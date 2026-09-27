@@ -4,6 +4,10 @@
 
 当前版本 **b.4.6**（内部安装版本 **0.4.6**）。[发布记录](docs/RELEASE_b.4.6.md) · [文档中心](docs/README.md) · [验证状态](docs/TESTING.md)
 
+## 下一代架构与施工
+
+[下一代架构书（中文）](docs/NEXT_ARCHITECTURE.zh-CN.md) 记录设计优先的 World/Object/Environment/Resource/Build 模型、语义 GUI、Cold/Live Build、生态集成及分阶段施工单。它描述目标架构，不表示相关能力已实现；Linux 侧从第 0.3 节开始，先核验版本与官方实例数据，再推进语义内核。
+
 ## 可以做什么
 
 - 用 Markdown、文本、JSON 或 YAML 编写档案，在源码、分段和字段表之间切换。字段表支持直接修改数值、文字和开关，并保留未修改的正文与格式。
