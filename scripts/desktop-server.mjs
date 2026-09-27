@@ -2,6 +2,7 @@ import { readWorkspace, registerWorkspace } from './lib/workspace.mjs';
 import { PROJECT_ROOT } from './lib/paths.mjs';
 import { rebuildIndex } from './lib/rebuild-workflow.mjs';
 import { stopRunningCommands } from './lib/process.mjs';
+import { recoverWorldTransaction } from './lib/world-transactions.mjs';
 
 let closing = false;
 async function shutdown() {
@@ -22,6 +23,7 @@ try {
   });
   process.stdin.on('end', () => { void shutdown(); });
   process.stdin.resume();
+  await recoverWorldTransaction(PROJECT_ROOT);
   const manifest = readWorkspace(PROJECT_ROOT);
   if (!manifest) throw new Error('Workspace manifest is required');
   if ([2, 3].includes(manifest.version)) await registerWorkspace(PROJECT_ROOT);

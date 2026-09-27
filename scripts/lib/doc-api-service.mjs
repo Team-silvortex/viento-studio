@@ -23,6 +23,9 @@ import { createApiMetrics } from './doc-api-metrics.mjs';
 import { createDocumentStore } from '../../engine/document-store.mjs';
 import { createError } from '../../engine/service-error.mjs';
 import { createNodeDocumentStorage } from '../adapters/node-document-storage.mjs';
+import { createWorldQueryService } from '../adapters/node-world-projection.mjs';
+import { createWorldCommandService } from '../adapters/node-world-commands.mjs';
+import { readTransactionStatus, readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 
 const DEFAULT_INDEX_CACHE_TTL_MS = 5000;
 let requestSequence = 0;
@@ -40,6 +43,8 @@ function getDefaultIndexCacheTtl(rawTtl) {
 }
 
 function createDocumentService(options = {}) {
+  const queryWorld = createWorldQueryService(PROJECT_ROOT);
+  const commandWorld = createWorldCommandService(PROJECT_ROOT);
   const exports = createExportService(PROJECT_ROOT);
   const sharedState = options.state || {};
   const state = {
@@ -62,7 +67,7 @@ function createDocumentService(options = {}) {
   });
 
   async function getCapabilities() {
-    return makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode);
+    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'world.recover'] };
   }
 
   function getRuntimeConfig() {
@@ -94,19 +99,26 @@ function createDocumentService(options = {}) {
     return index;
   }
 
+  let indexFence;
   async function getDocIndex() {
+    const fence = await readWorldFence(PROJECT_ROOT);
+    if (indexFence !== fence) { invalidateIndexCache(); indexFence = fence; }
     if (isIndexCacheValid()) {
       return indexCache.value;
     }
     if (indexBuildInFlight) {
-      return indexBuildInFlight;
+      const index = await indexBuildInFlight;
+      await assertWorldFence(PROJECT_ROOT, fence);
+      return index;
     }
 
     const building = rebuildIndexCache(indexGeneration).finally(() => {
       if (indexBuildInFlight === building) indexBuildInFlight = null;
     });
     indexBuildInFlight = building;
-    return building;
+    const index = await building;
+    await assertWorldFence(PROJECT_ROOT, fence);
+    return index;
   }
 
   function getHealth() {
@@ -230,6 +242,17 @@ function createDocumentService(options = {}) {
   }
 
   return {
+    queryWorld,
+    async transactionStatus() {
+      const { pending, receipt } = await readTransactionStatus(PROJECT_ROOT);
+      return { pending, receipt };
+    },
+    async executeWorldCommand(payload) {
+      if (state.rebuildInProgress) throw createError(409, 'Workspace is busy', {}, 'world_write_busy');
+      const result = await commandWorld(payload);
+      if (['applied', 'committed', 'rolled-back'].includes(result.status)) invalidateIndexCache();
+      return result;
+    },
     getProject: () => readProjectConfiguration(PROJECT_ROOT),
     previewProject: (payload) => previewProjectTemplate(reloadWorkspaceManifest(), payload),
     saveProject,

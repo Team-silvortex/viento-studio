@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viento.studio/schemas/changeset-v1.schema.json",
+  "title": "changeset v1 (experimental, document projection)",
+  "type": "object",
+  "required": [
+    "format",
+    "schemaVersion",
+    "id",
+    "worldId",
+    "actorRef",
+    "baseRevision",
+    "commands",
+    "preconditions",
+    "affectedObjects",
+    "state"
+  ],
+  "properties": {
+    "format": {
+      "const": "viento-changeset"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "worldId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actorRef": {
+      "type": "object",
+      "required": [
+        "kind",
+        "id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "user",
+            "agent",
+            "tool"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "baseRevision": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "input"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "objectId",
+          "revision"
+        ],
+        "properties": {
+          "objectId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "affectedObjects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "state": {
+      "const": "proposed"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Proposal structure only, not a durable commit. property.set returns a save result; changeset.apply returns a separate transaction-receipt-v1 for its existing-document batch. This schema does not define a general ChangeSet executor or recovery log."
+}

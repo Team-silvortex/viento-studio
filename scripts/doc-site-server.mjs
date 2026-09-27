@@ -13,6 +13,7 @@ import { createDocumentService } from './lib/doc-api-service.mjs';
 import { handleApiRequest } from './lib/doc-server-routes.mjs';
 import { handleStaticRequest } from './lib/doc-server-static-routes.mjs';
 import { createDesktopSession } from './lib/desktop-session.mjs';
+import { recoverWorldTransaction } from './lib/world-transactions.mjs';
 
 const PORT = resolvePort();
 const HOST = process.env.DOC_API_HOST || '127.0.0.1';
@@ -32,6 +33,7 @@ function parsePositiveInteger(value, fallback) {
   return parsed;
 }
 
+await recoverWorldTransaction(PROJECT_ROOT);
 const docService = createDocumentService({
   editablePrefixes: EDIT_ROOT_PREFIXES,
   backstoryMergeMode: BACKSTORY_MERGE_MODE,

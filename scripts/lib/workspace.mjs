@@ -7,6 +7,7 @@ import { workspacePaths, validateProjectTypes, projectDocumentDefaults } from '.
 import { resolveContainedPath } from './contained-path.mjs';
 import { mediaKindForName } from './media-format.mjs';
 import { portablePath, DOCUMENT_SOURCE_EXTENSIONS } from './doc-api-contract.mjs';
+import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 
 export { portablePath };
 
@@ -169,6 +170,7 @@ export async function fingerprint(file) {
 
 export async function readRegistry(root, { signal } = {}) {
   signal?.throwIfAborted();
+  const fence = await readWorldFence(root);
   try {
     const documentsRoot = workspacePaths(readWorkspace(root)).documents;
     const metadata = path.join(root, 'metadata');
@@ -214,6 +216,7 @@ export async function readRegistry(root, { signal } = {}) {
       }
     }
     validateDocumentModels(documents);
+    await assertWorldFence(root, fence);
     return { assets, documents };
   } catch (error) { signal?.throwIfAborted(); throw error; }
 }
@@ -250,7 +253,7 @@ async function acquireRegistryLock(file) {
 }
 
 const registryOperations = new Map();
-export async function withRegistryLock(root, operation) {
+export async function withRegistryLock(root, operation, { allowPendingWorldTransaction = false } = {}) {
   const key = path.resolve(root);
   const previous = registryOperations.get(key) || Promise.resolve();
   const task = previous.catch(() => {}).then(async () => {
@@ -260,7 +263,10 @@ export async function withRegistryLock(root, operation) {
     let lock;
     try { lock = await acquireRegistryLock(lockPath); }
     catch (error) { throw Object.assign(error, { statusCode: 409, errorCode: 'registry_busy' }); }
-    try { return await operation(); }
+    try {
+      if (!allowPendingWorldTransaction) await readWorldFence(root);
+      return await operation();
+    }
     finally { await lock.close(); await fsp.rm(lockPath, { force: true }); }
   });
   registryOperations.set(key, task);
@@ -296,6 +302,7 @@ export async function registerWorkspace(root, { name, legacyIndex, scanAssets = 
   const lockPath = path.join(root, '.viento/registry.lock');
   const lock = await acquireRegistryLock(lockPath);
   try {
+    await readWorldFence(root);
     const previous = readWorkspace(root);
     const defaultName = portableName(path.basename(root)) ? path.basename(root) : '作品库';
     const manifest = { ...previous, format: 'viento-workspace', version: previous?.version === 3 ? 3 : 2, id: previous?.id || randomUUID(), name: name || previous?.name || defaultName, createdAt: previous?.createdAt ?? Date.now(), paths, assetStores: { ...ASSET_STORES } };

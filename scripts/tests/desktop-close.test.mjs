@@ -18,7 +18,7 @@ async function closeHarness() {
 }
 
 test('desktop close reports document and template drafts and busy operations without discarding input', async () => {
-  for (const scenario of ['clean', 'source', 'template', 'saving', 'applying']) {
+  for (const scenario of ['clean', 'source', 'template', 'property', 'saving', 'applying', 'command']) {
     const { runtime, document, element } = await closeHarness();
     document.body.inert = false;
     element('docSourceEditor').value = '尚未保存的正文';
@@ -26,10 +26,13 @@ test('desktop close reports document and template drafts and busy operations wit
     if (scenario === 'template') element('projectSettingsDialog').dataset.dirty = 'true';
     if (scenario === 'saving') element('docEditPanel').setAttribute('aria-busy', 'true');
     if (scenario === 'applying') element('projectSettingsDialog').setAttribute('aria-busy', 'true');
+    const world = document.createElement('dialog'); world.id = 'worldBrowserDialog'; document.body.appendChild(world);
+    if (scenario === 'property') world.dataset.dirty = 'true';
+    if (scenario === 'command') world.setAttribute('aria-busy', 'true');
     const id = randomUUID(), sent = [];
     runtime.fetch = async (url, options) => { sent.push({ url, ...JSON.parse(options.body) }); return { ok: true }; };
     await vm.runInContext(closeScript.replace('__VIENTO_CLOSE_ID__', JSON.stringify(id)), runtime);
-    assert.deepEqual(sent, [{ url: '/__desktop/close-response', id, busy: ['saving', 'applying'].includes(scenario), dirty: ['source', 'template'].includes(scenario) }], scenario);
+    assert.deepEqual(sent, [{ url: '/__desktop/close-response', id, busy: ['saving', 'applying', 'command'].includes(scenario), dirty: ['source', 'template', 'property'].includes(scenario) }], scenario);
     assert.equal(document.body.inert, true, 'input is frozen while the host checks this snapshot');
     assert.equal(runtime.window.__vientoCloseGuard.inert, false);
     assert.equal(element('docSourceEditor').value, '尚未保存的正文');

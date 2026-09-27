@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viento.studio/schemas/transaction-receipt-v1.schema.json",
+  "title": "Document source transaction receipt v1",
+  "description": "Host commit decision for an existing-document ChangeSet. Not a World v4 manifest or a durable undo history.",
+  "type": "object",
+  "required": ["format", "schemaVersion", "transactionId", "worldId", "proposalId", "baseRevision", "revision", "state"],
+  "additionalProperties": false,
+  "properties": {
+    "format": { "const": "viento-transaction-receipt" },
+    "schemaVersion": { "const": 1 },
+    "transactionId": { "type": "string", "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$" },
+    "worldId": { "type": "string", "minLength": 1 },
+    "proposalId": { "type": "string", "pattern": "^proposal:[a-f0-9]{64}$" },
+    "baseRevision": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "revision": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "state": { "enum": ["committed", "rolled-back"] }
+  }
+}

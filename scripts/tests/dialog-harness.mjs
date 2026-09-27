@@ -8,6 +8,7 @@ import { isComposingInput } from '../../web/modules/app-keyboard.js';
 // Event-capable DOM fixture for the real dialog controllers. It reads their
 // actual markup; layout and rendering remain covered by the native smoke test.
 class DialogElement extends Element {
+  get lastElementChild() { return this.children.at(-1) || null; }
   constructor(tag, document) {
     super(tag);
     this.ownerDocument = document;

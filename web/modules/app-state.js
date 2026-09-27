@@ -24,6 +24,7 @@ export const appState = {
   isRebuilding: false,
   isSaving: false,
   isExporting: false,
+  isMutatingWorld: false,
   isImportingMedia: false,
   isLoadingSource: false,
   isLoadingTemplate: false,

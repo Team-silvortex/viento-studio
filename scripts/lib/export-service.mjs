@@ -3,6 +3,7 @@ import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { resolveContainedPath } from './contained-path.mjs';
 import { exportError, planExport, writeExportZip } from './export-package.mjs';
+import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
@@ -88,6 +89,7 @@ export function createExportService(root, { ttlMs = 15 * 60 * 1000 } = {}) {
     busy = true;
     let directory, id;
     try {
+      const fence = await readWorldFence(root);
       // Keep prepared and interrupted downloads retryable. Only completed,
       // inactive downloads or revoked jobs can give their slot to the next
       // export, after their pending cleanup succeeds.
@@ -120,6 +122,7 @@ export function createExportService(root, { ttlMs = 15 * 60 * 1000 } = {}) {
       signal?.throwIfAborted();
       const job = { id, directory, file, fileName: plan.fileName, bytes, documentCount: plan.documentCount, assetCount: plan.assetCount,
         readers: 0, downloaded: false, released: false };
+      await assertWorldFence(root, fence);
       jobs.set(id, job);
       retain(job);
       return { id, fileName: job.fileName, bytes, documentCount: job.documentCount, assetCount: job.assetCount };

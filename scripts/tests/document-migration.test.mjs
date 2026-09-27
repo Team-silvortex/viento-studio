@@ -140,6 +140,12 @@ for (const kind of ['private-directory', 'migration-directory', 'lock-file']) te
   assert.deepEqual(await fs.readFile(sentinel), original);
   if (outsideFiles) assert.deepEqual(await fs.readdir(outside), outsideFiles);
   assert.deepEqual(await metadataBytes(h.root), before);
+  if (kind === 'private-directory') {
+    // Transaction-aware readers now reject a linked private directory too.
+    await assert.rejects(readRegistry(h.root), error => error.errorCode === 'world_journal_invalid');
+    await fs.unlink(source);
+    await fs.rename(outside, source);
+  }
   await h.preserve();
 });
 

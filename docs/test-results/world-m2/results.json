@@ -1,0 +1,146 @@
+{
+  "milestone": "V-M2 single-property vertical slice",
+  "softwareVersion": "0.0.2",
+  "semanticSchemaVersion": 1,
+  "checkedAt": "2026-09-27T21:32:52+08:00",
+  "baseline": "2d4cdd77548b822e641dcc632556626745854a94",
+  "status": "local-source-validation-passed",
+  "scope": [
+    "property.set preview and single-file apply",
+    "guarded inverse command",
+    "GUI / CLI / HTTP command parity",
+    "legacy document editor write coordination"
+  ],
+  "application": {
+    "command": "npm run check -- --app-only",
+    "nativeArchiveEnabled": true,
+    "nativeMobileStorageEnabled": true,
+    "testFileConcurrency": 2,
+    "syntaxFiles": 204,
+    "tests": 685,
+    "passed": 685,
+    "failed": 0,
+    "skipped": 0
+  },
+  "native": {
+    "command": "CARGO_BUILD_JOBS=1 cargo test --manifest-path src-tauri/Cargo.toml --offline",
+    "passed": 42,
+    "failed": 0,
+    "ignored": 1,
+    "ignoredReason": "full-size source and asset migration requires VIENTO_TEST_SOURCE_ROOT",
+    "desktopCloseScriptExecutedInDomHarness": true
+  },
+  "semanticRegression": {
+    "tests": 31,
+    "passed": 31,
+    "failed": 0,
+    "skipped": 0,
+    "newCommandAndGuiTests": 18,
+    "projectionFormats": [
+      1,
+      2,
+      3
+    ],
+    "registeredWriteFormats": [
+      2,
+      3
+    ],
+    "sourceFormats": [
+      "Markdown",
+      "JSON",
+      "YAML"
+    ],
+    "checks": [
+      "zero-write preview",
+      "BOM / CRLF / comments / untouched bytes / numeric precision",
+      "unregistered and unknown types denied",
+      "strict inputs and schema validation",
+      "structure-changing edits denied",
+      "same-size preserved-mtime conflict",
+      "two in-process writers from one base",
+      "HTTP / CLI identical save receipt and revision",
+      "cross-process registry lock shared with legacy editor",
+      "legacy / semantic stale writes rejected both directions",
+      "HTTP auth / methods / content type / body limit",
+      "no-op leaves source mtime unchanged",
+      "guarded inverse restores tested text values",
+      "failed publication cleans temporary files",
+      "portable planner without Node globals",
+      "GUI retains draft on conflict and timeout",
+      "GUI invalidates edited preview and restores keyboard focus",
+      "GUI marks successful save separately from index failure",
+      "desktop close detects property drafts and busy commands"
+    ]
+  },
+  "officialWorkspace": {
+    "mode": "preview",
+    "objects": 885,
+    "resources": 1155,
+    "propertyUnchanged": true,
+    "revisionUnchanged": true,
+    "sourceMtimeUnchanged": true,
+    "elapsedMs": 2773,
+    "maxHeapMiB": 256
+  },
+  "browser": {
+    "host": "integrated Chromium browser; isolated synthetic v3 workspace",
+    "interaction": "DOM events and keyboard; embedded browser native pointer stability was not used",
+    "savedTextProperty": {
+      "before": "100",
+      "after": "125",
+      "exactByteEdit": true,
+      "bomCrlfAndTrailingSpacesPreserved": true,
+      "documentPreviewRefreshed": true
+    },
+    "conflict": {
+      "externalSavedValue": "126",
+      "retainedDraft": "150",
+      "httpStatus": 409,
+      "externalValuePreserved": true,
+      "applyDisabled": true
+    },
+    "numericProperty": {
+      "before": "9007199254740993",
+      "after": "9007199254740995",
+      "appliedUsingKeyboard": true
+    },
+    "literalMarkupNotExecuted": true,
+    "languages": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "focusedButtonContrastChecked": true,
+    "responsiveLayout": {
+      "method": "computed DOM layout at 390 CSS pixels; no narrow-screen compositor screenshot claim",
+      "dialogClientWidth": 335,
+      "dialogScrollWidth": 335,
+      "inspectorClientWidth": 303,
+      "inspectorScrollWidth": 303,
+      "editorClientWidth": 301,
+      "editorScrollWidth": 301,
+      "columns": 1
+    },
+    "desktopScreenshot": "property-preview.jpg"
+  },
+  "preparedResources": {
+    "desktopResourcesOnly": "passed",
+    "mobile": "passed; semantic capabilities remain unavailable without a native adapter"
+  },
+  "limits": [
+    "One registered document property per operation; semantic creation, relation and resource commands remain pending",
+    "No general ChangeSet executor, persisted command history, multi-record transaction or crash recovery",
+    "External programs can race the final validation and rename; lock guarantees apply to cooperating Node writers",
+    "Preview revision is predicted; projection is not a transactional Build snapshot",
+    "Inverse commands restore property values, not necessarily previous lexical formatting",
+    "No new installer, physical device acceptance or release/push in this milestone",
+    "Historical V-M1 evidence and fingerprints are unchanged"
+  ],
+  "logSha256": {
+    "application-check.log": "d7b522a6b32989d5d0e261b04d507fa7a981d3453f3265aee8c0e39e11e11476",
+    "semantic-check.log": "1b876aa222914031378c0f0d7ebee4f818d611f4df81c0838a647e7e13ecd09a",
+    "native-check.log": "72e6575193950d9f1be697a4c5b404b898da555a52c785854bdcb01df06c3091",
+    "desktop-prepare.log": "117b00d04805946903a4a850f808a978da3c1a23857009a72a1890fabccc8e5d",
+    "mobile-prepare.log": "c64b1ac957a5077fc010afef67dedefd464928be8a34d1f32b656e66cc004ed7"
+  }
+}

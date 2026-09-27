@@ -37,12 +37,13 @@ async function readDocumentSnapshot(absolutePath) {
   }
 }
 
-async function writeDocumentAtomically(absolutePath, content, { create = false, previousStats = null } = {}) {
+async function writeDocumentAtomically(absolutePath, content, { create = false, previousStats = null, beforePublish = () => {}, temporaryName = null } = {}) {
   const directory = path.dirname(absolutePath);
   await fs.mkdir(directory, { recursive: true });
   // A valid 255-byte source name must not overflow the filesystem limit when
   // creating its temporary sibling. The random name stays short on its own.
-  const temporaryPath = path.join(directory, `.${randomUUID()}.tmp`);
+  if (temporaryName !== null && !/^\.viento-[a-f0-9-]{36}-[0-9]{1,2}\.tmp$/.test(temporaryName)) throw new Error('Invalid transaction temporary name');
+  const temporaryPath = path.join(directory, temporaryName || `.${randomUUID()}.tmp`);
   const handle = await fs.open(temporaryPath, 'wx', previousStats ? previousStats.mode & 0o777 : 0o666);
   try {
     await handle.writeFile(content, 'utf8');
@@ -58,6 +59,7 @@ async function writeDocumentAtomically(absolutePath, content, { create = false, 
     }
     await handle.sync();
     await handle.close();
+    await beforePublish();
     if (create) {
       // link is exclusive: another creator can never be silently overwritten.
       await fs.link(temporaryPath, absolutePath);

@@ -46,6 +46,7 @@ import { createBlockDraft, serializeBlockDraft, serializeSourceDraft } from './a
 import { setupMediaEditor } from './app-media-editor.js';
 import { setupExport } from './app-export.js';
 import { setupProjectSettings } from './app-project-settings.js';
+import { setupWorldBrowser } from './app-world-browser.js';
 import { isComposingInput } from './app-keyboard.js';
 import { createFieldEditor } from './app-field-editor.js';
 import { API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion } from '../../scripts/lib/doc-api-contract.mjs';
@@ -60,6 +61,7 @@ import {
 } from './app-doc-service.js';
 
 let mediaEditorController = null;
+let worldBrowserController = null;
 let fieldEditorController = null;
 let fieldDraftSourcePath = '';
 let fieldLoadToken = 0;
@@ -1457,7 +1459,7 @@ function isInEditSession() {
 }
 
 function isEditorWriteBusy() {
-  return state.isSaving || state.isRebuilding || state.isImportingMedia || state.isExporting || state.isConfiguringProject;
+  return state.isSaving || state.isRebuilding || state.isImportingMedia || state.isExporting || state.isConfiguringProject || state.isMutatingWorld;
 }
 
 function isEditorBusy() {
@@ -1964,6 +1966,7 @@ async function detectEditBackend() {
   const normalizedDetection = normalizeEditBackendState(detection);
   detectedEditBackendState = normalizedDetection;
   state.editBackendAvailable = Boolean(normalizedDetection.available);
+  worldBrowserController?.setAvailable(detection.payload?.semanticProjection === true, detection.payload?.semanticCommands || []);
 }
 
 function resolveInitialMode() {
@@ -5180,6 +5183,25 @@ async function loadData(preferredPath = '', options = {}) {
 
 async function initApp(options = {}) {
   await setupSettings(options.settings);
+  worldBrowserController = setupWorldBrowser({
+    getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy() }),
+    setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
+    applied: async result => {
+      if (!['applied', 'committed', 'rolled-back'].includes(result.status)) return;
+      // Recovery can be requested while an older document draft is open.
+      // Keep that draft and its original version; a later stale save must conflict.
+      if (result.status !== 'applied' && (state.editHasUnsavedChanges || state.isCreating)) return;
+      const changes = result.changes || (result.change ? [result.change] : []);
+      for (const { sourcePath } of changes) {
+        const doc = getDocBySourcePath(sourcePath);
+        if (state.isEditing && canonicalizeSourcePath(state.activeEditSource) === canonicalizeSourcePath(sourcePath)) applyEditMode(doc, false);
+        if (doc) for (const key of ['_sourceCachedText', '_sourceRenderedText', '_sourceVersion', '_renderSignature']) delete doc[key];
+      }
+      if (!changes.length && state.isEditing) applyEditMode(getActiveDoc(), false);
+      await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: changes.length === 1 ? toRebuildFilter(changes[0].sourcePath) : '', requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
+      await loadData(state.activePath, { forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
+    },
+  });
   if (options.features?.project !== false) setupProjectSettings({
     getContext: () => ({ workspace: state.workspace, editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy() }),
     setBusy: (busy) => { state.isConfiguringProject = busy; refreshEditButtons(); },
@@ -5451,7 +5473,7 @@ async function initApp(options = {}) {
     window.addEventListener('keydown', handleWindowKeydown);
 
     window.addEventListener('beforeunload', (event) => {
-      if (!state.editHasUnsavedChanges && document.getElementById('projectSettingsDialog')?.dataset.dirty !== 'true') {
+      if (!state.editHasUnsavedChanges && !document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"]')) {
         return;
       }
       event.preventDefault();

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viento.studio/schemas/command-descriptor-v1.schema.json",
+  "title": "command-descriptor v1 (experimental, document projection)",
+  "type": "object",
+  "required": [
+    "format",
+    "schemaVersion",
+    "id",
+    "version",
+    "inputSchema",
+    "outputSchema",
+    "targetTypes",
+    "preconditions",
+    "effects",
+    "requiredCapabilities",
+    "undoMode"
+  ],
+  "properties": {
+    "format": {
+      "const": "viento-command"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "inputSchema": {
+      "type": "object"
+    },
+    "outputSchema": {
+      "type": "object"
+    },
+    "targetTypes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "requiredCapabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "undoMode": {
+      "enum": [
+        "none",
+        "inverse-command",
+        "compensation"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

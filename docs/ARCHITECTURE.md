@@ -1,8 +1,14 @@
 # 系统架构
 
-本文描述 **0.0.2** 继承自 b.4.6 的模块职责与数据流。软件版本重启不改变既有存储契约；交接证据见 [迁移记录](HANDOFF_0.0.1.md)。Viento Studio 由共用编辑器和引擎、桌面 / 浏览器适配、Android 适配组成；作品类型、模板与字段规则来自项目清单。
+本文描述 **0.0.3** 的模块职责与数据流，包括继承自 b.4.6 的编辑链路和新增的对象命令／事务层。软件版本重启不改变既有存储契约；交接证据见 [迁移记录](HANDOFF_0.0.1.md)。Viento Studio 由共用编辑器和引擎、桌面 / 浏览器适配、Android 适配组成；作品类型、模板与字段规则来自项目清单。
 
 [文档中心](README.md) · [验证状态](TESTING.md) · [引擎接口](../engine/README.md)
+
+V-M1 新增可移植 World 投影与查询模块。Node 适配器读取旧作品的正文和登记，`GET /api/world` 与 CLI 共用查询实现，编辑器的“世界与对象”视图消费同一结果。投影只存在于内存，不参与原有保存或归档格式；Android 暂不声明此宿主能力。契约和限制见 [世界与对象](WORLD_PROJECTION.md)。
+
+V-M2 第一条纵切接通 `property.set`：可移植规划器校验版本和字段往返，Node 执行器与旧文档保存共用登记锁并只替换一个源文件。GUI、`POST /api/world/commands` 和 CLI 请求使用相同契约；提案与保存回执分离。它不是多记录事务，详见 [ADR 0003](adr/0003-single-property-command.md)。
+
+V-M3 第一条纵切通过 `changeset.apply` 提交多个现有对象的属性修改。Node 宿主先持久化前后镜像和意图，再替换源文件、发布提交标记和回执；启动及显式恢复入口按提交决策整批恢复。World、旧文档读写及 Node／Rust 导出遵守读取屏障，详见 [ADR 0004](adr/0004-recoverable-source-changesets.md)。尚不包含创建、登记、资源或 Build 事务。
 
 ## 模块边界
 

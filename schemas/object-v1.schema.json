@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viento.studio/schemas/object-v1.schema.json",
+  "title": "object v1 (experimental, document projection)",
+  "type": "object",
+  "required": [
+    "format",
+    "schemaVersion",
+    "id",
+    "worldId",
+    "name",
+    "typeRef",
+    "typeVersion",
+    "revision",
+    "readOnly",
+    "properties",
+    "propertyBindings",
+    "behaviorBindings",
+    "documentRefs",
+    "provenance"
+  ],
+  "properties": {
+    "format": {
+      "const": "viento-object"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "worldId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "typeRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "typeVersion": {
+      "const": 1
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "readOnly": {
+      "const": true
+    },
+    "properties": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "label",
+          "group",
+          "kind",
+          "value"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "group": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "propertyBindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "propertyPath",
+          "authorityKind",
+          "authorityRef",
+          "sourceRevision"
+        ],
+        "properties": {
+          "propertyPath": {
+            "type": "string",
+            "pattern": "^/properties/field-[0-9]+$"
+          },
+          "authorityKind": {
+            "const": "document"
+          },
+          "authorityRef": {
+            "type": "object",
+            "required": [
+              "sourcePath",
+              "range"
+            ],
+            "properties": {
+              "sourcePath": {
+                "type": "string",
+                "minLength": 1
+              },
+              "range": {
+                "type": "object",
+                "required": [
+                  "start",
+                  "end",
+                  "unit"
+                ],
+                "properties": {
+                  "start": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "end": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "unit": {
+                    "const": "utf16"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          },
+          "sourceRevision": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "behaviorBindings": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "documentRefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "sourcePath",
+          "sourceRevision"
+        ],
+        "properties": {
+          "sourcePath": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceRevision": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "identity",
+        "workspaceVersion",
+        "documentType",
+        "descriptor",
+        "parser"
+      ],
+      "properties": {
+        "identity": {
+          "enum": [
+            "registered",
+            "path-derived"
+          ]
+        },
+        "workspaceVersion": {
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        "documentType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "descriptor": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "parser": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

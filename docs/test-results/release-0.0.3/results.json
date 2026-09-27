@@ -1,0 +1,74 @@
+{
+  "version": "0.0.3",
+  "checkedAt": "2026-09-27T23:01:16+08:00",
+  "baseline": "2d4cdd77548b822e641dcc632556626745854a94",
+  "status": "local-source-release-checks-passed",
+  "environment": {
+    "node": "v24.21.0",
+    "rust": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "cargoBuildJobs": 1,
+    "testFileConcurrency": 2
+  },
+  "application": {
+    "command": "VIENTO_TEST_ARCHIVE_BINARY=\"$PWD/src-tauri/target/debug/examples/workspace-archive\" VIENTO_MOBILE_STORE_BIN=\"$PWD/src-tauri/target/debug/examples/mobile-storage\" npm run check -- --app-only",
+    "syntaxFiles": 209,
+    "tests": 708,
+    "passed": 708,
+    "failed": 0,
+    "skipped": 0,
+    "nativeArchiveEnabled": true,
+    "nativeMobileStorageEnabled": true,
+    "includesFinalLegacyDraftRecoveryGuard": true
+  },
+  "rust": {
+    "passed": 44,
+    "failed": 0,
+    "ignored": 1,
+    "command": "CARGO_BUILD_JOBS=1 cargo test --manifest-path src-tauri/Cargo.toml --locked --offline",
+    "ignoredCase": "full_project_migration_roundtrip",
+    "ignoredReason": "requires VIENTO_TEST_SOURCE_ROOT",
+    "nativeCompatibilityToolsBuilt": [
+      "workspace-archive",
+      "mobile-storage"
+    ],
+    "existingVendorWarnings": "glib vendor warnings remain"
+  },
+  "preparedResources": {
+    "desktop": "passed: resources-only; VERSION and package metadata verified at 0.0.3",
+    "mobile": "passed: generated display version verified at 0.0.3; no semantic host capability"
+  },
+  "installationMetadata": {
+    "identifier": "io.viento.studio",
+    "androidVersionCode": 1000003,
+    "macOSBundleVersion": "1.0.3"
+  },
+  "historicalDevelopmentEvidence": [
+    "../world-m1/results.json",
+    "../world-m2/results.json",
+    "../world-m3/results.json"
+  ],
+  "sourceFingerprintCount": 66,
+  "limits": [
+    "Source commit and push only; no new installer or GitHub Release",
+    "Development browser and SIGKILL evidence remains recorded at pre-release version 0.0.2",
+    "World v4, general creation/relation/resource transactions, Build, and Android semantic host are not implemented",
+    "No new official-workspace writes or device acceptance in this release"
+  ],
+  "localLogs": {
+    "application-check.log": {
+      "sha256": "aaf4498bcb3fbd6f6758cfd506352ab55d310d7edea03702561d250764e40215"
+    },
+    "cargo-test.log": {
+      "sha256": "5a137e91ac7dc7aa97f959a2066e0866b21d503dfa0f1500596123689211e271"
+    },
+    "cargo-build.log": {
+      "sha256": "4cd4f7fea297db2bde9a48f336f491b2160ac90c1e4795a6558a0a08cdde1270"
+    },
+    "desktop-prepare.log": {
+      "sha256": "9fea2b7c69cb426bb65ec3eb5d160061e49a9ee1f07d5cb87f665e43688dbfb5"
+    },
+    "mobile-prepare.log": {
+      "sha256": "7800fb90944c97ed9102bb44f7992870156be339b72fe79442966d91c6139065"
+    }
+  }
+}

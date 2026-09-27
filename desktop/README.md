@@ -1,6 +1,6 @@
 # Viento Studio 桌面版
 
-当前版本 **0.0.2**，继承 b.4.6 的桌面宿主。当前变更见 [版本记录](../docs/RELEASE_0.0.2.md)，名称、版本与官方作品的交接见 [交接记录](../docs/HANDOFF_0.0.1.md)。应用标识与数据路径沿用 `io.viento.studio`；从 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
+当前版本 **0.0.3**，继承 b.4.6 的桌面宿主。当前变更见 [版本记录](../docs/RELEASE_0.0.3.md)，名称、版本与官方作品的交接见 [交接记录](../docs/HANDOFF_0.0.1.md)。应用标识与数据路径沿用 `io.viento.studio`；从 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
 
 Linux GTK/WebKit 使用仓库内的 glib 安全修复副本，构建及源码迁移需要完整保留 `src-tauri/vendor`。补丁来源、兼容原因和优化回归见 [安全修复记录](../docs/SECURITY_GLIB_b.2.9.md)。
 
@@ -41,7 +41,7 @@ npm run desktop:build
 
 在内存较小的 Linux 开发机上，可用 `CARGO_BUILD_JOBS=1 npm run desktop:build` 限制编译并发，避免同时运行模拟器和大批构建。
 
-默认输出位于 `src-tauri/target/release/bundle`；设置 `CARGO_TARGET_DIR` 时位于该目录的 `release/bundle`。构建脚本将完成的安装包改为 `VERSION` 中的发布编号，例如 `Viento-Studio_0.0.2_amd64.AppImage`。Linux 可指定 `--bundles deb,appimage`，Windows 使用 `--bundles nsis`，macOS 使用 `--bundles dmg`。跨平台发行应分别在目标系统构建；仓库中的 **Build desktop installers** 工作流可手动生成三端产物，仅上传工作流构件，不自动发布版本。
+默认输出位于 `src-tauri/target/release/bundle`；设置 `CARGO_TARGET_DIR` 时位于该目录的 `release/bundle`。构建脚本将完成的安装包改为 `VERSION` 中的发布编号，例如 `Viento-Studio_0.0.3_amd64.AppImage`。Linux 可指定 `--bundles deb,appimage`，Windows 使用 `--bundles nsis`，macOS 使用 `--bundles dmg`。跨平台发行应分别在目标系统构建；仓库中的 **Build desktop installers** 工作流可手动生成三端产物，仅上传工作流构件，不自动发布版本。
 
 每次 Linux 打包前会重建生成用的 `.AppDir` 目录，避免 GTK 打包插件因旧链接残留而使第二次构建失败。Rust 编译缓存、已生成的安装包及作品库不在此清理范围内。
 

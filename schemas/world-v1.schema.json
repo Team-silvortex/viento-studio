@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viento.studio/schemas/world-v1.schema.json",
+  "title": "world v1 (experimental, document projection)",
+  "type": "object",
+  "required": [
+    "format",
+    "schemaVersion",
+    "id",
+    "projectId",
+    "name",
+    "revision",
+    "readOnly",
+    "authorityKind",
+    "sourceWorkspaceVersion",
+    "typePackageRefs",
+    "environmentRefs",
+    "buildTargetRefs"
+  ],
+  "properties": {
+    "format": {
+      "const": "viento-world"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projectId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "readOnly": {
+      "const": true
+    },
+    "authorityKind": {
+      "const": "document"
+    },
+    "sourceWorkspaceVersion": {
+      "enum": [
+        1,
+        2,
+        3
+      ]
+    },
+    "typePackageRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "environmentRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "buildTargetRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "additionalProperties": false
+}

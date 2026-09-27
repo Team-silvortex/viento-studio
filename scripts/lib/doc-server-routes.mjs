@@ -8,6 +8,8 @@ import {
 } from './doc-api-contract.mjs';
 import { appendFile } from 'node:fs/promises';
 import { timingSafeEqual } from 'node:crypto';
+import { WORLD_API_PATH } from '../../engine/world-query.mjs';
+import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
 import {
   readRequestJsonBody,
   sendApiResponse,
@@ -289,6 +291,7 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
+  if (pathname === WORLD_COMMAND_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === API_PATHS.EXPORT && method === API_METHODS.POST) return true;
   return pathname === API_PATHS.DOC && WRITE_METHODS.has(method)
     || pathname === API_PATHS.REBUILD && REBUILD_METHODS.has(method)
@@ -412,7 +415,8 @@ async function handleApiIndex(response, service, requestId = '') {
 async function handleApiCapabilities(response, service, requestId = '') {
   try {
     const { editablePrefixes, backstoryMergeMode } = service.getRuntimeConfig();
-    sendApiResponse(response, makeCapabilitiesPayload(editablePrefixes, backstoryMergeMode), requestId);
+    const capabilities = service.getCapabilities ? await service.getCapabilities() : makeCapabilitiesPayload(editablePrefixes, backstoryMergeMode);
+    sendApiResponse(response, capabilities, requestId);
     return isHttpStatus(response.statusCode, 200);
   } catch (error) {
     return mapServiceErrorToHttp(error, response, requestId);
@@ -506,6 +510,39 @@ async function handleApiRequest({
   let requestId = '';
 
   const route = {
+    '/api/world/transaction': {
+      [API_METHODS.GET]: async () => {
+        try { sendApiResponse(response, await service.transactionStatus(), requestId); return 200; }
+        catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
+    [WORLD_COMMAND_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          sendApiResponse(response, await service.executeWorldCommand(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) {
+          if (error instanceof SyntaxError) {
+            sendApiError(response, 400, 'Invalid command JSON', { errorCode: 'world_command_invalid' }, requestId);
+            return 400;
+          }
+          return mapServiceErrorToHttp(error, response, requestId);
+        }
+      },
+    },
+    [WORLD_API_PATH]: {
+      [API_METHODS.GET]: async () => {
+        try {
+          const query = Object.fromEntries(requestUrl.searchParams);
+          if (Object.keys(query).length !== [...requestUrl.searchParams].length) {
+            sendApiError(response, 400, 'Duplicate world query parameter', { errorCode: 'world_query_invalid' }, requestId);
+            return 400;
+          }
+          sendApiResponse(response, await service.queryWorld(query), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
     [API_PATHS.PROJECT]: {
       [API_METHODS.GET]: () => handleProject(response, request, service, false, requestId),
       [API_METHODS.POST]: () => handleProject(response, request, service, false, requestId),

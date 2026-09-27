@@ -8,6 +8,7 @@ import {
 } from './doc-server.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
 import { API_RESPONSE, API_RESPONSE_DEFAULTS } from './doc-api-contract.mjs';
+import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 
 const STATIC_ALLOWED_METHODS = ['GET', 'HEAD'];
 
@@ -128,8 +129,16 @@ async function handleProjectFileRequest({ response, pathname, projectRoot, reque
   }
 
   let candidatePath;
-  try { candidatePath = await resolveProjectFilePath(decodedPath); }
+  let fence;
+  const guarded = isManagedAssetPath(decodedPath) || decodedPath.startsWith('/data/') || decodedPath.startsWith('/web/data/');
+  try {
+    if (guarded) fence = await readWorldFence(projectRoot);
+    candidatePath = await resolveProjectFilePath(decodedPath);
+  }
   catch (error) {
+    if (error.errorCode?.startsWith('world_')) {
+      await sendStaticJsonError(response, error.statusCode, error.message, error.errorCode); return true;
+    }
     const forbidden = error.statusCode === 403;
     await sendStaticJsonError(response, forbidden ? 403 : 404,
       forbidden ? 'forbidden' : 'Not found', forbidden ? 'path_forbidden' : 'not_found');
@@ -162,9 +171,14 @@ async function handleProjectFileRequest({ response, pathname, projectRoot, reque
     if (decodedPath.startsWith('/assets/') || decodedPath.startsWith('/asset-files/')) {
       response.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
     }
-    await sendFile(candidatePath, response, request, stat);
+    await sendFile(candidatePath, response, request, { beforeSend: async () => {
+      if (guarded) await assertWorldFence(projectRoot, fence);
+    } });
     return true;
-  } catch {
+  } catch (error) {
+    if (error.errorCode?.startsWith('world_')) {
+      await sendStaticJsonError(response, error.statusCode, error.message, error.errorCode); return true;
+    }
     const normalizedPath = decodedPath || pathname;
     if (isWebAssetPath(normalizedPath) || normalizedPath.startsWith('/engine/') || isManagedAssetPath(normalizedPath)) {
       await sendStaticJsonError(response, 404, 'Not found', 'not_found');

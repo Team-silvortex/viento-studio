@@ -36,6 +36,10 @@ Shell 入口 `scripts/start-doc-site.sh --mode edit|browse` 及旧的 `start-doc
 
 ## 转换与作品维护
 
+语义查询使用 `npm run world -- --root /完整路径/作品库`，可选择 `object.list`、`object.inspect` 或 `world.validate` 命令；不修改文件或登记。`adapters/node-world-projection.mjs` 负责只读盘点与来源复查，查询逻辑在可移植引擎内。GUI 和 `/api/world` 调用同一契约，详见 [世界与对象](../docs/WORLD_PROJECTION.md)。
+
+属性命令使用 `node scripts/world.mjs --root /完整路径/作品库 --request command.json`（`-` 表示 stdin）。JSON 必须显式提供 `mode: preview|apply` 与所有版本条件；不能与查询参数混用。`property.set` 保存单个属性，`changeset.apply` 可恢复地保存多个现有对象的属性。GUI 和 `POST /api/world/commands` 共用 `adapters/node-world-commands.mjs`；CLI 只保存原文，不自动重建派生索引。`--transaction-status` 检查未完成事务，`--recover` 显式恢复；编辑宿主启动时也先恢复。协议和限制见 [批量提交](../docs/WORLD_TRANSACTIONS.md)。
+
 ```sh
 npm run rebuild
 npm run check

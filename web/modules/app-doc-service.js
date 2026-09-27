@@ -3,6 +3,13 @@ import { translateDiagnostic } from '../i18n/diagnostics.js';
 import { API_PATHS, API_REQUEST_KEYS, DOC_CAPABILITIES_FIELDS } from '../../scripts/lib/doc-api-contract.mjs';
 import { fetchJsonApiRequest, fetchTextApiRequest, fetchWithTimeout, makeRequestError, safeParseJsonResponse, withCacheBust } from './app-services.js';
 import { APP_ERROR_MESSAGES, APP_REQUEST_LABELS } from './app-state.js';
+import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
+
+export async function requestWorldCommand(payload) {
+  return (await fetchJsonApiRequest(WORLD_COMMAND_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('修改对象属性'))).payload;
+}
 
 const DOC_API_TOKEN_STORAGE_KEY = 'doc-api-token';
 const DOC_API_TOKEN_MAX_LENGTH = 512;

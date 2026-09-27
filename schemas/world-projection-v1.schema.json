@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viento.studio/schemas/world-projection-v1.schema.json",
+  "title": "world-projection v1 (experimental, document projection)",
+  "type": "object",
+  "required": [
+    "format",
+    "schemaVersion",
+    "world",
+    "objects",
+    "types",
+    "relations",
+    "resources",
+    "resourceBindings",
+    "diagnostics"
+  ],
+  "properties": {
+    "format": {
+      "const": "viento-world-projection"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "world": {
+      "$ref": "https://viento.studio/schemas/world-v1.schema.json"
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "$ref": "https://viento.studio/schemas/object-v1.schema.json"
+      }
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "version",
+          "label",
+          "authorityKind",
+          "readOnly",
+          "definition"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "const": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "authorityKind": {
+            "const": "document"
+          },
+          "readOnly": {
+            "const": true
+          },
+          "definition": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "worldId",
+          "sourceObjectId",
+          "targetObjectId",
+          "typeRef",
+          "properties"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "worldId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceObjectId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "targetObjectId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "typeRef": {
+            "type": "string",
+            "minLength": 1
+          },
+          "properties": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "revision",
+          "descriptor",
+          "availability",
+          "contentVerified"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "const": "file"
+          },
+          "revision": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "descriptor": {
+            "type": "object"
+          },
+          "availability": {
+            "enum": [
+              "unverified",
+              "present-unverified",
+              "missing",
+              "unreadable",
+              "size-changed"
+            ]
+          },
+          "contentVerified": {
+            "const": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "resourceBindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "objectId",
+          "resourceId",
+          "slot",
+          "descriptor"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "objectId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "resourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "slot": {
+            "type": "string"
+          },
+          "descriptor": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "severity"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "severity": {
+            "enum": [
+              "warning",
+              "error"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

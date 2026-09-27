@@ -8,6 +8,10 @@ export { prepareMediaDraft, insertStructuredMedia } from './media-insertion.mjs'
 export { createProjectModel, validateProjectTypes, validateParserDefinition, LEGACY_PATHS } from './project.mjs';
 export { createDocumentStore } from './document-store.mjs';
 export { normalizeSourcePath, sourceExtension, sourceFileName } from './source-path.mjs';
+export { createWorldProjection, canonicalJson } from './world-projection.mjs';
+export { queryWorldProjection, worldCommandDescriptors, validateWorldQuery } from './world-query.mjs';
+export { preparePropertySet, validateWorldCommand, worldMutationDescriptors, canSetObjectProperty } from './world-commands.mjs';
+export { prepareChangeSet } from './world-changeset.mjs';
 export * from './media-format.mjs';
 export * from './document-model.mjs';
 export * from './document-values.mjs';

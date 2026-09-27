@@ -40,7 +40,7 @@ export function createDocumentStore({ storage, editablePrefixes, onWrite = () =>
     const force = normalized.force === true;
     const expectedVersion = normalizeDocumentVersion(normalized.expectedVersion);
 
-    return storage.transaction(filePath, async () => {
+    return (storage.writeTransaction || storage.transaction).call(storage, filePath, async () => {
       const reference = await storage.resolve(filePath, { create });
       if (!reference || (!create && !reference.exists)) throw createError(404, API_ERRORS.docNotFound, {}, API_ERRORS.docNotFound);
       if (create && reference.exists) throw createError(409, API_ERRORS.alreadyExists, {}, API_ERRORS.alreadyExists);
@@ -73,7 +73,7 @@ export function createDocumentStore({ storage, editablePrefixes, onWrite = () =>
         if (create && error?.code === 'EEXIST') throw createError(409, API_ERRORS.alreadyExists, {}, API_ERRORS.alreadyExists);
         throw createError(500, 'failed to save', {}, API_RESPONSE_DEFAULTS.internalErrorPrefix);
       }
-    });
+    }, { create });
   }
 
   return { getDocByPath, writeDoc };

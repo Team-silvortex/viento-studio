@@ -1,0 +1,176 @@
+{
+  "milestone": "V-M3 recoverable existing-document ChangeSet vertical slice",
+  "softwareVersion": "0.0.2",
+  "semanticSchemaVersion": 1,
+  "checkedAt": "2026-09-27T22:36:36+08:00",
+  "baseline": "2d4cdd77548b822e641dcc632556626745854a94",
+  "status": "local-source-validation-passed",
+  "scope": [
+    "changeset.apply over registered document properties",
+    "GUI staging queue / CLI / HTTP command interface",
+    "durable intent, before/after images, commit marker and last receipt",
+    "restart and explicit recovery",
+    "legacy reader/writer and Node/Rust export fences"
+  ],
+  "application": {
+    "command": "npm run check -- --app-only",
+    "nativeArchiveEnabled": true,
+    "nativeMobileStorageEnabled": true,
+    "testFileConcurrency": 2,
+    "syntaxFiles": 209,
+    "tests": 708,
+    "passed": 708,
+    "failed": 0,
+    "skipped": 0,
+    "timing": "Full suite passed before the final UI recovery guard that preserves an existing dirty legacy draft. Final guard covered by focused regression and real browser acceptance below."
+  },
+  "native": {
+    "command": "CARGO_BUILD_JOBS=1 cargo test --manifest-path src-tauri/Cargo.toml --offline",
+    "passed": 44,
+    "failed": 0,
+    "ignored": 1,
+    "ignoredReason": "full-size source and asset migration requires VIENTO_TEST_SOURCE_ROOT",
+    "archiveExampleRebuilt": true,
+    "existingVendorWarnings": "glib vendor warnings remain"
+  },
+  "finalFocusedRegression": {
+    "tests": 63,
+    "passed": 63,
+    "failed": 0,
+    "skipped": 0,
+    "files": [
+      "world-projection",
+      "world-commands",
+      "world-transactions",
+      "world-browser",
+      "desktop-close",
+      "document-migration"
+    ],
+    "newTransactionAndGuiTests": 23
+  },
+  "crashRecovery": {
+    "method": "Real Node child processes stopped via SIGKILL at IPC checkpoints",
+    "publicationPoints": [
+      "intent",
+      "source-ready/0",
+      "source-ready/1",
+      "data/0",
+      "data/1",
+      "commit",
+      "head"
+    ],
+    "preCommitResult": "all old sources",
+    "postCommitResult": "all new sources",
+    "recoveryInterruptedAgain": [
+      "rollback",
+      "roll-forward"
+    ],
+    "temporarySourcesCleaned": true,
+    "corruptAndConflictingInputsPreserveSources": [
+      "external source bytes",
+      "truncated image",
+      "symlink image",
+      "escaping source path",
+      "foreign project ID",
+      "invalid commit marker",
+      "oversized intent"
+    ],
+    "legacyAndExportFences": true,
+    "authenticatedRecovery": true,
+    "automaticServerStartupRecovery": true
+  },
+  "browser": {
+    "host": "integrated Chromium browser; isolated synthetic v3 project",
+    "interaction": "DOM events and keyboard; no native pointer stability claim",
+    "firstBatch": {
+      "before": [
+        "100",
+        "200"
+      ],
+      "after": [
+        "125",
+        "225"
+      ],
+      "keyboardCommit": true,
+      "exactBytes": true,
+      "bomCrlfAndTrailingSpacesPreserved": true,
+      "documentPreviewRefreshed": true
+    },
+    "conflict": {
+      "externalValue": "226",
+      "draftValues": [
+        "250",
+        "150"
+      ],
+      "httpStatus": 409,
+      "queueRetained": true,
+      "applyDisabled": true,
+      "sameSizeAndPreservedMtime": true,
+      "closeCancelledPreservesQueue": true
+    },
+    "recoveryWithLegacyDraft": {
+      "fault": "SIGKILL after commit marker",
+      "recoveredValues": [
+        "175",
+        "275"
+      ],
+      "legacyUnsavedDraftPreserved": true,
+      "subsequentLegacySaveStatus": 409,
+      "recoveredSourcesNotOverwritten": true
+    },
+    "languages": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "responsiveLayout": {
+      "method": "DOM measurement at 390 CSS pixels; no narrow-screen compositor screenshot claim",
+      "dialogClientWidth": 335,
+      "dialogScrollWidth": 335,
+      "batchClientWidth": 301,
+      "batchScrollWidth": 301,
+      "columns": 1
+    },
+    "desktopScreenshot": "batch-preview.jpg",
+    "screenshotValues": {
+      "before": [
+        "175",
+        "275"
+      ],
+      "proposed": [
+        "200",
+        "300"
+      ],
+      "note": "Final preview was not applied; owned tab and server were closed."
+    }
+  },
+  "preparedResources": {
+    "desktopResourcesOnly": "passed",
+    "mobile": "passed; semantic transaction capabilities remain unavailable"
+  },
+  "officialWorkspace": {
+    "writes": 0,
+    "note": "This milestone uses isolated fixtures only; no new official-workspace acceptance claim."
+  },
+  "limits": [
+    "One property per object, at most 32 registered objects; no create/relation/resource transaction yet",
+    "Linux process-crash acceptance only; no hardware power-loss, Windows/macOS or network filesystem certification",
+    "Unsupported directory syncing fails before source publication",
+    "External editors and old application versions do not obey the transaction fence and can race the last validation and rename",
+    "Only last transaction receipt retained; no durable undo stack or idempotency key",
+    "GUI staged drafts are memory-only",
+    "Abandoned private staging or cleanup directories may remain; no general garbage collector",
+    "Not a transactional Build snapshot or workspace v4",
+    "No new installer, release, commit or push; historical M1/M2 evidence unchanged"
+  ],
+  "sourceFingerprintCount": 53,
+  "logSha256": {
+    "application-check.log": "d6bc4d419e315998ad9b0bb4f0f20dbae06c233ec28abde0546fba87559e831c",
+    "semantic-check.log": "618434d2a67d5e5c87545ef1a02c049a35167b1c05163d592dae11949cca5b07",
+    "native-check.log": "51d6ff5fe41c7e4825b0fccca634e2dfd4059c1b1a25d53456d218f99838b68a",
+    "archive-build.log": "c12063940062994ab8a2c543362c53c74cdf623c41ea258c12bb3678fea0e0a4",
+    "desktop-prepare.log": "9fea2b7c69cb426bb65ec3eb5d160061e49a9ee1f07d5cb87f665e43688dbfb5",
+    "mobile-prepare.log": "418f33642ba7830e7a54529f1a11c356f3fbeeefe64474bd7529d3104262ad00"
+  },
+  "screenshotSha256": "89d88fc7999f79905862349209168425a8825d72de6857710d5afa17111510fb"
+}

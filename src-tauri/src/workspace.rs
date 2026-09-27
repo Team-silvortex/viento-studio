@@ -896,7 +896,45 @@ fn same_file_version(expected: &fs::Metadata, actual: &fs::Metadata) -> Result<b
     Ok(expected.created().ok() == actual.created().ok())
 }
 
+fn world_transaction_fence(root: &Path) -> Result<Option<Vec<u8>>> {
+    for directory in [root.join(".viento"), root.join(".viento/world-transactions")] {
+        match fs::symlink_metadata(&directory) {
+            Ok(meta) if meta.is_dir() && !meta.file_type().is_symlink() => {}
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+            _ => return Err("事务目录无效，请保留现场并恢复".into()),
+        }
+    }
+    let directory = root.join(".viento/world-transactions");
+    match fs::symlink_metadata(directory.join("active")) {
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+        _ => return Err("存在未完成事务，请先在编辑器或 world --recover 中恢复后再导出".into()),
+    }
+    let head = directory.join("head.json");
+    match fs::symlink_metadata(&head) {
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+        Ok(meta) if meta.is_file() && !meta.file_type().is_symlink() && meta.len() <= 8192 => {}
+        _ => return Err("事务提交记录无效".into()),
+    }
+    let mut bytes = Vec::new();
+    fs::File::open(head).map_err(io_error)?.take(8193).read_to_end(&mut bytes).map_err(io_error)?;
+    if bytes.len() > 8192 { return Err("事务提交记录过大".into()); }
+    let receipt: serde_json::Value = serde_json::from_slice(&bytes).map_err(io_error)?;
+    let valid_hash = |key: &str, prefix: &str| receipt[key].as_str()
+        .and_then(|value| value.strip_prefix(prefix))
+        .is_some_and(|value| value.len() == 64 && value.bytes().all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)));
+    if receipt["format"] != "viento-transaction-receipt" || receipt["schemaVersion"] != 1
+        || !matches!(receipt["state"].as_str(), Some("committed" | "rolled-back"))
+        || receipt.as_object().is_none_or(|object| object.len() != 8)
+        || receipt["worldId"].as_str().is_none_or(str::is_empty)
+        || receipt["transactionId"].as_str().is_none_or(|id| Uuid::parse_str(id).is_err())
+        || !valid_hash("proposalId", "proposal:") || !valid_hash("baseRevision", "sha256:") || !valid_hash("revision", "sha256:") {
+        return Err("事务提交记录无效".into());
+    }
+    Ok(Some(Sha256::digest(&bytes).to_vec()))
+}
+
 pub fn export_workspace(root: &Path, destination: &Path) -> Result<usize> {
+    let transaction_fence = world_transaction_fence(root)?;
     let workspace = ensure_workspace(root)?;
     let asset_directory = asset_root(root)?;
     let files = list_files(root)?;
@@ -1012,6 +1050,9 @@ pub fn export_workspace(root: &Path, destination: &Path) -> Result<usize> {
     .map_err(io_error)?;
     writer.finish().map_err(io_error)?;
     temporary.as_file().sync_all().map_err(io_error)?;
+    if world_transaction_fence(root)? != transaction_fence {
+        return Err("导出期间事务状态发生变化，请重试".into());
+    }
     temporary.persist(destination).map_err(io_error)?;
     Ok(files.len())
 }
@@ -1355,6 +1396,40 @@ mod tests {
         assert_eq!(snapshot.modified().unwrap(), current.modified().unwrap());
         assert!(!same_file_version(&snapshot, &current).unwrap());
         assert_eq!(fs::read(file).unwrap(), b"modified");
+    }
+
+    #[test]
+    fn unfinished_world_transactions_block_archives_and_receipts_fence_completed_transactions() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = create_workspace(temp.path(), "transaction-test", None, None).unwrap();
+        let directory = root.join(".viento/world-transactions");
+        fs::create_dir_all(directory.join("active")).unwrap();
+        let destination = temp.path().join("archive.viento");
+        fs::write(&destination, b"existing archive").unwrap();
+        assert!(export_workspace(&root, &destination).unwrap_err().contains("未完成事务"));
+        assert_eq!(fs::read(&destination).unwrap(), b"existing archive");
+        fs::remove_dir(directory.join("active")).unwrap();
+        let before = world_transaction_fence(&root).unwrap();
+        let receipt = serde_json::json!({"format":"viento-transaction-receipt", "schemaVersion":1,
+            "transactionId":Uuid::new_v4().to_string(), "state":"committed", "worldId":"world:test",
+            "proposalId":format!("proposal:{}", "a".repeat(64)), "baseRevision":format!("sha256:{}", "b".repeat(64)),
+            "revision":format!("sha256:{}", "c".repeat(64))});
+        write_json(&directory.join("head.json"), &receipt).unwrap();
+        assert_ne!(world_transaction_fence(&root).unwrap(), before);
+        export_workspace(&root, &destination).unwrap();
+        fs::write(directory.join("head.json"), b"{broken").unwrap();
+        let completed = fs::read(&destination).unwrap();
+        assert!(export_workspace(&root, &destination).is_err());
+        assert_eq!(fs::read(&destination).unwrap(), completed);
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn world_transaction_fences_reject_linked_state() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = create_workspace(temp.path(), "linked-transaction", None, None).unwrap();
+        std::os::unix::fs::symlink(temp.path().join("missing"), root.join(".viento/world-transactions")).unwrap();
+        assert!(world_transaction_fence(&root).is_err());
     }
 
     fn legacy_workspace(parent: &Path, name: &str) -> PathBuf {

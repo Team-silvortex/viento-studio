@@ -461,13 +461,14 @@ function requestedByteRange(request, stats) {
   return { start: Number(start), end: Number(end) };
 }
 
-async function sendFile(filePath, response, request = null) {
+async function sendFile(filePath, response, request = null, { beforeSend = async () => {} } = {}) {
   // Open before sending headers, so missing/unreadable files follow the normal
   // request error path. An unhandled stream error used to kill the whole editor.
   const handle = await fs.open(filePath, 'r');
   try {
     const stats = await handle.stat();
     if (!stats.isFile()) throw new Error('not a regular file');
+    await beforeSend();
     setSecurityHeaders(response);
     if (path.extname(filePath).toLowerCase() === '.svg') {
       response.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; sandbox");
