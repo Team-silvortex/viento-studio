@@ -25,3 +25,36 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check -- --app-only
+
+  compatibility:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CARGO_BUILD_JOBS: '2'
+      TAURI_CONFIG: '{"bundle":{"externalBin":[],"resources":null}}'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+      - name: Install native dependencies
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev
+      - run: npm ci
+      - run: cargo test --manifest-path src-tauri/Cargo.toml --locked
+      - run: cargo build --manifest-path src-tauri/Cargo.toml --locked --example workspace-archive --example mobile-storage
+      - name: Verify predecessor formats and desktop / mobile archive exchange
+        env:
+          VIENTO_TEST_ARCHIVE_BINARY: ${{ github.workspace }}/src-tauri/target/debug/examples/workspace-archive
+          VIENTO_MOBILE_STORE_BIN: ${{ github.workspace }}/src-tauri/target/debug/examples/mobile-storage
+        run: >-
+          node --test --test-concurrency=2
+          scripts/tests/predecessor-compatibility.test.mjs
+          scripts/tests/export.test.mjs
+          scripts/tests/archive-registry.test.mjs
+          scripts/tests/mobile-archive.test.mjs
+          scripts/tests/mobile-platform.test.mjs

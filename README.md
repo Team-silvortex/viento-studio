@@ -2,11 +2,11 @@
 
 通用 OC 设计 IDE，用于整理原创角色、世界观、故事与设定。类型、模板、字段和展示分组由作品定义；程序与作品数据分别保存，更新应用无需搬动素材。
 
-当前版本 **b.4.6**（内部安装版本 **0.4.6**）。[发布记录](docs/RELEASE_b.4.6.md) · [文档中心](docs/README.md) · [验证状态](docs/TESTING.md)
+当前版本 **0.0.2**，继承前身 b.4.6 的文档引擎与跨平台宿主。[版本记录](docs/RELEASE_0.0.2.md) · [交接记录](docs/HANDOFF_0.0.1.md) · [文档中心](docs/README.md) · [验证状态](docs/TESTING.md)
 
 ## 下一代架构与施工
 
-[下一代架构书（中文）](docs/NEXT_ARCHITECTURE.zh-CN.md) 记录设计优先的 World/Object/Environment/Resource/Build 模型、语义 GUI、Cold/Live Build、生态集成及分阶段施工单。它描述目标架构，不表示相关能力已实现；Linux 侧从第 0.3 节开始，先核验版本与官方实例数据，再推进语义内核。
+[下一代架构书（中文）](docs/NEXT_ARCHITECTURE.zh-CN.md) 记录设计优先的 World/Object/Environment/Resource/Build 模型、语义 GUI、Cold/Live Build、生态集成及分阶段施工单。它描述目标架构，不表示相关能力已实现；仓库、版本线与官方实例的交接见 [0.0.1 交接记录](docs/HANDOFF_0.0.1.md)，后续从语义内核里程碑推进。
 
 ## 可以做什么
 
@@ -33,8 +33,8 @@
 准备 Node.js 24、Rust 稳定版及 [Tauri 系统依赖](https://v2.tauri.app/start/prerequisites/)：
 
 ```sh
-git clone --depth 1 https://github.com/chiharu-kiryu/epic-of-viento-line.git
-cd epic-of-viento-line
+git clone --depth 1 https://github.com/Team-silvortex/viento-studio.git
+cd viento-studio
 npm ci
 npm run desktop:dev
 ```
@@ -59,6 +59,6 @@ npm run desktop:dev
 
 仓库保留程序和原作品的完整 Git 历史，早期提交包含作品正文与素材。浅克隆只下载当前版本；需要完整历史时可运行 `git fetch --unshallow`。当前目录和安装包采用程序与作品分离的结构。
 
-欢迎通过 [Issues](https://github.com/chiharu-kiryu/epic-of-viento-line/issues) 反馈问题，通过 Pull Request 参与开发。请先阅读 [贡献指南](.github/CONTRIBUTING.md)；安全问题使用 [私密报告说明](.github/SECURITY.md)。程序许可证见 [LICENSE](LICENSE)，第三方组件保留各自的许可声明。
+欢迎通过 [Issues](https://github.com/Team-silvortex/viento-studio/issues) 反馈问题，通过 Pull Request 参与开发。请先阅读 [贡献指南](.github/CONTRIBUTING.md)；安全问题使用 [私密报告说明](.github/SECURITY.md)。程序许可证见 [LICENSE](LICENSE)，第三方组件保留各自的许可声明。
 
-`main` 推送与 Pull Request 自动执行应用检查；三端安装包通过 **Build desktop installers** 工作流手动构建，产物作为工作流构件保存，不自动发布。测试版编号为 `b.X.Y`，X、Y 均为 0–9；`b.9.9` 后进入 `1.0.0`。
+`main` 推送与 Pull Request 自动执行应用检查；三端安装包通过 **Build desktop installers** 工作流手动构建，产物作为工作流构件保存，不自动发布。新产品版本采用 `0.0.1` 起的三段数字版本；旧 `b.X.Y` 发布记录保留原编号。已有安装的切换步骤见 [安装兼容约定](docs/adr/0001-product-version-and-data-compatibility.md)。

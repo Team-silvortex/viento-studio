@@ -34,12 +34,12 @@ Pull Request 请说明遇到的问题、修改后的行为、验证方式以及�
 
 ## 发布约定
 
-测试版编号为 `b.X.Y`，X、Y 为 0–9；内部安装版本为 `0.X.Y`，`b.9.9` 后进入 `1.0.0`。`node desktop/version.mjs --next` 只显示下一版本，不修改文件。发布时同步 `VERSION`、两份 npm 清单、Tauri / Cargo 清单与锁文件、网页和作品库的版本显示，检查工具会核对一致性。
+新产品版本从 `0.0.1` 开始，使用无前导零的三段数字版本；日常递增 patch，不再按个位数进位。旧 `b.X.Y` 只用于历史版本兼容。`node desktop/version.mjs --next` 只显示下一版本，不修改文件。发布时同步 `VERSION`、两份 npm 清单、Tauri / Cargo 清单与锁文件、网页和作品库的版本显示，检查工具会核对一致性。Android 安装编号及 macOS 构建编号使用连续递增的纪元映射，必须一并更新，具体公式和降级安装边界见 [版本与数据兼容 ADR](../docs/adr/0001-product-version-and-data-compatibility.md)。
 
 新建对应发布记录，列清实际验证环境与未覆盖内容，再提交版本变更。`main` / PR 自动运行基础应用检查；**Build desktop installers** 为手动工作流，只上传构件，不自动生成 GitHub Release。调试 APK、源码归档和桌面安装包的验证及签名状态分别说明。
 
 ## 报告问题
 
-普通故障在 [Issues](https://github.com/chiharu-kiryu/epic-of-viento-line/issues) 提交，包含应用版本、系统、复现步骤、期望和实际结果。截图、日志及样例中请去除私人作品和凭据。涉及安全的问题请遵循 [安全报告说明](SECURITY.md)。
+普通故障在 [Issues](https://github.com/Team-silvortex/viento-studio/issues) 提交，包含应用版本、系统、复现步骤、期望和实际结果。截图、日志及样例中请去除私人作品和凭据。涉及安全的问题请遵循 [安全报告说明](SECURITY.md)。
 
 程序许可证见 [LICENSE](../LICENSE)；提交改进时保留第三方代码已有的来源和许可声明。

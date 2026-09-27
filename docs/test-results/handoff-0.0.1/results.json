@@ -1,0 +1,69 @@
+{
+  "version": "0.0.1",
+  "date": "2026-09-27",
+  "status": "local-handoff-complete",
+  "baseline": "dc4301584b945758237db4209d947c0fd06dc9db",
+  "application": {
+    "syntaxFiles": 192,
+    "tests": 657,
+    "passed": 657,
+    "failed": 0,
+    "skipped": 0,
+    "testFileConcurrency": 2,
+    "nativeArchiveEnabled": true,
+    "nativeMobileStorageEnabled": true
+  },
+  "rust": {
+    "passed": 42,
+    "failed": 0,
+    "ignored": 1,
+    "ignoredCase": "full_project_migration_roundtrip",
+    "officialWorkspaceVerifiedSeparately": true
+  },
+  "nativeDesktop": {
+    "runtime": "Ubuntu 24.04 / WebKitGTK 2.52.6",
+    "genericFieldsLanguagesMedia": "passed",
+    "libraryDialogsExportRestore": "passed",
+    "appImage": "passed: actual packaged 0.0.1 legacy-workspace editor, media, save and close workflow",
+    "installed": "passed: same verified AppImage bytes, previous application retained"
+  },
+  "android": {
+    "build": "passed",
+    "abi": "arm64-v8a",
+    "versionName": "0.0.1",
+    "versionCode": 1000001,
+    "signature": "debug",
+    "deviceUpgrade": "passed: real 0.4.6 APK → 0.0.1 APK on isolated Android 15 emulator; native data, identities and durable WebView storage retained",
+    "upgradeEvidence": "android-upgrade.json"
+  },
+  "workspace": "workspace.json",
+  "repository": "repository.json",
+  "predecessorFixtureValidation": "frozen-fixtures-baseline.json",
+  "installationPolicy": "../../adr/0001-product-version-and-data-compatibility.md",
+  "publication": {
+    "committed": false,
+    "pushed": false,
+    "githubReleaseCreated": false
+  },
+  "limits": [
+    "Windows and macOS installation behavior not device-tested",
+    "No Android physical-device or store-signing acceptance",
+    "Future World/Object/v4/Build features are not part of this migration"
+  ],
+  "interruption": {
+    "hostOOM": true,
+    "incompleteRestoreRejected": true,
+    "freshNativeRestoreVerified": true,
+    "sourceUnchanged": true,
+    "cargoBuildJobsAfterRestart": 1
+  },
+  "installation": "installation.json",
+  "githubActions": "workflow validated locally; not dispatched",
+  "builds": {
+    "linuxAppImage": "passed",
+    "linuxDeb": "built and metadata verified; not installed as a system package",
+    "androidArm64DebugApk": "built, signature and emulator upgrade verified",
+    "windowsMacOS": "configuration only; not built on this host"
+  },
+  "artifacts": "artifacts.json"
+}

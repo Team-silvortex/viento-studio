@@ -1,0 +1,71 @@
+{
+  "version": "0.0.2",
+  "checkedAt": "2026-09-27T15:07:35+08:00",
+  "baseline": "dc4301584b945758237db4209d947c0fd06dc9db",
+  "status": "local-source-release-checks-passed",
+  "environment": {
+    "node": "v24.21.0",
+    "rust": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "cargoBuildJobs": 1,
+    "testFileConcurrency": 2
+  },
+  "application": {
+    "command": "VIENTO_TEST_ARCHIVE_BINARY=\"$PWD/src-tauri/target/debug/examples/workspace-archive\" VIENTO_MOBILE_STORE_BIN=\"$PWD/src-tauri/target/debug/examples/mobile-storage\" npm run check -- --app-only",
+    "syntaxFiles": 192,
+    "tests": 657,
+    "passed": 657,
+    "failed": 0,
+    "skipped": 0,
+    "nativeArchiveEnabled": true,
+    "nativeMobileStorageEnabled": true
+  },
+  "rust": {
+    "passed": 42,
+    "failed": 0,
+    "ignored": 1,
+    "command": "cargo test --manifest-path src-tauri/Cargo.toml --locked",
+    "tauriConfig": {
+      "bundle": {
+        "externalBin": [],
+        "resources": null
+      }
+    },
+    "ignoredCase": "full_project_migration_roundtrip",
+    "nativeCompatibilityToolsBuilt": [
+      "workspace-archive",
+      "mobile-storage"
+    ]
+  },
+  "preparedResources": {
+    "desktop": "passed: resources-only; VERSION and package metadata verified at 0.0.2",
+    "mobile": "passed: generated display version verified at 0.0.2"
+  },
+  "installationMetadata": {
+    "identifier": "io.viento.studio",
+    "androidVersionCode": 1000002,
+    "macOSBundleVersion": "1.0.2"
+  },
+  "workflow": "YAML parsed; main push includes application and native compatibility jobs",
+  "historicalHandoff": "../handoff-0.0.1/results.json",
+  "limits": [
+    "Installers and device workflows were not rebuilt or rerun for 0.0.2",
+    "Full official-workspace backup and restore evidence remains versioned as 0.0.1"
+  ],
+  "localLogs": {
+    "application-check.log": {
+      "sha256": "130f2578cf9d154599f934890fc8a32bde381f0977a485b0a6af5a9a98b26729"
+    },
+    "cargo-build.log": {
+      "sha256": "19afacc806491c50a1e10c61f134701a97a1bf570fde1751147aee22bca9f9bc"
+    },
+    "cargo-test.log": {
+      "sha256": "5cb7e615109912f03694793067550251e63634414babccd2870df6ceb29a04ee"
+    },
+    "desktop-prepare.log": {
+      "sha256": "117b00d04805946903a4a850f808a978da3c1a23857009a72a1890fabccc8e5d"
+    },
+    "mobile-prepare.log": {
+      "sha256": "c64b1ac957a5077fc010afef67dedefd464928be8a34d1f32b656e66cc004ed7"
+    }
+  }
+}

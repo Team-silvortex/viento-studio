@@ -25,9 +25,9 @@ async function main() {
       if (entry.isDirectory() && depth < 3 && !/\.(?:app|AppDir)$/.test(entry.name)) {
         await renameBundles(source, depth + 1);
       } else if (entry.isFile() && /\.(?:AppImage|deb|rpm|dmg|exe|msi|app\.tar\.gz)(?:\.sig)?$/.test(entry.name)) {
-        const renamed = entry.name.replace(token, version);
+        const renamed = entry.name.replace(token, version).replaceAll(' ', '-');
         if (renamed === entry.name) continue;
-        const destination = path.join(directory, renamed.replaceAll(' ', '-'));
+        const destination = path.join(directory, renamed);
         await fs.rename(source, destination);
         console.log(`Release ${version}: ${destination}`);
       }

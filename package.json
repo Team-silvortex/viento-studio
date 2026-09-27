@@ -1,5 +1,5 @@
 {
-  "name": "epic-of-viento-line",
+  "name": "viento-studio",
   "private": true,
   "type": "module",
   "engines": {
@@ -7,7 +7,7 @@
   },
   "scripts": {
     "tauri": "tauri",
-    "test": "node --test scripts/tests/*.test.mjs",
+    "test": "node --test --test-concurrency=2 scripts/tests/*.test.mjs",
     "check": "node scripts/check-project.mjs",
     "desktop:prepare": "node desktop/prepare.mjs",
     "desktop:dev": "tauri dev",
@@ -31,5 +31,13 @@
     "@tauri-apps/cli": "2.11.4",
     "acorn": "8.18.0"
   },
-  "version": "0.4.6"
+  "version": "0.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Team-silvortex/viento-studio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Team-silvortex/viento-studio/issues"
+  },
+  "homepage": "https://github.com/Team-silvortex/viento-studio#readme"
 }

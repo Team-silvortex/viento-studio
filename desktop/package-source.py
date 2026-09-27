@@ -51,9 +51,9 @@ def parse_release_version(version):
     beta = re.fullmatch(r"b\.([0-9])\.([0-9])", version)
     if beta:
         return f"0.{beta[1]}.{beta[2]}"
-    if re.fullmatch(r"[1-9][0-9]*\.[0-9]\.[0-9]", version):
+    if re.fullmatch(r"(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)", version):
         return version
-    raise ValueError("VERSION must use b.X.Y (X and Y are digits 0–9) or a numeric release such as 1.0.0")
+    raise ValueError("VERSION must use a numeric release such as 0.0.1 (no leading zeros), or a historical b.X.Y version")
 
 
 def main():
