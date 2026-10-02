@@ -5,12 +5,18 @@ import { handleStaticRequest } from './lib/doc-server-static-routes.mjs';
 import { handleApiRequest } from './lib/doc-server-routes.mjs';
 import { API_PATHS } from './lib/doc-api-contract.mjs';
 import { createExportService } from './lib/export-service.mjs';
+import { createResourcePackageService } from './lib/resource-package-service.mjs';
+import { RESOURCE_PACKAGE_API } from '../engine/resource-package.mjs';
 
 const port = resolvePort();
-const service = { exports: createExportService(PROJECT_ROOT) };
+const service = { exports: createExportService(PROJECT_ROOT), resourcePackages: createResourcePackageService(PROJECT_ROOT) };
 createServer(async (request, response) => {
   try {
     const url = new URL(request.url, 'http://localhost');
+    if (url.pathname === RESOURCE_PACKAGE_API) {
+      if (request.method !== 'GET') { response.writeHead(405, { Allow: 'GET' }); response.end(); return; }
+      if (await handleApiRequest({ pathname: url.pathname, request, response, requestUrl: url, service })) return;
+    }
     if (url.pathname === API_PATHS.EXPORT && await handleApiRequest({ pathname: url.pathname, request, response, requestUrl: url, service })) return;
     await handleStaticRequest({ pathname: url.pathname, request, response, projectRoot: PROJECT_ROOT, webRoot: WEB_ROOT, requestMethod: request.method });
   } catch (error) {

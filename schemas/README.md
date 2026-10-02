@@ -4,6 +4,7 @@
 - `workspace-v2.schema.json`：旧项目公共清单，继续使用 `design-data`、`data-template` 与独立元数据。
 - `asset-v1.schema.json`：素材身份、类型、位置、内容指纹和旧路径。
 - `document-v1.schema.json`：文档身份、源文件位置和附件关联。
+- `resource-package-v1.schema.json`：选择式资源包清单、根身份、类型及外部依赖、文件摘要；见 [资源包契约](../docs/RESOURCE_PACKAGES.md)。
 
 这些是通用格式定义，随应用分发。具体作品记录保存在作品库内的 `workspace.json` 与 `metadata/`。
 

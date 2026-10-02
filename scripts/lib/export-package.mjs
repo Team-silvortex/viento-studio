@@ -16,6 +16,8 @@ import { buildDocumentLayout } from '../standardize-docs/layout.mjs';
 import { renderExport } from './export-render.mjs';
 import { formatMessage } from '../../web/i18n/messages.js';
 import { isSupportedLanguage } from '../../web/i18n/languages.js';
+import { addResourcePackage } from './resource-package-export.mjs';
+import { PACKAGE_LIMITS, RESOURCE_PACKAGE_FORMAT } from '../../engine/resource-package.mjs';
 
 const MAX_FILES = 200000;
 const MAX_FILE_BYTES = 8 * 1024 ** 3;
@@ -30,6 +32,21 @@ export function exportFileName(name, suffix) {
   return `${portablePath(safe) ? safe : '作品'}${suffix}`;
 }
 
+export function assetExportFileName(asset) {
+  let extension = path.extname(asset.location.path);
+  const original = path.basename(asset.location.path);
+  const name = asset.name || original;
+  // Registration uses a stem; uploads retain the original filename. Neither
+  // representation should lose an extension or acquire a duplicate one.
+  const stem = name === path.basename(original, extension) || !name.toLowerCase().endsWith(extension.toLowerCase())
+    ? name : name.slice(0, name.length - extension.length);
+  if (stem !== name) extension = name.slice(stem.length);
+  const letters = Array.from(stem.normalize('NFC').replace(/[<>:"/\\|?*\x00-\x1f\x7f-\x9f\uD800-\uDFFF]/gu, '_'));
+  while (letters.length && Buffer.byteLength(letters.join('') + extension) > 240) letters.pop();
+  const candidate = `${letters.join('').replace(/[. ]+$/g, '')}${extension}`;
+  return portablePath(candidate) ? candidate : `asset${extension}`;
+}
+
 async function existing(file, signal) {
   signal?.throwIfAborted();
   try {
@@ -39,7 +56,7 @@ async function existing(file, signal) {
 
 export async function planExport(root, options = {}, signal) {
   signal?.throwIfAborted();
-  if (!options || !['document', 'workspace'].includes(options.kind)) throw exportError('请选择文档分享或完整项目包');
+  if (!options || !['document', 'workspace', 'resources', 'asset'].includes(options.kind)) throw exportError('请选择文档分享、资源包或完整项目包');
   if (options.kind === 'document' && !['markdown', 'html'].includes(options.format)) throw exportError('请选择 Markdown 或离线网页');
   const language = options.language === undefined ? 'zh-CN' : options.language;
   if (!isSupportedLanguage(language)) throw exportError('不支持的界面语言');
@@ -86,6 +103,7 @@ export async function planExport(root, options = {}, signal) {
     folderSnapshots.push({ base, files });
     for (const file of files) await addFile(base, file, `${folder}/${file}`);
   }
+  let validateResourcePackage;
   async function validateSnapshot(snapshotSignal = signal) {
     try {
       snapshotSignal?.throwIfAborted();
@@ -110,11 +128,22 @@ export async function planExport(root, options = {}, signal) {
       const currentRegistry = await readRegistry(root, { signal: snapshotSignal });
       snapshotSignal?.throwIfAborted();
       if (JSON.stringify(currentRegistry) !== JSON.stringify(registry)) throw exportError('导出期间项目配置或登记信息发生变化，请重试', 409);
+      if (validateResourcePackage) await validateResourcePackage(snapshotSignal);
     } catch (error) { snapshotSignal?.throwIfAborted(); throw error; }
   }
 
   let title, archiveManifest, documentCount = 0, assetCount = 0;
-  if (options.kind === 'workspace') {
+  if (options.kind === 'asset') {
+    const asset = registry.assets.find(item => item.id === options.assetId);
+    if (!asset) throw exportError('请选择已登记的素材', 404);
+    const fileName = assetExportFileName(asset);
+    const entry = await addFile(assetRoot, asset.location.path, fileName, asset.content);
+    return { raw: entry, validateSnapshot, fileName, documentCount: 0, assetCount: 1 };
+  } else if (options.kind === 'resources') {
+    const result = await addResourcePackage(root, options, { addFile, addBuffer }, signal);
+    ({ title, archiveManifest, documentCount, assetCount } = result);
+    validateResourcePackage = result.validate;
+  } else if (options.kind === 'workspace') {
     const workspace = manifest || { format: 'viento-workspace', version: 1, id: randomUUID(), name: exportFileName(path.basename(root), ''), createdAt: Math.floor(Date.now() / 1000) };
     title = workspace.name;
     for (const folder of [paths.documents, paths.templates, ...(workspace.version >= 2 ? ['metadata'] : []), 'assets']) {
@@ -226,7 +255,44 @@ export async function planExport(root, options = {}, signal) {
   try { assertPortableFileTree(entries.keys()); } catch (error) { throw exportError(error.message); }
   if ([...entries.values()].reduce((total, entry) => total + (entry.buffer?.length ?? entry.stat.size), 0) > MAX_TOTAL_BYTES) throw exportError('导出内容超过 64 GiB 限制');
   return { entries: [...entries.values()], archiveManifest, validateSnapshot, documentCount, assetCount,
-    fileName: exportFileName(title, options.kind === 'workspace' ? '.viento.zip' : `-${options.format === 'html' ? t('网页') : 'Markdown'}.zip`) };
+    fileName: exportFileName(title, options.kind === 'workspace' ? '.viento.zip' : options.kind === 'resources' ? '.viento-package.zip' : `-${options.format === 'html' ? t('网页') : 'Markdown'}.zip`) };
+}
+
+// Stage the original bytes using the same registration/snapshot checks as a
+// package. Streaming keeps a large video out of memory and allows cancellation.
+export async function writeExportFile(plan, output, signal) {
+  const entry = plan.raw;
+  signal?.throwIfAborted();
+  const file = await resolveContainedPath(entry.base, path.join(entry.base, entry.relative));
+  signal?.throwIfAborted();
+  const input = await fs.open(file, constants.O_RDONLY | (constants.O_NOFOLLOW || 0) | (constants.O_NONBLOCK || 0));
+  let reader;
+  try {
+    signal?.throwIfAborted();
+    if (signature(await input.stat()) !== signature(entry.stat)) throw exportError(userMessage`导出期间文件发生变化：${entry.relative}`, 409);
+    const hash = createHash('sha256');
+    let size = 0;
+    const hashed = new Transform({
+      transform(chunk, encoding, done) {
+        size += chunk.length;
+        if (size > entry.stat.size) return done(exportError(userMessage`导出期间文件发生变化：${entry.relative}`, 409));
+        hash.update(chunk); done(null, chunk);
+      },
+      flush(done) {
+        const sha256 = hash.digest('hex');
+        if (size !== entry.stat.size || (entry.expected && (entry.expected.size !== size || entry.expected.sha256 !== sha256))) {
+          return done(exportError(userMessage`文件内容与登记不一致，请刷新登记后重试：${entry.relative}`, 409));
+        }
+        done();
+      },
+    });
+    reader = input.createReadStream({ autoClose: false });
+    await pipeline(reader, hashed, createWriteStream(output, { flags: 'wx', mode: 0o600 }), { signal });
+    signal?.throwIfAborted();
+    await plan.validateSnapshot(signal);
+    signal?.throwIfAborted();
+  } catch (error) { signal?.throwIfAborted(); throw error; }
+  finally { reader?.destroy(); await input.close(); }
 }
 
 export async function writeExportZip(plan, output, signal) {
@@ -299,7 +365,9 @@ export async function writeExportZip(plan, output, signal) {
         stopped.signal.throwIfAborted();
         await plan.validateSnapshot(stopped.signal);
         stopped.signal.throwIfAborted();
-        callback(null, Readable.from(json({ ...plan.archiveManifest, files: hashes })));
+        const manifest = json({ ...plan.archiveManifest, files: hashes });
+        if (plan.archiveManifest.format === RESOURCE_PACKAGE_FORMAT && manifest.length > PACKAGE_LIMITS.jsonBytes) throw exportError('资源包中的正文或元数据超过大小限制');
+        callback(null, Readable.from(manifest));
       })().catch(callback));
     });
     zip.end();

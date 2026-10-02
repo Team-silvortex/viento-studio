@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Viento resource package manifest v1",
+  "type": "object",
+  "required": ["format", "version", "exportedAt", "source", "roots", "includeDependencies", "includeChildren", "documents", "assets", "types", "requirements", "files"],
+  "properties": {
+    "format": { "const": "viento-resource-package" },
+    "version": { "const": 1 },
+    "exportedAt": { "type": "integer", "minimum": 0 },
+    "source": {
+      "type": "object", "required": ["id", "name", "version", "paths"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "name": { "type": "string" }, "version": { "enum": [2, 3] },
+        "paths": { "type": "object", "required": ["documents", "templates", "metadata"], "properties": {
+          "documents": { "enum": ["documents", "design-data"] }, "templates": { "enum": ["templates", "data-template"] }, "metadata": { "const": "metadata" }
+        } }
+      }
+    },
+    "roots": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/id" } },
+    "includeDependencies": { "type": "boolean" }, "includeChildren": { "type": "boolean" },
+    "documents": { "type": "array", "items": { "type": "object", "required": ["id", "sourcePath", "definition"], "properties": {
+      "id": { "$ref": "#/$defs/id" }, "sourcePath": { "$ref": "#/$defs/path" },
+      "definition": { "type": "object", "required": ["documentType", "parserProfile", "parserOptions", "fieldGroups"], "properties": {
+        "documentType": { "type": "string", "minLength": 1 }, "parserProfile": { "enum": ["structured", "prose", "legacy-hero"] },
+        "parserOptions": { "type": "object" }, "fieldGroups": { "type": "array" }
+      } }
+    } } },
+    "assets": { "type": "array", "items": { "type": "object", "required": ["id", "path"], "properties": {
+      "id": { "$ref": "#/$defs/id" }, "path": { "$ref": "#/$defs/path" }
+    } } },
+    "types": { "type": "array", "maxItems": 100, "items": { "type": "object", "required": ["id", "label", "directory", "parserProfile"], "properties": {
+      "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]{0,63}$" }, "label": { "type": "string", "minLength": 1 },
+      "directory": { "type": "string" }, "parserProfile": { "enum": ["structured", "prose"] }, "template": { "$ref": "#/$defs/path" }
+    } } },
+    "requirements": { "type": "array", "items": { "type": "object", "required": ["id", "category", "path", "recordSha256", "content"], "properties": {
+      "id": { "$ref": "#/$defs/id" }, "category": { "enum": ["document", "asset"] }, "path": { "$ref": "#/$defs/path" },
+      "recordSha256": { "$ref": "#/$defs/sha256" }, "content": { "$ref": "#/$defs/fingerprint" }
+    } } },
+    "files": { "type": "array", "maxItems": 200000, "items": { "allOf": [
+      { "$ref": "#/$defs/fingerprint" }, { "type": "object", "required": ["path"], "properties": { "path": { "$ref": "#/$defs/path" } } }
+    ] } }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+    "path": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "fingerprint": { "type": "object", "required": ["size", "sha256"], "properties": {
+      "size": { "type": "integer", "minimum": 0, "maximum": 8589934592 }, "sha256": { "$ref": "#/$defs/sha256" }
+    } }
+  }
+}

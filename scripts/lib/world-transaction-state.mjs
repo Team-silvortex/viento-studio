@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { resolveContainedPath } from './contained-path.mjs';
 import { createError } from '../../engine/service-error.mjs';
+import { readPackageFence } from './resource-package-state.mjs';
 
 export const transactionError = (code, message) => createError(409, message, {}, code);
 export const transactionHash = bytes => `sha256:${createHash('sha256').update(bytes).digest('hex')}`;
@@ -52,7 +53,8 @@ export async function readTransactionStatus(root) {
 export async function readWorldFence(root) {
   const { pending, token } = await readTransactionStatus(root);
   if (pending) throw transactionError('world_recovery_required', 'A transaction is unfinished; recover before reading or writing');
-  return token;
+  const packageToken = await readPackageFence(root);
+  return packageToken ? transactionHash(JSON.stringify([token, packageToken])) : token;
 }
 export async function assertWorldFence(root, token) {
   if (await readWorldFence(root) !== token) throw transactionError('world_read_conflict', 'A transaction completed during this read; retry');

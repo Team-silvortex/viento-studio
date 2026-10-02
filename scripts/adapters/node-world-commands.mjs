@@ -6,6 +6,7 @@ import { preparePropertySet, validateWorldCommand } from '../../engine/world-com
 import { prepareChangeSet } from '../../engine/world-changeset.mjs';
 import { prepareObjectCreate } from '../../engine/world-object-create.mjs';
 import { prepareRelationAdd } from '../../engine/world-relations.mjs';
+import { prepareResourceBind } from '../../engine/world-resources.mjs';
 import { createError } from '../../engine/service-error.mjs';
 import { readWorldSnapshot } from './node-world-projection.mjs';
 import { withRegistryLock } from '../lib/workspace.mjs';
@@ -35,11 +36,12 @@ async function readRecordContent(root, id) {
 }
 
 async function prepare(snapshot, request, root) {
-  if (request.command === 'relation.add') {
+  if (['relation.add', 'resource.bind'].includes(request.command)) {
     if (!snapshot.source.documents.some(item => item.record?.id === request.objectId)) {
-      throw createError(404, 'Registered relation source not found', {}, 'world_relation_object_missing');
+      throw createError(404, 'Registered object not found', {}, request.command === 'relation.add' ? 'world_relation_object_missing' : 'world_resource_target_missing');
     }
-    const plan = await prepareRelationAdd(snapshot.source, snapshot.projection, await readRecordContent(root, request.objectId), request, { digest });
+    const planner = request.command === 'relation.add' ? prepareRelationAdd : prepareResourceBind;
+    const plan = await planner(snapshot.source, snapshot.projection, await readRecordContent(root, request.objectId), request, { digest });
     if (Buffer.byteLength(plan.plans[0].afterContent) > 1024 * 1024) throw createError(413, 'Registration exceeds the command limit', {}, 'world_record_limit');
     return plan;
   }
@@ -85,7 +87,7 @@ export function createWorldCommandService(root, { checkpoint } = {}) {
       if (request.command === 'world.recover') return await recoverWorldTransaction(physicalRoot, { checkpoint });
       const initial = await prepare(await readWorldSnapshot(physicalRoot), request, physicalRoot);
       if (request.mode === 'preview') return initial.result;
-      if (['changeset.apply', 'object.create', 'relation.add'].includes(request.command)) {
+      if (['changeset.apply', 'object.create', 'relation.add', 'resource.bind'].includes(request.command)) {
         // Never acquire a document queue while holding the registry lock. Legacy
         // writers already hold their queue when waiting for this same lock.
         return await withRegistryLock(physicalRoot, async () => {

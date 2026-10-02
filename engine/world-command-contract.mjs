@@ -25,6 +25,9 @@ export const RELATION_KINDS = Object.freeze(['part-of', 'references']);
 const relationProperties = { mode: properties.mode, worldId: identifier, baseRevision: revision, actorRef: properties.actorRef,
   objectId: createProperties.objectId, objectRevision: revision, targetObjectId: createProperties.objectId, targetRevision: revision,
   kind: { enum: [...RELATION_KINDS] }, slot: { type: 'string', maxLength: 200 } };
+const resourceProperties = { mode: properties.mode, worldId: identifier, baseRevision: revision, actorRef: properties.actorRef,
+  objectId: createProperties.objectId, objectRevision: revision, resourceId: createProperties.objectId, resourceRevision: revision,
+  slot: { type: 'string', minLength: 1, maxLength: 200, pattern: '\\S' } };
 
 export function worldMutationDescriptors() {
   return JSON.parse(JSON.stringify([{ format: 'viento-command', schemaVersion: 1, id: 'property.set', version: 1,
@@ -50,7 +53,13 @@ export function worldMutationDescriptors() {
     outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'relation'],
       properties: { status: { enum: ['preview', 'applied'] }, worldId: identifier, baseRevision: revision, revision } },
     targetTypes: ['io.viento.document/*'], preconditions: ['registered-endpoints-with-source', 'matching-world-and-endpoint-revisions', 'distinct-endpoints', 'unique-relation', 'acyclic-ownership'],
-    effects: ['append-document-relation-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' }]));
+    effects: ['append-document-relation-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
+  { format: 'viento-command', schemaVersion: 1, id: 'resource.bind', version: 1,
+    inputSchema: { type: 'object', properties: resourceProperties, required: Object.keys(resourceProperties), additionalProperties: false },
+    outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'binding'],
+      properties: { status: { enum: ['preview', 'applied'] }, worldId: identifier, baseRevision: revision, revision } },
+    targetTypes: ['io.viento.document/*'], preconditions: ['registered-object-with-source', 'registered-resource', 'matching-world-object-resource-revisions', 'unique-resource-slot-binding'],
+    effects: ['append-resource-binding-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' }]));
 }
 
 export function validateWorldCommand(request) {
@@ -60,7 +69,7 @@ export function validateWorldCommand(request) {
     if (Object.keys(request).length !== 2 || !Object.hasOwn(request, 'mode') || request.mode !== 'apply') invalid();
     return { command: 'world.recover', mode: 'apply' };
   }
-  if (!['property.set', 'changeset.apply', 'object.create', 'relation.add'].includes(request.command)) invalid();
+  if (!['property.set', 'changeset.apply', 'object.create', 'relation.add', 'resource.bind'].includes(request.command)) invalid();
   const check = (value, rule) => {
     if (rule.const) return value === rule.const;
     if (rule.enum) return rule.enum.includes(value);
@@ -73,7 +82,7 @@ export function validateWorldCommand(request) {
       && (!rule.pattern || new RegExp(rule.pattern).test(value));
   };
   const rules = request.command === 'changeset.apply' ? batchProperties : request.command === 'object.create' ? createProperties
-    : request.command === 'relation.add' ? relationProperties : properties;
+    : request.command === 'relation.add' ? relationProperties : request.command === 'resource.bind' ? resourceProperties : properties;
   if (Object.keys(request).length !== Object.keys(rules).length + 1
     || !Object.entries(rules).every(([key, rule]) => Object.hasOwn(request, key) && check(request[key], rule))) invalid();
   // Prevent UTF-8 encoding from replacing an unpaired UTF-16 surrogate on disk.

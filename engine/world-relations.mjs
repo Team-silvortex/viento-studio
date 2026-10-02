@@ -1,5 +1,5 @@
-import { parseDocument, isMap, isSeq } from 'yaml';
 import { createError } from './service-error.mjs';
+import { appendRecordItem, registrationGuard } from './world-record-edit.mjs';
 import { validateWorldCommand, canRelateObject, RELATION_KINDS } from './world-command-contract.mjs';
 import { validateDocumentModels } from './document-model.mjs';
 import { createWorldProjection, canonicalJson } from './world-projection.mjs';
@@ -14,31 +14,12 @@ export function appendRelationRecord(content, relation) {
     || !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(relation.targetId)
     || typeof relation.slot !== 'string' || relation.slot.length > 200
     || /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(relation.slot)) invalidRecord();
-  let before;
-  try { before = JSON.parse(content); } catch { invalidRecord(); }
-  const parsed = parseDocument(content, { keepSourceTokens: true, intAsBigInt: true, uniqueKeys: true });
-  if (parsed.errors.length || !isMap(parsed.contents)) invalidRecord();
-  const root = parsed.contents, pair = root.items.find(item => item.key?.value === 'relations');
-  if (pair && !isSeq(pair.value)) invalidRecord();
-  const target = pair ? pair.value : root, last = target.items.at(-1);
-  const at = last ? (isMap(target) ? last.value : last)?.range?.[1] : target.range[0] + 1;
-  if (!Number.isInteger(at) || !target.flow) invalidRecord();
-  const value = pair ? JSON.stringify(relation) : `"relations": [${JSON.stringify(relation)}]`;
-  const separator = last ? ', ' : '';
-  const afterContent = content.slice(0, at) + separator + value + content.slice(at);
-  let after;
-  try { after = JSON.parse(afterContent); } catch { invalidRecord(); }
-  if (canonicalJson(after) !== canonicalJson({ ...before, relations: [...(before.relations || []), relation] })) invalidRecord();
-  return { before, after, afterContent };
+  return appendRecordItem(content, 'relations', relation);
 }
 
 // The changed record has its own exact byte hashes. The remaining registry
 // guards relation targets and the ownership graph during crash recovery.
-export function relationRegistryGuard(registry, objectId) {
-  const byId = (a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
-  return canonicalJson({ documents: registry.documents.filter(item => item.id !== objectId).sort(byId),
-    assets: [...registry.assets].sort(byId) });
-}
+export const relationRegistryGuard = registrationGuard;
 
 export async function prepareRelationAdd(source, projection, recordContent, rawRequest, { digest }) {
   const request = validateWorldCommand(rawRequest);

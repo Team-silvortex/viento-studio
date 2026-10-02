@@ -25,7 +25,7 @@
                 <h1 id="siteTitle">Viento Studio</h1>
                 <p id="siteSubtitle" data-i18n="角色、故事与世界设定">角色、故事与世界设定</p>
               </div>
-              <span id="appVersion" class="release-version">0.0.4</span>
+              <span id="appVersion" class="release-version">0.0.5</span>
             </div>
           </div>
           <nav id="topbarNav" class="topbar-nav" aria-label="—">
@@ -166,16 +166,56 @@
       <fieldset id="docExportOptions" class="doc-export-options">
         <legend data-i18n="导出用途">导出用途</legend>
         <label class="doc-export-choice"><input type="radio" name="exportKind" value="document" checked><span><strong data-i18n="文档分享">文档分享</strong><small data-i18n="当前档案与引用的图片、视频、音频，打包后便于分享。">当前档案与引用的图片、视频、音频，打包后便于分享。</small></span></label>
+        <label class="doc-export-choice"><input type="radio" name="exportKind" value="resources"><span><strong data-i18n="资源包">资源包</strong><small data-i18n="选择对象与素材，自动收集依赖，可导入其他项目继续使用。">选择对象与素材，自动收集依赖，可导入其他项目继续使用。</small></span></label>
         <label class="doc-export-choice"><input type="radio" name="exportKind" value="workspace"><span><strong data-i18n="完整项目包">完整项目包</strong><small data-i18n="全部正文、模板、元数据和素材，可在作品库中导入恢复。">全部正文、模板、元数据和素材，可在作品库中导入恢复。</small></span></label>
         <div id="docExportDocumentOptions" class="doc-export-document-options">
           <label for="docExportFormat" data-i18n="分享格式">分享格式</label>
           <select id="docExportFormat"><option value="html" data-i18n="离线网页 · 解压后打开阅读">离线网页 · 解压后打开阅读</option><option value="markdown" data-i18n="Markdown · 继续编辑或交给其他工具">Markdown · 继续编辑或交给其他工具</option></select>
           <label class="doc-export-children"><input id="docExportChildren" type="checkbox" checked><span data-i18n="包含附属内容（如角色背景故事）">包含附属内容（如角色背景故事）</span></label>
         </div>
+        <section id="docResourcePackageOptions" class="doc-resource-package" hidden aria-label="资源包" data-i18n-aria-label="资源包">
+          <div class="doc-package-toolbar">
+            <button id="docPackageRefresh" type="button" class="doc-btn doc-btn-ghost" data-i18n="刷新资源清单">刷新资源清单</button>
+            <button id="docPackageChooseFile" type="button" class="doc-btn" data-i18n="导入资源包…">导入资源包…</button>
+            <button id="docPackageRecover" type="button" class="doc-btn doc-btn-ghost" data-i18n="恢复中断的导入">恢复中断的导入</button>
+            <input id="docPackageFile" type="file" accept=".viento-package.zip,.zip" hidden>
+          </div>
+          <div id="docPackageSelection">
+            <div class="doc-package-filters">
+              <input id="docPackageSearch" type="search" placeholder="搜索名称或路径" data-i18n-placeholder="搜索名称或路径" aria-label="搜索名称或路径" data-i18n-aria-label="搜索名称或路径">
+              <select id="docPackageKind" aria-label="资源类型" data-i18n-aria-label="资源类型">
+                <option value="" data-i18n="全部类型">全部类型</option><option value="document" data-i18n="对象">对象</option>
+                <option value="image" data-i18n="图片">图片</option><option value="video" data-i18n="视频">视频</option><option value="audio" data-i18n="音频">音频</option>
+                <option value="font" data-i18n="字体">字体</option><option value="text" data-i18n="文本">文本</option><option value="other" data-i18n="其他">其他</option>
+              </select>
+            </div>
+            <div class="doc-package-toolbar">
+              <button id="docPackageSelectVisible" type="button" class="doc-btn doc-btn-ghost" data-i18n="选择筛选结果">选择筛选结果</button>
+              <button id="docPackageClear" type="button" class="doc-btn doc-btn-ghost" data-i18n="清空选择">清空选择</button>
+              <label><input id="docPackageSelectedOnly" type="checkbox"><span data-i18n="只看已选">只看已选</span></label>
+            </div>
+            <div id="docPackageEntries" class="doc-package-entries" aria-label="资源清单" data-i18n-aria-label="资源清单"></div>
+            <button id="docPackageMore" type="button" class="doc-btn doc-btn-ghost" hidden data-i18n="显示更多">显示更多</button>
+            <label class="doc-export-children"><input id="docPackageDependencies" type="checkbox" checked><span data-i18n="自动包含依赖（推荐）">自动包含依赖（推荐）</span></label>
+            <label class="doc-export-children"><input id="docPackageChildren" type="checkbox" checked><span data-i18n="包含附属内容（如角色背景故事）">包含附属内容（如角色背景故事）</span></label>
+            <p id="docPackageSummary" class="muted" role="status" aria-live="polite"></p>
+          </div>
+          <div id="docPackageImportPreview" hidden>
+            <p id="docPackageImportSummary"></p>
+            <ul id="docPackageImportItems" class="doc-package-entries"></ul>
+            <div class="doc-package-toolbar">
+              <button id="docPackageImportBack" type="button" class="doc-btn doc-btn-ghost" data-i18n="返回资源选择">返回资源选择</button>
+              <button id="docPackageImportRefresh" type="button" class="doc-btn" data-i18n="重新预览导入">重新预览导入</button>
+              <button id="docPackageImportApply" type="button" class="doc-btn doc-btn-success" data-i18n="确认导入">确认导入</button>
+            </div>
+          </div>
+          <p id="docPackageMessage" class="doc-media-message" role="status" aria-live="polite"></p>
+        </section>
       </fieldset>
       <p id="docExportHint" class="muted" data-i18n="导出已保存的内容，图片、视频与音频会一起打包。原始项目保留在原处。">导出已保存的内容，图片、视频与音频会一起打包。原始项目保留在原处。</p>
       <p id="docExportMessage" class="doc-media-message" role="status" aria-live="polite"></p>
       <div class="doc-export-actions">
+        <button id="docExportBackBtn" type="button" class="doc-btn doc-btn-ghost" hidden data-i18n="返回资源选择">返回资源选择</button>
         <button id="docExportStartBtn" type="button" class="doc-btn doc-btn-success" data-i18n="开始导出">开始导出</button>
         <button id="docExportDownload" type="button" class="doc-btn doc-btn-success" hidden data-i18n="下载文件">下载文件</button>
         <button id="docExportSaveBtn" type="button" class="doc-btn doc-btn-success" hidden data-i18n="选择保存位置">选择保存位置</button>

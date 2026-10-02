@@ -13,6 +13,7 @@ import { prepareMediaInsertion } from './media-insertion.mjs';
 import { prepareDocumentFields } from './document-field-draft.mjs';
 import { userMessage, userMessageText } from './user-message.mjs';
 import { createExportService } from './export-service.mjs';
+import { createResourcePackageService } from './resource-package-service.mjs';
 import {
   makeCapabilitiesPayload,
   API_ERRORS,
@@ -46,6 +47,7 @@ function createDocumentService(options = {}) {
   const queryWorld = createWorldQueryService(PROJECT_ROOT);
   const commandWorld = createWorldCommandService(PROJECT_ROOT);
   const exports = createExportService(PROJECT_ROOT);
+  const resourcePackages = createResourcePackageService(PROJECT_ROOT, { imported: () => { reloadWorkspaceManifest(); invalidateIndexCache(); } });
   const sharedState = options.state || {};
   const state = {
     rebuildInProgress: false,
@@ -67,7 +69,7 @@ function createDocumentService(options = {}) {
   });
 
   async function getCapabilities() {
-    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'relation.add', 'world.recover'] };
+    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'relation.add', 'resource.bind', 'world.recover'] };
   }
 
   function getRuntimeConfig() {
@@ -257,6 +259,7 @@ function createDocumentService(options = {}) {
     previewProject: (payload) => previewProjectTemplate(reloadWorkspaceManifest(), payload),
     saveProject,
     exports,
+    resourcePackages,
     getMediaAssets: () => listMediaAssets(PROJECT_ROOT),
     importMediaAsset: (request, name) => importMediaAsset(PROJECT_ROOT, request, name),
     prepareMediaInsertion: (payload) => prepareMediaInsertion(PROJECT_ROOT, payload),

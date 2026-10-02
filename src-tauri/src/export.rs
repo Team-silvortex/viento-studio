@@ -12,6 +12,19 @@ pub struct PreparedExport {
     before: fs::Metadata,
 }
 
+// A save filter follows the actual export, including raw image/video/audio.
+// Unusual or missing extensions use the platform's unrestricted picker.
+pub fn file_extension(name: &str) -> Option<&str> {
+    Path::new(name)
+        .extension()
+        .and_then(|value| value.to_str())
+        .filter(|value| {
+            !value.is_empty()
+                && value.len() <= 16
+                && value.bytes().all(|b| b.is_ascii_alphanumeric())
+        })
+}
+
 // Hold the actual file before the picker opens. Expiry may unlink its cache
 // pathname while the user chooses a destination; this handle keeps the bytes
 // available without making another temporary copy or extending every job's TTL.
@@ -25,6 +38,7 @@ pub fn prepare_export(root: &Path, id: &str) -> Result<PreparedExport> {
     }
     let root = root.canonicalize().map_err(|e| e.to_string())?;
     let mut source = root.clone();
+    // Historical cache name shared with Node; bytes may be a raw media file.
     for component in [".viento", "cache", "exports", id, "payload.zip"] {
         source.push(component);
         if fs::symlink_metadata(&source)
@@ -90,6 +104,45 @@ mod tests {
 
     fn save(root: &Path, id: &str, output: &Path) -> Result<()> {
         save_prepared_export(prepare_export(root, id)?, output)
+    }
+
+    #[test]
+    fn raw_resources_use_their_extension_and_save_exact_bytes_after_cache_expiry() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().join("project");
+        for name in [
+            "立绘 #100%.PNG",
+            "片段.mp4",
+            "主题曲.wav",
+            "package.viento-package.zip",
+            "empty",
+        ] {
+            assert!(workspace::portable_component(name));
+            assert_eq!(
+                file_extension(name),
+                name.rsplit_once('.').map(|(_, ext)| ext)
+            );
+            let id = Uuid::new_v4().to_string();
+            let staged = root.join(format!(".viento/cache/exports/{id}"));
+            fs::create_dir_all(&staged).unwrap();
+            let bytes: &[u8] = if name == "empty" {
+                b""
+            } else {
+                b"\x00\xfforiginal media\x01"
+            };
+            fs::write(staged.join("payload.zip"), bytes).unwrap();
+            let held = prepare_export(&root, &id).unwrap();
+            fs::remove_dir_all(&staged).unwrap();
+            let target = temp.path().join(name);
+            fs::write(&target, b"old").unwrap();
+            save_prepared_export(held, &target).unwrap();
+            assert_eq!(fs::read(target).unwrap(), bytes);
+        }
+        assert_eq!(file_extension("odd.拡張子"), None);
+        assert_eq!(file_extension("odd.ext-too-long-for-a-filter"), None);
+        for name in ["../outside.png", "CON.wav", "image\n.png"] {
+            assert!(!workspace::portable_component(name));
+        }
     }
 
     #[test]

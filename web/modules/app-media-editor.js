@@ -92,7 +92,15 @@ export function setupMediaEditor(adapter) {
       detail.textContent = `${t({ image: '图片', video: '视频', audio: '音频' }[asset.kind])} · ${fileSize(asset.size)}${asset.status === 'available' ? '' : t(' · 离线或缺失')}`;
       item.appendChild(detail);
       item.addEventListener('click', () => void insertExisting(asset));
-      list.appendChild(item);
+      if (adapter.exportAsset) {
+        const card = document.createElement('div'); card.className = 'doc-media-card'; card.appendChild(item);
+        const button = document.createElement('button'); button.type = 'button'; button.className = 'doc-btn doc-btn-ghost doc-asset-export';
+        button.textContent = t('导出原文件'); button.dataset.assetId = asset.id;
+        button.setAttribute('aria-label', t('导出原文件：{0}', asset.name));
+        button.disabled = item.disabled;
+        button.addEventListener('click', () => { if (!adapter.isBusy()) adapter.exportAsset(asset); });
+        card.appendChild(button); list.appendChild(card);
+      } else list.appendChild(item);
     }
     more.hidden = filtered.length <= limit;
     if (!filtered.length) {

@@ -17,7 +17,20 @@ const input = { workspace: { id: 'portable-project', version: 3, name: 'Portable
   documents: [{ sourcePath: 'documents/object.json', record: { id: 'portable-object' }, content, sourceRevision: `sha256:${createHash('sha256').update(content).digest('hex')}` }] };
 const before = JSON.stringify(input);
 const projection = await entry.namespace.createWorldProjection(input, { digest: value => createHash('sha256').update(value).digest('hex') });
-if (process.argv.includes('--relations')) {
+if (process.argv.includes('--resources')) {
+  const id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', assetId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
+  const recordContent = `{"id":"${id}","assetBindings":[],"extension":9007199254740993}`;
+  const source = { ...input, documents: [{ ...input.documents[0], record: JSON.parse(recordContent) }],
+    assets: [{ record: { id: assetId, name: 'Reference', kind: 'image' }, availability: 'missing' }] };
+  const original = JSON.stringify(source), digest = value => createHash('sha256').update(value).digest('hex');
+  const view = await entry.namespace.createWorldProjection(source, { digest });
+  const plan = await entry.namespace.prepareResourceBind(source, view, recordContent, { command: 'resource.bind', mode: 'preview',
+    worldId: view.world.id, baseRevision: view.world.revision, actorRef: { kind: 'tool', id: 'portable' },
+    objectId: id, objectRevision: view.objects[0].revision, resourceId: assetId, resourceRevision: view.resources[0].revision, slot: 'portrait',
+  }, { digest });
+  console.log(JSON.stringify({ slot: plan.result.binding.slot,
+    largeNumberPreserved: plan.plans[0].afterContent.includes('9007199254740993'), unchanged: original === JSON.stringify(source) }));
+} else if (process.argv.includes('--relations')) {
   const id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', targetId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
   const recordContent = `{"id":"${id}","relations":[],"extension":9007199254740993}`;
   const source = { ...input, assets: [], documents: [

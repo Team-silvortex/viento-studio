@@ -5200,7 +5200,7 @@ async function initApp(options = {}) {
       }
       if (!changes.length && state.isEditing) applyEditMode(getActiveDoc(), false);
       // Ownership changes affect both ends and the hierarchy of their children.
-      const sourceFilter = changes.length === 1 && changes[0].kind !== 'relation.add' ? toRebuildFilter(changes[0].sourcePath) : '';
+      const sourceFilter = changes.length === 1 && !['relation.add', 'resource.bind'].includes(changes[0].kind) ? toRebuildFilter(changes[0].sourcePath) : '';
       await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter, requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
       await loadData(state.activePath, { forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
     },
@@ -5211,13 +5211,19 @@ async function initApp(options = {}) {
     applied: async () => { createTemplateCache.clear(); createTemplateLoadErrorCache.clear(); await loadData(state.activePath, { forceCacheBust: true, throwOnError: true }); },
   });
   onLanguageChange(refreshLanguageUi);
-  if (options.features?.export !== false) setupExport({
+  const exportController = options.features?.export === false ? null : setupExport({
     getContext: () => ({
       path: getSourcePath(getActiveDoc()).replace(/^docs-standard\//, ''),
       title: getActiveDoc()?.title || getActiveDoc()?.name || '',
+      editable: isEditModeActive(),
       dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(),
     }),
     setBusy: (busy) => { state.isExporting = busy; refreshEditButtons(); },
+    applied: async () => {
+      createTemplateCache.clear(); createTemplateLoadErrorCache.clear();
+      await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: '', requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
+      await loadData(state.activePath, { forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
+    },
   });
   mediaEditorController = options.features?.media === false ? null : setupMediaEditor({
     isEditable: () => isInEditSession() && isEditModeActive(),
@@ -5228,6 +5234,7 @@ async function initApp(options = {}) {
     replaceSource: replaceMediaDraftSource,
     changed: refreshEditSessionDirtyState,
     status: setEditorStatus,
+    exportAsset: exportController?.exportAsset,
   });
   setStaticUiTexts();
   state.isSidebarCollapsed = window.matchMedia?.('(max-width: 760px)').matches || false;

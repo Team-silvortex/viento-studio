@@ -60,7 +60,7 @@ HTTP 的预览和应用都沿用文档写 API 的鉴权、JSON 请求限制和�
 - GUI、CLI、HTTP 共用查询与 revision 检查。三种冻结样例验证没有创建或改写作品文件。
 - `property.set` 共用可移植规划器与 Node 执行器；v2 / v3 登记对象单文件保真写入、无变化保存、冲突和反向命令已验证，见 [单属性命令 ADR](adr/0003-single-property-command.md)。
 
-V-M2 单属性命令保持上述边界；后续 [V-M3 第一条纵切](WORLD_TRANSACTIONS.md) 已接入 `changeset.apply`、GUI 暂存队列和现有文档的多源恢复协议。0.0.3 之后源码还加入 [object.create](WORLD_OBJECT_CREATE.md)，以可恢复事务创建正文与登记，以及 [relation.add](WORLD_RELATIONS.md)，保真追加引用或共享归属并校验关系图。ChangeSet 仍是 `proposed` 提案，持久事务回执与提案分离。尚未接通 `resource.bind` 或通用混合 ChangeSet 执行器。应用锁能协调现有 Node 写入方，外部程序在最后校验与替换之间的竞争仍不属于保证范围。当前投影不是 Build 快照，不改变旧项目格式。
+V-M2 单属性命令保持上述边界；后续 [V-M3 第一条纵切](WORLD_TRANSACTIONS.md) 已接入 `changeset.apply`、GUI 暂存队列和现有文档的多源恢复协议。0.0.3 之后源码还加入 [object.create](WORLD_OBJECT_CREATE.md)，以可恢复事务创建正文与登记，以及 [relation.add](WORLD_RELATIONS.md)，保真追加引用或共享归属并校验关系图。ChangeSet 仍是 `proposed` 提案，持久事务回执与提案分离。0.0.5 已接通 [resource.bind](WORLD_RESOURCES.md)，绑定已登记资源并支持恢复；通用混合 ChangeSet 执行器仍未实现。应用锁能协调现有 Node 写入方，外部程序在最后校验与替换之间的竞争仍不属于保证范围。当前投影不是 Build 快照，不改变旧项目格式。
 
 ## 验证
 

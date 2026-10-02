@@ -23,7 +23,7 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
   dialog.setAttribute('aria-labelledby', 'worldBrowserTitle');
   dialog.innerHTML = `<header class="world-heading"><div><p class="world-eyebrow">WORLD</p><h2 id="worldBrowserTitle" data-i18n="世界与对象"></h2><p id="worldName"></p></div>
     <div class="world-actions"><button type="button" id="worldRefresh" class="doc-btn doc-btn-ghost" data-i18n="刷新"></button><button type="button" id="worldClose" class="doc-btn" data-i18n="返回编辑器"></button></div></header>
-    <p class="world-note" data-i18n="只显示已保存内容。编辑模式下可创建对象、修改属性或添加关系。"></p>
+    <p class="world-note" data-i18n="只显示已保存内容。编辑模式下可创建对象、修改属性、添加关系或绑定资源。"></p>
     <p id="worldStatus" role="status" aria-live="polite"></p>
     <p id="worldCommandStatus" role="status" aria-live="polite"></p>
     <button type="button" id="worldRecover" class="doc-btn" data-i18n="恢复未完成的提交" hidden></button>
@@ -40,8 +40,9 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
   let batchSupported = false, recoverySupported = false, recoveryNeeded = false, queued = [], batchPreview = null;
   let createSupported = false, creation = null;
   let relationSupported = false, relationDraft = null;
-  const dirty = () => Boolean(creation || relationDraft || draft && draft.value !== draft.original);
-  const canDiscard = (all = false) => !(dirty() || all && queued.length) || window.confirm(t('有未保存的对象、关系或属性修改，确定丢弃？'));
+  let resourceSupported = false, resourceDraft = null;
+  const dirty = () => Boolean(creation || relationDraft || resourceDraft || draft && draft.value !== draft.original);
+  const canDiscard = (all = false) => !(dirty() || all && queued.length) || window.confirm(t('有未保存的对象修改，确定丢弃？'));
   const canWrite = () => {
     const context = getContext();
     return context.editable && !context.dirty && !context.creating && !context.busy;
@@ -52,6 +53,7 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
     && createTypes().length > 0 && !queued.length;
   const relationTargets = id => (projection?.objects || []).filter(object => object.id !== id && canRelateObject(object));
   const canAddRelation = object => relationSupported && canWrite() && canRelateObject(object) && !queued.length && relationTargets(object.id).length > 0;
+  const canBindResource = object => resourceSupported && canWrite() && canRelateObject(object) && !queued.length && projection?.resources.length > 0;
   function node(tag, text, className = '') {
     const element = document.createElement(tag); element.textContent = text; element.className = className; return element;
   }
@@ -68,6 +70,7 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
     }
     inspector.append(facts);
     if (relationDraft) { renderRelationEditor(inspector); return; }
+    if (resourceDraft) { renderResourceEditor(inspector); return; }
     const fields = Object.entries(object.properties);
     const editable = canEdit() && canSetObjectProperty(projection, object);
     if (writable && !busy && !editable) inspector.append(node('p', t('仅支持已登记对象；请在编辑模式下保存或结束文档草稿后修改属性。'), 'world-source'));
@@ -114,6 +117,19 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
       });
       inspector.append(add);
     }
+    if (resourceSupported) {
+      const add = node('button', t('绑定资源'), 'doc-btn doc-btn-ghost'); add.type = 'button'; add.id = 'worldResourceAdd';
+      add.disabled = busy || !canBindResource(object);
+      add.addEventListener('click', () => {
+        if (busy || !canBindResource(object) || !canDiscard()) return;
+        const resource = projection.resources[0]; draft = null; notice = '';
+        resourceDraft = { preview: null, message: '', request: { command: 'resource.bind', mode: 'preview',
+          worldId: projection.world.id, baseRevision: projection.world.revision, objectId: object.id, objectRevision: object.revision,
+          resourceId: resource.id, resourceRevision: resource.revision, slot: 'attachment', actorRef: { kind: 'user', id: 'local-ui' } } };
+        render(); el('worldResourceTarget').focus();
+      }); inspector.append(add);
+      if (!projection.resources.length) inspector.append(node('p', t('暂无已登记资源，请先在素材管理中导入。'), 'world-source'));
+    }
     const links = node('ul', '', 'world-links');
     for (const relation of projection.relations.filter(item => item.sourceObjectId === object.id)) {
       const target = projection.objects.find(item => item.id === relation.targetObjectId);
@@ -137,8 +153,9 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
       item.append(node('strong', object.name), node('span', object.documentRefs[0].sourcePath));
       item.addEventListener('click', () => {
         if (busy || (creation || object.id !== selectedId) && !canDiscard()) return;
-        if (creation || object.id !== selectedId) { draft = null; creation = null; relationDraft = null; updateDraftActions(); }
+        if (creation || object.id !== selectedId) { draft = null; creation = null; relationDraft = null; resourceDraft = null; }
         selectedId = object.id; renderList(); renderInspector();
+        updateDraftActions();
         list.querySelector('[aria-pressed="true"]')?.focus();
       }); list.append(item);
     }
@@ -154,6 +171,10 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
       || !relationTargets(relationDraft.request.objectId).some(item => item.id === relationDraft.request.targetObjectId);
     if (el('worldRelationApply')) el('worldRelationApply').disabled = el('worldRelationPreview').disabled || !relationDraft?.preview;
     if (el('worldRelationDiff')) el('worldRelationDiff').hidden = !relationDraft?.preview;
+    if (el('worldResourcePreview')) el('worldResourcePreview').disabled = busy || !canBindResource(projection?.objects.find(item => item.id === resourceDraft.request.objectId))
+      || !resourceDraft.request.slot.trim() || !projection.resources.some(item => item.id === resourceDraft.request.resourceId);
+    if (el('worldResourceApply')) el('worldResourceApply').disabled = el('worldResourcePreview').disabled || !resourceDraft?.preview;
+    if (el('worldResourceDiff')) el('worldResourceDiff').hidden = !resourceDraft?.preview;
     if (el('worldPropertyPreview')) el('worldPropertyPreview').disabled = busy || !dirty();
     if (el('worldPropertyApply')) el('worldPropertyApply').disabled = busy || !draft?.preview || !dirty() || queued.length > 0;
     if (el('worldPropertyStage')) el('worldPropertyStage').disabled = busy || !draft?.preview || !dirty()
@@ -161,6 +182,65 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
     if (el('worldBatchPreview')) el('worldBatchPreview').disabled = busy || dirty() || !canEdit();
     if (el('worldBatchApply')) el('worldBatchApply').disabled = busy || dirty() || !canEdit() || !batchPreview;
     if (el('worldPropertyDiff')) el('worldPropertyDiff').hidden = !draft?.preview;
+  }
+  function renderResourceEditor(inspector) {
+    const section = node('section', '', 'world-property-editor');
+    section.append(node('h4', t('绑定资源')), node('p', t('选择已登记资源并填写用途；离线资源也可绑定，文件内容尚未校验。')));
+    const invalidate = () => { resourceDraft.preview = null; resourceDraft.message = ''; updateDraftActions(); el('worldResourceMessage').textContent = ''; };
+    const caption = node('label', t('目标资源')); caption.htmlFor = 'worldResourceTarget';
+    const select = document.createElement('select'); select.id = 'worldResourceTarget'; select.disabled = busy;
+    for (const resource of projection.resources) {
+      const option = node('option', `${resource.descriptor.name} · ${resource.descriptor.location.path} · ${t(resource.availability === 'present-unverified' ? '文件存在，内容尚未校验' : '素材缺失或需要检查')}`);
+      option.value = resource.id; select.append(option);
+    }
+    select.value = resourceDraft.request.resourceId;
+    select.addEventListener('change', () => {
+      resourceDraft.request.resourceId = select.value;
+      resourceDraft.request.resourceRevision = projection.resources.find(resource => resource.id === select.value)?.revision || '';
+      invalidate();
+    });
+    const slotLabel = node('label', t('资源用途（如 portrait、voice、attachment）')); slotLabel.htmlFor = 'worldResourceSlot';
+    const slot = document.createElement('input'); slot.type = 'text'; slot.id = 'worldResourceSlot'; slot.maxLength = 200; slot.disabled = busy;
+    slot.value = resourceDraft.request.slot;
+    slot.addEventListener('input', () => { resourceDraft.request.slot = slot.value; invalidate(); });
+    const message = node('p', t(resourceDraft.message)); message.id = 'worldResourceMessage'; message.setAttribute('role', 'status');
+    const actions = node('div', '', 'world-actions');
+    for (const [id, label, action] of [['worldResourcePreview', '预览绑定', () => void runResource('preview')],
+      ['worldResourceApply', '保存绑定', () => void runResource('apply')],
+      ['worldResourceCancel', '取消修改', () => { if (!busy && canDiscard()) { resourceDraft = null; render(); el('worldResourceAdd')?.focus(); } }]]) {
+      const button = node('button', t(label), 'doc-btn'); button.type = 'button'; button.id = id; button.disabled = busy;
+      button.addEventListener('click', action); actions.append(button);
+    }
+    const preview = node('div', '', 'world-property-diff'); preview.id = 'worldResourceDiff';
+    if (resourceDraft.preview) {
+      const binding = resourceDraft.preview.binding, resource = projection.resources.find(item => item.id === binding.resourceId);
+      preview.append(node('h4', t('将添加的资源绑定')), node('p', `${binding.slot} → ${resource?.descriptor.name || binding.resourceId}`));
+    }
+    section.append(caption, select, slotLabel, slot, message, actions, preview); inspector.append(section);
+  }
+  async function runResource(mode) {
+    if (busy || !resourceDraft || !canBindResource(projection?.objects.find(item => item.id === resourceDraft.request.objectId))
+      || !resourceDraft.request.slot.trim() || mode === 'apply' && !resourceDraft.preview) return;
+    busy = true; setBusy(true); resourceDraft.message = mode === 'preview' ? '正在预览资源绑定…' : '正在保存资源绑定…'; render();
+    try {
+      const result = await requestWorldCommand({ ...resourceDraft.request, mode });
+      if (mode === 'preview') { resourceDraft.preview = result; resourceDraft.message = '预览已就绪；应用时会再次检查版本。'; }
+      else {
+        resourceDraft = null; notice = '资源绑定已保存。';
+        try { await applied(result); } catch { notice = '资源绑定已保存，但文档预览更新失败，请重新构建。'; }
+        try { await readProjection(); } catch { failed = true; projection = null; notice = '资源绑定已保存，请刷新核对内容。'; }
+      }
+    } catch (error) {
+      resourceDraft.preview = null;
+      const code = error.payload?.errorCode || error.payload?.data?.errorCode;
+      recoveryNeeded = ['world_recovery_required', 'world_recovery_conflict', 'world_journal_invalid'].includes(code);
+      resourceDraft.message = ['world_revision_conflict', 'world_read_conflict'].includes(code)
+        ? '工程版本已变化。资源绑定草稿仍保留，请记下选择后刷新，再重新预览。'
+        : code === 'world_resource_binding_exists' ? '此资源已绑定到该用途，请选择其他资源或用途。'
+        : ['world_resource_target_missing', 'world_resource_read_only'].includes(code) ? '请选择已登记资源和原文可用的对象。'
+        : code === 'world_record_invalid' ? '登记信息无法安全编辑，请检查重复键或无效格式。'
+        : '资源绑定请求未完成。草稿仍保留，请核对保存结果后重新预览。';
+    } finally { busy = false; setBusy(false); render(); el(resourceDraft?.preview ? 'worldResourceApply' : resourceDraft ? 'worldResourceTarget' : 'worldResourceAdd')?.focus(); }
   }
   function renderRelationEditor(inspector) {
     const section = node('section', '', 'world-property-editor');
@@ -399,7 +479,7 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
   }
   async function recover() {
     if (busy || getContext().busy || !recoverySupported) return;
-    busy = true; setBusy(true); batchPreview = null; if (draft) draft.preview = null; if (creation) creation.preview = null; if (relationDraft) relationDraft.preview = null; render();
+    busy = true; setBusy(true); batchPreview = null; if (draft) draft.preview = null; if (creation) creation.preview = null; if (relationDraft) relationDraft.preview = null; if (resourceDraft) resourceDraft.preview = null; render();
     try {
       const result = await requestWorldCommand({ command: 'world.recover', mode: 'apply' });
       recoveryNeeded = false; notice = '恢复已完成。请核对保存结果；原草稿和待提交修改仍保留。';
@@ -437,7 +517,7 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
   }
   async function refresh() {
     if (busy || !canDiscard(true)) return;
-    const current = ++generation; busy = true; failed = false; projection = null; draft = null; creation = null; relationDraft = null; queued = []; batchPreview = null; notice = ''; render();
+    const current = ++generation; busy = true; failed = false; projection = null; draft = null; creation = null; relationDraft = null; resourceDraft = null; queued = []; batchPreview = null; notice = ''; render();
     try {
       await readProjection();
       recoveryNeeded = false;
@@ -453,13 +533,13 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
   el('worldCreate').addEventListener('click', () => {
     if (busy || creation || !canCreate() || !canDiscard()) return;
     const type = createTypes()[0].definition, root = projection.world.sourceWorkspaceVersion === 3 ? 'documents' : 'design-data';
-    draft = null; relationDraft = null; notice = '';
+    draft = null; relationDraft = null; resourceDraft = null; notice = '';
     creation = { preview: null, message: '', request: { command: 'object.create', mode: 'preview',
       worldId: projection.world.id, baseRevision: projection.world.revision, objectId: crypto.randomUUID(), documentType: type.id,
       sourcePath: [root, type.directory, 'new-object.md'].filter(Boolean).join('/'), content: '', actorRef: { kind: 'user', id: 'local-ui' } } };
     render(); el('worldCreatePath').focus();
   });
-  const close = () => { if (!busy && canDiscard(true)) { draft = null; creation = null; relationDraft = null; queued = []; batchPreview = null; updateDraftActions(); dialog.close(); } };
+  const close = () => { if (!busy && canDiscard(true)) { draft = null; creation = null; relationDraft = null; resourceDraft = null; queued = []; batchPreview = null; render(); dialog.close(); } };
   el('worldClose').addEventListener('click', close);
   dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
   dialog.addEventListener('keydown', event => {
@@ -471,5 +551,5 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
   el('worldSearch').addEventListener('input', renderList);
   onLanguageChange(() => { if (dialog.open) render(); });
   return { setAvailable(available, commands = []) { button.hidden = !available; writable = commands.includes('property.set');
-    batchSupported = commands.includes('changeset.apply'); recoverySupported = commands.includes('world.recover'); createSupported = commands.includes('object.create'); relationSupported = commands.includes('relation.add'); } };
+    batchSupported = commands.includes('changeset.apply'); recoverySupported = commands.includes('world.recover'); createSupported = commands.includes('object.create'); relationSupported = commands.includes('relation.add'); resourceSupported = commands.includes('resource.bind'); } };
 }

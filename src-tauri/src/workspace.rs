@@ -897,6 +897,34 @@ fn same_file_version(expected: &fs::Metadata, actual: &fs::Metadata) -> Result<b
 }
 
 fn world_transaction_fence(root: &Path) -> Result<Option<Vec<u8>>> {
+    let world = world_transaction_receipt(root)?;
+    let directory = root.join(".viento/package-import");
+    if let Ok(metadata) = fs::symlink_metadata(&directory) {
+        if metadata.file_type().is_symlink() || !metadata.is_dir() {
+            return Err("资源包导入记录无效".into());
+        }
+    }
+    if fs::symlink_metadata(directory.join("active")).is_ok() {
+        return Err("资源包导入尚未完成，请先恢复导入".into());
+    }
+    let file = directory.join("head");
+    match fs::symlink_metadata(&file) {
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(world),
+        Err(error) => return Err(error.to_string()),
+        Ok(metadata) if metadata.file_type().is_symlink() || !metadata.is_file() || metadata.len() > 128 => {
+            return Err("资源包导入记录无效".into());
+        }
+        _ => {}
+    }
+    let mut token = String::new();
+    fs::File::open(file).map_err(io_error)?.take(129).read_to_string(&mut token).map_err(io_error)?;
+    if token.len() != 37 || !token.ends_with('\n') || Uuid::parse_str(token.trim()).is_err() {
+        return Err("资源包导入记录无效".into());
+    }
+    serde_json::to_vec(&(world, token)).map(Some).map_err(|error| error.to_string())
+}
+
+fn world_transaction_receipt(root: &Path) -> Result<Option<Vec<u8>>> {
     for directory in [root.join(".viento"), root.join(".viento/world-transactions")] {
         match fs::symlink_metadata(&directory) {
             Ok(meta) if meta.is_dir() && !meta.file_type().is_symlink() => {}
@@ -1430,6 +1458,23 @@ mod tests {
         let root = create_workspace(temp.path(), "linked-transaction", None, None).unwrap();
         std::os::unix::fs::symlink(temp.path().join("missing"), root.join(".viento/world-transactions")).unwrap();
         assert!(world_transaction_fence(&root).is_err());
+    }
+
+    #[test]
+    fn resource_package_imports_block_archives_until_committed() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = create_workspace(temp.path(), "package-import", None, None).unwrap();
+        let directory = root.join(".viento/package-import");
+        let before = world_transaction_fence(&root).unwrap();
+        fs::create_dir_all(directory.join("active")).unwrap();
+        let archive = temp.path().join("old.zip");
+        fs::write(&archive, b"previous backup").unwrap();
+        assert!(export_workspace(&root, &archive).is_err());
+        assert_eq!(fs::read(&archive).unwrap(), b"previous backup");
+        fs::write(directory.join("head"), format!("{}\n", Uuid::new_v4())).unwrap();
+        fs::remove_dir(directory.join("active")).unwrap();
+        assert_ne!(world_transaction_fence(&root).unwrap(), before);
+        assert!(export_workspace(&root, &archive).is_ok());
     }
 
     fn legacy_workspace(parent: &Path, name: &str) -> PathBuf {

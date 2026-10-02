@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { resolveContainedPath } from './contained-path.mjs';
-import { exportError, planExport, writeExportZip } from './export-package.mjs';
+import { exportError, planExport, writeExportZip, writeExportFile } from './export-package.mjs';
 import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -114,13 +114,15 @@ export function createExportService(root, { ttlMs = 15 * 60 * 1000 } = {}) {
       id = randomUUID();
       directory = path.join(cache, id);
       await fs.mkdir(directory, { mode: 0o700 });
+      // A fixed private pathname is shared with the native save bridge. Raw
+      // exports keep their bytes here too; the public filename determines type.
       const file = path.join(directory, 'payload.zip');
-      await writeExportZip(plan, file, signal);
+      await (plan.raw ? writeExportFile : writeExportZip)(plan, file, signal);
       const bytes = (await fs.stat(file)).size;
       // Cancellation can arrive after the ZIP writer removed its listener,
       // while the final stat is pending. Recheck before publishing the job.
       signal?.throwIfAborted();
-      const job = { id, directory, file, fileName: plan.fileName, bytes, documentCount: plan.documentCount, assetCount: plan.assetCount,
+      const job = { id, directory, file, kind: options.kind, fileName: plan.fileName, bytes, documentCount: plan.documentCount, assetCount: plan.assetCount,
         readers: 0, downloaded: false, released: false };
       await assertWorldFence(root, fence);
       jobs.set(id, job);

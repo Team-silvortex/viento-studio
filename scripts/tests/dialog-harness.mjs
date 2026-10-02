@@ -4,6 +4,7 @@ import { Element } from './editor-harness.mjs';
 import { t, getLanguage, translateMessage, uiMessage, asUiMessage } from '../../web/i18n/index.js';
 import { diagnosticMessage, translateDiagnostic } from '../../web/i18n/diagnostics.js';
 import { isComposingInput } from '../../web/modules/app-keyboard.js';
+import { selectPackageEntries, PACKAGE_LIMITS } from '../../engine/resource-package.mjs';
 
 // Event-capable DOM fixture for the real dialog controllers. It reads their
 // actual markup; layout and rendering remain covered by the native smoke test.
@@ -114,13 +115,18 @@ export async function dialogHarness(module, overrides = {}) {
   const timers = new Map();
   let timerId = 0;
   const runtime = vm.createContext({
-    document, window, URL, AbortController, DOMException, console,
+    document, window, URL, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS,
     location: { href: 'http://127.0.0.1/web/' },
     t, getLanguage, translateMessage, uiMessage, asUiMessage, diagnosticMessage, translateDiagnostic, isComposingInput, translatePage() {}, onLanguageChange() {},
     setTimeout: (callback) => { timers.set(++timerId, callback); return timerId; },
     clearTimeout: (id) => timers.delete(id),
     ...overrides,
   });
+  if (module === 'app-export') {
+    const packages = (await fs.readFile(new URL('../../web/modules/app-resource-packages.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(packages, runtime);
+  }
   const source = (await fs.readFile(new URL(`../../web/modules/${module}.js`, import.meta.url), 'utf8'))
     .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
   vm.runInContext(source, runtime);

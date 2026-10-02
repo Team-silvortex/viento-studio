@@ -1,0 +1,162 @@
+{
+  "milestone": "V-M2 / V-M3 recoverable resource.bind vertical slice",
+  "validatedDate": "2026-10-02",
+  "baseline": "cc370f192bca8226e351110abd05e03de5a8458e",
+  "softwareVersion": "0.0.4",
+  "releaseStatus": "development source; no version bump, commit, push or installer update",
+  "status": "local-source-validation-passed",
+  "semanticSchemaVersion": 1,
+  "workspaceVersions": [
+    2,
+    3
+  ],
+  "transactionIntentVersion": 4,
+  "application": {
+    "command": "npm run check -- --app-only",
+    "nativeArchiveEnabled": true,
+    "nativeMobileStorageEnabled": true,
+    "syntaxFiles": 216,
+    "tests": 801,
+    "pass": 801,
+    "fail": 0,
+    "skipped": 0,
+    "newTests": 33,
+    "newResourceTests": 29,
+    "newGuiTests": 4
+  },
+  "command": {
+    "interfaces": [
+      "GUI",
+      "CLI",
+      "HTTP"
+    ],
+    "kinds": [
+      "image",
+      "video",
+      "audio",
+      "font",
+      "text",
+      "other"
+    ],
+    "customRoles": true,
+    "sharedResourcesAndRoles": true,
+    "duplicateObjectResourceRoleRejected": true,
+    "offlineBindingsAllowed": true,
+    "contentVerified": false,
+    "preconditions": [
+      "World revision",
+      "Object revision",
+      "Resource registration revision"
+    ],
+    "previewWrites": 0,
+    "onlyDocumentRegistrationChanges": true,
+    "resourceFilesCopied": 0
+  },
+  "preservation": {
+    "method": "JSON token insertion shared with relation.add",
+    "unknownFieldsAndNumbers": [
+      "9007199254740993",
+      "-0",
+      "1.2300e+4"
+    ],
+    "existingBindingBytes": true,
+    "sourceAssetAndRelationBytes": true,
+    "newlinesAndPermissions": true,
+    "formatOnlyEditsRetained": true,
+    "duplicateKeysRejected": true
+  },
+  "recovery": {
+    "method": "real child process SIGKILL",
+    "checkpoints": [
+      "intent",
+      "source-ready/0",
+      "data/0",
+      "commit",
+      "head"
+    ],
+    "recoveryInterruptedAgain": [
+      "rollback",
+      "roll-forward"
+    ],
+    "beforeCommit": "exact previous registration",
+    "afterCommit": "exact new registration",
+    "corruptOrForeignData": "no recovery writes; journal retained",
+    "publicReadAndExportFences": true,
+    "startupRecovery": true,
+    "previousProtocolsStillPass": [
+      1,
+      2,
+      3
+    ]
+  },
+  "interoperability": {
+    "route": "native desktop export → native mobile storage import/context/index/export → native desktop restore",
+    "versions": [
+      2,
+      3
+    ],
+    "everyFixtureFileByteCompared": true,
+    "finalWorldRevisionMatches": true,
+    "pendingBindingBlocksNativeExport": true,
+    "mobileMediaUiOrSemanticWrites": false
+  },
+  "browser": {
+    "details": "browser.json",
+    "screenshot": "resource-form.jpg",
+    "method": "headless Chrome with DOM events, real editor server and real interrupted worker",
+    "runtimeErrors": 0,
+    "languages": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "languageSwitchMethod": "shared applyLanguage handler invoked in the browser; resource draft retained",
+    "narrowViewportCssPixels": 390,
+    "guiSaveConflictAndRecovery": true,
+    "nativeDesktopPointerAcceptance": false
+  },
+  "native": {
+    "details": "native.json",
+    "rustSourceChanged": false,
+    "fullDesktopBuild": "blocked by missing glib-2.0.pc",
+    "fallback": "isolated manifest compiles unchanged storage source and existing example adapters",
+    "dependencyLockMatches": true,
+    "dependencyCount": 65,
+    "fullRustSuiteRun": false,
+    "androidDeviceRun": false
+  },
+  "preparedResources": {
+    "desktopResourcesOnly": "passed",
+    "mobile": "passed"
+  },
+  "officialWorkspace": {
+    "writes": 0,
+    "scope": "synthetic fixtures only"
+  },
+  "verificationNote": "First full run passed 799 tests and failed two new assertions that assumed mobile index exposed assetRefs. Existing mobile media UI is unsupported; corrected the contract check to native registration context and all archive bytes. Final full run passed all 801.",
+  "sourceFingerprintCount": 68,
+  "logSha256": {
+    "application-check.log": "df3bf626b1e9b41cb35205176baf9be720f6caf49c3efe42e1fa3eab7315df6c",
+    "resource-regression.log": "aa2fb386b96060309b818a9811cf3b2627f509072c4bac2f79d1ee7b4a7f6785",
+    "desktop-prepare.log": "51034903f37666d3349e3ee7d64947fe6e4b67631ad96a8975ad72d96e1e21f1",
+    "mobile-prepare.log": "cb6401ca315a00077b2eaf8a07f51a6d79f28c8fbb614fd72935494e0bad4d0e"
+  },
+  "screenshotSha256": "ade73a455ffb55810332e7d84aa421d0ff8d932c7fdea96405c4fb57f6965980",
+  "limits": [
+    "one binding per command; changeset.apply still property-only",
+    "no resource import, unbind, replace or undo in this command",
+    "resource registration revision is not verified content or a Build lock",
+    "drafts remain in page memory",
+    "pending intent v4 requires a supporting executor; installed 0.0.4 refuses it",
+    "process-crash verification, not hardware power loss or network filesystem certification",
+    "external writers can race final checks",
+    "no Android semantic adapter, workspace v4 or Build provider"
+  ],
+  "cleanup": {
+    "temporaryNativeBuildRemoved": true,
+    "temporaryNativeFileBytes": 254924176,
+    "preparedDesktopAndMobileResourcesRemoved": true,
+    "chromeProfilesAndFixtureServersRemoved": true,
+    "installedApplicationAndDailyWorkspacesUntouched": true
+  }
+}

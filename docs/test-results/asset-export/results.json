@@ -1,0 +1,86 @@
+{
+  "feature": "Individual registered resource export",
+  "testedAt": "2026-10-02T14:18:02.370929+00:00",
+  "baseCommit": "cc370f192bca8226e351110abd05e03de5a8458e",
+  "version": "0.0.4 development source",
+  "application": {
+    "passed": 852,
+    "failed": 0,
+    "skipped": 0,
+    "javascriptFiles": 231,
+    "log": "application.log",
+    "nativeInteropEnabled": true
+  },
+  "targeted": {
+    "passed": 17,
+    "failed": 0,
+    "log": "targeted.log"
+  },
+  "native": {
+    "passed": 38,
+    "failed": 0,
+    "ignored": 1,
+    "log": "native.log",
+    "examplesBuild": "native-examples.log",
+    "scope": "Original workspace, mobile_storage, export, preferences and close_state Rust modules compiled through an isolated Cargo manifest; complete Tauri host not built"
+  },
+  "browser": {
+    "browser": "Chrome/154.0.8037.97",
+    "steps": [
+      "Export one image from the package list; return with selection unchanged",
+      "Export image, video and audio from media cards in Chinese/English/Japanese; compare downloaded filenames and every byte",
+      "Keep draft text and caret across exports; verify narrow layout and insert at the original caret afterwards; source files unchanged"
+    ],
+    "files": [
+      {
+        "name": "立绘 #100%.png",
+        "bytes": 68,
+        "sha256": "98884e721ec2f605f3788f2bc39a61de305ff4f4fcaf26b6f4eabeebcd6c0fb4"
+      },
+      {
+        "name": "片段%20空 格.mp4",
+        "bytes": 24,
+        "sha256": "3bee83cd93579b8504f6102a3ea57af43d230bdfefd60acc239c198aebb2136d"
+      },
+      {
+        "name": "立绘 #100%.png",
+        "bytes": 68,
+        "sha256": "98884e721ec2f605f3788f2bc39a61de305ff4f4fcaf26b6f4eabeebcd6c0fb4"
+      },
+      {
+        "name": "テーマ曲.wav",
+        "bytes": 46,
+        "sha256": "4aebda3a657a0d8f532d11ceacb1679081d7bdf7d7d301a53f1096af3580be91"
+      }
+    ],
+    "errors": [],
+    "ok": true
+  },
+  "limitations": [
+    "No new desktop bundle built or installed; native picker window interaction awaits bundle acceptance",
+    "Individual resource export UI is not connected to Android",
+    "Tiny video fixture validates transfer bytes, not playback decoding"
+  ],
+  "cleanup": "Disposable fixtures, browser profile/downloads and independent native build directory removed after validation; daily workspaces not used",
+  "sourceSha256": {
+    "scripts/lib/export-package.mjs": "990e0d9fae00c310671bbc5209261d022603b96a66a0941ff6b7764dca0052ba",
+    "scripts/lib/export-service.mjs": "4b8b998a76d16674fb1c030a3cab0a7b840b387c0e91ed36a0b7d8f060869112",
+    "scripts/lib/doc-server.mjs": "6a382de42557218744a846a20d86cf550f7f3d61158310882009263840f64515",
+    "scripts/lib/doc-server-routes.mjs": "c31ec0e99440ead5b1305dbb0b0154e30f118ee89c0ed6cb9796d1540c7fbaa0",
+    "web/modules/app-doc-service.js": "7250a3fda21cd5593a5ba9cd6895df7924098fdfbacccb60035870c68569d339",
+    "web/modules/app-export.js": "5c0d7f38f9d864c1a3ea571b3a9f04d66690708b2cbe8e348e53ce9b651f65fd",
+    "web/modules/app-media-editor.js": "91a54f063af412835e7f19d768370a406bb250e4455a9fd92f9553176af23b53",
+    "web/modules/app-resource-packages.js": "b0e06e1f771447c8fe8b3973f0ad3d2ef4b01299ecab073c5f9f5b692bdfc676",
+    "web/modules/app-runtime.js": "bc4a2d4c5dd733c3586dfe5f846fcc6e7477a8ea94846c6a3864555c5fd4668e",
+    "web/index.html": "5b7e3bf57dcbe4cef7d363520c9a9e6804d44c82e2a4f9fd3014de109aa847cd",
+    "web/styles.css": "2fa848a275ade7d392c9f2955194cecc5c54fd335625147ff44b433b4272b68f",
+    "web/editor-layout.css": "70d7afdf04229cdbfd5893d2d573eec9363aa1c3df6b0cdb1182fd8fc064f6f4",
+    "web/i18n/en.js": "83cd319a0611d8e4c135dfa6d6b64b6f96d8b8b065de0ac520f020ae7d8285e3",
+    "web/i18n/ja.js": "c429fce6cb181edf6cc29ea086f2e75839f6fe78354682f5ee6a450b509719fa",
+    "src-tauri/src/export.rs": "f050442c347327ec0cab6c1cd6f871eb5765d801783216d28376b88f7d46e96e",
+    "src-tauri/src/desktop_host.rs": "73312ddc1c411ead02b4b9bbccd86ebd9de62c78afebbaaabe4f469eea763d44",
+    "scripts/tests/asset-export.test.mjs": "98dda47dbf226114ad7e45b7e291c348932157f3c1943fdbc56886386573445a",
+    "scripts/tests/asset-export-browser.test.mjs": "be7c25b29e51dd70be647a19bcc518a06707040f28f0db49491cd565bc08d0a9",
+    "scripts/tests/asset-export-smoke.mjs": "ad7488ec4f823e02128dd1ba335fd8e5475517c1c07c720f11a2507497884b74"
+  }
+}

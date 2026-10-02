@@ -305,3 +305,91 @@ test('World GUI requires relation support and available endpoints, and never mix
   unavailable.element('worldRefresh').click(); await flushDialogs();
   assert.equal(unavailable.element('worldRelationAdd').disabled, true);
 });
+
+async function resourceHarness(overrides = {}) {
+  const h = await harness(overrides);
+  h.projection.resources = [0,1].map(index => ({ id: `resource-${index}`, revision: `sha256:${String(index).repeat(64)}`,
+    descriptor: { name: `Media ${index}`, location: { path: `media-${index}.ogg` } }, availability: index ? 'missing' : 'present-unverified' }));
+  h.controller.setAvailable(true, ['property.set','changeset.apply','object.create','relation.add','resource.bind','world.recover']);
+  h.element('worldRefresh').click(); await flushDialogs(); h.element('worldResourceAdd').click();
+  const fill = (id,value) => { const el = h.element(id); el.value = value; el.dispatch(id === 'worldResourceSlot' ? 'input' : 'change'); };
+  const result = () => { const { payload } = h.calls.at(-1); return { status:'preview', changes:[{ kind:'resource.bind' }],
+    binding: { objectId:payload.objectId,resourceId:payload.resourceId,slot:payload.slot } }; };
+  const preview = () => { h.element('worldResourcePreview').click(); return h.calls.at(-1); };
+  return { ...h, fill, resourceResult:result, resourcePreview:preview };
+}
+
+test('World GUI binds resources with pinned revisions and invalidates previews for every resource or role edit', async () => {
+  const h = await resourceHarness(); h.fill('worldResourceSlot','voice');
+  assert.equal(h.element('worldResourceApply').disabled,true);
+  const first=h.resourcePreview(); assert.equal(first.payload.command,'resource.bind');
+  assert.equal(first.payload.resourceRevision,h.projection.resources[0].revision);
+  first.resolve(h.resourceResult()); await flushDialogs();
+  assert.equal(h.document.activeElement,h.element('worldResourceApply'));
+  assert.match(h.element('worldResourceDiff').textContent,/voice.*Media 0/);
+  for(const [id,value] of [['worldResourceTarget','resource-1'],['worldResourceSlot','声音 🎵']]) {
+    h.fill(id,value); assert.equal(h.element('worldResourceApply').disabled,true); assert.equal(h.element('worldResourceDiff').hidden,true);
+    h.resourcePreview().resolve(h.resourceResult()); await flushDialogs();
+  }
+  h.element('worldResourceApply').click(); const apply=h.calls.at(-1);
+  assert.equal(apply.payload.baseRevision,first.payload.baseRevision); assert.equal(apply.payload.objectRevision,first.payload.objectRevision);
+  assert.equal(apply.payload.resourceRevision,h.projection.resources[1].revision); assert.equal(apply.payload.slot,'声音 🎵');
+  apply.reject(Object.assign(new Error('changed'),{payload:{errorCode:'world_revision_conflict'}})); await flushDialogs();
+  assert.equal(h.element('worldResourceTarget').value,'resource-1'); assert.equal(h.element('worldResourceSlot').value,'声音 🎵');
+  assert.match(h.element('worldResourceMessage').textContent,/版本已变化.*草稿仍保留/);
+  assert.equal(h.element('worldResourceApply').disabled,true); assert.equal(h.calls.length,4);
+});
+
+test('resource drafts survive language changes, navigation guards and recovery without automatic resubmission', async () => {
+  let languageChanged;
+  const h = await resourceHarness({onLanguageChange:callback=>{languageChanged=callback;}});
+  h.fill('worldResourceSlot','保留'); languageChanged();
+  h.runtime.window.confirm=()=>false;
+  for(const id of ['worldClose','worldRefresh','worldResourceCancel','worldCreate'])h.element(id).click();
+  h.element('worldObjects').children[1].click();
+  assert.equal(h.element('worldResourceSlot').value,'保留'); assert.equal(h.element('worldBrowserDialog').open,true);
+  const pending=h.resourcePreview(); assert.equal(h.current.busy,true);
+  assert.equal(h.element('worldResourceTarget').disabled,true); assert.equal(h.element('worldResourceSlot').disabled,true);
+  h.element('worldClose').click(); h.element('worldBrowserDialog').dispatch('cancel'); h.element('worldResourcePreview').click();
+  pending.reject(Object.assign(new Error('duplicate'),{payload:{errorCode:'world_resource_binding_exists'}})); await flushDialogs();
+  assert.equal(h.calls.length,1); assert.match(h.element('worldResourceMessage').textContent,/已绑定/);
+  h.resourcePreview().resolve(h.resourceResult()); await flushDialogs(); h.element('worldResourceApply').click();
+  h.calls.at(-1).reject(Object.assign(new Error('pending'),{payload:{errorCode:'world_recovery_required'}})); await flushDialogs();
+  assert.equal(h.element('worldRecover').hidden,false); h.element('worldRecover').click();
+  assert.equal(h.calls.at(-1).payload.command,'world.recover'); h.calls.at(-1).resolve({status:'rolled-back'}); await flushDialogs();
+  assert.equal(h.element('worldResourceSlot').value,'保留'); assert.equal(h.element('worldResourceApply').disabled,true);
+  assert.equal(h.element('worldBrowserDialog').dataset.dirty,'true'); assert.equal(h.calls.length,4);
+});
+
+test('resource drafts can be discarded by cancel, object switch, creation or close, and saved bindings report rebuild errors accurately', async () => {
+  for(const action of ['cancel','switch','create','close','apply']) {
+    const h=await resourceHarness({applied:async()=>{throw new Error('index unavailable');}});
+    h.resourcePreview().resolve(h.resourceResult()); await flushDialogs(); h.runtime.window.confirm=()=>true;
+    if(action==='cancel') h.element('worldResourceCancel').click();
+    if(action==='switch') h.element('worldObjects').children[1].click();
+    if(action==='create') h.element('worldCreate').click();
+    if(action==='close') h.element('worldClose').click();
+    if(action==='apply') {
+      h.element('worldResourceApply').click(); h.calls.at(-1).resolve({...h.resourceResult(),status:'applied'}); await flushDialogs();
+      assert.match(h.element('worldCommandStatus').textContent,/资源绑定已保存.*预览更新失败/);
+    }
+    assert.equal(h.element('worldResourceSlot'),null,action);
+    assert.equal(h.element('worldBrowserDialog').dataset.dirty,String(action==='create'),action);
+  }
+});
+
+test('resource actions respect capabilities, available objects, empty roles and staged properties', async () => {
+  const h=await harness(); assert.equal(h.element('worldResourceAdd'),null);
+  h.controller.setAvailable(true,['resource.bind']); h.element('worldRefresh').click(); await flushDialogs();
+  assert.equal(h.element('worldResourceAdd').disabled,true);
+  const r=await resourceHarness(); r.fill('worldResourceSlot','  ');
+  assert.equal(r.element('worldResourcePreview').disabled,true); r.element('worldResourcePreview').click(); assert.equal(r.calls.length,0);
+  r.runtime.window.confirm=()=>true; r.element('worldResourceCancel').click();
+  for(const key of ['dirty','creating','busy']) {
+    r.current[key]=true; r.element('worldRefresh').click(); await flushDialogs();
+    assert.equal(r.element('worldResourceAdd').disabled,true,key); r.current[key]=false;
+  }
+  r.element('worldRefresh').click(); await flushDialogs(); r.edit(); r.type('125');
+  r.preview().resolve(previewResult); await flushDialogs(); r.element('worldPropertyStage').click();
+  assert.equal(r.element('worldResourceAdd').disabled,true); r.element('worldResourceAdd').click(); assert.equal(r.element('worldResourceSlot'),null);
+});

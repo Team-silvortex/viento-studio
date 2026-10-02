@@ -1,0 +1,25 @@
+✔ media cards export image/video/audio independently, preserve unsaved text and allow insertion afterwards (57.961368ms)
+✔ per-resource export keeps package selection and returns without toggling checkboxes (45.12435ms)
+✔ back during preparation cancels raw export and discards late results without changing the package selection (27.244938ms)
+✔ raw file failures, cancellation, expired probes and retry keep the selected resource and draft (23.72232ms)
+✔ raw export status translates in English and Japanese without changing the filename (20.688852ms)
+✔ native raw export automatically opens its picker, allows cancellation/retry and releases only after saving (26.180651ms)
+✔ v2 exports one external image/video/audio as exact original bytes (112.135333ms)
+✔ v3 exports one external image/video/audio as exact original bytes (92.353538ms)
+✔ original filenames distinguish registry stems, uploaded names, repeated extensions and portable fallback (0.922978ms)
+✔ UUID-named uploads keep the authored filename and reject unknown IDs or arbitrary paths (78.77619ms)
+✔ missing, changed and linked resources cannot publish a raw export; a repaired file can retry (68.842702ms)
+✔ raw export rejects source replacement and metadata changes between planning and publication (55.444164ms)
+✔ doc-site-server.mjs: authenticated raw downloads use their real MIME, names and ranges (293.062433ms)
+✔ browse-server.mjs: authenticated raw downloads use their real MIME, names and ranges (247.04365ms)
+✔ cancelling a raw export during open waits for file cleanup and keeps original bytes (148.056197ms)
+✔ cancelling a raw export during read waits for file cleanup and keeps original bytes (148.218605ms)
+✔ cancelling a raw export during close waits for file cleanup and keeps original bytes (151.96973ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1519.892244

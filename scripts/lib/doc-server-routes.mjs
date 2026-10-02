@@ -10,11 +10,13 @@ import { appendFile } from 'node:fs/promises';
 import { timingSafeEqual } from 'node:crypto';
 import { WORLD_API_PATH } from '../../engine/world-query.mjs';
 import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
+import { RESOURCE_PACKAGE_API, PACKAGE_LIMITS } from '../../engine/resource-package.mjs';
 import {
   readRequestJsonBody,
   sendApiResponse,
   sendApiError,
   sendFile,
+  getMime,
 } from './doc-server.mjs';
 
 const RATE_LIMIT_WINDOW_MS = normalizeNumericConfigValue('DOC_API_RATE_WINDOW_MS', 60 * 1000);
@@ -291,6 +293,7 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
+  if (pathname === RESOURCE_PACKAGE_API && method === API_METHODS.POST) return true;
   if (pathname === WORLD_COMMAND_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === API_PATHS.EXPORT && method === API_METHODS.POST) return true;
   return pathname === API_PATHS.DOC && WRITE_METHODS.has(method)
@@ -351,9 +354,11 @@ async function handleExport(response, request, requestUrl, service, requestId = 
   try {
     if (request.method === API_METHODS.GET) {
       await service.exports.download(requestUrl.searchParams.get('id'), async (job) => {
-        response.setHeader('Content-Disposition', `attachment; filename="viento-export.zip"; filename*=UTF-8''${encodeURIComponent(job.fileName)}`);
+        const fallback = job.kind === 'asset' ? job.fileName.replace(/[^a-zA-Z0-9._-]/g, '_') : 'viento-export.zip';
+        const encodedName = encodeURIComponent(job.fileName).replace(/['()*]/g, ch => `%${ch.charCodeAt(0).toString(16).toUpperCase()}`);
+        response.setHeader('Content-Disposition', `attachment; filename="${fallback}"; filename*=UTF-8''${encodedName}`);
         response.setHeader('Cache-Control', 'no-store');
-        await sendFile(job.file, response, request);
+        await sendFile(job.file, response, request, { contentType: job.kind === 'asset' ? getMime(job.fileName) : 'application/zip' });
         if (!response.writableFinished) return false;
         if (response.statusCode === 200) return true;
         if (response.statusCode !== 206) return false;
@@ -373,6 +378,29 @@ async function handleExport(response, request, requestUrl, service, requestId = 
   } catch (error) {
     if (response.destroyed) return 499;
     if (response.headersSent) { response.destroy(); return 500; }
+    return mapServiceErrorToHttp(error, response, requestId);
+  } finally { response.removeListener('close', cancel); }
+}
+
+async function handleResourcePackage(response, request, requestUrl, service, requestId = '') {
+  const controller = new AbortController();
+  const cancel = () => { if (!response.writableEnded) controller.abort(new Error('Resource package request cancelled')); };
+  response.on('close', cancel);
+  try {
+    let result;
+    if (request.method === API_METHODS.GET) result = requestUrl.searchParams.get('status') === '1'
+      ? await service.resourcePackages.status() : await service.resourcePackages.catalog(controller.signal);
+    else if (getContentType(request) === 'application/octet-stream') {
+      if (Number(request.headers['content-length']) > PACKAGE_LIMITS.fileBytes) {
+        request.resume(); sendApiError(response, 413, 'resource package too large', {}, requestId); return 413;
+      }
+      result = await service.resourcePackages.inspect(request, controller.signal);
+    } else result = await service.resourcePackages.command(await readRequestJsonBody(request), controller.signal);
+    if (!response.destroyed) sendApiResponse(response, result, requestId);
+    return response.destroyed && !response.writableFinished ? 499 : 200;
+  } catch (error) {
+    if (response.destroyed) return 499;
+    if (error instanceof SyntaxError) { sendApiError(response, 400, 'Invalid JSON', {}, requestId); return 400; }
     return mapServiceErrorToHttp(error, response, requestId);
   } finally { response.removeListener('close', cancel); }
 }
@@ -510,6 +538,10 @@ async function handleApiRequest({
   let requestId = '';
 
   const route = {
+    [RESOURCE_PACKAGE_API]: {
+      [API_METHODS.GET]: () => handleResourcePackage(response, request, requestUrl, service, requestId),
+      [API_METHODS.POST]: () => handleResourcePackage(response, request, requestUrl, service, requestId),
+    },
     '/api/world/transaction': {
       [API_METHODS.GET]: async () => {
         try { sendApiResponse(response, await service.transactionStatus(), requestId); return 200; }
@@ -615,7 +647,8 @@ async function handleApiRequest({
     }
 
     const validWriteType = pathname === API_PATHS.ASSETS
-      ? getContentType(request) === 'application/octet-stream' : isJsonRequest(request);
+      ? getContentType(request) === 'application/octet-stream'
+      : pathname === RESOURCE_PACKAGE_API ? isJsonRequest(request) || getContentType(request) === 'application/octet-stream' : isJsonRequest(request);
     if (isMutatingWriteRequest(pathname, method) && !validWriteType) {
       statusCode = 415;
       logSecurityEvent('unsupported_media_type', request, {

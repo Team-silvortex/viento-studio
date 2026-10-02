@@ -407,8 +407,7 @@ async fn save_editor_export(
                 .map(|value| value.to_string())
                 .as_deref()
                 != Ok(request_id.as_str())
-            || file_name.contains(['/', '\\'])
-            || !file_name.ends_with(".zip")
+            || !workspace::portable_component(&file_name)
         {
             return Err("无效的导出任务".into());
         }
@@ -432,13 +431,21 @@ async fn save_editor_export(
         };
         let lang = language(&app);
         let Some(destination) = select_path(&app, move || {
-            rfd::AsyncFileDialog::new()
+            let picker = rfd::AsyncFileDialog::new()
                 .set_parent(&editor)
                 .set_directory(directory)
-                .set_title(lang.text("保存导出文件", "Save exported file", "書き出したファイルを保存"))
-                .set_file_name(file_name)
-                .add_filter(lang.text("ZIP 文件", "ZIP file", "ZIP ファイル"), &["zip"])
-                .save_file()
+                .set_title(lang.text(
+                    "保存导出文件",
+                    "Save exported file",
+                    "書き出したファイルを保存",
+                ))
+                .set_file_name(&file_name);
+            let picker = if let Some(extension) = export::file_extension(&file_name) {
+                picker.add_filter(extension.to_uppercase(), &[extension])
+            } else {
+                picker
+            };
+            picker.save_file()
         })
         .await?
         else {

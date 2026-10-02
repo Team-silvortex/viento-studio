@@ -1,0 +1,99 @@
+{
+  "host": "Google Chrome headless with real Node editor API, synthetic workspace v3",
+  "languages": [
+    {
+      "language": "en",
+      "button": "Save binding",
+      "draftRetained": true
+    },
+    {
+      "language": "ja",
+      "button": "割り当てを保存",
+      "draftRetained": true
+    },
+    {
+      "language": "zh-CN",
+      "button": "保存绑定",
+      "draftRetained": true
+    }
+  ],
+  "network": [
+    {
+      "command": "resource.bind",
+      "mode": "preview",
+      "status": 200,
+      "result": "preview",
+      "revision": "sha256:11d2a2c47a6e6f891c3ff6c9475ae077f4b89ce61ca9cecc6b19108f2169f55d"
+    },
+    {
+      "command": "resource.bind",
+      "mode": "apply",
+      "status": 200,
+      "result": "applied",
+      "revision": "sha256:11d2a2c47a6e6f891c3ff6c9475ae077f4b89ce61ca9cecc6b19108f2169f55d"
+    },
+    {
+      "command": "resource.bind",
+      "mode": "preview",
+      "status": 409,
+      "errorCode": "world_resource_binding_exists"
+    },
+    {
+      "command": "resource.bind",
+      "mode": "preview",
+      "status": 200,
+      "result": "preview",
+      "revision": "sha256:615783a80242e32f865723c2561ccbe4fe0f85b2af56f574b61f279d6ebfd3a7"
+    },
+    {
+      "command": "resource.bind",
+      "mode": "apply",
+      "status": 409,
+      "errorCode": "world_revision_conflict"
+    },
+    {
+      "command": "resource.bind",
+      "mode": "preview",
+      "status": 409,
+      "errorCode": "world_recovery_required"
+    },
+    {
+      "command": "world.recover",
+      "mode": "apply",
+      "status": 200,
+      "result": "rolled-back"
+    }
+  ],
+  "previewWrites": 0,
+  "narrow": {
+    "dialogWidth": 350,
+    "dialogScroll": 350,
+    "inspectorWidth": 318,
+    "inspectorScroll": 318,
+    "columns": "318px"
+  },
+  "saved": {
+    "revision": "sha256:11d2a2c47a6e6f891c3ff6c9475ae077f4b89ce61ca9cecc6b19108f2169f55d",
+    "metadataOnly": true,
+    "indexUpdated": true
+  },
+  "duplicateRejected": true,
+  "conflict": {
+    "externalResourceRegistration": true,
+    "sameLength": true,
+    "status": 409,
+    "draftRetained": true,
+    "applyDisabled": true,
+    "discardCancelled": true
+  },
+  "recovery": {
+    "checkpoint": "data/0",
+    "method": "SIGKILL → GUI recover",
+    "status": "rolled-back",
+    "exactPreviousRecord": true,
+    "draftRetained": true,
+    "previewInvalidated": true,
+    "noAutomaticResubmission": true
+  },
+  "runtimeErrors": []
+}

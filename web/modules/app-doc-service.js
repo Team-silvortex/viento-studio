@@ -2,6 +2,7 @@ import { t } from '../i18n/index.js';
 import { translateDiagnostic } from '../i18n/diagnostics.js';
 import { API_PATHS, API_REQUEST_KEYS, DOC_CAPABILITIES_FIELDS } from '../../scripts/lib/doc-api-contract.mjs';
 import { fetchJsonApiRequest, fetchTextApiRequest, fetchWithTimeout, makeRequestError, safeParseJsonResponse, withCacheBust } from './app-services.js';
+import { RESOURCE_PACKAGE_API } from '../../engine/resource-package.mjs';
 import { APP_ERROR_MESSAGES, APP_REQUEST_LABELS } from './app-state.js';
 import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
 
@@ -448,13 +449,36 @@ export async function requestExport(payload, signal) {
   }), 60 * 60 * 1000, t('准备导出'))).payload;
 }
 
+export async function loadResourcePackageCatalog(signal) {
+  return (await fetchJsonApiRequest(RESOURCE_PACKAGE_API, { signal, cache: 'no-store' }, 120000, t('读取资源清单'))).payload;
+}
+
+export async function inspectResourcePackage(file, signal) {
+  return (await fetchJsonApiRequest(RESOURCE_PACKAGE_API, withAuthHeaders({ method: 'POST',
+    headers: { 'Content-Type': 'application/octet-stream' }, body: file, signal,
+  }), 60 * 60 * 1000, t('预览资源包导入'))).payload;
+}
+
+export async function resourcePackageCommand(payload, signal) {
+  return (await fetchJsonApiRequest(RESOURCE_PACKAGE_API, withAuthHeaders({ method: 'POST',
+    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal,
+  }), payload.action === 'release' ? 10000 : 60 * 60 * 1000, t('处理资源包'))).payload;
+}
+
 export async function checkExport(id, signal) {
   // Probe one byte through the download route, renewing its idle lifetime
-  // without buffering the ZIP or claiming that the whole file was downloaded.
+  // without buffering the file or claiming that it was fully downloaded.
   const label = t('检查导出文件');
   return fetchWithTimeout(`${API_PATHS.EXPORT}?id=${encodeURIComponent(id)}`, {
     headers: { Range: 'bytes=0-0' }, cache: 'no-store', signal,
   }, 10000, label, async response => {
+    // Registered raw resources may be empty. Their range probe is necessarily
+    // unsatisfiable, while an ordinary GET still downloads a valid empty file.
+    if (response.status === 416 && response.headers.get('content-range') === 'bytes */0'
+      && response.headers.get('content-length') === '0') {
+      if ((await response.arrayBuffer()).byteLength !== 0) throw new Error(t('后端返回了非预期响应格式'));
+      return;
+    }
     if (!response.ok) throw makeRequestError(response, await safeParseJsonResponse(response), label);
     if (response.status !== 206 || !/^bytes 0-0\/[1-9]\d*$/.test(response.headers.get('content-range') || '')
       || Number(response.headers.get('content-length')) !== 1) {

@@ -300,6 +300,25 @@ textarea.doc-field-input { resize: vertical; }
 .doc-export-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
 .doc-export-actions a { text-decoration: none; }
 .doc-export-actions [hidden] { display: none; }
+.doc-export-dialog:has(#docResourcePackageOptions:not([hidden])) { width: min(760px, calc(100vw - 32px)); }
+.doc-resource-package[hidden], .doc-resource-package [hidden] { display: none; }
+.doc-resource-package { border-top: 1px solid #405977; padding-top: 16px; margin-top: 16px; }
+.doc-package-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0; }
+.doc-package-toolbar label { display: flex; align-items: center; gap: 6px; }
+.doc-package-filters { display: grid; grid-template-columns: minmax(0, 1fr) 130px; gap: 10px; }
+.doc-package-filters input, .doc-package-filters select { min-width: 0; min-height: 40px; padding: 8px 10px; background: #15233a; color: #dce8fa; border: 1px solid #536e91; border-radius: 8px; font: inherit; }
+.doc-package-entries { max-height: min(32vh, 340px); overflow: auto; border: 1px solid #405977; border-radius: 8px; margin: 12px 0; padding: 4px; }
+ul.doc-package-entries { padding: 12px 12px 12px 30px; overflow-wrap: anywhere; }
+.doc-package-entry { display: flex; gap: 10px; align-items: center; padding: 10px; cursor: pointer; border-radius: 6px; }
+.doc-package-entry:hover, .doc-package-entry:focus-within { background: #23394d; }
+.doc-package-entry:has(input:checked) { background: #193a33; }
+.doc-package-entry input { accent-color: #8ad8b4; }
+.doc-package-choice { display: flex; gap: 10px; align-items: center; flex: 1; min-width: 0; cursor: pointer; }
+.doc-package-choice > span { flex: 1; min-width: 0; }
+.doc-package-entry strong, .doc-package-entry small { display: block; overflow-wrap: anywhere; }
+.doc-package-entry small { color: #a8bad2; margin-top: 3px; font-size: 12px; }
+.doc-package-entry .doc-package-badge { flex: 0 0 auto; max-width: 32%; }
+.doc-package-entries > p { padding: 12px; }
 
 .project-settings { width: min(1080px, calc(100vw - 36px)); max-height: calc(100vh - 40px); overflow: auto; box-sizing: border-box; border: 1px solid #36516a; border-radius: 16px; padding: 24px; background: #101b2b; color: #dce9f6; }
 .project-settings::backdrop { background: #030a15c9; }

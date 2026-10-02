@@ -14,7 +14,9 @@ export { preparePropertySet, validateWorldCommand, worldMutationDescriptors, can
 export { prepareChangeSet } from './world-changeset.mjs';
 export { prepareObjectCreate } from './world-object-create.mjs';
 export { prepareRelationAdd } from './world-relations.mjs';
+export { prepareResourceBind } from './world-resources.mjs';
 export * from './media-format.mjs';
 export * from './document-model.mjs';
 export * from './document-values.mjs';
 export * from './document-contract.mjs';
+export * from './resource-package.mjs';

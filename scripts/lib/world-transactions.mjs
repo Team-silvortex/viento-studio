@@ -6,6 +6,7 @@ import { readWorkspace, readRegistry, withRegistryLock } from './workspace.mjs';
 import { workspacePaths, projectDefinition } from './project-layout.mjs';
 import { getCreatePathError, portablePath } from '../../engine/document-contract.mjs';
 import { appendRelationRecord, relationRegistryGuard } from '../../engine/world-relations.mjs';
+import { appendResourceBinding } from '../../engine/world-resources.mjs';
 import { validateDocumentModels } from '../../engine/document-model.mjs';
 import { checkFilesystemLocation } from './project-documents.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
@@ -95,13 +96,13 @@ async function loadIntent(root) {
   const bytes = await readTransactionFile(root, 'active/intent.json', 65536);
   const intent = JSON.parse(bytes), workspace = readWorkspace(root);
   const documents = workspacePaths(workspace).documents;
-  if (intent.format !== 'viento-source-transaction' || ![1, 2, 3].includes(intent.version) || !uuid.test(intent.id)
+  if (intent.format !== 'viento-source-transaction' || ![1, 2, 3, 4].includes(intent.version) || !uuid.test(intent.id)
     || intent.projectId !== workspace?.id || intent.manifestHash !== transactionHash(canonicalJson(workspace))
     || typeof intent.worldId !== 'string' || !/^proposal:[a-f0-9]{64}$/.test(intent.proposalId)
     || !hash.test(intent.baseRevision) || !hash.test(intent.revision)
     || intent.previousHead !== null && !hash.test(intent.previousHead)
     || !Array.isArray(intent.entries) || !intent.entries.length || intent.entries.length > 32) throw invalid();
-  const creating = intent.version === 2, relating = intent.version === 3;
+  const creating = intent.version === 2, relating = [3, 4].includes(intent.version), binding = intent.version === 4;
   if (creating && (intent.entries.length !== 2 || ![2, 3].includes(workspace.version))) throw invalid();
   if (relating && (intent.entries.length !== 1 || ![2, 3].includes(workspace.version) || !hash.test(intent.registryHash))) throw invalid();
   const seen = new Set(), objects = new Set(), images = [];
@@ -139,18 +140,19 @@ async function loadIntent(root) {
   if (relating) {
     const text = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(images[0].before);
     let edit;
-    try { edit = appendRelationRecord(text, intent.mutation); } catch { throw invalid(); }
+    try { edit = (binding ? appendResourceBinding : appendRelationRecord)(text, intent.mutation); } catch { throw invalid(); }
     const entry = intent.entries[0];
     if (!Buffer.from(edit.afterContent).equals(images[0].after) || edit.before.format !== 'viento-document'
       || edit.before.version !== 1 || edit.before.id !== entry.objectId || !portablePath(edit.before.sourcePath)
       || !edit.before.sourcePath.startsWith(`${documents}/`) || !Array.isArray(edit.before.assetBindings)
-      || intent.mutation.targetId === entry.objectId) throw invalid();
+      || !binding && intent.mutation.targetId === entry.objectId) throw invalid();
     // Recovery is the only reader allowed through its own pending barrier.
     // Guard the rest of the registry before restoring either graph state.
     const registry = await readRegistry(root, { allowPendingWorldTransaction: true,
       recoveryTemporaryRecord: `metadata/documents/${sourceTemporaryName(intent, 0)}` });
     if (transactionHash(relationRegistryGuard(registry, entry.objectId)) !== intent.registryHash) throw conflict();
     if (!registry.documents.some(record => record.id === entry.objectId)) throw conflict();
+    if (binding && !registry.assets.some(record => record.id === intent.mutation.assetId)) throw conflict();
     for (const image of [edit.before, edit.after]) {
       validateDocumentModels(registry.documents.map(record => record.id === entry.objectId ? image : record));
     }
@@ -216,8 +218,8 @@ export async function commitWorldTransaction(root, plan, { checkpoint = noop, be
   if (state.pending) throw transactionError('world_recovery_required', 'Recover the unfinished transaction first');
   const id = randomUUID(), directory = await transactionPath(root), stage = await transactionPath(root, `staging-${id}`);
   const workspace = readWorkspace(root);
-  const creating = plan.kind === 'object.create', relating = plan.kind === 'relation.add';
-  const intent = { format: 'viento-source-transaction', version: creating ? 2 : relating ? 3 : 1, id, projectId: workspace.id,
+  const creating = plan.kind === 'object.create', relating = ['relation.add', 'resource.bind'].includes(plan.kind);
+  const intent = { format: 'viento-source-transaction', version: creating ? 2 : plan.kind === 'resource.bind' ? 4 : relating ? 3 : 1, id, projectId: workspace.id,
     manifestHash: transactionHash(canonicalJson(workspace)), worldId: result.worldId, proposalId: result.proposal.id,
     baseRevision: result.baseRevision, revision: result.revision, previousHead: state.token, entries: [],
     ...(relating ? { mutation: plan.mutation, registryHash: plan.registryHash } : {}) };
