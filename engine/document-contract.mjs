@@ -54,6 +54,17 @@ export function getCreatePathError(value) {
   return '';
 }
 
+// Include absent registered sources: a record reserves both its name and the
+// spelling of its ancestor directories across case-insensitive/NFC filesystems.
+export function conflictsWithSourcePath(sourcePath, existing) {
+  const parts = sourcePath.split('/'), previous = existing.split('/');
+  for (let i = 0; i < Math.min(parts.length, previous.length); i++) {
+    if (parts[i].normalize('NFC').toLowerCase() !== previous[i].normalize('NFC').toLowerCase()) return false;
+    if (parts[i] !== previous[i]) return true;
+  }
+  return true;
+}
+
 export const DOC_CAPABILITIES_FIELDS = Object.freeze({
   ok: 'ok',
   mode: 'mode',

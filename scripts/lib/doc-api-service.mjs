@@ -67,7 +67,7 @@ function createDocumentService(options = {}) {
   });
 
   async function getCapabilities() {
-    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'world.recover'] };
+    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'relation.add', 'world.recover'] };
   }
 
   function getRuntimeConfig() {

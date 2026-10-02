@@ -3,7 +3,7 @@ import vm from 'node:vm';
 import { createHash } from 'node:crypto';
 
 const root = new URL('../../engine/', import.meta.url), yaml = new URL('../../node_modules/yaml/browser/', import.meta.url);
-const context = vm.createContext({}), modules = new Map();
+const context = vm.createContext({ TextEncoder }), modules = new Map();
 function load(url) {
   if (!url.href.startsWith(root.href) && !url.href.startsWith(yaml.href)) throw new Error('Host dependency in semantic kernel');
   if (!modules.has(url.href)) modules.set(url.href, new vm.SourceTextModule(fs.readFileSync(url, 'utf8'), { context, identifier: url.href }));
@@ -17,7 +17,34 @@ const input = { workspace: { id: 'portable-project', version: 3, name: 'Portable
   documents: [{ sourcePath: 'documents/object.json', record: { id: 'portable-object' }, content, sourceRevision: `sha256:${createHash('sha256').update(content).digest('hex')}` }] };
 const before = JSON.stringify(input);
 const projection = await entry.namespace.createWorldProjection(input, { digest: value => createHash('sha256').update(value).digest('hex') });
-if (process.argv.includes('--changesets')) {
+if (process.argv.includes('--relations')) {
+  const id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', targetId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+  const recordContent = `{"id":"${id}","relations":[],"extension":9007199254740993}`;
+  const source = { ...input, assets: [], documents: [
+    { ...input.documents[0], record: JSON.parse(recordContent) },
+    { ...input.documents[0], sourcePath: 'documents/target.json', record: { id: targetId, relations: [] } },
+  ] };
+  const original = JSON.stringify(source), digest = value => createHash('sha256').update(value).digest('hex');
+  const view = await entry.namespace.createWorldProjection(source, { digest });
+  const plan = await entry.namespace.prepareRelationAdd(source, view, recordContent, { command: 'relation.add', mode: 'preview',
+    worldId: view.world.id, baseRevision: view.world.revision, actorRef: { kind: 'tool', id: 'portable' },
+    objectId: id, objectRevision: view.objects.find(item => item.id === id).revision,
+    targetObjectId: targetId, targetRevision: view.objects.find(item => item.id === targetId).revision,
+    kind: 'references', slot: '',
+  }, { digest });
+  console.log(JSON.stringify({ kind: plan.result.relation.properties.kind,
+    largeNumberPreserved: plan.plans[0].afterContent.includes('9007199254740993'), unchanged: original === JSON.stringify(source) }));
+} else if (process.argv.includes('--create')) {
+  const source = { ...input, definition: { paths: { documents: 'documents', templates: 'templates', metadata: 'metadata' },
+    documentTypes: [{ id: 'record', label: 'Record', directory: '', parserProfile: 'structured' }] } };
+  const original = JSON.stringify(source);
+  const view = await entry.namespace.createWorldProjection(source, { digest: value => createHash('sha256').update(value).digest('hex') });
+  const plan = await entry.namespace.prepareObjectCreate(source, view, { command: 'object.create', mode: 'preview',
+    worldId: view.world.id, baseRevision: view.world.revision, actorRef: { kind: 'tool', id: 'portable' },
+    objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd', documentType: 'record', sourcePath: 'documents/new.json', content,
+  }, { digest: value => createHash('sha256').update(value).digest('hex') });
+  console.log(JSON.stringify({ value: plan.result.object.properties['field-0'].value, unchanged: original === JSON.stringify(source), files: plan.plans.length }));
+} else if (process.argv.includes('--changesets')) {
   const object = projection.objects[0];
   const plan = await entry.namespace.prepareChangeSet(input, projection, { command: 'changeset.apply', mode: 'preview',
     worldId: projection.world.id, baseRevision: projection.world.revision, actorRef: { kind: 'tool', id: 'portable' },

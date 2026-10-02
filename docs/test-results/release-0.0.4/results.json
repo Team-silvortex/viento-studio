@@ -1,0 +1,168 @@
+{
+  "version": "0.0.4",
+  "checkedAt": "2026-10-02T02:58:29.958785+00:00",
+  "baseline": "dd22f42ab59091cce4877f7102faad4c65898827",
+  "status": "local-release-checks-and-reinstallation-passed",
+  "environment": {
+    "system": "Ubuntu 24.04.5 LTS",
+    "architecture": "x86_64",
+    "webkitGTK": "2.52.6",
+    "node": "v24.21.0",
+    "rust": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "cargoBuildJobs": 1,
+    "testFileConcurrency": 2
+  },
+  "application": {
+    "command": "VIENTO_TEST_ARCHIVE_BINARY=\"$PWD/src-tauri/target/debug/examples/workspace-archive\" VIENTO_MOBILE_STORE_BIN=\"$PWD/src-tauri/target/debug/examples/mobile-storage\" npm run check -- --app-only",
+    "exitCode": 0,
+    "syntaxFiles": 213,
+    "tests": 768,
+    "passed": 768,
+    "failed": 0,
+    "skipped": 0,
+    "nativeArchiveEnabled": true,
+    "nativeMobileStorageEnabled": true,
+    "finalRunAfterNativeToolsRebuilt": true,
+    "nativeToolSha256": {
+      "workspace-archive": "9c44096a12435560a4cbd076f27fce0d746cd349a723eac872b12fd1b71a9028",
+      "mobile-storage": "502f40594c27efad05a2078e898cf4b90c6450534205aaa45656525a1122a5b0"
+    }
+  },
+  "rust": {
+    "command": "CARGO_BUILD_JOBS=1 cargo test --manifest-path src-tauri/Cargo.toml --locked --offline",
+    "exitCode": 0,
+    "passed": 44,
+    "failed": 0,
+    "ignored": 1,
+    "ignoredCase": "full_project_migration_roundtrip",
+    "ignoredReason": "requires VIENTO_TEST_SOURCE_ROOT; no official workspace selected",
+    "existingVendorWarnings": "unchanged glib vendor warnings"
+  },
+  "desktopBuild": {
+    "command": "CARGO_BUILD_JOBS=1 LDAI_RUNTIME_FILE=\"$PWD/desktop/.cache/appimage-runtime-x86_64\" npm run desktop:build -- --bundles appimage,deb",
+    "exitCode": 0,
+    "artifacts": [
+      {
+        "file": "Viento-Studio_0.0.4_amd64.AppImage",
+        "bytes": 124303864,
+        "sha256": "0f162f6d0e91aab71f0064a7478d2e0b2d1c0414d46aae66c1a69113f455fd31"
+      },
+      {
+        "file": "Viento-Studio_0.0.4_amd64.deb",
+        "bytes": 54991648,
+        "sha256": "6803132be22520b7c65eadf99c65fdcfa50eddcae1bd7264c1cb896ac67e6831"
+      }
+    ],
+    "appImageRuntime": {
+      "source": "runtime prefix of the previously installed and verified 0.0.1 AppImage",
+      "bytes": 944632,
+      "sha256": "8a6ad763c81091a506bee312a83792ca6529e0c08780fc9d3287450b81f1695f"
+    },
+    "resources": {
+      "version": "0.0.4",
+      "packagedFilesMatchingPreparedResources": 405,
+      "packagedFilesMatchingRepositorySources": 157,
+      "includesObjectCreateAndRelations": true,
+      "projectDataBundled": false
+    }
+  },
+  "nativeAppImage": {
+    "script": "desktop/tests/native-smoke.py",
+    "command": "VIENTO_EXPECT_APP_VERSION=0.0.4 VIENTO_TEST_GENERIC_CREATE=\"$PWD/src-tauri/target/debug/examples/workspace-archive\" VIENTO_TEST_FIELDS=1 VIENTO_TEST_LANGUAGE=1 python3 desktop/tests/native-smoke.py <tauri-driver> <WebKitWebDriver> \"$PWD/src-tauri/target/release/bundle/appimage/Viento-Studio_0.0.4_amd64.AppImage\"",
+    "exitCode": 0,
+    "configuration": "isolated XDG directories, D-Bus session, Xvfb display, synthetic projects; bundled local xdotool with matching LD_LIBRARY_PATH",
+    "appImageSha256": "0f162f6d0e91aab71f0064a7478d2e0b2d1c0414d46aae66c1a69113f455fd31",
+    "milestones": [
+      "English and Japanese settings survive full native application restarts",
+      "a new editor origin loads the language saved by the library",
+      "配音样例.wav plays and seeks",
+      "配音样例.mp3 plays and seeks",
+      "配音样例.ogg plays and seeks",
+      "配音样例.opus plays and seeks",
+      "配音样例.flac plays and seeks",
+      "配音样例.m4a plays and seeks",
+      "配音样例.aac plays and seeks",
+      "WAV / MP3 / Ogg / Opus / FLAC / M4A / AAC playback, pause and seeking; audio filter, original download and stable-ID reuse",
+      "cancel new type / Escape / back / type switch → retain or discard drafts → restore selection → translated controls → narrow layout → unchanged project bytes",
+      "project template editor → typed preview → live save → add a type → unchanged authored content / metadata",
+      "language switch preserves source / block DOM, drafts, paths and project bytes; export guard is translated",
+      "native field edit → three languages retain draft → source/field switch → save → exact YAML bytes and metadata retained",
+      "Japanese native save picker and export instructions; original document bytes retained",
+      "native export dialog → cancel / retry GTK save picker → offline document with media → complete project export → native import with exact source and asset bytes → staging cleanup",
+      "native v3 creation → empty generic project → project-owned types → character background + PNG / WebM / MP4 → custom YAML template + chosen folder + saved type → reopen → full backup and byte-identical restore"
+    ],
+    "log": "native-smoke.log",
+    "screenshot": "desktop-library.png",
+    "scope": "Desktop library/editor regression; object.create and relation.add UI workflows retain their separate development browser evidence"
+  },
+  "localInstallation": {
+    "version": "0.0.4",
+    "previousVersion": "0.0.1",
+    "identifier": "io.viento.studio",
+    "method": "atomic AppImage replacement at the existing installation path",
+    "installedAt": "2026-10-02T02:55:02.276894+00:00",
+    "installedAppImageSha256": "0f162f6d0e91aab71f0064a7478d2e0b2d1c0414d46aae66c1a69113f455fd31",
+    "previousAppImageSha256": "545ff9af087ee988bcfd91185bc4a3ecb1bd4a8ce6624ab7e462a8eb7bb9d31c",
+    "backupVerifiedBeforeReplacement": true,
+    "backedUpFiles": [
+      "Viento-Studio.AppImage",
+      "install.json",
+      "launcher",
+      "io.viento.studio.desktop"
+    ],
+    "launcherUnchanged": true,
+    "iconsUnchanged": true,
+    "desktopEntryVersion": "0.0.4",
+    "desktopEntryValidationExitCode": 0,
+    "desktopDatabaseUpdated": true,
+    "projectDataMoved": false,
+    "configurationReset": false,
+    "debInstalled": false,
+    "launcherStarted": true,
+    "visibleWindowTitle": "Viento Studio 0.0.4 · 作品库",
+    "leftLibraryOpen": true,
+    "openedWorkspace": false
+  },
+  "mobileResources": {
+    "version": "0.0.4",
+    "prepareExitCode": 0,
+    "apkBuilt": false,
+    "deviceTested": false
+  },
+  "installationMetadata": {
+    "identifier": "io.viento.studio",
+    "androidVersionCode": 1000004,
+    "macOSBundleVersion": "1.0.4"
+  },
+  "historicalDevelopmentEvidence": [
+    "../world-create/results.json",
+    "../world-relations/results.json"
+  ],
+  "sourceFingerprintCount": 90,
+  "limits": [
+    "Object creation and relation browser/SIGKILL evidence remains at the original development version 0.0.3; it is not relabeled as a native 0.0.4 interaction test.",
+    "No resource-binding command, relation deletion, arbitrary mixed ChangeSet, workspace v4, Build or Android semantic writes.",
+    "Linux AppImage acceptance only; deb was built but not installed. No APK build, Windows/macOS, physical mobile-device or power-loss acceptance.",
+    "No official project writes, configuration reset, GitHub Release or installer upload."
+  ],
+  "localLogs": {
+    "application-check.log": {
+      "sha256": "f33ff041322b64c77c8b195acfd72d426c46238da9c905260645b53363f55865"
+    },
+    "application-final.log": {
+      "sha256": "37d5998937f8538ec4f87e969132f4c8724fe1e58b61f49dbba862b3a8caa93e"
+    },
+    "cargo-test.log": {
+      "sha256": "91c32e8b4b6cc3c0955adc8202b7ffd614b10fb0353620691ed1d0bca176dada"
+    },
+    "desktop-build.log": {
+      "sha256": "4a5ec57b9e04c8e11e29a9c788118951e4c5797e1f43a1ddf8b51569addb92c8"
+    },
+    "mobile-prepare.log": {
+      "sha256": "cb6401ca315a00077b2eaf8a07f51a6d79f28c8fbb614fd72935494e0bad4d0e"
+    },
+    "native-smoke.log": {
+      "sha256": "5b724011748d599419c1ba24a9d403b169fa55a427ddf95dd8d3df67b47371dc"
+    }
+  }
+}

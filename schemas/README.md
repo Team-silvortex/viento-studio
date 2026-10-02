@@ -11,4 +11,4 @@
 
 JSON Schema 描述字段结构。运行时还会检查文件名与 ID 一致性、身份和位置唯一性、路径可移植性及链接边界。正文中已有的业务字段不复制到登记文件。规则实现位于 `scripts/lib/workspace.mjs`，归档与 v1 兼容实现位于 `src-tauri/src/workspace.rs`。
 
-`transaction-receipt-v1` 是 V-M3 现有文档批量提交／回退的独立持久回执，不把 `changeset-v1` 的提案状态改成提交状态。`changeset.apply` 的输入形状通过 CommandDescriptor 分发；此阶段没有通用命令日志格式或 workspace v4。见 [ADR 0004](../docs/adr/0004-recoverable-source-changesets.md)。
+`transaction-receipt-v1` 是 V-M3 批量属性提交、后续对象创建与关系追加的独立持久回执，不把 `changeset-v1` 的提案状态改成提交状态。`changeset.apply`、`object.create` 与 `relation.add` 的输入形状通过 CommandDescriptor 分发；创建和关系追加没有用户撤销反向命令。此阶段没有通用命令日志格式或 workspace v4。见 [ADR 0004](../docs/adr/0004-recoverable-source-changesets.md)、[ADR 0005](../docs/adr/0005-recoverable-object-creation.md) 和 [ADR 0006](../docs/adr/0006-recoverable-relation-registration.md)。

@@ -168,9 +168,11 @@ export async function fingerprint(file) {
   return { size: before.size, sha256: hash.digest('hex') };
 }
 
-export async function readRegistry(root, { signal } = {}) {
+export async function readRegistry(root, { signal, allowPendingWorldTransaction = false, recoveryTemporaryRecord = null } = {}) {
   signal?.throwIfAborted();
-  const fence = await readWorldFence(root);
+  // Only the transaction recovery validator opts out, while holding the lock.
+  // Public readers retain the barrier; this flag is never an HTTP input.
+  const fence = allowPendingWorldTransaction ? null : await readWorldFence(root);
   try {
     const documentsRoot = workspacePaths(readWorkspace(root)).documents;
     const metadata = path.join(root, 'metadata');
@@ -184,6 +186,9 @@ export async function readRegistry(root, { signal } = {}) {
       if (!fs.existsSync(folder)) continue;
       for (const file of await walkFiles(folder, { signal })) {
         signal?.throwIfAborted();
+        // Recovery names its one validated, transaction-owned temporary file.
+        // walkFiles still rejects links; any other extra file remains invalid.
+        if (allowPendingWorldTransaction && `metadata/${kind}/${file}` === recoveryTemporaryRecord) continue;
         if (!file.endsWith('.json')) throw new Error(`登记目录只能包含 JSON：${kind}/${file}`);
         const raw = await fsp.readFile(path.join(folder, file), { encoding: 'utf8', signal });
         signal?.throwIfAborted();
@@ -216,7 +221,7 @@ export async function readRegistry(root, { signal } = {}) {
       }
     }
     validateDocumentModels(documents);
-    await assertWorldFence(root, fence);
+    if (!allowPendingWorldTransaction) await assertWorldFence(root, fence);
     return { assets, documents };
   } catch (error) { signal?.throwIfAborted(); throw error; }
 }

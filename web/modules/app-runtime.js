@@ -5192,13 +5192,16 @@ async function initApp(options = {}) {
       // Keep that draft and its original version; a later stale save must conflict.
       if (result.status !== 'applied' && (state.editHasUnsavedChanges || state.isCreating)) return;
       const changes = result.changes || (result.change ? [result.change] : []);
-      for (const { sourcePath } of changes) {
+      const affectedPaths = new Set(changes.flatMap(change => [change.sourcePath, change.targetSourcePath].filter(Boolean)));
+      for (const sourcePath of affectedPaths) {
         const doc = getDocBySourcePath(sourcePath);
         if (state.isEditing && canonicalizeSourcePath(state.activeEditSource) === canonicalizeSourcePath(sourcePath)) applyEditMode(doc, false);
         if (doc) for (const key of ['_sourceCachedText', '_sourceRenderedText', '_sourceVersion', '_renderSignature']) delete doc[key];
       }
       if (!changes.length && state.isEditing) applyEditMode(getActiveDoc(), false);
-      await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: changes.length === 1 ? toRebuildFilter(changes[0].sourcePath) : '', requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
+      // Ownership changes affect both ends and the hierarchy of their children.
+      const sourceFilter = changes.length === 1 && changes[0].kind !== 'relation.add' ? toRebuildFilter(changes[0].sourcePath) : '';
+      await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter, requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
       await loadData(state.activePath, { forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
     },
   });

@@ -4,21 +4,56 @@ import { createHash } from 'node:crypto';
 import { createWorldProjection } from '../../engine/world-projection.mjs';
 import { preparePropertySet, validateWorldCommand } from '../../engine/world-commands.mjs';
 import { prepareChangeSet } from '../../engine/world-changeset.mjs';
+import { prepareObjectCreate } from '../../engine/world-object-create.mjs';
+import { prepareRelationAdd } from '../../engine/world-relations.mjs';
 import { createError } from '../../engine/service-error.mjs';
 import { readWorldSnapshot } from './node-world-projection.mjs';
 import { withRegistryLock } from '../lib/workspace.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
 import { withDocumentTransaction, readDocumentSnapshot, writeDocumentAtomically } from '../lib/doc-file-store.mjs';
 import { commitWorldTransaction, recoverWorldTransaction } from '../lib/world-transactions.mjs';
+import { checkFilesystemLocation } from '../lib/project-documents.mjs';
 
 const digest = value => createHash('sha256').update(value).digest('hex');
 const conflict = () => createError(409, 'World changed; refresh and preview again', {}, 'world_revision_conflict');
 
-async function prepare(snapshot, request) {
-  if (request.command === 'changeset.apply') {
-    const plan = await prepareChangeSet(snapshot.source, snapshot.projection, request, { digest });
+async function readRecordContent(root, id) {
+  const file = await resolveContainedPath(root, path.join(root, 'metadata/documents', `${id}.json`));
+  const handle = await fs.open(file, 'r');
+  try {
+    const stat = await handle.stat();
+    if (!stat.isFile() || stat.size > 1024 * 1024) throw createError(413, 'Registration exceeds the command limit', {}, 'world_record_limit');
+    const bytes = Buffer.alloc(stat.size + 1); let size = 0;
+    while (size < bytes.length) {
+      const { bytesRead } = await handle.read(bytes, size, bytes.length - size, null);
+      if (!bytesRead) break;
+      size += bytesRead;
+    }
+    if (size !== stat.size) throw conflict();
+    return new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes.subarray(0, size));
+  } finally { await handle.close(); }
+}
+
+async function prepare(snapshot, request, root) {
+  if (request.command === 'relation.add') {
+    if (!snapshot.source.documents.some(item => item.record?.id === request.objectId)) {
+      throw createError(404, 'Registered relation source not found', {}, 'world_relation_object_missing');
+    }
+    const plan = await prepareRelationAdd(snapshot.source, snapshot.projection, await readRecordContent(root, request.objectId), request, { digest });
+    if (Buffer.byteLength(plan.plans[0].afterContent) > 1024 * 1024) throw createError(413, 'Registration exceeds the command limit', {}, 'world_record_limit');
+    return plan;
+  }
+  if (['changeset.apply', 'object.create'].includes(request.command)) {
+    const planner = request.command === 'object.create' ? prepareObjectCreate : prepareChangeSet;
+    const plan = await planner(snapshot.source, snapshot.projection, request, { digest });
+    if (request.command === 'object.create') {
+      for (const item of plan.plans) {
+        await resolveContainedPath(root, path.join(root, item.sourcePath), { allowMissing: true });
+        await checkFilesystemLocation(root, item.sourcePath);
+      }
+    }
     if (plan.plans.some(item => Buffer.byteLength(item.afterContent) > 8 * 1024 * 1024)
-      || plan.plans.reduce((size, item) => size + Buffer.byteLength(item.beforeContent) + Buffer.byteLength(item.afterContent), 0) > 32 * 1024 * 1024
+      || plan.plans.reduce((size, item) => size + Buffer.byteLength(item.beforeContent || '') + Buffer.byteLength(item.afterContent), 0) > 32 * 1024 * 1024
       || plan.nextSource.documents.reduce((size, item) => size + Buffer.byteLength(item.content || ''), 0) > 64 * 1024 * 1024) {
       throw createError(413, 'ChangeSet exceeds the transaction source limit', {}, 'world_source_limit');
     }
@@ -48,13 +83,13 @@ export function createWorldCommandService(root, { checkpoint } = {}) {
     try {
       const physicalRoot = await fs.realpath(root);
       if (request.command === 'world.recover') return await recoverWorldTransaction(physicalRoot, { checkpoint });
-      const initial = await prepare(await readWorldSnapshot(physicalRoot), request);
+      const initial = await prepare(await readWorldSnapshot(physicalRoot), request, physicalRoot);
       if (request.mode === 'preview') return initial.result;
-      if (request.command === 'changeset.apply') {
+      if (['changeset.apply', 'object.create', 'relation.add'].includes(request.command)) {
         // Never acquire a document queue while holding the registry lock. Legacy
         // writers already hold their queue when waiting for this same lock.
         return await withRegistryLock(physicalRoot, async () => {
-          const plan = await prepare(await readWorldSnapshot(physicalRoot), request);
+          const plan = await prepare(await readWorldSnapshot(physicalRoot), request, physicalRoot);
           return commitWorldTransaction(physicalRoot, plan, { checkpoint, beforeIntent: async () => {
             if ((await readWorldSnapshot(physicalRoot)).projection.world.revision !== request.baseRevision) throw conflict();
           } });
@@ -63,7 +98,7 @@ export function createWorldCommandService(root, { checkpoint } = {}) {
       // Use the same ordering as the legacy editor: document queue, then the
       // cross-process registry lock. Re-read all authority inside that lock.
       return await withDocumentTransaction(initial.sourcePath, () => withRegistryLock(physicalRoot, async () => {
-        const plan = await prepare(await readWorldSnapshot(physicalRoot), request);
+        const plan = await prepare(await readWorldSnapshot(physicalRoot), request, physicalRoot);
         if (plan.beforeContent === plan.afterContent) return { ...plan.result, status: 'unchanged' };
         const absolute = await resolveContainedPath(physicalRoot, path.join(physicalRoot, plan.sourcePath));
         const previous = await readDocumentSnapshot(absolute);
@@ -84,6 +119,7 @@ export function createWorldCommandService(root, { checkpoint } = {}) {
       }));
     } catch (error) {
       if (error.statusCode && error.errorCode?.startsWith('world_')) throw error;
+      if (error.errorCode === 'document already exists') throw createError(409, 'This source location is already reserved', {}, 'world_create_path_conflict');
       if (error.errorCode === 'registry_busy') throw createError(409, 'Workspace is busy; retry after the current write', {}, 'world_write_busy');
       throw createError(422, 'Cannot execute this world command', {}, 'world_command_unavailable');
     }

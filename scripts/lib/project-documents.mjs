@@ -5,33 +5,25 @@ import { readWorkspace, readRegistry, withRegistryLock, writeJson } from './work
 import { projectDefinition, projectDocumentDefaults } from './project-layout.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
 import { API_ERRORS } from './doc-api-contract.mjs';
+import { conflictsWithSourcePath } from '../../engine/document-contract.mjs';
 
 const portableKey = (value) => value.normalize('NFC').toLowerCase();
 const pathConflict = (sourcePath) => Object.assign(new Error(`新建位置与已有文档或目录冲突：${sourcePath}`), {
   statusCode: 409, errorCode: API_ERRORS.alreadyExists,
 });
 
-function conflictsWithRegisteredPath(sourcePath, existing) {
-  const parts = sourcePath.split('/'), previous = existing.split('/');
-  for (let i = 0; i < Math.min(parts.length, previous.length); i++) {
-    if (portableKey(parts[i]) !== portableKey(previous[i])) return false;
-    if (parts[i] !== previous[i]) return true;
-  }
-  // A descriptor still reserves its identity when its source is missing. It
-  // also cannot be reused as a directory, or replaced by an ancestor file.
-  return true;
-}
-
-async function checkFilesystemLocation(root, sourcePath) {
+export async function checkFilesystemLocation(root, sourcePath, { allowExisting = false } = {}) {
   const parts = sourcePath.split('/');
   let directory = root;
   for (const [index, part] of parts.entries()) {
     const entries = await fs.readdir(directory, { withFileTypes: true });
     const matches = entries.filter((entry) => portableKey(entry.name) === portableKey(part));
     if (!matches.length) return;
-    if (matches.some((entry) => entry.name !== part) || index === parts.length - 1 || !matches[0].isDirectory()) {
+    if (matches.some((entry) => entry.name !== part) || (index === parts.length - 1
+      ? !allowExisting || !matches[0].isFile() : !matches[0].isDirectory())) {
       throw pathConflict([...parts.slice(0, index), matches[0].name].join('/'));
     }
+    if (index === parts.length - 1) return;
     directory = path.join(directory, part);
   }
 }
@@ -44,7 +36,7 @@ export async function createRegisteredDocument(root, sourcePath, documentType, w
     const manifest = readWorkspace(root);
     const managed = [2, 3].includes(manifest?.version);
     const registry = managed ? await readRegistry(root) : { documents: [] };
-    const reserved = registry.documents.find((record) => conflictsWithRegisteredPath(sourcePath, record.sourcePath));
+    const reserved = registry.documents.find((record) => conflictsWithSourcePath(sourcePath, record.sourcePath));
     if (reserved) throw pathConflict(reserved.sourcePath);
     await checkFilesystemLocation(root, sourcePath);
     if (!managed || (manifest.version === 2 && documentType === undefined)) return writeSource();

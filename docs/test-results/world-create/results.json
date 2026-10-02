@@ -1,0 +1,145 @@
+{
+  "milestone": "V-M2 / V-M3 recoverable object.create vertical slice",
+  "softwareVersion": "0.0.3",
+  "releaseStatus": "post-0.0.3 working tree; not committed or published",
+  "checkedAt": "2026-09-27T15:40:05.476Z",
+  "baseline": "dd22f42ab59091cce4877f7102faad4c65898827",
+  "semanticSchemaVersion": 1,
+  "status": "local-source-validation-passed",
+  "scope": [
+    "portable object.create planning",
+    "GUI / CLI / HTTP shared command",
+    "exclusive source and registration publication",
+    "version 2 creation intent and version 1 recovery compatibility"
+  ],
+  "application": {
+    "command": "npm run check -- --app-only",
+    "nativeArchiveEnabled": true,
+    "nativeMobileStorageEnabled": true,
+    "testFileConcurrency": 2,
+    "syntaxFiles": 211,
+    "tests": 737,
+    "passed": 737,
+    "failed": 0,
+    "skipped": 0,
+    "newTests": 29,
+    "timing": "Final executable sources, CSS and schema description included in this run"
+  },
+  "crashRecovery": {
+    "method": "Real Node processes killed at IPC checkpoints",
+    "publicationPoints": [
+      "intent",
+      "source-ready/0",
+      "data/0",
+      "source-ready/1",
+      "data/1",
+      "commit",
+      "head"
+    ],
+    "beforeCommit": "both source and registration absent",
+    "afterCommit": "both exact after-images",
+    "secondCrashDuringRecovery": [
+      "rollback",
+      "roll-forward"
+    ],
+    "emptySourceDistinctFromAbsence": true,
+    "externalEditsPreserved": true,
+    "corruptImagesAndPathsRejected": true,
+    "sourceTemporariesCleaned": true,
+    "readAndExportFences": true,
+    "automaticStartupRecovery": true
+  },
+  "interoperability": {
+    "workspaceVersions": [
+      2,
+      3
+    ],
+    "route": "Native desktop export → native mobile storage import/index/export → native desktop restore",
+    "sourceBytesAndObjectIdentityPreserved": true,
+    "finalWorldRevisionMatches": true,
+    "pendingCreationBlocksNativeExport": true,
+    "mobileSemanticCreation": false
+  },
+  "browser": {
+    "host": "Integrated Chromium browser, isolated synthetic v3 workspace",
+    "interaction": "DOM events and browser controls; no native desktop pointer acceptance claim",
+    "creation": {
+      "objectId": "b72f5a5a-9bd1-4c4f-89b6-1cc15bf34395",
+      "sourcePath": "documents/characters/望风者.json",
+      "previewWrites": 0,
+      "exactSubmittedText": true,
+      "bomPreserved": true,
+      "largeInteger": "9007199254740993",
+      "selectedAfterSave": true,
+      "indexUpdated": true,
+      "receiptRevisionMatches": true,
+      "note": "Browser textarea normalizes entered CRLF to LF; disk matches the exact submitted string. Core CRLF preservation is checked separately."
+    },
+    "conflicts": {
+      "existingPath": {
+        "status": 409,
+        "errorCode": "world_create_path_conflict"
+      },
+      "externalEdit": {
+        "status": 409,
+        "errorCode": "world_revision_conflict",
+        "sameSizeAndPreservedMtime": true
+      },
+      "draftRetained": true,
+      "applyDisabled": true,
+      "closeCancelledPreservesDraft": true
+    },
+    "languages": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "languageChangePreservesDraft": true,
+    "responsiveLayout": {
+      "method": "DOM measurements at 390 CSS pixels",
+      "dialogClientWidth": 335,
+      "dialogScrollWidth": 335,
+      "editorClientWidth": 301,
+      "editorScrollWidth": 301,
+      "columns": 1
+    },
+    "screenshot": "creation-form.jpg",
+    "screenshotNote": "Final CSS verified; preview of a second story draft, never applied. Synthetic original traveler restored after conflict test."
+  },
+  "preparedResources": {
+    "desktopResourcesOnly": "passed",
+    "mobile": "passed"
+  },
+  "native": {
+    "rustSourceChanged": false,
+    "fullRustSuiteRun": false,
+    "tools": "Existing 0.0.3 native examples invoked by application tests",
+    "binarySha256": {
+      "workspace-archive": "40ca093d52539c30f16c61e7f04c9d22512c9bbb64e6fa6cbf5aacd6ad0ab245",
+      "mobile-storage": "849686505344a0aa343e9c2d28141b8843cbf3f43677772f17ca3404b1eb47b1"
+    }
+  },
+  "officialWorkspace": {
+    "writes": 0,
+    "scope": "Synthetic fixtures only"
+  },
+  "sourceFingerprintCount": 66,
+  "logSha256": {
+    "application-check.log": "ab743c323d0779df4694bd7246b35160e50e20c87d8843ebb4831b0181fc8ae8",
+    "desktop-prepare.log": "9fea2b7c69cb426bb65ec3eb5d160061e49a9ee1f07d5cb87f665e43688dbfb5",
+    "mobile-prepare.log": "7800fb90944c97ed9102bb44f7992870156be339b72fe79442966d91c6139065"
+  },
+  "screenshotSha256": "4e94aed66a4c7bd3d0896ee6feba068185cd80ca558ed3bf20286aa876403975",
+  "limits": [
+    "Single-object creation only; changeset.apply still accepts existing-object property edits only",
+    "Old New Document flow is unchanged",
+    "No automatic template loading in the new form",
+    "No relation/resource command, user deletion/undo or durable idempotency history",
+    "Creation drafts remain in page memory",
+    "Rollback may leave empty directories; private abandoned staging/cleanup garbage can remain",
+    "Version 2 pending intents require a supporting application for recovery; old 0.0.3 fails closed",
+    "Linux process-crash acceptance, not hardware power-loss or Windows/macOS/network filesystem certification",
+    "External writers and malicious directory swaps can race final validation",
+    "No Android semantic write adapter, Build snapshot, installer, new release, commit or push"
+  ]
+}

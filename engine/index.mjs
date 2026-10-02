@@ -12,6 +12,8 @@ export { createWorldProjection, canonicalJson } from './world-projection.mjs';
 export { queryWorldProjection, worldCommandDescriptors, validateWorldQuery } from './world-query.mjs';
 export { preparePropertySet, validateWorldCommand, worldMutationDescriptors, canSetObjectProperty } from './world-commands.mjs';
 export { prepareChangeSet } from './world-changeset.mjs';
+export { prepareObjectCreate } from './world-object-create.mjs';
+export { prepareRelationAdd } from './world-relations.mjs';
 export * from './media-format.mjs';
 export * from './document-model.mjs';
 export * from './document-values.mjs';

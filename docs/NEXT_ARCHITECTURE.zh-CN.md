@@ -391,7 +391,7 @@ Viento 的 World revision 以不可变 ArtifactRevision 发布到 Cyanrex；一�
 
 **首批可拆分施工单：**
 
-当前实现进度：V-M1 已加入实验性 Schema、属性权威来源 ADR，以及旧工程的只读 World / Object 投影和 GUI / CLI / HTTP 查询。V-M2 第一条纵切已接通 `property.set` 的预览、单文件保真写入、旧编辑器并发协调及真实版本冲突，见 [使用与验证记录](WORLD_PROJECTION.md)。V-M3 第一条纵切加入多个现有对象属性的批量提交、意图／提交记录、进程中断恢复及旧编辑器和导出读取屏障，见 [事务协议与验收范围](WORLD_TRANSACTIONS.md)。受控的 v1 / v2 / v3 格式样例与官方实例分别验收，不将合成样例称为三份真实生产工程。语义创建、关系和资源绑定动作、登记／资源事务及后续 Build 能力仍未实现。
+当前实现进度：V-M1 已加入实验性 Schema、属性权威来源 ADR，以及旧工程的只读 World / Object 投影和 GUI / CLI / HTTP 查询。V-M2 第一条纵切已接通 `property.set` 的预览、单文件保真写入、旧编辑器并发协调及真实版本冲突，见 [使用与验证记录](WORLD_PROJECTION.md)。V-M3 第一条纵切加入多个现有对象属性的批量提交、意图／提交记录、进程中断恢复及旧编辑器和导出读取屏障，见 [事务协议与验收范围](WORLD_TRANSACTIONS.md)。0.0.3 之后源码进一步接通 [object.create](WORLD_OBJECT_CREATE.md)：统一预览、正文与登记的可恢复创建、GUI 草稿保护和归档互通；随后加入 [relation.add](WORLD_RELATIONS.md)，以保真登记追加连接引用或共享归属，统一图约束与中断恢复。受控的 v1 / v2 / v3 格式样例与官方实例分别验收，不将合成样例称为三份真实生产工程。资源绑定命令、通用登记／资源事务、混合 ChangeSet 及后续 Build 能力仍未实现。
 
 | 编号 | 工作项 | 可审查验收物 |
 |---|---|---|
