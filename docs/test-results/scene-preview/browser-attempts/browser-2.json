@@ -1,0 +1,416 @@
+{
+  "startedAt": "2026-10-03T06:48:58.948Z",
+  "browser": "Chrome/154.0.8037.97",
+  "steps": [
+    "No Godot is configured: the Preview tab renders both frozen SVG images at inherited/overridden sizes and center positions, with source-aware resolved projection fields. No build job runs.",
+    "Real pointer selection opens the correct actor inspector. Zoom, grid, pointer pan and Fit visibly affect only the camera and overlay."
+  ],
+  "errors": [],
+  "limitations": [
+    "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+    "This is a static authoring preview. No Godot tool, runtime movement, audio, or gameplay was used."
+  ],
+  "ok": false,
+  "failure": "Error: Timed out: topmost actor hit\n    at wait (file:///tmp/viento-scene-preview-z3tliajd/repo/scripts/tests/scene-preview-smoke.mjs:35:9)\n    at async file:///tmp/viento-scene-preview-z3tliajd/repo/scripts/tests/scene-preview-smoke.mjs:177:3",
+  "pageFailure": {
+    "text": "收起目录\nV\nViento Studio\n0.0.5\n设置\n项目类型与模板\n世界与对象\n构建与运行\n导出\n浏览\n编辑\n×\n全部（7）\n文档（7）\n当前显示 7 个文档（共 7 个） （静态生成 2026/10/3 14:48:59）\n分类 文档（7）\n文档（7）\na\n文档 · 文档\n可编辑\nb\n文档 · 文档\n可编辑\ncore\n文档 · 文档\n可编辑\ninvalid\n文档 · 文档\n可编辑\noverlap\n文档 · 文档\n可编辑\nrpg-npc\n文档 · 文档\n可编辑\nrpg-player\n文档 · 文档\n可编辑\n类型：文档\n分组：文档\n路径：DOCS-STANDARD/DOCUMENTS/SCENES/A.JSON\na\n文档 · 文档 · json\n新建文档\n开始编辑\n刷新预览\n源文件：documents/scenes/a.json\na\n分类：文档\n文档\n类型：文档\n文件信息\n内容\nformat\nviento-scene2d\nschemaVersion\n1\ntitle\nA · inherited and overridden\nviewport\n640\n480\nbackground\n#101827\nactors\nobjectId\n55bed9a0-1363-46b7-9528-1fc818ff0977\nposition\n160\n200\nuseProjectionDefaults\ntrue\nobjectId\n5c850470-3cae-40bc-b325-ab05cd15e0d7\nposition\n380\n200\nuseProjectionDefaults\ntrue\nsize\n120\n60\nimageResourceId\n1d02306c-58a2-4ece-8f69-0dcbba3b4534\n构建与运行\n返回编辑器\n构建场景文档\nA · inherited and overridden · documents/scenes/a.json\nB · plain inherited shape · documents/scenes/b.json\nC · invalid scene · documents/scenes/invalid.json\nD · tint and draw order · documents/scenes/overlap.json\n刷新状态\n场景预览\n构建任务\n\n查看已保存场景的静态布局，无需构建或安装运行引擎。移动、输入和状态变化请使用运行测试。\n\n刷新场景预览\n适应画布\n缩小\n90%\n放大\n显示网格\n\n已载入保存时的布局。修改场景或投影后，刷新预览查看变化。\n\n640 × 480 · 2 个角色 · 快照：sha256:d42f419a423b68f3b14fc0d72353d60e75557c7966818196f1c1eb10c1f45b87\n\n点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。\n\n场景对象\nTraveler · Player\nTraveler · NPC\n\n从画布或对象列表选择角色。\n\n编辑场景\n打开场景原文",
+    "captures": [
+      {
+        "ok": true,
+        "format": "viento-scene-preview",
+        "schemaVersion": 1,
+        "previewId": "8eca63ef-1a6e-499c-92d5-5d4603e94b88",
+        "snapshotId": "sha256:b5057946a1f9981ac79dddb0faadd5edae04451cf6046622f77e2cc61e673a49",
+        "scene": {
+          "objectId": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+          "sourcePath": "documents/scenes/a.json",
+          "sourceRevision": "sha256:3cdec84208c3821bf6b2c0abf3ae291cb837be8e4569cca21a9205a601af1052",
+          "title": "A · inherited and overridden",
+          "viewport": [
+            640,
+            480
+          ],
+          "background": "#101827"
+        },
+        "actors": [
+          {
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 180,
+            "controls": "arrows",
+            "imageResourceId": "79b49e08-6661-4a0f-ac25-bb61bd9b1075",
+            "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+            "position": [
+              160,
+              200
+            ],
+            "useProjectionDefaults": true,
+            "name": "Traveler · Player",
+            "sourcePath": "documents/projections/rpg-player.json",
+            "sourceRevision": "sha256:8d3444fa8b684237fca7b73d6c62c82ca8f2347da9f1045b8b34aa1bb2b6d14c",
+            "origin": {
+              "objectId": "2a06cedf-6950-4b28-921d-f62e766e8da6",
+              "sourcePath": "documents/core.md",
+              "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+            },
+            "fieldSources": {
+              "position": {
+                "objectId": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+                "sourcePath": "documents/scenes/a.json",
+                "propertyPath": "/actors/0/position"
+              },
+              "size": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/width"
+              },
+              "size/0": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/width"
+              },
+              "size/1": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/height"
+              },
+              "color": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/color"
+              },
+              "speed": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/speed"
+              },
+              "controls": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/controls"
+              },
+              "imageResourceId": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/image"
+              }
+            },
+            "declaration": {
+              "objectId": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/0"
+            }
+          },
+          {
+            "size": [
+              120,
+              60
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "1d02306c-58a2-4ece-8f69-0dcbba3b4534",
+            "objectId": "5c850470-3cae-40bc-b325-ab05cd15e0d7",
+            "position": [
+              380,
+              200
+            ],
+            "useProjectionDefaults": true,
+            "name": "Traveler · NPC",
+            "sourcePath": "documents/projections/rpg-npc.json",
+            "sourceRevision": "sha256:2a11969d4529490df1eb581a418d8e7e8e1200d897a4a9d26f402ee0b2b51dd7",
+            "origin": {
+              "objectId": "2a06cedf-6950-4b28-921d-f62e766e8da6",
+              "sourcePath": "documents/core.md",
+              "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+            },
+            "fieldSources": {
+              "position": {
+                "objectId": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+                "sourcePath": "documents/scenes/a.json",
+                "propertyPath": "/actors/1/position"
+              },
+              "size": {
+                "objectId": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+                "sourcePath": "documents/scenes/a.json",
+                "propertyPath": "/actors/1/size"
+              },
+              "size/0": {
+                "objectId": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+                "sourcePath": "documents/scenes/a.json",
+                "propertyPath": "/actors/1/size/0"
+              },
+              "size/1": {
+                "objectId": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+                "sourcePath": "documents/scenes/a.json",
+                "propertyPath": "/actors/1/size/1"
+              },
+              "color": {
+                "objectId": "5c850470-3cae-40bc-b325-ab05cd15e0d7",
+                "sourcePath": "documents/projections/rpg-npc.json",
+                "propertyPath": "/configuration/color"
+              },
+              "speed": {
+                "objectId": "5c850470-3cae-40bc-b325-ab05cd15e0d7",
+                "sourcePath": "documents/projections/rpg-npc.json",
+                "propertyPath": "/configuration/speed"
+              },
+              "controls": {
+                "objectId": "5c850470-3cae-40bc-b325-ab05cd15e0d7",
+                "sourcePath": "documents/projections/rpg-npc.json",
+                "propertyPath": "/configuration/controls"
+              },
+              "imageResourceId": {
+                "objectId": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+                "sourcePath": "documents/scenes/a.json",
+                "propertyPath": "/actors/1/imageResourceId"
+              }
+            },
+            "declaration": {
+              "objectId": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1"
+            }
+          }
+        ],
+        "resources": [
+          {
+            "id": "1d02306c-58a2-4ece-8f69-0dcbba3b4534",
+            "sha256": "f7625be74ac283fa82b558d40521041879fb8756178bff4a8dbedab93960cb67",
+            "size": 114,
+            "contentType": "image/svg+xml",
+            "url": "/api/scene-preview?previewId=8eca63ef-1a6e-499c-92d5-5d4603e94b88&resourceId=1d02306c-58a2-4ece-8f69-0dcbba3b4534"
+          },
+          {
+            "id": "79b49e08-6661-4a0f-ac25-bb61bd9b1075",
+            "sha256": "0f2ddc41264b0504ae84a6ef916c59888e4e43f0b71420cf1d04347310d9e953",
+            "size": 114,
+            "contentType": "image/svg+xml",
+            "url": "/api/scene-preview?previewId=8eca63ef-1a6e-499c-92d5-5d4603e94b88&resourceId=79b49e08-6661-4a0f-ac25-bb61bd9b1075"
+          }
+        ],
+        "diagnostics": [],
+        "requestId": "1791010140409-6"
+      },
+      {
+        "ok": true,
+        "format": "viento-scene-preview",
+        "schemaVersion": 1,
+        "previewId": "b72b690b-766f-40e8-ad57-dab89944cb5b",
+        "snapshotId": "sha256:d42f419a423b68f3b14fc0d72353d60e75557c7966818196f1c1eb10c1f45b87",
+        "scene": {
+          "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+          "sourcePath": "documents/scenes/overlap.json",
+          "sourceRevision": "sha256:929eac3a181c4de1438af1e4e5ea815cb600ecf289c1b9fdaec4bdf702e838dd",
+          "title": "D · tint and draw order",
+          "viewport": [
+            640,
+            480
+          ],
+          "background": "#101827"
+        },
+        "actors": [
+          {
+            "size": [
+              80,
+              80
+            ],
+            "color": "#808080",
+            "speed": 180,
+            "controls": "arrows",
+            "imageResourceId": "79b49e08-6661-4a0f-ac25-bb61bd9b1075",
+            "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+            "position": [
+              300,
+              200
+            ],
+            "useProjectionDefaults": true,
+            "name": "Traveler · Player",
+            "sourcePath": "documents/projections/rpg-player.json",
+            "sourceRevision": "sha256:8d3444fa8b684237fca7b73d6c62c82ca8f2347da9f1045b8b34aa1bb2b6d14c",
+            "origin": {
+              "objectId": "2a06cedf-6950-4b28-921d-f62e766e8da6",
+              "sourcePath": "documents/core.md",
+              "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+            },
+            "fieldSources": {
+              "position": {
+                "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+                "sourcePath": "documents/scenes/overlap.json",
+                "propertyPath": "/actors/0/position"
+              },
+              "size": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/width"
+              },
+              "size/0": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/width"
+              },
+              "size/1": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/height"
+              },
+              "color": {
+                "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+                "sourcePath": "documents/scenes/overlap.json",
+                "propertyPath": "/actors/0/color"
+              },
+              "speed": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/speed"
+              },
+              "controls": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/controls"
+              },
+              "imageResourceId": {
+                "objectId": "55bed9a0-1363-46b7-9528-1fc818ff0977",
+                "sourcePath": "documents/projections/rpg-player.json",
+                "propertyPath": "/configuration/image"
+              }
+            },
+            "declaration": {
+              "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+              "sourcePath": "documents/scenes/overlap.json",
+              "propertyPath": "/actors/0"
+            }
+          },
+          {
+            "size": [
+              40,
+              40
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "1d02306c-58a2-4ece-8f69-0dcbba3b4534",
+            "objectId": "5c850470-3cae-40bc-b325-ab05cd15e0d7",
+            "position": [
+              300,
+              200
+            ],
+            "useProjectionDefaults": true,
+            "name": "Traveler · NPC",
+            "sourcePath": "documents/projections/rpg-npc.json",
+            "sourceRevision": "sha256:2a11969d4529490df1eb581a418d8e7e8e1200d897a4a9d26f402ee0b2b51dd7",
+            "origin": {
+              "objectId": "2a06cedf-6950-4b28-921d-f62e766e8da6",
+              "sourcePath": "documents/core.md",
+              "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+            },
+            "fieldSources": {
+              "position": {
+                "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+                "sourcePath": "documents/scenes/overlap.json",
+                "propertyPath": "/actors/1/position"
+              },
+              "size": {
+                "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+                "sourcePath": "documents/scenes/overlap.json",
+                "propertyPath": "/actors/1/size"
+              },
+              "size/0": {
+                "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+                "sourcePath": "documents/scenes/overlap.json",
+                "propertyPath": "/actors/1/size/0"
+              },
+              "size/1": {
+                "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+                "sourcePath": "documents/scenes/overlap.json",
+                "propertyPath": "/actors/1/size/1"
+              },
+              "color": {
+                "objectId": "5c850470-3cae-40bc-b325-ab05cd15e0d7",
+                "sourcePath": "documents/projections/rpg-npc.json",
+                "propertyPath": "/configuration/color"
+              },
+              "speed": {
+                "objectId": "5c850470-3cae-40bc-b325-ab05cd15e0d7",
+                "sourcePath": "documents/projections/rpg-npc.json",
+                "propertyPath": "/configuration/speed"
+              },
+              "controls": {
+                "objectId": "5c850470-3cae-40bc-b325-ab05cd15e0d7",
+                "sourcePath": "documents/projections/rpg-npc.json",
+                "propertyPath": "/configuration/controls"
+              },
+              "imageResourceId": {
+                "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+                "sourcePath": "documents/scenes/overlap.json",
+                "propertyPath": "/actors/1/imageResourceId"
+              }
+            },
+            "declaration": {
+              "objectId": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+              "sourcePath": "documents/scenes/overlap.json",
+              "propertyPath": "/actors/1"
+            }
+          }
+        ],
+        "resources": [
+          {
+            "id": "1d02306c-58a2-4ece-8f69-0dcbba3b4534",
+            "sha256": "f7625be74ac283fa82b558d40521041879fb8756178bff4a8dbedab93960cb67",
+            "size": 114,
+            "contentType": "image/svg+xml",
+            "url": "/api/scene-preview?previewId=b72b690b-766f-40e8-ad57-dab89944cb5b&resourceId=1d02306c-58a2-4ece-8f69-0dcbba3b4534"
+          },
+          {
+            "id": "79b49e08-6661-4a0f-ac25-bb61bd9b1075",
+            "sha256": "0f2ddc41264b0504ae84a6ef916c59888e4e43f0b71420cf1d04347310d9e953",
+            "size": 114,
+            "contentType": "image/svg+xml",
+            "url": "/api/scene-preview?previewId=b72b690b-766f-40e8-ad57-dab89944cb5b&resourceId=79b49e08-6661-4a0f-ac25-bb61bd9b1075"
+          }
+        ],
+        "diagnostics": [],
+        "requestId": "1791010141072-10"
+      }
+    ],
+    "html": "<p class=\"build-note\" data-i18n=\"查看已保存场景的静态布局，无需构建或安装运行引擎。移动、输入和状态变化请使用运行测试。\">查看已保存场景的静态布局，无需构建或安装运行引擎。移动、输入和状态变化请使用运行测试。</p>\n    <p id=\"scenePreviewDraft\" class=\"build-hint\" hidden=\"\" data-i18n=\"存在未保存草稿；预览仍使用上次保存的场景和投影。\">存在未保存草稿；预览仍使用上次保存的场景和投影。</p>\n    <div class=\"scene-preview-toolbar\"><button id=\"scenePreviewRefresh\" type=\"button\" class=\"doc-btn\" data-i18n=\"刷新场景预览\">刷新场景预览</button>\n    <button id=\"scenePreviewFit\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"适应画布\">适应画布</button>\n    <button id=\"scenePreviewZoomOut\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"缩小\">缩小</button>\n    <output id=\"scenePreviewZoom\" aria-live=\"off\">90%</output>\n    <button id=\"scenePreviewZoomIn\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"放大\">放大</button>\n    <label class=\"scene-preview-grid\"><input id=\"scenePreviewGrid\" type=\"checkbox\"><span data-i18n=\"显示网格\">显示网格</span></label></div>\n    <p id=\"scenePreviewMessage\" role=\"status\" aria-live=\"polite\">已载入保存时的布局。修改场景或投影后，刷新预览查看变化。</p>\n    <p id=\"scenePreviewSummary\" class=\"build-hint\">640 × 480 · 2 个角色 · 快照：sha256:d42f419a423b68f3b14fc0d72353d60e75557c7966818196f1c1eb10c1f45b87</p>\n    <p class=\"build-hint\" id=\"scenePreviewHelp\" data-i18n=\"点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。\">点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。</p>\n    <div class=\"scene-preview-layout\"><canvas id=\"scenePreviewCanvas\" tabindex=\"0\" aria-describedby=\"scenePreviewHelp\" data-i18n-aria-label=\"已保存的二维场景预览\" aria-label=\"已保存的二维场景预览\" width=\"649\" height=\"479\"></canvas>\n    <aside><h3 data-i18n=\"场景对象\">场景对象</h3><ol id=\"scenePreviewObjects\"><li class=\"\"><button class=\"doc-btn doc-btn-ghost\" type=\"button\" data-object-id=\"55bed9a0-1363-46b7-9528-1fc818ff0977\" aria-pressed=\"false\">Traveler · Player</button></li><li class=\"\"><button class=\"doc-btn doc-btn-ghost\" type=\"button\" data-object-id=\"5c850470-3cae-40bc-b325-ab05cd15e0d7\" aria-pressed=\"false\">Traveler · NPC</button></li></ol><p id=\"scenePreviewSelection\" role=\"status\" aria-live=\"polite\">从画布或对象列表选择角色。</p>\n    <section id=\"scenePreviewInspector\" aria-labelledby=\"scenePreviewInspectorTitle\" hidden=\"\"><h3 id=\"scenePreviewInspectorTitle\" data-i18n=\"对象属性\">对象属性</h3><div id=\"scenePreviewProperties\"></div></section></aside></div>\n    <div class=\"scene-preview-toolbar\"><button id=\"scenePreviewEdit\" type=\"button\" class=\"doc-btn\" data-i18n=\"编辑场景\">编辑场景</button>\n    <button id=\"scenePreviewSource\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"打开场景原文\">打开场景原文</button></div>\n    <ul id=\"scenePreviewDiagnostics\" class=\"scene-diagnostics\"></ul>"
+  },
+  "serviceFailure": {
+    "supported": true,
+    "available": false,
+    "reason": "tool_missing",
+    "backend": {
+      "id": "org.viento.godot4",
+      "version": "0.1.0",
+      "label": "Godot 4"
+    },
+    "scenes": [
+      {
+        "id": "ffc0fb19-0aa4-4056-a4c2-245598d3bb7d",
+        "sourcePath": "documents/scenes/a.json",
+        "title": "A · inherited and overridden"
+      },
+      {
+        "id": "efa2b4db-c44c-4547-b342-eb727407517f",
+        "sourcePath": "documents/scenes/b.json",
+        "title": "B · plain inherited shape"
+      },
+      {
+        "id": "cd970f85-99d7-4704-8103-af64c85a84a0",
+        "sourcePath": "documents/scenes/invalid.json",
+        "title": "C · invalid scene"
+      },
+      {
+        "id": "e37fdb32-9011-4e3c-87d2-5354ce5785ea",
+        "sourcePath": "documents/scenes/overlap.json",
+        "title": "D · tint and draw order"
+      }
+    ],
+    "job": null,
+    "latestBuild": null
+  },
+  "finishedAt": "2026-10-03T06:49:46.972Z"
+}

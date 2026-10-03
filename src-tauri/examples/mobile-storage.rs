@@ -26,7 +26,8 @@ fn main() {
         let path = request["path"].as_str().unwrap_or("");
         let result = match request["action"].as_str().unwrap_or("") {
             "list" => library.list(),
-            "create" => library.create(request["payload"]["name"].as_str().unwrap_or("")),
+            "templates" => library.templates(),
+            "create" => library.create_request(&request["payload"]),
             "context" => library.context(id),
             "importArchive" => library.import_archive(std::path::Path::new(path)),
             "exportArchive" => library.export_archive(id, std::path::Path::new(path)),

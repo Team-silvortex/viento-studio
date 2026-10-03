@@ -1,0 +1,136 @@
+{
+  "date": "2026-10-03",
+  "version": "0.0.5 + uncommitted development changes",
+  "baseCommit": "14dfe01367aef8e8e411254c42fa7b22e6271405",
+  "runtime": {
+    "node": "v24.21.0",
+    "tool": {
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "backend": {
+      "id": "org.viento.godot4",
+      "version": "0.1.0",
+      "protocolVersion": 1,
+      "capabilities": [
+        "scene2d",
+        "input.arrows",
+        "state.movement",
+        "image"
+      ],
+      "artifactKind": "godot-project",
+      "platforms": [
+        "linux"
+      ],
+      "execution": {
+        "headlessLogic": true,
+        "windowPreview": true,
+        "embeddedViewport": false,
+        "gpuCompute": false
+      },
+      "sha256": "807ee7e4ac0d325e451d8e6fa79ee141591685b126b13e42c6153bceba209458"
+    },
+    "graphics": "OpenGL 4.6 / Mesa 26.0.8 / AMD Radeon 680M (reported by real Godot window)"
+  },
+  "checks": {
+    "application": {
+      "syntaxFiles": 241,
+      "tests": 816,
+      "pass": 801,
+      "fail": 0,
+      "skipped": 15,
+      "skipReason": "Native Rust archive/mobile helpers were not rebuilt in this turn; previous validation remains in oc-templates."
+    },
+    "finalBuildTests": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0
+    },
+    "realWindow": {
+      "pass": true,
+      "capture": "preview.png",
+      "events": [
+        {
+          "actors": [
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "ready",
+          "protocol": 1,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        },
+        {
+          "event": "state",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 1,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 1,
+          "state": "idle"
+        },
+        {
+          "actors": [
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                240,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "finished",
+          "fixedDelta": 0.25,
+          "protocol": 1
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Linux CLI only; GUI Build controls are not implemented.",
+    "Artifact is a generated Godot project and requires the recorded engine, not a standalone executable.",
+    "Window rendering and synthetic input/action tests do not verify hardware keyboard input, ns-nova GPU compute, embedded viewports, other backends or other operating systems.",
+    "Timeout/cancellation are per process phase; host SIGKILL/crash recovery is not implemented.",
+    "No Viento version bump, release build, installation, commit or push."
+  ],
+  "toolDownload": {
+    "url": "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip",
+    "archiveSha256": "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4",
+    "installation": "User cache io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64; no binary included in repository"
+  },
+  "sourceFiles": {
+    "engine/build-plan.mjs": "bda5d082181180f40659ca882fc03f33b318bdb4db7c78e117932002a3706ca1",
+    "engine/index.mjs": "79955c2cd19990abce1cb6ff14374735e549797bc030a8262e5bd091bd07eadd",
+    "examples/scene2d/.viento/workspace.json": "1bce15b707707d32150e437dc542c405c2c9364e0e7dfab505fb6c4ac13e6808",
+    "examples/scene2d/README.md": "3e4c3b0dfee179c6a334d81822ea9c5d318dfc736c28b421cbbf76772d9f2c7d",
+    "examples/scene2d/assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+    "examples/scene2d/documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+    "examples/scene2d/documents/scenes/demo.json": "795d2158efb32d59c090cbbe04f578aa4416271a1104b5732d3e79d6c2fa10ef",
+    "examples/scene2d/metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+    "examples/scene2d/metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+    "examples/scene2d/metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "ac30f3f3823b77c53c508cdb9703d43d58d9ab6422bfb2e47d33f235a0321cda",
+    "examples/scene2d/templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+    "examples/scene2d/templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+    "examples/scene2d/workspace.json": "09d64a3273da38479fda41bbcad778fa722129a87c4c438ad86be744309cade9",
+    "package.json": "cd3dc59cccd84c471f0efab8bec113345526c1d6c698b37505b14b2f8c120e3f",
+    "scripts/adapters/node-build-snapshot.mjs": "c66869125993f7df71a53309c78d4bef5c166a0f2856a4b10cb1463b27151fef",
+    "scripts/adapters/node-project-build.mjs": "c839e68ec7e20a29874f013e8f25198114b7c6927caf169bb9dd4b23c3b73afa",
+    "scripts/backends/godot4.mjs": "0f95e79d37802dc763ecebdb68b325fa52d2576da95e1b0e52c6c37d67b18c2c",
+    "scripts/backends/godot4/runtime.gd": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd",
+    "scripts/lib/build-process.mjs": "0b0715d7992cfaa3b817c22e9284bc59487af75c02148addba64268ad6109e0a",
+    "scripts/project-build.mjs": "921422d17f23914ac662169104b7395e07f3ed2fb6fa688404ca3a188e70b114",
+    "scripts/tests/project-build.test.mjs": "00bc4649f82323864689e301e5ba4bbd057b73c09fa507db9ce5791573eee264"
+  }
+}

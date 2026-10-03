@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-03",
+  "version": "0.0.5 + uncommitted development changes",
+  "baseCommit": "14dfe01367aef8e8e411254c42fa7b22e6271405",
+  "scope": "Local Linux editor Build and Run workbench; Godot remains a separate backend process.",
+  "runtime": {
+    "node": "v24.21.0",
+    "desktopBundledNode": "v24.20.0",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "godotSha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+    "browser": "Chrome/154.0.8037.97",
+    "graphics": "OpenGL 4.6 / Mesa 26.0.8 / AMD Radeon 680M, real window preview"
+  },
+  "checks": {
+    "application": {
+      "command": "VIENTO_GODOT_BIN=<Godot> npm run check -- --app-only",
+      "syntaxFiles": 248,
+      "tests": 842,
+      "pass": 827,
+      "fail": 0,
+      "skipped": 15,
+      "skipReason": "Archive/mobile helper paths were not supplied to this application run; the desktop Rust suite is reported separately.",
+      "log": "application.log"
+    },
+    "backendFocused": {
+      "tests": 17,
+      "pass": 17,
+      "fail": 0,
+      "skipped": 0,
+      "log": "backend.log"
+    },
+    "desktopPrepare": {
+      "pass": true,
+      "seconds": 56.67,
+      "log": "desktop-prepare.log"
+    },
+    "desktopRust": {
+      "command": "cargo test --locked --manifest-path src-tauri/Cargo.toml",
+      "pass": 48,
+      "fail": 0,
+      "ignored": 1,
+      "ignoreReason": "Full production-workspace migration requires explicitly selected author data.",
+      "seconds": 115.96,
+      "log": "desktop-test.log"
+    },
+    "browser": {
+      "pass": true,
+      "report": "browser.json",
+      "screenshots": [
+        "plan-zh.png",
+        "running-en.png",
+        "diagnostic-narrow-ja.png",
+        "draft-guard-narrow-ja.png"
+      ]
+    }
+  },
+  "verifiedBehaviors": [
+    "The GUI checks the saved scene snapshot and submits its digest; changed authoring inputs reject a stale plan before engine execution.",
+    "Plan -> real Godot build -> headless ready/moving/idle/finished; separate graphical preview reaches ready and cancels.",
+    "Close/reopen observes the same server-owned job. Unsaved drafts block new jobs and returning preserves source text and caret.",
+    "Diagnostics map to trusted source paths and JSON pointers; Chinese/English/Japanese labels and 390px layout were exercised.",
+    "HTTP enforces loopback socket, exact Host/Origin, existing write authentication, JSON and strict input keys; no caller-selected executable or output path.",
+    "SIGTERM and desktop owner EOF stop/reap real Godot, remove the runtime project and preserve authoring file hashes.",
+    "UTF-8 output is decoded incrementally; bounded protocol frames validate object identities, payloads and lifecycle order."
+  ],
+  "limits": [
+    "Linux local source editor only; packaged Tauri UI and Android device interaction were not exercised.",
+    "Artifact is a generated Godot project that requires the recorded engine; standalone executable export is not implemented.",
+    "No native Nuis/ns-nova/yalivia, second backend, embedded viewport, GPU compute, arbitrary state machine or live update.",
+    "A graphical ready event and synthetic input checks do not certify physical keyboard input.",
+    "Timeouts are per phase. Normal shutdown is covered; SIGKILL/power-loss recovery is not implemented.",
+    "Current-service job/build IDs do not survive server restart. Only the newest three builds created by that service are retained; previous sessions and CLI outputs are untouched.",
+    "No version bump, release packaging, installation, commit or push."
+  ],
+  "sourceFiles": {
+    "engine/build-plan.mjs": "e87abe4b415e733230c31959dc6aab6cb450fdad3460bfec846cf8c6f7d378c0",
+    "scripts/README.md": "b57b3bc4ee8c36ef2ae5c32c6b8db6d268f5e65cdcd4c351d3c59f10264892f9",
+    "scripts/adapters/node-project-build.mjs": "ad7d292454dcc0fd0922a1a99ead22940b2953da7ed8c55d86e18d7610af7047",
+    "scripts/backends/godot4.mjs": "ce4a0434fc97e194836e7881f585308fa7ff7100cc4d1746e47a575417ce746e",
+    "scripts/desktop-server.mjs": "3ec29d8f4408f8330cb769c32624a228b40addb83cc97d09cf63933a9e24c654",
+    "scripts/doc-site-server.mjs": "6421d9bc696ce8dd25402b4a103cd6da4e3b4d4242c6033a60020ae6bdb0afe1",
+    "scripts/lib/build-process.mjs": "1b541d1233e787f89a2f0be0c169a8e0caec13d308696e234b3670d2ef86a984",
+    "scripts/lib/doc-api-service.mjs": "a914a7747e670e6cb8dd65e4948364cb381166595075d19339ac8c4f2334fdc3",
+    "scripts/lib/doc-server-routes.mjs": "f6b51b9ea43f269daebb531a485b6e108e348df609a3515e56ad598c1c6d007f",
+    "scripts/lib/project-build-service.mjs": "6679a044906d8ccf672c1ecff7e77c7513a95cc40b256ebe908de455d787388a",
+    "scripts/tests/build-runtime-protocol.test.mjs": "49c1f959e2ef939f16fc544875e1eec0fa10ef57589919ae3033b1170ba004d5",
+    "scripts/tests/project-build-http.test.mjs": "c3c5980c665c945e8eccd8471a26a186b54240a385f55ba3e301661161fd0922",
+    "scripts/tests/project-build-service.test.mjs": "676f94810cbc9cc86ab739526d7dff55187c19a94726e9be8d5e02c1aaf08363",
+    "scripts/tests/project-build-smoke.mjs": "3c8834bd1175882a42b72ad3a210c43ceac07d917df30ac26ef492fb9e53e95d",
+    "scripts/tests/project-build-ui.test.mjs": "2c1b8ea9f8898850c545c998261ec2fe133521dadd5f6048773c5ea1fd7397aa",
+    "web/i18n/en.js": "119aaf65e25d9e41c82ac0e4d0832eaa45d529e04bdb20d27a45fd719390709f",
+    "web/i18n/ja.js": "45c6beb8b938434e86e3765ed302f86d281f63ecac086573961e9c141be57d2a",
+    "web/index.html": "ffde8de96f9191d4ece2b29253a68e4dce763f98e45618836f1073460786dddd",
+    "web/modules/app-project-build.js": "fe55618c7e7b1d5d35f4394add159903a04565bdc27adda23440aca29f63e52d",
+    "web/modules/app-runtime.js": "effbec17c9f01934dd4b220abe0b8ca8b3b3ab8cdb0225acb375e16b522d4c4d",
+    "web/project-build.css": "1f402e9189455c237ebf5b961a750a412b482b653708be333e35afd3aaaebc0b",
+    "mobile/platform.mjs": "921d587a591dbb662630598b838d0d6095774de386a0ecb8468cfb064753a771"
+  }
+}

@@ -14,6 +14,9 @@ import { handleApiRequest } from './lib/doc-server-routes.mjs';
 import { handleStaticRequest } from './lib/doc-server-static-routes.mjs';
 import { createDesktopSession } from './lib/desktop-session.mjs';
 import { recoverWorldTransaction } from './lib/world-transactions.mjs';
+import { stopProjectBuildServices } from './lib/project-build-service.mjs';
+import { stopScenePreviewServices } from './lib/scene-preview-service.mjs';
+import { stopRunningCommands } from './lib/process.mjs';
 
 const PORT = resolvePort();
 const HOST = process.env.DOC_API_HOST || '127.0.0.1';
@@ -38,6 +41,7 @@ const docService = createDocumentService({
   editablePrefixes: EDIT_ROOT_PREFIXES,
   backstoryMergeMode: BACKSTORY_MERGE_MODE,
   state: apiState,
+  projectBuildEnabled: process.platform === 'linux' && isLoopbackHost(HOST),
 });
 const desktopSession = createDesktopSession(process.env.VIENTO_SESSION_TOKEN, { exports: docService.exports });
 
@@ -225,3 +229,14 @@ server.listen(PORT, HOST, () => {
   console.log(`Doc viewer running at http://${HOST}:${server.address().port}`);
   console.log(`Backstory merge mode: ${BACKSTORY_MERGE_MODE}`);
 });
+
+let shuttingDown = false;
+async function shutdown() {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  server.close();
+  try { await Promise.all([stopProjectBuildServices(), stopScenePreviewServices(), stopRunningCommands()]); }
+  finally { server.closeAllConnections(); process.exit(0); }
+}
+process.once('SIGTERM', shutdown);
+process.once('SIGINT', shutdown);

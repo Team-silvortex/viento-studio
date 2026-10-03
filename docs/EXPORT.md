@@ -71,7 +71,7 @@ Android 预览版在作品库中提供完整项目包导入 / 导出，使用系
 
 ## 实现与验证
 
-最新 Linux 四组原生流程、Android 往返及下载完成判定修复见 [链路补测](WORKFLOW_VERIFICATION_b.4.5.md)。更早的保存窗口、过期、取消、覆盖和重试证据见 [编辑器导出实测](NATIVE_EXPORT_TEST_b.2.8.1.md)。当前覆盖与未测环境统一列于 [验证指南](TESTING.md)。
+b.4.5 阶段的 Linux 四组原生流程、Android 往返及下载完成判定修复见 [历史链路补测](WORKFLOW_VERIFICATION_b.4.5.md)。更早的保存窗口、过期、取消、覆盖和重试证据见 [编辑器导出实测](NATIVE_EXPORT_TEST_b.2.8.1.md)。当前功能和安装范围见 [当前状态](STATUS.md)，测试方法与待测环境见 [验证指南](TESTING.md)。
 
 `export-package.mjs` 负责选择正文、解析归属、收集素材和流式生成 ZIP；`export-render.mjs` 从通用布局生成网页或 Markdown；`export-service.mjs` 管理任务与临时空间。`/api/export` 提供准备、下载和释放接口，编辑服务与只读服务均可使用，准备操作沿用接口令牌规则。桌面保存通过会话校验后交给原生文件选择器。
 

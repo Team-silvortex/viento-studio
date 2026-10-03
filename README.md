@@ -1,45 +1,29 @@
 # Viento Studio
 
-通用 OC 设计 IDE，用于整理原创角色、世界观、故事与设定。类型、模板、字段和展示分组由作品定义；程序与作品数据分别保存，更新应用无需搬动素材。
+Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原创角色、游戏设定、文学、戏剧和软件设计：工程自己保存类型、模板、正文与资源，编辑器提供字段编辑、对象关系、可恢复保存和迁移。
 
-当前源码版本 **0.0.5**，支持对象创建、属性修改、关系与资源绑定、可恢复提交，以及资源包复用和单素材导出。[版本记录](docs/RELEASE_0.0.5.md) · [交接记录](docs/HANDOFF_0.0.1.md) · [文档中心](docs/README.md) · [验证状态](docs/TESTING.md)
+原生方向是 **Nuislang、ns-nova 与 yalivia runtime**。Viento 将作为 ns-nova 的官方 GUI 编辑器，自身 GUI 也计划迁到 ns-nova；目前使用 Web / Tauri 宿主，Godot 4 已作为独立进程接通受限二维场景构建与运行。原生执行、GUI 迁移及其他副引擎的阶段安排见 [开发路线](docs/ROADMAP.md)。
 
-## 下一代架构与施工
+[快速开始](docs/GETTING_STARTED.md) · [当前能力与平台](docs/STATUS.md) · [文档中心](docs/README.md) · [系统架构](docs/ARCHITECTURE.md)
 
-[下一代架构书（中文）](docs/NEXT_ARCHITECTURE.zh-CN.md) 记录设计优先的 World/Object/Environment/Resource/Build 模型、语义 GUI、Cold/Live Build、生态集成及分阶段施工单。它描述目标架构，不表示相关能力已实现；仓库、版本线与官方实例的交接见 [0.0.1 交接记录](docs/HANDOFF_0.0.1.md)，后续从语义内核里程碑推进。
+## 当前状态
 
-## 可以做什么
+源码版本为 **0.0.6**。本版纳入独立工程模板、OC 子模板与多份投影、Scene2D 创建／编辑／静态预览，以及 Linux **构建与运行** 工作台，详见 [版本记录](docs/RELEASE_0.0.6.md)。本次交付源码，使用新功能需从源码启动或自行构建安装包。
 
-- **查看与修改对象属性**：从旧工程读取对象、字段来源、关系与素材绑定；界面、CLI 和 HTTP 共用单属性预览、版本检查及保真保存，见 [世界与对象](docs/WORLD_PROJECTION.md)。
-- **批量保存对象属性**：暂存多个对象的修改、整批预览和提交；中断后恢复，旧编辑器和导出阻止读取未完成状态，见 [批量提交](docs/WORLD_TRANSACTIONS.md)。
-- **创建对象**：先预览类型、身份和原文，再一并保存正文与登记；中断后恢复完整对象或撤回创建，见 [对象创建](docs/WORLD_OBJECT_CREATE.md)。
-- **连接对象**：预览并添加引用或共享归属，检查重复及归属循环，保真保存登记并支持中断恢复，见 [对象关系](docs/WORLD_RELATIONS.md)。
-- **绑定资源**：为对象选择已登记素材和用途，预览后保真保存；支持离线素材和中断恢复，见 [资源绑定](docs/WORLD_RESOURCES.md)。
+当前已有：
 
-- 用 Markdown、文本、JSON 或 YAML 编写档案，在源码、分段和字段表之间切换。字段表支持直接修改数值、文字和开关，并保留未修改的正文与格式。
-- 为项目定义文档类型、起始模板、解析规则和字段分组；用稳定 ID 关联文档、所属故事与素材。
-- 插入图片、视频和音频，导出离线网页或 Markdown 分享包；使用完整项目包备份、迁移并继续编辑。
-- **资源包复用**：选择对象和素材、自动收集依赖，保留 UUID、关系和解析规则；导入其他项目前预览冲突，支持中断恢复，见 [资源包](docs/RESOURCE_PACKAGES.md)。
-- **单素材导出**：图片、视频、音频可从素材卡片或资源清单按原格式另存，不改动编辑草稿；见 [导出说明](docs/EXPORT.md)。
-- 在设置中切换简体中文、English、日本語。界面语言与作者的正文、字段名称分别处理，切换时保留草稿。
+- Markdown、文本、JSON、YAML 的源码／分段／字段编辑，以及中英日界面。
+- 空白、游戏、文学、戏剧和软件设计起始模板；工程独立维护类型与模板，角色背景及共享内容有明确归属。
+- 同一 OC 的多份独立投影，可创建／编辑 RPG、视觉小说、文学和戏剧配置；RPG 投影可在 Scene2D 中继承或覆盖运行字段。
+- 对象查询、属性修改、批量提交、对象创建、关系和资源绑定；版本冲突检查与中断恢复。
+- [图片／视频／音频引用](docs/MEDIA_RESOURCES.md)，文档分享、选择式资源包、单素材导出及完整工程迁移。
+- 实验性 Scene2D 场景创建／编辑、保存状态画布预览、计划检查、Godot 构建、无头测试、独立窗口运行、诊断和任务取消。
 
-各平台的接入范围不同：
+各平台的接入和实测范围见 [能力矩阵](docs/STATUS.md#平台接入)。现有构建产物是需要 Godot 的生成工程；原生 Nuis 执行、嵌入运行视口、GPU 计算及独立游戏程序导出仍在路线内。
 
-| 能力 | 桌面版 | 本地浏览器（编辑服务） | Android 预览版 |
-| --- | --- | --- | --- |
-| 源码、分段、字段编辑与三语设置 | 支持 | 支持 | 支持 |
-| 自定义类型与模板配置 | 支持 | 编辑服务支持 | 按导入定义解析；配置界面未接入 |
-| 图片、视频、音频的访问与插入 | 支持 | 支持 | 未接入；项目包保留文件 |
-| HTML / Markdown 文档分享 | 支持 | 支持 | 未接入 |
-| 选择式资源包导入 / 导出、单素材导出 | 支持 | 编辑服务支持；只读服务仅导出 | 未接入 |
-| 完整项目导入 / 导出 | 作品库及原生选择器 | 导出；导入使用桌面版 | 系统文件选择器，v2 / v3 包 |
-| 作品位置 | 独立文件夹，可绑定外置素材 | 使用已选本机作品 | 应用私有目录 |
+## 从源码开始
 
-桌面版支持 Linux、Windows、macOS 构建。当前原生交互实测覆盖 Linux；Android 已在 API 35 模拟器验证，仍处于功能预览阶段。可构建的平台不等于已经完成设备验收，详见 [测试覆盖与剩余事项](docs/TESTING.md)。
-
-## 从源码启动
-
-准备 Node.js 24、Rust 稳定版及 [Tauri 系统依赖](https://v2.tauri.app/start/prerequisites/)：
+桌面开发需要 Node.js 24、Rust 稳定版及 [Tauri 系统依赖](https://v2.tauri.app/start/prerequisites/)。
 
 ```sh
 git clone --depth 1 https://github.com/Team-silvortex/viento-studio.git
@@ -48,26 +32,18 @@ npm ci
 npm run desktop:dev
 ```
 
-在作品库首页选择 **新建作品库**，填写名称和位置；也可打开已有作品文件夹或导入 `.viento.zip`。首次启动需要准备内置运行环境并编译宿主。已构建的桌面安装包内置 Node.js，使用者无需安装开发工具。构建、系统要求和清理步骤见 [桌面版说明](desktop/README.md)。
+在首页新建工程、打开已有文件夹或导入 `.viento.zip`。浏览器启动、无 Rust 的样例体验和第一份文档见 [快速开始](docs/GETTING_STARTED.md)；安装包构建见 [桌面说明](desktop/README.md)，Android 见 [移动端说明](mobile/README.md)。预编译产物的交付与验收状态见 [当前状态](docs/STATUS.md#版本与交付)。
 
-只检查程序可运行 `npm run check -- --app-only`，无需真实作品。浏览器入口 `npm start -- --no-open` 需要先选定作品，配置方式见 [脚本与本地服务](scripts/README.md)。Android 的 JDK、SDK、构建和数据限制见 [移动端说明](mobile/README.md)。
+只检查应用代码可运行 `npm run check -- --app-only`，测试使用临时样例。验证层级和可选工具见 [测试指南](docs/TESTING.md)。
 
-## 作品与文档
+## 工程与资料
 
-新项目使用 `workspace.json`、`documents/`、`templates/`、`metadata/`、`assets/`；缓存单独保存在 `.viento/cache/`。旧项目保留原有结构。完整迁移包携带正文、模板、元数据及素材，排除本机设置和可重建缓存。
+新工程把清单、正文、模板、元数据、素材和可重建缓存分开保存；程序升级与工程迁移分别进行。目录契约见 [工程布局](docs/WORKSPACE_LAYOUT.md)，日常操作见 [项目工作流](docs/PROJECT_WORKFLOW.md)。
 
-- [项目工作流](docs/PROJECT_WORKFLOW.md)：新建、模板、编辑、保存与迁移。
-- [字段编辑](docs/FIELD_EDITING.md)：属性表、模式切换与内容保护。
-- [素材与音频](docs/AUDIO_RESOURCES.md)、[导出](docs/EXPORT.md)、[三语设置](docs/LANGUAGES.md)。
-- [通用项目结构](docs/GENERIC_PROJECTS.md)、[文档归属模型](docs/OC_DOCUMENT_MODEL.md)、[本机数据位置](docs/LOCAL_DATA_STORAGE.md)。
-- [架构](docs/ARCHITECTURE.md)、[可移植引擎](engine/README.md)、[验证指南](docs/TESTING.md)。
+原作品 **Epic of Viento Line** 是独立的 [官方内容示范](docs/examples/README.md)。仓库另含可复制的 [Scene2D 合成样例](examples/scene2d/README.md)，用于验证构建链路。两者的用途和数据范围分别说明。
 
-原作品 **Epic of Viento Line** 作为独立的 [官方示范](docs/examples/README.md)，不作为新项目的默认类型，也不进入应用安装包。
+## 参与开发
 
-## 公开开发
+先阅读 [贡献指南](.github/CONTRIBUTING.md) 与 [当前架构](docs/ARCHITECTURE.md)。需求和问题通过 [Issues](https://github.com/Team-silvortex/viento-studio/issues) 反馈，安全问题使用 [私密报告说明](.github/SECURITY.md)。程序许可证见 [LICENSE](LICENSE)。
 
-仓库保留程序和原作品的完整 Git 历史，早期提交包含作品正文与素材。浅克隆只下载当前版本；需要完整历史时可运行 `git fetch --unshallow`。当前目录和安装包采用程序与作品分离的结构。
-
-欢迎通过 [Issues](https://github.com/Team-silvortex/viento-studio/issues) 反馈问题，通过 Pull Request 参与开发。请先阅读 [贡献指南](.github/CONTRIBUTING.md)；安全问题使用 [私密报告说明](.github/SECURITY.md)。程序许可证见 [LICENSE](LICENSE)，第三方组件保留各自的许可声明。
-
-`main` 推送与 Pull Request 自动执行应用检查；三端安装包通过 **Build desktop installers** 工作流手动构建，产物作为工作流构件保存，不自动发布。新产品版本采用 `0.0.1` 起的三段数字版本；旧 `b.X.Y` 发布记录保留原编号。已有安装的切换步骤见 [安装兼容约定](docs/adr/0001-product-version-and-data-compatibility.md)。
+仓库保留早期程序、作品正文和素材的完整 Git 历史；浅克隆适合当前开发。发布、修复与测试记录统一从 [历史索引](docs/history/README.md) 查阅，既有数据的版本兼容见 [ADR 0001](docs/adr/0001-product-version-and-data-compatibility.md)。

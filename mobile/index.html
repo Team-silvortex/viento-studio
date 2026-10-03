@@ -13,7 +13,7 @@
     <p class="muted" data-i18n="项目包可在手机与桌面之间迁移；素材管理和模板配置仍在接入。"></p>
     <button id="importWorkspace" type="button" data-i18n="导入项目包"></button>
     <p class="muted" data-i18n="项目包包含已保存的正文、模板、元数据和素材；编辑草稿请先打开作品保存。"></p>
-    <form id="createWorkspace"><label for="workspaceName" data-i18n="作品名称"></label><div class="create-row"><input id="workspaceName" maxlength="80" required autocomplete="off"><button type="submit" data-i18n="新建作品"></button></div></form>
+    <form id="createWorkspace"><label for="projectTemplate" data-i18n="工程模板"></label><select id="projectTemplate" required aria-describedby="templateDescription"></select><p id="templateDescription" class="muted"></p><label for="workspaceName" data-i18n="作品名称"></label><div class="create-row"><input id="workspaceName" maxlength="80" required autocomplete="off"><button type="submit" data-i18n="新建作品"></button></div></form>
     <p id="mobileStatus" role="status" aria-live="polite"></p>
     <button id="mobileRetry" type="button" hidden data-i18n="重试"></button>
     <div id="workspaces" class="mobile-works"></div>

@@ -19,7 +19,6 @@ mod archive;
 
 const MAX_TEXT: usize = 1024 * 1024;
 const MAX_DOCUMENTS: usize = 20_000;
-const DEFAULTS: &str = include_str!("../../scripts/lib/project-defaults.json");
 type Result<T> = std::result::Result<T, StorageError>;
 
 #[derive(Debug, Serialize)]
@@ -221,9 +220,23 @@ impl MobileLibrary {
             .collect::<Vec<_>>()))
     }
     pub fn create(&self, name: &str) -> Result<Value> {
+        self.create_with_template(name, None)
+    }
+    pub fn templates(&self) -> Result<Value> {
+        workspace::project_templates::list().map_err(workspace_error)
+    }
+    pub fn create_request(&self, payload: &Value) -> Result<Value> {
+        let name = payload["name"].as_str().ok_or_else(|| error(400, "bad request"))?;
+        let template_id = payload.get("templateId")
+            .map(|value| value.as_str().ok_or_else(|| error(400, "bad request"))).transpose()?;
+        self.create_with_template(name, template_id)
+    }
+    fn create_with_template(&self, name: &str, template_id: Option<&str>) -> Result<Value> {
         real_directory(&self.root)?;
-        let path =
-            workspace::create_workspace(&self.root, name, None, None).map_err(workspace_error)?;
+        let path = match template_id {
+            Some(id) => workspace::create_workspace_from_template(&self.root, name, id),
+            None => workspace::create_workspace(&self.root, name, None, None),
+        }.map_err(workspace_error)?;
         Ok(
             serde_json::to_value(workspace::ensure_workspace(&path).map_err(workspace_error)?)
                 .unwrap(),
@@ -296,7 +309,7 @@ impl MobileLibrary {
         let (root, manifest) = self.project(id)?;
         let documents = Self::documents(&root, &manifest)?;
         Ok(
-            json!({ "manifest": manifest, "documents": documents, "defaults": serde_json::from_str::<Value>(DEFAULTS).unwrap() }),
+            json!({ "manifest": manifest, "documents": documents, "defaults": workspace::project_templates::legacy_defaults() }),
         )
     }
     pub fn resolve(&self, id: &str, source: &str) -> Result<Value> {
@@ -457,7 +470,7 @@ impl MobileLibrary {
                 return Err(error(413, "文档数量过多，请在桌面版中打开"));
             }
             Self::check_new_location(&root, source, &records)?;
-            let defaults: Value = serde_json::from_str(DEFAULTS).unwrap();
+            let defaults = workspace::project_templates::legacy_defaults();
             let types = manifest
                 .extra
                 .get("documentTypes")

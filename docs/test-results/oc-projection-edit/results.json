@@ -1,0 +1,117 @@
+{
+  "ok": true,
+  "date": "2026-10-03",
+  "productVersion": "0.0.5",
+  "baseCommit": "14dfe01367aef8e8e411254c42fa7b22e6271405",
+  "scope": "Existing authored projection editing, image replacement, restricted v7 update transactions and exact preview on the existing uncommitted development tree",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "node": "v24.21.0",
+  "rust": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "godot": {
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "validation": {
+    "application": {
+      "command": "VIENTO_TEST_ARCHIVE_BINARY=<temporary archive helper> VIENTO_MOBILE_STORE_BIN=<temporary mobile helper> VIENTO_GODOT_BIN=<cached Godot> npm run check -- --app-only",
+      "exitCode": 0,
+      "passed": 1025,
+      "failed": 0,
+      "skipped": 0,
+      "javascriptSyntaxFiles": 269,
+      "log": "app-check.log"
+    },
+    "browser": {
+      "command": "VIENTO_GODOT_BIN=<cached Godot> VIENTO_PROJECTION_EDIT_OUTPUT=<new evidence directory> node scripts/tests/object-projection-edit-smoke.mjs",
+      "exitCode": 0,
+      "report": "browser.json",
+      "log": "browser-smoke.log",
+      "version": "Chrome/154.0.8037.97",
+      "screenshots": [
+        "edit-conflict-narrow-ja.png",
+        "edit-form-zh.png",
+        "edit-preview-en.png",
+        "edit-preview-narrow-ja.png",
+        "edited-projection-runtime-ja.png",
+        "edited-world-inspector-ja.png"
+      ],
+      "previewMatchesSavedSource": true
+    },
+    "editorSubset": {
+      "passed": 150,
+      "failed": 0,
+      "skipped": 0,
+      "log": "ui-tests.log"
+    },
+    "projectionEditIntegration": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "log": "integration.log",
+      "tools": "Real Godot, native desktop archive and native mobile storage helper"
+    },
+    "nativeHelpers": {
+      "command": "CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0 CARGO_INCREMENTAL=0 CARGO_BUILD_JOBS=4 CARGO_TARGET_DIR=<temporary target> cargo build --locked --manifest-path src-tauri/Cargo.toml --example workspace-archive --example mobile-storage",
+      "exitCode": 0,
+      "log": "native-helpers.log",
+      "fullRustSuiteRepeated": false
+    },
+    "desktopPrepare": {
+      "command": "npm run desktop:prepare",
+      "exitCode": 0,
+      "log": "desktop-prepare-final.log",
+      "resourcesVerifiedAgainstFinalSources": true,
+      "resources": "resources.json"
+    },
+    "markdownLinks": {
+      "checkedChangedDocuments": true,
+      "allLocalTargetsExist": true
+    }
+  },
+  "coverage": [
+    "Title and all typed configuration fields can be edited through the same three-language form; fixed identity, source, type, path and template snapshot.",
+    "Scalar-range rewriting preserves BOM/CRLF, unknown exact integers and unmodified lexical tokens; preview matches committed source.",
+    "A newly selected image appends a deduplicated binding; old images, author relations and extensions remain intact. Clearing an image changes use without deleting media.",
+    "World/object/source conflicts and lost-response reconciliation retain the draft; the same existing UUID alone never proves success.",
+    "Restricted v7 two-existing-file transactions guard unchanged metadata; no-op produces no journal. SIGKILL at publishing boundaries, interrupted recovery, registry conflicts and forged journals are checked.",
+    "A shared OC, sibling projections and scene source remain byte-identical; inherited build values update, explicit old-image overrides remain valid, stale plans are rejected.",
+    "Single-selection resource packages and Node/Rust/mobile full roundtrips preserve identities, bytes and build semantics.",
+    "Chrome and real Godot rebuild preserve actor UUIDs; updated player moves 80px while NPC remains unchanged."
+  ],
+  "limitations": [
+    "No packaged Tauri window or Android device acceptance in this increment; browser HTTP and native storage helpers are separate checks.",
+    "Headless runtime logic checked; graphical runtime window and physical keyboard were not repeated.",
+    "No full Rust unit rerun: native source is unchanged; helper compilation and interoperability were exercised.",
+    "Template/source/path changes and multi-projection batch editing are outside this form.",
+    "Retained old image bindings remain dependencies and can enlarge selection packages; no resource deletion is performed.",
+    "No version bump, commit, push, package installation or actual-work data migration."
+  ],
+  "changedSourceSha256": {
+    "web/project-build.css": "062afc8f9ae58c93c7bbde59d30471e81b91897ccae4979032eefe70fdd5a408",
+    "web/modules/app-world-browser.js": "db99e5a7584992ee4dfe4e575fbe7bc7db966b3c8514a48ecdfb2e489eb407b0",
+    "web/modules/app-object-projection.js": "303d41e05d5fbea2f9311d6ab3bfa7773711b4f762c6e61a1148236777467cb7",
+    "web/i18n/ja.js": "3709af6cf71e373217c1faee2f3a24a497269e4416c55642f7abb9549821f847",
+    "web/i18n/en.js": "7541512b39b84b885645cc3ee82ff52283f8435f41d50ce7a6d949534041ab8b",
+    "docs/ROADMAP.md": "8ebf814163aa2336ffc9accf1b66689f2660d3ba111b46812e3adc6a5755aa5e",
+    "docs/STATUS.md": "bb1bdc8fa2e563d5cd431e4627e105f940e62b5097bdc4a1e3fd9c1f384e2357",
+    "docs/OBJECT_PROJECTIONS.md": "082f06beea1c98288efd5ba48a0eb4bfb55982c1116803169ede19c5a88dbd65",
+    "docs/WORLD_TRANSACTIONS.md": "61fdf3c4607496242d28332f048bd0f02842eca8569e9d04def2906815221865",
+    "docs/ARCHITECTURE.md": "4ade77adcc9adf9cf1be620f1e8894fe90cf8ea78681a459f9fde5c7745798bb",
+    "docs/TESTING.md": "063962b5025d63b6c6f9157ed75b9663336c9b5c2362d738828305e6f9d6d3e8",
+    "engine/world-projection-update.mjs": "86b4d72f9fe8909d4a66592501e40a43333e0e968dd226573a822df04cfdecc4",
+    "engine/world-command-contract.mjs": "8b21aac99bada81f4075bdf0fae08fb457f2aaacca834d5c3296a83a1df9d260",
+    "engine/index.mjs": "2b5a2214b02e03fccdffc0a7464a029d2be17e10df04da98f7ee42dcd02d28cb",
+    "engine/README.md": "35af9950d47488b7aa9b4991d77cd151effd840f5aa39ce846f9d98cb3ab25da",
+    "schemas/README.md": "5606faef0e81cafd358abde96d5b02092030bb423a78b53887496cae9445d309",
+    "scripts/README.md": "dddbcbb55f19f80985f0d884170b21b67287c70df417e6f4d41b7d27af8457b5",
+    "scripts/adapters/node-world-commands.mjs": "6805ee121f317c42b298a8d4f76e57c5d93302493a0307662a1028248e8cd8b6",
+    "scripts/tests/world-projection-update.test.mjs": "92c4645871ba061e4981c357019f52a038c4ac2e520c0463d5ecb23f532a8c3f",
+    "scripts/tests/projection-edit.test.mjs": "01415c1dea793340e944045865194b0e2dc751cd6807a3c8635440608bcb9eef",
+    "scripts/tests/object-projection-edit-smoke.mjs": "65ff57930b979e477278d29a6e44513502f230f3c37131c49969666e58c8eb31",
+    "scripts/tests/world-portable-runtime.mjs": "62b235dfbc1b6d1b0d079819f39e6533b8f184a51a6b63dbc35715619a2fb404",
+    "scripts/tests/object-projection-ui.test.mjs": "f4f354d452251bbc43402c5b87410e29299c1304f73188e8720914f5bb0c37dd",
+    "scripts/tests/dialog-harness.mjs": "474d6a1be7303bc3f4fc3dbf70e6b753748633139203d8921e72b0ffbe0fe584",
+    "scripts/lib/world-transactions.mjs": "b3eabc9cb8d054989e6f999e223431ca2d1855c547e2c23f3f291e9092e595b5",
+    "scripts/lib/doc-api-service.mjs": "e382dc5008a66db20ca9f10c2c45e1113aa4cdb6c96c3f754f7281004ed65135"
+  }
+}

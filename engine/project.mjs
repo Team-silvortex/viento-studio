@@ -61,9 +61,13 @@ export function createProjectModel(defaults) {
     return { id: manifest?.id || '', name: manifest?.name || '', version: manifest?.version || 1, paths,
       configurable: Boolean(manifest && manifest.version >= 2), projectTypes: Boolean(manifest?.documentTypes || manifest?.version === 3),
       ...(manifest?.example ? { example: manifest.example } : {}),
-      documentTypes: types.map((type) => ({ ...type,
+      documentTypes: types.map((type) => ({ ...JSON.parse(JSON.stringify(type)),
         ...((manifest?.documentTypes || manifest?.version === 3) && type.template ? { templateSource: `${paths.templates}/${type.template}` } : {}),
-        content: defaults.templates[type.template] || `# 新建${type.label}\n\n`,
+        // An explicit project owns its template bytes. Matching a builtin
+        // filename must never inject another project's/domain's template.
+        content: (manifest?.documentTypes || manifest?.version === 3)
+          ? (type.template ? '' : `# 新建${type.label}\n\n`)
+          : (defaults.templates[type.template] || `# 新建${type.label}\n\n`),
       })) };
   }
 

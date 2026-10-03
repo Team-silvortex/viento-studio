@@ -8,6 +8,8 @@ const status = document.getElementById('mobileStatus');
 const form = document.getElementById('createWorkspace'), input = document.getElementById('workspaceName');
 const list = document.getElementById('workspaces'), retry = document.getElementById('mobileRetry');
 const importButton = document.getElementById('importWorkspace');
+const templateSelect = document.getElementById('projectTemplate');
+let templateCatalog;
 let works = [], busy = false, loaded = false, message = null;
 let retryAction = refresh;
 function notify(key, ...values) { message = { key, values }; render(); }
@@ -23,7 +25,9 @@ function render() {
   status.textContent = !message ? '' : message.diagnostic
     ? translateDiagnostic(message, message.key) : t(message.key, ...message.values);
   input.disabled = busy;
-  form.querySelector('button').disabled = busy;
+  form.querySelector('button').disabled = busy || !templateCatalog?.templates?.length;
+  templateSelect.disabled = busy || !templateCatalog?.templates?.length;
+  renderProjectTemplates();
   importButton.disabled = busy;
   retry.disabled = busy;
   list.setAttribute('aria-busy', String(busy));
@@ -41,10 +45,27 @@ function render() {
     return row;
   }));
 }
+function renderProjectTemplates() {
+  const selected = templateSelect.value;
+  templateSelect.replaceChildren();
+  for (const template of templateCatalog?.templates || []) {
+    const option = document.createElement('option');
+    option.value = template.packageId; option.textContent = t(template.label);
+    templateSelect.appendChild(option);
+  }
+  templateSelect.value = templateCatalog?.templates.some((item) => item.packageId === selected) ? selected : templateCatalog?.defaultTemplate || '';
+  const template = templateCatalog?.templates.find((item) => item.packageId === templateSelect.value);
+  document.getElementById('templateDescription').textContent = template ? t(template.description) : '';
+}
 async function refresh() {
   if (busy) return;
   busy = true; retry.hidden = true; message = null; render();
-  try { works = await invoke('mobile_storage', { action: 'list' }); loaded = true; }
+  try {
+    [works, templateCatalog] = await Promise.all([
+      invoke('mobile_storage', { action: 'list' }), invoke('mobile_storage', { action: 'templates' }),
+    ]);
+    loaded = true;
+  }
   catch (error) { showError(error); }
   finally { busy = false; render(); }
 }
@@ -65,15 +86,18 @@ async function transfer(action, work) {
   finally { busy = false; render(); }
 }
 form.addEventListener('submit', async (event) => {
-  event.preventDefault(); if (busy || !input.value.trim()) return;
+  event.preventDefault();
+  const templateId = templateSelect.value;
+  if (busy || !input.value.trim() || !templateCatalog?.templates.some((item) => item.packageId === templateId)) return;
   busy = true; retry.hidden = true; message = null; render();
   try {
-    const work = await invoke('mobile_storage', { action: 'create', payload: { name: input.value.trim() } });
+    const work = await invoke('mobile_storage', { action: 'create', payload: { name: input.value.trim(), templateId } });
     location.href = `/editor.html?mode=edit&workspace=${encodeURIComponent(work.id)}`;
   } catch (error) { showError(error); }
   finally { busy = false; render(); }
 });
 retry.addEventListener('click', () => retryAction());
+templateSelect.addEventListener('change', renderProjectTemplates);
 importButton.addEventListener('click', () => transfer('import'));
 onLanguageChange(render);
 await setupSettings();

@@ -18,7 +18,7 @@ async function closeHarness() {
 }
 
 test('desktop close reports document and template drafts and busy operations without discarding input', async () => {
-  for (const scenario of ['clean', 'source', 'template', 'property', 'saving', 'applying', 'command']) {
+  for (const scenario of ['clean', 'source', 'template', 'property', 'scene', 'saving', 'applying', 'command', 'scene-saving', 'projection', 'projection-saving']) {
     const { runtime, document, element } = await closeHarness();
     document.body.inert = false;
     element('docSourceEditor').value = '尚未保存的正文';
@@ -29,10 +29,16 @@ test('desktop close reports document and template drafts and busy operations wit
     const world = document.createElement('dialog'); world.id = 'worldBrowserDialog'; document.body.appendChild(world);
     if (scenario === 'property') world.dataset.dirty = 'true';
     if (scenario === 'command') world.setAttribute('aria-busy', 'true');
+    const scene = document.createElement('dialog'); scene.id = 'sceneCreateDialog'; document.body.appendChild(scene);
+    if (scenario === 'scene') scene.dataset.dirty = 'true';
+    if (scenario === 'scene-saving') scene.setAttribute('aria-busy', 'true');
+    const projection = document.createElement('dialog'); projection.id = 'objectProjectionDialog'; document.body.appendChild(projection);
+    if (scenario === 'projection') projection.dataset.dirty = 'true';
+    if (scenario === 'projection-saving') projection.setAttribute('aria-busy', 'true');
     const id = randomUUID(), sent = [];
     runtime.fetch = async (url, options) => { sent.push({ url, ...JSON.parse(options.body) }); return { ok: true }; };
     await vm.runInContext(closeScript.replace('__VIENTO_CLOSE_ID__', JSON.stringify(id)), runtime);
-    assert.deepEqual(sent, [{ url: '/__desktop/close-response', id, busy: ['saving', 'applying', 'command'].includes(scenario), dirty: ['source', 'template', 'property'].includes(scenario) }], scenario);
+    assert.deepEqual(sent, [{ url: '/__desktop/close-response', id, busy: ['saving', 'applying', 'command', 'scene-saving', 'projection-saving'].includes(scenario), dirty: ['source', 'template', 'property', 'scene', 'projection'].includes(scenario) }], scenario);
     assert.equal(document.body.inert, true, 'input is frozen while the host checks this snapshot');
     assert.equal(runtime.window.__vientoCloseGuard.inert, false);
     assert.equal(element('docSourceEditor').value, '尚未保存的正文');

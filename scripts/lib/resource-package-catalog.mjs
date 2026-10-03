@@ -10,6 +10,7 @@ import { collectDocumentMedia, mediaUrl } from './media-format.mjs';
 import { collectAssetImageRefs } from './image-index.mjs';
 import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 import { PACKAGE_LIMITS, packageError } from '../../engine/resource-package.mjs';
+import { validateObjectProjection, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 
 export const packageDigest = bytes => createHash('sha256').update(bytes).digest('hex');
 const stamp = stat => [stat.dev, stat.ino, stat.size, stat.mtimeMs, stat.ctimeMs];
@@ -45,6 +46,7 @@ export async function readPackageCatalog(root, signal) {
   const registry = await readRegistry(root, { signal }), assetRoot = resolveAssetRoot(root);
   if (registry.documents.length + registry.assets.length > PACKAGE_LIMITS.files) throw packageError('导出文件过多');
   const entries = [], records = new Map(), sources = new Map(), templates = new Map(), revisions = [workspace, assetRoot];
+  const projectionChecks = [], documentSources = [];
   let sourceBytes = 0;
   const countSource = bytes => {
     sourceBytes += bytes.length;
@@ -77,6 +79,13 @@ export async function readPackageCatalog(root, signal) {
       if (category === 'asset' && record.content && stat.size !== record.content.size) item.status = 'changed';
       if (category === 'document') {
         const source = await readPackageBytes(root, relative, signal);
+        const sourceText = source.toString('utf8');
+        const projection = await validateObjectProjection(sourceText, record, { digest: packageDigest });
+        // Dependency validation only needs availability and whether the core
+        // is itself a projection. Do not retain every document's source text.
+        documentSources.push({ record, sourcePath: relative,
+          content: projection.recognized ? '{"format":"viento-object-projection"}' : '' });
+        if (projection.recognized) projectionChecks.push({ item, record, projection });
         const fingerprint = { size: source.length, sha256: packageDigest(source) };
         sources.set(record.id, fingerprint); revisions.push([record.id, fingerprint.sha256]);
         const parsed = parseSourceContent(source.toString('utf8'), relative, resolveDocumentDefinition(workspace, relative, record));
@@ -114,6 +123,13 @@ export async function readPackageCatalog(root, signal) {
       item.status = 'missing'; revisions.push([item.id, 'missing']);
     }
     entries.push(item);
+  }
+  // Metadata alone cannot describe a projection whose JSON was edited outside
+  // the semantic command. Refuse incomplete selective packages, while complete
+  // workspace backups remain able to preserve the original damaged bytes.
+  const projectionSource = { documents: documentSources, assets: registry.assets.map(record => ({ record })) };
+  for (const { item, record, projection } of projectionChecks) {
+    if (!projection.ok || validateProjectionDependencies(projection.value, record, projectionSource).length) item.problems.push('正文解析失败');
   }
   const byId = new Map(entries.map(item => [item.id, item]));
   for (const item of entries) for (const dependency of item.dependencies) if (!byId.has(dependency)) item.problems.push(dependency);

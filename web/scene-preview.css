@@ -1,0 +1,32 @@
+.scene-preview-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-block: 14px; }
+.scene-preview-toolbar output { min-width: 48px; text-align: center; font-variant-numeric: tabular-nums; }
+.scene-preview-grid { display: flex; align-items: center; gap: 8px; padding: 8px; }
+.scene-preview-grid input { width: 18px; height: 18px; }
+.scene-preview-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(210px, 27%); gap: 16px; align-items: start; }
+#scenePreviewCanvas { display: block; width: 100%; height: clamp(280px, 50vh, 500px); background: #dbe4df; border: 0; box-shadow: 0 0 0 1px #8da698; border-radius: 8px; box-sizing: border-box; touch-action: none; cursor: grab; }
+#scenePreviewCanvas:active { cursor: grabbing; }
+#scenePreviewCanvas:focus-visible { outline: 3px solid #24684b; outline-offset: 3px; }
+.scene-preview-layout aside { min-width: 0; max-height: 580px; overflow: auto; padding-inline: 3px; }
+.scene-preview-layout h3 { margin-block: 4px 10px; font-size: 16px; }
+#scenePreviewObjects { margin-top: 0; padding-inline-start: 24px; }
+#scenePreviewObjects li { margin-block: 6px; }
+#scenePreviewObjects button { width: 100%; text-align: start; white-space: normal; overflow-wrap: anywhere; }
+#scenePreviewObjects [aria-pressed="true"] { background: #285b47; color: white; }
+#scenePreviewInspector { border-top: 1px solid #bdcec4; padding-top: 12px; }
+.scene-preview-properties { margin-top: 0; font-size: 13px; overflow-wrap: anywhere; }
+.scene-preview-properties dt { font-weight: 600; margin-top: 12px; }
+.scene-preview-properties dd { margin: 4px 0 0; }
+.scene-preview-properties small { display: block; color: #52675c; padding-block: 4px; }
+.scene-preview-properties button { font-size: 12px; min-height: 30px !important; padding: 5px 8px; }
+#scenePreviewProperties > button { margin: 4px; white-space: normal; }
+#scenePreviewSummary { overflow-wrap: anywhere; }
+#scenePreviewDiagnostics { overflow-wrap: anywhere; }
+.scene-preview[data-scene-preview-state="error"] #scenePreviewMessage, .scene-preview[data-scene-preview-state="invalid"] #scenePreviewMessage { color: #a32424; }
+@media (max-width: 700px) {
+  .scene-preview-layout { grid-template-columns: minmax(0, 1fr); }
+  .scene-preview-layout aside { max-height: none; }
+  #scenePreviewCanvas { height: 300px; }
+  .scene-preview-toolbar > button { flex: 1 1 auto; }
+  .scene-preview-properties { display: grid; grid-template-columns: minmax(90px, 30%) minmax(0, 1fr); gap: 6px 12px; }
+  .scene-preview-properties dt, .scene-preview-properties dd { margin: 0; }
+}

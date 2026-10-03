@@ -226,7 +226,7 @@ function setSecurityHeaders(response = {}) {
     "base-uri 'self'",
     "script-src 'self'",
     "style-src 'self'",
-    "img-src 'self' data:",
+    "img-src 'self' data: blob:",
     "connect-src 'self'",
     "font-src 'self'",
     "object-src 'none'",

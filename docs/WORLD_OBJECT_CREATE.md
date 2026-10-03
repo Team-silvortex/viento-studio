@@ -1,6 +1,6 @@
 # 可恢复的对象创建
 
-0.0.4 纳入 `object.create`，补齐 V-M2 / V-M3 的创建链路。GUI、CLI 和 HTTP 使用同一可移植规划器及 Node 事务执行器；新对象继续保存为 workspace v2 / v3 的正文与文档登记，不更改作品格式。开发阶段的 0.0.3 验证记录保留原样，当前版本验收见 [0.0.4 记录](RELEASE_0.0.4.md)。
+0.0.4 纳入 `object.create`，补齐 V-M2 / V-M3 的创建链路。GUI、CLI 和 HTTP 使用同一可移植规划器及 Node 事务执行器；新对象继续保存为 workspace v2 / v3 的正文与文档登记，不更改作品格式。开发阶段的 0.0.3 验证记录保留原样，首次纳入版本的验收见 [0.0.4 记录](RELEASE_0.0.4.md)，当前平台状态见 [STATUS](STATUS.md)。
 
 ## 使用
 
@@ -46,7 +46,7 @@ World 身份和版本来自同一次查询；类型取自当前工程定义。v2
 
 [验证记录](test-results/world-create/results.json) 覆盖纯预览、精确正文／登记、解析规则、三端命令契约、真实版本冲突、UI 草稿保护，以及 SIGKILL 后恢复与恢复重入。新增对象已验证通过原生桌面导出 → 移动存储导入／导出 → 桌面恢复，身份及正文不变；移动端并未实现 `object.create` 命令。
 
-范围仍为 Linux 本机进程中断；外部编辑器、旧应用及恶意并发路径替换不遵守当前锁和读取屏障，不宣称硬件断电或跨网络文件系统事务。后续源码已接通 [关系追加与恢复](WORLD_RELATIONS.md)，创建阶段的历史验证记录保持不变。0.0.4 Linux 安装包验收见 [版本记录](RELEASE_0.0.4.md)；资源事务、通用混合 ChangeSet、永久撤销历史、Build 快照、Android 语义写入和其他平台安装验收仍待后续实现。
+范围仍为 Linux 本机进程中断；外部编辑器、旧应用及恶意并发路径替换不遵守当前锁和读取屏障，不宣称硬件断电或跨网络文件系统事务。后续源码已接通 [关系追加与恢复](WORLD_RELATIONS.md)，创建阶段的历史验证记录保持不变。0.0.4 Linux 安装包验收见 [版本记录](RELEASE_0.0.4.md)；通用资源内容事务、混合 ChangeSet、永久撤销历史与 Android 语义写入仍待实现。后续已有 [资源绑定](WORLD_RESOURCES.md) 与 [Scene2D 冻结构建](PROJECT_BUILD.md)；各平台安装验收单独见 [当前状态](STATUS.md)。
 
 ```sh
 VIENTO_TEST_ARCHIVE_BINARY="$PWD/src-tauri/target/debug/examples/workspace-archive" \

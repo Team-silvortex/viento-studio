@@ -64,7 +64,8 @@ export async function runPortableEngineScenarios(defaults) {
   await check('Project types, templates and registered identity', () => {
     engine.validateProjectTypes(manifest);
     equal(model.workspacePaths(manifest), defaults.paths);
-    equal(model.projectDefinition(manifest).documentTypes[0].content, defaults.templates['character.md']);
+    equal(model.projectDefinition(manifest).documentTypes[0].content, '');
+    equal(model.projectDefinition(manifest).documentTypes[0].templateSource, 'templates/character.md');
     equal(descriptor.id, 'stable-id'); equal(descriptor.documentType, 'character');
     equal(model.workspacePaths({ version: 2 }).documents, 'design-data');
   });

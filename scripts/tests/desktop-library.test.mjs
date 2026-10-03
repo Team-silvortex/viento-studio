@@ -6,6 +6,7 @@ import { formatMessage } from '../../web/i18n/messages.js';
 import { supportedLanguages, isSupportedLanguage } from '../../web/i18n/languages.js';
 import { deferred } from './editor-harness.mjs';
 import { dialogHarness, flushDialogs } from './dialog-harness.mjs';
+import { PROJECT_TEMPLATE_CATALOG } from '../lib/project-layout.mjs';
 
 const stripImports = (source) => source.replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '');
 async function libraryHarness(active = true, handlers = {}) {
@@ -15,7 +16,7 @@ async function libraryHarness(active = true, handlers = {}) {
   const catalogue = await fs.readFile(new URL('../../web/i18n/index.js', import.meta.url), 'utf8');
   vm.runInContext(stripImports(catalogue).replaceAll('export ', ''), h.runtime);
   const recent = ['current', 'other'].map((name) => ({ name, path: `/projects/${name}`, lastOpened: 0 }));
-  let state = { version: 'test', recent, active: active ? recent[0] : null };
+  let state = { version: 'test', recent, active: active ? recent[0] : null, projectTemplates: PROJECT_TEMPLATE_CATALOG };
   const calls = [], events = new Map();
   h.runtime.window.__TAURI__ = {
     core: { invoke: async (name, args) => {
@@ -130,4 +131,34 @@ test('library translates suggested names and actions but preserves names already
   h.events.get('language-changed')({ payload: 'zh-CN' });
   assert.equal(h.element('workspaceName').value, '設定 / My world / 原文');
   assert.equal(h.calls.some(({ name }) => name === 'new_workspace'), false);
+});
+
+test('the chosen project template survives translations and picker cancellation and is passed to the native host', async () => {
+  const picker = deferred();
+  const h = await libraryHarness(false, { new_workspace: () => picker.promise });
+  h.element('createBtn').click();
+  const select = h.element('projectTemplate');
+  assert.equal(select.value, 'org.viento.blank');
+  assert.deepEqual(select.children.map(option => option.textContent), ['空白工程', '游戏', '文学', '戏剧', '软件设计']);
+  select.value = 'org.viento.software-design'; select.dispatch('change');
+  assert.match(h.element('templateDescription').textContent, /组件、接口/);
+  h.events.get('language-changed')({ payload: 'en' });
+  assert.equal(select.value, 'org.viento.software-design');
+  assert.equal(select.children.at(-1).textContent, 'Software design');
+  assert.match(h.element('templateDescription').textContent, /Component, interface/);
+  h.element('cancelCreateBtn').click();
+  assert.equal(h.calls.some(({ name }) => name === 'new_workspace'), false);
+  h.element('createBtn').click();
+  h.element('workspaceName').value = 'Independent project';
+  h.element('createForm').dispatch('submit');
+  assert.equal(select.disabled, true);
+  assert.equal(h.element('workspaceName').disabled, true);
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), { name: 'new_workspace', args: {
+    name: 'Independent project', templateId: 'org.viento.software-design',
+  } });
+  picker.resolve(null); await flushDialogs();
+  h.element('createBtn').click();
+  assert.equal(select.value, 'org.viento.software-design');
+  assert.equal(select.disabled, false);
+  assert.equal(h.calls.some(({ name }) => name === 'launch_workspace'), false);
 });

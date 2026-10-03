@@ -1,0 +1,169 @@
+{
+  "ok": true,
+  "date": "2026-10-03",
+  "productVersion": "0.0.5",
+  "baseCommit": "14dfe01367aef8e8e411254c42fa7b22e6271405",
+  "scope": "OC subtemplates and multiple authored projections on the existing uncommitted development tree",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "node": "v24.21.0",
+  "rust": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "godot": {
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "validation": {
+    "application": {
+      "command": "VIENTO_TEST_ARCHIVE_BINARY=<native helper> VIENTO_MOBILE_STORE_BIN=<native helper> VIENTO_GODOT_BIN=<cached Godot> npm run check -- --app-only",
+      "exitCode": 0,
+      "passed": 986,
+      "failed": 0,
+      "skipped": 0,
+      "javascriptSyntaxFiles": 265,
+      "log": "check.log"
+    },
+    "native": {
+      "command": "CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0 CARGO_INCREMENTAL=0 CARGO_BUILD_JOBS=4 CARGO_TARGET_DIR=<temporary target> npm run desktop:test",
+      "exitCode": 0,
+      "passed": 48,
+      "failed": 0,
+      "ignored": 1,
+      "ignoredReason": "full_project_migration_roundtrip requires an explicitly selected work; no real work selected",
+      "log": "desktop-test.log"
+    },
+    "desktopPrepare": {
+      "command": "npm run desktop:prepare",
+      "exitCode": 0,
+      "log": "desktop-prepare-final.log",
+      "resourcesVerifiedAgainstFinalSources": true
+    },
+    "projectionIntegration": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "log": "build-integration.log",
+      "tools": "Real Godot, native desktop archive and native mobile storage helper"
+    },
+    "compatibilitySubset": {
+      "passed": 59,
+      "failed": 0,
+      "skipped": 2,
+      "log": "build-compatibility.log",
+      "note": "Optional tool cases rerun in the full application suite with zero skips."
+    },
+    "browser": {
+      "command": "VIENTO_GODOT_BIN=<cached Godot> VIENTO_PROJECTION_TEST_OUTPUT=<new directory> node scripts/tests/object-projection-smoke.mjs /usr/bin/google-chrome",
+      "exitCode": 0,
+      "report": "browser.json",
+      "screenshots": [
+        "projection-conflict-narrow-ja.png",
+        "projection-form-zh.png",
+        "projection-preview-en.png",
+        "projection-preview-narrow-ja.png",
+        "projection-runtime-ja.png",
+        "scene-inherited-projections-ja.png",
+        "shared-oc-projections-ja.png"
+      ]
+    }
+  },
+  "resolvedFindings": [
+    "Transitive YAML parser imports blocked browser startup. Split UI-safe template functions and build API constants from server-side parsing; static browser module graph and real Chrome now pass.",
+    "A delayed native dialog close event could invalidate a newly opened World read. Guard close handling by actual dialog state; delayed-event regression and rapid browser reopen pass.",
+    "Projection display names used generic JSON filenames instead of authored titles. World and Build use projection.title; title property edits update both while ordinary documents keep their parser titles.",
+    "Runtime projections preserve their own UUIDs and core source trace; projections without runtime mappings cannot bypass checks via explicit actor fields.",
+    "Projection source/asset registration and template locks are validated for selective export and import; full backup still preserves damaged authored text.",
+    "Generic image fields accept available image resources including GIF; only Scene2D runtime image fields apply Godot format and size restrictions."
+  ],
+  "earlierAttempts": [
+    {
+      "report": "initial-browser-module-load.json",
+      "outcome": "Browser module dependency error, fixed."
+    },
+    {
+      "report": "initial-browser-world-reopen.json",
+      "outcome": "World close/reopen race, fixed."
+    },
+    {
+      "report": "initial-browser-transient-read.json",
+      "outcome": "Smoke polling asserted HTTP 200 while a live transaction correctly fenced readers; polling now retries only known transient conflicts."
+    },
+    {
+      "report": "initial-browser-navigation-wait.json",
+      "outcome": "Smoke reached real runtime success, then clicked the old page during reload; now awaits a new navigation time origin and loaded object list."
+    },
+    {
+      "log": "check-initial.log",
+      "passed": 982,
+      "failed": 1,
+      "skipped": 0,
+      "outcome": "Linux /proc read raced process reaping (ESRCH). Test now accepts ENOENT/ESRCH while still requiring any observable descendant to be dead."
+    },
+    {
+      "log": "check-before-title.log",
+      "passed": 986,
+      "failed": 0,
+      "skipped": 0,
+      "outcome": "Passed before the final authored-title mapping adjustment; final check.log verifies the resulting sources."
+    }
+  ],
+  "limits": [
+    "No packaged Tauri window or Android device validation in this round; native storage helper interoperability is not device UI acceptance.",
+    "Headless smoke verifies movement and state; graphical runtime preview was not repeated.",
+    "Only Scene2D-mapped projections execute. RPG level/health/interactable and visual-novel/literature/drama fields remain design data, without automatic combat, AI or narrative execution.",
+    "Saved templates are self-contained snapshots; no automatic template upgrades or third-party package installer.",
+    "Non-image configuration uses existing property edits. Source identity/template lock/image edits require source and registration consistency; no general mixed transaction editor.",
+    "No new version, installation, commit or push. Unsaved form drafts remain in page memory."
+  ],
+  "sourceFingerprintScope": "Files changed during this increment, excluding generated resources and validation evidence",
+  "sources": {
+    "docs/ARCHITECTURE.md": "e01905d78bc73fc7451cab92f5f52cba416af94232b788e795d762d8903a047e",
+    "docs/OBJECT_PROJECTIONS.md": "b3e0fe83aa02f5a67cfc6292103da036629f995b6c8e2a630da4fde1dc2bb010",
+    "docs/PROJECT_BUILD.md": "12ea9556b90be735d7307846d64556a15db8278c9e45bf781c0cc97bab74333f",
+    "docs/PROJECT_TEMPLATES.md": "8b34629ac9de6141a623e029e70242a29e0c4983245d60865b67c8130816282c",
+    "docs/README.md": "1d7ad86fc8b30540227616e111c2719560e5061c23a4ced5387678c5d59ec873",
+    "docs/ROADMAP.md": "d009d96364e68091bf82c07965c2226449cdfe2f57b9e51a9ecf59f3ffc79383",
+    "docs/STATUS.md": "15134215660ca435abc0ffe76b58a13771c123c2c7c5840a66d20cd6ceeaa758",
+    "docs/TESTING.md": "4d96841994c5d15e574ad1c83c13832ee6b43c0f41f199001bd173c97e274362",
+    "docs/WORLD_TRANSACTIONS.md": "07ac7dda73070d39ba14061d67a9c028c76148d337ebeceaa0b68e6a2f2667a2",
+    "engine/README.md": "317c4ac092c2e50c2c31e7961ad1d5e4fb39992db589ac84f6b22489fd63d023",
+    "engine/build-plan.mjs": "41a6bbfa8107623dec967ac0b4493107f46c1590c7b151ccf807feddbc945716",
+    "engine/canonical-json.mjs": "44604f12be2a7619783e5928641e5d573cfde7ff0b5bdf30428e632966b72831",
+    "engine/index.mjs": "ff4e5fc40d9b2176f3704ddd8b772e3f92219f1222e2bcfa5ddbe0a8ce9cde5e",
+    "engine/object-projection-template.mjs": "eef775bf8bd4fb3c23fcc7eada83a4215cf7cf6dad0548a95e25fe4d2ed2b815",
+    "engine/object-projection.mjs": "7129077f29c3458128491cfed7b2243ed167446c3b086d86f6271f9b7f724cab",
+    "engine/project-build-contract.mjs": "792c49457f9af1bbfa3a0a04b1ba07c0888237dff9c8c4d8f97ea32ae1d91f3f",
+    "engine/world-command-contract.mjs": "81f34eb6494d4b4841fcbe2528e83de1cc978d939b87d834b0597d50ac0d8b0e",
+    "engine/world-commands.mjs": "7874e0bac496ac633680ff236b391d23c9bdf00cc72b24fa3b86272a2802827a",
+    "engine/world-object-projection.mjs": "165f2370017a818a8f208127e0f894c69a6fd0d53d0833465719c4da56a3a52a",
+    "engine/world-projection.mjs": "81630357629d2665a7cd52a99ae970801aca5d02897a80373695939cc638542d",
+    "engine/world-scene-create.mjs": "481828200649d85e8b1c31b402b41a351b74d59b5b3f6b96df8dcab394b7dba6",
+    "schemas/README.md": "b47b3803ca2a42518cc03b5abfce8786ba199c37be4fbf6689ac210a00cba5b8",
+    "schemas/object-v1.schema.json": "c1ddf820966052b42a3459150516aa2e36833b9dad0f2fcaaf49b39b813330b2",
+    "scripts/README.md": "6dc2321b47c48ea6f0f9c1d51761f54f4e511b60886d740cebda143f3530802d",
+    "scripts/adapters/node-build-snapshot.mjs": "6ac486b0b42c103621425ab39e5d25618dc0799acdcfb0951029b1ee22d46075",
+    "scripts/adapters/node-world-commands.mjs": "3c9608c32e48d0ceb0dccba8c70d5b6ab30e1deaf264ebff92a262aa8da89706",
+    "scripts/backends/godot4.mjs": "d42d385b5a6e62ff4aa91d00f6065bdd0cefbc7ddde55e08cf5e3c62060fff77",
+    "scripts/lib/doc-api-service.mjs": "62eb8f5c09e8b22a47e6fa7667558ae81ab9a1e87d9e30ba34657a45785274a8",
+    "scripts/lib/resource-package-catalog.mjs": "87e9605c40903d54edacff528c88e7daba12a7b87f4e7d0dbe3c06a939d3f18a",
+    "scripts/lib/resource-package-import.mjs": "6caa478df9147708ba03df95711f962280d36e2d4fe4cd426f8222b64cea5013",
+    "scripts/lib/world-transactions.mjs": "25eff1f5019b9c8169ba0c0d5d2ff1d6a52d4ea60601041c3c1bc4f068a2e857",
+    "scripts/tests/browser-module-graph.test.mjs": "62ca112e50d86af9259d68a174139d50eccd0c1f5a17a72bcc1e9e6e5b688821",
+    "scripts/tests/desktop-close.test.mjs": "2f028dc0037c03581eea4bfc3cdca93035ddc4f225299beefd606c505176886b",
+    "scripts/tests/dialog-harness.mjs": "1cbe5f3c9852140d22d02de8bd7bb61eec6e5f6699aea08899f391cdc01da866",
+    "scripts/tests/object-projection-smoke.mjs": "0cac2536a2df1999edc748bf83ba1703b0cd12b2242efabbd2da90973c6a7b8f",
+    "scripts/tests/object-projection-ui.test.mjs": "42d8f1e4c393eaae9b4c104e91404aed20b0dcc873469e140bef609bd8cc4ec0",
+    "scripts/tests/project-build.test.mjs": "79aa653a0e7156b5fd9867a2d73ed1c07eff709287e8d14ba539476d414ad9a9",
+    "scripts/tests/projection-build.test.mjs": "39fdcff0a82acd2c9571ad40eb0d6e31579e69e06351c7e9ac314e344fbcbb6a",
+    "scripts/tests/world-browser.test.mjs": "c6e82e79177e58bf2b279bfe331dbff77727afefe8163765e900823d5dfd14a0",
+    "scripts/tests/world-object-projection.test.mjs": "c210305ffdf172fa0111eec6ba6cc7d82ec83c6442f3d5aafeca38d95a292bbf",
+    "scripts/tests/world-portable-runtime.mjs": "4913a623a3908042d70b6581b678f65e3097767c7686f628bc2d9f05421a0d01",
+    "src-tauri/src/desktop_host.rs": "c27433b71b30ca62a6236b5c90628d0b0a9f15422a0c5b9cb683c5b041a52bd6",
+    "web/i18n/en.js": "6a04064f0aab753069da69914c1f357bd7111e24dc8af1464a072eae661d1de4",
+    "web/i18n/ja.js": "d3b985d4c3438fac6e2ae8748754843a1bdca77067d632541f9a2b796e457e1f",
+    "web/modules/app-object-projection.js": "6b1a4bd60cf7d633a60a0e6a5ea2bf50ee13702f15793aff3f66e82e4399280e",
+    "web/modules/app-project-build.js": "aff2215ace1107874cd5c1d5a56f5215a32b1f73d8e84ad91fdf6b1a254dabea",
+    "web/modules/app-runtime.js": "0463c1ae67bfd4b90c94c7438049fe5dc8e5dbdcdf455b76272705ea5b6ed152",
+    "web/modules/app-scene-create.js": "ff2485a2753b90f72515c87b35aa52f3895efec4c5afb8fd515f439c93031075",
+    "web/modules/app-world-browser.js": "9c42bb5eeb563fdcc36b16d9c9c71f1bce1d803dd4e4f5432009c94957d3547a",
+    "web/project-build.css": "82b0656eb61da6ea4f4473225adf53bfa18dd3a99d4086bca011cc323fdcdd0d"
+  }
+}

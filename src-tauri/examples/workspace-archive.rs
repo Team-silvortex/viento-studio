@@ -5,6 +5,11 @@ use viento_studio::workspace;
 fn run() -> workspace::Result<serde_json::Value> {
     let args: Vec<String> = std::env::args().skip(1).collect();
     match args.as_slice() {
+        [command] if command == "templates" => workspace::project_templates::list(),
+        [command, parent, name, template_id] if command == "create" => {
+            let root = workspace::create_workspace_from_template(Path::new(parent), name, template_id)?;
+            Ok(serde_json::json!({"root": root}))
+        }
         [command, parent, name] if command == "create" => {
             let root = workspace::create_workspace(Path::new(parent), name, None, None)?;
             Ok(serde_json::json!({"root": root}))
@@ -25,7 +30,7 @@ fn run() -> workspace::Result<serde_json::Value> {
             Ok(serde_json::json!({"archive": archive, "restoredAndVerified": true}))
         }
         _ => Err(
-            "Usage: workspace-archive create PARENT NAME | export ROOT ARCHIVE | import ARCHIVE PARENT | verify ARCHIVE"
+            "Usage: workspace-archive templates | create PARENT NAME [TEMPLATE_ID] | export ROOT ARCHIVE | import ARCHIVE PARENT | verify ARCHIVE"
                 .into(),
         ),
     }

@@ -1,0 +1,390 @@
+{
+  "format": "viento-project-template-catalog",
+  "version": 1,
+  "defaultTemplate": "org.viento.blank",
+  "legacyTemplate": "org.viento.oc-narrative",
+  "templates": [
+    {
+      "format": "viento-project-template",
+      "schemaVersion": 1,
+      "packageId": "org.viento.blank",
+      "version": "1.0.0",
+      "label": "空白工程",
+      "description": "从一个通用文档类型开始，按需添加自己的类型和模板。",
+      "documentTypes": [
+        {
+          "id": "document",
+          "label": "文档",
+          "directory": "",
+          "parserProfile": "structured",
+          "template": "document.md"
+        }
+      ],
+      "templates": {
+        "document.md": "# 新建文档\n\n"
+      }
+    },
+    {
+      "format": "viento-project-template",
+      "schemaVersion": 1,
+      "packageId": "org.viento.oc-game",
+      "version": "1.0.0",
+      "label": "游戏",
+      "description": "角色、能力、道具、关卡、任务、阵营与规则，适合游戏世界和玩法设计。",
+      "documentTypes": [
+        {
+          "id": "document",
+          "label": "设计文档",
+          "directory": "",
+          "parserProfile": "structured",
+          "template": "document.md"
+        },
+        {
+          "id": "character",
+          "label": "角色",
+          "directory": "characters",
+          "parserProfile": "structured",
+          "template": "character.md"
+        },
+        {
+          "id": "ability",
+          "label": "能力",
+          "directory": "abilities",
+          "parserProfile": "structured",
+          "template": "ability.md"
+        },
+        {
+          "id": "item",
+          "label": "道具",
+          "directory": "items",
+          "parserProfile": "structured",
+          "template": "item.md"
+        },
+        {
+          "id": "level",
+          "label": "关卡",
+          "directory": "levels",
+          "parserProfile": "structured",
+          "template": "level.md"
+        },
+        {
+          "id": "quest",
+          "label": "任务",
+          "directory": "quests",
+          "parserProfile": "structured",
+          "template": "quest.md"
+        },
+        {
+          "id": "faction",
+          "label": "阵营",
+          "directory": "factions",
+          "parserProfile": "structured",
+          "template": "faction.md"
+        },
+        {
+          "id": "rule",
+          "label": "规则",
+          "directory": "rules",
+          "parserProfile": "structured",
+          "template": "rule.md"
+        }
+      ],
+      "templates": {
+        "document.md": "# 新建设计文档\n\n## 设计目标\n\n## 内容\n\n",
+        "character.md": "# 新建角色\n\n## 基本信息\n名称：\n定位：\n所属阵营：\n\n## 外观与表现\n\n## 玩法与能力\n\n## 背景与经历\n\n## 关系\n\n",
+        "ability.md": "# 新建能力\n\n## 基本信息\n名称：\n用途：\n\n## 发动条件\n\n## 效果与反馈\n\n## 消耗与限制\n\n## 关联角色与资源\n\n",
+        "item.md": "# 新建道具\n\n## 基本信息\n名称：\n用途：\n\n## 获取与使用\n\n## 效果与限制\n\n## 外观与资源\n\n",
+        "level.md": "# 新建关卡\n\n## 体验目标\n\n## 空间与环境\n\n## 进入条件\n\n## 流程与挑战\n\n## 完成与失败条件\n\n## 资源需求\n\n",
+        "quest.md": "# 新建任务\n\n## 背景与目标\n\n## 触发条件\n\n## 流程与分支\n\n## 完成与失败条件\n\n## 奖励与后续影响\n\n",
+        "faction.md": "# 新建阵营\n\n## 宗旨与立场\n\n## 成员与组织\n\n## 资源与势力范围\n\n## 历史与关系\n\n",
+        "rule.md": "# 新建规则\n\n## 设计目的\n\n## 适用范围\n\n## 规则与边界\n\n## 示例与验证\n\n"
+      }
+    },
+    {
+      "format": "viento-project-template",
+      "schemaVersion": 1,
+      "packageId": "org.viento.oc-literature",
+      "version": "1.0.0",
+      "label": "文学",
+      "description": "人物、大纲、篇章、地点、组织与设定，适合小说和其他文学创作。",
+      "documentTypes": [
+        {
+          "id": "document",
+          "label": "作品说明",
+          "directory": "",
+          "parserProfile": "structured",
+          "template": "document.md"
+        },
+        {
+          "id": "character",
+          "label": "人物",
+          "directory": "characters",
+          "parserProfile": "structured",
+          "template": "character.md"
+        },
+        {
+          "id": "outline",
+          "label": "大纲",
+          "directory": "outlines",
+          "parserProfile": "prose",
+          "template": "outline.md"
+        },
+        {
+          "id": "chapter",
+          "label": "篇章",
+          "directory": "chapters",
+          "parserProfile": "prose",
+          "template": "chapter.md"
+        },
+        {
+          "id": "place",
+          "label": "地点",
+          "directory": "places",
+          "parserProfile": "structured",
+          "template": "place.md"
+        },
+        {
+          "id": "organization",
+          "label": "组织",
+          "directory": "organizations",
+          "parserProfile": "structured",
+          "template": "organization.md"
+        },
+        {
+          "id": "concept",
+          "label": "设定",
+          "directory": "concepts",
+          "parserProfile": "structured",
+          "template": "concept.md"
+        }
+      ],
+      "templates": {
+        "document.md": "# 新建作品说明\n\n## 主题与体裁\n\n## 创作意图\n\n## 内容\n\n",
+        "character.md": "# 新建人物\n\n## 身份与处境\n姓名：\n身份：\n\n## 性格与声音\n\n## 欲望与矛盾\n\n## 背景与经历\n\n## 人物弧光\n\n## 人物关系\n\n",
+        "outline.md": "# 新建大纲\n\n## 主题\n\n## 叙事视角\n\n## 主要冲突\n\n## 情节推进\n\n## 结局与伏笔\n\n",
+        "chapter.md": "# 新建篇章\n\n## 正文\n\n",
+        "place.md": "# 新建地点\n\n## 环境与氛围\n\n## 历史与日常\n\n## 人物与事件\n\n",
+        "organization.md": "# 新建组织\n\n## 宗旨\n\n## 成员与关系\n\n## 历史与事件\n\n",
+        "concept.md": "# 新建设定\n\n## 定义\n\n## 规则与边界\n\n## 与作品的关联\n\n"
+      }
+    },
+    {
+      "format": "viento-project-template",
+      "schemaVersion": 1,
+      "packageId": "org.viento.oc-drama",
+      "version": "1.0.0",
+      "label": "戏剧",
+      "description": "人物、幕、场、舞台提示与道具，适合剧本和舞台叙事创作。",
+      "documentTypes": [
+        {
+          "id": "document",
+          "label": "剧作说明",
+          "directory": "",
+          "parserProfile": "structured",
+          "template": "document.md"
+        },
+        {
+          "id": "character",
+          "label": "人物",
+          "directory": "characters",
+          "parserProfile": "structured",
+          "template": "character.md"
+        },
+        {
+          "id": "act",
+          "label": "幕",
+          "directory": "acts",
+          "parserProfile": "prose",
+          "template": "act.md"
+        },
+        {
+          "id": "scene",
+          "label": "场",
+          "directory": "scenes",
+          "parserProfile": "prose",
+          "template": "scene.md"
+        },
+        {
+          "id": "stage-direction",
+          "label": "舞台提示",
+          "directory": "stage-directions",
+          "parserProfile": "structured",
+          "template": "stage-direction.md"
+        },
+        {
+          "id": "prop",
+          "label": "道具",
+          "directory": "props",
+          "parserProfile": "structured",
+          "template": "prop.md"
+        }
+      ],
+      "templates": {
+        "document.md": "# 新建剧作说明\n\n## 主题与形式\n\n## 人物表\n\n## 幕场结构\n\n## 演出构想\n\n",
+        "character.md": "# 新建人物\n\n## 人物小传\n姓名：\n身份：\n\n## 背景与经历\n\n## 舞台目标\n\n## 行动与阻力\n\n## 语言与肢体\n\n## 人物关系\n\n",
+        "act.md": "# 新建幕\n\n## 戏剧目标\n\n## 主要冲突\n\n## 场次安排\n\n## 转折与幕间\n\n",
+        "scene.md": "# 新建场\n\n## 时间与地点\n\n## 在场人物\n\n## 行动与冲突\n\n## 台词与舞台提示\n\n（舞台提示）\n\n人物甲：\n\n人物乙：\n",
+        "stage-direction.md": "# 新建舞台提示\n\n## 提示信息\n所属场次：\n触发时机：\n\n## 灯光\n\n## 音响\n\n## 人物调度\n\n## 舞台变化\n\n",
+        "prop.md": "# 新建道具\n\n## 基本信息\n名称：\n使用人物：\n出现幕场：\n\n## 舞台功能\n\n## 外观与操作\n\n## 交接与复位\n\n"
+      }
+    },
+    {
+      "format": "viento-project-template",
+      "schemaVersion": 1,
+      "packageId": "org.viento.software-design",
+      "version": "1.0.0",
+      "label": "软件设计",
+      "description": "组件、接口、流程与验证文档，用于设计和梳理软件工程。",
+      "documentTypes": [
+        {
+          "id": "document",
+          "label": "文档",
+          "directory": "",
+          "parserProfile": "structured",
+          "template": "document.md"
+        },
+        {
+          "id": "component",
+          "label": "组件",
+          "directory": "components",
+          "parserProfile": "structured",
+          "template": "component.yaml",
+          "parserOptions": {
+            "titleField": "名称"
+          },
+          "fieldGroups": [
+            {
+              "title": "组件定义",
+              "fields": [
+                "名称",
+                "职责",
+                "输入",
+                "输出",
+                "依赖"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "interface",
+          "label": "接口",
+          "directory": "interfaces",
+          "parserProfile": "structured",
+          "template": "interface.yaml",
+          "parserOptions": {
+            "titleField": "名称"
+          },
+          "fieldGroups": [
+            {
+              "title": "接口契约",
+              "fields": [
+                "名称",
+                "输入",
+                "输出",
+                "错误处理"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "workflow",
+          "label": "流程",
+          "directory": "workflows",
+          "parserProfile": "prose",
+          "template": "workflow.md"
+        },
+        {
+          "id": "verification",
+          "label": "验证",
+          "directory": "verification",
+          "parserProfile": "structured",
+          "template": "verification.yaml",
+          "parserOptions": {
+            "titleField": "名称"
+          },
+          "fieldGroups": [
+            {
+              "title": "验证定义",
+              "fields": [
+                "名称",
+                "对象",
+                "前提",
+                "步骤",
+                "预期结果"
+              ]
+            }
+          ]
+        }
+      ],
+      "templates": {
+        "document.md": "# 新建文档\n\n",
+        "component.yaml": "名称: 新建组件\n职责: \"\"\n输入: []\n输出: []\n依赖: []\n",
+        "interface.yaml": "名称: 新建接口\n输入: []\n输出: []\n错误处理: \"\"\n",
+        "workflow.md": "# 新建流程\n\n## 目标\n\n## 输入与前提\n\n## 步骤\n\n## 完成条件\n\n",
+        "verification.yaml": "名称: 新建验证\n对象: \"\"\n前提: []\n步骤: []\n预期结果: \"\"\n"
+      }
+    }
+  ],
+  "compatibilityTemplates": [
+    {
+      "format": "viento-project-template",
+      "schemaVersion": 1,
+      "packageId": "org.viento.oc-narrative",
+      "version": "1.0.0",
+      "label": "OC 与叙事",
+      "description": "角色、故事、地点、组织与设定，适合人物和世界观创作。",
+      "documentTypes": [
+        {
+          "id": "document",
+          "label": "档案",
+          "directory": "",
+          "parserProfile": "structured",
+          "template": "document.md"
+        },
+        {
+          "id": "character",
+          "label": "角色",
+          "directory": "characters",
+          "parserProfile": "structured",
+          "template": "character.md"
+        },
+        {
+          "id": "story",
+          "label": "故事",
+          "directory": "stories",
+          "parserProfile": "prose",
+          "template": "story.md"
+        },
+        {
+          "id": "place",
+          "label": "地点",
+          "directory": "places",
+          "parserProfile": "structured",
+          "template": "place.md"
+        },
+        {
+          "id": "organization",
+          "label": "组织",
+          "directory": "organizations",
+          "parserProfile": "structured",
+          "template": "organization.md"
+        },
+        {
+          "id": "concept",
+          "label": "设定",
+          "directory": "concepts",
+          "parserProfile": "structured",
+          "template": "concept.md"
+        }
+      ],
+      "templates": {
+        "document.md": "# 新建档案\n\n## 内容\n\n",
+        "character.md": "# 新建角色\n\n## 身份\n姓名：\n别称：\n\n## 外貌与性格\n\n## 背景与经历\n\n## 关系\n\n",
+        "story.md": "# 新建故事\n\n",
+        "place.md": "# 新建地点\n\n## 概况\n\n## 环境\n\n## 历史与关联\n\n",
+        "organization.md": "# 新建组织\n\n## 宗旨\n\n## 成员与关系\n\n## 历史\n\n",
+        "concept.md": "# 新建设定\n\n## 定义\n\n## 规则与边界\n\n## 关联\n\n"
+      }
+    }
+  ]
+}

@@ -13,8 +13,16 @@ export { queryWorldProjection, worldCommandDescriptors, validateWorldQuery } fro
 export { preparePropertySet, validateWorldCommand, worldMutationDescriptors, canSetObjectProperty } from './world-commands.mjs';
 export { prepareChangeSet } from './world-changeset.mjs';
 export { prepareObjectCreate } from './world-object-create.mjs';
+export { prepareSceneCreate } from './world-scene-create.mjs';
+export { prepareSceneUpdate, updateSceneContent, appendSceneDependencies } from './world-scene-update.mjs';
+export { prepareProjectionCreate } from './world-object-projection.mjs';
+export { prepareProjectionUpdate, updateObjectProjectionContent, appendProjectionImageBindings } from './world-projection-update.mjs';
+export { getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, validateProjectionTemplate,
+  validateProjectionConfiguration, inspectObjectProjection, validateObjectProjection, validateProjectionDependencies,
+  projectionRegistration, renderProjectionRuntime, OBJECT_PROJECTION_FORMAT } from './object-projection.mjs';
 export { prepareRelationAdd } from './world-relations.mjs';
 export { prepareResourceBind } from './world-resources.mjs';
+export { createScene2DPlan, checkBuildCapabilities, SCENE2D_CAPABILITIES } from './build-plan.mjs';
 export * from './media-format.mjs';
 export * from './document-model.mjs';
 export * from './document-values.mjs';

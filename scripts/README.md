@@ -1,5 +1,7 @@
 # 脚本与本地服务
 
+[快速开始](../docs/GETTING_STARTED.md) · [架构与调用路径](../docs/ARCHITECTURE.md) · [验证指南](../docs/TESTING.md)
+
 脚本负责桌面 / 浏览器的本机文件适配、转换与索引、HTTP 服务和作品维护。解析、布局与字段修改的共用实现位于 [engine/](../engine/README.md)，Android 使用独立原生存储桥，不启动这些 Node 服务。
 
 ## 启动
@@ -31,6 +33,9 @@ Shell 入口 `scripts/start-doc-site.sh --mode edit|browse` 及旧的 `start-doc
 | `lib/workspace.mjs`、`workspace.mjs` | 登记、校验、外置素材绑定与维护 CLI |
 | `lib/export-package.mjs`、`lib/export-service.mjs` | 流式文档 / 完整项目包、任务及临时文件 |
 | `lib/doc-api-metrics.mjs` | `/api/health`、`/api/metrics` 的诊断指标 |
+| `project-build.mjs`、`adapters/node-project-build.mjs` | 冻结输入、构建计划、生成工程与独立运行会话 CLI |
+| `backends/godot4.mjs`、`backends/godot4/runtime.gd` | Godot 4 的受限二维场景生成、真实进程诊断与运行协议 |
+| `lib/project-build-service.mjs` | 编辑器构建任务的跨请求生命周期、进度、取消与宿主退出回收 |
 
 启动前执行 `lib/verify-doc-api-contract.mjs`，核对共享契约、前后端入口和请求组装；失败时中止启动。完整数据流见 [架构说明](../docs/ARCHITECTURE.md)。
 
@@ -38,7 +43,7 @@ Shell 入口 `scripts/start-doc-site.sh --mode edit|browse` 及旧的 `start-doc
 
 语义查询使用 `npm run world -- --root /完整路径/作品库`，可选择 `object.list`、`object.inspect` 或 `world.validate` 命令；不修改文件或登记。`adapters/node-world-projection.mjs` 负责只读盘点与来源复查，查询逻辑在可移植引擎内。GUI 和 `/api/world` 调用同一契约，详见 [世界与对象](../docs/WORLD_PROJECTION.md)。
 
-语义命令使用 `node scripts/world.mjs --root /完整路径/作品库 --request command.json`（`-` 表示 stdin）。JSON 必须显式提供 `mode: preview|apply` 与所有版本条件；不能与查询参数混用。`property.set` 保存单个属性，`changeset.apply` 可恢复地保存多个现有对象的属性；`object.create` 创建新正文与登记，`relation.add` 追加引用或共享归属，两者均支持恢复。0.0.5 支持 `resource.bind`，按资源 UUID 和用途追加绑定，固定资源登记版本并支持恢复。GUI 和 `POST /api/world/commands` 共用 `adapters/node-world-commands.mjs`；CLI 保存权威数据，不自动重建派生索引。`--transaction-status` 检查未完成事务，`--recover` 显式恢复；编辑宿主启动时也先恢复。协议和限制见 [批量提交](../docs/WORLD_TRANSACTIONS.md)、[对象创建](../docs/WORLD_OBJECT_CREATE.md)、[对象关系](../docs/WORLD_RELATIONS.md) 和 [资源绑定](../docs/WORLD_RESOURCES.md)。
+语义命令使用 `node scripts/world.mjs --root /完整路径/作品库 --request command.json`（`-` 表示 stdin）。JSON 必须显式提供 `mode: preview|apply` 与所有版本条件；不能与查询参数混用。`property.set` 保存单个属性，`changeset.apply` 可恢复地保存多个现有对象的属性；`object.create` 创建新正文与登记，`relation.add` 追加引用或共享归属，两者均支持恢复。0.0.5 支持 `resource.bind`，按资源 UUID 和用途追加绑定，固定资源登记版本并支持恢复。开发源码另有 `projection.create`：从同一 OC 创建不同子模板配置，嵌入完整模板快照并登记来源与图片，见 [多份投影](../docs/OBJECT_PROJECTIONS.md)。`projection.update`：以已有 UUID 和修订条件修改投影标题／配置，同步新图片绑定；`scene.create`：使用已有类型，一次新增 Scene2D 正文与自动派生的角色／图片登记依赖，见 [场景创建](../docs/PROJECT_BUILD.md#创建场景)。`scene.update` 使用已有场景的身份和三层修订条件更新正文，保留继承／覆盖并追加缺少的依赖，见 [场景更新](../docs/PROJECT_BUILD.md#场景更新命令)。GUI 和 `POST /api/world/commands` 共用 `adapters/node-world-commands.mjs`；CLI 保存权威数据，不自动重建派生索引。`--transaction-status` 检查未完成事务，`--recover` 显式恢复；编辑宿主启动时也先恢复。协议和限制见 [批量提交](../docs/WORLD_TRANSACTIONS.md)、[对象创建](../docs/WORLD_OBJECT_CREATE.md)、[对象关系](../docs/WORLD_RELATIONS.md) 和 [资源绑定](../docs/WORLD_RESOURCES.md)。
 
 ```sh
 npm run rebuild
@@ -58,6 +63,8 @@ npm run workspace -- check-project --root /完整路径/作品库
 
 ## 测试与记录
 
+实验性工程构建入口是 `npm run project:build -- --command plan|build|run`，与程序本身的 `desktop:build` 和文档索引 `rebuild` 分开。样例、显式引擎路径、默认本机缓存和取消／诊断见 [二维场景构建](../docs/PROJECT_BUILD.md)。开发源码的本机编辑器已通过 `/api/project-build` 接入工作台；任务服务仅接受场景／构建／任务 ID，工具路径由宿主配置，POST 沿用写入鉴权并额外限制本机同源访问。浏览服务器与 Android 不开放该能力。
+
 `npm test` 执行回归，`npm run check -- --app-only` 另检查语法、版本和 API 契约。启用真实 Rust 归档与移动存储的方式，以及 Linux 原生 / Android 设备的区别，统一见 [验证指南](../docs/TESTING.md)。
 
-编辑器测试覆盖草稿保护、模式往返、保存冲突、异步请求、重建失败及 BOM / CRLF / 空格保留；原生交互由独立流程验证，不能把轻量 DOM 测试当作真实系统窗口测试。最新 Linux 四组和 Android 模拟器证据见 [链路补测](../docs/WORKFLOW_VERIFICATION_b.4.5.md)。
+编辑器测试覆盖草稿保护、模式往返、保存冲突、异步请求、重建失败及 BOM / CRLF / 空格保留；原生交互由独立流程验证，不能把轻量 DOM 测试当作真实系统窗口测试。b.4.5 阶段的 Linux 四组和 Android 模拟器证据见 [链路补测](../docs/WORKFLOW_VERIFICATION_b.4.5.md)；各轮验证从 [历史索引](../docs/history/README.md) 查阅，最新源码与安装范围见 [当前状态](../docs/STATUS.md)。

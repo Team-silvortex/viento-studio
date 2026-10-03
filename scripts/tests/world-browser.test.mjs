@@ -393,3 +393,20 @@ test('resource actions respect capabilities, available objects, empty roles and 
   r.preview().resolve(previewResult); await flushDialogs(); r.element('worldPropertyStage').click();
   assert.equal(r.element('worldResourceAdd').disabled,true); r.element('worldResourceAdd').click(); assert.equal(r.element('worldResourceSlot'),null);
 });
+
+test('a delayed native close event cannot invalidate a read after the World dialog has reopened', async () => {
+  const h = await harness(), reading = deferred();
+  h.runtime.fetchJsonApiRequest = () => reading.promise;
+  h.element('worldClose').click();
+  h.element('worldBrowserBtn').click();
+  assert.equal(h.element('worldBrowserDialog').open, true);
+  assert.match(h.element('worldStatus').textContent, /正在处理/);
+  // close() queues the native close event; let it arrive while the next open's
+  // request is still pending, rather than concealing the race with a UI delay.
+  await flushDialogs();
+  reading.resolve({ payload: h.projection }); await flushDialogs();
+  assert.equal(h.element('worldBrowserDialog').open, true);
+  assert.doesNotMatch(h.element('worldStatus').textContent, /正在处理/);
+  assert.equal(h.element('worldObjects').querySelectorAll('button').length, 2);
+  assert.equal(h.element('worldBrowserDialog').getAttribute('aria-busy'), 'false');
+});

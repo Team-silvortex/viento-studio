@@ -5,6 +5,9 @@ import { t, getLanguage, translateMessage, uiMessage, asUiMessage } from '../../
 import { diagnosticMessage, translateDiagnostic } from '../../web/i18n/diagnostics.js';
 import { isComposingInput } from '../../web/modules/app-keyboard.js';
 import { selectPackageEntries, PACKAGE_LIMITS } from '../../engine/resource-package.mjs';
+import { getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime } from '../../engine/object-projection-template.mjs';
+import { canonicalJson } from '../../engine/canonical-json.mjs';
+import { getCreatePathError } from '../../engine/document-contract.mjs';
 
 // Event-capable DOM fixture for the real dialog controllers. It reads their
 // actual markup; layout and rendering remain covered by the native smoke test.
@@ -115,13 +118,25 @@ export async function dialogHarness(module, overrides = {}) {
   const timers = new Map();
   let timerId = 0;
   const runtime = vm.createContext({
-    document, window, URL, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS,
+    document, window, URL, TextEncoder, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS,
+    getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime, getCreatePathError, canonicalJson,
     location: { href: 'http://127.0.0.1/web/' },
     t, getLanguage, translateMessage, uiMessage, asUiMessage, diagnosticMessage, translateDiagnostic, isComposingInput, translatePage() {}, onLanguageChange() {},
     setTimeout: (callback) => { timers.set(++timerId, callback); return timerId; },
     clearTimeout: (id) => timers.delete(id),
+    setupScenePreview: () => ({ setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {}, destroy() {} }),
     ...overrides,
   });
+  if (module === 'app-world-browser') {
+    const projectionCreator = (await fs.readFile(new URL('../../web/modules/app-object-projection.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(projectionCreator, runtime);
+  }
+  if (module === 'app-project-build') {
+    const sceneCreate = (await fs.readFile(new URL('../../web/modules/app-scene-create.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(sceneCreate, runtime);
+  }
   if (module === 'app-export') {
     const packages = (await fs.readFile(new URL('../../web/modules/app-resource-packages.js', import.meta.url), 'utf8'))
       .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');

@@ -5,6 +5,10 @@ import { createWorldProjection } from '../../engine/world-projection.mjs';
 import { preparePropertySet, validateWorldCommand } from '../../engine/world-commands.mjs';
 import { prepareChangeSet } from '../../engine/world-changeset.mjs';
 import { prepareObjectCreate } from '../../engine/world-object-create.mjs';
+import { prepareSceneUpdate } from '../../engine/world-scene-update.mjs';
+import { prepareSceneCreate } from '../../engine/world-scene-create.mjs';
+import { prepareProjectionCreate } from '../../engine/world-object-projection.mjs';
+import { prepareProjectionUpdate } from '../../engine/world-projection-update.mjs';
 import { prepareRelationAdd } from '../../engine/world-relations.mjs';
 import { prepareResourceBind } from '../../engine/world-resources.mjs';
 import { createError } from '../../engine/service-error.mjs';
@@ -36,19 +40,24 @@ async function readRecordContent(root, id) {
 }
 
 async function prepare(snapshot, request, root) {
-  if (['relation.add', 'resource.bind'].includes(request.command)) {
+  if (['relation.add', 'resource.bind', 'projection.update', 'scene.update'].includes(request.command)) {
     if (!snapshot.source.documents.some(item => item.record?.id === request.objectId)) {
-      throw createError(404, 'Registered object not found', {}, request.command === 'relation.add' ? 'world_relation_object_missing' : 'world_resource_target_missing');
+      throw createError(404, 'Registered object not found', {}, ['projection.update', 'scene.update'].includes(request.command) ? 'world_object_not_found' : request.command === 'relation.add' ? 'world_relation_object_missing' : 'world_resource_target_missing');
     }
-    const planner = request.command === 'relation.add' ? prepareRelationAdd : prepareResourceBind;
+    const planner = request.command === 'scene.update' ? prepareSceneUpdate : request.command === 'projection.update' ? prepareProjectionUpdate : request.command === 'relation.add' ? prepareRelationAdd : prepareResourceBind;
     const plan = await planner(snapshot.source, snapshot.projection, await readRecordContent(root, request.objectId), request, { digest });
-    if (Buffer.byteLength(plan.plans[0].afterContent) > 1024 * 1024) throw createError(413, 'Registration exceeds the command limit', {}, 'world_record_limit');
+    if (Buffer.byteLength(plan.plans.at(-1).afterContent) > 1024 * 1024) throw createError(413, 'Registration exceeds the command limit', {}, 'world_record_limit');
+    if (['projection.update', 'scene.update'].includes(request.command) && (plan.plans.some(item => Buffer.byteLength(item.afterContent) > 8 * 1024 * 1024)
+      || plan.plans.reduce((size, item) => size + Buffer.byteLength(item.beforeContent) + Buffer.byteLength(item.afterContent), 0) > 32 * 1024 * 1024
+      || plan.nextSource.documents.reduce((size, item) => size + Buffer.byteLength(item.content || ''), 0) > 64 * 1024 * 1024)) {
+      throw createError(413, 'ChangeSet exceeds the transaction source limit', {}, 'world_source_limit');
+    }
     return plan;
   }
-  if (['changeset.apply', 'object.create'].includes(request.command)) {
-    const planner = request.command === 'object.create' ? prepareObjectCreate : prepareChangeSet;
+  if (['changeset.apply', 'object.create', 'scene.create', 'projection.create'].includes(request.command)) {
+    const planner = request.command === 'projection.create' ? prepareProjectionCreate : request.command === 'scene.create' ? prepareSceneCreate : request.command === 'object.create' ? prepareObjectCreate : prepareChangeSet;
     const plan = await planner(snapshot.source, snapshot.projection, request, { digest });
-    if (request.command === 'object.create') {
+    if (['object.create', 'scene.create', 'projection.create'].includes(request.command)) {
       for (const item of plan.plans) {
         await resolveContainedPath(root, path.join(root, item.sourcePath), { allowMissing: true });
         await checkFilesystemLocation(root, item.sourcePath);
@@ -87,7 +96,7 @@ export function createWorldCommandService(root, { checkpoint } = {}) {
       if (request.command === 'world.recover') return await recoverWorldTransaction(physicalRoot, { checkpoint });
       const initial = await prepare(await readWorldSnapshot(physicalRoot), request, physicalRoot);
       if (request.mode === 'preview') return initial.result;
-      if (['changeset.apply', 'object.create', 'relation.add', 'resource.bind'].includes(request.command)) {
+      if (['changeset.apply', 'object.create', 'scene.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind'].includes(request.command)) {
         // Never acquire a document queue while holding the registry lock. Legacy
         // writers already hold their queue when waiting for this same lock.
         return await withRegistryLock(physicalRoot, async () => {

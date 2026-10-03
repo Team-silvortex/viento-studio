@@ -19,6 +19,9 @@ function updateControls() {
       button.disabled = busy || (button.dataset.requiresClosedEditor === 'true' && !!currentLibrary?.active);
     });
   }
+  byId('workspaceName').disabled = busy;
+  byId('projectTemplate').disabled = busy;
+  byId('createBtn').disabled ||= !currentLibrary?.projectTemplates?.templates?.length;
 }
 
 function setBusy(value) {
@@ -47,6 +50,7 @@ async function refresh() {
 function renderLibrary() {
   const library = currentLibrary;
   if (!library) return;
+  renderProjectTemplates();
   byId('appVersion').textContent = library.version;
   document.title = t`Viento Studio ${library.version} · 作品库`;
   const list = byId('workspaces');
@@ -83,6 +87,24 @@ function renderLibrary() {
   updateControls();
 }
 
+function renderProjectTemplates() {
+  const select = byId('projectTemplate'), catalog = currentLibrary.projectTemplates;
+  const selected = select.value;
+  select.replaceChildren();
+  for (const template of catalog?.templates || []) {
+    const option = document.createElement('option');
+    option.value = template.packageId; option.textContent = t(template.label);
+    select.appendChild(option);
+  }
+  select.value = catalog?.templates.some((item) => item.packageId === selected) ? selected : catalog?.defaultTemplate || '';
+  updateTemplateDescription();
+}
+
+function updateTemplateDescription() {
+  const template = currentLibrary?.projectTemplates?.templates.find((item) => item.packageId === byId('projectTemplate').value);
+  byId('templateDescription').textContent = template ? t(template.description) : '';
+}
+
 async function run(message, action) {
   if (busy) return;
   setBusy(true); setStatus(message);
@@ -104,13 +126,15 @@ async function openChosen(command, args = {}) {
 
 byId('createBtn').addEventListener('click', () => { byId('createDialog').showModal(); if (!byId('workspaceName').dataset.edited) byId('workspaceName').value = t('我的作品库'); byId('workspaceName').select(); });
 byId('workspaceName').addEventListener('input', () => { byId('workspaceName').dataset.edited = 'true'; });
+byId('projectTemplate').addEventListener('change', updateTemplateDescription);
 byId('cancelCreateBtn').addEventListener('click', () => byId('createDialog').close());
 byId('createForm').addEventListener('submit', (event) => {
   event.preventDefault();
   const name = byId('workspaceName').value.trim();
-  if (!name) return;
+  const templateId = byId('projectTemplate').value;
+  if (busy || currentLibrary?.active || !name || !currentLibrary?.projectTemplates?.templates.some((item) => item.packageId === templateId)) return;
   byId('createDialog').close();
-  void run(t('正在创建作品库…'), () => openChosen('new_workspace', { name }));
+  void run(t('正在创建作品库…'), () => openChosen('new_workspace', { name, templateId }));
 });
 byId('openBtn').addEventListener('click', () => run(t('请选择作品库文件夹…'), () => openChosen('choose_workspace')));
 byId('importBtn').addEventListener('click', () => run(t('正在导入迁移包并逐文件校验…'), () => openChosen('restore_workspace')));

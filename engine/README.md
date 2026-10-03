@@ -1,5 +1,9 @@
 # 可移植引擎
 
+[当前架构](../docs/ARCHITECTURE.md) · [工程模板](../docs/PROJECT_TEMPLATES.md) · [开发路线](../docs/ROADMAP.md)
+
+这里的引擎是现有 JavaScript 解析、编辑和语义规划核心。Godot 等工程运行后端位于宿主适配层，Nuis / ns-nova / yalivia 原生接入属于后续路线。
+
 `index.mjs` 是不依赖 Node、HTTP 服务、Tauri 或本机配置的入口。输入是正文字符串、项目定义、登记记录和稳定素材引用；输出是解析结果、布局、字段范围或修改后的正文。唯一运行依赖是 `yaml`，浏览器宿主使用该包的 browser 发行文件，或由打包器解析其 browser/default 入口。
 
 桌面服务和网页编辑器已经复用这里的实现。旧的 `scripts/lib/`、`scripts/standardize-docs/` 和 `web/modules/` 入口保留转发，避免同时改变调用方与公共资源路径。核心不能反向导入这些入口。
@@ -10,10 +14,12 @@
 - `buildDocumentLayout(parsed)`：通用章节、字段分组和内容块布局。
 - `createDocumentFieldDraft` / `serializeFieldDraft`：依据当前正文范围编辑字段，保留未修改字节、BOM、换行和注释。应用层负责用 `fieldValueValid` 阻止非法输入。
 - `prepareMediaDraft`：插入和收集图片、视频、音频引用。宿主须先确认素材已登记，再传入 `{ type, src: 'asset:<UUID>', caption }`；此函数不导入素材文件。
-- `createProjectModel(defaults)`：注入默认类型与模板后，解析项目路径、定义及文档类型。默认数据的唯一来源仍是 `scripts/lib/project-defaults.json`，宿主负责装载，核心不读取文件。
+- `createProjectModel(defaults)`：注入默认类型与模板后，解析项目路径、定义及文档类型。宿主从 `scripts/lib/workspace-layout.json` 装载物理布局，从 `scripts/lib/project-templates.json` 装载起始模板包及旧工程兼容默认值。显式工程定义只使用自己的模板路径，不按内置文件名回退正文；返回的嵌套字段规则为独立副本。核心不读取文件，也不选择工程模板包。
 - `document-model.mjs`：登记记录的归属关系、旧模型兼容与层级组装。
 - `document-contract.mjs`：现有前后端共享的数据约定。接口能力声明不代表引擎已经实现某个平台宿主。
 - `resource-package.mjs`：基于稳定身份进行循环安全的依赖／附属内容选择，返回自动包含项和外部依赖；ZIP、校验缓存和导入事务属于 Node 宿主，见 [资源包](../docs/RESOURCE_PACKAGES.md)。
+- `object-projection-template.mjs`、`object-projection.mjs`、`world-object-projection.mjs`、`world-projection-update.mjs`：OC 子模板继承、嵌入快照、配置／依赖验证及 `projection.create`／`projection.update` 两文件规划；见 [多份投影](../docs/OBJECT_PROJECTIONS.md)。
+- `build-plan.mjs`：从明确的 Scene2D JSON 文档与 World 投影生成场景计划，校验对象、图片依赖及能力。模块不依赖 Godot 或本机进程；冻结资源、构建与运行属于 Node 适配层，见 [二维场景构建](../docs/PROJECT_BUILD.md)。
 
 `sourcePath` 是项目内以 `/` 分隔的逻辑路径，例如 `documents/characters/旅人.md`，不是磁盘绝对路径或 Android 的 `content://` URI。逻辑路径和 `asset:<UUID>` 应写入作品；平台句柄只存在于适配层。
 
@@ -24,6 +30,10 @@
 `world-command-contract.mjs` 提供轻量的属性命令描述、请求校验与可写性判断；浏览器查询入口不必加载解析依赖。`preparePropertySet(projection, content, request, { digest })` 在宿主提供的快照上检查 World / Object / source revision、生成单字段修改并验证解析往返。它返回原文修改计划及提案，不执行 I/O；`node-world-commands.mjs` 才负责锁和发布。完整边界见 [ADR 0003](../docs/adr/0003-single-property-command.md)。
 
 `prepareChangeSet(source, projection, request, { digest })` 整体规划多个现有对象的属性修改及反向命令，仍不执行 I/O。日志、读取屏障和恢复属于宿主，实现边界见 [ADR 0004](../docs/adr/0004-recoverable-source-changesets.md)。
+
+`prepareSceneCreate(source, projection, request, { digest })` 校验显式 Scene2D 声明，规划新正文及由角色／图片引用派生的登记。它复用同一个场景规划器，不依赖 Godot；Node 用受限事务共同保存两文件，见 [场景创建](../docs/PROJECT_BUILD.md#创建场景)。
+
+`prepareSceneUpdate(source, projection, recordContent, request, { digest })` 保真修改已有 Scene2D 声明，保留逐字段继承／覆盖并追加缺少的角色或图片依赖。`world-scene-update.mjs` 中的原文变换也供受限 version 8 恢复重放；候选由同一场景规划器校验，不读取文件或执行引擎，见 [场景编辑](../docs/PROJECT_BUILD.md#编辑已有场景)。
 
 `prepareObjectCreate(source, projection, request, { digest })` 检查新 UUID、类型、来源路径及正文，规划新正文与登记，并预测创建后的对象和世界 revision。它不读取模板、分配随机身份或创建文件；文件系统冲突检查、排他发布及恢复由 Node 宿主执行，见 [对象创建](../docs/WORLD_OBJECT_CREATE.md) 和 [ADR 0005](../docs/adr/0005-recoverable-object-creation.md)。
 

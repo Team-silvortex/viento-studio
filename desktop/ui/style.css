@@ -1,10 +1,10 @@
 :root { color-scheme: dark; font-family: Inter, "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif; color: #e2e8f1; background: #0b1424; font-synthesis: none; }
 * { box-sizing: border-box; }
 body { margin: 0; background: radial-gradient(ellipse at 90% 0, #172943 0, transparent 55%); min-height: 100vh; }
-button, input { font: inherit; }
+button, input, select { font: inherit; }
 button { border: 1px solid #35445d; border-radius: 9px; color: #dbe5f5; background: #17253b; padding: 11px 16px; cursor: pointer; white-space: nowrap; transition: background .15s; }
 button:hover:not(:disabled) { background: #223752; }
-button:focus-visible, input:focus-visible { outline: 2px solid #8ab5f4; outline-offset: 3px; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid #8ab5f4; outline-offset: 3px; }
 button:disabled { opacity: .45; cursor: wait; }
 button.primary { color: #0b3025; background: #8ad8b4; border-color: #8ad8b4; font-weight: 650; }
 button.primary:hover:not(:disabled) { background: #a4e6c8; }
@@ -45,7 +45,7 @@ dialog { width: min(460px, calc(100% - 40px)); border: 1px solid #405570; border
 dialog::backdrop { background: #030913b8; }
 dialog h2 { font-size: 21px; margin-bottom: 24px; }
 dialog label { display: block; font-size: 13px; margin-bottom: 10px; }
-dialog input[type="text"], #workspaceName { display: block; border: 1px solid #425b79; border-radius: 8px; background: #0d192b; color: #e0e9f7; padding: 12px; width: 100%; margin-bottom: 20px; }
+dialog input[type="text"], #workspaceName, #projectTemplate { display: block; border: 1px solid #425b79; border-radius: 8px; background: #0d192b; color: #e0e9f7; padding: 12px; width: 100%; margin-bottom: 20px; }
 .check-label { display: flex; gap: 10px; align-items: center; }
 .check-label input { accent-color: #8ad8b4; width: 16px; height: 16px; }
 dialog p { font-size: 12px; line-height: 1.8; color: #9eb0cb; margin-bottom: 24px; }

@@ -214,6 +214,15 @@
         },
         "parser": {
           "type": "object"
+        },
+        "authoredProjection": {
+          "description": "Derived authored projection summary; null identifies a damaged projection. Source text remains authoritative.",
+          "anyOf": [
+            { "type": "null" },
+            { "type": "object", "required": ["sourceObjectId", "template", "configuration"], "additionalProperties": false,
+              "properties": { "sourceObjectId": { "type": "string", "pattern": "^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$" },
+                "template": { "type": "object" }, "configuration": { "type": "object" } } }
+          ]
         }
       },
       "additionalProperties": false

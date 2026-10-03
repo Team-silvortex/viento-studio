@@ -1,0 +1,109 @@
+{
+  "ok": true,
+  "date": "2026-10-03",
+  "productVersion": "0.0.5",
+  "baseCommit": "14dfe01367aef8e8e411254c42fa7b22e6271405",
+  "scope": "Scene2D authoring form and recoverable scene.create command on the existing uncommitted development tree",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "node": "v24.21.0",
+  "rust": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "validation": {
+    "application": {
+      "command": "VIENTO_TEST_ARCHIVE_BINARY=<cargo-test helper> VIENTO_MOBILE_STORE_BIN=<cargo-test helper> VIENTO_GODOT_BIN=<cached Godot> npm run check -- --app-only",
+      "exitCode": 0,
+      "passed": 932,
+      "failed": 0,
+      "skipped": 0,
+      "javascriptSyntaxFiles": 254,
+      "log": "app-check.log"
+    },
+    "native": {
+      "command": "CARGO_TARGET_DIR=<temporary target> npm run desktop:test -- --locked",
+      "exitCode": 0,
+      "passed": 48,
+      "failed": 0,
+      "ignored": 1,
+      "ignoredReason": "full_project_migration_roundtrip requires explicitly selected full work",
+      "log": "desktop-test.log"
+    },
+    "desktopPrepare": {
+      "command": "npm run desktop:prepare",
+      "exitCode": 0,
+      "log": "desktop-prepare.log"
+    },
+    "sceneIntegration": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "log": "scene-integration.log"
+    },
+    "browser": {
+      "command": "VIENTO_GODOT_BIN=<cached Godot> VIENTO_SCENE_TEST_OUTPUT=<new evidence directory> node scripts/tests/scene-authoring-smoke.mjs /usr/bin/google-chrome",
+      "exitCode": 0,
+      "report": "browser.json",
+      "screenshots": [
+        "created-scene-runtime-ja.png",
+        "scene-conflict-narrow-ja.png",
+        "scene-form-zh.png",
+        "scene-preview-en.png",
+        "scene-preview-narrow-ja.png",
+        "scene-preview-zh.png"
+      ]
+    }
+  },
+  "resolvedFindings": [
+    "Scene save released the authoring busy state without rerendering build buttons; fixed and browser retest passed.",
+    "Confirmed scene discard left a stale dirty guard; fixed and DOM/desktop-close regression passed.",
+    "Failed catalogue refresh retained an apparently actionable stale preview; refresh invalidates preview and Save checks needsRefresh."
+  ],
+  "earlierAttempts": [
+    {
+      "report": "initial-browser-failure.json",
+      "outcome": "Captured disabled build buttons after successful scene save before the fix."
+    },
+    {
+      "log": "helper-rebuild-attempt.log",
+      "exitCode": 101,
+      "outcome": "Redundant cargo build after successful cargo test exceeded temporary disk quota. The successful test build had already produced both native helpers; they were retained, the 5.2 GB target was removed, and full application/native interoperability checks then passed."
+    }
+  ],
+  "limits": [
+    "No new package, installation, version bump, commit or push.",
+    "No packaged Tauri GUI or Android device validation in this round.",
+    "Runtime smoke validates headless logic; graphical runtime preview was previously tested and is not repeated here.",
+    "Form creates scenes; existing scene authoring still uses source/field editing and explicit relation/resource updates.",
+    "Browser scene drafts remain in page memory; durable authoring recovery applies to submitted transactions, not unsaved forms."
+  ],
+  "sources": {
+    "web/project-build.css": "ed957bfa21d7ea4f42c1d00cecd46eced90b835a085d2c5bf8968afb7e488329",
+    "web/modules/app-scene-create.js": "ba51f0a044b4f8af72fd9bb962bbdf744a763af0ba416c91d6e2b1830eaf1879",
+    "web/modules/app-project-build.js": "ab2bc598d6508b204fea4b75d2b5ee79afe4fdda37a1d32031c76d914d35567f",
+    "web/modules/app-runtime.js": "c1a13590f535d6b755913ca6ad9a08bf7c55bc800ec0ef38e566a34923f7e187",
+    "web/i18n/ja.js": "f44505db3969371b04361c8b44f5e01cc083bf142babbfa0e9d9a329905c1074",
+    "web/i18n/en.js": "96444f5a7eaf60aca154c5d91ba18d651c10db026e4b49550f3c7bd6be0b3a89",
+    "docs/ROADMAP.md": "d6fa58f63a96ad9d78bc3a2d2021fdc45369fbcc2d4675953acf12fae7050d23",
+    "docs/STATUS.md": "2e1d8773ce44939df33b0dcd3c3504a551a5705067a6ab011d0a6637cfa9b935",
+    "docs/PROJECT_BUILD.md": "ec8c716100f9daf395cc2491f7eb7dd9b6846d490061f5dd4f1477a5112eaa70",
+    "docs/WORLD_TRANSACTIONS.md": "1d9d4dcc1168272220801e8732cdd5e88b16a4af5fb3e69b18c0381c54a7124b",
+    "docs/ARCHITECTURE.md": "849235eae7a1a002ae85d98a32ed1b7f6b9f4517469511fb30922aab6d36b71e",
+    "docs/PROJECT_WORKFLOW.md": "83db766bfc1e129f9345f7a1cfab5929591e14badbe5bd8a659e5516eab6d9ff",
+    "docs/TESTING.md": "8d9189f9c6ed6fc3a2b9fd020d05577f81e0f51c2609812be9d3d6db95c9ef5d",
+    "engine/world-scene-create.mjs": "fd150509951f6ca86c19cc6a9161862b5c195e7caa9979f1880a39bf110e1c5f",
+    "engine/world-command-contract.mjs": "cf4f53e4eb263f94d0e9bbe6ee5180e756fce12d5e653b2360e61f343596e45a",
+    "engine/index.mjs": "a0a176e2c327a66c0f74cec4cf9804d05074439784799fcc37e2c1314b4ba371",
+    "engine/README.md": "37b6ae83585bb17d7cb490821d5286182ca92c114dc33c739d689c63226aee93",
+    "schemas/README.md": "8c17a8942ee14792705acc3a7ac853cb1e4f520ac27ee260b7f9596a85e92e11",
+    "scripts/README.md": "f6ad99783cee0b19e79530e68aa7a056b9fc6a0e65e98cfadaf63d7d2389a759",
+    "scripts/adapters/node-world-commands.mjs": "53ae0ef1b27a0b5e79ae0a765d1fff4a4afce663946d78aa7cc60384e0f2ddf2",
+    "scripts/tests/scene-create-ui.test.mjs": "7db9cfa92db1edd77f4361ab1898e029c5868f98de434e4a39e12864ef274548",
+    "scripts/tests/scene-authoring-smoke.mjs": "4e85358f1b5038e8cc8132560bda836b29bf7df69a324befcf3e1b765af05e02",
+    "scripts/tests/world-scene-create.test.mjs": "d11ec8664875835d0547f6147bdf54ed67dc858bac84b39c777525f8336d4178",
+    "scripts/tests/scene-authoring.test.mjs": "4f7cb797f6ce23264d6316d333d5fd9250dd8e123af1390081cd603df424845c",
+    "scripts/tests/world-portable-runtime.mjs": "d86be9a6af3ddce126b6fb6ea6f57e20e6be94b0fad13d6d41454862d7b40839",
+    "scripts/tests/dialog-harness.mjs": "8ad9e71d3be4fa83a8f116ff91f342059c99bbca8057b51eaec5688b915a59d8",
+    "scripts/tests/desktop-close.test.mjs": "826e22e793c742804649c928b7223b19b739dd82862c20aa0ae34864145a8392",
+    "scripts/lib/world-transactions.mjs": "eef3df8babd35ef2fc6086ed16621310e4963bd4058f3306a34c830aba1a04d7",
+    "scripts/lib/doc-api-service.mjs": "78c12a109e2b8557066b9c81e766b40e66f135e5c6ced69795dc227f79edd241",
+    "src-tauri/src/desktop_host.rs": "a074832aae3ce315f7bc9ca87d43324d361c61f93170de1df5d9b4ffd900a09b"
+  }
+}

@@ -208,6 +208,7 @@ struct LibraryState {
     version: String,
     build_version: String,
     examples: Vec<String>,
+    project_templates: serde_json::Value,
 }
 #[tauri::command]
 fn library_state(app: AppHandle, window: WebviewWindow) -> Result<LibraryState> {
@@ -240,6 +241,7 @@ fn library_state(app: AppHandle, window: WebviewWindow) -> Result<LibraryState> 
         version: release_version().into(),
         build_version: app.package_info().version.to_string(),
         examples,
+        project_templates: workspace::project_templates::list()?,
     })
 }
 #[tauri::command]
@@ -268,11 +270,13 @@ async fn new_workspace(
     app: AppHandle,
     window: WebviewWindow,
     name: String,
+    template_id: Option<String>,
 ) -> Result<Option<Recent>> {
     home_only(&window)?;
     let state = app.state::<DesktopState>();
     let _operation = operation(&state)?;
     require_closed_editor(&app)?;
+    if let Some(id) = &template_id { workspace::project_templates::select(id)?; }
     let directory = storage_directory(&app, "workspaces")?;
     let lang = language(&app);
     let Some(folder) = select_path(&app, move || {
@@ -287,7 +291,10 @@ async fn new_workspace(
     else {
         return Ok(None);
     };
-    let root = workspace::create_workspace(&folder, &name, None, None)?;
+    let root = match template_id {
+        Some(id) => workspace::create_workspace_from_template(&folder, &name, &id)?,
+        None => workspace::create_workspace(&folder, &name, None, None)?,
+    };
     Ok(Some(remember(&app, &root)?))
 }
 #[tauri::command]
@@ -625,8 +632,8 @@ const CLOSE_SCRIPT: &str = r#"(async () => {
   const panel = document.querySelector('#docEditPanel');
   const indicator = document.querySelector('#docEditDirtyIndicator');
   if (!panel || !indicator || !document.body) return;
-  const busy = panel.getAttribute('aria-busy') === 'true' || !!document.querySelector('#projectSettingsDialog[aria-busy="true"], #worldBrowserDialog[aria-busy="true"]');
-  const dirty = indicator.classList.contains('is-unsaved') || !!document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"]');
+  const busy = panel.getAttribute('aria-busy') === 'true' || !!document.querySelector('#projectSettingsDialog[aria-busy="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[aria-busy="true"], #objectProjectionDialog[aria-busy="true"]');
+  const dirty = indicator.classList.contains('is-unsaved') || !!document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #sceneCreateDialog[data-dirty="true"], #objectProjectionDialog[data-dirty="true"]');
   window.__vientoCloseGuard = {id, inert: document.body.inert};
   document.body.inert = true;
   await fetch('/__desktop/close-response', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id, busy, dirty})});

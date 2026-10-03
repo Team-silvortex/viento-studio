@@ -100,6 +100,7 @@ export function createMobilePlatform({ invoke, workspaceId }) {
       const body = options.body ? JSON.parse(options.body) : {};
       if (method === 'GET' && pathname === API_PATHS.CAPABILITIES) {
         const capabilities = makeCapabilitiesPayload(prefixes, 'disabled', 'android-native');
+        capabilities.projectBuild = false;
         capabilities.capabilities = { edit: true, create: true, rebuild: true, media: false, export: false, project: false };
         capabilities.endpoints = [API_PATHS.CAPABILITIES, API_PATHS.INDEX, API_PATHS.DOC, API_PATHS.REBUILD, API_PATHS.FIELDS];
         return json(capabilities);

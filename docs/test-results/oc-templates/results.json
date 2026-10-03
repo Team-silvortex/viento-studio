@@ -1,0 +1,148 @@
+{
+  "task": "Split OC starter templates into Game, Literature and Drama",
+  "recordedAt": "2026-10-03T01:57:57.474430+00:00",
+  "baseCommit": "14dfe01367aef8e8e411254c42fa7b22e6271405",
+  "sourceVersion": "0.0.5 + uncommitted project template and OC split increments",
+  "status": "passed",
+  "application": {
+    "command": "VIENTO_TEST_ARCHIVE_BINARY=\"$PWD/src-tauri/target/debug/examples/workspace-archive\" VIENTO_MOBILE_STORE_BIN=\"$PWD/src-tauri/target/debug/examples/mobile-storage\" npm run check -- --app-only",
+    "exitCode": 0,
+    "syntaxFiles": 234,
+    "passed": 859,
+    "failed": 0,
+    "skipped": 0,
+    "nativeHelpers": "Both examples compiled from the current source; native interoperability tests enabled"
+  },
+  "native": {
+    "command": "CARGO_BUILD_JOBS=2 CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0 CARGO_INCREMENTAL=0 npm run desktop:test -- --locked",
+    "exitCode": 0,
+    "passed": 48,
+    "failed": 0,
+    "ignored": 1,
+    "ignoredReason": "Full real-work migration requires an explicitly selected VIENTO_TEST_SOURCE_ROOT",
+    "examples": [
+      "workspace-archive",
+      "mobile-storage"
+    ]
+  },
+  "preparedResources": {
+    "desktop": "passed",
+    "mobile": "passed"
+  },
+  "browserCommand": "VIENTO_MOBILE_STORE_BIN=\"$PWD/src-tauri/target/debug/examples/mobile-storage\" node scripts/tests/project-templates-smoke.mjs",
+  "browserExitCode": 0,
+  "browser": {
+    "browser": "Chrome/154.0.8037.97",
+    "steps": [
+      "Desktop: five choices without legacy OC, translated labels, cancel, and native creation of game/literature/drama projects",
+      "Mobile: Japanese drama selection, scene template, repeated speakers and stage directions stay prose through save/reopen",
+      "Mobile: software template selection in Japanese, YAML template/field editing, save and reload with stable identity"
+    ],
+    "errors": [],
+    "limitations": [
+      "System pickers/window launches are substituted; no new APK or device test."
+    ],
+    "status": "passed"
+  },
+  "harnessCorrections": [
+    {
+      "initialStatus": "failed",
+      "assertion": "AssertionError [ERR_ASSERTION]: （灯光亮起）",
+      "cause": "The initial smoke script read #docContent, but structured document sections render in #sectionCards. Diagnostic body text and saved source both contained every dialogue line; there were no application errors.",
+      "correction": "Read the visible #sectionCards container; scroll it into view for the saved screenshot.",
+      "rerunStatus": "passed"
+    }
+  ],
+  "templates": {
+    "visible": [
+      "org.viento.blank",
+      "org.viento.oc-game",
+      "org.viento.oc-literature",
+      "org.viento.oc-drama",
+      "org.viento.software-design"
+    ],
+    "ocDocumentTypeCounts": {
+      "game": 8,
+      "literature": 7,
+      "drama": 6
+    },
+    "compatibility": "org.viento.oc-narrative",
+    "legacySha256": "30545b1162327ee60172cdbe0255a3f85729f668d036a7ff358be8259fe1dc90"
+  },
+  "invariants": [
+    "Each domain owns its type definitions and starter content; character histories remain in character templates.",
+    "Literature outlines/chapters and drama acts/scenes preserve repeated speaker labels as prose.",
+    "Game templates support custom fields without a fixed game-stat schema.",
+    "Native archive round trips retain BOM, CRLF, original source bytes, document UUIDs, layout, type definitions and package provenance for all three OC domains.",
+    "Old OC package content and digest remain identical; hidden compatibility selection and omitted-template legacy calls retain six original types.",
+    "Chinese, English and Japanese new-project labels and descriptions are present; language changes preserve the selected package."
+  ],
+  "limitations": [
+    "No new installer or APK was produced or installed.",
+    "No Android device/emulator or new native system-picker interaction was exercised.",
+    "Starter document content and user-owned type labels are project data, not automatically translated when UI language changes.",
+    "Builtin starter packages only; external package installation and executable workflows remain outside this increment."
+  ],
+  "additionalChecks": {
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    "browserSyntax": {
+      "command": "node --check scripts/tests/project-templates-smoke.mjs",
+      "exitCode": 0
+    }
+  },
+  "logs": [
+    "application.log",
+    "native.log",
+    "native-examples.log",
+    "desktop-prepare.log",
+    "mobile-prepare.log",
+    "browser.log"
+  ],
+  "changedSourceSha256": {
+    "README.md": "50278bae0e53c81c427a1a475c442193bea1173aea47129f9173f7dd29a4efde",
+    "desktop/README.md": "71a3a875be05807ddc11cad919ce4c8037ab24ae04f4620a4fb8ba13704d2213",
+    "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
+    "desktop/ui/index.html": "25252ddef2276c523bf8446ddae63176e6fcb270dd87a3fb452763c098eb9f8a",
+    "desktop/ui/style.css": "cf124635a56b3cbbecb99de2e3e3f3a527979dae7d6b8c079d695d8c7624dc0a",
+    "docs/GENERIC_PROJECTS.md": "6f32579150ad3322a357f982b0766eaf653dd6cb15eb915f97319aaa133b936a",
+    "docs/NEXT_ARCHITECTURE.zh-CN.md": "8b367d9f98f102362b3a0129e7f2effc20e32d5d67bea794e53e1fa986dbcb9d",
+    "docs/PROJECT_WORKFLOW.md": "eb2a451c155404321d6e4938ecb596053dbf2d00075bde3a8f22f9c512d56e5a",
+    "docs/README.md": "569189750d59e7b473f1e2c8e8779b839caac09e88740bff032b137f7b99954c",
+    "docs/TESTING.md": "8ae4163d0c83b1e31cd28153b3e3e3509559b47cdacaba6e388580027b88d2e8",
+    "engine/README.md": "f5c3dd0b6f1c542415e55f658e0482a6e80e152055afe036b2db9b4d1ebc9099",
+    "engine/project.mjs": "8673832907687e583137b7d024ac0131582905df0b8c3359fdd1e99733b30503",
+    "mobile/README.md": "142dbe453deef178afedb2f13cbbba3d14221a166d57a161d69c9a508a9c6167",
+    "mobile/index.html": "fad38d95b88e273206587485e48f0ef08f62eeb29d367ff140ae382225e0018a",
+    "mobile/library.js": "a60baece388c981736d68aa81ef76a47a3e83a893fe2ebb620d0c5e785bac6dd",
+    "mobile/mobile.css": "13cfd38d58bf54b6ee9ea18b026a23ab6affabc6cd783b536f65d0f4b354aa5a",
+    "scripts/lib/project-defaults.json": null,
+    "scripts/lib/project-layout.mjs": "83d9b9ba4e13bc43a340293f5d87a6e17fba1bb0ab01a0b4ea80e944682bde48",
+    "scripts/lib/project-templates.json": "3944610922fcc88d05c7f897f81fc7d8c25e6f214e5345d710f41f285f3c7734",
+    "scripts/lib/workspace-layout.json": "33427cd02fd4ea3499823d41e4a8445f9717325a3f40b8ae25fc2b603acb4090",
+    "scripts/tests/desktop-library.test.mjs": "1f600e7a2010d7be6d506eade9684edc42a215eb7c8c56c224f2f780fe9d3481",
+    "scripts/tests/mobile-library.test.mjs": "59b46b51b5ffa56516cde0700de384e5630acc01432dd27b8a9e2b4d6efe6512",
+    "scripts/tests/portable-engine-runtime.mjs": "12fb8a4631877feea45ebbb6b2640e55e34d015c32a2d0fabe5fb612b3ba350d",
+    "scripts/tests/portable-engine-scenarios.mjs": "17ce1d26ac1e07279e8d350b5a84defd24d1caaf12816123cf9910846efccfed",
+    "scripts/tests/project-templates-smoke.mjs": "e2089287afadeb1d532f3464c8dd2f31fdbaf941c7f8e2b2120ea52afb1a070b",
+    "scripts/tests/project-templates.test.mjs": "5cb420734d22c505979e8cfd04cef5a6287073df42b4f1f78cd5ad2115d337e4",
+    "src-tauri/examples/mobile-storage.rs": "cb4ae7fe6f0df6ca91f80c0b632b4b6b451938e00af42c3895886930edb3fa96",
+    "src-tauri/examples/workspace-archive.rs": "d10b0a82925eebd0659fc762e663b32c84708a6e3234fc5447b28a4b1add6682",
+    "src-tauri/src/desktop_host.rs": "152d5125e7bb02b4b33b07b47273c7e7bf71679f2ba393ed9764a6ca3d602e9c",
+    "src-tauri/src/mobile_host.rs": "c67f0605e004c3aa7e3f4b50ac7f808803e4f8c4825f88596f7153ef60f4c072",
+    "src-tauri/src/mobile_storage.rs": "a22f2b25771a34396d720189f0cc2cdb0540fcafe72c3391bdc9696bc12cb643",
+    "src-tauri/src/project_templates.rs": "dd1829a8dc3b7f56a00f70a8be127251401cbe844535dd3f887b1157008a9847",
+    "src-tauri/src/workspace.rs": "c1c23669fa7611620ed8813e8c6bcf21719e124dd2fd732aea3e91063814fb6e",
+    "web/i18n/en.js": "93a8c476faa906b3646a87934fae81b89c16da075b450c56ba1e6781e33828af",
+    "web/i18n/ja.js": "f4013bc26ddf14855b3242aeefac242fb1921ec7567d0fc674758f9eab9d6e26"
+  },
+  "cleanup": {
+    "command": "npm run clean",
+    "exitCode": 0,
+    "removedGeneratedDirectories": 7,
+    "log": "cleanup.log",
+    "preserved": "User projects, installed application, dist/current and historical validation records"
+  }
+}

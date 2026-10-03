@@ -1,14 +1,12 @@
 import { parseSourceContent } from './parse.mjs';
 import { createDocumentFieldDraft } from './fields.mjs';
 import { sourceFileName } from './source-path.mjs';
+import { validateObjectProjection, validateProjectionDependencies } from './object-projection.mjs';
 
 // Hashing is supplied by the host. The projection owns no filesystem, clock,
 // cache or write operation, and never promotes parsed values to stored records.
-export function canonicalJson(value) {
-  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
-  if (value && typeof value === 'object') return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(',')}}`;
-  return JSON.stringify(value);
-}
+export { canonicalJson } from './canonical-json.mjs';
+import { canonicalJson } from './canonical-json.mjs';
 
 const copy = value => JSON.parse(JSON.stringify(value));
 const compare = (a, b) => a < b ? -1 : a > b ? 1 : 0;
@@ -31,7 +29,7 @@ export async function createWorldProjection({ workspace, definition, documents, 
   if (!types.some(type => type.id === typeRef('document'))) types.push({ id: typeRef('document'), version: 1,
     label: 'Document', authorityKind: 'document', readOnly: true, definition: {} });
   const knownTypes = new Set(types.map(type => type.id));
-  const ids = new Set(), paths = new Set();
+  const ids = new Set(), paths = new Set(), authored = new Map();
   for (const source of [...documents].sort((a, b) => compare(a.sourcePath, b.sourcePath))) {
     const { sourcePath, record = null, descriptor = {}, content = null, sourceRevision = null } = source;
     const id = record?.id || `legacy-document:${await hash([workspace.id, sourcePath])}`;
@@ -48,16 +46,33 @@ export async function createWorldProjection({ workspace, definition, documents, 
         documentType: registeredType, descriptor: copy(record), parser: copy(descriptor) } };
     if (!record) issue('unregistered-document', id, sourcePath);
     if (!known) issue('unknown-document-type', id, sourcePath);
+    const projected = await validateObjectProjection(content, record, { digest });
+    if (projected.recognized) {
+      object.provenance.authoredProjection = projected.ok ? copy({ sourceObjectId: projected.value.sourceObjectId,
+        template: projected.value.template, configuration: projected.value.configuration }) : null;
+      for (const diagnostic of projected.diagnostics) issues.push({ ...diagnostic, objectId: id, sourcePath });
+      if (projected.ok) {
+        authored.set(id, { object, source, declaration: projected.value });
+        if (!sourcePath.toLowerCase().endsWith('.json')) issue('object-projection-invalid', id, sourcePath, 'error');
+      }
+    }
     if (content === null) issue('source-unavailable', id, sourcePath, 'error');
     else {
       try {
-        object.name = parseSourceContent(content, sourcePath, descriptor).title || object.name;
+        const parsedTitle = parseSourceContent(content, sourcePath, descriptor).title;
+        object.name = projected.recognized && projected.ok ? projected.value.title : parsedTitle || object.name;
         const draft = createDocumentFieldDraft(content, sourcePath, descriptor);
         for (const field of draft.fields) {
+          // Template locks and the OC identity are not scalar edit targets.
+          // Image configuration needs a registration transaction and cannot be
+          // edited by property.set, which only replaces one source file.
+          const configurationField = projected.value?.template.snapshot.fields.find(item => item.id === field.label);
+          if (projected.recognized && (field.key !== 'title' && field.key !== 'configuration'
+            || field.key === 'configuration' && (!configurationField || configurationField.type === 'image'))) continue;
           // A field ordinal is only meaningful together with this source revision.
           // Values retain their lexical precision (including very large numbers).
           const key = `field-${field.id}`;
-          object.properties[key] = { label: field.label, group: field.group || '', kind: field.kind, value: field.value };
+          object.properties[key] = { label: configurationField?.label || field.label, group: field.group || '', kind: field.kind, value: field.value };
           object.propertyBindings.push({ propertyPath: `/properties/${key}`, authorityKind: 'document',
             authorityRef: { sourcePath, range: { start: field.start, end: field.end, unit: 'utf16' } }, sourceRevision });
         }
@@ -82,6 +97,13 @@ export async function createWorldProjection({ workspace, definition, documents, 
   for (const binding of resourceBindings) if (!resourceIds.has(binding.resourceId)) issue('resource-target-missing', binding.objectId, '', 'error');
   for (const resource of resources) if (resource.availability !== 'present-unverified') issues.push({
     code: 'resource-unavailable', severity: 'warning', resourceId: resource.id, availability: resource.availability });
+  for (const [id, { object, source, declaration }] of authored) {
+    const dependencies = validateProjectionDependencies(declaration, source.record || { id }, { documents, assets });
+    if (issues.some(item => item.objectId === declaration.sourceObjectId && item.severity === 'error')) dependencies.push({
+      severity: 'error', code: 'object-projection-invalid', message: 'Projection source has invalid content', propertyPath: '/sourceObjectId', relatedObjectId: declaration.sourceObjectId });
+    for (const diagnostic of dependencies) issues.push({ ...diagnostic, objectId: id, sourcePath: source.sourcePath });
+    if (issues.some(item => item.objectId === id && item.severity === 'error')) object.provenance.authoredProjection = null;
+  }
   objects.sort(byId); relations.sort(byId); resources.sort(byId); resourceBindings.sort(byId); types.sort(byId);
   const world = { format: 'viento-world', schemaVersion: 1, id: worldId, projectId: workspace.id, name: workspace.name,
     revision: await revision({ projectionVersion: 1, workspace, definition,

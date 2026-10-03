@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "steps": [
+    "One browser-created OC produces RPG player, NPC and derived custom projections; template defaults retain current values, image defaults reset, each gets a unique UUID and the same core link.",
+    "Chinese, English and Japanese projection form retains its draft; 390px layout fits. External core edit invalidates preview; refresh preserves settings and creates only once.",
+    "Both projections enter one scene with inherited configuration and distinct runtime IDs; real Godot player moves 45px while NPC stays still. Source OC, projections, images and definitions remain byte-identical.",
+    "Existing projection form locks identity, source and template while editing title, speed, health and image. Preview does not write; conflict retains draft; save changes exactly source + metadata, preserving BOM/CRLF, core and siblings.",
+    "Rebuilt real Godot uses the same actor UUID with the new image and speed: player moves 80px, NPC remains unchanged. Old image remains registered for explicit scene overrides.",
+    "Reload discovers all three projections under the original OC and the same saved scene; authoring bytes remain unchanged."
+  ],
+  "limitations": [
+    "Source editor served over real HTTP; packaged Tauri IPC and Android were not exercised.",
+    "Headless checks validate runtime logic only; this authoring smoke does not repeat graphical runtime preview."
+  ],
+  "output": "/tmp/viento-projection-edit-2vgkk_36/browser-1"
+}

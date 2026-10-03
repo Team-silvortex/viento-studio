@@ -3,8 +3,10 @@ import { fetchJsonApiRequest } from './app-services.js';
 import { WORLD_API_PATH, queryWorldProjection } from '../../engine/world-query.mjs';
 import { canSetObjectProperty, canRelateObject, MAX_CHANGESET_COMMANDS } from '../../engine/world-command-contract.mjs';
 import { requestWorldCommand } from './app-doc-service.js';
+import { setupObjectProjection } from './app-object-projection.js';
 
 const diagnosticLabels = {
+  'object-projection-invalid': '投影配置无效，请检查原文与诊断。',
   'unregistered-document': '尚未登记身份；改名后身份会变化',
   'unknown-document-type': '未知类型，按通用文档展示',
   'source-unavailable': '原文缺失或无法读取',
@@ -15,7 +17,7 @@ const diagnosticLabels = {
   'resource-unavailable': '素材缺失或需要检查',
 };
 
-export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {}, applied = async () => {} } = {}) {
+export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {}, applied = async () => {}, openSource = () => false } = {}) {
   const button = document.getElementById('worldBrowserBtn');
   if (!button) return { setAvailable() {} };
   const dialog = document.createElement('dialog');
@@ -40,7 +42,18 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
   let batchSupported = false, recoverySupported = false, recoveryNeeded = false, queued = [], batchPreview = null;
   let createSupported = false, creation = null;
   let relationSupported = false, relationDraft = null;
-  let resourceSupported = false, resourceDraft = null;
+  let resourceSupported = false, resourceDraft = null, projectionSupported = false, projectionUpdateSupported = false;
+  const projectionCreator = setupObjectProjection({ getContext, setBusy: value => { busy = value; setBusy(value); render(); },
+    applied: async result => {
+      let refreshError;
+      try {
+        await readProjection();
+        if (projection.objects.some(object => object.id === result.object?.id)) selectedId = result.object.id;
+        else throw new Error('Saved projection was absent from the refreshed World');
+      } catch (error) { refreshError = error; }
+      try { await applied(result); } catch (error) { refreshError ||= error; }
+      render(); if (refreshError) throw refreshError;
+    }, closed: () => { (el('worldProjectionEdit') || el('worldProjectionSource') || el('worldProjectionCreate') || el('worldRefresh'))?.focus(); } });
   const dirty = () => Boolean(creation || relationDraft || resourceDraft || draft && draft.value !== draft.original);
   const canDiscard = (all = false) => !(dirty() || all && queued.length) || window.confirm(t('有未保存的对象修改，确定丢弃？'));
   const canWrite = () => {
@@ -71,11 +84,55 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
     inspector.append(facts);
     if (relationDraft) { renderRelationEditor(inspector); return; }
     if (resourceDraft) { renderResourceEditor(inspector); return; }
+    const authored = object.provenance?.authoredProjection;
+    const isProjection = Object.hasOwn(object.provenance || {}, 'authoredProjection');
+    const chooseObject = id => { if (busy || !canDiscard()) return; draft = null; selectedId = id; renderList(); renderInspector(); updateDraftActions(); };
+    if (isProjection) {
+      inspector.append(node('h4', t('投影配置')));
+      if (authored) {
+        const source = projection.objects.find(item => item.id === authored.sourceObjectId);
+        const back = node('button', t('返回来源对象：{0}', source?.name || authored.sourceObjectId), 'doc-btn doc-btn-ghost'); back.type = 'button'; back.id = 'worldProjectionSource';
+        back.disabled = busy || !source; back.addEventListener('click', () => chooseObject(authored.sourceObjectId)); inspector.append(back);
+        inspector.append(node('p', `${t(authored.template.snapshot.label)} · ${authored.template.version}`, 'world-source'));
+        if (projectionUpdateSupported) {
+          const edit = node('button', t('编辑投影配置'), 'doc-btn doc-btn-ghost'); edit.type = 'button'; edit.id = 'worldProjectionEdit';
+          edit.disabled = busy || !canWrite() || !canRelateObject(object) || Boolean(queued.length)
+            || projection.diagnostics.some(item => item.objectId === object.id && item.severity === 'error');
+          edit.addEventListener('click', () => {
+            if (edit.disabled || !canWrite() || !canDiscard()) return;
+            draft = null; relationDraft = null; resourceDraft = null; render(); projectionCreator.open(object.id, { mode: 'edit' });
+          }); inspector.append(edit);
+        }
+        const configuration = node('dl', '', 'world-facts');
+        for (const field of authored.template.snapshot.fields.filter(field => field.type === 'image')) {
+          const resourceId = authored.configuration[field.id], resource = projection.resources.find(item => item.id === resourceId);
+          configuration.append(node('dt', t(field.label)), node('dd', resourceId ? resource?.descriptor.name || resourceId : t('不使用图片')));
+        }
+        inspector.append(configuration);
+      } else inspector.append(node('p', t('投影配置无效，请检查原文与诊断。'), 'world-source'));
+      const editSource = node('button', t('编辑投影原文'), 'doc-btn doc-btn-ghost'); editSource.type = 'button'; editSource.id = 'worldProjectionEditSource'; editSource.disabled = busy;
+      editSource.addEventListener('click', () => { if (!busy && canDiscard(true) && openSource(object.documentRefs[0].sourcePath) !== false) { draft = null; queued = []; batchPreview = null; render(); dialog.close(); } });
+      inspector.append(editSource);
+    } else {
+      inspector.append(node('h4', t('此对象的投影')));
+      if (projectionSupported) {
+        const create = node('button', t('创建投影'), 'doc-btn doc-btn-ghost'); create.type = 'button'; create.id = 'worldProjectionCreate';
+        create.disabled = busy || !createTypes().length || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(object.id) || !canWrite() || !canRelateObject(object) || !object.documentRefs[0]?.sourceRevision || Boolean(queued.length)
+          || projection.diagnostics.some(item => item.objectId === object.id && item.severity === 'error');
+        create.addEventListener('click', () => { if (create.disabled || !canDiscard()) return; draft = null; relationDraft = null; resourceDraft = null; render(); projectionCreator.open(object.id); }); inspector.append(create);
+      }
+      const variants = node('ul', '', 'world-projection-list'); variants.id = 'worldProjectionList';
+      for (const variant of projection.objects.filter(item => item.provenance?.authoredProjection?.sourceObjectId === object.id)) {
+        const row = node('li'), button = node('button', `${variant.name} · ${t(variant.provenance.authoredProjection.template.snapshot.label)}`, 'doc-btn doc-btn-ghost');
+        button.type = 'button'; button.disabled = busy; button.addEventListener('click', () => chooseObject(variant.id)); row.append(button); variants.append(row);
+      }
+      if (!variants.children.length) variants.append(node('li', t('暂无投影。可使用不同子模板创建独立配置。'))); inspector.append(variants);
+    }
     const fields = Object.entries(object.properties);
     const editable = canEdit() && canSetObjectProperty(projection, object);
-    if (writable && !busy && !editable) inspector.append(node('p', t('仅支持已登记对象；请在编辑模式下保存或结束文档草稿后修改属性。'), 'world-source'));
-    if (!fields.length) inspector.append(node('p', t('没有可映射字段；原文与叙事内容保持原样。')));
-    else {
+    if (!isProjection && writable && !busy && !editable) inspector.append(node('p', t('仅支持已登记对象；请在编辑模式下保存或结束文档草稿后修改属性。'), 'world-source'));
+    if (!fields.length && !isProjection) inspector.append(node('p', t('没有可映射字段；原文与叙事内容保持原样。')));
+    else if (fields.length) {
       const table = node('table', '', 'world-properties'), head = document.createElement('thead'), row = document.createElement('tr');
       for (const label of [t('属性'), t('值'), t('原文位置')]) { const th = node('th', label); th.scope = 'col'; row.append(th); }
       head.append(row); table.append(head);
@@ -83,14 +140,19 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
       for (const [key, field] of fields) {
         const tr = document.createElement('tr');
         const binding = object.propertyBindings.find(item => item.propertyPath === `/properties/${key}`);
-        tr.append(node('td', [field.group, field.label].filter(Boolean).join(' / ')), node('td', field.value),
+        const labelKey = isProjection && field.label === 'title' && !field.group ? '标题' : field.label;
+        const displayLabel = isProjection ? t(labelKey) : field.label;
+        const configurationField = authored?.template.snapshot.fields.find(item => item.label === field.label);
+        const enumLabel = configurationField?.type === 'enum' && ['arrows', 'none'].includes(field.value) ? t(field.value === 'arrows' ? '方向键' : '不接受输入') : field.value;
+        const displayValue = isProjection && field.kind === 'boolean' ? t(field.value === 'true' ? '是' : '否') : enumLabel;
+        tr.append(node('td', isProjection ? displayLabel : [field.group, field.label].filter(Boolean).join(' / ')), node('td', displayValue),
           node('td', `${binding.authorityRef.range.start}–${binding.authorityRef.range.end} (UTF-16)`));
         if (editable) {
           const edit = node('button', t('修改属性'), 'doc-btn doc-btn-ghost'); edit.type = 'button'; edit.disabled = busy;
-          edit.setAttribute('aria-label', t('修改属性：{0}', field.label));
+          edit.setAttribute('aria-label', t('修改属性：{0}', displayLabel));
           edit.addEventListener('click', () => {
             if (busy || !canEdit() || !canDiscard()) return;
-            draft = { original: field.value, value: field.value, label: field.label, preview: null, message: '',
+            draft = { original: field.value, value: field.value, label: labelKey, localized: isProjection, preview: null, message: '',
               request: { command: 'property.set', mode: 'preview', worldId: projection.world.id, baseRevision: projection.world.revision,
                 objectId: object.id, objectRevision: object.revision, sourceRevision: binding.sourceRevision,
                 propertyPath: binding.propertyPath, value: field.value, actorRef: { kind: 'user', id: 'local-ui' } } };
@@ -371,7 +433,7 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
   }
   function renderPropertyEditor(inspector) {
     const section = node('section', '', 'world-property-editor');
-    section.append(node('h4', t('修改属性：{0}', draft.label)));
+    section.append(node('h4', t('修改属性：{0}', draft.localized ? t(draft.label) : draft.label)));
     const label = node('label', t('新值')); label.htmlFor = 'worldPropertyValue';
     const input = document.createElement('textarea'); input.id = 'worldPropertyValue'; input.rows = 3;
     input.maxLength = 262144; input.value = draft.value; input.disabled = busy;
@@ -419,6 +481,7 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
       recoveryNeeded = ['world_recovery_required', 'world_recovery_conflict', 'world_journal_invalid'].includes(code);
       draft.message = ['world_revision_conflict', 'world_read_conflict'].includes(code)
         ? '工程版本已变化。草稿仍保留，请复制内容后刷新，再重新预览。'
+        : code === 'world_projection_invalid' ? '投影配置无效，请检查标出的位置。'
         : code === 'world_property_roundtrip' ? '此值会改变其他字段或文档结构，请使用原文编辑器。'
         : code === 'world_property_value_invalid' ? '值与属性类型不符，请检查数字或布尔值。'
         : '请求未完成。草稿仍保留；请刷新核对已保存内容后再预览。';
@@ -546,10 +609,10 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
     event.stopPropagation();
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') event.preventDefault();
   });
-  dialog.addEventListener('close', () => { generation++; busy = false; });
+  dialog.addEventListener('close', () => { if (!dialog.open) { generation++; busy = false; } });
   el('worldSearch').maxLength = 200;
   el('worldSearch').addEventListener('input', renderList);
   onLanguageChange(() => { if (dialog.open) render(); });
   return { setAvailable(available, commands = []) { button.hidden = !available; writable = commands.includes('property.set');
-    batchSupported = commands.includes('changeset.apply'); recoverySupported = commands.includes('world.recover'); createSupported = commands.includes('object.create'); relationSupported = commands.includes('relation.add'); resourceSupported = commands.includes('resource.bind'); } };
+    batchSupported = commands.includes('changeset.apply'); recoverySupported = commands.includes('world.recover'); createSupported = commands.includes('object.create'); relationSupported = commands.includes('relation.add'); resourceSupported = commands.includes('resource.bind'); projectionSupported = commands.includes('projection.create'); projectionUpdateSupported = commands.includes('projection.update'); projectionCreator.setAvailable(available, commands); } };
 }

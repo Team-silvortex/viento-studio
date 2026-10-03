@@ -1,0 +1,17 @@
+Error: Timed out: #sceneCreateCheck enabled
+    at wait (file:///tmp/viento-scene-edit-8md3kcdx/repo/scripts/tests/scene-edit-smoke.mjs:33:9)
+    at async file:///tmp/viento-scene-edit-8md3kcdx/repo/scripts/tests/scene-edit-smoke.mjs:226:83
+{
+  "ok": false,
+  "steps": [
+    "One browser-created OC produces RPG player, NPC and derived custom projections; template defaults retain current values, image defaults reset, each gets a unique UUID and the same core link.",
+    "Chinese, English and Japanese projection form retains its draft; 390px layout fits. External core edit invalidates preview; refresh preserves settings and creates only once.",
+    "Both projections enter one scene with inherited configuration and distinct runtime IDs; real Godot player moves 45px while NPC stays still. Source OC, projections, images and definitions remain byte-identical."
+  ],
+  "limitations": [
+    "Source editor served over real HTTP; packaged Tauri IPC and Android were not exercised.",
+    "Headless checks validate runtime logic only; this authoring smoke does not repeat graphical runtime preview."
+  ],
+  "failure": "Error: Timed out: #sceneCreateCheck enabled\n    at wait (file:///tmp/viento-scene-edit-8md3kcdx/repo/scripts/tests/scene-edit-smoke.mjs:33:9)\n    at async file:///tmp/viento-scene-edit-8md3kcdx/repo/scripts/tests/scene-edit-smoke.mjs:226:83",
+  "output": "/tmp/viento-scene-edit-8md3kcdx/browser-1"
+}

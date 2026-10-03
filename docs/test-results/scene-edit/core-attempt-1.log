@@ -1,0 +1,127 @@
+✔ projection.update v2 preserves authored bytes and adds only distinct required image bindings (326.008119ms)
+✔ projection.update v3 preserves authored bytes and adds only distinct required image bindings (225.746832ms)
+✔ semantic no-op ignores candidate formatting and creates no journal or duplicate binding (320.416445ms)
+✔ projection.update rejects identity/template edits, unknown fields, invalid configuration, stale versions and ordinary documents without writes (346.014696ms)
+✔ projection.update v7 SIGKILL intent/- restores exact before source and registration (274.72232ms)
+✔ projection.update v7 SIGKILL source-ready/0 restores exact before source and registration (271.146363ms)
+✔ projection.update v7 SIGKILL data/0 restores exact before source and registration (282.729309ms)
+✔ projection.update v7 SIGKILL source-ready/1 restores exact before source and registration (302.606763ms)
+✔ projection.update v7 SIGKILL data/1 restores exact before source and registration (317.017841ms)
+✔ projection.update v7 SIGKILL commit/- restores exact after source and registration (301.978793ms)
+✔ projection.update v7 SIGKILL head/- restores exact after source and registration (300.410568ms)
+✔ v7 keeps a metadata guard for source-only edits and recovery can be interrupted again in both directions (769.895699ms)
+✔ v7 recovery ignores external OC source edits but blocks any external registry, projection source or own-record edit (1233.481176ms)
+✔ v7 rejects forged journal locked-core before publishing any recovery bytes (230.550732ms)
+✔ v7 rejects forged journal resigned-template before publishing any recovery bytes (236.07135ms)
+✔ v7 rejects forged journal formatting before publishing any recovery bytes (232.071226ms)
+✔ v7 rejects forged journal extra-binding before publishing any recovery bytes (234.522922ms)
+✔ v7 rejects forged journal removed-old-binding before publishing any recovery bytes (240.288742ms)
+✔ v7 rejects forged journal record-extension before publishing any recovery bytes (236.768329ms)
+✔ v7 rejects forged journal identity before publishing any recovery bytes (241.487602ms)
+✔ v7 rejects forged journal missing-entry before publishing any recovery bytes (232.688495ms)
+✔ v7 rejects forged journal downgrade-v6 before publishing any recovery bytes (218.401862ms)
+✔ v7 rejects forged journal downgrade-v1 before publishing any recovery bytes (215.271502ms)
+✔ projection.update HTTP authentication, CLI preview, diagnostics and no-op share one command contract (480.595954ms)
+✔ projection update planning and lossless token replacement execute without host APIs (87.102339ms)
+✔ scene.create v2: preview predicts exact source, deduplicated dependencies and build plan without modifying existing data (197.522419ms)
+✔ scene.create v3: preview predicts exact source, deduplicated dependencies and build plan without modifying existing data (136.332909ms)
+✔ scene.create rejects malformed, unsupported and unregistered declarations with build diagnostics and no writes (148.204286ms)
+✔ an empty generic project creates an actor then a scene using only its existing document type (81.722446ms)
+✔ scene.create v5 SIGKILL at intent/-: recovery rolls back both files (160.771541ms)
+✔ scene.create v5 SIGKILL at source-ready/0: recovery rolls back both files (168.333754ms)
+✔ scene.create v5 SIGKILL at data/0: recovery rolls back both files (161.971264ms)
+✔ scene.create v5 SIGKILL at source-ready/1: recovery rolls back both files (162.834876ms)
+✔ scene.create v5 SIGKILL at data/1: recovery rolls back both files (163.050301ms)
+✔ scene.create v5 SIGKILL at commit/-: recovery commits both files (162.699802ms)
+✔ scene.create v5 SIGKILL at head/-: recovery commits both files (168.474909ms)
+✔ scene.create recovery is restartable and ordinary failures roll back without changing actor records (508.13053ms)
+✔ scene recovery preserves journal and targets on actor-registration (150.984367ms)
+✔ scene recovery preserves journal and targets on asset-registration (144.663335ms)
+✔ scene recovery preserves journal and targets on extra-relation (153.985453ms)
+✔ scene recovery preserves journal and targets on extra-binding (162.495067ms)
+✔ scene recovery preserves journal and targets on unsupported-scene (148.009019ms)
+✔ scene recovery preserves journal and targets on foreign-source (157.018821ms)
+✔ scene recovery preserves journal and targets on downgrade-v2 (145.359612ms)
+✔ scene recovery preserves journal and targets on record-path-escape (152.878084ms)
+✔ scene creation is exposed through authenticated HTTP and CLI with identical preview and saved buildability (335.406538ms)
+✔ scene.create planning runs with browser globals and no host I/O (82.786544ms)
+✔ scene.update v2 previews exact bytes, preserves identity and appends deduplicated dependencies (252.258358ms)
+✔ scene.update v3 previews exact bytes, preserves identity and appends deduplicated dependencies (180.780663ms)
+✖ scene source transformation preserves uneven whitespace, escaped unchanged values and actor fragments through reorder/delete/add (3.627683ms)
+✔ scene.update no-op ignores candidate formatting; removing actors/images retains old registration dependencies (177.157247ms)
+✔ scene.update validates declaration features, actor identity, ranges, dependencies and matching revisions without writes (297.634094ms)
+✔ scene.update distinguishes inherited/explicit/absent values and null image suppression; repairs scene after actor source becomes invalid (427.534792ms)
+✔ scene.update v8 SIGKILL intent/- restores exact before source and registration (216.533236ms)
+✔ scene.update v8 SIGKILL source-ready/0 restores exact before source and registration (218.595559ms)
+✔ scene.update v8 SIGKILL data/0 restores exact before source and registration (224.639641ms)
+✔ scene.update v8 SIGKILL source-ready/1 restores exact before source and registration (230.446147ms)
+✔ scene.update v8 SIGKILL data/1 restores exact before source and registration (230.756791ms)
+✔ scene.update v8 SIGKILL commit/- restores exact after source and registration (251.027343ms)
+✔ scene.update v8 SIGKILL head/- restores exact after source and registration (229.890944ms)
+✔ v8 source-only edit still guards metadata and recovery is restartable in both directions (632.649987ms)
+✔ v8 ignores external actor source edits, blocks external registry/source/own-record changes, and never overwrites them (1058.433965ms)
+✔ v8 rejects forged journal format before recovery publishes bytes (195.769704ms)
+✔ v8 rejects forged journal unknown-feature before recovery publishes bytes (189.35741ms)
+✔ v8 rejects forged journal formatting before recovery publishes bytes (190.054239ms)
+✔ v8 rejects forged journal extra-binding before recovery publishes bytes (183.036558ms)
+✔ v8 rejects forged journal removed-relation before recovery publishes bytes (191.116945ms)
+✔ v8 rejects forged journal extension before recovery publishes bytes (185.412761ms)
+✔ v8 rejects forged journal identity before recovery publishes bytes (187.309152ms)
+✔ v8 rejects forged journal missing-entry before recovery publishes bytes (190.058807ms)
+✔ v8 rejects forged journal downgrade-v7 before recovery publishes bytes (191.418762ms)
+✔ v8 rejects forged journal downgrade-v5 before recovery publishes bytes (200.866576ms)
+✔ v8 rejects forged journal downgrade-v1 before recovery publishes bytes (191.41863ms)
+✖ scene.update HTTP auth, CLI preview, diagnostics and no-op use one contract (257.311674ms)
+✔ scene update planner runs without host APIs (80.844586ms)
+ℹ tests 75
+ℹ suites 0
+ℹ pass 73
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8279.366983
+
+✖ failing tests:
+
+test at scripts/tests/world-scene-update.test.mjs:104:1
+✖ scene source transformation preserves uneven whitespace, escaped unchanged values and actor fragments through reorder/delete/add (3.627683ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+    '﻿{"format":"viento-scene2d","schemaVersion":1, \r\n' +
+  +   '\t"title":"\\u65c5人场景","viewport":[800,480],"background":"#0d1829","actors":[{"objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[200,220],"size":[80,80],"color":"#ffffff","speed":1.6e2,"controls":"arrows","imageResourceId":"cccccccc-cccc-4ccc-8ccc-cccccccccccc"},{"objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","position":[200,220],"size":[80,80],"color":"#ffffff","speed":12,"controls":"arrows"}]}'
+  -   '\t"title":"\\u65c5人场景","viewport":[800,480],"background":"#0d1829","actors":[{"objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[200,220],"size":[80,80],"color":"#ffffff","speed":1.6e2,"controls":"arrows","imageResourceId":"cccccccc-cccc-4ccc-8ccc-cccccccccccc"},{"objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","position":[200,220],"size":[80,80],"color":"#ffffff","speed":12,"controls":"arrows","imageResourceId":"cccccccc-cccc-4ccc-8ccc-cccccccccccc"}]}'
+  
+      at TestContext.<anonymous> (file:///tmp/viento-scene-edit-8md3kcdx/repo/scripts/tests/world-scene-update.test.mjs:113:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '﻿{"format":"viento-scene2d","schemaVersion":1, \r\n\t"title":"\\u65c5人场景","viewport":[800,480],"background":"#0d1829","actors":[{"objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[200,220],"size":[80,80],"color":"#ffffff","speed":1.6e2,"controls":"arrows","imageResourceId":"cccccccc-cccc-4ccc-8ccc-cccccccccccc"},{"objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","position":[200,220],"size":[80,80],"color":"#ffffff","speed":12,"controls":"arrows"}]}',
+    expected: '﻿{"format":"viento-scene2d","schemaVersion":1, \r\n\t"title":"\\u65c5人场景","viewport":[800,480],"background":"#0d1829","actors":[{"objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[200,220],"size":[80,80],"color":"#ffffff","speed":1.6e2,"controls":"arrows","imageResourceId":"cccccccc-cccc-4ccc-8ccc-cccccccccccc"},{"objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","position":[200,220],"size":[80,80],"color":"#ffffff","speed":12,"controls":"arrows","imageResourceId":"cccccccc-cccc-4ccc-8ccc-cccccccccccc"}]}',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/world-scene-update.test.mjs:240:1
+✖ scene.update HTTP auth, CLI preview, diagnostics and no-op use one contract (257.311674ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok((await request(base, '/api/capabilities')).data.semanticCommands.includes('scene.update'))
+  
+      at TestContext.<anonymous> (file:///tmp/viento-scene-edit-8md3kcdx/repo/scripts/tests/world-scene-update.test.mjs:242:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

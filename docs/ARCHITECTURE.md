@@ -1,114 +1,155 @@
-# 系统架构
+# 系统架构：当前实现
 
-本文描述 **0.0.5** 的模块职责与数据流，包括继承自 b.4.6 的编辑链路和新增的对象命令／事务层。软件版本重启不改变既有存储契约；交接证据见 [迁移记录](HANDOFF_0.0.1.md)。Viento Studio 由共用编辑器和引擎、桌面 / 浏览器适配、Android 适配组成；作品类型、模板与字段规则来自项目清单。
+本文说明当前源码的模块职责、数据权威和调用链路。源码与安装包的交付范围见 [当前状态](STATUS.md)，后续范围与验收见 [演进路线](ROADMAP.md)，完整目标模型见 [下一代架构书](NEXT_ARCHITECTURE.zh-CN.md)。这里不把目标设计解释为已实现接口。
 
-[文档中心](README.md) · [验证状态](TESTING.md) · [引擎接口](../engine/README.md)
+Viento 正从通用文档设计工具演进为设计优先的 IDE。当前 GUI 使用 Web/Tauri，可移植引擎负责文档语义和变更规划，Node 或 Rust 宿主执行文件、进程与归档操作。原生方向是 Nuislang、ns-nova 和 yalivia runtime，Viento 将成为 ns-nova 的官方 GUI 编辑器；自身 GUI 的迁移与工程执行后端分开推进。现有 Godot 4 后端承担原生体系早期的受限场景执行，也可作为未来副引擎保留。原生运行、ns-nova GUI 和 Bevy 尚未接入。
 
-V-M1 新增可移植 World 投影与查询模块。Node 适配器读取旧作品的正文和登记，`GET /api/world` 与 CLI 共用查询实现，编辑器的“世界与对象”视图消费同一结果。投影只存在于内存，不参与原有保存或归档格式；Android 暂不声明此宿主能力。契约和限制见 [世界与对象](WORLD_PROJECTION.md)。
+## 模块与依赖方向
 
-V-M2 第一条纵切接通 `property.set`：可移植规划器校验版本和字段往返，Node 执行器与旧文档保存共用登记锁并只替换一个源文件。GUI、`POST /api/world/commands` 和 CLI 请求使用相同契约；提案与保存回执分离。它不是多记录事务，详见 [ADR 0003](adr/0003-single-property-command.md)。
+| 模块 | 当前职责 | 边界 |
+| --- | --- | --- |
+| `web/` | 文档阅读、源码／分段／字段草稿、世界与对象、素材／导出、构建面板和中英日界面 | 通过宿主接口操作工程；不直接启动执行器或选择磁盘输出路径 |
+| `engine/` | 解析与布局、项目模型、保真字段修改、文档存储流程、World 投影／查询／命令规划、资源依赖选择、Scene2D 计划 | 不依赖 Node、HTTP、Tauri 或具体游戏引擎；不执行文件和进程操作 |
+| `scripts/adapters/` | Node 文档读写、World 快照／命令执行、冻结构建输入、构建与运行编排 | 落实路径、修订号、锁、资源字节和生成物校验 |
+| `scripts/backends/` | Godot 4 工程生成、工具识别、诊断和运行事件协议 | 引擎节点路径与脚本只属于生成物，不改变作者对象身份 |
+| `scripts/lib/`、`scripts/ops/` | HTTP 服务、项目／模板、索引、素材、导出、事务恢复、构建任务和启动编排 | 把宿主操作交给相应适配器，不把领域规则放进路由 |
+| `desktop/`、`src-tauri/src/desktop_host.rs` | 桌面作品库、内置 Node、窗口／会话和进程生命周期、原生保存与归档 | 编辑 WebView 不直接获得文件系统或 Shell 权限 |
+| `mobile/`、移动端 Rust 模块 | Android 作品库、WebView 请求桥、私有存储、即时索引、草稿恢复和完整迁移 | 不启动 Node／HTTP；支持范围单独声明 |
+| `schemas/` | 作品清单、登记和实验性语义契约的验证定义 | 软件、作品格式、命令／事务协议分别版本化 |
 
-V-M3 第一条纵切通过 `changeset.apply` 提交多个现有对象的属性修改。Node 宿主先持久化前后镜像和意图，再替换源文件、发布提交标记和回执；启动及显式恢复入口按提交决策整批恢复。World、旧文档读写及 Node／Rust 导出遵守读取屏障，详见 [ADR 0004](adr/0004-recoverable-source-changesets.md)。0.0.3 之后源码扩展 `object.create`，将一个新正文与登记作为一笔可恢复创建，旧 version 1 属性意图继续兼容；创建意图使用受限 version 2，见 [ADR 0005](adr/0005-recoverable-object-creation.md)。随后加入 `relation.add`，保真追加引用或共享归属，version 3 意图限定单个既有登记并校验恢复前后的关系图，见 [ADR 0006](adr/0006-recoverable-relation-registration.md)。0.0.5 加入 `resource.bind`，以 version 4 意图向既有登记追加资源用途绑定，见 [ADR 0007](adr/0007-recoverable-resource-binding.md)；意图版本不改变 workspace v2 / v3。通用登记编辑、资源内容和 Build 事务尚未接入。
-
-## 模块边界
-
-| 目录 | 职责 |
-| --- | --- |
-| `web/` | 阅读与编辑界面、草稿控制器、素材和导出交互、三语词典 |
-| `engine/` | 解析、布局、字段修改、素材引用、文档模型与存储流程；不读取本机配置，不依赖 Node、HTTP 或 Tauri |
-| `scripts/adapters/` | Node 文件存储适配：定位、快照、串行写入与登记 |
-| `scripts/lib/`、`scripts/ops/` | 本机服务、转换与索引、素材登记、导出、本机配置及启动编排 |
-| `desktop/` | 作品库首页、运行环境准备、源码打包、清理和 Linux 原生测试 |
-| `mobile/` | Android 作品库、请求桥、即时索引、恢复草稿与移动布局 |
-| `src-tauri/src/` | 原生作品库和归档、窗口与进程生命周期、移动存储及迁移命令 |
-| `src-tauri/gen/android/` | 受版本控制的 Android 源工程、窗口边界与系统文档选择插件 |
-| `schemas/` | 项目清单、文档类型与登记的格式定义 |
-
-原有解析入口保留兼容转发；核心实现集中在 `engine/`，不能反向依赖宿主入口。YAML 解析依赖随应用离线提供。
+`engine/` 是共享语义实现，不是未来 ns-nova 的替身。其文档存储流程通过注入的 `storage` 调用宿主，命令规划返回待写内容和提案；真正持久化在宿主完成。旧的解析入口保留兼容转发，YAML 依赖随应用离线提供。接口细节见 [引擎说明](../engine/README.md)。
 
 ```mermaid
 flowchart TB
-  D[桌面作品库 · Tauri] --> N[内置 Node · 本机 HTTP 服务]
-  B[本地浏览器] --> N
-  N --> W[共用 web 编辑器]
-  A[Android 作品库 · Tauri] --> M[mobile 请求桥与即时索引]
-  M --> W
-  W --> E[engine · 解析 / 布局 / 字段 / 保存流程]
-  N --> E
-  M --> E
-  N --> F[Node 文件适配与索引缓存]
-  M --> R[Rust 私有存储]
-  F --> P[独立作品目录]
-  R --> Q[Android 应用私有作品目录]
-  D --> Z[Rust 完整项目归档]
-  R --> Z
-  Z --> X[标准 .viento.zip]
+  Desktop[Tauri 桌面作品库] --> Node[Node 本机服务]
+  Web[共用 Web 编辑器] --> Node
+  Web --> Mobile[Android 请求桥]
+  Node --> Core[可移植 engine]
+  Mobile --> Core
+  Node --> IO[Node 存储与事务适配]
+  Mobile --> Rust[Rust 私有存储与归档]
+  IO --> Source[作者工程与素材]
+  Rust --> Source
+  Node --> Build[构建任务与冻结输入]
+  Build --> Plan[可移植 Scene2D 计划]
+  Build --> Godot[Godot 4 适配器与独立进程]
+  Godot --> Output[独立生成物与运行会话]
 ```
 
-图中的共用编辑器通过当前宿主的请求接口工作；Android 的接口适配在 WebView 内完成，不启动 Node 或本机 HTTP 服务。
+图中的 Web 编辑器按宿主选择传输。Android 在 WebView 内适配请求，直接调用 Tauri 原生命令；构建分支目前只接入 Linux 本机编辑服务。
 
-## 项目数据是唯一来源
+## 数据权威与生命周期
 
-新建 v3 项目的 `workspace.json` 声明正文、模板、元数据、素材目录及文档类型；默认目录为 `documents/`、`templates/`、`metadata/`、`assets/`。旧 v1 / v2 桌面作品原位兼容，不因更新程序改名或重排源文件。
+新建 v3 工程用 `workspace.json` 声明类型与布局，默认保存 `documents/`、`templates/`、`metadata/`、`assets/`。旧 v1／v2 工程继续走兼容读取与原有保存规则，不因应用升级自动改名或重排正文。
 
-- 文档和素材用稳定 UUID 登记。路径用于定位，名称用于展示；背景故事用 `part-of` 归属档案，共享故事可有多个归属。
-- 模板提供新文档的起始正文。类型解析规则和字段分组控制解释与展示，不把模板重写进旧文档，也不执行模板脚本。
-- 正文中的项目路径使用 `/` 分隔的相对逻辑路径，素材可用 `asset:<UUID>` 引用；本机绝对路径和 Android `content://` 句柄不写入作品正文。
-- 桌面标准化文件、索引与临时导出集中在 `.viento/cache/`，属于派生数据。Android 索引按当前文件即时生成。
-- `.viento/local.json` 记录本机外置素材绑定，不进入迁移包。应用偏好、最近作品与恢复草稿也不等同于作品备份。
+| 数据 | 权威来源与保留规则 |
+| --- | --- |
+| 文档内容 | 原文是标题、字段、叙事和场景声明的权威来源；布局、索引和 World 属性是解析投影 |
+| 身份、关系与素材登记 | `metadata/` 保存稳定 UUID、逻辑路径、类型、归属／引用和资源用途绑定；名称和路径不充当身份 |
+| 类型和起始模板 | 创建工程时复制完整定义与模板，实例此后自行维护；模板不会自动重写旧正文 |
+| 素材字节 | 由登记中的逻辑存储定位；正文使用相对逻辑路径或 `asset:<UUID>`，本机外置位置留在 `.viento/local.json` |
+| 派生索引 | 受管理工程的标准化文件和索引位于 `.viento/cache/`；Android 索引即时生成，均不作为作品权威内容 |
+| 恢复状态 | `.viento/world-transactions/` 等意图和恢复记录参与一致性保障，不能当作普通缓存清理；活动事务阻止不一致的读取或导出 |
+| 构建输出 | 写到作者工程和实际素材目录之外，默认使用应用构建缓存；保存输入摘要、生成物、工具版本和会话记录 |
+| 本机偏好与草稿 | 与工程分开；Android 恢复草稿不等于作品备份，也不会自动进入完整迁移包 |
 
-格式详情见 [通用项目](GENERIC_PROJECTS.md)、[文档模型](OC_DOCUMENT_MODEL.md) 和 [作品库布局](WORKSPACE_LAYOUT.md)。
+角色背景仍由角色正文或有明确 `part-of` 归属的附属文档承载；共享故事可以多归属。不能为对象化另建一份与原文竞争的可写属性库。
 
-## 桌面与浏览器链路
+物理默认布局在 `scripts/lib/workspace-layout.json`，起始模板目录在 `scripts/lib/project-templates.json`。桌面和移动端创建工程时选择模板包，复制类型／模板并记录版本与摘要；缺少原始包不妨碍打开已创建工程。这些仍是文档实例模板，尚无可执行工程类型插件或模板包升级框架。格式与迁移见 [通用项目](GENERIC_PROJECTS.md)、[工作流](PROJECT_WORKFLOW.md) 和 [作品布局](WORKSPACE_LAYOUT.md)。
 
-Tauri 作品库启动随附 Node 和 `scripts/desktop-server.mjs`，处理服务绑定本机随机端口，使用每次启动独立的会话凭据、Cookie 和来源检查。编辑 WebView 不直接取得原生文件或 Shell 权限；桌面保存通过受校验的桥交给宿主。普通浏览器由 `scripts/ops/site.mjs` 启动同一服务，浏览模式不开放正文及项目配置写入。
+## 文档编辑与宿主存储
+
+桌面作品库启动内置 Node 和 `scripts/desktop-server.mjs`，服务绑定本机随机端口，以每次启动的会话 Cookie、Host 和 Origin 校验隔离编辑器。浏览器编辑入口由 `scripts/ops/site.mjs` 启动；独立浏览服务不开放正文写入、项目配置写入和构建操作。
 
 ```text
-作品清单 + 源文件 + 登记
-    → standardize-docs → 通用解析与布局
-    → build-static-doc-site → .viento/cache/indexes/
-    → data/index.json → 文档列表与阅读器
+工程清单 + 正文 + 登记
+  → 标准化与静态索引 → 阅读器和列表
 
-编辑草稿 → 文档接口 → engine/document-store
-    → Node 文件适配 → 版本检查 / 原子写入 / 新建登记
-    → 标准化与索引刷新 → 当前编辑器
+源码／分段／字段草稿
+  → 文档接口 → engine/document-store.mjs
+  → node-document-storage.mjs 或 Android Rust 存储
+  → 修订检查、原子写入与登记 → 刷新视图
 ```
 
-可编辑目录由已验证的项目配置决定，不固定为旧作品的 `design-data/`。编辑器读取的 `data/index.json` 是索引资源入口；服务另提供 `/api/index`，两者不应在调用说明中混为同一请求。
+可编辑目录来自已验证的工程定义。桌面静态索引入口 `data/index.json` 与实时文档接口 `/api/index` 是不同读取路径；两者共享原文及登记约束。正文保存与索引刷新分开：保存成功后即使刷新失败，也保留保存结果并允许重试。版本冲突保留草稿，字段修改只替换可证明对应的原文范围。
 
-接口契约集中在 `engine/document-contract.mjs`，旧 `scripts/lib/doc-api-contract.mjs` 保留转发。路由、文档服务、文件存储、项目设置、素材和导出分别处理各自职责。`/api/health` 和 `/api/metrics` 用于诊断，启动及检查时执行契约校验。
+Android 的 `mobile/platform.mjs` 复用引擎并通过 `mobile_storage` 传入作品 UUID 与逻辑源路径；Rust 核对 SHA-256 修订号、目录边界和共享锁，执行原子替换。创建文档另有持久化创建意图；恢复不覆盖已有的不同内容。媒体访问、World 命令与 Godot 构建没有因此自动获得移动端实现。
 
-保存正文和刷新索引是两个步骤。正文写入成功后即使刷新失败，也保留保存结果并允许重试；版本冲突保留当前草稿，不能把旧内容静默覆盖到新版本上。源码、分段和字段表共享同一份草稿，字段修改只回写对应的值片段。
+桌面关闭会检查未保存草稿，返回作品库可保留编辑窗口；Android 则按作品在 WebView 本机存储维护恢复草稿，两种保证不同。完整平台限制见 [桌面宿主](../desktop/README.md) 和 [Android 宿主](../mobile/README.md)。
 
-桌面返回作品库可保留本次编辑窗口的草稿；关闭时检查未保存状态。它不提供与 Android 相同的进程退出后草稿恢复保证。引擎退出及索引子进程回收完成后才释放作品会话锁，详见 [桌面宿主](../desktop/README.md)。
+## World 查询、语义命令与事务
 
-## Android 链路
+`scripts/adapters/node-world-projection.mjs` 读取正文和登记，交给 `engine/world-projection.mjs` 生成 World／Object／Resource 观察快照。GUI、`GET /api/world` 和 `scripts/world.mjs` 共用查询实现。投影保留原文修订号与属性范围，只存在于内存；资源的 `present-unverified` 状态表示发现文件，不表示字节已验证。
 
 ```text
-mobile 作品库 → 作品 UUID
-    → mobile/platform.mjs → 共用编辑器与 engine
-    → Tauri mobile_storage → Rust 存储锁与路径校验
-    → app_data_dir()/workspaces/<作品>/
+GUI / HTTP / CLI 语义请求
+  → 可移植命令校验和原文变更规划
+  → 预览提案，或 Node 执行器在共享锁内重新校验
+  → 原子单文件写入，或持久意图 / 数据发布 / 提交决定
+  → 回执与新投影
 ```
 
-原生命令只接受作品 ID 和逻辑源路径，不接受任意磁盘目录。保存核对 SHA-256 修订号，使用同目录临时文件和原子替换。新建文档先持久化正文及登记的创建意图，进程中断后按同一身份恢复；已有不同内容的文件不会被覆盖。
+| 已实现动作 | 持久化范围 |
+| --- | --- |
+| `property.set` | 一个现有文档中的一个字段，保真写回原文 |
+| `changeset.apply` | 多个现有对象的属性批量修改；当前每个对象一个字段，使用可恢复事务 |
+| `object.create` | 一个新正文与其登记共同发布／恢复 |
+| `projection.update` | 原位修改投影标题／配置、追加新图片绑定；version 7 意图守护正文与登记两个既有文件，保留来源／模板和额外元数据 |
+| `projection.create` | 新建 OC 投影配置与来源／图片登记；子模板快照完整嵌入正文，version 6 意图仍限两个新文件 |
+| `scene.update` | 原位修改场景、保留继承／覆盖语义，追加必要依赖；version 8 意图守护正文与登记两个既有文件 |
+| `scene.create` | 复用已有工程类型，新建 Scene2D 正文及派生角色／图片依赖；version 5 意图仍限两个新文件 |
+| `relation.add` | 保真追加一个引用或共享归属关系，重新校验端点和关系图 |
+| `resource.bind` | 向既有登记追加素材用途绑定；允许保留离线资源身份，实际构建另验资源字节 |
+| `world.recover` | 按已持久化的提交决定完成恢复，外部内容冲突时保留现场 |
 
-WebView 本机存储按作品保存草稿及原始修订号；恢复后继续进行冲突检查。恢复副本不进入项目包，卸载或清除应用数据会失去私有作品和草稿。
+Node 语义命令与旧文档保存共享登记锁。多记录发布先保存意图和前后镜像，以提交标记决定恢复到完整旧版或新版；读者在活动事务期间拒绝取得混合状态。World、旧编辑、资源包及 Node／Rust 完整导出遵守相应屏障。语义批次还不是任意混合命令事务，资源文件内容和 Build 不属于这些作者事务。
 
-原生窗口处理系统栏、刘海与软键盘边界，并通知 WebView 已消费的边界，避免遮挡或重复留白；编辑页面使用整页滚动。迁移选择器返回后，插件等待 Activity 恢复再在主线程交付结果，避免取消回执滞留。
+请求中的 `actorRef` 只是操作标签；HTTP 鉴权仍由宿主负责。语义命令描述不等于已接入远程 AI、Lese 或协作权限系统。使用、协议及恢复边界见 [World 投影](WORLD_PROJECTION.md)、[批量事务](WORLD_TRANSACTIONS.md)、[对象创建](WORLD_OBJECT_CREATE.md)、[关系](WORLD_RELATIONS.md) 与 [资源绑定](WORLD_RESOURCES.md)。
 
-当前已接入编辑、语言设置和完整迁移。媒体访问与插入、项目类型配置、文档分享导出仍未接入；不能根据共用引擎存在这些接口就宣称移动端已经支持。设备和容量边界见 [Android 说明](../mobile/README.md)。
+## 构建与运行
 
-## 分享与完整迁移
+当前实现是一条明确的 Scene2D 链路：场景 JSON 引用已登记角色 UUID 和图片，支持方向键输入与 `idle`／`moving` 状态。它不会从故事正文推断程序，也不执行任意 Nuis 或 Godot 脚本。
 
-选择式资源包还提供跨项目复用：纯引擎根据 UUID 计算依赖闭包，Node 宿主流式校验并预览目标冲突，通过独立的持久导入事务添加内容。它保留正文与身份，兼容地追加类型；不替换目标作品清单或既有异内容文件。Node 读写与 Rust 备份统一遵守资源包活动事务屏障。接口、格式及缓存生命周期见 [资源包契约](RESOURCE_PACKAGES.md)。
+```text
+已保存的场景、对象和登记
+  → node-build-snapshot：读取屏障、修订复查、图片字节与摘要
+  → engine/build-plan：显式场景语义与后端能力校验
+  → Godot 适配器：生成工程、导入资源、检查脚本
+  → build.json + snapshot.json + source-map.json + 生成项目
+  → 校验冻结产物并创建独立运行副本
+  → Godot 独立进程 → 状态事件、诊断、session.json
+```
 
-桌面 / 浏览器分享链路为：选择文档与附属内容 → 通用布局 → HTML / Markdown → 收集稳定引用及绑定素材 → 流式 ZIP → 下载或原生保存。完整项目包包含清单、模板、正文、全部登记和素材，排除本机绑定及缓存。
+场景预览从相同冻结快照读取可移植计划，`scene-preview-service.mjs` 提供有限期的图片字节，`app-scene-preview.js` 和 Canvas 视图消费有效字段。预览与构建任务使用独立生命周期，不启动引擎、不写作者数据；浏览器仅渲染静态保存状态，运行语义仍由后端执行。
 
-桌面原生作品库使用 Rust 归档；编辑器完整导出使用 Node 实现，两者通过往返测试对齐。Android 复用 Rust 归档，增加移动容量限制和系统文档选择适配；外部 URI 只用于传输，导入先暂存校验再发布到私有作品库，同一作品拒绝覆盖。
+`web/modules/app-scene-create.js` 共用创建／编辑场景表单，按字段维护投影继承与显式覆盖。`engine/world-scene-create.mjs` 和 `world-scene-update.mjs` 复用 Scene2D 规划器；宿主分别执行第 5 版创建和第 8 版更新事务，既有原文／字段编辑器继续可用。
 
-归档检查包内摘要，也核对正文和素材登记、关系、路径冲突与导出期间的源文件变化。文件成功写完后才替换正式备份；失败撤回本次恢复目录。下载完成按实际成功响应判断，未完成的包保留重试机会。详见 [导出契约](EXPORT.md)。
+`object-projection-template.mjs` 提供无解析器依赖的 OC 子模板继承、快照锁与配置规则，供浏览器直接导入；`object-projection.mjs` 负责正文识别及依赖验证；`world-object-projection.mjs` 规划创建，`app-object-projection.js` 提供表单。World 汇总同一 OC 的不同投影；场景可按投影运行映射继承配置，Build 保留投影 UUID 和原 OC 的来源身份。引擎适配器消费已解析值，不读取内置模板目录。见 [投影契约](OBJECT_PROJECTIONS.md)。
 
-## 检查与追踪
+`web/modules/app-project-build.js` 提供 Linux 本机编辑器面板；`scripts/lib/project-build-service.mjs` 管理跨 HTTP 请求的任务、进度、取消和本次服务登记的产物 ID；CLI 调用同一 Node 构建／运行适配器。面板关闭后任务继续，重新打开可以观察。计划检查返回快照身份，面板构建以该身份拒绝过期输入；未保存草稿不会被静默加入构建。
 
-当前覆盖、命令及剩余验证见 [验证指南](TESTING.md)。[功能网络及交互图](FUNCTION_NETWORK.md) 是 b.4.3 的桌面历史快照，保留原来的枚举和证据；本文与 Android 说明补充其后的架构变化。历史记录中的“未验证”只描述记录当时的状态。
+宿主通过 `VIENTO_GODOT_BIN` 选择工具。`/api/project-build` 限制回环连接与本机 Host／Origin，POST 沿用写鉴权；浏览器不能指定任意二进制、环境或磁盘输出目录。远程绑定的编辑服务、只读浏览服务与 Android 不提供执行能力。
+
+构建记录固定输入、适配器与真实工具的版本／摘要，运行前重验生成文件，并从冻结产物创建隔离副本。运行节点与作者 UUID 的映射只保存在生成记录中，运行值不会自动改写原文。进程输出有界，取消、超时、SIGINT／SIGTERM 和桌面 owner 关闭会回收引擎；运行工作副本与引擎缓存随后清理。强制杀死宿主或断电后的会话恢复仍未实现。
+
+产物是**需要 Godot 执行的生成工程**，并非独立发行程序。无头测试只验逻辑，正常窗口预览验图形路径；内嵌运行视口、原生 GPU 计算、Live Build、Nuis／yalivia 与 Bevy 接入仍是后续工作。参数、使用和验证入口见 [构建与运行](PROJECT_BUILD.md)。
+
+## 资源复用、分享与完整迁移
+
+三条链路共用稳定身份，但输出契约不同：
+
+| 链路 | 数据范围与实现 |
+| --- | --- |
+| 文档分享 | 选定文档及附属内容 → 通用布局 → HTML／Markdown 和所需素材 → ZIP |
+| 选择式资源包 | `engine/resource-package.mjs` 计算依赖闭包；Node 校验内容、预览冲突，以独立持久导入事务追加内容 |
+| 完整项目迁移 | 清单、模板、正文、登记及素材全部收集；Node 和 Rust 实现对齐同一项目包格式，Android 复用 Rust 并增加系统传输适配 |
+
+单个图片、音频、视频还可按原始字节导出。完整项目包不携带 `.viento/local.json` 的本机绑定或派生缓存；外置素材收集实际字节。导出核验摘要、身份、关系与源变化，活动事务先恢复或阻止导出；恢复先暂存校验再发布，拒绝覆盖既有异内容工程。
+
+构建输出不混入作者工程备份。生成物的独立发行、保留和迁移另有契约需求，不能用完整作品迁移能力代替已打包游戏的承诺。详见 [导出](EXPORT.md) 和 [资源包](RESOURCE_PACKAGES.md)。
+
+## 验证与架构演进
+
+当前平台覆盖和源码交付由 [STATUS](STATUS.md) 汇总，复现命令及设备边界见 [TESTING](TESTING.md)。历史 `test-results/`、发布记录和 [功能链路网络](FUNCTION_NETWORK.md) 保留执行时的环境与证据，不由本文更新旧统计。
+
+新增能力沿现有边界做可运行纵切：先说明作者数据、命令、宿主权限及输出归属，再用真实执行器验收。后续原生异构计算通过独立计算／渲染适配开放；设备句柄、队列和显存状态留在运行会话，通用文档与事务内核保持可移植。下一步范围见 [ROADMAP](ROADMAP.md)，长期决策见 [ADR 0008](adr/0008-native-nuis-and-bootstrap-runtime.md)。

@@ -13,6 +13,7 @@ import { parseSourceContent } from '../standardize-docs/doc-factory.mjs';
 import { collectDocumentMedia, mediaUrl } from './media-format.mjs';
 import { collectAssetImageRefs } from './image-index.mjs';
 import { packageError } from '../../engine/resource-package.mjs';
+import { validateObjectProjection, inspectObjectProjection, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 
 const key = value => value.normalize('NFC').toLowerCase();
 export async function packageDestination(root, assetRoot, store, relative) {
@@ -115,7 +116,35 @@ export async function planPackageImport(root, pack, signal) {
     const urls = [...media.urls, ...collectAssetImageRefs(media.text, sourcePath).map(file => `/${file.split('/').map(encodeURIComponent).join('/')}`)];
     for (const url of urls) if (!assetUrls.has(mediaUrl(url))) conflict(sourcePath, 'dependency');
   };
-  for (const item of pack.manifest.documents) checkReferences(await readPackageBytes(pack.content, item.sourcePath, signal), remap(item.sourcePath), item.definition);
+  const projectionSources = new Map(), projectionChecks = [];
+  const mappedById = new Map(mappedDocuments.map(record => [record.id, record]));
+  for (const item of pack.manifest.documents) {
+    const bytes = await readPackageBytes(pack.content, item.sourcePath, signal), record = mappedById.get(item.id);
+    checkReferences(bytes, remap(item.sourcePath), item.definition);
+    const checked = await validateObjectProjection(bytes.toString('utf8'), record, { digest: packageDigest });
+    // Keep a classification, not every incoming source body. The dependency
+    // validator needs only availability and whether a referenced OC is itself
+    // a projection; the archive already pins the actual bytes separately.
+    projectionSources.set(item.id, { record, content: checked.recognized ? '{"format":"viento-object-projection"}' : '' });
+    if (checked.recognized) projectionChecks.push({ record, checked });
+  }
+  for (const { record, checked } of projectionChecks) {
+    if (!checked.ok) { conflict(record.sourcePath, 'dependency'); continue; }
+    const coreId = checked.value.sourceObjectId;
+    if (!projectionSources.has(coreId)) {
+      const core = registry.documents.find(item => item.id === coreId);
+      if (core) {
+        let content = null;
+        try {
+          const bytes = await readPackageBytes(root, core.sourcePath, signal);
+          content = inspectObjectProjection(bytes.toString('utf8'), core).recognized ? '{"format":"viento-object-projection"}' : '';
+        } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT') throw error; }
+        projectionSources.set(coreId, { record: core, content });
+      }
+    }
+    if (validateProjectionDependencies(checked.value, record, { documents: [...projectionSources.values()],
+      assets: mergedAssets.map(record => ({ record })) }).length) conflict(record.sourcePath, 'dependency');
+  }
   for (const type of pack.manifest.types) if (type.template) {
     const file = `${pack.manifest.source.paths.templates}/${type.template}`;
     checkReferences(await readPackageBytes(pack.content, file, signal), remap(file), type);

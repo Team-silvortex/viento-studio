@@ -1,0 +1,114 @@
+{
+  "date": "2026-10-03",
+  "scope": "Linux local-editor Scene2D saved-state preview tab; unreleased development after 0.0.5",
+  "features": [
+    "Build & Run tabs share scene selection while preserving independent build job lifecycle",
+    "Static saved scene rendered from the existing portable plan and hash-verified frozen image bytes",
+    "Center positions, size, RGBA multiplication, draw order, projection inheritance and explicit overrides",
+    "Fit/zoom/pan/grid, accessible object selection, inspector/source navigation, scene edit with refreshed snapshot",
+    "Chinese, English and Japanese; 390px layout and keyboard tabs"
+  ],
+  "validation": {
+    "appCheck": {
+      "passed": 1108,
+      "failed": 0,
+      "skipped": 0,
+      "syntaxFiles": 283,
+      "apiContract": "passed",
+      "log": "app-check.log",
+      "godot": "4.7.2.stable.official.ed1daf0bf",
+      "nativeHelpers": [
+        "workspace-archive",
+        "mobile-storage"
+      ]
+    },
+    "targeted": {
+      "backendPassed": 17,
+      "previewUiPassed": 17,
+      "parentTabsPassed": 4
+    },
+    "browser": {
+      "browser": "Chrome/154.0.8037.97",
+      "passed": true,
+      "flowCount": 9,
+      "errors": [],
+      "report": "browser.json",
+      "screenshot": "preview-tab-overview-zh.png",
+      "configuredGodot": false,
+      "steps": [
+        "No Godot is configured: the Preview tab renders both frozen SVG images at inherited/overridden sizes and center positions, with source-aware resolved projection fields. No build job runs.",
+        "Real pointer selection opens the correct actor inspector. Zoom, grid, pointer pan and Fit visibly affect only the camera and overlay.",
+        "A second layout multiplies the inherited image by its RGBA tint and draws the later actor on top; a real center click selects that top actor.",
+        "Explicit imageResourceId:null removes inherited imagery. Arrow-key tab navigation maintains ARIA/focus, while English/Japanese and a 390px viewport retain the same scene without horizontal overflow.",
+        "A delayed old-scene response cannot replace a newer scene or restore its old images after rapid selection.",
+        "Invalid scene dimensions clear old pixels and show a source-located diagnostic. All previews, tab switches and gestures leave authoring files byte-identical and never create a build job.",
+        "Edit scene opens from the preview. Saving updates the title and actor position in a fresh preview while preserving scene UUID, BOM/CRLF and every other authored file.",
+        "Actor and original-OC source links return to the corresponding document; reopening Preview retains the selected scene and reads a fresh snapshot. Navigation is read-only.",
+        "SVG images render as image content: embedded script and external-image URLs never execute or request network access."
+      ]
+    },
+    "desktopResources": {
+      "prepare": "passed",
+      "sourceFilesMatched": 194,
+      "hashes": "packaged-sources.json",
+      "log": "desktop-prepare.log"
+    },
+    "nativeHelpers": {
+      "build": "passed",
+      "log": "native-helper-build.log",
+      "rustSourcesChanged": false
+    }
+  },
+  "fixedDuringValidation": [
+    "Image-only CSP permits blob images so controlled local decode works; script policy remains unchanged",
+    "Canvas focus prevents scroll so a pointer click selects the intended actor",
+    "Parent status polling keeps object/inspector nodes stable and does not steal keyboard focus",
+    "Same-scene refresh keeps manual zoom; changed viewport refits",
+    "Canvas visible border uses a shadow so CSS border sizing does not shift image and hit coordinates",
+    "Disconnected preview requests abort capture and cannot publish a late snapshot"
+  ],
+  "dataAndLifecycle": [
+    "Preview and camera gestures preserve all authored bytes; browser test separately records the explicitly saved scene edit",
+    "At most two retained server snapshots, total verified image bytes <=128MiB; capture serialized; ten-minute TTL, explicit release and shutdown cleanup",
+    "No preview disk cache or author directory writes; image decode failure is visible with a placeholder",
+    "Browser retained resized image canvases <=64MiB and tint tiles <=32MiB; not a bound on browser transient image decoding"
+  ],
+  "limitations": [
+    "Static saved layout only: no runtime input, movement, drag-to-write, physics or gameplay",
+    "Only Linux local editor capability is exposed in this increment",
+    "Browser fonts/SVG rasterization are not promised pixel-identical to Godot",
+    "No new installer, Tauri window, Android device or interactive Godot window acceptance this round",
+    "Full Rust suite was not repeated; existing unmodified native helpers were rebuilt and exercised by app checks",
+    "No version bump, commit, push, installation or production author-data migration"
+  ],
+  "changedSourceSha256": {
+    "README.md": "b6536fe90710e730f0c89bd56d23e94e563d3653d868f139406935acf316e737",
+    "docs/ARCHITECTURE.md": "2f7117c1919c769d7a282fd8448fa92ae3f54aec35c8e25e1b9b6a78a4dd92af",
+    "docs/PROJECT_BUILD.md": "9f0ec62e960fd390606ffa86b6adb5c9b20358c91c23528de26036d63914822a",
+    "docs/ROADMAP.md": "ec1e3de6e40bf553589abe2915f7e5ee83835df016d506f0d5eed596aa079a30",
+    "docs/STATUS.md": "9385ecb8af49e2c6c9ecc1ca9f12b9854d40b1d1c5f4ebfaea9a95775c22f097",
+    "docs/TESTING.md": "b67c7351df5c5a99e4208bb63cc2d58fc0c65ebbb78d5a32a7f1a8b8326b35ca",
+    "engine/scene-preview-contract.mjs": "2aa769b9e34fd7d61d9577e7c7fc0b3482edc5b8929a2406f333cf9d2655024d",
+    "scripts/desktop-server.mjs": "fcdda17a33877c7e628ec482985cf4399be29a992b398de88c7bf8224bb35527",
+    "scripts/doc-site-server.mjs": "5b46e7846e3cc3c9d6dd374a61ef856be9e4b7386145ecf16ac23aa649f9088e",
+    "scripts/lib/doc-api-service.mjs": "43248002bda12a0557ae40b6eaed3c2184931e0f8e48f051c80b689fe297c8af",
+    "scripts/lib/doc-server-routes.mjs": "d0a18afbad3367855f5a2e7e04a8028e88cfb96553dd8e3877530e4a5befe4fa",
+    "scripts/lib/doc-server.mjs": "885e3a61fae9b3a07f8fbe414b3c710f42dd3029050e50f3005968cf7e5a35fd",
+    "scripts/lib/scene-preview-service.mjs": "73b491d9184dfceaa6bedf6c6dc967ce9ca9c3c8687a9dd5d75ecd8e6adb51cf",
+    "scripts/tests/dialog-harness.mjs": "86878fde119c68d81479224046d073471ea94735a1b53183dbd619130e49dd27",
+    "scripts/tests/project-build-tabs.test.mjs": "534306ec70a609d794edc0c435830dbc58e12f83301a8e7a4138910e00a2c32c",
+    "scripts/tests/scene-preview-http.test.mjs": "07054615a07e961963ded3118638637102cc9f8f90297e9575fd0da0356eb1c8",
+    "scripts/tests/scene-preview-service.test.mjs": "30d95762b6d07f7abb928492a84ebb61b50377217bf0b4ee06d558e915ea6b6b",
+    "scripts/tests/scene-preview-smoke.mjs": "70100269f55c8afce25fdc726c47e76b9fd15c527a45895f22bc4ce8355ee7e7",
+    "scripts/tests/scene-preview-ui.test.mjs": "c31486bfd0910e1e0ffc92a0372db94be3534027e8ce4241f12a7662a43b19df",
+    "web/i18n/en.js": "f17029147c3cef3508275e982b8899ed19c906b242879a18b5c04c2a53c2f8af",
+    "web/i18n/ja.js": "5a70c1c81aafc507d4f322c43179f77851e8d2b49fbfc7362d58818a451bcc31",
+    "web/index.html": "614b336b655065f6c6c4ef33f4ad85f384375d8c12a9aa89fb297f0cb8b8eacf",
+    "web/modules/app-project-build.js": "c041fd436de5fd8e0a03ec01f5628ffa6863fcce7f32bce20199829bc78d4150",
+    "web/modules/app-runtime.js": "2db021b1276e0bab983e5a336f3e274e8c0b70d37184504c003fbe3e21c5bc2e",
+    "web/modules/app-scene-preview-canvas.js": "de649e7ff9c13c0f90372afae2c21d92b5aecc0cfbf10a8b7683e2442313b107",
+    "web/modules/app-scene-preview.js": "e6570fbb80bf92f4247f4ce6a0b0a2b7e00dae6194822952e0bff361b95f2f8a",
+    "web/project-build.css": "bf2e4aff1c7e447f32a8fc94761bced51032560e6fc35fbd41d786db8ecba509",
+    "web/scene-preview.css": "cd27c834836e38260a0abd62f4943658c41828e31129b0f10b128e177878c521"
+  }
+}

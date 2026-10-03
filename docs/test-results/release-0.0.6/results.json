@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-03",
+  "version": "0.0.6",
+  "baseCommit": "14dfe01367aef8e8e411254c42fa7b22e6271405",
+  "delivery": "Source commit and push to origin/main; no installer, installation, GitHub Release or version tag",
+  "environment": {
+    "platform": "Linux",
+    "architecture": "x86_64",
+    "node": "24.21.0",
+    "embeddedNode": "24.20.0",
+    "rust": "1.95.0",
+    "godot": "4.7.2.stable.official.ed1daf0bf"
+  },
+  "scope": [
+    "Independent project template packages: blank/game/literature/drama/software",
+    "OC subtemplates, multiple standalone projections, creation and editing",
+    "Scene2D form creation/editing, inheritance/overrides and static saved-scene preview",
+    "Linux Godot4 build/run workbench and CLI, snapshots, diagnostics, cancellation",
+    "Restricted transaction versions 5-8 with recovery and dependency-preserving resource/full-package migration",
+    "Updated current documentation and preserved historical evidence"
+  ],
+  "validation": {
+    "versions": {
+      "version": "0.0.6",
+      "buildVersion": "0.0.6",
+      "androidVersionCode": 1000006,
+      "macOSBundleVersion": "1.0.6"
+    },
+    "app": {
+      "passed": 1108,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "syntaxFiles": 283,
+      "apiContract": "passed",
+      "log": "app-check.log",
+      "nativeArchiveAndMobileHelpers": true,
+      "realGodot": true
+    },
+    "rust": {
+      "passed": 48,
+      "failed": 0,
+      "ignored": 1,
+      "reason": "full_project_migration_roundtrip needs explicitly supplied VIENTO_TEST_SOURCE_ROOT; no daily author workspace was used",
+      "log": "rust-tests.log"
+    },
+    "desktopPrepare": {
+      "passed": true,
+      "log": "desktop-prepare.log"
+    },
+    "mobilePrepare": {
+      "passed": true,
+      "log": "mobile-prepare.log"
+    },
+    "nativeHelpers": {
+      "passed": true,
+      "log": "native-helpers.log"
+    },
+    "preparedResources": {
+      "passed": true,
+      "desktopSourceCount": 194,
+      "manifest": "prepared-resources.json"
+    },
+    "finalFormatting": "Removed one extra blank line at EOF in engine/object-projection.mjs after staged whitespace check; node --check and regenerated desktop/mobile resource comparison passed. Mobile comparison accounts for the existing YAML browser import rewrite. No executable changes."
+  },
+  "previousUiEvidence": {
+    "scenePreview": "../scene-preview/results.json",
+    "browser": "../scene-preview/browser.json",
+    "browserFlowCount": 9,
+    "sceneEditing": "../scene-edit/results.json",
+    "projectionEditing": "../oc-projection-edit/results.json",
+    "buildWorkbench": "../build-workbench/results.json",
+    "templatePackages": "../project-templates/results.json",
+    "ocTemplates": "../oc-templates/results.json",
+    "note": "Historical development evidence retains its original version/hash and is not rewritten as packaged application acceptance"
+  },
+  "safety": {
+    "realAuthorDataUsed": false,
+    "workspaceFormat": "v2/v3 unchanged",
+    "applicationIdentifier": "io.viento.studio",
+    "credentialAndLargeArtifactReview": "passed; authored pending files are code, synthetic fixtures, documentation and evidence",
+    "sourceHashes": "source-hashes.json"
+  },
+  "limitations": [
+    "No new installer, APK, Tauri window, Android device, Windows or macOS native-interaction acceptance",
+    "Full-size real-author-workspace migration test intentionally ignored; isolated archive/mobile roundtrip tests pass",
+    "Static scene preview does not simulate gameplay; Godot generated projects still require Godot",
+    "Nuislang/ns-nova/yalivia native execution, embedded runtime, GPU channel, mixed generic ChangeSet and workspace v4 remain future work"
+  ]
+}

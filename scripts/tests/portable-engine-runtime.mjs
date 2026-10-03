@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { PROJECT_DEFAULTS } from '../lib/project-layout.mjs';
 
 // All source executes inside an empty context, including YAML's browser build.
 // Only the loader (outside the context) may read test modules and fixture data.
@@ -21,6 +22,5 @@ await test.link((specifier, parent) => {
   return load(url);
 });
 await test.evaluate();
-const defaults = JSON.parse(fs.readFileSync(new URL('scripts/lib/project-defaults.json', root), 'utf8'));
-const results = await test.namespace.runPortableEngineScenarios(defaults);
+const results = await test.namespace.runPortableEngineScenarios(PROJECT_DEFAULTS);
 console.log(JSON.stringify({ runtime: 'isolated-web-globals', modules: modules.size, checks: results }));

@@ -47,6 +47,7 @@ import { setupMediaEditor } from './app-media-editor.js';
 import { setupExport } from './app-export.js';
 import { setupProjectSettings } from './app-project-settings.js';
 import { setupWorldBrowser } from './app-world-browser.js';
+import { setupProjectBuild } from './app-project-build.js';
 import { isComposingInput } from './app-keyboard.js';
 import { createFieldEditor } from './app-field-editor.js';
 import { API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion } from '../../scripts/lib/doc-api-contract.mjs';
@@ -62,6 +63,7 @@ import {
 
 let mediaEditorController = null;
 let worldBrowserController = null;
+let projectBuildController = null;
 let fieldEditorController = null;
 let fieldDraftSourcePath = '';
 let fieldLoadToken = 0;
@@ -1967,6 +1969,7 @@ async function detectEditBackend() {
   detectedEditBackendState = normalizedDetection;
   state.editBackendAvailable = Boolean(normalizedDetection.available);
   worldBrowserController?.setAvailable(detection.payload?.semanticProjection === true, detection.payload?.semanticCommands || []);
+  projectBuildController?.setAvailable(detection.payload?.projectBuild === true, detection.payload?.semanticCommands || [], { scenePreview: detection.payload?.scenePreview === true });
 }
 
 function resolveInitialMode() {
@@ -5183,7 +5186,28 @@ async function loadData(preferredPath = '', options = {}) {
 
 async function initApp(options = {}) {
   await setupSettings(options.settings);
+  projectBuildController = setupProjectBuild({
+    getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())) }),
+    setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
+    applied: async result => {
+      const sourcePath = result.changes?.[0]?.sourcePath || result.object?.documentRefs?.[0]?.sourcePath || '';
+      await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: toRebuildFilter(sourcePath), requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
+      await loadData(state.activePath, { preferredSourcePath: sourcePath, forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
+    },
+    openSource: sourcePath => {
+      const doc = getDocBySourcePath(sourcePath);
+      if (!doc) throw new Error('Source document is unavailable');
+      selectDoc(doc.path);
+      return state.activePath === doc.path;
+    },
+  });
   worldBrowserController = setupWorldBrowser({
+    openSource: sourcePath => {
+      const doc = getDocBySourcePath(sourcePath);
+      if (!doc) return false;
+      selectDoc(doc.path);
+      return state.activePath === doc.path;
+    },
     getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy() }),
     setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
     applied: async result => {
@@ -5483,7 +5507,7 @@ async function initApp(options = {}) {
     window.addEventListener('keydown', handleWindowKeydown);
 
     window.addEventListener('beforeunload', (event) => {
-      if (!state.editHasUnsavedChanges && !document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"]')) {
+      if (!state.editHasUnsavedChanges && !document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[data-dirty="true"], #sceneCreateDialog[aria-busy="true"], #objectProjectionDialog[data-dirty="true"], #objectProjectionDialog[aria-busy="true"]')) {
         return;
       }
       event.preventDefault();

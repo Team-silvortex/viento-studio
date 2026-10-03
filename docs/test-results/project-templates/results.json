@@ -1,0 +1,95 @@
+{
+  "task": "Decouple project starter templates",
+  "recordedAt": "2026-10-03T01:33:37.662120+00:00",
+  "baseCommit": "14dfe01367aef8e8e411254c42fa7b22e6271405",
+  "sourceVersion": "0.0.5 + uncommitted project template increment",
+  "status": "passed",
+  "application": {
+    "command": "VIENTO_TEST_ARCHIVE_BINARY=... VIENTO_MOBILE_STORE_BIN=... npm run check -- --app-only",
+    "syntaxFiles": 233,
+    "passed": 858,
+    "failed": 0,
+    "skipped": 0,
+    "nativeHelpers": "Built from the current source; full native archive and storage tests enabled"
+  },
+  "additionalSyntaxChecks": [
+    "desktop/ui/app.js",
+    "scripts/tests/project-templates-smoke.mjs"
+  ],
+  "native": {
+    "command": "CARGO_BUILD_JOBS=2 CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0 CARGO_INCREMENTAL=0 npm run desktop:test -- --locked",
+    "passed": 48,
+    "failed": 0,
+    "ignored": 1,
+    "ignoredReason": "Full real-work migration requires an explicitly selected VIENTO_TEST_SOURCE_ROOT",
+    "examples": [
+      "workspace-archive",
+      "mobile-storage"
+    ]
+  },
+  "preparedResources": {
+    "desktop": "passed",
+    "mobile": "passed"
+  },
+  "browser": {
+    "browser": "Chrome/154.0.8037.97",
+    "steps": [
+      "Desktop: blank default, OC selection, language preservation, cancel, create via native host",
+      "Mobile: software template selection in Japanese, YAML template/field editing, save and reload with stable identity"
+    ],
+    "errors": [],
+    "limitations": [
+      "System pickers/window launches are substituted; no new APK or device test."
+    ],
+    "status": "passed"
+  },
+  "invariants": [
+    "New project starts from an explicit package selection; a fresh UUID and owned copies of types/templates are written.",
+    "Same type IDs, filenames and field groups do not share mutable definitions or fallback template content across projects.",
+    "Missing or invalid template IDs create no project and never silently substitute a different package.",
+    "Package provenance is retained through independent edits and archive restore; an unavailable originating package is not required.",
+    "Implicit historical projects and old creation calls retain their six OC defaults."
+  ],
+  "limitations": [
+    "No new installer or APK was produced or installed.",
+    "No Android device/emulator or new native system-picker interaction was exercised.",
+    "Builtin starter packages only; external package installation, executable providers and Build remain outside this increment."
+  ],
+  "changedSourceSha256": {
+    "README.md": "4e65bae0871fa40822595506dbdcc8866919696f6136ccecb694ac8a7cfcd613",
+    "desktop/README.md": "57f33935634cb62449f3d0107257b5e684e8cd49d2badf4fee1929b67aa7cd04",
+    "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
+    "desktop/ui/index.html": "25252ddef2276c523bf8446ddae63176e6fcb270dd87a3fb452763c098eb9f8a",
+    "desktop/ui/style.css": "cf124635a56b3cbbecb99de2e3e3f3a527979dae7d6b8c079d695d8c7624dc0a",
+    "docs/GENERIC_PROJECTS.md": "e6b4b114035b2f28a4972d2457ed763573d2c2d55d82217c65f653418beec54d",
+    "docs/NEXT_ARCHITECTURE.zh-CN.md": "5952b8b8d8bde055f562a30cbac91afd2532b08c8eb7a78fe26fef95e433cce9",
+    "docs/PROJECT_WORKFLOW.md": "549d676c7b3db872b3f9e4a75f1592842e8fe31c1e466c28f8e172607cb7f129",
+    "docs/README.md": "6e397258a07eecf42adbb96a42efdec3bf7a0d5ce9ead36debe0ca1e3fe33fd1",
+    "docs/TESTING.md": "788e9ce68cd2a381b030d6afc52b249e7868ae386e2aad2bbfa16892baa54f83",
+    "engine/README.md": "f5c3dd0b6f1c542415e55f658e0482a6e80e152055afe036b2db9b4d1ebc9099",
+    "engine/project.mjs": "8673832907687e583137b7d024ac0131582905df0b8c3359fdd1e99733b30503",
+    "mobile/README.md": "2702f3de6abb84366c0feac1fce73280490975aa66136ff393971644f240c361",
+    "mobile/index.html": "fad38d95b88e273206587485e48f0ef08f62eeb29d367ff140ae382225e0018a",
+    "mobile/library.js": "a60baece388c981736d68aa81ef76a47a3e83a893fe2ebb620d0c5e785bac6dd",
+    "mobile/mobile.css": "13cfd38d58bf54b6ee9ea18b026a23ab6affabc6cd783b536f65d0f4b354aa5a",
+    "scripts/lib/project-defaults.json": null,
+    "scripts/lib/project-layout.mjs": "e40815d3d524ce1a089d51ea7781d2b771dde57022b7128249337536a23f5f7c",
+    "scripts/lib/project-templates.json": "ff9b4acbbbc652f8cf94e748e5969136fbb13faf39c8c957b2a7678d31fb3c1a",
+    "scripts/lib/workspace-layout.json": "33427cd02fd4ea3499823d41e4a8445f9717325a3f40b8ae25fc2b603acb4090",
+    "scripts/tests/desktop-library.test.mjs": "a65b00d91c2f151ebe254d64539f9b7bef84b40ed40d5c89bd50438633c67eb1",
+    "scripts/tests/mobile-library.test.mjs": "59b46b51b5ffa56516cde0700de384e5630acc01432dd27b8a9e2b4d6efe6512",
+    "scripts/tests/portable-engine-runtime.mjs": "12fb8a4631877feea45ebbb6b2640e55e34d015c32a2d0fabe5fb612b3ba350d",
+    "scripts/tests/portable-engine-scenarios.mjs": "17ce1d26ac1e07279e8d350b5a84defd24d1caaf12816123cf9910846efccfed",
+    "scripts/tests/project-templates-smoke.mjs": "73485e59ab874a386dbd4f1667529b2b77dda55ca0c3db3418b6c9c972729ae5",
+    "scripts/tests/project-templates.test.mjs": "55e7e89a9645995563559a6d1e2fdace7068862a49a5b50012ac3c2237c03d14",
+    "src-tauri/examples/mobile-storage.rs": "cb4ae7fe6f0df6ca91f80c0b632b4b6b451938e00af42c3895886930edb3fa96",
+    "src-tauri/examples/workspace-archive.rs": "d10b0a82925eebd0659fc762e663b32c84708a6e3234fc5447b28a4b1add6682",
+    "src-tauri/src/desktop_host.rs": "152d5125e7bb02b4b33b07b47273c7e7bf71679f2ba393ed9764a6ca3d602e9c",
+    "src-tauri/src/mobile_host.rs": "c67f0605e004c3aa7e3f4b50ac7f808803e4f8c4825f88596f7153ef60f4c072",
+    "src-tauri/src/mobile_storage.rs": "a22f2b25771a34396d720189f0cc2cdb0540fcafe72c3391bdc9696bc12cb643",
+    "src-tauri/src/project_templates.rs": "635584092779ee931a4f87fdf9d45e6c81739fb314dcb07a2fd677cc27a2e744",
+    "src-tauri/src/workspace.rs": "c1c23669fa7611620ed8813e8c6bcf21719e124dd2fd732aea3e91063814fb6e",
+    "web/i18n/en.js": "d90bb7e37400570fa5afd977e68272a49ea5f03ccee4c08ff9a2b8d0cff2407e",
+    "web/i18n/ja.js": "c92e34c27ba2810c326a3a06e23839f80942810d000a70fdb537186919587970"
+  }
+}

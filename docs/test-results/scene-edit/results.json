@@ -1,0 +1,133 @@
+{
+  "ok": true,
+  "date": "2026-10-03",
+  "productVersion": "0.0.5",
+  "baseCommit": "14dfe01367aef8e8e411254c42fa7b22e6271405",
+  "scope": "Existing Scene2D editing with per-field projection overrides, recoverable v8 updates and stale plan invalidation on the existing uncommitted development tree",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "node": "v24.21.0",
+  "rust": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "godot": {
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "validation": {
+    "application": {
+      "command": "VIENTO_TEST_ARCHIVE_BINARY=<temporary archive helper> VIENTO_MOBILE_STORE_BIN=<temporary mobile helper> VIENTO_GODOT_BIN=<cached Godot> npm run check -- --app-only",
+      "exitCode": 0,
+      "passed": 1070,
+      "failed": 0,
+      "skipped": 0,
+      "javascriptSyntaxFiles": 274,
+      "log": "app-check.log"
+    },
+    "coreAndTransactionSubset": {
+      "passed": 111,
+      "failed": 0,
+      "skipped": 0,
+      "newSceneUpdateTests": 29,
+      "log": "core-final.log"
+    },
+    "editorSubset": {
+      "passed": 57,
+      "failed": 0,
+      "skipped": 0,
+      "newSceneEditTests": 10,
+      "log": "ui-tests.log"
+    },
+    "browser": {
+      "command": "VIENTO_GODOT_BIN=<cached Godot> VIENTO_SCENE_EDIT_OUTPUT=<new evidence directory> node scripts/tests/scene-edit-smoke.mjs",
+      "exitCode": 0,
+      "report": "browser.json",
+      "log": "browser-smoke.log",
+      "version": "Chrome/154.0.8037.97",
+      "screenshots": [
+        "scene-edit-conflict-narrow-ja.png",
+        "scene-edit-form-zh.png",
+        "scene-edit-preview-en.png",
+        "scene-edit-preview-narrow-ja.png",
+        "scene-edit-runtime-ja.png"
+      ],
+      "finalSourceRerun": true
+    },
+    "sceneEditIntegration": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "log": "integration.log",
+      "tools": "Real Godot, native desktop archive and native mobile storage helper; also rerun in final full application check"
+    },
+    "nativeHelpers": {
+      "command": "CARGO_PROFILE_DEV_DEBUG=0 CARGO_PROFILE_TEST_DEBUG=0 CARGO_INCREMENTAL=0 CARGO_BUILD_JOBS=4 CARGO_TARGET_DIR=<temporary target> cargo build --locked --manifest-path src-tauri/Cargo.toml --example workspace-archive --example mobile-storage",
+      "exitCode": 0,
+      "log": "native-helpers.log",
+      "fullRustSuiteRepeated": false
+    },
+    "desktopPrepare": {
+      "command": "npm run desktop:prepare",
+      "exitCode": 0,
+      "log": "desktop-prepare-final.log",
+      "resourcesVerifiedAgainstFinalSources": true,
+      "resources": "resources.json"
+    },
+    "markdownLinks": {
+      "checkedChangedDocuments": true,
+      "allLocalTargetsExist": true
+    }
+  },
+  "coverage": [
+    "Same scene UUID, document type and path; name, canvas, actor membership and field configuration editable through the existing dialog.",
+    "Per-field overrides work in creation and editing; absent inheritance fields, explicit false and imageResourceId:null remain distinct.",
+    "BOM, CRLF, unmodified numeric spellings and actor fragments survive exact source rewriting; no-op saves produce no transaction.",
+    "New dependencies appended without deleting prior relations, bindings, OC/projection source or media.",
+    "v8 two-existing-file transactions guard even unchanged metadata, reject forged journals, recover after seven publication boundaries and after a second interruption; external actor source remains untouched.",
+    "Scene drafts survive failed or inconsistent reads, revisions and unknown apply outcomes.",
+    "Saving invalidates the remembered plan job; old successful status responses cannot re-enable stale generation, while a genuinely new plan may reuse the same snapshot.",
+    "Old scenes using actor-only image bindings can be edited and recovered; no-op does not append redundant scene bindings.",
+    "Selective resource packages retain current and historical dependencies; native desktop/mobile full archives preserve exact authored bytes, identities and build snapshots.",
+    "Real Chrome three-language 390px workflow reaches actual Godot: only current actors run, scene speed override moves the player 80px and controls override holds the other actor stationary."
+  ],
+  "initialFailuresAndFixes": [
+    "Initial browser entry was hidden because the HTTP capabilities list lacked scene.update; added declaration plus HTTP assertion and reran final browser successfully.",
+    "Initial core run also exposed a shallow-copy fixture mutation; fixture isolation fixed. Sandbox process restrictions were retried using the authorized temporary-test environment.",
+    "Static review found actor-bound image compatibility missing from registry-only validation; added guarded bindings and no-op regression."
+  ],
+  "limitations": [
+    "No packaged Tauri window or Android device acceptance; real browser HTTP and native storage helpers were tested separately.",
+    "Headless runtime logic checked; graphical runtime window and physical keyboard were not repeated.",
+    "No full Rust unit rerun: native source unchanged; helper compilation and interoperability were exercised.",
+    "Scene editing remains a form, with no draggable scene canvas or arbitrary behavior scripting.",
+    "Historical dependencies are preserved and can enlarge selection packages; there is no implicit deletion of source objects or assets.",
+    "No version bump, commit, push, package installation or actual-work data migration."
+  ],
+  "changedSourceSha256": {
+    "web/project-build.css": "f7c4b31ba343ec2cb1c9bb177437ca8bedc3c2ca9ce944014d4d34f7be3d1f4f",
+    "web/modules/app-scene-create.js": "80d4ebb7dd289b1ea213dcba90861915feb77a9023c885da615ae966dd637f44",
+    "web/modules/app-project-build.js": "6b78e3b92a2aa8cb591560b2ff23872eecd580d8ea3f869b4d38ee3038de7c48",
+    "web/i18n/ja.js": "7cf70da1b06659b27a4cae6e439444e1b8efcd327db1b8e92df9b9a2ddc10b42",
+    "web/i18n/en.js": "3fffdc74d7a22da73107c3d804eee8b832ef57096de218e2ceb3fecfeb2b8808",
+    "docs/ROADMAP.md": "ca4b47e1b9dcd19160e10b5793af4bb0f84086b53cf56fd10822739a325dc1ab",
+    "docs/STATUS.md": "d70502dc99da95a04516b5730533a6cdc1b526d16a73f91cbe36ffa9c1eb6ad7",
+    "docs/OBJECT_PROJECTIONS.md": "1b1ca157960633ad89983517e0289ddb71a50ecbce5dd1dc83f7bac14ec0172d",
+    "docs/PROJECT_BUILD.md": "4205be7e327ea7760a00d53d9a34ad32bb4f58f248b739c11e04505f8aefc6af",
+    "docs/WORLD_TRANSACTIONS.md": "587040191b6d61682a5b68f26bc033eb233a4e5cc77d002dc892e0f3cb3b2670",
+    "docs/ARCHITECTURE.md": "3bc3bc60bc7f71dfaedaf71e765448de4f839d0090c6aa66d562aa9bd706f8ed",
+    "docs/TESTING.md": "cbe7331d9bba24b800c2b0719538e86e2fcdd47b157c42c5fcbc8772754a6d06",
+    "engine/world-scene-update.mjs": "0d26d46ba2ea9ab29ef4afd6a3cb7721f1b2d09d413f3e250c930f1a4f9e4943",
+    "engine/world-command-contract.mjs": "7feb103a1f51e3904b2c0c862187425ef10e1ff98dbd629dfa8b0667df3ffd41",
+    "engine/world-scene-create.mjs": "5fe4a75220c663835a3fb932e639c5208c98df6e051b0f6a940a6132778d7913",
+    "engine/index.mjs": "88052a0dcac9689bfebe98d694a631c71e2555551477edc165b20e95d0901650",
+    "engine/README.md": "b6c7f42c98d39ea6e2e04d66c039764189292b0cde1ed9e152767d323986afe5",
+    "schemas/README.md": "fe8e972e7d857cfbfda1141c5f44225657b97843fb1c07605623fa7498c588ce",
+    "scripts/README.md": "6f70a1e55f5981f0afbf275b112dfeb251e988bffb1915e136babac1fd63a777",
+    "scripts/adapters/node-world-commands.mjs": "ea887e3ca238528df1a1609815a6d1ca3e6545c060c5afeb009324ea5cfa3019",
+    "scripts/tests/scene-edit-ui.test.mjs": "0e2cb575f52f6582f5d81feaf6bf5176c5a1b83f87a0a02b6482b6d83fee0a1c",
+    "scripts/tests/world-scene-update.test.mjs": "1db8b139ebe49c8cad6af79b8c43e72043ad23a88ae06a1c1b76debc7547bec0",
+    "scripts/tests/scene-edit.test.mjs": "16f871673d1aa936528de54e8b63198feceb76097823583ad266582a8cdc4baa",
+    "scripts/tests/scene-edit-smoke.mjs": "becec9a949a3de6879b674b49c195c3ccd2d5f15ad8d24729640b1a0bd2bdc14",
+    "scripts/tests/world-portable-runtime.mjs": "82d510d359a74b47428ca984ba32b9cdc00cccd32c79615c83e1eb4a9aac82fb",
+    "scripts/tests/object-projection-ui.test.mjs": "7cafc158b9562c1058d98d751be3bc9f286aaf14ad10084579ad1f937ee76b4d",
+    "scripts/lib/world-transactions.mjs": "a4d1df41a901f30fba1999eae8d8d6c71ef20fdc1aae193fc39d4fbdb4c2d3a0",
+    "scripts/lib/doc-api-service.mjs": "fdaf4abfd1d56ece88bf8b76892a9e81f1603d13a7f4ec0fac5e494aea1cda1f"
+  }
+}

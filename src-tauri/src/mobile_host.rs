@@ -32,12 +32,8 @@ async fn mobile_storage(
         let path = path.as_deref().unwrap_or("");
         match action.as_str() {
             "list" => library.list(),
-            "create" => library.create(
-                payload
-                    .as_ref()
-                    .and_then(|p| p["name"].as_str())
-                    .ok_or_else(failure)?,
-            ),
+            "templates" => library.templates(),
+            "create" => library.create_request(payload.as_ref().ok_or_else(failure)?),
             "context" => library.context(id),
             "resolve" => library.resolve(id, path),
             "read" => library

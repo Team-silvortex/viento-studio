@@ -21,6 +21,8 @@ const createProperties = { mode: properties.mode, worldId: identifier, baseRevis
   objectId: { type: 'string', pattern: '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$' },
   documentType: { type: 'string', pattern: '^[a-z][a-z0-9_-]{0,63}$' },
   sourcePath: { type: 'string', minLength: 1, maxLength: 1024 }, content: { type: 'string', maxLength: 262144 } };
+const projectionUpdateProperties = { mode: properties.mode, worldId: identifier, baseRevision: revision, actorRef: properties.actorRef,
+  objectId: createProperties.objectId, objectRevision: revision, sourceRevision: revision, content: createProperties.content };
 export const RELATION_KINDS = Object.freeze(['part-of', 'references']);
 const relationProperties = { mode: properties.mode, worldId: identifier, baseRevision: revision, actorRef: properties.actorRef,
   objectId: createProperties.objectId, objectRevision: revision, targetObjectId: createProperties.objectId, targetRevision: revision,
@@ -48,6 +50,30 @@ export function worldMutationDescriptors() {
       properties: { status: { enum: ['preview', 'applied'] }, worldId: identifier, baseRevision: revision, revision } },
     targetTypes: ['io.viento.document/*'], preconditions: ['registered-workspace', 'known-document-type', 'matching-world-revision', 'unused-identity-and-source-path', 'parseable-source'],
     effects: ['create-document-and-registration-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
+  { format: 'viento-command', schemaVersion: 1, id: 'scene.create', version: 1,
+    inputSchema: { type: 'object', properties: createProperties, required: Object.keys(createProperties), additionalProperties: false },
+    outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'object'],
+      properties: { status: { enum: ['preview', 'applied'] }, worldId: identifier, baseRevision: revision, revision } },
+    targetTypes: ['io.viento.document/*'], preconditions: ['registered-workspace', 'known-document-type', 'matching-world-revision', 'unused-identity-and-source-path', 'valid-scene2d', 'registered-actor-and-image-dependencies'],
+    effects: ['create-scene-and-dependency-registration-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
+  { format: 'viento-command', schemaVersion: 1, id: 'scene.update', version: 1,
+    inputSchema: { type: 'object', properties: projectionUpdateProperties, required: Object.keys(projectionUpdateProperties), additionalProperties: false },
+    outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'object'],
+      properties: { status: { enum: ['preview', 'applied', 'unchanged'] }, worldId: identifier, baseRevision: revision, revision } },
+    targetTypes: ['io.viento.document/*'], preconditions: ['valid-registered-scene', 'matching-world-object-source-revisions', 'fixed-document-identity', 'valid-scene2d', 'registered-actor-and-image-dependencies', 'lossless-json-roundtrip'],
+    effects: ['update-scene-and-append-dependencies-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
+  { format: 'viento-command', schemaVersion: 1, id: 'projection.create', version: 1,
+    inputSchema: { type: 'object', properties: createProperties, required: Object.keys(createProperties), additionalProperties: false },
+    outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'object'],
+      properties: { status: { enum: ['preview', 'applied'] }, worldId: identifier, baseRevision: revision, revision } },
+    targetTypes: ['io.viento.document/*'], preconditions: ['registered-workspace', 'known-document-type', 'matching-world-revision', 'unused-identity-and-source-path', 'locked-declarative-template', 'ordinary-source-object', 'registered-image-dependencies'],
+    effects: ['create-projection-and-dependency-registration-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
+  { format: 'viento-command', schemaVersion: 1, id: 'projection.update', version: 1,
+    inputSchema: { type: 'object', properties: projectionUpdateProperties, required: Object.keys(projectionUpdateProperties), additionalProperties: false },
+    outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'object'],
+      properties: { status: { enum: ['preview', 'applied', 'unchanged'] }, worldId: identifier, baseRevision: revision, revision } },
+    targetTypes: ['io.viento.document/*'], preconditions: ['valid-registered-projection', 'matching-world-object-source-revisions', 'fixed-source-and-template', 'registered-image-dependencies', 'lossless-scalar-roundtrip'],
+    effects: ['update-projection-and-append-image-bindings-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
   { format: 'viento-command', schemaVersion: 1, id: 'relation.add', version: 1,
     inputSchema: { type: 'object', properties: relationProperties, required: Object.keys(relationProperties), additionalProperties: false },
     outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'relation'],
@@ -69,7 +95,7 @@ export function validateWorldCommand(request) {
     if (Object.keys(request).length !== 2 || !Object.hasOwn(request, 'mode') || request.mode !== 'apply') invalid();
     return { command: 'world.recover', mode: 'apply' };
   }
-  if (!['property.set', 'changeset.apply', 'object.create', 'relation.add', 'resource.bind'].includes(request.command)) invalid();
+  if (!['property.set', 'changeset.apply', 'object.create', 'scene.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind'].includes(request.command)) invalid();
   const check = (value, rule) => {
     if (rule.const) return value === rule.const;
     if (rule.enum) return rule.enum.includes(value);
@@ -81,8 +107,8 @@ export function validateWorldCommand(request) {
     return typeof value === 'string' && value.length >= (rule.minLength || 0) && value.length <= (rule.maxLength || 200)
       && (!rule.pattern || new RegExp(rule.pattern).test(value));
   };
-  const rules = request.command === 'changeset.apply' ? batchProperties : request.command === 'object.create' ? createProperties
-    : request.command === 'relation.add' ? relationProperties : request.command === 'resource.bind' ? resourceProperties : properties;
+  const rules = request.command === 'changeset.apply' ? batchProperties : ['object.create', 'scene.create', 'projection.create'].includes(request.command) ? createProperties
+    : ['projection.update', 'scene.update'].includes(request.command) ? projectionUpdateProperties : request.command === 'relation.add' ? relationProperties : request.command === 'resource.bind' ? resourceProperties : properties;
   if (Object.keys(request).length !== Object.keys(rules).length + 1
     || !Object.entries(rules).every(([key, rule]) => Object.hasOwn(request, key) && check(request[key], rule))) invalid();
   // Prevent UTF-8 encoding from replacing an unpaired UTF-16 surrogate on disk.
@@ -96,7 +122,7 @@ export function validateWorldCommand(request) {
 export function canSetObjectProperty(projection, object) {
   return object?.provenance.identity === 'registered' && Boolean(object.documentRefs[0]?.sourceRevision)
     && !projection.diagnostics.some(item => item.objectId === object.id
-      && ['unknown-document-type', 'unparsed-document', 'source-unavailable'].includes(item.code));
+      && ['unknown-document-type', 'unparsed-document', 'source-unavailable', 'object-projection-invalid'].includes(item.code));
 }
 
 export function canRelateObject(object) {

@@ -10,6 +10,8 @@ import { appendFile } from 'node:fs/promises';
 import { timingSafeEqual } from 'node:crypto';
 import { WORLD_API_PATH } from '../../engine/world-query.mjs';
 import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
+import { PROJECT_BUILD_API_PATH } from '../../engine/build-plan.mjs';
+import { SCENE_PREVIEW_API_PATH } from '../../engine/scene-preview-contract.mjs';
 import { RESOURCE_PACKAGE_API, PACKAGE_LIMITS } from '../../engine/resource-package.mjs';
 import {
   readRequestJsonBody,
@@ -31,6 +33,17 @@ const API_RATE_BUCKETS = new Map();
 const SECURITY_AUDIT_ENABLED = process?.env?.DOC_API_SECURITY_AUDIT === '1';
 const WRITE_METHODS = new Set([API_METHODS.POST, API_METHODS.PUT]);
 const REBUILD_METHODS = new Set([API_METHODS.POST]);
+
+// Build can launch a native process; ordinary web editing does not otherwise
+// require loopback or an Origin header. Validate the socket, never proxy headers.
+export function isLocalBuildRequest(request) {
+  const loopback = new Set(['127.0.0.1', '::1', '::ffff:127.0.0.1']);
+  if (!loopback.has(request.socket?.remoteAddress)) return false;
+  const host = request.headers?.host, port = request.socket?.localPort;
+  if (![`127.0.0.1:${port}`, `localhost:${port}`, `[::1]:${port}`].includes(host)) return false;
+  if (request.headers.origin && request.headers.origin !== `http://${host}`) return false;
+  return !['cross-site'].includes(request.headers['sec-fetch-site']);
+}
 
 function sanitizeClientIdentity(rawIdentity = '') {
   if (typeof rawIdentity !== 'string') {
@@ -228,11 +241,18 @@ function applyRateLimit(response, request, pathname = '') {
   pruneRateLimitBuckets(now);
   // Draft previews are frequent read-only work. They must not consume the
   // request allowance used for saving or navigating the user's documents.
-  const clientId = `${getClientIdentity(request)}${pathname === API_PATHS.MEDIA_INSERT ? ':media-preview' : ''}`;
+  const previewImage = pathname === SCENE_PREVIEW_API_PATH && request.method === API_METHODS.GET;
+  const clientId = `${getClientIdentity(request)}${previewImage ? ':scene-preview-images'
+    : pathname === SCENE_PREVIEW_API_PATH ? ':scene-preview'
+    : pathname === API_PATHS.MEDIA_INSERT ? ':media-preview'
+    : pathname === PROJECT_BUILD_API_PATH && request.method === API_METHODS.GET ? ':build-status' : ''}`;
   const state = getRateLimitState(clientId, now);
   state.count += 1;
 
-  if (state.count <= RATE_LIMIT_MAX_REQUESTS) {
+  // A scene permits 128 distinct images; two retained previews must be able to
+  // load in one window without spending the document-write request allowance.
+  const requestAllowance = previewImage ? Math.max(256, RATE_LIMIT_MAX_REQUESTS) : RATE_LIMIT_MAX_REQUESTS;
+  if (state.count <= requestAllowance) {
     return false;
   }
 
@@ -293,6 +313,8 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
+  if (pathname === SCENE_PREVIEW_API_PATH && ['POST', 'DELETE'].includes(method)) return true;
+  if (pathname === PROJECT_BUILD_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === RESOURCE_PACKAGE_API && method === API_METHODS.POST) return true;
   if (pathname === WORLD_COMMAND_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === API_PATHS.EXPORT && method === API_METHODS.POST) return true;
@@ -538,6 +560,66 @@ async function handleApiRequest({
   let requestId = '';
 
   const route = {
+    [SCENE_PREVIEW_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        const controller = new AbortController();
+        const disconnected = () => { if (!response.writableFinished) controller.abort(); };
+        response.once('close', disconnected);
+        try {
+          if (requestUrl.search) throw Object.assign(new Error('Invalid preview query'), { statusCode: 400, errorCode: 'scene_preview_request_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.scenePreview.create(await readRequestJsonBody(request), { signal: controller.signal }), requestId); return 200;
+        } catch (error) {
+          if (response.destroyed || response.writableEnded) return 499;
+          if (error instanceof SyntaxError) { sendApiError(response, 400, 'Invalid scene preview JSON', { errorCode: 'scene_preview_request_invalid' }, requestId); return 400; }
+          return mapServiceErrorToHttp(error, response, requestId);
+        } finally { response.removeListener('close', disconnected); }
+      },
+      [API_METHODS.GET]: async () => {
+        try {
+          const query = requestUrl.searchParams;
+          if ([...query.keys()].length !== 2 || query.getAll('previewId').length !== 1 || query.getAll('resourceId').length !== 1) {
+            throw Object.assign(new Error('Invalid preview query'), { statusCode: 400, errorCode: 'scene_preview_request_invalid' });
+          }
+          const resource = service.scenePreview.resource(query.get('previewId'), query.get('resourceId'));
+          response.setHeader('Cache-Control', 'no-store');
+          response.setHeader('Content-Type', resource.contentType);
+          response.setHeader('Content-Length', String(resource.bytes.length));
+          response.setHeader('X-Content-Type-Options', 'nosniff');
+          response.setHeader('Content-Security-Policy', "sandbox; default-src 'none'; style-src 'unsafe-inline'; img-src data:; frame-ancestors 'none'");
+          response.statusCode = 200; response.end(resource.bytes); return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+      DELETE: async () => {
+        try {
+          const query = requestUrl.searchParams;
+          if ([...query.keys()].length !== 1 || query.getAll('previewId').length !== 1) {
+            throw Object.assign(new Error('Invalid preview query'), { statusCode: 400, errorCode: 'scene_preview_request_invalid' });
+          }
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, service.scenePreview.release(query.get('previewId')), requestId); return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
+    [PROJECT_BUILD_API_PATH]: {
+      [API_METHODS.GET]: async () => {
+        try {
+          if ([...requestUrl.searchParams.keys()].some(key => key !== 'refresh') || requestUrl.searchParams.getAll('refresh').length > 1
+            || requestUrl.searchParams.has('refresh') && requestUrl.searchParams.get('refresh') !== '1') throw Object.assign(new Error('Invalid build query'), { statusCode: 400, errorCode: 'build_request_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.projectBuild.status({ refresh: requestUrl.searchParams.get('refresh') === '1' }), requestId); return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+      [API_METHODS.POST]: async () => {
+        try {
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.projectBuild.command(await readRequestJsonBody(request)), requestId); return 200;
+        } catch (error) {
+          if (error instanceof SyntaxError) { sendApiError(response, 400, 'Invalid build JSON', { errorCode: 'build_request_invalid' }, requestId); return 400; }
+          return mapServiceErrorToHttp(error, response, requestId);
+        }
+      },
+    },
     [RESOURCE_PACKAGE_API]: {
       [API_METHODS.GET]: () => handleResourcePackage(response, request, requestUrl, service, requestId),
       [API_METHODS.POST]: () => handleResourcePackage(response, request, requestUrl, service, requestId),
@@ -621,6 +703,14 @@ async function handleApiRequest({
   const handlers = route[pathname];
   if (!handlers) {
     return false;
+  }
+  if (pathname === PROJECT_BUILD_API_PATH && (!service.projectBuild || !isLocalBuildRequest(request))) {
+    sendApiError(response, 403, 'Project builds require a local editor session.', { errorCode: 'build_local_only' });
+    return true;
+  }
+  if (pathname === SCENE_PREVIEW_API_PATH && (!service.scenePreview || !isLocalBuildRequest(request))) {
+    sendApiError(response, 403, 'Scene previews require a local editor session.', { errorCode: 'scene_preview_local_only' });
+    return true;
   }
   if (applyRateLimit(response, request, pathname)) {
     return true;

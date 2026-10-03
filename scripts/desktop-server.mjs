@@ -3,12 +3,14 @@ import { PROJECT_ROOT } from './lib/paths.mjs';
 import { rebuildIndex } from './lib/rebuild-workflow.mjs';
 import { stopRunningCommands } from './lib/process.mjs';
 import { recoverWorldTransaction } from './lib/world-transactions.mjs';
+import { stopProjectBuildServices } from './lib/project-build-service.mjs';
+import { stopScenePreviewServices } from './lib/scene-preview-service.mjs';
 
 let closing = false;
 async function shutdown() {
   if (closing) return;
   closing = true;
-  await stopRunningCommands();
+  await Promise.all([stopRunningCommands(), stopProjectBuildServices(), stopScenePreviewServices()]);
   process.exit(0);
 }
 
@@ -28,7 +30,7 @@ try {
   if (!manifest) throw new Error('Workspace manifest is required');
   if ([2, 3].includes(manifest.version)) await registerWorkspace(PROJECT_ROOT);
   await rebuildIndex({ projectRoot: PROJECT_ROOT });
-  await import('./doc-site-server.mjs');
+  if (!closing) await import('./doc-site-server.mjs');
 } catch (error) {
   if (!closing) { console.error(error.message); process.exitCode = 1; process.stdin.pause(); }
 }

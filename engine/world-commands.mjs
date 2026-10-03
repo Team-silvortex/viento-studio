@@ -2,6 +2,7 @@ import { createError } from './service-error.mjs';
 import { canonicalJson } from './world-projection.mjs';
 import { createDocumentFieldDraft } from './fields.mjs';
 import { fieldValueValid, serializeFieldDraft } from './field-changes.mjs';
+import { validateObjectProjection } from './object-projection.mjs';
 
 import { validateWorldCommand, canSetObjectProperty } from './world-command-contract.mjs';
 export { WORLD_COMMAND_API_PATH, worldMutationDescriptors, validateWorldCommand, canSetObjectProperty } from './world-command-contract.mjs';
@@ -30,6 +31,11 @@ export async function preparePropertySet(projection, content, rawRequest, { dige
   if (!fieldValueValid(field, request.value)) fail(422, 'world_property_value_invalid', 'Value does not match the property type');
   const values = model.fields.map(item => item.value); values[index] = request.value;
   const afterContent = serializeFieldDraft(content, model, values);
+  if (Object.hasOwn(object.provenance, 'authoredProjection')) {
+    const checked = await validateObjectProjection(afterContent, object.provenance.descriptor, { digest });
+    if (!checked.ok || !checked.recognized) fail(422, 'world_projection_invalid', 'Projection value does not match its template', {
+      diagnostics: checked.diagnostics.map(item => ({ ...item, objectId: object.id, sourcePath })) });
+  }
   let after;
   try { after = createDocumentFieldDraft(afterContent, sourcePath, object.provenance.parser); }
   catch { fail(422, 'world_property_roundtrip', 'This value cannot be represented without changing the document structure'); }

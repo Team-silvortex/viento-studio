@@ -15,7 +15,9 @@ use zip::{write::SimpleFileOptions, CompressionMethod, ZipArchive, ZipWriter};
 pub type Result<T> = std::result::Result<T, String>;
 const ROOTS: [&str; 4] = ["design-data", "data-template", "assets", "metadata"];
 const GENERIC_ROOTS: [&str; 4] = ["documents", "templates", "assets", "metadata"];
-const PROJECT_DEFAULTS: &str = include_str!("../../scripts/lib/project-defaults.json");
+#[path = "project_templates.rs"]
+pub mod project_templates;
+const WORKSPACE_LAYOUT: &str = include_str!("../../scripts/lib/workspace-layout.json");
 fn data_roots(version: u32) -> [&'static str; 4] {
     if version == 3 {
         GENERIC_ROOTS
@@ -197,7 +199,7 @@ fn validate_manifest(workspace: &Workspace) -> Result<()> {
         return Err("作品库格式不受支持，请使用兼容版本打开；现有数据未修改".into());
     }
     if workspace.version >= 2
-        && (workspace.extra.get("paths") != Some(&default_layout(workspace.version)["paths"])
+        && (workspace.extra.get("paths") != Some(&layout_fields(workspace.version)["paths"])
             || workspace.extra.get("assetStores")
                 != Some(&serde_json::json!({"main":{"path":"assets"}})))
     {
@@ -313,14 +315,9 @@ fn validate_parser_definition(definition: &serde_json::Value) -> Result<()> {
     Ok(())
 }
 
-fn default_layout(version: u32) -> BTreeMap<String, serde_json::Value> {
+fn layout_fields(version: u32) -> BTreeMap<String, serde_json::Value> {
     if version == 3 {
-        let defaults: serde_json::Value =
-            serde_json::from_str(PROJECT_DEFAULTS).expect("valid bundled project defaults");
-        return ["paths", "assetStores", "documentTypes"]
-            .into_iter()
-            .map(|key| (key.into(), defaults[key].clone()))
-            .collect();
+        return serde_json::from_str(WORKSPACE_LAYOUT).expect("valid workspace layout");
     }
     BTreeMap::from([
         (
@@ -332,6 +329,14 @@ fn default_layout(version: u32) -> BTreeMap<String, serde_json::Value> {
             serde_json::json!({"main":{"path":"assets"}}),
         ),
     ])
+}
+
+fn default_layout(version: u32) -> BTreeMap<String, serde_json::Value> {
+    let mut fields = layout_fields(version);
+    if version == 3 {
+        fields.insert("documentTypes".into(), project_templates::legacy_defaults()["documentTypes"].clone());
+    }
+    fields
 }
 
 fn v2_guard() -> Workspace {
@@ -775,6 +780,23 @@ pub fn create_workspace(
     seed: Option<&Path>,
     templates: Option<&Path>,
 ) -> Result<PathBuf> {
+    create_workspace_contents(parent, name, seed, templates, None)
+}
+
+pub fn create_workspace_from_template(parent: &Path, name: &str, template_id: &str) -> Result<PathBuf> {
+    // Resolve and validate before creating anything. An unknown selection must
+    // not silently produce a different kind of project.
+    let template = project_templates::select(template_id)?;
+    create_workspace_contents(parent, name, None, None, Some(template))
+}
+
+fn create_workspace_contents(
+    parent: &Path,
+    name: &str,
+    seed: Option<&Path>,
+    templates: Option<&Path>,
+    template: Option<project_templates::ProjectTemplate>,
+) -> Result<PathBuf> {
     let name = name.trim();
     if !portable_component(name) || name.chars().count() > 80 {
         return Err("请填写不含路径符号的作品库名称（最多 80 字）".into());
@@ -787,7 +809,8 @@ pub fn create_workspace(
     for folder in data_roots(version) {
         fs::create_dir(temporary.path().join(folder)).map_err(io_error)?;
     }
-    let mut extra = default_layout(version);
+    let mut extra = layout_fields(version);
+    if template.is_none() { extra = default_layout(version); }
     if let Some(source) = seed {
         for relative in list_files(source)? {
             let destination = temporary.path().join(&relative);
@@ -800,6 +823,14 @@ pub fn create_workspace(
                 .map_err(io_error)?
                 .extra;
         }
+    } else if let Some(template) = template {
+        extra.insert("documentTypes".into(), serde_json::json!(template.document_types));
+        extra.insert("projectTemplate".into(), template.provenance());
+        for (file, content) in template.templates {
+            let destination = temporary.path().join("templates").join(file);
+            fs::create_dir_all(destination.parent().unwrap()).map_err(io_error)?;
+            fs::write(destination, content).map_err(io_error)?;
+        }
     } else if let Some(source) = templates.filter(|directory| directory.exists()) {
         let prefix = format!("{}/", data_roots(layout_version(source)?)[1]);
         for relative in list_files(source)? {
@@ -810,8 +841,7 @@ pub fn create_workspace(
             }
         }
     } else {
-        let defaults: serde_json::Value =
-            serde_json::from_str(PROJECT_DEFAULTS).map_err(io_error)?;
+        let defaults = project_templates::legacy_defaults();
         for (file, content) in defaults["templates"].as_object().ok_or("通用模板无效")? {
             fs::write(
                 temporary.path().join("templates").join(file),
@@ -1496,6 +1526,42 @@ mod tests {
         write_json(&directory.path().join("workspace.json"), &manifest).unwrap();
         ensure_v2_guard(directory.path()).unwrap();
         directory.keep()
+    }
+
+    #[test]
+    fn selected_templates_are_copied_once_and_roundtrip_without_catalogue_lookup() {
+        let temp = tempfile::tempdir().unwrap();
+        let first = create_workspace_from_template(temp.path(), "设计 A", "org.viento.software-design").unwrap();
+        let second = create_workspace_from_template(temp.path(), "设计 B", "org.viento.software-design").unwrap();
+        let blank = create_workspace_from_template(temp.path(), "空白", "org.viento.blank").unwrap();
+        let initial = ensure_workspace(&first).unwrap();
+        assert_ne!(initial.id, ensure_workspace(&second).unwrap().id);
+        assert_eq!(ensure_workspace(&blank).unwrap().extra["documentTypes"].as_array().unwrap().len(), 1);
+        assert!(!blank.join("templates/character.md").exists());
+        assert!(!first.join("templates/character.md").exists());
+        let original = fs::read(second.join("templates/component.yaml")).unwrap();
+        let modified = b"name: Independent\r\ncustom: true\r\n";
+        fs::write(first.join("templates/component.yaml"), modified).unwrap();
+        let third = create_workspace_from_template(temp.path(), "设计 C", "org.viento.software-design").unwrap();
+        assert_eq!(fs::read(second.join("templates/component.yaml")).unwrap(), original);
+        assert_eq!(fs::read(third.join("templates/component.yaml")).unwrap(), original);
+        let mut manifest = initial.clone();
+        // Provenance is a receipt, not an installed-package dependency. Existing
+        // projects remain usable when that package/version is unavailable.
+        manifest.extra.insert("projectTemplate".into(), serde_json::json!({
+            "packageId":"example.uninstalled", "version":"99.0.0", "digest":"sha256:historical"
+        }));
+        write_json(&first.join("workspace.json"), &manifest).unwrap();
+        let archive = temp.path().join("independent.zip");
+        export_workspace(&first, &archive).unwrap();
+        let restored = import_workspace(&archive, temp.path()).unwrap();
+        assert_eq!(fs::read(restored.join("workspace.json")).unwrap(), fs::read(first.join("workspace.json")).unwrap());
+        assert_eq!(fs::read(restored.join("templates/component.yaml")).unwrap(), modified);
+        assert_eq!(ensure_workspace(&restored).unwrap().id, initial.id);
+        let count = fs::read_dir(temp.path()).unwrap().count();
+        assert!(create_workspace_from_template(temp.path(), "拒绝", "unknown.template").is_err());
+        assert!(create_workspace_from_template(temp.path(), "../拒绝", "org.viento.blank").is_err());
+        assert_eq!(fs::read_dir(temp.path()).unwrap().count(), count);
     }
 
     #[test]

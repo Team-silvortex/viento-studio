@@ -27,6 +27,8 @@ import { createNodeDocumentStorage } from '../adapters/node-document-storage.mjs
 import { createWorldQueryService } from '../adapters/node-world-projection.mjs';
 import { createWorldCommandService } from '../adapters/node-world-commands.mjs';
 import { readTransactionStatus, readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
+import { createProjectBuildService } from './project-build-service.mjs';
+import { createScenePreviewService } from './scene-preview-service.mjs';
 
 const DEFAULT_INDEX_CACHE_TTL_MS = 5000;
 let requestSequence = 0;
@@ -47,6 +49,9 @@ function createDocumentService(options = {}) {
   const queryWorld = createWorldQueryService(PROJECT_ROOT);
   const commandWorld = createWorldCommandService(PROJECT_ROOT);
   const exports = createExportService(PROJECT_ROOT);
+  const projectBuildEnabled = options.projectBuildEnabled ?? process.platform === 'linux';
+  const projectBuild = createProjectBuildService(PROJECT_ROOT, { enabled: projectBuildEnabled });
+  const scenePreview = createScenePreviewService(PROJECT_ROOT, { enabled: projectBuildEnabled });
   const resourcePackages = createResourcePackageService(PROJECT_ROOT, { imported: () => { reloadWorkspaceManifest(); invalidateIndexCache(); } });
   const sharedState = options.state || {};
   const state = {
@@ -69,7 +74,7 @@ function createDocumentService(options = {}) {
   });
 
   async function getCapabilities() {
-    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'relation.add', 'resource.bind', 'world.recover'] };
+    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
   }
 
   function getRuntimeConfig() {
@@ -244,6 +249,8 @@ function createDocumentService(options = {}) {
   }
 
   return {
+    projectBuild,
+    scenePreview,
     queryWorld,
     async transactionStatus() {
       const { pending, receipt } = await readTransactionStatus(PROJECT_ROOT);
