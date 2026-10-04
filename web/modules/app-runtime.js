@@ -48,6 +48,8 @@ import { setupExport } from './app-export.js';
 import { setupProjectSettings } from './app-project-settings.js';
 import { setupWorldBrowser } from './app-world-browser.js';
 import { setupProjectBuild } from './app-project-build.js';
+import { sourceLocationSelection } from './app-source-location.js';
+import { prepareSceneSourceLayoutApply } from '../../engine/scene-source-layout.mjs';
 import { isComposingInput } from './app-keyboard.js';
 import { createFieldEditor } from './app-field-editor.js';
 import { API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion } from '../../scripts/lib/doc-api-contract.mjs';
@@ -173,6 +175,8 @@ let blockDraftSourcePath = '';
 let blockDraft = createBlockDraft();
 let sourceEditorDraft = '';
 let editorLoadToken = 0;
+let sourceNavigationToken = 0;
+let sourceNavigationRequest = null;
 let createTemplateToken = 0;
 let editSessionBaselinePath = '';
 let editSessionVersion = '';
@@ -209,6 +213,8 @@ const cachedListGroups = {
 };
 let cachedGroupedDocs = new WeakMap();
 let editSessionBaselineContent = '';
+let scenePreviewDraftEpoch = 0;
+let scenePreviewDraftState = [];
 let draftObserver = null;
 let renderedContentDocPath = '';
 let renderedContentSignature = '';
@@ -1747,6 +1753,12 @@ function refreshEditSessionDirtyState() {
 
 function updateEditUnsavedUi() {
   const inSession = isInEditSession();
+  const content = inSession ? getCurrentEditDraftContent() : '';
+  const draftState = [state.isEditing, state.isCreating, state.activeEditSource, state.editInputMode,
+    editSessionVersion, editSessionBaselineContent, content];
+  if (draftState.some((value, index) => value !== scenePreviewDraftState[index])) {
+    scenePreviewDraftEpoch++; scenePreviewDraftState = draftState;
+  }
   const showUnsaved = inSession && !!state.editHasUnsavedChanges;
   if (editDirtyIndicatorEl) {
     editDirtyIndicatorEl.classList.toggle('is-hidden', !inSession);
@@ -1757,7 +1769,6 @@ function updateEditUnsavedUi() {
     editSaveBtnEl.classList.toggle('doc-btn-unsaved', showUnsaved);
   }
   if (editMetricsEl) {
-    const content = inSession ? getCurrentEditDraftContent() : '';
     const characters = Array.from(content.replace(/\s/g, '')).length;
     const lines = content ? content.split(/\r\n|\r|\n/).length : 0;
     editMetricsEl.textContent = inSession ? t`${characters.toLocaleString(getLanguage())} 字 · ${lines} 行` : '';
@@ -3728,6 +3739,10 @@ async function enterEditMode() {
     refreshEditButtons();
     return;
   }
+  activateSourceEditor(doc, sourcePath);
+}
+
+function activateSourceEditor(doc, sourcePath) {
   state.activeEditPath = doc.path;
   state.activeEditSource = sourcePath;
   state.activeEditSourceVersion = normalizeEditSessionVersion(
@@ -3746,6 +3761,167 @@ async function enterEditMode() {
   }
   syncEditSessionBaseline();
   mediaEditorController?.refresh();
+}
+
+
+async function getScenePreviewDraft(sourcePath) {
+  const eligible = () => isEditModeActive() && state.isEditing && !state.isCreating
+    && state.editHasUnsavedChanges && !isEditorBusy()
+    && canonicalizeSourcePath(state.activeEditSource) === canonicalizeSourcePath(sourcePath);
+  if (!eligible()) return null;
+  const content = getCurrentEditContent(), baseline = editSessionBaselineContent;
+  const token = scenePreviewDraftEpoch, loadToken = editorLoadToken, version = editSessionVersion;
+  const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(baseline));
+  if (!eligible() || token !== scenePreviewDraftEpoch || loadToken !== editorLoadToken
+    || content !== getCurrentEditContent() || baseline !== editSessionBaselineContent || version !== editSessionVersion) return null;
+  const baseSourceRevision = `sha256:${[...new Uint8Array(bytes)].map(byte => byte.toString(16).padStart(2, '0')).join('')}`;
+  if (version.startsWith('sha256:') && version !== baseSourceRevision) return null;
+  return { sourcePath: canonicalizeSourcePath(sourcePath), baseSourceRevision, content };
+}
+
+async function applySceneSourceLayoutDraft(proposal, { isCurrent = () => true } = {}) {
+  const conflict = () => { throw Object.assign(new Error('The source editor no longer matches the reviewed scene draft.'), { errorCode: 'scene_source_layout_conflict' }); };
+  const doc = getActiveDoc(), sourcePath = proposal?.sourcePath;
+  if (typeof sourcePath !== 'string' || canonicalizeSourcePath(sourcePath) !== sourcePath) conflict();
+  const eligible = () => isEditModeActive() && state.isEditing && !state.isCreating && state.editInputMode === 'source'
+    && state.editHasUnsavedChanges && !isEditorBusy() && getActiveDoc() === doc
+    && state.activeEditPath === doc?.path && canonicalizeSourcePath(state.activeEditSource) === sourcePath;
+  if (!eligible()) conflict();
+  const epoch = scenePreviewDraftEpoch, loadToken = editorLoadToken, version = editSessionVersion;
+  const baseline = editSessionBaselineContent, content = getCurrentEditContent();
+  const owns = () => eligible() && isCurrent()
+    && epoch === scenePreviewDraftEpoch && loadToken === editorLoadToken && version === editSessionVersion
+    && baseline === editSessionBaselineContent && content === getCurrentEditContent();
+  if (!owns()) conflict();
+  const digest = async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join('');
+  const baseSourceRevision = `sha256:${await digest(baseline)}`;
+  if (!owns() || version.startsWith('sha256:') && version !== baseSourceRevision) conflict();
+  const prepared = await prepareSceneSourceLayoutApply({ sourcePath, baseSourceRevision, content }, proposal, { digest });
+  if (!owns()) conflict();
+  // This is an in-memory source edit. Preserve the original save preconditions
+  // and cached disk text so a later save must still detect external changes.
+  const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, scroll = editEditorEl.scrollTop;
+  setSourceEditorContent(prepared.afterContent);
+  if (Number.isInteger(start) && Number.isInteger(end)) editEditorEl.setSelectionRange?.(Math.min(start, editEditorEl.value.length), Math.min(end, editEditorEl.value.length));
+  editEditorEl.scrollTop = scroll;
+  refreshEditSessionDirtyState(); refreshEditButtons();
+  setEditorStatus(t(state.editHasUnsavedChanges ? '布局已应用到文本草稿；尚未保存。' : '布局已应用；文本与已保存版本一致。'));
+  return { applied: true };
+}
+
+async function openSceneDraftSource(sourcePath, location) {
+  const request = ++sourceNavigationToken, loadToken = editorLoadToken, epoch = scenePreviewDraftEpoch;
+  const doc = getActiveDoc();
+  const owns = () => request === sourceNavigationToken && loadToken === editorLoadToken && epoch === scenePreviewDraftEpoch
+    && getActiveDoc() === doc && isEditModeActive() && state.isEditing && !state.isCreating && !isEditorBusy()
+    && canonicalizeSourcePath(state.activeEditSource) === canonicalizeSourcePath(sourcePath)
+    && canonicalizeSourcePath(location.sourcePath) === canonicalizeSourcePath(sourcePath);
+  if (!owns()) return false;
+  if (state.editInputMode !== 'source') {
+    setEditorStatus(t('草稿来源定位需要源码模式；当前内容已保留。')); return true;
+  }
+  const content = getCurrentEditContent(), value = editEditorEl.value;
+  const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(content));
+  if (!owns() || getCurrentEditContent() !== content || editEditorEl.value !== value) return false;
+  const currentRevision = `sha256:${[...new Uint8Array(bytes)].map(byte => byte.toString(16).padStart(2, '0')).join('')}`;
+  const selection = sourceLocationSelection(content, location, currentRevision);
+  if (selection.status !== 'exact') {
+    setEditorStatus(t(selection.status === 'stale' ? '草稿已变化，请重新预览后定位；当前内容和光标已保留。'
+      : '草稿没有可精确定位的字段范围；当前内容和光标已保留。'));
+    return true;
+  }
+  const row = value.slice(0, selection.start).split('\n').length - 1;
+  const lineHeight = Number.parseFloat(globalThis.getComputedStyle?.(editEditorEl)?.lineHeight) || 20;
+  const scroll = Math.max(0, row * lineHeight - (editEditorEl.clientHeight || 0) / 2);
+  editEditorEl.setSelectionRange?.(selection.start, selection.end); editEditorEl.scrollTop = scroll;
+  setEditorStatus(t('已定位草稿字段：{0}', location.propertyPath || '/'));
+  let focused = false;
+  return { focus: () => {
+    if (focused || !owns() || state.editInputMode !== 'source' || getCurrentEditContent() !== content || editEditorEl.value !== value) return false;
+    focused = true; editEditorEl.focus(); editEditorEl.setSelectionRange?.(selection.start, selection.end);
+    editEditorEl.scrollTop = scroll; editEditorEl.scrollIntoView?.({ block: 'nearest' }); return true;
+  } };
+}
+
+async function openBuildSource(sourcePath, location = null) {
+  if (location?.previewDraft === true) return openSceneDraftSource(sourcePath, location);
+  const doc = getDocBySourcePath(sourcePath);
+  if (!doc) throw new Error('Source document is unavailable');
+  const request = ++sourceNavigationToken;
+  const located = Boolean(location?.sourceRange);
+  selectDoc(doc.path, { deferSourceRead: located });
+  if (state.activePath !== doc.path) return false;
+  if (!located) return true;
+  const unavailable = () => setEditorStatus(t('已打开文档，但无法精确定位来源。请刷新构建或场景预览后重试。'));
+  const dirty = () => isInEditSession() && (state.editHasUnsavedChanges || state.isCreating);
+  const protectDraft = () => setEditorStatus(t('当前文档有未保存草稿，已保留内容和光标；请保存或取消修改后再定位来源。'));
+  if (dirty()) { protectDraft(); return true; }
+  const ownLoading = sourceNavigationRequest?.doc === doc && state.isLoadingSource;
+  if (!isEditModeActive() || !isEditableSourceAvailable(getSourcePath(doc))
+    || canonicalizeSourcePath(location.sourcePath) !== canonicalizeSourcePath(sourcePath)
+    || isEditorWriteBusy() || state.isLoadingTemplate || state.isLoadingFields || state.isLoadingSource && !ownLoading) {
+    unavailable(); return true;
+  }
+  const owner = { doc, request, editorToken: ++editorLoadToken };
+  sourceNavigationRequest = owner;
+  const owns = () => sourceNavigationRequest === owner && sourceNavigationToken === request
+    && editorLoadToken === owner.editorToken && state.activePath === doc.path && getDocByPath(doc.path) === doc
+    && isEditModeActive() && canonicalizeSourcePath(getSourcePath(doc)) === canonicalizeSourcePath(sourcePath);
+  state.isLoadingSource = true; setEditorStatus(APP_ERROR_MESSAGES.loadingSource); refreshEditButtons();
+  try {
+    const sourceInfo = await fetchEditableSource(getSourcePath(doc));
+    if (!owns()) return false;
+    if (dirty()) { protectDraft(); return true; }
+    if (sourceInfo?.error || typeof sourceInfo?.content !== 'string') { unavailable(); return true; }
+    const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(sourceInfo.content));
+    if (!owns()) return false;
+    if (dirty()) { protectDraft(); return true; }
+    const currentRevision = `sha256:${[...new Uint8Array(hash)].map(byte => byte.toString(16).padStart(2, '0')).join('')}`;
+    const selection = sourceLocationSelection(sourceInfo.content, location, currentRevision);
+    doc._editorSource = getSourcePath(doc); doc._sourceCachedText = sourceInfo.content;
+    doc._sourceLastModified = sourceInfo.lastModified || ''; doc._sourceVersion = sourceInfo.version || '';
+    doc._renderSignature = makeDocRenderSignature(doc);
+    activateSourceEditor(doc, getSourcePath(doc));
+    if (selection.status === 'exact') {
+      editEditorEl.setSelectionRange?.(selection.start, selection.end); editEditorEl.focus();
+      const row = editEditorEl.value.slice(0, selection.start).split('\n').length - 1;
+      const lineHeight = Number.parseFloat(globalThis.getComputedStyle?.(editEditorEl)?.lineHeight) || 20;
+      editEditorEl.scrollTop = Math.max(0, row * lineHeight - (editEditorEl.clientHeight || 0) / 2);
+      editEditorEl.scrollIntoView?.({ block: 'nearest' });
+      setEditorStatus(t('已定位来源字段：{0}', location.propertyPath || '/'));
+    } else if (selection.status === 'stale') setEditorStatus(t('原文已变化，已打开当前文档；请刷新构建或场景预览后重新定位。'));
+    else if (selection.status === 'approximate') setEditorStatus(t('该字段没有独立的原文位置，已打开来源文档，未选择近似范围。'));
+    else unavailable();
+    const locatedContent = editEditorEl.value;
+    const locatedRange = selection.status === 'exact' ? [selection.start, selection.end] : [0, 0];
+    const locatedScroll = editEditorEl.scrollTop;
+    let focused = false;
+    return { focus: () => {
+      // The host dialog must close before its formerly inert editor can focus.
+      // Do not let a queued close event steal focus from a newer editor session.
+      if (focused || sourceNavigationToken !== request || editorLoadToken !== owner.editorToken
+        || state.activePath !== doc.path || getDocByPath(doc.path) !== doc || !isEditModeActive()
+        || !state.isEditing || state.activeEditPath !== doc.path || state.editInputMode !== 'source' || dirty()
+        || editEditorEl.value !== locatedContent || doc._sourceCachedText !== sourceInfo.content
+        || canonicalizeSourcePath(getSourcePath(doc)) !== canonicalizeSourcePath(sourcePath)) return false;
+      focused = true;
+      editEditorEl.focus();
+      // Native dialog focus restoration can collapse the selection of this
+      // reused textarea. Reapply only the range verified for this same content.
+      editEditorEl.setSelectionRange?.(...locatedRange);
+      editEditorEl.scrollTop = locatedScroll;
+      editEditorEl.scrollIntoView?.({ block: 'nearest' });
+      return true;
+    } };
+  } catch {
+    if (!owns()) return false;
+    if (dirty()) protectDraft();
+    else unavailable();
+    return true;
+  } finally {
+    if (sourceNavigationRequest === owner) sourceNavigationRequest = null;
+    if (editorLoadToken === owner.editorToken) { state.isLoadingSource = false; refreshEditButtons(); }
+  }
 }
 
 function handleEditorSaveShortcut(event) {
@@ -4903,7 +5079,7 @@ function selectDoc(pathValue, options = {}) {
   }
 
   if (!isInEditSession() && isEditModeActive() && isEditableSourcePath(getSourcePath(doc))) {
-    if (doc._sourceCachedText === undefined) {
+    if (doc._sourceCachedText === undefined && !options.deferSourceRead) {
       setEditorStatus(APP_ERROR_MESSAGES.loadingSource);
       syncDocEditorSource(doc)
         .then((result) => {
@@ -5187,19 +5363,19 @@ async function loadData(preferredPath = '', options = {}) {
 async function initApp(options = {}) {
   await setupSettings(options.settings);
   projectBuildController = setupProjectBuild({
-    getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())) }),
+    getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())),
+      sceneDraftPath: state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '',
+      sceneDraftWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source' && state.editHasUnsavedChanges,
+      sceneDraftToken: `${editorLoadToken}:${scenePreviewDraftEpoch}` }),
+    getSceneDraft: getScenePreviewDraft,
+    applySceneDraft: applySceneSourceLayoutDraft,
     setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
     applied: async result => {
       const sourcePath = result.changes?.[0]?.sourcePath || result.object?.documentRefs?.[0]?.sourcePath || '';
       await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: toRebuildFilter(sourcePath), requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
       await loadData(state.activePath, { preferredSourcePath: sourcePath, forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
     },
-    openSource: sourcePath => {
-      const doc = getDocBySourcePath(sourcePath);
-      if (!doc) throw new Error('Source document is unavailable');
-      selectDoc(doc.path);
-      return state.activePath === doc.path;
-    },
+    openSource: openBuildSource,
   });
   worldBrowserController = setupWorldBrowser({
     openSource: sourcePath => {
@@ -5507,7 +5683,7 @@ async function initApp(options = {}) {
     window.addEventListener('keydown', handleWindowKeydown);
 
     window.addEventListener('beforeunload', (event) => {
-      if (!state.editHasUnsavedChanges && !document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[data-dirty="true"], #sceneCreateDialog[aria-busy="true"], #objectProjectionDialog[data-dirty="true"], #objectProjectionDialog[aria-busy="true"]')) {
+      if (!state.editHasUnsavedChanges && !document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[data-dirty="true"], #sceneLayoutDialog[data-dirty="true"], #sceneCreateDialog[aria-busy="true"], #sceneLayoutDialog[aria-busy="true"], #objectProjectionDialog[data-dirty="true"], #objectProjectionDialog[aria-busy="true"]')) {
         return;
       }
       event.preventDefault();

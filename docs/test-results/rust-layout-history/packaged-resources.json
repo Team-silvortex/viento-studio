@@ -1,0 +1,141 @@
+{
+  "mode": "offline resources only; no installer, Cargo, app launch or author workspace",
+  "commands": [
+    "VIENTO_CORE_TARGET_DIR=/tmp/viento-history-rust-target CARGO_NET_OFFLINE=true node --import /tmp/viento-history-offline.mjs desktop/prepare.mjs --resources-only",
+    "VIENTO_CORE_TARGET_DIR=/tmp/viento-history-rust-target CARGO_NET_OFFLINE=true node --import /tmp/viento-history-offline.mjs mobile/prepare.mjs"
+  ],
+  "fetch": "disabled by verification import hook; pinned Node license copied from existing local installation after SHA-256 validation",
+  "desktopOutput": "Desktop application resources prepared (no project data bundled).\n",
+  "mobileOutput": "Mobile resources prepared: 0.0.6 (no Node executable or workspace data)\n",
+  "runtimeChecks": [
+    {
+      "directory": "desktop/resources",
+      "initialized": true,
+      "operations": [
+        "create",
+        "setPositions",
+        "undo",
+        "close"
+      ],
+      "passed": true
+    },
+    {
+      "directory": "mobile/dist",
+      "initialized": true,
+      "operations": [
+        "create",
+        "setPositions",
+        "undo",
+        "close"
+      ],
+      "passed": true
+    }
+  ],
+  "artifacts": {
+    "desktop/resources": {
+      "files": 464,
+      "bytes": 5763276,
+      "checks": {
+        "engine/studio-core.wasm": {
+          "bytes": 134577,
+          "sha256": "50eb0eae2bda6b39a4fc406a427d2588871cb18954447360a140b55cfd6992db",
+          "matchesSource": true
+        },
+        "engine/studio-core.build.json": {
+          "bytes": 1000,
+          "sha256": "783fd4a3ce69cf168fe72abb652cd90a41a917cf0c80fecf203e7c91450d842c",
+          "matchesSource": true
+        },
+        "engine/studio-core.mjs": {
+          "bytes": 9401,
+          "sha256": "b471a6fc9cdc39c48c592ee485001a6b3dd8bfc659834e37f936f038b5d17007",
+          "matchesSource": true
+        },
+        "engine/scene-layout.mjs": {
+          "bytes": 8216,
+          "sha256": "acdd6068e7766aebb9bbcd5b774322e88b2af0193599a71c5005ac140ceb5d41",
+          "matchesSource": true
+        },
+        "web/modules/app-studio-core.js": {
+          "bytes": 1740,
+          "sha256": "dbc282577a11f5930f4560c0e175b50dbcebbae10f915a1faa994aa740acabcc",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-layout.js": {
+          "bytes": 25860,
+          "sha256": "855ca95c91b2fa6616615ce086f800b5210b397484b2c0485a565ec6c154e579",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-preview-canvas.js": {
+          "bytes": 16016,
+          "sha256": "e88dd899b3e1cfba3e3f1f52a724f4792ce01d082d31ae02b9a373255974d486",
+          "matchesSource": true
+        }
+      }
+    },
+    "mobile/dist": {
+      "files": 173,
+      "bytes": 4362766,
+      "checks": {
+        "engine/studio-core.wasm": {
+          "bytes": 134577,
+          "sha256": "50eb0eae2bda6b39a4fc406a427d2588871cb18954447360a140b55cfd6992db",
+          "matchesSource": true
+        },
+        "engine/studio-core.build.json": {
+          "bytes": 1000,
+          "sha256": "783fd4a3ce69cf168fe72abb652cd90a41a917cf0c80fecf203e7c91450d842c",
+          "matchesSource": true
+        },
+        "engine/studio-core.mjs": {
+          "bytes": 9401,
+          "sha256": "b471a6fc9cdc39c48c592ee485001a6b3dd8bfc659834e37f936f038b5d17007",
+          "matchesSource": true
+        },
+        "engine/scene-layout.mjs": {
+          "bytes": 8216,
+          "sha256": "acdd6068e7766aebb9bbcd5b774322e88b2af0193599a71c5005ac140ceb5d41",
+          "matchesSource": true
+        },
+        "web/modules/app-studio-core.js": {
+          "bytes": 1740,
+          "sha256": "dbc282577a11f5930f4560c0e175b50dbcebbae10f915a1faa994aa740acabcc",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-layout.js": {
+          "bytes": 25860,
+          "sha256": "855ca95c91b2fa6616615ce086f800b5210b397484b2c0485a565ec6c154e579",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-preview-canvas.js": {
+          "bytes": 16016,
+          "sha256": "e88dd899b3e1cfba3e3f1f52a724f4792ce01d082d31ae02b9a373255974d486",
+          "matchesSource": true
+        }
+      }
+    }
+  },
+  "cleanup": [
+    {
+      "path": "desktop/resources",
+      "bytes": 5763276,
+      "removed": true
+    },
+    {
+      "path": "mobile/dist",
+      "bytes": 4362766,
+      "removed": true
+    },
+    {
+      "path": "desktop/ui/i18n",
+      "bytes": 236779,
+      "removed": true
+    },
+    {
+      "path": "desktop/.cache",
+      "bytes": 157609,
+      "removed": true
+    }
+  ],
+  "runtimeCheckExecution": "Node imported each packaged bridge, injected its packaged WASM and verified create/edit/undo/close. No Tauri process or Cargo was invoked by this runtime check."
+}

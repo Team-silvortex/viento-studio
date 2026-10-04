@@ -23,7 +23,11 @@ jobs:
         with:
           node-version: '24'
           cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
       - run: npm ci
+      - run: npm run core:test
       - run: npm run check -- --app-only
 
   compatibility:
@@ -39,12 +43,15 @@ jobs:
           node-version: '24'
           cache: npm
       - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: src-tauri -> target
       - name: Install native dependencies
         run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev
       - run: npm ci
+      - run: npm run core:build
       - run: cargo test --manifest-path src-tauri/Cargo.toml --locked
       - run: cargo build --manifest-path src-tauri/Cargo.toml --locked --example workspace-archive --example mobile-storage
       - name: Verify predecessor formats and desktop / mobile archive exchange

@@ -1,9 +1,13 @@
+import { overlaySceneDraftPreview, validateSceneDraftRequest } from '../../engine/scene-draft-preview.mjs';
+import { createSceneStructure } from '../../engine/scene-structure.mjs';
 import fs from 'node:fs/promises';
 import { constants } from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { readWorldSnapshot } from './node-world-projection.mjs';
-import { createScene2DPlan, buildActorFieldLocation } from '../../engine/build-plan.mjs';
+import { scene2DModelToPlan, buildActorFieldLocation } from '../../engine/build-plan.mjs';
+import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
+import { resolveScene2DModel } from '../../engine/scene-model.mjs';
 import { canonicalJson } from '../../engine/world-projection.mjs';
 import { resolveAssetRoot } from '../lib/workspace.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
@@ -35,13 +39,45 @@ export async function readBuildFile(file, limit, signal) {
 }
 
 export async function captureBuildSnapshot(root, sceneRef, { signal } = {}) {
+  // Build requests always capture saved bytes, even if callers supply unknown
+  // options. Draft previews cannot become executable build snapshots.
+  return captureScene(root, sceneRef, { signal });
+}
+
+export async function captureSceneDraftPreview(root, sceneRef, draft, { signal } = {}) {
+  validateSceneDraftRequest(sceneRef, draft);
+  return captureScene(root, sceneRef, { signal, draft });
+}
+
+async function captureScene(root, sceneRef, { signal, draft } = {}) {
   root = await fs.realpath(root);
   signal?.throwIfAborted();
   const fence = await readWorldFence(root);
   await resolveContainedPath(root, path.join(root, '.viento/local.json'), { allowMissing: true });
   const observed = await readWorldSnapshot(root);
-  const planned = createScene2DPlan(observed, sceneRef);
-  if (!planned.ok) return planned;
+  signal?.throwIfAborted();
+  const effective = draft ? await overlaySceneDraftPreview(observed, sceneRef, draft, { digest: buildHash }) : observed;
+  signal?.throwIfAborted();
+  const draftMeta = draft ? { draft: effective.draft } : {};
+  const assertDraftBaseline = after => {
+    if (draft && after.source.documents.find(item => item.record?.id === sceneRef)?.sourceRevision !== draft.baseSourceRevision) {
+      throw buildError('scene_preview_draft_conflict', 'The saved scene changed while freezing this draft.');
+    }
+  };
+  const finishInvalidDraft = async result => {
+    if (draft) {
+      signal?.throwIfAborted();
+      const after = await readWorldSnapshot(root);
+      assertDraftBaseline(after);
+      if (canonicalJson(after.source) !== canonicalJson(observed.source)) throw buildError('build_input_changed', 'Workspace changed while freezing draft inputs; retry.');
+      await assertWorldFence(root, fence);
+      signal?.throwIfAborted();
+    }
+    return { ...result, ...draftMeta };
+  };
+  const resolved = resolveScene2DModel(effective, sceneRef);
+  const planned = { ok: resolved.ok, plan: resolved.model ? scene2DModelToPlan(resolved.model) : null, diagnostics: resolved.diagnostics };
+  if (!planned.ok) return finishInvalidDraft(planned);
   const resources = new Map();
   const assetRoot = resolveAssetRoot(root);
   const boundary = assetRoot === path.join(root, 'assets') ? root : assetRoot;
@@ -57,20 +93,42 @@ export async function captureBuildSnapshot(root, sceneRef, { signal } = {}) {
     } catch (error) {
       signal?.throwIfAborted();
       const actor = planned.plan.actors.find(actor => actor.imageResourceId === resource.id);
-      return { ok: false, plan: planned.plan, diagnostics: [{ severity: 'error', code: error.errorCode || 'build_resource_unavailable',
+      return finishInvalidDraft({ ok: false, plan: planned.plan, diagnostics: [{ severity: 'error', code: error.errorCode || 'build_resource_unavailable',
         message: 'Cannot freeze image bytes; check availability and the registered hash.', resourceId: resource.id,
-        ...buildActorFieldLocation(actor, 'imageResourceId') }] };
+        ...(resolved.model.sourceLocations.actors.find(item => sceneActorIdentity(item) === sceneActorIdentity(actor))?.fields.imageResourceId
+          || buildActorFieldLocation(actor, 'imageResourceId')) }] });
     }
   }
   signal?.throwIfAborted();
   const after = await readWorldSnapshot(root);
+  assertDraftBaseline(after);
   if (canonicalJson(after.source) !== canonicalJson(observed.source) || resolveAssetRoot(root) !== assetRoot) {
     throw buildError('build_input_changed', 'Workspace changed while freezing build inputs; retry.');
   }
   await assertWorldFence(root, fence);
+  signal?.throwIfAborted();
+  if (draft) {
+    // Domain-separated identity only. Never expose a build-snapshot envelope,
+    // journal preconditions or a reusable disk build result for unsaved bytes.
+    const identity = { format: 'viento-scene-draft-preview', schemaVersion: 1,
+      source: effective.source, plan: planned.plan, draft: effective.draft };
+    return { ...planned, ...draftMeta, snapshotId: `sha256:${buildHash(canonicalJson(identity))}`, resources,
+      sourceLocations: resolved.model.sourceLocations,
+      ...(resolved.model.schemaVersion === 3 ? { sceneStructure: createSceneStructure(resolved.model) } : {}) };
+  }
   // Exact document text + parsed authoring descriptors are enough to reproduce
   // this plan. Resources travel separately as bytes identified by their hash.
   const snapshot = { format: 'viento-build-snapshot', schemaVersion: 1,
     source: observed.source, plan: planned.plan };
-  return { ...planned, snapshot, snapshotId: `sha256:${buildHash(canonicalJson(snapshot))}`, resources };
+  const object = observed.projection.objects.find(item => item.id === planned.plan.scene.objectId);
+  const document = observed.source.documents.find(item => item.record?.id === object?.id);
+  // Editor preconditions come from the same fenced observation as the rendered
+  // actors. They are deliberately outside the reproducible build snapshot.
+  const sceneEditing = object && document ? {
+    worldId: observed.projection.world.id, baseRevision: observed.projection.world.revision,
+    objectRevision: object.revision, sourceRevision: document.sourceRevision, content: document.content,
+  } : undefined;
+  return { ...planned, snapshot, snapshotId: `sha256:${buildHash(canonicalJson(snapshot))}`, resources, sceneEditing,
+    sourceLocations: resolved.model.sourceLocations,
+    ...(resolved.model.schemaVersion === 3 ? { sceneStructure: createSceneStructure(resolved.model) } : {}) };
 }

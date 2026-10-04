@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-03",
+  "scope": "Documentation/maintainer-tool update: four-dimensional function atlas; no product feature retest or installer acceptance",
+  "baselineCommit": "94e9626fc11c64f61a7391f7b081bc029306345a",
+  "counts": {
+    "architecture": 11,
+    "functions": 50,
+    "implementations": 99,
+    "bindings": 120,
+    "scoringCells": 480,
+    "semanticDependencies": 54,
+    "workflows": 13,
+    "legacyMappings": 50,
+    "referencedFiles": 289
+  },
+  "validation": {
+    "catalogCommand": "node scripts/function-atlas.mjs --check",
+    "catalog": "passed",
+    "nodeSyntax": "both generator modules passed",
+    "links": {
+      "checkedLinks": 662,
+      "errors": []
+    },
+    "invalidCatalogCases": {
+      "passed": 10,
+      "report": "validator.json"
+    },
+    "browser": {
+      "passed": 10,
+      "errors": 0,
+      "networkRequests": 0,
+      "report": "browser.json",
+      "screenshot": "browser.png"
+    },
+    "whitespace": "git diff --check passed",
+    "historicalGraphs": "all four original SHA-256 hashes preserved"
+  },
+  "sourceSha256": {
+    "docs/function-atlas.json": "e08ab40f4562a64c89f04961fc593a192177b0280dbfd1ad9f0632ef8f67cebb",
+    "docs/function-atlas.html": "0a07af3f22c2f2e0f8febe9bb25436e361948da73e9bbb11927d564c0f68338a",
+    "docs/function-atlas.mmd": "041ba16ec3b8115430c9e53350fae4de9d06358f4f656cf0e996582e02b78715",
+    "docs/FUNCTION_ATLAS.md": "fea460a20b7c1f9f26508d91f1e094641a825a33186b3a216835b8fd53823137",
+    "scripts/function-atlas.mjs": "223dbe22b94c4c106d6fcc65b758bbfa0b9df76e81dc3ffbbb7f455b2541bce7",
+    "scripts/function-atlas-view.mjs": "b882f262d6ea6f2a188c441633cf4065fc5e21b21a01f602a7427790f457752f"
+  },
+  "browserArtifactDifference": "Browser acceptance used the final reviewed cells, labels and viewer. After saving navigation edits, sourceSnapshot hashes were refreshed. Programmatic comparison proved all catalog content except sourceSnapshot identical, and viewer template bytes identical; no product tests rerun.",
+  "limitations": [
+    "Scores are scoped ordinal manual assessments, not averages, completion percentages or code-coverage measurements.",
+    "Static enumeration and semantic dependencies are not runtime tracing or a complete call graph.",
+    "Historical tests retain original tool/platform/version/skipped-case boundaries.",
+    "Source file hash validation detects changes in mapped files; new capabilities still require manual registration.",
+    "No author workspace reads/writes, product runtime change, version increment, commit, push or installation in this task."
+  ]
+}

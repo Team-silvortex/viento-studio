@@ -1,0 +1,320 @@
+{
+  "mode": "Offline resource preparation and packaged modules only; no installer, device or host launch, downloads, or author workspace.",
+  "commands": [
+    "CARGO_NET_OFFLINE=true node --import /tmp/viento-groups-offline.mjs desktop/prepare.mjs --resources-only",
+    "CARGO_NET_OFFLINE=true node --import /tmp/viento-groups-offline.mjs mobile/prepare.mjs",
+    "node --import /tmp/viento-groups-offline.mjs /tmp/viento-groups-package-check.mjs"
+  ],
+  "network": "fetch disabled; existing installed AppImage Node license read-only extraction matched pinned SHA-256",
+  "logs": {
+    "desktop": "desktop-prepare.log",
+    "mobile": "mobile-prepare.log",
+    "runtime": "packaged-runtime.log"
+  },
+  "runtimeChecks": [
+    {
+      "directory": "desktop/resources",
+      "legacyV1AndV2PlansExact": true,
+      "sourceModel3ToFlatPlan2": true,
+      "validatedDetachedStructure": true,
+      "outlineParentRetentionAndActorOrder": true,
+      "filteredGroupSelectionRetainsAllDescendants": true,
+      "wasmReady": true,
+      "positionMoveAndUndoRetainSourceGroups": true,
+      "losslessCandidatePreservesGroups": true,
+      "rustSavePhasesAcceptedWithSimulatedReceipts": true,
+      "hostFilesystemCommitNotExercised": true,
+      "legacyV1V2ArtifactsAndBackendFingerprintsExact": true,
+      "groupedSourceUsesUnchangedBackend2": true,
+      "passed": true
+    },
+    {
+      "directory": "mobile/dist",
+      "legacyV1AndV2PlansExact": true,
+      "sourceModel3ToFlatPlan2": true,
+      "validatedDetachedStructure": true,
+      "outlineParentRetentionAndActorOrder": true,
+      "filteredGroupSelectionRetainsAllDescendants": true,
+      "wasmReady": true,
+      "positionMoveAndUndoRetainSourceGroups": true,
+      "losslessCandidatePreservesGroups": true,
+      "rustSavePhasesAcceptedWithSimulatedReceipts": true,
+      "hostFilesystemCommitNotExercised": true,
+      "vendorImportsOnlyPackagedDirectory": true,
+      "noNodeRuntimeOrGodotBackendBundled": true,
+      "passed": true
+    }
+  ],
+  "artifacts": {
+    "desktop/resources": {
+      "files": 474,
+      "bytes": 5855759,
+      "checks": {
+        "engine/scene-groups.mjs": {
+          "bytes": 6946,
+          "sha256": "0149aa1efdedf32032446c2d5346a428982bf5f368230289fc0cc5e3a9d48cb0",
+          "matchesSource": true
+        },
+        "engine/scene-structure.mjs": {
+          "bytes": 2894,
+          "sha256": "9b890c2ec9db8e6aef48dc7fbc4c1c925d8f76147d1dea5f2fb6f7b93e10031c",
+          "matchesSource": true
+        },
+        "engine/scene-model.mjs": {
+          "bytes": 16107,
+          "sha256": "29872672282ec6b4a5924b014eadfa61093381636eabed6d7623bb428819ca3c",
+          "matchesSource": true
+        },
+        "engine/build-plan.mjs": {
+          "bytes": 2495,
+          "sha256": "5049473ef4c5423f6e97b275aed3f7a03bb5a10defc3f395538347af47d0e82b",
+          "matchesSource": true
+        },
+        "engine/scene-layout.mjs": {
+          "bytes": 10761,
+          "sha256": "c2cdb937a241b008622b71e7e9ab7a1a2291d9044e43dd183ceaab1954d40479",
+          "matchesSource": true
+        },
+        "engine/world-scene-update.mjs": {
+          "bytes": 12992,
+          "sha256": "368c43d2165f4eb2c8d29fa88dede51750c4f344f792a3233ab6465b6961bf74",
+          "matchesSource": true
+        },
+        "engine/world-scene-create.mjs": {
+          "bytes": 4987,
+          "sha256": "5fe4a75220c663835a3fb932e639c5208c98df6e051b0f6a940a6132778d7913",
+          "matchesSource": true
+        },
+        "engine/index.mjs": {
+          "bytes": 2685,
+          "sha256": "3d09f86071829a106ccffc5105f9982989f58a4c6e9c7af4502c6b857f389082",
+          "matchesSource": true
+        },
+        "engine/studio-core.wasm": {
+          "bytes": 141948,
+          "sha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+          "matchesSource": true
+        },
+        "engine/studio-core.build.json": {
+          "bytes": 1094,
+          "sha256": "fcb54497f4f4896320a8b2e3c1d654d835770e3efdaad133015ac779ddbff795",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-outline.js": {
+          "bytes": 5721,
+          "sha256": "93db8f0b3c7951e2a6631abfc09a87261522c3a1bb12401b9e47307c317b5264",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-create.js": {
+          "bytes": 43581,
+          "sha256": "a4e1821ed35754a0f87bf90e232f44e3b645f45e697c55bab06f5108550257cd",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-preview.js": {
+          "bytes": 21080,
+          "sha256": "428a0869741074bd8aee72e792dd18abc2c82153b37aae9af73209774d9b3a4b",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-layout.js": {
+          "bytes": 27862,
+          "sha256": "8ca1efee4e34262f386da5ab791aecdfa89cfe513f8ebe6279c758c382d8121b",
+          "matchesSource": true
+        },
+        "web/modules/app-project-build.js": {
+          "bytes": 25823,
+          "sha256": "8a6b819938b571c37b371649e187a68014253f63dcc62ef71ee2b6bf98f604cc",
+          "matchesSource": true
+        },
+        "web/i18n/en.js": {
+          "bytes": 102246,
+          "sha256": "9a60ede3dbc5284b00cca6c53f5ebf2c69c604d3f26b6b4a44896d81d953991a",
+          "matchesSource": true
+        },
+        "web/i18n/ja.js": {
+          "bytes": 129939,
+          "sha256": "fcd044c97cff3a7bcf6cc607bff3a936cffe54c21ef59f1028a4e04399b704f2",
+          "matchesSource": true
+        },
+        "web/scene-preview.css": {
+          "bytes": 4984,
+          "sha256": "58a412f15f789d6c5c21fa20b26c1b17ac7bc26248dde40fa64053ed12691fd1",
+          "matchesSource": true
+        },
+        "web/project-build.css": {
+          "bytes": 6106,
+          "sha256": "67187db21281ec21723f9f43c1a4a6445bc2af5677329c64b2a0351af2681808",
+          "matchesSource": true
+        },
+        "scripts/backends/godot4-dispatch.mjs": {
+          "bytes": 973,
+          "sha256": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
+          "matchesSource": true
+        },
+        "scripts/backends/godot4-instances.mjs": {
+          "bytes": 9873,
+          "sha256": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+          "matchesSource": true
+        },
+        "scripts/backends/godot4/runtime-v2.gd": {
+          "bytes": 4404,
+          "sha256": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
+          "matchesSource": true
+        },
+        "scripts/backends/godot4.mjs": {
+          "bytes": 10210,
+          "sha256": "d42d385b5a6e62ff4aa91d00f6065bdd0cefbc7ddde55e08cf5e3c62060fff77",
+          "matchesSource": true
+        },
+        "scripts/backends/godot4/runtime.gd": {
+          "bytes": 4195,
+          "sha256": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd",
+          "matchesSource": true
+        },
+        "scripts/adapters/node-build-snapshot.mjs": {
+          "bytes": 5701,
+          "sha256": "c22185794b7d22c2d7b6825f9c6eb9570c6d5c02001c5b1a2c1d13a2acf5603f",
+          "matchesSource": true
+        },
+        "scripts/lib/scene-preview-service.mjs": {
+          "bytes": 6935,
+          "sha256": "d81983d7856c81b2eb797a7de9ecb0fc1d35f6e2a958e33271d6cf83115d0e62",
+          "matchesSource": true
+        }
+      },
+      "projectDataAndFixturesAbsent": true
+    },
+    "mobile/dist": {
+      "files": 180,
+      "bytes": 4436342,
+      "checks": {
+        "engine/scene-groups.mjs": {
+          "bytes": 6946,
+          "sha256": "0149aa1efdedf32032446c2d5346a428982bf5f368230289fc0cc5e3a9d48cb0",
+          "matchesSource": true
+        },
+        "engine/scene-structure.mjs": {
+          "bytes": 2894,
+          "sha256": "9b890c2ec9db8e6aef48dc7fbc4c1c925d8f76147d1dea5f2fb6f7b93e10031c",
+          "matchesSource": true
+        },
+        "engine/scene-model.mjs": {
+          "bytes": 16107,
+          "sha256": "29872672282ec6b4a5924b014eadfa61093381636eabed6d7623bb428819ca3c",
+          "matchesSource": true
+        },
+        "engine/build-plan.mjs": {
+          "bytes": 2495,
+          "sha256": "5049473ef4c5423f6e97b275aed3f7a03bb5a10defc3f395538347af47d0e82b",
+          "matchesSource": true
+        },
+        "engine/scene-layout.mjs": {
+          "bytes": 10761,
+          "sha256": "c2cdb937a241b008622b71e7e9ab7a1a2291d9044e43dd183ceaab1954d40479",
+          "matchesSource": true
+        },
+        "engine/world-scene-update.mjs": {
+          "bytes": 13009,
+          "sha256": "d99e27e913c54b9be4a615a097cb335d96effc7011ea1deda6b07a19b04c575b",
+          "matchesSource": false,
+          "expectedMobileVendorRewrite": true
+        },
+        "engine/world-scene-create.mjs": {
+          "bytes": 4987,
+          "sha256": "5fe4a75220c663835a3fb932e639c5208c98df6e051b0f6a940a6132778d7913",
+          "matchesSource": true
+        },
+        "engine/index.mjs": {
+          "bytes": 2685,
+          "sha256": "3d09f86071829a106ccffc5105f9982989f58a4c6e9c7af4502c6b857f389082",
+          "matchesSource": true
+        },
+        "engine/studio-core.wasm": {
+          "bytes": 141948,
+          "sha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+          "matchesSource": true
+        },
+        "engine/studio-core.build.json": {
+          "bytes": 1094,
+          "sha256": "fcb54497f4f4896320a8b2e3c1d654d835770e3efdaad133015ac779ddbff795",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-outline.js": {
+          "bytes": 5721,
+          "sha256": "93db8f0b3c7951e2a6631abfc09a87261522c3a1bb12401b9e47307c317b5264",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-create.js": {
+          "bytes": 43581,
+          "sha256": "a4e1821ed35754a0f87bf90e232f44e3b645f45e697c55bab06f5108550257cd",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-preview.js": {
+          "bytes": 21080,
+          "sha256": "428a0869741074bd8aee72e792dd18abc2c82153b37aae9af73209774d9b3a4b",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-layout.js": {
+          "bytes": 27862,
+          "sha256": "8ca1efee4e34262f386da5ab791aecdfa89cfe513f8ebe6279c758c382d8121b",
+          "matchesSource": true
+        },
+        "web/modules/app-project-build.js": {
+          "bytes": 25823,
+          "sha256": "8a6b819938b571c37b371649e187a68014253f63dcc62ef71ee2b6bf98f604cc",
+          "matchesSource": true
+        },
+        "web/i18n/en.js": {
+          "bytes": 102246,
+          "sha256": "9a60ede3dbc5284b00cca6c53f5ebf2c69c604d3f26b6b4a44896d81d953991a",
+          "matchesSource": true
+        },
+        "web/i18n/ja.js": {
+          "bytes": 129939,
+          "sha256": "fcd044c97cff3a7bcf6cc607bff3a936cffe54c21ef59f1028a4e04399b704f2",
+          "matchesSource": true
+        },
+        "web/scene-preview.css": {
+          "bytes": 4984,
+          "sha256": "58a412f15f789d6c5c21fa20b26c1b17ac7bc26248dde40fa64053ed12691fd1",
+          "matchesSource": true
+        },
+        "web/project-build.css": {
+          "bytes": 6106,
+          "sha256": "67187db21281ec21723f9f43c1a4a6445bc2af5677329c64b2a0351af2681808",
+          "matchesSource": true
+        }
+      },
+      "projectDataAndFixturesAbsent": true
+    }
+  },
+  "cleanup": [
+    {
+      "path": "desktop/resources",
+      "bytes": 5855759,
+      "removed": true
+    },
+    {
+      "path": "mobile/dist",
+      "bytes": 4436342,
+      "removed": true
+    },
+    {
+      "path": "desktop/ui/i18n",
+      "bytes": 245614,
+      "removed": true
+    },
+    {
+      "path": "desktop/.cache",
+      "bytes": 157609,
+      "removed": true
+    }
+  ],
+  "finalAcceptance": {
+    "currentChecksumMatches": 45,
+    "wasmSha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+    "legacyRuntimeBackendsUnchanged": true,
+    "includesFinalDeepOutlineCssAndTranslationDeduplication": true,
+    "resourceCopiesRemoved": true,
+    "result": "passed"
+  }
+}

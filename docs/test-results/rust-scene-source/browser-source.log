@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "steps": [
+    "A v3 dirty text draft with nested groups and two instances of one definition enters layout. Real pointer dragging moves only parent descendants, Undo/Redo is one operation, coordinate edits invalidate review, and candidate JSON patches only position number tokens. Cancel leaves the exact text draft and all saved files/snapshots unchanged.",
+    "English/Japanese at390px retain the approved source patch. Applying layout closes the modal, replaces only the main in-memory text draft, and refreshes its canvas. The editor remains dirty against the original baseline; no document/world write endpoint is called, and saved build capture stays identical.",
+    "A dedicated race probe injects a newer main-editor input after layout review while the modal is open. Stale apply is rejected, the newer text is retained, the layout draft stays open, and disk/build capture are untouched. Normal interactions always type only in the visible, unblocked source textarea.",
+    "Only the normal main-editor Save persists the applied draft. Reopening saved preview yields the exact positions, nested groups and source SHA; all other author files remain byte-identical and the build snapshot changes only at this explicit save.",
+    "If the saved file changes externally after layout review, layout still applies only to memory and retains the original save preconditions. Automatic draft preview returns HTTP409, and normal main-editor Save opens its conflict dialog. Keeping the local draft preserves both its new coordinates and the external file; the isolated fixture is restored afterwards."
+  ],
+  "limitations": [
+    "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+    "This checks source-draft layout editing and normal editor save in isolated fixtures. No engine process, native IPC or device acceptance is claimed."
+  ],
+  "output": "/tmp/viento-rust-source-a96g_3x3/docs/test-results/rust-scene-source/browser-source"
+}

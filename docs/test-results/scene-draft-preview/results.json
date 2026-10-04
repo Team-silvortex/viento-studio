@@ -1,0 +1,205 @@
+{
+  "date": "2026-10-03",
+  "version": "0.0.6",
+  "baselineCommit": "94e9626fc11c64f61a7391f7b081bc029306345a",
+  "scope": "Unreleased single-scene source draft read-only preview, exact draft source navigation, retained last valid design preview and saved build isolation.",
+  "contracts": {
+    "request": "{sceneId,draft:{sourcePath,baseSourceRevision,content}}; existing {sceneId} unchanged",
+    "maxDraftUtf8Bytes": 131072,
+    "sourceVersions": [
+      1,
+      2,
+      3
+    ],
+    "runtimePlanVersions": [
+      1,
+      2
+    ],
+    "newPersistentSchema": false,
+    "dependencies": "Saved projection source, registered scene relations and resource bindings only; no inferred registration.",
+    "authorBytes": "Exact editor serialization including BOM/newlines; no writes to source, metadata, jobs or build cache.",
+    "sourceSelection": "Current editor session, content SHA-256 and exact UTF-16 range required; no disk read for draft source navigation.",
+    "lastValid": "One decoded model/image set retained for same-scene draft close/edit/reopen; explicit saved mode, different scene, capability loss or destroy clears.",
+    "build": "captureBuildSnapshot reads saved sources; draft capture has domain-separated identity and no executable snapshot or sceneEditing."
+  },
+  "checks": {
+    "backend": {
+      "tests": 28,
+      "pass": 28,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "http": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "host-ui": {
+      "tests": 37,
+      "pass": 37,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "ui-i18n": {
+      "tests": 43,
+      "pass": 43,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "app-check-verified": {
+      "tests": 1323,
+      "pass": 1304,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 19
+    }
+  },
+  "countsOverlap": true,
+  "javascriptSyntaxFiles": 324,
+  "versionAndApiPreflight": true,
+  "browsers": {
+    "browser-final-verified": {
+      "report": "browser-final-verified/browser.json",
+      "browser": "Chrome/154.0.8037.97",
+      "flowsPassed": 5,
+      "limitations": [
+        "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+        "Only saved dependencies and the current registered scene text draft are previewed. No layout writeback, engine process, or native device acceptance is claimed."
+      ]
+    },
+    "browser-saved-compat": {
+      "report": "browser-saved-compat/browser.json",
+      "browser": "Chrome/154.0.8037.97",
+      "flowsPassed": 11,
+      "limitations": [
+        "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+        "This is a static authoring preview. No Godot tool, runtime movement, audio, or gameplay was used."
+      ]
+    }
+  },
+  "nativeCore": "Unchanged crate built offline in temporary target; VIENTO_STUDIO_CORE_BIN enabled native/WASM parity in full app check.",
+  "wasm": {
+    "bytes": 141948,
+    "sha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+    "sourceUnchanged": true
+  },
+  "godot": {
+    "enabled": true,
+    "version": "4.7.2-stable",
+    "scope": "Existing app build/runtime regressions, including legacy v1/v2 and grouped source; no new runtime behavior added."
+  },
+  "offlinePackages": {
+    "report": "packaged-resources.json",
+    "desktopFiles": 91,
+    "mobileFiles": 91,
+    "moduleChecks": [
+      {
+        "package": "desktop/resources",
+        "isolatedGlobals": true,
+        "oldV1V2PlansExact": true,
+        "rawBOMCRLFUnicodeDraftLocation": true,
+        "v3ModelToPlan2": true,
+        "invalidAndSizeRejected": true,
+        "inputUnchanged": true
+      },
+      {
+        "package": "mobile/dist",
+        "isolatedGlobals": true,
+        "oldV1V2PlansExact": true,
+        "rawBOMCRLFUnicodeDraftLocation": true,
+        "v3ModelToPlan2": true,
+        "invalidAndSizeRejected": true,
+        "inputUnchanged": true
+      },
+      {
+        "package": "desktop/resources",
+        "actualPackagedAdapter": true,
+        "buildSnapshotUnchanged": true,
+        "draftNoSnapshotOrEditing": true,
+        "sourceUnchanged": true
+      }
+    ],
+    "runtimeLog": "packaged-runtime-verified.log",
+    "license": "Read-only extraction of installed AppImage NODE-LICENSE; pinned SHA-256 matched. No network download."
+  },
+  "iterations": [
+    {
+      "report": "app-check.log",
+      "result": "1303 pass, 1 translation coverage failure, 19 skipped. The new saved-mode button label was inserted while this run started; final dictionaries and full rerun passed."
+    },
+    {
+      "report": "browser/browser.json",
+      "result": "Initial 5 flows passed using injected input behind modal for failure retention; superseded by fully visible close/edit/reopen workflow."
+    },
+    {
+      "report": "browser-natural/browser.json",
+      "result": "Harness read textarea selection before native dialog close/focus restoration; updated to wait for actual nonempty verified selection."
+    },
+    {
+      "report": "browser-natural-verified/browser.json",
+      "result": "Natural 5 flows passed before final label and unchanged-language token fix."
+    },
+    {
+      "report": "browser-final-attempt/browser.json",
+      "result": "Whole PNG equality was sensitive to resize/text rasterization. Final harness asserts world-coordinate actor/background RGBA and records whole PNG/dimensions for diagnostics."
+    },
+    {
+      "report": "packaged-runtime.log",
+      "result": "Initial ad-hoc harness attempted reprojection of a minimal legacy planner fixture lacking a workspace version; replaced overlay fixture with valid isolated example observation, no product change."
+    }
+  ],
+  "cleanup": {
+    "generatedResources": [
+      {
+        "path": "desktop/resources",
+        "bytesRemoved": 5880760
+      },
+      {
+        "path": "mobile/dist",
+        "bytesRemoved": 4457827
+      },
+      {
+        "path": "desktop/ui/i18n",
+        "bytesRemoved": 251858
+      },
+      {
+        "path": "desktop/.cache",
+        "bytesRemoved": 157609
+      }
+    ],
+    "intermediateScreenshotsBytesRemoved": 5994988,
+    "retainedScreenshots": 8,
+    "taskStageAndCargoTarget": "Removed after guarded synchronization; no author workspace, preferences or installed application modified."
+  },
+  "limitations": [
+    "19 skipped cases require native archive/mobile storage helper executables not supplied.",
+    "Browser checks cover Linux source HTTP editor only, not Tauri IPC/window acceptance or Android devices.",
+    "No new installer, release, version bump, commit or push.",
+    "No reusable fragments, multi-file drafts, text/layout shared writable draft, persistent preview cache or Rust semantic migration.",
+    "Draft preview success is not scene.update validation or a saved build approval."
+  ],
+  "protectedHistoricalEvidenceAndBackendsUnchanged": true,
+  "changedSourceSha256": {
+    "engine/index.mjs": "e768eb8cca79eec573043998cddb5ad3911da349391dd9b14addd80689996867",
+    "engine/scene-draft-preview.mjs": "fa99b49e02927f7bd7c41082aa11a62605a14a660b01f50245b518d14e98b53c",
+    "engine/scene-preview-contract.mjs": "c500754da05884cc73f99c597d8367fad2a1515235e2d2c0c57377de1f34506b",
+    "scripts/adapters/node-build-snapshot.mjs": "a3bc4fdfc7ffb81391b72e7c238f09cbf4cc3e48491a46e23373d245326d4994",
+    "scripts/lib/scene-preview-service.mjs": "857be9e6b00e3ecbc1d25344995003ccfacfa921a9c54c82162d443d922af560",
+    "scripts/tests/scene-draft-preview-smoke.mjs": "439bab5bef863081a672b13a675c368e35be9718306ddb0a5a4504d7d729e378",
+    "scripts/tests/scene-draft-preview-ui.test.mjs": "8fea76e950cdf8679932dccf9dcd0d042cb89fa55947c33d2f82c5ff37919677",
+    "scripts/tests/scene-draft-preview.test.mjs": "8dd5c385799d4b3a608e9b8814c522faadf6bd8fd9104f02f8d1671bf626198c",
+    "scripts/tests/scene-preview-http.test.mjs": "2d7c3747feb6a27531d2cd94e73799b2929ebf26a0a46f55e6ca62afea13bf42",
+    "scripts/tests/source-location-ui.test.mjs": "31296b4d0b03c4cdafdc77de185eabdb8fba746bb10130aaf36df66b98158020",
+    "web/i18n/en.js": "9ab094506e992fbaf076ec26aebba17d2f77f4fe1005e2f03f9da11025705546",
+    "web/i18n/ja.js": "6ad25c16a3f84e6ad0720f4f67c2e46438734e185cba3bb392637d3ac7b6921e",
+    "web/modules/app-project-build.js": "b1b38642a2bd4b570fcd34f587021ee283eec6db32200b279e421c721b717b31",
+    "web/modules/app-runtime.js": "447775e94598f79203692f488157e04040cc0322b8345853a975d51d36f9da7c",
+    "web/modules/app-scene-preview.js": "e74c7acb91a6e2460fdf37d5b3f391ee77aba771e9d375ad9be3c23c222e3321",
+    "web/scene-preview.css": "0511f263032b1cb1396d67470f8c0ba702e47a74c41cdc0e360ad3a4304fea69"
+  }
+}

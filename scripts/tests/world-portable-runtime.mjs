@@ -3,7 +3,7 @@ import vm from 'node:vm';
 import { createHash } from 'node:crypto';
 
 const root = new URL('../../engine/', import.meta.url), yaml = new URL('../../node_modules/yaml/browser/', import.meta.url);
-const context = vm.createContext({ TextEncoder }), modules = new Map();
+const context = vm.createContext({ TextEncoder, TextDecoder }), modules = new Map();
 function load(url) {
   if (!url.href.startsWith(root.href) && !url.href.startsWith(yaml.href)) throw new Error('Host dependency in semantic kernel');
   if (!modules.has(url.href)) modules.set(url.href, new vm.SourceTextModule(fs.readFileSync(url, 'utf8'), { context, identifier: url.href }));

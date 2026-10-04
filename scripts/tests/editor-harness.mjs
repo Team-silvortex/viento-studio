@@ -1,5 +1,7 @@
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
+import { webcrypto } from 'node:crypto';
+import { sourceLocationSelection } from '../../web/modules/app-source-location.js';
 import { API_PATHS, API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion } from '../lib/doc-api-contract.mjs';
 import { getDocTemplate, DOC_TYPE_TEMPLATE_DEFS } from '../../web/modules/app-type-templates.js';
 import { createBlockDraft, serializeBlockDraft, serializeSourceDraft } from '../../web/modules/app-editor-draft.js';
@@ -43,7 +45,9 @@ export class Element {
   removeAttribute(name) { delete this[name]; }
   replaceChildren(...children) { this.children = [...children]; this.text = ''; }
   appendChild(child) { this.children.push(...(child.tagName === 'FRAGMENT' ? child.children : [child])); }
-  focus() {}
+  focus() { this.focused = true; }
+  setSelectionRange(start, end) { this.selectionStart = start; this.selectionEnd = end; }
+  scrollIntoView() { this.scrolledIntoView = true; }
   addEventListener() {}
   contains(node) { return this === node || this.children.some(child => child.contains(node)); }
   querySelector(selector) { return this.querySelectorAll(selector)[0] || null; }
@@ -73,7 +77,7 @@ export async function editorHarness(overrides = {}) {
     createDocumentFragment: () => new Element('fragment'),
   };
   const context = vm.createContext({
-    URL, Set, Map, console, setTimeout, clearTimeout, setInterval, clearInterval, document, AbortController,
+    URL, Set, Map, console, crypto: webcrypto, TextEncoder, sourceLocationSelection, setTimeout, clearTimeout, setInterval, clearInterval, document, AbortController,
     location: { href: 'http://127.0.0.1/web/?mode=edit', search: '?mode=edit' },
     history: { replaceState() {} },
     localStorage: { getItem: () => null, setItem() {} },

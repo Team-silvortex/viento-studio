@@ -1,0 +1,115 @@
+{
+  "date": "2026-10-03",
+  "scope": "Unreleased Scene2D multi-selection and atomic position batches after 0.0.6; builds on the prior scene-layout increment",
+  "features": [
+    "Shift/Ctrl/Meta-click, list checkboxes, select all/clear, and Ctrl/Meta+A in the layout canvas",
+    "Move a selected group with pointer or 1/10-pixel arrow-key nudges; shared delta preserves relative spacing",
+    "32-pixel snapping uses the actually dragged actor as anchor; the entire group is bounded together",
+    "Six alignments use resolved actor dimensions and the overall selection bounds",
+    "One group drag, nudge or alignment is one undo step; 100-batch in-memory history",
+    "Single-object coordinate inputs appear only for a single selection; select state does not alter the author draft",
+    "Existing review/apply scene.update and version/identity checks persist all changed positions together"
+  ],
+  "validation": {
+    "appCheck": {
+      "passed": 1170,
+      "failed": 0,
+      "skipped": 0,
+      "syntaxFiles": 291,
+      "versionAndApiContract": "passed",
+      "godot": "4.7.2.stable.official.ed1daf0bf",
+      "nativeHelpers": [
+        "workspace-archive",
+        "mobile-storage"
+      ],
+      "log": "app-check.log"
+    },
+    "browser": {
+      "passed": true,
+      "flowCount": 6,
+      "browser": "Chrome/154.0.8037.97",
+      "errors": [],
+      "report": "browser.json",
+      "steps": [
+        "Real Shift/Control canvas clicks, explicit list checkboxes, Select all and Clear maintain the same selection. Two-object selection clears/disables single-position fields, announces its count, and never creates a dirty draft or writes source.",
+        "Dragging a selected actor moves the selected pair as one group. The grabbed center snaps to the 32-unit grid while exact spacing is preserved and the unselected actor remains fixed. One Undo restores both actors; one Redo repeats the move.",
+        "All six alignment actions use the selected union bounds and each actor’s resolved width/height: left, horizontal center, right, top, vertical center, bottom. Each action is one Undo step and preserves every non-position declaration, including inherited defaults and explicit image:null.",
+        "English and Japanese preserve all three selected objects and the checked batch draft. At 390px, multi-select checkboxes and alignment actions remain available without horizontal overflow.",
+        "Apply publishes only the three reviewed position changes and refreshes the saved preview. Scene UUID, BOM/CRLF, all OC/projection declarations, metadata and resource bytes remain unchanged; the old build plan is invalidated without starting a new job.",
+        "An external edit between Check and Apply rejects the entire batch. All three selections and the local draft remain, no external content is overwritten, and Reload asks before discarding the draft and showing the current saved scene."
+      ],
+      "screenshots": [
+        "selection-align-top-zh.png",
+        "selection-alignment-narrow-ja.png",
+        "selection-conflict-preserved-zh.png",
+        "selection-controls-zh.png",
+        "selection-en.png",
+        "selection-group-drag-snap-zh.png",
+        "selection-list-narrow-ja.png",
+        "selection-narrow-ja.png",
+        "selection-saved-preview-zh.png"
+      ],
+      "godotConfigured": false
+    },
+    "desktopResources": {
+      "prepare": "passed",
+      "sourceFilesMatched": 196,
+      "hashes": "packaged-sources.json",
+      "log": "desktop-prepare.log"
+    },
+    "mobileResources": {
+      "prepare": "passed",
+      "sourceFilesMatched": 82,
+      "yamlImportsRewritten": true,
+      "hashes": "mobile-sources.json",
+      "log": "mobile-prepare.log"
+    },
+    "nativeHelpers": {
+      "build": "passed",
+      "rustSourcesChanged": false,
+      "log": "native-helpers.log",
+      "fullRustSuiteRepeated": false,
+      "previousRustResults": "../scene-layout/results.json"
+    },
+    "targetedUiCanvasPreview": {
+      "passed": 61,
+      "failed": 0,
+      "skipped": 0,
+      "log": "layout-ui.log"
+    }
+  },
+  "dataAndFailureHandling": [
+    "All position entries are validated before a batch mutates the draft or undo history; invalid entries reject the entire batch",
+    "Common displacement bounds handle floating-point cancellation near ±100000 without independently clamping and distorting spacing",
+    "Selection is ephemeral view state: it does not invalidate a reviewed draft and is not added to scene declarations, metadata, build inputs or archives",
+    "Unfinished coordinate input rejects selection changes, alignment and callbacks; conflicts and unknown save outcomes retain existing protections",
+    "Saved scene UUID, BOM/CRLF, unchanged JSON number spellings, inherited defaults, explicit null and omitted fields are preserved",
+    "Resource-package round-trip retains all selected positions and dependencies; generated Godot scene JSON receives the saved coordinates",
+    "Batch save refreshes the saved preview and invalidates the previous approved build plan; no automatic build or runtime start"
+  ],
+  "limitations": [
+    "Only Scene2D position editing; no persistent groups, marquee selection, resize, rotation or distribution tools",
+    "In-memory undo history is not crash recovery",
+    "Only Linux local-editor HTTP/Chrome was exercised; no new installer, Tauri window or Android device acceptance",
+    "Mobile resource preparation does not enable the unsupported scene authoring workflow on Android",
+    "No version bump, commit, push, installation or mutation of daily author workspaces"
+  ],
+  "changedSourceSha256": {
+    "docs/ARCHITECTURE.md": "a831a1ae71e503a5563421cc0ed48e034c576c7dcf2e2c635aa7e62d9e6a5831",
+    "docs/PROJECT_BUILD.md": "7ca0e25df8b2fab3757f55ee3a43d0006577ca9d624aae617dde73954b5775ce",
+    "docs/ROADMAP.md": "6a0dbcfb79415dcc17ae945040c00d7e2afb9f345c1c60cee42223e8e66ff7fe",
+    "docs/STATUS.md": "150c990e1e16192e6b6cc4706452df488fcec7e3dbce03276b952af8cf038a26",
+    "docs/TESTING.md": "d687dd441f0b542d250a8fe92f9af2cd8ecc6a2a928b7c215528217f06d06ba5",
+    "engine/scene-layout.mjs": "fbed4e7770655099315bdf5131f924991dcc614c430a2bb614370ce215898905",
+    "scripts/tests/scene-layout-canvas.test.mjs": "361e9c8839f54acfb6d65286a2aff4318b54d2eee7899127df000d822ed85143",
+    "scripts/tests/scene-layout-integration.test.mjs": "c3db445e51725559f83887e1035faec64c13881bfa04e179e42c585093649f69",
+    "scripts/tests/scene-layout-ui.test.mjs": "ac019a6e12fb9204584264b58c0355c35fe2f3cb77b40a69f82d03f225d5ed90",
+    "scripts/tests/scene-layout.test.mjs": "630f9d9ff3d2afe03f5a5908ba94a923109ce3673425c3c4eb65f38f7975670e",
+    "scripts/tests/scene-selection-smoke.mjs": "b21fe73ad3ec0e34e113e73efaf2bd8bbf241bc36b02f5fc1f8ee5b004068260",
+    "web/i18n/en.js": "df1e7e9f90d47ceebdb4a1767140352a7854b14b69f06b326f863555c4de1e65",
+    "web/i18n/ja.js": "8d4baa5640e841fa57ecc95137cd64581ca68090cae3ac869895e3e76a10eb24",
+    "web/modules/app-scene-layout.js": "e42ca193a161b6543eb4a657a76a287ef5d16612ea87d5f2ad17bf1d70fae304",
+    "web/modules/app-scene-preview-canvas.js": "11918ae3e6cf2618f2f224e1a80a3ffae1475a25bd2913a8611150500048a830",
+    "web/scene-preview.css": "6a86b7754fc587d86d0f42357e4ee5bcb63972b08310f6df55ed9198320566cc"
+  }
+}

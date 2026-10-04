@@ -2,7 +2,7 @@
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [0.0.6 版本记录](RELEASE_0.0.6.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.0.7 版本记录](RELEASE_0.0.7.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -15,7 +15,7 @@
 | 使用图片、视频与音频，切换界面语言 | [图片／视频／音频](MEDIA_RESOURCES.md)、[三语设置](LANGUAGES.md) |
 | 分享文档、备份工程或保存单个素材 | [导出](EXPORT.md) |
 | 选择对象和资源，在工程之间复用 | [资源包](RESOURCE_PACKAGES.md) |
-| 构建、测试和预览二维场景 | [构建与运行](PROJECT_BUILD.md) |
+| 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
 
 ## 工程格式与语义操作
 
@@ -36,6 +36,7 @@
 
 | 主题 | 文档 |
 | --- | --- |
+| 跨架构功能、实现证据、四维成熟度与工作流筛选 | [当前功能图谱](FUNCTION_ATLAS.md)、[离线交互版](function-atlas.html) |
 | 已实现的模块职责、依赖方向与完整调用路径 | [系统架构](ARCHITECTURE.md) |
 | 可移植解析、字段、存储及语义规划接口 | [引擎接口](../engine/README.md) |
 | Node 本地服务、索引与维护命令 | [脚本说明](../scripts/README.md) |
@@ -64,4 +65,4 @@
 - [历史索引](history/README.md)：发布、缺陷修复、平台验收、迁移及旧功能链路图。
 - [验证历程](history/VALIDATION.md)：各阶段的版本、测试计数、环境和限制。
 
-`test-results/` 保存日志、截图和源码摘要。旧报告与功能图表示当时的状态；当前操作入口从本页进入，当前平台判断以 [STATUS](STATUS.md) 为准。
+`test-results/` 保存日志、截图和源码摘要。[当前图谱](FUNCTION_ATLAS.md) 以四维坐标维护架构、功能、实现和成熟度；旧 b.4.3 图谱继续保存历史状态，不再承担当前能力目录。旧报告表示当时的状态；当前操作入口从本页进入，当前平台判断以 [STATUS](STATUS.md) 为准。

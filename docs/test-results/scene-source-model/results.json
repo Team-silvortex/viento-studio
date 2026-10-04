@@ -1,0 +1,148 @@
+{
+  "date": "2026-10-03",
+  "version": "0.0.6",
+  "baseCommit": "94e9626fc11c64f61a7391f7b081bc029306345a",
+  "scope": "Unreleased source-aware Scene2D v1 model, compatible build-plan adapter and revision-checked editor source navigation",
+  "implementation": [
+    "JSON.parse remains the only syntax/value authority; existing YAML CST provides private source ranges with original UTF-16 offsets, BOM, pointer and exactness. Raw tokens are budgeted before CST indexing.",
+    "Scene semantics, projection inheritance and resource checks moved into scene-model.mjs. build-plan.mjs emits the unchanged v1 DTO. Model/sourceLocations do not enter the frozen snapshot, generated Godot files or hashes.",
+    "Runtime rejects duplicate decoded JSON keys. Legacy transaction registration retains last-key semantics but no ambiguous ranges, and never indexes current projection bodies. If new source indexing budgets fail, the original JSON syntax gate remains available for bounded legacy recovery without ranges.",
+    "Source diagnostics and preview fields identify their actual author file and revision; inherited width/height have separate exact targets and composite size only an approximate container.",
+    "The editor reads and hashes current raw source before mapping UTF-16 offsets to the LF-normalized textarea. Stale or approximate locations open source without selection; dirty drafts and cursors are preserved.",
+    "Read/digest/navigation ownership and uncached-source loading prevent late responses from replacing newer documents. Modal close returns focus once to the valid source editor instead of stealing the visible selection."
+  ],
+  "validation": {
+    "appCheck": {
+      "tests": 1215,
+      "pass": 1196,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 19,
+      "syntaxFiles": 307,
+      "log": "app-check-verified.log",
+      "command": "VIENTO_STUDIO_CORE_BIN=<unchanged native core CLI> VIENTO_GODOT_BIN=<local Godot 4.7.2 executable> node scripts/check-project.mjs --app-only",
+      "realGodotEnabled": true,
+      "nativeCoreParityEnabled": true,
+      "nativeArchiveAndMobileHelpersProvided": false
+    },
+    "jsonSource": {
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "json-source-tests.log"
+    },
+    "sceneModel": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "scene-model-tests-verified.log"
+    },
+    "snapshotAndPreview": {
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "snapshot-tests.log",
+      "realGodotEnabled": true
+    },
+    "editorPreviewAndBuildUi": {
+      "tests": 91,
+      "pass": 91,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "source-location-ui.log"
+    },
+    "counting": "Targeted groups overlap the complete app suite; they are not additional tests.",
+    "legacyGolden": {
+      "fixture": "scripts/tests/fixtures/scene-model/legacy-plan-v1.json",
+      "planDeepEqual": true,
+      "snapshotIdExact": true,
+      "godotGeneratedFileHashesExact": true,
+      "scope": "Frozen pre-refactor valid v1 fixture with inherited, overridden and explicit-null image values."
+    },
+    "browser": {
+      "ok": true,
+      "flows": 11,
+      "browser": "Chrome/154.0.8037.97",
+      "report": "browser-verified/browser.json",
+      "steps": [
+        "No Godot is configured: the Preview tab renders both frozen SVG images at inherited/overridden sizes and center positions, with source-aware resolved projection fields. No build job runs.",
+        "Real pointer selection opens the correct actor inspector. Zoom, grid, pointer pan and Fit visibly affect only the camera and overlay.",
+        "A second layout multiplies the inherited image by its RGBA tint and draws the later actor on top; a real center click selects that top actor.",
+        "Explicit imageResourceId:null removes inherited imagery. Arrow-key tab navigation maintains ARIA/focus, while English/Japanese and a 390px viewport retain the same scene without horizontal overflow.",
+        "A delayed old-scene response cannot replace a newer scene or restore its old images after rapid selection.",
+        "Invalid scene dimensions clear old pixels and show a source-located diagnostic. All previews, tab switches and gestures leave authoring files byte-identical and never create a build job.",
+        "Edit scene opens from the preview. Saving updates the title and actor position in a fresh preview while preserving scene UUID, BOM/CRLF and every other authored file.",
+        "Actor and original-OC source links return to the corresponding document; reopening Preview retains the selected scene and reads a fresh snapshot. Navigation is read-only.",
+        "Field links select the exact JSON value in the actual source textarea: the saved scene position survives BOM, CRLF, Chinese and emoji offset conversion, and inherited speed selects the projection configuration. Composite size opens its document without selecting an approximate range.",
+        "Changing the scene on disk after preview capture opens the current source and reports a stale location with no selection or write. Restoring the test fixture restores every author-file hash.",
+        "SVG images render as image content: embedded script and external-image URLs never execute or request network access."
+      ],
+      "focusAndSelectionAssertions": true
+    },
+    "packagedResources": {
+      "desktop": "passed",
+      "mobile": "passed",
+      "evidence": "packaged-resources.json",
+      "scope": "Offline resource preparation and actual packaged model/parser/plan/selection module execution in Node; not a native GUI or device run."
+    },
+    "nativeCore": "Unchanged Rust sources/WASM; native CLI built offline only to enable existing parity tests in app suite. No new Rust migration claimed.",
+    "visualInspection": [
+      "browser-verified/source-position-zh.png",
+      "browser-verified/source-inherited-speed-zh.png"
+    ]
+  },
+  "limits": {
+    "jsonUtf16CodeUnits": 8388608,
+    "jsonDepth": 64,
+    "jsonValueNodes": 100000,
+    "actorCount": [
+      1,
+      128
+    ],
+    "oneObjectPerScene": true
+  },
+  "iterations": [
+    "A sandboxed process-output test timed out; the identical snapshot/preview group passed all 20 with normal process permissions and real Godot. sandbox log retained.",
+    "The first browser extension waited for the actor-source button before selecting an actor. The smoke harness ordering was corrected, then the full flow passed.",
+    "Visual inspection caught modal-close focus theft after selection offsets already passed. A subsequent real-browser run also exposed native focus restoration collapsing a cross-document selection. Final navigation restores the verified range after focus and checks current text; smoke requires both actual focus and selection after dialog close."
+  ],
+  "limitations": [
+    "Nineteen native archive/mobile helper cases are explicitly skipped; full Godot and existing native/WASM Studio core parity are enabled.",
+    "This is a JS source-model boundary, not a new Rust parser or semantic migration. Stable instances, scene hierarchy, fragments and screenplay behavior remain planned.",
+    "No new Tauri/Android window or device acceptance, installer, release, version bump, commit, push or installation.",
+    "Source offsets are valid only for the associated raw source revision and are not persisted author identities. Duplicate-key runtime scenes now require clarification by the author; recovery alone retains legacy interpretation."
+  ],
+  "cleanup": "Only final browser screenshots are retained. Intermediate browser copies and all prepared desktop/mobile copies were removed. Temporary staging and native build target are removed after guarded sync. Author workspaces and local configuration were not used.",
+  "changedSourceSha256": {
+    "engine/README.md": "31accbe2ef06f4440d7c4877922282b7e0dffc41ef6b6bc8a2432c18d1a59983",
+    "engine/build-plan.mjs": "880c361898f6b07a80797ebd44dead400f3ca74ed0abd73ae7540cca4332f99f",
+    "engine/index.mjs": "b90d373a13f9b180748468c0b1bafb1f83825f8d9e5c898b2061c0d233bf595d",
+    "engine/json-source.mjs": "4c219d428fbfde7945e7f11ee17fc6d9ef8d4bb0d78e5612b3e37ecb14a6a289",
+    "engine/scene-model.mjs": "f23377dc77489afc6cb41db03cfaa20cddef092ecd04eac673e48a0cc2050ea3",
+    "scripts/adapters/node-build-snapshot.mjs": "01cab9563b510a8c7ed27d9a600fe6f12050c46a91f928f7ce7947c7effee377",
+    "scripts/lib/scene-preview-service.mjs": "7c04da3e2664991e6dfeb77f5165ed0bdc5cd10cdd428d2335ffda229dd5e21c",
+    "scripts/tests/editor-harness.mjs": "3f708db62b634f2d7036e6c89ff2a08dc19f3f804ab7cebd5ec28c38fe2594f6",
+    "scripts/tests/fixtures/scene-model/legacy-plan-v1.json": "929b2ebec2f32466026d3ccb4bec55371eb52b680f1f4a8ece9338e3958913a4",
+    "scripts/tests/json-source.test.mjs": "586803cea964e682dd8e3d78f989fdb1289623260c9e6982a9482d89f3ca3ea0",
+    "scripts/tests/project-build-ui.test.mjs": "094885a775878f19d34850ad5dfb681fa15e9ccbc8597bbfc093f7ff1aa9cb58",
+    "scripts/tests/project-build.test.mjs": "71f6121fb34e3629ab239452ef0a410181a0ae5a1b024a7762965eefa85c4b49",
+    "scripts/tests/scene-model.test.mjs": "439eae373d39daba000cabce9e13360a4d759ad52918c576e253f86e310b7239",
+    "scripts/tests/scene-preview-service.test.mjs": "2171261342eecde8b1c4b9d2cd6226e17ced1fb8168f969d6d3659663dd7f19f",
+    "scripts/tests/scene-preview-smoke.mjs": "36aa9a08d3a5a239b2d2ab75e48c84b01a37757e4f1b35db2d86cc849391770a",
+    "scripts/tests/scene-preview-ui.test.mjs": "2298e70d352fb9bb85ce00c5237e961662b51c797dbf27563031eb2165f7bad4",
+    "scripts/tests/source-location-ui.test.mjs": "f6ec70db45b1263202c71d0f1f16c16db228c1b56cafc44c30a621bc907bcf76",
+    "web/i18n/en.js": "aeeed341737d7760fedb1455b3509fda63e2a6d0b5006f6ed3fecc69d0ec4eba",
+    "web/i18n/ja.js": "6ccf569bea2ecb95cb1f1b1a86c73c91732e2cdaafc88995bb1d37edc4081c83",
+    "web/modules/app-project-build.js": "e19fb5aa8ea273a6d7f980c0f9dae29eb64409f78ef27dc1a94ea2cef23b46ec",
+    "web/modules/app-runtime.js": "57ea04e8fd7113cd39bcd8a9156985c1f2418038e44f262784063cb8ec85a878",
+    "web/modules/app-scene-preview.js": "1cdc7a4598b8a7ac7362de8f747a9e13ad807d600266e3c5f609fda2fe0a35ac",
+    "web/modules/app-source-location.js": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70"
+  }
+}

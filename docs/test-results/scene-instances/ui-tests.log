@@ -1,0 +1,298 @@
+TAP version 13
+# Subtest: scene creator uses existing custom types and v2 roots, filtering unsupported images and submitting one complete command
+ok 1 - scene creator uses existing custom types and v2 roots, filtering unsupported images and submitting one complete command
+  ---
+  duration_ms: 38.778225
+  type: 'test'
+  ...
+# Subtest: scene form changes invalidate previews; blank numbers never submit and repeated definitions have independent identities
+ok 2 - scene form changes invalidate previews; blank numbers never submit and repeated definitions have independent identities
+  ---
+  duration_ms: 41.935261
+  type: 'test'
+  ...
+# Subtest: scene creator rejects unsafe paths and numeric bounds before submitting
+ok 3 - scene creator rejects unsafe paths and numeric bounds before submitting
+  ---
+  duration_ms: 38.352225
+  type: 'test'
+  ...
+# Subtest: cancel and Escape protect a dirty scene, then clear the closed-dialog guard after discarding
+ok 4 - cancel and Escape protect a dirty scene, then clear the closed-dialog guard after discarding
+  ---
+  duration_ms: 10.39476
+  type: 'test'
+  ...
+# Subtest: the scene creator blocks duplicate writes and retains scene identity through a revision conflict
+ok 5 - the scene creator blocks duplicate writes and retains scene identity through a revision conflict
+  ---
+  duration_ms: 21.768118
+  type: 'test'
+  ...
+# Subtest: an uncertain save keeps the draft locked until rereading confirms whether its identity exists
+ok 6 - an uncertain save keeps the draft locked until rereading confirms whether its identity exists
+  ---
+  duration_ms: 18.276792
+  type: 'test'
+  ...
+# Subtest: successful creation followed by a refresh failure cannot resubmit the scene
+ok 7 - successful creation followed by a refresh failure cannot resubmit the scene
+  ---
+  duration_ms: 12.110286
+  type: 'test'
+  ...
+# Subtest: server scene diagnostics localize and retain exact JSON pointers with raw details
+ok 8 - server scene diagnostics localize and retain exact JSON pointers with raw details
+  ---
+  duration_ms: 10.060769
+  type: 'test'
+  ...
+# Subtest: language changes preserve scene inputs, selected assets, focus and text selection
+ok 9 - language changes preserve scene inputs, selected assets, focus and text selection
+  ---
+  duration_ms: 14.290978
+  type: 'test'
+  ...
+# Subtest: empty projects and document drafts cannot silently create placeholder actors or overwrite editing
+ok 10 - empty projects and document drafts cannot silently create placeholder actors or overwrite editing
+  ---
+  duration_ms: 5.969109
+  type: 'test'
+  ...
+# Subtest: creation inside the build workbench selects the new scene and releases plan actions immediately
+ok 11 - creation inside the build workbench selects the new scene and releases plan actions immediately
+  ---
+  duration_ms: 32.714241
+  type: 'test'
+  ...
+# Subtest: all scene creation messages have English and Japanese translations
+ok 12 - all scene creation messages have English and Japanese translations
+  ---
+  duration_ms: 1.099051
+  type: 'test'
+  ...
+# Subtest: a failed project reload invalidates the previous preview while retaining the scene draft
+ok 13 - a failed project reload invalidates the previous preview while retaining the scene draft
+  ---
+  duration_ms: 17.345161
+  type: 'test'
+  ...
+# Subtest: new scenes can repeat a single definition and cloning and reordering preserve independent instance settings
+ok 14 - new scenes can repeat a single definition and cloning and reordering preserve independent instance settings
+  ---
+  duration_ms: 43.168372
+  type: 'test'
+  ...
+# Subtest: scene editing locks identity and preserves partial inheritance, explicit false and null without materializing absent fields
+ok 15 - scene editing locks identity and preserves partial inheritance, explicit false and null without materializing absent fields
+  ---
+  duration_ms: 39.945234
+  type: 'test'
+  ...
+# Subtest: scene fields can override one inherited value and return it to projection inheritance without affecting other overrides
+ok 16 - scene fields can override one inherited value and return it to projection inheritance without affecting other overrides
+  ---
+  duration_ms: 58.736822
+  type: 'test'
+  ...
+# Subtest: scene edit conflicts and failed reads preserve draft values and refresh source revisions only after a consistent source read
+ok 17 - scene edit conflicts and failed reads preserve draft values and refresh source revisions only after a consistent source read
+  ---
+  duration_ms: 59.593814
+  type: 'test'
+  ...
+# Subtest: an uncertain scene update reconciles the complete content and never mistakes an existing identity for success
+ok 18 - an uncertain scene update reconciles the complete content and never mistakes an existing identity for success
+  ---
+  duration_ms: 57.480398
+  type: 'test'
+  ...
+# Subtest: scene edit keeps dirty inputs, overrides and selection across languages, protects dismissal, and maps diagnostics to fields
+ok 19 - scene edit keeps dirty inputs, overrides and selection across languages, protects dismissal, and maps diagnostics to fields
+  ---
+  duration_ms: 34.346944
+  type: 'test'
+  ...
+# Subtest: scene edit capability is independent of creation and saved updates do not revive the previous plan
+ok 20 - scene edit capability is independent of creation and saved updates do not revive the previous plan
+  ---
+  duration_ms: 57.899246
+  type: 'test'
+  ...
+# Subtest: unrepresentable scene declarations are refused and immutable metadata changes never rebase a saved draft
+ok 21 - unrepresentable scene declarations are refused and immutable metadata changes never rebase a saved draft
+  ---
+  duration_ms: 34.908577
+  type: 'test'
+  ...
+# Subtest: successful scene update remains saved when refresh fails and blocks duplicate submit
+ok 22 - successful scene update remains saved when refresh fails and blocks duplicate submit
+  ---
+  duration_ms: 24.33211
+  type: 'test'
+  ...
+# Subtest: new scene forms also support partial projection overrides and an explicit no-image override
+ok 23 - new scene forms also support partial projection overrides and an explicit no-image override
+  ---
+  duration_ms: 37.09584
+  type: 'test'
+  ...
+# Subtest: scene creation cannot recover the old scene plan after refreshing the build workbench
+ok 24 - scene creation cannot recover the old scene plan after refreshing the build workbench
+  ---
+  duration_ms: 56.694327
+  type: 'test'
+  ...
+# Subtest: legacy scene upgrade is explicit, remains a draft, and seeds stable IDs before clone and reorder
+ok 25 - legacy scene upgrade is explicit, remains a draft, and seeds stable IDs before clone and reorder
+  ---
+  duration_ms: 46.258152
+  type: 'test'
+  ...
+# Subtest: v2 instance identities survive definition changes, inheritance toggles, languages, and partial overrides
+ok 26 - v2 instance identities survive definition changes, inheritance toggles, languages, and partial overrides
+  ---
+  duration_ms: 43.091729
+  type: 'test'
+  ...
+# Subtest: legacy scenes still reject repeated definitions until explicitly upgraded
+ok 27 - legacy scenes still reject repeated definitions until explicitly upgraded
+  ---
+  duration_ms: 17.845831
+  type: 'test'
+  ...
+# Subtest: saved scene preview does not require a build or runtime and never submits a write
+ok 28 - saved scene preview does not require a build or runtime and never submits a write
+  ---
+  duration_ms: 7.668025
+  type: 'test'
+  ...
+# Subtest: source links resolve inherited fields, scene fields, actor and original OC
+ok 29 - source links resolve inherited fields, scene fields, actor and original OC
+  ---
+  duration_ms: 6.166566
+  type: 'test'
+  ...
+# Subtest: unsaved drafts remain visible as saved-state previews and edit guards are checked at click time
+ok 30 - unsaved drafts remain visible as saved-state previews and edit guards are checked at click time
+  ---
+  duration_ms: 6.317817
+  type: 'test'
+  ...
+# Subtest: late replies from replaced scenes are released without overwriting the latest scene
+ok 31 - late replies from replaced scenes are released without overwriting the latest scene
+  ---
+  duration_ms: 7.146445
+  type: 'test'
+  ...
+# Subtest: hide and destruction cancel pending work, release previews, and re-opening reads fresh saved state
+ok 32 - hide and destruction cancel pending work, release previews, and re-opening reads fresh saved state
+  ---
+  duration_ms: 5.525525
+  type: 'test'
+  ...
+# Subtest: invalid saved scenes show source diagnostics and remove stale canvas content
+ok 33 - invalid saved scenes show source diagnostics and remove stale canvas content
+  ---
+  duration_ms: 5.925918
+  type: 'test'
+  ...
+# Subtest: image requests cannot use foreign hosts or arbitrary local endpoints
+ok 34 - image requests cannot use foreign hosts or arbitrary local endpoints
+  ---
+  duration_ms: 10.548776
+  type: 'test'
+  ...
+# Subtest: changing scenes during asset reads never decodes or paints the abandoned image
+ok 35 - changing scenes during asset reads never decodes or paints the abandoned image
+  ---
+  duration_ms: 6.009854
+  type: 'test'
+  ...
+# Subtest: capability loss and an empty scene stop preview requests
+ok 36 - capability loss and an empty scene stop preview requests
+  ---
+  duration_ms: 6.191331
+  type: 'test'
+  ...
+# Subtest: view controls affect only the canvas and navigation failures keep the saved preview
+ok 37 - view controls affect only the canvas and navigation failures keep the saved preview
+  ---
+  duration_ms: 7.707327
+  type: 'test'
+  ...
+# Subtest: scene preview user messages have English and Japanese translations
+ok 38 - scene preview user messages have English and Japanese translations
+  ---
+  duration_ms: 0.915271
+  type: 'test'
+  ...
+# Subtest: fit, point conversion and focal zoom preserve scene coordinates
+ok 39 - fit, point conversion and focal zoom preserve scene coordinates
+  ---
+  duration_ms: 0.229987
+  type: 'test'
+  ...
+# Subtest: canvas hit testing uses actor centers, reverse draw order, and scene clipping
+ok 40 - canvas hit testing uses actor centers, reverse draw order, and scene clipping
+  ---
+  duration_ms: 0.141553
+  type: 'test'
+  ...
+# Subtest: texture tint multiplies all RGBA channels and preserves transparent pixels
+ok 41 - texture tint multiplies all RGBA channels and preserves transparent pixels
+  ---
+  duration_ms: 0.16694
+  type: 'test'
+  ...
+# Subtest: canvas draws center-based layout and gestures change only the view
+ok 42 - canvas draws center-based layout and gestures change only the view
+  ---
+  duration_ms: 1.386606
+  type: 'test'
+  ...
+# Subtest: repeated parent refreshes retain object and inspector keyboard focus
+ok 43 - repeated parent refreshes retain object and inspector keyboard focus
+  ---
+  duration_ms: 8.827468
+  type: 'test'
+  ...
+# Subtest: refreshing a scene preserves manual view zoom while a changed viewport fits again
+ok 44 - refreshing a scene preserves manual view zoom while a changed viewport fits again
+  ---
+  duration_ms: 0.514516
+  type: 'test'
+  ...
+# Subtest: source-aware preview links carry scene and definition revisions without mixing their files or aggregate dimensions
+ok 45 - source-aware preview links carry scene and definition revisions without mixing their files or aggregate dimensions
+  ---
+  duration_ms: 5.811255
+  type: 'test'
+  ...
+# Subtest: source sidecars also locate ordinary actors and a refreshed range replaces old inspector link closures
+ok 46 - source sidecars also locate ordinary actors and a refreshed range replaces old inspector link closures
+  ---
+  duration_ms: 8.687258
+  type: 'test'
+  ...
+# Subtest: v2 repeated definitions select and locate each instance independently after row reorder
+ok 47 - v2 repeated definitions select and locate each instance independently after row reorder
+  ---
+  duration_ms: 9.35579
+  type: 'test'
+  ...
+# Subtest: preview rejects unsupported versions and repeated or missing instance identities before rendering
+ok 48 - preview rejects unsupported versions and repeated or missing instance identities before rendering
+  ---
+  duration_ms: 16.03128
+  type: 'test'
+  ...
+1..48
+# tests 48
+# suites 0
+# pass 48
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1051.535955

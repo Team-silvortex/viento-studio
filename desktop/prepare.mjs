@@ -1,3 +1,4 @@
+import { prepareStudioCore } from '../scripts/build-studio-core.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -58,6 +59,7 @@ async function prepareNode() {
 }
 
 async function prepareResources() {
+  await prepareStudioCore();
   // The library and editor ship the same catalogue and settings component.
   await fs.rm(path.join(desktop, 'ui', 'i18n'), { recursive: true, force: true });
   await fs.cp(path.join(root, 'web', 'i18n'), path.join(desktop, 'ui', 'i18n'), { recursive: true });

@@ -1,0 +1,1510 @@
+{
+  "format": "viento-legacy-scene-source-golden",
+  "version": 1,
+  "capturedAt": "2026-10-04T01:23:29.714Z",
+  "legacyModuleSha256": "7d5cb1bbac71d53c29a158356e00f03e503c7abe65a7c5083cde74c51cf1f2d4",
+  "notes": "Captured from pre-Rust JS patchSceneSourcePositions; expected outputs are immutable conformance evidence, not recomputed from the replacement implementation.",
+  "cases": [
+    {
+      "name": "v1-identity-noop",
+      "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ]\r\n    },\r\n    {\r\n      \"objectId\": \"00000002-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ]\r\n    }\r\n  ]\r\n}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            0,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ]\r\n    },\r\n    {\r\n      \"objectId\": \"00000002-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ]\r\n    }\r\n  ]\r\n}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "v1-unicode-bom-crlf-token-patch",
+      "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ]\r\n    },\r\n    {\r\n      \"objectId\": \"00000002-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ]\r\n    }\r\n  ]\r\n}",
+      "changes": [
+        {
+          "objectId": "00000002-1111-4111-8111-111111111111",
+          "position": [
+            1e-7,
+            -100000
+          ]
+        },
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            0.000001,
+            100000
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        0.000001,\r\n        100000\r\n      ]\r\n    },\r\n    {\r\n      \"objectId\": \"00000002-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        1e-7,\r\n        -100000\r\n      ]\r\n    }\r\n  ]\r\n}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1",
+          "/actors/1/position/0",
+          "/actors/1/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "v1-empty-changes",
+      "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ]\r\n    },\r\n    {\r\n      \"objectId\": \"00000002-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ]\r\n    }\r\n  ]\r\n}",
+      "changes": [],
+      "expected": {
+        "ok": true,
+        "afterContent": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ]\r\n    },\r\n    {\r\n      \"objectId\": \"00000002-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ]\r\n    }\r\n  ]\r\n}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "v2-identity-noop",
+      "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 2,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+      "changes": [
+        {
+          "objectId": "0000000b-1111-4111-8111-111111111111",
+          "position": [
+            0,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 2,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 2,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "v2-unicode-bom-crlf-token-patch",
+      "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 2,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+      "changes": [
+        {
+          "objectId": "0000000c-1111-4111-8111-111111111111",
+          "position": [
+            1e-7,
+            -100000
+          ]
+        },
+        {
+          "objectId": "0000000b-1111-4111-8111-111111111111",
+          "position": [
+            0.000001,
+            100000
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 2,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        0.000001,\r\n        100000\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        1e-7,\r\n        -100000\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1",
+          "/actors/1/position/0",
+          "/actors/1/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 2,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "v2-empty-changes",
+      "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 2,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+      "changes": [],
+      "expected": {
+        "ok": true,
+        "afterContent": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 2,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 2,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "v3-identity-noop",
+      "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 3,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"groups\": [\r\n    {\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\",\r\n      \"name\": \"Town😀\"\r\n    },\r\n    {\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\",\r\n      \"name\": \"Residents\",\r\n      \"parentGroupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    }\r\n  ],\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+      "changes": [
+        {
+          "objectId": "0000000b-1111-4111-8111-111111111111",
+          "position": [
+            0,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 3,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"groups\": [\r\n    {\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\",\r\n      \"name\": \"Town😀\"\r\n    },\r\n    {\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\",\r\n      \"name\": \"Residents\",\r\n      \"parentGroupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    }\r\n  ],\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 3,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "v3-unicode-bom-crlf-token-patch",
+      "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 3,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"groups\": [\r\n    {\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\",\r\n      \"name\": \"Town😀\"\r\n    },\r\n    {\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\",\r\n      \"name\": \"Residents\",\r\n      \"parentGroupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    }\r\n  ],\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+      "changes": [
+        {
+          "objectId": "0000000c-1111-4111-8111-111111111111",
+          "position": [
+            1e-7,
+            -100000
+          ]
+        },
+        {
+          "objectId": "0000000b-1111-4111-8111-111111111111",
+          "position": [
+            0.000001,
+            100000
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 3,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"groups\": [\r\n    {\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\",\r\n      \"name\": \"Town😀\"\r\n    },\r\n    {\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\",\r\n      \"name\": \"Residents\",\r\n      \"parentGroupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    }\r\n  ],\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        0.000001,\r\n        100000\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        1e-7,\r\n        -100000\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1",
+          "/actors/1/position/0",
+          "/actors/1/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 3,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "v3-empty-changes",
+      "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 3,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"groups\": [\r\n    {\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\",\r\n      \"name\": \"Town😀\"\r\n    },\r\n    {\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\",\r\n      \"name\": \"Residents\",\r\n      \"parentGroupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    }\r\n  ],\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+      "changes": [],
+      "expected": {
+        "ok": true,
+        "afterContent": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 3,\r\n  \"title\": \"故事😀 / Scene / 場面\",\r\n  \"groups\": [\r\n    {\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\",\r\n      \"name\": \"Town😀\"\r\n    },\r\n    {\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\",\r\n      \"name\": \"Residents\",\r\n      \"parentGroupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    }\r\n  ],\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        -0.000e+3,\r\n        0e-999\r\n      ],\r\n      \"instanceId\": \"0000000b-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000015-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"00000001-1111-4111-8111-111111111111\",\r\n      \"position\": [\r\n        2,\r\n        3\r\n      ],\r\n      \"instanceId\": \"0000000c-1111-4111-8111-111111111111\",\r\n      \"groupId\": \"00000016-1111-4111-8111-111111111111\"\r\n    }\r\n  ]\r\n}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 3,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "escaped-high-surrogate",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":\"\\ud800\"}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":\"\\ud800\"}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "escaped-low-surrogate",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":\"\\udc00\"}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":\"\\udc00\"}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "escaped-surrogate-key",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"\\ud800\":1}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"\\ud800\":1}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "escaped-pair-key",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"\\ud83d\\ude00\":\"emoji\"}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"\\ud83d\\ude00\":\"emoji\"}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "huge-positive-exponent",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":1e400}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":1e400}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "huge-negative-exponent",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":-1e400}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":-1e400}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "huge-integer",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":12345678901234567890123456789012345678901234567890}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":12345678901234567890123456789012345678901234567890}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "underflow-exponent",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":1e-999}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":1e-999}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "nul-escaped-value",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":\"\\u0000\"}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":\"\\u0000\"}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "line-separators",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":\"  \"}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":\"  \"}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "nested-unknown-data",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"unknown\":{\"path\":\"/tmp/never-read.json\",\"nested\":[true,false,null,{\"a/b~c\":1e400}]}}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"unknown\":{\"path\":\"/tmp/never-read.json\",\"nested\":[true,false,null,{\"a/b~c\":1e400}]}}",
+        "changedPaths": [
+          "/actors/0/position/0"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "duplicate-decoded-key",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":1,\"\\u0065xtra\":2}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "duplicate-surrogate-key",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"\\ud800\":1,\"\\ud800\":2}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "duplicate-emoji-key",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"😀\":1,\"\\ud83d\\ude00\":2}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "nested-duplicate",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"extra\":{\"a/b\":1,\"a\\u002fb\":2}}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "escaped-known-keys",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"a\\u0063tors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"pos\\u0069tion\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"pos\\u0069tion\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            4,
+            5
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"a\\u0063tors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"pos\\u0069tion\":[4,5]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"pos\\u0069tion\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "numeric-schema-version",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1.0e0,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            4,
+            5
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1.0e0,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[4,5]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "number-spelling-1e-7",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1e-7,
+            1e-7
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1e-7,1e-7]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "number-spelling-0.000001",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            0.000001,
+            0.000001
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0.000001,0.000001]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "number-spelling-0.00001",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            0.00001,
+            0.00001
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0.00001,0.00001]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "number-spelling-0.00001",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            0.00001,
+            0.00001
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0.00001,0.00001]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "number-spelling-5e-324",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            5e-324,
+            5e-324
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[5e-324,5e-324]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "number-spelling--5e-324",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            -5e-324,
+            -5e-324
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[-5e-324,-5e-324]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "number-spelling-1.2345678901234567",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1.2345678901234567,
+            1.2345678901234567
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1.2345678901234567,1.2345678901234567]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "number-spelling-0",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            0,
+            0
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "number-spelling-99999.99999999999",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            99999.99999999999,
+            99999.99999999999
+          ]
+        }
+      ],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[99999.99999999999,99999.99999999999]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+        "changedPaths": [
+          "/actors/0/position/0",
+          "/actors/0/position/1"
+        ]
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "groups-required",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "groups-null",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":null,\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-id-duplicate",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\"},{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-instance-collision",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"0000000b-1111-4111-8111-111111111111\",\"name\":\"Town😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-upper-id",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"AAAAAAAA-1111-4111-8111-111111111111\",\"name\":\"Town😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-parent-orphan",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000063-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-parent-null",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\",\"parentGroupId\":null},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-self-cycle",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-multi-cycle",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\",\"parentGroupId\":\"00000016-1111-4111-8111-111111111111\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-unknown-field",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\",\"position\":[0,0]},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-empty-name",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"﻿  \"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-name-control",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"line\\nnext\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-name-delete-control",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"word\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-name-160-utf16",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 3,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "group-name-162-utf16",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "group-name-next-line",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 3,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "group-name-escaped-surrogate",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"\\ud800\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": true,
+        "afterContent": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"\\ud800\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+        "changedPaths": []
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 3,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "actor-orphan-group",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000063-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "actor-null-group",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":null},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "instances-repeat",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "actor-null",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":3,\"title\":\"故事😀 / Scene / 場面\",\"groups\":[{\"groupId\":\"00000015-1111-4111-8111-111111111111\",\"name\":\"Town😀\"},{\"groupId\":\"00000016-1111-4111-8111-111111111111\",\"name\":\"Residents\",\"parentGroupId\":\"00000015-1111-4111-8111-111111111111\"}],\"actors\":[null,{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\",\"groupId\":\"00000016-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "v1-groups-unsupported",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],\"groups\":[]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "v2-groups-unsupported",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":2,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\"}],\"groups\":[]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "v1-instance-unsupported",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\"},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "v2-instance-required",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":2,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "v1-group-unsupported",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "v2-group-unsupported",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":2,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0],\"instanceId\":\"0000000b-1111-4111-8111-111111111111\",\"groupId\":\"00000015-1111-4111-8111-111111111111\"},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3],\"instanceId\":\"0000000c-1111-4111-8111-111111111111\"}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "position-null",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":null},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "position-string",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":\"0\"},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "position-pair-length",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "position-too-large",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[100001,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "position-negative-too-large",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[-100001,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "nonfinite-position",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[1e400,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "actor-id-duplicate",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "changes-null",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": null,
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "changes-object",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": {},
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "changes-duplicate",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            2
+          ]
+        },
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            3,
+            4
+          ]
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "changes-unknown",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000063-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            2
+          ]
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "changes-extra-key",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            2
+          ],
+          "unreviewed": true
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "changes-invalid-coordinate",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "objectId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            null
+          ]
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "changes-wrong-shape",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [
+        {
+          "instanceId": "00000001-1111-4111-8111-111111111111",
+          "position": [
+            1,
+            2
+          ]
+        }
+      ],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": true,
+        "schemaVersion": 1,
+        "actorCount": 2
+      }
+    },
+    {
+      "name": "syntax-trailing-comma",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}],}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "syntax-comment",
+      "content": "{/* comment */\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "double-bom",
+      "content": "﻿﻿{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"故事😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "literal-surrogate",
+      "content": "{\"format\":\"viento-scene2d\",\"schemaVersion\":1,\"title\":\"\ud800😀 / Scene / 場面\",\"actors\":[{\"objectId\":\"00000001-1111-4111-8111-111111111111\",\"position\":[0,0]},{\"objectId\":\"00000002-1111-4111-8111-111111111111\",\"position\":[2,3]}]}",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "empty",
+      "content": "",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    },
+    {
+      "name": "wrong-root",
+      "content": "[]",
+      "changes": [],
+      "expected": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      },
+      "expectedInspect": {
+        "ok": false,
+        "errorCode": "scene_source_layout_invalid"
+      }
+    }
+  ]
+}

@@ -10,6 +10,9 @@ import { buildProject, runProjectBuild } from '../adapters/node-project-build.mj
 import { runBuildProcess } from '../lib/build-process.mjs';
 import { createScene2DPlan, checkBuildCapabilities } from '../../engine/build-plan.mjs';
 import { inspectObjectProjection, renderProjectionRuntime, validateProjectionDependencies } from '../../engine/object-projection.mjs';
+import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
+import { validateSceneGroups } from '../../engine/scene-groups.mjs';
+import { parseJsonSource, locateJsonSource } from '../../engine/json-source.mjs';
 import { readWorldSnapshot } from '../adapters/node-world-projection.mjs';
 import { runProjectBuildCommand } from '../project-build.mjs';
 
@@ -49,9 +52,12 @@ test('scene build: deterministic, movable, frozen bytes; portable planner has no
   assert.deepEqual(await runProjectBuildCommand(['--root', root, '--scene', scene]), {
     ok: true, plan: captured.plan, snapshotId: captured.snapshotId, diagnostics: [],
   });
+  const modelSource = await fs.readFile(new URL('../../engine/scene-model.mjs', import.meta.url), 'utf8');
+  const resolveScene2DModel = vm.runInNewContext(`${modelSource.replace(/^import .*\n/gm, '').replaceAll('export ', '')}\nresolveScene2DModel`,
+    { inspectObjectProjection, renderProjectionRuntime, validateProjectionDependencies, parseJsonSource, locateJsonSource, sceneActorIdentity, validateSceneGroups });
   const source = await fs.readFile(new URL('../../engine/build-plan.mjs', import.meta.url), 'utf8');
   const portable = vm.runInNewContext(`${source.replace(/^import .*\n/gm, '').replace(/^export \{.*\} from .*\n/gm, '').replaceAll('export ', '')}\ncreateScene2DPlan`,
-    { inspectObjectProjection, renderProjectionRuntime, validateProjectionDependencies });
+    { resolveScene2DModel });
   const observed = await readWorldSnapshot(root);
   assert.deepEqual(JSON.parse(JSON.stringify(portable(observed, scene))), createScene2DPlan(observed, scene));
   assert.deepEqual(checkBuildCapabilities(captured.plan, { capabilities: [] }).map(item => item.capability), captured.plan.requiredCapabilities);

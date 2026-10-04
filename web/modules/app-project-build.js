@@ -3,18 +3,28 @@ import { fetchJsonApiRequest } from './app-services.js';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
 import { setupSceneCreate } from './app-scene-create.js';
 import { setupScenePreview } from './app-scene-preview.js';
+import { setupSceneLayout } from './app-scene-layout.js';
 const errorLabels = {
   build_projection_invalid: '场景引用的投影无效，请检查投影原文。',
   build_projection_source: '投影的来源对象不可读取或不是普通对象，请检查来源。',
   build_projection_unlinked: '投影缺少来源关系，请检查对象登记。',
   build_projection_runtime: '此投影不支持当前二维场景，请选择兼容的游戏投影。',
   build_scene_required: '请选择已登记且可读取的场景文档。',
-  build_scene_format: '场景必须使用 viento-scene2d 第 1 版 JSON 格式。',
+  build_scene_format: '场景必须使用 viento-scene2d 第 1、2 或 3 版 JSON 格式。',
   build_scene_json: '场景 JSON 格式有误，请打开原文检查。',
   build_scene_value: '场景字段的值不符合要求，请检查标出的位置。',
   build_actor_value: '角色字段的值不符合要求，请检查标出的位置。',
   build_actor_missing: '场景引用的角色不存在或原文不可用。',
   build_actor_duplicate: '同一个角色不能在场景中重复声明。',
+  build_group_value: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_missing: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_duplicate: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_parent: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_cycle: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_depth: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_actor_group: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_instance_missing: '每个场景实例都需要有效的 UUID 身份。',
+  build_instance_duplicate: '场景实例身份不能重复，请为复制的实例使用新身份。',
   build_actor_unlinked: '请先在世界与对象中登记场景到角色的关系。',
   build_image_unsupported: '请选择已登记的 PNG、JPEG、WebP 或 SVG 图片。',
   build_image_unbound: '请先在世界与对象中将图片绑定到角色或场景。',
@@ -58,7 +68,7 @@ const phaseLabels = { snapshot: '正在冻结工程快照…', tool: '正在检�
 const kindLabels = { plan: '检查计划', build: '构建场景', run: '运行场景' };
 const statusLabels = { running: '进行中', succeeded: '已完成', failed: '失败', cancelled: '已取消', timeout: '超时' };
 
-export function setupProjectBuild({ getContext = () => ({}), openSource = () => false, setBusy = () => {}, applied = async () => {} } = {}) {
+export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = async () => null, applySceneDraft = async () => ({ applied: false }), openSource = () => false, setBusy = () => {}, applied = async () => {} } = {}) {
   const button = document.getElementById('projectBuildBtn');
   if (!button) return { setAvailable() {} };
   const dialog = document.createElement('dialog');
@@ -94,8 +104,9 @@ export function setupProjectBuild({ getContext = () => ({}), openSource = () => 
   const el = id => dialog.querySelector(`#${id}`);
   let available = false, creationSupported = false, updateSupported = false, data = null, selected = '', requestBusy = false, timer = null, requestEpoch = 0;
   let previewSupported = false, activeTab = 'build';
+  let dialogSession = 0, handledCloseSession = -1, sourceNavigationEpoch = 0, pendingSourceFocus = null;
   let errorMessage = '', errorDetails = '', plan = null, planScene = '', planJob = '', cancelling = false, invalidatedPlanJob = '', invalidatedSnapshot = '';
-  const sceneCreator = setupSceneCreate({ getContext, setBusy: value => { setBusy(value); render(); }, applied: async result => {
+  const sceneApplied = async result => {
     let refreshError;
     try { await applied(result); } catch (error) { refreshError = error; }
     const createdId = result.object?.id || result.changes?.[0]?.objectId;
@@ -105,7 +116,8 @@ export function setupProjectBuild({ getContext = () => ({}), openSource = () => 
     await refresh(true);
     if (refreshError) throw refreshError;
     if (errorMessage || !data?.scenes.some(scene => scene.id === createdId)) throw new Error(t('场景已创建，但目录或构建列表刷新失败。请刷新核对，勿重复创建。'));
-  } });
+  };
+  const sceneCreator = setupSceneCreate({ getContext, setBusy: value => { setBusy(value); render(); }, applied: sceneApplied });
   const running = () => data?.job?.status === 'running';
   const ready = () => {
     const context = getContext();
@@ -114,11 +126,66 @@ export function setupProjectBuild({ getContext = () => ({}), openSource = () => 
   const editScene = () => {
     if (updateSupported && selected && !requestBusy && !running() && ready()) sceneCreator.open(selected, { mode: 'edit' });
   };
+  async function navigateSource(...args) {
+    const session = dialogSession, epoch = ++sourceNavigationEpoch;
+    const owns = () => dialog.open && dialogSession === session && sourceNavigationEpoch === epoch;
+    try {
+      const opened = await openSource(...args);
+      if (!owns()) return false;
+      if (opened !== false) {
+        pendingSourceFocus = typeof opened?.focus === 'function' ? { session, epoch, focus: opened.focus } : null;
+        dialog.close();
+      }
+      return opened;
+    } catch (error) {
+      if (!owns()) return false;
+      throw error;
+    }
+  }
+  const canEditDraftLayout = () => {
+    const context = getContext(), scene = data?.scenes?.find(item => item.id === selected);
+    return Boolean(previewSupported && scene && context.sceneDraftPath === scene.sourcePath && context.sceneDraftWritable
+      && context.editable && context.dirty && !context.creating && !context.busy && !requestBusy && !running());
+  };
   const scenePreview = setupScenePreview({
     container: el('projectBuildPreviewPanel'),
-    getContext: () => ({ ...getContext(), canEditScene: Boolean(updateSupported && selected && !requestBusy && !running() && ready()) }),
+    getContext: () => {
+      const context = getContext(), scene = data?.scenes?.find(item => item.id === selected);
+      return { ...context, canEditScene: Boolean(updateSupported && selected && !requestBusy && !running() && ready()),
+        canEditDraftLayout: canEditDraftLayout(),
+        canPreviewDraft: Boolean(previewSupported && scene && context.sceneDraftPath === scene.sourcePath
+          && context.editable && context.dirty && !context.creating && !context.busy) };
+    },
+    getDraft: async id => {
+      const scene = data?.scenes?.find(item => item.id === id);
+      return scene && selected === id ? getSceneDraft(scene.sourcePath) : null;
+    },
     editScene,
-    openSource: async (...args) => { const opened = await openSource(...args); if (opened !== false) dialog.close(); return opened; },
+    editLayout: input => sceneLayout.open(input),
+    editDraftLayout: async input => {
+      const session = dialogSession, sceneId = selected, path = input.model?.scene?.sourcePath;
+      const owns = () => dialog.open && session === dialogSession && selected === sceneId && canEditDraftLayout()
+        && data?.scenes?.some(scene => scene.id === sceneId && scene.sourcePath === path) && input.isCurrent();
+      if (input.model?.scene?.objectId !== sceneId || !owns()) return false;
+      const source = await getSceneDraft(path);
+      if (!source || !owns()) return false;
+      return sceneLayout.openSource({ ...input, source, isCurrent: owns });
+    },
+    openSource: navigateSource,
+  });
+  const sceneLayout = setupSceneLayout({
+    getContext: () => ({ ...getContext(), canEditDraftLayout: canEditDraftLayout(), canEditScene: Boolean(updateSupported && selected && !requestBusy && !running() && ready()) }),
+    setBusy: value => { setBusy(value); render(); }, applied: sceneApplied,
+    applySourceDraft: async (proposal, { isCurrent = () => true } = {}) => {
+      const session = dialogSession, sceneId = selected;
+      const owns = () => dialog.open && session === dialogSession && selected === sceneId && canEditDraftLayout()
+        && data?.scenes?.some(scene => scene.id === sceneId && scene.id === proposal.sceneId && scene.sourcePath === proposal.sourcePath)
+        && isCurrent();
+      if (!owns()) throw Object.assign(new Error('The selected scene draft changed.'), { errorCode: 'scene_source_layout_conflict' });
+      return applySceneDraft(proposal, { isCurrent: owns });
+    },
+    sourceApplied: () => scenePreview.refreshDraft(),
+    reload: () => scenePreview.invalidate(),
   });
   const node = (tag, text, className = '') => { const item = document.createElement(tag); item.textContent = text; item.className = className; return item; };
   const matchedBuild = () => data?.latestBuild?.sceneId === selected ? data.latestBuild : null;
@@ -186,8 +253,7 @@ export function setupProjectBuild({ getContext = () => ({}), openSource = () => 
         link.type = 'button';
         link.addEventListener('click', async () => {
           try {
-            const opened = await openSource(diagnostic.sourcePath, diagnostic);
-            if (opened !== false) dialog.close();
+            await navigateSource(diagnostic.sourcePath, diagnostic);
           } catch { errorMessage = t('无法打开原文，请返回编辑器查找该文档。'); render(); }
         });
         item.append(link);
@@ -256,12 +322,24 @@ export function setupProjectBuild({ getContext = () => ({}), openSource = () => 
       }
     }
   }
-  button.addEventListener('click', () => { if (available && !dialog.open) { render(); dialog.showModal(); void refresh(); } });
+  button.addEventListener('click', () => { if (available && !dialog.open) {
+    dialogSession++; sourceNavigationEpoch++; pendingSourceFocus = null;
+    render(); dialog.showModal(); void refresh();
+  } });
   el('projectBuildEditScene').addEventListener('click', editScene);
   el('projectBuildCreateScene').addEventListener('click', () => { if (creationSupported && !requestBusy && !running() && ready()) sceneCreator.open(); });
   el('projectBuildClose').addEventListener('click', () => dialog.close());
   dialog.addEventListener('cancel', event => { event.preventDefault(); dialog.close(); });
-  dialog.addEventListener('close', () => { if (!dialog.open) { scenePreview.setVisible(false); button.focus(); } });
+  dialog.addEventListener('close', () => {
+    if (dialog.open || handledCloseSession === dialogSession) return;
+    handledCloseSession = dialogSession;
+    const pending = pendingSourceFocus; pendingSourceFocus = null;
+    const current = pending?.session === dialogSession && pending.epoch === sourceNavigationEpoch;
+    sourceNavigationEpoch++;
+    scenePreview.setVisible(false);
+    if (current) pending.focus();
+    else button.focus();
+  });
   const tabs = ['projectBuildTabPreview', 'projectBuildTabBuild'];
   function selectTab(index, focus = false) {
     if (!previewSupported) return;
@@ -294,6 +372,8 @@ export function setupProjectBuild({ getContext = () => ({}), openSource = () => 
     previewSupported = available && capabilities.scenePreview === true;
     if (!previewSupported) activeTab = 'build';
     scenePreview.setAvailable(previewSupported);
+    sceneLayout.setAvailable(previewSupported && updateSupported);
+    sceneLayout.setSourceAvailable?.(previewSupported);
     if (!available) { requestEpoch++; requestBusy = false; clearTimeout(timer); timer = null; if (dialog.open) dialog.close(); }
     render();
   } };

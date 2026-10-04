@@ -1,0 +1,130 @@
+{
+  "date": "2026-10-03",
+  "scope": "Unreleased Scene2D position layout editing after 0.0.6; Linux local editor source",
+  "features": [
+    "Scene Preview → Edit scene layout; drag actors or enter center X/Y coordinates",
+    "Move/Pan, 32-pixel absolute-center snap, 1/10-pixel keyboard nudges, bounded 100-step undo/redo",
+    "Local position drafts; explicit scene.update review/apply with original version preconditions",
+    "Preserve projection inheritance, omitted fields, explicit null and all non-position author values; same lossless v8 scene transaction",
+    "Refresh saved preview and invalidate the previous build plan without automatically building",
+    "Chinese, English, Japanese and 390px viewport"
+  ],
+  "validation": {
+    "appCheck": {
+      "passed": 1148,
+      "failed": 0,
+      "skipped": 0,
+      "syntaxFiles": 290,
+      "versionAndApiContract": "passed",
+      "log": "app-check.log",
+      "godot": "4.7.2.stable.official.ed1daf0bf",
+      "nativeHelpers": [
+        "workspace-archive",
+        "mobile-storage"
+      ]
+    },
+    "rust": {
+      "passed": 48,
+      "failed": 0,
+      "ignored": 1,
+      "ignoredReason": "Optional large real-workspace archive round-trip is disabled by configuration",
+      "log": "rust-tests.log"
+    },
+    "browser": {
+      "passed": true,
+      "flowCount": 7,
+      "browser": "Chrome/154.0.8037.97",
+      "errors": [],
+      "report": "browser.json",
+      "steps": [
+        "A real pointer drag changes the selected actor center, while coordinate fields and 32-unit snapping share Undo/Redo history. Escape cancels an in-progress drag and Pan moves only the camera. Every action remains a local draft; all author files are byte-identical.",
+        "Cancel, Escape, and Return each require a decision before discarding a changed layout. Rejecting keeps the same draft; accepting closes it without writing any source or changing the saved preview.",
+        "The proposed source changes only one actor position. English and Japanese labels preserve the checked draft, and the Japanese layout fits a real 390px viewport without horizontal overflow.",
+        "Apply saves the exact checked source, preserves Scene UUID, BOM/CRLF, OC/projection documents, inherited fields, and resource bytes, then refreshes the saved preview. The prior build plan is invalidated without launching a build.",
+        "An external scene edit between Check and Apply causes a conflict. The file is never overwritten, the local layout draft stays available, and Reload asks before discarding it and returning to the newer saved scene.",
+        "When the server saves successfully but the browser loses the Apply response, the draft remains and repeat Save is blocked. Verify reads the current source, recognizes the exact checked result without any further write, and refreshes the saved preview.",
+        "Cancelable beforeunload events are prevented while the layout is dirty and independently while its saved completion refresh is busy. An unchanged layout, undo to baseline, and completed or closed saves allow leaving. No page navigation is performed."
+      ],
+      "screenshots": [
+        "layout-canvas-narrow-ja.png",
+        "layout-check-zh.png",
+        "layout-conflict-draft-zh.png",
+        "layout-drag-snap-zh.png",
+        "layout-en.png",
+        "layout-narrow-ja.png",
+        "layout-saved-narrow-ja.png",
+        "layout-saved-preview-zh.png",
+        "layout-unknown-save-zh.png"
+      ],
+      "godotConfigured": false
+    },
+    "desktopResources": {
+      "prepare": "passed",
+      "sourceFilesMatched": 196,
+      "hashes": "packaged-sources.json",
+      "log": "desktop-prepare.log"
+    },
+    "mobileResources": {
+      "prepare": "passed",
+      "sourceFilesMatched": 82,
+      "yamlImportsRewritten": true,
+      "hashes": "mobile-sources.json",
+      "log": "mobile-prepare.log"
+    },
+    "nativeHelpers": {
+      "build": "passed",
+      "log": "native-helpers.log"
+    },
+    "focusedUiAndDraft": {
+      "testFilesPassed": 4,
+      "testFilesFailed": 0,
+      "log": "targeted.log",
+      "note": "Default Node isolation summarizes four files; all individual cases are included in app-check.log"
+    }
+  },
+  "dataAndFailureHandling": [
+    "Layout review and gestures are read-only; only explicit Apply changes the scene source and transaction head",
+    "BOM, CRLF, unchanged JSON lexical forms and large metadata integers preserved; scene UUID, all OC/projection documents and media bytes retained",
+    "Core integration confirms resource-package round-trip and generated Godot scene coordinates",
+    "Foreign or malformed success replies cannot clear the draft; Apply cannot be repeated while outcome is uncertain",
+    "Unknown save uses World → source/hash → World to confirm scene identity, path and stable object/source revisions before semantic comparison",
+    "External changes preserve the local draft and refuse stale writes; Reload explicitly confirms discarding",
+    "Cancel/Back/Escape and browser beforeunload protect drafts; desktop close script accounts for dirty and busy layout states",
+    "Editor preconditions stay outside reproducible build snapshots and serialized artifacts"
+  ],
+  "limitations": [
+    "Position editing only; no actor resize, rotation, gameplay simulation or embedded runtime",
+    "Undo history is in memory and bounded to 100 committed position edits; it is not persistent recovery after a crash",
+    "Linux HTTP/Chrome source was exercised; no new installer, Tauri window, Android device or interactive Godot window acceptance",
+    "Mobile resource preparation does not enable the unsupported scene workflow on Android",
+    "No version bump, commit, push, installation or modification to daily author workspaces"
+  ],
+  "changedSourceSha256": {
+    "docs/ARCHITECTURE.md": "db4b86448d3f9008853ec3224e3c7714c39b7b88b7492ec9a0af253711e7a03c",
+    "docs/PROJECT_BUILD.md": "0962b88c206de5432e0d89f438b72309669c9350da02dbcc4d7ebf3785ed1bc5",
+    "docs/ROADMAP.md": "be05ec18947f63b468defba9d3f428008dd990bbeb91c58b0d436f83fe63d7ff",
+    "docs/STATUS.md": "4830778c6c595801ad424d3950e81a5131fdb6646a59bbe35553802e87c5f08b",
+    "docs/TESTING.md": "dee728e88a7fed13f2cc3e36f00938c54fd043f4638d9577f877f95964a9b03f",
+    "engine/scene-layout.mjs": "96368a9af3aa200d95e63b0f70acb24c67cd99be389d8fea615e3c720b761697",
+    "scripts/adapters/node-build-snapshot.mjs": "ab1ecd4074100044cb35348c5d1f1930563a204840b4ed9bc0e6cc6e3d8a9211",
+    "scripts/lib/scene-preview-service.mjs": "8f3f8a492ea70c89507f17a4e6d866b9189809e49590a634612955600660968e",
+    "scripts/tests/desktop-close.test.mjs": "aedbf93021a6b0432514081fd8280ec2d64bc2361f2be712bddde5660039de7a",
+    "scripts/tests/dialog-harness.mjs": "ab0c1bbd6a57f099216ee63021ad9aa8a2aa8d91333c1693f7b8a4e6b2e9b1f6",
+    "scripts/tests/project-build-ui.test.mjs": "7427ffbbe00a00528557a767832a27797b022e425f71476e424c861403678da4",
+    "scripts/tests/scene-layout-canvas.test.mjs": "ce0372c057b8619cf0956515df222d7cf2e6b07ae2500dd874b313fcb8aec557",
+    "scripts/tests/scene-layout-integration.test.mjs": "6424e39dfb60c056310f563d525a8a9b41366e64e0cf8b3d28ab5a6ebb859341",
+    "scripts/tests/scene-layout-smoke.mjs": "13c4194c8310d73999cd6d65c02ba87661b792c4ab37cab8186ce4e3b1c365e3",
+    "scripts/tests/scene-layout-ui.test.mjs": "72977b0c6c4c521681bf1f4041c2bfa3aec69af0e4d1e2b649f6c5b20bc8c6df",
+    "scripts/tests/scene-layout.test.mjs": "483ab51569fba453841a683cc58d03943e0c26725e1fc1a2adfa6eae0f2d3f8d",
+    "scripts/tests/scene-preview-service.test.mjs": "ef3d1cc2276ad9dd9758e9d48235b633ef6c4be638fae9035477540e24f5700e",
+    "src-tauri/src/desktop_host.rs": "57b530a2926d2625067e25fafff4a9a19fb85ec05de7bc7d23f0f70f62f8078f",
+    "web/i18n/en.js": "a43049cc499c6e0113e3d1ce87b7e36ed84b7b5b5233952c73d39ac434e8deb7",
+    "web/i18n/ja.js": "ffc616c07f3121d6263b3f0684e4bac854b0800445f91b73e4cf7b390e85fdc1",
+    "web/modules/app-project-build.js": "18123897198a72d44561a4e002702c9c52ce556ce2d81e6e830f6c730c1fe8c0",
+    "web/modules/app-runtime.js": "67d1a7f53cbc4cc99dfe5a73e2d94ff8b8f234eda07bc8becf9c521176dfbb07",
+    "web/modules/app-scene-layout.js": "7a2a0aeaf1ab06f1398b194f8e4a9755561e3100936618a450e6704bd540f104",
+    "web/modules/app-scene-preview-canvas.js": "c3ebc8491c4e7116a4d1af06fe00905c4fd4b67536da03a032f7abdc57af3eda",
+    "web/modules/app-scene-preview.js": "f8351a8017629edd54f9e70e5ef073176b17c9ab4e711289de2da7488173b9f0",
+    "web/scene-preview.css": "353ad5bdb2076f9d722e9aded98543bb103a72f7486b59324d38ddcb4d0f406d"
+  }
+}

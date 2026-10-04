@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-03",
+  "scope": "Unreleased first shared Rust Studio core after 0.0.6; scene layout geometry and atomic position validation",
+  "implementation": [
+    "Standalone Rust crate independent of Tauri, DOM, filesystem and game backends; native library/JSON-lines CLI and WASM use the same geometry rules",
+    "Move, anchor grid snap, bounded group displacement, six alignments and atomic batch validation are called by the existing editor through synchronous WASM",
+    "No JavaScript geometry fallback; portable ABI bridge has no Node/front-end imports; host adapters inject module bytes",
+    "The author declaration, history and scene.update transaction remain unchanged; only geometry crosses the core boundary",
+    "Development checks, source startup and desktop/mobile resources prepare the generated core; source archives include Rust sources and Cargo.lock but exclude generated files",
+    "Roadmap now prioritizes GDScript and Rust; C# deferred; Nuislang is not a prerequisite"
+  ],
+  "validation": {
+    "nativeRust": {
+      "passed": 16,
+      "failed": 0,
+      "log": "rust-core.log",
+      "command": "cargo test --offline --locked --manifest-path crates/viento-studio-core/Cargo.toml"
+    },
+    "appCheck": {
+      "tests": 1139,
+      "pass": 1120,
+      "fail": 0,
+      "skipped": 19,
+      "syntaxFiles": 297,
+      "versionAndApiContract": "passed",
+      "log": "app-check.log",
+      "godot": "4.7.2.stable.official.ed1daf0bf",
+      "nativeArchiveAndMobileHelpersProvided": false
+    },
+    "coreIntegration": {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmParitySamples": 74,
+      "includedIn": "app-check.log"
+    },
+    "browser": {
+      "ok": true,
+      "flowCount": 6,
+      "browser": "Chrome/154.0.8037.97",
+      "errors": [],
+      "report": "browser-final/browser.json",
+      "steps": [
+        "Real Shift/Control canvas clicks, explicit list checkboxes, Select all and Clear maintain the same selection. Two-object selection clears/disables single-position fields, announces its count, and never creates a dirty draft or writes source.",
+        "Dragging a selected actor moves the selected pair as one group. The grabbed center snaps to the 32-unit grid while exact spacing is preserved and the unselected actor remains fixed. One Undo restores both actors; one Redo repeats the move.",
+        "All six alignment actions use the selected union bounds and each actor’s resolved width/height: left, horizontal center, right, top, vertical center, bottom. Each action is one Undo step and preserves every non-position declaration, including inherited defaults and explicit image:null.",
+        "English and Japanese preserve all three selected objects and the checked batch draft. At 390px, multi-select checkboxes and alignment actions remain available without horizontal overflow.",
+        "Apply publishes only the three reviewed position changes and refreshes the saved preview. Scene UUID, BOM/CRLF, all OC/projection declarations, metadata and resource bytes remain unchanged; the old build plan is invalidated without starting a new job.",
+        "An external edit between Check and Apply rejects the entire batch. All three selections and the local draft remain, no external content is overwritten, and Reload asks before discarding the draft and showing the current saved scene."
+      ]
+    },
+    "sourceArchive": {
+      "passed": 1,
+      "format": "tar.gz",
+      "log": "source-archive.log",
+      "includedIn": "app-check.log"
+    },
+    "packagedResources": {
+      "desktop": "passed",
+      "mobile": "passed",
+      "hashes": "packaged-sources.json",
+      "logs": [
+        "desktop-prepare.log",
+        "mobile-prepare.log"
+      ]
+    }
+  },
+  "wasm": {
+    "protocolVersion": 1,
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "sourceHash": "c07cb9f2b34950b2ab276c8fed4c1ee529d8fd8d66aa33793e3fc4baed94f717",
+    "wasmSha256": "425a323be315195d7ab18e784e35469509fdc108bbc16283474bab1484ef2e90",
+    "bytes": 113618,
+    "sources": {
+      "Cargo.lock": "1e20cad8bf8ad24bd85a25432fa739f1357894b7e6d87a5ec6ec1f0de6436396",
+      "Cargo.toml": "c6678822a9daa9f9292dd0153ac881292f5784f836333e43bfb55a72539a6095",
+      "src/lib.rs": "921c7df3d8fce203a2b152e7208cc98a79386247619a78e38d662b9a083361de",
+      "src/main.rs": "f83f78f6d29d557f30d110e4da08ed756d0ef1d58258103d7b53f35544268178",
+      "src/scene_layout.rs": "b7bc1be799e29192c2035d6539f41f7f54024ff8f626c26c2355bf5fd610d987",
+      "src/wasm.rs": "d31a2a380b9739a17a74fc8262fa08f2ddbd7aa8ef229d0c45ba38ad3dd163ad",
+      "build-script": "a6356c18fd5ba25fd46f67cad17fa7c441dc8b780d37c9d51fa3437512f67452"
+    }
+  },
+  "limitations": [
+    "The production editor executes Rust via WASM in the webview; no new Tauri command or native editor process was added",
+    "Draft history, source parsing/preservation, World and build planning still mostly run in JavaScript",
+    "No Bevy or arbitrary GDScript author-behavior integration yet; C# and Nuislang are not added",
+    "Nineteen existing archive/mobile integration cases were skipped because their native helpers were not rebuilt in this geometry-only change",
+    "No new Tauri window, Android device, installer, release, commit or push",
+    "Browser acceptance preceded only the final unselected-invalid-geometry helper compatibility fix; the final application suite covers that fix and the same UI workflows"
+  ],
+  "cleanup": "Temporary crate targets and prepared desktop/mobile resource copies are removed after verified source sync; only the small generated WASM and manifest are retained in the development checkout",
+  "changedSourceSha256": {
+    "engine/scene-layout.mjs": "244abd61919aa553cfa665483db23e163c5e753f09778b18286559ab61acb388",
+    "scripts/tests/scene-layout-canvas.test.mjs": "f84a6071faf2053362a5741526cd631e43c783f1d5178d81ff30184840dedef3",
+    "scripts/tests/scene-layout-integration.test.mjs": "5bc3fd26ae43db74ce10147da0d82093c1f0957535cd66f08ef1fc4dd96a5176",
+    "scripts/tests/scene-layout-ui.test.mjs": "bed762513080e2af4db4183a617b8498bb15189445d08f3b8aa4dcfa2564d1a0",
+    "scripts/tests/scene-layout.test.mjs": "38445edc6f43c04caca6d219512cef33831203df3f2d63514fec11d487c8e631",
+    "web/modules/app-scene-layout.js": "f920cb36cd1e67ff22c50f3f149714a2c579945f59f8a31ef4a17b97fbfac754",
+    ".github/CONTRIBUTING.md": "55323374717cbeefa28efef9eae5a72b134673f67f3b90a412cd2bbf60c50d81",
+    ".github/workflows/check.yml": "48c9c0e07ab0a6223db4c05339aad0615122287bd2c7053f02fea258cc0b4d43",
+    ".github/workflows/desktop.yml": "d847be30613177a7ffb3f2785890ba183fce7dbf8f4fa35e2991325ef2cd78a6",
+    ".gitignore": "9c6013feefacc0c73ddc0abb263e62f9c6a1419a1a0ac938b581a3c13654720e",
+    "README.md": "78b24069f6df7c7bba41c00c61eaa2f4743cf2bc13af0e831be227fe67696320",
+    "desktop/README.md": "959d93171ad5a531fff0de5c1ec57a86b9f256bd941a21d92e10f0df7904c0c0",
+    "desktop/clean.mjs": "9e876271815acf59aebb343a9ec229d8f1a38d59896722aeaf2cf2bc2fb12648",
+    "desktop/package-source.py": "ae947c31f64bde9c93cc532caccb1668c298d6ed28df3da88d8d36e0b7d67da7",
+    "desktop/prepare.mjs": "e7a6b2713b288b600c75ad542e260c2cf194e3fc1f2749556dd67309f1edbaa4",
+    "docs/ARCHITECTURE.md": "69078f2d793c511cfa48f5bc7f4d76a87ab24618e5190becd961a9f291473baf",
+    "docs/GETTING_STARTED.md": "34018e059dbe297b3706e17366017b5021870ccb0f10abfd8a0a473a9e14d959",
+    "docs/PROJECT_BUILD.md": "80a50b011fab9433c7cad95b844bb0cb3341d15860bd609dac0df35d3782cba9",
+    "docs/ROADMAP.md": "1410d05359ed1c64971700fae3253b212f3524d5d7a4562a9c838e40445fdd44",
+    "docs/STATUS.md": "d44afad0127b3d7e65c0ac0d94f638f37c1fe86348ca4678b5479ee7522a0bc0",
+    "docs/TESTING.md": "57ab1502ff87acae5a1a3b81b846aeb9223dc6e155e572698bfd2871441069f3",
+    "mobile/README.md": "b00eb136d70e4d04fd595d10cb9ccd4a723bea8b43d3398e920681259aa6f8f2",
+    "mobile/prepare.mjs": "0bc3a5744176b542b2adf85fd1742f6d3f67a78ac553659883a3ddeef8f01907",
+    "package.json": "249674cc0120ce094efa528081c7cea3395a4bc143b5c5e38281330deae60297",
+    "scripts/check-project.mjs": "c9f490f1dd0683f4ac452c202ed35292609c4b9e19c6eafabb3d90bcbc846e77",
+    "scripts/lib/doc-server-static-routes.mjs": "a5b6b35796680ac7865b6da28123a4a112a699df4c378b449d6af1c64f82d01b",
+    "scripts/lib/doc-server.mjs": "d480e0db99c68f8a9225a37db91de9916f5458e63b845edc1914ebe0604f6d94",
+    "scripts/tests/dialog-harness.mjs": "f7aacb1490cc28d9c9c895d599e88704bd66ee36387bbb59e133753ba036f2e3",
+    "scripts/tests/scene-preview-http.test.mjs": "a4ab8a1b319b3c871a1221e86dd5f643942b884aa40493e826d64f2cc21e7c07",
+    "src-tauri/tauri.android.conf.json": "01b441cde265163afc4a66ded55ff61337827a86d2fddae3d1f28a9f1de55d4f",
+    "web/i18n/en.js": "8eec77a2c329bb1c23c0012f695439723a00750c03ae471d7166e069ecd85d54",
+    "web/i18n/ja.js": "fc21dc9b83016d643f7da03f0066ca8892d86a3759b2206339aca757133dc722",
+    "web/modules/app-scene-preview-canvas.js": "e88dd899b3e1cfba3e3f1f52a724f4792ce01d082d31ae02b9a373255974d486",
+    "scripts/build-studio-core.mjs": "a6356c18fd5ba25fd46f67cad17fa7c441dc8b780d37c9d51fa3437512f67452",
+    "scripts/adapters/node-studio-core.mjs": "4ef99f01f9201b59b1f5ed8227bdd74ba8dd9f41caad491836cf7edbb8af3037",
+    "scripts/tests/studio-core.test.mjs": "457b613cee8f57bb5c0188ad6a0d1f5aa71d5e43bbbe4139011b8a8624fd6547",
+    "scripts/tests/source-archive.test.mjs": "c69e2e82fcb2145b81c8c35d6c0d6f9adc6047293846130d4c98b4bdf3cc739b",
+    "web/modules/app-studio-core.js": "dbc282577a11f5930f4560c0e175b50dbcebbae10f915a1faa994aa740acabcc",
+    "engine/studio-core.mjs": "8ca839d1d75a5a8965767864a2f3baa66b18b91a98c150703481115605af7456",
+    "crates/viento-studio-core/Cargo.lock": "1e20cad8bf8ad24bd85a25432fa739f1357894b7e6d87a5ec6ec1f0de6436396",
+    "crates/viento-studio-core/Cargo.toml": "c6678822a9daa9f9292dd0153ac881292f5784f836333e43bfb55a72539a6095",
+    "crates/viento-studio-core/tests/cli.rs": "6a617222c482c8d018412273a901aa6aa47418162625e77efe89153554b97e7a",
+    "crates/viento-studio-core/tests/layout.rs": "b8a5be8c8bedd619375134ec365f3e294c77a3332e97a4b23d1ab1cbe3740dd4",
+    "crates/viento-studio-core/src/main.rs": "f83f78f6d29d557f30d110e4da08ed756d0ef1d58258103d7b53f35544268178",
+    "crates/viento-studio-core/src/wasm.rs": "d31a2a380b9739a17a74fc8262fa08f2ddbd7aa8ef229d0c45ba38ad3dd163ad",
+    "crates/viento-studio-core/src/scene_layout.rs": "b7bc1be799e29192c2035d6539f41f7f54024ff8f626c26c2355bf5fd610d987",
+    "crates/viento-studio-core/src/lib.rs": "921c7df3d8fce203a2b152e7208cc98a79386247619a78e38d662b9a083361de"
+  }
+}

@@ -1,0 +1,68 @@
+TAP version 13
+# Subtest: source core is real standalone WASM with an explicit source feature version and no host I/O imports
+ok 1 - source core is real standalone WASM with an explicit source feature version and no host I/O imports
+  ---
+  duration_ms: 3.435748
+  type: 'test'
+  ...
+# Subtest: real WASM inspect and patch preserve 82 frozen pre-Rust source cases
+ok 2 - real WASM inspect and patch preserve 82 frozen pre-Rust source cases
+  ---
+  duration_ms: 12.494584
+  type: 'test'
+  ...
+# 164 frozen inspect/patch responses; Unicode, decoded duplicate keys, JSON number spellings, v1/v2/v3 and group constraints
+# Subtest: public JavaScript source patch retains the frozen legacy results and error codes
+ok 3 - public JavaScript source patch retains the frozen legacy results and error codes
+  ---
+  duration_ms: 7.566307
+  type: 'test'
+  ...
+# Subtest: WASM emits JavaScript canonical coordinate tokens across binary64 roundtrip and exponent thresholds
+ok 4 - WASM emits JavaScript canonical coordinate tokens across binary64 roundtrip and exponent thresholds
+  ---
+  duration_ms: 13.701467
+  type: 'test'
+  ...
+# 320 deterministic IEEE-754 samples; all untouched source bytes remain exact
+# Subtest: source parsing and patched output enforce UTF8, UTF16, actor, group and depth bounds without partial results
+ok 5 - source parsing and patched output enforce UTF8, UTF16, actor, group and depth bounds without partial results
+  ---
+  duration_ms: 6.631125
+  type: 'test'
+  ...
+# 16 boundary requests
+# Subtest: native and WASM return identical complete source responses for all legacy, binary64 and boundary requests
+ok 6 - native and WASM return identical complete source responses for all legacy, binary64 and boundary requests
+  ---
+  duration_ms: 111.79068
+  type: 'test'
+  ...
+# 500 identical native/WASM request-response samples; SHA256 01c0b8a322a799d6c3af43cbe4e1a604d2b2e7404e25d1d623f33a1868280c32
+# Subtest: missing or unsupported source feature blocks only source editing while old geometry remains available
+ok 7 - missing or unsupported source feature blocks only source editing while old geometry remains available
+  ---
+  duration_ms: 3.766598
+  type: 'test'
+  ...
+# Subtest: the source bridge rejects cross-domain and non-JSON requests without invoking user getters or damaging the core
+ok 8 - the source bridge rejects cross-domain and non-JSON requests without invoking user getters or damaging the core
+  ---
+  duration_ms: 0.457563
+  type: 'test'
+  ...
+# Subtest: the source bridge fails closed on malformed or mixed-domain source responses
+ok 9 - the source bridge fails closed on malformed or mixed-domain source responses
+  ---
+  duration_ms: 18.590863
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 249.585718

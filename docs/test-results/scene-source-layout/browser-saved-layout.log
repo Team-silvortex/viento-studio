@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "steps": [
+    "A real pointer drag changes the selected actor center, while coordinate fields and 32-unit snapping share Undo/Redo history. Escape cancels an in-progress drag and Pan moves only the camera. Every action remains a local draft; all author files are byte-identical.",
+    "Cancel, Escape, and Return each require a decision before discarding a changed layout. Rejecting keeps the same draft; accepting closes it without writing any source or changing the saved preview.",
+    "The proposed source changes only one actor position. English and Japanese labels preserve the checked draft, and the Japanese layout fits a real 390px viewport without horizontal overflow.",
+    "Apply saves the exact checked source, preserves Scene UUID, BOM/CRLF, OC/projection documents, inherited fields, and resource bytes, then refreshes the saved preview. The prior build plan is invalidated without launching a build.",
+    "An external scene edit between Check and Apply causes a conflict. The file is never overwritten, the local layout draft stays available, and Reload asks before discarding it and returning to the newer saved scene.",
+    "When the server saves successfully but the browser loses the Apply response, the draft remains and repeat Save is blocked. Verify reads the current source, recognizes the exact checked result without any further write, and refreshes the saved preview.",
+    "Cancelable beforeunload events are prevented while the layout is dirty and independently while its saved completion refresh is busy. An unchanged layout, undo to baseline, and completed or closed saves allow leaving. No page navigation is performed.",
+    "Two real preview responses are held across programmatic close and reopen. Releasing the old response cannot approve, change or unlock the new draft; only its own response enables Save, and both checks leave author files unchanged."
+  ],
+  "limitations": [
+    "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+    "Layout edits exercise static positions only. No Godot tool, runtime movement, audio, or gameplay was used."
+  ],
+  "output": "/tmp/viento-source-layout-0xztlvgg/docs/test-results/scene-source-layout/browser-saved-layout"
+}

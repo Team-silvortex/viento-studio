@@ -1,6 +1,8 @@
+import { sceneStructureActors } from '../../engine/scene-structure.mjs';
 import { randomUUID } from 'node:crypto';
 import { createError } from '../../engine/service-error.mjs';
-import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
+import { validateSceneDraftRequest } from '../../engine/scene-draft-preview.mjs';
+import { captureBuildSnapshot, captureSceneDraftPreview } from '../adapters/node-build-snapshot.mjs';
 import { SCENE_PREVIEW_API_PATH } from '../../engine/scene-preview-contract.mjs';
 
 const services = new Set();
@@ -18,7 +20,7 @@ export async function stopScenePreviewServices() {
 // capture cancels its predecessor and waits for it, bounding in-flight memory.
 export function createScenePreviewService(root, {
   enabled = process.platform === 'linux', ttlMs = 10 * 60 * 1000,
-  capture = captureBuildSnapshot,
+  capture = captureBuildSnapshot, captureDraft = captureSceneDraftPreview,
 } = {}) {
   let closed = false, closing, active = null, retainedBytes = 0;
   const previews = new Map();
@@ -38,9 +40,11 @@ export function createScenePreviewService(root, {
   async function create(payload, { signal } = {}) {
     ready();
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)
-      || Object.keys(payload).length !== 1 || !uuid(payload.sceneId)) {
+      || !Object.hasOwn(payload, 'sceneId') || Object.keys(payload).some(key => !['sceneId', 'draft'].includes(key)) || !uuid(payload.sceneId)) {
       throw fail('scene_preview_request_invalid', 'Select a registered scene identity.');
     }
+    const isDraft = Object.hasOwn(payload, 'draft');
+    if (isDraft) validateSceneDraftRequest(payload.sceneId, payload.draft);
     const previous = active;
     previous?.controller.abort();
     const owner = { controller: new AbortController(), promise: null };
@@ -56,14 +60,19 @@ export function createScenePreviewService(root, {
       if (previous) await previous.promise.catch(() => {});
       assertOwner();
       let captured;
-      try { captured = await capture(root, payload.sceneId, { signal: owner.controller.signal }); }
+      try { captured = isDraft
+        ? await captureDraft(root, payload.sceneId, payload.draft, { signal: owner.controller.signal })
+        : await capture(root, payload.sceneId, { signal: owner.controller.signal }); }
       catch (error) {
         assertOwner();
         throw fail(error.errorCode || 'scene_preview_failed', 'Cannot freeze this scene preview.',
-          ['build_input_changed', 'world_read_conflict', 'world_recovery_required'].includes(error.errorCode) ? 409 : 422);
+          error.errorCode === 'scene_preview_request_invalid' ? 400
+            : ['scene_preview_draft_conflict', 'build_input_changed', 'world_read_conflict', 'world_recovery_required'].includes(error.errorCode) ? 409 : 422);
       }
       assertOwner();
-      if (!captured.ok) return { ok: false, previewId: null, diagnostics: clone(captured.diagnostics || []) };
+      const draft = isDraft && captured.draft ? { baseSourceRevision: captured.draft.baseSourceRevision,
+        sourceRevision: captured.draft.sourceRevision } : undefined;
+      if (!captured.ok) return { ok: false, previewId: null, diagnostics: clone(captured.diagnostics || []), ...(draft ? { draft } : {}) };
       const previewId = randomUUID();
       const resources = captured.plan.resources.map(resource => ({ id: resource.id, sha256: resource.sha256, size: resource.size,
         contentType: mediaTypes[resource.extension],
@@ -72,9 +81,20 @@ export function createScenePreviewService(root, {
       if (byteLength > MAX_BYTES || resources.some(resource => !resource.contentType || captured.resources.get(resource.id)?.length !== resource.size)) {
         throw fail('scene_preview_limit', 'Scene preview images exceed the supported memory limit.', 422);
       }
-      const result = { ok: true, format: 'viento-scene-preview', schemaVersion: 1, previewId,
+      const result = { ok: true, format: 'viento-scene-preview', schemaVersion: captured.plan.schemaVersion || 1, previewId,
         snapshotId: captured.snapshotId, scene: captured.plan.scene, actors: captured.plan.actors, resources,
         diagnostics: captured.diagnostics || [] };
+      if (captured.sceneStructure !== undefined) {
+        sceneStructureActors(captured.sceneStructure, captured.plan.actors);
+        const { format, schemaVersion, sourceSchemaVersion, groups, memberships } = captured.sceneStructure;
+        result.sceneStructure = clone({ format, schemaVersion, sourceSchemaVersion, groups, memberships });
+      }
+      if (captured.sourceLocations) result.sourceLocations = clone(captured.sourceLocations);
+      if (draft) result.draft = draft;
+      if (!isDraft && captured.sceneEditing) {
+        const { worldId, baseRevision, objectRevision, sourceRevision, content } = captured.sceneEditing;
+        result.sceneEditing = { worldId, baseRevision, objectRevision, sourceRevision, content };
+      }
       prune();
       while (previews.size >= 2 || retainedBytes + byteLength > MAX_BYTES) discard(previews.keys().next().value);
       const timer = setTimeout(() => discard(previewId), ttlMs);

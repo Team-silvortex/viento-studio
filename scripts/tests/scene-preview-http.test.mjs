@@ -148,8 +148,16 @@ test('scene preview HTTP requires local write auth and strict JSON requests with
   const authorized = { Authorization: 'Bearer preview-test-token' };
   const application = await fetch(h.base), policy = application.headers.get('content-security-policy');
   assert.match(policy, /(?:^|; )img-src 'self' data: blob:(?:;|$)/);
-  assert.match(policy, /(?:^|; )script-src 'self'(?:;|$)/);
+  assert.match(policy, /(?:^|; )script-src 'self' 'wasm-unsafe-eval'(?:;|$)/);
   assert.match(policy, /(?:^|; )connect-src 'self'(?:;|$)/);
+  assert.ok(!policy.includes("'unsafe-eval'"));
+  const core = await fetch(`${h.base}/engine/studio-core.wasm`);
+  assert.equal(core.status, 200); assert.equal(core.headers.get('content-type'), 'application/wasm');
+  const module = await WebAssembly.compile(await core.arrayBuffer());
+  assert.equal(WebAssembly.Module.imports(module).length, 0);
+  assert.ok(WebAssembly.Module.exports(module).some(item => item.name === 'viento_core_run'));
+  assert.equal((await fetch(`${h.base}/engine/studio-core.build.json`)).status, 404);
+
   assert.equal((await h.request(undefined, { pathname: '/api/capabilities' })).data.scenePreview, true);
   assert.equal((await h.request({ sceneId })).status, 401);
   assert.equal((await h.request({ sceneId }, { headers: { Authorization: 'Bearer wrong' } })).status, 403);
@@ -259,4 +267,53 @@ test('closing the HTTP connection aborts preview capture without a late response
   const disconnected = new Promise(resolve => request.once('error', resolve));
   request.end(body); await entered; request.destroy(); await disconnected; await cancelled;
   assert.equal(await requestResult, true); assert.equal(endedAfterAbort, false);
+});
+
+test('draft HTTP preview retains local/auth boundaries, exact source ranges, byte limits and conflict status without native jobs', {
+  skip: process.platform !== 'linux', timeout: 45000,
+}, async t => {
+  const h = await harness(t, { env: { DOC_API_TOKEN: 'draft-preview-token', DOC_API_REQUIRE_WRITE_AUTH: '1' } });
+  const headers = { Authorization: 'Bearer draft-preview-token' };
+  const sourcePath = 'documents/scenes/demo.json', content = await fs.readFile(path.join(h.workspace, sourcePath), 'utf8');
+  const scene = JSON.parse(content); scene.title = '未保存 🎭'; scene.actors[0].position = [444, 111];
+  const draft = { sourcePath, baseSourceRevision: `sha256:${buildHash(content)}`,
+    content: `\uFEFF${JSON.stringify(scene, null, 2).replaceAll('\n', '\r\n')}\r\n` };
+  const payload = { sceneId, draft };
+  assert.equal((await h.request(payload)).status, 401);
+  assert.equal((await h.request(payload, { headers: { Authorization: 'Bearer wrong' } })).status, 403);
+  assert.equal((await h.request(payload, { headers: { ...headers, Origin: 'https://example.org' } })).status, 403);
+  assert.equal((await h.request(payload, { headers: { ...headers, 'Content-Type': 'text/plain' } })).status, 415);
+  const response = await h.request(payload, { headers });
+  assert.equal(response.status, 200); assert.match(response.headers.get('cache-control'), /no-store/);
+  const preview = response.data; assert.equal(preview.ok, true); assert.equal(preview.scene.title, scene.title);
+  assert.equal(preview.sceneEditing, undefined); assert.equal(preview.snapshot, undefined);
+  assert.equal(preview.draft.sourceRevision, `sha256:${buildHash(draft.content)}`);
+  const location = preview.sourceLocations.actors[0].fields.position;
+  assert.equal(location.sourceRevision, preview.draft.sourceRevision);
+  assert.deepEqual(JSON.parse(draft.content.slice(location.sourceRange.start, location.sourceRange.end)), [444, 111]);
+  const image = preview.resources[0], frozen = await h.request(undefined, { pathname: image.url });
+  assert.equal(frozen.status, 200); assert.equal(buildHash(frozen.bytes), image.sha256);
+  assert.equal((await h.request(undefined, { pathname: '/api/project-build' })).data.job, null);
+  assert.deepEqual(await files(h.cache), []); assert.deepEqual(await authorBytes(h.workspace), h.before);
+
+  for (const invalid of [{ ...draft, extra: true }, { ...draft, sourcePath: '../scene.json' },
+    { ...draft, baseSourceRevision: 'unknown' }, { ...draft, content: '界'.repeat(45000) }]) {
+    const rejected = await h.request({ sceneId, draft: invalid }, { headers });
+    assert.equal(rejected.status, 400); assert.equal(rejected.data.errorCode, 'scene_preview_request_invalid');
+  }
+  const padded = content.padEnd(128 * 1024, ' ');
+  const maximum = await h.request({ sceneId, draft: { ...draft, content: padded } }, { headers });
+  assert.equal(maximum.status, 200); assert.equal(maximum.data.ok, true);
+  assert.equal(maximum.data.draft.sourceRevision, `sha256:${buildHash(padded)}`);
+  const worstEscaping = await h.request({ sceneId, draft: { ...draft, content: '\u0000'.repeat(128 * 1024) } }, { headers });
+  assert.equal(worstEscaping.status, 200); assert.equal(worstEscaping.data.ok, false);
+  assert.equal(worstEscaping.data.diagnostics[0].sourceRevision, `sha256:${buildHash('\u0000'.repeat(128 * 1024))}`);
+  const tooLarge = await h.request({ sceneId, draft: { ...draft, content: 'x'.repeat(128 * 1024 + 1) } }, { headers });
+  assert.equal(tooLarge.status, 400); assert.equal(tooLarge.data.errorCode, 'scene_preview_request_invalid');
+  const httpLimit = await h.request({ sceneId, draft: { ...draft, content: '\u0000'.repeat(200000) } }, { headers });
+  assert.equal(httpLimit.status, 413, 'the original whole-request limit remains enforced');
+  assert.equal((await h.request(undefined, { pathname: image.url })).status, 200, 'failed previews retain the last usable images');
+  const conflict = await h.request({ sceneId, draft: { ...draft, baseSourceRevision: 'sha256:' + '0'.repeat(64) } }, { headers });
+  assert.equal(conflict.status, 409); assert.equal(conflict.data.errorCode, 'scene_preview_draft_conflict');
+  assert.deepEqual(await authorBytes(h.workspace), h.before); assert.deepEqual(await files(h.cache), []);
 });

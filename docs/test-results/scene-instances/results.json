@@ -1,0 +1,221 @@
+{
+  "date": "2026-10-03",
+  "version": "0.0.6",
+  "baseCommit": "94e9626fc11c64f61a7391f7b081bc029306345a",
+  "scope": "Unreleased Scene2D v2: independent flat instances of shared OC/projection definitions across source, editor, layout history, transactions, export, Godot builds and runtime events.",
+  "implementation": [
+    "Author v2 actors carry a unique scene-local instanceId and may repeat definition objectId. New scenes default to v2; old v1 upgrades only through an explicit checked save. Clone/add mint UUIDs; upgrade seeds old definition UUIDs; definition changes, inheritance switches and reorder preserve instance IDs.",
+    "JSON source model, build plan and preview envelope support versions1/2. Snapshot envelope stays version1 with a versioned plan. Provenance carries both identities outside frozen snapshots; duplicate/invalid IDs and >128 actors reject. v2 recovery stays strict for duplicate JSON keys and source budgets; v1 legacy recovery behavior stays compatible.",
+    "Lossless actor matching follows instance IDs. Upgrade/reorder/save preserve untouched author fragments, BOM, CRLF and numeric spelling; scene.update refuses identity-losing v2-to-v1 downgrade. Existing two-file transaction journals are reused with explicit source and registration recovery tests.",
+    "Preview, hit testing, field navigation, layout selection, move and history use sceneActorIdentity. Rust geometry and draft protocol remain unchanged: only the JS adapter maps instanceId to the protocol opaque key named objectId; author definition IDs are preserved.",
+    "Definition relations and shared images are deduplicated. A selected resource-package roundtrip retains both instances, their shared definition, owned story and image. Capture/resource-error provenance resolves the affected instance rather than the first repeated definition.",
+    "Version-dispatched Godot generation preserves legacy generator/runtime bytes and fingerprint. v2 source maps, nodes and runtime frames carry paired instance and definition IDs; spoofed/mismatched/downgraded frames reject. Import diagnostics are bounded before per-instance expansion: at most256 records,4096 message characters each."
+  ],
+  "validation": {
+    "appCheck": {
+      "tests": 1252,
+      "pass": 1233,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 19,
+      "log": "app-check-verified.log",
+      "syntaxFiles": 313,
+      "command": "VIENTO_STUDIO_CORE_BIN=<unchanged native core CLI> VIENTO_GODOT_BIN=<local Godot 4.7.2> node scripts/check-project.mjs --app-only",
+      "realGodotEnabled": true,
+      "nativeCoreParityEnabled": true,
+      "nativeArchiveAndMobileHelpersProvided": false
+    },
+    "semanticsTransactionsPackages": {
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "semantics-tests.log"
+    },
+    "legacySemanticRegression": {
+      "tests": 80,
+      "pass": 80,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "semantics-legacy-tests.log",
+      "scope": "Earlier focused 4-file run before two extra upgrade-recovery cases; overlaps final complete suite."
+    },
+    "runtimeFinal": {
+      "tests": 9,
+      "pass": 9,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "runtime-review-tests.log",
+      "realGodotEnabled": true
+    },
+    "runtimeLegacyCombined": {
+      "tests": 25,
+      "pass": 25,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "runtime-tests.log",
+      "scope": "Earlier combined25 cases; final bounded diagnostic regression and real Godot rerun in runtimeFinal."
+    },
+    "layoutAdapter": {
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "layout-tests.log"
+    },
+    "previewCapture": {
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "preview-tests-final.log"
+    },
+    "sceneUi": {
+      "tests": 48,
+      "pass": 48,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "ui-tests.log"
+    },
+    "layoutCanvasUi": {
+      "tests": 56,
+      "pass": 56,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "ui-layout-tests.log"
+    },
+    "projectionUi": {
+      "tests": 22,
+      "pass": 22,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "projection-ui-tests.log"
+    },
+    "counting": "Targeted groups overlap complete app suite and one another; do not sum them as independent coverage.",
+    "browserInstances": {
+      "ok": true,
+      "flows": 5,
+      "browser": "Chrome/154.0.8037.97",
+      "report": "browser/browser.json",
+      "steps": [
+        "Existing v1 opens without conversion. Explicit upgrade seeds stable IDs, Duplicate creates a new ID for the same definition, and reorder retains all IDs. Preview is read-only; Save preserves BOM/CRLF and changes only the scene source.",
+        "English/Japanese language switches retain the checked instance IDs and draft; the Japanese form fits a real 390px viewport.",
+        "A real canvas click selects the cloned instance, and its position source link focuses the actual editor and selects /actors/0/position after reorder, with BOM/CRLF preserved on disk.",
+        "Real pointer dragging, Undo/Redo, coordinate edits and save operate on the selected instance only. The other instance of the same definition remains at [160,200]; reopening preserves both independent positions and IDs.",
+        "An external revision between Check and Apply refuses the stale save without overwriting disk, and keeps the selected instance draft for recovery. The entire UI workflow never launches a build job."
+      ]
+    },
+    "browserLegacy": {
+      "ok": true,
+      "flows": 11,
+      "browser": "Chrome/154.0.8037.97",
+      "report": "browser-v1/browser.json",
+      "steps": [
+        "No Godot is configured: the Preview tab renders both frozen SVG images at inherited/overridden sizes and center positions, with source-aware resolved projection fields. No build job runs.",
+        "Real pointer selection opens the correct actor inspector. Zoom, grid, pointer pan and Fit visibly affect only the camera and overlay.",
+        "A second layout multiplies the inherited image by its RGBA tint and draws the later actor on top; a real center click selects that top actor.",
+        "Explicit imageResourceId:null removes inherited imagery. Arrow-key tab navigation maintains ARIA/focus, while English/Japanese and a 390px viewport retain the same scene without horizontal overflow.",
+        "A delayed old-scene response cannot replace a newer scene or restore its old images after rapid selection.",
+        "Invalid scene dimensions clear old pixels and show a source-located diagnostic. All previews, tab switches and gestures leave authoring files byte-identical and never create a build job.",
+        "Edit scene opens from the preview. Saving updates the title and actor position in a fresh preview while preserving scene UUID, BOM/CRLF and every other authored file.",
+        "Actor and original-OC source links return to the corresponding document; reopening Preview retains the selected scene and reads a fresh snapshot. Navigation is read-only.",
+        "Field links select the exact JSON value in the actual source textarea: the saved scene position survives BOM, CRLF, Chinese and emoji offset conversion, and inherited speed selects the projection configuration. Composite size opens its document without selecting an approximate range.",
+        "Changing the scene on disk after preview capture opens the current source and reports a stale location with no selection or write. Restoring the test fixture restores every author-file hash.",
+        "SVG images render as image content: embedded script and external-image URLs never execute or request network access."
+      ]
+    },
+    "packagedResources": {
+      "desktop": "passed",
+      "mobile": "passed",
+      "evidence": "packaged-resources.json",
+      "scope": "Offline preparation and actual packaged model/plan/layout WASM/runtime module execution; not native GUI or device acceptance."
+    },
+    "legacyCompatibility": {
+      "v1PlanSnapshotGeneratedHashesExact": true,
+      "v1FrozenBuildReplayed": true,
+      "v1BackendSha256": "dba885d7965715e56b1f1ac394dc78e3227d3502d23318a736dca6eb93beabe6",
+      "legacyBackendFilesUnchanged": true
+    },
+    "nativeCore": {
+      "rustSourcesUnchanged": true,
+      "wasmUnchanged": true,
+      "wasmBytes": 141948,
+      "wasmSha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+      "scope": "Built unchanged native CLI offline to enable parity, no new Rust semantic migration."
+    },
+    "visualInspection": [
+      "browser/instances-ja.png",
+      "browser/instances-preview-selected-zh.png"
+    ]
+  },
+  "limits": {
+    "actorCount": [
+      1,
+      128
+    ],
+    "shape": "flat instances only",
+    "jsonUtf16CodeUnits": 8388608,
+    "jsonDepth": 64,
+    "jsonValueNodes": 100000,
+    "v2ImportDiagnosticRecords": 256,
+    "v2ImportDiagnosticMessageCharacters": 4096
+  },
+  "iterations": [
+    "Read-only review reproduced shared-resource error amplification:100 log lines with128 instances emitted12801 diagnostics. v2 now bounds count and line length before expanding; regression tests cover repeated and oversized lines.",
+    "Initial preview fixture incorrectly used explicit null with a non-inherited actor, which existing semantics reject. Corrected fixture omits the image field for that actor; final14 preview tests pass. Initial normal-isolation wrapper hid child details, so targeted no-isolation run revealed the fixture assertion.",
+    "First complete run passed1232 with19skips and one old projection UI assertion expecting default v1. Updated it to assert defaultv2 and stable instance ID across definition and inheritance switches; final full run passes."
+  ],
+  "limitations": [
+    "Nineteen native archive/mobile helper cases skipped because those helpers were not supplied. Shared core parity and actual Godot4.7.2 enabled. Selected resource-package Node roundtrip is covered; no new full native archive/device acceptance claimed.",
+    "Scene hierarchy, reusable fragments, screenplay events, arbitrary author scripts and >128-actor scalability remain planned. Instance semantics remain portable JS; Rust core receives opaque keys.",
+    "Old clients are not claimed universally read-only: format-aware operations retain version gates, while old generic source editors can still edit author text.",
+    "No Tauri/Android window or device acceptance, installer, version bump, commit, push or installation."
+  ],
+  "cleanup": "All checks use disposable fixtures. Offline prepared resources and cache copies removed; staging/native build target removed after guarded synchronization. Existing author workspaces/configuration and prior evidence not changed.",
+  "changedSourceSha256": {
+    "engine/README.md": "23851bdcfbf9ae2172f5d7243612dea1ca2af26244f48eacb62fc17d56a240c0",
+    "engine/build-plan.mjs": "b1cec65df39e032b214308b856b894cba4d76a94010fa9b0e86d915cabd2a945",
+    "engine/index.mjs": "163d6dc306ef6d36827e326add486135bb52955995b365cdc458059bc0d220ff",
+    "engine/scene-identity.mjs": "eb17e6efdda342ca9ebb431c5522adf7f1544300f1fa6d24a75425ae4cb73a1e",
+    "engine/scene-layout.mjs": "ce736f29820b013391a8f521ffa1d2fc1485384b54ae0ecb51a46935b8b83edd",
+    "engine/scene-model.mjs": "a7626aba3f39f2cce5d468309c6d144f417d78f24a0a8b7afaade84e77f9ff65",
+    "engine/world-scene-update.mjs": "6f296860839b70cec0ca6f1867b171f4d5930374959ffb67928c40e018c3ef21",
+    "scripts/adapters/node-build-snapshot.mjs": "2fc2c75dff20ec929a832976a88586007ba9b6c3a9efbd6144f96d7ebdeffb7b",
+    "scripts/adapters/node-project-build.mjs": "a51ee525f472f574b463331b20acc03e478d7c41c81277e5a78280c7b509a420",
+    "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
+    "scripts/backends/godot4-dispatch.mjs": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
+    "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+    "scripts/lib/project-build-service.mjs": "9a54ccb9a5d8e012dba727e10e84384ef77c9ec621e1120e0deabd7da822e58f",
+    "scripts/lib/scene-preview-service.mjs": "dbf4984c904866bbed7f405850e2929437d0fbfe08b5baae6e6b19b1fadaca95",
+    "scripts/tests/dialog-harness.mjs": "a4c45d8b445adb6181b2bc989dd11e422f27f788575f906a558d1559c0f31e0c",
+    "scripts/tests/object-projection-ui.test.mjs": "9807ba6d47a82438fdcb1d70572d7555b8a603aa1397a305ebb7e8d55cdca796",
+    "scripts/tests/project-build.test.mjs": "b1298a6818574bfbcb98a874ddda1c330a37d25800f14226585ded27a310ec30",
+    "scripts/tests/scene-create-ui.test.mjs": "29547020a8294fd08da9a42cd16789af6747c594c5d5c9122ca353eaa3e68c9d",
+    "scripts/tests/scene-edit-ui.test.mjs": "f6a2342fd975acb6c2fe51e76c7a896be3e9e01603cbae7b01ac3199f303e728",
+    "scripts/tests/scene-instance-runtime.test.mjs": "bc954dd4caae47ddde57d2a0fabba0c90a2fffb54dc85ed76bb639b6620f9ba1",
+    "scripts/tests/scene-instances-smoke.mjs": "97a20ec8524496cf525458da495ae0001831dc7f87b124071d5c6b78eea03021",
+    "scripts/tests/scene-instances.test.mjs": "29d84f5bae8f505524817ec6e9cd56be22adcb93653997cc8fd658be7505d814",
+    "scripts/tests/scene-layout-canvas.test.mjs": "e2da64b39ca69dd848f6c2d9524aed2e24689ad5161c1ca44545654af42d7cab",
+    "scripts/tests/scene-layout-ui.test.mjs": "d0ac236598f24ff50ac70534457779838e7cdab13d82f026de86e771d48be30c",
+    "scripts/tests/scene-layout.test.mjs": "cbbf08010587dcc1ffb0d48e6550dc9ece40499da3af5b8adf91c25d619f31a6",
+    "scripts/tests/scene-preview-service.test.mjs": "3dc13a67ac51770f53735bc7803467def19ef8487930a8ed8175caee3672f67d",
+    "scripts/tests/scene-preview-ui.test.mjs": "595464943db924b417823a0c6c46f77b2b3c85879bbfa7a6b0354daad6e70f1e",
+    "web/i18n/en.js": "2a0c52d6d5d9a29919e9e86d1076118a8f5d41ebda730d00e11e7207c05613e4",
+    "web/i18n/ja.js": "6b1aeb19c85cc6248dd23cd746e16278b50cae9eb94d6af59024037e736d74a1",
+    "web/modules/app-project-build.js": "54bcf4d524df648016d96657965165f3401594aaabc42d7791d613b3295471a5",
+    "web/modules/app-scene-create.js": "a8acccd817acf320fa6126e96937df5bc26a00a69edfac7e140f3b23aa3b29fa",
+    "web/modules/app-scene-layout.js": "9e40b3fb97419e276a0595ec1bda6b12dec4a862051e9cdb970e0cd36fb6f180",
+    "web/modules/app-scene-preview-canvas.js": "8c1fca2f3491251fd0cd26bd5ebe85403742ae2c2b80a1ef589b5b1a7d93d15a",
+    "web/modules/app-scene-preview.js": "01e89d96c092b705d9e36480823a06c1b268e54f82c79a63b9f0cf7bb6f95792",
+    "web/project-build.css": "ac769e5df3d7c989d08c4e8672291b435f4fdf4ce2d8bc58a116f38781fe3b80"
+  }
+}

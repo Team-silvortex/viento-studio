@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-04",
+  "version": "0.0.7",
+  "baseCommit": "94e9626fc11c64f61a7391f7b081bc029306345a",
+  "delivery": "Source commit and push to origin/main; no installer, installation, GitHub Release or version tag",
+  "environment": {
+    "platform": "Linux",
+    "architecture": "x86_64",
+    "nodeForFullApp": "24.20.0 (locked embedded runtime)",
+    "developmentNode": "24.21.0",
+    "rust": "1.95.0",
+    "godot": "4.7.2-stable"
+  },
+  "scope": [
+    "Single and multiple selection, scene layout edits, alignment, snapping, guarded save and unknown-response verification",
+    "Shared Rust geometry, bounded position history, layout save workflow and exact scene source coordinate patches through native/WASM",
+    "Scene2D stable instances, nested organization groups, precise source and inherited-field locations",
+    "Read-only current source draft preview and reviewed in-memory layout application followed by normal editor Save",
+    "Versioned scene runtime compatibility, guarded transactions, complete archives and selective resource-package dependencies",
+    "Architecture/function/implementation/maturity atlas and current release documentation"
+  ],
+  "validation": {
+    "versions": {
+      "version": "0.0.7",
+      "buildVersion": "0.0.7",
+      "androidVersionCode": 1000007,
+      "macOSBundleVersion": "1.0.7"
+    },
+    "app": {
+      "passed": 1422,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "syntaxFiles": 330,
+      "apiContract": "passed",
+      "log": "app-check.log",
+      "nativeArchiveAndMobileHelpers": true,
+      "nativeCoreParity": true,
+      "realGodot": true
+    },
+    "sharedCore": {
+      "passed": 48,
+      "failed": 0,
+      "ignored": 0,
+      "log": "core-tests.log",
+      "fmt": "core-fmt.log",
+      "clippy": "core-clippy.log",
+      "nativeBuild": "core-native.log"
+    },
+    "desktopRust": {
+      "passed": 48,
+      "failed": 0,
+      "ignored": 1,
+      "reason": "full_project_migration_roundtrip requires an explicitly supplied real-author workspace; isolated archive and mobile roundtrip tests run in the application check.",
+      "log": "native-tests.log"
+    },
+    "nativeHelpers": {
+      "passed": true,
+      "log": "native-helpers-build.log"
+    },
+    "desktopPrepare": {
+      "passed": true,
+      "log": "desktop-prepare.log",
+      "finalResources": "desktop-resources-final.log"
+    },
+    "mobilePrepare": {
+      "passed": true,
+      "log": "mobile-prepare.log"
+    },
+    "preparedResources": {
+      "passed": true,
+      "manifest": "prepared-resources.json",
+      "desktopFiles": 476,
+      "mobileFiles": 182
+    },
+    "publicationReview": "publication-review.json",
+    "documentation": "docs-check.json"
+  },
+  "wasm": {
+    "bytes": 209864,
+    "sha256": "562a8d5427fc69f470f429bff370f577acf8faf279ff5c5a0e13235ec94083af",
+    "sourceHash": "ad7fc7c5dffe5910db3eb90390875888460bdc7ca31a67d1e461ea247d2615a1",
+    "protocolVersion": 1,
+    "sourceFeatureVersion": 1
+  },
+  "previousUiAndCompatibilityEvidence": {
+    "latest": "../rust-scene-source/results.json",
+    "sourceBrowser": "../rust-scene-source/browser-source/browser.json",
+    "sourceBrowserFlows": 5,
+    "sourceBrowserAssertions": 99,
+    "savedBrowser": "../rust-scene-source/browser-saved/browser.json",
+    "savedBrowserFlows": 8,
+    "instances": "../scene-instances/results.json",
+    "groups": "../scene-groups/results.json",
+    "draftPreview": "../scene-draft-preview/results.json",
+    "coreSourceParity": "../rust-scene-source/source-parity.json",
+    "note": "Existing synthetic browser, native/WASM and numeric evidence retains its original execution version and hashes; no new packaged GUI or device acceptance is claimed."
+  },
+  "dataProtection": {
+    "realAuthorDataUsed": false,
+    "workspaceFormat": "v2/v3 unchanged",
+    "applicationIdentifier": "io.viento.studio",
+    "sourceHashes": "source-hashes.json",
+    "historicalEvidence": "publication-review.json"
+  },
+  "cleanup": {
+    "report": "cleanup.json",
+    "generatedResourcesAndTemporaryTargetsRemoved": true,
+    "retained": "Current generated engine WASM/build manifest retained for source startup; installed application, existing dist artifacts and author data unchanged."
+  },
+  "limitations": [
+    "No new Tauri window, Android device, Windows/macOS native-interaction acceptance or installer creation.",
+    "Real-author full-size migration test intentionally ignored; isolated native archive and mobile storage tests pass.",
+    "This Rust migration covers layout, local history, save stages and source coordinate patches; broader scene/World semantics remain JavaScript.",
+    "Reusable scene fragments, spatial transforms, multi-file draft transactions, shared undo across views and generic script/runtime/GPU integration remain future work."
+  ]
+}

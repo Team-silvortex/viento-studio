@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: Rust WASM draft registries isolate sessions and preserve atomic changes, redo branches, and reset state
+ok 1 - Rust WASM draft registries isolate sessions and preserve atomic changes, redo branches, and reset state
+  ---
+  duration_ms: 8.388617
+  type: 'test'
+  ...
+# Subtest: native and WASM draft histories return identical responses within persistent registries
+ok 2 - native and WASM draft histories return identical responses within persistent registries
+  ---
+  duration_ms: 6.39862
+  type: 'test'
+  ...
+# Subtest: 128-actor WASM drafts bound history at 100 batches without round-tripping journal or author source
+ok 3 - 128-actor WASM drafts bound history at 100 batches without round-tripping journal or author source
+  ---
+  duration_ms: 85.661309
+  type: 'test'
+  ...
+# Subtest: native and WASM agree on 128-actor, 100-step retention, undo, redo, and reset
+ok 4 - native and WASM agree on 128-actor, 100-step retention, undo, redo, and reset
+  ---
+  duration_ms: 280.610199
+  type: 'test'
+  ...
+# Subtest: WASM draft capacity is released on close, handles are monotonic, and stale or malformed handles fail
+ok 5 - WASM draft capacity is released on close, handles are monotonic, and stale or malformed handles fail
+  ---
+  duration_ms: 2.169616
+  type: 'test'
+  ...
+# Subtest: native and WASM share capacity, monotonic identity, and stale-handle contracts
+ok 6 - native and WASM share capacity, monotonic identity, and stale-handle contracts
+  ---
+  duration_ms: 5.996202
+  type: 'test'
+  ...
+# Subtest: WASM draft creation bounds actor count and UTF-8 identity bytes without consuming failed handles
+ok 7 - WASM draft creation bounds actor count and UTF-8 identity bytes without consuming failed handles
+  ---
+  duration_ms: 1.124257
+  type: 'test'
+  ...
+# Subtest: the actual JS draft bridge owns only a handle and current response, with defensive result copies and explicit release
+ok 8 - the actual JS draft bridge owns only a handle and current response, with defensive result copies and explicit release
+  ---
+  duration_ms: 2.525275
+  type: 'test'
+  ...
+# Subtest: the draft bridge fails closed on incompatible response versions and malformed state envelopes
+ok 9 - the draft bridge fails closed on incompatible response versions and malformed state envelopes
+  ---
+  duration_ms: 11.224478
+  type: 'test'
+  ...
+# Subtest: stateful WASM ABI consumes each input once and cannot replay create, undo, or close
+ok 10 - stateful WASM ABI consumes each input once and cannot replay create, undo, or close
+  ---
+  duration_ms: 1.194429
+  type: 'test'
+  ...
+# Subtest: native and WASM reject malformed messages without losing an existing draft or its redo branch
+ok 11 - native and WASM reject malformed messages without losing an existing draft or its redo branch
+  ---
+  duration_ms: 3.715126
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 421.293026

@@ -1,0 +1,23 @@
+Error: Timed out: #scenePreviewActorSource enabled
+    at wait (file:///tmp/viento-scene-source-9gffgtcc/scripts/tests/scene-preview-smoke.mjs:35:9)
+    at async selectActor (file:///tmp/viento-scene-source-9gffgtcc/scripts/tests/scene-preview-smoke.mjs:270:5)
+    at async file:///tmp/viento-scene-source-9gffgtcc/scripts/tests/scene-preview-smoke.mjs:277:3
+{
+  "ok": false,
+  "steps": [
+    "No Godot is configured: the Preview tab renders both frozen SVG images at inherited/overridden sizes and center positions, with source-aware resolved projection fields. No build job runs.",
+    "Real pointer selection opens the correct actor inspector. Zoom, grid, pointer pan and Fit visibly affect only the camera and overlay.",
+    "A second layout multiplies the inherited image by its RGBA tint and draws the later actor on top; a real center click selects that top actor.",
+    "Explicit imageResourceId:null removes inherited imagery. Arrow-key tab navigation maintains ARIA/focus, while English/Japanese and a 390px viewport retain the same scene without horizontal overflow.",
+    "A delayed old-scene response cannot replace a newer scene or restore its old images after rapid selection.",
+    "Invalid scene dimensions clear old pixels and show a source-located diagnostic. All previews, tab switches and gestures leave authoring files byte-identical and never create a build job.",
+    "Edit scene opens from the preview. Saving updates the title and actor position in a fresh preview while preserving scene UUID, BOM/CRLF and every other authored file.",
+    "Actor and original-OC source links return to the corresponding document; reopening Preview retains the selected scene and reads a fresh snapshot. Navigation is read-only."
+  ],
+  "limitations": [
+    "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+    "This is a static authoring preview. No Godot tool, runtime movement, audio, or gameplay was used."
+  ],
+  "failure": "Error: Timed out: #scenePreviewActorSource enabled\n    at wait (file:///tmp/viento-scene-source-9gffgtcc/scripts/tests/scene-preview-smoke.mjs:35:9)\n    at async selectActor (file:///tmp/viento-scene-source-9gffgtcc/scripts/tests/scene-preview-smoke.mjs:270:5)\n    at async file:///tmp/viento-scene-source-9gffgtcc/scripts/tests/scene-preview-smoke.mjs:277:3",
+  "output": "/tmp/viento-scene-source-9gffgtcc/docs/test-results/scene-source-model/preview-browser"
+}

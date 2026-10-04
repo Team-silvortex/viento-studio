@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: JSON source accepts object, array and primitive roots without rebuilding semantic values
+ok 1 - JSON source accepts object, array and primitive roots without rebuilding semantic values
+  ---
+  duration_ms: 9.1924
+  type: 'test'
+  ...
+# Subtest: ranges are original UTF-16 offsets including BOM and CRLF around Chinese, emoji and escapes
+ok 2 - ranges are original UTF-16 offsets including BOM and CRLF around Chinese, emoji and escapes
+  ---
+  duration_ms: 0.995398
+  type: 'test'
+  ...
+# Subtest: JSON pointers handle empty and escaped keys without prototype pollution or array coercion
+ok 3 - JSON pointers handle empty and escaped keys without prototype pollution or array coercion
+  ---
+  duration_ms: 0.69833
+  type: 'test'
+  ...
+# Subtest: nearest fallback uses an existing container and reports its actual pointer
+ok 4 - nearest fallback uses an existing container and reports its actual pointer
+  ---
+  duration_ms: 0.515023
+  type: 'test'
+  ...
+# Subtest: duplicate decoded keys are rejected at every depth and compatibility mode never invents a range
+ok 5 - duplicate decoded keys are rejected at every depth and compatibility mode never invents a range
+  ---
+  duration_ms: 2.728503
+  type: 'test'
+  ...
+# Subtest: numeric spellings and explicit null image suppression remain exact original tokens
+ok 6 - numeric spellings and explicit null image suppression remain exact original tokens
+  ---
+  duration_ms: 0.465737
+  type: 'test'
+  ...
+# Subtest: only complete strict JSON passes syntax validation despite YAML accepting more forms
+ok 7 - only complete strict JSON passes syntax validation despite YAML accepting more forms
+  ---
+  duration_ms: 0.396442
+  type: 'test'
+  ...
+# Subtest: character, depth and node limits include overwritten duplicate values before CST parsing
+ok 8 - character, depth and node limits include overwritten duplicate values before CST parsing
+  ---
+  duration_ms: 1112.10129
+  type: 'test'
+  ...
+# Subtest: source indexing works without Node or DOM globals and catches CST failures
+ok 9 - source indexing works without Node or DOM globals and catches CST failures
+  ---
+  duration_ms: 14.44618
+  type: 'test'
+  ...
+# Subtest: returned spans are detached and foreign or serialized results cannot supply a forged index
+ok 10 - returned spans are detached and foreign or serialized results cannot supply a forged index
+  ---
+  duration_ms: 0.67269
+  type: 'test'
+  ...
+# Subtest: portable engine has no dependency back into Node adapters, frontend or native host
+ok 11 - portable engine has no dependency back into Node adapters, frontend or native host
+  ---
+  duration_ms: 103.490307
+  type: 'test'
+  ...
+# Subtest: portable engine workflows execute without Node globals using the browser YAML distribution
+ok 12 - portable engine workflows execute without Node globals using the browser YAML distribution
+  ---
+  duration_ms: 92.125236
+  type: 'test'
+  ...
+# Subtest: logical source names retain POSIX extension semantics independent of the host OS
+ok 13 - logical source names retain POSIX extension semantics independent of the host OS
+  ---
+  duration_ms: 0.623224
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1322.806866

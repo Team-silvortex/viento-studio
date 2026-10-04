@@ -1,0 +1,47 @@
+TAP version 13
+# Subtest: real WASM save transitions enforce review gates, stale receipts, unknown-save locks, and bounded lifecycle ownership
+ok 1 - real WASM save transitions enforce review gates, stale receipts, unknown-save locks, and bounded lifecycle ownership
+  ---
+  duration_ms: 23.011999
+  type: 'test'
+  ...
+# Subtest: real WASM classifies preview, apply, and verification errors without making unknown outcomes writable
+ok 2 - real WASM classifies preview, apply, and verification errors without making unknown outcomes writable
+  ---
+  duration_ms: 21.963105
+  type: 'test'
+  ...
+# Subtest: native and WASM preserve identical save state across complete persistent sessions and the error matrix
+ok 3 - native and WASM preserve identical save state across complete persistent sessions and the error matrix
+  ---
+  duration_ms: 151.31042
+  type: 'test'
+  ...
+# 548 persistent native/WASM request-response samples
+# Subtest: the real save bridge leaves state untouched on invalid transport or cross-domain calls
+ok 4 - the real save bridge leaves state untouched on invalid transport or cross-domain calls
+  ---
+  duration_ms: 2.995397
+  type: 'test'
+  ...
+# Subtest: the save bridge accepts every declared state without repairing inconsistent flags
+ok 5 - the save bridge accepts every declared state without repairing inconsistent flags
+  ---
+  duration_ms: 8.330337
+  type: 'test'
+  ...
+# Subtest: the save bridge fails closed on state, token, identity, and shape mismatches
+ok 6 - the save bridge fails closed on state, token, identity, and shape mismatches
+  ---
+  duration_ms: 78.760439
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 306.615237

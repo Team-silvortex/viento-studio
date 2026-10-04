@@ -1,0 +1,542 @@
+{
+  "description": "Frozen from the pre-group Scene2D v2 implementation, before author schema3/group support.",
+  "baselineSha256": {
+    "engine/scene-model.mjs": "a7626aba3f39f2cce5d468309c6d144f417d78f24a0a8b7afaade84e77f9ff65",
+    "engine/build-plan.mjs": "b1cec65df39e032b214308b856b894cba4d76a94010fa9b0e86d915cabd2a945",
+    "scripts/backends/godot4-dispatch.mjs": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
+    "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+    "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8"
+  },
+  "ids": {
+    "scene": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "core": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "first": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+    "second": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+    "image": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+    "instances": [
+      "11111111-1111-4111-8111-111111111111",
+      "22222222-2222-4222-8222-222222222222"
+    ]
+  },
+  "observed": {
+    "source": {
+      "workspace": {
+        "id": "source-model-project"
+      },
+      "documents": [
+        {
+          "record": {
+            "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "sourcePath": "documents/oc.md",
+            "documentType": "document",
+            "relations": [],
+            "assetBindings": []
+          },
+          "sourcePath": "documents/oc.md",
+          "content": "﻿# 共同人物🦊\r\n\r\nPRIVATE_AUTHOR_BODY_ONLY_IN_DOCUMENT\r\n",
+          "sourceRevision": "sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a"
+        },
+        {
+          "record": {
+            "id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "documentType": "document",
+            "relations": [
+              {
+                "kind": "references",
+                "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "slot": "projection-source"
+              }
+            ],
+            "assetBindings": [
+              {
+                "assetId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+                "role": "image"
+              }
+            ]
+          },
+          "sourcePath": "documents/projections/p1.json",
+          "content": "﻿{\r\n\t\"format\": \"viento-object-projection\",\r\n\t\"schemaVersion\": 1,\r\n\t\"title\": \"投影🦊 1\",\r\n\t\"sourceObjectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\r\n\t\"template\": {\r\n\t\t\"packageId\": \"org.viento.test.scene-model\",\r\n\t\t\"version\": \"1.0.0\",\r\n\t\t\"digest\": \"sha256:4e69d968ee18e949bafe9bfa452237e471e32ee17a69d5cc80379c5923245a9d\",\r\n\t\t\"snapshot\": {\r\n\t\t\t\"id\": \"org.viento.test.scene-model\",\r\n\t\t\t\"version\": \"1.0.0\",\r\n\t\t\t\"label\": \"来源测试\",\r\n\t\t\t\"family\": \"game\",\r\n\t\t\t\"lineage\": [],\r\n\t\t\t\"fields\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"width\",\r\n\t\t\t\t\t\"label\": \"宽\",\r\n\t\t\t\t\t\"type\": \"number\",\r\n\t\t\t\t\t\"default\": 80\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"height\",\r\n\t\t\t\t\t\"label\": \"高\",\r\n\t\t\t\t\t\"type\": \"number\",\r\n\t\t\t\t\t\"default\": 60\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"color\",\r\n\t\t\t\t\t\"label\": \"颜色\",\r\n\t\t\t\t\t\"type\": \"string\",\r\n\t\t\t\t\t\"default\": \"#ffffff\"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"speed\",\r\n\t\t\t\t\t\"label\": \"速度\",\r\n\t\t\t\t\t\"type\": \"number\",\r\n\t\t\t\t\t\"default\": 160\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"controls\",\r\n\t\t\t\t\t\"label\": \"控制\",\r\n\t\t\t\t\t\"type\": \"enum\",\r\n\t\t\t\t\t\"default\": \"arrows\",\r\n\t\t\t\t\t\"options\": [\r\n\t\t\t\t\t\t\"arrows\",\r\n\t\t\t\t\t\t\"none\"\r\n\t\t\t\t\t]\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"image\",\r\n\t\t\t\t\t\"label\": \"图片\",\r\n\t\t\t\t\t\"type\": \"image\",\r\n\t\t\t\t\t\"default\": \"\"\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"runtime\": {\r\n\t\t\t\t\"kind\": \"scene2d-actor\",\r\n\t\t\t\t\"width\": \"width\",\r\n\t\t\t\t\"height\": \"height\",\r\n\t\t\t\t\"color\": \"color\",\r\n\t\t\t\t\"speed\": \"speed\",\r\n\t\t\t\t\"controls\": \"controls\",\r\n\t\t\t\t\"image\": \"image\"\r\n\t\t\t}\r\n\t\t}\r\n\t},\r\n\t\"configuration\": {\r\n\t\t\"width\": 80,\r\n\t\t\"height\": 60,\r\n\t\t\"color\": \"#ffffff\",\r\n\t\t\"spe\\u0065d\": 1.6e2,\r\n\t\t\"controls\": \"arrows\",\r\n\t\t\"image\": \"cccccccc-cccc-4ccc-8ccc-cccccccccccc\"\r\n\t}\r\n}\r\n \t",
+          "sourceRevision": "sha256:07c6af570c5936a18dc4d4f910ed5afd7f854fd27ec6c1d07eec2afd1b4f91de"
+        },
+        {
+          "record": {
+            "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+            "sourcePath": "documents/projections/p2.json",
+            "documentType": "document",
+            "relations": [
+              {
+                "kind": "references",
+                "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "slot": "projection-source"
+              }
+            ],
+            "assetBindings": [
+              {
+                "assetId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+                "role": "image"
+              }
+            ]
+          },
+          "sourcePath": "documents/projections/p2.json",
+          "content": "﻿{\r\n\t\"format\": \"viento-object-projection\",\r\n\t\"schemaVersion\": 1,\r\n\t\"title\": \"投影🦊 2\",\r\n\t\"sourceObjectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\r\n\t\"template\": {\r\n\t\t\"packageId\": \"org.viento.test.scene-model\",\r\n\t\t\"version\": \"1.0.0\",\r\n\t\t\"digest\": \"sha256:4e69d968ee18e949bafe9bfa452237e471e32ee17a69d5cc80379c5923245a9d\",\r\n\t\t\"snapshot\": {\r\n\t\t\t\"id\": \"org.viento.test.scene-model\",\r\n\t\t\t\"version\": \"1.0.0\",\r\n\t\t\t\"label\": \"来源测试\",\r\n\t\t\t\"family\": \"game\",\r\n\t\t\t\"lineage\": [],\r\n\t\t\t\"fields\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"width\",\r\n\t\t\t\t\t\"label\": \"宽\",\r\n\t\t\t\t\t\"type\": \"number\",\r\n\t\t\t\t\t\"default\": 80\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"height\",\r\n\t\t\t\t\t\"label\": \"高\",\r\n\t\t\t\t\t\"type\": \"number\",\r\n\t\t\t\t\t\"default\": 60\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"color\",\r\n\t\t\t\t\t\"label\": \"颜色\",\r\n\t\t\t\t\t\"type\": \"string\",\r\n\t\t\t\t\t\"default\": \"#ffffff\"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"speed\",\r\n\t\t\t\t\t\"label\": \"速度\",\r\n\t\t\t\t\t\"type\": \"number\",\r\n\t\t\t\t\t\"default\": 160\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"controls\",\r\n\t\t\t\t\t\"label\": \"控制\",\r\n\t\t\t\t\t\"type\": \"enum\",\r\n\t\t\t\t\t\"default\": \"arrows\",\r\n\t\t\t\t\t\"options\": [\r\n\t\t\t\t\t\t\"arrows\",\r\n\t\t\t\t\t\t\"none\"\r\n\t\t\t\t\t]\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"id\": \"image\",\r\n\t\t\t\t\t\"label\": \"图片\",\r\n\t\t\t\t\t\"type\": \"image\",\r\n\t\t\t\t\t\"default\": \"\"\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"runtime\": {\r\n\t\t\t\t\"kind\": \"scene2d-actor\",\r\n\t\t\t\t\"width\": \"width\",\r\n\t\t\t\t\"height\": \"height\",\r\n\t\t\t\t\"color\": \"color\",\r\n\t\t\t\t\"speed\": \"speed\",\r\n\t\t\t\t\"controls\": \"controls\",\r\n\t\t\t\t\"image\": \"image\"\r\n\t\t\t}\r\n\t\t}\r\n\t},\r\n\t\"configuration\": {\r\n\t\t\"width\": 120,\r\n\t\t\"height\": 40,\r\n\t\t\"color\": \"#557799\",\r\n\t\t\"speed\": 0,\r\n\t\t\"controls\": \"none\",\r\n\t\t\"image\": \"cccccccc-cccc-4ccc-8ccc-cccccccccccc\"\r\n\t}\r\n}\r\n \t",
+          "sourceRevision": "sha256:7c4b0c4b69729ddd4a54eca94b1d9b0fa1bb7140d674b4303890291277cfe1ba"
+        },
+        {
+          "record": {
+            "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/source.json",
+            "documentType": "document",
+            "relations": [
+              {
+                "kind": "references",
+                "targetId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+                "slot": ""
+              },
+              {
+                "kind": "references",
+                "targetId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "slot": ""
+              }
+            ],
+            "assetBindings": []
+          },
+          "sourcePath": "documents/scenes/source.json",
+          "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 2,\r\n  \"title\": \"中文🦊 场景\",\r\n  \"viewport\": [\r\n    640,\r\n    480\r\n  ],\r\n  \"background\": \"#102030\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb\",\r\n      \"position\": [\r\n        100.25,\r\n        200\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"instanceId\": \"11111111-1111-4111-8111-111111111111\"\r\n    },\r\n    {\r\n      \"objectId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb\",\r\n      \"position\": [\r\n        340,\r\n        220\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"instanceId\": \"22222222-2222-4222-8222-222222222222\",\r\n      \"speed\": 17,\r\n      \"imageResourceId\": null\r\n    }\r\n  ]\r\n}\r\n",
+          "sourceRevision": "sha256:67feedd86f2eaab89e85f0a7fa1fd5c7c0b7c4971c65809111f34d4ba493c922"
+        }
+      ],
+      "assets": [
+        {
+          "record": {
+            "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "kind": "image",
+            "location": {
+              "path": "sample.svg"
+            },
+            "content": {
+              "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "size": 64
+            }
+          }
+        }
+      ]
+    },
+    "projection": {
+      "world": {
+        "id": "world:source-model",
+        "revision": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "objects": [
+        {
+          "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "name": "共同人物"
+        },
+        {
+          "id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+          "name": "投影 A"
+        },
+        {
+          "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+          "name": "投影 B"
+        },
+        {
+          "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "name": "场景"
+        }
+      ],
+      "relations": [
+        {
+          "sourceObjectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+          "targetObjectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+        },
+        {
+          "sourceObjectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+          "targetObjectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+        },
+        {
+          "sourceObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "targetObjectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+        },
+        {
+          "sourceObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "targetObjectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee"
+        }
+      ],
+      "resources": [
+        {
+          "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "descriptor": {
+            "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "kind": "image",
+            "location": {
+              "path": "sample.svg"
+            },
+            "content": {
+              "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "size": 64
+            }
+          }
+        }
+      ],
+      "resourceBindings": [
+        {
+          "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+          "resourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+        },
+        {
+          "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+          "resourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+        }
+      ],
+      "diagnostics": []
+    }
+  },
+  "plan": {
+    "format": "viento-build-plan",
+    "schemaVersion": 2,
+    "kind": "scene2d",
+    "projectId": "source-model-project",
+    "worldId": "world:source-model",
+    "worldRevision": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "scene": {
+      "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "sourcePath": "documents/scenes/source.json",
+      "sourceRevision": "sha256:67feedd86f2eaab89e85f0a7fa1fd5c7c0b7c4971c65809111f34d4ba493c922",
+      "title": "中文🦊 场景",
+      "viewport": [
+        640,
+        480
+      ],
+      "background": "#102030"
+    },
+    "requiredCapabilities": [
+      "scene2d",
+      "input.arrows",
+      "state.movement",
+      "image"
+    ],
+    "actors": [
+      {
+        "size": [
+          80,
+          60
+        ],
+        "color": "#ffffff",
+        "speed": 160,
+        "controls": "arrows",
+        "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "position": [
+          100.25,
+          200
+        ],
+        "useProjectionDefaults": true,
+        "instanceId": "11111111-1111-4111-8111-111111111111",
+        "name": "投影 A",
+        "sourcePath": "documents/projections/p1.json",
+        "sourceRevision": "sha256:07c6af570c5936a18dc4d4f910ed5afd7f854fd27ec6c1d07eec2afd1b4f91de",
+        "origin": {
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sourcePath": "documents/oc.md",
+          "sourceRevision": "sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a"
+        },
+        "fieldSources": {
+          "position": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/source.json",
+            "propertyPath": "/actors/0/position"
+          },
+          "size": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/width"
+          },
+          "size/0": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/width"
+          },
+          "size/1": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/height"
+          },
+          "color": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/color"
+          },
+          "speed": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/speed"
+          },
+          "controls": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/controls"
+          },
+          "imageResourceId": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/image"
+          }
+        },
+        "declaration": {
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/source.json",
+          "propertyPath": "/actors/0"
+        }
+      },
+      {
+        "size": [
+          80,
+          60
+        ],
+        "color": "#ffffff",
+        "speed": 17,
+        "controls": "arrows",
+        "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "position": [
+          340,
+          220
+        ],
+        "useProjectionDefaults": true,
+        "instanceId": "22222222-2222-4222-8222-222222222222",
+        "name": "投影 A",
+        "sourcePath": "documents/projections/p1.json",
+        "sourceRevision": "sha256:07c6af570c5936a18dc4d4f910ed5afd7f854fd27ec6c1d07eec2afd1b4f91de",
+        "origin": {
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sourcePath": "documents/oc.md",
+          "sourceRevision": "sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a"
+        },
+        "fieldSources": {
+          "position": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/source.json",
+            "propertyPath": "/actors/1/position"
+          },
+          "size": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/width"
+          },
+          "size/0": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/width"
+          },
+          "size/1": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/height"
+          },
+          "color": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/color"
+          },
+          "speed": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/source.json",
+            "propertyPath": "/actors/1/speed"
+          },
+          "controls": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/controls"
+          },
+          "imageResourceId": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/source.json",
+            "propertyPath": "/actors/1/imageResourceId"
+          }
+        },
+        "declaration": {
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/source.json",
+          "propertyPath": "/actors/1"
+        }
+      }
+    ],
+    "resources": [
+      {
+        "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "size": 64,
+        "extension": "svg"
+      }
+    ]
+  },
+  "godotBackend": {
+    "id": "org.viento.godot4",
+    "version": "0.2.0",
+    "protocolVersion": 2,
+    "capabilities": [
+      "scene2d",
+      "input.arrows",
+      "state.movement",
+      "image"
+    ],
+    "artifactKind": "godot-project",
+    "platforms": [
+      "linux"
+    ],
+    "execution": {
+      "headlessLogic": true,
+      "windowPreview": true,
+      "embeddedViewport": false,
+      "gpuCompute": false
+    },
+    "sha256": "ea3c52f868896f082483536be6dea9abf1c9c0b336165f63b360a9edccd2724e"
+  },
+  "godotFiles": {
+    "project.godot": "d9dc405e465085c4d7a0065a0ed522b151c2f53ff6f1f460d2624faf0887a569",
+    "main.tscn": "410aea99b623b947179265d855c15949525625d3ce7a24dcba14b5398e192050",
+    "runtime.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
+    "scene.json": "7ef07dbe4cdd63a9a0d1bccc6d0ba64bfa07ff3b73ea7cc85281b220502df921"
+  },
+  "godotSourceMap": {
+    "format": "viento-runtime-map",
+    "schemaVersion": 2,
+    "scene": {
+      "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "sourcePath": "documents/scenes/source.json",
+      "sourceRevision": "sha256:67feedd86f2eaab89e85f0a7fa1fd5c7c0b7c4971c65809111f34d4ba493c922",
+      "title": "中文🦊 场景",
+      "viewport": [
+        640,
+        480
+      ],
+      "background": "#102030"
+    },
+    "objects": [
+      {
+        "instanceId": "11111111-1111-4111-8111-111111111111",
+        "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "sourcePath": "documents/projections/p1.json",
+        "sourceRevision": "sha256:07c6af570c5936a18dc4d4f910ed5afd7f854fd27ec6c1d07eec2afd1b4f91de",
+        "nodePath": "/root/VientoScene/actor_11111111_1111_4111_8111_111111111111",
+        "declaration": {
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/source.json",
+          "propertyPath": "/actors/0"
+        },
+        "origin": {
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sourcePath": "documents/oc.md",
+          "sourceRevision": "sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a"
+        },
+        "fieldSources": {
+          "position": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/source.json",
+            "propertyPath": "/actors/0/position"
+          },
+          "size": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/width"
+          },
+          "size/0": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/width"
+          },
+          "size/1": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/height"
+          },
+          "color": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/color"
+          },
+          "speed": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/speed"
+          },
+          "controls": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/controls"
+          },
+          "imageResourceId": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/image"
+          }
+        }
+      },
+      {
+        "instanceId": "22222222-2222-4222-8222-222222222222",
+        "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "sourcePath": "documents/projections/p1.json",
+        "sourceRevision": "sha256:07c6af570c5936a18dc4d4f910ed5afd7f854fd27ec6c1d07eec2afd1b4f91de",
+        "nodePath": "/root/VientoScene/actor_22222222_2222_4222_8222_222222222222",
+        "declaration": {
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/source.json",
+          "propertyPath": "/actors/1"
+        },
+        "origin": {
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sourcePath": "documents/oc.md",
+          "sourceRevision": "sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a"
+        },
+        "fieldSources": {
+          "position": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/source.json",
+            "propertyPath": "/actors/1/position"
+          },
+          "size": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/width"
+          },
+          "size/0": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/width"
+          },
+          "size/1": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/height"
+          },
+          "color": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/color"
+          },
+          "speed": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/source.json",
+            "propertyPath": "/actors/1/speed"
+          },
+          "controls": {
+            "objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+            "sourcePath": "documents/projections/p1.json",
+            "propertyPath": "/configuration/controls"
+          },
+          "imageResourceId": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/source.json",
+            "propertyPath": "/actors/1/imageResourceId"
+          }
+        }
+      }
+    ],
+    "resources": [
+      {
+        "resourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "generatedPath": "images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg"
+      }
+    ]
+  }
+}

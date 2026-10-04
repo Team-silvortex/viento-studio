@@ -1,0 +1,22 @@
+✔ scene preview freezes the build plan and verified images without a tool, cache, or author writes (88.900324ms)
+✔ scene preview retains frozen bytes and the last usable snapshot when live resources become invalid (39.370334ms)
+✔ scene preview exposes only frozen scene editing fields and never the rest of a host capture (43.619896ms)
+✔ scene preview rejects malformed scenes and strict identities without opening arbitrary paths (31.775852ms)
+✔ scene preview evicts the oldest of three snapshots and explicit release is idempotent (56.134305ms)
+✔ scene preview expiration releases images even when no new capture replaces them (83.609203ms)
+✔ scene preview total retained bytes are bounded independently of the snapshot count (83.842809ms)
+✔ new preview captures supersede late older requests and never capture concurrently (41.12142ms)
+✔ scene preview close aborts and waits for capture, blocks late publication, and is idempotent (5.389725ms)
+✔ scene preview disabled hosts never inspect workspace content (5.809003ms)
+✔ scene preview cannot follow replaced asset symlinks or admit unverified image bytes (21.49973ms)
+✔ scene preview captures only complete plans and hides host exceptions (5.475479ms)
+✔ disconnecting a preview request aborts its capture without replacing the last good images (23.687646ms)
+✔ v2 preview shares frozen image bytes while resource errors locate the actual instance override (58.445063ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 634.052837

@@ -1,0 +1,62 @@
+{
+  "format": "viento-scene-source-parity",
+  "version": 1,
+  "checkedAt": "2026-10-04T02:05:49.361Z",
+  "ok": true,
+  "tests": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0
+  },
+  "samples": {
+    "total": 500,
+    "frozenLegacyCases": 82,
+    "frozenInspectAndPatch": 164,
+    "binary64": 320,
+    "boundaries": 16
+  },
+  "legacy": {
+    "moduleSha256": "7d5cb1bbac71d53c29a158356e00f03e503c7abe65a7c5083cde74c51cf1f2d4",
+    "fixture": "scripts/tests/fixtures/studio-core-source/legacy-patches.json",
+    "fixtureSha256": "5a8a13a3a987cee41c24f1147fc928f295246a6cb608f69e3283bd6771515f6a",
+    "patchAccepted": 34,
+    "patchRejected": 48
+  },
+  "native": {
+    "binarySha256": "5c82c8b2263136b9997cf3d08d2ad8d29ccd6b7216dc1ad691f183592dd3b8aa"
+  },
+  "wasm": {
+    "bytes": 209864,
+    "sha256": "562a8d5427fc69f470f429bff370f577acf8faf279ff5c5a0e13235ec94083af",
+    "imports": [],
+    "sourceFeatureVersion": 1
+  },
+  "testSource": {
+    "path": "scripts/tests/studio-core-source.test.mjs",
+    "sha256": "edeaa3ed65fd986cdc0ad5b2b780a3ebfbc63596518c8a307d515272a44969d2"
+  },
+  "transcriptSha256": "01c0b8a322a799d6c3af43cbe4e1a604d2b2e7404e25d1d623f33a1868280c32",
+  "checks": [
+    "Exact old JS patch outputs and error codes for v1/v2/v3; content includes Unicode before edited tokens, BOM/CRLF, unknown huge numbers, exponent spellings and escaped lone surrogates.",
+    "Duplicate decoded keys and malformed groups, actor identities, coordinate patches, input/output byte growth, UTF16 group names and structural depth are rejected without partial results.",
+    "Canonical JS number token spelling across bounded binary64 samples, subnormals, 1e-6 threshold and exact even ties; native and WASM return identical full envelopes.",
+    "Missing or non-1 optional source capability rejects source editing while the existing geometry interface remains usable.",
+    "Malformed response shapes, coordinate paths, ordering, duplicates, output UTF8 limits and patch-state inconsistencies poison only their isolated bridge; ordinary semantic errors do not poison the loaded core.",
+    "Accessor and cross-domain input rejection occurs without calling user getters."
+  ],
+  "limitations": [
+    "Source inspection and coordinate patching only. UI, runtime-engine behavior, packaged applications and native-device acceptance are covered elsewhere, not by this report.",
+    "The literal lone-surrogate input cannot be represented by the Rust outer JSON transport; both raw cores reject it as studio_core_request_invalid. The public JS wrapper retains the original scene_source_layout_invalid error."
+  ],
+  "iterations": [
+    {
+      "log": "source-parity.log",
+      "result": "8 passed, 1 test-harness failure: WebAssembly.instantiate(Module) returns Instance directly. No product failure."
+    },
+    {
+      "log": "source-parity-verified.log",
+      "result": "9 passed, 0 failed after fixing only the test overload handling."
+    }
+  ]
+}

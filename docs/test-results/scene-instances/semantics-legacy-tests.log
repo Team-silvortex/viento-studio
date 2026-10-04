@@ -1,0 +1,490 @@
+TAP version 13
+# Subtest: Scene2D v2 repeats one projection as independent stable instances and keeps v1 plan bytes unchanged
+ok 1 - Scene2D v2 repeats one projection as independent stable instances and keeps v1 plan bytes unchanged
+  ---
+  duration_ms: 33.379351
+  type: 'test'
+  ...
+# Subtest: v2 source locations distinguish repeated definitions and follow instance IDs through reorder
+ok 2 - v2 source locations distinguish repeated definitions and follow instance IDs through reorder
+  ---
+  duration_ms: 8.802293
+  type: 'test'
+  ...
+# Subtest: instance identity validation is versioned, rejects missing/duplicate IDs and retains the actor bound
+ok 3 - instance identity validation is versioned, rejects missing/duplicate IDs and retains the actor bound
+  ---
+  duration_ms: 196.118738
+  type: 'test'
+  ...
+# Subtest: repeated definitions remain participating diagnostics and registration recovery ignores their current bodies
+ok 4 - repeated definitions remain participating diagnostics and registration recovery ignores their current bodies
+  ---
+  duration_ms: 6.808158
+  type: 'test'
+  ...
+# Subtest: v2 registration refuses duplicate decoded keys while old v1 registration still recovers
+ok 5 - v2 registration refuses duplicate decoded keys while old v1 registration still recovers
+  ---
+  duration_ms: 2.016185
+  type: 'test'
+  ...
+# Subtest: lossless v2 reorder moves the right raw fragments even when every instance shares one definition
+ok 6 - lossless v2 reorder moves the right raw fragments even when every instance shares one definition
+  ---
+  duration_ms: 4.635652
+  type: 'test'
+  ...
+# Subtest: explicit v1 upgrade retains original fragments and seeded identities, and refuses a lossy downgrade
+ok 7 - explicit v1 upgrade retains original fragments and seeded identities, and refuses a lossy downgrade
+  ---
+  duration_ms: 2.581005
+  type: 'test'
+  ...
+# Subtest: v2 create and update save independent instances with one definition/image dependency and preserve unrelated files
+ok 8 - v2 create and update save independent instances with one definition/image dependency and preserve unrelated files
+  ---
+  duration_ms: 240.50751
+  type: 'test'
+  ...
+# Subtest: v2 scene.create SIGKILL recovery rolls back exact instance bytes without restoring author definitions
+ok 9 - v2 scene.create SIGKILL recovery rolls back exact instance bytes without restoring author definitions
+  ---
+  duration_ms: 180.352779
+  type: 'test'
+  ...
+# Subtest: v2 scene.create SIGKILL recovery commits exact instance bytes without restoring author definitions
+ok 10 - v2 scene.create SIGKILL recovery commits exact instance bytes without restoring author definitions
+  ---
+  duration_ms: 183.498031
+  type: 'test'
+  ...
+# Subtest: v2 scene.update SIGKILL recovery rolls back exact instance bytes without restoring author definitions
+ok 11 - v2 scene.update SIGKILL recovery rolls back exact instance bytes without restoring author definitions
+  ---
+  duration_ms: 237.607393
+  type: 'test'
+  ...
+# Subtest: v2 scene.update SIGKILL recovery commits exact instance bytes without restoring author definitions
+ok 12 - v2 scene.update SIGKILL recovery commits exact instance bytes without restoring author definitions
+  ---
+  duration_ms: 240.306488
+  type: 'test'
+  ...
+# Subtest: recovery rejects forged duplicate v2 identities even when journal after-image hashes are recomputed
+ok 13 - recovery rejects forged duplicate v2 identities even when journal after-image hashes are recomputed
+  ---
+  duration_ms: 158.964675
+  type: 'test'
+  ...
+# Subtest: resource package round trip retains repeated-instance source and closes shared definition, owned story and image exactly once
+ok 14 - resource package round trip retains repeated-instance source and closes shared definition, owned story and image exactly once
+  ---
+  duration_ms: 291.721564
+  type: 'test'
+  ...
+# Subtest: scene model preserves frozen legacy plan, build snapshot and generated Godot files exactly
+ok 15 - scene model preserves frozen legacy plan, build snapshot and generated Godot files exactly
+  ---
+  duration_ms: 37.684708
+  type: 'test'
+  ...
+# Subtest: source locations retain exact BOM, CRLF, Unicode and escaped JSON token offsets
+ok 16 - source locations retain exact BOM, CRLF, Unicode and escaped JSON token offsets
+  ---
+  duration_ms: 6.057123
+  type: 'test'
+  ...
+# Subtest: inherited dimensions have independent precise sources and an honest composite size anchor
+ok 17 - inherited dimensions have independent precise sources and an honest composite size anchor
+  ---
+  duration_ms: 5.091018
+  type: 'test'
+  ...
+# Subtest: explicit null, missing image and disabled projection defaults retain distinct semantics and sources
+ok 18 - explicit null, missing image and disabled projection defaults retain distinct semantics and sources
+  ---
+  duration_ms: 10.817416
+  type: 'test'
+  ...
+# Subtest: unknown fields use decoded JSON Pointer keys and exact value ranges
+ok 19 - unknown fields use decoded JSON Pointer keys and exact value ranges
+  ---
+  duration_ms: 6.2763
+  type: 'test'
+  ...
+# Subtest: missing scene and actor fields locate the nearest existing container without claiming exactness
+ok 20 - missing scene and actor fields locate the nearest existing container without claiming exactness
+  ---
+  duration_ms: 3.256109
+  type: 'test'
+  ...
+# Subtest: invalid inherited values locate projection configuration while scene overrides locate declarations
+ok 21 - invalid inherited values locate projection configuration while scene overrides locate declarations
+  ---
+  duration_ms: 6.380473
+  type: 'test'
+  ...
+# Subtest: actor reordering retains identity and definition but updates declaration pointers and revision
+ok 22 - actor reordering retains identity and definition but updates declaration pointers and revision
+  ---
+  duration_ms: 8.543061
+  type: 'test'
+  ...
+# Subtest: non-JSON actor definitions retain identity and revision without leaking body text or fabricated ranges
+ok 23 - non-JSON actor definitions retain identity and revision without leaking body text or fabricated ranges
+  ---
+  duration_ms: 4.96276
+  type: 'test'
+  ...
+# Subtest: runtime rejects duplicate decoded root and actor keys while registration preserves legacy last-key semantics
+ok 24 - runtime rejects duplicate decoded root and actor keys while registration preserves legacy last-key semantics
+  ---
+  duration_ms: 6.39488
+  type: 'test'
+  ...
+# Subtest: registration recovers legacy duplicate fields whose discarded value exceeds source-index budgets
+ok 25 - registration recovers legacy duplicate fields whose discarded value exceeds source-index budgets
+  ---
+  duration_ms: 39.62321
+  type: 'test'
+  ...
+# Subtest: registration recovery does not depend on current projection JSON, revision or resolved defaults
+ok 26 - registration recovery does not depend on current projection JSON, revision or resolved defaults
+  ---
+  duration_ms: 8.486225
+  type: 'test'
+  ...
+# Subtest: registration recovery does not derive locations from even valid current projection bodies
+ok 27 - registration recovery does not derive locations from even valid current projection bodies
+  ---
+  duration_ms: 2.494303
+  type: 'test'
+  ...
+# Subtest: registration recovery still rejects missing explicit position and broken scene-to-actor registrations
+ok 28 - registration recovery still rejects missing explicit position and broken scene-to-actor registrations
+  ---
+  duration_ms: 1.486852
+  type: 'test'
+  ...
+# Subtest: re-resolving changed source recalculates UTF-16 ranges and leaves old model and build DTO independent
+ok 29 - re-resolving changed source recalculates UTF-16 ranges and leaves old model and build DTO independent
+  ---
+  duration_ms: 19.947137
+  type: 'test'
+  ...
+# Subtest: scene.create v2: preview predicts exact source, deduplicated dependencies and build plan without modifying existing data
+ok 30 - scene.create v2: preview predicts exact source, deduplicated dependencies and build plan without modifying existing data
+  ---
+  duration_ms: 245.231306
+  type: 'test'
+  ...
+# Subtest: scene.create v3: preview predicts exact source, deduplicated dependencies and build plan without modifying existing data
+ok 31 - scene.create v3: preview predicts exact source, deduplicated dependencies and build plan without modifying existing data
+  ---
+  duration_ms: 159.056616
+  type: 'test'
+  ...
+# Subtest: scene.create rejects malformed, unsupported and unregistered declarations with build diagnostics and no writes
+ok 32 - scene.create rejects malformed, unsupported and unregistered declarations with build diagnostics and no writes
+  ---
+  duration_ms: 172.539223
+  type: 'test'
+  ...
+# Subtest: an empty generic project creates an actor then a scene using only its existing document type
+ok 33 - an empty generic project creates an actor then a scene using only its existing document type
+  ---
+  duration_ms: 97.885756
+  type: 'test'
+  ...
+# Subtest: scene.create v5 SIGKILL at intent/-: recovery rolls back both files
+ok 34 - scene.create v5 SIGKILL at intent/-: recovery rolls back both files
+  ---
+  duration_ms: 182.90513
+  type: 'test'
+  ...
+# Subtest: scene.create v5 SIGKILL at source-ready/0: recovery rolls back both files
+ok 35 - scene.create v5 SIGKILL at source-ready/0: recovery rolls back both files
+  ---
+  duration_ms: 178.220127
+  type: 'test'
+  ...
+# Subtest: scene.create v5 SIGKILL at data/0: recovery rolls back both files
+ok 36 - scene.create v5 SIGKILL at data/0: recovery rolls back both files
+  ---
+  duration_ms: 186.381089
+  type: 'test'
+  ...
+# Subtest: scene.create v5 SIGKILL at source-ready/1: recovery rolls back both files
+ok 37 - scene.create v5 SIGKILL at source-ready/1: recovery rolls back both files
+  ---
+  duration_ms: 178.4315
+  type: 'test'
+  ...
+# Subtest: scene.create v5 SIGKILL at data/1: recovery rolls back both files
+ok 38 - scene.create v5 SIGKILL at data/1: recovery rolls back both files
+  ---
+  duration_ms: 182.224246
+  type: 'test'
+  ...
+# Subtest: scene.create v5 SIGKILL at commit/-: recovery commits both files
+ok 39 - scene.create v5 SIGKILL at commit/-: recovery commits both files
+  ---
+  duration_ms: 176.328854
+  type: 'test'
+  ...
+# Subtest: scene.create v5 SIGKILL at head/-: recovery commits both files
+ok 40 - scene.create v5 SIGKILL at head/-: recovery commits both files
+  ---
+  duration_ms: 165.399751
+  type: 'test'
+  ...
+# Subtest: scene.create recovery is restartable and ordinary failures roll back without changing actor records
+ok 41 - scene.create recovery is restartable and ordinary failures roll back without changing actor records
+  ---
+  duration_ms: 506.512621
+  type: 'test'
+  ...
+# Subtest: scene recovery preserves journal and targets on actor-registration
+ok 42 - scene recovery preserves journal and targets on actor-registration
+  ---
+  duration_ms: 136.147577
+  type: 'test'
+  ...
+# Subtest: scene recovery preserves journal and targets on asset-registration
+ok 43 - scene recovery preserves journal and targets on asset-registration
+  ---
+  duration_ms: 139.062322
+  type: 'test'
+  ...
+# Subtest: scene recovery preserves journal and targets on extra-relation
+ok 44 - scene recovery preserves journal and targets on extra-relation
+  ---
+  duration_ms: 149.276838
+  type: 'test'
+  ...
+# Subtest: scene recovery preserves journal and targets on extra-binding
+ok 45 - scene recovery preserves journal and targets on extra-binding
+  ---
+  duration_ms: 136.442696
+  type: 'test'
+  ...
+# Subtest: scene recovery preserves journal and targets on unsupported-scene
+ok 46 - scene recovery preserves journal and targets on unsupported-scene
+  ---
+  duration_ms: 142.992344
+  type: 'test'
+  ...
+# Subtest: scene recovery preserves journal and targets on foreign-source
+ok 47 - scene recovery preserves journal and targets on foreign-source
+  ---
+  duration_ms: 145.301674
+  type: 'test'
+  ...
+# Subtest: scene recovery preserves journal and targets on downgrade-v2
+ok 48 - scene recovery preserves journal and targets on downgrade-v2
+  ---
+  duration_ms: 148.565978
+  type: 'test'
+  ...
+# Subtest: scene recovery preserves journal and targets on record-path-escape
+ok 49 - scene recovery preserves journal and targets on record-path-escape
+  ---
+  duration_ms: 142.17199
+  type: 'test'
+  ...
+# Subtest: scene creation is exposed through authenticated HTTP and CLI with identical preview and saved buildability
+ok 50 - scene creation is exposed through authenticated HTTP and CLI with identical preview and saved buildability
+  ---
+  duration_ms: 341.788937
+  type: 'test'
+  ...
+# Subtest: scene.create planning runs with browser globals and no host I/O
+ok 51 - scene.create planning runs with browser globals and no host I/O
+  ---
+  duration_ms: 73.361116
+  type: 'test'
+  ...
+# Subtest: scene.update v2 previews exact bytes, preserves identity and appends deduplicated dependencies
+ok 52 - scene.update v2 previews exact bytes, preserves identity and appends deduplicated dependencies
+  ---
+  duration_ms: 321.188926
+  type: 'test'
+  ...
+# Subtest: scene.update v3 previews exact bytes, preserves identity and appends deduplicated dependencies
+ok 53 - scene.update v3 previews exact bytes, preserves identity and appends deduplicated dependencies
+  ---
+  duration_ms: 204.954914
+  type: 'test'
+  ...
+# Subtest: scene source transformation preserves uneven whitespace, escaped unchanged values and actor fragments through reorder/delete/add
+ok 54 - scene source transformation preserves uneven whitespace, escaped unchanged values and actor fragments through reorder/delete/add
+  ---
+  duration_ms: 2.988763
+  type: 'test'
+  ...
+# Subtest: scene.update no-op ignores candidate formatting; removing actors/images retains old registration dependencies
+ok 55 - scene.update no-op ignores candidate formatting; removing actors/images retains old registration dependencies
+  ---
+  duration_ms: 226.849908
+  type: 'test'
+  ...
+# Subtest: scene.update accepts existing scenes whose explicit images are bound only to their actor, including recovery
+ok 56 - scene.update accepts existing scenes whose explicit images are bound only to their actor, including recovery
+  ---
+  duration_ms: 357.317093
+  type: 'test'
+  ...
+# Subtest: scene.update validates declaration features, actor identity, ranges, dependencies and matching revisions without writes
+ok 57 - scene.update validates declaration features, actor identity, ranges, dependencies and matching revisions without writes
+  ---
+  duration_ms: 362.69786
+  type: 'test'
+  ...
+# Subtest: scene.update distinguishes inherited/explicit/absent values and null image suppression; repairs scene after actor source becomes invalid
+ok 58 - scene.update distinguishes inherited/explicit/absent values and null image suppression; repairs scene after actor source becomes invalid
+  ---
+  duration_ms: 457.418025
+  type: 'test'
+  ...
+# Subtest: scene.update v8 SIGKILL intent/- restores exact before source and registration
+ok 59 - scene.update v8 SIGKILL intent/- restores exact before source and registration
+  ---
+  duration_ms: 219.816974
+  type: 'test'
+  ...
+# Subtest: scene.update v8 SIGKILL source-ready/0 restores exact before source and registration
+ok 60 - scene.update v8 SIGKILL source-ready/0 restores exact before source and registration
+  ---
+  duration_ms: 218.839698
+  type: 'test'
+  ...
+# Subtest: scene.update v8 SIGKILL data/0 restores exact before source and registration
+ok 61 - scene.update v8 SIGKILL data/0 restores exact before source and registration
+  ---
+  duration_ms: 210.101264
+  type: 'test'
+  ...
+# Subtest: scene.update v8 SIGKILL source-ready/1 restores exact before source and registration
+ok 62 - scene.update v8 SIGKILL source-ready/1 restores exact before source and registration
+  ---
+  duration_ms: 219.802777
+  type: 'test'
+  ...
+# Subtest: scene.update v8 SIGKILL data/1 restores exact before source and registration
+ok 63 - scene.update v8 SIGKILL data/1 restores exact before source and registration
+  ---
+  duration_ms: 229.506685
+  type: 'test'
+  ...
+# Subtest: scene.update v8 SIGKILL commit/- restores exact after source and registration
+ok 64 - scene.update v8 SIGKILL commit/- restores exact after source and registration
+  ---
+  duration_ms: 237.450843
+  type: 'test'
+  ...
+# Subtest: scene.update v8 SIGKILL head/- restores exact after source and registration
+ok 65 - scene.update v8 SIGKILL head/- restores exact after source and registration
+  ---
+  duration_ms: 227.054751
+  type: 'test'
+  ...
+# Subtest: v8 source-only edit still guards metadata and recovery is restartable in both directions
+ok 66 - v8 source-only edit still guards metadata and recovery is restartable in both directions
+  ---
+  duration_ms: 619.423202
+  type: 'test'
+  ...
+# Subtest: v8 ignores external actor source edits, blocks external registry/source/own-record changes, and never overwrites them
+ok 67 - v8 ignores external actor source edits, blocks external registry/source/own-record changes, and never overwrites them
+  ---
+  duration_ms: 978.846812
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal format before recovery publishes bytes
+ok 68 - v8 rejects forged journal format before recovery publishes bytes
+  ---
+  duration_ms: 199.309458
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal unknown-feature before recovery publishes bytes
+ok 69 - v8 rejects forged journal unknown-feature before recovery publishes bytes
+  ---
+  duration_ms: 204.852926
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal formatting before recovery publishes bytes
+ok 70 - v8 rejects forged journal formatting before recovery publishes bytes
+  ---
+  duration_ms: 197.018502
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal extra-binding before recovery publishes bytes
+ok 71 - v8 rejects forged journal extra-binding before recovery publishes bytes
+  ---
+  duration_ms: 186.071104
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal removed-relation before recovery publishes bytes
+ok 72 - v8 rejects forged journal removed-relation before recovery publishes bytes
+  ---
+  duration_ms: 191.192127
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal extension before recovery publishes bytes
+ok 73 - v8 rejects forged journal extension before recovery publishes bytes
+  ---
+  duration_ms: 193.676193
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal identity before recovery publishes bytes
+ok 74 - v8 rejects forged journal identity before recovery publishes bytes
+  ---
+  duration_ms: 190.910685
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal missing-entry before recovery publishes bytes
+ok 75 - v8 rejects forged journal missing-entry before recovery publishes bytes
+  ---
+  duration_ms: 194.514139
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal downgrade-v7 before recovery publishes bytes
+ok 76 - v8 rejects forged journal downgrade-v7 before recovery publishes bytes
+  ---
+  duration_ms: 186.156282
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal downgrade-v5 before recovery publishes bytes
+ok 77 - v8 rejects forged journal downgrade-v5 before recovery publishes bytes
+  ---
+  duration_ms: 190.659228
+  type: 'test'
+  ...
+# Subtest: v8 rejects forged journal downgrade-v1 before recovery publishes bytes
+ok 78 - v8 rejects forged journal downgrade-v1 before recovery publishes bytes
+  ---
+  duration_ms: 193.670402
+  type: 'test'
+  ...
+# Subtest: scene.update HTTP auth, CLI preview, diagnostics and no-op use one contract
+ok 79 - scene.update HTTP auth, CLI preview, diagnostics and no-op use one contract
+  ---
+  duration_ms: 422.249787
+  type: 'test'
+  ...
+# Subtest: scene update planner runs without host APIs
+ok 80 - scene update planner runs without host APIs
+  ---
+  duration_ms: 76.307481
+  type: 'test'
+  ...
+1..80
+# tests 80
+# suites 0
+# pass 80
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7861.915487

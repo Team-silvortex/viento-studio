@@ -8,7 +8,7 @@ const root = new URL('../../', import.meta.url);
 const yaml = new URL('node_modules/yaml/browser/', root);
 const entry = new URL('portable-engine-scenarios.mjs', import.meta.url);
 const modules = new Map();
-const context = vm.createContext({ TextEncoder });
+const context = vm.createContext({ TextEncoder, TextDecoder });
 function load(url) {
   if (!modules.has(url.href)) modules.set(url.href, new vm.SourceTextModule(fs.readFileSync(url, 'utf8'), { context, identifier: url.href }));
   return modules.get(url.href);

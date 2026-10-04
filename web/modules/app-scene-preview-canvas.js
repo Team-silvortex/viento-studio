@@ -1,6 +1,14 @@
-// Engine-neutral saved Scene2D layout. View gestures never mutate the scene.
+import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
+import './app-studio-core.js';
+// Engine-neutral Scene2D layout. Gestures never mutate the supplied scene.
+import { moveSceneSelection } from '../../engine/scene-layout.mjs';
+
 const MIN_SCALE = 0.02, MAX_SCALE = 16;
 const clampScale = value => Math.max(MIN_SCALE, Math.min(MAX_SCALE, value));
+// Compatibility entry point; all authored position rules live in Rust.
+export function moveScenePosition(position, delta, snap = 0) {
+  return moveSceneSelection([{ objectId: 'position-preview', position, size: [1, 1] }], ['position-preview'], delta, snap)[0].position;
+}
 export function fitSceneView(viewport, width, height, padding = 24) {
   const scale = clampScale(Math.min(Math.max(1, width - padding * 2) / viewport[0], Math.max(1, height - padding * 2) / viewport[1]));
   return { scale, offsetX: (width - viewport[0] * scale) / 2, offsetY: (height - viewport[1] * scale) / 2 };
@@ -15,7 +23,7 @@ export function hitTestScene(scene, actors, x, y) {
   if (x < 0 || y < 0 || x > scene.viewport[0] || y > scene.viewport[1]) return null;
   for (let index = actors.length - 1; index >= 0; index--) {
     const actor = actors[index];
-    if (Math.abs(x - actor.position[0]) <= actor.size[0] / 2 && Math.abs(y - actor.position[1]) <= actor.size[1] / 2) return actor.objectId;
+    if (Math.abs(x - actor.position[0]) <= actor.size[0] / 2 && Math.abs(y - actor.position[1]) <= actor.size[1] / 2) return sceneActorIdentity(actor);
   }
   return null;
 }
@@ -27,14 +35,43 @@ export function tintPixels(pixels, color) {
   }
   return pixels;
 }
-export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewChange = () => {} }) {
+export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewChange = () => {}, onMove = () => {}, onMoveMany = () => {} }) {
   const context = canvas.getContext?.('2d');
   let model = null, images = new Map(), selected = null, visible = false, grid = false, view = { scale: 1, offsetX: 0, offsetY: 0 };
   let width = 0, height = 0, fitted = true, drag = null, disposed = false, lastSceneKey = '';
+  let editing = false, snap = 0, space = false, multiSelect = false, selectedIds = [];
   const tiles = new Map(), listeners = [];
   let tileBytes = 0;
   const clearTiles = () => { for (const tile of tiles.values()) { tile.width = 0; tile.height = 0; } tiles.clear(); tileBytes = 0; };
   const notify = () => onViewChange({ ...view });
+  function cancelDrag() {
+    if (!drag) return;
+    const id = drag.id; drag = null;
+    try { canvas.releasePointerCapture?.(id); } catch { /* Capture may already have been lost. */ }
+    draw();
+  }
+  const positionOf = actor => drag?.kind === 'move' ? drag.positions.get(sceneActorIdentity(actor)) || actor.position : actor.position;
+  function selection(ids, primary = selected) {
+    const valid = new Set(model?.actors.map(sceneActorIdentity) || []);
+    const next = [...new Set(ids)].filter(id => valid.has(id)).slice(0, multiSelect ? undefined : 1);
+    if (next.length !== selectedIds.length || next.some((id, index) => id !== selectedIds[index])) cancelDrag();
+    selectedIds = next; selected = next.includes(primary) ? primary : next[0] || null;
+  }
+  function selectAt(id, toggle = false) {
+    if (!id) selection([]);
+    else if (!multiSelect) selection([id]);
+    else if (toggle && selectedIds.includes(id)) selection(selectedIds.filter(value => value !== id));
+    else if (toggle) selection([...selectedIds, id], id);
+    else if (selectedIds.includes(id)) selection(selectedIds, id);
+    else selection([id]);
+    onSelect(selected, { ids: selectedIds.slice() });
+  }
+  function commit(changes, ids) {
+    const original = new Map(model.actors.map(actor => [sceneActorIdentity(actor), actor.position]));
+    if (!changes.some(change => change.position.some((value, index) => value !== original.get(change.objectId)?.[index]))) return;
+    if (ids.length > 1) onMoveMany(changes.map(change => ({ objectId: change.objectId, position: change.position.slice() })), { commit: true });
+    else if (changes.length) onMove(changes[0].objectId, changes[0].position.slice(), { commit: true });
+  }
   function tinted(actor, image) {
     if (/^#ffffff(?:ff)?$/i.test(actor.color)) return image;
     const key = `${actor.imageResourceId}:${actor.color}`;
@@ -72,7 +109,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
       context.strokeStyle = '#8ca49966'; context.lineWidth = 1 / view.scale; context.stroke();
     }
     for (const actor of actors) {
-      const [x, y] = actor.position, [w, h] = actor.size;
+      const [x, y] = positionOf(actor), [w, h] = actor.size;
       if (actor.imageResourceId) {
         const image = images.get(actor.imageResourceId);
         if (image) context.drawImage(tinted(actor, image), x - w / 2, y - h / 2, w, h);
@@ -86,67 +123,118 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
       context.font = '16px sans-serif'; context.textBaseline = 'top'; context.fillStyle = '#ffffff';
       context.fillText(actor.name, x - w / 2, y + h / 2 + 4);
     }
-    const actor = actors.find(item => item.objectId === selected);
-    if (actor) {
+    const highlighted = new Set(selectedIds);
+    for (const actor of actors.filter(item => highlighted.has(sceneActorIdentity(item)))) {
+      const [x, y] = positionOf(actor);
       context.lineWidth = 3 / view.scale; context.strokeStyle = '#ffe575';
-      context.strokeRect(actor.position[0] - actor.size[0] / 2, actor.position[1] - actor.size[1] / 2, ...actor.size);
+      context.strokeRect(x - actor.size[0] / 2, y - actor.size[1] / 2, ...actor.size);
       context.beginPath(); const radius = 5 / view.scale;
-      context.moveTo(actor.position[0] - radius, actor.position[1]); context.lineTo(actor.position[0] + radius, actor.position[1]);
-      context.moveTo(actor.position[0], actor.position[1] - radius); context.lineTo(actor.position[0], actor.position[1] + radius); context.stroke();
+      context.moveTo(x - radius, y); context.lineTo(x + radius, y);
+      context.moveTo(x, y - radius); context.lineTo(x, y + radius); context.stroke();
     }
     context.restore(); context.lineWidth = 1 / view.scale; context.strokeStyle = '#537061'; context.strokeRect(0, 0, sceneWidth, sceneHeight);
   }
   function resize() {
     const bounds = canvas.getBoundingClientRect?.(); if (!bounds || !bounds.width || !bounds.height) return;
+    if (width && height && (width !== bounds.width || height !== bounds.height)) cancelDrag();
     const oldWidth = width, oldHeight = height; width = bounds.width; height = bounds.height;
     if (model && fitted) view = fitSceneView(model.scene.viewport, width, height);
     else if (oldWidth && oldHeight) view = { ...view, offsetX: view.offsetX + (width - oldWidth) / 2, offsetY: view.offsetY + (height - oldHeight) / 2 };
     notify(); draw();
   }
-  function fit() { fitted = true; resize(); }
-  function zoom(factor, x = width / 2, y = height / 2) { if (!model) return; fitted = false; view = zoomSceneView(view, factor, x, y); notify(); draw(); }
+  function fit() { cancelDrag(); fitted = true; resize(); }
+  function zoom(factor, x = width / 2, y = height / 2) { if (!model) return; cancelDrag(); fitted = false; view = zoomSceneView(view, factor, x, y); notify(); draw(); }
   const point = event => { const bounds = canvas.getBoundingClientRect(); return [event.clientX - bounds.left, event.clientY - bounds.top]; };
   const listen = (name, callback, options) => { canvas.addEventListener(name, callback, options); listeners.push([name, callback, options]); };
   listen('wheel', event => { if (!model || !visible) return; event.preventDefault(); zoom(Math.exp(-Math.max(-100, Math.min(100, event.deltaY)) * 0.01), ...point(event)); }, { passive: false });
   listen('pointerdown', event => {
-    if (!model || !visible || event.button > 0 || drag) return;
-    canvas.focus({ preventScroll: true }); const [x, y] = point(event); drag = { id: event.pointerId, x, y, lastX: x, lastY: y, moved: false };
-    canvas.setPointerCapture?.(event.pointerId);
+    if (!model || !visible || disposed || ![0, 1].includes(event.button) || drag) return;
+    event.preventDefault?.(); canvas.focus({ preventScroll: true });
+    const [x, y] = point(event), panOnly = event.button === 1 || space;
+    const actorId = !panOnly && editing ? hitTestScene(model.scene, model.actors, ...canvasToScene(view, x, y)) : null;
+    const toggle = multiSelect && Boolean(event.shiftKey || event.ctrlKey || event.metaKey), original = model;
+    if (actorId) selectAt(actorId, toggle);
+    if (model !== original || disposed || !visible) return;
+    const ids = actorId && selectedIds.includes(actorId) ? [actorId, ...selectedIds.filter(id => id !== actorId)] : [];
+    const kind = actorId ? (ids.length && editing ? 'move' : 'select') : 'pan';
+    drag = { id: event.pointerId, kind, ids, positions: new Map(model.actors.filter(actor => ids.includes(sceneActorIdentity(actor))).map(actor => [sceneActorIdentity(actor), actor.position.slice()])),
+      x, y, lastX: x, lastY: y, moved: false, panOnly, toggle };
+    try { canvas.setPointerCapture?.(event.pointerId); } catch { /* Detached canvases cannot capture a pointer. */ }
+    if (actorId) draw();
   });
   listen('pointermove', event => {
     if (!drag || drag.id !== event.pointerId) return;
-    const [x, y] = point(event); drag.moved ||= Math.hypot(x - drag.x, y - drag.y) > 4;
-    if (drag.moved) { fitted = false; view.offsetX += x - drag.lastX; view.offsetY += y - drag.lastY; notify(); draw(); }
+    const [x, y] = point(event), wasMoved = drag.moved;
+    drag.moved ||= Math.hypot(x - drag.x, y - drag.y) > 4;
+    if (drag.moved) {
+      if (drag.kind === 'move') {
+        const changes = moveSceneSelection(model.actors, drag.ids, [(x - drag.x) / view.scale, (y - drag.y) / view.scale], snap);
+        drag.positions = new Map(changes.map(change => [change.objectId, change.position]));
+      } else if (drag.kind === 'pan') {
+        fitted = false; view.offsetX += x - (wasMoved ? drag.lastX : drag.x); view.offsetY += y - (wasMoved ? drag.lastY : drag.y); notify();
+      }
+      draw();
+    }
     drag.lastX = x; drag.lastY = y;
   });
   listen('pointerup', event => {
     if (!drag || drag.id !== event.pointerId) return;
-    if (!drag.moved) { selected = hitTestScene(model.scene, model.actors, ...canvasToScene(view, ...point(event))); onSelect(selected); draw(); }
-    drag = null; canvas.releasePointerCapture?.(event.pointerId);
+    const completed = drag; drag = null;
+    try { canvas.releasePointerCapture?.(event.pointerId); } catch { /* Capture may already have been lost. */ }
+    if (completed.kind === 'move') {
+      if (completed.moved) commit(completed.ids.map(objectId => ({ objectId, position: completed.positions.get(objectId) })), completed.ids);
+    } else if (completed.kind === 'pan' && !completed.moved && !completed.panOnly) {
+      selectAt(hitTestScene(model.scene, model.actors, ...canvasToScene(view, ...point(event))), completed.toggle);
+    }
+    draw();
   });
-  listen('pointercancel', () => { drag = null; }); listen('lostpointercapture', () => { drag = null; });
+  const cancelPointer = event => { if (drag && (event.pointerId === undefined || event.pointerId === drag.id)) cancelDrag(); };
+  listen('pointercancel', cancelPointer); listen('lostpointercapture', cancelPointer);
+  listen('blur', () => { space = false; cancelDrag(); });
   listen('keydown', event => {
-    if (!model || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (!model || !visible || event.altKey) return;
+    if (multiSelect && (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'a') {
+      event.preventDefault(); event.stopPropagation(); cancelDrag(); selection(model.actors.map(sceneActorIdentity));
+      onSelect(selected, { ids: selectedIds.slice() }); draw(); return;
+    }
+    if (event.ctrlKey || event.metaKey) return;
+    if (event.key === 'Escape' && drag?.kind === 'move') { event.preventDefault(); event.stopPropagation(); cancelDrag(); return; }
+    if (event.key === ' ' || event.code === 'Space') { space = true; event.preventDefault(); event.stopPropagation(); return; }
     if (['+', '=', '-', '0', 'Home', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { event.preventDefault(); event.stopPropagation(); }
     if (['+', '='].includes(event.key)) zoom(1.25); else if (event.key === '-') zoom(0.8); else if (['0', 'Home'].includes(event.key)) fit();
     else if (event.key.startsWith('Arrow')) {
+      if (editing && selectedIds.length && !space) {
+        cancelDrag();
+        const amount = event.shiftKey ? 10 : 1;
+        const changes = moveSceneSelection(model.actors, selectedIds, [event.key === 'ArrowLeft' ? -amount : event.key === 'ArrowRight' ? amount : 0,
+          event.key === 'ArrowUp' ? -amount : event.key === 'ArrowDown' ? amount : 0]);
+        commit(changes, selectedIds);
+        draw(); return;
+      }
       fitted = false; view.offsetX += event.key === 'ArrowLeft' ? 32 : event.key === 'ArrowRight' ? -32 : 0;
       view.offsetY += event.key === 'ArrowUp' ? 32 : event.key === 'ArrowDown' ? -32 : 0; notify(); draw();
     }
   });
+  listen('keyup', event => { if (event.key === ' ' || event.code === 'Space') space = false; });
   const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(resize) : null; observer?.observe(canvas);
   return {
     setScene(value) {
+      if (model === value) { draw(); return; }
+      cancelDrag();
       const key = value ? JSON.stringify([value.scene.objectId, value.scene.viewport]) : lastSceneKey;
       if (key !== lastSceneKey) fitted = true;
       lastSceneKey = key; model = value;
-      if (!value?.actors.some(actor => actor.objectId === selected)) selected = null;
+      selection(selectedIds);
       clearTiles(); resize(); draw();
     },
     setImages(value) { images = value; clearTiles(); draw(); },
-    setVisible(value) { visible = value; drag = null; if (visible) resize(); },
-    setGrid(value) { grid = value; draw(); }, select(id) { selected = id; draw(); }, fit, zoom,
+    setVisible(value) { if (visible !== value || !value) { space = false; cancelDrag(); } visible = value; if (visible) resize(); },
+    setEditing(value) { if (editing !== Boolean(value)) { space = false; cancelDrag(); } editing = Boolean(value); },
+    setMultiSelect(value) { const next = Boolean(value); if (multiSelect !== next) cancelDrag(); multiSelect = next; selection(selectedIds); draw(); },
+    setSnap(value) { const next = Number.isSafeInteger(value) && value > 0 && value <= 100000 ? value : 0; if (snap !== next) cancelDrag(); snap = next; },
+    setGrid(value) { grid = value; draw(); }, select(id) { selection(id ? [id] : []); draw(); },
+    selectMany(ids) { selection(Array.isArray(ids) ? ids : []); draw(); }, fit, zoom,
     getView() { return { ...view }; },
-    destroy() { disposed = true; observer?.disconnect(); listeners.forEach(args => canvas.removeEventListener(...args)); clearTiles(); images = new Map(); model = null; canvas.width = 0; canvas.height = 0; },
+    destroy() { disposed = true; cancelDrag(); observer?.disconnect(); listeners.forEach(args => canvas.removeEventListener(...args)); clearTiles(); images = new Map(); model = null; canvas.width = 0; canvas.height = 0; },
   };
 }

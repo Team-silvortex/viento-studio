@@ -1,3 +1,8 @@
+import { sceneStructureActors } from '../../engine/scene-structure.mjs';
+import { buildSceneOutline, validateSceneGroups } from '../../engine/scene-groups.mjs';
+import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
+import '../adapters/node-studio-core.mjs';
+import { getStudioCoreMetadata } from '../../engine/studio-core.mjs';
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import { Element } from './editor-harness.mjs';
@@ -118,15 +123,21 @@ export async function dialogHarness(module, overrides = {}) {
   const timers = new Map();
   let timerId = 0;
   const runtime = vm.createContext({
-    document, window, URL, TextEncoder, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS,
-    getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime, getCreatePathError, canonicalJson,
+    document, window, URL, TextEncoder, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS, getStudioCoreMetadata,
+    getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime, getCreatePathError, canonicalJson, sceneActorIdentity, sceneStructureActors, buildSceneOutline, validateSceneGroups,
     location: { href: 'http://127.0.0.1/web/' },
     t, getLanguage, translateMessage, uiMessage, asUiMessage, diagnosticMessage, translateDiagnostic, isComposingInput, translatePage() {}, onLanguageChange() {},
     setTimeout: (callback) => { timers.set(++timerId, callback); return timerId; },
     clearTimeout: (id) => timers.delete(id),
+    setupSceneLayout: () => ({ setAvailable() {}, open() {} }),
     setupScenePreview: () => ({ setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {}, destroy() {} }),
     ...overrides,
   });
+  if (['app-scene-preview', 'app-scene-layout', 'app-scene-outline'].includes(module)) {
+    const outlineSource = (await fs.readFile(new URL('../../web/modules/app-scene-outline.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    if (module !== 'app-scene-outline') vm.runInContext(outlineSource, runtime);
+  }
   if (module === 'app-world-browser') {
     const projectionCreator = (await fs.readFile(new URL('../../web/modules/app-object-projection.js', import.meta.url), 'utf8'))
       .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');

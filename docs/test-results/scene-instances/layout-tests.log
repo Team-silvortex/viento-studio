@@ -1,0 +1,27 @@
+✔ scene layout generates fixed-version position-only commands without resolving inherited values into the source (7.487559ms)
+✔ scene layout undo and redo preserve other actors, discard redo on a new branch, and reset to exact source bytes (1.503122ms)
+✔ scene layout rejects malformed edits atomically and bounds history without losing the original dirty comparison (9.729603ms)
+✔ scene layout freezes preconditions and defensively copies source, actors, coordinate arrays and commands (0.740105ms)
+✔ legacy and inconsistent scene previews remain read-only instead of manufacturing editable preconditions (0.677359ms)
+✔ selection movement applies one integer or anchor-snapped displacement and keeps the caller data and order intact (1.16811ms)
+✔ selection movement clamps the complete group, including floating boundary cancellation, without compressing spacing (0.620313ms)
+✔ all six alignment modes use resolved size and the selection bounding box, independent of declaration inheritance (1.183649ms)
+✔ selection helpers reject duplicate or missing identities, invalid geometry and overflowing alignments atomically (1.893076ms)
+✔ selection geometry ignores unselected non-JSON fields while preserving global identity checks (2.378809ms)
+✔ position batches validate every actor before any edit and form one undo step without discarding redo on a no-op (1.288403ms)
+✔ batch move and align convenience methods preserve inherited fields and keep each full selection operation in bounded history (12.902347ms)
+✔ Rust drafts isolate histories and disposal releases bounded sessions without recycling a live draft (11.855864ms)
+✔ cross-domain dispatch is rejected before it can allocate, mutate or close a Rust draft (1.557704ms)
+✔ layout draft save snapshots use the Rust workflow, preserve no-op reviews and protect pending positions (1.332135ms)
+✔ save dispatch cannot be used through geometry or draft interfaces and preserves the current request (0.504366ms)
+✔ v2 layout isolates repeated definitions by stable instance identity through history and source commands (1.022891ms)
+✔ instance geometry maps only opaque instance keys to Rust and never evaluates identity accessors (0.369507ms)
+✔ v2 layout refuses duplicate, missing, mismatched or swapped instance identities without manufacturing a draft (0.637614ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 79.527459

@@ -13,8 +13,9 @@ import tempfile
 ROOT = Path(__file__).resolve().parent.parent
 INPUTS = [".gitattributes", ".gitignore", ".github", "LICENSE", "README.md", "VERSION", "favicon.ico",
           "package.json", "package-lock.json", "engine", "web", "scripts", "mobile",
-          "desktop", "src-tauri", "schemas", "docs"]
-GENERATED = {"src-tauri/target", "src-tauri/binaries", "src-tauri/gen/schemas",
+          "desktop", "src-tauri", "schemas", "docs", "crates/viento-studio-core"]
+GENERATED = {"crates/viento-studio-core/target", "engine/studio-core.wasm", "engine/studio-core.build.json",
+             "src-tauri/target", "src-tauri/binaries", "src-tauri/gen/schemas",
              "desktop/resources", "desktop/.cache", "desktop/ui/i18n", "web/data", "mobile/dist",
              "src-tauri/gen/android/.gradle", "src-tauri/gen/android/.kotlin", "src-tauri/gen/android/.tauri",
              "src-tauri/gen/android/build", "src-tauri/gen/android/app/build", "src-tauri/gen/android/buildSrc/build",

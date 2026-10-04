@@ -21,6 +21,7 @@ const STATIC_CACHE_CONTROL_HTML_EXTENSIONS = new Set([
 ]);
 
 const MIME_TYPES = new Map([
+  ['.wasm', 'application/wasm'],
   ['.html', 'text/html; charset=utf-8'],
   ['.css', 'text/css; charset=utf-8'],
   ['.js', 'application/javascript; charset=utf-8'],
@@ -224,7 +225,7 @@ function setSecurityHeaders(response = {}) {
   response.setHeader('Content-Security-Policy', [
     "default-src 'self'",
     "base-uri 'self'",
-    "script-src 'self'",
+    "script-src 'self' 'wasm-unsafe-eval'",
     "style-src 'self'",
     "img-src 'self' data: blob:",
     "connect-src 'self'",

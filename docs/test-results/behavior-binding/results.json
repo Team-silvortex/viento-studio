@@ -1,0 +1,150 @@
+{
+  "recordedAt": "2026-10-03T08:44:33.746Z",
+  "scope": "Isolated GDScript binding feasibility; not an implemented Viento feature",
+  "platform": "linux",
+  "arch": "x64",
+  "node": "v24.21.0",
+  "toolSha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "sources": {
+    "project.godot": "253751bd5719c499129b1157f7b644206e20d728d5e32cae31b23c2da30ab179",
+    "guard.gd": "def2f0abe75256b05a54a03d558c8464c4cb0fd7bca772b40df6c2db6851ed67",
+    "bindings.json": "d4f2e4f236ef2ae4c81570d78052c9878569f9fa6c533e6aada01c88f47db3b3",
+    "probe.gd": "7bc1246f9c670170aaf5065effe24e6193294fbe891d66ad3a99f268ae9aa23a",
+    "run.mjs": "36c4e6d3885662c381ef33d2aa5136d7cd195b7e031200518f127ced33f0965a"
+  },
+  "positive": {
+    "exitCode": 0,
+    "data": {
+      "checks": [
+        "export metadata and defaults",
+        "method and signal discovery",
+        "two instances of one behavior",
+        "per-instance parameter binding",
+        "bound callable invocation",
+        "signal routing with instance identity",
+        "parameter update isolation",
+        "signal disconnect"
+      ],
+      "distances": [
+        40,
+        20
+      ],
+      "events": [
+        {
+          "checkpoint": "east",
+          "instanceId": "guard-east"
+        },
+        {
+          "checkpoint": "west",
+          "instanceId": "guard-west"
+        },
+        {
+          "checkpoint": "east",
+          "instanceId": "guard-east"
+        }
+      ],
+      "failures": [],
+      "features": {
+        "dotnet": false,
+        "headless": true
+      },
+      "godot": "4.7.2-stable (official)",
+      "methods": [
+        "configure",
+        "advance"
+      ],
+      "ok": true,
+      "properties": {
+        "checkpoint": {
+          "default": "dock",
+          "hint": 0,
+          "hintString": "",
+          "type": "String"
+        },
+        "speed": {
+          "default": 160,
+          "hint": 1,
+          "hintString": "0.0,1000.0,0.5",
+          "type": "float"
+        }
+      },
+      "signals": [
+        "arrived"
+      ]
+    },
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_BINDING_PROBE:{\"checks\":[\"export metadata and defaults\",\"method and signal discovery\",\"two instances of one behavior\",\"per-instance parameter binding\",\"bound callable invocation\",\"signal routing with instance identity\",\"parameter update isolation\",\"signal disconnect\"],\"distances\":[40.0,20.0],\"events\":[{\"checkpoint\":\"east\",\"instanceId\":\"guard-east\"},{\"checkpoint\":\"west\",\"instanceId\":\"guard-west\"},{\"checkpoint\":\"east\",\"instanceId\":\"guard-east\"}],\"failures\":[],\"features\":{\"dotnet\":false,\"headless\":true},\"godot\":\"4.7.2-stable (official)\",\"methods\":[\"configure\",\"advance\"],\"ok\":true,\"properties\":{\"checkpoint\":{\"default\":\"dock\",\"hint\":0,\"hintString\":\"\",\"type\":\"String\"},\"speed\":{\"default\":160.0,\"hint\":1,\"hintString\":\"0.0,1000.0,0.5\",\"type\":\"float\"}},\"signals\":[\"arrived\"]}\n"
+  },
+  "failureControl": {
+    "exitCode": 1,
+    "data": {
+      "checks": [
+        "export metadata and defaults",
+        "method and signal discovery",
+        "two instances of one behavior",
+        "per-instance parameter binding",
+        "bound callable invocation",
+        "signal routing with instance identity",
+        "parameter update isolation",
+        "signal disconnect"
+      ],
+      "distances": [
+        40,
+        20
+      ],
+      "events": [
+        {
+          "checkpoint": "east",
+          "instanceId": "guard-east"
+        },
+        {
+          "checkpoint": "west",
+          "instanceId": "guard-west"
+        },
+        {
+          "checkpoint": "east",
+          "instanceId": "guard-east"
+        }
+      ],
+      "failures": [
+        "deliberate failure to verify nonzero exit"
+      ],
+      "features": {
+        "dotnet": false,
+        "headless": true
+      },
+      "godot": "4.7.2-stable (official)",
+      "methods": [
+        "configure",
+        "advance"
+      ],
+      "ok": false,
+      "properties": {
+        "checkpoint": {
+          "default": "dock",
+          "hint": 0,
+          "hintString": "",
+          "type": "String"
+        },
+        "speed": {
+          "default": 160,
+          "hint": 1,
+          "hintString": "0.0,1000.0,0.5",
+          "type": "float"
+        }
+      },
+      "signals": [
+        "arrived"
+      ]
+    },
+    "output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_BINDING_PROBE:{\"checks\":[\"export metadata and defaults\",\"method and signal discovery\",\"two instances of one behavior\",\"per-instance parameter binding\",\"bound callable invocation\",\"signal routing with instance identity\",\"parameter update isolation\",\"signal disconnect\"],\"distances\":[40.0,20.0],\"events\":[{\"checkpoint\":\"east\",\"instanceId\":\"guard-east\"},{\"checkpoint\":\"west\",\"instanceId\":\"guard-west\"},{\"checkpoint\":\"east\",\"instanceId\":\"guard-east\"}],\"failures\":[\"deliberate failure to verify nonzero exit\"],\"features\":{\"dotnet\":false,\"headless\":true},\"godot\":\"4.7.2-stable (official)\",\"methods\":[\"configure\",\"advance\"],\"ok\":false,\"properties\":{\"checkpoint\":{\"default\":\"dock\",\"hint\":0,\"hintString\":\"\",\"type\":\"String\"},\"speed\":{\"default\":160.0,\"hint\":1,\"hintString\":\"0.0,1000.0,0.5\",\"type\":\"float\"}},\"signals\":[\"arrived\"]}\nPROBE_FAILED: deliberate failure to verify nonzero exit\n"
+  },
+  "notTested": [
+    "C# runtime or cross-language calls",
+    "Bevy compilation or BRP integration",
+    "script hot reload or state restoration",
+    "large-scene performance",
+    "Viento UI/build integration",
+    "author source writeback or migration"
+  ],
+  "cleanup": "Temporary project and redirected XDG state removed by runner"
+}

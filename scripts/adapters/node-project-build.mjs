@@ -8,7 +8,7 @@ import { captureBuildSnapshot, buildHash, buildError, readBuildFile } from './no
 import { resolveContainedPath } from '../lib/contained-path.mjs';
 import { resolveAssetRoot } from '../lib/workspace.mjs';
 import { runBuildProcess } from '../lib/build-process.mjs';
-import { GODOT4_BACKEND, identifyGodot, generateGodotProject, godotDiagnostics, createRuntimeEventReader } from '../backends/godot4.mjs';
+import { GODOT4_BACKEND, identifyGodot, generateGodotProject, godotDiagnostics, createRuntimeEventReader } from '../backends/godot4-dispatch.mjs';
 
 const json = value => JSON.stringify(value, null, 2) + '\n';
 const within = (root, target) => { const relative = path.relative(root, target); return relative === '' || relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative); };
@@ -139,7 +139,7 @@ export async function runProjectBuild({ buildDirectory, godot, signal, timeoutMs
     const build = JSON.parse(await read('build.json', 4 * 1024 * 1024));
     const snapshot = JSON.parse(await read('snapshot.json', 80 * 1024 * 1024));
     if (build.format !== 'viento-build-record' || build.schemaVersion !== 1 || build.status !== 'succeeded'
-      || build.backend?.id !== GODOT4_BACKEND.id || build.backend.protocolVersion !== 1
+      || build.backend?.id !== GODOT4_BACKEND.id || ![1, 2].includes(build.backend.protocolVersion)
       || snapshot.format !== 'viento-build-snapshot' || snapshot.schemaVersion !== 1
       || build.snapshotId !== `sha256:${buildHash(canonicalJson(snapshot))}`) throw buildError('runtime_build_invalid', 'Select a successful build with an intact snapshot.');
     const projection = await createWorldProjection(snapshot.source, { digest: buildHash });
@@ -148,7 +148,8 @@ export async function runProjectBuild({ buildDirectory, godot, signal, timeoutMs
       || restored.plan.resources.reduce((sum, item) => sum + item.size, 0) > 128 * 1024 * 1024) throw buildError('runtime_build_invalid', 'The frozen scene plan is invalid.');
     plan = restored.plan;
     const generated = await generateGodotProject(plan);
-    if (generated.backend.sha256 !== build.backend.sha256) throw buildError('runtime_adapter_changed', 'Backend code changed; rebuild this project before running.');
+    if (generated.backend.protocolVersion !== build.backend.protocolVersion
+      || generated.backend.sha256 !== build.backend.sha256) throw buildError('runtime_adapter_changed', 'Backend code changed; rebuild this project before running.');
     onProgress({ phase: 'tool' });
     const tool = await identifyGodot(godot, { signal });
     if (tool.sha256 !== build.tool.sha256 || tool.version !== build.tool.version) throw buildError('runtime_tool_changed', 'Use the exact toolchain recorded by this build, or rebuild.');

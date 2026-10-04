@@ -1,0 +1,45 @@
+✔ build UI checks a frozen plan, submits that snapshot, and waits for an explicit run (29.371184ms)
+✔ scene switching cannot reuse another scene plan or artifact (18.73445ms)
+✔ saving a layout refreshes preview and invalidates the approved build plan without submitting a job (15.433099ms)
+✔ draft, creation, busy and browse guards prevent task submission even when context changed after rendering (23.028429ms)
+✔ closing a running task preserves it and polling, while dirty drafts still allow cancellation (17.866794ms)
+✔ a lost submission response is reconciled with GET without resubmitting the task (11.269475ms)
+✔ diagnostics retain exact source coordinates, protect declined navigation, and render details as text (8.964419ms)
+✔ preview and diagnostic navigation focus the source editor after the dialog closes, preserving legacy callbacks (23.632942ms)
+✔ late source navigation cannot close a reopened dialog or replace a newer navigation focus (19.996414ms)
+✔ queued dialog-close focus is discarded when the dialog is reopened before the close event (10.664459ms)
+✔ multiple queued close events focus the final closed session only once (10.84208ms)
+✔ snapshot conflicts invalidate the approved plan and preserve original error details (12.771564ms)
+✔ an unconfigured tool permits planning and blocks build/run; unsupported hosts hide the entry (13.954608ms)
+✔ all build dialog user messages have English and Japanese translations (0.608883ms)
+✔ asynchronous snapshot conflicts invalidate the plan after the job completes (17.134742ms)
+✔ editor build context resolves generated source paths without changing the active draft (17.824549ms)
+✔ exact source selection converts original UTF-16 offsets through BOM, Chinese, emoji and every newline form (0.787263ms)
+✔ source selection rejects stale, malformed, ambiguous and split-character ranges without guessing (0.554783ms)
+✔ the actual editor source entry opens and selects the observed field without writing or changing line endings (5.196125ms)
+✔ uncached source navigation performs one owned read instead of starting a competing automatic preload (3.397284ms)
+✔ deferred editor focus runs once and cannot steal focus after navigation, mode changes or dirty edits (20.868558ms)
+✔ stale and approximate source locations open current text without selecting the old or nearest range (6.168442ms)
+✔ same-document unsaved text and cursor survive source navigation, while declined cross-document navigation stays put (2.981914ms)
+✔ a late source read cannot update another document or release its active navigation busy state (3.244004ms)
+✔ the newest source request wins even when two locations target the same document (3.020262ms)
+✔ a late revision digest cannot overwrite a newly selected location (3.199505ms)
+✔ source read and revision digest errors release only their own loading state without changing source or draft (7.72392ms)
+✔ a mode change or a newer legacy link cancels pending precise selection (8.185764ms)
+✔ navigation checks catalog identity and newly dirty text after asynchronous reads (4.99117ms)
+✔ legacy links retain document navigation and malformed locations never select another file (2.330927ms)
+✔ source navigation messages and scene declaration links have English and Japanese translations (0.103189ms)
+✔ scene preview captures exact unsaved text and the original baseline without reading or saving (2.550411ms)
+✔ scene draft capture rejects changed content or a mismatched recovery baseline during asynchronous hashing (4.257876ms)
+✔ draft source navigation selects current unsaved Unicode/CRLF text and restores focus without disk reads (2.414435ms)
+✔ stale, approximate or missing draft ranges keep both text and caret; foreign draft navigation never selects a document (2.318121ms)
+✔ draft source hash and deferred focus cannot overwrite or steal focus from newer edits (4.303308ms)
+✔ unchanged editor UI refreshes do not invalidate a pending draft hash or its later focus (4.522261ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 395.300625

@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: Scene2D v2 repeats one projection as independent stable instances and keeps v1 plan bytes unchanged
+ok 1 - Scene2D v2 repeats one projection as independent stable instances and keeps v1 plan bytes unchanged
+  ---
+  duration_ms: 28.746097
+  type: 'test'
+  ...
+# Subtest: v2 source locations distinguish repeated definitions and follow instance IDs through reorder
+ok 2 - v2 source locations distinguish repeated definitions and follow instance IDs through reorder
+  ---
+  duration_ms: 7.093535
+  type: 'test'
+  ...
+# Subtest: instance identity validation is versioned, rejects missing/duplicate IDs and retains the actor bound
+ok 3 - instance identity validation is versioned, rejects missing/duplicate IDs and retains the actor bound
+  ---
+  duration_ms: 154.394408
+  type: 'test'
+  ...
+# Subtest: repeated definitions remain participating diagnostics and registration recovery ignores their current bodies
+ok 4 - repeated definitions remain participating diagnostics and registration recovery ignores their current bodies
+  ---
+  duration_ms: 4.532701
+  type: 'test'
+  ...
+# Subtest: v2 registration refuses duplicate decoded keys while old v1 registration still recovers
+ok 5 - v2 registration refuses duplicate decoded keys while old v1 registration still recovers
+  ---
+  duration_ms: 2.183764
+  type: 'test'
+  ...
+# Subtest: lossless v2 reorder moves the right raw fragments even when every instance shares one definition
+ok 6 - lossless v2 reorder moves the right raw fragments even when every instance shares one definition
+  ---
+  duration_ms: 3.828827
+  type: 'test'
+  ...
+# Subtest: explicit v1 upgrade retains original fragments and seeded identities, and refuses a lossy downgrade
+ok 7 - explicit v1 upgrade retains original fragments and seeded identities, and refuses a lossy downgrade
+  ---
+  duration_ms: 2.086948
+  type: 'test'
+  ...
+# Subtest: v2 create and update save independent instances with one definition/image dependency and preserve unrelated files
+ok 8 - v2 create and update save independent instances with one definition/image dependency and preserve unrelated files
+  ---
+  duration_ms: 227.204968
+  type: 'test'
+  ...
+# Subtest: v2 scene.create SIGKILL recovery rolls back exact instance bytes without restoring author definitions
+ok 9 - v2 scene.create SIGKILL recovery rolls back exact instance bytes without restoring author definitions
+  ---
+  duration_ms: 171.1614
+  type: 'test'
+  ...
+# Subtest: v2 scene.create SIGKILL recovery commits exact instance bytes without restoring author definitions
+ok 10 - v2 scene.create SIGKILL recovery commits exact instance bytes without restoring author definitions
+  ---
+  duration_ms: 189.824713
+  type: 'test'
+  ...
+# Subtest: v2 scene.update SIGKILL recovery rolls back exact instance bytes without restoring author definitions
+ok 11 - v2 scene.update SIGKILL recovery rolls back exact instance bytes without restoring author definitions
+  ---
+  duration_ms: 276.563981
+  type: 'test'
+  ...
+# Subtest: v2 scene.update SIGKILL recovery commits exact instance bytes without restoring author definitions
+ok 12 - v2 scene.update SIGKILL recovery commits exact instance bytes without restoring author definitions
+  ---
+  duration_ms: 257.734486
+  type: 'test'
+  ...
+# Subtest: explicit v1 instance upgrade recovers exact v1 source and retains metadata
+ok 13 - explicit v1 instance upgrade recovers exact v1 source and retains metadata
+  ---
+  duration_ms: 250.873623
+  type: 'test'
+  ...
+# Subtest: explicit v1 instance upgrade recovers committed v2 source and retains metadata
+ok 14 - explicit v1 instance upgrade recovers committed v2 source and retains metadata
+  ---
+  duration_ms: 253.579635
+  type: 'test'
+  ...
+# Subtest: recovery rejects forged duplicate v2 identities even when journal after-image hashes are recomputed
+ok 15 - recovery rejects forged duplicate v2 identities even when journal after-image hashes are recomputed
+  ---
+  duration_ms: 159.266868
+  type: 'test'
+  ...
+# Subtest: resource package round trip retains repeated-instance source and closes shared definition, owned story and image exactly once
+ok 16 - resource package round trip retains repeated-instance source and closes shared definition, owned story and image exactly once
+  ---
+  duration_ms: 297.913253
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2365.986073

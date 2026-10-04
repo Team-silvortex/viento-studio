@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: studio core loads a real standalone Rust WASM module and exposes protocol metadata
+ok 1 - studio core loads a real standalone Rust WASM module and exposes protocol metadata
+  ---
+  duration_ms: 3.834346
+  type: 'test'
+  ...
+# Subtest: WASM group motion preserves input order, fractional spacing, anchor snapping, and caller data
+ok 2 - WASM group motion preserves input order, fractional spacing, anchor snapping, and caller data
+  ---
+  duration_ms: 2.696084
+  type: 'test'
+  ...
+# Subtest: WASM rounding follows JavaScript negative halfway behavior and accepts subnormal snap sizes
+ok 3 - WASM rounding follows JavaScript negative halfway behavior and accepts subnormal snap sizes
+  ---
+  duration_ms: 0.445308
+  type: 'test'
+  ...
+# Subtest: WASM boundary movement applies one bounded displacement without squeezing the group
+ok 4 - WASM boundary movement applies one bounded displacement without squeezing the group
+  ---
+  duration_ms: 0.311556
+  type: 'test'
+  ...
+# Subtest: WASM six-way alignment uses each full size and refuses the entire overflowing result
+ok 5 - WASM six-way alignment uses each full size and refuses the entire overflowing result
+  ---
+  duration_ms: 1.26417
+  type: 'test'
+  ...
+# Subtest: WASM rejects unsupported protocols and commands instead of silently selecting a fallback
+ok 6 - WASM rejects unsupported protocols and commands instead of silently selecting a fallback
+  ---
+  duration_ms: 0.36681
+  type: 'test'
+  ...
+# Subtest: WASM rejects malformed geometry and transport-only non-JSON values before they can become null or disappear
+ok 7 - WASM rejects malformed geometry and transport-only non-JSON values before they can become null or disappear
+  ---
+  duration_ms: 0.976477
+  type: 'test'
+  ...
+# Subtest: WASM input has a one MiB byte limit including multi-byte object identities
+ok 8 - WASM input has a one MiB byte limit including multi-byte object identities
+  ---
+  duration_ms: 3.331801
+  type: 'test'
+  ...
+# Subtest: WASM validates a complete position batch before publishing any change
+ok 9 - WASM validates a complete position batch before publishing any change
+  ---
+  duration_ms: 0.935811
+  type: 'test'
+  ...
+# Subtest: Rust-backed batch validation leaves the editor draft and redo history untouched on a later invalid actor
+ok 10 - Rust-backed batch validation leaves the editor draft and redo history untouched on a later invalid actor
+  ---
+  duration_ms: 3.179504
+  type: 'test'
+  ...
+# Subtest: native Rust and real WASM return identical results for fixed edge cases and seeded boundary samples
+ok 11 - native Rust and real WASM return identical results for fixed edge cases and seeded boundary samples
+  ---
+  duration_ms: 199.280956
+  type: 'test'
+  ...
+# Subtest: native JSON transport rejects corrupt documents and oversized UTF-8 inputs without partial results
+ok 12 - native JSON transport rejects corrupt documents and oversized UTF-8 inputs without partial results
+  ---
+  duration_ms: 22.64055
+  type: 'test'
+  ...
+# Subtest: real WASM ABI handles owned memory, invalid UTF-8 and allocation limits without replaying old commands
+ok 13 - real WASM ABI handles owned memory, invalid UTF-8 and allocation limits without replaying old commands
+  ---
+  duration_ms: 6.374377
+  type: 'test'
+  ...
+# Subtest: native JSON-lines transport recovers after invalid and oversized messages within one process
+ok 14 - native JSON-lines transport recovers after invalid and oversized messages within one process
+  ---
+  duration_ms: 14.844808
+  type: 'test'
+  ...
+# Subtest: the WASM bridge rejects serializers and accessors without executing caller code
+ok 15 - the WASM bridge rejects serializers and accessors without executing caller code
+  ---
+  duration_ms: 0.339609
+  type: 'test'
+  ...
+# Subtest: the actual Node adapter remains importable and fails closed when the shipped WASM is missing or corrupted
+ok 16 - the actual Node adapter remains importable and fails closed when the shipped WASM is missing or corrupted
+  ---
+  duration_ms: 7.127534
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 283.431973

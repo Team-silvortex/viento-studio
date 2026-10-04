@@ -1,3 +1,4 @@
+import { validateSceneGroups } from '../../engine/scene-groups.mjs';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 import { fetchJsonApiRequest } from './app-services.js';
 import { requestWorldCommand, readDocSource } from './app-doc-service.js';
@@ -27,6 +28,15 @@ const sceneDiagnosticLabels = {
   build_projection_runtime: '此投影不支持当前二维场景，请选择兼容的游戏投影。',
   build_actor_missing: '场景引用的角色不存在或原文不可用。',
   build_actor_duplicate: '同一个角色不能在场景中重复声明。',
+  build_group_value: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_missing: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_duplicate: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_parent: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_cycle: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_group_depth: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_actor_group: '场景分组无效，请检查分组身份、名称和父级关系。',
+  build_instance_missing: '每个场景实例都需要有效的 UUID 身份。',
+  build_instance_duplicate: '场景实例身份不能重复，请为复制的实例使用新身份。',
   build_actor_value: '角色字段的值不符合要求，请检查标出的位置。',
   build_scene_value: '场景字段的值不符合要求，请检查标出的位置。',
   build_image_unsupported: '请选择已登记的 PNG、JPEG、WebP 或 SVG 图片。',
@@ -52,7 +62,10 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
     <button id="sceneCreateRefresh" type="button" class="doc-btn doc-btn-ghost" data-i18n="重新读取工程"></button>
     <p id="sceneCreateEmpty" class="build-note" hidden data-i18n="暂无可用对象。请先返回编辑器，在世界与对象中创建并保存文档；需要图片时先通过插入素材导入。"></p>
     <form id="sceneCreateForm" novalidate><fieldset id="sceneCreateFields"><legend data-i18n="场景设置"></legend><div id="sceneCreateSettings" class="scene-settings"></div>
-    <h3 data-i18n="场景中的对象"></h3><p class="build-hint" data-i18n="同一对象在当前场景中只能出现一次。未选择图片时显示纯色矩形。"></p>
+    <h3 data-i18n="场景中的对象"></h3><p id="sceneCreateInstanceHint" class="build-hint"></p>
+    <button id="sceneCreateEnableInstances" type="button" class="doc-btn doc-btn-ghost" data-i18n="启用场景实例" hidden></button>
+    <button id="sceneCreateEnableGroups" type="button" class="doc-btn doc-btn-ghost" data-i18n="启用场景分组" hidden></button>
+    <section id="sceneCreateGroupSection" hidden><p class="build-hint" data-i18n="启用分组只修改草稿，预览并保存后升级场景格式。"></p><h3 data-i18n="场景分组"></h3><p class="build-hint" data-i18n="分组用于组织与整组选取，不改变位置、绘制顺序或运行行为。只能删除没有子组和实例的空组。"></p><div id="sceneCreateGroups"></div><button id="sceneCreateAddGroup" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加分组"></button></section>
     <div id="sceneCreateActors"></div><button id="sceneCreateAdd" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加场景对象"></button></fieldset>
     <ul id="sceneCreateDiagnostics" class="scene-diagnostics"></ul>
     <section id="sceneCreatePreview" class="build-summary" hidden><h3 id="sceneCreatePreviewTitle" data-i18n="将创建的场景"></h3><p id="sceneCreateSummary"></p><pre id="sceneCreateSource" tabindex="0"></pre></section>
@@ -75,9 +88,9 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
     && resource.descriptor.content.size > 0 && resource.descriptor.content.size <= 32 * 1024 * 1024);
   const root = () => projection?.world.sourceWorkspaceVersion === 3 ? 'documents' : 'design-data';
   const node = (tag, text = '', className = '') => { const element = document.createElement(tag); element.textContent = text; element.className = className; return element; };
-  const defaultActor = id => {
+  const defaultActor = (id, instanceId) => {
     const inherited = projectionRuntime(projection?.objects.find(object => object.id === id));
-    return { objectId: id, position: ['200', '220'], size: inherited ? inherited.size.map(String) : ['80', '80'], color: inherited?.color || '#ffffff',
+    return { objectId: id, ...(instanceId ? { instanceId } : {}), position: ['200', '220'], size: inherited ? inherited.size.map(String) : ['80', '80'], color: inherited?.color || '#ffffff',
       speed: String(inherited?.speed ?? 160), controls: inherited?.controls || 'arrows', imageResourceId: inherited?.imageResourceId || '', useProjectionDefaults: Boolean(inherited), inheritPresent: Boolean(inherited), overrides: [] };
   };
   const actorLabel = object => {
@@ -108,7 +121,7 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
   }
   function renderFields() {
     const focused = document.activeElement, focusedId = focused?.id, start = focused?.selectionStart, end = focused?.selectionEnd;
-    const settings = el('sceneCreateSettings'), list = el('sceneCreateActors'); settings.replaceChildren(); list.replaceChildren();
+    const settings = el('sceneCreateSettings'), list = el('sceneCreateActors'); settings.replaceChildren(); list.replaceChildren(); el('sceneCreateGroups').replaceChildren();
     if (!draft) return;
     if (editing) field(settings, { id: 'sceneCreateIdentity', label: '对象身份', value: draft.objectId, readOnly: true });
     field(settings, { id: 'sceneCreateName', label: '场景名称', value: draft.title, maxLength: 160, pointer: '/title', changeValue: value => { draft.title = value; } });
@@ -118,12 +131,38 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
     field(settings, { id: 'sceneCreateBackground', label: '背景颜色（十六进制）', value: draft.background, maxLength: 9, pointer: '/background', changeValue: value => { draft.background = value; } });
     ['视口宽度', '视口高度'].forEach((label, index) => field(settings, { id: `sceneCreateViewport${index}`, label, type: 'number', min: 64, max: 4096,
       value: draft.viewport[index], pointer: '/viewport', changeValue: value => { draft.viewport[index] = value; } }));
+    for (const [index, group] of (draft.groups || []).entries()) {
+      const card = node('fieldset', '', 'scene-group'); card.append(node('legend', t('分组 {0}', index + 1)));
+      const fields = node('div', '', 'scene-actor-fields'), prefix = `sceneGroup${index}`;
+      field(fields, { id: `${prefix}Identity`, label: '分组身份', value: group.groupId, pointer: `/groups/${index}/groupId`, readOnly: true });
+      field(fields, { id: `${prefix}Name`, label: '分组名称', value: group.name, maxLength: 160, pointer: `/groups/${index}/name`, changeValue: value => { group.name = value; renderFields(); } });
+      const descendants = new Set([group.groupId]);
+      for (let pass = 0; pass < (draft.groups || []).length; pass++) for (const item of draft.groups) if (descendants.has(item.parentGroupId)) descendants.add(item.groupId);
+      field(fields, { id: `${prefix}Parent`, label: '父级分组', value: group.parentGroupId || '', pointer: `/groups/${index}/parentGroupId`,
+        options: [['', t('场景根级')], ...draft.groups.filter(item => !descendants.has(item.groupId)).map(item => [item.groupId, item.name])], changeValue: value => {
+          if (value) group.parentGroupId = value; else delete group.parentGroupId;
+          renderFields();
+        } });
+      const remove = node('button', t('删除空分组'), 'doc-btn doc-btn-ghost'); remove.id = `${prefix}Remove`; remove.type = 'button';
+      const nonempty = () => draft.groups.some(item => item.parentGroupId === group.groupId) || draft.actors.some(actor => actor.groupId === group.groupId);
+      remove.disabled = nonempty(); remove.addEventListener('click', () => {
+        if (busy || saved || uncertain || nonempty()) return;
+        draft.groups.splice(index, 1); change(); renderFields(); el('sceneCreateAddGroup').focus();
+      });
+      card.append(fields, remove); el('sceneCreateGroups').append(card);
+    }
     draft.actors.forEach((actor, index) => {
       const card = node('fieldset', '', 'scene-actor'); const legend = node('legend', t('场景对象 {0}', index + 1)); card.append(legend);
       const fields = node('div', '', 'scene-actor-fields'); const prefix = `sceneActor${index}`;
       field(fields, { id: `${prefix}Object`, label: '关联对象', value: actor.objectId, pointer: `/actors/${index}/objectId`,
         options: actors().map(object => [object.id, actorLabel(object)]), changeValue: value => {
-          const position = actor.position; Object.assign(actor, defaultActor(value), { position }); renderFields();
+          const position = actor.position; Object.assign(actor, defaultActor(value, actor.instanceId), { position }); renderFields();
+        } });
+      if (draft.schemaVersion >= 2) field(fields, { id: `${prefix}Instance`, label: '实例身份', value: actor.instanceId, pointer: `/actors/${index}/instanceId`, readOnly: true });
+      if (draft.schemaVersion === 3) field(fields, { id: `${prefix}Group`, label: '所属分组', value: actor.groupId || '', pointer: `/actors/${index}/groupId`,
+        options: [['', t('场景根级')], ...draft.groups.map(group => [group.groupId, group.name])], changeValue: value => {
+          if (value) actor.groupId = value; else delete actor.groupId;
+          renderFields();
         } });
       const inherited = projectionRuntime(projection.objects.find(object => object.id === actor.objectId));
       if (inherited) {
@@ -132,7 +171,7 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
         label.append(node('span', t('使用投影配置')), check); fields.append(label);
         check.addEventListener('change', () => {
           if (busy || saved || uncertain) return;
-          const position = actor.position; if (check.checked) Object.assign(actor, defaultActor(actor.objectId), { position });
+          const position = actor.position; if (check.checked) Object.assign(actor, defaultActor(actor.objectId, actor.instanceId), { position });
           actor.useProjectionDefaults = check.checked; actor.inheritPresent = check.checked; actor.overrides = []; change(); renderFields();
         });
         if (actor.useProjectionDefaults) {
@@ -170,8 +209,28 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
       }
       const remove = node('button', t('移除场景对象'), 'doc-btn doc-btn-ghost'); remove.type = 'button'; remove.id = `${prefix}Remove`;
       remove.disabled = draft.actors.length <= 1; remove.setAttribute('aria-label', t('移除场景对象 {0}', index + 1));
-      remove.addEventListener('click', () => { if (busy || saved || draft.actors.length <= 1) return; draft.actors.splice(index, 1); change(); renderFields(); el('sceneCreateAdd').focus(); });
-      card.append(fields, remove); list.append(card);
+      remove.addEventListener('click', () => { if (busy || saved || uncertain || draft.actors.length <= 1) return; draft.actors.splice(index, 1); change(); renderFields(); el('sceneCreateAdd').focus(); });
+      const actions = node('div', '', 'build-actions');
+      for (const [suffix, label, offset] of [['Up', '上移实例', -1], ['Down', '下移实例', 1]]) {
+        const move = node('button', t(label), 'doc-btn doc-btn-ghost'); move.type = 'button'; move.id = `${prefix}${suffix}`;
+        move.disabled = index + offset < 0 || index + offset >= draft.actors.length;
+        move.setAttribute('aria-label', t('{0}：场景对象 {1}', t(label), index + 1));
+        move.addEventListener('click', () => {
+          if (busy || saved || uncertain || index + offset < 0 || index + offset >= draft.actors.length) return;
+          [draft.actors[index], draft.actors[index + offset]] = [draft.actors[index + offset], draft.actors[index]];
+          change(); renderFields(); el(`sceneActor${index + offset}Object`).focus();
+        }); actions.append(move);
+      }
+      if (draft.schemaVersion >= 2) {
+        const duplicate = node('button', t('复制场景实例'), 'doc-btn doc-btn-ghost'); duplicate.type = 'button'; duplicate.id = `${prefix}Duplicate`;
+        duplicate.disabled = draft.actors.length >= 128; duplicate.setAttribute('aria-label', t('复制场景实例 {0}', index + 1));
+        duplicate.addEventListener('click', () => {
+          if (busy || saved || uncertain || draft.actors.length >= 128) return;
+          draft.actors.splice(index + 1, 0, { ...sceneCopy(actor), instanceId: crypto.randomUUID() });
+          change(); renderFields(); el(`sceneActor${index + 1}Object`).focus();
+        }); actions.append(duplicate);
+      }
+      actions.append(remove); card.append(fields, actions); list.append(card);
     });
     if (focusedId) {
       const replacement = el(focusedId); replacement?.focus();
@@ -192,10 +251,14 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
     if (!editing && (draft.sourcePath.length > 1024 || getCreatePathError(draft.sourcePath) || !draft.sourcePath.startsWith(`${root()}/`) || !draft.sourcePath.toLowerCase().endsWith('.json'))) issue('world_create_path_invalid');
     if (!draft.actors.length || draft.actors.length > 128) issue('build_scene_value', '/actors');
     const ids = new Set();
+    if (draft.schemaVersion === 3) issues.push(...validateSceneGroups({ schemaVersion: 3, groups: draft.groups, actors: draft.actors }).diagnostics);
     for (const [index, actor] of draft.actors.entries()) {
       const at = `/actors/${index}`;
       if (!actors().some(object => object.id === actor.objectId)) issue('build_actor_missing', `${at}/objectId`);
-      if (ids.has(actor.objectId)) issue('build_actor_duplicate', `${at}/objectId`); ids.add(actor.objectId);
+      const identity = draft.schemaVersion >= 2 ? actor.instanceId : actor.objectId;
+      if (draft.schemaVersion >= 2 && !sceneUuid(identity)) issue('build_instance_missing', `${at}/instanceId`);
+      if (ids.has(identity)) issue(draft.schemaVersion >= 2 ? 'build_instance_duplicate' : 'build_actor_duplicate', `${at}/${draft.schemaVersion >= 2 ? 'instanceId' : 'objectId'}`);
+      ids.add(identity);
       if (!actor.position.every(value => numeric(value, -100000, 100000))) issue('build_actor_value', `${at}/position`);
       if (actor.useProjectionDefaults && !projectionRuntime(projection.objects.find(object => object.id === actor.objectId))) issue('build_actor_value', `${at}/objectId`);
       const check = key => !actor.useProjectionDefaults || actor.overrides.includes(key);
@@ -208,9 +271,9 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
     return issues;
   }
   function declaration() {
-    return { format: 'viento-scene2d', schemaVersion: 1, title: draft.title, viewport: draft.viewport.map(Number), background: draft.background,
+    return { format: 'viento-scene2d', schemaVersion: draft.schemaVersion, title: draft.title, viewport: draft.viewport.map(Number), background: draft.background, ...(draft.schemaVersion === 3 ? { groups: sceneCopy(draft.groups) } : {}),
       actors: draft.actors.map(actor => {
-        const value = { objectId: actor.objectId, position: actor.position.map(Number) };
+        const value = { ...(draft.schemaVersion >= 2 ? { instanceId: actor.instanceId } : {}), objectId: actor.objectId, position: actor.position.map(Number), ...(draft.schemaVersion === 3 && actor.groupId ? { groupId: actor.groupId } : {}) };
         if (actor.inheritPresent || actor.useProjectionDefaults) value.useProjectionDefaults = actor.useProjectionDefaults;
         const include = key => !actor.useProjectionDefaults || actor.overrides.includes(key);
         if (include('size')) value.size = actor.size.map(Number);
@@ -250,7 +313,16 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
     el('sceneCreateClose').disabled = busy; el('sceneCreateCancel').disabled = busy;
     el('sceneCreateCheck').disabled = busy || saved || uncertain || needsRefresh || !canWrite() || !draft || !actors().length;
     el('sceneCreateSave').disabled = busy || saved || uncertain || needsRefresh || !canWrite() || !preview;
-    el('sceneCreateAdd').disabled = busy || saved || uncertain || !draft || draft.actors.length >= Math.min(128, actors().length);
+    el('sceneCreateAdd').disabled = busy || saved || uncertain || !draft || !actors().length || draft.actors.length >= (draft.schemaVersion >= 2 ? 128 : Math.min(128, actors().length));
+    el('sceneCreateEnableInstances').hidden = draft?.schemaVersion !== 1;
+    el('sceneCreateEnableInstances').disabled = busy || saved || uncertain || !draft;
+    el('sceneCreateEnableGroups').hidden = draft?.schemaVersion !== 2;
+    el('sceneCreateEnableGroups').disabled = busy || saved || uncertain || !draft;
+    el('sceneCreateGroupSection').hidden = draft?.schemaVersion !== 3;
+    el('sceneCreateAddGroup').disabled = busy || saved || uncertain || !draft || (draft.groups || []).length >= 128;
+    el('sceneCreateInstanceHint').textContent = t(draft?.schemaVersion === 1
+      ? '此场景使用旧版格式，同一对象只能出现一次。启用场景实例后可重复引用；预览并保存后才升级格式。'
+      : '同一对象可创建多个独立实例。复制保留配置，位置与覆盖值分别保存；调整顺序会改变重叠时的前后关系。');
     el('sceneCreateEmpty').hidden = !projection || actors().length > 0;
     el('sceneCreateMessage').textContent = t(message);
     el('sceneCreateDetails').textContent = details;
@@ -288,12 +360,12 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
         if (generation !== epoch) return;
         if (typeof payload?.content !== 'string' || `sha256:${await sceneDigest(payload.content)}` !== ref.sourceRevision) throw Object.assign(new Error('Scene source changed while reading'), { payload: { errorCode: 'world_read_conflict' } });
         const content = JSON.parse(payload.content.replace(/^\uFEFF/, ''));
-        if (content?.format !== 'viento-scene2d' || content.schemaVersion !== 1 || !Array.isArray(content.actors)
+        if (content?.format !== 'viento-scene2d' || ![1, 2, 3].includes(content.schemaVersion) || !Array.isArray(content.actors)
           || !Array.isArray(content.viewport) || !ref.sourcePath.toLowerCase().endsWith('.json')) throw Object.assign(new Error('Unsupported scene declaration'), { payload: { errorCode: 'world_scene_invalid' } });
         if (!draft) {
-          draft = { objectId: object.id, documentType: object.provenance.documentType, sourcePath: ref.sourcePath,
+          draft = { schemaVersion: content.schemaVersion, objectId: object.id, documentType: object.provenance.documentType, sourcePath: ref.sourcePath,
             objectRevision: object.revision, sourceRevision: ref.sourceRevision, title: content.title,
-            viewport: content.viewport.map(String), background: content.background,
+            viewport: content.viewport.map(String), background: content.background, ...(content.schemaVersion === 3 ? { groups: sceneCopy(content.groups) } : {}),
             actors: content.actors.map(value => {
               const defaults = defaultActor(value.objectId), actor = { ...defaults, ...sceneCopy(value),
                 position: value.position?.map(String) || ['', ''], size: value.size?.map(String) || defaults.size,
@@ -316,11 +388,11 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
       }
       if (!draft) {
         const type = types().find(type => type.definition.id === 'level') || types().find(type => type.definition.id === 'document') || types()[0];
-        draft = { objectId: crypto.randomUUID(), documentType: type?.definition.id || '', sourcePath: `${root()}/scenes/new-scene.json`,
-          title: t('新建场景'), viewport: ['800', '480'], background: '#0d1829', actors: actors().length ? [defaultActor(actors()[0].id)] : [] };
+        draft = { schemaVersion: 2, objectId: crypto.randomUUID(), documentType: type?.definition.id || '', sourcePath: `${root()}/scenes/new-scene.json`,
+          title: t('新建场景'), viewport: ['800', '480'], background: '#0d1829', actors: actors().length ? [defaultActor(actors()[0].id, crypto.randomUUID())] : [] };
       } else if (projection.objects.some(object => object.id === draft.objectId)) {
         uncertain = true; message = '此身份已经登记，请先核对已保存内容。';
-      } else { uncertain = false; if (!draft.actors.length && actors().length) draft.actors.push(defaultActor(actors()[0].id)); }
+      } else { uncertain = false; if (!draft.actors.length && actors().length) draft.actors.push(defaultActor(actors()[0].id, draft.schemaVersion >= 2 ? crypto.randomUUID() : undefined)); }
       if (!uncertain) message = '配置场景后预览，确认原文与依赖再保存。';
       renderFields();
     } catch (error) {
@@ -356,9 +428,23 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
   }
   el('sceneCreateAdd').addEventListener('click', () => {
     if (busy || saved || uncertain || !draft || draft.actors.length >= 128) return;
-    const object = actors().find(item => !draft.actors.some(actor => actor.objectId === item.id));
+    const object = actors().find(item => !draft.actors.some(actor => actor.objectId === item.id)) || (draft.schemaVersion >= 2 ? actors()[0] : null);
     if (!object) return;
-    draft.actors.push(defaultActor(object.id)); change(); renderFields(); el(`sceneActor${draft.actors.length - 1}Object`).focus();
+    draft.actors.push(defaultActor(object.id, draft.schemaVersion >= 2 ? crypto.randomUUID() : undefined)); change(); renderFields(); el(`sceneActor${draft.actors.length - 1}Object`).focus();
+  });
+  el('sceneCreateEnableGroups').addEventListener('click', () => {
+    if (busy || saved || uncertain || draft?.schemaVersion !== 2) return;
+    draft.schemaVersion = 3; draft.groups = []; change(); renderFields(); el('sceneCreateAddGroup').focus();
+  });
+  el('sceneCreateAddGroup').addEventListener('click', () => {
+    if (busy || saved || uncertain || draft?.schemaVersion !== 3 || draft.groups.length >= 128) return;
+    draft.groups.push({ groupId: crypto.randomUUID(), name: t('新建分组') }); change(); renderFields(); el(`sceneGroup${draft.groups.length - 1}Name`).focus();
+  });
+  el('sceneCreateEnableInstances').addEventListener('click', () => {
+    if (busy || saved || uncertain || draft?.schemaVersion !== 1) return;
+    draft.schemaVersion = 2;
+    for (const actor of draft.actors) actor.instanceId = actor.objectId;
+    change(); renderFields(); el('sceneActor0Instance')?.focus();
   });
   el('sceneCreateClose').addEventListener('click', close); el('sceneCreateCancel').addEventListener('click', close);
   el('sceneCreateRefresh').addEventListener('click', () => void read());

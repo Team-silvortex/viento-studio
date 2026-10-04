@@ -7,6 +7,7 @@ import { appendResourceBinding } from './world-resources.mjs';
 import { registrationGuard } from './world-record-edit.mjs';
 import { createWorldProjection, canonicalJson } from './world-projection.mjs';
 import { createError } from './service-error.mjs';
+import { sceneActorIdentity } from './scene-identity.mjs';
 
 const fail = (status, code, message, payload = {}) => { throw createError(status, message, payload, code); };
 const invalid = (message, propertyPath = '', diagnostics) => fail(422, 'world_scene_invalid', message, {
@@ -26,10 +27,11 @@ export function updateSceneContent(beforeContent, candidateContent) {
     const offset = content.startsWith('\uFEFF') ? 1 : 0;
     const parsed = parseDocument(content.slice(offset), { keepSourceTokens: true, intAsBigInt: true, uniqueKeys: true });
     if (parsed.errors.length || !isMap(parsed.contents)) invalid('The scene cannot be edited losslessly');
-    if (!plain(value) || value.format !== 'viento-scene2d' || value.schemaVersion !== 1) invalid('Expected viento-scene2d schemaVersion 1', '', [{ severity: 'error', code: 'build_scene_format', message: 'Expected viento-scene2d schemaVersion 1', propertyPath: '' }]);
+    if (!plain(value) || value.format !== 'viento-scene2d' || ![1, 2, 3].includes(value.schemaVersion)) invalid('Expected viento-scene2d schemaVersion 1, 2 or 3', '', [{ severity: 'error', code: 'build_scene_format', message: 'Expected viento-scene2d schemaVersion 1, 2 or 3', propertyPath: '' }]);
     return { value, root: parsed.contents, offset };
   };
   const original = parse(beforeContent), candidate = parse(candidateContent), source = beforeContent.slice(original.offset);
+  if (candidate.value.schemaVersion < original.value.schemaVersion) invalid('Scene identities and organization cannot be discarded by downgrading the scene', '/schemaVersion');
   const changedPaths = [], raw = node => source.slice(node.range[0], node.range[1]);
   const render = (node, before, after, location) => {
     if (same(before, after)) return raw(node);
@@ -52,16 +54,16 @@ export function updateSceneContent(beforeContent, candidateContent) {
       return source.slice(node.range[0], start) + joined + source.slice(end, node.range[1]);
     }
     if (isSeq(node) && Array.isArray(before) && Array.isArray(after)) {
-      const actors = location === '/actors';
-      const identities = actors ? new Map(before.map((actor, index) => [actor?.objectId, index])) : null;
-      if (actors && !same(before.map(actor => actor?.objectId), after.map(actor => actor?.objectId))) changedPaths.push(location);
-      const previousIndices = after.map((value, index) => actors ? identities.get(value?.objectId) : index);
+      const identity = location === '/actors' ? sceneActorIdentity : location === '/groups' ? group => group?.groupId : null;
+      const identities = identity ? new Map(before.map((item, index) => [identity(item), index])) : null;
+      if (identity && !same(before.map(identity), after.map(identity))) changedPaths.push(location);
+      const previousIndices = after.map((value, index) => identity ? identities.get(identity(value)) : index);
       const pieces = after.map((value, index) => {
         const previous = previousIndices[index];
-        if (previous === undefined || previous >= node.items.length) { if (!actors) changedPaths.push(`${location}/${index}`); return JSON.stringify(value); }
+        if (previous === undefined || previous >= node.items.length) { if (!identity) changedPaths.push(`${location}/${index}`); return JSON.stringify(value); }
         return render(node.items[previous], before[previous], value, `${location}/${index}`);
       });
-      if (!actors && before.length !== after.length) changedPaths.push(location);
+      if (!identity && before.length !== after.length) changedPaths.push(location);
       const start = node.items[0]?.range[0] ?? node.range[0] + 1, end = node.items.at(-1)?.range[1] ?? start;
       const separator = node.items.length > 1 ? source.slice(node.items[0].range[1], node.items[1].range[0]) : ', ';
       const joined = pieces.map((piece, index) => {

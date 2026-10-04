@@ -178,7 +178,9 @@ test('new scene forms also support partial projection overrides and an explicit 
   h.set('sceneActor0OverrideSpeed', true, 'change'); h.set('sceneActor0Speed', '450');
   h.set('sceneActor0OverrideImage', true, 'change'); h.set('sceneActor0Image', '', 'change'); await h.preview();
   assert.equal(h.calls.at(-1).request.command, 'scene.create');
-  assert.deepEqual(JSON.parse(h.calls.at(-1).request.content).actors[0], { objectId: ids[1], position: [200, 220], useProjectionDefaults: true, speed: 450, imageResourceId: null });
+  const { instanceId, ...actor } = JSON.parse(h.calls.at(-1).request.content).actors[0];
+  assert.match(instanceId, /^[a-f0-9-]{36}$/);
+  assert.deepEqual(actor, { objectId: ids[1], position: [200, 220], useProjectionDefaults: true, speed: 450, imageResourceId: null });
 });
 
 test('scene creation cannot recover the old scene plan after refreshing the build workbench', async () => {
@@ -191,4 +193,84 @@ test('scene creation cannot recover the old scene plan after refreshing the buil
   h.element('projectBuildRefresh').click(); await flushDialogs(); assert.equal(h.element('projectBuildGenerate').disabled, true);
   h.buildState.job = { ...old, id: 'explicit-new-plan' }; h.element('projectBuildRefresh').click(); await flushDialogs();
   assert.equal(h.element('projectBuildGenerate').disabled, false, 'an explicitly checked new plan can reuse unchanged snapshot bytes');
+});
+
+
+test('legacy scene upgrade is explicit, remains a draft, and seeds stable IDs before clone and reorder', async () => {
+  const h = await harness(); assert.equal(h.element('sceneCreateEnableInstances').hidden, false);
+  await h.preview(); assert.deepEqual(JSON.parse(h.calls.at(-1).request.content), declaration());
+  h.element('sceneCreateEnableInstances').click(); assert.equal(h.element('sceneCreateDialog').dataset.dirty, 'true');
+  assert.equal(h.element('sceneCreateSave').disabled, true); assert.equal(h.calls.length, 1);
+  for (let i = 0; i < 3; i++) assert.equal(h.element(`sceneActor${i}Instance`).value, ids[i + 1]);
+  h.element('sceneActor0Duplicate').click(); const duplicate = h.element('sceneActor1Instance').value;
+  assert.notEqual(duplicate, ids[1]); h.element('sceneActor1Down').click();
+  await h.preview(); const value = JSON.parse(h.calls.at(-1).request.content);
+  assert.equal(value.schemaVersion, 2); assert.deepEqual(value.actors.map(actor => actor.instanceId), [ids[1], ids[2], duplicate, ids[3]]);
+  assert.deepEqual(value.actors[2], { ...declaration().actors[0], instanceId: duplicate });
+  assert.deepEqual(h.state().scene, declaration(), 'preview has not rewritten saved v1 source');
+});
+
+test('v2 instance identities survive definition changes, inheritance toggles, languages, and partial overrides', async () => {
+  const scene = declaration(); scene.schemaVersion = 2; scene.actors = scene.actors.slice(0, 1).map(actor => ({ ...actor, instanceId: ids[0] }));
+  scene.actors.push({ ...scene.actors[0], instanceId: ids[2], position: [240, 280], speed: 77 });
+  const h = await harness({ scene }); assert.equal(h.element('sceneCreateEnableInstances').hidden, true);
+  h.set('sceneActor1Object', ids[3], 'change'); assert.equal(h.element('sceneActor1Instance').value, ids[2]);
+  h.set('sceneActor1Object', ids[1], 'change'); h.set('sceneActor1UseProjection', false, 'change');
+  h.set('sceneActor1UseProjection', true, 'change'); h.setLanguage('en');
+  assert.equal(h.element('sceneActor1Instance').value, ids[2]); h.set('sceneActor1OverrideSpeed', true, 'change'); h.set('sceneActor1Speed', '333');
+  await h.preview(); const value = JSON.parse(h.calls.at(-1).request.content);
+  assert.deepEqual(value.actors[0], scene.actors[0]);
+  assert.deepEqual(value.actors[1], { instanceId: ids[2], objectId: ids[1], position: [240, 280], useProjectionDefaults: true, speed: 333 });
+});
+
+test('legacy scenes still reject repeated definitions until explicitly upgraded', async () => {
+  const h = await harness(); h.set('sceneActor1Object', ids[1], 'change'); h.element('sceneCreateCheck').click();
+  assert.equal(h.calls.length, 0); assert.match(h.element('sceneCreateDiagnostics').textContent, /重复/);
+});
+
+test('scene groups require explicit upgrade, retain instance identities and serialize only explicit memberships', async () => {
+  const h = await harness(); assert.equal(h.element('sceneCreateEnableGroups').hidden, true);
+  h.element('sceneCreateEnableInstances').click();
+  assert.equal(h.element('sceneCreateEnableGroups').hidden, false);
+  h.element('sceneCreateEnableGroups').click(); h.element('sceneCreateAddGroup').click();
+  const parentId = h.element('sceneGroup0Identity').value;
+  h.set('sceneGroup0Name', 'Party'); h.element('sceneCreateAddGroup').click();
+  const childId = h.element('sceneGroup1Identity').value;
+  h.set('sceneGroup1Name', 'Front line'); h.set('sceneGroup1Parent', parentId, 'change');
+  h.set('sceneActor0Group', childId, 'change');
+  assert.equal(h.element('sceneGroup0Remove').disabled, true); assert.equal(h.element('sceneGroup1Remove').disabled, true);
+  assert.ok(!h.element('sceneGroup0Parent').children.some(option => option.value === childId), 'descendant cannot become parent');
+  h.set('sceneActor0Object', ids[2], 'change');
+  assert.equal(h.element('sceneActor0Group').value, childId); assert.equal(h.element('sceneActor0Instance').value, ids[1]);
+  h.element('sceneActor0Duplicate').click(); const copyId = h.element('sceneActor1Instance').value;
+  assert.notEqual(copyId, ids[1]); assert.equal(h.element('sceneActor1Group').value, childId);
+  h.element('sceneActor1Down').click(); assert.equal(h.element('sceneActor2Instance').value, copyId);
+  h.setLanguage('en'); assert.equal(h.element('sceneActor2Group').value, childId);
+  h.setLanguage('ja'); assert.equal(h.element('sceneGroup1Name').value, 'Front line');
+  await h.preview(); const value = JSON.parse(h.calls.at(-1).request.content);
+  assert.equal(value.schemaVersion, 3); assert.deepEqual(value.groups, [{ groupId: parentId, name: 'Party' }, { groupId: childId, name: 'Front line', parentGroupId: parentId }]);
+  assert.equal(value.actors[0].groupId, childId); assert.equal(value.actors[2].groupId, childId);
+  assert.equal(Object.hasOwn(value.actors[1], 'groupId'), false); assert.equal(Object.hasOwn(value.groups[0], 'parentGroupId'), false);
+});
+
+test('saved group memberships survive inheritance switching and empty groups can be removed without reassigning actors', async () => {
+  const scene = declaration(); scene.schemaVersion = 3; scene.groups = [{ groupId: '12345678-1234-4234-8234-123456789abc', name: 'Party' }];
+  scene.actors.forEach(actor => { actor.instanceId = actor.objectId; }); scene.actors[0].groupId = scene.groups[0].groupId;
+  const h = await harness({ scene }); assert.equal(h.element('sceneCreateEnableGroups').hidden, true);
+  h.set('sceneActor0UseProjection', false, 'change'); h.set('sceneActor0UseProjection', true, 'change');
+  assert.equal(h.element('sceneActor0Group').value, scene.groups[0].groupId);
+  h.element('sceneGroup0Remove').click(); await h.preview(); assert.equal(JSON.parse(h.calls.at(-1).request.content).groups.length, 1);
+  h.set('sceneActor0Group', '', 'change'); assert.equal(h.element('sceneGroup0Remove').disabled, false);
+  h.element('sceneGroup0Remove').click(); await h.preview(); const value = JSON.parse(h.calls.at(-1).request.content);
+  assert.deepEqual(value.groups, []); assert.equal(Object.hasOwn(value.actors[0], 'groupId'), false);
+  assert.equal(value.actors[0].instanceId, scene.actors[0].instanceId);
+});
+
+test('invalid scene group names and parent depths block preview without sending a command', async () => {
+  const h = await harness(); h.element('sceneCreateEnableInstances').click(); h.element('sceneCreateEnableGroups').click(); h.element('sceneCreateAddGroup').click();
+  h.set('sceneGroup0Name', '  '); h.element('sceneCreateCheck').click(); assert.equal(h.calls.length, 0);
+  assert.match(h.element('sceneCreateDiagnostics').textContent, /分组/);
+  h.set('sceneGroup0Name', 'Root'); let parent = h.element('sceneGroup0Identity').value;
+  for (let index = 1; index < 17; index++) { h.element('sceneCreateAddGroup').click(); h.set(`sceneGroup${index}Parent`, parent, 'change'); parent = h.element(`sceneGroup${index}Identity`).value; }
+  h.element('sceneCreateCheck').click(); assert.equal(h.calls.length, 0); assert.match(h.element('sceneCreateDiagnostics').textContent, /parentGroupId/);
 });

@@ -2,7 +2,15 @@
 
 本页说明如何选择测试、运行命令和解释覆盖范围。当前功能、发布及安装状态见 [开发状态](STATUS.md)，历次数字和阶段说明见 [历史验证记录](history/VALIDATION.md)。所有常规测试使用独立临时工程。
 
-最近保存的 [场景预览结果](test-results/scene-preview/results.json) 和 [浏览器证据](test-results/scene-preview/browser.json) 覆盖完整应用检查与 Chrome 静态画布；[场景编辑结果](test-results/scene-edit/results.json) 保留原生归档／移动存储往返和真实 Godot 运行证据。此前的 [OC 投影结果](test-results/oc-projections/results.json) 还保留当时的桌面 Rust 检查。通过／跳过／忽略数及源码、安装包与设备的区别统一列在 [当前状态](STATUS.md#验证边界)；各轮原始报告保持当时的条件。
+当前保存状态与异步归属见 [Rust 保存工作流验证](test-results/rust-layout-save/results.json) 及 [真实浏览器记录](test-results/rust-layout-save/layout-browser/browser.json)。
+
+此前 Rust 布局草稿／撤销历史见 [验证结果](test-results/rust-layout-history/results.json)、[多选与生命周期实测](test-results/rust-layout-history/selection-browser/browser.json) 和 [保存失败／冲突实测](test-results/rust-layout-history/layout-browser/browser.json)。
+
+最新多选与批量布局见 [场景多选结果](test-results/scene-selection/results.json) 和 [浏览器记录](test-results/scene-selection/browser.json)。前一轮布局编辑回归见 [场景布局结果](test-results/scene-layout/results.json) 与 [真实浏览器记录](test-results/scene-layout/browser.json)。此前的 [场景预览结果](test-results/scene-preview/results.json) 和 [浏览器证据](test-results/scene-preview/browser.json) 覆盖完整应用检查与 Chrome 静态画布；[场景编辑结果](test-results/scene-edit/results.json) 保留原生归档／移动存储往返和真实 Godot 运行证据。此前的 [OC 投影结果](test-results/oc-projections/results.json) 还保留当时的桌面 Rust 检查。通过／跳过／忽略数及源码、安装包与设备的区别统一列在 [当前状态](STATUS.md#验证边界)；各轮原始报告保持当时的条件。
+
+## 功能图谱与证据核对
+
+[当前功能图谱](FUNCTION_ATLAS.md) 为架构、功能、实现与四项成熟度提供离线筛选，完整映射旧图的 F01–F50。检查命令 `node scripts/function-atlas.mjs --check` 验证坐标、引用文件、指纹、评分门槛及派生视图一致性；它不运行产品测试，也不证明评分或测试覆盖率。引用文件改变后需人工重审相关条目，再显式运行 `node scripts/function-atlas.mjs --write --refresh-sources`。旧报告只适用于其原条件。
 
 ## 选择验证范围
 
@@ -18,12 +26,124 @@
 
 涉及正文或素材时，断言内容字节、登记关系与失败后的状态；涉及任务生命周期时，核对进程退出和临时资源回收。程序自己的单元测试通过、跨语言互通通过、浏览器通过、系统窗口通过和设备通过是不同证据，分别记录。
 
-## 应用检查
+## Rust 源码检查与坐标补丁
 
-使用 Node.js 24，在仓库根目录执行：
+本轮将单场景源码布局的严格检查与精确数值补丁迁入共享 Rust，最终执行范围和数字见 [本轮记录](test-results/rust-scene-source/results.json)。原功能入口与后端完整场景模型未改变；下方源码布局、保存布局及来源模型专项仍须通过。
 
 ```sh
+npm run core:test
+npm run core:build
+VIENTO_STUDIO_CORE_BIN=/绝对路径/viento-core \
+  node --test scripts/tests/studio-core-source.test.mjs scripts/tests/scene-source-layout.test.mjs
+```
+
+运行独立核心原生测试、真实 WASM 和原生／WASM 对照，再核对冻结的旧 JS 补丁样例。有效样例须逐字匹配 `afterContent` 和有序 `changedPaths`；错误样例核对拒绝及会话未改变。覆盖 BOM／CRLF／emoji、解码后重复键、转义孤立代理字符、其他字段的极大／极小数值、未改指数／负零、变动坐标的 JavaScript 数字拼写、v1／v2／v3 身份及组关系。组名的长度与空白判断沿用 JavaScript 字符串语义，不能改用 Rust 字节数或另一套空白定义。前后 128 KiB UTF-8、64 层／100000 值节点、128 个实例／组及 16 层组关系均有边界样例。
+
+协议测试另核对 `sceneSource.inspect`／`sceneSource.patch` 不创建或改变任何布局会话、跨操作域拒绝、响应结构校验，以及缺少可选源码能力的旧 WASM 仍能处理旧布局操作。不得用 JS 补丁回退掩盖核心缺失。浏览器实测验证应用的 HTTP 模块图不加载 YAML、旧包目录 URL 不开放，源码布局与已保存布局仍各走原流程；移动通用解析的 YAML 资源需保留。离线桌面／移动资源使用实际打包 WASM 再运行源补丁与旧布局。上述结果不能替代新安装包或设备验收。
+
+## 场景原文草稿布局回写
+
+[本轮结果](test-results/scene-source-layout/results.json) 汇总当前执行范围；[Chrome 草稿流程](test-results/scene-source-layout/browser-render/browser.json) 与 [旧保存布局](test-results/scene-source-layout/browser-saved-layout/browser.json) 分别验证本地应用／普通保存和事务保存；[引擎专项](test-results/scene-source-layout/engine-final.log) 覆盖新增源补丁、旧保存布局及 JSON 来源。
+
+```sh
+node --test --test-isolation=none scripts/tests/scene-source-layout.test.mjs \
+  scripts/tests/scene-layout.test.mjs scripts/tests/json-source.test.mjs
+node --test scripts/tests/scene-source-layout-host.test.mjs \
+  scripts/tests/scene-source-layout-ui.test.mjs scripts/tests/scene-layout-ui.test.mjs scripts/tests/scene-draft-preview-ui.test.mjs
+VIENTO_SCENE_SOURCE_LAYOUT_OUTPUT=/独立证据目录 node scripts/tests/scene-source-layout-smoke.mjs /浏览器绝对路径
+```
+
+核对 Scene2D v1／v2／v3、重复定义的独立实例、分组后代移动、100 批次历史、32 会话容量及退出释放。坐标补丁只替换变化数值；验证 BOM／CRLF／Unicode、未改指数／负零、解码重复键、无效身份、伪造候选、前后 128 KiB UTF-8 边界及孤立代理字符。
+
+宿主与真实 Chrome 另验证源码模式入口、完整正文审阅、取消保留文本、应用后按原基线计算 dirty（包括回到基线）、普通保存／重开、编辑会话基线冲突、旧画面／换文档／异步 hash 的归属失效、三语窄屏与资源清理。应用前后作者文件、元数据和构建输入须原字节一致；普通保存单独检查正文的预期变化。外部文件已改动时，本地应用不读盘且仍可完成，随后的预览应报告基线冲突，普通保存必须按原版本条件拒绝覆盖并保留草稿。草稿模式不得调用 `scene.update` 或触发 World 写入忙碌状态，保存版布局仍须回归；局部历史不代表跨文本／表单／画布统一撤销，也不等于安装包或设备验收。
+
+## 场景原文草稿预览
+
+[本轮结果](test-results/scene-draft-preview/results.json) 与 [Chrome 自然往返流程](test-results/scene-draft-preview/browser-final-verified/browser.json) 分别记录代码／HTTP 与实际界面验证。
+
+```sh
+node --test scripts/tests/scene-draft-preview.test.mjs scripts/tests/scene-preview-service.test.mjs \
+  scripts/tests/scene-preview-http.test.mjs scripts/tests/scene-preview-ui.test.mjs \
+  scripts/tests/scene-draft-preview-ui.test.mjs \
+  scripts/tests/source-location-ui.test.mjs scripts/tests/project-build-ui.test.mjs
+VIENTO_SCENE_DRAFT_OUTPUT=/独立证据目录 node scripts/tests/scene-draft-preview-smoke.mjs /浏览器绝对路径
+```
+
+核对原文／元数据不写入、保存版构建快照不变、128 KiB 及 HTTP 总请求边界、冻结期间外部变化、错误保留最后有效画面、来源摘要与焦点、关闭往返／切场景／迟到响应，以及中英日窄屏。浏览器只测静态设计状态，不替代 Godot 运行、新安装包或 Android 设备验收。历次报告保留原样。
+
+## 嵌套场景分组
+
+本轮 [验证结果](test-results/scene-groups/results.json) 包含 1269 通过／19 跳过、真实 Godot、旧版兼容和离线打包。分组交互及 16 层窄屏证据见 [Chrome 实测](test-results/scene-groups/browser-final/browser.json)。
+
+```sh
+node --test scripts/tests/scene-groups.test.mjs scripts/tests/scene-layout.test.mjs \
+  scripts/tests/scene-preview-service.test.mjs scripts/tests/scene-outline-ui.test.mjs
+VIENTO_GODOT_BIN=/绝对路径/Godot可执行文件 \
+  node --test scripts/tests/scene-group-runtime.test.mjs
+VIENTO_SCENE_GROUPS_OUTPUT=/新的空证据目录 \
+  node scripts/tests/scene-groups-smoke.mjs /绝对路径/chromium
+```
+
+分组语义检查覆盖 UUID、成员、父组、环、数量／深度边界、搜索时保留祖先、按作者顺序选取后代、原文片段和精确来源。真实 SIGKILL 覆盖新建、更新及升级的提交／回滚边界，伪造组树的日志即使重算摘要也拒绝恢复。资源包往返核对组与实例 UUID、原文和去重后的定义／所属故事／素材。
+
+兼容样本分别固定旧 v1／v2 的观察输入、计划、生成文件、来源映射及后端摘要。新作者 v3 应生成 plan2，结构附加信息不进入冻结计划；真实 Godot 从冻结输入运行，源工程离线后仍可重放。布局保持分组与成员，Rust 只处理实例几何键，组选择不改变绘制顺序。
+
+浏览器实测检查显式启用、空组删除保护、父子成员、搜索／折叠、三语窄屏、组名到真实原文选区、后代共同拖动与撤销、保存重开及外部组名变化后的冲突保留。离线打包执行仅验证桌面／移动资源中的实际模块和 WASM；安装窗口、移动设备、空间层次和片段仍需另行验收；本轮单场景源码的坐标回写另见上方专项，跨视图统一撤销未实现。
+
+## 独立场景实例
+
+本轮 [完整验证结果](test-results/scene-instances/results.json) 记录应用 1233 通过／19 跳过、真实 Godot、新实例 Chrome 5 条与旧 v1 11 条流程，以及离线桌面／移动打包执行。实例实测截图与步骤见 [浏览器记录](test-results/scene-instances/browser/browser.json)。
+
+```sh
+node --test scripts/tests/scene-instances.test.mjs scripts/tests/scene-model.test.mjs \
+  scripts/tests/world-scene-create.test.mjs scripts/tests/world-scene-update.test.mjs
+VIENTO_GODOT_BIN=/绝对路径/Godot可执行文件 \
+  node --test scripts/tests/scene-instance-runtime.test.mjs
+VIENTO_SCENE_INSTANCES_OUTPUT=/新的空证据目录 \
+  node scripts/tests/scene-instances-smoke.mjs /绝对路径/chromium
+```
+
+`scene-instances.test.mjs` 的 16 项检查覆盖共享定义的独立身份／覆盖、重复或缺失 UUID、128 实例上限、按实例重排的原文范围与数字写法、v1 固定计划、显式升级和拒绝降级。真实子进程分别在创建、更新及 v1→v2 升级的发布与提交边界被 SIGKILL，恢复逐字比较正文／登记，并确认不覆盖崩溃后修改的定义正文；伪造实例身份即使重算日志摘要仍被拒绝。选择式资源包导出／导入核对实例原文，并只保留一份共享定义、所属故事和图片。
+
+运行专项区分 v1／v2 生成器、来源映射和协议，核对每帧的实例／定义配对、事件顺序及诊断来源；配置真实 Godot 后验证同一对象的移动实例与静止实例。布局／画布／表单专项还需检查同一定义的多选、单实例位置修改、复制、重排、撤销重做、精确来源、三语和旧场景显式升级。所有操作使用隔离工程；Rust 核心收到不透明几何键，实例语义仍由 JS 处理。
+
+本轮实例专项日志见 [16 项语义／事务／资源往返](test-results/scene-instances/semantics-tests.log)，旧链路联合日志见 [80 项兼容检查](test-results/scene-instances/semantics-legacy-tests.log)。日志组有重叠；这些检查不代表持久层次、片段、剧本事件、大规模场景、旧客户端全面只读或安装设备已验收。
+
+## 场景来源模型与原文定位
+
+```sh
+node --test scripts/tests/json-source.test.mjs scripts/tests/scene-model.test.mjs scripts/tests/source-location-ui.test.mjs
+VIENTO_SCENE_PREVIEW_OUTPUT=/empty/evidence/path node scripts/tests/scene-preview-smoke.mjs /usr/bin/google-chrome
+```
+
+解析测试核对严格 JSON、解码后重复键、BOM／CRLF／emoji、转义指针和大小／深度／节点预算。模型测试用拆分前的固定样例逐字段比较 v1 计划、快照摘要及 Godot 生成文件；分别检查字段继承／覆盖、缺字段近似范围、对象重排和旧事务重复键恢复，包括被覆盖值超出新索引预算时的兼容。编辑器测试使用真实 runtime 代码，验证当前正文摘要、行尾偏移转换、未保存草稿与异步导航隔离。
+
+真实 Chrome 从预览属性点击到主编辑器，核对场景位置与继承速度的实际选区、合成尺寸的近似提示及外部修改后的过期提示。浏览器样例及模型检查均使用隔离工程，新增来源不进入冻结计划，也不改写作者数据。证据见 [来源模型验证](test-results/scene-source-model/results.json)；该历史记录不代表 Rust 语义、稳定实例、Tauri 或 Android 设备验收；稳定实例另见本页上方专项。
+
+## 共享 Rust 核心
+
+`npm run core:test` 不依赖 Tauri/GTK，运行独立核心的原生测试；`npm run core:build` 准备浏览器实际使用的 WASM，应用检查会自动执行该准备步骤。`scripts/tests/studio-core.test.mjs` 验证真实 WASM、数值兼容、无效批次、缓冲协议及核心缺失／损坏后的失败状态。Node 测试通过独立适配器加载二进制，`engine/` 继续禁止 Node 和前端依赖。需要核对原生与 WASM 输出时：
+
+```sh
+cargo build --locked --manifest-path crates/viento-studio-core/Cargo.toml --bin viento-core
+VIENTO_STUDIO_CORE_BIN="$PWD/crates/viento-studio-core/target/debug/viento-core" \
+  node --test scripts/tests/studio-core*.test.mjs
+```
+
+`studio-core-draft.test.mjs` 另验证真实 WASM 与持久 native JSON-lines 会话的草稿状态：100 步历史、128 对象批次、无操作／无效批次保留 redo、32 草稿容量、句柄释放与失效、缓冲不可重复消费。UI 和集成测试在退出时显式释放草稿，不依赖垃圾回收。
+
+`studio-core-save.test.mjs` 验证保存阶段及错误分类、宿主可写门禁、审阅失效、原生修改冻结、重复／迟到请求与刷新阶段。原生和 WASM 对照使用持久会话，避免逐请求重启掩盖状态错误。布局 UI 另验证嵌套错误回执、刷新失败和异步会话归属。`scene-layout-smoke.mjs` 使用两份真实延迟检查响应，验证关闭重开后旧响应不能批准或解锁新草稿。
+
+布局专项与真实浏览器仍需验证一批次撤销、检查／保存、冲突及未改字段；`scene-selection-smoke.mjs` 另连续打开／编辑／撤销／关闭 40 次，验证超过 32 个槽位后仍能创建新草稿，并核对作者文件未写入。原生／WASM 一致不等于已验 Android WebView 或 Tauri 安装包。当前保存链证据见 [Rust 保存工作流验证](test-results/rust-layout-save/results.json)，前一轮草稿证据见 [Rust 草稿历史验证](test-results/rust-layout-history/results.json)，初次几何迁移见 [Rust 核心验证](test-results/rust-studio-core/results.json)。
+
+## 应用检查
+
+使用 Node.js 24 和 Rust 稳定版，在仓库根目录执行：
+
+```sh
+rustup target add wasm32-unknown-unknown
 npm ci
+npm run core:test
 npm run check -- --app-only
 ```
 
@@ -182,3 +302,25 @@ python3 desktop/tests/native-library.py /path/to/tauri-driver /path/to/WebKitWeb
 将新日志、截图和摘要放入独立证据目录，链接到对应变更说明。历史阶段摘要见 [验证历史](history/VALIDATION.md)，全部版本化和日期型报告见 [历史导航](history/README.md)；`test-results/` 中的旧日志、指纹及历史功能图不覆盖。
 
 测试结束后先退出进程、保留需要交付的产物，再用 `npm run clean -- --dry-run` 核对清理范围。自定义 Cargo target 和本轮新建的模拟器不在默认清理范围内，按实际创建路径单独处理；用户工程、已有模拟器、全局 SDK 和待交付产物保留。完整说明见 [桌面交付与清理](../desktop/README.md#交付与清理)。
+
+## 场景布局编辑
+
+```sh
+node --test scripts/tests/scene-layout*.test.mjs scripts/tests/project-build-ui.test.mjs scripts/tests/desktop-close.test.mjs
+VIENTO_SCENE_LAYOUT_OUTPUT=/绝对路径/新的空证据目录 node scripts/tests/scene-layout-smoke.mjs /绝对路径/chromium
+```
+
+布局专项验证位置草稿、100 步撤销／重做、拖动和取消、数值输入、版本前置条件、继承及 JSON 原文保真、资源包往返与生成产物中的坐标。界面回归覆盖保存响应校验、丢失响应后的只读核对，以及场景身份或路径变化时保留草稿。
+
+真实 Chrome 使用临时空白工程和真实 HTTP 服务，覆盖拖动、32 像素吸附、平移、检查／保存、放弃确认、中英日和 390px 布局。保存后预览刷新、旧构建计划失效；外部冲突和响应丢失均不重复写入。浏览器专项无需配置 Godot；完整应用回归另外提供真实 Godot、原生归档与移动存储辅助程序，避免集成测试跳过。桌面关闭脚本的草稿／忙碌保护有回归，实际 Tauri 窗口与 Android 设备仍需单独验收。
+
+## 场景多选与批量布局
+
+```sh
+node --test --test-isolation=none scripts/tests/scene-layout.test.mjs scripts/tests/scene-layout-integration.test.mjs scripts/tests/scene-layout-canvas.test.mjs scripts/tests/scene-layout-ui.test.mjs scripts/tests/scene-preview-ui.test.mjs
+VIENTO_SCENE_SELECTION_OUTPUT=/绝对路径/新的空证据目录 node scripts/tests/scene-selection-smoke.mjs /绝对路径/chromium
+```
+
+专项使用三个不同尺寸、图片继承方式不同的对象，核对组合键和列表选择、全选／清选、共同位移、实际抓取对象作为吸附基准、六向对齐以及批次撤销／重做。边界回归包括浮点坐标、整组限制范围、无效批次原子拒绝及未完成数值输入保护。多选时隐藏单对象坐标框，切回单选恢复。
+
+真实 Chrome 检查批量保存、冲突草稿、三语与 390px 布局；保存只修改场景位置，保留 UUID、BOM／CRLF、元数据、OC、投影和素材。集成测试另外核对资源包迁移及生成 Godot 场景中的全部坐标。原有只读预览和单对象布局测试继续保留。

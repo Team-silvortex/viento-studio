@@ -18,7 +18,7 @@ test('portable engine has no dependency back into Node adapters, frontend or nat
       assert.notEqual(node.type, 'ImportExpression', `${file}: host imports must be injected`);
       if (/^(ImportDeclaration|ExportAllDeclaration|ExportNamedDeclaration)$/.test(node.type) && node.source) {
         const specifier = node.source.value;
-        assert.ok(specifier === 'yaml' || (specifier.startsWith('./') && new URL(specifier, root).href.startsWith(root.href)), `${file}: ${specifier}`);
+        assert.ok(specifier === 'yaml' || specifier === '../node_modules/yaml/browser/index.js' || (specifier.startsWith('./') && new URL(specifier, root).href.startsWith(root.href)), `${file}: ${specifier}`);
       }
       for (const child of Object.values(node)) if (Array.isArray(child)) child.forEach(visit); else visit(child);
     };

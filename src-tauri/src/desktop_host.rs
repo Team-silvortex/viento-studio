@@ -632,8 +632,8 @@ const CLOSE_SCRIPT: &str = r#"(async () => {
   const panel = document.querySelector('#docEditPanel');
   const indicator = document.querySelector('#docEditDirtyIndicator');
   if (!panel || !indicator || !document.body) return;
-  const busy = panel.getAttribute('aria-busy') === 'true' || !!document.querySelector('#projectSettingsDialog[aria-busy="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[aria-busy="true"], #objectProjectionDialog[aria-busy="true"]');
-  const dirty = indicator.classList.contains('is-unsaved') || !!document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #sceneCreateDialog[data-dirty="true"], #objectProjectionDialog[data-dirty="true"]');
+  const busy = panel.getAttribute('aria-busy') === 'true' || !!document.querySelector('#projectSettingsDialog[aria-busy="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[aria-busy="true"], #sceneLayoutDialog[aria-busy="true"], #objectProjectionDialog[aria-busy="true"]');
+  const dirty = indicator.classList.contains('is-unsaved') || !!document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #sceneCreateDialog[data-dirty="true"], #sceneLayoutDialog[data-dirty="true"], #objectProjectionDialog[data-dirty="true"]');
   window.__vientoCloseGuard = {id, inert: document.body.inert};
   document.body.inert = true;
   await fetch('/__desktop/close-response', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id, busy, dirty})});

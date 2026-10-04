@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { parse } from 'acorn';
 import { fixture, serve, request, write } from './helpers.mjs';
 import { writeDocumentAtomically } from '../lib/doc-file-store.mjs';
 import { API_PATHS } from '../lib/doc-api-contract.mjs';
@@ -35,11 +36,18 @@ test('browser module graph is served as JavaScript; server-only modules stay pri
     assert.match(response.headers.get('Content-Type'), /javascript/, pathname);
     assert.match(response.headers.get('Cache-Control'), /no-cache/, pathname);
     const source = await response.text();
-    for (const match of source.matchAll(/\bfrom\s*['"]([^'"]+)['"]/g)) {
-      pending.push(new URL(match[1], `${base}${pathname}`).pathname);
+    const ast = parse(source, { sourceType: 'module', ecmaVersion: 'latest' });
+    for (const node of ast.body) {
+      if (!/^(ImportDeclaration|ExportAllDeclaration|ExportNamedDeclaration)$/.test(node.type) || !node.source) continue;
+      const specifier = node.source.value;
+      assert.match(specifier, /^(?:\.?\.?\/)/, `browser module needs an explicit path: ${pathname} → ${specifier}`);
+      pending.push(new URL(specifier, `${base}${pathname}`).pathname);
     }
   }
   assert.ok(visited.has('/scripts/lib/doc-api-contract.mjs'));
+  assert.ok(visited.has('/engine/scene-source-layout.mjs'), 'source layout stays in the portable engine graph');
+  assert.ok(visited.has('/engine/studio-core.mjs'), 'source layout delegates parsing and patching to the Rust bridge');
+  assert.equal([...visited].some(value => value.startsWith('/node_modules/')), false, 'the editor no longer loads the host YAML distribution');
   for (const module of ['document-contract', 'source-draft', 'field-changes', 'media-format', 'document-values']) {
     assert.ok(visited.has(`/engine/${module}.mjs`), module);
   }
@@ -49,6 +57,21 @@ test('browser module graph is served as JavaScript; server-only modules stay pri
   assert.equal((await fetch(`${base}/engine/README.md`)).status, 404);
   assert.equal((await request(base, '/api/health')).status, 200);
   assert.equal((await request(base, '/api/doc?path=../README.md')).status, 400);
+});
+
+test('installed parsing dependencies remain private after source editing moves into Rust', async t => {
+  const root = await fixture(t), base = await serve(t, root);
+  for (const request of ['/node_modules/yaml/browser/index.js', '/node_modules/yaml/browser/dist/index.js',
+    '/node_modules/yaml/browser/dist/schema/yaml-1.1/timestamp.js', '/node_modules/yaml/package.json',
+    '/node_modules/yauzl/index.js', '/node_modules/yaml/browser/', '/node_modules/yaml/browser/index.js.map']) {
+    for (const method of ['GET', 'HEAD']) {
+      const response = await fetch(base + request, { method });
+      assert.equal(response.status, 404, `${method} ${request}`); await response.arrayBuffer();
+    }
+  }
+  const post = await fetch(base + '/node_modules/yaml/browser/index.js', { method: 'POST' });
+  assert.equal(post.status, 405); assert.equal(post.headers.get('Allow'), 'GET, HEAD');
+  assert.equal((await request(base, '/api/health')).status, 200);
 });
 
 test('same-version concurrent edits accept one writer, including source-path aliases', async (t) => {

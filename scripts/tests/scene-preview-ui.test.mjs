@@ -218,3 +218,104 @@ test('refreshing a scene preserves manual view zoom while a changed viewport fit
   view.setScene({ ...value, scene: { ...value.scene, viewport: [1600, 960] } }); assert.equal(view.getView().scale, 0.5);
   view.destroy();
 });
+
+test('source-aware preview links carry scene and definition revisions without mixing their files or aggregate dimensions', async () => {
+  const h = await harness(), data = preview(), scenePath = data.scene.sourcePath, definitionPath = data.actors[0].sourcePath;
+  const locate = (sourcePath, propertyPath, marker, exact = true) => ({ sourcePath, propertyPath, objectId: sourcePath === scenePath ? sceneOne : actorId,
+    sourceRevision: `sha256:${marker.repeat(64)}`, sourceRange: { start: 10, end: 20, encoding: 'utf-16', propertyPath, exact } });
+  const scene = locate(scenePath, '', 'a'), definition = locate(definitionPath, '', 'b'), declaration = locate(scenePath, '/actors/0', 'a');
+  const fields = { position: locate(scenePath, '/actors/0/position', 'a'), speed: locate(definitionPath, '/configuration/speed', 'b'),
+    size: locate(definitionPath, '/configuration', 'b', false), 'size/0': locate(definitionPath, '/configuration/width', 'b'),
+    'size/1': locate(scenePath, '/actors/0/size/1', 'a') };
+  data.sourceLocations = { scene, actors: [{ objectId: actorId, definition, declaration, fields }] };
+  await h.resolve(data); h.element('scenePreviewObjects').querySelector('button').click();
+  const rows = h.element('scenePreviewProperties').querySelectorAll('dd');
+  for (const [row, field] of [[0, 'position'], [3, 'speed']]) {
+    rows[row].querySelector('button').click(); await flushDialogs(); assert.deepEqual(h.opened.at(-1), [fields[field].sourcePath, fields[field]]);
+  }
+  const dimensions = rows[1].querySelectorAll('button'); assert.equal(dimensions.length, 3);
+  for (const [index, field] of ['size', 'size/0', 'size/1'].entries()) {
+    dimensions[index].click(); await flushDialogs(); assert.deepEqual(h.opened.at(-1), [fields[field].sourcePath, fields[field]]);
+  }
+  for (const [id, expected] of [['scenePreviewActorSource', definition], ['scenePreviewDeclarationSource', declaration], ['scenePreviewSource', scene]]) {
+    h.element(id).click(); await flushDialogs(); assert.deepEqual(h.opened.at(-1), [expected.sourcePath, expected]);
+  }
+});
+
+test('source sidecars also locate ordinary actors and a refreshed range replaces old inspector link closures', async () => {
+  const h = await harness(), data = preview(); delete data.actors[0].fieldSources; delete data.actors[0].origin;
+  const original = { ...data.actors[0].declaration, propertyPath: '/actors/0/position', sourceRevision: `sha256:${'a'.repeat(64)}`,
+    sourceRange: { start: 10, end: 20, encoding: 'utf-16', propertyPath: '/actors/0/position', exact: true } };
+  data.sourceLocations = { actors: [{ objectId: actorId, fields: { position: original } }] };
+  await h.resolve(data); h.element('scenePreviewObjects').querySelector('button').click();
+  h.element('scenePreviewProperties').querySelectorAll('dd')[0].querySelector('button').click(); await flushDialogs();
+  assert.deepEqual(h.opened.at(-1)[1], original);
+  h.controller.invalidate(); const updated = structuredClone(data); updated.previewId = previewTwo;
+  const next = updated.sourceLocations.actors[0].fields.position; next.sourceRevision = `sha256:${'b'.repeat(64)}`; next.sourceRange.start = 40; next.sourceRange.end = 50;
+  await h.resolve(updated); h.element('scenePreviewObjects').querySelector('button').click();
+  h.element('scenePreviewProperties').querySelectorAll('dd')[0].querySelector('button').click(); await flushDialogs();
+  assert.deepEqual(h.opened.at(-1)[1], next); assert.notDeepEqual(h.opened.at(-1)[1], original);
+});
+
+test('v2 repeated definitions select and locate each instance independently after row reorder', async () => {
+  const h = await harness(), data = preview(); data.schemaVersion = 2;
+  const first = previewOne, second = previewTwo;
+  data.actors[0].instanceId = first;
+  data.actors.push({ ...structuredClone(data.actors[0]), instanceId: second, position: [400, 120], speed: 99,
+    declaration: { ...data.actors[0].declaration, propertyPath: '/actors/1' } });
+  data.sourceLocations = { actors: data.actors.map((actor, index) => ({ objectId: actorId, instanceId: actor.instanceId,
+    fields: { position: { ...actor.declaration, propertyPath: `/actors/${index}/position`, sourceRevision: `sha256:${'a'.repeat(64)}` } } })) };
+  await h.resolve(data); const buttons = h.element('scenePreviewObjects').querySelectorAll('button');
+  assert.deepEqual(buttons.map(button => button.dataset.objectId), [actorId, actorId]);
+  assert.deepEqual(buttons.map(button => button.dataset.actorId), [first, second]);
+  buttons[1].click(); assert.equal(buttons[0].getAttribute('aria-pressed'), 'false'); assert.equal(buttons[1].getAttribute('aria-pressed'), 'true');
+  assert.match(h.element('scenePreviewProperties').textContent, /400, 120/); assert.match(h.element('scenePreviewProperties').textContent, new RegExp(second));
+  h.element('scenePreviewProperties').querySelector('dd').querySelector('button').click(); await flushDialogs();
+  assert.equal(h.opened.at(-1)[1].propertyPath, '/actors/1/position');
+  h.controller.invalidate(); const next = structuredClone(data); next.previewId = imageId; next.actors.reverse(); next.sourceLocations.actors.reverse();
+  next.sourceLocations.actors[0].fields.position.propertyPath = '/actors/0/position';
+  await h.resolve(next); h.element('scenePreviewObjects').querySelectorAll('button')[0].click();
+  assert.match(h.element('scenePreviewProperties').textContent, /400, 120/);
+  h.element('scenePreviewProperties').querySelector('dd').querySelector('button').click(); await flushDialogs();
+  assert.equal(h.opened.at(-1)[1].propertyPath, '/actors/0/position');
+});
+
+test('preview rejects unsupported versions and repeated or missing instance identities before rendering', async () => {
+  for (const mutate of [data => { data.schemaVersion = 3; },
+    data => { data.schemaVersion = 2; },
+    data => { data.schemaVersion = 2; data.actors[0].instanceId = previewOne; data.actors.push(structuredClone(data.actors[0])); },
+    data => { data.actors[0].instanceId = previewOne; }]) {
+    const h = await harness(), data = preview(); mutate(data); await h.resolve(data);
+    assert.notEqual(h.container.dataset.scenePreviewState, 'ready'); assert.equal(h.element('scenePreviewObjects').querySelectorAll('button').length, 0);
+  }
+});
+
+test('grouped saved previews use the editor sidecar and open the exact group name source', async () => {
+  const h = await harness(), value = preview(), groupId = '77777777-7777-4777-8777-777777777777';
+  value.schemaVersion = 2; value.actors[0].instanceId = actorId;
+  value.sceneStructure = { format: 'viento-scene-structure', schemaVersion: 1, sourceSchemaVersion: 3,
+    groups: [{ groupId, name: 'Party <script>' }], memberships: [{ instanceId: actorId, groupId }] };
+  const location = { objectId: sceneOne, sourcePath: value.scene.sourcePath, propertyPath: '/groups/0/name', sourceRevision: `sha256:${'a'.repeat(64)}`, sourceRange: { start: 10, end: 24 } };
+  value.sourceLocations = { groups: [{ groupId, fields: { name: location } }] };
+  await h.resolve(value); assert.equal(h.container.dataset.scenePreviewState, 'ready');
+  const root = h.element('scenePreviewObjects'); assert.equal(root.querySelectorAll('script').length, 0);
+  root.querySelector(`button[data-group-source="${groupId}"]`).click(); await flushDialogs();
+  assert.equal(h.opened.at(-1)[0], value.scene.sourcePath); assert.deepEqual(h.opened.at(-1)[1], location);
+  const search = h.element('scenePreviewSearch'); search.value = 'Traveler'; search.dispatch('input');
+  assert.equal(root.querySelectorAll('button[data-group-toggle]').length, 1);
+  root.querySelector(`button[data-actor-id="${actorId}"]`).click(); assert.match(h.element('scenePreviewInspector').textContent, /Traveler/);
+});
+
+test('invalid scene structure sidecars never paint or expose a misleading group tree', async () => {
+  for (const alter of [value => { value.sceneStructure.groups[0].parentGroupId = value.sceneStructure.groups[0].groupId; },
+    value => { value.sceneStructure.memberships[0].instanceId = sceneTwo; }, value => { value.sceneStructure.memberships.push(value.sceneStructure.memberships[0]); }]) {
+    const h = await harness(), value = preview(), groupId = '77777777-7777-4777-8777-777777777777';
+    value.schemaVersion = 2; value.actors[0].instanceId = actorId;
+    value.sceneStructure = { format: 'viento-scene-structure', schemaVersion: 1, sourceSchemaVersion: 3, groups: [{ groupId, name: 'Party' }], memberships: [{ instanceId: actorId, groupId }] };
+    alter(value); await h.resolve(value);
+    assert.equal(h.container.dataset.scenePreviewState, 'error'); assert.equal(h.element('scenePreviewCanvas').hidden, true);
+    assert.equal(h.viewCalls.filter(call => call.name === 'setScene' && call.args[0]).length, 0);
+    assert.equal(h.element('scenePreviewObjects').querySelectorAll('[data-group-toggle]').length, 0);
+    assert.ok(h.calls.some(call => call.request.method === 'DELETE' && call.url.includes(value.previewId)), 'rejected structure releases its captured preview');
+  }
+});

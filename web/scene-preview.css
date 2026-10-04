@@ -19,7 +19,8 @@
 .scene-preview-properties small { display: block; color: #52675c; padding-block: 4px; }
 .scene-preview-properties button { font-size: 12px; min-height: 30px !important; padding: 5px 8px; }
 #scenePreviewProperties > button { margin: 4px; white-space: normal; }
-#scenePreviewSummary { overflow-wrap: anywhere; }
+#scenePreviewSummary, #scenePreviewProvenance, #scenePreviewMessage { overflow-wrap: anywhere; }
+.scene-preview-toolbar > button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 #scenePreviewDiagnostics { overflow-wrap: anywhere; }
 .scene-preview[data-scene-preview-state="error"] #scenePreviewMessage, .scene-preview[data-scene-preview-state="invalid"] #scenePreviewMessage { color: #a32424; }
 @media (max-width: 700px) {
@@ -30,3 +31,32 @@
   .scene-preview-properties { display: grid; grid-template-columns: minmax(90px, 30%) minmax(0, 1fr); gap: 6px 12px; }
   .scene-preview-properties dt, .scene-preview-properties dd { margin: 0; }
 }
+
+.scene-layout { width: min(1100px, calc(100vw - 24px)); }
+#sceneLayoutCanvas { display: block; width: 100%; height: clamp(300px, 52vh, 530px); border: 0; box-shadow: 0 0 0 1px #8da698; background: #dbe4df; border-radius: 8px; touch-action: none; }
+#sceneLayoutCanvas:focus-visible { outline: 3px solid #24684b; outline-offset: 3px; }
+#sceneLayoutObjects { padding-inline-start: 24px; }
+#sceneLayoutObjects button { width: 100%; white-space: normal; overflow-wrap: anywhere; text-align: start; }
+#sceneLayoutObjects li { margin-block: 6px; }
+#sceneLayoutObjects [aria-pressed="true"], #sceneLayoutPan[aria-pressed="true"] { background: #285b47; color: white; }
+.scene-layout .scene-settings { grid-template-columns: minmax(0, 1fr); }
+.scene-layout pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 220px; overflow: auto; }
+#sceneLayoutMessage { min-height: 1.5em; }
+@media (max-width: 700px) { #sceneLayoutCanvas { height: 300px; } }
+
+.scene-layout-object-row { display: flex; align-items: center; gap: 8px; }
+.scene-layout-object-row > input { flex: 0 0 auto; width: 18px; height: 18px; }
+.scene-layout-object-row > button { min-width: 0; }
+.scene-layout-selection-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.scene-layout-align { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-top: 16px; padding: 10px 0 0; border: 0; border-top: 1px solid #bdcec4; min-width: 0; }
+.scene-layout-align button { white-space: normal; overflow-wrap: anywhere; padding-inline: 6px; }
+.scene-layout-align .build-hint { grid-column: 1 / -1; }
+
+/* Scene outlines use source identities; grouping never reorders the canvas. */
+#scenePreviewObjects, #sceneLayoutObjects { list-style: none; padding-inline-start: 0; }
+#scenePreviewObjects ol, #sceneLayoutObjects ol { list-style: none; padding-inline-start: 12px; border-inline-start: 1px solid #bdcec4; margin-inline-start: 4px; }
+.scene-outline-group-actions { display: flex; align-items: center; gap: 6px; margin-block: 4px; padding-inline-start: 6px; }
+.scene-outline-group-actions > input { flex: 0 0 auto; width: 18px; height: 18px; }
+.scene-outline-group-actions > button { min-width: 0; font-size: 12px; }
+/* Keep deep outlines readable in a narrow inspector while retaining nesting. */
+#scenePreviewObjects ol ol ol ol, #sceneLayoutObjects ol ol ol ol { padding-inline-start: 3px; margin-inline-start: 1px; }

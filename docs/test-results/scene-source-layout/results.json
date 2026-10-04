@@ -1,0 +1,204 @@
+{
+  "date": "2026-10-03",
+  "version": "0.0.6",
+  "baselineCommit": "94e9626fc11c64f61a7391f7b081bc029306345a",
+  "scope": "Unreleased current-scene source draft layout: exact source → shared Rust geometry/history → reviewed coordinate-token patch → in-memory text application → normal editor save.",
+  "contracts": {
+    "sourceVersions": [
+      1,
+      2,
+      3
+    ],
+    "runtimePlanVersions": [
+      1,
+      2
+    ],
+    "maxDraftUtf8Bytes": 131072,
+    "newPersistentSchema": false,
+    "rustProtocolChanged": false,
+    "sourceMode": "Only the current registered scene in the active dirty source editor can receive a reviewed layout patch; fields/blocks and new unregistered scenes cannot.",
+    "geometry": "Saved and source-only layouts share the existing Rust position/100-step history session; source-only drafts have no World save command or save-state API.",
+    "patch": "Replace changed coordinate scalar ranges only. Preserve untouched source bytes, BOM, CRLF, identity, groups, inheritance and numeric spelling.",
+    "ownership": "Preview provenance, source hash, editor/session baseline and origin dialog/scene ownership are checked again after asynchronous preparation and before synchronous memory replacement.",
+    "apply": "No filesystem, registry or build write. The editor retains its original expectedVersion and cached disk content. Exact return to baseline clears dirty state and refreshes saved preview.",
+    "externalChange": "A disk edit does not prevent a memory-only apply; automatic draft preview can reject its old baseline with 409, and normal Save opens the existing conflict workflow without replacing the external file.",
+    "dependency": "JSON CST uses the installed YAML browser ESM; HTTP allows only JavaScript inside that distribution with contained paths, and mobile maps it to the existing vendor/YAML assets."
+  },
+  "checks": {
+    "engine-final": {
+      "tests": 44,
+      "pass": 44,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "host-integration": {
+      "tests": 48,
+      "pass": 48,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "app-check-verified": {
+      "tests": 1363,
+      "pass": 1344,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 19
+    },
+    "ui": {
+      "tests": 88,
+      "pass": 88,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "browser-dependencies/parser-portable.log": {
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "browser-dependencies/static-module-routes-complete.log": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    }
+  },
+  "countsOverlap": true,
+  "javascriptSyntaxFiles": 329,
+  "versionAndApiPreflight": true,
+  "browsers": {
+    "browser-render": {
+      "report": "browser-render/browser.json",
+      "browser": "Chrome/154.0.8037.97",
+      "flowsPassed": 5,
+      "assertions": 99,
+      "limitations": [
+        "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+        "This checks source-draft layout editing and normal editor save in isolated fixtures. No engine process, native IPC or device acceptance is claimed."
+      ]
+    },
+    "browser-saved-layout": {
+      "report": "browser-saved-layout/browser.json",
+      "browser": "Chrome/154.0.8037.97",
+      "flowsPassed": 8,
+      "limitations": [
+        "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+        "Layout edits exercise static positions only. No Godot tool, runtime movement, audio, or gameplay was used."
+      ]
+    }
+  },
+  "nativeCore": "Unchanged crate built offline in a temporary target; native/WASM parity enabled by VIENTO_STUDIO_CORE_BIN during the full app check.",
+  "godot": {
+    "enabled": true,
+    "version": "4.7.2-stable",
+    "scope": "Existing build/runtime regressions; no new runtime features."
+  },
+  "wasm": {
+    "bytes": 141948,
+    "sha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+    "sourceUnchanged": true
+  },
+  "offlinePackages": {
+    "report": "packaged-resources.json",
+    "desktopFiles": 65,
+    "mobileFiles": 63,
+    "loadedModulesPerIsolatedVm": 82,
+    "runtimeLog": "packaged-runtime.log",
+    "verified": [
+      "Source schema v1/v2/v3 coordinate patch, review/apply preparation and stale rejection",
+      "Rust undo/redo, repeated definitions and grouped descendants",
+      "Existing saved-layout command and save-state acknowledgment; no native commit"
+    ],
+    "network": "No download; pinned license extracted read-only from installed AppImage."
+  },
+  "iterations": [
+    {
+      "report": "browser/browser.json",
+      "result": "Initial browser found bare yaml import from the new source helper. Fixed explicit public browser ESM path and HTTP/module/mobile loading; protected route tests added."
+    },
+    {
+      "report": "app-check.log",
+      "result": "1333 passed, 11 failed, 19 skipped. One route rejected YAML’s yaml-1.1 directory; ten isolated World checks lacked the standard TextDecoder global after index exports gained the Rust bridge. Corrected route and test environment; final complete rerun passed."
+    },
+    {
+      "report": "browser-verified/browser.json",
+      "result": "Four flows passed before a harness mistakenly expected in-memory apply to read external disk changes. Corrected test to verify preview 409 and normal Save conflict, matching the specified no-I/O contract."
+    },
+    {
+      "report": "browser-final/browser.json",
+      "result": "Five flows / 87 assertions passed; final render run adds explicit visible/scrollable full-source review checks and records 99 assertions."
+    },
+    {
+      "report": "browser-dependencies/static-module-routes-complete.log",
+      "result": "After the full app run, changed only the static-route test fixture to copy ordinary module files and alias directories for cross-platform compatibility. Both affected tests reran successfully."
+    }
+  ],
+  "cleanup": {
+    "generatedResources": {
+      "desktop/resources": {
+        "generatedBytes": 5912357,
+        "removed": true
+      },
+      "mobile/dist": {
+        "generatedBytes": 4487465,
+        "removed": true
+      },
+      "desktop/ui/i18n": {
+        "generatedBytes": 257726,
+        "removed": true
+      },
+      "desktop/.cache": {
+        "generatedBytes": 157609,
+        "removed": true
+      }
+    },
+    "previousResourcePreparationBytesRemoved": 10815129,
+    "savedLayoutDuplicatePngBytesRemoved": 941631,
+    "retainedSavedLayoutPngs": [
+      "layout-conflict-draft-zh.png",
+      "layout-drag-snap-zh.png",
+      "layout-narrow-ja.png",
+      "layout-saved-preview-zh.png"
+    ],
+    "temporaryStageAndCargoTarget": "Removed after guarded synchronization; author workspace, preferences and installed application remain unchanged.",
+    "sourceLayoutIntermediatePngBytesRemoved": 1791342,
+    "retainedSourceLayoutPngs": 5
+  },
+  "limitations": [
+    "19 skipped tests require native archive/mobile storage helper executables not supplied.",
+    "Linux source HTTP/Chrome and packaged module/WASM checks do not constitute Tauri window/IPC or Android device acceptance.",
+    "No new installer, version bump, commit or push.",
+    "Only coordinates in one scene source draft; no fragments, multi-file draft, shared undo history across views or new Rust scene semantics."
+  ],
+  "historicalEvidenceLegacyNetworkRustAndBackendFilesUnchanged": true,
+  "protectedBaselineFilesChecked": 1154,
+  "changedSourceSha256": {
+    "engine/index.mjs": "5d5031be4d39cd07b029bb0e4651e0c0a458138a2caaa898882944610b2958be",
+    "engine/json-source.mjs": "4ba390fc18fc178d437eeb14b50edebdc02b66772eec8417bfd74a7fcdd59ccb",
+    "engine/scene-layout.mjs": "247578b42addf2ebe467f44d6ebac04c61c721da938b097be0e9cffa8af267a0",
+    "engine/scene-source-layout.mjs": "7d5cb1bbac71d53c29a158356e00f03e503c7abe65a7c5083cde74c51cf1f2d4",
+    "mobile/prepare.mjs": "f223d33e55a5623d728d04ea7d15ced551fac3b223c095f034f5a47274974a3f",
+    "scripts/lib/doc-server-static-routes.mjs": "3aa97167b88909661e93854083bff7e4f5015fc85dfba5f19ac66c7fd7cfdeb2",
+    "scripts/lib/doc-server.mjs": "acb295fd118958d8911fae140ced6bca2b624507e34eaaac384352d69afcc1d0",
+    "scripts/tests/doc-api.test.mjs": "833d98f1bb4dbee8f4ec197025e8d42c1c30407b3fad14b0f0b9daa6552fdd82",
+    "scripts/tests/portable-engine-runtime.mjs": "3aa190a7e4492c422afa24286cafb34a19e5ba212f6ccefae5eeb86e989e5b6a",
+    "scripts/tests/portable-engine.test.mjs": "90c17db812f222ac50c24b51b2b178d2c5bf585c41de0919bb2e870e925f1a0f",
+    "scripts/tests/project-build-ui.test.mjs": "36020778aa92f3bafee43d8b241ce239d9bfd2dd2ae559f13c77179e2809b76a",
+    "scripts/tests/scene-source-layout-host.test.mjs": "4e48f27e545905897a60a8596c3077d1a0c4c07f5b39e8b09463d86ab2973e62",
+    "scripts/tests/scene-source-layout-smoke.mjs": "a0314c3468ab36013e05c4219229502a9dbeaf5bd549df1b2a21eb4e2bf3f701",
+    "scripts/tests/scene-source-layout-ui.test.mjs": "a1ffbf763016871969679771a5045d37bc40bd5f19e5f31202c93873900b657e",
+    "scripts/tests/scene-source-layout.test.mjs": "2c6b53cc4f156e5c64370eb2fc5a8c6802a679f0a582486530e0a4b13b9f2b34",
+    "scripts/tests/world-portable-runtime.mjs": "5ff47320402e41bdf3ed69c94b9636a30a6de69c033bf74d0e016a053a85079a",
+    "web/i18n/en.js": "321fae9ce05696b27a208f73f05a674e44427ca4273d0141cb274c5fcf6da5b9",
+    "web/i18n/ja.js": "b2e5044ff8b6dfb742172b7dc433f8e8adf87699e30be5ff7b3dbfc3e5d481d0",
+    "web/modules/app-project-build.js": "df91e2c5d5fb6b240f1088fb6ec5eaacf7caca0cd14a30f252866d6737c10c33",
+    "web/modules/app-runtime.js": "0779ff5b4bd791087c3fe519ce5ad4ee15ff7bf7b328421fe465fb0762c98938",
+    "web/modules/app-scene-layout.js": "1e6b5bc5df5ddfacd92bf9ae982c10c08e966d38825acefd725a25591dd5d10f",
+    "web/modules/app-scene-preview.js": "a2d16d7249cb8ce083e55beab7e74cc4e7ac3bb3192b630d74b0e06be0a54d4b"
+  }
+}

@@ -1,0 +1,1259 @@
+{
+  "startedAt": "2026-10-03T11:03:47.275Z",
+  "browser": "Chrome/154.0.8037.97",
+  "steps": [
+    "Real Shift/Control canvas clicks, explicit list checkboxes, Select all and Clear maintain the same selection. Two-object selection clears/disables single-position fields, announces its count, and never creates a dirty draft or writes source.",
+    "Dragging a selected actor moves the selected pair as one group. The grabbed center snaps to the 32-unit grid while exact spacing is preserved and the unselected actor remains fixed. One Undo restores both actors; one Redo repeats the move.",
+    "All six alignment actions use the selected union bounds and each actor’s resolved width/height: left, horizontal center, right, top, vertical center, bottom. Each action is one Undo step and preserves every non-position declaration, including inherited defaults and explicit image:null.",
+    "English and Japanese preserve all three selected objects and the checked batch draft. At 390px, multi-select checkboxes and alignment actions remain available without horizontal overflow.",
+    "Apply publishes only the three reviewed position changes and refreshes the saved preview. Scene UUID, BOM/CRLF, all OC/projection declarations, metadata and resource bytes remain unchanged; the old build plan is invalidated without starting a new job.",
+    "An external edit between Check and Apply rejects the entire batch. All three selections and the local draft remain, no external content is overwritten, and Reload asks before discarding the draft and showing the current saved scene.",
+    "Forty consecutive real dialog open/edit/undo/close cycles release Rust draft handles beyond the 32-slot limit. Each reopen starts with empty history and no draft is written to author files."
+  ],
+  "errors": [],
+  "svgRequests": [],
+  "limitations": [
+    "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+    "Multi-selection edits exercise static positions only. No Godot tool, runtime movement, audio, or gameplay was used."
+  ],
+  "initialPlan": {
+    "id": "123f55b7-0068-416e-8859-fca39abd45a0",
+    "kind": "plan",
+    "sceneId": "8771c27f-19e9-4713-bc30-016e258539bc",
+    "status": "succeeded",
+    "phase": "completed",
+    "createdAt": "2026-10-03T11:03:48.903Z",
+    "diagnostics": [],
+    "events": [],
+    "logs": "",
+    "plan": {
+      "snapshotId": "sha256:e1fedc10c7d86a7beb9ad0dedcd815936370dc5276b399d792a35713abf73b9e",
+      "title": "Selection · inherited and overridden",
+      "actorCount": 3,
+      "resourceCount": 2
+    },
+    "finishedAt": "2026-10-03T11:03:48.978Z"
+  },
+  "groupMovement": {
+    "positions": [
+      [
+        160,
+        160
+      ],
+      [
+        400,
+        240
+      ],
+      [
+        220,
+        360
+      ]
+    ],
+    "delta": [
+      40,
+      40
+    ],
+    "secondAnchorPositions": [
+      [
+        144,
+        144
+      ],
+      [
+        384,
+        224
+      ],
+      [
+        220,
+        360
+      ]
+    ]
+  },
+  "alignments": {
+    "Left": [
+      [
+        120,
+        120
+      ],
+      [
+        140,
+        200
+      ],
+      [
+        100,
+        360
+      ]
+    ],
+    "Center": [
+      [
+        250,
+        120
+      ],
+      [
+        250,
+        200
+      ],
+      [
+        250,
+        360
+      ]
+    ],
+    "Right": [
+      [
+        380,
+        120
+      ],
+      [
+        360,
+        200
+      ],
+      [
+        400,
+        360
+      ]
+    ],
+    "Top": [
+      [
+        120,
+        120
+      ],
+      [
+        360,
+        110
+      ],
+      [
+        220,
+        128
+      ]
+    ],
+    "Middle": [
+      [
+        120,
+        244
+      ],
+      [
+        360,
+        244
+      ],
+      [
+        220,
+        244
+      ]
+    ],
+    "Bottom": [
+      [
+        120,
+        368
+      ],
+      [
+        360,
+        378
+      ],
+      [
+        220,
+        360
+      ]
+    ]
+  },
+  "enLabels": [
+    "Select all objects",
+    "Clear selection",
+    "Align left",
+    "Center horizontally",
+    "Align right",
+    "Align top",
+    "Center vertically",
+    "Align bottom"
+  ],
+  "jaLabels": [
+    "すべて選択",
+    "選択を解除",
+    "左揃え",
+    "左右中央揃え",
+    "右揃え",
+    "上揃え",
+    "上下中央揃え",
+    "下揃え"
+  ],
+  "conflictMessage": "场景或工程已变化。布局草稿保留，请核对后重新读取，避免覆盖外部修改。",
+  "confirmations": [
+    "有未保存的布局修改，确定丢弃？",
+    "有未保存的布局修改，确定丢弃？"
+  ],
+  "created": {
+    "coreId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+    "projectionIds": [
+      "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+      "a6892019-9591-4a54-b575-0d0bec57a51e",
+      "b299cddd-6a56-4446-b05b-d4ea95b6b26a"
+    ],
+    "imageIds": [
+      "173947bd-28a7-40ed-9e94-8fa91af15a46",
+      "4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5"
+    ],
+    "sceneId": "8771c27f-19e9-4713-bc30-016e258539bc"
+  },
+  "authorFiles": {
+    "workspace.json": "913b3c54555d87e0aafbcbd121cbfdfcdcd0cb45ac69c828a734dd209d82fe8f",
+    "templates/document.md": "4d9c3e64dcabffe398f14117d5172ff467c4ec5a24c55e0910b099e5a95f3266",
+    "metadata/documents/29619af9-d1a6-4f15-9bc8-054e850ce31e.json": "f06b3791414c20df05b381f85ddfa2f09cf39c9faa82e28fc49f9599921b75bb",
+    "metadata/documents/8771c27f-19e9-4713-bc30-016e258539bc.json": "6f62e1ec3d382c4fe030e003d983fed98d0221ee80ccac5afaf9424cb6a307a7",
+    "metadata/documents/91f7e5b4-1e1b-45e5-869f-f353a7512ecb.json": "c85c2215d5f752064e0944b939c514743f5c8b6ab431066ef0c0d73987817c14",
+    "metadata/documents/a6892019-9591-4a54-b575-0d0bec57a51e.json": "f45f7814fa1cd481bb722a912715e8cddc92d8f0a3b4080ff03db602345a3dd0",
+    "metadata/documents/b299cddd-6a56-4446-b05b-d4ea95b6b26a.json": "79691cdde54469404ff4034bb6698c9663083e79d8cca6d2584c7a3cd668589d",
+    "metadata/assets/173947bd-28a7-40ed-9e94-8fa91af15a46.json": "0f67249e10637ed499b68918981795852fde1ef750418e7b55e0010dfc1521c8",
+    "metadata/assets/4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5.json": "b069a1f3d3f0eee075071f3f2c99aff8984f2aa10452255773ff0ec60b4ffab9",
+    "documents/core.md": "49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5",
+    "documents/scenes/a.json": "0db573d95ab037e6fabe89db9351811557726766f26f0acf7f2c4284f48afe18",
+    "documents/projections/rpg-npc-1.json": "26849e9ea567edaf63b69310d8d3c0eca3aef949cd0607edbeec7bb1143576e8",
+    "documents/projections/rpg-npc-2.json": "251535714d7ffd6156effe5f3c324422f6aa0b06b10d9d0b3450e5e3d390516a",
+    "documents/projections/rpg-player-0.json": "4b85eb4dd8939e40e0e7d3da58e73a5ac4d510a942ed13be33091170582581d5",
+    "assets/media/images/173947bd-28a7-40ed-9e94-8fa91af15a46.svg": "9cfe62540fb37c2c6658e5ce4ee78a30a212e8095350d8999879e624d01ad5b0",
+    "assets/media/images/4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5.svg": "e9a0658f139025f06a6615373e51a8040543b2f5999c2b1b1d09ab978050ce90"
+  },
+  "savedPositions": [
+    [
+      160,
+      160
+    ],
+    [
+      400,
+      240
+    ],
+    [
+      260,
+      400
+    ]
+  ],
+  "captures": [
+    {
+      "ok": true,
+      "format": "viento-scene-preview",
+      "schemaVersion": 1,
+      "previewId": "bce55642-d5a8-4e70-9303-a1bc645aa61a",
+      "snapshotId": "sha256:e1fedc10c7d86a7beb9ad0dedcd815936370dc5276b399d792a35713abf73b9e",
+      "scene": {
+        "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+        "sourcePath": "documents/scenes/a.json",
+        "sourceRevision": "sha256:21cd29bd8012f9332ec54fcbb04ef3f1e3f22264b1a0df902da3a6ba1ded09b7",
+        "title": "Selection · inherited and overridden",
+        "viewport": [
+          640,
+          480
+        ],
+        "background": "#101827"
+      },
+      "actors": [
+        {
+          "size": [
+            80,
+            80
+          ],
+          "color": "#ffffff",
+          "speed": 180,
+          "controls": "arrows",
+          "imageResourceId": "173947bd-28a7-40ed-9e94-8fa91af15a46",
+          "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+          "position": [
+            120,
+            120
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Player",
+          "sourcePath": "documents/projections/rpg-player-0.json",
+          "sourceRevision": "sha256:4b85eb4dd8939e40e0e7d3da58e73a5ac4d510a942ed13be33091170582581d5",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/0/position"
+            },
+            "size": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/width"
+            },
+            "size/0": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/width"
+            },
+            "size/1": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/height"
+            },
+            "color": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/color"
+            },
+            "speed": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/image"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/0"
+          }
+        },
+        {
+          "size": [
+            120,
+            60
+          ],
+          "color": "#ffffff",
+          "speed": 0,
+          "controls": "none",
+          "imageResourceId": "4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5",
+          "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+          "position": [
+            360,
+            200
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Guard",
+          "sourcePath": "documents/projections/rpg-npc-1.json",
+          "sourceRevision": "sha256:26849e9ea567edaf63b69310d8d3c0eca3aef949cd0607edbeec7bb1143576e8",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/position"
+            },
+            "size": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size"
+            },
+            "size/0": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size/0"
+            },
+            "size/1": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size/1"
+            },
+            "color": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/color"
+            },
+            "speed": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/imageResourceId"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/1"
+          }
+        },
+        {
+          "size": [
+            40,
+            96
+          ],
+          "color": "#44ee99",
+          "speed": 0,
+          "controls": "none",
+          "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+          "position": [
+            220,
+            360
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Companion",
+          "sourcePath": "documents/projections/rpg-npc-2.json",
+          "sourceRevision": "sha256:251535714d7ffd6156effe5f3c324422f6aa0b06b10d9d0b3450e5e3d390516a",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/position"
+            },
+            "size": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size"
+            },
+            "size/0": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size/0"
+            },
+            "size/1": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size/1"
+            },
+            "color": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/color"
+            },
+            "speed": {
+              "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+              "sourcePath": "documents/projections/rpg-npc-2.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+              "sourcePath": "documents/projections/rpg-npc-2.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/imageResourceId"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/2"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "173947bd-28a7-40ed-9e94-8fa91af15a46",
+          "sha256": "9cfe62540fb37c2c6658e5ce4ee78a30a212e8095350d8999879e624d01ad5b0",
+          "size": 292,
+          "contentType": "image/svg+xml",
+          "url": "/api/scene-preview?previewId=bce55642-d5a8-4e70-9303-a1bc645aa61a&resourceId=173947bd-28a7-40ed-9e94-8fa91af15a46"
+        },
+        {
+          "id": "4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5",
+          "sha256": "e9a0658f139025f06a6615373e51a8040543b2f5999c2b1b1d09ab978050ce90",
+          "size": 292,
+          "contentType": "image/svg+xml",
+          "url": "/api/scene-preview?previewId=bce55642-d5a8-4e70-9303-a1bc645aa61a&resourceId=4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5"
+        }
+      ],
+      "diagnostics": [],
+      "sceneEditing": {
+        "worldId": "world:6aa89b31fc08f80fa76e25fd0f2725084f069a76a3eed24e839ec799ff13d871",
+        "baseRevision": "sha256:bddd28d94611c67f61ae8d68164f61b504508f20d9355f12079ddaab70a91d7c",
+        "objectRevision": "sha256:7aa3ca7ed5b08556afe31d0e73829e71ba11639e720ae563bb86ee66ed3f0756",
+        "sourceRevision": "sha256:21cd29bd8012f9332ec54fcbb04ef3f1e3f22264b1a0df902da3a6ba1ded09b7",
+        "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"Selection · inherited and overridden\",\r\n  \"viewport\": [\r\n    640,\r\n    480\r\n  ],\r\n  \"background\": \"#101827\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"29619af9-d1a6-4f15-9bc8-054e850ce31e\",\r\n      \"position\": [\r\n        120,\r\n        120\r\n      ],\r\n      \"useProjectionDefaults\": true\r\n    },\r\n    {\r\n      \"objectId\": \"a6892019-9591-4a54-b575-0d0bec57a51e\",\r\n      \"position\": [\r\n        360,\r\n        200\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        120,\r\n        60\r\n      ],\r\n      \"imageResourceId\": \"4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5\"\r\n    },\r\n    {\r\n      \"objectId\": \"b299cddd-6a56-4446-b05b-d4ea95b6b26a\",\r\n      \"position\": [\r\n        220,\r\n        360\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        40,\r\n        96\r\n      ],\r\n      \"imageResourceId\": null,\r\n      \"color\": \"#44ee99\"\r\n    }\r\n  ]\r\n}\r\n"
+      },
+      "requestId": "1791025429928-11"
+    },
+    {
+      "ok": true,
+      "format": "viento-scene-preview",
+      "schemaVersion": 1,
+      "previewId": "149768cd-406e-4b4f-9870-6f7945552ac5",
+      "snapshotId": "sha256:5ff2bda31c49e5b771216b922b196c621f8f5f320c099357ff88ccf5e5cc3a5b",
+      "scene": {
+        "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+        "sourcePath": "documents/scenes/a.json",
+        "sourceRevision": "sha256:5e64cd0a4301eef23c00b052a681133140d63780f657bc4d18f157aab15db492",
+        "title": "Selection · inherited and overridden",
+        "viewport": [
+          640,
+          480
+        ],
+        "background": "#101827"
+      },
+      "actors": [
+        {
+          "size": [
+            80,
+            80
+          ],
+          "color": "#ffffff",
+          "speed": 180,
+          "controls": "arrows",
+          "imageResourceId": "173947bd-28a7-40ed-9e94-8fa91af15a46",
+          "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+          "position": [
+            160,
+            160
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Player",
+          "sourcePath": "documents/projections/rpg-player-0.json",
+          "sourceRevision": "sha256:4b85eb4dd8939e40e0e7d3da58e73a5ac4d510a942ed13be33091170582581d5",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/0/position"
+            },
+            "size": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/width"
+            },
+            "size/0": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/width"
+            },
+            "size/1": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/height"
+            },
+            "color": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/color"
+            },
+            "speed": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/image"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/0"
+          }
+        },
+        {
+          "size": [
+            120,
+            60
+          ],
+          "color": "#ffffff",
+          "speed": 0,
+          "controls": "none",
+          "imageResourceId": "4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5",
+          "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+          "position": [
+            400,
+            240
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Guard",
+          "sourcePath": "documents/projections/rpg-npc-1.json",
+          "sourceRevision": "sha256:26849e9ea567edaf63b69310d8d3c0eca3aef949cd0607edbeec7bb1143576e8",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/position"
+            },
+            "size": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size"
+            },
+            "size/0": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size/0"
+            },
+            "size/1": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size/1"
+            },
+            "color": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/color"
+            },
+            "speed": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/imageResourceId"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/1"
+          }
+        },
+        {
+          "size": [
+            40,
+            96
+          ],
+          "color": "#44ee99",
+          "speed": 0,
+          "controls": "none",
+          "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+          "position": [
+            260,
+            400
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Companion",
+          "sourcePath": "documents/projections/rpg-npc-2.json",
+          "sourceRevision": "sha256:251535714d7ffd6156effe5f3c324422f6aa0b06b10d9d0b3450e5e3d390516a",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/position"
+            },
+            "size": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size"
+            },
+            "size/0": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size/0"
+            },
+            "size/1": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size/1"
+            },
+            "color": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/color"
+            },
+            "speed": {
+              "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+              "sourcePath": "documents/projections/rpg-npc-2.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+              "sourcePath": "documents/projections/rpg-npc-2.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/imageResourceId"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/2"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "173947bd-28a7-40ed-9e94-8fa91af15a46",
+          "sha256": "9cfe62540fb37c2c6658e5ce4ee78a30a212e8095350d8999879e624d01ad5b0",
+          "size": 292,
+          "contentType": "image/svg+xml",
+          "url": "/api/scene-preview?previewId=149768cd-406e-4b4f-9870-6f7945552ac5&resourceId=173947bd-28a7-40ed-9e94-8fa91af15a46"
+        },
+        {
+          "id": "4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5",
+          "sha256": "e9a0658f139025f06a6615373e51a8040543b2f5999c2b1b1d09ab978050ce90",
+          "size": 292,
+          "contentType": "image/svg+xml",
+          "url": "/api/scene-preview?previewId=149768cd-406e-4b4f-9870-6f7945552ac5&resourceId=4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5"
+        }
+      ],
+      "diagnostics": [],
+      "sceneEditing": {
+        "worldId": "world:6aa89b31fc08f80fa76e25fd0f2725084f069a76a3eed24e839ec799ff13d871",
+        "baseRevision": "sha256:5d52a9a54f01432b51c5bcc36a664c860f99dfdc7099bbd7470694e0547e5a89",
+        "objectRevision": "sha256:eb220efc153061cc63b194e92f970a41dfae96910e17637585b72ffc91c12f76",
+        "sourceRevision": "sha256:5e64cd0a4301eef23c00b052a681133140d63780f657bc4d18f157aab15db492",
+        "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"Selection · inherited and overridden\",\r\n  \"viewport\": [\r\n    640,\r\n    480\r\n  ],\r\n  \"background\": \"#101827\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"29619af9-d1a6-4f15-9bc8-054e850ce31e\",\r\n      \"position\": [\r\n        160,\r\n        160\r\n      ],\r\n      \"useProjectionDefaults\": true\r\n    },\r\n    {\r\n      \"objectId\": \"a6892019-9591-4a54-b575-0d0bec57a51e\",\r\n      \"position\": [\r\n        400,\r\n        240\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        120,\r\n        60\r\n      ],\r\n      \"imageResourceId\": \"4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5\"\r\n    },\r\n    {\r\n      \"objectId\": \"b299cddd-6a56-4446-b05b-d4ea95b6b26a\",\r\n      \"position\": [\r\n        260,\r\n        400\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        40,\r\n        96\r\n      ],\r\n      \"imageResourceId\": null,\r\n      \"color\": \"#44ee99\"\r\n    }\r\n  ]\r\n}\r\n"
+      },
+      "requestId": "1791025434070-28"
+    },
+    {
+      "ok": true,
+      "format": "viento-scene-preview",
+      "schemaVersion": 1,
+      "previewId": "dff3eb93-f6da-4458-8b03-76ed037f80dd",
+      "snapshotId": "sha256:5ff2bda31c49e5b771216b922b196c621f8f5f320c099357ff88ccf5e5cc3a5b",
+      "scene": {
+        "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+        "sourcePath": "documents/scenes/a.json",
+        "sourceRevision": "sha256:5e64cd0a4301eef23c00b052a681133140d63780f657bc4d18f157aab15db492",
+        "title": "Selection · inherited and overridden",
+        "viewport": [
+          640,
+          480
+        ],
+        "background": "#101827"
+      },
+      "actors": [
+        {
+          "size": [
+            80,
+            80
+          ],
+          "color": "#ffffff",
+          "speed": 180,
+          "controls": "arrows",
+          "imageResourceId": "173947bd-28a7-40ed-9e94-8fa91af15a46",
+          "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+          "position": [
+            160,
+            160
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Player",
+          "sourcePath": "documents/projections/rpg-player-0.json",
+          "sourceRevision": "sha256:4b85eb4dd8939e40e0e7d3da58e73a5ac4d510a942ed13be33091170582581d5",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/0/position"
+            },
+            "size": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/width"
+            },
+            "size/0": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/width"
+            },
+            "size/1": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/height"
+            },
+            "color": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/color"
+            },
+            "speed": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/image"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/0"
+          }
+        },
+        {
+          "size": [
+            120,
+            60
+          ],
+          "color": "#ffffff",
+          "speed": 0,
+          "controls": "none",
+          "imageResourceId": "4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5",
+          "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+          "position": [
+            400,
+            240
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Guard",
+          "sourcePath": "documents/projections/rpg-npc-1.json",
+          "sourceRevision": "sha256:26849e9ea567edaf63b69310d8d3c0eca3aef949cd0607edbeec7bb1143576e8",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/position"
+            },
+            "size": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size"
+            },
+            "size/0": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size/0"
+            },
+            "size/1": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size/1"
+            },
+            "color": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/color"
+            },
+            "speed": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/imageResourceId"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/1"
+          }
+        },
+        {
+          "size": [
+            40,
+            96
+          ],
+          "color": "#44ee99",
+          "speed": 0,
+          "controls": "none",
+          "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+          "position": [
+            260,
+            400
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Companion",
+          "sourcePath": "documents/projections/rpg-npc-2.json",
+          "sourceRevision": "sha256:251535714d7ffd6156effe5f3c324422f6aa0b06b10d9d0b3450e5e3d390516a",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/position"
+            },
+            "size": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size"
+            },
+            "size/0": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size/0"
+            },
+            "size/1": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size/1"
+            },
+            "color": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/color"
+            },
+            "speed": {
+              "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+              "sourcePath": "documents/projections/rpg-npc-2.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+              "sourcePath": "documents/projections/rpg-npc-2.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/imageResourceId"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/2"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "173947bd-28a7-40ed-9e94-8fa91af15a46",
+          "sha256": "9cfe62540fb37c2c6658e5ce4ee78a30a212e8095350d8999879e624d01ad5b0",
+          "size": 292,
+          "contentType": "image/svg+xml",
+          "url": "/api/scene-preview?previewId=dff3eb93-f6da-4458-8b03-76ed037f80dd&resourceId=173947bd-28a7-40ed-9e94-8fa91af15a46"
+        },
+        {
+          "id": "4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5",
+          "sha256": "e9a0658f139025f06a6615373e51a8040543b2f5999c2b1b1d09ab978050ce90",
+          "size": 292,
+          "contentType": "image/svg+xml",
+          "url": "/api/scene-preview?previewId=dff3eb93-f6da-4458-8b03-76ed037f80dd&resourceId=4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5"
+        }
+      ],
+      "diagnostics": [],
+      "sceneEditing": {
+        "worldId": "world:6aa89b31fc08f80fa76e25fd0f2725084f069a76a3eed24e839ec799ff13d871",
+        "baseRevision": "sha256:5d52a9a54f01432b51c5bcc36a664c860f99dfdc7099bbd7470694e0547e5a89",
+        "objectRevision": "sha256:eb220efc153061cc63b194e92f970a41dfae96910e17637585b72ffc91c12f76",
+        "sourceRevision": "sha256:5e64cd0a4301eef23c00b052a681133140d63780f657bc4d18f157aab15db492",
+        "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"Selection · inherited and overridden\",\r\n  \"viewport\": [\r\n    640,\r\n    480\r\n  ],\r\n  \"background\": \"#101827\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"29619af9-d1a6-4f15-9bc8-054e850ce31e\",\r\n      \"position\": [\r\n        160,\r\n        160\r\n      ],\r\n      \"useProjectionDefaults\": true\r\n    },\r\n    {\r\n      \"objectId\": \"a6892019-9591-4a54-b575-0d0bec57a51e\",\r\n      \"position\": [\r\n        400,\r\n        240\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        120,\r\n        60\r\n      ],\r\n      \"imageResourceId\": \"4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5\"\r\n    },\r\n    {\r\n      \"objectId\": \"b299cddd-6a56-4446-b05b-d4ea95b6b26a\",\r\n      \"position\": [\r\n        260,\r\n        400\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        40,\r\n        96\r\n      ],\r\n      \"imageResourceId\": null,\r\n      \"color\": \"#44ee99\"\r\n    }\r\n  ]\r\n}\r\n"
+      },
+      "requestId": "1791025434191-34"
+    },
+    {
+      "ok": true,
+      "format": "viento-scene-preview",
+      "schemaVersion": 1,
+      "previewId": "89529cf4-cbb9-4f04-8c2c-dc27ef7290b7",
+      "snapshotId": "sha256:53fa6f725fb1bcac4f014f814924030ec105642f79ea5aff4333f1eced3979dd",
+      "scene": {
+        "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+        "sourcePath": "documents/scenes/a.json",
+        "sourceRevision": "sha256:0db573d95ab037e6fabe89db9351811557726766f26f0acf7f2c4284f48afe18",
+        "title": "Selection · externally changed",
+        "viewport": [
+          640,
+          480
+        ],
+        "background": "#101827"
+      },
+      "actors": [
+        {
+          "size": [
+            80,
+            80
+          ],
+          "color": "#ffffff",
+          "speed": 180,
+          "controls": "arrows",
+          "imageResourceId": "173947bd-28a7-40ed-9e94-8fa91af15a46",
+          "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+          "position": [
+            160,
+            160
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Player",
+          "sourcePath": "documents/projections/rpg-player-0.json",
+          "sourceRevision": "sha256:4b85eb4dd8939e40e0e7d3da58e73a5ac4d510a942ed13be33091170582581d5",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/0/position"
+            },
+            "size": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/width"
+            },
+            "size/0": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/width"
+            },
+            "size/1": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/height"
+            },
+            "color": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/color"
+            },
+            "speed": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "29619af9-d1a6-4f15-9bc8-054e850ce31e",
+              "sourcePath": "documents/projections/rpg-player-0.json",
+              "propertyPath": "/configuration/image"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/0"
+          }
+        },
+        {
+          "size": [
+            120,
+            60
+          ],
+          "color": "#ffffff",
+          "speed": 0,
+          "controls": "none",
+          "imageResourceId": "4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5",
+          "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+          "position": [
+            400,
+            240
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Guard",
+          "sourcePath": "documents/projections/rpg-npc-1.json",
+          "sourceRevision": "sha256:26849e9ea567edaf63b69310d8d3c0eca3aef949cd0607edbeec7bb1143576e8",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/position"
+            },
+            "size": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size"
+            },
+            "size/0": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size/0"
+            },
+            "size/1": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/size/1"
+            },
+            "color": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/color"
+            },
+            "speed": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "a6892019-9591-4a54-b575-0d0bec57a51e",
+              "sourcePath": "documents/projections/rpg-npc-1.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/1/imageResourceId"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/1"
+          }
+        },
+        {
+          "size": [
+            40,
+            96
+          ],
+          "color": "#44ee99",
+          "speed": 0,
+          "controls": "none",
+          "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+          "position": [
+            260,
+            400
+          ],
+          "useProjectionDefaults": true,
+          "name": "Traveler · Companion",
+          "sourcePath": "documents/projections/rpg-npc-2.json",
+          "sourceRevision": "sha256:251535714d7ffd6156effe5f3c324422f6aa0b06b10d9d0b3450e5e3d390516a",
+          "origin": {
+            "objectId": "91f7e5b4-1e1b-45e5-869f-f353a7512ecb",
+            "sourcePath": "documents/core.md",
+            "sourceRevision": "sha256:49ac734da6ad77c26e76476152ace9ccc4ef7a9cbc29cf5316545d1de066f0e5"
+          },
+          "fieldSources": {
+            "position": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/position"
+            },
+            "size": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size"
+            },
+            "size/0": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size/0"
+            },
+            "size/1": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/size/1"
+            },
+            "color": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/color"
+            },
+            "speed": {
+              "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+              "sourcePath": "documents/projections/rpg-npc-2.json",
+              "propertyPath": "/configuration/speed"
+            },
+            "controls": {
+              "objectId": "b299cddd-6a56-4446-b05b-d4ea95b6b26a",
+              "sourcePath": "documents/projections/rpg-npc-2.json",
+              "propertyPath": "/configuration/controls"
+            },
+            "imageResourceId": {
+              "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+              "sourcePath": "documents/scenes/a.json",
+              "propertyPath": "/actors/2/imageResourceId"
+            }
+          },
+          "declaration": {
+            "objectId": "8771c27f-19e9-4713-bc30-016e258539bc",
+            "sourcePath": "documents/scenes/a.json",
+            "propertyPath": "/actors/2"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "id": "173947bd-28a7-40ed-9e94-8fa91af15a46",
+          "sha256": "9cfe62540fb37c2c6658e5ce4ee78a30a212e8095350d8999879e624d01ad5b0",
+          "size": 292,
+          "contentType": "image/svg+xml",
+          "url": "/api/scene-preview?previewId=89529cf4-cbb9-4f04-8c2c-dc27ef7290b7&resourceId=173947bd-28a7-40ed-9e94-8fa91af15a46"
+        },
+        {
+          "id": "4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5",
+          "sha256": "e9a0658f139025f06a6615373e51a8040543b2f5999c2b1b1d09ab978050ce90",
+          "size": 292,
+          "contentType": "image/svg+xml",
+          "url": "/api/scene-preview?previewId=89529cf4-cbb9-4f04-8c2c-dc27ef7290b7&resourceId=4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5"
+        }
+      ],
+      "diagnostics": [],
+      "sceneEditing": {
+        "worldId": "world:6aa89b31fc08f80fa76e25fd0f2725084f069a76a3eed24e839ec799ff13d871",
+        "baseRevision": "sha256:5a368895717b7166d90ae0686cc8de0886007c97ac05cafe351ec7c1393b5260",
+        "objectRevision": "sha256:4fc28d62ef02b48a10ab9af7441abbe1fd577492f13e8ce0229b84a8f9de2ca4",
+        "sourceRevision": "sha256:0db573d95ab037e6fabe89db9351811557726766f26f0acf7f2c4284f48afe18",
+        "content": "﻿{\r\n  \"format\": \"viento-scene2d\",\r\n  \"schemaVersion\": 1,\r\n  \"title\": \"Selection · externally changed\",\r\n  \"viewport\": [\r\n    640,\r\n    480\r\n  ],\r\n  \"background\": \"#101827\",\r\n  \"actors\": [\r\n    {\r\n      \"objectId\": \"29619af9-d1a6-4f15-9bc8-054e850ce31e\",\r\n      \"position\": [\r\n        160,\r\n        160\r\n      ],\r\n      \"useProjectionDefaults\": true\r\n    },\r\n    {\r\n      \"objectId\": \"a6892019-9591-4a54-b575-0d0bec57a51e\",\r\n      \"position\": [\r\n        400,\r\n        240\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        120,\r\n        60\r\n      ],\r\n      \"imageResourceId\": \"4715e9eb-9aa6-44c1-97ef-cf6849c1b5e5\"\r\n    },\r\n    {\r\n      \"objectId\": \"b299cddd-6a56-4446-b05b-d4ea95b6b26a\",\r\n      \"position\": [\r\n        260,\r\n        400\r\n      ],\r\n      \"useProjectionDefaults\": true,\r\n      \"size\": [\r\n        40,\r\n        96\r\n      ],\r\n      \"imageResourceId\": null,\r\n      \"color\": \"#44ee99\"\r\n    }\r\n  ]\r\n}\r\n"
+      },
+      "requestId": "1791025435191-40"
+    }
+  ],
+  "ok": true,
+  "finishedAt": "2026-10-03T11:03:57.520Z"
+}

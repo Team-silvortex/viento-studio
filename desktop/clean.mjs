@@ -5,7 +5,7 @@ import { appStoragePaths, readWorkspaceSelector } from '../scripts/lib/app-stora
 
 // Only application build output belongs here. Never add dist/, workspaces/,
 // .viento/, Git history or arbitrary user-supplied paths to this list.
-const generated = ['src-tauri/target', 'src-tauri/binaries', 'src-tauri/gen/schemas',
+const generated = ['crates/viento-studio-core/target', 'engine/studio-core.wasm', 'engine/studio-core.build.json', 'src-tauri/target', 'src-tauri/binaries', 'src-tauri/gen/schemas',
   'desktop/resources', 'desktop/.cache', 'desktop/ui/i18n', 'mobile/dist',
   'src-tauri/gen/android/.gradle', 'src-tauri/gen/android/.kotlin', 'src-tauri/gen/android/build',
   'src-tauri/gen/android/app/build', 'src-tauri/gen/android/buildSrc/build', 'src-tauri/gen/android/buildSrc/.gradle',
@@ -79,6 +79,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     if (process.argv.slice(2).some((arg) => arg !== '--dry-run')) throw new Error('用法：npm run clean [-- --dry-run]');
     const dryRun = process.argv.includes('--dry-run');
     const files = await cleanBuilds(root, { dryRun });
-    console.log(`${dryRun ? '将清理' : '已清理'} ${files.length} 个构建目录：${files.join(', ') || '无'}`);
+    console.log(`${dryRun ? '将清理' : '已清理'} ${files.length} 个构建项：${files.join(', ') || '无'}`);
   } catch (error) { console.error(error.message); process.exitCode = 1; }
 }

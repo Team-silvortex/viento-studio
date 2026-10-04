@@ -1,3 +1,4 @@
+import { prepareStudioCore } from '../scripts/build-studio-core.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -5,6 +6,7 @@ import { verifyReleaseVersions } from '../desktop/version.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 export async function prepareMobile() {
+  await prepareStudioCore();
   const release = await verifyReleaseVersions();
   const mobile = path.join(root, 'mobile'), output = path.join(mobile, 'dist');
   const stage = await fs.mkdtemp(path.join(mobile, '.dist-'));
@@ -19,7 +21,8 @@ export async function prepareMobile() {
     for (const file of await fs.readdir(path.join(stage, 'engine'))) {
       if (!file.endsWith('.mjs')) continue;
       const target = path.join(stage, 'engine', file);
-      await fs.writeFile(target, (await fs.readFile(target, 'utf8')).replaceAll("from 'yaml'", "from '/vendor/yaml/index.js'"));
+      await fs.writeFile(target, (await fs.readFile(target, 'utf8')).replaceAll("from 'yaml'", "from '/vendor/yaml/index.js'")
+        .replaceAll("from '../node_modules/yaml/browser/index.js'", "from '/vendor/yaml/index.js'"));
     }
     await fs.mkdir(path.join(stage, 'scripts/lib'), { recursive: true });
     for (const file of ['doc-api-contract.mjs', 'media-format.mjs', 'document-values.mjs']) await fs.copyFile(path.join(root, 'scripts/lib', file), path.join(stage, 'scripts/lib', file));

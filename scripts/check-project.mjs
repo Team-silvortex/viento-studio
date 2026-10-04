@@ -1,3 +1,4 @@
+import { prepareStudioCore } from './build-studio-core.mjs';
 import fs from 'node:fs/promises';
 import { INDEX_OUTPUT } from './lib/paths.mjs';
 import path from 'node:path';
@@ -7,6 +8,7 @@ import { runDocApiContractPreflight } from './lib/verify-doc-api-contract.mjs';
 import { verifyReleaseVersions } from '../desktop/version.mjs';
 
 async function main() {
+  await prepareStudioCore();
   const release = await verifyReleaseVersions();
   console.log(`版本一致性检查通过：${release.version}（构建 ${release.buildVersion}）`);
   const files = (await Promise.all(['engine', 'scripts', 'web', 'mobile'].map((root) => collectFiles(root, {

@@ -4,11 +4,11 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 
 原生方向是 **Nuislang、ns-nova 与 yalivia runtime**。Viento 将作为 ns-nova 的官方 GUI 编辑器，自身 GUI 也计划迁到 ns-nova；目前使用 Web / Tauri 宿主，Godot 4 已作为独立进程接通受限二维场景构建与运行。原生执行、GUI 迁移及其他副引擎的阶段安排见 [开发路线](docs/ROADMAP.md)。
 
-[快速开始](docs/GETTING_STARTED.md) · [当前能力与平台](docs/STATUS.md) · [文档中心](docs/README.md) · [系统架构](docs/ARCHITECTURE.md)
+[快速开始](docs/GETTING_STARTED.md) · [当前能力与平台](docs/STATUS.md) · [功能成熟度图谱](docs/FUNCTION_ATLAS.md) · [文档中心](docs/README.md) · [系统架构](docs/ARCHITECTURE.md)
 
 ## 当前状态
 
-源码版本为 **0.0.6**。本版纳入独立工程模板、OC 子模板与多份投影、Scene2D 创建／编辑／静态预览，以及 Linux **构建与运行** 工作台，详见 [版本记录](docs/RELEASE_0.0.6.md)。本次交付源码，使用新功能需从源码启动或自行构建安装包。
+源码版本为 **0.0.7**。本版纳入场景布局编辑、共享 Rust 几何与历史／保存核心、独立场景实例、组织分组，以及原文草稿预览和坐标回写，详见 [版本记录](docs/RELEASE_0.0.7.md)。本次交付源码，使用新功能需从源码启动或自行构建安装包；最近保留的 Linux 安装包验收仍为 0.0.4。
 
 当前已有：
 
@@ -17,7 +17,8 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 - 同一 OC 的多份独立投影，可创建／编辑 RPG、视觉小说、文学和戏剧配置；RPG 投影可在 Scene2D 中继承或覆盖运行字段。
 - 对象查询、属性修改、批量提交、对象创建、关系和资源绑定；版本冲突检查与中断恢复。
 - [图片／视频／音频引用](docs/MEDIA_RESOURCES.md)，文档分享、选择式资源包、单素材导出及完整工程迁移。
-- 实验性 Scene2D 场景创建／编辑、保存状态画布预览、计划检查、Godot 构建、无头测试、独立窗口运行、诊断和任务取消。
+- 实验性 Scene2D 场景创建／编辑、独立实例、嵌套组织分组，单选／多选布局和局部撤销历史；保存状态及原文草稿预览，精确坐标回写与普通保存。
+- 共享 Rust/WASM 编辑核心，以及计划检查、Godot 构建、无头测试、独立窗口运行、诊断和任务取消。
 
 各平台的接入和实测范围见 [能力矩阵](docs/STATUS.md#平台接入)。现有构建产物是需要 Godot 的生成工程；原生 Nuis 执行、嵌入运行视口、GPU 计算及独立游戏程序导出仍在路线内。
 
@@ -28,11 +29,12 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 ```sh
 git clone --depth 1 https://github.com/Team-silvortex/viento-studio.git
 cd viento-studio
+rustup target add wasm32-unknown-unknown
 npm ci
 npm run desktop:dev
 ```
 
-在首页新建工程、打开已有文件夹或导入 `.viento.zip`。浏览器启动、无 Rust 的样例体验和第一份文档见 [快速开始](docs/GETTING_STARTED.md)；安装包构建见 [桌面说明](desktop/README.md)，Android 见 [移动端说明](mobile/README.md)。预编译产物的交付与验收状态见 [当前状态](docs/STATUS.md#版本与交付)。
+在首页新建工程、打开已有文件夹或导入 `.viento.zip`。浏览器启动、合成样例体验和第一份文档见 [快速开始](docs/GETTING_STARTED.md)；安装包构建见 [桌面说明](desktop/README.md)，Android 见 [移动端说明](mobile/README.md)。预编译产物的交付与验收状态见 [当前状态](docs/STATUS.md#版本与交付)。
 
 只检查应用代码可运行 `npm run check -- --app-only`，测试使用临时样例。验证层级和可选工具见 [测试指南](docs/TESTING.md)。
 

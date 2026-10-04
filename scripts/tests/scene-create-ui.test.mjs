@@ -75,14 +75,16 @@ test('scene creator uses existing custom types and v2 roots, filtering unsupport
   assert.equal(h.element('sceneCreateSave').disabled, true); assert.equal(h.element('sceneCreateDialog').dataset.dirty, 'false');
 });
 
-test('scene form changes invalidate previews; blank numbers and duplicate actors never submit', async () => {
+test('scene form changes invalidate previews; blank numbers never submit and repeated definitions have independent identities', async () => {
   const h = await harness(); await h.preview();
   h.set('sceneActor0Speed', ''); assert.equal(h.element('sceneCreateSave').disabled, true);
   h.element('sceneCreateCheck').click(); assert.equal(h.calls.length, 1);
   assert.match(h.element('sceneCreateDiagnostics').textContent, /\/actors\/0\/speed/);
   h.set('sceneActor0Speed', '0'); h.element('sceneCreateAdd').click();
-  h.set('sceneActor1Object', ids[0], 'change'); h.element('sceneCreateCheck').click(); assert.equal(h.calls.length, 1);
-  assert.match(h.element('sceneCreateDiagnostics').textContent, /重复/);
+  h.set('sceneActor1Object', ids[0], 'change'); await h.preview();
+  const repeated = JSON.parse(h.calls.at(-1).request.content); assert.equal(repeated.schemaVersion, 2);
+  assert.equal(repeated.actors[0].objectId, repeated.actors[1].objectId);
+  assert.notEqual(repeated.actors[0].instanceId, repeated.actors[1].instanceId);
   h.set('sceneActor1Object', ids[1], 'change'); await h.preview();
   assert.equal(JSON.parse(h.calls.at(-1).request.content).actors[0].speed, 0);
   h.set('sceneCreateType', 'notes', 'change'); assert.equal(h.element('sceneCreateSave').disabled, true);
@@ -195,4 +197,27 @@ test('a failed project reload invalidates the previous preview while retaining t
   assert.equal(h.element('sceneCreatePreview').hidden, true);
   assert.match(h.element('sceneCreateMessage').textContent, /无法读取工程/);
   h.element('sceneCreateForm').requestSubmit(); assert.equal(h.calls.length, 1);
+});
+
+
+test('new scenes can repeat a single definition and cloning and reordering preserve independent instance settings', async () => {
+  const h = await harness(); const projection = await fixture(); projection.objects = projection.objects.slice(0, 1); h.setProjection(projection);
+  h.element('sceneCreateRefresh').click(); await flushDialogs();
+  const original = h.element('sceneActor0Instance').value;
+  assert.equal(h.element('sceneActor0Instance').readOnly, true);
+  assert.equal(h.element('sceneCreateEnableInstances').hidden, true);
+  h.element('sceneCreateAdd').click(); assert.equal(h.element('sceneActor1Object').value, ids[0]);
+  const second = h.element('sceneActor1Instance').value; assert.notEqual(original, second);
+  h.set('sceneActor0position0', '120.5'); h.set('sceneActor0Color', '#224466');
+  h.element('sceneActor0Duplicate').click(); const cloned = h.element('sceneActor1Instance').value;
+  assert.equal(new Set([original, second, cloned]).size, 3);
+  assert.equal(h.element('sceneActor1position0').value, '120.5');
+  h.set('sceneActor1position0', '400'); h.element('sceneActor1Down').click();
+  assert.equal(h.element('sceneActor2Instance').value, cloned); h.setLanguage('ja'); assert.equal(h.element('sceneActor2Instance').value, cloned);
+  await h.preview(); const value = JSON.parse(h.calls.at(-1).request.content);
+  assert.deepEqual(value.actors.map(actor => actor.instanceId), [original, second, cloned]);
+  assert.deepEqual(value.actors.map(actor => actor.position[0]), [120.5, 200, 400]);
+  assert.equal(value.actors[2].color, '#224466'); assert.ok(value.actors.every(actor => actor.objectId === ids[0]));
+  h.element('sceneActor0Remove').click(); await h.preview();
+  assert.deepEqual(JSON.parse(h.calls.at(-1).request.content).actors.map(actor => actor.instanceId), [second, cloned]);
 });

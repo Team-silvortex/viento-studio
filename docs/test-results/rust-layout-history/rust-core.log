@@ -1,0 +1,64 @@
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.04s
+     Running unittests src/lib.rs (/tmp/viento-history-rust-target/debug/deps/viento_studio_core-5f23e457f0a6fb2b)
+
+running 4 tests
+test scene_layout::tests::javascript_rounding_handles_negative_ties_and_neighbors ... ok
+test layout_draft::tests::handle_exhaustion_never_wraps_or_reuses_closed_identifiers ... ok
+test wasm::tests::abi_runs_owned_buffers_and_invalid_allocations_do_not_replay_requests ... ok
+test wasm::tests::abi_consumes_mutating_requests_once_and_recovers_after_rejected_runs ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (/tmp/viento-history-rust-target/debug/deps/viento_core-2576ebf013e150b3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (/tmp/viento-history-rust-target/debug/deps/cli-2f3b92945c2b0890)
+
+running 2 tests
+test native_json_lines_share_draft_history_until_explicit_close ... ok
+test native_json_lines_recovers_after_bad_json_and_an_oversized_line ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/draft.rs (/tmp/viento-history-rust-target/debug/deps/draft-837291ad59787839)
+
+running 8 tests
+test invalid_or_noop_batches_preserve_redo_and_all_positions ... ok
+test native_draft_owns_atomic_batches_and_independent_snapshots ... ok
+test history_keeps_exactly_one_hundred_batches_and_original_dirty_baseline ... ok
+test full_actor_batch_is_one_step_and_limits_are_measured_in_utf8_bytes ... ok
+test native_threads_have_independent_draft_sessions ... ok
+test dispatcher_drafts_isolate_histories_and_release_without_handle_reuse ... ok
+test protocol_rejects_bad_handles_and_malformed_batches_without_losing_redo ... ok
+test full_registry_rejects_without_evicting_or_mutating_active_drafts ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/layout.rs (/tmp/viento-history-rust-target/debug/deps/layout-032fc8bb02aba73e)
+
+running 13 tests
+test fractional_boundary_cancellation_is_nudged_as_a_group ... ok
+test alignment_overflow_rejects_the_entire_batch ... ok
+test batch_rejects_extra_fields_duplicate_ids_and_invalid_existing_positions_atomically ... ok
+test batch_preserves_input_order_and_noops_and_does_not_need_sizes ... ok
+test geometry_only_validates_selected_positions_and_sizes_but_all_identities ... ok
+test group_clamp_preserves_spacing_at_both_boundaries ... ok
+test protocol_rejects_bad_json_unknown_versions_and_operations ... ok
+test json_float_parsing_keeps_the_exact_binary_coordinate ... ok
+test negative_ties_follow_javascript_round_in_both_free_and_snapped_movement ... ok
+test movement_uses_shared_delta_and_first_selected_snap_anchor ... ok
+test six_alignments_use_resolved_sizes_and_keep_unselected_actors_out ... ok
+test malformed_geometry_is_rejected_before_any_changes_are_returned ... ok
+test input_limit_is_shared_by_native_dispatch_and_wasm ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests viento_studio_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

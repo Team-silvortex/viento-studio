@@ -23,7 +23,12 @@
     "rebuild": "node scripts/ops/rebuild.mjs",
     "workspace": "node scripts/workspace.mjs",
     "world": "node scripts/world.mjs",
-    "project:build": "node scripts/project-build.mjs"
+    "project:build": "node scripts/project-build.mjs",
+    "core:build": "node scripts/build-studio-core.mjs",
+    "core:test": "cargo test --manifest-path crates/viento-studio-core/Cargo.toml --locked",
+    "pretest": "node scripts/build-studio-core.mjs",
+    "prestart": "node scripts/build-studio-core.mjs",
+    "prebrowse": "node scripts/build-studio-core.mjs"
   },
   "dependencies": {
     "yaml": "2.9.0",
@@ -35,7 +40,7 @@
     "acorn": "8.18.0",
     "ajv": "8.20.0"
   },
-  "version": "0.0.6",
+  "version": "0.0.7",
   "repository": {
     "type": "git",
     "url": "https://github.com/Team-silvortex/viento-studio.git"

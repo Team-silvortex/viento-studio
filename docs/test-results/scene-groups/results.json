@@ -1,0 +1,236 @@
+{
+  "date": "2026-10-03",
+  "version": "0.0.6",
+  "baseCommit": "94e9626fc11c64f61a7391f7b081bc029306345a",
+  "scope": "Unreleased Scene2D author v3 logical nested groups, portable outline/search, descendant selection, lossless authoring and compatible frozen execution.",
+  "implementation": [
+    "Author v3 requires groups[] with stable groupId/name/optional parentGroupId and optional actor.groupId. Groups are scene-local organization, not World records, spatial transforms, visibility or runtime nodes. Flat actor order remains the paint order and positions remain absolute.",
+    "New scenes still default to v2. The form explicitly enables groups; existing v1 first enables instances. Group/member edits, names and parent changes keep instance identities. Only empty groups can be deleted from the form; cycles, missing references, invalid UUIDs, excessive depth/count and version downgrades reject.",
+    "Portable scene-groups builds a deterministic nested outline, ancestor-retaining search and descendant instance IDs in original actor order. Shared UI renders disclosures and group selection; selection/filter/collapse are view state only. Deep indentation is compacted to retain readable controls on narrow displays.",
+    "Lossless updates match group UUIDs rather than array positions and preserve untouched source fragments, BOM/CRLF and numeric spelling. Group source links verify the current revision and select exact raw name ranges in the existing source editor.",
+    "The model follows author version3, while the plan adapter emits runtime plan2 and removes group membership fields. Capture/preview carry validated sceneStructure and group source locations beside the plan. Preview envelope remains version2; raw source and structure consistency are checked for layout drafts.",
+    "Layout expands group selection into existing instance keys. The unchanged Rust/WASM core handles movement, history and save phases; source adapters preserve group containers and memberships. Group-only edits still change author/world revisions and snapshot IDs.",
+    "Transactions reuse existing two-file create/update boundaries, including legacy upgrade recovery. Export retains grouping in author JSON and deduplicates shared definitions, owned story and image resources. Frozen v1/v2 generators, runtime files and backend fingerprints remain unchanged."
+  ],
+  "validation": {
+    "appCheck": {
+      "tests": 1288,
+      "pass": 1269,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 19,
+      "log": "app-check-verified.log",
+      "syntaxFiles": 320,
+      "realGodotEnabled": true,
+      "nativeCoreParityEnabled": true,
+      "nativeArchiveAndMobileHelpersProvided": false,
+      "command": "VIENTO_STUDIO_CORE_BIN=<unchanged native core CLI> VIENTO_GODOT_BIN=<local Godot4.7.2> node scripts/check-project.mjs --app-only"
+    },
+    "groupSemantics": {
+      "tests": 18,
+      "pass": 18,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "group-core-tests.log"
+    },
+    "semanticLegacyCombined": {
+      "tests": 73,
+      "pass": 70,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 3,
+      "log": "semantics-tests.log",
+      "scope": "Earlier combined regression; three Godot/native environment skips here, actual Godot and core parity enabled in final full suite."
+    },
+    "runtime": {
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "group-runtime.log",
+      "realGodotEnabled": true
+    },
+    "ui": {
+      "tests": 87,
+      "pass": 87,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "ui-tests.log"
+    },
+    "translations": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "log": "i18n-tests.log"
+    },
+    "integrationInitial": {
+      "tests": 42,
+      "pass": 41,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 1,
+      "log": "integration-initial.log",
+      "scope": "Earlier focused integration before actual Godot invocation; included in final app coverage."
+    },
+    "counting": "All targeted test groups overlap the complete suite; do not sum them as independent coverage.",
+    "browserGroups": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "flows": 5,
+      "steps": [
+        "Explicit v1→instances→groups upgrades only the checked draft. Parent/child groups, member assignment and empty-only removal preserve instance IDs; parent choices exclude cycles. Save preserves BOM/CRLF and changes only scene text. English/Japanese and390px form retain the same draft.",
+        "Nested outline collapse and search preserve matching ancestors without changing the canvas or author files. Clearing search restores collapse and language switches keep the query. Group source opens the real textarea and selects the exact Unicode name after BOM/CRLF offset conversion.",
+        "Selecting a parent group expands to all and only descendant instances. Real pointer dragging preserves their spacing and original actor order, leaves ungrouped actors fixed, and is one Undo/Redo step. Save/reopen retains groups and memberships; selecting a child selects only its descendant.",
+        "An external group-name change after layout review rejects stale Apply, preserves the selected child instance and local position draft, and never overwrites author text. No build job or engine is launched by the editor workflow.",
+        "A16-level group chain remains usable at390px; searching the deepest instance retains all16 ancestors without horizontal overflow. The temporary source fixture is then restored."
+      ],
+      "report": "browser-final/browser.json",
+      "deepOutline": {
+        "listWidth": 297,
+        "listScrollWidth": 297,
+        "asideWidth": 303,
+        "asideScrollWidth": 303,
+        "deepestButtonWidth": 181
+      }
+    },
+    "browserV1": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "flows": 11,
+      "steps": [
+        "No Godot is configured: the Preview tab renders both frozen SVG images at inherited/overridden sizes and center positions, with source-aware resolved projection fields. No build job runs.",
+        "Real pointer selection opens the correct actor inspector. Zoom, grid, pointer pan and Fit visibly affect only the camera and overlay.",
+        "A second layout multiplies the inherited image by its RGBA tint and draws the later actor on top; a real center click selects that top actor.",
+        "Explicit imageResourceId:null removes inherited imagery. Arrow-key tab navigation maintains ARIA/focus, while English/Japanese and a 390px viewport retain the same scene without horizontal overflow.",
+        "A delayed old-scene response cannot replace a newer scene or restore its old images after rapid selection.",
+        "Invalid scene dimensions clear old pixels and show a source-located diagnostic. All previews, tab switches and gestures leave authoring files byte-identical and never create a build job.",
+        "Edit scene opens from the preview. Saving updates the title and actor position in a fresh preview while preserving scene UUID, BOM/CRLF and every other authored file.",
+        "Actor and original-OC source links return to the corresponding document; reopening Preview retains the selected scene and reads a fresh snapshot. Navigation is read-only.",
+        "Field links select the exact JSON value in the actual source textarea: the saved scene position survives BOM, CRLF, Chinese and emoji offset conversion, and inherited speed selects the projection configuration. Composite size opens its document without selecting an approximate range.",
+        "Changing the scene on disk after preview capture opens the current source and reports a stale location with no selection or write. Restoring the test fixture restores every author-file hash.",
+        "SVG images render as image content: embedded script and external-image URLs never execute or request network access."
+      ],
+      "report": "browser-v1/browser.json"
+    },
+    "browserV2": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "flows": 5,
+      "steps": [
+        "Existing v1 opens without conversion. Explicit upgrade seeds stable IDs, Duplicate creates a new ID for the same definition, and reorder retains all IDs. Preview is read-only; Save preserves BOM/CRLF and changes only the scene source.",
+        "English/Japanese language switches retain the checked instance IDs and draft; the Japanese form fits a real 390px viewport.",
+        "A real canvas click selects the cloned instance, and its position source link focuses the actual editor and selects /actors/0/position after reorder, with BOM/CRLF preserved on disk.",
+        "Real pointer dragging, Undo/Redo, coordinate edits and save operate on the selected instance only. The other instance of the same definition remains at [160,200]; reopening preserves both independent positions and IDs.",
+        "An external revision between Check and Apply refuses the stale save without overwriting disk, and keeps the selected instance draft for recovery. The entire UI workflow never launches a build job."
+      ],
+      "report": "browser-v2/browser.json"
+    },
+    "packagedResources": {
+      "desktop": "passed",
+      "mobile": "passed",
+      "sourceChecks": 45,
+      "evidence": "packaged-resources.json",
+      "scope": "Offline preparation and actual packaged modules/WASM execution, including final CSS/catalog. Host filesystem commit in package harness is simulated; real commits covered separately by HTTP/Node tests."
+    },
+    "legacyCompatibility": {
+      "v1Golden": "scripts/tests/fixtures/scene-model/legacy-plan-v1.json",
+      "v2Golden": "scripts/tests/fixtures/scene-model/legacy-plan-v2.json",
+      "plansGeneratedFilesAndSourceMapsExact": true,
+      "v1BackendSha256": "dba885d7965715e56b1f1ac394dc78e3227d3502d23318a736dca6eb93beabe6",
+      "v2BackendSha256": "ea3c52f868896f082483536be6dea9abf1c9c0b336165f63b360a9edccd2724e",
+      "backendSourceFilesUnchanged": {
+        "scripts/backends/godot4.mjs": "d42d385b5a6e62ff4aa91d00f6065bdd0cefbc7ddde55e08cf5e3c62060fff77",
+        "scripts/backends/godot4/runtime.gd": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd",
+        "scripts/backends/godot4-dispatch.mjs": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
+        "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+        "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8"
+      }
+    },
+    "rustCore": {
+      "sourcesUnchanged": true,
+      "wasmSha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+      "scope": "Unchanged native CLI built offline to enable native/WASM parity; no Rust group semantics added."
+    },
+    "documentExample": {
+      "authorSchemaVersion": 3,
+      "groups": 2,
+      "compiledPlanVersion": 2,
+      "validatedAgainst": "examples/scene2d observation in memory; no example source changes"
+    },
+    "visualInspection": [
+      "browser-final/groups-layout-descendants-zh.png",
+      "browser-final/groups-author-ja.png",
+      "browser-final/groups-depth16-narrow-zh.png"
+    ]
+  },
+  "limits": {
+    "actors": [
+      1,
+      128
+    ],
+    "groups": [
+      0,
+      128
+    ],
+    "groupDepth": 16,
+    "groupNameCharacters": [
+      1,
+      160
+    ],
+    "groupIdentity": "unique lowercase UUID, disjoint from instance IDs; duplicate names permitted",
+    "jsonUtf16CodeUnits": 8388608,
+    "jsonDepth": 64,
+    "jsonValueNodes": 100000
+  },
+  "iterations": [
+    "UI review found an invalid structure sidecar could leave its captured preview unreleased; rejection now releases the preview before reporting failure, with regression coverage.",
+    "First browser harness attempted review after Undo returned to the clean saved baseline. Changed it to assert clean state and each original position; review correctly remains disabled when unchanged. Original browser.json retained; intermediate screenshots removed.",
+    "First app run found one newly duplicated English Expand message. Removed the duplicate while retaining the identical established translation; final i18n/full app runs pass.",
+    "Depth16 initially fit without horizontal overflow but left deep labels too narrow. Compacted indentation after the first levels; final Chrome flow asserts the deepest button is at least160px wide at390px. Final CSS-only adjustment was verified in the browser and refreshed packaged resources after the full app suite."
+  ],
+  "limitations": [
+    "Nineteen native archive/mobile helper tests skipped because helpers were not supplied. Real Godot and unchanged native/WASM core parity enabled. Node selected-resource-package roundtrip is covered; no new native full-archive acceptance claimed.",
+    "Groups organize editor content only; group transforms, visibility, reusable fragments, screenplay events, arbitrary author scripts, shared text/canvas drafts and scale beyond128instances remain planned.",
+    "Group/model/source rules remain portable JS. Rust receives only instance geometry keys; Android scene UI and new Tauri/device acceptance are not claimed by packaged module execution.",
+    "No new installer, version bump, commit, push, installation or author-workspace/configuration mutation."
+  ],
+  "cleanup": "Final browser screenshots retained; intermediate group-browser images and generated desktop/mobile copies removed. Temporary stage/native build target removed after guarded sync. All prior evidence and historical function-network artifacts remain byte-identical.",
+  "changedSourceSha256": {
+    "engine/README.md": "be7d4d1ad58435c1d88de6842f9f903454556446f23d3382dccefd52ffb2ce05",
+    "engine/build-plan.mjs": "5049473ef4c5423f6e97b275aed3f7a03bb5a10defc3f395538347af47d0e82b",
+    "engine/index.mjs": "3d09f86071829a106ccffc5105f9982989f58a4c6e9c7af4502c6b857f389082",
+    "engine/scene-groups.mjs": "0149aa1efdedf32032446c2d5346a428982bf5f368230289fc0cc5e3a9d48cb0",
+    "engine/scene-layout.mjs": "c2cdb937a241b008622b71e7e9ab7a1a2291d9044e43dd183ceaab1954d40479",
+    "engine/scene-model.mjs": "29872672282ec6b4a5924b014eadfa61093381636eabed6d7623bb428819ca3c",
+    "engine/scene-structure.mjs": "9b890c2ec9db8e6aef48dc7fbc4c1c925d8f76147d1dea5f2fb6f7b93e10031c",
+    "engine/world-scene-update.mjs": "368c43d2165f4eb2c8d29fa88dede51750c4f344f792a3233ab6465b6961bf74",
+    "scripts/adapters/node-build-snapshot.mjs": "c22185794b7d22c2d7b6825f9c6eb9570c6d5c02001c5b1a2c1d13a2acf5603f",
+    "scripts/lib/scene-preview-service.mjs": "d81983d7856c81b2eb797a7de9ecb0fc1d35f6e2a958e33271d6cf83115d0e62",
+    "scripts/tests/dialog-harness.mjs": "8499588a6bd1db7f3a163ebe76606e73c0d568d36783f3239bc7b41df77859d2",
+    "scripts/tests/fixtures/scene-model/legacy-plan-v2.json": "eed953ffadac02c98fb52225254afb85c501e9ef7cd597c4d29810aac61f979d",
+    "scripts/tests/project-build.test.mjs": "dbac1c150cd570a624071f77ac26884d3f80cbc220dc651d79a80c675dcd75e3",
+    "scripts/tests/scene-edit-ui.test.mjs": "8ce97a416c89c5eab653d8fdec0b4bb4f2e15e9bba52a97b4e151472c3da80f1",
+    "scripts/tests/scene-group-runtime.test.mjs": "a7b94a39e85258da99183d73e3924d96b50d8f355d202f512c1857641aa3dbd5",
+    "scripts/tests/scene-groups-smoke.mjs": "4679e0e886074e91b1fe99f2ae40d92e26293ca7da93fc12769c87c6bcfef756",
+    "scripts/tests/scene-groups.test.mjs": "8fb970a3ba3e61f04c6d105bc20df7bf88725472749be9f40c6fd14830a10a86",
+    "scripts/tests/scene-layout-ui.test.mjs": "7c25646be382d62a768498d791483eb32c67a5059349609c24f2575a7ee7d732",
+    "scripts/tests/scene-layout.test.mjs": "8009722553fc0498fb90f78ab96440c2693a4a7cad5da8f8e5e5e6142ec9d6c4",
+    "scripts/tests/scene-outline-ui.test.mjs": "cbd8ff7d42d9b6d93ca8abd655c073862023addbc407a9ea7988bfe01bc3a4a5",
+    "scripts/tests/scene-preview-service.test.mjs": "26caa0ba5a5933e1f3784a2f7df9451dc0baa49e18b25db12f32d1772a2a93e0",
+    "scripts/tests/scene-preview-ui.test.mjs": "0782dcc2f33fe96e6375146ad48b6d0fe0637091cf21670864f21dae45d6214f",
+    "web/i18n/en.js": "9a60ede3dbc5284b00cca6c53f5ebf2c69c604d3f26b6b4a44896d81d953991a",
+    "web/i18n/ja.js": "fcd044c97cff3a7bcf6cc607bff3a936cffe54c21ef59f1028a4e04399b704f2",
+    "web/modules/app-project-build.js": "8a6b819938b571c37b371649e187a68014253f63dcc62ef71ee2b6bf98f604cc",
+    "web/modules/app-scene-create.js": "a4e1821ed35754a0f87bf90e232f44e3b645f45e697c55bab06f5108550257cd",
+    "web/modules/app-scene-layout.js": "8ca1efee4e34262f386da5ab791aecdfa89cfe513f8ebe6279c758c382d8121b",
+    "web/modules/app-scene-outline.js": "93db8f0b3c7951e2a6631abfc09a87261522c3a1bb12401b9e47307c317b5264",
+    "web/modules/app-scene-preview.js": "428a0869741074bd8aee72e792dd18abc2c82153b37aae9af73209774d9b3a4b",
+    "web/project-build.css": "67187db21281ec21723f9f43c1a4a6445bc2af5677329c64b2a0351af2681808",
+    "web/scene-preview.css": "58a412f15f789d6c5c21fa20b26c1b17ac7bc26248dde40fa64053ed12691fd1"
+  }
+}

@@ -139,12 +139,16 @@ test('World exposes multiple projections of the same core, returns to it and gua
 test('scene picks compatible projections and submits inherited defaults separately from complete explicit overrides', async () => {
   const h = await harness({ scene: true }); const picker = h.element('sceneActor0Object');
   assert.equal(picker.children.some(option => option.value === ids[3]), false); assert.equal(picker.children.some(option => option.value === ids[1]), true);
+  const instanceId = h.element('sceneActor0Instance').value;
+  assert.match(instanceId, /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/);
   h.set('sceneActor0Object', ids[1], 'change'); assert.equal(h.element('sceneActor0UseProjection').checked, true);
   assert.equal(h.element('sceneActor0Speed').value, '250'); assert.equal(h.element('sceneActor0Speed').disabled, true); assert.equal(h.element('sceneActor0position0').disabled, false);
   h.set('sceneActor0position0', '32'); await h.preview();
-  const inherited = JSON.parse(h.calls.at(-1).request.content).actors[0]; assert.deepEqual(inherited, { objectId: ids[1], position: [32, 220], useProjectionDefaults: true });
+  const inherited = JSON.parse(h.calls.at(-1).request.content).actors[0]; assert.deepEqual(inherited, { instanceId, objectId: ids[1], position: [32, 220], useProjectionDefaults: true });
+  assert.equal(JSON.parse(h.calls.at(-1).request.content).schemaVersion, 2);
   h.set('sceneActor0UseProjection', false, 'change'); assert.equal(h.element('sceneCreateSave').disabled, true); assert.equal(h.element('sceneActor0Speed').disabled, false);
   h.set('sceneActor0Speed', '0'); await h.preview(); const explicit = JSON.parse(h.calls.at(-1).request.content).actors[0];
+  assert.equal(explicit.instanceId, instanceId); assert.equal(explicit.objectId, ids[1]);
   assert.equal(explicit.useProjectionDefaults, undefined); assert.equal(explicit.speed, 0); assert.deepEqual(explicit.size, [80, 80]); assert.equal(explicit.imageResourceId, assetId);
   h.set('sceneActor0UseProjection', true, 'change'); assert.equal(h.element('sceneActor0Speed').value, '250');
 });

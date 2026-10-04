@@ -60,6 +60,7 @@ function isSafeStaticAssetPath(pathname) {
     || pathname === '/scripts/lib/media-format.mjs'
     || pathname === '/scripts/lib/document-values.mjs'
     || /^\/engine\/[a-z0-9-]+\.mjs$/.test(pathname)
+    || pathname === '/engine/studio-core.wasm'
     || pathname.startsWith('/assets/')
     || pathname.startsWith('/asset-files/')
     || pathname.startsWith('/web/')

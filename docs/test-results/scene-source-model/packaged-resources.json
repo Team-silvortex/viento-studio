@@ -1,0 +1,222 @@
+{
+  "mode": "offline resources only; no installer, Cargo, app launch or author workspace",
+  "commands": [
+    "CARGO_NET_OFFLINE=true node --import /tmp/viento-scene-source-offline.mjs desktop/prepare.mjs --resources-only",
+    "CARGO_NET_OFFLINE=true node --import /tmp/viento-scene-source-offline.mjs mobile/prepare.mjs",
+    "node /tmp/viento-scene-source-package-check.mjs"
+  ],
+  "fetch": "disabled by import hook; pinned Node license read from existing installed AppImage and SHA-256 validated",
+  "desktopOutput": "Desktop application resources prepared (no project data bundled).\n",
+  "mobileOutput": "Mobile resources prepared: 0.0.6 (no Node executable or workspace data)\n",
+  "logs": {
+    "desktop": "desktop-prepare-verified.log",
+    "mobile": "mobile-prepare-verified.log",
+    "runtime": "packaged-runtime-verified.log"
+  },
+  "runtimeCheckExecution": "Node imported each packaged Scene2D model, JSON source parser, plan adapter and source selection helper. Mobile vendor imports resolved only to that packaged vendor directory.",
+  "runtimeChecks": [
+    {
+      "directory": "desktop/resources",
+      "goldenPlanExact": true,
+      "inputUnchanged": true,
+      "sidecarExcludedFromPlan": true,
+      "bomCrLfUnicodeSelection": {
+        "status": "exact",
+        "start": 226,
+        "end": 252
+      },
+      "selectedPosition": [
+        100.25,
+        200
+      ],
+      "approximateNotSelected": true,
+      "staleRevisionRejected": true,
+      "runtimeDuplicateRejected": true,
+      "registrationDuplicateNoRange": true,
+      "registrationLegacyDepthAndNodeBudgetsRecovered": true,
+      "registrationMalformedJsonRejected": true,
+      "passed": true
+    },
+    {
+      "directory": "mobile/dist",
+      "goldenPlanExact": true,
+      "inputUnchanged": true,
+      "sidecarExcludedFromPlan": true,
+      "bomCrLfUnicodeSelection": {
+        "status": "exact",
+        "start": 226,
+        "end": 252
+      },
+      "selectedPosition": [
+        100.25,
+        200
+      ],
+      "approximateNotSelected": true,
+      "staleRevisionRejected": true,
+      "runtimeDuplicateRejected": true,
+      "registrationDuplicateNoRange": true,
+      "registrationLegacyDepthAndNodeBudgetsRecovered": true,
+      "registrationMalformedJsonRejected": true,
+      "passed": true
+    }
+  ],
+  "artifacts": {
+    "desktop/resources": {
+      "files": 467,
+      "bytes": 5800049,
+      "checks": {
+        "engine/json-source.mjs": {
+          "bytes": 6714,
+          "sha256": "4c219d428fbfde7945e7f11ee17fc6d9ef8d4bb0d78e5612b3e37ecb14a6a289",
+          "matchesSource": true
+        },
+        "engine/scene-model.mjs": {
+          "bytes": 14273,
+          "sha256": "f23377dc77489afc6cb41db03cfaa20cddef092ecd04eac673e48a0cc2050ea3",
+          "matchesSource": true
+        },
+        "engine/build-plan.mjs": {
+          "bytes": 2358,
+          "sha256": "880c361898f6b07a80797ebd44dead400f3ca74ed0abd73ae7540cca4332f99f",
+          "matchesSource": true
+        },
+        "engine/studio-core.wasm": {
+          "bytes": 141948,
+          "sha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+          "matchesSource": true
+        },
+        "engine/studio-core.build.json": {
+          "bytes": 1094,
+          "sha256": "fcb54497f4f4896320a8b2e3c1d654d835770e3efdaad133015ac779ddbff795",
+          "matchesSource": true
+        },
+        "web/modules/app-source-location.js": {
+          "bytes": 1724,
+          "sha256": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70",
+          "matchesSource": true
+        },
+        "web/modules/app-runtime.js": {
+          "bytes": 199822,
+          "sha256": "57ea04e8fd7113cd39bcd8a9156985c1f2418038e44f262784063cb8ec85a878",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-preview.js": {
+          "bytes": 19458,
+          "sha256": "1cdc7a4598b8a7ac7362de8f747a9e13ad807d600266e3c5f609fda2fe0a35ac",
+          "matchesSource": true
+        },
+        "web/modules/app-project-build.js": {
+          "bytes": 24963,
+          "sha256": "e19fb5aa8ea273a6d7f980c0f9dae29eb64409f78ef27dc1a94ea2cef23b46ec",
+          "matchesSource": true
+        },
+        "web/i18n/en.js": {
+          "bytes": 99321,
+          "sha256": "aeeed341737d7760fedb1455b3509fda63e2a6d0b5006f6ed3fecc69d0ec4eba",
+          "matchesSource": true
+        },
+        "web/i18n/ja.js": {
+          "bytes": 126337,
+          "sha256": "6ccf569bea2ecb95cb1f1b1a86c73c91732e2cdaafc88995bb1d37edc4081c83",
+          "matchesSource": true
+        }
+      },
+      "projectDataAndTestFixturesAbsent": true
+    },
+    "mobile/dist": {
+      "files": 176,
+      "bytes": 4398142,
+      "checks": {
+        "engine/json-source.mjs": {
+          "bytes": 6731,
+          "sha256": "2a19d51da7a381d57c5eb8430e91dd0c82c614c618538b507dbc50dc0cfb34de",
+          "matchesSource": false,
+          "expectedMobileVendorRewrite": true
+        },
+        "engine/scene-model.mjs": {
+          "bytes": 14273,
+          "sha256": "f23377dc77489afc6cb41db03cfaa20cddef092ecd04eac673e48a0cc2050ea3",
+          "matchesSource": true
+        },
+        "engine/build-plan.mjs": {
+          "bytes": 2358,
+          "sha256": "880c361898f6b07a80797ebd44dead400f3ca74ed0abd73ae7540cca4332f99f",
+          "matchesSource": true
+        },
+        "engine/studio-core.wasm": {
+          "bytes": 141948,
+          "sha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+          "matchesSource": true
+        },
+        "engine/studio-core.build.json": {
+          "bytes": 1094,
+          "sha256": "fcb54497f4f4896320a8b2e3c1d654d835770e3efdaad133015ac779ddbff795",
+          "matchesSource": true
+        },
+        "web/modules/app-source-location.js": {
+          "bytes": 1724,
+          "sha256": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70",
+          "matchesSource": true
+        },
+        "web/modules/app-runtime.js": {
+          "bytes": 199822,
+          "sha256": "57ea04e8fd7113cd39bcd8a9156985c1f2418038e44f262784063cb8ec85a878",
+          "matchesSource": true
+        },
+        "web/modules/app-scene-preview.js": {
+          "bytes": 19458,
+          "sha256": "1cdc7a4598b8a7ac7362de8f747a9e13ad807d600266e3c5f609fda2fe0a35ac",
+          "matchesSource": true
+        },
+        "web/modules/app-project-build.js": {
+          "bytes": 24963,
+          "sha256": "e19fb5aa8ea273a6d7f980c0f9dae29eb64409f78ef27dc1a94ea2cef23b46ec",
+          "matchesSource": true
+        },
+        "web/i18n/en.js": {
+          "bytes": 99321,
+          "sha256": "aeeed341737d7760fedb1455b3509fda63e2a6d0b5006f6ed3fecc69d0ec4eba",
+          "matchesSource": true
+        },
+        "web/i18n/ja.js": {
+          "bytes": 126337,
+          "sha256": "6ccf569bea2ecb95cb1f1b1a86c73c91732e2cdaafc88995bb1d37edc4081c83",
+          "matchesSource": true
+        }
+      },
+      "projectDataAndTestFixturesAbsent": true
+    }
+  },
+  "cleanup": [
+    {
+      "path": "desktop/resources",
+      "bytes": 5800049,
+      "removed": true
+    },
+    {
+      "path": "mobile/dist",
+      "bytes": 4398142,
+      "removed": true
+    },
+    {
+      "path": "desktop/ui/i18n",
+      "bytes": 239087,
+      "removed": true
+    },
+    {
+      "path": "desktop/.cache",
+      "bytes": 157609,
+      "removed": true
+    }
+  ],
+  "finalAcceptance": {
+    "currentChecksumMatches": 22,
+    "includesModalFocusAndVerifiedRangeRestoration": true,
+    "currentRuntimeSha256": "57ea04e8fd7113cd39bcd8a9156985c1f2418038e44f262784063cb8ec85a878",
+    "currentSceneModelSha256": "f23377dc77489afc6cb41db03cfaa20cddef092ecd04eac673e48a0cc2050ea3",
+    "legacyRegistrationRecoveryVerified": true,
+    "projectBuildUiChecked": true,
+    "resourceCopiesRemoved": true,
+    "result": "passed"
+  }
+}

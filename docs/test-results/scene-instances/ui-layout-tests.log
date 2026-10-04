@@ -1,0 +1,346 @@
+TAP version 13
+# Subtest: free movement preserves imported fractions and snapping aligns absolute centers within legal coordinates
+ok 1 - free movement preserves imported fractions and snapping aligns absolute centers within legal coordinates
+  ---
+  duration_ms: 4.257769
+  type: 'test'
+  ...
+# Subtest: dragging an actor previews a copy and commits once without mutating the saved model or view
+ok 2 - dragging an actor previews a copy and commits once without mutating the saved model or view
+  ---
+  duration_ms: 2.105382
+  type: 'test'
+  ...
+# Subtest: screen movement converts through current zoom and an owner can publish the committed model synchronously
+ok 3 - screen movement converts through current zoom and an owner can publish the committed model synchronously
+  ---
+  duration_ms: 0.742749
+  type: 'test'
+  ...
+# Subtest: clicks and motion inside the four screen-pixel threshold never change an off-grid position
+ok 4 - clicks and motion inside the four screen-pixel threshold never change an off-grid position
+  ---
+  duration_ms: 0.539543
+  type: 'test'
+  ...
+# Subtest: Escape, pointer cancellation and lost capture revert only temporary actor movement
+ok 5 - Escape, pointer cancellation and lost capture revert only temporary actor movement
+  ---
+  duration_ms: 4.436362
+  type: 'test'
+  ...
+# Subtest: cancelling another pointer never cancels the active actor gesture
+ok 6 - cancelling another pointer never cancels the active actor gesture
+  ---
+  duration_ms: 0.478659
+  type: 'test'
+  ...
+# Subtest: model, mode, visibility, snap and selection changes safely abandon pending movement
+ok 7 - model, mode, visibility, snap and selection changes safely abandon pending movement
+  ---
+  duration_ms: 2.527415
+  type: 'test'
+  ...
+# Subtest: idempotent renders preserve a drag but destruction removes listeners and pending work
+ok 8 - idempotent renders preserve a drag but destruction removes listeners and pending work
+  ---
+  duration_ms: 0.439406
+  type: 'test'
+  ...
+# Subtest: dragging empty space, middle button and space-modified actors pans without moving or selecting objects
+ok 9 - dragging empty space, middle button and space-modified actors pans without moving or selecting objects
+  ---
+  duration_ms: 0.319604
+  type: 'test'
+  ...
+# Subtest: space release restores actor movement while readonly actor drags and arrows still pan
+ok 10 - space release restores actor movement while readonly actor drags and arrows still pan
+  ---
+  duration_ms: 0.40382
+  type: 'test'
+  ...
+# Subtest: keyboard editing nudges by one or ten scene units regardless of zoom or grid and leaves undo modifiers alone
+ok 11 - keyboard editing nudges by one or ten scene units regardless of zoom or grid and leaves undo modifiers alone
+  ---
+  duration_ms: 0.42028
+  type: 'test'
+  ...
+# Subtest: arrow nudges do not emit no-op history at the coordinate boundary
+ok 12 - arrow nudges do not emit no-op history at the coordinate boundary
+  ---
+  duration_ms: 0.342106
+  type: 'test'
+  ...
+# Subtest: editing uses reverse draw order and refuses to grab actor pixels outside the scene viewport
+ok 13 - editing uses reverse draw order and refuses to grab actor pixels outside the scene viewport
+  ---
+  duration_ms: 0.18864
+  type: 'test'
+  ...
+# Subtest: missing textures retain their placeholder while the actor is dragged
+ok 14 - missing textures retain their placeholder while the actor is dragged
+  ---
+  duration_ms: 0.455496
+  type: 'test'
+  ...
+# Subtest: modifier clicks toggle multi-selection while ordinary selected clicks retain the group
+ok 15 - modifier clicks toggle multi-selection while ordinary selected clicks retain the group
+  ---
+  duration_ms: 1.190161
+  type: 'test'
+  ...
+# Subtest: unselecting the last actor and clicking blank canvas both publish an empty selection
+ok 16 - unselecting the last actor and clicking blank canvas both publish an empty selection
+  ---
+  duration_ms: 0.324303
+  type: 'test'
+  ...
+# Subtest: a group drag keeps relative positions, highlights every actor and sends one batch commit
+ok 17 - a group drag keeps relative positions, highlights every actor and sends one batch commit
+  ---
+  duration_ms: 0.941198
+  type: 'test'
+  ...
+# Subtest: snapped group movement anchors the grabbed actor and preserves fractional spacing
+ok 18 - snapped group movement anchors the grabbed actor and preserves fractional spacing
+  ---
+  duration_ms: 0.529384
+  type: 'test'
+  ...
+# Subtest: groups stop together at a coordinate boundary instead of squeezing their spacing
+ok 19 - groups stop together at a coordinate boundary instead of squeezing their spacing
+  ---
+  duration_ms: 0.440678
+  type: 'test'
+  ...
+# Subtest: group arrow nudges emit a batch even with grid enabled and suppress fully clamped no-ops
+ok 20 - group arrow nudges emit a batch even with grid enabled and suppress fully clamped no-ops
+  ---
+  duration_ms: 1.398799
+  type: 'test'
+  ...
+# Subtest: all-selection shortcut belongs only to multi-selection canvases and leaves undo shortcuts alone
+ok 21 - all-selection shortcut belongs only to multi-selection canvases and leaves undo shortcuts alone
+  ---
+  duration_ms: 0.283106
+  type: 'test'
+  ...
+# Subtest: readonly previews preserve single selection even with modifiers or selectMany calls
+ok 22 - readonly previews preserve single selection even with modifiers or selectMany calls
+  ---
+  duration_ms: 0.256036
+  type: 'test'
+  ...
+# Subtest: group cancellation never commits and an idempotent selection refresh keeps an active drag
+ok 23 - group cancellation never commits and an idempotent selection refresh keeps an active drag
+  ---
+  duration_ms: 1.688977
+  type: 'test'
+  ...
+# Subtest: middle, space and empty-area drags preserve the group while panning
+ok 24 - middle, space and empty-area drags preserve the group while panning
+  ---
+  duration_ms: 0.591558
+  type: 'test'
+  ...
+# Subtest: synchronous owner selection updates preserve group dragging and its independent primary actor
+ok 25 - synchronous owner selection updates preserve group dragging and its independent primary actor
+  ---
+  duration_ms: 0.346584
+  type: 'test'
+  ...
+# Subtest: canvas hit tests, keyboard and group drags distinguish instances sharing one definition
+ok 26 - canvas hit tests, keyboard and group drags distinguish instances sharing one definition
+  ---
+  duration_ms: 0.474892
+  type: 'test'
+  ...
+# Subtest: layout moves remain a draft; review and save submit fixed source versions without expanding inheritance
+ok 27 - layout moves remain a draft; review and save submit fixed source versions without expanding inheritance
+  ---
+  duration_ms: 36.414586
+  type: 'test'
+  ...
+# Subtest: one move is one undo step and changing a reviewed draft disables its old approval
+ok 28 - one move is one undo step and changing a reviewed draft disables its old approval
+  ---
+  duration_ms: 35.845088
+  type: 'test'
+  ...
+# Subtest: invalid numeric input stays unsaved and cannot silently submit the previous coordinates
+ok 29 - invalid numeric input stays unsaved and cannot silently submit the previous coordinates
+  ---
+  duration_ms: 19.426608
+  type: 'test'
+  ...
+# Subtest: close, escape, and reload honor unsaved layout confirmation and busy protection
+ok 30 - close, escape, and reload honor unsaved layout confirmation and busy protection
+  ---
+  duration_ms: 14.094864
+  type: 'test'
+  ...
+# Subtest: source conflicts retain coordinates and do not silently rebase or overwrite
+ok 31 - source conflicts retain coordinates and do not silently rebase or overwrite
+  ---
+  duration_ms: 13.115794
+  type: 'test'
+  ...
+# Subtest: unknown apply is verified through read-only source comparison, never submitted twice
+ok 32 - unknown apply is verified through read-only source comparison, never submitted twice
+  ---
+  duration_ms: 21.395666
+  type: 'test'
+  ...
+# Subtest: unknown apply with different saved content preserves the draft and requires explicit reload
+ok 33 - unknown apply with different saved content preserves the draft and requires explicit reload
+  ---
+  duration_ms: 18.282112
+  type: 'test'
+  ...
+# Subtest: capability and document draft changes lock layout writes while preserving its draft
+ok 34 - capability and document draft changes lock layout writes while preserving its draft
+  ---
+  duration_ms: 10.675572
+  type: 'test'
+  ...
+# Subtest: malformed or mismatched successful preview responses never approve a different layout or enable saving
+ok 35 - malformed or mismatched successful preview responses never approve a different layout or enable saving
+  ---
+  duration_ms: 134.978084
+  type: 'test'
+  ...
+# Subtest: malformed or foreign apply success remains uncertain and requires verification without another mutation
+ok 36 - malformed or foreign apply success remains uncertain and requires verification without another mutation
+  ---
+  duration_ms: 144.578167
+  type: 'test'
+  ...
+# Subtest: unknown apply cannot be acknowledged by matching bytes at a removed or relocated scene path
+ok 37 - unknown apply cannot be acknowledged by matching bytes at a removed or relocated scene path
+  ---
+  duration_ms: 74.950693
+  type: 'test'
+  ...
+# Subtest: unknown apply rechecks identity after reading source and preserves the draft when registration changes mid-read
+ok 38 - unknown apply rechecks identity after reading source and preserves the draft when registration changes mid-read
+  ---
+  duration_ms: 56.387459
+  type: 'test'
+  ...
+# Subtest: failed verification reads retain the uncertain draft and allow a read-only retry
+ok 39 - failed verification reads retain the uncertain draft and allow a read-only retry
+  ---
+  duration_ms: 32.06698
+  type: 'test'
+  ...
+# Subtest: layout response validation accepts the real scene.update preview and commit including losslessly preserved source formatting
+ok 40 - layout response validation accepts the real scene.update preview and commit including losslessly preserved source formatting
+  ---
+  duration_ms: 146.35608
+  type: 'test'
+  ...
+# Subtest: layout messages have English and Japanese translations
+ok 41 - layout messages have English and Japanese translations
+  ---
+  duration_ms: 0.679232
+  type: 'test'
+  ...
+# Subtest: multi-selection remains view state; checkboxes, select all, and clear do not change the draft
+ok 42 - multi-selection remains view state; checkboxes, select all, and clear do not change the draft
+  ---
+  duration_ms: 16.066325
+  type: 'test'
+  ...
+# Subtest: one group gesture and one alignment each use one undo step and one reviewed scene update
+ok 43 - one group gesture and one alignment each use one undo step and one reviewed scene update
+  ---
+  duration_ms: 35.48527
+  type: 'test'
+  ...
+# Subtest: an invalid batch cannot partially move actors or silently discard an unfinished coordinate
+ok 44 - an invalid batch cannot partially move actors or silently discard an unfinished coordinate
+  ---
+  duration_ms: 18.289255
+  type: 'test'
+  ...
+# Subtest: conflicts freeze batch commands while keeping all selected positions and history
+ok 45 - conflicts freeze batch commands while keeping all selected positions and history
+  ---
+  duration_ms: 15.804299
+  type: 'test'
+  ...
+# Subtest: missing Rust core blocks layout edits with a translated message while retaining the saved model
+ok 46 - missing Rust core blocks layout edits with a translated message while retaining the saved model
+  ---
+  duration_ms: 7.375872
+  type: 'test'
+  ...
+# Subtest: close, cancel and reload release Rust drafts while declined discard retains the same history
+ok 47 - close, cancel and reload release Rust drafts while declined discard retains the same history
+  ---
+  duration_ms: 317.293074
+  type: 'test'
+  ...
+# Subtest: a failed dialog open disposes its Rust session and a legacy core error becomes a translated failure
+ok 48 - a failed dialog open disposes its Rust session and a legacy core error becomes a translated failure
+  ---
+  duration_ms: 124.636533
+  type: 'test'
+  ...
+# Subtest: history and coordinate core failures preserve the last Rust snapshot and unsaved close protection
+ok 49 - history and coordinate core failures preserve the last Rust snapshot and unsaved close protection
+  ---
+  duration_ms: 16.982979
+  type: 'test'
+  ...
+# Subtest: nested verification error codes enter Rust conflict state and cannot be retried as uncertain saves
+ok 50 - nested verification error codes enter Rust conflict state and cannot be retried as uncertain saves
+  ---
+  duration_ms: 53.250601
+  type: 'test'
+  ...
+# Subtest: refresh failure after an accepted apply stays saved, warns, and cannot submit the write again
+ok 51 - refresh failure after an accepted apply stays saved, warns, and cannot submit the write again
+  ---
+  duration_ms: 17.880726
+  type: 'test'
+  ...
+# Subtest: late preview responses and old close events cannot approve, unlock or replace another session
+ok 52 - late preview responses and old close events cannot approve, unlock or replace another session
+  ---
+  duration_ms: 17.223005
+  type: 'test'
+  ...
+# Subtest: late apply success after a programmatic close cannot acknowledge another session or trigger its refresh
+ok 53 - late apply success after a programmatic close cannot acknowledge another session or trigger its refresh
+  ---
+  duration_ms: 20.662514
+  type: 'test'
+  ...
+# Subtest: late verification reads stop before further reads or refresh when their session was closed
+ok 54 - late verification reads stop before further reads or refresh when their session was closed
+  ---
+  duration_ms: 22.943532
+  type: 'test'
+  ...
+# Subtest: a core failure after begin retains the last Rust phase but releases host busy state and allows confirmed close
+ok 55 - a core failure after begin retains the last Rust phase but releases host busy state and allows confirmed close
+  ---
+  duration_ms: 18.5129
+  type: 'test'
+  ...
+# Subtest: layout repeated-definition instances select, move, undo, align and serialize separately
+ok 56 - layout repeated-definition instances select, move, undo, align and serialize separately
+  ---
+  duration_ms: 23.008281
+  type: 'test'
+  ...
+1..56
+# tests 56
+# suites 0
+# pass 56
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1577.014209

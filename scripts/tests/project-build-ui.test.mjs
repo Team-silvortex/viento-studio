@@ -25,6 +25,7 @@ async function harness(options = {}) {
     }, ...options.overrides,
   });
   const controller = h.runtime.setupProjectBuild({ getContext: () => current,
+    getSceneDraft: options.getSceneDraft, applySceneDraft: options.applySceneDraft,
     openSource: (...args) => { opened.push(args); return options.openSource ? options.openSource(...args) : true; } });
   controller.setAvailable(true); h.element('projectBuildBtn').click(); await flushDialogs();
   const setState = value => { state = value; };
@@ -70,6 +71,25 @@ test('scene switching cannot reuse another scene plan or artifact', async () => 
   assert.equal(h.element('projectBuildGenerate').disabled, true);
   h.element('projectBuildPlan').click();
   assert.deepEqual(h.calls.at(-1).body, { action: 'plan', sceneId: 'scene-two' });
+});
+
+test('saving a layout refreshes preview and invalidates the approved build plan without submitting a job', async () => {
+  let layout; const refreshed = [];
+  const h = await harness({ overrides: {
+    setupSceneLayout: options => { layout = options; return { setAvailable() {}, open() {} }; },
+    setupScenePreview: () => ({ setAvailable() {}, setScene() {}, setVisible() {}, invalidate: () => refreshed.push(true) }),
+  } });
+  h.controller.setAvailable(true, ['scene.update'], { scenePreview: true });
+  await h.finishPlan();
+  assert.equal(h.element('projectBuildGenerate').disabled, false);
+  const writes = h.calls.filter(call => call.body).length;
+  await layout.applied({ changes: [{ objectId: 'scene-one', sourcePath: scenes[0].sourcePath }] });
+  assert.equal(refreshed.length, 1);
+  assert.equal(h.element('projectBuildGenerate').disabled, true);
+  assert.equal(h.element('projectBuildPlanSummary').hidden, true);
+  await h.refresh();
+  assert.equal(h.element('projectBuildGenerate').disabled, true, 'polling cannot re-approve the old snapshot');
+  assert.equal(h.calls.filter(call => call.body).length, writes, 'save never launches a plan or build');
 });
 
 test('draft, creation, busy and browse guards prevent task submission even when context changed after rendering', async () => {
@@ -130,6 +150,78 @@ test('diagnostics retain exact source coordinates, protect declined navigation, 
   assert.equal(h.element('projectBuildDialog').open, false);
 });
 
+test('preview and diagnostic navigation focus the source editor after the dialog closes, preserving legacy callbacks', async () => {
+  for (const entry of ['preview', 'diagnostic']) {
+    let preview; const focusStates = [];
+    const diagnostic = { code: 'build_actor_value', sourcePath: scenes[0].sourcePath, propertyPath: '/actors/0/speed' };
+    const h = await harness({ state: { ...initial(), job: job('plan', 'failed', { diagnostics: [diagnostic] }) },
+      overrides: { setupScenePreview: options => { preview = options; return { setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {} }; } },
+      openSource: () => ({ focus: () => {
+        focusStates.push(h.element('projectBuildDialog').open);
+        h.element('docSourceEditor').focus();
+      } }),
+    });
+    if (entry === 'preview') await preview.openSource(diagnostic.sourcePath, diagnostic);
+    else { h.element('projectBuildDiagnostics').querySelector('button').click(); await flushDialogs(); }
+    await flushDialogs();
+    assert.deepEqual(focusStates, [false]);
+    assert.equal(h.runtime.document.activeElement, h.element('docSourceEditor'));
+    h.element('projectBuildBtn').click(); await flushDialogs();
+    h.element('projectBuildClose').click(); await flushDialogs();
+    assert.equal(h.runtime.document.activeElement, h.element('projectBuildBtn'));
+    assert.equal(focusStates.length, 1);
+  }
+});
+
+test('late source navigation cannot close a reopened dialog or replace a newer navigation focus', async () => {
+  for (const interruption of ['reopen', 'newer']) {
+    let preview; const reads = [], focused = [];
+    const h = await harness({ overrides: { setupScenePreview: options => {
+      preview = options; return { setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {} };
+    } }, openSource: () => { const read = deferred(); reads.push(read); return read.promise; } });
+    const first = preview.openSource(scenes[0].sourcePath);
+    if (interruption === 'reopen') {
+      h.element('projectBuildClose').click(); await flushDialogs(); h.element('projectBuildBtn').click(); await flushDialogs();
+    } else {
+      const second = preview.openSource(scenes[1].sourcePath);
+      reads[1].resolve({ focus: () => { focused.push('new'); h.element('docSourceEditor').focus(); } });
+      await second; await flushDialogs();
+    }
+    reads[0].resolve({ focus: () => focused.push('old') });
+    assert.equal(await first, false); await flushDialogs();
+    assert.deepEqual(focused, interruption === 'reopen' ? [] : ['new']);
+    assert.equal(h.element('projectBuildDialog').open, interruption === 'reopen');
+    if (interruption === 'newer') assert.equal(h.runtime.document.activeElement, h.element('docSourceEditor'));
+  }
+});
+
+test('queued dialog-close focus is discarded when the dialog is reopened before the close event', async () => {
+  let preview; let focuses = 0;
+  const h = await harness({ overrides: { setupScenePreview: options => {
+    preview = options; return { setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {} };
+  } }, openSource: () => ({ focus: () => { focuses++; } }) });
+  await preview.openSource(scenes[0].sourcePath);
+  h.element('projectBuildBtn').click();
+  h.element('projectBuildScene').focus();
+  await flushDialogs();
+  assert.equal(focuses, 0); assert.equal(h.element('projectBuildDialog').open, true);
+  assert.equal(h.runtime.document.activeElement, h.element('projectBuildScene'));
+});
+
+test('multiple queued close events focus the final closed session only once', async () => {
+  let preview; const focused = [];
+  const h = await harness({ overrides: { setupScenePreview: options => {
+    preview = options; return { setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {} };
+  } }, openSource: path => ({ focus: () => { focused.push(path); h.element('docSourceEditor').focus(); } }) });
+  await preview.openSource(scenes[0].sourcePath);
+  h.element('projectBuildBtn').click();
+  await preview.openSource(scenes[1].sourcePath);
+  await flushDialogs(); await flushDialogs();
+  assert.deepEqual(focused, [scenes[1].sourcePath]);
+  assert.equal(h.element('projectBuildDialog').open, false);
+  assert.equal(h.runtime.document.activeElement, h.element('docSourceEditor'));
+});
+
 test('snapshot conflicts invalidate the approved plan and preserve original error details', async () => {
   const h = await harness(); await h.finishPlan(); h.element('projectBuildGenerate').click();
   h.calls.at(-1).reject(Object.assign(new Error('snapshot differs'), { payload: { errorCode: 'build_snapshot_conflict' } })); await flushDialogs();
@@ -183,4 +275,67 @@ test('editor build context resolves generated source paths without changing the 
   assert.equal(buildContext().dirty, true);
   assert.equal(h.source.value, '未保存的场景草稿');
   assert.equal(h.doc.sourcePath, 'docs-standard/documents/scenes/second.json');
+});
+
+test('source layout bridge uses the active draft, refreshes draft preview, and does not require a disk-write command', async () => {
+  let preview, layout, sourceEnabled; const opened = [], applied = [], refreshes = [];
+  const draft = { sourcePath: scenes[0].sourcePath, baseSourceRevision: 'sha256:' + 'a'.repeat(64), content: 'raw draft' };
+  const h = await harness({ getSceneDraft: async path => { assert.equal(path, draft.sourcePath); return draft; },
+    applySceneDraft: async proposal => { applied.push(proposal); return { applied: true }; },
+    overrides: {
+      setupScenePreview: options => { preview = options; return { setAvailable() {}, setScene() {}, setVisible() {}, invalidate() { assert.fail('Draft application cannot switch to saved mode'); }, refreshDraft() { refreshes.push('draft'); } }; },
+      setupSceneLayout: options => { layout = options; return { setAvailable() {}, setSourceAvailable(value) { sourceEnabled = value; }, openSource: async input => { assert.equal(input.isCurrent(), true); opened.push(input); return true; } }; },
+    } });
+  h.controller.setAvailable(true, [], { scenePreview: true });
+  Object.assign(h.current, { dirty: true, sceneDraftWritable: true, sceneDraftPath: scenes[0].sourcePath, sceneDraftToken: 'one' });
+  assert.equal(sourceEnabled, true); assert.equal(preview.getContext().canEditScene, false);
+  assert.equal(preview.getContext().canEditDraftLayout, true);
+  assert.equal(await preview.editDraftLayout({ model: { scene: { objectId: scenes[0].id, sourcePath: scenes[0].sourcePath } }, images: new Map(), isCurrent: () => true }), true);
+  assert.equal(opened[0].source, draft);
+  const proposal = { sceneId: scenes[0].id, sourcePath: scenes[0].sourcePath };
+  assert.equal((await layout.applySourceDraft(proposal)).applied, true); assert.equal(applied[0], proposal);
+  await layout.sourceApplied(); assert.deepEqual(refreshes, ['draft']);
+  assert.equal(h.calls.some(call => call.request.method === 'POST'), false);
+  h.current.sceneDraftWritable = false; assert.equal(preview.getContext().canEditDraftLayout, false);
+  await assert.rejects(layout.applySourceDraft(proposal), { errorCode: 'scene_source_layout_conflict' });
+});
+
+test('source layout bridge discards delayed opens after scene or dialog ownership changes', async () => {
+  for (const change of ['scene', 'close', 'preview']) {
+    const waiting = deferred(), opened = []; let preview, previewCurrent = true;
+    const h = await harness({ getSceneDraft: () => waiting.promise, overrides: {
+      setupScenePreview: options => { preview = options; return { setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {} }; },
+      setupSceneLayout: () => ({ setAvailable() {}, setSourceAvailable() {}, openSource: input => { opened.push(input); return true; } }),
+    } });
+    h.controller.setAvailable(true, [], { scenePreview: true });
+    Object.assign(h.current, { dirty: true, sceneDraftWritable: true, sceneDraftPath: scenes[0].sourcePath });
+    const request = preview.editDraftLayout({ model: { scene: { objectId: scenes[0].id, sourcePath: scenes[0].sourcePath } }, isCurrent: () => previewCurrent });
+    if (change === 'scene') { h.element('projectBuildScene').value = scenes[1].id; h.element('projectBuildScene').dispatch('change'); }
+    else if (change === 'close') h.element('projectBuildClose').click();
+    else previewCurrent = false;
+    waiting.resolve({ sourcePath: scenes[0].sourcePath, content: 'old draft' });
+    assert.equal(await request, false); assert.equal(opened.length, 0);
+    assert.equal(h.calls.some(call => call.request.method === 'POST'), false);
+  }
+});
+
+
+test('source apply propagates live origin ownership to the asynchronous editor host', async () => {
+  for (const change of ['scene', 'close', 'layout', 'reopen']) {
+    let layout, owner, live = true;
+    const h = await harness({ applySceneDraft: async (_proposal, options) => { owner = options.isCurrent; return { applied: true }; }, overrides: {
+      setupSceneLayout: options => { layout = options; return { setAvailable() {}, setSourceAvailable() {} }; },
+    } });
+    h.controller.setAvailable(true, [], { scenePreview: true });
+    Object.assign(h.current, { dirty: true, sceneDraftWritable: true, sceneDraftPath: scenes[0].sourcePath });
+    await layout.applySourceDraft({ sceneId: scenes[0].id, sourcePath: scenes[0].sourcePath }, { isCurrent: () => live });
+    assert.equal(owner(), true);
+    if (change === 'scene') { h.element('projectBuildScene').value = scenes[1].id; h.element('projectBuildScene').dispatch('change'); }
+    else if (change === 'layout') live = false;
+    else {
+      h.element('projectBuildClose').click(); await flushDialogs();
+      if (change === 'reopen') { h.element('projectBuildBtn').click(); await flushDialogs(); }
+    }
+    assert.equal(owner(), false);
+  }
 });

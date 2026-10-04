@@ -1,0 +1,100 @@
+TAP version 13
+# Subtest: scene model preserves frozen legacy plan, build snapshot and generated Godot files exactly
+ok 1 - scene model preserves frozen legacy plan, build snapshot and generated Godot files exactly
+  ---
+  duration_ms: 31.376748
+  type: 'test'
+  ...
+# Subtest: source locations retain exact BOM, CRLF, Unicode and escaped JSON token offsets
+ok 2 - source locations retain exact BOM, CRLF, Unicode and escaped JSON token offsets
+  ---
+  duration_ms: 4.706965
+  type: 'test'
+  ...
+# Subtest: inherited dimensions have independent precise sources and an honest composite size anchor
+ok 3 - inherited dimensions have independent precise sources and an honest composite size anchor
+  ---
+  duration_ms: 4.161436
+  type: 'test'
+  ...
+# Subtest: explicit null, missing image and disabled projection defaults retain distinct semantics and sources
+ok 4 - explicit null, missing image and disabled projection defaults retain distinct semantics and sources
+  ---
+  duration_ms: 7.434199
+  type: 'test'
+  ...
+# Subtest: unknown fields use decoded JSON Pointer keys and exact value ranges
+ok 5 - unknown fields use decoded JSON Pointer keys and exact value ranges
+  ---
+  duration_ms: 4.14694
+  type: 'test'
+  ...
+# Subtest: missing scene and actor fields locate the nearest existing container without claiming exactness
+ok 6 - missing scene and actor fields locate the nearest existing container without claiming exactness
+  ---
+  duration_ms: 2.255331
+  type: 'test'
+  ...
+# Subtest: invalid inherited values locate projection configuration while scene overrides locate declarations
+ok 7 - invalid inherited values locate projection configuration while scene overrides locate declarations
+  ---
+  duration_ms: 3.917915
+  type: 'test'
+  ...
+# Subtest: actor reordering retains identity and definition but updates declaration pointers and revision
+ok 8 - actor reordering retains identity and definition but updates declaration pointers and revision
+  ---
+  duration_ms: 7.277559
+  type: 'test'
+  ...
+# Subtest: non-JSON actor definitions retain identity and revision without leaking body text or fabricated ranges
+ok 9 - non-JSON actor definitions retain identity and revision without leaking body text or fabricated ranges
+  ---
+  duration_ms: 2.390551
+  type: 'test'
+  ...
+# Subtest: runtime rejects duplicate decoded root and actor keys while registration preserves legacy last-key semantics
+ok 10 - runtime rejects duplicate decoded root and actor keys while registration preserves legacy last-key semantics
+  ---
+  duration_ms: 3.401391
+  type: 'test'
+  ...
+# Subtest: registration recovers legacy duplicate fields whose discarded value exceeds source-index budgets
+ok 11 - registration recovers legacy duplicate fields whose discarded value exceeds source-index budgets
+  ---
+  duration_ms: 24.493818
+  type: 'test'
+  ...
+# Subtest: registration recovery does not depend on current projection JSON, revision or resolved defaults
+ok 12 - registration recovery does not depend on current projection JSON, revision or resolved defaults
+  ---
+  duration_ms: 4.311724
+  type: 'test'
+  ...
+# Subtest: registration recovery does not derive locations from even valid current projection bodies
+ok 13 - registration recovery does not derive locations from even valid current projection bodies
+  ---
+  duration_ms: 1.791523
+  type: 'test'
+  ...
+# Subtest: registration recovery still rejects missing explicit position and broken scene-to-actor registrations
+ok 14 - registration recovery still rejects missing explicit position and broken scene-to-actor registrations
+  ---
+  duration_ms: 0.985663
+  type: 'test'
+  ...
+# Subtest: re-resolving changed source recalculates UTF-16 ranges and leaves old model and build DTO independent
+ok 15 - re-resolving changed source recalculates UTF-16 ranges and leaves old model and build DTO independent
+  ---
+  duration_ms: 8.535916
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 164.072881

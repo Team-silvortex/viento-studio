@@ -21,6 +21,7 @@
 | [RELEASE_0.0.4.md](../RELEASE_0.0.4.md) | 0.0.4 版本记录 |
 | [RELEASE_0.0.5.md](../RELEASE_0.0.5.md) | 0.0.5 版本记录 |
 | [RELEASE_0.0.6.md](../RELEASE_0.0.6.md) | 0.0.6 模板、投影与场景工作台 |
+| [RELEASE_0.0.7.md](../RELEASE_0.0.7.md) | 0.0.7 场景布局、Rust 核心与源码草稿 |
 | [RELEASE_b.2.8.1.md](../RELEASE_b.2.8.1.md) | b.2.8.1 发布记录 |
 | [RELEASE_b.2.8.2.md](../RELEASE_b.2.8.2.md) | 发布编号更正 |
 | [RELEASE_b.2.8.md](../RELEASE_b.2.8.md) | b.2.8 发布记录 |

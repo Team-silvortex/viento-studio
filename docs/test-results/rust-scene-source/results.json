@@ -1,0 +1,169 @@
+{
+  "date": "2026-10-04",
+  "version": "0.0.6",
+  "baselineCommit": "94e9626fc11c64f61a7391f7b081bc029306345a",
+  "scope": "Unreleased Rust source-layout inspection and exact coordinate-token patching shared by native and WASM; browser source layout no longer imports the YAML CST.",
+  "contracts": {
+    "protocolVersion": 1,
+    "sourceFeatureVersion": 1,
+    "operations": [
+      "sceneSource.inspect",
+      "sceneSource.patch"
+    ],
+    "sourceVersions": [
+      1,
+      2,
+      3
+    ],
+    "maxSourceUtf8Bytes": 131072,
+    "newPersistentSchema": false,
+    "inspection": "Strict bounded JSON, decoded duplicate keys, instance identities, coordinate bounds and logical scene groups. Inspect returns schemaVersion and actorCount only; it does not allocate draft sessions.",
+    "patch": "Validates the complete batch before output, replaces changed coordinate scalar ranges only, and preserves other source bytes including BOM/CRLF, exponent notation, large unknown numbers and escaped UTF-16 surrogate code units.",
+    "numericCompatibility": "Changed coordinates use JSON.stringify spelling, including decimal/exponent thresholds, subnormal values and exact ties. Numerically unchanged negative zero and exponent tokens are retained verbatim.",
+    "bridge": "Validates plain finite JSON without executing getters, gates the optional source feature independently of the existing protocol-1 geometry interface, and rejects malformed source response shapes and paths.",
+    "host": "Existing preview provenance, baseline hash and editor/dialog ownership remain in JavaScript. Applying a source patch changes only editor memory; normal Save retains its existing guarded persistence and conflict workflow.",
+    "remainingJavaScript": "The broader scene model, World commands, backend general JSON/CST/YAML parsing and mobile YAML import rewrite remain unchanged.",
+    "browserDependencies": "Removed the temporary public YAML browser-module route. The source-layout ESM graph now uses 8 modules and no YAML/CST dependency."
+  },
+  "checks": {
+    "app-check": {
+      "tests": 1372,
+      "pass": 1353,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 19,
+      "log": "app-check.log"
+    },
+    "rust": {
+      "tests": 48,
+      "pass": 48,
+      "fail": 0,
+      "log": "cargo-test.log",
+      "fmt": "cargo-fmt.log",
+      "clippy": "cargo-clippy.log"
+    },
+    "source-parity": {
+      "tests": 9,
+      "pass": 9,
+      "fail": 0,
+      "skipped": 0,
+      "samples": 500,
+      "legacyCases": 82,
+      "binary64Samples": 320,
+      "report": "source-parity.json"
+    },
+    "numeric-stress": {
+      "samples": 12000,
+      "pass": 12000,
+      "log": "numeric-stress.log"
+    },
+    "browser-modules": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "log": "browser-modules.log"
+    }
+  },
+  "countsOverlap": true,
+  "javascriptSyntaxFiles": 330,
+  "versionAndApiPreflight": true,
+  "browsers": {
+    "source": {
+      "report": "browser-source/browser.json",
+      "browser": "Chrome/154.0.8037.97",
+      "flowsPassed": 5,
+      "assertions": 99
+    },
+    "saved": {
+      "report": "browser-saved/browser.json",
+      "browser": "Chrome/154.0.8037.97",
+      "flowsPassed": 8
+    }
+  },
+  "nativeCore": {
+    "build": "Offline locked debug binary in an isolated temporary Cargo target. Used by the full application check and source parity tests.",
+    "log": "native-build.log"
+  },
+  "godot": {
+    "enabled": true,
+    "version": "4.7.2-stable",
+    "scope": "Existing build/runtime regressions enabled during the full application check."
+  },
+  "wasm": {
+    "bytes": 209864,
+    "sha256": "562a8d5427fc69f470f429bff370f577acf8faf279ff5c5a0e13235ec94083af",
+    "sourceHash": "ad7fc7c5dffe5910db3eb90390875888460bdc7ca31a67d1e461ea247d2615a1",
+    "imports": [],
+    "log": "wasm-build.log"
+  },
+  "offlinePackages": {
+    "report": "packaged-resources.json",
+    "log": "packaged-resources.log",
+    "desktopFiles": 59,
+    "mobileFiles": 58,
+    "sourceModulesPerIsolatedVm": 8,
+    "backendModulesPerIsolatedVm": 74,
+    "network": "Fetch disabled; pinned Node license extracted read-only from the installed AppImage.",
+    "verified": [
+      "v1/v2/v3 inspection and exact coordinate patches",
+      "Source draft creation, review/apply preparation and stale rejection",
+      "Existing geometry, draft undo/redo and saved-layout candidate",
+      "Stateless source operations do not consume 32 draft slots",
+      "Retained backend JSON/CST and YAML parsers"
+    ]
+  },
+  "iterations": [
+    {
+      "log": "source-parity.log",
+      "result": "8 passed, 1 test harness failure caused by treating WebAssembly.instantiate(Module) as its bytes overload; corrected the test only. Source parity and the full application check subsequently passed."
+    }
+  ],
+  "cleanup": {
+    "generatedResources": {
+      "desktop/resources": {
+        "generatedBytes": 5981823,
+        "removed": true
+      },
+      "mobile/dist": {
+        "generatedBytes": 4556335,
+        "removed": true
+      },
+      "desktop/ui/i18n": {
+        "generatedBytes": 257726,
+        "removed": true
+      },
+      "desktop/.cache": {
+        "generatedBytes": 157609,
+        "removed": true
+      }
+    },
+    "savedLayoutDuplicatePngBytesRemoved": 941129,
+    "retainedSavedLayoutPngs": [
+      "layout-conflict-draft-zh.png",
+      "layout-drag-snap-zh.png",
+      "layout-narrow-ja.png",
+      "layout-saved-preview-zh.png"
+    ],
+    "retainedSourceLayoutPngs": 5,
+    "temporaryStageAndCargoTarget": "Removed after guarded synchronization; author workspace, preferences and installed application remain unchanged."
+  },
+  "limitations": [
+    "19 skipped tests require native archive/mobile storage helper executables not supplied.",
+    "HTTP Chrome and isolated packaged ESM/WASM checks do not constitute native Tauri window/IPC or Android device acceptance.",
+    "No new installer, version bump, commit or push.",
+    "This migration covers source inspection and coordinate patches only; no scene fragments, multiple-file drafts, shared editor undo stack or migration of the complete scene model.",
+    "Literal lone surrogates cannot cross the raw Rust JSON string transport and return studio_core_request_invalid there; the public JavaScript wrapper retains scene_source_layout_invalid."
+  ],
+  "changedSourceSha256": {
+    "crates/viento-studio-core/src/lib.rs": "648cf3273c8f1ab338ee8297734c51f5eeea6631d42b4fb89e46cc1fae54d7d6",
+    "crates/viento-studio-core/src/scene_source.rs": "e185b24e5abeed2f2159bcedd6dde4078174cab600e40c9f8e61e4a9b674f974",
+    "engine/scene-source-layout.mjs": "94ef1c1d1130c1d751fdb909df570cc2f125a3119bc0f1a790f2012c2611738d",
+    "engine/studio-core.mjs": "13377d95f473476b3aa6706cd6b0bc38b45f976ddac40d75d0b385e71a0a23e0",
+    "scripts/lib/doc-server.mjs": "d480e0db99c68f8a9225a37db91de9916f5458e63b845edc1914ebe0604f6d94",
+    "scripts/lib/doc-server-static-routes.mjs": "a5b6b35796680ac7865b6da28123a4a112a699df4c378b449d6af1c64f82d01b",
+    "scripts/tests/doc-api.test.mjs": "1b7ec1a5e0081840789af02e7d39c01afde0a6b8e8b5f5762c5af5b68e899a2b",
+    "scripts/tests/scene-source-layout-host.test.mjs": "11bb15e9ad4f40a2e84bdcff02da973075af7104429992fb3d539819f0c2c0d0",
+    "scripts/tests/studio-core-source.test.mjs": "edeaa3ed65fd986cdc0ad5b2b780a3ebfbc63596518c8a307d515272a44969d2",
+    "scripts/tests/fixtures/studio-core-source/legacy-patches.json": "5a8a13a3a987cee41c24f1147fc928f295246a6cb608f69e3283bd6771515f6a"
+  }
+}

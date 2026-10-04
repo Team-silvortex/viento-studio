@@ -4,9 +4,10 @@
 
 ## 开始开发
 
-使用 Node.js 24。仅修改编辑器或转换器时，不需要安装 Rust 或提供真实作品：
+使用 Node.js 24、Rust 稳定版与 `wasm32-unknown-unknown` 目标。应用检查会准备共享 Rust 核心，无需安装 Tauri/GTK 或提供真实作品：
 
 ```sh
+rustup target add wasm32-unknown-unknown
 npm ci
 npm run check -- --app-only
 ```
@@ -38,11 +39,12 @@ Pull Request 请说明遇到的问题、修改后的行为、验证方式以及�
 | 当前功能、未发布增量、平台和安装状态 | `docs/STATUS.md` |
 | 用户操作、格式与接口 | 对应专题指南；避免将同一规则完整复制到多个页面 |
 | 实际模块与依赖 | `docs/ARCHITECTURE.md` |
+| 当前跨架构功能、实现与成熟度证据 | `docs/function-atlas.json`，由 `scripts/function-atlas.mjs` 生成文档／离线图／Mermaid |
 | 下一阶段与验收条件、长期设计、决策原因 | `docs/ROADMAP.md`、下一代架构书、`docs/adr/` |
 | 如何测试 | `docs/TESTING.md` |
 | 某轮发生了什么、验证了什么 | 原报告与 `docs/test-results/`，从 `docs/history/` 索引 |
 
-能力接入后更新当前状态、对应操作和架构入口，再把实现进度反映到路线中。安装包、源码、浏览器和设备验收分别标注，未发布源码功能不能写成所有安装版都已有。文档中的“工程”指单个 workspace；界面步骤使用实际按钮名称。
+能力接入后更新当前状态、对应操作和架构入口，再把实现进度反映到路线中。同步审查功能图谱的受影响坐标、上下游、评分理由与证据，执行 `node scripts/function-atlas.mjs --write --refresh-sources` 后再 `--check`；不要只刷新指纹而沿用失效评分。安装包、源码、浏览器和设备验收分别标注，未发布源码功能不能写成所有安装版都已有。文档中的“工程”指单个 workspace；界面步骤使用实际按钮名称。
 
 带版本号的报告、旧功能图、日志和源码指纹保留当时的结果；新一轮新增证据目录。调整导航优先保留既有路径和标题锚点；必须迁移时检查所有入链。纯文档修改检查相对链接、标题锚点、示例与实际命令／契约的一致性、历史文件字节保留，无需为排版重跑应用编译；同时修改代码时按该代码范围执行验证。
 

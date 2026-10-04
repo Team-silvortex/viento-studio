@@ -1,0 +1,166 @@
+{
+  "date": "2026-10-03",
+  "version": "0.0.6",
+  "baseCommit": "94e9626fc11c64f61a7391f7b081bc029306345a",
+  "scope": "Unreleased Rust Scene2D layout save workflow integrated with position drafts and the existing HTTP transaction adapter",
+  "implementation": [
+    "LayoutSaveWorkflow owns nine phases, reviewed-state invalidation, authoritative dirty gates, error classification and per-draft monotonically increasing request IDs.",
+    "layoutSave.read/invalidate/begin/resolve/refreshed use the existing draft handle and lifetime; no extra registry or persisted data. Rust blocks positions/history changes outside editable phases.",
+    "Accepted apply or verification becomes refreshing (saved and busy), then saved even when preview refresh fails. Unknown writes allow read-only verification, never automatic apply retry.",
+    "JS retains author source, reviewed request/response content, receipt/digest validation, World/source reads and I/O. Each async return/finally checks the captured operation and draft before touching current UI.",
+    "Nested verification error envelopes use the same normalization as apply. Core failures retain the last snapshot and unsaved guard while completed host I/O can release busy/close protection.",
+    "Unsupported save capability in an older protocol-v1 draft core closes the newly allocated draft before reporting the component failure."
+  ],
+  "validation": {
+    "nativeRust": {
+      "passed": 36,
+      "failed": 0,
+      "ignored": 0,
+      "command": "CARGO_TARGET_DIR=/tmp/viento-save-rust-target cargo test --offline --locked --manifest-path crates/viento-studio-core/Cargo.toml",
+      "log": "rust-core.log",
+      "fmt": "passed",
+      "clippyAllTargetsDenyWarnings": "passed",
+      "checkLogs": [
+        "rust-fmt.log",
+        "rust-clippy.log"
+      ]
+    },
+    "appCheck": {
+      "tests": 1169,
+      "pass": 1150,
+      "fail": 0,
+      "skipped": 19,
+      "syntaxFiles": 301,
+      "versionAndApiContract": "passed",
+      "command": "VIENTO_STUDIO_CORE_BIN=<native core CLI> VIENTO_GODOT_BIN=<local Godot 4.7.2 executable> node scripts/check-project.mjs --app-only",
+      "log": "app-check.log",
+      "realGodotEnabled": true,
+      "nativeArchiveAndMobileHelpersProvided": false
+    },
+    "saveContract": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmPersistentSequences": 47,
+      "nativeWasmRequestResponseComparisons": 548,
+      "mainSequences": 14,
+      "errorMatrixSequences": 33,
+      "log": "save-contract.log"
+    },
+    "draftRegression": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmRequestResponseComparisons": 453,
+      "log": "draft-contract.log"
+    },
+    "geometryRegression": {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmParitySamples": 74,
+      "log": "geometry-contract.log"
+    },
+    "layoutUnitUiIntegrationCanvas": {
+      "passed": 75,
+      "failed": 0,
+      "skipped": 0,
+      "log": "layout-tests.log"
+    },
+    "counting": "Targeted test groups overlap the complete app suite. Persistent sequences and request/response comparisons are sample counts, not additional test counts.",
+    "browser": [
+      {
+        "ok": true,
+        "flows": 8,
+        "browser": "Chrome/154.0.8037.97",
+        "report": "layout-browser/browser.json",
+        "steps": [
+          "A real pointer drag changes the selected actor center, while coordinate fields and 32-unit snapping share Undo/Redo history. Escape cancels an in-progress drag and Pan moves only the camera. Every action remains a local draft; all author files are byte-identical.",
+          "Cancel, Escape, and Return each require a decision before discarding a changed layout. Rejecting keeps the same draft; accepting closes it without writing any source or changing the saved preview.",
+          "The proposed source changes only one actor position. English and Japanese labels preserve the checked draft, and the Japanese layout fits a real 390px viewport without horizontal overflow.",
+          "Apply saves the exact checked source, preserves Scene UUID, BOM/CRLF, OC/projection documents, inherited fields, and resource bytes, then refreshes the saved preview. The prior build plan is invalidated without launching a build.",
+          "An external scene edit between Check and Apply causes a conflict. The file is never overwritten, the local layout draft stays available, and Reload asks before discarding it and returning to the newer saved scene.",
+          "When the server saves successfully but the browser loses the Apply response, the draft remains and repeat Save is blocked. Verify reads the current source, recognizes the exact checked result without any further write, and refreshes the saved preview.",
+          "Cancelable beforeunload events are prevented while the layout is dirty and independently while its saved completion refresh is busy. An unchanged layout, undo to baseline, and completed or closed saves allow leaving. No page navigation is performed.",
+          "Two real preview responses are held across programmatic close and reopen. Releasing the old response cannot approve, change or unlock the new draft; only its own response enables Save, and both checks leave author files unchanged."
+        ]
+      },
+      {
+        "ok": true,
+        "flows": 7,
+        "browser": "Chrome/154.0.8037.97",
+        "report": "selection-browser/browser.json",
+        "steps": [
+          "Real Shift/Control canvas clicks, explicit list checkboxes, Select all and Clear maintain the same selection. Two-object selection clears/disables single-position fields, announces its count, and never creates a dirty draft or writes source.",
+          "Dragging a selected actor moves the selected pair as one group. The grabbed center snaps to the 32-unit grid while exact spacing is preserved and the unselected actor remains fixed. One Undo restores both actors; one Redo repeats the move.",
+          "All six alignment actions use the selected union bounds and each actor’s resolved width/height: left, horizontal center, right, top, vertical center, bottom. Each action is one Undo step and preserves every non-position declaration, including inherited defaults and explicit image:null.",
+          "English and Japanese preserve all three selected objects and the checked batch draft. At 390px, multi-select checkboxes and alignment actions remain available without horizontal overflow.",
+          "Apply publishes only the three reviewed position changes and refreshes the saved preview. Scene UUID, BOM/CRLF, all OC/projection declarations, metadata and resource bytes remain unchanged; the old build plan is invalidated without starting a new job.",
+          "An external edit between Check and Apply rejects the entire batch. All three selections and the local draft remain, no external content is overwritten, and Reload asks before discarding the draft and showing the current saved scene.",
+          "Forty consecutive real dialog open/edit/undo/close cycles release Rust draft handles beyond the 32-slot limit. Each reopen starts with empty history and no draft is written to author files."
+        ]
+      }
+    ],
+    "packagedResources": {
+      "desktop": "passed",
+      "mobile": "passed",
+      "evidence": "packaged-resources.json",
+      "execution": "Node loaded both prepared bridge/source adapters and WASM, exercised all successful save phases and rejected repeated apply; not a Tauri/Android GUI run."
+    },
+    "previousDraftOnlyCore": {
+      "bytes": 134577,
+      "failedCapabilityProbeCycles": 40,
+      "runtimeAndLegacyDraftStillUsable": true,
+      "log": "previous-core.log"
+    },
+    "sourceArchive": {
+      "result": "passed",
+      "includedIn": "app-check.log",
+      "scope": "crate sources and lockfile inclusion; generated files excluded"
+    },
+    "visualInspection": [
+      "layout-browser/layout-late-review-isolated-zh.png",
+      "layout-browser/layout-unknown-save-zh.png"
+    ]
+  },
+  "wasm": {
+    "protocolVersion": 1,
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "sourceHash": "481abae229b85fe2b795dfbf15f3271c83e7516395b49eb401a0a858400696dc",
+    "wasmSha256": "fa527052132abe1bd87003b84f6ede6cfd1e49a5d5507091f164a8edefab8121",
+    "bytes": 141948,
+    "sources": {
+      "Cargo.lock": "1e20cad8bf8ad24bd85a25432fa739f1357894b7e6d87a5ec6ec1f0de6436396",
+      "Cargo.toml": "c6678822a9daa9f9292dd0153ac881292f5784f836333e43bfb55a72539a6095",
+      "src/layout_draft.rs": "dfb72651a8787fed4410eb3e24dd4c82741fee3c18aca315530e304c436cb9aa",
+      "src/layout_save.rs": "8ebbc7c48366381c527031e1a12e35f13fc89f156c3d7162499489f1d5a0156c",
+      "src/lib.rs": "ca7682d1bf9f67e0a139f3e844319487807233a0a1268c928049794098fdbcdb",
+      "src/main.rs": "f83f78f6d29d557f30d110e4da08ed756d0ef1d58258103d7b53f35544268178",
+      "src/scene_layout.rs": "b7bc1be799e29192c2035d6539f41f7f54024ff8f626c26c2355bf5fd610d987",
+      "src/wasm.rs": "30eff24e802dff307f655de3dbf4fad4a75974769025df2e713f66108f1cf0b6",
+      "build-script": "a6356c18fd5ba25fd46f67cad17fa7c441dc8b780d37c9d51fa3437512f67452"
+    }
+  },
+  "limitations": [
+    "Nineteen native archive/mobile helper integration cases are explicitly skipped; real Godot and native/WASM Studio core checks are enabled.",
+    "No new Tauri window, Android device/WebView, installer, release, commit, push or installation. Mobile resource preparation does not enable Android scene editing.",
+    "Rust makes save-state decisions from host-validated outcomes; full author receipt/source/digest validation and actual persistent transactions remain JS/host responsibilities.",
+    "Draft/request IDs are in-memory local workflow identifiers, not server idempotency keys or a cross-restart recovery scheme.",
+    "Browser tests use isolated synthetic author workspaces and static layouts; no game runtime movement or arbitrary author scripts are accepted here."
+  ],
+  "cleanup": "Prepared desktop/mobile copies removed after verification. Temporary staging and Rust build targets removed after guarded source sync; only the generated 141948-byte WASM and manifest remain in the development checkout.",
+  "changedSourceSha256": {
+    "crates/viento-studio-core/src/layout_draft.rs": "dfb72651a8787fed4410eb3e24dd4c82741fee3c18aca315530e304c436cb9aa",
+    "crates/viento-studio-core/src/layout_save.rs": "8ebbc7c48366381c527031e1a12e35f13fc89f156c3d7162499489f1d5a0156c",
+    "crates/viento-studio-core/src/lib.rs": "ca7682d1bf9f67e0a139f3e844319487807233a0a1268c928049794098fdbcdb",
+    "crates/viento-studio-core/tests/draft.rs": "1d4444ba9c36e235e5b769f51134d4fd8e010f14b445940fc6c3f4ef20067e17",
+    "crates/viento-studio-core/tests/save.rs": "ec2aa2bb5958b709c33954f1d0f9b4a6a7a5fa4b47ba0f7c9803a12082ff8e72",
+    "engine/scene-layout.mjs": "6403981c2ffb3769b938671218d48fc4c73b1e648422ce44a8fd09231140cdad",
+    "engine/studio-core.mjs": "a0ef372c7cbb1c575f331632eea3b0c501c2f16f3b1802758b8714523030da8f",
+    "scripts/tests/scene-layout-smoke.mjs": "829e3bbbdb2aa25eabd2ccb663170d588d1b09230817c2ceb2786f1918ba47a3",
+    "scripts/tests/scene-layout-ui.test.mjs": "a467dc2644337770be856ebc8b5d7fe044c57edeecab7de961861e5d2960231c",
+    "scripts/tests/scene-layout.test.mjs": "f16dfc01696bbac9fc952976109b76cc59fcff6287b131e37868bbfc20be3a8f",
+    "scripts/tests/studio-core-save.test.mjs": "11056e173bc14de843d6315349f42d10f608afb11cbe37dec89651969da1b668",
+    "web/modules/app-scene-layout.js": "c13fcba8f08a86228c5c122d51b7cd1ff6cbe90e9f28b5b652e6bbe4fdf4a3d2"
+  }
+}

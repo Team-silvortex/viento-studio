@@ -22,7 +22,14 @@ export { getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplat
   projectionRegistration, renderProjectionRuntime, OBJECT_PROJECTION_FORMAT } from './object-projection.mjs';
 export { prepareRelationAdd } from './world-relations.mjs';
 export { prepareResourceBind } from './world-resources.mjs';
-export { createScene2DPlan, checkBuildCapabilities, SCENE2D_CAPABILITIES } from './build-plan.mjs';
+export { validateSceneGroups, buildSceneOutline, SCENE_GROUP_LIMIT, SCENE_GROUP_DEPTH_LIMIT } from './scene-groups.mjs';
+export { createSceneStructure, sceneStructureActors } from './scene-structure.mjs';
+export { sceneActorIdentity } from './scene-identity.mjs';
+export { resolveScene2DModel } from './scene-model.mjs';
+export { overlaySceneDraftPreview, validateSceneDraftRequest } from './scene-draft-preview.mjs';
+export { MAX_SCENE_DRAFT_BYTES } from './scene-preview-contract.mjs';
+export { createSceneSourceLayoutDraft, patchSceneSourcePositions, prepareSceneSourceLayoutApply } from './scene-source-layout.mjs';
+export { createScene2DPlan, scene2DModelToPlan, checkBuildCapabilities, SCENE2D_CAPABILITIES } from './build-plan.mjs';
 export * from './media-format.mjs';
 export * from './document-model.mjs';
 export * from './document-values.mjs';

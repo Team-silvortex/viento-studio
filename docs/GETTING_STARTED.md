@@ -13,13 +13,14 @@
 | 已有工程，想在浏览器编辑或体验合成样例 | 启动本机编辑服务，见下文 |
 | Android 预览 | 按 [移动端说明](../mobile/README.md) 构建与导入，先确认功能和设备限制 |
 
-当前源码版本是 0.0.6，本次未制作新的安装包。具体范围见 [当前状态](STATUS.md#版本与交付)。
+当前源码版本是 0.0.7，本次未制作新的安装包。具体范围见 [当前状态](STATUS.md#版本与交付)。
 
 ## 从源码启动桌面版
 
 准备 Node.js 24、Rust 稳定版及 [Tauri 系统依赖](https://v2.tauri.app/start/prerequisites/)，在仓库根目录执行：
 
 ```sh
+rustup target add wasm32-unknown-unknown
 npm ci
 npm run desktop:dev
 ```
@@ -32,9 +33,10 @@ npm run desktop:dev
 
 ## 从浏览器打开工程
 
-只运行本机编辑服务需要 Node.js 24 和 npm 依赖。先准备已有的工程目录，再显式指定：
+从源码首次准备本机编辑服务需要 Node.js 24、Rust 稳定版和 WASM 编译目标。共享核心编译后随应用资源分发，正常运行无需 Rust。先准备已有的工程目录，再显式指定：
 
 ```sh
+rustup target add wasm32-unknown-unknown
 npm ci
 VIENTO_WORKSPACE_ROOT=/完整路径/我的工程 npm start -- --no-open
 ```

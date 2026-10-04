@@ -6,7 +6,7 @@ import { createError } from '../../engine/service-error.mjs';
 import { readWorldSnapshot } from '../adapters/node-world-projection.mjs';
 import { captureBuildSnapshot, buildHash } from '../adapters/node-build-snapshot.mjs';
 import { buildProject, runProjectBuild, projectBuildCacheRoot } from '../adapters/node-project-build.mjs';
-import { GODOT4_BACKEND } from '../backends/godot4.mjs';
+import { GODOT4_BACKEND } from '../backends/godot4-dispatch.mjs';
 
 const services = new Set();
 const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);

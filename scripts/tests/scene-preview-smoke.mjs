@@ -75,7 +75,7 @@ try {
       configuration: { ...Object.fromEntries(selected.fields.map(field => [field.id, field.default])), image: images[0].id, speed: index ? 0 : 180 } };
     variants.push(await create('projection.create', `documents/projections/${suffix}.json`, json(declaration)));
   }
-  const declaration = { format: 'viento-scene2d', schemaVersion: 1, title: 'A · inherited and overridden', viewport: [640, 480], background: '#101827', actors: [
+  const declaration = { format: 'viento-scene2d', schemaVersion: 1, title: 'A · 旅人😀 inherited and overridden', viewport: [640, 480], background: '#101827', actors: [
     { objectId: variants[0].objectId, position: [160, 200], useProjectionDefaults: true },
     { objectId: variants[1].objectId, position: [380, 200], useProjectionDefaults: true, size: [120, 60], imageResourceId: images[1].id },
   ] };
@@ -238,10 +238,10 @@ try {
   await select(scene.objectId); await waitScene(scene.objectId);
   await wait(async () => Boolean(await colorBounds(colors.blue)), 'restore scene A');
   await enabled('#scenePreviewEdit'); await click('#scenePreviewEdit'); await enabled('#sceneCreateCheck');
-  await fill('#sceneCreateName', 'A · preview follows save'); await fill('#sceneActor0position0', '210');
+  await fill('#sceneCreateName', 'A · 旅人😀 preview follows save'); await fill('#sceneActor0position0', '210');
   await click('#sceneCreateCheck'); await enabled('#sceneCreateSave'); await click('#sceneCreateSave');
   await enabled('#sceneCreateClose'); await click('#sceneCreateClose');
-  await wait(async () => (await latest())?.scene?.title === 'A · preview follows save', 'saved scene refresh');
+  await wait(async () => (await latest())?.scene?.title === 'A · 旅人😀 preview follows save', 'saved scene refresh');
   await wait(async () => Boolean(await colorBounds(colors.blue)), 'saved scene pixels');
   assert.deepEqual((await latest()).actors[0].position, [210, 200]);
   const savedText = await fs.readFile(path.join(root, scene.sourcePath), 'utf8'); assert.equal(savedText[0], '\uFEFF'); assert.ok(savedText.includes('\r\n'));
@@ -265,6 +265,46 @@ try {
   await wait(() => evaluate(`!document.querySelector('#projectBuildDialog').open && (await import('/web/modules/app-state.js')).appState.activePath.endsWith(${JSON.stringify(core.sourcePath)})`), 'original OC navigation');
   assert.deepEqual(await sourceTree(root), saved); assert.equal((await state()).job, null);
   report.steps.push('Actor and original-OC source links return to the corresponding document; reopening Preview retains the selected scene and reads a fresh snapshot. Navigation is read-only.');
+  const selectActor = async () => {
+    await click('#projectBuildBtn'); await waitScene(scene.objectId);
+    await wait(() => evaluate(`Boolean(document.querySelector('#scenePreviewObjects button[data-object-id="${variants[0].objectId}"]'))`), 'source actor available');
+    await evaluate(`document.querySelector('#scenePreviewObjects button[data-object-id="${variants[0].objectId}"]').click()`);
+  };
+  const selection = () => evaluate(`(() => { const input = document.querySelector('#docSourceEditor'); return {
+    value: input.value, start: input.selectionStart, end: input.selectionEnd,
+    text: input.value.slice(input.selectionStart, input.selectionEnd), status: document.querySelector('#docEditStatus').textContent }; })()`);
+  await selectActor();
+  await click('#scenePreviewProperties button[aria-label="查看 位置（中心） 的来源"]');
+  await wait(async () => (await selection()).status.includes('已定位来源字段'), 'exact scene source range');
+  await wait(() => evaluate(`document.activeElement.id === 'docSourceEditor'`), 'source editor focus after modal close');
+  const selectedPosition = await selection();
+  assert.deepEqual(JSON.parse(selectedPosition.text), [210, 200]);
+  assert.equal(selectedPosition.value[0], '\uFEFF'); assert.ok(selectedPosition.value.includes('旅人😀'));
+  assert.ok(!selectedPosition.value.includes('\r')); assert.ok(savedText.includes('\r\n'));
+  await screenshot('source-position-zh.png');
+  await selectActor();
+  await click('#scenePreviewProperties button[aria-label="查看 速度 的来源"]');
+  await wait(async () => (await selection()).status.includes('/configuration/speed'), 'inherited speed range');
+  await wait(() => evaluate(`document.activeElement.id === 'docSourceEditor'`), 'inherited source editor focus');
+  assert.equal((await selection()).text, '180');
+  await screenshot('source-inherited-speed-zh.png');
+  await selectActor();
+  await click('#scenePreviewProperties button[aria-label="查看 尺寸 的来源"]');
+  await wait(async () => (await selection()).status.includes('未选择近似范围'), 'composite field fallback');
+  assert.equal((await selection()).start, (await selection()).end);
+  report.steps.push('Field links select the exact JSON value in the actual source textarea: the saved scene position survives BOM, CRLF, Chinese and emoji offset conversion, and inherited speed selects the projection configuration. Composite size opens its document without selecting an approximate range.');
+  await selectActor();
+  const externalText = savedText.replace('旅人😀 preview follows save', '外部修改😀 preview follows save');
+  await write(scene.sourcePath, externalText);
+  await click('#scenePreviewProperties button[aria-label="查看 位置（中心） 的来源"]');
+  await wait(async () => (await selection()).status.includes('原文已变化'), 'stale source range rejected');
+  await wait(() => evaluate(`document.activeElement.id === 'docSourceEditor'`), 'stale source editor focus');
+  const stale = await selection(); assert.equal(stale.start, stale.end); assert.ok(stale.value.includes('外部修改😀'));
+  assert.equal(await fs.readFile(path.join(root, scene.sourcePath), 'utf8'), externalText);
+  await screenshot('source-stale-zh.png');
+  await write(scene.sourcePath, savedText);
+  assert.deepEqual(await sourceTree(root), saved);
+  report.steps.push('Changing the scene on disk after preview capture opens the current source and reports a stale location with no selection or write. Restoring the test fixture restores every author-file hash.');
   report.created = { coreId: core.objectId, projectionIds: variants.map(value => value.objectId), imageIds: images.map(value => value.id), sceneIds: [scene.objectId, alternate.objectId, overlap.objectId, invalid.objectId] };
   report.authorFiles = await sourceTree(root); report.captures = await evaluate('window.__sceneCaptures');
   assert.deepEqual(report.errors, []); assert.deepEqual(report.svgRequests, []); report.steps.push('SVG images render as image content: embedded script and external-image URLs never execute or request network access.'); report.ok = true;
