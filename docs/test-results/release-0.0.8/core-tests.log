@@ -1,0 +1,119 @@
+   Compiling viento-studio-core v0.1.0 (/home/chiharukiryu/cdev/viento-studio/crates/viento-studio-core)
+    Finished `test` profile [unoptimized] target(s) in 1.14s
+     Running unittests src/lib.rs (/tmp/viento-release-008-core-target/debug/deps/viento_studio_core-adff6161ca29f987)
+
+running 44 tests
+test layout_save::tests::exhausted_request_identifiers_do_not_reuse_tokens_or_change_state ... ok
+test layout_draft::tests::handle_exhaustion_never_wraps_or_reuses_closed_identifiers ... ok
+test scene_composition::tests::expansion_is_v3_and_source_map_tracks_composite_and_identity_fields ... ok
+test scene_composition::tests::request_has_exact_shape_and_does_not_extend_protocol ... ok
+test scene_composition::tests::inherited_image_null_and_absence_stay_distinct ... ok
+test scene_composition::tests::strict_scanner_rejects_decoded_duplicates_and_bad_json_everywhere ... ok
+test scene_composition::tests::overrides_are_local_and_stable_explicit_ids_survive_reordering ... ok
+test scene_composition::tests::scene_and_names_follow_unicode_units_and_viewport_bounds ... ok
+test scene_composition::tests::group_references_cycles_and_depth_are_checked_for_every_fragment ... ok
+test scene_composition::tests::identity_maps_are_complete_unique_and_cross_domain_disjoint ... ok
+test scene_composition::tests::template_domains_are_separate_but_keys_and_duplicates_are_strict ... ok
+test scene_composition::tests::override_whitelist_prevents_identity_definition_group_and_inheritance_changes ... ok
+test scene_composition_patch::tests::array_patch_retains_unchanged_axis_lexemes_and_internal_whitespace ... ok
+test scene_composition_patch::tests::existing_values_gain_ordered_fields_without_reformatting_others ... ok
+test scene_layout::tests::javascript_rounding_handles_negative_ties_and_neighbors ... ok
+test scene_composition_patch::tests::only_changed_existing_scalar_tokens_are_replaced ... ok
+test scene_source::tests::decimal_output_matches_javascript_thresholds_subnormals_and_exact_even_ties ... ok
+test scene_composition_patch::tests::missing_override_array_is_inserted_only_inside_the_selected_placement ... ok
+test scene_composition::tests::numeric_and_runtime_actor_contracts_hold_before_and_after_override ... ok
+test scene_composition_patch::tests::equivalent_existing_values_are_a_byte_identical_noop ... ok
+test scene_composition_patch::tests::stable_target_survives_placement_and_override_reordering ... ok
+test scene_composition::tests::unknown_fields_and_invalid_unused_fragments_cannot_hide ... ok
+test scene_source::tests::inspect_versions_and_optional_feature_probe ... ok
+test scene_source::tests::paths_follow_source_order_and_decoded_position_keys_preserve_their_spelling ... ok
+test scene_source::tests::exact_requests_and_batch_shapes_are_required ... ok
+test scene_source::tests::strict_syntax_and_duplicate_decoded_keys_are_checked_throughout_unknown_subtrees ... ok
+test scene_composition::tests::raw_utf8_limit_and_nested_budget_are_checked_before_decoding ... ok
+test scene_source::tests::structural_depth_budget_includes_unknown_subtrees_and_empty_containers ... ok
+test wasm::tests::abi_runs_owned_buffers_and_invalid_allocations_do_not_replay_requests ... ok
+test scene_source::tests::lossless_patches_keep_bom_crlf_numeric_spelling_and_unknown_values ... ok
+test wasm::tests::abi_consumes_mutating_requests_once_and_recovers_after_rejected_runs ... ok
+test scene_source::tests::group_names_use_utf16_units_and_ecmascript_whitespace ... ok
+test scene_source::tests::unknown_numbers_and_escaped_lone_surrogates_are_never_interpreted_or_normalized ... ok
+test scene_composition_patch::tests::request_shape_unknown_targets_and_all_original_recipe_errors_are_rejected ... ok
+test scene_composition_patch::tests::null_images_follow_inheritance_and_position_remains_local_before_offset ... ok
+test scene_composition_patch::tests::numerical_replacements_use_the_existing_javascript_number_spelling ... ok
+test scene_composition_patch::tests::empty_arrays_and_a_missing_actor_override_append_without_touching_other_entries ... ok
+test scene_source::tests::group_identity_parent_topology_and_membership_are_bounded ... ok
+test scene_composition::tests::failures_are_atomic_and_stateless_expansion_uses_no_layout_sessions ... ok
+test scene_composition_patch::tests::all_six_fields_set_atomically_and_bad_values_never_produce_partial_output ... ok
+test scene_source::tests::source_geometry_and_identity_limits_match_all_three_versions ... ok
+test scene_composition_patch::tests::source_and_output_utf8_budgets_are_enforced_before_returning_content ... ok
+test scene_composition::tests::declared_and_expanded_budgets_bound_all_work ... ok
+test scene_source::tests::byte_limits_apply_before_parsing_and_after_coordinate_growth ... ok
+
+test result: ok. 44 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running unittests src/main.rs (/tmp/viento-release-008-core-target/debug/deps/viento_core-0a4f7798cd415365)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (/tmp/viento-release-008-core-target/debug/deps/cli-3c160fed33342dd9)
+
+running 2 tests
+test native_json_lines_share_draft_history_until_explicit_close ... ok
+test native_json_lines_recovers_after_bad_json_and_an_oversized_line ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/draft.rs (/tmp/viento-release-008-core-target/debug/deps/draft-09aa91c4b0e5f631)
+
+running 8 tests
+test invalid_or_noop_batches_preserve_redo_and_all_positions ... ok
+test native_draft_owns_atomic_batches_and_independent_snapshots ... ok
+test history_keeps_exactly_one_hundred_batches_and_original_dirty_baseline ... ok
+test full_actor_batch_is_one_step_and_limits_are_measured_in_utf8_bytes ... ok
+test dispatcher_drafts_isolate_histories_and_release_without_handle_reuse ... ok
+test native_threads_have_independent_draft_sessions ... ok
+test protocol_rejects_bad_handles_and_malformed_batches_without_losing_redo ... ok
+test full_registry_rejects_without_evicting_or_mutating_active_drafts ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/layout.rs (/tmp/viento-release-008-core-target/debug/deps/layout-34d643487032367d)
+
+running 13 tests
+test alignment_overflow_rejects_the_entire_batch ... ok
+test fractional_boundary_cancellation_is_nudged_as_a_group ... ok
+test batch_preserves_input_order_and_noops_and_does_not_need_sizes ... ok
+test json_float_parsing_keeps_the_exact_binary_coordinate ... ok
+test geometry_only_validates_selected_positions_and_sizes_but_all_identities ... ok
+test batch_rejects_extra_fields_duplicate_ids_and_invalid_existing_positions_atomically ... ok
+test negative_ties_follow_javascript_round_in_both_free_and_snapped_movement ... ok
+test group_clamp_preserves_spacing_at_both_boundaries ... ok
+test movement_uses_shared_delta_and_first_selected_snap_anchor ... ok
+test protocol_rejects_bad_json_unknown_versions_and_operations ... ok
+test six_alignments_use_resolved_sizes_and_keep_unselected_actors_out ... ok
+test malformed_geometry_is_rejected_before_any_changes_are_returned ... ok
+test input_limit_is_shared_by_native_dispatch_and_wasm ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/save.rs (/tmp/viento-release-008-core-target/debug/deps/save-ae48f81c3f1bd3c3)
+
+running 8 tests
+test accepted_save_is_one_way_even_when_refresh_fails_and_verification_can_conflict ... ok
+test actual_draft_edits_invalidate_reviews_but_invalid_batches_and_noops_do_not ... ok
+test error_matrix_keeps_definite_conflicts_distinct_from_uncertain_writes ... ok
+test begin_guards_dirty_permission_pending_input_and_phase_without_mutation ... ok
+test stale_repeated_or_malformed_completions_leave_the_workflow_unchanged ... ok
+test flags_are_derived_from_all_nine_phases_and_request_ids_are_monotonic ... ok
+test draft_uses_authoritative_dirty_and_freezes_all_mutations_outside_editable_phases ... ok
+test protocol_validates_shapes_and_draft_handles_without_changing_any_session ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests viento_studio_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

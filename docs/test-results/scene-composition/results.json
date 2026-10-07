@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-07",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased source prototype; no version bump, commit, push, installer or installation in this turn.",
+  "environment": {
+    "platform": "Linux",
+    "architecture": "x86_64",
+    "node": "24.21.0",
+    "rust": "1.95.0",
+    "godot": "4.7.2-stable",
+    "nativeArchiveAndMobileHelpers": false
+  },
+  "scope": [
+    "Pure Rust sceneComposition.expand on protocol 1 with optional feature version 1; native and WASM share one implementation.",
+    "Single-file recipe v1 with fragments, repeated placements, explicit stable local-key to UUID maps, organizational groups, isolated field overrides and positional offset.",
+    "Ordinary Scene2D v3 output and separate JSON Pointer contributor map; CLI bundle also binds the raw UTF-8 source SHA-256.",
+    "Read-only bounded Node CLI; generated scene enters existing scene.create, model, runtime2, resource-package, full archive and Godot paths in synthetic workspaces."
+  ],
+  "validation": {
+    "sharedCore": {
+      "passed": 63,
+      "failed": 0,
+      "ignored": 0,
+      "log": "core-tests.log",
+      "fmt": "core-fmt.log",
+      "clippy": "core-clippy.log",
+      "nativeBuild": "native-build.log",
+      "wasmBuild": "wasm-build.log"
+    },
+    "integration": {
+      "tests": 18,
+      "pass": 18,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "durationMs": 11118.44993,
+      "log": "integration-final.log",
+      "invalidRecipeCases": 57,
+      "nativeWasmSamples": 60,
+      "nativeWasmResponseSha256": "0ebb41f7709bbec1c6d67d0099c0a6ee0700b3fe36d340376117b2b7e627e80a",
+      "actualGodotBuildAndRun": true,
+      "sourceDisconnectedBeforeRun": true,
+      "resourcePackageRoundtrip": true,
+      "completeArchive": true,
+      "recipesAutoRegistered": false
+    },
+    "app": {
+      "tests": 1390,
+      "pass": 1371,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 19,
+      "durationMs": 154258.493379,
+      "syntaxFiles": 333,
+      "apiContract": "passed",
+      "versionConsistency": "0.0.7",
+      "log": "app-check.log",
+      "skippedReason": "Existing native archive and mobile-storage cross-language gates require VIENTO_TEST_ARCHIVE_BINARY and/or VIENTO_MOBILE_STORE_BIN, which were not built in this turn. New native-core parity and actual Godot tests ran.",
+      "skippedTests": [
+        "﹣ native archive metadata stays compatible with the editor reader before backup and restore commit (0.577341ms) # SKIP",
+        "﹣ editor and native v2/v3 archives round-trip with exact sources, metadata and external media (0.181072ms) # SKIP",
+        "﹣ desktop ZIP → mobile index/edit → desktop restore preserves v2/v3 identities, stories and media (0.568319ms) # Set both native test binaries",
+        "﹣ mobile platform uses native private storage for create / parse / field edit / save / reopen (0.636602ms) # Set VIENTO_MOBILE_STORE_BIN to the mobile-storage example",
+        "﹣ native restore, re-export and second restore preserve every portable byte (0.604324ms) # Set VIENTO_TEST_ARCHIVE_BINARY for the native compatibility gate",
+        "﹣ native restore, re-export and second restore preserve every portable byte (0.19893ms) # Set VIENTO_TEST_ARCHIVE_BINARY for the native compatibility gate",
+        "﹣ native restore, re-export and second restore preserve every portable byte (0.223124ms) # Set VIENTO_TEST_ARCHIVE_BINARY for the native compatibility gate",
+        "﹣ native project selection, field editing and archive restore use a self-contained template snapshot (0.161426ms) # Set VIENTO_MOBILE_STORE_BIN to the mobile-storage example",
+        "﹣ native desktop and mobile full archive round-trip keeps projection/core identities; editing P1 changes no other source (0.175702ms) # Set VIENTO_TEST_ARCHIVE_BINARY and VIENTO_MOBILE_STORE_BIN for native migration",
+        "﹣ edited projection bytes, retained metadata and both scenes survive Node → Rust → mobile → Rust complete migration (0.177156ms) # Set VIENTO_TEST_ARCHIVE_BINARY and VIENTO_MOBILE_STORE_BIN for native migration",
+        "﹣ a resource package imported into a project remains compatible with native full-project migration (0.2384ms) # SKIP",
+        "﹣ native blank creation → authored scene → Node and Rust complete archive restores preserve build identity and every file (0.151119ms) # Set VIENTO_TEST_ARCHIVE_BINARY to validate native creation and complete archive restore",
+        "﹣ edited-scene bytes and dependencies survive Node → Rust → mobile → Rust complete migration (0.160978ms) # Set VIENTO_TEST_ARCHIVE_BINARY and VIENTO_MOBILE_STORE_BIN for native migration",
+        "﹣ created v2 object survives native export → mobile import/export → desktop restore (0.191678ms) # SKIP",
+        "﹣ created v3 object survives native export → mobile import/export → desktop restore (0.070442ms) # SKIP",
+        "﹣ v2 shared ownership survives desktop → mobile → desktop archives (0.165159ms) # SKIP",
+        "﹣ v3 shared ownership survives desktop → mobile → desktop archives (0.068138ms) # SKIP",
+        "﹣ v2 resource binding survives desktop → mobile → desktop archives (0.219391ms) # SKIP",
+        "﹣ v3 resource binding survives desktop → mobile → desktop archives (0.082104ms) # SKIP"
+      ]
+    },
+    "packagedResources": {
+      "passed": true,
+      "evidence": "packaged-resources.json",
+      "desktopSourceFilesChecked": 61,
+      "mobileSourceFilesChecked": 59,
+      "sourceFilesUnchanged": 65,
+      "isolatedModulesPerHost": 7,
+      "actors": 4,
+      "groups": 4,
+      "oldSourceInspectPatchAndGeometry": "passed"
+    },
+    "documentation": "docs-check.json"
+  },
+  "reviewFix": {
+    "finding": "A sourceMap contributor pointer could exist in the recipe while belonging to another actor, field or placement; a malformed ABI response was accepted. The production Rust response itself was correct.",
+    "change": "The JS boundary now validates exact contributor paths and order for the current template, actor override, placement offset and group membership/parent. Value expansion remains in Rust.",
+    "addedMalformedResponseCases": 11,
+    "firstIntegrationLog": "integration-first.log",
+    "firstAppLog": "app-check-first.log",
+    "firstPackagedEvidence": "packaged-resources-first.json"
+  },
+  "wasm": {
+    "bytes": 263790,
+    "sha256": "1960d001eb620aff13c518d7ffb640e5f43f19a2627b2905c519a47043ae786d",
+    "sourceHash": "a06fdceb1e39c3d7412c99a0e34207d08d6de6b9fd17abc0658831ad6dc05d34",
+    "protocolVersion": 1,
+    "compositionFeatureVersion": 1,
+    "sourceFeatureVersion": 1
+  },
+  "dataProtection": {
+    "realAuthorWorkspaceUsed": false,
+    "existingSceneAndWorkspaceFormatsUnchanged": true,
+    "sourceHashes": "source-hashes.json",
+    "historicalEvidence": "historical-preservation.json",
+    "historicalTrackedFilesUnchanged": 1218,
+    "cleanup": "cleanup.json"
+  },
+  "limits": [
+    "Experimental CLI/engine entry only: no recipe GUI, registered recipe object, dependency closure or automatic recipe backup.",
+    "Generated scenes can be edited normally, but edits do not update the recipe; re-expansion does not merge later baked-scene edits.",
+    "No nested/cross-file fragments, arbitrary expressions/scripts, spatial group transforms or multi-file transactions; existing 128 actor/group bounds remain.",
+    "SourceMap provides contributor JSON Pointers, not exact writable source spans or World write authority.",
+    "No new browser UI, Tauri window, installer or Android device acceptance; prior reports retain their original conditions."
+  ]
+}

@@ -9,6 +9,7 @@ import { SCENE_PREVIEW_API_PATH } from '../../engine/scene-preview-contract.mjs'
 const PREVIEW_API = SCENE_PREVIEW_API_PATH;
 const previewUUID = /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/;
 const diagnosticLabels = {
+  'composition-document-invalid': '场景配方有误，请检查片段、放置和局部覆盖。',
   build_scene_required: '请选择已登记且可读取的场景文档。',
   build_scene_format: '场景必须使用 viento-scene2d 第 1、2 或 3 版 JSON 格式。',
   build_scene_json: '场景 JSON 格式有误，请打开原文检查。',
@@ -39,11 +40,11 @@ const diagnosticLabels = {
   world_recovery_required: '工程存在未完成的提交，请先在世界与对象中恢复。',
 };
 
-export function setupScenePreview({ container, getContext = () => ({}), getDraft = async () => null, openSource = () => false, editScene = () => {}, editLayout = () => false, editDraftLayout = async () => false }) {
+export function setupScenePreview({ container, getContext = () => ({}), getDraft = async () => null, openSource = () => false, editScene = () => {}, editLayout = () => false, editDraftLayout = async () => false, editCompositionOverride = async () => false }) {
   container.classList.add('scene-preview');
   container.innerHTML = `<p class="build-note" data-i18n="查看已保存场景或当前原文草稿的静态布局，无需构建或安装运行引擎。移动、输入和状态变化请使用运行测试。"></p>
     <p id="scenePreviewDraft" class="build-hint" hidden data-i18n="存在未保存草稿；预览仍使用上次保存的场景和投影。"></p>
-    <div class="scene-preview-toolbar"><button id="scenePreviewRefresh" type="button" class="doc-btn" data-i18n="预览已保存场景"></button>
+    <div class="scene-preview-toolbar"><button id="scenePreviewRefresh" type="button" class="doc-btn"></button>
     <button id="scenePreviewDraftRefresh" type="button" class="doc-btn" data-i18n="预览当前草稿"></button>
     <button id="scenePreviewFit" type="button" class="doc-btn doc-btn-ghost" data-i18n="适应画布"></button>
     <button id="scenePreviewZoomOut" type="button" class="doc-btn doc-btn-ghost" data-i18n="缩小"></button>
@@ -53,24 +54,46 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     <p id="scenePreviewMessage" role="status" aria-live="polite"></p>
     <p id="scenePreviewProvenance" class="build-hint"></p>
     <p id="scenePreviewSummary" class="build-hint"></p>
+    <p id="scenePreviewComposition" class="build-hint" hidden></p><div id="scenePreviewSceneSources" class="scene-preview-toolbar" hidden></div>
     <p class="build-hint" id="scenePreviewHelp" data-i18n="点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。"></p>
     <div class="scene-preview-layout"><canvas id="scenePreviewCanvas" tabindex="0" aria-describedby="scenePreviewHelp" data-i18n-aria-label="已保存的二维场景预览"></canvas>
     <aside><h3 data-i18n="场景对象"></h3><label class="scene-field"><span data-i18n="搜索场景对象与分组"></span><input id="scenePreviewSearch" type="search"></label><ol id="scenePreviewObjects"></ol><p id="scenePreviewSelection" role="status" aria-live="polite"></p>
-    <section id="scenePreviewInspector" aria-labelledby="scenePreviewInspectorTitle"><h3 id="scenePreviewInspectorTitle" data-i18n="对象属性"></h3><div id="scenePreviewProperties"></div></section></aside></div>
+    <section id="scenePreviewInspector" aria-labelledby="scenePreviewInspectorTitle"><h3 id="scenePreviewInspectorTitle" data-i18n="对象属性"></h3><div id="scenePreviewProperties"></div><button id="scenePreviewCompositionOverride" type="button" class="doc-btn" hidden data-i18n="编辑此实例覆盖"></button><p id="scenePreviewCompositionOverrideHint" class="build-hint" hidden></p></section></aside></div>
     <div class="scene-preview-toolbar"><button id="scenePreviewDraftLayoutEdit" type="button" class="doc-btn" hidden data-i18n="调整草稿布局"></button><button id="scenePreviewLayoutEdit" type="button" class="doc-btn" data-i18n="编辑场景布局"></button><button id="scenePreviewEdit" type="button" class="doc-btn" data-i18n="编辑场景"></button>
-    <button id="scenePreviewSource" type="button" class="doc-btn doc-btn-ghost" data-i18n="打开场景原文"></button></div>
+    <button id="scenePreviewSource" type="button" class="doc-btn doc-btn-ghost"></button></div>
     <ul id="scenePreviewDiagnostics" class="scene-diagnostics"></ul>`;
   const el = id => container.querySelector(`#${id}`);
   const node = (tag, text, className = '') => { const value = document.createElement(tag); value.textContent = text; value.className = className; return value; };
   let available = false, visible = false, sceneId = '', requestEpoch = 0, controller = null, model = null, selected = null, disposed = false;
   let state = 'empty', errorKey = '', diagnostics = [], imageErrors = [], images = new Map();
+  let selectedGroup = null, compositionOverrideOpening = false;
+  let sceneSourceSignature = '';
   let inspectorSignature = '', loadingKind = 'saved', diagnosticsOrigin = null, pendingPreview = null, loadingDraftToken = null, wantedDraft = false, modelReleased = false, modelDraftToken = null, draftLayoutOpening = false;
   const revisionPattern = /^sha256:[a-f0-9]{64}$/;
   const canPreviewDraft = () => { const context = getContext(); return context.canPreviewDraft === true && !context.creating && !context.busy; };
-  const canEditDraftLayout = () => Boolean(model?.draft && state === 'ready' && visible && available && !disposed
+  const isComposition = () => Boolean(model?.composition || getContext().previewKind === 'composition');
+  const canEditDraftLayout = () => Boolean(!isComposition() && model?.draft && state === 'ready' && visible && available && !disposed
     && canPreviewDraft() && getContext().editable && getContext().canEditDraftLayout === true && getContext().sceneDraftToken === modelDraftToken);
+  const canEditCompositionOverride = () => {
+    const context = getContext();
+    return Boolean(model?.composition && state === 'ready' && available && visible && !disposed && selected
+      && model.actors.some(actor => sceneActorIdentity(actor) === selected) && context.canEditCompositionOverride === true
+      && context.compositionSourceWritable === true && context.editable && !context.creating && !context.busy
+      && context.sceneDraftPath === model.scene.sourcePath
+      && (context.dirty ? model.draft && context.sceneDraftToken === modelDraftToken : !model.draft));
+  };
+  function renderCompositionOverride() {
+    const actor = model?.actors.find(item => sceneActorIdentity(item) === selected), context = getContext();
+    const button = el('scenePreviewCompositionOverride'); button.hidden = !model?.composition || !actor;
+    button.disabled = compositionOverrideOpening || !canEditCompositionOverride();
+    const hint = el('scenePreviewCompositionOverrideHint');
+    hint.hidden = button.hidden || !button.disabled;
+    hint.textContent = t(context.compositionSourceWritable && context.dirty
+      ? '原文有未保存修改，请先预览当前草稿，再编辑此实例覆盖。'
+      : '请先在源码模式打开同一配方，再编辑此实例覆盖。');
+  }
   const modelOrigin = () => model ? { sourcePath: model.scene.sourcePath, draft: model.draft || null } : null;
-  const canvas = createScenePreviewCanvas({ canvas: el('scenePreviewCanvas'), onSelect(id) { selected = id; renderSelection(); },
+  const canvas = createScenePreviewCanvas({ canvas: el('scenePreviewCanvas'), onSelect(id) { selectedGroup = null; selected = id; renderSelection(); },
     onViewChange(view) { el('scenePreviewZoom').textContent = `${Math.round(view.scale * 100)}%`; } });
   const release = id => {
     if (!previewUUID.test(id || '')) return;
@@ -85,7 +108,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   function cancelRequest() { requestEpoch++; controller?.abort(); controller = null; disposePending(); }
   function reset() {
     cancelRequest();
-    releaseModel(); outline.reset(); model = null; selected = null; diagnostics = []; imageErrors = [];
+    releaseModel(); outline.reset(); model = null; selected = null; selectedGroup = null; diagnostics = []; imageErrors = [];
     canvas.setScene(null); canvas.setImages(new Map());
     disposeImages(images);
     images = new Map(); state = 'empty'; errorKey = ''; diagnosticsOrigin = null; inspectorSignature = '';
@@ -98,27 +121,71 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   }
   function sourceButton(label, location, id, origin = modelOrigin()) {
     const button = node('button', t(label), 'doc-btn doc-btn-ghost'); button.type = 'button'; if (id) button.id = id;
+    button.dataset.propertyPath = location.propertyPath || '';
     button.addEventListener('click', () => void navigate(location, origin)); return button;
   }
   const outline = createSceneOutline({ root: el('scenePreviewObjects'), search: el('scenePreviewSearch'),
-    onActorSelect(id) { selected = id; canvas.select(selected); renderSelection(); },
+    onActorSelect(id) { selectedGroup = null; selected = id; canvas.select(selected); renderSelection(); },
     onGroupSource(id) {
       const location = model?.sourceLocations?.groups?.find(group => group.groupId === id);
-      if (location) void navigate(location.fields?.name || location.declaration);
+      if (!location) return;
+      if (model?.composition) { selectedGroup = id; selected = null; canvas.select(null); renderSelection(); }
+      else void navigate(location.fields?.name || location.declaration);
     },
   });
+  const roleLabels = { template: '片段字段', override: '局部覆盖', offset: '放置偏移', identity: '身份映射' };
+  function appendSources(cell, location, label = '查看字段来源', origin = modelOrigin()) {
+    if (!location) return;
+    if (isComposition() && Array.isArray(location.contributors) && location.contributors.length) {
+      for (const contribution of location.contributors) {
+        const link = sourceButton(roleLabels[contribution.role] || '查看字段来源', contribution, undefined, origin);
+        link.dataset.compositionRole = contribution.role;
+        link.setAttribute('aria-label', t('查看 {0} 的来源', `${t(label)} · ${t(roleLabels[contribution.role] || '查看字段来源')}`));
+        cell.append(link);
+      }
+    } else {
+      const link = sourceButton('查看字段来源', location, undefined, origin); link.setAttribute('aria-label', t('查看 {0} 的来源', t(label))); cell.append(link);
+    }
+  }
+  function declarationSource(location) {
+    return model?.composition ? location?.contributors?.find(item => item.role === 'template') || location : location;
+  }
+  function appendIdentitySource(row, declaration) {
+    const identity = model?.composition && declaration?.contributors?.find(item => item.role === 'identity');
+    if (identity) { const link = sourceButton('身份映射', identity); link.dataset.compositionRole = 'identity'; row.append(link); }
+  }
+  function appendCompositionIdentity(properties, composition) {
+    if (!composition) return;
+    for (const [label, key] of [['片段', 'fragmentId'], ['放置', 'placementId'], ['局部标识', 'localKey']]) {
+      properties.append(node('p', `${t(label)} · ${composition[key]}`, 'build-monospace'));
+    }
+  }
   function renderSelection() {
+    renderCompositionOverride();
     const actors = model?.actors || [], actor = actors.find(item => sceneActorIdentity(item) === selected);
     const provenance = Array.isArray(model?.sourceLocations?.actors) ? model.sourceLocations.actors.find(item => sceneActorIdentity(item) === sceneActorIdentity(actor)) : null;
+    const group = model?.sceneStructure?.groups?.find(item => item.groupId === selectedGroup);
+    const groupProvenance = model?.sourceLocations?.groups?.find(item => item.groupId === selectedGroup);
     outline.setSelection(selected ? [selected] : []);
     const properties = el('scenePreviewProperties');
-    el('scenePreviewInspector').hidden = !actor;
-    el('scenePreviewSelection').textContent = actor ? t('已选择：{0}', actor.name) : t('从画布或对象列表选择角色。');
-    el('scenePreviewInspectorTitle').textContent = actor ? `${t('对象属性')} · ${actor.name}` : t('对象属性');
-    const signature = JSON.stringify([actor || null, provenance, modelOrigin(), t('查看字段来源'), t('位置（中心）')]);
+    el('scenePreviewInspector').hidden = !actor && !group;
+    el('scenePreviewSelection').textContent = actor || group ? t('已选择：{0}', (actor || group).name) : t('从画布或对象列表选择角色。');
+    el('scenePreviewInspectorTitle').textContent = actor || group ? `${t('对象属性')} · ${(actor || group).name}` : t('对象属性');
+    const signature = JSON.stringify([actor || null, provenance, group, groupProvenance, modelOrigin(), t('查看字段来源'), t('位置（中心）')]);
     if (signature === inspectorSignature) return;
     inspectorSignature = signature; properties.replaceChildren();
+    if (group && model?.composition) {
+      appendCompositionIdentity(properties, groupProvenance?.composition);
+      for (const [field, label] of [['name', '分组名称'], ['parentGroupId', '父分组']]) {
+        const location = groupProvenance?.fields?.[field];
+        if (location) { const row = node('p', `${t(label)} · ${group[field] || ''}`); appendSources(row, location, label); properties.append(row); }
+      }
+      const identity = node('p', group.groupId, 'build-monospace'); appendIdentitySource(identity, groupProvenance?.declaration); properties.append(identity);
+      if (groupProvenance?.declaration) properties.append(sourceButton('打开片段声明', declarationSource(groupProvenance.declaration), 'scenePreviewGroupSource'));
+      return;
+    }
     if (!actor) return;
+    appendCompositionIdentity(properties, provenance?.composition);
     const list = node('dl', '', 'scene-preview-properties');
     const rows = [['位置（中心）', 'position', actor.position.join(', ')], ['尺寸', 'size', actor.size.join(' × ')], ['颜色', 'color', actor.color],
       ['速度', 'speed', String(actor.speed)], ['控制', 'controls', t(actor.controls === 'arrows' ? '方向键' : '不接受输入')], ['场景图片', 'imageResourceId', actor.imageResourceId || t('不使用图片')]];
@@ -127,16 +194,19 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
       const location = provenance?.fields?.[field] || actor.fieldSources?.[field] || { ...actor.declaration, propertyPath: `${actor.declaration.propertyPath}/${field}` };
       const inherited = location.sourcePath === actor.sourcePath && location.sourcePath !== model.scene.sourcePath;
       cell.append(node('small', t(inherited ? '继承自投影' : '场景中的值')));
-      const source = sourceButton('查看字段来源', location); source.setAttribute('aria-label', t('查看 {0} 的来源', t(label))); cell.append(source);
+      appendSources(cell, location, label);
       if (field === 'size') for (const [axis, label] of [['size/0', '宽度'], ['size/1', '高度']]) {
         const axisLocation = provenance?.fields?.[axis];
-        if (axisLocation) { const link = sourceButton(label, axisLocation); link.setAttribute('aria-label', t('查看 {0} 的来源', t(label))); cell.append(link); }
+        if (axisLocation) {
+          if (model?.composition && axisLocation.contributors?.length) appendSources(cell, axisLocation, label);
+          else { const link = sourceButton(label, axisLocation); link.setAttribute('aria-label', t('查看 {0} 的来源', t(label))); cell.append(link); }
+        }
       }
       list.append(cell);
     }
-    if (actor.instanceId) properties.append(node('p', `${t('实例身份')} · ${actor.instanceId}`, 'build-monospace'));
+    if (actor.instanceId) { const identity = node('p', `${t('实例身份')} · ${actor.instanceId}`, 'build-monospace'); appendIdentitySource(identity, provenance?.declaration); properties.append(identity); }
     properties.append(list, node('p', actor.objectId, 'build-monospace'), sourceButton('打开对象原文', provenance?.definition || { objectId: actor.objectId, sourcePath: actor.sourcePath }, 'scenePreviewActorSource'));
-    properties.append(sourceButton('打开场景声明', provenance?.declaration || actor.declaration, 'scenePreviewDeclarationSource'));
+    properties.append(sourceButton(model?.composition ? '打开片段声明' : '打开场景声明', declarationSource(provenance?.declaration || actor.declaration), 'scenePreviewDeclarationSource'));
     if (actor.origin) properties.append(sourceButton('打开原 OC', actor.origin, 'scenePreviewOriginSource'));
   }
   function render() {
@@ -148,14 +218,17 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     const busy = state === 'loading';
     container.dataset.scenePreviewState = state; container.setAttribute('aria-busy', String(busy));
     el('scenePreviewDraft').hidden = Boolean(model?.draft) || (!context.dirty && !context.creating);
+    el('scenePreviewRefresh').textContent = t(isComposition() ? '预览已保存配方' : '预览已保存场景');
     el('scenePreviewRefresh').disabled = !available || !sceneId || busy;
     el('scenePreviewDraftRefresh').disabled = !available || !sceneId || busy || !canPreviewDraft();
     for (const id of ['scenePreviewFit', 'scenePreviewZoomIn', 'scenePreviewZoomOut', 'scenePreviewGrid']) el(id).disabled = !model;
-    el('scenePreviewEdit').disabled = !model || Boolean(model.draft) || busy || !context.editable || context.dirty || context.creating || context.busy || context.canEditScene === false;
+    el('scenePreviewEdit').hidden = isComposition();
+    el('scenePreviewEdit').disabled = isComposition() || !model || Boolean(model.draft) || busy || !context.editable || context.dirty || context.creating || context.busy || context.canEditScene === false;
     el('scenePreviewSource').disabled = !model;
-    el('scenePreviewLayoutEdit').hidden = !model?.sceneEditing || Boolean(model?.draft);
+    el('scenePreviewSource').textContent = t(isComposition() ? '打开配方原文' : '打开场景原文');
+    el('scenePreviewLayoutEdit').hidden = isComposition() || !model?.sceneEditing || Boolean(model?.draft);
     el('scenePreviewLayoutEdit').disabled = state !== 'ready' || el('scenePreviewEdit').disabled;
-    el('scenePreviewDraftLayoutEdit').hidden = !model?.draft;
+    el('scenePreviewDraftLayoutEdit').hidden = isComposition() || !model?.draft;
     el('scenePreviewDraftLayoutEdit').disabled = draftLayoutOpening || !canEditDraftLayout();
     el('scenePreviewMessage').textContent = errorKey ? t(errorKey) : t(busy
       ? loadingKind === 'draft' ? '正在读取当前草稿与图片…' : '正在读取已保存场景与图片…'
@@ -164,9 +237,21 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
         : state === 'invalid' ? '场景无法预览，请检查下方诊断。' : '请选择场景以查看预览。');
     el('scenePreviewProvenance').textContent = model ? t(state === 'error' || state === 'invalid'
       ? model.draft ? '当前画面：上一次有效草稿预览。' : '当前画面：上一次有效的已保存场景预览。'
+      : model.composition ? model.draft ? '当前画面：未保存配方草稿的展开结果。投影和素材使用已保存内容。' : '当前画面：已保存配方的展开结果。'
       : model.draft ? '当前画面：未保存草稿。投影和素材使用已保存内容。' : '当前画面：已保存场景。') : '';
     el('scenePreviewCanvas').setAttribute('aria-label', t(model?.draft ? '未保存的二维场景草稿预览' : '已保存的二维场景预览'));
-    el('scenePreviewSummary').textContent = model ? `${t('{0} × {1} · {2} 个角色', ...model.scene.viewport, model.actors.length)} · ${t('快照：{0}', model.snapshotId)}` : '';
+    el('scenePreviewComposition').hidden = !isComposition();
+    el('scenePreviewComposition').textContent = `${t('配方预览（只读）')} · ${t('该预览由配方展开生成；请编辑配方原文以修改布局。')}`;
+    const sceneSources = el('scenePreviewSceneSources'); sceneSources.hidden = !model?.composition;
+    const sourceSignature = JSON.stringify([model?.composition, model?.sourceLocations?.sceneFields, modelOrigin(), t('查看字段来源')]);
+    if (sourceSignature !== sceneSourceSignature) {
+      sceneSourceSignature = sourceSignature; sceneSources.replaceChildren();
+      if (model?.composition) for (const [field, label] of [['title', '标题'], ['viewport', '画布尺寸'], ['background', '背景颜色']]) {
+        const location = model.sourceLocations?.sceneFields?.[field];
+        if (location) { const link = sourceButton(label, location); link.setAttribute('aria-label', t('查看 {0} 的来源', t(label))); sceneSources.append(link); }
+      }
+    }
+    el('scenePreviewSummary').textContent = model ? `${t('{0} × {1} · {2} 个角色', ...model.scene.viewport, model.actors.length)} · ${model.composition ? t('配方：{0} 个片段 · {1} 次放置', model.composition.fragmentCount, model.composition.placementCount) : t('快照：{0}', model.snapshotId)}` : '';
     el('scenePreviewCanvas').hidden = !model || !visible; el('scenePreviewHelp').hidden = !model || !visible;
     outline.setModel({ groups: model?.sceneStructure?.groups || [], actors: model ? sceneStructureActors(model.sceneStructure, model.actors) : [] });
     renderSelection();
@@ -174,7 +259,8 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     if (diagnostics.length) issues.append(node('li', t(diagnosticsOrigin?.kind === 'draft' ? '以下诊断来自本次草稿。' : '以下诊断来自已保存内容。'), 'build-hint'));
     for (const diagnostic of diagnostics) {
       const item = node('li', ''); item.append(node('p', `${t(diagnosticLabels[diagnostic.code] || '场景无法预览，请打开标出位置检查。')} (${diagnostic.code || 'scene_preview_failed'})`));
-      if (diagnostic.sourcePath) { const link = sourceButton('打开原文', diagnostic, undefined, diagnosticsOrigin); link.textContent += ` · ${diagnostic.sourcePath}${diagnostic.propertyPath || ''}`; item.append(link); } issues.append(item);
+      if (isComposition() && diagnostic.contributors?.length) appendSources(item, diagnostic, '查看字段来源', diagnosticsOrigin);
+      else if (diagnostic.sourcePath) { const link = sourceButton('打开原文', diagnostic, undefined, diagnosticsOrigin); link.textContent += ` · ${diagnostic.sourcePath}${diagnostic.propertyPath || ''}`; item.append(link); } issues.append(item);
     }
     for (const id of imageErrors) issues.append(node('li', t('图片无法解码或超过预览内存限制：{0}', id)));
   }
@@ -240,6 +326,16 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
           || !revisionPattern.test(payload.draft?.sourceRevision || '') || Object.hasOwn(payload, 'sceneEditing') : Object.hasOwn(payload, 'draft'))) {
         release(payload?.previewId); throw Object.assign(new Error('Invalid preview response'), { payload });
       }
+      const composition = payload.composition;
+      if (getContext().previewKind === 'composition' && !composition || composition && (
+        composition.format !== 'viento-scene-composition-preview' || composition.schemaVersion !== 1
+        || composition.recipeObjectId !== requestedScene || composition.sourcePath !== payload.scene.sourcePath
+        || !revisionPattern.test(composition.sourceRevision || '') || composition.sourceRevision !== payload.scene.sourceRevision
+        || !Number.isInteger(composition.fragmentCount) || composition.fragmentCount < 1 || composition.fragmentCount > 32
+        || !Number.isInteger(composition.placementCount) || composition.placementCount < 1 || composition.placementCount > 128
+        || kind === 'draft' && composition.sourceRevision !== payload.draft.sourceRevision)) {
+        release(payload.previewId); throw Object.assign(new Error('Invalid composition preview response'), { payload });
+      }
       try { sceneStructureActors(payload.sceneStructure, payload.actors); }
       catch (error) { release(payload.previewId); throw error; }
       candidate = { payload, images: new Map(), imageErrors: [] }; pendingPreview = candidate;
@@ -263,6 +359,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
       const previousModel = model, previousImages = images, previousReleased = modelReleased;
       model = payload; modelDraftToken = kind === 'draft' ? draftToken : null; modelReleased = false; images = candidate.images; imageErrors = candidate.imageErrors; pendingPreview = null;
       if (!model.actors.some(actor => sceneActorIdentity(actor) === selected)) selected = null;
+      if (!model.sceneStructure?.groups?.some(group => group.groupId === selectedGroup)) selectedGroup = null;
       canvas.setScene(model); canvas.setImages(images); canvas.select(selected); canvas.setVisible(true);
       if (!previousReleased) release(previousModel?.previewId); disposeImages(previousImages);
       state = 'ready'; render();
@@ -294,11 +391,11 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   el('scenePreviewGrid').addEventListener('change', () => canvas.setGrid(el('scenePreviewGrid').checked));
   el('scenePreviewSource').addEventListener('click', () => { if (model) void navigate(model.sourceLocations?.scene || { objectId: model.scene.objectId, sourcePath: model.scene.sourcePath }); });
   el('scenePreviewEdit').addEventListener('click', () => {
-    const context = getContext(); if (model && !model.draft && state !== 'loading' && context.editable && !context.dirty && !context.creating && !context.busy && context.canEditScene !== false) editScene(sceneId);
+    const context = getContext(); if (!isComposition() && model && !model.draft && state !== 'loading' && context.editable && !context.dirty && !context.creating && !context.busy && context.canEditScene !== false) editScene(sceneId);
   });
   el('scenePreviewLayoutEdit').addEventListener('click', () => {
     const context = getContext();
-    if (model?.sceneEditing && !model.draft && state === 'ready' && context.editable && !context.dirty && !context.creating && !context.busy && context.canEditScene !== false) {
+    if (!isComposition() && model?.sceneEditing && !model.draft && state === 'ready' && context.editable && !context.dirty && !context.creating && !context.busy && context.canEditScene !== false) {
       if (editLayout({ model, images }) === false) { errorKey = '布局编辑暂不可用，请刷新场景预览重试。'; render(); }
     }
   });
@@ -313,6 +410,19 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     } catch {
       if (isCurrent()) errorKey = '草稿布局编辑暂不可用，请重新预览当前草稿后重试。';
     } finally { draftLayoutOpening = false; if (!disposed) render(); }
+  });
+  el('scenePreviewCompositionOverride').addEventListener('click', async () => {
+    if (compositionOverrideOpening || !canEditCompositionOverride()) return;
+    const openingModel = model, instanceId = selected, epoch = requestEpoch, token = getContext().sceneDraftToken;
+    const isCurrent = () => canEditCompositionOverride() && model === openingModel && selected === instanceId
+      && requestEpoch === epoch && getContext().sceneDraftToken === token;
+    compositionOverrideOpening = true; render();
+    try {
+      const opened = await editCompositionOverride({ model: openingModel, instanceId, isCurrent });
+      if (opened === false && isCurrent()) errorKey = '实例覆盖编辑暂不可用，请重新预览当前配方后重试。';
+    } catch {
+      if (isCurrent()) errorKey = '实例覆盖编辑暂不可用，请重新预览当前配方后重试。';
+    } finally { compositionOverrideOpening = false; if (!disposed) render(); }
   });
   const unsubscribe = onLanguageChange(() => { if (!disposed) { render(); outline.refresh(); } }); render();
   return {

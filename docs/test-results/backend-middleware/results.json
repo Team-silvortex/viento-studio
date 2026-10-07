@@ -1,0 +1,178 @@
+{
+  "date": "2026-10-07",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased incremental source work. No version bump, commit, push, installer or installation.",
+  "scope": [
+    "Strict portable data-only execution capability descriptor separates build, headless logic, window preview, window capture, offscreen render, embedded viewport and GPU compute declarations.",
+    "Trusted host-only adapter registry and generic frozen build/session orchestration separate engine process arguments, import phases, resource layout and cleanup into the Godot adapter.",
+    "Engine-neutral generated files, UUID resourceFiles, artifact identity and phase results are validated before destination publication; invalid paths, overlaps and silent failed phases are refused.",
+    "New build/session records bind an independent execution-adapter fingerprint; known Godot legacy records missing this field remain subject to historical generator, tool and byte checks.",
+    "Build workbench independently guards supported operations, platform, backend-owned jobs/artifacts and descriptor approval identity; Chinese/English/Japanese capability summaries preserve draft and diagnostic workflows."
+  ],
+  "validation": {
+    "app": {
+      "tests": 1593,
+      "pass": 1593,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 153491.332729,
+      "log": "app-check.log",
+      "syntaxFiles": 357,
+      "apiContract": "passed",
+      "versionConsistency": "0.0.7"
+    },
+    "portableContract": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 68.735911,
+      "log": "core-contract.log",
+      "overlapsFullApp": true
+    },
+    "godotAdapter": {
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 775.982208,
+      "log": "godot-adapter-final.log",
+      "overlapsFullApp": true
+    },
+    "hostRegression": {
+      "tests": 41,
+      "pass": 41,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 30190.036586,
+      "log": "host-real.log",
+      "overlapsFullApp": true,
+      "newMiddlewareTests": 10,
+      "realGodotVersion": "4.7.2.stable.official.ed1daf0bf"
+    },
+    "uiRegression": {
+      "tests": 154,
+      "pass": 154,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 2242.212804,
+      "log": "ui-final.log",
+      "overlapsFullApp": true,
+      "newCapabilityTests": 9
+    },
+    "newAppTests": {
+      "total": 45,
+      "portableContract": 15,
+      "godotAdapter": 11,
+      "middleware": 10,
+      "ui": 9,
+      "includedInFullApp": true
+    },
+    "browser": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "steps": 4,
+      "consoleExceptions": 0,
+      "evidence": "browser/browser.json",
+      "log": "browser.log",
+      "script": "../../../scripts/tests/project-build-smoke.mjs",
+      "realHttpServer": true,
+      "disposableProjectsOnly": true,
+      "actualHeadlessRuntime": true,
+      "actualWindowPreview": true,
+      "windowRenderer": [
+        "OpenGL API 4.6 (Core Profile) Mesa 26.0.8-1ubuntu0.3 - Compatibility - Using Device: AMD - AMD Radeon 680M (radeonsi, rembrandt, ACO, DRM 3.64, 7.0.0-38-generic)"
+      ],
+      "panelReopenAndCancellation": true,
+      "diagnosticSourceNavigation": true,
+      "unsavedDraftAndCaretRetained": true,
+      "languages": [
+        "zh-CN",
+        "en",
+        "ja"
+      ],
+      "narrowWidth": 390,
+      "screenshotsVisuallyInspected": [
+        "browser/plan-zh.png",
+        "browser/diagnostic-narrow-ja.png"
+      ],
+      "nativeTauriWindowOrAndroidDevice": false
+    },
+    "packagedResources": {
+      "ok": true,
+      "evidence": "packaged-resources.json",
+      "log": "packaged-final.log",
+      "desktopFiles": 74,
+      "mobileFiles": 63,
+      "embeddedNode": "v24.20.0",
+      "sourceAndPackageHashesStableBeforeAndAfterExecution": true,
+      "preparedDesktopRealGodotBuildAndHeadless": true,
+      "preparedDesktopLegacyRecordReplay": true,
+      "mobileIsolatedPortableModuleCount": 1,
+      "mobileHostExecutorBundled": false,
+      "nativeTauriWindowOrAndroidDevice": false
+    },
+    "nativeBuilds": {
+      "core": "core-native-build.log",
+      "archiveAndMobileHelpers": "native-helpers-build.log",
+      "realBinariesUsedInFullApp": true,
+      "wasmRebuiltThisRound": false,
+      "rustTestsRerunThisRound": false,
+      "scope": "Rust sources were unchanged this round. Existing native/WASM parity, archive and mobile-storage tests ran in the full app using supplied compiled native binaries; earlier standalone Rust test evidence retains its original scope."
+    },
+    "documentation": "docs-check.json"
+  },
+  "compatibility": {
+    "sceneAuthorPlanAndRuntimeFormatsUnchanged": true,
+    "historicalGodotV1GeneratorSha256": "dba885d7965715e56b1f1ac394dc78e3227d3502d23318a736dca6eb93beabe6",
+    "originalGeneratorRuntimeAndWasmFilesUnchanged": true,
+    "legacyGodotBuildWithoutExecutionAdapterReplayed": true,
+    "secondAdapterOnlyTestFixture": true,
+    "adapterFingerprint": {
+      "id": "org.viento.godot4",
+      "contractVersion": 1,
+      "sha256": "d3ad6404f4b22a68660868e0f46ae6224cd75320ab58fc04edc9c86416f357a1"
+    }
+  },
+  "harnessAndVerificationNotes": [
+    "Initial real host run overlapped the last Godot adapter ownership-snapshot edit; the new fingerprint correctly rejected that changing adapter. The frozen final real host suite passed all 41 tests; host-real-initial-adapter-edit.log is retained.",
+    "Existing scene-edit UI fixtures lacked the now-required full backend descriptor and backend-owned jobs. Fixtures now represent actual transport data without removing assertions; ui-regression-first.log is retained.",
+    "Initial browser harness unconditionally clicked the editor toggle after diagnostic navigation had already entered editing. The corrected harness respects current editor state; initial browser evidence and log are retained.",
+    "The browser harness now defaults to a fresh temporary evidence directory and rejects non-empty explicitly selected output directories, preserving prior historical reports.",
+    "Initial pure-contract harness static scan matched a comment; corrected isolation checks still execute the actual module without Node or DOM. core-contract-initial.log is retained."
+  ],
+  "wasm": {
+    "bytes": 285596,
+    "sha256": "8b14be6e13c33b5bf5a6cb16f956498dc03a3d62e50bb83ec8967b9896c7738e"
+  },
+  "dataProtection": {
+    "realAuthorWorkspaceUsed": false,
+    "authoringOrMetadataMigrationPerformed": false,
+    "sourceHashes": "source-hashes.json",
+    "productAndTestFilesHashVerifiedAfterExecution": 50,
+    "historicalEvidence": "historical-preservation.json",
+    "historicalFilesUnchanged": 1432,
+    "frozenBackendAndWasmFilesUnchanged": 7,
+    "cleanup": "cleanup.json",
+    "temporaryAllocatedGiBRemoved": 1.969
+  },
+  "limits": [
+    "Godot 4 on Linux remains the only product execution backend. The injected Node backend is a test fixture, not a new engine integration.",
+    "Current plan admission supports Scene2D plan versions 1 and 2 with runtime protocols 1 and 2. This is an internal trusted-host adapter contract, not a stable third-party plugin ABI.",
+    "offscreenRender, embeddedViewport and gpuCompute are explicit false; namespaced extension metadata does not execute GPU or native code. Nuislang, ns-nova, yalivia and Bevy are not implemented.",
+    "Mobile validation runs the prepared portable capability contract only. It does not provide an Android Godot executor or Android UI/device acceptance.",
+    "Tool availability retains the existing file/access check; engine identity and binary hashes are verified at actual build/run time.",
+    "This round verifies a real browser and graphical Godot preview, plus prepared desktop headless execution. It does not open or install a Tauri application."
+  ]
+}

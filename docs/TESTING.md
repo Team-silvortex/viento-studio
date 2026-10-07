@@ -12,6 +12,14 @@
 
 [当前功能图谱](FUNCTION_ATLAS.md) 为架构、功能、实现与四项成熟度提供离线筛选，完整映射旧图的 F01–F50。检查命令 `node scripts/function-atlas.mjs --check` 验证坐标、引用文件、指纹、评分门槛及派生视图一致性；它不运行产品测试，也不证明评分或测试覆盖率。引用文件改变后需人工重审相关条目，再显式运行 `node scripts/function-atlas.mjs --write --refresh-sources`。旧报告只适用于其原条件。
 
+## 0.0.8 源码发布检查
+
+本次[发布候选](test-results/release-0.0.8/results.json)重新执行 0.0.8 下的完整应用 **1774／1774**，0 失败／跳过／取消，**391** JS／API／版本检查通过；启用两个真实引擎、原生核心和归档／移动存储辅助程序。共享编辑核心 Rust **75／75** 与 fmt／clippy另计，版本／源码归档专项 **8／8** 与应用重叠。
+
+[资源清单](test-results/release-0.0.8/prepared-manifests.json)核对桌面资源 496／作品库 11／移动 192 份；[准备模块运行](test-results/release-0.0.8/packaged-resources.json)另核对 89／68，实际 10 次离线会话，移动只执行 4 个纯模块。实际[临时源码归档](test-results/release-0.0.8/source-archive.json)2573 文件／68 关键项回读核对两 crate、四官方样例和排除生成物／作品；快照在最终发布审计文字之前生成，已删除，不重标为最终提交归档。
+
+1733 历史／9 冻结原字节保持、138 当前源码摘要核对；7 新生成目录与 1 验证归档清理回收 2058166272 字节／1.917 GiB。近期 Chrome、Bevy 独立 Rust和其他专题保留原执行条件；本轮不做新安装、浏览器、Tauri 窗口或 Android 设备实测。下列数字段保留各专题原版本，不因源码发布改写。
+
 ## 选择验证范围
 
 | 改动范围 | 应执行的验证 | 能证明的层级 |
@@ -21,10 +29,194 @@
 | 登记、事务、迁移、完整归档或移动存储 | 应用检查 + 原生测试 + 启用两个原生工具的跨语言往返 | 正文、UUID、模板、素材及失败恢复的一致性 |
 | 桌面宿主、会话与进程生命周期 | 应用检查 + `desktop:prepare` + `desktop:test`；系统交互另跑原生窗口流程 | 编译和原生逻辑；窗口流程需单独证据 |
 | Scene2D 构建、HTTP 任务或运行协议 | 构建专项 + 配置真实 Godot 的应用检查 + Chrome 构建工作台 | 引擎进程、产物、状态、退出清理和网页操作 |
+| 场景行为清单、源码或事件 | 可移植／包依赖专项 + 冻结宿主与真实 Godot + 真实浏览器 | 实例独立参数、类型／签名拒绝、可信来源、原字节迁移及旧计划兼容 |
+| 执行后端中间层、描述符或适配器 | 纯能力／宿主／具体适配器专项 + 已有冻结样例 + 真实 Godot／Bevy／浏览器 + 桌面和移动打包模块 | 能力隔离、可信注入、输出边界、冻结回放与界面审批；测试后端不代表产品引擎接入 |
+| 全局／按实例有限方向回放、步骤采样或工具升级 | 纯控制／观察、宿主／UI、Rust 工具及两引擎实际回放 + Chrome + 准备资源 | 数据与联合预算、身份／步骤／生命周期、冻结离线、取消保样本和原字节清理；不证明实时输入、反射或渲染 |
+| 运行对象观察、检索和来源导航 | 纯观察／宿主／UI 专项 + 同计划真实 Godot／Bevy + Chrome + 准备资源 | 稳定身份、启动／结束／过期样本、任务归属、只读 inspect、事件环独立、草稿与光标保护；不证明反射／RPC |
 | Android 宿主、系统选择器与生命周期 | 移动资源／原生检查 + 独立设备工作流 | 对应设备、系统和 WebView 条件下的行为 |
 | 新安装包 | 在准备交付的安装包上重跑平台关键流程 | 该产物的安装及运行；源码通过不能替代 |
 
 涉及正文或素材时，断言内容字节、登记关系与失败后的状态；涉及任务生命周期时，核对进程退出和临时资源回收。程序自己的单元测试通过、跨语言互通通过、浏览器通过、系统窗口通过和设备通过是不同证据，分别记录。
+
+## 有限控制回放
+
+[有限控制回放](RUNTIME_CONTROL.md)采用独立的纯数据程序和 trace，不升级作者 Scene2D 或旧 plan／runtime 1／2。程序专项验证精确布尔字段、1–64 步、`0 < fixedDelta <= 0.25`、总时长至多 8 秒、最后全释放，以及实例数 × 步数至多 1024；拒绝访问器、隐藏键、原型、循环、路径、Entity 和超限。步骤准入核对完整身份集合、连续索引、ready／finished 顺序及最终样本一致；一个输出块的回调必须保持原行序，无效结束不能覆盖有效样本。
+
+```sh
+node --test scripts/tests/scene-control-program.test.mjs \
+  scripts/tests/scene-instance-control.test.mjs \
+  scripts/tests/scene-runtime-query.test.mjs scripts/tests/scene-runtime-events.test.mjs
+
+CARGO_TARGET_DIR=/tmp/viento-bevy-control-target \
+  CARGO_PROFILE_DEV_DEBUG=0 CARGO_INCREMENTAL=0 \
+  cargo test --manifest-path crates/viento-bevy-runtime/Cargo.toml --locked --offline -j2
+```
+
+schema 2 另验证每步 0–128 行、总行数至多 1024、重复目标拒绝、定义 UUID 不能冒充实例、未知实例提前拒绝、plan 1 即使空输入也不支持，以及未列每步释放；schema 1 的精确结构、旧执行语义和 16 KiB 文件限制保留，schema 2 文件至多 256 KiB。最终按实例纯专项与相邻模块 **45／45** 通过，见[本轮纯规则](test-results/runtime-instance-control/portable-tests-final.log)。另回归合法 11／64 步 × 128 行超限在深拷贝节点防御前返回 `runtime_control_limit`，预算预检只读描述符，访问器仍不执行；初始 44 项日志保留。
+
+实际工具升级后，以 `VIENTO_BEVY_BIN` 和 `VIENTO_GODOT_BIN` 指向真实工具，再运行应用与控制宿主／界面专项。对照同一 plan 1／2 的多步方向、反向抵消、斜向归一化、none／零速度、重复定义实例；位置浮点误差与状态序列分开比较。另验证 `--control-program` 从冻结产物离线运行、严格 HTTP 白名单、窗口／行为拒绝、cancel／timeout 最后样本、原构建与作者字节不变。Chrome 另检查全局／实例选择仅改变示例目标、显式生成才替换 JSON、多实例不同方向与逐步释放、同名且 UUID 前缀相同的实例以末尾短标识区分、完整 UUID 提示与实际值保持、JSON 编辑和错误保留输入、控制进度、三语 390px、来源与草稿守护；桌面准备资源执行两个真实后端，移动仅验证纯模块，不把它计为 Android 执行或 UI。
+
+本轮按实例最终结果见[实例控制记录](test-results/runtime-instance-control/results.json)：应用 **1774／1774**、0 失败／跳过／取消，**391** JS／API／0.0.7 版本通过；新增 **28**（纯实例 9、后端 4、宿主 6、UI 6、CLI 3）已含全量。pure **45／45**、engine **36／36**、host／UI **69／69**、CLI **7／7** 与窄屏标签 UI **42／42** 是相关或重叠专项，不能再次加到应用总数；可信 Rust **25／25**（16 单元＋9 实际 CLI）和 fmt／clippy 另计。最终 Chrome 8 条流程／4 Bevy＋4 默认 Godot 任务／0 异常，三语 390px 的短标识、JSON 与光标保留分别检查，见[最终浏览器](test-results/runtime-instance-control/browser-final/browser.json)。
+
+[准备资源](test-results/runtime-instance-control/packaged-resources.json)核对桌面 **89**／移动 **68**，内置 Node 实际运行 **10 次离线会话**（4 普通＋4 全局＋2 实例）；移动仅执行 4 个纯模块并准入 10 份真实输出。1668 历史／9 冻结文件原字节保持、当前 126 源码摘要复验，旧120中96未变／24按范围改动；8 个新生成目录清理释放 2404941824 字节／约 **2.240 GiB**，三代可信 Bevy 缓存保留。证据不代表实时、运行组件修改、Bevy 图形、作者 Rust、Tauri 新安装或 Android 执行／界面验收。
+
+上一轮全局有限控制结果集中于[上一轮有限控制记录](test-results/runtime-control-replay/results.json)，不修改旧报告。应用 **1746／1746**、0 失败／跳过／取消，385 JS／API／0.0.7 版本通过；新增 39（纯控制 15、实际后端 8、宿主／UI 12、CLI 4）已计入全量。相关专项为 pure 36／36、engine 32／32、host／UI 47／47、CLI 4／4；升级可信 Bevy Rust **20／20** 及 fmt／clippy 另计。Chrome 8 流程／4 Bevy＋4 默认 Godot 服务任务／0 异常，准备资源桌面 89／移动 68、8 次离线普通／控制会话与 4 个移动纯模块。1612 历史／9 冻结文件原字节保持；源码指纹、环境与该轮临时产物清理以该轮记录为准。代表分数／斜向样例按 **0.0001 坐标单位**容差比较，不能推广为任意浮点过程逐位相等。
+
+## 运行对象观察
+
+[运行对象](RUNTIME_OBJECTS.md)的普通观察消费既有 plan／runtime 1／2／3，不升级作者格式或改运行脚本。纯观察专项核对完整身份集合、生命周期、位置采样失效、来源权威、分离输出、AND 查询与数据预算；宿主专项核对只在冻结验证后建立视图、原始事件环淘汰、严格 inspect 白名单、当前任务／服务归属、响应隔离，以及取消／超时／错误保留最后样本。界面核对最新场景／后端／构建／快照归属、本地检索、迟到导航、名称安全文本、中英日标签和草稿／光标保护。
+
+```sh
+node --test scripts/tests/scene-runtime-query.test.mjs \
+  scripts/tests/scene-runtime-query-ui.test.mjs
+VIENTO_BEVY_BIN=/绝对路径/viento-bevy-runtime \
+  VIENTO_GODOT_BIN=/绝对路径/Godot可执行文件 \
+  node --test scripts/tests/scene-runtime-query-host.test.mjs
+```
+
+必须配置实际两个工具后再记录宿主成功／跳过数：Godot／Bevy 分别执行同一 plan 1／2，Godot 单独执行行为协议 3；另核对 CLI 离线回放、真实取消、作者与原构建字节。Chrome 和准备资源检查另列；移动只能复用纯观察，未接运行对象 UI 或执行器。运行对象首轮的数字、环境与清理统一保存于[运行对象验证目录](test-results/runtime-object-inspection/results.json)，已有后端接入报告保持当时条件。
+
+运行对象首轮应用 **1707／1707**、0 失败／跳过，378 份 JavaScript 及 API／版本预检通过；新增 34（纯观察 15／宿主 8／UI 11）已计入，UI 新旧专项合计 45／45。实际 Chrome 7 条流程、3 Bevy＋3 默认 Godot 服务任务、0 异常；准备资源 86／67，四次同计划离线观察／查询一致，移动只执行三个纯模块。1581 历史／9 冻结字节保持、109 源码摘要复验；7 个临时目录回收 1.828 GiB。此前 Bevy Rust 14 项属于首轮工具证据，该轮复用该二进制，不重复计作新 Rust 验收。
+
+## Bevy 第二后端
+
+[Bevy 指南](BEVY_BACKEND.md)在 0.0.8 纳入源码的切片使用固定 Bevy 0.19.1 的真实可信程序，消费与 Godot 相同的无图 plan 1／2。先构建 `crates/viento-bevy-runtime/`，把 `VIENTO_BEVY_BIN` 指向其绝对路径；Cargo 目标目录放在工程之外，获取依赖后使用锁文件离线重建。仅 JavaScript 夹具或描述符不能代替 Bevy 工具验收。
+
+```sh
+CARGO_TARGET_DIR=/tmp/viento-bevy-prototype-target \
+  cargo test --manifest-path crates/viento-bevy-runtime/Cargo.toml --locked --offline -j2
+VIENTO_BEVY_BIN=/绝对路径/viento-bevy-runtime \
+  node --test scripts/tests/bevy-adapter.test.mjs scripts/tests/scene-runtime-events.test.mjs
+VIENTO_BEVY_BIN=/绝对路径/viento-bevy-runtime \
+  VIENTO_GODOT_BIN=/绝对路径/Godot可执行文件 npm run check -- --app-only
+```
+
+核对同一定义的两个实例保留不同身份，固定 0.25 秒受控右向输入只移动 `controls: "arrows"` 的实例，释放后状态回到 `idle`。运行事件必须匹配冻结身份、完整演员集合、有限数值、协议和生命周期；伪造实例／定义配对、额外字段、重复 ready、结束后事件及帧预算均拒绝。无头输入不证明实体键盘或图形渲染。
+
+宿主集成另检查旧中立计划与显式后端检查的区别、旧 `--godot` 别名、Bevy 版本／工具 SHA、离线冻结回放、产物修改、取消／超时及源工程原字节。Bevy 缺 `image`、不接受 GDScript plan 3、禁用窗口／截图；HTTP 不得因新增宿主选择而接收工具、后端代码或磁盘路径。桌面资源副本能加载适配器不表示安装包已带 Bevy 二进制；移动仅复用纯事件规则，没有引擎执行器。
+
+Bevy 首轮接入结果统一保存在[Bevy 首轮记录](test-results/bevy-backend/results.json)，已有 Godot、行为绑定、编辑核心和历史报告保持原条件。应用、可信 Rust 程序、浏览器与打包验证分别报告；没有重新发布安装包或验收 Android 引擎运行。
+
+该轮最终应用 **1673／1673**、0 失败／跳过，最终 373 份 JavaScript 语法及 API／版本预检通过（初次全量为 372，补入浏览器脚本后补查）。新增 25 项（中立事件 6、适配器 13、宿主 6）已计入全量；可信 Bevy 程序另有 Rust 14 项（9 单元＋5 CLI）。Chrome 5 条流程／3 Bevy 任务＋1 默认 Godot 计划、0 异常。准备资源核对桌面 84／移动 65 份文件；内置 Node 24.20.0 与两引擎的 plan 1／2 共四个离线会话一致，移动仅构造／执行两个纯模块并准入实际输出，不构成 Android 引擎或设备验收。具体事实见[运行程序证明](test-results/bevy-backend/runtime-proof.json)、[浏览器](test-results/bevy-backend/browser/browser.json)与[打包记录](test-results/bevy-backend/packaged-resources.json)。
+
+## 场景实例行为
+
+[行为指南](SCENE_BEHAVIORS.md)在 0.0.8 纳入源码的功能单独验证可移植清单、包依赖、冻结宿主、真实 Godot 和界面。计划 3 仅对明确选择行为清单的场景启用；旧无行为计划／生成器摘要和静态预览必须保持。最终证据见[行为运行记录](test-results/scene-behavior-runtime/results.json)，旧预研报告仅证明当时的独立探针。
+
+最终应用 **1648／1648**、0 失败／跳过，365 份 JavaScript 及 API／版本预检通过。新增 55 项（纯规则 17、包 10、Godot 行为 12、UI 6、宿主 10）已计入全量；Godot 新旧适配器 23、相关 UI 67 与全量重叠。Chrome 5 条流程、8 个任务、0 异常；本轮没有另做图形窗口或安装／设备验收。实际打包核对桌面 81／移动 64 份文件，内置 Node 24.20.0 与 Godot 4.7.2 验证离线双事件回放；移动隔离构造并执行 84 个可移植模块，仅证明规则、计划与能力契约。原生辅助程序参与全量，Rust／WASM 未改动，独立 Rust 测试未重复运行。
+
+```sh
+node --test scripts/tests/scene-behaviors.test.mjs scripts/tests/scene-behavior-packages.test.mjs \
+  scripts/tests/scene-behavior-ui.test.mjs
+VIENTO_GODOT_BIN=/绝对路径/Godot可执行文件 \
+  node --test scripts/tests/scene-behavior-workflow.test.mjs scripts/tests/godot4-behaviors.test.mjs
+
+# Chrome + HTTP + 实际 Godot；证据目录必须不存在或为空
+VIENTO_GODOT_BIN=/绝对路径/Godot可执行文件 \
+  VIENTO_BEHAVIOR_TEST_OUTPUT=/tmp/viento-behavior-evidence \
+  node scripts/tests/scene-behavior-smoke.mjs /绝对路径/chromium
+```
+
+纯规则检查格式、重复键、身份、出向登记边、预算、标量和跨实例引用；包检查实际原文派生依赖、缺项后重算摘要、外部 requirements 与读取屏障。普通保存和完整备份继续保留未完成原文，选择式迁移严格拒绝无效绑定。包内场景不能借未声明的目标角色；外部场景须先被锁定，传递角色再沿其登记边读取并复验。
+
+真实 Godot 核对同一 TXT 两个独立绑定、整数到 float 导出参数、信号签名、身份／事件／生命周期防伪、编译错误与冻结回放。`amount` 为合法标量文本但不符合 float 导出类型时，应在计划和脚本编译通过后由运行反射拒绝，不能把阶段混为一谈。静态预览只返回几何，不负责行为校验。
+
+Chrome 的五条流程完成双实例事件、三语 390px、运行参数字段精确定位、TXT 编译错误行定位及未保存草稿／光标保护；UI 专项检查文本安全与数量显示，不在浏览器执行 GDScript。打包资源和无 Node／DOM 的可移植模块检查另取证，不代表 Tauri 安装、Android 行为界面或移动执行器验收。
+
+## 执行后端中间层
+
+当前[中间层契约](BACKEND_MIDDLEWARE.md)有独立专项，该轮范围见[此前中间层记录](test-results/backend-middleware/results.json)。先核对纯描述符的字段、预算、数据所有权、访问器拒绝和七种独立操作；在无 Node／DOM 全局的隔离环境执行能力模块。宿主专项使用可信替代夹具验证非 Godot 的阶段和文件布局、资源映射、注册身份、产物路径／碰撞／预算以及旧记录和新 `executionAdapter` 指纹回放。夹具只证明接口编排，不宣称第二引擎、GPU 或原生运行。
+
+最终应用 **1593／1593**、0 跳过，357 份 JavaScript 及 API／版本检查通过。新增 45 项为纯契约 15、Godot 适配器 11、宿主 10 和 UI 能力 9；相关 UI／三语 154 项、真实宿主 41 项均与全量重叠。Chrome [4 条真实流程](test-results/backend-middleware/browser/browser.json)分别核对构建／无头、真实窗口取消和关闭重开、源诊断与日文 390px、草稿／光标保护，异常为 0；它不替代新安装包或设备验收。
+
+```sh
+node --test scripts/tests/backend-capabilities.test.mjs \
+  scripts/tests/backend-middleware.test.mjs scripts/tests/godot4-adapter.test.mjs \
+  scripts/tests/backend-capability-ui.test.mjs
+
+VIENTO_GODOT_BIN=/绝对路径/Godot可执行文件 \
+  node --test scripts/tests/project-build.test.mjs scripts/tests/project-build-service.test.mjs \
+  scripts/tests/project-build-http.test.mjs scripts/tests/build-runtime-protocol.test.mjs
+VIENTO_GODOT_BIN=/绝对路径/Godot可执行文件 npm run check -- --app-only
+```
+
+Godot 包装适配器必须逐字节核对原 v1／v2 生成文件、脚本、来源映射和历史后端摘要；执行参数、环境与缓存回收也单独验证。真实 Godot 验收需记录版本及平台，核对构建、无头和窗口模式、冻结源工程离线回放、工具／适配器／产物变化拒绝及进程退出。界面专项验证能力分别开放、未知／缺失描述符失败关闭、描述符变化撤销旧计划／产物、后端身份不符和迟到响应；Chrome 实测与三语窄屏另存新目录。
+
+桌面准备和移动准备后核对实际副本摘要：内置 Node 执行新宿主及既有 Godot 场景链路，移动在无 Node／DOM 全局的隔离环境执行纯能力契约。该轮[打包记录](test-results/backend-middleware/packaged-resources.json)检查桌面 74／移动 63 份文件；移动只加载 1 个新纯模块，没有执行适配器、Android 构建服务或 UI 实测。内置 Node 24.20.0 和真实 Godot 4.7.2 完成新构建／无头与缺少 `executionAdapter` 的旧记录回放。新安装包、Tauri 窗口和设备分别验收。所有验证在临时工程完成，历史报告与旧生成器原字节保持。
+
+## 场景片段组合实验
+
+文件内组合使用独立 [recipe 样例](../examples/scene-composition/README.md)，输出已有 v3。首轮纯组合、来源及真实后端执行范围见[组合实验记录](test-results/scene-composition/results.json)；普通文档登记／保存、源码派生依赖及包迁移的后续证据见[配方文档工作流记录](test-results/scene-composition-workflow/results.json)。上述历史记录覆盖已有源码编辑与资源包界面；当前另有已保存／未保存配方预览、贡献来源定位及单实例覆盖原文草稿编辑，验证方法见下节。共享模板编辑、覆盖删除、拖动回写和跨文件事务尚未接入。
+
+```sh
+npm run core:test
+npm run core:build
+VIENTO_STUDIO_CORE_BIN=/绝对路径/viento-core \
+  VIENTO_GODOT_BIN=/绝对路径/Godot \
+  node --test scripts/tests/scene-composition.test.mjs
+node --test scripts/tests/scene-composition-document.test.mjs scripts/tests/scene-composition-workflow.test.mjs
+npm --silent run scene:compose -- --input examples/scene-composition/recipe.json --emit bundle
+```
+
+原生辅助程序可用 `cargo build --manifest-path crates/viento-studio-core/Cargo.toml --bin viento-core` 构建，显式设置 `VIENTO_STUDIO_CORE_BIN` 指向其产物。分别核对 Rust 单元、原生／WASM 相同请求、CLI 和现有场景规划／构建集成；未配置原生程序或 Godot 时，相关跳过须单独报告。
+
+重点验证稳定显式 UUID 不随重排变化、同一片段多次放置的覆盖隔离、继承字段省略和明确去图、局部位置先覆盖再偏移、组身份及父组重映射、输出顺序、碰撞／循环／超预算拒绝、解码重复键和未知字段拒绝。来源映射须指回模板、放置、身份映射及具体覆盖的 JSON Pointer；显式偏移是额外贡献项，不能声明精确可写范围。CLI 的 bundle 摘要基于输入原字节，标准输出只能包含所选 JSON，输入文件及工程目录保持原样；旧核心缺少可选能力时仍应能使用旧布局操作。
+
+集成测试须在临时工程用正常 `scene.create` 创建生成场景，核对新正文与定义／图片依赖登记，再验证 plan/runtime v2 和真实 Godot。编辑或归档这份已登记的生成场景沿用旧契约，与配方作者文档分别核对。旧场景 v1／v2／v3 计划、源码补丁和布局操作仍须通过原回归。新增证据放入本轮目录，已有报告保持原字节。
+
+文档工作流专项从普通已登记 JSON 创建开始，核对原字节保存、修订冲突、原文改变后的当前依赖及包往返后的身份／展开结果。未使用片段、被覆盖的模板图片、覆盖图片和投影的来源闭包都必须保留，派生依赖不能写入作者元数据。关闭依赖收集时校验带指纹的 requirements；伪造包即使重写 manifest／hash，仍须因删掉真实依赖而在目标写入前被拒绝，目标已存在同 UUID 内容也不能绕过。
+
+同时检查未完成配方可普通保存与完整备份，选择式导出／已登记展开报告错误，修复恢复可用；无效 UTF-8 不被替换解码后当作合法配方。顶层 `format` 删除后按普通 JSON 处理，嵌套样例标记不误判为配方。只读 CLI 分别核对独立文件和 `--root/--object/--revision`，登记模式 bundle 的 origin 与当前 World／源修订对应。原生归档和移动辅助程序需实际构建并显式配置才计入执行，不能用 Node 探针代替目标设备验收。
+
+真实浏览器复验使用现有源码编辑和资源包界面。执行前指定一个尚未包含 `browser.json` 的新证据目录；脚本拒绝覆盖已保存报告：
+
+```sh
+VIENTO_COMPOSITION_SMOKE_OUTPUT=/tmp/viento-composition-browser-new \
+  node scripts/tests/scene-composition-workflow-smoke.mjs /usr/bin/google-chrome
+```
+
+探针只使用临时工程、独立浏览器配置和本机 HTTP 服务，完成普通创建／源码编辑保存、依赖自动选择、真实下载、日文目标预览和确认导入。检查原文、元数据、对象／素材 UUID、图片字节、重建索引、界面错误面板及 Runtime 异常。最终[浏览器记录](test-results/scene-composition-workflow/browser/browser.json)及同目录截图只证明这些既有界面承载普通配方文档；不是专用配方预览或覆盖编辑验收。
+
+### 已保存与未保存配方预览
+
+配方预览使用独立纯引擎、宿主和 UI 专项；不修改原配方规则或 Rust 协议。最终执行范围见[本轮结果](test-results/scene-composition-preview/results.json)，引擎日志见[只读模型专项](test-results/scene-composition-preview/engine.log)，实际 Chrome 流程见[浏览器记录](test-results/scene-composition-preview/browser/browser.json)，打包副本与移动隔离模块验证见[资源记录](test-results/scene-composition-preview/packaged-resources.json)。
+
+```sh
+node --test scripts/tests/scene-composition-preview.test.mjs \
+  scripts/tests/scene-composition-preview-host.test.mjs \
+  scripts/tests/scene-composition-preview-ui.test.mjs
+VIENTO_COMPOSITION_PREVIEW_OUTPUT=/tmp/viento-composition-preview-new \
+  node scripts/tests/scene-composition-preview-smoke.mjs /usr/bin/google-chrome
+```
+
+浏览器输出目录必须为空，探针拒绝覆盖已有证据。它通过本机 HTTP 和独立 Chrome 配置打开临时已登记配方，核对已保存／未保存原文的画布和大纲、图片真实像素、来源选区与只读入口；同时检查无效草稿、外部保存冲突、迟到响应、返回保存画面时保留编辑草稿，以及中英日 390px 窄屏。模板声明、单实例身份、覆盖位置、偏移、场景标题和组名都执行实际源码导航；原始作者文件与元数据前后保持一致，SVG 不得执行脚本或发起外联。
+
+引擎专项核对 workspace v2／v3 中的 recipe v1：投影继承的复合尺寸和独立轴来源保持原修订；偏移与覆盖为独立精确贡献项，主合成位置为近似范围。标题、视口、背景、组父身份及诊断全部指向配方原字节，不能泄露生成 `/actors/N`、`/groups/N` 路径或范围。全部声明依赖在展开前检查，未知字段、解码重复键、缺失定义、错误图片类别、自引、嵌套和未使用片段错误均不给部分模型。深度冻结输入仍可预览，输出不暴露内部观察、`sceneEditing` 或可执行 snapshot。
+
+宿主专项继续核对源观察前后修订、图片大小／摘要、并发变更拒绝及缓存释放。预览清单与构建 Scene2D 清单分开；配方不能创建构建任务，Scene2D 原有快照、草稿和布局链路仍须通过回归。这些证据覆盖本机编辑服务，不表示配方覆盖写回、Tauri 新安装或 Android 设备接入。
+
+### 单实例局部覆盖与普通保存
+
+局部覆盖使用独立可选的核心操作，不改变 recipe、World 或原展开协议。最终[结果](test-results/scene-composition-overrides/results.json)记录应用 1548／1548、0 跳过、350 份 JavaScript 语法检查和 Rust 75 项；新增 54 个应用测试已计入全量，不重复相加。核心桥接 12 项含 55 次真实原生／WASM 对照和 17 类坏回执；纯提案 12、主编辑器新增 8、父控制器 6、界面新增 16 均通过。专项分别检查 Rust 原文补丁、桥接回执、纯提案、主编辑器应用、父预览会话及三语界面；真实浏览器单独使用临时工程，不能把 DOM 测试或打包模块执行当作安装／设备验收。
+
+```sh
+npm run core:test
+npm run core:build
+VIENTO_STUDIO_CORE_BIN=/绝对路径/viento-core \
+  node --test scripts/tests/studio-core-composition-patch.test.mjs
+node --test scripts/tests/scene-composition-overrides.test.mjs \
+  scripts/tests/scene-composition-overrides-host.test.mjs \
+  scripts/tests/scene-composition-overrides-bridge.test.mjs \
+  scripts/tests/scene-composition-overrides-ui.test.mjs
+VIENTO_COMPOSITION_OVERRIDES_OUTPUT=/tmp/viento-composition-overrides-new \
+  node scripts/tests/scene-composition-overrides-smoke.mjs /usr/bin/google-chrome
+```
+
+浏览器输出目录必须为空，不覆盖旧证据。原生／WASM 对照需显式提供新核心原生程序；缺失时跳过必须单独报告。检查六类字段 set 的确定顺序、偏移前坐标、仅实际改字段写入、投影继承与明确去图、同一片段不同放置隔离，以及数组重排后稳定目标。三种插入分支分别为缺字段、缺演员覆盖、缺覆盖数组；替换与插入均需保留 BOM、CRLF、字段顺序、未改空白和数字 token。输入和输出各 128 KiB、完整原文前后校验、无状态操作不占历史槽、旧核心无新能力仍可使用原能力均需覆盖。
+
+桥接测试伪造回执中的另一演员／放置、共享模板、身份或其他字段变化，以及错误／乱序路径、非法原文与解码重复键；坏回执关闭运行时，合法输入错误不关闭。纯提案与主编辑器检查摘要、保存基线、稳定目标、精确回执复算，以及异步等待期间输入被修改、旧提案重放和晚到焦点。来源贡献、生成坐标和预览结果不能冒充可写范围。
+
+真实流程应从当前原文的有效预览打开“编辑此实例覆盖”，检查完整候选和实际图片，应用后确认只有内存草稿改变，再执行普通保存和重开；配方资源包迁移继续沿用文档工作流回归。同时验证取消、未改字段不取消继承、无效数字／缺依赖图片不能应用、外部保存冲突、检查后源码变化及迟到响应；中英日窄屏保留表单内容。本轮[Chrome 记录](test-results/scene-composition-overrides/browser/browser.json)完成 6 条流程和 11 次预览捕获，Runtime 异常／SVG 外联为 0；普通保存仅改变配方正文，元数据和图片保持原字节。资源包往返的历史证据仍见上面的文档工作流，不把本轮浏览器流程算作新增迁移实测。[打包记录](test-results/scene-composition-overrides/packaged-resources.json)核对桌面 68／移动 64 份文件，内置 Node 与移动无 Node 全局的 110 个隔离模块执行新覆盖助手及旧能力；覆盖后 89 个配方位置逐项核对。共享片段编辑、删除覆盖／恢复继承、配方拖动回写、多文件事务和目标设备界面不在本轮范围。
 
 ## Rust 源码检查与坐标补丁
 

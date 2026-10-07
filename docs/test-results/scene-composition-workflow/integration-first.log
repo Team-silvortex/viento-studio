@@ -1,0 +1,22 @@
+✔ ordinary document creation/save preserves recipe identity and exact bytes without writing dependency metadata (149.004024ms)
+✔ catalog derives all source dependencies, including unused fragments and shadowed images, plus the projection closure (235.507252ms)
+✔ changing only recipe source immediately updates derived closure and catalog revision without retaining stale metadata edges (121.92368ms)
+✔ resource package migration preserves recipe source/UUID and re-expands to identical scene and provenance (284.74596ms)
+✔ excluded dependencies are pinned requirements and stale required content rejects import without writes (201.041555ms)
+✔ reader rejects omitted source-declared assets or document requirements even after manifest hashes are rewritten (283.396064ms)
+✔ source dependency category spoofing and invalid UTF8 remain rejected despite valid archive hashes (206.72258ms)
+✔ unfinished source remains saveable and fully backupable; selective export rejects it until the author repairs it (157.567553ms)
+✔ catalog diagnoses self, nested recipe, missing definition, wrong-kind image and malformed Unicode without changing author files (209.708207ms)
+✔ registered CLI reads current source with optimistic revision and logical origin, emits a detached result and makes no writes (288.297579ms)
+✔ registered CLI rejects mode confusion, unknown document and incomplete source dependencies without creating a baked scene (121.719074ms)
+✔ complete native archive restore and re-export retain recipe bytes, logical identity and empty authored dependency metadata (173.368649ms)
+✔ desktop recipe archive crosses native mobile storage, ordinary mobile edit and desktop restore without losing references or identities (188.77421ms)
+✔ registered recipe explicitly bakes through scene.create and real Godot while recipe source and metadata remain unchanged (7461.422674ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10189.237729

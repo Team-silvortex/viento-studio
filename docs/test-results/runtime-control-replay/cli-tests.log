@@ -1,0 +1,66 @@
+✔ CLI control replay rejects non-run and non-finite modes before opening the selected input (2.273961ms)
+✔ CLI controls accept only bounded regular JSON data; code, path overrides and symlinks are refused (7.676319ms)
+✖ CLI replays real org.viento.bevy offline, records every step and leaves author data and output unchanged (131.827234ms)
+✖ CLI replays real org.viento.godot4 offline, records every step and leaves author data and output unchanged (7249.420415ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 2
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7536.299553
+
+✖ failing tests:
+
+test at scripts/tests/scene-control-cli.test.mjs:55:3
+✖ CLI replays real org.viento.bevy offline, records every step and leaves author data and output unchanged (131.827234ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      'build.json': 'f3da8e82ff29e8823c89115ffec5464a0fbff4da9a0cff7ca2dbbaaf02cf02a2',
+      'project/scene-data.json': '78fee62de16b5e2ebc0aaab5a98d8616ef760ad4ce47f4acdc362bb12297640b',
+  +   'sessions/7a8a4367-c557-4c77-b98c-7c9b0e2b1d36/session.json': '63391b50efadd870ed8f8852723ca1b4ad7c948e9325ef8ed6452eb1e1dc52fd',
+      'snapshot.json': 'de49dec7ceef90f1e2e2c0c3d4eed45d0646f8a1a9784e914017224dc3f14f16',
+      'source-map.json': '89262190da710618122b7c82e63e1b982b87b69819d104afaceb3b54088f033f'
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-control-cli.test.mjs:78:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'build.json': 'f3da8e82ff29e8823c89115ffec5464a0fbff4da9a0cff7ca2dbbaaf02cf02a2', 'snapshot.json': 'de49dec7ceef90f1e2e2c0c3d4eed45d0646f8a1a9784e914017224dc3f14f16', 'source-map.json': '89262190da710618122b7c82e63e1b982b87b69819d104afaceb3b54088f033f', 'sessions/7a8a4367-c557-4c77-b98c-7c9b0e2b1d36/session.json': '63391b50efadd870ed8f8852723ca1b4ad7c948e9325ef8ed6452eb1e1dc52fd', 'project/scene-data.json': '78fee62de16b5e2ebc0aaab5a98d8616ef760ad4ce47f4acdc362bb12297640b' },
+    expected: { 'build.json': 'f3da8e82ff29e8823c89115ffec5464a0fbff4da9a0cff7ca2dbbaaf02cf02a2', 'snapshot.json': 'de49dec7ceef90f1e2e2c0c3d4eed45d0646f8a1a9784e914017224dc3f14f16', 'source-map.json': '89262190da710618122b7c82e63e1b982b87b69819d104afaceb3b54088f033f', 'project/scene-data.json': '78fee62de16b5e2ebc0aaab5a98d8616ef760ad4ce47f4acdc362bb12297640b' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-control-cli.test.mjs:55:3
+✖ CLI replays real org.viento.godot4 offline, records every step and leaves author data and output unchanged (7249.420415ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      'build.json': 'a6f963eb3dcf9ddebc28f02cd6a39804059520ad9560d5756d447ceec40e2725',
+      'project/main.tscn': '410aea99b623b947179265d855c15949525625d3ce7a24dcba14b5398e192050',
+      'project/project.godot': 'c19289a2886074ae8ec161237b6a6febf59a3cc2fe5a95033eeee6046f2023bf',
+      'project/runtime.gd': 'f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8',
+      'project/runtime.gd.uid': '0fef46539a233dce3fbd4b4982e79881a180cc7370dd17ba7b3e723808f494b5',
+      'project/scene.json': '75561064d1f1e5f3f55817ade938cbc13107d0ddbbe5c8eadd46e1a13aeef939',
+  +   'sessions/4f6a9740-b673-4956-865b-1929f680d40b/session.json': '827d2b525bb3df816132901c6c52ca70d93437e5abb4a8f4e054a9ee37a37736',
+      'snapshot.json': 'de49dec7ceef90f1e2e2c0c3d4eed45d0646f8a1a9784e914017224dc3f14f16',
+      'source-map.json': '365c5abebe280d438732116422ca0abb7c60afe03616b4601693deb490076b6d'
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-control-cli.test.mjs:78:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'build.json': 'a6f963eb3dcf9ddebc28f02cd6a39804059520ad9560d5756d447ceec40e2725', 'snapshot.json': 'de49dec7ceef90f1e2e2c0c3d4eed45d0646f8a1a9784e914017224dc3f14f16', 'source-map.json': '365c5abebe280d438732116422ca0abb7c60afe03616b4601693deb490076b6d', 'sessions/4f6a9740-b673-4956-865b-1929f680d40b/session.json': '827d2b525bb3df816132901c6c52ca70d93437e5abb4a8f4e054a9ee37a37736', 'project/main.tscn': '410aea99b623b947179265d855c15949525625d3ce7a24dcba14b5398e192050', 'project/project.godot': 'c19289a2886074ae8ec161237b6a6febf59a3cc2fe5a95033eeee6046f2023bf', 'project/runtime.gd': 'f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8', 'project/runtime.gd.uid': '0fef46539a233dce3fbd4b4982e79881a180cc7370dd17ba7b3e723808f494b5', 'project/scene.json': '75561064d1f1e5f3f55817ade938cbc13107d0ddbbe5c8eadd46e1a13aeef939' },
+    expected: { 'build.json': 'a6f963eb3dcf9ddebc28f02cd6a39804059520ad9560d5756d447ceec40e2725', 'snapshot.json': 'de49dec7ceef90f1e2e2c0c3d4eed45d0646f8a1a9784e914017224dc3f14f16', 'source-map.json': '365c5abebe280d438732116422ca0abb7c60afe03616b4601693deb490076b6d', 'project/main.tscn': '410aea99b623b947179265d855c15949525625d3ce7a24dcba14b5398e192050', 'project/project.godot': 'c19289a2886074ae8ec161237b6a6febf59a3cc2fe5a95033eeee6046f2023bf', 'project/runtime.gd': 'f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8', 'project/runtime.gd.uid': '0fef46539a233dce3fbd4b4982e79881a180cc7370dd17ba7b3e723808f494b5', 'project/scene.json': '75561064d1f1e5f3f55817ade938cbc13107d0ddbbe5c8eadd46e1a13aeef939' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

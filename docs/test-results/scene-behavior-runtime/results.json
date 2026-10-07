@@ -1,0 +1,215 @@
+{
+  "date": "2026-10-07",
+  "recordedAt": "2026-10-07T06:37:24.820Z",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased incremental source work; no version bump, commit, push, installer or installation.",
+  "scope": [
+    "Portable strict standalone scene behavior manifests use stable scene, instance, binding and registered TXT source UUIDs, bounded scalar parameters and declared signal-event aliases.",
+    "Only the saved scene metadata behavior relation opts into execution; frozen plan/runtime 3 carries sources and provenance. Static saved/draft/recipe previews retain geometry-only plan2, and ordinary saves/full backups preserve unfinished source.",
+    "Linux Godot 4 adapter loads independent Node instances, validates own exported scalar properties and typed 0–4 argument signals, then routes per-binding events. Generator/runtime extension is separate from original v1/v2 byte-frozen implementation.",
+    "Frozen host compilation and runtime diagnostics navigate to registered TXT source lines or exact manifest parameter pointers. The UI shows counts and identity-bearing events in Chinese, English and Japanese without parsing scripts.",
+    "Selective resource packages recompute body dependencies, validate registered edges and bound actor definitions, preserve exact source bytes, recheck pinned scene/script dependencies and fence permitted transitive actor reads.",
+    "Malformed actor collections and coercible diagnostic code/parameter arrays are rejected as structured diagnostics; new sample media and registration files remain visible to Git via narrowly scoped ignore exceptions."
+  ],
+  "validation": {
+    "app": {
+      "log": "app-check.log",
+      "tests": 1648,
+      "suites": 0,
+      "pass": 1648,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 179389.018035,
+      "syntaxFiles": 365,
+      "apiContract": "passed",
+      "versionConsistency": "0.0.7"
+    },
+    "portableAndPackages": {
+      "log": "portable-packages-final.log",
+      "tests": 27,
+      "suites": 0,
+      "pass": 27,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 1326.747906,
+      "overlapsFullApp": true,
+      "portableTests": 17,
+      "resourcePackageTests": 10
+    },
+    "godotAdapter": {
+      "log": "godot-adapter-final.log",
+      "tests": 23,
+      "suites": 0,
+      "pass": 23,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 10634.092983,
+      "overlapsFullApp": true,
+      "newBehaviorTests": 12,
+      "existingAdapterTests": 11,
+      "realGodotVersion": "4.7.2.stable.official.ed1daf0bf"
+    },
+    "hostWorkflow": {
+      "log": "workflow-real-initial.log",
+      "tests": 10,
+      "suites": 0,
+      "pass": 10,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 34725.705395,
+      "overlapsFullApp": true,
+      "scope": "Initial full real Godot workflow run. The same 10 cases reran in the final full app after malformed-input hardening."
+    },
+    "uiRegression": {
+      "log": "ui-final.log",
+      "tests": 67,
+      "suites": 0,
+      "pass": 67,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 1281.055705,
+      "overlapsFullApp": true,
+      "newBehaviorTests": 6
+    },
+    "newAppTests": {
+      "total": 55,
+      "portable": 17,
+      "resourcePackages": 10,
+      "godotBehavior": 12,
+      "ui": 6,
+      "hostWorkflow": 10,
+      "includedInFullApp": true
+    },
+    "browser": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "steps": 5,
+      "jobs": 8,
+      "consoleExceptions": 0,
+      "evidence": "browser/browser.json",
+      "log": "browser-final.log",
+      "script": "../../../scripts/tests/scene-behavior-smoke.mjs",
+      "realHttpServer": true,
+      "disposableProjectsOnly": true,
+      "actualGodotHeadless": true,
+      "actualWindowPreview": false,
+      "independentBehaviorEvents": 2,
+      "parameterSourceNavigation": {
+        "path": "docs-standard/documents/behaviors/demo.json",
+        "selected": "\"invalid float\""
+      },
+      "scriptSourceNavigation": {
+        "path": "docs-standard/documents/scripts/checkpoint.txt",
+        "selected": "func _ready( -> void:"
+      },
+      "unsavedDraftAndCaretRetained": true,
+      "languages": [
+        "zh-CN",
+        "en",
+        "ja"
+      ],
+      "narrowWidth": 390,
+      "screenshotsVisuallyInspected": [
+        "browser/events-390-ja.png",
+        "browser/parameter-diagnostic-390-ja.png",
+        "browser/script-diagnostic-390-ja.png"
+      ],
+      "nativeTauriWindowOrAndroidDevice": false
+    },
+    "packagedResources": {
+      "ok": true,
+      "evidence": "packaged-resources.json",
+      "log": "packaged-runtime.log",
+      "script": "packaged-check.mjs",
+      "desktopFiles": 81,
+      "mobileFiles": 64,
+      "embeddedNode": "v24.20.0",
+      "sourceAndPackageHashesStableBeforeAndAfterExecution": true,
+      "preparedDesktopRealGodotBuildAndHeadless": true,
+      "preparedDesktopOfflineDualEventReplay": true,
+      "originalV1V2GoldenResultsUnchanged": true,
+      "mobileConstructedPortableModules": 84,
+      "mobileEvaluatedPortableModules": 84,
+      "mobileExplicitlyExercisedExports": [
+        "inspectSceneBehaviors",
+        "createScene2DPlan (including resolveSceneBehaviors and resolveScene2DModel)",
+        "validateExecutionBackendDescriptor",
+        "checkExecutionBackendSupport",
+        "canExecuteBackend"
+      ],
+      "mobilePlanExactDesktopParity": true,
+      "mobileHostExecutorBundled": false,
+      "nativeTauriWindowOrAndroidDevice": false
+    },
+    "nativeBuilds": {
+      "core": "core-native-build.log",
+      "archiveAndMobileHelpers": "native-helpers-build-final.log",
+      "realBinariesUsedInFullApp": true,
+      "wasmRebuiltThisRound": false,
+      "rustTestsRerunThisRound": false,
+      "scope": "This increment changed no Rust source or WASM. Current native core/archive/mobile helpers were compiled offline and supplied to the final app regression; earlier standalone Rust checks retain their historical scope."
+    },
+    "documentation": "docs-check.json",
+    "examplePublication": {
+      "evidence": "example-publication.json",
+      "files": 17,
+      "sourceAndGitVisibleInventoryEqual": true
+    }
+  },
+  "compatibility": {
+    "worldV1BehaviorBindingsRemainEmpty": true,
+    "workspaceAndSceneAuthorFormatsUnchanged": true,
+    "oldNoBehaviorPlanAndRuntime1And2Unchanged": true,
+    "explicitBehaviorPlanAndRuntimeVersion": 3,
+    "historicalGodotV1GeneratorSha256": "dba885d7965715e56b1f1ac394dc78e3227d3502d23318a736dca6eb93beabe6",
+    "originalGeneratorRuntimeAndWasmFilesUnchanged": true,
+    "executionAdapter": {
+      "id": "org.viento.godot4",
+      "contractVersion": 1,
+      "sha256": "9e360a3e609d22f1a86b153f093e5c8b5ac4bec3a778b7060120d45ae0a47eb0"
+    }
+  },
+  "harnessAndVerificationNotes": [
+    "The initial native helper build required the prepared embedded Node sidecar and failed before resource preparation; after desktop preparation the offline final helper build succeeded. Both logs are retained.",
+    "The first portable workflow fixture assumed one relation spelling and lacked the required draft sourcePath. Valid nonownership metadata edges and the actual draft DTO are now used; the first log and successful final portable/real runs are retained.",
+    "Initial browser acceptance passed but captured the top viewport. The final smoke run scrolls the relevant events and diagnostic sections into view; both screenshot sets remain separate.",
+    "The initial full app passed 1648/1648 before final malformed-input review. Additional cases inside existing tests now reject actors:{find:1}, null and [null], plus JSON arrays in diagnostic code/parameter fields. Final full app and final prepared checks use the hardened source.",
+    "Prepared artifacts from before the final review are explicitly archived as initial. Final preparation was rerun after both parser and runtime-reader hardening; all reported final source/package hashes were stable during real execution.",
+    "The source-hash inventory excludes editable current documentation/README but includes sample author Markdown/templates, the new 231-byte sample image, asset metadata and scoped .gitignore rules; all 78 files were rechecked after full app and cleanup."
+  ],
+  "wasm": {
+    "bytes": 285596,
+    "sha256": "8b14be6e13c33b5bf5a6cb16f956498dc03a3d62e50bb83ec8967b9896c7738e"
+  },
+  "dataProtection": {
+    "realAuthorWorkspaceUsed": false,
+    "authoringOrMetadataMigrationPerformed": false,
+    "sourceHashes": "source-hashes.json",
+    "productTestAndExampleFilesHashVerifiedAfterExecution": 78,
+    "historicalEvidence": "historical-preservation.json",
+    "historicalFilesUnchanged": 1476,
+    "frozenBackendAndWasmFilesUnchanged": 7,
+    "cleanup": "cleanup.json",
+    "temporaryGeneratedPathsRemoved": 7,
+    "temporaryAllocatedGiBRemoved": 1.828
+  },
+  "limits": [
+    "Only Linux Godot 4/GDScript is a product executable backend. No Bevy, Nuislang, ns-nova, yalivia or C# integration is implemented.",
+    "The binding manifest is portable data and the extension uses independent Node behavior instances, own exported scalar properties and typed signals; it is not cross-engine source translation, RPC, arbitrary Variant reflection, hot reload, an authoring form or a general state machine.",
+    "Author scripts execute with the current user permissions. Generated directories and process isolation do not provide a code sandbox.",
+    "World v1 behaviorBindings stays empty; Scene2D author v2/v3 can opt in through one registered behavior relation. Static saved/draft/recipe previews do not validate or execute behavior code.",
+    "GPU compute, offscreen rendering and embedded engine viewport remain unsupported. Mobile validation proves only portable prepared planning/capabilities, not Android engine execution or UI/device acceptance.",
+    "This increment does not open, install or accept a new Tauri window and does not repeat the earlier graphical Godot preview; historical evidence remains at its original scope."
+  ]
+}

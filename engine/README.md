@@ -23,7 +23,13 @@
 - `scene-draft-preview.mjs`：`validateSceneDraftRequest` 限定单份已登记场景草稿（128 KiB UTF-8），`overlaySceneDraftPreview` 校验原文 SHA-256 基线，在克隆观察中替换原样文本并重建投影；登记关系不变，不写文件，不规划保存。宿主冻结图片并复查读取屏障后，供独立草稿预览使用，构建仍读取保存版本。
 - `scene-source-layout.mjs`：通过 Rust `sceneSource.inspect`／`sceneSource.patch` 检查源码结构并生成精确坐标补丁；JS 核对有效预览、摘要和会话来源，共享 Rust 几何与局部历史，供宿主核验后写入编辑器内存，不接收 World 保存权限或执行 I/O。
 - `scene-model.mjs`：`resolveScene2DModel` 解析 Scene2D v1／v2／v3、投影有效值和依赖，返回对应版本的模型与文件／修订／字段范围；v2 以 `instanceId` 区分同一定义的多个实例，`objectId` 继续引用登记文档。登记恢复模式不重读投影语义，仅 v1 保留历史重复键／索引预算兼容。
-- `build-plan.mjs`：`scene2DModelToPlan` 将作者 v1 发射为 plan v1、作者 v2／v3 发射为 plan v2；旧 DTO 保持原样，v3 分组从运行计划剔除，`createScene2DPlan` 保留原入口；来源附加信息不进入冻结计划，能力与 Godot 适配分离。冻结资源、构建与运行属于 Node 适配层，见 [二维场景构建](../docs/PROJECT_BUILD.md)。
+- `build-plan.mjs`：`scene2DModelToPlan` 将作者 v1 发射为 plan v1、作者 v2／v3 发射为 plan v2；旧 DTO 保持原样，v3 分组从运行计划剔除，`createScene2DPlan` 保留原入口，并在场景明确关联有效行为清单时组合 plan／runtime 3；没有行为时旧计划逐字段不变。几何来源附加信息不进入冻结计划，能力与 Godot 适配分离。冻结资源、构建与运行属于 Node 适配层，见 [二维场景构建](../docs/PROJECT_BUILD.md)。
+- `scene-behaviors.mjs`：识别并严格检查注册行为清单、场景实例、TXT 源码、标量参数与信号声明；解析明确 `behavior` 关系，派生并核验资源包依赖，生成可冻结的行为 DTO。无 Node／DOM／Godot 调用，不执行或解析 GDScript；静态预览继续只消费几何模型。当前格式与预算见[场景行为](../docs/SCENE_BEHAVIORS.md)。
+
+- `backend-capabilities.mjs`：校验并分离冻结 `viento-execution-backend` schema 1 纯数据描述符；分别判断七种执行操作、平台、plan kind／schema 和功能需求。没有 Godot 回退、工具探测或进程调用；描述符格式／字段或操作不合法时拒绝，UI 的 `canExecuteBackend` 失败时返回 `false`。宿主注册表与具体引擎实现见[执行后端中间层](../docs/BACKEND_MIDDLEWARE.md)。
+- `scene-control-program.mjs`：分离并深冻结严格方向布尔程序；schema 1 保留全局输入，schema 2 每步按冻结 plan 2 实例 UUID 独立输入，未列实例释放，重复／未知目标拒绝且输入总行数至多 1024。核对 1–64 步、`0 < fixedDelta <= 0.25` 秒、总时长 8 秒、最后全释放及演员 × 步数 1024 联合预算；逐行准入协议 1／2 完整步骤样本与生命周期，回调按原顺序进入既有事件读取器和观察。没有 I/O、引擎句柄或移动模拟，见[有限控制回放](../docs/RUNTIME_CONTROL.md)。
+- `scene-runtime-query.mjs`：从已验证冻结 plan 1／2／3 取得稳定实例／定义身份及来源，消费已准入 ready／state／finished，提供分离的完整只读观察和 AND 身份筛选。状态变化使原位置样本过期，诊断／行为不改观察；可选有限控制程序为 plan 1／2 增加步骤进度和 `pushSample`，无程序 DTO 原样保留；无 Node、DOM、具体引擎、反射或 RPC 依赖，见[运行对象](../docs/RUNTIME_OBJECTS.md)。
+- `scene-runtime-events.mjs`：独立校验 plan／runtime 1／2 的实例身份、坐标、运动状态与 ready／finished 生命周期；诊断导航只从冻结计划取来源。没有 Node、DOM、Godot 或 Bevy 依赖；当前由 [Bevy 无头适配器](../docs/BEVY_BACKEND.md)消费，旧 Godot 事件读取器保持原字节。
 
 `scene-identity.mjs` 的 `sceneActorIdentity(actor)` 返回 v2／v3 `instanceId` 或旧 v1 `objectId`，供已验证模型的选择、原文匹配和布局使用；它不分配身份或替代场景校验。新表单默认 v2，启用分组显式升级 v3。
 
@@ -44,6 +50,24 @@
 保存版的状态由随草稿存在的 Rust `LayoutSaveWorkflow` 持有，检查／保存／核对返回当前请求标识；重复或失效完成被拒绝。位置修改使审阅失效，非可编辑阶段不能修改位置。JS 保留作者原文、已审阅的请求／响应、摘要和回读校验，并在每次异步返回时核对会话归属。
 
 独立 Rust `LayoutDraft` 可直接用于原生调用，`undo`、`redo`、`reset` 返回 `Result<bool, CoreError>`，保存阶段冻结时明确拒绝变更；JSON/WASM 草稿表最多 32 份，每份 1–128 个对象，历史最多 100 批次。句柄不持久化、不代表权限，布局状态结果不包含整个历史或作者正文；无状态源码补丁单独返回候选正文。此轮没有添加永久撤销、跨重启草稿恢复、原生 GUI 或 Android 场景入口。具体边界见 [共享核心架构](../docs/ARCHITECTURE.md#共享-rust-核心的运行边界)。
+
+## 文件内片段组合实验
+
+0.0.8 的 `scene-composition.mjs` 提供同步 `expandSceneComposition(content)`，返回已分离的 `{ scene, sourceMap }`。它经 `dispatchStudioCoreComposition` 调用无状态 `sceneComposition.expand`，不执行 I/O、分配 UUID 或创建布局会话。宿主须先初始化共享核心；可选 `viento_core_scene_composition_version() === 1` 导出声明组合能力，旧核心继续支持原操作但拒绝此操作，没有 JS 组合回退。
+
+recipe v1 在单文件内声明片段和放置，显式提供局部键到生成演员／组 UUID 的完整映射。Rust 校验结构、覆盖、组织关系和展开预算，输出现有 Scene2D v3；定义、投影继承、素材实际内容和登记关系继续由原 Scene2D 规划器验证。桥接会核对来源贡献项属于当前模板、演员覆盖、放置偏移或组引用，不能引用另一个对象的有效路径。来源仅为输入配方的 JSON Pointer 及贡献项，没有宿主路径、摘要或可写范围；Node CLI 才把原始输入字节摘要加入 bundle；已登记模式还附只读文档／World 来源。生成场景不携带配方元数据，后续编辑不反向更新配方。
+
+`scene-composition-document.mjs` 提供同步 `inspectSceneComposition(content)` 与 `validateSceneCompositionDependencies(checked, record, source)`。它按当前正文顶层格式识别普通已登记 JSON 文档，复用 Rust 校验，再收集全部模板与覆盖的定义／图片 UUID；不复制组合算法，也不读写作品。无效配方不返回部分依赖，最小格式标记可供只读分类。依赖校验检查可用正文、自引用／嵌套配方与图片类别，投影闭包继续由既有规则处理。
+
+Node CLI 和资源包宿主消费派生结果，文档登记／保存沿用原流程；没有新增 World 命令、元数据自动回写或普通解析器布局。未完成原文可保存及完整备份，选择式迁移要求配方与依赖有效。已保存／未保存配方的只读预览已接入；当前源码配方可另行编辑单实例局部覆盖并应用到原文草稿，再普通保存。共享模板编辑、删除覆盖／恢复继承、嵌套／跨文件片段和多文件事务仍未接入。完整契约及只读 CLI 用法见[片段组合指南](../docs/SCENE_COMPOSITION.md)。
+
+局部覆盖使用独立的可选 `viento_core_scene_composition_patch_version() === 1`，由 Rust `sceneComposition.patchOverrides` 按稳定放置 ID 和局部演员键设置 position／size／color／speed／controls／imageResourceId 六类值。它复用严格 scanner、组合校验和数值序列化，只补丁目标源码，保留其他原始字节；前后原文各限 128 KiB，不保存文件或改 World。桥接提供 `supportsStudioCoreCompositionPatch()` 和 `dispatchStudioCoreCompositionPatch(request)`，核对有序真实路径、唯一目标语义并重新严格展开回执，坏回执使核心不可用；缺少新能力不影响旧展开／源码／几何能力。
+
+`scene-composition-overrides.mjs` 的 `createSceneCompositionOverrideDraft(model, source, actorId, { digest })` 绑定有效预览、当前原文摘要和保存基线，返回局部表单值及 `propose`；未改字段不变成显式覆盖。`prepareSceneCompositionOverrideApply(current, proposal, { digest })` 重新核对摘要、身份与精确 Rust 回执。异步前复制输入，纯接口没有 I/O；宿主完整预览候选并在最终内存应用前复查当前会话，持久保存继续由普通编辑器处理。贡献来源仅授权导航，不授予这项编辑能力。
+
+`scene-composition-preview.mjs` 提供异步 `resolveSceneCompositionPreview(observed, recipeId, { digest })`，返回 `{ recognized, ok, model, diagnostics, composition }`。它支持 workspace v2／v3 中普通已登记 recipe v1；草稿由宿主先使用既有只读覆盖器处理。内部克隆观察、合并派生与作者原关系／绑定、调用原 v3 模型后，把场景修订、诊断与来源全部映射回配方原文；不会返回合成观察、`sceneEditing` 或构建 snapshot。没有格式标记时 `recognized: false`，由调用方继续原 Scene2D 流程。
+
+`composition` v1 只携带 `recipeObjectId`、`sourcePath`、`sourceRevision`、`fragmentCount`、`placementCount`。`sourceLocations.sceneFields` 增加标题／视口／背景位置；演员／组来源附 `fragmentId`、`placementId` 和 `localKey`。合成字段的主范围 `exact: false`，`contributors` 的每项是实际位置加 `role: template | override | offset | identity`；投影继承的复合尺寸与独立轴来源保留。宿主负责图片实际字节、并发读取守护与缓存，前端仅导航和渲染，不从来源推导写入权限。
 
 ## World 只读投影
 

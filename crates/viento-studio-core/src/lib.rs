@@ -3,6 +3,8 @@
 
 mod layout_draft;
 mod layout_save;
+mod scene_composition;
+mod scene_composition_patch;
 mod scene_layout;
 mod scene_source;
 mod wasm;
@@ -18,6 +20,8 @@ pub use layout_save::{
     LayoutSaveAction, LayoutSaveOutcome, LayoutSavePhase, LayoutSaveResponse, LayoutSaveState,
     LayoutSaveWorkflow,
 };
+pub use scene_composition::SceneCompositionResponse;
+pub use scene_composition_patch::SceneCompositionPatchResponse;
 pub use scene_layout::{align_selection, move_selection, validate_batch, PositionChange};
 pub use scene_source::SceneSourceResponse;
 pub use wasm::{
@@ -31,6 +35,18 @@ pub const MAX_INPUT_BYTES: usize = 1024 * 1024;
 /// their existing layout operations; hosts gate only source operations on it.
 #[no_mangle]
 pub extern "C" fn viento_core_scene_source_version() -> u32 {
+    1
+}
+
+/// Optional feature probe for stateless scene composition.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_version() -> u32 {
+    1
+}
+
+/// Independent capability: earlier composition cores can still expand recipes.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_patch_version() -> u32 {
     1
 }
 
@@ -112,6 +128,19 @@ pub enum CoreResponse {
         ok: bool,
         source: SceneSourceResponse,
     },
+    CompositionSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        composition: SceneCompositionResponse,
+    },
+    CompositionPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "compositionPatch")]
+        composition_patch: SceneCompositionPatchResponse,
+    },
     Failure {
         #[serde(rename = "protocolVersion")]
         protocol_version: u32,
@@ -137,6 +166,20 @@ fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
         return Err(CoreError::request());
     }
     let operation = value["operation"].as_str();
+    if operation == Some("sceneComposition.patchOverrides") {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("sceneComposition.expand") {
+        return Ok(CoreResponse::CompositionSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition: scene_composition::dispatch(value)?,
+        });
+    }
     if let Some(operation @ ("sceneSource.inspect" | "sceneSource.patch")) = operation {
         return Ok(CoreResponse::SourceSuccess {
             protocol_version: PROTOCOL_VERSION,

@@ -1,0 +1,176 @@
+{
+  "date": "2026-10-07",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased incremental source work. No version bump, commit, push, installer or installation.",
+  "scope": [
+    "Select one generated recipe actor by stable placementId and local actorKey, then set only its changed position, size, color, speed, controls or imageResourceId.",
+    "Independent optional Rust patch capability performs strict input/output expansion and byte-preserving patches. Existing source tokens, BOM, line endings, other placements, fragments and identity/group declarations remain intact.",
+    "Portable proposal preparation binds saved/current-draft previews to exact source hashes and save baselines, then independently recomputes the receipt before application.",
+    "Current source-editor instance override dialog provides named registered image selection, pre-offset local coordinates, complete-source review and Chinese/English/Japanese controls.",
+    "Candidate checking validates the full saved dependencies and images through a separate preview lease. Application changes editor memory only; ordinary Save keeps its original external-conflict preconditions."
+  ],
+  "validation": {
+    "app": {
+      "tests": 1548,
+      "pass": 1548,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 149862.694993,
+      "syntaxFiles": 350,
+      "apiContract": "passed",
+      "versionConsistency": "0.0.7",
+      "log": "app-check.log"
+    },
+    "rust": {
+      "pass": 75,
+      "libraryTests": 44,
+      "integrationTests": 31,
+      "newPatchTests": 12,
+      "fail": 0,
+      "log": "core-tests.log",
+      "fmt": "core-fmt.log",
+      "clippy": "core-clippy.log"
+    },
+    "coreBridge": {
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "realNativeWasmComparisons": 55,
+      "malformedReceiptVariants": 17,
+      "optionalCapabilityCompatibility": true,
+      "log": "core-bridge.log",
+      "overlapsFullApp": true
+    },
+    "pureOverrides": {
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0,
+      "log": "pure-engine.log",
+      "overlapsFullApp": true
+    },
+    "hostRegression": {
+      "pass": 39,
+      "newTests": 8,
+      "fail": 0,
+      "skipped": 0,
+      "log": "host-regression.log",
+      "overlapsFullApp": true
+    },
+    "parentBridge": {
+      "pass": 6,
+      "newTests": 6,
+      "fail": 0,
+      "skipped": 0,
+      "log": "bridge-final.log",
+      "overlapsFullApp": true,
+      "worldPayloadMatchesRealApi": true
+    },
+    "uiRegression": {
+      "pass": 105,
+      "newTests": 16,
+      "fail": 0,
+      "skipped": 0,
+      "log": "ui-final.log",
+      "overlapsFullApp": true
+    },
+    "newAppTests": {
+      "total": 54,
+      "coreBridge": 12,
+      "pureOverrides": 12,
+      "host": 8,
+      "parentBridge": 6,
+      "ui": 16,
+      "includedInFullApp": true
+    },
+    "browser": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "steps": 6,
+      "previewCaptures": 11,
+      "consoleExceptions": 0,
+      "externalSvgRequests": 0,
+      "evidence": "browser/browser.json",
+      "log": "browser-final.log",
+      "script": "../../../scripts/tests/scene-composition-overrides-smoke.mjs",
+      "realHttpServer": true,
+      "disposableProjectsOnly": true,
+      "cleanSourceEntryAndCancel": true,
+      "sixFieldsSetOnlyForSelectedInstance": true,
+      "inMemoryApplyOnly": true,
+      "staleReviewedProposalRejected": true,
+      "normalSaveOnlyChangesRecipe": true,
+      "externalConflictCancelRetainsDraftAndExternalFile": true,
+      "languages": [
+        "zh-CN",
+        "en",
+        "ja"
+      ],
+      "narrowWidth": 390,
+      "screenshotsVisuallyInspected": true
+    },
+    "packagedResources": {
+      "ok": true,
+      "evidence": "packaged-resources.json",
+      "log": "packaged-final.log",
+      "desktopFiles": 68,
+      "mobileFiles": 64,
+      "embeddedNode": "v24.20.0",
+      "mobileModuleCount": 110,
+      "sourceAndPackageHashesStableBeforeAndAfterExecution": true,
+      "savedAndDraftOverridePreparationExecuted": true,
+      "fullDependencyPreviewExecuted": true,
+      "oldExpandSourcePatchGeometryUndoRedoExecuted": true,
+      "sourceLocationsAfterOverride": {
+        "recipeLocations": 89,
+        "exactSourceRanges": 75,
+        "compositeOrNearestRanges": 14
+      },
+      "nativeTauriWindowOrAndroidDevice": false
+    },
+    "nativeBuilds": {
+      "core": "core-native-build.log",
+      "wasm": "core-wasm-build.log",
+      "archiveAndMobileHelpers": "native-helpers-build.log",
+      "actualArchiveMobileAndGodotTests": "Included in final app with supplied real binaries; zero skipped tests."
+    },
+    "documentation": "docs-check.json"
+  },
+  "productFixes": [
+    "Real browser verification found an empty image picker because the parent controller read payload.projection.resources while /api/world returns projection directly. The controller and regression fixture now read payload.resources.",
+    "The override dialog reuses existing responsive form and raw-source review styles so long JSON and identities do not force 390px Chinese/English/Japanese forms beyond the dialog width.",
+    "Successful application resets dialog busy state and restores focus through the original host receipt; unchanged form signatures and session tokens prevent stale approval from being reused."
+  ],
+  "harnessCorrections": [
+    "Initial parent fixture lacked PROJECT_BUILD_API_PATH; the production module was unchanged for that correction. Initial bridge attempt log is retained.",
+    "Initial clean-host assertion expected a dirty-only draft snapshot from a clean editor. It now reads the production state baseline; initial host attempt log is retained.",
+    "First prepared mobile resources predated final bridge strict-return expansion validation. Integrity checks correctly rejected them; first retry and final reports preserve subsequent frozen-source checks.",
+    "After the image catalog correction, the browser reached the real save-conflict overlay but its script incorrectly tested native dialog.open. The existing overlay uses is-hidden; final six-step run uses that visibility contract. Both failed browser attempts are preserved."
+  ],
+  "wasm": {
+    "bytes": 285596,
+    "sha256": "8b14be6e13c33b5bf5a6cb16f956498dc03a3d62e50bb83ec8967b9896c7738e"
+  },
+  "dataProtection": {
+    "realAuthorWorkspaceUsed": false,
+    "metadataDependencyEdgesRewritten": false,
+    "workspaceWorldOrSceneFormatsChanged": false,
+    "generatedScenesSavedByOverrideEditing": false,
+    "sourceHashes": "source-hashes.json",
+    "productFilesHashVerifiedAfterExecution": 41,
+    "historicalEvidence": "historical-preservation.json",
+    "historicalFilesUnchanged": 1367,
+    "cleanup": "cleanup.json",
+    "temporaryAllocatedGiBRemoved": 2.017
+  },
+  "limits": [
+    "Set-only editing for six fields in one currently opened registered recipe source session. No reset-to-inheritance, override deletion, shared-template editing, definition/identity/group changes, placement-offset edits or canvas dragging.",
+    "Only recipe source is overlaid in memory. Dependencies and media are saved versions checked during candidate preview; local application is not an atomic dependency commit.",
+    "Recipes remain preview inputs and ordinary documents; they do not become executable build snapshots or generated-scene write grants.",
+    "Existing 128 KiB source, 32 fragments, 128 placements, 128 generated actors and Scene2D v3 budgets remain. No nested/cross-file fragment authoring or multi-file transaction.",
+    "The preview, override form and ordinary source editor do not provide unified undo history.",
+    "Prepared mobile semantic execution on Linux is not Android UI/device acceptance. This round does not open an installed Tauri window or create/install a release."
+  ]
+}

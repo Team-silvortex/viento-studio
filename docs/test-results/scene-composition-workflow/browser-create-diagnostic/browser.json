@@ -1,0 +1,895 @@
+{
+  "browser": "Chrome/154.0.8037.97",
+  "steps": [],
+  "errors": [],
+  "ok": false,
+  "failure": "Error: Timed out: create registered JSON\n    at wait (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-workflow-smoke.mjs:53:127)\n    at async file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-workflow-smoke.mjs:101:3",
+  "editorState": {
+    "state": {
+      "docs": [
+        {
+          "id": "e77f49e0-0d7a-417f-b6a9-299e31237a0c",
+          "assetRefs": [],
+          "unresolvedAssetPaths": [],
+          "path": "docs-standard/documents/scenes/workflow-recipe.json",
+          "title": "workflow-recipe",
+          "name": "workflow-recipe",
+          "category": "document",
+          "displayPath": "docs-standard/documents/scenes/workflow-recipe.json",
+          "relations": [],
+          "layout": {
+            "schemaVersion": "viento-layout-v1",
+            "sections": [
+              {
+                "id": "section-1",
+                "title": "内容",
+                "titleKey": "内容",
+                "level": 1,
+                "anchor": "",
+                "blocks": [
+                  {
+                    "type": "kv",
+                    "key": "format",
+                    "value": "viento-scene-composition"
+                  },
+                  {
+                    "type": "kv",
+                    "key": "schemaVersion",
+                    "value": 1
+                  },
+                  {
+                    "type": "kv",
+                    "key": "scene",
+                    "value": {
+                      "title": "Two parties / 两支队伍 / 二つの隊",
+                      "viewport": [
+                        800,
+                        480
+                      ],
+                      "background": "#0d1829"
+                    }
+                  },
+                  {
+                    "type": "kv",
+                    "key": "fragments",
+                    "value": [
+                      {
+                        "fragmentId": "party",
+                        "groups": [
+                          {
+                            "key": "party",
+                            "name": "Party / 队伍 / 隊"
+                          },
+                          {
+                            "key": "companions",
+                            "name": "Companions / 同行者",
+                            "parentKey": "party"
+                          }
+                        ],
+                        "actors": [
+                          {
+                            "key": "leader",
+                            "objectId": "e81186f4-158a-4a43-b481-7139ffc98238",
+                            "groupKey": "party",
+                            "position": [
+                              120,
+                              180
+                            ],
+                            "size": [
+                              64,
+                              64
+                            ],
+                            "color": "#ffffff",
+                            "speed": 160,
+                            "controls": "arrows",
+                            "imageResourceId": "f8952841-d781-4094-a9fd-46fbb1d4f305"
+                          },
+                          {
+                            "key": "companion",
+                            "objectId": "e81186f4-158a-4a43-b481-7139ffc98238",
+                            "groupKey": "companions",
+                            "position": [
+                              200,
+                              180
+                            ],
+                            "size": [
+                              48,
+                              48
+                            ],
+                            "color": "#87d8b9",
+                            "speed": 0,
+                            "controls": "none",
+                            "imageResourceId": "f8952841-d781-4094-a9fd-46fbb1d4f305"
+                          }
+                        ]
+                      },
+                      {
+                        "fragmentId": "not-placed",
+                        "groups": [],
+                        "actors": [
+                          {
+                            "key": "waiting",
+                            "objectId": "e81186f4-158a-4a43-b481-7139ffc98238",
+                            "position": [
+                              200,
+                              180
+                            ],
+                            "size": [
+                              48,
+                              48
+                            ],
+                            "color": "#87d8b9",
+                            "speed": 0,
+                            "controls": "none",
+                            "imageResourceId": "458930a0-0c39-4592-a9ce-a6594b2b7202"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "kv",
+                    "key": "placements",
+                    "value": [
+                      {
+                        "placementId": "10000000-1111-4111-8111-111111111111",
+                        "fragmentId": "party",
+                        "actorIds": {
+                          "leader": "20000000-1111-4111-8111-111111111111",
+                          "companion": "20000001-1111-4111-8111-111111111111"
+                        },
+                        "groupIds": {
+                          "party": "30000000-1111-4111-8111-111111111111",
+                          "companions": "30000001-1111-4111-8111-111111111111"
+                        }
+                      },
+                      {
+                        "placementId": "10000001-1111-4111-8111-111111111111",
+                        "fragmentId": "party",
+                        "offset": [
+                          360,
+                          80
+                        ],
+                        "actorIds": {
+                          "leader": "20000002-1111-4111-8111-111111111111",
+                          "companion": "20000003-1111-4111-8111-111111111111"
+                        },
+                        "groupIds": {
+                          "party": "30000002-1111-4111-8111-111111111111",
+                          "companions": "30000003-1111-4111-8111-111111111111"
+                        },
+                        "overrides": [
+                          {
+                            "actorKey": "leader",
+                            "values": {
+                              "position": [
+                                100,
+                                140
+                              ],
+                              "color": "#f1c46e",
+                              "speed": 0,
+                              "controls": "none"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "group": "档案",
+          "source": {
+            "path": "docs-standard/documents/scenes/workflow-recipe.json",
+            "extension": ".json",
+            "size": 3039,
+            "modifiedAt": "2026-10-07T04:37:14.422Z"
+          },
+          "meta": {
+            "source": "docs-standard/documents/scenes/workflow-recipe.json",
+            "title": "workflow-recipe",
+            "category": "document",
+            "group": "档案",
+            "purpose": "档案",
+            "schemaVersion": "standard-doc-v2"
+          },
+          "fields": {
+            "format": "viento-scene-composition",
+            "schemaVersion": 1,
+            "scene": {
+              "title": "Two parties / 两支队伍 / 二つの隊",
+              "viewport": [
+                800,
+                480
+              ],
+              "background": "#0d1829"
+            },
+            "fragments": [
+              {
+                "fragmentId": "party",
+                "groups": [
+                  {
+                    "key": "party",
+                    "name": "Party / 队伍 / 隊"
+                  },
+                  {
+                    "key": "companions",
+                    "name": "Companions / 同行者",
+                    "parentKey": "party"
+                  }
+                ],
+                "actors": [
+                  {
+                    "key": "leader",
+                    "objectId": "e81186f4-158a-4a43-b481-7139ffc98238",
+                    "groupKey": "party",
+                    "position": [
+                      120,
+                      180
+                    ],
+                    "size": [
+                      64,
+                      64
+                    ],
+                    "color": "#ffffff",
+                    "speed": 160,
+                    "controls": "arrows",
+                    "imageResourceId": "f8952841-d781-4094-a9fd-46fbb1d4f305"
+                  },
+                  {
+                    "key": "companion",
+                    "objectId": "e81186f4-158a-4a43-b481-7139ffc98238",
+                    "groupKey": "companions",
+                    "position": [
+                      200,
+                      180
+                    ],
+                    "size": [
+                      48,
+                      48
+                    ],
+                    "color": "#87d8b9",
+                    "speed": 0,
+                    "controls": "none",
+                    "imageResourceId": "f8952841-d781-4094-a9fd-46fbb1d4f305"
+                  }
+                ]
+              },
+              {
+                "fragmentId": "not-placed",
+                "groups": [],
+                "actors": [
+                  {
+                    "key": "waiting",
+                    "objectId": "e81186f4-158a-4a43-b481-7139ffc98238",
+                    "position": [
+                      200,
+                      180
+                    ],
+                    "size": [
+                      48,
+                      48
+                    ],
+                    "color": "#87d8b9",
+                    "speed": 0,
+                    "controls": "none",
+                    "imageResourceId": "458930a0-0c39-4592-a9ce-a6594b2b7202"
+                  }
+                ]
+              }
+            ],
+            "placements": [
+              {
+                "placementId": "10000000-1111-4111-8111-111111111111",
+                "fragmentId": "party",
+                "actorIds": {
+                  "leader": "20000000-1111-4111-8111-111111111111",
+                  "companion": "20000001-1111-4111-8111-111111111111"
+                },
+                "groupIds": {
+                  "party": "30000000-1111-4111-8111-111111111111",
+                  "companions": "30000001-1111-4111-8111-111111111111"
+                }
+              },
+              {
+                "placementId": "10000001-1111-4111-8111-111111111111",
+                "fragmentId": "party",
+                "offset": [
+                  360,
+                  80
+                ],
+                "actorIds": {
+                  "leader": "20000002-1111-4111-8111-111111111111",
+                  "companion": "20000003-1111-4111-8111-111111111111"
+                },
+                "groupIds": {
+                  "party": "30000002-1111-4111-8111-111111111111",
+                  "companions": "30000003-1111-4111-8111-111111111111"
+                },
+                "overrides": [
+                  {
+                    "actorKey": "leader",
+                    "values": {
+                      "position": [
+                        100,
+                        140
+                      ],
+                      "color": "#f1c46e",
+                      "speed": 0,
+                      "controls": "none"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "backstory": null,
+          "sections": [
+            {
+              "key": "_header",
+              "value": "workflow-recipe"
+            },
+            {
+              "key": "format",
+              "value": "viento-scene-composition"
+            },
+            {
+              "key": "schemaVersion",
+              "value": "1"
+            },
+            {
+              "key": "scene",
+              "value": "{\n  \"title\": \"Two parties / 两支队伍 / 二つの隊\",\n  \"viewport\": [\n    800,\n    480\n  ],\n  \"background\": \"#0d1829\"\n}"
+            },
+            {
+              "key": "fragments",
+              "value": "{\n  \"fragmentId\": \"party\",\n  \"groups\": [\n    {\n      \"key\": \"party\",\n      \"name\": \"Party / 队伍 / 隊\"\n    },\n    {\n      \"key\": \"companions\",\n      \"name\": \"Companions / 同行者\",\n      \"parentKey\": \"party\"\n    }\n  ],\n  \"actors\": [\n    {\n      \"key\": \"leader\",\n      \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n      \"groupKey\": \"party\",\n      \"position\": [\n        120,\n        180\n      ],\n      \"size\": [\n        64,\n        64\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 160,\n      \"controls\": \"arrows\",\n      \"imageResourceId\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n    },\n    {\n      \"key\": \"companion\",\n      \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n      \"groupKey\": \"companions\",\n      \"position\": [\n        200,\n        180\n      ],\n      \"size\": [\n        48,\n        48\n      ],\n      \"color\": \"#87d8b9\",\n      \"speed\": 0,\n      \"controls\": \"none\",\n      \"imageResourceId\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n    }\n  ]\n}\n{\n  \"fragmentId\": \"not-placed\",\n  \"groups\": [],\n  \"actors\": [\n    {\n      \"key\": \"waiting\",\n      \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n      \"position\": [\n        200,\n        180\n      ],\n      \"size\": [\n        48,\n        48\n      ],\n      \"color\": \"#87d8b9\",\n      \"speed\": 0,\n      \"controls\": \"none\",\n      \"imageResourceId\": \"458930a0-0c39-4592-a9ce-a6594b2b7202\"\n    }\n  ]\n}"
+            },
+            {
+              "key": "placements",
+              "value": "{\n  \"placementId\": \"10000000-1111-4111-8111-111111111111\",\n  \"fragmentId\": \"party\",\n  \"actorIds\": {\n    \"leader\": \"20000000-1111-4111-8111-111111111111\",\n    \"companion\": \"20000001-1111-4111-8111-111111111111\"\n  },\n  \"groupIds\": {\n    \"party\": \"30000000-1111-4111-8111-111111111111\",\n    \"companions\": \"30000001-1111-4111-8111-111111111111\"\n  }\n}\n{\n  \"placementId\": \"10000001-1111-4111-8111-111111111111\",\n  \"fragmentId\": \"party\",\n  \"offset\": [\n    360,\n    80\n  ],\n  \"actorIds\": {\n    \"leader\": \"20000002-1111-4111-8111-111111111111\",\n    \"companion\": \"20000003-1111-4111-8111-111111111111\"\n  },\n  \"groupIds\": {\n    \"party\": \"30000002-1111-4111-8111-111111111111\",\n    \"companions\": \"30000003-1111-4111-8111-111111111111\"\n  },\n  \"overrides\": [\n    {\n      \"actorKey\": \"leader\",\n      \"values\": {\n        \"position\": [\n          100,\n          140\n        ],\n        \"color\": \"#f1c46e\",\n        \"speed\": 0,\n        \"controls\": \"none\"\n      }\n    }\n  ]\n}"
+            }
+          ],
+          "outline": [
+            {
+              "id": "workflow-recipe",
+              "title": "workflow-recipe",
+              "level": 1,
+              "anchor": "#workflow-recipe",
+              "children": []
+            }
+          ],
+          "blocks": [
+            {
+              "type": "json",
+              "value": {
+                "format": "viento-scene-composition",
+                "schemaVersion": 1,
+                "scene": {
+                  "title": "Two parties / 两支队伍 / 二つの隊",
+                  "viewport": [
+                    800,
+                    480
+                  ],
+                  "background": "#0d1829"
+                },
+                "fragments": [
+                  {
+                    "fragmentId": "party",
+                    "groups": [
+                      {
+                        "key": "party",
+                        "name": "Party / 队伍 / 隊"
+                      },
+                      {
+                        "key": "companions",
+                        "name": "Companions / 同行者",
+                        "parentKey": "party"
+                      }
+                    ],
+                    "actors": [
+                      {
+                        "key": "leader",
+                        "objectId": "e81186f4-158a-4a43-b481-7139ffc98238",
+                        "groupKey": "party",
+                        "position": [
+                          120,
+                          180
+                        ],
+                        "size": [
+                          64,
+                          64
+                        ],
+                        "color": "#ffffff",
+                        "speed": 160,
+                        "controls": "arrows",
+                        "imageResourceId": "f8952841-d781-4094-a9fd-46fbb1d4f305"
+                      },
+                      {
+                        "key": "companion",
+                        "objectId": "e81186f4-158a-4a43-b481-7139ffc98238",
+                        "groupKey": "companions",
+                        "position": [
+                          200,
+                          180
+                        ],
+                        "size": [
+                          48,
+                          48
+                        ],
+                        "color": "#87d8b9",
+                        "speed": 0,
+                        "controls": "none",
+                        "imageResourceId": "f8952841-d781-4094-a9fd-46fbb1d4f305"
+                      }
+                    ]
+                  },
+                  {
+                    "fragmentId": "not-placed",
+                    "groups": [],
+                    "actors": [
+                      {
+                        "key": "waiting",
+                        "objectId": "e81186f4-158a-4a43-b481-7139ffc98238",
+                        "position": [
+                          200,
+                          180
+                        ],
+                        "size": [
+                          48,
+                          48
+                        ],
+                        "color": "#87d8b9",
+                        "speed": 0,
+                        "controls": "none",
+                        "imageResourceId": "458930a0-0c39-4592-a9ce-a6594b2b7202"
+                      }
+                    ]
+                  }
+                ],
+                "placements": [
+                  {
+                    "placementId": "10000000-1111-4111-8111-111111111111",
+                    "fragmentId": "party",
+                    "actorIds": {
+                      "leader": "20000000-1111-4111-8111-111111111111",
+                      "companion": "20000001-1111-4111-8111-111111111111"
+                    },
+                    "groupIds": {
+                      "party": "30000000-1111-4111-8111-111111111111",
+                      "companions": "30000001-1111-4111-8111-111111111111"
+                    }
+                  },
+                  {
+                    "placementId": "10000001-1111-4111-8111-111111111111",
+                    "fragmentId": "party",
+                    "offset": [
+                      360,
+                      80
+                    ],
+                    "actorIds": {
+                      "leader": "20000002-1111-4111-8111-111111111111",
+                      "companion": "20000003-1111-4111-8111-111111111111"
+                    },
+                    "groupIds": {
+                      "party": "30000002-1111-4111-8111-111111111111",
+                      "companions": "30000003-1111-4111-8111-111111111111"
+                    },
+                    "overrides": [
+                      {
+                        "actorKey": "leader",
+                        "values": {
+                          "position": [
+                            100,
+                            140
+                          ],
+                          "color": "#f1c46e",
+                          "speed": 0,
+                          "controls": "none"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "json",
+          "lastModified": "2026-10-07T04:37:14.422Z",
+          "size": 3039,
+          "content": "{\n  \"format\": \"viento-scene-composition\",\n  \"schemaVersion\": 1,\n  \"scene\": {\n    \"title\": \"Two parties / 两支队伍 / 二つの隊\",\n    \"viewport\": [\n      800,\n      480\n    ],\n    \"background\": \"#0d1829\"\n  },\n  \"fragments\": [\n    {\n      \"fragmentId\": \"party\",\n      \"groups\": [\n        {\n          \"key\": \"party\",\n          \"name\": \"Party / 队伍 / 隊\"\n        },\n        {\n          \"key\": \"companions\",\n          \"name\": \"Companions / 同行者\",\n          \"parentKey\": \"party\"\n        }\n      ],\n      \"actors\": [\n        {\n          \"key\": \"leader\",\n          \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n          \"groupKey\": \"party\",\n          \"position\": [\n            120,\n            180\n          ],\n          \"size\": [\n            64,\n            64\n          ],\n          \"color\": \"#ffffff\",\n          \"speed\": 160,\n          \"controls\": \"arrows\",\n          \"imageResourceId\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n        },\n        {\n          \"key\": \"companion\",\n          \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n          \"groupKey\": \"companions\",\n          \"position\": [\n            200,\n            180\n          ],\n          \"size\": [\n            48,\n            48\n          ],\n          \"color\": \"#87d8b9\",\n          \"speed\": 0,\n          \"controls\": \"none\",\n          \"imageResourceId\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n        }\n      ]\n    },\n    {\n      \"fragmentId\": \"not-placed\",\n      \"groups\": [],\n      \"actors\": [\n        {\n          \"key\": \"waiting\",\n          \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n          \"position\": [\n            200,\n            180\n          ],\n          \"size\": [\n            48,\n            48\n          ],\n          \"color\": \"#87d8b9\",\n          \"speed\": 0,\n          \"controls\": \"none\",\n          \"imageResourceId\": \"458930a0-0c39-4592-a9ce-a6594b2b7202\"\n        }\n      ]\n    }\n  ],\n  \"placements\": [\n    {\n      \"placementId\": \"10000000-1111-4111-8111-111111111111\",\n      \"fragmentId\": \"party\",\n      \"actorIds\": {\n        \"leader\": \"20000000-1111-4111-8111-111111111111\",\n        \"companion\": \"20000001-1111-4111-8111-111111111111\"\n      },\n      \"groupIds\": {\n        \"party\": \"30000000-1111-4111-8111-111111111111\",\n        \"companions\": \"30000001-1111-4111-8111-111111111111\"\n      }\n    },\n    {\n      \"placementId\": \"10000001-1111-4111-8111-111111111111\",\n      \"fragmentId\": \"party\",\n      \"offset\": [\n        360,\n        80\n      ],\n      \"actorIds\": {\n        \"leader\": \"20000002-1111-4111-8111-111111111111\",\n        \"companion\": \"20000003-1111-4111-8111-111111111111\"\n      },\n      \"groupIds\": {\n        \"party\": \"30000002-1111-4111-8111-111111111111\",\n        \"companions\": \"30000003-1111-4111-8111-111111111111\"\n      },\n      \"overrides\": [\n        {\n          \"actorKey\": \"leader\",\n          \"values\": {\n            \"position\": [\n              100,\n              140\n            ],\n            \"color\": \"#f1c46e\",\n            \"speed\": 0,\n            \"controls\": \"none\"\n          }\n        }\n      ]\n    }\n  ]\n}\n",
+          "heroImages": [],
+          "heroSkills": [],
+          "standardPath": "docs-standard/.entries/bc9461f54225ef34492ef66424a6a3a5badf425754d5c645e9a43780b2d63088.json",
+          "parser": {
+            "contentType": "json",
+            "format": "json",
+            "profile": "json",
+            "lineCount": 131,
+            "fieldCount": 5,
+            "blockCount": 1
+          },
+          "parserStats": {
+            "blockCount": 1,
+            "headingCount": 0,
+            "paragraphCount": 0,
+            "listCount": 0,
+            "tableCount": 0,
+            "kvCount": 0
+          },
+          "owners": [],
+          "ownedDocuments": [],
+          "_searchText": "workflow-recipe workflow-recipe docs-standard/documents/scenes/workflow-recipe.json 档案 document json format viento-scene-composition schemaversion 1 scene [object object] fragments [object object],[object object] placements [object object],[object object] _header workflow-recipe format viento-scene-composition schemaversion 1 scene {\n  \"title\": \"two parties / 两支队伍 / 二つの隊\",\n  \"viewport\": [\n    800,\n    480\n  ],\n  \"background\": \"#0d1829\"\n} fragments {\n  \"fragmentid\": \"party\",\n  \"groups\": [\n    {\n      \"key\": \"party\",\n      \"name\": \"party / 队伍 / 隊\"\n    },\n    {\n      \"key\": \"companions\",\n      \"name\": \"companions / 同行者\",\n      \"parentkey\": \"party\"\n    }\n  ],\n  \"actors\": [\n    {\n      \"key\": \"leader\",\n      \"objectid\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n      \"groupkey\": \"party\",\n      \"position\": [\n        120,\n        180\n      ],\n      \"size\": [\n        64,\n        64\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 160,\n      \"controls\": \"arrows\",\n      \"imageresourceid\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n    },\n    {\n      \"key\": \"companion\",\n      \"objectid\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n      \"groupkey\": \"companions\",\n      \"position\": [\n        200,\n        180\n      ],\n      \"size\": [\n        48,\n        48\n      ],\n      \"color\": \"#87d8b9\",\n      \"speed\": 0,\n      \"controls\": \"none\",\n      \"imageresourceid\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n    }\n  ]\n}\n{\n  \"fragmentid\": \"not-placed\",\n  \"groups\": [],\n  \"actors\": [\n    {\n      \"key\": \"waiting\",\n      \"objectid\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n      \"position\": [\n        200,\n        180\n      ],\n      \"size\": [\n        48,\n        48\n      ],\n      \"color\": \"#87d8b9\",\n      \"speed\": 0,\n      \"controls\": \"none\",\n      \"imageresourceid\": \"458930a0-0c39-4592-a9ce-a6594b2b7202\"\n    }\n  ]\n} placements {\n  \"placementid\": \"10000000-1111-4111-8111-111111111111\",\n  \"fragmentid\": \"party\",\n  \"actorids\": {\n    \"leader\": \"20000000-1111-4111-8111-111111111111\",\n    \"companion\": \"20000001-1111-4111-8111-111111111111\"\n  },\n  \"groupids\": {\n    \"party\": \"30000000-1111-4111-8111-111111111111\",\n    \"companions\": \"30000001-1111-4111-8111-111111111111\"\n  }\n}\n{\n  \"placementid\": \"10000001-1111-4111-8111-111111111111\",\n  \"fragmentid\": \"party\",\n  \"offset\": [\n    360,\n    80\n  ],\n  \"actorids\": {\n    \"leader\": \"20000002-1111-4111-8111-111111111111\",\n    \"companion\": \"20000003-1111-4111-8111-111111111111\"\n  },\n  \"groupids\": {\n    \"party\": \"30000002-1111-4111-8111-111111111111\",\n    \"companions\": \"30000003-1111-4111-8111-111111111111\"\n  },\n  \"overrides\": [\n    {\n      \"actorkey\": \"leader\",\n      \"values\": {\n        \"position\": [\n          100,\n          140\n        ],\n        \"color\": \"#f1c46e\",\n        \"speed\": 0,\n        \"controls\": \"none\"\n      }\n    }\n  ]\n} json   [object object] workflow-recipe #workflow-recipe",
+          "sourcePath": "docs-standard/documents/scenes/workflow-recipe.json",
+          "_heroImagesOrdered": [],
+          "_sourceCachedText": "{\n  \"format\": \"viento-scene-composition\",\n  \"schemaVersion\": 1,\n  \"scene\": {\n    \"title\": \"Two parties / 两支队伍 / 二つの隊\",\n    \"viewport\": [\n      800,\n      480\n    ],\n    \"background\": \"#0d1829\"\n  },\n  \"fragments\": [\n    {\n      \"fragmentId\": \"party\",\n      \"groups\": [\n        {\n          \"key\": \"party\",\n          \"name\": \"Party / 队伍 / 隊\"\n        },\n        {\n          \"key\": \"companions\",\n          \"name\": \"Companions / 同行者\",\n          \"parentKey\": \"party\"\n        }\n      ],\n      \"actors\": [\n        {\n          \"key\": \"leader\",\n          \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n          \"groupKey\": \"party\",\n          \"position\": [\n            120,\n            180\n          ],\n          \"size\": [\n            64,\n            64\n          ],\n          \"color\": \"#ffffff\",\n          \"speed\": 160,\n          \"controls\": \"arrows\",\n          \"imageResourceId\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n        },\n        {\n          \"key\": \"companion\",\n          \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n          \"groupKey\": \"companions\",\n          \"position\": [\n            200,\n            180\n          ],\n          \"size\": [\n            48,\n            48\n          ],\n          \"color\": \"#87d8b9\",\n          \"speed\": 0,\n          \"controls\": \"none\",\n          \"imageResourceId\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n        }\n      ]\n    },\n    {\n      \"fragmentId\": \"not-placed\",\n      \"groups\": [],\n      \"actors\": [\n        {\n          \"key\": \"waiting\",\n          \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n          \"position\": [\n            200,\n            180\n          ],\n          \"size\": [\n            48,\n            48\n          ],\n          \"color\": \"#87d8b9\",\n          \"speed\": 0,\n          \"controls\": \"none\",\n          \"imageResourceId\": \"458930a0-0c39-4592-a9ce-a6594b2b7202\"\n        }\n      ]\n    }\n  ],\n  \"placements\": [\n    {\n      \"placementId\": \"10000000-1111-4111-8111-111111111111\",\n      \"fragmentId\": \"party\",\n      \"actorIds\": {\n        \"leader\": \"20000000-1111-4111-8111-111111111111\",\n        \"companion\": \"20000001-1111-4111-8111-111111111111\"\n      },\n      \"groupIds\": {\n        \"party\": \"30000000-1111-4111-8111-111111111111\",\n        \"companions\": \"30000001-1111-4111-8111-111111111111\"\n      }\n    },\n    {\n      \"placementId\": \"10000001-1111-4111-8111-111111111111\",\n      \"fragmentId\": \"party\",\n      \"offset\": [\n        360,\n        80\n      ],\n      \"actorIds\": {\n        \"leader\": \"20000002-1111-4111-8111-111111111111\",\n        \"companion\": \"20000003-1111-4111-8111-111111111111\"\n      },\n      \"groupIds\": {\n        \"party\": \"30000002-1111-4111-8111-111111111111\",\n        \"companions\": \"30000003-1111-4111-8111-111111111111\"\n      },\n      \"overrides\": [\n        {\n          \"actorKey\": \"leader\",\n          \"values\": {\n            \"position\": [\n              100,\n              140\n            ],\n            \"color\": \"#f1c46e\",\n            \"speed\": 0,\n            \"controls\": \"none\"\n          }\n        }\n      ]\n    }\n  ]\n}\n",
+          "_sourceVersion": "sha256:2bf628843b1ab7138e0fc7e70164bb4f0941bbefff1a4e77386b1e36398252d0",
+          "_sourceLastModified": "2026-10-07T04:37:14.422Z",
+          "_renderSignature": "docsstandarddocumentsscenesworkflowrecipejson||workflowrecipe||docsstandarddocumentsscenesworkflowrecipejson||document||档案||json||sha2562bf628843b1ab7138e0fc7e70164bb4f0941bbefff1a4e77386b1e36398252d0||formatvientoscenecompositionschemaversion1scenetitletwoparties两支队伍二隊viewport800480background0d1829fragmentsfragmentidpartygroupskeypartynameparty队伍隊keycompanionsnamecompanions同行者parentkeypartyactorskeyleaderobjectide81186f4158a4a43b4817139ffc98238groupkeypartyposition120180size6464colorffffffspeed160controlsarrowsimageresourceidf8952841d7814094a9fd46fbb1d4f305keycompanionobjectide81186f4158a4a43b4817139ffc98238groupkeycompanionsposition200180size4848color87d8b9speed0controlsnoneimageresourceidf8952841d7814094a9fd46fbb1d4f305fragmentidnotplacedgroupsactorskeywaitingobjectide81186f4158a4a43b4817139ffc98238position200180size4848color87d8b9speed0controlsnoneimageresourceid458930a00c394592a9cea6594b2b7202placementsplacementid10000000111141118111111111111111fragmentidpartyactoridsleader20000000111141118111111111111111companion20000001111141118111111111111111groupidsparty30000000111141118111111111111111companions30000001111141118111111111111111placementid10000001111141118111111111111111fragmentidpartyoffset36080actoridsleader20000002111141118111111111111111companion20000003111141118111111111111111groupidsparty30000002111141118111111111111111companions30000003111141118111111111111111overridesactorkeyleadervaluesposition100140colorf1c46espeed0controlsnone||formatvientoscenecompositionfragmentsactorscolorffffffcontrolsarrowsgroupkeypartyimageresourceidf8952841d7814094a9fd46fbb1d4f305keyleaderobjectide81186f4158a4a43b4817139ffc98238position120180size6464speed160color87d8b9controlsnonegroupkeycompanionsimageresourceidf8952841d7814094a9fd46fbb1d4f305keycompanionobjectide81186f4158a4a43b4817139ffc98238position200180size4848speed0fragmentidpartygroupskeypartynameparty队伍隊keycompanionsnamecompanions同行者parentkeypartyactorscolor87d8b9controlsnoneimageresourceid458930a00c394592a9cea6594b2b7202keywaitingobjectide81186f4158a4a43b4817139ffc98238position200180size4848speed0fragmentidnotplacedgroupsplacementsactoridscompanion20000001111141118111111111111111leader20000000111141118111111111111111fragmentidpartygroupidscompanions30000001111141118111111111111111party30000000111141118111111111111111placementid10000000111141118111111111111111actoridscompanion20000003111141118111111111111111leader20000002111141118111111111111111fragmentidpartygroupidscompanions30000003111141118111111111111111party30000002111141118111111111111111offset36080overridesactorkeyleadervaluescolorf1c46econtrolsnoneposition100140speed0placementid10000001111141118111111111111111scenebackground0d1829titletwoparties两支队伍二隊viewport800480schemaversion1||keyheadervalueworkflowrecipekeyformatvaluevientoscenecompositionkeyschemaversionvalue1keyscenevaluetitletwoparties两支队伍二隊viewport800480background0d1829keyfragmentsvaluefragmentidpartygroupskeypartynameparty队伍隊keycompanionsnamecompanions同行者parentkeypartyactorskeyleaderobjectide81186f4158a4a43b4817139ffc98238groupkeypartyposition120180size6464colorffffffspeed160controlsarrowsimageresourceidf8952841d7814094a9fd46fbb1d4f305keycompanionobjectide81186f4158a4a43b4817139ffc98238groupkeycompanionsposition200180size4848color87d8b9speed0controlsnoneimageresourceidf8952841d7814094a9fd46fbb1d4f305fragmentidnotplacedgroupsactorskeywaitingobjectide81186f4158a4a43b4817139ffc98238position200180size4848color87d8b9speed0controlsnoneimageresourceid458930a00c394592a9cea6594b2b7202keyplacementsvalueplacementid10000000111141118111111111111111fragmentidpartyactoridsleader20000000111141118111111111111111companion20000001111141118111111111111111groupidsparty30000000111141118111111111111111companions30000001111141118111111111111111placementid10000001111141118111111111111111fragmentidpartyoffset36080actoridsleader20000002111141118111111111111111companion20000003111141118111111111111111groupidsparty30000002111141118111111111111111companions30000003111141118111111111111111overridesactorkeyleadervaluesposition100140colorf1c46espeed0controlsnone||keytexttitletypejsonvalueformatvientoscenecompositionfragmentsactorscolorffffffcontrolsarrowsgroupkeypartyimageresourceidf8952841d7814094a9fd46fbb1d4f305keyleaderobjectide81186f4158a4a43b4817139ffc98238position120180size6464speed160color87d8b9controlsnonegroupkeycompanionsimageresourceidf8952841d7814094a9fd46fbb1d4f305keycompanionobjectide81186f4158a4a43b4817139ffc98238position200180size4848speed0fragmentidpartygroupskeypartynameparty队伍隊keycompanionsnamecompanions同行者parentkeypartyactorscolor87d8b9controlsnoneimageresourceid458930a00c394592a9cea6594b2b7202keywaitingobjectide81186f4158a4a43b4817139ffc98238position200180size4848speed0fragmentidnotplacedgroupsplacementsactoridscompanion20000001111141118111111111111111leader20000000111141118111111111111111fragmentidpartygroupidscompanions30000001111141118111111111111111party30000000111141118111111111111111placementid10000000111141118111111111111111actoridscompanion20000003111141118111111111111111leader20000002111141118111111111111111fragmentidpartygroupidscompanions30000003111141118111111111111111party30000002111141118111111111111111offset36080overridesactorkeyleadervaluescolorf1c46econtrolsnoneposition100140speed0placementid10000001111141118111111111111111scenebackground0d1829titletwoparties两支队伍二隊viewport800480schemaversion1||anchorworkflowrecipechildrenidworkflowrecipelevel1titleworkflowrecipe||schemaversionvientolayoutv1sectionsanchorblockskeyformattypekvvaluevientoscenecompositionkeyschemaversiontypekvvalue1keyscenetypekvvaluebackground0d1829titletwoparties两支队伍二隊viewport800480keyfragmentstypekvvalueactorscolorffffffcontrolsarrowsgroupkeypartyimageresourceidf8952841d7814094a9fd46fbb1d4f305keyleaderobjectide81186f4158a4a43b4817139ffc98238position120180size6464speed160color87d8b9controlsnonegroupkeycompanionsimageresourceidf8952841d7814094a9fd46fbb1d4f305keycompanionobjectide81186f4158a4a43b4817139ffc98238position200180size4848speed0fragmentidpartygroupskeypartynameparty队伍隊keycompanionsnamecompanions同行者parentkeypartyactorscolor87d8b9controlsnoneimageresourceid458930a00c394592a9cea6594b2b7202keywaitingobjectide81186f4158a4a43b4817139ffc98238position200180size4848speed0fragmentidnotplacedgroupskeyplacementstypekvvalueactoridscompanion20000001111141118111111111111111leader20000000111141118111111111111111fragmentidpartygroupidscompanions30000001111141118111111111111111party30000000111141118111111111111111placementid10000000111141118111111111111111actoridscompanion20000003111141118111111111111111leader20000002111141118111111111111111fragmentidpartygroupidscompanions30000003111141118111111111111111party30000002111141118111111111111111offset36080overridesactorkeyleadervaluescolorf1c46econtrolsnoneposition100140speed0placementid10000001111141118111111111111111idsection1level1title内容titlekey内容||||",
+          "_contentRenderMode": "card-only"
+        },
+        {
+          "id": "45cb1b57-d3ae-46bb-82f7-57f810a33912",
+          "assetRefs": [],
+          "unresolvedAssetPaths": [],
+          "path": "docs-standard/documents/stories/背景.md",
+          "title": "风之旅途",
+          "name": "背景",
+          "category": "story",
+          "displayPath": "docs-standard/documents/stories/背景.md",
+          "relations": [
+            {
+              "kind": "part-of",
+              "targetId": "e81186f4-158a-4a43-b481-7139ffc98238",
+              "slot": "背景故事"
+            }
+          ],
+          "layout": {
+            "schemaVersion": "viento-layout-v1",
+            "sections": [
+              {
+                "id": "section-1",
+                "title": "内容",
+                "titleKey": "内容",
+                "level": 1,
+                "anchor": "",
+                "blocks": [
+                  {
+                    "type": "paragraph",
+                    "text": "原有大纲保持不变。"
+                  }
+                ]
+              }
+            ]
+          },
+          "group": "故事",
+          "source": {
+            "path": "docs-standard/documents/stories/背景.md",
+            "extension": ".md",
+            "size": 44,
+            "modifiedAt": "2026-10-07T04:37:13.161Z"
+          },
+          "meta": {
+            "source": "docs-standard/documents/stories/背景.md",
+            "title": "风之旅途",
+            "category": "story",
+            "group": "故事",
+            "purpose": "故事",
+            "schemaVersion": "standard-doc-v2"
+          },
+          "fields": {
+            "_header": "风之旅途"
+          },
+          "backstory": null,
+          "sections": [
+            {
+              "key": "_header",
+              "value": "风之旅途"
+            },
+            {
+              "key": "段落",
+              "value": "原有大纲保持不变。"
+            }
+          ],
+          "outline": [
+            {
+              "id": "风之旅途",
+              "title": "风之旅途",
+              "level": 1,
+              "anchor": "#风之旅途",
+              "children": []
+            }
+          ],
+          "blocks": [
+            {
+              "type": "heading",
+              "level": 1,
+              "title": "风之旅途",
+              "anchor": "#风之旅途"
+            },
+            {
+              "type": "paragraph",
+              "text": "原有大纲保持不变。"
+            }
+          ],
+          "type": "md",
+          "lastModified": "2026-10-07T04:37:13.161Z",
+          "size": 44,
+          "content": "# 风之旅途\n\n原有大纲保持不变。\n",
+          "heroImages": [],
+          "heroSkills": [],
+          "standardPath": "docs-standard/.entries/7d16c43cb516bacc006148d7894a6d97af93349dc1cd050b4865708b62a6709c.json",
+          "parser": {
+            "contentType": "text",
+            "format": "structured-text",
+            "profile": "heading-text",
+            "lineCount": 4,
+            "fieldCount": 1,
+            "blockCount": 2
+          },
+          "parserStats": {
+            "blockCount": 2,
+            "headingCount": 1,
+            "paragraphCount": 1,
+            "listCount": 0,
+            "tableCount": 0,
+            "kvCount": 0
+          },
+          "owners": [
+            {
+              "id": "e81186f4-158a-4a43-b481-7139ffc98238",
+              "path": "docs-standard/documents/characters/角色.md",
+              "title": "星野",
+              "slot": "背景故事"
+            }
+          ],
+          "ownedDocuments": [],
+          "_searchText": "风之旅途 背景 docs-standard/documents/stories/背景.md 故事 story md _header 风之旅途 _header 风之旅途 段落 原有大纲保持不变。 heading 风之旅途   paragraph    风之旅途 #风之旅途",
+          "sourcePath": "docs-standard/documents/stories/背景.md",
+          "_sourceVersion": "",
+          "_sourceLastModified": "2026-10-07T04:37:13.161Z",
+          "_renderSignature": "docsstandarddocumentsstories背景md||风之旅途||docsstandarddocumentsstories背景md||story||故事||md||20261007t043713161z||风之旅途原有大纲保持不变||header风之旅途||keyheadervalue风之旅途key段落value原有大纲保持不变||keytexttitle风之旅途typeheadingvaluekeytext原有大纲保持不变titletypeparagraphvalue||anchor风之旅途childrenid风之旅途level1title风之旅途||schemaversionvientolayoutv1sectionsanchorblockstext原有大纲保持不变typeparagraphidsection1level1title内容titlekey内容||ide81186f4158a4a43b4817139ffc98238pathdocsstandarddocumentscharacters角色mdslot背景故事title星野||"
+        },
+        {
+          "id": "e81186f4-158a-4a43-b481-7139ffc98238",
+          "assetRefs": [
+            "f8952841-d781-4094-a9fd-46fbb1d4f305"
+          ],
+          "unresolvedAssetPaths": [],
+          "path": "docs-standard/documents/characters/角色.md",
+          "title": "星野",
+          "name": "角色",
+          "category": "character",
+          "displayPath": "docs-standard/documents/characters/角色.md",
+          "relations": [],
+          "layout": {
+            "schemaVersion": "viento-layout-v1",
+            "sections": [
+              {
+                "id": "section-1",
+                "title": "内容",
+                "titleKey": "内容",
+                "level": 1,
+                "anchor": "",
+                "blocks": [
+                  {
+                    "type": "kv",
+                    "key": "姓名",
+                    "value": "星野"
+                  },
+                  {
+                    "type": "image",
+                    "src": "asset:f8952841-d781-4094-a9fd-46fbb1d4f305",
+                    "caption": "立绘"
+                  }
+                ]
+              }
+            ]
+          },
+          "group": "角色",
+          "source": {
+            "path": "docs-standard/documents/characters/角色.md",
+            "extension": ".md",
+            "size": 81,
+            "modifiedAt": "2026-10-07T04:37:13.176Z"
+          },
+          "meta": {
+            "source": "docs-standard/documents/characters/角色.md",
+            "title": "星野",
+            "category": "character",
+            "group": "角色",
+            "purpose": "角色",
+            "schemaVersion": "standard-doc-v2"
+          },
+          "fields": {
+            "姓名": "星野",
+            "_header": "星野"
+          },
+          "backstory": null,
+          "sections": [
+            {
+              "key": "_header",
+              "value": "星野"
+            },
+            {
+              "key": "姓名",
+              "value": "星野"
+            },
+            {
+              "key": "段落",
+              "value": "![立绘](asset:f8952841-d781-4094-a9fd-46fbb1d4f305)"
+            }
+          ],
+          "outline": [
+            {
+              "id": "星野",
+              "title": "星野",
+              "level": 1,
+              "anchor": "#星野",
+              "children": []
+            }
+          ],
+          "blocks": [
+            {
+              "type": "heading",
+              "level": 1,
+              "title": "星野",
+              "anchor": "#星野"
+            },
+            {
+              "type": "kv",
+              "key": "姓名",
+              "value": "星野"
+            },
+            {
+              "type": "image",
+              "src": "asset:f8952841-d781-4094-a9fd-46fbb1d4f305",
+              "caption": "立绘"
+            }
+          ],
+          "type": "md",
+          "lastModified": "2026-10-07T04:37:13.176Z",
+          "size": 81,
+          "content": "# 星野\n\n姓名：星野\n\n![立绘](asset:f8952841-d781-4094-a9fd-46fbb1d4f305)\n",
+          "heroImages": [
+            "assets/portrait.svg"
+          ],
+          "heroSkills": [],
+          "standardPath": "docs-standard/.entries/b49e58af97dfc74fa7b3d10d38997dd1a2b58cac226918bce2e8f60aac676498.json",
+          "parser": {
+            "contentType": "text",
+            "format": "structured-text",
+            "profile": "markdown-like",
+            "lineCount": 6,
+            "fieldCount": 2,
+            "blockCount": 3
+          },
+          "parserStats": {
+            "blockCount": 3,
+            "headingCount": 1,
+            "paragraphCount": 0,
+            "listCount": 0,
+            "tableCount": 0,
+            "kvCount": 1
+          },
+          "owners": [],
+          "ownedDocuments": [
+            {
+              "id": "45cb1b57-d3ae-46bb-82f7-57f810a33912",
+              "path": "docs-standard/documents/stories/背景.md",
+              "title": "风之旅途",
+              "slot": "背景故事"
+            }
+          ],
+          "_searchText": "星野 角色 docs-standard/documents/characters/角色.md 角色 character md 姓名 星野 _header 星野 _header 星野 姓名 星野 段落 ![立绘](asset:f8952841-d781-4094-a9fd-46fbb1d4f305) heading 星野   kv  姓名 星野 image    星野 #星野 风之旅途 背景 docs-standard/documents/stories/背景.md 故事 story md _header 风之旅途 _header 风之旅途 段落 原有大纲保持不变。 heading 风之旅途   paragraph    风之旅途 #风之旅途",
+          "sourcePath": "docs-standard/documents/characters/角色.md",
+          "_heroImagesOrdered": [
+            "assets/portrait.svg"
+          ],
+          "_sourceVersion": "",
+          "_sourceLastModified": "2026-10-07T04:37:13.176Z",
+          "_renderSignature": "docsstandarddocumentscharacters角色md||星野||docsstandarddocumentscharacters角色md||character||角色||md||20261007t043713176z||星野姓名星野立绘assetf8952841d7814094a9fd46fbb1d4f305||header星野姓名星野||keyheadervalue星野key姓名value星野key段落value立绘assetf8952841d7814094a9fd46fbb1d4f305||keytexttitle星野typeheadingvaluekey姓名texttitletypekvvalue星野keytexttitletypeimagevalue||anchor星野childrenid星野level1title星野||schemaversionvientolayoutv1sectionsanchorblockskey姓名typekvvalue星野caption立绘srcassetf8952841d7814094a9fd46fbb1d4f305typeimageidsection1level1title内容titlekey内容||||id45cb1b57d3ae46bb82f757f810a33912pathdocsstandarddocumentsstories背景mdslot背景故事title风之旅途"
+        }
+      ],
+      "activePath": "docs-standard/documents/scenes/workflow-recipe.json",
+      "activeTab": "all",
+      "generatedStatus": "（静态生成 2026/10/7 12:37:14）",
+      "editInputMode": "source",
+      "editBlockDrafts": [],
+      "editHasUnsavedChanges": false,
+      "isSidebarCollapsed": false,
+      "mode": "edit",
+      "editBackendAvailable": true,
+      "isEditing": true,
+      "isRebuilding": false,
+      "isSaving": false,
+      "isExporting": false,
+      "isMutatingWorld": false,
+      "isImportingMedia": false,
+      "isLoadingSource": false,
+      "isLoadingTemplate": false,
+      "isLoadingFields": false,
+      "isCreating": false,
+      "isCreatePathValid": true,
+      "activeCreateType": "document",
+      "activeEditPath": "docs-standard/documents/scenes/workflow-recipe.json",
+      "activeEditSource": "docs-standard/documents/scenes/workflow-recipe.json",
+      "activeCreatePath": "documents/scenes/workflow-recipe.json",
+      "activeEditSourceVersion": "sha256:2bf628843b1ab7138e0fc7e70164bb4f0941bbefff1a4e77386b1e36398252d0",
+      "workspace": {
+        "id": "df1abd2c-7c9e-4146-9f5e-bb0fd77be7b7",
+        "name": "Scene recipe workflow 场景配方实测",
+        "version": 3,
+        "paths": {
+          "documents": "documents",
+          "templates": "templates",
+          "metadata": "metadata"
+        },
+        "configurable": true,
+        "projectTypes": true,
+        "documentTypes": [
+          {
+            "id": "document",
+            "label": "档案",
+            "directory": "",
+            "parserProfile": "structured",
+            "template": "document.md",
+            "templateSource": "templates/document.md",
+            "content": ""
+          },
+          {
+            "id": "character",
+            "label": "角色",
+            "directory": "characters",
+            "parserProfile": "structured",
+            "template": "character.md",
+            "templateSource": "templates/character.md",
+            "content": ""
+          },
+          {
+            "id": "story",
+            "label": "故事",
+            "directory": "stories",
+            "parserProfile": "prose",
+            "template": "story.md",
+            "templateSource": "templates/story.md",
+            "content": ""
+          },
+          {
+            "id": "place",
+            "label": "地点",
+            "directory": "places",
+            "parserProfile": "structured",
+            "template": "place.md",
+            "templateSource": "templates/place.md",
+            "content": ""
+          },
+          {
+            "id": "organization",
+            "label": "组织",
+            "directory": "organizations",
+            "parserProfile": "structured",
+            "template": "organization.md",
+            "templateSource": "templates/organization.md",
+            "content": ""
+          },
+          {
+            "id": "concept",
+            "label": "设定",
+            "directory": "concepts",
+            "parserProfile": "structured",
+            "template": "concept.md",
+            "templateSource": "templates/concept.md",
+            "content": ""
+          }
+        ]
+      },
+      "generatedAt": "2026-10-07T04:37:14.574Z"
+    },
+    "status": "重建完成，文档已刷新（耗时 0.2s）",
+    "path": "documents/scenes/workflow-recipe.json",
+    "saveDisabled": false,
+    "text": "{\n  \"format\": \"viento-scene-composition\",\n  \"schemaVersion\": 1,\n  \"scene\": {\n    \"title\": \"Two parties / 两支队伍 / 二つの隊\",\n    \"viewport\": [\n      800,\n      480\n    ],\n    \"background\": \"#0d1829\"\n  },\n  \"fragments\": [\n    {\n      \"fragmentId\": \"party\",\n      \"groups\": [\n        {\n          \"key\": \"party\",\n          \"name\": \"Party / 队伍 / 隊\"\n        },\n        {\n          \"key\": \"companions\",\n          \"name\": \"Companions / 同行者\",\n          \"parentKey\": \"party\"\n        }\n      ],\n      \"actors\": [\n        {\n          \"key\": \"leader\",\n          \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n          \"groupKey\": \"party\",\n          \"position\": [\n            120,\n            180\n          ],\n          \"size\": [\n            64,\n            64\n          ],\n          \"color\": \"#ffffff\",\n          \"speed\": 160,\n          \"controls\": \"arrows\",\n          \"imageResourceId\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n        },\n        {\n          \"key\": \"companion\",\n          \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n          \"groupKey\": \"companions\",\n          \"position\": [\n            200,\n            180\n          ],\n          \"size\": [\n            48,\n            48\n          ],\n          \"color\": \"#87d8b9\",\n          \"speed\": 0,\n          \"controls\": \"none\",\n          \"imageResourceId\": \"f8952841-d781-4094-a9fd-46fbb1d4f305\"\n        }\n      ]\n    },\n    {\n      \"fragmentId\": \"not-placed\",\n      \"groups\": [],\n      \"actors\": [\n        {\n          \"key\": \"waiting\",\n          \"objectId\": \"e81186f4-158a-4a43-b481-7139ffc98238\",\n          \"position\": [\n            200,\n            180\n          ],\n          \"size\": [\n            48,\n            48\n          ],\n          \"color\": \"#87d8b9\",\n          \"speed\": 0,\n          \"controls\": \"none\",\n          \"imageResourceId\": \"458930a0-0c39-4592-a9ce-a6594b2b7202\"\n        }\n      ]\n    }\n  ],\n  \"placements\": [\n    {\n      \"placementId\": \"10000000-1111-4111-8111-111111111111\",\n      \"fragmentId\": \"party\",\n      \"actorIds\": {\n        \"leader\": \"20000000-1111-4111-8111-111111111111\",\n        \"companion\": \"20000001-1111-4111-8111-111111111111\"\n      },\n      \"groupIds\": {\n        \"party\": \"30000000-1111-4111-8111-111111111111\",\n        \"companions\": \"30000001-1111-4111-8111-111111111111\"\n      }\n    },\n    {\n      \"placementId\": \"10000001-1111-4111-8111-111111111111\",\n      \"fragmentId\": \"party\",\n      \"offset\": [\n        360,\n        80\n      ],\n      \"actorIds\": {\n        \"leader\": \"20000002-1111-4111-8111-111111111111\",\n        \"companion\": \"20000003-1111-4111-8111-111111111111\"\n      },\n      \"groupIds\": {\n        \"party\": \"30000002-1111-4111-8111-111111111111\",\n        \"companions\": \"30000003-1111-4111-8111-111111111111\"\n      },\n      \"overrides\": [\n        {\n          \"actorKey\": \"leader\",\n          \"values\": {\n            \"position\": [\n              100,\n              140\n            ],\n            \"color\": \"#f1c46e\",\n            \"speed\": 0,\n            \"controls\": \"none\"\n          }\n        }\n      ]\n    }\n  ]\n}\n"
+  }
+}

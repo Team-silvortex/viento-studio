@@ -1,0 +1,262 @@
+{
+  "date": "2026-10-07",
+  "recordedAt": "2026-10-07T07:07:19.199293+00:00",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased working-tree prototype; no commit, push, application install or version bump.",
+  "scope": {
+    "backendId": "org.viento.bevy",
+    "adapterVersion": "0.1.0",
+    "runtimeVersion": "0.1.0",
+    "bevyVersion": "0.19.1",
+    "realBevyAppEcs": true,
+    "platforms": [
+      "linux"
+    ],
+    "planVersions": [
+      1,
+      2
+    ],
+    "runtimeProtocolVersions": [
+      1,
+      2
+    ],
+    "capabilities": [
+      "scene2d",
+      "input.arrows",
+      "state.movement"
+    ],
+    "artifactKind": "bevy-scene",
+    "entry": "scene-data.json",
+    "buildPhases": [
+      "scene-check"
+    ],
+    "runtimePhases": [],
+    "execution": {
+      "build": true,
+      "headlessLogic": true,
+      "windowPreview": false,
+      "windowCapture": false,
+      "offscreenRender": false,
+      "embeddedViewport": false,
+      "gpuCompute": false
+    },
+    "defaultBackend": "org.viento.godot4"
+  },
+  "validation": {
+    "app": {
+      "tests": 1673,
+      "pass": 1673,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 189631.462511,
+      "log": "app-check.log"
+    },
+    "newAppTests": {
+      "total": 25,
+      "eventReader": 6,
+      "adapter": 13,
+      "workflow": 6,
+      "includedInAppTotal": true
+    },
+    "adapterAndReaderRealTool": {
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 669.308225,
+      "log": "adapter-real-final.log"
+    },
+    "realTwoBackendWorkflow": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 14887.581318,
+      "log": "workflow-real-initial.log"
+    },
+    "finalJavaScriptSyntax": {
+      "passed": 373,
+      "initialAppInventory": 372,
+      "log": "syntax-final.log",
+      "scope": "Final independent syntax pass includes the newly added browser harness."
+    },
+    "rust": {
+      "rustUnit": 9,
+      "processIntegration": 5,
+      "passed": 14,
+      "failed": 0,
+      "ignored": 0,
+      "log": "runtime-tests-final.log",
+      "fmtCheck": true,
+      "clippyAllTargetsWarningsDenied": true,
+      "logs": [
+        "runtime-tests-final.log",
+        "runtime-fmt.log",
+        "runtime-clippy.log"
+      ],
+      "independentOfAppTotal": true
+    },
+    "browser": {
+      "ok": true,
+      "version": "Chrome/154.0.8037.97",
+      "steps": 5,
+      "bevyJobs": 3,
+      "separateDefaultGodotPlan": true,
+      "runtimeExceptions": 0,
+      "languages": [
+        "zh",
+        "en",
+        "ja"
+      ],
+      "narrowWidthPx": 390,
+      "evidence": "browser/browser.json"
+    },
+    "preparedResources": {
+      "ok": true,
+      "embeddedNode": "v24.20.0",
+      "desktopFiles": 84,
+      "mobileFiles": 65,
+      "offlineSessions": 4,
+      "mobilePureModules": 2,
+      "rustCrateAndBevyBinaryNotBundled": true,
+      "sourceAndPackagedHashesStableThroughoutExecution": true,
+      "syntheticFixtureRemoved": true,
+      "evidence": "packaged-resources.json"
+    }
+  },
+  "designFindings": [
+    {
+      "boundary": "Common model and event admission",
+      "finding": "Frozen scene plans and paired author identities can feed both engines directly. The portable reader admits real Godot and Bevy protocol 1/2 logs without Node, DOM or engine imports. Engine-local Entity handles and author filesystem paths stay outside the common model.",
+      "evidence": [
+        "workflow-real-initial.log",
+        "packaged-resources.json",
+        "scripts/tests/scene-runtime-events.test.mjs"
+      ]
+    },
+    {
+      "boundary": "Execution orchestration",
+      "finding": "The existing generic executor required no Bevy-specific branch or new contract version in this round. It retains snapshot, path, artifact inventory, tool/adapter identity, owned sessions, cancellation and deadlines. The default registry adds the second trusted adapter; outer host configuration selects its tool.",
+      "evidence": [
+        "scripts/adapters/node-execution-backends.mjs",
+        "scripts/adapters/node-execution-tool.mjs",
+        "adapter-real-final.log",
+        "workflow-real-initial.log"
+      ]
+    },
+    {
+      "boundary": "Adapter and engine runtime",
+      "finding": "The adapter owns data layout, scene-check phase, command arguments and frozen source diagnostics. A separately precompiled trusted Rust executable owns Bevy App, ECS components, queries and movement systems. Building an author project does not compile or execute author Cargo/Rust.",
+      "evidence": [
+        "scripts/backends/bevy-adapter.mjs",
+        "scripts/backends/bevy-project.mjs",
+        "runtime-proof.json"
+      ]
+    },
+    {
+      "boundary": "Capability declarations",
+      "finding": "Bevy declares only the implemented headless subset. Image, author GDScript/Rust behaviors, window, capture, GPU and Android execution are not inferred from dependency availability. Browser actions and host requests refuse unsupported operations.",
+      "evidence": [
+        "browser/browser.json",
+        "packaged-resources.json",
+        "adapter-real-final.log"
+      ]
+    },
+    {
+      "boundary": "Future granularity",
+      "finding": "The current adapter contract is sufficient for a data-only project executed by a prebuilt trusted tool. Per-project Rust compilation, typed queries/commands, engine reflection, resource loading and render/compute access require separate scoped designs and evidence before broadening the shared contract.",
+      "status": "Design conclusion; these capabilities are not implemented."
+    }
+  ],
+  "compatibility": {
+    "sameFrozenPlanTwoEngines": true,
+    "actualProtocol1And2EventsEqualForTestFixtures": true,
+    "authorRootOfflineReplay": true,
+    "defaultGodotBrowserPlan": true,
+    "oldGodotGoldensUnchanged": true,
+    "frozenBackendAndWasmFiles": 9,
+    "evidence": [
+      "workflow-real-initial.log",
+      "browser/browser.json",
+      "packaged-resources.json",
+      "historical-preservation.json"
+    ],
+    "precisionScope": "The controlled representative fixtures use exact integer positions and fixed deltas. No claim of bit-identical arbitrary floating-point physics between engines."
+  },
+  "harnessAndVerificationNotes": [
+    {
+      "log": "adapter-real-first.log",
+      "issue": "Initial integration assertion expected a runtime diagnostic frame for invalid data; actual tool correctly reported stderr with nonzero process exit. Harness expectation was corrected to the existing generic process failure contract.",
+      "productChange": false
+    },
+    {
+      "log": "adapter-portable-first.log",
+      "issue": "An earlier portable-only run skipped the unavailable native tool; the final real-tool run and full app run have zero skips."
+    },
+    {
+      "log": "browser-first.log",
+      "issue": "Default Godot host verification initially expected HTTP 202; the synchronous admitted plan correctly returns 200. The assertion was corrected and all five browser steps reran.",
+      "productChange": false
+    },
+    {
+      "logs": [
+        "packaged-check-initial.log",
+        "packaged-check-golden-harness.log"
+      ],
+      "issue": "Prepared harness first referenced the wrong module path and then read a missing field from the legacy v1 golden. Harness corrections only; final packaged checks succeeded.",
+      "productChange": false
+    }
+  ],
+  "wasm": {
+    "bytes": 285596,
+    "sha256": "8b14be6e13c33b5bf5a6cb16f956498dc03a3d62e50bb83ec8967b9896c7738e",
+    "unchanged": true
+  },
+  "dataProtection": {
+    "historicalReportsUnchanged": 1531,
+    "frozenBackendAndWasmUnchanged": 9,
+    "currentChangedAndNewSourceHashes": 103,
+    "newExampleFilesGitVisible": 9,
+    "authorFilesUnchangedInRealWorkflows": true,
+    "existingUserWorkspacesAndPreferencesNotUsed": true,
+    "installedApplicationUnchanged": true,
+    "cleanup": {
+      "removedDirectories": 8,
+      "allocatedBytesFreed": 2405773312,
+      "allocatedGiBFreed": 2.241,
+      "evidence": "cleanup.json"
+    },
+    "retainedExternalHostTool": {
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.1.0-8c4dab4afa35",
+      "sha256": "8c4dab4afa35115e710b0b68a3c9535971d2271d5c01976881dc4f9d6b3377e3",
+      "bytes": 11170328,
+      "sourceBuildTarget": "/tmp/viento-bevy-prototype-target/debug/viento-bevy-runtime",
+      "existedBeforeCopy": false,
+      "metadata": {
+        "bevyVersion": "0.19.1",
+        "protocolVersions": [
+          1,
+          2
+        ],
+        "runtimeKind": "viento-bevy-runtime",
+        "runtimeVersion": "0.1.0"
+      },
+      "scope": "Pinned external development host tool in the local user cache; application preferences, installed Viento app and desktop sidecars unchanged. The compiled host is retained for use after temporary Cargo targets are removed."
+    }
+  },
+  "limits": [
+    "Headless App/ECS execution only; no Bevy rendering, window, image/audio/video, GPU, reflection, BRP/RPC or hot reload.",
+    "Normal sessions currently stay idle at 60 Hz; smoke supplies controlled input. No hardware keyboard or runtime input bridge was implemented.",
+    "No author Rust/GDScript compilation or behavior binding through this Bevy adapter.",
+    "Prepared desktop modules and browser workflow were tested; no new installer or installed Tauri application was tested.",
+    "Prepared mobile pure modules were evaluated; no Android device, mobile UI or Android engine execution was tested.",
+    "The trusted executable runs with current user permissions; this is not a code sandbox."
+  ]
+}

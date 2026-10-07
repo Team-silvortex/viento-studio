@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-07",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased incremental source work. No version bump, commit, push, installer or installation.",
+  "scope": [
+    "Ordinary author-owned registered JSON recipe documents reuse existing create, save, optimistic revision and complete archive workflows.",
+    "Portable read-only inspection derives all fragment actor definitions and all template/override image references from current source, including unused fragments and shadowed images; metadata is never rewritten.",
+    "Selective resource package catalog, reader and importer validate recognized recipes and their declared dependencies, preserve source/UUID, retain projection closure and reject omitted or miscategorized manifest dependencies.",
+    "Registered-document CLI validates current source revision and reference registration, emits detached Scene2D v3 or bundle with logical origin; no write or automatic rebuild."
+  ],
+  "validation": {
+    "app": {
+      "tests": 1464,
+      "pass": 1464,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 151970.905724,
+      "syntaxFiles": 336,
+      "apiContract": "passed",
+      "versionConsistency": "0.0.7",
+      "log": "app-check.log"
+    },
+    "documentInspection": {
+      "pass": 10,
+      "fail": 0,
+      "log": "engine.log",
+      "overlapsFullApp": true
+    },
+    "workflow": {
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0,
+      "log": "integration-first.log",
+      "additionalBoundary": "asset-kind-boundary.log",
+      "overlapsFullApp": true,
+      "actualNativeArchive": true,
+      "actualNativeMobileStorage": true,
+      "actualGodotBuildAndRun": true
+    },
+    "browser": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "steps": 5,
+      "consoleExceptions": 0,
+      "uiErrorPanelEmpty": true,
+      "evidence": "browser/browser.json",
+      "script": "../../../scripts/tests/scene-composition-workflow-smoke.mjs",
+      "additionalSyntaxFilePassed": true,
+      "realHttpServers": true,
+      "disposableProjectsOnly": true,
+      "chineseCreateEditExport": true,
+      "japaneseImport": true,
+      "sourceMetadataAndResourceBytesPreserved": true
+    },
+    "packagedResources": {
+      "ok": true,
+      "evidence": "packaged-resources.json",
+      "integrity": "packaged-final-integrity.json",
+      "desktopFiles": 58,
+      "mobileFiles": 53,
+      "embeddedNode": "v24.20.0",
+      "actualPackagedCliAndPackageMigration": true,
+      "actualPackagedMobilePlatformAndNativeStorage": true
+    },
+    "nativeBuilds": {
+      "core": "core-native-build.log",
+      "archiveAndMobileHelpers": "native-helpers-build.log",
+      "coreSourceChangedSincePriorRound": false,
+      "priorRustTests": "../scene-composition/core-tests.log",
+      "rustTestsRepeatedThisRound": false
+    },
+    "documentation": "docs-check.json"
+  },
+  "harnessCorrections": [
+    "Initial browser fixture used an invalid slash in workspace name; corrected the synthetic name.",
+    "Browser create wait incorrectly compared the editor docs-standard preview alias against a raw document path; ordinary save had already succeeded. Fixed test path normalization.",
+    "Added missing v3 template snapshot files to the disposable browser fixture and asserted the UI error panel stays empty. Final workflow passed; no product changes were needed for these harness issues."
+  ],
+  "wasm": {
+    "bytes": 263790,
+    "sha256": "1960d001eb620aff13c518d7ffb640e5f43f19a2627b2905c519a47043ae786d",
+    "changedSincePriorRound": false
+  },
+  "dataProtection": {
+    "realAuthorWorkspaceUsed": false,
+    "metadataDependencyEdgesRewritten": false,
+    "workspaceAndWorldFormatsChanged": false,
+    "sourceHashes": "source-hashes.json",
+    "historicalEvidence": "historical-preservation.json",
+    "historicalFilesUnchanged": 1268,
+    "cleanup": "cleanup.json"
+  },
+  "limits": [
+    "Existing source editor and package UI support ordinary recipe documents. No dedicated recipe preview, placement/override GUI, automatic baked-scene synchronization or reverse source write-back.",
+    "Registered CLI verifies declared reference availability and image kind, not actual image bytes or runtime feasibility; existing scene/model/build validation remains responsible for runtime acceptance.",
+    "Malformed recognized recipes can be saved and fully backed up; selective resource packages reject them. Removing the top-level format marker makes an ordinary document and exits derived recipe semantics.",
+    "Single-file fragments, explicit UUID maps, bounded expansion and existing Scene2D v3 remain unchanged. No nested/cross-file compositions, scripts, spatial group transforms or multi-file transaction.",
+    "Native mobile storage and packaged platform tests ran on Linux. No Android device, Tauri window or installer acceptance in this round."
+  ]
+}

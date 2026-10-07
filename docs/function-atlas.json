@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "meta": {
     "title": "Viento Studio 功能成熟度图谱",
-    "date": "2026-10-04",
-    "version": "0.0.7",
-    "commit": "94e9626fc11c64f61a7391f7b081bc029306345a",
-    "scope": "0.0.7源码交付：场景布局、共享Rust几何/历史/保存/源码补丁、精确来源、独立实例、组织分组及原文草稿预览/内存回写。发布前1422应用全过/0跳过、330JS、共享核心48及fmt/clippy、桌面Rust48/1ignored、桌面476/移动182资源摘要核对，证据见release-0.0.7/results.json；专题报告保持各自原版本和环境。没有新安装包、Tauri窗口或Android设备验收；Linux最近安装验收仍为0.0.4。",
+    "date": "2026-10-07",
+    "version": "0.0.8",
+    "commit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+    "scope": "0.0.8源码交付：纳入scene composition/保存态与草稿预览/单实例局部覆盖、GDScript场景行为、可信execution backend middleware、Bevy0.19.1无头第二后端、运行对象只读观察及schema1全局/schema2实例有限控制。七个功能source-release、42交付单元2→3，只说明源码纳入，无新安装/设备或实时/GPU。新版本实际app1774/1774、0fail/skip/cancel、391JS/API/版本通过；共享编辑核心Rust75+fmt/clippy，version/source8与app重叠。prepared全清单496desktopResources/11library/192mobile、运行专项89/68/10offline（4default+4global+2instance）及mobile4pure/10stdout。临时归档2573files/68critical核对两crate与4官方示例、排除生成物/作品，审计文案前快照已删除，不是最终commit压缩包。1733history/9frozen原字节、138source核对；7新dirs+1archive清理2058166272B/1.917GiB，三代Bevy cache及已安装/用户数据保留。Godot adapter0.5.0/Bevy adapter/native0.3.0不变；旧0.0.7专题Chrome8与Bevy Rust25等保留原条件不重标新验收，无GitHubRelease/tag。",
     "historicalSha256": {
       "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
       "docs/function-network.json": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
@@ -28,7 +28,7 @@
       {
         "id": "rust-core",
         "label": "共享 Rust 核心",
-        "responsibility": "无宿主依赖的确定性规则、有界布局草稿及无状态源码检查/坐标补丁；原生与WASM共用实现，完整World/构建语义仍在JS。"
+        "responsibility": "无宿主依赖的确定性规则、有界布局草稿、无状态源码检查/坐标补丁及实验性单文件片段组合；原生与WASM共用，完整World/构建语义仍在JS。"
       },
       {
         "id": "node-service",
@@ -53,7 +53,7 @@
       {
         "id": "runtime-backend",
         "label": "执行后端",
-        "responsibility": "Godot生成物与运行协议、GDScript实验及后续候选。"
+        "responsibility": "Godot生成/运行与显式GDScript绑定；独立Bevy无头ECS程序消费中立计划与事件，能力分别声明；原生路线另列。"
       },
       {
         "id": "definition",
@@ -309,7 +309,8 @@
           "选择对象及依赖闭包；验证、冲突预览、独立持久导入事务；保留 UUID、归属和原字节；只读服务只开放清单／导出",
           "Android 未接入资源包 UI",
           "导入恢复中的 fence 不能按缓存清理；外部改动停止恢复",
-          "旧功能图 50 条链未包含此能力"
+          "旧功能图 50 条链未包含此能力",
+          "未发布配方增量按当前原文派生全部模板/覆盖依赖，读包/导入重验类别与清单完整性；不写作者metadata，失效配方可完整备份但不能选择式迁移。"
         ],
         "next": "Android 选择式导入导出未接；无升级覆盖或任意合并语义。",
         "platforms": [
@@ -500,10 +501,10 @@
         "group": "验证与交付",
         "entry": "desktop:prepare/build、mobile:prepare、desktop/package-source.py、手动 CI",
         "boundary": [
-          "0.0.5/0.0.6/0.0.7均无新安装包；不能以资源准备通过代替运行验收",
+          "0.0.5–0.0.8均源码交付、无新安装包；资源准备或临时sourcearchive通过不能替代安装运行验收。",
           "Windows/macOS原生验收未完成，Android发行签名未配置",
           "CI手动触发只生成构件，不自动GitHub Release",
-          "分发机制既有；含共享Rust核心的组合已纳入0.0.7源码交付，尚无新安装包验收"
+          "共享Rust与累计场景/后端功能纳入0.0.8源码；本轮源码归档修复两crate与4官方样例闭包、所有crate target/作品排除，验证快照已删除，审计文案之后的最终Git提交不另冒充同一archive。"
         ],
         "next": "对含Rust核心的实际安装包做Linux及Android验收；Windows/macOS待目标机验证。",
         "platforms": [
@@ -536,7 +537,7 @@
         "entry": "npm run check -- --app-only / core:test / desktop:test / 浏览器及原生专项脚本",
         "boundary": [
           "测试总数不表示功能覆盖率；不同工具配置导致不同跳过数",
-          "最新轮次19项归档/移动存储跳过，真实Godot和核心native/WASM启用",
+          "当前轮次的工具、失败和跳过以bevy-backend/results.json为准；历史报告保留当时条件。",
           "未验证的平台/尚未实现功能不能列为已测试"
         ],
         "next": "每次验证记录实际工具与跳过项，持续补原生窗口／设备和大规模性能。",
@@ -590,12 +591,35 @@
           "仅 Scene2D 受限能力；尚未迁 Rust",
           "不从任意故事正文自动推导可执行游戏",
           "v2双身份冻结重放与v3逻辑组已纳入0.0.7源码；旧v1/v2计划、生成文件和后端摘要保持，v3仅使用现有v2运行协议",
-          "captureBuildSnapshot仍只读取保存文件且忽略未知draft选项；只读草稿捕获使用独立入口/身份域，不提供可执行快照或污染构建任务缓存。"
+          "captureBuildSnapshot仍只读取保存文件且忽略未知draft选项；只读草稿捕获使用独立入口/身份域，不提供可执行快照或污染构建任务缓存。",
+          "未发布行为另列behavior.scene_runtime：已登记v2/v3 scene显式behavior关系才组合plan/runtime3，源码/清单进入冻结原文；旧无行为计划与所有静态预览保持原版本。"
         ],
-        "next": "把后续层次、片段和行为依赖接入冻结输入，保留旧格式重放和来源边界。",
+        "next": "保留已接行为依赖与旧格式重放，完善后续层次/片段的冻结输入和来源边界。",
         "platforms": [
           "Linux本机编辑服务",
           "新版Tauri窗口和Android未验收/未接入"
+        ],
+        "delivery": "source-release"
+      },
+      {
+        "id": "execution.backend_middleware",
+        "label": "执行后端能力、可信注册与通用编排",
+        "group": "场景与构建",
+        "entry": "engine/backend-capabilities.mjs→可信host registry/executor→Godot或Bevy adapter",
+        "boundary": [
+          "0.0.8源码执行中间层独立于作者、plan和runtime格式；精确纯数据描述符分别声明build/headlessLogic/windowPreview/windowCapture/offscreenRender/embeddedViewport/gpuCompute，未知或不支持请求失败关闭。",
+          "宿主固定可信适配器、阶段及工具；HTTP和工程文件不能提交后端代码、可执行文件或输出路径，host固定选择已注册Godot/Bevy，网页没有选择器。",
+          "通用执行器消费中立files/resourceFiles/来源/产物契约，发布前检查相对路径、碰撞、入口和预算；Godot参数、环境、文件约定和缓存保留在具体适配器。",
+          "新构建/会话增加独立executionAdapter指纹；历史backend生成器摘要与协议不改；仅显式接受legacy的已知Godot允许旧记录缺新字段，其余冻结回放检查仍执行。",
+          "Godot4产品仅Linux及四种操作；offscreenRender/embeddedViewport/gpuCompute为false。Bevy另有真实无图headless实现；替代夹具/命名空间扩展不代表Nuis/ns-nova/yalivia/GPU实现。",
+          "服务返回platform/full descriptor/job.backendId/latestBuild.backendId；UI按操作判断，描述符或后端变化撤销旧计划/产物批准。没有新安装或设备验收。",
+          "Godot descriptor0.5.0 保留显式behavior.bindings/behavior.gdscript与plan3；Bevy adapter/tool0.3.0；两者声明runtime.control-replay与runtime.control-replay.instances，全局仅无行为plan1/2有限headless，按实例仅冻结plan2；可选数据参数不增加RPC/Entity或第八种操作。"
+        ],
+        "next": "有限方向回放与采样沿同一可信 host 接入；实时通道、运行资源和作者 Rust 行为由后续共同需求另立契约。",
+        "platforms": [
+          "Linux本机编辑服务",
+          "移动打包纯能力模块不代表Android执行服务",
+          "新版Tauri窗口/新安装和设备未验收"
         ],
         "delivery": "source-release"
       },
@@ -607,11 +631,12 @@
         "boundary": [
           "仅 Linux 启用",
           "产物为需要 Godot 的工程，非独立发行程序",
-          "runtime.gd 固定；不支持挂载任意作者 GDScript",
+          "旧runtime.gd保持固定；当前显式GDScript Node参数/信号绑定另列behavior.scene_runtime，不支持任意方法RPC或热重载。",
           "无嵌入视口/GPU 计算/物理/音频行为",
-          "v1与v2生成器/运行脚本字节冻结；v3作者逻辑组编译为既有plan2，运行层不接收groupId或组结构；实例/定义双身份继续沿用v2"
+          "v1与v2生成器/运行脚本字节冻结；v3作者逻辑组编译为既有plan2，运行层不接收groupId或组结构；实例/定义双身份继续沿用v2",
+          "未发布中间层包装原冻结分支，新增executionAdapter指纹独立于历史生成器摘要；Godot参数/环境/缓存留在后端，第二Bevy实现只消费无图plan1/2，Godot原范围保留。"
         ],
-        "next": "接入明确的作者行为契约及GDScript薄绑定，保持固定运行边界。",
+        "next": "保持旧v1/v2生成分支兼容；明确行为分支的作者契约与证据另列behavior.scene_runtime。",
         "platforms": [
           "Linux本机编辑服务",
           "新版Tauri窗口和Android未验收/未接入"
@@ -627,7 +652,8 @@
           "仅 Linux 本机编辑服务；只读浏览/Android 无入口",
           "单服务单任务；任务身份只属于当前服务会话",
           "SIGKILL/断电恢复及跨重启任务发现未实现",
-          "本会话仅保留最近三份自建输出，不自动删以前会话/CLI 产物"
+          "本会话仅保留最近三份自建输出，不自动删以前会话/CLI 产物",
+          "未发布界面按完整descriptor分别判断模式；描述符或backend身份变化撤销旧计划/产物批准，不新增第二引擎选择器。"
         ],
         "next": "补跨重启任务与崩溃残留发现，目标系统分别验收。",
         "platforms": [
@@ -648,7 +674,9 @@
           "缓存保留两份/128 MiB/十分钟；这不是大型场景性能验收",
           "0.0.7按v2实例选择与定位，共享定义/图片不合并实例；具体交付见scene.instances_v2",
           "v3逻辑分组通过独立sceneStructure侧带进入共享大纲；树与查询不改变plan2演员顺序或静态画布渲染",
-          "当前原文草稿是独立的scene.text_draft_preview源码能力；保存态刷新、图形布局和可执行构建不隐式消费未保存文本。"
+          "当前原文草稿是独立的scene.text_draft_preview源码能力；保存态刷新、图形布局和可执行构建不隐式消费未保存文本。",
+          "未发布配方保存态/当前原文只读预览另列scene.composition；独立预览观察不成为原Scene2D可执行快照。",
+          "静态预览仅geometry，不校验或执行行为清单；保存态behavior错误仍可得到有效预览，不视为可构建证明。"
         ],
         "next": "在分组与搜索基础上验证更大场景的导航和按需资源加载，空间变换与可复用片段单独定义。",
         "platforms": [
@@ -717,15 +745,15 @@
       },
       {
         "id": "behavior.gdscript_binding",
-        "label": "GDScript 行为绑定探针",
+        "label": "GDScript 行为绑定历史探针",
         "group": "运行后端与演进",
         "entry": "node docs/test-results/behavior-binding/run.mjs",
         "boundary": [
-          "产品无任意脚本挂载入口/快照/迁移/作者诊断",
-          "未验证热重载、大场景、持久格式或脚本恢复",
-          "独立探针的行为ID仍不是作者行为协议；产品v2场景实例已经独立接入，但尚不能挂载该探针脚本"
+          "仅2026-10-03独立探针，未验证产品快照/包迁移/UI；历史结果原字节保留。",
+          "该探针的实验身份/方法调用不是持久作者协议，也未覆盖热重载或大量对象。",
+          "当前产品受限绑定使用独立behavior.scene_runtime实现与新证据，不提升本探针成熟度。"
         ],
-        "next": "定义作者脚本资源／参数／事件协议，再接快照、诊断、构建与迁移。",
+        "next": "保留选型证据；当前作者链路参见behavior.scene_runtime，不用旧探针代替新产品验收。",
         "platforms": [
           "Linux独立Godot探针"
         ],
@@ -738,11 +766,11 @@
         "entry": "开发路线：文本层次、复用片段与剧本事件（非现有产品入口）",
         "boundary": [
           "Scene2D v2稳定实例和v3持久逻辑分组已分别形成scene.instances_v2与scene.groups_v3切片，不代表完整文本场景系统完成",
-          "actors仍为1–128个实例；逻辑组不改变坐标或绘制顺序，空间父子变换、片段展开、剧本事件和跨文件原子提交仍未实现",
+          "actors仍为1–128个实例；逻辑组不改变坐标或绘制顺序，空间父子变换、剧本事件和跨文件原子提交仍未实现；单文件片段展开另列实验scene.composition",
           "分组树与查询不等于大规模场景性能验收，也没有自动迁移旧作品",
-          "单场景原文草稿预览与坐标回写分别列scene.text_draft_preview、scene.source_layout；没有源码/表单/布局统一undo，也没有复用片段展开或多文件原子提交。"
+          "单场景原文草稿预览与坐标回写另列切片；scene.composition已提供单文件展开及普通配方文档/依赖迁移，已接保存态/当前草稿配方只读预览及贡献来源定位，当前源码单实例覆盖另走稳定目标补丁，共享模板编辑、统一undo和多文件原子提交仍未接。"
         ],
-        "next": "以稳定实例、逻辑组和单源Rust精确回写为底座，先验证确定性片段组合与兼容v3产物、稳定身份和来源映射；作者片段的覆盖/跨文件写回、统一历史与空间变换另立契约。",
+        "next": "配方已接普通JSON保存、依赖迁移、当前原文预览与贡献定位；下一步共享模板修改与单次放置覆盖的写回隔离，统一历史、嵌套/跨文件及空间变换另立契约。",
         "platforms": [
           "规划未接入产品"
         ],
@@ -750,19 +778,23 @@
       },
       {
         "id": "runtime.bevy_rust",
-        "label": "Bevy/Rust 第二后端候选",
+        "label": "Bevy/Rust 无头第二后端",
         "group": "运行后端与演进",
-        "entry": "路线与行为绑定选型（非产品入口）",
+        "entry": "已登记无图Scene2D→显式CLI或host选择→冻结构建→可信Bevy ECS程序→事件与离线回放",
         "boundary": [
-          "无适配器、运行协议、作者行为目录/来源映射或UI入口",
-          "已有Rust核心不代表已有Bevy引擎或Rust作者脚本",
-          "不承诺行为自动跨语言互译"
+          "0.0.8源码交付；org.viento.bevy adapter/runtime0.3.0锁Bevy0.19.1；Linux plan/runtime1/2，仅build/headlessLogic，以及scene2d/input.arrows/state.movement/runtime.control-replay/runtime.control-replay.instances。旧0.1.0/0.2.0工具和记录需按精确身份重新构建。",
+          "同定义双实例保留instanceId/objectId配对；受控固定步方向输入只移动arrows实例，无实体键盘/图片/窗口或GPU验收。 按实例schema2仅冻结plan2，每步未列实例释放；完整trace仍返回全体演员。",
+          "Rust运行程序是独立可信本机工具，作者工程只生成scene-data.json；不动态运行Cargo或编译作者Rust源码。",
+          "中立事件模块无Node/DOM/Godot/Bevy imports；原Godot5文件保持字节，适配器各自负责命令/生成布局/工具身份。",
+          "host环境固定单backend，CLI可显式backend/tool；HTTP不接新代码/路径，原界面无引擎选择器；desktop资源带adapter但不带Bevybin，Android不带执行器。",
+          "不承诺作者Rust/GDScript跨语言互译；无BRP/反射/RPC/热更新/任意状态机/新安装包。"
         ],
-        "next": "先复用行为/构建契约做独立真实后端探针，再决定产品接入。",
+        "next": "有限控制程序与步骤采样已接通；再按实际共同需求定义连续实时采样、类型化事件、资源通道与作者 Rust 行为，图片/窗口与规模独立验收。",
         "platforms": [
-          "规划未接入产品"
+          "Linux可信本机CLI/编辑服务；源码与新安装验收分开",
+          "Android仅portable事件规则，无执行器/UI"
         ],
-        "delivery": "planned"
+        "delivery": "source-release"
       },
       {
         "id": "runtime.native_nuis",
@@ -772,7 +804,8 @@
         "boundary": [
           "无Nuis构建执行、ns-nova/yalivia接入",
           "当前开发不以Nuislang就绪为前置",
-          "不可将项目内共享Rust算法称作ns-nova引擎接入"
+          "不可将项目内共享Rust算法称作ns-nova引擎接入",
+          "已实现描述符和host中间层只是接入起点；命名空间native extension身份/版本不代表原生代码或GPU可执行。"
         ],
         "next": "等待原生公开契约并做最小适配器；不阻塞近期场景与行为。",
         "platforms": [
@@ -921,9 +954,10 @@
           "运行拒绝解码后重复键；仅旧v1事务恢复保留最后键语义且无歧义范围，v2/v3恢复继续严格校验",
           "来源和逻辑组侧带信息不进入冻结构建计划；v3作者文本仍进入快照，过期、近似范围不选择，未保存草稿保留",
           "新Tauri安装产物及Android设备未验收",
-          "单场景草稿来源可按原样hash在当前编辑器定位，坏草稿诊断与最后有效画面各保留自己的修订；不是将保存态来源强行映射到未保存文本。"
+          "单场景草稿来源可按原样hash在当前编辑器定位，坏草稿诊断与最后有效画面各保留自己的修订；不是将保存态来源强行映射到未保存文本。",
+          "未发布配方预览复用来源模型并将生成位置重映射到recipe真实贡献项；仅导航，不授予覆盖或布局写入，具体范围见scene.composition。"
         ],
-        "next": "为后续层次/片段提供可追溯展开与原文写回位置，保留修订校验及旧冻结快照边界。",
+        "next": "为共享模板与单次放置覆盖明确写回目标和历史边界，保持已有来源修订守护及旧冻结构建快照。",
         "platforms": [
           "Linux本机编辑服务",
           "新版Tauri窗口和Android未验收/未接入"
@@ -965,7 +999,7 @@
           "领域校验、树模型和原文变换仍在JS；不是Rust语义迁移，也不是空间层次/片段/剧本事件；新Tauri安装包及Android场景功能未验收/未接入",
           "单场景v3草稿的组变化可只读预览，组后代位置可通过scene.source_layout应用回源码；不写组登记，组结构仍随普通保存持久化。"
         ],
-        "next": "在逻辑分组和稳定来源之上定义可复用片段及展开/写回边界，空间父子变换与大规模场景性能单独验证。",
+        "next": "实验scene.composition已用稳定组身份展开现有v3；后续接配方来源/覆盖编辑，空间父子变换与大规模场景性能单独验证。",
         "platforms": [
           "Linux本机编辑服务、Chrome和真实Godot4",
           "桌面/移动离线资源准备；新安装包和目标设备未验收"
@@ -984,7 +1018,8 @@
           "有效结果原子替换；错误、外部基线冲突或迟到响应保留最后有效画面和来源修订。同一场景可关闭预览、编辑原文、重开自动预览草稿；关闭释放服务端资源，仅保留一份有界解码画面，换场景/失去能力/销毁清理",
           "精确来源定位只校验当前编辑器草稿并移动光标；原文变化、近似范围、场景切换和异步所有权失效均保留内容。投影来源继续走保存态来源路径",
           "草稿预览不授予图形场景表单或World布局保存；来源仍与当前源码一致时可进入独立scene.source_layout本地坐标回写。构建只捕获保存输入，即使传入未知draft选项也不会构建草稿。",
-          "只读覆盖与重新投影仍是JS；宿主冻结、HTTP和浏览器渲染分别负责I/O与界面。完整场景/投影语义未下沉Rust，没有多文件原子保存或完整剧本系统；单场景源码坐标回写另列scene.source_layout，新Tauri安装产物和Android场景功能未验收/未接入。"
+          "只读覆盖与重新投影仍是JS；宿主冻结、HTTP和浏览器渲染分别负责I/O与界面。完整场景/投影语义未下沉Rust，没有多文件原子保存或完整剧本系统；单场景源码坐标回写另列scene.source_layout，新Tauri安装产物和Android场景功能未验收/未接入。",
+          "当前草稿为配方时走scene.composition的专用只读模型；来源贡献可导航，仍不允许scene.source_layout回写生成坐标。"
         ],
         "next": "在已接入的单场景坐标回写上明确跨视图历史、多文件片段来源与提交边界；目标设备另行验收。",
         "platforms": [
@@ -1008,10 +1043,130 @@
           "只有本次布局会话的局部undo；没有跨源码/表单/布局统一历史、跨重启布局恢复、多文件事务或剧本/空间变换。本版为源码交付，新安装产物/设备未验收",
           "JS只负责本切片的解码、预览元数据与hash/owner；完整Scene2DModel、投影继承、依赖/登记、来源导航及事务JSON/CST仍在JS。前端源码布局不再加载YAML，也无JS补丁回退；旧WASM缺少源码能力时保留旧布局操作并拒绝新源操作。"
         ],
-        "next": "在Rust单源准确补丁之上先验证可复用片段的确定性组合、稳定身份、来源和局部覆盖，产出兼容v3场景后再接作者工作流；跨文件提交与跨视图历史须独立契约。",
+        "next": "复用片段已另列scene.composition实验；源码补丁仍只改当前普通场景，配方覆盖写回、跨文件提交与跨视图历史须独立契约。",
         "platforms": [
           "Linux本机编辑服务与Chrome；真实业务与回归范围见本轮报告",
           "桌面/移动离线资源与隔离模块运行通过；新版Tauri安装窗口和Android场景功能未验收/未接入"
+        ],
+        "delivery": "source-release"
+      },
+      {
+        "id": "scene.composition",
+        "label": "文件内场景片段、配方预览、单实例覆盖与迁移实验",
+        "group": "场景与构建",
+        "entry": "普通已登记JSON源码编辑/保存与资源包；保存/草稿配方预览、贡献导航及当前源码的单实例覆盖对话框；scene:compose只读CLI",
+        "boundary": [
+          "0.0.8源码实验性功能：recipe v1复用普通已登记.json文档与原编辑/保存/冲突；workspace v2/v3配方可只读预览，不新增项目类型、World/journal命令、workspace/Scene2D/运行协议。",
+          "配方1–32片段，各含演员及逻辑组；1–128次放置，显式local key→UUID完整映射；声明与展开分别限128演员/128组及16层，重排不改身份。",
+          "放置先合并白名单覆盖再应用位置偏移，越界整批拒绝；继承字段省略与imageResourceId:null区分，覆盖不改变定义/身份/分组/继承开关。",
+          "Rust严格JSON/重复键/形状/引用/身份/覆盖/预算检查；无状态无I/O，不使用32槽布局会话。原生和WASM共用，不分配或散列生成UUID。",
+          "来源sidecar记录模板/放置/身份及贡献JSON Pointer；CLI保留原字节SHA-256，登记模式增加objectId/sourcePath/worldId/worldRevision来源；不授予World/sceneEditing权限。",
+          "当前顶层format选择配方工作流，删除后回归普通JSON；Rust校验后从全部模板/覆盖派生对象/图片依赖，含unused/被覆盖项，null忽略；不按文件名猜、不自动写metadata。",
+          "配方依赖合并作者已有关系，导出闭包与读包/导入重验实际字节；依赖必须正确列入documents/assets或有指纹requirements，目标同UUID不能补清单漏项；投影闭包沿旧规则。",
+          "未完成原文可普通保存和完整备份，无效配方不能展开/选择式打包；生成v3经已有scene.create单独登记，编辑它不会回写配方。",
+          "保存态与当前单文档草稿先复用原观察/修订守护，内部克隆展开为v3并合并派生和手工依赖；完整模型/投影/图片规则共用，内部观察不返回、不持久化。",
+          "配方标题/画布/背景、演员/组声明和诊断映射实际原文；多贡献主位置近似，template/override/offset/identity各可精确导航。继承尺寸/图片继续指向投影，旧revision不能误选新文本。",
+          "独立预览身份绑定配方原文/World修订与冻结图片，不返回sceneEditing或执行snapshot；配方从构建Scene2D清单分离，Scene2D表单/拖动/草稿布局不接生成坐标。",
+          "单实例覆盖仅对当前同路径/摘要/保存基线源码会话开放；独立Rust可选操作按placementId+actorKey设置六字段，前后128KiB/完整展开校验，保留其余原始字节，未改字段保留继承。",
+          "提案与准备应用分离异步输入，桥接拒绝非目标语义/伪造路径/重复键回执；宿主检查完整模型/真实图片并复核live会话才改内存，实际保存复用普通编辑器冲突机制；取消/迟到/过期不改原草稿。",
+          "不编辑共享模板、不删除覆盖/恢复继承、不从画布拖动回写；缺少patch能力只关闭新入口，旧展开/源码/几何仍可用。生成场景的直接编辑不反向修改配方。",
+          "无嵌套/跨文件片段、通用表达式、脚本、组空间变换或多文件事务；没有新安装包、Tauri窗口或Android配方入口验收。"
+        ],
+        "next": "在当前单实例set与普通保存闭环上，再定义删除覆盖/恢复继承、共享片段编辑及撤销边界；画布拖动、嵌套/跨文件和多文件提交另立契约。",
+        "platforms": [
+          "Linux本机编辑服务与Chrome配方预览/局部覆盖原文草稿；Node只读CLI/资源包；共享Rust原生/WASM展开与保真补丁",
+          "实际打包资源隔离检查与安装/Android设备范围按本轮报告区分"
+        ],
+        "delivery": "source-release"
+      },
+      {
+        "id": "behavior.scene_runtime",
+        "label": "场景实例的GDScript参数、信号与冻结迁移",
+        "group": "场景与构建",
+        "entry": "已登记scene→behavior关系→JSON绑定清单/TXT源码→检查计划/构建/无头测试→行为事件与源诊断",
+        "boundary": [
+          "0.0.8源码交付；明确选择绑定文档的Scene2D v2/v3才生成plan/runtime3；旧无行为v1/v2分支保持，Worldv1.behaviorBindings仍为[]。",
+          "严格可移植manifest1：最多32bindings/8sources，TXT每份64KiB合计512KiB；场景与源码必须有非part-of出向登记，稳定实例/定义依赖完整。",
+          "Godot4仅GDScript独立Node：无参构造、脚本自身标量export、最多4个明确类型信号参数；每binding独立对象，事件绑定身份可信且限制ready/finished生命周期。",
+          "作者源码随冻结快照；回放重新规划、核对指纹/工具/每份输出；TXT编译定位原文行，参数类型运行错误定位manifest指针，sourceRange由冻结作者文本补充。",
+          "选择包重派生场景/源码直接依赖并要求清单或pin；包内scene不得借ambientactor，外部pinnedscene可沿已锁关系读取传递actor并hash/fence复验；完整备份允许未完成原文。",
+          "静态预览只geometry，不验证或运行bindings；GUI展示计数/安全文本事件和诊断，不执行脚本，未保存任意doc继续阻止build/run。",
+          "脚本以用户权限运行，无沙箱承诺；无任意方法RPC/热更新/通用状态机/行为参数表单/作者BevyRust行为/Nuis/GPU/Android执行器或新安装验收。"
+        ],
+        "next": "完善绑定清单创作和参数辅助，再独立定义解绑/热更新及规模验证；其他后端必须真实工具链验收。",
+        "platforms": [
+          "Linux本机编辑服务与真实Chrome/Godot4",
+          "移动仅纯规则与完整作者数据存储互通，不代表行为执行或UI接入",
+          "Tauri新安装及Android设备未验收"
+        ],
+        "delivery": "source-release"
+      },
+      {
+        "id": "runtime.objects_inspection",
+        "label": "运行对象、位置采样与冻结来源只读观察",
+        "group": "场景与构建",
+        "entry": "构建任务→当前owned运行job.runtime→本地名称/实例/定义检索、原文声明；POST /api/project-build action:inspect",
+        "boundary": [
+          "0.0.8源码交付；普通观察消费既有 plan/runtime1/2/3，无程序DTO保持；有限控制 plan1/2 可选 control 摘要和完整步骤样本，不改变作者格式或 adapter contract1。",
+          "仅从已验证冻结plan捕获actor身份、名称与来源；protocol1按objectId，2/3按instanceId且核对objectId，不暴露引擎Entity/节点/句柄。",
+          "waiting只有metadata/null样本；ready/finished提供完整坐标；state改变状态并使旧位置positionCurrent=false，diagnostic/behavior不改变观察，不提供实时反射。",
+          "host在frozen/source/adapter/tool/artifact验证后建立视图，runtime progress先于raw ready；128条事件ring不裁剪完整128actor视图，取消/错误/超时会话保留最后有效样本。",
+          "inspect只接受当前owned runjob UUID及可选instanceId/objectId小写UUID，AND过滤无匹配[]，无active/tool availability门禁，不启动任务/占槽/读作者源；foreign/nonrun/missing/unavailable拒绝。",
+          "UI核对scene/backend/descriptor/build/snapshot/protocol归属，本地检索、三语、采样阶段和source守护，dirty/creating/busy禁跳转并保护光标，切换清理旧对象。",
+          "没有连续位置采样、组件反射/RPC/运行修改、作者Rust/BRP/资源通道/GPU/跨会话历史采用或Android对象UI。",
+          "有限方向回放另外准入 VIENTO_TRACE 全体样本；phase仍ready，positionSample control/零基positionStep；state可使样本stale，有效finished清步骤标记；来源仍由冻结计划提供。 按实例输入继续复用完整trace schema1及原观察DTO；稀疏输入不省略未列实例的样本。"
+        ],
+        "next": "有限固定步骤采样已接入；连续实时采样、组件查询和运行修改仍需明确时间/顺序/预算/所有权，不写作者权威数据。",
+        "platforms": [
+          "Linux本机CLI/编辑服务与工作台，实际浏览器/准备资源证据分列",
+          "Android仅可移植观察模块；无对象UI/执行器/设备验收",
+          "Tauri新安装和窗口未验收"
+        ],
+        "delivery": "source-release"
+      },
+      {
+        "id": "runtime.control_replay",
+        "label": "有限方向程序、跨后端回放与完整步骤采样",
+        "group": "场景与构建",
+        "entry": "构建任务 → 编辑控制回放 / 控制回放；project-build run --control-program",
+        "boundary": [
+          "0.0.8源码交付；只支持 runtime.control-replay capability、无作者行为 scene2d plan/runtime1/2、有限 headless；window/capture/interactive/plan3拒绝。",
+          "viento-runtime-control schema1 只有 fixedDelta 与 steps 的四向精确bool；1..64步，0<dt<=.25秒，总时长<=8秒，最后全释放；actors*steps<=1024联合预算执行前拒绝。 本功能保留schema1全局基础；schema2的独立实例路由另见runtime.instance_control。",
+          "纯模块不执行访问器、不接原型/隐藏字段/稀疏数组/循环/paths/Entity，输入分离深冻结；host记录canonicalJSON SHA、程序与有效样本。",
+          "VIENTO_TRACE schema1 按连续0基stepIndex返回全体actor身份/有限position/idle|moving；只在validready与finished之间，结束步长/演员值必须匹配程序与lastsample。",
+          "runtime与trace逐行原序，不先处理整块finished；无效结束不覆盖样本，取消/错误不补造完成；旧no-control观察和默认smoke保留。",
+          "Godot独立可信控制驱动保留原5文件/GDS行为2文件；Bevy可信工具0.3.0处理自身ECS，固定Bevy0.19.1、不编译作者Rust；工具/bin不进作者迁移包。",
+          "schema1 CLI只run可选16KiB JSON文件；HTTP只run新增controlProgram数据，UI编辑/进度/三语步骤样本与草稿守护；没有stdin、RPC、实时键盘、反射、渲染/GPU、安装或Android执行器。"
+        ],
+        "next": "schema1全局基础保持；按实例有限输入已作为runtime.instance_control独立接入；实时采样或类型化运行资源、作者Rust、窗口输入和规模仍各自验收。",
+        "platforms": [
+          "Linux本机编辑服务/CLI；实际浏览器与准备资源分别记录",
+          "Android只复用pure规则，未接执行器/界面/设备",
+          "Tauri新安装与窗口未验收"
+        ],
+        "delivery": "source-release"
+      },
+      {
+        "id": "runtime.instance_control",
+        "label": "按实例独立有限输入与稀疏步骤路由",
+        "group": "场景与构建",
+        "entry": "已验证冻结plan2 → 输入示例的目标/显式生成输入示例或JSON → 控制回放；CLI run --control-program schema2",
+        "boundary": [
+          "0.0.8源码交付；同时要求runtime.control-replay及runtime.control-replay.instances、无行为冻结plan/runtime2、有限headless；plan1即使empty inputs也拒绝，plan3/window/capture/interactive不支持。",
+          "viento-runtime-control schema2精确顶层format/schemaVersion/fixedDelta/steps；每步精确inputs，每行instanceId+四向bool；0..128行/步，总输入行<=1024，1..64步、0<dt<=.25、总时长<=8、最后inputs空或每行全false。",
+          "instanceId只准入冻结plan2实际实例集合；same-step重复拒绝、跨step可重复，定义UUID不能冒充实例，未知目标runtime_control_target_missing；合法实际instanceId与objectId相同仍按成员判断。",
+          "每步未列实例全部释放，不粘住上一输入；controls none/零速度保持原规则；具体移动/归一化在受信任Godot或Bevy runtime，可移植层只验证数据/身份/预算/trace。",
+          "actors*steps<=1024继续独立检查，因为每步trace返回全部冻结演员；trace schema1/protocol2及观察control/positionStep形状不变，无程序旧DTO与schema1全局语义保持。",
+          "CLI schema2控制文件<=256KiB，schema1旧16KiB限制保留；host记录冻结规范程序SHA及有效样本，verifiedownedbuild持有中立controlTargets；HTTP不接作者路径/工具/code/Entity，未知目标在启动任务前拒绝。",
+          "Godot adapter0.5.0用独立可信GDS driver；Bevy adapter/native0.3.0锁Bevy0.19.1，工具升级需重建；旧Godot5/GDS2/WASM2及历史证据原字节保留。",
+          "UI实例列表以instanceId末尾8位在前、name在后，窄屏区分同名/同前缀实例；title及实际值保留完整instanceId；选择目标不改JSON，显式生成才替换为已验证四步示例；poll/reopen/locale保留输入与草稿守护，不写作者工程。",
+          "仅有限按实例方向输入；没有实时输入/RPC/反射/运行组件修改、作者Rust、渲染/GPU、跨会话恢复、Tauri新安装或Android执行器。"
+        ],
+        "next": "保持有限路由和完整采样的共同粒度；类型化事件、资源、实时采样与可变组件只有出现实际共同需求才另立契约。",
+        "platforms": [
+          "Linux本机CLI/编辑服务，实际两引擎/浏览器/准备资源证据分列",
+          "Android仅pure规则复用，无执行器/UI/设备验收",
+          "Tauri新安装与窗口未验收"
         ],
         "delivery": "source-release"
       }
@@ -2103,12 +2258,16 @@
       },
       {
         "id": "i091",
-        "label": "Bevy/Rust 第二后端候选（未实现）",
-        "kind": "planned",
+        "label": "viento-bevy-runtime：锁定Bevy的可信无头ECS程序",
+        "kind": "product",
         "language": [
-          "未实现"
+          "Rust"
         ],
-        "paths": []
+        "paths": [
+          "crates/viento-bevy-runtime/Cargo.toml",
+          "crates/viento-bevy-runtime/Cargo.lock",
+          "crates/viento-bevy-runtime/src/main.rs"
+        ]
       },
       {
         "id": "i092",
@@ -2312,6 +2471,227 @@
         ],
         "paths": [
           "crates/viento-studio-core/src/scene_source.rs"
+        ]
+      },
+      {
+        "id": "i111",
+        "label": "scene_composition.rs：无状态文件内片段组合",
+        "kind": "prototype",
+        "language": [
+          "Rust"
+        ],
+        "paths": [
+          "crates/viento-studio-core/src/scene_composition.rs"
+        ]
+      },
+      {
+        "id": "i112",
+        "label": "scene-composition.mjs / studio-core.mjs：可移植组合调用与响应守护",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-composition.mjs",
+          "engine/studio-core.mjs"
+        ]
+      },
+      {
+        "id": "i113",
+        "label": "scene-compose.mjs：独立文件/已登记快照的只读JSON输出",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/scene-compose.mjs"
+        ]
+      },
+      {
+        "id": "i114",
+        "label": "scene-composition-document.mjs：配方文档识别与源码派生依赖",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-composition-document.mjs"
+        ]
+      },
+      {
+        "id": "i115",
+        "label": "scene-composition-preview.mjs：只读展开模型与贡献来源映射",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-composition-preview.mjs"
+        ]
+      },
+      {
+        "id": "i116",
+        "label": "scene_composition_patch.rs：稳定目标的六字段保真覆盖补丁",
+        "kind": "prototype",
+        "language": [
+          "Rust"
+        ],
+        "paths": [
+          "crates/viento-studio-core/src/scene_composition_patch.rs"
+        ]
+      },
+      {
+        "id": "i117",
+        "label": "scene-composition-overrides.mjs：绑定原文与预览的覆盖提案及复核",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-composition-overrides.mjs"
+        ]
+      },
+      {
+        "id": "i118",
+        "label": "app-scene-composition-overrides.js：实例覆盖检查与草稿应用对话框",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-scene-composition-overrides.js"
+        ]
+      },
+      {
+        "id": "i119",
+        "label": "backend-capabilities.mjs：纯数据描述符和七操作支持检查",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/backend-capabilities.mjs"
+        ]
+      },
+      {
+        "id": "i120",
+        "label": "node-execution-backends.mjs / node-project-build.mjs：可信注册、输出与冻结编排",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/adapters/node-execution-backends.mjs",
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/lib/project-build-service.mjs"
+        ]
+      },
+      {
+        "id": "i121",
+        "label": "godot4-adapter.mjs：具体工具、阶段、环境与固定生成分支",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i122",
+        "label": "scene-behaviors.mjs：严格清单、依赖与可移植绑定计划",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-behaviors.mjs",
+          "engine/build-plan.mjs"
+        ]
+      },
+      {
+        "id": "i123",
+        "label": "godot4-behaviors.mjs / behavior-runtime.gd：独立Node参数/信号",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-behaviors.mjs",
+          "scripts/backends/godot4/behavior-runtime.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i124",
+        "label": "scene-runtime-events.mjs：中立Scene2D身份与生命周期准入",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-runtime-events.mjs"
+        ]
+      },
+      {
+        "id": "i125",
+        "label": "bevy-adapter.mjs / bevy-project.mjs：工具、阶段与数据产物",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/backends/bevy-adapter.mjs",
+          "scripts/backends/bevy-project.mjs"
+        ]
+      },
+      {
+        "id": "i126",
+        "label": "node-execution-tool.mjs / project-build.mjs：可信host和CLI后端选择",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/adapters/node-execution-tool.mjs",
+          "scripts/project-build.mjs",
+          "scripts/lib/doc-api-service.mjs"
+        ]
+      },
+      {
+        "id": "i127",
+        "label": "scene-runtime-query.mjs：稳定身份与采样观察核心",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-runtime-query.mjs"
+        ]
+      },
+      {
+        "id": "i128",
+        "label": "scene-control-program.mjs：有限程序及原序trace准入",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-control-program.mjs"
+        ]
+      },
+      {
+        "id": "i129",
+        "label": "control-runtime.gd / control.tscn：独立Godot固定步控制驱动",
+        "kind": "product",
+        "language": [
+          "GDScript",
+          "TSCN"
+        ],
+        "paths": [
+          "scripts/backends/godot4/control-runtime.gd",
+          "scripts/backends/godot4/control.tscn"
         ]
       }
     ],
@@ -3813,7 +4193,7 @@
       "architecture": "delivery",
       "function": "delivery.packaging",
       "implementation": "i063",
-      "role": "开发构建或打包资源；不等于实际安装验收。",
+      "role": "开发构建/资源准备与源码归档：0.0.8明确两crate和四官方样例闭包、排除targets/作者数据；临时快照回读不等于最终commit压缩包或安装验收。",
       "evidence": [
         "e190",
         "e191",
@@ -3825,7 +4205,16 @@
         "e009",
         "e196",
         "e363",
-        "e364"
+        "e364",
+        "e491",
+        "e492",
+        "e494",
+        "e495",
+        "e496",
+        "e499",
+        "e500",
+        "e501",
+        "e502"
       ]
     },
     {
@@ -3842,7 +4231,16 @@
         "e009",
         "e196",
         "e363",
-        "e364"
+        "e364",
+        "e491",
+        "e492",
+        "e494",
+        "e495",
+        "e496",
+        "e499",
+        "e500",
+        "e501",
+        "e502"
       ]
     },
     {
@@ -3860,7 +4258,16 @@
         "e009",
         "e196",
         "e363",
-        "e364"
+        "e364",
+        "e491",
+        "e492",
+        "e494",
+        "e495",
+        "e496",
+        "e499",
+        "e500",
+        "e501",
+        "e502"
       ]
     },
     {
@@ -4020,7 +4427,10 @@
         "e312",
         "e315",
         "e363",
-        "e364"
+        "e364",
+        "e409",
+        "e410",
+        "e411"
       ]
     },
     {
@@ -4046,7 +4456,10 @@
         "e340",
         "e343",
         "e363",
-        "e364"
+        "e364",
+        "e409",
+        "e410",
+        "e411"
       ]
     },
     {
@@ -4067,7 +4480,10 @@
         "e312",
         "e315",
         "e363",
-        "e364"
+        "e364",
+        "e409",
+        "e410",
+        "e411"
       ]
     },
     {
@@ -4075,7 +4491,7 @@
       "architecture": "node-service",
       "function": "runtime.godot_generated_project",
       "implementation": "i075",
-      "role": "按冻结计划选择v1/v2后端并严格核对协议/摘要；旧v1源码交付基线保留，v2源码范围另列。",
+      "role": "通用executor按可信registry固定后端；执行相应plan/protocol并校验冻结输出，具体Godot命令/环境/文件名已从本模块移出；新增中间层交付另列。",
       "evidence": [
         "e235",
         "e225",
@@ -4087,7 +4503,10 @@
         "e312",
         "e315",
         "e363",
-        "e364"
+        "e364",
+        "e409",
+        "e410",
+        "e411"
       ]
     },
     {
@@ -4095,7 +4514,7 @@
       "architecture": "ui",
       "function": "build.workbench_lifecycle",
       "implementation": "i076",
-      "role": "界面状态、用户输入与结果呈现；不据此推断规则已迁Rust。",
+      "role": "界面状态、用户输入与结果呈现；按纯描述符分别判断操作并核对任务/产物后端身份，变更撤销旧批准；新增中间层交付另列。",
       "evidence": [
         "e236",
         "e227",
@@ -4106,7 +4525,17 @@
         "e162",
         "e241",
         "e363",
-        "e364"
+        "e364",
+        "e409",
+        "e410",
+        "e411",
+        "e443",
+        "e444",
+        "e445",
+        "e446",
+        "e448",
+        "e449",
+        "e450"
       ]
     },
     {
@@ -4114,7 +4543,7 @@
       "architecture": "node-service",
       "function": "build.workbench_lifecycle",
       "implementation": "i077",
-      "role": "本机服务编排及宿主适配；领域计算与持久化按对应模块分工。",
+      "role": "本机服务编排/生命周期，固定host选择的可信backend并返回平台/descriptor和任务/产物后端身份；HTTP不给实现/路径权限。",
       "evidence": [
         "e242",
         "e243",
@@ -4128,7 +4557,17 @@
         "e162",
         "e241",
         "e363",
-        "e364"
+        "e364",
+        "e409",
+        "e410",
+        "e411",
+        "e443",
+        "e444",
+        "e445",
+        "e446",
+        "e448",
+        "e449",
+        "e450"
       ]
     },
     {
@@ -4486,7 +4925,7 @@
       "architecture": "runtime-backend",
       "function": "behavior.gdscript_binding",
       "implementation": "i089",
-      "role": "独立GDScript绑定探针，尚未进入作者数据、构建或迁移链。",
+      "role": "历史独立GDScript探针；不承担当前作者协议或其构建/迁移验证。",
       "evidence": [
         "e274",
         "e275",
@@ -4501,7 +4940,7 @@
       "architecture": "semantic-js",
       "function": "scene.text_instances",
       "implementation": "i090",
-      "role": "完整文本场景系统的规划占位；稳定实例、逻辑分组和单源只读预览已另列源码切片，片段展开/剧本事件/共享可写草稿/跨文件原子提交仍未实现。",
+      "role": "完整文本场景系统的规划占位；稳定实例、逻辑分组和单源只读预览已另列源码切片，嵌套/跨文件片段、剧本事件、共享可写草稿和跨文件原子提交仍未实现。",
       "evidence": [
         "e280",
         "e281",
@@ -4513,10 +4952,33 @@
       "architecture": "runtime-backend",
       "function": "runtime.bevy_rust",
       "implementation": "i091",
-      "role": "规划占位，尚无生产实现；无适配器、运行协议、作者行为目录/来源映射或UI入口",
+      "role": "预编译可信Bevy程序检查数据并用真实ECS移动/状态，两个实例保留定义配对；无作者Rust编译或渲染能力。",
       "evidence": [
-        "e282",
-        "e280"
+        "e425",
+        "e426",
+        "e429",
+        "e430",
+        "e432",
+        "e433",
+        "e434",
+        "e437",
+        "e438",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
       ]
     },
     {
@@ -4944,7 +5406,9 @@
         "e313",
         "e312",
         "e363",
-        "e364"
+        "e364",
+        "e386",
+        "e385"
       ]
     },
     {
@@ -4966,7 +5430,9 @@
         "e343",
         "e344",
         "e363",
-        "e364"
+        "e364",
+        "e386",
+        "e385"
       ]
     },
     {
@@ -4986,7 +5452,9 @@
         "e340",
         "e343",
         "e363",
-        "e364"
+        "e364",
+        "e386",
+        "e385"
       ]
     },
     {
@@ -5008,7 +5476,9 @@
         "e341",
         "e343",
         "e363",
-        "e364"
+        "e364",
+        "e386",
+        "e385"
       ]
     },
     {
@@ -5208,7 +5678,10 @@
         "e315",
         "e314",
         "e363",
-        "e364"
+        "e364",
+        "e409",
+        "e410",
+        "e411"
       ]
     },
     {
@@ -5729,6 +6202,1106 @@
         "e362",
         "e363",
         "e364"
+      ]
+    },
+    {
+      "id": "b178",
+      "architecture": "rust-core",
+      "function": "scene.composition",
+      "implementation": "i111",
+      "role": "纯Rust检查并展开recipe，明确声明/展开上限及稳定映射，输出既有v3和无宿主来源指针；不接World或文件。",
+      "evidence": [
+        "e365",
+        "e368",
+        "e369",
+        "e370",
+        "e371",
+        "e372",
+        "e375",
+        "e376",
+        "e377",
+        "e378",
+        "e379",
+        "e386",
+        "e387",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b179",
+      "architecture": "semantic-js",
+      "function": "scene.composition",
+      "implementation": "i112",
+      "role": "同步调用Rust组合/独立可选覆盖补丁；校验来源归属、唯一目标语义与真实有序changedPaths，并重新严格展开回执。坏回执关闭runtime；缺patch能力保留旧域，无JS算法回退。",
+      "evidence": [
+        "e366",
+        "e368",
+        "e369",
+        "e370",
+        "e372",
+        "e375",
+        "e376",
+        "e377",
+        "e378",
+        "e379",
+        "e386",
+        "e387",
+        "e388",
+        "e389",
+        "e390",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b180",
+      "architecture": "node-service",
+      "function": "scene.composition",
+      "implementation": "i113",
+      "role": "有界独立文件或已登记World快照，核对可选源修订与全部声明依赖；输出scene或带原字节摘要/origin的bundle，不写/注册/构建作品。",
+      "evidence": [
+        "e367",
+        "e368",
+        "e369",
+        "e370",
+        "e371",
+        "e372",
+        "e373",
+        "e374",
+        "e375",
+        "e376",
+        "e377",
+        "e378",
+        "e379",
+        "e386",
+        "e387",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b181",
+      "architecture": "semantic-js",
+      "function": "scene.composition",
+      "implementation": "i114",
+      "role": "普通文档顶层格式识别，复用Rust校验并从全部模板/覆盖只读派生对象与图片依赖；分类和引用检查不写元数据、不复制组合算法。",
+      "evidence": [
+        "e373",
+        "e374",
+        "e375",
+        "e376",
+        "e369",
+        "e377",
+        "e378",
+        "e379",
+        "e386",
+        "e387",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b182",
+      "architecture": "node-service",
+      "function": "scene.composition",
+      "implementation": "i040",
+      "role": "资源包目录合并源码派生边和原文指纹；读包/导入重新检查真实recipe与分类/requirements完整性、目标现存来源；保留已有持久导入机制。",
+      "evidence": [
+        "e136",
+        "e137",
+        "e138",
+        "e373",
+        "e374",
+        "e375",
+        "e376",
+        "e369",
+        "e377",
+        "e378",
+        "e379",
+        "e386",
+        "e387",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b183",
+      "architecture": "semantic-js",
+      "function": "scene.composition",
+      "implementation": "i115",
+      "role": "合并临时派生与作者依赖，复用v3模型并把场景/诊断/字段映射配方原字节；保留投影来源，不输出synthetic观察或写权限。",
+      "evidence": [
+        "e380",
+        "e381",
+        "e382",
+        "e385",
+        "e369",
+        "e386",
+        "e387",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b184",
+      "architecture": "node-service",
+      "function": "scene.composition",
+      "implementation": "i073",
+      "role": "保存/草稿配方捕获使用原源fence及冻结图片，独立预览身份无build snapshot；原captureBuildSnapshot继续只处理已登记Scene2D。",
+      "evidence": [
+        "e229",
+        "e380",
+        "e381",
+        "e382",
+        "e385",
+        "e369",
+        "e386",
+        "e387",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b185",
+      "architecture": "node-service",
+      "function": "scene.composition",
+      "implementation": "i080",
+      "role": "HTTP预览保留配方元数据、真实来源和组织大纲，资源缓存/摘要/释放沿旧规则；拒绝把配方响应变成sceneEditing。",
+      "evidence": [
+        "e253",
+        "e382",
+        "e383",
+        "e385",
+        "e369",
+        "e386",
+        "e387",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b186",
+      "architecture": "node-service",
+      "function": "scene.composition",
+      "implementation": "i077",
+      "role": "状态分别列可构建Scene2D与可预览配方；不因普通recipe文档启动后端任务，缺Godot时仍提供本机静态预览。",
+      "evidence": [
+        "e382",
+        "e383",
+        "e384",
+        "e385",
+        "e369",
+        "e386",
+        "e387",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b187",
+      "architecture": "ui",
+      "function": "scene.composition",
+      "implementation": "i102",
+      "role": "画布/大纲与贡献导航保留dirty/修订；普通Scene2D写入和构建入口关闭，独立覆盖入口需当前源码身份/能力。父控制器验证候选并传live守护，主编辑器复核提案后仅替换同一原文草稿。",
+      "evidence": [
+        "e383",
+        "e384",
+        "e385",
+        "e369",
+        "e386",
+        "e387",
+        "e391",
+        "e393",
+        "e394",
+        "e395",
+        "e396",
+        "e397",
+        "e399",
+        "e400",
+        "e398",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b188",
+      "architecture": "rust-core",
+      "function": "scene.composition",
+      "implementation": "i116",
+      "role": "严格校验整份配方后按稳定目标生成保真六字段set补丁，前后展开/预算均检查；不改共享片段/其他放置/身份，不创建会话或执行I/O。",
+      "evidence": [
+        "e388",
+        "e389",
+        "e390",
+        "e369",
+        "e399",
+        "e400",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b189",
+      "architecture": "semantic-js",
+      "function": "scene.composition",
+      "implementation": "i117",
+      "role": "从当前源与真实预览派生局部编辑状态；提案只包含实际改值，prepare重验hash/目标与精确核心输出，异步前分离输入，无保存副作用。",
+      "evidence": [
+        "e391",
+        "e392",
+        "e389",
+        "e369",
+        "e399",
+        "e400",
+        "e398",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b190",
+      "architecture": "ui",
+      "function": "scene.composition",
+      "implementation": "i118",
+      "role": "单实例表单→完整候选检查/审阅→live守护的显式内存应用；原文/保存基线保持，普通保存负责磁盘；取消/过期/迟到不写。",
+      "evidence": [
+        "e393",
+        "e394",
+        "e395",
+        "e396",
+        "e397",
+        "e369",
+        "e399",
+        "e400",
+        "e398",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b191",
+      "architecture": "semantic-js",
+      "function": "execution.backend_middleware",
+      "implementation": "i119",
+      "role": "严格分离冻结descriptor；七种执行操作/平台/plan schema/feature分别校验，未知数据不获权；无工具/文件/进程依赖。",
+      "evidence": [
+        "e401",
+        "e404",
+        "e408",
+        "e409",
+        "e411",
+        "e433",
+        "e434",
+        "e435",
+        "e437",
+        "e438",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b192",
+      "architecture": "node-service",
+      "function": "execution.backend_middleware",
+      "implementation": "i120",
+      "role": "固定可信后端与生命周期；中立files/resourceFiles输出先校验再发布，冻结工具/生成物/独立executionAdapter回放；HTTP不注册或选任意代码/路径。",
+      "evidence": [
+        "e402",
+        "e235",
+        "e242",
+        "e405",
+        "e408",
+        "e409",
+        "e410",
+        "e411",
+        "e433",
+        "e434",
+        "e435",
+        "e437",
+        "e438",
+        "e443",
+        "e444",
+        "e445",
+        "e446",
+        "e448",
+        "e449",
+        "e450",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b193",
+      "architecture": "runtime-backend",
+      "function": "execution.backend_middleware",
+      "implementation": "i121",
+      "role": "包装旧Godot v1/v2冻结生成器及新增显式行为v3分支；具体命令/环境/阶段/缓存与通用宿主隔离，四operation实装，离屏/内嵌/GPU false；legacy兼容显式声明。",
+      "evidence": [
+        "e403",
+        "e406",
+        "e408",
+        "e409",
+        "e410",
+        "e411",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b194",
+      "architecture": "ui",
+      "function": "execution.backend_middleware",
+      "implementation": "i076",
+      "role": "根据完整纯描述符按操作开放任务入口；descriptor/后端变化撤销旧计划和产物批准，保留dirty/会话/异步归属与三语界面。",
+      "evidence": [
+        "e236",
+        "e407",
+        "e408",
+        "e409",
+        "e410",
+        "e411",
+        "e433",
+        "e434",
+        "e435",
+        "e437",
+        "e438",
+        "e443",
+        "e444",
+        "e445",
+        "e446",
+        "e448",
+        "e449",
+        "e450",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b195",
+      "architecture": "semantic-js",
+      "function": "behavior.scene_runtime",
+      "implementation": "i122",
+      "role": "可移植显式绑定规则与plan3组合；保存语法和执行契约分开，不填World空字段。",
+      "evidence": [
+        "e412",
+        "e415",
+        "e417",
+        "e421",
+        "e422",
+        "e424",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b196",
+      "architecture": "node-service",
+      "function": "behavior.scene_runtime",
+      "implementation": "i120",
+      "role": "复用保存态捕获与冻结回放，精确诊断范围来自冻结原文，服务仅返回计数和可信DTO。",
+      "evidence": [
+        "e417",
+        "e421",
+        "e422",
+        "e423",
+        "e424",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b197",
+      "architecture": "runtime-backend",
+      "function": "behavior.scene_runtime",
+      "implementation": "i123",
+      "role": "独立Node源码生成/编译、export与signal类型检查、可信身份及生命周期；不改旧生成字节。",
+      "evidence": [
+        "e413",
+        "e414",
+        "e418",
+        "e417",
+        "e421",
+        "e422",
+        "e424",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b198",
+      "architecture": "ui",
+      "function": "behavior.scene_runtime",
+      "implementation": "i076",
+      "role": "行为数量/事件三语可读文本和源诊断，保留rawlog和任意文档草稿运行保护。",
+      "evidence": [
+        "e419",
+        "e420",
+        "e421",
+        "e422",
+        "e423",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b199",
+      "architecture": "node-service",
+      "function": "behavior.scene_runtime",
+      "implementation": "i040",
+      "role": "按实际绑定原文重新验证scene/script及actor闭包、requirement指纹与并发读取；普通保存/fullbackup保持原规则。",
+      "evidence": [
+        "e416",
+        "e417",
+        "e421",
+        "e422",
+        "e424",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b200",
+      "architecture": "semantic-js",
+      "function": "runtime.bevy_rust",
+      "implementation": "i124",
+      "role": "中立runtime1/2身份/完整集合/数值/状态/生命周期校验，无引擎或宿主依赖。",
+      "evidence": [
+        "e425",
+        "e427",
+        "e428",
+        "e432",
+        "e433",
+        "e434",
+        "e437",
+        "e438",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b201",
+      "architecture": "runtime-backend",
+      "function": "runtime.bevy_rust",
+      "implementation": "i125",
+      "role": "Bevy精确工具识别、noimage准入、数据工程生成与scene-check/headless阶段，不导入Godot模块。",
+      "evidence": [
+        "e425",
+        "e429",
+        "e430",
+        "e432",
+        "e433",
+        "e434",
+        "e437",
+        "e438",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b202",
+      "architecture": "node-service",
+      "function": "runtime.bevy_rust",
+      "implementation": "i126",
+      "role": "CLI显式backend/tool和host环境固定选择，沿用通用冻结executor；HTTP不选择可执行代码或路径。",
+      "evidence": [
+        "e425",
+        "e431",
+        "e433",
+        "e434",
+        "e437",
+        "e438",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b203",
+      "architecture": "ui",
+      "function": "runtime.bevy_rust",
+      "implementation": "i076",
+      "role": "复用构建工作台观察host固定的Bevy，按descriptor开放plan/build/headless并禁window；三语/390px/dirty/caret保持，没有引擎选择下拉框。",
+      "evidence": [
+        "e425",
+        "e435",
+        "e436",
+        "e437",
+        "e438",
+        "e443",
+        "e444",
+        "e445",
+        "e446",
+        "e448",
+        "e449",
+        "e450",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b204",
+      "architecture": "semantic-js",
+      "function": "runtime.objects_inspection",
+      "implementation": "i127",
+      "role": "冻结身份/来源与纯采样状态独立于引擎与视图，query分离完整DTO并按AND过滤；原事件准入仍属于adapter。",
+      "evidence": [
+        "e439",
+        "e440",
+        "e441",
+        "e442",
+        "e443",
+        "e444",
+        "e449",
+        "e450",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b205",
+      "architecture": "node-service",
+      "function": "runtime.objects_inspection",
+      "implementation": "i120",
+      "role": "验证全部frozen产物后建立观察，runtime progress/终态session与独立job视图；strictinspect只读当前ownedrun且不查tool或占槽。",
+      "evidence": [
+        "e439",
+        "e443",
+        "e444",
+        "e448",
+        "e449",
+        "e450",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b206",
+      "architecture": "ui",
+      "function": "runtime.objects_inspection",
+      "implementation": "i076",
+      "role": "消费归属匹配的job.runtime，本地过滤和三语采样标签、名称安全文本与冻结source导航，保持焦点/dirty/迟到归属保护。",
+      "evidence": [
+        "e439",
+        "e445",
+        "e446",
+        "e447",
+        "e448",
+        "e449",
+        "e450",
+        "e451",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b207",
+      "architecture": "semantic-js",
+      "function": "runtime.control_replay",
+      "implementation": "i128",
+      "role": "纯程序/联合预算与原序trace准入，无模拟或引擎依赖。",
+      "evidence": [
+        "e451",
+        "e452",
+        "e453",
+        "e454",
+        "e459",
+        "e461",
+        "e463",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b208",
+      "architecture": "semantic-js",
+      "function": "runtime.control_replay",
+      "implementation": "i127",
+      "role": "可选control进度/positionStep与pushSample；旧DTO逐字段保持，来源冻结且查询分离。",
+      "evidence": [
+        "e451",
+        "e452",
+        "e453",
+        "e454",
+        "e463",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b209",
+      "architecture": "node-service",
+      "function": "runtime.control_replay",
+      "implementation": "i120",
+      "role": "冻结程序SHA/独立会话与strict HTTP/CLI，仅可信描述符数据参数；取消/错误保留有效样本。",
+      "evidence": [
+        "e451",
+        "e462",
+        "e463",
+        "e464",
+        "e466",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b210",
+      "architecture": "runtime-backend",
+      "function": "runtime.control_replay",
+      "implementation": "i129",
+      "role": "Godot独立可信控制驱动消费bool程序并报告固定步trace，原5/GDS2文件保持。",
+      "evidence": [
+        "e451",
+        "e455",
+        "e456",
+        "e460",
+        "e461",
+        "e462",
+        "e463",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b211",
+      "architecture": "runtime-backend",
+      "function": "runtime.control_replay",
+      "implementation": "i091",
+      "role": "Bevy可信ECS工具0.3.0执行同程序、jointbudget和稳定实例trace，不编译作者Rust。",
+      "evidence": [
+        "e451",
+        "e457",
+        "e458",
+        "e459",
+        "e460",
+        "e461",
+        "e462",
+        "e463",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b212",
+      "architecture": "ui",
+      "function": "runtime.control_replay",
+      "implementation": "i076",
+      "role": "独立回放/JSON editor按cap与plan/budget开放，消费host步骤观察和安全三语labels；旧runpayload保持。",
+      "evidence": [
+        "e451",
+        "e464",
+        "e465",
+        "e466",
+        "e467",
+        "e468",
+        "e469",
+        "e470",
+        "e471",
+        "e485",
+        "e486",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b213",
+      "architecture": "semantic-js",
+      "function": "runtime.instance_control",
+      "implementation": "i128",
+      "role": "schema2严格分离冻结、目标提前检查、双预算；原trace逐行准入共用，无移动模拟。",
+      "evidence": [
+        "e451",
+        "e452",
+        "e472",
+        "e473",
+        "e484",
+        "e485",
+        "e486",
+        "e487",
+        "e488",
+        "e489",
+        "e490",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b214",
+      "architecture": "semantic-js",
+      "function": "runtime.instance_control",
+      "implementation": "i127",
+      "role": "observer构造复用schema2 plan校验，fulltrace/control摘要与旧DTO保留，位置仍从后端准入帧记录。",
+      "evidence": [
+        "e451",
+        "e472",
+        "e473",
+        "e484",
+        "e485",
+        "e486",
+        "e487",
+        "e488",
+        "e489",
+        "e490",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b215",
+      "architecture": "node-service",
+      "function": "runtime.instance_control",
+      "implementation": "i120",
+      "role": "owned frozen实例目标缓存、双capability与SHA/样本绑定，未知目标提前拒绝；CLI16/256KiB和独立会话保持。",
+      "evidence": [
+        "e451",
+        "e474",
+        "e475",
+        "e476",
+        "e477",
+        "e478",
+        "e484",
+        "e485",
+        "e486",
+        "e487",
+        "e488",
+        "e489",
+        "e490",
+        "e480",
+        "e481",
+        "e482",
+        "e483",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b216",
+      "architecture": "runtime-backend",
+      "function": "runtime.instance_control",
+      "implementation": "i129",
+      "role": "Godot0.5.0可信GDS control driver按step instanceId路由与release未列，旧生成/行为文件字节保持。",
+      "evidence": [
+        "e451",
+        "e455",
+        "e456",
+        "e474",
+        "e475",
+        "e476",
+        "e477",
+        "e484",
+        "e485",
+        "e486",
+        "e487",
+        "e488",
+        "e489",
+        "e490",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b217",
+      "architecture": "runtime-backend",
+      "function": "runtime.instance_control",
+      "implementation": "i091",
+      "role": "Bevy0.3.0可信ECS工具按稳定instanceId每步方向与release，独立验证原生输入/预算，不编译作者Rust。",
+      "evidence": [
+        "e451",
+        "e457",
+        "e458",
+        "e474",
+        "e475",
+        "e479",
+        "e484",
+        "e485",
+        "e486",
+        "e487",
+        "e488",
+        "e489",
+        "e490",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
+      ]
+    },
+    {
+      "id": "b218",
+      "architecture": "ui",
+      "function": "runtime.instance_control",
+      "implementation": "i076",
+      "role": "当前ownedbuild目标列表（末尾UUID短标识在前，title及value完整）、显式生成schema2示例与JSON保留、未知实例本地拒绝、三语提示和完整步骤观察。",
+      "evidence": [
+        "e451",
+        "e464",
+        "e465",
+        "e478",
+        "e484",
+        "e485",
+        "e486",
+        "e487",
+        "e488",
+        "e489",
+        "e490",
+        "e480",
+        "e481",
+        "e482",
+        "e483",
+        "e491",
+        "e492",
+        "e497",
+        "e498"
       ]
     }
   ],
@@ -8931,7 +10504,7 @@
         "delivery"
       ],
       "value": 3,
-      "reason": "相应能力已纳入0.0.7源码版本，发布前实际验证见发行报告；本轮没有制作或验收新的Tauri/Android安装产物，旧安装证据不能提升本次交付等级。"
+      "reason": "分发与归档修复纳入0.0.8源码；本次准备清单/有限模块运行与临时source快照按独立报告验收，无新安装产物/设备或远端CI实跑。"
     },
     {
       "coordinates": [
@@ -8971,7 +10544,7 @@
         "delivery"
       ],
       "value": 3,
-      "reason": "相应能力已纳入0.0.7源码版本，发布前实际验证见发行报告；本轮没有制作或验收新的Tauri/Android安装产物，旧安装证据不能提升本次交付等级。"
+      "reason": "分发与归档修复纳入0.0.8源码；本次准备清单/有限模块运行与临时source快照按独立报告验收，无新安装产物/设备或远端CI实跑。"
     },
     {
       "coordinates": [
@@ -9011,7 +10584,7 @@
         "delivery"
       ],
       "value": 3,
-      "reason": "相应能力已纳入0.0.7源码版本，发布前实际验证见发行报告；本轮没有制作或验收新的Tauri/Android安装产物，旧安装证据不能提升本次交付等级。"
+      "reason": "分发与归档修复纳入0.0.8源码；本次准备清单/有限模块运行与临时source快照按独立报告验收，无新安装产物/设备或远端CI实跑。"
     },
     {
       "coordinates": [
@@ -10100,8 +11673,8 @@
         "i091",
         "implementation"
       ],
-      "value": 1,
-      "reason": "已有设计方向，但无产品实现。"
+      "value": 4,
+      "reason": "本轮所声明的无图计划、真实ECS/实例、准入与冻结执行接入；不把作者Rust/资源/图形规划算作实现。"
     },
     {
       "coordinates": [
@@ -10110,8 +11683,8 @@
         "i091",
         "verification"
       ],
-      "value": 0,
-      "reason": "没有该目标能力的可执行产品验证。"
+      "value": 4,
+      "reason": "真实Bevy/Rust、同plan Godot比较、冻结/CLI/服务、浏览器及准备资源形成受限流程证据；无图片/窗口/作者Rust或安装/设备验收。"
     },
     {
       "coordinates": [
@@ -10120,8 +11693,8 @@
         "i091",
         "decoupling"
       ],
-      "value": null,
-      "reason": "尚无实现，不能给解耦打分。"
+      "value": 3,
+      "reason": "规则、可信host、具体adapter与Rust运行程序分别有显式边界；无引擎命令进入通用executor，仍按实际复用证据评分。"
     },
     {
       "coordinates": [
@@ -10130,8 +11703,8 @@
         "i091",
         "delivery"
       ],
-      "value": 0,
-      "reason": "尚无产品交付。"
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
     },
     {
       "coordinates": [
@@ -12772,6 +14345,1646 @@
       ],
       "value": 3,
       "reason": "相应能力已纳入0.0.7源码版本，发布前实际验证见发行报告；本轮没有制作或验收新的Tauri/Android安装产物，旧安装证据不能提升本次交付等级。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition",
+        "i111",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "共享纯组合及源码派生依赖已被普通文档保存/迁移、只读CLI和saved/draft配方预览消费；覆盖写回仍待实现，不宣称完整剧本创作闭环。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition",
+        "i111",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition",
+        "i111",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "同一无状态Rust组合实现已通过60次原生/WASM对照，桌面/移动打包的WASM隔离复用通过；纯规则不依赖宿主/World/渲染。未接第三方替换或原生GUI。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition",
+        "i111",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i112",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "共享纯组合及源码派生依赖已被普通文档保存/迁移、只读CLI和saved/draft配方预览消费；覆盖写回仍待实现，不宣称完整剧本创作闭环。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i112",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i112",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯组合、可移植协议桥与Node只读I/O职责显式分开；输出旧v3，不向核心引入宿主或运行后端。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i112",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i113",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "共享纯组合及源码派生依赖已被普通文档保存/迁移、只读CLI和saved/draft配方预览消费；覆盖写回仍待实现，不宣称完整剧本创作闭环。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i113",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i113",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯组合、可移植协议桥与Node只读I/O职责显式分开；输出旧v3，不向核心引入宿主或运行后端。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i113",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i114",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "共享纯组合及源码派生依赖已被普通文档保存/迁移、只读CLI和saved/draft配方预览消费；覆盖写回仍待实现，不宣称完整剧本创作闭环。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i114",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i114",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "便携识别/派生与Node字节/目录/归档适配分离，Rust仍是配方唯一组合校验器；没有新World事务或渲染依赖。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i114",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i040",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "共享纯组合及源码派生依赖已被普通文档保存/迁移、只读CLI和saved/draft配方预览消费；覆盖写回仍待实现，不宣称完整剧本创作闭环。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i040",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i040",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "便携识别/派生与Node字节/目录/归档适配分离，Rust仍是配方唯一组合校验器；没有新World事务或渲染依赖。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i040",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i115",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已接普通已登记配方保存态/当前未保存原文的只读预览与真实贡献定位；单实例覆盖另经独立草稿补丁与普通保存，共享模板创作和多文件提交仍未实现。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i115",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i115",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯克隆观察/模型/来源映射复用既有Rust规则与Scene2D语义，不引入宿主I/O或渲染。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i115",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i073",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已接普通已登记配方保存态/当前未保存原文的只读预览与真实贡献定位；单实例覆盖另经独立草稿补丁与普通保存，共享模板创作和多文件提交仍未实现。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i073",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i073",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "复用纯模型结果，Node源fence/图片缓存与UI渲染/导航分工明确；未宣称替换宿主或目标设备可用。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i073",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i080",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已接普通已登记配方保存态/当前未保存原文的只读预览与真实贡献定位；单实例覆盖另经独立草稿补丁与普通保存，共享模板创作和多文件提交仍未实现。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i080",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i080",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "复用纯模型结果，Node源fence/图片缓存与UI渲染/导航分工明确；未宣称替换宿主或目标设备可用。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i080",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i077",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已接普通已登记配方保存态/当前未保存原文的只读预览与真实贡献定位；单实例覆盖另经独立草稿补丁与普通保存，共享模板创作和多文件提交仍未实现。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i077",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i077",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "复用纯模型结果，Node源fence/图片缓存与UI渲染/导航分工明确；未宣称替换宿主或目标设备可用。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition",
+        "i077",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition",
+        "i102",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已接普通已登记配方保存态/当前未保存原文的只读预览与真实贡献定位；单实例覆盖另经独立草稿补丁与普通保存，共享模板创作和多文件提交仍未实现。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition",
+        "i102",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition",
+        "i102",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "复用纯模型结果，Node源fence/图片缓存与UI渲染/导航分工明确；未宣称替换宿主或目标设备可用。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition",
+        "i102",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition",
+        "i116",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "六字段set与三种插入分支形成明确单目标补丁；来源和普通保存边界已接，共享片段/reset/拖动/跨文件仍未接。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition",
+        "i116",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition",
+        "i116",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "Rust无状态规则跨原生/WASM共用；纯提案、宿主完整校验/内存应用与视图职责独立，文件保存沿旧编辑器。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition",
+        "i116",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i117",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "六字段set与三种插入分支形成明确单目标补丁；来源和普通保存边界已接，共享片段/reset/拖动/跨文件仍未接。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i117",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i117",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "Rust无状态规则跨原生/WASM共用；纯提案、宿主完整校验/内存应用与视图职责独立，文件保存沿旧编辑器。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition",
+        "i117",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition",
+        "i118",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "六字段set与三种插入分支形成明确单目标补丁；来源和普通保存边界已接，共享片段/reset/拖动/跨文件仍未接。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition",
+        "i118",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "最终应用1548全部通过/0跳过、350JS、Rust75；55实际native/WASM对照/17坏回执，新增纯提案/host/parent/UI专项、Chrome6步11捕获和打包68/64/110通过。跨模块验证保守计3；安装和设备未验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition",
+        "i118",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "Rust无状态规则跨原生/WASM共用；纯提案、宿主完整校验/内存应用与视图职责独立，文件保存沿旧编辑器。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition",
+        "i118",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "execution.backend_middleware",
+        "i119",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "纯descriptor、可信host/通用executor、具体Godot/Bevy adapter和既有UI形成当前声明的受限主链及拒绝分支；无任意作者Rust/BRP/渲染/GPU。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "execution.backend_middleware",
+        "i119",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮专项、真实Godot及Chrome和打包资源验证对应范围；替代夹具只证明host契约，新安装/目标设备未验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "execution.backend_middleware",
+        "i119",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "同一纯数据能力模块在桌面Node、浏览器和无Node移动隔离目标复用；不依赖DOM、宿主I/O或具体引擎。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "execution.backend_middleware",
+        "i119",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "execution.backend_middleware",
+        "i120",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "纯descriptor、可信host/通用executor、具体Godot/Bevy adapter和既有UI形成当前声明的受限主链及拒绝分支；无任意作者Rust/BRP/渲染/GPU。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "execution.backend_middleware",
+        "i120",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮专项、真实Godot及Chrome和打包资源验证对应范围；替代夹具只证明host契约，新安装/目标设备未验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "execution.backend_middleware",
+        "i120",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "可信通用executor已有Godot与真实Bevy两种工具/阶段/产物消费，冻结回放与数据身份不包含引擎CLI约定。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "execution.backend_middleware",
+        "i120",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "execution.backend_middleware",
+        "i121",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "纯descriptor、可信host/通用executor、具体Godot/Bevy adapter和既有UI形成当前声明的受限主链及拒绝分支；无任意作者Rust/BRP/渲染/GPU。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "execution.backend_middleware",
+        "i121",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮专项、真实Godot及Chrome和打包资源验证对应范围；替代夹具只证明host契约，新安装/目标设备未验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "execution.backend_middleware",
+        "i121",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "具体Godot实现通过显式宿主接口工作，历史生成/运行分支保持；仍是Linux单引擎实现，无第二真实后端。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "execution.backend_middleware",
+        "i121",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "execution.backend_middleware",
+        "i076",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "纯descriptor、可信host/通用executor、具体Godot/Bevy adapter和既有UI形成当前声明的受限主链及拒绝分支；无任意作者Rust/BRP/渲染/GPU。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "execution.backend_middleware",
+        "i076",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮专项、真实Godot及Chrome和打包资源验证对应范围；替代夹具只证明host契约，新安装/目标设备未验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "execution.backend_middleware",
+        "i076",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "UI复用纯能力检查与服务身份接口，状态和审批仍由JS工作台负责；无Rust流程或跨宿主运行视口。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "execution.backend_middleware",
+        "i076",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.scene_runtime",
+        "i122",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "所声明的注册、计划、执行、诊断和迁移已形成受限主链与拒绝分支；不含参数表单/热更新/第二引擎。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.scene_runtime",
+        "i122",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "最终1648应用回归含新增55项；对应真实Godot、Chrome5步和打包资源验证通过，环境与未验安装/设备边界明确。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.scene_runtime",
+        "i122",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "同一纯清单/规划规则在Node与移动准备树无Node/DOM隔离环境实际执行，计划逐字段一致；不代表Android执行服务或第二真实后端。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "behavior.scene_runtime",
+        "i122",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.scene_runtime",
+        "i120",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "所声明的注册、计划、执行、诊断和迁移已形成受限主链与拒绝分支；不含参数表单/热更新/第二引擎。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.scene_runtime",
+        "i120",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "最终1648应用回归含新增55项；对应真实Godot、Chrome5步和打包资源验证通过，环境与未验安装/设备边界明确。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.scene_runtime",
+        "i120",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯规则、可信host、Godot实现与UI通过明确DTO相接，仍无第二真实执行器或完整Rust语义迁移。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.scene_runtime",
+        "i120",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "behavior.scene_runtime",
+        "i123",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "所声明的注册、计划、执行、诊断和迁移已形成受限主链与拒绝分支；不含参数表单/热更新/第二引擎。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "behavior.scene_runtime",
+        "i123",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "最终1648应用回归含新增55项；对应真实Godot、Chrome5步和打包资源验证通过，环境与未验安装/设备边界明确。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "behavior.scene_runtime",
+        "i123",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯规则、可信host、Godot实现与UI通过明确DTO相接，仍无第二真实执行器或完整Rust语义迁移。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "behavior.scene_runtime",
+        "i123",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.scene_runtime",
+        "i076",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "所声明的注册、计划、执行、诊断和迁移已形成受限主链与拒绝分支；不含参数表单/热更新/第二引擎。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.scene_runtime",
+        "i076",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "最终1648应用回归含新增55项；对应真实Godot、Chrome5步和打包资源验证通过，环境与未验安装/设备边界明确。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.scene_runtime",
+        "i076",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯规则、可信host、Godot实现与UI通过明确DTO相接，仍无第二真实执行器或完整Rust语义迁移。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "behavior.scene_runtime",
+        "i076",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.scene_runtime",
+        "i040",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "所声明的注册、计划、执行、诊断和迁移已形成受限主链与拒绝分支；不含参数表单/热更新/第二引擎。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.scene_runtime",
+        "i040",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "最终1648应用回归含新增55项；对应真实Godot、Chrome5步和打包资源验证通过，环境与未验安装/设备边界明确。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.scene_runtime",
+        "i040",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯规则、可信host、Godot实现与UI通过明确DTO相接，仍无第二真实执行器或完整Rust语义迁移。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "behavior.scene_runtime",
+        "i040",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.bevy_rust",
+        "i124",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "本轮所声明的无图计划、真实ECS/实例、准入与冻结执行接入；不把作者Rust/资源/图形规划算作实现。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.bevy_rust",
+        "i124",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Bevy/Rust、同plan Godot比较、冻结/CLI/服务、浏览器及准备资源形成受限流程证据；无图片/窗口/作者Rust或安装/设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.bevy_rust",
+        "i124",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "同一中立事件模块准入实际Godot/Bevy的plan1/2日志，移动无Node/DOM环境也实际执行；旧Godot读取器不改。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.bevy_rust",
+        "i124",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.bevy_rust",
+        "i125",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "本轮所声明的无图计划、真实ECS/实例、准入与冻结执行接入；不把作者Rust/资源/图形规划算作实现。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.bevy_rust",
+        "i125",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Bevy/Rust、同plan Godot比较、冻结/CLI/服务、浏览器及准备资源形成受限流程证据；无图片/窗口/作者Rust或安装/设备验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.bevy_rust",
+        "i125",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "规则、可信host、具体adapter与Rust运行程序分别有显式边界；无引擎命令进入通用executor，仍按实际复用证据评分。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.bevy_rust",
+        "i125",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.bevy_rust",
+        "i126",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "本轮所声明的无图计划、真实ECS/实例、准入与冻结执行接入；不把作者Rust/资源/图形规划算作实现。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.bevy_rust",
+        "i126",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Bevy/Rust、同plan Godot比较、冻结/CLI/服务、浏览器及准备资源形成受限流程证据；无图片/窗口/作者Rust或安装/设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.bevy_rust",
+        "i126",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "同一host/CLI/executor由真实Godot与Bevy消费，工具选择来自可信本机配置，输出/回放/HTTP路径边界共用。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.bevy_rust",
+        "i126",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.bevy_rust",
+        "i076",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "现有UI按完整descriptor消费真实Bevy任务与事件；禁window、dirty/caret/会话守护保持，没有新渲染器或后端选择器。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.bevy_rust",
+        "i076",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "Chrome5步、3Bevy任务与独立默认Godotplan、三语390px/HTTP422/作者原字节实际验证，未验收Tauri或Android。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.bevy_rust",
+        "i076",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "UI只消费capabilities与host任务结果，不解析Bevy场景或运行Rust；实际执行/身份和产物检查属于宿主。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.bevy_rust",
+        "i076",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.objects_inspection",
+        "i127",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "所声明的固定身份、启动/结束/过期样本、只读查询与工作台形成闭环，错误和取消保留最后观察；不含实时采样/反射/RPC。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.objects_inspection",
+        "i127",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯核心、真实双引擎同计划/行为协议3、冻结离线/取消与UI专项，真实Chrome及准备资源分别记录；未验安装或设备。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.objects_inspection",
+        "i127",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "同一纯观察消费实际Godot/Bevy既有事件，host/界面通过独立数据契约相接；不携引擎Entity或反射依赖。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.objects_inspection",
+        "i127",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.objects_inspection",
+        "i120",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "所声明的固定身份、启动/结束/过期样本、只读查询与工作台形成闭环，错误和取消保留最后观察；不含实时采样/反射/RPC。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.objects_inspection",
+        "i120",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯核心、真实双引擎同计划/行为协议3、冻结离线/取消与UI专项，真实Chrome及准备资源分别记录；未验安装或设备。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.objects_inspection",
+        "i120",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "同一纯观察消费实际Godot/Bevy既有事件，host/界面通过独立数据契约相接；不携引擎Entity或反射依赖。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.objects_inspection",
+        "i120",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.objects_inspection",
+        "i076",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "所声明的固定身份、启动/结束/过期样本、只读查询与工作台形成闭环，错误和取消保留最后观察；不含实时采样/反射/RPC。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.objects_inspection",
+        "i076",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯核心、真实双引擎同计划/行为协议3、冻结离线/取消与UI专项，真实Chrome及准备资源分别记录；未验安装或设备。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.objects_inspection",
+        "i076",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "UI只消费host观察和纯query校验，过滤/渲染/source导航与引擎执行独立；仍绑定现有Web界面。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.objects_inspection",
+        "i076",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.control_replay",
+        "i128",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "有限数据/步骤采样范围已接入；没有通用实时输入、作者行为或图形能力。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.control_replay",
+        "i128",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "上一轮schema1全局条件保留；当前Godot0.5.0/Bevy0.3.0实际36engine/7CLI、1774全量、Chrome8及prepared10offline包含普通与global兼容复验；新增实例另记runtime.instance_control。范围仍有限代表样例，非实时/渲染/作者Rust/安装设备。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.control_replay",
+        "i128",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "方向与完整样本使用中立数据，所有权/会话由宿主负责，具体移动只在对应后端，UI只消费观察。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.control_replay",
+        "i128",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.control_replay",
+        "i127",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "有限数据/步骤采样范围已接入；没有通用实时输入、作者行为或图形能力。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.control_replay",
+        "i127",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "上一轮schema1全局条件保留；当前Godot0.5.0/Bevy0.3.0实际36engine/7CLI、1774全量、Chrome8及prepared10offline包含普通与global兼容复验；新增实例另记runtime.instance_control。范围仍有限代表样例，非实时/渲染/作者Rust/安装设备。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.control_replay",
+        "i127",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "方向与完整样本使用中立数据，所有权/会话由宿主负责，具体移动只在对应后端，UI只消费观察。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.control_replay",
+        "i127",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.control_replay",
+        "i120",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "有限数据/步骤采样范围已接入；没有通用实时输入、作者行为或图形能力。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.control_replay",
+        "i120",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "上一轮schema1全局条件保留；当前Godot0.5.0/Bevy0.3.0实际36engine/7CLI、1774全量、Chrome8及prepared10offline包含普通与global兼容复验；新增实例另记runtime.instance_control。范围仍有限代表样例，非实时/渲染/作者Rust/安装设备。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.control_replay",
+        "i120",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "方向与完整样本使用中立数据，所有权/会话由宿主负责，具体移动只在对应后端，UI只消费观察。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.control_replay",
+        "i120",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.control_replay",
+        "i129",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "有限数据/步骤采样范围已接入；没有通用实时输入、作者行为或图形能力。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.control_replay",
+        "i129",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "上一轮schema1全局条件保留；当前Godot0.5.0/Bevy0.3.0实际36engine/7CLI、1774全量、Chrome8及prepared10offline包含普通与global兼容复验；新增实例另记runtime.instance_control。范围仍有限代表样例，非实时/渲染/作者Rust/安装设备。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.control_replay",
+        "i129",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "方向与完整样本使用中立数据，所有权/会话由宿主负责，具体移动只在对应后端，UI只消费观察。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.control_replay",
+        "i129",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.control_replay",
+        "i091",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "有限数据/步骤采样范围已接入；没有通用实时输入、作者行为或图形能力。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.control_replay",
+        "i091",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "上一轮schema1全局条件保留；当前Godot0.5.0/Bevy0.3.0实际36engine/7CLI、1774全量、Chrome8及prepared10offline包含普通与global兼容复验；新增实例另记runtime.instance_control。范围仍有限代表样例，非实时/渲染/作者Rust/安装设备。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.control_replay",
+        "i091",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "方向与完整样本使用中立数据，所有权/会话由宿主负责，具体移动只在对应后端，UI只消费观察。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.control_replay",
+        "i091",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.control_replay",
+        "i076",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "有限数据/步骤采样范围已接入；没有通用实时输入、作者行为或图形能力。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.control_replay",
+        "i076",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "上一轮schema1全局条件保留；当前Godot0.5.0/Bevy0.3.0实际36engine/7CLI、1774全量、Chrome8及prepared10offline包含普通与global兼容复验；新增实例另记runtime.instance_control。范围仍有限代表样例，非实时/渲染/作者Rust/安装设备。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.control_replay",
+        "i076",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "方向与完整样本使用中立数据，所有权/会话由宿主负责，具体移动只在对应后端，UI只消费观察。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.control_replay",
+        "i076",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.instance_control",
+        "i128",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "窄范围schema2实例路由已接入，共用完整trace/观察；不扩大为实时或图形能力。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.instance_control",
+        "i128",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "本轮pure45、实际Godot/Bevy engine36、CLI7、host/UI69、标签42、Rust25、Chrome8流程与prepared10offline/4pure有明确证据；仅有限实例/方向代表场景，非连续实时、任意规模、图形、作者Rust或安装设备。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.instance_control",
+        "i128",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "共享稳定instanceId与方向纯数据；middleware验证而不模拟，各runtime自行路由，宿主独占会话与文件副作用，UI仅生成明确输入和消费观察。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.instance_control",
+        "i128",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.instance_control",
+        "i127",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "窄范围schema2实例路由已接入，共用完整trace/观察；不扩大为实时或图形能力。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.instance_control",
+        "i127",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "本轮pure45、实际Godot/Bevy engine36、CLI7、host/UI69、标签42、Rust25、Chrome8流程与prepared10offline/4pure有明确证据；仅有限实例/方向代表场景，非连续实时、任意规模、图形、作者Rust或安装设备。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.instance_control",
+        "i127",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "共享稳定instanceId与方向纯数据；middleware验证而不模拟，各runtime自行路由，宿主独占会话与文件副作用，UI仅生成明确输入和消费观察。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.instance_control",
+        "i127",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.instance_control",
+        "i120",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "窄范围schema2实例路由已接入，共用完整trace/观察；不扩大为实时或图形能力。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.instance_control",
+        "i120",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "本轮pure45、实际Godot/Bevy engine36、CLI7、host/UI69、标签42、Rust25、Chrome8流程与prepared10offline/4pure有明确证据；仅有限实例/方向代表场景，非连续实时、任意规模、图形、作者Rust或安装设备。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.instance_control",
+        "i120",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "共享稳定instanceId与方向纯数据；middleware验证而不模拟，各runtime自行路由，宿主独占会话与文件副作用，UI仅生成明确输入和消费观察。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.instance_control",
+        "i120",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.instance_control",
+        "i129",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "窄范围schema2实例路由已接入，共用完整trace/观察；不扩大为实时或图形能力。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.instance_control",
+        "i129",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "本轮pure45、实际Godot/Bevy engine36、CLI7、host/UI69、标签42、Rust25、Chrome8流程与prepared10offline/4pure有明确证据；仅有限实例/方向代表场景，非连续实时、任意规模、图形、作者Rust或安装设备。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.instance_control",
+        "i129",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "共享稳定instanceId与方向纯数据；middleware验证而不模拟，各runtime自行路由，宿主独占会话与文件副作用，UI仅生成明确输入和消费观察。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.instance_control",
+        "i129",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.instance_control",
+        "i091",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "窄范围schema2实例路由已接入，共用完整trace/观察；不扩大为实时或图形能力。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.instance_control",
+        "i091",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "本轮pure45、实际Godot/Bevy engine36、CLI7、host/UI69、标签42、Rust25、Chrome8流程与prepared10offline/4pure有明确证据；仅有限实例/方向代表场景，非连续实时、任意规模、图形、作者Rust或安装设备。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.instance_control",
+        "i091",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "共享稳定instanceId与方向纯数据；middleware验证而不模拟，各runtime自行路由，宿主独占会话与文件副作用，UI仅生成明确输入和消费观察。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.instance_control",
+        "i091",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.instance_control",
+        "i076",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "窄范围schema2实例路由已接入，共用完整trace/观察；不扩大为实时或图形能力。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.instance_control",
+        "i076",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "本轮pure45、实际Godot/Bevy engine36、CLI7、host/UI69、标签42、Rust25、Chrome8流程与prepared10offline/4pure有明确证据；仅有限实例/方向代表场景，非连续实时、任意规模、图形、作者Rust或安装设备。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.instance_control",
+        "i076",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "共享稳定instanceId与方向纯数据；middleware验证而不模拟，各runtime自行路由，宿主独占会话与文件副作用，UI仅生成明确输入和消费观察。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.instance_control",
+        "i076",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "相应累计能力纳入0.0.8源码版本提交/推送；本次实际1774全量与资源/版本收口见发行报告，历史专题仍原条件。无新安装、Tauri窗口或Android设备验收。"
     }
   ],
   "evidence": [
@@ -14958,6 +18171,834 @@
       "kind": "report",
       "path": "docs/test-results/release-0.0.7/results.json",
       "note": "0.0.7发布前实际应用、共享核心、桌面宿主和离线资源验证；本轮源码交付，不是新安装或设备验收。"
+    },
+    {
+      "id": "e365",
+      "kind": "source",
+      "path": "crates/viento-studio-core/src/scene_composition.rs",
+      "note": "recipe v1严格结构/身份映射/覆盖/组织关系及预算检查；无状态展开既有v3与JSON Pointer来源，不操作宿主或草稿表。"
+    },
+    {
+      "id": "e366",
+      "kind": "source",
+      "path": "engine/scene-composition.mjs",
+      "note": "可移植同步入口，调用共享Rust并返回分离场景/来源结果；不提供JS算法回退、I/O或登记。"
+    },
+    {
+      "id": "e367",
+      "kind": "source",
+      "path": "scripts/scene-compose.mjs",
+      "note": "有界独立文件或已登记World快照读取，当前源修订守护/声明依赖检查、原字节摘要与可选origin；仅scene/bundle stdout，不保存/注册/执行。"
+    },
+    {
+      "id": "e368",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition.test.mjs",
+      "note": "新组合契约、稳定身份/覆盖/来源/错误/预算、真实native/WASM、CLI和临时scene.create/构建集成；实际执行范围见同轮报告。"
+    },
+    {
+      "id": "e369",
+      "kind": "design",
+      "path": "docs/SCENE_COMPOSITION.md",
+      "note": "recipe/稳定身份/展开来源、保存迁移、贡献导航和单实例六字段覆盖契约；独立保真草稿补丁再普通保存，不授权生成坐标直写，无共享片段编辑/reset/跨文件事务。"
+    },
+    {
+      "id": "e370",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition/results.json",
+      "note": "最终应用1371通过/19旧原生辅助环境跳过，333JS；Rust63，组合18全过含57invalid/60native-WASM与真实Godot、包往返及归档；打包61/59文件和各7模块通过。仅实验，不代表配方GUI或设备验收。"
+    },
+    {
+      "id": "e371",
+      "kind": "source",
+      "path": "examples/scene-composition/recipe.json",
+      "note": "同一两演员/两层组织片段放置两次，共享定义/图片，显式四实例/四组身份及第二队局部位置/颜色/速度/控制覆盖。"
+    },
+    {
+      "id": "e372",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition/packaged-resources.json",
+      "note": "最终桥接来源归属修正后，desktop61/mobile59文件摘要及两套各7模块隔离运行通过；相同263790字节WASM、组合4演员/4组及旧源码/几何操作。不等于Android功能接入或安装/设备验收。"
+    },
+    {
+      "id": "e373",
+      "kind": "source",
+      "path": "engine/scene-composition-document.mjs",
+      "note": "顶层格式识别、共享Rust严格校验后的全部声明依赖派生；只读目标存在/自引用/嵌套配方/图片类别检查，不写metadata。"
+    },
+    {
+      "id": "e374",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-document.test.mjs",
+      "note": "10项纯文档识别、删除format退出、malformed/escaped marker、Rust校验与不可用核心、unused/shadowed/override union及只读依赖类型/缺失检查。"
+    },
+    {
+      "id": "e375",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-workflow.test.mjs",
+      "note": "隔离工程普通登记保存/冲突、当前原文依赖、包迁移/requirements/伪造清单、invalid正文备份及只读CLI集成；实际执行范围见本轮报告。"
+    },
+    {
+      "id": "e376",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-workflow/results.json",
+      "note": "本轮应用1464全通过/无跳过，336JS及后补浏览器脚本单独语法检查；原生归档/移动存储/Godot、实际打包链路及Chrome5步普通配方编辑迁移通过。没有专用配方预览/覆盖UI或安装/设备验收。"
+    },
+    {
+      "id": "e377",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-workflow/packaged-resources.json",
+      "note": "实际打包桌面CLI/选择式包往返与移动隔离模块/原生存储桥编辑、冲突、归档返桌面；保留recipe原文和身份。没有新增选择式包移动UI、安装或Android设备验收。"
+    },
+    {
+      "id": "e378",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-workflow-smoke.mjs",
+      "note": "真实Chrome/HTTP普通配方新建/源码编辑、自动选择依赖、下载及日文目标导入；临时工程逐字节/身份/元数据/错误面板检查，拒绝覆盖旧报告。"
+    },
+    {
+      "id": "e379",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-workflow/browser/browser.json",
+      "note": "Chrome154实际5步通过：中文普通新建/源码保存、5条依赖选择与下载、日文导入；正文/metadata/UUID/图片字节及重建索引核对，Runtime异常0与UI错误面板为空。只验证原有编辑/资源包界面，不代表新配方预览或覆盖GUI。"
+    },
+    {
+      "id": "e380",
+      "kind": "source",
+      "path": "engine/scene-composition-preview.mjs",
+      "note": "纯已登记配方预览：复用Rust展开、全部声明依赖检查及原v3模型，内部合并依赖后映射真实来源，不返回观察/snapshot/写入权限。"
+    },
+    {
+      "id": "e381",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-preview.test.mjs",
+      "note": "12项纯引擎保存态/draft overlay、投影复合尺寸、位置多贡献、UTF16范围、诊断映射、注册/版本/依赖失败与不可变输入/分离返回值。"
+    },
+    {
+      "id": "e382",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-preview-host.test.mjs",
+      "note": "配方saved/draft捕获、完整依赖/图片与前后源fence、HTTP清单/只读资源、构建隔离和真实作者目录不变；实际执行见本轮报告。"
+    },
+    {
+      "id": "e383",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-preview-ui.test.mjs",
+      "note": "预览与构建清单分离、配方响应身份守护、模板/覆盖/偏移/身份按钮、草稿保留及只读编辑入口；实际执行见本轮报告。"
+    },
+    {
+      "id": "e384",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-preview-smoke.mjs",
+      "note": "隔离Chrome与真实HTTP saved/draft预览：真实图片像素、六类贡献导航、无效/冲突/延迟保护、三语390px、SVG脚本/外联防线及作者inventory不变。"
+    },
+    {
+      "id": "e385",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-preview/browser/browser.json",
+      "note": "Chrome实际7步通过；override/offset/template declaration/instance identity/scene.title/group.name真实精确选区且保留dirty；中英日390px、invalid/external409/delay/savedrefresh通过，Runtime异常0、SVG外联0、作者inventory不变。非安装或设备验收。"
+    },
+    {
+      "id": "e386",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-preview/results.json",
+      "note": "最终应用1494/1494通过0跳过，342JS/API/版本预检；纯引擎12、新宿主9/UI9，Chrome7步六类来源导航/草稿保护/三语窄屏，真实原生归档/移动/Godot与打包65/61文件。无写回/新安装/设备验收。"
+    },
+    {
+      "id": "e387",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-preview/packaged-resources.json",
+      "note": "实际desktop65/mobile61文件摘要；内置Node24.20.0 saved/draft服务及构建隔离、打包UI，移动无Node隔离106模块模型一致；每种模型88来源含74精确/14复合，无作者字节改变。移动预览GUI/设备未接。"
+    },
+    {
+      "id": "e388",
+      "kind": "source",
+      "path": "crates/viento-studio-core/src/scene_composition_patch.rs",
+      "note": "纯Rust无状态六字段set，稳定放置/局部键、前后完整展开、保留原字节的token替换和三类容器插入；12个Rust专项。"
+    },
+    {
+      "id": "e389",
+      "kind": "test",
+      "path": "scripts/tests/studio-core-composition-patch.test.mjs",
+      "note": "12项实际WASM/原生对照与桥接，55次请求对照、17种伪造回执拒绝；旧能力保留/会话独立/UTF8预算/目标及顺序核对。"
+    },
+    {
+      "id": "e390",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-overrides/core-bridge.log",
+      "note": "新核心桥接12/12通过0跳过；实际55次native/WASM请求及17种坏回执，运行范围限核心与bridge。"
+    },
+    {
+      "id": "e391",
+      "kind": "source",
+      "path": "engine/scene-composition-overrides.mjs",
+      "note": "create/propose/prepare绑定真实配方预览和原文，异步前分离数据，只写实际改字段，摘要/基线/目标/精确Rust回执复验。"
+    },
+    {
+      "id": "e392",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-overrides.test.mjs",
+      "note": "有效保存/草稿模型、局部与绝对位置、插入/保真、六字段/继承、提案伪造及异步数据变更拒绝。"
+    },
+    {
+      "id": "e393",
+      "kind": "source",
+      "path": "web/modules/app-scene-composition-overrides.js",
+      "note": "独立实例覆盖表单、完整原文审阅、宿主候选检查后显式应用；取消/迟到/过期/能力及会话守护，中英日和图片友好标签。"
+    },
+    {
+      "id": "e394",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-overrides-ui.test.mjs",
+      "note": "覆盖表单数值/继承/图片、检查审批、取消与异步session/owner守护、晚改输入与语言消息完整性。"
+    },
+    {
+      "id": "e395",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-overrides-host.test.mjs",
+      "note": "主编辑器clean/dirty源码获取、Unicode行尾/选区/保存基线保留，异步live复核、旧提案重放与foreign身份拒绝。"
+    },
+    {
+      "id": "e396",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-overrides-bridge.test.mjs",
+      "note": "父构建预览控制器使用真实顶层资源目录，候选原文与预览身份检查、租约释放和close/reopen/晚到响应守护。"
+    },
+    {
+      "id": "e397",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-overrides-smoke.mjs",
+      "note": "隔离Chrome及本机HTTP单实例覆盖流程：审阅/草稿应用/普通保存/重开、原文及身份字节核对和三语窄屏失败保护。"
+    },
+    {
+      "id": "e398",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-overrides/browser/browser.json",
+      "note": "Chrome154真实6步11预览捕获：clean进入/取消、六字段单实例隔离、完整审阅/内存应用、stale拒绝、普通保存重开和外部冲突取消；三语390px，Runtime异常/SVG外联0，保存仅recipe改变。非包迁移、安装或设备验收。"
+    },
+    {
+      "id": "e399",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-overrides/results.json",
+      "note": "最终应用1548/1548通过0跳过，350JS，Rust75+fmt/clippy；新增54应用测试与全量重叠，55native/WASM对照/17坏回执。Chrome6步11捕获、实际打包68/64/110及1367历史保留；版本0.0.7未发布，无安装/设备验收。"
+    },
+    {
+      "id": "e400",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-overrides/packaged-resources.json",
+      "note": "实际desktop68/mobile64文件前后摘要稳定；内置Node24.20.0及移动隔离110模块检查saved/draft覆盖提案、完整预览、精确补丁一致和旧展开/source/几何undo-redo。覆盖后89位置含75精确/14复合；未接移动覆盖界面/设备。"
+    },
+    {
+      "id": "e401",
+      "kind": "source",
+      "path": "engine/backend-capabilities.mjs",
+      "note": "可移植、严格有界、分离冻结的纯数据描述符；分别检查七操作/平台/计划/功能需求；无宿主或Godot默认。"
+    },
+    {
+      "id": "e402",
+      "kind": "source",
+      "path": "scripts/adapters/node-execution-backends.mjs",
+      "note": "仅可信宿主注册实现；固定阶段/描述符，校验中立生成输出路径/碰撞/预算和独立适配指纹。"
+    },
+    {
+      "id": "e403",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "Godot执行适配器独占参数、环境、阶段/缓存与plan分派；旧生成器冻结，新增显式行为v3另有本轮验证。"
+    },
+    {
+      "id": "e404",
+      "kind": "test",
+      "path": "scripts/tests/backend-capabilities.test.mjs",
+      "note": "15项纯契约：严格DTO/访问器/预算/分离冻结，独立操作和源诊断，真实无Node/DOM隔离realm。"
+    },
+    {
+      "id": "e405",
+      "kind": "test",
+      "path": "scripts/tests/backend-middleware.test.mjs",
+      "note": "10项可信替代夹具与通用executor/service：中立资源/文件布局、能力拒绝、回放/指纹/legacy及输出路径碰撞；夹具不是产品第二引擎。"
+    },
+    {
+      "id": "e406",
+      "kind": "test",
+      "path": "scripts/tests/godot4-adapter.test.mjs",
+      "note": "11项Godot包装适配器：旧v1/v2生成文件/来源/后端摘要逐字节保持，async输入快照，阶段/执行模式/环境/清理/指纹。"
+    },
+    {
+      "id": "e407",
+      "kind": "test",
+      "path": "scripts/tests/backend-capability-ui.test.mjs",
+      "note": "新增9项界面：操作分别判断、未知/缺失描述符拒绝、变更撤销旧计划和产物、后端身份/迟到任务守护。"
+    },
+    {
+      "id": "e408",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "当前实现契约：纯数据能力、可信宿主实现与具体引擎分离；新指纹与显式旧Godot兼容，0.0.8源码/平台/未实现边界。"
+    },
+    {
+      "id": "e409",
+      "kind": "report",
+      "path": "docs/test-results/backend-middleware/results.json",
+      "note": "最终应用1593/1593、0skip、357JS与API/版本通过；新增45应用项已含全量，真实host41与UI154重叠；Chrome4步0异常、desktop74/mobile63与移动纯模块1；1432历史/7冻结文件不变，仅本轮7临时目录清理1.969GiB。工作树0.0.7无新安装/设备验收。"
+    },
+    {
+      "id": "e410",
+      "kind": "report",
+      "path": "docs/test-results/backend-middleware/browser/browser.json",
+      "note": "Chrome154+真实HTTP/Godot4步：构建/无头事件、实际Radeon680M窗口close/reopen/取消、精确源诊断和ja390px、dirty草稿/caret保留；0错误，作者原字节不变，非安装/Android验收。"
+    },
+    {
+      "id": "e411",
+      "kind": "report",
+      "path": "docs/test-results/backend-middleware/packaged-resources.json",
+      "note": "实际desktop74/mobile63文件摘要一致且执行前后稳定；包内Node24.20.0+真实Godot4.7.2构建/无头及无executionAdapter旧记录回放；移动只隔离1个纯能力模块，无Node/DOM，不含执行适配器、Android执行或UI验收。"
+    },
+    {
+      "id": "e412",
+      "kind": "source",
+      "path": "engine/scene-behaviors.mjs",
+      "note": "纯清单检查/显式关系解析/注册依赖/planDTO，无Node/DOM或GDS执行。"
+    },
+    {
+      "id": "e413",
+      "kind": "source",
+      "path": "scripts/backends/godot4-behaviors.mjs",
+      "note": "plan3工程/来源生成、诊断和可信事件读取；旧生成分支保留。"
+    },
+    {
+      "id": "e414",
+      "kind": "source",
+      "path": "scripts/backends/godot4/behavior-runtime.gd",
+      "note": "独立Node实例、实际export/signal反射和protocol3事件。"
+    },
+    {
+      "id": "e415",
+      "kind": "test",
+      "path": "scripts/tests/scene-behaviors.test.mjs",
+      "note": "17项纯规则/身份/闭包/预算；具体执行记录见本轮results。"
+    },
+    {
+      "id": "e416",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-packages.test.mjs",
+      "note": "10项包闭包/requirement/篡改/传递actor/并发与完整备份；不编译脚本。"
+    },
+    {
+      "id": "e417",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-workflow.test.mjs",
+      "note": "保存快照、旧计划/静态预览、HTTP、实际Godot/离线回放/精确诊断/取消。"
+    },
+    {
+      "id": "e418",
+      "kind": "test",
+      "path": "scripts/tests/godot4-behaviors.test.mjs",
+      "note": "生成与原字节源、参数/签名/生命周期/事件防伪，真实Godot条件按结果记录。"
+    },
+    {
+      "id": "e419",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-ui.test.mjs",
+      "note": "6项计数/文本安全事件/三语诊断/草稿保护；UI不执行脚本。"
+    },
+    {
+      "id": "e420",
+      "kind": "test",
+      "path": "scripts/tests/scene-behavior-smoke.mjs",
+      "note": "新空目录临时样例、真实HTTP/Chrome/Godot，5步和作者字节复原。"
+    },
+    {
+      "id": "e421",
+      "kind": "design",
+      "path": "docs/SCENE_BEHAVIORS.md",
+      "note": "0.0.8源码绑定格式、登记边、预算、脚本权限、来源和迁移契约。"
+    },
+    {
+      "id": "e422",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-runtime/results.json",
+      "note": "最终应用1648/1648、0fail/0skip、365JS/API/版本通过；新增55项已含全量，Godot23/UI67重叠；Chrome5步8任务0异常、desktop81/mobile64/移动84纯模块；1476历史与7冻结保持、78源码摘要复验、17样例Git可见；7临时目录回收1.828GiB。0.0.7未发布无新窗口/安装/设备验收。"
+    },
+    {
+      "id": "e423",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-runtime/browser/browser.json",
+      "note": "真实Chrome/Godot5步：两实例east40/west20、3语390px、参数run阶段诊断/精确字段、TXTcompile行、dirty/caret；0异常。"
+    },
+    {
+      "id": "e424",
+      "kind": "report",
+      "path": "docs/test-results/scene-behavior-runtime/packaged-resources.json",
+      "note": "最终实际desktop81/mobile64摘要前后稳定；内置Node24.20.0+Godot4.7.2构建/离线双事件；移动无Node/DOM构造并执行84纯模块，清单/计划/能力与桌面一致，无移动执行器/行为UI/设备。"
+    },
+    {
+      "id": "e425",
+      "kind": "design",
+      "path": "docs/BEVY_BACKEND.md",
+      "note": "0.0.8源码Bevy工具/计划/CLI/host/粒度与noimage等明确边界。"
+    },
+    {
+      "id": "e426",
+      "kind": "report",
+      "path": "docs/test-results/bevy-backend/runtime-proof.json",
+      "note": "锁Bevy0.19.1真实Rust14项与CLI，独立11.17MB二进制，不含渲染/window/wgpu执行依赖。"
+    },
+    {
+      "id": "e427",
+      "kind": "source",
+      "path": "engine/scene-runtime-events.mjs",
+      "note": "零import可移植plan1/2事件准入，导航取冻结计划。"
+    },
+    {
+      "id": "e428",
+      "kind": "test",
+      "path": "scripts/tests/scene-runtime-events.test.mjs",
+      "note": "协议/实例配对/生命周期/分块与预算的6项规则。"
+    },
+    {
+      "id": "e429",
+      "kind": "source",
+      "path": "scripts/backends/bevy-adapter.mjs",
+      "note": "noimage descriptor、精确可信工具身份、scene-check、headless与冻结fingerprint。"
+    },
+    {
+      "id": "e430",
+      "kind": "test",
+      "path": "scripts/tests/bevy-adapter.test.mjs",
+      "note": "13项实际数据生成/准入/工具/执行/cleanup，新旧作者身份不进引擎路径。"
+    },
+    {
+      "id": "e431",
+      "kind": "source",
+      "path": "scripts/adapters/node-execution-tool.mjs",
+      "note": "host配置固定已注册Godot/Bevy及工具env；HTTP不获工具选择权限。"
+    },
+    {
+      "id": "e432",
+      "kind": "report",
+      "path": "docs/test-results/bevy-backend/adapter-real-final.log",
+      "note": "真实Bevy适配器与中立事件19/19，0失败/跳过；不代替fullapp/UI/安装验收。"
+    },
+    {
+      "id": "e433",
+      "kind": "test",
+      "path": "scripts/tests/bevy-workflow.test.mjs",
+      "note": "6项真实host/CLI/冻结回放/取消，v1/v2同plan两引擎完整events相同，实际Godotstdout由中立reader复验。"
+    },
+    {
+      "id": "e434",
+      "kind": "report",
+      "path": "docs/test-results/bevy-backend/workflow-real-initial.log",
+      "note": "真实Godot/Bevy宿主工作流6/6，0fail/skip；已保存数据/冻结工具/产物与取消，非Rust作者行为或渲染。"
+    },
+    {
+      "id": "e435",
+      "kind": "report",
+      "path": "docs/test-results/bevy-backend/browser/browser.json",
+      "note": "Chrome5步/3Bevyjob+1独立默认Godotplan、0异常；390px中英日、禁window及HTTP422、dirty/caret/authorbytes。"
+    },
+    {
+      "id": "e436",
+      "kind": "test",
+      "path": "scripts/tests/bevy-smoke.mjs",
+      "note": "独立HTTP宿主与真实Chrome/Bevy ECS用户入口，新目录证据不覆盖旧Godot流程。"
+    },
+    {
+      "id": "e437",
+      "kind": "report",
+      "path": "docs/test-results/bevy-backend/packaged-resources.json",
+      "note": "实际desktop84/mobile65摘要稳定；内置Node24.20.0与两引擎plan1/2四离线会话相同；移动2构造/2执行纯模块接四实际stdout，无执行器或设备UI，Bevycrate/bin未bundle。"
+    },
+    {
+      "id": "e438",
+      "kind": "report",
+      "path": "docs/test-results/bevy-backend/results.json",
+      "note": "最终1673/1673、0fail/skip；373JS（initial372）/API/version；新25包含于全量、Rust14另计；Chrome5/3Bevy+1defaultGodotplan；prepared84/65/2纯模块/4offline；1531历史/9冻结、103sourcehash与9exampleGit可见；8目录2.241GiB，11.17MB工具缓存保留。0.0.7未发布，无渲染/Rust作者行为/安装/设备。"
+    },
+    {
+      "id": "e439",
+      "kind": "design",
+      "path": "docs/RUNTIME_OBJECTS.md",
+      "note": "当前workbench/采样/strict inspect DTO/任务所有权及中间层边界。"
+    },
+    {
+      "id": "e440",
+      "kind": "source",
+      "path": "engine/scene-runtime-query.mjs",
+      "note": "稳定actor/source视图、既有1/2/3事件与AND过滤；只导入purecontrol模块，为1/2可选增加control进度/完整步骤，旧DTO保持；无Node/DOM或具体引擎。"
+    },
+    {
+      "id": "e441",
+      "kind": "test",
+      "path": "scripts/tests/scene-runtime-query.test.mjs",
+      "note": "完整集合/身份/生命周期/采样失效/分离输出/来源守护/预算与legacy兼容。"
+    },
+    {
+      "id": "e442",
+      "kind": "report",
+      "path": "docs/test-results/runtime-object-inspection/core-query-final.log",
+      "note": "纯观察核心最终15/15，含长多行名称/合法逻辑路径、来源revision补齐与无Node/DOM隔离。"
+    },
+    {
+      "id": "e443",
+      "kind": "test",
+      "path": "scripts/tests/scene-runtime-query-host.test.mjs",
+      "note": "8项host包括真实Godot/Bevy同plan1/2、Godot3、CLI离线/cancel、128ring/strictinspect/response隔离。"
+    },
+    {
+      "id": "e444",
+      "kind": "report",
+      "path": "docs/test-results/runtime-object-inspection/host-real.log",
+      "note": "真实host最终8/8、0fail/skip，原生两tool均启用；simulation错误/timeout/throw与实际引擎/离线/取消分开。"
+    },
+    {
+      "id": "e445",
+      "kind": "test",
+      "path": "scripts/tests/scene-runtime-query-ui.test.mjs",
+      "note": "11项对象/采样/归属/检索/三语/安全文本/source异步/dirty/caret专项，旧34回归另有日志。"
+    },
+    {
+      "id": "e446",
+      "kind": "report",
+      "path": "docs/test-results/runtime-object-inspection/ui-final.log",
+      "note": "当前对象11+旧工作台34合计45/45通过，0skip；DOM证据不代替真实Chrome/安装验收。"
+    },
+    {
+      "id": "e447",
+      "kind": "test",
+      "path": "scripts/tests/runtime-object-smoke.mjs",
+      "note": "独立HTTP/实际Chrome/Bevy场景的运行对象、source、三语/390px、草稿与旧任务切换流程。"
+    },
+    {
+      "id": "e448",
+      "kind": "report",
+      "path": "docs/test-results/runtime-object-inspection/browser/browser.json",
+      "note": "真实Chrome7steps/3Bevy+3独立默认Godot服务任务/0异常，HTTPinspect+拒绝/localfilter/source/三语390px/dirty/caret/任务归属，作者原字节保持。"
+    },
+    {
+      "id": "e449",
+      "kind": "report",
+      "path": "docs/test-results/runtime-object-inspection/packaged-resources.json",
+      "note": "实际desktop86/mobile67副本，内置Node24.20.0/两引擎plan1/2四次离线观察与query一致；移动3纯模块复用，无执行器/UI/设备，既有Bevy工具外置不bundled。"
+    },
+    {
+      "id": "e450",
+      "kind": "report",
+      "path": "docs/test-results/runtime-object-inspection/results.json",
+      "note": "最终app1707/1707、0fail/skip，378JS/API/version0.0.7；新34含pure15/host8/UI11（新旧UI45）；Chrome7/6jobs/0异常，prepared86/67/3pure/4offline；1581历史/9冻结、109source、7目录1.828GiB，仅0.0.7未发布，无反射/RPC/安装/设备。"
+    },
+    {
+      "id": "e451",
+      "kind": "design",
+      "path": "docs/RUNTIME_CONTROL.md",
+      "note": "有限方向JSON/预算/CLI/HTTP/可选观察、实际适配器和工具版本；不表示实时或安装验收。"
+    },
+    {
+      "id": "e452",
+      "kind": "source",
+      "path": "engine/scene-control-program.mjs",
+      "note": "深冻结bool程序、联合1024预算、完整身份/step序/lifecycle/lastsample，逐行onRuntime/onSample，无I/O或引擎句柄。"
+    },
+    {
+      "id": "e453",
+      "kind": "test",
+      "path": "scripts/tests/scene-control-program.test.mjs",
+      "note": "新15项pure控制、非数据拒绝、联合预算、样本序列和旧DTO可选扩展；VM无Node/DOM。"
+    },
+    {
+      "id": "e454",
+      "kind": "report",
+      "path": "docs/test-results/runtime-control-replay/portable-tests.log",
+      "note": "36/36，0fail/skip；新15控制+旧15对象观察+旧6中立事件，含contradictoryfinished不覆盖样本及原序callback。"
+    },
+    {
+      "id": "e455",
+      "kind": "source",
+      "path": "scripts/backends/godot4/control-runtime.gd",
+      "note": "独立Godot可信固定步方向驱动、完整trace与生命周期；旧runtime生成/行为文件保持。"
+    },
+    {
+      "id": "e456",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "Godot0.4.0 capability与可选program，仅headless1/2，wx暂存/清理独立驱动与程序。"
+    },
+    {
+      "id": "e457",
+      "kind": "source",
+      "path": "crates/viento-bevy-runtime/src/main.rs",
+      "note": "Bevy可信工具0.2.0 ECS消费同有限方向程序及trace，联合预算、有限f64和actor稳定身份。"
+    },
+    {
+      "id": "e458",
+      "kind": "source",
+      "path": "scripts/backends/bevy-adapter.mjs",
+      "note": "Bevy0.2.0精确tool identity/SHA、有限控制参数与独立会话程序，不导入Godot。"
+    },
+    {
+      "id": "e459",
+      "kind": "report",
+      "path": "docs/test-results/runtime-control-replay/runtime-proof.json",
+      "note": "升级可信Bevy工具Rust20/20、fmt/clippy及依赖范围；与旧0.1.0首轮14项分别记录。"
+    },
+    {
+      "id": "e460",
+      "kind": "test",
+      "path": "scripts/tests/runtime-control-backends.test.mjs",
+      "note": "真实Godot/Bevy同plan1/2方向/相反/斜向/none/零速与原默认smoke、旧图片初始化。"
+    },
+    {
+      "id": "e461",
+      "kind": "report",
+      "path": "docs/test-results/runtime-control-replay/engine-tests-final.log",
+      "note": "32/32含8项新实际控制后端，0fail/skip；代表浮点位置用容差比较，不声称任意物理逐位相等。"
+    },
+    {
+      "id": "e462",
+      "kind": "test",
+      "path": "scripts/tests/scene-control-cli.test.mjs",
+      "note": "有限控制CLI模式/文件边界和两真实引擎冻结离线回放、原构建与作者原字节。"
+    },
+    {
+      "id": "e463",
+      "kind": "report",
+      "path": "docs/test-results/runtime-control-replay/cli-tests-final.log",
+      "note": "4/4，0fail/skip；Godot与Bevy实际控制CLI离线运行，不重读作者工程。"
+    },
+    {
+      "id": "e464",
+      "kind": "test",
+      "path": "scripts/tests/scene-control-host.test.mjs",
+      "note": "strict HTTP可选controlProgram/headless/cap/schema/joint1024及typedprogress/session/取消最后样本。"
+    },
+    {
+      "id": "e465",
+      "kind": "test",
+      "path": "scripts/tests/scene-control-ui.test.mjs",
+      "note": "独立回放按钮/JSON编辑、错误保输入、进度/step1based和三语、旧payload、behavior/cap/dirty归属。"
+    },
+    {
+      "id": "e466",
+      "kind": "report",
+      "path": "docs/test-results/runtime-control-replay/host-ui-tests.log",
+      "note": "47/47，0fail/skip；新12控制host/UI与相邻旧对象/工作台测试，DOM不代替实际Chrome。"
+    },
+    {
+      "id": "e467",
+      "kind": "test",
+      "path": "scripts/tests/control-replay-smoke.mjs",
+      "note": "真实Chrome/HTTP/Bevy控制编辑、步骤/inspect、三语390px、草稿、旧默认Godot和作者字节。"
+    },
+    {
+      "id": "e468",
+      "kind": "report",
+      "path": "docs/test-results/runtime-control-replay/browser-final/browser.json",
+      "note": "Chrome8steps/4Bevy+4独立默认Godot服务任务/0异常；控制编辑/进度/HTTP严格拒绝、三语390px、来源/draft/caret、作者字节；无Tauri窗口或设备。"
+    },
+    {
+      "id": "e469",
+      "kind": "report",
+      "path": "docs/test-results/runtime-control-replay/packaged-resources.json",
+      "note": "实际desktop89/mobile68摘要稳定；内置Node两引擎plan1/2普通+控制8离线会话，移动4pure模块；没有Android执行器/UI/设备，Bevybin不bundle。"
+    },
+    {
+      "id": "e470",
+      "kind": "report",
+      "path": "docs/test-results/runtime-control-replay/results.json",
+      "note": "最终app1746/1746、0fail/skip/cancel、385JS/API/version0.0.7；新39含全量（pure15/engine8/hostUI12/CLI4）；Rust20+fmt/clippy、Chrome8/8jobs、prepared89/68/8offline/4pure；1612history/9frozen/120sources、8generated2.239GiB；旧/新Bevytool保留，无install或设备。"
+    },
+    {
+      "id": "e471",
+      "kind": "report",
+      "path": "docs/test-results/runtime-control-replay/boundary-findings.json",
+      "note": "上一轮全局控制25files范围review：program/trace/lifecycle/observer、strictheadless、sessionwx/clean与工具/源/产物边界，未发现开放问题；不把审查当作形式证明或所有未来能力覆盖。"
+    },
+    {
+      "id": "e472",
+      "kind": "test",
+      "path": "scripts/tests/scene-instance-control.test.mjs",
+      "note": "新增9：严格schema2分离冻结、稀疏/lastrelease、两项1024预算、真实instance集合/定义不冒充、plan1拒绝、trace/observer原形状与无Node/DOM VM。 合法11/64×128大输入在deepcopy防御前统一rowlimit诊断，descriptor-only预算预检不执行访问器。"
+    },
+    {
+      "id": "e473",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/portable-tests-final.log",
+      "note": "本轮最终pure45/45、无失败/跳过；9新instance+15globalcontrol+15query+6neutral events，初始44报告保留，不代表具体引擎移动数学验收。"
+    },
+    {
+      "id": "e474",
+      "kind": "test",
+      "path": "scripts/tests/runtime-instance-backends.test.mjs",
+      "note": "真实双引擎plan2稀疏不同实例方向、未列逐步释放、边界/冻结原字节；工具须当前精确身份。"
+    },
+    {
+      "id": "e475",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/engine-tests-final.log",
+      "note": "本轮真实Godot0.5.0/Bevy adapter与native0.3.0、相邻适配器/控制36/36，含新增实例4；受控分数/斜向坐标按0.0001-unit容差，非任意浮点逐位一致。"
+    },
+    {
+      "id": "e476",
+      "kind": "test",
+      "path": "scripts/tests/scene-instance-control-cli.test.mjs",
+      "note": "独立CLI schema1/2文件预算、实际离线冻结产物、未知/定义UUID目标与version拒绝。"
+    },
+    {
+      "id": "e477",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/cli-tests.log",
+      "note": "本轮CLI7/7（旧global4+新增instance3），两个真实engine离线冻结产物，16/256KiB预算与stricttarget拒绝；0fail/skip。"
+    },
+    {
+      "id": "e478",
+      "kind": "test",
+      "path": "scripts/tests/instance-control-smoke.mjs",
+      "note": "真实Chrome/服务：选目标与显式生成、同定义实例不同方向、strictHTTP/三语/dirty/caret/原字节；未等同安装设备。"
+    },
+    {
+      "id": "e479",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/runtime-proof.json",
+      "note": "当前可信Bevy native0.3.0锁0.19.1，Rust25/25（16unit+9actualCLI）、fmt/clippy通过，精确工具SHA；core/WASM不改。"
+    },
+    {
+      "id": "e480",
+      "kind": "test",
+      "path": "scripts/tests/scene-instance-control-host.test.mjs",
+      "note": "本轮新增6host：verified frozen targets、双cap、任务前未知目标/plan1拒绝、取消及独立会话记录，原控制参数兼容。"
+    },
+    {
+      "id": "e481",
+      "kind": "test",
+      "path": "scripts/tests/scene-instance-control-ui.test.mjs",
+      "note": "本轮新增6UI：owned plan2目标、显式生成/编辑保护、版本能力/行与演员预算、未知UUID拒绝、完整实例value与短标识可读性。"
+    },
+    {
+      "id": "e482",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/host-ui-tests-final.log",
+      "note": "本轮host/UI与相邻回归69/69，真实工具env启用、0skip；新增host6/UI6含全量1774，专项有重叠。"
+    },
+    {
+      "id": "e483",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/ui-target-label-tests-final.log",
+      "note": "最终窄屏label与相关UI42/42，无fail/skip；末尾UUID短标识前置，fullUUID仍title/value/JSON，产品小修后另复验。"
+    },
+    {
+      "id": "e484",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/browser-final/browser.json",
+      "note": "最终真实Chrome154：8steps、4Bevy+4defaultGodot jobs、0errors；独立方向/未列release、三语390/无横溢、前置UUID后缀目视、target不改JSON/显式example/dirty/caret/source/HTTPstrict。"
+    },
+    {
+      "id": "e485",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/packaged-resources.json",
+      "note": "最终prepared89desktop/68mobile、当前源/准备指纹全过程稳定；10offline（4default+4global+2instance）真实双engine、mobile4pure/10stdout；无nativebin/Rustcrate打包或Android执行器/设备。"
+    },
+    {
+      "id": "e486",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/results.json",
+      "note": "最终app1774/1774、0fail/skip/cancel、391JS/API/version；新28含全量（pure9/engine4/host6/UI6/CLI3）；Rust25及fmt/clippy、Chrome8、prepared89/68/10offline/4pure；1668history/9frozen/126sources、cleanup8/2.240GiB，三代tools保留，未release/install。"
+    },
+    {
+      "id": "e487",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/boundary-findings.json",
+      "note": "本轮27files只读边界复审0open；大输入预算诊断与窄屏标签两finding已修复并专项/全量/真实浏览器复验，不作为形式证明或所有未来能力覆盖。"
+    },
+    {
+      "id": "e488",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/source-hashes.json",
+      "note": "本轮126源/测试/样例README实际字节摘要复验，旧120中96未变/24有意改变；当前docs/atlas来源另由generator快照核对。"
+    },
+    {
+      "id": "e489",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/cleanup.json",
+      "note": "只移除本轮原先不存在的8generated路径，释放2404941824B约2.240GiB；作者/历史/依赖/已安装程序及三代cachedBevy工具保留。"
+    },
+    {
+      "id": "e490",
+      "kind": "report",
+      "path": "docs/test-results/runtime-instance-control/historical-preservation.json",
+      "note": "1668历史及9冻结Godot/GDS/WASM原字节保持；126当前source，old120中96未改/24按范围改，new6tests/harness，不改旧examples/报告。"
+    },
+    {
+      "id": "e491",
+      "kind": "design",
+      "path": "docs/RELEASE_0.0.8.md",
+      "note": "0.0.8累计源码交付范围、数据/后端/有限输入边界、实际发布前验证；历史专题原条件、临时归档时点和未新增安装/设备明确分开。"
+    },
+    {
+      "id": "e492",
+      "kind": "report",
+      "path": "docs/test-results/release-0.0.8/results.json",
+      "note": "0.0.8候选1774/1774、0fail/skip/cancel、391JS/API/version；core75/fmt/clippy、version/source8重叠；全清单496/11/192与89/68/10offline/4pure；临时archive2573/68critical；1733history/9frozen/138source及cleanup1.917GiB；源码commit/push，无新安装/Chrome/设备/Release/tag。"
+    },
+    {
+      "id": "e493",
+      "kind": "report",
+      "path": "docs/test-results/release-0.0.8/core-proof.json",
+      "note": "本次共享Rust编辑核心实际75/75、fmt/clippy、原生辅助构建与sourceSHA；独立于此前可信Bevy Rust25证明。"
+    },
+    {
+      "id": "e494",
+      "kind": "report",
+      "path": "docs/test-results/release-0.0.8/prepared-manifests.json",
+      "note": "新版本全部资源清单按字节核对：desktopResources496、library11、mobile192；manifest核对与有限实际模块运行分列。"
+    },
+    {
+      "id": "e495",
+      "kind": "report",
+      "path": "docs/test-results/release-0.0.8/packaged-resources.json",
+      "note": "0.0.8准备模块桌面89/移动68、10真实offline（4普通/4global/2instance）、4移动纯模块/10stdout；源/准备hash稳定，无Bevybin/Rustcrate打包或Android运行器。"
+    },
+    {
+      "id": "e496",
+      "kind": "report",
+      "path": "docs/test-results/release-0.0.8/source-archive.json",
+      "note": "发布审计文案前的临时SOURCE_MANIFEST源码快照：2573文件逐字节回读、68critical匹配，两crate/锁与4官方示例；已删除，不重建或宣称最终commit归档，后续审计文件经Git交付。"
+    },
+    {
+      "id": "e497",
+      "kind": "report",
+      "path": "docs/test-results/release-0.0.8/historical-preservation.json",
+      "note": "1733历史/9冻结原字节保持；preRelease134中122同/12有意修改，current138的发布代码/源README摘要核对；当前docs/atlas另由来源快照记录。"
+    },
+    {
+      "id": "e498",
+      "kind": "report",
+      "path": "docs/test-results/release-0.0.8/source-hashes.json",
+      "note": "当前138发布源码/配置/源README/样例字节摘要；根README、engine/desktop/mobileREADME在记录后冻结，docs当前指南/atlas不写入此manifest避免指纹循环。"
+    },
+    {
+      "id": "e499",
+      "kind": "report",
+      "path": "docs/test-results/release-0.0.8/cleanup.json",
+      "note": "仅7个原先不存在的generated目录与1临时验证archive移除，回收2058166272B/1.917GiB；已有dist/依赖/installed/作品及三代cachedtools保留。"
+    },
+    {
+      "id": "e500",
+      "kind": "source",
+      "path": "desktop/package-source.py",
+      "note": "0.0.8修复sourceclosure：两个可信Rustcrate/locks、明确四官方examples，所有crate target/生成缓存/非白名单作品继续排除，逐字节回读后发布临时验证archive。"
+    },
+    {
+      "id": "e501",
+      "kind": "test",
+      "path": "scripts/tests/source-archive.test.mjs",
+      "note": "既有源码归档测试新增边界断言但不新增case数：Bevy源码与locks/四官方示例可收集、target/非官方作者数据拒绝，tar字节manifest及故障保旧归档；全量涵盖。"
+    },
+    {
+      "id": "e502",
+      "kind": "report",
+      "path": "docs/test-results/release-0.0.8/version-source-tests.log",
+      "note": "版本与源码归档专项8/8，无fail/skip；断言强化与app1774重叠，addedTestCount0，不加总覆盖率。"
     }
   ],
   "dependencies": [
@@ -15234,13 +19275,13 @@
     {
       "to": "behavior.gdscript_binding",
       "relation": "planned",
-      "reason": "未来绑定需稳定实例和作者来源",
+      "reason": "历史探针是选型参考，不代表作者链；当前显式绑定另列behavior.scene_runtime。",
       "from": "scene.text_instances"
     },
     {
       "to": "behavior.gdscript_binding",
       "relation": "planned",
-      "reason": "探针尚未进入产品运行器",
+      "reason": "历史探针是选型参考，不代表作者链；当前显式绑定另列behavior.scene_runtime。",
       "from": "runtime.godot_generated_project"
     },
     {
@@ -15264,7 +19305,7 @@
     {
       "to": "runtime.bevy_rust",
       "relation": "planned",
-      "reason": "共享行为契约后再验证第二后端",
+      "reason": "未来Rust作者行为绑定仍需单独契约；当前无图ECS数据计划不授予源码执行。",
       "from": "behavior.gdscript_binding"
     },
     {
@@ -15391,7 +19432,7 @@
       "from": "scene.instances_v2",
       "to": "behavior.gdscript_binding",
       "relation": "planned",
-      "reason": "未来作者行为需将状态及事件绑定到稳定实例；当前固定运行器尚不挂载任意脚本。"
+      "reason": "历史探针是选型参考，不代表作者链；当前显式绑定另列behavior.scene_runtime。"
     },
     {
       "from": "scene.groups_v3",
@@ -15530,6 +19571,204 @@
       "to": "scene.text_instances",
       "relation": "planned",
       "reason": "片段展开或跨文件写回须在单源精确proposal之上确定来源/覆盖与原子提交边界。"
+    },
+    {
+      "from": "scene.instances_v2",
+      "to": "scene.composition",
+      "relation": "requires",
+      "reason": "生成演员使用显式稳定instanceId，定义objectId保持共享引用，顺序不决定身份。"
+    },
+    {
+      "from": "scene.groups_v3",
+      "to": "scene.composition",
+      "relation": "requires",
+      "reason": "输出现有v3组织分组并重映射父组/归属；不引入空间父子变换或v4。"
+    },
+    {
+      "from": "scene.composition",
+      "to": "scene.text_instances",
+      "relation": "planned",
+      "reason": "配方已接普通保存/迁移、贡献预览和单实例六字段覆盖原文草稿；共享模板/reset/跨文件与统一历史仍分别推进。"
+    },
+    {
+      "from": "world.object-create",
+      "to": "scene.composition",
+      "relation": "requires",
+      "reason": "配方复用现有普通文档正文/登记创建，不新增配方专属World命令。"
+    },
+    {
+      "from": "authoring.document-edit",
+      "to": "scene.composition",
+      "relation": "requires",
+      "reason": "配方原文与覆盖草稿沿旧保存/冲突流程；内存应用保留live会话与保存基线，允许未完成源码，不自动写metadata。"
+    },
+    {
+      "from": "scene.composition",
+      "to": "resource.package",
+      "relation": "requires",
+      "reason": "全部模板/覆盖声明形成只读派生依赖，包内或已锁定requirement必须完整，迁移保持recipe原字节/身份。"
+    },
+    {
+      "from": "scene.source_model",
+      "to": "scene.composition",
+      "relation": "requires",
+      "reason": "配方展开复用完整v3语义/投影来源，生成位置重映射到作者原文贡献项。"
+    },
+    {
+      "from": "scene.saved_preview",
+      "to": "scene.composition",
+      "relation": "requires",
+      "reason": "保存态配方复用画布/大纲及资源生命周期，保持只读模型和独立预览身份。"
+    },
+    {
+      "from": "scene.text_draft_preview",
+      "to": "scene.composition",
+      "relation": "requires",
+      "reason": "当前原文配方先复用同一baseline/overlay及会话修订守护，不改变保存或World写入。"
+    },
+    {
+      "from": "build.snapshot_plan",
+      "to": "execution.backend_middleware",
+      "relation": "requires",
+      "reason": "冻结计划在可信执行前分别核对操作、平台、plan schema和功能需求。"
+    },
+    {
+      "from": "execution.backend_middleware",
+      "to": "runtime.godot_generated_project",
+      "relation": "requires",
+      "reason": "通用宿主选择已注册Godot包装实现；具体阶段、参数与生成器留在后端。"
+    },
+    {
+      "from": "execution.backend_middleware",
+      "to": "build.workbench_lifecycle",
+      "relation": "requires",
+      "reason": "服务/界面以完整descriptor和后端身份守护任务、计划和产物批准。"
+    },
+    {
+      "from": "execution.backend_middleware",
+      "to": "runtime.bevy_rust",
+      "relation": "requires",
+      "reason": "可信host选择已注册Bevy真实无头实现，具体命令/生成布局由adapter承担。"
+    },
+    {
+      "from": "execution.backend_middleware",
+      "to": "runtime.native_nuis",
+      "relation": "planned",
+      "reason": "原生扩展仍需真实工具链/资源通道/会话接口，不由descriptor模拟执行。"
+    },
+    {
+      "from": "scene.instances_v2",
+      "to": "behavior.scene_runtime",
+      "relation": "requires",
+      "reason": "绑定使用稳定instanceId和定义身份，不依赖显示名称。"
+    },
+    {
+      "from": "build.snapshot_plan",
+      "to": "behavior.scene_runtime",
+      "relation": "requires",
+      "reason": "保存源与登记进入冻结快照，重放重新组合计划。"
+    },
+    {
+      "from": "execution.backend_middleware",
+      "to": "behavior.scene_runtime",
+      "relation": "requires",
+      "reason": "明确检查plan3及behavior能力，宿主固定可信适配器。"
+    },
+    {
+      "from": "behavior.scene_runtime",
+      "to": "resource.package",
+      "relation": "requires",
+      "reason": "声明依赖重派生与元数据闭包/外部pin核验。"
+    },
+    {
+      "from": "behavior.scene_runtime",
+      "to": "build.workbench_lifecycle",
+      "relation": "requires",
+      "reason": "计数/事件和来源诊断进入现有任务和草稿保护。"
+    },
+    {
+      "from": "behavior.scene_runtime",
+      "to": "runtime.bevy_rust",
+      "relation": "planned",
+      "reason": "未来Rust作者行为绑定仍需单独契约；当前无图ECS数据计划不授予源码执行。"
+    },
+    {
+      "from": "build.snapshot_plan",
+      "to": "runtime.bevy_rust",
+      "relation": "requires",
+      "reason": "无图plan1/2经严格capability准入，保持作者身份、来源与冻结计划。"
+    },
+    {
+      "from": "runtime.bevy_rust",
+      "to": "build.workbench_lifecycle",
+      "relation": "requires",
+      "reason": "固定host Bevy后既有工作台管理plan/build/headless；window/capture能力禁用。"
+    },
+    {
+      "from": "build.snapshot_plan",
+      "to": "runtime.objects_inspection",
+      "relation": "requires",
+      "reason": "对象身份与来源只取已验证冻结计划。"
+    },
+    {
+      "from": "execution.backend_middleware",
+      "to": "runtime.objects_inspection",
+      "relation": "requires",
+      "reason": "适配器准入事件，通用host拥有任务/会话与查询。"
+    },
+    {
+      "from": "build.workbench_lifecycle",
+      "to": "runtime.objects_inspection",
+      "relation": "requires",
+      "reason": "对象面板归属当前运行任务与匹配构建/快照。"
+    },
+    {
+      "from": "scene.instances_v2",
+      "to": "runtime.objects_inspection",
+      "relation": "requires",
+      "reason": "protocol2/3保留实例/定义配对，protocol1继续历史定义身份。"
+    },
+    {
+      "from": "runtime.bevy_rust",
+      "to": "runtime.objects_inspection",
+      "relation": "requires",
+      "reason": "已有Bevy1/2事件进入同一只读观察，不改可信程序或引擎协议。"
+    },
+    {
+      "from": "runtime.control_replay",
+      "to": "build.snapshot_plan",
+      "relation": "requires",
+      "reason": "有效冻结身份与可信后端、对象采样观察是有限控制回放的当前前置条件。"
+    },
+    {
+      "from": "runtime.control_replay",
+      "to": "execution.backend_middleware",
+      "relation": "requires",
+      "reason": "有效冻结身份与可信后端、对象采样观察是有限控制回放的当前前置条件。"
+    },
+    {
+      "from": "runtime.control_replay",
+      "to": "runtime.objects_inspection",
+      "relation": "requires",
+      "reason": "有效冻结身份与可信后端、对象采样观察是有限控制回放的当前前置条件。"
+    },
+    {
+      "to": "runtime.control_replay",
+      "relation": "requires",
+      "reason": "继承有限程序/时长/原序trace及共享运行会话，schema1全局保持。",
+      "from": "runtime.instance_control"
+    },
+    {
+      "to": "runtime.objects_inspection",
+      "relation": "requires",
+      "reason": "按实例输入仍返回全体演员样本并复用稳定身份只读观察。",
+      "from": "runtime.instance_control"
+    },
+    {
+      "to": "build.snapshot_plan",
+      "relation": "requires",
+      "reason": "目标只能来自已验证冻结plan2实际实例集合，作者定义/路径不能冒充。",
+      "from": "runtime.instance_control"
     }
   ],
   "workflows": [
@@ -15601,10 +19840,11 @@
       "steps": [
         "scene.instances_v2",
         "build.snapshot_plan",
+        "execution.backend_middleware",
         "runtime.godot_generated_project",
         "build.workbench_lifecycle"
       ],
-      "boundary": "Linux本机服务；v2实例运行与旧v1冻结重放均有证据，固定行为仍不等于任意脚本或独立游戏导出。"
+      "boundary": "Linux本机服务；旧v1/v2冻结重放保持，显式行为plan3另列行为工作流。0.0.8源码中间层严格区分能力/可信host/具体Godot；没有独立游戏发行，descriptor变化需重新批准。"
     },
     {
       "id": "W07",
@@ -15669,7 +19909,7 @@
         "behavior.gdscript_binding",
         "runtime.bevy_rust"
       ],
-      "boundary": "稳定实例、逻辑分组和单源只读草稿预览已有独立工作树切片；共享可写草稿、复用片段、空间变换、作者行为绑定与Rust后端仍为规划。"
+      "boundary": "稳定实例/分组、原文预览/回写和GDScript绑定已有切片；Bevy只接无图ECS计划，空间/剧本与Rust作者行为仍规划；历史探针原条件保留。"
     },
     {
       "id": "W13",
@@ -15745,6 +19985,93 @@
         "scene.source_layout"
       ],
       "boundary": "仅源码模式/单scene：Rust strict inspect→有效预览/hash绑定→Rust几何与局部历史→Rust精确scalar proposal→宿主复核后内存应用→主编辑器普通保存。source操作无状态且不读写磁盘；取消不改文本，应用不重置保存基线，无World命令/构建/统一undo。"
+    },
+    {
+      "id": "scene-composition",
+      "label": "配方预览、单实例覆盖原文草稿与保存迁移",
+      "steps": [
+        "world.object-create",
+        "authoring.document-edit",
+        "scene.composition",
+        "scene.text_draft_preview",
+        "scene.source_model",
+        "resource.package"
+      ],
+      "boundary": "普通JSON登记/源码保存→Rust展开与依赖→saved/draft预览/贡献导航→当前源的稳定目标六字段set提案→完整候选检查→live复核后内存应用→普通保存→资源包迁移作者字节。预览无snapshot/sceneEditing，不改共享片段/其他放置；CLI输出v3可另行登记构建，生成编辑不回写recipe。"
+    },
+    {
+      "id": "execution-backend-admission",
+      "label": "显式能力到冻结后端执行",
+      "steps": [
+        "build.snapshot_plan",
+        "execution.backend_middleware",
+        "runtime.godot_generated_project",
+        "build.workbench_lifecycle"
+      ],
+      "boundary": "保存态输入→纯descriptor→可信registry→Godot或Bevy独立adapter→指纹与冻结回放；Godot图片/窗口/显式GDScript与Bevy无图headless分别验收，无原生/离屏/内嵌/GPU。"
+    },
+    {
+      "id": "scene-behavior-runtime",
+      "label": "实例行为从作者原文到事件、诊断与迁移",
+      "steps": [
+        "authoring.document-edit",
+        "world.relation-add",
+        "scene.instances_v2",
+        "behavior.scene_runtime",
+        "build.snapshot_plan",
+        "execution.backend_middleware",
+        "build.workbench_lifecycle",
+        "resource.package"
+      ],
+      "boundary": "普通JSON/TXT+显式关系→严格plan3→冻结构建→Godot独立Node/参数/信号→可信事件/源诊断→选择包或完整迁移。静态预览不校验行为；生成物和事件不回写作者文本，无RPC/热更新/移动执行器。"
+    },
+    {
+      "id": "bevy-backend",
+      "label": "同计划双引擎：Bevy数据构建与无头回放",
+      "steps": [
+        "scene.instances_v2",
+        "build.snapshot_plan",
+        "execution.backend_middleware",
+        "runtime.bevy_rust",
+        "build.workbench_lifecycle"
+      ],
+      "boundary": "同定义两实例无图plan2→显式CLI/host backend与可信tool→scene-check→Bevy ECS固定步/中立事件→冻结源离线回放。Godot同plan比较，不跨译作者脚本；HTTP不收新路径/代码，无window/image/作者Rust/GPU。"
+    },
+    {
+      "id": "runtime-object-inspection",
+      "label": "运行对象样本→稳定实例检索→冻结声明来源",
+      "steps": [
+        "scene.instances_v2",
+        "build.snapshot_plan",
+        "execution.backend_middleware",
+        "build.workbench_lifecycle",
+        "runtime.objects_inspection"
+      ],
+      "boundary": "已验证冻结构建→Godot/Bevy既有准入事件→完整runtime视图与ownedinspect→本地检索/阶段提示/source守护；state使旧位置失效，cancel/error留样本，无RPC/连续采样/作者回写。"
+    },
+    {
+      "id": "runtime-control-replay",
+      "label": "冻结构建→有限方向程序→两引擎步骤采样→只读对象观察",
+      "steps": [
+        "build.snapshot_plan",
+        "execution.backend_middleware",
+        "runtime.control_replay",
+        "build.workbench_lifecycle",
+        "runtime.objects_inspection"
+      ],
+      "boundary": "有限headless无行为plan1/2，程序/联合预算与SHA捕获，adapter暂存/清理，runtime原序ready/state/trace/finished与独立对象视图；不能跨译脚本或回写作者数据，无RPC/实时输入/渲染。"
+    },
+    {
+      "id": "runtime-instance-control",
+      "label": "冻结plan2→独立实例输入→每步释放→全体样本观察",
+      "steps": [
+        "build.snapshot_plan",
+        "runtime.control_replay",
+        "runtime.instance_control",
+        "build.workbench_lifecycle",
+        "runtime.objects_inspection"
+      ],
+      "boundary": "owned冻结实例目标→显式示例或严格JSON→dualcap/版本/输入行/actorssteps预算→Godot/Bevy各自按实例路由且每步未列释放→原schema1完整trace/observer；不回写作者、不接实时或RPC。"
     }
   ],
   "legacyCoverage": [
@@ -16168,14 +20495,15 @@
   ],
   "priorities": [
     {
-      "label": "逻辑分组之上的复用片段与展开来源",
+      "label": "从单实例覆盖推进共享片段与继承编辑",
       "functions": [
+        "scene.composition",
         "scene.groups_v3",
         "scene.text_instances",
         "scene.source_model"
       ],
-      "reason": "稳定实例与逻辑组已贯通作者原文、导航、布局、事务和迁移；1–128演员/128组/16层限制仍在，尚无片段展开或空间变换。",
-      "acceptance": "先以隔离片段组合样例验证确定性v3产物、稳定身份、局部覆盖和展开来源；接入作者工作流前另定登记依赖/迁移和跨文件提交，空间父子变换与规模单独验收。"
+      "reason": "配方保存/迁移、贡献预览及六字段单实例set已接通，精确补丁仅应用当前原文草稿并普通保存；共享片段编辑、删除覆盖/恢复继承及跨视图历史仍为空白。",
+      "acceptance": "分别定义共享模板、删除覆盖/恢复继承和画布拖动的稳定目标、基线、撤销与保存，保留作者原字节/依赖；嵌套/跨文件、空间变换及规模分别验收。"
     },
     {
       "label": "在单源补丁之后继续下沉完整语义",
@@ -16186,13 +20514,17 @@
       "acceptance": "逐条对照既有JS完整语义与源码/注册/恢复契约，保持BOM/行尾、UUID、来源范围及事务兼容，不把受限source检查冒充完整模型。"
     },
     {
-      "label": "把GDScript探针接成作者链",
+      "label": "完善已接通的GDScript行为创作",
       "functions": [
-        "behavior.gdscript_binding",
-        "runtime.bevy_rust"
+        "behavior.scene_runtime",
+        "execution.backend_middleware",
+        "runtime.bevy_rust",
+        "runtime.objects_inspection",
+        "runtime.control_replay",
+        "runtime.instance_control"
       ],
-      "reason": "当前固定runtime.gd不等于作者脚本能力。",
-      "acceptance": "脚本身份、参数、动作、事件、依赖快照、错误定位及完整迁移；之后再验证Rust后端。"
+      "reason": "显式清单、参数/信号、冻结执行、诊断与迁移已接通；作者表单、动态解绑/热更新及规模验证仍需独立设计，Bevy第二后端已接无图ECS数据计划，作者Rust行为仍未实现。 当前只读实例观察已接通，连续采样与反射仍独立。 有限方向回放与固定步采样已接入；连续实时通道与反射仍需独立设计。 按实例有限方向现已独立接入，每步未列释放、目标与双预算明确；仍不是实时对象编辑。",
+      "acceptance": "保留实例/绑定稳定身份、类型检查、来源和依赖闭包；参数辅助与生命周期变更分别验收，按真实两引擎共同需求逐项验证Rust行为与运行资源。"
     },
     {
       "label": "补真实交付与目标平台证据",
@@ -16214,13 +20546,18 @@
   "sourceSnapshot": {
     ".github/workflows/check.yml": "48c9c0e07ab0a6223db4c05339aad0615122287bd2c7053f02fea258cc0b4d43",
     ".github/workflows/desktop.yml": "d847be30613177a7ffb3f2785890ba183fce7dbf8f4fa35e2991325ef2cd78a6",
+    "crates/viento-bevy-runtime/Cargo.lock": "020a9107ef3963bff994b8519f8cdc40e794bc6f8a4a05f6822c2f000328fce1",
+    "crates/viento-bevy-runtime/Cargo.toml": "83963741707ad7e02848116a79e33e89ae25db33036b8c45dab0b9d2544a1578",
+    "crates/viento-bevy-runtime/src/main.rs": "1e3d6950563a26e64ab625c341e8809dcdb67b19af13db01059e03e4760b6417",
     "crates/viento-studio-core/Cargo.toml": "c6678822a9daa9f9292dd0153ac881292f5784f836333e43bfb55a72539a6095",
     "crates/viento-studio-core/src/layout_draft.rs": "dfb72651a8787fed4410eb3e24dd4c82741fee3c18aca315530e304c436cb9aa",
     "crates/viento-studio-core/src/layout_save.rs": "8ebbc7c48366381c527031e1a12e35f13fc89f156c3d7162499489f1d5a0156c",
-    "crates/viento-studio-core/src/lib.rs": "648cf3273c8f1ab338ee8297734c51f5eeea6631d42b4fb89e46cc1fae54d7d6",
+    "crates/viento-studio-core/src/lib.rs": "c44561340704b6bb7425b878f0e3e5d2b521a8eaffd381c4c2ef8ddbe773a367",
     "crates/viento-studio-core/src/main.rs": "f83f78f6d29d557f30d110e4da08ed756d0ef1d58258103d7b53f35544268178",
+    "crates/viento-studio-core/src/scene_composition.rs": "1ca6bcf535886103af8ee2111b808c2ec974362ceeab8fe5924f55ef16a9dfab",
+    "crates/viento-studio-core/src/scene_composition_patch.rs": "ef6425f2c353aabd340c7fea93393443a4582ae9cc08f364428633d6f9190c77",
     "crates/viento-studio-core/src/scene_layout.rs": "b7bc1be799e29192c2035d6539f41f7f54024ff8f626c26c2355bf5fd610d987",
-    "crates/viento-studio-core/src/scene_source.rs": "e185b24e5abeed2f2159bcedd6dde4078174cab600e40c9f8e61e4a9b674f974",
+    "crates/viento-studio-core/src/scene_source.rs": "d6ca04ce055959dcec315d98bbf6e2680bef76c2bea014f852d62e2f6a00ad44",
     "crates/viento-studio-core/src/wasm.rs": "30eff24e802dff307f655de3dbf4fad4a75974769025df2e713f66108f1cf0b6",
     "crates/viento-studio-core/tests/cli.rs": "c0d41788917d27bfbf5e7cca74bb4128e4eddf72fae25675eb21094361d06b55",
     "crates/viento-studio-core/tests/draft.rs": "1d4444ba9c36e235e5b769f51134d4fd8e010f14b445940fc6c3f4ef20067e17",
@@ -16228,17 +20565,24 @@
     "crates/viento-studio-core/tests/save.rs": "ec2aa2bb5958b709c33954f1d0f9b4a6a7a5fa4b47ba0f7c9803a12082ff8e72",
     "desktop/build.mjs": "ddc4f5b892566dc0f1515dd806b9805b961a3414d3444d80c3a6d6c1b4ea6f30",
     "desktop/clean.mjs": "9e876271815acf59aebb343a9ec229d8f1a38d59896722aeaf2cf2bc2fb12648",
-    "desktop/package-source.py": "ae947c31f64bde9c93cc532caccb1668c298d6ed28df3da88d8d36e0b7d67da7",
+    "desktop/package-source.py": "6a5a0b2c3eb848ee9bea980255b61b5077e22ebcb57ebd1e65c6522f55b1ee22",
     "desktop/prepare.mjs": "e7a6b2713b288b600c75ad542e260c2cf194e3fc1f2749556dd67309f1edbaa4",
     "desktop/tests/native-library.py": "7bcdaf1283b0e7b9691819e7a494df065d5b8b39d6aba5fa7b772f6ebda1dafe",
     "desktop/tests/native-smoke.py": "931080c878f369a9993ee6e1b8571537fee117b79139b23ac7fcc1f87252ba8d",
     "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
-    "docs/ARCHITECTURE.md": "771929c736a26c8e905c246b7a509a2adc5fc5b0454d3a60f3943c9984fbbea5",
+    "docs/ARCHITECTURE.md": "c7912367ed7c12c8cb5f3ac6d1ebbc6cff65c947fe5f599c717ddbae9ef16bf3",
+    "docs/BACKEND_MIDDLEWARE.md": "a2ae995a005a4488884358f94e411fbb265161c9c6a455ed9e606bd3150eadba",
+    "docs/BEVY_BACKEND.md": "142a0396b0eda3e8cc83ab2442517d27b1e5ab714caae682e53e2f2996b3ff33",
     "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
     "docs/NEXT_ARCHITECTURE.zh-CN.md": "1ca5d0336fdbdd6582ca0219e29a265c8115c1bee1dcc7ff386944d4be4ced30",
-    "docs/PROJECT_BUILD.md": "cf012cbc791461eac238e8c5f35977e3207c1bc33db384b3d131f80024a762ec",
+    "docs/PROJECT_BUILD.md": "75b9f651b2a672c838377d29c50a31c59294493e85cd18527b92d10aea444749",
     "docs/RELEASE_0.0.7.md": "2fd35d702ddcf55edb8813fef0646f6d3d3a846a0e6f33f64c6fc44399e0375e",
-    "docs/ROADMAP.md": "a4a0cf5dfb6c144d757cee66cb69233cbc7068db097d28a8fbab8be9af7b5136",
+    "docs/RELEASE_0.0.8.md": "dfc6b4e1fb850f3f7d5888f89c0a7ceffdad9e0c5b2c6fc68f9f8e65b114fe7b",
+    "docs/ROADMAP.md": "d5a2f527f99acc07b0fa53295847e80d4ea6e286e8576795133cf8e0da25f8d1",
+    "docs/RUNTIME_CONTROL.md": "d06ca841ba42941b541050a0fa9572efbf9e3eb78d2a8547a1a86684f305a119",
+    "docs/RUNTIME_OBJECTS.md": "00ff9006369439642be27b20a4c0d380b22b238a153aac1e621ae812cc4d8651",
+    "docs/SCENE_BEHAVIORS.md": "3ffd4022029ad9260172be976af8f457824805343ff4aeabc07272e783855e11",
+    "docs/SCENE_COMPOSITION.md": "fc52654063e9c6dafa9c6daacd9ab39b8560515af1b1bcda23b60e59a202b078",
     "docs/WORLD_TRANSACTIONS.md": "9463c94035a951656f26e7f1d7c9050b1b2a51be444cb38241cb42ad4b8cb8ad",
     "docs/adr/0008-native-nuis-and-bootstrap-runtime.md": "7fbaba85e92b981b584f0d7cefc525b70890bb4d951a5727797b2c46381fde60",
     "docs/function-network.html": "bf42bb7b77083ed40316cd12ba21544e07b5a3b45f045b88ac0b24af056039d9",
@@ -16247,11 +20591,20 @@
     "docs/test-results/archive-registry-2026-09-23/results.json": "74ad57d6fb2666ef6851df17cc60ef6222eec02f27f350090e6a27cef35e734a",
     "docs/test-results/asset-binding-2026-09-23/results.json": "e24c5a353a859e8ac7600afebe64ed6eb9d9b4ba072cc56097492558b3fbcdf2",
     "docs/test-results/asset-export/results.json": "21a4c9c5a1ed7bf6a175ea4f58d1bb653c977f7e451260af8fb6950e0f8f3dba",
+    "docs/test-results/backend-middleware/browser/browser.json": "8416b6495082dc35d38885a801b4da0e762db2f9609ef5764873730f98f9a703",
+    "docs/test-results/backend-middleware/packaged-resources.json": "334d5993b0528f0e7f5f74e5a94c9e13703dfffd09a2f8f9747e1e88803ff7d7",
+    "docs/test-results/backend-middleware/results.json": "007dd6b0e4461ca1f1b46244472673a5efca0b37ff4ac5d4d3c064868df7b51a",
     "docs/test-results/behavior-binding/bindings.json": "d4f2e4f236ef2ae4c81570d78052c9878569f9fa6c533e6aada01c88f47db3b3",
     "docs/test-results/behavior-binding/guard.gd": "def2f0abe75256b05a54a03d558c8464c4cb0fd7bca772b40df6c2db6851ed67",
     "docs/test-results/behavior-binding/probe.gd": "7bc1246f9c670170aaf5065effe24e6193294fbe891d66ad3a99f268ae9aa23a",
     "docs/test-results/behavior-binding/results.json": "094bb52f8408e4925765ce7066165c1f8bd798b4d28654e9490e7e4c97db59e7",
     "docs/test-results/behavior-binding/run.mjs": "36c4e6d3885662c381ef33d2aa5136d7cd195b7e031200518f127ced33f0965a",
+    "docs/test-results/bevy-backend/adapter-real-final.log": "82b160bd938363aa71342782e77dd1fb3f071527b91fa82b2c32093ceac7cfa7",
+    "docs/test-results/bevy-backend/browser/browser.json": "82c36eb37c1907d7b017c23ad9571915fcb5386bbb8ff3628b4469bf06a43b29",
+    "docs/test-results/bevy-backend/packaged-resources.json": "462f968f09b61e60a24b14896e858e1efe88636af4880406062d0c32e86f1687",
+    "docs/test-results/bevy-backend/results.json": "8fe7f14d6c5779d42f8e7083f84d38af91c3815bed47337e5394c15a8682516d",
+    "docs/test-results/bevy-backend/runtime-proof.json": "91a7a9e305065caa1f730d8df238dfe2e8d358b4eae3f1cce926e7f031fd8129",
+    "docs/test-results/bevy-backend/workflow-real-initial.log": "02a6d4eae61708927aaea399de5ec3d19a515b066955a44cbbfd31c742949625",
     "docs/test-results/build-workbench/browser.json": "652d2efcbc17e2cc82d1b7720d6b6b9a9440e73595a8452f87a257c5b1d0637e",
     "docs/test-results/build-workbench/results.json": "2ad094db36c7e0cea0c8c1ef64932524cdadb567fe9352829082157a9be15ab4",
     "docs/test-results/document-migration-2026-09-23/results.json": "3a595c004e372eb845762b343ff39d565e30793360904133331557be446f221f",
@@ -16274,7 +20627,44 @@
     "docs/test-results/release-0.0.5/results.json": "4634d41bdc6a76283f589af9bd30817e7f5925a27c28d70bfdfbca9cd9f7f519",
     "docs/test-results/release-0.0.6/results.json": "dbb532197c4f1f800a513d3500b91ed994d03a9857ccfc9123f8b2f0d715bfcd",
     "docs/test-results/release-0.0.7/results.json": "f713978ba0eb3933045f1660ad0a7db5ebd0f85a24b2d381aa5015bb70dd368c",
+    "docs/test-results/release-0.0.8/cleanup.json": "4587b81092c939d72cdf1545ec8ca91983e505d95fce1408fbd7406179fa72c1",
+    "docs/test-results/release-0.0.8/core-proof.json": "c4225a49dbab7a313490b096fe6d5094eab18444719f53f670a52d6275101a59",
+    "docs/test-results/release-0.0.8/historical-preservation.json": "9530af7c9b1282c95fdb4e0bd8aaf9551eed269e82a8a00d89066ab993d1b5d9",
+    "docs/test-results/release-0.0.8/packaged-resources.json": "1aa82e7ce0a7363402753013963f9abecf949c33ea6c56bd2689ae9f6d7372ef",
+    "docs/test-results/release-0.0.8/prepared-manifests.json": "94fbe528075eb9fecfa54403befe6afafa1fb845af7e42c6724126706b736b97",
+    "docs/test-results/release-0.0.8/results.json": "1ff8ca3e70f597e456005eb4d49df0a1de90b76569a5e15ada856f1736ff40a6",
+    "docs/test-results/release-0.0.8/source-archive.json": "c9864bcf88a0a98a1645f94b9319e22a33d155574e7fdf81c97a7a7a3fedc205",
+    "docs/test-results/release-0.0.8/source-hashes.json": "0d4e0492febe5cd977cd629e5f02df4be80f2eeb920cacfb195b5c9648ec6e7f",
+    "docs/test-results/release-0.0.8/version-source-tests.log": "853265ab658fe75fbf67b0bb4911897b0720a1dcd11c83dedce54afb6f041e61",
     "docs/test-results/resource-packages/results.json": "8a1a13357a461cd249efe5178b7c5bf06d2f950b377b0e25afb73abf84cdb3f9",
+    "docs/test-results/runtime-control-replay/boundary-findings.json": "418a398802a277fb4b11ae9b6eb2ac332c5fe2c53d44c5649180e84dd858a409",
+    "docs/test-results/runtime-control-replay/browser-final/browser.json": "dd3afeb9ef7939fc9e00d47e4803b2c98f73f0a1762d1933eaf1d97f54921b76",
+    "docs/test-results/runtime-control-replay/cli-tests-final.log": "e52d886c931559327c881bb4bb710d329514cdde3b69a939124ef2b87e09d1f7",
+    "docs/test-results/runtime-control-replay/engine-tests-final.log": "163abaea50e79fed05503b3e7436b9952f2458ef13973befc62ddeab64a964ed",
+    "docs/test-results/runtime-control-replay/host-ui-tests.log": "66c339a361219971bd5e1b83ea516fa7bd30483f751f4a2891963a8fb8ab340d",
+    "docs/test-results/runtime-control-replay/packaged-resources.json": "cad15941997bddd9b7cc6ecd9ea3e3bc1ea6281b1416720e1fecfb1ce1ee7e40",
+    "docs/test-results/runtime-control-replay/portable-tests.log": "29e56311cf670c3e4818dac46ca38f4fcc3f9ce6f283ec5e030b6a40fbc84a74",
+    "docs/test-results/runtime-control-replay/results.json": "d374dd8fd05b45c363e9fdb4d8d2fb56fa58a2016be47b8e69d00850b3ba53c8",
+    "docs/test-results/runtime-control-replay/runtime-proof.json": "27158c568087c5c4bf739038e7572f28847951a86874d30a4026f8a74e935dd7",
+    "docs/test-results/runtime-instance-control/boundary-findings.json": "e7bd64ade65225cce87997dfe7eb5e28745e96bf2b8b8b8137b39587500f99ff",
+    "docs/test-results/runtime-instance-control/browser-final/browser.json": "9bb279639589d33cd3d9ffc4c5089f04c7ce0984994536eed708f6e2c430fe81",
+    "docs/test-results/runtime-instance-control/cleanup.json": "48af19af93e40a3a16a0d888d59ae5088d865bfbfb45eb6052834b0872c52ab5",
+    "docs/test-results/runtime-instance-control/cli-tests.log": "0473643f2f85f275de79b3fc48f036db1f7f124e0c428c8e56374b6004ae00cc",
+    "docs/test-results/runtime-instance-control/engine-tests-final.log": "0da5312fca817d2211f843a65189cf450d5ca36a1d0c980d0241a46c4e1e833c",
+    "docs/test-results/runtime-instance-control/historical-preservation.json": "63160e760c748722826c5614fd919875e25819c7e26ea9b9cb055767142f044e",
+    "docs/test-results/runtime-instance-control/host-ui-tests-final.log": "bde20301f1b334e67cd9f293d17efc33ae572ea5f992461ba6e1e647037320bb",
+    "docs/test-results/runtime-instance-control/packaged-resources.json": "8cd2e2b66c7ec962361447633b56e17018a1af182164e3c3822c1cb74f87d50d",
+    "docs/test-results/runtime-instance-control/portable-tests-final.log": "5678c360e6498202ed4955d889c5d9bcc7318c92b9cfc101c596b9e11aae73e1",
+    "docs/test-results/runtime-instance-control/results.json": "5f268a23dff4af95e4ea9bd589325f252d7f61a0c10a4f0a7d91ccd29806dc1b",
+    "docs/test-results/runtime-instance-control/runtime-proof.json": "c8aa3513bf82823ce3f60bf08a3b1fc71e50a4c32eac9e56c2a9b4fa132dcfcc",
+    "docs/test-results/runtime-instance-control/source-hashes.json": "36b3da5f8fec0789f7ab6db92d0fb1f3f2a5e8eb2fad87825555e65243dfc4d9",
+    "docs/test-results/runtime-instance-control/ui-target-label-tests-final.log": "29a4223cdf1aba82f6224f24f32778b5716037625eee51fc0b7d88ca3e19dd06",
+    "docs/test-results/runtime-object-inspection/browser/browser.json": "b0daad2ee887616c1b8c6be94516db6905100f1af5e5958a164bf5b4179c7725",
+    "docs/test-results/runtime-object-inspection/core-query-final.log": "1e26a7055f28284faa51936f052a3c222e4632383c83b39483e30a0f5e264109",
+    "docs/test-results/runtime-object-inspection/host-real.log": "a887ef5fd723876af139de5b3bc3bccdc6c3bd5d8d4f2b8209b3a7984c3a5222",
+    "docs/test-results/runtime-object-inspection/packaged-resources.json": "1a00a772d5ca1eaf2304a9cb6152f38d3258099898ef2b3f73dd672487a62881",
+    "docs/test-results/runtime-object-inspection/results.json": "3473e66346df1fd002d96737edbcb79dbc04489eff75ef0e31bafc259a1b475b",
+    "docs/test-results/runtime-object-inspection/ui-final.log": "3547c5cd480c4c5cfd1971fb4eb4dff7131b6ca4e010b95137929d8471160907",
     "docs/test-results/rust-layout-history/layout-browser/browser.json": "d84bce83350a26dea7ce7585f6bca6c244f1da14933eaff640d59b9ca09af2ae",
     "docs/test-results/rust-layout-history/packaged-resources.json": "d79e96104ce0aadedfca36b27dc1e4389916b72a9b4ec395df3c87742e7c2f74",
     "docs/test-results/rust-layout-history/results.json": "9ba9d2e9994a027a41b25fadde1ca95034649aae11c8a69bf010cda5400f459a",
@@ -16292,6 +20682,21 @@
     "docs/test-results/save-conflicts-2026-09-23/results.json": "ed8d45d766c56e61b66064071e2d66919cd84bb461dbd98aaa8af422162aec80",
     "docs/test-results/save-recovery-2026-09-23/results.json": "25bf82e92b504db863bbb0263975882e9c37460c7f16c67428ee69e2f8454252",
     "docs/test-results/scene-authoring/results.json": "9987614ebe654d261c58473e15465bde3a402050e4d6d9205fdb360890836235",
+    "docs/test-results/scene-behavior-runtime/browser/browser.json": "2cead9b5c6e2554cfc22607e3af5b508130833a4cefda4550a924a645dad7825",
+    "docs/test-results/scene-behavior-runtime/packaged-resources.json": "ea1bece6c62c5315dca4a34b18f494621a750c71f8155ec78d2cea8c20ebae61",
+    "docs/test-results/scene-behavior-runtime/results.json": "dd86dd3cd0e38ef95e7f88383c9cb8d4681e43d62256268d3641b16c167ed15b",
+    "docs/test-results/scene-composition-overrides/browser/browser.json": "778b360bd9e39b493e1499eb28eb1e48de82499bf16da52b7404fdddc128145e",
+    "docs/test-results/scene-composition-overrides/core-bridge.log": "40673895643c5193b30f4059c97df8dd941b10823edf30746f198676720667ff",
+    "docs/test-results/scene-composition-overrides/packaged-resources.json": "bbb87df7df29543717a2d9dabeb264d0829d97fb6e59e1dc883a9f0f3a7f4471",
+    "docs/test-results/scene-composition-overrides/results.json": "3243df79e29df623887175eaf80971bb2ed65ec723490e3e195b480a13a93765",
+    "docs/test-results/scene-composition-preview/browser/browser.json": "24296ce0f28ef8a7cb5a2fc2689639a72ae194e184aaad468240a4c9cc3cfef2",
+    "docs/test-results/scene-composition-preview/packaged-resources.json": "7ce95bacd904838f3b1157cb5bfdd6aa344bb1681639c8babae78e11766b741a",
+    "docs/test-results/scene-composition-preview/results.json": "c6c35396e02e7be0afe667ae9191adb55f6d6d93398d8c7dfb9c13fb5d2f18b7",
+    "docs/test-results/scene-composition-workflow/browser/browser.json": "084d0187379810a944455b39b4fbb02f10107ae396c05e461ae91ecb9ce84721",
+    "docs/test-results/scene-composition-workflow/packaged-resources.json": "44e03e135e9d1e186e3aead58f9d88e510f2c5127bd99a04b1667218efd34b67",
+    "docs/test-results/scene-composition-workflow/results.json": "bc99cbe85f85e56056df73bb24e7c12412e1fc4c1e2e6d079369eedd37cfca51",
+    "docs/test-results/scene-composition/packaged-resources.json": "9d3ac04e94fc90d807b5a546046d1745a1fa663f3febb18c8fee2415110a4d2f",
+    "docs/test-results/scene-composition/results.json": "22a2e422170cf968572aedd263f3f033b1730a278f361221c48d52d5a2b74f3b",
     "docs/test-results/scene-draft-preview/app-check-verified.log": "5b4462e0745429af67a93d67720b7115b8eaaf0e5f7ce259b79e855aee0a017c",
     "docs/test-results/scene-draft-preview/backend.log": "14ed48c53cd150e82ec6300eafdebab40bf9b7e903bfe0c867fcd5e0bc67db8d",
     "docs/test-results/scene-draft-preview/browser-final-verified/browser.json": "eb8a14e1f2f743de4350b85b2d08936e07d8e30e48fe51c4d6201380e772f154",
@@ -16334,7 +20739,8 @@
     "docs/test-results/world-m3/results.json": "aa4491e956bfe0f23f61158c5cf9a8ffeff6b48a4aa435f485acaeab74311d59",
     "docs/test-results/world-relations/results.json": "91d13aa1fbff592cc96cbbe3622d859b0151c38ca32f4d752d8cc29a2be20524",
     "docs/test-results/world-resources/results.json": "8dcb109a0bf9b4005240173cdac94b77ac9c5b67ebeb747dcf73dddf1ab4ffee",
-    "engine/build-plan.mjs": "5049473ef4c5423f6e97b275aed3f7a03bb5a10defc3f395538347af47d0e82b",
+    "engine/backend-capabilities.mjs": "ffa235fc1f3de1c518c7f1136e1cb3e1e6cd44d38583288d67469ccf067047a4",
+    "engine/build-plan.mjs": "5f847f5be41d5c607261ea59c4840fb2699a0b611eb9960980d9f15de371987b",
     "engine/document-model.mjs": "ccdd05ff614086ad038dae4dccfca438eee99aefca69ce85a05c9f1b5c93b0ef",
     "engine/document-store.mjs": "b67d62b4f94e2fb48fa7e3546108a56776df57eb7dc65811aff4e53b5939dd46",
     "engine/field-changes.mjs": "48596ba0a33795b72043a996d0f898114d42298d6ab1556bf273bffadb5416cf",
@@ -16350,16 +20756,24 @@
     "engine/project-build-contract.mjs": "792c49457f9af1bbfa3a0a04b1ba07c0888237dff9c8c4d8f97ea32ae1d91f3f",
     "engine/project.mjs": "8673832907687e583137b7d024ac0131582905df0b8c3359fdd1e99733b30503",
     "engine/resource-package.mjs": "fe7eee206331ec6d5dd16c90e76474b1483742e1796921392529b9521db4ac92",
+    "engine/scene-behaviors.mjs": "d1316c6050cf1c82ec05adcbe10518e7c4602981b376f8b4a757c7310478a80e",
+    "engine/scene-composition-document.mjs": "1a347770d48baa9faf5d412f556e99efa5b305f417b4b667102d0729f1878ff6",
+    "engine/scene-composition-overrides.mjs": "bbb63427a3a172a0e71bbd2ca8acdfc1285e94572ae2b2011689b9cbdd1d2944",
+    "engine/scene-composition-preview.mjs": "0a87adb768e2eea38648573c50796cafbd8e5ad2a979147b0e7a2b8075720a90",
+    "engine/scene-composition.mjs": "c8abacedd43e4378699f6b030d67859b1831ddeaea352c6d582984826ac1453c",
+    "engine/scene-control-program.mjs": "474502d570e68d960835e0fa41c6fdf0804d1acb8c69b4a67e0df7249de481af",
     "engine/scene-draft-preview.mjs": "fa99b49e02927f7bd7c41082aa11a62605a14a660b01f50245b518d14e98b53c",
     "engine/scene-groups.mjs": "0149aa1efdedf32032446c2d5346a428982bf5f368230289fc0cc5e3a9d48cb0",
     "engine/scene-identity.mjs": "eb17e6efdda342ca9ebb431c5522adf7f1544300f1fa6d24a75425ae4cb73a1e",
     "engine/scene-layout.mjs": "247578b42addf2ebe467f44d6ebac04c61c721da938b097be0e9cffa8af267a0",
     "engine/scene-model.mjs": "29872672282ec6b4a5924b014eadfa61093381636eabed6d7623bb428819ca3c",
     "engine/scene-preview-contract.mjs": "c500754da05884cc73f99c597d8367fad2a1515235e2d2c0c57377de1f34506b",
+    "engine/scene-runtime-events.mjs": "227f3953bf7892bccbb1be5f1bfc5f42fd9d70a88583783738a15ad9a1bb69d5",
+    "engine/scene-runtime-query.mjs": "2409489089f75e026a9358ea23cdee72b512fb809ad85ff45b92253193909c74",
     "engine/scene-source-layout.mjs": "94ef1c1d1130c1d751fdb909df570cc2f125a3119bc0f1a790f2012c2611738d",
     "engine/scene-structure.mjs": "9b890c2ec9db8e6aef48dc7fbc4c1c925d8f76147d1dea5f2fb6f7b93e10031c",
     "engine/source-draft.mjs": "aa67dd9d5829b0f2fb3ac46388745dfe271c02e49bc6d079bb753e55b5864c74",
-    "engine/studio-core.mjs": "13377d95f473476b3aa6706cd6b0bc38b45f976ddac40d75d0b385e71a0a23e0",
+    "engine/studio-core.mjs": "e72b91d1c1d3e3e57510d722af79ccc25758d3bc489de807f3c424cf52b9a960",
     "engine/world-changeset.mjs": "c89c51ef9b019d4b11b902b37050de849ac01ab70ecd1c0228e4ad5dae887829",
     "engine/world-command-contract.mjs": "7feb103a1f51e3904b2c0c862187425ef10e1ff98dbd629dfa8b0667df3ffd41",
     "engine/world-commands.mjs": "7874e0bac496ac633680ff236b391d23c9bdf00cc72b24fa3b86272a2802827a",
@@ -16373,21 +20787,31 @@
     "engine/world-resources.mjs": "dbbe7ff8f94dfa07d1cf5473c83af2caeb56f635bb0462feac432f5482c8f9d2",
     "engine/world-scene-create.mjs": "5fe4a75220c663835a3fb932e639c5208c98df6e051b0f6a940a6132778d7913",
     "engine/world-scene-update.mjs": "368c43d2165f4eb2c8d29fa88dede51750c4f344f792a3233ab6465b6961bf74",
+    "examples/scene-composition/recipe.json": "de85dc57c25399069d17cb5b55a356215fc67191f48f43cc241071177793f871",
     "mobile/drafts.mjs": "ec9d87e19e31bb6ada688e6309f9de35ea8fd44362b1d8d04979bd5686d8e53b",
     "mobile/editor.js": "c4a7b6346acaa346d836b7b3f555c4d7a468d6e28d92528419083985005d8d0f",
     "mobile/library.js": "a60baece388c981736d68aa81ef76a47a3e83a893fe2ebb620d0c5e785bac6dd",
     "mobile/platform.mjs": "921d587a591dbb662630598b838d0d6095774de386a0ecb8468cfb064753a771",
     "mobile/prepare.mjs": "f223d33e55a5623d728d04ea7d15ced551fac3b223c095f034f5a47274974a3f",
     "scripts/README.md": "6f70a1e55f5981f0afbf275b112dfeb251e988bffb1915e136babac1fd63a777",
-    "scripts/adapters/node-build-snapshot.mjs": "a3bc4fdfc7ffb81391b72e7c238f09cbf4cc3e48491a46e23373d245326d4994",
+    "scripts/adapters/node-build-snapshot.mjs": "154af9d75b1de5c316a201156da19c0963e4505b51e89bc4687a8595dd351ace",
     "scripts/adapters/node-document-storage.mjs": "46310ddedb77daf0d6e7fdf47d9b022211c0768814fa4b23d108745cf351b61a",
-    "scripts/adapters/node-project-build.mjs": "a51ee525f472f574b463331b20acc03e478d7c41c81277e5a78280c7b509a420",
+    "scripts/adapters/node-execution-backends.mjs": "1732b4689161c0809482eac2da24672635be7363f8dc9cf62435309de177b9e0",
+    "scripts/adapters/node-execution-tool.mjs": "87ce2126bd95784ef1e01136f9766a11c80fa977fecc6d9a1cff2c94442b42ac",
+    "scripts/adapters/node-project-build.mjs": "00670b6b3e372e0db7e52eb6a1ca24f711e6d209c2a0734193684de118050733",
     "scripts/adapters/node-studio-core.mjs": "4ef99f01f9201b59b1f5ed8227bdd74ba8dd9f41caad491836cf7edbb8af3037",
     "scripts/adapters/node-world-commands.mjs": "ea887e3ca238528df1a1609815a6d1ca3e6545c060c5afeb009324ea5cfa3019",
     "scripts/adapters/node-world-projection.mjs": "c98c4ac6eef138605102b9317583c83d416e1e414f9843407aab5ecf4297fa61",
+    "scripts/backends/bevy-adapter.mjs": "fe4930697c4087d8983b368825e2c47b58878f37ccb91928984b0eea77f1bbef",
+    "scripts/backends/bevy-project.mjs": "3e4cec5947286359b1561d1551603db4cf5f3dc382a0121d0560b9578af1ec53",
+    "scripts/backends/godot4-adapter.mjs": "d423244d45f19865835ea1043a4f5638ba51b1532ac43d5cc78d6562acbcb7db",
+    "scripts/backends/godot4-behaviors.mjs": "d80c7230f8dccb0aa7d96818ded0bb6d39c65d302f5263dd57cef5245e92cb60",
     "scripts/backends/godot4-dispatch.mjs": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
     "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
     "scripts/backends/godot4.mjs": "d42d385b5a6e62ff4aa91d00f6065bdd0cefbc7ddde55e08cf5e3c62060fff77",
+    "scripts/backends/godot4/behavior-runtime.gd": "ec039ccaff0f376734938f54808b7929e7385393fd89516de35561e5959943bb",
+    "scripts/backends/godot4/control-runtime.gd": "7490fcb7dfb2c7a1f7b4b251a77804be0f5cea22e568eafe33a404de6b4aba64",
+    "scripts/backends/godot4/control.tscn": "adcd159c8ef7ea1463b859e4a83dacc10c8aaa39f431b80eb695aaf4151466f2",
     "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
     "scripts/backends/godot4/runtime.gd": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd",
     "scripts/browse-server.mjs": "7a47725ae7c4ef5ee1bd126beb6ae9ce51d804880bb2b8584ac3e522c29ab373",
@@ -16398,6 +20822,7 @@
     "scripts/lib/build-process.mjs": "1b541d1233e787f89a2f0be0c169a8e0caec13d308696e234b3670d2ef86a984",
     "scripts/lib/desktop-session.mjs": "3c2e5c1e206110721ed90784589d03ba7c8b70faeb62c637723280165f0bfe10",
     "scripts/lib/doc-api-contract.mjs": "fb0333e2d1523f7d3c8eaff8858e895feacd74e61bd6924fa6f1a80910896b1c",
+    "scripts/lib/doc-api-service.mjs": "abfc415ebb2acdc864aa29669c8e3576b085f0f01cb8cef1a58732355c320c46",
     "scripts/lib/doc-server-routes.mjs": "d0a18afbad3367855f5a2e7e04a8028e88cfb96553dd8e3877530e4a5befe4fa",
     "scripts/lib/doc-server-static-routes.mjs": "a5b6b35796680ac7865b6da28123a4a112a699df4c378b449d6af1c64f82d01b",
     "scripts/lib/doc-server.mjs": "d480e0db99c68f8a9225a37db91de9916f5458e63b845edc1914ebe0604f6d94",
@@ -16409,18 +20834,18 @@
     "scripts/lib/media-assets.mjs": "b73fe62036b25f115f26f861250ca7fe28fc8a8b66ae17da688cc6a410d27965",
     "scripts/lib/media-insertion.mjs": "27ffea2efc1564656b003a08e4cd7a3f87ef9c77858cfbea19f3ff8cb5ff42c9",
     "scripts/lib/paths.mjs": "0a0e5325d12176c09e88ffe8bdf195b1d19cb7ca210650aeb3f2764e3bfd3848",
-    "scripts/lib/project-build-service.mjs": "9a54ccb9a5d8e012dba727e10e84384ef77c9ec621e1120e0deabd7da822e58f",
+    "scripts/lib/project-build-service.mjs": "8c6a2699fc826838052464d7203823755d371507146eca5844c399926d2d56c2",
     "scripts/lib/project-definition.mjs": "984c6deaf35f6d376f631d6e9de19a2c49f9a6f9f33a865d72f13beda6c5c88f",
     "scripts/lib/project-documents.mjs": "9f81f09f1e0f627bc229e01adae8967cf5562ee36c118b472fd729a20da6247f",
     "scripts/lib/project-service.mjs": "a1a6a04d00bef0f682e579f84cc7e68cc45892d9e1904c36418d77e6375ff44c",
     "scripts/lib/project-templates.json": "3944610922fcc88d05c7f897f81fc7d8c25e6f214e5345d710f41f285f3c7734",
-    "scripts/lib/resource-package-catalog.mjs": "87e9605c40903d54edacff528c88e7daba12a7b87f4e7d0dbe3c06a939d3f18a",
+    "scripts/lib/resource-package-catalog.mjs": "f66fe66530a48de9384b930597e0195917ca57568367025cf967e82ef8664ee3",
     "scripts/lib/resource-package-export.mjs": "8b5d1bb3d655c085b0bebc2f7bc9e6df955d8a49e68419e83c738706931e0030",
-    "scripts/lib/resource-package-import.mjs": "6caa478df9147708ba03df95711f962280d36e2d4fe4cd426f8222b64cea5013",
-    "scripts/lib/resource-package-reader.mjs": "67f6e9db87a0e907e508e381f73c89ff481313bcd6e0f3245c1d146bfbb3ed4a",
+    "scripts/lib/resource-package-import.mjs": "91da445a836abd7765380bf54520a720ac21c6977f1c388183d4d048a3f76506",
+    "scripts/lib/resource-package-reader.mjs": "6a63a2a6f22bd6f2db67a48b37714aa775436c64762866552cffb9492100ec94",
     "scripts/lib/resource-package-service.mjs": "b383ffe1a71355548633da386f6c12dff3643c5c47e606ff55b650bdd0297616",
     "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
-    "scripts/lib/scene-preview-service.mjs": "857be9e6b00e3ecbc1d25344995003ccfacfa921a9c54c82162d443d922af560",
+    "scripts/lib/scene-preview-service.mjs": "2a85f07a7b544b1fa910d054e3291d7e1b9a0bd9447b3182836ad9a0f5525c5b",
     "scripts/lib/site-launcher.mjs": "be7335962d296619a20361da5fe63e833396666d6ce87d92dacf03ebe7c9a313",
     "scripts/lib/static-index.mjs": "10916a3bc484cbf01eac53027bc0a877de081d8fb18efaab53814b1acade71f3",
     "scripts/lib/verify-doc-api-contract.mjs": "19ae734ce2ced56b62ffe9f79cb0cc949a7684ce41717a37c1336f351e19a980",
@@ -16429,7 +20854,8 @@
     "scripts/lib/world-transaction-state.mjs": "76ad888adecf5cc285e6f16d670aaf305608e3ed9a036ec309969493a74d31f9",
     "scripts/lib/world-transactions.mjs": "a4d1df41a901f30fba1999eae8d8d6c71ef20fdc1aae193fc39d4fbdb4c2d3a0",
     "scripts/ops/site.mjs": "49a05759788ee1466f83e13573d4350f74bd527d1d8b0b756ce89ce7291af015",
-    "scripts/project-build.mjs": "921422d17f23914ac662169104b7395e07f3ed2fb6fa688404ca3a188e70b114",
+    "scripts/project-build.mjs": "1154395bfee67e29f4db94fbfc0a9b6f6c28d5c010bedeafa27b82a70fe017b0",
+    "scripts/scene-compose.mjs": "a4774451c1bfa2791c434483259d663bd150f738be189d3381be3a3800ac9d90",
     "scripts/standardize-docs/core.mjs": "00cdb3efb310b01b7506166c2259682c022974284fe3f5677e7235fcb0c5da56",
     "scripts/tests/app-storage.test.mjs": "7894dd3647a2dbbb3360880a1c00daec75ac76a559631da40bd7e36a70ef2261",
     "scripts/tests/archive-registry.test.mjs": "9bc1bc9644ae86939df75d0badec660e4af71f56e858cb9d13e206b74fdeef9c",
@@ -16437,10 +20863,17 @@
     "scripts/tests/asset-export-browser.test.mjs": "be7c25b29e51dd70be647a19bcc518a06707040f28f0db49491cd565bc08d0a9",
     "scripts/tests/asset-export-smoke.mjs": "ad7488ec4f823e02128dd1ba335fd8e5475517c1c07c720f11a2507497884b74",
     "scripts/tests/asset-export.test.mjs": "98dda47dbf226114ad7e45b7e291c348932157f3c1943fdbc56886386573445a",
+    "scripts/tests/backend-capabilities.test.mjs": "c60876c783197082189677fd9f1cd38475b8d011c3f85638e13896e7ccee995e",
+    "scripts/tests/backend-capability-ui.test.mjs": "d5dbfcc61c12e82fe70e0371a832ea7891fe3d2d46d7ea6232676e87542fb57b",
+    "scripts/tests/backend-middleware.test.mjs": "dcc72c9fc872fad18c1fc0e58743a5c6ae3380ad29e63bab22e724899345ede6",
+    "scripts/tests/bevy-adapter.test.mjs": "0efab72485adeb18620963453ecb59dab7905c75f3864c9b1eda5f020a22aa83",
+    "scripts/tests/bevy-smoke.mjs": "0d6e4fb727303221a9d0ed6f7ce7eb11040cd7f2aee1dd18d1f3fd40f9811cfc",
+    "scripts/tests/bevy-workflow.test.mjs": "6277b593bc1fc06a01c7e026979abebd8368f395753cccc610dccd05d2f85217",
     "scripts/tests/build-cleanup.test.mjs": "ca704bafeeaaf7a5c3c629919fce101663afb8850e2707485744ef7dc81b0d85",
     "scripts/tests/build-runtime-protocol.test.mjs": "49c1f959e2ef939f16fc544875e1eec0fa10ef57589919ae3033b1170ba004d5",
     "scripts/tests/build.test.mjs": "3e241da1a1ac5798fbdc075ca8f64eb55e2322d8d121e2a0d4c110ded7a84dcc",
     "scripts/tests/call-paths.test.mjs": "a5559e1f56c77918b96d1a33f44b62a891870fb448d7f68ce4dedeea41140d2f",
+    "scripts/tests/control-replay-smoke.mjs": "d395f5684779bc5635af1a87f958853c63891c3ea896f8585a4738ce4452e837",
     "scripts/tests/desktop-close.test.mjs": "aedbf93021a6b0432514081fd8280ec2d64bc2361f2be712bddde5660039de7a",
     "scripts/tests/desktop-library.test.mjs": "1f600e7a2010d7be6d506eade9684edc42a215eb7c8c56c224f2f780fe9d3481",
     "scripts/tests/desktop-workspace.test.mjs": "95a79fabec528755b749c2e40a373315ab36e09050e294cb867d606ed7bd09ac",
@@ -16465,7 +20898,10 @@
     "scripts/tests/fixtures/scene-model/legacy-plan-v1.json": "929b2ebec2f32466026d3ccb4bec55371eb52b680f1f4a8ece9338e3958913a4",
     "scripts/tests/fixtures/scene-model/legacy-plan-v2.json": "eed953ffadac02c98fb52225254afb85c501e9ef7cd597c4d29810aac61f979d",
     "scripts/tests/fixtures/studio-core-source/legacy-patches.json": "5a8a13a3a987cee41c24f1147fc928f295246a6cb608f69e3283bd6771515f6a",
+    "scripts/tests/godot4-adapter.test.mjs": "59844324cf0e3d18431217304ae6ff61e7f7e17311b92607d6c0270359ee5fb5",
+    "scripts/tests/godot4-behaviors.test.mjs": "addbed9b220c3ee298f0be51648c24b80b98d2473c3918aafc7b7e4eac87ceb4",
     "scripts/tests/i18n-diagnostics.test.mjs": "9afce6184f6ac3d9a5a314bea0b3abe070b0852c988f6c524b95b2ba3d2c1ff0",
+    "scripts/tests/instance-control-smoke.mjs": "29d6425d5f43fcb3bff1766ce021cdb08c4933f4d755de73f53a007d2aa06b93",
     "scripts/tests/json-source.test.mjs": "586803cea964e682dd8e3d78f989fdb1289623260c9e6982a9482d89f3ca3ea0",
     "scripts/tests/media-loading.test.mjs": "d019b915c86fa6d54e830d934ebfc9a9b8f1a3f3226c8a270a4c8cb242625c90",
     "scripts/tests/media-preview-content.test.mjs": "78a4b9dc4ca029b55b75ff8fddfde1abfb39bbb5a849dd22cbcc1c08745b7242",
@@ -16480,10 +20916,10 @@
     "scripts/tests/portable-engine.test.mjs": "90c17db812f222ac50c24b51b2b178d2c5bf585c41de0919bb2e870e925f1a0f",
     "scripts/tests/project-build-http.test.mjs": "c3c5980c665c945e8eccd8471a26a186b54240a385f55ba3e301661161fd0922",
     "scripts/tests/project-build-service.test.mjs": "676f94810cbc9cc86ab739526d7dff55187c19a94726e9be8d5e02c1aaf08363",
-    "scripts/tests/project-build-smoke.mjs": "3c8834bd1175882a42b72ad3a210c43ceac07d917df30ac26ef492fb9e53e95d",
+    "scripts/tests/project-build-smoke.mjs": "ec77400298cdc28c948ee42a7d8527e2389a13623acc5a70c387bb4558a25e77",
     "scripts/tests/project-build-tabs.test.mjs": "534306ec70a609d794edc0c435830dbc58e12f83301a8e7a4138910e00a2c32c",
-    "scripts/tests/project-build-ui.test.mjs": "36020778aa92f3bafee43d8b241ce239d9bfd2dd2ae559f13c77179e2809b76a",
-    "scripts/tests/project-build.test.mjs": "dbac1c150cd570a624071f77ac26884d3f80cbc220dc651d79a80c675dcd75e3",
+    "scripts/tests/project-build-ui.test.mjs": "9cead81a225f2d26aad4da5ee00f38f5090b21792adcd266402b4f197e1503ea",
+    "scripts/tests/project-build.test.mjs": "8e55a93642b833f83b3b8da3353a8074694a633702e9b11b7728eeec40a7cc4c",
     "scripts/tests/project-definition.test.mjs": "46ff91af400a9b78c20ec7d4fed122faa7037bd292850abeb3b29dcd12376f0f",
     "scripts/tests/project-snapshot.test.mjs": "442fd8529e7f09011fee3ccf18df1c909206f3d677fcde0f0b8c38e052868da8",
     "scripts/tests/project-templates-smoke.mjs": "e2089287afadeb1d532f3464c8dd2f31fdbaf941c7f8e2b2120ea52afb1a070b",
@@ -16493,15 +20929,44 @@
     "scripts/tests/resource-package-browser.test.mjs": "da4d2e9a1cf019f8117a9b3bf9f1e2d1eeabc47536734bfd7499775fc7579e83",
     "scripts/tests/resource-package-smoke.mjs": "4ecd8a2adebf180520544f27ab50f457545d034c2fd629ce6a65d4c87025bbbe",
     "scripts/tests/resource-packages.test.mjs": "1fd932c20f3631aa4f20bb07745103c415407aff4cbaff42267af84373591876",
+    "scripts/tests/runtime-control-backends.test.mjs": "3e1b10c5678e54a7fc52f35dae7b10b5aef8d1ff40d19f2035acffe4dfced67c",
+    "scripts/tests/runtime-instance-backends.test.mjs": "cc0e4d9795bce048a8f51704d764c1f91b082ec66ff7a2019b66830257b0408d",
+    "scripts/tests/runtime-object-smoke.mjs": "97d8fb99231301db6af075723d41993d1ccde031b7fef274c21c866bb9bc48f4",
     "scripts/tests/scene-authoring.test.mjs": "4f7cb797f6ce23264d6316d333d5fd9250dd8e123af1390081cd603df424845c",
+    "scripts/tests/scene-behavior-packages.test.mjs": "ac1603141a64e6d1f8ce4ffbae977523c9dfbbee58b8bf8336d94972a9cc7147",
+    "scripts/tests/scene-behavior-smoke.mjs": "b55d43740e202de9510b2c89fedad151849e4e50ed40981be4bbceca9342d30c",
+    "scripts/tests/scene-behavior-ui.test.mjs": "dc2497a7ca512974d90f980d0dbf1f8354ad71187087712f8e527a11c118773e",
+    "scripts/tests/scene-behavior-workflow.test.mjs": "24003ef3309cf1a65d83db793cbfcf1034e9c5facd039808a68c984f2cf8c10c",
+    "scripts/tests/scene-behaviors.test.mjs": "d2aff6f73a5c08364a5714ce94c261c97ead184bf53ca3045c73b8d9ead729f6",
+    "scripts/tests/scene-composition-document.test.mjs": "11dca7c5f4293e87467461585916f00b02130c41b59d3688ce671eda03b0f587",
+    "scripts/tests/scene-composition-overrides-bridge.test.mjs": "3bd5ca5b5aae1e5036249110f9bb3669f8347883ab2154a58251b07b1758f5b9",
+    "scripts/tests/scene-composition-overrides-host.test.mjs": "f2ee0f5c78599ff333ddc08ed36b73d88e921fd5769a7268f5ce521d22de3b9f",
+    "scripts/tests/scene-composition-overrides-smoke.mjs": "c652d8f6fe91696ef4299f3fd017145f08c1f300d01b08c0b9ca0c16fab54580",
+    "scripts/tests/scene-composition-overrides-ui.test.mjs": "0cea0bac1c804fdaa8eca236b51d00cf20ba7c79ba1e99140615d09d3cac0bd0",
+    "scripts/tests/scene-composition-overrides.test.mjs": "6840d07129e29d497f91774a1cb25bb2a4840fa3534e70678ddefb69abf631da",
+    "scripts/tests/scene-composition-preview-host.test.mjs": "83de77fc3799a5f15a24dff4697482bb0a5c1ee41c49ada49c1304c6242a507e",
+    "scripts/tests/scene-composition-preview-smoke.mjs": "40e363af060dbaa6751b6c2d57d714e69efdf0b772f0278b8f7041821e4953b3",
+    "scripts/tests/scene-composition-preview-ui.test.mjs": "203ed60778272475146653e29b20ec609d86c01dfcbf2f7ea3db4fea3593de62",
+    "scripts/tests/scene-composition-preview.test.mjs": "442ff4a7180a5c4241e348fc4a5874804013a1ea85819ea3e9dc0163ede75252",
+    "scripts/tests/scene-composition-workflow-smoke.mjs": "d315368552e9f11ccee75a28e5d57199be3571994fd5165f2137b22f2e696d6f",
+    "scripts/tests/scene-composition-workflow.test.mjs": "6a3b3edad02ea1f6b0ab131848131e40703fea7214608da7e8e3e6fdc890300a",
+    "scripts/tests/scene-composition.test.mjs": "f170cb14e4b0c698eb2d4d0ff2eda8c9e95663646098dd45dc2f15c8c984f4f5",
+    "scripts/tests/scene-control-cli.test.mjs": "63e461302af3d6f16682dfbd30238a39bb9cf4bad395491e1259d57559563c19",
+    "scripts/tests/scene-control-host.test.mjs": "467a0fa86faa4a8d09aa49d9db6f6415d0d3916da78b7c65b7c7b31cc0e8e323",
+    "scripts/tests/scene-control-program.test.mjs": "d565d3b8d526f3957f69c38410a94c3381f7114f26ae97f89b0c1fee0943c3e4",
+    "scripts/tests/scene-control-ui.test.mjs": "a0c79c21b3097b1f327bf3b5c45f0a6503d4066468f0134783928ee6fc5731e2",
     "scripts/tests/scene-draft-preview-smoke.mjs": "439bab5bef863081a672b13a675c368e35be9718306ddb0a5a4504d7d729e378",
     "scripts/tests/scene-draft-preview-ui.test.mjs": "8fea76e950cdf8679932dccf9dcd0d042cb89fa55947c33d2f82c5ff37919677",
     "scripts/tests/scene-draft-preview.test.mjs": "8dd5c385799d4b3a608e9b8814c522faadf6bd8fd9104f02f8d1671bf626198c",
-    "scripts/tests/scene-edit-ui.test.mjs": "8ce97a416c89c5eab653d8fdec0b4bb4f2e15e9bba52a97b4e151472c3da80f1",
+    "scripts/tests/scene-edit-ui.test.mjs": "a02fdc9513929220098940fd8b4f5dcad8732499189eea9375d00ccc8e4cfa11",
     "scripts/tests/scene-edit.test.mjs": "16f871673d1aa936528de54e8b63198feceb76097823583ad266582a8cdc4baa",
     "scripts/tests/scene-group-runtime.test.mjs": "a7b94a39e85258da99183d73e3924d96b50d8f355d202f512c1857641aa3dbd5",
     "scripts/tests/scene-groups-smoke.mjs": "4679e0e886074e91b1fe99f2ae40d92e26293ca7da93fc12769c87c6bcfef756",
     "scripts/tests/scene-groups.test.mjs": "8fb970a3ba3e61f04c6d105bc20df7bf88725472749be9f40c6fd14830a10a86",
+    "scripts/tests/scene-instance-control-cli.test.mjs": "e3ffcfc45095933c37316951d226f4e641d891d4855a2e9acf66f00a503616eb",
+    "scripts/tests/scene-instance-control-host.test.mjs": "5e843215e78ed042721734d25615d37e72fd57101f76bc474cbde88459719840",
+    "scripts/tests/scene-instance-control-ui.test.mjs": "dd6b838bf6c2680922e350d19d56e40d372f22af271d76a80175e168e52ee766",
+    "scripts/tests/scene-instance-control.test.mjs": "21edc4c2b1b5991e75c1bc8bf0878a6993ce6fca5580a456075f42d29e5c8fc3",
     "scripts/tests/scene-instance-runtime.test.mjs": "bc954dd4caae47ddde57d2a0fabba0c90a2fffb54dc85ed76bb639b6620f9ba1",
     "scripts/tests/scene-instances-smoke.mjs": "97a20ec8524496cf525458da495ae0001831dc7f87b124071d5c6b78eea03021",
     "scripts/tests/scene-instances.test.mjs": "29d84f5bae8f505524817ec6e9cd56be22adcb93653997cc8fd658be7505d814",
@@ -16515,13 +20980,18 @@
     "scripts/tests/scene-preview-service.test.mjs": "26caa0ba5a5933e1f3784a2f7df9451dc0baa49e18b25db12f32d1772a2a93e0",
     "scripts/tests/scene-preview-smoke.mjs": "36aa9a08d3a5a239b2d2ab75e48c84b01a37757e4f1b35db2d86cc849391770a",
     "scripts/tests/scene-preview-ui.test.mjs": "0782dcc2f33fe96e6375146ad48b6d0fe0637091cf21670864f21dae45d6214f",
+    "scripts/tests/scene-runtime-events.test.mjs": "fcf547db4d467fe249b0b8a831fd8c173d72ab53b4fb70802e090298a09107a4",
+    "scripts/tests/scene-runtime-query-host.test.mjs": "0a988123be97a780dd6432c020104a5c4eff1d2da3caafbe2daacd3b69bcc6d9",
+    "scripts/tests/scene-runtime-query-ui.test.mjs": "fa0429bf48587bf124d66a5d798dcd04f6be76d958e1cefaa84629b9a4f2e454",
+    "scripts/tests/scene-runtime-query.test.mjs": "678cae94ee662fd78e54bdc79b168bd3208ddd0d893073b7ef8315904c5b1a6b",
     "scripts/tests/scene-selection-smoke.mjs": "27ec75d993e215cdd5bbdaff76561041f2c4ef55ec75381e9d6d03bc1c9eb28a",
     "scripts/tests/scene-source-layout-host.test.mjs": "11bb15e9ad4f40a2e84bdcff02da973075af7104429992fb3d539819f0c2c0d0",
     "scripts/tests/scene-source-layout-smoke.mjs": "a0314c3468ab36013e05c4219229502a9dbeaf5bd549df1b2a21eb4e2bf3f701",
     "scripts/tests/scene-source-layout-ui.test.mjs": "a1ffbf763016871969679771a5045d37bc40bd5f19e5f31202c93873900b657e",
     "scripts/tests/scene-source-layout.test.mjs": "2c6b53cc4f156e5c64370eb2fc5a8c6802a679f0a582486530e0a4b13b9f2b34",
-    "scripts/tests/source-archive.test.mjs": "c69e2e82fcb2145b81c8c35d6c0d6f9adc6047293846130d4c98b4bdf3cc739b",
+    "scripts/tests/source-archive.test.mjs": "645381a1e79322d59c99802c13c3cac1936dd02798ac33b2c2026905d69a224a",
     "scripts/tests/source-location-ui.test.mjs": "31296b4d0b03c4cdafdc77de185eabdb8fba746bb10130aaf36df66b98158020",
+    "scripts/tests/studio-core-composition-patch.test.mjs": "06c7633ece8c2b1e0fb0d17f46e5b5e6d44b61420664c884a87f3637d3cb06bf",
     "scripts/tests/studio-core-draft.test.mjs": "ea7f4b31b1ff281b116328d3a831756a614695f8255e3a4fe2c61d8778bd3409",
     "scripts/tests/studio-core-save.test.mjs": "11056e173bc14de843d6315349f42d10f608afb11cbe37dec89651969da1b668",
     "scripts/tests/studio-core-source.test.mjs": "edeaa3ed65fd986cdc0ad5b2b780a3ebfbc63596518c8a307d515272a44969d2",
@@ -16555,9 +21025,9 @@
     "src-tauri/src/preferences.rs": "21cd709cf08108333dbd039507fc23a802e7d221309937bb4416a753b0eeba8e",
     "src-tauri/src/project_templates.rs": "dd1829a8dc3b7f56a00f70a8be127251401cbe844535dd3f887b1157008a9847",
     "src-tauri/src/workspace.rs": "c1c23669fa7611620ed8813e8c6bcf21719e124dd2fd732aea3e91063814fb6e",
-    "web/i18n/en.js": "321fae9ce05696b27a208f73f05a674e44427ca4273d0141cb274c5fcf6da5b9",
+    "web/i18n/en.js": "35a835b9ebccf547d065906bb11b0ab4b42faae7974a0a77dbac4aa89982cfeb",
     "web/i18n/index.js": "74c86ed56017e915280972d1bceb0e06574b9dadaad73e92b4bb09a3c7017567",
-    "web/i18n/ja.js": "b2e5044ff8b6dfb742172b7dc433f8e8adf87699e30be5ff7b3dbfc3e5d481d0",
+    "web/i18n/ja.js": "8211fd5f03afe27fa47635c3e51e0d1d1dcd06fa9bef857ac2cc6aafc75d9f88",
     "web/modules/app-editor-draft.js": "df1634a910b8b231b7ed44067c41138c23bbd2bbb7936fefb5cc9d977a147316",
     "web/modules/app-export.js": "5c0d7f38f9d864c1a3ea571b3a9f04d66690708b2cbe8e348e53ce9b651f65fd",
     "web/modules/app-field-draft.js": "c39eaefce71275942a94761902d39799f94a701cadddcecde879203e4ba129ce",
@@ -16565,16 +21035,17 @@
     "web/modules/app-media-editor.js": "91a54f063af412835e7f19d768370a406bb250e4455a9fd92f9553176af23b53",
     "web/modules/app-media-render.js": "a8b3b1aff81deaf915de895ad45ca9c6e61b3e4abd54d3f42aebc7dc1ba42231",
     "web/modules/app-object-projection.js": "303d41e05d5fbea2f9311d6ab3bfa7773711b4f762c6e61a1148236777467cb7",
-    "web/modules/app-project-build.js": "df91e2c5d5fb6b240f1088fb6ec5eaacf7caca0cd14a30f252866d6737c10c33",
+    "web/modules/app-project-build.js": "00199ae8dbfadc0440821f675fdf604bcd655eba49f957ba61f6393a066cbea4",
     "web/modules/app-project-settings.js": "96ae129e3e4f97eab2e50e26650f2790206a491df39ad0140a54916c25875d9b",
     "web/modules/app-render.js": "da76d685f52d9603a0b12e39e418804fbaf8e71f80dbc993a16af0ba06328010",
     "web/modules/app-resource-packages.js": "b0e06e1f771447c8fe8b3973f0ad3d2ef4b01299ecab073c5f9f5b692bdfc676",
-    "web/modules/app-runtime.js": "0779ff5b4bd791087c3fe519ce5ad4ee15ff7bf7b328421fe465fb0762c98938",
+    "web/modules/app-runtime.js": "5d668a4f0d44c030348537db09565a566d5faad0870ca21db5f23b7159d50c0a",
+    "web/modules/app-scene-composition-overrides.js": "a5352f6aa0a2bc243717869509e554922f523a9c815487176ad325dbc38a9ea7",
     "web/modules/app-scene-create.js": "a4e1821ed35754a0f87bf90e232f44e3b645f45e697c55bab06f5108550257cd",
     "web/modules/app-scene-layout.js": "1e6b5bc5df5ddfacd92bf9ae982c10c08e966d38825acefd725a25591dd5d10f",
     "web/modules/app-scene-outline.js": "93db8f0b3c7951e2a6631abfc09a87261522c3a1bb12401b9e47307c317b5264",
     "web/modules/app-scene-preview-canvas.js": "8c1fca2f3491251fd0cd26bd5ebe85403742ae2c2b80a1ef589b5b1a7d93d15a",
-    "web/modules/app-scene-preview.js": "a2d16d7249cb8ce083e55beab7e74cc4e7ac3bb3192b630d74b0e06be0a54d4b",
+    "web/modules/app-scene-preview.js": "ed4d580efeb58a3a4a60e2ed7dd2b221c6cc346b922acfaa8e272091870f7e4b",
     "web/modules/app-source-location.js": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70",
     "web/modules/app-studio-core.js": "dbc282577a11f5930f4560c0e175b50dbcebbae10f915a1faa994aa740acabcc",
     "web/modules/app-world-browser.js": "db99e5a7584992ee4dfe4e575fbe7bc7db966b3c8514a48ecdfb2e489eb407b0"

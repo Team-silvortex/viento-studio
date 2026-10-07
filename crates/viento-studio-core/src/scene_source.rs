@@ -46,8 +46,8 @@ pub enum SceneSourceResponse {
 
 // Strings use UTF-16 code units so escaped lone surrogates and decoded duplicate
 // keys have exactly JavaScript's meaning without corrupting unrelated source.
-struct Node {
-    span: Range<usize>,
+pub(crate) struct Node {
+    pub(crate) span: Range<usize>,
     kind: Kind,
 }
 enum Kind {
@@ -58,14 +58,14 @@ enum Kind {
     Other,
 }
 impl Node {
-    fn object(&self) -> Result<&[(Vec<u16>, Node)], CoreError> {
+    pub(crate) fn object(&self) -> Result<&[(Vec<u16>, Node)], CoreError> {
         if let Kind::Object(value) = &self.kind {
             Ok(value)
         } else {
             Err(invalid())
         }
     }
-    fn array(&self) -> Result<&[Node], CoreError> {
+    pub(crate) fn array(&self) -> Result<&[Node], CoreError> {
         if let Kind::Array(value) = &self.kind {
             Ok(value)
         } else {
@@ -79,7 +79,7 @@ impl Node {
             Err(invalid())
         }
     }
-    fn get(&self, key: &str) -> Option<&Node> {
+    pub(crate) fn get(&self, key: &str) -> Option<&Node> {
         let Kind::Object(entries) = &self.kind else {
             return None;
         };
@@ -308,6 +308,18 @@ impl<'a> Scanner<'a> {
         }
         Ok(root)
     }
+}
+
+/// Reuse strict syntax, decoded-key uniqueness and tree budgets without
+/// exposing the source-layout scanner or changing its existing semantics.
+pub(crate) fn validate_json_source(source: &str) -> Result<(), CoreError> {
+    Scanner::parse(source).map(|_| ())
+}
+
+/// Byte ranges for another stateless, source-preserving core operation. All
+/// syntax, duplicate-key and resource limits remain owned by the same scanner.
+pub(crate) fn parse_json_source(source: &str) -> Result<Node, CoreError> {
+    Scanner::parse(source)
 }
 
 fn uuid(units: &[u16]) -> bool {
@@ -576,7 +588,7 @@ fn canonical_significand(value: f64, coefficient: u64, exponent: i32) -> u64 {
 
 // Keep shortest round-trip digits, using JSON.stringify's decimal placement for
 // positions below 1e-6 and canonical ties independent of request number syntax.
-fn js_number(value: f64) -> String {
+pub(crate) fn js_number(value: f64) -> String {
     if value == 0.0 {
         return "0".to_owned();
     }

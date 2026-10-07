@@ -1,0 +1,169 @@
+{
+  "format": "viento-runtime-control-boundary-review",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-07T07:56:48.406166+00:00",
+  "status": "no-open-findings",
+  "findings": [],
+  "method": "Read-only follow-up source and contract review of the final implementation; the reviewer authored the host/UI slice earlier in this round. This report is not an independent penetration test or another execution of the acceptance suite.",
+  "reviewedFiles": [
+    {
+      "path": "engine/scene-control-program.mjs",
+      "sha256": "da1b8ded9235ffea4fe33109a4f6621785b3d03a48b125987aff321bcdcacf00"
+    },
+    {
+      "path": "engine/scene-runtime-query.mjs",
+      "sha256": "2409489089f75e026a9358ea23cdee72b512fb809ad85ff45b92253193909c74"
+    },
+    {
+      "path": "engine/scene-runtime-events.mjs",
+      "sha256": "227f3953bf7892bccbb1be5f1bfc5f42fd9d70a88583783738a15ad9a1bb69d5"
+    },
+    {
+      "path": "engine/backend-capabilities.mjs",
+      "sha256": "ffa235fc1f3de1c518c7f1136e1cb3e1e6cd44d38583288d67469ccf067047a4"
+    },
+    {
+      "path": "scripts/adapters/node-project-build.mjs",
+      "sha256": "d9deb52dec5fba813d483e7a02ee7eaa2f809caf291ce46aec8049bcfe1685a7"
+    },
+    {
+      "path": "scripts/adapters/node-execution-backends.mjs",
+      "sha256": "1732b4689161c0809482eac2da24672635be7363f8dc9cf62435309de177b9e0"
+    },
+    {
+      "path": "scripts/adapters/node-build-snapshot.mjs",
+      "sha256": "154af9d75b1de5c316a201156da19c0963e4505b51e89bc4687a8595dd351ace"
+    },
+    {
+      "path": "scripts/lib/project-build-service.mjs",
+      "sha256": "4f3177321cfc89c4a00829a54a0d6d786b64b92c2fc6376e0188361192d30700"
+    },
+    {
+      "path": "scripts/lib/doc-api-service.mjs",
+      "sha256": "abfc415ebb2acdc864aa29669c8e3576b085f0f01cb8cef1a58732355c320c46"
+    },
+    {
+      "path": "scripts/lib/build-process.mjs",
+      "sha256": "1b541d1233e787f89a2f0be0c169a8e0caec13d308696e234b3670d2ef86a984"
+    },
+    {
+      "path": "scripts/lib/contained-path.mjs",
+      "sha256": "87667cdc08989b312355610234cfbf3ec45484105d1788262596a230d752c949"
+    },
+    {
+      "path": "scripts/project-build.mjs",
+      "sha256": "a29d5d81a3a10621967e16a81bd940e104aebb4dd20b7c804c9eab1083868eb9"
+    },
+    {
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "sha256": "6e068801ed1103fbae727f089d19e2052840f3ee97dc8dc245ee271e1652a7d0"
+    },
+    {
+      "path": "scripts/backends/godot4/control-runtime.gd",
+      "sha256": "736655b91dd2d7dbea978dec4f054951fe1936f8c1b921f70816978eccc5db55"
+    },
+    {
+      "path": "scripts/backends/godot4/control.tscn",
+      "sha256": "adcd159c8ef7ea1463b859e4a83dacc10c8aaa39f431b80eb695aaf4151466f2"
+    },
+    {
+      "path": "scripts/backends/godot4/runtime.gd",
+      "sha256": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd"
+    },
+    {
+      "path": "scripts/backends/godot4/runtime-v2.gd",
+      "sha256": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8"
+    },
+    {
+      "path": "scripts/backends/bevy-adapter.mjs",
+      "sha256": "10a6530b2debd885b49aab944f09649878569474bba499a70d4f51b0fb01d486"
+    },
+    {
+      "path": "scripts/backends/bevy-project.mjs",
+      "sha256": "1050105c1029fef4609ccf8fbbfd70eab0e35019cbb6455933194f3990bdef8c"
+    },
+    {
+      "path": "crates/viento-bevy-runtime/src/main.rs",
+      "sha256": "56cdc44f09e38c1f6279256b80c223b73726498afcb1af41a56231593df0bd96"
+    },
+    {
+      "path": "crates/viento-bevy-runtime/Cargo.toml",
+      "sha256": "9fda4f75b0cffc74ca2fdddfd83da1722584bcf7b9994421fa18825cb6636c68"
+    },
+    {
+      "path": "web/modules/app-project-build.js",
+      "sha256": "796ddb4c55591a4685e2d5d9091b1d2d160a9af1846851b6192cf2c2563127e2"
+    },
+    {
+      "path": "web/project-build.css",
+      "sha256": "438cc9674b9b8e72983332f53af8554a94297f55ec69fd9a59aea536d8bbb76e"
+    },
+    {
+      "path": "web/i18n/en.js",
+      "sha256": "252ac994e13dc9fe92f68e2a4a7e6868c4c397ec949f7edbd471012d6f1d44b7"
+    },
+    {
+      "path": "web/i18n/ja.js",
+      "sha256": "3aca522fd2249877b5becc36ca121602e2f85596e54cf9f25e37c4bcc48e4117"
+    }
+  ],
+  "boundaries": [
+    {
+      "area": "Pure data admission and resource budgets",
+      "status": "reviewed",
+      "conclusion": "Exact detached boolean DTOs, finite duration and final release are checked before use. Public program/plan admission additionally limits actorCount × stepCount to 1024. Browser HTTP, shared host, adapters and native runtime enforce the applicable limits without interpreting a script or engine handle."
+    },
+    {
+      "area": "Input authority and execution selection",
+      "status": "reviewed",
+      "conclusion": "HTTP accepts control values only, rejects unknown tool/backend/output/program-path fields and requires a service-owned successful build. CLI alone reads a bounded regular JSON file, then passes detached values. Only the local host configuration selects the tool and registered backend."
+    },
+    {
+      "area": "Frozen build and source identity",
+      "status": "reviewed",
+      "conclusion": "The host restores the plan from frozen source and checks snapshot, backend code, execution fingerprint, tool identity and complete generated inventory before constructing a control session. Control records do not change the frozen plan or introduce new author navigation."
+    },
+    {
+      "area": "Session staging and cleanup",
+      "status": "reviewed",
+      "conclusion": "Adapters use exact session-relative names and exclusive writes for control data and the trusted Godot wrapper. Existing links/files are preserved on admission failure. Adapter finally blocks remove staged control files; the shared host finally removes its runtime project on completion, cancellation or failure."
+    },
+    {
+      "area": "Trace ordering, completeness and retained samples",
+      "status": "reviewed",
+      "conclusion": "A single incremental reader admits ready, numbered complete actor samples and matching finished frames in stream order. Paired definition/instance identity is checked. Contradictory final frames cannot overwrite the last admitted observation. Successful process exit requires complete control lifecycle; cancelled or failed execution can retain partial valid samples while malformed admitted-stream input still records errors."
+    },
+    {
+      "area": "Observation versus raw-event ownership",
+      "status": "reviewed",
+      "conclusion": "Runtime observations and control samples are detached and retained independently of the service 128-event ring. They remain sampled positions with explicit current/stale markers. Progress callbacks cannot mutate the input program, record events, samples or source provenance."
+    },
+    {
+      "area": "Engine and protocol compatibility",
+      "status": "reviewed",
+      "conclusion": "Control replay is a capability on the existing headlessLogic operation, not an eighth execution mode. Adapter contract version 1 and plan/runtime protocols 1/2 remain. Godot adapter 0.4.0 and Bevy adapter/native runtime 0.2.0 use the same finite DTO; behavior plan 3 is rejected for replay. The pinned Bevy dependency remains 0.19.1."
+    },
+    {
+      "area": "UI intent and draft preservation",
+      "status": "reviewed",
+      "conclusion": "The distinct replay action sends controlProgram only when explicitly requested. Original headless run payloads omit it. Capabilities, owned frozen build facts and live dirty/creating/busy guards gate execution. Program errors stay local and the persistent textarea retains its text and selection through polling, reopening and locale changes. Author names, logs and IDs render as text."
+    }
+  ],
+  "limitations": [
+    "The configured native executable and installed Godot tool are trusted local host programs. Hash/version checks identify them but provide neither signing nor a sandbox against another process with the same user permissions.",
+    "This is finite global arrow-input replay on Scene2D plans 1/2. It does not add live input, arbitrary actions, per-entity commands, authored Rust/GDS behavior replay, stdin/RPC/BRP, windows, GPU execution or viewport rendering.",
+    "The portable layer admits identity and frame shape; it does not independently simulate or prove engine movement. Recorded positions are samples and may be stale after a subsequent state frame.",
+    "Godot Vector2 and Bevy f64 positions have different precision. Representative diagonal trajectory checks use an explicit 0.0001-unit tolerance; no bitwise equality promise is made for arbitrary input values, coordinates or trajectories.",
+    "Real browser, engine, prepared-package and full-app results are separate evidence. This review did not rerun those checks or evaluate actual native Tauri/Android live execution.",
+    "A follow-up current-document/link review will be performed after the documentation and atlas source freeze; this boundary report does not declare those documents final."
+  ],
+  "evidenceReferences": [
+    "docs/test-results/runtime-control-replay/host-ui-tests.log",
+    "docs/test-results/runtime-control-replay/portable-tests.log",
+    "docs/test-results/runtime-control-replay/engine-tests-final.log",
+    "docs/test-results/runtime-control-replay/runtime-tests.log",
+    "docs/test-results/runtime-control-replay/browser/browser.json",
+    "docs/test-results/runtime-control-replay/host-tool.json"
+  ],
+  "productFilesChangedByReview": false
+}

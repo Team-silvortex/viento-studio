@@ -1,0 +1,73 @@
+{
+  "ok": true,
+  "recordedAt": "2026-10-07T08:35:18.393639+00:00",
+  "nativeTool": {
+    "path": "/tmp/viento-instance-bevy-target/debug/viento-bevy-runtime",
+    "bytes": 11363224,
+    "sha256": "0f15d7ad897a5b4dbc58574cec14eb81284e5c0ba75634bd86232a8de2c1781f",
+    "version": "viento-bevy-runtime 0.3.0 bevy 0.19.1",
+    "metadata": {
+      "bevyVersion": "0.19.1",
+      "protocolVersions": [
+        1,
+        2
+      ],
+      "runtimeKind": "viento-bevy-runtime",
+      "runtimeVersion": "0.3.0"
+    }
+  },
+  "tests": {
+    "unit": 16,
+    "actualCli": 9,
+    "total": 25,
+    "failed": 0,
+    "ignored": 0,
+    "log": "runtime-tests-final.log"
+  },
+  "format": {
+    "ok": true,
+    "log": "runtime-fmt-final.log"
+  },
+  "clippy": {
+    "ok": true,
+    "allTargets": true,
+    "denyWarnings": true,
+    "log": "runtime-clippy-final.log"
+  },
+  "dependencyScope": {
+    "bevy": "0.19.1",
+    "features": [
+      "std"
+    ],
+    "noRenderWindowGpuDependencies": true,
+    "log": "runtime-dependencies.txt"
+  },
+  "sourceSha256": {
+    "crates/viento-bevy-runtime/Cargo.toml": "83963741707ad7e02848116a79e33e89ae25db33036b8c45dab0b9d2544a1578",
+    "crates/viento-bevy-runtime/Cargo.lock": "020a9107ef3963bff994b8519f8cdc40e794bc6f8a4a05f6822c2f000328fce1",
+    "crates/viento-bevy-runtime/src/main.rs": "1e3d6950563a26e64ab625c341e8809dcdb67b19af13db01059e03e4760b6417",
+    "crates/viento-bevy-runtime/tests/cli.rs": "bf4b6c7599e7bd2174855cfddc75f8c2c2c233539c2ff0e4d42960c52275dd99"
+  },
+  "scope": {
+    "actualBevyAppMinimalPluginsEcs": true,
+    "scenePlanAndRuntimeProtocols": [
+      1,
+      2
+    ],
+    "globalSchema1FileMaxBytes": 16384,
+    "instanceSchema2FileMaxBytes": 262144,
+    "schema2RequiresPlan2": true,
+    "totalInstanceInputsMax": 1024,
+    "actorStepMax": 1024,
+    "missingInstanceMeansAllArrowsReleasedEachStep": true,
+    "emptyLastStepAllowed": true,
+    "globalControlAndDefaultSmokePreserved": true,
+    "notImplemented": [
+      "real-time control",
+      "author Rust or Cargo compilation",
+      "renderer",
+      "GPU execution"
+    ],
+    "targetAdmission": "Before ready, require membership in the exact frozen instance-ID set. Duplicate rows, unknown IDs and definition-only IDs are rejected; a UUID shared by a definition and an actual instance remains a valid instance target."
+  }
+}

@@ -3,6 +3,7 @@ import { buildSceneOutline, validateSceneGroups } from '../../engine/scene-group
 import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
 import '../adapters/node-studio-core.mjs';
 import { getStudioCoreMetadata } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreCompositionPatch } from '../../engine/studio-core.mjs';
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import { Element } from './editor-harness.mjs';
@@ -12,6 +13,7 @@ import { isComposingInput } from '../../web/modules/app-keyboard.js';
 import { selectPackageEntries, PACKAGE_LIMITS } from '../../engine/resource-package.mjs';
 import { getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime } from '../../engine/object-projection-template.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
+import { canExecuteBackend } from '../../engine/backend-capabilities.mjs';
 import { getCreatePathError } from '../../engine/document-contract.mjs';
 
 // Event-capable DOM fixture for the real dialog controllers. It reads their
@@ -123,13 +125,14 @@ export async function dialogHarness(module, overrides = {}) {
   const timers = new Map();
   let timerId = 0;
   const runtime = vm.createContext({
-    document, window, URL, TextEncoder, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS, getStudioCoreMetadata,
-    getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime, getCreatePathError, canonicalJson, sceneActorIdentity, sceneStructureActors, buildSceneOutline, validateSceneGroups,
+    document, window, URL, TextEncoder, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS, getStudioCoreMetadata, supportsStudioCoreCompositionPatch,
+    getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime, getCreatePathError, canonicalJson, canExecuteBackend, sceneActorIdentity, sceneStructureActors, buildSceneOutline, validateSceneGroups,
     location: { href: 'http://127.0.0.1/web/' },
     t, getLanguage, translateMessage, uiMessage, asUiMessage, diagnosticMessage, translateDiagnostic, isComposingInput, translatePage() {}, onLanguageChange() {},
     setTimeout: (callback) => { timers.set(++timerId, callback); return timerId; },
     clearTimeout: (id) => timers.delete(id),
     setupSceneLayout: () => ({ setAvailable() {}, open() {} }),
+    setupSceneCompositionOverrides: () => ({ open() {}, refresh() {}, destroy() {} }),
     setupScenePreview: () => ({ setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {}, destroy() {} }),
     ...overrides,
   });

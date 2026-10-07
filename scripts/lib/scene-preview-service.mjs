@@ -2,7 +2,7 @@ import { sceneStructureActors } from '../../engine/scene-structure.mjs';
 import { randomUUID } from 'node:crypto';
 import { createError } from '../../engine/service-error.mjs';
 import { validateSceneDraftRequest } from '../../engine/scene-draft-preview.mjs';
-import { captureBuildSnapshot, captureSceneDraftPreview } from '../adapters/node-build-snapshot.mjs';
+import { captureScenePreviewSnapshot, captureSceneDraftPreview } from '../adapters/node-build-snapshot.mjs';
 import { SCENE_PREVIEW_API_PATH } from '../../engine/scene-preview-contract.mjs';
 
 const services = new Set();
@@ -20,7 +20,7 @@ export async function stopScenePreviewServices() {
 // capture cancels its predecessor and waits for it, bounding in-flight memory.
 export function createScenePreviewService(root, {
   enabled = process.platform === 'linux', ttlMs = 10 * 60 * 1000,
-  capture = captureBuildSnapshot, captureDraft = captureSceneDraftPreview,
+  capture = captureScenePreviewSnapshot, captureDraft = captureSceneDraftPreview,
 } = {}) {
   let closed = false, closing, active = null, retainedBytes = 0;
   const previews = new Map();
@@ -72,7 +72,13 @@ export function createScenePreviewService(root, {
       assertOwner();
       const draft = isDraft && captured.draft ? { baseSourceRevision: captured.draft.baseSourceRevision,
         sourceRevision: captured.draft.sourceRevision } : undefined;
-      if (!captured.ok) return { ok: false, previewId: null, diagnostics: clone(captured.diagnostics || []), ...(draft ? { draft } : {}) };
+      let composition;
+      if (captured.composition) {
+        const { format, schemaVersion, recipeObjectId, sourcePath, sourceRevision, fragmentCount, placementCount } = captured.composition;
+        composition = clone({ format, schemaVersion, recipeObjectId, sourcePath, sourceRevision, fragmentCount, placementCount });
+      }
+      if (!captured.ok) return { ok: false, previewId: null, diagnostics: clone(captured.diagnostics || []),
+        ...(draft ? { draft } : {}), ...(composition ? { composition } : {}) };
       const previewId = randomUUID();
       const resources = captured.plan.resources.map(resource => ({ id: resource.id, sha256: resource.sha256, size: resource.size,
         contentType: mediaTypes[resource.extension],
@@ -91,7 +97,8 @@ export function createScenePreviewService(root, {
       }
       if (captured.sourceLocations) result.sourceLocations = clone(captured.sourceLocations);
       if (draft) result.draft = draft;
-      if (!isDraft && captured.sceneEditing) {
+      if (composition) result.composition = composition;
+      if (!isDraft && !composition && captured.sceneEditing) {
         const { worldId, baseRevision, objectRevision, sourceRevision, content } = captured.sceneEditing;
         result.sceneEditing = { worldId, baseRevision, objectRevision, sourceRevision, content };
       }

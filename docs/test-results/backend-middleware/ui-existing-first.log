@@ -1,0 +1,27 @@
+✔ build UI checks a frozen plan, submits that snapshot, and waits for an explicit run (39.331658ms)
+✔ scene switching cannot reuse another scene plan or artifact (23.183602ms)
+✔ saving a layout refreshes preview and invalidates the approved build plan without submitting a job (29.56167ms)
+✔ draft, creation, busy and browse guards prevent task submission even when context changed after rendering (21.232143ms)
+✔ closing a running task preserves it and polling, while dirty drafts still allow cancellation (19.04119ms)
+✔ a lost submission response is reconciled with GET without resubmitting the task (14.179666ms)
+✔ diagnostics retain exact source coordinates, protect declined navigation, and render details as text (10.443945ms)
+✔ preview and diagnostic navigation focus the source editor after the dialog closes, preserving legacy callbacks (29.263235ms)
+✔ late source navigation cannot close a reopened dialog or replace a newer navigation focus (21.685843ms)
+✔ queued dialog-close focus is discarded when the dialog is reopened before the close event (13.415628ms)
+✔ multiple queued close events focus the final closed session only once (14.099233ms)
+✔ snapshot conflicts invalidate the approved plan and preserve original error details (17.563319ms)
+✔ an unconfigured tool permits planning and blocks build/run; unsupported hosts hide the entry (17.078239ms)
+✔ all build dialog user messages have English and Japanese translations (2.029697ms)
+✔ asynchronous snapshot conflicts invalidate the plan after the job completes (17.229156ms)
+✔ editor build context resolves generated source paths without changing the active draft (17.88551ms)
+✔ source layout bridge uses the active draft, refreshes draft preview, and does not require a disk-write command (12.025653ms)
+✔ source layout bridge discards delayed opens after scene or dialog ownership changes (31.197451ms)
+✔ source apply propagates live origin ownership to the asynchronous editor host (43.105922ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 503.148028

@@ -1,0 +1,15 @@
+node:internal/fs/promises:1345
+  return new FileHandle(await PromisePrototypeThen(
+                        ^
+
+Error: ENOENT: no such file or directory, open '/home/chiharukiryu/cdev/viento-studio/scripts/doc-api.mjs'
+    at async open (node:internal/fs/promises:1345:25)
+    at async Object.readFile (node:internal/fs/promises:1996:14)
+    at async file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/bevy-backend/packaged-check.mjs:43:20 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/chiharukiryu/cdev/viento-studio/scripts/doc-api.mjs'
+}
+
+Node.js v24.20.0

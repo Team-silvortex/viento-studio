@@ -2,13 +2,13 @@
 
 Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原创角色、游戏设定、文学、戏剧和软件设计：工程自己保存类型、模板、正文与资源，编辑器提供字段编辑、对象关系、可恢复保存和迁移。
 
-原生方向是 **Nuislang、ns-nova 与 yalivia runtime**。Viento 将作为 ns-nova 的官方 GUI 编辑器，自身 GUI 也计划迁到 ns-nova；目前使用 Web / Tauri 宿主，Godot 4 已作为独立进程接通受限二维场景构建与运行。原生执行、GUI 迁移及其他副引擎的阶段安排见 [开发路线](docs/ROADMAP.md)。
+原生方向是 **Nuislang、ns-nova 与 yalivia runtime**。Viento 将作为 ns-nova 的官方 GUI 编辑器，自身 GUI 也计划迁到 ns-nova；目前使用 Web / Tauri 宿主，Godot 4 已作为独立进程接通受限二维场景构建与运行。0.0.8 源码纳入 [Bevy 无头后端](docs/BEVY_BACKEND.md)，用同一冻结场景计划验证第二引擎的对象身份、输入与移动规则。原生执行、GUI 迁移及副引擎的阶段安排见 [开发路线](docs/ROADMAP.md)。
 
 [快速开始](docs/GETTING_STARTED.md) · [当前能力与平台](docs/STATUS.md) · [功能成熟度图谱](docs/FUNCTION_ATLAS.md) · [文档中心](docs/README.md) · [系统架构](docs/ARCHITECTURE.md)
 
 ## 当前状态
 
-源码版本为 **0.0.7**。本版纳入场景布局编辑、共享 Rust 几何与历史／保存核心、独立场景实例、组织分组，以及原文草稿预览和坐标回写，详见 [版本记录](docs/RELEASE_0.0.7.md)。本次交付源码，使用新功能需从源码启动或自行构建安装包；最近保留的 Linux 安装包验收仍为 0.0.4。
+源码版本为 **0.0.8**。在 0.0.7 的布局、实例与源码预览基础上，本版纳入场景片段组合／预览／局部覆盖、GDScript 行为绑定、执行后端中间层、Bevy 无头后端，以及运行对象观察和全局／按实例有限控制，详见 [版本记录](docs/RELEASE_0.0.8.md)。本次交付源码，使用新功能需从源码启动或自行构建安装包；最近保留的 Linux 安装包验收仍为 0.0.4。
 
 当前已有：
 
@@ -18,9 +18,11 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 - 对象查询、属性修改、批量提交、对象创建、关系和资源绑定；版本冲突检查与中断恢复。
 - [图片／视频／音频引用](docs/MEDIA_RESOURCES.md)，文档分享、选择式资源包、单素材导出及完整工程迁移。
 - 实验性 Scene2D 场景创建／编辑、独立实例、嵌套组织分组，单选／多选布局和局部撤销历史；保存状态及原文草稿预览，精确坐标回写与普通保存。
-- 共享 Rust/WASM 编辑核心，以及计划检查、Godot 构建、无头测试、独立窗口运行、诊断和任务取消。
+- 共享 Rust/WASM 编辑核心；[场景片段配方](docs/SCENE_COMPOSITION.md)的展开、保存态／草稿预览及单实例局部覆盖。
+- 计划检查、Godot 构建、[GDScript 行为绑定](docs/SCENE_BEHAVIORS.md)、无头测试、独立窗口、诊断和任务取消；[可信执行中间层](docs/BACKEND_MIDDLEWARE.md)复用冻结计划与工具校验。
+- Godot／Bevy [有限控制回放](docs/RUNTIME_CONTROL.md)：全局或按实例独立方向输入、固定步骤采样和冻结运行对象观察。
 
-各平台的接入和实测范围见 [能力矩阵](docs/STATUS.md#平台接入)。现有构建产物是需要 Godot 的生成工程；原生 Nuis 执行、嵌入运行视口、GPU 计算及独立游戏程序导出仍在路线内。
+各平台的接入和实测范围见 [能力矩阵](docs/STATUS.md#平台接入)。Godot 产物需要 Godot 工具；Bevy 无头产物需要单独构建的可信运行程序，不编译工程中的 Rust 文本，也不提供图片或窗口渲染。原生 Nuis 执行、嵌入运行视口、GPU 计算及独立游戏程序导出仍在路线内。
 
 ## 从源码开始
 

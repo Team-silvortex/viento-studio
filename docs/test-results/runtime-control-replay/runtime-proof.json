@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "recordedAt": "2026-10-07T07:48:49.370734+00:00",
+  "nativeTool": {
+    "path": "/tmp/viento-control-bevy-target/debug/viento-bevy-runtime",
+    "bytes": 11246856,
+    "sha256": "69cb452d306e7d96fbc1fe02007826615bd9d5eca3a7daf1a9e4c545a4134eaf",
+    "version": "viento-bevy-runtime 0.2.0 bevy 0.19.1",
+    "metadata": {
+      "bevyVersion": "0.19.1",
+      "protocolVersions": [
+        1,
+        2
+      ],
+      "runtimeKind": "viento-bevy-runtime",
+      "runtimeVersion": "0.2.0"
+    }
+  },
+  "tests": {
+    "unit": 13,
+    "actualCli": 7,
+    "total": 20,
+    "failed": 0,
+    "ignored": 0,
+    "log": "runtime-tests.log"
+  },
+  "format": {
+    "ok": true,
+    "log": "runtime-fmt.log"
+  },
+  "clippy": {
+    "ok": true,
+    "allTargets": true,
+    "denyWarnings": true,
+    "log": "runtime-clippy.log"
+  },
+  "dependencyScope": {
+    "bevy": "0.19.1",
+    "cargoLockVersionChange": "Only the viento-bevy-runtime package version changed to 0.2.0.",
+    "features": [
+      "std"
+    ],
+    "noRenderWindowGpuDependencies": true,
+    "log": "runtime-dependencies.txt"
+  },
+  "sourceSha256": {
+    "crates/viento-bevy-runtime/Cargo.toml": "9fda4f75b0cffc74ca2fdddfd83da1722584bcf7b9994421fa18825cb6636c68",
+    "crates/viento-bevy-runtime/Cargo.lock": "1f012f51babd7428680c85eb6eb3003437853958fdffd4d7f7d744461ef7a289",
+    "crates/viento-bevy-runtime/src/main.rs": "56cdc44f09e38c1f6279256b80c223b73726498afcb1af41a56231593df0bd96",
+    "crates/viento-bevy-runtime/tests/cli.rs": "68eee214c41fa9d6ca2818352c4fdcc7cd5da67ee568c674950452fb8361caf4"
+  },
+  "scope": {
+    "actualBevyAppMinimalPluginsEcs": true,
+    "scenePlanAndRuntimeProtocols": [
+      1,
+      2
+    ],
+    "finiteControlProgram": {
+      "format": "viento-runtime-control",
+      "schemaVersion": 1,
+      "stepsMin": 1,
+      "stepsMax": 64,
+      "fixedDeltaMinExclusive": 0,
+      "fixedDeltaMax": 0.25,
+      "durationMaxSeconds": 8,
+      "actorStepMax": 1024,
+      "lastStepMustReleaseAllArrows": true,
+      "fileMaxBytes": 16384,
+      "absoluteRegularSameSceneDirectoryFile": true,
+      "requiresSmoke": true
+    },
+    "semantics": [
+      "Four global arrow booleans, opposing keys cancel, diagonals normalize.",
+      "Independent ECS identity, controls and speed components.",
+      "Complete paired-identity actor samples after each step.",
+      "Default smoke protocol/event shape remains unchanged; no trace without a program."
+    ],
+    "notImplemented": [
+      "real-time input bridge",
+      "per-instance control routing",
+      "renderer",
+      "window preview",
+      "author Cargo or Rust compilation",
+      "GPU execution"
+    ]
+  }
+}

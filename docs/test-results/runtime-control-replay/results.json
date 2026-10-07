@@ -1,0 +1,316 @@
+{
+  "date": "2026-10-07",
+  "recordedAt": "2026-10-07T07:57:36.845336+00:00",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased working-tree implementation; no commit, push, application install or version bump.",
+  "scope": {
+    "feature": "Finite direction control replay and per-step observation",
+    "controlFormat": "viento-runtime-control",
+    "controlSchemaVersion": 1,
+    "traceFormat": "viento-runtime-trace",
+    "traceSchemaVersion": 1,
+    "planAndRuntimeProtocols": [
+      1,
+      2
+    ],
+    "capability": "runtime.control-replay",
+    "backendVersions": {
+      "org.viento.godot4": "0.4.0",
+      "org.viento.bevy": "0.2.0"
+    },
+    "bevyRuntimeVersion": "0.2.0",
+    "bevyDependencyVersion": "0.19.1",
+    "adapterContractVersionUnchanged": 1,
+    "authorPlanVersionsUnchanged": true,
+    "oldGodotGeneratorsAndGDSRuntimeBytesUnchanged": true,
+    "oldUncontrolledRuntimeDTOUnchanged": true,
+    "headlessFiniteOnly": true,
+    "realTimeInput": false,
+    "perInstanceInputRouting": false,
+    "engineReflectionOrQueryRPC": false,
+    "authorWrites": false
+  },
+  "program": {
+    "stepsMin": 1,
+    "stepsMax": 64,
+    "fixedDeltaMinExclusive": 0,
+    "fixedDeltaMaxSeconds": 0.25,
+    "totalSimulationMaxSeconds": 8,
+    "actorStepMax": 1024,
+    "lastStepReleasesAllDirections": true,
+    "cliFileMaxBytes": 16384,
+    "stepKeys": [
+      "left",
+      "right",
+      "up",
+      "down"
+    ],
+    "values": "Strict booleans; unknown fields, executable code and paths rejected."
+  },
+  "validation": {
+    "app": {
+      "tests": 1746,
+      "pass": 1746,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 235643.464027,
+      "log": "app-check.log"
+    },
+    "newAppTests": {
+      "total": 39,
+      "portableControl": 15,
+      "realBackendsAndAdapters": 8,
+      "host": 6,
+      "ui": 6,
+      "cli": 4,
+      "includedInAppTotal": true
+    },
+    "portableControlAndObserverRegression": {
+      "tests": 36,
+      "pass": 36,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 206.794194,
+      "log": "portable-tests.log"
+    },
+    "engineAdaptersAndControls": {
+      "tests": 32,
+      "pass": 32,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 18364.698203,
+      "log": "engine-tests-final.log"
+    },
+    "hostUIAndRelatedRegression": {
+      "tests": 47,
+      "pass": 47,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 1603.019426,
+      "log": "host-ui-tests.log"
+    },
+    "cli": {
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 13310.076702,
+      "log": "cli-tests-final.log"
+    },
+    "nativeRust": {
+      "unit": 13,
+      "actualCli": 7,
+      "total": 20,
+      "failed": 0,
+      "ignored": 0,
+      "log": "runtime-tests.log"
+    },
+    "nativeFormat": {
+      "ok": true,
+      "log": "runtime-fmt.log"
+    },
+    "nativeClippy": {
+      "ok": true,
+      "allTargets": true,
+      "denyWarnings": true,
+      "log": "runtime-clippy.log"
+    },
+    "syntax": {
+      "passed": 385,
+      "log": "project-check.log"
+    },
+    "apiContractAndReleaseVersion": {
+      "passed": true,
+      "version": "0.0.7",
+      "log": "project-check.log"
+    },
+    "browser": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "steps": 8,
+      "bevyJobs": 4,
+      "separateDefaultGodotJobs": 4,
+      "runtimeExceptions": 0,
+      "languages": [
+        "zh",
+        "en",
+        "ja"
+      ],
+      "narrowWidthPx": 390,
+      "localMalformedProgramStartsNoJob": true,
+      "invalidOrWindowHTTPStartsNoJob": true,
+      "programTextAndCaretPreserved": true,
+      "dirtyAuthorDraftAndSourceNavigationGuards": true,
+      "sameRealControlledSamplesAndObservations": true,
+      "evidence": "browser-final/browser.json",
+      "log": "browser-final.log"
+    },
+    "preparedResources": {
+      "ok": true,
+      "embeddedNode": "v24.20.0",
+      "desktopFiles": 89,
+      "mobileFiles": 68,
+      "defaultOfflineSessions": 4,
+      "controlledOfflineSessions": 4,
+      "mobilePureModules": 4,
+      "sourceAndPackagedHashesStableThroughoutExecution": true,
+      "rustCrateAndBevyBinaryNotBundled": true,
+      "syntheticFixturesRemoved": true,
+      "actualGDS3ControlRejectedBeforeNewJob": true,
+      "evidence": "packaged-resources.json",
+      "log": "packaged-final.log"
+    },
+    "nativeHelpers": {
+      "editorCoreArchiveAndMobileStorageBuilt": true,
+      "usedByFullAppChecks": true,
+      "editorCoreAndWasmSourceUnchanged": true,
+      "independentEditorCoreRustSuiteRepeated": false,
+      "logs": [
+        "core-native-build.log",
+        "native-helper-build.log"
+      ]
+    }
+  },
+  "api": {
+    "path": "/api/project-build",
+    "method": "POST",
+    "action": "run",
+    "requestKeys": [
+      "action",
+      "buildId",
+      "mode",
+      "controlProgram"
+    ],
+    "newField": "controlProgram is optional pure program values; no input file path, backend or tool is accepted.",
+    "ownership": "Only service-owned successful frozen build; current capability, plan version and combined budget checked before allocating a job. Frozen artifacts and exact tool identity are revalidated by the generic host.",
+    "record": "control: { program, sha256, samples }; runtime.control: { stepCount, completedSteps, fixedDelta }.",
+    "inspection": "Existing read-only inspect returns the optional control summary and admitted actor samples without new process/query calls.",
+    "errors": {
+      "runtime_control_invalid": 400,
+      "runtime_control_mode": 422,
+      "runtime_control_unsupported": 422,
+      "runtime_control_limit": 422
+    }
+  },
+  "findings": {
+    "traceLifecycleBeforeObservation": true,
+    "validSamplesRetainedOnCancelFailureTimeout": true,
+    "completeStableIdentityPairsEveryStep": true,
+    "finishedMustMatchLastSampleAndFixedDelta": true,
+    "singleSequentialRuntimeAndTraceAdmission": true,
+    "boundedDetachedInputAndObserverCallbacks": true,
+    "strictHeadlessSmokeBooleans": true,
+    "exclusiveSessionFileWritesAndCleanup": true,
+    "opposingDirectionsCancelAndDiagonalsNormalize": true,
+    "crossEngineCoordinateComparisonTolerance": 0.0001,
+    "noneControlsAndZeroSpeedIndependent": true,
+    "actualGodotImageControlPlan1And2Tested": true,
+    "ordinarySmokeNoTraceAndOriginalFinalPositionsPreserved": true,
+    "review": "boundary-findings.json"
+  },
+  "compatibility": {
+    "recordedAt": "2026-10-07T07:54:57.891Z",
+    "historicalFilesUnchanged": 1612,
+    "frozenBackendAndWasmUnchanged": 9,
+    "previousSourceFiles": 109,
+    "previousSourcesUnchanged": 89,
+    "intentionallyChangedPreviousSources": [
+      "crates/viento-bevy-runtime/Cargo.lock",
+      "crates/viento-bevy-runtime/Cargo.toml",
+      "crates/viento-bevy-runtime/src/main.rs",
+      "crates/viento-bevy-runtime/tests/cli.rs",
+      "engine/scene-runtime-query.mjs",
+      "scripts/adapters/node-project-build.mjs",
+      "scripts/backends/bevy-adapter.mjs",
+      "scripts/backends/bevy-project.mjs",
+      "scripts/backends/godot4-adapter.mjs",
+      "scripts/lib/project-build-service.mjs",
+      "scripts/project-build.mjs",
+      "scripts/tests/bevy-adapter.test.mjs",
+      "scripts/tests/bevy-smoke.mjs",
+      "scripts/tests/godot4-adapter.test.mjs",
+      "scripts/tests/runtime-object-smoke.mjs",
+      "scripts/tests/scene-runtime-query.test.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-project-build.js",
+      "web/project-build.css"
+    ],
+    "currentSourceFiles": 120,
+    "oldCachedBevyToolPreserved": {
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.1.0-8c4dab4afa35",
+      "bytes": 11170328,
+      "sha256": "8c4dab4afa35115e710b0b68a3c9535971d2271d5c01976881dc4f9d6b3377e3",
+      "unchanged": true
+    },
+    "currentCachedBevyTool": {
+      "version": "0.2.0",
+      "bevyVersion": "0.19.1",
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.2.0-69cb452d306e",
+      "bytes": 11246856,
+      "sha256": "69cb452d306e7d96fbc1fe02007826615bd9d5eca3a7daf1a9e4c545a4134eaf",
+      "scope": "External pinned trusted native host. Existing 0.1.0 tool preserved; no app installation."
+    },
+    "wasm": {
+      "bytes": 285596,
+      "sha256": "8b14be6e13c33b5bf5a6cb16f956498dc03a3d62e50bb83ec8967b9896c7738e",
+      "unchanged": true
+    },
+    "evidence": "historical-preservation.json"
+  },
+  "dataProtection": {
+    "authorTestFixturesAndOriginalBuildBytesUnchanged": true,
+    "existingAuthorWorkspacesAndInstalledPreferencesNotModified": true,
+    "installedApplicationUnchanged": true,
+    "sourceHashEvidence": "source-hashes.json",
+    "cleanup": {
+      "removedDirectories": 8,
+      "allocatedBytesFreed": 2404605952,
+      "allocatedGiBFreed": 2.239,
+      "evidence": "cleanup.json"
+    }
+  },
+  "harnessAndVerificationNotes": [
+    {
+      "issue": "Initial CLI inventory assertion included intentional new session.json records. The assertion now compares only original frozen build files and separately proves execution-project cleanup.",
+      "productChange": false,
+      "initialLog": "cli-tests.log",
+      "finalLog": "cli-tests-final.log"
+    },
+    {
+      "issue": "The initial application command named a nonexistent npm script; the real full suite ran directly with all required native tool paths and zero skips.",
+      "productChange": false,
+      "initialLog": "app-command-initial.log",
+      "finalLog": "app-check.log"
+    },
+    {
+      "issue": "Project preflight passed version, syntax, API and read-only legacy index validation, then began a redundant suite without the required test tool environment. That redundant process tree was stopped; only the completed environment-enabled app-check suite counts as the full application result.",
+      "productChange": false,
+      "log": "project-check.log"
+    },
+    {
+      "issue": "Final source review tightened control-only mode checks to strict boolean values. The complete app suite, final prepared resources and final browser run use this finalized implementation.",
+      "productChange": true,
+      "finalLog": "app-check.log"
+    }
+  ],
+  "limits": [
+    "This is finite deterministic direction replay and reported step samples, not wall-clock live input or engine reflection.",
+    "The program applies globally to arrows-enabled instances; there is no per-instance selector, component editing or runtime RPC.",
+    "Godot uses float32 vector coordinates and the Bevy movement implementation uses float64. Diagonal comparisons use 0.0001 scene-unit tolerance; bitwise equality for arbitrary paths is not claimed.",
+    "The Bevy backend remains its headless no-image plan 1/2 subset; author Rust, rendering, GPU and window preview are not included.",
+    "Successful prepared desktop module execution and real browser workflows do not establish installed Tauri IPC/window or Android device/UI behavior.",
+    "Mobile checks execute four renderer-independent prepared modules only, with execution capability gates still denied on Android."
+  ]
+}

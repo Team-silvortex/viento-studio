@@ -14,7 +14,7 @@ const archiveScript = path.join(application, 'desktop/package-source.py');
 const pythonOptions = { env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' }, timeout: 15000, maxBuffer: 1024 * 1024 };
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 
-test('source archives retain the standalone Rust core and lock while excluding generated WASM and build caches', async t => {
+test('source archives retain both Rust crates and official examples while excluding local state and build caches', async t => {
   let inputs;
   try {
     const result = await run('python3', ['-B', '-c', 'import json, runpy, sys; print(json.dumps(runpy.run_path(sys.argv[1])["INPUTS"]))', archiveScript], pythonOptions);
@@ -43,20 +43,37 @@ test('source archives retain the standalone Rust core and lock while excluding g
     }
   }
   await write('desktop/package-source.py', await fs.readFile(archiveScript));
-  const core = 'crates/viento-studio-core';
+  const crates = ['crates/viento-studio-core', 'crates/viento-bevy-runtime'];
   const required = new Map();
-  for (const relative of ['Cargo.toml', 'Cargo.lock', ...(await fs.readdir(path.join(application, core, 'src'), { recursive: true }))
-    .filter(file => file.endsWith('.rs')).map(file => `src/${file}`), ...(await fs.readdir(path.join(application, core, 'tests'), { recursive: true }))
-    .filter(file => file.endsWith('.rs')).map(file => `tests/${file}`)]) {
-    const name = `${core}/${relative.replaceAll(path.sep, '/')}`;
+  async function retain(name) {
     const bytes = await fs.readFile(path.join(application, name));
     required.set(name, { size: bytes.length, sha256: digest(bytes) });
     await write(name, bytes);
   }
+  for (const crate of crates) {
+    for (const relative of ['Cargo.toml', 'Cargo.lock', ...(await fs.readdir(path.join(application, crate, 'src'), { recursive: true }))
+      .filter(file => file.endsWith('.rs')).map(file => `src/${file}`), ...(await fs.readdir(path.join(application, crate, 'tests'), { recursive: true }))
+      .filter(file => file.endsWith('.rs')).map(file => `tests/${file}`)]) {
+      await retain(`${crate}/${relative.replaceAll(path.sep, '/')}`);
+    }
+  }
+  const examples = ['scene2d', 'scene-composition', 'scene-behaviors', 'bevy-headless'];
+  for (const example of examples) {
+    const base = `examples/${example}`;
+    for (const file of await fs.readdir(path.join(application, base), { recursive: true })) {
+      if ((await fs.stat(path.join(application, base, file))).isFile()) await retain(`${base}/${file.replaceAll(path.sep, '/')}`);
+    }
+  }
   const excluded = [
-    `${core}/target/debug/viento-core`, `${core}/target/wasm32-unknown-unknown/release/viento_studio_core.wasm`,
+    'crates/viento-studio-core/target/debug/viento-core', 'crates/viento-studio-core/target/wasm32-unknown-unknown/release/viento_studio_core.wasm',
+    'crates/viento-bevy-runtime/target/release/viento-bevy-runtime', 'crates/viento-bevy-runtime/target/debug/cache',
     'engine/studio-core.wasm', 'engine/studio-core.build.json', 'crates/scratch/notes.txt',
     'workspaces/story/documents/private.md', 'src-tauri/target/debug/cache', 'desktop/resources/engine/studio-core.wasm',
+    'examples/private-story/documents/private.md',
+    ...examples.flatMap(example => [`.viento/local.json`, `.viento/cache/builds/build/scene-data.json`,
+      '.viento/cache/builds/build/sessions/session/control-program.json', '.viento/cache/projections/index.json',
+      '.godot/editor/state', '.import/generated', 'node_modules/generated.js', 'viento.config.json', 'export_credentials.cfg']
+      .map(file => `examples/${example}/${file}`)),
   ];
   for (const name of excluded) await write(name, `generated or private: ${name}`);
   await write('engine/studio-core.mjs', '// Authoritative JavaScript bridge stays in the source package.\n');

@@ -9,9 +9,14 @@ import ja from '../../web/i18n/ja.js';
 
 const scenes = [{ id: 'scene-one', title: 'First scene', sourcePath: 'documents/scenes/first.json' },
   { id: 'scene-two', title: 'Second scene', sourcePath: 'documents/scenes/second.json' }];
-const initial = () => ({ supported: true, available: true, reason: null, backend: { id: 'godot4', version: '1', label: 'Godot 4' }, scenes, job: null, latestBuild: null });
+const backendId = 'org.viento.godot4';
+const backend = () => ({ format: 'viento-execution-backend', schemaVersion: 1, id: backendId, version: '0.2.0', label: 'Godot 4',
+  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }],
+  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image'],
+  execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false }, extensions: [] });
+const initial = () => ({ supported: true, available: true, reason: null, platform: 'linux', backend: backend(), scenes, job: null, latestBuild: null });
 const plan = { snapshotId: 'sha256:frozen', title: 'First scene', actorCount: 1, resourceCount: 1 };
-const job = (kind, status = 'running', extra = {}) => ({ id: `job-${kind}`, kind, status, sceneId: 'scene-one', phase: 'snapshot', diagnostics: [], events: [], logs: '', ...extra });
+const job = (kind, status = 'running', extra = {}) => ({ id: `job-${kind}`, backendId, kind, status, sceneId: 'scene-one', phase: 'snapshot', diagnostics: [], events: [], logs: '', ...extra });
 async function harness(options = {}) {
   const current = { editable: true, dirty: false, creating: false, busy: false, path: scenes[0].sourcePath };
   const calls = [], opened = [];
@@ -48,7 +53,7 @@ test('build UI checks a frozen plan, submits that snapshot, and waits for an exp
   assert.match(h.element('projectBuildPlanCounts').textContent, /First scene.*1.*1/);
   h.element('projectBuildGenerate').click();
   assert.deepEqual(h.calls.at(-1).body, { action: 'build', sceneId: 'scene-one', expectedSnapshotId: 'sha256:frozen' });
-  const built = { ...initial(), job: job('build', 'succeeded'), latestBuild: { id: 'built-one', sceneId: 'scene-one', snapshotId: plan.snapshotId, title: plan.title } };
+  const built = { ...initial(), job: job('build', 'succeeded'), latestBuild: { id: 'built-one', backendId, sceneId: 'scene-one', snapshotId: plan.snapshotId, title: plan.title } };
   await h.resolve(built);
   assert.equal(h.calls.filter(call => call.body?.action === 'run').length, 0);
   assert.equal(h.element('projectBuildHeadless').disabled, false);
@@ -62,7 +67,7 @@ test('build UI checks a frozen plan, submits that snapshot, and waits for an exp
 
 test('scene switching cannot reuse another scene plan or artifact', async () => {
   const h = await harness(); await h.finishPlan();
-  h.setState({ ...initial(), job: job('plan', 'succeeded', { plan }), latestBuild: { id: 'built-one', sceneId: 'scene-one' } }); await h.refresh();
+  h.setState({ ...initial(), job: job('plan', 'succeeded', { plan }), latestBuild: { id: 'built-one', backendId, sceneId: 'scene-one' } }); await h.refresh();
   h.element('projectBuildScene').value = 'scene-two'; h.element('projectBuildScene').dispatch('change');
   assert.equal(h.element('projectBuildGenerate').disabled, true);
   assert.equal(h.element('projectBuildHeadless').disabled, true);
@@ -233,7 +238,7 @@ test('snapshot conflicts invalidate the approved plan and preserve original erro
 test('an unconfigured tool permits planning and blocks build/run; unsupported hosts hide the entry', async () => {
   const h = await harness({ state: { ...initial(), available: false, reason: 'tool_missing' } });
   assert.equal(h.element('projectBuildPlan').disabled, false);
-  assert.match(h.element('projectBuildAvailability').textContent, /Godot 4/);
+  assert.match(h.element('projectBuildAvailability').textContent, /构建工具/);
   await h.finishPlan(); assert.equal(h.element('projectBuildGenerate').disabled, true);
   h.controller.setAvailable(false);
   assert.equal(h.element('projectBuildBtn').hidden, true);

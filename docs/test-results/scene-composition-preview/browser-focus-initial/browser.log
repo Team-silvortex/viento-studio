@@ -1,0 +1,30 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  [
++   170,
++   210
+-   340,
+-   100
+  ]
+
+    at file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-preview-smoke.mjs:190:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [Array],
+  expected: [Array],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+{
+  "ok": false,
+  "steps": [
+    "A recipe-only project lists its ordinary JSON document in the preview picker, renders four generated instances/groups and frozen images, and exposes fragment/placement identities. Scene editing is blocked and the build tab contains no recipe or executable job."
+  ],
+  "limitations": [
+    "HTTP editor and real Chrome canvas only; packaged Tauri IPC and Android were not exercised.",
+    "Only saved dependencies and the current registered scene text draft are previewed. No layout writeback, engine process, or native device acceptance is claimed."
+  ],
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   170,\n+   210\n-   340,\n-   100\n  ]\n\n    at file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-preview-smoke.mjs:190:10",
+  "output": "/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-composition-preview/browser"
+}

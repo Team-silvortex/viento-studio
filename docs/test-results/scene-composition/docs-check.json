@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-07",
+  "ok": true,
+  "scope": "Documentation, relative Markdown links/anchors (including explicit HTML anchor IDs), reviewed atlas generation, historical byte preservation and whitespace only; application tests were not repeated.",
+  "documentationFiles": [
+    "docs/SCENE_COMPOSITION.md",
+    "examples/scene-composition/README.md",
+    "docs/STATUS.md",
+    "docs/ROADMAP.md",
+    "docs/ARCHITECTURE.md",
+    "docs/PROJECT_BUILD.md",
+    "docs/TESTING.md",
+    "docs/README.md",
+    "engine/README.md",
+    "docs/FUNCTION_ATLAS.md"
+  ],
+  "relativeLinks": {
+    "checked": 946,
+    "anchorsChecked": 195,
+    "errors": []
+  },
+  "atlas": {
+    "generatedWith": "node scripts/function-atlas.mjs --write --refresh-sources",
+    "checkedWith": "node scripts/function-atlas.mjs --check",
+    "result": {
+      "ok": true,
+      "mode": "check",
+      "architectures": 11,
+      "functions": 57,
+      "implementations": 113,
+      "bindings": 179,
+      "cells": 716,
+      "dependencyEdges": 98,
+      "workflows": 19,
+      "historicalChains": 50,
+      "referencedFiles": 374
+    },
+    "newFeature": "scene.composition",
+    "maturity": {
+      "implementation": 2,
+      "verification": 3,
+      "decoupling": {
+        "rustCore": 4,
+        "portableBridge": 3,
+        "nodeCli": 3
+      },
+      "delivery": 2
+    },
+    "boundary": "Experimental single-file CLI/engine prototype; evidence supports native/WASM and temporary-project backend integration, not recipe GUI/registration/automatic backup/reverse editing or installation."
+  },
+  "historicalPreservation": {
+    "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+    "checkedTrackedFiles": 1245,
+    "includes": "Prior test-results, docs/history, all RELEASE records and four legacy function-network files",
+    "changed": []
+  },
+  "commandContract": {
+    "version": "0.0.7",
+    "script": "node scripts/scene-compose.mjs",
+    "machineOutput": "npm --silent run scene:compose -- --input examples/scene-composition/recipe.json --emit bundle",
+    "preparationStderr": "node scripts/build-studio-core.mjs 1>&2",
+    "postCleanupExecutionEvidence": "cli-final.json"
+  },
+  "whitespace": {
+    "gitDiffCheck": true,
+    "newAndChangedMarkdownTrailingWhitespace": []
+  },
+  "hashes": {
+    "docs/SCENE_COMPOSITION.md": "2a01034d7c8fb2949cec429b55df44b599ba54eb55a145e27fc086863bb78af4",
+    "examples/scene-composition/README.md": "a3a37b32ae4f997fae1c72dd653778f66a944fe4efaf8e54de6c16ca826723c7",
+    "docs/STATUS.md": "7ab1881a02300655312d847ae09e2e80d4ae84ff92074312792bf00e4e65b7bf",
+    "docs/ROADMAP.md": "a24bce2e6b7debb6d30716b845ec3bad83aa26db738138d8ef8cba34fb977421",
+    "docs/ARCHITECTURE.md": "029a2e54dc0ba33cb385091d6b932d72a3a7ec71dd0ec5af4a489b94c66c8a60",
+    "docs/PROJECT_BUILD.md": "52263d612d1d9ec8f7e7e88cbf6a423742d499e5562e63c5e0d9102de0a9f026",
+    "docs/TESTING.md": "45a13335d54a5fb3e993c82a5e26af2b0d5b523dcf95ebaf5771a01a3f147865",
+    "docs/README.md": "ce12cd1cf5391aee4ee9363af49e22ac8341cf20b9bd3f9985cae63e1656b8fb",
+    "engine/README.md": "ae07328d0b23c64e77f265e3a664f212c3fd5a31baa3d86496f90429c96f1b13",
+    "docs/FUNCTION_ATLAS.md": "e1fb2d1031aa4b644cd933264b1c9cfd26dd20c8886011100ea6d95f4b3ac802",
+    "docs/function-atlas.json": "301b9f554f6f4907251daff078ecbe0bf6e20d31742f16fff35a2f48db127bdb",
+    "docs/function-atlas.html": "144694f186b01310cc8583ec4fe0969eb24743f671e1c32ca765d0981e13431e",
+    "docs/function-atlas.mmd": "178950578043019e30d050c0bddc45b5f361092b185daa3964b27af9bbef8948"
+  }
+}

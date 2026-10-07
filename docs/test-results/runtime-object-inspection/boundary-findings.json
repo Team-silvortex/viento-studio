@@ -1,0 +1,28 @@
+{
+  "scope": "Read-only observations of already admitted lifecycle/state frames; no engine command, query RPC, reflection or extrapolation.",
+  "findings": [
+    {
+      "boundary": "Common portable module",
+      "result": "The same admitted protocol 1/2/3 frames produce stable instance views and typed UUID queries. Definition queries preserve all repeated instances; engine-local numeric handles and process-supplied file paths are never query identities."
+    },
+    {
+      "boundary": "Host execution ownership",
+      "result": "The generic host derives the view only after reconstructing and verifying the frozen plan/artifact/tool. The session persists the last valid sample across cancellation/failure. A separate view survives the bounded raw event ring."
+    },
+    {
+      "boundary": "UI rendering",
+      "result": "The UI renders detached host data and filters locally, labels startup/end/stale samples, and delegates source navigation using the frozen source revision. It cannot supply executable, backend, output path or Entity handles through inspect."
+    },
+    {
+      "boundary": "Protocol granularity",
+      "result": "Existing ready/state/finished data was sufficient for this inspection layer. It did not justify changing author scene/build formats, execution adapter contracts or engine protocols. Active control, reflection and fresh position sampling remain separate future capabilities."
+    }
+  ],
+  "evidence": [
+    "core-query-final.log",
+    "host-real.log",
+    "ui-final.log",
+    "browser/browser.json",
+    "packaged-resources.json"
+  ]
+}

@@ -3,12 +3,15 @@ import path from 'node:path';
 import os from 'node:os';
 import { randomUUID } from 'node:crypto';
 import { canonicalJson, createWorldProjection } from '../../engine/world-projection.mjs';
-import { checkBuildCapabilities, createScene2DPlan } from '../../engine/build-plan.mjs';
+import { createScene2DPlan } from '../../engine/build-plan.mjs';
+import { createSceneRuntimeObservation } from '../../engine/scene-runtime-query.mjs';
+import { validateSceneControlProgram, validateSceneControlPlan, createSceneControlTraceReader } from '../../engine/scene-control-program.mjs';
+import { checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
 import { captureBuildSnapshot, buildHash, buildError, readBuildFile } from './node-build-snapshot.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
 import { resolveAssetRoot } from '../lib/workspace.mjs';
-import { runBuildProcess } from '../lib/build-process.mjs';
-import { GODOT4_BACKEND, identifyGodot, generateGodotProject, godotDiagnostics, createRuntimeEventReader } from '../backends/godot4-dispatch.mjs';
+import { DEFAULT_EXECUTION_BACKEND, createExecutionBackendRegistry, assertBackendOperation,
+  executionAdapterFingerprint, validateGeneratedExecutionProject, executionPhaseDiagnostics, attachFrozenDiagnosticSources } from './node-execution-backends.mjs';
 
 const json = value => JSON.stringify(value, null, 2) + '\n';
 const within = (root, target) => { const relative = path.relative(root, target); return relative === '' || relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative); };
@@ -52,16 +55,8 @@ async function saveRecord(directory, name, record) {
   finally { await fs.rm(temporary, { force: true }); }
 }
 
-async function processPhase(tool, directory, args, options) {
-  const result = await runBuildProcess(tool.executable, ['--path', directory, ...args], {
-    cwd: directory, env: { ...process.env, GODOT_SILENCE_ROOT_WARNING: '1',
-      XDG_DATA_HOME: path.join(directory, '.host/data'), XDG_CONFIG_HOME: path.join(directory, '.host/config'),
-      XDG_CACHE_HOME: path.join(directory, '.host/cache') }, ...options,
-  });
-  return result;
-}
-
-export async function buildProject({ root, scene, godot, output, signal, timeoutMs = 30000, expectedSnapshotId, onProgress = () => {} }) {
+export async function buildProject({ root, scene, godot, tool = godot, backendId = DEFAULT_EXECUTION_BACKEND,
+  backendRegistry = createExecutionBackendRegistry(), output, signal, timeoutMs = 30000, expectedSnapshotId, onProgress = () => {} }) {
   let directory, plan, record;
   try {
     root = await fs.realpath(root);
@@ -70,28 +65,30 @@ export async function buildProject({ root, scene, godot, output, signal, timeout
     plan = captured.plan;
     if (!captured.ok) return { ok: false, status: 'rejected', diagnostics: captured.diagnostics };
     if (expectedSnapshotId && expectedSnapshotId !== captured.snapshotId) throw buildError('build_snapshot_changed', 'Saved project inputs changed; check the build plan again.');
-    const missing = checkBuildCapabilities(plan, GODOT4_BACKEND);
+    const adapter = backendRegistry.resolve(backendId);
+    const missing = checkExecutionBackendSupport(adapter.descriptor, { operation: 'build', platform: process.platform, plan });
     if (missing.length) return { ok: false, status: 'rejected', diagnostics: missing };
     onProgress({ phase: 'tool' });
-    const tool = await identifyGodot(godot, { signal });
+    const identifiedTool = await adapter.identify(tool, { signal });
     onProgress({ phase: 'generate' });
-    const generated = await generateGodotProject(plan);
+    const generated = validateGeneratedExecutionProject(adapter, plan, await adapter.generate(plan));
+    const executionAdapter = await executionAdapterFingerprint(adapter);
     const snapshotBytes = Buffer.from(json(captured.snapshot));
     if (snapshotBytes.length > 80 * 1024 * 1024) throw buildError('build_input_limit', 'Serialized build snapshot exceeds 80 MiB.');
     aborted(signal);
     const buildId = randomUUID();
     directory = await reserveBuildDirectory(root, output, buildId);
     record = { format: 'viento-build-record', schemaVersion: 1, buildId, status: 'building',
-      snapshotId: captured.snapshotId, backend: generated.backend,
-      tool: { version: tool.version, sha256: tool.sha256, platform: tool.platform, arch: tool.arch },
-      artifact: { kind: GODOT4_BACKEND.artifactKind, entry: 'project/project.godot', requiresTool: true, files: [] },
+      snapshotId: captured.snapshotId, backend: generated.backend, executionAdapter,
+      tool: { version: identifiedTool.version, sha256: identifiedTool.sha256, platform: identifiedTool.platform, arch: identifiedTool.arch },
+      artifact: { ...generated.artifact, entry: `project/${generated.artifact.entry}`, files: [] },
       diagnostics: [], phases: [] };
     await saveRecord(directory, 'build.json', record);
     await fs.writeFile(path.join(directory, 'snapshot.json'), snapshotBytes, { flag: 'wx' });
     await fs.writeFile(path.join(directory, 'source-map.json'), json(generated.sourceMap), { flag: 'wx' });
     const project = path.join(directory, 'project');
     await fs.mkdir(project);
-    for (const resource of plan.resources) generated.files.set(generated.imageFiles.get(resource.id), captured.resources.get(resource.id));
+    for (const resource of plan.resources) generated.files.set(generated.resourceFiles.get(resource.id), captured.resources.get(resource.id));
     for (const [relative, bytes] of generated.files) {
       aborted(signal);
       const file = path.join(project, relative);
@@ -99,21 +96,19 @@ export async function buildProject({ root, scene, godot, output, signal, timeout
       await fs.writeFile(file, bytes, { flag: 'wx' });
       record.artifact.files.push({ path: relative, size: bytes.length, sha256: buildHash(bytes) });
     }
-    onProgress({ phase: 'import' });
     const onOutput = output => onProgress({ output });
-    const imported = await processPhase(tool, project, ['--headless', '--editor', '--import'], { signal, timeoutMs, onOutput });
-    record.phases.push({ phase: 'import', ...imported });
-    record.diagnostics.push(...godotDiagnostics(imported, plan));
-    if (!record.diagnostics.length) {
-      onProgress({ phase: 'script-check' });
-      const checked = await processPhase(tool, project, ['--headless', '--script', 'res://runtime.gd', '--check-only'], { signal, timeoutMs, onOutput });
-      record.phases.push({ phase: 'script-check', ...checked });
-      record.diagnostics.push(...godotDiagnostics(checked, plan));
+    for (const phase of adapter.buildPhases) {
+      onProgress({ phase });
+      const result = await adapter.executePhase({ phase, tool: identifiedTool, directory: project, signal, timeoutMs, onOutput });
+      record.phases.push({ phase, ...result });
+      record.diagnostics.push(...executionPhaseDiagnostics(adapter, result, plan));
+      if (record.diagnostics.length) break;
     }
     // Caches are regenerable. Keep the small generated project, not editor or
     // shader caches in every build. Runtime gets its own temporary project.
-    await fs.rm(path.join(project, '.godot'), { recursive: true, force: true });
-    await fs.rm(path.join(project, '.host'), { recursive: true, force: true });
+    await adapter.cleanupProject(project);
+    if (plan.behaviors) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, captured.snapshot.source.documents,
+      [plan.behaviors.manifest.objectId, ...plan.behaviors.sources.map(source => source.objectId)]);
     record.status = record.diagnostics.length ? (record.phases.some(item => item.status === 'cancelled') ? 'cancelled' : record.phases.some(item => item.status === 'timeout') ? 'timeout' : 'failed') : 'succeeded';
     await saveRecord(directory, 'build.json', record);
     return { ok: record.status === 'succeeded', status: record.status, buildDirectory: directory, record };
@@ -130,70 +125,126 @@ export async function buildProject({ root, scene, godot, output, signal, timeout
   }
 }
 
-export async function runProjectBuild({ buildDirectory, godot, signal, timeoutMs = 30000, headless = true, smoke = true, capture = false, onProgress = () => {} }) {
-  let sessionDirectory, record, plan;
+export async function runProjectBuild({ buildDirectory, godot, tool = godot, backendId,
+  backendRegistry = createExecutionBackendRegistry(), signal, timeoutMs = 30000, headless = true, smoke = true, capture = false, controlProgram: inputControlProgram, onProgress = () => {} }) {
+  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram;
+  // Callback consumers receive detached DTOs and cannot alter admitted input,
+  // events, samples or the session record while a process is running.
+  const publish = event => onProgress(JSON.parse(JSON.stringify(event)));
   try {
+    if (inputControlProgram !== undefined) {
+      controlProgram = validateSceneControlProgram(inputControlProgram);
+      if (headless !== true || smoke !== true || capture !== false) throw buildError('runtime_control_mode', 'Control replay requires a finite headless smoke run.');
+    }
     if (capture && (headless || !smoke)) throw buildError('runtime_capture_mode', 'Preview capture requires a windowed smoke run.');
     buildDirectory = await fs.realpath(buildDirectory);
     const read = async (name, limit) => readBuildFile(await resolveContainedPath(buildDirectory, path.join(buildDirectory, name)), limit, signal);
     const build = JSON.parse(await read('build.json', 4 * 1024 * 1024));
     const snapshot = JSON.parse(await read('snapshot.json', 80 * 1024 * 1024));
     if (build.format !== 'viento-build-record' || build.schemaVersion !== 1 || build.status !== 'succeeded'
-      || build.backend?.id !== GODOT4_BACKEND.id || ![1, 2].includes(build.backend.protocolVersion)
+      || typeof build.backend?.id !== 'string'
       || snapshot.format !== 'viento-build-snapshot' || snapshot.schemaVersion !== 1
       || build.snapshotId !== `sha256:${buildHash(canonicalJson(snapshot))}`) throw buildError('runtime_build_invalid', 'Select a successful build with an intact snapshot.');
+    if (backendId !== undefined && backendId !== build.backend.id) throw buildError('runtime_backend_changed', 'The selected execution backend differs from this frozen build.');
+    const adapter = backendRegistry.resolve(build.backend.id);
+    const operation = capture ? 'windowCapture' : headless ? 'headlessLogic' : 'windowPreview';
+    assertBackendOperation(adapter, operation);
+    if (controlProgram && (!adapter.descriptor.capabilities.includes('runtime.control-replay')
+      || controlProgram.schemaVersion === 2 && !adapter.descriptor.capabilities.includes('runtime.control-replay.instances'))) {
+      throw buildError('runtime_control_unsupported', 'This backend does not support control replay.');
+    }
     const projection = await createWorldProjection(snapshot.source, { digest: buildHash });
     const restored = createScene2DPlan({ source: snapshot.source, projection }, snapshot.plan?.scene?.objectId);
     if (!restored.ok || canonicalJson(restored.plan) !== canonicalJson(snapshot.plan)
       || restored.plan.resources.reduce((sum, item) => sum + item.size, 0) > 128 * 1024 * 1024) throw buildError('runtime_build_invalid', 'The frozen scene plan is invalid.');
     plan = restored.plan;
-    const generated = await generateGodotProject(plan);
+    if (controlProgram && (plan.kind !== 'scene2d' || ![1, 2].includes(plan.schemaVersion) || plan.behaviors)) {
+      throw buildError('runtime_control_unsupported', 'Control replay requires a Scene2D plan version 1 or 2 without authored behaviors.');
+    }
+    if (controlProgram) controlProgram = validateSceneControlPlan(plan, controlProgram);
+    frozenSourceDocuments = snapshot.source.documents;
+    assertBackendOperation(adapter, operation, plan);
+    const generated = validateGeneratedExecutionProject(adapter, plan, await adapter.generate(plan));
     if (generated.backend.protocolVersion !== build.backend.protocolVersion
       || generated.backend.sha256 !== build.backend.sha256) throw buildError('runtime_adapter_changed', 'Backend code changed; rebuild this project before running.');
-    onProgress({ phase: 'tool' });
-    const tool = await identifyGodot(godot, { signal });
-    if (tool.sha256 !== build.tool.sha256 || tool.version !== build.tool.version) throw buildError('runtime_tool_changed', 'Use the exact toolchain recorded by this build, or rebuild.');
+    const executionAdapter = await executionAdapterFingerprint(adapter);
+    if (build.executionAdapter !== undefined ? canonicalJson(build.executionAdapter) !== canonicalJson(executionAdapter)
+      : !adapter.acceptsLegacyBuildRecords) throw buildError('runtime_adapter_changed', 'Execution adapter changed; rebuild this project before running.');
+    if (build.artifact?.kind !== generated.artifact.kind || build.artifact?.entry !== `project/${generated.artifact.entry}`
+      || build.artifact?.requiresTool !== generated.artifact.requiresTool) throw buildError('runtime_artifact_changed', 'Generated artifact declaration changed.');
+    publish({ phase: 'tool' });
+    const identifiedTool = await adapter.identify(tool, { signal });
+    if (identifiedTool.sha256 !== build.tool.sha256 || identifiedTool.version !== build.tool.version) throw buildError('runtime_tool_changed', 'Use the exact toolchain recorded by this build, or rebuild.');
     // Reconstruct the allowed outputs from the frozen plan, never accept an
     // arbitrary path or executable from a stored build record.
-    const allowed = new Set([...generated.files.keys(), ...generated.imageFiles.values()]);
+    const allowed = new Set([...generated.files.keys(), ...generated.resourceFiles.values()]);
     if (!Array.isArray(build.artifact.files) || build.artifact.files.length !== allowed.size) throw buildError('runtime_artifact_changed', 'Generated artifact inventory changed.');
     const bytes = new Map();
     for (const file of build.artifact.files) {
       if (!allowed.delete(file.path)) throw buildError('runtime_artifact_changed', 'Generated artifact inventory changed.');
       const content = await read(`project/${file.path}`, 32 * 1024 * 1024);
       const expected = generated.files.get(file.path);
-      const resource = plan.resources.find(item => generated.imageFiles.get(item.id) === file.path);
+      const resource = plan.resources.find(item => generated.resourceFiles.get(item.id) === file.path);
       if (content.length !== file.size || buildHash(content) !== file.sha256
         || (expected && !content.equals(expected)) || (resource && buildHash(content) !== resource.sha256)) throw buildError('runtime_artifact_changed', 'Generated artifact bytes changed; rebuild instead of editing the output.');
       bytes.set(file.path, content);
     }
     aborted(signal);
+    // Runtime identities and navigation come only from the revalidated frozen
+    // plan. No process frame can introduce an object or author location.
+    observation = createSceneRuntimeObservation(plan, { ...(controlProgram ? { controlProgram } : {}) });
     const sessions = await resolveContainedPath(buildDirectory, path.join(buildDirectory, 'sessions'), { allowMissing: true });
     await fs.mkdir(sessions, { recursive: true });
     const sessionId = randomUUID(); sessionDirectory = path.join(sessions, sessionId);
     await fs.mkdir(sessionDirectory, { mode: 0o700 });
     record = { format: 'viento-runtime-session', schemaVersion: 1, sessionId, buildId: build.buildId,
-      snapshotId: build.snapshotId, backendId: build.backend.id, tool: build.tool,
-      mode: headless ? 'headless-logic' : 'window-preview', smoke, status: 'starting', events: [], diagnostics: [], phases: [] };
+      snapshotId: build.snapshotId, backendId: build.backend.id, executionAdapter, tool: build.tool,
+      mode: headless ? 'headless-logic' : 'window-preview', smoke, status: 'starting', events: [], diagnostics: [], phases: [],
+      runtime: observation.snapshot(),
+      ...(controlProgram ? { control: { program: controlProgram, sha256: `sha256:${buildHash(canonicalJson(controlProgram))}`, samples: [] } } : {}) };
     await saveRecord(sessionDirectory, 'session.json', record);
+    publish({ runtime: observation.snapshot() });
     const project = path.join(sessionDirectory, 'project'); await fs.mkdir(project);
     for (const [relative, content] of bytes) {
       await fs.mkdir(path.dirname(path.join(project, relative)), { recursive: true });
       await fs.writeFile(path.join(project, relative), content, { flag: 'wx' });
     }
-    onProgress({ phase: 'import' });
-    const imported = await processPhase(tool, project, ['--headless', '--editor', '--import'], { signal, timeoutMs, onOutput: output => onProgress({ output }) });
-    record.phases.push({ phase: 'import', ...imported }); record.diagnostics.push(...godotDiagnostics(imported, plan));
+    for (const phase of adapter.runtimePhases) {
+      publish({ phase });
+      const result = await adapter.executePhase({ phase, tool: identifiedTool, directory: project, signal, timeoutMs, onOutput: output => publish({ output }) });
+      record.phases.push({ phase, ...result }); record.diagnostics.push(...executionPhaseDiagnostics(adapter, result, plan));
+      if (record.diagnostics.length) break;
+    }
     if (!record.diagnostics.length) {
-      const options = [...(smoke ? ['--viento-smoke'] : []), ...(capture ? [`--viento-capture=${path.join(sessionDirectory, 'preview.png')}`] : [])];
-      const runtime = createRuntimeEventReader(plan, { onEvent: event => onProgress({ event, ...(event.event === 'ready' ? { phase: 'running' } : {}) }) });
+      const runtime = adapter.createEventReader(plan, { onEvent: event => {
+        if (observation.push(event)) {
+          record.runtime = observation.snapshot();
+          // A consumer may cancel in response to ready. Publish the corresponding
+          // detached view first so that cancellation cannot hide admitted state.
+          publish({ runtime: observation.snapshot() });
+        }
+        publish({ event, ...(event.event === 'ready' ? { phase: 'running' } : {}) });
+      } });
+      const trace = controlProgram ? createSceneControlTraceReader(plan, controlProgram, {
+        onRuntime: text => runtime.push(text),
+        onSample: sample => {
+          record.control.samples.push(JSON.parse(JSON.stringify(sample)));
+          if (observation.pushSample(sample)) {
+            record.runtime = observation.snapshot();
+            publish({ runtime: observation.snapshot(), controlSample: sample });
+          }
+        },
+      }) : null;
       record.status = 'running'; await saveRecord(sessionDirectory, 'session.json', record);
-      onProgress({ phase: 'starting' });
-      const result = await processPhase(tool, project, [...(headless ? ['--headless'] : []), '--', ...options], { signal, timeoutMs,
-        onOutput: output => { onProgress({ output }); if (output.stream === 'stdout') runtime.push(output.text); } });
+      publish({ phase: 'starting' });
+      const result = await adapter.executePhase({ phase: 'run', tool: identifiedTool, directory: project, signal, timeoutMs, mode: operation, smoke,
+        ...(controlProgram ? { controlProgram: JSON.parse(JSON.stringify(controlProgram)) } : {}),
+        ...(capture ? { capturePath: path.join(sessionDirectory, 'preview.png') } : {}),
+        onOutput: output => { publish({ output }); if (output.stream === 'stdout') (trace || runtime).push(output.text); } });
+      if (trace) trace.finish({ requireComplete: result.status === 'succeeded' });
       runtime.finish();
       record.phases.push({ phase: 'run', ...result }); record.events = runtime.events;
-      record.diagnostics.push(...godotDiagnostics(result, plan), ...runtime.diagnostics);
+      record.diagnostics.push(...executionPhaseDiagnostics(adapter, result, plan), ...runtime.diagnostics, ...(trace?.diagnostics || []));
       if (!record.diagnostics.length && (!runtime.events.some(item => item.event === 'ready') || smoke && !runtime.events.some(item => item.event === 'finished'))) {
         record.diagnostics.push(diagnostic(buildError('runtime_protocol_incomplete', 'Runtime exited without the required lifecycle events.'), plan));
       }
@@ -208,6 +259,9 @@ export async function runProjectBuild({ buildDirectory, godot, signal, timeoutMs
   } finally {
     if (sessionDirectory) await fs.rm(path.join(sessionDirectory, 'project'), { recursive: true, force: true });
   }
+  if (observation) record.runtime = observation.snapshot();
+  if (plan.behaviors) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, frozenSourceDocuments,
+    [plan.behaviors.manifest.objectId, ...plan.behaviors.sources.map(source => source.objectId)]);
   await saveRecord(sessionDirectory, 'session.json', record);
   return { ok: record.status === 'succeeded', status: record.status, sessionDirectory, record };
 }

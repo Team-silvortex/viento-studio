@@ -50,6 +50,7 @@ import { setupWorldBrowser } from './app-world-browser.js';
 import { setupProjectBuild } from './app-project-build.js';
 import { sourceLocationSelection } from './app-source-location.js';
 import { prepareSceneSourceLayoutApply } from '../../engine/scene-source-layout.mjs';
+import { prepareSceneCompositionOverrideApply } from '../../engine/scene-composition-overrides.mjs';
 import { isComposingInput } from './app-keyboard.js';
 import { createFieldEditor } from './app-field-editor.js';
 import { API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion } from '../../scripts/lib/doc-api-contract.mjs';
@@ -3779,6 +3780,53 @@ async function getScenePreviewDraft(sourcePath) {
   return { sourcePath: canonicalizeSourcePath(sourcePath), baseSourceRevision, content };
 }
 
+async function getSceneCompositionSource(sourcePath) {
+  const eligible = () => isEditModeActive() && state.isEditing && !state.isCreating
+    && state.editInputMode === 'source' && !isEditorBusy()
+    && canonicalizeSourcePath(state.activeEditSource) === canonicalizeSourcePath(sourcePath);
+  if (!eligible()) return null;
+  const content = getCurrentEditContent(), baseline = editSessionBaselineContent;
+  const epoch = scenePreviewDraftEpoch, loadToken = editorLoadToken, version = editSessionVersion;
+  const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(baseline));
+  if (!eligible() || epoch !== scenePreviewDraftEpoch || loadToken !== editorLoadToken
+    || content !== getCurrentEditContent() || baseline !== editSessionBaselineContent || version !== editSessionVersion) return null;
+  const baseSourceRevision = `sha256:${[...new Uint8Array(bytes)].map(byte => byte.toString(16).padStart(2, '0')).join('')}`;
+  if (version.startsWith('sha256:') && version !== baseSourceRevision) return null;
+  return { sourcePath: canonicalizeSourcePath(sourcePath), baseSourceRevision, content };
+}
+
+async function applySceneCompositionOverrideDraft(proposal, { isCurrent = () => true } = {}) {
+  const conflict = () => { throw Object.assign(new Error('The source editor no longer matches the reviewed composition override.'), { errorCode: 'scene_composition_override_conflict' }); };
+  const doc = getActiveDoc(), sourcePath = proposal?.sourcePath;
+  if (typeof sourcePath !== 'string' || canonicalizeSourcePath(sourcePath) !== sourcePath) conflict();
+  const eligible = () => isEditModeActive() && state.isEditing && !state.isCreating && state.editInputMode === 'source'
+    && !isEditorBusy() && getActiveDoc() === doc && state.activeEditPath === doc?.path
+    && canonicalizeSourcePath(state.activeEditSource) === sourcePath;
+  if (!eligible()) conflict();
+  const epoch = scenePreviewDraftEpoch, loadToken = editorLoadToken, version = editSessionVersion;
+  const baseline = editSessionBaselineContent, content = getCurrentEditContent();
+  const owns = () => eligible() && isCurrent() && epoch === scenePreviewDraftEpoch && loadToken === editorLoadToken
+    && version === editSessionVersion && baseline === editSessionBaselineContent && content === getCurrentEditContent();
+  if (!owns()) conflict();
+  const digest = async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join('');
+  const baseSourceRevision = `sha256:${await digest(baseline)}`;
+  if (!owns() || version.startsWith('sha256:') && version !== baseSourceRevision) conflict();
+  const prepared = await prepareSceneCompositionOverrideApply({ sourcePath, baseSourceRevision, content }, proposal, { digest });
+  if (!owns()) conflict();
+  const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, scroll = editEditorEl.scrollTop;
+  // Keep the ordinary save baseline and disk cache. This only changes the
+  // currently owned source editor; later saving still detects external edits.
+  setSourceEditorContent(prepared.afterContent);
+  if (Number.isInteger(start) && Number.isInteger(end)) editEditorEl.setSelectionRange?.(Math.min(start, editEditorEl.value.length), Math.min(end, editEditorEl.value.length));
+  editEditorEl.scrollTop = scroll;
+  refreshEditSessionDirtyState(); refreshEditButtons();
+  setEditorStatus(t(state.editHasUnsavedChanges ? '实例覆盖已应用到原文草稿；尚未保存。' : '实例覆盖已应用；文本与已保存版本一致。'));
+  const appliedEpoch = scenePreviewDraftEpoch;
+  return { applied: true, focus() {
+    if (eligible() && appliedEpoch === scenePreviewDraftEpoch && getCurrentEditContent() === prepared.afterContent) editEditorEl.focus();
+  } };
+}
+
 async function applySceneSourceLayoutDraft(proposal, { isCurrent = () => true } = {}) {
   const conflict = () => { throw Object.assign(new Error('The source editor no longer matches the reviewed scene draft.'), { errorCode: 'scene_source_layout_conflict' }); };
   const doc = getActiveDoc(), sourcePath = proposal?.sourcePath;
@@ -5366,9 +5414,12 @@ async function initApp(options = {}) {
     getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())),
       sceneDraftPath: state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '',
       sceneDraftWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source' && state.editHasUnsavedChanges,
+      compositionSourceWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source',
       sceneDraftToken: `${editorLoadToken}:${scenePreviewDraftEpoch}` }),
     getSceneDraft: getScenePreviewDraft,
     applySceneDraft: applySceneSourceLayoutDraft,
+    getCompositionSource: getSceneCompositionSource,
+    applyCompositionDraft: applySceneCompositionOverrideDraft,
     setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
     applied: async result => {
       const sourcePath = result.changes?.[0]?.sourcePath || result.object?.documentRefs?.[0]?.sourcePath || '';

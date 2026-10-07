@@ -1,6 +1,7 @@
 // Build DTO adapter. Source locations are editor metadata kept outside the
 // frozen plan. Valid v1 inputs still emit identical legacy snapshots and artifacts.
 import { resolveScene2DModel } from './scene-model.mjs';
+import { resolveSceneBehaviors } from './scene-behaviors.mjs';
 export const SCENE2D_CAPABILITIES = ['scene2d', 'input.arrows', 'state.movement', 'image'];
 export { PROJECT_BUILD_API_PATH } from './project-build-contract.mjs';
 
@@ -16,7 +17,18 @@ export function scene2DModelToPlan(model) {
 
 export function createScene2DPlan(observed, sceneRef) {
   const resolved = resolveScene2DModel(observed, sceneRef);
-  return { ok: resolved.ok, plan: resolved.model ? scene2DModelToPlan(resolved.model) : null, diagnostics: resolved.diagnostics };
+  if (!resolved.ok) return { ok: false, plan: null, diagnostics: resolved.diagnostics };
+  return attachSceneBehaviorPlan(observed, scene2DModelToPlan(resolved.model));
+}
+
+// Only saved executable planning opts into declared behaviors. Static scene
+// previews and registration recovery continue to use the original model DTO.
+export function attachSceneBehaviorPlan(observed, plan) {
+  const resolved = resolveSceneBehaviors(observed, plan);
+  if (!resolved.ok) return { ok: false, plan: null, diagnostics: resolved.diagnostics };
+  return { ok: true, plan: resolved.behaviors ? { ...plan, schemaVersion: 3,
+    requiredCapabilities: [...plan.requiredCapabilities, 'behavior.bindings', `behavior.${resolved.behaviors.language}`],
+    behaviors: resolved.behaviors } : plan, diagnostics: resolved.diagnostics };
 }
 
 // Recovery checks frozen declaration and guarded registrations only, retaining

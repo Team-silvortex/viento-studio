@@ -3,7 +3,7 @@ import path from 'node:path';
 import { readWorkspace, readRegistry, resolveAssetRoot, walkFiles, assertPortableFileTree, portablePath } from './workspace.mjs';
 import { workspacePaths, projectDefinition, resolveDocumentDefinition, validateProjectTypes } from './project-layout.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
-import { readPackageBytes, packageDigest } from './resource-package-catalog.mjs';
+import { readPackageBytes, packageDigest, inspectPackageComposition, inspectPackageSceneBehaviors, packageDocumentClassification } from './resource-package-catalog.mjs';
 import { packageFileHash } from './resource-package-export.mjs';
 import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 import { appendRecordItem, replaceRecordString } from '../../engine/world-record-edit.mjs';
@@ -14,6 +14,8 @@ import { collectDocumentMedia, mediaUrl } from './media-format.mjs';
 import { collectAssetImageRefs } from './image-index.mjs';
 import { packageError } from '../../engine/resource-package.mjs';
 import { validateObjectProjection, inspectObjectProjection, validateProjectionDependencies } from '../../engine/object-projection.mjs';
+import { validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
+import { sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
 
 const key = value => value.normalize('NFC').toLowerCase();
 export async function packageDestination(root, assetRoot, store, relative) {
@@ -50,6 +52,11 @@ export async function planPackageImport(root, pack, signal) {
   validateProjectTypes(nextWorkspace);
   const existingIds = new Map([...registry.documents, ...registry.assets].map(record => [record.id, record]));
   const incomingIds = new Set([...pack.manifest.documents, ...pack.manifest.assets].map(item => item.id));
+  const requiredById = new Map(pack.manifest.requirements.map(item => [item.id, item])), requiredContent = new Map();
+  const declaredDocuments = new Set([...pack.manifest.documents.map(item => item.id),
+    ...pack.manifest.requirements.filter(item => item.category === 'document').map(item => item.id)]);
+  const declaredAssets = new Set([...pack.manifest.assets.map(item => item.id),
+    ...pack.manifest.requirements.filter(item => item.category === 'asset').map(item => item.id)]);
   const mappedDocuments = [], mappedAssets = [];
   const remap = relative => relative.startsWith(`${pack.manifest.source.paths.documents}/`)
     ? `${paths.documents}/${relative.slice(pack.manifest.source.paths.documents.length + 1)}`
@@ -80,6 +87,7 @@ export async function planPackageImport(root, pack, signal) {
     let actual;
     try { actual = await packageFileHash(base, relative, signal); }
     catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT') throw error; }
+    if (actual) requiredContent.set(item.id, { id: item.id, store: item.category === 'asset' ? 'assets' : 'project', path: relative, content: actual });
     if (packageDigest(bytes) !== item.recordSha256 || canonicalJson(actual || null) !== canonicalJson(item.content)) conflict(item.path, 'dependency');
   }
   const mergedDocuments = [...registry.documents.filter(record => !incomingIds.has(record.id)), ...mappedDocuments];
@@ -116,17 +124,51 @@ export async function planPackageImport(root, pack, signal) {
     const urls = [...media.urls, ...collectAssetImageRefs(media.text, sourcePath).map(file => `/${file.split('/').map(encodeURIComponent).join('/')}`)];
     for (const url of urls) if (!assetUrls.has(mediaUrl(url))) conflict(sourcePath, 'dependency');
   };
-  const projectionSources = new Map(), projectionChecks = [];
+  const projectionSources = new Map(), projectionChecks = [], compositionChecks = [], behaviorChecks = [], dependencySources = new Map();
   const mappedById = new Map(mappedDocuments.map(record => [record.id, record]));
   for (const item of pack.manifest.documents) {
     const bytes = await readPackageBytes(pack.content, item.sourcePath, signal), record = mappedById.get(item.id);
     checkReferences(bytes, remap(item.sourcePath), item.definition);
     const checked = await validateObjectProjection(bytes.toString('utf8'), record, { digest: packageDigest });
+    const composition = inspectPackageComposition(bytes, item.sourcePath);
+    const behavior = inspectPackageSceneBehaviors(bytes, item.sourcePath);
     // Keep a classification, not every incoming source body. The dependency
-    // validator needs only availability and whether a referenced OC is itself
-    // a projection; the archive already pins the actual bytes separately.
-    projectionSources.set(item.id, { record, content: checked.recognized ? '{"format":"viento-object-projection"}' : '' });
+    // validators need only availability and projection/composition identity;
+    // the archive already pins the actual bytes separately.
+    projectionSources.set(item.id, { record, content: packageDocumentClassification(checked, composition) });
     if (checked.recognized) projectionChecks.push({ record, checked });
+    if (composition.recognized) compositionChecks.push({ record, checked: composition });
+    if (behavior.recognized) behaviorChecks.push({ record, checked: behavior });
+  }
+  for (const { record, checked } of compositionChecks) {
+    // Repeat source-derived declaration checks even when a caller supplies an
+    // already unpacked package. Unpinned ambient UUIDs cannot fill manifest gaps.
+    if (!checked.ok || checked.dependencies.objectIds.some(id => !declaredDocuments.has(id))
+      || checked.dependencies.imageResourceIds.some(id => !declaredAssets.has(id))) {
+      conflict(record.sourcePath, 'dependency'); continue;
+    }
+    for (const id of [...checked.dependencies.objectIds, ...checked.dependencies.imageResourceIds]) {
+      if (requiredContent.has(id)) dependencySources.set(id, requiredContent.get(id));
+    }
+    for (const id of checked.dependencies.objectIds) if (!projectionSources.has(id)) {
+      const requirement = requiredById.get(id), dependency = registry.documents.find(item => item.id === id);
+      if (!dependency || requirement?.category !== 'document') continue;
+      let content = null;
+      try {
+        const bytes = await readPackageBytes(root, dependency.sourcePath, signal);
+        const fingerprint = { size: bytes.length, sha256: packageDigest(bytes) };
+        // Validate the same target source bytes that were pinned by the package,
+        // then observe them again before returning a reviewable plan.
+        if (canonicalJson(fingerprint) !== canonicalJson(requirement.content)) conflict(record.sourcePath, 'dependency');
+        dependencySources.set(id, { id, store: 'project', path: dependency.sourcePath, content: fingerprint });
+        const projection = await validateObjectProjection(bytes.toString('utf8'), dependency, { digest: packageDigest });
+        content = packageDocumentClassification(projection, inspectPackageComposition(bytes, dependency.sourcePath));
+        if (projection.recognized) projectionChecks.push({ record: dependency, checked: projection });
+      } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT') throw error; }
+      projectionSources.set(id, { record: dependency, content });
+    }
+    if (validateSceneCompositionDependencies(checked, record, { documents: [...projectionSources.values()],
+      assets: mergedAssets.map(record => ({ record })) }).length) conflict(record.sourcePath, 'dependency');
   }
   for (const { record, checked } of projectionChecks) {
     if (!checked.ok) { conflict(record.sourcePath, 'dependency'); continue; }
@@ -137,13 +179,67 @@ export async function planPackageImport(root, pack, signal) {
         let content = null;
         try {
           const bytes = await readPackageBytes(root, core.sourcePath, signal);
-          content = inspectObjectProjection(bytes.toString('utf8'), core).recognized ? '{"format":"viento-object-projection"}' : '';
+          content = packageDocumentClassification(inspectObjectProjection(bytes.toString('utf8'), core), inspectPackageComposition(bytes, core.sourcePath));
+          if (compositionChecks.length) dependencySources.set(coreId, { id: coreId, store: 'project', path: core.sourcePath,
+            content: { size: bytes.length, sha256: packageDigest(bytes) } });
         } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT') throw error; }
         projectionSources.set(coreId, { record: core, content });
       }
     }
     if (validateProjectionDependencies(checked.value, record, { documents: [...projectionSources.values()],
       assets: mergedAssets.map(record => ({ record })) }).length) conflict(record.sourcePath, 'dependency');
+  }
+  const behaviorSources = new Map();
+  for (const { record, checked } of behaviorChecks) {
+    if (!checked.ok || sceneBehaviorDocumentIds(checked.value).some(id => !declaredDocuments.has(id))) {
+      conflict(record.sourcePath, 'dependency'); continue;
+    }
+    for (const id of sceneBehaviorDocumentIds(checked.value)) {
+      if (behaviorSources.has(id)) continue;
+      const incoming = pack.manifest.documents.find(item => item.id === id), requirement = requiredById.get(id);
+      const dependency = incoming ? mappedById.get(id) : registry.documents.find(item => item.id === id);
+      if (!dependency || !incoming && requirement?.category !== 'document') continue;
+      let content = null;
+      try {
+        const bytes = incoming ? await readPackageBytes(pack.content, incoming.sourcePath, signal)
+          : await readPackageBytes(root, dependency.sourcePath, signal);
+        if (!incoming) {
+          const fingerprint = { size: bytes.length, sha256: packageDigest(bytes) };
+          if (canonicalJson(fingerprint) !== canonicalJson(requirement.content)) conflict(record.sourcePath, 'dependency');
+          dependencySources.set(id, { id, store: 'project', path: dependency.sourcePath, content: fingerprint });
+        }
+        content = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
+      } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT' && !(error instanceof TypeError)) throw error; }
+      behaviorSources.set(id, { record: dependency, sourcePath: dependency.sourcePath, content });
+    }
+    const scene = behaviorSources.get(checked.value.sceneObjectId);
+    let sceneValue;
+    try { sceneValue = JSON.parse(scene?.content?.replace(/^\uFEFF/, '') || 'null'); } catch { /* Dependency validation diagnoses invalid scenes. */ }
+    for (const binding of checked.value.bindings) {
+      const actorId = Array.isArray(sceneValue?.actors)
+        ? sceneValue.actors.find(actor => actor?.instanceId === binding.instanceId)?.objectId : null;
+      if (actorId && mappedById.has(checked.value.sceneObjectId) && !declaredDocuments.has(actorId)) {
+        conflict(record.sourcePath, 'dependency'); continue;
+      }
+      if (!actorId || projectionSources.has(actorId) || behaviorSources.has(actorId)) continue;
+      // An excluded, pinned scene can introduce its own actor dependency.
+      // Follow only its registered edge, then pin the observed target bytes;
+      // direct manifest scene/script references remain package-declared UUIDs.
+      if (!scene?.record.relations?.some(relation => relation.targetId === actorId)) continue;
+      const actor = registry.documents.find(item => item.id === actorId);
+      if (!actor) continue;
+      let content = null;
+      try {
+        const bytes = await readPackageBytes(root, actor.sourcePath, signal);
+        content = bytes.toString('utf8');
+        const fingerprint = { size: bytes.length, sha256: packageDigest(bytes) }, requirement = requiredById.get(actorId);
+        if (requirement && canonicalJson(fingerprint) !== canonicalJson(requirement.content)) conflict(record.sourcePath, 'dependency');
+        dependencySources.set(actorId, { id: actorId, store: 'project', path: actor.sourcePath,
+          content: fingerprint });
+      } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT') throw error; }
+      behaviorSources.set(actorId, { record: actor, sourcePath: actor.sourcePath, content });
+    }
+    if (validateSceneBehaviorDependencies(checked.value, record, { documents: [...projectionSources.values(), ...behaviorSources.values()] }).length) conflict(record.sourcePath, 'dependency');
   }
   for (const type of pack.manifest.types) if (type.template) {
     const file = `${pack.manifest.source.paths.templates}/${type.template}`;
@@ -177,11 +273,18 @@ export async function planPackageImport(root, pack, signal) {
       else { file.reuse = true; reused.push(file.path); }
     } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT') throw error; }
   }
+  const dependencies = [...dependencySources.values()].sort((left, right) => left.id.localeCompare(right.id));
+  for (const dependency of dependencies) {
+    let actual;
+    try { actual = await packageFileHash(dependency.store === 'assets' ? assetRoot : root, dependency.path, signal); }
+    catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT') throw error; }
+    if (canonicalJson(actual || null) !== canonicalJson(dependency.content)) throw packageError('目标项目已变化，请重新预览导入', 409);
+  }
   await assertWorldFence(root, fence); signal?.throwIfAborted();
   if (canonicalJson(await readRegistry(root, { signal })) !== canonicalJson(registry)
     || !(await readPackageBytes(root, 'workspace.json', signal)).equals(workspaceBefore) || resolveAssetRoot(root) !== assetRoot) throw packageError('目标项目已变化，请重新预览导入', 409);
   const revision = packageDigest(canonicalJson({ fence, registry, assetRoot, inventory, workspace: packageDigest(workspaceBefore),
-    files: files.map(({ buffer, ...file }) => file), conflicts }));
+    files: files.map(({ buffer, ...file }) => file), conflicts, ...(dependencies.length ? { dependencies } : {}) }));
   return { revision, workspace, assetRoot, files, workspaceBefore, workspaceAfter: Buffer.from(workspaceAfter),
     summary: { name: pack.manifest.source.name, items, conflicts, newFiles: files.filter(file => !file.reuse).length, reusedFiles: reused.length,
       documentCount: pack.manifest.documents.length, assetCount: pack.manifest.assets.length } };

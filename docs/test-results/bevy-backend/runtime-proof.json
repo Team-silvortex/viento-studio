@@ -1,0 +1,88 @@
+{
+  "format": "viento-bevy-runtime-proof",
+  "schemaVersion": 1,
+  "runtime": {
+    "bevyVersion": "0.19.1",
+    "protocolVersions": [
+      1,
+      2
+    ],
+    "runtimeKind": "viento-bevy-runtime",
+    "runtimeVersion": "0.1.0"
+  },
+  "versionLine": "viento-bevy-runtime 0.1.0 bevy 0.19.1",
+  "rustVersion": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "cargoVersion": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)",
+  "binary": {
+    "path": "/tmp/viento-bevy-prototype-target/debug/viento-bevy-runtime",
+    "bytes": 11170328,
+    "sha256": "8c4dab4afa35115e710b0b68a3c9535971d2271d5c01976881dc4f9d6b3377e3",
+    "profile": "dev (debug=0, incremental=false)"
+  },
+  "dependencies": {
+    "bevy": "=0.19.1",
+    "defaultFeatures": false,
+    "features": [
+      "std"
+    ],
+    "lockedPackages": 176,
+    "rendererPackages": []
+  },
+  "initialCompileSeconds": 32.85,
+  "tests": {
+    "rustUnit": 9,
+    "processIntegration": 5,
+    "passed": 14,
+    "failed": 0,
+    "ignored": 0,
+    "log": "runtime-tests-final.log"
+  },
+  "boundaries": {
+    "realBevyAppEcs": true,
+    "authorCargoExecuted": false,
+    "authorRustBehaviors": false,
+    "window": false,
+    "renderer": false,
+    "gpu": false,
+    "productionImageCapability": false,
+    "resourceIntegrityTestsOnly": true,
+    "normalSession": "60 Hz idle with external cancellation",
+    "smokeInput": "right=true delta=0.25 then right=false delta=0.25"
+  },
+  "sources": [
+    {
+      "path": "crates/viento-bevy-runtime/Cargo.toml",
+      "bytes": 518,
+      "sha256": "1632420c5c7285ff6cf3300a6dbf3cfea5c9eaa905c325f9d6f3bc878ee3882e"
+    },
+    {
+      "path": "crates/viento-bevy-runtime/Cargo.lock",
+      "bytes": 43308,
+      "sha256": "eace7a937633b03247bad0dc59016e5ca144d952dbad5cbd58ce0bf482868a3c"
+    },
+    {
+      "path": "crates/viento-bevy-runtime/src/main.rs",
+      "bytes": 26735,
+      "sha256": "928a760b31a136965c896e20c8058ba813b77ff1ff0c900aa366cc01dc2da9c0"
+    },
+    {
+      "path": "crates/viento-bevy-runtime/tests/cli.rs",
+      "bytes": 7837,
+      "sha256": "3310aa831f823da95f4cc07078392f6bc1e5dd75f6cfbc4cbe6bb2b5122cfd48"
+    }
+  ],
+  "officialSources": [
+    {
+      "url": "https://docs.rs/bevy/0.19.1/bevy/struct.MinimalPlugins.html",
+      "claim": "MinimalPlugins contains task pool, frame count, time and schedule runner without DefaultPlugins"
+    },
+    {
+      "url": "https://crates.io/crates/bevy/0.19.1",
+      "claim": "cargo info identified Bevy stable 0.19.1 with rust-version 1.95.0"
+    },
+    {
+      "url": "https://bevy.org/news/bevy-0-19/",
+      "claim": "official Bevy 0.19 release documentation"
+    }
+  ]
+}

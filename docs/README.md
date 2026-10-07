@@ -2,7 +2,7 @@
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.0.7 版本记录](RELEASE_0.0.7.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.0.8 版本记录](RELEASE_0.0.8.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -16,6 +16,11 @@
 | 分享文档、备份工程或保存单个素材 | [导出](EXPORT.md) |
 | 选择对象和资源，在工程之间复用 | [资源包](RESOURCE_PACKAGES.md) |
 | 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
+| 场景实例挂载 GDScript、参数、信号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
+| 查看运行对象、检索实例／定义并返回冻结声明 | [运行对象与采样](RUNTIME_OBJECTS.md) |
+| 在 Godot／Bevy 上回放全局或独立实例方向并逐步观察 | [有限控制回放](RUNTIME_CONTROL.md) |
+| 同一无图场景在 Godot／Bevy 上构建与无头运行 | [Bevy 第二后端](BEVY_BACKEND.md) |
+| 复用片段配方、预览来源与编辑单实例局部覆盖 | [场景片段组合](SCENE_COMPOSITION.md) |
 
 ## 工程格式与语义操作
 
@@ -39,6 +44,7 @@
 | 跨架构功能、实现证据、四维成熟度与工作流筛选 | [当前功能图谱](FUNCTION_ATLAS.md)、[离线交互版](function-atlas.html) |
 | 已实现的模块职责、依赖方向与完整调用路径 | [系统架构](ARCHITECTURE.md) |
 | 可移植解析、字段、存储及语义规划接口 | [引擎接口](../engine/README.md) |
+| 执行能力描述符、可信宿主注册表与具体引擎隔离 | [执行后端中间层](BACKEND_MIDDLEWARE.md) |
 | Node 本地服务、索引与维护命令 | [脚本说明](../scripts/README.md) |
 | 桌面启动、打包、原生交互和清理 | [桌面说明](../desktop/README.md) |
 | Android 私有存储、构建与设备限制 | [移动端说明](../mobile/README.md) |
@@ -62,6 +68,8 @@
 
 - [Epic of Viento Line](examples/README.md)：独立官方作品，说明现有作品如何使用通用定义。
 - [Scene2D](../examples/scene2d/README.md)：仓库内合成工程，验证从设计声明到运行产物。
+- [场景片段组合](../examples/scene-composition/README.md)：单文件配方展开到现有 v3；已保存／当前草稿可预览并查看贡献来源，单实例局部覆盖可检查后应用到当前原文草稿并普通保存，不自动登记生成场景。
+- [场景行为](../examples/scene-behaviors/README.md)：同一 GDScript 的两个实例使用独立参数，贯通计划、构建、事件、来源诊断和依赖迁移。
 - [历史索引](history/README.md)：发布、缺陷修复、平台验收、迁移及旧功能链路图。
 - [验证历程](history/VALIDATION.md)：各阶段的版本、测试计数、环境和限制。
 

@@ -1,0 +1,55 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ {
++   artifactKind: 'godot-project',
++   capabilities: [
++     'scene2d',
++     'input.arrows',
++     'state.movement',
++     'image'
++   ],
++   execution: {
++     embeddedViewport: false,
++     gpuCompute: false,
++     headlessLogic: true,
++     windowPreview: true
++   },
++   id: 'org.viento.godot4',
++   platforms: [
++     'linux'
++   ],
++   protocolVersion: 1,
++   sha256: 'dba885d7965715e56b1f1ac394dc78e3227d3502d23318a736dca6eb93beabe6',
++   version: '0.1.0'
++ }
+- undefined
+
+    at file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/bevy-backend/packaged-check.mjs:172:71 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    id: 'org.viento.godot4',
+    version: '0.1.0',
+    protocolVersion: 1,
+    capabilities: [ 'scene2d', 'input.arrows', 'state.movement', 'image' ],
+    artifactKind: 'godot-project',
+    platforms: [ 'linux' ],
+    execution: {
+      headlessLogic: true,
+      windowPreview: true,
+      embeddedViewport: false,
+      gpuCompute: false
+    },
+    sha256: 'dba885d7965715e56b1f1ac394dc78e3227d3502d23318a736dca6eb93beabe6'
+  },
+  expected: undefined,
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

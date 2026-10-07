@@ -1,0 +1,47 @@
+✔ Bevy descriptor advertises only real headless v1/v2 operations and freezes its host contract (1.301878ms)
+✔ generated Bevy scenes contain runtime data only and keep author navigation in a detached host map (7.473975ms)
+✔ generation admits a private snapshot before async reads and treats literal user strings as JSON data (2.340103ms)
+✔ images, behavior plans and incompatible capabilities are rejected before generation including stripped image tokens (1.787631ms)
+✔ invalid paired identities, dimensions and resource filename authority cannot reach the runtime artifact (2.560669ms)
+✔ availability never executes tools, while identify pins exact runtime, Bevy version and executable bytes (195.485956ms)
+✔ Bevy-specific check/run arguments remain literal and host paths stay inside generated project (95.824985ms)
+✔ unsupported mode, phase, capture, relative tool and output requests fail before a process is created (1.623937ms)
+✔ shared process ownership handles cancellation, deadlines and failed observers for Bevy (172.69493ms)
+✔ resource diagnostics from the check phase resolve only frozen source identities and reject forged author paths (1.199024ms)
+✔ cleanup removes only owned host cache paths and cannot follow them into author data (1.738713ms)
+✔ execution fingerprints cover the packaged implementation without depending on unbundled Rust checkout files (1.171554ms)
+✖ real Bevy App/ECS runtime checks and runs both legacy and paired-instance scene plans (60.801791ms)
+✔ neutral protocol admission preserves old v1/v2 accepted frames and trusted diagnostic navigation (2.840472ms)
+✔ protocol v2 accepts two instances of one definition and refuses missing, repeated and mismatched identities (0.45077ms)
+✔ engine output cannot redirect source links, pretend to provide a behavior frame or advance invalid lifecycles (0.316058ms)
+✔ stream fragmentation, CRLF and an unfinished final frame are handled without ordinary-log event injection (0.326557ms)
+✔ unbounded protocol lines and event floods are rejected with bounded diagnostics (9.509201ms)
+✔ portable event middleware runs without Node, DOM, imports or filesystem globals (6.854482ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 18
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 688.236718
+
+✖ failing tests:
+
+test at scripts/tests/bevy-adapter.test.mjs:169:1
+✖ real Bevy App/ECS runtime checks and runs both legacy and paired-instance scene plans (60.801791ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(adapter.diagnostics(failed, value).some(item => item.code === 'runtime_scene_invalid'))
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-adapter.test.mjs:187:51)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

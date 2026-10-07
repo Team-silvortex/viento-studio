@@ -28,7 +28,9 @@
     "core:test": "cargo test --manifest-path crates/viento-studio-core/Cargo.toml --locked",
     "pretest": "node scripts/build-studio-core.mjs",
     "prestart": "node scripts/build-studio-core.mjs",
-    "prebrowse": "node scripts/build-studio-core.mjs"
+    "prebrowse": "node scripts/build-studio-core.mjs",
+    "scene:compose": "node scripts/scene-compose.mjs",
+    "prescene:compose": "node scripts/build-studio-core.mjs 1>&2"
   },
   "dependencies": {
     "yaml": "2.9.0",
@@ -40,7 +42,7 @@
     "acorn": "8.18.0",
     "ajv": "8.20.0"
   },
-  "version": "0.0.7",
+  "version": "0.0.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/Team-silvortex/viento-studio.git"

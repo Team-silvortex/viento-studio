@@ -1,0 +1,97 @@
+✖ saved behavior planning freezes registered text and independent instance parameters; CLI is read only (60.890232ms)
+✖ registered behavior bindings require explicit scene opt-in; static previews never acquire execution sources (54.853436ms)
+✖ draft preview remains separate when saved behavior inputs are invalid or unfinished (57.747816ms)
+✖ editing only behavior source invalidates approved saved input before engine probing or output allocation (35.379212ms)
+✖ behavior plan schema, language capabilities and declared backend identity are separate middleware gates (19.195822ms)
+✖ host plan summary exposes behavior counts while transport keeps backend/tool selection host-only (39.031232ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 386.473258
+
+✖ failing tests:
+
+test at scripts/tests/scene-behavior-workflow.test.mjs:43:1
+✖ saved behavior planning freezes registered text and independent instance parameters; CLI is read only (60.890232ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_behavior_unlinked","message":"Register a reference from the behavior manifest to this dependency.","propertyPath":"/sceneObjectId","relatedObjectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2","sourceRange":{"start":81,"end":119,"encoding":"utf-16","propertyPath":"/sceneObjectId","exact":true}},{"severity":"error","code":"build_behavior_unlinked","message":"Register a reference from the behavior manifest to this dependency.","propertyPath":"/bindings/0/implementation/sourceObjectId","relatedObjectId":"ffffffff-ffff-4fff-8fff-ffffffffffff","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2","sourceRange":{"start":388,"end":426,"encoding":"utf-16","propertyPath":"/bindings/0/implementation/sourceObjectId","exact":true}}]
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-workflow.test.mjs:46:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-behavior-workflow.test.mjs:63:1
+✖ registered behavior bindings require explicit scene opt-in; static previews never acquire execution sources (54.853436ms)
+  TypeError: Cannot read properties of null (reading 'schemaVersion')
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-workflow.test.mjs:66:27)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/scene-behavior-workflow.test.mjs:74:1
+✖ draft preview remains separate when saved behavior inputs are invalid or unfinished (57.747816ms)
+  Error: Provide a bounded draft of the selected registered scene.
+      at createError (file:///home/chiharukiryu/cdev/viento-studio/engine/service-error.mjs:2:17)
+      at invalid (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-draft-preview.mjs:11:23)
+      at validateSceneDraftRequest (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-draft-preview.mjs:17:136)
+      at captureSceneDraftPreview (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-build-snapshot.mjs:54:3)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-workflow.test.mjs:82:23)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    statusCode: 400,
+    payload: {},
+    errorCode: 'scene_preview_request_invalid'
+  }
+
+test at scripts/tests/scene-behavior-workflow.test.mjs:86:1
+✖ editing only behavior source invalidates approved saved input before engine probing or output allocation (35.379212ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+  
+  undefined
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-workflow.test.mjs:89:69)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-behavior-workflow.test.mjs:96:1
+✖ behavior plan schema, language capabilities and declared backend identity are separate middleware gates (19.195822ms)
+  TypeError: Cannot read properties of null (reading 'requiredCapabilities')
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-workflow.test.mjs:100:28)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/scene-behavior-workflow.test.mjs:108:1
+✖ host plan summary exposes behavior counts while transport keeps backend/tool selection host-only (39.031232ms)
+  AssertionError [ERR_ASSERTION]: {"supported":true,"available":true,"reason":null,"platform":"linux","backend":{"format":"viento-execution-backend","schemaVersion":1,"id":"org.viento.godot4","label":"Godot 4","version":"0.3.0","platforms":["linux"],"plans":[{"kind":"scene2d","schemaVersion":1,"runtimeProtocolVersion":1},{"kind":"scene2d","schemaVersion":2,"runtimeProtocolVersion":2},{"kind":"scene2d","schemaVersion":3,"runtimeProtocolVersion":3}],"capabilities":["scene2d","input.arrows","state.movement","image","behavior.bindings","behavior.gdscript"],"execution":{"build":true,"headlessLogic":true,"windowPreview":true,"windowCapture":true,"offscreenRender":false,"embeddedViewport":false,"gpuCompute":false},"extensions":[]},"scenes":[{"id":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","title":"Independent GDScript Behaviors"}],"previewDocuments":[{"id":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","title":"Independent GDScript Behaviors","kind":"scene"}],"job":{"id":"587c559e-52f9-4dd0-a86a-49e976cad093","kind":"plan","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","backendId":"org.viento.godot4","status":"failed","phase":"completed","createdAt":"2026-10-07T06:13:48.755Z","diagnostics":[{"severity":"error","code":"build_behavior_unlinked","message":"Register a reference from the behavior manifest to this dependency.","propertyPath":"/sceneObjectId","relatedObjectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2","sourceRange":{"start":81,"end":119,"encoding":"utf-16","propertyPath":"/sceneObjectId","exact":true}},{"severity":"error","code":"build_behavior_unlinked","message":"Register a reference from the behavior manifest to this dependency.","propertyPath":"/bindings/0/implementation/sourceObjectId","relatedObjectId":"ffffffff-ffff-4fff-8fff-ffffffffffff","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2","sourceRange":{"start":388,"end":426,"encoding":"utf-16","propertyPath":"/bindings/0/implementation/sourceObjectId","exact":true}}],"events":[],"logs":"","plan":null,"finishedAt":"2026-10-07T06:13:48.768Z"},"latestBuild":null}
+  + actual - expected
+  
+  + 'failed'
+  - 'succeeded'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-workflow.test.mjs:115:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'succeeded',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

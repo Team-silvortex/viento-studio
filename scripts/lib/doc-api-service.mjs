@@ -28,6 +28,7 @@ import { createWorldQueryService } from '../adapters/node-world-projection.mjs';
 import { createWorldCommandService } from '../adapters/node-world-commands.mjs';
 import { readTransactionStatus, readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 import { createProjectBuildService } from './project-build-service.mjs';
+import { executionHostConfiguration } from '../adapters/node-execution-tool.mjs';
 import { createScenePreviewService } from './scene-preview-service.mjs';
 
 const DEFAULT_INDEX_CACHE_TTL_MS = 5000;
@@ -50,7 +51,7 @@ function createDocumentService(options = {}) {
   const commandWorld = createWorldCommandService(PROJECT_ROOT);
   const exports = createExportService(PROJECT_ROOT);
   const projectBuildEnabled = options.projectBuildEnabled ?? process.platform === 'linux';
-  const projectBuild = createProjectBuildService(PROJECT_ROOT, { enabled: projectBuildEnabled });
+  const projectBuild = createProjectBuildService(PROJECT_ROOT, { enabled: projectBuildEnabled, ...executionHostConfiguration() });
   const scenePreview = createScenePreviewService(PROJECT_ROOT, { enabled: projectBuildEnabled });
   const resourcePackages = createResourcePackageService(PROJECT_ROOT, { imported: () => { reloadWorkspaceManifest(); invalidateIndexCache(); } });
   const sharedState = options.state || {};

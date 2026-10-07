@@ -1,0 +1,97 @@
+✖ clean recipe source opens override editing with named registered images and no write endpoint (26.624443ms)
+✔ a delayed source open cannot edit a closed or reopened parent session (19.736368ms)
+✖ candidate checking uses the exact draft and releases its independent preview lease (10.710617ms)
+✖ mismatched validation revisions, identity, counts or generated write grants never approve a candidate (11.662411ms)
+✖ closing the parent or changing the source token while validation waits rejects the late response (24.299818ms)
+✖ apply delegates a live parent owner and completion closes only its own editor session (13.340525ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 1
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 169.550389
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-overrides-bridge.test.mjs:48:1
+✖ clean recipe source opens override editing with named registered images and no write endpoint (26.624443ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-overrides-bridge.test.mjs:49:38)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-composition-overrides-bridge.test.mjs:62:1
+✖ candidate checking uses the exact draft and releases its independent preview lease (10.710617ms)
+  Error: The composition preview owner changed.
+      at conflict (evalmachine.<anonymous>:221:52)
+      at Object.validateDraft (evalmachine.<anonymous>:225:20)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-overrides-bridge.test.mjs:63:85)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'scene_composition_override_conflict'
+  }
+
+test at scripts/tests/scene-composition-overrides-bridge.test.mjs:69:1
+✖ mismatched validation revisions, identity, counts or generated write grants never approve a candidate (11.662411ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   errorCode: 'scene_composition_override_conflict'
+  -   errorCode: 'scene_composition_override_invalid'
+    }
+  
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-overrides-bridge.test.mjs:75:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: The composition preview owner changed.
+        at conflict (evalmachine.<anonymous>:221:52)
+        at Object.validateDraft (evalmachine.<anonymous>:225:20)
+        at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-overrides-bridge.test.mjs:75:37)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: { errorCode: 'scene_composition_override_invalid' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-composition-overrides-bridge.test.mjs:80:1
+✖ closing the parent or changing the source token while validation waits rejects the late response (24.299818ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(h.calls.some(call => call.request?.method === 'DELETE'))
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-overrides-bridge.test.mjs:87:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-composition-overrides-bridge.test.mjs:91:1
+✖ apply delegates a live parent owner and completion closes only its own editor session (13.340525ms)
+  Error: The selected recipe source changed.
+      at Object.applySourceDraft (evalmachine.<anonymous>:255:40)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-overrides-bridge.test.mjs:93:35)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'scene_composition_override_conflict'
+  }

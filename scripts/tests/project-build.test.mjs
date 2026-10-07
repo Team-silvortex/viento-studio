@@ -9,6 +9,7 @@ import { captureBuildSnapshot, buildHash } from '../adapters/node-build-snapshot
 import { buildProject, runProjectBuild } from '../adapters/node-project-build.mjs';
 import { runBuildProcess } from '../lib/build-process.mjs';
 import { createScene2DPlan, checkBuildCapabilities } from '../../engine/build-plan.mjs';
+import { resolveSceneBehaviors } from '../../engine/scene-behaviors.mjs';
 import { inspectObjectProjection, renderProjectionRuntime, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
 import { validateSceneGroups } from '../../engine/scene-groups.mjs';
@@ -57,7 +58,7 @@ test('scene build: deterministic, movable, frozen bytes; portable planner has no
     { inspectObjectProjection, renderProjectionRuntime, validateProjectionDependencies, parseJsonSource, locateJsonSource, sceneActorIdentity, validateSceneGroups });
   const source = await fs.readFile(new URL('../../engine/build-plan.mjs', import.meta.url), 'utf8');
   const portable = vm.runInNewContext(`${source.replace(/^import .*\n/gm, '').replace(/^export \{.*\} from .*\n/gm, '').replaceAll('export ', '')}\ncreateScene2DPlan`,
-    { resolveScene2DModel });
+    { resolveScene2DModel, resolveSceneBehaviors });
   const observed = await readWorldSnapshot(root);
   assert.deepEqual(JSON.parse(JSON.stringify(portable(observed, scene))), createScene2DPlan(observed, scene));
   assert.deepEqual(checkBuildCapabilities(captured.plan, { capabilities: [] }).map(item => item.capability), captured.plan.requiredCapabilities);

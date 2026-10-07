@@ -1,0 +1,56 @@
+✔ preview capability exposes independent tabs without requiring Godot (28.097248ms)
+✔ tab keyboard navigation moves focus and uses roving tabindex (16.88699ms)
+✔ preview close and quick reopen preserve running build polling and source navigation choice (18.318042ms)
+✔ older capabilities retain the existing build workflow (10.474133ms)
+✔ build UI checks a frozen plan, submits that snapshot, and waits for an explicit run (41.268006ms)
+✔ scene switching cannot reuse another scene plan or artifact (21.549087ms)
+✔ saving a layout refreshes preview and invalidates the approved build plan without submitting a job (26.64779ms)
+✔ draft, creation, busy and browse guards prevent task submission even when context changed after rendering (20.894735ms)
+✔ closing a running task preserves it and polling, while dirty drafts still allow cancellation (17.280996ms)
+✔ a lost submission response is reconciled with GET without resubmitting the task (13.239727ms)
+✔ diagnostics retain exact source coordinates, protect declined navigation, and render details as text (9.120294ms)
+✔ preview and diagnostic navigation focus the source editor after the dialog closes, preserving legacy callbacks (27.719762ms)
+✔ late source navigation cannot close a reopened dialog or replace a newer navigation focus (19.946003ms)
+✔ queued dialog-close focus is discarded when the dialog is reopened before the close event (12.800196ms)
+✔ multiple queued close events focus the final closed session only once (13.978507ms)
+✔ snapshot conflicts invalidate the approved plan and preserve original error details (18.101348ms)
+✔ an unconfigured tool permits planning and blocks build/run; unsupported hosts hide the entry (14.721456ms)
+✔ all build dialog user messages have English and Japanese translations (0.910651ms)
+✔ asynchronous snapshot conflicts invalidate the plan after the job completes (15.968524ms)
+✔ editor build context resolves generated source paths without changing the active draft (18.323472ms)
+✔ source layout bridge uses the active draft, refreshes draft preview, and does not require a disk-write command (8.441235ms)
+✔ source layout bridge discards delayed opens after scene or dialog ownership changes (29.309822ms)
+✔ source apply propagates live origin ownership to the asynchronous editor host (36.939121ms)
+✖ clean source sessions can create an instance override without inventing an initial dirty edit (39.311983ms)
+✔ dirty source application preserves Unicode, line endings, selection and the ordinary save baseline (11.669776ms)
+✔ foreign paths, baselines, target identities and altered afterContent cannot replace the current source (45.251796ms)
+✔ other modes, inactive editors and busy states reject override application and source acquisition (28.141499ms)
+✔ a source change during the saved-baseline digest invalidates the proposal (4.403945ms)
+✔ the parent preview owner is checked again after patch preparation and before editing memory (6.38217ms)
+✔ an old proposal cannot be replayed and an old focus receipt cannot focus a later editor (8.623897ms)
+✔ clean source acquisition refuses a snapshot if the live text changes during hashing (3.27667ms)
+✔ applying source layout edits only memory, preserves raw bytes, original save baseline and disk cache (29.991645ms)
+✔ stale content, changed baseline, foreign path and unreviewed afterContent cannot replace current text (25.98375ms)
+✔ only an active source-mode draft can accept layout results (28.687709ms)
+✔ text, path, mode or save baseline changes during the baseline digest reject delayed layout results (18.366684ms)
+✔ host rechecks editor ownership after portable patch preparation and before memory write (4.199684ms)
+✔ language-only UI refresh keeps a pending source apply valid and replay of an old proposal is rejected (5.754919ms)
+✔ origin layout or preview owner is rechecked after each asynchronous preparation stage (9.373126ms)
+✔ returning coordinates to the exact baseline clears dirty state without writing the saved file (4.892457ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 38
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 491.650132
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-overrides-host.test.mjs:38:1
+✖ clean source sessions can create an instance override without inventing an initial dirty edit (39.311983ms)
+  TypeError: Cannot read properties of null (reading 'expectedVersion')
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-overrides-host.test.mjs:45:92)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)

@@ -1,0 +1,22 @@
+[package]
+name = "viento-bevy-runtime"
+version = "0.3.0"
+edition = "2024"
+rust-version = "1.95"
+publish = false
+description = "Trusted headless Bevy execution adapter for Viento scene plans"
+
+[dependencies]
+bevy = { version = "=0.19.1", default-features = false, features = ["std"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["float_roundtrip"] }
+sha2 = "0.10"
+
+[profile.dev]
+debug = 0
+incremental = false
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true

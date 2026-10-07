@@ -12,12 +12,21 @@
 .project-build .doc-btn { color: white; background: #285b47; border-color: #285b47; min-height: 40px; }
 .project-build .doc-btn-ghost { color: #244d3c; background: #f7faf8; border-color: #94b4a2; }
 .project-build .doc-btn:hover:not(:disabled) { color: white; background: #1c4735; }
-.project-build :is(button, select, summary, pre):focus-visible { outline: 2px solid #24684b; outline-offset: 3px; }
+.project-build :is(button, input, textarea, select, summary, pre):focus-visible { outline: 2px solid #24684b; outline-offset: 3px; }
 .project-build button:disabled, .project-build select:disabled { opacity: .55; cursor: default; }
 .project-build [hidden] { display: none !important; }
 .build-summary h3 { margin-top: 0; }
 .build-monospace { font: 12px monospace; overflow-wrap: anywhere; }
 .build-hint { font-size: 13px; line-height: 1.7; color: #536d64; }
+.build-runtime-objects { min-width: 0; margin-block: 20px; }
+.build-runtime-objects > label { display: block; margin-bottom: 6px; font-weight: 600; }
+.build-runtime-objects > input { box-sizing: border-box; width: 100%; min-width: 0; padding: 10px; font: inherit; color: inherit; background: white; border: 1px solid #94b4a2; border-radius: 8px; }
+#projectBuildRuntimeObjectList { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 12px; padding: 0; list-style: none; }
+.build-runtime-object { min-width: 0; border: 1px solid #bdd1c4; border-radius: 10px; padding: 12px; overflow-wrap: anywhere; }
+.build-runtime-object h4 { margin: 0 0 8px; font-size: 16px; }
+.build-runtime-object p { margin-block: 6px; line-height: 1.5; }
+.build-runtime-sample { color: #536d64; font-size: 13px; }
+.build-runtime-object .build-runtime-source { margin-top: 8px; max-width: 100%; white-space: normal; text-align: start; }
 #projectBuildError { color: #a32424; padding: 12px; border-inline-start: 3px solid currentColor; background: #fff2ee; }
 #projectBuildDiagnostics { padding-inline-start: 22px; overflow-wrap: anywhere; }
 .build-diagnostic { padding-bottom: 8px; }
@@ -63,3 +72,14 @@
 
 .scene-create .scene-group { min-width: 0; margin-block: 12px; padding: 12px; border: 1px solid #bdcec4; border-radius: 8px; }
 .scene-create .scene-group > button { margin-top: 10px; }
+
+.build-control-editor { min-width: 0; margin-block: 16px; padding: 12px; border: 1px solid #bdd1c4; border-radius: 10px; }
+.build-control-editor > summary { cursor: pointer; font-weight: 600; }
+.build-control-editor > label { display: block; margin-block: 10px 6px; }
+.build-control-editor > textarea { box-sizing: border-box; width: 100%; min-width: 0; min-height: 180px; resize: vertical; padding: 10px; font: 12px/1.6 monospace; color: inherit; background: white; border: 1px solid #94b4a2; border-radius: 8px; }
+#projectBuildControlError { color: #a32424; overflow-wrap: anywhere; }
+
+.build-control-target { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; }
+.build-control-target > label { grid-column: 1 / -1; }
+.build-control-target > select { box-sizing: border-box; width: 100%; min-width: 0; padding: 10px; font: inherit; color: inherit; background: white; border: 1px solid #94b4a2; border-radius: 8px; }
+@media (max-width: 600px) { .build-control-target { grid-template-columns: minmax(0, 1fr); } .build-control-target > label { grid-column: auto; } }

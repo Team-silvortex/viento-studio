@@ -1,3 +1,4 @@
+import './node-studio-core.mjs';
 import { overlaySceneDraftPreview, validateSceneDraftRequest } from '../../engine/scene-draft-preview.mjs';
 import { createSceneStructure } from '../../engine/scene-structure.mjs';
 import fs from 'node:fs/promises';
@@ -5,9 +6,10 @@ import { constants } from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { readWorldSnapshot } from './node-world-projection.mjs';
-import { scene2DModelToPlan, buildActorFieldLocation } from '../../engine/build-plan.mjs';
+import { scene2DModelToPlan, attachSceneBehaviorPlan, buildActorFieldLocation } from '../../engine/build-plan.mjs';
 import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
 import { resolveScene2DModel } from '../../engine/scene-model.mjs';
+import { resolveSceneCompositionPreview } from '../../engine/scene-composition-preview.mjs';
 import { canonicalJson } from '../../engine/world-projection.mjs';
 import { resolveAssetRoot } from '../lib/workspace.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
@@ -44,12 +46,16 @@ export async function captureBuildSnapshot(root, sceneRef, { signal } = {}) {
   return captureScene(root, sceneRef, { signal });
 }
 
-export async function captureSceneDraftPreview(root, sceneRef, draft, { signal } = {}) {
-  validateSceneDraftRequest(sceneRef, draft);
-  return captureScene(root, sceneRef, { signal, draft });
+export async function captureScenePreviewSnapshot(root, sceneRef, { signal } = {}) {
+  return captureScene(root, sceneRef, { signal, compositionPreview: true });
 }
 
-async function captureScene(root, sceneRef, { signal, draft } = {}) {
+export async function captureSceneDraftPreview(root, sceneRef, draft, { signal } = {}) {
+  validateSceneDraftRequest(sceneRef, draft);
+  return captureScene(root, sceneRef, { signal, draft, compositionPreview: true });
+}
+
+async function captureScene(root, sceneRef, { signal, draft, compositionPreview = false } = {}) {
   root = await fs.realpath(root);
   signal?.throwIfAborted();
   const fence = await readWorldFence(root);
@@ -58,14 +64,17 @@ async function captureScene(root, sceneRef, { signal, draft } = {}) {
   signal?.throwIfAborted();
   const effective = draft ? await overlaySceneDraftPreview(observed, sceneRef, draft, { digest: buildHash }) : observed;
   signal?.throwIfAborted();
+  const composition = compositionPreview ? await resolveSceneCompositionPreview(effective, sceneRef, { digest: buildHash }) : null;
+  signal?.throwIfAborted();
   const draftMeta = draft ? { draft: effective.draft } : {};
+  const previewMeta = { ...draftMeta, ...(composition?.composition ? { composition: composition.composition } : {}) };
   const assertDraftBaseline = after => {
     if (draft && after.source.documents.find(item => item.record?.id === sceneRef)?.sourceRevision !== draft.baseSourceRevision) {
       throw buildError('scene_preview_draft_conflict', 'The saved scene changed while freezing this draft.');
     }
   };
-  const finishInvalidDraft = async result => {
-    if (draft) {
+  const finishInvalidPreview = async result => {
+    if (draft || composition?.recognized) {
       signal?.throwIfAborted();
       const after = await readWorldSnapshot(root);
       assertDraftBaseline(after);
@@ -73,11 +82,12 @@ async function captureScene(root, sceneRef, { signal, draft } = {}) {
       await assertWorldFence(root, fence);
       signal?.throwIfAborted();
     }
-    return { ...result, ...draftMeta };
+    return { ...result, ...previewMeta };
   };
-  const resolved = resolveScene2DModel(effective, sceneRef);
-  const planned = { ok: resolved.ok, plan: resolved.model ? scene2DModelToPlan(resolved.model) : null, diagnostics: resolved.diagnostics };
-  if (!planned.ok) return finishInvalidDraft(planned);
+  const resolved = composition?.recognized ? composition : resolveScene2DModel(effective, sceneRef);
+  let planned = { ok: resolved.ok, plan: resolved.model ? scene2DModelToPlan(resolved.model) : null, diagnostics: resolved.diagnostics };
+  if (planned.ok && !compositionPreview && !draft) planned = attachSceneBehaviorPlan(effective, planned.plan);
+  if (!planned.ok) return finishInvalidPreview(planned);
   const resources = new Map();
   const assetRoot = resolveAssetRoot(root);
   const boundary = assetRoot === path.join(root, 'assets') ? root : assetRoot;
@@ -93,7 +103,7 @@ async function captureScene(root, sceneRef, { signal, draft } = {}) {
     } catch (error) {
       signal?.throwIfAborted();
       const actor = planned.plan.actors.find(actor => actor.imageResourceId === resource.id);
-      return finishInvalidDraft({ ok: false, plan: planned.plan, diagnostics: [{ severity: 'error', code: error.errorCode || 'build_resource_unavailable',
+      return finishInvalidPreview({ ok: false, plan: planned.plan, diagnostics: [{ severity: 'error', code: error.errorCode || 'build_resource_unavailable',
         message: 'Cannot freeze image bytes; check availability and the registered hash.', resourceId: resource.id,
         ...(resolved.model.sourceLocations.actors.find(item => sceneActorIdentity(item) === sceneActorIdentity(actor))?.fields.imageResourceId
           || buildActorFieldLocation(actor, 'imageResourceId')) }] });
@@ -107,6 +117,14 @@ async function captureScene(root, sceneRef, { signal, draft } = {}) {
   }
   await assertWorldFence(root, fence);
   signal?.throwIfAborted();
+  if (composition?.recognized) {
+    // A recipe preview is a transient expansion. It never yields the build
+    // envelope or editing preconditions used to write a registered scene.
+    const identity = { format: 'viento-scene-composition-preview', schemaVersion: 1,
+      source: effective.source, plan: planned.plan, ...previewMeta };
+    return { ...planned, ...previewMeta, snapshotId: `sha256:${buildHash(canonicalJson(identity))}`, resources,
+      sourceLocations: resolved.model.sourceLocations, sceneStructure: createSceneStructure(resolved.model) };
+  }
   if (draft) {
     // Domain-separated identity only. Never expose a build-snapshot envelope,
     // journal preconditions or a reusable disk build result for unsaved bytes.

@@ -15,8 +15,9 @@ import { buildHash } from '../adapters/node-build-snapshot.mjs';
 const appRoot = fileURLToPath(new URL('../../', import.meta.url));
 const godot = process.env.VIENTO_GODOT_BIN;
 if (!godot || !path.isAbsolute(godot)) throw new Error('Set VIENTO_GODOT_BIN to an absolute Godot executable.');
-const output = path.resolve(process.env.VIENTO_BUILD_TEST_OUTPUT || path.join(appRoot, 'docs/test-results/build-workbench'));
+const output = path.resolve(process.env.VIENTO_BUILD_TEST_OUTPUT || path.join(os.tmpdir(), `viento-build-workbench-evidence-${Date.now()}`));
 await fs.mkdir(output, { recursive: true });
+if ((await fs.readdir(output)).length) throw new Error('Choose an empty VIENTO_BUILD_TEST_OUTPUT directory; prior evidence is immutable.');
 const cleanups = [], t = { after: cleanup => cleanups.push(cleanup) };
 const report = { startedAt: new Date().toISOString(), browser: '', steps: [], jobs: [], errors: [], limitations: [
   'Source editor served over real HTTP; packaged Tauri IPC and Android were not exercised.',
@@ -81,6 +82,11 @@ try {
   await call('Page.navigate', { url: `${base}/web/?mode=edit` });
   await wait(() => evaluate(`document.readyState === 'complete' && (await import('/web/modules/app-state.js')).appState.editBackendAvailable && document.querySelector('#projectBuildBtn')?.hidden === false`), 'build-capable editor');
   await click('#projectBuildBtn'); await enabled('#projectBuildPlan');
+  const advertised = await state();
+  assert.equal(advertised.backend.format, 'viento-execution-backend');
+  assert.deepEqual(advertised.backend.execution, { build: true, headlessLogic: true, windowPreview: true, windowCapture: true,
+    offscreenRender: false, embeddedViewport: false, gpuCompute: false });
+  assert.equal(advertised.platform, 'linux');
   assert.equal(await evaluate(`document.querySelector('#projectBuildScene').options.length`), 1);
   await click('#projectBuildPlan');
   const planned = await complete('plan'); assert.equal(planned.status, 'succeeded', JSON.stringify(planned));
@@ -128,7 +134,9 @@ try {
   await fs.writeFile(sceneFile, original);
   report.steps.push('Invalid actor speed reports source JSON pointer; Japanese 390px dialog fits; diagnostic opens scene source document.');
 
-  await click('#docEditBtn');
+  // Source diagnostics may already enter editing. The toolbar button toggles
+  // that mode, so only click when navigation left us in the reading view.
+  if (!await evaluate(`(await import('/web/modules/app-state.js')).appState.isEditing`)) await click('#docEditBtn');
   await wait(() => evaluate(`(await import('/web/modules/app-state.js')).appState.isEditing && !document.querySelector('#docSourceEditor').readOnly`), 'source editing');
   await click('#docEditSourceModeBtn');
   const draft = original + '\n未保存 / unsaved / 下書き\n';

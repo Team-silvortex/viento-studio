@@ -8,6 +8,8 @@ let runtime = null, loadError = null, dispatching = false, initialization = null
 const GEOMETRY_OPERATIONS = new Set(['move', 'align', 'validateBatch']);
 const DRAFT_OPERATIONS = new Set(['create', 'setPositions', 'undo', 'redo', 'reset', 'read', 'close'].map(name => `layoutDraft.${name}`));
 const SOURCE_OPERATIONS = new Set(['sceneSource.inspect', 'sceneSource.patch']);
+const COMPOSITION_OPERATIONS = new Set(['sceneComposition.expand']);
+const COMPOSITION_PATCH_OPERATIONS = new Set(['sceneComposition.patchOverrides']);
 const SAVE_OPERATIONS = new Set(['read', 'invalidate', 'begin', 'resolve', 'refreshed'].map(name => `layoutSave.${name}`));
 
 const fail = (errorCode, message, cause) => Object.assign(new Error(message, cause ? { cause } : undefined), { errorCode });
@@ -211,4 +213,175 @@ export function dispatchStudioCoreSource(request) {
     }
     if ((source.changedPaths.length === 0) !== (source.afterContent === input.content)) throw new Error('Rust core returned inconsistent source patch state.');
   }).source;
+}
+
+// Experimental composition returns an ordinary v3 scene and separate recipe
+// pointers. The host checks the boundary, while Rust owns expansion rules.
+export function dispatchStudioCoreComposition(request) {
+  assertJson(request);
+  if (!COMPOSITION_OPERATIONS.has(request?.operation)) throw fail('studio_core_request_invalid', 'This Rust core operation does not belong to the composition interface.');
+  if (!runtime || typeof runtime.viento_core_scene_composition_version !== 'function'
+    || runtime.viento_core_scene_composition_version() !== 1) throw unavailable();
+  return dispatch(request, COMPOSITION_OPERATIONS, (result, input) => {
+    const invalid = () => { throw new Error('Rust core returned malformed scene composition data.'); };
+    const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+    const key = value => typeof value === 'string' && /^[a-zA-Z][a-zA-Z0-9_-]{0,63}$/.test(value);
+    const members = (value, required, optional = []) => value && typeof value === 'object' && !Array.isArray(value)
+      && required.every(name => Object.hasOwn(value, name)) && Object.keys(value).every(name => required.includes(name) || optional.includes(name));
+    const pair = (value, min, max) => Array.isArray(value) && value.length === 2 && value.every(item => typeof item === 'number' && Number.isFinite(item) && item >= min && item <= max);
+    const hex = value => typeof value === 'string' && /^#[a-f0-9]{6}(?:[a-f0-9]{2})?$/i.test(value);
+    const { composition } = result;
+    if (!record(result, ['protocolVersion', 'ok', 'composition']) || !record(composition, ['scene', 'sourceMap'])) invalid();
+    const { scene, sourceMap } = composition;
+    const recipe = JSON.parse(input.content.replace(/^\uFEFF/, ''));
+    const at = pointer => {
+      let value = recipe;
+      for (const name of pointer.slice(1).split('/')) {
+        if (!value || typeof value !== 'object' || !Object.hasOwn(value, name)) invalid();
+        value = value[name];
+      }
+      return value;
+    };
+    if (!record(scene, ['format', 'schemaVersion', 'title', 'viewport', 'background', 'actors', 'groups'])
+      || scene.format !== 'viento-scene2d' || scene.schemaVersion !== 3 || typeof scene.title !== 'string' || !scene.title.trim() || scene.title.length > 160 || /[\x00-\x1f]/.test(scene.title)
+      || !pair(scene.viewport, 64, 4096) || !scene.viewport.every(Number.isInteger) || !hex(scene.background)
+      || !Array.isArray(scene.actors) || scene.actors.length < 1 || scene.actors.length > 128
+      || !Array.isArray(scene.groups) || scene.groups.length > 128 || encoder.encode(JSON.stringify(scene)).length > 128 * 1024) invalid();
+    const identities = new Set(), groupIds = new Set();
+    for (const group of scene.groups) {
+      if (!members(group, ['groupId', 'name'], ['parentGroupId']) || !uuid(group.groupId) || identities.has(group.groupId)
+        || typeof group.name !== 'string' || !group.name.trim() || group.name.length > 160 || /[\x00-\x1f\x7f]/.test(group.name)
+        || Object.hasOwn(group, 'parentGroupId') && !uuid(group.parentGroupId)) invalid();
+      identities.add(group.groupId); groupIds.add(group.groupId);
+    }
+    for (const group of scene.groups) if (Object.hasOwn(group, 'parentGroupId') && !groupIds.has(group.parentGroupId)) invalid();
+    const parents = new Map(scene.groups.map(group => [group.groupId, group.parentGroupId]));
+    for (const group of scene.groups) {
+      const seen = new Set();
+      for (let id = group.groupId; id !== undefined; id = parents.get(id)) {
+        if (seen.has(id) || seen.size >= 16) invalid();
+        seen.add(id);
+      }
+    }
+    for (const actor of scene.actors) {
+      if (!members(actor, ['instanceId', 'objectId', 'position'], ['groupId', 'size', 'color', 'speed', 'controls', 'imageResourceId', 'useProjectionDefaults'])
+        || !uuid(actor.instanceId) || !uuid(actor.objectId) || identities.has(actor.instanceId) || !pair(actor.position, -100000, 100000)
+        || Object.hasOwn(actor, 'groupId') && !groupIds.has(actor.groupId)
+        || Object.hasOwn(actor, 'size') && !pair(actor.size, 1, 2048) || Object.hasOwn(actor, 'color') && !hex(actor.color)
+        || Object.hasOwn(actor, 'speed') && !(typeof actor.speed === 'number' && actor.speed >= 0 && actor.speed <= 2000)
+        || Object.hasOwn(actor, 'controls') && !['arrows', 'none'].includes(actor.controls)
+        || Object.hasOwn(actor, 'imageResourceId') && actor.imageResourceId !== null && !uuid(actor.imageResourceId)
+        || actor.useProjectionDefaults !== true && (actor.imageResourceId === null || ['size', 'color', 'speed', 'controls'].some(name => !Object.hasOwn(actor, name)))
+        || Object.hasOwn(actor, 'useProjectionDefaults') && typeof actor.useProjectionDefaults !== 'boolean') invalid();
+      identities.add(actor.instanceId);
+    }
+    if (!record(sourceMap, ['format', 'schemaVersion', 'actors', 'groups']) || sourceMap.format !== 'viento-scene-composition-map' || sourceMap.schemaVersion !== 1) invalid();
+    const pointer = value => typeof value === 'string' && value.length <= 256
+      && /^\/(?:fragments|placements)\/(?:0|[1-9][0-9]{0,2})(?:\/(?:[a-zA-Z][a-zA-Z0-9_-]{0,63}|0|[1-9][0-9]{0,2}))*$/.test(value);
+    for (const [kind, identity, mapping] of [['actors', 'instanceId', 'actorIds'], ['groups', 'groupId', 'groupIds']]) {
+      if (!Array.isArray(sourceMap[kind]) || sourceMap[kind].length !== scene[kind].length) invalid();
+      for (const [index, item] of sourceMap[kind].entries()) {
+        const value = scene[kind][index];
+        if (!record(item, [identity, 'placementId', 'fragmentId', 'localKey', 'templatePath', 'placementPath', 'identityPath', 'fields'])
+          || item[identity] !== value[identity] || !uuid(item.placementId) || !key(item.fragmentId) || !key(item.localKey)
+          || !pointer(item.templatePath) || !new RegExp(`^/fragments/(?:0|[1-9][0-9]?)/${kind}/(?:0|[1-9][0-9]{0,2})$`).test(item.templatePath)
+          || !/^\/placements\/(?:0|[1-9][0-9]{0,2})$/.test(item.placementPath)
+          || item.identityPath !== `${item.placementPath}/${mapping}/${item.localKey}`
+          || !record(item.fields, Object.keys(value).filter(name => name !== identity))) invalid();
+        if (at(item.identityPath) !== item[identity] || at(item.templatePath)?.key !== item.localKey
+          || at(item.placementPath)?.placementId !== item.placementId || at(item.placementPath)?.fragmentId !== item.fragmentId
+          || at(item.templatePath.split('/').slice(0, 3).join('/'))?.fragmentId !== item.fragmentId) invalid();
+        const template = at(item.templatePath), placement = at(item.placementPath);
+        const overrideIndex = kind === 'actors' && Array.isArray(placement.overrides)
+          ? placement.overrides.findIndex(override => override?.actorKey === item.localKey) : -1;
+        for (const [field, paths] of Object.entries(item.fields)) {
+          if (!Array.isArray(paths) || paths.length < 1 || paths.length > 2 || !paths.every(pointer) || new Set(paths).size !== paths.length) invalid();
+          // Check provenance ownership without duplicating Rust's value expansion.
+          // An existing pointer in another placement is not this field's source.
+          let expected;
+          if (kind === 'actors' && field === 'groupId') {
+            expected = [`${item.templatePath}/groupKey`, `${item.placementPath}/groupIds/${template.groupKey}`];
+          } else if (kind === 'groups' && field === 'parentGroupId') {
+            expected = [`${item.templatePath}/parentKey`, `${item.placementPath}/groupIds/${template.parentKey}`];
+          } else {
+            const overridden = overrideIndex >= 0 && Object.hasOwn(placement.overrides[overrideIndex].values ?? {}, field);
+            expected = [overridden ? `${item.placementPath}/overrides/${overrideIndex}/values/${field}` : `${item.templatePath}/${field}`];
+            if (kind === 'actors' && field === 'position' && Object.hasOwn(placement, 'offset')) expected.push(`${item.placementPath}/offset`);
+          }
+          if (paths.length !== expected.length || paths.some((path, index) => path !== expected[index])) invalid();
+          for (const path of paths) at(path);
+        }
+      }
+    }
+  }).composition;
+}
+
+export function supportsStudioCoreCompositionPatch() {
+  return Boolean(runtime && typeof runtime.viento_core_scene_composition_patch_version === 'function'
+    && runtime.viento_core_scene_composition_patch_version() === 1);
+}
+
+// This boundary verifies the narrow set operation and stable target ownership;
+// only Rust chooses byte edits, formatting and recipe validity. No JS fallback.
+export function dispatchStudioCoreCompositionPatch(request) {
+  assertJson(request);
+  if (!COMPOSITION_PATCH_OPERATIONS.has(request?.operation)) throw fail('studio_core_request_invalid', 'This Rust core operation does not belong to the composition patch interface.');
+  if (!supportsStudioCoreCompositionPatch()) throw unavailable();
+  const patch = dispatch(request, COMPOSITION_PATCH_OPERATIONS, (result, input) => {
+    const invalid = () => { throw new Error('Rust core returned malformed composition override patch data.'); };
+    const fields = ['position', 'size', 'color', 'speed', 'controls', 'imageResourceId'];
+    const same = (left, right) => {
+      if (left === right) return true;
+      if (!left || !right || typeof left !== 'object' || typeof right !== 'object' || Array.isArray(left) !== Array.isArray(right)) return false;
+      const keys = Object.keys(left);
+      return keys.length === Object.keys(right).length && keys.every(key => Object.hasOwn(right, key) && same(left[key], right[key]));
+    };
+    const patch = result.compositionPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'compositionPatch']) || !record(patch, ['afterContent', 'changedPaths'])
+      || typeof patch.afterContent !== 'string' || encoder.encode(patch.afterContent).length > 128 * 1024
+      || !Array.isArray(patch.changedPaths) || patch.changedPaths.length > fields.length
+      || !record(input, ['protocolVersion', 'operation', 'content', 'placementId', 'actorKey', 'values'])
+      || typeof input.content !== 'string' || encoder.encode(input.content).length > 128 * 1024
+      || typeof input.placementId !== 'string' || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(input.placementId)
+      || typeof input.actorKey !== 'string' || !/^[a-zA-Z][a-zA-Z0-9_-]{0,63}$/.test(input.actorKey)
+      || !input.values || typeof input.values !== 'object' || Array.isArray(input.values)
+      || !Object.keys(input.values).length || Object.keys(input.values).some(key => !fields.includes(key))) invalid();
+    const before = JSON.parse(input.content.replace(/^\uFEFF/, ''));
+    const after = JSON.parse(patch.afterContent.replace(/^\uFEFF/, ''));
+    if (before?.format !== 'viento-scene-composition' || before.schemaVersion !== 1 || !Array.isArray(before.placements)
+      || before.placements.length < 1 || before.placements.length > 128) invalid();
+    const indices = before.placements.flatMap((placement, index) => placement?.placementId === input.placementId ? [index] : []);
+    if (indices.length !== 1) invalid();
+    const placementIndex = indices[0], placement = before.placements[placementIndex];
+    if (!placement.actorIds || !Object.hasOwn(placement.actorIds, input.actorKey)
+      || Object.hasOwn(placement, 'overrides') && !Array.isArray(placement.overrides)) invalid();
+    const overrides = placement.overrides || [];
+    const matching = overrides.flatMap((value, index) => value?.actorKey === input.actorKey ? [index] : []);
+    if (matching.length > 1) invalid();
+    const overrideIndex = matching.length ? matching[0] : overrides.length;
+    const existing = matching.length ? overrides[overrideIndex].values : {};
+    if (!existing || typeof existing !== 'object' || Array.isArray(existing)) invalid();
+    const changed = fields.filter(field => Object.hasOwn(input.values, field)
+      && (!Object.hasOwn(existing, field) || !same(existing[field], input.values[field])));
+    const expectedPaths = changed.map(field => `/placements/${placementIndex}/overrides/${overrideIndex}/values/${field}`);
+    if (!same(patch.changedPaths, expectedPaths)
+      || (expectedPaths.length === 0) !== (patch.afterContent === input.content)) invalid();
+    if (changed.length) {
+      if (!Object.hasOwn(placement, 'overrides')) placement.overrides = overrides;
+      if (!matching.length) overrides.push({ actorKey: input.actorKey, values: existing });
+      for (const field of changed) existing[field] = input.values[field];
+    }
+    if (!same(before, after)) invalid();
+  }).compositionPatch;
+  // JSON equality above guards write scope, but does not detect duplicate
+  // decoded source keys. Revalidate with the existing core after the first
+  // dispatch ends; never nest WASM buffer calls or add another JS parser.
+  try {
+    dispatchStudioCoreComposition({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION,
+      operation: 'sceneComposition.expand', content: patch.afterContent });
+  } catch (error) {
+    runtime = null; loadError = error;
+    throw unavailable();
+  }
+  return patch;
 }

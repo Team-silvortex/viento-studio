@@ -1,0 +1,116 @@
+{
+  "format": "viento-publication-review",
+  "schemaVersion": 1,
+  "ok": true,
+  "release": "0.0.8",
+  "reviewedAt": "2026-10-07T09:11:44.573083+00:00",
+  "reviewer": "control_host_ui",
+  "scope": "Local source-release completeness review of Git-collectable pending files, relative source imports, version contracts, packaging inputs, desktop/mobile preparation, and current CI entrypoints. No product or historical report changed during this final review.",
+  "candidateSnapshot": {
+    "modifiedTrackedFiles": 53,
+    "untrackedFiles": 612,
+    "totalPendingFiles": 665,
+    "pathsSha256": "45b910888758901457b27f5b608aefdbe268f61a5b7d40264e75cc87ad2f4e6b",
+    "note": "Snapshot excludes this report; later release evidence and final atlas/document refresh are checked by the release owner before staging."
+  },
+  "sourceCompleteness": {
+    "priorRoundRequiredSources": 126,
+    "missingOrNotGitCollectable": [],
+    "pendingJavascriptSourcesScanned": 83,
+    "relativeImportsChecked": 441,
+    "missingRelativeImports": [],
+    "method": "Static relative quoted ESM imports on changed/new JS source outside evidence; existing prepared-resource/runtime proofs are separate checks."
+  },
+  "excludedPublicationMaterial": {
+    "unintendedAuthorDataOrLocalConfig": 0,
+    "buildOrRuntimeCaches": 0,
+    "nativeOrWasmBinaryFiles": 0,
+    "symlinks": 0,
+    "findings": [],
+    "note": "Official synthetic examples and test screenshots/logs are intentional publication material. Both author-data/config and cache classifications use the same deny-path scan; zero does not imply a general security audit."
+  },
+  "versions": {
+    "release": {
+      "version": "0.0.8",
+      "buildVersion": "0.0.8"
+    },
+    "installer": {
+      "androidVersionCode": 1000008,
+      "macOSBundleVersion": "1.0.8"
+    },
+    "verifiedSites": [
+      "VERSION",
+      "package.json",
+      "package-lock.json root and root package",
+      "src-tauri/Cargo.toml",
+      "src-tauri/Cargo.lock own application",
+      "src-tauri/tauri.conf.json",
+      "web/index.html",
+      "desktop/ui/index.html",
+      "src-tauri/tauri.android.conf.json"
+    ],
+    "independentRuntimeToolVersion": "0.3.0",
+    "appIdentifier": "io.viento.studio"
+  },
+  "packaging": {
+    "readonlyManifestEnumerationFiles": 2571,
+    "requiredCrateAndExampleFiles": 58,
+    "missingRequiredFiles": [],
+    "officialExampleDirectories": [
+      "examples/scene2d",
+      "examples/scene-composition",
+      "examples/scene-behaviors",
+      "examples/bevy-headless"
+    ],
+    "exampleStateMarkers": [
+      "examples/bevy-headless/.viento/workspace.json",
+      "examples/scene-behaviors/.viento/workspace.json",
+      "examples/scene2d/.viento/workspace.json"
+    ],
+    "bevyTargetGitIgnored": true,
+    "desktopModules": "Recursive engine/scripts/web copy includes new pure modules, execution adapters, and Godot .gd/.tscn control/behavior support. Native Bevy tool is intentionally separately configured, not embedded.",
+    "mobileModules": "Recursive engine/web copy includes pure modules; mobile packaging does not add Node, Godot/Bevy execution, or a device claim.",
+    "fullRepositoryArchiveCheck": "Release owner separately creates and byte-checks the complete current source archive; this review used read-only enumeration plus an isolated real small-archive regression."
+  },
+  "resolvedFinding": {
+    "id": "source-archive-missing-backend-and-examples",
+    "problem": "Source archive INPUTS omitted the new Bevy Rust crate and all official examples, making documented sample/build commands incomplete from the archive. New Bevy target was not Git-ignored.",
+    "resolution": "Added the exact Bevy crate and four explicit official sample directories; excluded Bevy target and sample local/snapshot/build/session/engine caches while retaining only canonical .viento/workspace.json markers.",
+    "modifiedFiles": [
+      ".gitignore",
+      "desktop/package-source.py",
+      "scripts/tests/source-archive.test.mjs"
+    ],
+    "sourceSha256": {
+      ".gitignore": "a599b45feb2541cbec401e25d1f87c15b718a1ed1c54dab62efcb0360f2f1862",
+      "desktop/package-source.py": "6a5a0b2c3eb848ee9bea980255b61b5077e22ebcb57ebd1e65c6522f55b1ee22",
+      "scripts/tests/source-archive.test.mjs": "645381a1e79322d59c99802c13c3cac1936dd02798ac33b2c2026905d69a224a"
+    },
+    "regression": {
+      "file": "scripts/tests/source-archive.test.mjs",
+      "command": "node --test scripts/tests/source-archive.test.mjs",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "addedTestCount": 0,
+      "includedInFullApplicationTotal": true,
+      "counting": "Existing one-test regression was expanded; it overlaps the final full application run and must not be added to its total.",
+      "coverage": "An isolated real archive verifies both crate manifests/locks/src/tests and all official sample bytes against SHA-256 manifest; private extra example, generated native/WASM outputs, local bindings, projections/build/session and engine caches stay out, and source inputs remain untouched."
+    }
+  },
+  "ci": {
+    "currentChecks": "Application workflow runs npm ci, shared Rust core tests, and the full JS/API/version application check; manual desktop matrix prepares recursive resources and builds installers.",
+    "nonBlockingFollowUp": "Bevy native crate is not yet a separate CI job; the current real 25-test Rust/tool proof is retained, and the executable is explicitly separately configured."
+  },
+  "whitespaceCheck": {
+    "ok": true
+  },
+  "openBlockingFindings": [],
+  "limits": [
+    "Reviewer authored the packaging fix and expanded its existing regression; this is a separate final read-only pass, not an independent external security audit.",
+    "Static import scan does not prove arbitrary dynamic imports, device APIs, signing, GPU/rendering, or cross-platform installers.",
+    "No new large test suite, installer, device run, GitHub Release or tag was created by this review.",
+    "Final staged set, preservation hashes, complete archive bytes, and final app/atlas/results are release-owner checks; current CI was inspected, not remotely executed."
+  ]
+}

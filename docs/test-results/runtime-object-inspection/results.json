@@ -1,0 +1,241 @@
+{
+  "date": "2026-10-07",
+  "recordedAt": "2026-10-07T07:33:05.616951+00:00",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased working-tree implementation; no commit, push, application install or version bump.",
+  "scope": {
+    "feature": "Runtime object inspection",
+    "observationFormat": "viento-runtime-observation",
+    "schemaVersion": 1,
+    "protocolVersions": [
+      1,
+      2,
+      3
+    ],
+    "actualBackends": [
+      "org.viento.bevy",
+      "org.viento.godot4"
+    ],
+    "bevyRuntimeAndCrateUnchanged": true,
+    "engineDescriptorsAdaptersGeneratorsUnchanged": true,
+    "authorPlanAndProtocolVersionsUnchanged": true,
+    "genericExecutionAdapterContractUnchanged": true,
+    "samples": [
+      "ready",
+      "finished"
+    ],
+    "stateUpdatesInvalidateLastPositionSample": true,
+    "livePositionPolling": false,
+    "engineQueryRpc": false,
+    "entityHandlesExposed": false,
+    "authorWrites": false
+  },
+  "validation": {
+    "app": {
+      "tests": 1707,
+      "pass": 1707,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 214297.811801,
+      "log": "app-check.log"
+    },
+    "newAppTests": {
+      "total": 34,
+      "portableQuery": 15,
+      "host": 8,
+      "ui": 11,
+      "includedInAppTotal": true
+    },
+    "portableQuery": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 186.975734,
+      "log": "core-query-final.log"
+    },
+    "hostRealEngines": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 22641.04559,
+      "log": "host-real.log"
+    },
+    "uiAndRelatedRegressions": {
+      "tests": 45,
+      "pass": 45,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 828.102109,
+      "log": "ui-final.log"
+    },
+    "syntax": {
+      "passed": 378,
+      "log": "app-check.log"
+    },
+    "apiContractAndReleaseVersion": {
+      "passed": true,
+      "version": "0.0.7",
+      "log": "app-check.log"
+    },
+    "browser": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "steps": 7,
+      "bevyJobs": 3,
+      "separateDefaultGodotJobs": 3,
+      "runtimeExceptions": 0,
+      "languages": [
+        "zh",
+        "en",
+        "ja"
+      ],
+      "narrowWidthPx": 390,
+      "instanceSourceNavigationAndReopen": true,
+      "dirtyDraftAndCaretPreserved": true,
+      "inspectionOverrideAndForeignJobDenial": true,
+      "realBevyAndGodotViewsEqual": true,
+      "evidence": "browser/browser.json",
+      "log": "browser-first.log"
+    },
+    "preparedResources": {
+      "ok": true,
+      "embeddedNode": "v24.20.0",
+      "desktopFiles": 86,
+      "mobileFiles": 67,
+      "offlineSessions": 4,
+      "identicalRuntimeObservations": true,
+      "mobilePureModules": 3,
+      "sourceAndPackagedHashesStableThroughoutExecution": true,
+      "rustCrateAndBevyBinaryNotBundled": true,
+      "syntheticFixtureRemoved": true,
+      "evidence": "packaged-resources.json",
+      "log": "packaged-first.log"
+    },
+    "nativeTools": {
+      "editingCoreBuilt": true,
+      "archiveAndMobileStorageBuilt": true,
+      "usedByFullAppChecks": true,
+      "independentRustSuitesRerun": false,
+      "reason": "This increment changes portable JS, host JS and UI; the Bevy crate and existing Rust/WASM sources are unchanged from the previous validated working tree. Existing native helper integration is enabled in the full application run.",
+      "logs": [
+        "core-build.log",
+        "native-helpers-build-ready.log"
+      ]
+    }
+  },
+  "api": {
+    "path": "/api/project-build",
+    "method": "POST",
+    "action": "inspect",
+    "requestKeys": [
+      "action",
+      "jobId",
+      "instanceId",
+      "objectId"
+    ],
+    "filters": "Optional instanceId and objectId combine with AND. A definition query returns all matching instances; no match returns actors: [].",
+    "ownership": "Only the current service-owned run job. Inspection starts no task, does not cancel a task and does not query tool availability.",
+    "response": "Observation DTO with jobId/buildId/snapshotId/backendId/status. Every returned object is detached.",
+    "errors": {
+      "build_request_invalid": 400,
+      "runtime_query_job_missing": 404,
+      "runtime_query_unavailable": 409
+    },
+    "scope": "Existing local-host/edit authentication and transport fences apply; tool/backend/paths/Entity IDs are rejected."
+  },
+  "findings": {
+    "ringIndependent": true,
+    "ringProbe": "262 admitted ready/state/finished events leave only the final 128 raw events while retaining both instance observations.",
+    "cancelFailureTimeoutSamplesRetained": true,
+    "sameDefinitionInstancesDistinct": true,
+    "trustedRevisionAttached": true,
+    "existingNameAndPathCompatibility": "The new projection accepts existing normalized relative colon paths and multiline names, deriving at most 4096 display characters without changing author data. It does not detach unrelated author behavior source into a query.",
+    "positions": "Coordinates come only from complete ready/finished frames. A state event marks the older coordinate sample stale; no position or movement is extrapolated.",
+    "designEvidence": "boundary-findings.json"
+  },
+  "compatibility": {
+    "historicalFilesUnchanged": 1581,
+    "frozenBackendAndWasmUnchanged": 9,
+    "previousSourceFiles": 103,
+    "previousSourcesUnchanged": 98,
+    "intentionallyChangedPreviousSources": [
+      "scripts/adapters/node-project-build.mjs",
+      "scripts/lib/project-build-service.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-project-build.js"
+    ],
+    "sameExternalBevyTool": {
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.1.0-8c4dab4afa35",
+      "sha256": "8c4dab4afa35115e710b0b68a3c9535971d2271d5c01976881dc4f9d6b3377e3",
+      "bytes": 11170328,
+      "metadata": {
+        "bevyVersion": "0.19.1",
+        "protocolVersions": [
+          1,
+          2
+        ],
+        "runtimeKind": "viento-bevy-runtime",
+        "runtimeVersion": "0.1.0"
+      },
+      "recordedAt": "2026-10-07T07:18:47.054678+00:00",
+      "reusedFrom": "../bevy-backend/host-tool.json",
+      "scope": "Existing external trusted Bevy tool reused without rebuilding or replacement; all new functionality observes already admitted protocol events in the shared host."
+    },
+    "wasm": {
+      "bytes": 285596,
+      "sha256": "8b14be6e13c33b5bf5a6cb16f956498dc03a3d62e50bb83ec8967b9896c7738e",
+      "unchanged": true
+    },
+    "evidence": "historical-preservation.json"
+  },
+  "dataProtection": {
+    "currentChangedAndNewSourceHashes": 109,
+    "sourceHashEvidence": "source-hashes.json",
+    "actualAuthorFixturesByteIdentical": true,
+    "originalBuildFilesByteIdentical": true,
+    "existingUserWorkspacesAndPreferencesNotUsed": true,
+    "installedApplicationUnchanged": true,
+    "cleanup": {
+      "removedDirectories": 7,
+      "allocatedBytesFreed": 1962721280,
+      "allocatedGiBFreed": 1.828,
+      "evidence": "cleanup.json"
+    }
+  },
+  "harnessAndVerificationNotes": [
+    {
+      "issue": "The initial host regression expected one actor in the official protocol-3 example; that fixture actually has two. The assertion was corrected and the host final run and full app run both passed.",
+      "productChange": false,
+      "finalLog": "host-real.log"
+    },
+    {
+      "issue": "Native helper compilation initially ran before desktop preparation produced the required embedded Node resource; two setup-order attempts failed. After preparation completed, the same unchanged native sources built successfully.",
+      "productChange": false,
+      "logs": [
+        "native-helpers-build.log",
+        "native-helpers-build-final.log"
+      ],
+      "finalLog": "native-helpers-build-ready.log"
+    }
+  ],
+  "limits": [
+    "This is a read-only host view of already admitted events, not a Bevy/Godot live world reflection or query RPC.",
+    "Position currentness means consistency with the last complete reported sample; it does not mean current wall-clock engine coordinates.",
+    "The existing Bevy backend still supports only its headless no-image plan 1/2 subset. This increment adds no rendering, GPU, author Rust compilation, runtime input bridge or engine capability.",
+    "The UI source link opens the original declaration and carries its frozen source revision; stale or unsaved text must not receive an inferred exact position.",
+    "Prepared desktop modules and actual browser workflows were tested; no new installer or installed Tauri window was tested.",
+    "Prepared mobile pure modules were evaluated, with no Android device, mobile UI or engine execution."
+  ]
+}

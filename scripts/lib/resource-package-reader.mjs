@@ -9,7 +9,10 @@ import { portablePath, assertPortableFileTree } from './workspace.mjs';
 import { validateProjectTypes, workspacePaths } from './project-layout.mjs';
 import { validateDocumentModels } from './document-model.mjs';
 import { PACKAGE_LIMITS, RESOURCE_PACKAGE_FORMAT, RESOURCE_PACKAGE_VERSION, packageError } from '../../engine/resource-package.mjs';
-import { readPackageBytes } from './resource-package-catalog.mjs';
+import { readPackageBytes, inspectPackageComposition, inspectPackageSceneBehaviors, packageDocumentClassification } from './resource-package-catalog.mjs';
+import { inspectObjectProjection } from '../../engine/object-projection.mjs';
+import { validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
+import { sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
 
 export const PACKAGE_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const hashValue = value => Number.isSafeInteger(value?.size) && value.size >= 0 && value.size <= PACKAGE_LIMITS.fileBytes && /^[a-f0-9]{64}$/.test(value.sha256);
@@ -128,6 +131,52 @@ export async function unpackResourcePackage(file, directory, signal) {
       ...manifest.requirements.filter(item => item.category === 'document').map(item => ({ id: item.id, sourcePath: item.path }))]);
     const assetIds = new Set([...manifest.assets.map(asset => asset.id), ...manifest.requirements.filter(item => item.category === 'asset').map(item => item.id)]);
     if (manifest.documents.some(doc => records.get(doc.id).record.assetBindings.some(link => !assetIds.has(link.assetId)))) invalid();
+    // Recipe references are authored in the source, not mirrored into metadata.
+    // A checksum-correct archive cannot erase a dependency from its manifest.
+    const documentIds = new Set([...manifest.documents.map(doc => doc.id), ...manifest.requirements.filter(item => item.category === 'document').map(item => item.id)]);
+    const compositionChecks = [], behaviorChecks = [], documentSources = [];
+    for (const item of manifest.documents) {
+      const bytes = await readPackageBytes(content, item.sourcePath, signal), record = records.get(item.id).record;
+      const checked = inspectPackageComposition(bytes, item.sourcePath);
+      documentSources.push({ record, content: packageDocumentClassification(inspectObjectProjection(bytes.toString('utf8'), record), checked) });
+      const behavior = inspectPackageSceneBehaviors(bytes, item.sourcePath);
+      if (behavior.recognized) {
+        if (!behavior.ok || sceneBehaviorDocumentIds(behavior.value).some(id => !documentIds.has(id))) invalid();
+        behaviorChecks.push({ record, checked: behavior });
+      }
+      if (!checked.recognized) continue;
+      if (!checked.ok || checked.dependencies.objectIds.some(id => !documentIds.has(id))
+        || checked.dependencies.imageResourceIds.some(id => !assetIds.has(id))) invalid();
+      compositionChecks.push({ record, checked });
+    }
+    // Requirements are pinned but their bytes/kind become available only when
+    // a target is selected. Import planning repeats validation against them.
+    const compositionSource = {
+      documents: [...documentSources, ...manifest.requirements.filter(item => item.category === 'document')
+        .map(item => ({ record: { id: item.id }, content: '' }))],
+      assets: [...manifest.assets.map(item => ({ record: records.get(item.id).record })),
+        ...manifest.requirements.filter(item => item.category === 'asset').map(item => ({ record: { id: item.id, kind: 'image' } }))],
+    };
+    for (const { record, checked } of compositionChecks) if (validateSceneCompositionDependencies(checked, record, compositionSource).length) invalid();
+    const behaviorIds = new Set(behaviorChecks.flatMap(item => sceneBehaviorDocumentIds(item.checked.value)));
+    for (const id of behaviorIds) {
+      const document = documentSources.find(item => item.record.id === id);
+      if (!document) continue;
+      const bytes = await readPackageBytes(content, document.record.sourcePath, signal);
+      try { document.content = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); }
+      catch { invalid(); }
+    }
+    const requiredDocuments = manifest.requirements.filter(item => item.category === 'document');
+    const requiredIds = new Set(requiredDocuments.map(item => item.id));
+    const behaviorSource = { documents: [...documentSources, ...requiredDocuments.map(item => ({
+      record: { id: item.id, format: 'viento-document', sourcePath: item.path }, content: null }))] };
+    for (const { record, checked } of behaviorChecks) {
+      // A declared requirement is hash-pinned but its body is unavailable until
+      // target selection. Only this availability diagnostic may be deferred;
+      // metadata links, document kinds/paths and included bodies are checked now.
+      if (validateSceneBehaviorDependencies(checked.value, record, behaviorSource).some(diagnostic =>
+        diagnostic.code !== 'build_behavior_dependency_unavailable' || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
+    }
     signal?.throwIfAborted();
     if (zipFailure) throw zipFailure;
     return { manifest, files, records, content };

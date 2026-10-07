@@ -49,7 +49,12 @@ async function settle(h) {
 async function harness(options = {}) {
   let state = await fixture(options.scene, options.fixture), nextReadError = null, sourceMismatch = false, locale = 'zh-CN';
   const current = { editable: true, dirty: false, creating: false, busy: false }, calls = [], reads = [], languages = [], buildCalls = [];
-  const buildState = { supported: true, available: true, backend: { id: 'godot4', label: 'Godot 4', version: '1' }, scenes: [{ id: sceneId, sourcePath, title: state.scene.title }], job: options.job || null, latestBuild: null };
+  const buildState = { supported: true, available: true, platform: 'linux', backend: {
+    format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.2.0',
+    platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }],
+    capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image'],
+    execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false }, extensions: [],
+  }, scenes: [{ id: sceneId, sourcePath, title: state.scene.title }], job: options.job || null, latestBuild: null };
   const h = await dialogHarness(options.builder ? 'app-project-build' : 'app-scene-create', {
     WORLD_API_PATH, PROJECT_BUILD_API_PATH, API_PATHS, crypto: webcrypto,
     t: (key, ...args) => (locale === 'en' ? en[key] || key : locale === 'ja' ? ja[key] || key : key).replace(/\{(\d+)\}/g, (_, i) => String(args[i])),
@@ -144,7 +149,7 @@ test('scene edit keeps dirty inputs, overrides and selection across languages, p
 });
 
 test('scene edit capability is independent of creation and saved updates do not revive the previous plan', async () => {
-  const old = { id: 'old-plan', kind: 'plan', status: 'succeeded', sceneId, plan: { title: 'Old', actorCount: 3, resourceCount: 1, snapshotId: 'old-snapshot' } };
+  const old = { id: 'old-plan', backendId: 'org.viento.godot4', kind: 'plan', status: 'succeeded', sceneId, plan: { title: 'Old', actorCount: 3, resourceCount: 1, snapshotId: 'old-snapshot' } };
   const h = await harness({ builder: true, commands: ['scene.update'], job: old });
   assert.equal(h.element('projectBuildCreateScene').hidden, true); assert.equal(h.element('projectBuildEditScene').hidden, false);
   h.set('sceneCreateName', 'Saved scene'); await h.preview(); h.element('sceneCreateForm').requestSubmit();
@@ -184,7 +189,7 @@ test('new scene forms also support partial projection overrides and an explicit 
 });
 
 test('scene creation cannot recover the old scene plan after refreshing the build workbench', async () => {
-  const old = { id: 'old-plan', kind: 'plan', status: 'succeeded', sceneId, plan: { title: 'Old', actorCount: 3, resourceCount: 1, snapshotId: 'old-snapshot' } };
+  const old = { id: 'old-plan', backendId: 'org.viento.godot4', kind: 'plan', status: 'succeeded', sceneId, plan: { title: 'Old', actorCount: 3, resourceCount: 1, snapshotId: 'old-snapshot' } };
   const h = await harness({ builder: true, job: old, open: false }); h.element('projectBuildCreateScene').click(); await settle(h);
   await h.preview(); const createdId = h.calls.at(-1).request.objectId;
   h.buildState.scenes.push({ id: createdId, sourcePath: 'documents/scenes/new-scene.json', title: 'New' });

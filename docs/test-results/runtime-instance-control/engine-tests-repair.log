@@ -1,0 +1,46 @@
+✔ both adapters expose finite control replay as a capability without adding execution modes (0.830022ms)
+✔ adapters stage only validated control data and trusted session wrappers, then remove staged files (70.5657ms)
+✔ control admission refuses unsafe modes, invalid DTOs, behavior plans and actor-step overflows before spawning (6.691747ms)
+✔ session staging never overwrites or follows an existing control-file link (4.926054ms)
+✔ controlled execution cleans trusted session files after cancellation or observer failure (112.24414ms)
+✔ real Godot and Bevy replay v1/v2 arrow sequences with paired identities and normalized diagonal trajectories (7272.598602ms)
+✔ real replay keeps none controls and zero-speed actors idle and preserves old default smoke behavior (3974.927348ms)
+✔ Godot control replay inherits legacy image initialization without changing generated scene inventories (6855.966876ms)
+✔ per-instance control is an additive capability, with engine-owned implementation versions (0.762254ms)
+✔ adapters reject unknown or definition targets, duplicate rows, plan1 and row overflow before staging or spawning (31.280116ms)
+✖ real engine replay drives repeated-definition instances in opposite directions with independent release and movement (3623.817173ms)
+✔ empty instance steps release all actors and explicit false rows give identical results (4012.676384ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 11
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18434.407624
+
+✖ failing tests:
+
+test at scripts/tests/runtime-instance-backends.test.mjs:79:1
+✖ real engine replay drives repeated-definition instances in opposite directions with independent release and movement (3623.817173ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      'main.tscn': '410aea99b623b947179265d855c15949525625d3ce7a24dcba14b5398e192050',
+      'project.godot': 'd9dc405e465085c4d7a0065a0ed522b151c2f53ff6f1f460d2624faf0887a569',
+      'runtime.gd': 'f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8',
+  +   'runtime.gd.uid': '0fef46539a233dce3fbd4b4982e79881a180cc7370dd17ba7b3e723808f494b5',
+      'scene.json': 'c6c12e2171c388fdb22011134c8b26b38743475963c44fd8545b39c61edbf64d'
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/runtime-instance-backends.test.mjs:103:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'main.tscn': '410aea99b623b947179265d855c15949525625d3ce7a24dcba14b5398e192050', 'project.godot': 'd9dc405e465085c4d7a0065a0ed522b151c2f53ff6f1f460d2624faf0887a569', 'runtime.gd': 'f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8', 'runtime.gd.uid': '0fef46539a233dce3fbd4b4982e79881a180cc7370dd17ba7b3e723808f494b5', 'scene.json': 'c6c12e2171c388fdb22011134c8b26b38743475963c44fd8545b39c61edbf64d' },
+    expected: { 'main.tscn': '410aea99b623b947179265d855c15949525625d3ce7a24dcba14b5398e192050', 'project.godot': 'd9dc405e465085c4d7a0065a0ed522b151c2f53ff6f1f460d2624faf0887a569', 'runtime.gd': 'f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8', 'scene.json': 'c6c12e2171c388fdb22011134c8b26b38743475963c44fd8545b39c61edbf64d' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

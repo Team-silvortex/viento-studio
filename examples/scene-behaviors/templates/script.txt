@@ -1,0 +1,8 @@
+extends Node
+
+signal arrived(checkpoint: String, amount: float)
+@export var checkpoint: String = "dock"
+@export var amount: float = 0.0
+
+func _ready() -> void:
+	arrived.emit(checkpoint, amount)

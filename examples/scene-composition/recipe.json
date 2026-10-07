@@ -1,0 +1,72 @@
+{
+  "format": "viento-scene-composition",
+  "schemaVersion": 1,
+  "scene": {
+    "title": "Two parties / 两支队伍 / 二つの隊",
+    "viewport": [800, 480],
+    "background": "#0d1829"
+  },
+  "fragments": [
+    {
+      "fragmentId": "party",
+      "groups": [
+        { "key": "party", "name": "Party / 队伍 / 隊" },
+        { "key": "companions", "name": "Companions / 同行者", "parentKey": "party" }
+      ],
+      "actors": [
+        {
+          "key": "leader",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "groupKey": "party",
+          "position": [120, 180],
+          "size": [64, 64],
+          "color": "#ffffff",
+          "speed": 160,
+          "controls": "arrows",
+          "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+        },
+        {
+          "key": "companion",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "groupKey": "companions",
+          "position": [200, 180],
+          "size": [48, 48],
+          "color": "#87d8b9",
+          "speed": 0,
+          "controls": "none",
+          "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc"
+        }
+      ]
+    }
+  ],
+  "placements": [
+    {
+      "placementId": "10000000-1111-4111-8111-111111111111",
+      "fragmentId": "party",
+      "actorIds": {
+        "leader": "20000000-1111-4111-8111-111111111111",
+        "companion": "20000001-1111-4111-8111-111111111111"
+      },
+      "groupIds": {
+        "party": "30000000-1111-4111-8111-111111111111",
+        "companions": "30000001-1111-4111-8111-111111111111"
+      }
+    },
+    {
+      "placementId": "10000001-1111-4111-8111-111111111111",
+      "fragmentId": "party",
+      "offset": [360, 80],
+      "actorIds": {
+        "leader": "20000002-1111-4111-8111-111111111111",
+        "companion": "20000003-1111-4111-8111-111111111111"
+      },
+      "groupIds": {
+        "party": "30000002-1111-4111-8111-111111111111",
+        "companions": "30000003-1111-4111-8111-111111111111"
+      },
+      "overrides": [
+        { "actorKey": "leader", "values": { "position": [100, 140], "color": "#f1c46e", "speed": 0, "controls": "none" } }
+      ]
+    }
+  ]
+}

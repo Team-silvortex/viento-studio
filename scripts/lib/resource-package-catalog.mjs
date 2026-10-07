@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import '../adapters/node-studio-core.mjs';
 import { constants } from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
@@ -11,9 +12,40 @@ import { collectAssetImageRefs } from './image-index.mjs';
 import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 import { PACKAGE_LIMITS, packageError } from '../../engine/resource-package.mjs';
 import { validateObjectProjection, validateProjectionDependencies } from '../../engine/object-projection.mjs';
+import { inspectSceneComposition, validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
+import { inspectSceneBehaviors, sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
 
 export const packageDigest = bytes => createHash('sha256').update(bytes).digest('hex');
 const stamp = stat => [stat.dev, stat.ino, stat.size, stat.mtimeMs, stat.ctimeMs];
+
+// Preserve ordinary document decoding. Recognized recipes additionally require
+// the exact UTF-8 bytes and JSON path accepted by the composition CLI.
+export function inspectPackageComposition(bytes, sourcePath) {
+  const checked = inspectSceneComposition(bytes.toString('utf8'));
+  if (!checked.recognized) return checked;
+  let valid = sourcePath.toLowerCase().endsWith('.json');
+  try { new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); }
+  catch { valid = false; }
+  return valid ? checked : { recognized: true, ok: false, value: null,
+    dependencies: { objectIds: [], imageResourceIds: [] },
+    diagnostics: [{ severity: 'error', code: 'composition-document-invalid',
+      message: 'A scene composition requires UTF-8 JSON source in a .json document.', propertyPath: '' }] };
+}
+
+export function packageDocumentClassification(projection, composition) {
+  return composition.recognized ? '{"format":"viento-scene-composition"}'
+    : projection.recognized ? '{"format":"viento-object-projection"}' : '';
+}
+
+export function inspectPackageSceneBehaviors(bytes, sourcePath) {
+  const checked = inspectSceneBehaviors(bytes.toString('utf8'));
+  if (!checked.recognized) return checked;
+  let valid = sourcePath.toLowerCase().endsWith('.json');
+  try { new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); }
+  catch { valid = false; }
+  return valid ? checked : { recognized: true, ok: false, value: null, diagnostics: [{ severity: 'error',
+    code: 'build_behavior_invalid', message: 'A behavior manifest requires UTF-8 JSON in a registered .json document.', propertyPath: '' }] };
+}
 
 export async function readPackageBytes(base, relative, signal, limit = PACKAGE_LIMITS.jsonBytes) {
   signal?.throwIfAborted();
@@ -46,7 +78,7 @@ export async function readPackageCatalog(root, signal) {
   const registry = await readRegistry(root, { signal }), assetRoot = resolveAssetRoot(root);
   if (registry.documents.length + registry.assets.length > PACKAGE_LIMITS.files) throw packageError('导出文件过多');
   const entries = [], records = new Map(), sources = new Map(), templates = new Map(), revisions = [workspace, assetRoot];
-  const projectionChecks = [], documentSources = [];
+  const projectionChecks = [], compositionChecks = [], behaviorChecks = [], documentSources = [];
   let sourceBytes = 0;
   const countSource = bytes => {
     sourceBytes += bytes.length;
@@ -81,16 +113,20 @@ export async function readPackageCatalog(root, signal) {
         const source = await readPackageBytes(root, relative, signal);
         const sourceText = source.toString('utf8');
         const projection = await validateObjectProjection(sourceText, record, { digest: packageDigest });
-        // Dependency validation only needs availability and whether the core
-        // is itself a projection. Do not retain every document's source text.
+        const composition = inspectPackageComposition(source, relative);
+        const behavior = inspectPackageSceneBehaviors(source, relative);
+        // Dependency validation only needs availability and the projection or
+        // composition classification. Do not retain every source body.
         documentSources.push({ record, sourcePath: relative,
-          content: projection.recognized ? '{"format":"viento-object-projection"}' : '' });
+          content: packageDocumentClassification(projection, composition) });
         if (projection.recognized) projectionChecks.push({ item, record, projection });
+        if (composition.recognized) compositionChecks.push({ item, record, composition });
+        if (behavior.recognized) behaviorChecks.push({ item, record, behavior });
         const fingerprint = { size: source.length, sha256: packageDigest(source) };
         sources.set(record.id, fingerprint); revisions.push([record.id, fingerprint.sha256]);
         const parsed = parseSourceContent(source.toString('utf8'), relative, resolveDocumentDefinition(workspace, relative, record));
         if (parsed.parseError) item.problems.push('正文解析失败');
-        item.name = parsed.title || item.name;
+        item.name = composition.ok && composition.recognized ? composition.value.scene.title : parsed.title || item.name;
         const media = collectDocumentMedia(parsed.blocks);
         const urls = [...media.urls, ...collectAssetImageRefs(media.text, relative).map(file => `/${file.split('/').map(encodeURIComponent).join('/')}`)];
         const type = types.find(type => type.id === resolveDocumentDefinition(workspace, relative, record).documentType);
@@ -111,6 +147,8 @@ export async function readPackageCatalog(root, signal) {
           urls.push(...templates.get(type.id).urls);
         }
         const deps = new Set([...(record.relations || []).map(link => link.targetId), ...record.assetBindings.map(link => link.assetId)]);
+        if (composition.ok) for (const id of [...composition.dependencies.objectIds, ...composition.dependencies.imageResourceIds]) deps.add(id);
+        if (behavior.ok && behavior.recognized) for (const id of sceneBehaviorDocumentIds(behavior.value)) deps.add(id);
         for (const url of urls) {
           const id = byUrl.get(mediaUrl(url));
           if (id) deps.add(id); else item.problems.push(url);
@@ -128,8 +166,28 @@ export async function readPackageCatalog(root, signal) {
   // the semantic command. Refuse incomplete selective packages, while complete
   // workspace backups remain able to preserve the original damaged bytes.
   const projectionSource = { documents: documentSources, assets: registry.assets.map(record => ({ record })) };
+  // Only opted-in declarative manifests require the actual scene/script body.
+  // Re-observe these source-derived UUID dependencies against catalog hashes;
+  // ordinary author documents still retain only their thin classification.
+  const behaviorIds = new Set(behaviorChecks.filter(item => item.behavior.ok).flatMap(item => sceneBehaviorDocumentIds(item.behavior.value)));
+  for (const id of behaviorIds) {
+    const document = documentSources.find(item => item.record.id === id);
+    if (!document) continue;
+    document.content = null;
+    try {
+      const bytes = await readPackageBytes(root, document.sourcePath, signal);
+      if (JSON.stringify({ size: bytes.length, sha256: packageDigest(bytes) }) !== JSON.stringify(sources.get(id))) throw packageError('资源清单已变化，请刷新后重新选择', 409);
+      document.content = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
+    } catch (error) { signal?.throwIfAborted(); if (error.statusCode === 409) throw error; }
+  }
   for (const { item, record, projection } of projectionChecks) {
     if (!projection.ok || validateProjectionDependencies(projection.value, record, projectionSource).length) item.problems.push('正文解析失败');
+  }
+  for (const { item, record, composition } of compositionChecks) {
+    if (!composition.ok || validateSceneCompositionDependencies(composition, record, projectionSource).length) item.problems.push('正文解析失败');
+  }
+  for (const { item, record, behavior } of behaviorChecks) {
+    if (!behavior.ok || validateSceneBehaviorDependencies(behavior.value, record, projectionSource).length) item.problems.push('正文解析失败');
   }
   const byId = new Map(entries.map(item => [item.id, item]));
   for (const item of entries) for (const dependency of item.dependencies) if (!byId.has(dependency)) item.problems.push(dependency);

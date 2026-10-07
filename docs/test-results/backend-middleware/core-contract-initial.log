@@ -1,0 +1,217 @@
+✔ backend descriptors detach and recursively freeze every admitted field (2.621809ms)
+✔ descriptor schema rejects unknown, missing and host implementation fields (0.955691ms)
+✔ identities, versions and lists remain bounded unique descriptor data (1.627244ms)
+✔ plan schemas and runtime protocol schemas are explicit separate declarations (0.569068ms)
+✔ execution operations require seven explicit booleans without support inference (2.065305ms)
+✔ namespaced native extension metadata never implies runtime or GPU support (0.766413ms)
+✔ descriptor admission refuses accessors and inherited authority before getters run (0.360283ms)
+✔ nonserializable, cyclic, sparse, overdeep and oversized DTOs fail closed (0.761894ms)
+✔ support checks admit known plans and platforms with or without optional plan data (0.434082ms)
+✔ unsupported plan format, kind and schema diagnose source without choosing a fallback (0.381282ms)
+✔ missing feature diagnostics retain the scene source and original capability order (0.254613ms)
+✔ all execution, platform, plan and capability rejections remain independently visible (0.172407ms)
+✔ malformed support requests and plan DTOs cannot bypass validation (1.140292ms)
+✔ UI support convenience is explicit, operation-specific and fail closed (0.72245ms)
+✖ portable middleware executes in an isolated JavaScript realm without host globals (6.967626ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 66.722714
+
+✖ failing tests:
+
+test at scripts/tests/backend-capabilities.test.mjs:210:1
+✖ portable middleware executes in an isolated JavaScript realm without host globals (6.967626ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /(?:from\s+['"]node:|\b(?:process|Buffer|document|window)\b)/u. Input:
+  
+  '// Portable admission checks only. Executables, artifact generators and process\n' +
+    '// lifecycle belong to host adapters; a descriptor never supplies runnable code.\n' +
+    'export const EXECUTION_BACKEND_DESCRIPTOR_SCHEMA_VERSION = 1;\n' +
+    '\n' +
+    "const DESCRIPTOR_KEYS = ['format', 'schemaVersion', 'id', 'label', 'version', 'platforms', 'plans', 'capabilities', 'execution', 'extensions'];\n" +
+    "const OPERATIONS = ['build', 'headlessLogic', 'windowPreview', 'windowCapture', 'offscreenRender', 'embeddedViewport', 'gpuCompute'];\n" +
+    'const NAMESPACE = /^[a-z][a-z0-9_-]*(?:\\.[a-z][a-z0-9_-]*)+$/;\n' +
+    'const IDENTIFIER = /^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/;\n' +
+    'const PLATFORM = /^[a-z][a-z0-9-]*$/;\n' +
+    'const VERSION = /^(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)$/;\n' +
+    "const INVALID_KEYS = new Set(['__proto__', 'constructor', 'prototype']);\n" +
+    '\n' +
+    'function invalid() {\n' +
+    "  const error = new TypeError('Invalid execution backend descriptor or support request.');\n" +
+    "  error.errorCode = 'build_backend_invalid';\n" +
+    '  return error;\n' +
+    '}\n' +
+    '\n' +
+    '// Inspect property descriptors before reading values. In particular JSON-like\n' +
+    '// objects with getters, symbols, hidden fields, custom prototypes or sparse\n' +
+    '// arrays cannot acquire authority while they are being validated.\n' +
+    'function detachData(input, { maxNodes = 32768, maxChars = 4 * 1024 * 1024, maxArray = 8192 } = {}) {\n' +
+    '  const active = new Set();\n' +
+    '  let nodes = 0, chars = 0;\n' +
+    '  function copy(value, depth) {\n' +
+    '    if (++nodes > maxNodes || depth > 32) throw invalid();\n' +
+    "    if (value === null || typeof value === 'boolean') return value;\n" +
+    "    if (typeof value === 'number') { if (!Number.isFinite(value)) throw invalid(); return value; }\n" +
+    "    if (typeof value === 'string') {\n" +
+    '      chars += value.length;\n' +
+    '      if (value.length > 65536 || chars > maxChars) throw invalid();\n' +
+    '      return value;\n' +
+    '    }\n' +
+    "    if (!value || typeof value !== 'object' || active.has(value)) throw invalid();\n" +
+    '    const array = Array.isArray(value);\n' +
+    '    const prototype = Object.getPrototypeOf(value);\n' +
+    '    if (array ? prototype !== Array.prototype : prototype !== Object.prototype && prototype !== null) throw invalid();\n' +
+    '    const descriptors = Object.getOwnPropertyDescriptors(value);\n' +
+    '    const keys = Reflect.ownKeys(descriptors);\n' +
+    "    if (keys.some(key => typeof key !== 'string' || INVALID_KEYS.has(key))) throw invalid();\n" +
+    '    for (const key of keys) {\n' +
+    '      const descriptor = descriptors[key];\n' +
+    "      if (!Object.hasOwn(descriptor, 'value') || !(array && key === 'length') && !descriptor.enumerable) throw invalid();\n" +
+    '    }\n' +
+    '    let result;\n' +
+    '    if (array) {\n' +
+    '      const length = descriptors.length?.value;\n' +
+    '      if (!Number.isSafeInteger(length) || length < 0 || length > maxArray || keys.length !== length + 1) throw invalid();\n' +
+    '      result = [];\n' +
+    '      active.add(value);\n' +
+    '      for (let index = 0; index < length; index++) {\n' +
+    '        if (!Object.hasOwn(descriptors, String(index))) throw invalid();\n' +
+    '        result.push(copy(descriptors[index].value, depth + 1));\n' +
+    '      }\n' +
+    '    } else {\n' +
+    '      if (keys.length > 256) throw invalid();\n' +
+    '      result = {};\n' +
+    '      active.add(value);\n' +
+    '      for (const key of keys) {\n' +
+    '        chars += key.length;\n' +
+    '        if (key.length > 256 || chars > maxChars) throw invalid();\n' +
+    '        result[key] = copy(descriptors[key].value, depth + 1);\n' +
+    '      }\n' +
+    '    }\n' +
+    '    active.delete(value);\n' +
+    '    return result;\n' +
+    '  }\n' +
+    '  try { return copy(input, 0); }\n' +
+    '  catch { throw invalid(); }\n' +
+    '}\n' +
+    '\n' +
+    "const plain = value => value !== null && typeof value === 'object' && !Array.isArray(value);\n" +
+    'function exact(value, keys) {\n' +
+    '  if (!plain(value) || Object.keys(value).length !== keys.length || keys.some(key => !Object.hasOwn(value, key))) throw invalid();\n' +
+    '}\n' +
+    'function token(value, expression, max = 128) {\n' +
+    "  if (typeof value !== 'string' || value.length > max || !expression.test(value)) throw invalid();\n" +
+    '}\n' +
+    'function text(value, max) {\n' +
+    "  if (typeof value !== 'string' || !value.trim() || value.length > max || /[\\u0000-\\u001f\\u007f]/u.test(value)) throw invalid();\n" +
+    '}\n' +
+    'function tokens(value, expression, maximum, length = 128) {\n' +
+    '  if (!Array.isArray(value) || value.length > maximum) throw invalid();\n' +
+    '  const seen = new Set();\n' +
+    '  for (const item of value) {\n' +
+    '    token(item, expression, length);\n' +
+    '    if (seen.has(item)) throw invalid();\n' +
+    '    seen.add(item);\n' +
+    '  }\n' +
+    '}\n' +
+    'function freeze(value) {\n' +
+    "  if (value !== null && typeof value === 'object') {\n" +
+    '    for (const item of Object.values(value)) freeze(item);\n' +
+    '    Object.freeze(value);\n' +
+    '  }\n' +
+    '  return value;\n' +
+    '}\n' +
+    '\n' +
+    'export function validateExecutionBackendDescriptor(input) {\n' +
+    '  const value = detachData(input, { maxNodes: 2048, maxChars: 32768, maxArray: 128 });\n' +
+    '  exact(value, DESCRIPTOR_KEYS);\n' +
+    "  if (value.format !== 'viento-execution-backend' || value.schemaVersion !== EXECUTION_BACKEND_DESCRIPTOR_SCHEMA_VERSION) throw invalid();\n" +
+    '  token(value.id, NAMESPACE, 192);\n' +
+    '  text(value.label, 256);\n' +
+    '  token(value.version, VERSION, 32);\n' +
+    '  tokens(value.platforms, PLATFORM, 32, 64);\n' +
+    '  tokens(value.capabilities, IDENTIFIER, 128);\n' +
+    '  if (!Array.isArray(value.plans) || value.plans.length > 32) throw invalid();\n' +
+    '  const plans = new Set();\n' +
+    '  for (const plan of value.plans) {\n' +
+    "    exact(plan, ['kind', 'schemaVersion', 'runtimeProtocolVersion']);\n" +
+    "    if (plan.kind !== 'scene2d' || ![1, 2].includes(plan.schemaVersion) || ![1, 2].includes(plan.runtimeProtocolVersion)) throw invalid();\n" +
+    '    const key = `${plan.kind}:${plan.schemaVersion}`;\n' +
+    '    if (plans.has(key)) throw invalid();\n' +
+    '    plans.add(key);\n' +
+    '  }\n' +
+    '  exact(value.execution, OPERATIONS);\n' +
+    "  if (OPERATIONS.some(operation => typeof value.execution[operation] !== 'boolean') || value.execution.windowCapture && !value.execution.windowPreview) throw invalid();\n" +
+    '  if (!Array.isArray(value.extensions) || value.extensions.length > 64) throw invalid();\n' +
+    '  const extensions = new Set();\n' +
+    '  for (const extension of value.extensions) {\n' +
+    "    exact(extension, ['id', 'version']);\n" +
+    '    token(extension.id, NAMESPACE, 256);\n' +
+    '    token(extension.version, VERSION, 32);\n' +
+    '    if (!extension.id.startsWith(`${value.id}.`) || extensions.has(extension.id)) throw invalid();\n' +
+    '    extensions.add(extension.id);\n' +
+    '  }\n' +
+    '  return freeze(value);\n' +
+    '}\n' +
+    '\n' +
+    'function supportRequest(input) {\n' +
+    '  const value = detachData(input);\n' +
+    "  if (!plain(value) || Object.keys(value).some(key => !['operation', 'platform', 'plan'].includes(key))) throw invalid();\n" +
+    "  if (Object.hasOwn(value, 'operation') && !OPERATIONS.includes(value.operation)) throw invalid();\n" +
+    "  if (Object.hasOwn(value, 'platform')) token(value.platform, PLATFORM, 64);\n" +
+    "  if (Object.hasOwn(value, 'plan')) {\n" +
+    '    const plan = value.plan;\n' +
+    "    if (!plain(plan) || typeof plan.format !== 'string' || !plan.format || plan.format.length > 128\n" +
+    '      || !Number.isSafeInteger(plan.schemaVersion) || plan.schemaVersion < 1) throw invalid();\n' +
+    '    token(plan.kind, IDENTIFIER);\n' +
+    '    tokens(plan.requiredCapabilities, IDENTIFIER, 128);\n' +
+    '    if (!plain(plan.scene)) throw invalid();\n' +
+    '    text(plan.scene.objectId, 256);\n' +
+    '    text(plan.scene.sourcePath, 4096);\n' +
+    '  }\n' +
+    '  return value;\n' +
+    '}\n' +
+    '\n' +
+    'export function checkExecutionBackendSupport(descriptor, request = {}) {\n' +
+    '  const backend = validateExecutionBackendDescriptor(descriptor);\n' +
+    '  const value = supportRequest(request);\n' +
+    "  const location = { objectId: value.plan?.scene.objectId || null, sourcePath: value.plan?.scene.sourcePath || '', propertyPath: '' };\n" +
+    "  const diagnostic = (code, message, details = {}) => ({ severity: 'error', code, message, ...location, ...details });\n" +
+    '  const diagnostics = [];\n' +
+    "  if (!value.operation || !backend.execution[value.operation]) diagnostics.push(diagnostic('build_execution_unsupported',\n" +
+    "    value.operation ? `Backend does not support execution operation: ${value.operation}` : 'Select an execution operation.', value.operation ? { operation: value.operation } : {}));\n" +
+    "  if (value.platform && !backend.platforms.includes(value.platform)) diagnostics.push(diagnostic('build_platform_unsupported',\n" +
+    '    `Backend does not support platform: ${value.platform}`, { platform: value.platform }));\n' +
+    '  if (value.plan) {\n' +
+    '    const plan = value.plan;\n' +
+    "    if (plan.format !== 'viento-build-plan' || !backend.plans.some(item => item.kind === plan.kind && item.schemaVersion === plan.schemaVersion)) {\n" +
+    "      diagnostics.push(diagnostic('build_backend_plan_unsupported', 'Backend does not support this build plan kind and schema.',\n" +
+    '        { kind: plan.kind, schemaVersion: plan.schemaVersion }));\n' +
+    '    }\n' +
+    '    for (const capability of plan.requiredCapabilities) {\n' +
+    "      if (!backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing', `Backend lacks capability: ${capability}`, { capability }));\n" +
+    '    }\n' +
+    '  }\n' +
+    '  return diagnostics;\n' +
+    '}\n' +
+    '\n' +
+    'export function canExecuteBackend(descriptor, operation, platform) {\n' +
+    '  try {\n' +
+    '    return checkExecutionBackendSupport(descriptor, { operation, ...(platform === undefined ? {} : { platform }) }).length === 0;\n' +
+    '  } catch { return false; }\n' +
+    '}\n'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-capabilities.test.mjs:212:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "// Portable admission checks only. Executables, artifact generators and process\n// lifecycle belong to host adapters; a descriptor never supplies runnable code.\nexport const EXECUTION_BACKEND_DESCRIPTOR_SCHEMA_VERSION = 1;\n\nconst DESCRIPTOR_KEYS = ['format', 'schemaVersion', 'id', 'label', 'version', 'platforms', 'plans', 'capabilities', 'execution', 'extensions'];\nconst OPERATIONS = ['build', 'headlessLogic', 'windowPreview', 'windowCapture', 'offscreenRender', 'embeddedViewport', 'gpuCompute'];\nconst NAMESPACE = /^[a-z][a-z0-9_-]*(?:\\.[a-z][a-z0-9_-]*)+$/;\nconst IDENTIFIER = /^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/;\nconst PLATFORM = /^[a-z][a-z0-9-]*$/;\nconst VERSION = /^(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)$/;\nconst INVALID_KEYS = new Set(['__proto__', 'constructor', 'prototype']);\n\nfunction invalid() {\n  const error = new TypeError('Invalid execution backend descriptor or support request.');\n  error.errorCode = 'build_backend_invalid';\n  return error;\n}\n\n// Inspect property descriptors before reading values. In particular JSON-like\n// objects with getters, symbols, hidden fields, custom prototypes or sparse\n// arrays cannot acquire authority while they are being validated.\nfunction detachData(input, { maxNodes = 32768, maxChars = 4 * 1024 * 1024, maxArray = 8192 } = {}) {\n  const active = new Set();\n  let nodes = 0, chars = 0;\n  function copy(value, depth) {\n    if (++nodes > maxNodes || depth > 32) throw invalid();\n    if (value === null || typeof value === 'boolean') return value;\n    if (typeof value === 'number') { if (!Number.isFinite(value)) throw invalid(); return value; }\n    if (typeof value === 'string') {\n      chars += value.length;\n      if (value.length > 65536 || chars > maxChars) throw invalid();\n      return value;\n    }\n    if (!value || typeof value !== 'object' || active.has(value)) throw invalid();\n    const array = Array.isArray(value);\n    const prototype = Object.getPrototypeOf(value);\n    if (array ? prototype !== Array.prototype : prototype !== Object.prototype && prototype !== null) throw invalid();\n    const descriptors = Object.getOwnPropertyDescriptors(value);\n    const keys = Reflect.ownKeys(descriptors);\n    if (keys.some(key => typeof key !== 'string' || INVALID_KEYS.has(key))) throw invalid();\n    for (const key of keys) {\n      const descriptor = descriptors[key];\n      if (!Object.hasOwn(descriptor, 'value') || !(array && key === 'length') && !descriptor.enumerable) throw invalid();\n    }\n    let result;\n    if (array) {\n      const length = descriptors.length?.value;\n      if (!Number.isSafeInteger(length) || length < 0 || length > maxArray || keys.length !== length + 1) throw invalid();\n      result = [];\n      active.add(value);\n      for (let index = 0; index < length; index++) {\n        if (!Object.hasOwn(descriptors, String(index))) throw invalid();\n        result.push(copy(descriptors[index].value, depth + 1));\n      }\n    } else {\n      if (keys.length > 256) throw invalid();\n      result = {};\n      active.add(value);\n      for (const key of keys) {\n        chars += key.length;\n        if (key.length > 256 || chars > maxChars) throw invalid();\n        result[key] = copy(descriptors[key].value, depth + 1);\n      }\n    }\n    active.delete(value);\n    return result;\n  }\n  try { return copy(input, 0); }\n  catch { throw invalid(); }\n}\n\nconst plain = value => value !== null && typeof value === 'object' && !Array.isArray(value);\nfunction exact(value, keys) {\n  if (!plain(value) || Object.keys(value).length !== keys.length || keys.some(key => !Object.hasOwn(value, key))) throw invalid();\n}\nfunction token(value, expression, max = 128) {\n  if (typeof value !== 'string' || value.length > max || !expression.test(value)) throw invalid();\n}\nfunction text(value, max) {\n  if (typeof value !== 'string' || !value.trim() || value.length > max || /[\\u0000-\\u001f\\u007f]/u.test(value)) throw invalid();\n}\nfunction tokens(value, expression, maximum, length = 128) {\n  if (!Array.isArray(value) || value.length > maximum) throw invalid();\n  const seen = new Set();\n  for (const item of value) {\n    token(item, expression, length);\n    if (seen.has(item)) throw invalid();\n    seen.add(item);\n  }\n}\nfunction freeze(value) {\n  if (value !== null && typeof value === 'object') {\n    for (const item of Object.values(value)) freeze(item);\n    Object.freeze(value);\n  }\n  return value;\n}\n\nexport function validateExecutionBackendDescriptor(input) {\n  const value = detachData(input, { maxNodes: 2048, maxChars: 32768, maxArray: 128 });\n  exact(value, DESCRIPTOR_KEYS);\n  if (value.format !== 'viento-execution-backend' || value.schemaVersion !== EXECUTION_BACKEND_DESCRIPTOR_SCHEMA_VERSION) throw invalid();\n  token(value.id, NAMESPACE, 192);\n  text(value.label, 256);\n  token(value.version, VERSION, 32);\n  tokens(value.platforms, PLATFORM, 32, 64);\n  tokens(value.capabilities, IDENTIFIER, 128);\n  if (!Array.isArray(value.plans) || value.plans.length > 32) throw invalid();\n  const plans = new Set();\n  for (const plan of value.plans) {\n    exact(plan, ['kind', 'schemaVersion', 'runtimeProtocolVersion']);\n    if (plan.kind !== 'scene2d' || ![1, 2].includes(plan.schemaVersion) || ![1, 2].includes(plan.runtimeProtocolVersion)) throw invalid();\n    const key = `${plan.kind}:${plan.schemaVersion}`;\n    if (plans.has(key)) throw invalid();\n    plans.add(key);\n  }\n  exact(value.execution, OPERATIONS);\n  if (OPERATIONS.some(operation => typeof value.execution[operation] !== 'boolean') || value.execution.windowCapture && !value.execution.windowPreview) throw invalid();\n  if (!Array.isArray(value.extensions) || value.extensions.length > 64) throw invalid();\n  const extensions = new Set();\n  for (const extension of value.extensions) {\n    exact(extension, ['id', 'version']);\n    token(extension.id, NAMESPACE, 256);\n    token(extension.version, VERSION, 32);\n    if (!extension.id.startsWith(`${value.id}.`) || extensions.has(extension.id)) throw invalid();\n    extensions.add(extension.id);\n  }\n  return freeze(value);\n}\n\nfunction supportRequest(input) {\n  const value = detachData(input);\n  if (!plain(value) || Object.keys(value).some(key => !['operation', 'platform', 'plan'].includes(key))) throw invalid();\n  if (Object.hasOwn(value, 'operation') && !OPERATIONS.includes(value.operation)) throw invalid();\n  if (Object.hasOwn(value, 'platform')) token(value.platform, PLATFORM, 64);\n  if (Object.hasOwn(value, 'plan')) {\n    const plan = value.plan;\n    if (!plain(plan) || typeof plan.format !== 'string' || !plan.format || plan.format.length > 128\n      || !Number.isSafeInteger(plan.schemaVersion) || plan.schemaVersion < 1) throw invalid();\n    token(plan.kind, IDENTIFIER);\n    tokens(plan.requiredCapabilities, IDENTIFIER, 128);\n    if (!plain(plan.scene)) throw invalid();\n    text(plan.scene.objectId, 256);\n    text(plan.scene.sourcePath, 4096);\n  }\n  return value;\n}\n\nexport function checkExecutionBackendSupport(descriptor, request = {}) {\n  const backend = validateExecutionBackendDescriptor(descriptor);\n  const value = supportRequest(request);\n  const location = { objectId: value.plan?.scene.objectId || null, sourcePath: value.plan?.scene.sourcePath || '', propertyPath: '' };\n  const diagnostic = (code, message, details = {}) => ({ severity: 'error', code, message, ...location, ...details });\n  const diagnostics = [];\n  if (!value.operation || !backend.execution[value.operation]) diagnostics.push(diagnostic('build_execution_unsupported',\n    value.operation ? `Backend does not support execution operation: ${value.operation}` : 'Select an execution operation.', value.operation ? { operation: value.operation } : {}));\n  if (value.platform && !backend.platforms.includes(value.platform)) diagnostics.push(diagnostic('build_platform_unsupported',\n    `Backend does not support platform: ${value.platform}`, { platform: value.platform }));\n  if (value.plan) {\n    const plan = value.plan;\n    if (plan.format !== 'viento-build-plan' || !backend.plans.some(item => item.kind === plan.kind && item.schemaVersion === plan.schemaVersion)) {\n      diagnostics.push(diagnostic('build_backend_plan_unsupported', 'Backend does not support this build plan kind and schema.',\n        { kind: plan.kind, schemaVersion: plan.schemaVersion }));\n    }\n    for (const capability of plan.requiredCapabilities) {\n      if (!backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing', `Backend lacks capability: ${capability}`, { capability }));\n    }\n  }\n  return diagnostics;\n}\n\nexport function canExecuteBackend(descriptor, operation, platform) {\n  try {\n    return checkExecutionBackendSupport(descriptor, { operation, ...(platform === undefined ? {} : { platform }) }).length === 0;\n  } catch { return false; }\n}\n",
+    expected: /(?:from\s+['"]node:|\b(?:process|Buffer|document|window)\b)/u,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

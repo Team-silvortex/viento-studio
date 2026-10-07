@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export application source, including uncommitted files, without any works or builds."""
+"""Export application source and official examples, without local works or builds."""
 import hashlib
 import io
 import json
@@ -13,8 +13,10 @@ import tempfile
 ROOT = Path(__file__).resolve().parent.parent
 INPUTS = [".gitattributes", ".gitignore", ".github", "LICENSE", "README.md", "VERSION", "favicon.ico",
           "package.json", "package-lock.json", "engine", "web", "scripts", "mobile",
-          "desktop", "src-tauri", "schemas", "docs", "crates/viento-studio-core"]
-GENERATED = {"crates/viento-studio-core/target", "engine/studio-core.wasm", "engine/studio-core.build.json",
+          "desktop", "src-tauri", "schemas", "docs", "crates/viento-studio-core", "crates/viento-bevy-runtime",
+          "examples/scene2d", "examples/scene-composition", "examples/scene-behaviors", "examples/bevy-headless"]
+GENERATED = {"crates/viento-studio-core/target", "crates/viento-bevy-runtime/target",
+             "engine/studio-core.wasm", "engine/studio-core.build.json",
              "src-tauri/target", "src-tauri/binaries", "src-tauri/gen/schemas",
              "desktop/resources", "desktop/.cache", "desktop/ui/i18n", "web/data", "mobile/dist",
              "src-tauri/gen/android/.gradle", "src-tauri/gen/android/.kotlin", "src-tauri/gen/android/.tauri",
@@ -30,6 +32,17 @@ GENERATED = {"crates/viento-studio-core/target", "engine/studio-core.wasm", "eng
 
 def source_files(directory):
     relative = directory.relative_to(ROOT).as_posix()
+    if relative.startswith("examples/"):
+        parts = directory.relative_to(ROOT).parts
+        if ".viento" in parts:
+            state = parts[parts.index(".viento") + 1:]
+            # Keep the canonical predecessor rejection marker, never local
+            # bindings, generated snapshots, builds, or execution sessions.
+            if state and state != ("workspace.json",):
+                return
+        if directory.name in {".godot", ".import", ".mono", "node_modules", "viento.config.json",
+                              "export.cfg", "export_credentials.cfg"}:
+            return
     if relative.startswith("src-tauri/gen/android/") and (
             directory.name in {".gradle", ".kotlin", ".idea", ".tauri", ".cxx", ".externalNativeBuild", "build", "captures"}
             or directory.suffix.lower() in {".jks", ".keystore", ".p12"}):

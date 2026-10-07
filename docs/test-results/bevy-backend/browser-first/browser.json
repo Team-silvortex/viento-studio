@@ -1,0 +1,448 @@
+{
+  "startedAt": "2026-10-07T06:57:31.330Z",
+  "browser": "Chrome/154.0.8037.97",
+  "steps": [
+    "The real browser checks the saved plan, builds a data-only Bevy artifact, and runs a real App/ECS smoke step. Two instances of one definition retain distinct identities and final positions [240,220] and [500,220].",
+    "The unsupported window action stays disabled. A manually submitted HTTP window request is independently rejected with 422 before starting a job.",
+    "Chinese, English and Japanese show the Bevy backend and its two admitted execution capabilities at 390px without horizontal overflow. Window preview remains disabled.",
+    "An unsaved scene-source draft blocks checks, builds and runs. Closing the workbench preserves draft text and caret, and every author file remains byte identical."
+  ],
+  "jobs": [
+    {
+      "id": "2e38598b-cbb0-4016-a339-d8fbf52a5e7a",
+      "kind": "plan",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-07T06:57:32.468Z",
+      "diagnostics": [],
+      "events": [],
+      "logs": "",
+      "plan": {
+        "snapshotId": "sha256:f3e9e00e923a433cdccf4047ff50bd521b566d8521c562852c7c221bfcdcf1b6",
+        "title": "One Scene, Two Execution Backends",
+        "actorCount": 2,
+        "resourceCount": 0
+      },
+      "finishedAt": "2026-10-07T06:57:32.497Z"
+    },
+    {
+      "id": "186c0723-fdf1-4215-ad40-192c472a5005",
+      "kind": "build",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-07T06:57:33.862Z",
+      "diagnostics": [],
+      "events": [],
+      "logs": "",
+      "plan": null,
+      "buildId": "56d1c8a4-cdbc-4384-ab81-cc3e151b81d0",
+      "finishedAt": "2026-10-07T06:57:33.909Z"
+    },
+    {
+      "id": "a686682e-96b3-4acd-8a48-f0c07dc4af33",
+      "kind": "run",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-07T06:57:34.881Z",
+      "diagnostics": [],
+      "events": [
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "ready",
+          "protocol": 2,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                240,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "finished",
+          "fixedDelta": 0.25,
+          "protocol": 2
+        }
+      ],
+      "logs": "VIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":2,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"finished\",\"fixedDelta\":0.25,\"protocol\":2}\n",
+      "plan": null,
+      "buildId": "56d1c8a4-cdbc-4384-ab81-cc3e151b81d0",
+      "finishedAt": "2026-10-07T06:57:34.916Z"
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "The browser uses a real local HTTP service. Packaged Tauri IPC and Android UI are not exercised.",
+    "The Bevy runtime exercises real App/ECS logic with controlled smoke input. Rendering, hardware keyboard input and GPU execution are not tested or advertised.",
+    "No author Rust behavior source is compiled or executed in this backend."
+  ],
+  "backend": {
+    "format": "viento-execution-backend",
+    "schemaVersion": 1,
+    "id": "org.viento.bevy",
+    "label": "Bevy",
+    "version": "0.1.0",
+    "platforms": [
+      "linux"
+    ],
+    "plans": [
+      {
+        "kind": "scene2d",
+        "schemaVersion": 1,
+        "runtimeProtocolVersion": 1
+      },
+      {
+        "kind": "scene2d",
+        "schemaVersion": 2,
+        "runtimeProtocolVersion": 2
+      }
+    ],
+    "capabilities": [
+      "scene2d",
+      "input.arrows",
+      "state.movement"
+    ],
+    "execution": {
+      "build": true,
+      "headlessLogic": true,
+      "windowPreview": false,
+      "windowCapture": false,
+      "offscreenRender": false,
+      "embeddedViewport": false,
+      "gpuCompute": false
+    },
+    "extensions": []
+  },
+  "events": [
+    {
+      "actors": [
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            200,
+            220
+          ],
+          "state": "idle"
+        },
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            500,
+            220
+          ],
+          "state": "idle"
+        }
+      ],
+      "event": "ready",
+      "protocol": 2,
+      "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+    },
+    {
+      "event": "state",
+      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "protocol": 2,
+      "state": "moving"
+    },
+    {
+      "event": "state",
+      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "protocol": 2,
+      "state": "idle"
+    },
+    {
+      "actors": [
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            240,
+            220
+          ],
+          "state": "idle"
+        },
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            500,
+            220
+          ],
+          "state": "idle"
+        }
+      ],
+      "event": "finished",
+      "fixedDelta": 0.25,
+      "protocol": 2
+    }
+  ],
+  "windowRejection": {
+    "status": 422,
+    "payload": {
+      "ok": false,
+      "error": "Backend does not support execution operation: windowPreview",
+      "errorCode": "build_execution_unsupported",
+      "requestId": "1791356256204-23"
+    },
+    "data": {
+      "ok": false,
+      "error": "Backend does not support execution operation: windowPreview",
+      "errorCode": "build_execution_unsupported",
+      "requestId": "1791356256204-23"
+    }
+  },
+  "labels": {
+    "zh": {
+      "backend": "Bevy · 0.1.0",
+      "capabilities": "已声明能力：构建场景 · 无头逻辑测试",
+      "events": "已收到 4 条运行事件；完整内容见原始细节。",
+      "windowDisabled": true,
+      "overflow": false
+    },
+    "en": {
+      "backend": "Bevy · 0.1.0",
+      "capabilities": "Declared capabilities: Build scene · Headless logic tests",
+      "events": "Received 4 runtime events. See raw details for the full content.",
+      "windowDisabled": true,
+      "overflow": false
+    },
+    "ja": {
+      "backend": "Bevy · 0.1.0",
+      "capabilities": "宣言された機能：シーンをビルド · ヘッドレスのロジックテスト",
+      "events": "実行イベントを 4 件受信しました。全文は元の詳細情報で確認できます。",
+      "windowDisabled": true,
+      "overflow": false
+    }
+  },
+  "sourceProof": {
+    "before": {
+      "README.md": "f775d2dcaef16bb6a75a0d85cdaf789d4ccc9a2fd44b5f7319a19ea5f9b8aada",
+      "workspace.json": "b1b3d99d26b75c76850ffd60a509144cf4a3eba9f17d99ff1b987f2417091956",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "a0fe17a266293b148c2112859a2cbe34bd834c39d6a1a58ddb6e5ea59c7d6d09",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "ac30f3f3823b77c53c508cdb9703d43d58d9ab6422bfb2e47d33f235a0321cda",
+      "documents/scenes/demo.json": "4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20"
+    },
+    "after": {
+      "README.md": "f775d2dcaef16bb6a75a0d85cdaf789d4ccc9a2fd44b5f7319a19ea5f9b8aada",
+      "workspace.json": "b1b3d99d26b75c76850ffd60a509144cf4a3eba9f17d99ff1b987f2417091956",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "a0fe17a266293b148c2112859a2cbe34bd834c39d6a1a58ddb6e5ea59c7d6d09",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "ac30f3f3823b77c53c508cdb9703d43d58d9ab6422bfb2e47d33f235a0321cda",
+      "documents/scenes/demo.json": "4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20"
+    },
+    "unchanged": true
+  },
+  "ok": false,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n200 !== 202\n\n    at file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-smoke.mjs:159:10\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+  "pageFailure": {
+    "text": "Viento Studio\n0.0.7\n設定\nプロジェクトの種類とテンプレート\nワールドとオブジェクト\nビルドと実行\n書き出し\n閲覧\n編集\n×\nすべて（2）\n角色 / ACTOR（1）\n场景 / SCENE（1）\n2 件中 2 件のドキュメントを表示 （生成日時：2026/10/7 14:57:31）\nカテゴリ 角色 / ACTOR（1）\n角色 / ACTOR（1）\ntraveler\n角色 / Actor · 角色 / Actor\n編集可能\nカテゴリ 场景 / SCENE（1）\n场景 / SCENE（1）\ndemo\n场景 / Scene · 场景 / Scene\n編集可能\ndemo\nソース編集\nブロック編集\nフィールド編集\n閲覧に戻る\n素材を挿入\n変更を保存\n元ファイル：documents/scenes/demo.json\n未保存\n517 文字 · 45 行",
+    "source": "{\n  \"format\": \"viento-scene2d\",\n  \"schemaVersion\": 2,\n  \"title\": \"One Scene, Two Execution Backends\",\n  \"viewport\": [\n    800,\n    480\n  ],\n  \"background\": \"#0d1829\",\n  \"actors\": [\n    {\n      \"objectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\n      \"position\": [\n        200,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 160,\n      \"controls\": \"arrows\"\n    },\n    {\n      \"objectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\n      \"position\": [\n        500,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#88ccff\",\n      \"speed\": 80,\n      \"controls\": \"none\"\n    }\n  ]\n}\n\n\n"
+  },
+  "serviceFailure": {
+    "supported": true,
+    "available": true,
+    "reason": null,
+    "platform": "linux",
+    "backend": {
+      "format": "viento-execution-backend",
+      "schemaVersion": 1,
+      "id": "org.viento.bevy",
+      "label": "Bevy",
+      "version": "0.1.0",
+      "platforms": [
+        "linux"
+      ],
+      "plans": [
+        {
+          "kind": "scene2d",
+          "schemaVersion": 1,
+          "runtimeProtocolVersion": 1
+        },
+        {
+          "kind": "scene2d",
+          "schemaVersion": 2,
+          "runtimeProtocolVersion": 2
+        }
+      ],
+      "capabilities": [
+        "scene2d",
+        "input.arrows",
+        "state.movement"
+      ],
+      "execution": {
+        "build": true,
+        "headlessLogic": true,
+        "windowPreview": false,
+        "windowCapture": false,
+        "offscreenRender": false,
+        "embeddedViewport": false,
+        "gpuCompute": false
+      },
+      "extensions": []
+    },
+    "scenes": [
+      {
+        "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sourcePath": "documents/scenes/demo.json",
+        "title": "One Scene, Two Execution Backends"
+      }
+    ],
+    "previewDocuments": [
+      {
+        "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sourcePath": "documents/scenes/demo.json",
+        "title": "One Scene, Two Execution Backends",
+        "kind": "scene"
+      }
+    ],
+    "job": {
+      "id": "a686682e-96b3-4acd-8a48-f0c07dc4af33",
+      "kind": "run",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-07T06:57:34.881Z",
+      "diagnostics": [],
+      "events": [
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "ready",
+          "protocol": 2,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                240,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "finished",
+          "fixedDelta": 0.25,
+          "protocol": 2
+        }
+      ],
+      "logs": "VIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":2,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"finished\",\"fixedDelta\":0.25,\"protocol\":2}\n",
+      "plan": null,
+      "buildId": "56d1c8a4-cdbc-4384-ab81-cc3e151b81d0",
+      "finishedAt": "2026-10-07T06:57:34.916Z"
+    },
+    "latestBuild": {
+      "id": "56d1c8a4-cdbc-4384-ab81-cc3e151b81d0",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "snapshotId": "sha256:f3e9e00e923a433cdccf4047ff50bd521b566d8521c562852c7c221bfcdcf1b6",
+      "title": "One Scene, Two Execution Backends"
+    }
+  },
+  "finishedAt": "2026-10-07T06:57:37.816Z"
+}

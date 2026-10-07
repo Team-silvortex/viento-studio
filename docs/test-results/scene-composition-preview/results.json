@@ -1,0 +1,134 @@
+{
+  "date": "2026-10-07",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased incremental source work. No version bump, commit, push, installer or installation.",
+  "scope": [
+    "Existing scene-preview tab accepts ordinary registered JSON composition recipes and their current exact editor drafts; build scenes remain saved Scene2D only.",
+    "Portable read-only resolver reuses shared Rust expansion and the Scene2D model within a detached in-memory clone. Generated world observations and write grants are never exposed.",
+    "Actor/group identities and real recipe contributor locations distinguish template, override, offset and identity; inherited projection provenance stays at its original source.",
+    "Saved source, draft baseline, world fences and image bytes are checked; malformed drafts retain their last valid picture while stale navigation and delayed responses cannot overwrite current text or canvas.",
+    "Chinese, English and Japanese controls; independent remembered preview/build selection and all recipe layout-write actions guarded."
+  ],
+  "validation": {
+    "app": {
+      "tests": 1494,
+      "pass": 1494,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 149076.947926,
+      "syntaxFiles": 342,
+      "apiContract": "passed",
+      "versionConsistency": "0.0.7",
+      "log": "app-check.log"
+    },
+    "purePreview": {
+      "pass": 12,
+      "fail": 0,
+      "log": "engine.log",
+      "overlapsFullApp": true
+    },
+    "hostRegression": {
+      "pass": 48,
+      "newTests": 9,
+      "fail": 0,
+      "skipped": 0,
+      "log": "host-regression.log",
+      "overlapsFullApp": true
+    },
+    "uiRegression": {
+      "pass": 89,
+      "newTests": 9,
+      "fail": 0,
+      "skipped": 0,
+      "log": "ui.log",
+      "overlapsFullApp": true
+    },
+    "browser": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "steps": 7,
+      "consoleExceptions": 0,
+      "externalSvgRequests": 0,
+      "evidence": "browser/browser.json",
+      "script": "../../../scripts/tests/scene-composition-preview-smoke.mjs",
+      "finalScriptSyntaxChecked": true,
+      "realHttpServer": true,
+      "disposableProjectsOnly": true,
+      "exactSourceNavigation": [
+        "override",
+        "offset",
+        "template declaration",
+        "instance identity",
+        "scene title",
+        "group name"
+      ],
+      "languages": [
+        "zh-CN",
+        "en",
+        "ja"
+      ],
+      "narrowWidth": 390,
+      "authorBytesAndMetadataPreserved": true
+    },
+    "packagedResources": {
+      "ok": true,
+      "evidence": "packaged-resources.json",
+      "integrity": "packaged-final-integrity.json",
+      "log": "packaged-resources-final.log",
+      "desktopFiles": 65,
+      "mobileFiles": 61,
+      "embeddedNode": "v24.20.0",
+      "desktopSavedDraftCaptureServiceAndCatalog": true,
+      "packagedUiControllerExecuted": true,
+      "isolatedMobileResolver": true,
+      "mobileModuleCount": 106,
+      "sourceLocationsPerModel": {
+        "total": 88,
+        "exact": 74,
+        "compositeOrNearest": 14
+      },
+      "nativeTauriWindowOrAndroidDevice": false
+    },
+    "nativeBuilds": {
+      "core": "core-native-build.log",
+      "archiveAndMobileHelpers": "native-helpers-build.log",
+      "actualArchiveMobileAndGodotTests": "Included in final app with explicitly supplied real binaries; zero skipped tests.",
+      "coreSourceChangedSincePriorRound": false,
+      "priorRustTests": "../scene-composition/core-tests.log",
+      "rustTestsRepeatedThisRound": false
+    },
+    "documentation": "docs-check.json"
+  },
+  "harnessCorrections": [
+    "Native helper compilation initially ran before desktop sidecar preparation; retry after pinned Node preparation succeeded. No Rust source repair.",
+    "Initial browser assertions sampled selection before native dialog focus restoration finished. The harness now waits for the exact selected JSON token.",
+    "Delayed-response probe used statement syntax in an expression-only evaluator and initially waited for a held response before releasing it. Fixed harness expression and open-preview wait mode; final seven-step run passed.",
+    "Before-final-UI successful browser/package evidence is retained separately. Final runs cover the frozen template/identity navigation and final recipe caption."
+  ],
+  "wasm": {
+    "bytes": 263790,
+    "sha256": "1960d001eb620aff13c518d7ffb640e5f43f19a2627b2905c519a47043ae786d",
+    "changedSincePriorRound": false
+  },
+  "dataProtection": {
+    "realAuthorWorkspaceUsed": false,
+    "metadataDependencyEdgesRewritten": false,
+    "workspaceWorldOrSceneFormatsChanged": false,
+    "sourceHashes": "source-hashes.json",
+    "historicalEvidence": "historical-preservation.json",
+    "historicalFilesUnchanged": 1304,
+    "cleanup": "cleanup.json",
+    "temporaryAllocatedGiBRemoved": 1.826,
+    "generatedScenesCreatedByPreview": false
+  },
+  "limits": [
+    "Recipe preview is read-only. Template/override forms, reverse source write-back and automatic baked-scene synchronization remain future work.",
+    "Only current registered recipe text is overlaid; dependencies and images use saved versions. Recipes never become executable build snapshots.",
+    "Single-file fragments, explicit stable UUID maps, existing Scene2D v3, bounded expansion and ordinary source saving remain unchanged. No nested/cross-file composition or multi-file transaction.",
+    "Mobile isolation verifies packaged portable semantics on Linux, not mobile preview UI. No Tauri window, installer acceptance or Android device run in this round.",
+    "Production Rust recipe semantics and WASM did not change. Defensive location remapping removes all generated ranges; no unsupported claim of reproducing a separate CST indexing failure."
+  ]
+}

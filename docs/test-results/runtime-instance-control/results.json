@@ -1,0 +1,367 @@
+{
+  "date": "2026-10-07",
+  "recordedAt": "2026-10-07T08:50:43.581589+00:00",
+  "version": "0.0.7",
+  "baseCommit": "b3d5220b588f667fba8557bd222ab3082f9001e3",
+  "delivery": "Unreleased working-tree implementation; no commit, push, application install or application version bump.",
+  "scope": {
+    "feature": "Finite independent per-instance direction control and per-step observation",
+    "controlFormat": "viento-runtime-control",
+    "controlSchemaVersions": [
+      1,
+      2
+    ],
+    "instanceControlSchemaVersion": 2,
+    "instancePlanAndRuntimeProtocol": 2,
+    "globalReplayPlanAndRuntimeProtocols": [
+      1,
+      2
+    ],
+    "capabilities": [
+      "runtime.control-replay",
+      "runtime.control-replay.instances"
+    ],
+    "backendVersions": {
+      "org.viento.godot4": "0.5.0",
+      "org.viento.bevy": "0.3.0"
+    },
+    "bevyRuntimeVersion": "0.3.0",
+    "bevyDependencyVersion": "0.19.1",
+    "adapterContractVersionUnchanged": 1,
+    "authorPlanVersionsUnchanged": true,
+    "traceAndObservationDTOFormatsUnchanged": true,
+    "oldGodotGeneratorsAndGDSRuntimeBytesUnchanged": true,
+    "ordinarySmokeAndGlobalReplayCompatible": true,
+    "headlessFiniteOnly": true,
+    "realTimeInput": false,
+    "engineReflectionOrQueryRPC": false,
+    "authorWrites": false
+  },
+  "program": {
+    "stepsMin": 1,
+    "stepsMax": 64,
+    "fixedDeltaMinExclusive": 0,
+    "fixedDeltaMaxSeconds": 0.25,
+    "totalSimulationMaxSeconds": 8,
+    "actorStepMax": 1024,
+    "instanceRowsPerStepMax": 128,
+    "totalInstanceRowsMax": 1024,
+    "globalFileMaxBytes": 16384,
+    "instanceFileMaxBytes": 262144,
+    "target": "Full stable UUID instanceId in the service-owned frozen plan; definition objectId is not a target.",
+    "omittedTargetReleasesAllDirectionsEachStep": true,
+    "duplicateTargetsWithinOneStepRejected": true,
+    "emptyInputsValid": true,
+    "lastStepReleasesAllDirections": true,
+    "values": "Four strict booleans left/right/up/down. Unknown fields, accessors, executable code, engine handles and paths rejected."
+  },
+  "validation": {
+    "app": {
+      "tests": 1774,
+      "pass": 1774,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 235278.50528,
+      "log": "app-check.log"
+    },
+    "newAppTests": {
+      "total": 28,
+      "portableInstanceControl": 9,
+      "realBackendsAndAdapters": 4,
+      "host": 6,
+      "ui": 6,
+      "cli": 3,
+      "includedInAppTotal": true
+    },
+    "portableControlAndObserverRegression": {
+      "tests": 45,
+      "pass": 45,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 240.978136,
+      "log": "portable-tests-final.log"
+    },
+    "engineAdaptersAndControls": {
+      "tests": 36,
+      "pass": 36,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 18650.754148,
+      "log": "engine-tests-final.log"
+    },
+    "hostUIAndRelatedRegression": {
+      "tests": 69,
+      "pass": 69,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 28367.98,
+      "log": "host-ui-tests-final.log"
+    },
+    "finalTargetLabelUIRegression": {
+      "tests": 42,
+      "pass": 42,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 1061.815595,
+      "log": "ui-target-label-tests-final.log"
+    },
+    "cli": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 11297.639602,
+      "log": "cli-tests.log"
+    },
+    "nativeRust": {
+      "unit": 16,
+      "actualCli": 9,
+      "total": 25,
+      "failed": 0,
+      "ignored": 0,
+      "log": "runtime-tests-final.log"
+    },
+    "nativeFormat": {
+      "ok": true,
+      "log": "runtime-fmt-final.log"
+    },
+    "nativeClippy": {
+      "ok": true,
+      "allTargets": true,
+      "denyWarnings": true,
+      "log": "runtime-clippy-final.log"
+    },
+    "dependencyScope": {
+      "bevy": "0.19.1",
+      "features": [
+        "std"
+      ],
+      "noRenderWindowGpuDependencies": true,
+      "log": "runtime-dependencies.txt"
+    },
+    "syntax": {
+      "passed": 391,
+      "log": "preflight-final.log"
+    },
+    "apiContractAndReleaseVersion": {
+      "passed": true,
+      "version": "0.0.7",
+      "log": "preflight-final.log"
+    },
+    "browser": {
+      "ok": true,
+      "browser": "Chrome/154.0.8037.97",
+      "steps": 8,
+      "bevyJobs": 4,
+      "separateDefaultGodotJobs": 4,
+      "runtimeExceptions": 0,
+      "languages": [
+        "zh",
+        "en",
+        "ja"
+      ],
+      "narrowWidthPx": 390,
+      "sameDefinitionIndependentInputAndImmediateRelease": true,
+      "finalPositions": [
+        [
+          200,
+          220
+        ],
+        [
+          490,
+          210
+        ]
+      ],
+      "sameRealControlledSamplesAndObservations": true,
+      "targetChangeDoesNotOverwriteEditedJSON": true,
+      "explicitExampleUsesFullStableInstanceUUID": true,
+      "targetProgramAndCaretPreservedAcrossPollingLocaleReopen": true,
+      "shortInstanceIDSuffixVisibleBeforeNameAt390px": true,
+      "dirtyAuthorDraftAndSourceNavigationGuards": true,
+      "invalidOrWindowHTTPStartsNoJob": true,
+      "evidence": "browser-final/browser.json",
+      "log": "browser-final.log",
+      "initialEvidence": "browser/browser.json"
+    },
+    "preparedResources": {
+      "ok": true,
+      "embeddedNode": "v24.20.0",
+      "desktopFiles": 89,
+      "mobileFiles": 68,
+      "defaultOfflineSessions": 4,
+      "globalReplayOfflineSessions": 4,
+      "instanceReplayOfflineSessions": 2,
+      "totalOfflineSessions": 10,
+      "mobilePureModules": 4,
+      "mobileActualStdoutAdmissions": 10,
+      "sourceAndPackagedHashesStableThroughoutExecution": true,
+      "rustCrateAndBevyBinaryNotBundled": true,
+      "syntheticFixturesRemoved": true,
+      "evidence": "packaged-resources.json",
+      "log": "packaged-final.log",
+      "initialEvidence": "packaged-resources-initial.json",
+      "harnessSha256": "2e4986747991eaa06eca704474f6bfe0268cb3c94dad3ec76b09f1c5debb2856"
+    },
+    "nativeHelpers": {
+      "editorCoreArchiveAndMobileStorageBuilt": true,
+      "usedByFullAppChecks": true,
+      "editorCoreAndWasmSourceUnchanged": true,
+      "independentEditorCoreRustSuiteRepeated": false,
+      "logs": [
+        "core-native-build.log",
+        "native-helper-build.log"
+      ]
+    },
+    "countsOverlap": "The portable, adapter, host/UI, CLI and final UI regression suites overlap the full app total and must not be added to it."
+  },
+  "api": {
+    "path": "/api/project-build",
+    "method": "POST",
+    "action": "run",
+    "requestKeys": [
+      "action",
+      "buildId",
+      "mode",
+      "controlProgram"
+    ],
+    "admission": "Only service-owned successful frozen builds. Capability, plan version, stable targets, input-row count and actor-step budget checked before allocating a job; generic host revalidates artifact and tool identity. Browser accepts only pure values, never file paths or engine handles.",
+    "record": "control: { program, sha256, samples }; runtime.control: { stepCount, completedSteps, fixedDelta }.",
+    "inspection": "Existing typed read-only inspection; no new reflection or query process.",
+    "latestBuild": "Minimal frozen controlTargets contains full instanceId, objectId and bounded author display name.",
+    "errors": {
+      "runtime_control_invalid": 400,
+      "runtime_control_mode": 422,
+      "runtime_control_unsupported": 422,
+      "runtime_control_limit": 422,
+      "runtime_control_target_missing": 422
+    }
+  },
+  "findings": {
+    "sameOCIndependentInstances": true,
+    "omittedInputNoStickyMovement": true,
+    "zeroSpeedAndNoneControlsRemainIdle": true,
+    "opposingDirectionsCancelAndDiagonalsNormalize": true,
+    "completeStableIdentityPairsSampledEveryStep": true,
+    "originalGlobalReplayAndDefaultSmokePositionsPreserved": true,
+    "definitionAndForeignTargetsFailBeforeSpawn": true,
+    "boundedInputAndJointBudgetBeforeSessionCreation": true,
+    "exclusiveSessionFileWritesAndCleanup": true,
+    "frozenBuildBytesAndAuthorBytesUnchanged": true,
+    "largeRowBudgetPrecheckUsesDescriptorsWithoutExecutingGetters": true,
+    "crossEngineCoordinateComparisonTolerance": 0.0001,
+    "review": "boundary-findings.json",
+    "openReviewFindings": 0
+  },
+  "compatibility": {
+    "recordedAt": "2026-10-07T08:48:28.366232+00:00",
+    "historicalFilesUnchanged": 1668,
+    "frozenBackendAndWasmUnchanged": 9,
+    "previousSourceFiles": 120,
+    "previousSourcesUnchanged": 96,
+    "intentionallyChangedPreviousSources": [
+      "README.md",
+      "crates/viento-bevy-runtime/Cargo.lock",
+      "crates/viento-bevy-runtime/Cargo.toml",
+      "crates/viento-bevy-runtime/src/main.rs",
+      "crates/viento-bevy-runtime/tests/cli.rs",
+      "engine/README.md",
+      "engine/scene-control-program.mjs",
+      "scripts/adapters/node-project-build.mjs",
+      "scripts/backends/bevy-adapter.mjs",
+      "scripts/backends/bevy-project.mjs",
+      "scripts/backends/godot4-adapter.mjs",
+      "scripts/backends/godot4/control-runtime.gd",
+      "scripts/lib/project-build-service.mjs",
+      "scripts/project-build.mjs",
+      "scripts/tests/bevy-adapter.test.mjs",
+      "scripts/tests/bevy-smoke.mjs",
+      "scripts/tests/control-replay-smoke.mjs",
+      "scripts/tests/godot4-adapter.test.mjs",
+      "scripts/tests/runtime-object-smoke.mjs",
+      "scripts/tests/scene-control-cli.test.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-project-build.js",
+      "web/project-build.css"
+    ],
+    "currentSourceFiles": 126,
+    "newSourceFiles": [
+      "scripts/tests/instance-control-smoke.mjs",
+      "scripts/tests/runtime-instance-backends.test.mjs",
+      "scripts/tests/scene-instance-control-cli.test.mjs",
+      "scripts/tests/scene-instance-control-host.test.mjs",
+      "scripts/tests/scene-instance-control-ui.test.mjs",
+      "scripts/tests/scene-instance-control.test.mjs"
+    ],
+    "retainedCachedBevyTools": [
+      {
+        "version": "0.1.0",
+        "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.1.0-8c4dab4afa35",
+        "bytes": 11170328,
+        "sha256": "8c4dab4afa35115e710b0b68a3c9535971d2271d5c01976881dc4f9d6b3377e3",
+        "unchanged": true
+      },
+      {
+        "version": "0.2.0",
+        "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.2.0-69cb452d306e",
+        "bytes": 11246856,
+        "sha256": "69cb452d306e7d96fbc1fe02007826615bd9d5eca3a7daf1a9e4c545a4134eaf",
+        "unchanged": true
+      },
+      {
+        "version": "0.3.0",
+        "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.3.0-0f15d7ad897a",
+        "bytes": 11363224,
+        "sha256": "0f15d7ad897a5b4dbc58574cec14eb81284e5c0ba75634bd86232a8de2c1781f",
+        "unchanged": true
+      }
+    ],
+    "wasm": {
+      "bytes": 285596,
+      "sha256": "8b14be6e13c33b5bf5a6cb16f956498dc03a3d62e50bb83ec8967b9896c7738e",
+      "unchanged": true
+    },
+    "evidence": "historical-preservation.json"
+  },
+  "dataProtection": {
+    "authorTestFixturesAndOriginalBuildBytesUnchanged": true,
+    "existingAuthorWorkspacesAndInstalledPreferencesNotModified": true,
+    "installedApplicationUnchanged": true,
+    "sourceHashEvidence": "source-hashes.json",
+    "cleanup": {
+      "removedDirectories": 8,
+      "allocatedBytesFreed": 2404941824,
+      "allocatedGiBFreed": 2.24,
+      "evidence": "cleanup.json"
+    }
+  },
+  "harnessAndVerificationNotes": [
+    "Final full app run enables actual Godot, native editor core, archive and mobile-storage helpers. Earlier host/UI run had four environment skips; final host/UI run has none.",
+    "Core input row-budget precheck was repaired after review: 9, 10, 11 and 64 steps of 128 rows all report runtime_control_limit, without invoking accessor getters. The new regression is included in the final 1774 app total.",
+    "Actual Godot JSON schema numbers are floats. Trusted control wrapper uses numeric validation instead of Array.contains integer variant matching; engine final 36-test run includes the repair.",
+    "Direct adapter budget validation uses a fixed generated scene filename where the author frozen sourcePath is absent. Source navigation still uses the real author frozen source plan.",
+    "Godot creates runtime.gd.uid during import. Frozen inventory comparison starts after import; original generated-file bytes are separately verified. Earlier failing harness logs are retained.",
+    "Visual inspection of the first 390px browser run found indistinguishable long same-name UUID prefixes. Option display now starts with the final eight UUID characters; full UUID stays in value/title/program. Final UI42, browser and prepared resource runs use the corrected product bytes.",
+    "Initial packaged proof is retained separately. Final package rerun changed only app-project-build.js relative to initial proof; both source and prepared files have SHA256 00199ae8dbfadc0440821f675fdf604bcd655eba49f957ba61f6393a066cbea4.",
+    "Final browser screenshots were visually inspected. Previous runtime-control-replay reports and all 1668 historical baseline files remain byte identical.",
+    "Boundary reviewer also implemented the host/UI slice in this round; the report is not an independent penetration test."
+  ],
+  "limits": [
+    "Finite headless control only; no hardware keyboard input, live stepping, arbitrary actor properties, physics, animation, scripting RPC or engine reflection.",
+    "Per-instance schema2 requires plan/runtime2; plan1 and behavior/GDS3 reject it before a new run. Existing global schema1 still supports plans1/2.",
+    "Prepared mobile pure data admission is tested. Android engine execution/UI, packaged Tauri IPC/window and new installers are not exercised.",
+    "Bevy actual App/ECS uses std-only features; rendering, images, windows, author Rust behavior execution and GPU are not tested or advertised."
+  ]
+}

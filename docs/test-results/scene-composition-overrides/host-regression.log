@@ -1,0 +1,47 @@
+✔ preview capability exposes independent tabs without requiring Godot (29.847548ms)
+✔ tab keyboard navigation moves focus and uses roving tabindex (19.793365ms)
+✔ preview close and quick reopen preserve running build polling and source navigation choice (19.959215ms)
+✔ older capabilities retain the existing build workflow (11.43335ms)
+✔ build UI checks a frozen plan, submits that snapshot, and waits for an explicit run (47.17835ms)
+✔ scene switching cannot reuse another scene plan or artifact (28.739507ms)
+✔ saving a layout refreshes preview and invalidates the approved build plan without submitting a job (28.178198ms)
+✔ draft, creation, busy and browse guards prevent task submission even when context changed after rendering (21.031511ms)
+✔ closing a running task preserves it and polling, while dirty drafts still allow cancellation (18.336063ms)
+✔ a lost submission response is reconciled with GET without resubmitting the task (14.352357ms)
+✔ diagnostics retain exact source coordinates, protect declined navigation, and render details as text (10.733262ms)
+✔ preview and diagnostic navigation focus the source editor after the dialog closes, preserving legacy callbacks (29.593575ms)
+✔ late source navigation cannot close a reopened dialog or replace a newer navigation focus (21.920212ms)
+✔ queued dialog-close focus is discarded when the dialog is reopened before the close event (13.843135ms)
+✔ multiple queued close events focus the final closed session only once (15.962947ms)
+✔ snapshot conflicts invalidate the approved plan and preserve original error details (17.00212ms)
+✔ an unconfigured tool permits planning and blocks build/run; unsupported hosts hide the entry (13.120975ms)
+✔ all build dialog user messages have English and Japanese translations (0.98421ms)
+✔ asynchronous snapshot conflicts invalidate the plan after the job completes (16.887666ms)
+✔ editor build context resolves generated source paths without changing the active draft (19.990676ms)
+✔ source layout bridge uses the active draft, refreshes draft preview, and does not require a disk-write command (9.904993ms)
+✔ source layout bridge discards delayed opens after scene or dialog ownership changes (28.100303ms)
+✔ source apply propagates live origin ownership to the asynchronous editor host (40.216871ms)
+✔ clean source sessions can create an instance override without inventing an initial dirty edit (41.998159ms)
+✔ dirty source application preserves Unicode, line endings, selection and the ordinary save baseline (11.528397ms)
+✔ foreign paths, baselines, target identities and altered afterContent cannot replace the current source (50.454143ms)
+✔ other modes, inactive editors and busy states reject override application and source acquisition (29.236396ms)
+✔ a source change during the saved-baseline digest invalidates the proposal (5.171627ms)
+✔ the parent preview owner is checked again after patch preparation and before editing memory (7.122753ms)
+✔ an old proposal cannot be replayed and an old focus receipt cannot focus a later editor (8.462658ms)
+✔ clean source acquisition refuses a snapshot if the live text changes during hashing (3.538674ms)
+✔ applying source layout edits only memory, preserves raw bytes, original save baseline and disk cache (30.685093ms)
+✔ stale content, changed baseline, foreign path and unreviewed afterContent cannot replace current text (27.023219ms)
+✔ only an active source-mode draft can accept layout results (36.608204ms)
+✔ text, path, mode or save baseline changes during the baseline digest reject delayed layout results (18.839262ms)
+✔ host rechecks editor ownership after portable patch preparation and before memory write (4.11439ms)
+✔ language-only UI refresh keeps a pending source apply valid and replay of an old proposal is rejected (5.222832ms)
+✔ origin layout or preview owner is rechecked after each asynchronous preparation stage (8.671558ms)
+✔ returning coordinates to the exact baseline clears dirty state without writing the saved file (4.675218ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 533.824996
