@@ -14,6 +14,10 @@ import { selectPackageEntries, PACKAGE_LIMITS } from '../../engine/resource-pack
 import { getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime } from '../../engine/object-projection-template.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { canExecuteBackend } from '../../engine/backend-capabilities.mjs';
+import { validateExecutionToolStatus } from '../../engine/execution-tool-status.mjs';
+import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
+import { validateRuntimeCaseSuite, summarizeRuntimeCaseSuite } from '../../engine/runtime-case-suite-contract.mjs';
+import { validateRuntimeCaseReport } from '../../engine/runtime-case-report.mjs';
 import { getCreatePathError } from '../../engine/document-contract.mjs';
 
 // Event-capable DOM fixture for the real dialog controllers. It reads their
@@ -125,8 +129,14 @@ export async function dialogHarness(module, overrides = {}) {
   const timers = new Map();
   let timerId = 0;
   const runtime = vm.createContext({
-    document, window, URL, TextEncoder, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS, getStudioCoreMetadata, supportsStudioCoreCompositionPatch,
-    getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime, getCreatePathError, canonicalJson, canExecuteBackend, sceneActorIdentity, sceneStructureActors, buildSceneOutline, validateSceneGroups,
+    document, window, URL, Blob, TextEncoder, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS, getStudioCoreMetadata, supportsStudioCoreCompositionPatch,
+    getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime, getCreatePathError, canonicalJson, canExecuteBackend, validateExecutionToolStatus, sceneActorIdentity, sceneStructureActors, buildSceneOutline, validateSceneGroups,
+    validateRuntimeCase: value => validateRuntimeCase(JSON.parse(JSON.stringify(value))),
+    validateRuntimeCasePlan: (plan, value) => validateRuntimeCasePlan(JSON.parse(JSON.stringify(plan)), JSON.parse(JSON.stringify(value))),
+    evaluateRuntimeCase: (plan, value, samples, options = {}) => evaluateRuntimeCase(JSON.parse(JSON.stringify(plan)), JSON.parse(JSON.stringify(value)), JSON.parse(JSON.stringify(samples)), JSON.parse(JSON.stringify(options))),
+    validateRuntimeCaseSuite: value => validateRuntimeCaseSuite(JSON.parse(JSON.stringify(value))),
+    summarizeRuntimeCaseSuite: value => summarizeRuntimeCaseSuite(JSON.parse(JSON.stringify(value))),
+    validateRuntimeCaseReport,
     location: { href: 'http://127.0.0.1/web/' },
     t, getLanguage, translateMessage, uiMessage, asUiMessage, diagnosticMessage, translateDiagnostic, isComposingInput, translatePage() {}, onLanguageChange() {},
     setTimeout: (callback) => { timers.set(++timerId, callback); return timerId; },
@@ -147,6 +157,15 @@ export async function dialogHarness(module, overrides = {}) {
     vm.runInContext(projectionCreator, runtime);
   }
   if (module === 'app-project-build') {
+    const caseReport = (await fs.readFile(new URL('../../web/modules/app-runtime-case-report.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(caseReport, runtime);
+    const caseDocuments = (await fs.readFile(new URL('../../web/modules/app-runtime-case-documents.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(caseDocuments, runtime);
+    const caseSuites = (await fs.readFile(new URL('../../web/modules/app-runtime-case-suites.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(caseSuites, runtime);
     const sceneCreate = (await fs.readFile(new URL('../../web/modules/app-scene-create.js', import.meta.url), 'utf8'))
       .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
     vm.runInContext(sceneCreate, runtime);

@@ -15,6 +15,8 @@ const backend = () => ({ format: 'viento-execution-backend', schemaVersion: 1, i
   capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false }, extensions: [] });
 const initial = () => ({ supported: true, available: true, reason: null, platform: 'linux', backend: backend(), scenes, job: null, latestBuild: null });
+const checkedTool = (status = 'unchecked', reason = null) => ({ format: 'viento-execution-tool-status', schemaVersion: 1, backendId,
+  status, reason, identity: status === 'ready' ? { version: '4.7.2.stable', sha256: 'a'.repeat(64), platform: 'linux', arch: 'x64' } : null });
 const plan = { snapshotId: 'sha256:frozen', title: 'First scene', actorCount: 1, resourceCount: 1 };
 const job = (kind, status = 'running', extra = {}) => ({ id: `job-${kind}`, backendId, kind, status, sceneId: 'scene-one', phase: 'snapshot', diagnostics: [], events: [], logs: '', ...extra });
 async function harness(options = {}) {
@@ -63,6 +65,104 @@ test('build UI checks a frozen plan, submits that snapshot, and waits for an exp
   assert.match(h.element('projectBuildEvents').textContent, /2/);
   h.element('projectBuildWindow').click();
   assert.deepEqual(h.calls.at(-1).body, { action: 'run', buildId: 'built-one', mode: 'window' });
+});
+
+test('tool identity checks preserve approved plans, author drafts and control input through closing and reopening', async () => {
+  const h = await harness({ state: { ...initial(), toolStatus: checkedTool() } });
+  await h.finishPlan();
+  const input = h.element('projectBuildControlProgram');
+  input.value = '{ "unfinished author input"'; input.selectionStart = 3; input.selectionEnd = 8;
+  h.current.dirty = true; h.controller.setAvailable(true);
+  assert.equal(h.element('projectBuildToolCheck').disabled, false, 'an author draft does not block this read-only check');
+  h.element('projectBuildToolCheck').click();
+  assert.deepEqual(h.calls.at(-1).body, { action: 'tool-check' });
+  assert.match(h.element('projectBuildAvailability').textContent, /正在检查工具身份/);
+  assert.equal(h.element('projectBuildToolCheck').disabled, true);
+  h.element('projectBuildClose').click(); await flushDialogs();
+  h.element('projectBuildBtn').click(); await flushDialogs();
+  await h.resolve({ ...initial(), toolStatus: checkedTool('ready'), job: job('plan', 'succeeded', { plan }) });
+  assert.equal(h.current.dirty, true); assert.equal(input.value, '{ "unfinished author input"');
+  assert.equal(input.selectionStart, 3); assert.equal(input.selectionEnd, 8);
+  assert.match(h.element('projectBuildAvailability').textContent, /身份已确认.*4.7.2/);
+  assert.equal(h.element('projectBuildPlanSummary').hidden, false);
+  h.current.dirty = false; h.controller.setAvailable(true);
+  assert.equal(h.element('projectBuildGenerate').disabled, false, 'the same approved plan survives the check');
+  h.element('projectBuildGenerate').click();
+  assert.deepEqual(h.calls.at(-1).body, { action: 'build', sceneId: 'scene-one', expectedSnapshotId: plan.snapshotId });
+});
+
+test('tool failures disable execution, preserve plan checks and render only safe status text', async () => {
+  const h = await harness({ state: { ...initial(), toolStatus: checkedTool() } });
+  await h.finishPlan(); h.element('projectBuildToolCheck').click();
+  await h.resolve({ ...initial(), available: false, reason: 'tool_version', toolStatus: checkedTool('unavailable', 'tool_version'),
+    job: job('plan', 'succeeded', { plan }) });
+  assert.match(h.element('projectBuildAvailability').textContent, /版本不受支持/);
+  assert.equal(h.element('projectBuildGenerate').disabled, true);
+  assert.equal(h.element('projectBuildPlan').disabled, false);
+  assert.equal(h.element('projectBuildToolCheck').disabled, false);
+  h.element('projectBuildToolCheck').click();
+  const ready = checkedTool('ready'); ready.identity.version = '4.7.2 <img onerror=window.bad>';
+  await h.resolve({ ...initial(), toolStatus: ready, job: job('plan', 'succeeded', { plan }) });
+  assert.match(h.element('projectBuildAvailability').textContent, /<img onerror=window.bad>/);
+  assert.equal(h.element('projectBuildAvailability').children.length, 0);
+  assert.equal(h.element('projectBuildGenerate').disabled, false);
+});
+
+test('external tool checks use read polling and cannot start build jobs or another probe', async () => {
+  const h = await harness({ state: { ...initial(), toolStatus: checkedTool('checking') } });
+  assert.equal(h.element('projectBuildToolCheck').disabled, true);
+  assert.equal(h.element('projectBuildPlan').disabled, true);
+  const requests = h.calls.length; h.element('projectBuildToolCheck').click(); h.element('projectBuildPlan').click();
+  assert.equal(h.calls.length, requests);
+  h.setState({ ...initial(), toolStatus: checkedTool('ready') }); await h.tick();
+  assert.equal(h.calls.at(-1).body, null);
+  assert.equal(h.element('projectBuildToolCheck').disabled, false);
+  assert.equal(h.element('projectBuildPlan').disabled, false);
+});
+
+test('legacy hosts hide tool checking and malformed identities cannot replace accepted build state', async () => {
+  const h = await harness();
+  assert.equal(h.element('projectBuildToolCheck').hidden, true);
+  await h.finishPlan();
+  h.setState({ ...initial(), toolStatus: { ...checkedTool('ready'), backendId: 'org.viento.bevy' } }); await h.refresh();
+  assert.equal(h.element('projectBuildToolCheck').hidden, true);
+  assert.equal(h.element('projectBuildGenerate').disabled, true, 'a failed status read cannot authorize execution');
+  assert.equal(h.element('projectBuildPlanSummary').hidden, false);
+  h.setState({ ...initial(), toolStatus: checkedTool(), job: job('plan', 'succeeded', { plan }) }); await h.refresh();
+  assert.equal(h.element('projectBuildToolCheck').hidden, false);
+  assert.equal(h.element('projectBuildGenerate').disabled, false);
+});
+
+test('a lost tool-check response is reconciled by reading status without repeating the process', async () => {
+  const h = await harness({ state: { ...initial(), toolStatus: checkedTool() } });
+  h.element('projectBuildToolCheck').click();
+  h.calls.at(-1).reject(new Error('Lost response')); await flushDialogs();
+  h.setState({ ...initial(), toolStatus: checkedTool('ready') }); await h.tick();
+  assert.equal(h.calls.filter(call => call.body?.action === 'tool-check').length, 1);
+  assert.equal(h.calls.at(-1).body, null);
+  assert.match(h.element('projectBuildAvailability').textContent, /身份已确认/);
+});
+
+test('offline author catalog blocks new plans and builds while preserving frozen execution, tools and runtime observations', async () => {
+  const state = { ...initial(), toolStatus: checkedTool('ready'), job: job('plan', 'succeeded', { plan }),
+    latestBuild: { id: 'built-one', backendId, sceneId: 'scene-one', snapshotId: plan.snapshotId } };
+  const h = await harness({ state });
+  h.setState({ ...state, catalogDiagnostic: { code: 'build_catalog_unavailable' } }); await h.refresh();
+  assert.equal(h.element('projectBuildCatalogDiagnostic').hidden, false);
+  assert.equal(h.element('projectBuildPlan').disabled, true);
+  assert.equal(h.element('projectBuildGenerate').disabled, true);
+  assert.equal(h.element('projectBuildHeadless').disabled, false);
+  assert.equal(h.element('projectBuildWindow').disabled, false);
+  assert.equal(h.element('projectBuildToolCheck').disabled, false);
+  const calls = h.calls.length; h.element('projectBuildPlan').click(); h.element('projectBuildGenerate').click();
+  assert.equal(h.calls.length, calls);
+  h.element('projectBuildHeadless').click();
+  assert.deepEqual(h.calls.at(-1).body, { action: 'run', buildId: 'built-one', mode: 'headless' });
+  await h.resolve({ ...state, catalogDiagnostic: { code: 'build_catalog_unavailable' }, job: job('run', 'succeeded') });
+  h.setState({ ...state, catalogDiagnostic: null }); await h.refresh();
+  assert.equal(h.element('projectBuildCatalogDiagnostic').hidden, true);
+  assert.equal(h.element('projectBuildPlan').disabled, false);
+  assert.equal(h.element('projectBuildGenerate').disabled, false);
 });
 
 test('scene switching cannot reuse another scene plan or artifact', async () => {

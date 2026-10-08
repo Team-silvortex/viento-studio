@@ -19,7 +19,8 @@ const actorId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const bevy = process.env.VIENTO_BEVY_BIN, godot = process.env.VIENTO_GODOT_BIN;
 const absent = file => assert.rejects(fs.stat(file), { code: 'ENOENT' });
 const gate = () => { let release; return { promise: new Promise(resolve => { release = resolve; }), resolve: value => release(value) }; };
-const fakeTool = { executable: '/trusted/host/tool', version: 'test-host', sha256: 'a'.repeat(64), platform: process.platform, arch: process.arch };
+// A real candidate path for stat-only discovery; execution is still injected.
+const fakeTool = { executable: process.execPath, version: 'test-host', sha256: 'a'.repeat(64), platform: process.platform, arch: process.arch };
 const phaseResult = (phase, status = 'succeeded') => ({ phase, status, exitCode: status === 'succeeded' ? 0 : 1, stdout: '', stderr: '' });
 
 async function fixture(t, { version = 2, example = 'bevy-headless', options = {} } = {}) {

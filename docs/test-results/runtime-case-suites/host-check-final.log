@@ -1,0 +1,25 @@
+✔ suite author writer preserves exact source and ordinary registration identity without metadata member mirrors (261.708222ms)
+✔ suite update conflicts preserve both source bytes and source revision; invalid create leaves no registration (228.076367ms)
+✔ suite publication rechecks dependencies and rolls back only its own new registration (215.340665ms)
+✔ batch continues after assertion failure, executes declared order and keeps author bytes and the owned build intact (254.527152ms)
+✔ all members are preflighted before allocating a job, even when only the final member is invalid (196.710635ms)
+✔ stale group revision, forbidden HTTP options and another frozen scene are refused without replacing the job (216.480028ms)
+✔ members are frozen once at admission; later author edits and source-offline transition cannot change an active batch (215.326597ms)
+✔ cancel retains sampled incomplete member, does not launch queued members and waits for process reaping (198.451106ms)
+✔ execution/protocol failure stops queued members while preserving their explicit not-run state (196.449729ms)
+✔ trusted batch wall budget aborts and reaps the current session, then persists a bounded receipt outside author data (269.409469ms)
+✔ successful batch receipts pin the build/snapshot and reject a replaced frozen build before a later session (199.787966ms)
+✔ CLI suite mode rejects incompatible flags before opening source or build; normal offline run modes stay separate (5.341081ms)
+✔ simultaneous batches cannot both acquire the execution slot while a member is running (221.997234ms)
+✔ closing the service aborts a batch and awaits the executing member before admitting no further work (212.895112ms)
+✔ suite executor detaches all member definitions and plan targets before awaiting cache or engine work (185.84879ms)
+✔ misconfigured suite receipt cache inside author roots is refused before source writes or sessions (166.065363ms)
+✔ a build pruned during suite source admission cannot acquire a job or allocate a receipt or session (297.718929ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3674.591633

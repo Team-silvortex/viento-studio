@@ -1,0 +1,147 @@
+{
+  "format": "viento-runtime-tool-check-acceptance",
+  "schemaVersion": 1,
+  "ok": true,
+  "recordedAt": "2026-10-07T15:19:51.460481+00:00",
+  "sourceVersion": "0.0.8",
+  "sourceBaseCommit": "d36baad631550a99593efe388cf84aa238b79c5f",
+  "delivery": "unreleased-working-tree",
+  "changes": [
+    "Portable exact tool-status DTO; explicit trusted host identity check shared by HTTP, CLI and three-language UI.",
+    "GET never identifies or executes a tool; cached status is invalidated by candidate metadata changes, never authorizes execution.",
+    "Source catalog failures no longer block owned frozen runtime/inspection/tool status; fresh author input remains mandatory for new plan/build."
+  ],
+  "application": {
+    "tests": 1814,
+    "passed": 1814,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 227663.550126,
+    "javascriptFiles": 397,
+    "apiAndVersionPreflight": true,
+    "log": "app-check.log"
+  },
+  "addedRegressionCases": {
+    "total": 40,
+    "portableDTO": 7,
+    "hostProbe": 8,
+    "realToolIdentification": 5,
+    "CLI": 6,
+    "service": 7,
+    "UI": 6,
+    "HTTP": 1,
+    "includedInApplicationTotal": true,
+    "offlineCatalogFixCasesIncluded": 3
+  },
+  "initialFailures": {
+    "application": {
+      "log": "app-check-initial.log",
+      "passed": 1800,
+      "failed": 11,
+      "total": 1811,
+      "cause": "Three trusted adapter fixtures still supplied a fictional executable path. They now use a real stat-only candidate path; execution remains injected."
+    },
+    "prepared": {
+      "log": "packaged-runtime-initial.log",
+      "cause": "An expired source catalog could abort frozen runtime status after the author directory was moved offline. Fixed with bounded cached discovery and mandatory fresh author admission for new plan/build."
+    },
+    "browser": {
+      "log": "browser-check-initial.log",
+      "cause": "Acceptance script clicked during startup before host capability detection and edit mode. Waits now require the visible enabled entry; no tool-check product failure was found.",
+      "recordingCorrection": {
+        "evidence": "browser/browser-initial.json",
+        "cause": "Initial terminal-state wait could collect the preceding plan twice and omit the build record. The acceptance script now requires a fresh task UUID and the expected kind. All four scenarios and three locales were rerun; the final three records are distinct plan/build/run successes."
+      }
+    }
+  },
+  "browser": {
+    "browser": "Chrome/154.0.8037.97",
+    "scenarios": 4,
+    "localesAt390px": 3,
+    "jobs": 3,
+    "runtimeExceptions": 0,
+    "draftAndCaretPreserved": true,
+    "authorBytesUnchanged": true,
+    "evidence": "browser/browser.json",
+    "reproduction": "browser-check.mjs",
+    "uniqueJobKinds": [
+      "plan",
+      "build",
+      "run"
+    ],
+    "uniqueJobCount": 3
+  },
+  "prepared": {
+    "embeddedNode": {
+      "version": "v24.20.0",
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "desktopFullManifestFiles": 498,
+    "desktopFocusedSourceChecks": 105,
+    "mobileFullManifestFiles": 193,
+    "mobileFocusedSourceChecks": 70,
+    "realOfflineSessions": 2,
+    "realRuntimeEvents": 8,
+    "portableMobileModules": 1,
+    "portableMobileAcceptedCases": 14,
+    "portableMobileRejectedCases": 6,
+    "evidence": "packaged-resources.json",
+    "reproduction": "packaged-check.mjs",
+    "log": "packaged-runtime-check.log"
+  },
+  "tools": [
+    {
+      "backendId": "org.viento.godot4",
+      "identity": {
+        "version": "4.7.2.stable.official.ed1daf0bf",
+        "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "bytes": 146414384
+    },
+    {
+      "backendId": "org.viento.bevy",
+      "identity": {
+        "version": "viento-bevy-runtime 0.3.0 bevy 0.19.1",
+        "sha256": "0f15d7ad897a5b4dbc58574cec14eb81284e5c0ba75634bd86232a8de2c1781f",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "bytes": 11363224
+    }
+  ],
+  "native": {
+    "freshBuiltAndUsed": true,
+    "offlineLocked": true,
+    "proof": "native-helpers-proof.json",
+    "rustSourcesUnchanged": 19,
+    "standaloneRustTestsRerun": false,
+    "unchangedPriorEditorCoreTests": {
+      "count": 75,
+      "evidence": "../release-0.0.8/core-proof.json"
+    },
+    "note": "The existing Bevy native 0.3.0 tool was identified and used, not rebuilt. Rust editor and Bevy sources and frozen WASM bytes remain unchanged; prior standalone Rust reports keep their original conditions."
+  },
+  "preservation": {
+    "historicalFiles": 1730,
+    "frozenBackendAndWasmFiles": 9,
+    "rustSources": 19,
+    "productAndTestHashes": 458,
+    "evidence": "historical-preservation.json"
+  },
+  "cleanup": {
+    "directories": 7,
+    "freedAllocatedBytes": 2107277312,
+    "freedGiB": 1.963,
+    "evidence": "cleanup.json"
+  },
+  "limits": [
+    "Linux local editor service and source CLI only. No installed Tauri window or Android device acceptance.",
+    "No new application version, commit/push, installer, installation, GitHub Release or tag.",
+    "No engine discovery/configuration UI or automatic downloads; host still selects a fixed trusted backend and tool.",
+    "Godot adapter 0.5.0, Bevy adapter/native 0.3.0, author formats and existing plan/runtime protocols unchanged.",
+    "No GPU/embedded viewport/reflection/live RPC or authored Rust behavior added."
+  ]
+}

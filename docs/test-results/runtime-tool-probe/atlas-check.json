@@ -1,0 +1,144 @@
+{
+  "format": "viento-execution-tool-atlas-check",
+  "schemaVersion": 1,
+  "ok": true,
+  "recordedAt": "2026-10-07T15:22:11.230562+00:00",
+  "scope": "Current tool identity working-tree atlas and immutable source/history audit; not a product, installer or device test rerun.",
+  "sourceVersion": "0.0.8",
+  "sourceBaseCommit": "d36baad631550a99593efe388cf84aa238b79c5f",
+  "newFunctionDelivery": "working-tree",
+  "generator": {
+    "writeCommand": "node scripts/function-atlas.mjs --write --refresh-sources",
+    "writePassed": true,
+    "checkCommand": "node scripts/function-atlas.mjs --check",
+    "checkPassed": true,
+    "gitDiffCheckPassed": true
+  },
+  "counts": {
+    "architectures": 11,
+    "functions": 63,
+    "implementations": 131,
+    "bindings": 222,
+    "cells": 888,
+    "dependencyEdges": 130,
+    "workflows": 26,
+    "historicalChains": 50,
+    "evidence": 520,
+    "referencedFiles": 523
+  },
+  "addedIDs": {
+    "functions": [
+      "execution.tool_identity"
+    ],
+    "implementations": [
+      "i130",
+      "i131"
+    ],
+    "bindings": [
+      "b219",
+      "b220",
+      "b221",
+      "b222",
+      "b223"
+    ],
+    "evidence": [
+      "e503",
+      "e504",
+      "e505",
+      "e506",
+      "e507",
+      "e508",
+      "e509",
+      "e510",
+      "e511",
+      "e512",
+      "e513",
+      "e514",
+      "e515",
+      "e516",
+      "e517",
+      "e518",
+      "e519",
+      "e520"
+    ],
+    "workflow": [
+      "execution-tool-identity"
+    ]
+  },
+  "existingAudit": {
+    "changedFunctionIDs": [
+      "execution.backend_middleware"
+    ],
+    "change": "One appended middleware boundary only; scores and all other existing entries unchanged.",
+    "oldCellsAndScoresPreserved": 868,
+    "oldBindingsPreserved": 217,
+    "oldEvidencePreserved": 502,
+    "oldDependenciesPreserved": 128,
+    "oldWorkflowsPreserved": 25,
+    "oldLegacyCoveragePreserved": 50,
+    "oldReleaseScopeStringPreserved": true,
+    "historicalAtlasHashesPreserved": true
+  },
+  "newScores": {
+    "implementation": 3,
+    "verification": 3,
+    "decoupling": 4,
+    "delivery": 2
+  },
+  "sourceFingerprintsMatched": 523,
+  "independentPreservation": {
+    "historical-baseline.json": {
+      "checked": 1730,
+      "mismatches": [],
+      "ok": true
+    },
+    "frozen-backend-baseline.json": {
+      "checked": 9,
+      "mismatches": [],
+      "ok": true
+    },
+    "rust-source-baseline.json": {
+      "checked": 19,
+      "mismatches": [],
+      "ok": true
+    },
+    "source-hashes.json": {
+      "checked": 458,
+      "mismatches": [],
+      "ok": true
+    }
+  },
+  "resultsEvidence": "docs/test-results/runtime-tool-probe/results.json",
+  "resultsSha256": "91384fae63eaca1b6dad3c4b6ce03209c3a99398aa0102fb8cfeea912267ad43",
+  "atlasSha256": {
+    "docs/function-atlas.json": "441089a86bf5fbe08e06c0e6b2a1685fa70dacdfcd4d51423c4389022f102561",
+    "docs/FUNCTION_ATLAS.md": "2c35d2f57ee2503e39fa4604767c3a67d8f6b369a2499351023a5a7a2ac213ab",
+    "docs/function-atlas.html": "23708dcaef1078ddaafd9cb881bb03e4f83bec1ef7dde9415303fa22af5eddac",
+    "docs/function-atlas.mmd": "1a3392bcf905aa4a50bbe6dc8050ba3c7b8bd8a3117b1c678af8053120e121be"
+  },
+  "limits": [
+    "Verification is 3, delivery is 2; no installed/platform maturity upgrade.",
+    "No old evidence/report bytes or product code changed by the atlas update.",
+    "The current 1730 physical historical files and old release report 1733 retain their respective scopes; they are not merged or rewritten.",
+    "No standalone Rust 75/25 test rerun is claimed."
+  ],
+  "browserRecordingCorrection": {
+    "initialEvidence": "docs/test-results/runtime-tool-probe/browser/browser-initial.json",
+    "finalEvidence": "docs/test-results/runtime-tool-probe/browser/browser.json",
+    "freshTaskIdentityAndKindWait": true,
+    "uniqueJobCount": 3,
+    "uniqueJobKinds": [
+      "plan",
+      "build",
+      "run"
+    ],
+    "allJobsSucceeded": true,
+    "productChanges": false,
+    "applicationTestsRerun": false
+  },
+  "refreshedEvidenceOnly": [
+    "docs/test-results/runtime-tool-probe/browser-check.mjs",
+    "docs/test-results/runtime-tool-probe/browser/browser.json",
+    "docs/test-results/runtime-tool-probe/results.json"
+  ]
+}

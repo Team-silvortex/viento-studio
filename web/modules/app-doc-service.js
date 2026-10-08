@@ -5,6 +5,13 @@ import { fetchJsonApiRequest, fetchTextApiRequest, fetchWithTimeout, makeRequest
 import { RESOURCE_PACKAGE_API } from '../../engine/resource-package.mjs';
 import { APP_ERROR_MESSAGES, APP_REQUEST_LABELS } from './app-state.js';
 import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
+import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
+
+export async function requestProjectBuildDocument(payload) {
+  return (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('管理运行验收文档'))).payload;
+}
 
 export async function requestWorldCommand(payload) {
   return (await fetchJsonApiRequest(WORLD_COMMAND_API_PATH, withAuthHeaders({

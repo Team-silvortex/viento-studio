@@ -5,7 +5,7 @@ import {
   withDocumentTransaction, documentContentVersion, readDocumentSnapshot, writeDocumentAtomically,
 } from '../lib/doc-file-store.mjs';
 
-export function createNodeDocumentStorage({ root, resolvePath }) {
+export function createNodeDocumentStorage({ root, resolvePath, prepareWrite }) {
   return {
     transaction: withDocumentTransaction,
     // Reads remain side-effect free. Existing source writes share the registry
@@ -23,8 +23,9 @@ export function createNodeDocumentStorage({ root, resolvePath }) {
       return { content, lastModified: stats.mtime.toISOString(), version, writeState: stats };
     },
     async write(reference, content, { create, previous, documentType }) {
+      const beforePublish = await prepareWrite?.({ reference, content, create, previous, documentType });
       const writeSource = () => writeDocumentAtomically(reference.handle, content, {
-        create, previousStats: previous?.writeState || null,
+        create, previousStats: previous?.writeState || null, ...(beforePublish ? { beforePublish } : {}),
       });
       const stats = create
         ? await createRegisteredDocument(root, reference.path, documentType, writeSource)

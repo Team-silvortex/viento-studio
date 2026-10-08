@@ -17,7 +17,8 @@ const sceneId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd', backendId = 'org.viento.
 const objectId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const instances = ['bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2'];
 const unknown = 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';
-const fakeTool = { executable: '/trusted/host/tool', version: 'instance-host-test', sha256: 'a'.repeat(64), platform: process.platform, arch: process.arch };
+// A real candidate path for stat-only discovery; execution is still injected.
+const fakeTool = { executable: process.execPath, version: 'instance-host-test', sha256: 'a'.repeat(64), platform: process.platform, arch: process.arch };
 const released = () => ({ left: false, right: false, up: false, down: false });
 const row = (instanceId, direction) => ({ instanceId, ...released(), ...(direction ? { [direction]: true } : {}) });
 const program = () => ({ format: 'viento-runtime-control', schemaVersion: 2, fixedDelta: 0.125,

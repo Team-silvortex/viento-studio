@@ -3,7 +3,8 @@ import path from 'node:path';
 import { readWorkspace, readRegistry, resolveAssetRoot, walkFiles, assertPortableFileTree, portablePath } from './workspace.mjs';
 import { workspacePaths, projectDefinition, resolveDocumentDefinition, validateProjectTypes } from './project-layout.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
-import { readPackageBytes, packageDigest, inspectPackageComposition, inspectPackageSceneBehaviors, packageDocumentClassification } from './resource-package-catalog.mjs';
+import { readPackageBytes, packageDigest, inspectPackageComposition, inspectPackageSceneBehaviors, inspectPackageRuntimeCase,
+  inspectPackageRuntimeCaseSuite, packageDocumentClassification } from './resource-package-catalog.mjs';
 import { packageFileHash } from './resource-package-export.mjs';
 import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 import { appendRecordItem, replaceRecordString } from '../../engine/world-record-edit.mjs';
@@ -16,6 +17,8 @@ import { packageError } from '../../engine/resource-package.mjs';
 import { validateObjectProjection, inspectObjectProjection, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 import { validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
 import { sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
+import { runtimeCaseDocumentIds, validateRuntimeCaseDocumentDependencies } from '../../engine/runtime-case-document.mjs';
+import { runtimeCaseSuiteDocumentIds, validateRuntimeCaseSuiteDependencies } from '../../engine/runtime-case-suite.mjs';
 
 const key = value => value.normalize('NFC').toLowerCase();
 export async function packageDestination(root, assetRoot, store, relative) {
@@ -124,7 +127,7 @@ export async function planPackageImport(root, pack, signal) {
     const urls = [...media.urls, ...collectAssetImageRefs(media.text, sourcePath).map(file => `/${file.split('/').map(encodeURIComponent).join('/')}`)];
     for (const url of urls) if (!assetUrls.has(mediaUrl(url))) conflict(sourcePath, 'dependency');
   };
-  const projectionSources = new Map(), projectionChecks = [], compositionChecks = [], behaviorChecks = [], dependencySources = new Map();
+  const projectionSources = new Map(), projectionChecks = [], compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], dependencySources = new Map();
   const mappedById = new Map(mappedDocuments.map(record => [record.id, record]));
   for (const item of pack.manifest.documents) {
     const bytes = await readPackageBytes(pack.content, item.sourcePath, signal), record = mappedById.get(item.id);
@@ -132,6 +135,8 @@ export async function planPackageImport(root, pack, signal) {
     const checked = await validateObjectProjection(bytes.toString('utf8'), record, { digest: packageDigest });
     const composition = inspectPackageComposition(bytes, item.sourcePath);
     const behavior = inspectPackageSceneBehaviors(bytes, item.sourcePath);
+    const runtimeCase = inspectPackageRuntimeCase(bytes, item.sourcePath);
+    const suite = inspectPackageRuntimeCaseSuite(bytes, item.sourcePath);
     // Keep a classification, not every incoming source body. The dependency
     // validators need only availability and projection/composition identity;
     // the archive already pins the actual bytes separately.
@@ -139,6 +144,8 @@ export async function planPackageImport(root, pack, signal) {
     if (checked.recognized) projectionChecks.push({ record, checked });
     if (composition.recognized) compositionChecks.push({ record, checked: composition });
     if (behavior.recognized) behaviorChecks.push({ record, checked: behavior });
+    if (runtimeCase.recognized) caseChecks.push({ record, checked: runtimeCase });
+    if (suite.recognized) suiteChecks.push({ record, checked: suite });
   }
   for (const { record, checked } of compositionChecks) {
     // Repeat source-derived declaration checks even when a caller supplies an
@@ -240,6 +247,93 @@ export async function planPackageImport(root, pack, signal) {
       behaviorSources.set(actorId, { record: actor, sourcePath: actor.sourcePath, content });
     }
     if (validateSceneBehaviorDependencies(checked.value, record, { documents: [...projectionSources.values(), ...behaviorSources.values()] }).length) conflict(record.sourcePath, 'dependency');
+  }
+  const caseSources = new Map();
+  for (const { record, checked } of caseChecks) {
+    if (!checked.ok || runtimeCaseDocumentIds(checked.value).some(id => !declaredDocuments.has(id))) {
+      conflict(record.sourcePath, 'dependency'); continue;
+    }
+    const sceneId = checked.value.sceneObjectId, incoming = pack.manifest.documents.find(item => item.id === sceneId);
+    const requirement = requiredById.get(sceneId), sceneRecord = incoming ? mappedById.get(sceneId) : registry.documents.find(item => item.id === sceneId);
+    if (sceneRecord && (incoming || requirement?.category === 'document') && !caseSources.has(sceneId)) {
+      let content = null;
+      try {
+        const bytes = incoming ? await readPackageBytes(pack.content, incoming.sourcePath, signal)
+          : await readPackageBytes(root, sceneRecord.sourcePath, signal);
+        if (!incoming) {
+          const fingerprint = { size: bytes.length, sha256: packageDigest(bytes) };
+          if (canonicalJson(fingerprint) !== canonicalJson(requirement.content)) conflict(record.sourcePath, 'dependency');
+          dependencySources.set(sceneId, { id: sceneId, store: 'project', path: sceneRecord.sourcePath, content: fingerprint });
+        }
+        content = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
+      } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT' && !(error instanceof TypeError)) throw error; }
+      caseSources.set(sceneId, { record: sceneRecord, sourcePath: sceneRecord.sourcePath, content });
+    }
+    const scene = caseSources.get(sceneId);
+    let declaration;
+    try { declaration = JSON.parse(scene?.content?.replace(/^\uFEFF/, '') || 'null'); } catch { /* The shared dependency validator diagnoses invalid scene source. */ }
+    for (const actor of Array.isArray(declaration?.actors) ? declaration.actors : []) {
+      const actorId = actor?.objectId;
+      if (incoming && !declaredDocuments.has(actorId)) { conflict(record.sourcePath, 'dependency'); continue; }
+      if (!actorId || projectionSources.has(actorId) || caseSources.has(actorId)) continue;
+      // Only the already-pinned scene's registered edges may introduce ambient
+      // actor definitions. Observe their bytes again before import publication.
+      if (!scene?.record.relations?.some(relation => relation.targetId === actorId)) continue;
+      const definition = registry.documents.find(item => item.id === actorId);
+      if (!definition) continue;
+      let content = null;
+      try {
+        const bytes = await readPackageBytes(root, definition.sourcePath, signal), fingerprint = { size: bytes.length, sha256: packageDigest(bytes) };
+        const required = requiredById.get(actorId);
+        if (required && canonicalJson(fingerprint) !== canonicalJson(required.content)) conflict(record.sourcePath, 'dependency');
+        content = bytes.toString('utf8');
+        dependencySources.set(actorId, { id: actorId, store: 'project', path: definition.sourcePath, content: fingerprint });
+      } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT') throw error; }
+      caseSources.set(actorId, { record: definition, sourcePath: definition.sourcePath, content });
+    }
+    const caseDependencies = new Map([...projectionSources, ...caseSources]);
+    if (validateRuntimeCaseDocumentDependencies(checked.value, record, { documents: [...caseDependencies.values()] }).length) {
+      conflict(record.sourcePath, 'dependency');
+    }
+  }
+  const suiteSources = new Map([...projectionSources, ...caseSources]), loadedSuiteDocuments = new Set();
+  async function readSuiteDependency(id, owner, { ambient = false, strictUtf8 = true } = {}) {
+    if (loadedSuiteDocuments.has(id)) return;
+    const incoming = pack.manifest.documents.find(item => item.id === id), requirement = requiredById.get(id);
+    const dependency = incoming ? mappedById.get(id) : registry.documents.find(item => item.id === id);
+    if (!dependency || !incoming && requirement?.category !== 'document' && !ambient) return;
+    let content = null;
+    try {
+      const bytes = incoming ? await readPackageBytes(pack.content, incoming.sourcePath, signal)
+        : await readPackageBytes(root, dependency.sourcePath, signal);
+      if (!incoming) {
+        const fingerprint = { size: bytes.length, sha256: packageDigest(bytes) };
+        if (requirement && canonicalJson(fingerprint) !== canonicalJson(requirement.content)) conflict(owner.sourcePath, 'dependency');
+        dependencySources.set(id, { id, store: 'project', path: dependency.sourcePath, content: fingerprint });
+      }
+      content = strictUtf8 ? new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes) : bytes.toString('utf8');
+    } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT' && !(error instanceof TypeError)) throw error; }
+    suiteSources.set(id, { record: dependency, sourcePath: dependency.sourcePath, content });
+    loadedSuiteDocuments.add(id);
+  }
+  for (const { record, checked } of suiteChecks) {
+    if (!checked.ok || runtimeCaseSuiteDocumentIds(checked.value).some(id => !declaredDocuments.has(id))) {
+      conflict(record.sourcePath, 'dependency'); continue;
+    }
+    for (const id of runtimeCaseSuiteDocumentIds(checked.value)) await readSuiteDependency(id, record);
+    const sceneId = checked.value.sceneObjectId, scene = suiteSources.get(sceneId);
+    const incomingScene = pack.manifest.documents.some(item => item.id === sceneId);
+    let declaration;
+    try { declaration = JSON.parse(scene?.content?.replace(/^\uFEFF/, '') || 'null'); } catch { /* Shared suite admission diagnoses the scene body. */ }
+    for (const actor of Array.isArray(declaration?.actors) ? declaration.actors : []) {
+      const id = actor?.objectId;
+      if (incomingScene && !declaredDocuments.has(id)) { conflict(record.sourcePath, 'dependency'); continue; }
+      if (!id || !scene?.record.relations?.some(relation => relation.targetId === id)) continue;
+      await readSuiteDependency(id, record, { ambient: !incomingScene, strictUtf8: false });
+    }
+    if (validateRuntimeCaseSuiteDependencies(checked.value, record, { documents: [...suiteSources.values()] }).length) {
+      conflict(record.sourcePath, 'dependency');
+    }
   }
   for (const type of pack.manifest.types) if (type.template) {
     const file = `${pack.manifest.source.paths.templates}/${type.template}`;

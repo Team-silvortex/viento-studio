@@ -1,0 +1,249 @@
+{
+  "format": "viento-runtime-suite-docs-review",
+  "schemaVersion": 1,
+  "ok": false,
+  "recordedAt": "2026-10-08T03:51:27.860Z",
+  "scope": "Read-only review of twelve current guides, local links/anchors, atlas prefixes and final recorded acceptance. Only this new audit and atlas-prefix-check.json are written; no product test, native tool, browser or mobile test is rerun.",
+  "reviewer": "control_core; implemented portable suite rules/tests earlier and independently reviewed host boundaries. This is not an external audit.",
+  "sourceVersion": "0.0.8",
+  "sourceBaseCommit": "d36baad631550a99593efe388cf84aa238b79c5f",
+  "delivery": "unreleased-working-tree",
+  "reviewedDocumentSha256": {
+    "docs/README.md": "57d2ef628abf2cd6a29c46af6b1bc93a1ad48bf65c21bd02d4b272496cd36ffe",
+    "docs/STATUS.md": "dafd586a83db27c224901a5ec60480e1aba9cbb6a0defe1653fbc9e6a9d727d9",
+    "docs/TESTING.md": "b238ceba0633d3ea71a915cec791584653f9cd1aaa6922000fe27ddfd67d66c9",
+    "docs/ARCHITECTURE.md": "228bccd357dadee08781ade04213e5bd4afa14f6b9d8907af328bb1488a324af",
+    "docs/ROADMAP.md": "d5d3f2dfee3801260ee337340fb4b9b0be3d220d63b4cd82277a34c0508b625f",
+    "docs/PROJECT_BUILD.md": "256539886e74d307324975fce3b1ac9cccd581975b3ab9dcbd88df9615f52802",
+    "docs/BACKEND_MIDDLEWARE.md": "3c68f7eb30ef7a467ef456ea60953dfc0cb7808551fea0140d870a93245df2dc",
+    "docs/RUNTIME_CONTROL.md": "06e6a1e5b4336cbe6e712065c00665709b302ee94cb46b869f51963a2858142f",
+    "docs/RUNTIME_CASES.md": "466af4c931db4b486bfd36aaf07a6d4ce4fba7ab36a1b8cca12035f4092f8810",
+    "docs/RUNTIME_CASE_SUITES.md": "474eb088299feb42bbea2a90149f70e35bbbac9dbdede9d959394ee0747c819e",
+    "docs/FUNCTION_ATLAS.md": "26b26665e4158c9301aac097bd3e5e3ea6255f86d7b1e6226c57f9c73e8826fe",
+    "engine/README.md": "1390dab8e8d6e7637843ec70bc256397de1ea623f06e39e484f408679a655f31"
+  },
+  "links": {
+    "reviewedDocuments": 12,
+    "localReferences": 1385,
+    "localAnchors": 262,
+    "externalReferencesNotFetched": 11,
+    "newAcceptanceEvidenceReferences": 31,
+    "broken": [],
+    "scannerScope": "Markdown inline/reference links outside fenced code; duplicate GFM heading slugs plus explicit HTML id/name anchors. External sites were not fetched."
+  },
+  "contractReview": [
+    {
+      "area": "Author contract",
+      "finding": "Exact four-field schema1 suite; 16KiB UTF-8 JSON, stable registered ordered 1–16 members, one scene. Each member is the existing case envelope; self, foreign scene, nested suite and unknown registration reject. Titles, results, paths and metadata relationship mirrors are absent from the author body."
+    },
+    {
+      "area": "Shared admission and budgets",
+      "finding": "Existing no-behavior frozen plan2 and old control schemas1/2 are reused. All members are captured and admitted before a job/tool; aggregate actorCount×sum steps≤4096 and sum checks≤1024. Source/package validation checks known scenes and existing member structure even when other bodies are declared requirements; full aggregate admission waits until all member bodies exist."
+    },
+    {
+      "area": "Browser boundary",
+      "finding": "Import-free suite contract owns the structural validator and summary. The author suite entry re-exports those same functions, adding source/dependency/plan parsing. GUI imports only the lightweight contract; original HTTP private YAML boundary is unchanged. First full/Chrome YAML404 failures and the reader deferred-scene failure are retained separately from final proofs."
+    },
+    {
+      "area": "Host order and cancellation",
+      "finding": "Trusted host uses one captured author snapshot and ordered existing headless sessions. Every member rechecks the frozen build/snapshot/tool; pruned ownership is refused before job allocation. Assertion failure continues, execution/protocol failure or cancel stops remaining members, retains partial observations, reaps the process and releases the slot. The final committed member result survives late cancellation."
+    },
+    {
+      "area": "Result and time semantics",
+      "finding": "Summary completed counts passed/failed/incomplete, excluding not-run. Queued/running means running; incomplete/not-run gives incomplete. Only entirely passed/failed members make complete true. Whole-batch execution deadline is120s; the old30s limit applies per engine phase, with termination/reaping before slot release, rather than a per-member wall-time promise."
+    },
+    {
+      "area": "Author UI, CLI and migration",
+      "finding": "Three-language UI explicitly edits ordered saved membership, retains draft/caret and uses conflict/publication guards. CLI suite UUID/project-relative path mode requires fresh source and owned frozen build, excludes case/control/window/interactive/capture. Cache receipts and individual sessions are separate from author files. Selective closure/declared-requirement target checks and full standard-data-root archives preserve raw bytes and UUIDs; root README is outside archive data."
+    },
+    {
+      "area": "Delivery",
+      "finding": "Unreleased0.0.8 working tree only. Native/backend/WASM and old control/trace/scene formats are preserved. Fresh offline-locked native helpers were used, with no independent Rust tests rerun. Prepared mobile tests portable data only; no new installation, installed Tauri acceptance, Android host/device execution, version, commit/push or Release is claimed."
+    }
+  ],
+  "finalApplication": {
+    "tests": 1962,
+    "passed": 1962,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 250021.05773,
+    "javascriptFiles": 423,
+    "apiAndVersionPreflight": true,
+    "log": "app-check.log"
+  },
+  "newRegressions": {
+    "total": 60,
+    "portableSuite": 14,
+    "authorAndSchedulerHost": 17,
+    "resourcePackages": 14,
+    "suiteUi": 14,
+    "http": 1,
+    "includedInApplicationTotal": true,
+    "targetedChecksOverlapApplication": true
+  },
+  "browser": {
+    "browser": "Chrome/154.0.8037.97",
+    "scenarios": 8,
+    "localesAt390px": 3,
+    "jobs": 5,
+    "runtimeExceptions": 0,
+    "originalAuthorBytesUnchanged": true,
+    "newRegisteredDocuments": 7,
+    "newAuthorAndMetadataFiles": 14,
+    "draftAndCaretPreserved": true,
+    "evidence": "browser/browser.json",
+    "reproduction": "browser-check.mjs",
+    "visuallyInspected": [
+      "browser/zh-CN-390.png",
+      "browser/en-390.png",
+      "browser/ja-390.png"
+    ],
+    "screenshotScope": "Three-language narrow layout and visible 2/3 progress, terminal facts verified in browser JSON",
+    "sourceFingerprints": {
+      "checked": 10,
+      "mismatches": []
+    }
+  },
+  "prepared": {
+    "embeddedNode": {
+      "version": "v24.20.0",
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "counts": {
+      "backends": 2,
+      "builds": 2,
+      "casesPerSuite": 2,
+      "batchReceipts": 8,
+      "runtimeSessions": 18,
+      "passedServiceSuites": 2,
+      "failedServiceSuitesWithContinuation": 2,
+      "cliUuidSuites": 2,
+      "cliPathSuites": 2,
+      "offlineAdmittedSuites": 2,
+      "offlineIndividualCasePasses": 2
+    },
+    "desktopFullManifestFiles": 508,
+    "mobileFullManifestFiles": 199,
+    "desktopFocusedSourceChecks": 122,
+    "mobileFocusedSourceChecks": 77,
+    "portableEntryModules": 3,
+    "portableModuleCount": 81,
+    "accepted": 22,
+    "rejected": 8,
+    "sourceFingerprints": {
+      "desktop/resources": {
+        "checked": 122,
+        "mismatches": []
+      },
+      "mobile/dist": {
+        "checked": 77,
+        "mismatches": []
+      }
+    },
+    "androidExecutionClaimed": false
+  },
+  "preservation": {
+    "historical-baseline": {
+      "checked": 1866,
+      "mismatches": []
+    },
+    "frozen-backend-baseline": {
+      "checked": 9,
+      "mismatches": []
+    },
+    "rust-source-baseline": {
+      "checked": 19,
+      "mismatches": []
+    },
+    "source-hashes": {
+      "checked": 513,
+      "mismatches": []
+    }
+  },
+  "atlas": {
+    "counts": {
+      "architecture": 11,
+      "function": 66,
+      "implementation": 139,
+      "maturity": 4,
+      "bindings": 243,
+      "cells": 972,
+      "evidence": 566,
+      "dependencies": 143,
+      "workflows": 29,
+      "legacyCoverage": 50,
+      "priorities": 4,
+      "referencedFiles": 571
+    },
+    "audit": "atlas-prefix-check.json"
+  },
+  "retainedInitialChecks": [
+    {
+      "log": "suite-package-check-initial.log",
+      "sha256": "c75af4ae16de2909e4446d2818e5c7db7d1967a8a03735e930b30c7ae88597c9",
+      "reason": "Real reader gap: included invalid scene skipped structural validation when all members were deferred as declared requirements. Shared scene dependency validation now rejects it at read, and targeted/full tests pass."
+    },
+    {
+      "log": "package-regressions.log",
+      "sha256": "6684d31f021c8b8479bdc51991a88577a71c7de8babb0c5e9de136eca06aa7d9",
+      "reason": "Existing native environment-gated neighbors in targeted run. Final full application supplies real engines and native helpers with zero skips."
+    },
+    {
+      "log": "browser-check-initial.log",
+      "sha256": "c421704a141ed70c5821650a81683350e1843c3c82100c752bda54c7fd0e6e4c",
+      "reason": "Editor remained uninitialized; the subsequent instrumented browser run diagnosed the real transitive YAML static dependency 404. Initial script/log/report retained."
+    },
+    {
+      "log": "browser-check-second.log",
+      "sha256": "660149e80078a5c48ed5522b14c51fe75deb7f9548f0e509b777f4b043176d74",
+      "reason": "Instrumented browser proved new suite UI imported author CST/YAML through suite module, triggering /node_modules/yaml 404 under the existing HTTP boundary. Lightweight contract entry now shares the same structural validator/summary without importing source parsing."
+    },
+    {
+      "log": "app-check-initial.log",
+      "sha256": "db8d88880f8e5079d4957a9580a8e296457bb1c4128d2e5374618e5d58c9f3de",
+      "reason": "Existing HTTP browser module-graph regression independently caught the same transitive YAML 404. Final checks rerun after the contract/UI boundary fix."
+    },
+    {
+      "log": "packaged-check-initial.log",
+      "sha256": "047e24c63c05232df219a36b6796114f68de6d9733e15e059b0ea5744cf932bc",
+      "reason": "Initial prepared desktop suites/native migration passed, but this was not editor UI acceptance. Final resources and dual-engine/mobile proof regenerated after the browser import boundary fix."
+    },
+    {
+      "log": "browser-check-third.log",
+      "sha256": "ea822fa8896d8d74b7259e256672909d0393ea5bec3aed058fbccdc5ced6c3cc",
+      "reason": "The probe expected terminal workbench buttons to reflect an external source rename without refreshing the parent state. Final browser proof explicitly refreshes/reopens before checking the offline guard; admission remained refused by the host."
+    },
+    {
+      "log": "node-download.log",
+      "sha256": "b85bd3643e403d8a9a868ff44dda5dabc33780f121e7e012e997f29b4feeed5f",
+      "reason": "Pinned official Node archive TLS failed through the current route; identical mirror archive was accepted only after matching the official pinned SHA. Normal preparation uses the same original archive and license."
+    },
+    {
+      "log": "node-download-alternate.log",
+      "sha256": "b85bd3643e403d8a9a868ff44dda5dabc33780f121e7e012e997f29b4feeed5f",
+      "reason": "Official alternate release URL with TLS1.2 also failed; mirror verification and final embedded Node SHA are recorded."
+    }
+  ],
+  "cleanup": {
+    "directories": 7,
+    "freedAllocatedBytes": 1963524096,
+    "freedGiB": 1.82867431640625,
+    "evidence": "cleanup.json",
+    "stillPresent": []
+  },
+  "finalEvidenceSha256": {
+    "results.json": "46f1d131047d8bb0f6c3b2e95e843dde3ee03bc74f626c183a37b152f4948299",
+    "browser/browser.json": "2f0ffa9e76c0fc692e9bc65039fc8c900fabcf2db251a4c4d3723e3f9d4bfe4e",
+    "packaged-resources.json": "2b1505972f1650cefc794c5f2e4c5a45bbed757d729dcab286ca08df2b516054",
+    "native-helpers-proof.json": "8664de5ef68c393453f0c36a3ee658db94a43ebeb6423fe91feb37e2f1b44f00",
+    "historical-preservation.json": "5d3cf5143254a9e021354692ead2cf0d03899e3d1f63e682c94a869ef7f5d0e0",
+    "cleanup.json": "4fb24da494d3110fd2860c2694f302daf925636eca66dcd0c4897ddda729056b"
+  },
+  "findings": [
+    {
+      "area": "atlas-prefix",
+      "message": "Historical chain fingerprint changed"
+    }
+  ]
+}

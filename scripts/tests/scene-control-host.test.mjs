@@ -14,7 +14,8 @@ import { canonicalJson } from '../../engine/canonical-json.mjs';
 
 const app = fileURLToPath(new URL('../../', import.meta.url));
 const sceneId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd', backendId = 'org.viento.bevy';
-const fakeTool = { executable: '/trusted/host/tool', version: 'test-host', sha256: 'a'.repeat(64), platform: process.platform, arch: process.arch };
+// A real candidate path for stat-only discovery; execution is still injected.
+const fakeTool = { executable: process.execPath, version: 'test-host', sha256: 'a'.repeat(64), platform: process.platform, arch: process.arch };
 const released = () => ({ left: false, right: false, up: false, down: false });
 const program = () => ({ format: 'viento-runtime-control', schemaVersion: 1, fixedDelta: 0.25,
   steps: [{ ...released(), right: true }, released(), { ...released(), up: true }, released()] });

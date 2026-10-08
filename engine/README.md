@@ -1,5 +1,9 @@
 # 可移植引擎
 
+工具状态和用例／组／报告纯模块已纳入 [0.0.9 源码交付](../docs/RELEASE_0.0.9.md)，原阶段报告仍保持 0.0.8 条件。
+
+`runtime-case-report.mjs` 是输出报告的纯入口：固定上下文、实例目标、终态、原 case/trace 与重新计算的 evaluation，严格核对存储评价并返回深度冻结副本，实际 UTF-8 紧凑导出限定 2 MiB。它不导入作者 CST/YAML、Node、DOM 或运行生命周期重放。可信文件 pin 属于 Node，GUI 只读详情与显式下载，见[成员报告](../docs/RUNTIME_CASE_REPORTS.md)。
+
 [当前架构](../docs/ARCHITECTURE.md) · [工程模板](../docs/PROJECT_TEMPLATES.md) · [开发路线](../docs/ROADMAP.md)
 
 这里保留现有 JavaScript 解析、原文适配与语义规划，并通过 `studio-core.mjs` 调用独立的共享 Rust 编辑规则和草稿状态。Godot 等工程运行后端位于宿主适配层，Nuis / ns-nova / yalivia 原生接入属于后续路线。
@@ -7,6 +11,8 @@
 `index.mjs` 是不依赖 Node、HTTP 服务、Tauri 或本机配置的入口。输入是正文字符串、项目定义、登记记录和稳定素材引用；输出是解析结果、布局、字段范围或修改后的正文。唯一运行依赖是 `yaml`，浏览器宿主使用该包的 browser 发行文件，或由打包器解析其 browser/default 入口。`json-source.mjs` 仍供后端模型与事务使用；源码布局通过 Rust 严格扫描与补丁接口工作，前端模块图不再为它加载 YAML，本机服务也不再公开 YAML 包目录。移动端通用解析仍保留已有 `/vendor/yaml/`。
 
 桌面服务和网页编辑器已经复用这里的实现。旧的 `scripts/lib/`、`scripts/standardize-docs/` 和 `web/modules/` 入口保留转发，避免同时改变调用方与公共资源路径。核心不能反向导入这些入口。
+
+有序验收组的轻量纯入口 `runtime-case-suite-contract.mjs` 定义成员结构和终态汇总，GUI 不加载作者解析依赖；`runtime-case-suite.mjs` 重导出同一规则并另接联合预算、原用例及共享场景准入。不访问文件、DOM 或引擎。作者捕获与逐成员调度留在 Node，操作与边界见[验收组](../docs/RUNTIME_CASE_SUITES.md)。
 
 ## 数据与解析
 
@@ -28,6 +34,8 @@
 
 - `backend-capabilities.mjs`：校验并分离冻结 `viento-execution-backend` schema 1 纯数据描述符；分别判断七种执行操作、平台、plan kind／schema 和功能需求。没有 Godot 回退、工具探测或进程调用；描述符格式／字段或操作不合法时拒绝，UI 的 `canExecuteBackend` 失败时返回 `false`。宿主注册表与具体引擎实现见[执行后端中间层](../docs/BACKEND_MIDDLEWARE.md)。
 - `scene-control-program.mjs`：分离并深冻结严格方向布尔程序；schema 1 保留全局输入，schema 2 每步按冻结 plan 2 实例 UUID 独立输入，未列实例释放，重复／未知目标拒绝且输入总行数至多 1024。核对 1–64 步、`0 < fixedDelta <= 0.25` 秒、总时长 8 秒、最后全释放及演员 × 步数 1024 联合预算；逐行准入协议 1／2 完整步骤样本与生命周期，回调按原顺序进入既有事件读取器和观察。没有 I/O、引擎句柄或移动模拟，见[有限控制回放](../docs/RUNTIME_CONTROL.md)。
+- `runtime-verification-case.mjs`：未发布的有限运行用例与评判；复用控制 schema 1／2，仅无行为冻结 plan 2，以稳定实例和零基步骤检查有限坐标／非负显式容差或状态。严格分离／冻结、1–128 检查、未知／重复目标与顺序样本拒绝；完整运行、断言失败、缺样本／中断分别表示，不模拟引擎或写作者数据。见[运行验收用例](../docs/RUNTIME_CASES.md)。
+- `runtime-case-document.mjs`：工程验收文档的严格四字段包装、正文格式识别、稳定场景绑定及登记依赖验证；复用内层原用例，派生场景依赖与可选子内容，不读写工程，不把文件位置或结果写入运行协议。
 - `scene-runtime-query.mjs`：从已验证冻结 plan 1／2／3 取得稳定实例／定义身份及来源，消费已准入 ready／state／finished，提供分离的完整只读观察和 AND 身份筛选。状态变化使原位置样本过期，诊断／行为不改观察；可选有限控制程序为 plan 1／2 增加步骤进度和 `pushSample`，无程序 DTO 原样保留；无 Node、DOM、具体引擎、反射或 RPC 依赖，见[运行对象](../docs/RUNTIME_OBJECTS.md)。
 - `scene-runtime-events.mjs`：独立校验 plan／runtime 1／2 的实例身份、坐标、运动状态与 ready／finished 生命周期；诊断导航只从冻结计划取来源。没有 Node、DOM、Godot 或 Bevy 依赖；当前由 [Bevy 无头适配器](../docs/BEVY_BACKEND.md)消费，旧 Godot 事件读取器保持原字节。
 
@@ -109,8 +117,12 @@ Node CLI 和资源包宿主消费派生结果，文档登记／保存沿用原�
 
 ## 验证与下一步
 
+未发布增量的 `execution-tool-status.mjs` 是独立纯数据工具状态契约：严格分离 `unchecked`／`checking`／`ready`／`unavailable` 与受控失败原因，只有成功状态携版本及完整二进制摘要，不携路径、原始进程输出或执行权限。宿主显式探测复用已有适配器识别，浏览器只显示状态；见[中间层说明](../docs/BACKEND_MIDDLEWARE.md#工具身份检查未发布增量)。
+
 `scripts/tests/portable-engine.test.mjs` 在没有 Node 全局对象的隔离环境中加载引擎及 YAML 浏览器版本，执行跨格式编辑、媒体引用和存储冲突场景，同时检查依赖方向。`portable-engine-scenarios.mjs` 也可通过静态测试页面在真实浏览器中运行，不需要应用 API。
 
 Android 预览宿主已接入：`mobile/platform.mjs` 在 WebView 中复用本引擎，`src-tauri/src/mobile_storage.rs` 在应用私有目录执行原生读写。移动端索引即时生成，不需要 Node 或后台 HTTP 服务。编辑器保留按作品隔离的恢复草稿，恢复时沿用旧版本指纹，避免覆盖应用关闭期间发生的修改。
 
 移动宿主已复用桌面项目包格式，通过系统文件选择器导入、导出。后续仍需媒体访问、模板配置和真机验证，见 [移动端说明](../mobile/README.md)。不要为了兼容宿主而改变现有作品格式或在正文中保存设备绝对路径。
+
+作者验收的 Node 存储提供可选 `prepareWrite` 发布守护，供当前场景和正文版本复查；普通文档存储的既有接口与行为保持。移动资源包含纯包装校验，不提供本机引擎工作台的作者文档动作。

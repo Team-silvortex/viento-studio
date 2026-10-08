@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-07**。源码版本 **0.0.8**；审查基线为提交 `b3d5220b588f667fba8557bd222ab3082f9001e3`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-08**。源码版本 **0.0.9**；审查基线为提交 `d36baad631550a99593efe388cf84aa238b79c5f`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -19,14 +19,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 62 |
-| 实现单元（含规划占位） | 129 |
-| 已审查实现关系 | 217 |
-| 显式评分单元 | 868 |
-| 语义依赖边 | 128 |
-| 工作流切片 | 25 |
+| 功能 | 67 |
+| 实现单元（含规划占位） | 142 |
+| 已审查实现关系 | 248 |
+| 显式评分单元 | 992 |
+| 语义依赖边 | 146 |
+| 工作流切片 | 30 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 505 |
+| 引用并校验指纹的文件 | 597 |
 
 ## 评分锚点
 
@@ -120,6 +120,11 @@
 | 运行对象样本→稳定实例检索→冻结声明来源 | [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [执行后端能力、可信注册与通用编排](#execution.backend_middleware) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [运行对象、位置采样与冻结来源只读观察](#runtime.objects_inspection) | 已验证冻结构建→Godot/Bevy既有准入事件→完整runtime视图与ownedinspect→本地检索/阶段提示/source守护；state使旧位置失效，cancel/error留样本，无RPC/连续采样/作者回写。 |
 | 冻结构建→有限方向程序→两引擎步骤采样→只读对象观察 | [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [执行后端能力、可信注册与通用编排](#execution.backend_middleware) → [有限方向程序、跨后端回放与完整步骤采样](#runtime.control_replay) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [运行对象、位置采样与冻结来源只读观察](#runtime.objects_inspection) | 有限headless无行为plan1/2，程序/联合预算与SHA捕获，adapter暂存/清理，runtime原序ready/state/trace/finished与独立对象视图；不能跨译脚本或回写作者数据，无RPC/实时输入/渲染。 |
 | 冻结plan2→独立实例输入→每步释放→全体样本观察 | [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [有限方向程序、跨后端回放与完整步骤采样](#runtime.control_replay) → [按实例独立有限输入与稀疏步骤路由](#runtime.instance_control) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [运行对象、位置采样与冻结来源只读观察](#runtime.objects_inspection) | owned冻结实例目标→显式示例或严格JSON→dualcap/版本/输入行/actorssteps预算→Godot/Bevy各自按实例路由且每步未列释放→原schema1完整trace/observer；不回写作者、不接实时或RPC。 |
+| 可选显式工具检查→计划批准→运行前重新核对 | [可信工具身份检查、状态DTO与候选失效](#execution.tool_identity) → [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [执行后端能力、可信注册与通用编排](#execution.backend_middleware) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) | GET无进程→显式固定工具identify→中立只读状态；ready只说明检查时身份，后续用户仍显式批准场景/构建，执行重新识别并核对冻结来源/产物/工具。检查不写作者/生成输出，不覆盖旧job/样本；0.0.8之后未发布，无新安装/设备。 |
+| 有限输入＋预期→冻结实例采样→独立验收结果 | [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [执行后端能力、可信注册与通用编排](#execution.backend_middleware) → [有限方向程序、跨后端回放与完整步骤采样](#runtime.control_replay) → [有限运行验收用例与步骤预期评判](#runtime.verification_cases) → [运行对象、位置采样与冻结来源只读观察](#runtime.objects_inspection) | 显式case或从owned完整采样生成末步预期；host真实完成，pure逐步实例检查，assertion failed与execution failed分开；不完整不判passed，作者和原产物不改。 |
+| 验收草稿→明确保存/载入→稳定身份迁移→同场景冻结重跑 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [稳定身份、登记、归属及历史背景迁移](#identity.registration-ownership) → [工程验收用例保存、重用与稳定身份迁移](#runtime.case_documents) → [选择式资源包依赖闭包、冲突预览与追加导入](#resource.package) → [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [有限运行验收用例与步骤预期评判](#runtime.verification_cases) | 作者文档fresh字节与双修订保护；包/完整迁移保留UUID和正文；frozen场景绑定提前检查，离线仅已有loaded纯case，不做批量或安装/Android引擎。 |
+| 保存用例→有序组→全部准入→顺序执行/取消→独立汇总 | [工程验收用例保存、重用与稳定身份迁移](#runtime.case_documents) → [同场景有序验收组与宿主批次调度](#runtime.case_suites) → [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [执行后端能力、可信注册与通用编排](#execution.backend_middleware) → [有限运行验收用例与步骤预期评判](#runtime.verification_cases) → [选择式资源包依赖闭包、冲突预览与追加导入](#resource.package) | 先fresh捕获全部作者成员再分配owner；assertion fail继续/executionfail或cancel停余项，reap释放；mobile只pure、不升级安装/设备或旧评分。 |
+| 当前有序组→committed成员→私有pin回读→逐步详情→显式JSON下载 | [同场景有序验收组与宿主批次调度](#runtime.case_suites) → [有限运行验收用例与步骤预期评判](#runtime.verification_cases) → [当前批次成员详情与独立报告导出](#runtime.case_reports) | 作者来源离线可读owned报告；新job/close使旧owner失效，不扫描历史，不自动改预期，mobile仅pure。 |
 
 ## 功能与实现切片
 
@@ -692,7 +697,7 @@
 | 执行后端 | **godot4-adapter.mjs：具体工具、阶段、环境与固定生成分支**；包装旧Godot v1/v2冻结生成器及新增显式行为v3分支；具体命令/环境/阶段/缓存与通用宿主隔离，四operation实装，离屏/内嵌/GPU false；legacy兼容显式声明。 | 4 / 4 / 3 / 3 | [docs/test-results/backend-middleware/results.json](../docs/test-results/backend-middleware/results.json)、[docs/test-results/backend-middleware/browser/browser.json](../docs/test-results/backend-middleware/browser/browser.json)、[docs/test-results/backend-middleware/packaged-resources.json](../docs/test-results/backend-middleware/packaged-resources.json) |
 | 交互与渲染 | **app-project-build.js**；根据完整纯描述符按操作开放任务入口；descriptor/后端变化撤销旧计划和产物批准，保留dirty/会话/异步归属与三语界面。 | 4 / 4 / 3 / 3 | [docs/test-results/backend-middleware/results.json](../docs/test-results/backend-middleware/results.json)、[docs/test-results/backend-middleware/browser/browser.json](../docs/test-results/backend-middleware/browser/browser.json)、[docs/test-results/backend-middleware/packaged-resources.json](../docs/test-results/backend-middleware/packaged-resources.json) |
 
-平台：Linux本机编辑服务、移动打包纯能力模块不代表Android执行服务、新版Tauri窗口/新安装和设备未验收。边界：0.0.8源码执行中间层独立于作者、plan和runtime格式；精确纯数据描述符分别声明build/headlessLogic/windowPreview/windowCapture/offscreenRender/embeddedViewport/gpuCompute，未知或不支持请求失败关闭。；宿主固定可信适配器、阶段及工具；HTTP和工程文件不能提交后端代码、可执行文件或输出路径，host固定选择已注册Godot/Bevy，网页没有选择器。；通用执行器消费中立files/resourceFiles/来源/产物契约，发布前检查相对路径、碰撞、入口和预算；Godot参数、环境、文件约定和缓存保留在具体适配器。；新构建/会话增加独立executionAdapter指纹；历史backend生成器摘要与协议不改；仅显式接受legacy的已知Godot允许旧记录缺新字段，其余冻结回放检查仍执行。；Godot4产品仅Linux及四种操作；offscreenRender/embeddedViewport/gpuCompute为false。Bevy另有真实无图headless实现；替代夹具/命名空间扩展不代表Nuis/ns-nova/yalivia/GPU实现。；服务返回platform/full descriptor/job.backendId/latestBuild.backendId；UI按操作判断，描述符或后端变化撤销旧计划/产物批准。没有新安装或设备验收。；Godot descriptor0.5.0 保留显式behavior.bindings/behavior.gdscript与plan3；Bevy adapter/tool0.3.0；两者声明runtime.control-replay与runtime.control-replay.instances，全局仅无行为plan1/2有限headless，按实例仅冻结plan2；可选数据参数不增加RPC/Entity或第八种操作。。
+平台：Linux本机编辑服务、移动打包纯能力模块不代表Android执行服务、新版Tauri窗口/新安装和设备未验收。边界：0.0.8源码执行中间层独立于作者、plan和runtime格式；精确纯数据描述符分别声明build/headlessLogic/windowPreview/windowCapture/offscreenRender/embeddedViewport/gpuCompute，未知或不支持请求失败关闭。；宿主固定可信适配器、阶段及工具；HTTP和工程文件不能提交后端代码、可执行文件或输出路径，host固定选择已注册Godot/Bevy，网页没有选择器。；通用执行器消费中立files/resourceFiles/来源/产物契约，发布前检查相对路径、碰撞、入口和预算；Godot参数、环境、文件约定和缓存保留在具体适配器。；新构建/会话增加独立executionAdapter指纹；历史backend生成器摘要与协议不改；仅显式接受legacy的已知Godot允许旧记录缺新字段，其余冻结回放检查仍执行。；Godot4产品仅Linux及四种操作；offscreenRender/embeddedViewport/gpuCompute为false。Bevy另有真实无图headless实现；替代夹具/命名空间扩展不代表Nuis/ns-nova/yalivia/GPU实现。；服务返回platform/full descriptor/job.backendId/latestBuild.backendId；UI按操作判断，描述符或后端变化撤销旧计划/产物批准。没有新安装或设备验收。；Godot descriptor0.5.0 保留显式behavior.bindings/behavior.gdscript与plan3；Bevy adapter/tool0.3.0；两者声明runtime.control-replay与runtime.control-replay.instances，全局仅无行为plan1/2有限headless，按实例仅冻结plan2；可选数据参数不增加RPC/Entity或第八种操作。；0.0.8之后未发布的显式工具身份检查由execution.tool_identity独立列出；GET无子进程，ready不授予执行权，实际build/run仍fresh identify及冻结工具/adapter/产物守护；本功能既有评分不因该增量提升。。
 
 下一步：有限方向回放与采样沿同一可信 host 接入；实时通道、运行资源和作者 Rust 行为由后续共同需求另立契约。
 
@@ -1209,6 +1214,107 @@
 平台：Linux本机CLI/编辑服务，实际两引擎/浏览器/准备资源证据分列、Android仅pure规则复用，无执行器/UI/设备验收、Tauri新安装与窗口未验收。边界：0.0.8源码交付；同时要求runtime.control-replay及runtime.control-replay.instances、无行为冻结plan/runtime2、有限headless；plan1即使empty inputs也拒绝，plan3/window/capture/interactive不支持。；viento-runtime-control schema2精确顶层format/schemaVersion/fixedDelta/steps；每步精确inputs，每行instanceId+四向bool；0..128行/步，总输入行<=1024，1..64步、0<dt<=.25、总时长<=8、最后inputs空或每行全false。；instanceId只准入冻结plan2实际实例集合；same-step重复拒绝、跨step可重复，定义UUID不能冒充实例，未知目标runtime_control_target_missing；合法实际instanceId与objectId相同仍按成员判断。；每步未列实例全部释放，不粘住上一输入；controls none/零速度保持原规则；具体移动/归一化在受信任Godot或Bevy runtime，可移植层只验证数据/身份/预算/trace。；actors*steps<=1024继续独立检查，因为每步trace返回全部冻结演员；trace schema1/protocol2及观察control/positionStep形状不变，无程序旧DTO与schema1全局语义保持。；CLI schema2控制文件<=256KiB，schema1旧16KiB限制保留；host记录冻结规范程序SHA及有效样本，verifiedownedbuild持有中立controlTargets；HTTP不接作者路径/工具/code/Entity，未知目标在启动任务前拒绝。；Godot adapter0.5.0用独立可信GDS driver；Bevy adapter/native0.3.0锁Bevy0.19.1，工具升级需重建；旧Godot5/GDS2/WASM2及历史证据原字节保留。；UI实例列表以instanceId末尾8位在前、name在后，窄屏区分同名/同前缀实例；title及实际值保留完整instanceId；选择目标不改JSON，显式生成才替换为已验证四步示例；poll/reopen/locale保留输入与草稿守护，不写作者工程。；仅有限按实例方向输入；没有实时输入/RPC/反射/运行组件修改、作者Rust、渲染/GPU、跨会话恢复、Tauri新安装或Android执行器。。
 
 下一步：保持有限路由和完整采样的共同粒度；类型化事件、资源、实时采样与可变组件只有出现实际共同需求才另立契约。
+
+<a id="execution.tool_identity"></a>
+### 可信工具身份检查、状态DTO与候选失效
+
+`execution.tool_identity` · 场景与构建 · 源码交付
+
+入口：工作台“检查工具身份” → POST /api/project-build 精确action:tool-check；源码CLI --command tool-check → 同一可信host probe
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **execution-tool-status.mjs：纯数据工具状态契约**；严格纯状态准入/冻结，同一DTO供Node与浏览器消费，拒路径/代码/访问器/污染；pending不携身份。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-tool-probe/results.json](../docs/test-results/runtime-tool-probe/results.json)、[docs/test-results/runtime-tool-probe/core-probe-tests.log](../docs/test-results/runtime-tool-probe/core-probe-tests.log)、[docs/test-results/runtime-tool-probe/packaged-resources.json](../docs/test-results/runtime-tool-probe/packaged-resources.json) |
+| 本机服务与适配 | **node-execution-tool-probe.mjs：可信身份探测与候选签名**；固定host工具的无进程候选观察、显式adapter.identify、总预算/取消与候选前后核对，只输出中立身份。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-tool-probe/results.json](../docs/test-results/runtime-tool-probe/results.json)、[docs/test-results/runtime-tool-probe/engine-probes.log](../docs/test-results/runtime-tool-probe/engine-probes.log)、[docs/test-results/runtime-tool-probe/core-probe-tests.log](../docs/test-results/runtime-tool-probe/core-probe-tests.log) |
+| 本机服务与适配 | **project-build-service.mjs / build-process.mjs 等**；精确tool-check鉴权、单owned检查/构建槽、会话缓存与关闭回收；不覆盖job/最新产物/计划或作者树，执行仍重新识别。 成功catalog+owned构建/运行的来源离线只读降级；新plan/build仍fresh源并提前拒绝。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-tool-probe/results.json](../docs/test-results/runtime-tool-probe/results.json)、[docs/test-results/runtime-tool-probe/core-probe-tests.log](../docs/test-results/runtime-tool-probe/core-probe-tests.log)、[docs/test-results/runtime-tool-probe/browser/browser.json](../docs/test-results/runtime-tool-probe/browser/browser.json) |
+| 交互与渲染 | **app-project-build.js**；显式检查及三语受控状态文本，纯DTO/backend核对、dirty草稿和旧无DTO兼容、checking与请求归属守护，丢响应只GET。 来源不可读提示与工具身份分开，源问题只阻止新计划/构建。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-tool-probe/results.json](../docs/test-results/runtime-tool-probe/results.json)、[docs/test-results/runtime-tool-probe/core-probe-tests.log](../docs/test-results/runtime-tool-probe/core-probe-tests.log)、[docs/test-results/runtime-tool-probe/browser/browser.json](../docs/test-results/runtime-tool-probe/browser/browser.json) |
+| 验证与维护 | **node-execution-tool.mjs / project-build.mjs：可信host和CLI后端选择**；独立源码CLI工具检查：仅固定注册host backend/tool与有界deadline，不打开作者工程、不生成场景输出。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-tool-probe/results.json](../docs/test-results/runtime-tool-probe/results.json)、[docs/test-results/runtime-tool-probe/engine-probes.log](../docs/test-results/runtime-tool-probe/engine-probes.log)、[docs/test-results/runtime-tool-probe/core-probe-tests.log](../docs/test-results/runtime-tool-probe/core-probe-tests.log) |
+
+平台：Linux可信CLI/本机编辑服务与工作台；实测范围独立报告、可移植DTO可准备到桌面/移动资源，无Android检查或执行入口、新Tauri安装/窗口与其他目标设备未验收。边界：0.0.9源码交付；原0.0.8阶段协议与边界保留。0.0.8后的未发布工作树增量；工具检查与构建/运行分别准入，ready只记录检查时身份，不审批场景、授权执行、生成输出或自动重建。；viento-execution-tool-status schema1精确format/schemaVersion/backendId/status/reason/identity；unchecked/checking/ready/unavailable，只有ready携带version/完整二进制SHA256裸64hex/platform/arch；严格分离冻结、拒额外字段/getter/污染，DTO无路径、原始日志或执行代码。；GET只观察文件X_OK、解析路径及stat，绝不启动子进程；候选key仅宿主私有，基于realpath/dev/ino/size/mtimeNs/ctimeNs/mode，改变时会话缓存回到unchecked，不隐式探测。未检查候选沿旧available兼容行为，显式失败后available=false，成功重检恢复。；显式探测复用固定可信adapter.identify，不另写版本兼容规则；12s总终止预算覆盖候选与identify，子进程既有10s/合并输出1MiB、二进制读取512MiB上限保持；abort后等待回收而非遗留Promise.race，取消/超时或前后候选改变均不得缓存ready。；POST只允许{action:tool-check}，沿本机编辑鉴权，拒scene/backend/tool/path/output等附加字段；一个service同时一个检查或构建任务，close取消并等待检查。HTTP断开或网页关面板不取消宿主探测，完成结果须仍属同owner/未关闭service。；检查不创建/替换job/latestBuild，不改计划批准、运行样本、作者文件或草稿；构建和运行继续fresh identify，对照冻结工具版本/SHA与adapter/产物/来源守护，成功检查不能绕过runtime_tool_changed重建要求。；工作台消费同一纯DTO并核对backendId，旧服务无DTO隐藏检查入口；中英日文本与checking提示，dirty/creating草稿可检查但不保存/丢弃，异步请求守护和响应丢失只读刷新不重复发起检查。；独立CLI只接受固定已注册backend、可信host工具配置及1..12000ms预算，不读作者工程、不接场景/输出/控制程序/window/capture/interactive输入；ok按ready判断，公共JSON无本机路径。；Godot adapter0.5.0、Bevy adapter/native0.3.0/Bevy0.19.1、注册器及旧Godot/GDS/native/WASM冻结生成器不改；新辅助层不改变历史executionAdapter指纹、runtime/作者协议或增加第八种执行操作。；已成功读取catalog并拥有本会话已验证构建或其owned运行后，作者源暂不可读可只读降级至缓存目录，catalogDiagnostic仅返回固定code=build_catalog_unavailable；run/inspect/cancel/tool-check继续服务冻结产物。plan/build仍强制读取当前源，失败在创建job前拒绝；没有成功catalog或owned产物不能借此降级，恢复后的成功刷新清除诊断。UI来源提示独立于工具状态，仅阻止新的计划/构建，不把工具ready或冻结运行观察覆盖为源错误。；能力范围仅Linux本机检查；资源准备/纯DTO复用不表示Android工具执行器、Tauri新安装/窗口、Windows/macOS设备或新发行验收。。
+
+下一步：继续按真实共同需求补工具诊断和目标平台验收；检查时身份不得取代运行前重新校验和冻结产物重建守护。
+
+<a id="runtime.verification_cases"></a>
+### 有限运行验收用例与步骤预期评判
+
+`runtime.verification_cases` · 场景与构建 · 源码交付
+
+入口：工作台编辑／明确生成用例→运行验收；CLI run --runtime-case；owned HTTP runtimeCase纯数据
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **runtime-verification-case.mjs：纯用例准入与样本评判**；纯case严格分离冻结、目标/预算与samples评判；引擎完成事实由host传入，不模拟移动或执行。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-verification-cases/results.json](../docs/test-results/runtime-verification-cases/results.json)、[docs/test-results/runtime-verification-cases/browser/browser.json](../docs/test-results/runtime-verification-cases/browser/browser.json)、[docs/test-results/runtime-verification-cases/packaged-resources.json](../docs/test-results/runtime-verification-cases/packaged-resources.json) |
+| 本机服务与适配 | **node-project-build.mjs**；通用冻结executor组合控制与真实采样，独立caseSHA/记录；断言失败和取消持久化分别处理。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-verification-cases/results.json](../docs/test-results/runtime-verification-cases/results.json)、[docs/test-results/runtime-verification-cases/browser/browser.json](../docs/test-results/runtime-verification-cases/browser/browser.json)、[docs/test-results/runtime-verification-cases/packaged-resources.json](../docs/test-results/runtime-verification-cases/packaged-resources.json) |
+| 本机服务与适配 | **project-build-service.mjs / build-process.mjs 等**；owned单槽精确payload、beforeawait分离与prejob目标准入、commit点和独立verification。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-verification-cases/results.json](../docs/test-results/runtime-verification-cases/results.json)、[docs/test-results/runtime-verification-cases/browser/browser.json](../docs/test-results/runtime-verification-cases/browser/browser.json)、[docs/test-results/runtime-verification-cases/packaged-resources.json](../docs/test-results/runtime-verification-cases/packaged-resources.json) |
+| 交互与渲染 | **app-project-build.js**；明确JSON/完整采样baseline生成、三语逐行显示和纯评判再次校验；不自动写作者，文本/光标守护。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-verification-cases/results.json](../docs/test-results/runtime-verification-cases/results.json)、[docs/test-results/runtime-verification-cases/browser/browser.json](../docs/test-results/runtime-verification-cases/browser/browser.json)、[docs/test-results/runtime-verification-cases/packaged-resources.json](../docs/test-results/runtime-verification-cases/packaged-resources.json) |
+| 验证与维护 | **node-execution-tool.mjs / project-build.mjs：可信host和CLI后端选择**；源码CLI只finiteheadless/regular256KiB case，与control程序/窗口/非run互斥；冻结来源。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-verification-cases/results.json](../docs/test-results/runtime-verification-cases/results.json)、[docs/test-results/runtime-verification-cases/browser/browser.json](../docs/test-results/runtime-verification-cases/browser/browser.json)、[docs/test-results/runtime-verification-cases/packaged-resources.json](../docs/test-results/runtime-verification-cases/packaged-resources.json) |
+
+平台：Linux固定可信Godot/Bevy CLI与本机GUI服务、可移植pure DTO/评判可准备到桌面/移动资源、安装Tauri/Android设备未验收。边界：0.0.9源码交付；原0.0.8阶段协议与边界保留。0.0.8之后未发布工作树；仅无行为冻结plan2、control program1/2、真实有限无头运行；旧plan1控制与所有旧作者/计划/trace/adapter/native/WASM不变。；纯viento-runtime-case schema1精确format/schemaVersion/program/checks；1–128稳定实例+零基步骤检查，至少position或state，重复实例步拒绝；position精确value[有限x,y]+有限非负显式tolerance，逐轴绝对差<=tol，无隐藏epsilon或模拟运动。；复用控制原预算/目标与严格trace；每步全体定义/实例配对且连续0起prefix，纯评判再审查样本，不伪造ready/finished/缺样本/引擎事实，不携路径/代码/后端/Entity。；complete只由可信宿主成功且完整运行确认；passed/failed/incomplete独立于执行status；cancel/timeout/protocolfailed或缺样本整体incomplete，逐行保留已观察actual/expected/比较，缺失unavailable。；host预FS验证输入/互斥finiteheadless，冻结plan目标在identify和session前准入；控制program与case各canonicalSHA，session追加verification但不改作者/生成库存；最终保存中的取消也持久化cancelled/incomplete，service用已完成record作为结果提交点。；service只owned build/headless/case数据、beforeawait分离与beforejobslot准入；CLI regular256KiB用例，互斥control-program/window/capture/interactive与非run/tool-check，JSON文件不接最终symlink。；GUI独立文本保留poll/lang/reopen选区，中英日显示执行与逐行验收；显式从owned成功完整control末步采样生成位置/state检查，tol0.0001，生成会覆盖输入但不自动学期望或写作者。；可移植JS契约与宿主执行/GUI分开；准备mobile仅纯case/control模块及已准入desktop数据评判，非Android执行或设备验收。。
+
+下一步：分别定义工程内用例登记／保存／迁移、更广运行观察和作者行为检查；保留真实引擎完成与预期比较的边界。
+
+<a id="runtime.case_documents"></a>
+### 工程验收用例保存、重用与稳定身份迁移
+
+`runtime.case_documents` · 场景与构建 · 源码交付
+
+入口：工程验收用例→刷新/明确载入/保存/另存→资源包或完整迁移→同场景冻结运行；CLI兼容包装
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **runtime-case-document.mjs：可移植工程包装与场景绑定**；纯工程文档识别、case分离与场景/实例/定义依赖守护；不读文件或模拟运行。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-documents/results.json](../docs/test-results/runtime-case-documents/results.json)、[docs/test-results/runtime-case-documents/browser/browser.json](../docs/test-results/runtime-case-documents/browser/browser.json)、[docs/test-results/runtime-case-documents/packaged-resources.json](../docs/test-results/runtime-case-documents/packaged-resources.json) |
+| 本机服务与适配 | **runtime-case-documents.mjs：fresh作者目录与原子保存守护**；fresh作者catalog/load/save，双修订与publication再观察，既有事务复用。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-documents/results.json](../docs/test-results/runtime-case-documents/results.json)、[docs/test-results/runtime-case-documents/browser/browser.json](../docs/test-results/runtime-case-documents/browser/browser.json)、[docs/test-results/runtime-case-documents/packaged-resources.json](../docs/test-results/runtime-case-documents/packaged-resources.json) |
+| 存储与事务 | **node-document-storage.mjs**；普通原子文档writer的可选发布守护；case新登记失败仅回滚本次descriptor。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-documents/results.json](../docs/test-results/runtime-case-documents/results.json)、[docs/test-results/runtime-case-documents/browser/browser.json](../docs/test-results/runtime-case-documents/browser/browser.json)、[docs/test-results/runtime-case-documents/packaged-resources.json](../docs/test-results/runtime-case-documents/packaged-resources.json) |
+| 交互与渲染 | **app-runtime-case-documents.js：独立用例文档交互**；独立用例文档controller、auth headers、显式载入和写入、迟到回执/草稿守护。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-documents/results.json](../docs/test-results/runtime-case-documents/results.json)、[docs/test-results/runtime-case-documents/browser/browser.json](../docs/test-results/runtime-case-documents/browser/browser.json)、[docs/test-results/runtime-case-documents/packaged-resources.json](../docs/test-results/runtime-case-documents/packaged-resources.json) |
+| 交互与渲染 | **app-project-build.js**；构建工作台传递scene/context和纯case，冻结运行与作者保存分别准入。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-documents/results.json](../docs/test-results/runtime-case-documents/results.json)、[docs/test-results/runtime-case-documents/browser/browser.json](../docs/test-results/runtime-case-documents/browser/browser.json)、[docs/test-results/runtime-case-documents/packaged-resources.json](../docs/test-results/runtime-case-documents/packaged-resources.json) |
+| 存储与事务 | **resource-package-service.mjs / resource-package-export.mjs 等**；选择包source-derived依赖与optional scenechildren、requirements/真实target核验及字节稳定迁移。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-documents/results.json](../docs/test-results/runtime-case-documents/results.json)、[docs/test-results/runtime-case-documents/browser/browser.json](../docs/test-results/runtime-case-documents/browser/browser.json)、[docs/test-results/runtime-case-documents/packaged-resources.json](../docs/test-results/runtime-case-documents/packaged-resources.json) |
+| 验证与维护 | **node-execution-tool.mjs / project-build.mjs：可信host和CLI后端选择**；CLI兼容原case与保存包装，scene绑定守护与旧有限模式/文件边界。 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-documents/results.json](../docs/test-results/runtime-case-documents/results.json)、[docs/test-results/runtime-case-documents/browser/browser.json](../docs/test-results/runtime-case-documents/browser/browser.json)、[docs/test-results/runtime-case-documents/packaged-resources.json](../docs/test-results/runtime-case-documents/packaged-resources.json) |
+
+平台：Linux本机作者服务、工作台与可信Godot/Bevy CLI、纯模块可准备到移动资源；无Android引擎服务、未更新安装包或验收Tauri/设备。边界：0.0.9源码交付；原0.0.8阶段协议与边界保留。0.0.8之后未发布工作树，作者文档与原运行case分离，原场景/计划/控制/trace/native/WASM及adapter不变。；严格四字段viento-runtime-case-document schema1，sceneObjectId唯一关联权威，case原DTO；256KiB UTF8/重复键/结构/稳定实例与定义登记边检查。；普通文档UUID/类型登记与原子正文写，source SHA CAS及scene SHA/record在publish前再观察；拒force及互斥create/update，失败撤回本操作descriptor/临时正文，精确原文保持。；新独立GUI文档控制器，显式fresh catalog/load/save/new，token仅authheaders，错误/冲突/late响应保留草稿和光标；pending save关闭标未确认，readonly关闭不标；三语窄屏。；正文派生case→scene依赖、scene可选children；catalog/reader/import检查声明、instance/definition边和目标hash，只有已声明pinned requirement availability在reader延期，import完整复查。；路径迁移保留全部UUID/BOM/CRLF/作者字节，无UUID clone/自动预期学习；完整archive保留损坏可修正文，selective package拒不完整用例。；保存与引擎任务槽解耦，fresh作者读取不能用frozen缓存代替；已载入纯case可sourceoffline对同scene frozen运行，scene绑定不符在job/session前拒。；准备桌面实际Node/双引擎与原生完整归档；移动仅可移植规则与准入desktop采样，不是Android执行/界面/安装验收。。
+
+下一步：分别定义用例分组、批量验收、作者行为和更丰富运行观察；不从稳定ID迁移推导UUID克隆或跨引擎任意脚本转换。
+
+<a id="runtime.case_suites"></a>
+### 同场景有序验收组与宿主批次调度
+
+`runtime.case_suites` · 场景与构建 · 源码交付
+
+入口：已保存用例→按顺序选入/保存组→owned suite-run→成员结果/取消；CLI --runtime-suite
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **runtime-case-suite.mjs：纯组准入、依赖、联合预算与汇总**；组成员、共享场景准入、联合预算与独立结果汇总 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-suites/results.json](../docs/test-results/runtime-case-suites/results.json)、[docs/test-results/runtime-case-suites/browser/browser.json](../docs/test-results/runtime-case-suites/browser/browser.json)、[docs/test-results/runtime-case-suites/packaged-resources.json](../docs/test-results/runtime-case-suites/packaged-resources.json) |
+| 可移植 JS 语义 | **runtime-case-document.mjs：可移植工程包装与场景绑定**；沿用原用例绑定及抽出的共享场景依赖检查 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-suites/results.json](../docs/test-results/runtime-case-suites/results.json)、[docs/test-results/runtime-case-suites/browser/browser.json](../docs/test-results/runtime-case-suites/browser/browser.json)、[docs/test-results/runtime-case-suites/packaged-resources.json](../docs/test-results/runtime-case-suites/packaged-resources.json) |
+| 本机服务与适配 | **runtime-author-documents / runtime-case-suites：共享作者守护与整批捕获**；复用原作者原子保存和修订保护，一次捕获全体成员 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-suites/results.json](../docs/test-results/runtime-case-suites/results.json)、[docs/test-results/runtime-case-suites/browser/browser.json](../docs/test-results/runtime-case-suites/browser/browser.json)、[docs/test-results/runtime-case-suites/packaged-resources.json](../docs/test-results/runtime-case-suites/packaged-resources.json) |
+| 本机服务与适配 | **node-runtime-case-suite.mjs：复用有限会话的宿主顺序调度**；宿主顺序旧无头会话、取消等待退出和独立回执 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-suites/results.json](../docs/test-results/runtime-case-suites/results.json)、[docs/test-results/runtime-case-suites/browser/browser.json](../docs/test-results/runtime-case-suites/browser/browser.json)、[docs/test-results/runtime-case-suites/packaged-resources.json](../docs/test-results/runtime-case-suites/packaged-resources.json) |
+| 本机服务与适配 | **node-execution-backends.mjs / node-project-build.mjs：可信注册、输出与冻结编排**；构建/快照共同验证与owner准入复查，旧后端执行器不改 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-suites/results.json](../docs/test-results/runtime-case-suites/results.json)、[docs/test-results/runtime-case-suites/browser/browser.json](../docs/test-results/runtime-case-suites/browser/browser.json)、[docs/test-results/runtime-case-suites/packaged-resources.json](../docs/test-results/runtime-case-suites/packaged-resources.json) |
+| 存储与事务 | **resource-package-service.mjs / resource-package-export.mjs 等**；组→成员→场景闭包、requirements/目标字节核验与路径稳定迁移 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-suites/results.json](../docs/test-results/runtime-case-suites/results.json)、[docs/test-results/runtime-case-suites/browser/browser.json](../docs/test-results/runtime-case-suites/browser/browser.json)、[docs/test-results/runtime-case-suites/packaged-resources.json](../docs/test-results/runtime-case-suites/packaged-resources.json) |
+| 交互与渲染 | **app-runtime-case-suites.js：独立组编辑与进度展示**；显式有序成员/保存/载入/另存及批次结果，保留未知回执状态 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-suites/results.json](../docs/test-results/runtime-case-suites/results.json)、[docs/test-results/runtime-case-suites/browser/browser.json](../docs/test-results/runtime-case-suites/browser/browser.json)、[docs/test-results/runtime-case-suites/packaged-resources.json](../docs/test-results/runtime-case-suites/packaged-resources.json) |
+| 交互与渲染 | **app-project-build.js**；父工作台只调用宿主批次与状态轮询，单case生成严格区分 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-suites/results.json](../docs/test-results/runtime-case-suites/results.json)、[docs/test-results/runtime-case-suites/browser/browser.json](../docs/test-results/runtime-case-suites/browser/browser.json)、[docs/test-results/runtime-case-suites/packaged-resources.json](../docs/test-results/runtime-case-suites/packaged-resources.json) |
+| 验证与维护 | **node-execution-tool.mjs / project-build.mjs：可信host和CLI后端选择**；CLI互斥组模式，注册UUID/相对path与可信工具边界 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-suites/results.json](../docs/test-results/runtime-case-suites/results.json)、[docs/test-results/runtime-case-suites/browser/browser.json](../docs/test-results/runtime-case-suites/browser/browser.json)、[docs/test-results/runtime-case-suites/packaged-resources.json](../docs/test-results/runtime-case-suites/packaged-resources.json) |
+
+平台：Linux本机workbench/Node/CLI可信Godot与Bevy、纯规则可准备到移动资源；不含Android引擎宿主、0.0.9源码交付；未验收新安装/设备。。边界：0.0.9源码交付；原0.0.8阶段协议与边界保留。0.0.8之后未发布工作树；组与用例正文分开，原控制/trace/作者场景/plan/adapter/native/WASM保持。；严格四字段viento-runtime-case-suite schema1，16KiB、1–16同场景注册JSON成员、稳定UUID有序不重复；actor×总steps≤4096/总checks≤1024，全部预检后才分配job。；共享场景准入在成员正文延期时仍检查包内已知scene，reader只声明requirements缺正文延期，import真实目标再核验；完整迁移/路径变化保持原字节与UUID。；共享作者writer复用原登记锁、原子正文、source/scene SHA与publication guards；fresh组/成员来源，GUI显式保存/载入/另存，未知回执阻止重复写。；Node一次捕获所有成员与版本，逐成员复用现有headless executor，每份再检查frozen build/snapshot/tool；等待时被prune的owner在job前拒绝。；断言failed继续，进程/协议失败、timeout/cancel停余项为not-run；保持partial samples，等待reap释放唯一slot；final committed结果不被迟到cancel重写。；独立suite缓存原子receipt记录顺序/版本/session/counts，执行status与汇总status分开；GUI不启动队列、不从suite last samples生成单case。；真实Linux Chrome及prepared Node/Godot/Bevy/native archive限定验证；mobile仅pure数据，不是Android执行/安装验收。。
+
+下一步：分别定义更丰富状态检查、作者行为、嵌套或并行组；不推导自动更新预期、UUID克隆或引擎脚本互译。
+
+<a id="runtime.case_reports"></a>
+### 当前批次成员详情与独立报告导出
+
+`runtime.case_reports` · 场景与构建 · 源码交付
+
+入口：已完成suite成员→当前owned job/member只读回读→预期/实际详情→显式JSON下载
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **runtime-case-report.mjs：严格便携报告与完整重新评价**；纯报告契约、完整重新评价和数据预算 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-reports/results.json](../docs/test-results/runtime-case-reports/results.json)、[docs/test-results/runtime-case-reports/browser/browser.json](../docs/test-results/runtime-case-reports/browser/browser.json)、[docs/test-results/runtime-case-reports/packaged-resources.json](../docs/test-results/runtime-case-reports/packaged-resources.json) |
+| 本机服务与适配 | **runtime-case-reports / project-build-service：可信文件pin和当前成员只读归属**；可信报告文件pin/稳定回读与当前任务归属 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-reports/results.json](../docs/test-results/runtime-case-reports/results.json)、[docs/test-results/runtime-case-reports/browser/browser.json](../docs/test-results/runtime-case-reports/browser/browser.json)、[docs/test-results/runtime-case-reports/packaged-resources.json](../docs/test-results/runtime-case-reports/packaged-resources.json) |
+| 本机服务与适配 | **node-runtime-case-suite.mjs：复用有限会话的宿主顺序调度**；终态成员保存报告、保留断言及IO失败停止余项 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-reports/results.json](../docs/test-results/runtime-case-reports/results.json)、[docs/test-results/runtime-case-reports/browser/browser.json](../docs/test-results/runtime-case-reports/browser/browser.json)、[docs/test-results/runtime-case-reports/packaged-resources.json](../docs/test-results/runtime-case-reports/packaged-resources.json) |
+| 交互与渲染 | **app-runtime-case-report.js：独立三语详情与显式JSON导出**；实例步骤预期/实际/容差及显式独立JSON下载 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-reports/results.json](../docs/test-results/runtime-case-reports/results.json)、[docs/test-results/runtime-case-reports/browser/browser.json](../docs/test-results/runtime-case-reports/browser/browser.json)、[docs/test-results/runtime-case-reports/packaged-resources.json](../docs/test-results/runtime-case-reports/packaged-resources.json) |
+| 交互与渲染 | **app-project-build.js**；父工作台接详情callback，保持编辑稿/引擎任务独立 | 3 / 3 / 4 / 3 | [docs/test-results/runtime-case-reports/results.json](../docs/test-results/runtime-case-reports/results.json)、[docs/test-results/runtime-case-reports/browser/browser.json](../docs/test-results/runtime-case-reports/browser/browser.json)、[docs/test-results/runtime-case-reports/packaged-resources.json](../docs/test-results/runtime-case-reports/packaged-resources.json) |
+
+平台：Linux本机workbench/Node可信Godot与Bevy、纯报告入口可准备到移动资源；没有Android报告宿主或引擎验收、0.0.9源码交付；未验收新安装/设备。。边界：0.0.9源码交付；原0.0.8阶段协议与边界保留。0.0.8之后未发布工作树；report输出格式独立，不改作者case/suite/scene、plan/control/trace、adapter/native/WASM。；严格八字段viento-runtime-case-report schema1，十字段捕获上下文、实例目标、终态、原用例/采样与完整重新评价；UTF8 compact+newline≤2MiB，原64step/128actor/1024actor-step/128check预算。；纯validator只证明结构/评价一致，录入context为provenance，不能认证任意外部JSON的引擎执行或原作者字节；不合成事件/采样交错回放。；可信宿主固定member-UUID文件，wx0600临时+exclusive原子发布，读取拒绝符号链接/文件替换并核对rawSHA/context/definitionSHA；私有pin/路径不进入HTTP。；调度器保存committed叶结果后再发布reportAvailable；保存失败停止余项但保留真实execution/assertions/samples，末成员完整汇总不掩盖报告IO错误。；只允许当前service当前suite job/member UUID回读，不占执行slot、不读作者/工具/build；源离线/build被清理可读，新job/close/迟到owner拒绝，旧cache不扫描接管。；独立三语GUI核验context及public叶counts/state；可查看前面failed/partial报告，explicit Blob下载，不写草稿/自动预期，不导入外部report。；本轮实际Chrome/pinnedNode双引擎与mobile pure范围见results；无新installer/已安装Tauri/Androidhost或device。。
+
+下一步：单独设计跨重启报告历史、缓存管理和批次报告包；更广状态预期与引擎行为能力沿原边界演进。
 
 ## 旧功能链路映射
 

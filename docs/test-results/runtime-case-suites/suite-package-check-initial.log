@@ -1,0 +1,38 @@
+✔ suite dependencies and optional scene children derive from source without metadata changes or duplicate identities (74.424396ms)
+✔ suite selection closes members scene and definitions while disabling scene children omits optional suites and cases (295.337776ms)
+✔ suite round trips preserve member order stable identities BOM CRLF and exact scene bytes (159.695631ms)
+✔ v3 to v2 path migration changes only registrations while suite and members keep original UUID and source bytes (164.895748ms)
+✔ excluded suite dependencies are exact scene and member requirements and matching existing targets import without cloning (115.526001ms)
+✔ included scene with required members and definitions defers only their unavailable bodies (83.092371ms)
+✔ changed required member source and post-preview target changes reject publication without author writes (96.437846ms)
+✔ hash-matching required members still reject cross-scene bindings or incorrect instance targets (166.106447ms)
+✔ checksum-correct archives cannot conceal suite member or scene declarations or borrow unpinned ambient documents (100.12049ms)
+✔ checksum-correct reader rejects bad members cross-scene wrappers self references and included scene errors (145.023276ms)
+✖ known included scene errors cannot be deferred merely because all suite members are declared requirements (58.644794ms)
+✔ unfinished oversized extra-field non-JSON and invalid UTF-8 suite documents remain editable but cannot export selectively (151.666799ms)
+✔ aggregate suite actor-step budgets are enforced even when every individual case is valid (256.570178ms)
+✔ full workspace archives preserve damaged suite author bytes and stable workspace identity (19.584021ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 13
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2019.821734
+
+✖ failing tests:
+
+test at scripts/tests/runtime-case-suite-packages.test.mjs:196:1
+✖ known included scene errors cannot be deferred merely because all suite members are declared requirements (58.644794ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/runtime-case-suite-packages.test.mjs:201:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /资源包格式/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

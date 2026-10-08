@@ -1,0 +1,326 @@
+{
+  "format": "viento-runtime-tool-docs-review",
+  "schemaVersion": 1,
+  "ok": true,
+  "recordedAt": "2026-10-07T15:25:38.036957+00:00",
+  "scope": "Final read-only review of nine current guides, generated atlas, source bytes and recorded acceptance; writes only this new evidence report.",
+  "reviewer": "tool_host_ui; implemented the host/UI changes earlier in this turn, then performed this separate documentation audit. Not an external audit.",
+  "sourceVersion": "0.0.8",
+  "sourceBaseCommit": "d36baad631550a99593efe388cf84aa238b79c5f",
+  "delivery": "unreleased-working-tree",
+  "reviewedDocumentSha256": {
+    "README.md": "7bf83374a9e886369f0e26ade382993f9cc95dbc4943f638a7778010542c7b59",
+    "engine/README.md": "18b865beb6afed06e68d833eba026e592f4166b47ec134142fb55fb73e9f9cf8",
+    "docs/STATUS.md": "f544031d8359678d94a87079a40822435dee5b1e26a35453de970252835a593e",
+    "docs/ARCHITECTURE.md": "dca96800290a22eff8749ba013a3097c6962fa3a0c360d2237141c8d39f8c10b",
+    "docs/ROADMAP.md": "cbf4383bcb7878d340af1bc81e71ed5be3e37e8d1ae9218b7ba6af972e5d9aa4",
+    "docs/BACKEND_MIDDLEWARE.md": "2c44aa76f9ef4af9914a0c064fe21e9a9e4b2b51d48f8187f9c166c46c4bd4b7",
+    "docs/PROJECT_BUILD.md": "977bcbf668a02a64c2c3a83037125abeb78524b55ab6d2d3527e0881647a0861",
+    "docs/TESTING.md": "d8a153ad9a0b92f3ea2435fbdd1bf731334b755af6e7c898dfa9c694c2d9b413",
+    "docs/FUNCTION_ATLAS.md": "2c35d2f57ee2503e39fa4604767c3a67d8f6b369a2499351023a5a7a2ac213ab"
+  },
+  "links": {
+    "reviewedGuides": 9,
+    "localReferences": 1212,
+    "localAnchors": 243,
+    "externalReferencesNotFetched": 13,
+    "broken": [],
+    "acceptanceEvidenceReferences": 17,
+    "missingAcceptanceEvidence": []
+  },
+  "contractReview": [
+    {
+      "area": "Delivery and version",
+      "finding": "Current increment is explicitly unreleased working-tree; released 0.0.8 and its original evidence keep their original scope. No new installer, commit, push, tag or version is claimed."
+    },
+    {
+      "area": "Portable exact DTO",
+      "finding": "Six exact status fields; four statuses and eight controlled reasons. Only ready carries version/full SHA/platform/arch. Path/raw process output/execution authority stay on the host; descriptor inspection, detach and freeze are implemented."
+    },
+    {
+      "area": "Host budgets and ownership",
+      "finding": "Explicit probe defaults to 12 seconds across candidate/identify, bounded CLI accepts 1–12000ms; existing trusted version process is 10 seconds and combined output 1MiB. Abort waits for cleanup; shared slot and closed/ownership gates keep checks separate from jobs/artifacts."
+    },
+    {
+      "area": "HTTP and fresh execution",
+      "finding": "GET only observes candidate metadata, never identifies or executes; POST tool-check permits only action, uses actual loopback/Host/Origin and existing editing authentication. Backend/tool are host-fixed. Advisory in-memory identity is invalidated by candidate changes; build/run independently identify and check frozen bytes."
+    },
+    {
+      "area": "Source offline P2",
+      "finding": "Only a prior successful catalog plus owned successful build/runtime allows catalog-only degradation. Fixed build_catalog_unavailable diagnostic preserves owned status. New plan/build force fresh author reads before a new job; first catalog error still fails. Restore/refresh clears diagnostic. UI separates source warning and keeps frozen run/inspect/cancel/tool-check usable."
+    },
+    {
+      "area": "Three-language and legacy UI",
+      "finding": "Chinese, English and Japanese tool feedback; explicit check tolerates unsaved drafts and preserves caret/control values. Optional absent legacy DTO hides the entry. Narrow-screen wrapping verified by fresh retained Chrome metrics and inspected Japanese image."
+    },
+    {
+      "area": "Backend/portable scope",
+      "finding": "Godot adapter 0.5.0, Bevy adapter/native 0.3.0, author/plan/runtime formats and frozen WASM unchanged. Prepared mobile acceptance covers one pure DTO in isolated globals, not Android engine or installed GUI validation."
+    },
+    {
+      "area": "Counts and history",
+      "finding": "1814 includes the new 40 regressions; browser/packaged acceptance is separate. Current 1730 physical historical files and old release report 1733 are not merged. Fresh native helpers were used in application regression; standalone Rust 75/25 were not rerun."
+    }
+  ],
+  "atlas": {
+    "generatorCheckPassed": true,
+    "counts": {
+      "architectures": 11,
+      "functions": 63,
+      "implementations": 131,
+      "bindings": 222,
+      "cells": 888,
+      "dependencyEdges": 130,
+      "workflows": 26,
+      "historicalChains": 50,
+      "evidence": 520,
+      "referencedFiles": 523
+    },
+    "sourceFingerprintsMatched": 523,
+    "sourceMismatches": [],
+    "sha256": {
+      "docs/function-atlas.json": "441089a86bf5fbe08e06c0e6b2a1685fa70dacdfcd4d51423c4389022f102561",
+      "docs/FUNCTION_ATLAS.md": "2c35d2f57ee2503e39fa4604767c3a67d8f6b369a2499351023a5a7a2ac213ab",
+      "docs/function-atlas.html": "23708dcaef1078ddaafd9cb881bb03e4f83bec1ef7dde9415303fa22af5eddac",
+      "docs/function-atlas.mmd": "1a3392bcf905aa4a50bbe6dc8050ba3c7b8bd8a3117b1c678af8053120e121be"
+    },
+    "oldEntriesPreserved": {
+      "bindings": {
+        "checked": 217,
+        "changed": []
+      },
+      "cells": {
+        "checked": 868,
+        "changed": []
+      },
+      "evidence": {
+        "checked": 502,
+        "changed": []
+      },
+      "dependencies": {
+        "checked": 128,
+        "changed": []
+      },
+      "workflows": {
+        "checked": 25,
+        "changed": []
+      },
+      "legacyCoverage": {
+        "checked": 50,
+        "changed": []
+      }
+    },
+    "newToolIdentity": {
+      "bindings": [
+        "b219",
+        "b220",
+        "b221",
+        "b222",
+        "b223"
+      ],
+      "cells": 20,
+      "scores": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 4,
+        "delivery": 2
+      },
+      "delivery": "working-tree"
+    }
+  },
+  "recordedAcceptanceReview": {
+    "application": {
+      "tests": 1814,
+      "passed": 1814,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "javascriptFiles": 397,
+      "apiAndVersionPreflight": true,
+      "newCasesIncluded": 40,
+      "logCountsMatched": true
+    },
+    "browser": {
+      "browser": "Chrome/154.0.8037.97",
+      "scenarios": 4,
+      "locales": [
+        "zh-CN",
+        "en",
+        "ja"
+      ],
+      "width": 390,
+      "runtimeExceptions": 0,
+      "uniqueJobs": [
+        {
+          "id": "fd26c80d-b5d3-4f8e-94b6-9bc36ede3497",
+          "kind": "plan",
+          "status": "succeeded"
+        },
+        {
+          "id": "386f21e7-f776-4419-8757-9b77c9928a83",
+          "kind": "build",
+          "status": "succeeded"
+        },
+        {
+          "id": "d227ca67-ab54-4e16-9674-a1be074754ea",
+          "kind": "run",
+          "status": "succeeded"
+        }
+      ],
+      "draftAndCaretPreserved": true,
+      "authorBytesUnchanged": true
+    },
+    "prepared": {
+      "embeddedNode": {
+        "version": "v24.20.0",
+        "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+      },
+      "artifacts": {
+        "desktop/resources": {
+          "retainedFullManifestFiles": 498,
+          "focusedSourceHashes": 105,
+          "packagedHashMatchesRetainedManifest": true
+        },
+        "mobile/dist": {
+          "retainedFullManifestFiles": 193,
+          "focusedSourceHashes": 70,
+          "packagedHashMatchesRetainedManifest": true
+        }
+      },
+      "offlineSessions": [
+        {
+          "backendId": "org.viento.godot4",
+          "status": "succeeded",
+          "events": 4,
+          "freshAuthorCommandsRejected": [
+            "plan",
+            "build"
+          ],
+          "catalogDiagnostic": {
+            "code": "build_catalog_unavailable"
+          }
+        },
+        {
+          "backendId": "org.viento.bevy",
+          "status": "succeeded",
+          "events": 4,
+          "freshAuthorCommandsRejected": [
+            "plan",
+            "build"
+          ],
+          "catalogDiagnostic": {
+            "code": "build_catalog_unavailable"
+          }
+        }
+      ],
+      "mobile": {
+        "pureModules": 1,
+        "accepted": 14,
+        "rejected": 6,
+        "hostOrRendererImports": 0,
+        "androidExecutionClaimed": false
+      }
+    },
+    "nativeHelpers": {
+      "freshBuiltAndUsedInApplicationRegression": true,
+      "offlineLocked": true,
+      "standaloneRustTestsRerun": false
+    },
+    "sourceHashCrossChecks": {
+      "browserFinalSource": {
+        "checked": 8,
+        "mismatches": []
+      },
+      "packagedBackendSource": {
+        "checked": 12,
+        "mismatches": []
+      },
+      "packagedFrozenBackendAndCore": {
+        "checked": 9,
+        "mismatches": []
+      },
+      "desktop/resources": {
+        "checked": 105,
+        "mismatches": []
+      },
+      "mobile/dist": {
+        "checked": 70,
+        "mismatches": []
+      }
+    },
+    "cleanup": {
+      "initiallyAbsentDirectories": 7,
+      "freedAllocatedBytes": 2107277312,
+      "remainingDirectories": [],
+      "allPathsAbsentAtReview": true
+    }
+  },
+  "preservation": {
+    "historical-baseline": {
+      "checked": 1730,
+      "mismatches": []
+    },
+    "frozen-backend-baseline": {
+      "checked": 9,
+      "mismatches": []
+    },
+    "rust-source-baseline": {
+      "checked": 19,
+      "mismatches": []
+    },
+    "source-hashes": {
+      "checked": 458,
+      "mismatches": []
+    }
+  },
+  "resolvedReviewFindings": [
+    {
+      "area": "Browser acceptance recording",
+      "initialEvidence": "browser/browser-initial.json",
+      "initialKinds": [
+        "plan",
+        "plan",
+        "run"
+      ],
+      "initialUniqueJobCount": 2,
+      "cause": "The terminal-state wait could accept the previous plan response after requesting build; the initial record was not complete build evidence.",
+      "remedy": "Parent corrected the acceptance script to require a new UUID, expected plan/build/run kind and terminal success, then reran four scenarios and three locales. Product and full application suite were not changed or rerun for this recording fix.",
+      "finalEvidence": "browser/browser.json",
+      "finalKinds": [
+        "plan",
+        "build",
+        "run"
+      ],
+      "finalUniqueJobCount": 3,
+      "status": "resolved"
+    }
+  ],
+  "unresolvedFindings": [],
+  "evidenceSha256": {
+    "results.json": "91384fae63eaca1b6dad3c4b6ce03209c3a99398aa0102fb8cfeea912267ad43",
+    "atlas-check.json": "6b5c32feb62e79d2d5fe72eccfaefddac43ea53f050f045e986f0c7444d7ca66",
+    "app-check.log": "54083b04e0ac04103a15440bd990e32d190c336801525cc6f99a32e13290e014",
+    "browser/browser.json": "cdcf792b1fbbb1702483a09b7090432a31660e842f2150fa13c21cd60d6c918b",
+    "browser/browser-initial.json": "8ec04e5594b0d3465438fddf3e288c7c3a6073ae6fc8ed648b453634d5c1b2e8",
+    "browser-check.mjs": "9559ad0f5b7c26a93738fccfbdb603d5de9c00e329d0d2dd6262f0d0f83bc1d9",
+    "browser-check.log": "4dd9db7f77fc33fe440bbd75e22db8a516b1bc966946de4bf75b2a77a6984d9d",
+    "packaged-resources.json": "6b7be5208e854f8d1744577ac26f03ca88948a7290e9b8d5631a598c6981a553",
+    "packaged-check.mjs": "18e447bec8acdaed24dd4553890631167c4cc3c35f4cb3021065fc480cd33940",
+    "packaged-runtime-check.log": "13f790f6dce62f97aafb147de80926474da997e63e9e837edfd8187db7c02c53",
+    "native-helpers-proof.json": "dda4fa902d1c5ba867d5f0603e944e3ee5ab99ccce28013ffed8d61c19c35843",
+    "historical-preservation.json": "54e1a3ced2afc20dcb4ce4a7df0bf5fa1796f74fe871bf9f8e565d2871bc8437",
+    "historical-baseline.json": "116f2a05ffbcf8e12893e9b384d2fa6d844bbfe41e0f63d087655345eed28e31",
+    "frozen-backend-baseline.json": "6ff22d248648a1b72930ed76b8b84a0cae9bf65ee64fccbbd878dfc9721a969e",
+    "rust-source-baseline.json": "1597a12b6a6962e6ce2619efada9d5b887ebaed49581fe1803910649cf2adfe0",
+    "source-hashes.json": "27c78ff1a334df51ddd6585eff4bf695a7b6417f7acaab1d22ecaf10b5513bf7",
+    "generated-baseline.json": "24a72f8b498d7c3999e1f46bf19e6af09cd98c8dcb17d8f8b3e79a32fca2feae",
+    "cleanup.json": "185857bcbd6eb919efd7d7da1d42e7c64ed4e6df86b70a462800d6308dc82bbe"
+  },
+  "limits": [
+    "This review did not rerun the full application, external engines, native builds, installed Tauri or device acceptance.",
+    "Recorded browser/prepared proof was checked against current source hashes; generated packaged/native acceptance directories had already been removed, so deleted binary files were not re-inspected.",
+    "External URL targets were not fetched; local file references and heading anchors were checked.",
+    "Historical reports, product, guides and atlas files were read only. Only this new docs-check.json was created.",
+    "Overlapping source/hash maps and included regression counts are not additional independent test counts."
+  ]
+}

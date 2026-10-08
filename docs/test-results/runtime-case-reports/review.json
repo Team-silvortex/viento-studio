@@ -1,0 +1,73 @@
+{
+  "format": "viento-runtime-case-report-boundary-review",
+  "schemaVersion": 1,
+  "ok": true,
+  "recordedAt": "2026-10-08T04:15:12.042Z",
+  "reviewer": "control_core; author of the new portable report rule and tests, performing a separate read-only integration review. This is not an external audit.",
+  "scope": "Current source review before final acceptance/source freeze. No application, host, UI, browser, native or prepared-resource test was rerun for this review. Only this new review.json is written.",
+  "reviewedSourceSha256": {
+    "engine/runtime-case-report.mjs": "56bd922778f39610d0d3ff5bb09645c9d1f0b7497f6b2e39d4746e6faaec1e92",
+    "scripts/tests/runtime-case-report.test.mjs": "d313ecfe366b096198e5e85920b344bf49dd677fb4aab1234257a22e19c00f92",
+    "scripts/adapters/node-runtime-case-suite.mjs": "b104e896e46ea9d71dc63d647c28969cc7c5523db5310e35ec8ecff62d670736",
+    "scripts/lib/project-build-service.mjs": "24a39d663d10e4f9041f0cbcdcdef67b991990e81abbc431d26aecbaab8ee3a3",
+    "scripts/lib/runtime-case-reports.mjs": "0962c184aec1fa44bd7170f70d0f847725906576a6f8e133b47cfccb6ad6f1c7",
+    "scripts/tests/runtime-case-report-service.test.mjs": "25eb64eac6cf988ed382a6edf06db5b476c1eb9a6979d3e8769c857056c19f95",
+    "scripts/tests/runtime-case-reports-host.test.mjs": "0f345c33c1079f9fc84afffc82eb4b0ccb6fa505d7291195d48df71f6fa729e3",
+    "web/modules/app-runtime-case-report.js": "6cda8e8bb74a251879195efe6bc1b8312825d83e40fb702f4843e2afd5028c2e",
+    "web/modules/app-runtime-case-suites.js": "81d9ac9d6d8543c69dc0e590f2e018c15bdc75ec3e35ab9e764eff53b7c510fb",
+    "web/modules/app-project-build.js": "e0abc5b6cac99d2d0608c54f3ff1c78291dc79a3f139bbfc153db4f88e3db90c",
+    "scripts/tests/runtime-case-report-ui.test.mjs": "77cb4e47bceb994e1455bf355c86f6a9e37799fcec9310c16ff808f4c6d6029b"
+  },
+  "conclusions": [
+    {
+      "area": "Pure report boundary",
+      "finding": "Exact8-field schema1 report with exact10-field captured context; old case/control/trace evaluation is reused and the complete stored evaluation is compared. Strict descriptors, Unicode, finite values, paired targets and compact UTF8 plus newline2MiB cap protect the output. Captured raw source revisions are provenance rather than reconstructed author-byte hashes or external execution authentication."
+    },
+    {
+      "area": "Current job ownership",
+      "finding": "Service admits suite-report by current suite job UUID and admitted member UUID only, captures request scalar IDs before await and selects a private pin from its owned map. After cache reading it rechecks closed state, exact parent job object and pin map entry. The next task/new service cannot adopt old receipts. No report read authorizes execution or changes the execution slot."
+    },
+    {
+      "area": "Readonly cache and private pins",
+      "finding": "The readonly action branches before toolState, catalog reads and frozen build admission. Reader opens only the trusted receipt directory/member file, captures pin before await, rejects symlink/nonregular entries and changed directory/file identities, applies size/fatalUTF8/rawSHA guards, revalidates the pure report and compares all captured context fields and definition SHA. Raw pin path, directory, hashes and native causes are not included in public job/report DTOs."
+    },
+    {
+      "area": "Report-write failure and native facts",
+      "finding": "Scheduler computes committed leaf executionStatus, assertion state and counters before report publication. Failure to publish leaves these native facts intact, marks report unavailable, records runtime_report_write and stops queued members. Final-member failure can legitimately leave complete passed assertions while the batch job reports persistence failure. It does not manufacture an assertion or engine failure."
+    },
+    {
+      "area": "Cancellation and closing",
+      "finding": "Reports describe committed leaf records and do not use a late external abort to erase captured samples or reclassify their assertions. Cancellation still stops the next unstarted member. Service close aborts execution/probe, awaits tracked readonly operations and refuses returning a read after closure. Writer exclusive publication preserves existing cache files and cleans only its own staging inode."
+    },
+    {
+      "area": "GUI ownership and export",
+      "finding": "Detail controller admits reportAvailable terminal members, snapshots parent/member/build/backend/scene/revisions/session identity and workbench session, invalidates changed owners, and rejects stale responses after close/reopen or replacement. It validates returned evaluation and context before display, inserts dynamic content through textContent, whitelists error labels, and exports only the accepted frozen JSON on an explicit user action. It neither saves author documents nor generates expected values."
+    },
+    {
+      "area": "Browser dependency graph",
+      "finding": "GUI report entry imports only runtime-case-report and canonical-json. The pure report closure uses runtime-verification-case and scene-control-program; no source CST/YAML, node_modules, host IO or dynamic loader was added. Suite UI retains the import-free suite-contract entry. Existing HTTP private-module routing does not need widening."
+    },
+    {
+      "area": "Meaningful service regressions",
+      "finding": "Reviewed13 cases cover first failed assertions versus last passing session, reading while next member runs, missing queued/current detail, cancelled prefix and not-run absence, native and pre-process failures, one/two-member publication failure, altered/missing cache files, author/build offline, next-job/new-service ownership, in-flight competing job, close waiting and exact request whitelist. They assert result and filesystem/state invariants, including restored monkeypatches in finally, rather than merely mirroring private helper calls."
+    }
+  ],
+  "reviewedServiceTestCases": 13,
+  "reportedEarlierPureCheck": {
+    "tests": 74,
+    "passed": 74,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "evidence": "portable-tests.log",
+    "rerunForThisReview": false
+  },
+  "initialFixtureNote": "The first standalone new pure test invocation rejected the test-only backend strings godot.4/bevy.0_19, which violate the established backend namespace rule. Fixtures were corrected to actual org.viento IDs; the product guard was unchanged. No initial failure log was saved, and this is not represented as a product defect or fabricated initial test evidence.",
+  "limits": [
+    "This is a read-only source review, not final application/browser/prepared acceptance.",
+    "The host cache pin protects current service-owned bytes; self-contained exported JSON establishes internal consistency, not authenticated engine execution.",
+    "Source revisions label originally captured author bytes; no current author lookup, historical event interleaving replay or raw-source digest reconstruction is claimed.",
+    "Current-job scope only; no cross-service receipt history/adoption, installer, native protocol, engine update, Rust test rerun or Android execution."
+  ],
+  "findings": []
+}

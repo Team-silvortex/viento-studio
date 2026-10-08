@@ -1,0 +1,257 @@
+{
+  "format": "viento-runtime-case-document-acceptance",
+  "schemaVersion": 1,
+  "ok": true,
+  "recordedAt": "2026-10-08T02:56:11.988Z",
+  "sourceVersion": "0.0.8",
+  "sourceBaseCommit": "d36baad631550a99593efe388cf84aa238b79c5f",
+  "delivery": "unreleased-working-tree",
+  "changes": [
+    "Registered exact UTF-8 JSON envelope binds the existing pure runtime case to its stable scene identity.",
+    "Fresh author catalog/load and atomic registration/save reuse ordinary document storage with independent scene/document SHA guards and publication rechecks.",
+    "Three-language separate author-document controller supports explicit load/discard/new/save/save-copy without losing text, caret or author context.",
+    "Selective package closure includes scene, registered definitions and optional scene child cases; reader/import guard checksums, declared requirements, instances and target bytes.",
+    "CLI accepts saved envelope or old pure case; shared host and owned service reject mismatched frozen scenes before job/session creation."
+  ],
+  "application": {
+    "tests": 1902,
+    "passed": 1902,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 237227.609642,
+    "javascriptFiles": 412,
+    "apiAndVersionPreflight": true,
+    "log": "app-check.log"
+  },
+  "newRegressionTests": {
+    "total": 48,
+    "portableDocument": 11,
+    "authorHost": 9,
+    "resourcePackages": 13,
+    "documentUi": 14,
+    "http": 1,
+    "includedInApplicationTotal": true,
+    "uiTargeted": {
+      "tests": 48,
+      "passed": 48,
+      "new": 14,
+      "existing": 34,
+      "log": "ui-targeted-check.log",
+      "overlapsApplication": true
+    }
+  },
+  "browser": {
+    "browser": "Chrome/154.0.8037.97",
+    "scenarios": 6,
+    "localesAt390px": 3,
+    "jobs": 6,
+    "runtimeExceptions": 0,
+    "originalAuthorBytesUnchanged": true,
+    "newCaseFiles": 4,
+    "draftAndCaretPreserved": true,
+    "evidence": "browser/browser.json",
+    "reproduction": "browser-check.mjs",
+    "visuallyInspected": "browser/zh-CN-390.png"
+  },
+  "prepared": {
+    "embeddedNode": {
+      "version": "v24.20.0",
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "desktopFullManifestFiles": 502,
+    "desktopFocusedSourceChecks": 116,
+    "mobileFullManifestFiles": 196,
+    "mobileFocusedSourceChecks": 74,
+    "counts": {
+      "backends": 2,
+      "builds": 2,
+      "offlineRuntimeSessions": 6,
+      "servicePasses": 2,
+      "serviceAssertionFailures": 2,
+      "cliPasses": 2
+    },
+    "mobilePortable": {
+      "entryModuleCount": 2,
+      "entryModules": [
+        "engine/runtime-verification-case.mjs",
+        "engine/runtime-case-document.mjs"
+      ],
+      "moduleCount": 79,
+      "modules": [
+        "engine/json-source.mjs",
+        "engine/runtime-case-document.mjs",
+        "engine/runtime-verification-case.mjs",
+        "engine/scene-control-program.mjs",
+        "engine/scene-groups.mjs",
+        "engine/scene-identity.mjs",
+        "vendor/yaml/dist/compose/compose-collection.js",
+        "vendor/yaml/dist/compose/compose-doc.js",
+        "vendor/yaml/dist/compose/compose-node.js",
+        "vendor/yaml/dist/compose/compose-scalar.js",
+        "vendor/yaml/dist/compose/composer.js",
+        "vendor/yaml/dist/compose/resolve-block-map.js",
+        "vendor/yaml/dist/compose/resolve-block-scalar.js",
+        "vendor/yaml/dist/compose/resolve-block-seq.js",
+        "vendor/yaml/dist/compose/resolve-end.js",
+        "vendor/yaml/dist/compose/resolve-flow-collection.js",
+        "vendor/yaml/dist/compose/resolve-flow-scalar.js",
+        "vendor/yaml/dist/compose/resolve-props.js",
+        "vendor/yaml/dist/compose/util-contains-newline.js",
+        "vendor/yaml/dist/compose/util-empty-scalar-position.js",
+        "vendor/yaml/dist/compose/util-flow-indent-check.js",
+        "vendor/yaml/dist/compose/util-map-includes.js",
+        "vendor/yaml/dist/doc/Document.js",
+        "vendor/yaml/dist/doc/anchors.js",
+        "vendor/yaml/dist/doc/applyReviver.js",
+        "vendor/yaml/dist/doc/createNode.js",
+        "vendor/yaml/dist/doc/directives.js",
+        "vendor/yaml/dist/errors.js",
+        "vendor/yaml/dist/index.js",
+        "vendor/yaml/dist/log.js",
+        "vendor/yaml/dist/nodes/Alias.js",
+        "vendor/yaml/dist/nodes/Collection.js",
+        "vendor/yaml/dist/nodes/Node.js",
+        "vendor/yaml/dist/nodes/Pair.js",
+        "vendor/yaml/dist/nodes/Scalar.js",
+        "vendor/yaml/dist/nodes/YAMLMap.js",
+        "vendor/yaml/dist/nodes/YAMLSeq.js",
+        "vendor/yaml/dist/nodes/addPairToJSMap.js",
+        "vendor/yaml/dist/nodes/identity.js",
+        "vendor/yaml/dist/nodes/toJS.js",
+        "vendor/yaml/dist/parse/cst-scalar.js",
+        "vendor/yaml/dist/parse/cst-stringify.js",
+        "vendor/yaml/dist/parse/cst-visit.js",
+        "vendor/yaml/dist/parse/cst.js",
+        "vendor/yaml/dist/parse/lexer.js",
+        "vendor/yaml/dist/parse/line-counter.js",
+        "vendor/yaml/dist/parse/parser.js",
+        "vendor/yaml/dist/public-api.js",
+        "vendor/yaml/dist/schema/Schema.js",
+        "vendor/yaml/dist/schema/common/map.js",
+        "vendor/yaml/dist/schema/common/null.js",
+        "vendor/yaml/dist/schema/common/seq.js",
+        "vendor/yaml/dist/schema/common/string.js",
+        "vendor/yaml/dist/schema/core/bool.js",
+        "vendor/yaml/dist/schema/core/float.js",
+        "vendor/yaml/dist/schema/core/int.js",
+        "vendor/yaml/dist/schema/core/schema.js",
+        "vendor/yaml/dist/schema/json/schema.js",
+        "vendor/yaml/dist/schema/tags.js",
+        "vendor/yaml/dist/schema/yaml-1.1/binary.js",
+        "vendor/yaml/dist/schema/yaml-1.1/bool.js",
+        "vendor/yaml/dist/schema/yaml-1.1/float.js",
+        "vendor/yaml/dist/schema/yaml-1.1/int.js",
+        "vendor/yaml/dist/schema/yaml-1.1/merge.js",
+        "vendor/yaml/dist/schema/yaml-1.1/omap.js",
+        "vendor/yaml/dist/schema/yaml-1.1/pairs.js",
+        "vendor/yaml/dist/schema/yaml-1.1/schema.js",
+        "vendor/yaml/dist/schema/yaml-1.1/set.js",
+        "vendor/yaml/dist/schema/yaml-1.1/timestamp.js",
+        "vendor/yaml/dist/stringify/foldFlowLines.js",
+        "vendor/yaml/dist/stringify/stringify.js",
+        "vendor/yaml/dist/stringify/stringifyCollection.js",
+        "vendor/yaml/dist/stringify/stringifyComment.js",
+        "vendor/yaml/dist/stringify/stringifyDocument.js",
+        "vendor/yaml/dist/stringify/stringifyNumber.js",
+        "vendor/yaml/dist/stringify/stringifyPair.js",
+        "vendor/yaml/dist/stringify/stringifyString.js",
+        "vendor/yaml/dist/visit.js",
+        "vendor/yaml/index.js"
+      ],
+      "acceptedCases": 14,
+      "rejectedCases": 6,
+      "noNodeDomOrNetworkGlobals": true,
+      "desktopSamplesOnly": true,
+      "androidExecutionClaimed": false
+    },
+    "evidence": "packaged-resources.json",
+    "reproduction": "packaged-check.mjs"
+  },
+  "tools": [
+    {
+      "backendId": "org.viento.godot4",
+      "identity": {
+        "version": "4.7.2.stable.official.ed1daf0bf",
+        "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "bytes": 146414384
+    },
+    {
+      "backendId": "org.viento.bevy",
+      "identity": {
+        "version": "viento-bevy-runtime 0.3.0 bevy 0.19.1",
+        "sha256": "0f15d7ad897a5b4dbc58574cec14eb81284e5c0ba75634bd86232a8de2c1781f",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "bytes": 11363224
+    }
+  ],
+  "native": {
+    "freshBuiltAndUsed": true,
+    "offlineLocked": true,
+    "rustSourcesUnchanged": 19,
+    "standaloneRustTestsRerun": false,
+    "proof": "native-helpers-proof.json"
+  },
+  "archive": {
+    "fullNativeMigrations": 2,
+    "standardAuthorDataRootsOnly": true,
+    "rootReadmeOutsideArchive": true,
+    "authorBytesAndStableIdentitiesPreserved": true
+  },
+  "preservation": {
+    "historicalFiles": 1814,
+    "frozenBackendAndWasmFiles": 9,
+    "rustSources": 19,
+    "productAndTestHashes": 502,
+    "evidence": "historical-preservation.json"
+  },
+  "cleanup": {
+    "directories": 7,
+    "freedAllocatedBytes": 1965600768,
+    "freedGiB": 1.8306083679199219,
+    "evidence": "cleanup.json"
+  },
+  "retainedInitialChecks": [
+    {
+      "log": "author-package-check.log",
+      "tests": 31,
+      "passed": 30,
+      "failed": 1,
+      "reason": "An illegal custom-v3 directory fixture was replaced with a legal v3-to-v2 path migration. Production directory validation was retained."
+    },
+    {
+      "log": "author-package-http-check.log",
+      "tests": 40,
+      "passed": 38,
+      "failed": 0,
+      "skipped": 2,
+      "reason": "Existing real-Godot tests were environment-gated in this targeted command; the final complete application run supplied actual engines and native helpers and has no skips."
+    },
+    {
+      "log": "browser-check-initial.log",
+      "result": "failed",
+      "reason": "The probe clicked Save before the final job had reached the UI poll. The browser proof now waits for the button to enable; no product change was needed."
+    },
+    {
+      "log": "browser-check-second.log",
+      "result": "functional-pass",
+      "reason": "The intermediate UI still had pending en/ja translations; its three locale screenshots are retained but do not constitute final language acceptance."
+    },
+    {
+      "log": "node-download.log",
+      "result": "failed",
+      "reason": "Direct TLS download failed; proxy download was verified against the pinned archive SHA before normal preparation."
+    }
+  ],
+  "limits": [
+    "Existing pure case/control/trace, author scene/plan versions, adapter fingerprints, native/WASM remain unchanged.",
+    "Only stable-ID migration; no clone UUID rewrite, automatic expected-value update, author script assertions or batch suite runner.",
+    "Native full archive and prepared desktop actual engines were tested; mobile only pure document/case checks with admitted desktop samples.",
+    "No installed Tauri window, Android execution/device, new version, commit/push, installer, tag or Release."
+  ]
+}

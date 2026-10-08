@@ -9,10 +9,13 @@ import { portablePath, assertPortableFileTree } from './workspace.mjs';
 import { validateProjectTypes, workspacePaths } from './project-layout.mjs';
 import { validateDocumentModels } from './document-model.mjs';
 import { PACKAGE_LIMITS, RESOURCE_PACKAGE_FORMAT, RESOURCE_PACKAGE_VERSION, packageError } from '../../engine/resource-package.mjs';
-import { readPackageBytes, inspectPackageComposition, inspectPackageSceneBehaviors, packageDocumentClassification } from './resource-package-catalog.mjs';
+import { readPackageBytes, inspectPackageComposition, inspectPackageSceneBehaviors, inspectPackageRuntimeCase,
+  inspectPackageRuntimeCaseSuite, packageDocumentClassification } from './resource-package-catalog.mjs';
 import { inspectObjectProjection } from '../../engine/object-projection.mjs';
 import { validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
 import { sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
+import { runtimeCaseDocumentIds, validateRuntimeCaseDocumentDependencies } from '../../engine/runtime-case-document.mjs';
+import { runtimeCaseSuiteDocumentIds, validateRuntimeCaseSuiteDependencies } from '../../engine/runtime-case-suite.mjs';
 
 export const PACKAGE_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const hashValue = value => Number.isSafeInteger(value?.size) && value.size >= 0 && value.size <= PACKAGE_LIMITS.fileBytes && /^[a-f0-9]{64}$/.test(value.sha256);
@@ -134,12 +137,22 @@ export async function unpackResourcePackage(file, directory, signal) {
     // Recipe references are authored in the source, not mirrored into metadata.
     // A checksum-correct archive cannot erase a dependency from its manifest.
     const documentIds = new Set([...manifest.documents.map(doc => doc.id), ...manifest.requirements.filter(item => item.category === 'document').map(item => item.id)]);
-    const compositionChecks = [], behaviorChecks = [], documentSources = [];
+    const compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], documentSources = [];
     for (const item of manifest.documents) {
       const bytes = await readPackageBytes(content, item.sourcePath, signal), record = records.get(item.id).record;
       const checked = inspectPackageComposition(bytes, item.sourcePath);
       documentSources.push({ record, content: packageDocumentClassification(inspectObjectProjection(bytes.toString('utf8'), record), checked) });
       const behavior = inspectPackageSceneBehaviors(bytes, item.sourcePath);
+      const runtimeCase = inspectPackageRuntimeCase(bytes, item.sourcePath);
+      const suite = inspectPackageRuntimeCaseSuite(bytes, item.sourcePath);
+      if (suite.recognized) {
+        if (!suite.ok || runtimeCaseSuiteDocumentIds(suite.value).some(id => !documentIds.has(id))) invalid();
+        suiteChecks.push({ record, checked: suite });
+      }
+      if (runtimeCase.recognized) {
+        if (!runtimeCase.ok || runtimeCaseDocumentIds(runtimeCase.value).some(id => !documentIds.has(id))) invalid();
+        caseChecks.push({ record, checked: runtimeCase });
+      }
       if (behavior.recognized) {
         if (!behavior.ok || sceneBehaviorDocumentIds(behavior.value).some(id => !documentIds.has(id))) invalid();
         behaviorChecks.push({ record, checked: behavior });
@@ -158,8 +171,10 @@ export async function unpackResourcePackage(file, directory, signal) {
         ...manifest.requirements.filter(item => item.category === 'asset').map(item => ({ record: { id: item.id, kind: 'image' } }))],
     };
     for (const { record, checked } of compositionChecks) if (validateSceneCompositionDependencies(checked, record, compositionSource).length) invalid();
-    const behaviorIds = new Set(behaviorChecks.flatMap(item => sceneBehaviorDocumentIds(item.checked.value)));
-    for (const id of behaviorIds) {
+    const bodyDependencyIds = new Set([...behaviorChecks.flatMap(item => sceneBehaviorDocumentIds(item.checked.value)),
+      ...caseChecks.flatMap(item => runtimeCaseDocumentIds(item.checked.value)),
+      ...suiteChecks.flatMap(item => runtimeCaseSuiteDocumentIds(item.checked.value))]);
+    for (const id of bodyDependencyIds) {
       const document = documentSources.find(item => item.record.id === id);
       if (!document) continue;
       const bytes = await readPackageBytes(content, document.record.sourcePath, signal);
@@ -176,6 +191,15 @@ export async function unpackResourcePackage(file, directory, signal) {
       // metadata links, document kinds/paths and included bodies are checked now.
       if (validateSceneBehaviorDependencies(checked.value, record, behaviorSource).some(diagnostic =>
         diagnostic.code !== 'build_behavior_dependency_unavailable' || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
+    }
+    for (const { record, checked } of caseChecks) {
+      if (validateRuntimeCaseDocumentDependencies(checked.value, record, behaviorSource).some(diagnostic =>
+        diagnostic.code !== 'runtime_case_dependency_unavailable' || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
+    }
+    for (const { record, checked } of suiteChecks) {
+      if (validateRuntimeCaseSuiteDependencies(checked.value, record, behaviorSource).some(diagnostic =>
+        !['runtime_suite_dependency_unavailable', 'runtime_case_dependency_unavailable'].includes(diagnostic.code)
+          || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
     }
     signal?.throwIfAborted();
     if (zipFailure) throw zipFailure;

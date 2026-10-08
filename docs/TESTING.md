@@ -12,6 +12,14 @@
 
 [当前功能图谱](FUNCTION_ATLAS.md) 为架构、功能、实现与四项成熟度提供离线筛选，完整映射旧图的 F01–F50。检查命令 `node scripts/function-atlas.mjs --check` 验证坐标、引用文件、指纹、评分门槛及派生视图一致性；它不运行产品测试，也不证明评分或测试覆盖率。引用文件改变后需人工重审相关条目，再显式运行 `node scripts/function-atlas.mjs --write --refresh-sources`。旧报告只适用于其原条件。
 
+## 0.0.9 源码发布检查
+
+[本版发布候选](test-results/release-0.0.9/results.json)以固定 Node **24.20.0** 重新执行应用 **2017／2017**，0 失败／跳过／取消，**430** 个 JavaScript 文件及 API／版本检查通过。两个实际引擎和本轮新构建的核心、归档／移动存储辅助程序参与回归；版本／源码打包规则专项 **7／7** 已包含在应用总数内。独立 Rust 测试、Chrome、Tauri 窗口和 Android 设备未在本轮重跑。
+
+[完整准备清单](test-results/release-0.0.9/prepared-manifests.json)核对桌面 **511**／作品库 **11**／移动 **201** 份文件，[准备模块执行](test-results/release-0.0.9/packaged-resources.json)另核对重点源码 **125／79** 份。Godot／Bevy 得到 **5** 份批次回执、**9** 个真实会话与 **9** 份独立成员报告，含断言失败继续和 **4** 次作者来源及构建清理后的回读。实际取消保留 **64／64** 步样本，执行为取消、评价为未完成；不据此宣称在引擎步骤中途截断。移动仅运行隔离纯模块，**18** 接受／**10** 拒绝，不代表 Android 执行。
+
+[临时源码归档](test-results/release-0.0.9/source-archive.json)在最终发布审计元数据之前生成，逐项回读并核对源码、两独立 crate、官方样例和排除规则，验收后删除；不重标为最终提交 ZIP。旧专题原始证据与冻结后端／WASM／Rust 源码按原条件保留。本轮先前资源检查准确拒绝一次准备副本与更新后文档的摘要差异；重新准备后通过，初次失败日志保留。下列开发专题记录保持当时版本与范围。 最后清理一处新增文件末尾空行，语法与相关 **31／31** 专项通过，见[严格单字节格式记录](test-results/release-0.0.9/final-formatting.json)；全量／准备／归档仍标记为格式清理前的候选，最终摘要另列。
+
 ## 0.0.8 源码发布检查
 
 本次[发布候选](test-results/release-0.0.8/results.json)重新执行 0.0.8 下的完整应用 **1774／1774**，0 失败／跳过／取消，**391** JS／API／版本检查通过；启用两个真实引擎、原生核心和归档／移动存储辅助程序。共享编辑核心 Rust **75／75** 与 fmt／clippy另计，版本／源码归档专项 **8／8** 与应用重叠。
@@ -37,6 +45,81 @@
 | 新安装包 | 在准备交付的安装包上重跑平台关键流程 | 该产物的安装及运行；源码通过不能替代 |
 
 涉及正文或素材时，断言内容字节、登记关系与失败后的状态；涉及任务生命周期时，核对进程退出和临时资源回收。程序自己的单元测试通过、跨语言互通通过、浏览器通过、系统窗口通过和设备通过是不同证据，分别记录。
+
+## 成员详情与报告导出（未发布）
+
+[成员报告](RUNTIME_CASE_REPORTS.md)专项覆盖完整重新评价、上下文／终态／身份／Unicode／预算、真实文件 pin、符号链接与读取中替换、独占发布与自身清理、前面失败成员独立、运行中只读、取消采样前缀、预会话失败、保存失败保留断言、作者及构建离线、当前任务与服务关闭竞态、明确鉴权、三语和显式下载。
+
+```sh
+node --test scripts/tests/runtime-case-report.test.mjs \
+  scripts/tests/runtime-case-reports-host.test.mjs \
+  scripts/tests/runtime-case-report-service.test.mjs \
+  scripts/tests/runtime-case-report-ui.test.mjs \
+  scripts/tests/project-build-http.test.mjs
+```
+
+本轮完整应用检查 **2017／2017**，0 失败／跳过／取消，**430** 个 JavaScript 文件与 API／版本预检通过；新增 **55** 项已包含在全量，定向重复不累加。真实 Chrome **6** 流程、**5** 个唯一任务，中英日 390px、成员详情与显式 JSON 下载通过，作者原字节、编辑草稿和光标保留。准备资源使用固定 Node 24.20.0，核对桌面 **511**／移动 **201** 文件，重点源码 **125**／**79** 份；Godot／Bevy 两个实际后端的报告执行与独立回读见[准备资源记录](test-results/runtime-case-reports/packaged-resources.json)。移动仅执行隔离纯模块，不代表 Android 报告宿主或引擎执行。
+
+新增 55 项为纯报告 12、文件宿主 18、服务／调度 13、界面 11 和真实 HTTP 1，均在应用总数内。初次定向 67 项中 66 通过、1 个新 UI 测试夹具缺少既有路径常量而失败，修正夹具后冻结测试；不当作产品缺陷。新 UI 另增加当前成员评价／计数绑定，拒绝内部自洽但与当前成员不符的报告。 实际初次窄屏截图另发现英文标题被关闭按钮挤窄，随后只用一条窄屏 CSS 规则让标题占整行；保留原浏览器功能通过记录、截图和下载，最终界面重新实测。准备探针在修改期间准确拒绝混用的 CSS 指纹，未启动引擎，最终资源重新生成。
+
+1945 份历史证据、9 份冻结后端／WASM、19 份 Rust 源码及 520 份最终产品／测试摘要核对。使用本轮新构建的原生辅助程序完成应用检查，未重跑独立 Rust 测试或准备探针中的原生完整归档迁移。只清理初始不存在的 7 个本轮生成目录，回收 **1.831 GiB**，既有作品、工具、偏好和安装保留；源码仍为 0.0.8 未发布工作树。 最终浏览器和资源证据与相同产品摘要绑定，完整执行边界见[本轮结果](test-results/runtime-case-reports/results.json)。
+
+## 有序验收组工作流（未发布）
+
+[验收组](RUNTIME_CASE_SUITES.md)复用已保存用例和已有无头会话。专项检查严格四字段／唯一顺序、共享场景准入、联合预算、精确 BOM／CRLF 保存、版本与发布保护、一次捕获、准入期间构建清理、每成员冻结身份、断言失败继续、取消等待退出、总截止、独立回执、包要求与路径迁移。
+
+```sh
+node --test scripts/tests/runtime-case-suite.test.mjs \
+  scripts/tests/runtime-case-suite-host.test.mjs \
+  scripts/tests/runtime-case-suite-packages.test.mjs \
+  scripts/tests/runtime-case-suite-ui.test.mjs \
+  scripts/tests/project-build-http.test.mjs
+```
+
+上一轮有序验收组应用检查 **1962／1962**，0 失败／跳过／取消，**423** 个 JavaScript 文件与 API／版本预检通过；新增 **60** 项已计入全量。真实 Chrome 8 流程、5 个唯一任务、中英日 390px 与草稿／光标保护通过。准备资源使用固定 Node 24.20.0，核对桌面 **508**／移动 **199** 文件，重点源码 **122**／**77** 份；Godot／Bevy 2 次原生完整迁移、**8** 份批次回执和 **18** 个真实会话，含通过、断言失败继续、UUID／路径 CLI 与捕获后源离线。移动仅 3 个纯入口／81 个依赖模块、22 接受／8 拒绝，不执行 Android 引擎或作者宿主。
+
+新增 60 项由纯规则 14、作者／调度宿主 17、资源包 14、界面 14、HTTP 1 组成，已包含在应用总数，定向重复执行不再累加。准备 desktop archive 只核对标准工程数据根；样例根 README 不属于归档数据。Chrome 的 7 份新登记文档产生 14 份新正文／元数据，原作者文件保留。
+
+1866 份历史证据、9 份冻结后端／WASM、19 份 Rust 源码及 513 份最终产品／测试摘要核对；未重跑独立 Rust 测试。只清理初始不存在的 7 个本轮生成目录，回收 **1.829 GiB**，既有工具、作品、偏好与安装保留。首次包读取缺陷、浏览器模块依赖 404 和初次全量失败均保留原日志；修复后的最终证据绑定同一源码。 最终模块图还验证 GUI 轻量契约不引入 YAML／Node 依赖，HTTP 的既有私有模块边界保持。复现和保留的初次失败见[本轮记录](test-results/runtime-case-suites/results.json)。
+
+## 工程验收文档工作流（未发布）
+
+[用例文档](RUNTIME_CASES.md#工程内保存与迁移未发布增量)新增纯包装、fresh 作者目录、版本保护写入与稳定身份迁移。原运行 case 与 trace 保持。定向检查包括：包装格式／UTF-8／重复键及实例预算、BOM／CRLF 无改动保存、正文与场景外部冲突、发布前变更拒绝、创建登记撤回、无配置工具时的作者写入鉴权，以及源工程离线后已载入用例对同场景冻结构建的重跑。
+
+```sh
+node --test scripts/tests/runtime-case-document.test.mjs \
+  scripts/tests/runtime-case-documents-host.test.mjs \
+  scripts/tests/runtime-case-packages.test.mjs \
+  scripts/tests/runtime-case-documents-ui.test.mjs \
+  scripts/tests/project-build-http.test.mjs
+```
+
+资源包另验证多个用例共享场景的去重、选择依赖／子内容开关、包含场景但锁定定义要求、校验正确但删除依赖声明或引用错误实例的包拒绝、目标场景在预览后改变时不发布、v3 `documents/` 向合法 v2 `design-data/` 路径迁移保留 UUID 和原字节。完整工程包仍保存尚未修复的原文，不从选择式迁移的严格语义推导删除作者数据。
+
+真实 Chrome 单独使用临时工程，检查明确保存／载入、取消替换、冲突保留及另存、运行通过／失败、关闭重开与作者草稿守护，中英日 390px。准备资源用固定内置 Node 执行同一保存文档在 Godot／Bevy 的离线用例，再使用原生归档辅助程序回读原文和身份；移动只构造纯模块并核对包装与冻结计划，不执行引擎或作者服务。复现脚本与限定结果见[本轮记录](test-results/runtime-case-documents/results.json)。
+
+上一轮保存文档的冻结检查 **1902／1902**、0 失败／跳过／取消，412 JS／API／0.0.8 预检通过。新增 48（纯包装 11、作者宿主 9、资源包 13、用例界面 14、HTTP 1）已计入全量；界面定向 48／48 包含新 14 与旧 34，不能再次相加。最终 Chrome 6 流程／三语 390px／6 唯一任务／0 异常，保存及外部冲突只新增两份正文与两份登记，原 8 份作者文件原字节不变。
+
+最终准备资源核对桌面 502／移动 196 文件，重点源码 116／74 份；固定 Node 24.20.0 与 Godot／Bevy 分别保存并载入 BOM／CRLF 包装，原生完整归档导入后核对标准工程数据根的全部字节和 UUID，再对源离线的冻结构建完成通过、单条断言失败及 CLI 包装运行，共 6 会话。样例根 README 不在归档数据根内，原工程全量字节仍在执行前后对照；本轮不据此宣称任意根文件都进入工程归档。移动仅 2 纯入口／79 依赖模块、14 接受／6 拒绝，使用桌面实际采样，不证明 Android 引擎或作者服务。
+
+1814 份历史证据、9 份冻结后端／WASM、19 份 Rust 源码及 502 份最终产品／测试摘要保持；未重跑旧独立 Rust 测试。仅清理本轮初始不存在的 7 个临时目录，回收 **1.831 GiB**，既有工具、作者数据、偏好与安装保留。详见[保存与迁移验收](test-results/runtime-case-documents/results.json)。
+
+## 运行验收用例（未发布）
+
+[运行验收用例](RUNTIME_CASES.md)复用控制 schema 1／2 和旧 trace，只在冻结 plan 2 比较位置／状态。专项覆盖严格分离、预算与实例／步骤目标、显式容差、完整／中断／缺样本区别、持久记录与任务所有权、模式互斥及编辑器文本保留。真实两引擎使用完全相同输入：全部检查通过，再只改变一条预期得到单条断言失败；进程仍成功。源离线回放与作者／产物保真分别检查。
+
+```sh
+node --test scripts/tests/runtime-verification-case.test.mjs \
+  scripts/tests/runtime-case-host.test.mjs \
+  scripts/tests/runtime-case-service.test.mjs \
+  scripts/tests/runtime-case-ui.test.mjs \
+  scripts/tests/runtime-case-cli.test.mjs \
+  scripts/tests/runtime-case-boundary.test.mjs
+```
+
+真实 CLI 项沿用 `VIENTO_GODOT_BIN`／`VIENTO_BEVY_BIN` 的可信 Linux 工具，未提供时明确跳过；全量使用两者并提供原生辅助程序。Chrome／准备资源／纯移动模块分别记录，不把它们写成 Tauri 窗口或 Android 执行验收。本轮原始环境与结果见[运行验收记录](test-results/runtime-verification-cases/results.json)；旧工具身份检查和 0.0.8 发布证据保持原条件。
+
+上一轮运行验收用例的冻结回归 **1854／1854**、0 失败／跳过／取消，405 JS／API／0.0.8 版本预检通过，新增 40 已计入全量。Chrome 4 流程／三语窄屏／6 唯一任务，准备资源共 6 个双引擎离线会话；移动只执行 2 个纯模块／桌面采样评判。末次保存取消与提交后取消分别回归，先前能力字段兼容回归已修并复核最终源码；历史／冻结／Rust 源字节保持，独立 Rust 75／25 旧报告未重标本轮。临时目录回收 1.829 GiB，详见[最终结果](test-results/runtime-verification-cases/results.json)。
 
 ## 有限控制回放
 
@@ -143,6 +226,17 @@ VIENTO_GODOT_BIN=/绝对路径/Godot可执行文件 npm run check -- --app-only
 Godot 包装适配器必须逐字节核对原 v1／v2 生成文件、脚本、来源映射和历史后端摘要；执行参数、环境与缓存回收也单独验证。真实 Godot 验收需记录版本及平台，核对构建、无头和窗口模式、冻结源工程离线回放、工具／适配器／产物变化拒绝及进程退出。界面专项验证能力分别开放、未知／缺失描述符失败关闭、描述符变化撤销旧计划／产物、后端身份不符和迟到响应；Chrome 实测与三语窄屏另存新目录。
 
 桌面准备和移动准备后核对实际副本摘要：内置 Node 执行新宿主及既有 Godot 场景链路，移动在无 Node／DOM 全局的隔离环境执行纯能力契约。该轮[打包记录](test-results/backend-middleware/packaged-resources.json)检查桌面 74／移动 63 份文件；移动只加载 1 个新纯模块，没有执行适配器、Android 构建服务或 UI 实测。内置 Node 24.20.0 和真实 Godot 4.7.2 完成新构建／无头与缺少 `executionAdapter` 的旧记录回放。新安装包、Tauri 窗口和设备分别验收。所有验证在临时工程完成，历史报告与旧生成器原字节保持。
+
+### 显式工具身份检查
+
+未发布工具状态／宿主／CLI 回归可独立执行；真实工具测试须显式提供 `VIENTO_GODOT_BIN`、`VIENTO_BEVY_BIN`，旧版拒绝测试另用 `VIENTO_BEVY_OLD_BIN` 指向已有 0.2.0 可信工具，不自动下载或构建：
+
+```sh
+node --test scripts/tests/execution-tool-status.test.mjs scripts/tests/execution-tool-probe.test.mjs scripts/tests/execution-tool-cli.test.mjs scripts/tests/execution-tool-probe.integration.test.mjs
+node --test scripts/tests/project-build-service.test.mjs scripts/tests/project-build-ui.test.mjs scripts/tests/project-build-http.test.mjs
+```
+
+验证边界包括纯 DTO 的无宿主运行、错版与错配拒绝、候选替换、预算和取消回收、GET 不识别、严格 POST、并发／关闭、草稿与已有产物保护。真实工具识别不等于场景执行；本轮另在隔离浏览器和准备资源运行双后端链路，记录见[工具检查结果](test-results/runtime-tool-probe/results.json)。不将移动纯模块验证写成 Android 引擎接入。
 
 ## 场景片段组合实验
 

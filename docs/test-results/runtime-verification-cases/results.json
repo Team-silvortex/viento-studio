@@ -1,0 +1,169 @@
+{
+  "format": "viento-runtime-case-acceptance",
+  "schemaVersion": 1,
+  "ok": true,
+  "recordedAt": "2026-10-08T02:03:14.716Z",
+  "sourceVersion": "0.0.8",
+  "sourceBaseCommit": "d36baad631550a99593efe388cf84aa238b79c5f",
+  "delivery": "unreleased-working-tree",
+  "changes": [
+    "Strict portable finite cases compose existing control programs with per-instance step position/state expectations.",
+    "Shared host executes real backends and records case SHA plus separate passed/failed/incomplete evaluations; ordinary control behavior retained.",
+    "Owned service/CLI and three-language editor accept explicit cases and sample-derived reference generation.",
+    "Late cancellation during final persistence is saved cancelled/incomplete; committed records are not relabelled by a later service cancellation.",
+    "Restored the old public instance-capability field condition found during compatibility checks."
+  ],
+  "application": {
+    "tests": 1854,
+    "passed": 1854,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 231915.343384,
+    "javascriptFiles": 405,
+    "apiAndVersionPreflight": true,
+    "log": "app-check.log"
+  },
+  "addedRegressionCases": {
+    "total": 40,
+    "portableCore": 13,
+    "host": 6,
+    "service": 6,
+    "UI": 6,
+    "CLI": 7,
+    "commitBoundaries": 2,
+    "includedInApplicationTotal": true
+  },
+  "initialChecks": {
+    "application": {
+      "tests": 1854,
+      "passed": 1854,
+      "failed": 0,
+      "log": "app-check-initial.log",
+      "note": "Initial whole application passed, but the service changed while it ran. The complete frozen source, browser and prepared resources were checked again; only final proofs are used."
+    },
+    "compatibility": {
+      "issue": "Public controlTargets was widened to a global-only capability; restored the original instance-capability condition.",
+      "targetedInitial": {
+        "tests": 92,
+        "passed": 88,
+        "failed": 1,
+        "skipped": 3
+      },
+      "finalTargeted": {
+        "tests": 59,
+        "passed": 59,
+        "failed": 0,
+        "skipped": 0
+      },
+      "note": "Targeted figures came from the implementing agent; they overlap full application tests, not additional coverage."
+    },
+    "preparation": {
+      "logs": [
+        "desktop-prepare.log",
+        "desktop-prepare-proxy.log",
+        "node-download-recovery.log",
+        "node-download-resume.log",
+        "native-helpers-build-initial.log"
+      ],
+      "note": "Pinned Node downloads encountered network/TLS failures; a resumed download matched the locked archive SHA and normal preparation succeeded. Native helpers were initially started before the sidecar existed, then built offline/locked successfully."
+    },
+    "cancellation": {
+      "note": "The persistence-window issue was found in code review. The repair preceded the first boundary test run; there is no initial failing-run claim."
+    }
+  },
+  "browser": {
+    "browser": "Chrome/154.0.8037.97",
+    "scenarios": 4,
+    "localesAt390px": 3,
+    "jobs": 6,
+    "runtimeExceptions": 0,
+    "uniqueJobCount": 6,
+    "authorBytesUnchanged": true,
+    "draftAndCaretPreserved": true,
+    "evidence": "browser/browser.json",
+    "reproduction": "browser-check.mjs",
+    "visuallyInspected": "browser/zh-CN-390.png"
+  },
+  "prepared": {
+    "embeddedNode": {
+      "version": "v24.20.0",
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "desktopFullManifestFiles": 499,
+    "desktopFocusedSourceChecks": 106,
+    "mobileFullManifestFiles": 194,
+    "mobileFocusedSourceChecks": 71,
+    "counts": {
+      "backends": 2,
+      "builds": 2,
+      "offlineRuntimeSessions": 6,
+      "servicePasses": 2,
+      "serviceAssertionFailures": 2,
+      "cliPasses": 2
+    },
+    "mobilePortable": {
+      "moduleCount": 2,
+      "modules": [
+        "engine/runtime-verification-case.mjs",
+        "engine/scene-control-program.mjs"
+      ],
+      "acceptedCases": 8,
+      "rejectedCases": 4,
+      "noNodeDomOrNetworkGlobals": true,
+      "desktopSamplesOnly": true,
+      "androidExecutionClaimed": false
+    },
+    "evidence": "packaged-resources.json",
+    "reproduction": "packaged-check.mjs"
+  },
+  "tools": [
+    {
+      "backendId": "org.viento.godot4",
+      "identity": {
+        "version": "4.7.2.stable.official.ed1daf0bf",
+        "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "bytes": 146414384
+    },
+    {
+      "backendId": "org.viento.bevy",
+      "identity": {
+        "version": "viento-bevy-runtime 0.3.0 bevy 0.19.1",
+        "sha256": "0f15d7ad897a5b4dbc58574cec14eb81284e5c0ba75634bd86232a8de2c1781f",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "bytes": 11363224
+    }
+  ],
+  "native": {
+    "freshBuiltAndUsed": true,
+    "offlineLocked": true,
+    "rustSourcesUnchanged": 19,
+    "standaloneRustTestsRerun": false,
+    "proof": "native-helpers-proof.json"
+  },
+  "preservation": {
+    "historicalFiles": 1766,
+    "frozenBackendAndWasmFiles": 9,
+    "rustSources": 19,
+    "productAndTestHashes": 466,
+    "evidence": "historical-preservation.json"
+  },
+  "cleanup": {
+    "directories": 7,
+    "freedAllocatedBytes": 1963524096,
+    "freedGiB": 1.82867431640625,
+    "evidence": "cleanup.json"
+  },
+  "limits": [
+    "Only finite headless cases over no-behavior frozen Scene2D plan2; control schema1/2 and existing trace unchanged.",
+    "No case registry, author-file persistence/migration, arbitrary script assertions, image comparison or real-time input.",
+    "Prepared mobile only evaluates pure data using admitted desktop samples; no Android engine/device or installed Tauri window acceptance.",
+    "Godot adapter0.5.0 and Bevy adapter/native0.3.0/Bevy0.19.1 plus author formats and old native/WASM unchanged.",
+    "No new application version, commit/push, installer, installation, tag or GitHub Release."
+  ]
+}

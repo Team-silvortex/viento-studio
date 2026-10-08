@@ -2,7 +2,7 @@
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.0.8 版本记录](RELEASE_0.0.8.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.0.9 版本记录](RELEASE_0.0.9.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -19,6 +19,9 @@
 | 场景实例挂载 GDScript、参数、信号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
 | 查看运行对象、检索实例／定义并返回冻结声明 | [运行对象与采样](RUNTIME_OBJECTS.md) |
 | 在 Godot／Bevy 上回放全局或独立实例方向并逐步观察 | [有限控制回放](RUNTIME_CONTROL.md) |
+| 保存、迁移用例并在冻结实例场景上检查逐步位置／状态预期 | [运行验收用例](RUNTIME_CASES.md) |
+| 有序批量验收、成员顺序与联合预算 | [运行验收组](RUNTIME_CASE_SUITES.md) |
+| 查看批次中每份用例的失败步骤并下载独立 JSON | [成员报告](RUNTIME_CASE_REPORTS.md) |
 | 同一无图场景在 Godot／Bevy 上构建与无头运行 | [Bevy 第二后端](BEVY_BACKEND.md) |
 | 复用片段配方、预览来源与编辑单实例局部覆盖 | [场景片段组合](SCENE_COMPOSITION.md) |
 

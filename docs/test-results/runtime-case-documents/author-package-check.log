@@ -1,0 +1,50 @@
+✔ case envelopes detach and freeze existing global or instance cases without storing run state (2.979546ms)
+✔ envelope fields are exact data and accessors, hidden keys, polluted prototypes or cycles never gain authority (0.853314ms)
+✔ source inspection recognizes only a top-level document marker and preserves BOM/CRLF source verbatim (7.773548ms)
+✔ document text uses UTF-8 byte budgets and rejects duplicate decoded keys rather than normalizing them (7.822526ms)
+✔ plan binding requires the declared scene identity and retains the old plan2 case admission (1.475554ms)
+✔ dependency admission supports scene2 and grouped scene3, both control schemas and unregistered create candidates (4.800464ms)
+✔ only unavailable registered dependency bodies can be deferred, with their stable related document ID (1.880017ms)
+✔ source scene relations protect the package closure without requiring a case metadata mirror (1.870759ms)
+✔ deleted or duplicate instance identities, authored behaviors and legacy/recipe scenes cannot become runnable saved cases (4.006901ms)
+✔ a maximum permitted case remains valid through the wrapper and author identity plan while joint overflow stays a limit (113.434554ms)
+✔ dependency metadata/source accessors and sparse graphs are rejected without executing them (0.812212ms)
+✔ case author save atomically registers, preserves exact BOM/CRLF source and reloads stable identity (133.814651ms)
+✔ case updates use source revisions and never force-overwrite an external author edit (125.254217ms)
+✔ unknown instances, wrong scene binding, invalid types and locations leave no author source or metadata (56.632667ms)
+✔ saving refuses a changed author scene, while catalog retains an externally damaged case for repair (69.056625ms)
+✔ an external scene edit during publication rolls back only the new registration and temporary source (32.545678ms)
+✔ an external case edit during publication is preserved rather than renamed over (61.995434ms)
+✔ registered author cases are fresh reads, and loaded pure cases still run on owned frozen builds offline (116.966922ms)
+✔ shared host refuses a persisted case for another scene before sessions or tool identification (24.663738ms)
+✔ CLI recognizes saved wrapper constraints before reading a nonexistent frozen build (7.332837ms)
+✔ case source binds its scene without metadata edges and scene child discovery is bounded and deduplicated (68.611769ms)
+✔ selection closes case-to-scene-to-definition dependencies and scene children remain optional (178.559028ms)
+✔ global and instance case round trips preserve all identities and original author bytes (230.281745ms)
+✖ a different document root remaps only registered paths and preserves scene and case UUID bytes (57.791836ms)
+✔ pinned excluded scenes defer only unavailable bodies and must match actual target hashes at import (123.846778ms)
+✔ included scenes may defer declared definition requirements but cannot borrow an undeclared ambient definition (64.960263ms)
+✔ checksum-correct packages cannot erase the case scene dependency or use an unpinned ambient scene (66.812545ms)
+✔ checksum-correct packages reject wrong instance checks, malformed scenes and erased scene-definition links (133.225337ms)
+✔ recognized malformed, extra-field, non-JSON, invalid UTF-8 and oversized case sources cannot export selectively (118.32934ms)
+✔ changes to a pinned scene after preview invalidate publication without modifying the case or author sources (69.385295ms)
+✔ complete workspace archives preserve damaged editable case bytes instead of silently dropping the document (15.52442ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 30
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1256.993735
+
+✖ failing tests:
+
+test at scripts/tests/runtime-case-packages.test.mjs:122:1
+✖ a different document root remaps only registered paths and preserves scene and case UUID bytes (57.791836ms)
+  Error: 不受支持的作品库目录声明
+      at readWorkspace (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/workspace.mjs:43:11)
+      at planPackageImport (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/resource-package-import.mjs:31:57)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/runtime-case-packages.test.mjs:124:19)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

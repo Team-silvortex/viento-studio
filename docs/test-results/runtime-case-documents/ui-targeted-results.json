@@ -1,0 +1,73 @@
+{
+  "format": "viento-runtime-case-documents-ui-targeted-results",
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-08T02:51:35.951Z",
+  "status": "passed",
+  "command": "node --test scripts/tests/runtime-case-documents-ui.test.mjs scripts/tests/runtime-case-ui.test.mjs scripts/tests/project-build-ui.test.mjs scripts/tests/i18n-coverage.test.mjs",
+  "log": "ui-targeted-check.log",
+  "logSha256": "bc7a0deb1459351d0a44f064741636ab6df66c97b563cc32f04c58131805a625",
+  "counts": {
+    "tests": 48,
+    "passed": 48,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "groups": [
+    {
+      "file": "scripts/tests/runtime-case-documents-ui.test.mjs",
+      "passed": 14,
+      "scope": "new author-case workflow and authenticated browser transport"
+    },
+    {
+      "file": "scripts/tests/runtime-case-ui.test.mjs",
+      "passed": 6,
+      "scope": "previous bare-case execution and rendering compatibility"
+    },
+    {
+      "file": "scripts/tests/project-build-ui.test.mjs",
+      "passed": 25,
+      "scope": "previous build/tool/offline lifecycle and source navigation compatibility"
+    },
+    {
+      "file": "scripts/tests/i18n-coverage.test.mjs",
+      "passed": 3,
+      "scope": "catalogue identity, syntax and marked message coverage"
+    }
+  ],
+  "covered": [
+    "explicit refresh and registered creation without a build tool",
+    "selection and declined load preserve draft/caret",
+    "unchanged saves preserve original BOM/CRLF/indentation",
+    "HTTP revision conflicts preserve the loaded CAS version; explicit save-as uses a distinct source",
+    "late loads cannot replace changed or reopened drafts",
+    "edits during save preserve newer text and advance only the known committed source version",
+    "closing an in-flight save blocks duplicate writes until explicit read reconciliation",
+    "lost/invalid successful/server-error save responses do not trigger automatic retries",
+    "controlled source diagnostics are translated without raw exceptions",
+    "cross-scene saved binding blocks execution until explicit new-case or complete-sample generation",
+    "author dirty/creation/busy and offline write guards; frozen loaded execution remains possible offline",
+    "invalid and dependency-stale documents remain visible for explicit repair",
+    "polling/language/closing preserve case text/caret; titles are text only",
+    "existing API token is carried only in Authorization headers, without changing document bytes"
+  ],
+  "limits": [
+    "DOM harness with injected build/document transports; no physical Chrome or Tauri window evidence in this report",
+    "does not execute Godot/Bevy or independently run Rust tests",
+    "48 includes 34 existing tests and is not an additional disjoint count for whole-project totals",
+    "no release, installation or author-project mutation by these isolated tests"
+  ],
+  "sourceHashes": {
+    "web/modules/app-runtime-case-documents.js": "471b655a6ab2117f98ac62e52ba8fb8f8fc8f73e416cb0f218edaf7270bc4732",
+    "web/modules/app-project-build.js": "a1fff9b5e13865983428b24b5e6292608a76d56bd39f9ae0ab541830d619fb86",
+    "web/modules/app-doc-service.js": "da6bafd6ffb8d625984304c2ba9b0b757b8f37c95aa03315ade73173a1e8e939",
+    "web/i18n/en.js": "6a567cbe1f5a440af92cf79824d45ce2c316711ec3d84dda9ec838d4e02e77bd",
+    "web/i18n/ja.js": "3bc35573228ef3c1800cc948f846ad05ce271ed71de713a2b85483b7a64fdc67",
+    "web/project-build.css": "52c6943517462c70776ae2e6c7324924a4eb1631bff84061128cf7ef182ff2c5",
+    "scripts/tests/dialog-harness.mjs": "099347d884916bd9764c2b982dc2275960155c1c1f672874ac8cc2dc23bd065f",
+    "scripts/tests/runtime-case-documents-ui.test.mjs": "eeee21ad3a79eb0de00d05375546e66406e7b6a23a835e0eaf8afd9b1de1ed01",
+    "scripts/tests/runtime-case-ui.test.mjs": "7b39d8f9e08897c66733a6cb587bee17421a7a2f365d94eed9970bbd8a1dbfec",
+    "scripts/tests/project-build-ui.test.mjs": "de3921a85d8aa45985a079301fcd376fc86c51c32cc157f265bdd285c6d8d667",
+    "scripts/tests/i18n-coverage.test.mjs": "ece3de5128940ec2322ade2b4df284e206d52558f764e2fdcd10cde6285e907e"
+  }
+}

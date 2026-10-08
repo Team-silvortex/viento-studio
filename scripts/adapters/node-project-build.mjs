@@ -6,6 +6,7 @@ import { canonicalJson, createWorldProjection } from '../../engine/world-project
 import { createScene2DPlan } from '../../engine/build-plan.mjs';
 import { createSceneRuntimeObservation } from '../../engine/scene-runtime-query.mjs';
 import { validateSceneControlProgram, validateSceneControlPlan, createSceneControlTraceReader } from '../../engine/scene-control-program.mjs';
+import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
 import { checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
 import { captureBuildSnapshot, buildHash, buildError, readBuildFile } from './node-build-snapshot.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
@@ -125,41 +126,68 @@ export async function buildProject({ root, scene, godot, tool = godot, backendId
   }
 }
 
+// Author suites need the same restored frozen semantics before scheduling any
+// member. This reads no author workspace and starts no tool or runtime session.
+export async function readFrozenProjectBuild(buildDirectory, { backendId, backendRegistry = createExecutionBackendRegistry(), signal } = {}) {
+  buildDirectory = await fs.realpath(buildDirectory);
+  const read = async (name, limit) => readBuildFile(await resolveContainedPath(buildDirectory, path.join(buildDirectory, name)), limit, signal);
+  const build = JSON.parse(await read('build.json', 4 * 1024 * 1024));
+  const snapshot = JSON.parse(await read('snapshot.json', 80 * 1024 * 1024));
+  if (build.format !== 'viento-build-record' || build.schemaVersion !== 1 || build.status !== 'succeeded'
+    || typeof build.backend?.id !== 'string' || snapshot.format !== 'viento-build-snapshot' || snapshot.schemaVersion !== 1
+    || build.snapshotId !== `sha256:${buildHash(canonicalJson(snapshot))}`) throw buildError('runtime_build_invalid', 'Select a successful build with an intact snapshot.');
+  if (backendId !== undefined && backendId !== build.backend.id) throw buildError('runtime_backend_changed', 'The selected execution backend differs from this frozen build.');
+  const adapter = backendRegistry.resolve(build.backend.id);
+  const projection = await createWorldProjection(snapshot.source, { digest: buildHash });
+  const restored = createScene2DPlan({ source: snapshot.source, projection }, snapshot.plan?.scene?.objectId);
+  if (!restored.ok || canonicalJson(restored.plan) !== canonicalJson(snapshot.plan)
+    || restored.plan.resources.reduce((sum, item) => sum + item.size, 0) > 128 * 1024 * 1024) throw buildError('runtime_build_invalid', 'The frozen scene plan is invalid.');
+  return { buildDirectory, build, snapshot, adapter, plan:restored.plan };
+}
+
 export async function runProjectBuild({ buildDirectory, godot, tool = godot, backendId,
-  backendRegistry = createExecutionBackendRegistry(), signal, timeoutMs = 30000, headless = true, smoke = true, capture = false, controlProgram: inputControlProgram, onProgress = () => {} }) {
-  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram;
+  backendRegistry = createExecutionBackendRegistry(), signal, timeoutMs = 30000, headless = true, smoke = true, capture = false,
+  controlProgram: inputControlProgram, runtimeCase: inputRuntimeCase, runtimeCaseSceneId, expectedBuildId, expectedSnapshotId, onProgress = () => {} }) {
+  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram, runtimeCase;
   // Callback consumers receive detached DTOs and cannot alter admitted input,
   // events, samples or the session record while a process is running.
   const publish = event => onProgress(JSON.parse(JSON.stringify(event)));
   try {
+    if (runtimeCaseSceneId !== undefined && (inputRuntimeCase === undefined || typeof runtimeCaseSceneId !== 'string'
+      || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(runtimeCaseSceneId))) {
+      throw buildError('runtime_case_scene_mismatch', 'A scene binding requires a runtime case and a valid scene identity.');
+    }
+    if (inputRuntimeCase !== undefined) {
+      runtimeCase = validateRuntimeCase(inputRuntimeCase);
+      if (inputControlProgram !== undefined) throw buildError('runtime_case_invalid', 'Select either a verification case or a control program.');
+      if (headless !== true || smoke !== true || capture !== false) throw buildError('runtime_case_unsupported', 'Runtime verification requires a finite headless smoke run.');
+      controlProgram = runtimeCase.program;
+    }
     if (inputControlProgram !== undefined) {
       controlProgram = validateSceneControlProgram(inputControlProgram);
       if (headless !== true || smoke !== true || capture !== false) throw buildError('runtime_control_mode', 'Control replay requires a finite headless smoke run.');
     }
     if (capture && (headless || !smoke)) throw buildError('runtime_capture_mode', 'Preview capture requires a windowed smoke run.');
-    buildDirectory = await fs.realpath(buildDirectory);
+    const frozen = await readFrozenProjectBuild(buildDirectory, { backendId, backendRegistry, signal });
+    buildDirectory = frozen.buildDirectory; plan = frozen.plan;
+    const { build, snapshot, adapter } = frozen;
+    if (expectedBuildId !== undefined && build.buildId !== expectedBuildId
+      || expectedSnapshotId !== undefined && build.snapshotId !== expectedSnapshotId) {
+      throw buildError('runtime_build_invalid', 'The owned frozen build changed before execution.');
+    }
     const read = async (name, limit) => readBuildFile(await resolveContainedPath(buildDirectory, path.join(buildDirectory, name)), limit, signal);
-    const build = JSON.parse(await read('build.json', 4 * 1024 * 1024));
-    const snapshot = JSON.parse(await read('snapshot.json', 80 * 1024 * 1024));
-    if (build.format !== 'viento-build-record' || build.schemaVersion !== 1 || build.status !== 'succeeded'
-      || typeof build.backend?.id !== 'string'
-      || snapshot.format !== 'viento-build-snapshot' || snapshot.schemaVersion !== 1
-      || build.snapshotId !== `sha256:${buildHash(canonicalJson(snapshot))}`) throw buildError('runtime_build_invalid', 'Select a successful build with an intact snapshot.');
-    if (backendId !== undefined && backendId !== build.backend.id) throw buildError('runtime_backend_changed', 'The selected execution backend differs from this frozen build.');
-    const adapter = backendRegistry.resolve(build.backend.id);
     const operation = capture ? 'windowCapture' : headless ? 'headlessLogic' : 'windowPreview';
     assertBackendOperation(adapter, operation);
     if (controlProgram && (!adapter.descriptor.capabilities.includes('runtime.control-replay')
       || controlProgram.schemaVersion === 2 && !adapter.descriptor.capabilities.includes('runtime.control-replay.instances'))) {
-      throw buildError('runtime_control_unsupported', 'This backend does not support control replay.');
+      throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'This backend does not support control replay.');
     }
-    const projection = await createWorldProjection(snapshot.source, { digest: buildHash });
-    const restored = createScene2DPlan({ source: snapshot.source, projection }, snapshot.plan?.scene?.objectId);
-    if (!restored.ok || canonicalJson(restored.plan) !== canonicalJson(snapshot.plan)
-      || restored.plan.resources.reduce((sum, item) => sum + item.size, 0) > 128 * 1024 * 1024) throw buildError('runtime_build_invalid', 'The frozen scene plan is invalid.');
-    plan = restored.plan;
+    if (runtimeCaseSceneId !== undefined && plan.scene.objectId !== runtimeCaseSceneId) {
+      throw buildError('runtime_case_scene_mismatch', 'The runtime case belongs to a different frozen scene.');
+    }
+    if (runtimeCase) runtimeCase = validateRuntimeCasePlan(plan, runtimeCase);
     if (controlProgram && (plan.kind !== 'scene2d' || ![1, 2].includes(plan.schemaVersion) || plan.behaviors)) {
-      throw buildError('runtime_control_unsupported', 'Control replay requires a Scene2D plan version 1 or 2 without authored behaviors.');
+      throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'Control replay requires a Scene2D plan version 1 or 2 without authored behaviors.');
     }
     if (controlProgram) controlProgram = validateSceneControlPlan(plan, controlProgram);
     frozenSourceDocuments = snapshot.source.documents;
@@ -201,9 +229,11 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       snapshotId: build.snapshotId, backendId: build.backend.id, executionAdapter, tool: build.tool,
       mode: headless ? 'headless-logic' : 'window-preview', smoke, status: 'starting', events: [], diagnostics: [], phases: [],
       runtime: observation.snapshot(),
-      ...(controlProgram ? { control: { program: controlProgram, sha256: `sha256:${buildHash(canonicalJson(controlProgram))}`, samples: [] } } : {}) };
+      ...(controlProgram ? { control: { program: controlProgram, sha256: `sha256:${buildHash(canonicalJson(controlProgram))}`, samples: [] } } : {}),
+      ...(runtimeCase ? { verification: { definition: runtimeCase, sha256: `sha256:${buildHash(canonicalJson(runtimeCase))}`,
+        evaluation: evaluateRuntimeCase(plan, runtimeCase, [], { complete: false }) } } : {}) };
     await saveRecord(sessionDirectory, 'session.json', record);
-    publish({ runtime: observation.snapshot() });
+    publish({ runtime: observation.snapshot(), ...(record.verification ? { verification: record.verification } : {}) });
     const project = path.join(sessionDirectory, 'project'); await fs.mkdir(project);
     for (const [relative, content] of bytes) {
       await fs.mkdir(path.dirname(path.join(project, relative)), { recursive: true });
@@ -229,9 +259,11 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
         onRuntime: text => runtime.push(text),
         onSample: sample => {
           record.control.samples.push(JSON.parse(JSON.stringify(sample)));
+          if (runtimeCase) record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, record.control.samples, { complete: false });
           if (observation.pushSample(sample)) {
             record.runtime = observation.snapshot();
-            publish({ runtime: observation.snapshot(), controlSample: sample });
+            publish({ runtime: observation.snapshot(), controlSample: sample,
+              ...(record.verification ? { verification: record.verification } : {}) });
           }
         },
       }) : null;
@@ -260,8 +292,25 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     if (sessionDirectory) await fs.rm(path.join(sessionDirectory, 'project'), { recursive: true, force: true });
   }
   if (observation) record.runtime = observation.snapshot();
+  if (runtimeCase && record.verification) {
+    if (signal?.aborted && record.status === 'succeeded') {
+      record.status = 'cancelled'; record.diagnostics.push(diagnostic(buildError('runtime_cancelled', 'Runtime cancelled.'), plan));
+    }
+    try { record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, record.control.samples, { complete: record.status === 'succeeded' }); }
+    catch (error) {
+      record.diagnostics.push(diagnostic(error, plan)); record.status = 'failed';
+      record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, [], { complete: false });
+    }
+  }
   if (plan.behaviors) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, frozenSourceDocuments,
     [plan.behaviors.manifest.objectId, ...plan.behaviors.sources.map(source => source.objectId)]);
   await saveRecord(sessionDirectory, 'session.json', record);
-  return { ok: record.status === 'succeeded', status: record.status, sessionDirectory, record };
+  // Final record persistence is the case commit point. Cancellation during
+  // that awaited write must not leave a passed disk record behind.
+  if (runtimeCase && signal?.aborted && record.status === 'succeeded') {
+    record.status = 'cancelled'; record.diagnostics.push(diagnostic(buildError('runtime_cancelled', 'Runtime cancelled.'), plan));
+    record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, record.control.samples, { complete: false });
+    await saveRecord(sessionDirectory, 'session.json', record);
+  }
+  return { ok: record.status === 'succeeded' && (!record.verification || record.verification.evaluation.status === 'passed'), status: record.status, sessionDirectory, record };
 }

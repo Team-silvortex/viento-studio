@@ -1,0 +1,30 @@
+{
+  "ok": true,
+  "recordedAt": "2026-10-08T06:00:01.684Z",
+  "scope": "Current member report UI and authenticated transport integration; simulated DOM plus portable AST contract graph. Actual isolated Chrome/Godot evidence is separate.",
+  "newReportTests": 11,
+  "existingRegressionTests": 62,
+  "tests": 73,
+  "pass": 73,
+  "fail": 0,
+  "skipped": 0,
+  "cancelled": 0,
+  "log": "docs/test-results/runtime-case-reports/ui-check.log",
+  "sourceHashes": {
+    "web/modules/app-runtime-case-report.js": "6cda8e8bb74a251879195efe6bc1b8312825d83e40fb702f4843e2afd5028c2e",
+    "web/modules/app-runtime-case-suites.js": "81d9ac9d6d8543c69dc0e590f2e018c15bdc75ec3e35ab9e764eff53b7c510fb",
+    "web/modules/app-project-build.js": "e0abc5b6cac99d2d0608c54f3ff1c78291dc79a3f139bbfc153db4f88e3db90c",
+    "web/project-build.css": "d44c8a6db922c20656108398d157b6dc3f49994b7d2e66bb901d53cb378eb805",
+    "web/i18n/en.js": "4853dd95d702e0acdf60d62c7878052a1fb160f2cd65afbcc1a4acaa96bb9359",
+    "web/i18n/ja.js": "3fadb452acde64c00ecc06aafb21ec386215a98fbf8f2f75644d530a30b66c2f",
+    "engine/runtime-case-report.mjs": "56bd922778f39610d0d3ff5bb09645c9d1f0b7497f6b2e39d4746e6faaec1e92",
+    "scripts/tests/dialog-harness.mjs": "348b706003bb315dedcd099a8d52fb187a85599057b9f9d6d1d1b7f69b354fb7",
+    "scripts/tests/runtime-case-report-ui.test.mjs": "77cb4e47bceb994e1455bf355c86f6a9e37799fcec9310c16ff808f4c6d6029b",
+    "docs/test-results/runtime-case-reports/ui-check.log": "284975c0483ee90f813d9bde48933bfbff0bcbd6146ba35f0486467e06830f0d"
+  },
+  "notes": [
+    "The initial 10-test member-report suite had a missing PROJECT_BUILD_API_PATH in its integration fixture; the fixture was corrected, and public assertion state/count binding adds the eleventh test.",
+    "The first functional Chrome run passed but exposed a narrow English heading layout problem. CSS alone gives the title a full row below 600 px; original browser files and downloaded JSON are preserved in browser-initial.",
+    "Repeated targeted and browser runs are not added to the full-application test count."
+  ]
+}

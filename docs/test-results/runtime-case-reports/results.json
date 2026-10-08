@@ -1,0 +1,181 @@
+{
+  "format": "viento-runtime-case-report-acceptance",
+  "schemaVersion": 1,
+  "ok": true,
+  "recordedAt": "2026-10-08T06:00:19.789Z",
+  "sourceVersion": "0.0.8",
+  "sourceBaseCommit": "d36baad631550a99593efe388cf84aa238b79c5f",
+  "delivery": "unreleased-working-tree",
+  "changes": [
+    "Portable output-only schema1 member report reuses original case/control/trace rules and fully recomputes evaluation; strict detached terminal context and UTF8compact+newline2MiB limit.",
+    "Trusted host publishes fixed member UUID files exclusively with private raw/context/definition pins and stable bounded symlink-rejecting reads.",
+    "Suite scheduler persists each committed leaf independently, preserves actual samples/assertion counts on report publication failure and stops remaining queue.",
+    "Current owned suite job/member-only readonly service requires no author/tool/build read or execution slot; rejects stale owner, changed file and late close.",
+    "Independent three-language GUI validates public leaf context/counts and presents failed/partial checks; explicit local JSON download preserves the original captured definition and samples."
+  ],
+  "application": {
+    "tests": 2017,
+    "passed": 2017,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 254803.09319,
+    "javascriptFiles": 430,
+    "apiAndVersionPreflight": true,
+    "log": "app-check.log"
+  },
+  "newRegressionTests": {
+    "total": 55,
+    "portableReport": 12,
+    "reportFileHost": 18,
+    "reportServiceAndScheduler": 13,
+    "reportUi": 11,
+    "http": 1,
+    "includedInApplicationTotal": true,
+    "targetedChecksOverlapApplication": true
+  },
+  "browser": {
+    "browser": "Chrome/154.0.8037.97",
+    "scenarios": 6,
+    "localesAt390px": 3,
+    "jobs": 5,
+    "runtimeExceptions": 0,
+    "originalAuthorBytesUnchanged": true,
+    "draftAndCaretPreserved": true,
+    "evidence": "browser/browser.json",
+    "reproduction": "browser-check.mjs",
+    "visuallyInspected": [
+      "browser/zh-CN-390.png",
+      "browser/en-390.png",
+      "browser/ja-390.png"
+    ],
+    "scope": "Actual HTTP and Chrome member details/explicit JSON downloads, current-job read-only boundaries and three-language narrow layouts; full details in browser evidence."
+  },
+  "prepared": {
+    "embeddedNode": {
+      "version": "v24.20.0",
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "desktopFullManifestFiles": 511,
+    "desktopFocusedSourceChecks": 125,
+    "mobileFullManifestFiles": 201,
+    "mobileFocusedSourceChecks": 79,
+    "counts": {
+      "backends": 2,
+      "builds": 2,
+      "passedServiceSuites": 2,
+      "failedServiceSuitesWithContinuation": 2,
+      "batchReceipts": 5,
+      "runtimeSessions": 9,
+      "storedMemberReports": 9,
+      "onlineReportReads": 9,
+      "sourceOfflineAndBuildPrunedReportReads": 4,
+      "actualCancellationAttempts": 1,
+      "cancelledNativeSuites": 1,
+      "actualPartialCancelledPrefixes": 0,
+      "archivesExportedOrRestoredThisProbe": 0
+    },
+    "mobilePortable": {
+      "entryModuleCount": 1,
+      "entryModules": [
+        "engine/runtime-case-report.mjs"
+      ],
+      "moduleCount": 4,
+      "modules": [
+        "engine/canonical-json.mjs",
+        "engine/runtime-case-report.mjs",
+        "engine/runtime-verification-case.mjs",
+        "engine/scene-control-program.mjs"
+      ],
+      "validatedActualReports": 9,
+      "acceptedCases": 18,
+      "rejectedCases": 10,
+      "recomputesEvaluations": true,
+      "strictBackendNamespace": true,
+      "outputOnlyShapeValidationNotExternalEngineAuthenticity": true,
+      "noNodeDomNetworkOrVendorImports": true,
+      "desktopSamplesOnly": true,
+      "androidHostOrDeviceExecutionClaimed": false,
+      "androidUiAcceptanceClaimed": false
+    },
+    "evidence": "packaged-resources.json",
+    "reproduction": "packaged-check.mjs"
+  },
+  "tools": [
+    {
+      "backendId": "org.viento.godot4",
+      "identity": {
+        "version": "4.7.2.stable.official.ed1daf0bf",
+        "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "bytes": 146414384
+    },
+    {
+      "backendId": "org.viento.bevy",
+      "identity": {
+        "version": "viento-bevy-runtime 0.3.0 bevy 0.19.1",
+        "sha256": "0f15d7ad897a5b4dbc58574cec14eb81284e5c0ba75634bd86232a8de2c1781f",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "bytes": 11363224
+    }
+  ],
+  "native": {
+    "freshBuiltAndUsed": true,
+    "offlineLocked": true,
+    "rustSourcesUnchanged": 19,
+    "standaloneRustTestsRerun": false,
+    "proof": "native-helpers-proof.json",
+    "archiveMigrationsRerunInPreparedProbe": false
+  },
+  "preservation": {
+    "historicalFiles": 1945,
+    "frozenBackendAndWasmFiles": 9,
+    "rustSources": 19,
+    "productAndTestHashes": 520,
+    "evidence": "historical-preservation.json"
+  },
+  "cleanup": {
+    "directories": 7,
+    "freedAllocatedBytes": 1966104576,
+    "freedGiB": 1.8310775756835938,
+    "evidence": "cleanup.json"
+  },
+  "retainedInitialChecks": [
+    {
+      "log": "app-check-before-layout.log",
+      "tests": 2017,
+      "passed": 2017,
+      "failed": 0,
+      "reason": "Passed before a subsequent visual-only narrow header correction; final full application is rerun with the final CSS."
+    },
+    {
+      "log": "browser-check-initial.log",
+      "result": "passed",
+      "evidence": "browser-initial/browser.json",
+      "reason": "Six actual Chrome scenarios passed functional/overflow checks, but root visual inspection caught the English header squeezed into a narrow column. Single CSS media rule fixed; original screenshots and downloads preserved."
+    },
+    {
+      "log": "packaged-check-initial.log",
+      "result": "refused-before-engine-execution",
+      "reason": "Initial prepared probe started during CSS correction and its source guard correctly rejected oldCSS/current-source mismatch. Original script/log preserved; no initial JSON or engine claim fabricated."
+    },
+    {
+      "log": "report-focus-check.log",
+      "tests": 67,
+      "passed": 66,
+      "failed": 1,
+      "reason": "An in-progress new main UI fixture omitted its existing PROJECT_BUILD_API_PATH harness override. Fixture fixed before freeze; not a product defect. A further public-member count guard and its additional regression were added before final acceptance."
+    }
+  ],
+  "limits": [
+    "Unreleased0.0.8 working tree; no new version, commit/push, installer, installed Tauri or Android host/device acceptance.",
+    "Exported arbitrary JSON self-validation proves consistency, not authenticated engine execution or raw author bytes; no external report import or event interleaving replay.",
+    "Current service/current suite member ownership only; no cross-service history/adoption, persisted report UI index, batch archive or automatic expected-value update.",
+    "Backend/native/Rust/WASM and author/control/trace formats unchanged. Fresh native helpers support full application; standalone Rust tests and prepared native archive migrations not rerun.",
+    "Mobile proof executes only isolated pure report modules; no host filesystem, Node engine process or Android execution."
+  ]
+}

@@ -1,0 +1,395 @@
+{
+  "format": "viento-runtime-case-docs-review",
+  "schemaVersion": 1,
+  "ok": true,
+  "recordedAt": "2026-10-08T02:10:13.997Z",
+  "scope": "Final read-only review of ten current guides, the generated atlas, frozen source fingerprints and recorded acceptance. Only this new audit JSON is written.",
+  "reviewer": "control_core; implemented the portable case module/tests earlier, then performed this documentation/evidence review. This is not an external audit.",
+  "sourceVersion": "0.0.8",
+  "sourceBaseCommit": "d36baad631550a99593efe388cf84aa238b79c5f",
+  "delivery": "unreleased-working-tree",
+  "reviewedDocumentSha256": {
+    "README.md": "7bf83374a9e886369f0e26ade382993f9cc95dbc4943f638a7778010542c7b59",
+    "engine/README.md": "c2a55f981606ac285f66e423fc86dee0b85d5bf982d238ed924b1b1d0e5be2c9",
+    "docs/RUNTIME_CASES.md": "0f059d2b399df5731551e928f4e1dd11896729c48fc79c0d3c4575a04c669dc1",
+    "docs/STATUS.md": "c5bc6b9d90cd884a8c8ec5f1f4965f3b6683af0c3de64e7700ba5758a1e0608a",
+    "docs/ARCHITECTURE.md": "1d3966511d8bfc7e5a62793256ef09da02c396313de3e5fdcf2af5441e9fe965",
+    "docs/ROADMAP.md": "66d600f0ab3afcaf864ed3d28bf34b44ae620d3fcd4a223f4e13ebdc9d04e7ab",
+    "docs/PROJECT_BUILD.md": "ff211714d6963f2684f18ee39ae0fc0227e93d1eb76d638f1e9f458f7580fdd1",
+    "docs/BACKEND_MIDDLEWARE.md": "f2dadd97e5dcdb658a88f0f9b01e5ec22e9055210387bec8a4603607f593a049",
+    "docs/TESTING.md": "a57e8ed776e3a42fd26f33a9044dbc2b3e3637ba5cc5968a54fee1f7906d8151",
+    "docs/FUNCTION_ATLAS.md": "2417e57895a1d3326ba73250835d339672794a91bf5eb1f525d6b9c9d6657305"
+  },
+  "links": {
+    "reviewedDocuments": 10,
+    "localReferences": 1245,
+    "localAnchors": 248,
+    "externalReferencesNotFetched": 13,
+    "broken": [],
+    "newAcceptanceEvidenceReferences": 19,
+    "scannerScope": "Markdown links outside code fences; local Markdown heading slugs with duplicate suffixes and explicit HTML id/name anchors. External references were not fetched."
+  },
+  "contractReview": [
+    {
+      "area": "Strict portable case DTO and budgets",
+      "finding": "Exact viento-runtime-case schema1 fields format/schemaVersion/program/checks. Control schema1/2 remains unchanged. Cases require no-behavior frozen plan2, stable instance UUID and 0-based stepIndex; 1–128 checks, duplicate instance/step rejected, at least position or state. Coordinates and nonnegative tolerance are finite; tolerance is componentwise absolute, explicit and inclusive, without hidden epsilon or arbitrary upper bound. Control step/time/release/input-row and actor×step budgets are inherited; CLI file limit is 256KiB."
+    },
+    {
+      "area": "Strict actual samples and completion",
+      "finding": "Pure evaluation rechecks exact trace schema1/protocol2, contiguous 0-start prefix, complete actor sets and definition/instance pairing, finite positions and idle/moving state. It does not simulate movement or manufacture lifecycle. The host supplies completion; missing steps or complete:false produce overall incomplete. Observed row results remain available; missing rows are unavailable. Malformed samples throw runtime_case_sample_invalid."
+    },
+    {
+      "area": "Execution versus assertion",
+      "finding": "A successful engine and complete trace may have a failed evaluation; execution record/job remains succeeded while run ok is false and CLI exits1. Cancel, timeout, protocol or execution failure cannot yield overall passed. UI separately renders execution and evaluation and revalidates recorded evaluation against actual samples."
+    },
+    {
+      "area": "Final persistence and cancellation commit point",
+      "finding": "Host checks cancellation before final evaluation and again after awaiting final session save, re-persisting cancelled/incomplete when necessary. Service adopts the returned committed record status rather than retroactively relabelling it after later cancellation. The persistence race was found statically and repaired before the first boundary test; no initial failing boundary run is claimed."
+    },
+    {
+      "area": "Admission, ownership and modes",
+      "finding": "Host detaches/validates cases and rejects incompatible modes before filesystem work. Restored frozen plan targets and joint budgets are checked before tool identification and session allocation. HTTP accepts only owned build/headless/runtimeCase pure data, rejects simultaneous controlProgram, and validates before a new job slot. CLI --runtime-case rejects control-program/window/capture/interactive/non-run before opening the case/build, and final file symlinks are refused. Fixed trusted tools and frozen adapter/artifact checks are preserved."
+    },
+    {
+      "area": "Explicit baseline and three-language UI",
+      "finding": "Editor JSON and selection survive polling, language changes and close/reopen. Generation is an explicit button action using the final step of an owned successful complete control run, checking all instances with tolerance0.0001; it replaces text only on that action. Dirty author drafts still block execution. Chinese/English/Japanese button/result text matches DOM/i18n sources; retained 390px Chinese screenshot was inspected. No case is automatically learned or written into author files."
+    },
+    {
+      "area": "Default tutorial example",
+      "finding": "The guide JSON passes current pure admission against the default examples/bevy-headless plan2 identity set. Its first instance is bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1 at [200,220], speed160 and arrows; a .125 right step gives the documented [220,220], followed by release. Second instance controls:none agrees with the guide. This admission/static review did not execute an engine or fabricate accepted samples.",
+      "details": {
+        "guideExampleAdmitted": true,
+        "programSchema": 2,
+        "checks": 2,
+        "firstInstanceMatchesDefaultScene": true,
+        "defaultScenePosition": [
+          200,
+          220
+        ],
+        "defaultSceneSpeed": 160,
+        "defaultSceneControl": "arrows",
+        "note": "Read-only admission and static author-field review; no engine execution or manufactured samples."
+      }
+    },
+    {
+      "area": "Delivery and frozen formats",
+      "finding": "Source remains0.0.8 after the released base commit; this increment is working-tree only. Godot adapter0.5.0, Bevy adapter/native0.3.0 with Bevy0.19.1, old author/plan/runtime/control/trace and native/WASM are unchanged. No installer, installation, version bump, commit/push, Tauri installed-window or Android device execution is claimed. Prepared mobile only evaluates portable data from desktop samples."
+    }
+  ],
+  "atlas": {
+    "generatorCheck": {
+      "ok": true,
+      "mode": "check",
+      "architectures": 11,
+      "functions": 64,
+      "implementations": 132,
+      "bindings": 227,
+      "cells": 908,
+      "dependencyEdges": 134,
+      "workflows": 27,
+      "historicalChains": 50,
+      "referencedFiles": 538
+    },
+    "counts": {
+      "architecture": 11,
+      "function": 64,
+      "implementation": 132,
+      "maturity": 4,
+      "bindings": 227,
+      "cells": 908,
+      "evidence": 535,
+      "dependencies": 134,
+      "workflows": 27,
+      "legacyCoverage": 50,
+      "referencedFiles": 538
+    },
+    "sourceFingerprints": {
+      "checked": 538,
+      "mismatches": []
+    },
+    "oldEntriesPreserved": {
+      "axis-architecture": {
+        "checked": 11,
+        "changed": []
+      },
+      "axis-function": {
+        "checked": 63,
+        "changed": []
+      },
+      "axis-implementation": {
+        "checked": 131,
+        "changed": []
+      },
+      "axis-maturity": {
+        "checked": 4,
+        "changed": []
+      },
+      "bindings": {
+        "checked": 222,
+        "changed": []
+      },
+      "evidence": {
+        "checked": 520,
+        "changed": []
+      },
+      "workflows": {
+        "checked": 26,
+        "changed": []
+      },
+      "cells": {
+        "checked": 888,
+        "changed": []
+      },
+      "dependencies": {
+        "checked": 130,
+        "changed": []
+      },
+      "legacyCoverage": {
+        "checked": 50,
+        "changed": []
+      },
+      "priorities": {
+        "checked": 4,
+        "changed": []
+      }
+    },
+    "historicalMetaMatches": true,
+    "newCaseBindings": {
+      "b224": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 4,
+        "delivery": 2
+      },
+      "b225": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 4,
+        "delivery": 2
+      },
+      "b226": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 4,
+        "delivery": 2
+      },
+      "b227": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 4,
+        "delivery": 2
+      },
+      "b228": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 4,
+        "delivery": 2
+      }
+    },
+    "newFunctionDelivery": "working-tree",
+    "sha256": {
+      "docs/function-atlas.json": "6db180ace66536c38c0ce9f29c63dd6bc7c602686e663e966a93559122fd7ee4",
+      "docs/FUNCTION_ATLAS.md": "2417e57895a1d3326ba73250835d339672794a91bf5eb1f525d6b9c9d6657305",
+      "docs/function-atlas.html": "de1ed225cfb08c5e202da5d1c7a02bab8415e41b16cc16eebf294fac79e87bd5",
+      "docs/function-atlas.mmd": "22144d787c21b0fb51b41156edf878cb7fa536adbfebbc07615c0771fcce3488"
+    }
+  },
+  "recordedAcceptanceReview": {
+    "application": {
+      "tests": 1854,
+      "pass": 1854,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "duration_ms": 231915.343384,
+      "javascriptFiles": 405,
+      "apiAndVersionPreflight": true,
+      "newCasesIncluded": 40,
+      "countsMatchFinalResults": true
+    },
+    "initialVersusFinal": {
+      "initialApplication": {
+        "tests": 1854,
+        "passed": 1854,
+        "failed": 0,
+        "usedAsFinalProof": false
+      },
+      "sourceManifestChangedBetweenInitialAndFinal": [
+        "scripts/lib/project-build-service.mjs"
+      ],
+      "initialBrowserAndPreparedReportsRetained": true,
+      "finalFrozenApplicationBrowserAndPreparedReportsUsed": true,
+      "preparation": "Initial pinned-Node downloads had TLS/network failures. The recovered download matched the locked archive hash and normal final preparation succeeded. Native helpers initially lacked the sidecar, then built offline/locked successfully.",
+      "cancellation": "Static review finding repaired before the first boundary run; not presented as an initially failing regression."
+    },
+    "browser": {
+      "scenarios": 4,
+      "locales": [
+        {
+          "locale": "zh-CN",
+          "width": 390,
+          "scroll": 390
+        },
+        {
+          "locale": "en",
+          "width": 390,
+          "scroll": 390
+        },
+        {
+          "locale": "ja",
+          "width": 390,
+          "scroll": 390
+        }
+      ],
+      "errors": [],
+      "uniqueJobs": 6,
+      "jobs": [
+        {
+          "id": "719da94a-7d17-4859-b40b-aac801e1ad8e",
+          "kind": "plan",
+          "status": "succeeded",
+          "evaluation": null
+        },
+        {
+          "id": "07b9a3a9-c45f-4f08-a0c9-b6aa1a182a31",
+          "kind": "build",
+          "status": "succeeded",
+          "evaluation": null
+        },
+        {
+          "id": "9aacaab7-06bf-4f99-a833-b1699e347d8f",
+          "kind": "run",
+          "status": "succeeded",
+          "evaluation": null
+        },
+        {
+          "id": "b33cc408-2707-451b-bfd6-d484de5a1e1e",
+          "kind": "run",
+          "status": "succeeded",
+          "evaluation": "passed"
+        },
+        {
+          "id": "a0834f17-05e5-472a-b968-b44670943cf1",
+          "kind": "run",
+          "status": "succeeded",
+          "evaluation": "failed"
+        },
+        {
+          "id": "74dcf181-0c99-4442-92f5-ade405a708bd",
+          "kind": "run",
+          "status": "succeeded",
+          "evaluation": "failed"
+        }
+      ],
+      "authorBytesUnchanged": true,
+      "draftAndCaretPreserved": true
+    },
+    "prepared": {
+      "desktop/resources": {
+        "manifestFiles": 499,
+        "manifestCountMatches": true,
+        "manifestShaMatches": true,
+        "manifestByteCountMatches": true,
+        "focusedSourceFiles": 106,
+        "focusedShaMatches": true,
+        "sourceMismatches": [],
+        "preparedPathsRemoved": true
+      },
+      "mobile/dist": {
+        "manifestFiles": 194,
+        "manifestCountMatches": true,
+        "manifestShaMatches": true,
+        "manifestByteCountMatches": true,
+        "focusedSourceFiles": 71,
+        "focusedShaMatches": true,
+        "sourceMismatches": [],
+        "preparedPathsRemoved": true
+      },
+      "unchangedBackendSources": {
+        "checked": 12,
+        "mismatches": []
+      },
+      "frozenBackendAndCore": {
+        "checked": 9,
+        "mismatches": []
+      },
+      "counts": {
+        "backends": 2,
+        "builds": 2,
+        "offlineRuntimeSessions": 6,
+        "servicePasses": 2,
+        "serviceAssertionFailures": 2,
+        "cliPasses": 2
+      },
+      "mobile": {
+        "moduleCount": 2,
+        "modules": [
+          "engine/runtime-verification-case.mjs",
+          "engine/scene-control-program.mjs"
+        ],
+        "acceptedCases": 8,
+        "rejectedCases": 4,
+        "noNodeDomOrNetworkGlobals": true,
+        "desktopSamplesOnly": true,
+        "androidExecutionClaimed": false
+      }
+    },
+    "native": "Fresh native helpers were built offline/locked and used by the application run. Their temporary binaries were subsequently removed by the documented cleanup. Standalone Rust75/25 was not rerun or counted as current evidence.",
+    "cleanup": {
+      "directories": 7,
+      "removed": true,
+      "allocatedBytesSumMatches": true,
+      "freedAllocatedBytes": 1963524096,
+      "initiallyAbsent": true
+    }
+  },
+  "preservation": {
+    "historical-baseline": {
+      "checked": 1766,
+      "mismatches": []
+    },
+    "frozen-backend-baseline": {
+      "checked": 9,
+      "mismatches": []
+    },
+    "rust-source-baseline": {
+      "checked": 19,
+      "mismatches": []
+    },
+    "source-hashes": {
+      "checked": 466,
+      "mismatches": []
+    }
+  },
+  "unresolvedFindings": [],
+  "evidenceSha256": {
+    "docs/test-results/runtime-verification-cases/results.json": "6bdc8dcb82e1bcac0780766470944c154a5c8c78309dae0edf8039b9b5d15caa",
+    "docs/test-results/runtime-verification-cases/app-check.log": "4f391c91e2daa71927f2ec94798d55d1face88aa5a038e54aa38c302305d19d1",
+    "docs/test-results/runtime-verification-cases/app-check-initial.log": "3be05fb3c8dc3006b98d2aac2aba4389e8f5eaeaa0f0fb687a3ed31bfa657d36",
+    "docs/test-results/runtime-verification-cases/source-hashes.json": "a19e0bb4e6f571c54f5eda242e5278d4650be99ff41fbf026f12fe0196b25f7a",
+    "docs/test-results/runtime-verification-cases/source-hashes-initial.json": "533d58197fe622184349b653117325fc21c2c3a31cfc45d7aedb54fb23ab093e",
+    "docs/test-results/runtime-verification-cases/historical-preservation.json": "49d8e2aff5fa4fb509b59aa487faf636d9eb4308afbd160b24c49fb7bdf674e9",
+    "docs/test-results/runtime-verification-cases/historical-baseline.json": "1573ed9732b8b832b9fef8533883ba8ae6d9387e0ca4bbe0d1115691cd1cd5fa",
+    "docs/test-results/runtime-verification-cases/frozen-backend-baseline.json": "6ff22d248648a1b72930ed76b8b84a0cae9bf65ee64fccbbd878dfc9721a969e",
+    "docs/test-results/runtime-verification-cases/rust-source-baseline.json": "1597a12b6a6962e6ce2619efada9d5b887ebaed49581fe1803910649cf2adfe0",
+    "docs/test-results/runtime-verification-cases/atlas-baseline.json": "441089a86bf5fbe08e06c0e6b2a1685fa70dacdfcd4d51423c4389022f102561",
+    "docs/test-results/runtime-verification-cases/atlas-check.json": "31d8e1f98b7bf5ddcbbe689bb8bbad3690050293888120e8649a490b7849285b",
+    "docs/test-results/runtime-verification-cases/browser/browser.json": "f256242734069cd589f7f5fc6171e5b00d4752b84c68bbb63e48379e67a0863c",
+    "docs/test-results/runtime-verification-cases/browser/browser-initial.json": "f919fa7c3ea4162c868ded92263f5c324f219a66ab25b373aad248da52d3752f",
+    "docs/test-results/runtime-verification-cases/browser-check.mjs": "631b3316677b37f6464be460d978b43b94f87b9157c3eddd0b8bf07a156f96f7",
+    "docs/test-results/runtime-verification-cases/browser/zh-CN-390.png": "41f0d97dbc7395f45320d5d3c4b5d2fac74e7139757500dbbf706d4da76b0979",
+    "docs/test-results/runtime-verification-cases/packaged-resources.json": "c9fbf24c19477db85034a7f42a013e5ebcc647c6db89badc8bd0c4e3036014d7",
+    "docs/test-results/runtime-verification-cases/packaged-resources-initial.json": "6b587d5fc41c4eb1ec04aa44f15a13180f5a468a3720641780c95235734509c1",
+    "docs/test-results/runtime-verification-cases/packaged-check.mjs": "4cc2421aae1a580efc741ceda44638e7320888e7fccdc679dca9fffa0b5852f7",
+    "docs/test-results/runtime-verification-cases/native-helpers-proof.json": "1d6175a062cf7e42b368ef588cbf0475f24053eac359e2fe001d4fe304352e38",
+    "docs/test-results/runtime-verification-cases/cleanup.json": "fd6b9bfce83560eb7ed533d5c31f014f0948d85f92488ab6a6c27efa170ba1ae",
+    "docs/test-results/runtime-verification-cases/case-boundary-check.log": "036113e2ece0ab5de2db02bc02e9c0a4100d8380daa77e59938c6c8726b4b294"
+  },
+  "limits": [
+    "Read-only documentation/evidence review; no application, engine, browser, native or mobile acceptance was rerun.",
+    "Atlas --check was run separately; it checks consistency/fingerprints, not product behavior or coverage percentages.",
+    "Prepared manifests and focused source hashes were independently recomputed from retained evidence; generated resource trees are already removed, so no current prepared file readback is claimed.",
+    "Historical report facts retain their original conditions. This audit adds no installed-product or device acceptance.",
+    "The sole file written by this task is docs/test-results/runtime-verification-cases/docs-check.json."
+  ]
+}

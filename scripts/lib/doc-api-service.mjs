@@ -51,7 +51,7 @@ function createDocumentService(options = {}) {
   const commandWorld = createWorldCommandService(PROJECT_ROOT);
   const exports = createExportService(PROJECT_ROOT);
   const projectBuildEnabled = options.projectBuildEnabled ?? process.platform === 'linux';
-  const projectBuild = createProjectBuildService(PROJECT_ROOT, { enabled: projectBuildEnabled, ...executionHostConfiguration() });
+  const projectBuild = createProjectBuildService(PROJECT_ROOT, { enabled: projectBuildEnabled, ...executionHostConfiguration(), onAuthorWrite: invalidateIndexCache });
   const scenePreview = createScenePreviewService(PROJECT_ROOT, { enabled: projectBuildEnabled });
   const resourcePackages = createResourcePackageService(PROJECT_ROOT, { imported: () => { reloadWorkspaceManifest(); invalidateIndexCache(); } });
   const sharedState = options.state || {};

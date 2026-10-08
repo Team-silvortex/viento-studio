@@ -1,0 +1,19 @@
+file:///home/chiharukiryu/cdev/viento-studio/desktop/resources/engine/service-error.mjs:2
+  const error = new Error(message);
+                ^
+
+Error: Cannot read this workspace projection
+    at createError (file:///home/chiharukiryu/cdev/viento-studio/desktop/resources/engine/service-error.mjs:2:17)
+    at unavailable (file:///home/chiharukiryu/cdev/viento-studio/desktop/resources/scripts/adapters/node-world-projection.mjs:15:27)
+    at readWorldSnapshot (file:///home/chiharukiryu/cdev/viento-studio/desktop/resources/scripts/adapters/node-world-projection.mjs:80:11)
+    at async file:///home/chiharukiryu/cdev/viento-studio/desktop/resources/scripts/lib/project-build-service.mjs:57:24
+    at async readScenes (file:///home/chiharukiryu/cdev/viento-studio/desktop/resources/scripts/lib/project-build-service.mjs:76:5)
+    at async Object.status (file:///home/chiharukiryu/cdev/viento-studio/desktop/resources/scripts/lib/project-build-service.mjs:83:25)
+    at async settle (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/runtime-tool-probe/packaged-check.mjs:136:19)
+    at async file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/runtime-tool-probe/packaged-check.mjs:214:18 {
+  statusCode: 422,
+  payload: {},
+  errorCode: 'world_unavailable'
+}
+
+Node.js v24.20.0

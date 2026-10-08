@@ -1,0 +1,1652 @@
+{
+  "ok": true,
+  "startedAt": "2026-10-08T01:51:44.138Z",
+  "scope": "Fresh source 0.0.8 unreleased increment, actual isolated Chrome and Linux editor HTTP service; no installed Tauri or Android acceptance.",
+  "scenarios": [
+    {
+      "name": "sample-derived baseline",
+      "checks": 2
+    },
+    {
+      "name": "explicit mismatch",
+      "checks": 1
+    },
+    {
+      "name": "source offline case",
+      "status": "failed"
+    },
+    {
+      "name": "caret/language/reopen and dirty author protection"
+    }
+  ],
+  "locales": [
+    {
+      "locale": "zh-CN",
+      "width": 390,
+      "scroll": 390,
+      "dialog": [
+        {
+          "width": 335,
+          "scroll": 335
+        }
+      ],
+      "button": "运行验收",
+      "summary": "验收未完成 · 通过 0 · 未通过 0 · 无样本 2"
+    },
+    {
+      "locale": "en",
+      "width": 390,
+      "scroll": 390,
+      "dialog": [
+        {
+          "width": 335,
+          "scroll": 335
+        }
+      ],
+      "button": "Run verification",
+      "summary": "Verification incomplete · Passed 0 · Failed 0 · Unavailable 2"
+    },
+    {
+      "locale": "ja",
+      "width": 390,
+      "scroll": 390,
+      "dialog": [
+        {
+          "width": 335,
+          "scroll": 335
+        }
+      ],
+      "button": "検証を実行",
+      "summary": "検証未完了 · 合格 0 · 不合格 0 · サンプルなし 2"
+    }
+  ],
+  "errors": [],
+  "browser": "Chrome/154.0.8037.97",
+  "jobs": [
+    {
+      "id": "4ed05f74-6544-442a-935e-44a15cd85a41",
+      "kind": "plan",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-08T01:51:45.339Z",
+      "diagnostics": [],
+      "events": [],
+      "logs": "",
+      "plan": {
+        "snapshotId": "sha256:f3e9e00e923a433cdccf4047ff50bd521b566d8521c562852c7c221bfcdcf1b6",
+        "title": "One Scene, Two Execution Backends",
+        "actorCount": 2,
+        "resourceCount": 0
+      },
+      "runtime": null,
+      "finishedAt": "2026-10-08T01:51:45.379Z"
+    },
+    {
+      "id": "d1bf2b47-8c96-4dd3-9ef1-dbf894c1ffb3",
+      "kind": "build",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-08T01:51:46.374Z",
+      "diagnostics": [],
+      "events": [],
+      "logs": "",
+      "plan": null,
+      "runtime": null,
+      "buildId": "b979571d-98fc-4137-acde-f95169ed0365",
+      "finishedAt": "2026-10-08T01:51:46.429Z"
+    },
+    {
+      "id": "837599ee-877c-4745-9c98-b6a9e336de3a",
+      "kind": "run",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "buildId": "b979571d-98fc-4137-acde-f95169ed0365",
+      "snapshotId": "sha256:f3e9e00e923a433cdccf4047ff50bd521b566d8521c562852c7c221bfcdcf1b6",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-08T01:51:47.415Z",
+      "diagnostics": [],
+      "events": [
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "ready",
+          "protocol": 2,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "finished",
+          "fixedDelta": 0.25,
+          "protocol": 2
+        }
+      ],
+      "logs": "VIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":2,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"moving\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":0}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":1}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"moving\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":2}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":3}\nVIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"finished\",\"fixedDelta\":0.25,\"protocol\":2}\n",
+      "plan": null,
+      "runtime": {
+        "format": "viento-runtime-observation",
+        "schemaVersion": 1,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "protocolVersion": 2,
+        "phase": "finished",
+        "sequence": 10,
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              200,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/0",
+              "sourceRevision": "sha256:4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              500,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/1",
+              "sourceRevision": "sha256:4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11"
+            }
+          }
+        ],
+        "control": {
+          "stepCount": 4,
+          "completedSteps": 4,
+          "fixedDelta": 0.25
+        }
+      },
+      "control": {
+        "program": {
+          "format": "viento-runtime-control",
+          "schemaVersion": 1,
+          "fixedDelta": 0.25,
+          "steps": [
+            {
+              "left": false,
+              "right": true,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": false,
+              "right": false,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": true,
+              "right": false,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": false,
+              "right": false,
+              "up": false,
+              "down": false
+            }
+          ]
+        },
+        "sha256": "sha256:205bc375c44f5c2f27acf4a4fdca6a1b10d77a03772946fc5ba1a5edc180e1d8",
+        "samples": [
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  240,
+                  220
+                ],
+                "state": "moving"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 0
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  240,
+                  220
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 1
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "moving"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 2
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 3
+          }
+        ]
+      },
+      "finishedAt": "2026-10-08T01:51:47.467Z"
+    },
+    {
+      "id": "a39d402a-9ea8-4a1b-bfd6-1b43b781de4d",
+      "kind": "run",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "buildId": "b979571d-98fc-4137-acde-f95169ed0365",
+      "snapshotId": "sha256:f3e9e00e923a433cdccf4047ff50bd521b566d8521c562852c7c221bfcdcf1b6",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-08T01:51:48.478Z",
+      "diagnostics": [],
+      "events": [
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "ready",
+          "protocol": 2,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "finished",
+          "fixedDelta": 0.25,
+          "protocol": 2
+        }
+      ],
+      "logs": "VIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":2,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"moving\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":0}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":1}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"moving\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":2}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":3}\nVIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"finished\",\"fixedDelta\":0.25,\"protocol\":2}\n",
+      "plan": null,
+      "runtime": {
+        "format": "viento-runtime-observation",
+        "schemaVersion": 1,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "protocolVersion": 2,
+        "phase": "finished",
+        "sequence": 10,
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              200,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/0",
+              "sourceRevision": "sha256:4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              500,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/1",
+              "sourceRevision": "sha256:4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11"
+            }
+          }
+        ],
+        "control": {
+          "stepCount": 4,
+          "completedSteps": 4,
+          "fixedDelta": 0.25
+        }
+      },
+      "control": {
+        "program": {
+          "format": "viento-runtime-control",
+          "schemaVersion": 1,
+          "fixedDelta": 0.25,
+          "steps": [
+            {
+              "left": false,
+              "right": true,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": false,
+              "right": false,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": true,
+              "right": false,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": false,
+              "right": false,
+              "up": false,
+              "down": false
+            }
+          ]
+        },
+        "sha256": "sha256:205bc375c44f5c2f27acf4a4fdca6a1b10d77a03772946fc5ba1a5edc180e1d8",
+        "samples": [
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  240,
+                  220
+                ],
+                "state": "moving"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 0
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  240,
+                  220
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 1
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "moving"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 2
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 3
+          }
+        ]
+      },
+      "verification": {
+        "definition": {
+          "format": "viento-runtime-case",
+          "schemaVersion": 1,
+          "program": {
+            "format": "viento-runtime-control",
+            "schemaVersion": 1,
+            "fixedDelta": 0.25,
+            "steps": [
+              {
+                "left": false,
+                "right": true,
+                "up": false,
+                "down": false
+              },
+              {
+                "left": false,
+                "right": false,
+                "up": false,
+                "down": false
+              },
+              {
+                "left": true,
+                "right": false,
+                "up": false,
+                "down": false
+              },
+              {
+                "left": false,
+                "right": false,
+                "up": false,
+                "down": false
+              }
+            ]
+          },
+          "checks": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "stepIndex": 3,
+              "position": {
+                "value": [
+                  200,
+                  220
+                ],
+                "tolerance": 0.0001
+              },
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "stepIndex": 3,
+              "position": {
+                "value": [
+                  500,
+                  220
+                ],
+                "tolerance": 0.0001
+              },
+              "state": "idle"
+            }
+          ]
+        },
+        "sha256": "sha256:af699c75a5002974afb97fdcce3ef3bbb8f04f627e33acb176ce42627ac6b7b8",
+        "evaluation": {
+          "format": "viento-runtime-case-evaluation",
+          "schemaVersion": 1,
+          "status": "passed",
+          "complete": true,
+          "stepCount": 4,
+          "sampleCount": 4,
+          "checkCount": 2,
+          "passedChecks": 2,
+          "failedChecks": 0,
+          "unavailableChecks": 0,
+          "checks": [
+            {
+              "checkIndex": 0,
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "stepIndex": 3,
+              "status": "passed",
+              "expected": {
+                "position": {
+                  "value": [
+                    200,
+                    220
+                  ],
+                  "tolerance": 0.0001
+                },
+                "state": "idle"
+              },
+              "actual": {
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "idle"
+              },
+              "positionPassed": true,
+              "statePassed": true
+            },
+            {
+              "checkIndex": 1,
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "stepIndex": 3,
+              "status": "passed",
+              "expected": {
+                "position": {
+                  "value": [
+                    500,
+                    220
+                  ],
+                  "tolerance": 0.0001
+                },
+                "state": "idle"
+              },
+              "actual": {
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              },
+              "positionPassed": true,
+              "statePassed": true
+            }
+          ]
+        }
+      },
+      "finishedAt": "2026-10-08T01:51:48.522Z"
+    },
+    {
+      "id": "1a7334a1-da00-4ab7-8967-7e6cff492e20",
+      "kind": "run",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "buildId": "b979571d-98fc-4137-acde-f95169ed0365",
+      "snapshotId": "sha256:f3e9e00e923a433cdccf4047ff50bd521b566d8521c562852c7c221bfcdcf1b6",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-08T01:51:49.518Z",
+      "diagnostics": [],
+      "events": [
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "ready",
+          "protocol": 2,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "finished",
+          "fixedDelta": 0.25,
+          "protocol": 2
+        }
+      ],
+      "logs": "VIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":2,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"moving\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":0}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":1}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"moving\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":2}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":3}\nVIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"finished\",\"fixedDelta\":0.25,\"protocol\":2}\n",
+      "plan": null,
+      "runtime": {
+        "format": "viento-runtime-observation",
+        "schemaVersion": 1,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "protocolVersion": 2,
+        "phase": "finished",
+        "sequence": 10,
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              200,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/0",
+              "sourceRevision": "sha256:4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              500,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/1",
+              "sourceRevision": "sha256:4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11"
+            }
+          }
+        ],
+        "control": {
+          "stepCount": 4,
+          "completedSteps": 4,
+          "fixedDelta": 0.25
+        }
+      },
+      "control": {
+        "program": {
+          "format": "viento-runtime-control",
+          "schemaVersion": 1,
+          "fixedDelta": 0.25,
+          "steps": [
+            {
+              "left": false,
+              "right": true,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": false,
+              "right": false,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": true,
+              "right": false,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": false,
+              "right": false,
+              "up": false,
+              "down": false
+            }
+          ]
+        },
+        "sha256": "sha256:205bc375c44f5c2f27acf4a4fdca6a1b10d77a03772946fc5ba1a5edc180e1d8",
+        "samples": [
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  240,
+                  220
+                ],
+                "state": "moving"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 0
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  240,
+                  220
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 1
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "moving"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 2
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 3
+          }
+        ]
+      },
+      "verification": {
+        "definition": {
+          "format": "viento-runtime-case",
+          "schemaVersion": 1,
+          "program": {
+            "format": "viento-runtime-control",
+            "schemaVersion": 1,
+            "fixedDelta": 0.25,
+            "steps": [
+              {
+                "left": false,
+                "right": true,
+                "up": false,
+                "down": false
+              },
+              {
+                "left": false,
+                "right": false,
+                "up": false,
+                "down": false
+              },
+              {
+                "left": true,
+                "right": false,
+                "up": false,
+                "down": false
+              },
+              {
+                "left": false,
+                "right": false,
+                "up": false,
+                "down": false
+              }
+            ]
+          },
+          "checks": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "stepIndex": 3,
+              "position": {
+                "value": [
+                  201,
+                  220
+                ],
+                "tolerance": 0.0001
+              },
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "stepIndex": 3,
+              "position": {
+                "value": [
+                  500,
+                  220
+                ],
+                "tolerance": 0.0001
+              },
+              "state": "idle"
+            }
+          ]
+        },
+        "sha256": "sha256:9a1a49370de0f1b6c88b7c863df98a5b3f667da6b15df4dfe0d1a0084369332e",
+        "evaluation": {
+          "format": "viento-runtime-case-evaluation",
+          "schemaVersion": 1,
+          "status": "failed",
+          "complete": true,
+          "stepCount": 4,
+          "sampleCount": 4,
+          "checkCount": 2,
+          "passedChecks": 1,
+          "failedChecks": 1,
+          "unavailableChecks": 0,
+          "checks": [
+            {
+              "checkIndex": 0,
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "stepIndex": 3,
+              "status": "failed",
+              "expected": {
+                "position": {
+                  "value": [
+                    201,
+                    220
+                  ],
+                  "tolerance": 0.0001
+                },
+                "state": "idle"
+              },
+              "actual": {
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "idle"
+              },
+              "positionPassed": false,
+              "statePassed": true
+            },
+            {
+              "checkIndex": 1,
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "stepIndex": 3,
+              "status": "passed",
+              "expected": {
+                "position": {
+                  "value": [
+                    500,
+                    220
+                  ],
+                  "tolerance": 0.0001
+                },
+                "state": "idle"
+              },
+              "actual": {
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              },
+              "positionPassed": true,
+              "statePassed": true
+            }
+          ]
+        }
+      },
+      "finishedAt": "2026-10-08T01:51:49.561Z"
+    },
+    {
+      "id": "bb4c5176-8f11-4e4e-8701-83c8d23136e2",
+      "kind": "run",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.bevy",
+      "buildId": "b979571d-98fc-4137-acde-f95169ed0365",
+      "snapshotId": "sha256:f3e9e00e923a433cdccf4047ff50bd521b566d8521c562852c7c221bfcdcf1b6",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-08T01:51:53.211Z",
+      "diagnostics": [],
+      "events": [
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "ready",
+          "protocol": 2,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "moving"
+        },
+        {
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 2,
+          "state": "idle"
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "finished",
+          "fixedDelta": 0.25,
+          "protocol": 2
+        }
+      ],
+      "logs": "VIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":2,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"moving\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":0}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[240.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":1}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"moving\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"moving\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":2}\nVIENTO_RUNTIME:{\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":2,\"state\":\"idle\"}\nVIENTO_TRACE:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"sample\",\"format\":\"viento-runtime-trace\",\"protocolVersion\":2,\"schemaVersion\":1,\"stepIndex\":3}\nVIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"finished\",\"fixedDelta\":0.25,\"protocol\":2}\n",
+      "plan": null,
+      "runtime": {
+        "format": "viento-runtime-observation",
+        "schemaVersion": 1,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "protocolVersion": 2,
+        "phase": "finished",
+        "sequence": 10,
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              200,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/0",
+              "sourceRevision": "sha256:4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              500,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/1",
+              "sourceRevision": "sha256:4d954ed9e20dbc2f9a875d0f72134a2544fa2bac279a58cb2656453ddbae5c11"
+            }
+          }
+        ],
+        "control": {
+          "stepCount": 4,
+          "completedSteps": 4,
+          "fixedDelta": 0.25
+        }
+      },
+      "control": {
+        "program": {
+          "format": "viento-runtime-control",
+          "schemaVersion": 1,
+          "fixedDelta": 0.25,
+          "steps": [
+            {
+              "left": false,
+              "right": true,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": false,
+              "right": false,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": true,
+              "right": false,
+              "up": false,
+              "down": false
+            },
+            {
+              "left": false,
+              "right": false,
+              "up": false,
+              "down": false
+            }
+          ]
+        },
+        "sha256": "sha256:205bc375c44f5c2f27acf4a4fdca6a1b10d77a03772946fc5ba1a5edc180e1d8",
+        "samples": [
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  240,
+                  220
+                ],
+                "state": "moving"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 0
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  240,
+                  220
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 1
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "moving"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 2
+          },
+          {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "sample",
+            "format": "viento-runtime-trace",
+            "protocolVersion": 2,
+            "schemaVersion": 1,
+            "stepIndex": 3
+          }
+        ]
+      },
+      "verification": {
+        "definition": {
+          "format": "viento-runtime-case",
+          "schemaVersion": 1,
+          "program": {
+            "format": "viento-runtime-control",
+            "schemaVersion": 1,
+            "fixedDelta": 0.25,
+            "steps": [
+              {
+                "left": false,
+                "right": true,
+                "up": false,
+                "down": false
+              },
+              {
+                "left": false,
+                "right": false,
+                "up": false,
+                "down": false
+              },
+              {
+                "left": true,
+                "right": false,
+                "up": false,
+                "down": false
+              },
+              {
+                "left": false,
+                "right": false,
+                "up": false,
+                "down": false
+              }
+            ]
+          },
+          "checks": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "stepIndex": 3,
+              "position": {
+                "value": [
+                  201,
+                  220
+                ],
+                "tolerance": 0.0001
+              },
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "stepIndex": 3,
+              "position": {
+                "value": [
+                  500,
+                  220
+                ],
+                "tolerance": 0.0001
+              },
+              "state": "idle"
+            }
+          ]
+        },
+        "sha256": "sha256:9a1a49370de0f1b6c88b7c863df98a5b3f667da6b15df4dfe0d1a0084369332e",
+        "evaluation": {
+          "format": "viento-runtime-case-evaluation",
+          "schemaVersion": 1,
+          "status": "failed",
+          "complete": true,
+          "stepCount": 4,
+          "sampleCount": 4,
+          "checkCount": 2,
+          "passedChecks": 1,
+          "failedChecks": 1,
+          "unavailableChecks": 0,
+          "checks": [
+            {
+              "checkIndex": 0,
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "stepIndex": 3,
+              "status": "failed",
+              "expected": {
+                "position": {
+                  "value": [
+                    201,
+                    220
+                  ],
+                  "tolerance": 0.0001
+                },
+                "state": "idle"
+              },
+              "actual": {
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "idle"
+              },
+              "positionPassed": false,
+              "statePassed": true
+            },
+            {
+              "checkIndex": 1,
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "stepIndex": 3,
+              "status": "passed",
+              "expected": {
+                "position": {
+                  "value": [
+                    500,
+                    220
+                  ],
+                  "tolerance": 0.0001
+                },
+                "state": "idle"
+              },
+              "actual": {
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              },
+              "positionPassed": true,
+              "statePassed": true
+            }
+          ]
+        }
+      },
+      "finishedAt": "2026-10-08T01:51:53.256Z"
+    }
+  ],
+  "authorFiles": 8,
+  "authorBytesUnchanged": true,
+  "draftAndCaretPreserved": true,
+  "finishedAt": "2026-10-08T01:51:53.424Z",
+  "temporaryDirectoriesRemoved": true
+}
