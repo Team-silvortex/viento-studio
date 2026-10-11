@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-11T08:05:27.716780+00:00",
+  "ok": true,
+  "openFindings": [],
+  "mode": "Independent read-only design/implementation audit plus real browser regression and byte preservation checks",
+  "reviewScriptSha256": "08968524752ffb58c965e9a8ad17f2744040da45c08c033958d6958929a4d70e",
+  "reviewedSources": {
+    "engine/scene-authoring-candidate.mjs": "8844f7b911e15a9afaa6cc04028e78c4fb697089fbc9fccd7a570030f366f1c7",
+    "engine/scene-authoring-workflow.mjs": "2c14163c57a873609d7c20f74106b6bd7d4d28bb466dd88651ef3be2477abb64",
+    "web/modules/app-scene-authoring.js": "550dba8178ad8e57dc6a84b0dc295ecba6fe0e5c0565aa151f9dffa6bbc08fe4",
+    "web/modules/app-project-build.js": "53b15266ada2a6465751e5dd2a5144b79c1c0142392758b09a141ca87a910212",
+    "web/modules/app-runtime.js": "2ebcb746d50c76a05c81f7a280e61203eca428964d1cf77139c6c39becb14aad",
+    "engine/README.md": "f9d8edbe204b10f3944ed7707d7f2ef52426f483010adf15fe4336105c46e7a9",
+    "scripts/tests/scene-authoring-candidate.test.mjs": "b3a464adf57f1c8fdf730edab6b0203327599569c68f2e440df7393bf80fc78f",
+    "scripts/tests/scene-authoring-workflow.test.mjs": "52ef2d1a17fbf377c4c794742b8c3e5322cf02d49329dc2d96c102922623b6a9",
+    "scripts/tests/scene-authoring-ui.test.mjs": "c16dabfe3415dbffb376a8174aba251fa93affabc93cdfce6764b30a3e061d23",
+    "scripts/tests/scene-composition-overrides-bridge.test.mjs": "0324be1a08205d75d8b90dee0f47dd7b1e49715fca25684dbdff22cf5ccc4709"
+  },
+  "preservation": {
+    "historical": {
+      "files": 2799,
+      "allBytesMatch": true,
+      "manifestSha256": "0f5b064fb9c3652ba002f86280af906599e78797ee2732a0f5ba08f57a474cc8"
+    },
+    "source": {
+      "files": 610,
+      "allBytesMatch": true,
+      "manifestSha256": "2624ffbf0bbc9a78c7a27583511a266e95e34dac217e3ec36549fd577fa35c5c"
+    },
+    "previousSourceFiles": 604,
+    "protected": {
+      "core-source-hashes.json": {
+        "files": 14,
+        "allBytesMatch": true,
+        "manifestSha256": "090b6664e0681551dce7d26d3510c4502e7f12ad276a655368f2ecfeb6712349"
+      },
+      "core-source-hashes-final.json": {
+        "files": 14,
+        "allBytesMatch": true,
+        "manifestSha256": "090b6664e0681551dce7d26d3510c4502e7f12ad276a655368f2ecfeb6712349"
+      },
+      "frozen-backend-baseline.json": {
+        "files": 7,
+        "allBytesMatch": true,
+        "manifestSha256": "445f69282baec6203dd21d0dc98195c31577b9a500bca36303ebfced627af077"
+      },
+      "protected-scene-slices.json": {
+        "files": 23,
+        "allBytesMatch": true,
+        "manifestSha256": "b3fddfb84b7a27e13ef4bab299b7d1fe2ee88a11ddba0666edc1dc891c0c0d92"
+      },
+      "author-baseline.json": {
+        "files": 39,
+        "allBytesMatch": true,
+        "manifestSha256": "83403e6acef217cff98218099686972da9527e28e97c8e3bb729372619f30aff"
+      }
+    },
+    "tools": {
+      "files": 4,
+      "allByteHashesAndPhysicalIdentityMatch": true
+    },
+    "retainedWasmBytes": 337188,
+    "retainedWasmSha256": "c9cb529e365b43e9fefbfdf96ff947e6fc5e7ed34abc3c4d0f71efd2544f9581",
+    "retainedBuildMetadataSha256": "03fa30cd8b6d702739da5ecdad8931208c292c10cc7d5907c36f0a41ba6feaf9",
+    "sourceDeltaEntries": 10,
+    "sourceDeltaManifestSha256": "50238de7ab82045af5242d66b4d76ce44581532a5c9980876a3ca2ee2bf96461",
+    "oldCouplingSpecificTestChange": "old-test-contract-review.json"
+  },
+  "executedByThisReviewer": {
+    "browserWorkflows": 37,
+    "browserReport": "browser-regression.json",
+    "browserReportSha256": "76fad372b0bc775a620d53fed9bff15b30d1ac3a80f0417ebfbc8100274290d0",
+    "screenshotsViewed": 9,
+    "independentNativeEngineOrProductUnitTestsRun": 0
+  },
+  "reviewedBoundaries": [
+    {
+      "area": "layer-separation",
+      "result": "passed",
+      "detail": "Synchronous pure candidate validation receives detached JSON and a captured source SHA. Workflow owns per-domain lifecycle through explicit ports and contains no DOM, HTTP, execution backend or ordinary Save authority. Browser adapter binds transport, catalog and each existing renderer; build parent only provides current source owner and navigation context."
+    },
+    {
+      "area": "six-independent-workflows",
+      "result": "passed",
+      "detail": "Override and single canvas share the established instance candidate rule while retaining separate workflow functions/epochs/receipts. Batch, fragment, placement and structure use their fixed distinct strategies. No shared child form state or global approval bus was added; capability context exposes only the current entry capability and six existing source-owner fields."
+    },
+    {
+      "area": "candidate-contract-preservation",
+      "result": "passed",
+      "detail": "The five existing accepted domains retain their envelope and target policies. Structure accepts removed openers and source-only unused targets[] while verifying complete ordered actor/group provenance; placement matches real sceneStructure.groups; final source SHA/path, draft baseline, composition identity and preview lease are bound before acceptance. Candidate validation grants no source write or executable scene authority."
+    },
+    {
+      "area": "detached-asynchronous-lifecycle",
+      "result": "passed",
+      "detail": "Model/source/catalog/proposals are detached at ownership boundaries before asynchronous use; accessors/serializers, malformed non-JSON data and late caller/submitted DTO mutations reject. Open/reset generations and independent review/apply epochs invalidate older responses. All returned valid preview IDs are best-effort released even for stale or malformed responses."
+    },
+    {
+      "area": "committed-receipt",
+      "result": "passed",
+      "detail": "The trusted ordinary source port still recomputes exact domain patches and guards the editor baseline. Successful memory application may advance its source token; completion retains the original parent/source/session, current apply epoch, detached proposal fingerprint and exact result identity. Sibling workflows, closed sessions and older overlapping apply responses cannot replay that receipt."
+    },
+    {
+      "area": "unchanged-editor-policy",
+      "result": "passed",
+      "detail": "Existing editable/source-mode, request-busy/running and selected recipe/session rules remain supplied by the parent port. This extraction adds no execution-time author permissions, source disk Save, asset import/export, generated-engine reverse editing or new metadata transaction."
+    },
+    {
+      "area": "render-and-engine-isolation",
+      "result": "passed",
+      "detail": "Six renderers, 14 Rust sources, existing shared WASM/build metadata, backend generators/runtime files and protected old scene domains retain their bytes. Browser snapshots add explicit new workflow/candidate/adapter hashes that old smoke scripts do not capture themselves. Represented editor review, cancel, ordinary Save, source conflicts, image ownership and stable UUID flows all passed."
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "area": "unknown-kind-prototype-members",
+      "finding": "The initial normal-object capability table allowed constructor/toString/__proto__ lookups to reach inherited values and throw an unclassified TypeError.",
+      "resolution": "Workflow owner added string and own-key checks before capability lookup, retaining the established invalid errorCode.",
+      "evidence": "scripts/tests/scene-authoring-workflow.test.mjs invalid kind/capability test; workflow-tests.log 31/31"
+    }
+  ],
+  "reviewSuggestionsImplemented": [
+    "Latest-request epochs protect overlapping reviews and applies without sharing form state.",
+    "Reset/open expire prior child owners; complete model is snapshotted before source/catalog awaits.",
+    "Exact committed receipt tolerates the source-token increment but rejects owner replacement."
+  ],
+  "retainedInitialEvidence": {
+    "compositionRegression": "composition-regression-initial.log",
+    "reason": "337 old tests initially had only the obsolete same-function reference assertion fail (336 pass, one fail, zero skip). The approved independent-function contract change retains both full POST validation and preview DELETE release; original evidence was not overwritten.",
+    "workflowInitial": "workflow-tests-initial.log",
+    "candidateInitial": "candidate-tests-initial.log"
+  },
+  "unclaimed": [
+    "Installed desktop or Android acceptance",
+    "Native engine execution in this reviewer scope",
+    "New UI layout or ergonomic design acceptance",
+    "Cross-file transactions or unified cross-view history",
+    "Hostile-code VM sandbox",
+    "Expanded candidate format support or runtime permissions"
+  ]
+}

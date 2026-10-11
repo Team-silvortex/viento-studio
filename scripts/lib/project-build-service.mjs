@@ -19,6 +19,10 @@ import { createRuntimeCaseDocumentService } from './runtime-case-documents.mjs';
 import { createRuntimeCaseSuiteDocumentService, captureRuntimeCaseSuite } from './runtime-case-suites.mjs';
 import { summarizeRuntimeCaseSuite } from '../../engine/runtime-case-suite.mjs';
 import { readRuntimeCaseReport } from './runtime-case-reports.mjs';
+import { inspectBackendProject } from '../adapters/node-backend-project.mjs';
+import { PROJECT_RETENTION_PIN, assertProjectOwnership, inspectProjectRetention } from '../adapters/node-backend-project-retention.mjs';
+import { createBackendProjectCatalog, assertCatalogProject } from '../adapters/node-backend-project-catalog.mjs';
+import { resolveContainedPath } from './contained-path.mjs';
 
 const services = new Set();
 const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
@@ -48,9 +52,168 @@ export function createProjectBuildService(root, {
   let probe = null, candidateKey;
   let toolStatus = createExecutionToolStatus({ backendId, status: 'unchecked' });
   let scenes = [], previewDocuments = [], catalogAt = 0, catalogRead, catalogObserved = false, catalogDiagnostic = null;
-  const builds = new Map(), ownedOutputs = [];
+  const builds = new Map(), ownedOutputs = [], projects = new Map();
   const memberReports = new Map();
-  const namespace = path.join(cacheRoot, 'editor', buildHash(path.resolve(root)).slice(0, 24));
+  const namespace = path.join(cacheRoot, 'editor', buildHash(path.resolve(root)).slice(0, 24), backendId);
+  const projectCatalog = createBackendProjectCatalog({ namespace, backendId });
+  let projectCatalogRead = null, projectCatalogObserved = false, projectCatalogDiagnostic = null, workspaceId = null, selectionEpoch = 0;
+
+  function publicProjects() {
+    return [...projects.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt) || b.id.localeCompare(a.id))
+      .map(({ directory, retentionPin, catalogEntry, ...summary }) => clone(summary));
+  }
+
+  function catalogFailure(error) {
+    projectCatalogDiagnostic = { code: error.errorCode || 'backend_project_catalog_unavailable' };
+  }
+
+  async function readProjectCatalog({ refresh = false } = {}) {
+    if (projectCatalogObserved && !refresh) return;
+    if (!projectCatalogRead) projectCatalogRead = (async () => {
+      try {
+        const catalog = await projectCatalog.read();
+        if (closed) return;
+        const storedIds = new Set(catalog.entries.map(entry => entry.buildId));
+        // A refresh reconciles only restored rows, never current write receipts.
+        // Active jobs keep the frozen entry they already admitted until exit.
+        if (!active) for (const [id, summary] of projects) {
+          if (summary.origin !== 'previous-session' || storedIds.has(id)) continue;
+          projects.delete(id); builds.delete(id);
+          if (latestBuild?.id === id) latestBuild = null;
+        }
+        for (const entry of catalog.entries) {
+          const existing = projects.get(entry.buildId);
+          if (existing && (existing.origin === 'current-session' || active
+            || canonicalJson(existing.catalogEntry) === canonicalJson(entry))) continue;
+          if (existing) {
+            builds.delete(entry.buildId);
+            if (latestBuild?.id === entry.buildId) latestBuild = null;
+          }
+          projects.set(entry.buildId, { id: entry.buildId, sceneId: entry.sceneId, backendId,
+            snapshotId: entry.snapshotId, title: entry.title, createdAt: entry.createdAt, status: 'succeeded',
+            origin: 'previous-session', availability: 'unchecked', retention: 'preserved',
+            retentionReason: 'backend_project_previous_session', catalogEntry: entry,
+            directory: path.join(namespace, entry.directory) });
+        }
+        projectCatalogDiagnostic = null;
+      } catch (error) { catalogFailure(error); }
+      finally { projectCatalogObserved = true; }
+    })().finally(() => { projectCatalogRead = null; });
+    await projectCatalogRead;
+  }
+
+  async function persistProject(summary, project) {
+    try {
+      const entry = await projectCatalog.capture({ buildDirectory: summary.directory, project,
+        manifestSha256: summary.retentionPin.files.get('backend-project.json').sha256,
+        title: summary.title, createdAt: summary.createdAt, retentionPin: summary.retentionPin });
+      await projectCatalog.upsert(entry); summary.catalogEntry = entry; projectCatalogDiagnostic = null;
+    } catch (error) { catalogFailure(error); }
+  }
+
+  async function assertProjectScope(summary) {
+    if (!summary.catalogEntry) return;
+    // Observe only the small workspace identity, never author bodies or assets.
+    // Offline sources keep their last observed identity; a readable replacement
+    // at the same path must not inherit another workspace's frozen projects.
+    let currentWorkspaceId = workspaceId;
+    try {
+      let file;
+      for (const relative of ['workspace.json', '.viento/workspace.json']) {
+        try {
+          file = await resolveContainedPath(root, path.join(root, relative));
+          await fs.lstat(file); break;
+        } catch (error) { if (error.code !== 'ENOENT') throw error; }
+        file = null;
+      }
+      if (file) {
+        const header = JSON.parse(await readBuildFile(file, 4 * 1024 * 1024));
+        if (header.format !== 'viento-workspace' || !uuid(header.id) || header.compatibilityGuard) throw new Error('Invalid workspace identity.');
+        currentWorkspaceId = header.id;
+      }
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw fail('backend_project_workspace_changed', 'The author workspace identity cannot be verified.', 409);
+    }
+    if (currentWorkspaceId && currentWorkspaceId !== summary.catalogEntry.workspaceId) {
+      throw fail('backend_project_workspace_changed', 'This backend project belongs to a different author workspace.', 409);
+    }
+  }
+
+  async function assertRunnableEntry(entry) {
+    await assertProjectScope(entry);
+    if (entry.retentionPin) await assertProjectOwnership(entry.retentionPin);
+    else await assertCatalogProject(entry.catalogEntry);
+  }
+
+  function frozenBuildEntry(summary, frozenPlan) {
+    const entry = { id: summary.id, sceneId: summary.sceneId, backendId, snapshotId: summary.snapshotId, title: summary.title,
+      planSchemaVersion: frozenPlan.schemaVersion, actorCount: frozenPlan.actors.length };
+    const controlPlan = { format: frozenPlan.format, kind: frozenPlan.kind, schemaVersion: frozenPlan.schemaVersion,
+      scene: { objectId: frozenPlan.scene.objectId, sourcePath: frozenPlan.scene.sourcePath },
+      actors: frozenPlan.actors.map(actor => ({ objectId: actor.objectId, ...(actor.instanceId ? { instanceId: actor.instanceId } : {}) })) };
+    if (frozenPlan.schemaVersion === 2 && adapter.descriptor.capabilities.includes('runtime.control-replay.instances')) {
+      entry.controlTargets = frozenPlan.actors.map(actor => ({ instanceId: actor.instanceId, objectId: actor.objectId,
+        name: (actor.name || actor.objectId).replace(/\s+/gu, ' ').trim().slice(0, 160) || actor.objectId }));
+    }
+    return { public: entry, owned: { ...entry, directory: summary.directory, controlPlan,
+      retentionPin: summary.retentionPin, catalogEntry: summary.catalogEntry } };
+  }
+
+  async function inspectProject(summary) {
+    await assertRunnableEntry(summary);
+    const result = await inspectBackendProject({ buildDirectory: summary.directory, backendId, backendRegistry,
+      expectedBuildId: summary.id, expectedSnapshotId: summary.snapshotId,
+      expectedManifestSha256: summary.retentionPin?.files.get('backend-project.json')?.sha256 || summary.catalogEntry.manifestSha256 });
+    if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
+    if (projects.get(summary.id) !== summary) throw fail('build_artifact_missing', 'This backend project is no longer available.', 404);
+    if (result.buildDirectory !== summary.directory || summary.catalogEntry && (result.project.source.workspaceId !== summary.catalogEntry.workspaceId
+      || result.project.source.sceneId !== summary.sceneId || result.project.source.sourcePath !== summary.catalogEntry.sourcePath)) {
+      throw fail('backend_project_owner_changed', 'The recorded backend project identity changed.', 409);
+    }
+    await assertRunnableEntry(summary);
+    summary.availability = 'verified';
+    return result;
+  }
+
+  async function pruneProjects() {
+    // Only this host instance's trusted write receipts authorize deletion.
+    // Files added or edited outside the host, and run reports, stay visible.
+    while (ownedOutputs.length > 3) {
+      const entry = ownedOutputs.shift();
+      const inspection = await inspectProjectRetention(entry.retentionPin);
+      if (!inspection.complete) {
+        entry.retention = 'preserved'; entry.retentionReason = inspection.reason;
+        continue;
+      }
+      try {
+        await assertProjectOwnership(entry.retentionPin);
+        const quarantine = path.join(path.dirname(entry.directory), `.viento-prune-${randomUUID()}`);
+        await fs.rename(entry.directory, quarantine);
+        entry.directory = quarantine; entry.retentionPin.directory = quarantine;
+        const runnable = builds.get(entry.id);
+        if (runnable) runnable.directory = quarantine;
+        if (entry.catalogEntry) {
+          const project = JSON.parse(await readBuildFile(path.join(quarantine, 'backend-project.json'), 4 * 1024 * 1024));
+          await persistProject(entry, project);
+          if (runnable) runnable.catalogEntry = entry.catalogEntry;
+        }
+        // Rename first, then verify again: edits arriving during the first
+        // inspection stay in a visible retained directory instead of vanishing.
+        const after = await inspectProjectRetention(entry.retentionPin);
+        if (!after.complete) {
+          entry.retention = 'preserved'; entry.retentionReason = after.reason;
+          continue;
+        }
+        await assertProjectOwnership(entry.retentionPin);
+        await fs.rm(entry.directory, { recursive: true });
+        projects.delete(entry.id); builds.delete(entry.id);
+        if (latestBuild?.id === entry.id) latestBuild = null;
+        try { await projectCatalog.remove(entry.id); } catch (error) { catalogFailure(error); }
+      } catch {
+        entry.retention = 'preserved'; entry.retentionReason = 'backend_project_cleanup_failed';
+      }
+    }
+  }
 
   async function toolState() {
     const candidate = await readExecutionToolCandidate(adapter, { toolPath: tool, enabled, platform: process.platform });
@@ -69,6 +232,7 @@ export function createProjectBuildService(root, {
     if (!refresh && Date.now() - catalogAt < 3000) return;
     if (!catalogRead) catalogRead = (async () => {
       const observed = await readWorldSnapshot(root);
+      workspaceId = observed.source.workspace.id;
       const result = [], previews = [];
       for (const document of observed.source.documents) {
         if (!document.record?.id || !document.sourcePath.toLowerCase().endsWith('.json')) continue;
@@ -93,6 +257,7 @@ export function createProjectBuildService(root, {
 
   async function status({ refresh = false } = {}) {
     if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
+    await readProjectCatalog({ refresh });
     const tool = await toolState();
     if (tool.supported) {
       try { await readScenes({ refresh }); }
@@ -100,14 +265,23 @@ export function createProjectBuildService(root, {
         // Already-owned frozen artifacts and runtime observations remain usable
         // if the author source goes offline. Cached discovery cannot authorize
         // a new author build; command admission below always reads afresh.
-        if (!catalogObserved || !latestBuild && !(job?.kind === 'run' && builds.has(job.buildId))) throw error;
+        if ((!catalogObserved || !latestBuild && !(job?.kind === 'run' && builds.has(job.buildId))) && !projects.size) throw error;
         catalogDiagnostic = { code: 'build_catalog_unavailable' };
       }
     }
     if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
+    const visibleScenes = clone(scenes);
+    if (tool.supported) for (const summary of projects.values()) {
+      if (summary.catalogEntry && (!workspaceId || summary.catalogEntry.workspaceId === workspaceId)
+        && !visibleScenes.some(scene => scene.id === summary.sceneId)) visibleScenes.push({ id: summary.sceneId,
+        sourcePath: summary.catalogEntry.sourcePath, title: summary.title, frozenOnly: true });
+    }
     return { ...tool, platform: process.platform, backend: clone(adapter.descriptor),
-      scenes: clone(scenes), previewDocuments: clone(previewDocuments), catalogDiagnostic: clone(catalogDiagnostic),
-      job: clone(job), latestBuild: clone(latestBuild) };
+      scenes: visibleScenes, previewDocuments: clone(previewDocuments), catalogDiagnostic: clone(catalogDiagnostic),
+      job: clone(job), latestBuild: clone(latestBuild), projects: publicProjects(),
+      projectManagement: { format: 'viento-backend-project-management', schemaVersion: 1, scope: 'host-catalog',
+        retentionLimit: 3, preservedCount: [...projects.values()].filter(entry => entry.retention === 'preserved').length,
+        previousSessions: 'explicit-verify', catalogDiagnostic: clone(projectCatalogDiagnostic) } };
   }
 
   async function checkTool() {
@@ -167,6 +341,7 @@ export function createProjectBuildService(root, {
       const sceneId = job.sceneId;
       if (payload.action === 'suite-run') {
         const entry=builds.get(payload.buildId);
+        await assertRunnableEntry(entry);
         result=await executeRuntimeCaseSuite({capture:payload.capture,plan:payload.frozenPlan,authorRoot:root,buildDirectory:entry.directory,
           buildId:entry.id,snapshotId:entry.snapshotId,tool,backendId,backendRegistry,cacheRoot,signal:controller.signal,onProgress:progress});
         job.suite=clone(result.record.suite);
@@ -185,33 +360,26 @@ export function createProjectBuildService(root, {
         const output = path.join(namespace, job.id);
         result = await buildProject({ root, scene: sceneId, tool, backendId, backendRegistry, output, signal: controller.signal,
           expectedSnapshotId: payload.expectedSnapshotId, onProgress: progress });
-        if (result.buildDirectory) ownedOutputs.push(result.buildDirectory);
+        if (result.buildDirectory) {
+          const summary = { id: result.record.buildId, sceneId, backendId, snapshotId: result.record.snapshotId,
+            title: scenes.find(scene => scene.id === sceneId)?.title || sceneId,
+            status: result.record.status, createdAt: job.createdAt, origin: 'current-session', availability: result.ok ? 'verified' : 'unavailable',
+            retention: 'automatic', retentionReason: null,
+            directory: result.buildDirectory, retentionPin: result[PROJECT_RETENTION_PIN] };
+          ownedOutputs.push(summary); projects.set(summary.id, summary);
+        }
         if (result.ok) {
-          const entry = { id: result.record.buildId, sceneId, backendId, snapshotId: result.record.snapshotId,
-            title: scenes.find(scene => scene.id === sceneId)?.title || sceneId };
+          const summary = projects.get(result.record.buildId);
+          const project = JSON.parse(await readBuildFile(path.join(result.buildDirectory, 'backend-project.json'), 4 * 1024 * 1024, controller.signal));
+          await persistProject(summary, project);
           const frozenPlan = JSON.parse(await readBuildFile(path.join(result.buildDirectory, 'snapshot.json'), 80 * 1024 * 1024, controller.signal)).plan;
-          entry.planSchemaVersion = frozenPlan.schemaVersion; entry.actorCount = frozenPlan.actors.length;
-          // Targets and admission facts belong to this successful frozen build,
-          // never a later author edit or an HTTP-supplied engine identity.
-          const controlPlan = { format: frozenPlan.format, kind: frozenPlan.kind, schemaVersion: frozenPlan.schemaVersion,
-            scene: { objectId: frozenPlan.scene.objectId, sourcePath: frozenPlan.scene.sourcePath },
-            actors: frozenPlan.actors.map(actor => ({ objectId: actor.objectId, ...(actor.instanceId ? { instanceId: actor.instanceId } : {}) })) };
-          if (frozenPlan.schemaVersion === 2 && adapter.descriptor.capabilities.includes('runtime.control-replay.instances')) {
-            entry.controlTargets = frozenPlan.actors.map(actor => ({ instanceId: actor.instanceId, objectId: actor.objectId,
-              name: (actor.name || actor.objectId).replace(/\s+/gu, ' ').trim().slice(0, 160) || actor.objectId }));
-          }
-          builds.set(entry.id, { ...entry, directory: result.buildDirectory, controlPlan }); latestBuild = entry; job.buildId = entry.id;
+          const entry = frozenBuildEntry(summary, frozenPlan);
+          builds.set(entry.public.id, entry.owned); latestBuild = entry.public; job.buildId = entry.public.id;
         }
-        // Only prune directories created by this service instance. Builds from
-        // earlier sessions or CLI runs remain untouched and are never adopted.
-        while (ownedOutputs.length > 3) {
-          const old = ownedOutputs.shift();
-          for (const [id, entry] of builds) if (entry.directory === old) builds.delete(id);
-          if (latestBuild && !builds.has(latestBuild.id)) latestBuild = null;
-          await fs.rm(old, { recursive: true, force: true });
-        }
+        await pruneProjects();
       } else {
         const entry = builds.get(payload.buildId);
+        await assertRunnableEntry(entry);
         result = await runProjectBuild({ buildDirectory: entry.directory, tool, backendId, backendRegistry, signal: controller.signal,
           expectedBuildId:entry.id,expectedSnapshotId:entry.snapshotId,
           headless: payload.mode === 'headless', smoke: payload.mode === 'headless',
@@ -256,6 +424,7 @@ export function createProjectBuildService(root, {
     if(!state.available)throw fail('build_tool_required','Configure the selected backend tool before running.',422);
     const entry=builds.get(request.buildId);
     if(!entry)throw fail('build_artifact_missing','This build is no longer available.',404);
+    await assertRunnableEntry(entry);
     const frozen=await readFrozenProjectBuild(entry.directory,{backendId,backendRegistry});
     if(frozen.build.buildId!==entry.id||frozen.build.snapshotId!==entry.snapshotId||frozen.plan.scene.objectId!==entry.sceneId) {
       throw fail('runtime_build_invalid','The owned frozen build changed.',422);
@@ -288,9 +457,9 @@ export function createProjectBuildService(root, {
   async function command(payload) {
     if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)
-      || !['plan', 'build', 'run', 'cancel', 'inspect', 'tool-check', 'case-list', 'case-load', 'case-save', 'suite-list', 'suite-load', 'suite-save', 'suite-run', 'suite-report'].includes(payload.action)) throw fail('build_request_invalid', 'Invalid build action.');
+      || !['plan', 'build', 'run', 'cancel', 'inspect', 'inspect-project', 'select-project', 'tool-check', 'case-list', 'case-load', 'case-save', 'suite-list', 'suite-load', 'suite-save', 'suite-run', 'suite-report'].includes(payload.action)) throw fail('build_request_invalid', 'Invalid build action.');
     const allowed = { plan: ['action', 'sceneId'], build: ['action', 'sceneId', 'expectedSnapshotId'], run: ['action', 'buildId', 'mode', 'controlProgram', 'runtimeCase', 'runtimeCaseSceneId'], cancel: ['action', 'jobId'],
-      inspect: ['action', 'jobId', 'instanceId', 'objectId'], 'tool-check': ['action'],
+      inspect: ['action', 'jobId', 'instanceId', 'objectId'], 'inspect-project': ['action', 'buildId'], 'select-project': ['action', 'buildId'], 'tool-check': ['action'],
       'case-list': ['action', 'sceneId'], 'case-load': ['action', 'documentId'],
       'case-save': ['action', 'sceneId', 'sceneVersion', 'content', 'documentId', 'expectedVersion', 'sourcePath', 'documentType'],
       'suite-list':['action','sceneId'],'suite-load':['action','documentId'],
@@ -298,6 +467,39 @@ export function createProjectBuildService(root, {
       'suite-run':['action','buildId','suiteDocumentId','expectedVersion'],
       'suite-report':['action','jobId','documentId'] }[payload.action];
     if (Object.keys(payload).some(key => !allowed.includes(key))) throw fail('build_request_invalid', 'Unknown build request field.');
+    if (payload.action === 'inspect-project' || payload.action === 'select-project') {
+      const requestId = payload.buildId, selecting = payload.action === 'select-project';
+      if (!uuid(requestId)) throw fail('build_request_invalid', 'Select a recorded backend project.');
+      await readProjectCatalog();
+      if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
+      const summary = projects.get(requestId);
+      if (!summary || summary.status !== 'succeeded') throw fail('build_artifact_missing', 'This successful backend project is no longer available.', 404);
+      if (selecting && (active || probe)) throw fail('build_busy', 'A build task or tool check is already active.', 409);
+      const selectionOwner = selecting ? { epoch: ++selectionEpoch, latestBuild, job } : null;
+      return caseOperation(async () => {
+        try {
+          const result = await inspectProject(summary);
+          if (!selecting) return result;
+          const frozen = await readFrozenProjectBuild(summary.directory, { backendId, backendRegistry });
+          if (frozen.build.buildId !== summary.id || frozen.build.snapshotId !== summary.snapshotId || frozen.plan.scene.objectId !== summary.sceneId) {
+            throw fail('backend_project_changed', 'The frozen backend project changed during selection.', 409);
+          }
+          await assertRunnableEntry(summary);
+          if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
+          if (active || probe) throw fail('build_busy', 'A build task or tool check is already active.', 409);
+          if (selectionOwner.epoch !== selectionEpoch || selectionOwner.latestBuild !== latestBuild || selectionOwner.job !== job) {
+            throw fail('backend_project_selection_changed', 'The runtime project selection changed during verification.', 409);
+          }
+          if (projects.get(requestId) !== summary) throw fail('build_artifact_missing', 'This backend project is no longer available.', 404);
+          const entry = frozenBuildEntry(summary, frozen.plan);
+          builds.set(requestId, entry.owned); latestBuild = entry.public;
+          return status();
+        } catch (error) {
+          if (!['build_busy', 'build_service_closed', 'backend_project_selection_changed'].includes(error.errorCode)) summary.availability = 'unavailable';
+          throw error;
+        }
+      });
+    }
     if (payload.action === 'case-list') return caseOperation(() => caseDocuments.list(payload.sceneId));
     if (payload.action === 'case-load') return caseOperation(() => caseDocuments.load(payload.documentId));
     if (payload.action === 'case-save') return caseOperation(() => caseDocuments.save(payload));
@@ -426,7 +628,7 @@ export function createProjectBuildService(root, {
     closed = true;
     if (active) { job.phase = 'cancelling'; active.controller.abort(); }
     if (probe) probe.controller.abort();
-    closePromise = Promise.allSettled([active?.promise, probe?.promise, ...caseOperations]).finally(() => { memberReports.clear();services.delete(service); });
+    closePromise = Promise.allSettled([active?.promise, probe?.promise, projectCatalogRead, ...caseOperations]).finally(() => { memberReports.clear();services.delete(service); });
     return closePromise;
   } };
   services.add(service);

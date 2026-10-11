@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parent.parent
 INPUTS = [".gitattributes", ".gitignore", ".github", "LICENSE", "README.md", "VERSION", "favicon.ico",
           "package.json", "package-lock.json", "engine", "web", "scripts", "mobile",
           "desktop", "src-tauri", "schemas", "docs", "crates/viento-studio-core", "crates/viento-bevy-runtime",
-          "examples/scene2d", "examples/scene-composition", "examples/scene-behaviors", "examples/bevy-headless"]
+          "examples/scene2d", "examples/scene-composition", "examples/scene-behaviors", "examples/bevy-headless", "examples/scene3d"]
 GENERATED = {"crates/viento-studio-core/target", "crates/viento-bevy-runtime/target",
              "engine/studio-core.wasm", "engine/studio-core.build.json",
              "src-tauri/target", "src-tauri/binaries", "src-tauri/gen/schemas",

@@ -1,0 +1,828 @@
+✔ all five domains accept real saved and dirty source candidates including field reset layout offset reset and structure changes (214.476488ms)
+✔ candidate receipts are detached frozen identifiers and expose no GUI backend tool or save state (0.848356ms)
+✔ unknown kinds fail closed even with an otherwise valid single-instance receipt (0.600135ms)
+✔ every domain retains strict preview envelope scene owner source hash saved baseline and forbidden capability boundaries (42.17291ms)
+✔ missing non-record and malformed nested shapes yield the same diagnostic refusal instead of raw TypeErrors (21.417334ms)
+✔ invalid errors preserve the rejected payload for existing diagnostic handlers (0.523693ms)
+✔ instance fields and layout require their selected actor to remain in the candidate (1.317107ms)
+✔ position batches retain bounded unique changed actors and their placement-local provenance (3.540258ms)
+✔ shared fragments retain the full related target set in source order with a unique selected instance (3.974284ms)
+✔ placement actors retain exact source-ordered targets unique identities and local keys (3.604838ms)
+✔ placement group membership comes from sceneStructure and keeps complete ordered group provenance (5.228495ms)
+✔ structure validates complete actor and group identity and source-ordered provenance against actual Rust expansion (25.309877ms)
+✔ structure removal accepts the removed opener being absent and unused fragment edits retain empty target sets (1.00125ms)
+✔ structure rejects malformed duplicate-key or out-of-range recipes before granting a candidate receipt (2.46482ms)
+✔ projection-resolved candidate values remain compatible with raw inherited recipe declarations (0.43602ms)
+✔ override workflow independently opens, checks and applies through narrow ports (10.079097ms)
+✔ layout workflow independently opens, checks and applies through narrow ports (3.000635ms)
+✔ batch workflow independently opens, checks and applies through narrow ports (1.983174ms)
+✔ fragment workflow independently opens, checks and applies through narrow ports (2.55107ms)
+✔ placement workflow independently opens, checks and applies through narrow ports (2.501959ms)
+✔ structure workflow independently opens, checks and applies through narrow ports (2.341751ms)
+✔ invalid kind/capability pair is rejected rather than granting a sibling editing capability (0.475283ms)
+✔ editing gates require preview/source authority but never an installed execution backend (0.347395ms)
+✔ open binds the full recipe owner without binding a particular canvas actor selection (0.303053ms)
+✔ source acquisition snapshots raw source before catalog await and source/catalog DTOs remain detached (0.331767ms)
+✔ source, catalog and editor completion reject late owners and suppress stale port failures (0.63505ms)
+✔ current source/catalog failures remain observable and missing/mismatched source cannot open (0.329242ms)
+✔ reviewed proposals are detached and original changes across review await cannot approve (1.029633ms)
+✔ review ownership covers close, selection, source path, token, session, capability, reset and external guard (6.285729ms)
+✔ proposal and owner are rechecked after digest while unrelated language/rendering state is ignored (2.044859ms)
+✔ candidate rejection and invalid digest release a valid preview ID without granting application (4.038103ms)
+✔ temporary preview release is best effort for synchronous errors and rejected promises and never waits for cleanup (3.197882ms)
+✔ missing or invalid preview IDs cannot be sent to the release port (3.058573ms)
+✔ apply detaches before await and mutable caller proposals cannot acquire a success receipt (0.551244ms)
+✔ mutating the submitted DTO invalidates both the host isCurrent guard and its completed receipt (0.353296ms)
+✔ valid committed completion may advance source token but closed/replaced owners cannot retain the receipt (1.078904ms)
+✔ invalid or rejected apply results do not create a reusable source completion receipt (0.859317ms)
+✔ completion requires the identical result, full canonical proposal and original owner and is single-use (0.582893ms)
+✔ six sibling workflows cannot reuse another domain completion or be reset by a sibling lifecycle (0.384063ms)
+✔ new source sessions cannot replay an old receipt even when source path and selected recipe repeat (0.257809ms)
+✔ snapshot validation rejects getters, serializers, cycles, sparse arrays and non-JSON data without executing code (0.595787ms)
+✔ workflow module imports only pure authoring contracts and has no GUI, HTTP, backend or save dependency (7.913234ms)
+✔ open snapshots the model and chosen actor before awaits instead of consuming later mutable input (0.280371ms)
+✔ overlapping open attempts and reopening expire old form owners without sharing UI state (0.239355ms)
+✔ overlapping reviews use the latest request while every returned preview is still released (1.987293ms)
+✔ an older overlapping apply cannot overwrite a newer pending receipt or retain host write authority (0.562926ms)
+✖ group four-action candidates use real complete saved and dirty previews without changing runtime actor order or positions (156.410277ms)
+✔ group candidate rejects same-identity forged names parents presence order and extra organization fields (103.407345ms)
+✔ group candidate binds exact ordered memberships even when every actor and group identity is otherwise genuine (114.592428ms)
+✔ group candidate rejects foreign incomplete or reordered contribution provenance and forbidden execution receipts (85.004582ms)
+✔ group authoring exposes only its capability and applies one detached source receipt without execution availability (117.199975ms)
+✔ late group review rejects a replaced source owner and releases the actual complete preview receipt (55.371703ms)
+✔ forged organization review returns no approval and still releases the temporary preview (96.361225ms)
+✔ mutating group intent while applying or resetting the window invalidates the source receipt (84.245974ms)
+✔ placement add copy and removal use complete real candidate provenance including the removed opener (154.327417ms)
+✔ placement candidate rejects incomplete duplicated reordered or forged actors groups and placement counts (82.053228ms)
+✔ placement authoring keeps its own capability and requires source authority while execution may be unavailable (80.957192ms)
+✔ late placement review cannot approve a replaced source owner and releases its temporary preview (48.096185ms)
+✔ placement proposal mutation while applying invalidates the exact source receipt (33.327143ms)
+ℹ tests 59
+ℹ suites 0
+ℹ pass 58
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 947.43004
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-groups-workflow.test.mjs:52:1
+✖ group four-action candidates use real complete saved and dirty previews without changing runtime actor order or positions (156.410277ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        color: '#aabbcc',
+        controls: 'none',
+        declaration: {
+  ...
+                encoding: 'utf-16',
+  +             end: 959,
+  -             end: 905,
+                exact: true,
+                propertyPath: '/fragments/0/actors/0',
+  +             start: 570
+  -             start: 516
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/actorIds/leader',
+              role: 'identity',
+  ...
+                encoding: 'utf-16',
+  +             end: 2531,
+  -             end: 2477,
+                exact: true,
+                propertyPath: '/placements/0/actorIds/leader',
+  +             start: 2493
+  -             start: 2439
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/overrides/0/values/color',
+              role: 'override',
+  ...
+                encoding: 'utf-16',
+  +             end: 3055,
+  -             end: 2947,
+                exact: true,
+                propertyPath: '/placements/0/overrides/0/values/color',
+  +             start: 3046
+  -             start: 2938
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/overrides/0/values/controls',
+              role: 'override',
+  ...
+                encoding: 'utf-16',
+  +             end: 3009,
+  -             end: 2901,
+                exact: true,
+                propertyPath: '/placements/0/overrides/0/values/controls',
+  +             start: 3003
+  -             start: 2895
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/groupIds/party',
+              role: 'identity',
+  ...
+                encoding: 'utf-16',
+  +             end: 2667,
+  -             end: 2613,
+                exact: true,
+                propertyPath: '/placements/0/groupIds/party',
+  +             start: 2629
+  -             start: 2575
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/overrides/0/values/imageResourceId',
+              role: 'override',
+  ...
+                encoding: 'utf-16',
+  +             end: 2982,
+  -             end: 2874,
+                exact: true,
+                propertyPath: '/placements/0/overrides/0/values/imageResourceId',
+  +             start: 2978
+  -             start: 2870
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/overrides/0/values/position',
+              role: 'override',
+  ...
+                encoding: 'utf-16',
+  +             end: 3159,
+  -             end: 3051,
+                exact: true,
+                propertyPath: '/placements/0/overrides/0/values/position',
+  +             start: 3126
+  -             start: 3018
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/offset',
+              role: 'offset',
+  ...
+                encoding: 'utf-16',
+  +             end: 2878,
+  -             end: 2770,
+                exact: true,
+                propertyPath: '/placements/0/offset',
+  +             start: 2856
+  -             start: 2748
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/overrides/0/values/size',
+              role: 'override',
+  ...
+                encoding: 'utf-16',
+  +             end: 3105,
+  -             end: 2997,
+                exact: true,
+                propertyPath: '/placements/0/overrides/0/values/size',
+  +             start: 3072
+  -             start: 2964
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/overrides/0/values/speed',
+              role: 'override',
+  ...
+                encoding: 'utf-16',
+  +             end: 3028,
+  -             end: 2920,
+                exact: true,
+                propertyPath: '/placements/0/overrides/0/values/speed',
+  +             start: 3027
+  -             start: 2919
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            }
+          ],
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/0',
+          sourcePath: 'documents/scenes/source.json',
+          sourceRange: {
+            encoding: 'utf-16',
+  +         end: 959,
+  -         end: 905,
+            exact: false,
+            propertyPath: '/fragments/0/actors/0',
+  +         start: 570
+  -         start: 516
+          },
+  +       sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -       sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+        },
+        fieldSources: {
+          'size/0': {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/overrides/0/values/size/0',
+  ...
+              encoding: 'utf-16',
+  +           end: 3084,
+  -           end: 2976,
+              exact: true,
+              propertyPath: '/placements/0/overrides/0/values/size/0',
+  +           start: 3082
+  -           start: 2974
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          'size/1': {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/overrides/0/values/size/1',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 3096,
+  -           end: 2988,
+              exact: true,
+              propertyPath: '/placements/0/overrides/0/values/size/1',
+  +           start: 3094
+  -           start: 2986
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          color: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/overrides/0/values/color',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 3055,
+  -           end: 2947,
+              exact: true,
+              propertyPath: '/placements/0/overrides/0/values/color',
+  +           start: 3046
+  -           start: 2938
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          controls: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/overrides/0/values/controls',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 3009,
+  -           end: 2901,
+              exact: true,
+              propertyPath: '/placements/0/overrides/0/values/controls',
+  +           start: 3003
+  -           start: 2895
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          imageResourceId: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/overrides/0/values/imageResourceId',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 2982,
+  -           end: 2874,
+              exact: true,
+              propertyPath: '/placements/0/overrides/0/values/imageResourceId',
+  +           start: 2978
+  -           start: 2870
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          position: {
+            contributors: [
+              {
+                objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+  ...
+                  encoding: 'utf-16',
+  +               end: 3159,
+  -               end: 3051,
+                  exact: true,
+                  propertyPath: '/placements/0/overrides/0/values/position',
+  +               start: 3126
+  -               start: 3018
+                },
+  +             sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -             sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+              },
+              {
+                objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+                propertyPath: '/placements/0/offset',
+                role: 'offset',
+  ...
+                  encoding: 'utf-16',
+  +               end: 2878,
+  -               end: 2770,
+                  exact: true,
+                  propertyPath: '/placements/0/offset',
+  +               start: 2856
+  -               start: 2748
+                },
+  +             sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -             sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+              }
+            ],
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/overrides/0/values/position',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 3159,
+  -           end: 3051,
+              exact: false,
+              propertyPath: '/placements/0/overrides/0/values/position',
+  +           start: 3126
+  -           start: 3018
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          size: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/overrides/0/values/size',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 3105,
+  -           end: 2997,
+              exact: true,
+              propertyPath: '/placements/0/overrides/0/values/size',
+  +           start: 3072
+  -           start: 2964
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          speed: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/overrides/0/values/speed',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 3028,
+  -           end: 2920,
+              exact: true,
+              propertyPath: '/placements/0/overrides/0/values/speed',
+  +           start: 3027
+  -           start: 2919
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          }
+        },
+        instanceId: '20000000-1111-4111-8111-111111111111',
+        name: '投影🦊 1',
+        objectId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+  ...
+                encoding: 'utf-16',
+  +             end: 1322,
+  -             end: 1268,
+                exact: true,
+                propertyPath: '/fragments/0/actors/1',
+  +             start: 966
+  -             start: 912
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/actorIds/companion',
+              role: 'identity',
+  ...
+                encoding: 'utf-16',
+  +             end: 2589,
+  -             end: 2535,
+                exact: true,
+                propertyPath: '/placements/0/actorIds/companion',
+  +             start: 2551
+  -             start: 2497
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/groupIds/companions',
+              role: 'identity',
+  ...
+                encoding: 'utf-16',
+  +             end: 2726,
+  -             end: 2672,
+                exact: true,
+                propertyPath: '/placements/0/groupIds/companions',
+  +             start: 2688
+  -             start: 2634
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/0/offset',
+              role: 'offset',
+  ...
+                encoding: 'utf-16',
+  +             end: 2878,
+  -             end: 2770,
+                exact: true,
+                propertyPath: '/placements/0/offset',
+  +             start: 2856
+  -             start: 2748
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            }
+          ],
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1',
+          sourcePath: 'documents/scenes/source.json',
+          sourceRange: {
+            encoding: 'utf-16',
+  +         end: 1322,
+  -         end: 1268,
+            exact: false,
+            propertyPath: '/fragments/0/actors/1',
+  +         start: 966
+  -         start: 912
+          },
+  +       sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -       sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+        },
+        imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+        instanceId: '20000001-1111-4111-8111-111111111111',
+        name: '共同人物🦊',
+        objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+  ...
+                encoding: 'utf-16',
+  +             end: 959,
+  -             end: 905,
+                exact: true,
+                propertyPath: '/fragments/0/actors/0',
+  +             start: 570
+  -             start: 516
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/1/actorIds/leader',
+              role: 'identity',
+  ...
+                encoding: 'utf-16',
+  +             end: 3390,
+  -             end: 3282,
+                exact: true,
+                propertyPath: '/placements/1/actorIds/leader',
+  +             start: 3352
+  -             start: 3244
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/1/groupIds/party',
+              role: 'identity',
+  ...
+                encoding: 'utf-16',
+  +             end: 3526,
+  -             end: 3418,
+                exact: true,
+                propertyPath: '/placements/1/groupIds/party',
+  +             start: 3488
+  -             start: 3380
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/1/offset',
+              role: 'offset',
+  ...
+                encoding: 'utf-16',
+  +             end: 3317,
+  -             end: 3209,
+                exact: true,
+                propertyPath: '/placements/1/offset',
+  +             start: 3292
+  -             start: 3184
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            }
+          ],
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/0',
+          sourcePath: 'documents/scenes/source.json',
+          sourceRange: {
+            encoding: 'utf-16',
+  +         end: 959,
+  -         end: 905,
+            exact: false,
+            propertyPath: '/fragments/0/actors/0',
+  +         start: 570
+  -         start: 516
+          },
+  +       sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -       sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+        },
+        fieldSources: {
+          'size/0': {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/fragments/0/actors/0/size/0',
+  ...
+              encoding: 'utf-16',
+  +           end: 757,
+  -           end: 703,
+              exact: true,
+              propertyPath: '/fragments/0/actors/0/size/0',
+  +           start: 755
+  -           start: 701
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          'size/1': {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/fragments/0/actors/0/size/1',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 768,
+  -           end: 714,
+              exact: true,
+              propertyPath: '/fragments/0/actors/0/size/1',
+  +           start: 766
+  -           start: 712
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          color: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/fragments/0/actors/0/color',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 802,
+  -           end: 748,
+              exact: true,
+              propertyPath: '/fragments/0/actors/0/color',
+  +           start: 793
+  -           start: 739
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          controls: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/fragments/0/actors/0/controls',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 850,
+  -           end: 796,
+              exact: true,
+              propertyPath: '/fragments/0/actors/0/controls',
+  +           start: 842
+  -           start: 788
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          imageResourceId: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/fragments/0/actors/0/imageResourceId',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 915,
+  -           end: 861,
+              exact: true,
+              propertyPath: '/fragments/0/actors/0/imageResourceId',
+  +           start: 877
+  -           start: 823
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          position: {
+            contributors: [
+              {
+                objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+  ...
+                  encoding: 'utf-16',
+  +               end: 730,
+  -               end: 676,
+                  exact: true,
+                  propertyPath: '/fragments/0/actors/0/position',
+  +               start: 698
+  -               start: 644
+                },
+  +             sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -             sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+              },
+              {
+                objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+                propertyPath: '/placements/1/offset',
+                role: 'offset',
+  ...
+                  encoding: 'utf-16',
+  +               end: 3317,
+  -               end: 3209,
+                  exact: true,
+                  propertyPath: '/placements/1/offset',
+  +               start: 3292
+  -               start: 3184
+                },
+  +             sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -             sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+              }
+            ],
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/fragments/0/actors/0/position',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 730,
+  -           end: 676,
+              exact: false,
+              propertyPath: '/fragments/0/actors/0/position',
+  +           start: 698
+  -           start: 644
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          size: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/fragments/0/actors/0/size',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 776,
+  -           end: 722,
+              exact: true,
+              propertyPath: '/fragments/0/actors/0/size',
+  +           start: 746
+  -           start: 692
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          },
+          speed: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/fragments/0/actors/0/speed',
+            sourcePath: 'documents/scenes/source.json',
+            sourceRange: {
+              encoding: 'utf-16',
+  +           end: 822,
+  -           end: 768,
+              exact: true,
+              propertyPath: '/fragments/0/actors/0/speed',
+  +           start: 819
+  -           start: 765
+            },
+  +         sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -         sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+          }
+        },
+        imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+        instanceId: '20000002-1111-4111-8111-111111111111',
+        name: '投影🦊 1',
+  ...
+                encoding: 'utf-16',
+  +             end: 1322,
+  -             end: 1268,
+                exact: true,
+                propertyPath: '/fragments/0/actors/1',
+  +             start: 966
+  -             start: 912
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/1/actorIds/companion',
+              role: 'identity',
+  ...
+                encoding: 'utf-16',
+  +             end: 3448,
+  -             end: 3340,
+                exact: true,
+                propertyPath: '/placements/1/actorIds/companion',
+  +             start: 3410
+  -             start: 3302
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/1/groupIds/companions',
+              role: 'identity',
+  ...
+                encoding: 'utf-16',
+  +             end: 3585,
+  -             end: 3477,
+                exact: true,
+                propertyPath: '/placements/1/groupIds/companions',
+  +             start: 3547
+  -             start: 3439
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            },
+            {
+              objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+              propertyPath: '/placements/1/offset',
+              role: 'offset',
+  ...
+                encoding: 'utf-16',
+  +             end: 3317,
+  -             end: 3209,
+                exact: true,
+                propertyPath: '/placements/1/offset',
+  +             start: 3292
+  -             start: 3184
+              },
+  +           sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -           sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+            }
+          ],
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1',
+          sourcePath: 'documents/scenes/source.json',
+          sourceRange: {
+            encoding: 'utf-16',
+  +         end: 1322,
+  -         end: 1268,
+            exact: false,
+            propertyPath: '/fragments/0/actors/1',
+  +         start: 966
+  -         start: 912
+          },
+  +       sourceRevision: 'sha256:96af24d0e40fd5e21bf75aeed0a47a75926e15ae97d16d95062b342aa0d53651'
+  -       sourceRevision: 'sha256:7c98470f154f00e747dd53c8557d4fd1ae4f61822df763c832e1d928d52e4313'
+        },
+        imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+        instanceId: '20000003-1111-4111-8111-111111111111',
+        name: '共同人物🦊',
+        objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-groups-workflow.test.mjs:58:14)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { size: [Array], color: '#aabbcc', speed: 0, controls: 'none', instanceId: '20000000-1111-4111-8111-111111111111', objectId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', position: [Array], useProjectionDefaults: true, name: '投影🦊 1', sourcePath: 'documents/projections/p1.json', sourceRevision: 'sha256:07c6af570c5936a18dc4d4f910ed5afd7f854fd27ec6c1d07eec2afd1b4f91de', origin: [Object], fieldSources: [Object], declaration: [Object] }, { color: '#87d8b9', controls: 'none', imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', instanceId: '20000001-1111-4111-8111-111111111111', objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', position: [Array], size: [Array], speed: 0, name: '共同人物🦊', sourcePath: 'documents/oc.md', sourceRevision: 'sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a', declaration: [Object] }, { size: [Array], color: '#ffffff', speed: 160, controls: 'arrows', imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', instanceId: '20000002-1111-4111-8111-111111111111', objectId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', position: [Array], useProjectionDefaults: true, name: '投影🦊 1', sourcePath: 'documents/projections/p1.json', sourceRevision: 'sha256:07c6af570c5936a18dc4d4f910ed5afd7f854fd27ec6c1d07eec2afd1b4f91de', origin: [Object], fieldSources: [Object], declaration: [Object] }, { color: '#87d8b9', controls: 'none', imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', instanceId: '20000003-1111-4111-8111-111111111111', objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', position: [Array], size: [Array], speed: 0, name: '共同人物🦊', sourcePath: 'documents/oc.md', sourceRevision: 'sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a', declaration: [Object] } ],
+    expected: [ { size: [Array], color: '#aabbcc', speed: 0, controls: 'none', instanceId: '20000000-1111-4111-8111-111111111111', objectId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', position: [Array], useProjectionDefaults: true, name: '投影🦊 1', sourcePath: 'documents/projections/p1.json', sourceRevision: 'sha256:07c6af570c5936a18dc4d4f910ed5afd7f854fd27ec6c1d07eec2afd1b4f91de', origin: [Object], fieldSources: [Object], declaration: [Object] }, { color: '#87d8b9', controls: 'none', imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', instanceId: '20000001-1111-4111-8111-111111111111', objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', position: [Array], size: [Array], speed: 0, name: '共同人物🦊', sourcePath: 'documents/oc.md', sourceRevision: 'sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a', declaration: [Object] }, { size: [Array], color: '#ffffff', speed: 160, controls: 'arrows', imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', instanceId: '20000002-1111-4111-8111-111111111111', objectId: 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', position: [Array], useProjectionDefaults: true, name: '投影🦊 1', sourcePath: 'documents/projections/p1.json', sourceRevision: 'sha256:07c6af570c5936a18dc4d4f910ed5afd7f854fd27ec6c1d07eec2afd1b4f91de', origin: [Object], fieldSources: [Object], declaration: [Object] }, { color: '#87d8b9', controls: 'none', imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', instanceId: '20000003-1111-4111-8111-111111111111', objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', position: [Array], size: [Array], speed: 0, name: '共同人物🦊', sourcePath: 'documents/oc.md', sourceRevision: 'sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a', declaration: [Object] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

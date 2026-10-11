@@ -1,0 +1,50 @@
+✖ the shared actor editor opens the current source and a guarded catalog of registered image resources (68.090011ms)
+✔ a missing fragment capability preserves single-instance operations and blocks the new entry (54.791895ms)
+✔ late source acquisition cannot open a shared editor after closing the parent or replacing its preview (111.953589ms)
+✔ shared template checking submits the full exact candidate and releases its separate preview lease (48.334908ms)
+✔ every linked instance and its placement/fragment/local key must survive the full dependency check (308.041808ms)
+✔ source token changes during shared declaration validation reject late approval and release returned images (47.94386ms)
+✔ shared editor completion accepts detached copies after a token advance and rejects changed member payloads (44.264086ms)
+✔ a catalog arriving after the parent closes cannot open a shared template editor (43.471036ms)
+✔ linked targets must be complete, unique, ordered, and retain the same fragment declaration (214.10687ms)
+✔ clean source sessions can create a shared fragment edit without inventing an initial dirty edit (41.814346ms)
+✔ dirty source application preserves Unicode, line endings, selection and the ordinary save baseline while preserving all placements (12.438824ms)
+✔ foreign paths, baselines, target identities and altered afterContent cannot replace the current source (52.74761ms)
+✔ other modes, inactive editors and busy states reject fragment application and source acquisition (32.420031ms)
+✔ a source change during the saved-baseline digest invalidates the proposal (6.28808ms)
+✔ the parent preview owner is checked again after patch preparation and before editing memory (7.626182ms)
+✔ an old proposal cannot be replayed and an old focus receipt cannot focus a later editor (8.439508ms)
+✔ clean source acquisition refuses a snapshot if the live text changes during hashing (3.683256ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 16
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1018.799885
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-fragments-bridge.test.mjs:60:1
+✖ the shared actor editor opens the current source and a guarded catalog of registered image resources (68.090011ms)
+  AssertionError [ERR_ASSERTION]: Values have same structure but are not reference-equal:
+  
+  [
+    {
+      id: '44444444-4444-4444-8444-444444444444',
+      name: 'Picture',
+      path: 'assets/picture.svg'
+    }
+  ]
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragments-bridge.test.mjs:65:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { id: '44444444-4444-4444-8444-444444444444', name: 'Picture', path: 'assets/picture.svg' } ],
+    expected: [ { id: '44444444-4444-4444-8444-444444444444', name: 'Picture', path: 'assets/picture.svg' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

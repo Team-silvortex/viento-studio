@@ -1,0 +1,156 @@
+{
+  "format": "viento-scene-composition-placement-structure-core-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T09:14:34.480Z",
+  "head": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "version": "0.0.9",
+  "runtime": "v24.20.0",
+  "sourceHashes": {
+    "engine/scene-composition-placements.mjs": "200f30ef0456ff0245c86e19c3cf8aba1340a67d4538480a3bb9b82df2366b47",
+    "engine/studio-core.mjs": "593628a539fbeb2cb040c162e65145be0b855e0b6cf5adad8d26f7f6f6d520b5",
+    "engine/index.mjs": "d00682669dea4a4f32c5973bd1b0aeff97b5a476226230b59bc7dd63d3281a37",
+    "crates/viento-studio-core/src/lib.rs": "041417a6fca122a0a9eef254869e270248f8513b3a4e0fae51a08c04b385a292",
+    "crates/viento-studio-core/src/scene_composition_placements_patch.rs": "b287796d5c8a57657ad89c1524b9de9961943650fcd45e044ea8a35e87097152",
+    "scripts/tests/scene-composition-placements.test.mjs": "186e44c33686c4e2c438f6b873eacce0e95ed6c8716d30ef2bff3d27de87a982",
+    "scripts/tests/studio-core-composition-placements-patch.test.mjs": "198abd92c77514739f25d864e7e4d301f08a78bdf4ebe264ac581a05676df7e1"
+  },
+  "abi": {
+    "probe": "viento_core_scene_composition_placements_version",
+    "version": 1,
+    "operations": [
+      "sceneComposition.addPlacement",
+      "sceneComposition.copyPlacement",
+      "sceneComposition.removePlacement"
+    ],
+    "optional": true,
+    "priorCapabilitiesRetained": true
+  },
+  "api": {
+    "exports": [
+      "createSceneCompositionPlacementsDraft",
+      "prepareSceneCompositionPlacementsApply",
+      "supportsStudioCoreCompositionPlacements",
+      "dispatchStudioCoreCompositionPlacements"
+    ],
+    "draftFields": [
+      "fragments",
+      "placements",
+      "propose"
+    ],
+    "proposalKeys": [
+      "sceneId",
+      "sourcePath",
+      "baseSourceRevision",
+      "sourceRevision",
+      "edit",
+      "targets",
+      "afterContent",
+      "changedPaths"
+    ],
+    "targetShape": {
+      "placementId": "UUID",
+      "fragmentId": "fragment key",
+      "actors": [
+        {
+          "actorKey": "source actor key",
+          "instanceId": "UUID",
+          "objectId": "reusable definition UUID"
+        }
+      ],
+      "groups": [
+        {
+          "groupKey": "source group key",
+          "groupId": "UUID"
+        }
+      ],
+      "overrides": [
+        {
+          "actorKey": "source override key",
+          "fields": "fixed six-field order"
+        }
+      ]
+    },
+    "targetOrder": "actors/groups follow fragment declaration order; override records follow placement declaration order",
+    "changedPaths": "one /placements/N item pointer",
+    "ids": "supplied once by caller; placement/actor/group identities are mutually fresh against all current generated identities; helper also rejects scene UUID; reusable definition UUIDs are not identities",
+    "copyTokens": "source placement span copied with only placementId/actorIds/groupIds value token replacements"
+  },
+  "verification": {
+    "rust": {
+      "unit": 89,
+      "integration": [
+        2,
+        8,
+        9,
+        13,
+        9,
+        8
+      ],
+      "total": 138,
+      "newUnitTests": 10,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-native-test-final.log"
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "warningsDenied": true,
+      "log": "core-clippy-final.log"
+    },
+    "native": {
+      "path": "desktop/.cache/placement-structure-core-target/debug/viento-core",
+      "sha256": "9913daef2ef3165358f34dfe9e59c79075081617f58f9404ef454285e4ebc8f6",
+      "log": "core-native-build-final.log"
+    },
+    "wasm": {
+      "bytes": 347740,
+      "sha256": "fbe9e1e6a7c2eb0a924e00a070619ab8cd4eb8d635330366cb23a0fea29f683f",
+      "sourceHash": "ff7bbb08aba093658c604cf9d30b83b4d6a6993f6d8c8bf13e96a1971ff4c336",
+      "log": "core-wasm-build.log"
+    },
+    "newJavaScript": {
+      "pure": 14,
+      "bridge": 10,
+      "total": 24,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmParityRequests": 12,
+      "log": "core-js-tests-final.log"
+    },
+    "oldAndNewRegression": {
+      "files": 14,
+      "passed": 194,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-regression-final.log"
+    }
+  },
+  "retainedAttempts": [
+    {
+      "log": "core-native-test.log",
+      "result": "test fixture borrowed source immutably during mutable push; corrected fixture only"
+    },
+    {
+      "log": "core-clippy.log",
+      "result": "boolean expression simplification required; corrected with identical logic"
+    },
+    {
+      "log": "core-js-tests-initial.log",
+      "result": "24/24 passed before final malformed model guard assertion"
+    }
+  ],
+  "boundaries": [
+    "No filesystem or tool processes in pure/core operations",
+    "Append add/copy; remove cannot delete the last placement",
+    "Complete original and final expansion plus final 128 KiB budget",
+    "Detached model/source/proposal before asynchronous digest",
+    "Host reconstructs canonical action, complete target receipt and exact source patch",
+    "Original source bytes outside the edited placement item preserved; copy preserves declaration absence, numeric lexemes and override order",
+    "Root owns GUI/workflow/candidate/full application and packaging verification; this report does not claim those or device/install acceptance"
+  ],
+  "findings": []
+}

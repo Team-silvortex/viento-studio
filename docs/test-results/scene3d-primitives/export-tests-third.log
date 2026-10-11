@@ -1,0 +1,45 @@
+✔ generator preserves source plan semantics and explicitly uses XYZ independent static nodes (9.635234ms)
+✔ generator rejects wrong kind, scene keys, non-data accessors and extra nested behavior (1.197414ms)
+✔ export stores exact BOM/CRLF source, neutral plan and a full five-file inventory (11.094052ms)
+✔ existing output directories and files are never adopted or overwritten (7.089692ms)
+✔ invalid UTF8, malformed schema and oversized source do not create output (2.684064ms)
+✔ input or output symlink ancestors are rejected without changing the target (2.777551ms)
+✔ copied receipt JSON and an arbitrary existing project cannot execute a tool (321.401875ms)
+✔ modified, replaced or hardlinked generated source prevents execution (493.24732ms)
+✔ unregistered source or pre-existing cache symlink cannot authorize execution (490.20794ms)
+✔ an owned write failure cleans only its own unchanged files and empty directory (4.138764ms)
+✔ failure cleanup preserves an edited source and user-added files in its own output (5.173059ms)
+✔ CLI readonly emit works without output and invalid flag combinations never create output (3.087527ms)
+✔ aborted capture or export creates no output (0.723267ms)
+✔ explicit tool receipts cannot forge instance geometry, basis, camera, UUID, count or schema (1013.998923ms)
+✔ execution receipts authorize one finite attempt, including check then run in one operation (138.13867ms)
+✔ tool timeout and zero-exit script errors fail closed while retaining exact source (1077.380946ms)
+✔ actual Godot imports and probes the three-box example with ordered UUIDs and noncommuting XYZ transforms (5280.080942ms)
+✖ actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits (5244.878509ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14185.407144
+
+✖ failing tests:
+
+test at scripts/tests/scene3d-export.test.mjs:50:1
+✖ actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits (5244.878509ms)
+  AssertionError [ERR_ASSERTION]: {"ok":false,"phases":[{"phase":"identify","status":"succeeded","exitCode":0,"exitSignal":null,"stdout":"4.7.2.stable.official.ed1daf0bf\n","stderr":"","durationMs":35},{"phase":"import","status":"succeeded","exitCode":0,"exitSignal":null,"stdout":"Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n","stderr":"","durationMs":3007},{"phase":"script-check","status":"succeeded","exitCode":0,"exitSignal":null,"stdout":"Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n","stderr":"","durationMs":251},{"phase":"probe","status":"failed","exitCode":2,"exitSignal":null,"stdout":"Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_SCENE3D_PROBE {\"camera\":{\"far\":0.100000001490116,\"forward\":[0.0000000437113882867379,-1.0,-0.00000000000000191068546516471],\"fovDegrees\":179.0,\"near\":0.00100000004749745,\"position\":[100000.0,100000.0,100000.0]},\"coordinateSystem\":\"RH-Y-up-negative-Z-forward\",\"format\":\"viento-scene3d-probe\",\"issues\":[\"camera.forward\",\"light.direction\"],\"light\":{\"color\":[1.0,1.0,0.933333337306976,1.0],\"energy\":2.0,\"forward\":[0.707106828689575,0.0,0.707106828689575]},\"objectCount\":1,\"objects\":[{\"basisColumns\":[[0.999962031841278,-0.000102510959550273,-0.0087155606597662],[-0.0000117620638775406,0.999914050102234,-0.0131103182211518],[0.0087161548435688,0.0131099233403802,0.999876081943512]],\"color\":\"#44AAee\",\"declaredRotationDegrees\":[35999.25,-35999.5,36000.0],\"instanceId\":\"fcac60c0-e291-4583-8d90-72d61e7e6d74\",\"materialColor\":[0.266666680574417,0.666666686534882,0.933333337306976,1.0],\"name\":\"Box \\\" quoted \\\\ text\\n🦊\",\"position\":[100000.0,-100000.0,100000.0],\"rotationOrder\":\"XYZ\",\"size\":[0.00100000004749745,1000.0,0.00100000004749745]}],\"ok\":false,\"rotationOrder\":\"XYZ\",\"schemaVersion\":1,\"scope\":\"Static Godot tree/transform/material probe; no 2D runtime events or behavior execution.\"}\n","stderr":"WARNING: Vector3 cannot be normalized, the elements must be finite. Making (0, 0, 0) as a fallback.\n     at: normalize (./core/math/vector3.h:551)\n     GDScript backtrace (most recent call first):\n         [0] direction (res://runtime.gd:15)\n         [1] probe (res://runtime.gd:50)\n","durationMs":260}],"errorCode":"scene3d_probe_failed"}
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-export.test.mjs:51:538)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

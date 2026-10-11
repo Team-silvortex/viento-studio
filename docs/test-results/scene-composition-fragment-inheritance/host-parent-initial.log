@@ -1,0 +1,74 @@
+✔ reset-only candidates send full exact source and release the candidate preview lease (75.544736ms)
+✔ a reset that exposes an unavailable projection image cannot get candidate approval (58.240598ms)
+✔ reset-only candidates still require every linked actor and exact ordered source provenance (206.256183ms)
+✔ source ownership changes while reviewing a reset invalidate approval and release its lease (50.412332ms)
+✖ completion binds the exact reset list and same host receipt while allowing legal token advance (45.540201ms)
+✔ clean source sessions accept an atomic shared declaration SET/RESET without writing disk (53.542925ms)
+✖ dirty source application preserves Unicode, line endings, selection and the ordinary save baseline while preserving all placements (16.392962ms)
+✔ foreign paths, baselines, target identities and altered afterContent cannot replace the current source (87.331481ms)
+✔ other modes, inactive editors and busy states reject fragment application and source acquisition (33.390952ms)
+✔ a source change during the saved-baseline digest invalidates the proposal (7.262678ms)
+✔ the parent preview owner is checked again after patch preparation and before editing memory (7.670654ms)
+✔ an old proposal cannot be replayed and an old focus receipt cannot focus a later editor (9.432383ms)
+✔ clean source acquisition refuses a snapshot if the live text changes during hashing (4.659846ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 11
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 515.865098
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-fragment-inheritance-bridge.test.mjs:96:1
+✖ completion binds the exact reset list and same host receipt while allowing legal token advance (45.540201ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragment-inheritance-bridge.test.mjs:100:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-composition-fragment-inheritance-host.test.mjs:56:1
+✖ dirty source application preserves Unicode, line endings, selection and the ordinary save baseline while preserving all placements (16.392962ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  -   color: '#ffffff',
+  -   controls: 'arrows',
+      groupKey: 'party',
+  -   imageResourceId: null,
+      key: 'leader',
+      objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      position: [
+  +     125,
+  +     185
+  -     120,
+  -     180
+      ],
+  -   size: [
+  -     64,
+  -     64
+  -   ],
+  -   speed: 160,
+      useProjectionDefaults: true
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragment-inheritance-host.test.mjs:63:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { key: 'leader', objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', groupKey: 'party', position: [ 125, 185 ], useProjectionDefaults: true },
+    expected: { key: 'leader', objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', groupKey: 'party', position: [ 120, 180 ], size: [ 64, 64 ], color: '#ffffff', speed: 160, controls: 'arrows', imageResourceId: null, useProjectionDefaults: true },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,11 @@
+{
+  "format": "viento-evidence-git-byte-preservation",
+  "ok": true,
+  "file": ".gitattributes",
+  "beforeSha256": "37df84f8fde41ab2e860f87dc96e91c9edd1ba71d398a5c20679aa95da072f6f",
+  "afterSha256": "34af3adc0f4e8c61fc0c702420ac630f32c6915685264413398a34717aab805e",
+  "rule": "docs/test-results/** -text -whitespace",
+  "trigger": "New actual float32-boundaries/source.json is an intentional BOM/CRLF byte fixture. text=auto eol=lf would change its Git blob and break recorded source SHA.",
+  "preserves": "All historical report/fixture bytes, including existing raw logs. Existing image LFS attributes remain active. No evidence file content changed.",
+  "finalIndexProof": "git-index-byte-verification.json"
+}

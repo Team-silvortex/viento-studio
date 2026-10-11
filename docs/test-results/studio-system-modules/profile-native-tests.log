@@ -1,0 +1,45 @@
+✔ definition adoption: generated templates reject an unusable hidden directory in preview and apply (230.121599ms)
+✔ definition adoption: generated templates reject an unusable nested hidden directory in preview and apply (209.611722ms)
+✔ definition adoption: generated templates reject an unusable reserved directory in preview and apply (198.879909ms)
+✔ definition adoption: generated templates reject an unusable nested reserved directory in preview and apply (212.219264ms)
+✔ definition adoption: generated templates reject an unusable overlong UTF-8 directory in preview and apply (198.229624ms)
+✔ definition adoption: v2 generated templates support preview, repair, creation, rebuilding and export without rewriting old data (681.326813ms)
+✔ definition adoption: v3 generated templates support preview, repair, creation, rebuilding and export without rewriting old data (661.583585ms)
+✔ definition adoption: missing, malformed and oversized template files fail before changing the manifest or originals (266.948822ms)
+✔ definition adoption: changes in the same millisecond retain independent recovery journals (132.828541ms)
+✔ definition adoption: manifest write failure preserves the previous project, releases the lock and permits an immediate retry (145.370886ms)
+✔ builtin project packages are closed, parseable and independent of the physical workspace layout (11.80956ms)
+✔ game, literature and drama templates have independent roles and keep dialogue in prose (0.609528ms)
+✔ same IDs and filenames do not share template content or mutable field definitions across projects (117.892107ms)
+✔ native project selection, field editing and archive restore use a self-contained template snapshot (240.947762ms)
+✔ profile adoption is previewed, journaled and preserves authors, registrations and template bytes (119.756783ms)
+✔ invalid profile adoption fails before journal, workspace, metadata or author writes (75.427033ms)
+✔ profile adoption snapshots caller input before asynchronous locking or template reads (68.106407ms)
+✔ HTTP catalog carries additive requests and keeps a drama scene as prose with ordinary editing (405.925613ms)
+✔ legacy projects do not acquire a system profile or an implicit 2D/3D requirement from a scene type (0.690246ms)
+✔ already saved future and malformed profiles remain readable without rewriting their declarations (73.050851ms)
+✖ native archive restore and mobile catalog preserve requests and authored bytes without the template catalog (13.185422ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 20
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3064.233747
+
+✖ failing tests:
+
+test at scripts/tests/studio-profile-project.test.mjs:122:1
+✖ native archive restore and mobile catalog preserve requests and authored bytes without the template catalog (13.185422ms)
+  Error: ENOENT: no such file or directory, open '/tmp/viento-mobile-native-ZeH9BQ/Profile 原生往返/workspace.json'
+      at async open (node:internal/fs/promises:1345:25)
+      at async Object.readFile (node:internal/fs/promises:1996:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/studio-profile-project.test.mjs:129:31)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/tmp/viento-mobile-native-ZeH9BQ/Profile 原生往返/workspace.json'
+  }

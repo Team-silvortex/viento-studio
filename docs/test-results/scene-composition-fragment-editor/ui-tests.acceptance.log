@@ -1,0 +1,36 @@
+✔ raw fragment declarations appear disabled; selected instance overrides and projection defaults do not become template values (88.768822ms)
+✔ position is one explicit SET pair and reviews the full source with every referencing placement and mask (80.680057ms)
+✔ checking unchanged declared values performs no validation and creates no template patch (50.053966ms)
+✔ explicitly adding a missing declaration equal to the current inherited value still changes source (60.381425ms)
+✔ a missing size remains an empty pair until both dimensions are explicitly set (64.5004ms)
+✔ all six explicitly selected field sets update only the shared declaration and preserve every placement (125.119495ms)
+✔ unchecked fields preserve inheritance even if their raw inputs have been edited (65.7385ms)
+✔ the reviewed impact omits checked fields whose declaration is unchanged (57.61477ms)
+✔ all locally masked instances explicitly report a declaration-only edit that still passes source checking (52.036063ms)
+✔ image omission is blank and separate from an explicit null allowed by projection inheritance (58.386826ms)
+✔ an already declared null is shown explicitly and selecting that same null is a no-op (56.006025ms)
+✔ a noninheriting fragment cannot explicitly clear its image and retains an unavailable declaration in the picker (43.713031ms)
+✔ each invalid selected field is rejected without consuming unfinished input or altering source (148.665003ms)
+✔ silently changing a numeric field after approval invalidates the candidate before application (57.720107ms)
+✔ silently changing selected checkboxes or unchecked raw fields also revokes approval (83.277916ms)
+✔ dependency validation receives detached canonical values and targets rather than mutable approval state (60.692015ms)
+✔ pending dependency checks lock all controls and a silent raw change cannot approve the late result (71.49352ms)
+✔ failed validation retains author input and diagnostics without granting application (59.720716ms)
+✔ parent source token or ownership changes revoke approval while preserving the form for inspection (58.372049ms)
+✔ late validation after parent closure cannot approve or apply a shared edit (46.027193ms)
+✔ late open success or failure after owner loss stays silent and never opens an expired form (41.129495ms)
+✔ a newer asynchronous open supersedes the earlier request without replacing its established form (25.264981ms)
+✔ cancelling or returning to preview discards only the unapplied fragment proposal and restores opener focus (58.501728ms)
+✔ an unaccepted or stale apply preserves edits, requires rechecking and cannot report completion (61.205473ms)
+✔ a silent raw change while application is pending invalidates the guard before a host can edit source (61.919407ms)
+✔ destroying during an asynchronous apply cannot complete into a replaced dialog and dispose is idempotent (58.669436ms)
+✔ read-only or missing fragment capability never creates a draft (35.832391ms)
+✔ Chinese, English and Japanese include every new shared-fragment workflow message and placeholder (1.089347ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1861.721506

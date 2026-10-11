@@ -1,0 +1,164 @@
+{
+  "format": "viento-scene-composition-definition-authoring-core-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T10:18:26.430474+00:00",
+  "head": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "version": "0.0.9",
+  "runtime": "v24.20.0",
+  "sourceHashes": {
+    "engine/scene-composition-definitions.mjs": "60d5954ad141ae43b41638e87820ec4aa1c78360e350e23eacce98df6c69d9b6",
+    "engine/studio-core.mjs": "8ec3312ed8aed6e52365c473f51cb6c078fcd02c5dbe4d31b53ce83cf1060312",
+    "engine/index.mjs": "97bf414f89c8ae87ecc8193fa9bd245904a4dfa7f58c54f6218a8c0ad1eb4e1c",
+    "crates/viento-studio-core/src/lib.rs": "4f183586fb24f00c9c7084b3c960aacbfd8067615a3d77d580445f9d8a3fec2e",
+    "crates/viento-studio-core/src/scene_composition_definitions_patch.rs": "05b616505d765cc03b276a9304a54d7616a5b796338e7f2314973779fd605a8e",
+    "scripts/tests/scene-composition-definitions.test.mjs": "ea4a6cdfe595f81fa6f96b9292cdf2f476070d0a57efc52cddf16b45a7d5a671",
+    "scripts/tests/studio-core-composition-definitions-patch.test.mjs": "eb7f6238b88e91f84016f54177c42fc2281f6da88fa22df098092412d339deb5"
+  },
+  "abi": {
+    "probe": "viento_core_scene_composition_definitions_version",
+    "version": 1,
+    "optional": true,
+    "operations": [
+      "sceneComposition.addFragmentDefinition",
+      "sceneComposition.copyFragmentDefinition",
+      "sceneComposition.removeFragmentDefinition"
+    ],
+    "priorCapabilitiesRetained": true
+  },
+  "api": {
+    "exports": [
+      "createSceneCompositionDefinitionsDraft",
+      "prepareSceneCompositionDefinitionsApply",
+      "supportsStudioCoreCompositionDefinitions",
+      "dispatchStudioCoreCompositionDefinitions"
+    ],
+    "draftFields": [
+      "fragments",
+      "propose"
+    ],
+    "fragments": "deep-frozen raw fragment declarations with complete source-ordered related placements",
+    "proposalKeys": [
+      "sceneId",
+      "sourcePath",
+      "baseSourceRevision",
+      "sourceRevision",
+      "edit",
+      "targets",
+      "afterContent",
+      "changedPaths"
+    ],
+    "targets": "exact empty array; this domain never changes generated identity sets or places a definition",
+    "edits": {
+      "add": [
+        "action",
+        "fragment"
+      ],
+      "copy": [
+        "action",
+        "sourceFragmentId",
+        "fragmentId"
+      ],
+      "remove": [
+        "action",
+        "fragmentId"
+      ]
+    },
+    "copy": "original fragment CST span with only fragmentId value token replaced; no declaration body serialization",
+    "ids": "caller supplies distinct ASCII local fragmentId; no generated UUID allocation; reusable object references/local actor and group keys retained",
+    "errorCodes": [
+      "scene_composition_definitions_invalid",
+      "scene_composition_definitions_conflict",
+      "scene_composition_definitions_content_limit"
+    ]
+  },
+  "verification": {
+    "rust": {
+      "unit": 111,
+      "integration": [
+        2,
+        8,
+        9,
+        13,
+        9,
+        8
+      ],
+      "total": 160,
+      "newUnitTests": 10,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-native-test.log"
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "warningsDenied": true,
+      "log": "core-clippy.log"
+    },
+    "native": {
+      "path": "desktop/.cache/definition-authoring-core-target/debug/viento-core",
+      "sha256": "2bccfcf207e1c63e601b7b4084fd0ae51a5ffd47b839b301f634e615498a0dcd",
+      "log": "core-native-build.log"
+    },
+    "wasm": {
+      "bytes": 367924,
+      "sha256": "a8e4a4ce9213220d6e592cfb171c9c69e661216062d3b8d03002b6e9f513e037",
+      "sourceHash": "1aa359252b8fb49c82560a1d31cfd869db012dfbbfe04162bf9262b8866fc8bc",
+      "log": "core-wasm-build.log"
+    },
+    "newJavaScript": {
+      "pure": 15,
+      "bridge": 10,
+      "total": 25,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmParityRequests": 19,
+      "logs": [
+        "core-pure-tests.log",
+        "core-bridge-tests.log"
+      ]
+    },
+    "oldAndNewRegression": {
+      "files": 19,
+      "passed": 263,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-regression-final.log"
+    },
+    "portableSource": {
+      "cases": 10,
+      "passed": 10,
+      "failed": 0,
+      "module": "boundary-cases.mjs",
+      "report": "boundary-source-results.json",
+      "log": "boundary-source-check.log",
+      "imports": 0,
+      "digest": "explicit injected port"
+    }
+  },
+  "retainedAttempts": [
+    {
+      "logs": [
+        "core-native-test-initial.log",
+        "core-clippy-initial.log",
+        "core-pure-tests-initial.log"
+      ],
+      "result": "All initial runs passed; identical final log copies retained for stable evidence names"
+    }
+  ],
+  "boundaries": [
+    "No filesystem or tool process in pure/core operations",
+    "ADD and COPY append unplaced definitions; REMOVE requires no raw placement reference and at least one definition remains",
+    "No rename/reorder/cascade/placement mutations or generated UUID allocation",
+    "Complete original and final expansion with existing final128KiB/32fragment/128aggregate declared and expanded actor/group budgets",
+    "CST copy replaces only fragment identity value and preserves body token spelling/key order; outside-item bytes BOM and CRLF retained",
+    "Removing unused middle definitions rebuilds provenance paths while complete semantic expanded scene and generated IDs remain stable",
+    "Complete preview sceneStructure and source-ordered actor/group provenance bind source before draft opens",
+    "Model/source/proposal detached before asynchronous digest; host recomputes canonical intent, empty target array and exact patch receipt",
+    "Existing host dependency checks cover all raw declared object/explicit-image references; unused projection effective values and image bytes retain first-placement validation boundary",
+    "Root owns GUI/workflow/candidate/full app/browser/prepared verification; source portable proof is not installed-device acceptance"
+  ],
+  "findings": []
+}

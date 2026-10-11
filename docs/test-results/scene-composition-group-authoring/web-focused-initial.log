@@ -1,0 +1,57 @@
+✔ the eight editors receive only their own capability and source context; catalog ports are lazy and independent (9.829362ms)
+✔ browser adapter submits the exact source draft and releases the returned preview for each independent instance editor (6.469243ms)
+✔ each entry invokes its source operation and keeps completion receipts private from every sibling editor (21.147103ms)
+✔ closing the host invalidates pending completions and saved entry guards without granting new source authority (3.934144ms)
+✔ all entries refuse running, busy, wrong source or non-preview owners without reading catalogs (8.55509ms)
+file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-groups-host.test.mjs:4
+import { createSceneCompositionGroupsDraft, prepareSceneCompositionGroupsApply } from '../../engine/scene-composition-placements.mjs';
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: The requested module '../../engine/scene-composition-placements.mjs' does not provide an export named 'createSceneCompositionGroupsDraft'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:455:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:553:5)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.20.0
+✖ scripts/tests/scene-composition-groups-host.test.mjs (84.727259ms)
+✔ the whole-recipe group toolbar opens without a selected actor and needs its own capability/source ownership (112.28664ms)
+✔ actor selection changes preserve the recipe group owner but source token or scene changes revoke it (49.498683ms)
+✔ a pending group opening blocks all sibling editors and late rejection cannot revive a hidden preview (38.1097ms)
+✔ every sibling pending opener independently excludes group authoring (252.088084ms)
+✔ unsupported group authoring leaves earlier composition entries usable and reports a current failed opening (35.339594ms)
+file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-groups.mjs:110
+  const fragments=freeze(parsed.value.fragments.map(fragment=>({...clone(fragment),placements:clone(parsed.value.placements.filter(placement=>placement.fragmentId===fragment.fragmentId)))}));
+                                                                                                                                                                                          ^
+
+SyntaxError: Unexpected token ')'
+    at compileSourceTextModule (node:internal/modules/esm/utils:319:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:89:18)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:276:33)
+    at ModuleJob.link (node:internal/modules/esm/module_job:381:17)
+
+Node.js v24.20.0
+✖ scripts/tests/scene-composition-groups-ui.test.mjs (32.347367ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 10
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 623.511021
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-groups-host.test.mjs:1:1
+✖ scripts/tests/scene-composition-groups-host.test.mjs (84.727259ms)
+  'test failed'
+
+test at scripts/tests/scene-composition-groups-ui.test.mjs:1:1
+✖ scripts/tests/scene-composition-groups-ui.test.mjs (32.347367ms)
+  'test failed'

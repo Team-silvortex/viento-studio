@@ -42,7 +42,7 @@ async function previewHarness({ prepare, source = original, extension = 'md' } =
     replaceSource: runtime.replaceMediaDraftSource, insertText: runtime.insertMediaText,
     changed: runtime.refreshEditSessionDirtyState, status: runtime.setEditorStatus,
   });
-  runtime.testMediaController = controller; vm.runInContext('mediaEditorController = testMediaController;', runtime);
+  runtime.testMediaController = controller; vm.runInContext('studioSystem = { refreshMedia: () => testMediaController.refresh() };', runtime);
   runtime.rebuildIndexForDoc = async () => {};
   runtime.updateEditorForDoc(doc); await runtime.enterEditMode();
   assert.equal(state.isEditing, true); assert.equal(state.activeEditSourceVersion, '1');

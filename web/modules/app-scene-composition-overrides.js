@@ -1,4 +1,5 @@
 import { createSceneCompositionOverrideDraft } from '../../engine/scene-composition-overrides.mjs';
+import { supportsStudioCoreCompositionEdit } from '../../engine/studio-core.mjs';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 
 const digest = async text => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)))].map(byte => byte.toString(16).padStart(2, '0')).join('');
@@ -16,14 +17,21 @@ export function setupSceneCompositionOverrides({ getContext = () => ({}), valida
     <p id="sceneCompositionOverridesIdentity" class="build-hint"></p><p id="sceneCompositionOverridesMessage" role="status" aria-live="polite"></p>
     <fieldset id="sceneCompositionOverridesFields" class="scene-actor"><legend data-i18n="局部位置（偏移前）"></legend>
       <p id="sceneCompositionOverridesOffset" class="build-hint"></p>
-      <div class="scene-settings"><label class="scene-field"><span data-i18n="位置 X"></span><input id="sceneCompositionOverridesX" type="number" min="-100000" max="100000" step="any"></label>
+      <div class="scene-settings"><div class="scene-composition-override-group"><label class="scene-field"><span data-i18n="位置 X"></span><input id="sceneCompositionOverridesX" type="number" min="-100000" max="100000" step="any"></label>
       <label class="scene-field"><span data-i18n="位置 Y"></span><input id="sceneCompositionOverridesY" type="number" min="-100000" max="100000" step="any"></label>
-      <label class="scene-field"><span data-i18n="宽度"></span><input id="sceneCompositionOverridesWidth" type="number" min="1" max="2048" step="any"></label>
+      <div id="sceneCompositionOverridesPositionResetRow" class="scene-composition-override-reset"><button id="sceneCompositionOverridesPositionReset" type="button" class="doc-btn doc-btn-ghost" aria-describedby="sceneCompositionOverridesPositionStatus"></button><span id="sceneCompositionOverridesPositionStatus" class="build-hint"></span></div></div>
+      <div class="scene-composition-override-group"><label class="scene-field"><span data-i18n="宽度"></span><input id="sceneCompositionOverridesWidth" type="number" min="1" max="2048" step="any"></label>
       <label class="scene-field"><span data-i18n="高度"></span><input id="sceneCompositionOverridesHeight" type="number" min="1" max="2048" step="any"></label>
-      <label class="scene-field"><span data-i18n="颜色"></span><input id="sceneCompositionOverridesColor" type="text" spellcheck="false"></label>
-      <label class="scene-field"><span data-i18n="速度"></span><input id="sceneCompositionOverridesSpeed" type="number" min="0" max="2000" step="any"></label>
-      <label class="scene-field"><span data-i18n="控制"></span><select id="sceneCompositionOverridesControls"><option value="none" data-i18n="不接受输入"></option><option value="arrows" data-i18n="方向键"></option></select></label>
-      <label class="scene-field"><span data-i18n="场景图片"></span><select id="sceneCompositionOverridesImage"></select></label></div></fieldset>
+      <div id="sceneCompositionOverridesSizeResetRow" class="scene-composition-override-reset"><button id="sceneCompositionOverridesSizeReset" type="button" class="doc-btn doc-btn-ghost" aria-describedby="sceneCompositionOverridesSizeStatus"></button><span id="sceneCompositionOverridesSizeStatus" class="build-hint"></span></div></div>
+      <div class="scene-composition-override-group scene-composition-override-single"><label class="scene-field"><span data-i18n="颜色"></span><input id="sceneCompositionOverridesColor" type="text" spellcheck="false"></label>
+      <div id="sceneCompositionOverridesColorResetRow" class="scene-composition-override-reset"><button id="sceneCompositionOverridesColorReset" type="button" class="doc-btn doc-btn-ghost" aria-describedby="sceneCompositionOverridesColorStatus"></button><span id="sceneCompositionOverridesColorStatus" class="build-hint"></span></div></div>
+      <div class="scene-composition-override-group scene-composition-override-single"><label class="scene-field"><span data-i18n="速度"></span><input id="sceneCompositionOverridesSpeed" type="number" min="0" max="2000" step="any"></label>
+      <div id="sceneCompositionOverridesSpeedResetRow" class="scene-composition-override-reset"><button id="sceneCompositionOverridesSpeedReset" type="button" class="doc-btn doc-btn-ghost" aria-describedby="sceneCompositionOverridesSpeedStatus"></button><span id="sceneCompositionOverridesSpeedStatus" class="build-hint"></span></div></div>
+      <div class="scene-composition-override-group scene-composition-override-single"><label class="scene-field"><span data-i18n="控制"></span><select id="sceneCompositionOverridesControls"><option value="none" data-i18n="不接受输入"></option><option value="arrows" data-i18n="方向键"></option></select></label>
+      <div id="sceneCompositionOverridesControlsResetRow" class="scene-composition-override-reset"><button id="sceneCompositionOverridesControlsReset" type="button" class="doc-btn doc-btn-ghost" aria-describedby="sceneCompositionOverridesControlsStatus"></button><span id="sceneCompositionOverridesControlsStatus" class="build-hint"></span></div></div>
+      <div class="scene-composition-override-group scene-composition-override-single"><label class="scene-field"><span data-i18n="场景图片"></span><select id="sceneCompositionOverridesImage"></select></label>
+      <div id="sceneCompositionOverridesImageResetRow" class="scene-composition-override-reset"><button id="sceneCompositionOverridesImageReset" type="button" class="doc-btn doc-btn-ghost" aria-describedby="sceneCompositionOverridesImageStatus"></button><span id="sceneCompositionOverridesImageStatus" class="build-hint"></span></div></div></div>
+      <p id="sceneCompositionOverridesResetHelp" class="build-hint" data-i18n="恢复会移除此实例的字段覆盖。检查时重新读取片段和投影值；恢复图片与明确不使用图片不同。"></p></fieldset>
     <p class="build-hint" data-i18n="未改动字段保留原有继承与覆盖。应用后仍需在编辑器保存。"></p>
     <details id="sceneCompositionOverridesReview" class="build-raw" hidden><summary data-i18n="将应用到原文草稿的完整内容"></summary><pre id="sceneCompositionOverridesSource" tabindex="0"></pre></details>
     <ul id="sceneCompositionOverridesDiagnostics" class="scene-diagnostics"></ul>
@@ -34,25 +42,43 @@ export function setupSceneCompositionOverrides({ getContext = () => ({}), valida
   document.body.append(dialog);
   const el = suffix => dialog.querySelector(`#sceneCompositionOverrides${suffix}`);
   const fields = ['X', 'Y', 'Width', 'Height', 'Color', 'Speed', 'Controls', 'Image'];
+  const groups = [
+    { field: 'position', suffix: 'Position', inputs: ['X', 'Y'], label: '局部位置（偏移前）' },
+    { field: 'size', suffix: 'Size', inputs: ['Width', 'Height'], label: '尺寸' },
+    { field: 'color', suffix: 'Color', inputs: ['Color'], label: '颜色' },
+    { field: 'speed', suffix: 'Speed', inputs: ['Speed'], label: '速度' },
+    { field: 'controls', suffix: 'Controls', inputs: ['Controls'], label: '控制' },
+    { field: 'imageResourceId', suffix: 'Image', inputs: ['Image'], label: '场景图片' },
+  ];
   let session = null, openEpoch = 0, formEpoch = 0, disposed = false, opener = null, closeFocusEpoch = 0;
   let pending = false, proposal = null, approved = null, approvedSignature = '', message = '', details = '', diagnostics = [];
+  const resetFields = new Set();
+  const selectedResets = () => groups.filter(group => resetFields.has(group.field)).map(group => group.field);
   const current = () => {
     const c = getContext();
     return Boolean(session && !disposed && c.compositionSourceWritable === true && c.canEditCompositionOverride === true && c.editable && !c.creating && !c.busy
-      && c.sceneDraftPath === session.sourcePath && c.sceneDraftToken === session.token && session.isCurrent());
+      && c.sceneDraftPath === session.sourcePath && c.sceneDraftToken === session.token && session.isCurrent()
+      && (!resetFields.size || supportsStudioCoreCompositionEdit()));
   };
-  const formSignature = () => JSON.stringify(fields.map(field => el(field).value));
+  const formSignature = () => JSON.stringify({ values: fields.map(field => el(field).value), resetFields: selectedResets() });
   const numeric = suffix => {
     const raw = el(suffix).value.trim(), value = Number(raw);
     if (!raw || !Number.isFinite(value)) throw new TypeError('Each numeric field requires a finite number.');
     return value;
   };
   function values() {
-    return { position: [numeric('X'), numeric('Y')], size: [numeric('Width'), numeric('Height')], color: el('Color').value.trim(),
-      speed: numeric('Speed'), controls: el('Controls').value, imageResourceId: el('Image').value.trim() || null };
+    // Selected fields are removed by the core. Their former source values are
+    // placeholders, so an abandoned invalid input never guesses inheritance.
+    return { position: resetFields.has('position') ? [...session.values.position] : [numeric('X'), numeric('Y')],
+      size: resetFields.has('size') ? [...session.values.size] : [numeric('Width'), numeric('Height')],
+      color: resetFields.has('color') ? session.values.color : el('Color').value.trim(),
+      speed: resetFields.has('speed') ? session.values.speed : numeric('Speed'),
+      controls: resetFields.has('controls') ? session.values.controls : el('Controls').value,
+      imageResourceId: resetFields.has('imageResourceId') ? session.values.imageResourceId : el('Image').value.trim() || null };
   }
   function changed() {
     if (!session) return false;
+    if (resetFields.size) return true;
     try { return JSON.stringify(values()) !== JSON.stringify(session.values); }
     catch { return true; }
   }
@@ -63,6 +89,19 @@ export function setupSceneCompositionOverrides({ getContext = () => ({}), valida
     if (session && !pending && !valid) { approved = null; message = '原文或预览已变化，请重新预览后编辑实例覆盖。'; }
     dialog.setAttribute('aria-busy', String(pending)); dialog.dataset.dirty = String(changed());
     for (const field of fields) el(field).disabled = pending || !valid;
+    const canReset = supportsStudioCoreCompositionEdit();
+    el('ResetHelp').hidden = !canReset;
+    for (const group of groups) {
+      const selected = resetFields.has(group.field), available = Boolean(session && Object.hasOwn(session.draft.overrides, group.field));
+      const button = el(`${group.suffix}Reset`);
+      el(`${group.suffix}ResetRow`).hidden = !canReset;
+      button.disabled = pending || !valid || !canReset || !available;
+      button.textContent = t(selected ? '取消恢复' : '恢复继承');
+      button.setAttribute('aria-pressed', String(selected));
+      button.setAttribute('aria-label', t(selected ? '取消恢复：{0}' : '恢复继承：{0}', t(group.label)));
+      el(`${group.suffix}Status`).textContent = t(selected ? '已选择恢复；显示的仍是恢复前的值。' : available ? '已有局部覆盖' : '当前使用片段或投影值');
+      if (selected) for (const input of group.inputs) el(input).disabled = true;
+    }
     el('Check').disabled = pending || !valid || !changed(); el('Apply').disabled = pending || !valid || !approved;
     el('Close').disabled = pending; el('Cancel').disabled = pending;
     el('Message').textContent = t(message); el('Review').hidden = !proposal; el('Source').textContent = proposal?.afterContent || '';
@@ -76,7 +115,7 @@ export function setupSceneCompositionOverrides({ getContext = () => ({}), valida
     }
   }
   function reset() {
-    openEpoch++; formEpoch++; session = null; pending = false; proposal = null; approved = null; details = ''; diagnostics = [];
+    openEpoch++; formEpoch++; session = null; pending = false; proposal = null; approved = null; details = ''; diagnostics = []; resetFields.clear();
     dialog.setAttribute('aria-busy', 'false'); dialog.dataset.dirty = 'false';
   }
   function close() {
@@ -96,7 +135,7 @@ export function setupSceneCompositionOverrides({ getContext = () => ({}), valida
     if (pending || !current() || !changed()) { refresh(); return; }
     approved = null; proposal = null; diagnostics = []; details = '';
     const owner = session, epoch = formEpoch, signature = formSignature();
-    try { proposal = owner.draft.propose(values()); }
+    try { proposal = owner.draft.propose(values(), { resetFields: selectedResets() }); }
     catch (error) { report(error, '覆盖修改有误，请检查字段值后重试。'); refresh(); return; }
     const candidate = proposal;
     const owns = () => session === owner && dialog.open && !disposed;
@@ -131,6 +170,11 @@ export function setupSceneCompositionOverrides({ getContext = () => ({}), valida
     } finally { if (owns()) { pending = false; refresh(); } }
   }
   for (const field of fields) el(field).addEventListener(['Controls', 'Image'].includes(field) ? 'change' : 'input', () => {
+    formEpoch++; approved = null; proposal = null; details = ''; diagnostics = []; message = '实例覆盖尚未应用到原文草稿。'; refresh();
+  });
+  for (const group of groups) el(`${group.suffix}Reset`).addEventListener('click', () => {
+    if (pending || !current() || !supportsStudioCoreCompositionEdit() || !Object.hasOwn(session.draft.overrides, group.field)) return;
+    if (resetFields.has(group.field)) resetFields.delete(group.field); else resetFields.add(group.field);
     formEpoch++; approved = null; proposal = null; details = ''; diagnostics = []; message = '实例覆盖尚未应用到原文草稿。'; refresh();
   });
   el('Check').addEventListener('click', () => void check()); el('Apply').addEventListener('click', () => void apply());
@@ -171,7 +215,7 @@ export function setupSceneCompositionOverrides({ getContext = () => ({}), valida
           speed: initial.speed, controls: initial.controls, imageResourceId: initial.imageResourceId || null } };
         for (const [field, value] of [['X', initial.position[0]], ['Y', initial.position[1]], ['Width', initial.size[0]], ['Height', initial.size[1]],
           ['Color', initial.color], ['Speed', initial.speed], ['Controls', initial.controls], ['Image', initial.imageResourceId || '']]) el(field).value = String(value);
-        proposal = null; approved = null; pending = false; details = ''; diagnostics = []; formEpoch++;
+        proposal = null; approved = null; pending = false; details = ''; diagnostics = []; resetFields.clear(); formEpoch++;
         message = '实例覆盖尚未应用到原文草稿。'; opener = document.activeElement; closeFocusEpoch++;
         refresh(); dialog.showModal(); el('X').focus(); return true;
       } catch (error) {

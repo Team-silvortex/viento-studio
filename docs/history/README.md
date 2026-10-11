@@ -24,6 +24,7 @@
 | [RELEASE_0.0.7.md](../RELEASE_0.0.7.md) | 0.0.7 场景布局、Rust 核心与源码草稿 |
 | [RELEASE_0.0.8.md](../RELEASE_0.0.8.md) | 0.0.8 片段组合、GDScript、执行中间层与 Bevy |
 | [RELEASE_0.0.9.md](../RELEASE_0.0.9.md) | 0.0.9 工具检查、运行验收、工程用例、有序验收组与成员报告 |
+| [RELEASE_0.0.10.md](../RELEASE_0.0.10.md) | 0.0.10 后端工程管理、九域配方创作、系统模块与独立 3D 首切片 |
 | [RELEASE_b.2.8.1.md](../RELEASE_b.2.8.1.md) | b.2.8.1 发布记录 |
 | [RELEASE_b.2.8.2.md](../RELEASE_b.2.8.2.md) | 发布编号更正 |
 | [RELEASE_b.2.8.md](../RELEASE_b.2.8.md) | b.2.8 发布记录 |

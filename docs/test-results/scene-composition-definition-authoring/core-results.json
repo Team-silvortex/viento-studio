@@ -1,0 +1,251 @@
+{
+  "format": "viento-scene-composition-definition-authoring-core-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T10:34:56.116032+00:00",
+  "head": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "version": "0.0.9",
+  "runtime": "v24.20.0",
+  "sourceHashes": {
+    "engine/scene-composition-definitions.mjs": "60d5954ad141ae43b41638e87820ec4aa1c78360e350e23eacce98df6c69d9b6",
+    "engine/studio-core.mjs": "a6ef2bbb954cb9eccde7f3fe4a17d416fea7575650f7067f5093fbd40b18cc5a",
+    "engine/index.mjs": "97bf414f89c8ae87ecc8193fa9bd245904a4dfa7f58c54f6218a8c0ad1eb4e1c",
+    "crates/viento-studio-core/src/lib.rs": "a417bb6741e19ba7081a25e35bbceb3e00d88e2f523cfe5cb4f0850760807ec5",
+    "crates/viento-studio-core/src/scene_composition_definitions_patch.rs": "29c84ddd6eb6779e0477351abf42dc5f5dcaf8a1a1ea2daaf67f8f7411aa81de",
+    "scripts/tests/scene-composition-definitions.test.mjs": "ea4a6cdfe595f81fa6f96b9292cdf2f476070d0a57efc52cddf16b45a7d5a671",
+    "scripts/tests/studio-core-composition-definitions-patch.test.mjs": "cc3a07d936e2b5acd233ffa9ebf54845545b947b6903f958b21f9494f7f02df0"
+  },
+  "abi": {
+    "probe": "viento_core_scene_composition_definitions_version",
+    "version": 1,
+    "optional": true,
+    "operations": [
+      "sceneComposition.addFragmentDefinition",
+      "sceneComposition.copyFragmentDefinition",
+      "sceneComposition.removeFragmentDefinition"
+    ],
+    "priorCapabilitiesRetained": true,
+    "readOnlyOperations": [
+      "sceneComposition.inspectDefinitionLocations"
+    ],
+    "authoringOperationsRemainThree": true
+  },
+  "api": {
+    "exports": [
+      "createSceneCompositionDefinitionsDraft",
+      "prepareSceneCompositionDefinitionsApply",
+      "supportsStudioCoreCompositionDefinitions",
+      "dispatchStudioCoreCompositionDefinitions",
+      "dispatchStudioCoreCompositionDefinitionLocations"
+    ],
+    "draftFields": [
+      "fragments",
+      "propose"
+    ],
+    "fragments": "deep-frozen raw fragment declarations with complete source-ordered related placements",
+    "proposalKeys": [
+      "sceneId",
+      "sourcePath",
+      "baseSourceRevision",
+      "sourceRevision",
+      "edit",
+      "targets",
+      "afterContent",
+      "changedPaths"
+    ],
+    "targets": "exact empty array; this domain never changes generated identity sets or places a definition",
+    "edits": {
+      "add": [
+        "action",
+        "fragment"
+      ],
+      "copy": [
+        "action",
+        "sourceFragmentId",
+        "fragmentId"
+      ],
+      "remove": [
+        "action",
+        "fragmentId"
+      ]
+    },
+    "copy": "original fragment CST span with only fragmentId value token replaced; no declaration body serialization",
+    "ids": "caller supplies distinct ASCII local fragmentId; no generated UUID allocation; reusable object references/local actor and group keys retained",
+    "errorCodes": [
+      "scene_composition_definitions_invalid",
+      "scene_composition_definitions_conflict",
+      "scene_composition_definitions_content_limit"
+    ],
+    "definitionLocations": {
+      "requestKeys": [
+        "protocolVersion",
+        "operation",
+        "content",
+        "paths"
+      ],
+      "operation": "sceneComposition.inspectDefinitionLocations",
+      "responseKeys": [
+        "locations"
+      ],
+      "locationKeys": [
+        "propertyPath",
+        "start",
+        "end",
+        "encoding",
+        "exact"
+      ],
+      "encoding": "utf-16",
+      "paths": {
+        "minimum": 0,
+        "maximum": 4096,
+        "unique": true,
+        "maximumEachUtf8Bytes": 4096,
+        "rootPointer": ""
+      },
+      "ordered": true,
+      "nearest": "Missing properties, scalar children and noncanonical array indices fall back to the closest existing container; canonical JSON Pointer escaping is preserved",
+      "nullLocations": false,
+      "source": "Original source including BOM, CRLF, non-BMP characters and escaped keys; UTF-8 CST spans converted to UTF-16 offsets",
+      "validation": "Complete original composition expansion; strict pointer admission and input/query/receipt binding; no edit or geometry side effects",
+      "errorCodes": [
+        "studio_core_request_invalid",
+        "scene_composition_invalid",
+        "scene_composition_limit",
+        "studio_core_unavailable"
+      ],
+      "sameOptionalAbi": true,
+      "browserDependencies": "Core WASM and portable bridge only; no YAML, node_modules, DOM or tool process"
+    }
+  },
+  "verification": {
+    "rust": {
+      "unit": 114,
+      "integration": [
+        2,
+        8,
+        9,
+        13,
+        9,
+        8
+      ],
+      "total": 163,
+      "newUnitTests": 13,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-native-test.log",
+      "readOnlyLocationUnitTests": 3
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "warningsDenied": true,
+      "log": "core-clippy.log"
+    },
+    "native": {
+      "path": "desktop/.cache/definition-authoring-core-target/debug/viento-core",
+      "sha256": "3a220affb564f6951bb670fed31b0d0bb671af29988c99805bccc59022546198",
+      "log": "core-native-build.log"
+    },
+    "wasm": {
+      "bytes": 378412,
+      "sha256": "d614623bd2f29742a62a1cdddfda778cca39501ef05f1193e74e1f9dacb06225",
+      "sourceHash": "227bc084f47f9c08f686f6a4c46e2132d2bda6abcffddbdc592da85d12ab09eb",
+      "log": "core-wasm-build.log"
+    },
+    "newJavaScript": {
+      "pure": 15,
+      "bridge": 15,
+      "total": 30,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmParityRequests": 24,
+      "logs": [
+        "core-pure-tests.log",
+        "core-bridge-tests.log"
+      ],
+      "readOnlyLocationBridgeTests": 5
+    },
+    "oldAndNewRegression": {
+      "files": 19,
+      "passed": 268,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-regression-final.log"
+    },
+    "portableSource": {
+      "cases": 11,
+      "passed": 11,
+      "failed": 0,
+      "module": "boundary-cases.mjs",
+      "report": "boundary-source-results.json",
+      "log": "boundary-source-check.log",
+      "imports": 0,
+      "digest": "explicit injected port",
+      "readOnlyLocationCases": 1
+    }
+  },
+  "retainedAttempts": [
+    {
+      "logs": [
+        "core-native-test-initial.log",
+        "core-clippy-initial.log",
+        "core-pure-tests-initial.log"
+      ],
+      "result": "All initial runs passed; identical final log copies retained for stable evidence names"
+    },
+    {
+      "phase": "before-browser-provenance-fix",
+      "report": "core-results-before-browser-fix.json",
+      "result": {
+        "rust": 160,
+        "newJavaScript": 25,
+        "oldAndNewRegression": 263,
+        "nativeWasmParityRequests": 19,
+        "portableSource": 10
+      },
+      "logs": [
+        "core-native-test-before-browser-fix.log",
+        "core-clippy-before-browser-fix.log",
+        "core-fmt-check-before-browser-fix.log",
+        "core-native-build-before-browser-fix.log",
+        "core-wasm-build-before-browser-fix.log",
+        "core-pure-tests-before-browser-fix.log",
+        "core-bridge-tests-before-browser-fix.log",
+        "core-regression-final-before-browser-fix.log",
+        "boundary-source-check-before-browser-fix.log"
+      ],
+      "preservedArtifacts": [
+        "core-build-before-browser-fix.json",
+        "boundary-cases-before-browser-fix.mjs",
+        "boundary-source-results-before-browser-fix.json"
+      ],
+      "reason": "Initial core and pure authoring checks passed. Browser provenance validation imported a host YAML parser; root replaced that candidate dependency with this same-ABI read-only Rust CST locator. Authoring operations and pure draft contract remain unchanged."
+    },
+    {
+      "phase": "read-only-browser-provenance-fix",
+      "logs": [
+        "core-native-test-location-initial.log",
+        "core-clippy-location-initial.log",
+        "core-bridge-tests-location-initial.log"
+      ],
+      "result": "Fresh native, WASM, strict bridge and host JSON-source/YAML UTF-16 parity passed; stable evidence log copies describe the current frozen source."
+    }
+  ],
+  "boundaries": [
+    "No filesystem or tool process in pure/core operations",
+    "ADD and COPY append unplaced definitions; REMOVE requires no raw placement reference and at least one definition remains",
+    "No rename/reorder/cascade/placement mutations or generated UUID allocation",
+    "Complete original and final expansion with existing final128KiB/32fragment/128aggregate declared and expanded actor/group budgets",
+    "CST copy replaces only fragment identity value and preserves body token spelling/key order; outside-item bytes BOM and CRLF retained",
+    "Removing unused middle definitions rebuilds provenance paths while complete semantic expanded scene and generated IDs remain stable",
+    "Complete preview sceneStructure and source-ordered actor/group provenance bind source before draft opens",
+    "Model/source/proposal detached before asynchronous digest; host recomputes canonical intent, empty target array and exact patch receipt",
+    "Existing host dependency checks cover all raw declared object/explicit-image references; unused projection effective values and image bytes retain first-placement validation boundary",
+    "Definition locations are a read-only operation of the existing definitions ABI, with strict ordered unique JSON Pointer requests and UTF-16 ranges; they do not add a fourth authoring action or resource authority",
+    "Host parser parity covers BOM, CRLF, multilingual and non-BMP content, escaped keys, ~0/~1 pointers, exponent spelling, missing and scalar children, and noncanonical array indices",
+    "Root owns GUI/workflow/candidate/full app/browser/prepared verification; source portable proof is not installed-device acceptance"
+  ],
+  "findings": []
+}

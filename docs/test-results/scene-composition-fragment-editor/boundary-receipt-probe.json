@@ -1,0 +1,113 @@
+{
+  "ok": true,
+  "recordedAt": "2026-10-11T05:04:58.367Z",
+  "scope": "Independent bridge fault injection for six malformed fragment receipts and three absent/unsupported capability versions. Fake ABI supplies fragment responses/capabilities only; legacy operations relay to actual Rust WASM. Separately eight requests run through the real fresh native core and real raw WASM. No persistence, GUI, build, installed application or device acceptance.",
+  "runtime": {
+    "version": "v24.20.0",
+    "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+  },
+  "sourceManifest": {
+    "files": 553,
+    "sha256": "8aa88b9dbf0ad9f43ea649220af2eeda8529cda27606115403cd9586889052d2"
+  },
+  "binaryManifestSha256": "33d2af70e1e9b8bc52186ddf5d05cdc361d311dd0d9d5c138bd63fcbbd50dd9b",
+  "binaries": [
+    {
+      "path": "/home/chiharukiryu/cdev/viento-studio/src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu",
+      "bytes": 126458664,
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    {
+      "path": "/tmp/viento-fragment-editor-core-target/debug/viento-core",
+      "bytes": 12010264,
+      "sha256": "8633ef2ac5bd869701f07834a83409734f3a403bc5700688b138ef64f2e34d44"
+    },
+    {
+      "path": "/tmp/viento-fragment-editor-native-target/debug/examples/workspace-archive",
+      "bytes": 223869384,
+      "sha256": "2f149a4d2bfeb9b67305d620c8cc943abf36acda9957b5c99a6fbdf749ffab74"
+    },
+    {
+      "path": "/tmp/viento-fragment-editor-native-target/debug/examples/mobile-storage",
+      "bytes": 22800104,
+      "sha256": "0f2e3f9ae31fe6bec4a90a0e4ffdd7725b9ac4acf78aa14edd36433ba4939bed"
+    }
+  ],
+  "wasmSha256": "ca6c5a2d874bf0ed8936d0b04b2d8c276147a94265c7e5e115665ebb54256b04",
+  "checks": [
+    {
+      "id": "sibling-actor-modification",
+      "ok": true,
+      "rejectedOperations": 1,
+      "failedClosed": true
+    },
+    {
+      "id": "placement-override-modification",
+      "ok": true,
+      "rejectedOperations": 1,
+      "failedClosed": true
+    },
+    {
+      "id": "stable-definition-identity-modification",
+      "ok": true,
+      "rejectedOperations": 1,
+      "failedClosed": true
+    },
+    {
+      "id": "changed-path-order-forgery",
+      "ok": true,
+      "rejectedOperations": 1,
+      "failedClosed": true
+    },
+    {
+      "id": "duplicate-decoded-candidate-key",
+      "ok": true,
+      "rejectedOperations": 1,
+      "failedClosed": true
+    },
+    {
+      "id": "noop-original-byte-forgery",
+      "ok": true,
+      "rejectedOperations": 1,
+      "failedClosed": true
+    },
+    {
+      "id": "independent-cap-missing",
+      "ok": true,
+      "rejectedOperations": 1,
+      "oldPatchActuallyExecuted": true
+    },
+    {
+      "id": "independent-cap-0",
+      "ok": true,
+      "rejectedOperations": 1,
+      "oldPatchActuallyExecuted": true
+    },
+    {
+      "id": "independent-cap-2",
+      "ok": true,
+      "rejectedOperations": 1,
+      "oldPatchActuallyExecuted": true
+    },
+    {
+      "id": "actual-fresh-native-and-raw-wasm-parity",
+      "ok": true,
+      "requests": 8,
+      "noSkip": true
+    }
+  ],
+  "counts": {
+    "groups": 10,
+    "forgedReceipts": 6,
+    "unsupportedCaps": 3,
+    "rejectedOperations": 9,
+    "actualNativeParityRequests": 8
+  },
+  "proofSha256": "14038f4b21ddcfe58b56c6b620a242124358c805155cc914f27b9478c3facbbe",
+  "sourcesAndBinariesStable": true,
+  "initialProofCorrection": {
+    "log": "boundary-receipt-probe-initial.log",
+    "kind": "fixture-identity-collision",
+    "explanation": "Initial identity attack accidentally supplied the existing definition UUID and therefore made no identity change; corrected the proof fixture to a different valid UUID. Product sources and binaries unchanged."
+  }
+}

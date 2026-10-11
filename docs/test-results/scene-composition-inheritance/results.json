@@ -1,0 +1,478 @@
+{
+  "ok": true,
+  "date": "2026-10-08",
+  "recordedAt": "2026-10-08T07:42:51.986648+00:00",
+  "sourceVersion": "0.0.9",
+  "baseCommit": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "delivery": "unreleased-working-tree",
+  "scope": "Six-field per-instance composition inheritance restoration; mixed sets and resets form one Rust-validated exact-source candidate. Check, review and apply stay in editor memory; only ordinary Save writes author text.",
+  "feature": {
+    "function": "scene.composition_inheritance",
+    "fields": [
+      "position",
+      "size",
+      "color",
+      "speed",
+      "controls",
+      "imageResourceId"
+    ],
+    "operation": "sceneComposition.editOverrides",
+    "independentCapabilityVersion": 1,
+    "legacySetOperationAndProbeUnchanged": true,
+    "imageNullMeansExplicitClearAndResetDeletesOverride": true,
+    "lastEmptyActorOverrideRemoved": true,
+    "fragmentsStableIdentitiesAndOtherPlacementsPreserved": true
+  },
+  "application": {
+    "tests": 2037,
+    "pass": 2037,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 257221.865217,
+    "log": "app-check.log",
+    "node": "24.20.0 (pinned embedded)",
+    "javascriptFiles": 431,
+    "apiContract": "passed",
+    "versionPreflight": "0.0.9",
+    "actualGodotAndBevyRegression": true,
+    "freshNativeHelpers": true
+  },
+  "focused": {
+    "tests": 74,
+    "pass": 74,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 1723.50278,
+    "log": "focused-tests.log",
+    "includedInApplicationCount": true,
+    "newJavascriptTests": 20,
+    "newUiCasesUseExplicitlyLabelledProposalBoundarySpy": true
+  },
+  "rust": {
+    "passed": 87,
+    "failed": 0,
+    "ignored": 0,
+    "newUnitTests": 12,
+    "log": "core-tests.log",
+    "format": "core-fmt.log",
+    "clippyWarningsDenied": "core-clippy.log",
+    "newWasmBytes": 290737,
+    "newWasmSha256": "d870462368eb3180f6fde123516110e41ba2cbed13b773e7ffc1fc0e0b7ece2f"
+  },
+  "browser": {
+    "evidence": "browser/browser.json",
+    "browser": "Chrome/154.0.8037.97",
+    "steps": 9,
+    "runtimeExceptions": 0,
+    "localesAt390px": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "inheritance": {
+      "sameValueReset": true,
+      "mixedSetAndReset": true,
+      "allOverridesRemovedForSelectedActor": true,
+      "allStableInstanceIdsPreserved": true
+    },
+    "ordinarySave": {
+      "sourceSha256": "81d6ef54b8b2294cb67ffcdd64105e7a9dfe16ca7a729d7d55736c533c47f5d6",
+      "onlyChangedFile": "documents/scenes/recipe.json"
+    },
+    "scope": "Real HTTP editor in Chrome; disposable author workspace only."
+  },
+  "preparedResources": {
+    "evidence": "prepared-resources.json",
+    "scope": "Prepared desktop resources executed with embedded Node; isolated prepared mobile ESM/WASM set/reset override editing helpers and preview resolver. Full source copies and resource inventories are checked. No installed Tauri window, Android UI or native device is claimed.",
+    "embeddedNodeVersion": "v24.20.0",
+    "embeddedNodeSha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7",
+    "runtime": {
+      "overrides": {
+        "independentWasmCapability": true,
+        "savedAndDirtySourceSessions": true,
+        "changedOnlySets": true,
+        "localAndOffsetWorldPositions": true,
+        "appliedOnlyInMemory": true,
+        "replayedExactReceipts": true,
+        "staleAndForgedRejected": true,
+        "fragmentsAndOtherActorsAndIdentitiesPreserved": true,
+        "sourceAndMetadataBytesUnchanged": true,
+        "fullDependencyPreviewValidated": true,
+        "beforeRevision": "sha256:b1979af6c03b67ee92ad7ab29cced066950b9bc66b522ad1f5bd27ccb92cdeeb",
+        "candidateRevision": "sha256:2b453bad2eb80e0983473391db3fdce20473be13086bf251ea158adec4e67c7f",
+        "finalRevision": "sha256:9b3e6c5861d79602cac6d5c44d4cbe91841a2c1b94a1f86dc801ea8d1ad1dd29"
+      },
+      "inheritance": {
+        "desktopCases": 5,
+        "isolatedMobileCases": 5,
+        "cases": [
+          {
+            "name": "explicit-null-clears-image",
+            "desktopPreparedWasmAndHostPreview": true,
+            "isolatedMobileWasmProposalAndResolver": true,
+            "exactProposalAndReceiptParity": true,
+            "instanceIdentitiesAndOffsetPreserved": true,
+            "sourceAndMetadataDiskUnchanged": true,
+            "beforeSourceRevision": "sha256:42a45f60a824a9fdb60b324a6094cc5372fe3bb4a3a26d832cb5909ed566069e",
+            "afterSourceRevision": "sha256:32c934faeb0b93a7278e60761a8e11f30e458933950c32f4bbd44bb96a40f747",
+            "resetFields": [],
+            "setFields": [
+              "imageResourceId"
+            ],
+            "changedPaths": [
+              "/placements/1/overrides/0/values/imageResourceId"
+            ],
+            "sourceLocations": {
+              "recipeLocations": 89,
+              "exactSourceRanges": 75,
+              "compositeOrNearestRanges": 14
+            }
+          },
+          {
+            "name": "removing-image-field-restores-template-image",
+            "desktopPreparedWasmAndHostPreview": true,
+            "isolatedMobileWasmProposalAndResolver": true,
+            "exactProposalAndReceiptParity": true,
+            "instanceIdentitiesAndOffsetPreserved": true,
+            "sourceAndMetadataDiskUnchanged": true,
+            "beforeSourceRevision": "sha256:32c934faeb0b93a7278e60761a8e11f30e458933950c32f4bbd44bb96a40f747",
+            "afterSourceRevision": "sha256:42a45f60a824a9fdb60b324a6094cc5372fe3bb4a3a26d832cb5909ed566069e",
+            "resetFields": [
+              "imageResourceId"
+            ],
+            "setFields": [],
+            "changedPaths": [
+              "/placements/1/overrides/0/values/imageResourceId"
+            ],
+            "sourceLocations": {
+              "recipeLocations": 88,
+              "exactSourceRanges": 74,
+              "compositeOrNearestRanges": 14
+            }
+          },
+          {
+            "name": "same-value-restoration-still-removes-authored-field",
+            "desktopPreparedWasmAndHostPreview": true,
+            "isolatedMobileWasmProposalAndResolver": true,
+            "exactProposalAndReceiptParity": true,
+            "instanceIdentitiesAndOffsetPreserved": true,
+            "sourceAndMetadataDiskUnchanged": true,
+            "beforeSourceRevision": "sha256:8a490943fb2a1386e1c5b81fcf5eae906fca77b19ca891e40d09218a40fe012f",
+            "afterSourceRevision": "sha256:7d12445edfe01aae1c20c6d2ac34888cd0893df51fdb53da16583853ca7bfc8d",
+            "resetFields": [
+              "speed"
+            ],
+            "setFields": [],
+            "changedPaths": [
+              "/placements/1/overrides/0/values/speed"
+            ],
+            "sourceLocations": {
+              "recipeLocations": 87,
+              "exactSourceRanges": 73,
+              "compositeOrNearestRanges": 14
+            }
+          },
+          {
+            "name": "mixed-position-reset-and-color-set",
+            "desktopPreparedWasmAndHostPreview": true,
+            "isolatedMobileWasmProposalAndResolver": true,
+            "exactProposalAndReceiptParity": true,
+            "instanceIdentitiesAndOffsetPreserved": true,
+            "sourceAndMetadataDiskUnchanged": true,
+            "beforeSourceRevision": "sha256:42a45f60a824a9fdb60b324a6094cc5372fe3bb4a3a26d832cb5909ed566069e",
+            "afterSourceRevision": "sha256:3b31888c862b87b7897d66d82fb9e32ec4e62bc681f9726e4eff750b06b4d268",
+            "resetFields": [
+              "position"
+            ],
+            "setFields": [
+              "color"
+            ],
+            "changedPaths": [
+              "/placements/1/overrides/0/values/position",
+              "/placements/1/overrides/0/values/color"
+            ],
+            "sourceLocations": {
+              "recipeLocations": 87,
+              "exactSourceRanges": 73,
+              "compositeOrNearestRanges": 14
+            }
+          },
+          {
+            "name": "six-field-restoration-removes-empty-actor-override",
+            "desktopPreparedWasmAndHostPreview": true,
+            "isolatedMobileWasmProposalAndResolver": true,
+            "exactProposalAndReceiptParity": true,
+            "instanceIdentitiesAndOffsetPreserved": true,
+            "sourceAndMetadataDiskUnchanged": true,
+            "beforeSourceRevision": "sha256:9d2f040ac992a202b060f7c6874786c77ec24cb8d09777e5838a8b8821f13e74",
+            "afterSourceRevision": "sha256:0e28bda45d551c5fdb48e8d2d588f2fa30ae8e0366feaec43cffb001e35b5827",
+            "resetFields": [
+              "imageResourceId",
+              "controls",
+              "speed",
+              "color",
+              "size",
+              "position"
+            ],
+            "setFields": [],
+            "changedPaths": [
+              "/placements/1/overrides/0/values/position",
+              "/placements/1/overrides/0/values/size",
+              "/placements/1/overrides/0/values/color",
+              "/placements/1/overrides/0/values/speed",
+              "/placements/1/overrides/0/values/controls",
+              "/placements/1/overrides/0/values/imageResourceId"
+            ],
+            "sourceLocations": {
+              "recipeLocations": 84,
+              "exactSourceRanges": 70,
+              "compositeOrNearestRanges": 14
+            }
+          }
+        ],
+        "noOverrideResetNoopBothPlatforms": true,
+        "overlapRefusedWithoutRuntimeLossBothPlatforms": true,
+        "explicitNullAndInheritedImageDistinguished": true,
+        "sameValueRestoreChangesSource": true,
+        "completeActorOverrideRemoved": true,
+        "authorSourceAndMetadataBytesUnchanged": true,
+        "oldSetBehaviorRetained": true,
+        "noNodeDomOrNetworkGlobalsInMobileVm": true
+      },
+      "desktop": {
+        "actualPreparedModules": true,
+        "rawRecipeSourceRevision": "sha256:b1979af6c03b67ee92ad7ab29cced066950b9bc66b522ad1f5bd27ccb92cdeeb",
+        "savedAndDraftPreview": true,
+        "repeatedInstances": 4,
+        "groups": 4,
+        "recipeAndDefinitionAndAssetMetadataUnchanged": true,
+        "sourceTreeByteIdentical": true,
+        "buildEnvelopeAbsent": true,
+        "sceneWritebackAbsent": true,
+        "buildsRejectRecipes": true,
+        "noBuildJobsOrCache": true,
+        "previewCatalogKinds": [
+          "scene",
+          "composition"
+        ],
+        "imageHashVerifiedAndFrozen": true,
+        "changedImageDiagnosticUsesRecipeLocation": true,
+        "staleDraftRejected": true,
+        "malformedDraftRejected": true,
+        "oldSceneSnapshotUnchanged": true
+      },
+      "mobile": {
+        "isolatedPreparedResolver": true,
+        "noNodeGlobals": true,
+        "completeModelParity": true,
+        "rawSourceLocationsVerified": true,
+        "independentCompositionPatchCapability": true,
+        "independentCompositionEditCapability": true,
+        "capabilities": {
+          "viento_core_protocol_version": 1,
+          "viento_core_scene_source_version": 1,
+          "viento_core_scene_composition_version": 1,
+          "viento_core_scene_composition_patch_version": 1,
+          "viento_core_scene_composition_edit_version": 1
+        },
+        "overrideHelperSavedAndDraft": true,
+        "exactDesktopPatchParity": true,
+        "oldExpandAndSceneSourcePatchAndGeometryWithUndoRedo": true,
+        "originalFrozenObservationUnchanged": true,
+        "draftOverlayAndResolver": true,
+        "malformedDraftRejected": true,
+        "moduleCount": 111,
+        "modulePaths": [
+          "engine/build-plan.mjs",
+          "engine/canonical-json.mjs",
+          "engine/document-contract.mjs",
+          "engine/document-model.mjs",
+          "engine/document-values.mjs",
+          "engine/fields.mjs",
+          "engine/json-source.mjs",
+          "engine/legacy-profile.mjs",
+          "engine/media-format.mjs",
+          "engine/object-projection-template.mjs",
+          "engine/object-projection.mjs",
+          "engine/parse.mjs",
+          "engine/parser.mjs",
+          "engine/project-build-contract.mjs",
+          "engine/project.mjs",
+          "engine/scene-behaviors.mjs",
+          "engine/scene-composition-document.mjs",
+          "engine/scene-composition-overrides.mjs",
+          "engine/scene-composition-preview.mjs",
+          "engine/scene-composition.mjs",
+          "engine/scene-draft-preview.mjs",
+          "engine/scene-groups.mjs",
+          "engine/scene-identity.mjs",
+          "engine/scene-layout.mjs",
+          "engine/scene-model.mjs",
+          "engine/scene-preview-contract.mjs",
+          "engine/scene-source-layout.mjs",
+          "engine/scene-structure.mjs",
+          "engine/service-error.mjs",
+          "engine/source-path.mjs",
+          "engine/studio-core.mjs",
+          "engine/text-utils.mjs",
+          "engine/user-message.mjs",
+          "engine/world-command-contract.mjs",
+          "engine/world-object-create.mjs",
+          "engine/world-projection.mjs",
+          "engine/world-record-edit.mjs",
+          "engine/world-scene-create.mjs",
+          "vendor/yaml/dist/compose/compose-collection.js",
+          "vendor/yaml/dist/compose/compose-doc.js",
+          "vendor/yaml/dist/compose/compose-node.js",
+          "vendor/yaml/dist/compose/compose-scalar.js",
+          "vendor/yaml/dist/compose/composer.js",
+          "vendor/yaml/dist/compose/resolve-block-map.js",
+          "vendor/yaml/dist/compose/resolve-block-scalar.js",
+          "vendor/yaml/dist/compose/resolve-block-seq.js",
+          "vendor/yaml/dist/compose/resolve-end.js",
+          "vendor/yaml/dist/compose/resolve-flow-collection.js",
+          "vendor/yaml/dist/compose/resolve-flow-scalar.js",
+          "vendor/yaml/dist/compose/resolve-props.js",
+          "vendor/yaml/dist/compose/util-contains-newline.js",
+          "vendor/yaml/dist/compose/util-empty-scalar-position.js",
+          "vendor/yaml/dist/compose/util-flow-indent-check.js",
+          "vendor/yaml/dist/compose/util-map-includes.js",
+          "vendor/yaml/dist/doc/Document.js",
+          "vendor/yaml/dist/doc/anchors.js",
+          "vendor/yaml/dist/doc/applyReviver.js",
+          "vendor/yaml/dist/doc/createNode.js",
+          "vendor/yaml/dist/doc/directives.js",
+          "vendor/yaml/dist/errors.js",
+          "vendor/yaml/dist/index.js",
+          "vendor/yaml/dist/log.js",
+          "vendor/yaml/dist/nodes/Alias.js",
+          "vendor/yaml/dist/nodes/Collection.js",
+          "vendor/yaml/dist/nodes/Node.js",
+          "vendor/yaml/dist/nodes/Pair.js",
+          "vendor/yaml/dist/nodes/Scalar.js",
+          "vendor/yaml/dist/nodes/YAMLMap.js",
+          "vendor/yaml/dist/nodes/YAMLSeq.js",
+          "vendor/yaml/dist/nodes/addPairToJSMap.js",
+          "vendor/yaml/dist/nodes/identity.js",
+          "vendor/yaml/dist/nodes/toJS.js",
+          "vendor/yaml/dist/parse/cst-scalar.js",
+          "vendor/yaml/dist/parse/cst-stringify.js",
+          "vendor/yaml/dist/parse/cst-visit.js",
+          "vendor/yaml/dist/parse/cst.js",
+          "vendor/yaml/dist/parse/lexer.js",
+          "vendor/yaml/dist/parse/line-counter.js",
+          "vendor/yaml/dist/parse/parser.js",
+          "vendor/yaml/dist/public-api.js",
+          "vendor/yaml/dist/schema/Schema.js",
+          "vendor/yaml/dist/schema/common/map.js",
+          "vendor/yaml/dist/schema/common/null.js",
+          "vendor/yaml/dist/schema/common/seq.js",
+          "vendor/yaml/dist/schema/common/string.js",
+          "vendor/yaml/dist/schema/core/bool.js",
+          "vendor/yaml/dist/schema/core/float.js",
+          "vendor/yaml/dist/schema/core/int.js",
+          "vendor/yaml/dist/schema/core/schema.js",
+          "vendor/yaml/dist/schema/json/schema.js",
+          "vendor/yaml/dist/schema/tags.js",
+          "vendor/yaml/dist/schema/yaml-1.1/binary.js",
+          "vendor/yaml/dist/schema/yaml-1.1/bool.js",
+          "vendor/yaml/dist/schema/yaml-1.1/float.js",
+          "vendor/yaml/dist/schema/yaml-1.1/int.js",
+          "vendor/yaml/dist/schema/yaml-1.1/merge.js",
+          "vendor/yaml/dist/schema/yaml-1.1/omap.js",
+          "vendor/yaml/dist/schema/yaml-1.1/pairs.js",
+          "vendor/yaml/dist/schema/yaml-1.1/schema.js",
+          "vendor/yaml/dist/schema/yaml-1.1/set.js",
+          "vendor/yaml/dist/schema/yaml-1.1/timestamp.js",
+          "vendor/yaml/dist/stringify/foldFlowLines.js",
+          "vendor/yaml/dist/stringify/stringify.js",
+          "vendor/yaml/dist/stringify/stringifyCollection.js",
+          "vendor/yaml/dist/stringify/stringifyComment.js",
+          "vendor/yaml/dist/stringify/stringifyDocument.js",
+          "vendor/yaml/dist/stringify/stringifyNumber.js",
+          "vendor/yaml/dist/stringify/stringifyPair.js",
+          "vendor/yaml/dist/stringify/stringifyString.js",
+          "vendor/yaml/dist/visit.js",
+          "vendor/yaml/index.js"
+        ],
+        "wasmBytes": 290737,
+        "wasmSha256": "d870462368eb3180f6fde123516110e41ba2cbed13b773e7ffc1fc0e0b7ece2f",
+        "previewHostBundled": false,
+        "mobilePreviewGui": false,
+        "nativeDevice": false
+      }
+    },
+    "inventories": {
+      "desktop/resources": {
+        "files": 511,
+        "sha256": "bf7951544b0fbcb151418177d117325e3298ad73f406f09d8db8e380c7453c96",
+        "checkedFocusFiles": 80
+      },
+      "mobile/dist": {
+        "files": 201,
+        "sha256": "8f52515612645a8ca5aa7f41499e8b77a68c31f36becf31827d8c68f522f771b",
+        "checkedFocusFiles": 76
+      },
+      "desktop/ui": {
+        "files": 11,
+        "sha256": "152712684abff85bc15a8db1bdac6e172d844e817638f8b4a36790cfe510cf68",
+        "checkedFocusFiles": null
+      }
+    }
+  },
+  "boundaryReview": {
+    "evidence": "boundary-review.json",
+    "fix": "Strict expansion of both original and candidate blocks forged deletion that could erase duplicate decoded keys from the original.",
+    "beforeProbe": "boundary-original-source-probe.json",
+    "afterProbe": "boundary-original-source-probe-final.json"
+  },
+  "preservation": "historical-preservation.json",
+  "sourceHashes": "source-hashes.json",
+  "nativeHelperBytes": "native-helpers.json",
+  "cleanup": "cleanup.json",
+  "initialAttempts": [
+    {
+      "log": "native-helpers-build.log",
+      "cause": "Missing prepared Node sidecar prerequisite; retry after preparation passed in native-helpers-build-final.log."
+    },
+    {
+      "log": "desktop-prepare.log",
+      "cause": "Node download fetch failure; SHA-verified mirror archive and extracted pinned LICENSE used, final preparation passed."
+    },
+    {
+      "log": "core-targeted-initial-tail.log",
+      "scope": "Actual retained terminal tail excerpt, not a full command log.",
+      "cause": "Test expected integer 30 while serde emits 30.0; raw-byte preservation check passed. Fixture assertion corrected."
+    },
+    {
+      "script": "prepared-check-initial.mjs",
+      "log": "prepared-check-initial.log",
+      "cause": "The plain OC fixture did not contain the projection required by useProjectionDefaults; actual build_projection_runtime diagnosis retained in prepared-check-diagnostic.log."
+    },
+    {
+      "script": "prepared-check-projection-fixture.mjs",
+      "log": "prepared-check-projection-fixture.log",
+      "cause": "Golden observed record lacked disk metadata format/version; only synthetic fixture repaired."
+    },
+    {
+      "script": "prepared-check-provenance-fixture.mjs",
+      "log": "prepared-check-provenance-fixture.log",
+      "cause": "Whole-actor equality accidentally included expected changed provenance; runtime equality and strict source-location/CST assertions now checked separately."
+    },
+    {
+      "script": "prepared-check-single-source-fixture.mjs",
+      "log": "prepared-check-single-source-fixture.log",
+      "cause": "Restored image correctly has one exact template source without contributors array; harness now checks that actual single-source shape."
+    }
+  ],
+  "limitations": [
+    "No new version, commit, push, installer, Tauri window or Android device acceptance.",
+    "One existing composition instance/source session; no cross-file transaction, shared-fragment editing, direct recipe build, realtime preview or GPU claim.",
+    "Prepared mobile tests exercise isolated ESM/WASM helpers; no mobile preview GUI.",
+    "Focused and added JavaScript tests overlap the full application count."
+  ]
+}

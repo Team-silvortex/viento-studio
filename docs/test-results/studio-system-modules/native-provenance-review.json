@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-11T08:57:47.933944+00:00",
+  "scope": "Read-only final source/log verification of the native-only Studio profile integer provenance refinement after root cleanup; no product edits, builds or installed-device acceptance.",
+  "reviewedSources": {
+    "src-tauri/src/project_templates.rs": "ba7ca8372c4ac6a5e5d3a3fe547bcfaa5c5736fa3c7865fdb753bcfa82111410",
+    "src-tauri/src/workspace.rs": "96d18ed684189f69b7af979e2ad831033cf1b4a1f8a11336dd1da893e77a7f89",
+    "scripts/lib/project-templates.json": "3944610922fcc88d05c7f897f81fc7d8c25e6f214e5345d710f41f285f3c7734",
+    "engine/canonical-json.mjs": "44604f12be2a7619783e5928641e5d573cfde7ff0b5bdf30428e632966b72831"
+  },
+  "frozenSourceManifest": {
+    "file": "source-hashes.json",
+    "count": 617,
+    "nativeSourcesMatch": true
+  },
+  "provenanceBoundary": {
+    "normalization": "Only schemaVersion and apiVersion values within a successfully validated studioProfile in the private serde_json::to_value(self) digest clone",
+    "integerValues": [
+      "1",
+      "1.0",
+      "1e0"
+    ],
+    "schemaVersion": 1,
+    "apiVersionRange": [
+      1,
+      65535
+    ],
+    "validatedBeforeCast": true,
+    "templateSelfSerializationPreserved": true,
+    "workspaceProfileSerializationPreserved": true,
+    "existingFutureMalformedProfileReadMigrationPreserved": true,
+    "absentLegacyTemplateSerializationAndDigestPreserved": true,
+    "builtinTemplateJsonUnchanged": true,
+    "globalCanonicalJsonUnchanged": true
+  },
+  "crossLanguage": {
+    "nodeEvidence": "profile-integer-canonical-node.json",
+    "nodeVersion": "v24.20.0",
+    "canonicalSourceSha256": "44604f12be2a7619783e5928641e5d573cfde7ff0b5bdf30428e632966b72831",
+    "expectedDigest": "sha256:4b6196aa80f3d8c2260120f5bcd074bb0f5032bc51b39e9e0d9955b10452aa4f",
+    "nativeInteropCase": "studio_profile_provenance_matches_node_integer_semantics_without_rewriting_values",
+    "nativeCasePassedForAllThreeForms": true
+  },
+  "nativeUnits": {
+    "log": "native-unit-tests.log",
+    "logSha256": "9abb3f701adc1619331a0465c00f9e369d2bd74a2f016ec295026c0c4e66f10e",
+    "passed": 53,
+    "failed": 0,
+    "ignored": 1,
+    "ignoredCase": "workspace::tests::full_project_migration_roundtrip (requires VIENTO_TEST_SOURCE_ROOT)",
+    "newNativeCases": 11,
+    "allNewNativeCasesPassed": true,
+    "cases": [
+      {
+        "file": "src-tauri/src/project_templates.rs",
+        "line": 199,
+        "name": "absent_studio_profiles_preserve_builtin_serialization_and_provenance"
+      },
+      {
+        "file": "src-tauri/src/project_templates.rs",
+        "line": 219,
+        "name": "studio_profile_snapshots_are_validated_and_part_of_template_provenance"
+      },
+      {
+        "file": "src-tauri/src/project_templates.rs",
+        "line": 236,
+        "name": "explicit_null_and_malformed_template_profiles_are_not_treated_as_absent"
+      },
+      {
+        "file": "src-tauri/src/workspace.rs",
+        "line": 1334,
+        "name": "studio_profiles_accept_declarative_future_capabilities_without_mutating_manifests"
+      },
+      {
+        "file": "src-tauri/src/workspace.rs",
+        "line": 1349,
+        "name": "studio_profiles_reject_invalid_shapes_and_unknown_declaration_keys"
+      },
+      {
+        "file": "src-tauri/src/workspace.rs",
+        "line": 1390,
+        "name": "studio_profiles_reject_unsafe_tokens_versions_and_cross_list_duplicates"
+      },
+      {
+        "file": "src-tauri/src/workspace.rs",
+        "line": 1440,
+        "name": "studio_profiles_enforce_per_list_and_ascii_token_boundaries"
+      },
+      {
+        "file": "src-tauri/src/workspace.rs",
+        "line": 1474,
+        "name": "template_studio_profiles_are_copied_and_preserved_by_seed_and_archive_migration"
+      },
+      {
+        "file": "src-tauri/src/workspace.rs",
+        "line": 1520,
+        "name": "invalid_template_studio_profiles_do_not_publish_partial_projects"
+      },
+      {
+        "file": "src-tauri/src/workspace.rs",
+        "line": 1536,
+        "name": "existing_future_and_malformed_profiles_preserve_ordinary_open_and_archive_bytes"
+      },
+      {
+        "file": "src-tauri/src/project_templates.rs",
+        "line": 251,
+        "name": "studio_profile_provenance_matches_node_integer_semantics_without_rewriting_values"
+      }
+    ],
+    "executionOwner": "root"
+  },
+  "finalRelevantRegression": {
+    "log": "native-provenance-regression.log",
+    "logSha256": "eace82564c3d8fc33dead6d8c0caf04edaa67d4188e31d1f5e1fc2b6f19db5fe",
+    "tests": 83,
+    "pass": 83,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "durationMs": 3343.897864,
+    "usesFinalRelocatedNativeHelpers": "Root execution record and native-helpers.json; binaries were deleted before this final read-only review",
+    "scope": [
+      "project template provenance",
+      "profile adoption/snapshot/write/read",
+      "native/mobile archive migration",
+      "workspace author preservation"
+    ],
+    "executionOwner": "root"
+  },
+  "fullApplication": {
+    "log": "app-check.log",
+    "logSha256": "d541e579039f899c173c48c0d811f7a81fa9be52eefd871b04c8477f1a611c04",
+    "tests": 2680,
+    "pass": 2680,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "durationMs": 275351.166131,
+    "phase": "Before the last native-only provenance refinement; no full application run after that refinement is claimed",
+    "finalRefinementVerification": "53 native units plus 83 relevant Node/native cross-host regression cases"
+  },
+  "nativeHelpers": {
+    "manifest": "native-helpers.json",
+    "manifestSha256": "9e4f1915b3b6371e9e3d7294cb506fec85a0522c76ab016d7de81054af9a4ede",
+    "recordedBinaries": [
+      {
+        "path": "/tmp/viento-studio-system-modules-core-target/debug/viento-core",
+        "bytes": 12539584,
+        "sha256": "421806fb4fce5ceeea6bb524ac717a6f904bdb536f7636e4dd56f9c080234436"
+      },
+      {
+        "path": "/home/chiharukiryu/cdev/viento-studio/desktop/.cache/studio-system-modules-native-target/debug/examples/workspace-archive",
+        "bytes": 224556224,
+        "sha256": "4103b38fb02bc4fe4b0d76df7340223e1ea2e18cc15253317edd2d59b0c39e98"
+      },
+      {
+        "path": "/home/chiharukiryu/cdev/viento-studio/desktop/.cache/studio-system-modules-native-target/debug/examples/mobile-storage",
+        "bytes": 22912408,
+        "sha256": "09dc4e30f8359dbebcc870aa49aeaa77bfddc9a42038fe97207e1e2a0f0a98ce"
+      }
+    ],
+    "directBinaryRehashByThisFinalReview": false,
+    "reason": "All three generated helper paths were already absent after root cleanup; no reconstruction performed",
+    "cleanupPredeleteChecks": "Reviewed cleanup-generated.py checks the recorded size and SHA256 of all three helpers before any directory deletion; cleanup.json was published only after successful checks and deletion",
+    "cleanupScriptSha256": "fae38bdbaa77c057463369026372dbe1f800ba7ff87e9d1408dab7edb767fc94",
+    "cleanupEvidence": "cleanup.json",
+    "cleanupEvidenceSha256": "a56c580eeef09fdc312a9ebd14e823a1a82160acb94957ebbb14694d194b1a09",
+    "removedDirectories": 6,
+    "removedAllocatedBytes": 5817806848,
+    "allRemovedPathsActuallyAbsent": true,
+    "relocation": "native-target-relocation.json",
+    "target": "/home/chiharukiryu/cdev/viento-studio/desktop/.cache/studio-system-modules-native-target",
+    "targetOwnership": "Slice-owned baseline-absent subtree within baseline-absent desktop/.cache",
+    "initialQuotaFailureRetained": "native-tools-build-quota-failure.log"
+  },
+  "evidencePreservation": {
+    "priorNative52Log": "native-unit-tests-before-provenance-refinement.log",
+    "priorNative52LogOriginalSha256Preserved": true,
+    "earlierReportsNotEditedByThisReview": true,
+    "historicalReportsNotEditedByThisReview": true
+  },
+  "openFindings": [],
+  "claimsExcluded": [
+    "Direct rehash of already-deleted helpers by this final reviewer",
+    "Installed application verification",
+    "Android device execution",
+    "Full app suite executed after the last native-only refinement",
+    "No ignored native cases",
+    "Global canonical JSON replacement",
+    "3D or Rust script execution capability"
+  ]
+}

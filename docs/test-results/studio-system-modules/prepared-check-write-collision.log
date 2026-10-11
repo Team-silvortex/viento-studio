@@ -1,0 +1,17 @@
+(node:1504706) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `viento-node-x86_64-unknown-linux-gnu --trace-warnings ...` to show where the warning was created)
+node:internal/fs/promises:1345
+  return new FileHandle(await PromisePrototypeThen(
+                        ^
+
+Error: EEXIST: file already exists, open '/home/chiharukiryu/cdev/viento-studio/docs/test-results/studio-system-modules/packaged-resources.json'
+    at async open (node:internal/fs/promises:1345:25)
+    at async Object.writeFile (node:internal/fs/promises:1965:14)
+    at async file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/studio-system-modules/prepared-check.mjs:331:59 {
+  errno: -17,
+  code: 'EEXIST',
+  syscall: 'open',
+  path: '/home/chiharukiryu/cdev/viento-studio/docs/test-results/studio-system-modules/packaged-resources.json'
+}
+
+Node.js v24.20.0

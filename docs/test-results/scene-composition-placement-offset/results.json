@@ -1,0 +1,464 @@
+{
+  "ok": true,
+  "date": "2026-10-11",
+  "recordedAt": "2026-10-11T05:59:57.408319+00:00",
+  "sourceVersion": "0.0.9",
+  "baseCommit": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "delivery": "unreleased-working-tree",
+  "scope": "One existing recipe placement offset SET/removal, complete actor/group provenance and full dependency review, source draft application and ordinary Save.",
+  "feature": {
+    "function": "scene.composition_placement_editor",
+    "optionalCapability": 1,
+    "operation": "sceneComposition.editPlacementOffset",
+    "offsetPairSetOrNullDelete": true,
+    "absentAndExplicitZeroRemainDistinctAuthorIntent": true,
+    "offsetAppliedAfterLocalPositionOverride": true,
+    "everyActorInPlacementMoves": true,
+    "organizationGroupsAreNotSpatialTransforms": true,
+    "allOriginalAndFinalPlacementsValidated": true,
+    "templatesOverridesStableIdsUnrelatedBytesRetained": true,
+    "noGeometrySession": true,
+    "noImplicitSave": true
+  },
+  "application": {
+    "tests": 2353,
+    "pass": 2353,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 275723.614407,
+    "log": "app-check.log",
+    "node": "24.20.0 (pinned embedded)",
+    "javascriptFiles": 468,
+    "apiContract": "passed",
+    "versionPreflight": "0.0.9",
+    "actualGodotAndBevyRegression": true,
+    "freshNativeHelpers": true
+  },
+  "focused": {
+    "tests": 488,
+    "pass": 488,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 25166.339068,
+    "log": "focused-tests.log",
+    "includedInApplicationCount": true,
+    "newTests": {
+      "total": 70,
+      "files": {
+        "scripts/tests/scene-composition-placement-bridge.test.mjs": 7,
+        "scripts/tests/scene-composition-placement-host.test.mjs": 8,
+        "scripts/tests/scene-composition-placement-preview.test.mjs": 4,
+        "scripts/tests/scene-composition-placement-ui.test.mjs": 24,
+        "scripts/tests/scene-composition-placement.test.mjs": 16,
+        "scripts/tests/studio-core-composition-placement-patch.test.mjs": 11
+      },
+      "includedInFullApplication": true
+    },
+    "coreFocused": {
+      "tests": 155,
+      "pass": 155,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 1231.772969,
+      "log": "core-focus.log",
+      "overlapsApplicationAndFocused": true
+    }
+  },
+  "rust": {
+    "passed": 119,
+    "log": "core-native-test.log",
+    "fmt": "core-fmt.log",
+    "clippyDenyWarnings": "core-clippy.log",
+    "freshNativeCli": "core-native-build.log",
+    "freshWasm": "core-wasm-build.log",
+    "wasmBytes": 325826,
+    "wasmSha256": "4246d8fee45d85530c0afbb5012ae557fe67f5a53eae8915adf818444575ccf9"
+  },
+  "browser": {
+    "evidence": "browser/browser.json",
+    "browser": "Chrome/154.0.8037.97",
+    "steps": 5,
+    "runtimeExceptions": 0,
+    "layout": {
+      "zh-CN": {
+        "noHorizontalOverflow": true,
+        "actionsVisible": true,
+        "approved": true
+      },
+      "en": {
+        "noHorizontalOverflow": true,
+        "actionsVisible": true,
+        "approved": true
+      },
+      "ja": {
+        "noHorizontalOverflow": true,
+        "actionsVisible": true,
+        "approved": true
+      }
+    },
+    "normalSave": {
+      "sourceSha256": "36c7c642f54b2882db6515cf60f377a5c90f3a1742a965265ad4ecd3ba859c1d",
+      "onlyChangedFile": "documents/scenes/recipe.json",
+      "externalConflictPreserved": true
+    },
+    "screenshotsVisuallyInspected": [
+      "placement-narrow-zh-CN.png",
+      "placement-narrow-en.png",
+      "placement-narrow-ja.png",
+      "placement-reviewed.png"
+    ],
+    "visualScope": "Visible portions only; full candidate asserted by script. Actual Chrome HTTP editor with disposable registered projection and images; no installed window or device."
+  },
+  "oldBrowserRegressions": {
+    "inheritance-regression": {
+      "steps": 6,
+      "evidence": "inheritance-regression/browser.json",
+      "runtimeExceptions": 0
+    },
+    "batch-regression": {
+      "steps": 5,
+      "evidence": "batch-regression/browser.json",
+      "runtimeExceptions": 0
+    }
+  },
+  "preparedResources": {
+    "evidence": "packaged-resources.json",
+    "counts": {
+      "desktopCases": 14,
+      "mobileCases": 14,
+      "totalCases": 28,
+      "desktopLegacyCases": 21,
+      "mobileLegacyCases": 21,
+      "totalLegacyCases": 42,
+      "totalGroups": 70
+    },
+    "scope": "Read-only acceptance of prepared desktop placement-offset and legacy shared-SET/RESET/single/batch helpers under the pinned shared Node, and the prepared mobile placement-offset and legacy shared-SET/RESET/single/batch helpers with the rebuilt Rust WASM in an isolated VM. VM supplies standard TextEncoder/TextDecoder/WebAssembly globals and a host deterministic SHA callback; it verifies portability, not adversarial security isolation. This does not accept an installed Tauri application, Android device, author persistence, engine execution, or new standalone Rust tests.",
+    "embeddedNode": {
+      "version": "v24.20.0",
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "mobileChecks": {
+      "entryModuleCount": 10,
+      "moduleCount": 86,
+      "modules": [
+        "engine/canonical-json.mjs",
+        "engine/json-source.mjs",
+        "engine/scene-composition-batch-layout.mjs",
+        "engine/scene-composition-fragments.mjs",
+        "engine/scene-composition-layout.mjs",
+        "engine/scene-composition-overrides.mjs",
+        "engine/scene-composition-placement.mjs",
+        "engine/scene-composition.mjs",
+        "engine/scene-groups.mjs",
+        "engine/scene-identity.mjs",
+        "engine/scene-layout.mjs",
+        "engine/scene-structure.mjs",
+        "engine/studio-core.mjs",
+        "vendor/yaml/dist/compose/compose-collection.js",
+        "vendor/yaml/dist/compose/compose-doc.js",
+        "vendor/yaml/dist/compose/compose-node.js",
+        "vendor/yaml/dist/compose/compose-scalar.js",
+        "vendor/yaml/dist/compose/composer.js",
+        "vendor/yaml/dist/compose/resolve-block-map.js",
+        "vendor/yaml/dist/compose/resolve-block-scalar.js",
+        "vendor/yaml/dist/compose/resolve-block-seq.js",
+        "vendor/yaml/dist/compose/resolve-end.js",
+        "vendor/yaml/dist/compose/resolve-flow-collection.js",
+        "vendor/yaml/dist/compose/resolve-flow-scalar.js",
+        "vendor/yaml/dist/compose/resolve-props.js",
+        "vendor/yaml/dist/compose/util-contains-newline.js",
+        "vendor/yaml/dist/compose/util-empty-scalar-position.js",
+        "vendor/yaml/dist/compose/util-flow-indent-check.js",
+        "vendor/yaml/dist/compose/util-map-includes.js",
+        "vendor/yaml/dist/doc/Document.js",
+        "vendor/yaml/dist/doc/anchors.js",
+        "vendor/yaml/dist/doc/applyReviver.js",
+        "vendor/yaml/dist/doc/createNode.js",
+        "vendor/yaml/dist/doc/directives.js",
+        "vendor/yaml/dist/errors.js",
+        "vendor/yaml/dist/index.js",
+        "vendor/yaml/dist/log.js",
+        "vendor/yaml/dist/nodes/Alias.js",
+        "vendor/yaml/dist/nodes/Collection.js",
+        "vendor/yaml/dist/nodes/Node.js",
+        "vendor/yaml/dist/nodes/Pair.js",
+        "vendor/yaml/dist/nodes/Scalar.js",
+        "vendor/yaml/dist/nodes/YAMLMap.js",
+        "vendor/yaml/dist/nodes/YAMLSeq.js",
+        "vendor/yaml/dist/nodes/addPairToJSMap.js",
+        "vendor/yaml/dist/nodes/identity.js",
+        "vendor/yaml/dist/nodes/toJS.js",
+        "vendor/yaml/dist/parse/cst-scalar.js",
+        "vendor/yaml/dist/parse/cst-stringify.js",
+        "vendor/yaml/dist/parse/cst-visit.js",
+        "vendor/yaml/dist/parse/cst.js",
+        "vendor/yaml/dist/parse/lexer.js",
+        "vendor/yaml/dist/parse/line-counter.js",
+        "vendor/yaml/dist/parse/parser.js",
+        "vendor/yaml/dist/public-api.js",
+        "vendor/yaml/dist/schema/Schema.js",
+        "vendor/yaml/dist/schema/common/map.js",
+        "vendor/yaml/dist/schema/common/null.js",
+        "vendor/yaml/dist/schema/common/seq.js",
+        "vendor/yaml/dist/schema/common/string.js",
+        "vendor/yaml/dist/schema/core/bool.js",
+        "vendor/yaml/dist/schema/core/float.js",
+        "vendor/yaml/dist/schema/core/int.js",
+        "vendor/yaml/dist/schema/core/schema.js",
+        "vendor/yaml/dist/schema/json/schema.js",
+        "vendor/yaml/dist/schema/tags.js",
+        "vendor/yaml/dist/schema/yaml-1.1/binary.js",
+        "vendor/yaml/dist/schema/yaml-1.1/bool.js",
+        "vendor/yaml/dist/schema/yaml-1.1/float.js",
+        "vendor/yaml/dist/schema/yaml-1.1/int.js",
+        "vendor/yaml/dist/schema/yaml-1.1/merge.js",
+        "vendor/yaml/dist/schema/yaml-1.1/omap.js",
+        "vendor/yaml/dist/schema/yaml-1.1/pairs.js",
+        "vendor/yaml/dist/schema/yaml-1.1/schema.js",
+        "vendor/yaml/dist/schema/yaml-1.1/set.js",
+        "vendor/yaml/dist/schema/yaml-1.1/timestamp.js",
+        "vendor/yaml/dist/stringify/foldFlowLines.js",
+        "vendor/yaml/dist/stringify/stringify.js",
+        "vendor/yaml/dist/stringify/stringifyCollection.js",
+        "vendor/yaml/dist/stringify/stringifyComment.js",
+        "vendor/yaml/dist/stringify/stringifyDocument.js",
+        "vendor/yaml/dist/stringify/stringifyNumber.js",
+        "vendor/yaml/dist/stringify/stringifyPair.js",
+        "vendor/yaml/dist/stringify/stringifyString.js",
+        "vendor/yaml/dist/visit.js",
+        "vendor/yaml/index.js"
+      ],
+      "wasmSha256": "4246d8fee45d85530c0afbb5012ae557fe67f5a53eae8915adf818444575ccf9",
+      "wasmMetadata": {
+        "protocolVersion": 1,
+        "backend": "rust-wasm",
+        "ready": true
+      },
+      "checks": [
+        {
+          "id": "saved-dirty-whole-placement-fractional-offset-local-masks-and-byte-replacement",
+          "ok": true,
+          "sourceModes": 2
+        },
+        {
+          "id": "missing-versus-explicit-zero-author-intent-and-noop-delete",
+          "ok": true
+        },
+        {
+          "id": "reset-restores-zero-after-local-override-without-group-transform",
+          "ok": true
+        },
+        {
+          "id": "semantic-pair-noop-preserves-original-numeric-spelling-and-all-bytes",
+          "ok": true
+        },
+        {
+          "id": "finite-whole-pair-exact-intent-and-accessor-rejection-before-dispatch",
+          "ok": true,
+          "rejectedOperations": 15
+        },
+        {
+          "id": "invalid-original-and-unused-declaration-cannot-be-repaired-by-offset",
+          "ok": true,
+          "rejectedOperations": 4
+        },
+        {
+          "id": "every-final-target-world-bounds-including-unselected-actor-atomic",
+          "ok": true,
+          "rejectedOperations": 2
+        },
+        {
+          "id": "stable-selection-and-declaration-order-after-source-reorder",
+          "ok": true
+        },
+        {
+          "id": "exact-proposal-all-targets-groups-path-and-source-recomputed",
+          "ok": true,
+          "rejectedOperations": 17
+        },
+        {
+          "id": "whole-preview-actor-group-provenance-and-structure-not-selected-only",
+          "ok": true,
+          "rejectedOperations": 10
+        },
+        {
+          "id": "source-model-offset-target-and-group-snapshots-before-asynchronous-digest",
+          "ok": true
+        },
+        {
+          "id": "full-128-actor-and-128-organizational-group-target-budget",
+          "ok": true
+        },
+        {
+          "id": "offset-member-removal-first-middle-tail-and-escaped-decoded-key",
+          "ok": true,
+          "variants": 9
+        },
+        {
+          "id": "independent-operation-domain-and-final-byte-budget",
+          "ok": true,
+          "rejectedOperations": 6
+        }
+      ],
+      "legacyChecks": [
+        {
+          "id": "saved-and-dirty-atomic-mixed-intent-all-targets",
+          "ok": true,
+          "sourceModes": 2
+        },
+        {
+          "id": "five-optional-declarations-reset-whole-size-and-flag-stable",
+          "ok": true
+        },
+        {
+          "id": "image-absence-without-inheritance-and-null-resumes-projection",
+          "ok": true,
+          "rejectedOperations": 4,
+          "scope": "Tests source absence/flag preservation only, not live projected effective image resolution."
+        },
+        {
+          "id": "all-placement-masks-still-permit-source-reset",
+          "ok": true
+        },
+        {
+          "id": "net-absent-resets-new-shape-and-strict-intent-before-noop",
+          "ok": true,
+          "rejectedOperations": 10
+        },
+        {
+          "id": "token-removal-subsets-head-middle-tail-and-append",
+          "ok": true,
+          "variants": 93
+        },
+        {
+          "id": "final-source-budget-and-all-offset-bounds-atomic",
+          "ok": true,
+          "rejectedOperations": 2
+        },
+        {
+          "id": "exact-new-shape-target-mask-order-and-receipt-recomputed",
+          "ok": true,
+          "rejectedOperations": 15
+        },
+        {
+          "id": "detached-model-source-reset-and-targets-before-async-digest",
+          "ok": true
+        },
+        {
+          "id": "unused-fragment-and-old-set-domain-shape-actually-preserved",
+          "ok": true,
+          "rejectedOperations": 6
+        },
+        {
+          "id": "raw-declaration-saved-dirty-and-exact-source",
+          "ok": true,
+          "sourceModes": 2,
+          "unrelatedFragmentAndPlacementBytesPreserved": true
+        },
+        {
+          "id": "missing-declaration-equal-selected-effective-is-a-source-change",
+          "ok": true
+        },
+        {
+          "id": "all-placement-masking-keeps-the-shared-source-edit",
+          "ok": true
+        },
+        {
+          "id": "six-fields-null-inheritance-and-canonical-paths",
+          "ok": true,
+          "rejectedOperations": 1
+        },
+        {
+          "id": "all-offset-world-bounds-atomic-and-local-mask-preserved",
+          "ok": true,
+          "rejectedOperations": 1
+        },
+        {
+          "id": "literal-number-keys-noop-and-final-source-budget",
+          "ok": true,
+          "rejectedOperations": 1
+        },
+        {
+          "id": "all-targets-masks-proposals-source-and-provenance-recomputed",
+          "ok": true,
+          "rejectedOperations": 13
+        },
+        {
+          "id": "factory-and-apply-snapshot-nested-inputs-before-digest",
+          "ok": true
+        },
+        {
+          "id": "unused-fragments-set-only-shape-and-old-domain-guards",
+          "ok": true,
+          "rejectedOperations": 7
+        },
+        {
+          "id": "old-single-helper-source-receipt-actually-executed",
+          "ok": true
+        },
+        {
+          "id": "old-batch-helper-atomic-source-and-history-actually-executed",
+          "ok": true
+        }
+      ],
+      "acceptedCases": 14,
+      "legacyAcceptedCases": 21,
+      "rejectedOperations": 54,
+      "noNodeDomNetworkGlobals": true,
+      "noHostImports": true,
+      "noDeviceAcceptance": true
+    }
+  },
+  "boundaryReview": {
+    "evidence": "boundary-review.json",
+    "probe": "boundary-probe.json",
+    "receiptAndCapabilityProbe": "boundary-receipt-probe.json",
+    "findings": [],
+    "verdict": "No blocking correctness or ownership finding within the bounded placement-offset slice. Author absence and explicit zero, local overrides, organizational groups, complete preview dependencies and ordinary persistence retain separate semantics."
+  },
+  "sourceHashes": "source-hashes.json",
+  "preservation": "historical-preservation.json",
+  "nativeHelperBytes": "native-helpers.json",
+  "cleanup": "cleanup.json",
+  "initialAttempts": [
+    {
+      "log": "core-native-test-initial.log",
+      "cause": "New token-deletion fixture placed the reset member inside actorIds; only fixture corrected."
+    },
+    {
+      "log": "ui-tests-initial.log",
+      "cause": "New asynchronous late-open fixture rejected a deferred digest before its consumer was ready; only fixture synchronization corrected."
+    },
+    {
+      "log": "browser-initial.log",
+      "evidence": "browser-initial/browser.json",
+      "cause": "New smoke assumed groups at the preview top level. Actual v2 groups are sceneStructure.groups; the new parent validation and new test fixture were corrected."
+    },
+    {
+      "log": "browser-second.log",
+      "evidence": "browser-second/browser.json",
+      "cause": "New browser script called a nonexistent language setter; changed the fixture to the existing applyLanguage API."
+    },
+    {
+      "log": "boundary-probe-initial.log",
+      "cause": "New proof assumed tab indentation; changed its expectation to extract original pair bytes rather than assume formatting."
+    },
+    {
+      "log": "batch-regression.log",
+      "evidence": "batch-evidence-relocation.json",
+      "cause": "Successful old browser regression initially used the wrong output environment variable; report files relocated byte-for-byte from its owned temporary directory, original conditions retained."
+    }
+  ],
+  "limitations": [
+    "No version bump, commit, push, installer, installed Tauri window or Android device acceptance.",
+    "No actor/group structure edits, scale/hierarchy transforms, executable recipe build, cross-file transaction or cross-view undo.",
+    "Mobile prepared ESM/WASM portability is not device or security sandbox acceptance.",
+    "Focused/new/core counts overlap application tests."
+  ]
+}

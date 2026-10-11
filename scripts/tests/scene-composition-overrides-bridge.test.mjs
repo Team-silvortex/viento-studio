@@ -19,14 +19,15 @@ function checked(p = candidate()) {
       sourcePath: path, sourceRevision: hash, fragmentCount: 1, placementCount: 2 } };
 }
 async function fixture(t, options = {}) {
-  const calls = [], opened = [], applied = [];
+  const calls = [], opened = [], layoutOpened = [], applied = [];
   const context = { editable: true, dirty: false, creating: false, busy: false, path,
     sceneDraftPath: path, sceneDraftToken: 'source:1', compositionSourceWritable: true };
-  let preview, override;
+  let preview, override, layout;
   const h = await dialogHarness('app-project-build', {
     crypto: webcrypto, PROJECT_BUILD_API_PATH, SCENE_PREVIEW_API_PATH: '/api/scene-preview', WORLD_API_PATH: '/api/world', supportsStudioCoreCompositionPatch: () => true,
     setupScenePreview: config => { preview = config; return { setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {} }; },
     setupSceneCompositionOverrides: config => { override = config; return { open: input => { opened.push(input); return true; }, refresh() {} }; },
+    setupSceneCompositionLayout: config => { layout = config; return { open: input => { layoutOpened.push(input); return true; }, refresh() {} }; },
     fetchJsonApiRequest: async (url, request) => {
       calls.push({ url, request });
       if (url.startsWith('/api/scene-preview')) {
@@ -42,7 +43,7 @@ async function fixture(t, options = {}) {
   controller.setAvailable(true, [], { scenePreview: true }); h.element('projectBuildBtn').click(); await flushDialogs();
   h.element('projectBuildTabPreview').click(); await flushDialogs();
   t.after(() => { h.element('projectBuildDialog').close(); });
-  return { ...h, preview, override, calls, opened, applied, context };
+  return { ...h, preview, override, layout, layoutOpened, calls, opened, applied, context };
 }
 const input = () => ({ model: { composition: {}, scene: { objectId: recipeId, sourcePath: path } }, instanceId, isCurrent: () => true });
 
@@ -96,4 +97,57 @@ test('apply delegates a live parent owner and completion closes only its own edi
   assert.equal(h.element('projectBuildDialog').open, false); assert.equal(h.applied[0][1].isCurrent(), false);
   h.element('projectBuildBtn').click(); await flushDialogs(); h.override.sourceApplied(result, request);
   assert.equal(h.element('projectBuildDialog').open, true);
+});
+
+// Parent-controller boundary tests deliberately capture the modal callbacks;
+// real helper/WASM, UI and browser execution are separate evidence.
+test('recipe canvas layout opens the same source session with decoded images and no image catalog fetch', async t => {
+  const h = await fixture(t), images = new Map([[imageId, { width: 2, height: 2 }]]);
+  assert.equal(h.preview.getContext().canEditCompositionLayout, true);
+  assert.equal(await h.preview.editCompositionLayout({ ...input(), actorId: instanceId, images }), true);
+  assert.equal(h.layoutOpened.length, 1); assert.equal(h.layoutOpened[0].actorId, instanceId);
+  assert.equal(h.layoutOpened[0].source.sourcePath, path); assert.equal(h.layoutOpened[0].images, images);
+  assert.equal(h.calls.some(call => call.url === '/api/world'), false); assert.equal(h.applied.length, 0);
+});
+
+test('delayed canvas source acquisition cannot reopen a closed parent or changed preview owner', async t => {
+  for (const changed of ['parent', 'owner']) {
+    const pending = deferred(); let current = true;
+    const h = await fixture(t, { source: () => pending.promise });
+    const opening = h.preview.editCompositionLayout({ ...input(), actorId: instanceId, isCurrent: () => current });
+    if (changed === 'parent') h.element('projectBuildDialog').close(); else current = false;
+    pending.resolve({ sourcePath: path, baseSourceRevision: base, content: '{}' });
+    assert.equal(await opening, false); assert.equal(h.layoutOpened.length, 0); assert.equal(h.applied.length, 0);
+  }
+});
+
+test('canvas and property candidates use independent workflows with full dependency validation and released preview leases', async t => {
+  const h = await fixture(t), request = candidate();
+  assert.notEqual(h.layout.validateDraft, h.override.validateDraft);
+  assert.equal((await h.layout.validateDraft(request, { isCurrent: () => true })).ok, true);
+  assert.equal((await h.override.validateDraft(request, { isCurrent: () => true })).ok, true);
+  const post = h.calls.find(call => call.request?.method === 'POST');
+  assert.deepEqual(JSON.parse(post.request.body), { sceneId: recipeId, draft: { sourcePath: path, baseSourceRevision: base, content: request.afterContent } });
+  assert.ok(h.calls.some(call => call.request?.method === 'DELETE' && call.url.includes(previewId)));
+  assert.equal(h.calls.filter(call => call.request?.method === 'POST').length, 2);
+  assert.equal(h.calls.filter(call => call.request?.method === 'DELETE').length, 2);
+  assert.equal(h.applied.length, 0);
+});
+
+test('late canvas validation rejects changed source token and releases returned preview resources', async t => {
+  const pending = deferred(), h = await fixture(t, { validate: () => pending.promise });
+  const checking = h.layout.validateDraft(candidate()); h.context.sceneDraftToken = 'source:2';
+  pending.resolve({ payload: checked() });
+  await assert.rejects(checking, { errorCode: 'scene_composition_override_conflict' });
+  assert.ok(h.calls.some(call => call.request?.method === 'DELETE')); assert.equal(h.applied.length, 0);
+});
+
+test('canvas completion compares the complete detached proposal and still closes after the expected source-token increment', async t => {
+  const h = await fixture(t, { apply: async () => { h.context.sceneDraftToken = 'source:2'; return { applied: true, focus() {} }; } });
+  const request = candidate(), result = await h.layout.applySourceDraft({ ...request });
+  h.layout.sourceApplied(result, { ...request, afterContent: request.afterContent + ' ' }); assert.equal(h.element('projectBuildDialog').open, true);
+  // Real child controllers submit a detached copy, then complete with the original.
+  // Compare the complete payload and receipt, independent of the old token.
+  h.layout.sourceApplied(result, request);
+  assert.equal(h.element('projectBuildDialog').open, false);
 });

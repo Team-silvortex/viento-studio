@@ -1,0 +1,76 @@
+✔ placed definition rename pre-fills the current ID and explains that only removal requires no placements (107.945584ms)
+✔ same-ID rename reports unchanged and never requests candidate approval (59.941089ms)
+✔ multi-placement rename reviews actual stable actor and group UUIDs with an exact empty target proposal (63.645064ms)
+✔ unused definition rename changes only its declaration and displays no virtual identities (62.155094ms)
+✔ the last remaining used definition can be renamed while REMOVE stays disabled (61.595929ms)
+✔ IDs are case sensitive and the existing differently cased references update consistently (55.006978ms)
+✔ duplicate invalid and incomplete rename IDs retain raw input and never approve (223.612917ms)
+✔ missing rename adapter leaves all three original definition operations usable without changing the harness (95.685644ms)
+✔ unsupported rename capability disables only rename while original ADD COPY and REMOVE check normally (89.817771ms)
+✔ losing rename capability before check rejects the intent but a confirmed switch to COPY remains available (70.198516ms)
+✔ losing rename capability after approval prevents apply and preserves the typed ID (106.280825ms)
+✔ ordinary source application advances the token once and reports the exact committed proposal without saving disk (74.001146ms)
+✔ cancel and keyboard Escape preserve the original source and return focus only after explicit discard (39.157772ms)
+✔ switching fragment or operation honors discard and retains the entered rename until confirmed (55.02064ms)
+✔ silent raw ID and selected source changes invalidate an existing approval before apply (119.636443ms)
+✔ normal rename input invalidates approval while language changes preserve both input and approval (70.522259ms)
+✔ pending rename review locks all actions and silent edits cannot gain a delayed approval (57.157435ms)
+✔ a lost source token during delayed review prevents approval and keeps the rename draft (53.672526ms)
+✔ forced close during review cannot approve or reopen the next dialog session (57.380138ms)
+✔ late open success and rejection from a replaced source owner stay silent (41.202228ms)
+✔ source guard rejecting a delayed apply keeps the raw rename and cannot send a completion receipt (66.177451ms)
+✔ external source conflict preserves local rename and original disk baseline for the ordinary Save workflow (69.683371ms)
+✔ detached review and apply payloads cannot mutate the internal approved rename (65.039635ms)
+✖ all new rename messages translate in English and Japanese and identity text never injects markup (1.550507ms)
+✔ the definition directory exposes raw declarations and blocking placements without requiring a selected actor (100.209699ms)
+✔ ADD creates one explicit actor, no groups or placements, and no instance identities across rechecks or three languages (106.310983ms)
+✔ game projection ADD stores explicit inheritance and position without expanding defaults; absent, null and explicit images stay distinct (196.112964ms)
+✔ disabling projection inheritance keeps explicit inputs and authors them only when selected (65.94251ms)
+✔ COPY preserves the complete source CST of actors and nested groups while changing only the fragment ID (59.365663ms)
+✔ REMOVE deletes only an unused definition and preserves documents, resources, all placements and remaining declaration bytes (53.504354ms)
+✔ the last definition and any used definition cannot be removed even through a manually dispatched disabled button (29.24153ms)
+✔ missing catalogs disable only ADD while raw COPY and unused REMOVE remain available (70.404796ms)
+✔ invalid fragment IDs, duplicate IDs, unknown definitions, incomplete numbers and invalid explicit fields preserve all raw input (614.075564ms)
+✔ COPY cannot use an existing or unchanged ID and keeps the user input on failure (74.61667ms)
+✔ ADD and COPY enforce the declared actor budget before approval without changing current instances (164.229407ms)
+✔ cancel and escape require explicit discard when dirty and return focus without applying or generating identity (42.915231ms)
+✔ changing the source definition or operation honors discard and never silently consumes typed ADD input (47.412814ms)
+✔ pending review locks the full form and late completion after forced close cannot approve a new dialog (59.284853ms)
+✔ late open success and failure are suppressed after the original source owner is lost (48.947792ms)
+✔ dependency diagnostics retain declarations without implying unplaced resources were rendered (69.998232ms)
+✔ silent raw ID, actor, image, inheritance or source selection changes revoke a checked definition before apply (264.694109ms)
+✔ silent declaration mutation during review prevents a delayed approval (42.796598ms)
+✔ an unconfirmed apply receipt retains the definition and does not send a completion (53.581305ms)
+✔ a valid application accepts legitimate source-token advancement and keeps the ordinary saved baseline (54.766985ms)
+✔ source-owner loss during apply blocks a delayed receipt and preserves the author draft (56.349654ms)
+✔ missing capability and invalid source contexts fail closed without sibling work (179.754058ms)
+✔ every new definition UI, entry and source-application message has English and Japanese translations (0.916808ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 46
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2604.289205
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-definition-rename-ui.test.mjs:229:1
+✖ all new rename messages translate in English and Japanese and identity text never injects markup (1.550507ms)
+  AssertionError [ERR_ASSERTION]: en: SHA-256
+  + actual - expected
+  
+  + 'undefined'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-definition-rename-ui.test.mjs:232:93)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

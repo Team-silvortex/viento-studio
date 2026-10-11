@@ -368,9 +368,7 @@ test('editor build context resolves generated source paths without changing the 
   let buildContext;
   const stopAfterBuildSetup = new Error('Stop before unrelated editor setup');
   const h = await editorHarness({
-    setupSettings: async () => {},
-    setupProjectBuild: options => { buildContext = options.getContext; return { setAvailable() {} }; },
-    setupWorldBrowser: () => { throw stopAfterBuildSetup; },
+    setupStudioSystem: async ({ ports }) => { buildContext = ports.build.getContext; throw stopAfterBuildSetup; },
   });
   h.doc.sourcePath = 'docs-standard/documents/scenes/second.json';
   h.begin('未保存的场景草稿');

@@ -1,0 +1,21 @@
+    Checking memchr v2.8.3
+    Checking itoa v1.0.18
+    Checking serde_core v1.0.229
+    Checking zmij v1.0.23
+    Checking serde v1.0.229
+    Checking serde_json v1.0.151
+    Checking viento-studio-core v0.1.0 (/home/chiharukiryu/cdev/viento-studio/crates/viento-studio-core)
+error: this boolean expression can be simplified
+   --> src/scene_composition_placements_patch.rs:112:13
+    |
+112 | /             !required.contains(&key.as_str())
+113 | |                 && !(operation == "sceneComposition.addPlacement" && key == "offset")
+    | |_____________________________________________________________________________________^ help: try: `!(required.contains(&key.as_str()) || operation == "sceneComposition.addPlacement" && key == "offset")`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.95.0/index.html#nonminimal_bool
+    = note: `-D clippy::nonminimal-bool` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::nonminimal_bool)]`
+
+error: could not compile `viento-studio-core` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `viento-studio-core` (lib test) due to 1 previous error

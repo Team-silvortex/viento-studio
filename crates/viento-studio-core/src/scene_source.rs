@@ -48,6 +48,9 @@ pub enum SceneSourceResponse {
 // keys have exactly JavaScript's meaning without corrupting unrelated source.
 pub(crate) struct Node {
     pub(crate) span: Range<usize>,
+    // The key, colon and value of an object member, excluding surrounding
+    // whitespace and commas. Arrays and the root have no member range.
+    pub(crate) member_span: Option<Range<usize>>,
     kind: Kind,
 }
 enum Kind {
@@ -233,13 +236,16 @@ impl<'a> Scanner<'a> {
                 let mut keys = HashSet::new();
                 if self.byte() != Some(b'}') {
                     loop {
+                        let member_start = self.cursor;
                         let key = self.string()?;
                         if !keys.insert(key.clone()) {
                             return Err(invalid());
                         }
                         self.whitespace();
                         self.take(b':')?;
-                        entries.push((key, self.value(depth + 1)?));
+                        let mut value = self.value(depth + 1)?;
+                        value.member_span = Some(member_start..value.span.end);
+                        entries.push((key, value));
                         self.whitespace();
                         if self.byte() != Some(b',') {
                             break;
@@ -289,6 +295,7 @@ impl<'a> Scanner<'a> {
         };
         Ok(Node {
             span: start..self.cursor,
+            member_span: None,
             kind,
         })
     }
@@ -804,6 +811,30 @@ mod tests {
                 json!({"protocolVersion":1,"ok":true,"source":{"schemaVersion":version,"actorCount":2}})
             );
         }
+    }
+    #[test]
+    fn object_member_ranges_capture_original_keys_without_changing_value_ranges() {
+        let content = "\u{feff}{ \r\n \"spe\\u0065d\" \t: [1e2,-0],\"名\": {\"inner\":2} }\r\n";
+        let root = parse_json_source(content).unwrap();
+        assert!(root.member_span.is_none());
+        let speed = root.get("speed").unwrap();
+        assert_eq!(&content[speed.span.clone()], "[1e2,-0]");
+        assert_eq!(
+            &content[speed.member_span.clone().unwrap()],
+            "\"spe\\u0065d\" \t: [1e2,-0]"
+        );
+        for item in speed.array().unwrap() {
+            assert!(item.member_span.is_none());
+        }
+        let named = root.get("名").unwrap();
+        assert_eq!(
+            &content[named.member_span.clone().unwrap()],
+            "\"名\": {\"inner\":2}"
+        );
+        assert_eq!(
+            &content[named.get("inner").unwrap().member_span.clone().unwrap()],
+            "\"inner\":2"
+        );
     }
     #[test]
     fn exact_requests_and_batch_shapes_are_required() {

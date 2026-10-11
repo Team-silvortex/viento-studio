@@ -1,0 +1,77 @@
+{
+  "ok": true,
+  "recordedAt": "2026-10-11T04:39:28.449682+00:00",
+  "scope": "Independent read-only review of atomic position batches, Rust byte-patch/bridge validation, current-source geometry receipts, batch GUI ownership/selection/images, shared parent completion and editor source apply. Eight current-source probe groups ran under pinned Node 24.20.0; UI and browser evidence is separately attributed. No installed window or Android/device acceptance.",
+  "runtime": {
+    "version": "v24.20.0",
+    "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+  },
+  "sourceSha256": {
+    "crates/viento-studio-core/src/lib.rs": "4eabe671878d889b13be47157e3325d3433e2de30b0c53d85b0b5a39f1fe5916",
+    "crates/viento-studio-core/src/scene_composition_patch.rs": "389d807c81f25b58cc5dcf700a4833c6098035e97014e3ac6b67f3d29ca14dd1",
+    "engine/studio-core.mjs": "b03a1ba04512d6eb9cabc0c67ccc9856884629e7a7ab47146326580ea30365ee",
+    "engine/scene-composition-batch-layout.mjs": "353da8cd6b54394a69fb3a8ec66a6bb746090fe9a3dbf3d086a4219fd4261e74",
+    "web/modules/app-runtime.js": "cc5e9d50391a4f321b9310f5d058364596b77a5d6dfc8daaac4a6aecb32247db",
+    "web/modules/app-project-build.js": "e95f20c1a63b14f5321c3ce34a8ccdca9a7f91bc5a3770103ab4cf6df7330cb1",
+    "web/modules/app-scene-preview.js": "05e662be6257dc29da76ea5e99bea8620e30aaca6038dbb99bdafa884f511c47",
+    "web/modules/app-scene-composition-batch-layout.js": "f2e5eead553c2c33ad4f9797044cd889a289968d9a26d65371643f014748d442",
+    "scripts/tests/scene-composition-batch-layout-ui.test.mjs": "96347e2b4205f6b6c5b3f9ab98b2a145aac8ba3a85adaa59ea034e252d1691f5"
+  },
+  "frozenSourceManifest": {
+    "files": 543,
+    "sha256": "08f17ecb30bbc29efd77a40c895b79e3b3c32e9e6095d888d4ebae5d71ff39e7"
+  },
+  "protectedSources": {
+    "historical-baseline.json": {
+      "files": 2193,
+      "sha256": "0377cc9d66708d3e9a9b5e48c4e02fed95b5c894b7f56a40df36866aec68ae60",
+      "allMatch": true
+    },
+    "frozen-backend-baseline.json": {
+      "files": 7,
+      "sha256": "445f69282baec6203dd21d0dc98195c31577b9a500bca36303ebfced627af077",
+      "allMatch": true
+    },
+    "single-instance-baseline.json": {
+      "files": 5,
+      "sha256": "919b0243a467e8d4b6e978b1d849692f29016257c783aafd737cb91fd334609e",
+      "allMatch": true
+    }
+  },
+  "currentSourceProbe": {
+    "report": "boundary-probe.json",
+    "log": "boundary-probe-initial.log",
+    "cases": 8,
+    "allPass": true,
+    "sourceAndWasmUnchangedSinceProbe": true
+  },
+  "findings": [
+    {
+      "priority": "P3",
+      "status": "fixed",
+      "title": "Ignore an opening failure after the originating preview loses ownership",
+      "rootCause": "The initial batch-controller catch guarded epoch and disposal but omitted isCurrent(), so a late helper rejection could alert after the source preview closed or changed.",
+      "fix": "Dispose any candidate and reset owned partial state, then ignore a stale epoch, destroyed controller or failed source-owner predicate before alerting.",
+      "regression": {
+        "file": "scripts/tests/scene-composition-batch-layout-ui.test.mjs",
+        "test": "an asynchronous opening failure loses its alert and cannot disturb a closed originating preview",
+        "evidence": "ui-tests-final.log",
+        "suiteTests": 24,
+        "scope": "UI-controller harness with real helper/Rust history and outline; renderer spy; system Node 24.21.0"
+      }
+    }
+  ],
+  "reviewedBoundaries": [
+    "Same-placement new overrides are aggregated before edits; absent, empty and existing containers yield deterministic author order regardless of request order.",
+    "Exact final UTF-8 budget permits one target shrink to offset another target growth; no intermediate recipe or partial patch is returned.",
+    "Duplicate/unknown targets and any local/world coordinate failure reject all changes before history mutation; redo, dirty and untouched actors are preserved.",
+    "Fractional unmoved axes retain authored local values; returning a target to its initial world position omits it from the proposal.",
+    "All six size-aware alignments use the shared Rust geometry and one undo step; 100-step truncation/reset and closed-session guards remain intact.",
+    "Host preparation snapshots source/proposal before digest and recomputes every stable identity, canonical order, changed path and exact afterContent; forged/stale receipts fail.",
+    "Batch UI rejects unfinished and silently modified active coordinate fields before selecting/moving/alignment/check/apply; owned image canvases are cloned and released.",
+    "Shared parent completion authenticates the complete canonical proposal and the same result receipt, accepting detached child submissions and the expected source-token advance.",
+    "Memory source application guards document/path/baseline/content/load token and owner before and after both digest and full patch preparation; ordinary save still owns persistence and conflict handling.",
+    "Independent position capability protects older cores; five old single helper/controllers/browser harness sources are byte preserved, while the changed shared parent/runtime require separate actual regressions."
+  ],
+  "openFindings": []
+}

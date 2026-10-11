@@ -102,7 +102,7 @@ test('media loading: retry within the actual editor preserves dirty source, sele
     replaceSource: runtime.replaceMediaDraftSource, insertText: runtime.insertMediaText,
     changed: runtime.refreshEditSessionDirtyState, status: runtime.setEditorStatus,
   });
-  runtime.testMediaController = controller; vm.runInContext('mediaEditorController = testMediaController;', runtime);
+  runtime.testMediaController = controller; vm.runInContext('studioSystem = { refreshMedia: () => testMediaController.refresh() };', runtime);
   runtime.updateEditorForDoc(doc); await runtime.enterEditMode();
   const input = h.element('docSourceEditor');
   input.value += '\r\n未保存的正文'; input.selectionStart = 5; input.selectionEnd = 7;

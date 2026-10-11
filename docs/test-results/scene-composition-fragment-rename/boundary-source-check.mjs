@@ -1,0 +1,15 @@
+import '../../../scripts/adapters/node-studio-core.mjs';
+import * as engine from '../../../engine/index.mjs';
+import * as core from '../../../engine/studio-core.mjs';
+import * as composition from '../../../engine/scene-composition.mjs';
+import { createHash } from 'node:crypto';
+import fs from 'node:fs/promises';
+import { runDefinitionRenameCases } from './boundary-cases.mjs';
+const digest=content=>createHash('sha256').update(content).digest('hex');
+const modulePaths=['engine/scene-composition-definitions.mjs','engine/studio-core.mjs','engine/index.mjs','engine/studio-core.wasm'];
+const hashes=async()=>Object.fromEntries(await Promise.all(modulePaths.map(async path=>[path,digest(await fs.readFile(new URL('../../../'+path,import.meta.url)))])));
+const before=await hashes(),checks=await runDefinitionRenameCases({...engine,...core,...composition,digest}),after=await hashes();
+if(JSON.stringify(before)!==JSON.stringify(after))throw new Error('Source changed during portable proof');
+const report={format:'viento-scene-composition-fragment-rename-portable-source-proof',schemaVersion:1,runtime:process.version,sourceHashes:before,checks,passed:checks.length,failed:0,environment:'Source modules and actual WASM through pinned Node; import-free cases with explicit engine/digest ports; no device acceptance claim',errorDomains:['scene_composition_definitions_invalid','scene_composition_definitions_conflict','scene_composition_definitions_content_limit','scene_composition_definitions_unchanged'],unusedDependencies:'Pure/core validate native declarations; existing host checks base registered objects/explicit images. Projection effective values and image bytes still checked at first placement.'};
+await fs.writeFile(new URL('./boundary-source-results.json',import.meta.url),JSON.stringify(report,null,2)+'\n');
+process.stdout.write(JSON.stringify({passed:report.passed,failed:0,checks:checks.map(check=>check.id)})+'\n');

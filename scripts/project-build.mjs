@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { captureBuildSnapshot, readBuildFile, buildError } from './adapters/node-build-snapshot.mjs';
 import { buildProject, runProjectBuild, readFrozenProjectBuild } from './adapters/node-project-build.mjs';
+import { inspectBackendProject } from './adapters/node-backend-project.mjs';
 import { executeRuntimeCaseSuite } from './adapters/node-runtime-case-suite.mjs';
 import { captureRuntimeCaseSuite } from './lib/runtime-case-suites.mjs';
 import { executionHostConfiguration } from './adapters/node-execution-tool.mjs';
@@ -24,12 +25,20 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
     'runtime-case': { type: 'string' },
     'runtime-suite': { type: 'string' },
   } });
-  if (!['plan', 'build', 'run', 'tool-check'].includes(values.command)) throw new Error('Use --command plan, build, run or tool-check.');
+  if (!['plan', 'build', 'run', 'inspect', 'tool-check'].includes(values.command)) throw new Error('Use --command plan, build, run, inspect or tool-check.');
+  if (values.command === 'inspect') {
+    if (!values.build || Object.keys(values).some(key => !['command', 'build', 'backend'].includes(key))) {
+      throw buildError('build_request_invalid', 'Inspection accepts only --build and an optional --backend; it reads frozen output without a tool or author workspace.');
+    }
+    return { ok: true, ...await inspectBackendProject({ buildDirectory: path.resolve(values.build),
+      ...(values.backend !== undefined ? { backendId: values.backend } : {}), signal }) };
+  }
   const checkingTool = values.command === 'tool-check';
   const timeoutMs = Number(values['timeout-ms'] ?? (checkingTool ? '12000' : '30000'));
   const maxTimeout = checkingTool ? 12000 : 3600000;
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > maxTimeout) throw new Error(`Timeout must be 1–${maxTimeout} milliseconds.`);
-  const configuration = executionHostConfiguration({ backendId: values.backend, tool: values.tool ?? values.godot });
+  const hostEnvironment = { ...process.env }, requestedTool = values.tool ?? values.godot;
+  const configuration = executionHostConfiguration({ env: hostEnvironment, backendId: values.backend, tool: requestedTool });
   if (values.godot !== undefined && (values.tool !== undefined || configuration.backendId !== DEFAULT_EXECUTION_BACKEND)) {
     throw new Error('--godot is the Godot-only legacy alias; use --backend <id> --tool <path> for the selected backend.');
   }
@@ -41,7 +50,14 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
     const { toolStatus } = await probeExecutionTool(adapter, { toolPath: configuration.tool, signal, timeoutMs });
     return { ok: toolStatus.status === 'ready', toolStatus };
   }
-  const explicitBackend = values.backend !== undefined || process.env.VIENTO_EXECUTION_BACKEND !== undefined;
+  const explicitBackend = values.backend !== undefined || hostEnvironment.VIENTO_EXECUTION_BACKEND !== undefined;
+  const frozenConfiguration = frozen => {
+    const selected = executionHostConfiguration({ env: hostEnvironment, backendId: frozen.build.backend.id, tool: requestedTool });
+    if (values.godot !== undefined && selected.backendId !== DEFAULT_EXECUTION_BACKEND) {
+      throw new Error('--godot is the Godot-only legacy alias; use --backend <id> --tool <path> for the selected backend.');
+    }
+    return selected;
+  };
   // Decide the mode before opening either input file or the frozen build.
   if(values['runtime-suite']!==undefined) {
     if(values.command!=='run'||values['runtime-case']!==undefined||values['control-program']!==undefined
@@ -51,9 +67,10 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
     if(timeoutMs>30000)throw buildError('runtime_suite_limit','Each suite member is limited to 30 seconds.');
     const backendRegistry=createExecutionBackendRegistry();
     const frozen=await readFrozenProjectBuild(values.build,{...(explicitBackend?{backendId:configuration.backendId}:{}),backendRegistry,signal});
+    const selected=frozenConfiguration(frozen);
     const capture=await captureRuntimeCaseSuite(values.root,{documentRef:values['runtime-suite'],plan:frozen.plan,signal});
     return executeRuntimeCaseSuite({capture,plan:frozen.plan,authorRoot:values.root,buildDirectory:frozen.buildDirectory,
-      buildId:frozen.build.buildId,snapshotId:frozen.build.snapshotId,tool:configuration.tool,backendId:frozen.build.backend.id,
+      buildId:frozen.build.buildId,snapshotId:frozen.build.snapshotId,tool:selected.tool,backendId:selected.backendId,
       backendRegistry,signal,caseTimeoutMs:timeoutMs});
   }
   if (values['runtime-case'] !== undefined && (values['control-program'] !== undefined
@@ -93,8 +110,21 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
   }
   if (values.command === 'run') {
     if (!values.build || values.root || values.scene || values.output) throw new Error('Run requires --build <directory>; it runs frozen output without reopening source.');
-    return runProjectBuild({ buildDirectory: values.build, tool: configuration.tool,
-      ...(explicitBackend ? { backendId: configuration.backendId } : {}),
+    const backendRegistry = createExecutionBackendRegistry();
+    let frozen;
+    try {
+      frozen = await readFrozenProjectBuild(values.build, { ...(explicitBackend ? { backendId: configuration.backendId } : {}), backendRegistry, signal });
+    } catch (error) {
+      // Keep the ordinary run's result/diagnostic contract when its frozen
+      // input is missing or invalid. Admission errors above still reject.
+      return { ok: false, status: signal?.aborted ? 'cancelled' : 'failed', diagnostics: [{ severity: 'error',
+        code: signal?.aborted ? 'runtime_cancelled' : error.errorCode || 'build_failed',
+        message: signal?.aborted ? 'Runtime cancelled.' : error.errorCode ? error.message : 'Build operation failed.',
+        objectId: null, sourcePath: '', propertyPath: '' }] };
+    }
+    const selected = frozenConfiguration(frozen);
+    return runProjectBuild({ buildDirectory: frozen.buildDirectory, ...selected, backendRegistry,
+      expectedBuildId: frozen.build.buildId, expectedSnapshotId: frozen.build.snapshotId,
       ...(controlProgram ? { controlProgram } : {}),
       ...(runtimeCase ? { runtimeCase } : {}),
       ...(runtimeCaseSceneId ? { runtimeCaseSceneId } : {}),

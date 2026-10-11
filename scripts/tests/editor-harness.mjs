@@ -84,6 +84,7 @@ export async function editorHarness(overrides = {}) {
     window: { confirm: () => false },
     API_PATHS, API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion, getDocTemplate, DOC_TYPE_TEMPLATE_DEFS, createBlockDraft, serializeBlockDraft, serializeSourceDraft,
     t, localize, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage, diagnosticMessage, isComposingInput, createFieldEditor,
+    setupStudioSystem: async () => ({ refreshMedia() {}, updateCapabilities() {}, updateProject() {}, snapshot: () => ({}) }),
     refreshHeroBannerLabels() {},
     toDisplayValue: (value) => String(value ?? ''),
     getDisplayCategory: (doc) => doc?.category || 'other',
@@ -96,7 +97,7 @@ export async function editorHarness(overrides = {}) {
   });
   const stripImports = (source) => source.replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '');
   const stateSource = stripImports(await fs.readFile(new URL('../../web/modules/app-state.js', import.meta.url), 'utf8')).replaceAll('export ', '');
-  const runtimeSource = stripImports(await fs.readFile(new URL('../../web/modules/app-runtime.js', import.meta.url), 'utf8')).replace('export { initApp };', '');
+  const runtimeSource = stripImports(await fs.readFile(new URL('../../web/modules/app-runtime.js', import.meta.url), 'utf8')).replace('export { initApp, getStudioSystemSnapshot };', '');
   vm.runInContext(`${stateSource}\nconst state = appState;\n${runtimeSource}\n` +
     'globalThis.state = state; globalThis.renderActualContent = renderContent; renderContent = () => {}; renderMeta = () => {}; syncDocListEditPermissions = () => {};', context);
   context.state.mode = 'edit';

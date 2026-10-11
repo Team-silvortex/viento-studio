@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "scope": "Native profile integer provenance interoperability repair; private digest clone only",
+  "finding": {
+    "confirmedBySource": "serde_json Value serializes a float JSON integer such as 1.0 while Node JSON.stringify canonical output serializes 1; profile validation admits both by integer semantics",
+    "resolution": "Normalize schemaVersion and bounded apiVersion values only after profile validation, and only in the private provenance clone",
+    "authorProfileNotChanged": true,
+    "workspaceProfileCopyNotChanged": true,
+    "absentLegacyProvenanceNotChanged": true,
+    "globalCanonicalSerializerNotChanged": true
+  },
+  "sourceHashes": {
+    "src-tauri/src/project_templates.rs": "ba7ca8372c4ac6a5e5d3a3fe547bcfaa5c5736fa3c7865fdb753bcfa82111410",
+    "src-tauri/src/workspace.rs": "96d18ed684189f69b7af979e2ad831033cf1b4a1f8a11336dd1da893e77a7f89",
+    "scripts/lib/project-templates.json": "3944610922fcc88d05c7f897f81fc7d8c25e6f214e5345d710f41f285f3c7734",
+    "engine/canonical-json.mjs": "44604f12be2a7619783e5928641e5d573cfde7ff0b5bdf30428e632966b72831"
+  },
+  "nodeCanonicalEvidence": "profile-integer-canonical-node.json",
+  "nodeVersion": "v24.20.0",
+  "expectedDigest": "sha256:4b6196aa80f3d8c2260120f5bcd074bb0f5032bc51b39e9e0d9955b10452aa4f",
+  "nativeTest": {
+    "file": "src-tauri/src/project_templates.rs",
+    "line": 251,
+    "name": "studio_profile_provenance_matches_node_integer_semantics_without_rewriting_values",
+    "variants": [
+      "JSON integer 1",
+      "JSON float 1.0",
+      "JSON exponent 1e0"
+    ],
+    "checks": [
+      "same Node canonical digest",
+      "template self serialization bytes retained",
+      "workspace studioProfile serialization bytes retained"
+    ],
+    "execution": "delegated to root; no native compilation run by reviewer"
+  },
+  "checks": {
+    "whitespace": true,
+    "workspaceSourceUnchangedSincePriorFreeze": true,
+    "builtinCatalogBytesUnchanged": true,
+    "canonicalJsonSourceUnchanged": true
+  },
+  "openFindings": []
+}

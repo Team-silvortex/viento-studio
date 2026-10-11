@@ -1,0 +1,95 @@
+✖ structure opens independently of selected actor and execution availability, with a registered object/media catalog (78.565673ms)
+✔ late source and catalog acquisition cannot open under a replaced source owner (51.302139ms)
+✔ remove can approve a full candidate where the selected opener is absent; add validates new identities (125.565418ms)
+✔ whole candidate actor/group identities, definitions, provenance and recipe counts must match exact expansion (598.295993ms)
+✔ unused fragment edits validate even when the effective actor set stays the same (55.076502ms)
+✔ resource failures and source owner changes during asynchronous validation cannot approve (88.051971ms)
+✔ apply completion binds the identical host receipt and complete structural edit before returning to source (46.647312ms)
+✖ clean source accepts a new fragment member as a dirty draft with unchanged save baseline (38.330394ms)
+✖ removing the selected opener preserves BOM/CRLF, original OC and resource, groups, other identities and editor selection (9.906298ms)
+✔ altered edit, target IDs/overrides, candidate bytes, paths or revisions cannot replace live source (51.804615ms)
+✖ source acquisition and structure apply require a current writable source editor (15.181813ms)
+✔ author text changes during digest preserve newer input and reject structural application (7.181601ms)
+✖ late preparation cannot apply to a closed/replaced preview owner (5.186748ms)
+✖ successful structural receipt and proposal cannot be replayed into a newer source session (5.654889ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 8
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1117.246636
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-structure-bridge.test.mjs:67:1
+✖ structure opens independently of selected actor and execution availability, with a registered object/media catalog (78.565673ms)
+  ReferenceError: WORLD_API_PATH is not defined
+      at readCompositionStructureCatalog (evalmachine.<anonymous>:410:51)
+      at Object.editCompositionStructure (evalmachine.<anonymous>:514:29)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-structure-bridge.test.mjs:72:16)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at scripts/tests/scene-composition-structure-host.test.mjs:44:1
+✖ clean source accepts a new fragment member as a dirty draft with unchanged save baseline (38.330394ms)
+  TypeError: The shared structure edit does not match the recipe source.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:16:86)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:26:106)
+      at sourceSnapshot (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:39:18)
+      at prepareSceneCompositionStructureApply (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:126:18)
+      at applySceneCompositionSourceDraft (evalmachine.<anonymous>:4231:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-structure-host.test.mjs:46:17)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    errorCode: 'scene_composition_structure_invalid'
+  }
+
+test at scripts/tests/scene-composition-structure-host.test.mjs:50:1
+✖ removing the selected opener preserves BOM/CRLF, original OC and resource, groups, other identities and editor selection (9.906298ms)
+  TypeError: The shared structure edit does not match the recipe source.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:16:86)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:26:106)
+      at sourceSnapshot (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:39:18)
+      at prepareSceneCompositionStructureApply (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:126:18)
+      at applySceneCompositionSourceDraft (evalmachine.<anonymous>:4231:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-structure-host.test.mjs:52:17)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errorCode: 'scene_composition_structure_invalid'
+  }
+
+test at scripts/tests/scene-composition-structure-host.test.mjs:74:1
+✖ source acquisition and structure apply require a current writable source editor (15.181813ms)
+  TypeError: Cannot read properties of null (reading 'baselineContent')
+      at untouched (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-structure-host.test.mjs:40:46)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-structure-host.test.mjs:79:42)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at scripts/tests/scene-composition-structure-host.test.mjs:91:1
+✖ late preparation cannot apply to a closed/replaced preview owner (5.186748ms)
+  TypeError: The shared structure edit does not match the recipe source.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:16:86)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:26:106)
+      at sourceSnapshot (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:39:18)
+      at prepareSceneCompositionStructureApply (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:126:18)
+      at prepareSceneCompositionStructureApply (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-structure-host.test.mjs:94:25)
+      at applySceneCompositionSourceDraft (evalmachine.<anonymous>:4231:26) {
+    errorCode: 'scene_composition_structure_invalid'
+  }
+
+test at scripts/tests/scene-composition-structure-host.test.mjs:100:1
+✖ successful structural receipt and proposal cannot be replayed into a newer source session (5.654889ms)
+  TypeError: The shared structure edit does not match the recipe source.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:16:86)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:26:106)
+      at sourceSnapshot (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:39:18)
+      at prepareSceneCompositionStructureApply (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition-structure.mjs:126:18)
+      at applySceneCompositionSourceDraft (evalmachine.<anonymous>:4231:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-structure-host.test.mjs:101:55)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errorCode: 'scene_composition_structure_invalid'
+  }

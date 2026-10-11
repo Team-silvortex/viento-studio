@@ -1,0 +1,42 @@
+✔ generator preserves source plan semantics and explicitly uses XYZ independent static nodes (9.252652ms)
+✔ generator rejects wrong kind, scene keys, non-data accessors and extra nested behavior (1.50077ms)
+✔ export stores exact BOM/CRLF source, neutral plan and a full five-file inventory (11.496833ms)
+✔ existing output directories and files are never adopted or overwritten (6.011832ms)
+✔ invalid UTF8, malformed schema and oversized source do not create output (2.41344ms)
+✔ input or output symlink ancestors are rejected without changing the target (2.931797ms)
+✔ copied receipt JSON and an arbitrary existing project cannot execute a tool (359.801517ms)
+✔ modified, replaced or hardlinked generated source prevents execution (561.854494ms)
+✔ unregistered source or pre-existing cache symlink cannot authorize execution (522.237349ms)
+✔ an owned write failure cleans only its own unchanged files and empty directory (5.267861ms)
+✔ failure cleanup preserves an edited source and user-added files in its own output (8.947287ms)
+✖ CLI readonly emit works without output and invalid flag combinations never create output (4.345492ms)
+✔ aborted capture or export creates no output (1.629663ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1581.63035
+
+✖ failing tests:
+
+test at scripts/tests/scene3d-export.test.mjs:29:2
+✖ CLI readonly emit works without output and invalid flag combinations never create output (4.345492ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'viento-scene3d-model'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-export.test.mjs:29:309)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'viento-scene3d-model',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,14 @@
+import '../../../scripts/adapters/node-studio-core.mjs';
+import * as engine from '../../../engine/index.mjs';
+import * as core from '../../../engine/studio-core.mjs';
+import * as composition from '../../../engine/scene-composition.mjs';
+import fs from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { runScene3DCases } from './boundary-cases.mjs';
+const digest=content=>createHash('sha256').update(content).digest('hex');
+const modulePaths=['engine/scene3d.mjs','engine/studio-core.mjs','engine/index.mjs','engine/studio-core.wasm'];
+const hashes=async()=>Object.fromEntries(await Promise.all(modulePaths.map(async path=>[path,digest(await fs.readFile(new URL('../../../'+path,import.meta.url)))])));
+const before=await hashes(),checks=await runScene3DCases({...engine,...core,...composition}),after=await hashes();
+if(JSON.stringify(before)!==JSON.stringify(after))throw new Error('Source changed during 3D source proof');
+const report={format:'viento-scene3d-portable-source-proof',schemaVersion:1,runtime:process.version,sourceHashes:before,checks,passed:checks.length,failed:0,environment:'Source modules and actual WASM through pinned Node; import-free cases with explicit engine ports. Prepared copies and device acceptance reported separately.',errorDomains:['scene3d_invalid','scene3d_limit','studio_core_request_invalid'],semantics:'Y-up right-handed -Z forward; author degrees XYZ, renderer/exporter T*Rx*Ry*Rz*S; no assets, World, behavior or hierarchy admission'};
+await fs.writeFile(new URL('./boundary-source-results.json',import.meta.url),JSON.stringify(report,null,2)+'\n');process.stdout.write(JSON.stringify({passed:report.passed,failed:0,checks:checks.map(check=>check.id)})+'\n');

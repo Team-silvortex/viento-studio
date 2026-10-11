@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "scope": "Read-only review of system composition, additive module profiles and remaining domain boundaries",
+  "sourceHashes": {
+    "engine/studio-modules.mjs": "376d7a8182a23f5fa50817f68dd323290d8669aca3094c336425bd6ad5d41744",
+    "scripts/tests/studio-modules.test.mjs": "5fddde2c9ff50e3f7474464146b1931665bc2b414cd4f07e4abfe4087a9d0ad4",
+    "web/modules/app-studio-system.js": "51b811fe5a2d0b16e7752c5a3ccbe38f05354c01e52242d351f0d637df55cbf4",
+    "web/modules/app-runtime.js": "0cf471ee31a2583cdfdec0dbce790d9819edf0174d53265a62d213ebbd9e71fe",
+    "scripts/tests/studio-system-ui.test.mjs": "3a9965abbdf3ef2a97d088e5eeccc060b79025f565da7138291c02b052aa77f2",
+    "engine/project.mjs": "a7e6418c10226757a481f77e3f066714fad5a64f41aac92e779a936e42347c41",
+    "scripts/lib/project-definition.mjs": "06db926836dfa9043c9b78a47d6cd5da5f00511ad08870de9003d9b7f081a510",
+    "src-tauri/src/workspace.rs": "96d18ed684189f69b7af979e2ad831033cf1b4a1f8a11336dd1da893e77a7f89",
+    "src-tauri/src/project_templates.rs": "efbbb1dd3309605db89d18d9765a5a981f4ef3639b5e3b5f924db34026c6dfe7"
+  },
+  "verification": {
+    "runtime": "Node.js 24.20.0",
+    "focused": {
+      "log": "core-boundary-focused-frozen.log",
+      "pass": 44,
+      "fail": 0,
+      "skipped": 0,
+      "pureCases": 18,
+      "compositionRootCases": 26
+    }
+  },
+  "findings": [],
+  "resolvedFindings": [
+    {
+      "issue": "Strict profile validation in the shared document-type reader would reject an existing or future project before local planner diagnostics",
+      "resolution": "The read-time project type validator no longer validates profiles; new definition and native template write boundaries validate explicitly. Unknown profile data survives read and migration."
+    }
+  ],
+  "checkedBoundaries": [
+    "Seven modules register fixed version-1 contributions; project profiles request capabilities and never load paths or code.",
+    "Required and optional requests are additive. Missing 3D or Rust behavior capabilities never become Scene2D requests and never unmount the document editor.",
+    "Scene document types with prose parsing remain ordinary document definitions; representation recognition stays with the existing explicit scene format validators.",
+    "Browser composition mounts existing views once and privately stores controllers. Per-domain options are injected separately; the optional media export service exposes a function rather than a sibling controller.",
+    "World and build availability intersect module composition with host capability booleans. Module active and profile satisfied do not authorize save, semantic writes or tool execution.",
+    "Source callbacks remain in the document runtime; module assembly and metadata refresh do not invoke ordinary Save or expose source text, controllers or callbacks in snapshots.",
+    "Refresh of project profiles changes requests and local diagnostics without hot loading, disposing existing controllers or replacing the source authority.",
+    "Explicit null, undefined and future-schema profile declarations produce local diagnostics; absence retains legacy behavior.",
+    "The exported getStudioSystemSnapshot accessor returns only the detached system DTO, or null before boot; it exposes no source, controllers, callbacks, ports or save authority."
+  ],
+  "remainingCouplings": [
+    {
+      "area": "Document workbench",
+      "files": [
+        "web/modules/app-runtime.js"
+      ],
+      "limit": "The main runtime still owns selection, source baselines, dirty state, document history and ordinary Save. This slice declares its module but does not extract that lifecycle into a replacement kernel."
+    },
+    {
+      "area": "Build surface",
+      "files": [
+        "web/modules/app-project-build.js"
+      ],
+      "limit": "Scene previews, build planning, runtime selection, control and reports remain assembled within one existing build controller. Contributions describe this current surface, not independent dynamically replaceable executors."
+    },
+    {
+      "area": "World surface",
+      "files": [
+        "web/modules/app-world-browser.js"
+      ],
+      "limit": "World query, semantic edit forms and creation flows still share their existing world controller and host write gates."
+    },
+    {
+      "area": "Browser host adapters",
+      "files": [
+        "web/modules/app-project-settings.js",
+        "web/modules/app-export.js",
+        "web/modules/app-media-editor.js",
+        "web/modules/app-world-browser.js",
+        "web/modules/app-project-build.js"
+      ],
+      "limit": "Existing controllers still use their existing DOM and HTTP/platform imports. Domain ports isolate editor callbacks and composition; this is not complete transport inversion or a hostile extension sandbox."
+    },
+    {
+      "area": "Extension lifecycle",
+      "files": [
+        "engine/studio-modules.mjs",
+        "web/modules/app-studio-system.js"
+      ],
+      "limit": "Descriptors are trusted declarative data. There is no dynamic code discovery, package installation, hot unload, automatic migration or executable plugin permission grant."
+    },
+    {
+      "area": "Future representations",
+      "files": [
+        "engine/scene-model.mjs",
+        "engine/backend-capabilities.mjs"
+      ],
+      "limit": "3D, author Rust execution and native Nuis/ns-nova GUI/providers remain unavailable. Existing Scene2D and backend admission rules remain unchanged."
+    }
+  ],
+  "claimsExcluded": [
+    "Installed desktop or Android device acceptance",
+    "All functional areas have migrated into Rust",
+    "Dynamic third-party plugin execution",
+    "New 3D or author Rust compilation support",
+    "Any capability declaration grants filesystem, process or renderer authority"
+  ],
+  "dataAdmission": {
+    "descriptorPolicy": "Exact versioned keys, bounded plain enumerable JSON data only; no accessor, toJSON, function, hidden property, symbol, custom prototype, sparse array or cycle is admitted.",
+    "budgets": {
+      "modules": 32,
+      "dependenciesPerModule": 32,
+      "contributionsPerModule": 64,
+      "requestsPerProfileArray": 128,
+      "requestArrays": 2,
+      "apiVersionMax": 65535,
+      "tokenAsciiCharacters": 192,
+      "detachedNodes": 16384,
+      "detachedDepth": 16,
+      "detachedCharacters": 131072
+    },
+    "note": "Budgets reject whole requests; declarations are never silently truncated. Strict writer validation is independent of nonfatal read planning."
+  }
+}

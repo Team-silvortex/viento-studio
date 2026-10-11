@@ -1,0 +1,59 @@
+{
+  "format": "viento-fragment-rename-core-independent-audit",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T11:00:41.973553+00:00",
+  "mode": "Read-only second-pass review and standalone frozen-source probes; no product or existing test edits",
+  "sourceHashes": {
+    "engine/studio-core.mjs": "96284f8be59bec99d462a2a3c09e4163d23ce252231a600619cc4156014f91d3",
+    "engine/scene-composition-definitions.mjs": "ebfd57e058b1dc708d1d87f1930042d545d8f515503a9f75f14f3671ccbb37fa",
+    "crates/viento-studio-core/src/scene_composition_definition_rename.rs": "2b4cad0dc8502a31d7c7d40b22758b6daa5c6835a1cc5671521cacd8be6aad4c",
+    "crates/viento-studio-core/src/lib.rs": "efc55b4fcd8d6b617edece2b8a0ccaa8a52f2ac28280db8b17beda92d14d62c7",
+    "engine/studio-core.wasm": "3b3f2ad206b5c2f8a91dd45230f79bd9e6a125bd3e88356e3ffc2f16f4e2189e"
+  },
+  "coreResults": {
+    "path": "core-results.json",
+    "sha256": "f19a6783bb8a7a411b21b4165ae7d6b5502515d04ccd21fe50c14e4e9bdf7272"
+  },
+  "scope": [
+    "Rust exact request admission and source-bound CST selection",
+    "Decoded local identities, collisions, same-ID and complete original validation",
+    "Atomic full-batch budget and final expansion",
+    "Independent optional probe and old domain isolation",
+    "Strict bridge success envelope, semantic scope, ordered receipt paths and raw token inventory",
+    "Escaped quote/backslash boundaries and byte preservation with nonstandard root key order"
+  ],
+  "findings": [],
+  "blockingFindings": 0,
+  "probe": {
+    "script": "core-independent-audit-probe.mjs",
+    "report": "core-independent-audit-probe.json",
+    "log": "core-independent-audit-probe.log",
+    "groups": 6,
+    "failed": 0,
+    "lexicalVariants": 12,
+    "localIdentityBoundaryVariants": 4,
+    "malformedNativeRequestsRejected": 9,
+    "forgedReceiptsRejected": 9,
+    "sourceStable": true
+  },
+  "strengths": [
+    "Rust validates the whole original recipe before identity lookup or same-ID no-op. Invalid unused declarations and duplicate decoded source keys cannot be repaired or bypassed by rename.",
+    "CST lookup uses decoded field and identity values. Exact disjoint value spans are sorted by physical source position, while changedPaths intentionally remains fragment-then-source-ordered-placement order; root property order does not affect patch correctness.",
+    "Native same-ID returns byte-identical original text and an empty path array. Pure proposal/apply explicitly reject unchanged intent. Missing and unsupported rename probes leave prior domains ready.",
+    "Before/after complete semantic comparison prevents wrong placement references, unrelated actor/group/local-key/object mutations and identity collisions. Exact paths prevent omitted, duplicate, reordered or extra targets.",
+    "Both sources must parse as valid JSON before the lexical inventory is used. Escaped quotes and escaped backslashes are skipped inside string tokens. Nonstring token gaps and unchanged raw strings compare exactly, so BOM, CRLF, indentation, key spelling, exponent/negative-zero lexemes and unrelated escaped text cannot change silently.",
+    "Changed raw string tokens must decode to the old identity and equal the standard serialized new ASCII identity, with the exact expected changed-path count. Semantically equivalent escaped spellings of the new ID are therefore rejected as forged receipts.",
+    "Original and final expansion plus byte budgets bound the complete atomic operation. There is no partial source mutation, UUID allocation, geometry history change, filesystem access, dynamic parser or tool execution."
+  ],
+  "limitations": [
+    "This domain renames a local fragment identity and in-document placement references only; it does not rename actors/groups, rewrite external metadata or references, reorder declarations or migrate files.",
+    "Unsupported optional capability is isolated, but malformed successful core receipts intentionally invalidate the shared core runtime until reinitialization; this is existing fail-closed policy, not a silent downgrade.",
+    "Strict JSON/value checks are ordinary in-process data-contract validation. They are not a sandbox for arbitrary hostile JavaScript execution or a replacement for host source ownership and save-conflict guards.",
+    "Standalone probes use source modules and actual WASM under pinned Node. Browser integration, prepared-copy VM runs, full application coverage and installed-device acceptance are separately owned and reported by the root team."
+  ],
+  "retainedAttempt": {
+    "log": "core-independent-audit-probe-initial.log",
+    "reason": "Initial independent expected-output oracle applied semantic changedPaths in reverse order, incorrectly assuming fragments precede placements physically. The placement-first fixture exposed this oracle assumption. The oracle now sorts host CST ranges by descending physical source offset; the frozen product already sorted spans correctly and was not changed."
+  },
+  "conclusion": "No unhandled blocking request/receipt, raw-token preservation, no-op, budget or capability-isolation fault found in the frozen rename implementation."
+}

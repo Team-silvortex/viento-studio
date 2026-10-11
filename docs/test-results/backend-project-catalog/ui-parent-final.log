@@ -1,0 +1,204 @@
+✔ history detail reads remain independent from the approved latest build used by Run (140.728936ms)
+✔ old host state has no new list but keeps the existing latest-build Run available (53.592668ms)
+✔ parent close and reopen discard a delayed inspection without losing latest Run ownership (98.362579ms)
+✔ scene and preview-tab changes hide details and invalidate delayed reads (126.096893ms)
+✔ descriptor changes invalidate an existing detail even when backend ID and list rows remain the same (97.632854ms)
+✔ read failure stays inside details and cannot consume a previous successful build (61.703253ms)
+✔ unsaved author input blocks execution while readonly details preserve text and caret (76.238122ms)
+✖ parent explicit activation changes the one frozen execution target used by existing headless run (28.605388ms)
+✖ readonly inspection of restored history cannot choose a new execution target (19.892038ms)
+✖ failed selection reconciles with GET only and does not repeat the mutation or lose prior run build (15.900983ms)
+✖ lost select response reconciles a host-confirmed target by GET without a second select (17.030326ms)
+✖ close/reopen and scene/tab changes discard selection completion from the previous parent owner (15.320451ms)
+✖ descriptor or request epoch change invalidates pending select even when scene and IDs remain the same (14.388342ms)
+✖ frozen-only scene permits explicit run selection and run while denying plan/build/edit/create from offline authors (13.467203ms)
+✖ frozen-only row blocks author plan even when another live scene keeps the author catalog available (17.967034ms)
+✖ selected history updates existing control replay target and keeps the raw input intact (12.433771ms)
+✖ draft data is preserved during runtime selection and existing unsaved-input execution gate remains active (11.954101ms)
+✔ catalog restores unchecked histories without automatically selecting an execution target (15.309159ms)
+✔ inspect history is readonly; only explicit select command changes the runtime identity (17.141357ms)
+✔ unavailable historical entries permit explicit retry while failed builds do not (9.773061ms)
+✔ catalog diagnostics are visible even without rows and never disclose raw errors or paths (5.659382ms)
+✔ activation locks picker/inspect/selection and failure preserves previously selected execution target (6.851014ms)
+✔ late selection success after close or dispose cannot authorize a detached view (13.49748ms)
+✔ scene/session/backend/hidden owner changes suppress late activation and late errors (24.12874ms)
+✔ catalog row origin/snapshot changes invalidate selection but availability verification alone does not (13.545692ms)
+✔ forged select status cannot change runtime target or be accepted by parent (36.618859ms)
+✔ old host retains readonly workflow and does not expose unsupported selection command (5.982676ms)
+✔ pending external jobs disable selection without making readonly inspection unavailable (8.067173ms)
+✔ offline author input and missing installed tool do not hide verification or rewrite author data (5.977126ms)
+✔ new catalog wording translates at each language switch, including unchanged picker and runtime identity (7.418982ms)
+✔ catalog malformed identity and availability cannot expose commands (4.428736ms)
+✔ catalog selection errors have explicit localized concurrency/owner diagnostics (13.320845ms)
+✔ legacy hosts, foreign scene/backend, malformed and duplicate summaries cannot expose a project read (23.384037ms)
+✔ older project selection is independent of the latest run build and authored labels stay text (11.867687ms)
+✔ successful Godot details expose exact frozen source, tool and adapter plus classified files and evidence (8.967812ms)
+✔ Bevy details distinguish scene data from Cargo, author Rust and a standalone distribution (7.543549ms)
+✔ old unrecorded manifests disclose read-only reconstruction and missing adapter facts (9.347493ms)
+✔ read-only inspection is available with dirty author drafts, offline sources, unavailable tools and active runs (8.849748ms)
+✔ failed, cancelled and timeout records are visible but never authorize inspecting or running an intact project (14.41375ms)
+✔ all six preserved reasons explain why a project is outside automatic cleanup (22.965973ms)
+✔ pending reads lock picker and repeated inspect while close cancels only the view (5.903566ms)
+✔ new open survives a late closed read and late failure never alerts or damages the new view (8.461512ms)
+✔ scene, descriptor and parent session changes invalidate a pending response and existing detail (31.365617ms)
+✔ pruned, retention-changed or mismatched summary ownership cannot retain an old approval (31.687598ms)
+✔ forged build, scene, snapshot and backend manifests are rejected before any detail content (17.42194ms)
+✔ unvalidated generated paths, roles and resource mismatches cannot be rendered as inventory (17.326157ms)
+✔ partial directory inventories visibly remain incomplete, and contradictory complete receipts fail closed (12.119525ms)
+✔ unknown Linux names are visibly escaped, and the inspection inventory budget matches the host (40.508872ms)
+✔ unsafe extra inventory paths fail closed and directory ownership errors receive a specific explanation (21.577197ms)
+✔ invalid inspection receipts and unsafe display directories fail closed without path navigation (23.04842ms)
+✔ changed engineering files produce a specific safe explanation and preserve the selected row (3.932264ms)
+✔ Chinese, English and Japanese retranslate structured details while author paths and versions stay literal (27.142972ms)
+✔ all interface keys in the new view and retention reasons have English and Japanese entries (16.537702ms)
+✔ destroy is idempotent and detached read completion cannot recreate UI (3.143477ms)
+ℹ tests 54
+ℹ suites 0
+ℹ pass 44
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 728.009632
+
+✖ failing tests:
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:71:1
+✖ parent explicit activation changes the one frozen execution target used by existing headless run (28.605388ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:72:10)
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:76:1
+✖ readonly inspection of restored history cannot choose a new execution target (19.892038ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:77:10)
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:79:1
+✖ failed selection reconciles with GET only and does not repeat the mutation or lose prior run build (15.900983ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:80:10)
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:85:1
+✖ lost select response reconciles a host-confirmed target by GET without a second select (17.030326ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:86:32)
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:90:1
+✖ close/reopen and scene/tab changes discard selection completion from the previous parent owner (15.320451ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:91:55)
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:99:1
+✖ descriptor or request epoch change invalidates pending select even when scene and IDs remain the same (14.388342ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:100:56)
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:105:1
+✖ frozen-only scene permits explicit run selection and run while denying plan/build/edit/create from offline authors (13.467203ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:107:10)
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:112:1
+✖ frozen-only row blocks author plan even when another live scene keeps the author catalog available (17.967034ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:113:64)
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:117:1
+✖ selected history updates existing control replay target and keeps the raw input intact (12.433771ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:118:10)
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:122:1
+✖ draft data is preserved during runtime selection and existing unsaved-input execution gate remains active (11.954101ms)
+  SyntaxError: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at clone (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:16:29)
+      at canExecuteBackend (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:45:69)
+      at supportsExecution (evalmachine.<anonymous>:327:42)
+      at evalmachine.<anonymous>:721:80
+      at Array.filter (<anonymous>)
+      at render (evalmachine.<anonymous>:721:56)
+      at Object.setAvailable (evalmachine.<anonymous>:1065:5)
+      at view (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:59:14)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:123:10)

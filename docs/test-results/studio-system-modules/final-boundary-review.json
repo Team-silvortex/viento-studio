@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "scope": "Final read-only source and current documentation review after pre-await profile snapshot repair",
+  "reviewedSources": {
+    "engine/studio-modules.mjs": {
+      "sha256": "376d7a8182a23f5fa50817f68dd323290d8669aca3094c336425bd6ad5d41744",
+      "size": 11490
+    },
+    "engine/project.mjs": {
+      "sha256": "a7e6418c10226757a481f77e3f066714fad5a64f41aac92e779a936e42347c41",
+      "size": 6122
+    },
+    "scripts/lib/project-definition.mjs": {
+      "sha256": "a7da2a138b2b0be3db03b973945d9481afcb9745611c048ef449ed4a32c12781",
+      "size": 3018
+    },
+    "scripts/lib/project-service.mjs": {
+      "sha256": "a1a6a04d00bef0f682e579f84cc7e68cc45892d9e1904c36418d77e6375ff44c",
+      "size": 8138
+    },
+    "scripts/lib/workspace.mjs": {
+      "sha256": "c03621d379f9b1e62e32c576a7435b89fc587f92e8eb3637bd29f7f3968227ad",
+      "size": 27850
+    },
+    "web/modules/app-studio-system.js": {
+      "sha256": "51b811fe5a2d0b16e7752c5a3ccbe38f05354c01e52242d351f0d637df55cbf4",
+      "size": 4767
+    },
+    "web/modules/app-runtime.js": {
+      "sha256": "0cf471ee31a2583cdfdec0dbce790d9819edf0174d53265a62d213ebbd9e71fe",
+      "size": 213174
+    },
+    "src-tauri/src/project_templates.rs": {
+      "sha256": "efbbb1dd3309605db89d18d9765a5a981f4ef3639b5e3b5f924db34026c6dfe7",
+      "size": 11393
+    },
+    "src-tauri/src/workspace.rs": {
+      "sha256": "96d18ed684189f69b7af979e2ad831033cf1b4a1f8a11336dd1da893e77a7f89",
+      "size": 94595
+    },
+    "scripts/tests/studio-modules.test.mjs": {
+      "sha256": "5fddde2c9ff50e3f7474464146b1931665bc2b414cd4f07e4abfe4087a9d0ad4",
+      "size": 17127
+    },
+    "scripts/tests/studio-system-ui.test.mjs": {
+      "sha256": "3a9965abbdf3ef2a97d088e5eeccc060b79025f565da7138291c02b052aa77f2",
+      "size": 19408
+    },
+    "scripts/tests/studio-profile-project.test.mjs": {
+      "sha256": "8e28f98e60ea21ac5675eadd3357b6ebce22fc34e88bd45e5853472dc83b70ad",
+      "size": 10635
+    }
+  },
+  "reviewedDocuments": {
+    "docs/STUDIO_MODULES.md": {
+      "sha256": "788ab232b637da5c426fb48621db26bf548e3d0041eeaad5ad40251ce2bd1a1d",
+      "size": 7043
+    },
+    "docs/STATUS.md": {
+      "sha256": "b29ff0d8421c68edfe16792ac178071a13732eedd10ea1f50f46ea8e75e20db8",
+      "size": 42612
+    },
+    "docs/ARCHITECTURE.md": {
+      "sha256": "c64033b133677c2a5cd4e57419a5d99cd579b818c5e649b928b59efe6bd2f776",
+      "size": 67866
+    },
+    "docs/ROADMAP.md": {
+      "sha256": "301ae9b8ddfc622103b72eebff188517a98c64ac006f0ee7465fd65ecabe11d1",
+      "size": 27382
+    },
+    "docs/PROJECT_TEMPLATES.md": {
+      "sha256": "c6d16f07d591d573d75f8607738fbd8473352c168b832ba097a7d738f946ddd7",
+      "size": 10867
+    },
+    "docs/PROJECT_WORKFLOW.md": {
+      "sha256": "83db766bfc1e129f9345f7a1cfab5929591e14badbe5bd8a659e5516eab6d9ff",
+      "size": 10928
+    },
+    "docs/TESTING.md": {
+      "sha256": "d11fb4e65c0eef3c2cf0ce56a93e8b8659084d4a136f4c163f3283e9d265bd18",
+      "size": 113398
+    },
+    "docs/README.md": {
+      "sha256": "50231c7ea4e81097744d749afc45a2fd0777a80aae8d59df92993d81ac5e65df",
+      "size": 7278
+    },
+    "engine/README.md": {
+      "sha256": "2e46d04360255308f66599bf3c552afa69af39502f89bab4915aa70e24f06f78",
+      "size": 42303
+    }
+  },
+  "verification": {
+    "runtime": "Node.js 24.20.0",
+    "log": "independent-new-tests-frozen.log",
+    "pass": 51,
+    "fail": 0,
+    "skipped": 0,
+    "breakdown": {
+      "portableRegistry": 18,
+      "compositionRoot": 26,
+      "projectProfile": 7
+    },
+    "nativeFixture": "/tmp/viento-studio-system-modules-native-target/debug/examples/mobile-storage",
+    "fullApplication": "Owned by root; not rerun or inferred from the focused suite"
+  },
+  "findings": [],
+  "resolvedFindings": [
+    {
+      "issue": "Shared read-time strict profile validation would prevent ordinary opening of future or malformed profiles",
+      "finalState": "Existing manifest readers and native opening/seed/archive paths retain the profile data. The planner gives local diagnostics; strict validation belongs to new profile adoption and native template creation."
+    },
+    {
+      "issue": "A caller could mutate the newly supplied profile after validation during asynchronous definition locking or template reads",
+      "finalState": "applyProjectDefinition captures profileInput and receives the detached validated studioProfile before the first asynchronous lock; journal and manifest use that snapshot. The regression deliberately mutates original data and replaces definition.studioProfile, and final saved data stays validated."
+    }
+  ],
+  "factChecks": [
+    {
+      "claim": "Module declarations describe registered implementation surfaces",
+      "status": "supported",
+      "detail": "The seven builtins expose 22 contributions, with version-1 dependency and provider checks. Host flags are separate and do not establish executable installation or tool identity."
+    },
+    {
+      "claim": "Future 3D and author Rust behavior remain unavailable",
+      "status": "supported",
+      "detail": "No builtin registers scene.representation.scene3d or behavior.rust. Missing and version-incompatible requests report local diagnostics; no template/document type name invokes a Scene2D conversion."
+    },
+    {
+      "claim": "The document authority survives system composition",
+      "status": "supported",
+      "detail": "The runtime retains source, history, dirty state and ordinary Save. The private composition root injects separate area ports, returns detached metadata, and never exposes controllers or save callbacks."
+    },
+    {
+      "claim": "Project declarations are additive and migratable",
+      "status": "supported",
+      "detail": "Absent old profiles do not gain requests; omission preserves an existing profile. New profile data is strict and immutable before await. Native optional serialization preserves absent builtin provenance; existing and future declarations survive storage and archive migration."
+    },
+    {
+      "claim": "Current docs do not claim complete decomposition",
+      "status": "supported",
+      "detail": "STUDIO_MODULES explicitly retains the document lifecycle, World aggregation, build preview/execution aggregation, DOM/HTTP adapters and boot-only lifecycle. STATUS/ARCHITECTURE/ROADMAP keep these distinctions and unpublished scope."
+    },
+    {
+      "claim": "The registry is not a plugin permission surface",
+      "status": "supported",
+      "detail": "Only exact bounded plain data enters descriptors and requests; accessors, serialization hooks, functions, sparse arrays, inherited custom prototypes and cycles fail admission. There is no code loader, package installation, hot unload, sandbox or authority grant."
+    },
+    {
+      "claim": "The build and static scene preview remain partly coupled",
+      "status": "supported",
+      "detail": "Composition root forwards independently observed host flags, but the existing build controller still requires its build availability when enabling its scene preview. The new document states this current limitation."
+    }
+  ],
+  "remainingBoundaries": [
+    "The main document lifecycle is not yet extracted from app-runtime.",
+    "World query and mutation views still aggregate inside the existing controller.",
+    "Scene authoring, backend projects and runtime work still aggregate within the build surface.",
+    "Views still use existing DOM/HTTP/platform imports; per-domain ports do not imply complete transport inversion.",
+    "Snapshot diagnostics have no new interactive module configuration or missing-capability panel.",
+    "No 3D author format, author Rust compiler, Nuis/native provider or replacement ns-nova GUI is delivered.",
+    "No dynamic third-party installation, executable plugin authority, hot reload/unload or automatic migration is delivered.",
+    "No installed desktop/Android device acceptance or engine tool installation is inferred from module/host flags or focused tests."
+  ],
+  "previousReport": "core-boundary-review.json retained with its original earlier source identities"
+}

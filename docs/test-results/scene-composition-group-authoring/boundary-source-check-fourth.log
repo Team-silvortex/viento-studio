@@ -1,0 +1,16 @@
+file:///home/chiharukiryu/cdev/viento-studio/engine/studio-core.mjs:22
+const fail = (errorCode, message, cause) => Object.assign(new Error(message, cause ? { cause } : undefined), { errorCode });
+                                                          ^
+
+Error: Expected a valid scene composition recipe with explicit identities and references.
+    at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/studio-core.mjs:22:59)
+    at dispatch (file:///home/chiharukiryu/cdev/viento-studio/engine/studio-core.mjs:119:25)
+    at dispatchStudioCoreComposition (file:///home/chiharukiryu/cdev/viento-studio/engine/studio-core.mjs:232:10)
+    at Object.expandSceneComposition (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-composition.mjs:16:10)
+    at fixture (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-composition-group-authoring/boundary-cases.mjs:20:100)
+    at runGroupsCases (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-composition-group-authoring/boundary-cases.mjs:33:50)
+    at file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-composition-group-authoring/boundary-source-check.mjs:11:42 {
+  errorCode: 'scene_composition_invalid'
+}
+
+Node.js v24.20.0

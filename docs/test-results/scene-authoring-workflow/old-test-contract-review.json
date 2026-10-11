@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "review": "Approved architecture contract change, independently inspected in current source and original failure log.",
+  "file": "scripts/tests/scene-composition-overrides-bridge.test.mjs",
+  "beforeSha256": "1604fe60c7f3a82c0880b2904496982d431becdbf15063f6ea3efbb91d6b3111",
+  "reviewedAfterSha256": "0324be1a08205d75d8b90dee0f47dd7b1e49715fca25684dbdff22cf5ccc4709",
+  "originalEvidence": {
+    "log": "composition-regression-initial.log",
+    "sha256": "021f51d9ddf14656f99a1d6ccc2d09c69800a5f2b2cd200266c983a48c232dde",
+    "tests": 337,
+    "passed": 336,
+    "failed": 1,
+    "skipped": 0,
+    "failure": "Old reference-equality assertion required property and canvas validateDraft to be the same function."
+  },
+  "change": "Property form and canvas now use separate workflow instances/functions, so the assertion requires inequality. Each workflow validates the same complete candidate through actual stubbed HTTP POST and releases its own DELETE lease. Both callbacks are invoked; two POSTs/two DELETEs and zero source applies are asserted.",
+  "preservedChecks": [
+    "Complete sceneId/sourcePath/baseSourceRevision/afterContent POST payload assertion",
+    "Preview lease release",
+    "No source application while only checking",
+    "Existing malformed candidate, late owner/token, source receipt and exact completion tests retained"
+  ],
+  "conclusion": "This updates a coupling-specific implementation identity assertion without weakening the author/source/dependency validation contract. Final test success must be cited from a later actual run; the initial failure remains immutable."
+}

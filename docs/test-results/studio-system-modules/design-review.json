@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-11T08:15:29.017001+00:00",
+  "mode": "Independent read-only design risk review before module implementation; not an implemented feature acceptance",
+  "scope": "Entire Studio: author document/project templates, editor feature modules, representation formats, host ports and execution backends remain distinct.",
+  "sourceHashes": {
+    "engine/backend-capabilities.mjs": "ffa235fc1f3de1c518c7f1136e1cb3e1e6cd44d38583288d67469ccf067047a4",
+    "engine/project.mjs": "8673832907687e583137b7d024ac0131582905df0b8c3359fdd1e99733b30503",
+    "engine/index.mjs": "5d5031be4d39cd07b029bb0e4651e0c0a458138a2caaa898882944610b2958be",
+    "scripts/lib/project-layout.mjs": "83d9b9ba4e13bc43a340293f5d87a6e17fba1bb0ab01a0b4ea80e944682bde48",
+    "scripts/lib/project-templates.json": "3944610922fcc88d05c7f897f81fc7d8c25e6f214e5345d710f41f285f3c7734",
+    "src-tauri/src/project_templates.rs": "dd1829a8dc3b7f56a00f70a8be127251401cbe844535dd3f887b1157008a9847",
+    "schemas/workspace-v3.schema.json": "c7cdcb57473693ef9db8382d349f278181950cd626425b94bcfae8bf8ea33b37",
+    "web/modules/app-runtime.js": "2ebcb746d50c76a05c81f7a280e61203eca428964d1cf77139c6c39becb14aad",
+    "web/modules/app-project-build.js": "53b15266ada2a6465751e5dd2a5144b79c1c0142392758b09a141ca87a910212",
+    "web/modules/app-scene-authoring.js": "550dba8178ad8e57dc6a84b0dc295ecba6fe0e5c0565aa151f9dffa6bbc08fe4",
+    "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
+    "mobile/library.js": "a60baece388c981736d68aa81ef76a47a3e83a893fe2ebb620d0c5e785bac6dd",
+    "docs/ARCHITECTURE.md": "2dae612ffc77a282df4cdcda566d1bfe56162f06b460d7bc1d6a8c5ed8f1d282",
+    "docs/NEXT_ARCHITECTURE.zh-CN.md": "1ca5d0336fdbdd6582ca0219e29a265c8115c1bee1dcc7ff386944d4be4ced30"
+  },
+  "risksAndRequiredGuards": [
+    {
+      "area": "project-template-versus-document-format",
+      "finding": "The drama template declares a prose scene.md document type. The word scene/game must not grant Scene2D/Scene3D or engine execution.",
+      "guard": "Admit actual supported representation format/schema at each applicable operation, while retaining generic structured/prose authoring.",
+      "evidence": [
+        "scripts/lib/project-templates.json",
+        "engine/project.mjs"
+      ]
+    },
+    {
+      "area": "native-template-schema-and-digest",
+      "finding": "Native Catalog and ProjectTemplate deny unknown fields. Adding module/representation requirements to the existing template JSON would reject the entire native catalog and alter content digests at an unchanged package version.",
+      "guard": "Use an independent versioned requirements contract or explicitly evolve schema/native serialization and lock/migration tests. Already-instantiated projects remain source-owned and do not resolve installed template catalogs when opening.",
+      "evidence": [
+        "src-tauri/src/project_templates.rs",
+        "scripts/lib/project-layout.mjs"
+      ]
+    },
+    {
+      "area": "representation-versus-execution",
+      "finding": "Backend descriptor currently admits only scene2d plans 1/2/3. A runtime engine having 3D support does not implement Studio 3D author model/parser/editor/renderer/plan semantics.",
+      "guard": "Keep unsupported representation actions unavailable with reasons. Do not broaden old backend admission just to show a 3D label.",
+      "evidence": [
+        "engine/backend-capabilities.mjs",
+        "engine/index.mjs"
+      ]
+    },
+    {
+      "area": "generic-project-fallback",
+      "finding": "Blank, literary, drama and software-design projects own their document types and template bytes and do not require a running engine.",
+      "guard": "Absent/unknown optional modules and unavailable host processes must not disable opening, generic parsing, source editing or ordinary Save. Separate action admission from project availability.",
+      "evidence": [
+        "engine/project.mjs",
+        "scripts/lib/project-templates.json",
+        "web/modules/app-runtime.js"
+      ]
+    },
+    {
+      "area": "module-declaration-authority",
+      "finding": "Feature/template declarations describe requirements and binding contracts; they are not executable code or host authorization.",
+      "guard": "Static own-key/Map registry, exact identifiers/versions and bounded detached JSON. Reject unknown dependencies, cycles, unresolved implementation/ports and mismatched representations for the specific action. Do not dynamically import paths or execute scripts from a template descriptor.",
+      "evidence": [
+        "engine/backend-capabilities.mjs",
+        "engine/scene-authoring-workflow.mjs"
+      ]
+    },
+    {
+      "area": "host-scope-and-lifecycle",
+      "finding": "The recent authoring workflow proves source/candidate/render separation, while the overall UI still initializes multiple feature coordinators through a common bootstrap.",
+      "guard": "Expose named source/metadata/media/preview/process/navigation ports and per-module owner/dispose semantics. A disabled/replaced module must expire its pending approvals without stopping unrelated text editing or an already-running frozen backend task.",
+      "evidence": [
+        "web/modules/app-runtime.js",
+        "web/modules/app-project-build.js",
+        "web/modules/app-scene-authoring.js"
+      ]
+    },
+    {
+      "area": "project-format-and-migration",
+      "finding": "Existing workspace v3 declares author layout and types; adding an optional feature does not itself justify a workspace format upgrade.",
+      "guard": "Keep unknown future author bytes and existing backup/resource-package behavior intact. New persistent requirements must have explicit migration/archive semantics rather than relying on incidental directory scans.",
+      "evidence": [
+        "schemas/workspace-v3.schema.json",
+        "docs/ARCHITECTURE.md",
+        "docs/NEXT_ARCHITECTURE.zh-CN.md"
+      ]
+    }
+  ],
+  "suggestedContractPlanes": [
+    "Project/template requirement declaration",
+    "Actual document/representation format and schema",
+    "Installed feature implementation and dependencies",
+    "Host ports and owner/lifecycle",
+    "Per-backend execution plan/platform/tool support"
+  ],
+  "openProductFindings": [],
+  "unclaimed": [
+    "3D implementation or rendering acceptance",
+    "Arbitrary project plugins or executable template support",
+    "New workspace/schema migration",
+    "Native/backend/device acceptance for the proposed module contract"
+  ]
+}

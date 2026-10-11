@@ -1,6 +1,5 @@
 import { t, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage } from '../i18n/index.js';
 import { diagnosticMessage } from '../i18n/diagnostics.js';
-import { setupSettings } from '../i18n/settings.js';
 import {
   appState as state,
   domElements,
@@ -43,14 +42,17 @@ import { renderHeroBanner, refreshHeroBannerLabels, buildCommonCards, getHeroCar
 import { renderStructuredBlocks, hasRenderableToken } from './app-structured.js';
 import { getDocTemplate, DOC_TYPE_TEMPLATE_DEFS } from './app-type-templates.js';
 import { createBlockDraft, serializeBlockDraft, serializeSourceDraft } from './app-editor-draft.js';
-import { setupMediaEditor } from './app-media-editor.js';
-import { setupExport } from './app-export.js';
-import { setupProjectSettings } from './app-project-settings.js';
-import { setupWorldBrowser } from './app-world-browser.js';
-import { setupProjectBuild } from './app-project-build.js';
+import { setupStudioSystem } from './app-studio-system.js';
 import { sourceLocationSelection } from './app-source-location.js';
 import { prepareSceneSourceLayoutApply } from '../../engine/scene-source-layout.mjs';
 import { prepareSceneCompositionOverrideApply } from '../../engine/scene-composition-overrides.mjs';
+import { prepareSceneCompositionBatchLayoutApply } from '../../engine/scene-composition-batch-layout.mjs';
+import { prepareSceneCompositionFragmentApply } from '../../engine/scene-composition-fragments.mjs';
+import { prepareSceneCompositionPlacementApply } from '../../engine/scene-composition-placement.mjs';
+import { prepareSceneCompositionStructureApply } from '../../engine/scene-composition-structure.mjs';
+import { prepareSceneCompositionPlacementsApply } from '../../engine/scene-composition-placements.mjs';
+import { prepareSceneCompositionGroupsApply } from '../../engine/scene-composition-groups.mjs';
+import { prepareSceneCompositionDefinitionsApply } from '../../engine/scene-composition-definitions.mjs';
 import { isComposingInput } from './app-keyboard.js';
 import { createFieldEditor } from './app-field-editor.js';
 import { API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion } from '../../scripts/lib/doc-api-contract.mjs';
@@ -64,9 +66,7 @@ import {
   loadDocumentFields,
 } from './app-doc-service.js';
 
-let mediaEditorController = null;
-let worldBrowserController = null;
-let projectBuildController = null;
+let studioSystem = null;
 let fieldEditorController = null;
 let fieldDraftSourcePath = '';
 let fieldLoadToken = 0;
@@ -1509,7 +1509,7 @@ function syncEditorBusyUi() {
     if (editRebuildBtnEl) editRebuildBtnEl.disabled = true;
   }
   syncModeButtons(writeBusy);
-  mediaEditorController?.refresh();
+  studioSystem?.refreshMedia();
 }
 
 function syncModeButtons(writeBusy = isEditorWriteBusy()) {
@@ -1980,8 +1980,7 @@ async function detectEditBackend() {
   const normalizedDetection = normalizeEditBackendState(detection);
   detectedEditBackendState = normalizedDetection;
   state.editBackendAvailable = Boolean(normalizedDetection.available);
-  worldBrowserController?.setAvailable(detection.payload?.semanticProjection === true, detection.payload?.semanticCommands || []);
-  projectBuildController?.setAvailable(detection.payload?.projectBuild === true, detection.payload?.semanticCommands || [], { scenePreview: detection.payload?.scenePreview === true });
+  studioSystem?.updateCapabilities(detection.payload || null);
 }
 
 function resolveInitialMode() {
@@ -2428,7 +2427,7 @@ function updateCreatePathValidation(showStatus = false) {
     state.activeCreatePath = validation.value;
     if (editPathEl) editPathEl.textContent = `${APP_RUNTIME_TEXTS.create.sourcePrefix}${getCreateTypeLabel(state.activeCreateType)}${APP_RUNTIME_TEXTS.create.sourceTypeSuffix}${validation.value}`;
     refreshEditSessionDirtyState();
-    if (pathChanged) mediaEditorController?.refresh();
+    if (pathChanged) studioSystem?.refreshMedia();
   }
   return validation;
 }
@@ -2920,7 +2919,7 @@ function resetDocEditorState() {
   }
   state.activeCreateType = getCreateTypeDisplayList()[0] || 'hero';
   syncEditorLayout();
-  mediaEditorController?.refresh();
+  studioSystem?.refreshMedia();
 }
 
 const NEW_SKILL_MARKERS = /^(?:获得新技能|新增技能|新增被动技能|新增主动技能|新增额外技能)$/;
@@ -3761,7 +3760,7 @@ function activateSourceEditor(doc, sourcePath) {
     editEditorEl.focus();
   }
   syncEditSessionBaseline();
-  mediaEditorController?.refresh();
+  studioSystem?.refreshMedia();
 }
 
 
@@ -3795,7 +3794,61 @@ async function getSceneCompositionSource(sourcePath) {
   return { sourcePath: canonicalizeSourcePath(sourcePath), baseSourceRevision, content };
 }
 
+let scene3DSourceReadEpoch = 0, scene3DSourceReadState = null;
+function scene3DSourceContext() {
+  const sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
+  const editable = isEditModeActive() && state.isEditing && state.editInputMode === 'source', sourceJSON = Boolean(sourcePath && /\.json$/i.test(sourcePath));
+  if (editable && !state.isCreating && sourceJSON) {
+    const raw = getCurrentEditContent();
+    if (!scene3DSourceReadState || scene3DSourceReadState.sourcePath !== sourcePath || scene3DSourceReadState.loadToken !== editorLoadToken || scene3DSourceReadState.raw !== raw) {
+      scene3DSourceReadEpoch++; scene3DSourceReadState = { sourcePath, loadToken: editorLoadToken, raw };
+    }
+  } else if (scene3DSourceReadState) { scene3DSourceReadState = null; scene3DSourceReadEpoch++; }
+  return { editable, creating: state.isCreating, busy: isEditorBusy(), sourceJSON, sourcePath,
+    sourceToken: `${editorLoadToken}:${scenePreviewDraftEpoch}:${scene3DSourceReadEpoch}` };
+}
+
+async function getScene3DSourceSnapshot() {
+  const owner = scene3DSourceContext();
+  if (!owner.editable || owner.creating || owner.busy || !owner.sourceJSON) return null;
+  const content = getCurrentEditContent();
+  // Separate read-only authority: no composition proposal, World request or
+  // implicit save. The view verifies this token again after its await.
+  return { content, sourcePath: owner.sourcePath, token: owner.sourceToken };
+}
+
 async function applySceneCompositionOverrideDraft(proposal, { isCurrent = () => true } = {}) {
+  return applySceneCompositionSourceDraft(proposal, { isCurrent }, prepareSceneCompositionOverrideApply);
+}
+
+async function applySceneCompositionBatchLayoutDraft(proposal, { isCurrent = () => true } = {}) {
+  return applySceneCompositionSourceDraft(proposal, { isCurrent }, prepareSceneCompositionBatchLayoutApply, 'positions');
+}
+
+async function applySceneCompositionFragmentDraft(proposal, { isCurrent = () => true } = {}) {
+  return applySceneCompositionSourceDraft(proposal, { isCurrent }, prepareSceneCompositionFragmentApply, 'fragment');
+}
+async function applySceneCompositionPlacementDraft(proposal, { isCurrent = () => true } = {}) {
+  return applySceneCompositionSourceDraft(proposal, { isCurrent }, prepareSceneCompositionPlacementApply, 'placement');
+}
+
+async function applySceneCompositionStructureDraft(proposal, { isCurrent = () => true } = {}) {
+  return applySceneCompositionSourceDraft(proposal, { isCurrent }, prepareSceneCompositionStructureApply, 'structure');
+}
+
+async function applySceneCompositionPlacementsDraft(proposal, { isCurrent = () => true } = {}) {
+  return applySceneCompositionSourceDraft(proposal, { isCurrent }, prepareSceneCompositionPlacementsApply, 'placements');
+}
+
+async function applySceneCompositionGroupsDraft(proposal, { isCurrent = () => true } = {}) {
+  return applySceneCompositionSourceDraft(proposal, { isCurrent }, prepareSceneCompositionGroupsApply, 'groups');
+}
+
+async function applySceneCompositionDefinitionsDraft(proposal, { isCurrent = () => true } = {}) {
+  return applySceneCompositionSourceDraft(proposal, { isCurrent }, prepareSceneCompositionDefinitionsApply, 'definitions');
+}
+
+async function applySceneCompositionSourceDraft(proposal, { isCurrent = () => true }, prepare, kind = 'instance') {
   const conflict = () => { throw Object.assign(new Error('The source editor no longer matches the reviewed composition override.'), { errorCode: 'scene_composition_override_conflict' }); };
   const doc = getActiveDoc(), sourcePath = proposal?.sourcePath;
   if (typeof sourcePath !== 'string' || canonicalizeSourcePath(sourcePath) !== sourcePath) conflict();
@@ -3811,7 +3864,7 @@ async function applySceneCompositionOverrideDraft(proposal, { isCurrent = () => 
   const digest = async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join('');
   const baseSourceRevision = `sha256:${await digest(baseline)}`;
   if (!owns() || version.startsWith('sha256:') && version !== baseSourceRevision) conflict();
-  const prepared = await prepareSceneCompositionOverrideApply({ sourcePath, baseSourceRevision, content }, proposal, { digest });
+  const prepared = await prepare({ sourcePath, baseSourceRevision, content }, proposal, { digest });
   if (!owns()) conflict();
   const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, scroll = editEditorEl.scrollTop;
   // Keep the ordinary save baseline and disk cache. This only changes the
@@ -3820,7 +3873,21 @@ async function applySceneCompositionOverrideDraft(proposal, { isCurrent = () => 
   if (Number.isInteger(start) && Number.isInteger(end)) editEditorEl.setSelectionRange?.(Math.min(start, editEditorEl.value.length), Math.min(end, editEditorEl.value.length));
   editEditorEl.scrollTop = scroll;
   refreshEditSessionDirtyState(); refreshEditButtons();
-  setEditorStatus(t(state.editHasUnsavedChanges ? '实例覆盖已应用到原文草稿；尚未保存。' : '实例覆盖已应用；文本与已保存版本一致。'));
+  setEditorStatus(t(kind === 'definitions'
+    ? state.editHasUnsavedChanges ? '片段定义已应用到原文草稿；尚未保存。' : '片段定义已应用；文本与已保存版本一致。'
+    : kind === 'groups'
+    ? state.editHasUnsavedChanges ? '组织分组已应用到原文草稿；尚未保存。' : '组织分组已应用；文本与已保存版本一致。'
+    : kind === 'placements'
+    ? state.editHasUnsavedChanges ? '放置结构已应用到原文草稿；尚未保存。' : '放置结构已应用；文本与已保存版本一致。'
+    : kind === 'structure'
+    ? state.editHasUnsavedChanges ? '片段结构已应用到原文草稿；尚未保存。' : '片段结构已应用；文本与已保存版本一致。'
+    : kind === 'placement'
+    ? state.editHasUnsavedChanges ? '整组偏移已应用到原文草稿；尚未保存。' : '整组偏移已应用；文本与已保存版本一致。'
+    : kind === 'fragment'
+    ? state.editHasUnsavedChanges ? '共享片段已应用到原文草稿；尚未保存。' : '共享片段已应用；文本与已保存版本一致。'
+    : kind === 'positions'
+    ? state.editHasUnsavedChanges ? '批次布局已应用到原文草稿；尚未保存。' : '批次布局已应用；文本与已保存版本一致。'
+    : state.editHasUnsavedChanges ? '实例覆盖已应用到原文草稿；尚未保存。' : '实例覆盖已应用；文本与已保存版本一致。'));
   const appliedEpoch = scenePreviewDraftEpoch;
   return { applied: true, focus() {
     if (eligible() && appliedEpoch === scenePreviewDraftEpoch && getCurrentEditContent() === prepared.afterContent) editEditorEl.focus();
@@ -5334,6 +5401,7 @@ async function loadData(preferredPath = '', options = {}) {
       editingDoc._renderSignature = makeDocRenderSignature(editingDoc);
     }
     state.workspace = payload.workspace || null;
+    studioSystem?.updateProject(state.workspace);
     for (const type of state.workspace?.documentTypes || []) {
       Object.defineProperty(CATEGORY_LABELS, type.id, { value: type.label, configurable: true, enumerable: true, writable: true });
     }
@@ -5409,84 +5477,96 @@ async function loadData(preferredPath = '', options = {}) {
 }
 
 async function initApp(options = {}) {
-  await setupSettings(options.settings);
-  projectBuildController = setupProjectBuild({
-    getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())),
-      sceneDraftPath: state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '',
-      sceneDraftWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source' && state.editHasUnsavedChanges,
-      compositionSourceWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source',
-      sceneDraftToken: `${editorLoadToken}:${scenePreviewDraftEpoch}` }),
-    getSceneDraft: getScenePreviewDraft,
-    applySceneDraft: applySceneSourceLayoutDraft,
-    getCompositionSource: getSceneCompositionSource,
-    applyCompositionDraft: applySceneCompositionOverrideDraft,
-    setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
-    applied: async result => {
-      const sourcePath = result.changes?.[0]?.sourcePath || result.object?.documentRefs?.[0]?.sourcePath || '';
-      await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: toRebuildFilter(sourcePath), requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
-      await loadData(state.activePath, { preferredSourcePath: sourcePath, forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
+  studioSystem = await setupStudioSystem({
+    settings: options.settings,
+    features: options.features,
+    ports: {
+      scene3d: { getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot },
+      build: {
+        getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())),
+          sceneDraftPath: state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '',
+          sceneDraftWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source' && state.editHasUnsavedChanges,
+          compositionSourceWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source',
+          sceneDraftToken: `${editorLoadToken}:${scenePreviewDraftEpoch}` }),
+        getSceneDraft: getScenePreviewDraft,
+        applySceneDraft: applySceneSourceLayoutDraft,
+        getCompositionSource: getSceneCompositionSource,
+        applyCompositionDraft: applySceneCompositionOverrideDraft,
+        applyCompositionBatchDraft: applySceneCompositionBatchLayoutDraft,
+        applyCompositionFragmentDraft: applySceneCompositionFragmentDraft,
+        applyCompositionPlacementDraft: applySceneCompositionPlacementDraft,
+        applyCompositionStructureDraft: applySceneCompositionStructureDraft,
+        applyCompositionPlacementsDraft: applySceneCompositionPlacementsDraft,
+        applyCompositionGroupsDraft: applySceneCompositionGroupsDraft,
+        applyCompositionDefinitionsDraft: applySceneCompositionDefinitionsDraft,
+        setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
+        applied: async result => {
+          const sourcePath = result.changes?.[0]?.sourcePath || result.object?.documentRefs?.[0]?.sourcePath || '';
+          await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: toRebuildFilter(sourcePath), requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
+          await loadData(state.activePath, { preferredSourcePath: sourcePath, forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
+        },
+        openSource: openBuildSource,
+      },
+      world: {
+        openSource: sourcePath => {
+          const doc = getDocBySourcePath(sourcePath);
+          if (!doc) return false;
+          selectDoc(doc.path);
+          return state.activePath === doc.path;
+        },
+        getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy() }),
+        setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
+        applied: async result => {
+          if (!['applied', 'committed', 'rolled-back'].includes(result.status)) return;
+          // Recovery can be requested while an older document draft is open.
+          // Keep that draft and its original version; a later stale save must conflict.
+          if (result.status !== 'applied' && (state.editHasUnsavedChanges || state.isCreating)) return;
+          const changes = result.changes || (result.change ? [result.change] : []);
+          const affectedPaths = new Set(changes.flatMap(change => [change.sourcePath, change.targetSourcePath].filter(Boolean)));
+          for (const sourcePath of affectedPaths) {
+            const doc = getDocBySourcePath(sourcePath);
+            if (state.isEditing && canonicalizeSourcePath(state.activeEditSource) === canonicalizeSourcePath(sourcePath)) applyEditMode(doc, false);
+            if (doc) for (const key of ['_sourceCachedText', '_sourceRenderedText', '_sourceVersion', '_renderSignature']) delete doc[key];
+          }
+          if (!changes.length && state.isEditing) applyEditMode(getActiveDoc(), false);
+          // Ownership changes affect both ends and the hierarchy of their children.
+          const sourceFilter = changes.length === 1 && !['relation.add', 'resource.bind'].includes(changes[0].kind) ? toRebuildFilter(changes[0].sourcePath) : '';
+          await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter, requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
+          await loadData(state.activePath, { forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
+        },
+      },
+      project: {
+        getContext: () => ({ workspace: state.workspace, editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy() }),
+        setBusy: (busy) => { state.isConfiguringProject = busy; refreshEditButtons(); },
+        applied: async () => { createTemplateCache.clear(); createTemplateLoadErrorCache.clear(); await loadData(state.activePath, { forceCacheBust: true, throwOnError: true }); },
+      },
+      export: {
+        getContext: () => ({
+          path: getSourcePath(getActiveDoc()).replace(/^docs-standard\//, ''),
+          title: getActiveDoc()?.title || getActiveDoc()?.name || '',
+          editable: isEditModeActive(),
+          dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(),
+        }),
+        setBusy: (busy) => { state.isExporting = busy; refreshEditButtons(); },
+        applied: async () => {
+          createTemplateCache.clear(); createTemplateLoadErrorCache.clear();
+          await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: '', requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
+          await loadData(state.activePath, { forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
+        },
+      },
+      media: {
+        isEditable: () => isInEditSession() && isEditModeActive(),
+        isBusy: isEditorBusy,
+        getContext: mediaDraftContext,
+        setBusy: (busy) => { state.isImportingMedia = busy; refreshEditButtons(); },
+        insertText: insertMediaText,
+        replaceSource: replaceMediaDraftSource,
+        changed: refreshEditSessionDirtyState,
+        status: setEditorStatus,
+      },
     },
-    openSource: openBuildSource,
-  });
-  worldBrowserController = setupWorldBrowser({
-    openSource: sourcePath => {
-      const doc = getDocBySourcePath(sourcePath);
-      if (!doc) return false;
-      selectDoc(doc.path);
-      return state.activePath === doc.path;
-    },
-    getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy() }),
-    setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
-    applied: async result => {
-      if (!['applied', 'committed', 'rolled-back'].includes(result.status)) return;
-      // Recovery can be requested while an older document draft is open.
-      // Keep that draft and its original version; a later stale save must conflict.
-      if (result.status !== 'applied' && (state.editHasUnsavedChanges || state.isCreating)) return;
-      const changes = result.changes || (result.change ? [result.change] : []);
-      const affectedPaths = new Set(changes.flatMap(change => [change.sourcePath, change.targetSourcePath].filter(Boolean)));
-      for (const sourcePath of affectedPaths) {
-        const doc = getDocBySourcePath(sourcePath);
-        if (state.isEditing && canonicalizeSourcePath(state.activeEditSource) === canonicalizeSourcePath(sourcePath)) applyEditMode(doc, false);
-        if (doc) for (const key of ['_sourceCachedText', '_sourceRenderedText', '_sourceVersion', '_renderSignature']) delete doc[key];
-      }
-      if (!changes.length && state.isEditing) applyEditMode(getActiveDoc(), false);
-      // Ownership changes affect both ends and the hierarchy of their children.
-      const sourceFilter = changes.length === 1 && !['relation.add', 'resource.bind'].includes(changes[0].kind) ? toRebuildFilter(changes[0].sourcePath) : '';
-      await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter, requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
-      await loadData(state.activePath, { forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
-    },
-  });
-  if (options.features?.project !== false) setupProjectSettings({
-    getContext: () => ({ workspace: state.workspace, editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy() }),
-    setBusy: (busy) => { state.isConfiguringProject = busy; refreshEditButtons(); },
-    applied: async () => { createTemplateCache.clear(); createTemplateLoadErrorCache.clear(); await loadData(state.activePath, { forceCacheBust: true, throwOnError: true }); },
   });
   onLanguageChange(refreshLanguageUi);
-  const exportController = options.features?.export === false ? null : setupExport({
-    getContext: () => ({
-      path: getSourcePath(getActiveDoc()).replace(/^docs-standard\//, ''),
-      title: getActiveDoc()?.title || getActiveDoc()?.name || '',
-      editable: isEditModeActive(),
-      dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(),
-    }),
-    setBusy: (busy) => { state.isExporting = busy; refreshEditButtons(); },
-    applied: async () => {
-      createTemplateCache.clear(); createTemplateLoadErrorCache.clear();
-      await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: '', requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
-      await loadData(state.activePath, { forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
-    },
-  });
-  mediaEditorController = options.features?.media === false ? null : setupMediaEditor({
-    isEditable: () => isInEditSession() && isEditModeActive(),
-    isBusy: isEditorBusy,
-    getContext: mediaDraftContext,
-    setBusy: (busy) => { state.isImportingMedia = busy; refreshEditButtons(); },
-    insertText: insertMediaText,
-    replaceSource: replaceMediaDraftSource,
-    changed: refreshEditSessionDirtyState,
-    status: setEditorStatus,
-    exportAsset: exportController?.exportAsset,
-  });
   setStaticUiTexts();
   state.isSidebarCollapsed = window.matchMedia?.('(max-width: 760px)').matches || false;
   sidebarToggleBtnEl?.addEventListener('click', () => setEditorSidebarCollapsed(!state.isSidebarCollapsed));
@@ -5763,4 +5843,8 @@ async function initApp(options = {}) {
   return { captureDraft: captureEditorDraft, restoreDraft: restoreEditorDraft, isBusy: isEditorBusy };
 }
 
-export { initApp };
+// Read-only diagnostics for future workspace panels. The composition root
+// detaches this DTO; callers receive no controller, port or author content.
+function getStudioSystemSnapshot() { return studioSystem?.snapshot() ?? null; }
+
+export { initApp, getStudioSystemSnapshot };

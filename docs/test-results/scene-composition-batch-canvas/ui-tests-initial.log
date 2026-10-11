@@ -1,0 +1,50 @@
+✖ a recipe batch starts with one chosen instance and exposes all stable identities without changing source (91.039992ms)
+✔ opening without a chosen identity defaults to the first instance; unknown initial identity grants no foreign target (82.233142ms)
+✔ outline search, descendant groups, checkbox toggles and selection actions are view state only (41.111666ms)
+✔ an entire gesture crosses different offsets in one history step and reviews only net changed targets (65.488238ms)
+✔ all six alignments use resolved sizes and each can be undone as one batch (278.081091ms)
+✔ one locally out-of-range target rejects the whole gesture and preserves redo and every sibling position (41.858597ms)
+✔ selection changes retain reviewed geometry, while unknown or mismatched gesture targets cannot mutate it (61.544037ms)
+✔ numeric edits move only the selected instance and a completed change invalidates prior approval (55.265035ms)
+✔ unfinished and silently changed raw input cannot approve, select, align or apply a different position (67.963364ms)
+✔ returning every moved instance to its opening position produces no empty override or approval (44.100203ms)
+✔ pan, snap, grid and zoom controls keep independent history and source bytes (39.619878ms)
+✔ Ctrl+S checks then applies one batch and undo shortcuts remain local (58.402081ms)
+✔ cancel and Escape discard only the batch; declining retains selected instances and geometry history (35.949494ms)
+✔ source, capability and originating preview changes invalidate approval while retaining all batch positions (245.327361ms)
+✔ dependency failure retains the complete candidate, target list and diagnostics without approving application (36.630365ms)
+✔ pending checks lock selection, movement and numeric input; stale validation cannot approve a changed source (37.301322ms)
+✔ a closed check cannot approve or paint over a reopened batch layout (45.000305ms)
+✔ an ambiguous apply result never claims success or discards the editable batch (272.372791ms)
+✔ forced close invalidates a pending apply guard before source memory can be replaced (40.467043ms)
+✔ a stale asynchronous opening releases its Rust batch without replacing a newer layout (24.8331ms)
+✔ closing and destroying release only owned image copies and every Rust batch (29.241958ms)
+✔ a history core failure retains geometry and does not obstruct batch teardown (30.386851ms)
+✔ batch canvas and parent feedback messages are complete in English and Japanese (0.7303ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 22
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1870.0343
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-batch-layout-ui.test.mjs:89:1
+✖ a recipe batch starts with one chosen instance and exposes all stable identities without changing source (91.039992ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  8 !== 4
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-batch-layout-ui.test.mjs:96:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 8,
+    expected: 4,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

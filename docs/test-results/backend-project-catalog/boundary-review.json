@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "openFindings": [],
+  "finishedAt": "2026-10-11T07:11:01.733Z",
+  "scope": "Independent bounded source review and fault injection of host-only persistent catalog/selection/lifecycle; all frozen source and protected evidence hashes; exact prepared copy inventories plus copied desktop recovery/CLI and mobile pure-description/unsupported routes. No full app result is independently claimed here.",
+  "source": {
+    "files": 594,
+    "sha256": "88da0d0989362fead97264edfee142c61bba3b3107bb60a75a06bbea150e01ea",
+    "allMatch": true,
+    "previousFiles": 586,
+    "changedPrevious": [
+      "engine/README.md",
+      "scripts/lib/project-build-service.mjs",
+      "scripts/tests/backend-project-retention.test.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-backend-project.js",
+      "web/modules/app-project-build.js",
+      "web/project-build.css"
+    ],
+    "added": [
+      "scripts/adapters/node-backend-project-catalog.mjs",
+      "scripts/tests/backend-project-catalog-boundary.test.mjs",
+      "scripts/tests/backend-project-catalog-build-ui.test.mjs",
+      "scripts/tests/backend-project-catalog-service.test.mjs",
+      "scripts/tests/backend-project-catalog-smoke.mjs",
+      "scripts/tests/backend-project-catalog-ui-smoke.mjs",
+      "scripts/tests/backend-project-catalog-ui.test.mjs",
+      "scripts/tests/backend-project-catalog.test.mjs"
+    ],
+    "removed": [],
+    "note": "backend-project-retention expected host-catalog and recorded history, replaced-root select remains rejected"
+  },
+  "reviewedSources": {
+    "scripts/adapters/node-backend-project-catalog.mjs": "0ab8621e7031109183922dc4e1408e462ee99a23bd486c6c388c7f6cefcd6307",
+    "scripts/lib/project-build-service.mjs": "7aa4d86c7a8792a28f729cb944aefacfd8644be4fa8ba54d2844d8e7859fe4fa",
+    "scripts/adapters/node-backend-project-retention.mjs": "8c7c67082a0c7fcc9026a91fca305cbe3115e89337a89b62835a5708268c945e",
+    "scripts/adapters/node-backend-project.mjs": "0be94bebd640143ba15362fbc14e6093c49aa6d3653a4300dca8eac25246ce23",
+    "scripts/adapters/node-project-build.mjs": "9a1c10157131e0869f9fba73836baf4fe4fbf2d7d46d54dc4e665a57ac9c7ef1",
+    "scripts/project-build.mjs": "b01e7b90df0db6617a7fb6b04eb12963333647933ac10e98a661fb53119681af",
+    "engine/backend-project.mjs": "650202291ece923cde5d39005d1ad0da6e09c1afba4b8260035fc6ec22e53f4e",
+    "web/modules/app-backend-project.js": "5b99d65f8490e25f31a2be8f0aa008ab05b1ee7c98fcc5da7aeb5c83e699a86b",
+    "web/modules/app-project-build.js": "71ebf73159d03a70b46be84ae0f74bffeb97147b040ea609179e3c3fa722aea3",
+    "engine/README.md": "5d33f0e06e89848f5706d012d5008f41487548070db0c1bee795a5e1cef2e25b",
+    "scripts/tests/backend-project-catalog-boundary.test.mjs": "6d287d86c44ef07719ebfa42d0a0836087e49be3a0ff22836dadc1f26c99e6cc"
+  },
+  "preservation": {
+    "historical-baseline.json": {
+      "files": 2588,
+      "sha256": "1d7c7ca45998af7a0defc428838745460af5ee0ff084ce81fe478e0fbdba2358",
+      "allMatch": true
+    },
+    "core-source-hashes.json": {
+      "files": 13,
+      "sha256": "f84bfe63ad055e09b78a0a0e636c7a00726510ba9833316742e7389e0079fd08",
+      "allMatch": true
+    },
+    "frozen-backend-baseline.json": {
+      "files": 7,
+      "sha256": "445f69282baec6203dd21d0dc98195c31577b9a500bca36303ebfced627af077",
+      "allMatch": true
+    },
+    "protected-scene-slices.json": {
+      "files": 23,
+      "sha256": "b3fddfb84b7a27e13ef4bab299b7d1fe2ee88a11ddba0666edc1dc891c0c0d92",
+      "allMatch": true
+    }
+  },
+  "independentTests": {
+    "boundary": {
+      "log": "docs/test-results/backend-project-catalog/boundary-tests-frozen.log",
+      "sha256": "272f9569d1aa99f9c6aa683794638f4b506a380519c3c0650eefde4133a38bdb",
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "durationMs": 5082.426425
+    },
+    "publicationMissingTemp": {
+      "checks": 1,
+      "initialReproduced": true,
+      "initialIndexBytesPreserved": true,
+      "finalPass": true,
+      "finalSourceSha256": "0ab8621e7031109183922dc4e1408e462ee99a23bd486c6c388c7f6cefcd6307"
+    }
+  },
+  "ownerCoreRegression": {
+    "log": "docs/test-results/backend-project-catalog/catalog-core-lock-repair.log",
+    "sha256": "8049b3f7617ae4d54ee8658a040efcb7d60e95462934b0b6f5e1de99f0160414",
+    "tests": 15,
+    "pass": 15,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "durationMs": 2865.891566
+  },
+  "resolvedFindings": [
+    {
+      "id": "catalog-lock-peer-unlink",
+      "result": "EEXIST followed by peer release retries ENOENT within the original bounded deadline; unknown/stale locks are never removed.",
+      "proof": "boundary-tests-frozen.log"
+    },
+    {
+      "id": "catalog-staged-publication-replacement",
+      "result": "Temp regular-file identity, single-link status and exact bytes are checked before rename; a foreign replacement cannot overwrite the prior valid index and is retained.",
+      "proof": "boundary-tests-frozen.log"
+    },
+    {
+      "id": "catalog-missing-temp-strands-lock",
+      "result": "Independent close-hook deletion reproduced an owned lock left behind and subsequent busy errors; nested finally now always invokes identity-guarded own-lock release even if temp cleanup fails.",
+      "initial": "catalog-missing-temp-initial.json",
+      "final": "catalog-missing-temp-final.json"
+    },
+    {
+      "id": "explicit-refresh-author-cache",
+      "result": "The explicit Refresh button now requests forced source and persistent-index reconciliation; root/UI own browser and parent-regression evidence.",
+      "source": "web/modules/app-project-build.js"
+    }
+  ],
+  "reviewedGuards": [
+    "JSON DTOs and foreign catalog instances do not substitute for branded receipts. Capture validates physical ownership and manifest evidence; persisted metadata/read receipts grant no deletion ledger.",
+    "No namespace scan or adoption of orphan UUID directories; malformed or foreign index/lock/temp bytes are preserved. Writes are atomic, bounded and cross-process locked.",
+    "Restored projects stay preserved and unchecked until explicit inspect/select; inspect alone never selects runtime. Runtime admission still rechecks workspace identity, frozen project, adapter and tool rules.",
+    "Delayed selection, competing selection, close and new jobs cannot publish stale runtime ownership. Refresh reconciles missing/changed historical rows only when inactive; current host receipts keep their authority.",
+    "Only original current-session write receipts permit pristine-only quarantine cleanup. Restored selection never creates cleanup ownership; engine sessions, extras, modified files and replacement paths are preserved.",
+    "Controller and parent bind selection receipts to dialog session, selected scene/backend, row identity and request epoch; lost selection responses reconcile by GET without repeating selection.",
+    "Frozen-only history remains excluded from author preview/edit actions; no backend host execution is advertised or dispatched on mobile."
+  ],
+  "prepared": {
+    "report": "docs/test-results/backend-project-catalog/packaged-resources-frozen.json",
+    "sha256": "833e64b7a15b004e2c308ca4770467de49d08a2466c136ebb695b2a83f662af3",
+    "proof": "docs/test-results/backend-project-catalog/prepared-check-frozen.mjs",
+    "proofSha256": "2e47fe481164658c399274e8a6ff4cb787fa4b5b263ff161a6437ffe6e49bea0",
+    "counts": {
+      "desktopPortableGroups": 4,
+      "mobilePortableGroups": 4,
+      "desktopCatalogGroups": 7,
+      "desktopCliGroups": 2,
+      "mobileUnsupportedGroups": 4,
+      "totalGroups": 21
+    },
+    "artifacts": {
+      "desktop/resources": {
+        "files": 524,
+        "bytes": 6975657,
+        "manifestSha256": "8809376daf1a31b216fcf7a8920fe37f068b6d06392ff11eafd9531afb8c98a3"
+      },
+      "mobile/dist": {
+        "files": 211,
+        "bytes": 5303170,
+        "manifestSha256": "7f7970b67f88789c726ecb62f4063d7047d2ed4a4710ad43442f1fbabfefb1df"
+      },
+      "desktop/ui": {
+        "files": 11,
+        "bytes": 402581,
+        "manifestSha256": "cf0760d2d34dec7d5a7ac7d3d5c44a93d766a7c4c4283fd64bc0fec92b68f293"
+      }
+    },
+    "sourceCopyMappings": 534,
+    "mobilePureModules": 123,
+    "sourceAndCopiesStableDuringProof": true,
+    "embeddedNode": {
+      "version": "v24.20.0",
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "vmScope": "Standard Node VM without Node/DOM/network globals proves portability of copied pure metadata code; it is not a security sandbox for hostile code.",
+    "desktopHostScope": {
+      "actualToolProcessesStarted": 0,
+      "injectedToolIdentifications": 2,
+      "injectedEnginePhases": 4,
+      "scope": "Actual copied service, snapshot/generator, catalog, inspection and CLI execute. Build tool phases are injected fixtures; no actual Godot process or engine runtime is claimed."
+    },
+    "mobileScope": "Copied mobile platform and pure module graph execute with a storage-context fixture; backend host actions return unsupported. No device or native storage execution acceptance.",
+    "predecessors": [
+      {
+        "report": "docs/test-results/backend-project-catalog/packaged-resources.json",
+        "scope": "Initial catalog products, before forced Refresh and later missing-temp lock repair; scoped checks passed, the new fault was not covered."
+      },
+      {
+        "report": "docs/test-results/backend-project-catalog/packaged-resources-final.json",
+        "scope": "Forced Refresh repair applied, before missing-temp lock repair; scoped checks passed, the new fault was not covered."
+      }
+    ],
+    "realManifestEvidence": {
+      "scope": "Four actual current-round backend descriptions validate with both frozen copied pure modules; catalog and service recovery run separately on desktop with injected tool phases.",
+      "resultSha256": "029dd7929bfcd69008edea0183419da3fa5e52369f4444da45a92d3fd66d33f1",
+      "manifests": [
+        {
+          "name": "godot-image",
+          "sha256": "abb28102257c6bdcf2557ecec418dec680330c21e00279ceb6692b04ebe3262e"
+        },
+        {
+          "name": "godot-instances",
+          "sha256": "7e65dfdccb3386b22f8544c453888c87595b0ef40c573f05fa9b9b58b45c8597"
+        },
+        {
+          "name": "godot-behaviors",
+          "sha256": "3d61212aecb24f5cbe526d393a17b373ce1a53f6f8e281bad8dcc46ce971a052"
+        },
+        {
+          "name": "bevy-instances",
+          "sha256": "c31b060b669913cebb94a6993b099bb096b1022ea779ade4d4a52c4301619837"
+        }
+      ]
+    }
+  },
+  "observations": [
+    {
+      "blocking": false,
+      "detail": "After tool-free inspection, detail receipt text reports verified files while the side-row availability can retain the previous GET value until reconciliation; this does not select runtime or grant cleanup authority."
+    }
+  ],
+  "limitations": [
+    "Standard Node VM portability is not a sandbox for hostile code. The host assumes trusted modules and does not promise transaction isolation against every same-user mutation after the final check.",
+    "The independent desktop lifecycle fixtures run actual copied service/snapshot/generator/catalog/CLI code with injected engine phases; no actual engine process, installed application, foreign platform or device is claimed by this proof.",
+    "Current-round four real backend manifests are input evidence to both pure validators. Their actual engine runtime acceptance is reported separately by the root-owned real-backends-final results.",
+    "Mobile executes copied pure modules with a storage-context fixture and verifies unsupported backend-host routes; no Android device or native storage acceptance is claimed.",
+    "No original author data, historical reports, protected scene tests or Rust/Godot runtime generators were edited by this reviewer."
+  ],
+  "evidenceHashes": {
+    "docs/test-results/backend-project-catalog/baseline.json": "bc8ae5a122f39ca45ec845b84037a4d065172538e3a783fcb231462986e31639",
+    "docs/test-results/backend-project-catalog/source-hashes.json": "88da0d0989362fead97264edfee142c61bba3b3107bb60a75a06bbea150e01ea",
+    "docs/test-results/backend-project-catalog/source-delta.json": "6e86303a9c2e358ee2a9275803562e3cf94f00c134758c24492d91d6726ed0f0",
+    "docs/test-results/backend-project-catalog/catalog-missing-temp-probe.mjs": "f4e9f9aaf221855f97f5de90350669c462dde34b1e35bac053191cfe16f8771d",
+    "docs/test-results/backend-project-catalog/catalog-missing-temp-initial.json": "177f3cd8def5ee54c7668232bda5e47f4e2b4d946b347918363d268258338476",
+    "docs/test-results/backend-project-catalog/catalog-missing-temp-initial.log": "d8e0acef934d92a595739c131b4120d79408716143abc445be97bb9d564e79bc",
+    "docs/test-results/backend-project-catalog/catalog-missing-temp-final.json": "519a943645c21ab6a262692807c8355f54ea91e7066ab1062aca918cda3704ba",
+    "docs/test-results/backend-project-catalog/catalog-missing-temp-final.log": "baaef94a42f6c218714867705cf2de96a8b255268d21a51cbe61932dd8f92224",
+    "docs/test-results/backend-project-catalog/prepared-check.mjs": "cb58a89b009d5bd967bb88f77c742e97db05ac22dc4d432e6c4de065b55ebe22",
+    "docs/test-results/backend-project-catalog/prepared-check-initial.log": "35fa5f897b9c7c6216a7768828303587085cb5e22425eae2831ca22ece370b40",
+    "docs/test-results/backend-project-catalog/packaged-resources.json": "a02748475c4091755ea3c1d8a530be9a863f32153a4a6ff417b0e381024e59cf",
+    "docs/test-results/backend-project-catalog/prepared-check-final.mjs": "4712990cc692c759d6df84ad7037fe20b5f764db9e29f2f2b90b955c8c4ddda1",
+    "docs/test-results/backend-project-catalog/prepared-check-final.log": "f66ecf45b2351f36c218051dd3aab38de46c2e33c18362827d7af06a3f060db9",
+    "docs/test-results/backend-project-catalog/packaged-resources-final.json": "46487c0f2d71cc43dd84bcc109818d5d289d0d0a57afd5ebb15abff8b52f7ae1",
+    "docs/test-results/backend-project-catalog/prepared-check-frozen.mjs": "2e47fe481164658c399274e8a6ff4cb787fa4b5b263ff161a6437ffe6e49bea0",
+    "docs/test-results/backend-project-catalog/prepared-check-frozen.log": "5c5dc572ac4db6078a2a6715824f19746d2cdfd2315784f25ebeba5ec4541444",
+    "docs/test-results/backend-project-catalog/packaged-resources-frozen.json": "833e64b7a15b004e2c308ca4770467de49d08a2466c136ebb695b2a83f662af3",
+    "docs/test-results/backend-project-catalog/desktop-prepare-frozen.log": "9fea2b7c69cb426bb65ec3eb5d160061e49a9ee1f07d5cb87f665e43688dbfb5",
+    "docs/test-results/backend-project-catalog/mobile-prepare-frozen.log": "bf241dca7f98050484edf10c83ecf85313e16be2a0a039ddfe690a7cddb29731",
+    "docs/test-results/backend-project-catalog/boundary-tests-initial.log": "9640d437c7b6f613adedfa127736c13b7502870f2ac6c30e76d85436f6ab82a3",
+    "docs/test-results/backend-project-catalog/boundary-tests-second.log": "58ac6e36dc06775aa91ac62465f41ef3af714481fbc5da7d06dc42e3958869e8",
+    "docs/test-results/backend-project-catalog/boundary-tests-final.log": "db1a7bef0f44f981d4378a09e39ece8407151508c14c0b974f933acd471ec178",
+    "docs/test-results/backend-project-catalog/boundary-tests-frozen.log": "272f9569d1aa99f9c6aa683794638f4b506a380519c3c0650eefde4133a38bdb",
+    "docs/test-results/backend-project-catalog/catalog-core-lock-repair.log": "8049b3f7617ae4d54ee8658a040efcb7d60e95462934b0b6f5e1de99f0160414"
+  }
+}

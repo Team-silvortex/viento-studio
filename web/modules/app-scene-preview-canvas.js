@@ -39,7 +39,8 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
   const context = canvas.getContext?.('2d');
   let model = null, images = new Map(), selected = null, visible = false, grid = false, view = { scale: 1, offsetX: 0, offsetY: 0 };
   let width = 0, height = 0, fitted = true, drag = null, disposed = false, lastSceneKey = '';
-  let editing = false, snap = 0, space = false, multiSelect = false, selectedIds = [];
+  let editing = false, snap = 0, space = false, multiSelect = false, selectedIds = [], movableIds = null;
+  const movable = id => movableIds === null || movableIds.has(id);
   const tiles = new Map(), listeners = [];
   let tileBytes = 0;
   const clearTiles = () => { for (const tile of tiles.values()) { tile.width = 0; tile.height = 0; } tiles.clear(); tileBytes = 0; };
@@ -67,6 +68,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     onSelect(selected, { ids: selectedIds.slice() });
   }
   function commit(changes, ids) {
+    if (!editing || ids.some(id => !movable(id))) return;
     const original = new Map(model.actors.map(actor => [sceneActorIdentity(actor), actor.position]));
     if (!changes.some(change => change.position.some((value, index) => value !== original.get(change.objectId)?.[index]))) return;
     if (ids.length > 1) onMoveMany(changes.map(change => ({ objectId: change.objectId, position: change.position.slice() })), { commit: true });
@@ -155,7 +157,8 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     const toggle = multiSelect && Boolean(event.shiftKey || event.ctrlKey || event.metaKey), original = model;
     if (actorId) selectAt(actorId, toggle);
     if (model !== original || disposed || !visible) return;
-    const ids = actorId && selectedIds.includes(actorId) ? [actorId, ...selectedIds.filter(id => id !== actorId)] : [];
+    const ids = actorId && movable(actorId) && selectedIds.includes(actorId)
+      ? [actorId, ...selectedIds.filter(id => id !== actorId && movable(id))] : [];
     const kind = actorId ? (ids.length && editing ? 'move' : 'select') : 'pan';
     drag = { id: event.pointerId, kind, ids, positions: new Map(model.actors.filter(actor => ids.includes(sceneActorIdentity(actor))).map(actor => [sceneActorIdentity(actor), actor.position.slice()])),
       x, y, lastX: x, lastY: y, moved: false, panOnly, toggle };
@@ -205,10 +208,12 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     else if (event.key.startsWith('Arrow')) {
       if (editing && selectedIds.length && !space) {
         cancelDrag();
+        const ids = selectedIds.filter(movable);
+        if (!ids.length) return;
         const amount = event.shiftKey ? 10 : 1;
-        const changes = moveSceneSelection(model.actors, selectedIds, [event.key === 'ArrowLeft' ? -amount : event.key === 'ArrowRight' ? amount : 0,
+        const changes = moveSceneSelection(model.actors, ids, [event.key === 'ArrowLeft' ? -amount : event.key === 'ArrowRight' ? amount : 0,
           event.key === 'ArrowUp' ? -amount : event.key === 'ArrowDown' ? amount : 0]);
-        commit(changes, selectedIds);
+        commit(changes, ids);
         draw(); return;
       }
       fitted = false; view.offsetX += event.key === 'ArrowLeft' ? 32 : event.key === 'ArrowRight' ? -32 : 0;
@@ -230,6 +235,11 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     setImages(value) { images = value; clearTiles(); draw(); },
     setVisible(value) { if (visible !== value || !value) { space = false; cancelDrag(); } visible = value; if (visible) resize(); },
     setEditing(value) { if (editing !== Boolean(value)) { space = false; cancelDrag(); } editing = Boolean(value); },
+    setMovableIds(ids) {
+      const next = ids === null ? null : new Set(Array.isArray(ids) ? ids.filter(id => typeof id === 'string') : []);
+      if (next === null ? movableIds !== null : movableIds === null || next.size !== movableIds.size || [...next].some(id => !movableIds.has(id))) cancelDrag();
+      movableIds = next;
+    },
     setMultiSelect(value) { const next = Boolean(value); if (multiSelect !== next) cancelDrag(); multiSelect = next; selection(selectedIds); draw(); },
     setSnap(value) { const next = Number.isSafeInteger(value) && value > 0 && value <= 100000 ? value : 0; if (snap !== next) cancelDrag(); snap = next; },
     setGrid(value) { grid = value; draw(); }, select(id) { selection(id ? [id] : []); draw(); },

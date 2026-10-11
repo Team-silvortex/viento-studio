@@ -1,0 +1,23 @@
+{"phase":"prepared-desktop-batch-layout","cases":8,"ok":true}
+(node:597219) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `viento-node-x86_64-unknown-linux-gnu --trace-warnings ...` to show where the warning was created)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(typeof specifier === 'string' && !/[\\\0?#]/.test(specifier) && (specifier.startsWith('./') || specifier.startsWith('../') || specifier.startsWith('/engine/')))
+
+    at linker (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-composition-batch-canvas/prepared-check.mjs:342:10)
+    at [kLink] (node:internal/vm/module:345:28)
+    at node:internal/vm/module:361:32 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

@@ -1,0 +1,64 @@
+✔ the nine editors receive only their own capability and source context; catalog ports are lazy and independent (10.597964ms)
+✔ browser adapter submits the exact source draft and releases the returned preview for each independent instance editor (6.162772ms)
+✔ each entry invokes its source operation and keeps completion receipts private from every sibling editor (23.119217ms)
+✔ closing the host invalidates pending completions and saved entry guards without granting new source authority (4.767893ms)
+✔ all entries refuse running, busy, wrong source or non-preview owners without reading catalogs (8.236746ms)
+✔ ADD applies one unplaced definition only in source memory and preserves the normal saved baseline (128.76571ms)
+✔ COPY preserves all raw author fields and existing instance identities, current selection and formatting (49.145557ms)
+✔ REMOVE changes only an unplaced declaration and leaves all authored scene structure and placement mappings intact (38.014595ms)
+✖ forged intent, nonempty targets, candidate bytes, paths, source revisions or identities never replace the source (319.39226ms)
+✔ definition changes require the owned writable source editor and never gain create, blocks, fields or busy permissions (154.737346ms)
+✔ source changes during asynchronous hashing retain the newer author draft and reject the prior definition proposal (24.707384ms)
+✔ parent closure during preparation rejects delayed application and completion focus cannot target a later edited source (52.889231ms)
+✔ the whole-recipe definition toolbar opens without a selected actor and needs its own capability/source ownership (134.829004ms)
+✔ actor selection changes preserve the recipe definition owner but source token or scene changes revoke it (65.77755ms)
+✔ a pending definition opening blocks all sibling editors and late rejection cannot revive a hidden preview (47.844385ms)
+✔ every sibling pending opener independently excludes definition authoring (328.710572ms)
+✔ unsupported definition authoring leaves earlier composition entries usable and reports a current failed opening (40.913841ms)
+✔ the definition directory exposes raw declarations and blocking placements without requiring a selected actor (104.783639ms)
+✔ ADD creates one explicit actor, no groups or placements, and no instance identities across rechecks or three languages (114.399515ms)
+✔ game projection ADD stores explicit inheritance and position without expanding defaults; absent, null and explicit images stay distinct (207.820585ms)
+✔ disabling projection inheritance keeps explicit inputs and authors them only when selected (67.197566ms)
+✔ COPY preserves the complete source CST of actors and nested groups while changing only the fragment ID (56.437545ms)
+✔ REMOVE deletes only an unused definition and preserves documents, resources, all placements and remaining declaration bytes (59.394622ms)
+✔ the last definition and any used definition cannot be removed even through a manually dispatched disabled button (28.688918ms)
+✔ missing catalogs disable only ADD while raw COPY and unused REMOVE remain available (65.680276ms)
+✔ invalid fragment IDs, duplicate IDs, unknown definitions, incomplete numbers and invalid explicit fields preserve all raw input (567.358089ms)
+✔ COPY cannot use an existing or unchanged ID and keeps the user input on failure (75.387592ms)
+✔ ADD and COPY enforce the declared actor budget before approval without changing current instances (152.204789ms)
+✔ cancel and escape require explicit discard when dirty and return focus without applying or generating identity (34.795582ms)
+✔ changing the source definition or operation honors discard and never silently consumes typed ADD input (59.350426ms)
+✔ pending review locks the full form and late completion after forced close cannot approve a new dialog (61.870625ms)
+✔ late open success and failure are suppressed after the original source owner is lost (49.56555ms)
+✔ dependency diagnostics retain declarations without implying unplaced resources were rendered (64.273221ms)
+✔ silent raw ID, actor, image, inheritance or source selection changes revoke a checked definition before apply (239.340038ms)
+✔ silent declaration mutation during review prevents a delayed approval (40.052688ms)
+✔ an unconfirmed apply receipt retains the definition and does not send a completion (50.206341ms)
+✔ a valid application accepts legitimate source-token advancement and keeps the ordinary saved baseline (50.708923ms)
+✔ source-owner loss during apply blocks a delayed receipt and preserves the author draft (48.373173ms)
+✔ missing capability and invalid source contexts fail closed without sibling work (174.743823ms)
+✔ every new definition UI, entry and source-application message has English and Japanese translations (0.997267ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 39
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2526.547132
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-definitions-host.test.mjs:48:1
+✖ forged intent, nonempty targets, candidate bytes, paths, source revisions or identities never replace the source (319.39226ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-definitions-host.test.mjs:53:72)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }

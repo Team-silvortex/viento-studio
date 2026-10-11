@@ -1,0 +1,10 @@
+   Compiling viento-studio-core v0.1.0 (/home/chiharukiryu/cdev/viento-studio/crates/viento-studio-core)
+error[E0502]: cannot borrow `source` as immutable because it is also borrowed as mutable
+   --> src/scene_composition_placements_patch.rs:386:123
+    |
+386 | ...   source["fragments"].as_array_mut().unwrap().push(json!({"fragmentId":"unused","actors":[{"key":"alone","objectId":source["fra...
+    |       ------ mutable borrow occurs here           ---- mutable borrow later used by call                                ^^^^^^ immutable borrow occurs here
+
+For more information about this error, try `rustc --explain E0502`.
+error: could not compile `viento-studio-core` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

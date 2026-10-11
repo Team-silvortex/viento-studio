@@ -58,6 +58,11 @@ function valuesSnapshot(values, { all = false } = {}) {
   }
   return result;
 }
+function resetSnapshot(fields) {
+  if (!Array.isArray(fields) || fields.length > FIELDS.length || new Set(fields).size !== fields.length
+    || Array.from(fields).some(field => !FIELDS.includes(field))) fail();
+  return FIELDS.filter(field => fields.includes(field));
+}
 function decoded(content) {
   checkContent(content);
   const expanded = expandSceneComposition(content);
@@ -74,15 +79,30 @@ function targetFor(parsed, instanceId, placementId, actorKey) {
   const overrides = overrideIndex < 0 ? {} : placement.overrides[overrideIndex].values;
   return { entry, placement, placementIndex, template, overrideIndex, overrides };
 }
-function patch(content, parsed, target, values) {
-  const result = dispatchStudioCoreCompositionPatch({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'sceneComposition.patchOverrides',
-    content, placementId: target.entry.placementId, actorKey: target.entry.localKey, values });
+function patch(content, parsed, target, values, resetFields = []) {
+  if (resetFields.some(field => Object.hasOwn(values, field))) fail();
+  const result = dispatchStudioCoreCompositionPatch({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION,
+    operation: resetFields.length ? 'sceneComposition.editOverrides' : 'sceneComposition.patchOverrides',
+    content, placementId: target.entry.placementId, actorKey: target.entry.localKey, values,
+    ...(resetFields.length ? { resetFields } : {}) });
   if (!exact(result, ['afterContent', 'changedPaths']) || !Array.isArray(result.changedPaths)) fail();
   const after = decoded(result.afterContent), expected = clone(parsed.value), placement = expected.placements[target.placementIndex];
   let index = target.overrideIndex;
-  if (index < 0) { placement.overrides ||= []; index = placement.overrides.length; placement.overrides.push({ actorKey: target.entry.localKey, values: {} }); }
-  Object.assign(placement.overrides[index].values, values);
-  const changedPaths = FIELDS.filter(field => Object.hasOwn(values, field) && !same(target.overrides[field], values[field]))
+  if (index < 0) {
+    index = (placement.overrides || []).length;
+    if (Object.keys(values).length) {
+      placement.overrides ||= [];
+      placement.overrides.push({ actorKey: target.entry.localKey, values: {} });
+    }
+  }
+  const entry = placement.overrides?.[index];
+  if (entry) {
+    Object.assign(entry.values, values);
+    for (const field of resetFields) delete entry.values[field];
+    if (!Object.keys(entry.values).length) placement.overrides.splice(index, 1);
+  }
+  const changedPaths = FIELDS.filter(field => resetFields.includes(field) && Object.hasOwn(target.overrides, field)
+    || Object.hasOwn(values, field) && !same(target.overrides[field], values[field]))
     .map(field => `/placements/${target.placementIndex}/overrides/${index}/values/${field}`);
   if (!same(after.value, expected) || !same(result.changedPaths, changedPaths)) fail();
   return { afterContent: result.afterContent, changedPaths: [...result.changedPaths] };
@@ -135,13 +155,18 @@ export async function createSceneCompositionOverrideDraft(model, source, actorId
     actorId, objectId: actor.objectId, placementId: target.entry.placementId, actorKey: target.entry.localKey,
     fragmentId: target.entry.fragmentId, canClearImage: target.template.useProjectionDefaults === true,
     offset: [...offset], values: clone(values), effectiveValues: clone(effectiveValues), overrides: clone(target.overrides),
-    propose(input) {
-      const proposed = valuesSnapshot(input), changed = Object.fromEntries(FIELDS.filter(field => Object.hasOwn(proposed, field) && !same(proposed[field], values[field]))
+    propose(input, { resetFields: inputResets = [] } = {}) {
+      const resetFields = resetSnapshot(inputResets);
+      const proposed = valuesSnapshot(input), changed = Object.fromEntries(FIELDS.filter(field => !resetFields.includes(field)
+        && Object.hasOwn(proposed, field) && !same(proposed[field], values[field]))
         .map(field => [field, proposed[field]]));
-      if (!Object.keys(changed).length) fail('scene_composition_override_unchanged', 'No local override values changed.');
-      const prepared = patch(before.content, parsed, target, changed);
+      if (!Object.keys(changed).length && !resetFields.some(field => Object.hasOwn(target.overrides, field))) {
+        fail('scene_composition_override_unchanged', 'No local override values changed.');
+      }
+      const prepared = patch(before.content, parsed, target, changed, resetFields);
       return { sceneId, sourcePath: before.sourcePath, baseSourceRevision: before.baseSourceRevision, sourceRevision,
-        instanceId: actorId, placementId: target.entry.placementId, actorKey: target.entry.localKey, values: clone(changed), ...prepared };
+        instanceId: actorId, placementId: target.entry.placementId, actorKey: target.entry.localKey, values: clone(changed),
+        ...(resetFields.length ? { resetFields } : {}), ...prepared };
     },
   };
 }
@@ -149,16 +174,19 @@ export async function createSceneCompositionOverrideDraft(model, source, actorId
 /** Recompute the exact replacement; the host must still recheck its session. */
 export async function prepareSceneCompositionOverrideApply(current, proposal, { digest } = {}) {
   const source = sourceSnapshot(current);
-  if (!exact(proposal, ['sceneId', 'sourcePath', 'baseSourceRevision', 'sourceRevision', 'instanceId', 'placementId', 'actorKey', 'values', 'afterContent', 'changedPaths'])
+  if (!exact(proposal, ['sceneId', 'sourcePath', 'baseSourceRevision', 'sourceRevision', 'instanceId', 'placementId', 'actorKey', 'values', 'afterContent', 'changedPaths',
+    ...(Object.hasOwn(proposal || {}, 'resetFields') ? ['resetFields'] : [])])
     || !uuid(proposal.sceneId) || !uuid(proposal.instanceId) || !uuid(proposal.placementId)
     || typeof proposal.actorKey !== 'string' || !revision(proposal.sourceRevision) || !revision(proposal.baseSourceRevision)
     || typeof proposal.sourcePath !== 'string' || typeof proposal.afterContent !== 'string' || !Array.isArray(proposal.changedPaths)) fail();
   const expected = clone(proposal), values = valuesSnapshot(expected.values);
-  if (!Object.keys(values).length) fail('scene_composition_override_unchanged', 'No local override values changed.');
+  const resetFields = Object.hasOwn(expected, 'resetFields') ? resetSnapshot(expected.resetFields) : [];
+  if (!Object.keys(values).length && !resetFields.length) fail('scene_composition_override_unchanged', 'No local override values changed.');
+  if (resetFields.some(field => Object.hasOwn(values, field))) fail();
   if (source.sourcePath !== expected.sourcePath || source.baseSourceRevision !== expected.baseSourceRevision) conflict();
   if (await hash(source.content, digest) !== expected.sourceRevision) conflict();
   const parsed = decoded(source.content), target = targetFor(parsed, expected.instanceId, expected.placementId, expected.actorKey);
-  const prepared = patch(source.content, parsed, target, values);
+  const prepared = patch(source.content, parsed, target, values, resetFields);
   if (!prepared.changedPaths.length || prepared.afterContent !== expected.afterContent || !same(prepared.changedPaths, expected.changedPaths)) fail();
   return prepared;
 }

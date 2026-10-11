@@ -4,10 +4,7 @@ import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs'
 import { setupSceneCreate } from './app-scene-create.js';
 import { setupScenePreview } from './app-scene-preview.js';
 import { setupSceneLayout } from './app-scene-layout.js';
-import { setupSceneCompositionOverrides } from './app-scene-composition-overrides.js';
-import { SCENE_PREVIEW_API_PATH } from '../../engine/scene-preview-contract.mjs';
-import { supportsStudioCoreCompositionPatch } from '../../engine/studio-core.mjs';
-import { WORLD_API_PATH } from '../../engine/world-query.mjs';
+import { setupSceneAuthoring } from './app-scene-authoring.js';
 import { canExecuteBackend } from '../../engine/backend-capabilities.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { querySceneRuntimeObservation } from '../../engine/scene-runtime-query.mjs';
@@ -18,6 +15,7 @@ import { setupRuntimeCaseDocuments } from './app-runtime-case-documents.js';
 import { requestProjectBuildDocument } from './app-doc-service.js';
 import { setupRuntimeCaseSuites } from './app-runtime-case-suites.js';
 import { setupRuntimeCaseReport } from './app-runtime-case-report.js';
+import { setupBackendProject } from './app-backend-project.js';
 const errorLabels = {
   build_projection_invalid: '场景引用的投影无效，请检查投影原文。',
   build_projection_source: '投影的来源对象不可读取或不是普通对象，请检查来源。',
@@ -110,7 +108,7 @@ const toolReasonLabels = { platform_unsupported: errorLabels.build_platform_unsu
   tool_failed: '构建工具身份检查失败，请检查宿主工具配置。', tool_output_limit: '工具返回内容超出限制，检查已停止。',
   tool_cancelled: '工具检查已取消。', tool_changed: '构建工具已变化，请重新检查。' };
 
-export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = async () => null, applySceneDraft = async () => ({ applied: false }), getCompositionSource = async () => null, applyCompositionDraft = async () => ({ applied: false }), openSource = () => false, setBusy = () => {}, applied = async () => {} } = {}) {
+export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = async () => null, applySceneDraft = async () => ({ applied: false }), getCompositionSource = async () => null, applyCompositionDraft = async () => ({ applied: false }), applyCompositionBatchDraft = async () => ({ applied: false }), applyCompositionFragmentDraft = async () => ({ applied: false }), applyCompositionPlacementDraft = async () => ({ applied: false }), applyCompositionStructureDraft = async () => ({ applied: false }), applyCompositionPlacementsDraft = async () => ({ applied: false }), applyCompositionGroupsDraft = async () => ({ applied: false }), applyCompositionDefinitionsDraft = async () => ({ applied: false }), openSource = () => false, setBusy = () => {}, applied = async () => {} } = {}) {
   const button = document.getElementById('projectBuildBtn');
   if (!button) return { setAvailable() {} };
   const dialog = document.createElement('dialog');
@@ -160,8 +158,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <section id="projectBuildCaseResult" class="build-case-result" hidden aria-labelledby="projectBuildCaseTitle"><h3 id="projectBuildCaseTitle" data-i18n="运行验收结果"></h3>
     <p id="projectBuildCaseSummary" role="status" aria-live="polite"></p><ul id="projectBuildCaseChecks"></ul></section>
     <p id="projectBuildStatus" role="status" aria-live="polite"></p><p id="projectBuildError" role="alert" hidden></p>
+    <div id="projectBuildBackendProjects"></div>
     <section id="projectBuildPlanSummary" class="build-summary" hidden aria-labelledby="projectBuildPlanTitle"><h3 id="projectBuildPlanTitle" data-i18n="构建计划"></h3><p id="projectBuildPlanCounts"></p><p id="projectBuildBehaviorCounts" hidden></p><p id="projectBuildSnapshot" class="build-monospace"></p></section>
-    <p class="build-hint" data-i18n="先检查计划，再构建。测试与预览使用最近成功构建的快照；编辑后需重新构建。无头测试不验证画面。"></p>
+    <p id="projectBuildRunNote" class="build-hint" data-i18n="先检查计划，再构建。测试与预览使用最近成功构建的快照；编辑后需重新构建。无头测试不验证画面。"></p>
     <section aria-labelledby="projectBuildDiagnosticsTitle"><h3 id="projectBuildDiagnosticsTitle" data-i18n="构建诊断"></h3><ul id="projectBuildDiagnostics"></ul></section>
     <p id="projectBuildEvents" hidden></p>
     <section id="projectBuildRuntimeObjects" class="build-runtime-objects" hidden aria-labelledby="projectBuildRuntimeObjectsTitle"><h3 id="projectBuildRuntimeObjectsTitle" data-i18n="运行对象"></h3>
@@ -255,7 +254,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildControlError').hidden = !controlError;
     el('projectBuildControlError').textContent = controlError ? t(controlError) : '';
   }
-  let caseError = '', caseDocuments = null, caseSuites = null, caseReport = null;
+  let caseError = '', caseDocuments = null, caseSuites = null, caseReport = null, backendProjects = null;
   function runtimeCasePlan() {
     const targets = instanceControlTargets(false);
     return targets.length ? { format: 'viento-build-plan', kind: 'scene2d', schemaVersion: 2,
@@ -323,7 +322,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   let toolCheckBusy = false;
   let previewSupported = false, activeTab = 'build';
   const selections = { build: '', preview: '' };
-  const previewDocuments = () => data?.previewDocuments || (data?.scenes || []).map(scene => ({ ...scene, kind: 'scene' }));
+  const previewDocuments = () => data?.previewDocuments || (data?.scenes || []).filter(scene => scene.frozenOnly !== true).map(scene => ({ ...scene, kind: 'scene' }));
   const documentsForTab = () => activeTab === 'preview' ? previewDocuments() : data?.scenes || [];
   const selectedScene = () => data?.scenes?.find(scene => scene.id === selected);
   const selectedDocument = () => previewDocuments().find(item => item.id === selected);
@@ -360,13 +359,14 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   const catalogUnavailable = () => data?.catalogDiagnostic?.code === 'build_catalog_unavailable';
   const checkingTool = () => toolCheckBusy || data?.toolStatus?.status === 'checking';
   const mayCheckTool = () => activeTab === 'build' && available && data?.supported && Boolean(data?.toolStatus)
-    && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy();
+    && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.();
   const ready = () => {
     const context = getContext();
     return available && data?.supported && context.editable && !context.dirty && !context.creating && !context.busy;
   };
+  const liveScene = () => Boolean(selectedScene() && selectedScene().frozenOnly !== true && !catalogUnavailable());
   const editScene = () => {
-    if (updateSupported && selectedScene() && !requestBusy && !running() && ready()) sceneCreator.open(selected, { mode: 'edit' });
+    if (updateSupported && liveScene() && !requestBusy && !running() && ready()) sceneCreator.open(selected, { mode: 'edit' });
   };
   async function navigateSource(...args) {
     return navigateOwnedSource(args);
@@ -393,20 +393,29 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     return Boolean(previewSupported && scene && context.sceneDraftPath === scene.sourcePath && context.sceneDraftWritable
       && context.editable && context.dirty && !context.creating && !context.busy && !requestBusy && !running());
   };
-  const canEditCompositionOverride = () => {
-    const context = getContext(), recipe = selectedDocument();
-    return Boolean(previewSupported && supportsStudioCoreCompositionPatch() && activeTab === 'preview' && recipe?.kind === 'composition'
-      && context.sceneDraftPath === recipe.sourcePath && context.compositionSourceWritable === true
-      && context.editable && !context.creating && !context.busy && !requestBusy && !running());
-  };
-  let pendingCompositionApply = null;
+  const sceneAuthoring = setupSceneAuthoring({
+    getState: () => {
+      const recipe = selectedDocument();
+      return { open: dialog.open, session: dialogSession, selected, sourcePath: recipe?.sourcePath,
+        previewSupported, previewActive: activeTab === 'preview' && recipe?.kind === 'composition',
+        requestBusy, running: running(), context: getContext() };
+    },
+    getSource: getCompositionSource,
+    applyActions: { instance: applyCompositionDraft, positions: applyCompositionBatchDraft,
+      fragment: applyCompositionFragmentDraft, placement: applyCompositionPlacementDraft, structure: applyCompositionStructureDraft, placements: applyCompositionPlacementsDraft, groups: applyCompositionGroupsDraft, definitions: applyCompositionDefinitionsDraft },
+    onApplied: (result, proposal, owner) => {
+      const epoch = ++sourceNavigationEpoch;
+      pendingSourceFocus = typeof result.focus === 'function' ? { session: owner.session, epoch, focus: result.focus } : null;
+      scenePreview.invalidate(); dialog.close();
+    },
+  });
   const scenePreview = setupScenePreview({
     container: el('projectBuildPreviewPanel'),
     getContext: () => {
       const context = getContext(), scene = selectedDocument();
-      return { ...context, previewKind: scene?.kind, canEditScene: Boolean(updateSupported && selectedScene() && !requestBusy && !running() && ready()),
+      return { ...context, previewKind: scene?.kind, canEditScene: Boolean(updateSupported && liveScene() && !requestBusy && !running() && ready()),
         canEditDraftLayout: canEditDraftLayout(),
-        canEditCompositionOverride: canEditCompositionOverride(),
+        ...sceneAuthoring.previewContext(),
         canPreviewDraft: Boolean(previewSupported && scene && context.sceneDraftPath === scene.sourcePath
           && context.editable && context.dirty && !context.creating && !context.busy) };
     },
@@ -425,24 +434,11 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       if (!source || !owns()) return false;
       return sceneLayout.openSource({ ...input, source, isCurrent: owns });
     },
-    editCompositionOverride: async input => {
-      const session = dialogSession, recipeId = selected, path = input.model?.scene?.sourcePath;
-      const owns = () => dialog.open && session === dialogSession && selected === recipeId && canEditCompositionOverride()
-        && selectedDocument()?.sourcePath === path && input.isCurrent();
-      if (!input.model?.composition || input.model.scene.objectId !== recipeId || !owns()) return false;
-      const source = await getCompositionSource(path);
-      if (!source || !owns()) return false;
-      const { payload } = await fetchJsonApiRequest(WORLD_API_PATH, { cache: 'no-store' }, 15000, t('读取世界'));
-      if (!owns()) return false;
-      const images = (payload?.resources || []).filter(resource => resource.descriptor?.kind === 'image'
-        && resource.availability === 'present-unverified' && /\.(png|jpe?g|webp|svg)$/i.test(resource.descriptor.location?.path || ''))
-        .map(resource => ({ id: resource.id, name: resource.descriptor.name, path: resource.descriptor.location.path }));
-      return compositionOverrides.open({ ...input, source, images, isCurrent: owns });
-    },
+    ...sceneAuthoring.previewActions,
     openSource: navigateSource,
   });
   const sceneLayout = setupSceneLayout({
-    getContext: () => ({ ...getContext(), canEditDraftLayout: canEditDraftLayout(), canEditScene: Boolean(updateSupported && selectedScene() && !requestBusy && !running() && ready()) }),
+    getContext: () => ({ ...getContext(), canEditDraftLayout: canEditDraftLayout(), canEditScene: Boolean(updateSupported && liveScene() && !requestBusy && !running() && ready()) }),
     setBusy: value => { setBusy(value); render(); }, applied: sceneApplied,
     applySourceDraft: async (proposal, { isCurrent = () => true } = {}) => {
       const session = dialogSession, sceneId = selected;
@@ -454,58 +450,6 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     },
     sourceApplied: () => scenePreview.refreshDraft(),
     reload: () => scenePreview.invalidate(),
-  });
-  const compositionOverrides = setupSceneCompositionOverrides({
-    getContext: () => ({ ...getContext(), canEditCompositionOverride: canEditCompositionOverride() }),
-    validateDraft: async (proposal, { isCurrent = () => true } = {}) => {
-      const session = dialogSession, recipeId = selected, sourceToken = getContext().sceneDraftToken;
-      const conflict = () => { throw Object.assign(new Error('The composition preview owner changed.'), { errorCode: 'scene_composition_override_conflict' }); };
-      const owns = () => dialog.open && session === dialogSession && selected === recipeId && canEditCompositionOverride()
-        && getContext().sceneDraftToken === sourceToken && isCurrent()
-        && recipeId === proposal.sceneId && selectedDocument()?.sourcePath === proposal.sourcePath;
-      if (!owns()) conflict();
-      let previewId;
-      try {
-        const { payload } = await fetchJsonApiRequest(SCENE_PREVIEW_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sceneId: recipeId, draft: { sourcePath: proposal.sourcePath, baseSourceRevision: proposal.baseSourceRevision, content: proposal.afterContent } }) }, 15000, t('正在检查配方与素材…'));
-        if (/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(payload?.previewId || '')) previewId = payload.previewId;
-        if (!owns()) conflict();
-        const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(proposal.afterContent));
-        const expected = `sha256:${[...new Uint8Array(bytes)].map(byte => byte.toString(16).padStart(2, '0')).join('')}`;
-        if (!owns()) conflict();
-        if (payload?.ok !== true || payload.format !== 'viento-scene-preview' || payload.schemaVersion !== 2 || !previewId
-          || Object.hasOwn(payload, 'sceneEditing') || Object.hasOwn(payload, 'snapshot')
-          || payload.scene?.objectId !== recipeId || payload.scene.sourcePath !== proposal.sourcePath || payload.scene.sourceRevision !== expected
-          || payload.composition?.format !== 'viento-scene-composition-preview' || payload.composition.schemaVersion !== 1
-          || payload.composition.recipeObjectId !== recipeId || payload.composition.sourcePath !== proposal.sourcePath || payload.composition.sourceRevision !== expected
-          || !Number.isInteger(payload.composition.fragmentCount) || payload.composition.fragmentCount < 1 || payload.composition.fragmentCount > 32
-          || !Number.isInteger(payload.composition.placementCount) || payload.composition.placementCount < 1 || payload.composition.placementCount > 128
-          || payload.draft?.baseSourceRevision !== proposal.baseSourceRevision || payload.draft.sourceRevision !== expected
-          || !Array.isArray(payload.actors) || !payload.actors.some(actor => actor.instanceId === proposal.instanceId)) {
-          throw Object.assign(new Error('Composition validation did not match the reviewed source.'), { errorCode: 'scene_composition_override_invalid', payload });
-        }
-        return { ok: true };
-      } finally {
-        if (previewId) void fetchJsonApiRequest(`${SCENE_PREVIEW_API_PATH}?previewId=${encodeURIComponent(previewId)}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } }, 5000, t('释放场景预览')).catch(() => {});
-      }
-    },
-    applySourceDraft: async (proposal, { isCurrent = () => true } = {}) => {
-      const session = dialogSession, recipeId = selected;
-      const owns = () => dialog.open && session === dialogSession && selected === recipeId && canEditCompositionOverride()
-        && selectedDocument()?.sourcePath === proposal.sourcePath && recipeId === proposal.sceneId && isCurrent();
-      if (!owns()) throw Object.assign(new Error('The selected recipe source changed.'), { errorCode: 'scene_composition_override_conflict' });
-      const result = await applyCompositionDraft(proposal, { isCurrent: owns });
-      if (result?.applied === true) pendingCompositionApply = { session, recipeId, sourcePath: proposal.sourcePath, result };
-      return result;
-    },
-    sourceApplied: (result, proposal) => {
-      const pending = pendingCompositionApply; pendingCompositionApply = null;
-      if (!pending || !dialog.open || pending.session !== dialogSession || selected !== pending.recipeId
-        || proposal.sceneId !== pending.recipeId || proposal.sourcePath !== pending.sourcePath || result !== pending.result) return;
-      const epoch = ++sourceNavigationEpoch;
-      pendingSourceFocus = typeof result.focus === 'function' ? { session: dialogSession, epoch, focus: result.focus } : null;
-      scenePreview.invalidate(); dialog.close();
-    },
   });
   const node = (tag, text, className = '') => { const item = document.createElement(tag); item.textContent = text; item.className = className; return item; };
   const matchedBuild = () => backendUnchanged() && data?.latestBuild?.sceneId === selected
@@ -593,8 +537,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       if (source && !source.disabled) source.focus();
     }
   }
-  const mayStart = (action, mode) => activeTab === 'build' && !errorMessage && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && ready() && Boolean(selectedScene())
-    && (action === 'run' || !catalogUnavailable())
+  const mayStart = (action, mode) => activeTab === 'build' && !errorMessage && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.() && ready() && Boolean(selectedScene())
+    && (action === 'run' || liveScene())
     && (action === 'plan' || data.available && backendUnchanged() && (action === 'build'
       ? supportsExecution('build') && planBackend === acceptedBackend && planScene === selected && Boolean(plan)
       : action === 'run' && supportsExecution(mode === 'headless' ? 'headlessLogic' : mode === 'window' ? 'windowPreview' : '') && Boolean(matchedBuild())));
@@ -619,7 +563,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildTaskPanel').hidden = activeTab !== 'build';
     scenePreview.setScene(selected);
     scenePreview.setVisible(Boolean(dialog.open && previewSupported && activeTab === 'preview'));
-    compositionOverrides.refresh?.();
+    sceneAuthoring.refresh();
     button.textContent = active ? t('构建与运行 · 进行中') : t('构建与运行');
     button.setAttribute('aria-label', button.textContent);
     button.dataset.running = String(active);
@@ -637,10 +581,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     const scenes = documentsForTab(), picker = el('projectBuildScene');
     el('projectBuildSceneLabel').textContent = t(activeTab === 'preview' ? '预览文档' : '构建场景文档');
     // Keep the focused option stable during polling; re-populating a select can close its popup.
-    const signature = JSON.stringify(scenes);
+    const signature = JSON.stringify(scenes.map(scene => [scene, scene.frozenOnly ? t('仅冻结工程') : '']));
     if (picker.dataset.scenes !== signature) {
       picker.replaceChildren();
-      for (const scene of scenes) { const option = node('option', `${scene.title} · ${scene.sourcePath}`); option.value = scene.id; picker.append(option); }
+      for (const scene of scenes) { const option = node('option', `${scene.title} · ${scene.sourcePath}${scene.frozenOnly ? ` · ${t('仅冻结工程')}` : ''}`); option.value = scene.id; picker.append(option); }
       picker.dataset.scenes = signature;
     }
     picker.value = selected; picker.disabled = requestBusy || active || !scenes.length;
@@ -648,9 +592,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildEmpty').textContent = t(activeTab === 'preview' ? '暂无可预览场景或配方。请添加已登记的场景或场景配方 JSON 文档。' : creationSupported ? '暂无可构建场景。点击创建场景，选择已有对象开始。' : '暂无可构建场景。请添加已登记的 viento-scene2d JSON 场景文档。');
     el('projectBuildRefresh').disabled = requestBusy;
     el('projectBuildEditScene').hidden = activeTab === 'preview' || !updateSupported;
-    el('projectBuildEditScene').disabled = requestBusy || running() || !ready() || !selectedScene();
+    el('projectBuildEditScene').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildCreateScene').hidden = activeTab === 'preview' || !creationSupported;
-    el('projectBuildCreateScene').disabled = requestBusy || running() || !ready();
+    el('projectBuildCreateScene').disabled = requestBusy || running() || !ready() || catalogUnavailable();
     el('projectBuildPlan').disabled = !mayStart('plan');
     el('projectBuildGenerate').disabled = !mayStart('build');
     el('projectBuildHeadless').disabled = !mayStart('run', 'headless'); el('projectBuildWindow').disabled = !mayStart('run', 'window');
@@ -659,6 +603,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     caseDocuments?.render();
     caseSuites?.render();
     caseReport?.render();
+    backendProjects?.render();
+    if (data?.projectManagement?.scope === 'host-catalog') el('projectBuildRunNote').textContent = t('新设计先检查计划再构建；历史工程需明确设为运行工程。所有测试、控制与预览使用当前运行工程的冻结快照，无头测试不验证画面。');
     el('projectBuildCancel').hidden = !active;
     el('projectBuildCancel').disabled = requestBusy || cancelling;
     el('projectBuildStatus').textContent = requestBusy ? t('正在读取构建状态…') : job
@@ -853,6 +799,25 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('读取用例报告'))).payload,
   });
+  backendProjects = setupBackendProject({ container: el('projectBuildBackendProjects'),
+    getState: () => ({ available, visible: dialog.open && activeTab === 'build', session: dialogSession,
+      sceneId: selectedScene()?.id || '', backendId: data?.backend?.id || '', backendIdentity: acceptedBackend, requestEpoch,
+      projects: data?.projects, projectManagement: data?.projectManagement, latestBuild: matchedBuild(),
+      canSelect: !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() }),
+    onChange: render,
+    onSelect: (status, owner) => {
+      if (!dialog.open || activeTab !== 'build' || dialogSession !== owner.session || selected !== owner.sceneId
+        || acceptedBackend !== owner.backendIdentity || requestEpoch !== owner.requestEpoch || backendSignature(status.backend) !== acceptedBackend) return false;
+      accept(status); render(); return true;
+    },
+    onSelectSettled: ({ owner, accepted }) => {
+      // Selection may have succeeded at the host even if its response was lost. Reconcile with GET only.
+      if (!accepted && dialog.open && activeTab === 'build' && dialogSession === owner.session && selected === owner.sceneId
+        && acceptedBackend === owner.backendIdentity && requestEpoch === owner.requestEpoch) void refresh(true);
+    },
+    request: async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body) }, 15000, t('读取后端工程详情'))).payload,
+  });
   caseSuites = setupRuntimeCaseSuites({ container: el('projectBuildSuites'),
     getState: () => ({ ...getContext(), sceneId: selectedScene()?.id || '', available, visible: dialog.open, session: dialogSession,
       active: requestBusy || running() || checkingTool() || caseDocuments?.isBusy(), offline: catalogUnavailable(),
@@ -866,7 +831,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     render(); dialog.showModal(); void refresh();
   } });
   el('projectBuildEditScene').addEventListener('click', editScene);
-  el('projectBuildCreateScene').addEventListener('click', () => { if (creationSupported && !requestBusy && !running() && ready()) sceneCreator.open(); });
+  el('projectBuildCreateScene').addEventListener('click', () => { if (creationSupported && !requestBusy && !running() && ready() && !catalogUnavailable()) sceneCreator.open(); });
   el('projectBuildClose').addEventListener('click', () => dialog.close());
   dialog.addEventListener('cancel', event => { event.preventDefault(); dialog.close(); });
   dialog.addEventListener('close', () => {
@@ -875,7 +840,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     caseDocuments.closed();
     caseSuites.closed();
     caseReport.closed();
-    pendingCompositionApply = null;
+    backendProjects.closed();
+    sceneAuthoring.closed();
     const pending = pendingSourceFocus; pendingSourceFocus = null;
     const current = pending?.session === dialogSession && pending.epoch === sourceNavigationEpoch;
     sourceNavigationEpoch++;
@@ -901,7 +867,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     event.stopPropagation();
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') event.preventDefault();
   });
-  el('projectBuildRefresh').addEventListener('click', () => void refresh());
+  el('projectBuildRefresh').addEventListener('click', () => void refresh(true));
   el('projectBuildToolCheck').addEventListener('click', () => void checkTool());
   el('projectBuildScene').addEventListener('change', () => { selected = el('projectBuildScene').value; selections[activeTab] = selected; if (activeTab === 'build') { plan = null; planScene = ''; } if (!documentsForTab().some(item => item.id === selected)) selectDocument(); render(); });
   el('projectBuildPlan').addEventListener('click', () => void submit('plan'));

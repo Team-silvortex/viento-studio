@@ -1,0 +1,151 @@
+{
+  "format": "viento-release-content-review",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T11:56:52.242811+00:00",
+  "targetVersion": "0.0.10",
+  "readOnly": true,
+  "reviewedSnapshot": {
+    "head": "9065667363a99a28aa64855f49052f5ee1d6f581",
+    "versionAtScan": "0.0.9",
+    "files": 1772,
+    "logicalBytes": 234400125,
+    "states": {
+      " M": 53,
+      "??": 1719
+    },
+    "inventory": "pending-content-inventory.json",
+    "inventorySha256": "f29101126e0e36de26b985698a0107a102aaca4e1c2e39d4d6160bb31840be5c"
+  },
+  "recommendation": {
+    "initialStage": "All1772 initial modified/untracked source, tests, documentation, official3D examples and immutable evidence paths in recommended-stage-paths.txt/nul",
+    "includeFinalReleaseChanges": "After review, add explicitly approved version carriers/current release docs, source-packager fix and this release evidence directory. Re-read final pending paths before staging.",
+    "exclude": "Ignored dependencies, private works/config, caches, native/WASM build outputs, prepared copies and release archives; none appeared in current1772 pending set.",
+    "largeEvidence": "Do not rewrite/drop/compress-in-place frozen browser reports. Five12–20MB rawJSON records are deliberate source-bound history; maximum19,975,931bytes, no file≥100MiB.",
+    "sourcesOnly": "No new installed/package/device acceptance from this commit. Test proofs retain their actual0.0.9 execution conditions."
+  },
+  "contentChecks": {
+    "allRegularSingleLink": true,
+    "compiledOrArchiveCandidates": [],
+    "suspiciousLocalPaths": [],
+    "highConfidenceSecretPatternCandidates": [],
+    "longCredentialStringFieldCandidates": [],
+    "privateScanScope": "All1772 pending byte streams checked for privatekey/GitHub/OpenAI/AWS/credentialURL/JWT patterns; no detections. Structured long credential string fields also0. This is a bounded content review, not proof that every possible secret encoding is absent.",
+    "gitignoreActualProbes": {
+      "requested": [
+        "node_modules/cache",
+        "desktop/resources/package.json",
+        "desktop/ui/i18n/en.js",
+        "desktop/.cache/core/bin",
+        "src-tauri/binaries/viento-node",
+        "src-tauri/target/test",
+        "mobile/dist/index.html",
+        "engine/studio-core.wasm",
+        "engine/studio-core.build.json",
+        "crates/viento-studio-core/target/test",
+        "crates/viento-bevy-runtime/target/test",
+        "workspaces/workspace.json",
+        "viento.config.json",
+        ".godot/state"
+      ],
+      "ignored": [
+        "node_modules/cache",
+        "desktop/resources/package.json",
+        "desktop/ui/i18n/en.js",
+        "desktop/.cache/core/bin",
+        "src-tauri/binaries/viento-node",
+        "src-tauri/target/test",
+        "mobile/dist/index.html",
+        "engine/studio-core.wasm",
+        "engine/studio-core.build.json",
+        "crates/viento-studio-core/target/test",
+        "crates/viento-bevy-runtime/target/test",
+        "workspaces/workspace.json",
+        "viento.config.json",
+        ".godot/state"
+      ],
+      "allIgnored": true
+    },
+    "compressionEstimate": {
+      "bytes": 57240089,
+      "scope": "Sum of zlib-compressed individual blobs, not an actual Git push/pack measurement; future release files excluded."
+    }
+  },
+  "preservation": {
+    "historical-baseline.json": {
+      "files": 3457,
+      "mismatches": []
+    },
+    "author-baseline.json": {
+      "files": 39,
+      "mismatches": []
+    },
+    "scene3d-frozen-source": {
+      "files": 677,
+      "mismatches": [],
+      "manifestSha256": "7b06e08676ca6cc04ef2b6c7b044d03839b22ebae4150a38f407ed4f8ae41e5f"
+    },
+    "snapshot-files-change-since-scan": [],
+    "compressedIndividualBlobsEstimate": {
+      "bytes": 57240089,
+      "scope": "Sum of zlib-compressed individual blobs, not an actual Git push/pack measurement; future release files excluded."
+    },
+    "gitignore-probes": {
+      "requested": [
+        "node_modules/cache",
+        "desktop/resources/package.json",
+        "desktop/ui/i18n/en.js",
+        "desktop/.cache/core/bin",
+        "src-tauri/binaries/viento-node",
+        "src-tauri/target/test",
+        "mobile/dist/index.html",
+        "engine/studio-core.wasm",
+        "engine/studio-core.build.json",
+        "crates/viento-studio-core/target/test",
+        "crates/viento-bevy-runtime/target/test",
+        "workspaces/workspace.json",
+        "viento.config.json",
+        ".godot/state"
+      ],
+      "ignored": [
+        "node_modules/cache",
+        "desktop/resources/package.json",
+        "desktop/ui/i18n/en.js",
+        "desktop/.cache/core/bin",
+        "src-tauri/binaries/viento-node",
+        "src-tauri/target/test",
+        "mobile/dist/index.html",
+        "engine/studio-core.wasm",
+        "engine/studio-core.build.json",
+        "crates/viento-studio-core/target/test",
+        "crates/viento-bevy-runtime/target/test",
+        "workspaces/workspace.json",
+        "viento.config.json",
+        ".godot/state"
+      ],
+      "allIgnored": true
+    },
+    "allEvidenceAtReleaseScan": {
+      "files": 3633,
+      "baseline": "release-history-hashes.json"
+    }
+  },
+  "openFindings": [
+    {
+      "severity": "release-packaging",
+      "file": "desktop/package-source.py",
+      "description": "INPUTS omits examples/scene3d, so source archive drops new scene.json and README used by guide and actual tests.",
+      "evidence": "source-package-precheck.json actual read-only source_files enumeration",
+      "fixOwner": "root",
+      "requiredAction": "Add examples/scene3d to source inputs and verify final source archive inventory; no old evidence edit."
+    }
+  ],
+  "notPerformed": [
+    "No product/version/gitignore/old history modification",
+    "No staging/commit/push",
+    "No full test compilation or installed/device execution"
+  ],
+  "stageSnapshotPaths": {
+    "text": "recommended-stage-paths.txt",
+    "nul": "recommended-stage-paths.nul"
+  }
+}

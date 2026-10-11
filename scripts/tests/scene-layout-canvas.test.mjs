@@ -315,3 +315,48 @@ test('canvas hit tests, keyboard and group drags distinguish instances sharing o
   assert.deepEqual(h.groups.at(-1).changes, [{ objectId: second, position: [400.75, 250.25] }, { objectId: first, position: [180.25, 230.75] }]);
   assert.deepEqual(value.actors.map(actor => actor.position), [[160.25, 220.75], [380.75, 240.25]]);
 });
+
+test('movable identities keep other visible actors stationary during pointer and keyboard gestures', () => {
+  const h = harness(groupFixture()); h.controller.setEditing(true); h.controller.setMovableIds(['actor']);
+  const [x, y] = h.screen(h.model.actors[1].position);
+  h.dispatch('pointerdown', { clientX: x, clientY: y });
+  h.dispatch('pointermove', { clientX: x + 40, clientY: y + 20 });
+  assert.ok(h.calls.some(([name, ...args]) => name === 'fillRect' && JSON.stringify(args) === JSON.stringify([350.75, 216.25, 60, 48])));
+  assert.ok(!h.calls.some(([name, ...args]) => name === 'fillRect' && JSON.stringify(args) === JSON.stringify([390.75, 236.25, 60, 48])));
+  h.dispatch('pointerup'); h.dispatch('keydown', { key: 'ArrowRight' });
+  assert.deepEqual(h.selected, ['second']); assert.equal(h.moves.length + h.groups.length, 0);
+  h.controller.select('actor'); h.dispatch('keydown', { key: 'ArrowRight' });
+  assert.deepEqual(h.moves, [{ id: 'actor', position: [161.25, 220.75], options: { commit: true } }]);
+  assert.deepEqual(h.model.actors[1].position, [380.75, 240.25]);
+});
+
+test('movement grants are copied, idempotent refreshes retain gestures, and changes cancel pending movement', () => {
+  const h = harness(), ids = ['actor']; h.controller.setEditing(true); h.controller.setMovableIds(ids); ids.length = 0;
+  const [x, y] = h.screen(); h.dispatch('pointerdown'); h.dispatch('pointermove', { clientX: x + 12, clientY: y });
+  h.controller.setMovableIds(['actor']); h.dispatch('pointerup'); assert.equal(h.moves.length, 1);
+  h.dispatch('pointerdown'); h.dispatch('pointermove', { clientX: x + 20, clientY: y });
+  h.controller.setMovableIds([]); h.dispatch('pointerup'); h.dispatch('keydown', { key: 'ArrowRight' });
+  assert.equal(h.moves.length, 1); assert.deepEqual(h.lastActorRect(), [120.25, 188.75, 80, 64]);
+  h.controller.setMovableIds(null); h.dispatch('keydown', { key: 'ArrowRight' }); assert.equal(h.moves.length, 2);
+});
+
+test('restricted group gestures move only granted identities and preserve ordinary multi-selection after clearing the grant', () => {
+  const h = harness(groupFixture()); h.controller.setEditing(true); h.controller.setMultiSelect(true);
+  h.controller.selectMany(['actor', 'second']); h.controller.setMovableIds(['actor']);
+  const [x, y] = h.screen(); h.dispatch('pointerdown'); h.dispatch('pointermove', { clientX: x + 20, clientY: y }); h.dispatch('pointerup');
+  assert.equal(h.groups.length, 0); assert.deepEqual(h.moves[0].position, [180.25, 220.75]);
+  h.controller.setMovableIds(null); h.dispatch('keydown', { key: 'ArrowDown' });
+  assert.deepEqual(h.groups.at(-1).changes, [{ objectId: 'actor', position: [160.25, 221.75] }, { objectId: 'second', position: [380.75, 241.25] }]);
+});
+
+test('movement grants distinguish a target UUID from siblings that share its object definition', () => {
+  const first = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', second = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+  const original = fixture(), model = { ...original, actors: [{ ...original.actors[0], instanceId: first },
+    { ...original.actors[0], instanceId: second, position: [380.75, 240.25] }] };
+  const h = harness(model); h.controller.setEditing(true); h.controller.setMovableIds([second]);
+  h.dispatch('pointerdown'); h.dispatch('pointermove', { clientX: h.screen()[0] + 12 }); h.dispatch('pointerup');
+  h.dispatch('keydown', { key: 'ArrowRight' }); assert.equal(h.moves.length, 0);
+  h.controller.select(second); h.dispatch('keydown', { key: 'ArrowLeft' });
+  assert.deepEqual(h.moves, [{ id: second, position: [379.75, 240.25], options: { commit: true } }]);
+  assert.deepEqual(model.actors.map(actor => actor.position), [[160.25, 220.75], [380.75, 240.25]]);
+});

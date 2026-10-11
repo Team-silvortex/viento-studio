@@ -1,0 +1,55 @@
+✔ independent project boundary: preserve manual file added after quarantine rename without failing the new build (239.293822ms)
+✔ independent project boundary: preserve registered file edited after quarantine rename without failing the new build (197.800185ms)
+✔ independent project boundary: a link replacing the old root during quarantine cannot delete the outside directory (178.797468ms)
+✔ independent project boundary: same-byte outside hardlinks prevent automatic deletion while remaining outside execution authority (185.565391ms)
+✖ independent project boundary: thrown build phase attempts exact cleanup and preserves partial project and unrelated sidecars (29.580275ms)
+✔ CLI infers the frozen Bevy backend and its separate environment tool while author source is offline (194.900521ms)
+✔ CLI infers the same backend tool for suite members without changing saved author documents (298.860219ms)
+✔ CLI keeps explicit tool selection and refuses explicit foreign backend and Godot-only alias before a tool starts (156.855311ms)
+✔ CLI inspection is source-independent and ignores host backend/tool configuration without executing anything (103.223499ms)
+✔ CLI inspection rejects execution/source/output flags and a foreign requested backend without altering output (86.439757ms)
+✔ CLI inspection distinguishes extra manual files from changed registered artifacts and metadata bytes (116.130789ms)
+✔ CLI inspection never follows a substituted registered artifact symlink and preserves the link and outside target (80.546389ms)
+✔ CLI inspection reports completed runtime sessions as extra ownership scope without rewriting receipts or invoking the tool (145.176015ms)
+✔ CLI backend inference preserves missing frozen run diagnostics and cancellation without invoking a tool or writing output (85.561416ms)
+✔ CLI inspection derives legacy manifests without adopting or repairing old output and rejects changed legacy source maps (87.245002ms)
+✔ CLI portable manifest distinguishes logical audit names from generated filesystem authority (86.648766ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 15
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1581.859927
+
+✖ failing tests:
+
+test at scripts/tests/backend-project-boundary.test.mjs:109:1
+✖ independent project boundary: thrown build phase attempts exact cleanup and preserves partial project and unrelated sidecars (29.580275ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      generatedFiles: [
+        'project.godot',
+        'main.tscn',
+        'runtime.gd',
+        'scene.json',
+  +     'images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg'
+      ],
+      resourceFiles: [
+        'images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg'
+      ]
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-boundary.test.mjs:142:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { generatedFiles: [ 'project.godot', 'main.tscn', 'runtime.gd', 'scene.json', 'images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg' ], resourceFiles: [ 'images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg' ] },
+    expected: { generatedFiles: [ 'project.godot', 'main.tscn', 'runtime.gd', 'scene.json' ], resourceFiles: [ 'images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg' ] },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

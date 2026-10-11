@@ -1,0 +1,342 @@
+{
+  "format": "viento-scene-composition-group-authoring-independent-review",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-11T09:58:04.146648+00:00",
+  "ok": true,
+  "openFindings": [],
+  "scope": "Independent read-only source/receipt review and owned NEW real HTTP/Chrome smoke; no product edits, native rebuild, engine execution, installation or device claim.",
+  "finalSourceFreeze": {
+    "path": "source-hashes.json",
+    "sha256": "5beaca9f4a8c99e4862c1042d9ff5c00b7aa9c5156083aebb4ede6b9040582f1",
+    "files": 639,
+    "baselineSha256": "5beaca9f4a8c99e4862c1042d9ff5c00b7aa9c5156083aebb4ede6b9040582f1",
+    "allMatch": true,
+    "previousFiles": 628,
+    "deltaFiles": 28,
+    "newFiles": 11,
+    "deltaManifestMatches": true
+  },
+  "reviewedSources": {
+    "scripts/tests/scene-composition-groups-smoke.mjs": "920b2c5f933043430ed147cbbdc1b7014a8c980b7d3b849ad1e932d3462d8d87",
+    "engine/scene-composition-groups.mjs": "5f056f598340838fe1448577b31479fc6d5775766a725fe75ca3d8a9bde6741a",
+    "engine/studio-core.mjs": "accd7115ec18d6b420df5580b37cf6d96c57fa7039d7d3521e3e156b6521251f",
+    "engine/studio-core.wasm": "e557f68c076edefc57f819c7f39f459374eecaaebf6cc34987b8c5aa6107adda",
+    "crates/viento-studio-core/src/scene_composition_groups_patch.rs": "c6fd8690fc2a0c5b59ba984a18a3e10d7aa00f9c60393dac94b9768e945e19d2",
+    "web/modules/app-scene-composition-groups.js": "15182b125b55081f00086b14e4603839823e984b2e17601636247b0123253e7a",
+    "engine/scene-authoring-candidate.mjs": "4c01188c6971847a2b1fea608fab638e96c8d9b92d1a27988cd647a69c34aa73",
+    "engine/scene-authoring-workflow.mjs": "953265921f928025611a856b1b94012fcf4b5ad9ccbd2d90345750027ab1536e",
+    "web/modules/app-scene-authoring.js": "76d4f10b746541d2670230f1c2993c5fc928de5395df98cdc1ca59ea696f4ec0",
+    "web/modules/app-scene-preview.js": "c2b4ee66d16a1b8035bb444e20a40ad819f57e87b714a7a8b4700d2b81762f8c",
+    "web/modules/app-project-build.js": "ed92140516d48e221cadb63363f8d028f3f57b2948382debd110a5183a1e100a",
+    "web/modules/app-runtime.js": "da482c0f86e02779e15fbe07c07ca3cd37fafaa0960b4307bfe71ec2c7f490b2",
+    "web/i18n/en.js": "54e9a1e733f181d70cc2a8e5bad1a0c7a7ef145b0b792b597c3d916cc8bd28ee",
+    "web/i18n/ja.js": "1b29e1826c7fd138f3a940fa7da19fee07698170c3a61c0882d8428fba3b6e09"
+  },
+  "boundaries": [
+    "Four independently gated actions: ADD complete explicit source-ordered fresh group UUID mappings; EDIT full raw name and nullable parent; ASSIGN nullable raw groupKey; REMOVE raw empty leaf only. No implicit promotion, transformations or reorder.",
+    "ADD generated IDs are distinct from existing generated actor/group and placement IDs. The pure host helper also rejects the selected scene UUID; Rust recipe content alone does not contain that scene UUID. Definition object IDs remain a separate reusable reference domain.",
+    "Rust validates the complete original recipe, exact operation shape, one atomic CST patch and the final complete expansion. Original/final UTF-8 128 KiB, fragment/placement and declared/expanded actor/group budgets and depth16 apply, including unused declarations.",
+    "Semantic noops preserve original bytes and empty changedPaths in Rust; pure/UI decline an unchanged authoring proposal. Nullable parents and memberships delete only those declarations rather than inserting null.",
+    "Pure factory and prepare snapshot complete JSON before awaits, bind original actor/group provenance, recompute exact source patch, changedPaths and every AFTER target name/parent/membership in source order. Forged targets or old source owner fail closed.",
+    "The independent groups candidate matcher verifies full source-ordered group/name/parent structures and memberships after identity/provenance checks; UUID matching alone cannot approve group changes. Earlier candidate domains are kept unchanged.",
+    "Controller snapshots reviewed proposals, holds one action allocation through raw edits/language changes, rejects silent unreviewed intent and detached asynchronous results, and uses the existing source-owned workflow/ordinary Save ports.",
+    "Actual HTTP candidates with correct identities but wrong group name, parent or membership were rejected and their exact temporary previewId was released. A held response after child/parent closure and visible source input never changed or reopened the new owner.",
+    "Actual four actions retained old IDs/order, offsets including absence versus explicit zero, all six override values, OC/projection/image references and effective actor geometry/attributes. Unaffected source spans, BOM, CRLF, escaped map keys and fractional exponent spelling remained exact.",
+    "Actual source apply is memory-only; ordinary Save persists exact candidate bytes and reopen matches complete structure. External-write Save conflict retains reviewed local draft and disk source separately.",
+    "Unused fragments retain raw membership deletion gates, accept source-only edits with targets[], and allow the last empty group to be deleted while keeping groups:[]. No nonexistent effective instance or unused projection rendering is claimed.",
+    "Capability absent/unsupported boot injections alter only the new export; all seven prior recipe editors still open/cancel through current real helpers. Backend execution remains unavailable and no backend job is started."
+  ],
+  "browser": {
+    "path": "browser-confirmed/browser.json",
+    "sha256": "ded2d20702dba20379f7b5e399cf679b3acb2061a932021155f52e480a36f76e",
+    "runBy": "This independent reviewer",
+    "stepsPassed": 10,
+    "browser": "Chrome/154.0.8037.97",
+    "node": {
+      "version": "v24.20.0",
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "realHttpPostCaptures": 63,
+    "phases": [
+      {
+        "name": "ordinary-group-authoring",
+        "postCaptures": 50,
+        "observedDeleteCaptures": 50
+      },
+      {
+        "name": "group-capability-absent",
+        "postCaptures": 4,
+        "observedDeleteCaptures": 3
+      },
+      {
+        "name": "group-capability-unsupported",
+        "postCaptures": 4,
+        "observedDeleteCaptures": 3
+      },
+      {
+        "name": "ordinary-group-save-conflict",
+        "postCaptures": 5,
+        "observedDeleteCaptures": 5
+      }
+    ],
+    "runtimeErrors": 0,
+    "externalSvgRequests": 0,
+    "sourceHashesMatchedFrozenManifest": true,
+    "onlyChangedDisposableAuthorFile": "documents/scenes/recipe.json",
+    "ordinarySaveConflictPreserved": true,
+    "faultInjections": [
+      "One out-of-catalog parent option is deliberately added to the DOM select to test refusal of an invalid raw parent intent.",
+      "Only the three real HTTP candidate deliveries named name/parent/member are modified after untouched responses are captured.",
+      "A real preview response is held while its child is forcibly closed, parent preview closed and an actual visible source edit advances ownership.",
+      "Capability phases wrap only the new groups WASM capability export at boot; all other exports/controllers/HTTP remain real."
+    ]
+  },
+  "visual": {
+    "screenshots": [
+      {
+        "path": "browser-confirmed/groups-narrow-zh-CN.png",
+        "sha256": "a6b06111067fe6bfbbca3a830b36b265358892dd7d548f671d930f76fe257a34",
+        "reviewedVisually": true
+      },
+      {
+        "path": "browser-confirmed/groups-impact-zh-CN.png",
+        "sha256": "27df7ee7f2e295434a4b90c2badb6927f5ebb89c1a27452a95791db367b0a3bf",
+        "reviewedVisually": true
+      },
+      {
+        "path": "browser-confirmed/groups-narrow-en.png",
+        "sha256": "aaf542e76158554a0e68fa4150191c85fe838071b241c67fff7d3ffe243b4f25",
+        "reviewedVisually": true
+      },
+      {
+        "path": "browser-confirmed/groups-impact-en.png",
+        "sha256": "806e0599f4e5c0332aaf16dd6cf2f068a74db57b1e690610fde480ed2b5308f2",
+        "reviewedVisually": true
+      },
+      {
+        "path": "browser-confirmed/groups-narrow-ja.png",
+        "sha256": "45d8cf608fab596fb7da2ea2cc6985e3b5e735852bc398ed34d6d0cec47c982f",
+        "reviewedVisually": true
+      },
+      {
+        "path": "browser-confirmed/groups-impact-ja.png",
+        "sha256": "dc03c84920329b33e9e604406a401a483381b6a767232551ca9823039459a2e3",
+        "reviewedVisually": true
+      },
+      {
+        "path": "browser-confirmed/groups-reviewed.png",
+        "sha256": "19be09515f7ad836ef00947ee8cd9dc7c4f868ba5cef36160fbe13cf744af5bb",
+        "reviewedVisually": true
+      }
+    ],
+    "languages": {
+      "zh-CN": {
+        "noHorizontalOverflow": true,
+        "actionsVisible": true,
+        "approved": true
+      },
+      "en": {
+        "noHorizontalOverflow": true,
+        "actionsVisible": true,
+        "approved": true
+      },
+      "ja": {
+        "noHorizontalOverflow": true,
+        "actionsVisible": true,
+        "approved": true
+      }
+    },
+    "finding": "All seven screenshots inspected. At 390px group names/long IDs wrap, no horizontal overflow, persistent Check/Apply/Cancel footer remains visible; complete impacts and source are scrollable.",
+    "limit": "Viewport samples, not a whole-page proof. The desktop image samples impacts/source/footer; complete labels, ordered identities and memberships are checked from DOM/HTTP beyond screenshots."
+  },
+  "ownerExecutedEvidenceChecked": {
+    "logs": [
+      {
+        "path": "core-pure-tests.log",
+        "sha256": "0693480a5af5289f8a024ea6f465ea5385144f6b8a636ebdcdbd77919891dd7d",
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "duration_ms": 1309.569597,
+        "runBy": "Owner/root, read and checked independently; not rerun by this review."
+      },
+      {
+        "path": "core-bridge-tests.log",
+        "sha256": "5e2cbe5269eb5003ae833589429c1f33884a5bffacddd20d95c220afd2c5a82d",
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "duration_ms": 216.563127,
+        "runBy": "Owner/root, read and checked independently; not rerun by this review."
+      },
+      {
+        "path": "core-regression-final.log",
+        "sha256": "bf6778f72f0364278f474782b6ed5e7e7981de04c1a7c0ed68c8c891dd11058f",
+        "tests": 238,
+        "pass": 238,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "duration_ms": 2593.276947,
+        "runBy": "Owner/root, read and checked independently; not rerun by this review."
+      },
+      {
+        "path": "web-focused-second.log",
+        "sha256": "d4c5c4ff046d8742b98fa239f491f24b24293569240adfc8b5a0f46414e1d67b",
+        "tests": 41,
+        "pass": 41,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "duration_ms": 1836.338487,
+        "runBy": "Owner/root, read and checked independently; not rerun by this review."
+      },
+      {
+        "path": "web-regression.log",
+        "sha256": "9c05deff47d8641ac8bc2fde540c020d5e1362cb116f2f6d630824715510ff23",
+        "tests": 322,
+        "pass": 322,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "duration_ms": 5444.496735,
+        "runBy": "Owner/root, read and checked independently; not rerun by this review."
+      },
+      {
+        "path": "workflow-tests-final.log",
+        "sha256": "21c84e862d31858a272f5ae38979ff4dcdc586284e1ff43d980f14d33421d7ad",
+        "tests": 59,
+        "pass": 59,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "duration_ms": 1183.259168,
+        "runBy": "Owner/root, read and checked independently; not rerun by this review."
+      }
+    ],
+    "rust": {
+      "path": "core-native-test.log",
+      "sha256": "542f73039ab8fee8776130df3c5e597697b840d0d60f442e8fd5e84fe58fa04c",
+      "passed": 150,
+      "failed": 0,
+      "ignored": 0
+    },
+    "nativeHelpersManifestSha256": "a381110282153fb63cd4c92b04060247fa199f9f72080af9536ea3c72b26729f",
+    "allThreeCurrentBinariesReadAndHashMatched": true,
+    "wasm": {
+      "bytes": 362582,
+      "sha256": "e557f68c076edefc57f819c7f39f459374eecaaebf6cc34987b8c5aa6107adda",
+      "buildSourceHashesMatch": true
+    },
+    "fullApplicationAndPrepared": "Root owns full application and prepared-copy checks. They were running/pending at this review; no completed full/prepared result is inferred here."
+  },
+  "preservation": {
+    "historical": {
+      "files": 3111,
+      "baselineSha256": "040cc6a369e24d09359d6aa503d937fc766c83e93e171fefdb6ff7bd14fe003e",
+      "allMatch": true
+    },
+    "authors": {
+      "files": 39,
+      "baselineSha256": "b7434e135092fb397c0d6b32b90d82476a5f60c7de3dee8e99ba52323719f908",
+      "allMatch": true
+    },
+    "externalTools": {
+      "files": 4,
+      "allBytesAndPhysicalIdentitiesMatch": true
+    },
+    "unchangedProtectedSourceHashes": {
+      "crates/viento-studio-core/src/layout_draft.rs": "dfb72651a8787fed4410eb3e24dd4c82741fee3c18aca315530e304c436cb9aa",
+      "crates/viento-studio-core/src/layout_save.rs": "8ebbc7c48366381c527031e1a12e35f13fc89f156c3d7162499489f1d5a0156c",
+      "crates/viento-studio-core/src/main.rs": "f83f78f6d29d557f30d110e4da08ed756d0ef1d58258103d7b53f35544268178",
+      "crates/viento-studio-core/src/scene_composition.rs": "1ca6bcf535886103af8ee2111b808c2ec974362ceeab8fe5924f55ef16a9dfab",
+      "crates/viento-studio-core/src/scene_composition_fragment_patch.rs": "fe7421ca1ba86992a018042169d5bc0f5a652c72d2f9e4ac802b1bcf766eeeb1",
+      "crates/viento-studio-core/src/scene_composition_patch.rs": "be5702bae8133271c1703a134966549df906949577c87bab78e926e05db46162",
+      "crates/viento-studio-core/src/scene_composition_placement_patch.rs": "4717c99c5bcf8cd0f957de16e17702d84e06b53cbdde2d3a9e8fa4eb434183d2",
+      "crates/viento-studio-core/src/scene_composition_placements_patch.rs": "b287796d5c8a57657ad89c1524b9de9961943650fcd45e044ea8a35e87097152",
+      "crates/viento-studio-core/src/scene_composition_structure_patch.rs": "538b7b2ef74624453a6986d3f6064e604d379c8892eb5a71304a6b07d7b91fb0",
+      "crates/viento-studio-core/src/scene_layout.rs": "b7bc1be799e29192c2035d6539f41f7f54024ff8f626c26c2355bf5fd610d987",
+      "crates/viento-studio-core/src/scene_source.rs": "51eb8792dbc777a157e73c0cbfcba4724a5c843ed6ccbde77ca22998c0f7bb96",
+      "crates/viento-studio-core/src/wasm.rs": "30eff24e802dff307f655de3dbf4fad4a75974769025df2e713f66108f1cf0b6",
+      "crates/viento-studio-core/tests/cli.rs": "c0d41788917d27bfbf5e7cca74bb4128e4eddf72fae25675eb21094361d06b55",
+      "crates/viento-studio-core/tests/draft.rs": "1d4444ba9c36e235e5b769f51134d4fd8e010f14b445940fc6c3f4ef20067e17",
+      "crates/viento-studio-core/tests/fragment_inheritance.rs": "59d75cb075c068a39c79e1c12668de323ed4aca5481a23a1d58f4ac7e6c3bd04",
+      "crates/viento-studio-core/tests/layout.rs": "b8a5be8c8bedd619375134ec365f3e294c77a3332e97a4b23d1ab1cbe3740dd4",
+      "crates/viento-studio-core/tests/placement_offset.rs": "a55f710f5d0dd7006af2a9b63e51c6b96520cbfaf7e3d9f35fd305fbf27746fa",
+      "crates/viento-studio-core/tests/save.rs": "ec2aa2bb5958b709c33954f1d0f9b4a6a7a5fa4b47ba0f7c9803a12082ff8e72",
+      "scripts/backends/bevy-adapter.mjs": "fe4930697c4087d8983b368825e2c47b58878f37ccb91928984b0eea77f1bbef",
+      "scripts/backends/bevy-project.mjs": "3e4cec5947286359b1561d1551603db4cf5f3dc382a0121d0560b9578af1ec53",
+      "scripts/backends/godot4-adapter.mjs": "9ab26b8372a4ca2c793798e88b6f4c91bc9eeecdcaa663b68d19a37bcf30b7ac",
+      "scripts/backends/godot4-behaviors.mjs": "d80c7230f8dccb0aa7d96818ded0bb6d39c65d302f5263dd57cef5245e92cb60",
+      "scripts/backends/godot4-dispatch.mjs": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
+      "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+      "scripts/backends/godot4.mjs": "d42d385b5a6e62ff4aa91d00f6065bdd0cefbc7ddde55e08cf5e3c62060fff77",
+      "scripts/backends/godot4/behavior-runtime.gd": "ec039ccaff0f376734938f54808b7929e7385393fd89516de35561e5959943bb",
+      "scripts/backends/godot4/control-runtime.gd": "7490fcb7dfb2c7a1f7b4b251a77804be0f5cea22e568eafe33a404de6b4aba64",
+      "scripts/backends/godot4/control.tscn": "adcd159c8ef7ea1463b859e4a83dacc10c8aaa39f431b80eb695aaf4151466f2",
+      "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
+      "scripts/backends/godot4/runtime.gd": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd",
+      "scripts/tests/asset-export-smoke.mjs": "ad7488ec4f823e02128dd1ba335fd8e5475517c1c07c720f11a2507497884b74",
+      "scripts/tests/backend-project-catalog-smoke.mjs": "75c76b781052f8fd70708ae2a974bc27729802349a4b7b83a6e1cd36bbbb9767",
+      "scripts/tests/backend-project-catalog-ui-smoke.mjs": "715c3182f537aa87c67a5fd2f81be85396a409ec50c347351481fb95bf0603fc",
+      "scripts/tests/backend-project-management-smoke.mjs": "b22d15c02ec93d60edf1da1a75a1811b076131a3f83d45438b8362daf7864ec9",
+      "scripts/tests/backend-project-ui-smoke.mjs": "2f3efa980326d3fe41cb91dd88c3ba469d7fbe02f08f35a02a31daa702f8b786",
+      "scripts/tests/bevy-smoke.mjs": "0d6e4fb727303221a9d0ed6f7ce7eb11040cd7f2aee1dd18d1f3fd40f9811cfc",
+      "scripts/tests/control-replay-smoke.mjs": "d395f5684779bc5635af1a87f958853c63891c3ea896f8585a4738ce4452e837",
+      "scripts/tests/instance-control-smoke.mjs": "29d6425d5f43fcb3bff1766ce021cdb08c4933f4d755de73f53a007d2aa06b93",
+      "scripts/tests/object-projection-edit-smoke.mjs": "65ff57930b979e477278d29a6e44513502f230f3c37131c49969666e58c8eb31",
+      "scripts/tests/object-projection-smoke.mjs": "0cac2536a2df1999edc748bf83ba1703b0cd12b2242efabbd2da90973c6a7b8f",
+      "scripts/tests/project-build-smoke.mjs": "ec77400298cdc28c948ee42a7d8527e2389a13623acc5a70c387bb4558a25e77",
+      "scripts/tests/project-templates-smoke.mjs": "e2089287afadeb1d532f3464c8dd2f31fdbaf941c7f8e2b2120ea52afb1a070b",
+      "scripts/tests/resource-package-smoke.mjs": "4ecd8a2adebf180520544f27ab50f457545d034c2fd629ce6a65d4c87025bbbe",
+      "scripts/tests/runtime-object-smoke.mjs": "97d8fb99231301db6af075723d41993d1ccde031b7fef274c21c866bb9bc48f4",
+      "scripts/tests/scene-authoring-smoke.mjs": "4e85358f1b5038e8cc8132560bda836b29bf7df69a324befcf3e1b765af05e02",
+      "scripts/tests/scene-behavior-smoke.mjs": "b55d43740e202de9510b2c89fedad151849e4e50ed40981be4bbceca9342d30c",
+      "scripts/tests/scene-composition-batch-canvas-smoke.mjs": "45188b39e8477181a5f05f2f6c4d90f0d1358372230bd598e3eafe00733419e1",
+      "scripts/tests/scene-composition-canvas-smoke.mjs": "7d309bd0a455a1717d96c63c82467cc5165656189d1ef2e4ce6ada1897713cbb",
+      "scripts/tests/scene-composition-fragment-inheritance-smoke.mjs": "47598664fbb9b0604fff5f710774208b3db751d0dd7cc28867e6a73f3de8b384",
+      "scripts/tests/scene-composition-fragments-smoke.mjs": "910425fa0b6859207da5d2cca2ae21a443c77a68b3f5169338c942efe3addc79",
+      "scripts/tests/scene-composition-inheritance-smoke.mjs": "1ad5d70ac91a24bc1e5152647f30fea6c74d51852930d2b95d9fc3b8d8da162e",
+      "scripts/tests/scene-composition-overrides-smoke.mjs": "c652d8f6fe91696ef4299f3fd017145f08c1f300d01b08c0b9ca0c16fab54580",
+      "scripts/tests/scene-composition-placement-smoke.mjs": "b283e4610c480f655d6d527065507a2b56626281453956df4f47f782ecf56115",
+      "scripts/tests/scene-composition-placements-smoke.mjs": "1776d580858e76b6db6073fe6fc0e4b6d9282c9aeb99fae37f3d3aed1ed0e150",
+      "scripts/tests/scene-composition-preview-smoke.mjs": "40e363af060dbaa6751b6c2d57d714e69efdf0b772f0278b8f7041821e4953b3",
+      "scripts/tests/scene-composition-structure-smoke.mjs": "801ba2512767ac5edbe7dfdd851655ed98b0613741313bb7242a30bbcb6ed0e5",
+      "scripts/tests/scene-composition-workflow-smoke.mjs": "d315368552e9f11ccee75a28e5d57199be3571994fd5165f2137b22f2e696d6f",
+      "scripts/tests/scene-draft-preview-smoke.mjs": "439bab5bef863081a672b13a675c368e35be9718306ddb0a5a4504d7d729e378",
+      "scripts/tests/scene-edit-smoke.mjs": "becec9a949a3de6879b674b49c195c3ccd2d5f15ad8d24729640b1a0bd2bdc14",
+      "scripts/tests/scene-groups-smoke.mjs": "4679e0e886074e91b1fe99f2ae40d92e26293ca7da93fc12769c87c6bcfef756",
+      "scripts/tests/scene-instances-smoke.mjs": "97a20ec8524496cf525458da495ae0001831dc7f87b124071d5c6b78eea03021",
+      "scripts/tests/scene-layout-smoke.mjs": "829e3bbbdb2aa25eabd2ccb663170d588d1b09230817c2ceb2786f1918ba47a3",
+      "scripts/tests/scene-preview-smoke.mjs": "36aa9a08d3a5a239b2d2ab75e48c84b01a37757e4f1b35db2d86cc849391770a",
+      "scripts/tests/scene-selection-smoke.mjs": "27ec75d993e215cdd5bbdaff76561041f2c4ef55ec75381e9d6d03bc1c9eb28a",
+      "scripts/tests/scene-source-layout-smoke.mjs": "a0314c3468ab36013e05c4219229502a9dbeaf5bd549df1b2a21eb4e2bf3f701",
+      "scripts/tests/studio-system-smoke.mjs": "6b5895a2607dab1380ee392c96b6ea46b5d653dfdc0b5e2799ac01c4a5169f57",
+      "src-tauri/src/project_templates.rs": "ba7ca8372c4ac6a5e5d3a3fe547bcfaa5c5736fa3c7865fdb753bcfa82111410",
+      "src-tauri/src/workspace.rs": "96d18ed684189f69b7af979e2ad831033cf1b4a1f8a11336dd1da893e77a7f89"
+    },
+    "note": "All 3111 historical evidence files and complete historical inventory remain unchanged. All 39 author files and complete example inventory remain unchanged. Existing Rust domain/test files except explicit dispatcher integration, backend sources, prior smoke scripts and native profile/workspace sources are byte-preserved."
+  },
+  "retainedInitialFailure": {
+    "path": "browser-initial/browser.json",
+    "sha256": "b3a723fe4444686d5890bfad608000de069d6ea79ba9298b31187835133387ae",
+    "stepsPassedBeforeFailure": 8,
+    "cause": "Only NEW smoke used scenePreviewComposition instead of existing scenePreviewCompositionOverride for prior form entry. NEW fixture corrected; no product repair. Initial report/log/failure PNG remain immutable.",
+    "second": {
+      "path": "browser-second/browser.json",
+      "sha256": "52ef33b556f2a15ba07f3ecb6bf8dd44aa22c4ff88da1965dad2830d028f0196",
+      "stepsPassed": 10
+    },
+    "otherOwnerInitialEvidence": "Owner logs retain initial helper parse failure and NEW workflow overbroad full-DTO comparison failure; final workflow-tests-final.log is the actual 59/59 success. No failed confirmed log is presented as a pass."
+  },
+  "limitations": [
+    "Real HTTP editor and Chrome only; no installed Tauri window or Android device acceptance.",
+    "One recipe shared organization group ADD/EDIT/ASSIGN/REMOVE only; no fragment or actor definition editing, executable recipe build or cross-file transaction.",
+    "Standard Chrome boot-export/fetch-delivery fault injection is bounded compatibility evidence, not an old binary or hostile-code sandbox test.",
+    "Source authoring and static preview only. Organizational hierarchy carries no transforms, rendering order or executable backend semantics; no cross-file transaction, runtime behavior, installed Tauri or Android device acceptance."
+  ]
+}

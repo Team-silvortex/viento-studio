@@ -1,0 +1,35 @@
+✔ profile adoption is previewed, journaled and preserves authors, registrations and template bytes (108.113495ms)
+✔ invalid profile adoption fails before journal, workspace, metadata or author writes (72.943725ms)
+✖ HTTP catalog carries additive requests and keeps a drama scene as prose with ordinary editing (409.753814ms)
+✔ legacy projects do not acquire a system profile or an implicit 2D/3D requirement from a scene type (1.228604ms)
+﹣ native archive restore and mobile catalog preserve requests and authored bytes without the template catalog (0.098927ms) # Set VIENTO_MOBILE_STORE_BIN to the mobile-storage example
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 730.229614
+
+✖ failing tests:
+
+test at scripts/tests/studio-profile-project.test.mjs:74:1
+✖ HTTP catalog carries additive requests and keeps a drama scene as prose with ordinary editing (409.753814ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'prose'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/studio-profile-project.test.mjs:82:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'prose',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

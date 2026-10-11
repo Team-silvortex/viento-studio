@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "scope": "portable Studio module declaration and additive project capability planner",
+  "runtime": "v24.21.0",
+  "sourceHashes": {
+    "engine/studio-modules.mjs": "376d7a8182a23f5fa50817f68dd323290d8669aca3094c336425bd6ad5d41744",
+    "scripts/tests/studio-modules.test.mjs": "5fddde2c9ff50e3f7474464146b1931665bc2b414cd4f07e4abfe4087a9d0ad4"
+  },
+  "moduleCount": 7,
+  "capabilityCount": 22,
+  "tests": {
+    "log": "core-tests-initial.log",
+    "pass": 18,
+    "fail": 0,
+    "skipped": 0
+  },
+  "exports": [
+    "STUDIO_MODULE_SCHEMA_VERSION",
+    "STUDIO_PROFILE_SCHEMA_VERSION",
+    "STUDIO_MODULES",
+    "validateStudioProfile",
+    "validateStudioModuleDescriptor",
+    "createStudioModuleRegistry"
+  ],
+  "boundaries": [
+    "No dynamic code or package loading",
+    "No filesystem/process/backend/render authority",
+    "Static active means composition only; host admission stays independent",
+    "No 3D or author Rust runtime implementation",
+    "Project request profiles are additive; unavailable requests do not close the document editor"
+  ],
+  "pending": [
+    "Pinned Node replay and host/native/UI integration owned by root"
+  ]
+}

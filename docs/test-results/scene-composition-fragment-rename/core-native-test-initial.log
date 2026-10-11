@@ -1,0 +1,32 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.18
+   Compiling syn v3.0.5
+   Compiling serde_derive v1.0.229
+   Compiling viento-studio-core v0.1.0 (/home/chiharukiryu/cdev/viento-studio/crates/viento-studio-core)
+error[E0308]: mismatched types
+   --> src/scene_composition_definition_rename.rs:88:45
+    |
+ 88 |         after_content: apply_edits(content, edits)?,
+    |                        -----------          ^^^^^ expected `Vec<Edit>`, found `Vec<(Range<usize>, String)>`
+    |                        |
+    |                        arguments to this function are incorrect
+    |
+    = note: expected struct `Vec<scene_composition_patch::Edit>`
+               found struct `Vec<(std::ops::Range<usize>, std::string::String)>`
+note: function defined here
+   --> src/scene_composition_patch.rs:148:15
+    |
+148 | pub(crate) fn apply_edits(content: &str, mut edits: Vec<Edit>) -> Result<String, CoreError> {
+    |               ^^^^^^^^^^^                --------------------
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `viento-studio-core` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `viento-studio-core` (lib test) due to 1 previous error

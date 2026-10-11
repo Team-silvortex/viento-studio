@@ -1,0 +1,52 @@
+✔ raw fragment declarations appear disabled; selected instance overrides and projection defaults do not become template values (94.40092ms)
+✔ position is one explicit SET pair and reviews the full source with every referencing placement and mask (81.85852ms)
+✔ checking unchanged declared values performs no validation and creates no template patch (51.753864ms)
+✔ explicitly adding a missing declaration equal to the current inherited value still changes source (62.266805ms)
+✔ unchecked fields preserve inheritance even if their raw inputs have been edited (74.229628ms)
+✔ the reviewed impact omits checked fields whose declaration is unchanged (74.693333ms)
+✔ all locally masked instances explicitly report a declaration-only edit that still passes source checking (57.064304ms)
+✔ image omission is blank and separate from an explicit null allowed by projection inheritance (61.427386ms)
+✖ a noninheriting fragment cannot explicitly clear its image and retains an unavailable declaration in the picker (7.11181ms)
+✔ each invalid selected field is rejected without consuming unfinished input or altering source (160.707673ms)
+✔ silently changing a numeric field after approval invalidates the candidate before application (62.26309ms)
+✔ silently changing selected checkboxes or unchecked raw fields also revokes approval (99.046889ms)
+✔ dependency validation receives detached canonical values and targets rather than mutable approval state (69.609477ms)
+✔ pending dependency checks lock all controls and a silent raw change cannot approve the late result (60.031999ms)
+✔ failed validation retains author input and diagnostics without granting application (58.091604ms)
+✔ parent source token or ownership changes revoke approval while preserving the form for inspection (64.593507ms)
+✔ late validation after parent closure cannot approve or apply a shared edit (50.165607ms)
+✔ late open success or failure after owner loss stays silent and never opens an expired form (46.794938ms)
+✔ cancelling or returning to preview discards only the unapplied fragment proposal and restores opener focus (85.220653ms)
+✔ an unaccepted or stale apply preserves edits, requires rechecking and cannot report completion (63.237288ms)
+✔ destroying during an asynchronous apply cannot complete into a replaced dialog and dispose is idempotent (59.655027ms)
+✔ read-only or missing fragment capability never creates a draft (39.471416ms)
+✔ Chinese, English and Japanese include every new shared-fragment workflow message and placeholder (1.008032ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 22
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1621.789156
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-fragments-ui.test.mjs:154:1
+✖ a noninheriting fragment cannot explicitly clear its image and retains an unavailable declaration in the picker (7.11181ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"composition-document-invalid","message":"Expected a valid scene composition recipe with explicit identities and references.","propertyPath":"","reasonCode":"scene_composition_invalid","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/source.json","sourceRevision":"sha256:ac7b58c4749bc1d44af2ba770d10fa474039990a30ee707b44cf91e50e21f929","sourceRange":{"start":1,"end":2282,"encoding":"utf-16","propertyPath":"","exact":true}}]
+  
+  false !== true
+  
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragments-ui.test.mjs:35:10)
+      at async harness (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragments-ui.test.mjs:52:17)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragments-ui.test.mjs:155:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

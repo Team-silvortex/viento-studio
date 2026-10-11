@@ -1,0 +1,38 @@
+✔ CLI infers the frozen Bevy backend and its separate environment tool while author source is offline (173.530616ms)
+✔ CLI infers the same backend tool for suite members without changing saved author documents (264.882426ms)
+✔ CLI keeps explicit tool selection and refuses explicit foreign backend and Godot-only alias before a tool starts (128.681575ms)
+✔ CLI inspection is source-independent and ignores host backend/tool configuration without executing anything (81.262423ms)
+✔ CLI inspection rejects execution/source/output flags and a foreign requested backend without altering output (77.19059ms)
+✔ CLI inspection distinguishes extra manual files from changed registered artifacts and metadata bytes (114.318314ms)
+✔ CLI inspection never follows a substituted registered artifact symlink and preserves the link and outside target (75.880688ms)
+✔ CLI inspection reports completed runtime sessions as extra ownership scope without rewriting receipts or invoking the tool (147.124823ms)
+✔ CLI backend inference preserves missing frozen run diagnostics and cancellation without invoking a tool or writing output (73.629737ms)
+✔ CLI inspection derives legacy manifests without adopting or repairing old output and rejects changed legacy source maps (84.786755ms)
+✖ CLI inspection keeps legacy Linux source identifiers separate from strict generated paths (80.323356ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 10
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1430.486943
+
+✖ failing tests:
+
+test at scripts/tests/backend-project-cli.test.mjs:198:1
+✖ CLI inspection keeps legacy Linux source identifiers separate from strict generated paths (80.323356ms)
+  AssertionError [ERR_ASSERTION]: {"ok":false,"status":"failed","diagnostics":[{"severity":"error","code":"world_unavailable","message":"Cannot read this workspace projection","objectId":null,"sourcePath":"","propertyPath":""}]}
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-cli.test.mjs:205:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

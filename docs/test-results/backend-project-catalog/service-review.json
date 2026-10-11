@@ -1,0 +1,139 @@
+{
+  "format": "viento-backend-project-catalog-service-review",
+  "schemaVersion": 1,
+  "date": "2026-10-11",
+  "reviewer": "composition_core_next",
+  "method": "Read-only source and existing test-case coverage inspection. No additional engine execution, installation, device test or full-check completion is claimed by this review.",
+  "sources": [
+    {
+      "path": "scripts/lib/project-build-service.mjs",
+      "sha256": "7aa4d86c7a8792a28f729cb944aefacfd8644be4fa8ba54d2844d8e7859fe4fa"
+    },
+    {
+      "path": "scripts/adapters/node-backend-project-catalog.mjs",
+      "sha256": "0ab8621e7031109183922dc4e1408e462ee99a23bd486c6c388c7f6cefcd6307"
+    },
+    {
+      "path": "scripts/adapters/node-backend-project-retention.mjs",
+      "sha256": "8c7c67082a0c7fcc9026a91fca305cbe3115e89337a89b62835a5708268c945e"
+    },
+    {
+      "path": "scripts/adapters/node-backend-project.mjs",
+      "sha256": "0be94bebd640143ba15362fbc14e6093c49aa6d3653a4300dca8eac25246ce23"
+    },
+    {
+      "path": "scripts/adapters/node-project-build.mjs",
+      "sha256": "9a1c10157131e0869f9fba73836baf4fe4fbf2d7d46d54dc4e665a57ac9c7ef1"
+    },
+    {
+      "path": "scripts/tests/backend-project-catalog-service.test.mjs",
+      "sha256": "da360670ddbee42244bdb838a7249548640e2c9bbd659f05b7df389a4fb65f5f"
+    },
+    {
+      "path": "scripts/tests/backend-project-catalog-boundary.test.mjs",
+      "sha256": "6d287d86c44ef07719ebfa42d0a0836087e49be3a0ff22836dadc1f26c99e6cc"
+    }
+  ],
+  "areas": [
+    {
+      "name": "read/reconcile",
+      "path": "scripts/lib/project-build-service.mjs",
+      "line": 70,
+      "checks": [
+        "Persistent read returns metadata-only branded rows; no generation/tool process or directory adoption.",
+        "Restored rows remain preserved and never enter ownedOutputs. Refresh reconciles previous-session rows while active admitted jobs retain their own object.",
+        "Removed or changed restored rows revoke builds/latest selection after an explicit idle refresh; current in-memory creation receipts are kept."
+      ],
+      "conclusion": "No additional blocking finding in this declared reconciliation boundary."
+    },
+    {
+      "name": "scope/inspect",
+      "path": "scripts/lib/project-build-service.mjs",
+      "line": 114,
+      "checks": [
+        "Small readable author workspace identity is compared without fetching author bodies/assets; offline frozen access remains supported.",
+        "Inspect performs namespace/project identity and manifest SHA guard, complete frozen regeneration/inventory verification, then identity guard again.",
+        "Source workspace/scene/path, requested build/snapshot and exact manifest hash are bound; inspection cannot select runtime implicitly."
+      ],
+      "conclusion": "No additional blocking finding in the explicit inspection boundary."
+    },
+    {
+      "name": "selection",
+      "path": "scripts/lib/project-build-service.mjs",
+      "line": 478,
+      "checks": [
+        "Selection verifies the whole project and frozen plan before producing control targets or granting runtime entry.",
+        "Epoch plus captured latestBuild/job references reject older delayed completion after newer selection or new job.",
+        "Closed/active/probe status and same projects-map object are rechecked after awaits before publishing latestBuild."
+      ],
+      "conclusion": "Existing delayed-selection, close and new-build cases cover the relevant owner transitions; no additional blocking finding."
+    },
+    {
+      "name": "run/suite",
+      "path": "scripts/lib/project-build-service.mjs",
+      "line": 338,
+      "checks": [
+        "Both run and suite jobs call the shared catalog-or-current-root guard before invoking the frozen executor.",
+        "Restored runtime entries contain no deletion ledger; runtime operations still use the frozen backend and fresh tool verification.",
+        "Suite admission detaches member definitions, checks frozen IDs, then rechecks close/busy and builds-map reference before acquiring its slot."
+      ],
+      "conclusion": "No additional blocking finding in admitted frozen execution ownership. This review does not certify actual engine behavior."
+    },
+    {
+      "name": "close",
+      "path": "scripts/lib/project-build-service.mjs",
+      "line": 626,
+      "checks": [
+        "Close marks the service closed and aborts active job/probe before waiting.",
+        "Close waits active/probe, pending catalog read and tracked caseOperations, including delayed inspect/select.",
+        "Pending select checks closed before publishing ownership; status checks closed after asynchronous discovery."
+      ],
+      "conclusion": "No additional blocking finding in service close/selection completion."
+    },
+    {
+      "name": "retention",
+      "path": "scripts/lib/project-build-service.mjs",
+      "line": 178,
+      "checks": [
+        "Only current creating-host ledger objects enter the automatic retention queue.",
+        "Quarantine movement persists its known physical identity and new relative path; modified/extra/session outputs are preserved.",
+        "Catalog remove mutates only the index and never removes a project; failed index updates produce a visible diagnostic."
+      ],
+      "conclusion": "Persistent catalog remains separate from the automatic deletion authority."
+    }
+  ],
+  "resolvedFinding": {
+    "id": "catalog-owned-lock-after-missing-temp",
+    "description": "Temporary cleanup failure previously skipped release and left an owned lock blocking subsequent writes.",
+    "fix": "Nested finally guarantees owner-guarded lock release; missing temporary path is ignored and foreign temporary inode/link is preserved.",
+    "productSha256": "0ab8621e7031109183922dc4e1408e462ee99a23bd486c6c388c7f6cefcd6307",
+    "regressionLog": "docs/test-results/backend-project-catalog/catalog-core-lock-repair.log",
+    "regression": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "skip": 0,
+      "cancel": 0,
+      "todo": 0,
+      "node": "v24.21.0"
+    },
+    "independentProbe": "docs/test-results/backend-project-catalog/catalog-missing-temp-final.json",
+    "independentProbeResult": {
+      "ok": true,
+      "originalIndexPreserved": true,
+      "ownedLockLeftBehind": false,
+      "nextUpsertSucceeded": true,
+      "node": "v24.20.0"
+    }
+  },
+  "findings": [],
+  "limitations": [
+    "Old outputs never registered by the creating host are not scanned or automatically adopted. CLI-created outputs remain accessible through explicit CLI inspection only.",
+    "The catalog is bounded to 256 records and 1 MiB. Reaching a limit reports a diagnostic; no older record is silently evicted.",
+    "The scope binds the cache namespace to the author root path and backend. Moving author/output paths or replacing physical identities does not automatically adopt previous projects.",
+    "Only successful outputs are persisted in this catalog. Failed/partial outputs retain current-session protection and diagnostics; they do not gain cross-session recovery records.",
+    "Restored projects are preserved and are never assigned a fresh deletion receipt, even after explicit runtime selection.",
+    "Unknown stale locks are not automatically removed. Persistent index corruption is not silently repaired or overwritten."
+  ],
+  "conclusion": "The confirmed catalog lock-release issue is repaired and independently reproduced as fixed. No additional unresolved blocking finding was identified in the reviewed frozen service integration. Full application/prepared/browser and actual backend evidence remains the responsibility of the separately recorded root validation."
+}

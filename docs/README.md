@@ -1,8 +1,12 @@
 # 文档中心
 
+[系统模块与工程需求](STUDIO_MODULES.md)说明整个 Studio 的装配、模板需求、表示和后端边界，以及后续 3D 与工作流布局的接入规则。
+
+[后端工程管理](BACKEND_PROJECTS.md)现另覆盖成功工程的本机持久索引、重启恢复、明确运行目标选择、离线冻结场景入口与保留规则；新版源码的交付和验证条件见[当前状态](STATUS.md)。
+
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.0.9 版本记录](RELEASE_0.0.9.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.0.10 版本记录](RELEASE_0.0.10.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -22,8 +26,10 @@
 | 保存、迁移用例并在冻结实例场景上检查逐步位置／状态预期 | [运行验收用例](RUNTIME_CASES.md) |
 | 有序批量验收、成员顺序与联合预算 | [运行验收组](RUNTIME_CASE_SUITES.md) |
 | 查看批次中每份用例的失败步骤并下载独立 JSON | [成员报告](RUNTIME_CASE_REPORTS.md) |
+| 查看各后端生成工程、来源、文件库存与保留原因 | [后端工程管理](BACKEND_PROJECTS.md) |
 | 同一无图场景在 Godot／Bevy 上构建与无头运行 | [Bevy 第二后端](BEVY_BACKEND.md) |
-| 复用片段配方、预览来源与编辑单实例局部覆盖 | [场景片段组合](SCENE_COMPOSITION.md) |
+| 独立 3D 方块预览、相机与灯光、Godot 工程导出 | [3D 初步接入](SCENE3D.md) |
+| 复用片段配方、九域创作与来源审阅后普通保存 | [场景片段组合](SCENE_COMPOSITION.md) |
 
 ## 工程格式与语义操作
 
@@ -45,7 +51,7 @@
 | 主题 | 文档 |
 | --- | --- |
 | 跨架构功能、实现证据、四维成熟度与工作流筛选 | [当前功能图谱](FUNCTION_ATLAS.md)、[离线交互版](function-atlas.html) |
-| 已实现的模块职责、依赖方向与完整调用路径 | [系统架构](ARCHITECTURE.md) |
+| 已实现的模块职责、依赖方向与完整调用路径 | [系统架构](ARCHITECTURE.md)、[场景创作工作流](SCENE_AUTHORING.md) |
 | 可移植解析、字段、存储及语义规划接口 | [引擎接口](../engine/README.md) |
 | 执行能力描述符、可信宿主注册表与具体引擎隔离 | [执行后端中间层](BACKEND_MIDDLEWARE.md) |
 | Node 本地服务、索引与维护命令 | [脚本说明](../scripts/README.md) |
@@ -70,6 +76,7 @@
 ## 示例与历史
 
 - [Epic of Viento Line](examples/README.md)：独立官方作品，说明现有作品如何使用通用定义。
+- [Scene3D](../examples/scene3d/README.md)：独立方块、相机和方向光；只读预览与显式 Godot 工程导出。
 - [Scene2D](../examples/scene2d/README.md)：仓库内合成工程，验证从设计声明到运行产物。
 - [场景片段组合](../examples/scene-composition/README.md)：单文件配方展开到现有 v3；已保存／当前草稿可预览并查看贡献来源，单实例局部覆盖可检查后应用到当前原文草稿并普通保存，不自动登记生成场景。
 - [场景行为](../examples/scene-behaviors/README.md)：同一 GDScript 的两个实例使用独立参数，贯通计划、构建、事件、来源诊断和依赖迁移。
@@ -77,3 +84,9 @@
 - [验证历程](history/VALIDATION.md)：各阶段的版本、测试计数、环境和限制。
 
 `test-results/` 保存日志、截图和源码摘要。[当前图谱](FUNCTION_ATLAS.md) 以四维坐标维护架构、功能、实现和成熟度；旧 b.4.3 图谱继续保存历史状态，不再承担当前能力目录。旧报告表示当时的状态；当前操作入口从本页进入，当前平台判断以 [STATUS](STATUS.md) 为准。
+
+当前 2D 创作主线新增[共享演员结构编辑](SCENE_COMPOSITION.md#编辑片段的演员结构)与独立[整份放置管理](SCENE_COMPOSITION.md#管理片段放置)：复用已有片段、复制原偏移及覆盖或移除整份放置，审阅全部影响身份及完整原文，再应用源码草稿并普通保存。当前源码与各平台验收条件见[当前状态](STATUS.md)。
+
+2D 配方当前还可[编辑组织分组](SCENE_COMPOSITION.md#编辑共享片段的组织分组)，按明确操作调整组名、父级和演员归组；与放置、演员字段及画布各自独立，普通保存仍是作者写入入口。
+
+片段定义管理见[新增、复制、重命名与未引用删除](SCENE_COMPOSITION.md#管理片段定义)。先维护共享声明，再通过独立演员、组织组和放置入口完成场景；普通保存继续保留作者原文。

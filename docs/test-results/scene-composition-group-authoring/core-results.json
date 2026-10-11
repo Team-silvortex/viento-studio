@@ -1,0 +1,176 @@
+{
+  "format": "viento-scene-composition-group-authoring-core-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T09:56:12.873378+00:00",
+  "head": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "version": "0.0.9",
+  "runtime": "v24.20.0",
+  "sourceHashes": {
+    "engine/scene-composition-groups.mjs": "5f056f598340838fe1448577b31479fc6d5775766a725fe75ca3d8a9bde6741a",
+    "engine/studio-core.mjs": "accd7115ec18d6b420df5580b37cf6d96c57fa7039d7d3521e3e156b6521251f",
+    "engine/index.mjs": "a9320ebf92b64f690b257aca6db3a07b6c577e485305737dd07ac78e17c8fdea",
+    "crates/viento-studio-core/src/lib.rs": "1bde6b1f1689e9f9c1c47f9e4c88baf8425b2e16d4776f81fd6e382873ac2483",
+    "crates/viento-studio-core/src/scene_composition_groups_patch.rs": "c6fd8690fc2a0c5b59ba984a18a3e10d7aa00f9c60393dac94b9768e945e19d2",
+    "scripts/tests/scene-composition-groups.test.mjs": "47968930f06a59883ea01fa9991859357df537215784605f02e94c323aaf7da7",
+    "scripts/tests/studio-core-composition-groups-patch.test.mjs": "da0e6b43097b8af0f81f0f253671088db7a03169a2c14e5ebfb14325e8a5fefb"
+  },
+  "abi": {
+    "probe": "viento_core_scene_composition_groups_version",
+    "version": 1,
+    "optional": true,
+    "operations": [
+      "sceneComposition.addFragmentGroup",
+      "sceneComposition.editFragmentGroup",
+      "sceneComposition.assignFragmentActorGroup",
+      "sceneComposition.removeFragmentGroup"
+    ],
+    "priorCapabilitiesRetained": true
+  },
+  "api": {
+    "exports": [
+      "createSceneCompositionGroupsDraft",
+      "prepareSceneCompositionGroupsApply",
+      "supportsStudioCoreCompositionGroups",
+      "dispatchStudioCoreCompositionGroups"
+    ],
+    "draftFields": [
+      "fragments",
+      "propose"
+    ],
+    "proposalKeys": [
+      "sceneId",
+      "sourcePath",
+      "baseSourceRevision",
+      "sourceRevision",
+      "edit",
+      "targets",
+      "afterContent",
+      "changedPaths"
+    ],
+    "targets": "array of all affected placements AFTER edit in source order; unused fragment []",
+    "targetShape": {
+      "placementId": "UUID",
+      "fragmentId": "fragment key",
+      "groups": [
+        {
+          "groupKey": "source group key",
+          "groupId": "stable UUID",
+          "name": "decoded source name",
+          "parentGroupId": "UUID or null, always present"
+        }
+      ],
+      "actors": [
+        {
+          "actorKey": "source actor key",
+          "instanceId": "stable UUID",
+          "objectId": "reusable definition UUID",
+          "groupId": "UUID or null, always present"
+        }
+      ]
+    },
+    "ids": "ADD caller supplies each group UUID once in related-placement order; globally fresh against generated actor/group and placement identities; helper also rejects scene UUID; definition UUID is reusable",
+    "errorCodes": [
+      "scene_composition_groups_invalid",
+      "scene_composition_groups_conflict",
+      "scene_composition_groups_unchanged",
+      "scene_composition_groups_content_limit"
+    ]
+  },
+  "verification": {
+    "rust": {
+      "unit": 101,
+      "integration": [
+        2,
+        8,
+        9,
+        13,
+        9,
+        8
+      ],
+      "total": 150,
+      "newUnitTests": 12,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-native-test.log"
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "warningsDenied": true,
+      "log": "core-clippy.log"
+    },
+    "native": {
+      "path": "desktop/.cache/group-authoring-core-target/debug/viento-core",
+      "sha256": "1e0fde78504ada370d0dc00d424f6531abb95f712333c12317af6e8504d83d7d",
+      "log": "core-native-build.log"
+    },
+    "wasm": {
+      "bytes": 362582,
+      "sha256": "e557f68c076edefc57f819c7f39f459374eecaaebf6cc34987b8c5aa6107adda",
+      "sourceHash": "df5e9ee4b25e763356c42efd1185a9257dcd5de2636089502884130a1a41d776",
+      "log": "core-wasm-build.log"
+    },
+    "newJavaScript": {
+      "pure": 18,
+      "bridge": 10,
+      "total": 28,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmParityRequests": 19,
+      "logs": [
+        "core-pure-tests.log",
+        "core-bridge-tests.log"
+      ]
+    },
+    "oldAndNewRegression": {
+      "files": 17,
+      "passed": 238,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-regression-final.log"
+    },
+    "portableSource": {
+      "cases": 12,
+      "passed": 12,
+      "failed": 0,
+      "module": "boundary-cases.mjs",
+      "report": "boundary-source-results.json",
+      "log": "boundary-source-check.log",
+      "imports": 0,
+      "digest": "explicit injected port"
+    }
+  },
+  "retainedAttempts": [
+    {
+      "log": "core-pure-tests-initial.log",
+      "result": "16/18 passed; two NEW fixture assertions incorrectly compared provenance offsets/revisions and used a duplicate group key before budget admission; fixed fixture assertions only"
+    },
+    {
+      "log": "core-regression-without-native-env.log",
+      "result": "230 passed and 8 skipped; earlier native CLI paths absent, reran all 238 using fresh native CLI explicitly"
+    },
+    {
+      "logs": [
+        "boundary-source-check-initial.log",
+        "boundary-source-check-second.log",
+        "boundary-source-check-third.log",
+        "boundary-source-check-fourth.log"
+      ],
+      "result": "NEW proof harness relative import/export aggregation and inherited-null image fixture corrected; final proof passes actual source modules/WASM"
+    }
+  ],
+  "boundaries": [
+    "No filesystem or tool process in pure/core operations",
+    "Exact additive group mapping; existing key and generated identities preserved by edit/assign/remove",
+    "Raw empty leaf guard including unused fragments; last group removable without deleting containers",
+    "Complete original/final expansion and final 128 KiB, 128 group and depth16 budgets",
+    "Semantic no-op returns exact original bytes at core, rejected as unchanged by pure authoring helper",
+    "CST token patches preserve BOM CRLF escaped names/keys numeric spelling and all unrelated positions overrides/offsets",
+    "Model/source/proposal detached before asynchronous digest; exact full organization/provenance binding and host recomputation",
+    "Root owns GUI/workflow/candidate/full application/browser/prepared verification; source portable proof is not installed-device acceptance"
+  ],
+  "findings": []
+}

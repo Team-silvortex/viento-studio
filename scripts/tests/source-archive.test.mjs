@@ -57,7 +57,7 @@ test('source archives retain both Rust crates and official examples while exclud
       await retain(`${crate}/${relative.replaceAll(path.sep, '/')}`);
     }
   }
-  const examples = ['scene2d', 'scene-composition', 'scene-behaviors', 'bevy-headless'];
+  const examples = ['scene2d', 'scene-composition', 'scene-behaviors', 'bevy-headless', 'scene3d'];
   for (const example of examples) {
     const base = `examples/${example}`;
     for (const file of await fs.readdir(path.join(application, base), { recursive: true })) {

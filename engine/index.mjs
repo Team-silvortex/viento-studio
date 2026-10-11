@@ -35,3 +35,11 @@ export * from './document-model.mjs';
 export * from './document-values.mjs';
 export * from './document-contract.mjs';
 export * from './resource-package.mjs';
+
+export { STUDIO_MODULES, validateStudioProfile, validateStudioModuleDescriptor, createStudioModuleRegistry } from './studio-modules.mjs';
+
+export { createSceneCompositionPlacementsDraft, prepareSceneCompositionPlacementsApply } from './scene-composition-placements.mjs';
+
+export { createSceneCompositionGroupsDraft, prepareSceneCompositionGroupsApply } from './scene-composition-groups.mjs';
+export { createSceneCompositionDefinitionsDraft, prepareSceneCompositionDefinitionsApply } from './scene-composition-definitions.mjs';
+export { parseScene3DSource, createScene3DPlan, MAX_SCENE3D_BYTES } from './scene3d.mjs';

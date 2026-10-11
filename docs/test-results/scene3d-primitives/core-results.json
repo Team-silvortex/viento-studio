@@ -1,0 +1,152 @@
+{
+  "format": "viento-scene3d-primitives-core-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T11:31:40.736157+00:00",
+  "head": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "version": "0.0.9",
+  "runtime": "v24.20.0",
+  "sourceHashes": {
+    "crates/viento-studio-core/src/lib.rs": "4367226a0d161e2853d9ef3df276ea58f3056337ba7d58f79fdbf579cc798aaf",
+    "crates/viento-studio-core/src/scene3d.rs": "f7af0223a00bb948cf139f07df31bb2cd5ad7118b1b448671b3ff3c95de55bcb",
+    "engine/studio-core.mjs": "71fe6113d4b93444410d363cd742ab61daaeb028b0fd976970817a3fe0beb962",
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/index.mjs": "3c360329d139ff555f6c5f8f73eec4a781180c7d8ca2c9bb1cc78326aabfaa6e",
+    "scripts/tests/scene3d.test.mjs": "326fea22720a1241bcf8936f4a3d753e4e11d59b9558e3ba9a3466fbd3bee7db",
+    "scripts/tests/studio-core-scene3d.test.mjs": "f4abdde8eba1b8ab1de9343e1420408e02d4a07d391c8dc0470c0fb09039daf4"
+  },
+  "abi": {
+    "probe": "viento_core_scene3d_version",
+    "version": 1,
+    "optional": true,
+    "operation": "scene3d.parse",
+    "requestKeys": [
+      "protocolVersion",
+      "operation",
+      "content"
+    ],
+    "responseKeys": [
+      "model",
+      "sourceLocations"
+    ],
+    "priorCapabilitiesRetained": true,
+    "mutationAuthority": "None; stateless read-only native source validation and model/source-location parsing"
+  },
+  "api": {
+    "exports": [
+      "parseScene3DSource",
+      "createScene3DPlan",
+      "supportsStudioCoreScene3D",
+      "dispatchStudioCoreScene3D"
+    ],
+    "authorFormat": "viento-scene3d",
+    "modelFormat": "viento-scene3d-model",
+    "schemaVersion": 1,
+    "planFormat": "viento-build-plan",
+    "kind": "scene3d",
+    "sceneKeys": [
+      "name",
+      "viewport",
+      "background",
+      "camera",
+      "light",
+      "objects"
+    ],
+    "sourceLocations": "Exact objects array with stable canonical UUID, /objects/i pointer and whole-object UTF16 sourceRange including BOM/CRLF/nonBMP offsets",
+    "immutability": "Pure return values deep-frozen and detached; raw author degrees, color spelling and numeric values retained",
+    "coordinates": "Right-handed, Y-up, -Z camera forward; EulerXYZ column-vector transform T*Rx*Ry*Rz*S",
+    "errorCodes": [
+      "scene3d_invalid",
+      "scene3d_limit",
+      "studio_core_request_invalid"
+    ],
+    "missingCapability": "studio_core_unavailable only for the independent 3D interface"
+  },
+  "verification": {
+    "rust": {
+      "unit": 135,
+      "integration": [
+        2,
+        8,
+        9,
+        13,
+        9,
+        8
+      ],
+      "total": 184,
+      "newUnitTests": 12,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-native-test.log"
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "warningsDenied": true,
+      "log": "core-clippy.log"
+    },
+    "native": {
+      "path": "desktop/.cache/scene3d-core-target/debug/viento-core",
+      "sha256": "594515f31fbb81c99af0fbd8a15dfd8e4fc70eb2c4ec7a8f6b7894e1def2e585",
+      "log": "core-native-build.log"
+    },
+    "wasm": {
+      "bytes": 395888,
+      "sha256": "6114130522595a92b0f6627df1f29ac0bb86cc82c60a5fa68c06cb38f6cb3328",
+      "sourceHash": "39bdc26f4ba74c1751ae71d6ead7ddda527eb9289eca89f482ee23f4a8a9e642",
+      "log": "core-wasm-build.log"
+    },
+    "newJavaScript": {
+      "pure": 13,
+      "bridge": 11,
+      "total": 24,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmParityRequests": 18,
+      "logs": [
+        "core-pure-tests.log",
+        "core-bridge-tests.log"
+      ]
+    },
+    "oldAndNewRegression": {
+      "files": 23,
+      "passed": 314,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-regression-final.log"
+    },
+    "portableSource": {
+      "cases": 10,
+      "passed": 10,
+      "failed": 0,
+      "module": "boundary-cases.mjs",
+      "export": "runScene3DCases",
+      "report": "boundary-source-results.json",
+      "log": "boundary-source-check.log",
+      "imports": 0,
+      "prepared": "Separate actual prepared desktop/mobile VM proof pending parent final prepare; no device acceptance"
+    }
+  },
+  "retainedAttempts": [
+    {
+      "log": "core-bridge-tests-initial.log",
+      "result": {
+        "passed": 10,
+        "failed": 1
+      },
+      "reason": "New capability-isolation fixture called nonexistent supportsStudioCoreComposition instead of existing supportsStudioCoreCompositionPatch. Only the new test fixture was corrected; production unchanged."
+    }
+  ],
+  "boundaries": [
+    "Strict exact single-file JSON with decoded duplicate-key rejection, safe Unicode, finite values and 128KiB UTF8 bound",
+    "1–128 unique canonical lower-case UUID box objects, no assets/objectId/World/behavior/hierarchy/scene composition admission",
+    "GPU-practical nonvertical camera/light constraints, bounded FOV/frustum/coordinates/positive size, source values retained",
+    "Native CST validates source and produces whole-object byte ranges converted to UTF16; bridge validates complete model and each source-bound location",
+    "Independent optional ABI, no fallback to 2D and no native geometry history or existing author operation changes",
+    "Renderer and standalone Godot prototype export are separate adapters; this report does not claim device acceptance, pixel parity, installed IDE or integration with the 2D build service",
+    "Parent owns full-app/UI/browser/backend/export/prepared inventories and preservation"
+  ],
+  "findings": []
+}

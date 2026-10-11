@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-11",
+  "scope": "Shared recipe actor ADD/REMOVE atomic CST edits, independent optional structure ABI and detached pure draft/apply",
+  "sources": {
+    "crates/viento-studio-core/src/lib.rs": "9b20f93d82696ab833ef099629a88b1345a42f5234e3ce5205ef67f1f8f60937",
+    "crates/viento-studio-core/src/scene_composition_structure_patch.rs": "538b7b2ef74624453a6986d3f6064e604d379c8892eb5a71304a6b07d7b91fb0",
+    "engine/studio-core.mjs": "898e131a524022f08cf0754350cfcbedae1676786fea87fbd82543dbe96d4967",
+    "engine/scene-composition-structure.mjs": "a9f513cb20f84ac808177ecadf0b1692c74a129ae21ab15f7af8799b12a2ab36",
+    "scripts/tests/scene-composition-structure.test.mjs": "c5d6879837f2ffdd5f56a9fe2b96d167d5ecd1039ab256fae8236f27d0ed67fb",
+    "scripts/tests/studio-core-composition-structure-patch.test.mjs": "9d72be2b703dc72805e4f6e439e7c234bcbb7f8f98960f1e6aa887467ab779d4"
+  },
+  "evidence": {
+    "core-native-initial.log": "0f406b0e05027fb8cd17096d634afdd6ce4dc4d66673d86ed5526dc2af839d00",
+    "core-native-test.log": "83b3f015bee348a5445676e69425a7531540a32744e7f006fc8e81e606d0fedd",
+    "core-fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "core-clippy.log": "1d2f1be761338e322d276cefd728f4f075905b466c6a7bae2e9068e2223ca487",
+    "core-native-build.log": "ee1d3fffa2022e962e63e0dbe4d35c9c198450a20c29fc09030f635dbb38bfcd",
+    "core-wasm-build.log": "53c765ed8df554709e6e1c71cf17d0daa0f51b7ee18fe0ea5dac9f1e6d7b5e4e",
+    "pure-tests-initial.log": "6f49c56d7287b9434bcac1d7ea16ee4d9d946f82e9d8d77ae9c91af4ed55dde3",
+    "bridge-tests-initial.log": "29fb7f2a2eb15cd9532fcbc2b20a18f17b07aa90cec6d1f8ce4a4a0ecbaeb70b",
+    "core-regression-final.log": "92d5efba83f717110f8790c4054f08bd4fb2d3de7ba7d45dff876f9cd56c6301"
+  },
+  "nodeVersion": "v24.20.0",
+  "native": {
+    "binary": "/tmp/viento-composition-structure-core-target/debug/viento-core",
+    "sha256": "421806fb4fce5ceeea6bb524ac717a6f904bdb536f7636e4dd56f9c080234436",
+    "targetDirectory": "/tmp/viento-composition-structure-core-target",
+    "tests": {
+      "passed": 128,
+      "failed": 0,
+      "ignored": 0
+    },
+    "fmt": "passed",
+    "clippyAllTargetsDenyWarnings": "passed"
+  },
+  "wasm": {
+    "targetDirectory": "/tmp/viento-scene-composition-structure-wasm-target",
+    "protocolVersion": 1,
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "sourceHash": "3e2bdefd9e201a953849acb7224f22e29269615f2dcc15c0d9c0d1ddc3fd58e4",
+    "wasmSha256": "c9cb529e365b43e9fefbfdf96ff947e6fc5e7ed34abc3c4d0f71efd2544f9581",
+    "bytes": 337188,
+    "sources": {
+      "Cargo.lock": "1e20cad8bf8ad24bd85a25432fa739f1357894b7e6d87a5ec6ec1f0de6436396",
+      "Cargo.toml": "c6678822a9daa9f9292dd0153ac881292f5784f836333e43bfb55a72539a6095",
+      "src/layout_draft.rs": "dfb72651a8787fed4410eb3e24dd4c82741fee3c18aca315530e304c436cb9aa",
+      "src/layout_save.rs": "8ebbc7c48366381c527031e1a12e35f13fc89f156c3d7162499489f1d5a0156c",
+      "src/lib.rs": "9b20f93d82696ab833ef099629a88b1345a42f5234e3ce5205ef67f1f8f60937",
+      "src/main.rs": "f83f78f6d29d557f30d110e4da08ed756d0ef1d58258103d7b53f35544268178",
+      "src/scene_composition.rs": "1ca6bcf535886103af8ee2111b808c2ec974362ceeab8fe5924f55ef16a9dfab",
+      "src/scene_composition_fragment_patch.rs": "fe7421ca1ba86992a018042169d5bc0f5a652c72d2f9e4ac802b1bcf766eeeb1",
+      "src/scene_composition_patch.rs": "be5702bae8133271c1703a134966549df906949577c87bab78e926e05db46162",
+      "src/scene_composition_placement_patch.rs": "4717c99c5bcf8cd0f957de16e17702d84e06b53cbdde2d3a9e8fa4eb434183d2",
+      "src/scene_composition_structure_patch.rs": "538b7b2ef74624453a6986d3f6064e604d379c8892eb5a71304a6b07d7b91fb0",
+      "src/scene_layout.rs": "b7bc1be799e29192c2035d6539f41f7f54024ff8f626c26c2355bf5fd610d987",
+      "src/scene_source.rs": "51eb8792dbc777a157e73c0cbfcba4724a5c843ed6ccbde77ca22998c0f7bb96",
+      "src/wasm.rs": "30eff24e802dff307f655de3dbf4fad4a75974769025df2e713f66108f1cf0b6",
+      "build-script": "a6356c18fd5ba25fd46f67cad17fa7c441dc8b780d37c9d51fa3437512f67452"
+    }
+  },
+  "newJavaScript": {
+    "pure": 18,
+    "bridge": 13,
+    "passed": 31,
+    "failed": 0,
+    "skipped": 0,
+    "nativeWasmExactParityRequests": 17
+  },
+  "coreRegression": {
+    "files": 14,
+    "total": 204,
+    "passed": 203,
+    "failed": 0,
+    "skipped": 1,
+    "skippedReason": "Existing real Godot composition integration requires VIENTO_GODOT_BIN. Native/WASM cases ran, not skipped. Root separately runs real backend/browser integration."
+  },
+  "retainedInitialFailure": {
+    "log": "core-native-initial.log",
+    "reason": "New budget-test fixture inserted padding at byte index 1 into a UTF-8 BOM. Fixed the fixture index to the BOM byte length; product code unchanged."
+  },
+  "compatibility": [
+    "Recipe schemaVersion remains 1",
+    "All older probe/operation/helper domains preserved",
+    "Unused source fragments can be edited with empty placement mappings",
+    "Definition objectId reuse allowed",
+    "ADD generated UUIDs reject collision with existing generated actors/groups/placements; pure helper also checks scene identity",
+    "REMOVE does not delete groups, placement containers, unrelated overrides or the last fragment actor",
+    "No source save, identity allocator, new geometry session or JavaScript token-edit fallback"
+  ],
+  "unclaimed": [
+    "Native installed application and Android device acceptance",
+    "New fragment/group/placement creation",
+    "More than 128 declared or expanded actors",
+    "A proof against arbitrary same-user mutation after final owner validation"
+  ]
+}

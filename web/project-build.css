@@ -50,6 +50,18 @@
 .scene-create input:focus-visible { outline: 2px solid #24684b; outline-offset: 3px; }
 .scene-create .scene-actor { border: 1px solid #bdd1c4; border-radius: 10px; padding: 16px; margin-block: 16px; min-width: 0; }
 .scene-actor > button, .scene-actor > .build-actions { margin-top: 12px; }
+#sceneCompositionOverridesDialog .scene-composition-override-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px; min-width: 0; align-content: start; }
+#sceneCompositionOverridesDialog .scene-composition-override-single > .scene-field { grid-column: 1 / -1; }
+#sceneCompositionOverridesDialog .scene-composition-override-reset { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; min-width: 0; }
+#sceneCompositionOverridesDialog .scene-composition-override-reset[hidden] { display: none; }
+#sceneCompositionOverridesDialog .scene-composition-override-reset .doc-btn { padding: 5px 9px; font-size: 13px; }
+#sceneCompositionOverridesDialog .scene-composition-override-reset .build-hint { margin: 0; flex: 1 1 130px; overflow-wrap: anywhere; }
+#sceneCompositionOverridesDialog .scene-composition-override-reset .doc-btn[aria-pressed="true"] { border-color: #2d8876; background: #dbf5e9; }
+#sceneCompositionLayoutCanvas { display: block; width: 100%; height: clamp(300px, 52vh, 530px); border: 0; box-shadow: 0 0 0 1px #8da698; background: #dbe4df; border-radius: 8px; touch-action: none; }
+#sceneCompositionLayoutCanvas:focus-visible { outline: 3px solid #24684b; outline-offset: 3px; }
+#sceneCompositionLayoutDialog .build-hint, #sceneCompositionLayoutSelection { overflow-wrap: anywhere; }
+#sceneCompositionLayoutPan[aria-pressed="true"] { background: #285b47; color: white; }
+@media (max-width: 700px) { #sceneCompositionLayoutCanvas { height: 300px; } }
 .scene-create pre { max-height: 260px; padding: 12px; white-space: pre-wrap; overflow-wrap: anywhere; overflow: auto; background: #edf2ef; border-radius: 8px; }
 .scene-diagnostics { padding-inline-start: 20px; }
 .scene-diagnostics button { white-space: normal; text-align: start; margin-block: 4px; }
@@ -110,3 +122,95 @@
 .build-control-target > label { grid-column: 1 / -1; }
 .build-control-target > select { box-sizing: border-box; width: 100%; min-width: 0; padding: 10px; font: inherit; color: inherit; background: white; border: 1px solid #94b4a2; border-radius: 8px; }
 @media (max-width: 600px) { .build-control-target { grid-template-columns: minmax(0, 1fr); } .build-control-target > label { grid-column: auto; } }
+
+#sceneCompositionBatchLayoutCanvas { display: block; width: 100%; height: clamp(300px, 52vh, 530px); border: 0; box-shadow: 0 0 0 1px #8da698; background: #dbe4df; border-radius: 8px; touch-action: none; }
+#sceneCompositionBatchLayoutCanvas:focus-visible { outline: 3px solid #24684b; outline-offset: 3px; }
+#sceneCompositionBatchLayoutDialog .build-hint, #sceneCompositionBatchLayoutSelection, #sceneCompositionBatchLayoutMessage, #sceneCompositionBatchLayoutTargets { overflow-wrap: anywhere; }
+#sceneCompositionBatchLayoutObjects, #sceneCompositionBatchLayoutObjects ol { list-style: none; padding-inline-start: 0; }
+#sceneCompositionBatchLayoutObjects ol { padding-inline-start: 12px; border-inline-start: 1px solid #bdcec4; margin-inline-start: 4px; }
+#sceneCompositionBatchLayoutObjects ol ol ol ol { padding-inline-start: 3px; margin-inline-start: 1px; }
+#sceneCompositionBatchLayoutObjects li { margin-block: 6px; }
+#sceneCompositionBatchLayoutObjects button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; text-align: start; }
+#sceneCompositionBatchLayoutObjects .scene-layout-object-row > button { flex: 1; }
+#sceneCompositionBatchLayoutObjects [aria-pressed="true"], #sceneCompositionBatchLayoutPan[aria-pressed="true"] { background: #285b47; color: white; }
+#sceneCompositionBatchLayoutTargets { padding-inline-start: 20px; font-size: 13px; line-height: 1.7; }
+#sceneCompositionBatchLayoutTargets li { margin-block: 6px; }
+@media (max-width: 700px) { #sceneCompositionBatchLayoutCanvas { height: 300px; } }
+
+.scene-composition-fragment-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; min-width: 0; padding: 12px; border: 1px solid #bdcec4; border-radius: 8px; }
+.scene-composition-fragment-group > .scene-composition-fragment-select, .scene-composition-fragment-group > .build-hint { grid-column: 1 / -1; margin-block: 0; }
+.scene-composition-fragment-single > .scene-field { grid-column: 1 / -1; }
+.scene-composition-fragment-select { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; cursor: pointer; }
+.scene-composition-fragment-select > input { width: 18px; height: 18px; margin: 0; flex-shrink: 0; }
+.scene-composition-fragment-select > span:last-child { font-weight: 600; }
+.scene-composition-fragment-targets { min-width: 0; padding: 12px; border: 1px solid #bdcec4; border-radius: 8px; }
+#sceneCompositionFragmentsDialog .build-hint, #sceneCompositionFragmentsIdentity, #sceneCompositionFragmentsMessage, #sceneCompositionFragmentsTargets { overflow-wrap: anywhere; }
+#sceneCompositionFragmentsTargets { padding-inline-start: 20px; font-size: 13px; line-height: 1.7; }
+#sceneCompositionFragmentsTargets li { margin-block: 12px; }
+#sceneCompositionFragmentsTargets p { margin-block: 4px; }
+@media (max-width: 600px) { #sceneCompositionFragmentsDialog .scene-settings { grid-template-columns: minmax(0, 1fr); } }
+
+.scene-composition-fragment-restore { display: flex; grid-column: 1 / -1; align-items: start; gap: 8px; min-width: 0; font-size: 13px; cursor: pointer; }
+.scene-composition-fragment-restore > input { width: 18px; height: 18px; flex-shrink: 0; margin: 0; }
+.scene-composition-fragment-restore > span { overflow-wrap: anywhere; }
+
+.scene-composition-placement-reset { display: flex; align-items: start; gap: 8px; min-width: 0; cursor: pointer; }
+.scene-composition-placement-reset > input { width: 18px; height: 18px; flex-shrink: 0; margin: 0; }
+.scene-composition-placement-reset > span { overflow-wrap: anywhere; }
+.scene-composition-placement-targets { min-width: 0; }
+.scene-composition-placement-targets ul { padding-left: 20px; }
+.scene-composition-placement-targets li { margin-block: 8px; overflow-wrap: anywhere; }
+
+.backend-project { min-width: 0; margin-block: 16px; padding: 14px; border: 1px solid #bdd1c4; border-radius: 10px; overflow-wrap: anywhere; }
+.backend-project-picker { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.backend-project-picker > label { grid-column: 1 / -1; }
+.backend-project-picker > select { box-sizing: border-box; min-width: 0; width: 100%; padding: 10px; color: inherit; font: inherit; background: white; border: 1px solid #94b4a2; border-radius: 8px; }
+.backend-project .build-actions { align-items: center; }
+.backend-project .build-actions > h3 { flex: 1; }
+.backend-project button { white-space: normal; }
+.backend-project-section { min-width: 0; margin-block: 16px; padding-block: 12px; border-top: 1px solid #cbd8d2; }
+.backend-project-section > h4 { margin-block: 0 10px; font-size: 15px; }
+.backend-project-facts { display: grid; grid-template-columns: minmax(110px, .3fr) minmax(0, 1fr); gap: 6px 12px; margin-block: 10px; min-width: 0; }
+.backend-project-facts > dt { color: #536d64; }
+.backend-project-facts > dd { margin: 0; min-width: 0; user-select: text; }
+.backend-project-inventory { margin-block: 12px; min-width: 0; }
+.backend-project-inventory > summary { cursor: pointer; font-weight: 600; padding-block: 8px; }
+.backend-project-files { list-style: none; padding: 0; margin: 0; min-width: 0; }
+.backend-project-files > li { min-width: 0; padding: 10px; margin-block: 10px; border: 1px solid #d0ddd6; border-radius: 8px; background: #f7faf8; }
+.backend-project-files > li > p { margin-block: 4px; }
+#backendProjectError { color: #a32424; }
+@media (max-width: 600px) {
+  .backend-project { padding: 10px; }
+  .backend-project-picker, .backend-project-facts { grid-template-columns: minmax(0, 1fr); }
+  .backend-project-picker > label { grid-column: auto; }
+  .backend-project-facts { gap: 4px; }
+  .backend-project-facts > dd { margin-bottom: 8px; }
+  .backend-project .build-actions > h3 { flex-basis: 100%; }
+}
+
+.backend-project-runtime { padding: 10px; border: 1px solid #94b4a2; border-radius: 8px; background: #edf5ef; overflow-wrap: anywhere; user-select: text; }
+#backendProjectActivate { margin-block: 10px 4px; max-width: 100%; }
+
+.scene-composition-structure-inherited { display: flex; grid-column: 1 / -1; gap: 8px; align-items: start; min-width: 0; }
+.scene-composition-structure-inherited input { width: 18px; height: 18px; flex-shrink: 0; margin: 0; }
+.scene-composition-structure-targets { padding-left: 20px; overflow-wrap: anywhere; }
+.scene-composition-structure-targets li { margin-block: 10px; }
+.scene-composition-structure-targets p { margin-block: 4px; }
+@media (max-width: 600px) { #sceneCompositionStructureDialog .scene-settings { grid-template-columns: minmax(0, 1fr); } }
+
+.scene-composition-placements-targets { padding-left: 20px; overflow-wrap: anywhere; }
+.scene-composition-placements-targets li { margin-block: 10px; }
+.scene-composition-placements-targets p { margin-block: 4px; }
+@media (max-width: 600px) { #sceneCompositionPlacementsDialog .scene-settings { grid-template-columns: minmax(0, 1fr); } }
+
+/* Shared organizational edits remain readable at narrow viewport widths. */
+.scene-composition-groups-targets { padding-left: 1.2rem; overflow-wrap: anywhere; }
+.scene-composition-groups-targets > li { margin: .5rem 0; }
+.scene-composition-groups-targets p { margin: .35rem 0; }
+#sceneCompositionGroupsDialog .build-actions { flex-wrap: wrap; }
+
+/* Shared definitions display author declarations without rendered identities. */
+.scene-composition-definitions-targets { padding-left: 1.25rem; overflow-wrap: anywhere; }
+.scene-composition-definitions-targets p { margin: .35rem 0; }
+.scene-composition-definitions-targets pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .85rem; }
+#sceneCompositionDefinitionsActorFields { border: 0; margin: .75rem 0 0; padding: 0; min-width: 0; }

@@ -1,0 +1,255 @@
+{
+  "ok": true,
+  "date": "2026-10-08",
+  "recordedAt": "2026-10-08T08:35:15.152362+00:00",
+  "sourceVersion": "0.0.9",
+  "baseCommit": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "delivery": "unreleased-working-tree",
+  "scope": "One selected recipe instance can be moved in a dedicated canvas dialog. Existing Rust geometry/history and exact override patches feed the ordinary source draft, dependency check, full review, guarded apply and normal Save.",
+  "feature": {
+    "function": "scene.composition_canvas",
+    "fields": [
+      "position"
+    ],
+    "fixedInstanceUuid": true,
+    "fullSceneIsContext": true,
+    "worldToLocalOffsetConversion": true,
+    "unchangedAxesPreserveAuthoredLocalNumbers": true,
+    "localAndWorldBoundsCheckedBeforeHistoryMutation": true,
+    "returnToOriginProducesNoOverride": true,
+    "reusedRustGeometryHistoryAndPatchProtocol": true,
+    "sharedFragmentsOffsetsOtherInstancesAndOtherFieldsPreserved": true
+  },
+  "application": {
+    "tests": 2082,
+    "pass": 2082,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 256574.915901,
+    "log": "app-check.log",
+    "node": "24.20.0 (pinned embedded)",
+    "javascriptFiles": 436,
+    "apiContract": "passed",
+    "versionPreflight": "0.0.9",
+    "actualGodotAndBevyRegression": true,
+    "freshNativeHelpers": true
+  },
+  "focused": {
+    "tests": 128,
+    "pass": 128,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "durationMs": 4362.620145,
+    "log": "focused-tests.log",
+    "includedInApplicationCount": true,
+    "newJavascriptTests": 45,
+    "pureHelper": {
+      "passed": 15,
+      "log": "core-layout-tests.log",
+      "node": "24.20.0"
+    },
+    "uiAndCanvasInitialLocalSuite": {
+      "passed": 49,
+      "node": "24.21.0 (system)",
+      "ui19IncludedInPinnedFocus": true,
+      "all49IncludedInPinnedFullApp": true
+    },
+    "uiCanvasSpyDoesNotClaimRenderedBrowserAcceptance": true
+  },
+  "rust": {
+    "sourceFilesUnchanged": 19,
+    "sourceBaseline": "rust-source-baseline.json",
+    "sharedWasmBytesUnchanged": true,
+    "wasmSha256": "d870462368eb3180f6fde123516110e41ba2cbed13b773e7ffc1fc0e0b7ece2f",
+    "nativeCliFreshlyBuilt": true,
+    "standaloneUnitTestsRerunThisTurn": false,
+    "priorCore87EvidenceRetainsOriginalConditions": "../scene-composition-inheritance/results.json"
+  },
+  "browser": {
+    "evidence": "browser-final/browser.json",
+    "browser": "Chrome/154.0.8037.97",
+    "steps": 7,
+    "runtimeExceptions": 0,
+    "localesAt390px": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "layout": {
+      "physicalDrag": true,
+      "siblingCannotMove": true,
+      "rustUndoRedo": true,
+      "backToOriginNoop": true,
+      "localRangeChecked": true,
+      "keyboardNudge": true,
+      "worldToLocal": true,
+      "ordinarySave": true,
+      "stableIds": true
+    },
+    "ordinarySave": {
+      "sourceSha256": "72785e3ea9592a72a62142b3b0db68ef36f0f6db5fc254c6dfeb45234c845bb2",
+      "onlyChangedFile": "documents/scenes/recipe.json"
+    },
+    "scope": "Actual Chrome pointer drag and keyboard input in the real HTTP editor; disposable workspace only."
+  },
+  "sharedCallbackBrowserRegression": {
+    "evidence": "inheritance-regression/browser.json",
+    "steps": 9,
+    "runtimeExceptions": 0,
+    "actualExistingSixFieldSetResetAndNormalSave": true,
+    "freshRunDoesNotOverwriteEarlierReports": true
+  },
+  "preparedResources": {
+    "evidence": "packaged-resources.json",
+    "scope": "Read-only acceptance of prepared desktop helper/canvas copies under the pinned shared Node, and the prepared mobile pure helper with the unchanged Rust WASM in an isolated VM. Host injects only module bytes and a deterministic SHA function. This does not accept an installed Tauri application, Android device, author persistence, engine execution, or new standalone Rust tests.",
+    "embeddedNodeVersion": "v24.20.0",
+    "embeddedNodeSha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7",
+    "harnessSha256": "a050b5a247276ef2160e2bdb006b5597f3e9e25c5acbc93c653086abe7b02893",
+    "artifacts": {
+      "desktop/resources": {
+        "manifestFileCount": 513,
+        "manifestSha256": "7e9255522a9c80dcdc9f862f090378e3013b745198de844f37912ae1aeed680d",
+        "checkedSourceFiles": 111
+      },
+      "mobile/dist": {
+        "manifestFileCount": 203,
+        "manifestSha256": "c32e637221adfe134388848e1641e143faa08d52e11d4d94cecf6fa96276a9ad",
+        "checkedSourceFiles": 81
+      }
+    },
+    "counts": {
+      "desktopCases": 5,
+      "mobileCases": 5,
+      "totalCases": 10
+    },
+    "desktopChecks": [
+      {
+        "id": "exact-saved-and-draft-receipt",
+        "ok": true,
+        "sourceModes": 2,
+        "onlyLocalPositionChanges": true,
+        "allOtherBytesAndActorsUnchanged": true
+      },
+      {
+        "id": "fractional-axis-history-noop",
+        "ok": true
+      },
+      {
+        "id": "world-local-bounds-and-rust-snap",
+        "ok": true,
+        "rejectedPositions": 5
+      },
+      {
+        "id": "foreign-instance-and-stale-receipts",
+        "ok": true,
+        "rejectedOperations": 8
+      },
+      {
+        "id": "preawait-detach-and-disposal",
+        "ok": true
+      }
+    ],
+    "mobileChecks": {
+      "entryModuleCount": 5,
+      "moduleCount": 9,
+      "modules": [
+        "engine/canonical-json.mjs",
+        "engine/scene-composition-layout.mjs",
+        "engine/scene-composition-overrides.mjs",
+        "engine/scene-composition.mjs",
+        "engine/scene-groups.mjs",
+        "engine/scene-identity.mjs",
+        "engine/scene-layout.mjs",
+        "engine/scene-structure.mjs",
+        "engine/studio-core.mjs"
+      ],
+      "wasmSha256": "d870462368eb3180f6fde123516110e41ba2cbed13b773e7ffc1fc0e0b7ece2f",
+      "wasmMetadata": {
+        "protocolVersion": 1,
+        "backend": "rust-wasm",
+        "ready": true
+      },
+      "checks": [
+        {
+          "id": "exact-saved-and-draft-receipt",
+          "ok": true,
+          "sourceModes": 2,
+          "onlyLocalPositionChanges": true,
+          "allOtherBytesAndActorsUnchanged": true
+        },
+        {
+          "id": "fractional-axis-history-noop",
+          "ok": true
+        },
+        {
+          "id": "world-local-bounds-and-rust-snap",
+          "ok": true,
+          "rejectedPositions": 5
+        },
+        {
+          "id": "foreign-instance-and-stale-receipts",
+          "ok": true,
+          "rejectedOperations": 8
+        },
+        {
+          "id": "preawait-detach-and-disposal",
+          "ok": true
+        }
+      ],
+      "acceptedCases": 5,
+      "rejectedOperations": 13,
+      "noNodeDomNetworkGlobals": true,
+      "noHostImports": true,
+      "noDeviceAcceptance": true
+    }
+  },
+  "boundaryReview": {
+    "evidence": "boundary-review.json",
+    "fix": "Parent completion compares the complete canonical submitted payload and result identity, accepting legitimate detached child copies while rejecting changed fields. Completion still works after the expected source token increment."
+  },
+  "preservation": "historical-preservation.json",
+  "sourceHashes": "source-hashes.json",
+  "nativeHelperBytes": "native-helpers.json",
+  "cleanup": "cleanup.json",
+  "initialAttempts": [
+    {
+      "log": "prepared-check-initial.log",
+      "kind": "proof-old-version-assumption",
+      "explanation": "The first proof invocation stopped before manifest or behavior checks because its inherited guard expected 0.0.8; the frozen current source version is read directly instead. No product failure or product change is claimed."
+    },
+    {
+      "log": "prepared-check-fixture-initial.log",
+      "kind": "proof-missing-provenance-definition",
+      "explanation": "The source map stores placement identity rather than a definition UUID. The constructed proof preview initially omitted the provenance objectId and was correctly rejected; the proof now obtains it from the corresponding expanded actor. Product sources are unchanged."
+    },
+    {
+      "log": "core-layout-tests-initial.log",
+      "node": "24.20.0",
+      "passed": 13,
+      "tests": 15,
+      "cause": "New fixture compared actor provenance as runtime semantics, and its first budget case grew by only one byte. Fixture assertions corrected; product unchanged."
+    },
+    {
+      "evidence": "browser/browser.json",
+      "log": "browser-check-initial.log",
+      "harness": "browser-harness-initial.mjs",
+      "cause": "New browser harness used nonexistent setLanguage instead of actual applyLanguage; only harness corrected. This failure did not reach the parent completion P2."
+    },
+    {
+      "log": "focused-tests-initial.log",
+      "passed": 128,
+      "scope": "Real initial passing focus before the independent review found the copied proposal completion issue; final focus rerun after correction."
+    }
+  ],
+  "limitations": [
+    "No new version, commit, push, installer, installed Tauri window or Android device acceptance.",
+    "One recipe/source session and one UUID; no multi-selection, alignment, placement-offset editing, shared-fragment editing or cross-view common undo.",
+    "Only ordinary Save persists; generated recipes still cannot build or run directly.",
+    "Prepared mobile checks exercise isolated ESM/WASM helpers, not a mobile scene GUI.",
+    "Focused, added JavaScript and local suites overlap the full application count."
+  ]
+}

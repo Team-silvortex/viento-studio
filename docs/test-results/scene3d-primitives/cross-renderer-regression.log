@@ -1,0 +1,25 @@
+✔ matrix composition keeps column-major identity and translated scaled box positions (1.015402ms)
+✔ mixed-axis Euler XYZ matches Godot Rx*(Ry*Rz) analytical columns (0.1799ms)
+✔ lookAt puts the camera at origin and its target along negative Z (0.191913ms)
+✔ perspective uses WebGL clipping and source near/far values (0.182415ms)
+✔ orbit is detached, preserves target and clamps polar and distance singularities (0.851462ms)
+✔ hex conversion preserves authored case and color channels (0.151788ms)
+✔ subnormal accepted directional light normalizes to a finite unit vector (1.4001ms)
+✔ unsupported WebGL2 returns no renderer and does not allocate fake geometry (0.15832ms)
+✔ actual renderer draws each box with source matrices, light and camera uniforms (1.245007ms)
+✔ drawing buffer bounds DPR and dimension allocations on initial render and resize (0.388815ms)
+✔ pointer orbit and wheel zoom never mutate the supplied model; view reset restores source camera (0.583193ms)
+✔ unrelated pointer and right click cannot change the view (0.224014ms)
+✔ dispose releases every shader/program/VAO/buffer, observer and interaction listener exactly once (0.257898ms)
+✔ shader compile failure still releases the partially allocated program and shader (0.379197ms)
+✔ link failure releases both shaders without leaving geometry or listeners (0.139244ms)
+✔ buffer allocation failure releases the VAO and all compilation resources (0.151516ms)
+✔ unexpected context loss is reported and stops further draw calls (0.233121ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 59.542704

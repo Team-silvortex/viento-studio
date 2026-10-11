@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-11",
+  "version": "0.0.9",
+  "nodeVersion": "v24.20.0",
+  "scope": "Independent review of frozen source authoring candidate/workflow, six browser adapter entries and parent wiring, focused tests and actual prepared desktop/mobile VM copies.",
+  "findings": [],
+  "sources": {
+    "engine/scene-authoring-candidate.mjs": "8844f7b911e15a9afaa6cc04028e78c4fb697089fbc9fccd7a570030f366f1c7",
+    "engine/scene-authoring-workflow.mjs": "2c14163c57a873609d7c20f74106b6bd7d4d28bb466dd88651ef3be2477abb64",
+    "web/modules/app-scene-authoring.js": "550dba8178ad8e57dc6a84b0dc295ecba6fe0e5c0565aa151f9dffa6bbc08fe4",
+    "web/modules/app-project-build.js": "53b15266ada2a6465751e5dd2a5144b79c1c0142392758b09a141ca87a910212",
+    "scripts/tests/scene-authoring-candidate.test.mjs": "b3a464adf57f1c8fdf730edab6b0203327599569c68f2e440df7393bf80fc78f",
+    "scripts/tests/scene-authoring-workflow.test.mjs": "52ef2d1a17fbf377c4c794742b8c3e5322cf02d49329dc2d96c102922623b6a9",
+    "scripts/tests/scene-authoring-ui.test.mjs": "c16dabfe3415dbffb376a8174aba251fa93affabc93cdfce6764b30a3e061d23"
+  },
+  "artifacts": {
+    "candidate-tests-initial.log": "a7418f70fa66de7e9704b45d2aade72014b0ec965f08f4e0f1a6cf77c7726db0",
+    "candidate-tests-final.log": "593cdf492fb85ced866c030f94c52a0eabc1d773684f87876cb5caffaf1c4506",
+    "independent-authoring-focused-final.log": "28acea31973dfa9bbcaf2a72fb62e13e8b0edeb7c08627b6028a7714130a28e5",
+    "prepared-check-initial.log": "33ee7f5f02a3d6275840368ed72c7acfb6534cffbbb5079d9078bb7ac0d7e5fa",
+    "packaged-resources.json": "75009230b5b3983a761144993f28812829041dcd2933e56aefdcb774a7ffb48c",
+    "prepared-check.mjs": "e59934fd07b64dbd9f7f2650d00343af2eaef15c61372dd5355aacc26c65c391"
+  },
+  "focused": {
+    "candidate": 15,
+    "workflow": 31,
+    "browserAdapter": 5,
+    "total": 51,
+    "passed": 51,
+    "failed": 0,
+    "skipped": 0
+  },
+  "checks": [
+    {
+      "id": "closed-domain-routing",
+      "result": "passed",
+      "detail": "Exactly five semantic candidate kinds and six legal kind/capability pairs. Instance override and single layout use separate workflow state while retaining their common source operation. Unknown kinds and sibling capability claims refuse."
+    },
+    {
+      "id": "narrow-host-ports-and-context",
+      "result": "passed",
+      "detail": "Each controller receives six source/editability context fields and its own capability key. Only override/fragment/structure lazily acquire world resource catalogs. Engine contracts import no GUI, HTTP, build adapter or tool process."
+    },
+    {
+      "id": "source-owner-snapshots",
+      "result": "passed",
+      "detail": "Model and chosen actor captured before source acquisition; source captured before catalog await; proposal and submitted DTO reject serializers/accessors and are detached before asynchronous ports. Owner checks use source/session/token plus latest attempt epochs."
+    },
+    {
+      "id": "candidate-envelope-and-provenance",
+      "result": "passed",
+      "detail": "Existing source/scene/hash/base/prohibited preview capabilities and each domain target matcher are preserved. Placement groups are read from sceneStructure.groups and sourceLocations.groups. Structure checks whole expanded identity/provenance, permits unused edits and the removed opener to be absent."
+    },
+    {
+      "id": "preview-lease-lifetime",
+      "result": "passed",
+      "detail": "A returned own data-property valid preview UUID is captured even for stale/malformed responses and released in finally. Release is best effort; invalid or getter IDs are not promoted to release authority."
+    },
+    {
+      "id": "apply-and-completion-lifetime",
+      "result": "passed",
+      "detail": "Source write ports receive current guards, successful source-token advancement is accepted only for the original owner, and completion requires the identical result plus full canonical proposal. Pending receipts are private, single-use, reset on reopen/close and protected against overlapping apply attempts."
+    },
+    {
+      "id": "authoring-versus-derived-build-identity",
+      "result": "passed",
+      "detail": "Parent getState binds source path, selected recipe, preview/session and the original busy gates; it does not bind backend identity, latest build, artifact snapshot or runtime observation. A backend identity change alone does not grant or revoke source ownership."
+    }
+  ],
+  "prepared": {
+    "sourceFiles": 610,
+    "historicalFiles": 2799,
+    "inventoryFiles": {
+      "desktop/resources": 529,
+      "mobile/dist": 216,
+      "desktop/ui": 11
+    },
+    "casesEach": 40,
+    "totalCases": 80,
+    "workflowGroupsEach": 12,
+    "previousStructureGroupsEach": 4,
+    "previousPlacementFragmentGroupsEach": 24,
+    "standardVmModulesEach": 86,
+    "sourceAndInventoryByteGuards": "passed",
+    "noNodeDomFetchProcessGlobals": true,
+    "copiedWasmSha256": "c9cb529e365b43e9fefbfdf96ff947e6fc5e7ed34abc3c4d0f71efd2544f9581"
+  },
+  "retainedInitialFailure": {
+    "file": "candidate-tests-initial.log",
+    "result": "14 passed, 1 failed",
+    "reason": "New test expected projection default size [40,50]; the immutable golden projection declares [80,60]. Corrected only the new fixture assertion. Candidate product source did not change."
+  },
+  "boundaries": [
+    "User approval and raw form signatures remain in the six established UI controllers; this extraction does not create a common UI state machine or grant approval from an engine receipt.",
+    "The injected source apply port still recomputes the exact domain patch and rechecks current ownership immediately before the in-memory editor write. Ordinary Save and external-file conflict handling remain host responsibilities.",
+    "Caller-supplied sourceRevision is computed from a captured candidate by the workflow digest port. The synchronous candidate validator does not perform hashing or independently grant source-write authority.",
+    "The previous busy/running and preview/source-writability gates are retained. This round does not authorize editing through an active source-owner or running-job conflict.",
+    "Temporary preview release remains best effort. Malformed or UUID-less responses are refused and are never converted into arbitrary release paths.",
+    "Standard VM and prepared copies verify portable contracts and packaging bytes, not hostile-code isolation, an installed desktop application, Android device acceptance or execution-engine acceptance."
+  ]
+}

@@ -1,0 +1,35 @@
+✔ CLI infers the frozen Bevy backend and its separate environment tool while author source is offline (183.783527ms)
+✔ CLI infers the same backend tool for suite members without changing saved author documents (279.562079ms)
+✔ CLI keeps explicit tool selection and refuses explicit foreign backend and Godot-only alias before a tool starts (141.035714ms)
+✔ CLI inspection is source-independent and ignores host backend/tool configuration without executing anything (86.490503ms)
+✔ CLI inspection rejects execution/source/output flags and a foreign requested backend without altering output (78.126134ms)
+✔ CLI inspection distinguishes extra manual files from changed registered artifacts and metadata bytes (115.425177ms)
+✔ CLI inspection never follows a substituted registered artifact symlink and preserves the link and outside target (86.955382ms)
+✔ CLI inspection reports completed runtime sessions as extra ownership scope without rewriting receipts or invoking the tool (145.79019ms)
+✔ CLI backend inference preserves missing frozen run diagnostics and cancellation without invoking a tool or writing output (81.589711ms)
+✔ CLI inspection derives legacy manifests without adopting or repairing old output and rejects changed legacy source maps (84.460749ms)
+✖ CLI derives cold legacy logical source identifiers separately from strict generated paths (79.329319ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 10
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1503.279861
+
+✖ failing tests:
+
+test at scripts/tests/backend-project-cli.test.mjs:199:1
+✖ CLI derives cold legacy logical source identifiers separately from strict generated paths (79.329319ms)
+  Error: The backend project does not match its frozen source and file inventory.
+      at buildError (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-build-snapshot.mjs:19:74)
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-backend-project.mjs:17:60)
+      at inspectionError (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-backend-project.mjs:168:3)
+      at inspectBackendProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-backend-project.mjs:191:21)
+      at async runProjectBuildCommand (file:///home/chiharukiryu/cdev/viento-studio/scripts/project-build.mjs:33:27)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-cli.test.mjs:213:90)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errorCode: 'backend_project_changed'
+  }

@@ -3,8 +3,16 @@
 
 mod layout_draft;
 mod layout_save;
+mod scene3d;
 mod scene_composition;
+mod scene_composition_definition_rename;
+mod scene_composition_definitions_patch;
+mod scene_composition_fragment_patch;
+mod scene_composition_groups_patch;
 mod scene_composition_patch;
+mod scene_composition_placement_patch;
+mod scene_composition_placements_patch;
+mod scene_composition_structure_patch;
 mod scene_layout;
 mod scene_source;
 mod wasm;
@@ -47,6 +55,72 @@ pub extern "C" fn viento_core_scene_composition_version() -> u32 {
 /// Independent capability: earlier composition cores can still expand recipes.
 #[no_mangle]
 pub extern "C" fn viento_core_scene_composition_patch_version() -> u32 {
+    1
+}
+
+/// Independent atomic set/reset capability; earlier patch cores remain usable.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_edit_version() -> u32 {
+    1
+}
+
+/// Independent position-only batch capability; older set/reset cores stay usable.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_positions_version() -> u32 {
+    1
+}
+
+/// Independent shared fragment actor capability; local override domains stay separate.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_fragment_version() -> u32 {
+    1
+}
+
+/// Independent shared declaration set/reset capability; set-only cores remain valid.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_fragment_edit_version() -> u32 {
+    1
+}
+
+/// Independent placement offset capability; actor edit domains remain valid.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_placement_version() -> u32 {
+    1
+}
+
+/// Independent shared structure capability; existing value domains stay valid.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_structure_version() -> u32 {
+    1
+}
+
+/// Independent placement add/copy/remove capability.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_placements_version() -> u32 {
+    1
+}
+
+/// Independent shared organizational group capability.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_groups_version() -> u32 {
+    1
+}
+
+/// Independent management of unplaced fragment definitions.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_definitions_version() -> u32 {
+    1
+}
+
+/// Optional fragment identity rename; original definition operations stay usable.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_composition_definition_rename_version() -> u32 {
+    1
+}
+
+/// Independent strict 3D primitive source parsing; existing 2D domains remain valid.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_version() -> u32 {
     1
 }
 
@@ -134,12 +208,25 @@ pub enum CoreResponse {
         ok: bool,
         composition: SceneCompositionResponse,
     },
+    Scene3DSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        scene3d: scene3d::Scene3DResponse,
+    },
     CompositionPatchSuccess {
         #[serde(rename = "protocolVersion")]
         protocol_version: u32,
         ok: bool,
         #[serde(rename = "compositionPatch")]
         composition_patch: SceneCompositionPatchResponse,
+    },
+    CompositionLocationsSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "compositionLocations")]
+        composition_locations: scene_composition_definitions_patch::DefinitionLocationsResponse,
     },
     Failure {
         #[serde(rename = "protocolVersion")]
@@ -166,7 +253,116 @@ fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
         return Err(CoreError::request());
     }
     let operation = value["operation"].as_str();
-    if operation == Some("sceneComposition.patchOverrides") {
+    if operation == Some("scene3d.parse") {
+        let request = value.as_object().ok_or_else(CoreError::request)?;
+        if request.len() != 3 || !request.contains_key("content") {
+            return Err(CoreError::request());
+        }
+        return Ok(CoreResponse::Scene3DSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d: scene3d::parse(request["content"].as_str().ok_or_else(CoreError::request)?)?,
+        });
+    }
+    if operation == Some("sceneComposition.renameFragmentDefinition") {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_definition_rename::dispatch(value)?,
+        });
+    }
+    if operation == Some("sceneComposition.inspectDefinitionLocations") {
+        return Ok(CoreResponse::CompositionLocationsSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_locations: scene_composition_definitions_patch::inspect_locations(value)?,
+        });
+    }
+    if matches!(
+        operation,
+        Some(
+            "sceneComposition.addFragmentGroup"
+                | "sceneComposition.editFragmentGroup"
+                | "sceneComposition.assignFragmentActorGroup"
+                | "sceneComposition.removeFragmentGroup"
+        )
+    ) {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_groups_patch::dispatch(value)?,
+        });
+    }
+    if matches!(
+        operation,
+        Some(
+            "sceneComposition.addPlacement"
+                | "sceneComposition.copyPlacement"
+                | "sceneComposition.removePlacement"
+        )
+    ) {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_placements_patch::dispatch(value)?,
+        });
+    }
+    if matches!(
+        operation,
+        Some(
+            "sceneComposition.addFragmentDefinition"
+                | "sceneComposition.copyFragmentDefinition"
+                | "sceneComposition.removeFragmentDefinition"
+        )
+    ) {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_definitions_patch::dispatch(value)?,
+        });
+    }
+    if matches!(
+        operation,
+        Some("sceneComposition.addFragmentActor" | "sceneComposition.removeFragmentActor")
+    ) {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_structure_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("sceneComposition.editPlacementOffset") {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_placement_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("sceneComposition.editFragmentActor") {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_fragment_patch::dispatch_edit(value)?,
+        });
+    }
+    if operation == Some("sceneComposition.patchFragmentActor") {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_fragment_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("sceneComposition.patchPositions") {
+        return Ok(CoreResponse::CompositionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            composition_patch: scene_composition_patch::dispatch_positions(value)?,
+        });
+    }
+    if matches!(
+        operation,
+        Some("sceneComposition.patchOverrides" | "sceneComposition.editOverrides")
+    ) {
         return Ok(CoreResponse::CompositionPatchSuccess {
             protocol_version: PROTOCOL_VERSION,
             ok: true,

@@ -1,0 +1,31 @@
+✔ recipe preview identifies its read-only origin and forbids all layout writes even with a forged editing grant (30.836528ms)
+✔ recipe actor inspector exposes separate exact override, offset and identity sources while inherited projection fields retain their own origin (13.71433ms)
+✔ scene and group recipe sources retain exact recipe locations and group composition identity (16.406693ms)
+✔ recipe drafts keep exact contributor navigation in the current text and cannot enter draft layout (16.365115ms)
+✔ invalid recipe drafts preserve the last valid contributor closures and label composition diagnostics (25.938869ms)
+✔ recipe draft responses from stale editor sessions are released without painting or granting edits (18.151525ms)
+✔ untrusted recipe marker identity, revisions and composition budgets fail before rendering (49.719448ms)
+✔ recipe-only projects offer current recipe previews and drafts while build selectors and jobs remain empty (93.111999ms)
+✔ mixed projects remember separate preview and build choices, filter forged picker values and preserve ordinary scene editing (86.39078ms)
+✔ structure toolbar opens the whole composition without requiring a selected actor (31.084585ms)
+✔ actor selection is a view preference and cannot invalidate an opened shared structure editor (19.926943ms)
+✖ dirty source requires a matching draft preview before shared structure editing (11.773099ms)
+✔ source token, hidden preview and document replacement suppress late structure failures (54.975663ms)
+✔ capability and source ownership are checked at click time and structure failures stay localized (13.966525ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 13
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 422.08642
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-structure-preview-ui.test.mjs:86:1
+✖ dirty source requires a matching draft preview before shared structure editing (11.773099ms)
+  TypeError: Cannot read properties of null (reading 'click')
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-structure-preview-ui.test.mjs:88:39)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

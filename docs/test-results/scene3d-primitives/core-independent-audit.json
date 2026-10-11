@@ -1,0 +1,49 @@
+{
+  "format": "viento-scene3d-core-readonly-audit",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T11:33:09.036Z",
+  "runtime": "v24.20.0",
+  "sourceHashes": {
+    "crates/viento-studio-core/src/scene3d.rs": "f7af0223a00bb948cf139f07df31bb2cd5ad7118b1b448671b3ff3c95de55bcb",
+    "crates/viento-studio-core/src/lib.rs": "4367226a0d161e2853d9ef3df276ea58f3056337ba7d58f79fdbf579cc798aaf",
+    "engine/studio-core.mjs": "71fe6113d4b93444410d363cd742ab61daaeb028b0fd976970817a3fe0beb962",
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.wasm": "6114130522595a92b0f6627df1f29ac0bb86cc82c60a5fa68c06cb38f6cb3328"
+  },
+  "nativeSha256": "594515f31fbb81c99af0fbd8a15dfd8e4fc70eb2c4ec7a8f6b7894e1def2e585",
+  "checks": [
+    {
+      "id": "fresh-native-WASM-strict-envelope-and-read-only-operation-admission",
+      "ok": true,
+      "requests": 7
+    },
+    {
+      "id": "actual-native-WASM-double-boundary-subnormal-frustum-and-malformed-parity",
+      "ok": true,
+      "requests": 20
+    },
+    {
+      "id": "3D-only-module-does-not-require-legacy-probes-and-missing-3D-does-not-poison-old-runtime",
+      "ok": true,
+      "configurations": 4
+    },
+    {
+      "id": "bridge-validates-native-double-boundaries-without-invalidating-author-errors",
+      "ok": true,
+      "requests": 13
+    },
+    {
+      "id": "forged-model-and-whole-object-range-successes-poison-untrusted-module-before-read-use",
+      "ok": true,
+      "forgeries": 3
+    }
+  ],
+  "passed": 5,
+  "failed": 0,
+  "findings": [],
+  "limitations": [
+    "The bridge verifies a trusted native parser receipt; it deliberately does not introduce another source parser.",
+    "Standard same-process JavaScript data validation is not a security sandbox for hostile Proxies or external same-user file races.",
+    "Read-only model parsing provides no asset, World, behavior, hierarchy, source mutation or 2D fallback."
+  ]
+}

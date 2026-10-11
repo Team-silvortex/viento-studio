@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "recordedAt": "2026-10-08T08:18:11.831Z",
+  "scope": "Independent read-only source boundary review and small probes of the actual child apply functions, parent completion handlers and shared canvas. No full application, installed Tauri, Android device, or standalone Rust test acceptance is claimed.",
+  "sourceSha256": {
+    "engine/scene-composition-layout.mjs": "b0c3516c832fb0269545955b72165fdc1556074e9263a920dc46936ec6f6d2f5",
+    "engine/scene-composition-overrides.mjs": "df009572489f19369106fb5e8ce2f8e9ef8146ee2bf989fd442f9c3cbb9d0977",
+    "engine/scene-layout.mjs": "247578b42addf2ebe467f44d6ebac04c61c721da938b097be0e9cffa8af267a0",
+    "engine/studio-core.mjs": "eff4d8b5ef7dde7c88f1efac6466dbf72dc8669c678c847ceb0d344bd360a8a2",
+    "web/modules/app-scene-composition-layout.js": "2330947bdd7d3f6258c71615e384e3c54630d5415184d6532cea663cc59313b6",
+    "web/modules/app-scene-composition-overrides.js": "c8f90fc7aec8db3439c2f5bee8b3a5d439499114f284b8f8c625a7561f9453b0",
+    "web/modules/app-scene-preview-canvas.js": "ad36101025726abb723a1d44da16d05bd165a814eaa3d3cac562ae61a0007a58",
+    "web/modules/app-scene-preview.js": "5375979777998f7beee8fda4249562080a534914ce2accb82d09edfde6fb8cbf",
+    "web/modules/app-project-build.js": "006dc485d53110f8ac3ac15ed7e6ba4b50cb11efc454df21bef466689e6b33d7",
+    "web/modules/app-doc-service.js": "da6bafd6ffb8d625984304c2ba9b0b757b8f37c95aa03315ade73173a1e8e939",
+    "scripts/tests/scene-composition-layout.test.mjs": "7a9ff0c06a70679469f462263340bd87e038338864b374f472eb69cbb7c03ef3",
+    "scripts/tests/scene-composition-layout-ui.test.mjs": "4ad73a3d3b45287048aed016c2f02204c31dd74ac5b117f4e7cef1181ce066ee",
+    "scripts/tests/scene-composition-overrides-bridge.test.mjs": "1604fe60c7f3a82c0880b2904496982d431becdbf15063f6ea3efbb91d6b3111",
+    "scripts/tests/scene-layout-canvas.test.mjs": "afef22306b20a0bcf15454841c0472dff023904e0daee63dc36c43caeb23cb0b",
+    "engine/README.md": "39a134dd04f7d64943e4361721575e3bf0e7e87c04788fbec7a56698ea043a62"
+  },
+  "preservation": {
+    "historical-baseline.json": {
+      "files": 2129,
+      "baselineSha256": "80712e7e413bdf52c9d4475f144e5d71516227dfd301fd3a2e98dabd05c027d2",
+      "allOriginalHashesMatch": true
+    },
+    "frozen-backend-baseline.json": {
+      "files": 9,
+      "baselineSha256": "acf7c7a71fe0d4afc4dbb880a7ef5a0cb665c3cf8b0104bd6c76405969670a9a",
+      "allOriginalHashesMatch": true
+    },
+    "rust-source-baseline.json": {
+      "files": 19,
+      "baselineSha256": "60f8c044f5e259afb7736c1f4cbcd052a0ba8971f4308c3369b5f6cd1af3dae4",
+      "allOriginalHashesMatch": true
+    }
+  },
+  "findings": [
+    {
+      "id": "composition-apply-completion-proposal-identity",
+      "priority": "P2",
+      "status": "resolved",
+      "initial": "Both real child controllers submitted copy(candidate) but completed with candidate. The new parent reference-equality guard rejected every successful child completion.",
+      "initialChildSources": {
+        "web/modules/app-scene-composition-layout.js": "2330947bdd7d3f6258c71615e384e3c54630d5415184d6532cea663cc59313b6",
+        "web/modules/app-scene-composition-overrides.js": "c8f90fc7aec8db3439c2f5bee8b3a5d439499114f284b8f8c625a7561f9453b0"
+      },
+      "initialProbe": {
+        "actualChildApplyFunctions": 2,
+        "submissionEqualsCompletion": false,
+        "equalPayload": true,
+        "resultSame": true
+      },
+      "resolution": "Parent captures the full canonical proposal payload at accepted submission. Completion requires the same result object and exact canonical payload, allowing the intentional detached copies. Existing override controller bytes remain unchanged.",
+      "verification": {
+        "actualParentHandlerProbe": true,
+        "detachedCopyAccepted": true,
+        "sourceTokenAdvancedBeforeCompletion": true,
+        "wrongCompletionsRejected": 7,
+        "currentOperationInvalidatesAndCloses": true
+      }
+    }
+  ],
+  "canvasProbe": {
+    "ok": true,
+    "foreignPointerMoves": 0,
+    "foreignKeyboardMoves": 0,
+    "targetKeyboardMoves": 1,
+    "spacePanDelta": 20,
+    "gestureInvalidations": 4,
+    "sourceModelUntouched": true,
+    "ownedCanvasReleased": true
+  },
+  "reviewedBoundaries": [
+    "One instance UUID only; sharing a definition UUID does not grant movement to sibling instances.",
+    "Movable grants, scene replacement, editing and visibility changes cancel pending gestures; middle/space panning changes only the view.",
+    "Layout factory snapshots source/model before asynchronous digest, then reuses existing recipe source/provenance and Rust source-patch validation.",
+    "Position is world-space in the canvas and local-space in one override; both coordinates remain finite and bounded. Unmoved fractional axes retain their original authored local number.",
+    "Raw numeric values, input epochs and exact signatures block approval/application even without a dispatched input event. Live guards reject stale source tokens, preview selection and closed/reopened sessions.",
+    "Validation uses the exact source draft, checks the matching preview receipt, and releases its preview lease in finally; canvas never saves or builds.",
+    "Successful application may advance the source token; only the matching accepted operation may invalidate/close the parent and restore source focus.",
+    "Copied preview images belong to the layout controller and are zeroed on close/disposal; original preview images and source model are untouched.",
+    "Old null movement grants preserve ordinary canvas behavior, multi-selection and direct scene layout."
+  ],
+  "openFindings": []
+}

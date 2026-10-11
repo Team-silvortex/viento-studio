@@ -1,0 +1,35 @@
+{
+  "startedAt": "2026-10-11T11:28:09.475Z",
+  "steps": [],
+  "errors": [],
+  "screenshots": [],
+  "modules": [],
+  "limitations": [
+    "Real HTTP editor, native/WASM source semantics and WebGL2 draws/readPixels; no installed desktop, Android or hardware-GPU claim.",
+    "Browser renderer/vendor are recorded explicitly; headless Chrome may use a software GPU implementation.",
+    "Unsupported-renderer phase injects getContext(webgl2)=null only; all source semantics and editor Save remain real.",
+    "Readonly orbit/zoom/reset cannot author a scene. No textures, hierarchy, physics or asset-format support is implied."
+  ],
+  "node": {
+    "version": "v24.20.0",
+    "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+  },
+  "sources": {
+    "scripts/tests/scene3d-preview-smoke.mjs": "7db6d8f59672a68dfbb3a7427f30dd6bbc72d63b669f49efc28ba14a5f902433",
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.mjs": "71fe6113d4b93444410d363cd742ab61daaeb028b0fd976970817a3fe0beb962",
+    "engine/studio-modules.mjs": "c7a8bf1d2bfe8fd92421924054f2c3c625eeee0aa67d0874e94a4f7840d62d20",
+    "web/modules/app-scene3d-preview.js": "c09771f9b758a7e1786ad9de4d01e0337113769826875603c0782003a1256050",
+    "web/modules/scene3d-renderer.js": "50c17c92d28d01bfae6d40d5916ce5d1e13ff1cab4285a299ea87030a47ab94d",
+    "web/modules/scene3d-math.js": "94bda5256de88430bdeb3446985d8c5f62b8906898a6842fd55afd043ea55ecb",
+    "web/modules/app-studio-system.js": "4887c56a0e12e859ad050a47ccaacedc59fcf8ac824af4263c437ec8a479ac5e",
+    "web/modules/app-runtime.js": "8a9f6720157e237b81f9886d73afe5b4b6929508b65909d8e195334b1181e972",
+    "web/scene3d.css": "506fd6d0940e344146ff3930e5e25b47be200926a3d5974a94558bf5a0a13928",
+    "web/i18n/en.js": "f038f5f7ac8815a2d002b5ab128c9f5111add611eac7447a177a71cfb85cc163",
+    "web/i18n/ja.js": "cd04239fd5b8c7f3d591fe942d0edffa6a29e6468a983f4e7f55851e8739b512"
+  },
+  "status": "failed",
+  "failure": "Error: Choose a document type defined by this project\n    at createError (file:///home/chiharukiryu/cdev/viento-studio/engine/service-error.mjs:2:17)\n    at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/world-object-create.mjs:7:49)\n    at prepareObjectCreate (file:///home/chiharukiryu/cdev/viento-studio/engine/world-object-create.mjs:19:14)\n    at prepare (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-world-commands.mjs:59:24)\n    at file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-world-commands.mjs:97:29\n    at async file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-preview-smoke.mjs:47:2",
+  "finishedAt": "2026-10-11T11:28:09.717Z"
+}
+

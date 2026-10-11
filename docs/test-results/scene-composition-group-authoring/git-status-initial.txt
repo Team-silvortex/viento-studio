@@ -1,0 +1,167 @@
+ M crates/viento-studio-core/src/lib.rs
+ M crates/viento-studio-core/src/scene_composition_patch.rs
+ M crates/viento-studio-core/src/scene_source.rs
+ M docs/ARCHITECTURE.md
+ M docs/BACKEND_MIDDLEWARE.md
+ M docs/BEVY_BACKEND.md
+ M docs/FUNCTION_ATLAS.md
+ M docs/PROJECT_BUILD.md
+ M docs/PROJECT_TEMPLATES.md
+ M docs/README.md
+ M docs/ROADMAP.md
+ M docs/SCENE_COMPOSITION.md
+ M docs/STATUS.md
+ M docs/TESTING.md
+ M docs/function-atlas.html
+ M docs/function-atlas.json
+ M docs/function-atlas.mmd
+ M engine/README.md
+ M engine/index.mjs
+ M engine/project.mjs
+ M engine/scene-composition-overrides.mjs
+ M engine/studio-core.mjs
+ M schemas/workspace-v2.schema.json
+ M schemas/workspace-v3.schema.json
+ M scripts/adapters/node-project-build.mjs
+ M scripts/backends/godot4-adapter.mjs
+ M scripts/lib/project-build-service.mjs
+ M scripts/lib/project-definition.mjs
+ M scripts/project-build.mjs
+ M scripts/tests/dialog-harness.mjs
+ M scripts/tests/editor-dialogs.test.mjs
+ M scripts/tests/editor-harness.mjs
+ M scripts/tests/media-drop.test.mjs
+ M scripts/tests/media-loading.test.mjs
+ M scripts/tests/media-preview-parsing.test.mjs
+ M scripts/tests/media-preview-requests.test.mjs
+ M scripts/tests/project-build-ui.test.mjs
+ M scripts/tests/scene-composition-overrides-bridge.test.mjs
+ M scripts/tests/scene-composition-overrides-ui.test.mjs
+ M scripts/tests/scene-composition-overrides.test.mjs
+ M scripts/tests/scene-layout-canvas.test.mjs
+ M scripts/tests/studio-core-composition-patch.test.mjs
+ M src-tauri/src/project_templates.rs
+ M src-tauri/src/workspace.rs
+ M web/i18n/en.js
+ M web/i18n/ja.js
+ M web/modules/app-project-build.js
+ M web/modules/app-runtime.js
+ M web/modules/app-scene-composition-overrides.js
+ M web/modules/app-scene-preview-canvas.js
+ M web/modules/app-scene-preview.js
+ M web/project-build.css
+?? crates/viento-studio-core/src/scene_composition_fragment_patch.rs
+?? crates/viento-studio-core/src/scene_composition_placement_patch.rs
+?? crates/viento-studio-core/src/scene_composition_placements_patch.rs
+?? crates/viento-studio-core/src/scene_composition_structure_patch.rs
+?? crates/viento-studio-core/tests/fragment_inheritance.rs
+?? crates/viento-studio-core/tests/placement_offset.rs
+?? docs/BACKEND_PROJECTS.md
+?? docs/SCENE_AUTHORING.md
+?? docs/STUDIO_MODULES.md
+?? docs/test-results/backend-project-catalog/
+?? docs/test-results/backend-project-management/
+?? docs/test-results/scene-authoring-workflow/
+?? docs/test-results/scene-composition-batch-canvas/
+?? docs/test-results/scene-composition-canvas/
+?? docs/test-results/scene-composition-fragment-editor/
+?? docs/test-results/scene-composition-fragment-inheritance/
+?? docs/test-results/scene-composition-group-authoring/
+?? docs/test-results/scene-composition-inheritance/
+?? docs/test-results/scene-composition-placement-offset/
+?? docs/test-results/scene-composition-placement-structure/
+?? docs/test-results/scene-composition-structure/
+?? docs/test-results/studio-system-modules/
+?? engine/backend-project.mjs
+?? engine/scene-authoring-candidate.mjs
+?? engine/scene-authoring-workflow.mjs
+?? engine/scene-composition-batch-layout.mjs
+?? engine/scene-composition-fragments.mjs
+?? engine/scene-composition-layout.mjs
+?? engine/scene-composition-placement.mjs
+?? engine/scene-composition-placements.mjs
+?? engine/scene-composition-structure.mjs
+?? engine/studio-modules.mjs
+?? schemas/studio-profile-v1.schema.json
+?? scripts/adapters/node-backend-project-catalog.mjs
+?? scripts/adapters/node-backend-project-retention.mjs
+?? scripts/adapters/node-backend-project.mjs
+?? scripts/tests/backend-project-boundary.test.mjs
+?? scripts/tests/backend-project-build-ui.test.mjs
+?? scripts/tests/backend-project-cache.test.mjs
+?? scripts/tests/backend-project-catalog-boundary.test.mjs
+?? scripts/tests/backend-project-catalog-build-ui.test.mjs
+?? scripts/tests/backend-project-catalog-service.test.mjs
+?? scripts/tests/backend-project-catalog-smoke.mjs
+?? scripts/tests/backend-project-catalog-ui-smoke.mjs
+?? scripts/tests/backend-project-catalog-ui.test.mjs
+?? scripts/tests/backend-project-catalog.test.mjs
+?? scripts/tests/backend-project-cli.test.mjs
+?? scripts/tests/backend-project-management-smoke.mjs
+?? scripts/tests/backend-project-retention.test.mjs
+?? scripts/tests/backend-project-ui-smoke.mjs
+?? scripts/tests/backend-project-ui.test.mjs
+?? scripts/tests/backend-project.test.mjs
+?? scripts/tests/helpers/
+?? scripts/tests/node-backend-project.test.mjs
+?? scripts/tests/scene-authoring-candidate.test.mjs
+?? scripts/tests/scene-authoring-ui.test.mjs
+?? scripts/tests/scene-authoring-workflow.test.mjs
+?? scripts/tests/scene-composition-batch-canvas-smoke.mjs
+?? scripts/tests/scene-composition-batch-layout-bridge.test.mjs
+?? scripts/tests/scene-composition-batch-layout-host.test.mjs
+?? scripts/tests/scene-composition-batch-layout-ui.test.mjs
+?? scripts/tests/scene-composition-batch-layout.test.mjs
+?? scripts/tests/scene-composition-canvas-smoke.mjs
+?? scripts/tests/scene-composition-fragment-inheritance-bridge.test.mjs
+?? scripts/tests/scene-composition-fragment-inheritance-host.test.mjs
+?? scripts/tests/scene-composition-fragment-inheritance-smoke.mjs
+?? scripts/tests/scene-composition-fragment-inheritance-ui.test.mjs
+?? scripts/tests/scene-composition-fragment-inheritance.test.mjs
+?? scripts/tests/scene-composition-fragments-bridge.test.mjs
+?? scripts/tests/scene-composition-fragments-host.test.mjs
+?? scripts/tests/scene-composition-fragments-preview.test.mjs
+?? scripts/tests/scene-composition-fragments-smoke.mjs
+?? scripts/tests/scene-composition-fragments-ui.test.mjs
+?? scripts/tests/scene-composition-fragments.test.mjs
+?? scripts/tests/scene-composition-inheritance-smoke.mjs
+?? scripts/tests/scene-composition-layout-ui.test.mjs
+?? scripts/tests/scene-composition-layout.test.mjs
+?? scripts/tests/scene-composition-placement-bridge.test.mjs
+?? scripts/tests/scene-composition-placement-host.test.mjs
+?? scripts/tests/scene-composition-placement-preview.test.mjs
+?? scripts/tests/scene-composition-placement-smoke.mjs
+?? scripts/tests/scene-composition-placement-ui.test.mjs
+?? scripts/tests/scene-composition-placement.test.mjs
+?? scripts/tests/scene-composition-placements-fixture.mjs
+?? scripts/tests/scene-composition-placements-host.test.mjs
+?? scripts/tests/scene-composition-placements-preview.test.mjs
+?? scripts/tests/scene-composition-placements-smoke.mjs
+?? scripts/tests/scene-composition-placements-ui.test.mjs
+?? scripts/tests/scene-composition-placements-workflow.test.mjs
+?? scripts/tests/scene-composition-placements.test.mjs
+?? scripts/tests/scene-composition-structure-bridge.test.mjs
+?? scripts/tests/scene-composition-structure-host.test.mjs
+?? scripts/tests/scene-composition-structure-preview-ui.test.mjs
+?? scripts/tests/scene-composition-structure-smoke.mjs
+?? scripts/tests/scene-composition-structure-ui.test.mjs
+?? scripts/tests/scene-composition-structure.test.mjs
+?? scripts/tests/studio-core-composition-batch-patch.test.mjs
+?? scripts/tests/studio-core-composition-fragment-edit.test.mjs
+?? scripts/tests/studio-core-composition-fragment-patch.test.mjs
+?? scripts/tests/studio-core-composition-placement-patch.test.mjs
+?? scripts/tests/studio-core-composition-placements-patch.test.mjs
+?? scripts/tests/studio-core-composition-structure-patch.test.mjs
+?? scripts/tests/studio-modules.test.mjs
+?? scripts/tests/studio-profile-project.test.mjs
+?? scripts/tests/studio-system-smoke.mjs
+?? scripts/tests/studio-system-ui.test.mjs
+?? web/modules/app-backend-project.js
+?? web/modules/app-scene-authoring.js
+?? web/modules/app-scene-composition-batch-layout.js
+?? web/modules/app-scene-composition-fragments.js
+?? web/modules/app-scene-composition-layout.js
+?? web/modules/app-scene-composition-placement.js
+?? web/modules/app-scene-composition-placements.js
+?? web/modules/app-scene-composition-structure.js
+?? web/modules/app-studio-system.js

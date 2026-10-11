@@ -1,9 +1,12 @@
+import { createSceneAuthoringWorkflow } from '../../engine/scene-authoring-workflow.mjs';
+import { SCENE_PREVIEW_API_PATH } from '../../engine/scene-preview-contract.mjs';
+import { WORLD_API_PATH } from '../../engine/world-query.mjs';
 import { sceneStructureActors } from '../../engine/scene-structure.mjs';
 import { buildSceneOutline, validateSceneGroups } from '../../engine/scene-groups.mjs';
 import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
 import '../adapters/node-studio-core.mjs';
 import { getStudioCoreMetadata } from '../../engine/studio-core.mjs';
-import { supportsStudioCoreCompositionPatch } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreCompositionPatch, supportsStudioCoreCompositionPositions, supportsStudioCoreCompositionFragment, supportsStudioCoreCompositionFragmentEdit, supportsStudioCoreCompositionPlacement, supportsStudioCoreCompositionStructure, supportsStudioCoreCompositionPlacements, supportsStudioCoreCompositionGroups, supportsStudioCoreCompositionDefinitions } from '../../engine/studio-core.mjs';
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import { Element } from './editor-harness.mjs';
@@ -129,7 +132,13 @@ export async function dialogHarness(module, overrides = {}) {
   const timers = new Map();
   let timerId = 0;
   const runtime = vm.createContext({
-    document, window, URL, Blob, TextEncoder, AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS, getStudioCoreMetadata, supportsStudioCoreCompositionPatch,
+    document, window, URL, Blob, TextEncoder, SCENE_PREVIEW_API_PATH, WORLD_API_PATH,
+    // Browser modules share a realm. This VM fixture transports catalog/source
+    // JSON DTOs into the host-imported workflow realm at injected port returns.
+    createSceneAuthoringWorkflow: options => createSceneAuthoringWorkflow({ ...options,
+      getSource: async (...args) => JSON.parse(JSON.stringify(await options.getSource(...args))),
+      ...(options.loadCatalog ? { loadCatalog: async (...args) => JSON.parse(JSON.stringify(await options.loadCatalog(...args))) } : {}),
+    }), AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS, getStudioCoreMetadata, supportsStudioCoreCompositionPatch, supportsStudioCoreCompositionPositions, supportsStudioCoreCompositionFragment, supportsStudioCoreCompositionFragmentEdit, supportsStudioCoreCompositionPlacement, supportsStudioCoreCompositionStructure, supportsStudioCoreCompositionPlacements, supportsStudioCoreCompositionGroups, supportsStudioCoreCompositionDefinitions,
     getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime, getCreatePathError, canonicalJson, canExecuteBackend, validateExecutionToolStatus, sceneActorIdentity, sceneStructureActors, buildSceneOutline, validateSceneGroups,
     validateRuntimeCase: value => validateRuntimeCase(JSON.parse(JSON.stringify(value))),
     validateRuntimeCasePlan: (plan, value) => validateRuntimeCasePlan(JSON.parse(JSON.stringify(plan)), JSON.parse(JSON.stringify(value))),
@@ -143,6 +152,15 @@ export async function dialogHarness(module, overrides = {}) {
     clearTimeout: (id) => timers.delete(id),
     setupSceneLayout: () => ({ setAvailable() {}, open() {} }),
     setupSceneCompositionOverrides: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupSceneCompositionLayout: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupSceneCompositionBatchLayout: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupSceneCompositionFragments: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupSceneCompositionPlacement: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupSceneCompositionStructure: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupSceneCompositionPlacements: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupSceneCompositionGroups: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupSceneCompositionDefinitions: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupBackendProject: () => ({ open() {}, render() {}, closed() {}, dispose() {} }),
     setupScenePreview: () => ({ setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {}, destroy() {} }),
     ...overrides,
   });
@@ -157,6 +175,9 @@ export async function dialogHarness(module, overrides = {}) {
     vm.runInContext(projectionCreator, runtime);
   }
   if (module === 'app-project-build') {
+    const authoring = (await fs.readFile(new URL('../../web/modules/app-scene-authoring.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(authoring, runtime);
     const caseReport = (await fs.readFile(new URL('../../web/modules/app-runtime-case-report.js', import.meta.url), 'utf8'))
       .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
     vm.runInContext(caseReport, runtime);

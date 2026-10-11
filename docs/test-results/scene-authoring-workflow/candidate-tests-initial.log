@@ -1,0 +1,52 @@
+✔ all five domains accept real saved and dirty source candidates including field reset layout offset reset and structure changes (196.867256ms)
+✔ candidate receipts are detached frozen identifiers and expose no GUI backend tool or save state (0.820349ms)
+✔ unknown kinds fail closed even with an otherwise valid single-instance receipt (0.629378ms)
+✔ every domain retains strict preview envelope scene owner source hash saved baseline and forbidden capability boundaries (41.134193ms)
+✔ missing non-record and malformed nested shapes yield the same diagnostic refusal instead of raw TypeErrors (19.321891ms)
+✔ invalid errors preserve the rejected payload for existing diagnostic handlers (1.089384ms)
+✔ instance fields and layout require their selected actor to remain in the candidate (1.198345ms)
+✔ position batches retain bounded unique changed actors and their placement-local provenance (3.504889ms)
+✔ shared fragments retain the full related target set in source order with a unique selected instance (4.117956ms)
+✔ placement actors retain exact source-ordered targets unique identities and local keys (3.539733ms)
+✔ placement group membership comes from sceneStructure and keeps complete ordered group provenance (5.118708ms)
+✔ structure validates complete actor and group identity and source-ordered provenance against actual Rust expansion (24.421233ms)
+✔ structure removal accepts the removed opener being absent and unused fragment edits retain empty target sets (0.969053ms)
+✔ structure rejects malformed duplicate-key or out-of-range recipes before granting a candidate receipt (2.502625ms)
+✖ projection-resolved candidate values remain compatible with raw inherited recipe declarations (1.20652ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 699.110842
+
+✖ failing tests:
+
+test at scripts/tests/scene-authoring-candidate.test.mjs:210:1
+✖ projection-resolved candidate values remain compatible with raw inherited recipe declarations (1.20652ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   80,
+  +   60
+  -   40,
+  -   50
+    ]
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-authoring-candidate.test.mjs:212:84)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 80, 60 ],
+    expected: [ 40, 50 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

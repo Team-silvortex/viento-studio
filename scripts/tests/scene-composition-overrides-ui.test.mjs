@@ -18,11 +18,12 @@ const example = JSON.parse(await fs.readFile(new URL('../../examples/scene-compo
 const hash = text => createHash('sha256').update(text).digest('hex'), revision = text => `sha256:${hash(text)}`;
 const copy = value => JSON.parse(JSON.stringify(value)), { ids } = golden;
 const previewId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
-async function fixture({ dirty = false, inherit = true } = {}) {
+async function fixture({ dirty = false, inherit = true, overrideValues = {} } = {}) {
   const observed = copy(golden.observed), recipe = copy(example);
   observed.source.workspace.version = 3; observed.source.definition = { documentTypes: [{ id: 'document', label: 'Document' }] };
   recipe.fragments[0].actors[0] = { key: 'leader', objectId: ids.first, groupKey: 'party', position: [120, 180], useProjectionDefaults: true };
   recipe.fragments[0].actors[1].objectId = ids.first;
+  Object.assign(recipe.placements[1].overrides[0].values, overrideValues);
   if (!inherit) recipe.fragments[0].actors[0] = { ...recipe.fragments[0].actors[0], useProjectionDefaults: false,
     size: [80, 60], color: '#ffffff', speed: 160, controls: 'arrows', imageResourceId: ids.image };
   const source = observed.source.documents.find(item => item.record.id === ids.scene);
@@ -54,6 +55,7 @@ async function harness(t, options = {}) {
     canEditCompositionOverride: true, sceneDraftPath: value.source.sourcePath, sceneDraftToken: 1 };
   const h = await dialogHarness('app-scene-composition-overrides', {
     crypto: webcrypto, queueMicrotask, createSceneCompositionOverrideDraft: options.factory || createSceneCompositionOverrideDraft,
+    supportsStudioCoreCompositionEdit: () => options.editSupported === true,
     requestWorldCommand() { assert.fail('Instance override UI must not call World commands'); },
     fetchJsonApiRequest() { assert.fail('Only the parent dependency validator owns preview HTTP'); },
   });
@@ -112,6 +114,140 @@ test('non-inherited image fields keep their current resource and do not offer in
   const h = await harness(t, { inherit: false }); assert.ok(h.el('Image').children.some(option => option.value === ids.image));
   assert.equal(h.el('Image').children.some(option => option.value === ''), false);
   h.input('X', 125); await h.check(); assert.equal(Object.hasOwn(h.validation[0].values, 'imageResourceId'), false);
+});
+
+// The dialog delegates source edits and inherited-value resolution. These
+// tests exercise its real controller with an explicit proposal-boundary spy;
+// the Rust, pure proposal and browser tests check the actual source patch.
+async function restorationHarness(t, options = {}) {
+  const edits = [];
+  const h = await harness(t, { editSupported: true, ...options,
+    factory: async (...args) => {
+      const draft = await createSceneCompositionOverrideDraft(...args);
+      return { ...draft, propose(input, choices = {}) {
+        const values = copy(input), resetFields = copy(choices.resetFields || []); edits.push({ values, resetFields });
+        return { sceneId: args[0].scene.objectId, sourcePath: args[1].sourcePath,
+          baseSourceRevision: args[1].baseSourceRevision, sourceRevision: revision(args[1].content),
+          instanceId: draft.actorId, placementId: draft.placementId, actorKey: draft.actorKey,
+          values, resetFields, afterContent: '{"reviewed":"candidate from the proposal boundary"}', changedPaths: [] };
+      } };
+    },
+    apply: options.apply || (async (_proposal, guard) => {
+      assert.equal(guard.isCurrent(), true); return { applied: true };
+    }),
+  });
+  return { ...h, edits };
+}
+
+test('an older core hides restoration controls and forced clicks retain the setter workflow', async t => {
+  const h = await harness(t);
+  assert.equal(h.el('ResetHelp').hidden, true); assert.equal(h.el('PositionResetRow').hidden, true);
+  h.el('PositionReset').dispatch('click'); assert.equal(h.el('Dialog').dataset.dirty, 'false');
+  h.input('X', 135); await h.check();
+  assert.deepEqual(copy(h.validation[0].values), { position: [135, 140] });
+  assert.equal(Object.hasOwn(h.validation[0], 'resetFields'), false); assert.equal(h.el('Apply').disabled, false);
+});
+
+test('restoration is offered only for existing local overrides and position and size each use one paired action', async t => {
+  const h = await restorationHarness(t, { overrideValues: { size: [84, 72] } });
+  for (const suffix of ['Position', 'Size', 'Color', 'Speed', 'Controls']) {
+    assert.equal(h.el(`${suffix}ResetRow`).hidden, false); assert.equal(h.el(`${suffix}Reset`).disabled, false);
+  }
+  assert.equal(h.el('ImageReset').disabled, true); h.el('ImageReset').dispatch('click'); assert.equal(h.el('Dialog').dataset.dirty, 'false');
+  h.el('PositionReset').click(); h.el('SizeReset').click();
+  for (const suffix of ['X', 'Y', 'Width', 'Height']) assert.equal(h.el(suffix).disabled, true);
+  assert.equal(h.el('PositionReset').getAttribute('aria-pressed'), 'true');
+  assert.match(h.el('PositionReset').getAttribute('aria-label'), /局部位置/);
+  assert.match(h.el('PositionStatus').textContent, /恢复前/);
+  assert.equal(h.el('Dialog').dataset.dirty, 'true'); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Check').disabled, false);
+  assert.equal(h.edits.length, 0); assert.equal(h.memory(), h.value.source.content);
+});
+
+test('same-value restoration remains dirty, carries the ordered choices and reviews a delegated complete candidate', async t => {
+  const h = await restorationHarness(t, { overrideValues: { size: [80, 60], imageResourceId: ids.image } });
+  const original = copy(h.value.source);
+  h.el('ImageReset').click(); h.el('SpeedReset').click(); h.el('SizeReset').click();
+  assert.equal(h.el('Speed').value, '0'); assert.equal(h.el('Image').value, ids.image); assert.equal(h.el('Check').disabled, false);
+  await h.check(); assert.deepEqual(h.edits[0].resetFields, ['size', 'speed', 'imageResourceId']);
+  assert.equal(h.el('Apply').disabled, false); assert.equal(h.el('Source').textContent, h.validation[0].afterContent);
+  assert.equal(h.proposals.length, 0); assert.equal(h.memory(), original.content);
+  h.el('Apply').click(); await settle(h); await flushDialogs();
+  assert.equal(h.proposals.length, 1); assert.equal(h.applied.length, 1); assert.equal(h.el('Dialog').open, false);
+  assert.deepEqual(h.value.source, original);
+});
+
+test('restoration can accompany another edited field and cancelling restoration keeps prior raw inputs', async t => {
+  const h = await restorationHarness(t); h.input('X', 135); h.input('Color', '#112233'); h.el('PositionReset').click();
+  assert.equal(h.el('X').value, '135'); assert.equal(h.el('X').disabled, true); await h.check();
+  assert.deepEqual(h.edits[0].resetFields, ['position']); assert.equal(h.edits[0].values.color, '#112233');
+  assert.deepEqual(h.edits[0].values.position, [100, 140], 'discarded input is not converted to an inherited value');
+  h.el('PositionReset').click(); assert.equal(h.el('X').value, '135'); assert.equal(h.el('X').disabled, false);
+  assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true);
+  await h.check(); assert.deepEqual(h.edits[1].resetFields, []); assert.deepEqual(h.edits[1].values.position, [135, 140]);
+});
+
+test('restoring an explicit no-image override differs from selecting no image and never guesses a projected image', async t => {
+  const h = await restorationHarness(t, { overrideValues: { imageResourceId: null } });
+  assert.equal(h.el('Image').value, ''); assert.equal(h.el('ImageReset').disabled, false);
+  h.el('ImageReset').click(); await h.check();
+  assert.deepEqual(h.edits[0].resetFields, ['imageResourceId']); assert.equal(h.edits[0].values.imageResourceId, null);
+  assert.equal(h.el('Image').value, ''); assert.equal(h.el('Image').disabled, true);
+  h.el('ImageReset').click(); assert.equal(h.el('Dialog').dataset.dirty, 'false'); assert.equal(h.el('Apply').disabled, true);
+  h.input('Image', ids.image); await h.check(); assert.deepEqual(h.edits[1].resetFields, []); assert.equal(h.edits[1].values.imageResourceId, ids.image);
+});
+
+test('invalid abandoned numeric input cannot obstruct a selected restoration but remains when restoration is cancelled', async t => {
+  const h = await restorationHarness(t); h.input('X', ''); h.el('PositionReset').click(); await h.check();
+  assert.deepEqual(h.edits[0].values.position, [100, 140]); assert.equal(h.el('X').value, ''); assert.equal(h.el('Apply').disabled, false);
+  h.el('PositionReset').click(); await h.check();
+  assert.equal(h.edits.length, 1); assert.equal(h.el('Apply').disabled, true); assert.match(h.el('Message').textContent, /字段值/);
+});
+
+test('changing restoration invalidates review approval and cancellation or Escape preserves the source', async t => {
+  for (const exit of ['Cancel', 'escape']) {
+    const h = await restorationHarness(t); h.el('PositionReset').click(); await h.check(); assert.equal(h.el('Apply').disabled, false);
+    h.el('ColorReset').click(); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true);
+    h.runtime.window.confirm = () => false;
+    if (exit === 'escape') h.el('Dialog').dispatch('cancel'); else h.el('Cancel').click();
+    assert.equal(h.el('Dialog').open, true); assert.equal(h.el('PositionReset').getAttribute('aria-pressed'), 'true');
+    h.runtime.window.confirm = () => true;
+    if (exit === 'escape') h.el('Dialog').dispatch('cancel'); else h.el('Cancel').click();
+    await flushDialogs(); assert.equal(h.el('Dialog').open, false); assert.equal(h.memory(), h.value.source.content);
+    assert.equal(h.proposals.length, 0); assert.equal(h.applied.length, 0);
+  }
+});
+
+test('late restoration validation cannot revive a changed source or closed dialog and a reopened form clears old choices', async t => {
+  for (const close of [false, true]) {
+    const pending = deferred(), h = await restorationHarness(t, { validate: () => pending.promise });
+    h.el('PositionReset').click(); h.el('Check').click();
+    assert.equal(h.el('PositionReset').disabled, true); h.el('ColorReset').dispatch('click');
+    if (close) { h.el('Dialog').close(); await flushDialogs(); } else h.context.sceneDraftToken++;
+    pending.resolve({ ok: true }); await settle(h); h.el('Apply').dispatch('click');
+    assert.equal(h.proposals.length, 0); assert.equal(h.memory(), h.value.source.content);
+    if (close) {
+      assert.equal(await h.open(), true); assert.equal(h.el('PositionReset').getAttribute('aria-pressed'), 'false');
+      assert.equal(h.el('X').disabled, false); assert.equal(h.el('Dialog').dataset.dirty, 'false');
+    } else {
+      assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('PositionReset').getAttribute('aria-pressed'), 'true');
+      assert.equal(h.el('ColorReset').getAttribute('aria-pressed'), 'false');
+    }
+  }
+});
+
+test('restoration validation failures retain the selected action and candidate without approving source application', async t => {
+  const h = await restorationHarness(t, { validate: async () => ({ ok: false, diagnostics: [{ code: 'build_image_unsupported' }] }) });
+  h.el('ColorReset').click(); await h.check();
+  assert.equal(h.el('ColorReset').getAttribute('aria-pressed'), 'true'); assert.equal(h.el('Color').disabled, true);
+  assert.equal(h.el('Review').hidden, false); assert.match(h.el('Diagnostics').textContent, /build_image_unsupported/);
+  h.el('Apply').dispatch('click'); assert.equal(h.proposals.length, 0); assert.equal(h.memory(), h.value.source.content);
+});
+
+test('losing the optional restoration capability cannot authorize an existing restored candidate', async t => {
+  const h = await restorationHarness(t); h.el('PositionReset').click(); await h.check();
+  h.runtime.supportsStudioCoreCompositionEdit = () => false; h.controller.refresh(); h.el('Apply').dispatch('click');
+  assert.equal(h.el('PositionResetRow').hidden, true); assert.equal(h.el('Check').disabled, true);
+  assert.equal(h.el('Apply').disabled, true); assert.equal(h.proposals.length, 0); assert.equal(h.memory(), h.value.source.content);
 });
 
 test('cancel and Escape discard only the override form and retain editor source and save preconditions', async t => {
@@ -181,18 +317,18 @@ test('guarded application exposes live ownership and a forced close cannot apply
 
 async function previewHarness(t) {
   const value = await fixture(), context = { editable: true, dirty: false, busy: false, creating: false, previewKind: 'composition',
-    canEditCompositionOverride: true, compositionSourceWritable: true, canPreviewDraft: true, sceneDraftPath: value.source.sourcePath, sceneDraftToken: 1 };
-  const calls = [], opened = [], writes = []; let result = true;
+    canEditCompositionOverride: true, canEditCompositionLayout: true, canEditCompositionBatchLayout: true, compositionSourceWritable: true, canPreviewDraft: true, sceneDraftPath: value.source.sourcePath, sceneDraftToken: 1 };
+  const calls = [], opened = [], layouts = [], batches = [], writes = []; let result = true;
   const h = await dialogHarness('app-scene-preview', { SCENE_PREVIEW_API_PATH: '/api/scene-preview',
     createScenePreviewCanvas: () => Object.fromEntries(['setScene', 'setImages', 'setVisible', 'select', 'fit', 'zoom', 'setGrid', 'destroy'].map(name => [name, () => {}])),
     fetchJsonApiRequest: (url, request) => { const wait = deferred(); calls.push({ url, request, ...wait }); if (request.method === 'DELETE') wait.resolve({ payload: { ok: true } }); return wait.promise; } });
   const container = h.document.createElement('section'); h.document.body.append(container);
   const controller = h.runtime.setupScenePreview({ container, getContext: () => context, getDraft: async () => value.source,
-    editCompositionOverride: input => { opened.push(input); return result; }, editScene: () => writes.push('scene'), editLayout: () => writes.push('layout'), editDraftLayout: () => writes.push('draft-layout') });
+    editCompositionOverride: input => { opened.push(input); return result; }, editCompositionLayout: input => { layouts.push(input); return result; }, editCompositionBatchLayout: input => { batches.push(input); return result; }, editScene: () => writes.push('scene'), editLayout: () => writes.push('layout'), editDraftLayout: () => writes.push('draft-layout') });
   const resolve = async payload => { calls.filter(call => call.request.method === 'POST').at(-1).resolve({ payload }); await flushDialogs(); };
   t.after(() => controller.destroy()); controller.setAvailable(true); controller.setScene(ids.scene); controller.setVisible(true); await resolve(value.model);
   h.element('scenePreviewObjects').querySelector(`button[data-actor-id="${value.instanceId}"]`).click();
-  return { ...h, value, context, container, controller, opened, writes, resolve, setResult: v => { result = v; } };
+  return { ...h, value, context, container, controller, opened, layouts, batches, writes, resolve, setResult: v => { result = v; } };
 }
 
 test('only the source-bound clean saved or current draft recipe instance enables its own override action', async t => {
@@ -229,4 +365,46 @@ test('instance override interface messages are complete in English and Japanese'
   const source = await fs.readFile(new URL('../../web/modules/app-scene-composition-overrides.js', import.meta.url), 'utf8');
   const keys = [...source.matchAll(/(?:'([^'\n]*[\u3400-\u9fff][^'\n]*)'|data-i18n="([^"]+)")/g)].map(match => match[1] || match[2]);
   for (const key of keys) { assert.ok(en[key], `English: ${key}`); assert.ok(ja[key], `Japanese: ${key}`); }
+});
+
+test('recipe preview canvas action binds the selected stable instance and remains separate from ordinary scene layout', async t => {
+  const h = await previewHarness(t), button = h.element('scenePreviewCompositionLayout');
+  assert.equal(button.hidden, false); assert.equal(button.disabled, false); button.click(); await flushDialogs();
+  assert.equal(h.layouts.length, 1); assert.equal(h.layouts[0].actorId, h.value.instanceId);
+  assert.equal(h.layouts[0].model, h.value.model); assert.equal(h.layouts[0].images.size, 0);
+  assert.equal(h.layouts[0].isCurrent(), true);
+  for (const [key, value] of [['dirty', true], ['compositionSourceWritable', false], ['canEditCompositionLayout', false], ['busy', true], ['sceneDraftPath', 'other.json']]) {
+    const old = h.context[key]; h.context[key] = value; h.controller.setScene(ids.scene);
+    assert.equal(button.disabled, true); button.dispatch('click'); await flushDialogs(); h.context[key] = old;
+  }
+  assert.equal(h.layouts.length, 1); assert.equal(h.opened.length, 0); assert.equal(h.writes.length, 0);
+});
+
+test('pending canvas openings block duplicate and other-modal openings and stale owners stay rejected', async t => {
+  const h = await previewHarness(t), pending = deferred(); h.setResult(pending.promise);
+  const button = h.element('scenePreviewCompositionLayout'); button.click(); button.dispatch('click');
+  h.element('scenePreviewCompositionOverride').dispatch('click');
+  assert.equal(h.layouts.length, 1); assert.equal(h.opened.length, 0);
+  h.context.sceneDraftToken++; h.controller.setVisible(false); assert.equal(h.layouts[0].isCurrent(), false);
+  pending.resolve(false); await flushDialogs(); assert.equal(h.container.dataset.scenePreviewState, 'empty'); assert.equal(h.writes.length, 0);
+});
+
+test('batch preview action owns the full recipe while parent actor selection stays view state', async t => {
+  const h = await previewHarness(t), button = h.element('scenePreviewCompositionBatchLayout');
+  assert.equal(button.disabled, false); button.click(); await flushDialogs(); assert.equal(h.batches.length, 1);
+  const input = h.batches[0]; assert.equal(input.actorId, h.value.instanceId); assert.equal(input.model, h.value.model);
+  h.element('scenePreviewObjects').querySelector(`button[data-actor-id="${h.value.model.actors[0].instanceId}"]`).click();
+  assert.equal(input.isCurrent(), true);
+  h.context.sceneDraftToken++; h.context.dirty = true; h.controller.setScene(ids.scene); assert.equal(input.isCurrent(), false);
+  assert.equal(button.disabled, true); button.dispatch('click'); assert.equal(h.batches.length, 1);
+});
+
+test('a pending batch opening blocks other edit dialogs and cannot revive a hidden preview', async t => {
+  const h = await previewHarness(t), waiting = deferred(); h.setResult(waiting.promise);
+  h.element('scenePreviewCompositionBatchLayout').click(); h.element('scenePreviewCompositionBatchLayout').dispatch('click');
+  h.element('scenePreviewCompositionLayout').dispatch('click'); h.element('scenePreviewCompositionOverride').dispatch('click');
+  assert.equal(h.batches.length, 1); assert.equal(h.layouts.length, 0); assert.equal(h.opened.length, 0);
+  h.controller.setVisible(false); assert.equal(h.batches[0].isCurrent(), false);
+  waiting.resolve(false); await flushDialogs(); assert.equal(h.container.dataset.scenePreviewState, 'empty');
+  assert.equal(h.writes.length, 0);
 });

@@ -5,15 +5,18 @@ import { readWorkspace, readRegistry, withRegistryLock, writeJson } from './work
 import { projectDefinition, validateProjectTypes, workspacePaths } from './project-layout.mjs';
 import { previewProjectTemplate } from './project-service.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
+import { validateStudioProfile } from '../../engine/studio-modules.mjs';
 
 // Definitions contain declarative data only. Applying one never moves source
 // files or changes document identities, ownership, or asset registrations.
 export async function applyProjectDefinition(root, definition, { write = false } = {}) {
+  const profileInput = definition?.studioProfile;
+  const studioProfile = profileInput === undefined ? undefined : validateStudioProfile(profileInput);
   return withRegistryLock(root, async () => {
     const before = readWorkspace(root);
     if (!before || before.version < 2) throw new Error('请先登记项目');
     if (definition?.format !== 'viento-project-definition' || definition.version !== 1 || !definition.documentTypes) throw new Error('项目定义格式无效');
-    const after = { ...before, documentTypes: definition.documentTypes, ...(definition.example ? { example: definition.example } : {}) };
+    const after = { ...before, ...(studioProfile !== undefined ? { studioProfile } : {}), documentTypes: definition.documentTypes, ...(definition.example ? { example: definition.example } : {}) };
     validateProjectTypes(after);
     const registry = await readRegistry(root);
     const unknown = registry.documents.filter((record) => !definition.documentTypes.some((type) => type.id === record.documentType));

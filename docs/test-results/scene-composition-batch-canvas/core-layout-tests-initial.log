@@ -1,0 +1,23 @@
+✔ saved and dirty recipe bindings expose detached actors with one pristine geometry history (93.866134ms)
+✔ same-placement and cross-placement movement produces a position-only atomic local patch in source order (36.5758ms)
+✔ different placement offsets keep selected world spacing and do not change offsets (22.432746ms)
+✔ six alignments use resolved sizes and each alignment is one undoable atomic batch (142.628917ms)
+✔ grid movement is atomic and returning one actor to baseline omits it from the proposal (24.567404ms)
+✔ fractional unmoved axes retain each authored local value and no-op actors retain inheritance (20.519396ms)
+✔ a local out-of-bounds target rejects the whole otherwise-valid movement without losing redo (19.062079ms)
+✔ duplicate unknown malformed and sparse changes are rejected before history mutation (18.988971ms)
+✔ 100-step history truncates batches while reset still restores every original instance (38.185424ms)
+✔ every actor provenance is checked, including noninitial actors, before a geometry session is allocated (26.744041ms)
+✔ factory snapshots all author and model data before its one asynchronous digest (26.789006ms)
+✔ apply rejects stale sources, forged receipts, substituted UUID mappings and reordered or unchanged targets (27.661948ms)
+✔ apply snapshots the complete proposal and source before awaiting host hashing (20.488287ms)
+✔ over-budget candidates keep the original source and recoverable position history intact (32.95193ms)
+✔ 32 shared Rust draft slots are reclaimed by idempotent disposal and disposed batches cannot mutate (81.578474ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 774.54405

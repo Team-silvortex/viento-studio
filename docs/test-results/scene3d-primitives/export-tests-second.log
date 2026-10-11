@@ -1,0 +1,44 @@
+✔ generator preserves source plan semantics and explicitly uses XYZ independent static nodes (9.351942ms)
+✔ generator rejects wrong kind, scene keys, non-data accessors and extra nested behavior (1.297612ms)
+✔ export stores exact BOM/CRLF source, neutral plan and a full five-file inventory (11.291958ms)
+✔ existing output directories and files are never adopted or overwritten (5.769743ms)
+✔ invalid UTF8, malformed schema and oversized source do not create output (2.25983ms)
+✔ input or output symlink ancestors are rejected without changing the target (2.625962ms)
+✔ copied receipt JSON and an arbitrary existing project cannot execute a tool (323.413075ms)
+✔ modified, replaced or hardlinked generated source prevents execution (494.56814ms)
+✔ unregistered source or pre-existing cache symlink cannot authorize execution (495.409624ms)
+✔ an owned write failure cleans only its own unchanged files and empty directory (5.157226ms)
+✔ failure cleanup preserves an edited source and user-added files in its own output (5.929184ms)
+✔ CLI readonly emit works without output and invalid flag combinations never create output (3.146456ms)
+✔ aborted capture or export creates no output (0.766157ms)
+✔ explicit tool receipts cannot forge instance geometry, basis, camera, UUID, count or schema (1009.875157ms)
+✔ execution receipts authorize one finite attempt, including check then run in one operation (142.283317ms)
+✔ tool timeout and zero-exit script errors fail closed while retaining exact source (1085.073549ms)
+✔ actual Godot imports and probes the three-box example with ordered UUIDs and noncommuting XYZ transforms (5386.107403ms)
+✖ actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits (1.833455ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9060.598393
+
+✖ failing tests:
+
+test at scripts/tests/scene3d-export.test.mjs:50:1
+✖ actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits (1.833455ms)
+  Error: Expected a valid bounded 3D box scene, usable camera and directional light.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/studio-core.mjs:25:59)
+      at dispatch (file:///home/chiharukiryu/cdev/viento-studio/engine/studio-core.mjs:122:25)
+      at dispatchStudioCoreScene3D (file:///home/chiharukiryu/cdev/viento-studio/engine/studio-core.mjs:971:10)
+      at parseScene3DSource (file:///home/chiharukiryu/cdev/viento-studio/engine/scene3d.mjs:11:17)
+      at createScene3DPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene3d.mjs:16:21)
+      at readScene3DInput (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-scene3d-export.mjs:55:16)
+      at async exportScene3DProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-scene3d-export.mjs:80:20)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-export.test.mjs:51:437)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errorCode: 'scene3d_invalid'
+  }

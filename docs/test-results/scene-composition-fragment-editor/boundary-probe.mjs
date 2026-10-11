@@ -1,0 +1,18 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { fileURLToPath,pathToFileURL } from 'node:url';
+import { runFragmentCases,sha } from './boundary-cases.mjs';
+const root=fileURLToPath(new URL('../../../',import.meta.url)),e=fileURLToPath(new URL('./',import.meta.url));
+assert.equal(process.version,'v24.20.0');
+const manifests=JSON.parse(await fs.readFile(path.join(e,'core-source-hashes.json'),'utf8'));
+for(const [file,digest]of Object.entries(manifests))assert.equal(sha(await fs.readFile(path.join(root,file))),digest);
+await import(pathToFileURL(path.join(root,'scripts/adapters/node-studio-core.mjs')));
+const modules=['engine/scene-composition-fragments.mjs','engine/scene-composition.mjs','engine/scene-structure.mjs','engine/studio-core.mjs'];
+const api=Object.assign({},...await Promise.all(modules.map(file=>import(pathToFileURL(path.join(root,file))))));
+const example=JSON.parse(await fs.readFile(path.join(root,'examples/scene-composition/recipe.json'),'utf8'));
+const checks=await runFragmentCases(api,example);
+for(const [file,digest]of Object.entries(manifests))assert.equal(sha(await fs.readFile(path.join(root,file))),digest);
+const report={ok:true,recordedAt:new Date().toISOString(),scope:'Independent current-source helper and actual Rust/WASM set-only declaration proof using synthetic valid effective previews. No live World dependency, author persistence, GUI, prepared-copy, installation or device acceptance.',runtime:{version:process.version,sha256:sha(await fs.readFile(process.execPath))},coreSourceSha256:manifests,cases:checks,probeSha256:sha(await fs.readFile(fileURLToPath(import.meta.url))),caseHarnessSha256:sha(await fs.readFile(path.join(e,'boundary-cases.mjs')))};
+await fs.writeFile(path.join(e,'boundary-probe.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify({ok:true,cases:checks.length,rejectedOperations:checks.reduce((sum,item)=>sum+(item.rejectedOperations||0),0),runtime:report.runtime}));

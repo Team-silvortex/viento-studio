@@ -1,0 +1,191 @@
+{
+  "createdAt": "2026-10-11T11:41:45.997781+00:00",
+  "head": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "version": "0.0.9",
+  "finalSourceFreeze": {
+    "path": "docs/test-results/scene3d-primitives/source-hashes.json",
+    "sha256": "7b06e08676ca6cc04ef2b6c7b044d03839b22ebae4150a38f407ed4f8ae41e5f",
+    "count": 677,
+    "verifiedCurrentFiles": 677
+  },
+  "openFindings": [],
+  "findings": [],
+  "scope": "Source worktree and actual Linux tests only. No installed bundle, Android device, GPU pixel parity, persisted 3D project service or arbitrary-tool sandbox acceptance.",
+  "format": "viento-scene3d-backend-results",
+  "schemaVersion": 1,
+  "ok": true,
+  "sourceHashes": {
+    "scripts/backends/godot4-scene3d.mjs": "66e3430065adc0566ddae7593fb8c30ac22f4705c83770b9503a667c2265d7c1",
+    "scripts/backends/godot3d/runtime.gd": "46b87d59fb0c58dfc61c0a4c16e55511dcf0d77f49cb4eb0787e1d2ab4c29fe2",
+    "scripts/adapters/node-scene3d-export.mjs": "8256d67eb25cdb182a24335f156bfe7c8e185f5f7fce4bab394f9e30a9e3c56a",
+    "scripts/scene3d.mjs": "2a996e5e15c8d93960911d3503c5df6ca94df6ab344b61f3acd34a929d53fec5",
+    "scripts/tests/scene3d-export.test.mjs": "90604da81ab36474a75f2db6929d2cffbb7e2b4cb3d3a41cce1d326e7e445ad1"
+  },
+  "api": {
+    "readScene3DInput": "Strict UTF8 exact content and hash plus native plan/parsed model-sourceLocations; no filesystem mutation",
+    "exportScene3DProject": "Only a fresh absent output directory; returned manifest and private session receipt",
+    "executeScene3DProject": "Explicit absolute executable; one branded fresh receipt permits identify/import/script-check and optional finite probe",
+    "cli": "--input source default plan; --emit model gives actual model; --output absent directory; optional --check OR --run with --godot-bin absolute",
+    "inventory": {
+      "manifest": "scene3d-project.json",
+      "format": "viento-scene3d-project",
+      "schemaVersion": 1,
+      "files": [
+        "source.json",
+        "plan.json",
+        "project.godot",
+        "scene.tscn",
+        "runtime.gd"
+      ],
+      "fileCount": 5,
+      "manifestIsSeparate": true
+    },
+    "backend": "org.viento.godot4 majorVersion4 prototype=true; independent of existing 2D registry/protocol",
+    "coordinates": "Right-handed Y-up -Z-forward EulerXYZ T*Rx*Ry*Rz*S; explicit rotation_order0"
+  },
+  "verification": {
+    "tests": {
+      "file": "scripts/tests/scene3d-export.test.mjs",
+      "log": "export-tests-final.log",
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "durationMs": 14309.040302,
+      "realGodotTests": 2,
+      "negativeProbeVariants": 7
+    },
+    "actualGodotProof": {
+      "report": "godot-final.json",
+      "cases": [
+        {
+          "name": "three-box-example",
+          "report": "godot-final-three-box-example.json",
+          "objectCount": 3,
+          "phases": [
+            {
+              "phase": "identify",
+              "status": "succeeded",
+              "exitCode": 0
+            },
+            {
+              "phase": "import",
+              "status": "succeeded",
+              "exitCode": 0
+            },
+            {
+              "phase": "script-check",
+              "status": "succeeded",
+              "exitCode": 0
+            },
+            {
+              "phase": "probe",
+              "status": "succeeded",
+              "exitCode": 0
+            }
+          ],
+          "sourceSha256": "c736315528deb61e43b5265cf568270aa883983b705c19a6da595f8b1034b9df",
+          "fullInventoryEntries": 35,
+          "fixtureRemoved": true
+        },
+        {
+          "name": "float32-boundaries",
+          "report": "godot-final-float32-boundaries.json",
+          "objectCount": 3,
+          "phases": [
+            {
+              "phase": "identify",
+              "status": "succeeded",
+              "exitCode": 0
+            },
+            {
+              "phase": "import",
+              "status": "succeeded",
+              "exitCode": 0
+            },
+            {
+              "phase": "script-check",
+              "status": "succeeded",
+              "exitCode": 0
+            },
+            {
+              "phase": "probe",
+              "status": "succeeded",
+              "exitCode": 0
+            }
+          ],
+          "sourceSha256": "b76edbbdc204a0ae6244d07b2714034e7a61aed6c36cba47fadd2aec87b7f839",
+          "fullInventoryEntries": 35,
+          "fixtureRemoved": true
+        }
+      ],
+      "fourPhasesEach": true,
+      "tool": {
+        "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+        "bytes": 146414384,
+        "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+        "dev": 66306,
+        "ino": 4460413
+      },
+      "eulerIndependentMaxError": 6.557766218939776e-08
+    },
+    "copiedGeneratedEvidence": "godot-final/<case>/ all five inventory files plus manifest exact SHA",
+    "peerReadOnlyReview": "Core owner independently reviewed standalone host/runtime; no further concrete ownership/source-loss finding (team message). Full-app and prepared tests are owned and separately recorded by root."
+  },
+  "closedFindings": [
+    {
+      "finding": "CLI --emit model originally returned parser envelope",
+      "fix": "Return native actual model; 13-test initial 12/1 preserved in export-tests-initial.log"
+    },
+    {
+      "finding": "Direct norm loses robust direction at subnormal values",
+      "fix": "Scale before temporary normalization; author source/plan values remain exact"
+    },
+    {
+      "finding": "Godot look_at followed by position update loses near-Y-up horizontal component via float32 Euler decomposition",
+      "fix": "Assign complete Transform3D with Basis.looking_at; actual high-position and near-vertical probe passes"
+    },
+    {
+      "finding": "Godot JSON parse/display underflows tiny authored directions or rotations",
+      "fix": "Runtime uses validated generated normalized direction metadata; host independently recomputes original vectors and basis, probe numeric declarations use bounded1e-12 tolerance; exact stored source/plan remain unchanged"
+    }
+  ],
+  "retainedAttempts": [
+    {
+      "log": "export-tests-initial.log",
+      "passed": 12,
+      "failed": 1,
+      "reason": "Real CLI model envelope contract mismatch repaired only NEW CLI."
+    },
+    {
+      "log": "export-tests-second.log",
+      "passed": 17,
+      "failed": 1,
+      "reason": "NEW near-vertical camera fixture sat at f64 .01/1e-4 boundary and correctly failed native admission; fixture given numeric margin."
+    },
+    {
+      "log": "export-tests-third.log",
+      "passed": 17,
+      "failed": 1,
+      "reason": "Actual Godot float32 Euler basis reconstruction and JSON subnormal parsing exposed NEW runtime issues; minimal standalone runtime repair."
+    },
+    {
+      "log": "export-tests-fourth.log",
+      "passed": 18,
+      "failed": 0,
+      "reason": "Successful intermediate proof before root-requested tiny-rotation receipt tolerance refinement; final18 after refinement separately retained."
+    }
+  ],
+  "cleanup": {
+    "initialFixture": "cleanup-export-fixture.json",
+    "onlyOwnDisposableFixtures": true,
+    "rootGeneratedPathsNotTouched": true
+  },
+  "limitations": [
+    "Explicit authorized absolute tool is trusted; vendor authenticity not inferred from version string.",
+    "No security sandbox against arbitrary same-UID concurrent changes after last path/inode/SHA check.",
+    "Godot-generated cache roots retained after successful execution; source manifest inventories five immutable generated/input files and excludes later cache.",
+    "Execution receipt is not serializable transferable or reusable; persisted output can be inspected but this prototype CLI does not adopt it for execution.",
+    "Positions/materials/bases reported with documented bounded float32 tolerances; stored source bytes remain exact."
+  ]
+}

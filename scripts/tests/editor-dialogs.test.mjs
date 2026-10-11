@@ -222,7 +222,7 @@ async function mediaPreviewHarness(overrides = {}) {
     changed: runtime.refreshEditSessionDirtyState, status: runtime.setEditorStatus,
   });
   runtime.testMediaController = controller;
-  vm.runInContext('mediaEditorController = testMediaController;', runtime);
+  vm.runInContext('studioSystem = { refreshMedia: () => testMediaController.refresh() };', runtime);
   runtime.rebuildIndexForDoc = async () => {};
   runtime.updateEditorForDoc(doc);
   await runtime.enterEditMode();

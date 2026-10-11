@@ -255,6 +255,52 @@ fn validate_manifest(workspace: &Workspace) -> Result<()> {
     Ok(())
 }
 
+fn validate_studio_profile(profile: &serde_json::Value) -> Result<()> {
+    let invalid = || "Studio 功能配置声明无效".to_string();
+    let profile = profile.as_object().ok_or_else(invalid)?;
+    let keys = ["format", "schemaVersion", "required", "optional"];
+    if profile.len() != keys.len()
+        || keys.iter().any(|key| !profile.contains_key(*key))
+        || profile["format"].as_str() != Some("viento-studio-profile")
+        || profile["schemaVersion"].as_f64() != Some(1.0)
+    {
+        return Err(invalid());
+    }
+    let mut seen = HashSet::new();
+    for key in ["required", "optional"] {
+        let requests = profile[key]
+            .as_array()
+            .filter(|requests| requests.len() <= 128)
+            .ok_or_else(invalid)?;
+        for request in requests {
+            let request = request.as_object().ok_or_else(invalid)?;
+            if request.len() != 2
+                || !request.contains_key("capability")
+                || !request.contains_key("apiVersion")
+            {
+                return Err(invalid());
+            }
+            let capability = request["capability"].as_str().ok_or_else(invalid)?;
+            let api_version = request["apiVersion"].as_f64().ok_or_else(invalid)?;
+            if capability.len() > 192
+                || !capability.starts_with(|c: char| c.is_ascii_lowercase())
+                || !capability.split(['.', '_', '-']).all(|part| {
+                    !part.is_empty()
+                        && part
+                            .bytes()
+                            .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit())
+                })
+                || !(1.0..=65535.0).contains(&api_version)
+                || api_version.fract() != 0.0
+                || !seen.insert(capability)
+            {
+                return Err(invalid());
+            }
+        }
+    }
+    Ok(())
+}
+
 fn validate_parser_definition(definition: &serde_json::Value) -> Result<()> {
     let field_name = |value: &serde_json::Value| {
         value
@@ -802,6 +848,14 @@ fn create_workspace_contents(
         return Err("请填写不含路径符号的作品库名称（最多 80 字）".into());
     }
     let version = seed.map(layout_version).transpose()?.unwrap_or(3);
+    // New template requirements are a strict write boundary. Existing project
+    // profiles are preserved when read or migrated, including future schemas.
+    if let Some(profile) = template
+        .as_ref()
+        .and_then(|template| template.studio_profile.as_ref())
+    {
+        validate_studio_profile(profile)?;
+    }
     let temporary = Builder::new()
         .prefix(&format!("{name}-"))
         .tempdir_in(parent)
@@ -826,6 +880,9 @@ fn create_workspace_contents(
     } else if let Some(template) = template {
         extra.insert("documentTypes".into(), serde_json::json!(template.document_types));
         extra.insert("projectTemplate".into(), template.provenance());
+        if let Some(profile) = template.studio_profile {
+            extra.insert("studioProfile".into(), profile);
+        }
         for (file, content) in template.templates {
             let destination = temporary.path().join("templates").join(file);
             fs::create_dir_all(destination.parent().unwrap()).map_err(io_error)?;
@@ -1254,6 +1311,275 @@ pub fn import_workspace(archive_path: &Path, parent: &Path) -> Result<PathBuf> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn profile_manifest(profile: serde_json::Value) -> Workspace {
+        let mut extra = layout_fields(3);
+        extra.insert("studioProfile".into(), profile);
+        Workspace {
+            format: "viento-workspace".into(),
+            version: 3,
+            id: "00000000-0000-0000-0000-000000000001".into(),
+            name: "Studio profile".into(),
+            created_at: 0,
+            extra,
+        }
+    }
+
+    fn empty_studio_profile() -> serde_json::Value {
+        serde_json::json!({"format":"viento-studio-profile","schemaVersion":1,
+            "required":[],"optional":[]})
+    }
+
+    #[test]
+    fn studio_profiles_accept_declarative_future_capabilities_without_mutating_manifests() {
+        for profile in [
+            empty_studio_profile(),
+            serde_json::json!({"format":"viento-studio-profile","schemaVersion":1.0,
+                "required":[{"capability":"future.scene3d.edit","apiVersion":1.0}],
+                "optional":[{"capability":"backend.rust-bevy_3","apiVersion":65535}]}),
+        ] {
+            let manifest = profile_manifest(profile);
+            let before = serde_json::to_vec(&manifest).unwrap();
+            validate_studio_profile(&manifest.extra["studioProfile"]).unwrap();
+            assert_eq!(serde_json::to_vec(&manifest).unwrap(), before);
+        }
+    }
+
+    #[test]
+    fn studio_profiles_reject_invalid_shapes_and_unknown_declaration_keys() {
+        let mut bad = vec![serde_json::Value::Null, serde_json::json!([])];
+        for key in ["format", "schemaVersion", "required", "optional"] {
+            let mut profile = empty_studio_profile();
+            profile.as_object_mut().unwrap().remove(key);
+            bad.push(profile);
+        }
+        for (key, value) in [
+            ("format", serde_json::json!("other-profile")),
+            ("schemaVersion", serde_json::json!(2)),
+            ("required", serde_json::Value::Null),
+            ("optional", serde_json::json!({})),
+            ("script", serde_json::json!("untrusted.js")),
+        ] {
+            let mut profile = empty_studio_profile();
+            profile[key] = value;
+            bad.push(profile);
+        }
+        for request in [
+            serde_json::Value::Null,
+            serde_json::json!([]),
+            serde_json::json!({"capability":"scene.edit"}),
+            serde_json::json!({"apiVersion":1}),
+            serde_json::json!({"capability":"scene.edit","apiVersion":1,"path":"module.js"}),
+        ] {
+            let mut profile = empty_studio_profile();
+            profile["required"] = serde_json::json!([request]);
+            bad.push(profile);
+        }
+        for profile in bad {
+            let manifest = profile_manifest(profile.clone());
+            let before = serde_json::to_vec(&manifest).unwrap();
+            assert!(
+                validate_studio_profile(&manifest.extra["studioProfile"]).is_err(),
+                "{profile}"
+            );
+            assert_eq!(serde_json::to_vec(&manifest).unwrap(), before);
+        }
+    }
+
+    #[test]
+    fn studio_profiles_reject_unsafe_tokens_versions_and_cross_list_duplicates() {
+        for capability in [
+            "",
+            "Scene.edit",
+            "3d.scene",
+            ".scene",
+            "scene.",
+            "scene..edit",
+            "scene_-edit",
+            "scene/edit",
+            "scene\\edit",
+            "scene:edit",
+            "场景.edit",
+            "scene\nedit",
+            "scene edit",
+        ] {
+            let mut profile = empty_studio_profile();
+            profile["required"] = serde_json::json!([{"capability":capability,"apiVersion":1}]);
+            assert!(validate_studio_profile(&profile).is_err(), "{capability}");
+        }
+        for version in [
+            serde_json::Value::Null,
+            serde_json::json!(true),
+            serde_json::json!("1"),
+            serde_json::json!(0),
+            serde_json::json!(-1),
+            serde_json::json!(1.5),
+            serde_json::json!(65536),
+            serde_json::json!(9007199254740992_u64),
+        ] {
+            let mut profile = empty_studio_profile();
+            profile["optional"] =
+                serde_json::json!([{"capability":"scene.edit","apiVersion":version}]);
+            assert!(validate_studio_profile(&profile).is_err());
+        }
+        for across_lists in [false, true] {
+            let mut profile = empty_studio_profile();
+            let request = serde_json::json!({"capability":"scene.edit","apiVersion":1});
+            profile["required"] = serde_json::json!([request]);
+            if across_lists {
+                profile["optional"] =
+                    serde_json::json!([{"capability":"scene.edit","apiVersion":2}]);
+            } else {
+                profile["required"].as_array_mut().unwrap().push(request);
+            }
+            assert!(validate_studio_profile(&profile).is_err());
+        }
+    }
+
+    #[test]
+    fn studio_profiles_enforce_per_list_and_ascii_token_boundaries() {
+        let requests = |prefix: &str| {
+            (0..128)
+                .map(|index| {
+                    serde_json::json!({
+                        "capability":format!("{prefix}.item{index}"),"apiVersion":1
+                    })
+                })
+                .collect::<Vec<_>>()
+        };
+        let mut profile = empty_studio_profile();
+        profile["required"] = serde_json::json!(requests("required"));
+        profile["optional"] = serde_json::json!(requests("optional"));
+        validate_studio_profile(&profile).unwrap();
+        for key in ["required", "optional"] {
+            let mut excessive = profile.clone();
+            excessive[key]
+                .as_array_mut()
+                .unwrap()
+                .push(serde_json::json!({
+                    "capability":"extra.item","apiVersion":1
+                }));
+            assert!(validate_studio_profile(&excessive).is_err());
+        }
+        for (length, valid) in [(192, true), (193, false)] {
+            let mut profile = empty_studio_profile();
+            profile["required"] = serde_json::json!([{
+                "capability":"a".repeat(length),"apiVersion":1
+            }]);
+            assert_eq!(validate_studio_profile(&profile).is_ok(), valid);
+        }
+    }
+
+    #[test]
+    fn template_studio_profiles_are_copied_and_preserved_by_seed_and_archive_migration() {
+        let temp = tempfile::tempdir().unwrap();
+        let profile = serde_json::json!({"format":"viento-studio-profile","schemaVersion":1,
+            "required":[{"capability":"future.scene3d.edit","apiVersion":1}],"optional":[]});
+        let mut template = project_templates::select("org.viento.blank").unwrap();
+        template.studio_profile = Some(profile.clone());
+        let original = template.clone();
+        let provenance = template.provenance();
+        let root =
+            create_workspace_contents(temp.path(), "Profile copy", None, None, Some(template))
+                .unwrap();
+        let manifest = ensure_workspace(&root).unwrap();
+        assert_eq!(manifest.extra["studioProfile"], profile);
+        assert_eq!(manifest.extra["projectTemplate"], provenance);
+        let mut detached = original;
+        detached.studio_profile.as_mut().unwrap()["required"] = serde_json::json!([]);
+        assert_eq!(
+            ensure_workspace(&root).unwrap().extra["studioProfile"],
+            profile
+        );
+        let seeded = create_workspace(temp.path(), "Profile seed", Some(&root), None).unwrap();
+        assert_eq!(
+            ensure_workspace(&seeded).unwrap().extra["studioProfile"],
+            profile
+        );
+        fs::write(root.join("documents/story.md"), b"# preserved author\r\n").unwrap();
+        let archive = temp.path().join("profile.zip");
+        export_workspace(&root, &archive).unwrap();
+        let restored = import_workspace(&archive, temp.path()).unwrap();
+        assert_eq!(
+            ensure_workspace(&restored).unwrap().extra["studioProfile"],
+            profile
+        );
+        assert_eq!(
+            fs::read(restored.join("documents/story.md")).unwrap(),
+            b"# preserved author\r\n"
+        );
+        let blank =
+            create_workspace_from_template(temp.path(), "No profile", "org.viento.blank").unwrap();
+        assert!(!ensure_workspace(&blank)
+            .unwrap()
+            .extra
+            .contains_key("studioProfile"));
+    }
+
+    #[test]
+    fn invalid_template_studio_profiles_do_not_publish_partial_projects() {
+        let temp = tempfile::tempdir().unwrap();
+        let mut template = project_templates::select("org.viento.blank").unwrap();
+        template.studio_profile = Some(serde_json::Value::Null);
+        assert!(create_workspace_contents(
+            temp.path(),
+            "Invalid profile",
+            None,
+            None,
+            Some(template)
+        )
+        .is_err());
+        assert_eq!(fs::read_dir(temp.path()).unwrap().count(), 0);
+    }
+
+    #[test]
+    fn existing_future_and_malformed_profiles_preserve_ordinary_open_and_archive_bytes() {
+        for profile in [
+            serde_json::Value::Null,
+            serde_json::json!({"format":"viento-studio-profile","schemaVersion":2,
+                "required":[{"capability":"scene3d.future","apiVersion":2}],
+                "optional":[],"future":{"renderer":"unimplemented"}}),
+            serde_json::json!({"format":"viento-studio-profile","schemaVersion":1,
+                "required":null,"optional":[]}),
+        ] {
+            let temp = tempfile::tempdir().unwrap();
+            let root =
+                create_workspace_from_template(temp.path(), "Existing profile", "org.viento.blank")
+                    .unwrap();
+            let mut manifest = ensure_workspace(&root).unwrap();
+            manifest
+                .extra
+                .insert("studioProfile".into(), profile.clone());
+            write_json(&root.join("workspace.json"), &manifest).unwrap();
+            fs::write(root.join("documents/story.md"), b"# still editable\r\n").unwrap();
+            let before = fs::read(root.join("workspace.json")).unwrap();
+            assert!(validate_studio_profile(&profile).is_err());
+            validate_manifest(&manifest).unwrap();
+            assert_eq!(
+                ensure_workspace(&root).unwrap().extra["studioProfile"],
+                profile
+            );
+            assert_eq!(fs::read(root.join("workspace.json")).unwrap(), before);
+            let seeded = create_workspace(temp.path(), "Future seed", Some(&root), None).unwrap();
+            assert_eq!(
+                ensure_workspace(&seeded).unwrap().extra["studioProfile"],
+                profile
+            );
+            let archive = temp.path().join("future-profile.zip");
+            export_workspace(&root, &archive).unwrap();
+            let restored = import_workspace(&archive, temp.path()).unwrap();
+            assert_eq!(
+                ensure_workspace(&restored).unwrap().extra["studioProfile"],
+                profile
+            );
+            assert_eq!(fs::read(restored.join("workspace.json")).unwrap(), before);
+            assert_eq!(fs::read(root.join("workspace.json")).unwrap(), before);
+            assert_eq!(
+                fs::read(restored.join("documents/story.md")).unwrap(),
+                b"# still editable\r\n"
+            );
+        }
+    }
 
     fn registered_asset(root: &Path, relative: &str, bytes: &[u8]) -> String {
         let id = Uuid::new_v4().to_string();

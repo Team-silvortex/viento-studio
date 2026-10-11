@@ -13,6 +13,8 @@ import { resolveContainedPath } from '../lib/contained-path.mjs';
 import { resolveAssetRoot } from '../lib/workspace.mjs';
 import { DEFAULT_EXECUTION_BACKEND, createExecutionBackendRegistry, assertBackendOperation,
   executionAdapterFingerprint, validateGeneratedExecutionProject, executionPhaseDiagnostics, attachFrozenDiagnosticSources } from './node-execution-backends.mjs';
+import { createBackendProjectManifest } from './node-backend-project.mjs';
+import { PROJECT_RETENTION_PIN, createProjectRetentionPin, pinProjectFile } from './node-backend-project-retention.mjs';
 
 const json = value => JSON.stringify(value, null, 2) + '\n';
 const within = (root, target) => { const relative = path.relative(root, target); return relative === '' || relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative); };
@@ -50,15 +52,20 @@ async function reserveBuildDirectory(root, requested, id) {
   return output;
 }
 
-async function saveRecord(directory, name, record) {
+async function saveRecord(directory, name, record, retentionPin) {
   const temporary = path.join(directory, `.${name}.${randomUUID()}`);
-  try { await fs.writeFile(temporary, json(record), { flag: 'wx', mode: 0o600 }); await fs.rename(temporary, path.join(directory, name)); }
+  const bytes = json(record);
+  try {
+    await fs.writeFile(temporary, bytes, { flag: 'wx', mode: 0o600 });
+    await fs.rename(temporary, path.join(directory, name));
+    pinProjectFile(retentionPin, name, bytes);
+  }
   finally { await fs.rm(temporary, { force: true }); }
 }
 
 export async function buildProject({ root, scene, godot, tool = godot, backendId = DEFAULT_EXECUTION_BACKEND,
   backendRegistry = createExecutionBackendRegistry(), output, signal, timeoutMs = 30000, expectedSnapshotId, onProgress = () => {} }) {
-  let directory, plan, record;
+  let directory, plan, record, retentionPin, adapter, generated;
   try {
     root = await fs.realpath(root);
     onProgress({ phase: 'snapshot' });
@@ -66,35 +73,41 @@ export async function buildProject({ root, scene, godot, tool = godot, backendId
     plan = captured.plan;
     if (!captured.ok) return { ok: false, status: 'rejected', diagnostics: captured.diagnostics };
     if (expectedSnapshotId && expectedSnapshotId !== captured.snapshotId) throw buildError('build_snapshot_changed', 'Saved project inputs changed; check the build plan again.');
-    const adapter = backendRegistry.resolve(backendId);
+    adapter = backendRegistry.resolve(backendId);
     const missing = checkExecutionBackendSupport(adapter.descriptor, { operation: 'build', platform: process.platform, plan });
     if (missing.length) return { ok: false, status: 'rejected', diagnostics: missing };
     onProgress({ phase: 'tool' });
     const identifiedTool = await adapter.identify(tool, { signal });
     onProgress({ phase: 'generate' });
-    const generated = validateGeneratedExecutionProject(adapter, plan, await adapter.generate(plan));
+    generated = validateGeneratedExecutionProject(adapter, plan, await adapter.generate(plan));
     const executionAdapter = await executionAdapterFingerprint(adapter);
     const snapshotBytes = Buffer.from(json(captured.snapshot));
     if (snapshotBytes.length > 80 * 1024 * 1024) throw buildError('build_input_limit', 'Serialized build snapshot exceeds 80 MiB.');
     aborted(signal);
     const buildId = randomUUID();
     directory = await reserveBuildDirectory(root, output, buildId);
+    retentionPin = await createProjectRetentionPin(directory);
     record = { format: 'viento-build-record', schemaVersion: 1, buildId, status: 'building',
       snapshotId: captured.snapshotId, backend: generated.backend, executionAdapter,
       tool: { version: identifiedTool.version, sha256: identifiedTool.sha256, platform: identifiedTool.platform, arch: identifiedTool.arch },
       artifact: { ...generated.artifact, entry: `project/${generated.artifact.entry}`, files: [] },
       diagnostics: [], phases: [] };
-    await saveRecord(directory, 'build.json', record);
+    await saveRecord(directory, 'build.json', record, retentionPin);
     await fs.writeFile(path.join(directory, 'snapshot.json'), snapshotBytes, { flag: 'wx' });
-    await fs.writeFile(path.join(directory, 'source-map.json'), json(generated.sourceMap), { flag: 'wx' });
+    pinProjectFile(retentionPin, 'snapshot.json', snapshotBytes);
+    const sourceMapBytes = json(generated.sourceMap);
+    await fs.writeFile(path.join(directory, 'source-map.json'), sourceMapBytes, { flag: 'wx' });
+    pinProjectFile(retentionPin, 'source-map.json', sourceMapBytes);
     const project = path.join(directory, 'project');
     await fs.mkdir(project);
+    retentionPin.directories.add('project');
     for (const resource of plan.resources) generated.files.set(generated.resourceFiles.get(resource.id), captured.resources.get(resource.id));
     for (const [relative, bytes] of generated.files) {
       aborted(signal);
       const file = path.join(project, relative);
       await fs.mkdir(path.dirname(file), { recursive: true });
       await fs.writeFile(file, bytes, { flag: 'wx' });
+      pinProjectFile(retentionPin, `project/${relative}`, bytes);
       record.artifact.files.push({ path: relative, size: bytes.length, sha256: buildHash(bytes) });
     }
     const onOutput = output => onProgress({ output });
@@ -107,20 +120,31 @@ export async function buildProject({ root, scene, godot, tool = godot, backendId
     }
     // Caches are regenerable. Keep the small generated project, not editor or
     // shader caches in every build. Runtime gets its own temporary project.
-    await adapter.cleanupProject(project);
+    await adapter.cleanupProject(project, { generatedFiles: [...generated.files.keys()], resourceFiles: [...generated.resourceFiles.values()] });
     if (plan.behaviors) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, captured.snapshot.source.documents,
       [plan.behaviors.manifest.objectId, ...plan.behaviors.sources.map(source => source.objectId)]);
     record.status = record.diagnostics.length ? (record.phases.some(item => item.status === 'cancelled') ? 'cancelled' : record.phases.some(item => item.status === 'timeout') ? 'timeout' : 'failed') : 'succeeded';
-    await saveRecord(directory, 'build.json', record);
-    return { ok: record.status === 'succeeded', status: record.status, buildDirectory: directory, record };
+    await saveRecord(directory, 'build.json', record, retentionPin);
+    if (record.status === 'succeeded') {
+      const manifest = createBackendProjectManifest({ build: record, snapshot: captured.snapshot, sourceMap: generated.sourceMap, generated });
+      await saveRecord(directory, 'backend-project.json', manifest, retentionPin);
+    }
+    return { ok: record.status === 'succeeded', status: record.status, buildDirectory: directory, record,
+      [PROJECT_RETENTION_PIN]: retentionPin };
   } catch (error) {
     const status = signal?.aborted ? 'cancelled' : 'failed';
     const item = diagnostic(signal?.aborted ? buildError('build_cancelled', 'Build operation cancelled.') : error, plan);
     if (record && directory) {
       record.status = status; record.diagnostics.push(item);
-      await fs.rm(path.join(directory, 'project'), { recursive: true, force: true });
-      await saveRecord(directory, 'build.json', record);
-      return { ok: false, status, buildDirectory: directory, record };
+      // Keep the partial generated input for diagnosis. Later host retention
+      // only removes bytes it wrote, so external edits cannot disappear here.
+      try {
+        await adapter.cleanupProject(path.join(directory, 'project'), {
+          generatedFiles: [...generated.files.keys()], resourceFiles: [...generated.resourceFiles.values()],
+        });
+      } catch { /* Unremoved or unknown paths make retention preserve the output. */ }
+      await saveRecord(directory, 'build.json', record, retentionPin);
+      return { ok: false, status, buildDirectory: directory, record, [PROJECT_RETENTION_PIN]: retentionPin };
     }
     return { ok: false, status, diagnostics: [item] };
   }

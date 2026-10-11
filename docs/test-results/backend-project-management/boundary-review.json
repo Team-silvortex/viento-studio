@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "reviewedAt": "2026-10-11T06:36:42.298999+00:00",
+  "openFindings": [],
+  "conclusion": "No blocking implementation finding remains in the reviewed management/inspection/retention/CLI scope. New cleanup-failure test validates the fixed catch-scope and real adapter cleanup; complete prepared inventories and portable metadata checks pass.",
+  "reviewedSources": {
+    "engine/backend-project.mjs": "650202291ece923cde5d39005d1ad0da6e09c1afba4b8260035fc6ec22e53f4e",
+    "engine/README.md": "d35f058a7eec3ee5b9a1788147cb59fd20cedcbe50cf0abe7e707dc9fa55a340",
+    "scripts/adapters/node-backend-project.mjs": "0be94bebd640143ba15362fbc14e6093c49aa6d3653a4300dca8eac25246ce23",
+    "scripts/adapters/node-backend-project-retention.mjs": "8c7c67082a0c7fcc9026a91fca305cbe3115e89337a89b62835a5708268c945e",
+    "scripts/adapters/node-project-build.mjs": "9a1c10157131e0869f9fba73836baf4fe4fbf2d7d46d54dc4e665a57ac9c7ef1",
+    "scripts/backends/godot4-adapter.mjs": "9ab26b8372a4ca2c793798e88b6f4c91bc9eeecdcaa663b68d19a37bcf30b7ac",
+    "scripts/lib/project-build-service.mjs": "89aed0dfee1cccda470d61d8c1a1c91b780043ab8b19315f07edb56bf0f7aef0",
+    "scripts/project-build.mjs": "b01e7b90df0db6617a7fb6b04eb12963333647933ac10e98a661fb53119681af",
+    "scripts/tests/backend-project-boundary.test.mjs": "dc60c3e7544894f7195887229cd5c038668734d526e3ea3c4b5c8eed6c14f311",
+    "scripts/tests/backend-project-cli.test.mjs": "6c29d8a8614e38caa7821346d3fb4ecaaab59a90128190dd5d5371d3555a0c09",
+    "web/modules/app-backend-project.js": "3169183116f7ee7b6a8731391858b400a6af8c6ff7f90e68cb04725a43ec9aee",
+    "web/modules/app-project-build.js": "03b7a223df3ae24ed010a04105db28e860b0fb640edb1883c5bdb94c03d331e8",
+    "web/project-build.css": "a8694d621d868dd2e9c0284dc5f2ae86e34f64ebc8539a215eeba3710b3413e8"
+  },
+  "frozenSourceManifest": {
+    "path": "source-hashes.json",
+    "files": 586,
+    "sha256": "47d93c8d7c5ded674485eb404e90eba99bf4893387c6b7aa55c125cecf6f1771",
+    "allMatch": true
+  },
+  "previousSourceScope": {
+    "files": 571,
+    "changedFiles": [
+      "engine/README.md",
+      "scripts/adapters/node-project-build.mjs",
+      "scripts/backends/godot4-adapter.mjs",
+      "scripts/lib/project-build-service.mjs",
+      "scripts/project-build.mjs",
+      "scripts/tests/dialog-harness.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-project-build.js",
+      "web/project-build.css"
+    ],
+    "newFiles": [
+      "engine/backend-project.mjs",
+      "scripts/adapters/node-backend-project-retention.mjs",
+      "scripts/adapters/node-backend-project.mjs",
+      "scripts/tests/backend-project-boundary.test.mjs",
+      "scripts/tests/backend-project-build-ui.test.mjs",
+      "scripts/tests/backend-project-cache.test.mjs",
+      "scripts/tests/backend-project-cli.test.mjs",
+      "scripts/tests/backend-project-management-smoke.mjs",
+      "scripts/tests/backend-project-retention.test.mjs",
+      "scripts/tests/backend-project-ui-smoke.mjs",
+      "scripts/tests/backend-project-ui.test.mjs",
+      "scripts/tests/backend-project.test.mjs",
+      "scripts/tests/helpers/backend-project-fixture.mjs",
+      "scripts/tests/node-backend-project.test.mjs",
+      "web/modules/app-backend-project.js"
+    ],
+    "allOtherPreviousFilesMatch": true,
+    "manifestSha256": "dd925f1c7c86a838d07e18729736c7bccf15dd9f290254468775bdcee7a5374f"
+  },
+  "historicalPreservation": {
+    "files": 2511,
+    "manifestSha256": "e7e377719b19361b26901d9a9d9cf25343c53b3b0bc51d0a2d85a80b6f84aec8",
+    "allMatch": true
+  },
+  "unchangedGodotGeneratorAndRuntimeSources": {
+    "files": 9,
+    "hashes": {
+      "scripts/backends/godot4-behaviors.mjs": "d80c7230f8dccb0aa7d96818ded0bb6d39c65d302f5263dd57cef5245e92cb60",
+      "scripts/backends/godot4-dispatch.mjs": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
+      "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+      "scripts/backends/godot4.mjs": "d42d385b5a6e62ff4aa91d00f6065bdd0cefbc7ddde55e08cf5e3c62060fff77",
+      "scripts/backends/godot4/behavior-runtime.gd": "ec039ccaff0f376734938f54808b7929e7385393fd89516de35561e5959943bb",
+      "scripts/backends/godot4/control-runtime.gd": "7490fcb7dfb2c7a1f7b4b251a77804be0f5cea22e568eafe33a404de6b4aba64",
+      "scripts/backends/godot4/control.tscn": "adcd159c8ef7ea1463b859e4a83dacc10c8aaa39f431b80eb695aaf4151466f2",
+      "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
+      "scripts/backends/godot4/runtime.gd": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd"
+    },
+    "allMatch": true,
+    "scope": "Godot adapter cleanup intentionally changed; the existing generator/runtime sources listed here remain byte identical."
+  },
+  "nativeManifest": {
+    "path": "native-helpers.json",
+    "sha256": "5be60815cfdc902d9a93bc48ed05e2030d881a73ee3aa26306d70ec635a6250a",
+    "entries": {
+      "/home/chiharukiryu/cdev/viento-studio/src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu": {
+        "size": 126458664,
+        "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+      },
+      "/tmp/viento-backend-project-core-target/debug/viento-core": {
+        "size": 12224736,
+        "sha256": "35a14ddf9451d5f25cd445e5a80c9de6bbed6a939e225d5d61de865a53ee1964"
+      },
+      "/tmp/viento-backend-project-native-target/debug/examples/workspace-archive": {
+        "size": 223869384,
+        "sha256": "2f149a4d2bfeb9b67305d620c8cc943abf36acda9957b5c99a6fbdf749ffab74"
+      },
+      "/tmp/viento-backend-project-native-target/debug/examples/mobile-storage": {
+        "size": 22800104,
+        "sha256": "0f2e3f9ae31fe6bec4a90a0e4ffdd7725b9ac4acf78aa14edd36433ba4939bed"
+      },
+      "/home/chiharukiryu/cdev/viento-studio/engine/studio-core.wasm": {
+        "size": 325826,
+        "sha256": "4246d8fee45d85530c0afbb5012ae557fe67f5a53eae8915adf818444575ccf9"
+      }
+    },
+    "allBytesMatch": true,
+    "scope": "Byte verification here; tool/native runtime execution belongs to separate owner logs, not this review."
+  },
+  "tests": {
+    "independentFinal": {
+      "path": "boundary-cli-final-repair.log",
+      "sha256": "f08e509dfdf9ff8b652497532130941ba7b52123e0dd05596ab79b0064af1f2e",
+      "node": "v24.20.0",
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "skip": 0,
+      "cancelled": 0,
+      "durationMs": 1483.117226,
+      "groups": {
+        "CLI": 11,
+        "boundary": 5
+      },
+      "scope": "CLI uses bounded executable contract fixtures; retention uses actual host writes with injected phases. No actual Godot/Bevy engine acceptance claimed by these 16 tests."
+    },
+    "prepared": {
+      "path": "packaged-resources.json",
+      "sha256": "08c8f28eab8e6d1ceeabf15061867b4ac2207d6ee7379d4f85eb44544aa1840e",
+      "rawLog": "prepared-check-final.log",
+      "rawLogSha256": "7fe1ae42526dcafb2403a58cc25544775e4b4b48b55058f1251c84deeee42a29",
+      "counts": {
+        "desktopPortableGroups": 13,
+        "mobilePortableGroups": 13,
+        "desktopCliGroups": 6,
+        "totalGroups": 32
+      },
+      "artifacts": {
+        "desktop/resources": {
+          "files": 523,
+          "bytes": 6928521,
+          "manifestSha256": "181a98eb59d034fbdc04d69bcd7e022093ad4298cd75bf2469139f815d33aea7"
+        },
+        "mobile/dist": {
+          "files": 211,
+          "bytes": 5284209,
+          "manifestSha256": "1d461f848d308154b5049d04fe8db2e352a784a8a2db326dd39c1d435eef11fa"
+        },
+        "desktop/ui": {
+          "files": 11,
+          "bytes": 392172,
+          "manifestSha256": "d57e124e1973c7c447a3ff496fb1c21c17cf069e429f86356f94f4cf72c03e47"
+        }
+      },
+      "scope": "Actual prepared desktop/mobile copies: complete byte inventories, portable metadata validation, and copied desktop CLI inspection of a disposable output. No tool/build process, installation, Android device, GUI or foreign-platform acceptance here.",
+      "vmScope": "Standard Node VM without Node/DOM/network globals proves portability of copied pure metadata code; it is not a security sandbox for hostile code."
+    }
+  },
+  "verifiedBoundaries": [
+    "Portable manifests describe source/backend/adapter/tool identity, generated files/resource copies, exact metadata evidence and lifecycle; they do not grant filesystem, execution, plugin installation or cleanup authority.",
+    "Inspect uses frozen source and registered implementation fingerprints without consulting the author workspace or identifying/starting a tool. Missing legacy manifest derives a read-only description without adoption or repair.",
+    "Unknown directories are reported as single extra entries and never traversed. Known artifacts/metadata are checked before and after asynchronous generator work. Added manual/session paths make completeness false rather than becoming owned files.",
+    "Service selects only its own successful-build UUID for inspection. Inspection DTOs and in-flight completions remain bound to the selected owned entry, root identity and frozen build/snapshot/manifest pins.",
+    "Management inventory validation and runtime authorization stay separate: runtime preserves the existing frozen-byte, backend, adapter and tool checks. complete=false does not itself revoke runtime admission.",
+    "Cleanup authority is a private, current-service write receipt with physical root/inode and exact byte/tree inventory. Extra/manual/session paths, edits, symlinks, hardlinks and replaced roots preserve outputs.",
+    "Retirement quarantines the exact owned directory then repeats the complete content/ownership check before deletion. Deterministic mutations at rename and outside links were tested; new builds remain successful when old outputs are preserved.",
+    "Godot cleanup only removes .godot/.host cache classes and exact staged script .uid/resource .import paths. Failure retains partial project inputs and unrelated files, attempts known cleanup once, writes failed record, and publishes no successful manifest.",
+    "Copied desktop CLI inspects a disposable generated output while author files are offline; copied mobile pure code validates the four actual backend manifests without importing or executing Node backend host modules."
+  ],
+  "resolvedFindings": [
+    {
+      "id": "cli-frozen-backend-tool-selection",
+      "resolution": "CLI derives tool configuration from the frozen backend for run and suite; explicit tool/backends and Godot alias admission remain enforced.",
+      "proof": "11 CLI groups in boundary-cli-final-repair.log"
+    },
+    {
+      "id": "destructive-auto-retention-and-local-race",
+      "resolution": "Root added private receipts, dirty/session/link preservation, same-parent quarantine and second complete check. No scan/adopt of previous sessions.",
+      "proof": "4 original boundary tests plus owner retention logs"
+    },
+    {
+      "id": "failed-cleanup-scope",
+      "resolution": "Root moved adapter/generated to outer build scope so catch cleanup is reachable. The new fifth boundary test observes one cleanup call after an injected thrown phase and checks cache/known sidecars removed, partial/unrelated files retained.",
+      "proof": "boundary-cli-final-repair.log"
+    }
+  ],
+  "preservedInitialEvidence": [
+    {
+      "path": "cli-tests-second.log",
+      "classification": "New CLI fixture assumed upstream author reader accepted a colon/newline path; upstream world reader rejected it. Fixture narrowed to pure audit-path semantics, no product path-permission expansion."
+    },
+    {
+      "path": "cli-tests-third.log",
+      "classification": "Revised legacy executable fixture exceeded existing frozen-planner permission; corrected to pure portable audit validation."
+    },
+    {
+      "path": "cli-boundary-final.log",
+      "classification": "New failure cleanup fixture used positional executePhase arguments; actual host API passes one object. Test-only repair."
+    },
+    {
+      "path": "cli-boundary-final-second.log",
+      "classification": "New cleanup spy expected generator-only paths but actual trusted staged set also includes resource copies. Test-only repair."
+    },
+    {
+      "path": "focused-final.log",
+      "classification": "Root focused initial run included the same new cleanup fixture expectation failure; log remains unchanged."
+    },
+    {
+      "path": "prepared-check-initial.log",
+      "classification": "Proof wrongly expected standard VM built-in WebAssembly to be absent. Corrected assertion covers Node/DOM/network globals; no WASM or runtime invocation occurs in pure metadata proof."
+    },
+    {
+      "path": "native-host-build.log",
+      "classification": "Initial owner native build lacked prepared resources; repair has a distinct log."
+    },
+    {
+      "path": "real-backends-initial/results.json",
+      "classification": "Actual Godot outputs initially reported known UID/import extras; cleanup was added. Initial real smoke also used an unregistered Bevy ID, corrected only in the new fixture. Final four real manifest receipts report complete inventories."
+    }
+  ],
+  "limitations": [
+    "Only current service-session history/ownership is managed; previous caches are not adopted and there is no persistent cross-service history or editable generated author project.",
+    "Retirement is protected against the bounded tested filesystem changes and ordinary path writers; it is not a transaction lock against arbitrary continuous same-user concurrent writes after the final check.",
+    "Prepared VM is a portability test, not a hostile-code security sandbox. No mobile Node backend execution, Android device, installed Tauri application or foreign-platform acceptance.",
+    "The added fifth boundary case was introduced after the full-check initial file enumeration may have completed. Its actual acceptance is the separate final 16-case log and the root focused rerun; do not inflate the initial full-check count."
+  ]
+}

@@ -1,5 +1,27 @@
 # 验证指南
 
+[0.0.10 源码交付](RELEASE_0.0.10.md)汇总累积主线及其验证时序；下列专题和 0.0.9 发布检查继续保留当时版本、来源摘要及平台边界。源码发布不重标历史日志，也不等于新安装包或 Android 设备验收。
+
+新增[3D 初步接入验证](test-results/scene3d-primitives/results.json)分别检查独立作者格式、Rust／WASM、GPU API 预览、原文会话守护及 Godot 导出／有限无头实测，旧 2D 路径另行回归。实际图形后端、准备副本和工具环境在本轮证据中记录，不能扩大为安装或设备结论。
+
+新增[片段重命名专题](test-results/scene-composition-fragment-rename/results.json)验证 Rust 独立可选能力、原始值 token 保真、全部放置引用更新、完整候选来源、旧三动作兼容、实际浏览器保存重开及桌面／移动准备副本。专项与全量重叠；真实失败和修正均保留新日志，旧证据和示范作者文件不改。本轮不代表安装窗口或 Android 设备验收。
+
+片段定义新增、CST 复制与未引用移除的验证另保留[独立记录](test-results/scene-composition-definition-authoring/results.json)。专项核对原文保真、声明预算、删除引起的来源路径变化、全部既有实例／组织语义及普通保存；真实浏览器与准备副本分别记录，前轮八入口历史保持原条件。
+
+组织分组新增、改名／改父级、演员归组和空叶组移除的验证另保留[独立记录](test-results/scene-composition-group-authoring/results.json)。专项、原生／WASM、真实浏览器、完整应用与准备副本分别记录；前轮放置管理及七入口历史保持原条件，该轮八个配方编辑入口没有新增安装或设备验收。
+
+## 整份配方放置管理
+
+新增、复制、移除分别检查原文保真、全演员／组身份、声明缺省、最终展开预算及旧接口拒绝跨域操作。纯提案和完整候选／工作流专项检查过期来源、伪造回执及删除原选中演员；真实浏览器检查取消、审阅、普通保存和重开。原生与 WASM 为同一共享 Rust 规则，完整应用、准备副本与浏览器日志分别存于[独立记录](test-results/scene-composition-placement-structure/results.json)，不替代桌面安装或 Android 设备验收。
+
+## 系统装配与模板需求
+
+系统注册／规划、GUI 装配和声明采用的专项分别见 `scripts/tests/studio-modules.test.mjs`、`studio-system-ui.test.mjs` 和 `studio-profile-project.test.mjs`。最后一组的原生备份往返需提供 `VIENTO_MOBILE_STORE_BIN`；原生模板及未来声明读取测试在桌面 Rust `--lib` 集合。新增配置严格拒绝坏声明，已有未来声明继续保留与普通编辑；实际浏览器证明和 prepared 副本核对见[本轮证据](test-results/studio-system-modules/results.json)。3D、动态插件和 Android 设备不在本轮验收中。
+
+本轮[后端工程持久恢复验收](test-results/backend-project-catalog/results.json)验证成功登记、跨服务只读恢复、明确选择后的运行／控制／用例／验收组对接，另检查损坏索引、并发写入、目录／清单替换、关闭与过期选择、旧工程保留和三语界面。固定 Node **24.20.0** 的完整应用 **2504／2504**（491 个 JavaScript、API／版本预检，0 失败／跳过／取消／todo）与新增专项 **65／65**（索引 15、服务 10、独立边界 14、控制器 15、父集成 11）通过；这些用例包含于本轮完整应用，不与旧回归总数相加。真实 Godot／Bevy 四种工程均经过重启／离线运行，两个实例场景另完成四步控制、三项断言、两成员验收组及四份成员报告。首轮实例夹具误用禁用输入的示范演员，仅新夹具显式声明 arrows 后通过；原失败证据保留。浏览器发现手动刷新命中目录缓存，已改为强制读取并增加父控制器回归；独立故障注入发现临时发布文件消失导致宿主锁未释放，已在任何临时清理结果下释放自己拥有的锁，原索引精确保持且后续更新成功。共享 Rust／WASM 和后端生成器／运行协议未改，新行为只在 Node 宿主与三语 GUI，对应安装窗口／Android 执行仍未验收。
+
+后端工程管理专项覆盖纯清单、只读检查、CLI 冻结后端工具选择、宿主工程归属、改动保护与三语详情。实际 Godot / Bevy 工具验证与浏览器界面证据分别列在[本轮记录](test-results/backend-project-management/results.json)，不计为新安装版或 Android 设备验收。 本轮全量 2438/2438、零失败和跳过；新增领域最终 86/86 与全量重叠，其中一条失败阶段清理测试在全量启动后追加，另在领域检查中通过。实际工具四种场景、Chrome 五条流程与资源副本 32 组分别报告；共享 Rust／WASM 未改，无新 Rust 测试或设备结论。
+
 本页说明如何选择测试、运行命令和解释覆盖范围。当前功能、发布及安装状态见 [开发状态](STATUS.md)，历次数字和阶段说明见 [历史验证记录](history/VALIDATION.md)。所有常规测试使用独立临时工程。
 
 当前保存状态与异步归属见 [Rust 保存工作流验证](test-results/rust-layout-save/results.json) 及 [真实浏览器记录](test-results/rust-layout-save/layout-browser/browser.json)。
@@ -7,6 +29,16 @@
 此前 Rust 布局草稿／撤销历史见 [验证结果](test-results/rust-layout-history/results.json)、[多选与生命周期实测](test-results/rust-layout-history/selection-browser/browser.json) 和 [保存失败／冲突实测](test-results/rust-layout-history/layout-browser/browser.json)。
 
 最新多选与批量布局见 [场景多选结果](test-results/scene-selection/results.json) 和 [浏览器记录](test-results/scene-selection/browser.json)。前一轮布局编辑回归见 [场景布局结果](test-results/scene-layout/results.json) 与 [真实浏览器记录](test-results/scene-layout/browser.json)。此前的 [场景预览结果](test-results/scene-preview/results.json) 和 [浏览器证据](test-results/scene-preview/browser.json) 覆盖完整应用检查与 Chrome 静态画布；[场景编辑结果](test-results/scene-edit/results.json) 保留原生归档／移动存储往返和真实 Godot 运行证据。此前的 [OC 投影结果](test-results/oc-projections/results.json) 还保留当时的桌面 Rust 检查。通过／跳过／忽略数及源码、安装包与设备的区别统一列在 [当前状态](STATUS.md#验证边界)；各轮原始报告保持当时的条件。
+
+## 独立场景创作流程与宿主接口
+
+[创作接口说明](SCENE_AUTHORING.md)区分纯候选、注入工作流、浏览器连接、各独立表单及原文宿主。[本轮完整证据](test-results/scene-authoring-workflow/results.json)以固定 Node **24.20.0** 完成 **2629／2629** 全量和 **506** 个 JavaScript／API／版本预检，均无失败、跳过、取消或 todo；新增候选 **15**／工作流 **31**／接线 **5** 共 **51** 项，含旧编辑回归的 **388** 项与全量重叠。重点检查同源归属、await 前输入快照、迟到／重叠请求、恶意 JSON 数据、临时预览释放、合法令牌推进、私有回执、关闭与跨区重放；六个子 UI 保留独立审批及历史。
+
+真实 Chrome 六个入口共 **37** 条回归通过，记录在[浏览器汇总](test-results/scene-authoring-workflow/browser-regression.json)；**9** 张六入口及中英日窄屏代表图已目视。已有 smoke 脚本原字节复用，各脚本的输出环境变量指定新空目录，不能覆盖旧证据。桌面／移动[准备副本](test-results/scene-authoring-workflow/packaged-resources.json)各在标准 VM 实际加载 **86** 本地模块／保留 WASM，执行 **12** 新流程组与 **28** 旧组，共 **80** 组；库存 **529／216／11** 文件和 **610** 冻结源码一致。无 Node、DOM 或 fetch 全局的执行证明模块可移植，不是恶意代码隔离或设备验收。
+
+首轮旧专项 **336／337** 唯一失败是强制实例属性和画布共用同一函数引用；新架构改为独立函数，并保留双方完整 POST、DELETE、原文载荷和零应用断言，见[契约审查](test-results/scene-authoring-workflow/old-test-contract-review.json)。新候选初次错误投影尺寸只修夹具，初次日志保留。Rust／WASM 和实际源编辑／普通保存宿主未改，Rust 只为全量重新构建原生辅助工具，没有宣称重跑独立 Rust 套件或安装／Android 编辑设备实测。
+
+可单独运行 `node --test scripts/tests/scene-authoring-*.test.mjs`，完整应用仍使用本页常规命令。只测试回调桩不能代替原文宿主的最后核对、真实预览依赖或普通保存回归。
 
 ## 功能图谱与证据核对
 
@@ -240,7 +272,7 @@ node --test scripts/tests/project-build-service.test.mjs scripts/tests/project-b
 
 ## 场景片段组合实验
 
-文件内组合使用独立 [recipe 样例](../examples/scene-composition/README.md)，输出已有 v3。首轮纯组合、来源及真实后端执行范围见[组合实验记录](test-results/scene-composition/results.json)；普通文档登记／保存、源码派生依赖及包迁移的后续证据见[配方文档工作流记录](test-results/scene-composition-workflow/results.json)。上述历史记录覆盖已有源码编辑与资源包界面；当前另有已保存／未保存配方预览、贡献来源定位及单实例覆盖原文草稿编辑，验证方法见下节。共享模板编辑、覆盖删除、拖动回写和跨文件事务尚未接入。
+文件内组合使用独立 [recipe 样例](../examples/scene-composition/README.md)，输出已有 v3。首轮纯组合、来源及真实后端执行范围见[组合实验记录](test-results/scene-composition/results.json)；普通文档登记／保存、源码派生依赖及包迁移的后续证据见[配方文档工作流记录](test-results/scene-composition-workflow/results.json)。上述历史记录覆盖已有源码编辑与资源包界面；当前另有已保存／未保存配方预览、贡献来源定位及单实例覆盖原文草稿编辑，验证方法见下节。0.0.10 源码另接恢复继承、单实例位置画布及独立多实例移动／对齐批次，见下方各专题；共享片段字段、声明恢复、偏移和结构创作已另接独立入口，跨文件事务尚未接入。
 
 ```sh
 npm run core:test
@@ -291,7 +323,7 @@ VIENTO_COMPOSITION_PREVIEW_OUTPUT=/tmp/viento-composition-preview-new \
 
 ### 单实例局部覆盖与普通保存
 
-局部覆盖使用独立可选的核心操作，不改变 recipe、World 或原展开协议。最终[结果](test-results/scene-composition-overrides/results.json)记录应用 1548／1548、0 跳过、350 份 JavaScript 语法检查和 Rust 75 项；新增 54 个应用测试已计入全量，不重复相加。核心桥接 12 项含 55 次真实原生／WASM 对照和 17 类坏回执；纯提案 12、主编辑器新增 8、父控制器 6、界面新增 16 均通过。专项分别检查 Rust 原文补丁、桥接回执、纯提案、主编辑器应用、父预览会话及三语界面；真实浏览器单独使用临时工程，不能把 DOM 测试或打包模块执行当作安装／设备验收。
+局部覆盖使用独立可选的核心操作，不改变 recipe、World 或原展开协议。本节保留原 set 专题的条件和数字；0.0.9 发布后恢复继承的新增验证见下一节。原最终[结果](test-results/scene-composition-overrides/results.json)记录应用 1548／1548、0 跳过、350 份 JavaScript 语法检查和 Rust 75 项；新增 54 个应用测试已计入全量，不重复相加。核心桥接 12 项含 55 次真实原生／WASM 对照和 17 类坏回执；纯提案 12、主编辑器新增 8、父控制器 6、界面新增 16 均通过。专项分别检查 Rust 原文补丁、桥接回执、纯提案、主编辑器应用、父预览会话及三语界面；真实浏览器单独使用临时工程，不能把 DOM 测试或打包模块执行当作安装／设备验收。
 
 ```sh
 npm run core:test
@@ -310,7 +342,192 @@ VIENTO_COMPOSITION_OVERRIDES_OUTPUT=/tmp/viento-composition-overrides-new \
 
 桥接测试伪造回执中的另一演员／放置、共享模板、身份或其他字段变化，以及错误／乱序路径、非法原文与解码重复键；坏回执关闭运行时，合法输入错误不关闭。纯提案与主编辑器检查摘要、保存基线、稳定目标、精确回执复算，以及异步等待期间输入被修改、旧提案重放和晚到焦点。来源贡献、生成坐标和预览结果不能冒充可写范围。
 
-真实流程应从当前原文的有效预览打开“编辑此实例覆盖”，检查完整候选和实际图片，应用后确认只有内存草稿改变，再执行普通保存和重开；配方资源包迁移继续沿用文档工作流回归。同时验证取消、未改字段不取消继承、无效数字／缺依赖图片不能应用、外部保存冲突、检查后源码变化及迟到响应；中英日窄屏保留表单内容。本轮[Chrome 记录](test-results/scene-composition-overrides/browser/browser.json)完成 6 条流程和 11 次预览捕获，Runtime 异常／SVG 外联为 0；普通保存仅改变配方正文，元数据和图片保持原字节。资源包往返的历史证据仍见上面的文档工作流，不把本轮浏览器流程算作新增迁移实测。[打包记录](test-results/scene-composition-overrides/packaged-resources.json)核对桌面 68／移动 64 份文件，内置 Node 与移动无 Node 全局的 110 个隔离模块执行新覆盖助手及旧能力；覆盖后 89 个配方位置逐项核对。共享片段编辑、删除覆盖／恢复继承、配方拖动回写、多文件事务和目标设备界面不在本轮范围。
+真实流程应从当前原文的有效预览打开“编辑此实例覆盖”，检查完整候选和实际图片，应用后确认只有内存草稿改变，再执行普通保存和重开；配方资源包迁移继续沿用文档工作流回归。同时验证取消、未改字段不取消继承、无效数字／缺依赖图片不能应用、外部保存冲突、检查后源码变化及迟到响应；中英日窄屏保留表单内容。原专题的[Chrome 记录](test-results/scene-composition-overrides/browser/browser.json)完成 6 条流程和 11 次预览捕获，Runtime 异常／SVG 外联为 0；普通保存仅改变配方正文，元数据和图片保持原字节。资源包往返的历史证据仍见上面的文档工作流，不把该浏览器流程算作新增迁移实测。[打包记录](test-results/scene-composition-overrides/packaged-resources.json)核对桌面 68／移动 64 份文件，内置 Node 与移动无 Node 全局的 110 个隔离模块执行新覆盖助手及旧能力；覆盖后 89 个配方位置逐项核对。该历史 set 专题未覆盖恢复继承；当前新增验证见下节。共享片段编辑、配方拖动回写、多文件事务和目标设备界面仍未接入。
+
+### 恢复继承与混合补丁
+
+当前 **0.0.9 发布后未发布工作树**在上述链路加入六字段恢复，独立 edit 能力不更改旧 set／expand 请求。新[验证记录](test-results/scene-composition-inheritance/results.json)与旧证据分开。固定内置 Node **24.20.0** 的[完整应用回归](test-results/scene-composition-inheritance/app-check.log)通过 **2037／2037**、0 失败／跳过／取消，**431** 个 JavaScript 文件及 API／版本预检通过。共享 Rust 原生 **87** 项及 fmt／clippy 通过，最终[专项日志](test-results/scene-composition-inheritance/focused-tests.log)为 **74／74**，含真实原生／WASM 对照；专项已计入全量，不重复相加。准备资源实际范围按本轮结果记录。
+
+本轮[准备资源记录](test-results/scene-composition-inheritance/prepared-resources.json)核对完整桌面资源 **511**、移动资源 **201**、作品库界面 **11** 份文件及重点副本 **80／76** 份。桌面用固定 Node **24.20.0** 执行准备模块，隔离移动环境加载 **111** 个 ESM 模块和真实 WASM；两端各通过相同 **5** 类继承案例，不相加为 10 种功能。覆盖显式清图 `null`、图片恢复、同值恢复、混合 set／reset、六字段恢复删除条目，以及无覆盖的 no-op、作者字节不写和精确提案／回执一致；旧 set／expand／源码与几何能力继续验证。隔离移动环境不包含 Node、DOM 或网络全局，不表示 Android 界面、宿主或设备已接入。
+
+```sh
+npm run core:test
+npm run core:build
+VIENTO_STUDIO_CORE_BIN=/绝对路径/viento-core \
+  node --test scripts/tests/studio-core-composition-patch.test.mjs \
+  scripts/tests/scene-composition-overrides.test.mjs \
+  scripts/tests/scene-composition-overrides-host.test.mjs \
+  scripts/tests/scene-composition-overrides-bridge.test.mjs \
+  scripts/tests/scene-composition-overrides-ui.test.mjs
+VIENTO_COMPOSITION_OVERRIDES_OUTPUT=/tmp/viento-composition-inheritance-new \
+  node scripts/tests/scene-composition-inheritance-smoke.mjs /usr/bin/google-chrome
+```
+
+核心检查 set／reset 不重叠、六字段固定路径顺序、位置／尺寸成对恢复、仅删除目标成员、最后字段删除后移除演员覆盖条目但保留空数组、无覆盖时不创建空条目，以及数组重排后的稳定身份。BOM、CRLF、转义字段、数字写法与无关空白保真；恢复图片、显式图片 `null` 和片段内图片各自处理。新能力缺失时旧 set／expand／源码／几何继续可用，原生与真实 WASM 回执必须一致。
+
+提案与 UI 检查同值恢复仍为源码修改、混合 set／reset 的单次候选、无效废弃输入与取消恢复、完整原文审阅，以及来源／token／批准／能力失效和迟到响应。新增 UI 的提案边界替身只证明界面委托；真实 Rust、候选预览与普通保存由其他专项及浏览器实际运行验证。边界审阅另保存[最终结论](test-results/scene-composition-inheritance/boundary-review.json)；严格重验输入和候选，恶意回执不能删除输入中的非法重复键来伪造成功。
+
+实际浏览器使用独立临时配方工程，验证同值恢复取消、混合设置与恢复、删除所选演员全部覆盖、完整候选、普通保存与再预览、外部文件冲突及过期源码保护。新[Chrome 记录](test-results/scene-composition-inheritance/browser/browser.json)使用 **154.0.8037.97**，完成 **9** 条流程，中英日 **390px** 恢复入口和审阅流程分别截图；只有普通保存改变配方正文，元数据、图片、共享片段与实例 UUID 保留。它独立于旧专题，不等同新安装窗口、Android 宿主或设备验收。
+
+### 配方单实例画布与原文草稿
+
+当前 **0.0.9 发布后未发布工作树**复用既有 Rust 几何／历史和 position-only 覆盖提案，新增独立画布 owner。结果单独保存于[画布专题](test-results/scene-composition-canvas/results.json)，不改写上轮继承或普通 Scene2D 布局证据。最终固定 Node **24.20.0** 完成应用 **2082／2082**，0 失败／跳过／取消，**436** 个 JavaScript 文件及 API／版本预检通过。[相关专项](test-results/scene-composition-canvas/focused-tests.log) **128／128** 已计入全量，其中新纯适配 **15** 项执行真实共享 WASM，新位置界面 **19** 项通过。共享画布 **30** 项由全量验证；初次位置界面及画布合计 **49／49** 来自系统 Node **24.21.0**，保留原条件。专项不与全量重复相加。
+
+```sh
+node --test scripts/tests/scene-composition-layout.test.mjs \
+  scripts/tests/scene-composition-layout-ui.test.mjs \
+  scripts/tests/scene-layout-canvas.test.mjs \
+  scripts/tests/scene-composition-overrides-ui.test.mjs
+```
+
+纯适配回归覆盖保存态和未保存原文、稳定 UUID 兄弟实例、首次覆盖与显式无图片、局部／场景位置及偏移边界、原位 no-op、小数未动轴、撤销／重做和 100 步预算、32 槽释放、坏模型／来源、异步输入分离与 128 KiB 候选限制。非目标或局部越界操作必须保留位置、dirty、历史和 redo；候选重新展开并通过既有 apply 复算，只有 `position` 改变。
+
+画布和 GUI 验证固定可移动实例的指针／键盘门禁、一次拖动一次提交、网格／缩放、Esc／取消、未完成输入、批准失效、当前源码 token／父 owner 和迟到响应。真实浏览器应使用隔离配方工程，另核对完整候选、普通保存／重开、外部冲突、元数据／图片／UUID／兄弟实例原字节、中英日及窄屏。准备资源分别执行实际桌面副本和无 Node／DOM／网络全局的移动 ESM／WASM；移动纯模块不代表 Android 位置编辑宿主、界面或设备。
+
+实际[准备副本记录](test-results/scene-composition-canvas/packaged-resources.json)核对桌面完整 **513**／重点源码 **111**、移动完整 **203**／重点源码 **81** 份文件，固定 Node **24.20.0** 执行桌面复制模块，移动在隔离 VM 中加载 **9** 个纯模块及未改动的 Rust WASM。两端各通过同一 **5** 组位置案例，共 **10** 组；移动显式拒绝 **13** 个非法操作，无 Node／DOM／网络全局或宿主导入。案例核对保存及草稿回执、范围外原字节、局部／场景边界、小数未动轴、原位和历史、伪造／过期回执、首次 await 前分离及释放。准备资源初次版本假设和缺少定义来源的测试 fixture 失败单独保留，修正的是验证脚本；此记录不证明作者磁盘写入、安装窗口、引擎执行、Android 设备或新增独立 Rust 测试。
+
+共享父回调另验证两个子对话框的合法复制提案：完整规范化内容和同一结果回执匹配后允许结束并返回编辑器，改变任一字段仍拒绝。初次浏览器脚本调用了不存在的语言函数，失败记录保留原条件；修正为实际 `applyLanguage` 后，[最终画布实测](test-results/scene-composition-canvas/browser-final/browser.json)在 Chrome **154.0.8037.97** 完成 **7** 条流程，0 页面异常、0 SVG 外部访问，桌面与中英日 **390px** 截图另经视觉核对。旧六字段／恢复流程在新目录[重跑 **9** 条](test-results/scene-composition-canvas/inheritance-regression/browser.json)，0 异常；这是本轮共享父回调回归，原继承报告保持原字节。
+
+### 配方多实例批次画布与原文草稿
+
+本段仍是 **0.0.9 发布后未发布工作树**，独立记录于[批次画布专题](test-results/scene-composition-batch-canvas/results.json)，不改写单实例、恢复继承或旧布局报告。新增可选 `sceneComposition.patchPositions` 原子生成多目标位置补丁，既有 set／edit／expand、作者格式与普通保存保持。共享核心原生 **93** 项及 fmt／clippy 通过；[最终相关专项](test-results/scene-composition-batch-canvas/focused-tests.log)使用固定 Node **24.20.0** 完成 **249／249**，0 失败／跳过／取消。新纯适配 15、核心桥接 10、批次界面 24、父控制器 7、主编辑器 8 及预览新增 2 项共 66 项，均已包含在专项和[本轮完整应用](test-results/scene-composition-batch-canvas/app-check.log) **2148／2148** 内；固定 Node 24.20.0 完成 **444** 个 JavaScript 文件及 API／版本预检，0 失败／跳过／取消，不与专项相加。界面初次最终 24 项使用系统 Node 24.21.0，真实大纲、helper 和 Rust 执行，画布绘制为测试替身。
+
+```sh
+npm run core:test
+npm run core:build
+VIENTO_STUDIO_CORE_BIN=/绝对路径/viento-core \
+  node --test scripts/tests/studio-core-composition-batch-patch.test.mjs \
+  scripts/tests/scene-composition-batch-layout.test.mjs \
+  scripts/tests/scene-composition-batch-layout-ui.test.mjs \
+  scripts/tests/scene-composition-batch-layout-host.test.mjs \
+  scripts/tests/scene-composition-batch-layout-bridge.test.mjs
+VIENTO_COMPOSITION_BATCH_CANVAS_OUTPUT=/tmp/viento-composition-batch-new \
+  node scripts/tests/scene-composition-batch-canvas-smoke.mjs /usr/bin/google-chrome
+```
+
+原生和实际 WASM 回执逐字核对，检查独立 probe／调度域、1–128 唯一目标、规范作者顺序、同放置多个新增覆盖合并插入、已有数值 token 与其他覆盖字段保真、净无变化不创建空覆盖，以及最终候选 128 KiB 预算。严格输入和完整展开在补丁前后均检查，不能把依次完成的单实例补丁当作原子批次。缺 positions 能力时旧 set／edit／expand 和几何仍可用；坏回执改变非目标语义、路径或身份必须拒绝并禁用运行时。
+
+纯适配验证当前保存／草稿来源、全部实例与组织侧带、每目标独立 offset、世界及局部双边界、未动轴小数、同定义不同 UUID、净变化候选、真实六向对齐和一个会话的 100 步批次历史。任一目标失败不得改变任一位置、dirty 或 redo；未提交的选择集不会成为作者保存权限。准备应用必须重算所有稳定目标和精确回执，顺序、重复、过期、伪造及异步变动输入均拒绝。
+
+GUI 检查真实大纲的搜索、后代选择及多选切换，完整候选和目标列表、批次历史、未完成原始坐标、取消与图片副本释放。静默改变字段后不能靠换选、对齐、拖动或应用绕过批准；检查和应用期间锁定作者操作，关闭或换源后的迟到打开／失败／检查／应用不影响新 owner。共享父回调接受合法分离提案并严格核对规范化内容及同一完成回执。
+
+实际[Chrome 实测](test-results/scene-composition-batch-canvas/browser/browser.json)使用 **154.0.8037.97** 完成 **5** 条流程，0 页面异常、0 SVG 外部访问，中英日 **390px** 截图另经视觉核对。临时工程通过分组选择和真实拖动／方向键跨两放置修改四个目标，按尺寸对齐并整批撤销／重做，审阅完整原文后应用和普通保存／重开；原始字段批准失效及外部冲突保留原草稿。旧单实例脚本在[本轮独立目录](test-results/scene-composition-batch-canvas/single-regression/browser.json)另实跑 **7** 条流程，0 异常和 SVG 外部访问，原专题保持其原条件。
+
+本轮[准备副本](test-results/scene-composition-batch-canvas/packaged-resources.json)核对桌面完整 **515**／重点源码 **113**、移动完整 **205**／重点源码 **83**、作品库 **11** 份文件和真实共享 WASM。桌面用固定 Node **24.20.0** 执行准备模块，移动在无 Node／DOM／网络或宿主导入的隔离环境中加载 **84** 个本地 ESM 模块（含 vendor YAML）。两端各通过同一 **8** 组案例，共 **16** 组执行；覆盖保存／未保存来源、多放置和同放置位置批次、局部／场景边界、未动轴小数、历史／净变化／生命周期、精确回执和非法目标拒绝。重点副本 SHA 与来源逐一匹配，**543** 份最终源码前后稳定；案例类别和实际范围以报告为准，不累计为 16 种功能。准备纯模块不等于 Tauri 安装、Android 画布宿主／界面／设备或新引擎验收。初次专项的 dirty 条件 fixture 错误、界面重复统计组按钮和复选框的 fixture 错误、准备过程覆盖正在执行的 Node 二进制导致的 `ETXTBSY` 均保留原始记录，不能改写为产品失败或最终通过证据。准备验证首次隔离链接器只允许 engine 路径，实际 JSON 范围工具还依赖已准备的本地 vendor YAML；修正的是 proof 的本地导入白名单，产品及副本未改，仍拒绝宿主导入和 Node／DOM／网络全局。
+
+### 共享片段字段与普通保存
+
+本轮仍是 **0.0.9 发布后未发布工作树**，新证据独立保存于[共享字段专题](test-results/scene-composition-fragment-editor/results.json)。操作见[共享片段表单](SCENE_COMPOSITION.md#编辑共享片段的演员声明)，Rust、纯提案、GUI、来源宿主及真实浏览器分别核对；原单实例、恢复、批次画布和冻结后端证据保持原条件。
+
+```sh
+npm run core:test
+npm run core:build
+VIENTO_STUDIO_CORE_BIN=/绝对路径/viento-core \
+  node --test scripts/tests/studio-core-composition-fragment-patch.test.mjs \
+  scripts/tests/scene-composition-fragments.test.mjs \
+  scripts/tests/scene-composition-fragments-ui.test.mjs \
+  scripts/tests/scene-composition-fragments-host.test.mjs \
+  scripts/tests/scene-composition-fragments-bridge.test.mjs
+VIENTO_COMPOSITION_FRAGMENT_OUTPUT=/tmp/viento-composition-fragment-new \
+  node scripts/tests/scene-composition-fragments-smoke.mjs /usr/bin/google-chrome
+```
+
+原生与真实 WASM 回执逐字核对：独立 fragment probe／操作域、六字段非空 SET 白名单、未知或重复键、现有模板身份、位置／尺寸成对和图片 null 限制、全部放置偏移后的坐标、前后 128 KiB UTF-8、BOM／CRLF／Unicode 与范围外数值字节。旧 set／edit／positions／expand 域拒绝新操作；缺新能力时保留旧功能，坏回执改变其他声明、覆盖、身份或来源路径时应拒绝。
+
+纯提案分别核对作者 raw 声明与所选实例的有效／覆盖值，全部相关 targets 的源码顺序及六字段覆盖列表；未声明字段明确设为当前有效同值仍新增声明，已声明相同值不产生候选，全实例掩蔽仍允许修改声明。首次 await 前分离全部输入，prepare 重算精确候选与来源摘要、保存基线、引用集合、掩蔽和路径；错误来源、遗漏／重复／乱序目标、伪造候选或检查期间作者变化不得应用。
+
+GUI 逐字段明确勾选，未声明字段空白且未选输入禁用，位置和尺寸成对；选中的局部覆盖不会初始化为模板值。核对选择后影响清单、全遮蔽提示、完整原文审阅、合法分离提案／完成回执、取消返回、raw 字段及 checkbox 静默改变失效、pending 锁定、父 owner／token 和 late open／check／apply。此表单没有几何历史、Canvas 或独立图片副本，不能以渲染替身宣称画布操作。
+
+浏览器使用隔离配方工程，检查全部相关放置与覆盖掩蔽、取消、普通保存／重开、共享与单实例入口分离、原作者关系／资源字节／UUID／组／偏移保持；中英日 390px 图片另经视觉核对。准备副本分别执行完整桌面资源与无 Node／DOM／网络或宿主导入的移动 ESM／WASM，覆盖声明设置和精确应用回执；纯移动模块不代表 Android 编辑入口、设备或引擎执行。
+
+本轮实际共享 Rust 原生 **101** 项及 fmt／clippy 通过；固定 Node **24.20.0** 的[正式相关专项](test-results/scene-composition-fragment-editor/focused-tests-final.log) **358／358**、[完整应用](test-results/scene-composition-fragment-editor/app-check.log) **2223／2223**，0 失败／跳过／取消／todo；**453** 个 JavaScript 文件与 API／版本预检通过。新增 **75**（helper 16／核心桥接 11／UI 28／父控制器 9／主编辑器 8／入口 3）全部计入全量。核心定向 161 和正式专项 358 有旧回归重叠，不与全量相加。UI [独立 28 项](test-results/scene-composition-fragment-editor/ui-tests.acceptance.log)使用系统 Node 24.21.0，真实 helper／Rust；产品无画布或历史替身。
+
+[真实 Chrome](test-results/scene-composition-fragment-editor/browser/browser.json)使用 **154.0.8037.97** 完成 **6** 条共享字段流程，0 页面异常／SVG 外部访问；中英日 **390px** 和审阅页可见区域截图已另经视觉核对；完整候选原文由浏览器逐字断言核对。原[单实例脚本](test-results/scene-composition-fragment-editor/single-regression/browser.json) **7** 条与[批次脚本](test-results/scene-composition-fragment-editor/batch-regression/browser.json) **5** 条在新目录实际回归，均 0 异常／SVG，原脚本不变。
+
+本轮[准备副本](test-results/scene-composition-fragment-editor/packaged-resources.json)完整核对桌面资源 **517**／移动 **207**／作品库界面 **11** 份文件，逐份源码复制或明确变换匹配。固定 Node **24.20.0** 的桌面副本和隔离移动 ESM／实际 WASM 各通过 **9** 组新共享字段案例及 **2** 组真实旧单实例／批次 helper 回归，共 **22** 组执行（新 18／旧 4）。移动加载 **85** 个本地模块，含 vendor YAML，无 Node／DOM／网络全局或宿主导入；只验证纯声明编辑和回执，不替代 Android 作者编辑、安装窗口、持久化或引擎执行。本轮 **553** 份产品／测试源码摘要与副本执行绑定。
+
+[本轮保真核对](test-results/scene-composition-fragment-editor/historical-preservation.json)确认 **2257** 份旧历史、**7** 份冻结 Godot 后端、**9** 份旧单实例／批次／覆盖切片和 **553** 份最终源码保持；旧评分和报告执行条件不改写。仅[清理](test-results/scene-composition-fragment-editor/cleanup.json) **8** 个最初不存在的本轮生成目录，按 inode 去重的已分配磁盘块回收 **4879388672** 字节，即 **4.544 GiB**；共享重建 WASM、外部工具、作者数据、偏好及已有安装保留。
+
+[独立边界审查](test-results/scene-composition-fragment-editor/boundary-review.json)没有发现本切片的阻塞问题；[核心边界探针](test-results/scene-composition-fragment-editor/boundary-probe.json)和[回执／能力探针](test-results/scene-composition-fragment-editor/boundary-receipt-probe.json)另执行显式拒绝、缺新能力保留旧操作及原生／WASM 对照，不加入应用测试计数。审查结论只适用于现有演员六字段设置与单份原文会话。
+
+本轮初次夹具对数字写法／插入缩进、非法无继承图片 null、删除必需位置、跨 VM 数组及缺少回调集合的假设均保留原日志。初次核心／相关专项未提供所需工具而分别跳过 1／2 项，正式同一套专项补齐后无跳过；初次完整检查因启动参数中的重复 Godot 路径被主动终止，不记为完成的失败全量。独立伪造 UUID 夹具使用了原身份，及汇总脚本读取边界报告 schema 的误配只修验证脚本；汇总在写最终报告／清理前停止，修正后完成。全部初次条件与正式结果由[本轮记录](test-results/scene-composition-fragment-editor/results.json)分别列出，准备副本首次执行即通过。
+
+### 共享声明恢复与原子设置删除
+
+当前 **0.0.9 发布后未发布工作树** 在原共享字段表单增加可选声明恢复，新证据独立保存于[共享继承专题](test-results/scene-composition-fragment-inheritance/results.json)。原 SET 专题、实例覆盖、两个画布及后端报告保留原条件；使用方法见[恢复共享片段](SCENE_COMPOSITION.md#恢复共享片段的投影继承)。
+
+```sh
+npm run core:test
+npm run core:build
+VIENTO_STUDIO_CORE_BIN=/绝对路径/viento-core \
+  node --test scripts/tests/studio-core-composition-fragment-edit.test.mjs \
+  scripts/tests/scene-composition-fragment-inheritance.test.mjs \
+  scripts/tests/scene-composition-fragment-inheritance-ui.test.mjs \
+  scripts/tests/scene-composition-fragment-inheritance-host.test.mjs \
+  scripts/tests/scene-composition-fragment-inheritance-bridge.test.mjs
+VIENTO_COMPOSITION_FRAGMENT_INHERITANCE_OUTPUT=/tmp/viento-fragment-inheritance-new \
+  node scripts/tests/scene-composition-fragment-inheritance-smoke.mjs /usr/bin/google-chrome
+```
+
+真实原生与 WASM 核对独立 `fragment_edit` probe／操作域：设置和 reset 不重叠，位置不可删，四属性仅 source 开启投影继承可删，图片任一状态可删；显式图片 null 与删除分别验收。检查缺失字段恢复、净无变化、所有放置偏移、前后 128 KiB UTF-8、BOM／CRLF、必要分隔符、极端未改数值和范围外字节；旧 SET 与缺新能力兼容仍真实执行，不能拿 fake values 模拟删除。
+
+纯 helper 的 `proposeEdit({ values, reset })` 验证原始意图再规范净设置／实际删除，新形状始终携带 reset；原 `propose(values)` 与旧提案形状保持。prepare 在摘要 await 前分离来源及提案，重新计算完整引用集合、顺序、掩蔽、精确正文和路径；错误／遗漏／重排目标、坏回执或异步输入变动不得应用。
+
+GUI 五个恢复选择默认不勾，未声明或不允许删除时禁用，位置没有恢复控件；同字段 SET／RESET 互斥，原始输入不抹去。核对 pure reset、mixed set-reset、null 删除重继承、无继承图片删除无图、全部实例掩蔽仍只改声明、净影响列表、完整原文和图片依赖检查。原始输入／checkbox 静默变化、pending／owner／token／迟到完成、合法分离回执、取消及普通保存冲突各有专项；旧 SET-only 原测试保持原字节。
+
+浏览器应使用真实投影默认值，删除后再次预览确认实际继承；完整候选、全部 targets 和覆盖掩蔽用逐字断言核对，三语 390px 可见界面另经目视检查。准备副本用实际 WASM 执行原子删除与旧 SET／单实例／批次 helper，移动只加载本地纯模块，不替代 Android 编辑入口或设备验收。本轮实际计数以[结果](test-results/scene-composition-fragment-inheritance/results.json)与独立日志为准，专项和浏览器流程不累计为应用覆盖率。
+
+本轮共享 Rust 原生 **110** 项（新增 9）及 fmt／clippy 通过；固定 Node **24.20.0** 的[完整应用](test-results/scene-composition-fragment-inheritance/app-check.log) **2283／2283**、[正式相关专项](test-results/scene-composition-fragment-inheritance/focused-tests.log) **418／418** 均 0 失败／跳过／取消／todo，**459** 个 JavaScript 文件及 API／版本预检通过。新增 **60** 项（helper 16／协议桥接 11／UI 20／父控制器 5／主编辑器 8）已包含在全量，核心专项 **88**、相关专项和界面回归互相重叠，不相加。UI [新 20 项](test-results/scene-composition-fragment-inheritance/ui-tests-initial.log)和[旧 SET 原测试 28 项](test-results/scene-composition-fragment-inheritance/ui-regression-initial.log)首次均通过，使用系统 Node **24.21.0** 与真实 helper／Rust，无 Canvas 或几何历史替身。
+
+实际 Chrome **154.0.8037.97** 的[共享声明恢复实测](test-results/scene-composition-fragment-inheritance/browser-second/browser.json)完成 **6** 条流程；[旧共享 SET](test-results/scene-composition-fragment-inheritance/set-regression/browser.json) **6** 条、[旧实例恢复](test-results/scene-composition-fragment-inheritance/override-regression/browser.json) **9** 条和[旧批次画布](test-results/scene-composition-fragment-inheritance/batch-regression/browser.json) **5** 条分别实际回归，均 0 页面异常。新流程使用真实投影和图片，检查 null 删除后重继承、无继承图片删除无图、原子混合设置／恢复、局部掩蔽、普通保存和冲突。中英日 **390px** 及审阅页的可见区域共 4 张截图另经目视核对；完整候选原文由浏览器逐字断言核对。
+
+[准备副本](test-results/scene-composition-fragment-inheritance/packaged-resources.json)完整核对桌面资源 **517**／移动 **207**／作品库界面 **11** 份文件，逐份源码复制或明确变换匹配。两端各执行 **10** 组新恢复和 **11** 组旧 SET／单实例／批次 helper，共 **42** 组（新 20／旧 22），首跑通过。移动加载 **85** 个本地 ESM 模块及实际重建 WASM，无 Node／DOM／网络全局或宿主导入；这是纯规则可移植验证，不等同 Android 编辑／持久化／设备或安全沙箱验收。[最终结果](test-results/scene-composition-fragment-inheritance/results.json)绑定 **560** 份产品／测试源码与四个 fresh 原生 helper。
+
+[保真报告](test-results/scene-composition-fragment-inheritance/historical-preservation.json)确认 **2339** 份旧历史、**16** 份受保护旧切片、**7** 份冻结 Godot 后端和 **560** 份最终源码保持。仅[清理](test-results/scene-composition-fragment-inheritance/cleanup.json) **9** 个确属本轮的生成目录：8 个在起始基线不存在，额外 default target 的生成时间与归属有独立证据。按 inode 去重已分配磁盘块回收 **4896763904** 字节，即 **4.560 GiB**；共享重建 WASM、外部工具、作者数据、偏好与已有安装保持，版本仍为 0.0.9。
+
+[独立审查](test-results/scene-composition-fragment-inheritance/boundary-review.json)未发现本有界切片的阻塞问题。[声明边界探针](test-results/scene-composition-fragment-inheritance/boundary-probe.json)另执行 10 组／37 个明确拒绝及 93 种 token 组合；[回执与能力探针](test-results/scene-composition-fragment-inheritance/boundary-receipt-probe.json)另执行 13 组，含 9 类伪造回执、3 类缺新能力仍真实执行旧 SET 和 12 个原生／WASM 请求对照，不加入应用总数。
+
+初次核心测试的语法及无继承 null 夹具、helper 对原始速度值的假设、宿主／父完成回调的夹具断言和浏览器素材库相对路径仅修验证文件；原日志均保留。准备启动使用不支持的参数，随后在资源准备前终止；提前编译 helper 缺资源，正式准备和编译后通过。额外默认构建目录有独立生成时间／归属记录并列入清理。完整应用、准备副本和最终汇总首跑成功；具体初次条件由[本轮结果](test-results/scene-composition-fragment-inheritance/results.json)分别列出，未改产品绕过失败。
+
+### 放置偏移与全成员原文审批
+
+当前 **0.0.9 发布后未发布工作树** 增加独立 placement 表单和原子 offset 补丁，[新专题](test-results/scene-composition-placement-offset/results.json)与旧字段／继承／批次证据分别保存。操作见[整组放置偏移](SCENE_COMPOSITION.md#调整整组放置偏移)，组织组仍不提供空间变换。
+
+```sh
+npm run core:test
+npm run core:build
+VIENTO_STUDIO_CORE_BIN=/绝对路径/viento-core \
+  node --test scripts/tests/studio-core-composition-placement-patch.test.mjs \
+  scripts/tests/scene-composition-placement.test.mjs \
+  scripts/tests/scene-composition-placement-ui.test.mjs \
+  scripts/tests/scene-composition-placement-host.test.mjs \
+  scripts/tests/scene-composition-placement-bridge.test.mjs \
+  scripts/tests/scene-composition-placement-preview.test.mjs
+VIENTO_COMPOSITION_PLACEMENT_OUTPUT=/tmp/viento-placement-new \
+  node scripts/tests/scene-composition-placement-smoke.mjs /usr/bin/google-chrome
+```
+
+真实原生与 WASM 核对独立 placement cap1／`editPlacementOffset` 域、稳定 placement 身份、有限数值对及 null 删除、缺省与显式零的双向变化。偏移在演员局部覆盖之后相加，任一成员世界坐标越界须原子拒绝；核对正负边界、前后 128 KiB、BOM／CRLF、极端未改数值、删除首／中／末 token 与插入，保留其他放置、共享片段、局部覆盖、全部演员／组 UUID 及范围外字节。缺新能力继续真实执行旧操作，坏回执不能改变非目标语义或路径。
+
+纯 helper 在首次 await 前分离源及有效模型，绑定 selected actor 所属的全部 placement targets 和 groups，顺序来自片段声明。propose(pairOrNull) 只产生净源码变化；prepare 重新核对源摘要、保存基线、完整演员／组来源、映射／顺序、精确候选和 changedPaths。完整／遗漏／重复／乱序／foreign actor 或 group 回执分别检验；输入／提案嵌套值异步修改不得绕过校验。
+
+GUI 显示 raw 声明和当前预览生效偏移，缺失不自动填零，数值对必须完整；恢复保持用户输入，未声明时不能删除。影响列表覆盖全体成员，差异只读，完整候选与 canonical 批准独立绑定。核对静默 raw／reset 改变、pending 锁全部操作、owner／token／path／保存基线、late open/check/apply、新开覆盖旧请求、取消／焦点和幂等销毁；没有 Canvas、媒体副本或几何会话。
+
+真实浏览器应验证多成员局部覆盖后统一偏移、缺省与显式零、恢复、完整 targets／groups／候选、普通保存及外部冲突。完整候选逐字断言，三语 390px 的可见表单和审阅区域另经目视检查；可滚动选项不能误称已在所有截图内可见。准备副本使用实际 WASM 执行偏移提案及旧 SET／恢复／批次 helper，移动只验证隔离本地纯模块，不提升 Android 编辑宿主或设备成熟度。
+
+正式结果如下；应用、相关专项和核心专项具有重叠，不能累加为覆盖率。
+
+本轮共享 Rust 原生 **119** 项（新增 9）及 fmt／clippy 通过；固定 Node **24.20.0** 的[完整应用](test-results/scene-composition-placement-offset/app-check.log) **2353／2353**、[相关专项](test-results/scene-composition-placement-offset/focused-tests.log) **488／488** 和[核心专项](test-results/scene-composition-placement-offset/core-focus.log) **155／155** 均 0 失败／跳过／取消／todo，**468** 个 JavaScript 文件及 API／版本预检通过。[新增 70 项](test-results/scene-composition-placement-offset/new-test-counts.json)为 helper 16／协议 11／UI 24／父控制器 7／预览 4／主编辑器 8，已包含在全量；专项互相重叠，不相加。系统 Node **24.21.0** 的新 UI **24** 项及原共享 SET／恢复测试 **48** 项实际通过，真实 helper／Rust 执行，无 Canvas 或媒体替身。
+
+实际 Chrome **154.0.8037.97** 的[放置偏移实测](test-results/scene-composition-placement-offset/browser/browser.json)完成 **5** 条流程；[旧共享恢复](test-results/scene-composition-placement-offset/inheritance-regression/browser.json) **6** 条和[旧批次画布](test-results/scene-composition-placement-offset/batch-regression/browser.json) **5** 条另实际回归，均 0 页面异常。新流程检查全成员偏移、缺省与显式零、恢复、完整候选、普通保存与外部冲突。中英日 **390px** 和审阅页可见区域共 4 张截图另经目视核对；完整候选原文由浏览器逐字断言核对。本轮没有单独重跑旧 SET 浏览器流程。
+
+[准备副本](test-results/scene-composition-placement-offset/packaged-resources.json)完整核对桌面资源 **519**／移动 **209**／作品库界面 **11** 份文件，源码复制或明确变换逐份匹配。桌面与隔离移动各执行 **14** 组新偏移和 **21** 组旧 SET／恢复／单实例／批次 helper，共 **70** 组（新 28／旧 42），首跑通过。移动加载 **86** 个本地 ESM 模块及实际重建 WASM，无 Node／DOM／网络全局或宿主导入；这是纯层可移植验证，不等同 Android 作者编辑／持久化／设备、安全沙箱、安装窗口或引擎执行验收。
+
+[保真报告](test-results/scene-composition-placement-offset/historical-preservation.json)确认 **2430** 份旧历史、**23** 份受保护旧切片、**7** 份冻结 Godot 后端和 **571** 份最终产品／测试源码保持。仅[清理](test-results/scene-composition-placement-offset/cleanup.json) **8** 个最初不存在的本轮生成目录，按 inode 去重已分配磁盘块回收 **4887965696** 字节，即 **4.552 GiB**；共享重建 WASM、依赖、外部工具、作者数据、偏好和已有安装保留。版本仍为 **0.0.9**，新能力属于未发布工作树。
+
+独立[边界复核](test-results/scene-composition-placement-offset/boundary-review.json)检查 9 份源码，最终 findings 为空；[纯边界探针](test-results/scene-composition-placement-offset/boundary-probe.json)另执行 14 组、54 次明确拒绝，[回执探针](test-results/scene-composition-placement-offset/boundary-receipt-probe.json)另执行 18 组，含 14 类伪造回执、3 类缺能力时旧操作可用、15 个旧操作与 19 个原生／WASM 请求对照。这些独立探针不加入应用总数。
+
+初次新浏览器发现父检查与新夹具错误地从预览顶层读取 groups；实际 v2 组织组位于 `sceneStructure.groups`，新父检查和新夹具已修正。新核心 reset 夹具位置、late-open 等待屏障、浏览器语言切换调用和边界探针缩进假设仅修验证文件；日志按初次条件保留。成功的旧批次浏览器初用错误输出环境变量，证据按[迁移记录](test-results/scene-composition-placement-offset/batch-evidence-relocation.json)逐字节搬入本轮目录，原报告条件未重写。完整应用、准备副本和最终汇总首跑成功，具体初次条件见[本轮结果](test-results/scene-composition-placement-offset/results.json)。
 
 ## Rust 源码检查与坐标补丁
 
@@ -579,7 +796,7 @@ python3 desktop/tests/native-library.py /path/to/tauri-driver /path/to/WebKitWeb
 | 完整大工程与容量边界 | 多 GiB 迁移、长期压力、空间不足、不同文件系统及接近移动限制时的性能 |
 | Scene2D 人工交互 | 实体键盘、长时间窗口运行和更多图形设备；原生引擎或其他平台必须在接入后建立各自测试 |
 
-尚未实现的原生 Nuis/ns-nova/yalivia、第二后端、嵌入视口、GPU 计算及宿主崩溃恢复等内容，以 [开发状态](STATUS.md) 和 [构建说明](PROJECT_BUILD.md) 为准；补测不能替代实现。
+尚未实现的原生 Nuis/ns-nova/yalivia、嵌入视口、GPU 计算及宿主崩溃恢复等内容，以 [开发状态](STATUS.md) 和 [构建说明](PROJECT_BUILD.md) 为准；补测不能替代实现。
 
 ## 证据与清理
 
@@ -610,3 +827,16 @@ VIENTO_SCENE_SELECTION_OUTPUT=/绝对路径/新的空证据目录 node scripts/t
 专项使用三个不同尺寸、图片继承方式不同的对象，核对组合键和列表选择、全选／清选、共同位移、实际抓取对象作为吸附基准、六向对齐以及批次撤销／重做。边界回归包括浮点坐标、整组限制范围、无效批次原子拒绝及未完成数值输入保护。多选时隐藏单对象坐标框，切回单选恢复。
 
 真实 Chrome 检查批量保存、冲突草稿、三语与 390px 布局；保存只修改场景位置，保留 UUID、BOM／CRLF、元数据、OC、投影和素材。集成测试另外核对资源包迁移及生成 Godot 场景中的全部坐标。原有只读预览和单对象布局测试继续保留。
+
+## 共享片段演员结构与普通保存
+
+新增／移除片段演员使用独立 Rust 结构能力，测试同时覆盖所有相关放置映射、局部覆盖清理、未放置片段、最后成员保护、完整原文回执与来源冲突。产品格式继续 recipe v1 → Scene2D v3。
+
+```sh
+cargo test --locked --manifest-path crates/viento-studio-core/Cargo.toml
+node scripts/build-studio-core.mjs
+node --test scripts/tests/studio-core-composition-structure-patch.test.mjs scripts/tests/scene-composition-structure*.test.mjs
+VIENTO_COMPOSITION_STRUCTURE_OUTPUT=/empty/evidence/path node scripts/tests/scene-composition-structure-smoke.mjs /usr/bin/google-chrome
+```
+
+真实浏览器脚本创建临时作品，检查固定两放置身份、投影／图片／组来源、取消／原始输入失效、普通保存与重开、移除覆盖和未放置片段、图片不可用及外部保存冲突，并保留中英日 390px 截图。未放置片段检查声明和登记依赖，没有渲染实例，不扩大为所有投影有效默认值验收。对应准备副本验证纯 helper 与实际 WASM，无 Node／DOM／网络全局；这是标准 VM 可移植性验证，不是恶意代码安全沙箱，也不代表 Android 设备编辑或新版安装窗口。新证据位于 [结构创作专题](test-results/scene-composition-structure/results.json)，旧证据和评分按原条件保留。

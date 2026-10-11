@@ -1,0 +1,102 @@
+{
+  "format": "viento-scene-composition-groups-document-review",
+  "schemaVersion": 1,
+  "date": "2026-10-11",
+  "status": "pass",
+  "ok": true,
+  "scope": "Read-only review of current documentation for shared organizational group authoring; excludes historical validation statements and historical reports.",
+  "reviewedFiles": [
+    {
+      "path": "docs/SCENE_COMPOSITION.md",
+      "size": 61667,
+      "sha256": "6222d9971e14d0330bf4db97623cdd4bd0904784fdd05af9fe735799be3a0b3a"
+    },
+    {
+      "path": "docs/SCENE_AUTHORING.md",
+      "size": 5894,
+      "sha256": "1cc2feb8f7459ee6668b75a3669d8813fd7ecbfea3e4f0cd8c4b76909b5741a6"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "size": 69079,
+      "sha256": "86141f1072fb4a5be8a418150d7c45b1db352f3b8810ce321196630bd02aa4ab"
+    },
+    {
+      "path": "docs/STATUS.md",
+      "size": 43768,
+      "sha256": "4de2d22eb72bb2855e18460b71c5c5519dc193bcc0c559dcc9095b3b867ec2bf"
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "size": 28232,
+      "sha256": "ad12442dbdbb395e0c6e871544a8aaea50dec966553545fd3e9840759da1d566"
+    },
+    {
+      "path": "docs/TESTING.md",
+      "size": 114342,
+      "sha256": "84a72c97b915c7cfb8f186c1da3a24dbb9220c4c63adf3519c0d7411c9284fd8"
+    },
+    {
+      "path": "docs/README.md",
+      "size": 7630,
+      "sha256": "f4c2a536c1a60bf3d4d6c3463475b9cc3d3c298d41ca0964a96d41b152a00b32"
+    },
+    {
+      "path": "engine/README.md",
+      "size": 43489,
+      "sha256": "246f26dc3d3abd12380e2be7e73f885024434247cb5d5a209b7ac8dfdfe082ff"
+    }
+  ],
+  "checks": {
+    "eightIndependentCurrentEditors": true,
+    "fourOrganizationalOperations": true,
+    "actualUngroupOptionLabel": true,
+    "lastEmptyGroupAllowed": true,
+    "oldSixEntryHistoryScoped": true,
+    "previousSevenEntryHistoryScoped": true,
+    "organizationalNotSpatial": true,
+    "ordinarySaveSourceAuthority": true,
+    "unusedRenderingBoundary": true,
+    "noNewInstallationDeviceClaim": true,
+    "engineContractFrozenScope": true
+  },
+  "findings": [],
+  "resolvedDuringReview": [
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "description": "Current shared-structure statements in both Scene2D organization paragraphs now distinguish existing actor/placement/group authoring from future fragment-definition and spatial work."
+    },
+    {
+      "path": "docs/STATUS.md",
+      "description": "Both broad current functionality paragraphs now include shared groups and narrow unfinished structure to fragment definitions."
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "description": "Current table and next-step paragraphs no longer classify shared organizational group authoring as unimplemented."
+    },
+    {
+      "path": "docs/SCENE_COMPOSITION.md",
+      "description": "Actor membership steps now use the actual Cancel membership option label."
+    }
+  ],
+  "validatedSemantics": [
+    "Add assigns one fresh group UUID to every related placement, stable across checks and language changes.",
+    "Edit changes raw display name and parent while preserving group key and existing identities; root parent is represented without declaration.",
+    "Assign changes only one shared actor groupKey or removes membership, applying to all placements without changing actor identity or geometry.",
+    "Remove only permits empty leaf groups without direct actors or direct child groups; no promotion or implicit membership rewrite, and the last group may be removed.",
+    "All organizational changes are source-owned proposals, complete candidate reviews and in-memory source application followed by ordinary Save.",
+    "Organization introduces no spatial transform, draw-order change, execution backend protocol change or cross-file/global undo authority.",
+    "128 KiB source/candidate, global declared and expanded 128-group budgets and 16-level hierarchy remain unchanged."
+  ],
+  "historicalEvidencePolicy": [
+    "No historical report or validation count was rewritten by this reviewer.",
+    "The old six-entry workflow and seven-entry placement management validation remain scoped to their original slices.",
+    "Studio composition-root six functional areas and six public source context fields are distinct from the eight current recipe UI entry points.",
+    "Portable/native/browser verification does not imply a new release, installation or device acceptance."
+  ],
+  "writes": [
+    "docs/test-results/scene-composition-group-authoring/document-review.json"
+  ],
+  "productAndTestChanges": false,
+  "documentationChangesByReviewer": false
+}

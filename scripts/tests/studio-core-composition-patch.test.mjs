@@ -36,6 +36,8 @@ function expected(input) {
   let local = placement.overrides.find(item => item.actorKey === input.actorKey);
   if (!local) { local = { actorKey: input.actorKey, values: {} }; placement.overrides.push(local); }
   Object.assign(local.values, input.values);
+  for (const field of input.resetFields || []) delete local.values[field];
+  if (!Object.keys(local.values).length) placement.overrides.splice(placement.overrides.indexOf(local), 1);
   return value;
 }
 async function rawWasm() {
@@ -68,7 +70,7 @@ async function nativeSequence(inputs) {
   });
 }
 let bridgeId = 0;
-async function responseBridge(response, feature = 1) {
+async function responseBridge(response, feature = 1, editFeature = null) {
   const module = await import(new URL(`../../engine/studio-core.mjs?composition-patch-response=${++bridgeId}`, import.meta.url));
   const memory = new WebAssembly.Memory({ initial: 40 }), instantiate = WebAssembly.instantiate;
   let inputLength = 0, outputLength = 0;
@@ -76,10 +78,11 @@ async function responseBridge(response, feature = 1) {
     WebAssembly.instantiate = async () => ({ instance: { exports: { memory, viento_core_protocol_version: () => 1,
       viento_core_scene_composition_version: () => 1, viento_core_scene_source_version: () => 1,
       ...(feature === null ? {} : { viento_core_scene_composition_patch_version: () => feature }),
+      ...(editFeature === null ? {} : { viento_core_scene_composition_edit_version: () => editFeature }),
       viento_core_input: length => { inputLength = length; return 16; },
       viento_core_run: () => {
         const input = JSON.parse(new TextDecoder().decode(new Uint8Array(memory.buffer, 16, inputLength)));
-        const value = input.operation === 'sceneComposition.patchOverrides' ? response : wasm(input);
+        const value = ['sceneComposition.patchOverrides', 'sceneComposition.editOverrides'].includes(input.operation) ? response : wasm(input);
         const bytes = new TextEncoder().encode(JSON.stringify(value)); outputLength = bytes.length;
         new Uint8Array(memory.buffer, 1048576, bytes.length).set(bytes); return 1048576;
       }, viento_core_output_len: () => outputLength,
@@ -97,6 +100,90 @@ test('override patch has an independent optional capability and preserves the ex
   assert.deepEqual(core.getStudioCoreMetadata(), { protocolVersion: 1, backend: 'rust-wasm', ready: true });
   assert.equal(core.dispatchStudioCoreComposition({ protocolVersion: 1, operation: 'sceneComposition.expand', content: serialize(recipe()) }).scene.schemaVersion, 3);
 });
+
+const editRequest = (content, resetFields, values = {}, extra = {}) => request(content, values,
+  { operation: 'sceneComposition.editOverrides', resetFields, ...extra });
+
+test('optional set/reset capability is independent; older cores retain all existing patch behavior', async () => {
+  const { instance } = await WebAssembly.instantiate(bytes, {});
+  assert.equal(instance.exports.viento_core_scene_composition_edit_version(), 1);
+  assert.equal(core.supportsStudioCoreCompositionEdit(), true);
+  const input = request(recipe());
+  for (const feature of [null, 0, 2]) {
+    const module = await responseBridge(wasm(input), 1, feature);
+    assert.equal(module.supportsStudioCoreCompositionEdit(), false);
+    assert.equal(module.supportsStudioCoreCompositionPatch(), true);
+    assert.throws(() => module.dispatchStudioCoreCompositionPatch(editRequest(recipe(), ['speed'])), { errorCode: 'studio_core_unavailable' });
+    assert.deepEqual(module.dispatchStudioCoreCompositionPatch(input), patch(input));
+    assert.equal(module.getStudioCoreMetadata().ready, true);
+  }
+});
+
+test('set/reset is one exact local edit, cleans empty actor overrides and keeps null distinct from inheritance', () => {
+  const value = recipe();
+  value.placements[1].overrides.push({ actorKey: 'companion', values: { imageResourceId: null, speed: 10 } });
+  const input = editRequest(value, ['speed', 'position']), result = patch(input);
+  assert.deepEqual(result.changedPaths, ['/placements/1/overrides/0/values/position', '/placements/1/overrides/0/values/speed']);
+  assert.deepEqual(parse(result.afterContent), expected(input));
+  assert.deepEqual(parse(result.afterContent).placements[1].overrides, [value.placements[1].overrides[1]]);
+  const resetImage = editRequest(result.afterContent, ['imageResourceId'], {}, { actorKey: 'companion' });
+  const imageResult = patch(resetImage);
+  assert.equal(Object.hasOwn(parse(imageResult.afterContent).placements[1].overrides[0].values, 'imageResourceId'), false);
+  const mixed = editRequest(value, ['position'], { speed: 150 });
+  assert.deepEqual(parse(patch(mixed).afterContent), expected(mixed));
+  const missing = editRequest(value, ['color']);
+  assert.deepEqual(patch(missing), { afterContent: missing.content, changedPaths: [] });
+});
+
+test('reset refuses duplicates, unknown fields and overlapping set fields without poisoning valid later edits', () => {
+  for (const input of [editRequest(recipe(), []), editRequest(recipe(), ['speed', 'speed']),
+    editRequest(recipe(), ['instanceId']), editRequest(recipe(), ['speed'], { speed: 9 }),
+    editRequest(recipe(), ['speed'], {}, { placementId: id(99) }), editRequest(recipe(), ['speed'], {}, { extra: true })]) {
+    assert.throws(() => patch(input));
+    assert.equal(core.getStudioCoreMetadata().ready, true);
+  }
+  const input = editRequest(recipe(), ['position'], { speed: 9 });
+  assert.deepEqual(parse(patch(input).afterContent), expected(input));
+});
+
+test('forged reset result cannot change another actor, reorder paths, retain removed fields or invent no-op', async () => {
+  const input = editRequest(recipe(), ['speed', 'position']);
+  for (const alter of [response => response.compositionPatch.changedPaths.reverse(),
+    response => { response.compositionPatch.changedPaths = []; },
+    response => { response.compositionPatch.afterContent = input.content; },
+    response => { const value = parse(response.compositionPatch.afterContent); value.placements[0].actorIds.leader = id(99); response.compositionPatch.afterContent = serialize(value); },
+    response => { const value = parse(response.compositionPatch.afterContent); value.placements[1].overrides = [{ actorKey: 'leader', values: { speed: 18.25 } }]; response.compositionPatch.afterContent = serialize(value); }]) {
+    const response = wasm(input); assert.equal(response.ok, true); alter(response);
+    const module = await responseBridge(response, 1, 1);
+    assert.throws(() => module.dispatchStudioCoreCompositionPatch(input), { errorCode: 'studio_core_unavailable' });
+    assert.equal(module.getStudioCoreMetadata().ready, false);
+  }
+});
+
+test('a forged deletion cannot hide duplicate decoded keys in the original author source', async () => {
+  const value = recipe(); value.placements[1].overrides[0].values = { speed: 18.25 };
+  const input = editRequest(serialize(value).replace('"speed": 18.25', '"speed":9,"spe\\u0065d":18.25'), ['speed']);
+  assert.equal(wasm(input).ok, false);
+  value.placements[1].overrides = [];
+  const response = { protocolVersion: 1, ok: true, compositionPatch: {
+    afterContent: serialize(value), changedPaths: ['/placements/1/overrides/0/values/speed'],
+  } };
+  const module = await responseBridge(response, 1, 1);
+  assert.throws(() => module.dispatchStudioCoreCompositionPatch(input), { errorCode: 'studio_core_unavailable' });
+  assert.equal(module.getStudioCoreMetadata().ready, false);
+});
+
+test('native and actual WASM agree on combined set/reset, container removal and rejected inputs',
+  { skip: !nativeAvailable && 'Set VIENTO_STUDIO_CORE_BIN for real native reset parity.' }, async () => {
+    const inputs = [];
+    for (const resetFields of [['speed'], ['position'], ['position', 'speed'], ['imageResourceId']]) {
+      inputs.push(editRequest(recipe(), resetFields));
+      inputs.push(editRequest(recipe(), resetFields, { color: '#334455' }));
+    }
+    inputs.push(editRequest(recipe(), ['speed', 'speed']), editRequest(recipe(), ['speed'], { speed: 1 }),
+      editRequest(recipe(), ['speed'], {}, { placementId: id(99) }), editRequest(recipe(), []));
+    assert.deepEqual(await nativeSequence(inputs), inputs.map(wasm));
+  });
 
 test('existing overrides replace only changed scalar or axis tokens and preserve all other author bytes', () => {
   const input = request(serialize(recipe()).replace('"speed": 18.25', '"spe\\u0065d": 1.825e1'));

@@ -1,0 +1,82 @@
+{
+  "format": "viento-scene3d-core-cross-review",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T11:35:23.645376+00:00",
+  "scope": "Independent read-only review of other owners renderer/view/source-port and standalone Godot generator/export host; product was not edited by this reviewer. Current hashes must match final parent freeze.",
+  "sourceHashes": {
+    "web/modules/scene3d-math.js": "7548e0b9e4ee30a0e97e6f8c41da4a9d57cfc2d3424b491b888c36c4a988ba9d",
+    "web/modules/scene3d-renderer.js": "50c17c92d28d01bfae6d40d5916ce5d1e13ff1cab4285a299ea87030a47ab94d",
+    "web/modules/app-scene3d-preview.js": "c09771f9b758a7e1786ad9de4d01e0337113769826875603c0782003a1256050",
+    "web/modules/app-runtime.js": "1bf1a0a07606fddce68a6ccef24fb6d00074081252d57bd94e38378725a71406",
+    "web/modules/app-studio-system.js": "4887c56a0e12e859ad050a47ccaacedc59fcf8ac824af4263c437ec8a479ac5e",
+    "web/scene3d.css": "506fd6d0940e344146ff3930e5e25b47be200926a3d5974a94558bf5a0a13928",
+    "scripts/backends/godot4-scene3d.mjs": "66e3430065adc0566ddae7593fb8c30ac22f4705c83770b9503a667c2265d7c1",
+    "scripts/backends/godot3d/runtime.gd": "46b87d59fb0c58dfc61c0a4c16e55511dcf0d77f49cb4eb0787e1d2ab4c29fe2",
+    "scripts/adapters/node-scene3d-export.mjs": "8256d67eb25cdb182a24335f156bfe7c8e185f5f7fce4bab394f9e30a9e3c56a",
+    "scripts/scene3d.mjs": "2a996e5e15c8d93960911d3503c5df6ca94df6ab344b61f3acd34a929d53fec5",
+    "scripts/tests/scene3d-renderer.test.mjs": "763e6c5fd1218fdc0e9f9819ffd8f28c57d2d773537465188068d9292cc55d9d"
+  },
+  "findings": [],
+  "resolvedFindings": [
+    {
+      "id": "subnormal-direction-normalization",
+      "severity": "medium",
+      "before": "Read initial renderer normalize3 used value / Math.hypot(...value). Accepted [5e-324,0,5e-324] rounded its denominator to5e-324, yielding [1,0,1] instead of a unit direction. Fragment shader assumes lightDirection is normalized.",
+      "after": "Owner changed the new math adapter to divide by maximum component first, then normalize scaled components. Actual pinned-runtime probe now produces [0.7071067811865475,0,0.7071067811865475], length1, matching exporter double-scaled normalization.",
+      "regression": {
+        "file": "scripts/tests/scene3d-renderer.test.mjs",
+        "passed": 17,
+        "failed": 0,
+        "skipped": 0,
+        "log": "cross-renderer-regression.log"
+      },
+      "probe": "cross-math-initial.json records actual already-fixed math when the independent probe ran, not a pre-fix snapshot."
+    },
+    {
+      "id": "source-viewport-ratio",
+      "origin": "Root identified fixed4/3 layout before this review.",
+      "after": "Valid parsed viewport updates surface.style.aspectRatio for each refresh; drawing-buffer aspect uses actual bounds. CSS4/3 remains only the empty initial default. Existing owner tests inspect16/9 and portrait updates."
+    }
+  ],
+  "checkedBoundaries": [
+    {
+      "id": "transforms",
+      "result": "Analytical mixed Euler XYZ and T*Rx*Ry*Rz*S match frontend matrix math and explicit Godot rotation_order0/Basis.from_euler(XYZ). Flat axial box normals may rotate alone under positive nonuniform size. Camera view is Y-up RH with forward-Z negative."
+    },
+    {
+      "id": "source-owner",
+      "result": "UI receives dedicated read-only source/context ports. Runtime token includes load, preview epoch and actual raw source changes. Async source fetch is rechecked against current sourcePath/token/epoch and dialog ownership. Renderer has no save, HTTP, filesystem or World ports."
+    },
+    {
+      "id": "view-lifecycle",
+      "result": "Orbit/zoom clone camera fields without mutating model/source, reset restores authored camera; selection is read-only. Close/dispose advances epoch, releases observers/listeners/shaders/program/VAO/buffer/context and blocks late work. Invalid drafts retain a clearly identified last-valid preview."
+    },
+    {
+      "id": "unavailable",
+      "result": "Missing independent core3D export disables only this preview. WebGL2 absence/context loss yields declarative diagnostic without source rewrite or 2D fallback."
+    },
+    {
+      "id": "export-source",
+      "result": "Explicit existing input is bounded/fatalUTF8/no-follow and author source bytes round-trip with BOM/CRLF. New output only is created; source.json/plan.json/project.godot/scene.tscn/runtime.gd plus manifest are frozen under private receipt SHA/inode identity. Existing outputs are never adopted."
+    },
+    {
+      "id": "export-ownership",
+      "result": "WeakMap session-branded receipt authorizes exactly one bounded identify/import/check/probe attempt. Tool is explicit absolute executable and pinned. Before/after each phase all six owned files are checked; only engine-created named cache roots/UID sidecar become permitted after execution starts. Links/special/hardlinks/unregistered source refuse."
+    },
+    {
+      "id": "export-failure",
+      "result": "Rollback checks exact owned inode/nlink/bytes before unlink; modified or foreign files remain. No recursive deletion/adoption. Empty directory removal only, source input unchanged."
+    },
+    {
+      "id": "runtime-receipt",
+      "result": "Actual Godot finite probe binds ordered UUIDs, names, position, size, material color, degree declaration, XYZ basis columns, camera/fov/frustum and normalized light; malformed or duplicate probe lines refuse. Existing2D event/behavior/backend project service remains untouched."
+    }
+  ],
+  "limitations": [
+    "GPU rendering and Godot rendering have different materials/tone pipelines; only coordinate/geometry/plan parity is asserted, not pixel parity.",
+    "Float32 raster precision at extreme100000 positions and tiny0.001 objects can lose detail; native finite schema admission does not promise high-precision GPU pixels.",
+    "Explicit trusted local tool and same-process/same-user ownership checks are not hostile-code or concurrent filesystem security sandboxes.",
+    "3D is a standalone static-box prototype; no assets, object definitions, hierarchy, behavior, 2D build/runtime-service participation, persisted 3D project catalog, installed IDE or Android device acceptance is claimed."
+  ],
+  "finalHashConfirmation": "Parent final source inventory/preservation audit must compare the sourceHashes above after owners freeze; prepared proof separately verifies actual copied modules."
+}

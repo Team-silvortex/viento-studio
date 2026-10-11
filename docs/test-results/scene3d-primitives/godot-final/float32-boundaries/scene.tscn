@@ -1,0 +1,80 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://runtime.gd" id="1_runtime"]
+
+[sub_resource type="Environment" id="Environment_scene"]
+background_mode = 1
+background_color = Color(0.050980392156862744, 0.09411764705882353, 0.1607843137254902, 1)
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.2
+
+[sub_resource type="StandardMaterial3D" id="Material_0"]
+albedo_color = Color(0.19607843137254902, 0.2784313725490196, 0.3803921568627451, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="Mesh_0"]
+size = Vector3(0.001, 1000, 0.001)
+material = SubResource("Material_0")
+
+[sub_resource type="StandardMaterial3D" id="Material_1"]
+albedo_color = Color(0.5294117647058824, 0.8470588235294118, 0.7254901960784313, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="Mesh_1"]
+size = Vector3(1.5, 3, 1.5)
+material = SubResource("Material_1")
+
+[sub_resource type="StandardMaterial3D" id="Material_2"]
+albedo_color = Color(0.9450980392156862, 0.7686274509803922, 0.43137254901960786, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="Mesh_2"]
+size = Vector3(0.6, 0.6, 4)
+material = SubResource("Material_2")
+
+[node name="Scene3D" type="Node3D"]
+script = ExtResource("1_runtime")
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_scene")
+
+[node name="Camera" type="Camera3D" parent="."]
+position = Vector3(100000, 100000, 100000)
+current = true
+fov = 179
+near = 0.001
+far = 0.1
+metadata/viento_forward = Vector3(-0.00024999971297265313, -0.9999999687500712, 0)
+
+[node name="Light" type="DirectionalLight3D" parent="."]
+light_color = Color(1, 1, 1, 1)
+light_energy = 1.2
+metadata/viento_forward = Vector3(0.7071067811865475, 0, 0.7071067811865475)
+
+[node name="Box_0" type="MeshInstance3D" parent="."]
+position = Vector3(100000, -100000, 100000)
+; EULER_ORDER_XYZ = 0: column-vector transform T * Rx * Ry * Rz.
+rotation_order = 0
+rotation = Vector3(628.3054407485687, -628.3098040716986, 628.3185307179587)
+mesh = SubResource("Mesh_0")
+metadata/viento_instance_id = "40000000-1111-4111-8111-111111111111"
+metadata/viento_name = "Ground · 地面"
+
+[node name="Box_1" type="MeshInstance3D" parent="."]
+position = Vector3(5e-324, -5e-324, 0)
+; EULER_ORDER_XYZ = 0: column-vector transform T * Rx * Ry * Rz.
+rotation_order = 0
+rotation = Vector3(0, 0, 0)
+mesh = SubResource("Mesh_1")
+metadata/viento_instance_id = "40000001-1111-4111-8111-111111111111"
+metadata/viento_name = "Tower · 方柱"
+
+[node name="Box_2" type="MeshInstance3D" parent="."]
+position = Vector3(1.5, 1.8, 1)
+; EULER_ORDER_XYZ = 0: column-vector transform T * Rx * Ry * Rz.
+rotation_order = 0
+rotation = Vector3(0.3490658503988659, 0.6108652381980153, 0.17453292519943295)
+mesh = SubResource("Mesh_2")
+metadata/viento_instance_id = "40000002-1111-4111-8111-111111111111"
+metadata/viento_name = "Beam · 倾斜梁"

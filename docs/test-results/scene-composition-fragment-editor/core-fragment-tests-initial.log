@@ -1,0 +1,104 @@
+✔ saved and dirty shared drafts expose only raw declarations and canonical source-ordered targets (150.820946ms)
+✔ only authored fields change a shared template while every placement identity and override remains byte-stable (31.427386ms)
+✔ an undeclared field matching the selected instance effective value is still an explicit shared declaration (30.34556ms)
+✔ existing declared semantic noops are omitted without publishing incidental effective defaults (21.932124ms)
+✔ all overridden instances can conceal runtime changes while the template declaration still changes (27.111303ms)
+✔ offset validation is atomic and local coverage can shield a placement from shared position change (57.229787ms)
+✔ all six fields can be set with explicit null only when template inheritance permits it (50.899154ms)
+✖ source lexemes keep BOM CRLF escaped keys numeric spellings and unchanged axes (1.113809ms)
+✔ raw draft values targets and returned proposals are independently detached (24.895398ms)
+✔ factory snapshots all model source and provenance data before its one asynchronous digest (28.610019ms)
+✔ apply snapshots source proposal nested values targets and byte receipt before digest (24.005389ms)
+✔ current source baseline and path conflicts reject before replacing editor memory (32.331663ms)
+✔ apply recomputes strict target order override coverage mappings fields and exact byte receipt (47.390519ms)
+✔ the complete preview provenance is bound including siblings duplicates and nonselected placements (48.275388ms)
+✔ strict set-only inputs reject identity reset invalid omitted and sparse values without poisoning the draft (21.175908ms)
+✔ invalid sources hashes revisions and ordinary scene bindings cannot create a shared fragment draft (23.809214ms)
+✔ shared fragment patches use an independent capability and remain rejected by old operation domains (37.813196ms)
+✔ shared patch changes only the exact raw actor and returns canonical six-field paths (3.842131ms)
+✔ missing optional declarations append once even when equal effective overrides conceal the runtime change (2.256264ms)
+✔ existing semantic noops leave every author token intact and avoid false changed receipts (2.989355ms)
+✔ unused actor templates can be patched but cannot evade strict declaration validation (4.69629ms)
+✔ post-offset bounds reject uncovered placements and retain covered local values atomically (3.837361ms)
+✔ final 128KiB source budget allows compensating changes but rejects final overflow (15.212117ms)
+✔ strict set-only shape invalid scalars reset identity malformed targets and non-JSON input leave the actual core usable (8.192621ms)
+✔ forged receipts cannot alter siblings placement overrides identity field sets path ordering or no-op bytes (38.770106ms)
+✔ duplicate decoded original and candidate keys fail even when a forged receipt looks semantically identical (7.333413ms)
+✔ fresh native and raw WASM agree for shared edits unused templates final budgets and rejection responses (20.003013ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 26
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 765.896203
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-fragments.test.mjs:139:1
+✖ source lexemes keep BOM CRLF escaped keys numeric spellings and unchanged axes (1.113809ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+  
+  '﻿{\r\n' +
+    '\t"format": "viento-scene-composition",\r\n' +
+    '\t"schemaVersion": 1,\r\n' +
+    '\t"scene": {\r\n' +
+    '\t\t"title": "Shared fragment / 共有宣言 / 🦊",\r\n' +
+    '\t\t"viewport": [\r\n' +
+    '\t\t\t800,\r\n' +
+    '\t\t\t480\r\n' +
+    '\t\t],\r\n' +
+    '\t\t"background": "#0d1829"\r\n' +
+    '\t},\r\n' +
+    '\t"fragments": [\r\n' +
+    '\t\t{\r\n' +
+    '\t\t\t"fragmentId": "party",\r\n' +
+    '\t\t\t"groups": [\r\n' +
+    '\t\t\t\t{\r\n' +
+    '\t\t\t\t\t"key": "party",\r\n' +
+    '\t\t\t\t\t"name": "Party / 队伍 / 隊"\r\n' +
+    '\t\t\t\t},\r\n' +
+    '\t\t\t\t{\r\n' +
+    '\t\t\t\t\t"key": "companions",\r\n' +
+    '\t\t\t\t\t"name": "Companions / 同行者",\r\n' +
+    '\t\t\t\t\t"parentKey": "party"\r\n' +
+    '\t\t\t\t}\r\n' +
+    '\t\t\t],\r\n' +
+    '\t\t\t"actors": [\r\n' +
+    '\t\t\t\t{\r\n' +
+    '\t\t\t\t\t"key": "leader",\r\n' +
+    '\t\t\t\t\t"objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",\r\n' +
+    '\t\t\t\t\t"groupKey": "party",\r\n' +
+    '\t\t\t\t\t"position": [\r\n' +
+    '\t\t\t\t\t\t120,\r\n' +
+    '\t\t\t\t\t\t180\r\n' +
+    '\t\t\t\t\t],\r\n' +
+    '\t\t\t\t\t"useProjectionDefaults": true\r\n' +
+    '\t\t\t\t},\r\n' +
+    '\t\t\t\t{\r\n' +
+    '\t\t\t\t\t"key": "companion",\r\n' +
+    '\t\t\t\t\t"objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",\r\n' +
+    '\t\t\t\t\t"groupKey": "companions",\r\n' +
+    '\t\t\t\t\t"position": [\r\n' +
+    '\t\t\t\t\t\t200,\r\n' +
+    '\t\t\t\t\t\t180\r\n' +
+    '\t\t\t\t\t],\r\n' +
+    '\t\t\t\t\t"useProjectionDefaults": true,\r\n' +
+    '\t\t\t\t\t"size": [\r\n' +
+  ...
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragments.test.mjs:141:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '﻿{\r\n\t"format": "viento-scene-composition",\r\n\t"schemaVersion": 1,\r\n\t"scene": {\r\n\t\t"title": "Shared fragment / 共有宣言 / 🦊",\r\n\t\t"viewport": [\r\n\t\t\t800,\r\n\t\t\t480\r\n\t\t],\r\n\t\t"background": "#0d1829"\r\n\t},\r\n\t"fragments": [\r\n\t\t{\r\n\t\t\t"fragmentId": "party",\r\n\t\t\t"groups": [\r\n\t\t\t\t{\r\n\t\t\t\t\t"key": "party",\r\n\t\t\t\t\t"name": "Party / 队伍 / 隊"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t"key": "companions",\r\n\t\t\t\t\t"name": "Companions / 同行者",\r\n\t\t\t\t\t"parentKey": "party"\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t"actors": [\r\n\t\t\t\t{\r\n\t\t\t\t\t"key": "leader",\r\n\t\t\t\t\t"objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",\r\n\t\t\t\t\t"groupKey": "party",\r\n\t\t\t\t\t"position": [\r\n\t\t\t\t\t\t120,\r\n\t\t\t\t\t\t180\r\n\t\t\t\t\t],\r\n\t\t\t\t\t"useProjectionDefaults": true\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t"key": "companion",\r\n\t\t\t\t\t"objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",\r\n\t\t\t\t\t"groupKey": "companions",\r\n\t\t\t\t\t"position": [\r\n\t\t\t\t\t\t200,\r\n\t\t\t\t\t\t180\r\n\t\t\t\t\t],\r\n\t\t\t\t\t"useProjectionDefaults": true,\r\n\t\t\t\t\t"size": [\r\n\t\t\t\t\t\t48,\r\n\t\t\t\t\t\t48\r\n\t\t\t\t\t],\r\n\t\t\t\t\t"speed": 17,\r\n\t\t\t\t\t"color": "#112233",\r\n\t\t\t\t\t"controls": "arrows",\r\n\t\t\t\t\t"imageResourceId": null\r\n\t\t\t\t}\r\n\t\t\t]\r\n\t\t}\r\n\t],\r\n\t"placements": [\r\n\t\t{\r\n\t\t\t"placementId": "10000000-1111-4111-8111-111111111111",\r\n\t\t\t"fragmentId": "party",\r\n\t\t\t"actorIds": {\r\n\t\t\t\t"leader": "20000000-1111-4111-8111-111111111111",\r\n\t\t\t\t"companion": "20000001-1111-4111-8111-111111111111"\r\n\t\t\t},\r\n\t\t\t"groupIds": {\r\n\t\t\t\t"party": "30000000-1111-4111-8111-111111111111",\r\n\t\t\t\t"companions": "30000001-1111-4111-8111-111111111111"\r\n\t\t\t}\r\n\t\t},\r\n\t\t{\r\n\t\t\t"placementId": "10000001-1111-4111-8111-111111111111",\r\n\t\t\t"fragmentId": "party",\r\n\t\t\t"offset": [\r\n\t\t\t\t360,\r\n\t\t\t\t80\r\n\t\t\t],\r\n\t\t\t"actorIds": {\r\n\t\t\t\t"leader": "20000002-1111-4111-8111-111111111111",\r\n\t\t\t\t"companion": "20000003-1111-4111-8111-111111111111"\r\n\t\t\t},\r\n\t\t\t"groupIds": {\r\n\t\t\t\t"party": "30000002-1111-4111-8111-111111111111",\r\n\t\t\t\t"companions": "30000003-1111-4111-8111-111111111111"\r\n\t\t\t},\r\n\t\t\t"overrides": [\r\n\t\t\t\t{\r\n\t\t\t\t\t"actorKey": "leader",\r\n\t\t\t\t\t"values": {\r\n\t\t\t\t\t\t"position": [\r\n\t\t\t\t\t\t\t100,\r\n\t\t\t\t\t\t\t140\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t"color": "#f1c46e",\r\n\t\t\t\t\t\t"speed": 0,\r\n\t\t\t\t\t\t"controls": "none"\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t]\r\n\t\t}\r\n\t]\r\n}\r\n \t',
+    expected: '﻿{\r\n\t"format": "viento-scene-composition",\r\n\t"schemaVersion": 1,\r\n\t"scene": {\r\n\t\t"title": "Shared fragment / 共有宣言 / 🦊",\r\n\t\t"viewport": [\r\n\t\t\t800,\r\n\t\t\t480\r\n\t\t],\r\n\t\t"background": "#0d1829"\r\n\t},\r\n\t"fragments": [\r\n\t\t{\r\n\t\t\t"fragmentId": "party",\r\n\t\t\t"groups": [\r\n\t\t\t\t{\r\n\t\t\t\t\t"key": "party",\r\n\t\t\t\t\t"name": "Party / 队伍 / 隊"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t"key": "companions",\r\n\t\t\t\t\t"name": "Companions / 同行者",\r\n\t\t\t\t\t"parentKey": "party"\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t"actors": [\r\n\t\t\t\t{\r\n\t\t\t\t\t"key": "leader",\r\n\t\t\t\t\t"objectId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",\r\n\t\t\t\t\t"groupKey": "party",\r\n\t\t\t\t\t"position": [\r\n\t\t\t\t\t\t120,\r\n\t\t\t\t\t\t180\r\n\t\t\t\t\t],\r\n\t\t\t\t\t"useProjectionDefaults": true\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t"key": "companion",\r\n\t\t\t\t\t"objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",\r\n\t\t\t\t\t"groupKey": "companions",\r\n\t\t\t\t\t"position": [\r\n\t\t\t\t\t\t200,\r\n\t\t\t\t\t\t180\r\n\t\t\t\t\t],\r\n\t\t\t\t\t"useProjectionDefaults": true,\r\n\t\t\t\t\t"size": [\r\n\t\t\t\t\t\t48,\r\n\t\t\t\t\t\t48\r\n\t\t\t\t\t],\r\n\t\t\t\t\t"speed": 17,\r\n\t\t\t\t\t"color": "#112233",\r\n\t\t\t\t\t"controls": "arrows",\r\n\t\t\t\t\t"imageResourceId": null\r\n\t\t\t\t}\r\n\t\t\t]\r\n\t\t}\r\n\t],\r\n\t"placements": [\r\n\t\t{\r\n\t\t\t"placementId": "10000000-1111-4111-8111-111111111111",\r\n\t\t\t"fragmentId": "party",\r\n\t\t\t"actorIds": {\r\n\t\t\t\t"leader": "20000000-1111-4111-8111-111111111111",\r\n\t\t\t\t"companion": "20000001-1111-4111-8111-111111111111"\r\n\t\t\t},\r\n\t\t\t"groupIds": {\r\n\t\t\t\t"party": "30000000-1111-4111-8111-111111111111",\r\n\t\t\t\t"companions": "30000001-1111-4111-8111-111111111111"\r\n\t\t\t}\r\n\t\t},\r\n\t\t{\r\n\t\t\t"placementId": "10000001-1111-4111-8111-111111111111",\r\n\t\t\t"fragmentId": "party",\r\n\t\t\t"offset": [\r\n\t\t\t\t360,\r\n\t\t\t\t80\r\n\t\t\t],\r\n\t\t\t"actorIds": {\r\n\t\t\t\t"leader": "20000002-1111-4111-8111-111111111111",\r\n\t\t\t\t"companion": "20000003-1111-4111-8111-111111111111"\r\n\t\t\t},\r\n\t\t\t"groupIds": {\r\n\t\t\t\t"party": "30000002-1111-4111-8111-111111111111",\r\n\t\t\t\t"companions": "30000003-1111-4111-8111-111111111111"\r\n\t\t\t},\r\n\t\t\t"overrides": [\r\n\t\t\t\t{\r\n\t\t\t\t\t"actorKey": "leader",\r\n\t\t\t\t\t"values": {\r\n\t\t\t\t\t\t"position": [\r\n\t\t\t\t\t\t\t100,\r\n\t\t\t\t\t\t\t140\r\n\t\t\t\t\t\t],\r\n\t\t\t\t\t\t"color": "#f1c46e",\r\n\t\t\t\t\t\t"speed": 0,\r\n\t\t\t\t\t\t"controls": "none"\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t]\r\n\t\t}\r\n\t]\r\n}\r\n \t',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }

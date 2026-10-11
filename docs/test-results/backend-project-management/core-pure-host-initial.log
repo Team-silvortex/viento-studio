@@ -1,0 +1,87 @@
+✖ portable manifest describes the shared provenance contract for both backends and Godot author scripts (122.746783ms)
+✔ summary reports only manifest identity inventory counts and output bytes without tool paths or author bodies (34.115408ms)
+✔ manifest validation snapshots without reading accessors executing serializers or accepting sparse/prototyped data (28.366504ms)
+✔ output authority rejects unsafe paths missing entries duplicates prefix collisions and extra schema fields (34.841303ms)
+✔ resource-copy and author-source-copy inventories require exact ownership and hash/size agreement (75.547504ms)
+✔ source inventory keeps existing Linux source names distinct from generated-file path rules (27.219154ms)
+✔ frozen source identities evidence paths and lifecycle claims cannot be forged within the pure DTO (30.413401ms)
+✔ legacy adapter-null provenance is data while oversized arrays and invalid Unicode cannot evade budgets (34.819988ms)
+✔ portable validation executes without Node filesystem process or backend implementations (27.025259ms)
+✖ recorded Godot v1/v2/v3 and Bevy v1/v2 projects inspect without any executable discovery or execution (235.526913ms)
+✔ inspection uses frozen inputs after author source disappears and survives a directory move (43.208109ms)
+✖ legacy missing manifest derives provenance without writing and Godot retains its explicit adapter-null compatibility (53.693951ms)
+✔ manifest tampering or a forged source-map is rejected even when a valid generation remains on disk (65.789349ms)
+✔ exact evidence bytes detect metadata whitespace unknown members or identity changes independently of semantic JSON equality (126.315487ms)
+✔ every generated file and copied resource is verified rather than trusting inventory hashes alone (102.226774ms)
+✔ foreign backend build snapshot and manifest pins cannot authorize a different managed project (32.634829ms)
+✔ extra files empty directories symlinks and runtime sessions report incomplete inventory and remain untouched (44.728257ms)
+✔ links replacing a known root directory file metadata or ancestor cannot redirect project reads (116.113878ms)
+✔ inspection detects source-map or manifest replacement during asynchronous generation (33.544861ms)
+✔ unknown directory contents are never enumerated and known ancestors replaced by links are rejected before recursion (70.44395ms)
+✔ cleanup verification remains valid after adapter changes while ordinary inspection requires rebuilding (38.043456ms)
+✔ manifest factory refuses invented inventory resource ownership and final metadata size overruns (29.72262ms)
+✔ pre-aborted inspection reads no project files and creates no records directories or sessions (39.10315ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 20
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1156.420124
+
+✖ failing tests:
+
+test at scripts/tests/backend-project.test.mjs:9:1
+✖ portable manifest describes the shared provenance contract for both backends and Godot author scripts (122.746783ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_actor_duplicate","message":"An actor object may appear only once in this scene version.","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/1/objectId","sourceRevision":"sha256:8d46887bb7db7e5a02fd29470108a10878fd56d321afc3aceae3d2410359b658","sourceRange":{"start":451,"end":489,"encoding":"utf-16","propertyPath":"/actors/1/objectId","exact":true}}]
+  
+  false !== true
+  
+      at backendProjectFixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers/backend-project-fixture.mjs:28:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project.test.mjs:11:15)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/node-backend-project.test.mjs:13:1
+✖ recorded Godot v1/v2/v3 and Bevy v1/v2 projects inspect without any executable discovery or execution (235.526913ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_actor_duplicate","message":"An actor object may appear only once in this scene version.","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/1/objectId","sourceRevision":"sha256:8d46887bb7db7e5a02fd29470108a10878fd56d321afc3aceae3d2410359b658","sourceRange":{"start":451,"end":489,"encoding":"utf-16","propertyPath":"/actors/1/objectId","exact":true}}]
+  
+  false !== true
+  
+      at backendProjectFixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers/backend-project-fixture.mjs:28:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/node-backend-project.test.mjs:15:13)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/node-backend-project.test.mjs:28:1
+✖ legacy missing manifest derives provenance without writing and Godot retains its explicit adapter-null compatibility (53.693951ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_actor_duplicate","message":"An actor object may appear only once in this scene version.","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/demo.json","propertyPath":"/actors/1/objectId","sourceRevision":"sha256:8d46887bb7db7e5a02fd29470108a10878fd56d321afc3aceae3d2410359b658","sourceRange":{"start":451,"end":489,"encoding":"utf-16","propertyPath":"/actors/1/objectId","exact":true}}]
+  
+  false !== true
+  
+      at backendProjectFixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers/backend-project-fixture.mjs:28:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/node-backend-project.test.mjs:33:11)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

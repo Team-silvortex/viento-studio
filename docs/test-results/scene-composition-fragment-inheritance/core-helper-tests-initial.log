@@ -1,0 +1,43 @@
+✔ restoring all optional declarations exposes projection defaults while keeping every placement override (91.738392ms)
+✔ removing a raw declaration remains a source edit even when every effective value is unchanged (43.982962ms)
+✖ local override masks are unchanged and shield linked instances from restored shared defaults (38.049604ms)
+✔ mixed SET/RESET uses one fixed-order receipt and omits nonexistent resets and semantic no-op sets (46.392688ms)
+✔ legacy SET proposal retains its exact shape and both old and new SET-only candidates still apply (24.998588ms)
+✔ image reset restores projection inheritance, while explicit null stays a distinct no-image declaration (55.265674ms)
+✔ noninheriting declarations can delete images but cannot reset the four required attributes (77.070427ms)
+✔ reset intent cannot overlap SET even if the proposed value was itself a semantic no-op (18.573179ms)
+✔ missing declarations and original-value SETs cannot create empty or implicit promotion proposals (34.020684ms)
+✔ mixed edits retain BOM CRLF escaped keys unchanged numeric axes and every unrelated source byte (20.102497ms)
+✔ exact final source budget permits a deletion to pay for growth and rejects growth without mutation (47.142126ms)
+✔ restoring the last explicit optional declaration keeps mandatory identity placement and inheritance fields (17.992743ms)
+✔ raw defaults targets and returned reset proposals remain independently detached (19.899755ms)
+✔ apply rejects forged reset order nonexistent deletions altered coverage extra shape and candidate bytes (26.801885ms)
+✔ apply snapshots nested reset values targets source and byte receipt before awaiting its digest (18.696996ms)
+✔ current source revisions saved baselines and paths still reject stale restore receipts (17.518287ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 15
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 723.426962
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-fragment-inheritance.test.mjs:85:1
+✖ local override masks are unchanged and shield linked instances from restored shared defaults (38.049604ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 180
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragment-inheritance.test.mjs:92:108)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 180,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "kind": "read-only-boundary-review",
+  "reviewedAt": "2026-10-08T07:12:56.540Z",
+  "productVersion": "0.0.9",
+  "baseCommit": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "phase": "unreleased working-tree scene composition inheritance changes",
+  "ok": false,
+  "blockingFindings": [
+    {
+      "id": "original-source-strict-validation",
+      "priority": 2,
+      "file": "engine/studio-core.mjs",
+      "operation": "sceneComposition.editOverrides",
+      "summary": "A forged successful edit receipt can erase a decoded duplicate key in the original override and pass the bridge because only returned content is strictly re-expanded.",
+      "observed": {
+        "originalSourceValues": "{\"speed\":90,\"spe\\u0065d\":80}",
+        "request": {
+          "values": {},
+          "resetFields": [
+            "speed"
+          ]
+        },
+        "forgedAfter": "The selected actor override is removed; overrides remains [].",
+        "changedPaths": [
+          "/placements/0/overrides/0/values/speed"
+        ],
+        "probe": "boundary-original-source-probe.json"
+      },
+      "recommendation": "Strictly re-expand the original source as well as the candidate after a purported successful patch/edit receipt, outside nested ABI dispatch; add a fake-receipt regression.",
+      "scope": "The actual Rust implementation rejects this original source and the proposal helper expands the original first, so this finding concerns hostile or malformed ABI receipts at the exported bridge boundary."
+    }
+  ],
+  "nonBlockingFindings": [],
+  "files": [
+    {
+      "path": "engine/studio-core.mjs",
+      "bytes": 28669,
+      "sha256": "a61b76df896faa0fe3f8ea3240b41c4be51b5f0fd39670368dbdda6a5ba2d855"
+    },
+    {
+      "path": "engine/scene-composition-overrides.mjs",
+      "bytes": 14047,
+      "sha256": "df009572489f19369106fb5e8ce2f8e9ef8146ee2bf989fd442f9c3cbb9d0977"
+    },
+    {
+      "path": "web/modules/app-scene-composition-overrides.js",
+      "bytes": 20491,
+      "sha256": "c8f90fc7aec8db3439c2f5bee8b3a5d439499114f284b8f8c625a7561f9453b0"
+    },
+    {
+      "path": "web/modules/app-project-build.js",
+      "bytes": 75498,
+      "sha256": "e0abc5b6cac99d2d0608c54f3ff1c78291dc79a3f139bbfc153db4f88e3db90c"
+    },
+    {
+      "path": "web/modules/app-runtime.js",
+      "bytes": 210919,
+      "sha256": "5d668a4f0d44c030348537db09565a566d5faad0870ca21db5f23b7159d50c0a"
+    },
+    {
+      "path": "web/project-build.css",
+      "bytes": 11701,
+      "sha256": "e583022ef21baf0876af6676f4152b72833828e02600d2f6654db8dc6574ef77"
+    },
+    {
+      "path": "web/i18n/en.js",
+      "bytes": 134576,
+      "sha256": "2e1534f0898fa0f6401055475c657ef8901f562a42710307063fe56ec79e1c08"
+    },
+    {
+      "path": "web/i18n/ja.js",
+      "bytes": 169864,
+      "sha256": "af6dd819f0a7697591cf477bfe2204f1c61cb398814025418319888cdb1b7d59"
+    },
+    {
+      "path": "scripts/tests/studio-core-composition-patch.test.mjs",
+      "bytes": 23524,
+      "sha256": "fedb2ab775f53c7fe5b8558ebc9a487e0984a7c1593d99c4a60e7f72d7e3e9db"
+    },
+    {
+      "path": "scripts/tests/scene-composition-overrides.test.mjs",
+      "bytes": 21194,
+      "sha256": "e3eaabba5fa978da8e33b3d25c68247e0d6333adaef306f5f2536be9441276fa"
+    },
+    {
+      "path": "scripts/tests/scene-composition-overrides-ui.test.mjs",
+      "bytes": 29773,
+      "sha256": "93478f1658f4e5d99a85fa9d5768fb1fcb5dc5ea3f177c60fb20c4d73f42f763"
+    }
+  ],
+  "checks": [
+    {
+      "id": "optional-capability",
+      "status": "reviewed-pass",
+      "files": [
+        "engine/studio-core.mjs",
+        "web/modules/app-scene-composition-overrides.js"
+      ],
+      "observations": [
+        "editOverrides requires its own edit capability; patchOverrides continues to require the unchanged patch capability.",
+        "An unavailable new capability rejects the new operation without disabling already available operations.",
+        "The GUI hides reset controls for older cores, and selecting a reset additionally gates current-session application on the edit capability."
+      ]
+    },
+    {
+      "id": "request-intent",
+      "status": "reviewed-pass",
+      "files": [
+        "engine/studio-core.mjs",
+        "engine/scene-composition-overrides.mjs"
+      ],
+      "observations": [
+        "The boundary verifies the old six-key shape or new seven-key shape, supported field names, nonempty intent, unique reset fields and disjoint set/reset fields.",
+        "The proposal excludes selected reset fields from its changed set values; application preparation validates disjointness again.",
+        "Dense finite JSON request checks still run before ABI dispatch."
+      ]
+    },
+    {
+      "id": "missing-override-noop",
+      "status": "reviewed-pass",
+      "files": [
+        "engine/studio-core.mjs",
+        "engine/scene-composition-overrides.mjs"
+      ],
+      "observations": [
+        "An absent override or absent reset field cannot create an empty override through a reset-only request.",
+        "Zero changes require byte-identical returned content at the bridge.",
+        "The proposal rejects a reset-only intent that cannot change an authored override."
+      ]
+    },
+    {
+      "id": "last-override-member",
+      "status": "reviewed-finding",
+      "files": [
+        "engine/studio-core.mjs",
+        "engine/scene-composition-overrides.mjs"
+      ],
+      "observations": [
+        "Removing the last values member removes exactly the selected actor override entry and retains the overrides array.",
+        "Changed paths follow the fixed six-field order and the override index from the input source.",
+        "The bridge compares the complete expected recipe semantics, so unrelated actor changes, container removal, reordering or identity changes cannot pass.",
+        "A successful receipt is re-expanded by the existing strict core operation after the first ABI dispatch completes; malformed source cannot pass by JSON equality alone.",
+        "An isolated fake successful edit receipt erased the original duplicate-decoded target member and passed current bridge validation; strict validation of the original source is missing at this boundary."
+      ]
+    },
+    {
+      "id": "source-session-and-save",
+      "status": "reviewed-pass",
+      "files": [
+        "engine/scene-composition-overrides.mjs",
+        "web/modules/app-project-build.js",
+        "web/modules/app-runtime.js"
+      ],
+      "observations": [
+        "Source/model identities, content digest and saved baseline are detached and bound before proposing.",
+        "Preparation recomputes the exact receipt from the current content and stable instance/placement/local actor key.",
+        "The existing parent and editor recheck the active source owner, load token, source epoch, baseline and current content before in-memory application.",
+        "The normal save baseline and disk cache remain unchanged during application; no author-file writer or World transaction is added."
+      ]
+    },
+    {
+      "id": "gui-reset-state",
+      "status": "reviewed-pass",
+      "files": [
+        "web/modules/app-scene-composition-overrides.js",
+        "web/project-build.css",
+        "web/i18n/en.js",
+        "web/i18n/ja.js"
+      ],
+      "observations": [
+        "Reset selection participates in the form signature and revision epoch; input changes or reset toggles invalidate approval.",
+        "Reset controls are available only for authored fields; selected fields are disabled, and their former valid values serve only as ignored proposal placeholders.",
+        "The GUI explicitly identifies displayed values as pre-restoration; candidate validation resolves actual inheritance instead of guessing it in the form.",
+        "Explicit no-image null is kept distinct from image inheritance.",
+        "Cancel, forced close, stale async validation, stale source ownership and capability loss keep application guarded.",
+        "New reset strings have matching English and Japanese translations and accessible pressed state plus field labels."
+      ]
+    }
+  ],
+  "execution": {
+    "mode": "read-only code review plus isolated fake-ABI receipt probe",
+    "testsRunByThisReview": [
+      "One isolated original-source duplicate-key / erased override receipt probe"
+    ],
+    "browserRunByThisReview": false,
+    "fullAppRunByThisReview": false
+  },
+  "limitations": [
+    "This report assesses the source snapshots listed above; later product source changes require a follow-up review.",
+    "No browser visual verification, full application regression, fresh packaged-resource probe, installer or Android-device verification was performed by this review.",
+    "Rust implementation tests, formatter, clippy and native build are recorded separately in core-tests.log, core-fmt.log, core-clippy.log and core-native-build.log.",
+    "boundary-review-source-only.json preserves the initial source-only review before the additional adversarial probe; the current report supersedes its no-findings conclusion."
+  ],
+  "initialTargetedOutput": {
+    "path": "core-targeted-initial-tail.log",
+    "kind": "exact terminal tail excerpt",
+    "completeCommandLog": false,
+    "reason": "The first targeted run failed a test-fixture integer-versus-float expectation after its exact source-byte assertion passed; the fixture was corrected and subsequent checks passed."
+  }
+}

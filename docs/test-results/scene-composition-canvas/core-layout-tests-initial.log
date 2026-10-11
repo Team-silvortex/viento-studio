@@ -1,0 +1,169 @@
+✔ saved and dirty recipe sources bind one stable instance with all other canvas actors detached (92.235861ms)
+✔ canvas world coordinates produce only an exact local position patch with untouched source bytes (36.896721ms)
+✔ a first position override keeps template, sibling instances, placement offset and group UUIDs unchanged (21.902938ms)
+✖ moving an explicitly suppressed image never promotes inherited appearance or edits its sibling definition (38.620406ms)
+✔ stable instance identity locates the same placement after declaration order changes (22.319454ms)
+✔ unmoved fractional axes keep authored local numbers and returning to the original world position has no proposal (20.777017ms)
+✔ world movement and absolute grid snapping use existing Rust geometry with one history step (21.110868ms)
+✔ foreign UUIDs, multiple changes and invalid world input cannot mutate history or discard redo (19.434401ms)
+✔ local offset bounds reject otherwise legal world coordinates before Rust positions and history change (45.714036ms)
+✔ bounded Rust history retains the original baseline after truncation and reset clears both directions (24.262637ms)
+✔ the new factory rejects forged preview ownership, stale author bytes and malformed source before creating a layout (30.659284ms)
+✔ factory snapshots source and every actor before awaiting its digest and all exposed values remain detached (30.415721ms)
+✔ existing apply preparation recomputes position receipts and rejects stale, forged and substituted targets (27.782929ms)
+✖ a full source budget refuses coordinate growth while keeping the author source and recoverable layout untouched (35.180257ms)
+✔ single-instance sessions use the shared 32-slot Rust table and disposing releases their complete history (59.352878ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 13
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 653.194229
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-layout.test.mjs:112:1
+✖ moving an explicitly suppressed image never promotes inherited appearance or edits its sibling definition (38.620406ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      color: '#112233',
+      controls: 'arrows',
+      declaration: {
+        contributors: [
+  ...
+            },
+  +         sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -         sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+          },
+          {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/actorIds/companion',
+            role: 'identity',
+  ...
+            },
+  +         sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -         sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+          },
+          {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            propertyPath: '/placements/0/groupIds/companions',
+            role: 'identity',
+  ...
+            },
+  +         sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -         sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+          }
+        ],
+        objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+        propertyPath: '/fragments/0/actors/1',
+        sourcePath: 'documents/scenes/source.json',
+  ...
+        },
+  +     sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -     sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+      },
+      fieldSources: {
+        'size/0': {
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1/size/0',
+  ...
+          },
+  +       sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -       sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+        },
+        'size/1': {
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1/size/1',
+          sourcePath: 'documents/scenes/source.json',
+  ...
+          },
+  +       sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -       sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+        },
+        color: {
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1/color',
+          sourcePath: 'documents/scenes/source.json',
+  ...
+          },
+  +       sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -       sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+        },
+        controls: {
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1/controls',
+          sourcePath: 'documents/scenes/source.json',
+  ...
+          },
+  +       sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -       sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+        },
+        imageResourceId: {
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1/imageResourceId',
+          sourcePath: 'documents/scenes/source.json',
+  ...
+          },
+  +       sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -       sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+        },
+        position: {
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1/position',
+          sourcePath: 'documents/scenes/source.json',
+  ...
+          },
+  +       sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -       sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+        },
+        size: {
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1/size',
+          sourcePath: 'documents/scenes/source.json',
+  ...
+          },
+  +       sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -       sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+        },
+        speed: {
+          objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+          propertyPath: '/fragments/0/actors/1/speed',
+          sourcePath: 'documents/scenes/source.json',
+  ...
+          },
+  +       sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41'
+  -       sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5'
+        }
+      },
+      instanceId: '20000001-1111-4111-8111-111111111111',
+      name: '投影🦊 2',
+      objectId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-layout.test.mjs:121:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { size: [ 48, 48 ], color: '#112233', speed: 17, controls: 'arrows', instanceId: '20000001-1111-4111-8111-111111111111', objectId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', position: [ 200, 180 ], useProjectionDefaults: true, name: '投影🦊 2', sourcePath: 'documents/projections/p2.json', sourceRevision: 'sha256:7c4b0c4b69729ddd4a54eca94b1d9b0fa1bb7140d674b4303890291277cfe1ba', origin: { objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', sourcePath: 'documents/oc.md', sourceRevision: 'sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a' }, fieldSources: { position: [Object], size: [Object], 'size/0': [Object], 'size/1': [Object], color: [Object], speed: [Object], controls: [Object], imageResourceId: [Object] }, declaration: { objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd', sourcePath: 'documents/scenes/source.json', propertyPath: '/fragments/0/actors/1', sourceRevision: 'sha256:3ddf4bb93c830d4bbb90e96338e644589ab02c1b4c13e5e8af93257087407a41', sourceRange: [Object], contributors: [Array] } },
+    expected: { size: [ 48, 48 ], color: '#112233', speed: 17, controls: 'arrows', instanceId: '20000001-1111-4111-8111-111111111111', objectId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', position: [ 200, 180 ], useProjectionDefaults: true, name: '投影🦊 2', sourcePath: 'documents/projections/p2.json', sourceRevision: 'sha256:7c4b0c4b69729ddd4a54eca94b1d9b0fa1bb7140d674b4303890291277cfe1ba', origin: { objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', sourcePath: 'documents/oc.md', sourceRevision: 'sha256:31a7670b1f026c9bdbd4d73a953e91031a1eced7acc47e7ffc5cc5cfbd37d77a' }, fieldSources: { position: [Object], size: [Object], 'size/0': [Object], 'size/1': [Object], color: [Object], speed: [Object], controls: [Object], imageResourceId: [Object] }, declaration: { objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd', sourcePath: 'documents/scenes/source.json', propertyPath: '/fragments/0/actors/1', sourceRevision: 'sha256:e44c12f94a9a0153ceb399c67cf339b9f82d79285b00d82bf0895a026e3abcb5', sourceRange: [Object], contributors: [Array] } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-composition-layout.test.mjs:249:1
+✖ a full source budget refuses coordinate growth while keeping the author source and recoverable layout untouched (35.180257ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-layout.test.mjs:253:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }

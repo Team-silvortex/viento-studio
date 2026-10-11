@@ -60,6 +60,7 @@ export function createProjectModel(defaults) {
     const types = manifest?.documentTypes || defaults.documentTypes;
     return { id: manifest?.id || '', name: manifest?.name || '', version: manifest?.version || 1, paths,
       configurable: Boolean(manifest && manifest.version >= 2), projectTypes: Boolean(manifest?.documentTypes || manifest?.version === 3),
+      ...(manifest?.studioProfile !== undefined ? { studioProfile: JSON.parse(JSON.stringify(manifest.studioProfile)) } : {}),
       ...(manifest?.example ? { example: manifest.example } : {}),
       documentTypes: types.map((type) => ({ ...JSON.parse(JSON.stringify(type)),
         ...((manifest?.documentTypes || manifest?.version === 3) && type.template ? { templateSource: `${paths.templates}/${type.template}` } : {}),

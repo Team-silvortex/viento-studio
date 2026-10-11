@@ -1,0 +1,31 @@
+✔ raw fragment declarations appear disabled; selected instance overrides and projection defaults do not become template values (94.621106ms)
+✔ position is one explicit SET pair and reviews the full source with every referencing placement and mask (81.996453ms)
+✔ checking unchanged declared values performs no validation and creates no template patch (53.028718ms)
+✔ explicitly adding a missing declaration equal to the current inherited value still changes source (61.092798ms)
+✔ unchecked fields preserve inheritance even if their raw inputs have been edited (68.691271ms)
+✔ the reviewed impact omits checked fields whose declaration is unchanged (71.321254ms)
+✔ all locally masked instances explicitly report a declaration-only edit that still passes source checking (54.319574ms)
+✔ image omission is blank and separate from an explicit null allowed by projection inheritance (60.297416ms)
+✔ a noninheriting fragment cannot explicitly clear its image and retains an unavailable declaration in the picker (45.441096ms)
+✔ each invalid selected field is rejected without consuming unfinished input or altering source (152.643764ms)
+✔ silently changing a numeric field after approval invalidates the candidate before application (58.243721ms)
+✔ silently changing selected checkboxes or unchecked raw fields also revokes approval (82.974224ms)
+✔ dependency validation receives detached canonical values and targets rather than mutable approval state (62.101062ms)
+✔ pending dependency checks lock all controls and a silent raw change cannot approve the late result (53.594117ms)
+✔ failed validation retains author input and diagnostics without granting application (55.731475ms)
+✔ parent source token or ownership changes revoke approval while preserving the form for inspection (59.091062ms)
+✔ late validation after parent closure cannot approve or apply a shared edit (52.031685ms)
+✔ late open success or failure after owner loss stays silent and never opens an expired form (63.380141ms)
+✔ cancelling or returning to preview discards only the unapplied fragment proposal and restores opener focus (61.913372ms)
+✔ an unaccepted or stale apply preserves edits, requires rechecking and cannot report completion (60.792114ms)
+✔ destroying during an asynchronous apply cannot complete into a replaced dialog and dispose is idempotent (55.574447ms)
+✔ read-only or missing fragment capability never creates a draft (35.719605ms)
+✔ Chinese, English and Japanese include every new shared-fragment workflow message and placeholder (0.972543ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1592.182966

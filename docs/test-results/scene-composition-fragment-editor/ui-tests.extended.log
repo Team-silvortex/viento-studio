@@ -1,0 +1,56 @@
+✔ raw fragment declarations appear disabled; selected instance overrides and projection defaults do not become template values (91.070919ms)
+✔ position is one explicit SET pair and reviews the full source with every referencing placement and mask (79.66215ms)
+✔ checking unchanged declared values performs no validation and creates no template patch (49.714246ms)
+✔ explicitly adding a missing declaration equal to the current inherited value still changes source (62.092348ms)
+✖ a missing position remains an empty pair until both coordinates are explicitly set (7.20276ms)
+✔ all six explicitly selected field sets update only the shared declaration and preserve every placement (120.268868ms)
+✔ unchecked fields preserve inheritance even if their raw inputs have been edited (78.494505ms)
+✔ the reviewed impact omits checked fields whose declaration is unchanged (61.559178ms)
+✔ all locally masked instances explicitly report a declaration-only edit that still passes source checking (53.053088ms)
+✔ image omission is blank and separate from an explicit null allowed by projection inheritance (59.273443ms)
+✔ an already declared null is shown explicitly and selecting that same null is a no-op (57.548547ms)
+✔ a noninheriting fragment cannot explicitly clear its image and retains an unavailable declaration in the picker (44.32618ms)
+✔ each invalid selected field is rejected without consuming unfinished input or altering source (151.930648ms)
+✔ silently changing a numeric field after approval invalidates the candidate before application (57.987763ms)
+✔ silently changing selected checkboxes or unchecked raw fields also revokes approval (85.996081ms)
+✔ dependency validation receives detached canonical values and targets rather than mutable approval state (61.296025ms)
+✔ pending dependency checks lock all controls and a silent raw change cannot approve the late result (51.085914ms)
+✔ failed validation retains author input and diagnostics without granting application (63.419232ms)
+✔ parent source token or ownership changes revoke approval while preserving the form for inspection (87.919243ms)
+✔ late validation after parent closure cannot approve or apply a shared edit (47.033675ms)
+✔ late open success or failure after owner loss stays silent and never opens an expired form (35.338228ms)
+✔ cancelling or returning to preview discards only the unapplied fragment proposal and restores opener focus (58.806656ms)
+✔ an unaccepted or stale apply preserves edits, requires rechecking and cannot report completion (60.438645ms)
+✔ a silent raw change while application is pending invalidates the guard before a host can edit source (63.525506ms)
+✔ destroying during an asynchronous apply cannot complete into a replaced dialog and dispose is idempotent (56.543158ms)
+✔ read-only or missing fragment capability never creates a draft (32.547399ms)
+✔ Chinese, English and Japanese include every new shared-fragment workflow message and placeholder (0.985914ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 26
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1810.131151
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-fragments-ui.test.mjs:125:1
+✖ a missing position remains an empty pair until both coordinates are explicitly set (7.20276ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"composition-document-invalid","message":"Expected a valid scene composition recipe with explicit identities and references.","propertyPath":"","reasonCode":"scene_composition_invalid","objectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sourcePath":"documents/scenes/source.json","sourceRevision":"sha256:4e9eda2721b3d7948a5e15c037e2087d16d42320c35c35757b56f1928ccd1c79","sourceRange":{"start":1,"end":2044,"encoding":"utf-16","propertyPath":"","exact":true}}]
+  
+  false !== true
+  
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragments-ui.test.mjs:36:10)
+      at async harness (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragments-ui.test.mjs:53:17)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-fragments-ui.test.mjs:126:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

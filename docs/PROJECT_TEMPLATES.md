@@ -152,3 +152,7 @@ npm run workspace -- apply-definition --root /绝对路径/作品 --definition /
 省略 `template` 的类型使用自动生成的 Markdown 起始正文；指定模板时，文件必须存在、可解析且不超过 1 MB。示范定义见 [官方示范](examples/README.md)。
 
 当前支持 v3 通用目录和 v2 兼容目录。采用显式定义不要求为更新解析器搬动素材，也不是升级来源模板包的自动同步操作。文件布局与外置素材定位见 [作品库布局](WORKSPACE_LAYOUT.md)。
+
+## 模板声明工具需求
+
+模板包和工程清单可选携带 `studioProfile`，使用 schema 1 的 required / optional 能力及 API 版本声明。它是增量需求，不能加载代码或授予执行权限。原生创建复制声明，备份恢复保留原数据；无声明的旧模板与来源摘要保持原值。未来 3D 或作者 Rust 行为缺失只形成局部诊断，戏剧的 scene 文档仍按 prose 解析。字段、配置采用和扩展步骤见[系统模块与工程需求](STUDIO_MODULES.md#工程和模板的增量需求)。

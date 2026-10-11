@@ -73,6 +73,60 @@ test('saved and current-draft recipe sessions expose local values, world values,
   }
 });
 
+test('restoring local fields changes source even when the displayed value equals the inherited value', async () => {
+  const inherited = recipe(); delete inherited.placements[1].overrides[0].values.speed;
+  const inheritedFixture = await fixture(inherited);
+  const value = recipe(); value.placements[1].overrides[0].values.speed = inheritedFixture.model.actors[2].speed;
+  const f = await fixture(value, { dirty: true }), draft = await create(f);
+  const proposal = draft.propose(draft.values, { resetFields: ['speed'] });
+  assert.deepEqual(proposal.values, {}); assert.deepEqual(proposal.resetFields, ['speed']);
+  assert.equal(Object.hasOwn(parse(proposal.afterContent).placements[1].overrides[0].values, 'speed'), false);
+  assert.deepEqual(await prepare(f.source, proposal), { afterContent: proposal.afterContent, changedPaths: proposal.changedPaths });
+  assert.equal(proposal.baseSourceRevision, f.source.baseSourceRevision);
+});
+
+test('six-field restoration removes only the selected actor override and resolves projection inheritance again', async () => {
+  const value = recipe(); value.placements[1].overrides[0].values = {
+    position: [100, 140], size: [60, 70], color: '#332211', speed: 0, controls: 'none', imageResourceId: null,
+  };
+  const f = await fixture(value), draft = await create(f), before = structuredClone(f);
+  assert.equal(draft.values.imageResourceId, null);
+  const proposal = draft.propose(draft.values, { resetFields: ['imageResourceId', 'controls', 'speed', 'color', 'size', 'position'] });
+  assert.deepEqual(proposal.resetFields, ['position', 'size', 'color', 'speed', 'controls', 'imageResourceId']);
+  assert.deepEqual(parse(proposal.afterContent).placements[1].overrides, []);
+  const expected = structuredClone(value); expected.placements[1].overrides = [];
+  assert.deepEqual(parse(proposal.afterContent), expected);
+  const restored = await fixture(proposal.afterContent);
+  assert.deepEqual(restored.model.actors[2].position, [480, 260]);
+  assert.equal(restored.model.actors[2].imageResourceId, ids.image);
+  assert.equal(restored.model.actors[2].instanceId, f.model.actors[2].instanceId);
+  assert.deepEqual(f, before);
+});
+
+test('mixed edits and restoration share one proposal; restored form fields never become explicit sets', async () => {
+  const f = await fixture(), draft = await create(f);
+  const proposal = draft.propose({ ...draft.values, position: [999, 999], color: '#445566' }, { resetFields: ['position'] });
+  assert.deepEqual(proposal.values, { color: '#445566' });
+  const local = parse(proposal.afterContent).placements[1].overrides[0].values;
+  assert.equal(Object.hasOwn(local, 'position'), false); assert.equal(local.color, '#445566');
+  assert.equal(local.speed, draft.overrides.speed);
+  assert.deepEqual(await prepare(f.source, proposal), { afterContent: proposal.afterContent, changedPaths: proposal.changedPaths });
+  const forged = structuredClone(proposal); forged.values.position = [999, 999];
+  await assert.rejects(prepare(f.source, forged), invalid);
+});
+
+test('restoration refuses malformed field sets and keeps missing overrides as an unchanged source', async () => {
+  const f = await fixture(), draft = await create(f);
+  for (const resetFields of [['speed', 'speed'], ['objectId'], [null], new Array(1), 'speed']) {
+    assert.throws(() => draft.propose(draft.values, { resetFields }), invalid);
+  }
+  assert.throws(() => draft.propose(draft.values, { resetFields: ['size'] }), unchanged);
+  const proposal = draft.propose(draft.values, { resetFields: ['position'] });
+  const forged = structuredClone(proposal); forged.resetFields = ['speed'];
+  await assert.rejects(prepare(f.source, forged), invalid);
+  await assert.rejects(prepare({ ...f.source, content: f.source.content + ' ' }, proposal), conflict);
+});
+
 test('editing an existing override preserves all non-target source bytes and repeated checks use one baseline', async () => {
   const raw = serialize(recipe()).replace('"speed": 0,', '"spe\\u0065d": 0e0,');
   const f = await fixture(raw, { dirty: true }), draft = await create(f);

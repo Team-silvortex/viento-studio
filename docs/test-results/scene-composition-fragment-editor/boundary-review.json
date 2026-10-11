@@ -1,0 +1,219 @@
+{
+  "ok": true,
+  "recordedAt": "2026-10-11T05:08:13.932833+00:00",
+  "scope": "Independent read-only review of the shared fragment actor set-only slice and newly written bounded evidence only. This reviewer did not alter product files, build, prepare resource directories, install, clean up or release.",
+  "verdict": "No blocking correctness or ownership finding within the bounded slice. Raw shared declarations and source ownership remain separate from placement overrides, decoded images and ordinary persistence.",
+  "findings": [],
+  "reviewedSources": {
+    "crates/viento-studio-core/src/lib.rs": {
+      "sha256": "f1afb60bbb9efd574d86d084f4472fd1b7bd319b37e5dac8236accf936b9166a",
+      "review": "Independent operation dispatch and fragment capability export."
+    },
+    "crates/viento-studio-core/src/scene_composition_patch.rs": {
+      "sha256": "3330cefaa58c99b90c59ccb769ef806d93227edd57690215b276bc114ff9fb42",
+      "review": "Shared token edit helpers used by the new domain; original domains remain intact."
+    },
+    "crates/viento-studio-core/src/scene_composition_fragment_patch.rs": {
+      "sha256": "e0c6de9046b171062034980d18db577ced3a214394ddfeb9c26425015ee7b59b",
+      "review": "Raw template set-only atomic final candidate, all placements, exact tokens, final budget."
+    },
+    "engine/studio-core.mjs": {
+      "sha256": "5c0141890d0d99013b9cc98a81496f7d43f9a3682802611c4b76268b0d9742df",
+      "review": "Independent capability, strict JSON request and authenticated semantic receipt, fail closed."
+    },
+    "engine/scene-composition-fragments.mjs": {
+      "sha256": "ac45790ad12ea5acd1a71f7181bb892c4e83376995f4dde6aec9ae29b9395f46",
+      "review": "Raw declarations, full source/provenance binding, detached asynchronous input, recomputed targets and receipt."
+    },
+    "web/modules/app-scene-composition-fragments.js": {
+      "sha256": "e6460c8c086166bed2e303b21dba2fde84d0bebac9cd84f891e2559ea9d9ec30",
+      "review": "Explicit six-field selections, missing declarations, masks, approval invalidation and asynchronous ownership."
+    },
+    "web/modules/app-project-build.js": {
+      "sha256": "f2ef5a6a3852e2112476ad51a95bda3a6107b47fd0a57b2a8be23cc39ab0f22d",
+      "review": "Complete dependency preview, exact source/candidate owner, preview release, detached completion receipt."
+    },
+    "web/modules/app-scene-preview.js": {
+      "sha256": "44b9f3a3d16b047214549c071d1dcab1f4b7dfe8eb780a7cbfbb399b8f406b3f",
+      "review": "Selected stable instance and independent entry capability; shared single-flight and late-result owner."
+    },
+    "web/modules/app-runtime.js": {
+      "sha256": "017ad0fcd220cb7573b30dee26a4079d9c8c20c3763dc564d846594119388e9c",
+      "review": "Canonical source path, same editor/baseline/content/token/epoch before mutation, ordinary Save remains owner."
+    },
+    "engine/README.md": {
+      "sha256": "5709208f1d7e2256debf02affdbedd355764faa316799607b3dc9a5f86a6af83",
+      "review": "Public engine domain and maturity/scope description matches this set-only slice."
+    }
+  },
+  "checkedBoundaries": [
+    {
+      "id": "stable-template-target",
+      "conclusion": "Targets use fragmentId + actorKey with selected stable instance provenance; definition UUID is not an edit target. Definition/instance/group keys, groups, useProjectionDefaults, placements, offsets, mappings and local override bytes remain unchanged."
+    },
+    {
+      "id": "explicit-raw-declarations",
+      "conclusion": "The form displays declared template values only, leaves missing fields empty and unselected, and sets only checked changed fields. Missing same-effective declarations and templates fully masked by local overrides still produce deliberate source changes."
+    },
+    {
+      "id": "six-field-set-only-domain",
+      "conclusion": "Only position, size, color, speed, controls and imageResourceId are accepted. No deletion/reset/identity/flag/group operation. A null image requires existing projection-default inheritance; no flag is promoted implicitly."
+    },
+    {
+      "id": "all-final-expanded-placements",
+      "conclusion": "Both original and final whole recipe expansion validate declarations including unused fragments and every placement after local overrides/offsets. Bounds or final 128 KiB rejection is atomic; compensating growth/shrink uses final budget."
+    },
+    {
+      "id": "exact-author-tokens-and-noop",
+      "conclusion": "Token edits preserve BOM, CRLF, literal numeric/escaped keys and unrelated bytes. Semantic raw-declaration noops retain original bytes, but absent declarations are changes."
+    },
+    {
+      "id": "impact-and-host-recomputation",
+      "conclusion": "Impact lists include all placements referencing the exact template and masks per field. Host prepare recomputes source hash, target order, masks, changed values, full candidate bytes and canonical paths; forged/drop/reorder targets and proposals are rejected."
+    },
+    {
+      "id": "asynchronous-detachment",
+      "conclusion": "Factory and host-prepare snapshot model/source/nested proposals before asynchronous hashes. UI review binds owner, raw form signature and candidate fingerprint; late checks/opening cannot grant replacement approval. Successful detached completion is tied to canonical proposal and exact parent receipt."
+    },
+    {
+      "id": "memory-and-save-owner",
+      "conclusion": "The final editor mutation checks same canonical source, active document, baseline, text, load token, version, epoch and parent preview owner after helper/hash work. It edits memory only; ordinary Save retains external-write conflict handling."
+    },
+    {
+      "id": "images-and-preview-resource-owner",
+      "conclusion": "The new form reads registered image descriptors only and does not acquire decoded canvas images. Whole candidate preview checks real dependencies; parent releases its temporary preview even on rejection. Old canvas ownership remains in old controllers."
+    },
+    {
+      "id": "independent-cap-and-legacy-domains",
+      "conclusion": "New cap/operation is separate. Three missing/unsupported capability versions cannot enter this domain while real legacy patch still runs. Malformed new receipts fail closed. Prepared old single and batch helpers actually execute under both desktop and mobile copies."
+    }
+  ],
+  "independentEvidence": {
+    "currentSource": {
+      "file": "boundary-probe.json",
+      "sha256": "6e4431fb947d56a14af5c643be90ef4c0d5d5dfab91cf1688601b2ae59e9b660",
+      "groups": 9,
+      "rejectedOperations": 23,
+      "runtime": {
+        "version": "v24.20.0",
+        "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+      },
+      "scope": "Independent current-source helper and actual Rust/WASM set-only declaration proof using synthetic valid effective previews. No live World dependency, author persistence, GUI, prepared-copy, installation or device acceptance."
+    },
+    "bridgeReceiptsAndNativeParity": {
+      "file": "boundary-receipt-probe.json",
+      "sha256": "03b09009928f495738941fc0cbdf9665fc574f81dacb61786848f993d993e62d",
+      "counts": {
+        "groups": 10,
+        "forgedReceipts": 6,
+        "unsupportedCaps": 3,
+        "rejectedOperations": 9,
+        "actualNativeParityRequests": 8
+      },
+      "scope": "Independent bridge fault injection for six malformed fragment receipts and three absent/unsupported capability versions. Fake ABI supplies fragment responses/capabilities only; legacy operations relay to actual Rust WASM. Separately eight requests run through the real fresh native core and real raw WASM. No persistence, GUI, build, installed application or device acceptance.",
+      "initialProofCorrection": {
+        "log": "boundary-receipt-probe-initial.log",
+        "kind": "fixture-identity-collision",
+        "explanation": "Initial identity attack accidentally supplied the existing definition UUID and therefore made no identity change; corrected the proof fixture to a different valid UUID. Product sources and binaries unchanged."
+      }
+    },
+    "preparedCopies": {
+      "file": "packaged-resources.json",
+      "sha256": "b3cb5ed398de0e3613bfbab0c22294c9b9cf39fb7adda2e272d60c3e2e26b1a3",
+      "counts": {
+        "desktopCases": 9,
+        "mobileCases": 9,
+        "totalCases": 18,
+        "desktopLegacyCases": 2,
+        "mobileLegacyCases": 2,
+        "totalLegacyCases": 4,
+        "totalGroups": 22
+      },
+      "fullInventoryCounts": {
+        "desktop/resources": 517,
+        "mobile/dist": 207,
+        "desktop/ui": 11
+      },
+      "mobileModuleCount": 85,
+      "scope": "Real prepared resource copies; 9 new declaration groups + 2 actually executed old single/batch helper groups per platform. Mobile pure-module portability in a VM with standard TextEncoder/TextDecoder/WebAssembly globals and host SHA callback, no Node/DOM/network globals or imports. This is not a security sandbox or device acceptance."
+    }
+  },
+  "separateRootEvidenceInspected": {
+    "scope": "Read existing evidence produced by the root/UI agents; these runs are not this reviewer's new probe counts.",
+    "browser": {
+      "file": "browser/browser.json",
+      "sha256": "a35b8ce0d909021e97c00e7cb19780be3ba2d6ab7b658d46a3979bd9571e65fa",
+      "steps": 6,
+      "errors": 0,
+      "limitations": [
+        "Real HTTP editor and Chrome only; no installed Tauri window or Android device acceptance.",
+        "Six explicit set-only shared actor fields in one recipe source session. No declaration deletion, placement-offset change, executable recipe build or cross-file transaction."
+      ]
+    },
+    "ui": {
+      "file": "ui-tests.acceptance.log",
+      "sha256": "f5a583f98830cbd57e2e0578c760b7c1d3682d33e40cd68cd1640b51af7939d4",
+      "passes": 28,
+      "failures": 0,
+      "skips": 0
+    },
+    "host": {
+      "file": "host-parent-tests.log",
+      "sha256": "a07da244ccb0f00497b78d6beb0b88b051c740e620ffa3620f86a51029e87e59",
+      "passes": 17,
+      "failures": 0,
+      "skips": 0
+    },
+    "entry": {
+      "file": "preview-entry-tests.log",
+      "sha256": "ecfaecc708023f57bdbc73c9f84dd50ffedebe8b274e0403d2d3312418f43fb2",
+      "passes": 3,
+      "failures": 0,
+      "skips": 0
+    }
+  },
+  "preservation": {
+    "currentSource": {
+      "files": 553,
+      "sha256": "8aa88b9dbf0ad9f43ea649220af2eeda8529cda27606115403cd9586889052d2",
+      "allMatch": true
+    },
+    "coreSource": {
+      "files": 9,
+      "sha256": "8d749f0460d5e639c1637958b4de71dfc9a550578f31c2d894b3cc4d20877203",
+      "allMatch": true
+    },
+    "protected": {
+      "historical-baseline.json": {
+        "files": 2257,
+        "sha256": "c8caa9b564360d9254150ffaba504129f5191d6836804bc1a728c7e9e35bf98e",
+        "allMatch": true
+      },
+      "protected-scene-slices.json": {
+        "files": 9,
+        "sha256": "894e960ef147ec129ae4cf18742cc51f98dabdab403d018f7ef768f250b3637d",
+        "allMatch": true
+      },
+      "frozen-backend-baseline.json": {
+        "files": 7,
+        "sha256": "445f69282baec6203dd21d0dc98195c31577b9a500bca36303ebfced627af077",
+        "allMatch": true
+      }
+    },
+    "previousManifest": {
+      "files": 543,
+      "sha256": "08f17ecb30bbc29efd77a40c895b79e3b3c32e9e6095d888d4ebae5d71ff39e7",
+      "scope": "Historical previous manifest retained; equality of current product uses current 553-file source manifest."
+    },
+    "fourFreshBinaryFingerprintsMatch": true,
+    "oldEvidenceUntouched": true,
+    "oldSingleAndBatchProductBytesProtected": true
+  },
+  "limits": [
+    "Only one selected template actor in one recipe is edited. No cross-recipe shared asset mutation, declaration deletion/reset, placement offset edit or cross-file transaction.",
+    "The 9-case helper proofs use synthetic valid effective previews and do not resolve live World dependencies or persist data. Root real browser and parent tests separately cover dependency/save workflow.",
+    "Malformed receipt tests deliberately supply a fake ABI response/capability; native parity and real WASM requests are separately labelled and actually executed.",
+    "Prepared desktop/mobile inventories and portable helper execution do not establish installed Tauri, Android device, executable recipe build, Godot/Bevy execution or GPU behavior.",
+    "Existing canvas images remain owned by the previous canvas path. New form has no decoded image session and this review introduces no pointer workflow."
+  ]
+}

@@ -45,7 +45,7 @@ async function mediaEditor({ media = {}, editor = {}, blocks = true } = {}) {
     changed: runtime.refreshEditSessionDirtyState, status: runtime.setEditorStatus,
   });
   runtime.testMediaController = controller;
-  vm.runInContext('mediaEditorController = testMediaController;', runtime);
+  vm.runInContext('studioSystem = { refreshMedia: () => testMediaController.refresh() };', runtime);
   runtime.rebuildIndexForDoc = async () => {};
   runtime.updateEditorForDoc(doc); await runtime.enterEditMode();
   assert.equal(state.isEditing, true, 'the fixture must enter an editable project document');

@@ -1,0 +1,178 @@
+{
+  "format": "viento-scene-composition-structure-host-review",
+  "schemaVersion": 1,
+  "date": "2026-10-11",
+  "status": "passed",
+  "mode": "independent-read-only-review",
+  "sourceHashes": {
+    "web/modules/app-project-build.js": "1d8352517b0c8a244bcc43a4e063b0026476f4fd97b6c1681cc21d9c3ef20745",
+    "web/modules/app-runtime.js": "2ebcb746d50c76a05c81f7a280e61203eca428964d1cf77139c6c39becb14aad",
+    "engine/scene-composition-structure.mjs": "a9f513cb20f84ac808177ecadf0b1692c74a129ae21ab15f7af8799b12a2ab36",
+    "web/modules/app-scene-preview.js": "8fec52b2ec87623c970870aa8381a031b42d7e99f7d705a0866de5ebb8150ce7"
+  },
+  "findings": [],
+  "executed": {
+    "matcherProbes": 29,
+    "matcher": {
+      "valid": 4,
+      "rejected": 25,
+      "checks": [
+        {
+          "id": "matcher-valid-add",
+          "passed": true
+        },
+        {
+          "id": "matcher-valid-remove",
+          "passed": true
+        },
+        {
+          "id": "matcher-valid-unused-add",
+          "passed": true
+        },
+        {
+          "id": "matcher-valid-unused-remove",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-missing-actor",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-extra-actor",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-duplicate-actor-id",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-missing-group",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-extra-group",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-duplicate-group-id",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-missing-actor-provenance",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-extra-actor-provenance",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-reordered-actor-provenance",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-missing-group-provenance",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-extra-group-provenance",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-reordered-group-provenance",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-definition",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-definition-provenance",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-actor-fragment",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-actor-placement",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-actor-key",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-group-fragment",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-group-placement",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-group-key",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-owner-id",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-owner-path",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-stale-owner-revision",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-fragment-count",
+          "passed": true
+        },
+        {
+          "id": "matcher-reject-wrong-placement-count",
+          "passed": true
+        }
+      ]
+    },
+    "parentAndHostTests": {
+      "count": 14,
+      "passed": 14,
+      "failed": 0,
+      "log": "host-review-tests.log",
+      "node": "v24.21.0"
+    }
+  },
+  "reviewed": [
+    {
+      "area": "catalog-and-entry",
+      "result": "passed",
+      "evidence": "Toolbar opening does not require selection. Registered readable definition IDs, error-free authored game projections and supported existing image catalog are detached by the child. Source/token/recipe/parent owner is checked after source and World awaits."
+    },
+    {
+      "area": "candidate-identity-and-provenance",
+      "result": "passed",
+      "evidence": "Matcher independently expands exact candidate bytes. Complete actor/group cardinality, unique actual IDs, source-order provenance, fragment/placement/localKey, actor definition IDs, and declared source owner/revision must match. Removed opener is deliberately absent; unused changes retain unchanged expanded actors/groups."
+    },
+    {
+      "area": "canonical-edit-and-target-receipt",
+      "result": "passed",
+      "evidence": "Pure helper snapshots JSON before awaits, rehashes exact current content and base, rejects extra DTO fields, reconstructs ordered target IDs and removed override masks, reruns atomic patch, and compares complete afterContent/changedPaths. Parent candidate approval is not independent write authority."
+    },
+    {
+      "area": "runtime-await-ownership",
+      "result": "passed",
+      "evidence": "Shared apply captures active document identity, path, source mode, draft epoch, load token, save version/baseline and current text. Checks before digest, after digest and after pure prepare reject closed/replaced or edited owners. Successful write updates only in-memory source and preserves ordinary Save baseline/cache."
+    },
+    {
+      "area": "parent-success-receipt",
+      "result": "passed",
+      "evidence": "Source return/focus requires identical host result plus canonical entire proposal fingerprint and original dialog session/recipe/source path. A replaced dialog or forged/replayed receipt cannot close a new owner."
+    }
+  ],
+  "boundaries": [
+    "This review checks structural identity/provenance and source ownership; it does not expand rendering or execution claims.",
+    "All fragment object/image UUID references, including unused fragments, are dependency-validated by the existing preview document contract. Unused effective projection fields and registered image bytes are not rendered/loaded as placed actors in this slice.",
+    "Definition and media catalogs are read-only author input choices. Project, runtime, author document and resource files are not written by this review."
+  ]
+}

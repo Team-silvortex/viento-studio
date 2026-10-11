@@ -1,0 +1,83 @@
+✔ history detail reads remain independent from the approved latest build used by Run (155.444735ms)
+✔ old host state has no new list but keeps the existing latest-build Run available (66.795803ms)
+✔ parent close and reopen discard a delayed inspection without losing latest Run ownership (135.666945ms)
+✔ scene and preview-tab changes hide details and invalidate delayed reads (151.661143ms)
+✔ descriptor changes invalidate an existing detail even when backend ID and list rows remain the same (104.882905ms)
+✔ read failure stays inside details and cannot consume a previous successful build (66.155988ms)
+✔ unsaved author input blocks execution while readonly details preserve text and caret (90.539741ms)
+✔ parent explicit activation changes the one frozen execution target used by existing headless run (163.569556ms)
+✔ readonly inspection of restored history cannot choose a new execution target (119.272968ms)
+✔ failed selection reconciles with GET only and does not repeat the mutation or lose prior run build (156.802181ms)
+✔ lost select response reconciles a host-confirmed target by GET without a second select (102.242724ms)
+✔ close/reopen and scene/tab changes discard selection completion from the previous parent owner (225.179226ms)
+✔ descriptor or request epoch change invalidates pending select even when scene and IDs remain the same (173.379906ms)
+✔ frozen-only scene permits explicit run selection and run while denying plan/build/edit/create from offline authors (92.05697ms)
+✔ frozen-only row blocks author plan even when another live scene keeps the author catalog available (52.688817ms)
+✖ selected history updates existing control replay target and keeps the raw input intact (74.931585ms)
+✔ draft data is preserved during runtime selection and existing unsaved-input execution gate remains active (77.272057ms)
+✔ catalog restores unchecked histories without automatically selecting an execution target (22.342968ms)
+✔ inspect history is readonly; only explicit select command changes the runtime identity (26.671233ms)
+✔ unavailable historical entries permit explicit retry while failed builds do not (15.905059ms)
+✔ catalog diagnostics are visible even without rows and never disclose raw errors or paths (8.135862ms)
+✔ activation locks picker/inspect/selection and failure preserves previously selected execution target (8.592419ms)
+✔ late selection success after close or dispose cannot authorize a detached view (13.619301ms)
+✔ scene/session/backend/hidden owner changes suppress late activation and late errors (25.687086ms)
+✔ catalog row origin/snapshot changes invalidate selection but availability verification alone does not (13.802188ms)
+✔ forged select status cannot change runtime target or be accepted by parent (42.92775ms)
+✔ old host retains readonly workflow and does not expose unsupported selection command (9.548975ms)
+✔ pending external jobs disable selection without making readonly inspection unavailable (10.350826ms)
+✔ offline author input and missing installed tool do not hide verification or rewrite author data (4.412034ms)
+✔ new catalog wording translates at each language switch, including unchanged picker and runtime identity (8.279124ms)
+✔ catalog malformed identity and availability cannot expose commands (5.992975ms)
+✔ catalog selection errors have explicit localized concurrency/owner diagnostics (12.663767ms)
+✔ legacy hosts, foreign scene/backend, malformed and duplicate summaries cannot expose a project read (24.625051ms)
+✔ older project selection is independent of the latest run build and authored labels stay text (13.126796ms)
+✔ successful Godot details expose exact frozen source, tool and adapter plus classified files and evidence (9.930308ms)
+✔ Bevy details distinguish scene data from Cargo, author Rust and a standalone distribution (9.476837ms)
+✔ old unrecorded manifests disclose read-only reconstruction and missing adapter facts (10.524877ms)
+✔ read-only inspection is available with dirty author drafts, offline sources, unavailable tools and active runs (8.410093ms)
+✔ failed, cancelled and timeout records are visible but never authorize inspecting or running an intact project (16.719805ms)
+✔ all six preserved reasons explain why a project is outside automatic cleanup (28.558175ms)
+✔ pending reads lock picker and repeated inspect while close cancels only the view (5.73175ms)
+✔ new open survives a late closed read and late failure never alerts or damages the new view (8.986957ms)
+✔ scene, descriptor and parent session changes invalidate a pending response and existing detail (34.567832ms)
+✔ pruned, retention-changed or mismatched summary ownership cannot retain an old approval (33.519583ms)
+✔ forged build, scene, snapshot and backend manifests are rejected before any detail content (24.115293ms)
+✔ unvalidated generated paths, roles and resource mismatches cannot be rendered as inventory (23.219432ms)
+✔ partial directory inventories visibly remain incomplete, and contradictory complete receipts fail closed (13.069727ms)
+✔ unknown Linux names are visibly escaped, and the inspection inventory budget matches the host (48.867404ms)
+✔ unsafe extra inventory paths fail closed and directory ownership errors receive a specific explanation (28.726775ms)
+✔ invalid inspection receipts and unsafe display directories fail closed without path navigation (22.70192ms)
+✔ changed engineering files produce a specific safe explanation and preserve the selected row (6.207052ms)
+✔ Chinese, English and Japanese retranslate structured details while author paths and versions stay literal (36.034506ms)
+✔ all interface keys in the new view and retention reasons have English and Japanese entries (16.581853ms)
+✔ destroy is idempotent and detached read completion cannot recreate UI (4.933204ms)
+ℹ tests 54
+ℹ suites 0
+ℹ pass 53
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1331.548706
+
+✖ failing tests:
+
+test at scripts/tests/backend-project-catalog-build-ui.test.mjs:117:1
+✖ selected history updates existing control replay target and keeps the raw input intact (74.931585ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'select-project'
+  - 'run'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-project-catalog-build-ui.test.mjs:120:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'select-project',
+    expected: 'run',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

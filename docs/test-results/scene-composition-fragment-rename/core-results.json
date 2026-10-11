@@ -1,0 +1,172 @@
+{
+  "format": "viento-scene-composition-fragment-rename-core-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T10:53:15.631565+00:00",
+  "head": "9065667363a99a28aa64855f49052f5ee1d6f581",
+  "version": "0.0.9",
+  "runtime": "v24.20.0",
+  "sourceHashes": {
+    "crates/viento-studio-core/src/lib.rs": "efc55b4fcd8d6b617edece2b8a0ccaa8a52f2ac28280db8b17beda92d14d62c7",
+    "crates/viento-studio-core/src/scene_composition_definition_rename.rs": "2b4cad0dc8502a31d7c7d40b22758b6daa5c6835a1cc5671521cacd8be6aad4c",
+    "engine/studio-core.mjs": "96284f8be59bec99d462a2a3c09e4163d23ce252231a600619cc4156014f91d3",
+    "engine/scene-composition-definitions.mjs": "ebfd57e058b1dc708d1d87f1930042d545d8f515503a9f75f14f3671ccbb37fa",
+    "scripts/tests/scene-composition-definition-rename.test.mjs": "e72d7b16fe71d4eca2b43a1b85bec79777f2f910aaaf2abef7f340987a715da3",
+    "scripts/tests/studio-core-composition-definition-rename.test.mjs": "6ff1d573419a2bd5960e74c32a6ac38b6ef0209df7114227278e5f28c119564d"
+  },
+  "abi": {
+    "probe": "viento_core_scene_composition_definition_rename_version",
+    "version": 1,
+    "optional": true,
+    "operation": "sceneComposition.renameFragmentDefinition",
+    "requestKeys": [
+      "protocolVersion",
+      "operation",
+      "content",
+      "fragmentId",
+      "newFragmentId"
+    ],
+    "priorCapabilitiesRetained": true,
+    "originalDefinitionsActionsRemainSeparate": 3,
+    "originalReadOnlyLocatorUnchanged": true,
+    "renameBridgeDoesNotRequireDefinitionsProbe": true
+  },
+  "api": {
+    "exports": [
+      "createSceneCompositionDefinitionsDraft",
+      "prepareSceneCompositionDefinitionsApply",
+      "supportsStudioCoreCompositionDefinitionRename",
+      "dispatchStudioCoreCompositionDefinitionRename"
+    ],
+    "editKeys": [
+      "action",
+      "fragmentId",
+      "newFragmentId"
+    ],
+    "action": "rename",
+    "proposalKeys": [
+      "sceneId",
+      "sourcePath",
+      "baseSourceRevision",
+      "sourceRevision",
+      "edit",
+      "targets",
+      "afterContent",
+      "changedPaths"
+    ],
+    "targets": "Exact empty array; identity UUIDs remain stable, this domain renames only the local fragment key and raw related references",
+    "changedPaths": "Source-ordered /fragments/i/fragmentId followed by all related /placements/j/fragmentId",
+    "localIdentity": "Case-sensitive ASCII [a-zA-Z][a-zA-Z0-9_-]{0,63}; no trim or normalization; old identity must exist and new identity must not belong to another fragment",
+    "nativeNoop": "Same decoded identity returns exact original bytes and [] after complete original validation",
+    "pureNoop": "propose and prepare reject scene_composition_definitions_unchanged",
+    "errorCodes": [
+      "scene_composition_definitions_invalid",
+      "scene_composition_definitions_conflict",
+      "scene_composition_definitions_content_limit",
+      "scene_composition_definitions_unchanged"
+    ],
+    "unsupportedRename": "studio_core_unavailable without disabling any existing domain",
+    "bridgeReceipt": "Complete semantic intent, exact source-ordered changedPaths and string token inventory: only identity value tokens may change; all token gaps and unrelated raw strings remain byte-identical"
+  },
+  "verification": {
+    "rust": {
+      "unit": 123,
+      "integration": [
+        2,
+        8,
+        9,
+        13,
+        9,
+        8
+      ],
+      "total": 172,
+      "newUnitTests": 9,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-native-test.log"
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "warningsDenied": true,
+      "log": "core-clippy.log"
+    },
+    "native": {
+      "path": "desktop/.cache/fragment-rename-core-target/debug/viento-core",
+      "sha256": "b5d8436e893f5753a0efc2efd0ae7384bcec8abadf02c273224915641827dd10",
+      "log": "core-native-build.log"
+    },
+    "wasm": {
+      "bytes": 382560,
+      "sha256": "3b3f2ad206b5c2f8a91dd45230f79bd9e6a125bd3e88356e3ffc2f16f4e2189e",
+      "sourceHash": "9ad0ec3a2dd4ee6b1da8041a059650f75033748ae4e0a6846abb1ead672f34d1",
+      "log": "core-wasm-build.log"
+    },
+    "newJavaScript": {
+      "pure": 11,
+      "bridge": 11,
+      "total": 22,
+      "failed": 0,
+      "skipped": 0,
+      "nativeWasmParityRequests": 17,
+      "logs": [
+        "core-pure-tests.log",
+        "core-bridge-tests.log"
+      ]
+    },
+    "oldAndNewRegression": {
+      "files": 21,
+      "passed": 290,
+      "failed": 0,
+      "skipped": 0,
+      "log": "core-regression-final.log"
+    },
+    "portableSource": {
+      "cases": 10,
+      "passed": 10,
+      "failed": 0,
+      "module": "boundary-cases.mjs",
+      "export": "runDefinitionRenameCases",
+      "report": "boundary-source-results.json",
+      "log": "boundary-source-check.log",
+      "imports": 0,
+      "digest": "Explicit injected bare hex64 digest port",
+      "prepared": "Parent separately verifies actual prepared desktop/mobile VM copies; source proof is not device acceptance"
+    }
+  },
+  "retainedAttempts": [
+    {
+      "log": "core-native-test-initial.log",
+      "result": "Initial compile failed because the new module passed tuple edits to the existing Edit struct API. New module corrected to reuse the exact shared Edit type; no existing helper changed."
+    },
+    {
+      "log": "core-pure-tests-initial.log",
+      "result": {
+        "passed": 10,
+        "failed": 1
+      },
+      "reason": "The initial lexical preservation test expected a global textual replacement, incorrectly changing same-named group keys and memberships. Actual core preserved those fields; new test now builds the expected result using only identity value source ranges. No product change was required."
+    },
+    {
+      "log": "core-bridge-tests-initial.log",
+      "result": {
+        "passed": 11,
+        "failed": 0
+      },
+      "reason": "Initial bridge suite already passed; final log repeats the frozen source."
+    }
+  ],
+  "boundaries": [
+    "Single-file stateless atomic identity rename; no filesystem/tool process/resource lease or metadata mutation",
+    "CST edits replace only the fragment declaration identity value and all related placement fragmentId value tokens; escaped property keys, BOM/CRLF, numeric spelling, object references, local actor/group keys, UUIDs, order, offset and overrides retained",
+    "Unused fragments can be renamed; no new instance or UUID is allocated and full expanded scene semantics remain stable",
+    "Original and final full composition expansion with existing 128KiB and declaration/instance budgets; atomic growth rejected and shorter identifiers can reduce source size",
+    "Strict complete model/organizational semantics/provenance binds original source; snapshots precede asynchronous digest and host recomputes the entire intent/receipt",
+    "Old three author actions and read-only source locator remain separate; missing/wrong rename ABI only disables rename",
+    "Lightweight string token inventory only verifies response byte preservation; Rust remains the mutation and CST source-location authority",
+    "Root owns GUI/candidate/workflow/full application/browser/prepared/cleanup verification; this report records core, pure and source-portable checks only"
+  ],
+  "findings": []
+}

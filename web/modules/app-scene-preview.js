@@ -40,7 +40,7 @@ const diagnosticLabels = {
   world_recovery_required: '工程存在未完成的提交，请先在世界与对象中恢复。',
 };
 
-export function setupScenePreview({ container, getContext = () => ({}), getDraft = async () => null, openSource = () => false, editScene = () => {}, editLayout = () => false, editDraftLayout = async () => false, editCompositionOverride = async () => false }) {
+export function setupScenePreview({ container, getContext = () => ({}), getDraft = async () => null, openSource = () => false, editScene = () => {}, editLayout = () => false, editDraftLayout = async () => false, editCompositionOverride = async () => false, editCompositionLayout = async () => false, editCompositionBatchLayout = async () => false, editCompositionFragment = async () => false, editCompositionPlacement = async () => false, editCompositionStructure = async () => false, editCompositionPlacements = async () => false, editCompositionGroups = async () => false, editCompositionDefinitions = async () => false }) {
   container.classList.add('scene-preview');
   container.innerHTML = `<p class="build-note" data-i18n="查看已保存场景或当前原文草稿的静态布局，无需构建或安装运行引擎。移动、输入和状态变化请使用运行测试。"></p>
     <p id="scenePreviewDraft" class="build-hint" hidden data-i18n="存在未保存草稿；预览仍使用上次保存的场景和投影。"></p>
@@ -58,15 +58,16 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     <p class="build-hint" id="scenePreviewHelp" data-i18n="点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。"></p>
     <div class="scene-preview-layout"><canvas id="scenePreviewCanvas" tabindex="0" aria-describedby="scenePreviewHelp" data-i18n-aria-label="已保存的二维场景预览"></canvas>
     <aside><h3 data-i18n="场景对象"></h3><label class="scene-field"><span data-i18n="搜索场景对象与分组"></span><input id="scenePreviewSearch" type="search"></label><ol id="scenePreviewObjects"></ol><p id="scenePreviewSelection" role="status" aria-live="polite"></p>
-    <section id="scenePreviewInspector" aria-labelledby="scenePreviewInspectorTitle"><h3 id="scenePreviewInspectorTitle" data-i18n="对象属性"></h3><div id="scenePreviewProperties"></div><button id="scenePreviewCompositionOverride" type="button" class="doc-btn" hidden data-i18n="编辑此实例覆盖"></button><p id="scenePreviewCompositionOverrideHint" class="build-hint" hidden></p></section></aside></div>
-    <div class="scene-preview-toolbar"><button id="scenePreviewDraftLayoutEdit" type="button" class="doc-btn" hidden data-i18n="调整草稿布局"></button><button id="scenePreviewLayoutEdit" type="button" class="doc-btn" data-i18n="编辑场景布局"></button><button id="scenePreviewEdit" type="button" class="doc-btn" data-i18n="编辑场景"></button>
+    <section id="scenePreviewInspector" aria-labelledby="scenePreviewInspectorTitle"><h3 id="scenePreviewInspectorTitle" data-i18n="对象属性"></h3><div id="scenePreviewProperties"></div><button id="scenePreviewCompositionOverride" type="button" class="doc-btn" hidden data-i18n="编辑此实例覆盖"></button><button id="scenePreviewCompositionLayout" type="button" class="doc-btn" hidden data-i18n="调整此实例布局"></button><button id="scenePreviewCompositionFragment" type="button" class="doc-btn" hidden data-i18n="编辑共享片段"></button><button id="scenePreviewCompositionPlacement" type="button" class="doc-btn" hidden data-i18n="调整整组偏移"></button><p id="scenePreviewCompositionOverrideHint" class="build-hint" hidden></p></section></aside></div>
+    <div class="scene-preview-toolbar"><button id="scenePreviewCompositionDefinitions" type="button" class="doc-btn" hidden data-i18n="管理片段定义"></button><button id="scenePreviewCompositionGroups" type="button" class="doc-btn" hidden data-i18n="编辑组织分组"></button><button id="scenePreviewCompositionPlacements" type="button" class="doc-btn" hidden data-i18n="管理片段放置"></button><button id="scenePreviewCompositionStructure" type="button" class="doc-btn" hidden data-i18n="编辑片段结构"></button><button id="scenePreviewCompositionBatchLayout" type="button" class="doc-btn" hidden data-i18n="调整配方布局"></button><button id="scenePreviewDraftLayoutEdit" type="button" class="doc-btn" hidden data-i18n="调整草稿布局"></button><button id="scenePreviewLayoutEdit" type="button" class="doc-btn" data-i18n="编辑场景布局"></button><button id="scenePreviewEdit" type="button" class="doc-btn" data-i18n="编辑场景"></button>
     <button id="scenePreviewSource" type="button" class="doc-btn doc-btn-ghost"></button></div>
     <ul id="scenePreviewDiagnostics" class="scene-diagnostics"></ul>`;
   const el = id => container.querySelector(`#${id}`);
   const node = (tag, text, className = '') => { const value = document.createElement(tag); value.textContent = text; value.className = className; return value; };
   let available = false, visible = false, sceneId = '', requestEpoch = 0, controller = null, model = null, selected = null, disposed = false;
   let state = 'empty', errorKey = '', diagnostics = [], imageErrors = [], images = new Map();
-  let selectedGroup = null, compositionOverrideOpening = false;
+  let selectedGroup = null, compositionOverrideOpening = false, compositionLayoutOpening = false, compositionBatchOpening = false, compositionFragmentOpening = false, compositionPlacementOpening = false, compositionStructureOpening = false, compositionPlacementsOpening = false, compositionGroupsOpening = false, compositionDefinitionsOpening = false;
+  const compositionOpening = () => compositionOverrideOpening || compositionLayoutOpening || compositionBatchOpening || compositionFragmentOpening || compositionPlacementOpening || compositionStructureOpening || compositionPlacementsOpening || compositionGroupsOpening || compositionDefinitionsOpening;
   let sceneSourceSignature = '';
   let inspectorSignature = '', loadingKind = 'saved', diagnosticsOrigin = null, pendingPreview = null, loadingDraftToken = null, wantedDraft = false, modelReleased = false, modelDraftToken = null, draftLayoutOpening = false;
   const revisionPattern = /^sha256:[a-f0-9]{64}$/;
@@ -74,18 +75,43 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   const isComposition = () => Boolean(model?.composition || getContext().previewKind === 'composition');
   const canEditDraftLayout = () => Boolean(!isComposition() && model?.draft && state === 'ready' && visible && available && !disposed
     && canPreviewDraft() && getContext().editable && getContext().canEditDraftLayout === true && getContext().sceneDraftToken === modelDraftToken);
-  const canEditCompositionOverride = () => {
+  const canEditComposition = (capability, requireSelection = true) => {
     const context = getContext();
-    return Boolean(model?.composition && state === 'ready' && available && visible && !disposed && selected
-      && model.actors.some(actor => sceneActorIdentity(actor) === selected) && context.canEditCompositionOverride === true
+    return Boolean(model?.composition && state === 'ready' && available && visible && !disposed
+      && (!requireSelection || selected && model.actors.some(actor => sceneActorIdentity(actor) === selected)) && context[capability] === true
       && context.compositionSourceWritable === true && context.editable && !context.creating && !context.busy
       && context.sceneDraftPath === model.scene.sourcePath
       && (context.dirty ? model.draft && context.sceneDraftToken === modelDraftToken : !model.draft));
   };
+  const canEditCompositionOverride = () => canEditComposition('canEditCompositionOverride');
+  const canEditCompositionLayout = () => canEditComposition('canEditCompositionLayout');
+  const canEditCompositionBatchLayout = () => canEditComposition('canEditCompositionBatchLayout', false);
+  const canEditCompositionFragment = () => canEditComposition('canEditCompositionFragment');
+  const canEditCompositionPlacement = () => canEditComposition('canEditCompositionPlacement');
+  const canEditCompositionStructure = () => canEditComposition('canEditCompositionStructure', false);
+  const canEditCompositionPlacements = () => canEditComposition('canEditCompositionPlacements', false);
+  const canEditCompositionGroups = () => canEditComposition('canEditCompositionGroups', false);
+  const canEditCompositionDefinitions = () => canEditComposition('canEditCompositionDefinitions', false);
   function renderCompositionOverride() {
     const actor = model?.actors.find(item => sceneActorIdentity(item) === selected), context = getContext();
     const button = el('scenePreviewCompositionOverride'); button.hidden = !model?.composition || !actor;
-    button.disabled = compositionOverrideOpening || !canEditCompositionOverride();
+    button.disabled = compositionOpening() || !canEditCompositionOverride();
+    const layout = el('scenePreviewCompositionLayout'); layout.hidden = button.hidden;
+    layout.disabled = compositionOpening() || !canEditCompositionLayout();
+    const structure = el('scenePreviewCompositionStructure'); structure.hidden = !model?.composition;
+    structure.disabled = compositionOpening() || !canEditCompositionStructure();
+    const definitions = el('scenePreviewCompositionDefinitions'); definitions.hidden = !model?.composition;
+    definitions.disabled = compositionOpening() || !canEditCompositionDefinitions();
+    const groups = el('scenePreviewCompositionGroups'); groups.hidden = !model?.composition;
+    groups.disabled = compositionOpening() || !canEditCompositionGroups();
+    const placements = el('scenePreviewCompositionPlacements'); placements.hidden = !model?.composition;
+    placements.disabled = compositionOpening() || !canEditCompositionPlacements();
+    const batch = el('scenePreviewCompositionBatchLayout'); batch.hidden = !model?.composition;
+    batch.disabled = compositionOpening() || !canEditCompositionBatchLayout();
+    const fragment = el('scenePreviewCompositionFragment'); fragment.hidden = button.hidden;
+    fragment.disabled = compositionOpening() || !canEditCompositionFragment();
+    const placement = el('scenePreviewCompositionPlacement'); placement.hidden = button.hidden;
+    placement.disabled = compositionOpening() || !canEditCompositionPlacement();
     const hint = el('scenePreviewCompositionOverrideHint');
     hint.hidden = button.hidden || !button.disabled;
     hint.textContent = t(context.compositionSourceWritable && context.dirty
@@ -412,7 +438,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     } finally { draftLayoutOpening = false; if (!disposed) render(); }
   });
   el('scenePreviewCompositionOverride').addEventListener('click', async () => {
-    if (compositionOverrideOpening || !canEditCompositionOverride()) return;
+    if (compositionOpening() || !canEditCompositionOverride()) return;
     const openingModel = model, instanceId = selected, epoch = requestEpoch, token = getContext().sceneDraftToken;
     const isCurrent = () => canEditCompositionOverride() && model === openingModel && selected === instanceId
       && requestEpoch === epoch && getContext().sceneDraftToken === token;
@@ -423,6 +449,113 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     } catch {
       if (isCurrent()) errorKey = '实例覆盖编辑暂不可用，请重新预览当前配方后重试。';
     } finally { compositionOverrideOpening = false; if (!disposed) render(); }
+  });
+  el('scenePreviewCompositionLayout').addEventListener('click', async () => {
+    if (compositionOpening() || !canEditCompositionLayout()) return;
+    const openingModel = model, actorId = selected, epoch = requestEpoch, token = getContext().sceneDraftToken;
+    const isCurrent = () => canEditCompositionLayout() && model === openingModel && selected === actorId
+      && requestEpoch === epoch && getContext().sceneDraftToken === token;
+    compositionLayoutOpening = true; render();
+    try {
+      const opened = await editCompositionLayout({ model: openingModel, images, actorId, isCurrent });
+      if (opened === false && isCurrent()) errorKey = '实例布局调整暂不可用，请重新预览当前配方后重试。';
+    } catch {
+      if (isCurrent()) errorKey = '实例布局调整暂不可用，请重新预览当前配方后重试。';
+    } finally { compositionLayoutOpening = false; if (!disposed) render(); }
+  });
+  el('scenePreviewCompositionDefinitions').addEventListener('click', async () => {
+    if (compositionOpening() || !canEditCompositionDefinitions()) return;
+    const openingModel = model, actorId = selected || null, epoch = requestEpoch, token = getContext().sceneDraftToken;
+    const isCurrent = () => canEditCompositionDefinitions() && model === openingModel
+      && requestEpoch === epoch && getContext().sceneDraftToken === token;
+    compositionDefinitionsOpening = true; render();
+    try {
+      const opened = await editCompositionDefinitions({ model: openingModel, actorId, isCurrent });
+      if (opened === false && isCurrent()) errorKey = '片段定义管理暂不可用，请重新预览当前配方后重试。';
+    } catch {
+      if (isCurrent()) errorKey = '片段定义管理暂不可用，请重新预览当前配方后重试。';
+    } finally { compositionDefinitionsOpening = false; if (!disposed) render(); }
+  });
+  el('scenePreviewCompositionGroups').addEventListener('click', async () => {
+    if (compositionOpening() || !canEditCompositionGroups()) return;
+    const openingModel = model, actorId = selected || null, epoch = requestEpoch, token = getContext().sceneDraftToken;
+    const isCurrent = () => canEditCompositionGroups() && model === openingModel
+      && requestEpoch === epoch && getContext().sceneDraftToken === token;
+    compositionGroupsOpening = true; render();
+    try {
+      const opened = await editCompositionGroups({ model: openingModel, actorId, isCurrent });
+      if (opened === false && isCurrent()) errorKey = '组织分组编辑暂不可用，请重新预览当前配方后重试。';
+    } catch {
+      if (isCurrent()) errorKey = '组织分组编辑暂不可用，请重新预览当前配方后重试。';
+    } finally { compositionGroupsOpening = false; if (!disposed) render(); }
+  });
+  el('scenePreviewCompositionPlacements').addEventListener('click', async () => {
+    if (compositionOpening() || !canEditCompositionPlacements()) return;
+    const openingModel = model, actorId = selected || null, epoch = requestEpoch, token = getContext().sceneDraftToken;
+    const isCurrent = () => canEditCompositionPlacements() && model === openingModel
+      && requestEpoch === epoch && getContext().sceneDraftToken === token;
+    compositionPlacementsOpening = true; render();
+    try {
+      const opened = await editCompositionPlacements({ model: openingModel, actorId, isCurrent });
+      if (opened === false && isCurrent()) errorKey = '放置结构编辑暂不可用，请重新预览当前配方后重试。';
+    } catch {
+      if (isCurrent()) errorKey = '放置结构编辑暂不可用，请重新预览当前配方后重试。';
+    } finally { compositionPlacementsOpening = false; if (!disposed) render(); }
+  });
+  el('scenePreviewCompositionStructure').addEventListener('click', async () => {
+    if (compositionOpening() || !canEditCompositionStructure()) return;
+    const openingModel = model, actorId = selected || null, epoch = requestEpoch, token = getContext().sceneDraftToken;
+    // Actor selection is a view preference. The structure editor owns the whole recipe source.
+    const isCurrent = () => canEditCompositionStructure() && model === openingModel
+      && requestEpoch === epoch && getContext().sceneDraftToken === token;
+    compositionStructureOpening = true; render();
+    try {
+      const opened = await editCompositionStructure({ model: openingModel, actorId, isCurrent });
+      if (opened === false && isCurrent()) errorKey = '片段结构编辑暂不可用，请重新预览当前配方后重试。';
+    } catch {
+      if (isCurrent()) errorKey = '片段结构编辑暂不可用，请重新预览当前配方后重试。';
+    } finally { compositionStructureOpening = false; if (!disposed) render(); }
+  });
+  el('scenePreviewCompositionBatchLayout').addEventListener('click', async () => {
+    if (compositionOpening() || !canEditCompositionBatchLayout()) return;
+    const openingModel = model, actorId = selected, epoch = requestEpoch, token = getContext().sceneDraftToken;
+    // Selection belongs to the child view. Its owner is the complete recipe
+    // preview and source session, independent of the parent's current row.
+    const isCurrent = () => canEditCompositionBatchLayout() && model === openingModel
+      && requestEpoch === epoch && getContext().sceneDraftToken === token;
+    compositionBatchOpening = true; render();
+    try {
+      const opened = await editCompositionBatchLayout({ model: openingModel, images, actorId, isCurrent });
+      if (opened === false && isCurrent()) errorKey = '配方批次布局暂不可用，请重新预览当前配方后重试。';
+    } catch {
+      if (isCurrent()) errorKey = '配方批次布局暂不可用，请重新预览当前配方后重试。';
+    } finally { compositionBatchOpening = false; if (!disposed) render(); }
+  });
+  el('scenePreviewCompositionFragment').addEventListener('click', async () => {
+    if (compositionOpening() || !canEditCompositionFragment()) return;
+    const openingModel = model, actorId = selected, epoch = requestEpoch, token = getContext().sceneDraftToken;
+    const isCurrent = () => canEditCompositionFragment() && model === openingModel && selected === actorId
+      && requestEpoch === epoch && getContext().sceneDraftToken === token;
+    compositionFragmentOpening = true; render();
+    try {
+      const opened = await editCompositionFragment({ model: openingModel, actorId, isCurrent });
+      if (opened === false && isCurrent()) errorKey = '共享片段编辑暂不可用，请重新预览当前配方后重试。';
+    } catch {
+      if (isCurrent()) errorKey = '共享片段编辑暂不可用，请重新预览当前配方后重试。';
+    } finally { compositionFragmentOpening = false; if (!disposed) render(); }
+  });
+  el('scenePreviewCompositionPlacement').addEventListener('click', async () => {
+    if (compositionOpening() || !canEditCompositionPlacement()) return;
+    const openingModel = model, actorId = selected, epoch = requestEpoch, token = getContext().sceneDraftToken;
+    const isCurrent = () => canEditCompositionPlacement() && model === openingModel && selected === actorId
+      && requestEpoch === epoch && getContext().sceneDraftToken === token;
+    compositionPlacementOpening = true; render();
+    try {
+      const opened = await editCompositionPlacement({ model: openingModel, actorId, isCurrent });
+      if (opened === false && isCurrent()) errorKey = '整组偏移编辑暂不可用，请重新预览当前配方后重试。';
+    } catch {
+      if (isCurrent()) errorKey = '整组偏移编辑暂不可用，请重新预览当前配方后重试。';
+    } finally { compositionPlacementOpening = false; if (!disposed) render(); }
   });
   const unsubscribe = onLanguageChange(() => { if (!disposed) { render(); outline.refresh(); } }); render();
   return {

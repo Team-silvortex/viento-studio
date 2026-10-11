@@ -1,0 +1,250 @@
+(node:1873490) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `viento-node-x86_64-unknown-linux-gnu --trace-warnings ...` to show where the warning was created)
+engine/scene-authoring-candidate.mjs:15
+  return Object.assign(new Error('Composition validation did not match the reviewed source.'), {
+                       ^
+
+Error: Composition validation did not match the reviewed source.
+    at invalid (engine/scene-authoring-candidate.mjs:15:24)
+    at validateSceneAuthoringCandidate (engine/scene-authoring-candidate.mjs:166:80)
+    at Object.validateDraft (engine/scene-authoring-workflow.mjs:112:7)
+    at async workflowCases (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-composition-definition-authoring/prepared-check.mjs:230:27)
+    at async portable (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-composition-definition-authoring/prepared-check.mjs:348:173)
+    at async file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-composition-definition-authoring/prepared-check.mjs:352:25 {
+  errorCode: 'scene_composition_override_invalid',
+  payload: {
+    ok: true,
+    format: 'viento-scene-preview',
+    schemaVersion: 2,
+    scene: {
+      objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+      sourcePath: 'documents/placement-offset.json',
+      sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239',
+      viewport: [ 800, 480 ],
+      background: '#0d1829'
+    },
+    actors: [
+      {
+        size: [ 64, 64 ],
+        color: '#ffffff',
+        speed: 160,
+        controls: 'arrows',
+        groupId: '30000000-1111-4111-8111-111111111111',
+        imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+        instanceId: '20000000-1111-4111-8111-111111111111',
+        objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+        position: [ 120, 180 ],
+        name: '20000000-1111-4111-8111-111111111111'
+      },
+      {
+        size: [ 48, 48 ],
+        color: '#87d8b9',
+        speed: 0,
+        controls: 'none',
+        groupId: '30000001-1111-4111-8111-111111111111',
+        imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+        instanceId: '20000001-1111-4111-8111-111111111111',
+        objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+        position: [ 200, 180 ],
+        name: '20000001-1111-4111-8111-111111111111'
+      },
+      {
+        size: [ 64, 64 ],
+        color: '#f1c46e',
+        speed: 0,
+        controls: 'none',
+        groupId: '30000002-1111-4111-8111-111111111111',
+        imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+        instanceId: '20000002-1111-4111-8111-111111111111',
+        objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+        position: [ 460, 220 ],
+        name: '20000002-1111-4111-8111-111111111111'
+      },
+      {
+        size: [ 48, 48 ],
+        color: '#87d8b9',
+        speed: 0,
+        controls: 'none',
+        groupId: '30000003-1111-4111-8111-111111111111',
+        imageResourceId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
+        instanceId: '20000003-1111-4111-8111-111111111111',
+        objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+        position: [ 560, 260 ],
+        name: '20000003-1111-4111-8111-111111111111'
+      }
+    ],
+    composition: {
+      format: 'viento-scene-composition-preview',
+      schemaVersion: 1,
+      recipeObjectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+      sourcePath: 'documents/placement-offset.json',
+      sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239',
+      fragmentCount: 2,
+      placementCount: 2
+    },
+    sourceLocations: {
+      actors: [
+        {
+          instanceId: '20000000-1111-4111-8111-111111111111',
+          objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+          composition: {
+            fragmentId: 'party',
+            placementId: '10000000-1111-4111-8111-111111111111',
+            localKey: 'leader'
+          },
+          declaration: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            sourcePath: 'documents/placement-offset.json',
+            sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239'
+          }
+        },
+        {
+          instanceId: '20000001-1111-4111-8111-111111111111',
+          objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+          composition: {
+            fragmentId: 'party',
+            placementId: '10000000-1111-4111-8111-111111111111',
+            localKey: 'companion'
+          },
+          declaration: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            sourcePath: 'documents/placement-offset.json',
+            sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239'
+          }
+        },
+        {
+          instanceId: '20000002-1111-4111-8111-111111111111',
+          objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+          composition: {
+            fragmentId: 'party',
+            placementId: '10000001-1111-4111-8111-111111111111',
+            localKey: 'leader'
+          },
+          declaration: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            sourcePath: 'documents/placement-offset.json',
+            sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239'
+          }
+        },
+        {
+          instanceId: '20000003-1111-4111-8111-111111111111',
+          objectId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+          composition: {
+            fragmentId: 'party',
+            placementId: '10000001-1111-4111-8111-111111111111',
+            localKey: 'companion'
+          },
+          declaration: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            sourcePath: 'documents/placement-offset.json',
+            sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239'
+          }
+        }
+      ],
+      groups: [
+        {
+          groupId: '30000000-1111-4111-8111-111111111111',
+          composition: {
+            fragmentId: 'party',
+            placementId: '10000000-1111-4111-8111-111111111111',
+            localKey: 'party'
+          },
+          declaration: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            sourcePath: 'documents/placement-offset.json',
+            sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239'
+          }
+        },
+        {
+          groupId: '30000001-1111-4111-8111-111111111111',
+          composition: {
+            fragmentId: 'party',
+            placementId: '10000000-1111-4111-8111-111111111111',
+            localKey: 'companions'
+          },
+          declaration: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            sourcePath: 'documents/placement-offset.json',
+            sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239'
+          }
+        },
+        {
+          groupId: '30000002-1111-4111-8111-111111111111',
+          composition: {
+            fragmentId: 'party',
+            placementId: '10000001-1111-4111-8111-111111111111',
+            localKey: 'party'
+          },
+          declaration: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            sourcePath: 'documents/placement-offset.json',
+            sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239'
+          }
+        },
+        {
+          groupId: '30000003-1111-4111-8111-111111111111',
+          composition: {
+            fragmentId: 'party',
+            placementId: '10000001-1111-4111-8111-111111111111',
+            localKey: 'companions'
+          },
+          declaration: {
+            objectId: 'dddddddd-dddd-4ddd-8ddd-dddddddddddd',
+            sourcePath: 'documents/placement-offset.json',
+            sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239'
+          }
+        }
+      ]
+    },
+    sceneStructure: {
+      format: 'viento-scene-structure',
+      schemaVersion: 1,
+      sourceSchemaVersion: 3,
+      groups: [
+        {
+          groupId: '30000000-1111-4111-8111-111111111111',
+          name: 'Party / 队伍 / 隊'
+        },
+        {
+          groupId: '30000001-1111-4111-8111-111111111111',
+          name: 'Companions / 同行者',
+          parentGroupId: '30000000-1111-4111-8111-111111111111'
+        },
+        {
+          groupId: '30000002-1111-4111-8111-111111111111',
+          name: 'Party / 队伍 / 隊'
+        },
+        {
+          groupId: '30000003-1111-4111-8111-111111111111',
+          name: 'Companions / 同行者',
+          parentGroupId: '30000002-1111-4111-8111-111111111111'
+        }
+      ],
+      memberships: [
+        {
+          instanceId: '20000000-1111-4111-8111-111111111111',
+          groupId: '30000000-1111-4111-8111-111111111111'
+        },
+        {
+          instanceId: '20000001-1111-4111-8111-111111111111',
+          groupId: '30000001-1111-4111-8111-111111111111'
+        },
+        {
+          instanceId: '20000002-1111-4111-8111-111111111111',
+          groupId: '30000002-1111-4111-8111-111111111111'
+        },
+        {
+          instanceId: '20000003-1111-4111-8111-111111111111',
+          groupId: '30000003-1111-4111-8111-111111111111'
+        }
+      ]
+    },
+    previewId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee',
+    draft: {
+      baseSourceRevision: 'sha256:1a90b81cd922091ce589d7bd8b88a3e9d69c4ffd3cd28e5b5c629f5c3be7e4e6',
+      sourceRevision: 'sha256:8a60de740491f9486910bb605360b6e23b6a0247c8c04075f5f3d136ebc26239'
+    }
+  }
+}
+
+Node.js v24.20.0

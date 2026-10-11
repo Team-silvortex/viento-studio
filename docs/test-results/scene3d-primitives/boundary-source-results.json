@@ -1,0 +1,66 @@
+{
+  "format": "viento-scene3d-portable-source-proof",
+  "schemaVersion": 1,
+  "runtime": "v24.20.0",
+  "sourceHashes": {
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.mjs": "71fe6113d4b93444410d363cd742ab61daaeb028b0fd976970817a3fe0beb962",
+    "engine/index.mjs": "3c360329d139ff555f6c5f8f73eec4a781180c7d8ca2c9bb1cc78326aabfaa6e",
+    "engine/studio-core.wasm": "6114130522595a92b0f6627df1f29ac0bb86cc82c60a5fa68c06cb38f6cb3328"
+  },
+  "checks": [
+    {
+      "id": "complete-native-model-source-identities-and-exact-backend-neutral-XYZ-degree-plan",
+      "ok": true
+    },
+    {
+      "id": "BOM-CRLF-nonBMP-escaped-keys-exponent-whole-object-UTF16-ranges",
+      "ok": true
+    },
+    {
+      "id": "independent-returned-model-and-plan-values-preserve-author-source",
+      "ok": true
+    },
+    {
+      "id": "unknown-schema-fields-assets-world-behavior-hierarchy-and-2D-fallback-refuse",
+      "ok": true,
+      "rejectedOperations": 11
+    },
+    {
+      "id": "decoded-duplicate-keys-lone-surrogates-unsafe-JSON-and-invalid-source-rejected-with-ready-core",
+      "ok": true,
+      "rejectedOperations": 7
+    },
+    {
+      "id": "128-object-unique-canonical-UUID-and-256-Unicode-codepoint-name-bounds",
+      "ok": true
+    },
+    {
+      "id": "GPU-safe-Y-up-camera-and-directional-light-bases-and-frustum-separation",
+      "ok": true,
+      "rejectedOperations": 14
+    },
+    {
+      "id": "finite-triplet-size-degree-and-hex-boundaries-retain-raw-author-values",
+      "ok": true,
+      "rejectedOperations": 6
+    },
+    {
+      "id": "whole-UTF8-byte-budget-and-parse-only-dispatch-authority",
+      "ok": true
+    },
+    {
+      "id": "independent-3D-contribution-with-no-2D-source-plan-or-identity-regression",
+      "ok": true
+    }
+  ],
+  "passed": 10,
+  "failed": 0,
+  "environment": "Source modules and actual WASM through pinned Node; import-free cases with explicit engine ports. Prepared copies and device acceptance reported separately.",
+  "errorDomains": [
+    "scene3d_invalid",
+    "scene3d_limit",
+    "studio_core_request_invalid"
+  ],
+  "semantics": "Y-up right-handed -Z forward; author degrees XYZ, renderer/exporter T*Rx*Ry*Rz*S; no assets, World, behavior or hierarchy admission"
+}

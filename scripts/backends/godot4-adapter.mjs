@@ -148,12 +148,23 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
   }
 }
 
-async function cleanupProject(directory) {
+async function cleanupProject(directory, { generatedFiles = [], resourceFiles = [] } = {}) {
   if (!absolute(directory)) throw buildError('build_output_invalid', 'Cleanup requires an absolute generated-project directory.');
   const stat = await fs.lstat(directory);
   if (!stat.isDirectory() || stat.isSymbolicLink()) throw buildError('build_output_invalid', 'Cleanup requires a generated-project directory, not a link.');
   // rm removes a cache symlink itself, never the directory it points at.
   for (const name of ['.godot', '.host']) await fs.rm(path.join(directory, name), { recursive: true, force: true });
+  // Import/UID sidecars belong to exact staged inputs. They are recreated in
+  // each runtime copy and must not become unexplained, unowned build files.
+  const sidecars = new Set([
+    ...generatedFiles.filter(file => file.endsWith('.gd')).map(file => `${file}.uid`),
+    ...resourceFiles.map(file => `${file}.import`),
+  ]);
+  for (const relative of sidecars) {
+    const candidate = path.resolve(directory, relative);
+    const file = await resolveContainedPath(directory, candidate, { allowMissing: true });
+    await fs.rm(file, { force: true });
+  }
 }
 
 export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
