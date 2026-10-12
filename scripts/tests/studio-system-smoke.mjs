@@ -104,12 +104,12 @@ try {
     for (const line of ['（灯光亮起）', '人物甲：你是谁？', '人物乙：旅人。', '人物甲：我也是。']) assert.ok(doc.raw.includes(line)); };
   await navigate('missing-3d'); const first = await snapshot(); report.initialSnapshot = first;
   assert.ok(report.modules.includes('/web/modules/app-studio-system.js')); assert.equal(first.lifecycle, 'boot-only'); assert.equal(first.hotReload, false);
-  assert.equal(first.initializedModules.length, 8); assert.equal(await evaluate("document.querySelectorAll('#settingsDialog').length"), 1);
+  assert.equal(first.initializedModules.length, 17); assert.equal(await evaluate("document.querySelectorAll('#settingsDialog').length"), 1);
   assert.equal(first.plan.satisfied, false); assert.equal(first.plan.requests.find(request => request.capability === 'scene.representation.scene4d').status, 'missing');
   assert.equal(first.plan.requests.find(request => request.capability === 'document.edit').status, 'supported'); assert.equal(first.plan.modules.every(module => module.active), true);
   assert.deepEqual(await state('appState.workspace.studioProfile'), manifest.studioProfile); await assertProse();
   assert.deepEqual(await documentInventory(), originalInventory);
-  report.steps.push('Actual runtime loads one Studio root with eight module records; a drama scene stays prose and a required missing future representation capability leaves the base editor assembled and editable.');
+  report.steps.push('Actual runtime loads one Studio root with eleven module records; a drama scene stays prose and a required missing future representation capability leaves the base editor assembled and editable.');
 
   for (const [button, dialog, close] of [['#projectSettingsBtn', '#projectSettingsDialog', '#projectSettingsClose'],
     ['#worldBrowserBtn', '#worldBrowserDialog', '#worldClose'], ['#projectBuildBtn', '#projectBuildDialog', '#projectBuildClose'],

@@ -1,0 +1,87 @@
+{
+  "ok": true,
+  "finishedAt": "2026-10-12T09:43:12.780156+00:00",
+  "feature": "Read-only whole-scene framing in the existing 3D preview",
+  "version": "0.0.10",
+  "regression": {
+    "report": "regression.json",
+    "passed": 256,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "Relevant view math/rendering, readonly navigation/host, module assembly, model and translation regressions; not the full application suite or new Rust execution."
+  },
+  "independentReview": {
+    "report": "independent-review.json",
+    "groups": 12
+  },
+  "preparedResources": {
+    "report": "prepared.json",
+    "groups": 16,
+    "desktop": 8,
+    "mobile": 8,
+    "scope": "Copied resources with standard VM and recording GPU port"
+  },
+  "browser": {
+    "report": "browser-verified/browser.json",
+    "flows": 7,
+    "screenshots": 5,
+    "review": "browser-verified-review.json",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "geometryChecks": 9,
+    "sourceStable": true,
+    "servedSourcesVerified": 11,
+    "compositingChecks": [
+      {
+        "file": "framing-zh-CN-390.png",
+        "samples": 286,
+        "tolerance": 3,
+        "mismatches": 0
+      },
+      {
+        "file": "framing-en-390.png",
+        "samples": 260,
+        "tolerance": 3,
+        "mismatches": 0
+      },
+      {
+        "file": "framing-ja-390.png",
+        "samples": 208,
+        "tolerance": 3,
+        "mismatches": 0
+      }
+    ],
+    "cspAndSvgCountersTracked": false
+  },
+  "legacyBrowser": {
+    "report": "legacy-browser/browser.json",
+    "flows": 7,
+    "screenshots": 6,
+    "sourceStable": true
+  },
+  "initialBrowserAttempt": {
+    "completed": false,
+    "report": "browser-initial-interruption.json",
+    "reason": "Navigation hung; process stopped. Partial captures are not a passed run."
+  },
+  "automaticHeadlessPath": {
+    "visualReview": "browser-review.json",
+    "compositorComparison": "compositing-compositor.json",
+    "status": "Default headless mode has retained screenshot corruption. Explicit ANGLE/SwiftShader mode passes with identical final product files; underlying driver cause is not established."
+  },
+  "sourceFiles": 780,
+  "sourceManifest": "source-final.json",
+  "sourceBoundaries": "Only view math, renderer, preview UI, two translations and tests changed. Rust, author semantics, backend protocols and persistence are unchanged.",
+  "atlas": {
+    "functions": 96,
+    "implementations": 239,
+    "bindings": 373,
+    "cells": 1492,
+    "oldPrefixesPreserved": true
+  },
+  "limitations": [
+    "Counts for owner, independent and regression checks overlap; do not sum them.",
+    "No rerun of the entire application suite or Rust tests for this view-only change.",
+    "Software WebGL and prepared resources do not constitute hardware GPU, Android-device or installed-package acceptance.",
+    "Working-tree change; no release, commit, push or installation performed."
+  ]
+}

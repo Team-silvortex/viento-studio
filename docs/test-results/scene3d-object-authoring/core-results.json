@@ -1,0 +1,175 @@
+{
+  "format": "viento-scene3d-object-core-results",
+  "schemaVersion": 1,
+  "status": "passed",
+  "productVersion": "0.0.10",
+  "publishedBase": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "scope": {
+    "delivery": "Unpublished additive source after 0.0.10; no installed application or device acceptance.",
+    "capability": "viento_core_scene3d_objects_version",
+    "apiVersion": 1,
+    "operation": "scene3d.patchObjects",
+    "commonRequestKeys": [
+      "protocolVersion",
+      "operation",
+      "content",
+      "action"
+    ],
+    "actionSpecificRequestKeys": {
+      "add": [
+        "object"
+      ],
+      "copy": [
+        "instanceId",
+        "newInstanceId",
+        "name"
+      ],
+      "remove": [
+        "instanceId"
+      ]
+    },
+    "responseKeys": [
+      "action",
+      "instanceId",
+      "sourceInstanceId",
+      "beforeContent",
+      "afterContent",
+      "changedPaths"
+    ],
+    "identity": "Fresh canonical target UUID supplied by caller for add/copy; no implicit identity allocation. sourceInstanceId is source copy identity or null.",
+    "changedPaths": "Exactly one /objects/N for appended or removed index.",
+    "limits": "Existing complete scene3d parser before and after; 1–128 objects, 128 KiB UTF-8 before and after and all existing scene constraints.",
+    "tokenPreservation": "New complete object only serialized for add; copy clones original CST with only new identity and net changed name value token replaced; same-semantic copy name retains original spelling. Remove splices exact one item and separator. Unrelated bytes/order/BOM/CRLF, escaped keys and all existing numeric lexemes retained."
+  },
+  "sourceFiles": [
+    {
+      "path": "crates/viento-studio-core/src/lib.rs",
+      "bytes": 16897,
+      "sha256": "a904d4c89827938941453168a41428724efba6b9ecfccc47d9f456c5a4ac41fb"
+    },
+    {
+      "path": "crates/viento-studio-core/src/scene3d_objects_patch.rs",
+      "bytes": 21395,
+      "sha256": "e3a38afc5b6370e35a52845762461c748fff02627867492f92df4431883f8eb4"
+    },
+    {
+      "path": "engine/studio-core.mjs",
+      "bytes": 92416,
+      "sha256": "4203fc30acf84deaaa2ef07e853b8b71509bd587f4b8152d3da0998a14ad6fde"
+    },
+    {
+      "path": "scripts/tests/studio-core-scene3d-objects.test.mjs",
+      "bytes": 20772,
+      "sha256": "ce260d7352d3a233fdcae326b82b42408d7f099d8420a94fd2c7f28201278261"
+    }
+  ],
+  "compiledSourceHash": "9455267e0230579ae115cc46bbb75f817e86b05acb5e7f50f2255628ca38e896",
+  "compiledSourcesMatchCurrent": true,
+  "buildMetadata": {
+    "path": "engine/studio-core.build.json",
+    "bytes": 2498,
+    "sha256": "d1988db664efe9a0c38a4c7fdb6a4649982598f20b8b2a0a429fd57a7dcbc105"
+  },
+  "wasm": {
+    "path": "engine/studio-core.wasm",
+    "bytes": 474240,
+    "sha256": "ab5a10726a68967ed9782aa902ac1de44fc65e2dab96600fc83ecd8b8617ae53"
+  },
+  "nativeCli": {
+    "path": "desktop/.cache/scene3d-objects-core-target/debug/viento-core",
+    "bytes": 14402808,
+    "sha256": "1b59fde317f1ac59c76bf09bf59d4a4af3c85e22ffc52261e6ce479af89383fc"
+  },
+  "runtime": {
+    "nodeVersion": "v24.20.0",
+    "node": {
+      "path": "src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu",
+      "bytes": 126458664,
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)"
+  },
+  "verification": {
+    "rust": {
+      "passed": 210,
+      "unitPassed": 161,
+      "integrationPassed": 49,
+      "newUnitPassed": 14,
+      "failed": 0,
+      "ignored": 0,
+      "log": "core-native-test.log"
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "log": "core-clippy.log"
+    },
+    "freshWasmBuild": {
+      "passed": true,
+      "log": "core-wasm-build.log",
+      "buildOwner": "Root performed the centralized fresh native/WASM build."
+    },
+    "bridge": {
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "files": 1,
+      "log": "core-bridge-tests.log",
+      "nativeWasmParityRequests": 20
+    },
+    "sharedCoreRegression": {
+      "passed": 219,
+      "failed": 0,
+      "skipped": 0,
+      "files": 18,
+      "log": "core-regression-final.log",
+      "includesNewBridgeTests": true
+    },
+    "initialAttempts": {
+      "logs": [],
+      "note": "Core and bridge results listed here have no failed initial run; other owners retain their independent fixture logs."
+    }
+  },
+  "logFiles": [
+    {
+      "path": "docs/test-results/scene3d-object-authoring/core-native-test.log",
+      "bytes": 24065,
+      "sha256": "a8dca95fc1e3745620ff45e8a5a9068d83a820474324032713e014cd8e3a8a04"
+    },
+    {
+      "path": "docs/test-results/scene3d-object-authoring/core-fmt-check.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/test-results/scene3d-object-authoring/core-clippy.log",
+      "bytes": 350,
+      "sha256": "4728c42c919a3db3191ded506df705e9a55f2ab88d323adc3f5a07495eb7fec5"
+    },
+    {
+      "path": "docs/test-results/scene3d-object-authoring/core-wasm-build.log",
+      "bytes": 104,
+      "sha256": "a2cc0baaf8db8ba5cd181de7284f13816beaf47c82364eaf17e912d31d46f1ca"
+    },
+    {
+      "path": "docs/test-results/scene3d-object-authoring/core-bridge-tests.log",
+      "bytes": 2184,
+      "sha256": "bc56cf3c60a738827676911a36acd3df0e881d81b7aa282604c8e7b53b422529"
+    },
+    {
+      "path": "docs/test-results/scene3d-object-authoring/core-regression-final.log",
+      "bytes": 25677,
+      "sha256": "d8b59a2b0bad0f98e3c87e05025715b218f81be88e70307be7afb8c37e59fc2d"
+    }
+  ],
+  "boundaries": [
+    "Stateless object array authoring only; add/copy append, remove keeps at least one complete object.",
+    "Independent objects probe additionally requires old parse probe; missing objects support leaves old parsing, transforms and 2D APIs usable.",
+    "Bridge rejects getters, serializers, malformed and mixed-action DTOs; full semantic before/after and lexical receipt checks remain independent from authoring UI.",
+    "Normal domain errors leave core available; forged successful receipt poisons the runtime.",
+    "No YAML/browser package dependency, JavaScript scene validation substitute, geometry session, source Save, filesystem, World command, renderer or backend execution."
+  ]
+}

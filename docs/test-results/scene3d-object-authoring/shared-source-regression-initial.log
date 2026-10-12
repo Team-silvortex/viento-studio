@@ -1,0 +1,382 @@
+TAP version 13
+# Subtest: actual source host returns only five captured identity/source/revision values, leaving old preview exactly readonly
+ok 1 - actual source host returns only five captured identity/source/revision values, leaving old preview exactly readonly
+  ---
+  duration_ms: 5.628445
+  type: 'test'
+  ...
+# Subtest: actual apply changes only in-memory draft, retains saved baseline/cache/version, selection and scroll
+ok 2 - actual apply changes only in-memory draft, retains saved baseline/cache/version, selection and scroll
+  ---
+  duration_ms: 11.953862
+  type: 'test'
+  ...
+# Subtest: clone/getter/previously applied proposal cannot replay through the host
+ok 3 - clone/getter/previously applied proposal cannot replay through the host
+  ---
+  duration_ms: 7.553473
+  type: 'test'
+  ...
+# Subtest: wrong saved baseline SHA cannot be reviewed or applied
+ok 4 - wrong saved baseline SHA cannot be reviewed or applied
+  ---
+  duration_ms: 4.386152
+  type: 'test'
+  ...
+# Subtest: closing or editing while apply is waiting cannot update a draft at any of its three digest boundaries
+ok 5 - closing or editing while apply is waiting cannot update a draft at any of its three digest boundaries
+  ---
+  duration_ms: 109.463816
+  type: 'test'
+  ...
+# Subtest: source snapshot is invalidated by navigation or silent raw edits during either SHA wait
+ok 6 - source snapshot is invalidated by navigation or silent raw edits during either SHA wait
+  ---
+  duration_ms: 3.644396
+  type: 'test'
+  ...
+# Subtest: same-path document replacement and leaving/reopening the raw editor invalidate a previous review
+ok 7 - same-path document replacement and leaving/reopening the raw editor invalidate a previous review
+  ---
+  duration_ms: 4.127051
+  type: 'test'
+  ...
+# Subtest: unsaved raw content is independently hashed from its saved baseline
+ok 8 - unsaved raw content is independently hashed from its saved baseline
+  ---
+  duration_ms: 3.195955
+  type: 'test'
+  ...
+# Subtest: creation, nonJSON, non-source modes, busy and wrong editor identity cannot offer authoring authority
+ok 9 - creation, nonJSON, non-source modes, busy and wrong editor identity cannot offer authoring authority
+  ---
+  duration_ms: 2.965728
+  type: 'test'
+  ...
+# Subtest: 3D authoring host calls no Save, filesystem, HTTP, World, renderer or backend authority
+ok 10 - 3D authoring host calls no Save, filesystem, HTTP, World, renderer or backend authority
+  ---
+  duration_ms: 0.386716
+  type: 'test'
+  ...
+# Subtest: review changes only selected primitive transforms and preserves original source bytes and other objects
+ok 11 - review changes only selected primitive transforms and preserves original source bytes and other objects
+  ---
+  duration_ms: 11.172513
+  type: 'test'
+  ...
+# Subtest: empty and unchanged edits cannot acquire apply authority
+ok 12 - empty and unchanged edits cannot acquire apply authority
+  ---
+  duration_ms: 2.082962
+  type: 'test'
+  ...
+# Subtest: serialized or forged proposals cannot apply and malicious getters are never read
+ok 13 - serialized or forged proposals cannot apply and malicious getters are never read
+  ---
+  duration_ms: 2.938418
+  type: 'test'
+  ...
+# Subtest: ownership binds path, current token, current source and saved source revision independently
+ok 14 - ownership binds path, current token, current source and saved source revision independently
+  ---
+  duration_ms: 2.019684
+  type: 'test'
+  ...
+# Subtest: digest must confirm raw source bytes and may not return an invalid or different hash
+ok 15 - digest must confirm raw source bytes and may not return an invalid or different hash
+  ---
+  duration_ms: 1.979019
+  type: 'test'
+  ...
+# Subtest: caller source DTO is captured before the digest await
+ok 16 - caller source DTO is captured before the digest await
+  ---
+  duration_ms: 3.106259
+  type: 'test'
+  ...
+# Subtest: source DTO rejects noncanonical paths, unknown members, accessors and invalid revision claims
+ok 17 - source DTO rejects noncanonical paths, unknown members, accessors and invalid revision claims
+  ---
+  duration_ms: 0.475321
+  type: 'test'
+  ...
+# Subtest: caller changes to selected values after review cannot change the candidate
+ok 18 - caller changes to selected values after review cannot change the candidate
+  ---
+  duration_ms: 2.370515
+  type: 'test'
+  ...
+# Subtest: builtin composition declares ten stable modules and keeps contribution domains separate
+ok 19 - builtin composition declares ten stable modules and keeps contribution domains separate
+  ---
+  duration_ms: 3.00443
+  type: 'test'
+  ...
+# Subtest: module registration and plan results own detached immutable snapshots
+ok 20 - module registration and plan results own detached immutable snapshots
+  ---
+  duration_ms: 2.383138
+  type: 'test'
+  ...
+# Subtest: absent, null and empty additive profiles preserve legacy module composition
+ok 21 - absent, null and empty additive profiles preserve legacy module composition
+  ---
+  duration_ms: 0.867007
+  type: 'test'
+  ...
+# Subtest: required and optional requests preserve declaration order and have independent severity
+ok 22 - required and optional requests preserve declaration order and have independent severity
+  ---
+  duration_ms: 1.487749
+  type: 'test'
+  ...
+# Subtest: unknown representations and behavior requirements never fall back to Scene2D or authorize a backend
+ok 23 - unknown representations and behavior requirements never fall back to Scene2D or authorize a backend
+  ---
+  duration_ms: 0.760019
+  type: 'test'
+  ...
+# Subtest: capability API mismatch is explicit and does not reactivate a disabled module
+ok 24 - capability API mismatch is explicit and does not reactivate a disabled module
+  ---
+  duration_ms: 0.590655
+  type: 'test'
+  ...
+# Subtest: module feature projection propagates required dependencies but keeps optional media/export ports independent
+ok 25 - module feature projection propagates required dependencies but keeps optional media/export ports independent
+  ---
+  duration_ms: 0.759227
+  type: 'test'
+  ...
+# Subtest: dependency order is deterministic even when declarations arrive in reverse order
+ok 26 - dependency order is deterministic even when declarations arrive in reverse order
+  ---
+  duration_ms: 0.24265
+  type: 'test'
+  ...
+# Subtest: duplicate modules, ambiguous providers, missing/versioned dependencies and cycles fail registration
+ok 27 - duplicate modules, ambiguous providers, missing/versioned dependencies and cycles fail registration
+  ---
+  duration_ms: 0.460745
+  type: 'test'
+  ...
+# Subtest: explicit host registration can provide a future representation without claiming an executable provider
+ok 28 - explicit host registration can provide a future representation without claiming an executable provider
+  ---
+  duration_ms: 0.596746
+  type: 'test'
+  ...
+# Subtest: strict profile validates detached declarative requests but rejects paths, scripts and unknown keys
+ok 29 - strict profile validates detached declarative requests but rejects paths, scripts and unknown keys
+  ---
+  duration_ms: 0.633294
+  type: 'test'
+  ...
+# Subtest: malformed or future profiles produce local diagnostics and preserve ordinary document availability
+ok 30 - malformed or future profiles produce local diagnostics and preserve ordinary document availability
+  ---
+  duration_ms: 1.011845
+  type: 'test'
+  ...
+# Subtest: module descriptors reject dynamic implementations, unversioned capabilities and malformed domains
+ok 31 - module descriptors reject dynamic implementations, unversioned capabilities and malformed domains
+  ---
+  duration_ms: 0.461395
+  type: 'test'
+  ...
+# Subtest: feature options are strict metadata and reject unknown modules or forged enable flags
+ok 32 - feature options are strict metadata and reject unknown modules or forged enable flags
+  ---
+  duration_ms: 0.659052
+  type: 'test'
+  ...
+# Subtest: accessors, serialization hooks, inherited objects, hidden fields, symbols, sparse arrays and cycles never gain authority
+ok 33 - accessors, serialization hooks, inherited objects, hidden fields, symbols, sparse arrays and cycles never gain authority
+  ---
+  duration_ms: 1.58587
+  type: 'test'
+  ...
+# Subtest: profile and registry budgets reject excessive declarations instead of dropping requests
+ok 34 - profile and registry budgets reject excessive declarations instead of dropping requests
+  ---
+  duration_ms: 2.005999
+  type: 'test'
+  ...
+# Subtest: drama scene and custom document types stay document definitions and never infer representation requirements
+ok 35 - drama scene and custom document types stay document definitions and never infer representation requirements
+  ---
+  duration_ms: 1.142248
+  type: 'test'
+  ...
+# Subtest: declared future module profiles cannot mutate original author payload or the registered providers
+ok 36 - declared future module profiles cannot mutate original author payload or the registered providers
+  ---
+  duration_ms: 1.069814
+  type: 'test'
+  ...
+# Subtest: settings finish before localized areas mount, with the document authority already host-owned
+ok 37 - settings finish before localized areas mount, with the document authority already host-owned
+  ---
+  duration_ms: 4.906816
+  type: 'test'
+  ...
+# Subtest: a failed language initialization does not partly mount domain views
+ok 38 - a failed language initialization does not partly mount domain views
+  ---
+  duration_ms: 1.452272
+  type: 'test'
+  ...
+# Subtest: each area receives only its own frozen options and unchanged author callbacks
+ok 39 - each area receives only its own frozen options and unchanged author callbacks
+  ---
+  duration_ms: 1.141676
+  type: 'test'
+  ...
+# Subtest: port configuration is captured before awaiting settings and caller mutation cannot replace source authority
+ok 40 - port configuration is captured before awaiting settings and caller mutation cannot replace source authority
+  ---
+  duration_ms: 1.167805
+  type: 'test'
+  ...
+# Subtest: the public system surface and snapshots never expose controllers, functions or source text
+ok 41 - the public system surface and snapshots never expose controllers, functions or source text
+  ---
+  duration_ms: 1.241111
+  type: 'test'
+  ...
+# Subtest: media receives the declared export provider rather than a caller-supplied sibling override
+ok 42 - media receives the declared export provider rather than a caller-supplied sibling override
+  ---
+  duration_ms: 1.351506
+  type: 'test'
+  ...
+# Subtest: disabling export leaves reference editing active and gives media no phantom export provider
+ok 43 - disabling export leaves reference editing active and gives media no phantom export provider
+  ---
+  duration_ms: 1.420814
+  type: 'test'
+  ...
+# Subtest: an exporter without an asset provider does not disable or invent the optional media service
+ok 44 - an exporter without an asset provider does not disable or invent the optional media service
+  ---
+  duration_ms: 0.839566
+  type: 'test'
+  ...
+# Subtest: disabling project settings does not disable the document, world or build modules
+ok 45 - disabling project settings does not disable the document, world or build modules
+  ---
+  duration_ms: 1.156735
+  type: 'test'
+  ...
+# Subtest: disabling media leaves package exporting available and refresh performs no hidden media setup
+ok 46 - disabling media leaves package exporting available and refresh performs no hidden media setup
+  ---
+  duration_ms: 4.583778
+  type: 'test'
+  ...
+# Subtest: all legacy optional features may be disabled while base source and execution views stay assembled
+ok 47 - all legacy optional features may be disabled while base source and execution views stay assembled
+  ---
+  duration_ms: 2.782999
+  type: 'test'
+  ...
+# Subtest: module assembly does not grant host World writes, execution or preview availability
+ok 48 - module assembly does not grant host World writes, execution or preview availability
+  ---
+  duration_ms: 2.320031
+  type: 'test'
+  ...
+# Subtest: World access, execution and scene preview are independent host capabilities
+ok 49 - World access, execution and scene preview are independent host capabilities
+  ---
+  duration_ms: 1.888451
+  type: 'test'
+  ...
+# Subtest: host capability refresh fails closed for non-booleans and revokes previous grants
+ok 50 - host capability refresh fails closed for non-booleans and revokes previous grants
+  ---
+  duration_ms: 1.84966
+  type: 'test'
+  ...
+# Subtest: command arrays are isolated from the caller and every receiving area
+ok 51 - command arrays are isolated from the caller and every receiving area
+  ---
+  duration_ms: 1.869696
+  type: 'test'
+  ...
+# Subtest: snapshot mutation cannot change future module plans or capability delivery
+ok 52 - snapshot mutation cannot change future module plans or capability delivery
+  ---
+  duration_ms: 2.592015
+  type: 'test'
+  ...
+# Subtest: a future required 3D request reports the missing capability without unmounting current authoring
+ok 53 - a future required 3D request reports the missing capability without unmounting current authoring
+  ---
+  duration_ms: 1.609084
+  type: 'test'
+  ...
+# Subtest: optional missing or unsupported capabilities remain diagnostics and never imply Rust author compilation
+ok 54 - optional missing or unsupported capabilities remain diagnostics and never imply Rust author compilation
+  ---
+  duration_ms: 1.322231
+  type: 'test'
+  ...
+# Subtest: a disabled requested module is inactive while its independent sibling still supports author resources
+ok 55 - a disabled requested module is inactive while its independent sibling still supports author resources
+  ---
+  duration_ms: 1.088448
+  type: 'test'
+  ...
+# Subtest: malformed project profiles report a local diagnostic and preserve the already mounted editor
+ok 56 - malformed project profiles report a local diagnostic and preserve the already mounted editor
+  ---
+  duration_ms: 1.180649
+  type: 'test'
+  ...
+# Subtest: an explicitly null profile is invalid while an absent profile remains legacy, without rewriting author data
+ok 57 - an explicitly null profile is invalid while an absent profile remains legacy, without rewriting author data
+  ---
+  duration_ms: 1.954363
+  type: 'test'
+  ...
+# Subtest: a future profile schema preserves authored requests and assembled modules with a local invalid diagnostic
+ok 58 - a future profile schema preserves authored requests and assembled modules with a local invalid diagnostic
+  ---
+  duration_ms: 1.238316
+  type: 'test'
+  ...
+# Subtest: moving between additive profiles and a legacy project changes only plan diagnostics
+ok 59 - moving between additive profiles and a legacy project changes only plan diagnostics
+  ---
+  duration_ms: 1.334053
+  type: 'test'
+  ...
+# Subtest: refresh affects only the mounted media controller and does not remount any functional area
+ok 60 - refresh affects only the mounted media controller and does not remount any functional area
+  ---
+  duration_ms: 1.368006
+  type: 'test'
+  ...
+# Subtest: assembly and metadata refresh preserve injected source callbacks without invoking ordinary Save
+ok 61 - assembly and metadata refresh preserve injected source callbacks without invoking ordinary Save
+  ---
+  duration_ms: 2.062965
+  type: 'test'
+  ...
+# Subtest: settings fallback is used once and the explicit runtime settings remain authoritative
+ok 62 - settings fallback is used once and the explicit runtime settings remain authoritative
+  ---
+  duration_ms: 1.884934
+  type: 'test'
+  ...
+1..62
+# tests 62
+# suites 0
+# pass 62
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 214.541429

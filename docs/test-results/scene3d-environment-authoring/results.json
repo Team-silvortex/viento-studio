@@ -1,0 +1,131 @@
+{
+  "format": "viento-scene3d-environment-authoring-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T13:56:33.228681+00:00",
+  "ok": true,
+  "version": "0.0.10",
+  "publishedBase": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "delivery": "working-tree",
+  "feature": "Independent author camera, directional light and background review → guarded unsaved source apply → ordinary Save. Preview orbit/zoom remains independent.",
+  "counts": {
+    "application": {
+      "tests": 3256,
+      "pass": 3256,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "newApplicationTests": 75,
+    "rust": {
+      "total": 222,
+      "unit": 173,
+      "integration": 49,
+      "newUnit": 12
+    },
+    "syntaxFiles": 587,
+    "bridgeTests": 20,
+    "sharedCoreTests": 239,
+    "uiWithExisting3D": 121,
+    "newUI": 34,
+    "sourceHostAndSystem": 12,
+    "independentSourceQuality": 9,
+    "nativeWasmParityRequests": {
+      "core": 20,
+      "independent": 12
+    },
+    "actualBrowserFlows": {
+      "environment": 8,
+      "objects": 9,
+      "transforms": 7
+    },
+    "prepared": {
+      "total": 240,
+      "each": 120,
+      "inventory": {
+        "desktop/resources": 558,
+        "mobile/dist": 239,
+        "desktop/ui": 11
+      },
+      "modulesEach": 98
+    },
+    "frozenSource": 708,
+    "historicalReports": 3890,
+    "authorFiles": 41,
+    "externalTools": 4,
+    "atlas": {
+      "functions": 86,
+      "implementations": 198,
+      "bindings": 331,
+      "cells": 1324,
+      "evidence": 1265,
+      "dependencies": 224,
+      "workflows": 49
+    }
+  },
+  "authority": {
+    "nativeOperation": "scene3d.patchEnvironment",
+    "optionalAbiVersion": 1,
+    "module": "org.viento.scene3d-environment",
+    "capability": "scene.authoring.environment3d",
+    "declaredModules": 11,
+    "declaredCapabilities": 27,
+    "valuesOnly": true,
+    "fullFinalSceneAtomicValidation": true,
+    "privateBrands": 3,
+    "sourceFields": 5,
+    "readonlySourceFieldsUnchanged": 3,
+    "noImplicitSave": true
+  },
+  "proofs": {
+    "core": "core-results.json",
+    "sourceQuality": "source-quality-initial.json",
+    "review": "review.json",
+    "preservationBeforeCleanup": "preservation-audit-before-cleanup.json",
+    "browser": "browser-environment-confirmed/browser.json",
+    "web": "web-validation.json",
+    "application": "app-check.log",
+    "timing": "application-timing.json",
+    "syntax": "syntax-final.json",
+    "sourceManifest": "source-hashes-final.json",
+    "sourceFreeze": "source-freeze-final.json",
+    "prepared": "packaged-resources-final.json",
+    "cleanup": "cleanup.json"
+  },
+  "cleanup": {
+    "allocatedFileBytesRemoved": 5048123392,
+    "logicalBytesRemoved": 5893877634,
+    "allocatedGiBRemoved": 4.7014312744140625,
+    "exactOwnedGeneratedDirectories": [
+      "desktop/resources",
+      "desktop/ui/i18n",
+      "desktop/.cache",
+      "src-tauri/binaries",
+      "mobile/dist"
+    ],
+    "actualValidationPreparedReport": "packaged-resources-final.json",
+    "finalPreparedSha256": "3f1fba06787307a12ac5466f4a1882f9002b655789be947db10abe3e6c98ac8e",
+    "retainedSharedWasm": {
+      "bytes": 500608,
+      "sha256": "4e30e4be71ee3ecf3328aadcba675e2a996f8217d25ef377733bd296bdbc7e52"
+    },
+    "metadataNote": "Raw cleanup report retains the shared earlier object-template format label and first prepared evidence link. Its actual guard loads packaged-resources-final.json and source-hashes-final.json; first/final inventories and portable semantics are identical as application-timing.json verifies. This supplement binds final proofs without replacing the completed raw record."
+  },
+  "resolvedFindings": [
+    {
+      "issue": "Reply could satisfy final semantics by swapping camera property keys rather than only editing authorised leaf values.",
+      "fix": "New environment bridge keeps all property key tokens immutable alongside raw gaps, value-token and complete expected-model verification.",
+      "before": "receipt-key-swap-initial.json",
+      "after": "receipt-key-slot-final.json"
+    },
+    {
+      "issue": "Inline grid count blocked by existing style CSP.",
+      "fix": "New controller selects scoped external CSS classes; actual desktop and three-language narrow grid column checks and zero-CSP browser proof pass."
+    }
+  ],
+  "limits": [
+    "Overlapping targeted/app/prepared runs are not added as distinct test counts.",
+    "Chrome154 uses software SwiftShader; no new hardware GPU, installed app, Android device, release, physics, hierarchy, materials or execution acceptance.",
+    "Version, published HEAD and historical evidence remain unchanged. New feature remains unpublished."
+  ]
+}

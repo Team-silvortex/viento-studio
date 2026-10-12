@@ -1,0 +1,22 @@
+{
+  "format": "viento-scene3d-navigation-newline-initial",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-11T15:04:50.918Z",
+  "node": "v24.21.0",
+  "ok": false,
+  "expected": "Valid BOM+CRLF raw source remains byte-exact and locator selects matching LF-normalized textarea object.",
+  "actualLocated": false,
+  "rawAndDisplayedDiffer": true,
+  "rawSha256": "70953291192d0c4bbd9483610aa89a9dabc0faa8f7df338e40f2ec925e1c9d5d",
+  "displayedSha256": "b9be1d8a3b03a444966fdd439a6816dfc2e18b7b8098590d16ddedd9b48b96be",
+  "selection": [
+    0,
+    0
+  ],
+  "reviewedSources": {
+    "web/modules/app-runtime.js": "a81e4702a1ebeb83455015076c58729b273b35e39aef7539cb05679151ed9609",
+    "engine/scene3d-navigation.mjs": "1f08c68879fa7ef37f349b099d78a70ce9173553ac6983b2478df80a44cb1224"
+  },
+  "finding": "The initial host demands raw location.content equals normalized textarea.value; legitimate CRLF raw content returns false before cursor mapping.",
+  "scope": "Ordinary source/textarea newline fixture with actual runtime functions and actual native WASM parse; no product modification, browser, executable build, hostile delivery or Save operation."
+}

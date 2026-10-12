@@ -1,0 +1,277 @@
+{
+  "format": "viento-scene3d-framing-browser-independent-review",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-12T09:42:39.577051+00:00",
+  "ok": true,
+  "status": "passed-in-explicit-angle-software-environment",
+  "report": {
+    "file": "docs/test-results/scene3d-scene-framing/browser-verified/browser.json",
+    "sha256": "e7154e26094afd6deaf37432f7589b1777ee687ca7ec7accc4b81c143bcf162d",
+    "ok": true,
+    "status": "passed",
+    "steps": [
+      "Actual mouse click frames all three dispersed rotated boxes; every real Float32 uploaded box corner fits the clip volume. Source draft and saved bytes are unchanged.",
+      "Hidden selected objects and a zero-result filter still frame the complete loaded model. Filtering, selected UUID, inspector and highlighting remain unchanged.",
+      "Object focus, whole-scene focus, pointer orbit and author-camera reset cooperate. Reset restores the exact original GPU matrices; all-scene framing preserves the current heading.",
+      "An invalid edited source keeps native diagnostics and disables exact source location; whole-scene framing continues on the last valid model without saving or clearing that diagnostic.",
+      "A new unsaved model uses its complete new bounds. Chinese, English and Japanese at 390px preserve the entire framing action, source text and scrollable controls; all 24 corners fit each actual resized GPU viewport.",
+      "Closing disposes the view. Reopening reads the current unsaved draft and frames it; author files retain their original bytes throughout.",
+      "Injected WebGL unavailability disables only view controls, keeps verified declarations and does not change author files."
+    ],
+    "errors": [],
+    "geometryChecks": [
+      {
+        "label": "desktop",
+        "corners": 24,
+        "width": 801,
+        "height": 600
+      },
+      {
+        "label": "hidden-selected-filter",
+        "corners": 24,
+        "width": 801,
+        "height": 600
+      },
+      {
+        "label": "after-orbit",
+        "corners": 24,
+        "width": 801,
+        "height": 600
+      },
+      {
+        "label": "invalid-draft-last-valid",
+        "corners": 24,
+        "width": 801,
+        "height": 600
+      },
+      {
+        "label": "changed-unsaved-model",
+        "corners": 24,
+        "width": 801,
+        "height": 1604
+      },
+      {
+        "label": "zh-CN-390",
+        "corners": 24,
+        "width": 319,
+        "height": 640
+      },
+      {
+        "label": "en-390",
+        "corners": 24,
+        "width": 319,
+        "height": 640
+      },
+      {
+        "label": "ja-390",
+        "corners": 24,
+        "width": 319,
+        "height": 640
+      },
+      {
+        "label": "reopen-unsaved",
+        "corners": 24,
+        "width": 801,
+        "height": 1604
+      }
+    ],
+    "initializedModules": 17,
+    "capabilities": 33,
+    "browser": "Chrome/154.0.8037.97",
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "chromeArguments": [
+      "--headless=new",
+      "--no-sandbox",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--user-data-dir=/tmp/viento-scene3d-framing-browser-wvM3Vn/chrome",
+      "--remote-debugging-port=0",
+      "--window-size=1440,1080",
+      "about:blank"
+    ]
+  },
+  "blockingFindingsInReviewedEnvironment": [],
+  "personallyViewedScreenshots": [
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-verified/framing-desktop.png",
+      "sha256": "0c29614bb65697048da2a4663ee2fa79e9555810fa157b37f764dd8784087f3a",
+      "dimensions": [
+        1440,
+        937
+      ],
+      "personallyViewed": true,
+      "observation": "Three dispersed boxes and the selected outline are visible, with exact instance declarations and all five footer actions. This deliberately scrolled screenshot shows the viewport and footer; the header is above its visible area."
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-verified/framing-zh-CN-390.png",
+      "sha256": "e9cf0dc16e56ad2f855711b7761e201828039eabdba00e2564c92fc4576d966c",
+      "dimensions": [
+        390,
+        844
+      ],
+      "personallyViewed": true,
+      "observation": "Chinese heading, framing status and five wrapped actions are readable. Three boxes are visible in the tall viewport. The upper canvas is now uniform background without the earlier white rectangle/editor remnants."
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-verified/framing-en-390.png",
+      "sha256": "83fe36551bcd4e495cc1fc3e9c3a6a88e34a794ffeddfc0af7e317472dde0a6a",
+      "dimensions": [
+        390,
+        844
+      ],
+      "personallyViewed": true,
+      "observation": "English heading, status and five wrapped actions are readable without horizontal clipping. Three boxes are visible. No white rectangle or editor remnants are visible inside the canvas."
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-verified/framing-ja-390.png",
+      "sha256": "df774a53d2353b156583b335773bc8811917f5553c488bb2ac7fa15212da489e",
+      "dimensions": [
+        390,
+        844
+      ],
+      "personallyViewed": true,
+      "observation": "Japanese heading, status and five wrapped actions are readable. Three boxes are visible. The upper canvas has no earlier underlying editor text or blurred white rectangle."
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-verified/framing-no-webgl.png",
+      "sha256": "873b5eed32bfc68b13be8e018b8cbfc90746c0b6405204cbec1e08e62879ef8e",
+      "dimensions": [
+        1440,
+        937
+      ],
+      "personallyViewed": true,
+      "observation": "The empty viewport and explicit unavailable-WebGL fallback are visible alongside three source declarations. Reset and framing actions appear disabled, while refresh and source location remain available."
+    }
+  ],
+  "independentCompositingChecks": [
+    {
+      "file": "framing-zh-CN-390.png",
+      "sha256": "e9cf0dc16e56ad2f855711b7761e201828039eabdba00e2564c92fc4576d966c",
+      "samples": 286,
+      "tolerance": 3,
+      "mismatches": 0,
+      "independentDecoder": "Pillow"
+    },
+    {
+      "file": "framing-en-390.png",
+      "sha256": "83fe36551bcd4e495cc1fc3e9c3a6a88e34a794ffeddfc0af7e317472dde0a6a",
+      "samples": 260,
+      "tolerance": 3,
+      "mismatches": 0,
+      "independentDecoder": "Pillow"
+    },
+    {
+      "file": "framing-ja-390.png",
+      "sha256": "df774a53d2353b156583b335773bc8811917f5553c488bb2ac7fa15212da489e",
+      "samples": 208,
+      "tolerance": 3,
+      "mismatches": 0,
+      "independentDecoder": "Pillow"
+    }
+  ],
+  "sourceStable": {
+    "reportedDuringProof": true,
+    "independentlyMatchedCurrentReportSources": {
+      "scripts/tests/scene3d-framing-smoke.mjs": true,
+      "engine/scene3d.mjs": true,
+      "engine/studio-core.mjs": true,
+      "engine/studio-modules.mjs": true,
+      "web/modules/app-scene3d-preview.js": true,
+      "web/modules/scene3d-renderer.js": true,
+      "web/modules/scene3d-math.js": true,
+      "web/modules/app-studio-system.js": true,
+      "web/modules/app-runtime.js": true,
+      "web/scene3d.css": true,
+      "web/i18n/en.js": true,
+      "web/i18n/ja.js": true
+    },
+    "matchedSourceCount": 12,
+    "httpServedSourceCount": 11,
+    "httpServedSourcesEqualFrozenDisk": true,
+    "scene3dCssEqualsRoundStartingBytes": true
+  },
+  "inputMethod": "The smoke enters the editor and preview and invokes framing, selection, close and reopen with real CDP Input.dispatchMouseEvent events. Source text, language, scrolling and no-WebGL injection are controlled fixture setup; they are not asserted as mouse-only user workflows.",
+  "svgRequests": {
+    "tracked": false,
+    "count": null
+  },
+  "cspViolations": {
+    "tracked": false,
+    "count": null
+  },
+  "gpu": {
+    "hash": 1493892812,
+    "nonBackground": 19600,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0
+  },
+  "preservedEarlierEvidence": [
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-initial-interruption.json",
+      "sha256": "139ca825469a5c9aee1620ad7b69366d93b7473402aa4bcd6f521fadc30b4572"
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-review.json",
+      "sha256": "e1fcafbd5d4cdd0b1f695a463d4c45cec39651c8a1ae6249193f4a8c625b3475"
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-final/browser.json",
+      "sha256": "af5fa1dedf94d4e492e8922db54dbae37ec5d7f327d27a7dbca307902ee51e0a"
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-visual/browser.json",
+      "sha256": "afb2f18203daffe6534db6849992afbf5f0b8e0f2aeb8839c4fe9b52d33fe06f"
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/compositing-check.json",
+      "sha256": "c4daccb79daf6c8e1b7c4cbc8d3105fb10e4730550ea47421bccfe8865a3d0ab"
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/browser-angle/browser.json",
+      "sha256": "b88ca8198d59de6ee168168aa1691f51e279de103d5a776fba8b797a11292954"
+    },
+    {
+      "file": "docs/test-results/scene3d-scene-framing/compositing-angle.json",
+      "sha256": "cbe718b84ac7347cf40a9293e21ba2b2b3264b92b8484ddd34a20bb77506a9fd"
+    }
+  ],
+  "defaultFallbackLimitation": {
+    "status": "recorded-failure-still-valid",
+    "checks": [
+      {
+        "file": "framing-zh-CN-390.png",
+        "samples": 286,
+        "mismatches": 80
+      },
+      {
+        "file": "framing-en-390.png",
+        "samples": 260,
+        "mismatches": 93
+      },
+      {
+        "file": "framing-ja-390.png",
+        "samples": 208,
+        "mismatches": 143
+      }
+    ],
+    "conclusion": "Under the recorded default headless fallback, real readPixels and narrow final composed screenshots diverged. The unchanged product passed the explicit ANGLE flags in the verified run. The renderer string is identical, so the exact compositor/backend cause remains unproven. This is a test-environment limitation, not a claim of a universal product rendering fix."
+  },
+  "limitations": [
+    "Only the five browser-verified PNG files listed here were personally viewed in this final review. Earlier rejected screenshots and reports remain separate and unchanged.",
+    "The 754 probes sample visible canvas interior, excluding rounded borders and the sticky footer. They do not establish equality of every screenshot pixel or any hidden viewport area.",
+    "The browser fixture contains three boxes; the numerical independent review covers the wider scene boundaries separately. Framing an entire wide scene does not promise pixel visibility of each distant tiny object.",
+    "The unsupported-WebGL phase is an injected getContext(webgl2)=null control; this is not proof on a physical unsupported device.",
+    "No installed desktop, Android, hardware GPU, native build or complete application suite was run by this review. The 3811 application tests and 307 Rust tests from the earlier round are not claimed for this round.",
+    "This producer only reads reports, source bytes and PNGs and writes this new review JSON in the stage OUT; it does not alter products, old evidence, author files or the actual repository."
+  ]
+}

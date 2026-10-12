@@ -8,7 +8,7 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 
 ## 当前状态
 
-源码版本为 **0.0.10**。本版纳入双后端工程管理、九个独立 2D 创作入口、系统模块与模板需求装配，以及独立 3D 方块预览和 Godot 源工程导出，详见 [版本记录](docs/RELEASE_0.0.10.md)。本次交付源码，使用新功能需从源码启动或自行构建安装包；最近保留的 Linux 安装包验收仍为 0.0.4。
+源码版本为 **0.1.0**。本版补齐九个独立 3D 作者编辑入口，以及对象检索、原文定位、画布选择、选中反馈和全场景取景；继承双后端工程管理、2D 创作与模块装配，详见 [版本记录](docs/RELEASE_0.1.0.md)。本次交付源码，使用新功能需从源码启动或自行构建安装包；最近保留的 Linux 安装包验收仍为 0.0.4。
 
 当前已有：
 
@@ -22,7 +22,7 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 - 计划检查、Godot 构建、[GDScript 行为绑定](docs/SCENE_BEHAVIORS.md)、无头测试、独立窗口、诊断和任务取消；[可信执行中间层](docs/BACKEND_MIDDLEWARE.md)复用冻结计划与工具校验。
 - Godot／Bevy [有限控制回放](docs/RUNTIME_CONTROL.md)：全局或按实例独立方向输入、固定步骤采样和冻结运行对象观察。
 - 可检查和迁移的[后端派生工程](docs/BACKEND_PROJECTS.md)，独立[模块装配与模板需求](docs/STUDIO_MODULES.md)。
-- [独立 3D 首切片](docs/SCENE3D.md)：严格场景文本、只读 WebGL2 方块预览、相机与方向光，以及可检查的 Godot 源工程导出。
+- [3D 场景创作与预览](docs/SCENE3D.md)：严格场景文本、九类独立作者编辑、只读 WebGL2 导航与整景取景，以及可检查的 Godot 源工程导出。
 - 显式工具身份检查、[验收用例](docs/RUNTIME_CASES.md)的保存与稳定身份迁移、[有序验收组](docs/RUNTIME_CASE_SUITES.md)，以及当前批次[成员详情与 JSON 导出](docs/RUNTIME_CASE_REPORTS.md)。
 
 各平台的接入和实测范围见 [能力矩阵](docs/STATUS.md#平台接入)。Godot 产物需要 Godot 工具；Bevy 无头产物需要单独构建的可信运行程序，不编译工程中的 Rust 文本，也不提供图片或窗口渲染。原生 Nuis 执行、嵌入运行视口、GPU 计算及独立游戏程序导出仍在路线内。

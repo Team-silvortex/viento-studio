@@ -1,0 +1,174 @@
+{
+  "format": "viento-scene3d-translation-independent-preservation",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-12T03:34:46.913618+00:00",
+  "ok": true,
+  "openFindings": [],
+  "finalSourceFreeze": {
+    "manifest": "source-hashes-confirmed.json",
+    "manifestSha256": "ecb3120c155f511b4473eded81cb705f88a387be3a291e338eaec3a84c66dd32",
+    "files": 737,
+    "allMatch": true,
+    "changed": []
+  },
+  "preserved": {
+    "historical": {
+      "files": 4522,
+      "changed": [],
+      "baselineSha256": "ac91dcf50695b616d7c916e5295375620012f248b7b7411e9ea69f0c641152c3",
+      "allByteShaMatch": true
+    },
+    "authors": {
+      "files": 41,
+      "changed": [],
+      "baselineSha256": "b45c9d125a69b2d1561249995f6d4c07609a9b772fb8e16b43843342342924e8",
+      "allByteShaMatch": true
+    },
+    "externalTools": {
+      "files": 4,
+      "changed": [],
+      "baselineSha256": "d5a726203f89370dedbd863840746fca9e95093ca39c2c8ced2b88a93715d24a",
+      "byteShaSizeDevInoAndNlinkMatch": true,
+      "actual": {
+        "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.1.0-8c4dab4afa35": {
+          "sha256": "8c4dab4afa35115e710b0b68a3c9535971d2271d5c01976881dc4f9d6b3377e3",
+          "bytes": 11170328,
+          "dev": 66306,
+          "ino": 4457017,
+          "nlink": 1
+        },
+        "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.2.0-69cb452d306e": {
+          "sha256": "69cb452d306e7d96fbc1fe02007826615bd9d5eca3a7daf1a9e4c545a4134eaf",
+          "bytes": 11246856,
+          "dev": 66306,
+          "ino": 4457019,
+          "nlink": 1
+        },
+        "/home/chiharukiryu/.cache/io.viento.studio/toolchains/bevy/0.19.1/linux-x86_64/viento-bevy-runtime-0.3.0-0f15d7ad897a": {
+          "sha256": "0f15d7ad897a5b4dbc58574cec14eb81284e5c0ba75634bd86232a8de2c1781f",
+          "bytes": 11363224,
+          "dev": 66306,
+          "ino": 4457027,
+          "nlink": 1
+        },
+        "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64": {
+          "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+          "bytes": 146414384,
+          "dev": 66306,
+          "ino": 4460413,
+          "nlink": 1
+        }
+      }
+    },
+    "previousCore": {
+      "baselineSha256": "9380fa69668ab01d6cb10cd510f610f02e04102920fea5bbd583026604a1087d",
+      "allByteShaSizeMatch": true,
+      "files": {
+        "engine/studio-core.wasm": "previous-studio-core.wasm",
+        "engine/studio-core.build.json": "previous-studio-core.build.json"
+      }
+    },
+    "atlas": {
+      "path": "docs/function-atlas.json",
+      "sha256": "ecb057c8cc7eacaf7093eaef9211dc5b7019f5f686c6f72bc02df1ccb5fd9d89",
+      "baselineSha256": "ecb057c8cc7eacaf7093eaef9211dc5b7019f5f686c6f72bc02df1ccb5fd9d89",
+      "oldPrefixDeepExact": {
+        "axes.architecture": true,
+        "axes.function": true,
+        "axes.implementation": true,
+        "axes.maturity": true,
+        "bindings": true,
+        "cells": true,
+        "evidence": true,
+        "dependencies": true,
+        "workflows": true,
+        "legacyCoverage": true,
+        "priorities": true
+      },
+      "oldScoresCoordinatesReasonsAndMetaHistoryExact": true,
+      "counts": {
+        "functions": 90,
+        "implementations": 211,
+        "bindings": 345,
+        "cells": 1380,
+        "dependencies": 235,
+        "workflows": 53,
+        "evidence": 1382,
+        "sourceSnapshot": 1248
+      },
+      "allSourceSnapshotHashesMatch": null,
+      "phase": "Before root closing reports and final derived views; old full ordered prefixes checked now, final snapshot reviewed after cleanup."
+    }
+  },
+  "sourceDelta": {
+    "previous": 727,
+    "current": 737,
+    "added": [
+      "crates/viento-studio-core/src/scene3d_translation_patch.rs",
+      "engine/scene3d-translation.mjs",
+      "scripts/tests/scene3d-translation-smoke.mjs",
+      "scripts/tests/scene3d-translation-source-host.test.mjs",
+      "scripts/tests/scene3d-translation-system-ports.test.mjs",
+      "scripts/tests/scene3d-translation-ui.test.mjs",
+      "scripts/tests/scene3d-translation.test.mjs",
+      "scripts/tests/studio-core-scene3d-translation.test.mjs",
+      "web/modules/app-scene3d-translation.js",
+      "web/scene3d-translation.css"
+    ],
+    "changed": [
+      "crates/viento-studio-core/src/lib.rs",
+      "engine/README.md",
+      "engine/index.mjs",
+      "engine/studio-core.build.json",
+      "engine/studio-core.mjs",
+      "engine/studio-core.wasm",
+      "engine/studio-modules.mjs",
+      "scripts/tests/scene3d-environment-smoke.mjs",
+      "scripts/tests/scene3d-environment-system-ports.test.mjs",
+      "scripts/tests/scene3d-navigation-smoke.mjs",
+      "scripts/tests/scene3d-objects-smoke.mjs",
+      "scripts/tests/scene3d-picking-smoke.mjs",
+      "scripts/tests/scene3d-properties-smoke.mjs",
+      "scripts/tests/scene3d-property-system-ports.test.mjs",
+      "scripts/tests/scene3d-selection-smoke.mjs",
+      "scripts/tests/scene3d-transform-smoke.mjs",
+      "scripts/tests/studio-modules.test.mjs",
+      "scripts/tests/studio-system-smoke.mjs",
+      "scripts/tests/studio-system-ui.test.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-runtime.js",
+      "web/modules/app-studio-system.js"
+    ],
+    "removed": [],
+    "protectedFiles": 51,
+    "protectedUnchanged": true
+  },
+  "generatedDirectories": {
+    "initial": "generated-paths-initial.json",
+    "current": {
+      "desktop/resources": {
+        "exists": true,
+        "isSymlink": false
+      },
+      "desktop/ui/i18n": {
+        "exists": true,
+        "isSymlink": false
+      },
+      "desktop/.cache": {
+        "exists": true,
+        "isSymlink": false
+      },
+      "src-tauri/binaries": {
+        "exists": true,
+        "isSymlink": false
+      },
+      "mobile/dist": {
+        "exists": true,
+        "isSymlink": false
+      }
+    },
+    "note": "Recorded before root-only cleanup; reviewer did not delete or adopt generated directories."
+  },
+  "scope": "Fresh read-only final product/history/author/tool/previous-core preservation and ordered atlas-prefix check. Current new core retained separately from the predecessor proof."
+}

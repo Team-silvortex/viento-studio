@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: transform authoring module mounts with preview explicitly disabled and no backend or World capability
+ok 1 - transform authoring module mounts with preview explicitly disabled and no backend or World capability
+  ---
+  duration_ms: 4.103116
+  type: 'test'
+  ...
+# Subtest: missing or disabled authoring port leaves readonly preview and all legacy modules available
+ok 2 - missing or disabled authoring port leaves readonly preview and all legacy modules available
+  ---
+  duration_ms: 2.764422
+  type: 'test'
+  ...
+# Subtest: separate readonly and authoring callbacks are captured before settings await and controllers never escape
+ok 3 - separate readonly and authoring callbacks are captured before settings await and controllers never escape
+  ---
+  duration_ms: 1.247541
+  type: 'test'
+  ...
+# Subtest: authoring capability request reports its optional port availability and does not imply save or execution access
+not ok 4 - authoring capability request reports its optional port availability and does not imply save or execution access
+  ---
+  duration_ms: 2.253085
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-transform-system-ports.test.mjs:43:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'inactive'
+    - 'unavailable'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'unavailable'
+  actual: 'inactive'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-transform-system-ports.test.mjs:48:12)
+    async Test.run (node:internal/test_runner/test:1404:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 3
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 60.244863

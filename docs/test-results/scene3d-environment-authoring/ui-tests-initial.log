@@ -1,0 +1,62 @@
+✔ the independent entry requires an existing JSON editing source and explains an unavailable optional core (61.925559ms)
+✔ opening displays raw author declarations with every change group initially unselected (39.876563ms)
+✔ an empty selection cannot call the proposal or draft ports (29.345039ms)
+✔ only explicitly selected background values enter the proposal and review excludes object declarations (56.454383ms)
+✔ camera position and target selections send independent complete XYZ vectors without implicit camera fields (88.9649ms)
+✔ camera clipping is atomic so near can safely move past its old far when both change together (59.684924ms)
+✔ independent light selections send only chosen direction, raw color and energy including zero (79.614945ms)
+✔ fields silently modified while unselected are never included in explicit environment values (51.991067ms)
+✔ empty, nonfinite or out-of-range selected numeric input is retained without authorizing application (334.292232ms)
+✔ invalid hexadecimal colors are retained as raw text and never approve (122.527258ms)
+✔ combined invalid camera and lighting declarations are rejected without changing the source (173.330604ms)
+✔ explicitly selecting existing values reports a no-op and cannot authorize Apply (42.128179ms)
+✔ ordinary checkbox and value edits revoke approval while preserving the new input (75.130307ms)
+✔ silent checkbox, selected number, color or unselected input changes cannot replay review (261.813799ms)
+✔ all three languages preserve selection, raw numbers, raw colors and approved complete source (99.188777ms)
+✖ translated captions and numeric accessibility labels do not leave untranslated environment labels (34.461402ms)
+✔ declining cancellation retains local inputs and approval; accepting discards only the form (80.177278ms)
+✔ Escape cancellation honors discard choice and ignores repeat or composition keys (75.078828ms)
+✔ same-path token changes retain raw input but invalidate the source approval (60.880427ms)
+✔ changing path or leaving an eligible source closes the local form without writing (169.918666ms)
+✔ closing a pending read prevents late source completion or focus from reopening the form (24.876933ms)
+✔ an older source read cannot overwrite a newer opened session (48.973528ms)
+✔ late read failures after close are quiet and malformed source snapshots cannot create a session (92.670397ms)
+✔ malformed candidate identity, input values or complete source is rejected before approval (314.076214ms)
+✔ a successful exact receipt advances source token, applies only memory and returns focus once (66.080829ms)
+✔ path, content, owner token or unconfirmed successful-looking receipts cannot close the form (402.152079ms)
+✔ pending application locks all fields but cancellation immediately revokes the injected source guard (67.908431ms)
+✔ silent pending checkbox, color or number changes invalidate both apply guard and late receipt (201.01544ms)
+✔ an older apply response cannot clear a new pending source read (96.259907ms)
+✔ duplicate apply requests issue one call and failed application retains the local author intent (91.613714ms)
+✔ capability loss affects only this independent form and never grants Save, rendering or sibling authority (59.254295ms)
+✔ cancel restores focus and disposal is idempotent during a late source read (32.825241ms)
+✔ mixed background, camera clipping and light changes use real portable native WASM and preserve the proposal brand (114.104433ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 32
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3695.513178
+
+✖ failing tests:
+
+test at scripts/tests/scene3d-environment-ui.test.mjs:157:1
+✖ translated captions and numeric accessibility labels do not leave untranslated environment labels (34.461402ms)
+  AssertionError [ERR_ASSERTION]: X
+  + actual - expected
+  
+  + 'undefined'
+  - 'string'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-environment-ui.test.mjs:162:48)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'string',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

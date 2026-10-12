@@ -1,0 +1,112 @@
+✔ framing is detached frozen view data preserving heading FOV and all author inputs (1.718365ms)
+✔ eight independently transformed corners fit extreme size position rotation FOV and narrow or wide aspect (8.167511ms)
+✔ rotating a nonuniform box never changes its enclosing sphere framing distance (0.268416ms)
+✔ framing permits a view farther than 200000 and below author minimum near while repairing short author clipping (0.352616ms)
+✔ missing degenerate or unbounded view inputs fail without changing caller data (0.188246ms)
+✔ literal CSS client coordinates hit the box and leave blank border outside and invalid coordinates empty (2.460025ms)
+✔ nearest visible surface wins independent of declaration order and occludes farther boxes (0.633747ms)
+✔ exactly equal surface depth uses later declaration matching existing LEQUAL drawing (0.885542ms)
+✔ mixed XYZ rotated nonuniform boxes are intersected as actual transformed boxes rather than their enclosing AABB (0.44991ms)
+✔ near and far clipped objects behind or outside the camera produce no visible surface (0.356493ms)
+✔ when the near plane is inside a box only the real positive exit face is visible (0.309805ms)
+✔ a clipped entry face cannot occlude a valid foreground exit or another real visible surface (0.202934ms)
+✔ legal extreme Float32 clip ratio with an infinite far unprojection still picks finite geometry (0.176864ms)
+✔ actual rounded drawing allocation aspect controls projection separately from CSS or author viewport (0.257867ms)
+✔ focused temporary cameras and far-coordinate floating origins pick both minimum and maximum rotated boxes (4.874273ms)
+✔ translated camera and objects preserve hits while stable IDs do not depend on their source numeric index (1.216587ms)
+✔ matrix payloads and all caller frame objects remain unchanged after successful or missing hits (0.271322ms)
+✔ missing empty malformed singular and nonfinite drawing frames fail closed (0.322289ms)
+✔ matrix composition keeps column-major identity and translated scaled box positions (1.302379ms)
+✔ mixed-axis Euler XYZ matches Godot Rx*(Ry*Rz) analytical columns (0.183988ms)
+✔ lookAt puts the camera at origin and its target along negative Z (0.19566ms)
+✔ perspective uses WebGL clipping and source near/far values (0.178357ms)
+✔ orbit is detached, preserves target and clamps polar and distance singularities (0.71506ms)
+✔ hex conversion preserves authored case and color channels (0.13772ms)
+✔ subnormal accepted directional light normalizes to a finite unit vector (2.030283ms)
+✔ unsupported WebGL2 returns no renderer and does not allocate fake geometry (0.13276ms)
+✔ actual renderer draws each box with source matrices, light and camera uniforms (0.470809ms)
+✔ drawing buffer bounds DPR and dimension allocations on initial render and resize (0.400886ms)
+✔ pointer orbit and wheel zoom never mutate the supplied model; view reset restores source camera (0.744185ms)
+✔ unrelated pointer and right click cannot change the view (0.230865ms)
+✔ dispose releases every shader/program/VAO/buffer, observer and interaction listener exactly once (0.258107ms)
+✔ shader compile failure still releases the partially allocated program and shader (0.385888ms)
+✔ link failure releases both shaders without leaving geometry or listeners (0.161154ms)
+✔ buffer allocation failure releases the VAO and all compilation resources (0.159862ms)
+✔ unexpected context loss is reported and stops further draw calls (0.312621ms)
+✔ focusObject fits actual GPU corners using rotated box current heading and actual canvas aspect without author edits (0.825609ms)
+✔ focus handles minimum and maximum object extents at distant coordinates and extreme viewport FOV through actual float32 matrices (4.167118ms)
+✔ view-local floating origin makes translated large-coordinate scenes upload identical geometry light and view matrices (0.616594ms)
+✔ focused very long or very short views retain smooth first wheel distance and safe clipping rather than author orbit limits (0.549227ms)
+✔ focus after resize uses current drawing dimensions including DPR limit and not author viewport (0.325354ms)
+✔ invalid missing and disposed focus requests are false no-ops and never allocate or draw (0.206199ms)
+✔ lost context cannot change focus target heading clipping or draw count (0.170862ms)
+✔ focus reset and model refresh stop the old pointer drag and return author camera without retaining focused range (0.379096ms)
+✔ hitTest uses last actual viewport uniforms without rendering changing view or mutating the scene (1.549896ms)
+✔ sub-threshold jitter is one primary tap and never rotates the camera before selection (0.427497ms)
+✔ drag exceeding four CSS pixels and returning to start never becomes tap or double click (0.474656ms)
+✔ blank clicks wrong buttons and nonprimary starts cannot select or qualify focus (0.284417ms)
+✔ a second pointer revokes both active primary tap and previously approved double click eligibility (0.305076ms)
+✔ normal pointerup capture release preserves genuine double click eligibility while renderer never focuses itself (0.385237ms)
+✔ synthetic standalone mismatched expired repeated or nonleft double clicks never forge focus (0.607968ms)
+✔ unexpected capture loss and pointercancel clear active gestures and recent tap eligibility (0.853091ms)
+✔ wheel resize refresh reset focus and replacement render invalidate the old double click frame (1.052928ms)
+✖ stale CSS rectangle DPR or backing allocation refuses hitTest until a matching new draw (1.057176ms)
+✖ late disposed or contextlost hit requests and gestures do not callback or change camera (0.34944ms)
+✔ callback reentrancy cannot keep stale double click eligibility across model refresh or disposal (0.361092ms)
+✔ without a consumer or when a view callback throws the adapter keeps rendering and releasing normally (0.548766ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 54
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 92.260006
+
+✖ failing tests:
+
+test at scripts/tests/scene3d-renderer.test.mjs:262:1
+✖ stale CSS rectangle DPR or backing allocation refuses hitTest until a matching new draw (1.057176ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '00000000-0000-4000-8000-000000000001'
+  - null
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-renderer.test.mjs:266:27)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '00000000-0000-4000-8000-000000000001',
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-renderer.test.mjs:270:1
+✖ late disposed or contextlost hit requests and gestures do not callback or change camera (0.34944ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '00000000-0000-4000-8000-000000000001'
+  - null
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-renderer.test.mjs:272:38)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '00000000-0000-4000-8000-000000000001',
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

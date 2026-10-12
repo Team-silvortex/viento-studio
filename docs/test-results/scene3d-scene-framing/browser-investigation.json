@@ -1,0 +1,80 @@
+{
+  "scope": "Diagnostic chronology; only browser-verified is final acceptance. Earlier script passes did not include screenshot pixel assertions. Raw outputs are retained.",
+  "attempts": [
+    {
+      "directory": "browser-final",
+      "stepsPassed": 7,
+      "scriptStatus": "passed",
+      "scriptSha256": "9fa4a312831794baeb8b201aedcbfa4ed7841cae5fbc58220eaaca1183b61d70",
+      "styleSha256": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf"
+    },
+    {
+      "directory": "browser-visual",
+      "stepsPassed": 7,
+      "scriptStatus": "passed",
+      "scriptSha256": "be7859547cee8e9d374dad227474d41b365fbf9bda42277de0e980c6e703b780",
+      "styleSha256": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf"
+    },
+    {
+      "directory": "browser-contain",
+      "stepsPassed": 7,
+      "scriptStatus": "passed",
+      "scriptSha256": "4b4b5081d5098178c8ec51ae45fe982013a5d735c33578222d9c1d91477e13bc",
+      "styleSha256": "1bf5a0ea3235b32f4534471b5373456b37e2b97259458b2e39b24d98d4f71dc7"
+    },
+    {
+      "directory": "browser-compositor",
+      "stepsPassed": 7,
+      "scriptStatus": "passed",
+      "scriptSha256": "9e280563315fac967db9d87f95d395fc2a97145d60cbb229ff0549f44b00eec9",
+      "styleSha256": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf"
+    },
+    {
+      "directory": "browser-layer",
+      "stepsPassed": 7,
+      "scriptStatus": "passed",
+      "scriptSha256": "9e280563315fac967db9d87f95d395fc2a97145d60cbb229ff0549f44b00eec9",
+      "styleSha256": "449b5365dd1fe9754627922bd036201da86a6f2fc84c923be6754a376d6705b8"
+    },
+    {
+      "directory": "browser-redraw",
+      "stepsPassed": 4,
+      "scriptStatus": "failed",
+      "scriptSha256": "0c5c812e9d1220b441c6135328babf66b6929770a82124bcc59f9772a5fd29ee",
+      "styleSha256": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf"
+    },
+    {
+      "directory": "browser-redraw-fixed",
+      "stepsPassed": 7,
+      "scriptStatus": "passed",
+      "scriptSha256": "76292698ac227ed7d0ddff3be586ee8fb2ea3ac6b3e44675f7a63845096e508b",
+      "styleSha256": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf"
+    },
+    {
+      "directory": "browser-dialog",
+      "stepsPassed": 7,
+      "scriptStatus": "passed",
+      "scriptSha256": "9e280563315fac967db9d87f95d395fc2a97145d60cbb229ff0549f44b00eec9",
+      "styleSha256": "8250c3d02b213291c5dcb4bc2467b6805b5657591876b90e220a95284777e5d2"
+    },
+    {
+      "directory": "browser-angle",
+      "stepsPassed": 7,
+      "scriptStatus": "passed",
+      "scriptSha256": "983937e79df8531a7e8b32406063ff9f170b94b9368871db7ad651df9aa0764f",
+      "styleSha256": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf"
+    },
+    {
+      "directory": "browser-verified",
+      "stepsPassed": 7,
+      "scriptStatus": "passed",
+      "scriptSha256": "a0de2e124e535abae22f60d8e1ca97ce1c5ed8b89679d49a35455568503473b0",
+      "styleSha256": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf"
+    }
+  ],
+  "currentProductStyleUnchanged": true,
+  "automaticPath": "Waited frames, 500ms delay, two screenshot modes, container/GL/dialog isolation and redraw did not resolve the observed default-headless compositor mismatch. These were diagnostic experiments, not product fixes.",
+  "explicitPath": "Explicit --use-gl=angle --use-angle=swiftshader with the original product style yielded zero mismatch. The renderer string is identical, so the underlying driver/compositor cause remains unestablished.",
+  "finalBrowser": "browser-verified has 7 flows, 5 screenshots, 11 served byte identities and 754 decoded screenshot pixel comparisons.",
+  "testSyntaxCorrection": "browser-redraw failed before pixel capture from a test-only expression wrapper syntax error; browser-redraw-fixed preserves the corrected diagnostic run."
+}

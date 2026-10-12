@@ -1,0 +1,124 @@
+ M crates/viento-studio-core/src/lib.rs
+ M crates/viento-studio-core/src/scene3d.rs
+ M docs/ARCHITECTURE.md
+ M docs/FUNCTION_ATLAS.md
+ M docs/ROADMAP.md
+ M docs/SCENE3D.md
+ M docs/STATUS.md
+ M docs/STUDIO_MODULES.md
+ M docs/function-atlas.html
+ M docs/function-atlas.json
+ M docs/function-atlas.mmd
+ M engine/README.md
+ M engine/index.mjs
+ M engine/studio-core.mjs
+ M engine/studio-modules.mjs
+ M scripts/tests/studio-modules.test.mjs
+ M scripts/tests/studio-system-smoke.mjs
+ M scripts/tests/studio-system-ui.test.mjs
+ M web/i18n/en.js
+ M web/i18n/ja.js
+ M web/modules/app-runtime.js
+ M web/modules/app-studio-system.js
+?? crates/viento-studio-core/src/scene3d_patch.rs
+?? docs/test-results/scene3d-transform-authoring/app-check.log
+?? docs/test-results/scene3d-transform-authoring/atlas-baseline.json
+?? docs/test-results/scene3d-transform-authoring/atlas-check.log
+?? docs/test-results/scene3d-transform-authoring/atlas-preservation-review.json
+?? docs/test-results/scene3d-transform-authoring/atlas-refresh.log
+?? docs/test-results/scene3d-transform-authoring/author-baseline.json
+?? docs/test-results/scene3d-transform-authoring/baseline.json
+?? docs/test-results/scene3d-transform-authoring/browser-final.log
+?? docs/test-results/scene3d-transform-authoring/browser-final/browser.json
+?? docs/test-results/scene3d-transform-authoring/browser-final/transform-desktop-review.png
+?? docs/test-results/scene3d-transform-authoring/browser-final/transform-en-390.png
+?? docs/test-results/scene3d-transform-authoring/browser-final/transform-ja-390.png
+?? docs/test-results/scene3d-transform-authoring/browser-final/transform-save-conflict.png
+?? docs/test-results/scene3d-transform-authoring/browser-final/transform-without-webgl.png
+?? docs/test-results/scene3d-transform-authoring/browser-final/transform-zh-CN-390.png
+?? docs/test-results/scene3d-transform-authoring/browser-initial.log
+?? docs/test-results/scene3d-transform-authoring/browser-initial/browser.json
+?? docs/test-results/scene3d-transform-authoring/browser-initial/failure.png
+?? docs/test-results/scene3d-transform-authoring/browser-initial/transform-desktop-review.png
+?? docs/test-results/scene3d-transform-authoring/browser-initial/transform-en-390.png
+?? docs/test-results/scene3d-transform-authoring/browser-initial/transform-ja-390.png
+?? docs/test-results/scene3d-transform-authoring/browser-initial/transform-zh-CN-390.png
+?? docs/test-results/scene3d-transform-authoring/browser-second.log
+?? docs/test-results/scene3d-transform-authoring/browser-second/browser.json
+?? docs/test-results/scene3d-transform-authoring/browser-second/failure.png
+?? docs/test-results/scene3d-transform-authoring/browser-second/transform-desktop-review.png
+?? docs/test-results/scene3d-transform-authoring/browser-second/transform-en-390.png
+?? docs/test-results/scene3d-transform-authoring/browser-second/transform-ja-390.png
+?? docs/test-results/scene3d-transform-authoring/browser-second/transform-zh-CN-390.png
+?? docs/test-results/scene3d-transform-authoring/cleanup-owned.py
+?? docs/test-results/scene3d-transform-authoring/cleanup.json
+?? docs/test-results/scene3d-transform-authoring/cleanup.log
+?? docs/test-results/scene3d-transform-authoring/core-bridge-tests.log
+?? docs/test-results/scene3d-transform-authoring/core-clippy.log
+?? docs/test-results/scene3d-transform-authoring/core-document-review.json
+?? docs/test-results/scene3d-transform-authoring/core-fmt-check.log
+?? docs/test-results/scene3d-transform-authoring/core-native-test-second.log
+?? docs/test-results/scene3d-transform-authoring/core-native-test.log
+?? docs/test-results/scene3d-transform-authoring/core-regression-final.log
+?? docs/test-results/scene3d-transform-authoring/core-results.json
+?? docs/test-results/scene3d-transform-authoring/core-wasm-build-second.log
+?? docs/test-results/scene3d-transform-authoring/core-wasm-build.log
+?? docs/test-results/scene3d-transform-authoring/desktop-prepare-final.log
+?? docs/test-results/scene3d-transform-authoring/desktop-prepare-third.log
+?? docs/test-results/scene3d-transform-authoring/desktop-prepare.log
+?? docs/test-results/scene3d-transform-authoring/final-audit.json
+?? docs/test-results/scene3d-transform-authoring/final-boundary-review-confirmed.log
+?? docs/test-results/scene3d-transform-authoring/final-boundary-review.log
+?? docs/test-results/scene3d-transform-authoring/final-boundary-review.py
+?? docs/test-results/scene3d-transform-authoring/fixed-node.json
+?? docs/test-results/scene3d-transform-authoring/generated-paths-initial.json
+?? docs/test-results/scene3d-transform-authoring/git-status-initial.txt
+?? docs/test-results/scene3d-transform-authoring/historical-baseline.json
+?? docs/test-results/scene3d-transform-authoring/mobile-prepare.log
+?? docs/test-results/scene3d-transform-authoring/native-helpers.json
+?? docs/test-results/scene3d-transform-authoring/native-tools-build-second.log
+?? docs/test-results/scene3d-transform-authoring/native-tools-build.log
+?? docs/test-results/scene3d-transform-authoring/node-prepare.log
+?? docs/test-results/scene3d-transform-authoring/packaged-resources.json
+?? docs/test-results/scene3d-transform-authoring/portable-host-final.log
+?? docs/test-results/scene3d-transform-authoring/portable-host-initial.log
+?? docs/test-results/scene3d-transform-authoring/prepare-node.mjs
+?? docs/test-results/scene3d-transform-authoring/prepared-check-second.log
+?? docs/test-results/scene3d-transform-authoring/prepared-check.log
+?? docs/test-results/scene3d-transform-authoring/prepared-check.mjs
+?? docs/test-results/scene3d-transform-authoring/preservation-audit-before-cleanup.json
+?? docs/test-results/scene3d-transform-authoring/previous-source-hashes.json
+?? docs/test-results/scene3d-transform-authoring/protected-source-baseline.json
+?? docs/test-results/scene3d-transform-authoring/results.json
+?? docs/test-results/scene3d-transform-authoring/review.json
+?? docs/test-results/scene3d-transform-authoring/run-application-checks.sh
+?? docs/test-results/scene3d-transform-authoring/seam-review-initial.json
+?? docs/test-results/scene3d-transform-authoring/source-baseline.json
+?? docs/test-results/scene3d-transform-authoring/source-boundary-final.json
+?? docs/test-results/scene3d-transform-authoring/source-boundary-final.log
+?? docs/test-results/scene3d-transform-authoring/source-boundary-initial.json
+?? docs/test-results/scene3d-transform-authoring/source-boundary-initial.log
+?? docs/test-results/scene3d-transform-authoring/source-boundary-probe.mjs
+?? docs/test-results/scene3d-transform-authoring/source-delta.json
+?? docs/test-results/scene3d-transform-authoring/source-hashes.json
+?? docs/test-results/scene3d-transform-authoring/system-ports-final.log
+?? docs/test-results/scene3d-transform-authoring/system-ports.log
+?? docs/test-results/scene3d-transform-authoring/tool-baseline.json
+?? docs/test-results/scene3d-transform-authoring/ui-boundary-final.json
+?? docs/test-results/scene3d-transform-authoring/ui-boundary-final.log
+?? docs/test-results/scene3d-transform-authoring/ui-boundary-initial.log
+?? docs/test-results/scene3d-transform-authoring/ui-boundary-probe.mjs
+?? docs/test-results/scene3d-transform-authoring/ui-boundary-second.json
+?? docs/test-results/scene3d-transform-authoring/ui-boundary-second.log
+?? docs/test-results/scene3d-transform-authoring/ui-tests-final.log
+?? docs/test-results/scene3d-transform-authoring/ui-tests-initial.log
+?? docs/test-results/scene3d-transform-authoring/web-validation.json
+?? engine/scene3d-transform.mjs
+?? scripts/tests/scene3d-transform-smoke.mjs
+?? scripts/tests/scene3d-transform-source-host.test.mjs
+?? scripts/tests/scene3d-transform-system-ports.test.mjs
+?? scripts/tests/scene3d-transform.test.mjs
+?? scripts/tests/scene3d-transforms-ui.test.mjs
+?? scripts/tests/studio-core-scene3d-patch.test.mjs
+?? web/modules/app-scene3d-transforms.js
+?? web/scene3d-transforms.css

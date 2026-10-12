@@ -1,0 +1,43 @@
+✔ focusAll frames all objects while preserving source model current orbit heading FOV and selection (6.207739ms)
+✔ actual Float32 matrices enclose 128 remote objects for minimum and maximum FOV and drawing aspects (45.23056ms)
+✔ far-coordinate millimetre scene keeps floating-origin GPU transforms finite and contained (2.666051ms)
+✔ fresh focusAll uses rounded drawing-buffer aspect after resize rather than author viewport or CSS ratio (0.927465ms)
+✔ first wheel after huge or tiny whole-scene focus follows relative focused range and resets to author limits (0.830369ms)
+✔ focused scene zoom bounds stay relative to its fitted distance while preserving selected identity (0.566695ms)
+✔ setModel and resetView restore authored camera and clear fitted range without changing old source data (0.593766ms)
+✔ focusAll success clears an old pointer drag and old qualified double-click tap (1.211168ms)
+✔ lost-context missing-model and disposed full-scene requests remain camera draw and selection no-ops (0.458728ms)
+✖ one malformed object empty inventory invalid pole or numeric overflow atomically refuses without skipping objects (2.365076ms)
+✔ failed drawing rolls camera and focused range back and invalidates picking instead of exposing partially drawn matrices (0.965838ms)
+✔ a failing full-scene attempt clears pending drag and qualified tap even though its camera is unchanged (0.493966ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 11
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 70.676732
+
+✖ failing tests:
+
+test at scripts/tests/scene3d-scene-framing-renderer.test.mjs:64:1
+✖ one malformed object empty inventory invalid pole or numeric overflow atomically refuses without skipping objects (2.365076ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///tmp/viento-scene3d-framing-xmbbbvr9/project/scripts/tests/scene3d-scene-framing-renderer.test.mjs:65:569)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

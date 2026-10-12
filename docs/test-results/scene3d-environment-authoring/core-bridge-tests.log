@@ -1,0 +1,138 @@
+✔ environment capability is independently optional and requires old parse probe version one (23.491601ms)
+✔ new environment operation is isolated from old parsing transform objects 2D geometry and composition domains (2.870989ms)
+✔ atomic mixed background camera and light leaf changes follow canonical path order and exact source edits (12.939181ms)
+✖ partial vectors retain unchanged axes and all objects byte-for-byte including BOM CRLF escaped keys and exponents (7.161547ms)
+✔ semantic no-op preserves exponent negative zero escaped colors and entire raw content without poisoning (1.031514ms)
+✔ near-only may fail while near and far together are validated atomically against the final camera (2.711236ms)
+✔ position and target can both move when the intermediate old target would make the camera invalid (2.802559ms)
+✔ complete native cross-field camera and light constraints reject zero vertical and invalid plane candidates (4.023362ms)
+✔ native final parsing handles original numeric boundaries subnormal light and clipped camera together (5.633913ms)
+✔ strict nested DTO rejects empty null extra fields getters serializers hidden attributes and sparse nonfinite vectors (0.809754ms)
+✖ raw JSON duplicate decoded keys are rejected before native Value hides top values camera and light fields (0.504586ms)
+✔ invalid original full scene cannot be repaired and decoded source duplicates keep existing parse errors (0.384468ms)
+✔ whole original and final UTF8 budget allows exact no-op and shrink but rejects growth atomically (30.925544ms)
+✔ receipt envelope exact fields before source canonical paths budget and no-op all bind the request (35.810568ms)
+✔ success cannot alter an unrequested complete object viewport name or environment semantic value (16.903891ms)
+✔ success cannot normalize unchanged numeric string key or whitespace lexemes even when full semantics stay equal (22.026436ms)
+✔ stateless environment edits leave prior geometry history object edits and transform semantics unchanged (5.932408ms)
+✔ fresh native JSON CLI and real WASM agree on 20 environment lexical atomic invalid budget and old-domain requests (55.995546ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 16
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 313.844563
+
+✖ failing tests:
+
+test at scripts/tests/studio-core-scene3d-environment.test.mjs:127:1
+✖ partial vectors retain unchanged axes and all objects byte-for-byte including BOM CRLF escaped keys and exponents (7.161547ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /-2\.00e0/. Input:
+  
+  '﻿{\r\n' +
+    '\t"format": "viento-scene3d",\r\n' +
+    '\t"schemaVersion": 1,\r\n' +
+    '\t"name": "Environment / 環境 / 原文🦊",\r\n' +
+    '\t"viewport": [\r\n' +
+    '\t\t800,\r\n' +
+    '\t\t600\r\n' +
+    '\t],\r\n' +
+    '\t"backgrou\\u006ed": "#aabbcc",\r\n' +
+    '\t"camera": {\r\n' +
+    '\t\t"posi\\u0074ion": [\r\n' +
+    '\t\t\t9,\r\n' +
+    '\t\t\t6,\r\n' +
+    '\t\t\t8\r\n' +
+    '\t\t],\r\n' +
+    '\t\t"target": [\r\n' +
+    '\t\t\t0,\r\n' +
+    '\t\t\t0,\r\n' +
+    '\t\t\t0\r\n' +
+    '\t\t],\r\n' +
+    '\t\t"fovDegrees": 60,\r\n' +
+    '\t\t"near": 0.05,\r\n' +
+    '\t\t"far": 2000\r\n' +
+    '\t},\r\n' +
+    '\t"light": {\r\n' +
+    '\t\t"direction": [\r\n' +
+    '\t\t\t-1,\r\n' +
+    '\t\t\t-3,\r\n' +
+    '\t\t\t-1\r\n' +
+    '\t\t],\r\n' +
+    '\t\t"color": "#fedcba",\r\n' +
+    '\t\t"energy": 1.00e0\r\n' +
+    '\t},\r\n' +
+    '\t"objects": [\r\n' +
+    '\t\t{\r\n' +
+    '\t\t\t"instanceId": "00000001-1111-4111-8111-111111111111",\r\n' +
+    '\t\t\t"name": "Original \\"objects\\" \\\\ 🦊",\r\n' +
+    '\t\t\t"primitive": "box",\r\n' +
+    '\t\t\t"posi\\u0074ion": [\r\n' +
+    '\t\t\t\t-2,\r\n' +
+    '\t\t\t\t1.5,\r\n' +
+    '\t\t\t\t0\r\n' +
+    '\t\t\t],\r\n' +
+    '\t\t\t"rotationDegrees": [\r\n' +
+    '\t\t\t\t0,\r\n' +
+    '\t\t\t\t25,\r\n' +
+    '\t\t\t\t0\r\n' +
+    '\t\t\t],\r\n' +
+    '\t\t\t"size": [\r\n' +
+    '\t\t\t\t1.5,\r\n' +
+    '\t\t\t\t3,\r\n' +
+    '\t\t\t\t1.5\r\n' +
+    '\t\t\t],\r\n' +
+    '\t\t\t"color": "#87d8b9"\r\n' +
+    '\t\t},\r\n' +
+    '\t\t{\r\n' +
+    '\t\t\t"instanceId": "00000002-1111-4111-8111-111111111111",\r\n' +
+    '\t\t\t"name": "Other",\r\n' +
+    '\t\t\t"primitive": "box",\r\n' +
+    '\t\t\t"posi\\u0074ion": [\r\n' +
+    '\t\t\t\t100,\r\n' +
+    '\t\t\t\t20,\r\n' +
+    '\t\t\t\t30\r\n' +
+    '\t\t\t],\r\n' +
+    '\t\t\t"rotationDegrees": [\r\n' +
+    '\t\t\t\t15,\r\n' +
+    '\t\t\t\t20,\r\n' +
+    '\t\t\t\t30\r\n' +
+    '\t\t\t],\r\n' +
+    '\t\t\t"size": [\r\n' +
+    '\t\t\t\t1,\r\n' +
+    '\t\t\t\t2,\r\n' +
+    '\t\t\t\t3\r\n' +
+    '\t\t\t],\r\n' +
+    '\t\t\t"color": "#FFFFFF"\r\n' +
+    '\t\t}\r\n' +
+    '\t]\r\n' +
+    '}\r\n' +
+    ' \t'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/studio-core-scene3d-environment.test.mjs:131:94)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '﻿{\r\n\t"format": "viento-scene3d",\r\n\t"schemaVersion": 1,\r\n\t"name": "Environment / 環境 / 原文🦊",\r\n\t"viewport": [\r\n\t\t800,\r\n\t\t600\r\n\t],\r\n\t"backgrou\\u006ed": "#aabbcc",\r\n\t"camera": {\r\n\t\t"posi\\u0074ion": [\r\n\t\t\t9,\r\n\t\t\t6,\r\n\t\t\t8\r\n\t\t],\r\n\t\t"target": [\r\n\t\t\t0,\r\n\t\t\t0,\r\n\t\t\t0\r\n\t\t],\r\n\t\t"fovDegrees": 60,\r\n\t\t"near": 0.05,\r\n\t\t"far": 2000\r\n\t},\r\n\t"light": {\r\n\t\t"direction": [\r\n\t\t\t-1,\r\n\t\t\t-3,\r\n\t\t\t-1\r\n\t\t],\r\n\t\t"color": "#fedcba",\r\n\t\t"energy": 1.00e0\r\n\t},\r\n\t"objects": [\r\n\t\t{\r\n\t\t\t"instanceId": "00000001-1111-4111-8111-111111111111",\r\n\t\t\t"name": "Original \\"objects\\" \\\\ 🦊",\r\n\t\t\t"primitive": "box",\r\n\t\t\t"posi\\u0074ion": [\r\n\t\t\t\t-2,\r\n\t\t\t\t1.5,\r\n\t\t\t\t0\r\n\t\t\t],\r\n\t\t\t"rotationDegrees": [\r\n\t\t\t\t0,\r\n\t\t\t\t25,\r\n\t\t\t\t0\r\n\t\t\t],\r\n\t\t\t"size": [\r\n\t\t\t\t1.5,\r\n\t\t\t\t3,\r\n\t\t\t\t1.5\r\n\t\t\t],\r\n\t\t\t"color": "#87d8b9"\r\n\t\t},\r\n\t\t{\r\n\t\t\t"instanceId": "00000002-1111-4111-8111-111111111111",\r\n\t\t\t"name": "Other",\r\n\t\t\t"primitive": "box",\r\n\t\t\t"posi\\u0074ion": [\r\n\t\t\t\t100,\r\n\t\t\t\t20,\r\n\t\t\t\t30\r\n\t\t\t],\r\n\t\t\t"rotationDegrees": [\r\n\t\t\t\t15,\r\n\t\t\t\t20,\r\n\t\t\t\t30\r\n\t\t\t],\r\n\t\t\t"size": [\r\n\t\t\t\t1,\r\n\t\t\t\t2,\r\n\t\t\t\t3\r\n\t\t\t],\r\n\t\t\t"color": "#FFFFFF"\r\n\t\t}\r\n\t]\r\n}\r\n \t',
+    expected: /-2\.00e0/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at scripts/tests/studio-core-scene3d-environment.test.mjs:184:1
+✖ raw JSON duplicate decoded keys are rejected before native Value hides top values camera and light fields (0.504586ms)
+  TypeError: Cannot read properties of undefined (reading 'errorCode')
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/studio-core-scene3d-environment.test.mjs:185:124)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)

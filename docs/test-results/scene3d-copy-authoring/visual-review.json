@@ -1,0 +1,66 @@
+{
+  "format": "viento-scene3d-copy-web-visual-review",
+  "schemaVersion": 1,
+  "ok": true,
+  "scope": "isolated-stage-source-only",
+  "actualApply": false,
+  "actualCheckoutApplied": false,
+  "observedAt": "2026-10-12T07:15:12.763124+00:00",
+  "openFindings": [],
+  "finalSourceFreeze": {
+    "manifest": "source-hashes-final.json",
+    "manifestSha256": "67f7a900b02f93488e45bac8f65de563ffd2f16a54705dffc0a2fc2dcf3f3229",
+    "files": 767,
+    "currentMatches": true,
+    "scope": "Isolated staged source only. No application to the actual repository is performed by this report."
+  },
+  "browser": {
+    "path": "browser-copy/browser.json",
+    "sha256": "e405b3ac87745e47a2bb2a8ae9466ac6c5b70a129648443ed882de44e603f118"
+  },
+  "personallyViewedScreenshotCount": 6,
+  "producedScreenshotCount": 6,
+  "screenshots": [
+    {
+      "file": "browser-copy/copy-desktop-review.png",
+      "sha256": "a44ef04d2c7ee36fdbacf2959a1fd065fb1b927bc268d5e2744b3f67e90fc41e",
+      "personallyViewed": true
+    },
+    {
+      "file": "browser-copy/copy-zh-CN-390.png",
+      "sha256": "bece0e73108502aacd1fded88ebd4696e4f940928cdbfc295b980e6ad00d1e73",
+      "personallyViewed": true
+    },
+    {
+      "file": "browser-copy/copy-en-390.png",
+      "sha256": "59687fea202c28cc9a5cd090d99886ebd7a7db2e6a16ea4531fc4f192ee1acfb",
+      "personallyViewed": true
+    },
+    {
+      "file": "browser-copy/copy-ja-390.png",
+      "sha256": "0cc4616694fb9e4f9871b4b6bec598422f601f22f37fdff9212fb12757c6f384",
+      "personallyViewed": true
+    },
+    {
+      "file": "browser-copy/copy-save-conflict.png",
+      "sha256": "e39cf3d98f554f505b218f31ec5598c5e3f877b01c89926ab5a4978c924dd070",
+      "personallyViewed": true
+    },
+    {
+      "file": "browser-copy/copy-without-webgl.png",
+      "sha256": "f73c7a21746fcc9419f93f119f67661911c2daab2d73249c784838d24c44c5b9",
+      "personallyViewed": true
+    }
+  ],
+  "observations": [
+    "Desktop review visibly presents selected/hidden-source counts, the capacity distinction, original-to-new UUID mappings and zero XYZ offsets. Literal author names with line breaks and Unicode are shown as text. The screenshot is scrolled into the form; complete before/after declarations and full source below the visible region are verified by browser assertions, not claimed to have been visually inspected in full.",
+    "Chinese, English and Japanese 390px screenshots are readable with wrapping labels and identities, without horizontal overflow. Sticky Check/Apply/Cancel controls remain visible; the form and review content remain scrollable. Actual width, responsive column count, approved Apply state and footer bounds are asserted separately.",
+    "Japanese title and return-control text wrap naturally at 390px. English and Japanese action rows wrap within the dialog rather than extending beyond it.",
+    "The ordinary Save conflict screenshot shows the existing editor conflict dialog with Cancel and distinct resolution choices. The actual workflow verifies that Cancel preserves external bytes and the unsaved reviewed draft.",
+    "The WebGL-unavailable screenshot still presents a selected source, mapped new identity, capacity and copy review controls. Native source review and application authority remain independent of drawing; control availability is established by actual assertions rather than dark button colors."
+  ],
+  "limits": [
+    "Personal visual inspection covers the six listed visible image regions. Complete candidate source, all mapping entries and data preservation are asserted by the browser, not a visual reading of the entire scrolled source.",
+    "Rendering is real headless Chrome/SwiftShader software WebGL, not installed-app, Android/device, hardware-GPU or pixel-perfect acceptance. Actual project checkout and real author data are not modified."
+  ]
+}

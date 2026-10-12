@@ -1,0 +1,154 @@
+{
+  "format": "viento-scene3d-picking-renderer-results",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-11T16:07:10.550001+00:00",
+  "ok": true,
+  "scope": "Read-only geometric canvas picking and renderer gesture ownership; no author/source/schema/native/backend mutation. Real browser/GPU-pixel and packaged execution proof are reported separately by the parent.",
+  "runtime": {
+    "version": "v24.20.0",
+    "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7",
+    "bytes": 126458664,
+    "path": "src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu"
+  },
+  "sources": {
+    "web/modules/scene3d-picking.js": {
+      "sha256": "22c77588f14c2eb40fb1d85ccc98ed4079ca3c7a52b2cea426a8983c1372c2e2",
+      "bytes": 4688
+    },
+    "web/modules/scene3d-renderer.js": {
+      "sha256": "bc0d5005bc03fa4fb38c477fcaa19f54e369107b6329a56ff727740310a46a1c",
+      "bytes": 13891
+    },
+    "scripts/tests/scene3d-picking.test.mjs": {
+      "sha256": "17c6c79ff4d27165788e81b0d7f0fdae763c11e24606811ccade8d9912f4b3a2",
+      "bytes": 8104
+    },
+    "scripts/tests/scene3d-renderer.test.mjs": {
+      "sha256": "007901b8ae4ba20357f5ca67c989e967a5a6fa67efbd9de34d3b7ff91d6a7785",
+      "bytes": 28375
+    }
+  },
+  "unchangedMath": {
+    "path": "web/modules/scene3d-math.js",
+    "sha256": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+    "bytes": 4501
+  },
+  "sharedCorePreserved": {
+    "engine/studio-core.wasm": {
+      "expected": {
+        "sha256": "0e6f4cd70f28d7b00b1c50e3e5f7e52d1b680a55a377eda1a1d160a4e908879a",
+        "bytes": 515406
+      },
+      "actual": {
+        "sha256": "0e6f4cd70f28d7b00b1c50e3e5f7e52d1b680a55a377eda1a1d160a4e908879a",
+        "bytes": 515406
+      },
+      "unchanged": true
+    },
+    "engine/studio-core.build.json": {
+      "expected": {
+        "sha256": "e598b6aeb18467c7cabd95870a07e4f139ccf0f751dd348a2ed59a739e3bca3c",
+        "bytes": 2713
+      },
+      "actual": {
+        "sha256": "e598b6aeb18467c7cabd95870a07e4f139ccf0f751dd348a2ed59a739e3bca3c",
+        "bytes": 2713
+      },
+      "unchanged": true
+    }
+  },
+  "tests": {
+    "passed": 58,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 155.399045,
+    "files": [
+      {
+        "path": "scripts/tests/scene3d-math-navigation.test.mjs",
+        "passed": 5,
+        "previousAssertionsPreserved": true
+      },
+      {
+        "path": "scripts/tests/scene3d-picking.test.mjs",
+        "passed": 13,
+        "new": true
+      },
+      {
+        "path": "scripts/tests/scene3d-renderer.test.mjs",
+        "passed": 40,
+        "previousTestsPreserved": 25,
+        "newTests": 15
+      }
+    ],
+    "log": "renderer-tests-final.log",
+    "logSha256": "141f30a7a5434b1353e555d4673eeb5608e83d3f3a5ff6c0a85c479478870960"
+  },
+  "earlierEvidence": [
+    {
+      "log": "renderer-tests-initial.log",
+      "passed": 43,
+      "failed": 0,
+      "note": "Earlier bounded implementation state; not final source proof."
+    },
+    {
+      "log": "renderer-tests-fixture-initial.log",
+      "passed": 54,
+      "failed": 2,
+      "note": "Fixture-only mutable DPR/contextLost options were copied instead of retained; corrected without weakening their assertions."
+    },
+    {
+      "log": "renderer-tests-before-scroll-fix.log",
+      "passed": 56,
+      "failed": 0,
+      "note": "Passed before the independently discovered position-only scrolling gap. Preserved verbatim."
+    },
+    {
+      "log": "renderer-picking-scroll-focused.log",
+      "passed": 53,
+      "failed": 0,
+      "note": "Final renderer/picker subset; final 58-case execution additionally includes the five existing navigation math tests."
+    }
+  ],
+  "contract": {
+    "pureExport": "pickScene3DObject(frame, clientX, clientY) -> string|null",
+    "frame": {
+      "rect": [
+        "left",
+        "top",
+        "width",
+        "height"
+      ],
+      "width": "rounded drawing allocation integer",
+      "height": "rounded drawing allocation integer",
+      "viewProjection": "actual Float32 uniform payload, 16 values",
+      "objects": "source-ordered [{instanceId, model:<actual Float32 model uniform,16 values>}]"
+    },
+    "renderer": "hitTest(clientX,clientY) -> UUID|null; onPick(UUID, Object.freeze({focus:boolean}))",
+    "surfaceSelection": "Inverse near(-1)/middle(0) ray; transformed unit-box entry/exit real surfaces; homogeneous clip; minimum projected depth, later declaration wins exact equal depth matching existing LEQUAL.",
+    "ownership": "Renderer emits selection or focus hint only. UI owns selection approval and calls existing focusObject; renderer does not focus or change author source during hitTest/callback.",
+    "gestures": "Primary left single-pointer. Maximum displacement greater than 4 CSS px starts orbit and permanently removes tap eligibility for that gesture. Secondary pointer, cancel, unexpected lost capture, wheel, resize, model/reset/focus/context loss/dispose invalidate pending view gestures.",
+    "normalCaptureLoss": "Expected pointerup-driven release/lostpointercapture preserves qualified recent tap, including the native double-click sequence; active unexpected loss cancels.",
+    "framePosition": "Current CSS left/top are used with the same drawn Float32 matrices after ordinary scrolling without redraw. Changed CSS size or drawing allocation needs a fresh frame. Position changes during an active gesture or between approved tap and dblclick cancel that gesture.",
+    "invalid": "Missing/contextlost/disposed/unrendered/invalid matrix or coordinates return null and do not forward a callback."
+  },
+  "independentQuality": {
+    "path": "quality-confirmed.json",
+    "sha256": "e6b546b4787bbc287298d9c939939722028636eb5391fb316576562a7845ffcd",
+    "passed": 12,
+    "failed": 0,
+    "counts": {
+      "triangleReferenceSamples": 1144,
+      "float32UploadedSamples": 63,
+      "clipSurfaceCases": 5,
+      "gestureScenarios": 25
+    },
+    "sourceShaMatches": true
+  },
+  "limitations": [
+    "CPU geometric selection from actual Float32 upload coefficients; no claim of GPU raster edge, anti-aliasing or quantized depth-buffer bit parity.",
+    "WebGL fixtures observe actual renderer uniform payloads and lifecycle calls; browser pixel/device execution requires the separate parent/UI proof.",
+    "No source-writing authority or native scene validation is introduced by this view-only frame DTO."
+  ],
+  "findings": []
+}

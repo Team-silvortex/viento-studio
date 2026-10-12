@@ -37,6 +37,19 @@ test('injected 3D ports mount an independent eighth module with only their read-
   assert.equal(mount.ports.getContext, getContext); assert.equal(mount.ports.getSource, getSource); assert.deepEqual(Object.keys(mount.ports).sort(), ['getContext', 'getSource']); assert.equal(Object.isFrozen(mount.ports), true);
   assert.equal(copy(system.snapshot()).initializedModules.at(-1), 'org.viento.scene3d');
 });
+test('optional readonly source navigation mounts without authoring ports and is captured before settings await', async () => {
+  let release;
+  const h = systemFixture({ settings: new Promise(resolve => { release = resolve; }) });
+  const locateSource = () => 'selection only', getSource = () => 'readonly';
+  const ports = { scene3d: { getSource, locateSource } }, pending = h.setup({ ports });
+  ports.scene3d.locateSource = () => 'replacement'; release(); const system = await pending;
+  const mount = h.mounts.find(item => item.name === 'scene3d');
+  assert.equal(mount.ports.locateSource, locateSource); assert.equal(mount.ports.getSource, getSource);
+  assert.equal(Object.isFrozen(mount.ports), true); assert.deepEqual(Object.keys(mount.ports).sort(), ['getSource', 'locateSource']);
+  assert.equal(Object.hasOwn(mount.ports, 'applyDraft'), false);
+  assert.equal(copy(system.snapshot()).initializedModules.length, 8);
+  assert.equal(JSON.stringify(copy(system.snapshot())).includes('selection only'), false);
+});
 test('scene3d feature false disables only the optional new view and no renderer is mounted', async () => {
   const h = systemFixture(), system = await h.setup({ features: { scene3d: false }, ports: { scene3d: { getContext() {} } } });
   assert.equal(h.mounts.some(item => item.name === 'scene3d'), false); assert.equal(copy(system.snapshot()).initializedModules.length, 7);
@@ -82,5 +95,5 @@ test('creation, block editing, nonJSON, busy or disabled author mode cannot supp
 test('the runtime read-only 3D source functions have no composition, World, HTTP or Save calls', () => {
   const source = runtimeSource.slice(runtimeSource.indexOf('function scene3DSourceContext()'), runtimeSource.indexOf('\nasync function applySceneCompositionOverrideDraft'));
   assert.doesNotMatch(source, /fetch\s*\(|\.request\s*\(|applyScene|prepareScene|saveEdit|setBusy\s*\(/);
-  assert.match(runtimeSource, /scene3d:\s*\{ getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot \}/);
+  assert.match(runtimeSource, /scene3d:\s*\{ getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot, locateSource: locateScene3DSource \}/);
 });

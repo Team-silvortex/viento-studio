@@ -1,0 +1,201 @@
+{
+  "format": "viento-scene3d-full-scene-independent-review",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-12T09:11:55.555Z",
+  "node": "v24.21.0",
+  "ok": true,
+  "passed": 12,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "all rotated declarations contribute to independent eight-corner bounds in source order, including one and 128 objects",
+      "ok": true,
+      "scope": "independent-double-corner-oracle"
+    },
+    {
+      "name": "full-scene cameras contain every independent corner at extreme author coordinates, FOV and actual narrow/wide aspect",
+      "ok": true,
+      "scope": "independent-double-corner-oracle"
+    },
+    {
+      "name": "actual renderer uploads a contained Float32 projection for every source object and retains selection without mutating native model",
+      "ok": true,
+      "scope": "actual-renderer-with-recording-GL-fixture-no-GPU-acceptance"
+    },
+    {
+      "name": "focused full scenes retain smooth first wheel scaling beyond old orbit clamps and reset restores the author camera",
+      "ok": true,
+      "scope": "actual-renderer-event-fixture"
+    },
+    {
+      "name": "lost disposed or uninitialized full-scene requests are false camera/selection no-ops and consume no extra draw",
+      "ok": true,
+      "scope": "actual-renderer-event-fixture"
+    },
+    {
+      "name": "attempted drawing failure restores camera and selection, invalidates picking and reports the existing drawing-error path",
+      "ok": true,
+      "scope": "actual-renderer-injected-drawing-error"
+    },
+    {
+      "name": "full-scene framing ignores filtered and no-match lists, retaining stable selected UUID and exact source without additional source reads",
+      "ok": true,
+      "scope": "actual-preview-controller-native-parse-and-recording-renderer"
+    },
+    {
+      "name": "changed invalid author draft retains the last complete valid model for framing while original-location permission stays disabled",
+      "ok": true,
+      "scope": "actual-preview-controller-native-parse-and-recording-renderer"
+    },
+    {
+      "name": "busy ineligible unsupported or released source owners cannot invoke full-scene framing through forced button events",
+      "ok": true,
+      "scope": "actual-preview-controller-native-parse-and-recording-renderer"
+    },
+    {
+      "name": "a true drawing exception is reported and disables full-scene navigation without replacing its diagnostic with ordinary framing rejection",
+      "ok": true,
+      "scope": "actual-preview-controller-native-parse-and-recording-renderer"
+    },
+    {
+      "name": "a legacy renderer without focusAll leaves original navigation and native object declarations usable",
+      "ok": true,
+      "scope": "actual-preview-controller-native-parse-and-recording-renderer"
+    },
+    {
+      "name": "no-WebGL preview still supports native declarations and query without granting the new view control or any writer",
+      "ok": true,
+      "scope": "actual-preview-controller-native-parse-and-recording-renderer"
+    }
+  ],
+  "counts": {
+    "cornerContainmentScenarios": 60,
+    "uploadedFloat32Scenarios": 24,
+    "cornersChecked": 16080,
+    "controllerCases": 6
+  },
+  "reviewSources": {
+    "web/modules/scene3d-math.js": "29713754fc70e9e06327f0b48d2dd369effa3f245b857068cc932ed1e9345d05",
+    "web/modules/scene3d-renderer.js": "7794fbca35cee644be22fedcd0184fd0cc8d6189e278670e66462d889fc53d5c",
+    "web/modules/app-scene3d-preview.js": "5971ef0bb03d91c93020fb6eb185d600e8450bd7cd697dc532741651dc2f8691",
+    "web/i18n/en.js": "50bb3af721bd4428275dcf7c74cdcba8a99afc092931b2700ff7420c02bdb4fa",
+    "web/i18n/ja.js": "c2a353a6a131d6973e37133d971d116a582241139652c247e654967dcba3a28b"
+  },
+  "reviewSourcesAfter": {
+    "web/modules/scene3d-math.js": "29713754fc70e9e06327f0b48d2dd369effa3f245b857068cc932ed1e9345d05",
+    "web/modules/scene3d-renderer.js": "7794fbca35cee644be22fedcd0184fd0cc8d6189e278670e66462d889fc53d5c",
+    "web/modules/app-scene3d-preview.js": "5971ef0bb03d91c93020fb6eb185d600e8450bd7cd697dc532741651dc2f8691",
+    "web/i18n/en.js": "50bb3af721bd4428275dcf7c74cdcba8a99afc092931b2700ff7420c02bdb4fa",
+    "web/i18n/ja.js": "c2a353a6a131d6973e37133d971d116a582241139652c247e654967dcba3a28b"
+  },
+  "protectedSourceFiles": 99,
+  "protectedSources": {
+    "crates/viento-bevy-runtime/Cargo.lock": "020a9107ef3963bff994b8519f8cdc40e794bc6f8a4a05f6822c2f000328fce1",
+    "crates/viento-bevy-runtime/Cargo.toml": "83963741707ad7e02848116a79e33e89ae25db33036b8c45dab0b9d2544a1578",
+    "crates/viento-bevy-runtime/src/main.rs": "1e3d6950563a26e64ab625c341e8809dcdb67b19af13db01059e03e4760b6417",
+    "crates/viento-bevy-runtime/tests/cli.rs": "bf4b6c7599e7bd2174855cfddc75f8c2c2c233539c2ff0e4d42960c52275dd99",
+    "crates/viento-studio-core/Cargo.lock": "1e20cad8bf8ad24bd85a25432fa739f1357894b7e6d87a5ec6ec1f0de6436396",
+    "crates/viento-studio-core/Cargo.toml": "c6678822a9daa9f9292dd0153ac881292f5784f836333e43bfb55a72539a6095",
+    "crates/viento-studio-core/src/layout_draft.rs": "dfb72651a8787fed4410eb3e24dd4c82741fee3c18aca315530e304c436cb9aa",
+    "crates/viento-studio-core/src/layout_save.rs": "8ebbc7c48366381c527031e1a12e35f13fc89f156c3d7162499489f1d5a0156c",
+    "crates/viento-studio-core/src/lib.rs": "59ede67d00f3abc10431a156d9f8a94e6f0b93cf68f4c7f187fa55e661f503a8",
+    "crates/viento-studio-core/src/main.rs": "f83f78f6d29d557f30d110e4da08ed756d0ef1d58258103d7b53f35544268178",
+    "crates/viento-studio-core/src/scene3d.rs": "d17178daad94bd5e9f98951565d8cf5a479c46948e2836b088d9515827559a79",
+    "crates/viento-studio-core/src/scene3d_alignment_patch.rs": "8ffd4c71fe9f5d213003c142a31b17d87248676583b51addff71899b1e104863",
+    "crates/viento-studio-core/src/scene3d_copy_patch.rs": "feec560aac8c150e1f7c2f41e096cc421bf714b52e90e71e08c673d73d894705",
+    "crates/viento-studio-core/src/scene3d_distribution_patch.rs": "e8fcc42bc5c5a96ea3a4afc20b3cc8f6820013fb565f5f9ee52e164f165912d4",
+    "crates/viento-studio-core/src/scene3d_environment_patch.rs": "3341db2263792c6a9db8030e13d5300d196541675e26630cfde8a6ad5cc1d265",
+    "crates/viento-studio-core/src/scene3d_objects_patch.rs": "e3a38afc5b6370e35a52845762461c748fff02627867492f92df4431883f8eb4",
+    "crates/viento-studio-core/src/scene3d_patch.rs": "31f6d0278e0bcaa203efcc1da80725fe8ae601ae0a2eb3dedf3bc7a14dc09465",
+    "crates/viento-studio-core/src/scene3d_properties_patch.rs": "bad11b0d71a45d9b06468908ddccab1b49611608ac2cec555448b58d048d9aca",
+    "crates/viento-studio-core/src/scene3d_removal_patch.rs": "c6b67a5be9c973841b0c1d35a6bc64e90baba2a08db656199bef1f0764c7c2c6",
+    "crates/viento-studio-core/src/scene3d_translation_patch.rs": "4c794b6c41b03ce99b15bedd471c1e5b197faac6288a126079b9990f97c8254c",
+    "crates/viento-studio-core/src/scene_composition.rs": "1ca6bcf535886103af8ee2111b808c2ec974362ceeab8fe5924f55ef16a9dfab",
+    "crates/viento-studio-core/src/scene_composition_definition_rename.rs": "2b4cad0dc8502a31d7c7d40b22758b6daa5c6835a1cc5671521cacd8be6aad4c",
+    "crates/viento-studio-core/src/scene_composition_definitions_patch.rs": "29c84ddd6eb6779e0477351abf42dc5f5dcaf8a1a1ea2daaf67f8f7411aa81de",
+    "crates/viento-studio-core/src/scene_composition_fragment_patch.rs": "fe7421ca1ba86992a018042169d5bc0f5a652c72d2f9e4ac802b1bcf766eeeb1",
+    "crates/viento-studio-core/src/scene_composition_groups_patch.rs": "c6fd8690fc2a0c5b59ba984a18a3e10d7aa00f9c60393dac94b9768e945e19d2",
+    "crates/viento-studio-core/src/scene_composition_patch.rs": "be5702bae8133271c1703a134966549df906949577c87bab78e926e05db46162",
+    "crates/viento-studio-core/src/scene_composition_placement_patch.rs": "4717c99c5bcf8cd0f957de16e17702d84e06b53cbdde2d3a9e8fa4eb434183d2",
+    "crates/viento-studio-core/src/scene_composition_placements_patch.rs": "b287796d5c8a57657ad89c1524b9de9961943650fcd45e044ea8a35e87097152",
+    "crates/viento-studio-core/src/scene_composition_structure_patch.rs": "538b7b2ef74624453a6986d3f6064e604d379c8892eb5a71304a6b07d7b91fb0",
+    "crates/viento-studio-core/src/scene_layout.rs": "b7bc1be799e29192c2035d6539f41f7f54024ff8f626c26c2355bf5fd610d987",
+    "crates/viento-studio-core/src/scene_source.rs": "51eb8792dbc777a157e73c0cbfcba4724a5c843ed6ccbde77ca22998c0f7bb96",
+    "crates/viento-studio-core/src/wasm.rs": "30eff24e802dff307f655de3dbf4fad4a75974769025df2e713f66108f1cf0b6",
+    "crates/viento-studio-core/tests/cli.rs": "c0d41788917d27bfbf5e7cca74bb4128e4eddf72fae25675eb21094361d06b55",
+    "crates/viento-studio-core/tests/draft.rs": "1d4444ba9c36e235e5b769f51134d4fd8e010f14b445940fc6c3f4ef20067e17",
+    "crates/viento-studio-core/tests/fragment_inheritance.rs": "59d75cb075c068a39c79e1c12668de323ed4aca5481a23a1d58f4ac7e6c3bd04",
+    "crates/viento-studio-core/tests/layout.rs": "b8a5be8c8bedd619375134ec365f3e294c77a3332e97a4b23d1ab1cbe3740dd4",
+    "crates/viento-studio-core/tests/placement_offset.rs": "a55f710f5d0dd7006af2a9b63e51c6b96520cbfaf7e3d9f35fd305fbf27746fa",
+    "crates/viento-studio-core/tests/save.rs": "ec2aa2bb5958b709c33954f1d0f9b4a6a7a5fa4b47ba0f7c9803a12082ff8e72",
+    "engine/scene3d-alignment.mjs": "5b36f7377554e83337e892ef72839556df2d5a40e2dc9b2cdea1731709a5844d",
+    "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+    "engine/scene3d-copy.mjs": "1d3d4595d0fd212383f4d3ba05e89f97ffaac4e82ec3c9816900a1e01c5b5156",
+    "engine/scene3d-distribution.mjs": "b9b618779a834615149357411e3f737fce42da006d9c4cc1f5c1faf4c9ebe7c7",
+    "engine/scene3d-environment.mjs": "5045caf7f73038b5fe30f672c01348430caff1f8cc6cf825407797139f3637c0",
+    "engine/scene3d-navigation.mjs": "5b0fd3dafd2cdca59858df8d192895a38c8f992b4975dd0732f330a7a7bdf447",
+    "engine/scene3d-objects.mjs": "232245131d6b926e9d6cdb7d4b9c6103c09d5c142ae72f4365d9b5025c0ea3f4",
+    "engine/scene3d-properties.mjs": "06d3e1559d4124d2157718ea3b1cb77d1d184b39ce1a4219396fb1babf454d09",
+    "engine/scene3d-removal.mjs": "4ee3292c1e6893dbe57eca570e719036bd417dfc3e291fd08195e7e28e9270a2",
+    "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
+    "engine/scene3d-translation.mjs": "ff8bcc30e738f4a6d7f8ce3e79fe6f25ff21d17654bac348298a8f4ab8af83e3",
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.build.json": "68d1f72a9227052ed7d84241c3f926a0bcb924a3437d11693768e0e5fb4d036b",
+    "engine/studio-core.mjs": "faed6f4504481ef4c21a8e705d63ea8475c418279961921a3ac0457a603576e5",
+    "engine/studio-core.wasm": "49c4dc243e05c69d2b53b9cd144e9ad8e054c1c1edf8531d5808800bbb9c05b6",
+    "engine/studio-modules.mjs": "2883e038fec75106e244f8628b02c2d2394dc5629e16d0cc28402ad4486876dc",
+    "schemas/asset-v1.schema.json": "711348e6387cd48ddc2619f37ec5217bff4fc0b644fa097cf4a59c858d8b5ea5",
+    "schemas/changeset-v1.schema.json": "d834ea39677816cd54dc3ed86d28a86c5e3baf1ee86d5bfdfa6539240f2a4111",
+    "schemas/command-descriptor-v1.schema.json": "283d5996aba0f10c119cb42fa321775dac98afe022deff6cae44b51b9803a0cc",
+    "schemas/document-v1.schema.json": "f6661d6709c87ead53e8cd6c4c12fe216783a0d8e61dfd31078013e46125fc0d",
+    "schemas/layout-v1.schema.json": "67632ba6b7a135ae82e6bacbb301193e157138e47308502d893b74a6d2856772",
+    "schemas/object-v1.schema.json": "c1ddf820966052b42a3459150516aa2e36833b9dad0f2fcaaf49b39b813330b2",
+    "schemas/project-type-v1.schema.json": "1a3643032ace147c66ef0d06103583e42e7a264dff2f9ebb32c81297b1d9eb1f",
+    "schemas/resource-package-v1.schema.json": "1ce6fe4e0a91b2b7de2f88f66e89d87daebb0b9eed961ef3990d1f702b06f355",
+    "schemas/scene3d-v1.schema.json": "cfdcb6d08cae15f136e12b206ffea6f1a792d759fe21e8936c3201028f3ebe28",
+    "schemas/studio-profile-v1.schema.json": "4c9bf3af4323e2465be057c72d8b2c20754f369379e6213c910091966bf48dcb",
+    "schemas/transaction-receipt-v1.schema.json": "8749d132055bf081997c9fde265a43c1ef925e7a9d6570e3c61763fac79aa420",
+    "schemas/workspace-v2.schema.json": "97f486c697e5c0ccbf18bc797b63adc0443ae8fc2cac08b33d2d6f5aa87c5925",
+    "schemas/workspace-v3.schema.json": "b9f945ba4a6f221ecd782a0128bce342224dcc283f655c1c6e14b75e6fd2ac13",
+    "schemas/world-projection-v1.schema.json": "22ff6d8c88ed129b7448f3a75df39deeb3491f6647c4a597602566d49892a070",
+    "schemas/world-v1.schema.json": "e11f72ad6fb10efb5bdf2288c21206339ba5a29ed9d6e45c6ae29f01b2ac5f37",
+    "scripts/adapters/node-backend-project-catalog.mjs": "0ab8621e7031109183922dc4e1408e462ee99a23bd486c6c388c7f6cefcd6307",
+    "scripts/adapters/node-backend-project-retention.mjs": "8c7c67082a0c7fcc9026a91fca305cbe3115e89337a89b62835a5708268c945e",
+    "scripts/adapters/node-backend-project.mjs": "0be94bebd640143ba15362fbc14e6093c49aa6d3653a4300dca8eac25246ce23",
+    "scripts/adapters/node-build-snapshot.mjs": "154af9d75b1de5c316a201156da19c0963e4505b51e89bc4687a8595dd351ace",
+    "scripts/adapters/node-document-storage.mjs": "74c2c13ede6919cbc70bbd7eae2d1931f05b1bb709450b4181330af1dadb994e",
+    "scripts/adapters/node-execution-backends.mjs": "1732b4689161c0809482eac2da24672635be7363f8dc9cf62435309de177b9e0",
+    "scripts/adapters/node-execution-tool-probe.mjs": "10171f6f7300744028266eafe8dd4435414fe64392a9065d33fbbd47a37924fa",
+    "scripts/adapters/node-execution-tool.mjs": "87ce2126bd95784ef1e01136f9766a11c80fa977fecc6d9a1cff2c94442b42ac",
+    "scripts/adapters/node-project-build.mjs": "9a1c10157131e0869f9fba73836baf4fe4fbf2d7d46d54dc4e665a57ac9c7ef1",
+    "scripts/adapters/node-runtime-case-suite.mjs": "b104e896e46ea9d71dc63d647c28969cc7c5523db5310e35ec8ecff62d670736",
+    "scripts/adapters/node-scene3d-export.mjs": "8256d67eb25cdb182a24335f156bfe7c8e185f5f7fce4bab394f9e30a9e3c56a",
+    "scripts/adapters/node-studio-core.mjs": "4ef99f01f9201b59b1f5ed8227bdd74ba8dd9f41caad491836cf7edbb8af3037",
+    "scripts/adapters/node-world-commands.mjs": "ea887e3ca238528df1a1609815a6d1ca3e6545c060c5afeb009324ea5cfa3019",
+    "scripts/adapters/node-world-projection.mjs": "c98c4ac6eef138605102b9317583c83d416e1e414f9843407aab5ecf4297fa61",
+    "scripts/backends/bevy-adapter.mjs": "fe4930697c4087d8983b368825e2c47b58878f37ccb91928984b0eea77f1bbef",
+    "scripts/backends/bevy-project.mjs": "3e4cec5947286359b1561d1551603db4cf5f3dc382a0121d0560b9578af1ec53",
+    "scripts/backends/godot3d/runtime.gd": "46b87d59fb0c58dfc61c0a4c16e55511dcf0d77f49cb4eb0787e1d2ab4c29fe2",
+    "scripts/backends/godot4-adapter.mjs": "9ab26b8372a4ca2c793798e88b6f4c91bc9eeecdcaa663b68d19a37bcf30b7ac",
+    "scripts/backends/godot4-behaviors.mjs": "d80c7230f8dccb0aa7d96818ded0bb6d39c65d302f5263dd57cef5245e92cb60",
+    "scripts/backends/godot4-dispatch.mjs": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
+    "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+    "scripts/backends/godot4-scene3d.mjs": "66e3430065adc0566ddae7593fb8c30ac22f4705c83770b9503a667c2265d7c1",
+    "scripts/backends/godot4.mjs": "d42d385b5a6e62ff4aa91d00f6065bdd0cefbc7ddde55e08cf5e3c62060fff77",
+    "scripts/backends/godot4/behavior-runtime.gd": "ec039ccaff0f376734938f54808b7929e7385393fd89516de35561e5959943bb",
+    "scripts/backends/godot4/control-runtime.gd": "7490fcb7dfb2c7a1f7b4b251a77804be0f5cea22e568eafe33a404de6b4aba64",
+    "scripts/backends/godot4/control.tscn": "adcd159c8ef7ea1463b859e4a83dacc10c8aaa39f431b80eb695aaf4151466f2",
+    "scripts/backends/godot4/runtime-v2.gd": "f2637ad317e6c105cd20d51381d5edf12a6af16f879b9eaf69f201bfc4e91de8",
+    "scripts/backends/godot4/runtime.gd": "9a4af2ffd3662c8381851ddd830618137e5e20cce08493fe6523309e1cc2bdfd",
+    "web/modules/app-runtime.js": "24129665fcdecc426bc3f5b880bc61ffce6af647a47eec2b765f7ad8feebe7fe",
+    "web/modules/app-studio-system.js": "34b0d57b1a287b8ab1a9b099ab54ffb9c40726d7c866aefef975e951c0dee3b7"
+  },
+  "sourceStable": true,
+  "oldNativeAuthorBackendSourcesStable": true,
+  "limitations": [
+    "This round does not rerun or claim the preceding complete 3811 application checks or 307 Rust tests.",
+    "Recorded GL calls and Float32 corner calculations are an independent CPU oracle, not real browser or hardware GPU acceptance.",
+    "Full-scene containment does not guarantee a distant tiny object occupies a visible pixel.",
+    "No author proposal, disk writer, HTTP, build, installed desktop or device acceptance is granted by this reviewer."
+  ]
+}

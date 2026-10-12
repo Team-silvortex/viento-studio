@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "observedAt": "2026-10-12T04:17:21.224714+00:00",
+  "scope": "Actual isolated stage prepared desktop and mobile copies executed in standard VM; old314 assertions retained, each copy adds eight world-axis alignment groups. No installed/device/hardware GPU or hostile-code sandbox claim.",
+  "sourceFreeze": {
+    "manifest": "source-hashes-final.json",
+    "files": 747,
+    "sha256": "78a3f1dd764b8366847dbdf8e4e20ad0b511d52c7a001a93aa6f66492b0ff9ce",
+    "allMatch": true
+  },
+  "producer": {
+    "path": "prepared-check.mjs",
+    "sha256": "89fa8c4793070ee2613ebd5facb85835b9c591e7f8daff16cc1de104e54ec7d9"
+  },
+  "boundaryCases": {
+    "path": "boundary-cases.mjs",
+    "sha256": "bc75137f8aa905e38dc868c40737768537728dfcfcdf0eb44218415964b45573",
+    "groupsEach": 8,
+    "sourceCheck": "boundary-source-check.json",
+    "sourceCheckSha256": "993cd844fdf5c37dde6f521680afb9bc6ac43f63a7da3ff30ae971d0b689bc94"
+  },
+  "packaged": {
+    "report": "packaged-resources.json",
+    "sha256": "96079a0c11fcb97ec83f9182589212a8cede64f3b4d3ad5c5dbee90e38e6fd33",
+    "groups": 330,
+    "groupsEach": {
+      "desktop": 165,
+      "mobile": 165
+    },
+    "oldGroupsPreserved": 314,
+    "newAlignmentGroups": 16,
+    "modulesEach": {
+      "desktop": 105,
+      "mobile": 105
+    },
+    "inventory": {
+      "desktop/resources": 569,
+      "mobile/dist": 250,
+      "desktop/ui": 11
+    },
+    "allBytesMatch": true
+  },
+  "oldCasePreservation": {
+    "report": "prepared-proof-preservation.json",
+    "sha256": "e738ad990522306c4e739e4cd4da9fb73fd45dc7b64225e8212af95e3d99430b",
+    "oldCaseFunctions": 11,
+    "countsOnlyAdjustment": "system13/29 to14/30"
+  },
+  "runtime": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "guestBoundary": "WebAssembly and text codecs only; no Node/process/DOM/window/fetch. Explicit same-realm JSON/digest ports; copied renderer uses injected fake WebGL/canvas ports.",
+  "wasm": {
+    "sha256": "84038b6fa464aa86f9edd337b477c03683b60a4b96d1816cf5f5bb16c3f289d1",
+    "sameAcrossCopies": true
+  },
+  "execution": {
+    "log": "prepared-check.log",
+    "sha256": "fe3b67f351784d0a7c4b77cde77b831dfe9d2e306fd740c21596cf284bcec1cd",
+    "exitCode": 0,
+    "firstRunPassed": true
+  }
+}

@@ -1,0 +1,240 @@
+✔ independent entry gates existing JSON source and gives an optional core capability explanation (28.592954ms)
+✖ opening allocates one visible readonly add UUID and treats names as plain author text (15.863724ms)
+✖ add reviews exactly a standard box with explicit name and color and leaves other declarations unchanged (19.502257ms)
+✖ copy names are explicit, default to the exact source name and retain all source transform and color values (28.309034ms)
+✔ copy does not add a suffix to a valid maximum-length source name (16.260844ms)
+✔ remove reviews the selected stable object, a nullable after declaration and exact count reduction (15.221446ms)
+✔ last-object removal is blocked explicitly without calling the proposal or draft ports (11.583675ms)
+✔ 128-object scenes disable additions and copies but keep explicit removal available (49.750695ms)
+✖ allocated identities persist through checks, language changes and failed name validation (22.164469ms)
+✖ starting a different operation or choosing a different copy target allocates a fresh identity only once (9.512834ms)
+✖ declining a dirty operation or target switch retains identity, input and approval (15.51902ms)
+✖ silent action, target or readonly identity changes before check cannot approve a different operation (11.687007ms)
+✔ normal name or color edits invalidate prior review and retain the new author input (19.439559ms)
+✔ silent raw values, selectors and generated identity changes cannot reuse an approved proposal (62.767632ms)
+✔ invalid names, colors and duplicate generated identities preserve raw fields without approving (39.876848ms)
+✖ all three languages preserve author name, raw color, selection, allocated identity and approved source (21.790272ms)
+✔ late source read cannot reopen a cancelled form and cancellation stays enabled while pending (7.282206ms)
+✖ late read rejection cannot report into a fresh open or allocate another identity (9.277074ms)
+✔ malformed or mismatched source reads show diagnostics and no application path (24.622582ms)
+✔ source fields are captured before caller mutation and reviews retain the five-field source binding (10.563042ms)
+✔ source token changes preserve local inputs but revoke both check and application (13.548017ms)
+✔ source navigation or leaving edit mode force-closes local state without an author write (14.489211ms)
+✔ candidate mismatched action identity edit source or count cannot receive approval (98.640377ms)
+✔ mutating a caller-owned candidate after approval cannot retain application rights (13.397456ms)
+✔ legitimate memory application accepts exact new-token receipt and returns focus once (18.458009ms)
+✔ applied true alone and forged path content or token receipts leave the form open (78.877735ms)
+✔ pending application locks all author fields while cancellation revokes the host guard (14.934211ms)
+✖ late apply completion cannot clear or unlock a newer source read (16.341224ms)
+✔ silent raw changes across await invalidate both source port guard and completion (15.712602ms)
+✔ duplicate apply attempts issue one request and a rejected port preserves local author input (16.289317ms)
+✔ Escape declines or accepts discard without consuming approval and ignores IME or repeat keys (13.937583ms)
+✔ cancel returns focus and disposal is idempotent while a late read is ignored (8.37863ms)
+✔ optional capability loss affects only object authoring and rejects a previously approved apply (12.266107ms)
+✔ all structural actions connect through real portable helper and native WASM without losing proposal brand (53.171685ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 24
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 918.655993
+
+✖ failing tests:
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:87:1
+✖ opening allocates one visible readonly add UUID and treats names as plain author text (15.863724ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '00000000-0000-4000-9000-000000000000'
+  - '00000000-0000-4000-9000-000000000001'
+                                        ^
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:88:117)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '00000000-0000-4000-9000-000000000000',
+    expected: '00000000-0000-4000-9000-000000000001',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:94:1
+✖ add reviews exactly a standard box with explicit name and color and leaves other declarations unchanged (19.502257ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      action: 'add',
+      object: {
+        color: '#Ab12Cd',
+  +     instanceId: '00000000-0000-4000-9000-000000000000',
+  -     instanceId: '00000000-0000-4000-9000-000000000001',
+        name: '  author box  ',
+        position: [
+          0,
+          0,
+          0
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:96:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { action: 'add', object: { instanceId: '00000000-0000-4000-9000-000000000000', name: '  author box  ', primitive: 'box', position: [Array], rotationDegrees: [Array], size: [Array], color: '#Ab12Cd' } },
+    expected: { action: 'add', object: { instanceId: '00000000-0000-4000-9000-000000000001', name: '  author box  ', primitive: 'box', position: [Array], rotationDegrees: [Array], size: [Array], color: '#Ab12Cd' } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:102:1
+✖ copy names are explicit, default to the exact source name and retain all source transform and color values (28.309034ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '00000000-0000-4000-9000-000000000000'
+  - '00000000-0000-4000-9000-000000000002'
+                                        ^
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:104:132)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '00000000-0000-4000-9000-000000000000',
+    expected: '00000000-0000-4000-9000-000000000002',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:130:1
+✖ allocated identities persist through checks, language changes and failed name validation (22.164469ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:133:62)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:135:1
+✖ starting a different operation or choosing a different copy target allocates a fresh identity only once (9.512834ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 2
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:136:70)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:140:1
+✖ declining a dirty operation or target switch retains identity, input and approval (15.51902ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 2
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:143:150)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:145:1
+✖ silent action, target or readonly identity changes before check cannot approve a different operation (11.687007ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '00000000-0000-4000-9000-000000000000'
+  - '00000000-0000-4000-9000-000000000002'
+                                        ^
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:149:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '00000000-0000-4000-9000-000000000000',
+    expected: '00000000-0000-4000-9000-000000000002',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:167:1
+✖ all three languages preserve author name, raw color, selection, allocated identity and approved source (21.790272ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:171:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:178:1
+✖ late read rejection cannot report into a fresh open or allocate another identity (9.277074ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '00000000-0000-4000-9000-000000000000'
+  - '00000000-0000-4000-9000-000000000001'
+                                        ^
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:181:92)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '00000000-0000-4000-9000-000000000000',
+    expected: '00000000-0000-4000-9000-000000000001',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene3d-objects-ui.test.mjs:241:1
+✖ late apply completion cannot clear or unlock a newer source read (16.341224ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '00000000-0000-4000-9000-000000000000'
+  - '00000000-0000-4000-9000-000000000002'
+                                        ^
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-objects-ui.test.mjs:244:177)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '00000000-0000-4000-9000-000000000000',
+    expected: '00000000-0000-4000-9000-000000000002',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

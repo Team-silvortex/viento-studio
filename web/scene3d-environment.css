@@ -1,0 +1,22 @@
+.scene3d-environment-dialog { width:min(980px,calc(100vw - 24px)); max-width:980px; max-height:calc(100dvh - 24px); margin:auto; padding:20px; box-sizing:border-box; overflow:auto; border:1px solid #33536a; border-radius:16px; color:#d8e9f8; background:#101c2b; }
+.scene3d-environment-dialog [hidden] { display:none!important; }
+.scene3d-environment-dialog::backdrop { background:rgba(2,8,18,.76); }
+.scene3d-environment-header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.scene3d-environment-header h2 { margin:0; font-size:1.3rem; }
+.scene3d-environment-note { color:#a1bbcf; font-size:.88rem; overflow-wrap:anywhere; }
+.scene3d-environment-diagnostic { color:#ffcaab; overflow-wrap:anywhere; }
+.scene3d-environment-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.scene3d-environment-fields > p { grid-column:1/-1; }
+.scene3d-environment-fields fieldset { min-width:0; margin:0; padding:12px; border:1px solid #33536a; border-radius:8px; }
+.scene3d-environment-fields legend label { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.scene3d-environment-inputs { display:grid; grid-template-columns:minmax(0,1fr); gap:10px; }
+.scene3d-environment-inputs-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.scene3d-environment-inputs-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.scene3d-environment-inputs label { display:grid; gap:6px; min-width:0; }
+.scene3d-environment-dialog input[type=number],.scene3d-environment-dialog input[type=text] { width:100%; min-width:0; box-sizing:border-box; padding:9px; border:1px solid #33536a; border-radius:6px; background:#0a1422; color:inherit; font:inherit; }
+.scene3d-environment-comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.scene3d-environment-comparison section { min-width:0; }
+.scene3d-environment-dialog pre { margin:8px 0; padding:10px; border:1px solid #33536a; border-radius:6px; color:#bdd1e4; background:#0a1422; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.8rem; }
+.scene3d-environment-dialog li { overflow-wrap:anywhere; }
+.scene3d-environment-footer { position:sticky; bottom:-20px; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:10px; margin-top:18px; padding:14px 0; border-top:1px solid #33536a; background:#101c2b; }
+@media(max-width:700px) { .scene3d-environment-dialog { padding:14px; } .scene3d-environment-header h2 { font-size:1.1rem; } .scene3d-environment-fields,.scene3d-environment-comparison { grid-template-columns:minmax(0,1fr); } .scene3d-environment-footer { bottom:-14px; } .scene3d-environment-inputs { gap:6px; } }

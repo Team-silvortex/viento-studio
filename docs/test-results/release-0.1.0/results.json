@@ -1,0 +1,105 @@
+{
+  "ok": true,
+  "version": "0.1.0",
+  "checkedAt": "2026-10-12T10:01:57.172667+00:00",
+  "baselineCommit": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "commitRole": "Pre-release audit baseline; final release identity is the Git commit containing this record.",
+  "scope": "Source release metadata and documentation audit; preserves prior behavior evidence at its actual versions. No installer, device or full behavior rerun in this release turn.",
+  "preflight": {
+    "ok": true,
+    "version": "0.1.0",
+    "finishedAt": "2026-10-12T09:51:18.607Z",
+    "node": "v24.21.0",
+    "nodeSha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
+    "syntaxFiles": 647,
+    "versionAndApiPreflight": true,
+    "installer": {
+      "androidVersionCode": 1001000,
+      "macOSBundleVersion": "1.1.0"
+    },
+    "tests": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "testSources": {
+      "scripts/tests/version.test.mjs": "811f5d49fb9470e4fe04feffa4f0f49450a1cb17d5e7e0ab2aa0aacb2eb0ccdf",
+      "scripts/tests/source-archive.test.mjs": "a5ae73887e139ea645dd636704f99facbb7f7f1faaa0652f3d02c44df92709bf"
+    },
+    "scope": "Release metadata and source archive regression, all JavaScript syntax and API contract preflight. No new full application, Rust, browser, hardware GPU, installer or device run."
+  },
+  "atlasCheck": {
+    "ok": true,
+    "mode": "check",
+    "architectures": 11,
+    "functions": 96,
+    "implementations": 239,
+    "bindings": 373,
+    "cells": 1492,
+    "dependencyEdges": 252,
+    "workflows": 59,
+    "historicalChains": 50,
+    "referencedFiles": 1437
+  },
+  "historicalEvidence": {
+    "files": 5561,
+    "allBytesUnchanged": true,
+    "baselineMapSha256": "8c2671add84e14bcae84b0ba8c30ac18d57e736f5f8f7fdfca2d6428e1748622"
+  },
+  "dependencyLockChanges": "Only application release version fields changed; dependencies unchanged.",
+  "wasm": {
+    "file": "engine/studio-core.wasm",
+    "bytes": 599948,
+    "sha256": "49c4dc243e05c69d2b53b9cd144e9ad8e054c1c1edf8531d5808800bbb9c05b6",
+    "unchangedDuringRelease": true
+  },
+  "generatedDirectoriesAbsent": [
+    "desktop/resources",
+    "desktop/ui/i18n",
+    "desktop/.cache",
+    "src-tauri/binaries",
+    "mobile/dist"
+  ],
+  "gitDiffCheck": true,
+  "publication": "Ready for the user-authorized commit and push; no publication already claimed by this pre-commit check.",
+  "releaseFiles": {
+    "VERSION": "e9dd8507f4bf0c6f42458e41aea833ad0bd3f6127272335eee9bf4d58541ed67",
+    "package.json": "04718d001177a530283d5135814e46b0379df41f6f881bc5db307514c5d7fa2d",
+    "package-lock.json": "7b49d55e7939bdaf87cfa1c385a30efcb964539e5b123c5786888a0eb7879524",
+    "src-tauri/tauri.conf.json": "34b0b0bfbb7a2fc885256902497fd0de1140efff8a165cef76e2df264c04c876",
+    "src-tauri/tauri.android.conf.json": "a4813d4a9b623bf7811990da24c9d1f72b51a9a27bc173002d73f6f63ddbda03",
+    "src-tauri/Cargo.toml": "5c1ba0092554699b555ffce16e581c027fba231aca90f75156a821f444141692",
+    "src-tauri/Cargo.lock": "5dbed9e9684dc5b845bb8e23c8e1af17f7ddaba4177d6a8649cb6ec4617aae28",
+    "web/index.html": "b3c12f6f2b99cadbcb0516cf2bcadcb89493a0e1cf2c37dd294ea98fcdbc3be1",
+    "desktop/ui/index.html": "5f30cead5c7fb12cfa4455c8b581fc5ff3ad19d74ee9098539cb4eaf96f6067e",
+    "README.md": "bedc34b5a9110a2a9c8ba42412eb9cf106e558e5b94dcfe29523c318af55fec6",
+    "docs/README.md": "f09f19367b6192f4dd38e4129f6e9714dfd5f514374345115fba2bba9780251a",
+    "docs/GETTING_STARTED.md": "1f0a53b0ccb2a44b9e7399d700d9718e4512ef4a8af8495f0b76068699b4526c",
+    "docs/STATUS.md": "0621763099eab485989140735d2ab33fa2b4dcf2d395170ff36e236ecb08ce7f",
+    "docs/SCENE3D.md": "5164c98e8c22a158672687125d515bc123c50797bb53a82d5b1fb89c5926b9be",
+    "docs/STUDIO_MODULES.md": "49afb0ccef28becb0f864cecbd2de1a591823bf478ed1123a4ede989b650486f",
+    "docs/ARCHITECTURE.md": "0da6c81fd2d9e46b92271026cc2559c6c060c25e2bd8a0febc3915d347d52a27",
+    "docs/ROADMAP.md": "18060dc96a9c7c39f7f5188532069d126fc2d8d942b7af3225b190d09f4fd384",
+    "engine/README.md": "68fa830497ca9da852946549adcff47f74a01c6b8fdc957fbbdd0182549531bf",
+    "docs/history/README.md": "6c68e2cb88c3b6049ea367c1a9702f107e149bc908c2dcb57c976971ecef7d1e",
+    "docs/TESTING.md": "7036009ac223d4012649295d7c3e7a43cf6cfc82f195dd17387351ba5f2c7774",
+    "docs/RELEASE_0.1.0.md": "eb67bee0a217d480d9a1d0fc9108c1f1fafbf18d31f3300133cd26d00d4d4c81",
+    "docs/function-atlas.json": "53f340505b7250393d49896634c445f6007cc9c01787a60bff3f1a59a4846d25",
+    "docs/FUNCTION_ATLAS.md": "1872d74a0b3ca668ce8355d70a6f50efcc124c530e2337f71a948d126333b18f",
+    "docs/function-atlas.html": "45c50b514599e8676867a4adf9a4a56921ba96122016111104dcbff238b621f2",
+    "docs/function-atlas.mmd": "8ea342cbc83bd823a514c3bd6d2e2674982eed1ab398541719e637e9e099b1a0"
+  },
+  "finalFormatting": {
+    "ok": true,
+    "file": "web/scene3d-removal.css",
+    "reason": "Staged git diff --check found one new blank line at EOF, not visible in the earlier unstaged-only check.",
+    "change": "Remove exactly one trailing LF byte; all CSS rules unchanged.",
+    "beforeBytes": 2592,
+    "afterBytes": 2591,
+    "beforeSha256": "abb0532f7256dc1b8545769a6f16e35406825eae1fa2e975a1caa1bcf155f112",
+    "afterSha256": "2d41b80730124b46086326367f88d0c124d8163540a6469021605a0c95ee4bef",
+    "historicalBehaviorEvidence": "Retained at its recorded pre-formatting bytes; no behavior tests repeated for this whitespace-only fix."
+  }
+}

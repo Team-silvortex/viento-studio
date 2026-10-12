@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "observedAt": "2026-10-12T09:40:49.435974+00:00",
+  "passed": 13,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "successful packet writes exactly approved bytes and preserves existing permissions/unrelated files",
+      "ok": true
+    },
+    {
+      "name": "actual loaded payload SHA mismatch rejects before any target mutation",
+      "ok": true
+    },
+    {
+      "name": "stage mutation after snapshot cannot replace the approved in-memory payload",
+      "ok": true
+    },
+    {
+      "name": "original byte snapshot mismatch preserves the newer writer content and rejects apply",
+      "ok": true
+    },
+    {
+      "name": "exception immediately after a committed report replacement rolls every file and created directory back",
+      "ok": true
+    },
+    {
+      "name": "KeyboardInterrupt immediately after os.replace cannot omit the current file from rollback",
+      "ok": true
+    },
+    {
+      "name": "receipt commit failure belongs to the same rollback journal and leaves no report directory",
+      "ok": true
+    },
+    {
+      "name": "attempted missing target rollback tolerates absent files and removes newly created source directories",
+      "ok": true
+    },
+    {
+      "name": "a completely rolled back failure can immediately retry the same approved packet",
+      "ok": true
+    },
+    {
+      "name": "one restore error is reported explicitly while remaining journal entries still roll back",
+      "ok": true
+    },
+    {
+      "name": "post-apply baseline guard rolls owned changes back without deleting an unrelated external edit",
+      "ok": true
+    },
+    {
+      "name": "a mismatched approval SHA authorizes no target writes",
+      "ok": true
+    },
+    {
+      "name": "symlink payload paths fail before any actual fixture write",
+      "ok": true
+    }
+  ],
+  "applierPath": "/tmp/viento-scene3d-framing-xmbbbvr9/control/apply-reviewed-framing.py",
+  "applierSha256": "62e06a4f5e5eee937539ed244bdd6695cde92484b3d22882db94ad7090e42e32",
+  "scope": "Only the parameterized function was imported in memory and called against owned TemporaryDirectory toy roots. Formal main/real CLI was never executed. No actual checkout was read or written, no product/prepare-packet change.",
+  "formalCli": {
+    "fixedActual": "/home/chiharukiryu/cdev/viento-studio",
+    "fixedStage": "/tmp/viento-scene3d-framing-xmbbbvr9/project",
+    "onlyArgument": "approved packet SHA256",
+    "implementationCountRemains16": true
+  },
+  "changes": [
+    "Load and verify the retained payload and original byte snapshots.",
+    "Journal targets before replacement and receipt mutation.",
+    "Register new directories before mkdir and remove owned empty directories during rollback.",
+    "Use missing_ok deletion for attempted but uncreated targets.",
+    "Continue all rollback attempts and report incomplete recovery explicitly.",
+    "Check current original SHA again immediately before each journaled write and verify the receipt."
+  ],
+  "limits": [
+    "Exception and KeyboardInterrupt recovery is verified; SIGKILL, power loss and concurrent external-writer isolation are not transactional guarantees.",
+    "Rollback never recursively deletes nonempty directories; a genuine restore failure is surfaced instead of reported as successful."
+  ]
+}

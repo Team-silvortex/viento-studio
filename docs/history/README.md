@@ -12,7 +12,7 @@
 
 ## 发布记录
 
-`0.0.x` 是现行产品编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
+现行产品版本为 `0.1.0`，使用三段数字编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
 
 | 原报告 | 主题 |
 | --- | --- |
@@ -25,6 +25,7 @@
 | [RELEASE_0.0.8.md](../RELEASE_0.0.8.md) | 0.0.8 片段组合、GDScript、执行中间层与 Bevy |
 | [RELEASE_0.0.9.md](../RELEASE_0.0.9.md) | 0.0.9 工具检查、运行验收、工程用例、有序验收组与成员报告 |
 | [RELEASE_0.0.10.md](../RELEASE_0.0.10.md) | 0.0.10 后端工程管理、九域配方创作、系统模块与独立 3D 首切片 |
+| [RELEASE_0.1.0.md](../RELEASE_0.1.0.md) | 0.1.0 九域 3D 作者编辑、画布导航与整景取景 |
 | [RELEASE_b.2.8.1.md](../RELEASE_b.2.8.1.md) | b.2.8.1 发布记录 |
 | [RELEASE_b.2.8.2.md](../RELEASE_b.2.8.2.md) | 发布编号更正 |
 | [RELEASE_b.2.8.md](../RELEASE_b.2.8.md) | b.2.8 发布记录 |

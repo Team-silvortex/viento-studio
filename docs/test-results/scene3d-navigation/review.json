@@ -1,0 +1,358 @@
+{
+  "format": "viento-scene3d-navigation-independent-review",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T15:36:17.961392+00:00",
+  "ok": true,
+  "openFindings": [],
+  "head": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "version": "0.0.10",
+  "finalSourceFreeze": {
+    "manifest": "source-hashes-verified.json",
+    "manifestSha256": "17a474ce0b080d39166b7725897e45b8b285645f23972b3f88a4e1d4f4587f2d",
+    "files": 723,
+    "allMatch": true,
+    "drift": [],
+    "missing": [],
+    "firstManifest": "source-hashes-final.json",
+    "firstManifestSha256": "deae5d636501ae4a70c60083b72414afc77ddc3a32d7d2b52bf161fa5a1db2ab",
+    "inputRepairManifest": "source-hashes-confirmed.json",
+    "inputRepairManifestSha256": "d3d6e12c41a0d48da2f680168799bf399a256bdbc83d7ebcbb45462d42ef2088",
+    "firstToInputRepairChanges": [
+      "scripts/tests/scene3d-navigation-smoke.mjs",
+      "scripts/tests/scene3d-navigation-source-host.test.mjs",
+      "web/modules/app-runtime.js"
+    ],
+    "inputRepairToFinalChanges": [
+      "scripts/tests/scene3d-navigation-smoke.mjs",
+      "scripts/tests/scene3d-preview-ui.test.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-scene3d-preview.js"
+    ]
+  },
+  "sourceDelta": {
+    "added": [
+      "engine/scene3d-navigation.mjs",
+      "scripts/tests/scene3d-math-navigation.test.mjs",
+      "scripts/tests/scene3d-navigation-smoke.mjs",
+      "scripts/tests/scene3d-navigation-source-host.test.mjs",
+      "scripts/tests/scene3d-navigation.test.mjs"
+    ],
+    "changed": [
+      "engine/README.md",
+      "engine/index.mjs",
+      "scripts/tests/scene3d-environment-source-host.test.mjs",
+      "scripts/tests/scene3d-preview-ui.test.mjs",
+      "scripts/tests/scene3d-property-source-host.test.mjs",
+      "scripts/tests/scene3d-renderer.test.mjs",
+      "scripts/tests/scene3d-system-ports.test.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-runtime.js",
+      "web/modules/app-scene3d-preview.js",
+      "web/modules/scene3d-math.js",
+      "web/modules/scene3d-renderer.js",
+      "web/scene3d.css"
+    ],
+    "removed": []
+  },
+  "reviewedSources": {
+    "engine/scene3d-navigation.mjs": "5b0fd3dafd2cdca59858df8d192895a38c8f992b4975dd0732f330a7a7bdf447",
+    "web/modules/app-runtime.js": "fb2f0b870079dc26aeca4e6a7ba3517733f3fc5ecdc841dfbb6a5d7cdc5e0b37",
+    "web/modules/app-studio-system.js": "66515c395e6aec432d63cce6aea9c3fc1b2cdb52702dfa98195659010194cbb1",
+    "web/modules/app-scene3d-preview.js": "0da055fdcf7938daf0f169562912110651ea347bd8067ec9d4571b44f0a94ac3",
+    "web/modules/scene3d-renderer.js": "40cf4d2fcc3eb8fba4faca89487fac313772b327ff160b8350e1cffefea2f843",
+    "web/modules/scene3d-math.js": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d"
+  },
+  "independent": {
+    "sourceQuality": {
+      "report": "quality-confirmed.json",
+      "sha256": "4871051570ec5aaf69b34198ba9adf874501d8b0f93134f4fbcbc169e372f0f8",
+      "passed": 7,
+      "failed": 0,
+      "counts": {
+        "newlineVariants": 4,
+        "awaitOwnerVariants": 13,
+        "completionOwnerVariants": 7,
+        "framedCameras": 12,
+        "cornerProjections": 192
+      },
+      "scope": "Actual native WASM source parsing and actual runtime selection host; simulated LF-normalizing editor storage and await scheduler. Independent eight-corner XYZ projection and Float32 payload check, not real GPU execution, native CLI, browser, Save, build or device validation."
+    },
+    "sourceInputBroadcast": {
+      "report": "source-input-broadcast.json",
+      "sha256": "61841ea6cc0e76f4b14273b649dbdfeeb5a2bf4fcba6a4757719f07e59b356b3",
+      "passed": 3,
+      "failed": 0
+    }
+  },
+  "renderer": {
+    "report": "renderer-results.json",
+    "sha256": "fb6c983938d054506358d2bb5c6d2614e0a1d215ad24897d3ffb271128a47622",
+    "verification": {
+      "finalPinned": {
+        "passed": 30,
+        "failed": 0,
+        "skipped": 0,
+        "files": 2,
+        "preservedExistingTests": 17,
+        "newRendererTests": 8,
+        "newMathTests": 5,
+        "log": "renderer-tests-final.log"
+      },
+      "initialSystemRuntime": {
+        "nodeVersion": "v24.21.0",
+        "passed": 30,
+        "failed": 0,
+        "skipped": 0,
+        "log": "renderer-tests-initial.log"
+      },
+      "geometryCoverage": {
+        "independentMathScenarios": 240,
+        "cornersPerScenario": 8,
+        "actualUploadedFloat32Scenarios": 36,
+        "float32CornersPerScenario": 8,
+        "fovDegrees": [
+          1,
+          60,
+          179
+        ],
+        "mathAspect": [
+          0.0001220703125,
+          0.00048828125,
+          0.2,
+          1,
+          8192
+        ],
+        "sizeBounds": [
+          0.001,
+          1000
+        ],
+        "positionBounds": [
+          -100000,
+          100000
+        ],
+        "rotation": "Independent Z→Y→X rotation of corners, including mixed nonuniform axes and author ±36000 degrees.",
+        "evidence": "Frame tests use independent camera basis dot products; renderer tests use actual uploaded Float32 model/viewProjection matrices with rounded products, checking all corners in screen margin and WebGL depth."
+      }
+    }
+  },
+  "documentSupplement": {
+    "report": "renderer-document-review-confirmed.json",
+    "sha256": "9df2bcdaec9707dd80e70751ca5820f175d8d14829f687e55bbe7162fb8259d1",
+    "links": 73,
+    "initialReviewPreserved": {
+      "path": "docs/test-results/scene3d-navigation/renderer-document-review.json",
+      "bytes": 14817,
+      "sha256": "71ab8ea2b263eff0571a8ecd4c7f9f8efc64d9dbcee16fe0d3682aa34f2296c1"
+    },
+    "finalInterfaceHashesMatch": true
+  },
+  "browser": {
+    "report": "browser-navigation-reset-final/browser.json",
+    "sha256": "349a5eb8e749470876625e777caaec812fe2723c936bb5e3dbf710f3d9082375",
+    "flowClasses": 8,
+    "sourceStableDuringProof": true,
+    "errors": 0,
+    "cspViolations": 0,
+    "screenshots": [
+      {
+        "file": "navigation-desktop.png",
+        "sha256": "1e7d963ea9ac2cc1186109e140293896cb34d33d1b1f1d8fca40a528c2be89dd",
+        "personallyViewed": true
+      },
+      {
+        "file": "navigation-zh-CN-390.png",
+        "sha256": "95cc9333fb98167a196a69133fc74c9c8926e6871115f50f35fd5a59ffa3291d",
+        "personallyViewed": true
+      },
+      {
+        "file": "navigation-en-390.png",
+        "sha256": "94b08ad414926c40cd1ecf01f8b2b4058c52497b093b613fcc85dfa0cb2fedf5",
+        "personallyViewed": true
+      },
+      {
+        "file": "navigation-ja-390.png",
+        "sha256": "2b2876bfd938eb64034fff1d236aeebb628469fb1429dd179420265aab1a9bc7",
+        "personallyViewed": true
+      },
+      {
+        "file": "navigation-without-webgl.png",
+        "sha256": "23f13c0010ac2bea7e92914231847d3cbe377ca5fbdab9cc0c6d8ebf3f095e9f",
+        "personallyViewed": true
+      }
+    ]
+  },
+  "finalReadonlyRegression": {
+    "report": "browser-preview-regression-reset-final/browser.json",
+    "sha256": "36995f734333973df149dde9ffcea5711f8d90c15d4488b7fe303a6f088162bf",
+    "flowClasses": 7,
+    "sourceStableDuringProof": true,
+    "allBoundSourcesMatchFinal": true
+  },
+  "prepared": {
+    "report": "packaged-resources-verified.json",
+    "sha256": "c66dbe28e7cc9e982635b727ece3bd92f9a8e9412e620a974b3950f5d45c5276",
+    "groups": 272,
+    "files": {
+      "desktop/resources": 562,
+      "mobile/dist": 243,
+      "desktop/ui": 11
+    },
+    "portabilityOnly": true,
+    "notSecuritySandboxOrInstallation": true
+  },
+  "application": {
+    "report": "app-check-verified.log",
+    "sha256": "c01d5c7e064d4c2bc4a4c40a9e3d96dc4dbb73e4f8288b90e8fa5c997c94ca14",
+    "counts": {
+      "tests": 3381,
+      "pass": 3381,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 311398.212626
+  },
+  "priorApplication": {
+    "report": "app-check.log",
+    "sha256": "6ea1a42fd1547d3408bae23bb12b0d31c48ea4f12628e01e7596f2b4010eab4c",
+    "counts": {
+      "tests": 3380,
+      "pass": 3379,
+      "fail": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 307682.563761
+  },
+  "applicationTiming": {
+    "report": "application-timing.json",
+    "sha256": "4941d9dee9ddef6b69c3d7e7c27d86b4e410221c2bab5ea2e09dc1224e35e5e2",
+    "details": {
+      "format": "viento-scene3d-navigation-application-timing",
+      "schemaVersion": 1,
+      "recordedAt": "2026-10-11T15:36:01.067802+00:00",
+      "ok": true,
+      "firstApplication": {
+        "log": "app-check.log",
+        "sha256": "6ea1a42fd1547d3408bae23bb12b0d31c48ea4f12628e01e7596f2b4010eab4c",
+        "counts": {
+          "tests": 3380,
+          "pass": 3379,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "durationMs": 307682.563761,
+        "javascriptSyntaxFiles": 600,
+        "started": {
+          "startedAt": "2026-10-11T15:18:42.686937+00:00",
+          "sourceManifestSha256": "d3d6e12c41a0d48da2f680168799bf399a256bdbc83d7ebcbb45462d42ef2088",
+          "sourceFiles": 723,
+          "allSourcesMatch": true,
+          "expectedNewTests": 50,
+          "scope": "Fixed24.20 runtime with all current native helpers and fixed Godot/Bevy tools, app-only full regression after final product and test repairs."
+        },
+        "scope": "Actual edition after source-input notification and browser fixture repair; one newly duplicated English translation key failed. Original log and source manifest retained."
+      },
+      "repair": {
+        "files": {
+          "scripts/tests/scene3d-navigation-smoke.mjs": {
+            "before": "a08a5730e3f12e3fe5e88474ca72a4a687c1974ae78c2bf5cef49999907e55f2",
+            "after": "71676560eb90b1e1fb0e7552e425d47becd4401e9346330a6ed37a48d61d21b0"
+          },
+          "scripts/tests/scene3d-preview-ui.test.mjs": {
+            "before": "b4656c1de3ff12cc4fce84602745a827ae7afeccd1371a99b340be5e20b9993d",
+            "after": "5a3124db7413637b334417ef371dfbc43ecde01a931c79fe1d5acff81581468a"
+          },
+          "web/i18n/en.js": {
+            "before": "eb3cc5bf8d57945cf9f004b6fe274e9dc8694dc4505c27bc00d40570f8855b1b",
+            "after": "fb0144cf571fa413fb26086430fee7bce433c7b97bbef512a3da79fe1045a072"
+          },
+          "web/i18n/ja.js": {
+            "before": "f62213d98faef67bff180d2d21e44937a02f6e886e566d4cdaba9e53548df88a",
+            "after": "ec3f6445444d8ca04cdd5fa1e9a54a2b54a87fe4f15b95e1d9fa2bb9766d7e24"
+          },
+          "web/modules/app-scene3d-preview.js": {
+            "before": "60fd9e289662916559ce3ef0abc86d4ecdb1a3feffc73f7e306c5df89f4196d6",
+            "after": "0da055fdcf7938daf0f169562912110651ea347bd8067ec9d4571b44f0a94ac3"
+          }
+        },
+        "reason": "Remove only the newly repeated English search-clear key; make Reset restore translated author-camera status, with one new independent UI regression and browser assertion. Existing catalogue coverage is unchanged."
+      },
+      "finalApplication": {
+        "log": "app-check-verified.log",
+        "sha256": "c01d5c7e064d4c2bc4a4c40a9e3d96dc4dbb73e4f8288b90e8fa5c997c94ca14",
+        "counts": {
+          "tests": 3381,
+          "pass": 3381,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "durationMs": 311398.212626,
+        "javascriptSyntaxFiles": 600,
+        "started": {
+          "startedAt": "2026-10-11T15:30:17.345113+00:00",
+          "sourceManifest": "source-hashes-verified.json",
+          "sourceManifestSha256": "17a474ce0b080d39166b7725897e45b8b285645f23972b3f88a4e1d4f4587f2d",
+          "sourceFiles": 723,
+          "allSourcesMatch": true,
+          "expectedNewTests": 51,
+          "priorFailedApplication": "app-check.log",
+          "scope": "Actual final fixed24.20 app-only full regression after final translated Reset status and removing duplicate en Clear-search. Native/Godot/Bevy trusted tools bound to original baseline. Product sources frozen."
+        },
+        "completedBeforeRecordedAt": true,
+        "productSourcesUnchangedThroughout": true
+      },
+      "sourceManifestSha256": "17a474ce0b080d39166b7725897e45b8b285645f23972b3f88a4e1d4f4587f2d",
+      "nativeRuntime": "Pinned Node v24.20.0, current native archive/mobile/core helpers and trusted Godot/Bevy tools.",
+      "harnessFailures": [
+        "First new browser fixture called an already computed array; preserved and repaired separately.",
+        "Prepared harness initially redeclared box, then referenced a missing copied baseline filename; preserved producers/logs and repaired only new evidence."
+      ],
+      "browserDetectedProductRepairs": [
+        "Exact native CRLF/CR ranges now map only into complete LF-normalized textarea display without changing author bytes.",
+        "Normal source input broadcasts after actual dirty/epoch update through the composition root, so stale source-location controls immediately expire.",
+        "Reset restores both temporary camera and localized status instead of retaining a misleading focused-view message."
+      ],
+      "scope": "Completed application counts overlap all focused suites. Browser, native, copied VM and source phases are recorded separately; no install/device/GPU-hardware claim."
+    }
+  },
+  "lastUIRefinement": {
+    "scope": "Reset replaces the stale focused-view status with an explicit temporary author-camera reset message. Remove duplicate English search-clear key. No native, source-selection host, renderer, schema or authoring authority change.",
+    "sourceChanges": [
+      "scripts/tests/scene3d-navigation-smoke.mjs",
+      "scripts/tests/scene3d-preview-ui.test.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-scene3d-preview.js"
+    ],
+    "timing": "The prior actual 3380-test suite had one duplicate-English-key failure. The final completed application, UI/i18n and real-browser proofs are bound separately; earlier browser screenshots and reports are preserved."
+  },
+  "contracts": [
+    "Native parser alone admits source and supplies UTF16 declaration ranges; object index/query is display-only.",
+    "The readonly source snapshot remains exactly three fields; selection host rederives native range from exact bytes and stable UUID, not caller range.",
+    "Source navigation changes selection/scroll/status only, then once-only focus checks captured editor owner after intended modal close.",
+    "Normal source input updates dirty/epoch before root broadcasts refresh; stale visible source location is disabled without granting write authority.",
+    "Temporary camera frame uses actual drawing aspect and enclosing sphere; floating-origin Float32 matrices preserve authored coordinates.",
+    "Source Save, four private authoring brands, old 2D domains, backend generation and native schema remain independent."
+  ],
+  "resolvedFindings": [
+    "CRLF versus textarea LF location mismatch fixed with private raw-to-display UTF16 mapping.",
+    "Missing/nonfrozen/extra/getter locator receipts reject without trusting late completion.",
+    "Ordinary source input now broadcasts through the existing composition root before stale preview navigation can remain visibly active.",
+    "Reset now replaces the misleading focused-view status, and the repeated English search-clear dictionary key is removed."
+  ],
+  "limitations": [
+    "Prototype flat boxes only; no hierarchy, assets, new authoring authority, engine/editor backend integration or schema additions.",
+    "Headless Chrome WebGL and simulated Float32 payload checks are not installed/device/hardware-GPU or pixel parity acceptance.",
+    "Prepared VM proves portability, not a hostile-code sandbox.",
+    "All earlier failures and pre-refinement snapshots remain immutable."
+  ]
+}

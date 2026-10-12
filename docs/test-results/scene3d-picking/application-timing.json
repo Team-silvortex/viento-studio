@@ -1,0 +1,66 @@
+{
+  "format": "viento-scene3d-picking-application-timing",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-11T16:16:30.466079+00:00",
+  "ok": true,
+  "finalApplication": {
+    "log": "app-check.log",
+    "sha256": "55cbfab2ea45c2092e5def45cdd231c4722fcb2a6b532f7f14b701784a2ee867",
+    "counts": {
+      "tests": 3421,
+      "pass": 3421,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 302866.538666,
+    "javascriptSyntaxFiles": 603,
+    "started": {
+      "createdAt": "2026-10-11T16:10:22.123383+00:00",
+      "nodeVersion": "v24.20.0",
+      "sourceManifest": "source-hashes-final.json",
+      "sourceManifestSha256": "22c6fa824d52d8ef1147ae7351361e45de54075ec28917868a0a0b2e19e6a998",
+      "command": "run-application-checks.sh",
+      "phase": "Source frozen; application run about to start"
+    },
+    "completedBeforeRecordedAt": true,
+    "productSourcesUnchangedThroughout": true
+  },
+  "sourceManifestSha256": "22c6fa824d52d8ef1147ae7351361e45de54075ec28917868a0a0b2e19e6a998",
+  "newApplicationTests": 40,
+  "newTestsBreakdown": {
+    "purePicking": 13,
+    "rendererGesturesAndFrames": 15,
+    "previewUi": 12
+  },
+  "nativeRuntime": "Pinned Node v24.20.0; current unchanged-native core/archive/mobile helpers and original trusted Godot/Bevy tools.",
+  "resolvedProductFindings": [
+    {
+      "initial": "quality-initial.json",
+      "issue": "Secondary pointer left first tap and recent double-click eligibility alive.",
+      "resolution": "Other-pointer/button input clears gesture and tap. Initial8/10 preserved; final independent12/12."
+    },
+    {
+      "initial": "quality-scroll-initial.json",
+      "issue": "Position-only scrolling invalidated all hits until unrelated redraw.",
+      "resolution": "Use current CSS position over the same actual drawn matrices; cancel only old or active gestures across movement. Initial10/12 preserved; final independent12/12 and real narrow modal scroll."
+    }
+  ],
+  "harnessRepairs": [
+    "Renderer fixture initially copied mutable DPR/context-loss options; failed54/56 log retained and fixture state reference corrected without weakening assertions.",
+    "Independent scroll probe initially assumed a callback existed; original producer retained, optional read exposes intended failure assertions. Initial10/12 retained.",
+    "Source-freeze producer first expected only six changed files; engine/README.md was already in the baseline, so the explicit allowed documentation-only change was included. No product source was repaired for this inventory assertion."
+  ],
+  "rust": {
+    "freshTestRun": false,
+    "schemaNativeSourcesWasmMetadataUnchanged": true,
+    "previousRun": "../scene3d-navigation/rust-tests.log",
+    "previousPassed": 234,
+    "freshBuilds": [
+      "core-cli-build.log",
+      "native-tools-build-final.log"
+    ]
+  },
+  "scope": "Completed full application overlaps all focused tests. Earlier failures and producer snapshots remain separate. Browser, prepared VM, helper builds and source phases do not claim a new install or device acceptance."
+}

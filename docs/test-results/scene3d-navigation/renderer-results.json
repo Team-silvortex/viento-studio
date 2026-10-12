@@ -1,0 +1,128 @@
+{
+  "format": "viento-scene3d-navigation-renderer-results",
+  "schemaVersion": 1,
+  "status": "passed",
+  "version": "0.0.10",
+  "publishedBase": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "delivery": "Unpublished additive readonly view behavior after 0.0.10; no installer/device/hardware GPU acceptance.",
+  "sourceFiles": [
+    {
+      "path": "web/modules/scene3d-math.js",
+      "bytes": 4501,
+      "sha256": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d"
+    },
+    {
+      "path": "web/modules/scene3d-renderer.js",
+      "bytes": 9545,
+      "sha256": "40cf4d2fcc3eb8fba4faca89487fac313772b327ff160b8350e1cffefea2f843"
+    },
+    {
+      "path": "scripts/tests/scene3d-renderer.test.mjs",
+      "bytes": 18211,
+      "sha256": "b91a2e5004296924e60d7f41570624403f5bbd310c9a1691b28edeb9ecfcea65"
+    },
+    {
+      "path": "scripts/tests/scene3d-math-navigation.test.mjs",
+      "bytes": 5665,
+      "sha256": "8a5d62398098c9d1d3996440f9a4e0403dd335e5c960719eaafbf51bd1083860"
+    }
+  ],
+  "runtime": {
+    "nodeVersion": "v24.20.0",
+    "node": {
+      "path": "src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu",
+      "bytes": 126458664,
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    }
+  },
+  "verification": {
+    "finalPinned": {
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "files": 2,
+      "preservedExistingTests": 17,
+      "newRendererTests": 8,
+      "newMathTests": 5,
+      "log": "renderer-tests-final.log"
+    },
+    "initialSystemRuntime": {
+      "nodeVersion": "v24.21.0",
+      "passed": 30,
+      "failed": 0,
+      "skipped": 0,
+      "log": "renderer-tests-initial.log"
+    },
+    "geometryCoverage": {
+      "independentMathScenarios": 240,
+      "cornersPerScenario": 8,
+      "actualUploadedFloat32Scenarios": 36,
+      "float32CornersPerScenario": 8,
+      "fovDegrees": [
+        1,
+        60,
+        179
+      ],
+      "mathAspect": [
+        0.0001220703125,
+        0.00048828125,
+        0.2,
+        1,
+        8192
+      ],
+      "sizeBounds": [
+        0.001,
+        1000
+      ],
+      "positionBounds": [
+        -100000,
+        100000
+      ],
+      "rotation": "Independent Z→Y→X rotation of corners, including mixed nonuniform axes and author ±36000 degrees.",
+      "evidence": "Frame tests use independent camera basis dot products; renderer tests use actual uploaded Float32 model/viewProjection matrices with rounded products, checking all corners in screen margin and WebGL depth."
+    }
+  },
+  "contracts": {
+    "focusObject": "Synchronous boolean; missing model/invalid ID/disposed/contextlost returns false without camera/draw mutation.",
+    "frameCamera": "Detached deeply frozen temporary camera or null on invalid input; enclosing sphere frames at 1.2 margin against minimum actual horizontal/vertical FOV.",
+    "clipping": "Temporary near/far contain full selected geometry regardless of original author clipping.",
+    "interaction": "Focused view has separate temporary distance limits and recalculates clipping, avoiding initial wheel jump to default 0.01/200000 orbit bounds; ordinary orbit defaults retained.",
+    "reset": "resetView and setModel stop old drag, clear focus and restore new author camera; dispose releases listeners/GPU resources.",
+    "precision": "Target-relative floating origin only in GPU matrices; snapshot camera retains author coordinate system, whole-model/camera inputs unchanged."
+  },
+  "preservation": {
+    "oldRendererAssertionsRetained": true,
+    "lightAndTransformAssertionsRetained": true,
+    "translationInvariantUploadedUniforms": true,
+    "oldSharedCoreUnchanged": [
+      {
+        "path": "engine/studio-core.wasm",
+        "bytes": 515406,
+        "sha256": "0e6f4cd70f28d7b00b1c50e3e5f7e52d1b680a55a377eda1a1d160a4e908879a"
+      },
+      {
+        "path": "engine/studio-core.build.json",
+        "bytes": 2713,
+        "sha256": "e598b6aeb18467c7cabd95870a07e4f139ccf0f751dd348a2ed59a739e3bca3c"
+      }
+    ]
+  },
+  "logFiles": [
+    {
+      "path": "docs/test-results/scene3d-navigation/renderer-tests-initial.log",
+      "bytes": 3191,
+      "sha256": "fe404a8c474dba478a8d3793edb09c4b2c4ca1d2a9756c12d1d2d080f6aad479"
+    },
+    {
+      "path": "docs/test-results/scene3d-navigation/renderer-tests-final.log",
+      "bytes": 3188,
+      "sha256": "040470a907fb11c054de7f9b11104fe8ea5e451ce873c861438a1b0025c007c7"
+    }
+  ],
+  "findings": [],
+  "limitations": [
+    "The unit GL fixture records real renderer uploads and evaluates their float32 geometry; actual browser/GPU screenshots and view interaction are independently owned by root/reviewer.",
+    "Temporary focus is not an author camera edit, source navigation receipt, Save transaction or backend operation.",
+    "Focus guarantees framing at the dimensions observed at the action; users may deliberately orbit or zoom afterwards, and can refocus after resizing."
+  ]
+}

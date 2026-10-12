@@ -1,0 +1,135 @@
+{
+  "format": "viento-scene3d-transform-core-results",
+  "schemaVersion": 1,
+  "status": "passed",
+  "productVersion": "0.0.10",
+  "publishedBase": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "scope": {
+    "capability": "viento_core_scene3d_patch_version",
+    "apiVersion": 1,
+    "operation": "scene3d.patchObjectTransform",
+    "requestKeys": [
+      "protocolVersion",
+      "operation",
+      "content",
+      "instanceId",
+      "values"
+    ],
+    "values": [
+      "position",
+      "rotationDegrees",
+      "size"
+    ],
+    "responseKeys": [
+      "instanceId",
+      "beforeContent",
+      "afterContent",
+      "changedPaths"
+    ],
+    "noOp": "Exact original before/after bytes and empty changedPaths, accepted by native and bridge. Author proposal gate rejects no-op separately.",
+    "limits": "Existing full scene3d parser before and after; 128 KiB UTF-8; existing vector and whole-scene constraints.",
+    "tokenPreservation": "CST decoded-key/instance identity; only net numeric values replaced, fixed position/rotationDegrees/size then XYZ changedPaths; no YAML or JavaScript semantic parser added."
+  },
+  "sourceFiles": [
+    {
+      "path": "crates/viento-studio-core/src/lib.rs",
+      "bytes": 15982,
+      "sha256": "7149dfd7654e4b534aa8009cdbfc75f06e6fb6c364091613d6dd9a331860f339"
+    },
+    {
+      "path": "crates/viento-studio-core/src/scene3d.rs",
+      "bytes": 17151,
+      "sha256": "d17178daad94bd5e9f98951565d8cf5a479c46948e2836b088d9515827559a79"
+    },
+    {
+      "path": "crates/viento-studio-core/src/scene3d_patch.rs",
+      "bytes": 17487,
+      "sha256": "31f6d0278e0bcaa203efcc1da80725fe8ae601ae0a2eb3dedf3bc7a14dc09465"
+    },
+    {
+      "path": "engine/studio-core.mjs",
+      "bytes": 84905,
+      "sha256": "cdd331c2b7dfaef0714cf0fca7ea7f747cf0092eb1c99d928eab0582c53c907f"
+    },
+    {
+      "path": "scripts/tests/studio-core-scene3d-patch.test.mjs",
+      "bytes": 18582,
+      "sha256": "43ffe5aeac1d82f527669b3f90264db97414c7d1762d6a59d700529cc4f24cf8"
+    }
+  ],
+  "compiledSourceHash": "55bb289a43040372da0c2141d4f5af0d696bc7d1b471ac1aae446b21717baa14",
+  "compiledSourcesMatchCurrent": true,
+  "wasm": {
+    "path": "engine/studio-core.wasm",
+    "bytes": 448641,
+    "sha256": "8639baa69e67e51c911ef032a9df79e7c10da3662b02d1507fe0bf19192623ba"
+  },
+  "nativeCli": {
+    "path": "desktop/.cache/scene3d-transform-core-target/debug/viento-core",
+    "bytes": 14065520,
+    "sha256": "8ea1ee06f1b8520b2ad219aff0139a6b73200a585c28fb48ec6a20e849485b46"
+  },
+  "runtime": {
+    "nodeVersion": "v24.20.0",
+    "node": {
+      "path": "src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu",
+      "bytes": 126458664,
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)"
+  },
+  "verification": {
+    "rust": {
+      "passed": 196,
+      "unitPassed": 147,
+      "integrationPassed": 49,
+      "newUnitPassed": 12,
+      "failed": 0,
+      "ignored": 0,
+      "log": "core-native-test-second.log"
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "warningsDenied": true,
+      "log": "core-clippy.log"
+    },
+    "bridge": {
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0,
+      "files": 1,
+      "log": "core-bridge-tests.log",
+      "nativeWasmParityRequests": 18
+    },
+    "sharedCoreRegression": {
+      "passed": 201,
+      "failed": 0,
+      "skipped": 0,
+      "files": 17,
+      "log": "core-regression-final.log",
+      "includesNewBridgeTests": true
+    },
+    "freshWasmBuild": {
+      "passed": true,
+      "log": "core-wasm-build-second.log"
+    },
+    "initialAttempts": {
+      "logs": [
+        "core-native-test.log",
+        "core-wasm-build.log"
+      ],
+      "error": "E0282 deserialization type inference; fixed by explicit Value generic, initial failure logs retained."
+    }
+  },
+  "boundaries": [
+    "Stateless single stable instance only; no geometry session or source save.",
+    "Independent patch probe additionally requires old parse probe; missing patch leaves all old parsing and authoring interfaces usable.",
+    "Shared Scene3D parser semantics unchanged; only triple visibility widened inside Rust crate.",
+    "Old tests and reports are not edited; evidence/author preservation and full app/browser/prepared validation are separate root work.",
+    "No assets, object definitions, hierarchy, behaviors, schema change, tool/backend or device/installer validation implied."
+  ]
+}

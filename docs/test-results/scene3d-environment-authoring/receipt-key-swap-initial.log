@@ -1,0 +1,20 @@
+{
+  "format": "viento-environment-key-swap-independent-probe",
+  "schemaVersion": 1,
+  "runtime": "v24.20.0",
+  "bridgeSha256": "f4fd7b13213ad8d453b459555b9bc6bdf6b92343e1e1b0a90441874ac60be89c",
+  "wasm": {
+    "bytes": 500608,
+    "sha256": "4e30e4be71ee3ecf3328aadcba675e2a996f8217d25ef377733bd296bdbc7e52"
+  },
+  "ok": false,
+  "acceptedForbiddenKeyRewrite": true,
+  "errorCode": null,
+  "changedPaths": [
+    "/camera/position/0",
+    "/camera/target/0"
+  ],
+  "originalCamera": "{\"position\":[1,0,0],\"target\":[0,0,0],\"fovDegrees\":50,\"near\":0.1,\"far\":1000}",
+  "forgedCamera": "{\"target\":[1,0,0],\"position\":[0,0,0],\"fovDegrees\":50,\"near\":0.1,\"far\":1000}",
+  "scope": "Actual WASM environment request; only delivered environment afterContent changed. Camera semantic final values are correct, but only numeric axis leaves were requested and property keys must remain exact."
+}

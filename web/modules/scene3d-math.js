@@ -31,12 +31,79 @@ export function objectMatrix4(object) {
   [matrix[12], matrix[13], matrix[14]] = object.position;
   return matrix;
 }
-export function orbitCamera(camera, yaw, pitch, scale = 1) {
+export function orbitCamera(camera, yaw, pitch, scale = 1, distanceLimit = 200000, distanceMinimum = 0.01) {
   const delta = camera.position.map((value, index) => value - camera.target[index]);
-  const distance = Math.max(0.01, Math.min(200000, Math.hypot(...delta) * scale));
+  const distance = Math.max(distanceMinimum, Math.min(distanceLimit, Math.hypot(...delta) * scale));
   const angle = Math.atan2(delta[0], delta[2]) + yaw;
   const elevation = Math.max(-Math.PI / 2 + 0.002, Math.min(Math.PI / 2 - 0.002, Math.asin(delta[1] / Math.hypot(...delta)) + pitch));
   return { ...camera, target: [...camera.target], position: camera.target.map((value, index) => value +
     [distance * Math.cos(elevation) * Math.sin(angle), distance * Math.sin(elevation), distance * Math.cos(elevation) * Math.cos(angle)][index]) };
+}
+
+// The sphere enclosing all eight box corners is rotation invariant. Frame it
+// against the smaller actual viewport half-angle, keeping the current heading.
+// These are temporary view values; author camera clipping remains untouched.
+export function frameCamera(camera, object, aspect) {
+  const triplet = value => Array.isArray(value) && value.length === 3 && value.every(Number.isFinite);
+  if (!camera || !object || !triplet(camera.position) || !triplet(camera.target)
+    || !triplet(object.position) || !triplet(object.size) || object.size.some(value => value <= 0)
+    || !Number.isFinite(aspect) || aspect <= 0 || !Number.isFinite(camera.fovDegrees)
+    || camera.fovDegrees <= 0 || camera.fovDegrees >= 180) return null;
+  const delta = camera.position.map((value, index) => value - camera.target[index]);
+  if (!Math.hypot(...delta) || !Math.hypot(delta[0], delta[2])) return null;
+  const heading = normalize3(delta), radius = Math.hypot(...object.size) / 2;
+  const vertical = camera.fovDegrees * Math.PI / 360;
+  const halfAngle = Math.min(vertical, Math.atan(Math.tan(vertical) * aspect));
+  const distance = radius * 1.2 / Math.sin(halfAngle);
+  const target = [...object.position], position = target.map((value, index) => value + heading[index] * distance);
+  const near = (distance - radius) / 2, far = distance + radius * 2;
+  if (![...position, distance, near, far].every(Number.isFinite) || near <= 0 || far <= near) return null;
+  return Object.freeze({ ...camera, position: Object.freeze(position), target: Object.freeze(target), near, far });
+}
+// Bounds use every transformed box corner. A missing or malformed object
+// rejects the complete scene rather than shrinking its view by omission.
+export function sceneBounds(objects) {
+  const triplet = value => Array.isArray(value) && value.length === 3 && value.every(Number.isFinite);
+  if (!Array.isArray(objects) || !objects.length || objects.length > 128) return null;
+  const points = [], min = [Infinity, Infinity, Infinity], max = [-Infinity, -Infinity, -Infinity];
+  for (const object of objects) {
+    if (!object || !triplet(object.position) || !triplet(object.size) || !triplet(object.rotationDegrees)
+      || object.size.some(value => value <= 0)) return null;
+    const matrix = objectMatrix4(object);
+    if (!matrix.every(Number.isFinite)) return null;
+    for (const x of [-.5, .5]) for (const y of [-.5, .5]) for (const z of [-.5, .5]) {
+      const point = [0, 1, 2].map(axis => matrix[axis] * x + matrix[4 + axis] * y + matrix[8 + axis] * z + object.position[axis]);
+      if (!point.every(Number.isFinite)) return null;
+      for (let axis = 0; axis < 3; axis++) { min[axis] = Math.min(min[axis], point[axis]); max[axis] = Math.max(max[axis], point[axis]); }
+      points.push(point);
+    }
+  }
+  // Half each bound before summing to avoid overflowing two finite limits.
+  const center = min.map((value, axis) => value / 2 + max[axis] / 2);
+  const radius = Math.max(...points.map(point => Math.hypot(...point.map((value, axis) => value - center[axis]))));
+  if (![...center, radius].every(Number.isFinite) || radius <= 0) return null;
+  return Object.freeze({ min: Object.freeze(min), max: Object.freeze(max), center: Object.freeze(center), radius });
+}
+
+// This is temporary framing of the complete validated scene. The enclosing
+// sphere fits the narrower drawing-buffer half-angle, preserving heading/FOV.
+export function frameSceneCamera(camera, objects, aspect) {
+  const triplet = value => Array.isArray(value) && value.length === 3 && value.every(Number.isFinite);
+  if (!camera || !triplet(camera.position) || !triplet(camera.target)
+    || !Number.isFinite(camera.fovDegrees) || camera.fovDegrees <= 0 || camera.fovDegrees >= 180
+    || !Number.isFinite(aspect) || aspect <= 0) return null;
+  const delta = camera.position.map((value, axis) => value - camera.target[axis]);
+  if (!delta.every(Number.isFinite) || !Math.hypot(...delta) || !Math.hypot(delta[0], delta[2])) return null;
+  const bounds = sceneBounds(objects); if (!bounds) return null;
+  const heading = normalize3(delta), vertical = camera.fovDegrees * Math.PI / 360;
+  const halfAngle = Math.min(vertical, Math.atan(Math.tan(vertical) * aspect));
+  const distance = bounds.radius * 1.2 / Math.sin(halfAngle);
+  const target = [...bounds.center], position = target.map((value, axis) => value + heading[axis] * distance);
+  const near = (distance - bounds.radius) / 2, far = distance + bounds.radius * 2;
+  if (![...position, distance, near, far].every(Number.isFinite) || near <= 0 || far <= near) return null;
+  // A finite distance can still disappear when added to a huge world target.
+  const actualDelta = position.map((value, axis) => value - target[axis]);
+  if (!actualDelta.every(Number.isFinite) || !Math.hypot(...actualDelta) || !Math.hypot(actualDelta[0], actualDelta[2])) return null;
+  return Object.freeze({ ...camera, position: Object.freeze(position), target: Object.freeze(target), near, far });
 }
 export const color3 = hex => [1, 3, 5].map(start => parseInt(hex.slice(start, start + 2), 16) / 255);

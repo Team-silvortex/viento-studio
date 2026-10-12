@@ -1,0 +1,93 @@
+{
+  "format": "viento-scene3d-environment-design-boundary-review",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T13:34:12.694701+00:00",
+  "status": "read-only pre-implementation recommendations; current root integration may be in progress",
+  "baseline": {
+    "report": "baseline.json",
+    "sha256": "670297b38c9f4ad39d38d64c1c1e4c8834aa9ae5026f24e159c396fe27e01678",
+    "sources": 698,
+    "historicalReports": 3890,
+    "authors": 41,
+    "trustedTools": 4
+  },
+  "reviewedSources": {
+    "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+    "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
+    "engine/scene3d-objects.mjs": "232245131d6b926e9d6cdb7d4b9c6103c09d5c142ae72f4365d9b5025c0ea3f4",
+    "web/modules/app-scene3d-preview.js": "c09771f9b758a7e1786ad9de4d01e0337113769826875603c0782003a1256050",
+    "web/modules/scene3d-renderer.js": "50c17c92d28d01bfae6d40d5916ce5d1e13ff1cab4285a299ea87030a47ab94d",
+    "web/modules/scene3d-math.js": "7548e0b9e4ee30a0e97e6f8c41da4a9d57cfc2d3424b491b888c36c4a988ba9d",
+    "web/modules/app-runtime.js": "483559f0d624ef31708626eea53b1ed257772bcb87f50b0d817bb972a629bc00",
+    "crates/viento-studio-core/src/scene3d.rs": "d17178daad94bd5e9f98951565d8cf5a479c46948e2836b088d9515827559a79",
+    "crates/viento-studio-core/src/scene3d_patch.rs": "31f6d0278e0bcaa203efcc1da80725fe8ae601ae0a2eb3dedf3bc7a14dc09465"
+  },
+  "proposedContract": {
+    "operation": "scene3d.patchEnvironment",
+    "independentCapability": true,
+    "schemaChange": false,
+    "requestKeys": [
+      "protocolVersion",
+      "operation",
+      "content",
+      "values"
+    ],
+    "values": "Nonempty partial top-level camera, light and background; camera and light, when present, are nonempty exact known-field records.",
+    "cameraFields": [
+      "position",
+      "target",
+      "fovDegrees",
+      "near",
+      "far"
+    ],
+    "lightFields": [
+      "direction",
+      "color",
+      "energy"
+    ],
+    "background": "RGB six-digit hex string",
+    "intent": "SET only; no reset, remove, normalization or renderer-camera import.",
+    "excluded": [
+      "viewport",
+      "name",
+      "format",
+      "schemaVersion",
+      "objects",
+      "backend/tool/export execution"
+    ],
+    "status": "Recommendation pending parent final contract, not an implemented API claim."
+  },
+  "requiredBoundaries": [
+    "Validate the entire bounded original source, apply all net leaf changes atomically, and validate the entire final source. Intermediate camera position/target and near/far combinations need not be valid.",
+    "Preserve all unrequested bytes, including BOM/CRLF, escaped decoded keys, ordering, exponents, signed zero and object identity. Same numeric value or same decoded string produces an exact byte no-op, not canonicalization.",
+    "Only requested scalar numeric or color-string value tokens are editable. Background/light.color strings do not justify modifying object colors, names, keys or any other string token.",
+    "Bridge verification must compare full before/after native models, exact requested changedPaths, and both numeric and string token inventories with every unapproved span unchanged.",
+    "Use separate environment proposal authority and domain capability. Shared source snapshot/host guards are reusable; copied or foreign-domain proposals convey no authority.",
+    "Readonly preview keeps getContext/getSource only. Its local orbit/zoom/reset camera is transient and must never update author camera or source. Explicit refresh reconstructs local view from the new authored model.",
+    "Environment authoring does not depend on WebGL availability and must not execute backend tools. Missing environment capability must leave old parse, preview, transform, objects and ordinary source editing available.",
+    "Application updates only the current source draft. Existing baseline/version/cache and normal Save conflict checks remain intact. Source path, document identity, reload token, revision, draft epoch and UI ownership are rechecked after all awaits.",
+    "Form intent and approval cover every raw checkbox/value and target identity; silent DOM mutation invalidates approval. Use a scoped hidden rule so layout styling cannot reveal inactive inputs."
+  ],
+  "existingEvidenceFromStaticRead": {
+    "readonlyPreview": "setupScene3DPreview takes only getContext/getSource; renderer maintains separate local camera copies and orbit/reset operations.",
+    "sourceIdentity": "captureScene3DAuthoringSource exact five-field source snapshot; existing host checks document, baseline, version, content and source/draft epochs.",
+    "currentHostIntegration": "An independent applyScene3DEnvironmentDraft wrapper is already present during concurrent implementation; this design report does not certify its pending pure/core/UI implementation.",
+    "bounds": "Reuse actual native schema1 camera safe-basis, minimum distance, near/far separation, directional-light safe-basis, RGB and 128 KiB limits without widening them."
+  },
+  "recommendedIndependentTests": [
+    "Final-valid camera position+target and near+far combined patch with an invalid sequential intermediate.",
+    "Zero energy valid; zero/vertical light direction and unusable camera rejected; tiny valid light direction remains raw while render normalization is temporary.",
+    "Exact semantic no-op for exponents, signed zero, escaped RGB values and mixed unchanged leaves; all-no-op has no approval.",
+    "Invalid mixed patch and final byte-budget overflow leave original bytes intact; duplicate decoded keys, null, unknown fields, accessors/sparse arrays/non-finite input rejected.",
+    "Forged correct requested values with rewritten keys, unrequested object transforms/colors, viewport or identity rejected.",
+    "Late close/new open, same-path document reload, source mutation at each awaited boundary, cross-domain brand and malformed completion receipt refused.",
+    "Readonly orbit/wheel/reset does not touch source; author environment patch plus explicit preview refresh uses the new authored camera/light/background.",
+    "Missing/unsupported new capability preserves old domains; normal Save external conflict remains visible; three languages and narrow layout retain approval/intent."
+  ],
+  "executedTests": [],
+  "scopeLimits": [
+    "Static design and baseline inspection only. No new operation, native/WASM, rendering, browser, prepared resource, installed desktop or device validation claimed."
+  ],
+  "productFilesWritten": [],
+  "historicalFilesWritten": []
+}

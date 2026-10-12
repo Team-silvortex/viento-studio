@@ -1,0 +1,11 @@
+{
+  "finding": "The 17th module exposed the non-wrapping, non-shrinking shared editor toolbar. Whole-page overflow was missed by initial desktop smoke assertions.",
+  "fix": "Wrap independent tool buttons within the editor header, preserving all actions and workspace identity.",
+  "changed": [
+    "scripts/tests/scene3d-removal-smoke.mjs",
+    "web/editor-layout.css"
+  ],
+  "beforeManifestSha256": "f4e4d979e920383fe2d548e89be87b373679f4b86dd0fb444142725cb0dac565",
+  "finalManifestSha256": "bf8d993b4759447c8dde8b681277823c45197b5e6892e697e765e3bfe8b7c79d",
+  "validation": "New browser checks cover all visible toolbar buttons and identity at 1440,1024,390 in zh-CN/en/ja."
+}

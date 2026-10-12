@@ -1,0 +1,33 @@
+{
+  "format": "viento-scene3d-alignment-browser-initial-provenance",
+  "ok": true,
+  "initialProducer": {
+    "path": "initial-producer/scene3d-alignment-smoke.mjs",
+    "sha256": "95b352c7cbf1d68afef3fe4ccb15c4446863a5907790bc3c0196bcb7653d5adf"
+  },
+  "initialStructuredReport": {
+    "path": "browser-alignment-initial/browser.json",
+    "sha256": "77073973938163223342683516fe24ede6a3578c360e00b577928f84048ca74f",
+    "status": "failed",
+    "completedWorkflows": 4,
+    "screenshots": [
+      "alignment-desktop-review.png",
+      "alignment-zh-CN-390.png",
+      "alignment-en-390.png",
+      "alignment-ja-390.png",
+      "failure.png"
+    ]
+  },
+  "initialStdout": {
+    "path": "browser-alignment-initial.log",
+    "originalBytesPreserved": false,
+    "currentSha256": "6131ee8bcae9e198f89072fdd08a9711c6b5c56914863d7f772f7d1a4f16b18c",
+    "explanation": "The root retry redirected stdout to the existing initial log, replacing the original stdout with an early nonempty-output error. No original stdout has been reconstructed. The original browser.json and five PNGs remain preserved."
+  },
+  "fixtureRepair": {
+    "scope": "new smoke producer only",
+    "changes": "Wrap two multi-statement detached-row Runtime.evaluate expressions in IIFEs. The expression evaluator requires a single expression. No product, CSS, dictionaries or UI tests changed.",
+    "fixedProducerSha256": "029cc1bb2af415b644d206c4882c0ca3afdbf0e8dda857ba6bac2dc55e8bc6e9"
+  },
+  "executionBoundary": "The initial subagent run completed under its then-current default execution context and cleaned up all temporary workspace, HTTP and Chrome processes. Further browser runs are owned by root under its effective approval policy; the subagent will only read results and view screenshots."
+}

@@ -1,0 +1,56 @@
+✔ language changes update retained UI references while preserving authored labels and interpolation values (1.450993ms)
+✔ English and Japanese catalogues preserve all message parameters (7.747699ms)
+✔ unknown messages cannot resolve inherited object properties in either catalogue (0.396919ms)
+✖ desktop language preferences require the local session and stay outside the project (237.654951ms)
+✖ scripts/tests/scene3d-removal-ui.test.mjs (0.136736ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 269.674892
+
+✖ failing tests:
+
+test at scripts/tests/i18n.test.mjs:59:1
+✖ desktop language preferences require the local session and stay outside the project (237.654951ms)
+  Error: Server exited: node:events:505
+      throw er; // Unhandled 'error' event
+      ^
+  
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+  Emitted 'error' event on Server instance at:
+      at emitErrorNT (node:net:2416:8)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+  
+  Node.js v24.21.0
+  
+      at ChildProcess.<anonymous> (file:///tmp/viento-scene3d-removal-71u64wrk/project/scripts/tests/helpers.mjs:79:62)
+      at ChildProcess.wrapper (node:events:639:12)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:295:12)
+
+test at scripts/tests/scene3d-removal-ui.test.mjs:1:1
+✖ scripts/tests/scene3d-removal-ui.test.mjs (0.136736ms)
+  SyntaxError: Unexpected end of input
+      at compileSourceTextModule (node:internal/modules/esm/utils:319:16)
+      at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:89:18)
+      at #translate (node:internal/modules/esm/loader:438:20)
+      at afterLoad (node:internal/modules/esm/loader:506:29)
+      at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+      at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+      at afterResolve (node:internal/modules/esm/loader:611:52)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12)
+      at node:internal/modules/esm/loader:636:32
+      at TracingChannel.tracePromise (node:diagnostics_channel:362:14)

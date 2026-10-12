@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { dialogHarness, flushDialogs } from './dialog-harness.mjs';
 import { deferred } from './editor-harness.mjs';
+import { createScene3DObjectIndex, queryScene3DObjects } from '../../engine/scene3d-navigation.mjs';
 import en from '../../web/i18n/en.js';
 import ja from '../../web/i18n/ja.js';
 
@@ -16,22 +17,32 @@ const parsed = () => ({ model: { format: 'viento-scene3d-model', schemaVersion: 
     { instanceId: two, propertyPath: '/objects/1', sourceRange: { start: 122, end: 192, encoding: 'utf-16', exact: true } }] } });
 async function fixture(t, options = {}) {
   const context = { editable: true, creating: false, busy: false, sourceJSON: true, sourcePath: 'documents/scenes/boxes.json', sourceToken: '1:0' };
-  const renders = [], instances = [], errors = []; let language = 'zh', supported = options.supported !== false, content = 'valid', listener = () => {}, loads = 0, parses = 0;
+  const renders = [], instances = [], errors = [], navigationCalls = []; let language = 'zh', supported = options.supported !== false, content = 'valid', listener = () => {}, loads = 0, parses = 0;
   const translate = key => ({ en, ja }[language]?.[key] || key);
   const h = await dialogHarness('app-scene3d-preview', { supportsStudioCoreScene3D: () => supported,
+    createScene3DObjectIndex, queryScene3DObjects,
     parseScene3DSource(raw) { parses++; if (options.parse) return options.parse(raw); if (raw !== 'valid') throw new Error('Invalid scene at /objects/0/size'); return parsed(); },
     createScene3DRenderer(canvas, ports) { if (options.rendererError) throw Error('Shader failed'); if (options.unsupported) return null;
-      const renderer = { canvas, disposed: 0, resets: 0, ports, setModel(model) { renders.push(copy(model)); }, dispose() { this.disposed++; }, resetView() { this.resets++; } }; instances.push(renderer); return renderer; },
+      const renderer = { canvas, disposed: 0, resets: 0, focuses: [], ports, setModel(model) { renders.push(copy(model)); }, dispose() { this.disposed++; }, resetView() { this.resets++; },
+        focusObject(id) { this.focuses.push(id); return options.focusResult !== false; } };
+      if (options.wholeScene) { renderer.focusAllCalls = 0; renderer.focusAll = () => { renderer.focusAllCalls++; return options.allResult !== false; }; }
+      if (options.selectionFeedback) {
+        renderer.selections = []; renderer.selectedInstanceId = null; renderer.events = [];
+        renderer.setModel = model => { renders.push(copy(model)); renderer.selectedInstanceId = null; renderer.events.push('model'); };
+        renderer.setSelectedObject = id => { renderer.selections.push(id); renderer.selectedInstanceId = id; renderer.events.push('selection:' + id); return true; };
+      }
+      instances.push(renderer); return renderer; },
     t: translate, translatePage(root) { for (const node of root.querySelectorAll('[data-i18n]')) node.textContent = translate(node.dataset.i18n); },
     onLanguageChange(fn) { listener = fn; return () => { listener = () => {}; }; },
   });
   h.runtime.window.alert = value => errors.push(value);
   const controller = h.runtime.setupScene3DPreview({ getContext: () => context, async getSource() { loads++; if (options.source) return options.source(context);
-    return { content, sourcePath: context.sourcePath, token: context.sourceToken }; } });
+    return { content, sourcePath: context.sourcePath, token: context.sourceToken }; },
+    ...(options.locate ? { locateSource: async (snapshot, ports) => { navigationCalls.push({ snapshot, ports }); return options.locate(snapshot, ports, h); } } : {}) });
   const el = suffix => h.element('scene3d' + suffix), open = () => controller.open();
   const settle = async () => { await flushDialogs(); await flushDialogs(); };
   t.after(() => controller.dispose());
-  return { ...h, controller, context, el, open, settle, renders, instances, errors, loads: () => loads, parses: () => parses,
+  return { ...h, controller, context, el, open, settle, renders, instances, errors, navigationCalls, loads: () => loads, parses: () => parses,
     setContent(value) { content = value; }, setSupported(value) { supported = value; }, setLanguage(value) { language = value; listener(); } };
 }
 
@@ -132,4 +143,321 @@ test('every new literal GUI message has English and Japanese translations', asyn
   const source = await fs.readFile(new URL('../../web/modules/app-scene3d-preview.js', import.meta.url), 'utf8');
   const keys = new Set([...source.matchAll(/data-i18n="([^"]+)"|\bt\('([^']+)'\)|message = '([^']+)'/g)].map(match => match[1] || match[2] || match[3]).filter(Boolean));
   for (const key of keys) for (const locale of [en, ja]) assert.ok(locale[key], key);
+});
+
+test('read-only search trims and matches case-insensitive Unicode names or UUIDs without changing selected declarations', async t => {
+  const h = await fixture(t); await h.open();
+  h.el('Search').value = '  OTHER  '; h.el('Search').dispatch('input'); assert.deepEqual(h.el('Objects').querySelectorAll('button').map(node => node.dataset.instanceId), [two]);
+  assert.match(h.el('Matches').textContent, /1 \/ 2/); assert.equal(h.el('SelectionHidden').hidden, false); assert.match(h.el('Inspector').textContent, new RegExp(one));
+  h.el('Search').value = two.slice(-8).toUpperCase(); h.el('Search').dispatch('input'); assert.equal(h.el('Objects').querySelectorAll('button')[0].dataset.instanceId, two);
+  const scene = parsed(); scene.model.objects[1].name = '雪É😀 <script>literal</script>'; const unicode = await fixture(t, { parse: () => scene }); await unicode.open();
+  unicode.el('Search').value = 'é😀'; unicode.el('Search').dispatch('input'); assert.equal(unicode.el('Objects').querySelectorAll('button')[0].textContent, scene.model.objects[1].name); assert.equal(unicode.el('Objects').querySelectorAll('script').length, 0);
+  assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1); assert.equal(h.context.sourceToken, '1:0');
+});
+test('empty results keep inspector selection and clearing search restores the same pressed UUID', async t => {
+  const h = await fixture(t); await h.open(); h.el('Objects').querySelectorAll('button')[1].click();
+  h.el('Search').value = 'missing'; h.el('Search').dispatch('input'); assert.equal(h.el('Objects').children.length, 0); assert.equal(h.el('NoResults').hidden, false); assert.equal(h.el('SelectionHidden').hidden, false);
+  assert.match(h.el('Inspector').textContent, new RegExp(two)); h.el('ClearSearch').click(); assert.equal(h.el('Search').value, ''); assert.equal(h.el('NoResults').hidden, true); assert.equal(h.el('SelectionHidden').hidden, true);
+  const selected = h.el('Objects').querySelectorAll('button').find(node => node.dataset.instanceId === two); assert.equal(selected.getAttribute('aria-pressed'), 'true'); assert.equal(h.document.activeElement, h.el('Search'));
+});
+test('valid refresh keeps a UUID through reorder and falls back to a remaining object after deletion without clearing the filter', async t => {
+  let scene = parsed(); const h = await fixture(t, { parse: () => scene }); await h.open(); h.el('Objects').querySelectorAll('button')[1].click();
+  h.el('Search').value = 'Other'; h.el('Search').dispatch('input'); scene = parsed(); scene.model.objects.reverse(); scene.sourceLocations.objects.reverse(); h.context.sourceToken = '1:1'; h.el('Refresh').click(); await h.settle();
+  assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.equal(h.el('Search').value, 'Other'); assert.equal(h.el('Objects').querySelectorAll('button')[0].getAttribute('aria-pressed'), 'true');
+  scene = parsed(); scene.model.objects.pop(); scene.sourceLocations.objects.pop(); h.context.sourceToken = '1:2'; h.el('Refresh').click(); await h.settle(); assert.match(h.el('Inspector').textContent, new RegExp(one)); assert.equal(h.el('SelectionHidden').hidden, false);
+  h.el('ClearSearch').click(); assert.equal(h.el('Objects').querySelectorAll('button')[0].dataset.instanceId, one); assert.equal(h.el('Objects').querySelectorAll('button')[0].getAttribute('aria-pressed'), 'true');
+});
+test('search handles all 128 declared objects with stable IDs, exact counts and a bounded visible results list', async t => {
+  const scene = parsed(), base = scene.model.objects[0]; scene.model.objects = Array.from({ length: 128 }, (_, i) => ({ ...copy(base), instanceId: `00000000-0000-4000-8000-${String(i + 1).padStart(12, '0')}`, name: `Box ${i + 1} 雪` }));
+  scene.sourceLocations.objects = scene.model.objects.map((item, i) => ({ instanceId: item.instanceId, propertyPath: `/objects/${i}`, sourceRange: { start: 50 + i * 10, end: 59 + i * 10, encoding: 'utf-16', exact: true } }));
+  const h = await fixture(t, { parse: () => scene }); await h.open(); assert.equal(h.el('Objects').querySelectorAll('button').length, 128); assert.match(h.el('Matches').textContent, /128 \/ 128/);
+  h.el('Search').value = 'Box 128'; h.el('Search').dispatch('input'); const found = h.el('Objects').querySelectorAll('button'); assert.equal(found.length, 1); assert.equal(found[0].dataset.instanceId, scene.model.objects[127].instanceId);
+  found[0].click(); assert.match(h.el('Inspector').textContent, /\/objects\/127/); assert.match(h.el('Matches').textContent, /1 \/ 128/);
+});
+test('language switching preserves raw filter and hidden selection without a new parse or renderer model', async t => {
+  const h = await fixture(t); await h.open(); h.el('Objects').querySelectorAll('button')[1].click(); h.el('Search').value = '  BLUE  '; h.el('Search').dispatch('input');
+  for (const language of ['en', 'ja', 'zh']) { h.setLanguage(language); assert.equal(h.el('Search').value, '  BLUE  '); assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.equal(h.el('SelectionHidden').hidden, false); assert.match(h.el('Matches').textContent, /1 \/ 2/); }
+  assert.equal(h.loads(), 1); assert.equal(h.parses(), 1); assert.equal(h.renders.length, 1);
+});
+test('focus targets the selected UUID even outside results and changes only the renderer temporary view', async t => {
+  const h = await fixture(t); await h.open(); h.el('Objects').querySelectorAll('button')[1].click(); h.el('Search').value = 'Blue'; h.el('Search').dispatch('input'); h.el('Focus').click();
+  assert.deepEqual(h.instances[0].focuses, [two]); assert.match(h.el('Status').textContent, /仅改变临时视角/); assert.equal(h.loads(), 1); assert.equal(h.context.sourceToken, '1:0'); assert.equal(h.navigationCalls.length, 0);
+  const rejected = await fixture(t, { focusResult: false }); await rejected.open(); rejected.el('Focus').click(); assert.match(rejected.el('Status').textContent, /无法聚焦/);
+  const unsupported = await fixture(t, { unsupported: true }); await unsupported.open(); assert.equal(unsupported.el('Focus').disabled, true);
+  h.instances[0].ports.onError(Error('context lost')); assert.equal(h.el('Focus').disabled, true);
+});
+test('source navigation is optional and never exposes source write or Save ports', async t => {
+  const h = await fixture(t); await h.open(); assert.equal(h.el('Locate').disabled, true); assert.match(h.el('Locate').title, /未提供/); h.el('Locate').click(); await h.settle(); assert.equal(h.navigationCalls.length, 0);
+  const source = await fs.readFile(new URL('../../web/modules/app-scene3d-preview.js', import.meta.url), 'utf8'); assert.equal(/applyDraft|World|saveDraft|createScene3D.*Proposal/.test(source.replace(/\/\/[^\n]*/g, '')), false);
+});
+test('exact read-only navigation snapshot and UUID remain guarded until receipt then focus occurs after modal close', async t => {
+  const gate = deferred(); let focused = 0; const h = await fixture(t, { locate: (snapshot, ports) => { assert.equal(Object.isFrozen(snapshot), true); assert.deepEqual(copy(snapshot), { sourcePath: 'documents/scenes/boxes.json', token: '1:0', content: 'valid' }); assert.equal(ports.instanceId, two); assert.equal(ports.isCurrent(), true); return gate.promise; } });
+  h.el('PreviewBtn').focus(); await h.open(); h.el('Objects').querySelectorAll('button')[1].click(); h.el('Locate').click(); assert.equal(h.el('Locate').disabled, true); assert.equal(h.el('Refresh').disabled, true); assert.equal(h.el('Search').disabled, true); assert.equal(h.el('Focus').disabled, true); assert.equal(h.el('Close').disabled, false);
+  gate.resolve(Object.freeze({ located: true, focus() { focused++; assert.equal(h.el('Dialog').open, false); h.element('projectBuildBtn').focus(); return true; } })); await h.settle(); assert.equal(focused, 1); assert.equal(h.el('Dialog').open, false); assert.equal(h.document.activeElement, h.element('projectBuildBtn')); assert.equal(h.instances[0].disposed, 1); assert.equal(h.context.sourceToken, '1:0');
+});
+test('false, malformed or throwing navigation receipts retain the dialog and explain that current source must be refreshed', async t => {
+  for (const receipt of [false, true, {}, { located: false }, Object.freeze({ located: true }), Object.freeze({ located: true, focus: 'forged' }), { located: true, focus() {} }, Object.freeze({ located: true, focus() {}, extra: true }), Object.freeze({ get located() { throw Error('Getter must never execute'); }, focus() {} })]) { const h = await fixture(t, { locate: () => receipt }); await h.open(); h.el('Locate').click(); await h.settle(); assert.equal(h.el('Dialog').open, true); assert.match(h.el('Status').textContent, /未确认.*刷新/); assert.equal(h.el('Locate').disabled, false); }
+  const rejected = await fixture(t, { locate: () => { throw Error('Current bytes changed'); } }); await rejected.open(); rejected.el('Locate').click(); await rejected.settle(); assert.match(rejected.el('Diagnostics').textContent, /Current bytes/); assert.equal(rejected.el('Dialog').open, true);
+});
+test('stale preview token or busy source disables navigation while declarations and focus remain read-only', async t => {
+  const h = await fixture(t, { locate: () => assert.fail('Stale preview must never call host navigation') }); await h.open(); h.context.sourceToken = '1:1'; h.controller.refresh(); assert.equal(h.el('Locate').disabled, true); h.el('Locate').click(); await h.settle(); assert.equal(h.navigationCalls.length, 0); assert.equal(h.el('Focus').disabled, false);
+  h.context.sourceToken = '1:0'; h.context.busy = true; h.controller.refresh(); h.el('Locate').click(); await h.settle(); assert.equal(h.navigationCalls.length, 0); assert.equal(h.el('Locate').disabled, true);
+});
+test('late navigation after close and reopen cannot focus or close a new owner session', async t => {
+  const gate = deferred(); let focused = 0; const h = await fixture(t, { locate: () => gate.promise }); await h.open(); h.el('Locate').click(); const old = h.navigationCalls[0]; h.el('Close').click(); assert.equal(old.ports.isCurrent(), false);
+  await h.open(); gate.resolve(Object.freeze({ located: true, focus() { focused++; return true; } })); await h.settle(); assert.equal(focused, 0); assert.equal(h.el('Dialog').open, true); assert.equal(h.instances.length, 2); assert.equal(h.instances[1].disposed, 0);
+});
+test('token, path, busy and silent query changes across navigation await revoke the host owner and late focus', async t => {
+  for (const change of ['token', 'path', 'busy', 'query', 'capability']) { const gate = deferred(); let focused = 0; const h = await fixture(t, { locate: () => gate.promise }); await h.open(); h.el('Locate').click();
+    if (change === 'token') h.context.sourceToken = 'new'; if (change === 'path') h.context.sourcePath = 'other.json'; if (change === 'busy') h.context.busy = true; if (change === 'query') h.el('Search').value = 'silent'; if (change === 'capability') h.setSupported(false);
+    assert.equal(h.navigationCalls[0].ports.isCurrent(), false); gate.resolve(Object.freeze({ located: true, focus() { focused++; return true; } })); await h.settle(); assert.equal(focused, 0); assert.equal(h.el('Dialog').open, true); assert.equal(h.el('Locate').disabled, change !== 'query'); }
+});
+test('duplicate navigation, result-list clicks and language callbacks cannot consume a pending receipt or change its target', async t => {
+  const gate = deferred(); const h = await fixture(t, { locate: () => gate.promise }); await h.open(); h.el('Locate').click(); h.el('Locate').click(); h.el('Objects').querySelectorAll('button')[1].click(); h.el('ClearSearch').click(); h.el('Refresh').click(); h.el('Focus').click();
+  assert.equal(h.navigationCalls.length, 1); assert.equal(h.navigationCalls[0].ports.instanceId, one); h.setLanguage('ja'); assert.equal(h.navigationCalls[0].ports.isCurrent(), true); assert.match(h.el('Inspector').textContent, new RegExp(one));
+  gate.resolve(false); await h.settle(); assert.equal(h.el('Dialog').open, true); assert.equal(h.el('Locate').disabled, false); assert.equal(h.loads(), 1); assert.equal(h.instances[0].focuses.length, 0);
+});
+test('late navigation failures after close or disposal remain silent and resources are released exactly once', async t => {
+  const gate = deferred(), h = await fixture(t, { locate: () => gate.promise }); await h.open(); h.el('Locate').click(); h.controller.dispose(); gate.reject(Error('Late navigation')); await h.settle(); assert.deepEqual(h.errors, []); assert.equal(h.instances[0].disposed, 1); assert.equal(h.el('Dialog'), null);
+});
+
+test('rebuilding the object list retains the focused stable button after selection and language changes without stealing search focus', async t => {
+  const h = await fixture(t); await h.open(); const old = h.el('Objects').querySelectorAll('button')[1]; old.focus(); old.click();
+  assert.notEqual(h.document.activeElement, old); assert.equal(h.document.activeElement.dataset.instanceId, two); assert.equal(h.document.activeElement.getAttribute('aria-pressed'), 'true');
+  h.setLanguage('en'); assert.equal(h.document.activeElement.dataset.instanceId, two); h.el('Search').focus(); h.el('Search').value = 'Blue'; h.el('Search').dispatch('input'); assert.equal(h.document.activeElement, h.el('Search'));
+});
+test('owner loss while navigation is pending ends the progress message and keeps a retryable declaration view', async t => {
+  for (const lose of ['token', 'silent-query']) { const gate = deferred(), h = await fixture(t, { locate: () => gate.promise }); await h.open(); h.el('Locate').click(); assert.match(h.el('Status').textContent, /正在定位/);
+    if (lose === 'token') h.context.sourceToken = 'new'; else h.el('Search').value = 'new-filter'; gate.resolve(Object.freeze({ located: true, focus: () => assert.fail('Stale completion must not focus') })); await h.settle();
+    assert.equal(h.el('Dialog').open, true); assert.match(h.el('Status').textContent, /未确认.*刷新/); assert.doesNotMatch(h.el('Status').textContent, /正在定位/); assert.equal(h.el('Close').disabled, false);
+  }
+});
+
+test('reset status replaces focused view in all languages while retaining read-only selection and source ownership', async t => {
+  const h = await fixture(t); await h.open(); h.el('Objects').querySelectorAll('button')[1].click();
+  h.el('Search').value = 'Other'; h.el('Search').dispatch('input'); h.el('Focus').click();
+  assert.match(h.el('Status').textContent, /已聚焦/);
+  const owner = copy(h.context); h.el('Reset').click();
+  const key = '视角已重置为作者相机；原文保持不变。';
+  assert.equal(h.el('Status').textContent, key); assert.equal(h.instances[0].resets, 1);
+  for (const [language, dictionary] of [['en', en], ['ja', ja]]) {
+    h.setLanguage(language); assert.equal(h.el('Status').textContent, dictionary[key]);
+    assert.equal(h.el('Search').value, 'Other'); assert.ok(h.el('Inspector').textContent.includes(two));
+  }
+  assert.deepEqual(h.context, owner); assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1);
+});
+
+test('canvas selection shares the stable UUID inspector and filtered list without changing source or camera', async t => {
+  const h = await fixture(t); await h.open(); const owner = copy(h.context), renderer = h.instances[0];
+  h.el('Search').value = 'Blue'; h.el('Search').dispatch('input'); h.el('Search').focus();
+  assert.equal(renderer.ports.onPick(two, { focus: false }), true);
+  assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.equal(h.el('SelectionHidden').hidden, false);
+  assert.equal(h.el('Search').value, 'Blue'); assert.equal(h.document.activeElement, h.el('Search'));
+  assert.deepEqual(h.el('Objects').querySelectorAll('button').map(node => node.dataset.instanceId), [one]);
+  assert.deepEqual(renderer.focuses, []); assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1);
+  assert.deepEqual(h.context, owner); assert.equal(h.navigationCalls.length, 0);
+  h.el('ClearSearch').click(); assert.equal(h.el('Objects').querySelectorAll('button')[1].getAttribute('aria-pressed'), 'true');
+});
+test('blank, missing and unknown canvas picks retain selection and do not consume source navigation', async t => {
+  const h = await fixture(t); await h.open(); const renderer = h.instances[0]; renderer.ports.onPick(two, { focus: false });
+  for (const id of [null, undefined, '', 'unknown', 1, {}]) assert.equal(renderer.ports.onPick(id, { focus: true }), false);
+  assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.deepEqual(renderer.focuses, []);
+  assert.equal(h.loads(), 1); assert.equal(h.navigationCalls.length, 0);
+});
+test('double-click focus hints accept only an own literal true value without reading getters', async t => {
+  const h = await fixture(t); await h.open(); const renderer = h.instances[0]; let getters = 0;
+  for (const hint of [undefined, null, true, { focus: 'true' }, { focus: 1 }, Object.create({ focus: true }), { get focus() { getters++; return true; } }]) {
+    assert.equal(renderer.ports.onPick(two, hint), true); assert.deepEqual(renderer.focuses, []);
+  }
+  assert.equal(getters, 0); assert.equal(renderer.ports.onPick(two, Object.freeze({ focus: true })), true);
+  assert.deepEqual(renderer.focuses, [two]); assert.match(h.el('Status').textContent, /已聚焦.*仅改变临时视角/);
+  assert.equal(h.context.sourceToken, '1:0'); assert.equal(h.loads(), 1);
+});
+test('source refresh locks canvas picks and then binds the retained renderer to the new valid model', async t => {
+  const gate = deferred(); let reads = 0; const h = await fixture(t, { source: context => ++reads === 1
+    ? { content: 'valid', sourcePath: context.sourcePath, token: context.sourceToken } : gate.promise });
+  await h.open(); const renderer = h.instances[0]; h.el('Refresh').click();
+  assert.equal(renderer.ports.onPick(two, { focus: true }), false); assert.match(h.el('Inspector').textContent, new RegExp(one));
+  gate.resolve({ content: 'valid', sourcePath: h.context.sourcePath, token: h.context.sourceToken }); await h.settle();
+  assert.equal(h.instances[0], renderer); assert.equal(renderer.ports.onPick(two, { focus: false }), true);
+  assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.deepEqual(renderer.focuses, []);
+});
+test('canvas picks cannot change a UUID or focus while its source locator receipt is pending', async t => {
+  const gate = deferred(), h = await fixture(t, { locate: () => gate.promise }); await h.open(); h.el('Locate').click();
+  assert.equal(h.instances[0].ports.onPick(two, { focus: true }), false); assert.equal(h.navigationCalls[0].ports.instanceId, one);
+  assert.equal(h.navigationCalls[0].ports.isCurrent(), true); assert.deepEqual(h.instances[0].focuses, []);
+  gate.resolve(false); await h.settle(); assert.match(h.el('Inspector').textContent, new RegExp(one));
+});
+test('closed and replaced canvas callbacks cannot select or report errors in a reopened owner', async t => {
+  const h = await fixture(t); await h.open(); const old = h.instances[0]; h.el('Close').click();
+  assert.equal(old.ports.onPick(two, { focus: true }), false); await h.open();
+  assert.equal(old.ports.onPick(two, { focus: true }), false); old.ports.onError(Error('old context lost'));
+  assert.match(h.el('Inspector').textContent, new RegExp(one)); assert.equal(h.el('Diagnostics').textContent, '');
+  assert.equal(h.instances[1].ports.onPick(two, { focus: false }), true); assert.equal(h.instances[1].disposed, 0);
+});
+test('disposal and current drawing failure invalidate the optional canvas selection callback', async t => {
+  const h = await fixture(t); await h.open(); const renderer = h.instances[0]; renderer.ports.onError(Error('context lost'));
+  assert.equal(renderer.ports.onPick(two, { focus: true }), false); assert.match(h.el('Inspector').textContent, new RegExp(one));
+  // A lost GPU does not remove independently inspectable author declarations.
+  h.el('Objects').querySelectorAll('button')[1].click(); assert.match(h.el('Inspector').textContent, new RegExp(two));
+  h.controller.dispose(); assert.equal(renderer.ports.onPick(one, { focus: true }), false); assert.equal(renderer.disposed, 1);
+});
+test('canvas picks require the current eligible document path and native capability without implicit source reload', async t => {
+  for (const [key, value] of [['editable', false], ['creating', true], ['sourceJSON', false], ['sourcePath', 'other.json']]) {
+    const h = await fixture(t); await h.open(); h.context[key] = value;
+    assert.equal(h.instances[0].ports.onPick(two, { focus: true }), false); assert.match(h.el('Inspector').textContent, new RegExp(one)); assert.equal(h.loads(), 1);
+  }
+  const h = await fixture(t); await h.open(); h.setSupported(false);
+  assert.equal(h.instances[0].ports.onPick(two, { focus: true }), false); assert.equal(h.loads(), 1);
+});
+test('stale source permits last-valid visual selection and focus while keeping strict source navigation disabled', async t => {
+  const h = await fixture(t, { locate: () => assert.fail('Stale visual selection must never navigate source') }); await h.open();
+  h.context.sourceToken = '1:1'; h.controller.refresh(); assert.equal(h.instances[0].ports.onPick(two, { focus: false }), true);
+  assert.match(h.el('Status').textContent, /上一次有效/); assert.equal(h.el('Locate').disabled, true);
+  assert.equal(h.instances[0].ports.onPick(two, { focus: true }), true); assert.deepEqual(h.instances[0].focuses, [two]);
+  h.el('Locate').click(); await h.settle(); assert.equal(h.navigationCalls.length, 0); assert.equal(h.context.sourceToken, '1:1');
+});
+test('invalid newer source retains visual selection against the last admitted model and its native diagnostic', async t => {
+  const h = await fixture(t, { locate: () => assert.fail('Invalid source must not use old declaration ranges') }); await h.open();
+  h.context.sourceToken = '1:1'; h.setContent('bad'); h.el('Refresh').click(); await h.settle();
+  assert.equal(h.instances[0].ports.onPick(two, { focus: false }), true); assert.match(h.el('Inspector').textContent, new RegExp(two));
+  assert.match(h.el('Status').textContent, /保留上一次有效/); assert.match(h.el('Diagnostics').textContent, /Invalid scene/);
+  assert.equal(h.el('Locate').disabled, true); assert.equal(h.renders.length, 1); assert.equal(h.navigationCalls.length, 0);
+});
+test('refresh removes old model identities while reset keeps selection and accepts only later current canvas taps', async t => {
+  const scene = parsed(), h = await fixture(t, { parse: () => scene }); await h.open(); const renderer = h.instances[0];
+  renderer.ports.onPick(two, { focus: false }); h.el('Reset').click(); assert.match(h.el('Inspector').textContent, new RegExp(two));
+  assert.equal(renderer.resets, 1); assert.equal(renderer.ports.onPick(one, { focus: false }), true);
+  scene.model.objects = scene.model.objects.slice(0, 1); scene.sourceLocations.objects = scene.sourceLocations.objects.slice(0, 1);
+  h.context.sourceToken = '1:1'; h.el('Refresh').click(); await h.settle();
+  assert.equal(renderer.ports.onPick(two, { focus: true }), false); assert.match(h.el('Inspector').textContent, new RegExp(one));
+  assert.deepEqual(renderer.focuses, []); assert.equal(h.renders.length, 2);
+});
+test('canvas gesture help is translated and accessible while language changes retain query and picked UUID', async t => {
+  const h = await fixture(t); await h.open(); h.el('Search').value = 'Blue'; h.el('Search').dispatch('input'); h.instances[0].ports.onPick(two, { focus: false });
+  const key = '单击方块选择，双击聚焦；拖动旋转视角，滚轮缩放。Y轴向上，右手坐标系，欧拉旋转XYZ。';
+  assert.equal(h.el('Canvas').getAttribute('aria-describedby'), 'scene3dGestures');
+  for (const [language, dictionary] of [['en', en], ['ja', ja]]) {
+    h.setLanguage(language); assert.equal(h.el('Gestures').textContent, dictionary[key]);
+    assert.equal(h.el('Search').value, 'Blue'); assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.equal(h.el('SelectionHidden').hidden, false);
+  }
+  assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1);
+});
+
+test('initial native model synchronizes its first stable UUID to optional renderer feedback after model reset', async t => {
+  const h = await fixture(t, { selectionFeedback: true }); await h.open(); const renderer = h.instances[0];
+  assert.deepEqual(renderer.events, ['model', 'selection:' + one]); assert.equal(renderer.selectedInstanceId, one);
+  assert.equal(h.el('Objects').querySelectorAll('button')[0].getAttribute('aria-pressed'), 'true');
+  assert.match(h.el('Inspector').textContent, new RegExp(one)); assert.equal(h.loads(), 1); assert.equal(h.context.sourceToken, '1:0');
+});
+test('list and canvas use one selection UUID and synchronize only actual selection changes without author ports', async t => {
+  const h = await fixture(t, { selectionFeedback: true }); await h.open(); const renderer = h.instances[0], owner = copy(h.context);
+  h.el('Objects').querySelectorAll('button')[1].click(); assert.equal(renderer.selectedInstanceId, two);
+  renderer.ports.onPick(one, { focus: false }); assert.equal(renderer.selectedInstanceId, one);
+  assert.deepEqual(renderer.selections, [one, two, one]); assert.match(h.el('Inspector').textContent, new RegExp(one));
+  assert.deepEqual(h.context, owner); assert.equal(h.loads(), 1); assert.equal(h.navigationCalls.length, 0); assert.deepEqual(renderer.focuses, []);
+});
+test('repeated selection and qualified double-click focus do not resubmit an unchanged UUID or reset the model', async t => {
+  const h = await fixture(t, { selectionFeedback: true }); await h.open(); const renderer = h.instances[0];
+  renderer.ports.onPick(two, { focus: false }); renderer.ports.onPick(two, { focus: false });
+  renderer.ports.onPick(two, { focus: true }); h.el('Objects').querySelectorAll('button')[1].click();
+  assert.deepEqual(renderer.selections, [one, two]); assert.deepEqual(renderer.focuses, [two]); assert.equal(h.renders.length, 1);
+  h.el('Reset').click(); assert.equal(renderer.selectedInstanceId, two); assert.deepEqual(renderer.selections, [one, two]);
+});
+test('filtering out a selected object and language or view repaint retain feedback without redundant setter calls', async t => {
+  const h = await fixture(t, { selectionFeedback: true }); await h.open(); const renderer = h.instances[0];
+  renderer.ports.onPick(two, { focus: false }); h.el('Search').value = 'Blue'; h.el('Search').dispatch('input');
+  for (const language of ['en', 'ja', 'zh']) { h.setLanguage(language); h.controller.refresh(); assert.equal(renderer.selectedInstanceId, two); assert.equal(h.el('SelectionHidden').hidden, false); }
+  h.el('ClearSearch').click(); assert.deepEqual(renderer.selections, [one, two]); assert.equal(h.renders.length, 1); assert.equal(h.loads(), 1);
+});
+test('successful reordered and deleted models resynchronize selection once after each model replacement', async t => {
+  let scene = parsed(); const h = await fixture(t, { selectionFeedback: true, parse: () => scene }); await h.open(); const renderer = h.instances[0];
+  renderer.ports.onPick(two, { focus: false }); scene = parsed(); scene.model.objects.reverse(); scene.sourceLocations.objects.reverse();
+  h.context.sourceToken = '1:1'; h.el('Refresh').click(); await h.settle(); assert.equal(renderer.selectedInstanceId, two);
+  assert.deepEqual(renderer.events.slice(-2), ['model', 'selection:' + two]);
+  scene = parsed(); scene.model.objects.pop(); scene.sourceLocations.objects.pop(); h.context.sourceToken = '1:2'; h.el('Refresh').click(); await h.settle();
+  assert.equal(renderer.selectedInstanceId, one); assert.deepEqual(renderer.events.slice(-2), ['model', 'selection:' + one]);
+  assert.deepEqual(renderer.selections, [one, two, two, one]); assert.equal(h.renders.length, 3);
+});
+test('last-valid visual feedback remains selectable after invalid or stale source without granting source navigation', async t => {
+  const h = await fixture(t, { selectionFeedback: true, locate: () => assert.fail('Stale outline must not locate source') }); await h.open(); const renderer = h.instances[0];
+  h.context.sourceToken = '1:1'; h.controller.refresh(); renderer.ports.onPick(two, { focus: false }); assert.equal(renderer.selectedInstanceId, two); assert.equal(h.el('Locate').disabled, true);
+  h.setContent('invalid'); h.el('Refresh').click(); await h.settle(); renderer.ports.onPick(one, { focus: false });
+  assert.equal(renderer.selectedInstanceId, one); assert.equal(h.renders.length, 1); assert.match(h.el('Status').textContent, /保留上一次有效/);
+  h.el('Locate').click(); await h.settle(); assert.equal(h.navigationCalls.length, 0); assert.deepEqual(renderer.selections, [one, two, one]);
+});
+test('old canvas selection callbacks cannot change feedback after close and a new renderer starts with its own selection', async t => {
+  const h = await fixture(t, { selectionFeedback: true }); await h.open(); const old = h.instances[0]; old.ports.onPick(two, { focus: false });
+  h.controller.close(); await h.open(); const current = h.instances[1]; assert.equal(old.ports.onPick(one, { focus: true }), false);
+  assert.deepEqual(old.selections, [one, two]); assert.deepEqual(current.selections, [one]); assert.equal(current.selectedInstanceId, one);
+  h.controller.dispose(); assert.equal(current.ports.onPick(two, { focus: false }), false); assert.deepEqual(current.selections, [one]);
+});
+test('pending ownership and failed drawing cannot deliver an invalid feedback change while declarations remain readable', async t => {
+  const gate = deferred(); let reads = 0; const h = await fixture(t, { selectionFeedback: true, source: context => ++reads === 1 ? { content: 'valid', sourcePath: context.sourcePath, token: context.sourceToken } : gate.promise });
+  await h.open(); const renderer = h.instances[0]; h.el('Refresh').click(); assert.equal(renderer.ports.onPick(two, { focus: false }), false); assert.deepEqual(renderer.selections, [one]);
+  gate.resolve({ content: 'valid', sourcePath: h.context.sourcePath, token: h.context.sourceToken }); await h.settle();
+  renderer.ports.onError(Error('context lost')); assert.equal(renderer.ports.onPick(two, { focus: false }), false); h.el('Objects').querySelectorAll('button')[1].click();
+  assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.deepEqual(renderer.selections, [one, one]);
+});
+test('selection edge help explicitly describes occlusion and translates without changing the selected view', async t => {
+  const h = await fixture(t, { selectionFeedback: true }); await h.open(); const renderer = h.instances[0];
+  const key = '选中方块的可见边缘会高亮；被遮挡的部分不会透视显示。选择只影响预览，不修改原文。';
+  assert.equal(h.el('SelectionNote').textContent, key);
+  for (const [language, dictionary] of [['en', en], ['ja', ja]]) { h.setLanguage(language); assert.equal(h.el('SelectionNote').textContent, dictionary[key]); }
+  assert.deepEqual(renderer.selections, [one]); assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1);
+});
+
+test('whole-scene framing uses the complete rendered model, retaining filtered selection and source authority', async t => {
+  const h = await fixture(t, { wholeScene: true, selectionFeedback: true }); await h.open();
+  h.el('Objects').querySelectorAll('button')[1].click(); h.el('Search').value='Blue'; h.el('Search').dispatch('input');
+  const before=copy({ context:h.context,models:h.renders,selections:h.instances[0].selections });
+  assert.equal(h.el('FocusAll').disabled,false);h.el('FocusAll').click();
+  assert.equal(h.instances[0].focusAllCalls,1);assert.equal(h.loads(),1);assert.equal(h.parses(),1);
+  assert.equal(h.el('Search').value,'Blue');assert.equal(h.el('SelectionHidden').hidden,false);
+  assert.deepEqual({ context:h.context,models:h.renders,selections:h.instances[0].selections },before);
+  assert.match(h.el('Status').textContent,/当前预览的全部对象/);
+});
+test('optional whole-scene renderer method only gates its own control', async t => {
+  const h=await fixture(t);await h.open();assert.equal(h.el('FocusAll').disabled,true);
+  assert.equal(h.el('Focus').disabled,false);assert.equal(h.el('Reset').disabled,false);
+  h.el('FocusAll').dispatch('click');assert.equal(h.loads(),1);
+});
+test('whole-scene framing checks current workspace context even before a UI refresh', async t => {
+  const h=await fixture(t,{wholeScene:true});await h.open();const renderer=h.instances[0];
+  for(const[key,value]of [['sourcePath','documents/other.json'],['editable',false],['creating',true],['sourceJSON',false],['busy',true]]){
+    const before=h.context[key];h.context[key]=value;h.el('FocusAll').dispatch('click');assert.equal(renderer.focusAllCalls,0,key);h.context[key]=before;
+  }
+  h.setSupported(false);h.el('FocusAll').dispatch('click');assert.equal(renderer.focusAllCalls,0);h.setSupported(true);
+  h.controller.close();h.el('FocusAll').dispatch('click');assert.equal(renderer.focusAllCalls,0);
+  h.controller.dispose();h.el('FocusAll')?.dispatch('click');assert.equal(renderer.focusAllCalls,0);
+});
+test('whole-scene framing is disabled throughout asynchronous refresh and after renderer failure', async t => {
+  const gate=deferred();let next=false;const h=await fixture(t,{wholeScene:true,source:context=>next?gate.promise:{content:'valid',sourcePath:context.sourcePath,token:context.sourceToken}});
+  await h.open();next=true;h.el('Refresh').click();assert.equal(h.el('FocusAll').disabled,true);h.el('FocusAll').dispatch('click');assert.equal(h.instances[0].focusAllCalls,0);
+  gate.resolve({content:'valid',sourcePath:h.context.sourcePath,token:h.context.sourceToken});await h.settle();assert.equal(h.el('FocusAll').disabled,false);
+  h.instances[0].ports.onError(Error('Context lost'));assert.equal(h.el('FocusAll').disabled,true);h.el('FocusAll').dispatch('click');assert.equal(h.instances[0].focusAllCalls,0);
+});
+test('whole-scene framing can inspect the last valid model while a changed draft remains unlocated and unsaved', async t => {
+  const h=await fixture(t,{wholeScene:true});await h.open();h.context.sourceToken='new-draft';h.setContent('bad');h.controller.refresh();h.el('Refresh').click();await h.settle();
+  const loads=h.loads();h.el('FocusAll').click();assert.equal(h.instances[0].focusAllCalls,1);assert.equal(h.loads(),loads);assert.equal(h.renders.length,1);assert.equal(h.el('Locate').disabled,true);
+  assert.match(h.el('Diagnostics').textContent,/Invalid scene/);assert.match(h.el('Status').textContent,/当前预览/);
+});
+test('whole-scene framing messages translate and refusal preserves current model without extra source reads', async t => {
+  const h=await fixture(t,{wholeScene:true,allResult:false});await h.open();const modelBefore=copy(h.renders);
+  for(const language of ['zh','en','ja']){
+    h.setLanguage(language);h.el('FocusAll').click();const dictionary={en,ja}[language];
+    assert.equal(h.el('FocusAll').textContent,dictionary?.['聚焦全部对象']||'聚焦全部对象');
+    const message='无法聚焦全部对象，当前视角与原文保持不变。';assert.equal(h.el('Status').textContent,dictionary?.[message]||message);
+  }
+  assert.equal(h.loads(),1);assert.deepEqual(h.renders,modelBefore);
+});
+test('no-WebGL fallback leaves whole-scene framing disabled and declarations available', async t => {
+  const h=await fixture(t,{unsupported:true,wholeScene:true});await h.open();assert.equal(h.el('FocusAll').disabled,true);assert.equal(h.el('Objects').querySelectorAll('button').length,2);assert.equal(h.el('Fallback').hidden,false);
+});
+
+
+test('whole-scene framing preserves a synchronous GPU error instead of reporting an ordinary refusal', async t => {
+  const h=await fixture(t,{wholeScene:true});await h.open();const renderer=h.instances[0];
+  renderer.focusAll=()=>{renderer.ports.onError(Error('Partial GPU draw failed'));return false;};
+  h.el('FocusAll').click();assert.match(h.el('Status').textContent,/3D绘制中断/);assert.match(h.el('Diagnostics').textContent,/Partial GPU draw failed/);assert.equal(h.el('FocusAll').disabled,true);assert.equal(h.el('Fallback').hidden,false);
 });

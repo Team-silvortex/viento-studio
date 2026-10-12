@@ -1,0 +1,214 @@
+{
+  "format": "viento-scene3d-environment-core-results",
+  "schemaVersion": 1,
+  "status": "passed",
+  "productVersion": "0.0.10",
+  "publishedBase": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "scope": {
+    "delivery": "Unpublished additive source after 0.0.10; no installed application or device acceptance.",
+    "capability": "viento_core_scene3d_environment_version",
+    "apiVersion": 1,
+    "operation": "scene3d.patchEnvironment",
+    "requestKeys": [
+      "protocolVersion",
+      "operation",
+      "content",
+      "values"
+    ],
+    "values": {
+      "background": "hex6 color string",
+      "camera": [
+        "position",
+        "target",
+        "fovDegrees",
+        "near",
+        "far"
+      ],
+      "light": [
+        "direction",
+        "color",
+        "energy"
+      ]
+    },
+    "responseKeys": [
+      "beforeContent",
+      "afterContent",
+      "changedPaths"
+    ],
+    "atomicSemantics": "Explicit nonempty outer/nested subsets, triplets and finite numeric leaves. Original full parse precedes editing; complete final parse validates camera/light/cross-field rules after merging all requested values. No temporary field-by-field validity requirement.",
+    "changedPathsOrder": [
+      "/background",
+      "/camera/position/0..2",
+      "/camera/target/0..2",
+      "/camera/fovDegrees",
+      "/camera/near",
+      "/camera/far",
+      "/light/direction/0..2",
+      "/light/color",
+      "/light/energy"
+    ],
+    "noOp": "Exact original before/after bytes with [] accepted by native and bridge; pure branded proposal gate independently rejects unchanged candidates.",
+    "limits": "Whole original/final scenes each limited to 128 KiB UTF-8; all existing full scene3d model, object and cross-field constraints inherited.",
+    "tokenPreservation": "CST leaf edits only net numbers/color string values; fixed logical paths independent of source key order. Unchanged exponent/signed zero/escaped colors, all keys/objects/viewport/name/structure/trivia/BOM/CRLF retained."
+  },
+  "sourceFiles": [
+    {
+      "path": "crates/viento-studio-core/src/lib.rs",
+      "bytes": 17862,
+      "sha256": "70042a257e071adf3c94a7db8d351358b9b2d47232da95a1c740b6d8017b9a1f"
+    },
+    {
+      "path": "crates/viento-studio-core/src/scene3d_environment_patch.rs",
+      "bytes": 19850,
+      "sha256": "3341db2263792c6a9db8030e13d5300d196541675e26630cfde8a6ad5cc1d265"
+    },
+    {
+      "path": "engine/studio-core.mjs",
+      "bytes": 99894,
+      "sha256": "489506353e962d10f42fdf6e65cc5088cb7eab256079115ca0a73294b788dc19"
+    },
+    {
+      "path": "scripts/tests/studio-core-scene3d-environment.test.mjs",
+      "bytes": 23516,
+      "sha256": "121d9bb9671a53ba06b9565cab970fba79b47ce4b83cd3d1883e56aad3c06f0a"
+    }
+  ],
+  "compiledSourceHash": "fb275d0c4004953c37f2d19b183dc93fa4faeb2a440efe138a7c743ba3c1f123",
+  "compiledSourcesMatchCurrent": true,
+  "buildMetadata": {
+    "path": "engine/studio-core.build.json",
+    "bytes": 2606,
+    "sha256": "aa9e76f6089c522448b6129c0bd9ee650df070ab4e49d903fd826d2478585d94"
+  },
+  "wasm": {
+    "path": "engine/studio-core.wasm",
+    "bytes": 500608,
+    "sha256": "4e30e4be71ee3ecf3328aadcba675e2a996f8217d25ef377733bd296bdbc7e52"
+  },
+  "nativeCli": {
+    "path": "desktop/.cache/scene3d-environment-core-target/debug/viento-core",
+    "bytes": 14745800,
+    "sha256": "51397c14f48753ab0b0d84e3504dbf94bceaa33fa83444cd0a53130c51d051b5"
+  },
+  "runtime": {
+    "nodeVersion": "v24.20.0",
+    "node": {
+      "path": "src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu",
+      "bytes": 126458664,
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)"
+  },
+  "verification": {
+    "rust": {
+      "passed": 222,
+      "unitPassed": 173,
+      "integrationPassed": 49,
+      "newUnitPassed": 12,
+      "failed": 0,
+      "ignored": 0,
+      "log": "rust-tests-final.log"
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "log": "core-clippy.log"
+    },
+    "freshWasmBuild": {
+      "passed": true,
+      "log": "core-wasm-build.log",
+      "buildOwner": "Root performed the centralized fresh native/WASM build."
+    },
+    "bridge": {
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "files": 1,
+      "log": "core-bridge-tests-key-repair.log",
+      "nativeWasmParityRequests": 20
+    },
+    "sharedCoreRegression": {
+      "passed": 239,
+      "failed": 0,
+      "skipped": 0,
+      "files": 19,
+      "log": "core-regression-final.log",
+      "includesNewBridgeTests": true
+    }
+  },
+  "initialAttempts": [
+    {
+      "log": "rust-tests.log",
+      "unitPassed": 170,
+      "unitFailed": 3,
+      "cause": "New fixture assumed sample camera/light endpoints and energy1 rather than actual [9,7,10]/[0,1,0]/energy1.2; escaped energy replacement yielded invalid literal. New fixture now explicitly sets known test environment, author sample unchanged."
+    },
+    {
+      "log": "core-bridge-tests.log",
+      "passed": 16,
+      "failed": 2,
+      "cause": "New fixture exponent replacement selected earlier light direction token rather than unchanged object token; raw-failure assertion read nested error instead of existing flat errorCode. Fixed new tests only, exact raw path is now selected by test-host CST."
+    },
+    {
+      "log": "core-bridge-tests-final.log",
+      "passed": 19,
+      "failed": 0,
+      "cause": "Pre-independent-review passing bridge state; preserved before subsequent key-swap repair."
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "id": "environment-receipt-key-swap",
+      "initialEvidence": "receipt-key-swap-initial.json",
+      "initialBridgeSha256": "f4fd7b13213ad8d453b459555b9bc6bdf6b92343e1e1b0a90441874ac60be89c",
+      "issue": "With camera position/target exchanged, a forged receipt could swap string key tokens instead of requested numeric leaf values while final model and token-change count matched.",
+      "repair": "Native-admitted JSON string tokens followed by colon are immutable keys. Exact key/structure inventory plus net value-token changes and complete expected model bind actual numeric/color value slots; no added JS property parser or native ABI.",
+      "regression": "Added semantic-equivalent camera-key swap receipt rejection to NEW bridge test; actual valid edit remains accepted.",
+      "finalBridgeSha256": "489506353e962d10f42fdf6e65cc5088cb7eab256079115ca0a73294b788dc19",
+      "status": "resolved"
+    }
+  ],
+  "logFiles": [
+    {
+      "path": "docs/test-results/scene3d-environment-authoring/rust-tests-final.log",
+      "bytes": 25154,
+      "sha256": "4e7160b8e5c08c24b38c8edaad7c693260923581da4ea9fc5fc421c0111a5147"
+    },
+    {
+      "path": "docs/test-results/scene3d-environment-authoring/core-fmt-check.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/test-results/scene3d-environment-authoring/core-clippy.log",
+      "bytes": 350,
+      "sha256": "5454ad3393ac3f7c9e8842b8381eefe2fdfa474c12924633e35adc570d5c5925"
+    },
+    {
+      "path": "docs/test-results/scene3d-environment-authoring/core-wasm-build.log",
+      "bytes": 104,
+      "sha256": "4cf0d73164fdd89f4515b8fcf4b737f9fa1389d12bb7e4df687f61c60d228765"
+    },
+    {
+      "path": "docs/test-results/scene3d-environment-authoring/core-bridge-tests-key-repair.log",
+      "bytes": 2531,
+      "sha256": "b492469ef5b27f9596b825d571616059c2dcd610a4621c0a5902806e8ff556cb"
+    },
+    {
+      "path": "docs/test-results/scene3d-environment-authoring/core-regression-final.log",
+      "bytes": 28059,
+      "sha256": "c536e2908044603da9cee8e10898d0021a526304cbf2e200f78f7210fefb9bbe"
+    }
+  ],
+  "boundaries": [
+    "New operation/probe is additive; existing parse, transforms, objects, 2D, author schema, runtime and backend contracts unchanged.",
+    "New support needs old parse probe and own version1 only; absent/version2 environment does not disable available old domains.",
+    "No JS semantic bound/cross-field rule copy, YAML, Node, DOM, property-path parser, filesystem, Save, renderer, World command, geometry session or backend execution in the bridge.",
+    "Normal source/value/budget errors leave core available; forged successful receipt poisons runtime.",
+    "Original source parse errors retain old codes; invalid environment/cross-field candidate uses scene3d_environment_invalid, final growth uses existing scene3d_limit.",
+    "Shared regression contains the new bridge cases; result counts from different runs are not added."
+  ]
+}

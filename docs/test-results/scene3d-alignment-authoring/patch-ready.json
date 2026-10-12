@@ -1,0 +1,1940 @@
+{
+  "createdAt": "2026-10-12T04:50:37.172822+00:00",
+  "ok": true,
+  "phase": "concrete-validated-reviewed-patch-awaiting-actual-application",
+  "actualApplyPerformed": false,
+  "actualRoot": "/home/chiharukiryu/cdev/viento-studio",
+  "stageRoot": "/tmp/viento-scene3d-alignment-fayrkhch/project",
+  "implementationPaths": [
+    "crates/viento-studio-core/src/lib.rs",
+    "crates/viento-studio-core/src/scene3d_alignment_patch.rs",
+    "docs/ARCHITECTURE.md",
+    "docs/ROADMAP.md",
+    "docs/SCENE3D.md",
+    "docs/STATUS.md",
+    "docs/STUDIO_MODULES.md",
+    "engine/README.md",
+    "engine/index.mjs",
+    "engine/scene3d-alignment.mjs",
+    "engine/studio-core.build.json",
+    "engine/studio-core.mjs",
+    "engine/studio-core.wasm",
+    "engine/studio-modules.mjs",
+    "scripts/tests/scene3d-alignment-smoke.mjs",
+    "scripts/tests/scene3d-alignment-source-host.test.mjs",
+    "scripts/tests/scene3d-alignment-system-ports.test.mjs",
+    "scripts/tests/scene3d-alignment-ui.test.mjs",
+    "scripts/tests/scene3d-alignment.test.mjs",
+    "scripts/tests/scene3d-environment-smoke.mjs",
+    "scripts/tests/scene3d-environment-system-ports.test.mjs",
+    "scripts/tests/scene3d-navigation-smoke.mjs",
+    "scripts/tests/scene3d-objects-smoke.mjs",
+    "scripts/tests/scene3d-picking-smoke.mjs",
+    "scripts/tests/scene3d-properties-smoke.mjs",
+    "scripts/tests/scene3d-property-system-ports.test.mjs",
+    "scripts/tests/scene3d-selection-smoke.mjs",
+    "scripts/tests/scene3d-transform-smoke.mjs",
+    "scripts/tests/scene3d-translation-smoke.mjs",
+    "scripts/tests/scene3d-translation-system-ports.test.mjs",
+    "scripts/tests/studio-core-scene3d-alignment.test.mjs",
+    "scripts/tests/studio-modules.test.mjs",
+    "scripts/tests/studio-system-smoke.mjs",
+    "scripts/tests/studio-system-ui.test.mjs",
+    "web/i18n/en.js",
+    "web/i18n/ja.js",
+    "web/modules/app-runtime.js",
+    "web/modules/app-scene3d-alignment.js",
+    "web/modules/app-studio-system.js",
+    "web/scene3d-alignment.css"
+  ],
+  "atlasPaths": [
+    "docs/function-atlas.json",
+    "docs/FUNCTION_ATLAS.md",
+    "docs/function-atlas.mmd",
+    "docs/function-atlas.html"
+  ],
+  "evidencePaths": [
+    "docs/test-results/scene3d-alignment-authoring/actual-checkout-readonly-audit.json",
+    "docs/test-results/scene3d-alignment-authoring/actual-path-probe.mjs",
+    "docs/test-results/scene3d-alignment-authoring/aggregate-draft.json",
+    "docs/test-results/scene3d-alignment-authoring/alignment-quality-probe.mjs",
+    "docs/test-results/scene3d-alignment-authoring/alignment-ui-quality-probe.mjs",
+    "docs/test-results/scene3d-alignment-authoring/append-atlas.py",
+    "docs/test-results/scene3d-alignment-authoring/application-check-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/application-observation.json",
+    "docs/test-results/scene3d-alignment-authoring/application-timing.json",
+    "docs/test-results/scene3d-alignment-authoring/apply-reviewed-patch.py",
+    "docs/test-results/scene3d-alignment-authoring/atlas-append-receipt.json",
+    "docs/test-results/scene3d-alignment-authoring/atlas-append.log",
+    "docs/test-results/scene3d-alignment-authoring/atlas-baseline.json",
+    "docs/test-results/scene3d-alignment-authoring/atlas-check.log",
+    "docs/test-results/scene3d-alignment-authoring/atlas-preservation-review.json",
+    "docs/test-results/scene3d-alignment-authoring/atlas-source-snapshot-before.json",
+    "docs/test-results/scene3d-alignment-authoring/atlas-write.log",
+    "docs/test-results/scene3d-alignment-authoring/author-baseline.json",
+    "docs/test-results/scene3d-alignment-authoring/baseline.json",
+    "docs/test-results/scene3d-alignment-authoring/boundary-cases.mjs",
+    "docs/test-results/scene3d-alignment-authoring/boundary-plan.json",
+    "docs/test-results/scene3d-alignment-authoring/boundary-source-check-before-core-port.mjs",
+    "docs/test-results/scene3d-alignment-authoring/boundary-source-check-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/boundary-source-check.json",
+    "docs/test-results/scene3d-alignment-authoring/boundary-source-check.log",
+    "docs/test-results/scene3d-alignment-authoring/boundary-source-check.mjs",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final.log",
+    "docs/test-results/scene3d-alignment-authoring/browser-error-layer-fixture.json",
+    "docs/test-results/scene3d-alignment-authoring/browser-initial-provenance.json",
+    "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final.log",
+    "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final.log",
+    "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final.log",
+    "docs/test-results/scene3d-alignment-authoring/cargo-config-initial.toml",
+    "docs/test-results/scene3d-alignment-authoring/cargo-metadata.log",
+    "docs/test-results/scene3d-alignment-authoring/checkout-files-baseline.json",
+    "docs/test-results/scene3d-alignment-authoring/core-bridge-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/core-clippy.log",
+    "docs/test-results/scene3d-alignment-authoring/core-fmt.log",
+    "docs/test-results/scene3d-alignment-authoring/core-native-build.log",
+    "docs/test-results/scene3d-alignment-authoring/core-native-tests-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/core-native-tests-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/core-proposal-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/core-regression-argv.json",
+    "docs/test-results/scene3d-alignment-authoring/core-regression.log",
+    "docs/test-results/scene3d-alignment-authoring/core-results.json",
+    "docs/test-results/scene3d-alignment-authoring/core-results.log",
+    "docs/test-results/scene3d-alignment-authoring/core-results.py",
+    "docs/test-results/scene3d-alignment-authoring/desktop-prepare-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/desktop-prepare-final.log",
+    "docs/test-results/scene3d-alignment-authoring/desktop-prepare-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/existing-scope-fixture-repair.json",
+    "docs/test-results/scene3d-alignment-authoring/existing-scope-review-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/existing-scope-review.json",
+    "docs/test-results/scene3d-alignment-authoring/existing-scope-review.log",
+    "docs/test-results/scene3d-alignment-authoring/final-source.diff",
+    "docs/test-results/scene3d-alignment-authoring/final-stage-review-before-native-group-schema.py",
+    "docs/test-results/scene3d-alignment-authoring/final-stage-review.py",
+    "docs/test-results/scene3d-alignment-authoring/finish-evidence-before-browser-final.py",
+    "docs/test-results/scene3d-alignment-authoring/finish-evidence-before-schema-read.py",
+    "docs/test-results/scene3d-alignment-authoring/finish-evidence.log",
+    "docs/test-results/scene3d-alignment-authoring/finish-evidence.py",
+    "docs/test-results/scene3d-alignment-authoring/fixed-node.json",
+    "docs/test-results/scene3d-alignment-authoring/historical-baseline.json",
+    "docs/test-results/scene3d-alignment-authoring/host-tests-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/i18n-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/implementation-ready.json",
+    "docs/test-results/scene3d-alignment-authoring/implementation.diff",
+    "docs/test-results/scene3d-alignment-authoring/independent-post-stage-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/independent-stage-review-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/independent-stage-review-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/isolated-cargo-repair.json",
+    "docs/test-results/scene3d-alignment-authoring/isolated-toolchain.json",
+    "docs/test-results/scene3d-alignment-authoring/mobile-prepare-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/mobile-prepare-final.log",
+    "docs/test-results/scene3d-alignment-authoring/module-count-adjustments.json",
+    "docs/test-results/scene3d-alignment-authoring/module-tests-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/module-tests-isolation-diagnostic.log",
+    "docs/test-results/scene3d-alignment-authoring/native-host-dependencies.json",
+    "docs/test-results/scene3d-alignment-authoring/native-size-repair.json",
+    "docs/test-results/scene3d-alignment-authoring/native-tools-build-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/native-tools-build.log",
+    "docs/test-results/scene3d-alignment-authoring/native-tools-copy-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/native-tools-small-build.log",
+    "docs/test-results/scene3d-alignment-authoring/packaged-resources-browser-final.json",
+    "docs/test-results/scene3d-alignment-authoring/packaged-resources-confirmed.json",
+    "docs/test-results/scene3d-alignment-authoring/packaged-resources.json",
+    "docs/test-results/scene3d-alignment-authoring/post-stage-review.json",
+    "docs/test-results/scene3d-alignment-authoring/post-stage-review.py",
+    "docs/test-results/scene3d-alignment-authoring/prepare-reviewed-patch.py",
+    "docs/test-results/scene3d-alignment-authoring/prepared-check-browser-final.log",
+    "docs/test-results/scene3d-alignment-authoring/prepared-check-browser-final.mjs",
+    "docs/test-results/scene3d-alignment-authoring/prepared-check-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/prepared-check-confirmed.mjs",
+    "docs/test-results/scene3d-alignment-authoring/prepared-check.log",
+    "docs/test-results/scene3d-alignment-authoring/prepared-check.mjs",
+    "docs/test-results/scene3d-alignment-authoring/prepared-confirmation-browser-final.json",
+    "docs/test-results/scene3d-alignment-authoring/prepared-confirmation-stale-source-guard.json",
+    "docs/test-results/scene3d-alignment-authoring/prepared-confirmation.json",
+    "docs/test-results/scene3d-alignment-authoring/prepared-confirmed-producer-draft.json",
+    "docs/test-results/scene3d-alignment-authoring/prepared-final-binding.json",
+    "docs/test-results/scene3d-alignment-authoring/prepared-proof-preservation.json",
+    "docs/test-results/scene3d-alignment-authoring/previous-studio-core.build.json",
+    "docs/test-results/scene3d-alignment-authoring/previous-studio-core.wasm",
+    "docs/test-results/scene3d-alignment-authoring/quality-initial.json",
+    "docs/test-results/scene3d-alignment-authoring/quality-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/results.json",
+    "docs/test-results/scene3d-alignment-authoring/root-closure-producers.json",
+    "docs/test-results/scene3d-alignment-authoring/run-application-checks.sh",
+    "docs/test-results/scene3d-alignment-authoring/runtime-license-proof.json",
+    "docs/test-results/scene3d-alignment-authoring/smoke-syntax-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/smoke-syntax-error-layer-final.log",
+    "docs/test-results/scene3d-alignment-authoring/source-baseline.json",
+    "docs/test-results/scene3d-alignment-authoring/source-freeze-confirmed.json",
+    "docs/test-results/scene3d-alignment-authoring/source-freeze-final.json",
+    "docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json",
+    "docs/test-results/scene3d-alignment-authoring/source-hashes-confirmed.json",
+    "docs/test-results/scene3d-alignment-authoring/source-hashes-final.json",
+    "docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json",
+    "docs/test-results/scene3d-alignment-authoring/source-phase.json",
+    "docs/test-results/scene3d-alignment-authoring/stage-preservation.json",
+    "docs/test-results/scene3d-alignment-authoring/stage-review.json",
+    "docs/test-results/scene3d-alignment-authoring/tool-baseline.json",
+    "docs/test-results/scene3d-alignment-authoring/ui-and-i18n-confirmed.log",
+    "docs/test-results/scene3d-alignment-authoring/ui-fixture-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/ui-fixture-second.log",
+    "docs/test-results/scene3d-alignment-authoring/ui-fixture-third.log",
+    "docs/test-results/scene3d-alignment-authoring/ui-quality-initial.json",
+    "docs/test-results/scene3d-alignment-authoring/ui-quality-initial.log",
+    "docs/test-results/scene3d-alignment-authoring/verify-existing-scope-initial.py",
+    "docs/test-results/scene3d-alignment-authoring/verify-existing-scope.py",
+    "docs/test-results/scene3d-alignment-authoring/visual-review-independent.json",
+    "docs/test-results/scene3d-alignment-authoring/visual-review-web.json",
+    "docs/test-results/scene3d-alignment-authoring/wasm-build.log",
+    "docs/test-results/scene3d-alignment-authoring/wasm-freeze.json",
+    "docs/test-results/scene3d-alignment-authoring/web-legacy-addendum.json",
+    "docs/test-results/scene3d-alignment-authoring/web-validation.json",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/alignment-desktop-review.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/alignment-en-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/alignment-ja-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/alignment-zh-CN-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/browser.json",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/failure.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/alignment-desktop-review.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/alignment-en-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/alignment-ja-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/alignment-zh-CN-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/browser.json",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/failure.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-desktop-review.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-en-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-ja-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-save-conflict.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-without-webgl.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-zh-CN-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/browser.json",
+    "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/browser.json",
+    "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-desktop.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-en-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-invalid-retained.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-ja-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-webgl-unavailable.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-zh-CN-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/browser.json",
+    "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-desktop.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-edges.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-en-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-ja-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-near-clip.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-without-webgl.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-zh-CN-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/browser.json",
+    "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-desktop-review.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-en-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-ja-390.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-save-conflict.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-without-webgl.png",
+    "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-zh-CN-390.png",
+    "docs/test-results/scene3d-alignment-authoring/initial-producer/scene3d-alignment-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-environment-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-environment-system-ports.test.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-navigation-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-objects-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-picking-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-properties-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-property-system-ports.test.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-selection-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-transform-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-translation-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-translation-system-ports.test.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/studio-modules.test.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/studio-system-smoke.mjs",
+    "docs/test-results/scene3d-alignment-authoring/previous-count-producers/studio-system-ui.test.mjs",
+    "docs/test-results/scene3d-alignment-authoring/root-confirmed-producer/scene3d-alignment-smoke.mjs"
+  ],
+  "files": [
+    {
+      "path": "crates/viento-studio-core/src/lib.rs",
+      "beforeSha256": "2f5f5bda8cbfeedc8b2c4f01bfe0cf4c717108c891324071eb69b8c34c3330cf",
+      "afterSha256": "7e74241938b2127a5d8293abde1fc676e7e22dd25adc05ea5749aac33a74438a",
+      "bytes": 20704,
+      "mode": 436
+    },
+    {
+      "path": "crates/viento-studio-core/src/scene3d_alignment_patch.rs",
+      "beforeSha256": null,
+      "afterSha256": "8ffd4c71fe9f5d213003c142a31b17d87248676583b51addff71899b1e104863",
+      "bytes": 19037,
+      "mode": 436
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "beforeSha256": "3f0a9ef56ce0836b540f362bb03744996b2cf80971d6ad79a2371da3c4975329",
+      "afterSha256": "638878ea6e1c3ad7869c276ecc4c7617f1eeace57a1fcbe1bd704ac0ae964857",
+      "bytes": 76285,
+      "mode": 420
+    },
+    {
+      "path": "docs/FUNCTION_ATLAS.md",
+      "beforeSha256": "9d33e5f71ea159fcb4bfe02b7d01f2ae6f04d52b0c71db2eb4047989bcaa4ca8",
+      "afterSha256": "003ef8c4fa870b933e085af8279768576aa47cd7ab1f9c4c617397280ee4e7cd",
+      "bytes": 392047,
+      "mode": 420
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "beforeSha256": "5208d31ec36f91a1d1fb3afad9243fe4954353a9db46d8586213070bf42afc2e",
+      "afterSha256": "9d71bcbba4af988c9a713b4ca95231342415b8015e655fd909fccd6df3f620dc",
+      "bytes": 35230,
+      "mode": 420
+    },
+    {
+      "path": "docs/SCENE3D.md",
+      "beforeSha256": "1c549a4664e7ef7e42abddeb4fc6b4a8dc3f3e359fdfbe43f04df854f13fd0eb",
+      "afterSha256": "81c68c7d8c617a74f55063f27b7073ded4711ce7c1a46ce53a3dcc232ec4b473",
+      "bytes": 27073,
+      "mode": 436
+    },
+    {
+      "path": "docs/STATUS.md",
+      "beforeSha256": "591bf584683221c8154557e9a4e13910b3998d0dfb625af647730d93065b7da4",
+      "afterSha256": "e17b44c517a3b0c1791426cd51d8ce2e732e12c7bc020509953bd0c37f7fd158",
+      "bytes": 64482,
+      "mode": 420
+    },
+    {
+      "path": "docs/STUDIO_MODULES.md",
+      "beforeSha256": "711a2684a41b75cf25de121d9feafd0064df407ac58df6cbfdf4c3ecf3a0de66",
+      "afterSha256": "2d1cbf33ee2ec87188debc57937401b8867495719ee8099336b538fc649b5615",
+      "bytes": 14454,
+      "mode": 436
+    },
+    {
+      "path": "docs/function-atlas.html",
+      "beforeSha256": "7fc79256a89e68817794ea5e85b26023d73fa87b4c04318e7021bbd126ddcdda",
+      "afterSha256": "5e7d9d9299fd54676302d341cb6d8275369576a0d65ffb75d734f9ed22f10d9a",
+      "bytes": 1247669,
+      "mode": 420
+    },
+    {
+      "path": "docs/function-atlas.json",
+      "beforeSha256": "66fe17f00711eee03f312a3deae147d6e55b690ac838ede3ab8e1a9a36ae77bf",
+      "afterSha256": "d9be940a9ad154ad5f77d02287b4fa1ddf45260b83cc25601fb8b76835df4d52",
+      "bytes": 1554070,
+      "mode": 420
+    },
+    {
+      "path": "docs/function-atlas.mmd",
+      "beforeSha256": "ba74ffce8c145ce19cacff46d444d0f94f90ba85204fbf2edf2dd58dfa4b74c6",
+      "afterSha256": "5d83b6c485856281a97c1419daf50e291094b015029506f3092220df7bbe8217",
+      "bytes": 8902,
+      "mode": 420
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/actual-checkout-readonly-audit.json",
+      "beforeSha256": null,
+      "afterSha256": "7e1942b6052f51ca6dff012c82425801a3d7170568bb155c73ae7372cefc6117",
+      "bytes": 4035,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/actual-path-probe.mjs",
+      "beforeSha256": null,
+      "afterSha256": "91b9fcdd6dfa015911121d684d588de5b4722aa3174a7878e3ea12170ace9790",
+      "bytes": 2566,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/aggregate-draft.json",
+      "beforeSha256": null,
+      "afterSha256": "97c6e8259bf7f9b1792fab20672f79b9b327d65c6560e746912675307334057f",
+      "bytes": 1671,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/alignment-quality-probe.mjs",
+      "beforeSha256": null,
+      "afterSha256": "9edc93395dba9e0f47b65d5642e83a6bbba7dfb22dc7797ecf0a47f99f69bb77",
+      "bytes": 23971,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/alignment-ui-quality-probe.mjs",
+      "beforeSha256": null,
+      "afterSha256": "a8598aa2cd428f138344467df3443a73ece87f0f9e13cc0ca546856a234bb101",
+      "bytes": 9749,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/append-atlas.py",
+      "beforeSha256": null,
+      "afterSha256": "22761d42c3dba9462a3450601b11b7a2614cbebde1f2a95d134bab6453cbb112",
+      "bytes": 10487,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/application-check-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "4118d4f9a62577482487e465884261674ae1d98cbab4a8aed0ac92a6b6902e1e",
+      "bytes": 405077,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/application-observation.json",
+      "beforeSha256": null,
+      "afterSha256": "c8460a118c69afaac2ba601039500f1a2d1ba220ce80f84e715bd0846524b2fe",
+      "bytes": 1749,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/application-timing.json",
+      "beforeSha256": null,
+      "afterSha256": "976aaddab20a636a4de8e3a4d391eb09b041265009b42efc33b61c54e89c9bb2",
+      "bytes": 8027,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/apply-reviewed-patch.py",
+      "beforeSha256": null,
+      "afterSha256": "26e8d0e4c625bebff71a6845cc46fe23fb2a0f13fb1ad82f27967613e3d381b5",
+      "bytes": 7975,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/atlas-append-receipt.json",
+      "beforeSha256": null,
+      "afterSha256": "7b2d2498881e61893801e65822e98b9bebf3df656833645f12eaca6bf6908ccd",
+      "bytes": 745,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/atlas-append.log",
+      "beforeSha256": null,
+      "afterSha256": "d01cd67fa03e8a8fde25606a384076d8d74f412dfed45d340d0759a764e20b33",
+      "bytes": 173,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/atlas-baseline.json",
+      "beforeSha256": null,
+      "afterSha256": "66fe17f00711eee03f312a3deae147d6e55b690ac838ede3ab8e1a9a36ae77bf",
+      "bytes": 1510305,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/atlas-check.log",
+      "beforeSha256": null,
+      "afterSha256": "eceb170dcf57a151203d679f4a451af5f75751a9720e379f92218da6c8ce0618",
+      "bytes": 238,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/atlas-preservation-review.json",
+      "beforeSha256": null,
+      "afterSha256": "d03629506cc5a487dd5fe0d723ee85cc051fcc589f9ced542bf977992b1c7154",
+      "bytes": 11540,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/atlas-source-snapshot-before.json",
+      "beforeSha256": null,
+      "afterSha256": "02c880a829424f1e51e4b8554b8602578672869aae51047e26d5a47c115f8891",
+      "bytes": 161716,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/atlas-write.log",
+      "beforeSha256": null,
+      "afterSha256": "315b6ce041ae401e9f6a941ca73d4722da9cacc289799ea0afcabbe390b81537",
+      "bytes": 238,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/author-baseline.json",
+      "beforeSha256": null,
+      "afterSha256": "b45c9d125a69b2d1561249995f6d4c07609a9b772fb8e16b43843342342924e8",
+      "bytes": 5154,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/baseline.json",
+      "beforeSha256": null,
+      "afterSha256": "163e785778d032b5d21be9770feff48ae47d15715f2f26a9d995827739afa12a",
+      "bytes": 1009,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/boundary-cases.mjs",
+      "beforeSha256": null,
+      "afterSha256": "bc75137f8aa905e38dc868c40737768537728dfcfcdf0eb44218415964b45573",
+      "bytes": 11354,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/boundary-plan.json",
+      "beforeSha256": null,
+      "afterSha256": "0aec89c99a94d0ea534fc604a1feb49b7fc3bd703f7c78cb06590a3f4a84064a",
+      "bytes": 1581,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/boundary-source-check-before-core-port.mjs",
+      "beforeSha256": null,
+      "afterSha256": "760eb1fb58316669ac5db07c6d0500fd6830cbcb9a20dc9b0358111ddc65505a",
+      "bytes": 916,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/boundary-source-check-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "18f1fa39116fbd7b46306a41c52ea61576699a9bce6b651b9a375c3e483a11b4",
+      "bytes": 23,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/boundary-source-check.json",
+      "beforeSha256": null,
+      "afterSha256": "993cd844fdf5c37dde6f521680afb9bc6ac43f63a7da3ff30ae971d0b689bc94",
+      "bytes": 1425,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/boundary-source-check.log",
+      "beforeSha256": null,
+      "afterSha256": "527527b482216008210fc27e6603add402080ef1cc1607dc406a1e1fcde6f4ed",
+      "bytes": 1748,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/boundary-source-check.mjs",
+      "beforeSha256": null,
+      "afterSha256": "7610576611dfd922f2f39051d603c1ef36830bbdbdfe504b2ab2223960ed39c4",
+      "bytes": 981,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "6131ee8bcae9e198f89072fdd08a9711c6b5c56914863d7f772f7d1a4f16b18c",
+      "bytes": 496,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/alignment-desktop-review.png",
+      "beforeSha256": null,
+      "afterSha256": "0362d94fadec1a795f326f8a35b76febc1e005246a571b057719d5d7e3c5af08",
+      "bytes": 197889,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/alignment-en-390.png",
+      "beforeSha256": null,
+      "afterSha256": "0a3b9284986348d18ff10c700745d6402f97df97c5a448f171617e1fda55134e",
+      "bytes": 94291,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/alignment-ja-390.png",
+      "beforeSha256": null,
+      "afterSha256": "e351d434e65e9574c6fcd9443f4b22d3e314e1d49901d430d5117db4ce323b07",
+      "bytes": 113697,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/alignment-zh-CN-390.png",
+      "beforeSha256": null,
+      "afterSha256": "dffb0a6b65392e1d600588213abf052b1c8dcfe4f60e75cdf3d2257b64b2ff99",
+      "bytes": 100315,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/browser.json",
+      "beforeSha256": null,
+      "afterSha256": "77073973938163223342683516fe24ede6a3578c360e00b577928f84048ca74f",
+      "bytes": 38316,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-initial/failure.png",
+      "beforeSha256": null,
+      "afterSha256": "51148557ddb1ca34192a1453225d31730a5e454356f5994b4cef044b001396e9",
+      "bytes": 183448,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "43a1de45b7324b88b2962a389b77ce155322fa89f2c5d40137fb31468eb3bc52",
+      "bytes": 37540,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/alignment-desktop-review.png",
+      "beforeSha256": null,
+      "afterSha256": "8ef8c7201ff899187cffb1503681d6bc8811af8ae30e92d2047967a1875f6b6f",
+      "bytes": 199120,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/alignment-en-390.png",
+      "beforeSha256": null,
+      "afterSha256": "7120de7a6575e3604aeb9f19c39d8504507fa59a6529f24b64c4c01bde7c1b83",
+      "bytes": 94200,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/alignment-ja-390.png",
+      "beforeSha256": null,
+      "afterSha256": "dff707e00459982c333ceda2b44c5ddf0c597de76f23d5761d8f76485282a248",
+      "bytes": 113631,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/alignment-zh-CN-390.png",
+      "beforeSha256": null,
+      "afterSha256": "715f06d48677957225e905a81f4990ff8081680b2bef880b35f27bb3dfc58c56",
+      "bytes": 100222,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/browser.json",
+      "beforeSha256": null,
+      "afterSha256": "49ccf595c8ccccbea0c11313d8777b85d46c83dd702d23842509febcc00eb10b",
+      "bytes": 37539,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-confirmed/failure.png",
+      "beforeSha256": null,
+      "afterSha256": "282cf1333af5b4583894b508a6e02d1e827e9a9ae6611ccbc84219efff28b842",
+      "bytes": 208391,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final.log",
+      "beforeSha256": null,
+      "afterSha256": "9ae397eed214f3f0b65cf3356f8a0d5f2808a2aec34b2b2b7f51cc12038309b6",
+      "bytes": 24402,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-desktop-review.png",
+      "beforeSha256": null,
+      "afterSha256": "01d585cc089fa42c2f9be4324e3a8c58811e7ca125682c202efafe55ce656842",
+      "bytes": 198909,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-en-390.png",
+      "beforeSha256": null,
+      "afterSha256": "a3415f050abf338f1ba6e6ff362040fd87ee5bbee2a9943554cdb1392c9c3acc",
+      "bytes": 94653,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-ja-390.png",
+      "beforeSha256": null,
+      "afterSha256": "fb69bde7430e2fdbed162181be1fcb79358f0b1680d2f07f34bd7bf3ace4cad6",
+      "bytes": 113805,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-save-conflict.png",
+      "beforeSha256": null,
+      "afterSha256": "72e9c00638134d0c7b7f96632b8533d321b8b26bae2093e73913bc1769f64229",
+      "bytes": 137674,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-without-webgl.png",
+      "beforeSha256": null,
+      "afterSha256": "c157817d59be00456c5e4bc98d5f5ac12e12594603644ab8d384fd62927a40c6",
+      "bytes": 196675,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/alignment-zh-CN-390.png",
+      "beforeSha256": null,
+      "afterSha256": "be678c557aaa109165dbd5cc52d54826494c1dd521036f66c0da105a385d98cf",
+      "bytes": 100674,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-alignment-root-final/browser.json",
+      "beforeSha256": null,
+      "afterSha256": "bd4f53e7285e5fc2d5dec02514f3032a99eb92b802b6420cb04cb47270f11f10",
+      "bytes": 24401,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-error-layer-fixture.json",
+      "beforeSha256": null,
+      "afterSha256": "b6733a581c5590d6bd3f255fe2654ca0a8a4782d3f55d0d564f4b4b3156eece3",
+      "bytes": 725,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-initial-provenance.json",
+      "beforeSha256": null,
+      "afterSha256": "bb1595d98ca85934dbf398e617e40753cb2cc34cb80704a078905724ea4f115e",
+      "bytes": 1776,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final.log",
+      "beforeSha256": null,
+      "afterSha256": "1333d4527ba3b677644921a0df466ccfaf8fccb0a739778c2acb4218918c5731",
+      "bytes": 17362,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/browser.json",
+      "beforeSha256": null,
+      "afterSha256": "82450b4ee30f210a104d69d7a5488425fa8071f4aacc1708e886f89630c5c300",
+      "bytes": 17361,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-desktop.png",
+      "beforeSha256": null,
+      "afterSha256": "bcc35f93020b426453cd500dc2d88480054d32baa11c5b91eb4f8619cea38ae9",
+      "bytes": 162682,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-en-390.png",
+      "beforeSha256": null,
+      "afterSha256": "37956c68f415f5dd1a31dd3f44776ae3d9edb65ebae4044a6767d9fdc3eee420",
+      "bytes": 80346,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-invalid-retained.png",
+      "beforeSha256": null,
+      "afterSha256": "076ba67d464b9519f994ae18025a0b9313c897d5999c2eb39eb680efebc2d8e5",
+      "bytes": 139699,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-ja-390.png",
+      "beforeSha256": null,
+      "afterSha256": "f7bfdd6d86700b16f8438d865252860ca32be5d64243c1455ec696c8b9c1a397",
+      "bytes": 103234,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-webgl-unavailable.png",
+      "beforeSha256": null,
+      "afterSha256": "f5466cdafd3644fc319b0c90a0112782400463735aa7e84295712ddacc21bead",
+      "bytes": 168193,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-preview-regression-final/scene3d-zh-CN-390.png",
+      "beforeSha256": null,
+      "afterSha256": "6d5e94930e2e53f6445a933463b4cfd55fb3cde3893375949540ae48b8ebe5e4",
+      "bytes": 86564,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final.log",
+      "beforeSha256": null,
+      "afterSha256": "c622e0fc4020e9b1dd7b7ced86998497af27a28ef2137f190aef5a264b3f18b5",
+      "bytes": 33329,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/browser.json",
+      "beforeSha256": null,
+      "afterSha256": "11d06e6e493d9313f1d87c6974a6fd9d382c0db620ee80dfbf79cdd192da8ed8",
+      "bytes": 33328,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-desktop.png",
+      "beforeSha256": null,
+      "afterSha256": "94d0ddb5c1970a4a63dd81cd794a082fa981c97eeda97578f8116ece88a0eded",
+      "bytes": 160575,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-edges.png",
+      "beforeSha256": null,
+      "afterSha256": "dd4a05d19cacb7aefac1ade3de567fb21f1e5c5ae49c9eaddcd97bedd0e14b88",
+      "bytes": 158486,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-en-390.png",
+      "beforeSha256": null,
+      "afterSha256": "708fcebbff3fb1e8f825f2f8187e982ea18ed0ae8f4cd8d6121dd432e60618f9",
+      "bytes": 80982,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-ja-390.png",
+      "beforeSha256": null,
+      "afterSha256": "0d6872e9076d54283fd15c30f61f25eabcd7dec6bedc2e294a23ca8f5cce09a6",
+      "bytes": 100419,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-near-clip.png",
+      "beforeSha256": null,
+      "afterSha256": "1b6d2f74a7b8c2484adaa8126c7a73b57109133760fc62c0bda03d5edf73cf26",
+      "bytes": 174941,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-without-webgl.png",
+      "beforeSha256": null,
+      "afterSha256": "6fdad5443363f22823ca83f42e25e9a1df036909610bde1a02e53b270d8add1a",
+      "bytes": 168940,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-selection-regression-final/selection-zh-CN-390.png",
+      "beforeSha256": null,
+      "afterSha256": "59d4acbf871b8a8424f5481557a577684fd5307e7d9a86add9d3dc8356e7e6de",
+      "bytes": 88374,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final.log",
+      "beforeSha256": null,
+      "afterSha256": "2d04e370b7d35d894abb93a5f4b0e436f2851c9fa0b0de705e5bb78f3c5b3e45",
+      "bytes": 23310,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/browser.json",
+      "beforeSha256": null,
+      "afterSha256": "84fddb4b2cfcb5c57ea394c4b168f45ca7c7487843f09a6059876f1686773a6c",
+      "bytes": 23309,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-desktop-review.png",
+      "beforeSha256": null,
+      "afterSha256": "429837f224afd8e370df91500829df6e7500d83dab74d107fc1e73c5ea459dfd",
+      "bytes": 177177,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-en-390.png",
+      "beforeSha256": null,
+      "afterSha256": "7128fac6b88eca3b368d4cfc9ae4ab21c03ca836a27ac869fbeb1347082cb9a1",
+      "bytes": 87285,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-ja-390.png",
+      "beforeSha256": null,
+      "afterSha256": "5f20c7785113ab80672aa00ed485fecdb3f04b6813f2aeece7477edb5efcdd81",
+      "bytes": 108239,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-save-conflict.png",
+      "beforeSha256": null,
+      "afterSha256": "a8ca948a948551aebf8ff6d4635976cecc5ef5786da3a3959d3009057348d585",
+      "bytes": 137410,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-without-webgl.png",
+      "beforeSha256": null,
+      "afterSha256": "55c8f09f800976e3043abfda0ad8b3cf6706987a18e9b55c375d5c5dfec7d221",
+      "bytes": 181232,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/browser-translation-regression-final/translation-zh-CN-390.png",
+      "beforeSha256": null,
+      "afterSha256": "c73b48aaec2107b36c04b62cd40c09fea3550329b4dfdd9a7b3b0fef204d47b4",
+      "bytes": 98124,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/cargo-config-initial.toml",
+      "beforeSha256": null,
+      "afterSha256": "90114663a5e9ad91cd1f0beb40cdf29789e72a4bc3886b6c6f461f53186c4826",
+      "bytes": 198,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/cargo-metadata.log",
+      "beforeSha256": null,
+      "afterSha256": "855ab1d040bc558d217ee47bae524338334d9733e037517a19fabf26ca3ad03b",
+      "bytes": 3393,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/checkout-files-baseline.json",
+      "beforeSha256": null,
+      "afterSha256": "13624e965061c98b56c9d6058c905681f4ead2a95765409fd97116722e484bae",
+      "bytes": 834916,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-bridge-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "22758fe04067588c7209ddfefe1285cf0dae4baf148890e108df45ece21d087f",
+      "bytes": 2232,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-clippy.log",
+      "beforeSha256": null,
+      "afterSha256": "bc2d211c6428d0bf1e665491cd30d4adb7b4506f196b90de6b48d4965e21e5b4",
+      "bytes": 359,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-fmt.log",
+      "beforeSha256": null,
+      "afterSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-native-build.log",
+      "beforeSha256": null,
+      "afterSha256": "02db5a66fa0c60ca8618bd08aac556eac4f3ec863e8630a0d353dba6a0f6e126",
+      "bytes": 72,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-native-tests-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "5c174ae25f6aed291d88aebee076c16bd9e13acb6c73bc291b2bda01dfcc5e30",
+      "bytes": 29721,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-native-tests-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "071a82e605bbfe401675d6e5a4445f711ad8de2a74b1884b61ee6740346173f6",
+      "bytes": 634,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-proposal-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "9262cc79b0f919fa3c1c87211339b4f84a3253c3f29c5a2b2694e204f1e2adfd",
+      "bytes": 1485,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-regression-argv.json",
+      "beforeSha256": null,
+      "afterSha256": "c32bf63b5ceb298914358d341f5be0b09c66188a3e39de3a93cd48182bc9df6d",
+      "bytes": 1853,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-regression.log",
+      "beforeSha256": null,
+      "afterSha256": "b6b70f5887e17a2ef986db14438955d7fc11625c2fc11e3f802b3e2352a533a7",
+      "bytes": 40713,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-results.json",
+      "beforeSha256": null,
+      "afterSha256": "6e2d664b2c4c02fabec3924eb43d2b4ae3b905441a81758704e36c0480a69538",
+      "bytes": 10075,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-results.log",
+      "beforeSha256": null,
+      "afterSha256": "f89bcb0837e194ade49d74ce7cd8b937e68109e543e0f09e7979adce10838e80",
+      "bytes": 192,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/core-results.py",
+      "beforeSha256": null,
+      "afterSha256": "105ed4cc6ddcf232e2045ded48477a3fac5ccbc0946756eda465c9f8fdef43e4",
+      "bytes": 8987,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/desktop-prepare-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "9fea2b7c69cb426bb65ec3eb5d160061e49a9ee1f07d5cb87f665e43688dbfb5",
+      "bytes": 66,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/desktop-prepare-final.log",
+      "beforeSha256": null,
+      "afterSha256": "9fea2b7c69cb426bb65ec3eb5d160061e49a9ee1f07d5cb87f665e43688dbfb5",
+      "bytes": 66,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/desktop-prepare-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "1732593232c209ebbcbbb93e248035c66f1af75bc6662062f64e54bd93c5cb44",
+      "bytes": 81,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/existing-scope-fixture-repair.json",
+      "beforeSha256": null,
+      "afterSha256": "35791cc98008610a7d50ff26c13567e88988b75c59de1729ee068ad84a0062cf",
+      "bytes": 612,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/existing-scope-review-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "9a36c23c92b442ec42aa107a10340be5babaff17436bc1558bfc8782ae3fbfcf",
+      "bytes": 138,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/existing-scope-review.json",
+      "beforeSha256": null,
+      "afterSha256": "906ae60e33ef2ff0de62e6800691279e9324ec92bee9431a7d78c6600a84ffd6",
+      "bytes": 1885,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/existing-scope-review.log",
+      "beforeSha256": null,
+      "afterSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/final-source.diff",
+      "beforeSha256": null,
+      "afterSha256": "4aaf88c15f0161e964ce5e1370832cc2f047b42291d15f5154a5668ef692d209",
+      "bytes": 328166,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/final-stage-review-before-native-group-schema.py",
+      "beforeSha256": null,
+      "afterSha256": "fa345c3b3258cd83d61f0cadc4e8622e3cab8f453c2c19f03565b966398331f7",
+      "bytes": 19917,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/final-stage-review.py",
+      "beforeSha256": null,
+      "afterSha256": "b968e9e41b622c3c1e881deb2d260c83ae0f47974bf59c5a573b443e6066c74f",
+      "bytes": 20071,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/finish-evidence-before-browser-final.py",
+      "beforeSha256": null,
+      "afterSha256": "0f071b5d6b85ebaf04bf1eefaf4b5cb0ce1261a2733576eff654048376ba79cb",
+      "bytes": 19379,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/finish-evidence-before-schema-read.py",
+      "beforeSha256": null,
+      "afterSha256": "170e9d053a58056c3762b4a7367b7b9f36a23034050109e57d66510ecd8eb58d",
+      "bytes": 22062,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/finish-evidence.log",
+      "beforeSha256": null,
+      "afterSha256": "28d937d89be89076ad1eec7d25cbf28872ab89f612f40cf287666cbabc1808a7",
+      "bytes": 225,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/finish-evidence.py",
+      "beforeSha256": null,
+      "afterSha256": "278c604d56cf890acb2e2a9894a3707c3a412003d07a8fe8eaecc940e2784299",
+      "bytes": 23639,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/fixed-node.json",
+      "beforeSha256": null,
+      "afterSha256": "d1a0702dd2bf8740c860e956500b74dd061d31940b0e8035f372e17cccd1d359",
+      "bytes": 513,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/historical-baseline.json",
+      "beforeSha256": null,
+      "afterSha256": "a2d47cc0e8b57dfbdb2f7c65bdf23673472ae9d4de44a362273bee0aeefbffb9",
+      "bytes": 669913,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/host-tests-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "c56ab10e736530602365ce5f5154ff8a0e57e9389e93edb77dc21095f916bf6f",
+      "bytes": 935,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/i18n-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "ab8241752eb965778b5de884456f64f4b78ae088fd0072adbd7a61048646fe80",
+      "bytes": 401,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/implementation-ready.json",
+      "beforeSha256": null,
+      "afterSha256": "f780891cade7aff108011706766c49054f64008d0fa89f39e40ca69910f02daf",
+      "bytes": 10811,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/implementation.diff",
+      "beforeSha256": null,
+      "afterSha256": "85b6009aa87991dc5e91dea575e974f94a1c19af13ee60207c30628431d7e216",
+      "bytes": 238957,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/independent-post-stage-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "6e0d95d93d117d1b02acce70fbd916d65ce8194f69c9148fff4d6f99a1059d9b",
+      "bytes": 315,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/independent-stage-review-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "ff1d9133c54dbabaa5f2f3e752436fc10cfa4db44bf6442d354b0650657d311a",
+      "bytes": 395,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/independent-stage-review-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "214047ce86d4bf34a6022824e7aed8e28c13c1df260817a77cc74ff362ecd34f",
+      "bytes": 492,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/initial-producer/scene3d-alignment-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "95b352c7cbf1d68afef3fe4ccb15c4446863a5907790bc3c0196bcb7653d5adf",
+      "bytes": 33788,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/isolated-cargo-repair.json",
+      "beforeSha256": null,
+      "afterSha256": "d3648465454f0d4b6bff9cb1920d17f55262c3e5e8e8a5b79ea4e506c3230de2",
+      "bytes": 3633,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/isolated-toolchain.json",
+      "beforeSha256": null,
+      "afterSha256": "9dbf7bdd8bd7d3e0c3690cead49bfabfaa1900d0b97462522cf4263ba35ea347",
+      "bytes": 438,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/mobile-prepare-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "f91462e4878aea776fe5944726eefc844c40eff6168ef75b5ef6349197d24909",
+      "bytes": 73,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/mobile-prepare-final.log",
+      "beforeSha256": null,
+      "afterSha256": "f91462e4878aea776fe5944726eefc844c40eff6168ef75b5ef6349197d24909",
+      "bytes": 73,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/module-count-adjustments.json",
+      "beforeSha256": null,
+      "afterSha256": "b44bd738911d79e1d16f6ec2f8c51d66157c96f60d34ccca2d360f173170f324",
+      "bytes": 6572,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/module-tests-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "b0c539f5d945866f0e0b63786771073161c75d6f339b8f2b645f956176c79de9",
+      "bytes": 301,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/module-tests-isolation-diagnostic.log",
+      "beforeSha256": null,
+      "afterSha256": "12e64a4d7d14cb919741af6eb6e1038a360d65052f577f578045cd2293a4e532",
+      "bytes": 5456,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/native-host-dependencies.json",
+      "beforeSha256": null,
+      "afterSha256": "651091543e1e2c4940259c5240d1fd61caaa74f68932c60d2a52a0e69f422306",
+      "bytes": 69939,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/native-size-repair.json",
+      "beforeSha256": null,
+      "afterSha256": "37279860c657df602572f5648aad454521f437b8d90cddd522dab9b340aec492",
+      "bytes": 607,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/native-tools-build-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "0bc1408ec4b95a643f90fd69a92b3857668b1c33c404558eafdf3eafbc18b42c",
+      "bytes": 22727,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/native-tools-build.log",
+      "beforeSha256": null,
+      "afterSha256": "6d16d446c69bbdfb426244f3443ccf3d6d17afa54558fadc2b564340044691de",
+      "bytes": 33648,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/native-tools-copy-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "b7acfc248c10460b6338fcc978e9aabab276c9ace3ff25c4b9462011da02b11a",
+      "bytes": 21942,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/native-tools-small-build.log",
+      "beforeSha256": null,
+      "afterSha256": "4a05d87134eabfb3f1183806204c8a0fa203c602f2bc39dc92acffe361d3c297",
+      "bytes": 32820,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/packaged-resources-browser-final.json",
+      "beforeSha256": null,
+      "afterSha256": "39f93fec6c52e438167333dfb073b7c9c7f2b4461eb7e23cb211db3e6bce1650",
+      "bytes": 546958,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/packaged-resources-confirmed.json",
+      "beforeSha256": null,
+      "afterSha256": "7ca14fcb1d9be141d8338908fdd36a38951345e65d593e9ce49bc1d7fc930ba5",
+      "bytes": 546958,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/packaged-resources.json",
+      "beforeSha256": null,
+      "afterSha256": "96079a0c11fcb97ec83f9182589212a8cede64f3b4d3ad5c5dbee90e38e6fd33",
+      "bytes": 546958,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/post-stage-review.json",
+      "beforeSha256": null,
+      "afterSha256": "b3e58b0a34d9236ef968033fc4cab04e2276a62e2cc5a5e294055d492a5dfaa6",
+      "bytes": 7627,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/post-stage-review.py",
+      "beforeSha256": null,
+      "afterSha256": "fbca7ae06be0d125506ae6e58789faa198e4ce6a087db2809b9350056841cf79",
+      "bytes": 10041,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepare-reviewed-patch.py",
+      "beforeSha256": null,
+      "afterSha256": "ccee2f16b6e7023a855ef1e84aaf60bac5a0f0e972525f6352a1c11b17f87eb9",
+      "bytes": 3695,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-check-browser-final.log",
+      "beforeSha256": null,
+      "afterSha256": "f5df63c46e92cd24fedb80badce54ef8be3154b02f10b7d6ee54dd4678730eae",
+      "bytes": 764,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-check-browser-final.mjs",
+      "beforeSha256": null,
+      "afterSha256": "8960e251293628078a1a2a2745280afc58186094958184390547209952965ea2",
+      "bytes": 83743,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-check-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "e0a07d89bf89fe93b2c166944773f7c0cda6928e82ef6a9665018885375a8c66",
+      "bytes": 764,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-check-confirmed.mjs",
+      "beforeSha256": null,
+      "afterSha256": "e652b38dc8cb410d8dac7d06e286eb793624025bf8a2da00059ba557685fc685",
+      "bytes": 83731,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-check.log",
+      "beforeSha256": null,
+      "afterSha256": "fe3b67f351784d0a7c4b77cde77b831dfe9d2e306fd740c21596cf284bcec1cd",
+      "bytes": 764,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-check.mjs",
+      "beforeSha256": null,
+      "afterSha256": "89fa8c4793070ee2613ebd5facb85835b9c591e7f8daff16cc1de104e54ec7d9",
+      "bytes": 83713,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-confirmation-browser-final.json",
+      "beforeSha256": null,
+      "afterSha256": "d4c12a13cf7703a5faaa179d0df7dcbf17729065a63c84a67ac12597f64de357",
+      "bytes": 1546,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-confirmation-stale-source-guard.json",
+      "beforeSha256": null,
+      "afterSha256": "ec98d8083853694f946d0fffa4d3e74760a46cfc793a3c2cd7cc7df9ef9abaed",
+      "bytes": 1253,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-confirmation.json",
+      "beforeSha256": null,
+      "afterSha256": "390a3e3b0da212e6da412c18aea1534e1339ffb0d113053b43e233fdbdd68f11",
+      "bytes": 2298,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-confirmed-producer-draft.json",
+      "beforeSha256": null,
+      "afterSha256": "dcafa214c132a20554c23da8497db29ba4553dcc5ed2ed9730fb515eb8d3d517",
+      "bytes": 702,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-final-binding.json",
+      "beforeSha256": null,
+      "afterSha256": "fb7cf110118c2aefc4f88c3d70d54fbef5113b3eeeda6bd952e09999c65b72e6",
+      "bytes": 3663,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/prepared-proof-preservation.json",
+      "beforeSha256": null,
+      "afterSha256": "e738ad990522306c4e739e4cd4da9fb73fd45dc7b64225e8212af95e3d99430b",
+      "bytes": 4068,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-environment-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "df00175ba28676f06b15a47166cf1e49d9efed2260728fa559de2f5119b910cb",
+      "bytes": 29143,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-environment-system-ports.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "cd0b1e3057f14d5fe82babbb3c291879b310a9dca71abd9c0920e08a3341e3a1",
+      "bytes": 6454,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-navigation-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "5313d9a85a052110beeaff558df66ae25282e45714e7cd1ab7318b8775a02c6b",
+      "bytes": 26677,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-objects-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "7dad5ee5b3faace5183633939491ef48395d58026f585a49ab1118e2e5032c6a",
+      "bytes": 27741,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-picking-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "b12ebba9c800e7b8b99200e842722f9a579d65013c493054866e9b36f2dc6ad5",
+      "bytes": 30562,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-properties-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "bb32685f3fb7bf10730c6f8a6cca1464ba6a156e9ca82af7cad667b52182b3da",
+      "bytes": 30411,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-property-system-ports.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "7be716cb6f9303c8ade04fe435d42495804c93ac62f2f4b75a7a102a6454dd10",
+      "bytes": 6792,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-selection-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "f5b90baa20d48501801f7b8e09527be829941a2c8a6fd5af1f26fb3cf79ca375",
+      "bytes": 36591,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-transform-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "9cc0ce79fc4daf60fb8755c82b76ec6ac8a5ec2e07a178d4c90c64b7c3b624ca",
+      "bytes": 21086,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-translation-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "83c42bd9c8ada0dad5bbbd83370a332206e6ed162ed6340b805ac335d7a74cd6",
+      "bytes": 29766,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/scene3d-translation-system-ports.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "03472b101f53e8259676d9c518fd40bc81ab66c23d337173254f64f4c4742301",
+      "bytes": 6284,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/studio-modules.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "46229e8f105b600923e2fee1b71681c7d4bf2260bb6a6dcee9980e23836281c5",
+      "bytes": 17577,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/studio-system-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "e2a22688fd0d5ca25b0a5d4df44e234a8d93d645e646f623eba3718deb63b976",
+      "bytes": 20063,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-count-producers/studio-system-ui.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "a8339388fe0b9c19ff4f95e0f493e4b25191dcd96c2edb88f007854d58d19a3a",
+      "bytes": 20800,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-studio-core.build.json",
+      "beforeSha256": null,
+      "afterSha256": "cfc10a4a48a6421a90d874a1061fb8ff1e3a1930804961c06841e01921a10320",
+      "bytes": 2821,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/previous-studio-core.wasm",
+      "beforeSha256": null,
+      "afterSha256": "ac40eb3d9a8ffcb4d079745c2b71492323fbabb1cdf3acda923e3497cbaaaad5",
+      "bytes": 528651,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/quality-initial.json",
+      "beforeSha256": null,
+      "afterSha256": "63dacf89c9928b6fc58842b3e43c1ecf6e57947954ac30e4f024e70c0e89499d",
+      "bytes": 4785,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/quality-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "102aa9c84b3e3bc043a08f52fabaa25065afab35754c7d1965e808eb9c0802f0",
+      "bytes": 200,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/results.json",
+      "beforeSha256": null,
+      "afterSha256": "4377a247c2e31424df731e81576c9d35be92941ae58102bef202e0e729de2e44",
+      "bytes": 17344,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/root-closure-producers.json",
+      "beforeSha256": null,
+      "afterSha256": "a025c57bbf1d4bff082b6d594ebf8b45b974969cc11ad03ad3974434c652d8f2",
+      "bytes": 1333,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/root-confirmed-producer/scene3d-alignment-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "029cc1bb2af415b644d206c4882c0ca3afdbf0e8dda857ba6bac2dc55e8bc6e9",
+      "bytes": 33810,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/run-application-checks.sh",
+      "beforeSha256": null,
+      "afterSha256": "53be3b8ebe8243fbfab46f20348fd456e1ae11332af5b24f4332dc1d8e03fc92",
+      "bytes": 1204,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/runtime-license-proof.json",
+      "beforeSha256": null,
+      "afterSha256": "4368b1520594a06aa38624b5ad2ab85cab8c713b134e05275a2d47032cb09a38",
+      "bytes": 463,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/smoke-syntax-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/smoke-syntax-error-layer-final.log",
+      "beforeSha256": null,
+      "afterSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/source-baseline.json",
+      "beforeSha256": null,
+      "afterSha256": "ecb3120c155f511b4473eded81cb705f88a387be3a291e338eaec3a84c66dd32",
+      "bytes": 82467,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/source-freeze-confirmed.json",
+      "beforeSha256": null,
+      "afterSha256": "5875669b54e0193b9bb8fdac61976aa3d67fa9ef9b7cd681c5e0d399036069ad",
+      "bytes": 484,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/source-freeze-final.json",
+      "beforeSha256": null,
+      "afterSha256": "11e917beb515c5b23b9ce49cc290b103e0487abce9c346caa0cc905054174095",
+      "bytes": 5463,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json",
+      "beforeSha256": null,
+      "afterSha256": "a5e024f9fcb78be02a006abdc8ee919103646e3cf3f1ca5628a3a58356bbf70c",
+      "bytes": 83633,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/source-hashes-confirmed.json",
+      "beforeSha256": null,
+      "afterSha256": "a0ef1d9e0fde23cb14c23d22d1ca7d753a14dbb7d46d1c81ad8cbd16790f3aae",
+      "bytes": 83633,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/source-hashes-final.json",
+      "beforeSha256": null,
+      "afterSha256": "78a3f1dd764b8366847dbdf8e4e20ad0b511d52c7a001a93aa6f66492b0ff9ce",
+      "bytes": 83633,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json",
+      "beforeSha256": null,
+      "afterSha256": "767fdaded9f1f672d88f077e80a920c40c31c5d28772c7257bc449cb99c7ad83",
+      "bytes": 1692,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/source-phase.json",
+      "beforeSha256": null,
+      "afterSha256": "36fad9b1c24f2a71558c013910096abb0f2fc9fdd14c73f4d2d7e7fbbc4b623d",
+      "bytes": 2165,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/stage-preservation.json",
+      "beforeSha256": null,
+      "afterSha256": "de5efdf13af1df273c2980cb30b883d2f059f4faa5eb73ad8c9b250c8b7f1d32",
+      "bytes": 10192,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/stage-review.json",
+      "beforeSha256": null,
+      "afterSha256": "185c74da76cd24f83d3555f3f0b7336d1cc1d188992db3aac5af093352f64bee",
+      "bytes": 8832,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/tool-baseline.json",
+      "beforeSha256": null,
+      "afterSha256": "d5a726203f89370dedbd863840746fca9e95093ca39c2c8ced2b88a93715d24a",
+      "bytes": 1157,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/ui-and-i18n-confirmed.log",
+      "beforeSha256": null,
+      "afterSha256": "7aefed7924289baa8e613e5566573884ae22b020d7decf740783d43fbfbe23c4",
+      "bytes": 8341,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/ui-fixture-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "7f9ad5f01cfb43d873702f03b192f030be84bfff7e5e00a97b261b45686621e1",
+      "bytes": 6511,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/ui-fixture-second.log",
+      "beforeSha256": null,
+      "afterSha256": "e0bf582d4c4c63ec30d8907aff3824b75d3923b98192f9ad087e908ac2e49aa5",
+      "bytes": 5829,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/ui-fixture-third.log",
+      "beforeSha256": null,
+      "afterSha256": "dfca45c8bc740332cdf15c6d6f805064f55c287cd14aed91d0a57a211f989f95",
+      "bytes": 4099,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/ui-quality-initial.json",
+      "beforeSha256": null,
+      "afterSha256": "13756bb727f5c21e506f1abdf0e2418ba3413da96450fb9e6302b3fa1478c179",
+      "bytes": 1899,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/ui-quality-initial.log",
+      "beforeSha256": null,
+      "afterSha256": "2d868e56e2e930b70bd4d0d6c3fc207dc7156f384505be8968dde099a368d558",
+      "bytes": 54,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/verify-existing-scope-initial.py",
+      "beforeSha256": null,
+      "afterSha256": "dc22b498f47a3a0cb09cbee37a3985d42c3e8e6611d099efe86f74749717af4d",
+      "bytes": 1606,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/verify-existing-scope.py",
+      "beforeSha256": null,
+      "afterSha256": "e49482b70d8720177eca3288b9566b9de6656f6c5ea489b54d877fd95bdbfade",
+      "bytes": 1725,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/visual-review-independent.json",
+      "beforeSha256": null,
+      "afterSha256": "ea88ad303c13ae440689313647711d0f523f609584697202d87e1795a40d2f48",
+      "bytes": 3354,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/visual-review-web.json",
+      "beforeSha256": null,
+      "afterSha256": "33bd8f60bb4f5d5f69a0d7a7536e00fd6aa00f5bbd3e87c01a6e28821d60fec3",
+      "bytes": 3399,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/wasm-build.log",
+      "beforeSha256": null,
+      "afterSha256": "c68145b46380ce2204ebb1549211f612d775f142ac007a209fc1eec7a84c9fb0",
+      "bytes": 104,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/wasm-freeze.json",
+      "beforeSha256": null,
+      "afterSha256": "365327872d0c32361b762b179f2a7632cb0a304d1dd991dfa4fe4b79a21bac30",
+      "bytes": 766,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/web-legacy-addendum.json",
+      "beforeSha256": null,
+      "afterSha256": "84a4eff8aceb871f31da0a70fcfa0fe260be5402409e0cc139d5a322d2c71b3f",
+      "bytes": 9706,
+      "mode": 436
+    },
+    {
+      "path": "docs/test-results/scene3d-alignment-authoring/web-validation.json",
+      "beforeSha256": null,
+      "afterSha256": "aa8c00ed19b5621e60ec8c31ef3adbf8d0daad5c1f6165f422573bde13d80431",
+      "bytes": 9359,
+      "mode": 436
+    },
+    {
+      "path": "engine/README.md",
+      "beforeSha256": "cb609aa3ba1457c2a67d737d1e8197bc000727b0c516432989e200db46f20e81",
+      "afterSha256": "469926c0df1624fd13fd07876d89eba14d2e8b6617a10bcb58c1a9769ccde928",
+      "bytes": 74509,
+      "mode": 436
+    },
+    {
+      "path": "engine/index.mjs",
+      "beforeSha256": "90bcb97be7073cfbb163d9c82601b5170b6cde5c7f116d8ab6a5b227d845819b",
+      "afterSha256": "7c2d7ff178689a022f29ece0d7bc023f3d9b3cc3ef9f51acc5b62b3f97086b4f",
+      "bytes": 4582,
+      "mode": 436
+    },
+    {
+      "path": "engine/scene3d-alignment.mjs",
+      "beforeSha256": null,
+      "afterSha256": "5b36f7377554e83337e892ef72839556df2d5a40e2dc9b2cdea1731709a5844d",
+      "bytes": 4224,
+      "mode": 436
+    },
+    {
+      "path": "engine/studio-core.build.json",
+      "beforeSha256": "cfc10a4a48a6421a90d874a1061fb8ff1e3a1930804961c06841e01921a10320",
+      "afterSha256": "d81612793c13384c0b49aa602423bd69fa9de435b9d526387ef0f3d33137dd6d",
+      "bytes": 2927,
+      "mode": 436
+    },
+    {
+      "path": "engine/studio-core.mjs",
+      "beforeSha256": "aab546616f8d4d98940e117886a8b8a07d5ebb318d34075c7d6166ae6eae671f",
+      "afterSha256": "e06cd9cef99065eb13d9c9742f7d7b2041581a4ac9bffc137b55601cd4b29fac",
+      "bytes": 116702,
+      "mode": 436
+    },
+    {
+      "path": "engine/studio-core.wasm",
+      "beforeSha256": "ac40eb3d9a8ffcb4d079745c2b71492323fbabb1cdf3acda923e3497cbaaaad5",
+      "afterSha256": "84038b6fa464aa86f9edd337b477c03683b60a4b96d1816cf5f5bb16c3f289d1",
+      "bytes": 543107,
+      "mode": 436
+    },
+    {
+      "path": "engine/studio-modules.mjs",
+      "beforeSha256": "f7a215922d10870ff95046104d4de0b75e08ed013d98bd95ca21c07d5393882d",
+      "afterSha256": "f46a103da6864cfaa6fb1e5020f31f39a9bf761874d2dd8e0a132f8a2427e90f",
+      "bytes": 12284,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-alignment-smoke.mjs",
+      "beforeSha256": null,
+      "afterSha256": "b8da986290e3b7ca9e3210896880e73c021ecf608c8c521d7a7bb327c6d0e4f7",
+      "bytes": 33812,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-alignment-source-host.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "e0cc5f2e4d3108383b643cd952572f1fd433e3aed00f1ec73ff66a6c130e42bc",
+      "bytes": 11191,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-alignment-system-ports.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "aa12bec99481eb8d48b4a84f124c1e788d70d193072d847fe196dc57e216af2e",
+      "bytes": 6383,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-alignment-ui.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "908e98745c64907c06328e729a6b5cfd02a4f418702c1bf788c65ed7ab17b571",
+      "bytes": 29701,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-alignment.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "c847f3dc92758d9fd7109ae044f77eccf9672d09a5c4b70d31d5ba91362e2d85",
+      "bytes": 10518,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-environment-smoke.mjs",
+      "beforeSha256": "df00175ba28676f06b15a47166cf1e49d9efed2260728fa559de2f5119b910cb",
+      "afterSha256": "75478c1bf6ff0537f536bee281a08bc06028a12e7ece77a0b1b4f4d8bfb29f11",
+      "bytes": 29143,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-environment-system-ports.test.mjs",
+      "beforeSha256": "cd0b1e3057f14d5fe82babbb3c291879b310a9dca71abd9c0920e08a3341e3a1",
+      "afterSha256": "1ef617f00fed5507fc3191a108e6fd8920ba1011db82c97a6a5ca7e2b4496de5",
+      "bytes": 6454,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-navigation-smoke.mjs",
+      "beforeSha256": "5313d9a85a052110beeaff558df66ae25282e45714e7cd1ab7318b8775a02c6b",
+      "afterSha256": "ea9b08cf5dfc1144ff7d9429ea5bc82bba28a6170dac1ec01d7fa19082a00409",
+      "bytes": 26677,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-objects-smoke.mjs",
+      "beforeSha256": "7dad5ee5b3faace5183633939491ef48395d58026f585a49ab1118e2e5032c6a",
+      "afterSha256": "2246c77985562b9a71aed5294fcead4a386998e88de6d5fa78b5f87d159fe0db",
+      "bytes": 27741,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-picking-smoke.mjs",
+      "beforeSha256": "b12ebba9c800e7b8b99200e842722f9a579d65013c493054866e9b36f2dc6ad5",
+      "afterSha256": "f718bc7504291031097acfee37d972d2c9a1e731fd69b36454b6de9cd1aba255",
+      "bytes": 30562,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-properties-smoke.mjs",
+      "beforeSha256": "bb32685f3fb7bf10730c6f8a6cca1464ba6a156e9ca82af7cad667b52182b3da",
+      "afterSha256": "bff9e460cdc00c9a2133d91a2d22530f2e97584d1df0e4955e63434a89a079a0",
+      "bytes": 30411,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-property-system-ports.test.mjs",
+      "beforeSha256": "7be716cb6f9303c8ade04fe435d42495804c93ac62f2f4b75a7a102a6454dd10",
+      "afterSha256": "92c7dea6e700f3e3414c989590fd3e5556e00d1fcbc31159610308393d0b804d",
+      "bytes": 6792,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-selection-smoke.mjs",
+      "beforeSha256": "f5b90baa20d48501801f7b8e09527be829941a2c8a6fd5af1f26fb3cf79ca375",
+      "afterSha256": "2d336d1413d6a1312172a6314caf9c7d8c74ebdc06b628fccb8e6ff487bdbb2a",
+      "bytes": 36591,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-transform-smoke.mjs",
+      "beforeSha256": "9cc0ce79fc4daf60fb8755c82b76ec6ac8a5ec2e07a178d4c90c64b7c3b624ca",
+      "afterSha256": "f91d1cb1bf8cc3448494e73f0a0155ad9b5f9626e67ceca09b313a001f4aeb88",
+      "bytes": 21086,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-translation-smoke.mjs",
+      "beforeSha256": "83c42bd9c8ada0dad5bbbd83370a332206e6ed162ed6340b805ac335d7a74cd6",
+      "afterSha256": "c2d8fda9772e67016b3a78766bfe04b16a344b53336011e5bf73d6fc657f4d98",
+      "bytes": 29766,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/scene3d-translation-system-ports.test.mjs",
+      "beforeSha256": "03472b101f53e8259676d9c518fd40bc81ab66c23d337173254f64f4c4742301",
+      "afterSha256": "300493538c0c173bed3f90536e893f4c6b4d812f87b39f598e5595b0dd11a363",
+      "bytes": 6284,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/studio-core-scene3d-alignment.test.mjs",
+      "beforeSha256": null,
+      "afterSha256": "bf95372ed35ea788289bcb5019bd5b18357e8aba206171e8ff8234a30f8994e8",
+      "bytes": 22520,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/studio-modules.test.mjs",
+      "beforeSha256": "46229e8f105b600923e2fee1b71681c7d4bf2260bb6a6dcee9980e23836281c5",
+      "afterSha256": "e94c02161a159ed23fa49e6e741dd442452b028751e314be87a6bab9c2a2e214",
+      "bytes": 17687,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/studio-system-smoke.mjs",
+      "beforeSha256": "e2a22688fd0d5ca25b0a5d4df44e234a8d93d645e646f623eba3718deb63b976",
+      "afterSha256": "ea410960bbea527cb18e419f08aa0f7564ec83dbab6e85e4c3588ae31ccd9737",
+      "bytes": 20063,
+      "mode": 436
+    },
+    {
+      "path": "scripts/tests/studio-system-ui.test.mjs",
+      "beforeSha256": "a8339388fe0b9c19ff4f95e0f493e4b25191dcd96c2edb88f007854d58d19a3a",
+      "afterSha256": "5e23dbf2d4680c818c3b0a25565f790a15ea264b3233935e849c657597caaf5f",
+      "bytes": 21220,
+      "mode": 436
+    },
+    {
+      "path": "web/i18n/en.js",
+      "beforeSha256": "ff2278020d43a80b70022a05cd88864606adb4b4e125962fc7f35425b38b87bc",
+      "afterSha256": "c71f3951342eda8020c986b69ece7e66462a85d5a52aa9546a1f4b20d6d7b319",
+      "bytes": 209243,
+      "mode": 436
+    },
+    {
+      "path": "web/i18n/ja.js",
+      "beforeSha256": "bb4bf132e4181de08d3a90e07ebecda960b92b75ac404377491a1815685659a4",
+      "afterSha256": "f02cbcb6bf30405711ee62471a2a5cb8c008dc51eea3dc803138335648757d7e",
+      "bytes": 260027,
+      "mode": 436
+    },
+    {
+      "path": "web/modules/app-runtime.js",
+      "beforeSha256": "8ea9e9de146a74c19f9103a1d56f5541a522ad0f63cff4a47b674502a27d48f3",
+      "afterSha256": "1bfdb4122ba3cae777427889e229429f7e524413dfcca658768db4f8f50c3780",
+      "bytes": 229077,
+      "mode": 436
+    },
+    {
+      "path": "web/modules/app-scene3d-alignment.js",
+      "beforeSha256": null,
+      "afterSha256": "a6f93e3d191dac8e81bf0cacbe9be6a277ab9d3037e84e18efd378748159bcb3",
+      "bytes": 21064,
+      "mode": 436
+    },
+    {
+      "path": "web/modules/app-studio-system.js",
+      "beforeSha256": "81846fa09b2cd0f8b22a53edbcb39c45ae1b4180e6a66aac0f76cd8c04469495",
+      "afterSha256": "2180b53604acda5309f7d2e49ddedd7e0c7da19ed0aeb5e9bccb60ff34b7023d",
+      "bytes": 7852,
+      "mode": 436
+    },
+    {
+      "path": "web/scene3d-alignment.css",
+      "beforeSha256": null,
+      "afterSha256": "911ca7d4c6af85a1238a1661ba7d3ac81c47efcb26107a55cb26b1f1659c1878",
+      "bytes": 3002,
+      "mode": 436
+    }
+  ],
+  "deletions": [],
+  "finalSourceManifestSha256": "a5e024f9fcb78be02a006abdc8ee919103646e3cf3f1ca5628a3a58356bbf70c",
+  "sourceDiff": {
+    "path": "docs/test-results/scene3d-alignment-authoring/final-source.diff",
+    "sha256": "4aaf88c15f0161e964ce5e1370832cc2f047b42291d15f5154a5668ef692d209"
+  },
+  "postStageReviewSha256": "b3e58b0a34d9236ef968033fc4cab04e2276a62e2cc5a5e294055d492a5dfaa6",
+  "applier": {
+    "path": "/tmp/viento-scene3d-alignment-fayrkhch/control/apply-reviewed-patch.py",
+    "sha256": "26e8d0e4c625bebff71a6845cc46fe23fb2a0f13fb1ad82f27967613e3d381b5"
+  },
+  "scope": "Only the 40 reviewed source/test/docs files, four generated atlas views, and the new alignment evidence folder. No deletions, caches, dependencies, tools, git, assets, or user project contents."
+}

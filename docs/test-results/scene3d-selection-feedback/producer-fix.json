@@ -1,0 +1,25 @@
+{
+  "format": "viento-scene3d-selection-browser-producer-fix",
+  "schemaVersion": 1,
+  "productChanged": false,
+  "historicalReportsChanged": false,
+  "initialBrowserPreserved": "browser-selection-initial/browser.json",
+  "changes": [
+    {
+      "path": "scripts/tests/scene3d-selection-smoke.mjs",
+      "beforeSha256": "d5c56a977e5b326929e3c2a889fe7a134bc1187211007dceff43bb7fd2ba0d5e",
+      "snapshot": "producer-before-fix/scene3d-selection-smoke.mjs",
+      "afterSha256": "6382af0dee2f8b1d1f9ac6361c59dc901d1c94ea85d98458d36a41261a241b87"
+    },
+    {
+      "path": "scripts/tests/scene3d-picking-smoke.mjs",
+      "beforeSha256": "455957003904ff7ebaec7e9530f7b22dfedafa67eb3c764a04a1d6b33bc683a3",
+      "snapshot": "producer-before-fix/scene3d-picking-smoke.mjs",
+      "afterSha256": "4ff97054572c43b7f755a37d7344352b18a629a9e3021d539a7729e2a58cf8f4"
+    }
+  ],
+  "reason": [
+    "The existing renderer disables backface culling; actual near-clipped back-surface ambient gray is legal geometry, not a cap. Compare center pixels on the same near-clipped model before/after selecting that object.",
+    "Orbit and narrow-focus inequality references now use the same selected UUID before changing the camera. Reset equality remains strict after restoring the reference UUID through the public list."
+  ]
+}

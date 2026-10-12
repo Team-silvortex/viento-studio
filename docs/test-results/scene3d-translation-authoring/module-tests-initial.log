@@ -1,0 +1,88 @@
+✖ translation is a separate source authoring module with only document dependency (3.275751ms)
+✔ translation mounts with all four other authoring areas and readonly preview explicitly disabled (3.141182ms)
+✔ missing and disabled translation leave all existing views mounted and do not create author authority (3.640807ms)
+✔ translation ports are captured before settings await and cannot borrow a sibling controller or callbacks (1.162284ms)
+✔ additive profile requests diagnose only mounted translation and never hot-mount or imply save/execution (2.754826ms)
+✖ builtin composition declares twelve stable modules and keeps contribution domains separate (1.921421ms)
+✔ module registration and plan results own detached immutable snapshots (2.794289ms)
+✔ absent, null and empty additive profiles preserve legacy module composition (1.028647ms)
+✔ required and optional requests preserve declaration order and have independent severity (1.196788ms)
+✔ unknown representations and behavior requirements never fall back to Scene2D or authorize a backend (0.785456ms)
+✔ capability API mismatch is explicit and does not reactivate a disabled module (0.848593ms)
+✔ module feature projection propagates required dependencies but keeps optional media/export ports independent (0.475892ms)
+✔ dependency order is deterministic even when declarations arrive in reverse order (0.264711ms)
+✔ duplicate modules, ambiguous providers, missing/versioned dependencies and cycles fail registration (0.464341ms)
+✔ explicit host registration can provide a future representation without claiming an executable provider (0.632261ms)
+✔ strict profile validates detached declarative requests but rejects paths, scripts and unknown keys (0.719133ms)
+✔ malformed or future profiles produce local diagnostics and preserve ordinary document availability (0.948979ms)
+✔ module descriptors reject dynamic implementations, unversioned capabilities and malformed domains (0.63667ms)
+✔ feature options are strict metadata and reject unknown modules or forged enable flags (0.815903ms)
+✔ accessors, serialization hooks, inherited objects, hidden fields, symbols, sparse arrays and cycles never gain authority (2.414074ms)
+✔ profile and registry budgets reject excessive declarations instead of dropping requests (2.143002ms)
+✔ drama scene and custom document types stay document definitions and never infer representation requirements (0.847069ms)
+✔ declared future module profiles cannot mutate original author payload or the registered providers (0.466955ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 21
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 82.974909
+
+✖ failing tests:
+
+test at scripts/tests/scene3d-translation-system-ports.test.mjs:24:1
+✖ translation is a separate source authoring module with only document dependency (3.275751ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + undefined
+  - [
+  -   {
+  -     apiVersion: 1,
+  -     id: 'org.viento.document'
+  -   }
+  - ]
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene3d-translation-system-ports.test.mjs:27:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: [ { id: 'org.viento.document', apiVersion: 1 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/studio-modules.test.mjs:17:1
+✖ builtin composition declares twelve stable modules and keeps contribution domains separate (1.921421ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'org.viento.document',
+      'org.viento.settings',
+      'org.viento.project',
+      'org.viento.world',
+  ...
+      'org.viento.scene3d-properties',
+  +   'org.viento.scene3d-translation'
+    ]
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/studio-modules.test.mjs:19:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'org.viento.document', 'org.viento.settings', 'org.viento.project', 'org.viento.world', 'org.viento.export', 'org.viento.media', 'org.viento.build', 'org.viento.scene3d', 'org.viento.scene3d-transforms', 'org.viento.scene3d-objects', 'org.viento.scene3d-environment', 'org.viento.scene3d-properties', 'org.viento.scene3d-translation' ],
+    expected: [ 'org.viento.document', 'org.viento.settings', 'org.viento.project', 'org.viento.world', 'org.viento.export', 'org.viento.media', 'org.viento.build', 'org.viento.scene3d', 'org.viento.scene3d-transforms', 'org.viento.scene3d-objects', 'org.viento.scene3d-environment', 'org.viento.scene3d-properties' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

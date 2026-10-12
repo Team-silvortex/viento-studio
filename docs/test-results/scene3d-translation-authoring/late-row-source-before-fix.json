@@ -1,0 +1,18 @@
+{
+  "format": "viento-scene3d-translation-late-row-before-fix",
+  "schemaVersion": 1,
+  "files": [
+    {
+      "path": "web/modules/app-scene3d-translation.js",
+      "sha256": "f523bfc5aaed72b937e065c361d704fe1118a6611994df5873b59071dc823965",
+      "snapshot": "initial-ui-source/app-scene3d-translation.js"
+    },
+    {
+      "path": "scripts/tests/scene3d-translation-ui.test.mjs",
+      "sha256": "32a070d0925147e86b9a4e1dee072614e8d092050b222859bbe207915d50440e",
+      "snapshot": "initial-ui-source/scene3d-translation-ui.test.mjs"
+    }
+  ],
+  "proof": "ui-late-checkbox-confirmed.json",
+  "reason": "An old detached checkbox callback referred only to current global session, so it could alter selection after close/reopen or a query rebuild."
+}

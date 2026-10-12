@@ -1,0 +1,359 @@
+{
+  "format": "viento-scene3d-picking-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T16:16:30.467694+00:00",
+  "status": "passed",
+  "ok": true,
+  "version": "0.0.10",
+  "publishedBase": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "delivery": "Unpublished worktree after 0.0.10; existing authoring work preserved; no new commit, push or installation.",
+  "features": [
+    "Single-click stable object selection from the actual last-drawn Float32 frame.",
+    "Qualified native double-click invokes existing temporary focus; filtering and blank clicks retain selection.",
+    "Cancelled/drag/multiple-pointer/stale-frame gestures do not select. Ordinary position-only scrolling remaps current canvas coordinates without redraw."
+  ],
+  "sourceFreeze": {
+    "manifest": "source-hashes-final.json",
+    "sha256": "22c6fa824d52d8ef1147ae7351361e45de54075ec28917868a0a0b2e19e6a998",
+    "files": 726,
+    "allMatch": true
+  },
+  "application": {
+    "log": "app-check.log",
+    "sha256": "55cbfab2ea45c2092e5def45cdd231c4722fcb2a6b532f7f14b701784a2ee867",
+    "counts": {
+      "tests": 3421,
+      "pass": 3421,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 302866.538666,
+    "javascriptSyntaxFiles": 603
+  },
+  "newApplicationTests": 40,
+  "focused": {
+    "renderer": {
+      "passed": 58,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "durationMs": 155.399045,
+      "files": [
+        {
+          "path": "scripts/tests/scene3d-math-navigation.test.mjs",
+          "passed": 5,
+          "previousAssertionsPreserved": true
+        },
+        {
+          "path": "scripts/tests/scene3d-picking.test.mjs",
+          "passed": 13,
+          "new": true
+        },
+        {
+          "path": "scripts/tests/scene3d-renderer.test.mjs",
+          "passed": 40,
+          "previousTestsPreserved": 25,
+          "newTests": 15
+        }
+      ],
+      "log": "renderer-tests-final.log",
+      "logSha256": "141f30a7a5434b1353e555d4673eeb5608e83d3f3a5ff6c0a85c479478870960"
+    },
+    "uiAndLocales": {
+      "log": "ui-regression-final.log",
+      "total": 187,
+      "passed": 187,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 3820.001432
+    },
+    "countsOverlapApplication": true,
+    "independentGeometry": {
+      "report": "quality-confirmed.json",
+      "passed": 12,
+      "counts": {
+        "triangleReferenceSamples": 1144,
+        "float32UploadedSamples": 63,
+        "clipSurfaceCases": 5,
+        "gestureScenarios": 25
+      }
+    },
+    "independentExtremeFrames": {
+      "report": "extreme-frame-final.json",
+      "passed": 18
+    }
+  },
+  "browsers": {
+    "current": {
+      "path": "browser-picking-initial/browser.json",
+      "sha256": "b1039c7014712e8fd79965f3d4870a1eb8605b6679789dc62bf236eba6b7eb24",
+      "ok": true,
+      "workflows": 8,
+      "browser": "Chrome/154.0.8037.97",
+      "sourceStableDuringProof": true,
+      "runtimeErrors": 0,
+      "sources": {
+        "scripts/tests/scene3d-picking-smoke.mjs": "f2a8229d79dbbcc4e8621d9613e6169e171310effe8a74a259bb15972569b9f1",
+        "engine/scene3d-navigation.mjs": "5b0fd3dafd2cdca59858df8d192895a38c8f992b4975dd0732f330a7a7bdf447",
+        "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+        "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
+        "web/modules/app-scene3d-transforms.js": "44082449bd8f7514412af1853523c9282527348fc76eda04c0822f6d91321a72",
+        "web/scene3d-transforms.css": "f8fae6e364087a4986fbfdf99a884f34dfb513f26cfeb8c3536ca90144c7cc29",
+        "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+        "engine/studio-core.mjs": "b421c96a01acdc5f1500430ccfb753b8fa2ac191e66d4ce45392ebe2e676bf52",
+        "engine/studio-modules.mjs": "c001337b303532947e92b3274008473b47cd672f97c80677e1b7e67cc583a0c0",
+        "web/modules/app-scene3d-preview.js": "2e1a0cd6857af86c6a5b9c646bbef675a47a260b85560005b1b36d7016d671a0",
+        "web/modules/scene3d-renderer.js": "bc0d5005bc03fa4fb38c477fcaa19f54e369107b6329a56ff727740310a46a1c",
+        "web/modules/scene3d-picking.js": "22c77588f14c2eb40fb1d85ccc98ed4079ca3c7a52b2cea426a8983c1372c2e2",
+        "web/modules/scene3d-math.js": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+        "web/modules/app-studio-system.js": "66515c395e6aec432d63cce6aea9c3fc1b2cdb52702dfa98195659010194cbb1",
+        "web/modules/app-runtime.js": "fb2f0b870079dc26aeca4e6a7ba3517733f3fc5ecdc841dfbb6a5d7cdc5e0b37",
+        "web/scene3d.css": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf",
+        "web/i18n/en.js": "ade1f88f06f7309e9c9a3440784fb4be12bdd61b827039aa27f6a1bcf0003d42",
+        "web/i18n/ja.js": "0225ad30e3f44cdd0fc7254f26066ce50f095ab5ac01a055e40d242a2438ef35"
+      },
+      "svgRequests": 0,
+      "cspViolations": 0,
+      "moduleCount": 12,
+      "declaredCapabilityCount": 28,
+      "gpu": {
+        "hash": 895008807,
+        "nonBackground": 15730,
+        "width": 801,
+        "height": 450,
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "vendor": "Google Inc. (Google)",
+        "error": 0,
+        "background": "#142538"
+      },
+      "focusedGpu": {
+        "hash": 1437515389,
+        "nonBackground": 122413,
+        "width": 801,
+        "height": 450,
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "vendor": "Google Inc. (Google)",
+        "error": 0,
+        "background": "#142538"
+      },
+      "orbitedGpu": {
+        "hash": 1908701367,
+        "nonBackground": 18296,
+        "width": 801,
+        "height": 450,
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "vendor": "Google Inc. (Google)",
+        "error": 0,
+        "background": "#142538"
+      },
+      "coincidentPixel": [
+        31,
+        62,
+        155,
+        255
+      ],
+      "positionOnlyScroll": {
+        "before": {
+          "left": 28,
+          "top": 201.15625,
+          "width": 319,
+          "height": 178.5625,
+          "bufferWidth": 319,
+          "bufferHeight": 179
+        },
+        "after": {
+          "left": 28,
+          "top": 131.15625,
+          "width": 319,
+          "height": 178.5625,
+          "bufferWidth": 319,
+          "bufferHeight": 179
+        },
+        "scrollTop": 70,
+        "maxScroll": 598
+      },
+      "gestureTranslations": [
+        {
+          "language": "zh-CN",
+          "actual": "单击方块选择，双击聚焦；拖动旋转视角，滚轮缩放。Y轴向上，右手坐标系，欧拉旋转XYZ。",
+          "expected": "单击方块选择，双击聚焦；拖动旋转视角，滚轮缩放。Y轴向上，右手坐标系，欧拉旋转XYZ。"
+        },
+        {
+          "language": "en",
+          "actual": "Click a box to select it; double-click to focus. Drag to orbit and scroll to zoom. Y-up, right-handed coordinates, Euler XYZ rotation.",
+          "expected": "Click a box to select it; double-click to focus. Drag to orbit and scroll to zoom. Y-up, right-handed coordinates, Euler XYZ rotation."
+        },
+        {
+          "language": "ja",
+          "actual": "ボックスをクリックして選択し、ダブルクリックでフォーカスします。ドラッグで回転、スクロールでズームします。Y軸が上の右手座標系、XYZオイラー回転です。",
+          "expected": "ボックスをクリックして選択し、ダブルクリックでフォーカスします。ドラッグで回転、スクロールでズームします。Y軸が上の右手座標系、XYZオイラー回転です。"
+        }
+      ],
+      "sourceSelections": [
+        {
+          "instanceId": "c94df14b-f855-4dd0-b334-8bc72cf41726",
+          "propertyPath": "/objects/3",
+          "rawRange": {
+            "start": 1618,
+            "end": 1982,
+            "encoding": "utf-16",
+            "exact": true
+          },
+          "displayRange": {
+            "start": 1521,
+            "end": 1865
+          },
+          "focused": true
+        },
+        {
+          "instanceId": "7de2aba1-4ac2-46c7-adc3-71fd1f93cf33",
+          "propertyPath": "/objects/1",
+          "rawRange": {
+            "start": 875,
+            "end": 1241,
+            "encoding": "utf-16",
+            "exact": true
+          },
+          "displayRange": {
+            "start": 820,
+            "end": 1166
+          },
+          "focused": true
+        },
+        {
+          "instanceId": "f6a3ea48-f628-4b6f-be22-4bbb78f3ea03",
+          "propertyPath": "/objects/1",
+          "rawRange": {
+            "start": 871,
+            "end": 1240,
+            "encoding": "utf-16",
+            "exact": true
+          },
+          "displayRange": {
+            "start": 816,
+            "end": 1165
+          },
+          "focused": true
+        }
+      ],
+      "conditions": "Actual HTTP editor, native/WASM source model, disposable workspace and Chrome CDP primary/right/jitter/drag/wheel/double-click input. Picking uses mathematical rotated boxes and source UUIDs; independent analytical camera projection and actual LEQUAL blue pixel verify the fixture. SwiftShader software renderer is explicitly recorded. WebGL2-unavailable is injected only for its explicit fallback phase."
+    },
+    "legacy": [
+      {
+        "path": "browser-navigation-regression-final/browser.json",
+        "sha256": "d9212a3fecbf107e2dbe81ae25d961bec8f14aea571dba758ec4139860cbc416",
+        "ok": true,
+        "workflows": 8,
+        "browser": "Chrome/154.0.8037.97",
+        "sourceStableDuringProof": true,
+        "runtimeErrors": 0,
+        "sources": {
+          "scripts/tests/scene3d-navigation-smoke.mjs": "71676560eb90b1e1fb0e7552e425d47becd4401e9346330a6ed37a48d61d21b0",
+          "engine/scene3d-navigation.mjs": "5b0fd3dafd2cdca59858df8d192895a38c8f992b4975dd0732f330a7a7bdf447",
+          "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+          "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
+          "web/modules/app-scene3d-transforms.js": "44082449bd8f7514412af1853523c9282527348fc76eda04c0822f6d91321a72",
+          "web/scene3d-transforms.css": "f8fae6e364087a4986fbfdf99a884f34dfb513f26cfeb8c3536ca90144c7cc29",
+          "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+          "engine/studio-core.mjs": "b421c96a01acdc5f1500430ccfb753b8fa2ac191e66d4ce45392ebe2e676bf52",
+          "engine/studio-modules.mjs": "c001337b303532947e92b3274008473b47cd672f97c80677e1b7e67cc583a0c0",
+          "web/modules/app-scene3d-preview.js": "2e1a0cd6857af86c6a5b9c646bbef675a47a260b85560005b1b36d7016d671a0",
+          "web/modules/scene3d-renderer.js": "bc0d5005bc03fa4fb38c477fcaa19f54e369107b6329a56ff727740310a46a1c",
+          "web/modules/scene3d-math.js": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+          "web/modules/app-studio-system.js": "66515c395e6aec432d63cce6aea9c3fc1b2cdb52702dfa98195659010194cbb1",
+          "web/modules/app-runtime.js": "fb2f0b870079dc26aeca4e6a7ba3517733f3fc5ecdc841dfbb6a5d7cdc5e0b37",
+          "web/scene3d.css": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf",
+          "web/i18n/en.js": "ade1f88f06f7309e9c9a3440784fb4be12bdd61b827039aa27f6a1bcf0003d42",
+          "web/i18n/ja.js": "0225ad30e3f44cdd0fc7254f26066ce50f095ab5ac01a055e40d242a2438ef35"
+        },
+        "svgRequests": 0,
+        "cspViolations": 0
+      },
+      {
+        "path": "browser-preview-regression-final/browser.json",
+        "sha256": "98061a29f31824f391906f466697d2e74374e5e19683d662691e554c74207893",
+        "ok": true,
+        "workflows": 7,
+        "browser": "Chrome/154.0.8037.97",
+        "sourceStableDuringProof": true,
+        "runtimeErrors": 0,
+        "sources": {
+          "scripts/tests/scene3d-preview-smoke.mjs": "28f947fde783b3d96866d9a50f15fe44b1a263e5293ce4ed4e0358abb9a32e90",
+          "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+          "engine/studio-core.mjs": "b421c96a01acdc5f1500430ccfb753b8fa2ac191e66d4ce45392ebe2e676bf52",
+          "engine/studio-modules.mjs": "c001337b303532947e92b3274008473b47cd672f97c80677e1b7e67cc583a0c0",
+          "web/modules/app-scene3d-preview.js": "2e1a0cd6857af86c6a5b9c646bbef675a47a260b85560005b1b36d7016d671a0",
+          "web/modules/scene3d-renderer.js": "bc0d5005bc03fa4fb38c477fcaa19f54e369107b6329a56ff727740310a46a1c",
+          "web/modules/scene3d-math.js": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+          "web/modules/app-studio-system.js": "66515c395e6aec432d63cce6aea9c3fc1b2cdb52702dfa98195659010194cbb1",
+          "web/modules/app-runtime.js": "fb2f0b870079dc26aeca4e6a7ba3517733f3fc5ecdc841dfbb6a5d7cdc5e0b37",
+          "web/scene3d.css": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf",
+          "web/i18n/en.js": "ade1f88f06f7309e9c9a3440784fb4be12bdd61b827039aa27f6a1bcf0003d42",
+          "web/i18n/ja.js": "0225ad30e3f44cdd0fc7254f26066ce50f095ab5ac01a055e40d242a2438ef35"
+        }
+      }
+    ]
+  },
+  "prepared": {
+    "report": "packaged-resources.json",
+    "sha256": "15a5e0951e2cbdccdb8fdeabfa53fc7306be58e80b7fed6429d88e984ec4bf76",
+    "totalGroups": 288,
+    "groupsEach": 144,
+    "artifacts": {
+      "desktop/resources": 563,
+      "mobile/dist": 244,
+      "desktop/ui": 11
+    },
+    "modulesEach": {
+      "desktop": 102,
+      "mobile": 102
+    }
+  },
+  "native": {
+    "freshTestRun": false,
+    "schemaNativeSourcesWasmMetadataUnchanged": true,
+    "previousRun": "../scene3d-navigation/rust-tests.log",
+    "previousPassed": 234,
+    "freshBuilds": [
+      "core-cli-build.log",
+      "native-tools-build-final.log"
+    ]
+  },
+  "preservation": {
+    "historicalFiles": 4319,
+    "authors": 41,
+    "externalTools": 4,
+    "preCleanupReport": "preservation-audit-before-cleanup.json"
+  },
+  "cleanup": {
+    "report": "cleanup.json",
+    "sha256": "891fa4216d194135d9acbd00e5720c2f66e5c7a1898825d5cc4985fd82307ec9",
+    "allocatedFileBytesRemoved": 4773404672,
+    "allocatedGiBRemoved": 4.445579528808594,
+    "exactDirectoriesRemoved": [
+      "desktop/resources",
+      "desktop/ui/i18n",
+      "desktop/.cache",
+      "src-tauri/binaries",
+      "mobile/dist"
+    ]
+  },
+  "review": {
+    "report": "review.json",
+    "sha256": "aaedc4e2c38c07cb83de4fe5840ad8b326ec1c14660e4a9ba967f7e3a3c30211",
+    "openFindings": []
+  },
+  "limitations": [
+    "Flat geometric boxes; no material/hierarchy/assets/gizmo/native schema/backend change.",
+    "Actual Float32 geometric depth is not antialias edge or quantized GPU depth-buffer parity.",
+    "Software SwiftShader and prepared portability are not installation, Android-device or hardware-GPU acceptance."
+  ],
+  "closingAtlas": "Append-only atlas/prefix/sourceSnapshot and fresh post-cleanup checks are recorded separately."
+}

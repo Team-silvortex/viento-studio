@@ -1,0 +1,14 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
+import { collectFiles } from '../../../scripts/lib/scan-files.mjs';
+import { runCommand } from '../../../scripts/lib/process.mjs';
+const root=fileURLToPath(new URL('../../../',import.meta.url)),out=path.dirname(fileURLToPath(import.meta.url));
+const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+const startedAt=new Date().toISOString();
+const files=(await Promise.all(['engine','scripts','web','mobile'].map(name=>collectFiles(path.join(root,name),{relativeBase:path.join(root,name),excludedRoots:[path.join(root,'mobile/dist')],isAccepted:name=>/\.(?:mjs|js)$/.test(name)})))).flat();
+let cursor=0;await Promise.all(Array.from({length:4},async()=>{while(cursor<files.length)await runCommand(process.execPath,['--check',files[cursor++]]);}));
+const manifest=JSON.parse(await fs.readFile(path.join(out,'source-hashes-final.json')));for(const[name,digest]of Object.entries(manifest))if(sha(await fs.readFile(path.join(root,name)))!==digest)throw Error('Frozen source changed: '+name);
+const report={startedAt,finishedAt:new Date().toISOString(),ok:true,node:{version:process.version,sha256:sha(await fs.readFile(process.execPath))},files:files.length,finalSourceFreeze:{files:Object.keys(manifest).length,manifestSha256:sha(await fs.readFile(path.join(out,'source-hashes-final.json'))),allMatch:true},scope:'Fresh whole JavaScript syntax pass after only the new browser proof pixel statistic changed. Full semantic suite runs the already-final product; first full syntax timing remains separately recorded. No application tests counted again.'};
+await fs.writeFile(path.join(out,'syntax-final.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx'});console.log(JSON.stringify(report));

@@ -1,0 +1,52 @@
+{
+  "format": "viento-scene3d-translation-ui-lifecycle-fix",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-12T03:31:40.075108+00:00",
+  "ok": true,
+  "classification": "actual-product-defect-fixed",
+  "defect": "A detached previous-session or previously rendered checkbox handler consulted only the new global current session. Dispatching its change could alter the new local selection without a current user selection.",
+  "firstProof": {
+    "path": "ui-late-checkbox-confirmed.json",
+    "sha256": "b1c12ad313b6c872a744a990aeac79a4839548c33fd9f73a3c98ad5b1475a6aa",
+    "ok": false,
+    "sourceBefore": "f523bfc5aaed72b937e065c361d704fe1118a6611994df5873b59071dc823965",
+    "noCheckApplySave": true
+  },
+  "change": "The row callback captures the exact session, dialog epoch and private row generation, and requires membership in the current Objects container plus the unchanged bound UUID. It then retains the existing pending/current source and native capability guards. No source/Save/renderer authority was added.",
+  "sourceAfter": "584a3ee52665ed8484747bfd714238352e3e6dbdc7d8adfb2c9b5a80588ce282",
+  "preservedSources": [
+    {
+      "path": "web/modules/app-scene3d-translation.js",
+      "sha256": "f523bfc5aaed72b937e065c361d704fe1118a6611994df5873b59071dc823965",
+      "snapshot": "initial-ui-source/app-scene3d-translation.js"
+    },
+    {
+      "path": "scripts/tests/scene3d-translation-ui.test.mjs",
+      "sha256": "32a070d0925147e86b9a4e1dee072614e8d092050b222859bbe207915d50440e",
+      "snapshot": "initial-ui-source/scene3d-translation-ui.test.mjs"
+    }
+  ],
+  "newRegressionTests": [
+    "detached old checkbox cannot select a new same-path session after closing and reopening",
+    "obsolete checkbox from a query rebuild cannot alter or clear the current reviewed selection",
+    "a current checkbox whose visible UUID is silently replaced cannot change the bound selection through its event"
+  ],
+  "independentAfterFix": {
+    "path": "ui-late-checkbox-after-fix.json",
+    "sha256": "51d4ae3092c41cf7d51f20fa848a0aa4851db4162db3514c1c125e65b4d08264",
+    "passed": 3,
+    "failed": 0,
+    "noCheckApplySave": true
+  },
+  "finalFocused": {
+    "path": "ui-regression-late-row-final.log",
+    "total": 232,
+    "passed": 232,
+    "failed": 0,
+    "newTranslationTests": 36,
+    "legacyUI": 193,
+    "i18n": 3,
+    "durationMs": 4123.223302
+  },
+  "phase": "The original 229-pass UI and initial eight-flow browser receipts remain earlier proof, not certification of this later row-lifecycle repair. Final 232 UI and independent ownership probes plus the confirmed eight-flow browser verify current source."
+}

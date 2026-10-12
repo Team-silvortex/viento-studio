@@ -4,6 +4,15 @@
 mod layout_draft;
 mod layout_save;
 mod scene3d;
+mod scene3d_alignment_patch;
+mod scene3d_copy_patch;
+mod scene3d_distribution_patch;
+mod scene3d_environment_patch;
+mod scene3d_objects_patch;
+mod scene3d_patch;
+mod scene3d_properties_patch;
+mod scene3d_removal_patch;
+mod scene3d_translation_patch;
 mod scene_composition;
 mod scene_composition_definition_rename;
 mod scene_composition_definitions_patch;
@@ -124,6 +133,60 @@ pub extern "C" fn viento_core_scene3d_version() -> u32 {
     1
 }
 
+/// Optional source-preserving 3D object transforms; parsing remains independent.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_patch_version() -> u32 {
+    1
+}
+
+/// Optional 3D object inventory edits; source parsing and transforms stay separate.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_objects_version() -> u32 {
+    1
+}
+
+/// Optional atomic 3D environment leaf edits; all other authoring stays separate.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_environment_version() -> u32 {
+    1
+}
+
+/// Optional name/color string edits; transforms and environment stay separate.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_properties_version() -> u32 {
+    1
+}
+
+/// Optional atomic relative position edits across existing primitive instances.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_translation_version() -> u32 {
+    1
+}
+
+/// Optional world-axis position alignment to an explicit selected reference.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_alignment_version() -> u32 {
+    1
+}
+
+/// Optional atomic world-axis distribution with original fixed endpoints.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_distribution_version() -> u32 {
+    1
+}
+
+/// Optional atomic raw copies of existing primitives with fresh identities.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_copy_version() -> u32 {
+    1
+}
+
+/// Independent atomic multi-object removal capability.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_removal_version() -> u32 {
+    1
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CoreError {
@@ -214,6 +277,69 @@ pub enum CoreResponse {
         ok: bool,
         scene3d: scene3d::Scene3DResponse,
     },
+    Scene3DPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dPatch")]
+        scene3d_patch: scene3d_patch::Scene3DPatchResponse,
+    },
+    Scene3DObjectsPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dObjectsPatch")]
+        scene3d_objects_patch: scene3d_objects_patch::Scene3DObjectsPatchResponse,
+    },
+    Scene3DEnvironmentPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dEnvironmentPatch")]
+        scene3d_environment_patch: scene3d_environment_patch::Scene3DEnvironmentPatchResponse,
+    },
+    Scene3DPropertiesPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dPropertiesPatch")]
+        scene3d_properties_patch: scene3d_properties_patch::Scene3DPropertiesPatchResponse,
+    },
+    Scene3DRemovalPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dRemovalPatch")]
+        scene3d_removal_patch: scene3d_removal_patch::Scene3DRemovalPatchResponse,
+    },
+    Scene3DCopyPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dCopyPatch")]
+        scene3d_copy_patch: scene3d_copy_patch::Scene3DCopyPatchResponse,
+    },
+    Scene3DDistributionPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dDistributionPatch")]
+        scene3d_distribution_patch: scene3d_distribution_patch::Scene3DDistributionPatchResponse,
+    },
+    Scene3DAlignmentPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dAlignmentPatch")]
+        scene3d_alignment_patch: scene3d_alignment_patch::Scene3DAlignmentPatchResponse,
+    },
+    Scene3DTranslationPatchSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dTranslationPatch")]
+        scene3d_translation_patch: scene3d_translation_patch::Scene3DTranslationPatchResponse,
+    },
     CompositionPatchSuccess {
         #[serde(rename = "protocolVersion")]
         protocol_version: u32,
@@ -253,6 +379,69 @@ fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
         return Err(CoreError::request());
     }
     let operation = value["operation"].as_str();
+    if operation == Some("scene3d.removeObjects") {
+        return Ok(CoreResponse::Scene3DRemovalPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_removal_patch: scene3d_removal_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("scene3d.copyObjects") {
+        return Ok(CoreResponse::Scene3DCopyPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_copy_patch: scene3d_copy_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("scene3d.distributeObjects") {
+        return Ok(CoreResponse::Scene3DDistributionPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_distribution_patch: scene3d_distribution_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("scene3d.alignObjects") {
+        return Ok(CoreResponse::Scene3DAlignmentPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_alignment_patch: scene3d_alignment_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("scene3d.translateObjects") {
+        return Ok(CoreResponse::Scene3DTranslationPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_translation_patch: scene3d_translation_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("scene3d.patchProperties") {
+        return Ok(CoreResponse::Scene3DPropertiesPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_properties_patch: scene3d_properties_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("scene3d.patchEnvironment") {
+        return Ok(CoreResponse::Scene3DEnvironmentPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_environment_patch: scene3d_environment_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("scene3d.patchObjects") {
+        return Ok(CoreResponse::Scene3DObjectsPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_objects_patch: scene3d_objects_patch::dispatch(value)?,
+        });
+    }
+    if operation == Some("scene3d.patchObjectTransform") {
+        return Ok(CoreResponse::Scene3DPatchSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_patch: scene3d_patch::dispatch(value)?,
+        });
+    }
     if operation == Some("scene3d.parse") {
         let request = value.as_object().ok_or_else(CoreError::request)?;
         if request.len() != 3 || !request.contains_key("content") {
@@ -436,9 +625,40 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
     let result = if input.len() > MAX_INPUT_BYTES {
         Err(CoreError::input_limit())
     } else {
-        serde_json::from_slice(input)
+        serde_json::from_slice::<Value>(input)
             .map_err(|_| CoreError::request())
-            .and_then(|value| dispatch_value(&value))
+            .and_then(|value| {
+                // Keep legacy request admission unchanged. The new exact DTO
+                // also rejects duplicate raw keys before Value can hide them.
+                if value["operation"].as_str() == Some("scene3d.patchObjectTransform") {
+                    scene3d_patch::validate_request_bytes(input)?;
+                }
+                if value["operation"].as_str() == Some("scene3d.patchObjects") {
+                    scene3d_objects_patch::validate_request_bytes(input)?;
+                }
+                if value["operation"].as_str() == Some("scene3d.patchEnvironment") {
+                    scene3d_environment_patch::validate_request_bytes(input)?;
+                }
+                if value["operation"].as_str() == Some("scene3d.patchProperties") {
+                    scene3d_properties_patch::validate_request_bytes(input)?;
+                }
+                if value["operation"].as_str() == Some("scene3d.translateObjects") {
+                    scene3d_translation_patch::validate_request_bytes(input)?;
+                }
+                if value["operation"].as_str() == Some("scene3d.alignObjects") {
+                    scene3d_alignment_patch::validate_request_bytes(input)?;
+                }
+                if value["operation"].as_str() == Some("scene3d.distributeObjects") {
+                    scene3d_distribution_patch::validate_request_bytes(input)?;
+                }
+                if value["operation"].as_str() == Some("scene3d.copyObjects") {
+                    scene3d_copy_patch::validate_request_bytes(input)?;
+                }
+                if value["operation"].as_str() == Some("scene3d.removeObjects") {
+                    scene3d_removal_patch::validate_request_bytes(input)?;
+                }
+                dispatch_value(&value)
+            })
     };
     match result {
         Ok(response) => response,

@@ -1,0 +1,9 @@
+file:///tmp/viento-scene3d-alignment-fayrkhch/project/docs/test-results/scene3d-alignment-authoring/boundary-cases.mjs:37
+    const source=snapshot(text(value)),before=plain(source);for(const intent of [edit([]),edit([id(1)]),edit([id(1),id(1)]),edit([id(1),'ffffffff-ffff-ffff-ffff-ffffffffffff']),edit([id(1),id(3)],id(2)),edit([id(1),id(3)],id(1),'X')])throws(()=>api.createScene3DAlignmentProposal(source,intent));same(plain(source),before);check(api.supportsStudioCoreScene3DAlignmentPatch());for(const supports of [api.supportsStudioCoreScene3DPatch,api.supportsStudioCoreScene3DObjectsPatch,api.supportsStudioCoreScene3DEnvironmentPatch,api.supportsStudioCoreScene3DPropertiesPatch,api.supportsStudioCoreScene3DTranslationPatch])check(supports());throws(()=>api.dispatchStudioCoreScene3DTranslationPatch(dto({protocolVersion:1,operation:'scene3d.alignObjects',content:source.content,instanceIds:[id(1),id(3)],anchorInstanceId:id(1),axis:'x'})),'studio_core_request_invalid');check(api.getStudioCoreMetadata().ready);
+                                                                                                                                                                                                                                                                                                                                             ^
+
+TypeError: api.supportsStudioCoreScene3DAlignmentPatch is not a function
+    at runAlignmentCases (file:///tmp/viento-scene3d-alignment-fayrkhch/project/docs/test-results/scene3d-alignment-authoring/boundary-cases.mjs:37:334)
+    at async file:///tmp/viento-scene3d-alignment-fayrkhch/project/docs/test-results/scene3d-alignment-authoring/boundary-source-check.mjs:9:14
+
+Node.js v24.21.0

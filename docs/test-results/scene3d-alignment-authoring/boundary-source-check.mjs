@@ -1,0 +1,13 @@
+import '../../../scripts/adapters/node-studio-core.mjs';
+import fs from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import * as engine from '../../../engine/index.mjs';
+import * as core from '../../../engine/studio-core.mjs';
+import * as alignment from '../../../engine/scene3d-alignment.mjs';
+import * as jsonSource from '../../../engine/json-source.mjs';
+import { runAlignmentCases } from './boundary-cases.mjs';
+const digest=value=>createHash('sha256').update(value).digest('hex');
+const checks=await runAlignmentCases({...engine,...core,...alignment,...jsonSource,digest});
+const report={ok:true,scope:'Source-only import-free alignment case validation over actual native-backed APIs; no prepared copy or device claim.',runtime:process.version,checks,groups:checks.length};
+await fs.writeFile(new URL('./boundary-source-check.json',import.meta.url),JSON.stringify(report,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify({ok:true,groups:checks.length}));

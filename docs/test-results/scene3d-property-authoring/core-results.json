@@ -1,0 +1,173 @@
+{
+  "format": "viento-scene3d-property-core-results",
+  "schemaVersion": 1,
+  "status": "passed",
+  "productVersion": "0.0.10",
+  "publishedBase": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "scope": {
+    "delivery": "Unpublished additive source after 0.0.10; no installed application or device acceptance.",
+    "capability": "viento_core_scene3d_properties_version",
+    "apiVersion": 1,
+    "operation": "scene3d.patchProperties",
+    "requestKeys": [
+      "protocolVersion",
+      "operation",
+      "content",
+      "instanceId",
+      "values"
+    ],
+    "values": [
+      "name",
+      "color"
+    ],
+    "responseKeys": [
+      "beforeContent",
+      "afterContent",
+      "changedPaths"
+    ],
+    "atomicSemantics": "SET-only nonempty string subset bound to one existing canonical instanceId. Original complete scene parsed before editing; final complete scene parsed after all requested net changes. Existing author name uses 1–256 Unicode codepoints, including whitespace/control/CRLF/astral text, with no trimming or normalization; colors inherit hex6.",
+    "changedPathsOrder": [
+      "/objects/N/name",
+      "/objects/N/color"
+    ],
+    "noOp": "Native and bridge accept exact original bytes with []; independent private-branded authoring proposal rejects unchanged approval.",
+    "limits": "Each whole original/final scene limited to 128 KiB UTF-8; existing full scene3d schema and all model/cross-field constraints inherited.",
+    "tokenPreservation": "Only selected net string value CST spans replaced with canonical JSON strings. Unchanged decoded strings preserve escapes. All keys, numeric/exponent/signed-zero lexemes, geometry, IDs, other objects, scene/environment, BOM/CRLF and outside bytes retained."
+  },
+  "sourceFiles": [
+    {
+      "path": "crates/viento-studio-core/src/lib.rs",
+      "bytes": 18811,
+      "sha256": "4823ab93c51edde79373e0d7e5aea06865b0c7773e39ab18156279e91d6cce35"
+    },
+    {
+      "path": "crates/viento-studio-core/src/scene3d_properties_patch.rs",
+      "bytes": 15552,
+      "sha256": "bad11b0d71a45d9b06468908ddccab1b49611608ac2cec555448b58d048d9aca"
+    },
+    {
+      "path": "engine/studio-core.mjs",
+      "bytes": 105113,
+      "sha256": "b421c96a01acdc5f1500430ccfb753b8fa2ac191e66d4ce45392ebe2e676bf52"
+    },
+    {
+      "path": "scripts/tests/studio-core-scene3d-properties.test.mjs",
+      "bytes": 22781,
+      "sha256": "39bb67aecb885f8cfb36ca8faae5b8559ae9eba899acdf90e862d93a58820461"
+    }
+  ],
+  "compiledSourceHash": "0ab4bdb7e92abf6df32fcf65c0e960dbc8cdfe41479666dc7cc788b71f25084b",
+  "compiledSourcesMatchCurrent": true,
+  "buildMetadata": {
+    "path": "engine/studio-core.build.json",
+    "bytes": 2713,
+    "sha256": "e598b6aeb18467c7cabd95870a07e4f139ccf0f751dd348a2ed59a739e3bca3c"
+  },
+  "wasm": {
+    "path": "engine/studio-core.wasm",
+    "bytes": 515406,
+    "sha256": "0e6f4cd70f28d7b00b1c50e3e5f7e52d1b680a55a377eda1a1d160a4e908879a"
+  },
+  "nativeCli": {
+    "path": "desktop/.cache/scene3d-property-core-target/debug/viento-core",
+    "bytes": 14966328,
+    "sha256": "b0b1d92b67a3a0bae475a8f46f7a67f4c3a4f70b126c264df10a0b92101e834c"
+  },
+  "runtime": {
+    "nodeVersion": "v24.20.0",
+    "node": {
+      "path": "src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu",
+      "bytes": 126458664,
+      "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7"
+    },
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)"
+  },
+  "verification": {
+    "rust": {
+      "passed": 234,
+      "unitPassed": 185,
+      "integrationPassed": 49,
+      "newUnitPassed": 12,
+      "failed": 0,
+      "ignored": 0,
+      "log": "rust-tests.log"
+    },
+    "fmt": {
+      "passed": true,
+      "log": "core-fmt-check.log"
+    },
+    "clippy": {
+      "passed": true,
+      "log": "core-clippy.log"
+    },
+    "freshWasmBuild": {
+      "passed": true,
+      "log": "core-wasm-build.log",
+      "buildOwner": "Root performed the centralized fresh native/WASM build."
+    },
+    "bridge": {
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0,
+      "files": 1,
+      "log": "core-bridge-tests.log",
+      "nativeWasmParityRequests": 20
+    },
+    "sharedCoreRegression": {
+      "passed": 259,
+      "failed": 0,
+      "skipped": 0,
+      "files": 20,
+      "log": "core-regression-final.log",
+      "includesNewBridgeTests": true
+    }
+  },
+  "initialAttempts": [],
+  "regressions": [
+    "Immutable name/color key tokens reject semantic-equivalent key-swap forged receipts.",
+    "All non-string source intervals remain exact, rejecting unrelated numeric/geometry edits and exponent/signed-zero/trivia rewrites.",
+    "Existing domain probes stay independent; missing/version2 properties probe leaves available old parse/transform/objects/environment operations usable.",
+    "Raw decoded duplicate keys, including null-first values, reject before Value can erase request intent."
+  ],
+  "logFiles": [
+    {
+      "path": "docs/test-results/scene3d-property-authoring/rust-tests.log",
+      "bytes": 26858,
+      "sha256": "eb22bccc33f32c0e818efc39f3718961c3025d70f130816bd7e9bbf8057c7d49"
+    },
+    {
+      "path": "docs/test-results/scene3d-property-authoring/core-fmt-check.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/test-results/scene3d-property-authoring/core-clippy.log",
+      "bytes": 350,
+      "sha256": "14da73fa90ad8c398263d71d9ab6d8168c9bab50096a1a2150aa2474e9a16128"
+    },
+    {
+      "path": "docs/test-results/scene3d-property-authoring/core-wasm-build.log",
+      "bytes": 104,
+      "sha256": "ad536ac6c64934720525a7c10fd71430cf48be6bbbbb2f5b054f0f8d2284bb9a"
+    },
+    {
+      "path": "docs/test-results/scene3d-property-authoring/core-bridge-tests.log",
+      "bytes": 2555,
+      "sha256": "f7d0b62e40dedb54841d99fb2600643dbaf44e6a50d3761d30f5c40f263a10c7"
+    },
+    {
+      "path": "docs/test-results/scene3d-property-authoring/core-regression-final.log",
+      "bytes": 30537,
+      "sha256": "526755de3c01b505944869d258702b3ea4bd318b539690d5a68841c0e54c06cd"
+    }
+  ],
+  "boundaries": [
+    "New operation/probe is additive; old parse, transforms, objects, environment, 2D, author schema and backend contracts unchanged.",
+    "Bridge needs old parse and own version1 probe only; no dependency on other edit domains.",
+    "Native parser owns semantic constraints; bridge only strict JSON DTO, expected full model, exact lexical inventory and response defense.",
+    "No JS semantic rule replica, YAML, Node, DOM, property parser, filesystem, Save, renderer, World command or backend execution in bridge.",
+    "Original scene parse codes unchanged; invalid values/final model uses scene3d_properties_invalid, source/candidate budget scene3d_limit, malformed request studio_core_request_invalid.",
+    "Ordinary domain failures retain runtime availability; forged successful receipts poison runtime.",
+    "Shared regression includes new bridge tests; counts from separate runs are not added."
+  ]
+}

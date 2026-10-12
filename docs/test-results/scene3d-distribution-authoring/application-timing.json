@@ -1,0 +1,96 @@
+{
+  "format": "viento-scene3d-distribution-application-timing",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-12T05:32:28.867861+00:00",
+  "ok": true,
+  "phase": "stage-tested-awaiting-actual-checkout-apply",
+  "fullApplication": {
+    "report": "application-check.log",
+    "sha256": "924397b768d1d32808c8356679e6a94372069fd50a804298838f53cbfdec8bd3",
+    "counts": {
+      "tests": 3671,
+      "pass": 3671,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 316237.053148,
+    "durationScope": "Actual Node suite duration; not inferred process wall time.",
+    "syntaxFiles": 628,
+    "versionAndApiPreflightPassed": true,
+    "executedManifestSha256": "d5093e2520a775307d09adf3a00830e0391fb97fbfae92fb844681f87a5b100c",
+    "executionScope": "Complete actual application suite in one formal isolated frozen stage phase. No checkout application/install/device acceptance."
+  },
+  "sourcePhases": {
+    "formal": {
+      "report": "source-hashes-final.json",
+      "sha256": "d5093e2520a775307d09adf3a00830e0391fb97fbfae92fb844681f87a5b100c"
+    },
+    "freeze": {
+      "report": "source-freeze-final.json",
+      "sha256": "d8b5bfa6c3dd9a0d7e90252a8e0327a3828f0f9664c20c002f89914a82b0b4d7"
+    },
+    "files": 757,
+    "sourceDeltaAfterFormalFreeze": [],
+    "scope": "One formal frozen source phase for core, UI, host, portable and all actual browser/full application proofs. No earlier-topic error/phase is transplanted into this round."
+  },
+  "prepared": {
+    "report": "packaged-resources.json",
+    "sha256": "69730ad7443dc15f1a313d2eb827f54a0c3f084f077a0baf7ba0454cd0826a2a",
+    "actualGroups": 346,
+    "binding": {
+      "report": "prepared-final-binding.json",
+      "sha256": "e77bca251a0df7298e839878c6f29d549539d8cb6f6ac592e4cb449dddb747ff"
+    }
+  },
+  "retainedInitialAttempts": [
+    {
+      "log": "core-native-tests-initial.log",
+      "unitPassed": 223,
+      "unitFailed": 2,
+      "producer": "initial-producer/scene3d_distribution_patch.rs",
+      "cause": "Only two new fixture errors: expected canonical net zero was serde Number(0.0) instead of emitted Number(0); broad substring replacement of existing -0.0 manufactured --0e0. Expected net-zero token subtype and exact CST spans corrected only in new tests. Production source policy/strict monotonicity untouched.",
+      "productChange": false,
+      "logReceipt": {
+        "report": "core-native-tests-initial.log",
+        "sha256": "ac2cd890ce0f5eef1ce56bc9f2587da1f745b0b077369384dfd4cb9f43e69119"
+      },
+      "producerReceipt": {
+        "report": "initial-producer/scene3d_distribution_patch.rs",
+        "sha256": "bd3df24603d1191c76e1e978605c08111bb2745aca9c9fb27dbddb4829b11805"
+      }
+    }
+  ],
+  "earlierFocusedUi": {
+    "report": "ui-fixture-initial.log",
+    "sha256": "fe4ae87e48090e4b9303ed4e7a2b985240b237569fcf31b49bb271b404774478",
+    "counts": {
+      "tests": 40,
+      "pass": 40,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 1432.803943,
+    "durationScope": "Actual Node suite duration; not inferred process wall time.",
+    "scope": "A passing earlier 40-case fixture/i18n focus; not relabelled as the later complete 78-case combined regression."
+  },
+  "webRetainedAttempts": [
+    {
+      "path": "ui-fixture-initial.log",
+      "total": 40,
+      "passed": 40,
+      "failed": 0,
+      "scope": "Initial 37 injected new GUI cases plus three translation-catalogue cases. The actual native integration and old alignment regressions are explicitly absent from this early run; later confirmed78 includes them."
+    }
+  ],
+  "runtime": {
+    "version": "v24.21.0",
+    "path": "/tmp/viento-scene3d-distribution-n4tesgxn/project/src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
+    "bytes": 126595440
+  },
+  "overlap": "Focused/core/UI/host/module checks overlap the complete application and each other. Native, prepared and browser prove different boundaries; counts are not additive coverage."
+}

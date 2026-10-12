@@ -1,0 +1,142 @@
+{
+  "format": "viento-scene3d-transform-authoring-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T12:43:55.999857+00:00",
+  "ok": true,
+  "status": "passed",
+  "version": "0.0.10",
+  "publishedBase": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "delivery": "working-tree",
+  "feature": "independent single-object scene3d source transform authoring",
+  "entry": "Existing JSON source editor → 编辑3D变换 → explicitly select position/rotationDegrees/size → Check full candidate → Apply draft → ordinary Save",
+  "boundaries": [
+    "Rust owns strict full scene and numeric CST patch rules; unchanged lexemes, source identity and other objects remain preserved.",
+    "Optional ABI is additive. Native no-op is legal; portable authoring cannot approve a no-op.",
+    "Private immutable proposals carry data, path/token/base/current source revisions. Apply rechecks document, load/draft epoch, exact raw source and saved baseline across awaits.",
+    "A successful in-memory apply carries exact content/path/new owner token; old preview still has its exact three-field readonly source port.",
+    "No Save, World, renderer or backend authority is handed to the authoring controller. External Save conflict remains the existing dialog."
+  ],
+  "validation": {
+    "application": {
+      "tests": 3109,
+      "pass": 3109,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "javascriptFiles": 570,
+      "runtime": "v24.20.0",
+      "proof": {
+        "path": "docs/test-results/scene3d-transform-authoring/app-check.log",
+        "sha256": "bfb4d9abbcfc0e464680acbb90a74c3e4d0d18dc02ebd0f112e10fd2677e8573"
+      }
+    },
+    "rust": {
+      "tests": 196,
+      "new": 12,
+      "unit": 147,
+      "integration": 49,
+      "fmt": true,
+      "clippyWarningsDenied": true,
+      "proof": {
+        "path": "docs/test-results/scene3d-transform-authoring/core-results.json",
+        "sha256": "3709653f6821f640336945fd5b45fdf5c954977051732411a59d2371b7ed9a3a"
+      }
+    },
+    "newApplicationTests": {
+      "tests": 67,
+      "coreBridge": 15,
+      "portableHelper": 8,
+      "actualSourceHost": 10,
+      "systemPorts": 4,
+      "ui": 30,
+      "overlap": "All included in the complete application suite; focused regression sets overlap and must not be added."
+    },
+    "browser": {
+      "flowClasses": 7,
+      "browser": "Chrome/154.0.8037.97",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "languages": [
+        "zh-CN",
+        "en",
+        "ja"
+      ],
+      "narrowWidth": 390,
+      "sourceStable": true,
+      "proof": {
+        "path": "docs/test-results/scene3d-transform-authoring/browser-final/browser.json",
+        "sha256": "9182b577accc8b3a992dbfe3dd6ae25604bd4876afafdb36ad3201a56c2f67ab"
+      }
+    },
+    "prepared": {
+      "tests": 216,
+      "newCasesEach": 5,
+      "desktopModules": 95,
+      "mobileModules": 95,
+      "inventories": {
+        "desktop/resources": 551,
+        "mobile/dist": 232,
+        "desktop/ui": 11
+      },
+      "proof": {
+        "path": "docs/test-results/scene3d-transform-authoring/packaged-resources.json",
+        "sha256": "ab84fd36ecf50f9b4f6d06cf7b0176f09fff60bd45f7af144a4422bc2f4db670"
+      }
+    },
+    "independent": {
+      "ui": 9,
+      "source": 14,
+      "rawNativeWasmParity": 7,
+      "openFindings": [],
+      "proof": {
+        "path": "docs/test-results/scene3d-transform-authoring/review.json",
+        "sha256": "b3f40d2925836bf5b4abc66f8a4a944ef8c210e3f8afc4410ece7642624462da"
+      }
+    }
+  },
+  "preservation": {
+    "historicalFiles": 3688,
+    "authorFiles": 41,
+    "externalTools": 4,
+    "frozenSourceFiles": 687,
+    "legacyParserRendererBackendAndSave": "Unchanged; prior strict scene helper visibility only widened for the new Rust operation, and lib registered additive ABI/dispatch.",
+    "proof": {
+      "path": "docs/test-results/scene3d-transform-authoring/preservation-audit-before-cleanup.json",
+      "sha256": "660a717d3d3b924294ae6cd5c498c939b6ee83f11b50629af7c225374e6ac6ca"
+    }
+  },
+  "cleanup": {
+    "allocatedFileBytesRemoved": 4954537984,
+    "generatedDirectories": 5,
+    "proof": {
+      "path": "docs/test-results/scene3d-transform-authoring/cleanup.json",
+      "sha256": "71bea75c22c17f4814331e4bb3f82f2a1b61d18294a0e9e1ec988e42f9abed37"
+    },
+    "retained": "Tested shared WASM/build metadata, author projects, all history and new reports, dependencies, external toolchains and installed applications"
+  },
+  "atlas": {
+    "functions": 84,
+    "implementations": 190,
+    "bindings": 321,
+    "cells": 1284,
+    "oldCoordinatesScoresReasonsPreserved": true,
+    "proof": {
+      "path": "docs/test-results/scene3d-transform-authoring/atlas-preservation-review.json",
+      "sha256": "16d4d3f83c5227140f4472664ec2c1e9376485385a6d303990198569e2962ecd"
+    }
+  },
+  "retainedInitialFailures": [
+    "core compilation type inference fixed before final build",
+    "new helper/system test incorrect error/status assertions corrected without relaxing product rules",
+    "Node sidecar ETXTBSY during concurrent preparation; successful final ordinary preparation separately recorded",
+    "native helper first build lacked generated resources; successful second build recorded",
+    "independent UI probe caught silent target mismatch; scoped product fix and same probe passed",
+    "new browser harness BOM parsing and ordinary Save conflict dialog handling corrected; final original workflow passed",
+    "prepared/import and independent source probe fixture errors retained; final fresh cases passed"
+  ],
+  "limits": [
+    "No version bump, commit/push, installed desktop acceptance, Android device or hardware GPU proof in this slice.",
+    "Existing primitive transforms only: no 3D gizmos, multi-object edits, hierarchy, structural authoring, materials, physics, model assets or new engine runtime protocol.",
+    "Actual browser uses SwiftShader; standard VM portability is not a hostile-code sandbox."
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "ok": true,
+  "status": "math-renderer-frozen",
+  "frozenAt": "2026-10-12T09:10:10.500636+00:00",
+  "node": {
+    "path": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "scope": "Complete validated scene readonly framing only. No native/Rust/build/full-suite execution, author API/schema/brand changes, six directions, actual checkout write, installed/device or hardware-GPU claim.",
+  "api": {
+    "renderer": "focusAll() -> boolean",
+    "sceneBounds": "sceneBounds(objects) -> frozen {min,max,center,radius} or null",
+    "frameSceneCamera": "frameSceneCamera(camera,objects,actualDrawingAspect) -> detached frozen camera or null",
+    "snapshotFieldsChanged": false,
+    "zoomBounds": "fitted temporary camera distance / 4 through distance * 4",
+    "poleViews": "Exact vertical heading remains rejected."
+  },
+  "tests": {
+    "newMath": {
+      "log": "math-initial.log",
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0
+    },
+    "newRenderer": {
+      "log": "renderer-confirmed.log",
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0
+    },
+    "existingMath": {
+      "log": "math-legacy.log",
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    "existingRenderer": {
+      "log": "renderer-legacy.log",
+      "tests": 49,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "totals": {
+    "tests": 75,
+    "pass": 75,
+    "fail": 0,
+    "skipped": 0
+  },
+  "syntaxFiles": 4,
+  "products": {
+    "web/modules/scene3d-math.js": {
+      "sha256": "29713754fc70e9e06327f0b48d2dd369effa3f245b857068cc932ed1e9345d05",
+      "bytes": 7917
+    },
+    "web/modules/scene3d-renderer.js": {
+      "sha256": "7794fbca35cee644be22fedcd0184fd0cc8d6189e278670e66462d889fc53d5c",
+      "bytes": 18348
+    },
+    "scripts/tests/scene3d-scene-framing-math.test.mjs": {
+      "sha256": "3df05359e8a680c767fc34560d3d71ab34c04e6d80588cec5271705a2312ab39",
+      "bytes": 7344
+    },
+    "scripts/tests/scene3d-scene-framing-renderer.test.mjs": {
+      "sha256": "256f86eef67df9481ac039dc34e132aef6d295b2dca480fc35af088c3ed08358",
+      "bytes": 16510
+    }
+  },
+  "existingMathAndRendererTestsPreserved": {
+    "scripts/tests/scene3d-math-navigation.test.mjs": "8a5d62398098c9d1d3996440f9a4e0403dd335e5c960719eaafbf51bd1083860",
+    "scripts/tests/scene3d-renderer.test.mjs": "95099eb58843d7794c78d00811d19e0bcb2f49bf08174827f9cfd2c3361f9563"
+  },
+  "protectedNativeAuthorSchemaFilesVerified": 49,
+  "failureHandling": "Before touching camera validate every object corner, temporary clipping/range and finite Float32 matrices. Draw failure rolls back camera/focus, removes the partially drawn picking frame and safely invokes the existing onError route; validation refusal stays quiet. Every full-scene attempt with a model cancels old drag/tap.",
+  "firstFailurePreserved": {
+    "logs": [
+      "renderer-initial.log",
+      "renderer-final.log"
+    ],
+    "reason": "The malformed-camera fixture initially mutated the caller model camera after setModel, even though the renderer intentionally owns a detached temporary camera. Constructing the malformed fixture before setModel tests the actual current view. The numeric overflow fixture now exceeds Float32 rather than merely using a large but representable value. No passed legacy case or product validation was weakened."
+  },
+  "environmentCorrections": {
+    "initialMissingRuntime": "The new stage lacked a bundled runtime and the previous owned stage had already been removed. Only syntax launch attempts failed with command-not-found; all actual test runs use the fixed existing Node 24.21.0 path above."
+  },
+  "staticReview": {
+    "findings": [],
+    "checks": [
+      "Bounds consume all eight rotated box corners for every object, never filter or selected subset.",
+      "Math imports no DOM/GPU/native/author engine facilities and mutates no input.",
+      "Existing renderer floating origin is retained for actual model/view matrix uploads.",
+      "Reset and setModel restore authored camera and clear temporary focus range.",
+      "Selection and source model have no writers in focusAll.",
+      "Malformed/empty/nonfinite/overflow admission fails the complete scene without skipping objects."
+    ],
+    "verificationScope": "Math uses independently rotated corners. Renderer tests witness every uploaded Float32 matrix and round multiplication at each operation over injected WebGL ports; no hardware pixel visibility guarantee for tiny distant objects."
+  }
+}

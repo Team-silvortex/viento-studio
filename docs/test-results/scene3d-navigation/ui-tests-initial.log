@@ -1,0 +1,45 @@
+✔ independent 3D entry is available only to existing editing JSON source and supported core (19.57273ms)
+✔ authored viewport aspect ratio is retained responsively after each valid source refresh (12.325856ms)
+✔ saved and unsaved snapshots share the same read-only entry without any write callback (12.632634ms)
+✔ object selection retains authored UUIDs and inspectable exact UTF-16 source pointers (9.312312ms)
+✔ invalid initial source reports a diagnostic without allocating a renderer or claiming a draw (5.481861ms)
+✔ invalid changed source retains the last valid model, GPU view, object selection and source diagnostics (25.290625ms)
+✔ unsupported WebGL2 still lists verified declarations and clearly states that no image was drawn (6.696978ms)
+✔ shader initialization error becomes an explicit drawing diagnostic while declarations stay readable (6.378188ms)
+✔ close releases the canvas and renderer once, returns focus and a reopen allocates a fresh renderer (10.037027ms)
+✔ native modal cancellation is read-only and immediately releases resources without a discard prompt (6.669697ms)
+✔ reset view calls only the renderer without loading source or changing owner token (5.924674ms)
+✔ source path navigation closes the old view and releases its GPU resources (6.420158ms)
+✔ leaving existing source edit mode closes the old view without touching its document (6.266178ms)
+✔ late source success after child close cannot reopen or allocate a canvas (4.752026ms)
+✔ late failure after closing or switching source is silent and does not attach old diagnostics (4.195278ms)
+✔ changed draft token across source await rejects a stale model and allows a fresh refresh (5.132333ms)
+✔ host snapshot path or token mismatch fails closed before parsing (4.571948ms)
+✔ pending source load blocks repeat refresh and reset but always permits close (5.809107ms)
+✔ lost native capability disables only this independent preview and retains existing author source (8.797914ms)
+✔ context loss is visible, blocks camera reset and does not claim a fresh draw (11.853085ms)
+✔ language refresh preserves object identity and translates the preview, controls and inspector (17.352589ms)
+✔ dispose prevents reopening and late completions, and removes only its own elements (4.108505ms)
+✔ every new literal GUI message has English and Japanese translations (0.652148ms)
+✔ read-only search trims and matches case-insensitive Unicode names or UUIDs without changing selected declarations (17.80456ms)
+✔ empty results keep inspector selection and clearing search restores the same pressed UUID (11.990975ms)
+✔ valid refresh keeps a UUID through reorder and falls back to a remaining object after deletion without clearing the filter (15.725085ms)
+✔ search handles all 128 declared objects with stable IDs, exact counts and a bounded visible results list (54.382997ms)
+✔ language switching preserves raw filter and hidden selection without a new parse or renderer model (14.859576ms)
+✔ focus targets the selected UUID even outside results and changes only the renderer temporary view (23.227049ms)
+✔ source navigation is optional and never exposes source write or Save ports (8.136408ms)
+✔ exact read-only navigation snapshot and UUID remain guarded until receipt then focus occurs after modal close (10.897758ms)
+✔ false, malformed or throwing navigation receipts retain the dialog and explain that current source must be refreshed (103.975405ms)
+✔ stale preview token or busy source disables navigation while declarations and focus remain read-only (14.162484ms)
+✔ late navigation after close and reopen cannot focus or close a new owner session (11.34551ms)
+✔ token, path, busy and silent query changes across navigation await revoke the host owner and late focus (43.472876ms)
+✔ duplicate navigation, result-list clicks and language callbacks cannot consume a pending receipt or change its target (11.414409ms)
+✔ late navigation failures after close or disposal remain silent and resources are released exactly once (7.15469ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 635.170075

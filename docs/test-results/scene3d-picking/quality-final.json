@@ -1,0 +1,71 @@
+{
+  "format": "viento-scene3d-picking-independent-quality",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-11T15:58:11.662Z",
+  "node": "v24.20.0",
+  "ok": true,
+  "passed": 10,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "projected clipped-triangle reference agrees across rotated, occluded, narrow and translated Float32 frames",
+      "ok": true
+    },
+    {
+      "name": "clip surfaces use visible exit faces and omit synthetic near caps, behind-camera and far-hidden boxes",
+      "ok": true
+    },
+    {
+      "name": "equal-depth LEQUAL selects last source declaration without mutating matrices",
+      "ok": true
+    },
+    {
+      "name": "outside rect and invalid matrix frames are null and never infer an author object",
+      "ok": true
+    },
+    {
+      "name": "renderer hitTest uses the actual uploaded Float32 matrices and rect without extra draws or source changes",
+      "ok": true
+    },
+    {
+      "name": "tap, native double-click and jitter emit stable UUID while author data remains intact",
+      "ok": true
+    },
+    {
+      "name": "out-and-back drag remains a drag and prevents stale double-tap focus",
+      "ok": true
+    },
+    {
+      "name": "cancel, capture loss, wheel, reset, refresh, resize and secondary pointer invalidate pending taps",
+      "ok": true
+    },
+    {
+      "name": "last tap is cleared by misses, drag interruptions, wheel and model generation changes",
+      "ok": true
+    },
+    {
+      "name": "callback throw and callback dispose leave capture released and no old handler resurrects a view",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "triangleReferenceSamples": 1144,
+    "float32UploadedSamples": 63,
+    "clipSurfaceCases": 5,
+    "gestureScenarios": 22
+  },
+  "sources": {
+    "web/modules/scene3d-picking.js": "22c77588f14c2eb40fb1d85ccc98ed4079ca3c7a52b2cea426a8983c1372c2e2",
+    "web/modules/scene3d-renderer.js": "325c07507b18085254f382f2e3c7b32fa5df35a5c71a0fb969f8607003f94547",
+    "web/modules/scene3d-math.js": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+    "web/modules/app-scene3d-preview.js": "2e1a0cd6857af86c6a5b9c646bbef675a47a260b85560005b1b36d7016d671a0"
+  },
+  "endSources": {
+    "web/modules/scene3d-picking.js": "22c77588f14c2eb40fb1d85ccc98ed4079ca3c7a52b2cea426a8983c1372c2e2",
+    "web/modules/scene3d-renderer.js": "325c07507b18085254f382f2e3c7b32fa5df35a5c71a0fb969f8607003f94547",
+    "web/modules/scene3d-math.js": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+    "web/modules/app-scene3d-preview.js": "2e1a0cd6857af86c6a5b9c646bbef675a47a260b85560005b1b36d7016d671a0"
+  },
+  "sourceStable": true,
+  "scope": "Actual pure picking helper and actual renderer code with a WebGL uniform/event fixture. Independent homogeneous clipping and triangle-depth reference, actual Float32 uniform payloads, simulated pointer/capture/resize lifecycle. This is geometric view quality, not real GPU raster edge/depth parity, browser pixels, native/device/install or author/Save execution."
+}

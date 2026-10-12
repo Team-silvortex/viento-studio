@@ -1,0 +1,27 @@
+{
+  "ok": false,
+  "observedAt": "2026-10-12T04:28:06.741081+00:00",
+  "scope": "Final read-only source guard before publishing a prepared confirmation; no product/evidence mutation to hide the guard.",
+  "preparedRun": {
+    "report": "packaged-resources-confirmed.json",
+    "sha256": "7ca14fcb1d9be141d8338908fdd36a38951345e65d593e9ce49bc1d7fc930ba5",
+    "ok": true,
+    "actualGroups": 330,
+    "allFrozenSourcesMatchedDuringExecution": true
+  },
+  "expectedManifest": {
+    "path": "source-hashes-confirmed.json",
+    "sha256": "a0ef1d9e0fde23cb14c23d22d1ca7d753a14dbb7d46d1c81ad8cbd16790f3aae",
+    "files": 747
+  },
+  "mismatches": [
+    {
+      "path": "scripts/tests/scene3d-alignment-smoke.mjs",
+      "expectedSHA256": "029cc1bb2af415b644d206c4882c0ca3afdbf0e8dda857ba6bac2dc55e8bc6e9",
+      "observedSHA256": "b8da986290e3b7ca9e3210896880e73c021ecf608c8c521d7a7bb327c6d0e4f7"
+    }
+  ],
+  "allOther746FrozenPathsExact": true,
+  "confirmationPublished": false,
+  "cause": "A NEW smoke evidence producer changed after the copied-VM proof completed, before the last source confirmation. Product/helper/GUI/source-host/native bytes remain equal. Await parent phase freeze rather than overwrite proof or claim the later source was executed."
+}

@@ -1,0 +1,227 @@
+{
+  "format": "viento-scene3d-environment-independent-review",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T13:53:12.921549+00:00",
+  "ok": true,
+  "openFindings": [],
+  "head": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "version": "0.0.10",
+  "finalSourceFreeze": {
+    "manifest": "source-hashes-final.json",
+    "manifestSha256": "939d3b1f9d05d244e93fe9d72d6ae08d1f085088c0587138e53c16d191823803",
+    "files": 708,
+    "allMatch": true,
+    "drift": [],
+    "missing": [],
+    "initialManifest": "source-hashes.json",
+    "initialManifestSha256": "63a4746a9203b26b88afd77a1f7ba3f28310b7d3d33058c3a48e302eb52b3d0f",
+    "initialToFinalChanges": [
+      "scripts/tests/scene3d-environment-smoke.mjs"
+    ],
+    "timing": "Final change is exclusively the NEW browser proof background pixel counter; the other 707 entries equal the initial freeze. Semantic source and CSP-compatible layout were frozen before the complete app run."
+  },
+  "reviewedSources": {
+    "engine/scene3d-environment.mjs": "5045caf7f73038b5fe30f672c01348430caff1f8cc6cf825407797139f3637c0",
+    "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+    "engine/studio-core.mjs": "489506353e962d10f42fdf6e65cc5088cb7eab256079115ca0a73294b788dc19",
+    "crates/viento-studio-core/src/scene3d_environment_patch.rs": "3341db2263792c6a9db8030e13d5300d196541675e26630cfde8a6ad5cc1d265",
+    "web/modules/app-runtime.js": "438a45a4edaa3abb364b9170870e4b44029e8d09ae565aa5cabef3dad67cc873",
+    "web/modules/app-studio-system.js": "6075f1e7a70d58de4a50d3089d5a298f6c5aa0d3eee1f88675ede721d695c722",
+    "engine/studio-modules.mjs": "5b838951e509f5196d20c6581cd52c380255ceeef291808bca5fb7e40f9d1d56",
+    "web/modules/app-scene3d-environment.js": "cbd10029a19d6d83a21894b6f4e8b1ba64d9c606b57def6065e9e68975dd52ed",
+    "web/scene3d-environment.css": "0105812cf68f548848f892fae080c342afdf3b3d6b2c16d30591f105c5735803",
+    "web/modules/app-scene3d-preview.js": "c09771f9b758a7e1786ad9de4d01e0337113769826875603c0782003a1256050",
+    "web/modules/scene3d-renderer.js": "50c17c92d28d01bfae6d40d5916ce5d1e13ff1cab4285a299ea87030a47ab94d"
+  },
+  "independent": {
+    "sourceQuality": {
+      "report": "source-quality-initial.json",
+      "sha256": "417978f33d7d2188103db7ef0d472fc667e6230d146eb54e0c82ecbfc7a3364d",
+      "passed": 9,
+      "failed": 0,
+      "nativeWasmRequests": 12
+    },
+    "actualHostAndAssembly": {
+      "report": "host-system-tests-final.log",
+      "sha256": "68d954a62575958c09577af94b605f6e409085758cf87eb5f91fce7bd076c77a",
+      "stats": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "applyDigestOwnerVariants": 30,
+      "readerDigestOwnerVariants": 12,
+      "pairwiseBrandDirections": 6,
+      "crossDomainOldReviewRevocations": 6,
+      "modules": 11,
+      "declarativeCapabilities": 27
+    }
+  },
+  "browser": {
+    "report": "browser-environment-confirmed/browser.json",
+    "sha256": "5ba0fc5e9563612cce1100588259be24855ccca1e38ee9aa3906b515e69c19b1",
+    "flowClasses": 8,
+    "errors": 0,
+    "sourceStableDuringProof": true,
+    "boundSources": 19,
+    "screenshots": [
+      {
+        "path": "browser-environment-confirmed/environment-desktop-review.png",
+        "sha256": "cdd51f3c6fc864f1fdfff3f0f3ee5f666690a0612f043e869f4a4da169db6be7",
+        "personallyViewed": true
+      },
+      {
+        "path": "browser-environment-confirmed/environment-zh-CN-390.png",
+        "sha256": "34c1ef22ead29163c7780e586633a043532ac609873b3e278e47339b5bfd331e",
+        "personallyViewed": true
+      },
+      {
+        "path": "browser-environment-confirmed/environment-en-390.png",
+        "sha256": "2508261e9465533762c17490779cd3fa61e538e60f2ab1a00642f36ed47baf57",
+        "personallyViewed": true
+      },
+      {
+        "path": "browser-environment-confirmed/environment-ja-390.png",
+        "sha256": "14c066a75ca8896462bb826cf88a4aa7476293911ccd818c273a9d17584fdd5e",
+        "personallyViewed": true
+      },
+      {
+        "path": "browser-environment-confirmed/environment-save-conflict.png",
+        "sha256": "a844c5817181e62ea8abb7beabec682b2450ea5ecef5ab0d50b0ac03bf1ff246",
+        "personallyViewed": true
+      },
+      {
+        "path": "browser-environment-confirmed/environment-without-webgl.png",
+        "sha256": "ef9df5a09e77dfa0acccd4e6f8604b5bce7e005c8f20b60223806e2217acb5fa",
+        "personallyViewed": true
+      }
+    ],
+    "visualConclusion": "Confirmed CSP-compatible XYZ rows and clip pair render correctly; desktop and Chinese/English/Japanese 390 px labels/fields/footer are readable without horizontal overflow. Save conflict and renderer-unavailable views are explicit."
+  },
+  "legacyBrowserRegressions": {
+    "objects": {
+      "report": "browser-objects-regression-1/browser.json",
+      "sha256": "f58014f77d3304ce392367df66edcdcfac8d2e06398993ac0962995a568c36ea",
+      "flowClasses": 9,
+      "sourceStableDuringProof": true
+    },
+    "transforms": {
+      "report": "browser-transforms-regression-1/browser.json",
+      "sha256": "681d0d96ef1bf15e3c920479eb6e05831e7735dd04d8af320087ec87b1bc38d3",
+      "flowClasses": 7,
+      "sourceStableDuringProof": true
+    }
+  },
+  "ownerEvidence": {
+    "core": {
+      "report": "core-results.json",
+      "sha256": "0dc3a190c46e1adc7e273c57d5424a883415218c7df0b41ffc7017b26a638404",
+      "verification": {
+        "rust": {
+          "passed": 222,
+          "unitPassed": 173,
+          "integrationPassed": 49,
+          "newUnitPassed": 12,
+          "failed": 0,
+          "ignored": 0,
+          "log": "rust-tests-final.log"
+        },
+        "fmt": {
+          "passed": true,
+          "log": "core-fmt-check.log"
+        },
+        "clippy": {
+          "passed": true,
+          "log": "core-clippy.log"
+        },
+        "freshWasmBuild": {
+          "passed": true,
+          "log": "core-wasm-build.log",
+          "buildOwner": "Root performed the centralized fresh native/WASM build."
+        },
+        "bridge": {
+          "passed": 20,
+          "failed": 0,
+          "skipped": 0,
+          "files": 1,
+          "log": "core-bridge-tests-key-repair.log",
+          "nativeWasmParityRequests": 20
+        },
+        "sharedCoreRegression": {
+          "passed": 239,
+          "failed": 0,
+          "skipped": 0,
+          "files": 19,
+          "log": "core-regression-final.log",
+          "includesNewBridgeTests": true
+        }
+      }
+    },
+    "ui": {
+      "report": "ui-tests-confirmed.log",
+      "sha256": "517fef4fd23fd02b19c12b06ed0fb2d001048ac29638d5e1714d1d005e57ddd7",
+      "stats": {
+        "tests": 34,
+        "pass": 34,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      }
+    },
+    "prepared": {
+      "report": "packaged-resources-final.json",
+      "sha256": "3f1fba06787307a12ac5466f4a1882f9002b655789be947db10abe3e6c98ac8e",
+      "groups": 240,
+      "desktopFiles": 558,
+      "mobileFiles": 239,
+      "libraryFiles": 11,
+      "localModulesEach": 98
+    }
+  },
+  "fullApplication": {
+    "report": "app-check.log",
+    "state": "completed",
+    "counts": {
+      "tests": 3256,
+      "pass": 3256,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "claim": "The root owns the full application run. This review only claims its independent completed tests and reports; no predicted full count is treated as completed."
+  },
+  "resolvedFindings": [
+    {
+      "id": "environment-key-token-rewrite",
+      "initialReport": "receipt-key-swap-initial.json",
+      "initialSha256": "b4d5e9a6a7f7c5fffb92c655782b365e9f90f8cde6a1f8224d015baef555fae2",
+      "finalReport": "receipt-key-slot-final.json",
+      "finalSha256": "ff9124a88b38c55f1fd23792de1ad9877a1e62efb22518b05e7933f0e7d04b19",
+      "fixedBridgeSha256": "489506353e962d10f42fdf6e65cc5088cb7eab256079115ca0a73294b788dc19",
+      "result": "The same real WASM response-delivery reproduction is rejected after immutable key-token inventory repair. Original failure remains."
+    },
+    {
+      "id": "CSP-inline-grid-layout",
+      "owner": "UI/root",
+      "result": "New inline column CSS was replaced with scoped external classes before the first 708-source freeze and full semantic run. Confirmed Chrome proof checks intended columns; prior browser captures remain early evidence."
+    }
+  ],
+  "boundaries": [
+    "Native exact leaf SET-only patches validate original and one combined final scene; camera/target and near/far avoid invalid intermediate admission. Required schema1 fields are not removed. All object declarations, IDs, unrequested values and source trivia remain byte exact.",
+    "Environment private brand is independent from transform and objects. Shared editor source admission/application checks five-field snapshot, doc identity, path, baseline/version/current bytes and ownership at every awaited digest. Completion advances exact source token; cloned or sibling proposals confer no authority.",
+    "The form updates unsaved raw editor memory only. Original saved baseline/cache/version, cursor and scroll remain intact; ordinary Save retains external-file conflict checks.",
+    "Readonly viewing camera has only reader ports; local orbit/zoom/reset never enters environment form or author source. Environment is reviewable without WebGL; backend tools, project runtime and renderer receive no implicit write authority.",
+    "Module and capability availability is additive (11/27); absent new capability leaves old domains and generic source editing intact. Declarative profile support is separate from native renderer/tool support."
+  ],
+  "scopeLimits": [
+    "Unpublished source development on 0.0.10; no commit, push, install, desktop-bundle or device acceptance.",
+    "Actual Chrome WebGL pixels may use software GPU; no hardware GPU or Godot pixel-parity claim.",
+    "Prepared VM cases prove copied ESM/WASM portability with injected DTO/hash ports; no hostile-code sandbox claim.",
+    "Only bounded normal source/owner/native parity quality probes were added following the parent scope refinement. No further attack testing performed."
+  ]
+}

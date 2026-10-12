@@ -1,0 +1,32 @@
+(node:2644601) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `viento-node-x86_64-unknown-linux-gnu --trace-warnings ...` to show where the warning was created)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+
+Caught error:
+
+TypeError: The reviewed 3D object properties no longer match the current source.
+    at async propertiesCases (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-property-authoring/prepared-check-final.mjs:510:93)
+    at async portable (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-property-authoring/prepared-check-final.mjs:559:28)
+    at async file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-property-authoring/prepared-check-final.mjs:563:25 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: TypeError: The reviewed 3D object properties no longer match the current source.
+      at error (engine/scene3d-properties.mjs:7:70)
+      at captureScene3DAuthoringSource (engine/scene3d-authoring.mjs:21:84)
+      at snapshot (engine/scene3d-properties.mjs:12:27)
+      at Object.prepareScene3DPropertiesApply (engine/scene3d-properties.mjs:35:20)
+      at propertiesCases (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-property-authoring/prepared-check-final.mjs:510:118)
+      at async portable (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-property-authoring/prepared-check-final.mjs:559:28)
+      at async file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-property-authoring/prepared-check-final.mjs:563:25 {
+    errorCode: 'scene3d_properties_invalid'
+  },
+  expected: [Function (anonymous)],
+  operator: 'rejects',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

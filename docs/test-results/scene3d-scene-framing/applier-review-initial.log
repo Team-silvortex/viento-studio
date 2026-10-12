@@ -1,0 +1,14 @@
+PASS successful packet writes exactly approved bytes and preserves existing permissions/unrelated files
+PASS actual loaded payload SHA mismatch rejects before any target mutation
+PASS stage mutation after snapshot cannot replace the approved in-memory payload
+PASS original byte snapshot mismatch preserves the newer writer content and rejects apply
+PASS exception immediately after a committed report replacement rolls every file and created directory back
+PASS KeyboardInterrupt immediately after os.replace cannot omit the current file from rollback
+PASS receipt commit failure belongs to the same rollback journal and leaves no report directory
+PASS attempted missing target rollback tolerates absent files and removes newly created source directories
+PASS a completely rolled back failure can immediately retry the same approved packet
+PASS one restore error is reported explicitly while remaining journal entries still roll back
+PASS post-apply baseline guard rolls owned changes back without deleting an unrelated external edit
+PASS a mismatched approval SHA authorizes no target writes
+PASS symlink payload paths fail before any actual fixture write
+{"ok": true, "passed": 13, "failed": 0, "applierSha256": "62e06a4f5e5eee937539ed244bdd6695cde92484b3d22882db94ad7090e42e32"}

@@ -53,6 +53,16 @@ import { prepareSceneCompositionStructureApply } from '../../engine/scene-compos
 import { prepareSceneCompositionPlacementsApply } from '../../engine/scene-composition-placements.mjs';
 import { prepareSceneCompositionGroupsApply } from '../../engine/scene-composition-groups.mjs';
 import { prepareSceneCompositionDefinitionsApply } from '../../engine/scene-composition-definitions.mjs';
+import { isScene3DTransformProposal, prepareScene3DTransformApply } from '../../engine/scene3d-transform.mjs';
+import { isScene3DObjectsProposal, prepareScene3DObjectsApply } from '../../engine/scene3d-objects.mjs';
+import { isScene3DEnvironmentProposal, prepareScene3DEnvironmentApply } from '../../engine/scene3d-environment.mjs';
+import { isScene3DPropertiesProposal, prepareScene3DPropertiesApply } from '../../engine/scene3d-properties.mjs';
+import { isScene3DTranslationProposal, prepareScene3DTranslationApply } from '../../engine/scene3d-translation.mjs';
+import { isScene3DAlignmentProposal, prepareScene3DAlignmentApply } from '../../engine/scene3d-alignment.mjs';
+import { isScene3DDistributionProposal, prepareScene3DDistributionApply } from '../../engine/scene3d-distribution.mjs';
+import { isScene3DCopyProposal, prepareScene3DCopyApply } from '../../engine/scene3d-copy.mjs';
+import { isScene3DRemovalProposal, prepareScene3DRemovalApply } from '../../engine/scene3d-removal.mjs';
+import { createScene3DSourceLocation, scene3DSourceDisplaySelection } from '../../engine/scene3d-navigation.mjs';
 import { isComposingInput } from './app-keyboard.js';
 import { createFieldEditor } from './app-field-editor.js';
 import { API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion } from '../../scripts/lib/doc-api-contract.mjs';
@@ -3817,6 +3827,50 @@ async function getScene3DSourceSnapshot() {
   return { content, sourcePath: owner.sourcePath, token: owner.sourceToken };
 }
 
+// Navigation owns only the current editor's selection. It rederives the exact
+// native range from captured source instead of trusting a view's numeric index.
+async function locateScene3DSource(snapshot, { instanceId, isCurrent = () => true } = {}) {
+  const owner = scene3DSourceContext(), doc = getActiveDoc();
+  if (!owner.editable || owner.creating || owner.busy || !owner.sourceJSON || !editEditorEl
+    || !doc || state.activeEditPath !== doc.path || typeof isCurrent !== 'function') return false;
+  let location;
+  try { location = createScene3DSourceLocation(snapshot, instanceId); } catch { return false; }
+  if (location.sourcePath !== owner.sourcePath || location.token !== owner.sourceToken
+    || location.content !== getCurrentEditContent()) return false;
+  const request = ++sourceNavigationToken, loadToken = editorLoadToken, epoch = scenePreviewDraftEpoch;
+  const baseline = editSessionBaselineContent, version = editSessionVersion, value = editEditorEl.value;
+  const owns = () => {
+    const current = scene3DSourceContext();
+    return request === sourceNavigationToken && loadToken === editorLoadToken && epoch === scenePreviewDraftEpoch
+      && getActiveDoc() === doc && state.activeEditPath === doc.path && current.editable && !current.creating && !current.busy
+      && current.sourceJSON && current.sourcePath === location.sourcePath && current.sourceToken === location.token
+      && getCurrentEditContent() === location.content && editEditorEl.value === value
+      && editSessionBaselineContent === baseline && editSessionVersion === version;
+  };
+  const approved = () => isCurrent() === true && owns();
+  if (!approved()) return false;
+  const current = await getScene3DSourceSnapshot();
+  if (!approved() || !current || current.content !== location.content
+    || current.sourcePath !== location.sourcePath || current.token !== location.token) return false;
+  let selection;
+  try { selection = scene3DSourceDisplaySelection(location, value); } catch { return false; }
+  const { start, end } = selection;
+  const row = value.slice(0, start).split('\n').length - 1;
+  const lineHeight = Number.parseFloat(globalThis.getComputedStyle?.(editEditorEl)?.lineHeight) || 20;
+  const scroll = Math.max(0, row * lineHeight - (editEditorEl.clientHeight || 0) / 2);
+  if (!approved()) return false;
+  editEditorEl.setSelectionRange?.(start, end); editEditorEl.scrollTop = scroll;
+  setEditorStatus(t('已定位草稿字段：{0}', location.propertyPath));
+  let focused = false;
+  return Object.freeze({ located: true, focus: () => {
+    // The modal must close before focus. Its approval callback is no longer
+    // applicable here; the captured document/session/bytes guard remains live.
+    if (focused || !owns()) return false;
+    focused = true; editEditorEl.focus(); editEditorEl.setSelectionRange?.(start, end);
+    editEditorEl.scrollTop = scroll; editEditorEl.scrollIntoView?.({ block: 'nearest' }); return true;
+  } });
+}
+
 async function applySceneCompositionOverrideDraft(proposal, { isCurrent = () => true } = {}) {
   return applySceneCompositionSourceDraft(proposal, { isCurrent }, prepareSceneCompositionOverrideApply);
 }
@@ -3891,6 +3945,128 @@ async function applySceneCompositionSourceDraft(proposal, { isCurrent = () => tr
   const appliedEpoch = scenePreviewDraftEpoch;
   return { applied: true, focus() {
     if (eligible() && appliedEpoch === scenePreviewDraftEpoch && getCurrentEditContent() === prepared.afterContent) editEditorEl.focus();
+  } };
+}
+
+// This independent authoring port never reaches the read-only 3D preview.
+let scene3DTransformReadEpoch = 0, scene3DTransformReadState = null;
+function scene3DTransformSourceContext() {
+  const context = scene3DSourceContext(), doc = getActiveDoc();
+  const editable = context.editable && Boolean(doc && state.activeEditPath === doc.path);
+  if (editable && !context.creating && context.sourceJSON) {
+    if (!scene3DTransformReadState || scene3DTransformReadState.token !== context.sourceToken
+      || scene3DTransformReadState.doc !== doc || scene3DTransformReadState.baseline !== editSessionBaselineContent
+      || scene3DTransformReadState.version !== editSessionVersion) {
+      scene3DTransformReadEpoch++;
+      scene3DTransformReadState = { token: context.sourceToken, doc, baseline: editSessionBaselineContent, version: editSessionVersion };
+    }
+  } else if (scene3DTransformReadState) { scene3DTransformReadState = null; scene3DTransformReadEpoch++; }
+  return { ...context, editable, sourceToken: `${context.sourceToken}:${scene3DTransformReadEpoch}` };
+}
+
+async function scene3DTransformDigest(value) {
+  return [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
+async function getScene3DTransformSourceSnapshot() {
+  const owner = scene3DTransformSourceContext();
+  if (!owner.editable || owner.creating || owner.busy || !owner.sourceJSON) return null;
+  const content = getCurrentEditContent(), baseline = editSessionBaselineContent, version = editSessionVersion;
+  const baseSourceRevision = `sha256:${await scene3DTransformDigest(baseline)}`;
+  const sourceRevision = `sha256:${await scene3DTransformDigest(content)}`;
+  const current = scene3DTransformSourceContext();
+  if (!current.editable || current.creating || current.busy || current.sourcePath !== owner.sourcePath
+    || current.sourceToken !== owner.sourceToken || content !== getCurrentEditContent()
+    || baseline !== editSessionBaselineContent || version !== editSessionVersion
+    || version.startsWith('sha256:') && version !== baseSourceRevision) return null;
+  return { content, sourcePath: owner.sourcePath, token: owner.sourceToken, baseSourceRevision, sourceRevision };
+}
+
+async function applyScene3DTransformDraft(proposal, options) {
+  return applyScene3DAuthoringDraft(proposal, options, { valid: isScene3DTransformProposal, prepare: prepareScene3DTransformApply,
+    errorCode: 'scene3d_transform_conflict', dirtyMessage: '3D变换已应用到原文草稿；尚未保存。', cleanMessage: '3D变换已应用；文本与已保存版本一致。' });
+}
+
+async function applyScene3DObjectsDraft(proposal, options) {
+  return applyScene3DAuthoringDraft(proposal, options, { valid: isScene3DObjectsProposal, prepare: prepareScene3DObjectsApply,
+    errorCode: 'scene3d_objects_conflict', dirtyMessage: '3D对象操作已应用到原文草稿；尚未保存。', cleanMessage: '3D对象操作已应用；文本与已保存版本一致。' });
+}
+
+async function applyScene3DEnvironmentDraft(proposal, options = {}) {
+  return applyScene3DAuthoringDraft(proposal, options, { valid: isScene3DEnvironmentProposal, prepare: prepareScene3DEnvironmentApply,
+    errorCode: 'scene3d_environment_conflict', dirtyMessage: '3D环境修改已应用到原文草稿；尚未保存。',
+    cleanMessage: '3D环境修改已应用；文本与已保存版本一致。' });
+}
+
+async function applyScene3DPropertiesDraft(proposal, options = {}) {
+  return applyScene3DAuthoringDraft(proposal, options, { valid: isScene3DPropertiesProposal, prepare: prepareScene3DPropertiesApply,
+    errorCode: 'scene3d_properties_conflict', dirtyMessage: '3D属性修改已应用到原文草稿；尚未保存。',
+    cleanMessage: '3D属性修改已应用；文本与已保存版本一致。' });
+}
+
+async function applyScene3DTranslationDraft(proposal, options = {}) {
+  return applyScene3DAuthoringDraft(proposal, options, { valid: isScene3DTranslationProposal, prepare: prepareScene3DTranslationApply,
+    errorCode: 'scene3d_translation_conflict', dirtyMessage: '3D整体移动已应用到原文草稿；尚未保存。',
+    cleanMessage: '3D整体移动已应用；文本与已保存版本一致。' });
+}
+
+async function applyScene3DAlignmentDraft(proposal, options = {}) {
+  return applyScene3DAuthoringDraft(proposal, options, { valid: isScene3DAlignmentProposal, prepare: prepareScene3DAlignmentApply,
+    errorCode: 'scene3d_alignment_conflict', dirtyMessage: '3D位置对齐已应用到原文草稿；尚未保存。',
+    cleanMessage: '3D位置对齐已应用；文本与已保存版本一致。' });
+}
+
+async function applyScene3DDistributionDraft(proposal, options = {}) {
+  return applyScene3DAuthoringDraft(proposal, options, { valid: isScene3DDistributionProposal, prepare: prepareScene3DDistributionApply,
+    errorCode: 'scene3d_distribution_conflict', dirtyMessage: '3D等距分布已应用到原文草稿；尚未保存。',
+    cleanMessage: '3D等距分布已应用；文本与已保存版本一致。' });
+}
+
+async function applyScene3DCopyDraft(proposal, options = {}) {
+  return applyScene3DAuthoringDraft(proposal, options, { valid: isScene3DCopyProposal, prepare: prepareScene3DCopyApply,
+    errorCode: 'scene3d_copy_conflict', dirtyMessage: '3D批量复制已应用到原文草稿；尚未保存。',
+    cleanMessage: '3D批量复制已应用；文本与已保存版本一致。' });
+}
+
+async function applyScene3DRemovalDraft(proposal, options = {}) {
+  return applyScene3DAuthoringDraft(proposal, options, { valid: isScene3DRemovalProposal, prepare: prepareScene3DRemovalApply,
+    errorCode: 'scene3d_removal_conflict', dirtyMessage: '3D批量移除已应用到原文草稿；尚未保存。',
+    cleanMessage: '3D批量移除已应用；文本与已保存版本一致。' });
+}
+
+// Shared document-owned source application only. Intent semantics and private
+// proposal authority stay inside the separately injected authoring domains.
+async function applyScene3DAuthoringDraft(proposal, { isCurrent = () => true } = {}, capability) {
+  const conflict = () => { throw Object.assign(new Error('The source editor no longer owns this reviewed 3D transform.'), { errorCode: capability.errorCode }); };
+  if (!capability.valid(proposal)) conflict();
+  const reviewed = proposal, doc = getActiveDoc(), sourcePath = reviewed.sourcePath;
+  if (canonicalizeSourcePath(sourcePath) !== sourcePath) conflict();
+  const owner = scene3DTransformSourceContext(), baseline = editSessionBaselineContent, version = editSessionVersion;
+  const content = getCurrentEditContent(), loadToken = editorLoadToken, epoch = scenePreviewDraftEpoch;
+  const eligible = () => { const context = scene3DTransformSourceContext();
+    return context.editable && !context.creating && !context.busy && context.sourceJSON && getActiveDoc() === doc
+      && context.sourcePath === sourcePath && context.sourceToken === owner.sourceToken; };
+  const owns = () => eligible() && isCurrent() && loadToken === editorLoadToken && epoch === scenePreviewDraftEpoch
+    && baseline === editSessionBaselineContent && version === editSessionVersion && content === getCurrentEditContent();
+  if (!owns()) conflict();
+  const baseSourceRevision = `sha256:${await scene3DTransformDigest(baseline)}`;
+  if (!owns() || version.startsWith('sha256:') && version !== baseSourceRevision) conflict();
+  const sourceRevision = `sha256:${await scene3DTransformDigest(content)}`;
+  if (!owns()) conflict();
+  const prepared = await capability.prepare({ sourcePath, token: owner.sourceToken, content, baseSourceRevision, sourceRevision }, reviewed,
+    { digest: scene3DTransformDigest });
+  if (!owns()) conflict();
+  const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, scroll = editEditorEl.scrollTop;
+  setSourceEditorContent(prepared.afterContent);
+  if (Number.isInteger(start) && Number.isInteger(end)) editEditorEl.setSelectionRange?.(Math.min(start, editEditorEl.value.length), Math.min(end, editEditorEl.value.length));
+  editEditorEl.scrollTop = scroll;
+  refreshEditSessionDirtyState(); refreshEditButtons();
+  setEditorStatus(t(state.editHasUnsavedChanges ? capability.dirtyMessage : capability.cleanMessage));
+  const appliedOwner = scene3DTransformSourceContext(), appliedEpoch = scenePreviewDraftEpoch;
+  return { applied: true, sourcePath, sourceToken: appliedOwner.sourceToken, content: prepared.afterContent, focus() {
+    const context = scene3DTransformSourceContext();
+    if (context.editable && !context.creating && !context.busy && getActiveDoc() === doc && context.sourcePath === sourcePath
+      && context.sourceToken === appliedOwner.sourceToken && appliedEpoch === scenePreviewDraftEpoch && getCurrentEditContent() === prepared.afterContent) editEditorEl.focus();
   } };
 }
 
@@ -5481,7 +5657,16 @@ async function initApp(options = {}) {
     settings: options.settings,
     features: options.features,
     ports: {
-      scene3d: { getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot },
+      scene3d: { getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot, locateSource: locateScene3DSource },
+      scene3dTransforms: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DTransformDraft },
+      scene3dObjects: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DObjectsDraft },
+      scene3dEnvironment: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DEnvironmentDraft },
+      scene3dProperties: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DPropertiesDraft },
+      scene3dTranslation: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DTranslationDraft },
+      scene3dAlignment: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DAlignmentDraft },
+      scene3dDistribution: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DDistributionDraft },
+      scene3dCopy: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DCopyDraft },
+      scene3dRemoval: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DRemovalDraft },
       build: {
         getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())),
           sceneDraftPath: state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '',
@@ -5714,6 +5899,9 @@ async function initApp(options = {}) {
         return;
       }
       refreshEditSessionDirtyState();
+      // Notify independent source views through the composition root so their
+      // visible selection/navigation state follows ordinary text edits.
+      studioSystem?.refreshMedia();
     };
     editEditorEl.addEventListener('input', onSourceInput);
   }

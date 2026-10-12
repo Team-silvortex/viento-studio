@@ -1,0 +1,92 @@
+{
+  "format": "viento-scene3d-navigation-application-timing",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-11T15:36:01.067802+00:00",
+  "ok": true,
+  "firstApplication": {
+    "log": "app-check.log",
+    "sha256": "6ea1a42fd1547d3408bae23bb12b0d31c48ea4f12628e01e7596f2b4010eab4c",
+    "counts": {
+      "tests": 3380,
+      "pass": 3379,
+      "fail": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 307682.563761,
+    "javascriptSyntaxFiles": 600,
+    "started": {
+      "startedAt": "2026-10-11T15:18:42.686937+00:00",
+      "sourceManifestSha256": "d3d6e12c41a0d48da2f680168799bf399a256bdbc83d7ebcbb45462d42ef2088",
+      "sourceFiles": 723,
+      "allSourcesMatch": true,
+      "expectedNewTests": 50,
+      "scope": "Fixed24.20 runtime with all current native helpers and fixed Godot/Bevy tools, app-only full regression after final product and test repairs."
+    },
+    "scope": "Actual edition after source-input notification and browser fixture repair; one newly duplicated English translation key failed. Original log and source manifest retained."
+  },
+  "repair": {
+    "files": {
+      "scripts/tests/scene3d-navigation-smoke.mjs": {
+        "before": "a08a5730e3f12e3fe5e88474ca72a4a687c1974ae78c2bf5cef49999907e55f2",
+        "after": "71676560eb90b1e1fb0e7552e425d47becd4401e9346330a6ed37a48d61d21b0"
+      },
+      "scripts/tests/scene3d-preview-ui.test.mjs": {
+        "before": "b4656c1de3ff12cc4fce84602745a827ae7afeccd1371a99b340be5e20b9993d",
+        "after": "5a3124db7413637b334417ef371dfbc43ecde01a931c79fe1d5acff81581468a"
+      },
+      "web/i18n/en.js": {
+        "before": "eb3cc5bf8d57945cf9f004b6fe274e9dc8694dc4505c27bc00d40570f8855b1b",
+        "after": "fb0144cf571fa413fb26086430fee7bce433c7b97bbef512a3da79fe1045a072"
+      },
+      "web/i18n/ja.js": {
+        "before": "f62213d98faef67bff180d2d21e44937a02f6e886e566d4cdaba9e53548df88a",
+        "after": "ec3f6445444d8ca04cdd5fa1e9a54a2b54a87fe4f15b95e1d9fa2bb9766d7e24"
+      },
+      "web/modules/app-scene3d-preview.js": {
+        "before": "60fd9e289662916559ce3ef0abc86d4ecdb1a3feffc73f7e306c5df89f4196d6",
+        "after": "0da055fdcf7938daf0f169562912110651ea347bd8067ec9d4571b44f0a94ac3"
+      }
+    },
+    "reason": "Remove only the newly repeated English search-clear key; make Reset restore translated author-camera status, with one new independent UI regression and browser assertion. Existing catalogue coverage is unchanged."
+  },
+  "finalApplication": {
+    "log": "app-check-verified.log",
+    "sha256": "c01d5c7e064d4c2bc4a4c40a9e3d96dc4dbb73e4f8288b90e8fa5c997c94ca14",
+    "counts": {
+      "tests": 3381,
+      "pass": 3381,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 311398.212626,
+    "javascriptSyntaxFiles": 600,
+    "started": {
+      "startedAt": "2026-10-11T15:30:17.345113+00:00",
+      "sourceManifest": "source-hashes-verified.json",
+      "sourceManifestSha256": "17a474ce0b080d39166b7725897e45b8b285645f23972b3f88a4e1d4f4587f2d",
+      "sourceFiles": 723,
+      "allSourcesMatch": true,
+      "expectedNewTests": 51,
+      "priorFailedApplication": "app-check.log",
+      "scope": "Actual final fixed24.20 app-only full regression after final translated Reset status and removing duplicate en Clear-search. Native/Godot/Bevy trusted tools bound to original baseline. Product sources frozen."
+    },
+    "completedBeforeRecordedAt": true,
+    "productSourcesUnchangedThroughout": true
+  },
+  "sourceManifestSha256": "17a474ce0b080d39166b7725897e45b8b285645f23972b3f88a4e1d4f4587f2d",
+  "nativeRuntime": "Pinned Node v24.20.0, current native archive/mobile/core helpers and trusted Godot/Bevy tools.",
+  "harnessFailures": [
+    "First new browser fixture called an already computed array; preserved and repaired separately.",
+    "Prepared harness initially redeclared box, then referenced a missing copied baseline filename; preserved producers/logs and repaired only new evidence."
+  ],
+  "browserDetectedProductRepairs": [
+    "Exact native CRLF/CR ranges now map only into complete LF-normalized textarea display without changing author bytes.",
+    "Normal source input broadcasts after actual dirty/epoch update through the composition root, so stale source-location controls immediately expire.",
+    "Reset restores both temporary camera and localized status instead of retaining a misleading focused-view message."
+  ],
+  "scope": "Completed application counts overlap all focused suites. Browser, native, copied VM and source phases are recorded separately; no install/device/GPU-hardware claim."
+}

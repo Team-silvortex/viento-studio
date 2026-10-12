@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: source archives retain both Rust crates and official examples while excluding local state and build caches
+ok 1 - source archives retain both Rust crates and official examples while excluding local state and build caches
+  ---
+  duration_ms: 311.264139
+  type: 'test'
+  ...
+# Subtest: beta release digits map below the first stable installer version
+ok 2 - beta release digits map below the first stable installer version
+  ---
+  duration_ms: 1.494014
+  type: 'test'
+  ...
+# Subtest: release numbers reject extra patches, non-digit beta parts and invalid stable numbers
+ok 3 - release numbers reject extra patches, non-digit beta parts and invalid stable numbers
+  ---
+  duration_ms: 0.585205
+  type: 'test'
+  ...
+# Subtest: all beta versions advance one digit and b.9.9 becomes 1.0.0
+ok 4 - all beta versions advance one digit and b.9.9 becomes 1.0.0
+  ---
+  duration_ms: 0.543906
+  type: 'test'
+  ...
+# Subtest: numeric releases advance the patch without imposing the historical beta digit rollover
+ok 5 - numeric releases advance the patch without imposing the historical beta digit rollover
+  ---
+  duration_ms: 0.145771
+  type: 'test'
+  ...
+# Subtest: new installer counters advance beyond the predecessor without changing the product version
+ok 6 - new installer counters advance beyond the predecessor without changing the product version
+  ---
+  duration_ms: 3.531061
+  type: 'test'
+  ...
+# Subtest: source packaging accepts the same numeric and historical version grammar
+ok 7 - source packaging accepts the same numeric and historical version grammar
+  ---
+  duration_ms: 38.054572
+  type: 'test'
+  ...
+# Subtest: release preflight rejects stale names, install counters and a changed data identity
+ok 8 - release preflight rejects stale names, install counters and a changed data identity
+  ---
+  duration_ms: 13.592624
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 361.143745

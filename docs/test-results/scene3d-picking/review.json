@@ -1,0 +1,388 @@
+{
+  "format": "viento-scene3d-picking-independent-review",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T16:16:01.550745+00:00",
+  "ok": true,
+  "openFindings": [],
+  "head": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "version": "0.0.10",
+  "finalSourceFreeze": {
+    "manifest": "source-hashes-final.json",
+    "manifestSha256": "22c6fa824d52d8ef1147ae7351361e45de54075ec28917868a0a0b2e19e6a998",
+    "files": 726,
+    "allMatch": true,
+    "missing": [],
+    "drift": []
+  },
+  "sourceDelta": {
+    "added": [
+      "scripts/tests/scene3d-picking-smoke.mjs",
+      "scripts/tests/scene3d-picking.test.mjs",
+      "web/modules/scene3d-picking.js"
+    ],
+    "changed": [
+      "engine/README.md",
+      "scripts/tests/scene3d-preview-ui.test.mjs",
+      "scripts/tests/scene3d-renderer.test.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-scene3d-preview.js",
+      "web/modules/scene3d-renderer.js"
+    ],
+    "removed": []
+  },
+  "sourceChangeScope": {
+    "changedProductOrTests": [
+      "scripts/tests/scene3d-preview-ui.test.mjs",
+      "scripts/tests/scene3d-renderer.test.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-scene3d-preview.js",
+      "web/modules/scene3d-renderer.js"
+    ],
+    "documentationOnly": [
+      "engine/README.md"
+    ],
+    "nativeEngineHostAuthoringAndMathUnchanged": true
+  },
+  "reviewedSources": {
+    "web/modules/scene3d-picking.js": "22c77588f14c2eb40fb1d85ccc98ed4079ca3c7a52b2cea426a8983c1372c2e2",
+    "web/modules/scene3d-renderer.js": "bc0d5005bc03fa4fb38c477fcaa19f54e369107b6329a56ff727740310a46a1c",
+    "web/modules/app-scene3d-preview.js": "2e1a0cd6857af86c6a5b9c646bbef675a47a260b85560005b1b36d7016d671a0",
+    "web/modules/app-runtime.js": "fb2f0b870079dc26aeca4e6a7ba3517733f3fc5ecdc841dfbb6a5d7cdc5e0b37",
+    "web/modules/app-studio-system.js": "66515c395e6aec432d63cce6aea9c3fc1b2cdb52702dfa98195659010194cbb1",
+    "engine/scene3d-navigation.mjs": "5b0fd3dafd2cdca59858df8d192895a38c8f992b4975dd0732f330a7a7bdf447",
+    "web/modules/scene3d-math.js": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d"
+  },
+  "independent": {
+    "quality": {
+      "report": "quality-confirmed.json",
+      "sha256": "e6b546b4787bbc287298d9c939939722028636eb5391fb316576562a7845ffcd",
+      "passed": 12,
+      "failed": 0,
+      "counts": {
+        "triangleReferenceSamples": 1144,
+        "float32UploadedSamples": 63,
+        "clipSurfaceCases": 5,
+        "gestureScenarios": 25
+      },
+      "scope": "Actual pure picking helper and actual renderer code with a WebGL uniform/event fixture. Independent homogeneous clipping and triangle-depth reference, actual Float32 uniform payloads, simulated pointer/capture/resize lifecycle. This is geometric view quality, not real GPU raster edge/depth parity, browser pixels, native/device/install or author/Save execution."
+    },
+    "extremeFrame": {
+      "report": "extreme-frame-final.json",
+      "sha256": "b3ea5a58ea82c847914780a53c80c5f86ffc50228aea27008c2bcef6bc07847a",
+      "passed": 18,
+      "failed": 0,
+      "scope": "Actual pure framing and picking with Float32 matrix payloads derived in the renderer coordinate convention. Eighteen combinations of distant coordinates, minimum/maximum/anisotropic size, FOV and canvas aspect; guaranteed center hit and finite temporary camera. No actual GPU, browser/device pixels or source mutation."
+    }
+  },
+  "renderer": {
+    "report": "renderer-results.json",
+    "sha256": "ad0f302be0a88df56079fe36a93cc10ef411ef6648433473c8d60ab9fd6b77ac",
+    "details": {
+      "format": "viento-scene3d-picking-renderer-results",
+      "schemaVersion": 1,
+      "observedAt": "2026-10-11T16:07:10.550001+00:00",
+      "ok": true,
+      "scope": "Read-only geometric canvas picking and renderer gesture ownership; no author/source/schema/native/backend mutation. Real browser/GPU-pixel and packaged execution proof are reported separately by the parent.",
+      "runtime": {
+        "version": "v24.20.0",
+        "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7",
+        "bytes": 126458664,
+        "path": "src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu"
+      },
+      "sources": {
+        "web/modules/scene3d-picking.js": {
+          "sha256": "22c77588f14c2eb40fb1d85ccc98ed4079ca3c7a52b2cea426a8983c1372c2e2",
+          "bytes": 4688
+        },
+        "web/modules/scene3d-renderer.js": {
+          "sha256": "bc0d5005bc03fa4fb38c477fcaa19f54e369107b6329a56ff727740310a46a1c",
+          "bytes": 13891
+        },
+        "scripts/tests/scene3d-picking.test.mjs": {
+          "sha256": "17c6c79ff4d27165788e81b0d7f0fdae763c11e24606811ccade8d9912f4b3a2",
+          "bytes": 8104
+        },
+        "scripts/tests/scene3d-renderer.test.mjs": {
+          "sha256": "007901b8ae4ba20357f5ca67c989e967a5a6fa67efbd9de34d3b7ff91d6a7785",
+          "bytes": 28375
+        }
+      },
+      "unchangedMath": {
+        "path": "web/modules/scene3d-math.js",
+        "sha256": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+        "bytes": 4501
+      },
+      "sharedCorePreserved": {
+        "engine/studio-core.wasm": {
+          "expected": {
+            "sha256": "0e6f4cd70f28d7b00b1c50e3e5f7e52d1b680a55a377eda1a1d160a4e908879a",
+            "bytes": 515406
+          },
+          "actual": {
+            "sha256": "0e6f4cd70f28d7b00b1c50e3e5f7e52d1b680a55a377eda1a1d160a4e908879a",
+            "bytes": 515406
+          },
+          "unchanged": true
+        },
+        "engine/studio-core.build.json": {
+          "expected": {
+            "sha256": "e598b6aeb18467c7cabd95870a07e4f139ccf0f751dd348a2ed59a739e3bca3c",
+            "bytes": 2713
+          },
+          "actual": {
+            "sha256": "e598b6aeb18467c7cabd95870a07e4f139ccf0f751dd348a2ed59a739e3bca3c",
+            "bytes": 2713
+          },
+          "unchanged": true
+        }
+      },
+      "tests": {
+        "passed": 58,
+        "failed": 0,
+        "skipped": 0,
+        "cancelled": 0,
+        "durationMs": 155.399045,
+        "files": [
+          {
+            "path": "scripts/tests/scene3d-math-navigation.test.mjs",
+            "passed": 5,
+            "previousAssertionsPreserved": true
+          },
+          {
+            "path": "scripts/tests/scene3d-picking.test.mjs",
+            "passed": 13,
+            "new": true
+          },
+          {
+            "path": "scripts/tests/scene3d-renderer.test.mjs",
+            "passed": 40,
+            "previousTestsPreserved": 25,
+            "newTests": 15
+          }
+        ],
+        "log": "renderer-tests-final.log",
+        "logSha256": "141f30a7a5434b1353e555d4673eeb5608e83d3f3a5ff6c0a85c479478870960"
+      },
+      "earlierEvidence": [
+        {
+          "log": "renderer-tests-initial.log",
+          "passed": 43,
+          "failed": 0,
+          "note": "Earlier bounded implementation state; not final source proof."
+        },
+        {
+          "log": "renderer-tests-fixture-initial.log",
+          "passed": 54,
+          "failed": 2,
+          "note": "Fixture-only mutable DPR/contextLost options were copied instead of retained; corrected without weakening their assertions."
+        },
+        {
+          "log": "renderer-tests-before-scroll-fix.log",
+          "passed": 56,
+          "failed": 0,
+          "note": "Passed before the independently discovered position-only scrolling gap. Preserved verbatim."
+        },
+        {
+          "log": "renderer-picking-scroll-focused.log",
+          "passed": 53,
+          "failed": 0,
+          "note": "Final renderer/picker subset; final 58-case execution additionally includes the five existing navigation math tests."
+        }
+      ],
+      "contract": {
+        "pureExport": "pickScene3DObject(frame, clientX, clientY) -> string|null",
+        "frame": {
+          "rect": [
+            "left",
+            "top",
+            "width",
+            "height"
+          ],
+          "width": "rounded drawing allocation integer",
+          "height": "rounded drawing allocation integer",
+          "viewProjection": "actual Float32 uniform payload, 16 values",
+          "objects": "source-ordered [{instanceId, model:<actual Float32 model uniform,16 values>}]"
+        },
+        "renderer": "hitTest(clientX,clientY) -> UUID|null; onPick(UUID, Object.freeze({focus:boolean}))",
+        "surfaceSelection": "Inverse near(-1)/middle(0) ray; transformed unit-box entry/exit real surfaces; homogeneous clip; minimum projected depth, later declaration wins exact equal depth matching existing LEQUAL.",
+        "ownership": "Renderer emits selection or focus hint only. UI owns selection approval and calls existing focusObject; renderer does not focus or change author source during hitTest/callback.",
+        "gestures": "Primary left single-pointer. Maximum displacement greater than 4 CSS px starts orbit and permanently removes tap eligibility for that gesture. Secondary pointer, cancel, unexpected lost capture, wheel, resize, model/reset/focus/context loss/dispose invalidate pending view gestures.",
+        "normalCaptureLoss": "Expected pointerup-driven release/lostpointercapture preserves qualified recent tap, including the native double-click sequence; active unexpected loss cancels.",
+        "framePosition": "Current CSS left/top are used with the same drawn Float32 matrices after ordinary scrolling without redraw. Changed CSS size or drawing allocation needs a fresh frame. Position changes during an active gesture or between approved tap and dblclick cancel that gesture.",
+        "invalid": "Missing/contextlost/disposed/unrendered/invalid matrix or coordinates return null and do not forward a callback."
+      },
+      "independentQuality": {
+        "path": "quality-confirmed.json",
+        "sha256": "e6b546b4787bbc287298d9c939939722028636eb5391fb316576562a7845ffcd",
+        "passed": 12,
+        "failed": 0,
+        "counts": {
+          "triangleReferenceSamples": 1144,
+          "float32UploadedSamples": 63,
+          "clipSurfaceCases": 5,
+          "gestureScenarios": 25
+        },
+        "sourceShaMatches": true
+      },
+      "limitations": [
+        "CPU geometric selection from actual Float32 upload coefficients; no claim of GPU raster edge, anti-aliasing or quantized depth-buffer bit parity.",
+        "WebGL fixtures observe actual renderer uniform payloads and lifecycle calls; browser pixel/device execution requires the separate parent/UI proof.",
+        "No source-writing authority or native scene validation is introduced by this view-only frame DTO."
+      ],
+      "findings": []
+    }
+  },
+  "browser": {
+    "report": "browser-picking-initial/browser.json",
+    "sha256": "b1039c7014712e8fd79965f3d4870a1eb8605b6679789dc62bf236eba6b7eb24",
+    "flowClasses": 8,
+    "sourceStableDuringProof": true,
+    "errors": 0,
+    "cspViolations": 0,
+    "screenshots": [
+      {
+        "file": "browser-picking-initial/picking-desktop.png",
+        "sha256": "a69abc83daae043176e5190077421c648be43df6d5a86425b7836ddbcb6ce9d1",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-picking-initial/picking-zh-CN-390.png",
+        "sha256": "f22ffc96e6f1b8c4541082b2e981c835579954a610fe75258fdc5902ca5ee118",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-picking-initial/picking-en-390.png",
+        "sha256": "6f8c9e429e65bb9760e1f74609d8197583e1541d5516d214fc0d1fb8824e7068",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-picking-initial/picking-ja-390.png",
+        "sha256": "8de2700e5fc02bd85a03eeb9e2445b570a7e10d55e74fd265e9cbb11f8233cdd",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-picking-initial/picking-without-webgl.png",
+        "sha256": "ccc924fd4ad5468c350a778417e30abca4f228e4f0fa3e1a5d210bc2a902eea5",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-navigation-regression-final/navigation-desktop.png",
+        "sha256": "092d1f278dc4f67a2491b12c8acccdd3eb5e424199897f646949ca2ed9272559",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-navigation-regression-final/navigation-zh-CN-390.png",
+        "sha256": "ffe97e6b98db292dc8e8d694f2ca76d7478bdb220d736760593a1b0d518c3c62",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-navigation-regression-final/navigation-en-390.png",
+        "sha256": "b05601dd16acf972a14c8744b4940ec0c96ec8a5a4f973d14f9e3208ad34bc35",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-navigation-regression-final/navigation-ja-390.png",
+        "sha256": "43f1ee2eb8150a0631d51e71047fd3f076cab913e2dcf4b3d1ba52413f399ac9",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-navigation-regression-final/navigation-without-webgl.png",
+        "sha256": "2c62b06682099d335f114cab09d5c11b90e7e62dcdd3a97337e577e450ef9363",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-preview-regression-final/scene3d-desktop.png",
+        "sha256": "75829ff28be5ce8842f2a51831dd621392e72d801af904a3ff0607256a964c30",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-preview-regression-final/scene3d-invalid-retained.png",
+        "sha256": "4c5744ded96f8e2c5f0a8b7fbee13c93ed6a88ead744c636c97e600755607e0a",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-preview-regression-final/scene3d-zh-CN-390.png",
+        "sha256": "504b9425169ae41f832426101718eb2e99a2b154f640935ee89d4e1422f1d6af",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-preview-regression-final/scene3d-en-390.png",
+        "sha256": "5fa2eeaa3a668b168cd518d6ccbbc5e8df78b947b4b14169b7aea8bbb366fa71",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-preview-regression-final/scene3d-ja-390.png",
+        "sha256": "7a5542b08db519aaea5895b773751cd297dd61324e6e98e5658703920a309a03",
+        "personallyViewed": true
+      },
+      {
+        "file": "browser-preview-regression-final/scene3d-webgl-unavailable.png",
+        "sha256": "1e5facf98489c9a6cb953e8d68c450a0b03152e24ac6d009ad571d1394435eb2",
+        "personallyViewed": true
+      }
+    ]
+  },
+  "visualReview": {
+    "canonicalReport": "visual-review-final.json",
+    "canonicalSha256": "a029cf7e08ff7566d8b34c8f27719b20cfac2db9491799cd9b3817af6df746cc",
+    "canonicalOwnerViewedImages": 16,
+    "independentSupplement": "independent-visual-supplement.json",
+    "independentSupplementSha256": "fc0acdc8a3dbbc9db1269e2116fc9168794dbaa09c18f517edbca6bb3c1afc06",
+    "independentlyViewedImages": 5
+  },
+  "prepared": {
+    "report": "packaged-resources.json",
+    "sha256": "15a5e0951e2cbdccdb8fdeabfa53fc7306be58e80b7fed6429d88e984ec4bf76",
+    "groups": 288,
+    "files": {
+      "desktop/resources": 563,
+      "mobile/dist": 244,
+      "desktop/ui": 11
+    },
+    "portabilityOnly": true,
+    "notSecuritySandboxOrInstallation": true
+  },
+  "application": {
+    "report": "app-check.log",
+    "sha256": "55cbfab2ea45c2092e5def45cdd231c4722fcb2a6b532f7f14b701784a2ee867",
+    "counts": {
+      "tests": 3421,
+      "pass": 3421,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 302866.538666
+  },
+  "contracts": [
+    "The pure hit helper consumes geometry and uploaded matrix payloads; it does not parse or mutate source.",
+    "Picking uses the current CSS client rect with the actual last-drawn allocation, floating origin and Float32 matrices.",
+    "Only actual box entry/exit surfaces inside the clip volume can win; near clipping never invents a cap. Exact equal depth chooses the later declaration under LEQUAL.",
+    "Single click selects a stable UUID. Native double-click may invoke the existing temporary focus; misses retain selection and filter.",
+    "Drag/cancel/other pointer/unexpected capture loss/resize/wheel/model replacement/context loss/dispose revoke click or double-click eligibility. Expected pointerup release/capture loss preserves a qualified recent tap for native double-click.",
+    "Position-only scrolling remaps current CSS coordinates without a redraw. Movement during an ongoing gesture or between its approved tap and double-click revokes that old gesture owner.",
+    "The preview validates current renderer/canvas/model membership and active source path without adding any source write or Save port.",
+    "Last-valid visual selection and focus remain available after the token changes; source location retains its stricter exact-snapshot owner guard."
+  ],
+  "resolvedFindings": [
+    {
+      "finding": "A secondary pointer was ignored and left the first pointer click and old tap eligible.",
+      "initialProof": "quality-initial.json",
+      "resolution": "Other-pointer/button down cancels gesture and tap; repaired independent proof passes."
+    },
+    {
+      "finding": "Position-only scrolling incorrectly invalidated every hit until a redraw.",
+      "initialProof": "quality-scroll-initial.json",
+      "resolution": "Current CSS position remaps the unchanged frame; ongoing and saved gestures bind position and cancel across movement."
+    }
+  ],
+  "limitations": [
+    "Geometric visible-face selection is not antialias-edge or hardware depth-buffer quantization parity.",
+    "Independent renderer proof uses a WebGL uniform/event fixture; browser evidence is separately bound and is not installed/device acceptance.",
+    "Flat boxes only; no hierarchy/material/assets/new schema/native semantics/backend or authoring authority change.",
+    "Prepared isolated VM proves portability, not hostile-code sandboxing. All earlier reports and failures remain immutable."
+  ]
+}

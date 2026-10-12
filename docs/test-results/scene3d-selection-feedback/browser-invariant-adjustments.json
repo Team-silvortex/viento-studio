@@ -1,0 +1,19 @@
+{
+  "format": "viento-scene3d-selection-browser-invariant-adjustments",
+  "schemaVersion": 1,
+  "historicalReportsModified": false,
+  "changes": [
+    {
+      "path": "scripts/tests/scene3d-picking-smoke.mjs",
+      "originalSha256": "f2a8229d79dbbcc4e8621d9613e6169e171310effe8a74a259bb15972569b9f1",
+      "reason": "Reset and invalid-retention pixel equality must compare the same selected UUID plus the same camera/model. Keep strict full pixel hashes by recording the actual current selection or restoring it through public list selection.",
+      "updatedSha256": "4ff97054572c43b7f755a37d7344352b18a629a9e3021d539a7729e2a58cf8f4"
+    },
+    {
+      "path": "scripts/tests/scene3d-navigation-smoke.mjs",
+      "originalSha256": "71676560eb90b1e1fb0e7552e425d47becd4401e9346330a6ed37a48d61d21b0",
+      "reason": "Keep the initial first-object GPU receipt, but separately record the selected last-object author-camera GPU before Focus; compare focused pixels against it and Reset strictly against the same selected-state author-camera receipt.",
+      "updatedSha256": "d4e7a85809d0ec6d159e9dfcd3de9301b21e96772878846960a593f238e17957"
+    }
+  ]
+}

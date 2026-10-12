@@ -1,0 +1,29 @@
+Cannot build the Rust Studio core. Install Rust and run rustup target add wasm32-unknown-unknown, then retry npm run core:build.
+cargo failed with exit code 101. Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling serde_json v1.0.151
+   Compiling serde v1.0.229
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling syn v3.0.5
+   Compiling serde_derive v1.0.229
+   Compiling viento-studio-core v0.1.0 (/home/chiharukiryu/cdev/viento-studio/crates/viento-studio-core)
+error[E0282]: type annotations needed
+   --> src/lib.rs:462:24
+    |
+462 |             .and_then(|value| {
+    |                        ^^^^^
+...
+465 |                 if value["operation"].as_str() == Some("scene3d.patchObjectTransform") {
+    |                    ----- type must be known at this point
+    |
+help: consider giving this closure parameter an explicit type
+    |
+462 |             .and_then(|value: /* Type */| {
+    |                             ++++++++++++
+
+For more information about this error, try `rustc --explain E0282`.
+error: could not compile `viento-studio-core` (lib) due to 1 previous error

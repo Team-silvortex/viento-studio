@@ -1,0 +1,127 @@
+{
+  "status": "passed",
+  "frozenAt": "2026-10-12T08:01:58.932515+00:00",
+  "stage": "/tmp/viento-scene3d-removal-71u64wrk/project",
+  "scope": "New independent atomic 3D removal core, bridge, private proposal brand and isolated tests only. Actual repository remains read-only.",
+  "capability": {
+    "abi": "viento_core_scene3d_removal_version",
+    "version": 1,
+    "operation": "scene3d.removeObjects",
+    "requestKeys": [
+      "protocolVersion",
+      "operation",
+      "content",
+      "instanceIds"
+    ],
+    "receipt": "scene3dRemovalPatch",
+    "receiptKeys": [
+      "instanceIds",
+      "beforeContent",
+      "afterContent",
+      "changedPaths"
+    ],
+    "proposalKeyCount": 11,
+    "sourceSnapshotKeyCount": 5,
+    "existingAuthorDomains": 8,
+    "brandRejectionDirections": 16,
+    "maxEffectiveRemovals": 127,
+    "rawCliWasmParityVectors": 30
+  },
+  "nativeRust": {
+    "pass": 307,
+    "fail": 0,
+    "skipped": 0,
+    "newRemovalUnitTests": 17,
+    "fmt": true,
+    "clippyWarningsDenied": true,
+    "cliBuilt": true,
+    "nativeBinary": "/tmp/viento-scene3d-removal-71u64wrk/target/core/debug/viento-core",
+    "nativeSha256": "4b253a8fa9fb4748057342793dc9340c9ae0d28dd9e12656543217b076bddc95",
+    "cargoHome": "/tmp/viento-scene3d-removal-71u64wrk/cargo-home",
+    "target": "/tmp/viento-scene3d-removal-71u64wrk/target/core",
+    "offline": true
+  },
+  "newJavaScript": {
+    "core-bridge": {
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0
+    },
+    "core-proposal": {
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "oldJavaScriptRegression": {
+    "files": 18,
+    "tests": 245,
+    "pass": 245,
+    "fail": 0,
+    "skipped": 0
+  },
+  "wasm": {
+    "buildCount": 1,
+    "bytes": 599948,
+    "sha256": "49c4dc243e05c69d2b53b9cd144e9ad8e054c1c1edf8531d5808800bbb9c05b6",
+    "previousBytes": 589027,
+    "previousSha256": "a9512e9ffca7029c75440daac4627b2e29a55758af4fee248b2789863926ed57",
+    "predecessorEightAuthorDomainsVerified": true
+  },
+  "oldFrozenFilesVerified": 60,
+  "firstFailurePreserved": {
+    "kind": "Initial formatting check; rustfmt applied before checks/builds",
+    "log": "core-fmt-initial.log"
+  },
+  "productFrozen": true,
+  "freeze": {
+    "crates/viento-studio-core/src/scene3d_removal_patch.rs": {
+      "sha256": "c6b67a5be9c973841b0c1d35a6bc64e90baba2a08db656199bef1f0764c7c2c6",
+      "bytes": 15274
+    },
+    "crates/viento-studio-core/src/lib.rs": {
+      "sha256": "59ede67d00f3abc10431a156d9f8a94e6f0b93cf68f4c7f187fa55e661f503a8",
+      "bytes": 23434
+    },
+    "engine/studio-core.mjs": {
+      "sha256": "faed6f4504481ef4c21a8e705d63ea8475c418279961921a3ac0457a603576e5",
+      "bytes": 136727
+    },
+    "engine/scene3d-removal.mjs": {
+      "sha256": "4ee3292c1e6893dbe57eca570e719036bd417dfc3e291fd08195e7e28e9270a2",
+      "bytes": 3665
+    },
+    "engine/studio-core.wasm": {
+      "sha256": "49c4dc243e05c69d2b53b9cd144e9ad8e054c1c1edf8531d5808800bbb9c05b6",
+      "bytes": 599948
+    },
+    "engine/studio-core.build.json": {
+      "sha256": "68d1f72a9227052ed7d84241c3f926a0bcb924a3437d11693768e0e5fb4d036b",
+      "bytes": 3241
+    },
+    "scripts/tests/studio-core-scene3d-removal.test.mjs": {
+      "sha256": "e6ee573a939290b2f0fd3fe19ef0839b1e0be4318ca0608d1c6c0a4fec7861bb",
+      "bytes": 18537
+    },
+    "scripts/tests/scene3d-removal.test.mjs": {
+      "sha256": "d13576d46653456f2b6bc67e19e12cb7be832dc5d2f585a29b82557013cac846",
+      "bytes": 10415
+    }
+  },
+  "logs": [
+    "core-fmt-initial.log",
+    "core-fmt-repair.log",
+    "core-fmt.log",
+    "core-test.log",
+    "core-clippy.log",
+    "core-cli-build.log",
+    "core-wasm-build.log",
+    "core-proposal-initial.log",
+    "core-bridge.log",
+    "core-proposal.log",
+    "core-old-authors.log",
+    "core-old-authors.json"
+  ]
+}

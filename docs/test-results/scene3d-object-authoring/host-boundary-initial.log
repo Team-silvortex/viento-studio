@@ -1,0 +1,37 @@
+{
+  "format": "viento-scene3d-objects-independent-host-boundary",
+  "schemaVersion": 1,
+  "runtime": "v24.20.0",
+  "applicationSourceSha256": "35b312103af18b5cd35c5f331e321797b14b973e7fb9a5ea08137053baea11e1",
+  "checks": [
+    {
+      "id": "readonly-source-remains-three-fields-and-shared-write-source-five-fields",
+      "ok": true
+    },
+    {
+      "id": "later-object-apply-wins-while-earlier-baseline-digest-is-pending",
+      "ok": true
+    },
+    {
+      "id": "transform-and-objects-race-share-owner-not-proposal-authority",
+      "ok": true
+    },
+    {
+      "id": "busy-version-reload-and-draft-epoch-at-each-three-awaits-cannot-author-write",
+      "ok": true
+    },
+    {
+      "id": "exact-current-token-receipt-restores-cursor-without-resetting-save-baseline",
+      "ok": true
+    },
+    {
+      "id": "shared-application-port-has-no-write-path-through-readonly-or-cross-domain-copies",
+      "ok": true
+    }
+  ],
+  "passed": 6,
+  "failed": 0,
+  "digestRaceVariants": 12,
+  "concurrentApplicationCases": 3,
+  "scope": "Actual extracted application source functions and actual Rust-backed private proposal/prepare. Editor memory and await scheduling are injected. Confirms ownership, cursor, cached bytes and Save preconditions remain; does not itself execute ordinary Save, browser rendering, backend runtime, installation or device."
+}

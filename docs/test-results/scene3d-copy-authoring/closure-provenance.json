@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "actualClosureAppendPerformed": false,
+  "cleanupAlreadyCompletedSuccessfully": true,
+  "recordedAt": "2026-10-12T07:39:52.114032+00:00",
+  "initialManifest": {
+    "path": "closure-ready-initial.json",
+    "sha256": "e39c5542fd9c14c49f5b381ad9f8d48440e4c74ecd1d1ee5ebe2d7da457260f5"
+  },
+  "changedAfterStdout": [
+    "finalize.log"
+  ],
+  "cause": "Caller redirected stdout inside closure inventory. Read-only check caught the completed log change before any actual closure append.",
+  "correction": "Retain completed initial manifest/log and bind final closure bytes after stdout finishes; cleanup and all product/tests/atlas/proofs are not rerun or altered. The already-applied identical finalize-evidence.py producer is left unchanged."
+}

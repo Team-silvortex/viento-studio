@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "actualApplyPerformed": false,
+  "initialPacket": {
+    "path": "patch-ready-initial.json",
+    "sha256": "40ad32211c0c8dac10f104b6447b19e8e38cdc4f3de0377a096eb5c2cda74711"
+  },
+  "initialLogSha256": "6f3922898db91f0829947cb81ed1272e1e31dc2847c7f5928d3cb5dd5ed47c09",
+  "initialPacketUnapplied": true,
+  "cause": "Initial prepare stdout was redirected into the folder being inventoried, so that one log changed after it was included. Detected by read-only post-assembly hash check before dry-run or actual application.",
+  "changedAfterInitialAssembly": [
+    "docs/test-results/scene3d-copy-authoring/patch-prepare-initial.log"
+  ],
+  "correction": "Retain initial packet/log; write final prepare diagnostics outside the packet folder, and require an existing source diff to remain byte-identical when reassembling. Product/tests/docs/atlas and completed checks unchanged."
+}

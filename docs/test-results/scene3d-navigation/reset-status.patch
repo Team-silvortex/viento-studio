@@ -1,0 +1,78 @@
+--- web/modules/app-scene3d-preview.js
++++ web/modules/app-scene3d-preview.js
+@@ -170,7 +170,10 @@
+     repaint();
+   }
+   button.addEventListener('click', open); el('Refresh').addEventListener('click', load);
+-  el('Reset').addEventListener('click', () => { if (!pending && renderer && !rendererFailed) renderer.resetView(); });
++  el('Reset').addEventListener('click', () => {
++    if (pending || !renderer || rendererFailed) return;
++    renderer.resetView(); message = '视角已重置为作者相机；原文保持不变。'; repaint();
++  });
+   el('Focus').addEventListener('click', () => {
+     if (pending || !selected || !renderer || rendererFailed) return;
+     const focused = typeof renderer.focusObject === 'function' && renderer.focusObject(selected);
+--- web/i18n/en.js
++++ web/i18n/en.js
+@@ -2110,4 +2110,5 @@
+   "未确认对象原文定位，请刷新当前草稿后重试。": "Source navigation was not confirmed. Refresh the current draft and retry.",
+   "已聚焦所选对象；仅改变临时视角，原文保持不变。": "Selected object focused. Only the temporary view changed; source is unchanged.",
+   "无法聚焦所选对象，当前视角与原文保持不变。": "The selected object could not be focused. View and source are unchanged.",
++  "视角已重置为作者相机；原文保持不变。": "View reset to the author camera; source is unchanged.",
+ };
+--- web/i18n/ja.js
++++ web/i18n/ja.js
+@@ -2107,4 +2107,5 @@
+   "未确认对象原文定位，请刷新当前草稿后重试。": "原文への移動を確認できませんでした。現在の下書きを更新して再試行してください。",
+   "已聚焦所选对象；仅改变临时视角，原文保持不变。": "選択オブジェクトにフォーカスしました。一時的な視点だけが変わり、原文は変わりません。",
+   "无法聚焦所选对象，当前视角与原文保持不变。": "選択オブジェクトにフォーカスできません。視点と原文は変わりません。",
++  "视角已重置为作者相机；原文保持不变。": "視点を作者のカメラにリセットしました。原文は変わりません。",
+ };
+--- scripts/tests/scene3d-preview-ui.test.mjs
++++ scripts/tests/scene3d-preview-ui.test.mjs
+@@ -225,3 +225,17 @@
+     assert.equal(h.el('Dialog').open, true); assert.match(h.el('Status').textContent, /未确认.*刷新/); assert.doesNotMatch(h.el('Status').textContent, /正在定位/); assert.equal(h.el('Close').disabled, false);
+   }
+ });
++
++test('reset status replaces focused view in all languages while retaining read-only selection and source ownership', async t => {
++  const h = await fixture(t); await h.open(); h.el('Objects').querySelectorAll('button')[1].click();
++  h.el('Search').value = 'Other'; h.el('Search').dispatch('input'); h.el('Focus').click();
++  assert.match(h.el('Status').textContent, /已聚焦/);
++  const owner = copy(h.context); h.el('Reset').click();
++  const key = '视角已重置为作者相机；原文保持不变。';
++  assert.equal(h.el('Status').textContent, key); assert.equal(h.instances[0].resets, 1);
++  for (const [language, dictionary] of [['en', en], ['ja', ja]]) {
++    h.setLanguage(language); assert.equal(h.el('Status').textContent, dictionary[key]);
++    assert.equal(h.el('Search').value, 'Other'); assert.ok(h.el('Inspector').textContent.includes(two));
++  }
++  assert.deepEqual(h.context, owner); assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1);
++});
+--- scripts/tests/scene3d-navigation-smoke.mjs
++++ scripts/tests/scene3d-navigation-smoke.mjs
+@@ -97,6 +97,7 @@
+  assert.equal(await evaluate("document.querySelector('#scene3dObjects b')"),null);await search(last.toUpperCase());assert.deepEqual(await ids(),[last]);await search('no-matching-object');assert.deepEqual(await ids(),[]);assert.equal(await evaluate("document.querySelector('#scene3dNoResults').hidden"),false);assert.equal(await evaluate("document.querySelector('#scene3dSelectionHidden').hidden"),false);assert.ok((await selected()).includes(last));
+  await enabled('#scene3dFocus');await click('#scene3dFocus');await settleFrames();const focused=await pixels();assert.ok(focused.nonBackground>1000);assert.notEqual(focused.hash,first.hash);report.focusedGpu=focused;await assertSource(original);
+  await click('#scene3dReset');await settleFrames();const reset=await pixels();assert.deepEqual(reset,first);report.resetGpu=reset;await assertSource(original);
++ const resetStatus=await evaluate("(async()=>{const {t}=await import('/web/i18n/index.js');return{actual:document.querySelector('#scene3dStatus').textContent,expected:t('视角已重置为作者相机；原文保持不变。')};})()");assert.equal(resetStatus.actual,resetStatus.expected);report.resetStatus=resetStatus;
+  await click('#scene3dClearSearch');assert.equal((await ids()).length,128);assert.equal(await evaluate(`document.querySelector('#scene3dObjects button[data-instance-id="${last}"]').getAttribute('aria-pressed')`),'true');assert.equal(await evaluate("document.activeElement.id"),'scene3dSearch');
+  report.steps.push('Trimmed Unicode lowercase name and UUID matching selects the same stable UUID, renders authored HTML as text and preserves keyboard/button focus across list rebuilds. Empty results preserve the hidden selection and inspector. Focus frames that selected box even outside results using a temporary camera; Reset restores identical authored-camera pixels. Search, focus and reset leave draft/disk bytes unchanged.');
+ 
+@@ -104,6 +105,7 @@
+  for(const language of ['zh-CN','en','ja']){await evaluate(`(await import('/web/i18n/index.js')).applyLanguage(${JSON.stringify(language)})`);await delay(100);await settleFrames();
+   assert.equal(await evaluate("document.documentElement.scrollWidth>innerWidth||document.querySelector('#scene3dDialog').scrollWidth>document.querySelector('#scene3dDialog').clientWidth"),false);assert.equal(await evaluate("document.querySelector('#scene3dSearch').value"),'  ÉLITE  ');assert.deepEqual(await ids(),[last]);assert.ok((await selected()).includes(last));
+   const labels=await evaluate("(async()=>{const {t}=await import('/web/i18n/index.js');return{actual:document.querySelector('#scene3dLocate').textContent,expected:t('定位对象原文')};})()");assert.equal(labels.actual,labels.expected);
++  const status=await evaluate("(async()=>{const {t}=await import('/web/i18n/index.js');return{actual:document.querySelector('#scene3dStatus').textContent,expected:t('视角已重置为作者相机；原文保持不变。')};})()");assert.equal(status.actual,status.expected);(report.localizedResetStatus||=[]).push({language,...status});
+   await evaluate("(()=>{const d=document.querySelector('#scene3dDialog'),e=document.querySelector('.scene3d-sidebar');d.scrollTop+=e.getBoundingClientRect().top-d.getBoundingClientRect().top-20;})()");await screenshot(`navigation-${language}-390.png`);
+   const footer=await evaluate("['scene3dFocus','scene3dLocate','scene3dReset','scene3dRefresh'].map(id=>{const r=document.getElementById(id).getBoundingClientRect();return{id,top:r.top,bottom:r.bottom};})");for(const item of footer)assert.ok(item.top>=0&&item.bottom<=844);(report.narrowFooterChecks||=[]).push({language,controls:footer});
+  }
+--- web/i18n/en.js
++++ web/i18n/en.js
+@@ -2098,7 +2098,6 @@
+ 
+   // Read-only 3D object browsing and source navigation.
+   "按名称或UUID查找对象": "Find objects by name or UUID",
+-  "清空搜索": "Clear search",
+   "没有匹配的对象。请修改名称或UUID筛选。": "No matching objects. Change the name or UUID filter.",
+   "所选对象不在当前结果中；对象声明仍保留。清空搜索可重新显示。": "The selected object is outside the current results. Its declaration remains visible; clear search to show it again.",
+   "聚焦所选对象": "Focus selected object",

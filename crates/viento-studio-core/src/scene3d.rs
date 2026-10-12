@@ -34,7 +34,7 @@ fn number(value: &Value, min: f64, max: f64) -> Result<f64, CoreError> {
         Ok(n)
     }
 }
-fn triple(value: &Value, min: f64, max: f64) -> Result<[f64; 3], CoreError> {
+pub(crate) fn triple(value: &Value, min: f64, max: f64) -> Result<[f64; 3], CoreError> {
     let a = value.as_array().ok_or_else(invalid)?;
     if a.len() != 3 {
         return Err(invalid());

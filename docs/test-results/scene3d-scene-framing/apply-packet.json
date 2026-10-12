@@ -1,0 +1,805 @@
+{
+  "actual": "/home/chiharukiryu/cdev/viento-studio",
+  "stage": "/tmp/viento-scene3d-framing-xmbbbvr9/project",
+  "baselineSha256": "45d23965f48dcbb438896cb3a62543db87fcc0a3c99b71dace973a5097c6407e",
+  "implementationFiles": [
+    "web/modules/scene3d-math.js",
+    "web/modules/scene3d-renderer.js",
+    "web/modules/app-scene3d-preview.js",
+    "web/i18n/en.js",
+    "web/i18n/ja.js",
+    "scripts/tests/scene3d-preview-ui.test.mjs",
+    "scripts/tests/scene3d-scene-framing-math.test.mjs",
+    "scripts/tests/scene3d-scene-framing-renderer.test.mjs",
+    "scripts/tests/scene3d-framing-smoke.mjs",
+    "docs/SCENE3D.md",
+    "docs/STATUS.md",
+    "docs/ROADMAP.md",
+    "docs/function-atlas.json",
+    "docs/function-atlas.html",
+    "docs/function-atlas.mmd",
+    "docs/FUNCTION_ATLAS.md"
+  ],
+  "files": {
+    "docs/FUNCTION_ATLAS.md": {
+      "before": "c502ef2c1f530cba7f20baf0c5efcb0c468086664cf87f20efd2799cc1902c68",
+      "after": "df7889ce496840238dab70e57c5b57608274b0ed8d144d735c2e3f21ce902904"
+    },
+    "docs/ROADMAP.md": {
+      "before": "d2dee69dd4db066082cefabae7ecf4bab87737e7648f370e1b99ad896d629569",
+      "after": "cb2844a1715d023710c1a1055416a0083ced558cdc4c247dd22560b2fbb84612"
+    },
+    "docs/SCENE3D.md": {
+      "before": "a7762f0f1a7af8edc3206ddb184adc0a112a617c5aeb4d8dbcd3bfbd38823ced",
+      "after": "b63231576f3bc4bcdb894a53e4d8e046de835a1f8ef9fe8cabead2a42710c549"
+    },
+    "docs/STATUS.md": {
+      "before": "ab6caf1f521f3a1dba26fc6d9726a8d7f2e035d3fb2a312268942bb774b224d2",
+      "after": "5be4988d217ac3ee3ba9cf4e6ee064ee04237aa6177555d461a1acfc7ea53d41"
+    },
+    "docs/function-atlas.html": {
+      "before": "9f7165db90002fb5518cf46badfccf4e5191b857c809684a543a33bc0b23b977",
+      "after": "42dd7e52f00aec76c4ffb9a8cb29573d137627107b91c92ba62c9aa692c5c103"
+    },
+    "docs/function-atlas.json": {
+      "before": "4fc2b1fd120db26bdc68f9a570cad905ad7f2a0d08702b814362769d364d47e1",
+      "after": "a53969becbc3099947295035c4600e6744c881bad91cc4da3800c6e74366b7e9"
+    },
+    "docs/function-atlas.mmd": {
+      "before": "b4281cc5438beef401c4cc8830cd517710bcf9c9bd927e4f8fdc108e8e97fd5a",
+      "after": "8ea342cbc83bd823a514c3bd6d2e2674982eed1ab398541719e637e9e099b1a0"
+    },
+    "docs/test-results/scene3d-scene-framing/append-atlas.py": {
+      "before": null,
+      "after": "83bbab03d13989909a10efb384f1287e2f02859213c61eb6d3f49d2fd2d1fd49"
+    },
+    "docs/test-results/scene3d-scene-framing/applier-review-initial.log": {
+      "before": null,
+      "after": "f052c2ca58559c6090cb7c555e86e4bf7e4c990952b61fe7443a1837d7cf0854"
+    },
+    "docs/test-results/scene3d-scene-framing/applier-review.json": {
+      "before": null,
+      "after": "6428ee227946b1dd9de9d8a386e6f14c5dba7d77b7ab90911da85e20d44c21ff"
+    },
+    "docs/test-results/scene3d-scene-framing/applier-review.py": {
+      "before": null,
+      "after": "8d171a432dfb258ca62cb3087aa86ca7743c6a20bc3946736eae5164d0de5fb0"
+    },
+    "docs/test-results/scene3d-scene-framing/apply-reviewed-framing.py": {
+      "before": null,
+      "after": "62e06a4f5e5eee937539ed244bdd6695cde92484b3d22882db94ad7090e42e32"
+    },
+    "docs/test-results/scene3d-scene-framing/atlas-append.log": {
+      "before": null,
+      "after": "b5a7257364f742b1e488a5b1cac566b9acda8198d54036cf55114eedbdc62845"
+    },
+    "docs/test-results/scene3d-scene-framing/atlas-before.json": {
+      "before": null,
+      "after": "4fc2b1fd120db26bdc68f9a570cad905ad7f2a0d08702b814362769d364d47e1"
+    },
+    "docs/test-results/scene3d-scene-framing/atlas-check.log": {
+      "before": null,
+      "after": "bdf4b17d14cd99d948011b5ad7a85ec03a88534aa06ae49e881191deb7c144d1"
+    },
+    "docs/test-results/scene3d-scene-framing/atlas-final-check.log": {
+      "before": null,
+      "after": "bdf4b17d14cd99d948011b5ad7a85ec03a88534aa06ae49e881191deb7c144d1"
+    },
+    "docs/test-results/scene3d-scene-framing/atlas-final-write.log": {
+      "before": null,
+      "after": "a973e1839f60d785870fec688bb659db933d69080a051f6f048e93fb03f37612"
+    },
+    "docs/test-results/scene3d-scene-framing/atlas-write.log": {
+      "before": null,
+      "after": "a973e1839f60d785870fec688bb659db933d69080a051f6f048e93fb03f37612"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle-source.mjs": {
+      "before": null,
+      "after": "983937e79df8531a7e8b32406063ff9f170b94b9368871db7ad651df9aa0764f"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle.log": {
+      "before": null,
+      "after": "5ccf66de4ced2063ddff6f081046939830600b5a93d5eeede904d590566cc21a"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle/browser.json": {
+      "before": null,
+      "after": "b88ca8198d59de6ee168168aa1691f51e279de103d5a776fba8b797a11292954"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle/framing-desktop.png": {
+      "before": null,
+      "after": "bac5554d0fc50b0a49c8f5c931fc8f96d077a0a4fb9b23cca6bee50ef672e948"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle/framing-en-390-view.png": {
+      "before": null,
+      "after": "83fe36551bcd4e495cc1fc3e9c3a6a88e34a794ffeddfc0af7e317472dde0a6a"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle/framing-en-390.png": {
+      "before": null,
+      "after": "83fe36551bcd4e495cc1fc3e9c3a6a88e34a794ffeddfc0af7e317472dde0a6a"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle/framing-ja-390-view.png": {
+      "before": null,
+      "after": "df774a53d2353b156583b335773bc8811917f5553c488bb2ac7fa15212da489e"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle/framing-ja-390.png": {
+      "before": null,
+      "after": "df774a53d2353b156583b335773bc8811917f5553c488bb2ac7fa15212da489e"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle/framing-no-webgl.png": {
+      "before": null,
+      "after": "b67f97b958036c5c9ee8bb03446b070b0ef5c7fc8bcc76a7872bbec4e4cd7bca"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle/framing-zh-CN-390-view.png": {
+      "before": null,
+      "after": "e9cf0dc16e56ad2f855711b7761e201828039eabdba00e2564c92fc4576d966c"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-angle/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "e9cf0dc16e56ad2f855711b7761e201828039eabdba00e2564c92fc4576d966c"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-completed-source.mjs": {
+      "before": null,
+      "after": "9fa4a312831794baeb8b201aedcbfa4ed7841cae5fbc58220eaaca1183b61d70"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor-source.mjs": {
+      "before": null,
+      "after": "9e280563315fac967db9d87f95d395fc2a97145d60cbb229ff0549f44b00eec9"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor.log": {
+      "before": null,
+      "after": "856faadb3ffff332318ba50a0caa7ff09d25733942ec10ab76a6c359bc66c480"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor/browser.json": {
+      "before": null,
+      "after": "8b2fac57ddc6ed6a0b76d367f5ea55f07b65c23c3a325abf3201e7108157e28a"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor/framing-desktop.png": {
+      "before": null,
+      "after": "4287c95a9fd9b5ac28ce01d555f76ab49ca37d1b9724dff5d9670f7c6093cf68"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor/framing-en-390-view.png": {
+      "before": null,
+      "after": "ba3aba7284a99093d85e5b0e653fbe40136f087e25d5caf980b48502a542c325"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor/framing-en-390.png": {
+      "before": null,
+      "after": "ba3aba7284a99093d85e5b0e653fbe40136f087e25d5caf980b48502a542c325"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor/framing-ja-390-view.png": {
+      "before": null,
+      "after": "7c6e7688441655dcb9714383f6652311e4b74b70bb4d88162491ea5742538a4b"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor/framing-ja-390.png": {
+      "before": null,
+      "after": "7c6e7688441655dcb9714383f6652311e4b74b70bb4d88162491ea5742538a4b"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor/framing-no-webgl.png": {
+      "before": null,
+      "after": "0d318b526ac27c00c09f4e2d71eeecb4d33e7a7c871b53f19088669897a1e299"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor/framing-zh-CN-390-view.png": {
+      "before": null,
+      "after": "d6ceca9d81cc19ec13f5f3f411252ac94952f886d624bec41fa1a93e21267cc6"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-compositor/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "d6ceca9d81cc19ec13f5f3f411252ac94952f886d624bec41fa1a93e21267cc6"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-contain-source.mjs": {
+      "before": null,
+      "after": "4b4b5081d5098178c8ec51ae45fe982013a5d735c33578222d9c1d91477e13bc"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-contain.log": {
+      "before": null,
+      "after": "25c159168e501e4e18d3f5ca91250e7d8c42d94db6a7ec1acd8d6909c4081abc"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-contain/browser.json": {
+      "before": null,
+      "after": "e06ba2c4cdf9b19553a57d03f69f76bfda3bfe6a8ab4d3f56b7ae3c4962d8dad"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-contain/framing-desktop.png": {
+      "before": null,
+      "after": "537585bc3229ee2a9c4b0a14404c284e7d8d45f88499f5c4bf176b684aa7126e"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-contain/framing-en-390.png": {
+      "before": null,
+      "after": "ba3aba7284a99093d85e5b0e653fbe40136f087e25d5caf980b48502a542c325"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-contain/framing-ja-390.png": {
+      "before": null,
+      "after": "7c6e7688441655dcb9714383f6652311e4b74b70bb4d88162491ea5742538a4b"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-contain/framing-no-webgl.png": {
+      "before": null,
+      "after": "9e58f6e26d74479d7515e2b893dfb0300bcd99b9ce3f3bd4374f862c13b1b203"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-contain/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "53c009c34bc36d0639197e9a4d8c43dc1ef8c6b09eb5249ccb0c14b1209e22dd"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog-source.mjs": {
+      "before": null,
+      "after": "9e280563315fac967db9d87f95d395fc2a97145d60cbb229ff0549f44b00eec9"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog.log": {
+      "before": null,
+      "after": "e87441953cd80575aa12f4202e0ac9ca68db188620ffc7f356a676186741fb45"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog/browser.json": {
+      "before": null,
+      "after": "aa0b873c7405f9c6788d40e159774c80ddee57b03faed34e86ef78bdff897305"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog/framing-desktop.png": {
+      "before": null,
+      "after": "8984593eba8c39650cfc4e178eca26e7b80fd482a8bec00f4dd8b06c43b6808c"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog/framing-en-390-view.png": {
+      "before": null,
+      "after": "e5a64a5e08402152ea5b2b6098d662fa968b9481acd04d82bcd4e0e4f7868ed3"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog/framing-en-390.png": {
+      "before": null,
+      "after": "e5a64a5e08402152ea5b2b6098d662fa968b9481acd04d82bcd4e0e4f7868ed3"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog/framing-ja-390-view.png": {
+      "before": null,
+      "after": "d167db6d86d3803c0b03e537d1e92f7a77d716125a8a7d4997405d6b4d1571c5"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog/framing-ja-390.png": {
+      "before": null,
+      "after": "d167db6d86d3803c0b03e537d1e92f7a77d716125a8a7d4997405d6b4d1571c5"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog/framing-no-webgl.png": {
+      "before": null,
+      "after": "d49cad75108396e067f217bfda33f9d3c762030361bd5be54a3aa19a03dcb96f"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog/framing-zh-CN-390-view.png": {
+      "before": null,
+      "after": "36abff7ba0eebcf36b1767dd182085cba26764d4da4852e9308c1f117345d978"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-dialog/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "36abff7ba0eebcf36b1767dd182085cba26764d4da4852e9308c1f117345d978"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-final.log": {
+      "before": null,
+      "after": "215f2d3e1666b03f9de17e1cc412645686c9734c4415f15476c127335d4c08f5"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-final/browser.json": {
+      "before": null,
+      "after": "af5fa1dedf94d4e492e8922db54dbae37ec5d7f327d27a7dbca307902ee51e0a"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-final/framing-desktop.png": {
+      "before": null,
+      "after": "3141f4c668372a9794bc604187e289819939ec1eafd7101a83768723142a9486"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-final/framing-en-390.png": {
+      "before": null,
+      "after": "461da0018038a94185767edad24347717829961748273eb8141713bf5c8bc892"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-final/framing-ja-390.png": {
+      "before": null,
+      "after": "15995f4446251af4210124cb4ee5b4eda0554a8eb807029f8b0582c097b1a791"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-final/framing-no-webgl.png": {
+      "before": null,
+      "after": "819a3e75bdafb3f0f323b30ce8056333d0d748adaaaff76d2187196b4ee54349"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-final/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "478d7f7a9353db64e94c5a21ec99da2fde80e6b43c1af06c9e8afc1553ca2c85"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-initial-interruption.json": {
+      "before": null,
+      "after": "139ca825469a5c9aee1620ad7b69366d93b7473402aa4bcd6f521fadc30b4572"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-initial-source.mjs": {
+      "before": null,
+      "after": "42175e37f3b94181de80a41d6d287adf22be1ba972404b1d799ba19a709a719d"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-investigation.json": {
+      "before": null,
+      "after": "7a7ad2a4c6fce8441ceb93dcf9aefdccc5ed62eb6dbd965490558fc7a0a1bb1c"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer-source.mjs": {
+      "before": null,
+      "after": "9e280563315fac967db9d87f95d395fc2a97145d60cbb229ff0549f44b00eec9"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer.log": {
+      "before": null,
+      "after": "995fc25908d8f7761e8d42f9f3ca2026ef455d104b6090b60a63536cc7a7a779"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer/browser.json": {
+      "before": null,
+      "after": "9d31e2b2b27dbbc4141b2ecceade121292be9cd6672bbb7436b54f7e426c08ab"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer/framing-desktop.png": {
+      "before": null,
+      "after": "6a74c52ead5370853a53f6b3532298f5a2968d5067f4799c55230720c45668a1"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer/framing-en-390-view.png": {
+      "before": null,
+      "after": "ba3aba7284a99093d85e5b0e653fbe40136f087e25d5caf980b48502a542c325"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer/framing-en-390.png": {
+      "before": null,
+      "after": "ba3aba7284a99093d85e5b0e653fbe40136f087e25d5caf980b48502a542c325"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer/framing-ja-390-view.png": {
+      "before": null,
+      "after": "7c6e7688441655dcb9714383f6652311e4b74b70bb4d88162491ea5742538a4b"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer/framing-ja-390.png": {
+      "before": null,
+      "after": "7c6e7688441655dcb9714383f6652311e4b74b70bb4d88162491ea5742538a4b"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer/framing-no-webgl.png": {
+      "before": null,
+      "after": "2e1e48bf175388d4154ba46e19ba0beb9129ee2d59557c3d465fe309565f0e08"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer/framing-zh-CN-390-view.png": {
+      "before": null,
+      "after": "d6ceca9d81cc19ec13f5f3f411252ac94952f886d624bec41fa1a93e21267cc6"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-layer/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "d6ceca9d81cc19ec13f5f3f411252ac94952f886d624bec41fa1a93e21267cc6"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed.log": {
+      "before": null,
+      "after": "f35ef33fc9ea3f781c711d3f9def18dcc83c253c037dca91af0c0c9f8be6cf01"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed/browser.json": {
+      "before": null,
+      "after": "47bc9045f67792dd7ec3b30ac19a7aff3907e5e966cec1de58a4f9bbf8bcdbde"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed/framing-desktop.png": {
+      "before": null,
+      "after": "baf2948675248c3b949666258df70d16ceb68d76765673074e0e7d8d58090deb"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed/framing-en-390-view.png": {
+      "before": null,
+      "after": "734008ae3ba96142bab96fb76e1d65bbbf3d8cccd716a629f1820fc1d3abccbf"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed/framing-en-390.png": {
+      "before": null,
+      "after": "734008ae3ba96142bab96fb76e1d65bbbf3d8cccd716a629f1820fc1d3abccbf"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed/framing-ja-390-view.png": {
+      "before": null,
+      "after": "6d60a2eb9b73dbf0899c7f35bda55e450efb11940d7ab995ef570a8b50bcb8e2"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed/framing-ja-390.png": {
+      "before": null,
+      "after": "6d60a2eb9b73dbf0899c7f35bda55e450efb11940d7ab995ef570a8b50bcb8e2"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed/framing-no-webgl.png": {
+      "before": null,
+      "after": "ca18d9e0e75b0a27f5a4daeeeb543e7f06b32756d4e3077399d2928356fa1b0f"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed/framing-zh-CN-390-view.png": {
+      "before": null,
+      "after": "d6ceca9d81cc19ec13f5f3f411252ac94952f886d624bec41fa1a93e21267cc6"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-fixed/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "d6ceca9d81cc19ec13f5f3f411252ac94952f886d624bec41fa1a93e21267cc6"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-initial-source.mjs": {
+      "before": null,
+      "after": "0c5c812e9d1220b441c6135328babf66b6929770a82124bcc59f9772a5fd29ee"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw-source.mjs": {
+      "before": null,
+      "after": "76292698ac227ed7d0ddff3be586ee8fb2ea3ac6b3e44675f7a63845096e508b"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw.log": {
+      "before": null,
+      "after": "4a13779f740355cc70253c4743462ddd88fa306b1965bb78405314d80ce9a25f"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw/browser.json": {
+      "before": null,
+      "after": "9a6d482fbdcc47827fa21dccb2293d4576f6e22bd6b9dfb5328d360cb8e447af"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw/failure.png": {
+      "before": null,
+      "after": "f475772847072320df7c09802e00e5babf5a10919566b4131c20391fc57e7ea2"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-redraw/framing-desktop.png": {
+      "before": null,
+      "after": "ae898a091f8057545047da5641e855102396c0b2a52490e7624fbff495366a73"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-review.json": {
+      "before": null,
+      "after": "e1fcafbd5d4cdd0b1f695a463d4c45cec39651c8a1ae6249193f4a8c625b3475"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-review.py": {
+      "before": null,
+      "after": "6588e260a95ee348c1cebf1bcaa2ba95a6f78bcbaf4ce984cf8b045c6d0d996b"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-verified-review.json": {
+      "before": null,
+      "after": "5fe9324100ea58f985b1a74f91608c809d5baf07e6e19120a5ec2d037652e8e2"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-verified-review.py": {
+      "before": null,
+      "after": "ec5e1a18220487fcfba76ef690fd657cff2b0c44cde59e26788ce8cf9ed75167"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-verified.log": {
+      "before": null,
+      "after": "b86a84e4c621239952fdc00caf1e1c6243ebc2e41ab01a6aa5423cc14497bb01"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-verified/browser.json": {
+      "before": null,
+      "after": "e7154e26094afd6deaf37432f7589b1777ee687ca7ec7accc4b81c143bcf162d"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-verified/framing-desktop.png": {
+      "before": null,
+      "after": "0c29614bb65697048da2a4663ee2fa79e9555810fa157b37f764dd8784087f3a"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-verified/framing-en-390.png": {
+      "before": null,
+      "after": "83fe36551bcd4e495cc1fc3e9c3a6a88e34a794ffeddfc0af7e317472dde0a6a"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-verified/framing-ja-390.png": {
+      "before": null,
+      "after": "df774a53d2353b156583b335773bc8811917f5553c488bb2ac7fa15212da489e"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-verified/framing-no-webgl.png": {
+      "before": null,
+      "after": "873b5eed32bfc68b13be8e018b8cbfc90746c0b6405204cbec1e08e62879ef8e"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-verified/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "e9cf0dc16e56ad2f855711b7761e201828039eabdba00e2564c92fc4576d966c"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-visual-source.mjs": {
+      "before": null,
+      "after": "be7859547cee8e9d374dad227474d41b365fbf9bda42277de0e980c6e703b780"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-visual.log": {
+      "before": null,
+      "after": "9fc09f57d4020cd58b83836c93da08daf1789eb509a8287d1eabf8b970c02245"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-visual/browser.json": {
+      "before": null,
+      "after": "afb2f18203daffe6534db6849992afbf5f0b8e0f2aeb8839c4fe9b52d33fe06f"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-visual/framing-desktop.png": {
+      "before": null,
+      "after": "c4181707c47e178cef91bc962d729dc652fb0b4bd50a2f89532988a31509d43a"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-visual/framing-en-390.png": {
+      "before": null,
+      "after": "ba3aba7284a99093d85e5b0e653fbe40136f087e25d5caf980b48502a542c325"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-visual/framing-ja-390.png": {
+      "before": null,
+      "after": "b2f627f06957f8a3c62aeb6bf27296292c68bb8c3b6638a9b7a07580a3bd324b"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-visual/framing-no-webgl.png": {
+      "before": null,
+      "after": "db492a96562638e717caec270f7a4089d21a87e28819395a7b132082795d5c01"
+    },
+    "docs/test-results/scene3d-scene-framing/browser-visual/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "d6ceca9d81cc19ec13f5f3f411252ac94952f886d624bec41fa1a93e21267cc6"
+    },
+    "docs/test-results/scene3d-scene-framing/browser.log": {
+      "before": null,
+      "after": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs/test-results/scene3d-scene-framing/browser/framing-desktop.png": {
+      "before": null,
+      "after": "d7bd5afb6aea39d1c0cc21319b8c0c2d7b9e24e916c73aa51df71fbc5773944d"
+    },
+    "docs/test-results/scene3d-scene-framing/browser/framing-en-390.png": {
+      "before": null,
+      "after": "461da0018038a94185767edad24347717829961748273eb8141713bf5c8bc892"
+    },
+    "docs/test-results/scene3d-scene-framing/browser/framing-ja-390.png": {
+      "before": null,
+      "after": "15995f4446251af4210124cb4ee5b4eda0554a8eb807029f8b0582c097b1a791"
+    },
+    "docs/test-results/scene3d-scene-framing/browser/framing-zh-CN-390.png": {
+      "before": null,
+      "after": "98a98ba15122f4683d7075420751398e60ec3c1c4d6f5ddb23e723234c08cfe5"
+    },
+    "docs/test-results/scene3d-scene-framing/compare-compositing.py": {
+      "before": null,
+      "after": "77dfd6ea0080607dc0558055c943594dfa2174584c97c2eec116fc4f6ad06c23"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-angle.json": {
+      "before": null,
+      "after": "cbe718b84ac7347cf40a9293e21ba2b2b3264b92b8484ddd34a20bb77506a9fd"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-angle.log": {
+      "before": null,
+      "after": "1c216ca4c61f1744be9e2df570635339e73066d02c4a8cd45d1160cd3398bb84"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-check.json": {
+      "before": null,
+      "after": "c4daccb79daf6c8e1b7c4cbc8d3105fb10e4730550ea47421bccfe8865a3d0ab"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-compositor.json": {
+      "before": null,
+      "after": "63e4c533e0e57da7cdbbc78986c12cf41eec7f3a1af1a466348da253863c314a"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-compositor.log": {
+      "before": null,
+      "after": "0daea3991b01c72c748e41258cc0a2e0ddd5096f3fd66f7c4644ad945d35ad9c"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-contain.json": {
+      "before": null,
+      "after": "0d5c184356ee419a030a1d2909dd07884a7d6925f9a97be9c0882853566c48c9"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-dialog.json": {
+      "before": null,
+      "after": "4b4058f8606c010b2536c6f0f81ccf2cf62b142748bacf70d23a811c81c913e3"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-dialog.log": {
+      "before": null,
+      "after": "ca8571d7a4ecc45efd8b9068630a36fdd05a14bb7bc9309d76316c1f04ed0c93"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-layer.json": {
+      "before": null,
+      "after": "291244df21a22a51d0492193614f849b0390708be6f6f7cbe58d7410cd25814a"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-layer.log": {
+      "before": null,
+      "after": "210b7bd4994df0c7cdb4bd961a2a7cbc0e482e1e4707be828a3ea2f5efdd916f"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-redraw.json": {
+      "before": null,
+      "after": "d4d7bad916533da8cb2c00cb3ee1cd714f2c26f8027a49b6e87a3c95ba50d417"
+    },
+    "docs/test-results/scene3d-scene-framing/compositing-redraw.log": {
+      "before": null,
+      "after": "591e3d623e07e2f352bd9eb81c5995a0fa3ca574ba70f392681841de2e48025e"
+    },
+    "docs/test-results/scene3d-scene-framing/contain-attempt.css": {
+      "before": null,
+      "after": "1bf5a0ea3235b32f4534471b5373456b37e2b97259458b2e39b24d98d4f71dc7"
+    },
+    "docs/test-results/scene3d-scene-framing/desktop-prepare.log": {
+      "before": null,
+      "after": "9fea2b7c69cb426bb65ec3eb5d160061e49a9ee1f07d5cb87f665e43688dbfb5"
+    },
+    "docs/test-results/scene3d-scene-framing/dialog-attempt.css": {
+      "before": null,
+      "after": "8250c3d02b213291c5dcb4bc2467b6805b5657591876b90e220a95284777e5d2"
+    },
+    "docs/test-results/scene3d-scene-framing/final-check-initial.json": {
+      "before": null,
+      "after": "992fc33a884c7bb744a0c11d5e18faf73c55c7f936e599aedd08d33d658a59a0"
+    },
+    "docs/test-results/scene3d-scene-framing/final-check.json": {
+      "before": null,
+      "after": "8e6e3144404f0017887166d23f3994e8f7f9e2f1f34a421382dc4d429b75ba66"
+    },
+    "docs/test-results/scene3d-scene-framing/i18n.log": {
+      "before": null,
+      "after": "202c94a72a5f9ec1374c3cbb93de02b554de6ec7d9c8ac9407a28f8fb5d05a1b"
+    },
+    "docs/test-results/scene3d-scene-framing/independent-review.json": {
+      "before": null,
+      "after": "dc4c9d08bf85712cce7627ff52b80b5f6eab8e4eedfe69cdef17cd1434b03512"
+    },
+    "docs/test-results/scene3d-scene-framing/independent-review.log": {
+      "before": null,
+      "after": "3a3d144dfa0ad4adcd77bbf9a7a80064ecf33e090f2b3b63d1b62e84cf93e1bd"
+    },
+    "docs/test-results/scene3d-scene-framing/independent-review.mjs": {
+      "before": null,
+      "after": "df0af57cdadc331b61cfa1e997496e9fc61f48f6e6bf1dd393383f60f138bd57"
+    },
+    "docs/test-results/scene3d-scene-framing/layer-attempt.css": {
+      "before": null,
+      "after": "449b5365dd1fe9754627922bd036201da86a6f2fc84c923be6754a376d6705b8"
+    },
+    "docs/test-results/scene3d-scene-framing/legacy-browser.log": {
+      "before": null,
+      "after": "b6282596571ab271cc5261c36a635da37ecd76c39ba08eb9201974d9201c365c"
+    },
+    "docs/test-results/scene3d-scene-framing/legacy-browser/browser.json": {
+      "before": null,
+      "after": "3d9dc5032e2f0d30e0b490a7f5e8e211fa890e21636fb18dd28839d1cf1adb38"
+    },
+    "docs/test-results/scene3d-scene-framing/legacy-browser/scene3d-desktop.png": {
+      "before": null,
+      "after": "011a7540d92e1742d125f49adcce5be3d13db62b7c72d2fec2278b868f6dd9ed"
+    },
+    "docs/test-results/scene3d-scene-framing/legacy-browser/scene3d-en-390.png": {
+      "before": null,
+      "after": "320813d4983789526a8a40ef4efa81f7b0a4cee174bddf1f9e1e9df227aa0263"
+    },
+    "docs/test-results/scene3d-scene-framing/legacy-browser/scene3d-invalid-retained.png": {
+      "before": null,
+      "after": "0919be4be3e9d3289b0cce49e2f451b6999f6144dad94ec237a882f182c76c44"
+    },
+    "docs/test-results/scene3d-scene-framing/legacy-browser/scene3d-ja-390.png": {
+      "before": null,
+      "after": "0897d07fa8f8e2a6fd19fa5c13e49deb54c4585adc5a6c4ee92d17fbad7b089a"
+    },
+    "docs/test-results/scene3d-scene-framing/legacy-browser/scene3d-webgl-unavailable.png": {
+      "before": null,
+      "after": "b90d53771d48531e03235b9fb706cd88e4fc87afe976ea9973bad0fca171f319"
+    },
+    "docs/test-results/scene3d-scene-framing/legacy-browser/scene3d-zh-CN-390.png": {
+      "before": null,
+      "after": "3fb9d92b4260d1517422ccbbdd61a255ac09fd73bd7dd50fd871fee04abfdfa6"
+    },
+    "docs/test-results/scene3d-scene-framing/math-initial.log": {
+      "before": null,
+      "after": "4dcf8b29cfdc575e2265264981b84498409def4c1ce75a476615c8de15aad081"
+    },
+    "docs/test-results/scene3d-scene-framing/math-legacy.log": {
+      "before": null,
+      "after": "5b4aafa065baf3bc0833967168fb4bc4ef066a3495824c1223ad2bea6b438f08"
+    },
+    "docs/test-results/scene3d-scene-framing/math-renderer-results.json": {
+      "before": null,
+      "after": "12beff58986100953d9c5fa151b027a72abdb2a95df195d3d908230bcf699f5e"
+    },
+    "docs/test-results/scene3d-scene-framing/mobile-prepare.log": {
+      "before": null,
+      "after": "f91462e4878aea776fe5944726eefc844c40eff6168ef75b5ef6349197d24909"
+    },
+    "docs/test-results/scene3d-scene-framing/prepare-packet.py": {
+      "before": null,
+      "after": "667c77bffdf49a44e51b1f846ca4f32bbfb26ceb617c835f66c470e535364b6b"
+    },
+    "docs/test-results/scene3d-scene-framing/prepared-check.mjs": {
+      "before": null,
+      "after": "cb649238b6b53938f2bd9647042b60f0f52f496eef3ef05e49720f6933194f9d"
+    },
+    "docs/test-results/scene3d-scene-framing/prepared.json": {
+      "before": null,
+      "after": "69dc3241d231e4d111f6d6fe313ee4d969dc05576b6424b44a94d85ebcab804d"
+    },
+    "docs/test-results/scene3d-scene-framing/prepared.log": {
+      "before": null,
+      "after": "974b4794eb7b2e51c1f2e9204ed7a7a4c26cc96430c0793ce88334921c0f3fe2"
+    },
+    "docs/test-results/scene3d-scene-framing/regression.json": {
+      "before": null,
+      "after": "c600038aed44b6b1cd2aeb920993c0b2c2d3559eccf6dad26a09593e5424d287"
+    },
+    "docs/test-results/scene3d-scene-framing/renderer-confirmed.log": {
+      "before": null,
+      "after": "7dfe39c0f2813d61d9662d2806de0fed5d2bac687d4c2506c04ff308ec8b8e42"
+    },
+    "docs/test-results/scene3d-scene-framing/renderer-final.log": {
+      "before": null,
+      "after": "dc36f0d89d06aefb796c9d98f6e3564550c262de9345eb6ba0c813022df5b77e"
+    },
+    "docs/test-results/scene3d-scene-framing/renderer-initial.log": {
+      "before": null,
+      "after": "9f7863ca257d2b3417cbff77301918413547955cfd4ff426b5af6c66a9811659"
+    },
+    "docs/test-results/scene3d-scene-framing/renderer-legacy.log": {
+      "before": null,
+      "after": "484f17c4e2c506e5979d943111f93b65227829e43180d7fa68e9147d8b2ecbb0"
+    },
+    "docs/test-results/scene3d-scene-framing/results.json": {
+      "before": null,
+      "after": "0491ed04993be14121bf604d796348bf7be1e2c7a4300929c396ef0f928c4ef1"
+    },
+    "docs/test-results/scene3d-scene-framing/run-regression.py": {
+      "before": null,
+      "after": "2fe1111c9bb7659810652698ad7867a4886aad83f220886469567c0d815eefb0"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-math-navigation.log": {
+      "before": null,
+      "after": "fb73e9d3e6cb79cb6a5a47d062ec123d83160e7fbe1cf0c6f1d6a4549eeef84c"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-module-boundary.log": {
+      "before": null,
+      "after": "bf2b01fd723b4885c27d50e1a55e8d3b90015bdd03c5512425419541b38a07f9"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-navigation-source-host.log": {
+      "before": null,
+      "after": "646ed236a3d657cc8a2908f82c59bfb5a3dcee833d9c74746c9dbea0bd2051d9"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-navigation.log": {
+      "before": null,
+      "after": "bc051dd5212e86190a0c265b69bd67cb1978ee15fea3d007a270172070b4a957"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-picking.log": {
+      "before": null,
+      "after": "7aca2cbcc0dc3f4359dd42fa13e712cdf889c2cc54e86764d73cdee52bdf864d"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-preview-ui.log": {
+      "before": null,
+      "after": "c4a7491e4f5525e82157135dde224d1bd9ddfa73cf64c6178d2418cb67c5fa1b"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-renderer.log": {
+      "before": null,
+      "after": "b729f36658511a4f7c2ae1b724f9cc383c2355e6b870514725f5fbf8b15ac025"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-scene-framing-math.log": {
+      "before": null,
+      "after": "b791e7facd6ee7a6321ac6536b4ab6d70da2ec3edd12fea3e3a71f29314ef8db"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-scene-framing-renderer.log": {
+      "before": null,
+      "after": "3d0b43059b910f124583a30ee87b75eb8d48ae71a1a6fb099557d5aafc755de3"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d-system-ports.log": {
+      "before": null,
+      "after": "ded262f40ecade9433d8aa4f3af8dc84fe51854fc19fc662f30e5cd529efa2df"
+    },
+    "docs/test-results/scene3d-scene-framing/scene3d.log": {
+      "before": null,
+      "after": "a6a13a1d60b4a770f6b56122ba5aa6c325ba1e786a2195f5bc889233858db331"
+    },
+    "docs/test-results/scene3d-scene-framing/source-before.json": {
+      "before": null,
+      "after": "bf8d993b4759447c8dde8b681277823c45197b5e6892e697e765e3bfe8b7c79d"
+    },
+    "docs/test-results/scene3d-scene-framing/source-final-initial.json": {
+      "before": null,
+      "after": "e84012731312dca9b0f6899e868f38ea69f1aa29302103482dd203d9d1789f36"
+    },
+    "docs/test-results/scene3d-scene-framing/source-final.json": {
+      "before": null,
+      "after": "1a8f705135b6e51d72e0409c13ed0eba8994f886f79cd2500ea23e09b350c657"
+    },
+    "docs/test-results/scene3d-scene-framing/studio-modules.log": {
+      "before": null,
+      "after": "05a109f516fce1789905c965683102b9cf2845da7abddb2dc0bf37cf08a9585d"
+    },
+    "docs/test-results/scene3d-scene-framing/studio-system-ui.log": {
+      "before": null,
+      "after": "8831c1c072803d526b4c12fc055b356340f1cf4acfa34569963d492c627c118e"
+    },
+    "docs/test-results/scene3d-scene-framing/ui-final.log": {
+      "before": null,
+      "after": "f4b054b3e0e3eb7156a7bf7e5a94f45b4ddf8691d2e1e7b6225e4f5c4f2430fe"
+    },
+    "docs/test-results/scene3d-scene-framing/ui-initial.log": {
+      "before": null,
+      "after": "4a389251d67fc0d979034c3f2d54e0c14202ef1551b8657211f6d7f80299f61f"
+    },
+    "docs/test-results/scene3d-scene-framing/ui.log": {
+      "before": null,
+      "after": "7341516a9c677d959294b267fd04420b2def6d57611c8ff183e8ca922c9f4212"
+    },
+    "scripts/tests/scene3d-framing-smoke.mjs": {
+      "before": null,
+      "after": "a0de2e124e535abae22f60d8e1ca97ce1c5ed8b89679d49a35455568503473b0"
+    },
+    "scripts/tests/scene3d-preview-ui.test.mjs": {
+      "before": "a0595518017aefbf4e1efd349eb8a20b66c51619e4de2243baffb5eefbd92a29",
+      "after": "e00c82b5735534cacba8a92422d9575b2d9ebb74fff3239f63589a94ede8a15f"
+    },
+    "scripts/tests/scene3d-scene-framing-math.test.mjs": {
+      "before": null,
+      "after": "3df05359e8a680c767fc34560d3d71ab34c04e6d80588cec5271705a2312ab39"
+    },
+    "scripts/tests/scene3d-scene-framing-renderer.test.mjs": {
+      "before": null,
+      "after": "256f86eef67df9481ac039dc34e132aef6d295b2dca480fc35af088c3ed08358"
+    },
+    "web/i18n/en.js": {
+      "before": "0b303bf3e75e3dda53eff060d87ace461983ffe74d1edaca6644775e6b58568d",
+      "after": "50bb3af721bd4428275dcf7c74cdcba8a99afc092931b2700ff7420c02bdb4fa"
+    },
+    "web/i18n/ja.js": {
+      "before": "9b1d9fd0fb3fa4a39dd92959d4b412d09e091ba3ae43b4b88f598e3d92586ec6",
+      "after": "c2a353a6a131d6973e37133d971d116a582241139652c247e654967dcba3a28b"
+    },
+    "web/modules/app-scene3d-preview.js": {
+      "before": "cf81cd58a91f2937211e05cfeea0bbcbbb59ae500537e3bc6783ac44de688e0b",
+      "after": "5971ef0bb03d91c93020fb6eb185d600e8450bd7cd697dc532741651dc2f8691"
+    },
+    "web/modules/scene3d-math.js": {
+      "before": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+      "after": "29713754fc70e9e06327f0b48d2dd369effa3f245b857068cc932ed1e9345d05"
+    },
+    "web/modules/scene3d-renderer.js": {
+      "before": "92cf5bc132af3d518c63d7adab57dd320ba66d9c9122b40314124f97c36a496c",
+      "after": "7794fbca35cee644be22fedcd0184fd0cc8d6189e278670e66462d889fc53d5c"
+    }
+  }
+}

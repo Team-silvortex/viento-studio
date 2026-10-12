@@ -1,5 +1,7 @@
 # 可移植引擎
 
+0.1.0 的独立 3D 作者接口分别覆盖变换、对象结构、环境、属性、整体移动、参照对齐、等距分布、批量复制和批量移除。九个可选 Rust 能力经可移植私有提案与文档来源守护接到独立界面；只更新原文草稿，普通保存保持持久权威。只读预览、数学与 GPU 适配不取得这些作者接口。当前 17 模块、33 项声明能力；交付与历史验证条件见[版本记录](../docs/RELEASE_0.1.0.md)。
+
 `studio-modules.mjs` 提供固定系统模块注册与增量需求规划：描述符、依赖、提供者和 API 版本确定性检查，不读取 DOM／文件／网络或执行引擎。模板的 `studioProfile` 只请求能力，普通文档继续可用；模块装配状态和宿主执行权限分开，见[系统边界](../docs/STUDIO_MODULES.md)。
 
 后端工程持久恢复由 `scripts/adapters/node-backend-project-catalog.mjs` 负责本机索引、原子更新和读取／运行身份守护，复用纯 `backend-project.mjs` 清单验证，不把文件、锁或物理 inode 放进可移植领域模块。服务显式选择冻结工程后复用已有运行、控制和验收上下文；恢复条目不授予清理权，格式与 GUI 见[后端工程管理](../docs/BACKEND_PROJECTS.md)。
@@ -12,13 +14,13 @@
 
 同一版源码另接[配方单实例画布调整](../docs/SCENE_COMPOSITION.md#从画布调整单个实例位置)：纯适配器复用已有 Rust 几何历史与局部覆盖补丁，GUI 编辑展开后的场景中心位置，候选只改作者原文中的局部 `position`。独立记录见[画布专题](../docs/test-results/scene-composition-canvas/results.json)；没有新作者格式、Rust 协议、共享片段修改或多选操作。
 
-当前另接独立[配方多实例批次画布](../docs/SCENE_COMPOSITION.md#从画布批量调整配方实例)：同一 Rust 几何会话处理多选移动和六向对齐，新可选无状态补丁一次修改多个稳定目标的局部位置。旧单实例入口继续独立使用；[批次专题](../docs/test-results/scene-composition-batch-canvas/results.json)保留本轮实际验证范围，该专题验证保留 0.0.9 条件，当前源码版本为 0.0.10。
+当前另接独立[配方多实例批次画布](../docs/SCENE_COMPOSITION.md#从画布批量调整配方实例)：同一 Rust 几何会话处理多选移动和六向对齐，新可选无状态补丁一次修改多个稳定目标的局部位置。旧单实例入口继续独立使用；[批次专题](../docs/test-results/scene-composition-batch-canvas/results.json)保留本轮实际验证范围，该专题验证保留 0.0.9 条件，该能力纳入 0.0.10，0.1.0 继续保留。
 
 同一版源码现接[共享片段字段编辑](../docs/SCENE_COMPOSITION.md#编辑共享片段的演员声明)：独立 Rust 能力只设置现有片段演员的六类声明，纯提案绑定全部相关放置及局部覆盖掩蔽；GUI 只显示原文声明并逐字段明确勾选，完整候选与图片经宿主检查后应用到当前原文草稿，再普通保存。[本轮记录](../docs/test-results/scene-composition-fragment-editor/results.json)独立保存，这些作者编辑能力不提升引擎执行或设备成熟度。
 
-当前另接[共享声明恢复](../docs/SCENE_COMPOSITION.md#恢复共享片段的投影继承)：移除现有可选声明，重新使用投影继承，或在未启用继承时移除图片。设置与恢复共用一次原子候选及普通保存；原六字段 SET 接口继续可用。[新增专题](../docs/test-results/scene-composition-fragment-inheritance/results.json)与前轮证据分别保存，该专题验证保留 0.0.9 条件，当前源码版本为 0.0.10。
+当前另接[共享声明恢复](../docs/SCENE_COMPOSITION.md#恢复共享片段的投影继承)：移除现有可选声明，重新使用投影继承，或在未启用继承时移除图片。设置与恢复共用一次原子候选及普通保存；原六字段 SET 接口继续可用。[新增专题](../docs/test-results/scene-composition-fragment-inheritance/results.json)与前轮证据分别保存，该专题验证保留 0.0.9 条件，该能力纳入 0.0.10，0.1.0 继续保留。
 
-同一版源码另接[放置偏移表单](../docs/SCENE_COMPOSITION.md#调整整组放置偏移)：编辑或删除一个 placement 的可选 `offset`，在各演员局部位置覆盖之后统一相加，影响该放置的全部实例；组织分组不提供空间变换。完整候选及全部演员／组身份检查后仅应用原文草稿，再普通保存。[本轮专题](../docs/test-results/scene-composition-placement-offset/results.json)单独保存，该专题验证保留 0.0.9 条件，当前源码版本为 0.0.10。
+同一版源码另接[放置偏移表单](../docs/SCENE_COMPOSITION.md#调整整组放置偏移)：编辑或删除一个 placement 的可选 `offset`，在各演员局部位置覆盖之后统一相加，影响该放置的全部实例；组织分组不提供空间变换。完整候选及全部演员／组身份检查后仅应用原文草稿，再普通保存。[本轮专题](../docs/test-results/scene-composition-placement-offset/results.json)单独保存，该专题验证保留 0.0.9 条件，该能力纳入 0.0.10，0.1.0 继续保留。
 
 `runtime-case-report.mjs` 是输出报告的纯入口：固定上下文、实例目标、终态、原 case/trace 与重新计算的 evaluation，严格核对存储评价并返回深度冻结副本，实际 UTF-8 紧凑导出限定 2 MiB。它不导入作者 CST/YAML、Node、DOM 或运行生命周期重放。可信文件 pin 属于 Node，GUI 只读详情与显式下载，见[成员报告](../docs/RUNTIME_CASE_REPORTS.md)。
 
@@ -203,3 +205,274 @@ Android 预览宿主已接入：`mobile/platform.mjs` 在 WebView 中复用本�
 ## 独立 3D 原始表示
 
 `scene3d.mjs` 的 `parseScene3DSource(content)` 返回冻结的 `{ model, sourceLocations }`；独立可选 `viento_core_scene3d_version() === 1`、`supportsStudioCoreScene3D()` 和 `dispatchStudioCoreScene3D()` 提供 `scene3d.parse`。Rust 校验严格作者结构、预算、稳定身份、相机／灯光与裁剪约束，并定位原始对象 UTF-16 范围。`createScene3DPlan(content)` 派生独立 `kind: 'scene3d'` schema 1 计划；纯层没有 DOM、文件或具体引擎依赖。原文仍为普通文档保存权威，GUI 的 WebGL2 和 Godot 导出适配分别消费同一模型／计划。原 2D 格式、创作域和执行协议不变。规则见[3D 初步接入](../docs/SCENE3D.md)。
+
+<a id="3d-只读浏览导航未发布增量"></a>
+
+### 3D 只读浏览导航（0.1.0）
+
+`scene3d-navigation.mjs` 复用已有 Rust `scene3d.parse` 的模型与来源，不增 schema、原生操作或编辑探针。`createScene3DObjectIndex(parsed)` 生成深冻结的显示行，`queryScene3DObjects(index, query)` 按名称／UUID 忽略大小写的字面子串筛选，保留声明顺序和稳定身份；仅查询 trim，不改作者名称。显示索引与作者提案、执行身份和保存资格分开。
+
+`createScene3DSourceLocation({ sourcePath, token, content }, instanceId)` 复制严格快照，再完整原生解析当前原文，按 UUID 派生 JSON Pointer 和 UTF-16 声明范围。返回值深冻结且带本域私有标记，`isScene3DSourceLocation()` 检查该资格；序列化副本不转移它。`scene3DSourceDisplaySelection(location, displayedContent)` 仅接受该凭据，完整核对显示文本等于源 CRLF／CR 转 LF 后的内容，并把原范围映射到浏览器文本框的 UTF-16 偏移。BOM、Unicode 与作者原换行字节保持，调用方的行号或数字范围不作为来源权威。
+
+预览仅取得独立 `getSource` 和可选 `locateSource` 端口。宿主重查文档、原文编辑会话、路径、token、完整源字节、保存基线和版本，并在 await 后再核当前视图审批；确认返回 `false` 或冻结 `{ located: true, focus }`。视图先关闭弹窗，再调用一次 `focus`；此时仍核当前文档／会话／源字节，只选择和滚动原文，不改变内容、dirty、保存或执行状态。缺少定位端口不会关闭搜索和 GPU 预览，旧画面不授予过期源范围导航。
+
+Web 渲染适配器新增同步 `focusObject(instanceId)`，成功返回 `true`，未加载、未知身份、已释放或上下文丢失时 `false` 且不改变视角。独立 `frameCamera(camera, object, aspect)` 以旋转方块包围球、实际绘制缓冲比例和较小视场角计算 1.2 倍留白，返回深冻结的临时镜头；无效视角输入返回 `null`。朝向和 FOV 保持，临时 near／far 包含完整几何，不受作者裁剪或普通轨道默认最大距限制。
+
+聚焦后的轨道／缩放使用独立临时距离边界并重算裁剪范围，避免第一次交互跳回普通 0.01／200000 默认夹距；非聚焦轨道保持原默认边界。GPU 矩阵使用目标作为临时浮动原点，保持平移不变量和远坐标小物体的 float32 精度；`snapshot().camera` 仍返回作者坐标系中的 detached 临时值。重置／新模型恢复作者相机并清旧拖动、聚焦，关闭释放 GPU 和监听资源。renderer／数学层不取得源字节、HTTP、文件、作者控制器、World 或后端端口。用户步骤见[只读浏览指南](../docs/SCENE3D.md#只读浏览导航未发布增量)。
+
+### 3D 全场景取景（0.1.0）
+
+`scene3d-math.js` 的 `sceneBounds(objects)` 以所有方块真实旋转八角点计算冻结的 `{ min, max, center, radius }` 或 `null`；`frameSceneCamera(camera, objects, aspect)` 保留当前视向与 FOV，使用实际画布比例生成临时相机或 `null`。全场景包围保证不等于远处微小对象具有可辨像素。
+
+渲染器的可选 `focusAll(): boolean` 取消旧手势，在上传前检查 Float32 矩阵有限性，保留当前选择及现有 `snapshot().camera` 形状；取景裁剪与缩放边界仅属于临时视图。无效计算不变更相机；真正绘图失败回滚相机与聚焦状态、使命中帧失效，并通过已有 `onError` 反馈。重置和成功新模型恢复作者相机。UI 在无 WebGL、等待刷新或旧会话状态时关闭动作，搜索过滤不会缩小取景范围；无效草稿仍可查看最近有效模型，原文定位继续检查完整当前来源。该接口没有 Rust、作者补丁、保存、素材或后端权限。用户边界见[全场景取景](../docs/SCENE3D.md#全场景取景未发布增量)，软件浏览器限制保存在[专题](../docs/test-results/scene3d-scene-framing/results.json)。
+
+<a id="3d-画布选择未发布增量"></a>
+
+### 3D 画布选择（0.1.0）
+
+画布命中属于视图坐标和输入适配，不新增 Rust 作者操作、schema、`engine/index.mjs` 导出或宿主权限。`web/modules/scene3d-picking.js` 的纯 `pickScene3DObject(frame, clientX, clientY)` 消费实际绘图帧 `{ rect, width, height, viewProjection, objects: [{ instanceId, model }] }`；矩阵是实际上传的 Float32 值，返回最近可见方块的 UUID 或 `null`，不修改输入。CSS 客户坐标通过当前画布位置映射；近面／中间深度构造有限射线，再检查真正的方块表面及齐次裁剪，避免极端裁剪比例下 Float32 远点变为无穷。完全同深度时与现有 `LEQUAL` 绘图一致，后声明优先。
+
+`renderer.hitTest(clientX, clientY)` 只读取内部最近成功绘图帧；未绘制、已关闭、上下文丢失或画布尺寸与当前分配不一致时返回 `null`。可选 `onPick(instanceId, { focus })` 只在合格单击／双击后通知独立预览；第二参数是冻结的视图提示，渲染器不直接取得选择控制器、源快照、作者提案、保存或引擎接口。预览核对当前画布／适配器、有效文档和模型 UUID 后更新选择；明确 `focus: true` 时再复用既有 `focusObject`。筛选及来源诊断保持，空白不清选择。
+
+此算法匹配实际绘图矩阵的几何投影，不宣称与抗锯齿边缘、深度缓冲量化或逐像素 ID 缓冲完全一致。手势、取消和真实浏览器范围见[画布选择指南](../docs/SCENE3D.md#画布选择未发布增量)。旧解析、四份作者提案品牌、来源定位宿主、后台工程和运行协议保持原字节。
+
+<a id="3d-选择反馈未发布增量"></a>
+
+### 3D 选择反馈（0.1.0）
+
+渲染器新增可选 `setSelectedObject(instanceId | null) -> boolean`，只持有临时稳定身份。未加载模型、未知身份、非法输入、上下文丢失或释放后返回 `false` 且不改变状态；有效身份或显式 `null` 更新视觉选择，同值调用成功且不重绘。`setModel` 清理旧选择，由独立预览在成功加载后同步；`resetView` 保留选择。`snapshot().selectedInstanceId` 是 UUID 或 `null`，不携带作者范围或写入资格。
+
+边缘提示在原有实体绘制的同一片元着色中完成。单位方块局部坐标和面的固定轴区分真实外边缘与三角对角线，导数近似计算明暗色带；位置、变换、Float32 上传矩阵、深度测试、裁剪和声明顺序保持，没有膨胀方块、额外透视通道或作者材质变更。同深度仍按现有 `LEQUAL` 顺序，后声明实体可以遮挡先声明对象的提示。
+
+选择反馈重绘仅在实际 Float32 相机／对象矩阵、有序 UUID、绘图分配和 CSS 尺寸均相同时保留私有几何帧身份，避免一次单击显示提示后误使原生双击失效。普通重绘及相机／模型／尺寸变化仍遵守原取消规则；位置变化的手势守护保持。列表与画布只向渲染器同步身份，没有新增 Rust 语义、schema、模块、作者补丁、来源宿主或后端协议。用户步骤与限制见[视觉反馈](../docs/SCENE3D.md#选中对象的视觉反馈未发布增量)。
+
+<a id="3d-单对象变换未发布增量"></a>
+
+### 3D 单对象变换（0.1.0）
+
+0.1.0 纳入独立可选 `viento_core_scene3d_patch_version() === 1`。`supportsStudioCoreScene3DPatch()` 同时检查原 `scene3d.parse` 与新补丁探针；缺少补丁探针不影响已支持的只读解析。`dispatchStudioCoreScene3DPatch(request)` 只接受以下五字段请求，`values` 是非空的 `position`／`rotationDegrees`／`size` 子集，每项为沿用作者范围的三个有限数值：
+
+```js
+dispatchStudioCoreScene3DPatch({
+  protocolVersion: 1,
+  operation: 'scene3d.patchObjectTransform',
+  content,
+  instanceId,
+  values: { position: [3, 1.5, -4] },
+});
+```
+
+原生响应的 `scene3dPatch` 与桥接返回值均为精确 `{ instanceId, beforeContent, afterContent, changedPaths }`。Rust 复用现有严格解析、CST 和数值规则，前后各验证完整原文及 128 KiB UTF-8 预算；按稳定实例只替换净变化数字 token。其他原文、未变数字词法、键转义、BOM、CRLF、顺序与稳定身份保持。路径只对应实际改动分量，固定按 `position`、`rotationDegrees`、`size` 再按 XYZ 排序，例如 `/objects/1/size/2`。原生和桥接接受无变化请求，返回原字节与空路径；作者提案层另以 `scene3d_transform_unchanged` 拒绝无净变化审批。
+
+桥接拒绝访问器、隐藏属性、自定义序列化和无效 DTO；成功回执绑定目标、完整输入原文、实际路径、全部非数字原字节及完整 Rust 前后模型，只允许请求目标字段的净数值变化。伪造或超限成功回执使核心不可用；正常来源／数值错误保持核心可用。桥接保持无 DOM、Node 或 YAML/CST 包依赖，数值词法库存仅防御回执，场景准入和修改仍由 Rust 执行。旧解析、模型、计划、2D 创作接口及后端协议保持原契约。
+
+`scene3d-transform.mjs` 的 `createScene3DTransformProposal(source, { instanceId, values })` 使用当前来源快照 `{ sourcePath, token, content, baseSourceRevision, sourceRevision }` 生成深冻结、带模块私有标记的完整提案；复制或序列化提案不转移应用资格。`prepareScene3DTransformApply(source, proposal, { digest })` 在等待摘要前分离来源，核对路径、token、原文与修订并重新生成精确补丁，返回冻结 `{ afterContent, sourcePath, changedPaths }`。它不保存文件或持有 World／引擎／渲染权限；宿主仍须在异步完成后核对当前编辑会话和审批，应用到原文内存，再普通保存。GUI 作者表单与只读预览分别取得自己的接口，步骤见[对象变换指南](../docs/SCENE3D.md#编辑单个对象的变换未发布增量)。
+
+[前轮变换核心记录](../docs/test-results/scene3d-transform-authoring/core-results.json)保留当时 196 项 Rust 测试及该轮验证范围，与 0.0.10 的初步 3D 验证分别保存，不代表已更新安装版、移动设备或额外引擎能力。
+
+<a id="3d-对象结构管理未发布增量"></a>
+
+### 3D 对象结构管理（0.1.0）
+
+0.1.0 纳入独立可选 `viento_core_scene3d_objects_version() === 1`。`supportsStudioCoreScene3DObjectsPatch()` 同时检查原 `scene3d.parse` 与新 objects 探针，`dispatchStudioCoreScene3DObjectsPatch(request)` 只调度 `scene3d.patchObjects`。缺少新探针只关闭对象管理，已有解析和变换接口保持；本域不依赖变换探针。
+
+请求共有精确四字段 `{ protocolVersion: 1, operation: 'scene3d.patchObjects', content, action }`，再按动作提供以下字段；不接受其他或混合动作字段：
+
+| `action` | 额外请求字段 | 修改范围 |
+| --- | --- | --- |
+| `add` | `object`：完整七字段方块声明 | 追加新对象；身份、名称、形状、位置、旋转、尺寸和颜色沿用既有 schema |
+| `copy` | `instanceId`、`newInstanceId`、`name` | 追加所选原声明的 CST 副本，只替换身份和净变化名称值 |
+| `remove` | `instanceId` | 删除所选声明及必要分隔符，保留至少一个对象 |
+
+新增／复制 UUID 由调用者一次提供，必须规范、全新且不与现有对象冲突。复制名称必需显式提供；与原名称语义相同时保留原名称 token，包括转义拼写。复制不添加偏移或修改变换，原数字的指数、负零、键转义、键顺序及项内空白保持。删除按原声明位置执行，未删除对象和场景其余字节保持。
+
+原生响应的 `scene3dObjectsPatch` 与桥接返回值均为精确六字段 `{ action, instanceId, sourceInstanceId, beforeContent, afterContent, changedPaths }`。`instanceId` 表示新增／复制的目标或被删除对象，`sourceInstanceId` 仅复制时为原对象身份，其余动作固定为 `null`。`changedPaths` 恰有一个 `/objects/N`，指追加位置或被删除位置；删除后其他对象的来源范围须重新读取，不能沿用旧原文范围。
+
+Rust 复用严格 `scene3d.parse` 和 CST，完整验证前后原文；两份原文分别限 128 KiB UTF-8，对象保持 1–128 个并沿用已有相机、灯光、名称、向量及身份约束。原文无效、未知或重复字段、身份冲突、最后对象删除、越界或增长超限均原子拒绝。桥接核对精确 DTO、完整前后 Rust 模型和所有未授权字节，拒绝访问器、自定义序列化、错误身份／路径及伪造成功回执；正常领域错误保持核心可用，坏成功回执使其不可用。没有新增 JavaScript 场景规则或 YAML／宿主依赖。
+
+`scene3d-objects.mjs` 提供 `createScene3DObjectsProposal(source, edit)`、`isScene3DObjectsProposal(proposal)` 和 `prepareScene3DObjectsApply(source, proposal, { digest })`。`source` 沿用精确 `{ sourcePath, token, content, baseSourceRevision, sourceRevision }`，`edit` 是 `{ action: 'add', object }`、`{ action: 'copy', instanceId, newInstanceId, name }` 或 `{ action: 'remove', instanceId }`。完整提案深冻结且带模块私有标记；拷贝、序列化或另一作者域的提案不能取得应用资格。
+
+应用准备在等待摘要前复制来源，核对路径、token、完整原文和修订，检查当前摘要并重算完整原生补丁，返回冻结 `{ afterContent, sourcePath, changedPaths }`。`scene3d-authoring.mjs` 只共享来源准入，不共享动作、提案标记或控制器。宿主仍须在等待后核对编辑会话与完整审批，才更新原文内存；普通保存负责磁盘写入、基线和外部冲突。作者层不调用渲染器、World 命令、后端或 Save；GUI 操作见[方块管理指南](../docs/SCENE3D.md#管理方块对象未发布增量)。
+
+`org.viento.scene3d-objects` 只依赖文档模块，贡献 `scene.authoring.objects3d`，由宿主注入本域来源和草稿应用接口。静态能力声明不授予权限，不代表安装包已更新或所有内部功能均已拆分。
+
+[前轮对象管理核心记录](../docs/test-results/scene3d-object-authoring/core-results.json)绑定当时 210 项 Rust 测试（新增 14 项）、18 项新桥接测试、20 请求的实际原生／WASM 一致性，以及含新增项的 219 项共享核心回归。各轮记录保留原时点；回归总数不相加，源码验证不代替安装版或设备验证。
+
+<a id="3d-环境原文编辑未发布增量"></a>
+
+### 3D 环境原文编辑（0.1.0）
+
+0.1.0 纳入独立可选 `viento_core_scene3d_environment_version() === 1`。`supportsStudioCoreScene3DEnvironmentPatch()` 要求原 `scene3d.parse` 与新环境探针均为 1；`dispatchStudioCoreScene3DEnvironmentPatch(request)` 只调度 `scene3d.patchEnvironment`。缺少新探针不会关闭已支持的原解析、对象或变换能力，本域也不依赖后两者的探针。
+
+请求精确为 `{ protocolVersion: 1, operation: 'scene3d.patchEnvironment', content, values }`。`values` 是非空的背景、相机或灯光子集；存在的嵌套子集也须非空，无 `null`、额外字段或原始 JSON 解码后重复键：
+
+| 值 | 允许的字段 |
+| --- | --- |
+| `background` | 六位十六进制颜色字符串 |
+| `camera` | `position`、`target` 三元有限数值；`fovDegrees`、`near`、`far` 有限数值 |
+| `light` | `direction` 三元有限数值；`color` 六位十六进制颜色；`energy` 有限数值 |
+
+```js
+dispatchStudioCoreScene3DEnvironmentPatch({
+  protocolVersion: 1,
+  operation: 'scene3d.patchEnvironment',
+  content,
+  values: { background: '#102030', camera: { near: 2000, far: 4000 } },
+});
+```
+
+原生 `scene3dEnvironmentPatch` 和桥接返回值均精确为 `{ beforeContent, afterContent, changedPaths }`。原文先经完整旧解析器校验，Rust 按 CST 只替换净变化的数字或颜色字符串值 token，合并全部所选项后再完整验证最终场景。近平面与远平面、位置与目标可以原子调整，不校验临时逐字段状态；相机距离／方向／裁剪、灯光方向／强度和其他数值限制沿用原 `scene3d.parse`。前后各限 128 KiB UTF-8，预算增长超限拒绝；无效候选不产生部分结果。
+
+`changedPaths` 固定按 `/background`、`/camera/position/0..2`、`/camera/target/0..2`、`/camera/fovDegrees`、`/camera/near`、`/camera/far`、`/light/direction/0..2`、`/light/color`、`/light/energy` 返回净变化项，与作者键顺序无关。同值数值和解码后同值字符串保留原始词法；所有对象、名称、视口、键转义、未改数值／颜色、BOM、CRLF 和其余原字节保持。合法原生和桥接 no-op 返回原字节及 `[]`，纯提案另以 `scene3d_environment_unchanged` 拒绝无变化审批。
+
+桥接先拒绝访问器、自定义序列化和无效精确 DTO，再用原生完整前后模型与数字／字符串 token 库存核对成功回执。库存固定全部 key token 和结构原字节，只允许 value slot 净变化；完整预期模型绑定请求的环境叶字段，不能靠交换相机键名伪造数值修改。坏成功回执使核心不可用；正常领域错误保持可用。没有引入 JavaScript 数值范围／交叉约束副本、JSON 属性解析器、YAML 或宿主依赖。
+
+`scene3d-environment.mjs` 的 `createScene3DEnvironmentProposal(source, { values })`、`isScene3DEnvironmentProposal(proposal)` 和 `prepareScene3DEnvironmentApply(source, proposal, { digest })` 使用本域私有提案标记，绑定精确来源快照 `{ sourcePath, token, content, baseSourceRevision, sourceRevision }`。提案深冻结并含前后环境和完整原文；复制、序列化或其他作者域的提案不能应用。准备阶段在 await 前复制来源，复查摘要、身份与修订，再重算全部补丁；宿主在等待后还须复查当前会话及审批才更新内存。普通保存继续负责磁盘持久化与冲突。
+
+`org.viento.scene3d-environment` 只依赖文档模块，贡献 `scene.authoring.environment3d`，取得自己的来源读取和草稿应用接口。它不取得预览渲染器、对象／变换控制器、World、后端或 Save 接口；预览临时视角不会转换为作者相机。用户步骤见[作者环境指南](../docs/SCENE3D.md#编辑作者环境未发布增量)。
+
+[前轮环境核心记录](../docs/test-results/scene3d-environment-authoring/core-results.json)绑定当时 222 项 Rust 测试（新增 12 项）、20 项新增桥接测试、20 请求的实际原生／WASM 一致性及含新增项的 239 项共享核心回归；初次新夹具失败与实际字段名交换漏洞、修复和回归日志均保留。此前变换、对象管理和发布证明保持原时点，不代表新安装包或设备验收。
+
+<a id="3d-对象属性原文编辑未发布增量"></a>
+
+### 3D 对象属性原文编辑（0.1.0）
+
+当前工作树另增独立可选 `viento_core_scene3d_properties_version() === 1`。`supportsStudioCoreScene3DPropertiesPatch()` 要求原 `scene3d.parse` 与新 properties 探针均为 1，`dispatchStudioCoreScene3DPropertiesPatch(request)` 只调度 `scene3d.patchProperties`。缺少本域能力仅关闭属性编辑，不关闭已支持的解析、变换、对象结构或环境操作，本域也不依赖它们的编辑探针。
+
+请求精确为 `{ protocolVersion: 1, operation: 'scene3d.patchProperties', content, instanceId, values }`，`instanceId` 指原文已有的稳定对象，`values` 是非空的 `name`／`color` 字符串子集，不接受 `null`、其他字段或原始 JSON 解码后重复键。只提供 SET，不修改身份、几何或结构：
+
+```js
+dispatchStudioCoreScene3DPropertiesPatch({
+  protocolVersion: 1,
+  operation: 'scene3d.patchProperties',
+  content,
+  instanceId,
+  values: { name: 'Tower · 方柱', color: '#87d8b9' },
+});
+```
+
+原生 `scene3dPropertiesPatch` 与桥接返回值均精确为 `{ beforeContent, afterContent, changedPaths }`。Rust 先完整验证原文，再仅替换目标净变化字符串值为规范 JSON 字符串；最终完整解析复用原名称 1–256 Unicode 码点、六位颜色及所有场景规则，没有新增 trim 或名称规范化。原文和结果分别限 128 KiB UTF-8，字符串增长与转义编码计入预算；原文无效、未知身份、非法属性或增长超限原子拒绝。路径固定按 `/objects/N/name`、`/objects/N/color` 返回实际变化，与作者键顺序无关。
+
+同值解码字符串保留原始转义词法。合法 native／bridge no-op 返回完整原字节与 `[]`，作者层以 `scene3d_properties_unchanged` 拒绝空审批。字符串库存固定全部 key token 及所有非字符串间隔，包括数字、顺序、BOM、换行和结构；全场景预期模型进一步绑定所选对象和值，名称／颜色键交换、其他对象变化或同值重新编码均拒绝。成功回执只有授权字符串 value slot 可变化；伪造回执使核心不可用，正常领域错误保留核心可用。桥接无 JavaScript 语义规则副本、属性解析器、DOM、Node、YAML 或文件依赖。
+
+`scene3d-properties.mjs` 提供 `createScene3DPropertiesProposal(source, { instanceId, values })`、`isScene3DPropertiesProposal(proposal)` 和 `prepareScene3DPropertiesApply(source, proposal, { digest })`。精确来源快照仍为 `{ sourcePath, token, content, baseSourceRevision, sourceRevision }`；提案深冻结并带本域私有标记，含选中身份、前后对象、完整原文和变更路径。拷贝、序列化及其他作者域提案不转移应用资格。
+
+准备阶段在 await 前复制来源，复查路径、token、原文、基线和当前摘要，重算全部字符串补丁；宿主在等待后复查当前会话与完整审批才更新原文内存，普通保存继续负责磁盘与冲突。属性模块不取得对象／变换／环境控制器、渲染器、World、后端或 Save 接口。当时工作树固定声明 12 个模块、28 项能力；`org.viento.scene3d-properties` 只依赖文档模块并贡献 `scene.authoring.properties3d`，静态声明不授予保存权限或证明安装包已更新。用户步骤见[名称和颜色指南](../docs/SCENE3D.md#编辑对象名称和颜色未发布增量)。
+
+本轮[对象属性核心验证](../docs/test-results/scene3d-property-authoring/core-results.json)绑定 234 项 Rust 测试（185 单元＋49 集成，新增 12 项）、20 项新增桥接测试、20 请求的实际 native／WASM 一致性，以及包含新增项的 259 项共享核心回归。实测包含原始重复键、Unicode／控制字符名称、同值转义与无变化、UTF-8 增长和收缩、键交换与非授权数值／对象回执、独立探针和旧操作兼容；这些源码证明不代表已更新安装包或设备验收。
+
+<a id="3d-多对象整体移动未发布增量"></a>
+
+### 3D 多对象整体移动（0.1.0）
+
+新可选 `viento_core_scene3d_translation_version() === 1` 由 `supportsStudioCoreScene3DTranslationPatch()` 检查，另要求既有 `scene3d.parse`。`dispatchStudioCoreScene3DTranslationPatch(request)` 只接受以下精确五字段请求；缺新探针只关闭整体移动，原四份作者操作继续独立可用。
+
+```js
+dispatchStudioCoreScene3DTranslationPatch({
+  protocolVersion: 1,
+  operation: 'scene3d.translateObjects',
+  content,
+  instanceIds: [firstId, secondId],
+  offset: [3, 0, 2],
+});
+```
+
+`instanceIds` 为 1–128 个不同且已存在的规范 UUID；`offset` 为三个有限数，各轴 ±200000。Rust 先解析完整原文和 CST，再计算全部目标位置，各轴最终 ±100000；合并净变化位置数字词元后只验证完整最终结果，不调用多次单对象补丁。前后各限 128 KiB UTF-8，任何无效目标、越界或最终预算超限整次拒绝。
+
+原生 `scene3dTranslationPatch` 与桥接返回值精确为 `{ instanceIds, offset, beforeContent, afterContent, changedPaths }`。目标按原声明顺序返回，包括因浮点舍入未净变化的已选对象；路径只列净变化位置分量，按原对象序号和 XYZ 排序。桥接分离输入，核对精确 DTO、完整前后原生模型及数字词元间所有原字节，拒绝伪造回执和未授权数值归一化。原生与桥接接受完全无净变化，返回原字节和空路径；作者提案以 `scene3d_translation_unchanged` 拒绝审批。BOM、CRLF、转义键、未变指数与负零词法保持。
+
+`scene3d-translation.mjs` 提供 `createScene3DTranslationProposal(source, { instanceIds, offset })`、`isScene3DTranslationProposal()`、`prepareScene3DTranslationApply(source, proposal, { digest })`。五字段来源为 `{ sourcePath, token, content, baseSourceRevision, sourceRevision }`；提案深冻结、带私有标记，包含源身份与修订、完整原文、规范目标、偏移、净变路径及完整 `beforeObjects`／`afterObjects`。拷贝、序列化及其他四域提案不能应用。
+
+准备阶段在 await 前复制来源，重查摘要及源身份并重算完整原生补丁。宿主在异步完成后再次检查来源所有者和审批才一次性更新原文内存，普通保存保留磁盘基线与冲突职责。`org.viento.scene3d-translation` 只依赖文档模块，贡献 `scene.authoring.translation3d`；该专题当时共十三模块、29 项声明能力。新域不依赖预览、具体后端、World 或 Save，不变更作者 schema、运行协议或渲染器。步骤见[整体移动指南](../docs/SCENE3D.md#整体移动多个对象未发布增量)，核心证据见[独立记录](../docs/test-results/scene3d-translation-authoring/core-results.json)。
+
+<a id="3d-参照位置对齐未发布增量"></a>
+
+### 3D 参照位置对齐（0.1.0）
+
+`viento_core_scene3d_alignment_version() === 1`、`supportsStudioCoreScene3DAlignmentPatch()`、`dispatchStudioCoreScene3DAlignmentPatch()` 提供独立可选对齐域，仅依赖原 `scene3d.parse`，缺此探针不影响其余五份作者操作。
+
+```js
+dispatchStudioCoreScene3DAlignmentPatch({
+  protocolVersion: 1,
+  operation: 'scene3d.alignObjects',
+  content,
+  instanceIds: [referenceId, otherId],
+  anchorInstanceId: referenceId,
+  axis: 'x',
+});
+```
+
+请求精确六字段；`instanceIds` 为 2–128 个不同且已存在的规范 UUID，`anchorInstanceId` 必须属于所选集合，`axis` 为小写 `x`／`y`／`z`。Rust 从同份完整原模型直接取得参照该轴位置，按原声明顺序设置所选对象，只合并净变化数字词元，再解析完整最终候选。前后各限 128 KiB UTF-8；原文无效、重复／未知身份、未选参照、非法轴或最终增长超限整次拒绝。目标没有通过多次变换或整体移动重建，没有屏幕／GPU 或包围盒计算。
+
+原生 `scene3dAlignmentPatch` 与桥接返回值精确为 `{ instanceIds, anchorInstanceId, axis, beforeContent, afterContent, changedPaths }`。所选对象含参照，按原声明顺序返回；路径只对应净变化的所选轴位置，按原对象序号排列。参照和已对齐对象保留原数字词法，未选轴与所有其他字段及词元间字节保持。桥接分离输入，核对完整前后原生模型、精确参照和轴、规范目标及位置数字范围，拒绝错误参照、额外路径、未授权修改或数值归一化。原生与桥接接受无净变化，返回原文与空路径；提案层以 `scene3d_alignment_unchanged` 拒绝审批。
+
+`scene3d-alignment.mjs` 提供 `createScene3DAlignmentProposal(source, { instanceIds, anchorInstanceId, axis })`、`isScene3DAlignmentProposal()`、`prepareScene3DAlignmentApply(source, proposal, { digest })`。精确五字段来源 `{ sourcePath, token, content, baseSourceRevision, sourceRevision }` 与当前作者域共用准入；私有品牌、动作语义与审批独立。提案包含完整原文、前后所选声明、目标、参照、轴和变更路径，深冻结，复制及其余五域品牌不能转移应用资格。准备在 await 前捕获来源，复查摘要及身份，再重算完整原生补丁；宿主等待后核对当前文档／来源／审批才一次性更新原文内存，普通保存继续负责磁盘基线和外部冲突。
+
+`org.viento.scene3d-alignment` 只依赖文档模块，贡献 `scene.authoring.alignment3d`，通过独立 `scene3dAlignment` 端口装配。该对齐专题当时共十四模块、30 项声明能力；作者 schema、只读渲染、2D、后端工程和运行协议保持。用户步骤见[位置对齐](../docs/SCENE3D.md#对齐多个对象的位置未发布增量)，验证见[独立记录](../docs/test-results/scene3d-alignment-authoring/results.json)。
+
+<a id="3d-单轴等距分布未发布增量"></a>
+
+## 3D 单轴等距分布（0.1.0）
+
+独立可选 `viento_core_scene3d_distribution_version() === 1` 与既有 `scene3d.parse` 共同决定 `supportsStudioCoreScene3DDistributionPatch()`。`dispatchStudioCoreScene3DDistributionPatch(request)` 接受精确五字段请求：
+
+```js
+{
+  protocolVersion: 1,
+  operation: 'scene3d.distributeObjects',
+  content: originalText,
+  instanceIds: [firstUuid, secondUuid, thirdUuid],
+  axis: 'x',
+}
+```
+
+目标为3–128个不同且已存在的稳定UUID。原生从同份完整原文按该轴数值升序排序，相等数值（含正／负零）按声明序，不采用调用者顺序。原排序两端直接保留作者数值和词元；内部点使用 `start + (end - start) * (i / (n - 1))` 的 binary64 运算次序，不采用融合乘加。跨度为0合法返回无净变化；非零跨度若最终序列含两端不能严格递增，整次 `scene3d_distribution_invalid`，没有部分回执或自行修正。其他作者约束及最终128KiB UTF-8预算在完整候选上核对，增长与收缩共同结算。
+
+精确回执 `scene3dDistributionPatch` 为 `{ instanceIds, orderedInstanceIds, axis, beforeContent, afterContent, changedPaths }`：`instanceIds`按原声明序，`orderedInstanceIds`按分布序，路径只列净变化该轴token并按原文对象序。桥接核对两套完整UUID、轴、前后模型及词元之间的全部未授权字节；不允许伪造重排或额外数字修改。未变内部点、两端、其他轴与对象、键拼写、指数／负零、BOM及CRLF保持。原生与桥接接受no-op，作者提案以 `scene3d_distribution_unchanged` 拒绝审批。
+
+`scene3d-distribution.mjs` 提供 `createScene3DDistributionProposal(source, { instanceIds, axis })`、`isScene3DDistributionProposal()` 和 `prepareScene3DDistributionApply(source, proposal, { digest })`。来源精确为 `{ sourcePath, token, content, baseSourceRevision, sourceRevision }`；独立深冻结提案携带原文、前后所选完整对象、两套身份顺序、轴与路径，具有第七私有品牌。序列化、克隆及旧六域提案不授予应用权。准备在await前分离来源，核对身份与摘要并重算完整原生补丁；宿主最后复核当前会话和审批，才一次写入原文内存，普通保存负责持久化和冲突。
+
+`org.viento.scene3d-distribution`仅依赖文档模块，贡献 `scene.authoring.distribution3d`，通过独立 `scene3dDistribution` 端口装配。该分布专题当时15模块、31项声明能力，schema、只读预览、渲染、2D和执行后端保持。缺新探针仅禁用本域；用户步骤见[等距分布](../docs/SCENE3D.md#等距分布多个对象的位置未发布增量)。
+
+<a id="3d-批量复制未发布增量"></a>
+
+## 3D 批量复制（0.1.0）
+
+独立可选 `viento_core_scene3d_copy_version() === 1` 与既有 `scene3d.parse` 共同决定 `supportsStudioCoreScene3DCopyPatch()`。`dispatchStudioCoreScene3DCopyPatch(request)` 只接受精确五字段：
+
+```js
+{
+  protocolVersion: 1,
+  operation: 'scene3d.copyObjects',
+  content: originalText,
+  copies: [
+    { sourceInstanceId: firstUuid, newInstanceId: firstCopyUuid },
+    { sourceInstanceId: secondUuid, newInstanceId: secondCopyUuid },
+  ],
+  offset: [3, 0, 2],
+}
+```
+
+`copies`准入为1–127份精确两字段映射，来源不同且存在，新UUID不同且不与任何原对象冲突。成功复制同时要求`originalCount + copies.length <= 128`，因此实际批次最大64，且不超过当前来源数与剩余名额；不会降低或截断请求。offset是作者世界位置的binary64逐分量加法，各轴±200000，副本最终每轴±100000。原解析错误沿用原域，语义身份／位置无效用`scene3d_copy_invalid`，最终对象／UTF-8预算超限用`scene3d_limit`；请求结构不合法用`studio_core_request_invalid`。零偏移和舍入后未净移动都仍合法结构复制，没有`unchanged`审批分支。
+
+精确原生`scene3dCopyPatch`为`{ copies, offset, beforeContent, afterContent, changedPaths }`。映射按来源在原文中的声明顺序返回、保持源→新UUID对应，副本同序追加；路径仅为顺序新项`/objects/<originalCount>`等。原完整文档在最后原对象末尾只有一处插入，每份为`,`＋原数组首项前空白＋副本完整声明，原前后字节保持。副本从来源CST复制，只修改新UUID值和净变化position数字词元，名称不加后缀；原位置未净变化时词法保持。整个候选一次校验128KiB UTF-8和作者约束，不循环调用旧copy或解析中间态。
+
+桥接使用原生前后sourceLocations、完整model witness和字符串／数字联合词元清单，限定UUID值槽及position数字槽，所有键、其他值、内部空白和原文前后段byte固定；名称恰等于旧UUID、位置与旋转/尺寸同数值时也不能扩大授权。来源UUID词法只在其副本的instanceId值被替换，其他相同字符串保持。
+
+`scene3d-copy.mjs`提供`createScene3DCopyProposal(source, { copies, offset })`、`isScene3DCopyProposal()`与`prepareScene3DCopyApply(source, proposal, { digest })`。五字段来源`{ sourcePath, token, content, baseSourceRevision, sourceRevision }`在await前分离；深冻结第八私有品牌提案包含完整原文、规范映射、共同偏移、新项路径及原selected `beforeObjects`与新clone `afterObjects`，两套诊断同source-order mapping。准备核对源身份／两修订／摘要并重算精确补丁；宿主最后守护才更新源内存，普通保存继续负责持久化与冲突。克隆、序列化及旧七域提案无跨入口权限。
+
+`org.viento.scene3d-copy`仅依赖文档模块，贡献`scene.authoring.copy3d`，通过独立`scene3dCopy`端口装配；该复制专题当时16模块、32项声明能力。作者schema、原七域、只读预览／渲染、2D与执行后端保持。缺新探针只禁用本域。用户步骤见[批量复制](../docs/SCENE3D.md#批量复制对象未发布增量)。
+
+<a id="3d-批量移除未发布增量"></a>
+
+## 3D 批量移除（0.1.0）
+
+新增可选ABI `viento_core_scene3d_removal_version() === 1`、`supportsStudioCoreScene3DRemovalPatch()`与`dispatchStudioCoreScene3DRemovalPatch()`。精确四键请求为`{ protocolVersion: 1, operation: 'scene3d.removeObjects', content, instanceIds }`，数组允许1–128个不同现有小写UUID；必须至少保留一个对象，因此最多成功移除127项。空选择、重复／未知身份或移除全部以`scene3d_removal_invalid`拒绝，原文解析和128KiB预算优先，不能通过删除绕过无效来源。
+
+原生`scene3dRemovalPatch`回执精确四键`{ instanceIds, beforeContent, afterContent, changedPaths }`。身份与路径按原声明顺序规范化，`/objects/i`使用删除前索引。基于原CST复用连续选中项的删除区间，一次合并拼接和最终完整解析；不循环旧单对象接口。幸存对象声明和删除区间之外的字节保留，必要逗号及邻近空白会随被删区间去除。
+
+桥接以原生model及sourceLocations独立重建完整预期切区间，要求afterContent逐字相同，并核对所有幸存对象模型。不接受语义相同的重排、数值改写或布局整理，不引入第二套JS语义解析器。
+
+`scene3d-removal.mjs`提供`createScene3DRemovalProposal(source, { instanceIds })`、`isScene3DRemovalProposal()`及`prepareScene3DRemovalApply(source, proposal, { digest })`。五字段来源在await前分离；第九私有WeakSet品牌和深冻结提案有11键：`kind: 'scene3d-removal'`、`sourcePath`、`sourceToken`、`baseSourceRevision`、`sourceRevision`、`instanceIds`、`beforeContent`、`afterContent`、`changedPaths`、`removedObjects`、`remainingObjects`。前者为源序待删对象，后者为全部源序幸存对象。准备核对摘要／身份／修订并重算完整补丁；宿主等待后复核会话和审批，才更新草稿，普通保存处理磁盘和冲突。旧八域及克隆不授予本域权限，没有无变化审批。
+
+`org.viento.scene3d-removal`仅依赖文档模块，贡献`scene.authoring.removal3d`并装配独立`scene3dRemoval`来源端口。当前17模块、33项声明能力；预览、schema、2D、执行后端及旧八作者域保持，用户步骤见[批量移除](../docs/SCENE3D.md#批量移除对象未发布增量)。

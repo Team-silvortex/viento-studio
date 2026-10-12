@@ -1,0 +1,206 @@
+{
+  "createdAt": "2026-10-12T04:55:08.035345+00:00",
+  "ok": true,
+  "openFindings": [],
+  "status": "implemented-tested-reviewed-applied-and-owned-temporary-files-cleaned",
+  "actualRoot": "/home/chiharukiryu/cdev/viento-studio",
+  "version": "0.0.10",
+  "head": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "actualApplyPerformed": true,
+  "sourceFilesVerified": 747,
+  "applicationPacketFilesVerified": 239,
+  "actualPathProposalProbe": {
+    "ok": true,
+    "phase": "actual-checkout-read-only-path-probe",
+    "actualRoot": "/home/chiharukiryu/cdev/viento-studio",
+    "node": "v24.21.0",
+    "wasmBytes": 543107,
+    "wasmSha256": "84038b6fa464aa86f9edd337b477c03683b60a4b96d1816cf5f5bb16c3f289d1",
+    "moduleCount": 14,
+    "alignmentAvailable": true,
+    "previousFiveDomainsAvailable": true,
+    "privateProposalApplyVerified": true,
+    "authorFileUnchanged": true,
+    "writerRequests": 0,
+    "scope": "Read-only actual-path module/WASM/proposal load after reviewed application; no full-suite rerun or UI/server/install claim."
+  },
+  "independentPostApplyReview": {
+    "report": "post-apply-review.json",
+    "sha256": "4de80e8903fb27dbfb5e7257f2e45963ba1f4b42a1b9f58e8ab5c509c3fc49ba"
+  },
+  "tests": {
+    "fullApplication": {
+      "report": "application-check-confirmed.log",
+      "sha256": "4118d4f9a62577482487e465884261674ae1d98cbab4a8aed0ac92a6b6902e1e",
+      "counts": {
+        "tests": 3593,
+        "pass": 3593,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "durationMs": 311703.633506,
+      "durationScope": "Node reported actual suite duration, not guessed process wall time.",
+      "syntaxFiles": 620,
+      "versionAndApiPreflightPassed": true,
+      "executedManifestSha256": "a0ef1d9e0fde23cb14c23d22d1ca7d753a14dbb7d46d1c81ad8cbd16790f3aae",
+      "finalSourceManifestSha256": "a5e024f9fcb78be02a006abdc8ee919103646e3cf3f1ca5628a3a58356bbf70c",
+      "onlyLaterDelta": [
+        "scripts/tests/scene3d-alignment-smoke.mjs"
+      ],
+      "allProductAndSemanticTestsUnchangedBetweenPhases": true,
+      "finalSmokeSyntaxCheck": {
+        "report": "smoke-syntax-error-layer-final.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "executionScope": "Full execution started on confirmed manifest, before later exact smoke error-family assertion correction. All semantic product/test inputs remain identical; final smoke separately syntax-checked and actual-browser executed. Isolated stage only."
+    },
+    "focused": {
+      "native": {
+        "report": "core-results.json",
+        "sha256": "6e2d664b2c4c02fabec3924eb43d2b4ae3b905441a81758704e36c0480a69538",
+        "passed": 258,
+        "unit": 209,
+        "integration": 49,
+        "newUnits": 12,
+        "fmtClippyPassed": true
+      },
+      "core": {
+        "report": "core-regression.log",
+        "sha256": "b6b70f5887e17a2ef986db14438955d7fc11625c2fc11e3f802b3e2352a533a7",
+        "passed": 349,
+        "includesNew29": true
+      },
+      "newBridgeAndProposal": {
+        "reports": [
+          {
+            "report": "core-bridge-initial.log",
+            "sha256": "22758fe04067588c7209ddfefe1285cf0dae4baf148890e108df45ece21d087f"
+          },
+          {
+            "report": "core-proposal-initial.log",
+            "sha256": "9262cc79b0f919fa3c1c87211339b4f84a3253c3f29c5a2b2694e204f1e2adfd"
+          }
+        ],
+        "passed": 29,
+        "bridge": 17,
+        "proposal": 12,
+        "nativeWasmParityRequests": 22
+      },
+      "uiAndLocales": {
+        "report": "ui-and-i18n-confirmed.log",
+        "sha256": "7aefed7924289baa8e613e5566573884ae22b020d7decf740783d43fbfbe23c4",
+        "counts": {
+          "tests": 76,
+          "pass": 76,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "durationMs": 2001.307832,
+        "durationScope": "Node reported actual suite duration, not guessed process wall time."
+      },
+      "host": {
+        "report": "host-tests-initial.log",
+        "sha256": "c56ab10e736530602365ce5f5154ff8a0e57e9389e93edb77dc21095f916bf6f",
+        "counts": {
+          "tests": 6,
+          "pass": 6,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "durationMs": 187.926707,
+        "durationScope": "Node reported actual suite duration, not guessed process wall time."
+      },
+      "modules": {
+        "report": "module-tests-isolation-diagnostic.log",
+        "sha256": "12e64a4d7d14cb919741af6eb6e1038a360d65052f577f578045cd2293a4e532",
+        "counts": {
+          "tests": 49,
+          "pass": 49,
+          "fail": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "durationMs": 81.133327,
+        "durationScope": "Node reported actual suite duration, not guessed process wall time."
+      },
+      "independentQuality": {
+        "report": "quality-initial.json",
+        "sha256": "63dacf89c9928b6fc58842b3e43c1ecf6e57947954ac30e4f024e70c0e89499d",
+        "passed": 14,
+        "counts": {
+          "canonicalTargets": 130,
+          "nativeParityRequests": 18,
+          "forgedReceipts": 15,
+          "oldOperations": 5,
+          "pairwiseBrandDirections": 10
+        }
+      },
+      "independentUiQuality": {
+        "report": "ui-quality-initial.json",
+        "sha256": "13756bb727f5c21e506f1abdf0e2418ba3413da96450fb9e6302b3fa1478c179",
+        "passed": 7
+      }
+    },
+    "browserFlowTotals": {
+      "new": 8,
+      "legacy": 25,
+      "scope": "Distinct actual reported flow counts; not additive test coverage."
+    },
+    "prepared": {
+      "report": "packaged-resources-browser-final.json",
+      "sha256": "39f93fec6c52e438167333dfb073b7c9c7f2b4461eb7e23cb211db3e6bce1650",
+      "groups": 330,
+      "groupsEach": 165,
+      "oldGroupsPreserved": 314,
+      "inventory": {
+        "desktop/resources": 569,
+        "mobile/dist": 250,
+        "desktop/ui": 11
+      },
+      "modulesEach": {
+        "desktop": 105,
+        "mobile": 105
+      },
+      "confirmation": {
+        "report": "prepared-confirmation-browser-final.json",
+        "sha256": "d4c12a13cf7703a5faaa179d0df7dcbf17729065a63c84a67ac12597f64de357"
+      },
+      "scope": "Standard VM without Node/DOM/fetch/process; explicit JSON/digest ports and copied fakeGL renderer contracts. No hostile-code sandbox or installed device/GPU claim."
+    }
+  },
+  "preserved": {
+    "historicalFiles": 4714,
+    "authorFiles": 41,
+    "externalToolFiles": 4
+  },
+  "atlas": {
+    "sha256": "d9be940a9ad154ad5f77d02287b4fa1ddf45260b83cc25601fb8b76835df4d52",
+    "oldPrefixDeepExact": {
+      "axes.architecture": true,
+      "axes.function": true,
+      "axes.implementation": true,
+      "axes.maturity": true,
+      "bindings": true,
+      "cells": true,
+      "evidence": true,
+      "dependencies": true,
+      "workflows": true,
+      "legacyCoverage": true,
+      "priorities": true
+    },
+    "sourceSnapshotAllActualHashesMatch": true,
+    "sourceSnapshotFiles": 1313
+  },
+  "cleanup": {
+    "report": "cleanup.json",
+    "sha256": "caa2d3b9ed1ce179618da8cb0d546892397968fb9f283783d761392bc2f6cad9"
+  },
+  "scope": "Full and browser tests ran on the isolated source phases documented in unchanged results.json; actual approved product/test bytes match final 747-source freeze, and actual-path WASM/proposal loading plus independent post-apply audit passed. No commit/push/version bump, new installation, Android device or hardware GPU acceptance."
+}

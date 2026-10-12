@@ -1,0 +1,117 @@
+{
+  "format": "viento-scene3d-selection-feedback-renderer-results",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-12T01:41:46.466299+00:00",
+  "ok": true,
+  "scope": "Renderer-owned read-only visual selection over the existing native-admitted box geometry. Shared author parse/edit APIs, schema, picking helper, math, source host and backend unchanged. Actual browser/GPU shader/pixel verification is separately reported by the parent/UI.",
+  "runtime": {
+    "path": "src-tauri/binaries/viento-node-x86_64-unknown-linux-gnu",
+    "version": "v24.20.0",
+    "sha256": "89af8424dd53e560b1933f87ba650d8bf57c83ca5a04600eefb31f416aabbae7",
+    "bytes": 126458664
+  },
+  "sources": {
+    "web/modules/scene3d-renderer.js": {
+      "sha256": "92cf5bc132af3d518c63d7adab57dd320ba66d9c9122b40314124f97c36a496c",
+      "bytes": 16362
+    },
+    "scripts/tests/scene3d-renderer.test.mjs": {
+      "sha256": "95099eb58843d7794c78d00811d19e0bcb2f49bf08174827f9cfd2c3361f9563",
+      "bytes": 37946
+    }
+  },
+  "unchanged": {
+    "web/modules/scene3d-picking.js": {
+      "sha256": "22c77588f14c2eb40fb1d85ccc98ed4079ca3c7a52b2cea426a8983c1372c2e2",
+      "bytes": 4688
+    },
+    "web/modules/scene3d-math.js": {
+      "sha256": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+      "bytes": 4501
+    },
+    "scripts/tests/scene3d-picking.test.mjs": {
+      "sha256": "17c6c79ff4d27165788e81b0d7f0fdae763c11e24606811ccade8d9912f4b3a2",
+      "bytes": 8104
+    },
+    "scripts/tests/scene3d-math-navigation.test.mjs": {
+      "sha256": "8a5d62398098c9d1d3996440f9a4e0403dd335e5c960719eaafbf51bd1083860",
+      "bytes": 5665
+    }
+  },
+  "sharedCorePreserved": {
+    "engine/studio-core.wasm": {
+      "expected": {
+        "sha256": "0e6f4cd70f28d7b00b1c50e3e5f7e52d1b680a55a377eda1a1d160a4e908879a",
+        "bytes": 515406
+      },
+      "actual": {
+        "sha256": "0e6f4cd70f28d7b00b1c50e3e5f7e52d1b680a55a377eda1a1d160a4e908879a",
+        "bytes": 515406
+      },
+      "unchanged": true
+    },
+    "engine/studio-core.build.json": {
+      "expected": {
+        "sha256": "e598b6aeb18467c7cabd95870a07e4f139ccf0f751dd348a2ed59a739e3bca3c",
+        "bytes": 2713
+      },
+      "actual": {
+        "sha256": "e598b6aeb18467c7cabd95870a07e4f139ccf0f751dd348a2ed59a739e3bca3c",
+        "bytes": 2713
+      },
+      "unchanged": true
+    }
+  },
+  "tests": {
+    "passed": 67,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 95.353929,
+    "previousTestsPreserved": 58,
+    "newRendererTests": 9,
+    "files": [
+      {
+        "path": "scripts/tests/scene3d-renderer.test.mjs",
+        "passed": 49,
+        "previousTests": 40,
+        "newTests": 9
+      },
+      {
+        "path": "scripts/tests/scene3d-picking.test.mjs",
+        "passed": 13,
+        "unchanged": true
+      },
+      {
+        "path": "scripts/tests/scene3d-math-navigation.test.mjs",
+        "passed": 5,
+        "unchanged": true
+      }
+    ],
+    "log": "renderer-tests-final.log",
+    "logSha256": "9896dc8dc7832c756970efd43058ce820c1f0ed315766ed6f32160aa93d78ada"
+  },
+  "oldAssertionsProof": {
+    "previousRendererTestSha256": "007901b8ae4ba20357f5ca67c989e967a5a6fa67efbd9de34d3b7ff91d6a7785",
+    "recoveredPreviousBodySha256": "007901b8ae4ba20357f5ca67c989e967a5a6fa67efbd9de34d3b7ff91d6a7785",
+    "identicalAfterRemovingNineNewTestsAndTheAddedUniformSpy": true,
+    "existing40TestBodiesAndAssertionsRemoved": 0,
+    "fixtureOnlyAddition": "uniform1i observer for the new per-object bool shader uniform"
+  },
+  "contract": {
+    "setter": "setSelectedObject(instanceId|null) -> boolean; known loaded stable UUID or null only. Unloaded, unknown, invalid, disposed or context-lost requests are false with prior state unchanged. Same selection returns true without redrawing.",
+    "snapshot": "selectedInstanceId is UUID|null, a read-only view snapshot field.",
+    "lifecycle": "setModel clears selected identity before the UI resynchronizes. resetView preserves it. dispose clears it. Setter never emits picks or changes camera/source model.",
+    "drawing": "One existing TRIANGLES pass per original box, 36 vertices, actual Float32 matrices, original declaration order, depth LEQUAL and no extra geometry or buffers. Object-local flat face axis selects its two varying coordinates, fwidth smooths distance to +/-0.5 boundaries, and a bright outer/dark inner mix distinguishes physical edges from author colors.",
+    "tapFrameException": "Only the private selection redraw may preserve existing frame identity. It requires exact actual Float32 VP/model payloads (including negative zero), stable source-ordered UUIDs, rounded allocation and CSS width/height, and unchanged actual backing width/height before drawing. Public render remains a new frame.",
+    "staleGuard": "Changes to model geometry, UUID order, CSS size or the backing buffer revoke old tap eligibility even if selection redraw restores the old allocation. Position-only scrolling still uses current rect; moving a pending gesture/tap cancels it.",
+    "normalDoubleClick": "Native pointerup-driven capture release followed by the UI selection setter, second tap and double-click retains qualified unchanged-geometry eligibility. Unexpected capture loss and other existing cancellation boundaries continue to revoke it."
+  },
+  "limitations": [
+    "Pixel width is derivative-based and approximate in drawing-buffer pixels; no fixed CSS-pixel outline thickness or cross-device pixel equality is promised.",
+    "No inflated geometry, extra wire/line pass, triangle diagonals, x-ray or synthetic near-plane cap is introduced. Hidden selected surfaces retain original depth occlusion and exact-depth later-declaration order.",
+    "Unit shader checks inspect the uploaded six-face/12-edge geometry and shader/GL call contract; they do not compile or rasterize the shader on real GPU hardware. Real browser pixel evidence is separate."
+  ],
+  "findings": [],
+  "buildScope": "No Rust/WASM/native compilation or whole-application test was run by this owner; pinned Node focused tests only."
+}

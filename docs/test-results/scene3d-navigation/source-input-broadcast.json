@@ -1,0 +1,26 @@
+{
+  "format": "viento-scene3d-navigation-source-input-quality",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-11T15:22:42.983Z",
+  "ok": true,
+  "node": "v24.20.0",
+  "passed": 3,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "actual input broadcasts only after the actual dirty/epoch update and grants no source writer",
+      "ok": true
+    },
+    {
+      "name": "restoring baseline broadcasts clean current owner without saving and inactive input does not broadcast",
+      "ok": true
+    },
+    {
+      "name": "boot without optional composition root still updates dirty state without throwing",
+      "ok": true
+    }
+  ],
+  "sourceSha256": "fb2f0b870079dc26aeca4e6a7ba3517733f3fc5ecdc841dfbb6a5d7cdc5e0b37",
+  "confirmedManifestSha256": "d3d6e12c41a0d48da2f680168799bf399a256bdbc83d7ebcbb45462d42ef2088",
+  "scope": "Actual runtime input handler, dirty/epoch update, readonly snapshot and native-WASM selection host with simulated editor storage and a composition-root observer. Checks notification ordering and normal ownership without source writes, Save, browser, GPU or device claims."
+}

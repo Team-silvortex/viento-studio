@@ -1,0 +1,16 @@
+{"ok":false,"output":"quality-scroll-initial.json","passed":10,"failed":2,"sourceStable":true,"counts":{"triangleReferenceSamples":1144,"float32UploadedSamples":63,"clipSurfaceCases":5,"gestureScenarios":22},"node":"v24.20.0"}
+position-only canvas scrolling remaps current CSS client coordinates without redraw while size changes require a fresh frame
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ null
+- '00000000-0000-4000-8000-000000000001'
+
+    at file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-picking/quality-probe.mjs:187:10
+    at run (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-picking/quality-probe.mjs:18:15)
+    at file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-picking/quality-probe.mjs:183:7
+canvas position changes during a pending tap or before double-click revoke the old gesture owner
+TypeError: Cannot read properties of undefined (reading 'id')
+    at file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-picking/quality-probe.mjs:204:32
+    at run (file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-picking/quality-probe.mjs:18:15)
+    at file:///home/chiharukiryu/cdev/viento-studio/docs/test-results/scene3d-picking/quality-probe.mjs:194:7

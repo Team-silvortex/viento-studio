@@ -1,0 +1,19 @@
+.scene3d-objects-dialog { width: min(980px, calc(100vw - 24px)); max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); box-sizing: border-box; overflow: auto; padding: 20px; border: 1px solid #385568; border-radius: 16px; background: #101d2c; color: #dce8f4; }
+.scene3d-objects-dialog::backdrop { background: #040c18bb; }
+.scene3d-objects-dialog [hidden] { display: none !important; }
+.scene3d-objects-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.scene3d-objects-header h2 { margin-top: 0; }
+.scene3d-objects-dialog h3, .scene3d-objects-dialog h4 { margin-bottom: 8px; }
+.scene3d-objects-note { color: #9cb8cb; font-size: .9rem; line-height: 1.5; overflow-wrap: anywhere; }
+.scene3d-objects-identity { font-family: monospace; overflow-wrap: anywhere; }
+.scene3d-objects-diagnostic { color: #ffd29a; overflow-wrap: anywhere; }
+.scene3d-objects-dialog label { display: grid; gap: 6px; min-width: 0; margin-bottom: 12px; }
+.scene3d-objects-dialog input, .scene3d-objects-dialog select { width: 100%; min-width: 0; box-sizing: border-box; border: 1px solid #385568; border-radius: 6px; padding: 9px; background: #091523; color: inherit; font: inherit; }
+.scene3d-objects-dialog input[readonly] { font-family: monospace; color: #9cb8cb; }
+.scene3d-objects-properties { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+.scene3d-objects-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.scene3d-objects-dialog pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #091523; border-radius: 8px; padding: 12px; font-size: .85rem; }
+.scene3d-objects-dialog details summary { cursor: pointer; margin: 10px 0; }
+.scene3d-objects-dialog ul { padding-left: 22px; overflow-wrap: anywhere; }
+.scene3d-objects-footer { position: sticky; bottom: -20px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; padding: 14px 0 4px; background: #101d2c; border-top: 1px solid #385568; }
+@media (max-width: 700px) { .scene3d-objects-dialog { padding: 14px; } .scene3d-objects-comparison, .scene3d-objects-properties { grid-template-columns: minmax(0, 1fr); } .scene3d-objects-footer { bottom: -14px; } }

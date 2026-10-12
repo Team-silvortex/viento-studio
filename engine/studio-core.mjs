@@ -21,6 +21,15 @@ const COMPOSITION_DEFINITION_RENAME_OPERATIONS = new Set(['sceneComposition.rena
 const COMPOSITION_PLACEMENTS_OPERATIONS = new Set(['sceneComposition.addPlacement', 'sceneComposition.copyPlacement', 'sceneComposition.removePlacement']);
 const COMPOSITION_STRUCTURE_OPERATIONS = new Set(['sceneComposition.addFragmentActor', 'sceneComposition.removeFragmentActor']);
 const SAVE_OPERATIONS = new Set(['read', 'invalidate', 'begin', 'resolve', 'refreshed'].map(name => `layoutSave.${name}`));
+const SCENE3D_PATCH_OPERATIONS = new Set(['scene3d.patchObjectTransform']);
+const SCENE3D_OBJECTS_OPERATIONS = new Set(['scene3d.patchObjects']);
+const SCENE3D_ENVIRONMENT_OPERATIONS = new Set(['scene3d.patchEnvironment']);
+const SCENE3D_PROPERTIES_OPERATIONS = new Set(['scene3d.patchProperties']);
+const SCENE3D_TRANSLATION_OPERATIONS = new Set(['scene3d.translateObjects']);
+const SCENE3D_ALIGNMENT_OPERATIONS = new Set(['scene3d.alignObjects']);
+const SCENE3D_DISTRIBUTION_OPERATIONS = new Set(['scene3d.distributeObjects']);
+const SCENE3D_COPY_OPERATIONS = new Set(['scene3d.copyObjects']);
+const SCENE3D_REMOVAL_OPERATIONS = new Set(['scene3d.removeObjects']);
 
 const fail = (errorCode, message, cause) => Object.assign(new Error(message, cause ? { cause } : undefined), { errorCode });
 const unavailable = () => fail('studio_core_unavailable', 'The Rust scene layout core is unavailable.', loadError);
@@ -1011,4 +1020,833 @@ export function dispatchStudioCoreScene3D(request) {
       end = range.end;
     }
   }).scene3d;
+}
+
+/** Optional numeric-token transforms. Rust still owns source admission and
+ * all scene rules; the bridge verifies the complete receipt and byte scope. */
+export function supportsStudioCoreScene3DPatch() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_patch_version === 'function'
+    && runtime.viento_core_scene3d_patch_version() === 1);
+}
+export function dispatchStudioCoreScene3DPatch(request) {
+  assertJson(request);
+  const fields = [['position', -100000, 100000], ['rotationDegrees', -36000, 36000], ['size', 0.001, 1000]];
+  if (!record(request, ['protocolVersion', 'operation', 'content', 'instanceId', 'values'])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_PATCH_OPERATIONS.has(request.operation)
+    || typeof request.content !== 'string' || typeof request.instanceId !== 'string'
+    || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(request.instanceId)
+    || !request.values || typeof request.values !== 'object' || Array.isArray(request.values)
+    || !Object.keys(request.values).length || Object.keys(request.values).length > fields.length
+    || Object.keys(request.values).some(key => !fields.some(([field]) => field === key))
+    || fields.some(([field, min, max]) => Object.hasOwn(request.values, field)
+      && (!Array.isArray(request.values[field]) || request.values[field].length !== 3
+        || request.values[field].some(value => typeof value !== 'number' || !Number.isFinite(value) || value < min || value > max)))) {
+    throw fail('studio_core_request_invalid', 'Expected one 3D instance and explicit bounded transform triplets.');
+  }
+  if (!supportsStudioCoreScene3DPatch()) throw unavailable();
+  // No caller objects cross calls to the native parser/patcher.
+  const input = JSON.parse(JSON.stringify(request));
+  const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
+  const index = before.model.objects.findIndex(object => object.instanceId === input.instanceId);
+  if (index < 0) throw fail('scene3d_patch_invalid', 'The requested 3D instance does not exist in this source.');
+  const expected = JSON.parse(JSON.stringify(before.model)), paths = [];
+  for (const [field] of fields) {
+    if (!Object.hasOwn(input.values, field)) continue;
+    for (let axis = 0; axis < 3; axis++) {
+      if (expected.objects[index][field][axis] === input.values[field][axis]) continue;
+      expected.objects[index][field][axis] = input.values[field][axis];
+      paths.push(`/objects/${index}/${field}/${axis}`);
+    }
+  }
+  const same = (a, b) => {
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+    const keys = Object.keys(a);
+    return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && same(a[key], b[key]));
+  };
+  const patch = dispatch(input, SCENE3D_PATCH_OPERATIONS, result => {
+    const invalid = () => { throw new Error('Rust core returned an unbound 3D transform patch.'); };
+    const patch = result.scene3dPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dPatch'])
+      || !record(patch, ['instanceId', 'beforeContent', 'afterContent', 'changedPaths'])
+      || patch.instanceId !== input.instanceId || patch.beforeContent !== input.content
+      || typeof patch.afterContent !== 'string' || encoder.encode(patch.afterContent).length > 128 * 1024
+      || !same(paths, patch.changedPaths) || (paths.length === 0) !== (input.content === patch.afterContent)) invalid();
+    // Inventory numeric tokens of JSON that was admitted by Rust. This scan
+    // owns neither syntax nor source paths. Exact nonnumeric gaps include all
+    // string/key spellings, delimiters, BOM and whitespace. Semantic validation
+    // below binds each necessary numeric change to the requested instance.
+    const inventory = content => {
+      const numbers = [], between = []; let last = 0;
+      for (let cursor = 0; cursor < content.length;) {
+        if (content[cursor] === '"') {
+          for (cursor++; cursor < content.length; cursor++) {
+            if (content[cursor] === '\\') { cursor++; continue; }
+            if (content[cursor] === '"') { cursor++; break; }
+          }
+          continue;
+        }
+        if (content[cursor] === '-' || /[0-9]/.test(content[cursor])) {
+          const token = /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/.exec(content.slice(cursor))?.[0];
+          if (!token) invalid();
+          between.push(content.slice(last, cursor)); numbers.push(token);
+          cursor += token.length; last = cursor;
+        } else cursor++;
+      }
+      between.push(content.slice(last)); return { numbers, between };
+    };
+    const original = inventory(input.content), changed = inventory(patch.afterContent);
+    if (!same(original.between, changed.between) || original.numbers.length !== changed.numbers.length) invalid();
+    let count = 0;
+    for (let i = 0; i < original.numbers.length; i++) {
+      if (original.numbers[i] === changed.numbers[i]) continue;
+      // Equal values must retain their original lexemes, including signed zero.
+      if (Number(original.numbers[i]) === Number(changed.numbers[i]) || !Number.isFinite(Number(changed.numbers[i]))) invalid();
+      count++;
+    }
+    if (count !== paths.length) invalid();
+  }).scene3dPatch;
+  try {
+    const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });
+    if (!same(expected, after.model)) throw new Error('Rust core changed unrequested 3D scene values.');
+  } catch (error) { runtime = null; loadError = error; throw unavailable(); }
+  return patch;
+}
+
+/** Independent append/copy/remove inventory authoring. Native CST locations
+ * bind every retained token; no host parser, filesystem or renderer is loaded. */
+export function supportsStudioCoreScene3DObjectsPatch() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_objects_version === 'function'
+    && runtime.viento_core_scene3d_objects_version() === 1);
+}
+export function dispatchStudioCoreScene3DObjectsPatch(request) {
+  assertJson(request);
+  const fields = { add: ['object'], copy: ['instanceId', 'newInstanceId', 'name'], remove: ['instanceId'] };
+  const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+  if (typeof request?.action !== 'string' || !Object.hasOwn(fields, request.action) || !record(request, ['protocolVersion', 'operation', 'content', 'action', ...fields[request.action]])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_OBJECTS_OPERATIONS.has(request.operation)
+    || typeof request.content !== 'string'
+    || (request.action === 'add' ? !record(request.object, ['instanceId', 'name', 'primitive', 'position', 'rotationDegrees', 'size', 'color']) || !uuid(request.object.instanceId)
+      : !uuid(request.instanceId) || request.action === 'copy' && (!uuid(request.newInstanceId) || typeof request.name !== 'string'))) {
+    throw fail('studio_core_request_invalid', 'Expected an exact 3D object add, copy or remove request.');
+  }
+  if (!supportsStudioCoreScene3DObjectsPatch()) throw unavailable();
+  const input = JSON.parse(JSON.stringify(request));
+  const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
+  const expected = JSON.parse(JSON.stringify(before.model)), original = before.model.objects;
+  const sourceIndex = input.action === 'add' ? -1 : original.findIndex(object => object.instanceId === input.instanceId);
+  const id = input.action === 'add' ? input.object.instanceId : input.action === 'copy' ? input.newInstanceId : input.instanceId;
+  if (input.action !== 'add' && sourceIndex < 0 || input.action === 'remove' && original.length <= 1
+    || input.action !== 'remove' && original.some(object => object.instanceId === id)) {
+    throw fail('scene3d_objects_invalid', 'The 3D object identity or removal does not match the source inventory.');
+  }
+  const index = input.action === 'remove' ? sourceIndex : original.length;
+  if (input.action === 'remove') expected.objects.splice(index, 1);
+  else expected.objects.push(input.action === 'add' ? input.object : { ...original[sourceIndex], instanceId: id, name: input.name });
+  const same = (a, b) => {
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+    const keys = Object.keys(a);
+    return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && same(a[key], b[key]));
+  };
+  const patch = dispatch(input, SCENE3D_OBJECTS_OPERATIONS, result => {
+    const patch = result.scene3dObjectsPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dObjectsPatch'])
+      || !record(patch, ['action', 'instanceId', 'sourceInstanceId', 'beforeContent', 'afterContent', 'changedPaths'])
+      || patch.action !== input.action || patch.instanceId !== id || patch.sourceInstanceId !== (input.action === 'copy' ? input.instanceId : null)
+      || patch.beforeContent !== input.content || typeof patch.afterContent !== 'string'
+      || patch.afterContent === input.content || encoder.encode(patch.afterContent).length > 128 * 1024
+      || !same(patch.changedPaths, [`/objects/${index}`])) throw new Error('Rust core returned an unbound 3D object patch.');
+  }).scene3dObjectsPatch;
+  try {
+    const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });
+    if (!same(expected, after.model)) throw new Error('Rust core changed an unrequested 3D declaration.');
+    const locations = before.sourceLocations.objects.map(object => object.sourceRange);
+    if (input.action === 'remove') {
+      const range = locations[index], start = index + 1 < locations.length ? range.start : locations[index - 1].end;
+      const end = index + 1 < locations.length ? locations[index + 1].start : range.end;
+      if (patch.afterContent !== input.content.slice(0, start) + input.content.slice(end)) throw new Error('Rust core rewrote bytes outside the removed object.');
+    } else {
+      const range = after.sourceLocations.objects[index].sourceRange, appended = patch.afterContent.slice(range.start, range.end);
+      // Existing CST ranges provide the array's first item boundary. Walking
+      // only its preceding whitespace recovers append indentation, not syntax.
+      let first = locations[0].start;
+      while (first > 0 && [' ', '\t', '\r', '\n'].includes(input.content[first - 1])) first--;
+      if (input.content[first - 1] !== '[') throw new Error('Rust core returned inconsistent object container locations.');
+      const padding = input.content.slice(first, locations[0].start), end = locations.at(-1).end;
+      if (patch.afterContent !== input.content.slice(0, end) + ',' + padding + appended + input.content.slice(end)) throw new Error('Rust core rewrote bytes outside the appended object.');
+      if (input.action === 'copy') {
+        const sourceRange = locations[sourceIndex], source = input.content.slice(sourceRange.start, sourceRange.end);
+        const inventory = content => {
+          const strings = [], between = []; let last = 0;
+          for (let cursor = 0; cursor < content.length; cursor++) {
+            if (content[cursor] !== '"') continue;
+            const start = cursor; between.push(content.slice(last, start));
+            for (cursor++; cursor < content.length; cursor++) {
+              if (content[cursor] === '\\') { cursor++; continue; }
+              if (content[cursor] === '"') break;
+            }
+            strings.push(content.slice(start, cursor + 1)); last = cursor + 1;
+          }
+          between.push(content.slice(last)); return { strings, between };
+        };
+        const originalTokens = inventory(source), copiedTokens = inventory(appended);
+        if (!same(originalTokens.between, copiedTokens.between) || originalTokens.strings.length !== copiedTokens.strings.length) throw new Error('Rust core normalized copied object tokens.');
+        let changed = 0;
+        for (let i = 0; i < originalTokens.strings.length; i++) {
+          if (originalTokens.strings[i] === copiedTokens.strings[i]) continue;
+          const old = JSON.parse(originalTokens.strings[i]);
+          if (!(old === input.instanceId && copiedTokens.strings[i] === JSON.stringify(id)
+            || original[sourceIndex].name !== input.name && old === original[sourceIndex].name && copiedTokens.strings[i] === JSON.stringify(input.name))) {
+            throw new Error('Rust core changed a copied object string outside identity/name.');
+          }
+          changed++;
+        }
+        if (changed !== 1 + Number(original[sourceIndex].name !== input.name)) throw new Error('Rust core changed a numerically or semantically equal copied token.');
+      }
+    }
+  } catch (error) { runtime = null; loadError = error; throw unavailable(); }
+  return patch;
+}
+
+/** Optional atomic environment edits. DTO and raw token inventory checks bind
+ * a receipt; native whole-scene parsing owns all camera and light constraints. */
+export function supportsStudioCoreScene3DEnvironmentPatch() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_environment_version === 'function'
+    && runtime.viento_core_scene3d_environment_version() === 1);
+}
+export function dispatchStudioCoreScene3DEnvironmentPatch(request) {
+  assertJson(request);
+  const camera = [['position', 'vector'], ['target', 'vector'], ['fovDegrees', 'number'], ['near', 'number'], ['far', 'number']];
+  const light = [['direction', 'vector'], ['color', 'color'], ['energy', 'number']];
+  const scalar = (value, type) => type === 'color' ? typeof value === 'string' && /^#[a-fA-F0-9]{6}$/.test(value)
+    : typeof value === 'number' && Number.isFinite(value);
+  const subset = (value, fields) => Boolean(value && typeof value === 'object' && !Array.isArray(value)
+    && Object.keys(value).length && Object.keys(value).every(key => fields.some(([name]) => name === key))
+    && fields.every(([field, type]) => !Object.hasOwn(value, field) || (type === 'vector'
+      ? Array.isArray(value[field]) && value[field].length === 3 && value[field].every(item => scalar(item, 'number'))
+      : scalar(value[field], type))));
+  if (!record(request, ['protocolVersion', 'operation', 'content', 'values'])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_ENVIRONMENT_OPERATIONS.has(request.operation)
+    || typeof request.content !== 'string' || !request.values || typeof request.values !== 'object' || Array.isArray(request.values)
+    || !Object.keys(request.values).length || Object.keys(request.values).some(key => !['background', 'camera', 'light'].includes(key))
+    || Object.hasOwn(request.values, 'background') && !scalar(request.values.background, 'color')
+    || Object.hasOwn(request.values, 'camera') && !subset(request.values.camera, camera)
+    || Object.hasOwn(request.values, 'light') && !subset(request.values.light, light)) {
+    throw fail('studio_core_request_invalid', 'Expected explicit nonempty 3D background, camera or light values.');
+  }
+  if (!supportsStudioCoreScene3DEnvironmentPatch()) throw unavailable();
+  const input = JSON.parse(JSON.stringify(request));
+  const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
+  const expected = JSON.parse(JSON.stringify(before.model)), paths = [];
+  if (Object.hasOwn(input.values, 'background') && expected.background !== input.values.background) {
+    expected.background = input.values.background; paths.push('/background');
+  }
+  for (const [parent, fields] of [['camera', camera], ['light', light]]) {
+    if (!Object.hasOwn(input.values, parent)) continue;
+    for (const [field, type] of fields) {
+      if (!Object.hasOwn(input.values[parent], field)) continue;
+      if (type === 'vector') {
+        for (let axis = 0; axis < 3; axis++) {
+          if (expected[parent][field][axis] === input.values[parent][field][axis]) continue;
+          expected[parent][field][axis] = input.values[parent][field][axis]; paths.push(`/${parent}/${field}/${axis}`);
+        }
+      } else if (expected[parent][field] !== input.values[parent][field]) {
+        expected[parent][field] = input.values[parent][field]; paths.push(`/${parent}/${field}`);
+      }
+    }
+  }
+  const same = (a, b) => {
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+    const keys = Object.keys(a);
+    return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && same(a[key], b[key]));
+  };
+  const patch = dispatch(input, SCENE3D_ENVIRONMENT_OPERATIONS, result => {
+    const invalid = () => { throw new Error('Rust core returned an unbound 3D environment patch.'); };
+    const patch = result.scene3dEnvironmentPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dEnvironmentPatch'])
+      || !record(patch, ['beforeContent', 'afterContent', 'changedPaths']) || patch.beforeContent !== input.content
+      || typeof patch.afterContent !== 'string' || encoder.encode(patch.afterContent).length > 128 * 1024
+      || !same(patch.changedPaths, paths) || (paths.length === 0) !== (input.content === patch.afterContent)) invalid();
+    // Inventory only valid native-admitted JSON. Exact gaps retain delimiters,
+    // BOM, whitespace and all unchanged string/key/numeric spellings. It has
+    // no property parser or semantic rules; the complete model check follows.
+    const inventory = content => {
+      const tokens = [], between = []; let last = 0;
+      for (let cursor = 0; cursor < content.length;) {
+        const start = cursor;
+        if (content[cursor] === '"') {
+          for (cursor++; cursor < content.length; cursor++) {
+            if (content[cursor] === '\\') { cursor++; continue; }
+            if (content[cursor] === '"') { cursor++; break; }
+          }
+          // Valid native-admitted JSON distinguishes a key by its following
+          // colon. Key spellings are never an environment-editable leaf. This
+          // fixed key/structure inventory binds numeric and color value slots
+          // without implementing a JavaScript JSON property/source parser.
+          let following = cursor;
+          while ([' ', '\t', '\r', '\n'].includes(content[following])) following++;
+          between.push(content.slice(last, start)); tokens.push({ type: content[following] === ':' ? 'key' : 'string', text: content.slice(start, cursor) }); last = cursor;
+        } else if (content[cursor] === '-' || /[0-9]/.test(content[cursor])) {
+          const token = /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/.exec(content.slice(cursor))?.[0];
+          if (!token) invalid();
+          cursor += token.length; between.push(content.slice(last, start)); tokens.push({ type: 'number', text: token }); last = cursor;
+        } else cursor++;
+      }
+      between.push(content.slice(last)); return { tokens, between };
+    };
+    const original = inventory(input.content), changed = inventory(patch.afterContent);
+    if (!same(original.between, changed.between) || original.tokens.length !== changed.tokens.length) invalid();
+    let count = 0;
+    for (let i = 0; i < original.tokens.length; i++) {
+      const old = original.tokens[i], next = changed.tokens[i];
+      if (old.type !== next.type) invalid();
+      if (old.text === next.text) continue;
+      if (old.type === 'key') invalid();
+      if (old.type === 'number') {
+        if (Number(old.text) === Number(next.text) || !Number.isFinite(Number(next.text))) invalid();
+      } else if (JSON.parse(old.text) === JSON.parse(next.text) || next.text !== JSON.stringify(JSON.parse(next.text))) invalid();
+      count++;
+    }
+    if (count !== paths.length) invalid();
+  }).scene3dEnvironmentPatch;
+  try {
+    const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });
+    if (!same(expected, after.model)) throw new Error('Rust core changed unrequested 3D environment values.');
+  } catch (error) { runtime = null; loadError = error; throw unavailable(); }
+  return patch;
+}
+
+/** Optional string-only name/color edits for one stable 3D object. Native
+ * parsing owns author constraints; immutable keys/nonstring bytes bind slots. */
+export function supportsStudioCoreScene3DPropertiesPatch() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_properties_version === 'function'
+    && runtime.viento_core_scene3d_properties_version() === 1);
+}
+export function dispatchStudioCoreScene3DPropertiesPatch(request) {
+  assertJson(request);
+  if (!record(request, ['protocolVersion', 'operation', 'content', 'instanceId', 'values'])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_PROPERTIES_OPERATIONS.has(request.operation)
+    || typeof request.content !== 'string' || typeof request.instanceId !== 'string'
+    || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(request.instanceId)
+    || !request.values || typeof request.values !== 'object' || Array.isArray(request.values)
+    || !Object.keys(request.values).length || Object.keys(request.values).some(key => !['name', 'color'].includes(key))
+    || Object.values(request.values).some(value => typeof value !== 'string')) {
+    throw fail('studio_core_request_invalid', 'Expected one stable 3D instance and nonempty explicit name/color strings.');
+  }
+  if (!supportsStudioCoreScene3DPropertiesPatch()) throw unavailable();
+  const input = JSON.parse(JSON.stringify(request));
+  const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
+  const index = before.model.objects.findIndex(object => object.instanceId === input.instanceId);
+  if (index < 0) throw fail('scene3d_properties_invalid', 'The requested 3D instance does not exist in this source.');
+  const expected = JSON.parse(JSON.stringify(before.model)), paths = [];
+  for (const field of ['name', 'color']) {
+    if (!Object.hasOwn(input.values, field) || expected.objects[index][field] === input.values[field]) continue;
+    expected.objects[index][field] = input.values[field]; paths.push(`/objects/${index}/${field}`);
+  }
+  const same = (a, b) => {
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+    const keys = Object.keys(a);
+    return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && same(a[key], b[key]));
+  };
+  const patch = dispatch(input, SCENE3D_PROPERTIES_OPERATIONS, result => {
+    const invalid = () => { throw new Error('Rust core returned an unbound 3D property patch.'); };
+    const patch = result.scene3dPropertiesPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dPropertiesPatch'])
+      || !record(patch, ['beforeContent', 'afterContent', 'changedPaths']) || patch.beforeContent !== input.content
+      || typeof patch.afterContent !== 'string' || encoder.encode(patch.afterContent).length > 128 * 1024
+      || !same(patch.changedPaths, paths) || (paths.length === 0) !== (input.content === patch.afterContent)) invalid();
+    // String inventory only: nonstring gaps retain every number, delimiter,
+    // BOM and whitespace byte. Valid native-admitted JSON's colon distinguishes
+    // immutable key tokens from value slots, without a JS property parser.
+    const inventory = content => {
+      const tokens = [], between = []; let last = 0;
+      for (let cursor = 0; cursor < content.length; cursor++) {
+        if (content[cursor] !== '"') continue;
+        const start = cursor;
+        for (cursor++; cursor < content.length; cursor++) {
+          if (content[cursor] === '\\') { cursor++; continue; }
+          if (content[cursor] === '"') break;
+        }
+        let following = cursor + 1;
+        while ([' ', '\t', '\r', '\n'].includes(content[following])) following++;
+        between.push(content.slice(last, start));
+        tokens.push({ key: content[following] === ':', text: content.slice(start, cursor + 1) }); last = cursor + 1;
+      }
+      between.push(content.slice(last)); return { tokens, between };
+    };
+    const original = inventory(input.content), changed = inventory(patch.afterContent);
+    if (!same(original.between, changed.between) || original.tokens.length !== changed.tokens.length) invalid();
+    let count = 0;
+    for (let i = 0; i < original.tokens.length; i++) {
+      const old = original.tokens[i], next = changed.tokens[i];
+      if (old.key !== next.key) invalid();
+      if (old.text === next.text) continue;
+      if (old.key || JSON.parse(old.text) === JSON.parse(next.text) || next.text !== JSON.stringify(JSON.parse(next.text))) invalid();
+      count++;
+    }
+    if (count !== paths.length) invalid();
+  }).scene3dPropertiesPatch;
+  try {
+    const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });
+    if (!same(expected, after.model)) throw new Error('Rust core changed unrequested 3D property values.');
+  } catch (error) { runtime = null; loadError = error; throw unavailable(); }
+  return patch;
+}
+
+/** Independent atomic relative translation. Rust owns source rules and the
+ * batch computation; this bridge binds the whole receipt and numeric scope. */
+export function supportsStudioCoreScene3DTranslationPatch() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_translation_version === 'function'
+    && runtime.viento_core_scene3d_translation_version() === 1);
+}
+export function dispatchStudioCoreScene3DTranslationPatch(request) {
+  assertJson(request);
+  const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+  if (!record(request, ['protocolVersion', 'operation', 'content', 'instanceIds', 'offset'])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_TRANSLATION_OPERATIONS.has(request.operation)
+    || typeof request.content !== 'string' || !Array.isArray(request.instanceIds) || request.instanceIds.length < 1 || request.instanceIds.length > 128
+    || !request.instanceIds.every(uuid) || new Set(request.instanceIds).size !== request.instanceIds.length
+    || !Array.isArray(request.offset) || request.offset.length !== 3
+    || !request.offset.every(value => typeof value === 'number' && Number.isFinite(value) && value >= -200000 && value <= 200000)) {
+    throw fail('studio_core_request_invalid', 'Expected unique stable 3D instances and one explicit bounded translation triplet.');
+  }
+  if (!supportsStudioCoreScene3DTranslationPatch()) throw unavailable();
+  const input = JSON.parse(JSON.stringify(request));
+  const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
+  const selected = new Set(input.instanceIds), expected = JSON.parse(JSON.stringify(before.model)), instanceIds = [], paths = [];
+  for (const [index, object] of expected.objects.entries()) {
+    if (!selected.has(object.instanceId)) continue;
+    instanceIds.push(object.instanceId);
+    for (let axis = 0; axis < 3; axis++) {
+      const next = object.position[axis] + input.offset[axis];
+      if (next === object.position[axis]) continue;
+      object.position[axis] = next; paths.push(`/objects/${index}/position/${axis}`);
+    }
+  }
+  if (instanceIds.length !== selected.size) throw fail('scene3d_translation_invalid', 'The requested 3D instances do not all exist in this source.');
+  const same = (a, b) => {
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+    const keys = Object.keys(a);
+    return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && same(a[key], b[key]));
+  };
+  const patch = dispatch(input, SCENE3D_TRANSLATION_OPERATIONS, result => {
+    const invalid = () => { throw new Error('Rust core returned an unbound atomic 3D translation patch.'); };
+    const patch = result.scene3dTranslationPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dTranslationPatch'])
+      || !record(patch, ['instanceIds', 'offset', 'beforeContent', 'afterContent', 'changedPaths'])
+      || !same(patch.instanceIds, instanceIds) || !same(patch.offset, input.offset) || patch.beforeContent !== input.content
+      || typeof patch.afterContent !== 'string' || encoder.encode(patch.afterContent).length > 128 * 1024
+      || !same(patch.changedPaths, paths) || (paths.length === 0) !== (input.content === patch.afterContent)) invalid();
+    // Scan only numbers outside strings in native-admitted JSON. Immutable gaps
+    // bind every key/string/delimiter/whitespace byte; native parsing below binds
+    // each value slot and the complete scene, without a second source parser.
+    const inventory = content => {
+      const numbers = [], between = []; let last = 0;
+      for (let cursor = 0; cursor < content.length;) {
+        if (content[cursor] === '"') {
+          for (cursor++; cursor < content.length; cursor++) {
+            if (content[cursor] === '\\') { cursor++; continue; }
+            if (content[cursor] === '"') { cursor++; break; }
+          }
+          continue;
+        }
+        if (content[cursor] === '-' || /[0-9]/.test(content[cursor])) {
+          const token = /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/.exec(content.slice(cursor))?.[0];
+          if (!token) invalid();
+          between.push(content.slice(last, cursor)); numbers.push(token); cursor += token.length; last = cursor;
+        } else cursor++;
+      }
+      between.push(content.slice(last)); return { numbers, between };
+    };
+    const original = inventory(input.content), changed = inventory(patch.afterContent);
+    if (!same(original.between, changed.between) || original.numbers.length !== changed.numbers.length) invalid();
+    let count = 0;
+    for (let index = 0; index < original.numbers.length; index++) {
+      if (original.numbers[index] === changed.numbers[index]) continue;
+      const value = Number(changed.numbers[index]);
+      if (!Number.isFinite(value) || Number(original.numbers[index]) === value || JSON.stringify(value) !== changed.numbers[index]) invalid();
+      count++;
+    }
+    if (count !== paths.length) invalid();
+  }).scene3dTranslationPatch;
+  try {
+    const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });
+    if (!same(expected, after.model)) throw new Error('Rust core changed unrequested 3D scene values.');
+  } catch (error) { runtime = null; loadError = error; throw unavailable(); }
+  return patch;
+}
+
+/** Independent atomic world-axis alignment. Rust owns source rules and the
+ * batch computation; this bridge binds the whole receipt and numeric scope. */
+export function supportsStudioCoreScene3DAlignmentPatch() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_alignment_version === 'function'
+    && runtime.viento_core_scene3d_alignment_version() === 1);
+}
+export function dispatchStudioCoreScene3DAlignmentPatch(request) {
+  assertJson(request);
+  const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+  if (!record(request, ['protocolVersion', 'operation', 'content', 'instanceIds', 'anchorInstanceId', 'axis'])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_ALIGNMENT_OPERATIONS.has(request.operation)
+    || typeof request.content !== 'string' || !Array.isArray(request.instanceIds) || request.instanceIds.length < 2 || request.instanceIds.length > 128
+    || !request.instanceIds.every(uuid) || new Set(request.instanceIds).size !== request.instanceIds.length
+    || !uuid(request.anchorInstanceId) || !request.instanceIds.includes(request.anchorInstanceId)
+    || !['x', 'y', 'z'].includes(request.axis)) {
+    throw fail('studio_core_request_invalid', 'Expected at least two stable 3D instances, one selected reference, and one world axis.');
+  }
+  if (!supportsStudioCoreScene3DAlignmentPatch()) throw unavailable();
+  const input = JSON.parse(JSON.stringify(request));
+  const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
+  const selected = new Set(input.instanceIds), expected = JSON.parse(JSON.stringify(before.model)), instanceIds = [], paths = [];
+  const axis = ['x', 'y', 'z'].indexOf(input.axis);
+  const anchor = expected.objects.find(object => object.instanceId === input.anchorInstanceId);
+  if (!anchor) throw fail('scene3d_alignment_invalid', 'The selected 3D reference does not exist in this source.');
+  const reference = anchor.position[axis];
+  for (const [index, object] of expected.objects.entries()) {
+    if (!selected.has(object.instanceId)) continue;
+    instanceIds.push(object.instanceId);
+    if (reference === object.position[axis]) continue;
+    object.position[axis] = reference; paths.push(`/objects/${index}/position/${axis}`);
+  }
+  if (instanceIds.length !== selected.size) throw fail('scene3d_alignment_invalid', 'The requested 3D instances do not all exist in this source.');
+  const same = (a, b) => {
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+    const keys = Object.keys(a);
+    return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && same(a[key], b[key]));
+  };
+  const patch = dispatch(input, SCENE3D_ALIGNMENT_OPERATIONS, result => {
+    const invalid = () => { throw new Error('Rust core returned an unbound atomic 3D alignment patch.'); };
+    const patch = result.scene3dAlignmentPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dAlignmentPatch'])
+      || !record(patch, ['instanceIds', 'anchorInstanceId', 'axis', 'beforeContent', 'afterContent', 'changedPaths'])
+      || !same(patch.instanceIds, instanceIds) || patch.anchorInstanceId !== input.anchorInstanceId || patch.axis !== input.axis || patch.beforeContent !== input.content
+      || typeof patch.afterContent !== 'string' || encoder.encode(patch.afterContent).length > 128 * 1024
+      || !same(patch.changedPaths, paths) || (paths.length === 0) !== (input.content === patch.afterContent)) invalid();
+    // Scan only numbers outside strings in native-admitted JSON. Immutable gaps
+    // bind every key/string/delimiter/whitespace byte; native parsing below binds
+    // each value slot and the complete scene, without a second source parser.
+    const inventory = content => {
+      const numbers = [], between = []; let last = 0;
+      for (let cursor = 0; cursor < content.length;) {
+        if (content[cursor] === '"') {
+          for (cursor++; cursor < content.length; cursor++) {
+            if (content[cursor] === '\\') { cursor++; continue; }
+            if (content[cursor] === '"') { cursor++; break; }
+          }
+          continue;
+        }
+        if (content[cursor] === '-' || /[0-9]/.test(content[cursor])) {
+          const token = /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/.exec(content.slice(cursor))?.[0];
+          if (!token) invalid();
+          between.push(content.slice(last, cursor)); numbers.push(token); cursor += token.length; last = cursor;
+        } else cursor++;
+      }
+      between.push(content.slice(last)); return { numbers, between };
+    };
+    const original = inventory(input.content), changed = inventory(patch.afterContent);
+    if (!same(original.between, changed.between) || original.numbers.length !== changed.numbers.length) invalid();
+    let count = 0;
+    for (let index = 0; index < original.numbers.length; index++) {
+      if (original.numbers[index] === changed.numbers[index]) continue;
+      const value = Number(changed.numbers[index]);
+      if (!Number.isFinite(value) || Number(original.numbers[index]) === value || JSON.stringify(value) !== changed.numbers[index]) invalid();
+      count++;
+    }
+    if (count !== paths.length) invalid();
+  }).scene3dAlignmentPatch;
+  try {
+    const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });
+    if (!same(expected, after.model)) throw new Error('Rust core changed unrequested 3D scene values.');
+  } catch (error) { runtime = null; loadError = error; throw unavailable(); }
+  return patch;
+}
+
+/** Independent atomic world-axis distribution. Rust owns source rules and the
+ * batch computation; this bridge binds the whole receipt and numeric scope. */
+export function supportsStudioCoreScene3DDistributionPatch() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_distribution_version === 'function'
+    && runtime.viento_core_scene3d_distribution_version() === 1);
+}
+export function dispatchStudioCoreScene3DDistributionPatch(request) {
+  assertJson(request);
+  const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+  if (!record(request, ['protocolVersion', 'operation', 'content', 'instanceIds', 'axis'])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_DISTRIBUTION_OPERATIONS.has(request.operation)
+    || typeof request.content !== 'string' || !Array.isArray(request.instanceIds) || request.instanceIds.length < 3 || request.instanceIds.length > 128
+    || !request.instanceIds.every(uuid) || new Set(request.instanceIds).size !== request.instanceIds.length
+    || !['x', 'y', 'z'].includes(request.axis)) {
+    throw fail('studio_core_request_invalid', 'Expected at least three stable 3D instances and one world axis.');
+  }
+  if (!supportsStudioCoreScene3DDistributionPatch()) throw unavailable();
+  const input = JSON.parse(JSON.stringify(request));
+  const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
+  const selected = new Set(input.instanceIds), expected = JSON.parse(JSON.stringify(before.model)), instanceIds = [], paths = [];
+  const axis = ['x', 'y', 'z'].indexOf(input.axis);
+  const targets = expected.objects.map((object, index) => ({ object, index, coordinate: object.position[axis] })).filter(({ object }) => selected.has(object.instanceId));
+  if (targets.length !== selected.size) throw fail('scene3d_distribution_invalid', 'The requested 3D instances do not all exist in this source.');
+  const ordered = [...targets].sort((a, b) => a.coordinate === b.coordinate ? a.index - b.index : a.coordinate < b.coordinate ? -1 : 1);
+  const orderedInstanceIds = ordered.map(({ object }) => object.instanceId), start = ordered[0].coordinate, end = ordered.at(-1).coordinate, span = end - start;
+  let previous, representable = true;
+  for (const [rank, target] of ordered.entries()) {
+    const next = span === 0 || rank === 0 || rank === ordered.length - 1 ? target.coordinate : start + span * (rank / (ordered.length - 1));
+    if (!Number.isFinite(next) || next < -100000 || next > 100000 || span > 0 && previous !== undefined && next <= previous) representable = false;
+    target.next = next; previous = next;
+  }
+  for (const target of targets) {
+    instanceIds.push(target.object.instanceId);
+    if (target.next === target.coordinate) continue;
+    target.object.position[axis] = target.next; paths.push(`/objects/${target.index}/position/${axis}`);
+  }
+  const same = (a, b) => {
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+    const keys = Object.keys(a);
+    return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && same(a[key], b[key]));
+  };
+  const patch = dispatch(input, SCENE3D_DISTRIBUTION_OPERATIONS, result => {
+    const invalid = () => { throw new Error('Rust core returned an unbound atomic 3D distribution patch.'); };
+    const patch = result.scene3dDistributionPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dDistributionPatch'])
+      || !record(patch, ['instanceIds', 'orderedInstanceIds', 'axis', 'beforeContent', 'afterContent', 'changedPaths'])
+      || !same(patch.instanceIds, instanceIds) || !same(patch.orderedInstanceIds, orderedInstanceIds) || !representable || patch.axis !== input.axis || patch.beforeContent !== input.content
+      || typeof patch.afterContent !== 'string' || encoder.encode(patch.afterContent).length > 128 * 1024
+      || !same(patch.changedPaths, paths) || (paths.length === 0) !== (input.content === patch.afterContent)) invalid();
+    // Scan only numbers outside strings in native-admitted JSON. Immutable gaps
+    // bind every key/string/delimiter/whitespace byte; native parsing below binds
+    // each value slot and the complete scene, without a second source parser.
+    const inventory = content => {
+      const numbers = [], between = []; let last = 0;
+      for (let cursor = 0; cursor < content.length;) {
+        if (content[cursor] === '"') {
+          for (cursor++; cursor < content.length; cursor++) {
+            if (content[cursor] === '\\') { cursor++; continue; }
+            if (content[cursor] === '"') { cursor++; break; }
+          }
+          continue;
+        }
+        if (content[cursor] === '-' || /[0-9]/.test(content[cursor])) {
+          const token = /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/.exec(content.slice(cursor))?.[0];
+          if (!token) invalid();
+          between.push(content.slice(last, cursor)); numbers.push(token); cursor += token.length; last = cursor;
+        } else cursor++;
+      }
+      between.push(content.slice(last)); return { numbers, between };
+    };
+    const original = inventory(input.content), changed = inventory(patch.afterContent);
+    if (!same(original.between, changed.between) || original.numbers.length !== changed.numbers.length) invalid();
+    let count = 0;
+    for (let index = 0; index < original.numbers.length; index++) {
+      if (original.numbers[index] === changed.numbers[index]) continue;
+      const value = Number(changed.numbers[index]);
+      if (!Number.isFinite(value) || Number(original.numbers[index]) === value || JSON.stringify(value) !== changed.numbers[index]) invalid();
+      count++;
+    }
+    if (count !== paths.length) invalid();
+  }).scene3dDistributionPatch;
+  try {
+    const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });
+    if (!same(expected, after.model)) throw new Error('Rust core changed unrequested 3D scene values.');
+  } catch (error) { runtime = null; loadError = error; throw unavailable(); }
+  return patch;
+}
+
+/** Atomic raw primitive copies. Only the native model and CST locations confer
+ * value slots; the joint inventory is a receipt witness, never an author parser. */
+export function supportsStudioCoreScene3DCopyPatch() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_copy_version === 'function'
+    && runtime.viento_core_scene3d_copy_version() === 1);
+}
+export function dispatchStudioCoreScene3DCopyPatch(request) {
+  assertJson(request);
+  if (!record(request, ['protocolVersion', 'operation', 'content', 'copies', 'offset'])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_COPY_OPERATIONS.has(request.operation)
+    || typeof request.content !== 'string' || !Array.isArray(request.copies)
+    || !request.copies.every(pair => record(pair, ['sourceInstanceId', 'newInstanceId']))) {
+    throw fail('studio_core_request_invalid', 'Expected an exact atomic 3D copy mapping and shared offset.');
+  }
+  if (!supportsStudioCoreScene3DCopyPatch()) throw unavailable();
+  const input = JSON.parse(JSON.stringify(request));
+  const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
+  const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+  if (!input.copies.length || input.copies.length > 127
+    || !Array.isArray(input.offset) || input.offset.length !== 3 || input.offset.some(value => typeof value !== 'number' || !Number.isFinite(value) || Math.abs(value) > 200000)
+    || input.copies.some(pair => !uuid(pair.sourceInstanceId) || !uuid(pair.newInstanceId))) {
+    throw fail('scene3d_copy_invalid', 'Expected distinct 3D sources, fresh UUIDs and a bounded finite shared offset.');
+  }
+  const original = before.model.objects, bySource = new Map(input.copies.map(pair => [pair.sourceInstanceId, pair])), existing = new Set(original.map(object => object.instanceId));
+  if (bySource.size !== input.copies.length || new Set(input.copies.map(pair => pair.newInstanceId)).size !== input.copies.length
+    || input.copies.some(pair => !existing.has(pair.sourceInstanceId) || existing.has(pair.newInstanceId))) {
+    throw fail('scene3d_copy_invalid', 'The copy mapping does not match distinct source and fresh instance identities.');
+  }
+  const expected = JSON.parse(JSON.stringify(before.model)), copies = [], paths = [], targets = [];
+  let validFinal = original.length + input.copies.length <= 128;
+  for (let index = 0; index < original.length; index++) {
+    const object = original[index], pair = bySource.get(object.instanceId); if (!pair) continue;
+    const copied = JSON.parse(JSON.stringify(object)); copied.instanceId = pair.newInstanceId;
+    for (let axis = 0; axis < 3; axis++) {
+      const next = object.position[axis] + input.offset[axis];
+      if (!Number.isFinite(next) || Math.abs(next) > 100000) validFinal = false;
+      copied.position[axis] = next;
+    }
+    copies.push(pair); targets.push({ index, object, copied }); paths.push(`/objects/${expected.objects.length}`); expected.objects.push(copied);
+  }
+  const same = (a, b) => {
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+    const keys = Object.keys(a);
+    return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && same(a[key], b[key]));
+  };
+  const patch = dispatch(input, SCENE3D_COPY_OPERATIONS, result => {
+    const patch = result.scene3dCopyPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dCopyPatch'])
+      || !record(patch, ['copies', 'offset', 'beforeContent', 'afterContent', 'changedPaths'])
+      || !validFinal || !same(patch.copies, copies) || !same(patch.offset, input.offset)
+      || patch.beforeContent !== input.content || typeof patch.afterContent !== 'string'
+      || patch.afterContent === input.content || encoder.encode(patch.afterContent).length > 128 * 1024
+      || !same(patch.changedPaths, paths)) throw new Error('Rust core returned an unbound atomic 3D copy receipt.');
+  }).scene3dCopyPatch;
+  try {
+    const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });
+    if (!same(expected, after.model)) throw new Error('Rust core changed an unauthorized copied or original 3D value.');
+    const originalLocations = before.sourceLocations.objects.map(object => object.sourceRange), afterLocations = after.sourceLocations.objects;
+    let first = originalLocations[0].start;
+    while (first > 0 && [' ', '\t', '\r', '\n'].includes(input.content[first - 1])) first--;
+    if (input.content[first - 1] !== '[') throw new Error('Rust core returned inconsistent copy container locations.');
+    const padding = input.content.slice(first, originalLocations[0].start), end = originalLocations.at(-1).end;
+    const rawCopies = targets.map((_, rank) => {
+      const range = afterLocations[original.length + rank].sourceRange;
+      return patch.afterContent.slice(range.start, range.end);
+    });
+    if (patch.afterContent !== input.content.slice(0, end) + rawCopies.map(raw => ',' + padding + raw).join('') + input.content.slice(end)) {
+      throw new Error('Rust core changed source bytes outside its one atomic copy insertion.');
+    }
+    const inventory = content => {
+      const tokens = [], gaps = []; let last = 0;
+      for (let cursor = 0; cursor < content.length;) {
+        const start = cursor; let kind, text;
+        if (content[cursor] === '"') {
+          kind = 'string'; cursor++;
+          for (; cursor < content.length; cursor++) {
+            if (content[cursor] === '\\') { cursor++; continue; }
+            if (content[cursor] === '"') { cursor++; break; }
+          }
+          text = content.slice(start, cursor);
+        } else if (content[cursor] === '-' || /[0-9]/.test(content[cursor])) {
+          kind = 'number'; text = /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/.exec(content.slice(cursor))?.[0];
+          if (!text) throw new Error('Rust copy has an invalid numeric token.'); cursor += text.length;
+        } else { cursor++; continue; }
+        gaps.push(content.slice(last, start)); tokens.push({ kind, text }); last = cursor;
+      }
+      gaps.push(content.slice(last)); return { tokens, gaps };
+    };
+    for (const [rank, target] of targets.entries()) {
+      const range = originalLocations[target.index], raw = input.content.slice(range.start, range.end);
+      const originalTokens = inventory(raw), clonedTokens = inventory(rawCopies[rank]);
+      if (!same(originalTokens.gaps, clonedTokens.gaps) || originalTokens.tokens.length !== clonedTokens.tokens.length) throw new Error('Rust core normalized copied declaration punctuation or whitespace.');
+      // Native admitted flat primitive declarations. Key->value gaps identify
+      // the unique identity string and three position numeric slots without
+      // allowing an equal name/value or geometry token to borrow authority.
+      const authorized = new Map(); let identities = 0, positions = 0;
+      for (let index = 0; index < originalTokens.tokens.length; index++) {
+        const token = originalTokens.tokens[index]; if (token.kind !== 'string') continue;
+        const key = JSON.parse(token.text), gap = originalTokens.gaps[index + 1];
+        if (key === 'instanceId' && /^\s*:\s*$/.test(gap)) {
+          if (originalTokens.tokens[index + 1]?.kind !== 'string' || JSON.parse(originalTokens.tokens[index + 1].text) !== target.object.instanceId) throw new Error('Rust copy identity slot is inconsistent.');
+          authorized.set(index + 1, JSON.stringify(target.copied.instanceId)); identities++;
+        }
+        if (key === 'position' && /^\s*:\s*\[\s*$/.test(gap)) {
+          for (let axis = 0; axis < 3; axis++) {
+            if (originalTokens.tokens[index + 1 + axis]?.kind !== 'number'
+              || Number(originalTokens.tokens[index + 1 + axis].text) !== target.object.position[axis]) throw new Error('Rust copy position slot is inconsistent.');
+            if (target.object.position[axis] !== target.copied.position[axis]) authorized.set(index + 1 + axis, JSON.stringify(target.copied.position[axis]));
+          }
+          positions++;
+        }
+      }
+      if (identities !== 1 || positions !== 1) throw new Error('Rust copy has ambiguous authorized value slots.');
+      for (let index = 0; index < originalTokens.tokens.length; index++) {
+        const originalToken = originalTokens.tokens[index], copiedToken = clonedTokens.tokens[index];
+        if (originalToken.kind !== copiedToken.kind || copiedToken.text !== (authorized.get(index) ?? originalToken.text)) throw new Error('Rust core rewrote a copied declaration outside fresh identity and net position slots.');
+      }
+    }
+  } catch (error) { runtime = null; loadError = error; throw unavailable(); }
+  return patch;
+}
+
+
+/** Atomic declaration removal. Original native UTF16 locations authorize the
+ * complete cut, and the native model witnesses every surviving scene value. */
+export function supportsStudioCoreScene3DRemovalPatch() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_removal_version === 'function'
+    && runtime.viento_core_scene3d_removal_version() === 1);
+}
+export function dispatchStudioCoreScene3DRemovalPatch(request) {
+  assertJson(request);
+  if (!record(request, ['protocolVersion', 'operation', 'content', 'instanceIds'])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_REMOVAL_OPERATIONS.has(request.operation)
+    || typeof request.content !== 'string') {
+    throw fail('studio_core_request_invalid', 'Expected an exact atomic 3D removal request.');
+  }
+  if (!supportsStudioCoreScene3DRemovalPatch()) throw unavailable();
+  const input = JSON.parse(JSON.stringify(request));
+  const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
+  const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+  if (!Array.isArray(input.instanceIds) || !input.instanceIds.length || input.instanceIds.length > 128
+    || input.instanceIds.some(id => !uuid(id)) || new Set(input.instanceIds).size !== input.instanceIds.length) {
+    throw fail('scene3d_removal_invalid', 'Expected distinct existing lowercase 3D instance identities.');
+  }
+  const selected = new Set(input.instanceIds), original = before.model.objects, removed = original.map(object => selected.has(object.instanceId));
+  const instanceIds = original.filter((_, index) => removed[index]).map(object => object.instanceId);
+  if (instanceIds.length !== selected.size || instanceIds.length >= original.length) {
+    throw fail('scene3d_removal_invalid', 'The selected objects must exist and leave at least one remaining object.');
+  }
+  const paths = original.flatMap((_, index) => removed[index] ? [`/objects/${index}`] : []);
+  const expectedModel = JSON.parse(JSON.stringify(before.model)); expectedModel.objects = original.filter((_, index) => !removed[index]);
+  const locations = before.sourceLocations.objects.map(object => object.sourceRange), ranges = [];
+  for (let index = 0; index < original.length;) {
+    if (!removed[index]) { index++; continue; }
+    const first = index; while (index < original.length && removed[index]) index++;
+    ranges.push(index < original.length ? { start: locations[first].start, end: locations[index].start }
+      : first > 0 ? { start: locations[first - 1].end, end: locations[index - 1].end }
+        : { start: locations[first].start, end: locations[index - 1].end });
+  }
+  let expectedContent = '', cursor = 0;
+  for (const range of ranges) {
+    if (range.start < cursor || range.end < range.start) throw unavailable();
+    expectedContent += input.content.slice(cursor, range.start); cursor = range.end;
+  }
+  expectedContent += input.content.slice(cursor);
+  const same = (a, b) => {
+    if (a === b) return true;
+    if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+    const keys = Object.keys(a); return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && same(a[key], b[key]));
+  };
+  const patch = dispatch(input, SCENE3D_REMOVAL_OPERATIONS, result => {
+    const patch = result.scene3dRemovalPatch;
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dRemovalPatch'])
+      || !record(patch, ['instanceIds', 'beforeContent', 'afterContent', 'changedPaths'])
+      || !same(patch.instanceIds, instanceIds) || !same(patch.changedPaths, paths)
+      || patch.beforeContent !== input.content || patch.afterContent !== expectedContent
+      || patch.afterContent === input.content || encoder.encode(patch.afterContent).length > 128 * 1024) {
+      throw new Error('Rust core returned an unbound atomic 3D removal receipt.');
+    }
+  }).scene3dRemovalPatch;
+  try {
+    const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });
+    if (!same(expectedModel, after.model)) throw new Error('Rust core changed an unauthorized surviving 3D scene value.');
+  } catch (error) { runtime = null; loadError = error; throw unavailable(); }
+  return patch;
 }

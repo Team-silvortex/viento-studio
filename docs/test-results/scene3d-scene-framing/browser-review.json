@@ -1,0 +1,202 @@
+{
+  "format": "viento-scene3d-full-scene-independent-browser-review",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-12T09:30:02.151823+00:00",
+  "ok": false,
+  "status": "visual-review-rejected",
+  "report": {
+    "path": "docs/test-results/scene3d-scene-framing/browser-final/browser.json",
+    "sha256": "af5fa1dedf94d4e492e8922db54dbae37ec5d7f327d27a7dbca307902ee51e0a",
+    "assertionStatus": "passed",
+    "steps": [
+      "Actual mouse click frames all three dispersed rotated boxes; every real Float32 uploaded box corner fits the clip volume. Source draft and saved bytes are unchanged.",
+      "Hidden selected objects and a zero-result filter still frame the complete loaded model. Filtering, selected UUID, inspector and highlighting remain unchanged.",
+      "Object focus, whole-scene focus, pointer orbit and author-camera reset cooperate. Reset restores the exact original GPU matrices; all-scene framing preserves the current heading.",
+      "An invalid edited source keeps native diagnostics and disables exact source location; whole-scene framing continues on the last valid model without saving or clearing that diagnostic.",
+      "A new unsaved model uses its complete new bounds. Chinese, English and Japanese at 390px preserve the entire framing action, source text and scrollable controls; all 24 corners fit each actual resized GPU viewport.",
+      "Closing disposes the view. Reopening reads the current unsaved draft and frames it; author files retain their original bytes throughout.",
+      "Injected WebGL unavailability disables only view controls, keeps verified declarations and does not change author files."
+    ],
+    "stepCount": 7,
+    "errors": [],
+    "sourceStableDuringThatProof": true,
+    "sourceFilesInThatProof": 12,
+    "moduleCount": 17,
+    "capabilityCount": 33,
+    "geometryChecks": [
+      {
+        "label": "desktop",
+        "corners": 24,
+        "width": 801,
+        "height": 600
+      },
+      {
+        "label": "hidden-selected-filter",
+        "corners": 24,
+        "width": 801,
+        "height": 600
+      },
+      {
+        "label": "after-orbit",
+        "corners": 24,
+        "width": 801,
+        "height": 600
+      },
+      {
+        "label": "invalid-draft-last-valid",
+        "corners": 24,
+        "width": 801,
+        "height": 600
+      },
+      {
+        "label": "changed-unsaved-model",
+        "corners": 24,
+        "width": 801,
+        "height": 1604
+      },
+      {
+        "label": "zh-CN-390",
+        "corners": 24,
+        "width": 319,
+        "height": 640
+      },
+      {
+        "label": "en-390",
+        "corners": 24,
+        "width": 319,
+        "height": 640
+      },
+      {
+        "label": "ja-390",
+        "corners": 24,
+        "width": 319,
+        "height": 640
+      },
+      {
+        "label": "reopen-unsaved",
+        "corners": 24,
+        "width": 801,
+        "height": 1604
+      }
+    ]
+  },
+  "blockingFindings": [
+    {
+      "scope": "composited narrow-screen scene image",
+      "affectedScreenshots": [
+        "framing-en-390.png",
+        "framing-ja-390.png",
+        "framing-zh-CN-390.png"
+      ],
+      "finding": "All three 390px language images show unexpected white/blurred/editor content within the opaque WebGL canvas. Matrix containment and desktop readPixels success do not establish that the narrow final composed image is correct.",
+      "cause": "Undetermined; browser/software compositor, scroll timing or product layout must be isolated before acceptance.",
+      "disposition": "Root informed and confirmed the Japanese image; keep current evidence immutable and collect follow-up in a new directory."
+    }
+  ],
+  "personallyViewedScreenshots": [
+    {
+      "path": "docs/test-results/scene3d-scene-framing/browser-final/framing-desktop.png",
+      "sha256": "3141f4c668372a9794bc604187e289819939ec1eafd7101a83768723142a9486",
+      "width": 1440,
+      "height": 937,
+      "personallyViewed": true,
+      "visualAccepted": true,
+      "observation": "The three dispersed boxes and selected outline fit the drawn desktop canvas. Object UUID declarations and all five footer actions are visible."
+    },
+    {
+      "path": "docs/test-results/scene3d-scene-framing/browser-final/framing-zh-CN-390.png",
+      "sha256": "478d7f7a9353db64e94c5a21ec99da2fde80e6b43c1af06c9e8afc1553ca2c85",
+      "width": 390,
+      "height": 844,
+      "personallyViewed": true,
+      "visualAccepted": false,
+      "observation": "Chinese controls and all five footer actions fit the viewport, but the canvas upper area contains an unexpected bright blurred rectangle and editor remnants; this is not accepted as a normal opaque scene image."
+    },
+    {
+      "path": "docs/test-results/scene3d-scene-framing/browser-final/framing-en-390.png",
+      "sha256": "461da0018038a94185767edad24347717829961748273eb8141713bf5c8bc892",
+      "width": 390,
+      "height": 844,
+      "personallyViewed": true,
+      "visualAccepted": false,
+      "observation": "English heading and footer actions wrap legibly, but the canvas contains a bright blurred region and underlying editor remnants above the rendered boxes."
+    },
+    {
+      "path": "docs/test-results/scene3d-scene-framing/browser-final/framing-ja-390.png",
+      "sha256": "15995f4446251af4210124cb4ee5b4eda0554a8eb807029f8b0582c097b1a791",
+      "width": 390,
+      "height": 844,
+      "personallyViewed": true,
+      "visualAccepted": false,
+      "observation": "Japanese actions remain visible in wrapped rows. The canvas upper region is severely contaminated by a large white blurred rectangle and visible editor button remnants."
+    },
+    {
+      "path": "docs/test-results/scene3d-scene-framing/browser-final/framing-no-webgl.png",
+      "sha256": "819a3e75bdafb3f0f323b30ce8056333d0d748adaaaff76d2187196b4ee54349",
+      "width": 1440,
+      "height": 937,
+      "personallyViewed": true,
+      "visualAccepted": true,
+      "observation": "The blank viewport and explicit WebGL2 fallback accompany readable native object declarations; unavailable drawing controls, including full-scene framing, are disabled."
+    }
+  ],
+  "currentSourceMismatches": [
+    {
+      "path": "scripts/tests/scene3d-framing-smoke.mjs",
+      "reportSha256": "9fa4a312831794baeb8b201aedcbfa4ed7841cae5fbc58220eaaca1183b61d70",
+      "currentSha256": "4b4b5081d5098178c8ec51ae45fe982013a5d735c33578222d9c1d91477e13bc"
+    },
+    {
+      "path": "web/scene3d.css",
+      "reportSha256": "32d37c9d2a3492bc1350620471b2c5e23dcc7b049fd474efffcce647860a0ebf",
+      "currentSha256": "1bf5a0ea3235b32f4534471b5373456b37e2b97259458b2e39b24d98d4f71dc7"
+    }
+  ],
+  "currentSourceScope": "Root is independently investigating the rejected screenshots with new harness/CSS experiments. This review binds the immutable original report and images; it does not pretend their old source SHA values bind the advancing investigation.",
+  "smokeRepairReview": {
+    "semanticsPreserved": true,
+    "initialProducer": "docs/test-results/scene3d-scene-framing/browser-initial-source.mjs",
+    "initialProducerSha256": "42175e37f3b94181de80a41d6d287adf22be1ba972404b1d799ba19a709a719d",
+    "currentProducerSha256": "4b4b5081d5098178c8ec51ae45fe982013a5d735c33578222d9c1d91477e13bc",
+    "changes": [
+      "Bound each CDP request by 10 seconds and handle actual browser dialogs.",
+      "After all unsaved-draft and reopen assertions complete, reset only the disposable editor fixture to its original text; assert dirty=false and original saved bytes before the fresh no-WebGL page navigation."
+    ],
+    "assertionsWeakened": false,
+    "productChangesInThisRepair": false,
+    "initialInterruption": {
+      "path": "docs/test-results/scene3d-scene-framing/browser-initial-interruption.json",
+      "sha256": "139ca825469a5c9aee1620ad7b69366d93b7473402aa4bcd6f521fadc30b4572",
+      "status": "interrupted-test-harness"
+    }
+  },
+  "inputMethod": "Actual Input.dispatchMouseEvent button entry and pointer orbit. DOM changes are explicit test setup for source text, language, scrolling and renderer instrumentation.",
+  "svgRequests": {
+    "tracked": false,
+    "count": null
+  },
+  "cspViolations": {
+    "tracked": false,
+    "count": null
+  },
+  "gpu": {
+    "softwareImplementation": "SwiftShader",
+    "hardwareAcceptance": false,
+    "observedDesktopReadPixels": {
+      "hash": 1493892812,
+      "nonBackground": 19600,
+      "width": 801,
+      "height": 600,
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "vendor": "Google Inc. (Google)",
+      "error": 0
+    }
+  },
+  "limitations": [
+    "This round does not claim a fresh full 3811 application suite or 307 Rust tests.",
+    "Recorded real uploaded matrices prove corner clipping checks; they do not substitute for composited screenshot review.",
+    "Framing all geometry does not promise a distant tiny object has a visible pixel.",
+    "No installed desktop, Android, hardware GPU, new HTTP/test execution or actual-checkout write by this reviewer."
+  ]
+}

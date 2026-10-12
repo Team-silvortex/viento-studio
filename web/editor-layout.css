@@ -45,12 +45,13 @@
 }
 
 .is-editor-mode .topbar { flex-shrink: 0; }
-.is-editor-mode .topbar-inner { max-width: none; padding: 10px 20px; flex-wrap: nowrap; }
+.is-editor-mode .topbar-inner { max-width: none; padding: 10px 20px; flex-wrap: wrap; }
 .is-editor-mode .brand, .is-editor-mode .brand-copy { min-width: 0; }
 .is-editor-mode .brand-badge { width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0; }
 .is-editor-mode .brand-copy h1 { font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .is-editor-mode .brand-copy p, .is-editor-mode .topbar-nav, .is-editor-mode .mode-state { display: none; }
-.is-editor-mode .topbar-mode { flex-shrink: 0; flex-wrap: nowrap; gap: 4px; }
+/* Independently mounted tools wrap within the workspace instead of widening it. */
+.is-editor-mode .topbar-mode { flex: 1 1 640px; min-width: 0; max-width: 100%; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
 .is-editor-mode .mode-btn { min-height: 34px; }
 
 .is-editor-mode .layout {

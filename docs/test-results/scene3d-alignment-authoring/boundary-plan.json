@@ -1,0 +1,36 @@
+{
+  "format": "viento-scene3d-alignment-independent-boundary-plan",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-12T03:58:57.068967+00:00",
+  "state": "prepared-not-executed",
+  "sourceRoot": "/home/chiharukiryu/cdev/viento-studio",
+  "stageRoot": "/tmp/viento-scene3d-alignment-fayrkhch/project",
+  "requestKeys": [
+    "protocolVersion",
+    "operation",
+    "content",
+    "instanceIds",
+    "anchorInstanceId",
+    "axis"
+  ],
+  "receiptKeys": [
+    "instanceIds",
+    "anchorInstanceId",
+    "axis",
+    "beforeContent",
+    "afterContent",
+    "changedPaths"
+  ],
+  "sourceAuthority": "Native admits complete author schema and reads anchor coordinate directly from original model. GUI author center/world axis selection has no renderer or backend authority. One original CST collection and final splice/budget.",
+  "qualityProducer": "alignment-quality-probe.mjs",
+  "plannedCases": 15,
+  "nativeRequired": "Parent supplies frozen compiled CLI and fresh WASM; reviewer does not build. No execution claimed.",
+  "preservation": "Actual checkout and all prior proof/source/author/tool data remain read-only. Only NEW stage evidence written.",
+  "initialStaticFinding": {
+    "path": "engine/studio-core.mjs",
+    "function": "dispatchStudioCoreScene3DAlignmentPatch",
+    "finding": "Both request guard and dispatch operation set still refer to SCENE3D_TRANSLATION_OPERATIONS in the developing stage implementation. This rejects the alignment operation.",
+    "ownerNotified": true,
+    "state": "Awaiting owner correction and final freeze; no runtime failure claimed."
+  }
+}

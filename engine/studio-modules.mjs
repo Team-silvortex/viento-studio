@@ -133,6 +133,33 @@ export const STUDIO_MODULES = freeze([
   moduleDescriptor('org.viento.scene3d', [
     ['scene.representation.scene3d', 'scene'], ['scene.preview.scene3d', 'scene'],
   ]),
+  moduleDescriptor('org.viento.scene3d-transforms', [
+    ['scene.authoring.transforms3d', 'authoring'],
+  ]),
+  moduleDescriptor('org.viento.scene3d-objects', [
+    ['scene.authoring.objects3d', 'authoring'],
+  ]),
+  moduleDescriptor('org.viento.scene3d-environment', [
+    ['scene.authoring.environment3d', 'authoring'],
+  ]),
+  moduleDescriptor('org.viento.scene3d-properties', [
+    ['scene.authoring.properties3d', 'authoring'],
+  ]),
+  moduleDescriptor('org.viento.scene3d-translation', [
+    ['scene.authoring.translation3d', 'authoring'],
+  ]),
+  moduleDescriptor('org.viento.scene3d-alignment', [
+    ['scene.authoring.alignment3d', 'authoring'],
+  ]),
+  moduleDescriptor('org.viento.scene3d-distribution', [
+    ['scene.authoring.distribution3d', 'authoring'],
+  ]),
+  moduleDescriptor('org.viento.scene3d-copy', [
+    ['scene.authoring.copy3d', 'authoring'],
+  ]),
+  moduleDescriptor('org.viento.scene3d-removal', [
+    ['scene.authoring.removal3d', 'authoring'],
+  ]),
 ]);
 
 export function createStudioModuleRegistry(input = STUDIO_MODULES) {

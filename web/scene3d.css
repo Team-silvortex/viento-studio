@@ -1,5 +1,6 @@
 .scene3d-dialog { width:min(1160px,calc(100vw - 24px)); max-width:1160px; max-height:calc(100dvh - 24px); margin:auto; padding:20px; border:1px solid #33536a; border-radius:16px; color:#d8e9f8; background:#101c2b; overflow:auto; box-sizing:border-box; }
 .scene3d-dialog::backdrop { background:rgba(2,8,18,.76); }
+.scene3d-dialog [hidden] { display:none!important; }
 .scene3d-header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
 .scene3d-header h2 { margin:0; font-size:1.4rem; }
 .scene3d-note,.scene3d-source { font-size:.88rem; color:#a1bbcf; overflow-wrap:anywhere; }
@@ -9,6 +10,10 @@
 #scene3dCanvas { display:block; width:100%; height:100%; touch-action:none; }
 .scene3d-sidebar { min-width:0; }
 .scene3d-sidebar h3 { font-size:1rem; margin:0 0 10px; }
+.scene3d-search { display:grid; gap:6px; font-size:.88rem; }
+.scene3d-search input { width:100%; min-width:0; box-sizing:border-box; padding:9px; border:1px solid #33536a; border-radius:6px; background:#0a1422; color:inherit; font:inherit; }
+.scene3d-search-summary { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin:8px 0; font-size:.8rem; }
+.scene3d-search-summary p { margin:0; }
 .scene3d-objects { list-style:none; margin:0 0 20px; padding:0; max-height:220px; overflow:auto; }
 .scene3d-objects li { display:grid; gap:4px; margin-bottom:10px; }
 .scene3d-objects button { text-align:left; font:inherit; color:inherit; padding:8px; border:1px solid #33536a; border-radius:6px; background:#0a1422; }

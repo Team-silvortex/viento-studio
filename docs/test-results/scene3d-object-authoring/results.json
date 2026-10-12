@@ -1,0 +1,189 @@
+{
+  "format": "viento-scene3d-object-authoring-results",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T13:21:02.084604+00:00",
+  "ok": true,
+  "status": "passed",
+  "version": "0.0.10",
+  "publishedBase": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+  "delivery": "working-tree",
+  "feature": "independent 3D primitive add/copy/remove with guarded source-preserving authoring",
+  "entry": "Existing JSON source editor → 管理3D对象 → select action and explicit name/fresh identity → Check complete candidate → Apply draft → ordinary Save",
+  "boundaries": [
+    "Rust owns strict full-scene validation and source-preserving object-array edits; all input/output size and count budgets remain enforced.",
+    "Copy preserves the complete source object except fresh UUID and semantically changed explicit name; removal preserves survivor source spans/order and refuses the last primitive.",
+    "Structure and transform proposals have separate private frozen brands. Shared source admission and host draft guard grant neither cross-domain approval nor sibling controller access.",
+    "Document/path/token/load/draft epoch/raw source/baseline/version checks run again across waits; successful apply carries exact source and a new ownership token.",
+    "Apply changes only memory; ordinary Save retains its external-disk conflict check. Old readonly preview remains three fields and cannot write."
+  ],
+  "validation": {
+    "application": {
+      "tests": 3181,
+      "pass": 3181,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "javascriptFiles": 579,
+      "runtime": "v24.20.0",
+      "proof": {
+        "path": "docs/test-results/scene3d-object-authoring/app-check.log",
+        "sha256": "ee37cbbb98535185b1ae16be69e1da11c4c0dd328707992383eedb1b81c5e914"
+      },
+      "timingSupplement": {
+        "path": "docs/test-results/scene3d-object-authoring/application-timing.json",
+        "sha256": "33a2adadac58b3de2cbc6b6868c205a7df70a3784b6bd83d127f3e07857a4067"
+      }
+    },
+    "rust": {
+      "tests": 210,
+      "new": 14,
+      "unit": 161,
+      "integration": 49,
+      "fmt": true,
+      "clippyWarningsDenied": true,
+      "proof": {
+        "path": "docs/test-results/scene3d-object-authoring/core-results.json",
+        "sha256": "08e68f25a59be43c099eb4092a589e1a0f807d96875f57593f410acc3b771366"
+      }
+    },
+    "newApplicationTests": {
+      "tests": 72,
+      "coreBridge": 18,
+      "portableHelper": 8,
+      "actualSourceHost": 8,
+      "systemPorts": 4,
+      "ui": 34,
+      "overlap": "All 72 are included in the complete application suite. UI87 and core219 focused sets overlap; do not add them to full tests or treat them as coverage percentages."
+    },
+    "finalLayout": {
+      "change": "Scoped [hidden] display priority corrects mode-specific field visibility after visual discovery. No semantic product code changed.",
+      "postCorrectionUiTests": 87,
+      "modeComputedDisplayChecks": 12,
+      "proof": {
+        "path": "docs/test-results/scene3d-object-authoring/web-validation.json",
+        "sha256": "3d54deb1337f7e6ccce179b6806067e596c7fd98f8c3755b25f1f83e8bcc4730"
+      },
+      "uiLog": {
+        "path": "docs/test-results/scene3d-object-authoring/ui-tests-layout-final.log",
+        "sha256": "2ce2ff57189803bf119a2d54be9d18b84a05427bfca4e50fe01451459e4789b4"
+      },
+      "finalSmokeSyntax": {
+        "path": "docs/test-results/scene3d-object-authoring/syntax-final.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "browser": {
+      "flowClasses": 9,
+      "browser": "Chrome/154.0.8037.97",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+      "languages": [
+        "zh-CN",
+        "en",
+        "ja"
+      ],
+      "narrowWidth": 390,
+      "sourceStable": true,
+      "proof": {
+        "path": "docs/test-results/scene3d-object-authoring/browser-objects-final/browser.json",
+        "sha256": "8c56d9c29c6e95b53127a70249edf374ce664547d6ae6d948366d7f3d6333b0c"
+      },
+      "visualProof": {
+        "path": "docs/test-results/scene3d-object-authoring/visual-review-final.json",
+        "sha256": "c381f75edf9229eb054061f739ae1956fd3fb55d217bac54558d9e29d13c8d58"
+      }
+    },
+    "oldTransformBrowser": {
+      "flowClasses": 7,
+      "scope": "Actual old seven-flow script rerun after shared host/source refactor and before the objects-only stylesheet correction; transform sources remain final identical.",
+      "proof": {
+        "path": "docs/test-results/scene3d-object-authoring/browser-transform-regression-1/browser.json",
+        "sha256": "40949eff7d7635692bfa2188678bd024cc4b85d81506c1a41c5888e603c73989"
+      }
+    },
+    "prepared": {
+      "tests": 228,
+      "newObjectsCasesEach": 6,
+      "desktopModules": 97,
+      "mobileModules": 97,
+      "inventories": {
+        "desktop/resources": 555,
+        "mobile/dist": 236,
+        "desktop/ui": 11
+      },
+      "proof": {
+        "path": "docs/test-results/scene3d-object-authoring/packaged-resources.json",
+        "sha256": "49b7466567b212536b9023660f566512dd5b0cbf4775fa5ddb855a6270772c57"
+      },
+      "explicitFinalDocSync": {
+        "path": "docs/test-results/scene3d-object-authoring/prepared-doc-sync.json",
+        "sha256": "14514af761a2b6ab6726ea7c96b80ea416fc06578486e408b1aaf6af1c12bff8"
+      },
+      "explicitFinalCssSync": {
+        "path": "docs/test-results/scene3d-object-authoring/prepared-css-sync.json",
+        "sha256": "9093c36640a1b56c6dc1735eaf275a7281acf6323c0c1b7b9ab6a3882b7827c3"
+      }
+    },
+    "independent": {
+      "source": 17,
+      "ui": 15,
+      "host": 6,
+      "groups": 38,
+      "nativeWasmParityRequests": 10,
+      "openFindings": [],
+      "proof": {
+        "path": "docs/test-results/scene3d-object-authoring/review.json",
+        "sha256": "93645c46080c2c912db5c9bfdec0323147d1ecb934e44fb66021f7ee72f95cf5"
+      }
+    }
+  },
+  "preservation": {
+    "historicalFiles": 3780,
+    "authorFiles": 41,
+    "externalTools": 4,
+    "frozenSourceFiles": 698,
+    "priorSourceManifestRetained": {
+      "path": "docs/test-results/scene3d-object-authoring/previous-source-hashes.json",
+      "sha256": "fb75c22ea0415c742eef0ca8b23b58920148dc684d4b9f795eb0f834e5088554"
+    },
+    "sourceFreeze": {
+      "path": "docs/test-results/scene3d-object-authoring/source-freeze.json",
+      "sha256": "3f5e485268ef576792c0898892029aec70fac66bd0a79b64ed159ea6d4f177f9"
+    },
+    "proof": {
+      "path": "docs/test-results/scene3d-object-authoring/preservation-audit-before-cleanup.json",
+      "sha256": "a8d4c0f2ff4583c43e23e5fdf91cc02b7538de5de682b3fd1ae932b59056d959"
+    }
+  },
+  "cleanup": {
+    "allocatedFileBytesRemoved": 4965203968,
+    "generatedDirectories": 5,
+    "proof": {
+      "path": "docs/test-results/scene3d-object-authoring/cleanup.json",
+      "sha256": "6c2e18574a75ba0b377a6b6b71fc0f2ecd6a02bb6065f79979860558ff2ec427"
+    },
+    "retained": "Tested shared WASM/build metadata, author sources/examples, all old/new reports, dependencies, external trusted toolchains and installed applications"
+  },
+  "atlas": {
+    "functions": 85,
+    "implementations": 194,
+    "bindings": 326,
+    "cells": 1304,
+    "oldCoordinatesScoresReasonsPreserved": true,
+    "proof": {
+      "path": "docs/test-results/scene3d-object-authoring/atlas-preservation-review.json",
+      "sha256": "c52ed46775b723632dda5b60828deb1c984bf685deef7e06d4e50a6bd3cd2557"
+    }
+  },
+  "retainedAttempts": [
+    "Initial NEW UI UUID fixture counter corrected; old logs retained and meaningful native-backed UI case passed.",
+    "Initial NEW browser fixture incorrectly compared textarea-normalized LF display directly with disk CRLF; final view/draft/candidate/disk scopes are explicit.",
+    "Actual screenshot review identified mode-hidden labels overridden by grid CSS; one scoped rule fixed it, final computed-display checks and complete workflow reran.",
+    "Initial NEW prepared lexical-copy fixture altered camera/root name instead of object tokens; corrected fixture targets the objects array and actual copied-source checks passed."
+  ],
+  "limits": [
+    "Working-tree increment only: no version bump, commit/push or new installer/device acceptance in this slice.",
+    "Schema1 boxes only, 1–128 objects; hierarchy, model assets, material systems, gizmos and multi-object transactions remain separate work.",
+    "Actual WebGL preview uses recorded SwiftShader software implementation; prepared VM checks have no Node/DOM/fetch/host imports and are portability checks, not hostile-code sandbox or device acceptance."
+  ]
+}

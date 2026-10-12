@@ -1,0 +1,79 @@
+{
+  "format": "viento-scene3d-translation-prepared-confirmation",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-12T03:27:55.479195+00:00",
+  "ok": true,
+  "phase": "Fresh execution after the real translation checkbox-row lifetime repair; initial successful copied proof remains unchanged as its earlier phase.",
+  "source": {
+    "manifest": "source-hashes-confirmed.json",
+    "files": 737,
+    "manifestSha256": "ecb3120c155f511b4473eded81cb705f88a387be3a291e338eaec3a84c66dd32",
+    "allMatch": true
+  },
+  "proof": {
+    "producer": "prepared-check-confirmed.mjs",
+    "producerSha256": "9722e696bf9efb50a1ae1a62b1e2fcb11d57ddf721926893a8dee7a6dca17d99",
+    "report": "packaged-resources-confirmed.json",
+    "reportSha256": "0ef74156614c94d0ef22325512085005d5370f27a92f15c7975c60d027d71bdf",
+    "log": "prepared-check-confirmed.log",
+    "logSha256": "284b3d8ae0b94a0574a2db05a8d29d30f9a5ef1a42998128b9bd8ff40265bbe3",
+    "firstConfirmedRunPassed": true
+  },
+  "initialProofRetained": {
+    "report": "packaged-resources.json",
+    "sha256": "154183491ae01a4f68e8b9ea288636bd3ca6ed5c7270e6f2d8e67a14e77fad60",
+    "confirmation": "prepared-confirmation.json",
+    "confirmationSha256": "eecd91b8edf04d27018c336f346995d2385e5e23ca0d4d48962fa0ee70cf3c26"
+  },
+  "totalGroupedCases": 314,
+  "previousGroupedCasesPreserved": 298,
+  "newTranslationGroups": 16,
+  "casesEach": 157,
+  "moduleCounts": {
+    "desktop": 104,
+    "mobile": 104
+  },
+  "initialAndConfirmedCaseReceiptsIdentical": true,
+  "producerOnlyManifestOutputNamesChanged": true,
+  "assertionsRemoved": 0,
+  "inventories": {
+    "desktop/resources": {
+      "files": 566,
+      "bytes": 7781505,
+      "manifestSha256": "8b2cfa694167bd482cb138cb8b7591ed338293abc14d22c2dc2236baaef195ec",
+      "allCopiedBytesMatch": true
+    },
+    "mobile/dist": {
+      "files": 247,
+      "bytes": 6042261,
+      "manifestSha256": "be1d29bd4f30b5495eca9e13b2c0f7d54e2eeaa5f0869ec3b3821c20a612591a",
+      "allCopiedBytesMatch": true
+    },
+    "desktop/ui": {
+      "files": 11,
+      "bytes": 491433,
+      "manifestSha256": "c61e3be63ca9add0e7a65981429789ce50315142285cf79226639875f383beb0",
+      "allCopiedBytesMatch": true
+    }
+  },
+  "sourcePhase": {
+    "report": "source-phase-confirmation.json",
+    "sha256": "e822f922e6b89d81f57b582e3e788785a0c2ed7764cac0f168a8c4b4401945a0",
+    "exactChangedPaths": [
+      "scripts/tests/scene3d-translation-smoke.mjs",
+      "scripts/tests/scene3d-translation-ui.test.mjs",
+      "web/modules/app-scene3d-translation.js"
+    ]
+  },
+  "wasm": {
+    "bytes": 528651,
+    "sha256": "ac40eb3d9a8ffcb4d079745c2b71492323fbabb1cdf3acda923e3497cbaaaad5",
+    "unchangedFromInitialExecution": true
+  },
+  "scope": "Actual copied pure modules and native WASM in standard VM without Node/DOM/fetch/process globals. Existing renderer cases use explicit injected canvas/WebGL spies. Full inventory also binds the repaired UI source byte copies, but this pure execution does not simulate the actual row lifecycle or replace its separate DOM/browser regressions.",
+  "limitations": [
+    "No installation, Android device, hardware GPU or hostile-code sandbox acceptance.",
+    "Initial core/host/legacy-author browser proof retains its actual unchanged-source phase; later checkbox repair is separately checked by final UI/browser/full proofs."
+  ],
+  "findings": []
+}

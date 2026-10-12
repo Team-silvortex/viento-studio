@@ -6,7 +6,7 @@
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.0.10 版本记录](RELEASE_0.0.10.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.0 版本记录](RELEASE_0.1.0.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -28,7 +28,7 @@
 | 查看批次中每份用例的失败步骤并下载独立 JSON | [成员报告](RUNTIME_CASE_REPORTS.md) |
 | 查看各后端生成工程、来源、文件库存与保留原因 | [后端工程管理](BACKEND_PROJECTS.md) |
 | 同一无图场景在 Godot／Bevy 上构建与无头运行 | [Bevy 第二后端](BEVY_BACKEND.md) |
-| 独立 3D 方块预览、相机与灯光、Godot 工程导出 | [3D 初步接入](SCENE3D.md) |
+| 3D 对象与环境编辑、批量操作、预览导航及 Godot 工程导出 | [3D 场景编辑与预览](SCENE3D.md) |
 | 复用片段配方、九域创作与来源审阅后普通保存 | [场景片段组合](SCENE_COMPOSITION.md) |
 
 ## 工程格式与语义操作

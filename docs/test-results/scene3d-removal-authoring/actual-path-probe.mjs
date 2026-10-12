@@ -1,0 +1,21 @@
+// Read-only actual-checkout load; candidates are created in memory only.
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import '/home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-studio-core.mjs';
+import {getStudioCoreMetadata,supportsStudioCoreScene3DRemovalPatch} from '/home/chiharukiryu/cdev/viento-studio/engine/studio-core.mjs';
+import {createScene3DRemovalProposal,prepareScene3DRemovalApply,isScene3DRemovalProposal} from '/home/chiharukiryu/cdev/viento-studio/engine/scene3d-removal.mjs';
+const actual='/home/chiharukiryu/cdev/viento-studio';
+const hash=v=>createHash('sha256').update(v).digest('hex');
+const content=await fs.readFile(actual+'/examples/scene3d/scene.json','utf8'),model=JSON.parse(content),revision='sha256:'+hash(content);
+const source={sourcePath:'documents/scenes/read-only-probe.json',token:'actual-memory-probe',content,sourceRevision:revision,baseSourceRevision:revision};
+assert.equal(supportsStudioCoreScene3DRemovalPatch(),true);
+const proposal=createScene3DRemovalProposal(source,{instanceIds:[model.objects[2].instanceId,model.objects[0].instanceId]});
+assert.equal(isScene3DRemovalProposal(proposal),true);assert.deepEqual(proposal.remainingObjects,[model.objects[1]]);
+const candidate=await prepareScene3DRemovalApply(source,proposal,{digest:hash});
+assert.deepEqual(JSON.parse(candidate.afterContent).objects,[model.objects[1]]);
+assert.throws(()=>createScene3DRemovalProposal(source,{instanceIds:model.objects.map(o=>o.instanceId)}));
+await assert.rejects(prepareScene3DRemovalApply(source,structuredClone(proposal),{digest:hash}));
+assert.equal(await fs.readFile(actual+'/examples/scene3d/scene.json','utf8'),content);
+const report={ok:true,observedAt:new Date().toISOString(),actualRoot:actual,core:getStudioCoreMetadata(),wasmSha256:hash(await fs.readFile(actual+'/engine/studio-core.wasm')),node:process.version,remainingObjects:1,changedPaths:candidate.changedPaths,authorContentUnchanged:true,writes:0,scope:'Load actual installed source tree and create/validate in-memory candidates only. No source save, test server, full suite rerun, installation or user workspace access.'};
+console.log(JSON.stringify(report,null,2));

@@ -1,0 +1,38 @@
+✔ framing is detached frozen view data preserving heading FOV and all author inputs (1.690152ms)
+✔ eight independently transformed corners fit extreme size position rotation FOV and narrow or wide aspect (10.731897ms)
+✔ rotating a nonuniform box never changes its enclosing sphere framing distance (0.249039ms)
+✔ framing permits a view farther than 200000 and below author minimum near while repairing short author clipping (0.19136ms)
+✔ missing degenerate or unbounded view inputs fail without changing caller data (0.178125ms)
+✔ matrix composition keeps column-major identity and translated scaled box positions (1.144425ms)
+✔ mixed-axis Euler XYZ matches Godot Rx*(Ry*Rz) analytical columns (0.193024ms)
+✔ lookAt puts the camera at origin and its target along negative Z (0.207912ms)
+✔ perspective uses WebGL clipping and source near/far values (0.186421ms)
+✔ orbit is detached, preserves target and clamps polar and distance singularities (0.776272ms)
+✔ hex conversion preserves authored case and color channels (0.135886ms)
+✔ subnormal accepted directional light normalizes to a finite unit vector (1.120389ms)
+✔ unsupported WebGL2 returns no renderer and does not allocate fake geometry (0.873364ms)
+✔ actual renderer draws each box with source matrices, light and camera uniforms (0.535398ms)
+✔ drawing buffer bounds DPR and dimension allocations on initial render and resize (0.396496ms)
+✔ pointer orbit and wheel zoom never mutate the supplied model; view reset restores source camera (0.672937ms)
+✔ unrelated pointer and right click cannot change the view (0.228931ms)
+✔ dispose releases every shader/program/VAO/buffer, observer and interaction listener exactly once (0.284155ms)
+✔ shader compile failure still releases the partially allocated program and shader (0.372672ms)
+✔ link failure releases both shaders without leaving geometry or listeners (0.15411ms)
+✔ buffer allocation failure releases the VAO and all compilation resources (0.155102ms)
+✔ unexpected context loss is reported and stops further draw calls (0.295256ms)
+✔ focusObject fits actual GPU corners using rotated box current heading and actual canvas aspect without author edits (0.862454ms)
+✔ focus handles minimum and maximum object extents at distant coordinates and extreme viewport FOV through actual float32 matrices (4.846425ms)
+✔ view-local floating origin makes translated large-coordinate scenes upload identical geometry light and view matrices (1.001997ms)
+✔ focused very long or very short views retain smooth first wheel distance and safe clipping rather than author orbit limits (0.646728ms)
+✔ focus after resize uses current drawing dimensions including DPR limit and not author viewport (0.321927ms)
+✔ invalid missing and disposed focus requests are false no-ops and never allocate or draw (0.235143ms)
+✔ lost context cannot change focus target heading clipping or draw count (0.174178ms)
+✔ focus reset and model refresh stop the old pointer drag and return author camera without retaining focused range (0.348827ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 83.328014

@@ -1,0 +1,138 @@
+{
+  "format": "viento-scene3d-selection-feedback-application-timing",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-12T01:57:44.931545+00:00",
+  "ok": true,
+  "relatedChecks": {
+    "log": "related-check.log",
+    "sha256": "446f0f23fb1e80564a2df6509d742b50ec5ee24c602afda217016676c35d4a8d",
+    "counts": {
+      "tests": 442,
+      "pass": 442,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "durationMs": 5750.256153,
+    "testFiles": 29,
+    "initialSyntaxFiles": 9,
+    "executedManifestSha256": "c12d77531c6250eac1891d89d65918232974ef303dfadcb07f07c26cc44f8a1c",
+    "allExecutedTestsAndProductBytesUnchangedAtConfirmedManifest": true,
+    "sourcePhaseConfirmation": "source-phase-confirmation.json"
+  },
+  "sourcePhases": {
+    "createdAt": "2026-10-12T01:50:27.498630+00:00",
+    "ok": true,
+    "initialManifest": {
+      "path": "source-hashes-final.json",
+      "sha256": "c12d77531c6250eac1891d89d65918232974ef303dfadcb07f07c26cc44f8a1c",
+      "files": 727
+    },
+    "confirmedManifest": {
+      "path": "source-hashes-confirmed.json",
+      "sha256": "e720524aa482becbd66a5e064a36603192e7cba9ffce53727cd683fd141535ce",
+      "files": 727,
+      "allMatch": true
+    },
+    "onlyChangedBrowserHarnesses": {
+      "scripts/tests/scene3d-picking-smoke.mjs": {
+        "before": "455957003904ff7ebaec7e9530f7b22dfedafa67eb3c764a04a1d6b33bc683a3",
+        "after": "4ff97054572c43b7f755a37d7344352b18a629a9e3021d539a7729e2a58cf8f4"
+      },
+      "scripts/tests/scene3d-selection-smoke.mjs": {
+        "before": "d5c56a977e5b326929e3c2a889fe7a134bc1187211007dceff43bb7fd2ba0d5e",
+        "after": "6382af0dee2f8b1d1f9ac6361c59dc901d1c94ea85d98458d36a41261a241b87"
+      }
+    },
+    "relatedChecks": {
+      "log": "related-check.log",
+      "sha256": "446f0f23fb1e80564a2df6509d742b50ec5ee24c602afda217016676c35d4a8d",
+      "start": "related-check-start.json",
+      "startSha256": "36a476fd5af5de07797003749dd3e9b1fe757985a2d7345b8a4e64887763caaa",
+      "counts": {
+        "tests": 442,
+        "pass": 442,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "testFiles": 29,
+      "allExecutedTestAndProductBytesUnchanged": true,
+      "executedAtInitialManifest": true,
+      "freshRerunClaim": false
+    },
+    "prepared": {
+      "report": "packaged-resources.json",
+      "sha256": "1da4e83c7e112a778df3f7b5b26337105d1c9148d05b65ec15b3447a0503e0ea",
+      "initialFrozenManifestSha256": "c12d77531c6250eac1891d89d65918232974ef303dfadcb07f07c26cc44f8a1c",
+      "allMappedSourceAndInventoryBytesStillMatch": true,
+      "currentInventory": {
+        "desktop/resources": 563,
+        "mobile/dist": 244,
+        "desktop/ui": 11
+      },
+      "portableExecutionFromInitialManifest": true,
+      "freshPortableRerunClaim": false
+    },
+    "finalSyntax": {
+      "files": [
+        "scripts/tests/scene3d-picking-smoke.mjs",
+        "scripts/tests/scene3d-selection-smoke.mjs"
+      ],
+      "node": "v24.20.0",
+      "exitCodes": [
+        0,
+        0
+      ],
+      "log": "smoke-syntax-confirmed.log",
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "scope": "Fresh source and inventory phase confirmation only. Previously completed related442/portable298/renderer67/UI196/independent23 retain their initial source manifest and actual execution dates. Only two browser producers changed; final browser execution uses confirmed hashes. No product/native/schema/host/backend change or invented test rerun."
+  },
+  "browserProducerRepair": {
+    "format": "viento-scene3d-selection-browser-producer-fix",
+    "schemaVersion": 1,
+    "productChanged": false,
+    "historicalReportsChanged": false,
+    "initialBrowserPreserved": "browser-selection-initial/browser.json",
+    "changes": [
+      {
+        "path": "scripts/tests/scene3d-selection-smoke.mjs",
+        "beforeSha256": "d5c56a977e5b326929e3c2a889fe7a134bc1187211007dceff43bb7fd2ba0d5e",
+        "snapshot": "producer-before-fix/scene3d-selection-smoke.mjs",
+        "afterSha256": "6382af0dee2f8b1d1f9ac6361c59dc901d1c94ea85d98458d36a41261a241b87"
+      },
+      {
+        "path": "scripts/tests/scene3d-picking-smoke.mjs",
+        "beforeSha256": "455957003904ff7ebaec7e9530f7b22dfedafa67eb3c764a04a1d6b33bc683a3",
+        "snapshot": "producer-before-fix/scene3d-picking-smoke.mjs",
+        "afterSha256": "4ff97054572c43b7f755a37d7344352b18a629a9e3021d539a7729e2a58cf8f4"
+      }
+    ],
+    "reason": [
+      "The existing renderer disables backface culling; actual near-clipped back-surface ambient gray is legal geometry, not a cap. Compare center pixels on the same near-clipped model before/after selecting that object.",
+      "Orbit and narrow-focus inequality references now use the same selected UUID before changing the camera. Reset equality remains strict after restoring the reference UUID through the public list."
+    ]
+  },
+  "firstBrowser": {
+    "report": "browser-selection-initial/browser.json",
+    "sha256": "f64458842962d73aa618190ddd8c00be7e828b56b360b6706a53e96070aec985",
+    "scope": "Initial eight completed flows followed by a wrong near-clipping pixel expectation. Report, screenshots and exact producer snapshots retained."
+  },
+  "productRepairForBrowserFailure": false,
+  "reason": "The existing renderer draws both sides. The test originally expected a farther object after clipping the front surface; the actual box back surface is valid. Final test compares the same near-clipped model before/after selection. Orbit/focus/reset pixels compare the same selected UUID and camera.",
+  "notRerun": {
+    "fullApplication": {
+      "priorReport": "../scene3d-picking/results.json",
+      "priorPassed": 3421
+    },
+    "rust": {
+      "priorReport": "../scene3d-navigation/rust-tests.log",
+      "priorPassed": 234
+    },
+    "nativeCliAndBackend": true
+  },
+  "scope": "Current related29 files, actual browser and copied modules are fresh slice proofs. Focused counts overlap related442. After first execution, only two browser producers changed; static syntax and source/inventory phase confirmation are fresh, while previous product tests and portable execution retain their real dates. No invented full/Rust/device/install rerun."
+}

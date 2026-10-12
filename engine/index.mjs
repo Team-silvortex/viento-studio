@@ -43,3 +43,14 @@ export { createSceneCompositionPlacementsDraft, prepareSceneCompositionPlacement
 export { createSceneCompositionGroupsDraft, prepareSceneCompositionGroupsApply } from './scene-composition-groups.mjs';
 export { createSceneCompositionDefinitionsDraft, prepareSceneCompositionDefinitionsApply } from './scene-composition-definitions.mjs';
 export { parseScene3DSource, createScene3DPlan, MAX_SCENE3D_BYTES } from './scene3d.mjs';
+export { createScene3DTransformProposal, prepareScene3DTransformApply, isScene3DTransformProposal } from './scene3d-transform.mjs';
+export { createScene3DObjectsProposal, prepareScene3DObjectsApply, isScene3DObjectsProposal } from './scene3d-objects.mjs';
+
+export { createScene3DEnvironmentProposal, isScene3DEnvironmentProposal, prepareScene3DEnvironmentApply } from './scene3d-environment.mjs';
+export { createScene3DPropertiesProposal, isScene3DPropertiesProposal, prepareScene3DPropertiesApply } from './scene3d-properties.mjs';
+export { createScene3DObjectIndex, queryScene3DObjects, createScene3DSourceLocation, isScene3DSourceLocation, scene3DSourceDisplaySelection } from './scene3d-navigation.mjs';
+export { createScene3DTranslationProposal, isScene3DTranslationProposal, prepareScene3DTranslationApply } from './scene3d-translation.mjs';
+export { createScene3DAlignmentProposal, isScene3DAlignmentProposal, prepareScene3DAlignmentApply } from './scene3d-alignment.mjs';
+export { createScene3DDistributionProposal, isScene3DDistributionProposal, prepareScene3DDistributionApply } from './scene3d-distribution.mjs';
+export { createScene3DCopyProposal, isScene3DCopyProposal, prepareScene3DCopyApply } from './scene3d-copy.mjs';
+export { createScene3DRemovalProposal, isScene3DRemovalProposal, prepareScene3DRemovalApply } from './scene3d-removal.mjs';

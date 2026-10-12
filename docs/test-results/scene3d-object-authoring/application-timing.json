@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "applicationTests": 3181,
+  "applicationSemanticProductSourcesUnchangedDuringSuite": true,
+  "scope": "Complete application suite and 579 JavaScript syntax/API/version checks ran with frozen semantic product code. The NEW browser harness later added explicit textarea-view normalization and computed-display assertions, and the only later product correction was one scoped stylesheet hidden rule. Final browser and UI focused regression validate this layout; final smoke syntax is separately checked. These supplementary proofs bind final freeze without pretending the initial syntax step ran the final harness.",
+  "laterChanges": [
+    {
+      "path": "web/scene3d-objects.css",
+      "beforeSha256": "63afca392ab991a7a835f7be7153a1058368aea111d164657121799d3743a150",
+      "afterSha256": "96cd7d1200d55022c88bc31b8a2b58aa0c00ea7d126683ee1fe201589e52342d",
+      "purpose": "Scoped hidden display priority for action-specific labels",
+      "proof": "browser-objects-final/browser.json"
+    },
+    {
+      "path": "scripts/tests/scene3d-objects-smoke.mjs",
+      "beforeSha256": "06a25705bb54429b3ef25b34acccabf285cab7b0222294e5d5a0fb8dd2267bd2",
+      "afterSha256": "95f9df5be1149e76387085aa1bdad724e3f6cffd898b04f42d4adf94d0083883",
+      "purpose": "NEW proof harness fixes and meaningful mode computed-display checks",
+      "proof": "syntax-final.log"
+    }
+  ],
+  "finalFrozenSourceManifestSha256": "8f93d71010a037165d810d0a7f84591b88b823b4a2251ece7a0d767767d00213",
+  "focused": "ui-tests-layout-final.log",
+  "prepared": "packaged-resources.json"
+}

@@ -1,0 +1,78 @@
+{
+  "format": "viento-scene3d-selection-feedback-cleanup",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-12T01:57:44.829469+00:00",
+  "ok": true,
+  "scope": "Only the five exact generated directories absent in this slice baseline. Final related checks, prepared/browser and independent preservation proofs completed first.",
+  "sourceManifestSha256": "e720524aa482becbd66a5e064a36603192e7cba9ffce53727cd683fd141535ce",
+  "relatedChecks": {
+    "tests": 442,
+    "pass": 442,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "evidence": {
+    "prepared": {
+      "path": "packaged-resources.json",
+      "sha256": "1da4e83c7e112a778df3f7b5b26337105d1c9148d05b65ec15b3447a0503e0ea"
+    },
+    "review": {
+      "path": "review.json",
+      "sha256": "3ff19da67b13be0ad06d2dce1ce4d91c7e698ee444be7b192ebd1bb82a7896bd"
+    },
+    "browser": {
+      "path": "browser-selection-confirmed/browser.json",
+      "sha256": "dcce5822858a45e672af4a3910e7ec6790e2ea310ca5f821c9b3fd83cb8d9752"
+    },
+    "preservation": {
+      "path": "preservation-audit-before-cleanup.json",
+      "sha256": "8132c21c71728be674c3072c377618653585399f93deffb3faf82908fea252d7"
+    }
+  },
+  "removed": [
+    {
+      "path": "desktop/resources",
+      "files": 563,
+      "logicalBytes": 7724168,
+      "allocatedFileBytes": 9113600
+    },
+    {
+      "path": "desktop/ui/i18n",
+      "files": 8,
+      "logicalBytes": 467189,
+      "allocatedFileBytes": 487424
+    },
+    {
+      "path": "desktop/.cache",
+      "files": 2,
+      "logicalBytes": 31996513,
+      "allocatedFileBytes": 32002048
+    },
+    {
+      "path": "src-tauri/binaries",
+      "files": 1,
+      "logicalBytes": 126458664,
+      "allocatedFileBytes": 126464000
+    },
+    {
+      "path": "mobile/dist",
+      "files": 244,
+      "logicalBytes": 5987708,
+      "allocatedFileBytes": 6549504
+    }
+  ],
+  "allocatedFileBytesRemoved": 174616576,
+  "logicalBytesRemoved": 172634242,
+  "allocationMeasurement": "st_blocks * 512, file inodes counted once across the deletion set; inodes with external hard links excluded; directory blocks excluded.",
+  "retained": [
+    "tested engine/studio-core.wasm and build metadata",
+    "author definitions and example assets",
+    "all historical and new evidence",
+    "dependencies",
+    "external trusted tools",
+    "installed applications and preferences"
+  ],
+  "directoriesRemainAbsent": true
+}

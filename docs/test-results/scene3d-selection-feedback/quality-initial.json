@@ -1,0 +1,124 @@
+{
+  "format": "viento-scene3d-selection-feedback-independent-quality",
+  "schemaVersion": 1,
+  "observedAt": "2026-10-12T01:40:49.618Z",
+  "node": "v24.20.0",
+  "ok": true,
+  "passed": 23,
+  "failed": 0,
+  "cases": [
+    {
+      "name": "projected clipped-triangle reference agrees across rotated, occluded, narrow and translated Float32 frames",
+      "ok": true
+    },
+    {
+      "name": "clip surfaces use visible exit faces and omit synthetic near caps, behind-camera and far-hidden boxes",
+      "ok": true
+    },
+    {
+      "name": "equal-depth LEQUAL selects last source declaration without mutating matrices",
+      "ok": true
+    },
+    {
+      "name": "outside rect and invalid matrix frames are null and never infer an author object",
+      "ok": true
+    },
+    {
+      "name": "renderer hitTest uses the actual uploaded Float32 matrices and rect without extra draws or source changes",
+      "ok": true
+    },
+    {
+      "name": "position-only canvas scrolling remaps current CSS client coordinates without redraw while size changes require a fresh frame",
+      "ok": true
+    },
+    {
+      "name": "canvas position changes during a pending tap or before double-click revoke the old gesture owner",
+      "ok": true
+    },
+    {
+      "name": "tap, native double-click and jitter emit stable UUID while author data remains intact",
+      "ok": true
+    },
+    {
+      "name": "out-and-back drag remains a drag and prevents stale double-tap focus",
+      "ok": true
+    },
+    {
+      "name": "cancel, capture loss, wheel, reset, refresh, resize and secondary pointer invalidate pending taps",
+      "ok": true
+    },
+    {
+      "name": "last tap is cleared by misses, drag interruptions, wheel and model generation changes",
+      "ok": true
+    },
+    {
+      "name": "callback throw and callback dispose leave capture released and no old handler resurrects a view",
+      "ok": true
+    },
+    {
+      "name": "selection accepts only current stable UUID or null and repeats are exact no-draw view no-ops",
+      "ok": true
+    },
+    {
+      "name": "selection redraw keeps actual Float32 geometry depth source order and one box pass with no resource allocation",
+      "ok": true
+    },
+    {
+      "name": "selection does not reorder equal-depth ties or turn a hidden declared UUID into a geometric hit",
+      "ok": true
+    },
+    {
+      "name": "onPick selection-only redraw and normal capture release preserve the native second tap and double click frame",
+      "ok": true
+    },
+    {
+      "name": "selection-only redraw during a primary pending tap leaves geometry ownership valid and does not emit its own pick",
+      "ok": true
+    },
+    {
+      "name": "selection redraw across changed allocation or CSS dimensions creates a fresh geometry owner and cancels old tap",
+      "ok": true
+    },
+    {
+      "name": "position-only scrolling with selection redraw remains hittable but cannot authorize a tap spanning canvas movement",
+      "ok": true
+    },
+    {
+      "name": "reset keeps selected UUID while source model replacement clears selection and old tap ownership",
+      "ok": true
+    },
+    {
+      "name": "selection handles callback reentrancy without resurrecting a disposed model or author camera",
+      "ok": true
+    },
+    {
+      "name": "lost context and dispose refuse selection or clear requests without draw mutation or callback",
+      "ok": true
+    },
+    {
+      "name": "clipped rotated narrow far and millimetre scenes preserve all independent geometric picks after selected redraw",
+      "ok": true
+    }
+  ],
+  "counts": {
+    "triangleReferenceSamples": 1144,
+    "float32UploadedSamples": 63,
+    "clipSurfaceCases": 5,
+    "gestureScenarios": 25,
+    "selectionScenarios": 29
+  },
+  "sources": {
+    "web/modules/scene3d-picking.js": "22c77588f14c2eb40fb1d85ccc98ed4079ca3c7a52b2cea426a8983c1372c2e2",
+    "web/modules/scene3d-renderer.js": "92cf5bc132af3d518c63d7adab57dd320ba66d9c9122b40314124f97c36a496c",
+    "web/modules/scene3d-math.js": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+    "web/modules/app-scene3d-preview.js": "cf81cd58a91f2937211e05cfeea0bbcbbb59ae500537e3bc6783ac44de688e0b"
+  },
+  "endSources": {
+    "web/modules/scene3d-picking.js": "22c77588f14c2eb40fb1d85ccc98ed4079ca3c7a52b2cea426a8983c1372c2e2",
+    "web/modules/scene3d-renderer.js": "92cf5bc132af3d518c63d7adab57dd320ba66d9c9122b40314124f97c36a496c",
+    "web/modules/scene3d-math.js": "b8515bd64158ce20ad0fac647235b2514500db3d6a35cbdf82d3c7e7e155b48d",
+    "web/modules/app-scene3d-preview.js": "cf81cd58a91f2937211e05cfeea0bbcbbb59ae500537e3bc6783ac44de688e0b"
+  },
+  "sourceStable": true,
+  "scope": "Actual pure picking helper and actual renderer code with a WebGL uniform/event fixture. Independent homogeneous clipping and triangle-depth reference, actual Float32 uniform payloads, simulated pointer/capture/resize lifecycle. Includes independent selection-only redraw and resource/depth/order/gesture assertions. This fixture does not compile/rasterize the shader or prove edge pixels; real browser/GPU pixels are separate. No native/device/install or author/Save execution claim."
+}

@@ -1,0 +1,19 @@
+.scene3d-transforms-dialog { width:min(980px,calc(100vw - 24px)); max-width:980px; max-height:calc(100dvh - 24px); margin:auto; padding:20px; box-sizing:border-box; overflow:auto; border:1px solid #33536a; border-radius:16px; color:#d8e9f8; background:#101c2b; }
+.scene3d-transforms-dialog::backdrop { background:rgba(2,8,18,.76); }
+.scene3d-transforms-header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.scene3d-transforms-header h2 { margin:0; font-size:1.3rem; }
+.scene3d-transforms-note,.scene3d-transforms-identity { color:#a1bbcf; font-size:.88rem; overflow-wrap:anywhere; }
+.scene3d-transforms-diagnostic { color:#ffcaab; overflow-wrap:anywhere; }
+.scene3d-transforms-object { display:grid; gap:8px; }
+.scene3d-transforms-dialog select,.scene3d-transforms-dialog input[type=number] { width:100%; min-width:0; box-sizing:border-box; padding:9px; border:1px solid #33536a; border-radius:6px; background:#0a1422; color:inherit; font:inherit; }
+.scene3d-transforms-vectors { display:grid; gap:12px; }
+.scene3d-transforms-vectors fieldset { min-width:0; margin:0; padding:12px; border:1px solid #33536a; border-radius:8px; }
+.scene3d-transforms-vectors legend label { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.scene3d-transforms-axes { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.scene3d-transforms-axes label { display:grid; gap:6px; }
+.scene3d-transforms-comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.scene3d-transforms-comparison section { min-width:0; }
+.scene3d-transforms-dialog pre { margin:8px 0; padding:10px; border:1px solid #33536a; border-radius:6px; color:#bdd1e4; background:#0a1422; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.8rem; }
+.scene3d-transforms-dialog li { overflow-wrap:anywhere; }
+.scene3d-transforms-footer { position:sticky; bottom:-20px; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:10px; margin-top:18px; padding:14px 0; border-top:1px solid #33536a; background:#101c2b; }
+@media(max-width:700px) { .scene3d-transforms-dialog { padding:14px; } .scene3d-transforms-header h2 { font-size:1.1rem; } .scene3d-transforms-comparison { grid-template-columns:minmax(0,1fr); gap:4px; } .scene3d-transforms-footer { bottom:-14px; } .scene3d-transforms-axes { gap:6px; } }

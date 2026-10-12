@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-11**。源码版本 **0.0.10**；审查基线为提交 `9065667363a99a28aa64855f49052f5ee1d6f581`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-12**。源码版本 **0.1.0**；审查基线为提交 `3a91e84a5cd543ebb4a6f416f727c544cf9ff083`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -19,14 +19,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 83 |
-| 实现单元（含规划占位） | 186 |
-| 已审查实现关系 | 316 |
-| 显式评分单元 | 1264 |
-| 语义依赖边 | 215 |
-| 工作流切片 | 46 |
+| 功能 | 96 |
+| 实现单元（含规划占位） | 239 |
+| 已审查实现关系 | 373 |
+| 显式评分单元 | 1492 |
+| 语义依赖边 | 252 |
+| 工作流切片 | 59 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 1082 |
+| 引用并校验指纹的文件 | 1437 |
 
 ## 评分锚点
 
@@ -143,6 +143,19 @@
 | 定义意图→原始定义/空目标/完整来源→完整候选→原文草稿→普通保存 | [文件内场景片段、配方预览、单实例覆盖与迁移实验](#scene.composition) → [共享片段定义新增、独立复制与未放置定义移除](#scene.composition_definitions_editor) → [独立场景创作流程、候选验收与宿主接口](#scene.authoring_workflow) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) | 完整有效场景和actor/group贡献来源验证后只改当前原文内存；仅无放置引用的定义可删，新定义首次放置仍复核投影与图片，旧编辑区/执行后端保持独立。 |
 | 原/新片段标识→全部引用审阅→完整候选来源→原文草稿→普通保存 | [文件内场景片段、配方预览、单实例覆盖与迁移实验](#scene.composition) → [共享片段重命名与全部放置引用同步](#scene.composition_definition_rename) → [独立场景创作流程、候选验收与宿主接口](#scene.authoring_workflow) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) | 同一recipe原子替换定义和全部放置引用；actor/group/placement身份及有效场景保持，普通Save仍是持久权威；能力缺失仅禁用新动作。 |
 | 严格 3D 原文→只读视图/独立计划→Godot 工程→有限探针 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) | 作者原文和普通 Save 保持权威；两个展示/后端适配消费独立数据，不复用原 2D 行为协议。 |
+| 单对象3D变换→完整候选→原文草稿→普通保存 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [独立 3D 对象变换原文创作](#scene.transform_authoring3d) | 审阅不写文件，应用只更新当前原文草稿；旧读取预览与普通Save独立守护。 |
+| 3D对象新增/复制/移除→完整原文→草稿→普通保存 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [独立 3D 对象新增、复制与移除](#scene.object_authoring3d) | 结构审阅没有写入权限，Apply只改当前内存草稿；新旧两种创作入口独立审批，普通Save保留原外部冲突守护。 |
+| 作者环境字段→完整最终候选→原文草稿→普通保存 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [独立3D作者相机、方向光与背景编辑](#scene.environment_authoring3d) | 最终相机/光规则一次原子校验；只改获准值词元及当前内存草稿，临时预览视角不可充当作者参数，普通Save保持持久和冲突权威。 |
+| 对象属性→完整最终候选→原文草稿→普通保存 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [独立3D对象名称与颜色编辑](#scene.properties_authoring3d) | 只替换指定稳定实例的净字符串值词元；字段审批不共享，普通Save保持磁盘持久和外部冲突权威。 |
+| 3D检索／临时聚焦→稳定UUID→当前原文选择 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D对象检索、临时聚焦与原文定位](#scene.navigation3d) | 检索和临时相机不编辑作者数据；完整当前来源重解析后仅selection/scroll/一次focus，旧raw范围不用于新草稿。 |
+| 有效3D绘图→画布命中→稳定选择／临时聚焦→可选原文定位 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D对象检索、临时聚焦与原文定位](#scene.navigation3d) → [3D画布几何选择与双击聚焦](#scene.picking3d) | 输入手势和几何命中只更新视图；原文定位仍使用已有宿主完整来源守护，不添加作者提案或普通保存。 |
+| 稳定选择→原实体边缘反馈→同几何双击聚焦／严格原文定位 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D对象检索、临时聚焦与原文定位](#scene.navigation3d) → [3D画布几何选择与双击聚焦](#scene.picking3d) → [3D稳定选择的实体边缘反馈](#scene.selection_feedback3d) | 输入、提示和临时镜头只改变视图；来源定位独立核完整原文，保存与作者提案不进入反馈。 |
+| 多选现有方块→共同偏移原子检查→完整审阅→一次内存应用→普通保存／冲突 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D多对象原子整体移动](#scene.translation_authoring3d) | 独立selection与私有brand，Rust一次CST补丁；审批变化撤销，来源并发只有赢家write一次，磁盘仍普通Save。 |
+| 显式多选／参照／世界轴→原子位置检查→完整审阅→一次内存应用→普通保存／冲突 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D多对象参照轴位置对齐](#scene.alignment_authoring3d) | 独立选择和第六私有品牌，原参照坐标只作用于所选position轴；来源和owner并发只允许赢家写一次完整草稿，磁盘仍普通Save。 |
+| 独立多选／世界轴→原坐标排序固定两端→原子位置检查→完整审阅→一次内存应用→普通保存／冲突 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D多对象单轴位置等距分布](#scene.distribution_authoring3d) | 独立选择与第七私有品牌，只改中间对象所选position轴；两端词元保持，非零跨度不足严格精度整批拒绝，来源与owner守护只允许一次完整草稿，磁盘仍普通Save。 |
+| 来源选择／新UUID／共同位移→整批检查→完整审阅→一次草稿应用→普通保存／冲突 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D多对象原文保真批量复制](#scene.copy_authoring3d) | 零偏移仍创建副本；所有原声明不变，新副本仅身份和净位置变化。一项失败整批拒绝，来源归属守护只授权草稿。 |
+| 显式来源选择→整批移除检查→删除／保留声明与完整原文审阅→一次草稿应用→普通保存／冲突 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D多对象原文保真原子批量移除](#scene.removal_authoring3d) | 至少保留一个对象；全选、重复、未知或空选择整批拒绝。删除路径沿用原声明索引，保留声明与区间外字节不变；来源归属与私牌守护只授权草稿。 |
+| 有效预览→全场景取景→筛选与单对象浏览→重置作者相机 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D对象检索、临时聚焦与原文定位](#scene.navigation3d) → [3D全场景临时取景](#scene.framing3d) | 始终只操作临时视角，保留正文、选择和保存基线；无效草稿继续查看最近有效模型。 |
 
 ## 功能与实现切片
 
@@ -1625,6 +1638,245 @@
 平台：Linux 实际 HTTP/Chrome WebGL2 软件 GPU，中英日 390px、Rust 原生/WASM、实际 Godot4.7.2 无头探针、桌面/移动准备副本；非安装/设备。边界：0.0.10源码交付（审查基线9065667）；新增独立 schema1，不改变原 2D 作者格式、创作域、构建及运行协议。；严格 128KiB JSON、1–128 方块、稳定 UUID、透视相机和方向光；Rust 定位原文对象 UTF-16 范围。；RH/Y-up/−Z forward、米、度、显式 EulerXYZ；归一化极小方向向量，保留作者原数值与顺序。；第八系统模块仅依赖文档模块；24 声明能力与实际核心、WebGL2、工具检测分离，缺失读取端口仅关闭新视图。；来源只读端口绑定文档、会话和原文字节；旧响应无权更新新窗口；普通 Save 持久化，视角操作不改原文。；WebGL2 窗口关闭释放资源，无效草稿保留最近有效模型；中英日窄屏及真实软件 GPU 像素证明单独记录。；独立 kind:scene3d 计划与 Godot 适配，原始 source.json 和五文件库存可检查；旧后端能力注册不变。；全新目录排他导出、私有当前创建凭据、一次有限执行和生成文件核验；不认领外部工程，也不声称同 UID 进程沙箱。；3042 全应用、184 Rust、7 实际浏览器流程、206 prepared VM 案例及实际 Godot 探针分开记录；专项重叠，不作合计。；39 旧作者文件、3457 旧证据及 4 外部工具原字节保留；新增两个 3D 作者示例。没有安装包或 Android 设备验收。。
 
 下一步：分别定义模型资源引用、空间层级、OC 投影、作者修改事务和行为能力，后续独立接 Bevy/NS-Nova。
+
+<a id="scene.transform_authoring3d"></a>
+### 独立 3D 对象变换原文创作
+
+`scene.transform_authoring3d` · 场景与构建 · 源码交付
+
+入口：已有 JSON 编辑会话→选择单对象/显式变换字段→Rust 数字补丁→完整候选审阅→原文草稿→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **3D单对象CST数字补丁与完整原文校验**；strict source patch | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-transform-authoring/results.json](../docs/test-results/scene3d-transform-authoring/results.json)、[docs/test-results/scene3d-transform-authoring/core-results.json](../docs/test-results/scene3d-transform-authoring/core-results.json)、[docs/test-results/scene3d-transform-authoring/core-document-review.json](../docs/test-results/scene3d-transform-authoring/core-document-review.json) |
+| 可移植 JS 语义 | **可选补丁桥与私有冻结原文提案**；branded proposal and receipt validation | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-transform-authoring/results.json](../docs/test-results/scene3d-transform-authoring/results.json)、[docs/test-results/scene3d-transform-authoring/core-results.json](../docs/test-results/scene3d-transform-authoring/core-results.json)、[docs/test-results/scene3d-transform-authoring/core-document-review.json](../docs/test-results/scene3d-transform-authoring/core-document-review.json) |
+| 交互与渲染 | **独立三语对象变换输入与完整候选审阅**；independent review and cancellation | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-transform-authoring/results.json](../docs/test-results/scene3d-transform-authoring/results.json)、[docs/test-results/scene3d-transform-authoring/core-results.json](../docs/test-results/scene3d-transform-authoring/core-results.json)、[docs/test-results/scene3d-transform-authoring/core-document-review.json](../docs/test-results/scene3d-transform-authoring/core-document-review.json) |
+| 交互与渲染 | **原文会话权限守护与独立系统端口**；document/session-owned draft port | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-transform-authoring/results.json](../docs/test-results/scene3d-transform-authoring/results.json)、[docs/test-results/scene3d-transform-authoring/core-results.json](../docs/test-results/scene3d-transform-authoring/core-results.json)、[docs/test-results/scene3d-transform-authoring/core-document-review.json](../docs/test-results/scene3d-transform-authoring/core-document-review.json) |
+| 可移植 JS 语义 | **原文会话权限守护与独立系统端口**；registered optional authoring module | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-transform-authoring/results.json](../docs/test-results/scene3d-transform-authoring/results.json)、[docs/test-results/scene3d-transform-authoring/core-results.json](../docs/test-results/scene3d-transform-authoring/core-results.json)、[docs/test-results/scene3d-transform-authoring/core-document-review.json](../docs/test-results/scene3d-transform-authoring/core-document-review.json) |
+
+平台：Linux实际HTTP/Chrome，三语390px；软件WebGL预览回归、共享Rust原生/WASM与桌面/移动prepared纯层；非设备验收。边界：0.0.10/base3a91e84 之后未发布工作树增量；独立第九模块及25项声明能力，不扩充旧只读预览端口。；位置、XYZ欧拉旋转、尺寸非空子集及稳定UUID；CST仅改净变化数字，保留BOM/CRLF、无关词元、其他对象及全部场景语义。；原生/WASM可选补丁ABI；native合法noop由portable提案层拒绝，未修改候选没有应用审批。；私有冻结提案品牌，路径/token/完整原文/保存基线/当前SHA及文档/加载/草稿epoch共同守护；每次等待后重新检查。；独立三语表单保留未应用输入和完整候选，静默输入/目标变化、取消或迟到回执不可应用旧审批。；只更新内存草稿，普通Save保留磁盘冲突；旧预览独立消费新原文，缺失WebGL/World/构建不关闭字段编辑。；原生、WASM、完整应用、实际HTTP浏览器和216prepared案例分别记录；没有新安装包、设备或硬件GPU验收。。
+
+下一步：独立明确结构增删、模型资源、空间层级和跨对象变换；不将此表单解释为3D gizmo或执行事务。
+
+<a id="scene.object_authoring3d"></a>
+### 独立 3D 对象新增、复制与移除
+
+`scene.object_authoring3d` · 场景与构建 · 源码交付
+
+入口：已有 JSON 编辑会话→选择对象操作／新身份→完整候选审阅→原文草稿→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **3D对象数组CST结构补丁与完整候选验证**；strict structure patch | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-object-authoring/core-results.json](../docs/test-results/scene3d-object-authoring/core-results.json)、[docs/test-results/scene3d-object-authoring/core-native-test.log](../docs/test-results/scene3d-object-authoring/core-native-test.log)、[docs/test-results/scene3d-object-authoring/core-clippy.log](../docs/test-results/scene3d-object-authoring/core-clippy.log) |
+| 可移植 JS 语义 | **可选对象补丁桥与独立冻结品牌及来源快照**；private object intent and complete receipt validation | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-object-authoring/core-results.json](../docs/test-results/scene3d-object-authoring/core-results.json)、[docs/test-results/scene3d-object-authoring/core-native-test.log](../docs/test-results/scene3d-object-authoring/core-native-test.log)、[docs/test-results/scene3d-object-authoring/core-clippy.log](../docs/test-results/scene3d-object-authoring/core-clippy.log) |
+| 交互与渲染 | **独立三语对象管理及数量／身份完整审阅**；independent source review and cancellation | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-object-authoring/core-results.json](../docs/test-results/scene3d-object-authoring/core-results.json)、[docs/test-results/scene3d-object-authoring/core-native-test.log](../docs/test-results/scene3d-object-authoring/core-native-test.log)、[docs/test-results/scene3d-object-authoring/core-clippy.log](../docs/test-results/scene3d-object-authoring/core-clippy.log) |
+| 交互与渲染 | **共享文档来源守护与独立对象端口及能力注册**；document-owned guarded in-memory apply | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-object-authoring/core-results.json](../docs/test-results/scene3d-object-authoring/core-results.json)、[docs/test-results/scene3d-object-authoring/core-native-test.log](../docs/test-results/scene3d-object-authoring/core-native-test.log)、[docs/test-results/scene3d-object-authoring/core-clippy.log](../docs/test-results/scene3d-object-authoring/core-clippy.log) |
+| 可移植 JS 语义 | **共享文档来源守护与独立对象端口及能力注册**；optional authoring-only module registration | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-object-authoring/core-results.json](../docs/test-results/scene3d-object-authoring/core-results.json)、[docs/test-results/scene3d-object-authoring/core-native-test.log](../docs/test-results/scene3d-object-authoring/core-native-test.log)、[docs/test-results/scene3d-object-authoring/core-clippy.log](../docs/test-results/scene3d-object-authoring/core-clippy.log) |
+
+平台：Linux实际HTTP/Chrome与三语390px；软件GPU预览另记、共享Rust原生/WASM和桌面/移动prepared纯层；非设备验收。边界：0.0.10/base3a91e84 之后未发布工作树；第十固定模块、26项声明能力，不扩充旧只读预览端口。；严格 schema1 方块，1–128对象及128KiB UTF-8整份输入／候选预算；新身份拒绝冲突，删除最后对象拒绝。；复制完整原CST对象，只替换新UUID与明确改变的名称词元；同值escaped名称、escaped键、数值词元及全部源对象保持。；增删只改对象数组必要结构，保留其他对象身份、顺序与原声明，以及相机、光、顶层原文和BOM/CRLF。；与变换提案各有私有冻结品牌；共享五字段来源检查及宿主应用守护，不共享控制器、审批或Save/World/渲染/执行权限。；路径/token/当前raw/保存基线/当前SHA、文档与加载／草稿epoch每次等待后复核；并发赢家保留，迟到回执不覆盖。；普通Save仍保护外部冲突；关闭预览/变换/World/build或缺失WebGL不关闭结构审阅；三语切换保留作者名称、新身份及审批。；实际原生/WASM、浏览器、完整应用及prepared纯层证据分别记录，不代表新安装、Android设备或硬件GPU验收。。
+
+下一步：空间层级、模型资源及多对象事务分别设计；不把结构表单当成3D gizmo、执行场景或128对象以上规模验收。
+
+<a id="scene.environment_authoring3d"></a>
+### 独立3D作者相机、方向光与背景编辑
+
+`scene.environment_authoring3d` · 场景与构建 · 源码交付
+
+入口：当前JSON原文→显式环境字段→完整候选审阅→原文草稿→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **3D环境原子CST叶值补丁与完整候选校验**；atomic complete environment patch | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-environment-authoring/baseline.json](../docs/test-results/scene3d-environment-authoring/baseline.json)、[docs/test-results/scene3d-environment-authoring/source-freeze.json](../docs/test-results/scene3d-environment-authoring/source-freeze.json)、[docs/test-results/scene3d-environment-authoring/core-results.json](../docs/test-results/scene3d-environment-authoring/core-results.json) |
+| 可移植 JS 语义 | **可选环境补丁桥与原文值库存及独立品牌**；private environment intent and bound raw value receipt | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-environment-authoring/baseline.json](../docs/test-results/scene3d-environment-authoring/baseline.json)、[docs/test-results/scene3d-environment-authoring/source-freeze.json](../docs/test-results/scene3d-environment-authoring/source-freeze.json)、[docs/test-results/scene3d-environment-authoring/core-results.json](../docs/test-results/scene3d-environment-authoring/core-results.json) |
+| 交互与渲染 | **独立三语环境字段审阅和取消**；independent localized author environment review | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-environment-authoring/baseline.json](../docs/test-results/scene3d-environment-authoring/baseline.json)、[docs/test-results/scene3d-environment-authoring/source-freeze.json](../docs/test-results/scene3d-environment-authoring/source-freeze.json)、[docs/test-results/scene3d-environment-authoring/core-results.json](../docs/test-results/scene3d-environment-authoring/core-results.json) |
+| 交互与渲染 | **文档来源会话守护与独立环境模块接线**；document-owned guarded unsaved source apply | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-environment-authoring/baseline.json](../docs/test-results/scene3d-environment-authoring/baseline.json)、[docs/test-results/scene3d-environment-authoring/source-freeze.json](../docs/test-results/scene3d-environment-authoring/source-freeze.json)、[docs/test-results/scene3d-environment-authoring/core-results.json](../docs/test-results/scene3d-environment-authoring/core-results.json) |
+| 可移植 JS 语义 | **文档来源会话守护与独立环境模块接线**；optional authoring-only environment module | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-environment-authoring/baseline.json](../docs/test-results/scene3d-environment-authoring/baseline.json)、[docs/test-results/scene3d-environment-authoring/source-freeze.json](../docs/test-results/scene3d-environment-authoring/source-freeze.json)、[docs/test-results/scene3d-environment-authoring/core-results.json](../docs/test-results/scene3d-environment-authoring/core-results.json) |
+
+平台：Linux实际HTTP/Chrome三语390px与软件GPU预览、共享Rust原生/WASM与桌面/移动prepared纯层；非安装或设备。边界：0.0.10/base3a91e84之后未发布工作树；第十一固定模块、27项声明能力，旧readonly来源端口不扩权。；严格非空camera/light/background叶字段；原文及完整最终场景各验证一次，跨字段原子候选允许有效最终结果，不验证临时中间状态。；仅净变化数字/颜色值token可替换，固定净路径顺序；保留全部对象、所有键、未选字段、BOM/CRLF及词法。；环境、对象与变换提案各有私有冻结品牌；共享五字段来源守护与文档宿主审批，草稿改变使其他旧审批失效。；作者环境只读原文声明，预览临时orbit/zoom不填入表单；WebGL/World/build/其他创作入口缺失不关闭独立环境编辑。；三语表单显式勾选、完整候选审阅、取消与失主等待守护；Apply仅改草稿，普通Save处理磁盘持久化及外部冲突。；独立审核实证回执字段名交换错误；修后property key tokens不可替换，完整语义及净value token联合绑定。初始失败与修后记录均保存。；原生/WASM、完整应用、实际Chrome/SwiftShader和prepared标准VM各自验证，不作重复加总，未作新安装、Android设备或硬件GPU验收。。
+
+下一步：模型资源、空间层级、材料和多对象编辑事务分别定义；此字段编辑不代表3D gizmo、场景运行或全局撤销实现。
+
+<a id="scene.properties_authoring3d"></a>
+### 独立3D对象名称与颜色编辑
+
+`scene.properties_authoring3d` · 场景与构建 · 源码交付
+
+入口：当前JSON原文→指定稳定UUID与明确名称／颜色→完整候选审阅→原文草稿→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **3D名称与颜色CST值补丁及完整候选验证**；atomic string-value patch and complete scene validation | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-property-authoring/baseline.json](../docs/test-results/scene3d-property-authoring/baseline.json)、[docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-property-authoring/core-results.json](../docs/test-results/scene3d-property-authoring/core-results.json) |
+| 可移植 JS 语义 | **可选属性补丁桥与独立冻结品牌**；private property intent and bound raw string receipt | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-property-authoring/baseline.json](../docs/test-results/scene3d-property-authoring/baseline.json)、[docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-property-authoring/core-results.json](../docs/test-results/scene3d-property-authoring/core-results.json) |
+| 交互与渲染 | **独立三语对象属性审阅与原名称保留**；independent localized property review and original name retention | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-property-authoring/baseline.json](../docs/test-results/scene3d-property-authoring/baseline.json)、[docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-property-authoring/core-results.json](../docs/test-results/scene3d-property-authoring/core-results.json) |
+| 交互与渲染 | **文档来源守护与独立属性模块装配**；document-owned guarded unsaved source apply | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-property-authoring/baseline.json](../docs/test-results/scene3d-property-authoring/baseline.json)、[docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-property-authoring/core-results.json](../docs/test-results/scene3d-property-authoring/core-results.json) |
+| 可移植 JS 语义 | **文档来源守护与独立属性模块装配**；optional independent authoring property module | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-property-authoring/baseline.json](../docs/test-results/scene3d-property-authoring/baseline.json)、[docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-property-authoring/core-results.json](../docs/test-results/scene3d-property-authoring/core-results.json) |
+
+平台：Linux实际HTTP/Chrome三语390px与软件GPU预览、共享Rust原生/WASM及桌面/移动prepared纯层。边界：0.0.10/base3a91e84之后未发布工作树，第十二固定模块、28项声明能力，只依赖文档模块。；名称沿用旧解析规则：1–256个Unicode码点，不trim或规范化空白；颜色六位hex及大小写原样。；原文与完整最终场景各验证一次，只替换净授权字符串值词元；保留全部键、数字、BOM/CRLF、几何与非目标对象。；四种3D提案各有私有冻结品牌，共享五字段来源与宿主等待守护；旧readonly端口保持三字段。；三语表单默认不选字段，原name含CRLF/CR时未编辑选中保留作者原串；完整审阅、取消及失主等待守护独立。；Apply仅修改内存草稿，普通Save保持持久及外部冲突权威；不依赖preview、World、build或其他编辑控制器。；原生/WASM、完整应用、实际Chrome/SwiftShader与prepared纯层分别验证，无新安装或设备验收。。
+
+下一步：模型素材、空间层级、材料、多对象事务与gizmo分别定义；属性字段不构成完整材料编辑。
+
+<a id="scene.navigation3d"></a>
+### 3D对象检索、临时聚焦与原文定位
+
+`scene.navigation3d` · 场景与构建 · 源码交付
+
+入口：当前JSON原文→Rust有效模型→独立文字检索／临时聚焦→稳定UUID重解析→返回原文声明
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **只读显示索引与私有原文定位回执**；validated-model display index and native exact-location private receipt | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-navigation/baseline.json](../docs/test-results/scene3d-navigation/baseline.json)、[docs/test-results/scene3d-navigation/source-freeze-verified.json](../docs/test-results/scene3d-navigation/source-freeze-verified.json)、[docs/test-results/scene3d-navigation/renderer-results.json](../docs/test-results/scene3d-navigation/renderer-results.json) |
+| 交互与渲染 | **完整方块临时镜头与浮动原点渲染**；temporary whole-box framing and view-local float32 origin | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-navigation/baseline.json](../docs/test-results/scene3d-navigation/baseline.json)、[docs/test-results/scene3d-navigation/source-freeze-verified.json](../docs/test-results/scene3d-navigation/source-freeze-verified.json)、[docs/test-results/scene3d-navigation/renderer-results.json](../docs/test-results/scene3d-navigation/renderer-results.json) |
+| 交互与渲染 | **独立3D检索选择与聚焦／返回原文界面**；localized readonly stable selection and independent view navigation | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-navigation/baseline.json](../docs/test-results/scene3d-navigation/baseline.json)、[docs/test-results/scene3d-navigation/source-freeze-verified.json](../docs/test-results/scene3d-navigation/source-freeze-verified.json)、[docs/test-results/scene3d-navigation/renderer-results.json](../docs/test-results/scene3d-navigation/renderer-results.json) |
+| 交互与渲染 | **当前原文选择与一次性焦点宿主守护**；document-owned selection and guarded once-only focus | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-navigation/baseline.json](../docs/test-results/scene3d-navigation/baseline.json)、[docs/test-results/scene3d-navigation/source-freeze-verified.json](../docs/test-results/scene3d-navigation/source-freeze-verified.json)、[docs/test-results/scene3d-navigation/renderer-results.json](../docs/test-results/scene3d-navigation/renderer-results.json) |
+
+平台：Linux实际HTTP/Chrome中英日390px与SwiftShader、共享Rust有效来源与桌面/移动prepared纯模块。边界：0.0.10/base3a91e84之后未发布增量，仍十二固定模块／28项能力，没有作者格式或执行协议升级。；索引只投影已通过Rust校验的对象名称、UUID与来源，字面大小写查询只影响显示，不重新解析作者语义。；筛选隐藏选择时保留UUID和声明并提示；有效刷新重排保留身份，无效原文保留最近有效画面。；按实际GPU画布视场角和包围球聚焦完整方块，临时裁剪及浮动原点属于渲染；重置和刷新恢复作者相机。；只读来源仍为sourcePath/token/content三字段，可选locateSource只拥有selection/scroll/once-focus；不取得草稿应用、Save、World或后端。；宿主重新native parse定位UUID，完整内容/文档/会话/基线/版本和调用方审批在等待后保持，拒绝旧范围和晚到焦点。；BOM/CRLF/CR/nonBMP的native原文UTF16范围仅映射到完整匹配的textarea LF显示，raw作者字节与Save基线保持。；实际Chrome/软件WebGL、完整应用和桌面/移动纯准备副本分别记录，不声称新安装/Android/硬件GPU验收。。
+
+下一步：空间层级、模型素材、行为与多对象创作分别实现；当前检索列表不形成3D树、碰撞或gizmo。
+
+<a id="scene.picking3d"></a>
+### 3D画布几何选择与双击聚焦
+
+`scene.picking3d` · 场景与构建 · 源码交付
+
+入口：有效Rust模型→实际Float32绘图帧→可见方块表面命中→稳定UUID选择／明确临时聚焦
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 交互与渲染 | **实际绘图矩阵的纯方块表面命中**；Renderer-owned geometry and gestures, or model-owned independent readonly selection; no author or host grant. | 4 / 3 / 4 / 3 | [docs/test-results/scene3d-picking/baseline.json](../docs/test-results/scene3d-picking/baseline.json)、[docs/test-results/scene3d-picking/source-freeze-final.json](../docs/test-results/scene3d-picking/source-freeze-final.json)、[docs/test-results/scene3d-picking/renderer-results.json](../docs/test-results/scene3d-picking/renderer-results.json) |
+| 交互与渲染 | **私有绘图帧与可撤销画布手势适配**；Renderer-owned geometry and gestures, or model-owned independent readonly selection; no author or host grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-picking/baseline.json](../docs/test-results/scene3d-picking/baseline.json)、[docs/test-results/scene3d-picking/source-freeze-final.json](../docs/test-results/scene3d-picking/source-freeze-final.json)、[docs/test-results/scene3d-picking/renderer-results.json](../docs/test-results/scene3d-picking/renderer-results.json) |
+| 交互与渲染 | **独立预览的稳定选择与临时聚焦接线**；Renderer-owned geometry and gestures, or model-owned independent readonly selection; no author or host grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-picking/baseline.json](../docs/test-results/scene3d-picking/baseline.json)、[docs/test-results/scene3d-picking/source-freeze-final.json](../docs/test-results/scene3d-picking/source-freeze-final.json)、[docs/test-results/scene3d-picking/renderer-results.json](../docs/test-results/scene3d-picking/renderer-results.json) |
+
+平台：Linux实际HTTP/Chrome中英日390px与SwiftShader、桌面／移动prepared纯Float32命中模块。边界：0.0.10之后未发布视图增量，保持12固定模块／28声明能力、作者格式、Rust／WASM及后端协议。；纯命中仅消费最近绘图的矩阵与CSS坐标，不读作者正文、原文范围、宿主或具体引擎。；使用相同浮动原点及实际上传矩阵，真实入口／出口表面必须在齐次裁剪内，近面不形成新几何。；最近表面遮挡优先，完全同深度按现有LEQUAL顺序选择后声明；不宣称抗锯齿与深度量化逐像素ID一致。；超过4CSSpx才旋转，返回起点仍为拖动；取消、多指、滚轮、手势中的位置／尺寸变化、模型变化及意外丢失捕获撤销旧手势；正常抬起释放保持原生双击。；渲染只通知UUID与冻结focus提示；独立预览核当前画布／适配器／文档／模型后共用选择路径。；筛选及空白点击保持当前选择；旧有效画面可查看，但其原文定位仍须宿主完整来源一致。；Chrome软件WebGL、正式应用、独立三角面参考及prepared纯VM分别记录，不提升安装／设备成熟度。。
+
+下一步：空间结构、素材和多对象创作分别推进；点击选择不构成编辑gizmo、碰撞、像素ID缓冲或新的作者规则。
+
+<a id="scene.selection_feedback3d"></a>
+### 3D稳定选择的实体边缘反馈
+
+`scene.selection_feedback3d` · 场景与构建 · 源码交付
+
+入口：列表／画布稳定UUID→只读临时选择→原实体同pass边带→原遮挡／裁剪→明确双击临时聚焦
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 交互与渲染 | **原实体单pass视觉选择及几何帧守护**；Renderer-owned display feedback and private geometric frame identity, or independent model-owned selection synchronization; no semantic or source-writing grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-selection-feedback/baseline.json](../docs/test-results/scene3d-selection-feedback/baseline.json)、[docs/test-results/scene3d-selection-feedback/source-freeze-confirmed.json](../docs/test-results/scene3d-selection-feedback/source-freeze-confirmed.json)、[docs/test-results/scene3d-selection-feedback/source-phase-confirmation.json](../docs/test-results/scene3d-selection-feedback/source-phase-confirmation.json) |
+| 交互与渲染 | **独立预览的稳定选择反馈同步与三语说明**；Renderer-owned display feedback and private geometric frame identity, or independent model-owned selection synchronization; no semantic or source-writing grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-selection-feedback/baseline.json](../docs/test-results/scene3d-selection-feedback/baseline.json)、[docs/test-results/scene3d-selection-feedback/source-freeze-confirmed.json](../docs/test-results/scene3d-selection-feedback/source-freeze-confirmed.json)、[docs/test-results/scene3d-selection-feedback/source-phase-confirmation.json](../docs/test-results/scene3d-selection-feedback/source-phase-confirmation.json) |
+
+平台：Linux实际HTTP/Chrome中英日390px与SwiftShader、桌面／移动prepared实际copiedrenderer＋注入GLspy。边界：0.0.10之后未发布视图增量；十二模块／28声明能力、原文作者格式、Rust／WASM、宿主和后端保持。；原实体片元着色通过局部面坐标和导数辨识真实边缘；双tone不修改作者颜色或几何。；单一原实体pass，Float32矩阵、LEQUAL深度和声明顺序保持；没有对角线、裁剪cap、膨胀几何或透视通道。；几何完全一致的私有反馈重绘保留tap.frame，普通重绘、模型、相机、尺寸和分配变化仍撤销旧资格。；独立GUI selected仍为唯一选择事实源；可选setter仅消费UUID/null，重复值不重绘，不取得写入或Save资格。；过滤、Reset、lastvalid画面保持选择；刷新重排／删除身份按原选择守护，原文定位仍须完整来源一致。；相关442/renderer67/UI196/独立23/portable298与真实Chrome33分别记录，重叠计数不相加。；首次浏览器近裁剪错误属于producer假设，初败与完整脚本保持；最终两harness变化由source phase明确绑定。；导数线宽近似；极细几何不保证内部可辨，隐藏对象通过列表／声明／聚焦确认；不宣称像素ID、安装或设备验收。。
+
+下一步：空间结构、模型素材与作者批次继续各自推进；本反馈不构成gizmo、层级、材质或统一场景事务。
+
+<a id="scene.translation_authoring3d"></a>
+### 3D多对象原子整体移动
+
+`scene.translation_authoring3d` · 场景与构建 · 源码交付
+
+入口：独立多选／偏移→Rust一次计算校验→完整候选审阅→当前原文草稿→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **原子共同偏移与保真位置数字补丁**；Independent native atomic semantic, accessor-safe optional bridge, privately branded proposal, isolated UI or source host; explicit port and draft ownership, no renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-translation-authoring/baseline.json](../docs/test-results/scene3d-translation-authoring/baseline.json)、[docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json) |
+| 可移植 JS 语义 | **可选translation桥接与完整回执数字词元见证**；Independent native atomic semantic, accessor-safe optional bridge, privately branded proposal, isolated UI or source host; explicit port and draft ownership, no renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-translation-authoring/baseline.json](../docs/test-results/scene3d-translation-authoring/baseline.json)、[docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json) |
+| 可移植 JS 语义 | **独立私有多对象提案与来源摘要准备**；Independent native atomic semantic, accessor-safe optional bridge, privately branded proposal, isolated UI or source host; explicit port and draft ownership, no renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-translation-authoring/baseline.json](../docs/test-results/scene3d-translation-authoring/baseline.json)、[docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json) |
+| 交互与渲染 | **独立多选偏移表单与三语完整候选审批**；Independent native atomic semantic, accessor-safe optional bridge, privately branded proposal, isolated UI or source host; explicit port and draft ownership, no renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-translation-authoring/baseline.json](../docs/test-results/scene3d-translation-authoring/baseline.json)、[docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json) |
+| 交互与渲染 | **第十三模块独立端口与共享最后草稿守护**；Independent native atomic semantic, accessor-safe optional bridge, privately branded proposal, isolated UI or source host; explicit port and draft ownership, no renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-translation-authoring/baseline.json](../docs/test-results/scene3d-translation-authoring/baseline.json)、[docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json)、[docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json](../docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json) |
+
+平台：Linux实际HTTP/Chrome中英日390px与SwiftShader、desktop/mobile prepared标准VM纯入口与隔离端口。边界：0.0.10之后未发布增量；十三固定模块／29声明能力，scene3d schema与后端、原四域、renderer保持。；1–128个现有不同UUID，共同XYZ偏移各轴±200000，全部最终position各轴±100000。；一份原model/CST合并位置数字词元，完整最终原文≤128KiB；任一失败无部分移动，目标与路径按sourceorder。；五字段来源、本域私有品牌、完整before/afterObjects与候选；复制／另外四域品牌不能转移审批。；独立UI选择不借preview选择；检索保持隐藏目标，zero或全部舍入无净变化不形成审批。；原文／表单／query／owner／关闭撤销approval；三digest与最后会话守护，完整内存write一次，Save继续基线冲突。；全应用、Rust、portable和真实Chrome分别记录，重叠测试不相加；真实Save与Conflict只在disposable workspace。；标准VM只证明实际copied模块，不取得Node/DOM/fetch/process；Chrome软件GPU与设备／安装交付分开。。
+
+下一步：空间结构、模型素材、批次旋转缩放和统一历史仍分别设计；本域不构成层级、gizmo或跨文件提交。
+
+<a id="scene.alignment_authoring3d"></a>
+### 3D多对象参照轴位置对齐
+
+`scene.alignment_authoring3d` · 场景与构建 · 源码交付
+
+入口：独立多选／所选参照／世界轴→Rust原子位置词元补丁→完整审阅→当前原文草稿→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **明确所选参照的原子世界轴位置数字补丁**；Independent native position semantics, optional accessor-safe receipt bridge, sixth private proposal, explicit UI or guarded source-host port. Authored world-axis reference only; no renderer, bounding-box, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-alignment-authoring/baseline.json](../docs/test-results/scene3d-alignment-authoring/baseline.json)、[docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json](../docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json)、[docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json](../docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json) |
+| 可移植 JS 语义 | **独立alignment可选桥接与完整位置词元回执见证**；Independent native position semantics, optional accessor-safe receipt bridge, sixth private proposal, explicit UI or guarded source-host port. Authored world-axis reference only; no renderer, bounding-box, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-alignment-authoring/baseline.json](../docs/test-results/scene3d-alignment-authoring/baseline.json)、[docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json](../docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json)、[docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json](../docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json) |
+| 可移植 JS 语义 | **第六私有对齐提案与五字段来源摘要准备**；Independent native position semantics, optional accessor-safe receipt bridge, sixth private proposal, explicit UI or guarded source-host port. Authored world-axis reference only; no renderer, bounding-box, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-alignment-authoring/baseline.json](../docs/test-results/scene3d-alignment-authoring/baseline.json)、[docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json](../docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json)、[docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json](../docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json) |
+| 交互与渲染 | **独立多选参照轴表单与三语完整候选审批**；Independent native position semantics, optional accessor-safe receipt bridge, sixth private proposal, explicit UI or guarded source-host port. Authored world-axis reference only; no renderer, bounding-box, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-alignment-authoring/baseline.json](../docs/test-results/scene3d-alignment-authoring/baseline.json)、[docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json](../docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json)、[docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json](../docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json) |
+| 交互与渲染 | **第十四模块明确来源端口与最后整份草稿守护**；Independent native position semantics, optional accessor-safe receipt bridge, sixth private proposal, explicit UI or guarded source-host port. Authored world-axis reference only; no renderer, bounding-box, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-alignment-authoring/baseline.json](../docs/test-results/scene3d-alignment-authoring/baseline.json)、[docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json](../docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json)、[docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json](../docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json) |
+
+平台：Linux隔离副本实际HTTP/Chrome三语390px与SwiftShader、desktop/mobile prepared标准VM与注入端口。边界：0.0.10之后未发布增量；十四固定模块／30声明能力，作者schema、预览渲染、后端及原五创作域保持。；2–128个现有不同小写UUID，参照必须由用户明确指定且属于所选；axis只接受作者世界x/y/z。；直接设置为原参照对象该轴position坐标，不做差值累加、AABB、旋转包围盒、表面或视角对齐；不改其他轴、尺寸、旋转或身份。；同份原model/CST合并净变化位置数字词元，完整原文与最终原文各≤128KiB；目标／路径按sourceorder，不净变的指数／负零词元保持。；独立可选ABI仅依赖parse；第六私有提案品牌与五字段来源、完整before/afterObjects绑定；克隆及原五域提案不能借用审批。；独立UI不借预览选择或相机；检索保持隐藏目标／明确参照，撤销参照不会自动重选，原文／表单／query／关闭／owner变更撤销approval。；异步摘要前捕获来源与意图，宿主重核会话与整份候选并仅一次写内存；普通Save继续拥有磁盘、基线和冲突权威。；本轮全应用／native／WASM／prepared／真实Chrome分证，实际测试在隔离副本及临时作品执行；源码写回另由具体审阅记录确认，不提高安装／设备成熟度。；标准VM无Node/DOM/fetch/process，只取得注入DTO/hash与fakeGL端口；Chrome为SwiftShader软件WebGL，不作硬件GPU、Android或已安装版验收。。
+
+下一步：旋转包围盒／表面对齐、批量复制、空间层级、模型素材、gizmo与统一历史仍分别设计，不以位置坐标对齐冒充几何布局。
+
+<a id="scene.distribution_authoring3d"></a>
+### 3D多对象单轴位置等距分布
+
+`scene.distribution_authoring3d` · 场景与构建 · 源码交付
+
+入口：独立多选／作者世界轴→原坐标排序与固定两端→Rust原子位置词元补丁→完整审阅→当前原文草稿→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **固定两端并验证精度的原子等距位置数字补丁**；Independent native equal-gap position semantics, strict binary64 representability and fixed endpoints, optional complete receipt bridge, seventh private proposal, explicit UI or guarded source-host port. No geometry, renderer, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-distribution-authoring/baseline.json](../docs/test-results/scene3d-distribution-authoring/baseline.json)、[docs/test-results/scene3d-distribution-authoring/source-hashes-final.json](../docs/test-results/scene3d-distribution-authoring/source-hashes-final.json)、[docs/test-results/scene3d-distribution-authoring/source-freeze-final.json](../docs/test-results/scene3d-distribution-authoring/source-freeze-final.json) |
+| 可移植 JS 语义 | **独立distribution可选桥接与双顺序完整词元回执见证**；Independent native equal-gap position semantics, strict binary64 representability and fixed endpoints, optional complete receipt bridge, seventh private proposal, explicit UI or guarded source-host port. No geometry, renderer, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-distribution-authoring/baseline.json](../docs/test-results/scene3d-distribution-authoring/baseline.json)、[docs/test-results/scene3d-distribution-authoring/source-hashes-final.json](../docs/test-results/scene3d-distribution-authoring/source-hashes-final.json)、[docs/test-results/scene3d-distribution-authoring/source-freeze-final.json](../docs/test-results/scene3d-distribution-authoring/source-freeze-final.json) |
+| 可移植 JS 语义 | **第七私有分布提案与五字段来源摘要准备**；Independent native equal-gap position semantics, strict binary64 representability and fixed endpoints, optional complete receipt bridge, seventh private proposal, explicit UI or guarded source-host port. No geometry, renderer, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-distribution-authoring/baseline.json](../docs/test-results/scene3d-distribution-authoring/baseline.json)、[docs/test-results/scene3d-distribution-authoring/source-hashes-final.json](../docs/test-results/scene3d-distribution-authoring/source-hashes-final.json)、[docs/test-results/scene3d-distribution-authoring/source-freeze-final.json](../docs/test-results/scene3d-distribution-authoring/source-freeze-final.json) |
+| 交互与渲染 | **独立多选世界轴表单与原生排序三语候选审批**；Independent native equal-gap position semantics, strict binary64 representability and fixed endpoints, optional complete receipt bridge, seventh private proposal, explicit UI or guarded source-host port. No geometry, renderer, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-distribution-authoring/baseline.json](../docs/test-results/scene3d-distribution-authoring/baseline.json)、[docs/test-results/scene3d-distribution-authoring/source-hashes-final.json](../docs/test-results/scene3d-distribution-authoring/source-hashes-final.json)、[docs/test-results/scene3d-distribution-authoring/source-freeze-final.json](../docs/test-results/scene3d-distribution-authoring/source-freeze-final.json) |
+| 交互与渲染 | **第十五模块明确来源端口与最后整份草稿守护**；Independent native equal-gap position semantics, strict binary64 representability and fixed endpoints, optional complete receipt bridge, seventh private proposal, explicit UI or guarded source-host port. No geometry, renderer, backend or Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-distribution-authoring/baseline.json](../docs/test-results/scene3d-distribution-authoring/baseline.json)、[docs/test-results/scene3d-distribution-authoring/source-hashes-final.json](../docs/test-results/scene3d-distribution-authoring/source-hashes-final.json)、[docs/test-results/scene3d-distribution-authoring/source-freeze-final.json](../docs/test-results/scene3d-distribution-authoring/source-freeze-final.json) |
+
+平台：Linux隔离副本实际HTTP/Chrome三语390px与SwiftShader、desktop/mobile prepared标准VM与注入端口。边界：0.0.10之后未发布增量；十五固定模块／31声明能力，作者schema、预览渲染、后端及原六创作域保持。；显式选择3–128个不同现有小写UUID，axis只接受作者世界x/y/z；原轴坐标数值升序，重合坐标包括±0均以原声明顺序打破平局。；两端保留原坐标与原数字词元；中间位置严格按binary64 start+(end-start)*(i/(n-1))先比例、乘跨度、再加起点，不作AABB、尺寸、表面、屏幕或透视分布。；零跨度合法原文无净变化；正跨度完整计算序列包括两端必须有限、在position边界内且严格递增，精度不足整批拒绝，不把折叠或重叠默认为成功。；一份原model/CST合并所有净变化位置数字词元，完整原文与最终候选各≤128KiB；instanceIds及净路径按sourceorder，orderedInstanceIds另表原数值排序；其他轴、UUID、旋转、尺寸、环境和词法保持。；独立可选ABI只依赖parse；第七私有品牌与五字段来源及完整before/afterObjects绑定；六个原域品牌和克隆不能借用审批。；独立UI不借预览选择或临时相机；检索保持隐藏目标，不在UI计算分布；表单、query、原文、归属、旧行事件和关闭改变撤销approval，异步摘要前捕获全部来源。；宿主重核会话与整份候选，仅一次写内存草稿；普通Save仍掌管磁盘、基线及外部冲突，原世界查询及后端不授予新编辑权。；本轮full/native/WASM/copied/实际Chrome分别记录，测试在隔离副本及临时作品执行；实际源码写回由独立记录确认，无新commit/push/安装或设备交付。；标准VM无Node/DOM/fetch/process，只有显式DTO/hash/fakeGL端口；Chrome使用SwiftShader软件WebGL，不宣称Android或硬件GPU验收。。
+
+下一步：批量复制、几何包围盒布局、空间层级、模型素材、gizmo和跨视图统一历史仍需分别设计，不以作者位置等距分布代替。
+
+<a id="scene.copy_authoring3d"></a>
+### 3D多对象原文保真批量复制
+
+`scene.copy_authoring3d` · 场景与构建 · 源码交付
+
+入口：独立选择来源与新UUID／共同XYZ位移→Rust原子保真副本→完整审阅→当前原文草稿→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **原子保真副本、身份与最终场景预算**；Independent atomic CST copying, complete slot-aware receipt bridge, eighth private proposal, explicit UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-copy-authoring/baseline.json](../docs/test-results/scene3d-copy-authoring/baseline.json)、[docs/test-results/scene3d-copy-authoring/source-hashes-final.json](../docs/test-results/scene3d-copy-authoring/source-hashes-final.json)、[docs/test-results/scene3d-copy-authoring/source-freeze-final.json](../docs/test-results/scene3d-copy-authoring/source-freeze-final.json) |
+| 可移植 JS 语义 | **独立copy桥接与槽位保真完整回执见证**；Independent atomic CST copying, complete slot-aware receipt bridge, eighth private proposal, explicit UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-copy-authoring/baseline.json](../docs/test-results/scene3d-copy-authoring/baseline.json)、[docs/test-results/scene3d-copy-authoring/source-hashes-final.json](../docs/test-results/scene3d-copy-authoring/source-hashes-final.json)、[docs/test-results/scene3d-copy-authoring/source-freeze-final.json](../docs/test-results/scene3d-copy-authoring/source-freeze-final.json) |
+| 可移植 JS 语义 | **第八私有复制提案及五字段摘要准备**；Independent atomic CST copying, complete slot-aware receipt bridge, eighth private proposal, explicit UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-copy-authoring/baseline.json](../docs/test-results/scene3d-copy-authoring/baseline.json)、[docs/test-results/scene3d-copy-authoring/source-hashes-final.json](../docs/test-results/scene3d-copy-authoring/source-hashes-final.json)、[docs/test-results/scene3d-copy-authoring/source-freeze-final.json](../docs/test-results/scene3d-copy-authoring/source-freeze-final.json) |
+| 交互与渲染 | **显式UUID映射、动态容量与三语复制审阅**；Independent atomic CST copying, complete slot-aware receipt bridge, eighth private proposal, explicit UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-copy-authoring/baseline.json](../docs/test-results/scene3d-copy-authoring/baseline.json)、[docs/test-results/scene3d-copy-authoring/source-hashes-final.json](../docs/test-results/scene3d-copy-authoring/source-hashes-final.json)、[docs/test-results/scene3d-copy-authoring/source-freeze-final.json](../docs/test-results/scene3d-copy-authoring/source-freeze-final.json) |
+| 交互与渲染 | **第十六模块独立来源及完整草稿最终守护**；Independent atomic CST copying, complete slot-aware receipt bridge, eighth private proposal, explicit UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-copy-authoring/baseline.json](../docs/test-results/scene3d-copy-authoring/baseline.json)、[docs/test-results/scene3d-copy-authoring/source-hashes-final.json](../docs/test-results/scene3d-copy-authoring/source-hashes-final.json)、[docs/test-results/scene3d-copy-authoring/source-freeze-final.json](../docs/test-results/scene3d-copy-authoring/source-freeze-final.json) |
+
+平台：Linux隔离HTTP/Chrome三语390px与SwiftShader、desktop/mobile准备副本标准VM。边界：0.0.10之后未发布增量；十六固定模块／32声明能力。作者schema、预览、后端及原七创作域保持。；每个不同现有来源UUID对应独立新UUID，规范映射和追加副本按原声明顺序；全部原声明及其文本原样保留。；请求1–127对映射，实际同时受来源数量和最终128对象预算限制，最大成功批次64；不截断超量选择。；共同XYZ按binary64逐分量相加，偏移每轴±200000，副本最终位置每轴±100000；名称、旋转、尺寸和颜色继承。零偏移也创建新身份，可能重叠。；复制整段来源CST，仅替换新UUID及净变化位置数字词元。单次固定尾部插入和完整最终解析／128KiB预算，任一目标无效整批拒绝。；独立可选ABI与第八私有提案品牌，五字段来源、前后对象诊断和完整回执绑定。七旧域和克隆不能借用审批。；桥接以原生model／sourceLocations及联合字符串数字词元见证定位身份与位置槽位；名称等于UUID或旋转等于位置也不能授权修改别的槽位。；独立来源端口只改草稿；查询、表单、映射、来源、取消、旧行和异步归属变化撤销审批，普通Save处理持久化及冲突。；全3752、Rust290、准备副本362及真实Chrome40流程在隔离副本完成；实际工程写回单独记录，不提高安装、设备或硬件GPU成熟度。。
+
+下一步：包围盒布局、层级、模型资源、gizmo和跨视图统一历史需分别设计。
+
+<a id="scene.removal_authoring3d"></a>
+### 3D多对象原文保真原子批量移除
+
+`scene.removal_authoring3d` · 场景与构建 · 源码交付
+
+入口：显式来源选择→Rust一次原子移除→待删除与全部保留声明审阅→当前原文草稿→普通保存／冲突
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **原CST连续run原子移除与完整来源预算**；Independent atomic CST removal, exact UTF16 complete-cut receipt bridge, ninth private proposal, explicit survivor-aware UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-removal-authoring/baseline.json](../docs/test-results/scene3d-removal-authoring/baseline.json)、[docs/test-results/scene3d-removal-authoring/core-results.json](../docs/test-results/scene3d-removal-authoring/core-results.json)、[docs/test-results/scene3d-removal-authoring/core-fmt-initial.log](../docs/test-results/scene3d-removal-authoring/core-fmt-initial.log) |
+| 可移植 JS 语义 | **独立removal桥接与UTF16完整切除回执见证**；Independent atomic CST removal, exact UTF16 complete-cut receipt bridge, ninth private proposal, explicit survivor-aware UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-removal-authoring/baseline.json](../docs/test-results/scene3d-removal-authoring/baseline.json)、[docs/test-results/scene3d-removal-authoring/core-results.json](../docs/test-results/scene3d-removal-authoring/core-results.json)、[docs/test-results/scene3d-removal-authoring/core-fmt-initial.log](../docs/test-results/scene3d-removal-authoring/core-fmt-initial.log) |
+| 可移植 JS 语义 | **第九私有移除提案与五字段摘要重算守护**；Independent atomic CST removal, exact UTF16 complete-cut receipt bridge, ninth private proposal, explicit survivor-aware UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-removal-authoring/baseline.json](../docs/test-results/scene3d-removal-authoring/baseline.json)、[docs/test-results/scene3d-removal-authoring/core-results.json](../docs/test-results/scene3d-removal-authoring/core-results.json)、[docs/test-results/scene3d-removal-authoring/core-fmt-initial.log](../docs/test-results/scene3d-removal-authoring/core-fmt-initial.log) |
+| 交互与渲染 | **显式选择、保留对象数量与三语移除完整审阅**；Independent atomic CST removal, exact UTF16 complete-cut receipt bridge, ninth private proposal, explicit survivor-aware UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-removal-authoring/baseline.json](../docs/test-results/scene3d-removal-authoring/baseline.json)、[docs/test-results/scene3d-removal-authoring/core-results.json](../docs/test-results/scene3d-removal-authoring/core-results.json)、[docs/test-results/scene3d-removal-authoring/core-fmt-initial.log](../docs/test-results/scene3d-removal-authoring/core-fmt-initial.log) |
+| 交互与渲染 | **第十七模块独立来源与当前草稿最终归属守护**；Independent atomic CST removal, exact UTF16 complete-cut receipt bridge, ninth private proposal, explicit survivor-aware UI or guarded source-host port. No renderer/backend/Save grant. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-removal-authoring/baseline.json](../docs/test-results/scene3d-removal-authoring/baseline.json)、[docs/test-results/scene3d-removal-authoring/core-results.json](../docs/test-results/scene3d-removal-authoring/core-results.json)、[docs/test-results/scene3d-removal-authoring/core-fmt-initial.log](../docs/test-results/scene3d-removal-authoring/core-fmt-initial.log) |
+
+平台：Linux隔离HTTP／Chrome三语390px与软件WebGL实测、desktop／mobile准备副本标准VM。边界：0.0.10之后未发布增量；十七固定模块／33声明能力。严格3D作者schema、旧八创作域、只读预览和后端语义保持。；精确四字段请求 scene3d.removeObjects；选择1–128个不同现有小写UUID，必须至少保留一个对象，实际最大成功移除127。全选、重复、未知或空选择整批拒绝，不截断选择。；完整原文解析和128KiB／128对象预算优先于移除意图；删除无效对象不能修复无效原文，超预算来源不能靠删除绕过预算。；复用原CST连续run分隔符切除，一组原区间、一次拼接、一次完整最终解析；保留声明及原文区间外字节不变，幸存对象顺序、身份、名称、变换、颜色和场景环境保持。；独立可选ABI viento_core_scene3d_removal_version v1；四字段回执规范instanceIds按原声明顺序，changedPaths用原objects索引，而非删除后索引。；桥接以原生model和UTF16 sourceLocations独立复现原文删除区间，要求完整afterContent相等，再要求完整过滤后model相等；无需引入新JSON作者语义解析器。；第九WeakSet私有品牌与精确十一字段深冻结提案；五字段来源在异步摘要前捕获，摘要后重算完整候选。旧八品牌十六方向及序列化克隆不能借用移除审批。；独立document来源端口只改草稿，默认不选择；查询只过滤列表，隐藏已选对象仍参与。全选保留完整选择并解释必须保留一对象，raw checkbox/query/source与旧行变化撤销审批。；已记录307 Rust（新17）、新增桥接与纯提案24、旧核心作者245、30 CLI／WASM向量、独立16及准备副本378项。HTTP／Chrome报告按各自来源SHA和当轮流程判定；最终来源刷新与全链复验由收尾记录，不把准备副本或软件GPU当成安装／设备验收。。
+
+下一步：包围盒布局、层级、模型资源、gizmo和跨视图统一历史需分别设计。
+
+<a id="scene.framing3d"></a>
+### 3D全场景临时取景
+
+`scene.framing3d` · 场景与构建 · 源码交付
+
+入口：当前有效预览模型→全部旋转角点包围→实际画布比例临时相机→三语取景／重置
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 交互与渲染 | **旋转方块全景包围与临时相机纯数学**；View-only full loaded scene framing; no author state, source-write port or backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-scene-framing/regression.json](../docs/test-results/scene3d-scene-framing/regression.json)、[docs/test-results/scene3d-scene-framing/browser-verified/browser.json](../docs/test-results/scene3d-scene-framing/browser-verified/browser.json)、[docs/test-results/scene3d-scene-framing/legacy-browser/browser.json](../docs/test-results/scene3d-scene-framing/legacy-browser/browser.json) |
+| 交互与渲染 | **全景GPU取景、手势清理与绘制失败反馈**；View-only full loaded scene framing; no author state, source-write port or backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-scene-framing/regression.json](../docs/test-results/scene3d-scene-framing/regression.json)、[docs/test-results/scene3d-scene-framing/browser-verified/browser.json](../docs/test-results/scene3d-scene-framing/browser-verified/browser.json)、[docs/test-results/scene3d-scene-framing/legacy-browser/browser.json](../docs/test-results/scene3d-scene-framing/legacy-browser/browser.json) |
+| 交互与渲染 | **现有只读预览的可选全景入口与三语状态**；View-only full loaded scene framing; no author state, source-write port or backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-scene-framing/regression.json](../docs/test-results/scene3d-scene-framing/regression.json)、[docs/test-results/scene3d-scene-framing/browser-verified/browser.json](../docs/test-results/scene3d-scene-framing/browser-verified/browser.json)、[docs/test-results/scene3d-scene-framing/legacy-browser/browser.json](../docs/test-results/scene3d-scene-framing/legacy-browser/browser.json) |
+
+平台：本机浏览器和桌面源码；实际Chrome显式ANGLE/SwiftShader，默认headless合成异常单独保留、桌面与移动准备副本的纯模块；设备未验收。边界：完整当前有效预览的1–128个方块参与，不受搜索、隐藏选择或当前所选对象影响。；纯数学保守包围、GPU适配和可选界面方法分开；17模块／33能力，无新作者ABI、宿主端口或引擎协议。；取景保持当前观看方向与FOV，临时裁剪及缩放范围独立；重置与成功刷新恢复作者相机。；无效草稿继续查看旧有效模型且保留诊断；取景不会授权原文定位、草稿应用或普通保存。；实际绘图失败清除命中资格并报告绘制中断，校验拒绝不修改相机；细小远物体不承诺像素可辨识。；只验证源码、复制资源与软件WebGL，不提升安装、设备或硬件GPU验收。。
+
+下一步：标准方向需要独立相机上方向及极点导航约定；模型素材、空间层级另行接入。
 
 ## 旧功能链路映射
 

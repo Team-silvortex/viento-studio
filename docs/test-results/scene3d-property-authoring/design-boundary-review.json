@@ -1,0 +1,38 @@
+{
+  "format": "viento-scene3d-property-design-boundary-review",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T14:12:14.572674+00:00",
+  "scope": "Read-only contract recommendation; implementation has not been independently tested in this report.",
+  "reviewedSources": {
+    "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+    "engine/scene3d-environment.mjs": "5045caf7f73038b5fe30f672c01348430caff1f8cc6cf825407797139f3637c0",
+    "engine/studio-core.mjs": "489506353e962d10f42fdf6e65cc5088cb7eab256079115ca0a73294b788dc19",
+    "crates/viento-studio-core/src/scene3d.rs": "d17178daad94bd5e9f98951565d8cf5a479c46948e2836b088d9515827559a79",
+    "web/modules/app-runtime.js": "438a45a4edaa3abb364b9170870e4b44029e8d09ae565aa5cabef3dad67cc873",
+    "web/modules/app-studio-system.js": "6075f1e7a70d58de4a50d3089d5a298f6c5aa0d3eee1f88675ede721d695c722"
+  },
+  "recommendedContract": {
+    "operation": "scene3d.patchProperties",
+    "identity": "Canonical lowercase stable UUID targeting exactly one existing object; no object replacement or array action.",
+    "values": "Nonempty exact record containing name and/or color; strings only. No null, reset, primitive, transforms, visibility, material, hierarchy or unknown keys.",
+    "name": "Existing schema: 1–256 Unicode codepoints. Preserve exact author string, including whitespace; no trim or normalization.",
+    "color": "Existing schema # followed by six hexadecimal digits; case retained and a case change is explicit author intent.",
+    "noop": "Decoded string equality preserves prior escaped string token. Native/bridge original bytes plus []; pure authoring refuses unchanged intent and no approval is created.",
+    "paths": "Actual net changes, fixed logical order name then color at the existing object index.",
+    "atomic": "Validate complete original and final scene, including 128 KiB UTF-8 budget, before exposing any candidate.",
+    "rawText": "Only selected name/color string value tokens may change. All key tokens, number tokens, other string tokens, trivia, BOM/CRLF, object ordering and stable UUID bytes remain exact.",
+    "provenance": "Independent optional capability and separate private proposal brand; snapshot exact shared five-field source DTO before await, bind all proposal values and selected object UUID, repeat native patch before applying.",
+    "authority": "Reuse shared in-memory application guards; keep ordinary Save preconditions/disk cache/baseline/cursor behavior. Existing read-only preview remains three-field source API and never receives applyDraft.",
+    "capabilityFailure": "Only new property entry is unavailable; existing preview and transform/object/environment authoring remain usable."
+  },
+  "meaningfulChecks": [
+    "Escaped name/color keys and values, quotes/backslashes/non-BMP names, BOM and CRLF with raw other objects/environment and numeric exponents preserved.",
+    "Net noop and explicit color case-only intent; 256 vs 257 Unicode codepoints; color/null/unknown UUID/extra-field refusal.",
+    "Name+color atomic final budget including shrink+growth and original invalid source refusal.",
+    "Four proposal brands pairwise isolation and cloned proposal refusal.",
+    "All three shared application digest awaits retain owner/path/token/content/load/document/baseline/version guards; no Save/network/render/tool call.",
+    "Silent object selection or raw string mutation after review revokes approval; late completion cannot mutate replacement editor.",
+    "Final source/history/author/tool/atlas baseline preservation; native/WASM parity on actual frozen core."
+  ],
+  "openFindings": []
+}

@@ -1,0 +1,100 @@
+{
+  "format": "viento-scene3d-transform-seam-review",
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T12:19:03.550386+00:00",
+  "mode": "read-only design review before implementation",
+  "baseline": {
+    "path": "docs/test-results/scene3d-transform-authoring/baseline.json",
+    "sha256": "ed501bb789b47b19125561949cf3651d19c45d2ef6705b35b08f5baa90c7f002",
+    "head": "3a91e84a5cd543ebb4a6f416f727c544cf9ff083",
+    "version": "0.0.10",
+    "sourceFiles": 677,
+    "historicalFiles": 3688,
+    "authorFiles": 41,
+    "tools": 4
+  },
+  "reviewedBaselineSources": {
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.mjs": "71fe6113d4b93444410d363cd742ab61daaeb028b0fd976970817a3fe0beb962",
+    "engine/studio-modules.mjs": "c7a8bf1d2bfe8fd92421924054f2c3c625eeee0aa67d0874e94a4f7840d62d20",
+    "web/modules/app-scene3d-preview.js": "c09771f9b758a7e1786ad9de4d01e0337113769826875603c0782003a1256050",
+    "web/modules/app-studio-system.js": "4887c56a0e12e859ad050a47ccaacedc59fcf8ac824af4263c437ec8a479ac5e",
+    "web/modules/app-runtime.js": "1bf1a0a07606fddce68a6ccef24fb6d00074081252d57bd94e38378725a71406",
+    "engine/scene-authoring-workflow.mjs": "577593157ec5a1924170ec9fc3e5e071e04dd2df2237231372c52e6526d2d10d",
+    "engine/scene-authoring-candidate.mjs": "7f31ae6c32878d4dd410e0e878e6bab12da26437d0478acfbea597fa321da7b4"
+  },
+  "existingSeams": [
+    {
+      "path": "web/modules/app-scene3d-preview.js",
+      "contract": "setupScene3DPreview({getContext,getSource})",
+      "authority": "read only; camera gestures are not author transforms",
+      "reuse": "read owner/token eligibility and stale-load suppression only"
+    },
+    {
+      "path": "web/modules/app-runtime.js",
+      "contract": "scene3DSourceContext/getScene3DSourceSnapshot",
+      "authority": "current JSON source-editor snapshot; path and token bound to editor load/draft epochs",
+      "reuse": "new independent read snapshot may add validated baseline revision; do not expand old preview authority"
+    },
+    {
+      "path": "web/modules/app-runtime.js",
+      "contract": "applySceneCompositionSourceDraft/ordinary save",
+      "authority": "owns active source document and maintains disk baseline for later save preconditions",
+      "reuse": "same in-memory mutation pattern and epoch guards; separate 3D prepare/domain"
+    },
+    {
+      "path": "web/modules/app-studio-system.js",
+      "contract": "private domain ports and controllers Map",
+      "authority": "sibling modules do not receive controllers/source mutation closures",
+      "reuse": "separate optional scene3d authoring injection/module; old preview ports remain read-only"
+    },
+    {
+      "path": "engine/scene3d.mjs",
+      "contract": "parseScene3DSource/createScene3DPlan",
+      "authority": "strict native-backed source semantics, complete model and UTF-16 object ranges",
+      "reuse": "validate complete before/final source without renderer/backend dependencies"
+    }
+  ],
+  "recommendedContract": {
+    "selection": "single existing instanceId in current source; no World object/scene registry dependency",
+    "values": "nonempty exact subset of position, rotationDegrees, size; each an exact dense finite numeric triple with existing scene3d bounds",
+    "proposal": "sourcePath, baseSourceRevision, sourceRevision, instanceId, values, afterContent, changedPaths; exact shape decided by implementation owner",
+    "patch": "numeric tokens only; preserve BOM/CRLF/escaped keys/unmodified lexemes/order/identities/camera/light/color/name/other objects",
+    "noOp": "semantic same values preserve original byte sequence; only net changed fields appear, full no-op gets no approval",
+    "prepare": "detach before await, recompute current digest, native patch and complete final parse; require exact candidate bytes/ordered net paths",
+    "apply": "guard doc identity/loadToken/draftEpoch/source path/baseline/version/raw content/external ownership at every await and immediately before sole source-editor mutation",
+    "save": "keep baseline and cached disk content untouched, mark dirty, ordinary Save detects external disk conflicts",
+    "capability": "independent edit ABI; absent or unsupported transform disables only new action",
+    "receipt": "strict approved intent/owner binding, reject forged/cross-path/mutated/late response; allow only exact successful write to advance source token"
+  },
+  "mustReject": [
+    "empty or unknown field values",
+    "wrong-length/sparse/accessor/nonfinite/out-of-bounds triple",
+    "missing/unknown/duplicate object identity",
+    "whole-source malformed or unrelated invalid object/camera/light",
+    "unexpected source path or base/current revision",
+    "afterContent or changedPaths not equal to native recomputation",
+    "request or nested proposal mutations across await",
+    "same path reloaded with different document/load owner",
+    "late open/review/apply after close/reset/selection or source edit",
+    "result not tied to exact approved proposal and owner"
+  ],
+  "meaningfulTestTargets": [
+    "semantic noop preserving 1e0/-0 tokens and whitespace",
+    "BOM/CRLF/non-BMP/escaped property keys plus stable UTF-16 ranges",
+    "one field/component changed; all other source bytes untouched",
+    "mixed three-field atomically rejected when any candidate violates full model",
+    "old parse/preview/2D/generic text with new capability absent and unsupported",
+    "late close/source mutation/document reload and overlapping request races",
+    "tampered candidate bytes/paths/receipt and nested caller mutation",
+    "apply draft then ordinary Save/reopen; disk edit triggers normal conflict without overwriting",
+    "read-only preview never receives authoring apply closure or auto-save authority",
+    "browser module graph stays Node/DOM-independent in pure layer"
+  ],
+  "openFindings": [],
+  "limits": [
+    "Design recommendations do not certify implementation or completed tests.",
+    "No build, browser, backend, device or installed-package validation was run for this baseline review.",
+    "Source-map and generated-path observations confer no cleanup or execution permissions."
+  ]
+}
