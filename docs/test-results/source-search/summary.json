@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-13T05:36:04.342418+00:00",
+  "baselineCommit": "d7e847937c6c86c1df2ae6661485e11e9c36f4e6",
+  "version": "0.1.1",
+  "delivery": "working-tree",
+  "feature": "authoring.source-search",
+  "sourceFiles": {
+    "engine/source-search.mjs": "6ae79219b7dfcf5d1bb4248933159151ad1e11b2b307c9f105aa728cb11dd1a9",
+    "engine/source-diagnostic.mjs": "5060a7cddc502fb3e4a664914ec01257afb299ffa2ef9ce6fbc11812ac492e90",
+    "engine/source-position.mjs": "204a0b68649937a0fffd552fbe5a384058c42f51447884b73023871be6f15cc3",
+    "engine/source-draft.mjs": "aa67dd9d5829b0f2fb3ac46388745dfe271c02e49bc6d079bb753e55b5864c74",
+    "web/modules/app-source-search.js": "ce2f78e29b37dbb86f843816420e9f3e18c03f65d69c9d6b667d2da7f8eca7fd",
+    "web/source-search.css": "23bf315ff971e0a21caa3ba677123c93f371becaf2167a9605b5c54048bfa615",
+    "web/modules/app-source-diagnostic.js": "378ec9944ce4a5273253bde4d685b058ce2c56bb830331564e68a2c6747cc68a",
+    "web/source-diagnostic.css": "a828c9e3715289ea58cc3368d53f1874e1c2f357ee5c85aefa0c1bd479ed011f",
+    "web/modules/app-source-reveal.js": "7c301fce690ef928446c0503f209d215ecd5f3d5c98ef98e31ef3996e7e2fa8b",
+    "web/modules/app-source-position.js": "83cd287e97da59b7bcb97208bcf08cb5801ddd3acb2b4e3beceeddf83842e5bb",
+    "web/modules/app-runtime.js": "ed894afa3e36d8a249332a5ea849dcdbb1045d1156af2150c356d30d4d85ff2c",
+    "web/modules/app-project-build.js": "a5201cf7b8430d481b850451657f7c2b2050235602a64ea9b6e5dc7d17174a3e",
+    "web/modules/app-media-editor.js": "514c629a0baeab519313898206c52e68fe0dfd8c9cf84bf50da0765451cfcc99",
+    "web/i18n/en.js": "3ede386aa05c88e47eeaba05a74b44f83a91d5899d2c64cf86889791f38b2632",
+    "web/i18n/ja.js": "3880ce0625fc730d02410e437d60c38307296222496a8675b9da04d742538fb3",
+    "scripts/tests/source-search-smoke.mjs": "d080575dfe2dabc1ef77b25dde5e2ed14d331deb95c324317bf2f45dc4ef740b",
+    "scripts/tests/source-search.test.mjs": "d918b22b981c5a84c9a098efefcac36057cfce674e45060ddc8cd131b078f395",
+    "scripts/tests/source-search-ui.test.mjs": "b8518005c09550ee07d4f7cf3c6286e1f4751742274d1e6d577313aac6bbfd1c",
+    "scripts/tests/source-search-host.test.mjs": "5a3848c7d6fc26d0d1a0f224c3883466244feaf2cb858da5f8ed7127886876d2",
+    "scripts/tests/media-drop.test.mjs": "a603228ef9029b0f722782567ca493a3f4c9dad12a5a4c84e042ef1ed2fa0db4",
+    "scripts/tests/scene3d-navigation-source-host.test.mjs": "fb02ca29cb47bbe3bfa27b65ae4fe7b8659ed92ca705b5cc983fff6460a5a675"
+  },
+  "fullApplication": {
+    "command": "node scripts/check-project.mjs --app-only",
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "counts": {
+      "tests": 4474,
+      "pass": 4368,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 106,
+      "todo": 0
+    },
+    "syntaxFiles": 748,
+    "apiContract": true,
+    "versionConsistency": true,
+    "log": "full-final.log",
+    "sha256": "c2b6fc14d12f3fb682f85a9adc3abfde8a29b9225c1c6bb0f93935479c3daef7",
+    "scope": "106 existing environment/optional-backend skips; no Rust rerun or installed-device acceptance."
+  },
+  "focused": {
+    "coreHost": {
+      "tests": 32,
+      "pass": 32,
+      "log": "core-host-verified.log"
+    },
+    "mediaSearch": {
+      "tests": 98,
+      "pass": 98,
+      "log": "media-boundary-focused.log"
+    },
+    "overlap": "Focused checks overlap the full suite; counts are not additive."
+  },
+  "browser": {
+    "report": "browser-1791869406177/report.json",
+    "sha256": "fadf922090598d0e0dcf1f42302e884c25f8845942c05f808471fbf19431393a",
+    "name": "Chrome/154.0.8037.97",
+    "workflowGroups": 10,
+    "mediaIsolationCases": 4,
+    "fingerprints": 16,
+    "screenshots": [
+      "source-search-desktop.png",
+      "source-search-zh-CN-390.png",
+      "source-search-en-390.png",
+      "source-search-ja-390.png"
+    ],
+    "savedOnly": [
+      "documents/scenes/demo.json"
+    ],
+    "preservedBom": true,
+    "onlyCrlf": true,
+    "scope": [
+      "Actual Chrome and local HTTP editor. No installed Tauri window, mobile WebView, Android, or other desktop OS claim.",
+      "Literal source search/replacement and a static diagnostic handoff are exercised. No backend generation, engine execution, regular expressions, cross-file search or language server is claimed.",
+      "The existing source serializer retains BOM and source newline style; it does not guarantee every mixed ending inside an edited middle region remains byte-identical.",
+      "Media checks dispatch synthetic image ClipboardEvent/DragEvent through real DOM handlers, not the OS clipboard."
+    ]
+  },
+  "resources": {
+    "report": "resources.json",
+    "sha256": "b3db471060c4fa3db49581d625a7a4fa8251a558d274695c7eca0f84bb0ba202",
+    "groups": 18,
+    "installed": false
+  },
+  "catalogue": {
+    "modules": 19,
+    "declaredCapabilities": 36,
+    "functions": 111,
+    "implementations": 291,
+    "bindings": 436,
+    "cells": 1744,
+    "dependencyEdges": 287,
+    "workflows": 74
+  },
+  "findingsFixed": [
+    "IME composing search fields remain enabled while commands are gated.",
+    "Native replacement rechecks actual focus and rejects ownership changes/reentrant commands.",
+    "Replacement feedback re-translates when changing language.",
+    "Auxiliary text inputs cannot become media import targets or schedule source media parsing."
+  ],
+  "priorAttempts": {
+    "core-host.log": "Initial host fixture omitted the catalogue rebuild stub; one fixture failure retained. Corrected harness, no production save change.",
+    "full-before-media-fix.log": "4470 checks:4364 pass/106 skip; ran before final media boundary fix. Superseded by full-final.log.",
+    "browser-1791869100107/report.json": "Passed initial search flow before media isolation; screenshot framing improved later.",
+    "browser-1791869157630/report.json": "Passed search with improved narrow screenshot framing; superseded by final media-aware browser run."
+  },
+  "limitations": [
+    "Single-document literal operations only; no regex, multi-file replacement or LSP.",
+    "Native undo compatibility verified in Linux Chrome only.",
+    "No version bump, commit, push, installation or engine execution this turn.",
+    "Existing source serializer preserves BOM/newline style; mixed line endings within edited middle spans follow existing serialization."
+  ]
+}

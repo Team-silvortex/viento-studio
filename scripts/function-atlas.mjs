@@ -27,10 +27,13 @@ if (options.has('--refresh-sources') && !options.has('--write')) throw new Error
 const data = JSON.parse(await fs.readFile(dataPath, 'utf8'));
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+const hasText = value => typeof value === 'string' && value.trim().length > 0;
 const unique = (items, name) => {
+  assert(Array.isArray(items), `Expected ${name} array`);
   const result = new Map();
   for (const item of items) {
-    assert(typeof item.id === 'string' && /^[a-zA-Z0-9_.-]+$/.test(item.id), `Invalid ${name} id`);
+    assert(record(item) && typeof item.id === 'string' && /^[a-zA-Z0-9_.-]+$/.test(item.id), `Invalid ${name} id`);
     assert(!result.has(item.id), `Duplicate ${name}: ${item.id}`);
     result.set(item.id, item);
   }
@@ -104,9 +107,31 @@ for (const edge of data.dependencies) {
   const key = [edge.from, edge.to, edge.relation].join('|');
   assert(!edges.has(key), `Duplicate dependency: ${key}`); edges.add(key);
 }
+const featureReferences = (items, context, minimum = 0) => {
+  assert(Array.isArray(items) && items.length >= minimum, `${context}: expected function references array with at least ${minimum} entries`);
+  const seen = new Set();
+  for (const id of items) {
+    assert(typeof id === 'string' && axes.function.has(id), `${context}: unknown function reference ${String(id)}`);
+    assert(!seen.has(id), `${context}: duplicate function reference ${id}`);
+    seen.add(id);
+  }
+  return seen;
+};
 for (const workflow of data.workflows) {
-  assert(workflow.steps.length > 1 && workflow.boundary, `Incomplete workflow: ${workflow.id}`);
-  for (const id of workflow.steps) assert(axes.function.has(id), `Unknown workflow feature: ${id}`);
+  assert(hasText(workflow.label) && hasText(workflow.boundary), `Incomplete workflow label/boundary: ${workflow.id}`);
+  const steps = featureReferences(workflow.steps, `${workflow.id} steps`, 2);
+  // Omission means the gap review has not been recorded. An explicit empty
+  // list records no additional gaps in this review; it never implies completion.
+  if (Object.hasOwn(workflow, 'gaps')) {
+    const gaps = featureReferences(workflow.gaps, `${workflow.id} gaps`);
+    for (const id of gaps) assert(!steps.has(id), `${workflow.id}: function occurs in both steps and gaps: ${id}`);
+  }
+}
+assert(Array.isArray(data.priorities), 'Expected priorities array');
+for (const [index, priority] of data.priorities.entries()) {
+  const context = `Priority ${index + 1}`;
+  assert(record(priority) && ['label', 'reason', 'acceptance'].every(key => hasText(priority[key])), `${context}: label/reason/acceptance must be nonempty text`);
+  featureReferences(priority.functions, context, 1);
 }
 const legacy = JSON.parse(await fs.readFile(path.join(root, 'docs/function-network.json'), 'utf8')).workflows;
 const legacyCoverage = unique(data.legacyCoverage, 'legacy chain');
@@ -130,14 +155,19 @@ else {
   assert(JSON.stringify(current) === JSON.stringify(data.sourceSnapshot), 'Referenced sources/evidence changed: review the affected scores, then --write --refresh-sources');
 }
 const scoreFor = (binding, dimension) => cells.get([binding.architecture, binding.function, binding.implementation, dimension].join('|'));
-const md = value => String(value).replaceAll('|', '\\|').replaceAll('\n', ' ');
-const fileLink = file => `[${file}](../${file})`;
+const md = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+  .replace(/[\\`*_{}[\]()#+.!|]/g, '\\$&').replace(/\r\n?|\n/g, ' ');
+const fileLink = file => `[${md(file)}](../${file.split('/').map(part => encodeURIComponent(part).replace(/[!'()*]/g, character => '%' + character.charCodeAt(0).toString(16).toUpperCase())).join('/')})`;
+const functionLink = id => `[${md(axes.function.get(id).label)}](#${id})`;
+const workflowLink = workflow => `[${md(workflow.label)}](function-atlas.html#workflow=${encodeURIComponent(workflow.id)})`;
+const workflowGaps = workflow => !Object.hasOwn(workflow, 'gaps') ? '缺口尚未梳理'
+  : workflow.gaps.length ? workflow.gaps.map(functionLink).join('、') : '本次未登记额外缺口（不表示完成）';
 const count = { architectures: axes.architecture.size, functions: axes.function.size, implementations: axes.implementation.size, bindings: bindings.size, cells: cells.size, dependencyEdges: edges.size, workflows: data.workflows.length, historicalChains: legacy.length, referencedFiles: filePaths.size };
 const guide = `# 当前功能图谱：架构、功能、实现与成熟度
 
 核对日期：**${data.meta.date}**。源码版本 **${data.meta.version}**；审查基线为提交 \`${data.meta.commit}\`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
-[离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
+[离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
 ## 模型与缺省语义
 
@@ -146,7 +176,8 @@ const guide = `# 当前功能图谱：架构、功能、实现与成熟度
 - 只存已审查的架构／功能／实现关系。缺省组合表示未建立关系，不代表分数 0。
 - 显式 \`0\` 表示有证据支持的未实现／未交付等状态；\`null\` 表示该项未评估或现阶段不适用。
 - 每个已登记实现关系有四个评分单元，分别给出理由。评分只适用于该行范围，语言和代码量本身不能增加成熟度。
-- 依赖边 \`requires\` 表示当前语义前置条件，\`planned\` 表示未来接入；均不是静态 import 或性能数据。工作流是业务路径索引，先后关系不保证每次操作调用所有步骤。
+- 依赖边方向为 **前置能力 \`from\` → 使用者 \`to\`**；\`requires\` 表示当前语义前置条件，\`planned\` 表示未来接入。它们不是静态 import 或性能数据。工作流是业务路径索引，先后关系不保证每次操作调用所有步骤。
+- 工作流的 \`steps\` 是所列路径，\`gaps\` 是另外登记的缺口功能，二者不重叠。缺少 \`gaps\` 表示缺口尚未梳理；显式 \`[]\` 表示本次未登记额外缺口，不能解释为全部完成。每项功能仍须按自己的成熟度与边界阅读。
 - 历史报告保留其日期、平台、跳过与样本边界。测试文件存在不等于此次运行过；旧安装包记录也不能证明未发布代码已交付。
 
 ## 规模
@@ -169,13 +200,15 @@ ${data.axes.architecture.map(a => `| ${md(a.label)} | ${md(a.responsibility)} |`
 
 ## 当前优先缺口
 
-${data.priorities.map((p,i)=>`${i+1}. **${p.label}**：${p.reason} 验收：${p.acceptance} 涉及 ${p.functions.map(id=>`[${axes.function.get(id).label}](#${id})`).join('、')}。`).join('\n')}
+${data.priorities.map((p,i)=>`${i+1}. **${md(p.label)}**：${md(p.reason)} 验收：${md(p.acceptance)} 涉及 ${p.functions.map(functionLink).join('、')}。`).join('\n')}
 
 ## 业务工作流
 
-| 路径 | 功能步骤 | 适用边界 |
-| --- | --- | --- |
-${data.workflows.map(w => `| ${md(w.label)} | ${w.steps.map(id=>`[${md(axes.function.get(id).label)}](#${id})`).join(' → ')} | ${md(w.boundary)} |`).join('\n')}
+工作流名称可打开离线交互页的对应路径。步骤不构成完成声明；已登记缺口与当前步骤分别列出。
+
+| 路径 | 功能步骤 | 已登记缺口 | 适用边界 |
+| --- | --- | --- | --- |
+${data.workflows.map(w => `| ${workflowLink(w)} | ${w.steps.map(functionLink).join(' → ')} | ${workflowGaps(w)} | ${md(w.boundary)} |`).join('\n')}
 
 ## 功能与实现切片
 
@@ -204,9 +237,9 @@ node scripts/function-atlas.mjs --check
 node scripts/function-atlas.mjs --write --refresh-sources
 \`\`\`
 
-只改说明／评分而来源未变时可用 \`--write\`。检查包括 ID／坐标唯一性、文件路径、已发布／未发布评分门槛、四维完整性、旧 50 链映射、源码及证据指纹、派生视图一致性。它不证明评分正确或产品测试通过，也不能自动发现目录外新增功能；每次新增能力需人工补图并核对 [STATUS](STATUS.md) 与 [ROADMAP](ROADMAP.md)。报告路径是仓库相对路径，不读取作者工程或本机配置。交互页内嵌同一数据，可脱机筛选和点开证据；单独复制 HTML 后仍可浏览，但源码链接需保持仓库相对布局。
+只改说明／评分而来源未变时可用 \`--write\`。检查包括 ID／坐标唯一性、文件路径、已发布／未发布评分门槛、四维完整性、工作流步骤／缺口和优先项的引用及唯一性、旧 50 链映射、源码及证据指纹、派生视图一致性。它不证明评分正确或产品测试通过，也不能自动发现目录外新增功能；每次新增能力需人工补图并核对 [STATUS](STATUS.md) 与 [ROADMAP](ROADMAP.md)。报告路径是仓库相对路径，不读取作者工程或本机配置。交互页内嵌同一数据，可脱机筛选和点开证据；单独复制 HTML 后仍可浏览，但源码链接需保持仓库相对布局。
 `;
-const diagram = ['flowchart LR', '  %% Generated semantic dependency graph; dashed edges are planned integrations.'];
+const diagram = ['flowchart LR', '  %% Direction: prerequisite from -> consumer to; dashed edges are planned integrations.'];
 const nodeIds = new Map(data.axes.function.map((f, index) => [f.id, `f${index}`]));
 const nodeId = id => nodeIds.get(id);
 for (const group of new Set(data.axes.function.map(f=>f.group))) {

@@ -1,0 +1,349 @@
+{
+  "date": "2026-10-13",
+  "scope": "Reviewed catalog mapping changes, not new runtime capability",
+  "featureAndWorkflowCorrections": [
+    {
+      "kind": "feature",
+      "id": "behavior.scene_runtime",
+      "before": {
+        "boundary": [
+          "0.0.8源码交付；明确选择绑定文档的Scene2D v2/v3才生成plan/runtime3；旧无行为v1/v2分支保持，Worldv1.behaviorBindings仍为[]。",
+          "严格可移植manifest1：最多32bindings/8sources，TXT每份64KiB合计512KiB；场景与源码必须有非part-of出向登记，稳定实例/定义依赖完整。",
+          "Godot4仅GDScript独立Node：无参构造、脚本自身标量export、最多4个明确类型信号参数；每binding独立对象，事件绑定身份可信且限制ready/finished生命周期。",
+          "作者源码随冻结快照；回放重新规划、核对指纹/工具/每份输出；TXT编译定位原文行，参数类型运行错误定位manifest指针，sourceRange由冻结作者文本补充。",
+          "选择包重派生场景/源码直接依赖并要求清单或pin；包内scene不得借ambientactor，外部pinnedscene可沿已锁关系读取传递actor并hash/fence复验；完整备份允许未完成原文。",
+          "静态预览只geometry，不验证或运行bindings；GUI展示计数/安全文本事件和诊断，不执行脚本，未保存任意doc继续阻止build/run。",
+          "脚本以用户权限运行，无沙箱承诺；无任意方法RPC/热更新/通用状态机/行为参数表单/作者BevyRust行为/Nuis/GPU/Android执行器或新安装验收。"
+        ],
+        "next": "完善绑定清单创作和参数辅助，再独立定义解绑/热更新及规模验证；其他后端必须真实工具链验收。"
+      },
+      "after": {
+        "boundary": [
+          "0.0.8源码交付；明确选择绑定文档的Scene2D v2/v3才生成plan/runtime3；旧无行为v1/v2分支保持，Worldv1.behaviorBindings仍为[]。",
+          "严格可移植manifest1：最多32bindings/8sources，TXT每份64KiB合计512KiB；场景与源码必须有非part-of出向登记，稳定实例/定义依赖完整。",
+          "Godot4仅GDScript独立Node：无参构造、脚本自身标量export、最多4个明确类型信号参数；每binding独立对象，事件绑定身份可信且限制ready/finished生命周期。",
+          "作者源码随冻结快照；回放重新规划、核对指纹/工具/每份输出；TXT编译定位原文行，参数类型运行错误定位manifest指针，sourceRange由冻结作者文本补充。",
+          "选择包重派生场景/源码直接依赖并要求清单或pin；包内scene不得借ambientactor，外部pinnedscene可沿已锁关系读取传递actor并hash/fence复验；完整备份允许未完成原文。",
+          "静态预览只geometry，不验证或运行bindings；GUI展示计数/安全文本事件和诊断，不执行脚本，未保存任意doc继续阻止build/run。",
+          "脚本以用户权限运行，无沙箱承诺；无任意方法RPC、热更新、通用状态机、作者Bevy Rust行为、Nuis、GPU、Android执行器或新安装验收。内置参数／信号表单、首次声明创建与脚本起始草稿分别见behavior.authoring、behavior.creation、script.authoring；这些作者入口不自动扩大运行能力。"
+        ],
+        "next": "内置脚本、首次绑定和参数／信号编辑已分别接通；继续定义已有声明迁移、关联增删、解绑／热更新及规模验证。其他后端的作者行为必须独立完成协议与真实运行验收。"
+      }
+    },
+    {
+      "kind": "feature",
+      "id": "scene.text_instances",
+      "before": {
+        "boundary": [
+          "Scene2D v2稳定实例和v3持久逻辑分组已分别形成scene.instances_v2与scene.groups_v3切片，不代表完整文本场景系统完成",
+          "actors仍为1–128个实例；逻辑组不改变坐标或绘制顺序，空间父子变换、剧本事件和跨文件原子提交仍未实现；单文件片段展开另列实验scene.composition",
+          "分组树与查询不等于大规模场景性能验收，也没有自动迁移旧作品",
+          "单场景原文草稿预览与坐标回写另列切片；scene.composition已提供单文件展开及普通配方文档/依赖迁移，已接保存态/当前草稿配方只读预览及贡献来源定位，当前源码单实例覆盖另走稳定目标补丁，共享模板编辑、统一undo和多文件原子提交仍未接。"
+        ],
+        "next": "配方已接普通JSON保存、依赖迁移、当前原文预览与贡献定位；下一步共享模板修改与单次放置覆盖的写回隔离，统一历史、嵌套/跨文件及空间变换另立契约。"
+      },
+      "after": {
+        "boundary": [
+          "Scene2D v2稳定实例和v3持久逻辑分组已分别形成scene.instances_v2与scene.groups_v3切片，不代表完整文本场景系统完成",
+          "actors仍为1–128个实例；逻辑组不改变坐标或绘制顺序，空间父子变换、剧本事件和跨文件原子提交仍未实现；单文件片段展开另列实验scene.composition",
+          "分组树与查询不等于大规模场景性能验收，也没有自动迁移旧作品",
+          "单场景原文草稿预览与坐标回写、配方六字段覆盖及恢复、共享片段字段与结构、放置、组织组和片段定义管理已有独立功能切片；scene.composition_materialize可把保存态配方生成独立运行场景。这里的规划缺口是空间父子变换、统一历史、剧本事件及嵌套／跨文件提交，不能将已实现子能力重复列为未接入。"
+        ],
+        "next": "沿已实现实例／分组及配方创作分别推进空间层次、跨视图历史、剧本事件和跨文件事务；现有组织分组不会隐式施加空间变换。"
+      }
+    },
+    {
+      "kind": "feature",
+      "id": "behavior.authoring",
+      "before": {
+        "boundary": [
+          "独立第18模块org.viento.scene-behaviors提供scene.authoring.behaviors；仅当前本机编辑服务，不代表Android行为编辑或新安装验收。",
+          "固定原场景、后端和语言；新增UUID由界面分配，保留已有bindingId，同实例可多行为，1–32条绑定且不能删除最后一条。",
+          "只选择已登记且由清单引用的TXT与所属场景实例；沿既有场景／角色／源码关系规则核对，不建立关联、不新建绑定文档。",
+          "参数保留文本／数字／布尔类型，信号映射遵守原预算；具体脚本导出类型和实际信号仍由后端构建／运行验证，界面不执行脚本。",
+          "JS私有提案与无浏览器第三方依赖的JSON索引保留未修改原文；同结构只改叶值，集合结构变化只重写选中容器，未知schema或重复键不自动清洗。",
+          "检查／应用核对原文字节、来源修订、保存基线、编辑会话与依赖摘要；仅同步修改内存，普通保存持有磁盘写入与外部冲突权限。",
+          "新建清单、变更所属场景／后端／语言、增加关联、LSP、热更新及作者Bevy Rust／3D行为尚未接入。"
+        ]
+      },
+      "after": {
+        "boundary": [
+          "独立第18模块org.viento.scene-behaviors提供scene.authoring.behaviors；仅当前本机编辑服务，不代表Android行为编辑或新安装验收。",
+          "固定原场景、后端和语言；新增UUID由界面分配，保留已有bindingId，同实例可多行为，1–32条绑定且不能删除最后一条。",
+          "只选择已登记且由清单引用的TXT与所属场景实例；沿既有场景／角色／源码关系规则核对，不建立关联、不新建绑定文档。",
+          "参数保留文本／数字／布尔类型，信号映射遵守原预算；具体脚本导出类型和实际信号仍由后端构建／运行验证，界面不执行脚本。",
+          "JS私有提案与无浏览器第三方依赖的JSON索引保留未修改原文；同结构只改叶值，集合结构变化只重写选中容器，未知schema或重复键不自动清洗。",
+          "检查／应用核对原文字节、来源修订、保存基线、编辑会话与依赖摘要；仅同步修改内存，普通保存持有磁盘写入与外部冲突权限。",
+          "本表单不新建清单或关联；首次创建已有独立behavior.creation入口。已有声明迁移所属场景／后端／语言、追加关联、LSP、热更新及作者Bevy Rust／3D行为仍未接入。"
+        ]
+      }
+    },
+    {
+      "kind": "workflow",
+      "id": "author-to-delivery",
+      "before": {
+        "id": "author-to-delivery",
+        "label": "设定→投影→场景→构建→审阅→交付",
+        "steps": [
+          "authoring.document-edit",
+          "world.query",
+          "projection.authoring",
+          "build.snapshot_plan",
+          "build.workbench_lifecycle",
+          "backend.project_management",
+          "backend.project_catalog",
+          "backend.project_delivery"
+        ],
+        "boundary": "作者数据与派生工程分别打包；现阶段Scene2D走统一构建目录，独立游戏发行、3D统一交付和LSP仍为待接能力。"
+      },
+      "after": {
+        "label": "普通二维创作→Godot运行→工程交付",
+        "steps": [
+          "authoring.document-edit",
+          "world.object-create",
+          "projection.authoring",
+          "scene.instances_v2",
+          "scene.saved_preview",
+          "build.snapshot_plan",
+          "execution.backend_middleware",
+          "build.workbench_lifecycle",
+          "runtime.godot_generated_project",
+          "backend.project_management",
+          "backend.project_catalog",
+          "backend.project_delivery"
+        ],
+        "boundary": "主路径明确包含普通Scene2D创建／编辑。对象创建、投影与静态预览按需求选择，步骤不是强制逐项调用或原子事务；脚本／行为见独立分支。作者v3逻辑分组不等于运行plan3。接收方需要Godot，独立发行另列缺口。",
+        "gaps": [
+          "build.standalone_distribution"
+        ]
+      }
+    },
+    {
+      "kind": "workflow",
+      "id": "composition-to-delivery",
+      "before": {
+        "id": "composition-to-delivery",
+        "label": "保存配方→独立场景→脚本／行为→Godot运行→生成工程交付",
+        "steps": [
+          "scene.composition",
+          "scene.composition_materialize",
+          "script.authoring",
+          "behavior.creation",
+          "build.workbench_lifecycle",
+          "backend.project_delivery"
+        ],
+        "boundary": "来源配方由测试夹具通过生产服务准备；此轮GUI连续验证从配方选择到交付，不将夹具准备计作上游UI验收。独立副本不与配方自动同步，交付工程需要兼容引擎。"
+      },
+      "after": {
+        "label": "保存配方→独立二维场景→Godot工程交付",
+        "steps": [
+          "scene.composition",
+          "scene.saved_preview",
+          "scene.composition_materialize",
+          "build.snapshot_plan",
+          "execution.backend_middleware",
+          "build.workbench_lifecycle",
+          "runtime.godot_generated_project",
+          "backend.project_management",
+          "backend.project_delivery"
+        ],
+        "boundary": "从已登记配方开始，生成独立v3场景；无行为场景可直接构建，脚本与行为不是必经步骤。保存态配方生成已真实验证，最新完整带行为路径见composition-godot-behaviors；不宣称上游创作全程GUI或配方自动同步。",
+        "gaps": [
+          "scene.composition_create",
+          "build.standalone_distribution"
+        ]
+      }
+    },
+    {
+      "kind": "workflow",
+      "id": "bevy-backend",
+      "before": {
+        "id": "bevy-backend",
+        "label": "同计划双引擎：Bevy数据构建与无头回放",
+        "steps": [
+          "scene.instances_v2",
+          "build.snapshot_plan",
+          "execution.backend_middleware",
+          "runtime.bevy_rust",
+          "build.workbench_lifecycle"
+        ],
+        "boundary": "同定义两实例无图plan2→显式CLI/host backend与可信tool→scene-check→Bevy ECS固定步/中立事件→冻结源离线回放。Godot同plan比较，不跨译作者脚本；HTTP不收新路径/代码，无window/image/作者Rust/GPU。"
+      },
+      "after": {
+        "boundary": "Linux宿主显式选择固定Bevy后端；支持无图Scene2D plan1/2、有限移动／控制和只读样本。没有图片、窗口、作者Rust编译或GDScript行为；不是通用游戏引擎能力已全部接入。",
+        "gaps": [
+          "behavior.bevy_rust",
+          "build.standalone_distribution"
+        ]
+      }
+    },
+    {
+      "kind": "workflow",
+      "id": "scene-behavior-authoring",
+      "before": {
+        "id": "scene-behavior-authoring",
+        "label": "已有行为清单→实例／脚本／参数／信号→审阅→草稿→保存→构建交付",
+        "steps": [
+          "authoring.document-edit",
+          "behavior.authoring",
+          "behavior.scene_runtime",
+          "build.snapshot_plan",
+          "build.workbench_lifecycle",
+          "backend.project_delivery"
+        ],
+        "boundary": "表单核对已有声明和登记依赖；应用只更新当前源码草稿，普通保存后再进入既有构建与生成工程交付。新建清单／关联、其他后端作者行为和LSP仍分别待接，编辑验证不代替运行验收。"
+      },
+      "after": {
+        "boundary": "已有绑定JSON可直接进入编辑，不以本轮首次创建为前置。表单核对现有声明及依赖，只应用原文草稿；普通保存后继续构建。首次创建与关联见behavior.creation，其他后端作者行为及LSP仍待接。"
+      }
+    },
+    {
+      "kind": "feature",
+      "id": "backend.project_delivery",
+      "before": {
+        "boundary": [
+          "只消费宿主已登记且完整核对的成功构建；请求绑定构建、快照与清单指纹，不接受目录或工具路径。",
+          "交付仅包含登记的project文件、素材／脚本副本、三语说明和SHA清单；作者快照、缓存、日志与清单外文件不入包。",
+          "准备持有任务占用直到流结束，服务关闭取消并等待；原生保存窗口阻止关闭，浏览器发起下载后由TTL清理，避免下载准入竞争。",
+          "纯清单契约、Node文件与ZIP适配、UI和宿主注入接口分离；校验只证明包内一致性，不授予执行或导入权限。",
+          "Godot生成工程仍需兼容Godot；Bevy是需可信运行程序的场景数据，非Cargo工程或独立发行程序。",
+          "本轮只接当前Scene2D后端构建目录；Scene3D/Composition统一打包、可执行发行与LSP服务另行接入。"
+        ],
+        "next": "补齐内置实例行为绑定与参数编辑，再接中立组装描述和3D交付；外部IDE/LSP只通过独立文档与诊断端口。"
+      },
+      "after": {
+        "boundary": [
+          "只消费宿主已登记且完整核对的成功构建；请求绑定构建、快照与清单指纹，不接受目录或工具路径。",
+          "交付仅包含登记的project文件、素材／脚本副本、三语说明和SHA清单；作者快照、缓存、日志与清单外文件不入包。",
+          "准备持有任务占用直到流结束，服务关闭取消并等待；原生保存窗口阻止关闭，浏览器发起下载后由TTL清理，避免下载准入竞争。",
+          "纯清单契约、Node文件与ZIP适配、UI和宿主注入接口分离；校验只证明包内一致性，不授予执行或导入权限。",
+          "Godot生成工程仍需兼容Godot；Bevy是需可信运行程序的场景数据，非Cargo工程或独立发行程序。",
+          "当前直接接收Scene2D后端构建目录；保存配方可先经scene.composition_materialize生成独立Scene2D，再走此交付。直接Composition／Scene3D统一组装、可执行发行与LSP服务仍另行接入。"
+        ],
+        "next": "内置脚本、首次绑定和参数／信号编辑已分别接通；后续独立定义已有声明关联管理、中立组装描述和3D交付。外部IDE／LSP通过独立文档与诊断端口接入。"
+      }
+    }
+  ],
+  "removedWorkflowOnlyDependencies": [
+    {
+      "from": "behavior.creation",
+      "to": "behavior.authoring",
+      "relation": "requires",
+      "reason": "首次保存后打开新声明原文，继续已有typed参数／信号审阅、草稿应用与普通保存。"
+    },
+    {
+      "from": "scene.composition_materialize",
+      "to": "scene.authoring_v1",
+      "relation": "requires",
+      "reason": "独立场景复用既有scene.create身份、依赖和事务。"
+    },
+    {
+      "from": "scene.composition_materialize",
+      "to": "build.workbench_lifecycle",
+      "relation": "requires",
+      "reason": "保存后选择新场景，并显式重新检查计划再构建运行。"
+    },
+    {
+      "from": "scene.composition_materialize",
+      "to": "backend.project_delivery",
+      "relation": "requires",
+      "reason": "成功冻结构建通过既有登记和库存核对交付工程包。"
+    }
+  ],
+  "previousPriorities": [
+    {
+      "label": "在字段与独立结构创作之后推进空间层次和跨视图历史",
+      "functions": [
+        "scene.composition",
+        "scene.composition_inheritance",
+        "scene.composition_canvas",
+        "scene.composition_batch_canvas",
+        "scene.composition_fragment_editor",
+        "scene.composition_fragment_inheritance",
+        "scene.composition_placement_editor",
+        "scene.groups_v3",
+        "scene.text_instances",
+        "scene.source_model"
+      ],
+      "reason": "0.0.10纳入恢复、单/多位置画布、共享声明SET/恢复、offset与演员/放置/组织组/定义结构及重命名；各入口保持独立原文审批，空间层次、其他字段批次与跨视图历史仍需独立合同。",
+      "acceptance": "保留原文/稳定身份/localoverrides/ordinarySave；后续空间层次和统一历史须单独定义事务与撤销，不能借组织组隐式施加transform，跨文件和规模独立验收。"
+    },
+    {
+      "label": "在单源补丁之后继续下沉完整语义",
+      "functions": [
+        "core.semantic_migration"
+      ],
+      "reason": "Rust已承接布局/历史/保存阶段，以及source-only严格JSON结构与数值补丁；完整作者模型、投影继承、来源导航和World规划仍JS。",
+      "acceptance": "逐条对照既有JS完整语义与源码/注册/恢复契约，保持BOM/行尾、UUID、来源范围及事务兼容，不把受限source检查冒充完整模型。"
+    },
+    {
+      "label": "完善已接通的GDScript行为创作",
+      "functions": [
+        "behavior.scene_runtime",
+        "execution.backend_middleware",
+        "runtime.bevy_rust",
+        "runtime.objects_inspection",
+        "runtime.control_replay",
+        "runtime.instance_control"
+      ],
+      "reason": "显式清单、参数/信号、冻结执行、诊断与迁移已接通；作者表单、动态解绑/热更新及规模验证仍需独立设计，Bevy第二后端已接无图ECS数据计划，作者Rust行为仍未实现。 当前只读实例观察已接通，连续采样与反射仍独立。 有限方向回放与固定步采样已接入；连续实时通道与反射仍需独立设计。 按实例有限方向现已独立接入，每步未列释放、目标与双预算明确；仍不是实时对象编辑。",
+      "acceptance": "保留实例/绑定稳定身份、类型检查、来源和依赖闭包；参数辅助与生命周期变更分别验收，按真实两引擎共同需求逐项验证Rust行为与运行资源。"
+    },
+    {
+      "label": "补真实交付与目标平台证据",
+      "functions": [
+        "delivery.packaging",
+        "host.android-editing",
+        "core.history_migration",
+        "scene.layout_draft",
+        "core.save_state_migration",
+        "scene.instances_v2",
+        "scene.groups_v3",
+        "scene.text_draft_preview",
+        "scene.source_layout"
+      ],
+      "reason": "Rust布局、来源/实例/分组、单源草稿预览及坐标回写已纳入0.0.7源码并保留专题证据；对应Tauri安装产物与目标WebView仍需实测。",
+      "acceptance": "对对应实际安装包重跑Linux关键流程及Android设备范围；Windows/macOS单独验收。"
+    },
+    {
+      "label": "后端工程可见之后定义持久目录管理",
+      "functions": [
+        "backend.project_management",
+        "execution.backend_middleware",
+        "build.standalone_distribution"
+      ],
+      "reason": "当前服务清单、源映射与清理边界已规范，下一步跨服务所有权恢复与发行工程不能成为缓存扫描或生成输出回写。",
+      "acceptance": "持久创建者索引原子更新，重启／迁移后完整核对与失效记录处理，保留未知和外部编辑，独立描述工具链与项目类型。"
+    },
+    {
+      "label": "持久工程运行对接之后明确登记与删除审阅",
+      "functions": [
+        "backend.project_catalog",
+        "backend.project_management"
+      ],
+      "reason": "本机跨服务恢复与执行选择已接入；作者权威、恢复身份、清理凭据和旧会话历史应继续分离。",
+      "acceptance": "显式移除／删除的可审阅计划，跨路径迁移与容量预算，损坏／外部修改／会话报告保留验证。"
+    }
+  ],
+  "newFunctions": [
+    "scene.composition_create",
+    "behavior.bevy_rust"
+  ],
+  "newBindings": [
+    "b444",
+    "b445",
+    "b446"
+  ],
+  "counts": {
+    "bindings": 445,
+    "cells": 1780,
+    "dependencies": 293,
+    "workflows": 78
+  },
+  "axes": {
+    "architecture": 11,
+    "function": 115,
+    "implementation": 299,
+    "maturity": 4
+  }
+}

@@ -1,3 +1,4 @@
+import { prepareCompositionDraftApply } from '../../engine/scene-composition-create.mjs';
 import { revealSourceOffset } from '../../web/modules/app-source-reveal.js';
 import { prepareScriptDraftApply } from '../../engine/script-authoring.mjs';
 import fs from 'node:fs/promises';
@@ -86,6 +87,7 @@ export async function editorHarness(overrides = {}) {
     window: { confirm: () => false },
     API_PATHS, API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion, getDocTemplate, DOC_TYPE_TEMPLATE_DEFS, createBlockDraft, serializeBlockDraft, serializeSourceDraft,
     t, localize, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage, diagnosticMessage, isComposingInput, createFieldEditor,
+    prepareCompositionDraftApply: (context, catalog, proposal) => prepareCompositionDraftApply(structuredClone(context), structuredClone(catalog), proposal),
     prepareScriptDraftApply: (context, proposal) => prepareScriptDraftApply(structuredClone(context), proposal),
     createSceneBehaviorSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),
     setupStudioSystem: async () => ({ refreshMedia() {}, updateCapabilities() {}, updateProject() {}, snapshot: () => ({}) }),

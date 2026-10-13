@@ -33,6 +33,7 @@ async function harness(options = {}) {
   });
   const controller = h.runtime.setupProjectBuild({ getContext: () => current,
     getSceneDraft: options.getSceneDraft, applySceneDraft: options.applySceneDraft,
+    applied: options.applied, setBusy: options.setBusy,
     openSource: (...args) => { opened.push(args); return options.openSource ? options.openSource(...args) : true; } });
   controller.setAvailable(true); h.element('projectBuildBtn').click(); await flushDialogs();
   const setState = value => { state = value; };
@@ -442,4 +443,108 @@ test('source apply propagates live origin ownership to the asynchronous editor h
     }
     assert.equal(owner(), false);
   }
+});
+
+test('problem rows belong to their task rather than the selected scene, and replaced rows cannot navigate', async () => {
+  const diagnostic = { code: 'build_actor_value', sourcePath: scenes[0].sourcePath, propertyPath: '/actors/0/speed' };
+  const first = job('plan', 'failed', { diagnostics: [diagnostic] });
+  const h = await harness({ state: { ...initial(), job: first } });
+  const old = h.element('projectBuildDiagnostics').querySelector('button');
+  const task = h.element('projectBuildProblemsTask').textContent;
+  h.element('projectBuildScene').value = scenes[1].id; h.element('projectBuildScene').dispatch('change');
+  assert.equal(h.element('projectBuildProblemsTask').textContent, task);
+  h.setState({ ...initial(), job: { ...first, id: 'another-task', sceneId: scenes[1].id } }); await h.refresh();
+  old.click(); await flushDialogs(); assert.equal(h.opened.length, 0);
+  assert.notEqual(h.element('projectBuildProblemsTask').textContent, task);
+  h.element('projectBuildDiagnostics').querySelector('button').click(); await flushDialogs();
+  assert.equal(h.opened.length, 1); assert.equal(h.opened[0][0], scenes[0].sourcePath);
+});
+
+test('identical polling preserves problem navigation ownership while newer results revoke it', async () => {
+  const pending = deferred();
+  const diagnostic = { code: 'build_actor_value', sourcePath: scenes[0].sourcePath, propertyPath: '/actors/0/speed' };
+  const first = job('plan', 'failed', { diagnostics: [diagnostic] });
+  const h = await harness({ state: { ...initial(), job: first }, openSource: () => pending.promise });
+  h.element('projectBuildDiagnostics').querySelector('button').click(); await flushDialogs();
+  const current = h.opened[0][2].isCurrent; assert.equal(current(), true);
+  h.setState({ ...initial(), job: structuredClone(first) }); await h.refresh(); assert.equal(current(), true);
+  h.setState({ ...initial(), job: { ...first, diagnostics: [{ ...diagnostic, message: 'new detail' }] } });
+  await h.refresh(); assert.equal(current(), false);
+  pending.resolve({ focus: () => assert.fail('obsolete result must not focus') }); await flushDialogs();
+  assert.equal(h.element('projectBuildDialog').open, true);
+});
+
+test('malformed or foreign backend problems clear navigation and show an explicit unavailable result', async () => {
+  const diagnostic = { code: 'build_actor_value', sourcePath: scenes[0].sourcePath };
+  const first = job('plan', 'failed', { diagnostics: [diagnostic] });
+  const h = await harness({ state: { ...initial(), job: first } });
+  for (const next of [{ ...first, diagnostics: [{ ...diagnostic, sourcePath: '../outside.txt' }] },
+    { ...first, backendId: 'another-backend' }]) {
+    h.setState({ ...initial(), job: next }); await h.refresh();
+    assert.equal(h.element('projectBuildDiagnostics').querySelector('button'), null);
+    assert.equal(h.element('projectBuildProblemsEmpty').hidden, false);
+    assert.notEqual(h.element('projectBuildProblemsEmpty').textContent, '');
+    assert.equal(h.opened.length, 0);
+  }
+});
+
+
+test('recipe materialization is offered only for a saved writable preview selection', async () => {
+  const recipe = { id: 'recipe-one', title: 'Recipe', sourcePath: 'documents/recipe.json', kind: 'composition' };
+  const opened = [], availability = [];
+  const state = { ...initial(), previewDocuments: [...scenes.map(scene => ({ ...scene, kind: 'scene' })), recipe] };
+  const h = await harness({ state, overrides: { setupSceneMaterialize: () => ({ open: id => opened.push(id), setAvailable: value => availability.push(value) }) } });
+  h.controller.setAvailable(true, ['scene.create'], { scenePreview: true });
+  assert.equal(h.element('projectBuildMaterialize').hidden, true);
+  h.element('projectBuildTabPreview').click();
+  assert.equal(h.element('projectBuildMaterialize').hidden, true, 'ordinary scenes keep their existing editors');
+  h.element('projectBuildScene').value = recipe.id; h.element('projectBuildScene').dispatch('change');
+  assert.equal(h.element('projectBuildMaterialize').hidden, false);
+  assert.equal(h.element('projectBuildMaterialize').disabled, false);
+  h.element('projectBuildMaterialize').click(); assert.deepEqual(opened, [recipe.id]);
+  for (const change of [{ dirty: true }, { creating: true }, { busy: true }, { editable: false }]) {
+    const saved = { ...h.current }; Object.assign(h.current, change);
+    h.element('projectBuildMaterialize').dispatch('click');
+    assert.deepEqual(opened, [recipe.id], 'event handler rechecks stale rendered controls'); Object.assign(h.current, saved);
+  }
+  h.setState({ ...state, job: job('run') }); await h.refresh();
+  assert.equal(h.element('projectBuildMaterialize').disabled, true);
+  h.element('projectBuildMaterialize').dispatch('click'); assert.equal(opened.length, 1);
+  h.controller.setAvailable(true, [], { scenePreview: true });
+  assert.equal(h.element('projectBuildMaterialize').hidden, true); assert.equal(availability.at(-1), false);
+});
+
+test('materialized scene becomes the build selection and requires a fresh explicit plan', async () => {
+  const recipe = { id: 'recipe-one', title: 'Recipe', sourcePath: 'documents/recipe.json', kind: 'composition' };
+  let bridge;
+  const h = await harness({ state: { ...initial(), previewDocuments: [recipe] },
+    overrides: { setupSceneMaterialize: options => { bridge = options; return { setAvailable() {}, open() {} }; } } });
+  await h.finishPlan();
+  h.controller.setAvailable(true, ['scene.create'], { scenePreview: true }); h.element('projectBuildTabPreview').click();
+  const created = { id: 'created-scene', title: 'Created', sourcePath: 'documents/generated-scene.json' };
+  h.setState({ ...initial(), scenes: [...scenes, created], previewDocuments: [recipe, { ...created, kind: 'scene' }], job: job('plan', 'succeeded', { plan }) });
+  await bridge.applied({ object: { id: created.id } });
+  assert.equal(h.element('projectBuildTabBuild').getAttribute('aria-selected'), 'true');
+  assert.equal(h.element('projectBuildScene').value, created.id);
+  assert.equal(h.element('projectBuildPlan').disabled, false);
+  assert.equal(h.element('projectBuildGenerate').disabled, true, 'old recipe or scene review never approves a new build');
+  assert.equal(h.calls.filter(call => call.body?.action === 'build' || call.body?.action === 'run').length, 0);
+  h.element('projectBuildTabPreview').click(); assert.equal(h.element('projectBuildScene').value, recipe.id, 'recipe selection remains available');
+});
+
+test('materialization host context reports session, selection and external busy state independently', async () => {
+  const recipe = { id: 'recipe-one', title: 'Recipe', sourcePath: 'documents/recipe.json', kind: 'composition' };
+  let bridge;
+  const h = await harness({ state: { ...initial(), previewDocuments: [recipe] },
+    overrides: { setupSceneMaterialize: options => { bridge = options; return { setAvailable() {}, open() {} }; } } });
+  h.controller.setAvailable(true, ['scene.create'], { scenePreview: true }); h.element('projectBuildTabPreview').click();
+  h.current.nonWorldBusy = false; h.current.sceneDraftToken = 'source-token';
+  const before = bridge.getContext(); assert.equal(before.visible, true); assert.equal(before.recipeId, recipe.id); assert.equal(before.sourceToken, 'source-token');
+  bridge.setBusy(true); h.current.busy = true;
+  assert.equal(bridge.getContext().busy, false, 'own transaction flag does not revoke its owner');
+  h.current.nonWorldBusy = true; assert.equal(bridge.getContext().busy, true);
+  h.current.nonWorldBusy = false; bridge.setBusy(false); assert.equal(bridge.getContext().busy, true);
+  h.current.busy = false; h.element('projectBuildClose').click();
+  assert.equal(bridge.getContext().visible, false);
+  h.element('projectBuildBtn').click(); await flushDialogs(); assert.notEqual(bridge.getContext().session, before.session);
 });

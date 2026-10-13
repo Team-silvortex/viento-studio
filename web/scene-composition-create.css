@@ -1,0 +1,40 @@
+.scene-composition-create-dialog { width:min(880px,calc(100vw - 24px)); max-width:880px; max-height:calc(100dvh - 24px); margin:auto; padding:0; box-sizing:border-box; overflow:hidden; border:1px solid #33536a; border-radius:16px; color:#d8e9f8; background:#101c2b; }
+.scene-composition-create-dialog[open] { display:flex; flex-direction:column; }
+.scene-composition-create-dialog [hidden] { display:none!important; }
+.scene-composition-create-dialog::backdrop { background:rgba(2,8,18,.76); }
+/* The body scrolls independently so returning or cancelling stays reachable. */
+.scene-composition-create-header { display:flex; flex:none; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid #33536a; }
+.scene-composition-create-header h2 { margin:0; font-size:1.25rem; }
+.scene-composition-create-body { min-height:0; overflow:auto; overscroll-behavior:contain; padding:0 20px 14px; }
+.scene-composition-create-body p { overflow-wrap:anywhere; }
+.scene-composition-create-note { color:#a1bbcf; font-size:.88rem; }
+.scene-composition-create-grid p { margin:0; }
+.scene-composition-create-status { flex:none; padding:0 20px; margin:8px 0; max-height:18dvh; overflow:auto; overflow-wrap:anywhere; }
+.scene-composition-create-footer { flex:none; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; padding:12px 20px; border-top:1px solid #33536a; }
+.scene-composition-create-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.scene-composition-create-wide { grid-column:1/-1; }
+.scene-composition-create-dialog fieldset { margin:14px 0; padding:12px; min-width:0; border:1px solid #33536a; }
+.scene-composition-create-dialog label { display:grid; gap:5px; min-width:0; }
+.scene-composition-create-dialog input,.scene-composition-create-dialog select { width:100%; min-width:0; box-sizing:border-box; padding:8px; border:1px solid #33536a; border-radius:6px; color:inherit; background:#0a1422; font:inherit; }
+.scene-composition-create-dialog select { text-overflow:ellipsis; }
+.scene-composition-create-dialog .scene-composition-create-check { display:flex; align-items:center; gap:8px; }
+.scene-composition-create-dialog input[type=checkbox] { flex:none; width:18px; height:18px; }
+.scene-composition-create-dialog .doc-btn { white-space:normal; overflow-wrap:anywhere; }
+.scene-composition-create-dialog pre { margin:8px 0; padding:12px; border:1px solid #33536a; border-radius:6px; color:#bdd1e4; background:#0a1422; white-space:pre-wrap; overflow-wrap:anywhere; tab-size:4; font-size:.85rem; }
+.scene-composition-create-actors { display:grid; grid-template-columns:minmax(180px,.8fr) minmax(0,1.2fr); gap:16px; align-items:start; }
+.scene-composition-create-actor-list { display:grid; gap:10px; min-width:0; }
+.scene-composition-create-actor-list select { height:180px; padding:4px; }
+.scene-composition-create-actor-list option { padding:6px 4px; overflow:hidden; text-overflow:ellipsis; }
+.scene-composition-create-actor-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.scene-composition-create-actor-actions .doc-btn { flex:1 1 100px; }
+.scene-composition-create-layout { margin-top:18px; padding:12px; border:1px solid #33536a; border-radius:8px; }
+.scene-composition-create-layout summary { cursor:pointer; overflow-wrap:anywhere; }
+.scene-composition-create-layout-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.scene-composition-create-layout-actions .doc-btn { flex:1 1 130px; }
+@media(max-width:700px) {
+ .scene-composition-create-header { padding:12px; } .scene-composition-create-header h2 { font-size:1.05rem; }
+ .scene-composition-create-body { padding:0 12px 12px; } .scene-composition-create-status { padding:0 12px; }
+ .scene-composition-create-footer { padding:10px 12px; justify-content:flex-start; } .scene-composition-create-footer .doc-btn { flex:1 1 130px; }
+ .scene-composition-create-grid,.scene-composition-create-actors { grid-template-columns:minmax(0,1fr); }
+ .scene-composition-create-actor-list select { height:132px; }
+}

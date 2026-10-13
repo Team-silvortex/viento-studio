@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-13",
+  "scope": "Documentation mapping/catalogue and offline viewer only; no runtime capability, release, installation or existing maturity change.",
+  "baselineCommit": "d7e847937c6c86c1df2ae6661485e11e9c36f4e6",
+  "sources": {
+    "scripts/function-atlas.mjs": "0671bfe401713bb187decf610a6bc410c2a97c8c19720a099486113ad60b591d",
+    "scripts/function-atlas-view.mjs": "75ee3fa52660721638aa561f62753ffa0bf71b96b11fd1aaa2a7f725bbe70e48",
+    "scripts/tests/function-atlas.test.mjs": "f66d6b898ccc0020b9cb065de64b8fd352240b5010896dbd5c3afb86f6122987",
+    "scripts/tests/function-atlas-view.test.mjs": "424df7a656adb48a57570c3f53d5677cec980292654cb9ba50fc1a377c69d764",
+    "scripts/tests/function-atlas-smoke.mjs": "616a725fcfa199f15d9e9b577072c49d34b615a8098572bbc7405de510caf530"
+  },
+  "catalogue": {
+    "architectures": 11,
+    "functions": 115,
+    "implementations": 299,
+    "bindings": 445,
+    "cells": 1780,
+    "dependencies": 293,
+    "workflows": 78
+  },
+  "unitTests": {
+    "file": "tests.log",
+    "tests": 28,
+    "pass": 28,
+    "fail": 0,
+    "skip": 0,
+    "scope": "15 generator CLI tests on disposable repositories and 13 isolated viewer tests"
+  },
+  "syntaxChecks": [
+    "scripts/function-atlas.mjs",
+    "scripts/function-atlas-view.mjs",
+    "scripts/tests/function-atlas-smoke.mjs"
+  ],
+  "candidateBrowser": {
+    "report": "browser-1791874515532/browser.json",
+    "visualReview": "browser-1791874515532/visual-review.json",
+    "groups": 5,
+    "screenshots": 6,
+    "pass": true
+  },
+  "integratedBrowser": {
+    "report": "browser-final/browser.json",
+    "note": "Run against the integrated and source-snapshot-refreshed atlas; the report itself is authoritative. Its output is intentionally not fingerprinted here to avoid a circular source-snapshot dependency."
+  },
+  "preservation": {
+    "catalogReview": "catalog-review.json",
+    "finalVerification": "final-verification.json",
+    "note": "Existing score cells, bindings, implementation records, evidence records and legacy network fingerprints are preserved. Catalogue corrections and appended records are reviewed separately."
+  },
+  "limitations": [
+    "Historical product, Godot, Bevy, installed Tauri and Android evidence was not rerun in this documentation increment.",
+    "Planned composition creation and Bevy author Rust entries do not imply implementation or validation.",
+    "A valid graph proves references and generated files are consistent, not that every feature or workflow has been accepted."
+  ]
+}

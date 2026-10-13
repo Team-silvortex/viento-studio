@@ -126,6 +126,61 @@ test('dropping outside an input uses the active editor and source mode preserves
   assert.equal(h.runtime.getCurrentEditContent(), input.value.replace(/\n/g, '\r\n'));
 });
 
+for (const blocks of [false, true]) test(`auxiliary text inputs cannot import pasted or dropped files into the ${blocks ? 'block' : 'source'} draft`, async () => {
+  const h = await mediaEditor({ blocks });
+  const surface = h.document.querySelector('.doc-editor-surface');
+  const authored = h.inputs(), target = authored.at(-1), before = h.runtime.getCurrentEditContent();
+  select(target, 3, 5, true);
+  // Use generic controls rather than a search-specific marker. The real host
+  // adapter deliberately falls back to a source/block for unknown inputs.
+  for (const tag of ['textarea', 'input']) {
+    const auxiliary = h.document.createElement(tag); auxiliary.value = 'literal query';
+    surface.append(auxiliary); auxiliary.focus(); auxiliary.dispatch('focusin', { bubbles: true });
+    assert.notEqual(h.runtime.mediaDraftContext(auxiliary).input, auxiliary);
+    const paste = auxiliary.dispatch('paste', { bubbles: true, clipboardData: { files: [file] } });
+    assert.notEqual(paste.defaultPrevented, true, 'ordinary clipboard handling stays with the auxiliary input');
+    const transfer = { files: [file], types: ['Files'], dropEffect: 'copy' };
+    const over = auxiliary.dispatch('dragover', { bubbles: true, dataTransfer: transfer });
+    assert.equal(over.defaultPrevented, true); assert.equal(transfer.dropEffect, 'none');
+    assert.equal(surface.classList.contains('is-media-drop'), false);
+    assert.equal(auxiliary.dispatch('drop', { bubbles: true, dataTransfer: transfer }).defaultPrevented, true);
+    await flushDialogs();
+    assert.equal(h.uploads.length, 0); assert.equal(h.writes.length, 0); assert.equal(h.element('docMediaDialog').open, false);
+    assert.equal(h.runtime.getCurrentEditContent(), before); assert.equal(h.state.editHasUnsavedChanges, false);
+    assert.equal(auxiliary.value, 'literal query'); assert.equal(target.selectionStart, 3); assert.equal(target.selectionEnd, 5);
+  }
+  // Focusing the auxiliary control cannot overwrite the last authored target.
+  h.element('docMediaInsertBtn').click(); await flushDialogs();
+  h.element('docMediaList').querySelector('button').click(); await flushDialogs();
+  assert.equal(target.value.includes(mediaMarkup(asset)), true);
+  for (const input of authored.filter(input => input !== target)) assert.equal(input.value.includes(mediaMarkup(asset)), false);
+  assert.equal(h.uploads.length, 0); assert.equal(h.writes.length, 0);
+});
+
+test('file paste uses its actual authored target even if focus still belongs to an auxiliary text control', async () => {
+  const h = await mediaEditor(); const [, untouched, target] = h.inputs();
+  const surface = h.document.querySelector('.doc-editor-surface'), auxiliary = h.document.createElement('textarea');
+  surface.append(auxiliary); select(untouched, 0, 4, true); select(target, 5, 5);
+  auxiliary.focus(); auxiliary.dispatch('focusin', { bubbles: true });
+  const before = target.value, untouchedBefore = untouched.value;
+  target.dispatch('paste', { bubbles: true, clipboardData: { files: [file] } }); await flushDialogs();
+  assert.equal(target.value, before.slice(0, 5) + added() + before.slice(5));
+  assert.equal(untouched.value, untouchedBefore); assert.equal(h.uploads.length, 1); assert.equal(h.writes.length, 0);
+});
+
+test('typing in auxiliary fields cannot schedule source media parsing, while authored source input still refreshes it', async () => {
+  const h = await mediaEditor({ blocks: false, editor: { readDocSource: async () => ({ content: original + mediaMarkup(asset), version: '1' }) } });
+  const surface = h.document.querySelector('.doc-editor-surface'), input = h.inputs()[0], before = h.runtime.getCurrentEditContent();
+  h.timers.clear();
+  for (const tag of ['textarea', 'input']) {
+    const auxiliary = h.document.createElement(tag); surface.append(auxiliary); auxiliary.value = 'asset:literal-search';
+    auxiliary.dispatch('input', { bubbles: true });
+    assert.equal(h.timers.size, 0, 'search text must not schedule the draft media parser');
+  }
+  assert.equal(h.runtime.getCurrentEditContent(), before); assert.equal(h.uploads.length, 0);
+  input.dispatch('input', { bubbles: true }); assert.equal(h.timers.size, 1, 'actual source input still refreshes its media preview');
+});
+
 test('cancelled and late uploads leave both the focused block and drop target intact', async () => {
   const pending = deferred(); let signal;
   const h = await mediaEditor({ media: { uploadMediaFile: (_file, options) => { signal = options.signal; return pending.promise; } } });

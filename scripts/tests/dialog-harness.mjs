@@ -1,3 +1,4 @@
+import { createProjectProblemsSnapshot, filterProjectProblems } from '../../engine/project-problems.mjs';
 import { createSceneAuthoringWorkflow } from '../../engine/scene-authoring-workflow.mjs';
 import { SCENE_PREVIEW_API_PATH } from '../../engine/scene-preview-contract.mjs';
 import { WORLD_API_PATH } from '../../engine/world-query.mjs';
@@ -145,7 +146,7 @@ export async function dialogHarness(module, overrides = {}) {
     evaluateRuntimeCase: (plan, value, samples, options = {}) => evaluateRuntimeCase(JSON.parse(JSON.stringify(plan)), JSON.parse(JSON.stringify(value)), JSON.parse(JSON.stringify(samples)), JSON.parse(JSON.stringify(options))),
     validateRuntimeCaseSuite: value => validateRuntimeCaseSuite(JSON.parse(JSON.stringify(value))),
     summarizeRuntimeCaseSuite: value => summarizeRuntimeCaseSuite(JSON.parse(JSON.stringify(value))),
-    validateRuntimeCaseReport,
+    validateRuntimeCaseReport, createProjectProblemsSnapshot, filterProjectProblems,
     location: { href: 'http://127.0.0.1/web/' },
     t, getLanguage, translateMessage, uiMessage, asUiMessage, diagnosticMessage, translateDiagnostic, isComposingInput, translatePage() {}, onLanguageChange() {},
     setTimeout: (callback) => { timers.set(++timerId, callback); return timerId; },
@@ -163,6 +164,7 @@ export async function dialogHarness(module, overrides = {}) {
     setupBackendProjectDelivery: () => ({ open() {}, close: () => true, refresh() {}, dispose() {}, isBusy: () => false }),
     setupBackendProject: () => ({ open() {}, render() {}, closed() {}, dispose() {} }),
     setupScenePreview: () => ({ setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {}, destroy() {} }),
+    setupSceneMaterialize: () => ({ setAvailable() {}, open() {}, refresh() {}, dispose() {} }),
     ...overrides,
   });
   if (['app-scene-preview', 'app-scene-layout', 'app-scene-outline'].includes(module)) {
@@ -176,6 +178,9 @@ export async function dialogHarness(module, overrides = {}) {
     vm.runInContext(projectionCreator, runtime);
   }
   if (module === 'app-project-build') {
+    const problems = (await fs.readFile(new URL('../../web/modules/app-project-problems.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(problems, runtime);
     const authoring = (await fs.readFile(new URL('../../web/modules/app-scene-authoring.js', import.meta.url), 'utf8'))
       .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
     vm.runInContext(authoring, runtime);

@@ -1,3 +1,4 @@
+import { createSceneCompositionCreateService } from './scene-composition-create-service.mjs';
 import { createSceneBehaviorCreationService } from './scene-behavior-creation-service.mjs';
 import { createSceneBehaviorAuthoringService } from './scene-behavior-authoring-service.mjs';
 import {
@@ -49,6 +50,7 @@ function getDefaultIndexCacheTtl(rawTtl) {
 }
 
 function createDocumentService(options = {}) {
+  const sceneCompositionCreate = createSceneCompositionCreateService(PROJECT_ROOT);
   const sceneBehaviorAuthoring = createSceneBehaviorAuthoringService(PROJECT_ROOT);
   const sceneBehaviorCreation = createSceneBehaviorCreationService(PROJECT_ROOT);
   const queryWorld = createWorldQueryService(PROJECT_ROOT);
@@ -258,6 +260,7 @@ function createDocumentService(options = {}) {
     scenePreview,
     sceneBehaviorAuthoring,
     sceneBehaviorCreation,
+    sceneCompositionCreate,
     queryWorld,
     async transactionStatus() {
       const { pending, receipt } = await readTransactionStatus(PROJECT_ROOT);

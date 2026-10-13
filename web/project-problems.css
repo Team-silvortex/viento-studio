@@ -1,0 +1,32 @@
+.project-problems { min-width:0; margin-block:20px; }
+.project-problems [hidden] { display:none !important; }
+.project-problems-task { white-space:pre-line; overflow-wrap:anywhere; font-size:13px; line-height:1.6; color:#536d64; }
+.project-problems-task > p { margin-block:0 6px; }
+.project-problems-task .project-problem-details { margin-block:6px 12px; }
+.project-problems-filters { display:grid; grid-template-columns:minmax(120px, .35fr) minmax(0, 1fr); gap:6px 12px; align-items:center; }
+.project-problems-filters label { font-size:13px; font-weight:600; }
+#projectBuildProblemsSeverityLabel { grid-column:1; grid-row:1; }
+#projectBuildProblemsSearchLabel { grid-column:2; grid-row:1; }
+.project-problems-filters :is(input,select) { box-sizing:border-box; width:100%; min-width:0; padding:9px; font:inherit; color:#172b26; background:white; border:1px solid #94b4a2; border-radius:8px; }
+.project-problems-filters :disabled { opacity:.6; }
+.project-problems-summary { overflow-wrap:anywhere; font-size:13px; line-height:1.6; }
+.project-problems #projectBuildDiagnostics { list-style:none; padding:0; display:grid; gap:10px; }
+.project-problem { min-width:0; padding:12px; border:1px solid #bdd1c4; border-inline-start-width:4px; border-radius:8px; overflow-wrap:anywhere; }
+.project-problem[data-severity="error"] { border-inline-start-color:#a32424; }
+.project-problem[data-severity="warning"] { border-inline-start-color:#886213; }
+.project-problem[data-severity="info"] { border-inline-start-color:#376c8a; }
+.project-problem-heading { display:flex; flex-wrap:wrap; gap:6px 10px; align-items:baseline; margin-top:0; }
+.project-problem-heading code { font-size:12px; }
+.project-problem-severity { font-weight:600; }
+.project-problem-message { line-height:1.6; }
+.project-problem-source { max-width:100%; }
+.project-problem-details { margin-top:12px; }
+.project-problem-details summary { cursor:pointer; font-size:13px; }
+.project-problem-details pre { box-sizing:border-box; max-width:100%; max-height:240px; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; font-size:12px; padding:10px; background:#edf2ef; border-radius:6px; }
+#projectBuildProblemsNavigationStatus { overflow-wrap:anywhere; }
+@media(max-width:480px) {
+  .project-problems-filters { grid-template-columns:minmax(0,1fr); }
+  .project-problems-filters label { grid-column:auto !important; grid-row:auto !important; }
+  .project-problems-filters :is(input,select) { font-size:16px; }
+  .project-problem { padding:10px; }
+}

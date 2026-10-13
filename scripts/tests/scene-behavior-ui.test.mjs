@@ -79,8 +79,8 @@ test('behavior event text never interprets markup and structured/non-scalar payl
 test('behavior diagnostics use localized guidance and preserve exact manifest or script source locations', async () => {
   for (const dictionary of [{}, en, ja]) for (const diagnostic of [
     { code: 'runtime_behavior_parameter_type', objectId: 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', sourcePath: 'documents/behaviors/demo.json',
-      propertyPath: '/bindings/0/parameters/amount', sourceRevision: 'sha256:source', bindingId: bindingIds[0],
-      sourceRange: { start: 11, end: 15, encoding: 'utf-16', exact: true }, message: 'Expected float' },
+      propertyPath: '/bindings/0/parameters/amount', sourceRevision: 'sha256:' + 'a'.repeat(64), bindingId: bindingIds[0],
+      sourceRange: { start: 11, end: 15, encoding: 'utf-16', exact: true, propertyPath: '/bindings/0/parameters/amount' }, message: 'Expected float' },
     { code: 'build_behavior_source_invalid', objectId: 'ffffffff-ffff-4fff-8fff-ffffffffffff', sourcePath: 'documents/scripts/checkpoint.txt',
       propertyPath: '', line: 8, message: 'Parser error <script>bad()</script>' },
   ]) {
@@ -88,9 +88,19 @@ test('behavior diagnostics use localized guidance and preserve exact manifest or
     const h = await harness(state, dictionary), message = '行为绑定或脚本有误，请检查标出的位置和原始日志。';
     assert.ok(h.element('projectBuildDiagnostics').textContent.includes(dictionary[message] || message));
     h.element('projectBuildDiagnostics').querySelector('button').click(); await flushDialogs();
-    assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0])), [diagnostic.sourcePath, diagnostic, { diagnostic: {
+    assert.equal(h.opened[0][0], diagnostic.sourcePath);
+    assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0][1])), {
+      index: 0, code: diagnostic.code, severity: 'error', messageKey: message, detail: diagnostic.message,
+      sourcePath: diagnostic.sourcePath, propertyPath: diagnostic.propertyPath,
+      sourceRevision: diagnostic.sourceRevision || '',
+      ...(diagnostic.sourceRange ? { sourceRange: diagnostic.sourceRange } : {}),
+    });
+    assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0][2])), { diagnostic: {
       code: diagnostic.code, severity: 'error', messageKey: message, detail: diagnostic.message,
-    } }]);
+    } });
+    assert.equal(typeof h.opened[0][2].isCurrent, 'function');
+    assert.ok(h.element('projectBuildLogs').textContent.includes(JSON.stringify(diagnostic, null, 2)),
+      'full backend details stay in raw logs while navigation receives a detached display/location DTO');
     assert.equal(h.element('projectBuildDialog').open, false);
     assert.equal(h.element('projectBuildLogs').querySelector('script'), null);
   }

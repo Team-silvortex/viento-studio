@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-13",
+  "version": "0.1.1",
+  "head": "d7e847937c6c86c1df2ae6661485e11e9c36f4e6",
+  "scope": "Unreleased multi-actor extension of the existing composition creation helper. No release, install, commit or push.",
+  "feature": {
+    "maxInitialActors": 64,
+    "fragments": 1,
+    "placements": 1,
+    "sameObjectMultipleInstances": true,
+    "stableSurvivingIdentities": true,
+    "projectionInheritancePreserved": true,
+    "legacySingleRequestCompatible": true,
+    "ordinarySaveOnly": true,
+    "modules": 20,
+    "capabilities": 37,
+    "newWriteAPI": false,
+    "rustRulesChanged": false
+  },
+  "application": {
+    "log": "full.log",
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "command": "scripts/check-project.mjs --app-only",
+    "total": 4676,
+    "pass": 4570,
+    "skip": 106,
+    "fail": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "javascriptSyntaxFiles": 774,
+    "versionAndApiPreflight": true
+  },
+  "targeted": {
+    "core": {
+      "pass": 22,
+      "new": 10,
+      "log": "core.log"
+    },
+    "ui": {
+      "pass": 29,
+      "new": 10,
+      "log": "ui.log"
+    },
+    "hostAndReadService": {
+      "pass": 19,
+      "new": 3,
+      "log": "host-service.log"
+    },
+    "uiCompatibility": {
+      "pass": 22,
+      "log": "ui-compatibility.log"
+    },
+    "newTestsTotal": 23,
+    "allIncludedInApplication": true
+  },
+  "browser": {
+    "report": "docs/test-results/scene-composition-multi-create/browser-1791883500843/browser.json",
+    "sha256": "f9a30388cb91527411cdc1669f4bfb347048d8397aece06c4a45a8673eb45888",
+    "passed": true,
+    "workflowGroups": 6,
+    "screenshots": 16,
+    "browser": "Chrome/154.0.8037.97",
+    "godot": {
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "productAndScriptHashesUnchanged": 17,
+    "temporaryRootCleaned": true,
+    "firstRunPassed": true,
+    "jobs": [
+      {
+        "kind": "plan",
+        "status": "succeeded"
+      },
+      {
+        "kind": "build",
+        "status": "succeeded"
+      },
+      {
+        "kind": "run",
+        "status": "succeeded"
+      }
+    ],
+    "movementPixels": {
+      "sameProjectionInstances": [
+        45,
+        45
+      ],
+      "ordinaryObject": 40
+    },
+    "scope": "Three GUI-authored actors from an empty project through normal save, preview, materialization and real Godot headless; shared input, not separate live player controls."
+  },
+  "preparedResources": {
+    "report": "packaged-resources.json",
+    "counts": {
+      "commonFeatureSourceFiles": 16,
+      "commonCopyComparisons": 32,
+      "desktopServiceCopies": 3,
+      "desktopLibraryTranslationCopies": 3,
+      "mobilePlatformCopies": 1,
+      "totalExactByteComparisons": 39,
+      "purePlannerPreparedCopyRuns": 2,
+      "actualCopiedUiGateCases": 10
+    },
+    "scope": "Standard resource-only desktop prepare and mobile prepare; copied modules/WASM and VM gates, not installation or Android device execution."
+  },
+  "preservation": {
+    "report": "preservation.json",
+    "existingScoresUnchanged": 1796,
+    "unrelatedCellsExactlyPreserved": 1776,
+    "oldReferencedReportsAndExampleFilesUnchanged": 866,
+    "installedAppImageUnchanged": true
+  },
+  "atlas": {
+    "functions": 115,
+    "implementations": 301,
+    "bindings": 449,
+    "cells": 1796,
+    "workflows": 79,
+    "dependencies": 295,
+    "maturityValuesUnchanged": true
+  },
+  "limits": [
+    "Creation assistant limits its initial list to 64 actors; shared recipe semantics keep their independent budgets.",
+    "No initial grid/reorder controls, scene format update, backend protocol change, installed target or new Android entry.",
+    "Plain actors retain the preexisting arrows control; the UI explicitly explains that shared input moves them together.",
+    "No new author scripts, media import, ZIP delivery, Bevy or graphic-game acceptance in this round.",
+    "106 conditional cases were skipped in the full application invocation; actual Godot was separately enabled in the real browser workflow."
+  ],
+  "evidenceHashes": {
+    "core.log": "f051a4978c51c8899a184984fcc076c95a04905d0d19d7f6be0f4df6d41d4122",
+    "ui.log": "f4db7b59ca40c6c3fb7e670993aeb37f363554070957577b151bb0f8c3a5dad1",
+    "host-service.log": "c916b84034d4dcbe9db647152a1f06d5d84569b4eda1946e965e695f4966ae5a",
+    "ui-compatibility.log": "b144298c23273a7922a817889b973ae6ae38d982567e5d159c5948a3d1a5d030",
+    "full.log": "3f1ebc605aab7ed515d397b7dfb07600cf4caf60d80a6a541a544dad9d2f05cd",
+    "packaged-resources.json": "d5321d84712bdc361d6a81bfa9ea317c5a07d5eb828117282222580ab55da0f5",
+    "preservation.json": "b85fc7bb40d6d8eb60708480ac5a75553780548ac66ad8bb9745ff1a6825b4c6"
+  }
+}

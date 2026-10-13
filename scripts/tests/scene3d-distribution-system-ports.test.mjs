@@ -23,7 +23,7 @@ function fixture(settings) {
 
 test('distribution is a separate source authoring module with only document dependency', () => {
   const registry = createStudioModuleRegistry(), plan = registry.plan(), declaration = registry.descriptors().find(m => m.id === 'org.viento.scene3d-distribution');
-  assert.equal(plan.modules.length, 19); assert.equal(plan.capabilities.length, 36);
+  assert.equal(plan.modules.length, 20); assert.equal(plan.capabilities.length, 37);
   assert.deepEqual(declaration.dependencies, [{ id: 'org.viento.document', apiVersion: 1 }]);
   assert.equal(plan.capabilities.find(c => c.capability === 'scene.authoring.distribution3d').moduleId, declaration.id);
 });

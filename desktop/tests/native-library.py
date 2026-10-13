@@ -257,8 +257,14 @@ with tempfile.TemporaryDirectory(prefix='viento-native-library-') as scratch:
         workspace = Path(recent()[0]['path'])
         assert workspace.parent == parent and recent()[0]['name'] == '原生作品 #100%', {'expectedParent': str(parent), 'actual': recent()[0]}
         manifest = json.loads((workspace / 'workspace.json').read_text())
-        assert manifest['version'] == 3 and len(manifest['documentTypes']) == 6
-        assert not list((workspace / 'documents').iterdir()) and len(list((workspace / 'templates').iterdir())) == 6
+        # Desktop creation now defaults to the generic blank template, while
+        # OC profiles remain explicit choices in the native creation form.
+        assert manifest['version'] == 3
+        assert manifest['projectTemplate']['packageId'] == 'org.viento.blank'
+        assert [item['id'] for item in manifest['documentTypes']] == ['document']
+        assert not list((workspace / 'documents').iterdir())
+        assert sorted(file.name for file in (workspace / 'templates').iterdir()) == ['document.md']
+        assert (workspace / 'templates/document.md').read_text() == '# 新建文档\n\n'
         wait_for(lambda: script('return document.body.innerText.includes(arguments[0])', recent()[0]['name']))
         screenshot('library-created-editor')
         home()

@@ -1,0 +1,54 @@
+✔ source indentation is available only to the current writable source session (32.03799ms)
+✔ ordinary input and status repaint preserve the source identity while navigation and source reload change it (4.053538ms)
+✔ source tools use ordinary dirty tracking and Save, preserving BOM and CRLF serialization (5.723084ms)
+✔ failed ordinary Save retains indented source and leaves retry to the existing save workflow (4.223017ms)
+✔ shared source context does not change when a read-only navigation moves focus selection or scroll (33.6797ms)
+✔ ordinary source input refreshes both independent source tools without adding persistence operations (4.549069ms)
+✔ busy and mode refresh revoke navigation context without replacing the source or discarding its draft (4.899289ms)
+✔ source search and diagnostics observe ordinary edits and reloads through independent controllers (30.398634ms)
+✖ literal replacements remain a normal draft and save only the current source with BOM and CRLF (9.467326ms)
+✔ native undo input restoring source clears dirty state without implicit persistence (5.533155ms)
+✔ a save conflict preserves replaced text and draft state for the ordinary conflict workflow (4.246203ms)
+✔ literal matches are nonoverlapping immutable ranges in the original source (2.379825ms)
+✔ regular expression punctuation and newlines are ordinary literal search text (0.255761ms)
+✔ empty queries and absent text produce a frozen empty result without insertion matches (0.384238ms)
+✔ Unicode simple case folding retains offsets after expanding lowercase characters (0.469347ms)
+✔ UTF-16 offsets preserve emoji, combining sequences, BOM and author whitespace (0.314137ms)
+✔ matching never splits a surrogate pair but isolated surrogates remain author text (0.476011ms)
+✔ new surrogate pairs across replacement boundaries keep exact text and a caret after the pair (0.221602ms)
+✔ single replacement requires exactly a current match and ignores overlapping candidates (0.289328ms)
+✔ replacement strings are literal and never expand dollar or capture references (0.22519ms)
+✔ multiline queries and replacement text preserve literal newlines and trailing whitespace (0.21523ms)
+✔ replace all produces one minimal span preserving every intervening character and outer text (0.9813ms)
+✔ case-insensitive replacement still changes author casing when requested (0.262305ms)
+✔ textual no-ops retain current selection and report matched count without an edit (0.171693ms)
+✔ frozen inputs are not mutated and independent calls retain no search cursor (0.198086ms)
+✔ invalid source, query, replacement and boolean fields are rejected without coercion (0.716983ms)
+✔ both replacement modes require safe ordered selection indices even when query is empty (0.716972ms)
+✔ requests require exact own enumerable data fields without reading getters (0.769167ms)
+✔ nonrecords and inherited data are rejected while cross-realm and null-prototype records work (2.175917ms)
+✔ input limits count UTF-16 units and reject oversized text before an empty query can bypass them (6.63676ms)
+✔ the match budget rejects complete operations beyond ten thousand matches without returning a prefix (21.920826ms)
+✔ replacement budgets include untouched text and allow exact-limit, shrinking and no-op results (3.063881ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 31
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 124.842468
+
+✖ failing tests:
+
+test at scripts/tests/source-search-host.test.mjs:30:1
+✖ literal replacements remain a normal draft and save only the current source with BOM and CRLF (9.467326ms)
+  TypeError: document.createTextNode is not a function
+      at renderRuntimeErrorPanel (evalmachine.<anonymous>:1724:39)
+      at logRuntimeError (evalmachine.<anonymous>:1629:3)
+      at logRuntimeErrorOrMessage (evalmachine.<anonymous>:1755:18)
+      at saveExistingDoc (evalmachine.<anonymous>:5027:47)
+      at async Object.saveCurrentDoc (evalmachine.<anonymous>:4779:10)
+      at async TestContext.<anonymous> (file:///tmp/viento-source-search-oyaq3xfl/candidate/scripts/tests/source-search-host.test.mjs:39:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

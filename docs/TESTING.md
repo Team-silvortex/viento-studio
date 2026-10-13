@@ -1,5 +1,13 @@
 # 验证指南
 
+**0.1.2 发布检查**单独保存在[发布预检](test-results/release-0.1.2/preflight.json)，验证版本、源码归档、JavaScript 语法、API 契约及本次退出保护修复。下列 4698 项完整回归运行于升版前 0.1.1 工作树，保留其原始版本、指纹和条件；本次不将历史结果改标为新版重跑。
+
+新增[起始排布验收](test-results/scene-composition-create-layout/README.md)：纯位置规划检查横排／竖排／网格、预算、原子越界拒绝，界面检查显式预览／应用、精确一次撤销及过期保护，普通宿主检查保存内容保留身份和继承。真实脚本为 `node scripts/tests/scene-composition-create-layout-smoke.mjs /usr/bin/google-chrome`，需设置可信 `VIENTO_GODOT_BIN`。本轮完整应用 4698 项中4592通过、106条件跳过；8组真实流程和准备副本另记，不代表安装或Android设备。
+
+新增[多演员配方专题](test-results/scene-composition-multi-create/README.md)：在同一创建核心／UI／宿主测试中追加多演员、重复引用、身份冲突、未完成坐标与整体保存；旧单演员请求继续回归。真实脚本为 `node scripts/tests/scene-composition-multi-create-smoke.mjs /usr/bin/google-chrome`，需设置可信 `VIENTO_GODOT_BIN`。本轮 4676 项中 4570 通过、106 条件跳过，另有三演员真实 Godot 与准备副本记录；不替代旧专题，也不计为新安装验收。
+
+新增[配方创建验收](test-results/scene-composition-create/README.md)：专项覆盖纯候选、只读目录、HTTP、独立表单、普通草稿／保存与模块门槛；可运行 `node --test scripts/tests/scene-composition-create*.test.mjs`。设置 `VIENTO_GODOT_BIN` 后运行 `node scripts/tests/scene-composition-create-smoke.mjs /usr/bin/google-chrome`，实际从空工程 GUI 创建 OC、投影、配方，再生成 Scene2D 并运行 Godot。完整应用 4653 项中 4547 通过、106 条件跳过；浏览器 6 组与准备资源分别记录。首次完整回归的 7 个旧目录计数断言已按 20 模块／37 能力更新；没有弱化端口隔离断言。新助手尚未重新安装，不将本次浏览器结果合并为上一轮安装结论。
+
 [0.1.0 源码交付](RELEASE_0.1.0.md)汇总当前主线及其验证时序；[本版发布预检](test-results/release-0.1.0/preflight.json)完成8项版本／源码归档回归与647文件语法／API检查。下列专题及旧版发布检查继续保留当时版本、来源摘要及平台边界。源码发布不重标历史日志，也不等于新安装包或 Android 设备验收。
 
 新增[3D 初步接入验证](test-results/scene3d-primitives/results.json)分别检查独立作者格式、Rust／WASM、GPU API 预览、原文会话守护及 Godot 导出／有限无头实测，旧 2D 路径另行回归。实际图形后端、准备副本和工具环境在本轮证据中记录，不能扩大为安装或设备结论。
@@ -772,8 +780,11 @@ python3 desktop/tests/native-library.py /path/to/tauri-driver /path/to/WebKitWeb
 | `VIENTO_TEST_GENERIC_CREATE=/path/to/workspace-archive` | 通用工程、类型和模板创建，以及完整归档恢复 |
 | `VIENTO_TEST_FIELDS=1` | 配合通用工程执行字段修改、模式往返和字节核对 |
 | `VIENTO_TEST_LANGUAGE=1` | 英日语言保存、重启和草稿保护 |
+| `VIENTO_TEST_2D_WORKFLOW=1` | 默认隔离样例中的配方生成 Scene2D、源码替换及原生撤销／重做、问题回源修复、Godot 构建与无头运行；不可与 GENERIC_CREATE 同时启用 |
 | `VIENTO_TEST_EDITOR_EXPORT=1` | 在 library 流程中执行原生导出保存、过期、取消与重试 |
 | `VIENTO_TEST_SCREENSHOT_DIR=/path/to/new-evidence` | 保留本轮截图及日志；默认随测试目录清理 |
+
+二维专项另需 `VIENTO_GODOT_BIN=/可信本机Godot绝对路径` 和 xdotool（可用 `VIENTO_TEST_XDOTOOL` 指定）。OC、已登记图片及保存后的配方在启动前作为隔离样例准备；本专项从预览配方开始，不替代上游界面创作。按钮与快捷键走真实 Tauri/WebKit，撤销／重做还通过独立 Xvfb 的键盘事件复核；表单赋值会发送输入事件。Godot 有限无头运行通过，不代表渲染游戏或独立发行包已验。复现安装验证可同时设置 `VIENTO_EXPECT_APP_VERSION=0.1.1`、`VIENTO_EXPECT_BUILD_VERSION=0.1.1` 和 `VIENTO_TEST_LANGUAGE=1`；[2026-10-13 安装记录](test-results/native-installed-0.1.1/README.md) 保留失败复现和修复后结果。
 
 系统选择器、覆盖确认、媒体解码和关闭确认需在原生窗口验收。构建安装包后，可将主程序或 AppImage 作为第三个参数再次运行；调试程序通过不代表安装包已经通过。以前的窗口和安装记录从 [历史平台验收](history/README.md#迁移平台验收与维护) 查阅。
 
@@ -789,7 +800,7 @@ python3 desktop/tests/native-library.py /path/to/tauri-driver /path/to/WebKitWeb
 
 | 范围 | 后续验收重点 |
 | --- | --- |
-| 新的桌面安装包 | 构建工作台在 Tauri 窗口中的入口、工具配置、退出收尾；原生保存和升级流程 |
+| 桌面安装扩展范围 | 本轮已验 Linux 0.1.1 工作树的编辑、配方生成、Godot 无头链、作品库和导出；其他后端、3D、上游全部创作及长任务中退出需分别补验 |
 | Windows / macOS | 系统文件选择、覆盖确认、媒体解码、生命周期及发行签名；Linux 结果不外推 |
 | Android 实体设备 | 中日输入法候选字、低内存回收、不同 Android／WebView、屏幕与厂商系统 |
 | Android 文件提供方 | 第三方云盘、外置设备、传输途中进程结束；商店签名更新需单独验收 |

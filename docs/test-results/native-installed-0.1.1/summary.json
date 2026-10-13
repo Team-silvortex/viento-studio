@@ -1,0 +1,153 @@
+{
+  "ok": true,
+  "finishedAt": "2026-10-13T08:14:24.571726+00:00",
+  "baseCommit": "d7e847937c6c86c1df2ae6661485e11e9c36f4e6",
+  "version": "0.1.1",
+  "workingTreeBuild": true,
+  "newRelease": false,
+  "installedAppImage": {
+    "sha256": "22fb45a03fe2a698ad1eec0b7c655161bd47d1769b5cf6ca7f65b12bce5ccc48",
+    "bytes": 129309176,
+    "record": "install.json",
+    "normalLauncher": "normal-launch.json"
+  },
+  "platform": {
+    "os": "Ubuntu 26.04.1 LTS x86_64",
+    "webkitGTK": "2.52.6",
+    "gtk": "3.24.52",
+    "bundledNode": "24.20.0",
+    "godot": "4.7.2-stable"
+  },
+  "fixes": [
+    {
+      "problem": "WebKit keeps source edit history but Ctrl+Z/Shift+Ctrl+Z do not route to it",
+      "implementation": "Independent current-source keyboard adapter uses the same native history, preserving input ownership, IME, dialog and busy guards",
+      "sources": [
+        "web/modules/app-source-history.js",
+        "web/modules/app-runtime.js"
+      ],
+      "verification": "Exact full-text WebDriver and isolated X11 keyboard undo/redo roundtrips; unit and Chrome regression"
+    },
+    {
+      "problem": "At 900×800, independent source toolbars and media preview squeeze the textarea below the existing usable-height requirement",
+      "implementation": "At widths up to 1100px, media flex share is 25% instead of 35%",
+      "sources": [
+        "web/editor-layout.css"
+      ],
+      "verification": "Unchanged source-height/media-fit native assertions pass"
+    }
+  ],
+  "checks": {
+    "application": {
+      "tests": 4604,
+      "passed": 4498,
+      "skipped": 106,
+      "failed": 0,
+      "javascriptSyntaxFiles": 763,
+      "apiAndVersionPassed": true,
+      "log": "app-check.log",
+      "skipReason": "Conditional native archive/mobile helpers and optional backend tool configuration not supplied to this application-wide invocation; installed GUI/Godot checks are recorded separately"
+    },
+    "sourceHistoryUnit": {
+      "tests": 15,
+      "passed": 15,
+      "log": "source-history-tests.log",
+      "includedInFullSuite": true
+    },
+    "chrome": {
+      "passed": true,
+      "steps": 10,
+      "mediaIsolationCases": 4,
+      "report": "../source-search/installed-history-regression/report.json"
+    },
+    "nativeEditor": {
+      "passed": true,
+      "run": "native-smoke-run-7",
+      "exitCode": 0,
+      "seconds": 59.63,
+      "screenshots": 24,
+      "report": "native-smoke-run-7/sources.json",
+      "workflow": "native-smoke-run-7/native-2d-workflow.json",
+      "visualReview": "native-smoke-run-7/visual-review.json",
+      "includes": [
+        "Language persistence/restart and native close confirmation",
+        "Image/video/audio import, playback, save and reopen",
+        "900×800 editor/media layout",
+        "OC background ownership, raw/blocks, dirty/save/cancel, engine shutdown",
+        "Recipe review/cancel/materialize, exact undo/redo, invalid plan and diagnostic source repair",
+        "Godot project generation, finite headless execution and 4 visible runtime instances"
+      ]
+    },
+    "nativeLibrary": {
+      "passed": true,
+      "run": "run-3-final",
+      "milestones": 8,
+      "screenshots": 20,
+      "includesEditorExports": true,
+      "report": "native-library/results.json"
+    },
+    "resources": {
+      "passed": true,
+      "files": 360,
+      "report": "resource-verification.json"
+    }
+  },
+  "dataProtection": {
+    "passed": true,
+    "unchangedFiles": 5020,
+    "report": "data-protection.json"
+  },
+  "cleanup": "cleanup.json",
+  "sourceHashes": {
+    "web/modules/app-source-history.js": "3982af7ea270864ab0d090f65c71201de42d34cefc261b8a93610f044bd2423f",
+    "web/modules/app-runtime.js": "715a900a549370ed32c35025e9f2bfd91e1e47ee7f1e13dadb1e3e8d45ddd3b3",
+    "web/editor-layout.css": "2849fe419c6652474f4e49d77c382be1bba8d07f7b85649896b04af0116da8ef",
+    "scripts/tests/source-history.test.mjs": "217754f8709f179fee79b2614c58a1b06cfe7d29661afefb2df112f4c8a75e4c"
+  },
+  "limitations": [
+    "OC, registered image and saved composition are prepared as fixture files before native startup. Their upstream GUI authoring is not exercised.",
+    "Installed Linux Tauri/WebKit through tauri-driver and Xvfb. Form values dispatch input/change events; buttons and keyboard use WebDriver.",
+    "Godot build and finite headless execution are exercised; rendered gameplay, author scripts, standalone distribution and other platforms are not claimed.",
+    "Native GUI media/library/export paths use isolated temporary projects. Normal desktop launch opens the library homepage without editing real author data.",
+    "This is a locally installed 0.1.1 working-tree build, not a new release or a commit/push.",
+    "Other engines, Android, Windows/macOS, full upstream authoring, author-script execution, rendered gameplay and standalone distribution are not newly validated here."
+  ],
+  "retainedAttempts": [
+    {
+      "path": "native-library/run-1",
+      "result": "failed: obsolete six-type default fixture expectation, corrected to generic blank template"
+    },
+    {
+      "path": "native-smoke",
+      "result": "failed: test selected index ID as source path; corrected locator"
+    },
+    {
+      "path": "native-smoke-run-2",
+      "result": "failed: genuine native undo shortcut defect"
+    },
+    {
+      "path": "native-smoke-run-3",
+      "result": "failed: native and physical shortcut diagnostic confirms defect"
+    },
+    {
+      "path": "native-smoke-run-4-diagnostic",
+      "result": "diagnostic only: direct browser undo stack works; deliberately not accepted as GUI pass"
+    },
+    {
+      "path": "native-core",
+      "result": "failed: genuine narrow-window source-height regression"
+    },
+    {
+      "path": "native-smoke-run-5",
+      "result": "passed functional suite; screenshots needed explicit completed-UI wait"
+    },
+    {
+      "path": "native-smoke-run-6",
+      "result": "passed; final run additionally restores strict initial asset registry count"
+    },
+    {
+      "path": "build-fixed.log",
+      "result": "failed ETXTBSY: embedded Node test ran while prepare recopied the executable; tests stopped and sequential build-fixed-retry.log succeeded"
+    }
+  ]
+}

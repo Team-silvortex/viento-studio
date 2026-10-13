@@ -1,0 +1,40 @@
+✔ source indentation is available only to the current writable source session (23.709008ms)
+✔ ordinary input and status repaint preserve the source identity while navigation and source reload change it (4.320542ms)
+✔ source tools use ordinary dirty tracking and Save, preserving BOM and CRLF serialization (5.755176ms)
+✔ failed ordinary Save retains indented source and leaves retry to the existing save workflow (4.47041ms)
+✔ shared source context does not change when a read-only navigation moves focus selection or scroll (24.069322ms)
+✔ ordinary source input refreshes both independent source tools without adding persistence operations (4.518024ms)
+✔ busy and mode refresh revoke navigation context without replacing the source or discarding its draft (5.446204ms)
+✔ source search and diagnostics observe ordinary edits and reloads through independent controllers (23.402681ms)
+✔ literal replacements remain a normal draft and save only the current source with BOM and CRLF (5.584468ms)
+✔ native undo input restoring source clears dirty state without implicit persistence (4.225745ms)
+✔ a save conflict preserves replaced text and draft state for the ordinary conflict workflow (4.447975ms)
+✔ literal matches are nonoverlapping immutable ranges in the original source (2.248626ms)
+✔ regular expression punctuation and newlines are ordinary literal search text (0.291338ms)
+✔ empty queries and absent text produce a frozen empty result without insertion matches (0.426766ms)
+✔ Unicode simple case folding retains offsets after expanding lowercase characters (0.608566ms)
+✔ UTF-16 offsets preserve emoji, combining sequences, BOM and author whitespace (0.344202ms)
+✔ matching never splits a surrogate pair but isolated surrogates remain author text (0.538717ms)
+✔ new surrogate pairs across replacement boundaries keep exact text and a caret after the pair (0.309734ms)
+✔ single replacement requires exactly a current match and ignores overlapping candidates (0.354352ms)
+✔ replacement strings are literal and never expand dollar or capture references (0.240186ms)
+✔ multiline queries and replacement text preserve literal newlines and trailing whitespace (1.059299ms)
+✔ replace all produces one minimal span preserving every intervening character and outer text (0.207852ms)
+✔ case-insensitive replacement still changes author casing when requested (0.240416ms)
+✔ textual no-ops retain current selection and report matched count without an edit (0.151039ms)
+✔ frozen inputs are not mutated and independent calls retain no search cursor (0.193223ms)
+✔ invalid source, query, replacement and boolean fields are rejected without coercion (0.760046ms)
+✔ both replacement modes require safe ordered selection indices even when query is empty (0.676611ms)
+✔ requests require exact own enumerable data fields without reading getters (0.833302ms)
+✔ nonrecords and inherited data are rejected while cross-realm and null-prototype records work (1.794486ms)
+✔ input limits count UTF-16 units and reject oversized text before an empty query can bypass them (6.742783ms)
+✔ the match budget rejects complete operations beyond ten thousand matches without returning a prefix (16.407718ms)
+✔ replacement budgets include untouched text and allow exact-limit, shrinking and no-op results (3.09833ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 114.736473

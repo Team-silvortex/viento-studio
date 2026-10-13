@@ -503,3 +503,35 @@ test('a diagnostic without source coordinates opens its text and binds only an u
   assert.equal(h.snapshots[0].sourceRevision, ''); assert.equal(Object.hasOwn(h.snapshots[0], 'range'), false);
   assert.equal(selected(h), ''); assert.equal(h.source.value, normalize(source)); assert.equal(h.writes.length, 0);
 });
+
+test('problem result ownership is checked before navigation and again after source reads', async () => {
+  const idle = await harness(); let current = false;
+  assert.equal(await idle.runtime.openBuildSource(idle.doc.sourcePath, location(), { isCurrent: () => current }), false);
+  assert.equal(idle.reads.length, 0);
+  const read = deferred(), h = await harness({ read: () => read.promise }); current = true;
+  const before = h.doc._sourceCachedText;
+  const pending = h.runtime.openBuildSource(h.doc.sourcePath, location(), { isCurrent: () => current });
+  current = false; read.resolve({ content: source, version: 'obsolete-task' });
+  assert.equal(await pending, false);
+  assert.equal(h.doc._sourceCachedText, before); assert.equal(h.state.isLoadingSource, false);
+  assert.equal(h.writes.length, 0);
+});
+
+test('a replaced problem result during revision hashing cannot activate its old source', async () => {
+  const hash = deferred(); let current = true;
+  const h = await harness({ crypto: { subtle: { digest: () => hash.promise } } });
+  const before = h.doc._sourceCachedText;
+  const pending = h.runtime.openBuildSource(h.doc.sourcePath, location(), { isCurrent: () => current });
+  await flush(); current = false;
+  hash.resolve(await webcrypto.subtle.digest('SHA-256', new TextEncoder().encode(source)));
+  assert.equal(await pending, false); assert.equal(h.doc._sourceCachedText, before);
+  assert.equal(h.state.isLoadingSource, false); assert.equal(h.writes.length, 0);
+});
+
+test('completed problem navigation hands focus off after its dialog closes without retaining dialog ownership', async () => {
+  const h = await harness(); let current = true;
+  const result = await h.runtime.openBuildSource(h.doc.sourcePath, location(), { isCurrent: () => current });
+  opened(result); current = false;
+  h.source.setSelectionRange(0, 0); assert.equal(result.focus(), true); assert.equal(selected(h), '160');
+  assert.equal(result.focus(), false); assert.equal(h.writes.length, 0);
+});

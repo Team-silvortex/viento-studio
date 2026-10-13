@@ -1,0 +1,76 @@
+{
+  "finalReport": "docs/test-results/scene-composition-create/browser-1791881088567/browser.json",
+  "reportSha256": "9580240d534e6e43708efe115cdfd92b5cc0be44104733bf150545c41ba5f494",
+  "passed": true,
+  "workflowGroups": 6,
+  "screenshots": 14,
+  "productAndHarnessSourceFiles": 17,
+  "sourceSnapshotUnchanged": true,
+  "temporaryWorkspaceCleaned": true,
+  "browser": "Chrome/154.0.8037.97",
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "godot": {
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "jobs": [
+    {
+      "kind": "plan",
+      "status": "succeeded",
+      "id": "8753cab0-4132-4c0f-ae1f-74dde72a80d8"
+    },
+    {
+      "kind": "build",
+      "status": "succeeded",
+      "id": "44e46390-5e2c-4513-bf36-6369a92b2f14"
+    },
+    {
+      "kind": "run",
+      "status": "succeeded",
+      "id": "be50d173-bdfc-4a86-b5d7-70c59dcea9da"
+    }
+  ],
+  "runtime": {
+    "finalActors": [
+      {
+        "instanceId": "9d103b0b-ca34-4f9f-aeb3-06a26860feb1",
+        "objectId": "c2c933dd-d58d-4f02-bab8-47d98675bbee",
+        "position": [
+          185,
+          180
+        ],
+        "state": "idle"
+      }
+    ]
+  },
+  "visualReview": {
+    "passed": true,
+    "inspected": [
+      "recipe-zh-CN-390.png",
+      "recipe-en-390.png",
+      "recipe-ja-390-source.png",
+      "godot-inherited-player-result.png"
+    ],
+    "notes": "Chinese/English/Japanese header/footer actions remain visible; long JSON wraps in independently scrolling body; final Godot screenshot waits for the editor completed status."
+  },
+  "priorRuns": [
+    {
+      "report": "browser-1791880936426/browser.json",
+      "status": "test-fixture-preparation-failed",
+      "reason": "The test workspace name contained /, which production portable-name validation correctly rejects. Changed the fixture name separators to middle dots."
+    },
+    {
+      "report": "browser-1791880966769/browser.json",
+      "status": "test-harness-expression-failed",
+      "reason": "A multi-statement CDP expression was missing its function wrapper. The first three workflow groups already passed; corrected the test expression without changing product code."
+    },
+    {
+      "report": "browser-1791881000877/browser.json",
+      "status": "passed",
+      "reason": "All six groups passed. The final report additionally waits for the editor polling cycle before capturing completed Godot UI and captures each translated form from its top."
+    }
+  ]
+}

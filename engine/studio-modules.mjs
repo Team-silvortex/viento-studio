@@ -119,6 +119,7 @@ export const STUDIO_MODULES = freeze([
     ['language.markdown', 'language'], ['language.text', 'language'], ['language.json', 'language'], ['language.yaml', 'language'],
   ], []),
   moduleDescriptor('org.viento.scripts', [['authoring.script', 'authoring']]),
+  moduleDescriptor('org.viento.scene-composition-create', [['scene.authoring.composition-create', 'authoring']]),
   moduleDescriptor('org.viento.settings', [['workbench.settings', 'workbench']], []),
   moduleDescriptor('org.viento.project', [['project.types', 'project'], ['project.templates', 'project']]),
   moduleDescriptor('org.viento.world', [

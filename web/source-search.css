@@ -1,0 +1,25 @@
+.doc-editor-wrap.source-search-container { display:flex; flex-direction:column; min-width:0; min-height:0; }
+.doc-editor-wrap.source-search-container[hidden] { display:none; }
+.doc-editor-wrap.source-search-container > .doc-editor { flex:1 1 auto; height:auto; min-height:0; }
+.source-search-tools { flex:0 0 auto; padding:5px 12px; border-bottom:1px solid #29384f; color:#bacbe3; font-size:12px; }
+.source-search-tools[hidden], .source-search-panel[hidden] { display:none; }
+.source-search-tools .doc-btn { min-height:28px; padding:4px 7px; font-size:12px; }
+.source-search-panel { display:grid; gap:6px; max-height:220px; overflow:auto; }
+.source-search-row { display:grid; grid-template-columns:65px minmax(0,1fr); gap:8px; align-items:center; }
+.source-search-panel textarea { display:block; box-sizing:border-box; width:100%; min-width:0; min-height:32px; max-height:80px; resize:vertical; padding:5px 8px; border:1px solid #354d69; border-radius:5px; background:#111d30; color:#d8e9f8; font:inherit; line-height:1.5; }
+.source-search-actions { display:flex; flex-wrap:wrap; align-items:center; gap:5px 8px; }
+.source-search-case { display:flex; gap:5px; align-items:center; }
+.source-search-case input { width:auto; accent-color:#8ad8b4; }
+#sourceSearchStatus { margin:0; overflow-wrap:anywhere; line-height:1.5; }
+@media(max-width:480px) {
+  .source-search-tools { padding:5px 10px; }
+  .source-search-row { grid-template-columns:60px minmax(0,1fr); }
+  .source-search-panel textarea { font-size:16px; }
+  .is-writing .content-frame:has(.source-search-panel:not([hidden])) { overflow:auto; }
+  .is-writing .doc-meta:has(.source-search-panel:not([hidden])),
+  .is-writing .doc-edit-panel:has(.source-search-panel:not([hidden])),
+  .is-writing .doc-editor-surface:has(.source-search-panel:not([hidden])) { flex:1 0 auto; }
+  .is-writing .doc-editor-surface:has(.source-search-panel:not([hidden])) { min-height:520px; }
+  .is-writing .doc-editor-surface:has(.source-search-panel:not([hidden])):has(.source-diagnostic-panel:not([hidden])) { min-height:650px; }
+  .doc-editor-wrap.source-search-container:has(.source-search-panel:not([hidden])) > .doc-editor { min-height:120px; }
+}

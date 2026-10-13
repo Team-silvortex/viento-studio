@@ -1,5 +1,9 @@
 # 可移植引擎
 
+`scene-composition-create.mjs` 为初始配方准备冻结草稿：编辑上下文与只读对象目录分别核对，稳定身份由调用者明确提供；现有 Rust 展开器校验完整声明。它不读取磁盘、不登记文档、不选择引擎，普通正文宿主继续拥有保存权威。
+
+`scene-composition-create-layout.mjs` 独立规划起始横排／竖排／网格，只接收稳定实例身份及数值坐标，返回冻结的位置清单。它拒绝整体越界，不读取对象外观或推断碰撞；视图负责显式应用与一次回退，完整配方仍经原创建核心和 Rust 校验。
+
 0.1.0 的独立 3D 作者接口分别覆盖变换、对象结构、环境、属性、整体移动、参照对齐、等距分布、批量复制和批量移除。九个可选 Rust 能力经可移植私有提案与文档来源守护接到独立界面；只更新原文草稿，普通保存保持持久权威。只读预览、数学与 GPU 适配不取得这些作者接口。0.1.0 发布时为 17 模块、33 项声明能力；之后的行为编辑、首次行为创建及独立脚本创建使当前工作树增至 19／36。交付与历史验证条件见[版本记录](../docs/RELEASE_0.1.0.md)。
 
 `studio-modules.mjs` 提供固定系统模块注册与增量需求规划：描述符、依赖、提供者和 API 版本确定性检查，不读取 DOM／文件／网络或执行引擎。模板的 `studioProfile` 只请求能力，普通文档继续可用；模块装配状态和宿主执行权限分开，见[系统边界](../docs/STUDIO_MODULES.md)。
@@ -543,3 +547,22 @@ dispatchStudioCoreScene3DAlignmentPatch({
 `source-position.mjs` 的 `createSourceLineIndex(text)` 接受至多 4 Mi UTF-16 码元的规范 LF 文本，返回冻结的 `length`、`lineCount`、`position(offset)` 和 `lineRange(line)` 接口。位置从 1 开始，偏移及列使用 UTF-16；首个 BOM 不计列，第一行可导航起点越过 BOM。换行符属于前一行，末尾 LF 产生可定位的空行。索引内部保存有界行起点，查询不暴露可变存储，非法输入返回 `source_position_invalid`；不读取文档、DOM、保存状态或后端。
 
 `source-diagnostic.mjs` 的 `createSourceDiagnosticSnapshot(input)` 返回脱离输入对象的冻结展示快照：来源路径、字段、修订、代码、级别、消息键、原始详情和定位状态。仅 `exact` 状态可携带已转换的 LF／UTF-16 范围；输入只允许普通数据属性，各字段有独立预算，不接受构建任务、访问器、函数或执行权限。它不计算源码摘要或判断错误是否解决：版本及字符边界由来源宿主核对，视图另核对当前文本范围。首次面板消费者见[诊断说明](../docs/SCENE_BEHAVIORS.md#原文诊断上下文)。
+
+## 字面源码查找与替换规划
+
+`source-search.mjs` 独立于语言、文件系统和界面。`findSourceMatches({ text, query, matchCase })` 返回冻结的非重叠 UTF-16 区间，空查询返回空数组；`matchCase` 默认 true，关闭后采用保留原始偏移的 Unicode 简单大小写匹配。
+
+`planSourceReplacement({ text, query, replacement, matchCase, selectionStart, selectionEnd, all })` 返回冻结的 `changed/start/end/replacement/selectionStart/selectionEnd/count`。单处模式要求选区恰好是一处匹配；全部模式合成最小包围区间，保留各匹配之间的正文。替换值始终为字面内容。没有净变化时不要求宿主创建编辑事务。
+
+原文需为 LF 文本，输入及输出最多 4 Mi UTF-16，查询 4096、替换输入 65536 码元，非重叠匹配最多 10000 处。非法输入报告 `source_search_invalid`，匹配或输出预算超限报告 `source_search_limit`；不返回可误认为完整结果的截断列表。宿主负责来源和当前文本守护、浏览器原生事务及普通保存；此模块不验证磁盘修订。
+
+## 当前任务诊断快照与筛选
+
+`project-problems.mjs` 提供 `createProjectProblemsSnapshot({task, diagnostics})` 与 `filterProjectProblems(snapshot, {severity, query, messages})`。前者输出冻结的 `{task, rows}`，每行保留原始零基 `index`；后者返回 `{rows, total, matched, counts}`，严重度统计始终基于完整快照。`messages` 可选，按全部行顺序传入当前语言消息。检索为 Unicode 忽略大小写的字面子串，不跨字段拼接；原始顺序与重复项保留。
+
+最多 256 行；纯核心查询最多 4096 UTF-16（界面限制 512），消息键 2000、翻译 4000、详情 8192、路径 4096、字段路径 2048。任务身份为有界标量；来源范围要求 UTF-16 整数边界、原始字段路径、显式 exact 与 SHA-256 修订，实际字符边界及当前修订由读取原文的宿主核对。缺失标量由适配器显式提供空字符串，无范围时省略 `sourceRange`；畸形记录、getter、稀疏数组、超限或无效来源均抛出 `project_problems_invalid`。筛选复验序列化快照，无模块私有品牌要求，便于后续原生适配。
+
+
+## 配方到独立运行场景
+
+`scene-composition-materialize.mjs` 以来源原文、登记投影、保存态预览和读取后的 World 修订规划独立 Scene2D。摘要由调用方注入，展开仍归共享 Rust 核心；生成新场景的命令复用 `scene.create`，原配方和元数据不写入。界面只编排读取、审阅、保存及结果核对，不把引擎或渲染依赖引入规划层。具体使用与边界见[配方指南](../docs/SCENE_COMPOSITION.md#从配方创建运行场景)。

@@ -1,8 +1,11 @@
+import { setupSourceSearch } from './app-source-search.js';
+import { setupSourceHistory } from './app-source-history.js';
 import { setupSourceDiagnostic } from './app-source-diagnostic.js';
 import { revealSourceOffset } from './app-source-reveal.js';
 import { setupSourcePosition } from './app-source-position.js';
 import { setupSourceIndentation } from './app-source-indentation.js';
 import { prepareScriptDraftApply } from '../../engine/script-authoring.mjs';
+import { prepareCompositionDraftApply } from '../../engine/scene-composition-create.mjs';
 import { createSceneBehaviorSourceHost } from './app-behavior-source.js';
 import { t, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage } from '../i18n/index.js';
 import { diagnosticMessage } from '../i18n/diagnostics.js';
@@ -87,6 +90,7 @@ let studioSystem = null;
 let sourceIndentationController = null;
 let sourcePositionController = null;
 let sourceDiagnosticController = null;
+let sourceSearchController = null;
 let sourceInteractionEpoch = 0;
 function markSourceInteraction() { sourceInteractionEpoch++; }
 let sourceEditorContentEpoch = 0;
@@ -1536,6 +1540,7 @@ function syncEditorBusyUi() {
   sourceIndentationController?.refresh();
   sourcePositionController?.refresh();
   sourceDiagnosticController?.refresh();
+  sourceSearchController?.refresh();
   studioSystem?.refreshMedia();
 }
 
@@ -2651,6 +2656,7 @@ function setSourceEditorContent(content) {
   sourceIndentationController?.refresh();
   sourcePositionController?.refresh();
   sourceDiagnosticController?.refresh();
+  sourceSearchController?.refresh();
 }
 
 function getSourceEditorContent() {
@@ -3711,10 +3717,10 @@ async function enterCreateMode() {
   if (editEditorEl) editEditorEl.scrollTop = 0;
 }
 
-// Script creation delegates only an in-memory draft to the ordinary document
-// editor. No template read, write API, registration or execution is performed.
-let scriptCreateGeneration = 0, scriptCreateObservation = null;
-function scriptCreateContext() {
+// Creation helpers delegate ordinary in-memory drafts to this shared document
+// host. Each domain validates its own proposal; this transition does no I/O.
+let documentCreateGeneration = 0, documentCreateObservation = null;
+function documentCreateContext() {
   const content = isInEditSession() ? getCurrentEditContent() : '';
   const documentRoot = getProjectDocumentsPath();
   const documentTypes = (state.workspace?.documentTypes || []).map(type => ({ id: type.id, label: type.label }));
@@ -3724,11 +3730,14 @@ function scriptCreateContext() {
   const observed = [state.workspace, getActiveDoc(), state.activePath, state.activeEditPath, state.editInputMode,
     editorLoadToken, content, editSessionBaselineContent, editSessionVersion,
     editable, busy, dirty, creating, documentRoot, JSON.stringify(documentTypes)];
-  if (!scriptCreateObservation || observed.some((value, index) => value !== scriptCreateObservation[index])) {
-    scriptCreateGeneration++; scriptCreateObservation = observed;
+  if (!documentCreateObservation || observed.some((value, index) => value !== documentCreateObservation[index])) {
+    documentCreateGeneration++; documentCreateObservation = observed;
   }
-  return { editable, busy, dirty, creating, sourceToken: `script:${scriptCreateGeneration}`, documentRoot, documentTypes };
+  return { editable, busy, dirty, creating, sourceToken: `create:${documentCreateGeneration}`, documentRoot, documentTypes };
 }
+
+function scriptCreateContext() { return documentCreateContext(); }
+function compositionCreateContext() { return documentCreateContext(); }
 
 function createScriptDraft(proposal, { isCurrent = () => true } = {}) {
   const conflict = () => { throw Object.assign(new Error('Script creation no longer owns this editor session.'), { errorCode: 'script_authoring_conflict' }); };
@@ -3737,6 +3746,21 @@ function createScriptDraft(proposal, { isCurrent = () => true } = {}) {
   if (!context.editable || context.busy || context.dirty || context.creating) conflict();
   const prepared = prepareScriptDraftApply({ sourceToken: context.sourceToken, documentRoot: context.documentRoot, documentTypes: context.documentTypes }, proposal);
   if (isCurrent() !== true || scriptCreateContext().sourceToken !== context.sourceToken) conflict();
+  return applyPreparedDocumentDraft(prepared, t('脚本草稿已准备好。可继续编辑，点击保存后才会登记到工程。'));
+}
+
+function createCompositionDraft(proposal, { catalog, isCurrent = () => true } = {}) {
+  const conflict = () => { throw Object.assign(new Error('Composition creation no longer owns this editor session.'), { errorCode: 'composition_authoring_conflict' }); };
+  if (typeof isCurrent !== 'function' || isCurrent() !== true) conflict();
+  const context = compositionCreateContext();
+  if (!context.editable || context.busy || context.dirty || context.creating) conflict();
+  const prepared = prepareCompositionDraftApply({ sourceToken: context.sourceToken, documentRoot: context.documentRoot, documentTypes: context.documentTypes }, catalog, proposal);
+  if (isCurrent() !== true || compositionCreateContext().sourceToken !== context.sourceToken) conflict();
+  return applyPreparedDocumentDraft(prepared, t('场景配方草稿已准备好。可继续编辑，点击保存后才会登记到工程。'));
+}
+
+// Called only after the helper-specific proposal and current owner are checked.
+function applyPreparedDocumentDraft(prepared, message) {
   // Keep admission and the complete new-session transition synchronous. Invalidate
   // any old template/source load before replacing the clean editor session.
   invalidateEditorLoads();
@@ -3748,16 +3772,16 @@ function createScriptDraft(proposal, { isCurrent = () => true } = {}) {
   setStoredCreateType(prepared.documentType);
   if (editPathEl) editPathEl.textContent = `${APP_RUNTIME_TEXTS.create.sourcePrefix}${getCreateTypeLabel(prepared.documentType)}${APP_RUNTIME_TEXTS.create.sourceTypeSuffix}${prepared.sourcePath}`;
   setEditorPanelVisibility(true);
-  // An unsaved generated script must participate in exit/recovery protection.
+  // Every generated draft must participate in exit/recovery protection.
   // Its baseline is empty, rather than treating the template as already saved.
   setSourceEditorContent(''); setEditSessionClean('', '');
   setSourceEditorContent(prepared.content);
   updateCreatePathValidation(); refreshEditSessionDirtyState(); refreshEditButtons();
-  setEditorStatus(t('脚本草稿已准备好。可继续编辑，点击保存后才会登记到工程。'));
+  setEditorStatus(message);
   editEditorEl?.setSelectionRange?.(0, 0); if (editEditorEl) editEditorEl.scrollTop = 0;
-  const appliedToken = scriptCreateContext().sourceToken; let focused = false;
+  const appliedToken = documentCreateContext().sourceToken; let focused = false;
   return Object.freeze({ applied: true, sourcePath: prepared.sourcePath, content: prepared.content, focus() {
-    if (focused || document.querySelector?.('dialog[open]') || scriptCreateContext().sourceToken !== appliedToken
+    if (focused || document.querySelector?.('dialog[open]') || documentCreateContext().sourceToken !== appliedToken
       || !isEditModeActive() || !state.isCreating || isEditorBusy() || getCurrentEditContent() !== prepared.content
       || getCreateInputPath() !== prepared.sourcePath || state.activeCreateType !== prepared.documentType) return false;
     // The chooser close event may arrive after the author has already moved
@@ -4230,17 +4254,18 @@ async function openAuthorSource(sourcePath, { sourceRevision, isCurrent = () => 
 }
 
 async function openBuildSource(sourcePath, location = null, context = null) {
-  return openSavedSource(sourcePath, location, null, context?.diagnostic);
+  return openSavedSource(sourcePath, location, null, context?.diagnostic, context?.isCurrent);
 }
 
-async function openSavedSource(sourcePath, location = null, sourceEdit = null, diagnostic = null) {
+async function openSavedSource(sourcePath, location = null, sourceEdit = null, diagnostic = null, isCurrent = () => true) {
+  if (typeof isCurrent !== 'function' || !isCurrent()) return false;
   if (location?.previewDraft === true) return openSceneDraftSource(sourcePath, location);
   const doc = getDocBySourcePath(sourcePath);
   if (!doc) throw new Error('Source document is unavailable');
   const request = ++sourceNavigationToken;
   const located = Boolean(location?.sourceRange) || Boolean(diagnostic);
   selectDoc(doc.path, { deferSourceRead: located || Boolean(sourceEdit) });
-  if (state.activePath !== doc.path) return false;
+  if (state.activePath !== doc.path || !isCurrent()) return false;
   if (!located && !sourceEdit) return true;
   const unavailable = () => setEditorStatus(t(sourceEdit ? '无法打开已创建的行为原文，请刷新目录后重试。' : '已打开文档，但无法精确定位来源。请刷新构建或场景预览后重试。'));
   const dirty = () => isInEditSession() && (state.editHasUnsavedChanges || state.isCreating);
@@ -4256,7 +4281,7 @@ async function openSavedSource(sourcePath, location = null, sourceEdit = null, d
   sourceNavigationRequest = owner;
   const owns = () => sourceNavigationRequest === owner && sourceNavigationToken === request
     && editorLoadToken === owner.editorToken && state.activePath === doc.path && getDocByPath(doc.path) === doc
-    && isEditModeActive() && (!sourceEdit || sourceEdit.isCurrent()) && canonicalizeSourcePath(getSourcePath(doc)) === canonicalizeSourcePath(sourcePath);
+    && isEditModeActive() && isCurrent() && (!sourceEdit || sourceEdit.isCurrent()) && canonicalizeSourcePath(getSourcePath(doc)) === canonicalizeSourcePath(sourcePath);
   state.isLoadingSource = true; setEditorStatus(APP_ERROR_MESSAGES.loadingSource); refreshEditButtons();
   try {
     const sourceInfo = await fetchEditableSource(getSourcePath(doc));
@@ -4354,6 +4379,7 @@ function handleSourceInput() {
   sourceIndentationController?.refresh();
   sourcePositionController?.refresh();
   sourceDiagnosticController?.refresh();
+  sourceSearchController?.refresh();
   // Ordinary typing, native undo and source tools update the same draft views.
   studioSystem?.refreshMedia();
 }
@@ -5805,6 +5831,7 @@ async function initApp(options = {}) {
     features: options.features,
     ports: {
       scripts: { getContext: scriptCreateContext, createDraft: createScriptDraft },
+      compositionCreate: { getContext: compositionCreateContext, createDraft: createCompositionDraft },
       sceneBehaviors: { ...behaviorSourceHost, inspect: payload => inspectSceneBehaviorAuthoring(payload) },
       scene3d: { getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot, locateSource: locateScene3DSource },
       scene3dTransforms: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DTransformDraft },
@@ -6046,10 +6073,14 @@ async function initApp(options = {}) {
 
   if (editEditorEl) {
     editEditorEl.addEventListener('input', handleSourceInput);
+    setupSourceHistory({ textarea: editEditorEl, container: docEditorWrapEl, getContext: sourceEditorContext });
     sourceIndentationController = setupSourceIndentation({
       textarea: editEditorEl, container: docEditorWrapEl, getContext: sourceEditorContext,
     });
     sourcePositionController = setupSourcePosition({
+      textarea: editEditorEl, container: docEditorWrapEl, getContext: sourceEditorContext,
+    });
+    sourceSearchController = setupSourceSearch({
       textarea: editEditorEl, container: docEditorWrapEl, getContext: sourceEditorContext,
     });
     sourceDiagnosticController = setupSourceDiagnostic({
@@ -6155,7 +6186,7 @@ async function initApp(options = {}) {
     window.addEventListener('keydown', handleWindowKeydown);
 
     window.addEventListener('beforeunload', (event) => {
-      if (!state.editHasUnsavedChanges && !document.querySelector('#scriptCreateDialog[data-dirty="true"], #scriptCreateDialog[aria-busy="true"], #sceneBehaviorCreateDialog[data-dirty="true"], #sceneBehaviorCreateDialog[aria-busy="true"], #sceneBehaviorsDialog[data-dirty="true"], #sceneBehaviorsDialog[aria-busy="true"], #projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[data-dirty="true"], #sceneLayoutDialog[data-dirty="true"], #sceneCreateDialog[aria-busy="true"], #sceneLayoutDialog[aria-busy="true"], #objectProjectionDialog[data-dirty="true"], #objectProjectionDialog[aria-busy="true"]')) {
+      if (!state.editHasUnsavedChanges && !document.querySelector('#sceneMaterializeDialog[data-dirty="true"], #sceneMaterializeDialog[aria-busy="true"], #sceneCompositionCreateDialog[data-dirty="true"], #sceneCompositionCreateDialog[aria-busy="true"], #scriptCreateDialog[data-dirty="true"], #scriptCreateDialog[aria-busy="true"], #sceneBehaviorCreateDialog[data-dirty="true"], #sceneBehaviorCreateDialog[aria-busy="true"], #sceneBehaviorsDialog[data-dirty="true"], #sceneBehaviorsDialog[aria-busy="true"], #projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[data-dirty="true"], #sceneLayoutDialog[data-dirty="true"], #sceneCreateDialog[aria-busy="true"], #sceneLayoutDialog[aria-busy="true"], #objectProjectionDialog[data-dirty="true"], #objectProjectionDialog[aria-busy="true"]')) {
         return;
       }
       event.preventDefault();

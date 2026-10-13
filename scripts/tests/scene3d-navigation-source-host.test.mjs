@@ -143,7 +143,7 @@ test('ordinary source input refreshes independent views through the root without
   assert.ok(start > 0 && end > start);
   assert.match(runtime, /editEditorEl\.addEventListener\('input', handleSourceInput\)/);
   const handler = runtime.slice(start, end); let inSession = true, dirty = 0, refresh = 0;
-  const context = vm.createContext({ sourceIndentationController: null, sourcePositionController: null, sourceDiagnosticController: null, isInEditSession: () => inSession, refreshEditSessionDirtyState: () => { dirty++; },
+  const context = vm.createContext({ sourceIndentationController: null, sourcePositionController: null, sourceDiagnosticController: null, sourceSearchController: null, isInEditSession: () => inSession, refreshEditSessionDirtyState: () => { dirty++; },
     studioSystem: { refreshMedia: () => { refresh++; } } });
   vm.runInContext(handler + '\nthis.onInput = handleSourceInput;', context);
   context.onInput(); assert.equal(dirty, 1); assert.equal(refresh, 1);

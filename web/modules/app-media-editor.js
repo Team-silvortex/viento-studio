@@ -17,7 +17,12 @@ export function setupMediaEditor(adapter) {
   let lastPreviewRequestAt = 0, previewPath = '', previewType = '';
   const fileSize = (bytes) => bytes < 1024 * 1024 ? `${Math.ceil(bytes / 1024)} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`;
   const status = (text, error = false) => { message.textContent = text; message.classList.toggle('is-error', error); };
-  const editableInput = (node) => node?.tagName === 'TEXTAREA' && surface.contains(node);
+  const textInput = (node) => ['TEXTAREA', 'INPUT'].includes(node?.tagName) && surface.contains(node);
+  // The surface also contains auxiliary controls such as find/replace fields.
+  // Only the draft adapter can identify which input owns authored content;
+  // its fallback source must never authorize a file import into another input.
+  const editableInput = (node) => textInput(node) && adapter.getContext(node)?.input === node;
+  const auxiliaryInput = (node) => textInput(node) && !editableInput(node);
   const capture = (preferredInput = null) => {
     // A file drop does not necessarily move focus from the previous block.
     if (editableInput(preferredInput)) lastInput = preferredInput;
@@ -204,14 +209,22 @@ export function setupMediaEditor(adapter) {
     } finally { aborter = null; setBusy(false); schedulePreview(); picker.value = ''; }
   }
   surface.addEventListener('focusin', (event) => { if (editableInput(event.target)) lastInput = event.target; });
-  surface.addEventListener('input', schedulePreview);
+  surface.addEventListener('input', (event) => {
+    if (!textInput(event.target) || editableInput(event.target)) schedulePreview();
+  });
   surface.addEventListener('paste', (event) => {
     const files = Array.from(event.clipboardData?.files || []);
     if (!files.length || !adapter.isEditable()) return;
-    event.preventDefault(); void importFiles(files, capture());
+    if (auxiliaryInput(event.target)) return;
+    event.preventDefault(); void importFiles(files, capture(event.target));
   });
   surface.addEventListener('dragover', (event) => {
-    if (adapter.isEditable() && Array.from(event.dataTransfer?.types || []).includes('Files')) { event.preventDefault(); surface.classList.add('is-media-drop'); }
+    if (adapter.isEditable() && Array.from(event.dataTransfer?.types || []).includes('Files')) {
+      event.preventDefault();
+      const auxiliary = auxiliaryInput(event.target);
+      surface.classList.toggle('is-media-drop', !auxiliary);
+      if (auxiliary) event.dataTransfer.dropEffect = 'none';
+    }
   });
   surface.addEventListener('dragleave', () => surface.classList.remove('is-media-drop'));
   surface.addEventListener('drop', (event) => {
@@ -219,6 +232,7 @@ export function setupMediaEditor(adapter) {
     const files = Array.from(event.dataTransfer?.files || []);
     if (!files.length || !adapter.isEditable()) return;
     event.preventDefault();
+    if (auxiliaryInput(event.target)) return;
     void importFiles(files, capture(event.target));
   });
   button.addEventListener('click', () => {

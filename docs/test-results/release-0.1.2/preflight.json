@@ -1,0 +1,104 @@
+{
+  "ok": true,
+  "version": "0.1.2",
+  "finishedAt": "2026-10-13T10:03:51.414760+00:00",
+  "baseCommit": "d7e847937c6c86c1df2ae6661485e11e9c36f4e6",
+  "node": "v24.21.0",
+  "syntaxFiles": 777,
+  "versionAndApiPreflight": true,
+  "installer": {
+    "androidVersionCode": 1001002,
+    "macOSBundleVersion": "1.1.2"
+  },
+  "nodeSha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c",
+  "tests": {
+    "tests": 8,
+    "pass": 8,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "log": "version-source.log"
+  },
+  "closeGuardRegression": {
+    "tests": 103,
+    "pass": 103,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "newTests": 1,
+    "log": "close-guard.log",
+    "correctedSources": {
+      "web/modules/app-runtime.js": "ac0e49e937256b0d0db5631a435ef2002f8b6f89371856dd585d78a9ff6e4342",
+      "src-tauri/src/desktop_host.rs": "d0ecbc30e399ca4e56041a47241d18fed8ebd5220e53521fdf680906a8d7346b",
+      "scripts/tests/desktop-close.test.mjs": "7c934d477510662397be011237bdfc79e9c90504fb7867398868c9ed19975026"
+    },
+    "scope": "Actual Rust-embedded close script and browser beforeunload callback, dirty/busy/clean states, materialize UI, ordinary creation host, source location, media focus, source history; no new native installer run."
+  },
+  "testSources": {
+    "scripts/tests/version.test.mjs": "811f5d49fb9470e4fe04feffa4f0f49450a1cb17d5e7e0ab2aa0aacb2eb0ccdf",
+    "scripts/tests/source-archive.test.mjs": "a5ae73887e139ea645dd636704f99facbb7f7f1faaa0652f3d02c44df92709bf",
+    "scripts/tests/desktop-close.test.mjs": "7c934d477510662397be011237bdfc79e9c90504fb7867398868c9ed19975026",
+    "scripts/tests/scene-materialize-ui.test.mjs": "8e7e079315dd90f5e623fe91fa26e5418c851974ff181964f09ee9db84e7dc7a",
+    "scripts/tests/scene-composition-create-host.test.mjs": "f8e2afb985440cca69dd3b793bbccdd3287f83cb8bed69e6b8a41d9cdc264c9a",
+    "scripts/tests/source-location-ui.test.mjs": "67d716b7758baa9bafc3fcba95e1c2dadf9482a437669b7a7f9021af5d1b7cdc",
+    "scripts/tests/media-drop.test.mjs": "a603228ef9029b0f722782567ca493a3f4c9dad12a5a4c84e042ef1ed2fa0db4",
+    "scripts/tests/source-history.test.mjs": "217754f8709f179fee79b2614c58a1b06cfe7d29661afefb2df112f4c8a75e4c"
+  },
+  "unchangedApplicationAndHistoricalFiles": 7892,
+  "historicalEvidenceFilesPreserved": 6778,
+  "preservationBaselineScope": "Captured before release version edits and after the parallel close-guard correction; version display files are excluded. This is a release-preservation check, not equivalence to the earlier full-suite run.",
+  "generatedCorePreserved": {
+    "engine/studio-core.wasm": "47ca1f48b07a5e9dc6a02052860b2ddc633fc92dd20e14f1139ba761fd446e0f",
+    "engine/studio-core.build.json": "00781459c93d15fd0d47b292ea3f8c2f88aaaa6dd913d6393cc3f74d45454b93"
+  },
+  "installedAppPreserved": {
+    "version": "0.1.1",
+    "sha256": "22fb45a03fe2a698ad1eec0b7c655161bd47d1769b5cf6ca7f65b12bce5ccc48",
+    "bytes": 129309176,
+    "scope": "Earlier worktree install, before composition creation/multiple actors/layout and this close guard correction; not a 0.1.2 installation."
+  },
+  "priorFullApplication": {
+    "version": "0.1.1",
+    "tests": 4698,
+    "pass": 4592,
+    "fail": 0,
+    "skipped": 106,
+    "cancelled": 0,
+    "report": "docs/test-results/scene-composition-create-layout/full.log",
+    "rerunForRelease": false,
+    "scope": "Before release metadata and close-guard correction. The changed close paths are verified in the separate 103-test regression, not represented as a rerun of the full suite."
+  },
+  "releasedFunctions": [
+    "authoring.source-search",
+    "build.task-problems",
+    "scene.composition_create",
+    "scene.composition_materialize"
+  ],
+  "deliveryCellsUpdated": 15,
+  "otherMaturityCellsPreserved": 1781,
+  "releaseSources": {
+    "VERSION": "297b50f08386d3521f8fdaf2f78eb8d9d0acdf452d2e61596905fba37208c792",
+    "package.json": "03e79711b4962233866758b0193457643a48062d107ba8036d2e0481dc1e7a62",
+    "package-lock.json": "92871cb28a9924c21b00c84898ca465a5a4af59a6ffa1a1ecb718dca111aa631",
+    "src-tauri/tauri.conf.json": "890e201136827ab1285ddbe9a6cc85990d6a1817e6d7bddd03e1906338834640",
+    "src-tauri/tauri.android.conf.json": "75a26fe765b3175a2292626149bb46348f2ef6b7f91eb06b3cd7eb390c721094",
+    "src-tauri/Cargo.toml": "482bd2dcb7da53cf2b6e9f619a9e5af4827dd15ae19768f9f280ba9576820f17",
+    "src-tauri/Cargo.lock": "711ddd02b01371293b4783fce4369bcf7693e0e614b59f8c8880d2236b64f739",
+    "web/index.html": "bc69cea6315ac9b030d0e671eb993543977bde17d8f57c9128f1939bcceac829",
+    "desktop/ui/index.html": "819c4fbfc418ea11095ad12156474d7637be3216d1ea0c9ea5495ebd3f1b5c70",
+    "README.md": "e9fed9aaf07749db1cef1aff5c442d23a898a427accc730fbbe9533c004ca638",
+    "desktop/README.md": "b4b7f154287753679ef320fb50f8e64f3235c1346e4d77ec4caec21ef3d63a55",
+    "docs/README.md": "ab4fab72263bfe8301655d3745398fd6e71ff7b2783b4517f6f2c48afd03aace",
+    "docs/history/README.md": "c4232981c7fa37e3ee6841fad5a0fecdbedfc4220c4230b2b9b58ea5d03a473b",
+    "docs/RELEASE_0.1.2.md": "33585f48e0ffc048dc2f912f252d1b6558e7d85493cf1b4a55b4056a4e660eb5",
+    "docs/STATUS.md": "f6e978965acc134ecac5b6ee6fb3fe2021ea43bcaaea60f39cbd19af86b3fdee",
+    "docs/ROADMAP.md": "d776e2d4fbe9de40425b0a4a317c6320262578b666e4fedaa43f7dc2166c5cc9",
+    "docs/TESTING.md": "5f32b237331c7170f33f81952c3741c92e52d6e06e79a0e595e31a29515bf968",
+    "docs/ARCHITECTURE.md": "3434e2f643244da1612bf2389c2abe00ed08d8fcbdf446e3ccd7ce3372a84418",
+    "docs/STUDIO_MODULES.md": "e92b3458ef48b60bb9a7b228d0219cda3248bb842426bf71c82ff094e0b10bd4",
+    "docs/SCENE_COMPOSITION.md": "90e1954c2f5e57a5c7e2a4d5d97179f6177832ec8e1f59983eabb6cbd6cc8d5a",
+    "docs/SCENE_BEHAVIORS.md": "16ef06fee7e46586ede5e43e21072f82f741adcc99329ec59f9f0a6bce0dcf08",
+    "docs/PROJECT_BUILD.md": "6326ea0fefe2c7334684cd05186925288b459a15b7147a4c7558c34be3e0bca6"
+  },
+  "scope": "Source release metadata, actual temporary source archive regression, all JavaScript syntax, API contract, close guard correction regression, application and historical evidence preservation. No new full application, Rust compilation, backend, browser smoke, installer, hardware GPU or device run."
+}

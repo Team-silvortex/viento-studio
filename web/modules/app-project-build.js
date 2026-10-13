@@ -1,9 +1,12 @@
+import { createProjectProblemsSnapshot } from '../../engine/project-problems.mjs';
+import { setupProjectProblems } from './app-project-problems.js';
 import { setupSceneBehaviorCreate } from './app-scene-behavior-create.js';
 import { inspectSceneBehaviorCreation, requestWorldCommand } from './app-doc-service.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 import { fetchJsonApiRequest } from './app-services.js';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
 import { setupSceneCreate } from './app-scene-create.js';
+import { setupSceneMaterialize } from './app-scene-materialize.js';
 import { setupScenePreview } from './app-scene-preview.js';
 import { setupSceneLayout } from './app-scene-layout.js';
 import { setupSceneAuthoring } from './app-scene-authoring.js';
@@ -128,6 +131,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <button id="projectBuildRefresh" type="button" class="doc-btn doc-btn-ghost" data-i18n="刷新状态"></button></div>
     <button id="projectBuildEditScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="编辑场景" hidden></button>
     <button id="projectBuildCreateScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="创建场景" hidden></button>
+    <button id="projectBuildMaterialize" type="button" class="doc-btn doc-btn-ghost" data-i18n="从配方创建场景" hidden></button>
     <button id="projectBuildCreateBehavior" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加场景行为" hidden></button>
     <p id="projectBuildEmpty" hidden data-i18n="暂无可构建场景。请添加已登记的 viento-scene2d JSON 场景文档。"></p>
     <div id="projectBuildTabs" class="build-tabs" role="tablist" data-i18n-aria-label="场景与构建选项卡" hidden>
@@ -165,7 +169,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <div id="projectBuildBackendProjects"></div>
     <section id="projectBuildPlanSummary" class="build-summary" hidden aria-labelledby="projectBuildPlanTitle"><h3 id="projectBuildPlanTitle" data-i18n="构建计划"></h3><p id="projectBuildPlanCounts"></p><p id="projectBuildBehaviorCounts" hidden></p><p id="projectBuildSnapshot" class="build-monospace"></p></section>
     <p id="projectBuildRunNote" class="build-hint" data-i18n="先检查计划，再构建。测试与预览使用最近成功构建的快照；编辑后需重新构建。无头测试不验证画面。"></p>
-    <section aria-labelledby="projectBuildDiagnosticsTitle"><h3 id="projectBuildDiagnosticsTitle" data-i18n="构建诊断"></h3><ul id="projectBuildDiagnostics"></ul></section>
+    <section id="projectBuildProblems" aria-labelledby="projectBuildDiagnosticsTitle"><h3 id="projectBuildDiagnosticsTitle" data-i18n="构建诊断"></h3><ul id="projectBuildDiagnostics"></ul></section>
     <p id="projectBuildEvents" hidden></p>
     <section id="projectBuildRuntimeObjects" class="build-runtime-objects" hidden aria-labelledby="projectBuildRuntimeObjectsTitle"><h3 id="projectBuildRuntimeObjectsTitle" data-i18n="运行对象"></h3>
     <p class="build-hint" data-i18n="只读查看本次运行收到的对象状态与位置样本；控制回放按步骤采样，不代表实时坐标。"></p>
@@ -323,7 +327,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     } catch { el('projectBuildCaseSummary').textContent = t('验收结果不可读取，请刷新状态。'); }
   }
   let available = false, creationSupported = false, updateSupported = false, behaviorCreationSupported = false, behaviorCreationBusy = false, data = null, selected = '', requestBusy = false, timer = null, requestEpoch = 0;
-  let toolCheckBusy = false;
+  let toolCheckBusy = false, materializationBusy = false;
   let previewSupported = false, activeTab = 'build';
   const selections = { build: '', preview: '' };
   const previewDocuments = () => data?.previewDocuments || (data?.scenes || []).filter(scene => scene.frozenOnly !== true).map(scene => ({ ...scene, kind: 'scene' }));
@@ -359,6 +363,17 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     if (errorMessage || !data?.scenes.some(scene => scene.id === createdId)) throw new Error(t('场景已创建，但目录或构建列表刷新失败。请刷新核对，勿重复创建。'));
   };
   const sceneCreator = setupSceneCreate({ getContext, setBusy: value => { setBusy(value); render(); }, applied: sceneApplied });
+  const sceneMaterializer = setupSceneMaterialize({
+    getContext: () => { const context = getContext(); return { ...context,
+      busy: (materializationBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || running() || checkingTool(),
+      session: String(dialogSession), visible: dialog.open && activeTab === 'preview', recipeId: selected, sourceToken: context.sceneDraftToken }; },
+    setBusy: value => { materializationBusy = value === true; setBusy(value); render(); },
+    applied: async result => {
+      selections.preview = selected;
+      activeTab = 'build';
+      await sceneApplied(result);
+    },
+  });
   const behaviorCreator = typeof setupSceneBehaviorCreate === 'function' ? setupSceneBehaviorCreate({
     getContext: () => { const context = getContext(); return { ...context,
       busy: (behaviorCreationBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || data?.job?.status === 'running',
@@ -386,6 +401,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     return available && data?.supported && context.editable && !context.dirty && !context.creating && !context.busy;
   };
   const liveScene = () => Boolean(selectedScene() && selectedScene().frozenOnly !== true && !catalogUnavailable());
+  const mayMaterialize = () => previewSupported && creationSupported && activeTab === 'preview'
+    && selectedDocument()?.kind === 'composition' && !requestBusy && !running() && !checkingTool() && !catalogUnavailable() && ready();
   const editScene = () => {
     if (updateSupported && liveScene() && !requestBusy && !running() && ready()) sceneCreator.open(selected, { mode: 'edit' });
   };
@@ -566,6 +583,31 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   const diagnosticLabel = code => errorLabels[code] || (typeof code === 'string' && /^(?:build_|runtime_)?behavior_/.test(code)
     ? '行为绑定或脚本有误，请检查标出的位置和原始日志。' : '构建请求未完成，请刷新状态核对结果。');
   const friendly = code => t(diagnosticLabel(code));
+  const problems = setupProjectProblems({
+    container: el('projectBuildProblems'),
+    getContext: () => ({ available: available && dialog.open && activeTab === 'build',
+      token: JSON.stringify([dialogSession, acceptedBackend, data?.job?.id || '']) }),
+    onOpen: async (row, { isCurrent }) => navigateOwnedSource([row.sourcePath, row, {
+      diagnostic: { code: row.code, severity: row.severity, messageKey: row.messageKey, detail: row.detail },
+      isCurrent,
+    }], isCurrent),
+  });
+  function renderProblems(job) {
+    if (!job) { problems.setSnapshot(null); return; }
+    try {
+      if (job.backendId !== data?.backend?.id) throw new Error('Problem task backend changed');
+      problems.setSnapshot(createProjectProblemsSnapshot({
+        task: { id: job.id, kind: job.kind, status: job.status, backendId: job.backendId, sceneId: job.sceneId ?? '' },
+        diagnostics: job.diagnostics.map(item => ({
+          code: item.code, severity: item.severity ?? 'error', messageKey: diagnosticLabel(item.code),
+          detail: typeof item.message === 'string' ? item.message.slice(0, 8192) : '',
+          sourcePath: item.sourcePath ?? '', propertyPath: item.propertyPath ?? '', sourceRevision: item.sourceRevision ?? '',
+          ...(item.sourceRange == null ? {} : { sourceRange: item.sourceRange }),
+        })),
+      }), { backendLabel: data.backend.label,
+        sceneLabel: data.scenes.find(scene => scene.id === job.sceneId)?.title });
+    } catch { problems.setSnapshot(null, { invalid: true }); }
+  }
   function render() {
     translatePage(dialog);
     const context = getContext(), job = data?.job;
@@ -586,6 +628,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     scenePreview.setScene(selected);
     scenePreview.setVisible(Boolean(dialog.open && previewSupported && activeTab === 'preview'));
     sceneAuthoring.refresh();
+    sceneMaterializer.refresh?.();
     button.textContent = active ? t('构建与运行 · 进行中') : t('构建与运行');
     button.setAttribute('aria-label', button.textContent);
     button.dataset.running = String(active);
@@ -617,6 +660,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildEditScene').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildCreateScene').hidden = activeTab === 'preview' || !creationSupported;
     el('projectBuildCreateScene').disabled = requestBusy || running() || !ready() || catalogUnavailable();
+    el('projectBuildMaterialize').hidden = !previewSupported || !creationSupported || activeTab !== 'preview' || selectedDocument()?.kind !== 'composition';
+    el('projectBuildMaterialize').disabled = !mayMaterialize();
     el('projectBuildCreateBehavior').hidden = activeTab === 'preview' || !behaviorCreationSupported;
     el('projectBuildCreateBehavior').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildPlan').disabled = !mayStart('plan');
@@ -643,26 +688,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildBehaviorCounts').hidden = !hasBehaviorCounts;
     el('projectBuildBehaviorCounts').textContent = hasBehaviorCounts ? t('{0} 个行为绑定 · {1} 份行为源码', summary.behaviorBindingCount, summary.behaviorSourceCount) : '';
     el('projectBuildSnapshot').textContent = summary ? t('快照：{0}', summary.snapshotId) : '';
-    const diagnostics = el('projectBuildDiagnostics'); diagnostics.replaceChildren();
-    for (const diagnostic of job?.diagnostics || []) {
-      const item = node('li', '', 'build-diagnostic');
-      item.append(node('p', friendly(diagnostic.code)));
-      if (diagnostic.sourcePath) {
-        const link = node('button', `${t('打开原文')} · ${diagnostic.sourcePath}${diagnostic.propertyPath || ''}`, 'doc-btn doc-btn-ghost');
-        link.type = 'button';
-        link.addEventListener('click', async () => {
-          try {
-            await navigateSource(diagnostic.sourcePath, diagnostic, { diagnostic: {
-              code: diagnostic.code, severity: diagnostic.severity || 'error',
-              messageKey: diagnosticLabel(diagnostic.code), detail: typeof diagnostic.message === 'string' ? diagnostic.message.slice(0, 8192) : '',
-            } });
-          } catch { errorMessage = t('无法打开原文，请返回编辑器查找该文档。'); render(); }
-        });
-        item.append(link);
-      }
-      diagnostics.append(item);
-    }
-    if (!diagnostics.children.length) diagnostics.append(node('li', t('暂无构建诊断。')));
+    renderProblems(job);
     el('projectBuildEvents').hidden = !job?.events?.length;
     el('projectBuildEvents').textContent = t('已收到 {0} 条运行事件；完整内容见原始细节。', job?.events?.length || 0);
     renderRuntimeObjects();
@@ -881,6 +907,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     backendProjects.closed();
     delivery.close();
     sceneAuthoring.closed();
+    problems.refresh();
     const pending = pendingSourceFocus; pendingSourceFocus = null;
     const current = pending?.session === dialogSession && pending.epoch === sourceNavigationEpoch;
     sourceNavigationEpoch++;
@@ -906,6 +933,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     event.stopPropagation();
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') event.preventDefault();
   });
+  el('projectBuildMaterialize').addEventListener('click', () => { if (mayMaterialize()) sceneMaterializer.open(selected); });
   el('projectBuildRefresh').addEventListener('click', () => void refresh(true));
   el('projectBuildToolCheck').addEventListener('click', () => void checkTool());
   el('projectBuildScene').addEventListener('change', () => { selected = el('projectBuildScene').value; selections[activeTab] = selected; if (activeTab === 'build') { plan = null; planScene = ''; } if (!documentsForTab().some(item => item.id === selected)) selectDocument(); render(); });
@@ -950,6 +978,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     previewSupported = available && capabilities.scenePreview === true;
     if (!previewSupported && activeTab !== 'build') { selections[activeTab] = selected; activeTab = 'build'; selectDocument(); }
     scenePreview.setAvailable(previewSupported);
+    sceneMaterializer.setAvailable(previewSupported && creationSupported);
     sceneLayout.setAvailable(previewSupported && updateSupported);
     sceneLayout.setSourceAvailable?.(previewSupported);
     if (!available) { requestEpoch++; requestBusy = false; toolCheckBusy = false; clearTimeout(timer); timer = null; if (dialog.open) dialog.close(); }

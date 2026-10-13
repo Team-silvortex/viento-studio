@@ -1,0 +1,63 @@
+{
+  "ok": true,
+  "finishedAt": "2026-10-13T07:30:48.725505+00:00",
+  "appVersion": "0.1.1",
+  "installedAppImageSha256": "a259d9db1fe9f9912f20b3b9d70e1883f27924a29f3ddeddff428809471eff95",
+  "usesActualInstalledAppImage": true,
+  "nativeEngine": "Tauri WebKitGTK 2.52.6",
+  "run": "run-2",
+  "testFile": "desktop/tests/native-library.py",
+  "testSha256": "923e991ff9a7427bb927466afb37b754e71b8fd7d18d6acf7b960842063ed0f4",
+  "includesEditorExports": true,
+  "milestones": [
+    "cancel name form / native creation picker; invalid name reports failure without creating files; retry remains available",
+    "real GTK creation → empty generic editor; active session blocks create/open/import before any picker, registration or file creation",
+    "open cancellation / invalid folder / successful open and deduplication; backup cancel / forbidden destination / retry → verified complete ZIP",
+    "real GTK save remains valid after prepared cache is released; saved share ZIP is byte-identical and includes source/image",
+    "cancel → expiry → regenerate in the same English dialog; invalid destination preserves a retryable package",
+    "native overwrite cancel keeps the existing file; explicit replace publishes the exact complete project; staging is cleared",
+    "cancel both import pickers → no writes; damaged archive → rollback and records preserved; retry → auto-open restored project with byte-identical sources/templates/metadata/media",
+    "English native folder picker and cancellation; two independent project copies remain registered; all test processes and files are isolated"
+  ],
+  "screenshots": [
+    "export-before-confirmation.png",
+    "export-expired-regenerate.png",
+    "export-forbidden-retry.png",
+    "export-overwrite-complete.png",
+    "export-overwrite-confirm.png",
+    "export-save-after-expiry.png",
+    "export-save-picker-en.png",
+    "library-active-guard.png",
+    "library-backup-complete.png",
+    "library-backup-picker.png",
+    "library-create-picker.png",
+    "library-created-editor.png",
+    "library-empty.png",
+    "library-final-en.png",
+    "library-import-picker.png",
+    "library-invalid-archive.png",
+    "library-open-picker-en.png",
+    "library-open-picker.png",
+    "library-restore-picker.png",
+    "library-restored-editor.png"
+  ],
+  "visuallyInspected": [
+    "library-created-editor.png",
+    "library-restored-editor.png",
+    "export-overwrite-complete.png",
+    "library-final-en.png"
+  ],
+  "previousRun": {
+    "run": "run-1",
+    "failure": "obsolete default six-OC-type assertion",
+    "retained": true
+  },
+  "productCodeChanged": false,
+  "cleanup": {
+    "temporaryExtraction": "/tmp/viento-native-installed-library-me6blnbp",
+    "removed": true,
+    "allocatedBytesRemoved": 411987968,
+    "testOwnTemporaryDataRemovedByContextManager": true,
+    "driversRetainedForParallelNativeSmoke": true
+  }
+}

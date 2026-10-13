@@ -8,6 +8,8 @@ Media checks require ffmpeg with PNG, VP8, H.264, MP3, Vorbis, Opus, FLAC and AA
 Set VIENTO_TEST_GENERIC_CREATE to the workspace-archive example executable to
 exercise new generic projects, project templates and a complete backup restore.
 Set VIENTO_TEST_FIELDS to exercise native field editing in the generic project.
+Set VIENTO_TEST_2D_WORKFLOW=1 for the installed 2D/materialize/search/problems chain.
+This optional chain requires a trusted Godot path in VIENTO_GODOT_BIN.
 """
 import base64
 import http.client
@@ -27,6 +29,7 @@ import uuid
 import zipfile
 import hashlib
 from project_settings_navigation import exercise_project_settings_navigation
+from native_workflow_2d import prepare_2d_workflow, exercise_2d_workflow
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -124,6 +127,10 @@ with tempfile.TemporaryDirectory(prefix='viento-native-e2e-') as directory:
         (workspace / 'workspace.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
         (workspace / 'templates/species.yaml').write_text('title: 新建种族\n灵魂数量: 2\n起源: 由项目自己的模板定义。\n')
         identifier = manifest['id']
+    workflow_2d = None
+    if os.environ.get('VIENTO_TEST_2D_WORKFLOW') == '1':
+        assert not generic_tool, 'Run 2D workflow separately from generic creation assertions'
+        workflow_2d = prepare_2d_workflow(workspace, ROOT)
     recent = dict(path=str(workspace), name=manifest['name'], id=identifier, lastOpened=int(time.time() * 1000))
     (app_data / 'library.json').write_text(json.dumps(dict(recent=[recent])))
     runtime = test_root / 'runtime'
@@ -634,6 +641,10 @@ with tempfile.TemporaryDirectory(prefix='viento-native-e2e-') as directory:
             print('PASS: native v3 creation → empty generic project → project-owned types → character background + PNG / WebM / MP4 → custom YAML template + chosen folder + saved type → reopen → full backup and byte-identical restore', flush=True)
             sys.exit(0)
         wait_for(lambda: script('return !!document.querySelector("#docEditBtn") && !document.querySelector("#docEditBtn").disabled'))
+        if workflow_2d:
+            exercise_2d_workflow(script=script, click=click, command=command, wait_for=wait_for,
+                                 workspace=workspace, screenshots=screenshots, fixture=workflow_2d,
+                                 display_environment=test_display_environment)
         select_document('原生桌面测试')
         wait_for(lambda: script('return document.querySelector("#docTitle")?.textContent.includes("原生桌面测试")'))
         if os.environ.get('VIENTO_EXPECT_APP_VERSION'):
@@ -711,7 +722,9 @@ with tempfile.TemporaryDirectory(prefix='viento-native-e2e-') as directory:
         click('#docEditBtn')
         wait_for(lambda: script('return !document.querySelector("#workspaceShell").classList.contains("is-writing")'))
         script('const input=document.querySelector("#searchInput");input.value="";input.dispatchEvent(new Event("input",{bubbles:true}));return true')
-        wait_for(lambda: script('return document.querySelectorAll("#docList button[data-path-key]").length === 3'))
+        # The optional chain retains its OC, saved recipe and generated scene.
+        expected_root_documents = 3 + (3 if workflow_2d else 0)
+        wait_for(lambda: script('return document.querySelectorAll("#docList button[data-path-key]").length === arguments[0]', expected_root_documents))
         script('const input=document.querySelector("#searchInput");input.value="只在背景中的暗号";input.dispatchEvent(new Event("input",{bubbles:true}));return true')
         wait_for(lambda: script('return document.querySelectorAll("#docList button[data-path-key]").length === 1'))
         assert script('return document.querySelector("#docList button[data-path-key]").title') == '测试角色'
@@ -725,6 +738,10 @@ with tempfile.TemporaryDirectory(prefix='viento-native-e2e-') as directory:
         click('#docEditBtn')
         wait_for(lambda: script('return document.querySelector("#workspaceShell").classList.contains("is-writing")'))
         script('const e=document.querySelector("#docSourceEditor");e.focus();e.setSelectionRange(e.value.length,e.value.length);return true')
+        initial_media_asset_ids = {file.stem for file in (workspace / 'metadata/assets').glob('*.json')}
+        assert len(initial_media_asset_ids) == 1 + (1 if workflow_2d else 0), 'Legacy SVG and optional 2D image must both be registered'
+        if workflow_2d:
+            assert workflow_2d['assetId'] in initial_media_asset_ids
         click('#docMediaInsertBtn')
         wait_for(lambda: script('return document.querySelector("#docMediaList .doc-media-choice") !== null'))
         insert_files([imported_image, imported_webm, imported_mp4, *imported_audio])
@@ -750,8 +767,10 @@ with tempfile.TemporaryDirectory(prefix='viento-native-e2e-') as directory:
         command('POST', '/window/rect', dict(width=1280, height=900))
         # Existing selection, paste and drop reuse exactly the same imported
         # asset; switching source/block modes must not damage their references.
-        assets_before = len(list((workspace / 'metadata/assets').glob('*.json')))
-        assert assets_before == 4 + len(imported_audio)
+        imported_asset_ids = {file.stem for file in (workspace / 'metadata/assets').glob('*.json')}
+        assets_before = len(imported_asset_ids)
+        assert initial_media_asset_ids <= imported_asset_ids
+        assert len(imported_asset_ids - initial_media_asset_ids) == 3 + len(imported_audio)
         script('const e=document.querySelector("#docSourceEditor");e.focus();e.setSelectionRange(e.value.length,e.value.length);return true')
         click('#docMediaInsertBtn')
         wait_for(lambda: script('return [...document.querySelectorAll(".doc-media-choice")].some(button => button.title === "角色参考 #1.png")'))
@@ -842,7 +861,14 @@ with tempfile.TemporaryDirectory(prefix='viento-native-e2e-') as directory:
         assert (private / 'cache/indexes/documents.json').is_file()
         assert (private / 'cache/indexes/assets.json').is_file()
         assert (private / 'cache/indexes/references.json').is_file()
-        assert len(list((workspace / 'metadata/documents').glob('*.json'))) == 5
+        final_document_index = json.loads((private / 'cache/indexes/documents.json').read_text())
+        final_document_ids = {doc['id'] for doc in final_document_index['docs']}
+        assert len(final_document_ids) == 5 + (3 if workflow_2d else 0)
+        assert {file.stem for file in (workspace / 'metadata/documents').glob('*.json')} == final_document_ids
+        (screenshots / 'shared-fixture-counts.json').write_text(json.dumps(dict(
+            rootDocumentCount=expected_root_documents, initialMediaAssetIds=sorted(initial_media_asset_ids),
+            afterImportAssetIds=sorted(imported_asset_ids), newImportedAssets=3 + len(imported_audio),
+            finalDocumentIds=sorted(final_document_ids), retained2dFixture=bool(workflow_2d)), indent=2) + '\n')
         assert not (workspace / 'web').exists()
 
         def engine_stopped():

@@ -10,6 +10,8 @@ import { createDesktopSession } from '../lib/desktop-session.mjs';
 
 const nativeSource = await fs.readFile(new URL('../../src-tauri/src/desktop_host.rs', import.meta.url), 'utf8');
 const closeScript = nativeSource.match(/const CLOSE_SCRIPT: &str = r#"([\s\S]*?)"#;/)[1];
+const browserSource = await fs.readFile(new URL('../../web/modules/app-runtime.js', import.meta.url), 'utf8');
+const beforeUnload = browserSource.match(/window\.addEventListener\('beforeunload', (\(event\) => \{[\s\S]*?\n    \})\);/)[1];
 
 async function closeHarness() {
   const harness = await dialogHarness('app-project-settings');
@@ -18,7 +20,7 @@ async function closeHarness() {
 }
 
 test('desktop close reports document and template drafts and busy operations without discarding input', async () => {
-  for (const scenario of ['clean', 'source', 'template', 'property', 'scene', 'saving', 'applying', 'command', 'scene-saving', 'projection', 'projection-saving', 'layout', 'layout-saving']) {
+  for (const scenario of ['clean', 'source', 'template', 'property', 'scene', 'saving', 'applying', 'command', 'scene-saving', 'projection', 'projection-saving', 'layout', 'layout-saving', 'composition-create', 'composition-create-reading', 'materialize', 'materialize-saving']) {
     const { runtime, document, element } = await closeHarness();
     document.body.inert = false;
     element('docSourceEditor').value = '尚未保存的正文';
@@ -38,13 +40,38 @@ test('desktop close reports document and template drafts and busy operations wit
     const projection = document.createElement('dialog'); projection.id = 'objectProjectionDialog'; document.body.appendChild(projection);
     if (scenario === 'projection') projection.dataset.dirty = 'true';
     if (scenario === 'projection-saving') projection.setAttribute('aria-busy', 'true');
+    const composition = document.createElement('dialog'); composition.id = 'sceneCompositionCreateDialog'; document.body.appendChild(composition);
+    if (scenario === 'composition-create') composition.dataset.dirty = 'true';
+    if (scenario === 'composition-create-reading') composition.setAttribute('aria-busy', 'true');
+    const materialize = document.createElement('dialog'); materialize.id = 'sceneMaterializeDialog'; document.body.appendChild(materialize);
+    if (scenario === 'materialize') materialize.dataset.dirty = 'true';
+    if (scenario === 'materialize-saving') materialize.setAttribute('aria-busy', 'true');
     const id = randomUUID(), sent = [];
     runtime.fetch = async (url, options) => { sent.push({ url, ...JSON.parse(options.body) }); return { ok: true }; };
     await vm.runInContext(closeScript.replace('__VIENTO_CLOSE_ID__', JSON.stringify(id)), runtime);
-    assert.deepEqual(sent, [{ url: '/__desktop/close-response', id, busy: ['saving', 'applying', 'command', 'scene-saving', 'projection-saving', 'layout-saving'].includes(scenario), dirty: ['source', 'template', 'property', 'scene', 'projection', 'layout'].includes(scenario) }], scenario);
+    assert.deepEqual(sent, [{ url: '/__desktop/close-response', id, busy: ['saving', 'applying', 'command', 'scene-saving', 'projection-saving', 'layout-saving', 'composition-create-reading', 'materialize-saving'].includes(scenario), dirty: ['source', 'template', 'property', 'scene', 'projection', 'layout', 'composition-create', 'materialize'].includes(scenario) }], scenario);
     assert.equal(document.body.inert, true, 'input is frozen while the host checks this snapshot');
     assert.equal(runtime.window.__vientoCloseGuard.inert, false);
     assert.equal(element('docSourceEditor').value, '尚未保存的正文');
+  }
+});
+
+test('browser unload protects materialization settings and pending creation while clean dialogs may close', async () => {
+  for (const scenario of ['clean', 'materialize', 'materialize-saving', 'materialize-saved']) {
+    const { runtime, document } = await closeHarness();
+    runtime.state = { editHasUnsavedChanges: false };
+    const dialog = document.createElement('dialog'); dialog.id = 'sceneMaterializeDialog'; dialog.open = true;
+    dialog.dataset.dirty = String(scenario === 'materialize');
+    dialog.setAttribute('aria-busy', String(scenario === 'materialize-saving'));
+    document.body.appendChild(dialog);
+    const input = document.createElement('input'); input.value = '尚未保存的独立场景名称'; dialog.appendChild(input);
+    let prevented = false;
+    const event = { preventDefault() { prevented = true; } };
+    vm.runInContext(`(${beforeUnload})`, runtime)(event);
+    const guarded = ['materialize', 'materialize-saving'].includes(scenario);
+    assert.equal(prevented, guarded, scenario);
+    assert.equal(event.returnValue, guarded ? '' : undefined, scenario);
+    assert.equal(input.value, '尚未保存的独立场景名称');
   }
 });
 

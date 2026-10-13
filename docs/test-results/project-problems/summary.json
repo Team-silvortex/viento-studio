@@ -1,0 +1,135 @@
+{
+  "date": "2026-10-13T06:05:58.917819+00:00",
+  "baselineCommit": "d7e847937c6c86c1df2ae6661485e11e9c36f4e6",
+  "baselineWorkingTree": "Includes previous source-search implementation and evidence; preserved as the starting tree.",
+  "version": "0.1.1",
+  "delivery": "working-tree",
+  "feature": "build.task-problems",
+  "sourceFiles": {
+    "engine/source-diagnostic.mjs": "5060a7cddc502fb3e4a664914ec01257afb299ffa2ef9ce6fbc11812ac492e90",
+    "engine/source-position.mjs": "204a0b68649937a0fffd552fbe5a384058c42f51447884b73023871be6f15cc3",
+    "engine/source-draft.mjs": "aa67dd9d5829b0f2fb3ac46388745dfe271c02e49bc6d079bb753e55b5864c74",
+    "web/modules/app-source-diagnostic.js": "378ec9944ce4a5273253bde4d685b058ce2c56bb830331564e68a2c6747cc68a",
+    "web/source-diagnostic.css": "a828c9e3715289ea58cc3368d53f1874e1c2f357ee5c85aefa0c1bd479ed011f",
+    "web/modules/app-source-reveal.js": "7c301fce690ef928446c0503f209d215ecd5f3d5c98ef98e31ef3996e7e2fa8b",
+    "web/modules/app-source-location.js": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70",
+    "web/modules/app-source-position.js": "83cd287e97da59b7bcb97208bcf08cb5801ddd3acb2b4e3beceeddf83842e5bb",
+    "web/modules/app-runtime.js": "1dbbd7aec56ea9b7eb333aa9492649d698fc9547565edf8decaf98cbeb8e64ba",
+    "web/modules/app-project-build.js": "842011b52f5207d1445d7426f6d258ae3977ff2a3291fc94018797b149647645",
+    "web/i18n/en.js": "e18de7fe19a5d55ae8facf8dabe972a4a1ae32ec6f28d0c0ba3e2db6e8ab0783",
+    "web/i18n/ja.js": "bf6fca02f31124392776eb8ab3b974f45ce7140aef415acb3f5712cb6b03da17",
+    "scripts/tests/project-problems-smoke.mjs": "c2c427b2047de9be1f8c3c1ae3021262b2e2e4fb125d3dcdb38cf8c9cf6824a6",
+    "engine/project-problems.mjs": "5b67e49504c1996c507f77fb4a4dc5541d5229aadfdf014211f6cce4f2dd1874",
+    "web/modules/app-project-problems.js": "31e7510d42480bb047a488465a06326e9abb7dd85a1d005915b029ff4fa723d3",
+    "web/project-problems.css": "39aebea6356895a5c2aa26aad9d1e0f4ddf18bb03fbbd66730db4d56c38c78ad",
+    "engine/source-search.mjs": "6ae79219b7dfcf5d1bb4248933159151ad1e11b2b307c9f105aa728cb11dd1a9",
+    "web/modules/app-source-search.js": "ce2f78e29b37dbb86f843816420e9f3e18c03f65d69c9d6b667d2da7f8eca7fd",
+    "web/source-search.css": "23bf315ff971e0a21caa3ba677123c93f371becaf2167a9605b5c54048bfa615",
+    "scripts/tests/project-problems.test.mjs": "2450a42479814bfe4e55d71ac6dc944f4032c8ed49a104d425727c0c8350d397",
+    "scripts/tests/project-problems-ui.test.mjs": "7fe61637410506de0f85055021d49f4496ed9ee3024aee74a1fa72eb6049d9e3",
+    "scripts/tests/project-build-ui.test.mjs": "39acd5c469889c713f941fa7e14e02fa7ac2e491b566ffae4a49ff800b711f35",
+    "scripts/tests/source-location-ui.test.mjs": "67d716b7758baa9bafc3fcba95e1c2dadf9482a437669b7a7f9021af5d1b7cdc",
+    "scripts/tests/dialog-harness.mjs": "64de8a4a3ada1fe4aa2de8cd9e5968a6dc900591ceb746f005c90d3b9d323ede",
+    "scripts/tests/scene-behavior-ui.test.mjs": "d79ab4ed3b639d8bc8bf8859ff768403a5df2186f71be66d8bf0fca3581f4667"
+  },
+  "fullApplication": {
+    "command": "node scripts/check-project.mjs --app-only",
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "counts": {
+      "tests": 4519,
+      "pass": 4413,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 106,
+      "todo": 0
+    },
+    "syntaxFiles": 753,
+    "apiContract": true,
+    "versionConsistency": true,
+    "log": "full-final.log",
+    "sha256": "cf75ea191c49ede517831764819ead6b58eefeb4cff4dc47b4358d00e5e55292",
+    "scope": "106 conditional environment/optional-backend skips; no Rust rerun or installed-device acceptance."
+  },
+  "focused": {
+    "coreAndSourceHost": {
+      "tests": 59,
+      "pass": 59,
+      "log": "core-source-host.log"
+    },
+    "buildHost": {
+      "tests": 28,
+      "pass": 28,
+      "log": "build-host-first.log"
+    },
+    "ui": {
+      "tests": 19,
+      "pass": 19,
+      "log": "ui-focused.log"
+    },
+    "behaviorCompatibility": {
+      "log": "behavior-ui-verified.log",
+      "pass": 6,
+      "tests": 6
+    },
+    "overlap": "Focused checks overlap the full suite and must not be added to it."
+  },
+  "browser": {
+    "report": "browser-1791870888844/report.json",
+    "sha256": "e954da7b225c0826e73bc0e56622db203e9ab42610f9f3f7d98aeabe14744c13",
+    "name": "Chrome/154.0.8037.97",
+    "workflowGroups": 4,
+    "fingerprints": 19,
+    "screenshots": [
+      "problems-safe-raw-details.png",
+      "project-problems-zh-CN-390.png",
+      "project-problems-en-390.png",
+      "project-problems-ja-390.png",
+      "project-problems-source-navigation.png"
+    ],
+    "authorFilesChanged": [],
+    "sourceSaves": 0,
+    "preservedBom": true,
+    "onlyCrlf": true,
+    "scope": [
+      "Actual Chrome and local HTTP editor. No installed Tauri window, mobile WebView, Android, or other desktop OS claim.",
+      "Build planning and its static source diagnostics are exercised. No backend generation, engine execution, language server, packaged Tauri, mobile WebView or Android claim.",
+      "The existing source serializer retains BOM and source newline style; it does not guarantee every mixed ending inside an edited middle region remains byte-identical."
+    ]
+  },
+  "resources": {
+    "report": "resources.json",
+    "sha256": "e0bdafc59197d72d4cf37bf36a1ff5278aa1058a14c19bf608f786a048c98463",
+    "groups": 17,
+    "installed": false
+  },
+  "catalogue": {
+    "modules": 19,
+    "declaredCapabilities": 36,
+    "functions": 112,
+    "implementations": 294,
+    "bindings": 439,
+    "cells": 1756,
+    "dependencyEdges": 288,
+    "workflows": 75
+  },
+  "priorAttempt": {
+    "log": "full-before-fixture-update.log",
+    "tests": 4519,
+    "pass": 4412,
+    "fail": 1,
+    "skipped": 106,
+    "reason": "Legacy behavior UI fixture used non-SHA source revision and missing range propertyPath, and asserted full raw job diagnostic forwarding. Updated fixture to real source contract and asserted detached display/location DTO plus complete raw logs; production code unchanged."
+  },
+  "boundaries": [
+    "Current single task only, max256 rows; not project-wide or historical diagnostics.",
+    "Pure task/row snapshots and literal filtering are independent of DOM, service and engine execution.",
+    "View receives snapshot, current ownership and one source navigation port.",
+    "Equivalent polls keep controls/rows; changed results/task/backend/window revoke stale navigation.",
+    "Source host checks ownership after reading and hashing before activation; delayed focus after closing uses editor ownership.",
+    "Filters, details and language changes do not save sources or launch tasks.",
+    "No version bump, commit, push, install or engine execution; existing search remains intact."
+  ]
+}

@@ -1,0 +1,27 @@
+✔ current-task problems distinguish no task, no reports and no filter matches without starting work (16.050864ms)
+✔ all task metadata and complete severity counts are visible independently of filters (7.464023ms)
+✔ literal case-insensitive search combines with severity over code, detail and source location (6.875602ms)
+✔ localized message search is recomputed on language changes without resetting query or severity (6.013325ms)
+✔ raw diagnostic content is rendered as text and rows without a source expose no navigation button (3.523999ms)
+✔ equivalent polls preserve query element, focus, caret and expanded row while status updates preserve same-task filters (5.054086ms)
+✔ hiding a row and changing languages retain its disclosure DOM and input composition state (5.527009ms)
+✔ new task or backend resets filters and disclosures, while context session reset clears the old task (7.494179ms)
+✔ source navigation forwards the original diagnostic without edits and prevents double opens (4.795037ms)
+✔ unchanged task polling and locale changes keep a pending source navigation valid (3.144944ms)
+✔ display labels remain plain text and can refresh without invalidating task identity or pending navigation (5.820952ms)
+✔ semantic snapshot replacement invalidates pending source navigation even if its row is unchanged (2.981305ms)
+✔ filter, session, backend and availability changes invalidate pending navigation and ignore late failures (12.429381ms)
+✔ stale, hidden, removed and disconnected navigation controls cannot open a source (4.878245ms)
+✔ failed and cancelled navigation stays in the component, localizes and allows retry (6.279458ms)
+✔ malformed observations and explicit invalid state reject all navigation without reporting a clean task (4.156973ms)
+✔ null snapshots clear task state and cannot revive old controls (3.059803ms)
+✔ dispose invalidates callbacks, removes listeners and leaves legacy list and title available (4.678287ms)
+✔ all three languages translate controls and task metadata without duplicating style resources (5.011465ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 197.147971

@@ -1,0 +1,188 @@
+{
+  "date": "2026-10-13",
+  "version": "0.1.1",
+  "head": "d7e847937c6c86c1df2ae6661485e11e9c36f4e6",
+  "scope": "Unreleased working-tree scene composition creation assistant; no new installation, release, commit or push.",
+  "architecture": {
+    "modules": 20,
+    "declaredCapabilities": 37,
+    "readOnlyCatalog": "GET /api/scene-composition-create",
+    "newWriteAPI": false,
+    "sharedRustRulesChanged": false
+  },
+  "application": {
+    "command": "Node v24.21.0 scripts/check-project.mjs --app-only",
+    "log": "full-final.log",
+    "total": 4653,
+    "pass": 4547,
+    "skip": 106,
+    "fail": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "javascriptSyntaxFiles": 773,
+    "apiAndVersionPreflight": true,
+    "optionalSkips": "Conditional native helpers, runtime tools and device-dependent cases are not all enabled by this invocation; actual Godot is separately exercised by the browser workflow."
+  },
+  "focused": {
+    "newTests": 49,
+    "newTestsIncludedInApplication": true,
+    "core": 12,
+    "catalog": 6,
+    "http": 2,
+    "ui": 19,
+    "host": 8,
+    "system": 2,
+    "hostAndExistingRegression": {
+      "pass": 74,
+      "log": "host-system-final.log"
+    },
+    "oldModuleCounts": {
+      "pass": 33,
+      "log": "module-count-regression.log"
+    }
+  },
+  "browser": {
+    "finalReport": "docs/test-results/scene-composition-create/browser-1791881088567/browser.json",
+    "reportSha256": "9580240d534e6e43708efe115cdfd92b5cc0be44104733bf150545c41ba5f494",
+    "passed": true,
+    "workflowGroups": 6,
+    "screenshots": 14,
+    "productAndHarnessSourceFiles": 17,
+    "sourceSnapshotUnchanged": true,
+    "temporaryWorkspaceCleaned": true,
+    "browser": "Chrome/154.0.8037.97",
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "godot": {
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "jobs": [
+      {
+        "kind": "plan",
+        "status": "succeeded",
+        "id": "8753cab0-4132-4c0f-ae1f-74dde72a80d8"
+      },
+      {
+        "kind": "build",
+        "status": "succeeded",
+        "id": "44e46390-5e2c-4513-bf36-6369a92b2f14"
+      },
+      {
+        "kind": "run",
+        "status": "succeeded",
+        "id": "be50d173-bdfc-4a86-b5d7-70c59dcea9da"
+      }
+    ],
+    "runtime": {
+      "finalActors": [
+        {
+          "instanceId": "9d103b0b-ca34-4f9f-aeb3-06a26860feb1",
+          "objectId": "c2c933dd-d58d-4f02-bab8-47d98675bbee",
+          "position": [
+            185,
+            180
+          ],
+          "state": "idle"
+        }
+      ]
+    },
+    "visualReview": {
+      "passed": true,
+      "inspected": [
+        "recipe-zh-CN-390.png",
+        "recipe-en-390.png",
+        "recipe-ja-390-source.png",
+        "godot-inherited-player-result.png"
+      ],
+      "notes": "Chinese/English/Japanese header/footer actions remain visible; long JSON wraps in independently scrolling body; final Godot screenshot waits for the editor completed status."
+    },
+    "priorRuns": [
+      {
+        "report": "browser-1791880936426/browser.json",
+        "status": "test-fixture-preparation-failed",
+        "reason": "The test workspace name contained /, which production portable-name validation correctly rejects. Changed the fixture name separators to middle dots."
+      },
+      {
+        "report": "browser-1791880966769/browser.json",
+        "status": "test-harness-expression-failed",
+        "reason": "A multi-statement CDP expression was missing its function wrapper. The first three workflow groups already passed; corrected the test expression without changing product code."
+      },
+      {
+        "report": "browser-1791881000877/browser.json",
+        "status": "passed",
+        "reason": "All six groups passed. The final report additionally waits for the editor polling cycle before capturing completed Godot UI and captures each translated form from its top."
+      }
+    ]
+  },
+  "preparedResources": {
+    "report": "packaged-resources.json",
+    "exactComparisons": 39,
+    "copiedPlannerAndWasmTargets": 2,
+    "copiedUiCapabilityCases": 10,
+    "scope": "prepared copies and in-memory VM, not installed targets; mobile has no Node service and does not expose creation"
+  },
+  "atlas": {
+    "functions": 115,
+    "implementations": 301,
+    "bindings": 449,
+    "cells": 1796,
+    "workflows": 79,
+    "dependencies": 295,
+    "previousUnrelatedCellsPreserved": 1776,
+    "previousPlannedCellsReplaced": 4,
+    "newFeatureCells": 20,
+    "maturity": [
+      4,
+      4,
+      3,
+      2
+    ],
+    "scope": "Only the new feature scores changed; prior installed evidence does not validate the new helper."
+  },
+  "preservation": {
+    "installedAppImageSha256": "22fb45a03fe2a698ad1eec0b7c655161bd47d1769b5cf6ca7f65b12bce5ccc48",
+    "installedAppUnchanged": true,
+    "browserWorkspaceAndAuthorChecks": "See browser.json; isolated workspace only; OC/projection/templates unchanged, saves add only intended document and registration pairs.",
+    "midTurnCheckpoint": "before.json was captured after parallel implementation began; it is not a pristine turn-start author-data or source baseline.",
+    "historicalNetwork": {
+      "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
+      "docs/function-network.json": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
+      "docs/function-network.html": "bf42bb7b77083ed40316cd12ba21544e07b5a3b45f045b88ac0b24af056039d9",
+      "docs/function-network.mmd": "a153d860a8171d1ce01ae45fd3a2e5d08d59e506d2d52ca966d5cfc3d87af39f"
+    }
+  },
+  "earlierFailures": [
+    {
+      "log": "host-system.log",
+      "reason": "Initial new test harness omitted WASM initialization and old explicit active-module expectations; corrected test setup."
+    },
+    {
+      "log": "full.log",
+      "reason": "Seven existing 3D module tests expected 19 modules/36 capabilities. Updated exact counts to 20/37 without changing isolation assertions; full rerun passed."
+    },
+    {
+      "report": "browser-acceptance.json",
+      "reason": "Retains initial fixture-name and CDP-expression failures plus earlier successful run."
+    },
+    {
+      "report": "packaged-resources.json",
+      "reason": "Verifier first had its own syntax stripping error; product was unchanged."
+    }
+  ],
+  "limits": [
+    "Initial assistant creates one fragment, actor and placement; existing authoring editors extend it.",
+    "No new Tauri install or Android device acceptance.",
+    "No new author behavior, ZIP delivery, Bevy behavior or graphic-game acceptance in this round.",
+    "Source resource copies do not prove delivery to all supported platforms."
+  ],
+  "evidenceHashes": {
+    "full-final.log": "b0c6d823614afd34c9b3819b2ba63fad41560f57e0dc7fa7015a7fdd65db89c2",
+    "host-system-final.log": "bffc3d3281cdb25ea4c1479e957fb7c006be13c91e1c2b423129b72e4008314d",
+    "module-count-regression.log": "682c52b4ae8d8f089437323249e779edaa5f5746a5e6ee3234ac41f8ed9f056f",
+    "browser-acceptance.json": "117bc6ac41b20f9bd6a2813e9b06c718f671a8d91b7b23773a8f1456abd952d8",
+    "packaged-resources.json": "c117c7ff74917cf464bee011be7b10c4d313d5d7644a70dc647fe884330b64df"
+  }
+}

@@ -1,8 +1,8 @@
 # Viento Studio 桌面版
 
-当前源码版本 **0.0.8**。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
+当前源码版本 **0.1.2**。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
 
-0.0.8 本次交付源码，未制作或安装新包；最近保留的 Linux 安装验收为 [0.0.4](../docs/test-results/release-0.0.4/results.json)。下文打包命令用于自行生成产物，源码新增的场景布局与 Rust 核心仍需在新 Tauri 安装产物上单独验收。
+2026-10-13 此前已构建并实际更新本机 Linux AppImage，安装版本为 **0.1.1**，包含当时的查找替换、配方生成场景及桌面修复，早于新配方创建、多演员与起始排布助手。安装包摘要与原生验收范围见[安装验收](../docs/test-results/native-installed-0.1.1/README.md)。本次 **0.1.2** 只交付源码，未制作或更新安装包；其他平台仍按各自证据时点判断。此前 [0.0.4 验收](../docs/test-results/release-0.0.4/results.json)保留。
 
 Linux GTK/WebKit 使用仓库内的 glib 安全修复副本，构建及源码迁移需要完整保留 `src-tauri/vendor`。补丁来源、兼容原因和优化回归见 [安全修复记录](../docs/SECURITY_GLIB_b.2.9.md)。
 
@@ -44,7 +44,7 @@ npm run desktop:build
 
 在内存较小的 Linux 开发机上，可用 `CARGO_BUILD_JOBS=1 npm run desktop:build` 限制编译并发，避免同时运行模拟器和大批构建。
 
-默认输出位于 `src-tauri/target/release/bundle`；设置 `CARGO_TARGET_DIR` 时位于该目录的 `release/bundle`。构建脚本将完成的安装包改为 `VERSION` 中的发布编号，例如 `Viento-Studio_0.0.8_amd64.AppImage`。Linux 可指定 `--bundles deb,appimage`，Windows 使用 `--bundles nsis`，macOS 使用 `--bundles dmg`。跨平台发行应分别在目标系统构建；仓库中的 **Build desktop installers** 工作流可手动生成三端产物，仅上传工作流构件，不自动发布版本。
+默认输出位于 `src-tauri/target/release/bundle`；设置 `CARGO_TARGET_DIR` 时位于该目录的 `release/bundle`。构建脚本将完成的安装包改为 `VERSION` 中的发布编号，例如 `Viento-Studio_0.1.2_amd64.AppImage`。Linux 可指定 `--bundles deb,appimage`，Windows 使用 `--bundles nsis`，macOS 使用 `--bundles dmg`。跨平台发行应分别在目标系统构建；仓库中的 **Build desktop installers** 工作流可手动生成三端产物，仅上传工作流构件，不自动发布版本。
 
 每次 Linux 打包前会重建生成用的 `.AppDir` 目录，避免 GTK 打包插件因旧链接残留而使第二次构建失败。Rust 编译缓存、已生成的安装包及作品库不在此清理范围内。
 

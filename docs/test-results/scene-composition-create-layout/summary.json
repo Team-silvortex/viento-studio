@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-13",
+  "version": "0.1.1",
+  "head": "d7e847937c6c86c1df2ae6661485e11e9c36f4e6",
+  "scope": "Unreleased starting-layout assistance within the composition creation dialog; no new install, release, commit or push.",
+  "feature": {
+    "modes": [
+      "row",
+      "column",
+      "grid"
+    ],
+    "maxActors": 64,
+    "positionOnly": true,
+    "explicitPreviewBeforeApply": true,
+    "oneUndoRestoresRawInput": true,
+    "sourceEditsInvalidateOldLayout": true,
+    "identityInheritanceAndOrderPreserved": true,
+    "ordinarySaveOnly": true,
+    "newWriteAPI": false,
+    "rustRulesChanged": false,
+    "modules": 20,
+    "capabilities": 37
+  },
+  "application": {
+    "log": "full.log",
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "command": "scripts/check-project.mjs --app-only",
+    "total": 4698,
+    "pass": 4592,
+    "skip": 106,
+    "fail": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "javascriptSyntaxFiles": 777,
+    "versionAndApiPreflight": true
+  },
+  "targeted": {
+    "pureLayout": {
+      "pass": 10,
+      "new": 10,
+      "log": "core.log"
+    },
+    "ui": {
+      "pass": 40,
+      "new": 11,
+      "log": "ui.log"
+    },
+    "ordinaryHostAndCreationRegression": {
+      "pass": 42,
+      "new": 1,
+      "log": "host-core-regression.log"
+    },
+    "translationAndScriptCompatibility": {
+      "pass": 22,
+      "log": "ui-compatibility.log"
+    },
+    "newTestsTotal": 22,
+    "includedInApplication": true,
+    "notAdditiveWithApplication": true
+  },
+  "browser": {
+    "report": "docs/test-results/scene-composition-create-layout/browser-1791884664281/browser.json",
+    "sha256": "effd08a65e67d2c344a75fedcd800798b93117490ca30a2e047d3c33628cfc27",
+    "passed": true,
+    "firstRunPassed": true,
+    "workflowGroups": 8,
+    "screenshots": 15,
+    "browser": "Chrome/154.0.8037.97",
+    "godot": {
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "sourceFingerprintsUnchanged": 18,
+    "temporaryRootCleaned": true,
+    "jobs": [
+      {
+        "kind": "plan",
+        "status": "succeeded"
+      },
+      {
+        "kind": "build",
+        "status": "succeeded"
+      },
+      {
+        "kind": "run",
+        "status": "succeeded"
+      }
+    ],
+    "initialPositions": [
+      [
+        100,
+        120
+      ],
+      [
+        250,
+        120
+      ],
+      [
+        100,
+        220
+      ]
+    ],
+    "finalPositions": [
+      [
+        145,
+        120
+      ],
+      [
+        295,
+        120
+      ],
+      [
+        140,
+        220
+      ]
+    ],
+    "scope": "Actual empty-project GUI authoring, row/column/grid preview/apply/undo and stale guard, normal save, materialization and Godot headless. Shared directional input, not independent live controllers."
+  },
+  "preparedResources": {
+    "report": "packaged-resources.json",
+    "counts": {
+      "commonFeatureSourceFiles": 17,
+      "commonCopyComparisons": 34,
+      "desktopServiceCopies": 3,
+      "desktopLibraryTranslationCopies": 3,
+      "mobilePlatformCopies": 1,
+      "totalExactByteComparisons": 41,
+      "purePlannerPreparedCopyRuns": 2,
+      "pureLayoutModeRuns": 6,
+      "actualCopiedUiGateCases": 10
+    },
+    "scope": "Resource-only desktop and mobile prepare; actual copied modules/WASM and in-memory GUI gates, not AppImage or Android device acceptance."
+  },
+  "preservation": {
+    "ok": true,
+    "scoreValuesUnchanged": 1796,
+    "unrelatedCellsExactlyUnchanged": 1776,
+    "oldReferencedReportsAndExamplesUnchanged": 867,
+    "browserSourcesStillExact": 18,
+    "installedAppImageUnchanged": true,
+    "installedAppImageSha256": "22fb45a03fe2a698ad1eec0b7c655161bd47d1769b5cf6ca7f65b12bce5ccc48",
+    "scope": "Actual author flow uses an isolated temporary project; no migration, installation or cleanup of user workspaces."
+  },
+  "atlas": {
+    "functions": 115,
+    "implementations": 301,
+    "bindings": 449,
+    "cells": 1796,
+    "workflows": 79,
+    "dependencies": 295,
+    "scoreValuesUnchanged": true
+  },
+  "initialFailures": [
+    {
+      "log": "core-initial.log",
+      "reason": "A test expected Number.MIN_VALUE added to 100000 to exceed the bound, but floating-point rounding leaves it unchanged. Corrected the fixture to a representable increment; product rules were not relaxed."
+    }
+  ],
+  "limits": [
+    "Initial arrangement applies to the whole actor list and uses center spacing; no size/collision or auto-fit computation.",
+    "One in-dialog undo is invalidated by later author edits/topology changes and does not join existing scene-editor histories.",
+    "No new author format, write endpoint, script behavior, ZIP delivery, Bevy capability, graphical gameplay, installation or Android acceptance.",
+    "106 full-suite conditional cases remain skipped; real Godot is separately enabled by the browser workflow."
+  ],
+  "evidenceHashes": {
+    "core.log": "15a7d33b47c2beedd273b2e9a044334dc94410865d71e4f20343d23a147f585d",
+    "ui.log": "53574e19d687794dd2f763973a4e9d013a86c46d3a17178528222238ad826c75",
+    "host-core-regression.log": "23f33ac368043fb2fd52bb5db00b787468d4be7c160bf2c14a0ca02eec250a36",
+    "ui-compatibility.log": "4c6f852dff9f931d1493c03c6d0b5a9c2d7fc532f884aa5ad70b110be3ea2f24",
+    "full.log": "f1062032b8545c4e2fa3c8f39bb554cd166c2486aa58bb1a2d542dfb8fe4857f",
+    "packaged-resources.json": "1975111fb80f163cb6ccd3fa2f98dabafe952766d09ea25b09abf77bf7478203",
+    "preservation.json": "075dbf8fca7a5ae93bb1a3ad0eda576ff4a4fff5882ad1a7ec875f080749b0d9"
+  }
+}

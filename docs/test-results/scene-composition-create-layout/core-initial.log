@@ -1,0 +1,37 @@
+✔ row, column and grid use actor order and preserve every instance identity (2.231637ms)
+✔ single actors and maximum creation budget work in every mode (2.085753ms)
+✔ fractional positive spacing, negative origins and inclusive coordinate boundaries stay exact (0.295035ms)
+✔ grid column extremes are deterministic and leave incomplete final rows untouched (0.294885ms)
+✔ changedCount counts actors rather than axes and a second application is unchanged (0.214777ms)
+✖ any candidate outside bounds rejects the entire plan without clipping or modifying input (0.783562ms)
+✔ positions, IDs and actor shapes reject duplicates, nonfinite values, missing or additional fields (0.726373ms)
+✔ settings require exact mode, bounds, positive spacings and integer columns even on unused axes (1.492688ms)
+✔ plans are deeply immutable detached snapshots and never mutate input (0.370923ms)
+✔ getters, inherited serializers, cycles, holes and pollution keys are rejected without invocation (0.440326ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63.960623
+
+✖ failing tests:
+
+test at scripts/tests/scene-composition-create-layout.test.mjs:54:1
+✖ any candidate outside bounds rejects the entire plan without clipping or modifying input (0.783562ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception (invalid).
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-composition-create-layout.test.mjs:60:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }

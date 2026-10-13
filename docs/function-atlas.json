@@ -3,9 +3,9 @@
   "meta": {
     "title": "Viento Studio 功能成熟度图谱",
     "date": "2026-10-13",
-    "version": "0.1.1",
-    "commit": "cc3c3b79c292d4d2c2db1edd4b8dae519810b641",
-    "scope": "0.1.1源码交付：纳入0.1.0后14项功能，只更新其60项交付评分；19模块／36项声明能力，110功能／288实现／433绑定／1732评分单元。其余评分与历史验证条件保持；发布预检另列，不声明新安装、设备或原生语言服务验收。meta.commit仍为升版前基线。",
+    "version": "0.1.2",
+    "commit": "d7e847937c6c86c1df2ae6661485e11e9c36f4e6",
+    "scope": "0.1.2源码交付：查找替换、任务问题回源、配方生成运行场景、新配方／多演员／起始排布，以及桌面编辑和退出保护修复。20模块／37项声明能力；4项功能的15个交付单元提升为源码交付，其他评分保持。旧安装验收为早于新助手的0.1.1工作树，本次未重新安装或验收设备。",
     "historicalSha256": {
       "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
       "docs/function-network.json": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
@@ -769,9 +769,9 @@
           "Scene2D v2稳定实例和v3持久逻辑分组已分别形成scene.instances_v2与scene.groups_v3切片，不代表完整文本场景系统完成",
           "actors仍为1–128个实例；逻辑组不改变坐标或绘制顺序，空间父子变换、剧本事件和跨文件原子提交仍未实现；单文件片段展开另列实验scene.composition",
           "分组树与查询不等于大规模场景性能验收，也没有自动迁移旧作品",
-          "单场景原文草稿预览与坐标回写另列切片；scene.composition已提供单文件展开及普通配方文档/依赖迁移，已接保存态/当前草稿配方只读预览及贡献来源定位，当前源码单实例覆盖另走稳定目标补丁，共享模板编辑、统一undo和多文件原子提交仍未接。"
+          "单场景原文草稿预览与坐标回写、配方六字段覆盖及恢复、共享片段字段与结构、放置、组织组和片段定义管理已有独立功能切片；scene.composition_materialize可把保存态配方生成独立运行场景。这里的规划缺口是空间父子变换、统一历史、剧本事件及嵌套／跨文件提交，不能将已实现子能力重复列为未接入。"
         ],
-        "next": "配方已接普通JSON保存、依赖迁移、当前原文预览与贡献定位；下一步共享模板修改与单次放置覆盖的写回隔离，统一历史、嵌套/跨文件及空间变换另立契约。",
+        "next": "沿已实现实例／分组及配方创作分别推进空间层次、跨视图历史、剧本事件和跨文件事务；现有组织分组不会隐式施加空间变换。",
         "platforms": [
           "规划未接入产品"
         ],
@@ -1092,9 +1092,9 @@
           "作者源码随冻结快照；回放重新规划、核对指纹/工具/每份输出；TXT编译定位原文行，参数类型运行错误定位manifest指针，sourceRange由冻结作者文本补充。",
           "选择包重派生场景/源码直接依赖并要求清单或pin；包内scene不得借ambientactor，外部pinnedscene可沿已锁关系读取传递actor并hash/fence复验；完整备份允许未完成原文。",
           "静态预览只geometry，不验证或运行bindings；GUI展示计数/安全文本事件和诊断，不执行脚本，未保存任意doc继续阻止build/run。",
-          "脚本以用户权限运行，无沙箱承诺；无任意方法RPC/热更新/通用状态机/行为参数表单/作者BevyRust行为/Nuis/GPU/Android执行器或新安装验收。"
+          "脚本以用户权限运行，无沙箱承诺；无任意方法RPC、热更新、通用状态机、作者Bevy Rust行为、Nuis、GPU、Android执行器或新安装验收。内置参数／信号表单、首次声明创建与脚本起始草稿分别见behavior.authoring、behavior.creation、script.authoring；这些作者入口不自动扩大运行能力。"
         ],
-        "next": "完善绑定清单创作和参数辅助，再独立定义解绑/热更新及规模验证；其他后端必须真实工具链验收。",
+        "next": "内置脚本、首次绑定和参数／信号编辑已分别接通；继续定义已有声明迁移、关联增删、解绑／热更新及规模验证。其他后端的作者行为必须独立完成协议与真实运行验收。",
         "platforms": [
           "Linux本机编辑服务与真实Chrome/Godot4",
           "移动仅纯规则与完整作者数据存储互通，不代表行为执行或UI接入",
@@ -2108,9 +2108,9 @@
           "准备持有任务占用直到流结束，服务关闭取消并等待；原生保存窗口阻止关闭，浏览器发起下载后由TTL清理，避免下载准入竞争。",
           "纯清单契约、Node文件与ZIP适配、UI和宿主注入接口分离；校验只证明包内一致性，不授予执行或导入权限。",
           "Godot生成工程仍需兼容Godot；Bevy是需可信运行程序的场景数据，非Cargo工程或独立发行程序。",
-          "本轮只接当前Scene2D后端构建目录；Scene3D/Composition统一打包、可执行发行与LSP服务另行接入。"
+          "当前直接接收Scene2D后端构建目录；保存配方可先经scene.composition_materialize生成独立Scene2D，再走此交付。直接Composition／Scene3D统一组装、可执行发行与LSP服务仍另行接入。"
         ],
-        "next": "补齐内置实例行为绑定与参数编辑，再接中立组装描述和3D交付；外部IDE/LSP只通过独立文档与诊断端口。",
+        "next": "内置脚本、首次绑定和参数／信号编辑已分别接通；后续独立定义已有声明关联管理、中立组装描述和3D交付。外部IDE／LSP通过独立文档与诊断端口接入。",
         "platforms": [
           "本地HTTP浏览器下载与Godot重定位导入",
           "桌面保存协议回归与资源副本；无新安装／Android实机验收"
@@ -2129,7 +2129,7 @@
           "参数保留文本／数字／布尔类型，信号映射遵守原预算；具体脚本导出类型和实际信号仍由后端构建／运行验证，界面不执行脚本。",
           "JS私有提案与无浏览器第三方依赖的JSON索引保留未修改原文；同结构只改叶值，集合结构变化只重写选中容器，未知schema或重复键不自动清洗。",
           "检查／应用核对原文字节、来源修订、保存基线、编辑会话与依赖摘要；仅同步修改内存，普通保存持有磁盘写入与外部冲突权限。",
-          "新建清单、变更所属场景／后端／语言、增加关联、LSP、热更新及作者Bevy Rust／3D行为尚未接入。"
+          "本表单不新建清单或关联；首次创建已有独立behavior.creation入口。已有声明迁移所属场景／后端／语言、追加关联、LSP、热更新及作者Bevy Rust／3D行为仍未接入。"
         ],
         "next": "首次创建与必要关联见behavior.creation，内置TXT起始草稿见script.authoring；后续推进已有声明迁移与关联管理、源码体验、标准诊断及LSP接口。",
         "platforms": [
@@ -2243,6 +2243,105 @@
           "桌面／移动仅准备资源；Android构建入口及设备另验"
         ],
         "delivery": "source-release"
+      },
+      {
+        "id": "authoring.source-search",
+        "label": "通用原文查找替换与单次原生撤销",
+        "group": "编辑与创作",
+        "entry": "当前源码→字面查找与匹配导航→当前或全部替换→原生撤销／重做→普通保存",
+        "boundary": [
+          "属于既有正文编辑模块，保持19模块／36项声明能力；不依赖语言、工程模板、行为关系或执行后端。",
+          "纯规划接受规范LF原文和UTF-16选区；字面非重叠匹配，默认区分大小写，忽略大小写使用Unicode简单折叠而不改变来源偏移。",
+          "替换当前要求精确选中匹配；全部替换返回最小包围范围，一次原生insertText形成可一次撤销的编辑；替换值不解释$&、$1或反斜杠。",
+          "原文与最终结果最多4Mi UTF-16，查询4096、替换输入65536、匹配10000；超限完整拒绝，选区不切开有效代理对。",
+          "来源令牌、原文、输入选项、焦点及选区在原生编辑前核对；IME、模态、忙碌与切换来源期间保护正文。媒体导入只接收宿主确认归属的输入框，不借辅助查找字段回退修改源码。",
+          "普通input继续负责草稿、脏状态及诊断待复验；普通保存继续保留BOM／原换行风格和外部冲突。切换或重新加载正文清除旧查找上下文。",
+          "Linux真实Chrome验证导航、原生历史、三语390px、素材事件隔离与目标唯一的BOM／CRLF保存；资源准备不代表安装或设备验收。正则、全工程替换及LSP另行推进。"
+        ],
+        "next": "继续独立接入工程问题总表与标准文档／LSP端口；跨文档搜索和编辑必须另行定义来源、事务与撤销。",
+        "platforms": [
+          "Linux本机编辑服务与真实Chrome",
+          "桌面／移动仅准备资源，其他WebView原生编辑兼容性另验"
+        ],
+        "delivery": "source-release"
+      },
+      {
+        "id": "build.task-problems",
+        "label": "当前构建任务的问题筛选与来源导航",
+        "group": "构建与运行",
+        "entry": "当前任务诊断→严重度／文字筛选→展开定位详情→核对原文版本→编辑保存与显式重验",
+        "delivery": "source-release",
+        "platforms": [
+          "Linux本机服务与真实Chrome",
+          "桌面／移动仅准备资源，移动构建入口及设备另验"
+        ],
+        "boundary": [
+          "只消费当前任务最多256条诊断，保留原序和重复项，不汇总工程、历史或持续检查。任务场景独立于场景选择器。",
+          "纯规则严格捕获任务标量与来源信息，按严重度、文件、字段、代码、原消息及当前翻译进行字面筛选；原始详情为最多8192码元摘录。",
+          "独立视图只取得快照、可用状态、来源令牌与受守护导航接口；筛选／详情／语言变化不读取文件、保存或执行引擎。",
+          "同一任务等价轮询保留查询、输入选区和详情节点；新任务／后端／窗口会话清理旧状态。结果变化或当前条目不可用时撤销旧导航。",
+          "主编辑宿主在原文读取和摘要计算之后核对任务归属，再沿既有源码修订、精确范围与草稿保护规则定位；关闭窗口后的焦点由正文身份接管。",
+          "无来源问题仍显示；无任务、无诊断、筛选无匹配及畸形快照分别说明，不伪造定位。修改／撤销不会认定问题解决，须显式重新检查。",
+          "真实Chrome只执行静态计划诊断与来源编辑链路；不提升现有后端执行、LSP或安装设备成熟度。"
+        ],
+        "next": "继续独立设计跨任务问题归档、工程诊断汇总与标准文档／LSP端口，不由只读列表隐式运行检查。"
+      },
+      {
+        "id": "scene.composition_materialize",
+        "label": "保存态配方生成独立运行场景",
+        "group": "场景与交互",
+        "entry": "已保存配方→完整依赖预览→独立场景审阅与创建→行为→构建运行→工程交付",
+        "delivery": "source-release",
+        "platforms": [
+          "Linux本机服务、真实Chrome与Godot",
+          "桌面／移动仅准备资源；安装及设备另验"
+        ],
+        "boundary": [
+          "输入仅限已登记保存态配方；读取前后核对World修订，完整配方预览包含未使用片段的依赖。",
+          "共享Rust展开保留实例／分组身份和投影继承声明；可移植规划不从渲染模型反推作者JSON，不读取文件或执行引擎。",
+          "新文档UUID、类型和路径经明确审阅；现有scene.create事务仅创建正文与依赖登记，原配方、定义和素材不改写。",
+          "生成场景独立维护，无自动同步、覆盖已有场景或反向回写；修改目的地撤销旧审阅，保存不明先只读核对。",
+          "构建父窗口只交接归属与新场景选择，旧计划失效；行为、快照、后端运行与工程交付继续沿独立接口。",
+          "浏览器实测从已准备的注册配方到新场景、脚本、行为、真实Godot逻辑执行和工程ZIP异地导入；不宣称上游创建全程UI、图形游戏验收或独立游戏安装包。"
+        ],
+        "next": "丰富配方初始结构并扩展连续创作到交付验收；配方直接构建、自动同步和独立游戏发行分别设计。"
+      },
+      {
+        "id": "scene.composition_create",
+        "label": "直接新建配方的内置助手",
+        "group": "场景与构建",
+        "entry": "主编辑器 → 新建场景配方 → 多演员／可选起始排布 → 完整JSON审阅 → 普通草稿与保存 → 场景预览／生成",
+        "boundary": [
+          "只读目录列出已登记有效对象和兼容二维游戏投影；配方本身及无效投影不作为起始演员。",
+          "起始一个片段、一次放置及1–64演员；每项独立对象／投影、继承、局部键与位置，同对象可重复引用。增删不重新分配存留实例UUID，未完成输入可切换保留。",
+          "起始排布为横排／竖排／网格的独立纯坐标规划；显式预览全部旧新位置后应用，一次撤销恢复原数字输入。手动修改或增删使旧提案／回退失效，越界整体拒绝。间距按中心计算，不读取外观或碰撞。",
+          "投影继承保留useProjectionDefaults，不复制当前解析值；普通对象使用明确起始值。共享Rust展开验证配方规则，不新增后端格式。",
+          "可移植规划、只读Node目录、独立三语界面和普通文档宿主分离；取消无写，应用前重读目录并复核来源归属。",
+          "审阅结果进入普通未保存JSON草稿，保存与登记沿现有接口；外部路径占用拒绝覆盖并保留草稿。",
+          "真实Chrome从空工程GUI创建OC／投影／三演员配方，生成独立Scene2D并由Godot无头运行；两个同源投影实例各移动45px、普通对象40px，仍是共享方向键输入。本轮不含新增安装、行为脚本、ZIP交付或图形游戏验收。"
+        ],
+        "next": "更丰富的起始片段组合、按需局部排布，以及完整上游创作到工程交付的同轮连续验收。",
+        "platforms": [
+          "本机HTTP编辑服务、真实Chrome与Godot无头验证",
+          "桌面／移动准备资源；新助手尚未安装，Android不开放创作入口"
+        ],
+        "delivery": "source-release"
+      },
+      {
+        "id": "behavior.bevy_rust",
+        "label": "Bevy 作者 Rust 行为接入",
+        "group": "运行后端与演进",
+        "entry": "规划：作者Rust源码与绑定→能力准入→可信构建工具→可追溯运行事件；尚无产品入口",
+        "boundary": [
+          "当前Bevy后端只消费scene-data.json并调用锁定的可信运行程序，不调用Cargo编译作者Rust。",
+          "无图Scene2D、有限控制与实例观察已经接通；不能据此推断图片、窗口、GDScript或作者Rust行为可用。",
+          "作者行为的构建、工具身份、绑定生命周期、冻结依赖和诊断来源仍需独立契约与真实后端验收。"
+        ],
+        "next": "从明确的实例行为需求定义最小中立声明与Rust编译／运行适配；保留Godot分支、冻结输入及不支持能力的明确拒绝。",
+        "platforms": [
+          "规划未接入产品"
+        ],
+        "delivery": "planned"
       }
     ],
     "implementation": [
@@ -2286,14 +2385,15 @@
       },
       {
         "id": "i004",
-        "label": "app-runtime.js / app-editor-draft.js",
+        "label": "app-runtime.js / app-editor-draft.js / app-source-history.js",
         "kind": "product",
         "language": [
           "JavaScript"
         ],
         "paths": [
           "web/modules/app-runtime.js",
-          "web/modules/app-editor-draft.js"
+          "web/modules/app-editor-draft.js",
+          "web/modules/app-source-history.js"
         ]
       },
       {
@@ -5788,6 +5888,165 @@
           "web/modules/app-project-build.js",
           "web/modules/app-runtime.js"
         ]
+      },
+      {
+        "id": "i289",
+        "label": "字面匹配与有界单一替换规划",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/source-search.mjs"
+        ]
+      },
+      {
+        "id": "i290",
+        "label": "独立查找替换视图、原生事务与三语布局",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-source-search.js",
+          "web/source-search.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js"
+        ]
+      },
+      {
+        "id": "i291",
+        "label": "普通源码宿主接线与媒体输入归属",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-runtime.js",
+          "web/modules/app-media-editor.js"
+        ]
+      },
+      {
+        "id": "i292",
+        "label": "有界单任务问题快照与字面筛选",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-problems.mjs"
+        ]
+      },
+      {
+        "id": "i293",
+        "label": "独立问题列表、三语筛选与稳定行节点",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-project-problems.js",
+          "web/project-problems.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js"
+        ]
+      },
+      {
+        "id": "i294",
+        "label": "任务观察映射与异步来源归属核对",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-project-build.js",
+          "web/modules/app-runtime.js"
+        ]
+      },
+      {
+        "id": "i295",
+        "label": "保存配方的独立场景规划与修订核对",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-composition-materialize.mjs"
+        ]
+      },
+      {
+        "id": "i296",
+        "label": "独立场景生成审阅与保存结果核对",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-scene-materialize.js",
+          "web/scene-materialize.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js"
+        ]
+      },
+      {
+        "id": "i297",
+        "label": "配方入口与新场景构建目录交接",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-project-build.js"
+        ]
+      },
+      {
+        "id": "i298",
+        "label": "新配方草稿与起始排布的可移植规划",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-composition-create.mjs",
+          "engine/scene-composition-create-layout.mjs"
+        ]
+      },
+      {
+        "id": "i299",
+        "label": "Bevy 作者 Rust 行为接入（规划）",
+        "kind": "planned",
+        "language": [],
+        "paths": [
+          "docs/FUNCTION_MAPPING_2D.md"
+        ]
+      },
+      {
+        "id": "i300",
+        "label": "新配方只读对象目录与HTTP适配",
+        "kind": "prototype",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/lib/scene-composition-create-service.mjs",
+          "scripts/lib/doc-api-service.mjs",
+          "scripts/lib/doc-server-routes.mjs"
+        ]
+      },
+      {
+        "id": "i301",
+        "label": "新配方独立表单、审阅与模块装配",
+        "kind": "prototype",
+        "language": [
+          "JavaScript",
+          "CSS"
+        ],
+        "paths": [
+          "web/modules/app-scene-composition-create.js",
+          "web/scene-composition-create.css",
+          "web/modules/app-studio-system.js",
+          "engine/studio-modules.mjs"
+        ]
       }
     ],
     "maturity": [
@@ -5917,7 +6176,12 @@
         "e020",
         "e021",
         "e363",
-        "e364"
+        "e364",
+        "e1888",
+        "e1889",
+        "e1890",
+        "e1891",
+        "e1892"
       ]
     },
     {
@@ -6624,7 +6888,8 @@
         "e110",
         "e021",
         "e363",
-        "e364"
+        "e364",
+        "e1891"
       ]
     },
     {
@@ -6643,7 +6908,8 @@
         "e110",
         "e021",
         "e363",
-        "e364"
+        "e364",
+        "e1891"
       ]
     },
     {
@@ -6662,7 +6928,8 @@
         "e110",
         "e021",
         "e363",
-        "e364"
+        "e364",
+        "e1891"
       ]
     },
     {
@@ -6976,7 +7243,8 @@
         "e161",
         "e162",
         "e363",
-        "e364"
+        "e364",
+        "e1891"
       ]
     },
     {
@@ -6996,7 +7264,8 @@
         "e161",
         "e162",
         "e363",
-        "e364"
+        "e364",
+        "e1891"
       ]
     },
     {
@@ -7034,7 +7303,8 @@
         "e009",
         "e166",
         "e363",
-        "e364"
+        "e364",
+        "e1891"
       ]
     },
     {
@@ -7053,7 +7323,8 @@
         "e009",
         "e166",
         "e363",
-        "e364"
+        "e364",
+        "e1891"
       ]
     },
     {
@@ -18706,6 +18977,370 @@
         "e1829",
         "e1831",
         "e1832"
+      ]
+    },
+    {
+      "id": "b435",
+      "architecture": "semantic-js",
+      "function": "authoring.source-search",
+      "implementation": "i289",
+      "role": "无DOM和文件接口的纯文本规则，输出不可变匹配与编辑计划。",
+      "evidence": [
+        "e1833",
+        "e1838",
+        "e1843",
+        "e1844",
+        "e1845",
+        "e1846",
+        "e1849",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b436",
+      "architecture": "ui",
+      "function": "authoring.source-search",
+      "implementation": "i290",
+      "role": "只操作当前源码选区及受守护的原生文本事务；不接保存或执行端口。",
+      "evidence": [
+        "e1834",
+        "e1835",
+        "e1839",
+        "e1842",
+        "e1848",
+        "e1843",
+        "e1844",
+        "e1845",
+        "e1846",
+        "e1849",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b437",
+      "architecture": "ui",
+      "function": "authoring.source-search",
+      "implementation": "i291",
+      "role": "原有草稿与普通保存负责持久化，媒体适配器核对真实文本输入归属。",
+      "evidence": [
+        "e1836",
+        "e1837",
+        "e1840",
+        "e1841",
+        "e1843",
+        "e1844",
+        "e1845",
+        "e1846",
+        "e1849",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b438",
+      "architecture": "semantic-js",
+      "function": "build.task-problems",
+      "implementation": "i292",
+      "role": "纯数据验证和不可变筛选不取得DOM、文件或执行接口。",
+      "evidence": [
+        "e1850",
+        "e1855",
+        "e1860",
+        "e1861",
+        "e1862",
+        "e1863",
+        "e1865",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b439",
+      "architecture": "ui",
+      "function": "build.task-problems",
+      "implementation": "i293",
+      "role": "视图维护筛选、展开状态和导航归属，不传递构建任务对象。",
+      "evidence": [
+        "e1851",
+        "e1852",
+        "e1856",
+        "e1859",
+        "e1864",
+        "e1860",
+        "e1861",
+        "e1862",
+        "e1863",
+        "e1865",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b440",
+      "architecture": "ui",
+      "function": "build.task-problems",
+      "implementation": "i294",
+      "role": "宿主把现有诊断映射为独立快照，读取／摘要后重验结果归属，再交接现有来源与焦点逻辑。",
+      "evidence": [
+        "e1853",
+        "e1854",
+        "e1857",
+        "e1858",
+        "e1860",
+        "e1861",
+        "e1862",
+        "e1863",
+        "e1865",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b441",
+      "architecture": "semantic-js",
+      "function": "scene.composition_materialize",
+      "implementation": "i295",
+      "role": "保存配方的独立场景规划与修订核对，不取得其他作者区或执行后端的职责。",
+      "evidence": [
+        "e1866",
+        "e1867",
+        "e1868",
+        "e1869",
+        "e1870",
+        "e1871",
+        "e1872",
+        "e1873",
+        "e1874",
+        "e1875",
+        "e1876",
+        "e1877",
+        "e1878",
+        "e1879",
+        "e1891",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b442",
+      "architecture": "ui",
+      "function": "scene.composition_materialize",
+      "implementation": "i296",
+      "role": "独立场景生成审阅与保存结果核对，不取得其他作者区或执行后端的职责。",
+      "evidence": [
+        "e1866",
+        "e1867",
+        "e1868",
+        "e1869",
+        "e1870",
+        "e1871",
+        "e1872",
+        "e1873",
+        "e1874",
+        "e1875",
+        "e1876",
+        "e1877",
+        "e1878",
+        "e1879",
+        "e1891",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b443",
+      "architecture": "ui",
+      "function": "scene.composition_materialize",
+      "implementation": "i297",
+      "role": "配方入口与新场景构建目录交接，不取得其他作者区或执行后端的职责。",
+      "evidence": [
+        "e1866",
+        "e1867",
+        "e1868",
+        "e1869",
+        "e1870",
+        "e1871",
+        "e1872",
+        "e1873",
+        "e1874",
+        "e1875",
+        "e1876",
+        "e1877",
+        "e1878",
+        "e1879",
+        "e1891",
+        "e1913",
+        "e1914"
+      ]
+    },
+    {
+      "id": "b444",
+      "architecture": "semantic-js",
+      "function": "scene.composition_create",
+      "implementation": "i298",
+      "role": "准备普通JSON草稿并核对目录／来源；不取得文件、渲染或运行权限。",
+      "evidence": [
+        "e1893",
+        "e1894",
+        "e1895",
+        "e1896",
+        "e1897",
+        "e1898",
+        "e1899",
+        "e1900",
+        "e1901",
+        "e1902",
+        "e1903",
+        "e1904",
+        "e1905",
+        "e1906",
+        "e1907",
+        "e1908",
+        "e1909",
+        "e1910",
+        "e1911",
+        "e1912",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b445",
+      "architecture": "runtime-backend",
+      "function": "behavior.bevy_rust",
+      "implementation": "i299",
+      "role": "规划缺口，尚无产品实现；现有相邻能力不替代该功能。",
+      "evidence": [
+        "e1880",
+        "e429"
+      ]
+    },
+    {
+      "id": "b446",
+      "architecture": "semantic-js",
+      "function": "scene.composition_materialize",
+      "implementation": "i071",
+      "role": "展开后的独立Scene2D复用scene.create校验、角色／图片依赖派生和正文／登记创建规划；不依赖旧v1界面。",
+      "evidence": [
+        "e221",
+        "e1870",
+        "e1874",
+        "e1880",
+        "e1891",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b447",
+      "architecture": "node-service",
+      "function": "scene.composition_create",
+      "implementation": "i300",
+      "role": "读取已有保存态对象目录并提供无缓存只读HTTP响应。",
+      "evidence": [
+        "e1893",
+        "e1894",
+        "e1895",
+        "e1896",
+        "e1897",
+        "e1898",
+        "e1899",
+        "e1900",
+        "e1901",
+        "e1902",
+        "e1903",
+        "e1904",
+        "e1905",
+        "e1906",
+        "e1907",
+        "e1908",
+        "e1909",
+        "e1910",
+        "e1911",
+        "e1912",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b448",
+      "architecture": "ui",
+      "function": "scene.composition_create",
+      "implementation": "i301",
+      "role": "独立表单和审阅，有限宿主端口；模块仅依赖文档能力。",
+      "evidence": [
+        "e1893",
+        "e1894",
+        "e1895",
+        "e1896",
+        "e1897",
+        "e1898",
+        "e1899",
+        "e1900",
+        "e1901",
+        "e1902",
+        "e1903",
+        "e1904",
+        "e1905",
+        "e1906",
+        "e1907",
+        "e1908",
+        "e1909",
+        "e1910",
+        "e1911",
+        "e1912",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b449",
+      "architecture": "ui",
+      "function": "scene.composition_create",
+      "implementation": "i004",
+      "role": "通过配方专属提案校验后复用普通创建草稿及保存。",
+      "evidence": [
+        "e1893",
+        "e1894",
+        "e1895",
+        "e1896",
+        "e1897",
+        "e1898",
+        "e1899",
+        "e1900",
+        "e1901",
+        "e1902",
+        "e1903",
+        "e1904",
+        "e1905",
+        "e1906",
+        "e1907",
+        "e1908",
+        "e1909",
+        "e1910",
+        "e1911",
+        "e1912",
+        "e1913"
+      ]
+    },
+    {
+      "id": "b450",
+      "architecture": "rust-core",
+      "function": "scene.composition_create",
+      "implementation": "i111",
+      "role": "复用已有无状态Rust配方展开验证；本轮不改变Rust算法或格式。",
+      "evidence": [
+        "e1893",
+        "e1894",
+        "e1895",
+        "e1896",
+        "e1897",
+        "e1898",
+        "e1899",
+        "e1900",
+        "e1901",
+        "e1902",
+        "e1903",
+        "e1904",
+        "e1905",
+        "e1906",
+        "e1907",
+        "e1908",
+        "e1909",
+        "e1910",
+        "e1911",
+        "e1912",
+        "e1913"
       ]
     }
   ],
@@ -36029,6 +36664,646 @@
       ],
       "value": 3,
       "reason": "已纳入0.1.1源码交付；专题验证保留原版本条件，发布预检另列。没有新的安装包或设备验收，不提升为安装交付。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.source-search",
+        "i289",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "纯规划、独立界面及普通源码接线形成单文档查找替换闭环，未扩展语言执行或跨文件权限。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.source-search",
+        "i289",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯规则、界面、实际宿主、全应用与真实Chrome检查覆盖导航、原生撤销、三语窄屏、媒体事件隔离和BOM／CRLF保存；其他WebView和设备另验。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.source-search",
+        "i289",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "文本规则、DOM视图及来源／保存宿主分别维护职责，媒体通过既有上下文核对输入归属；尚无第二原生实现验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "authoring.source-search",
+        "i289",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.source-search",
+        "i290",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "纯规划、独立界面及普通源码接线形成单文档查找替换闭环，未扩展语言执行或跨文件权限。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.source-search",
+        "i290",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯规则、界面、实际宿主、全应用与真实Chrome检查覆盖导航、原生撤销、三语窄屏、媒体事件隔离和BOM／CRLF保存；其他WebView和设备另验。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.source-search",
+        "i290",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "文本规则、DOM视图及来源／保存宿主分别维护职责，媒体通过既有上下文核对输入归属；尚无第二原生实现验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.source-search",
+        "i290",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.source-search",
+        "i291",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "纯规划、独立界面及普通源码接线形成单文档查找替换闭环，未扩展语言执行或跨文件权限。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.source-search",
+        "i291",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯规则、界面、实际宿主、全应用与真实Chrome检查覆盖导航、原生撤销、三语窄屏、媒体事件隔离和BOM／CRLF保存；其他WebView和设备另验。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.source-search",
+        "i291",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "文本规则、DOM视图及来源／保存宿主分别维护职责，媒体通过既有上下文核对输入归属；尚无第二原生实现验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "authoring.source-search",
+        "i291",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "build.task-problems",
+        "i292",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "当前任务筛选、详情与受守护来源导航形成闭环；未扩展为工程汇总或语言服务。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "build.task-problems",
+        "i292",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯规则、视图、实际构建／正文宿主与真实Chrome检查覆盖任务身份、轮询、三语窄屏和精确来源；完整范围见最终报告。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "build.task-problems",
+        "i292",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "任务标量快照、DOM视图和来源宿主分别维护责任；无新的持久化、执行或DOM访问进入纯规则，原生第二实现仍待验。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "build.task-problems",
+        "i292",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "build.task-problems",
+        "i293",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "当前任务筛选、详情与受守护来源导航形成闭环；未扩展为工程汇总或语言服务。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "build.task-problems",
+        "i293",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯规则、视图、实际构建／正文宿主与真实Chrome检查覆盖任务身份、轮询、三语窄屏和精确来源；完整范围见最终报告。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "build.task-problems",
+        "i293",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "任务标量快照、DOM视图和来源宿主分别维护责任；无新的持久化、执行或DOM访问进入纯规则，原生第二实现仍待验。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "build.task-problems",
+        "i293",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "build.task-problems",
+        "i294",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "当前任务筛选、详情与受守护来源导航形成闭环；未扩展为工程汇总或语言服务。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "build.task-problems",
+        "i294",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯规则、视图、实际构建／正文宿主与真实Chrome检查覆盖任务身份、轮询、三语窄屏和精确来源；完整范围见最终报告。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "build.task-problems",
+        "i294",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "任务标量快照、DOM视图和来源宿主分别维护责任；无新的持久化、执行或DOM访问进入纯规则，原生第二实现仍待验。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "build.task-problems",
+        "i294",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_materialize",
+        "i295",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "已保存配方到独立Scene2D、行为、运行及工程交付形成明确链路；自动同步和独立游戏发行仍未接入。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_materialize",
+        "i295",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯规则、界面、真实构建宿主与Chrome／Godot连续实测覆盖创建、原数据保持、行为事件、ZIP及异地导入。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_materialize",
+        "i295",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "Rust展开、JS规划、界面编排和既有创建事务分别负责；Godot执行及交付仍沿既有接口，第二原生视图尚未验。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_materialize",
+        "i295",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_materialize",
+        "i296",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "已保存配方到独立Scene2D、行为、运行及工程交付形成明确链路；自动同步和独立游戏发行仍未接入。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_materialize",
+        "i296",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯规则、界面、真实构建宿主与Chrome／Godot连续实测覆盖创建、原数据保持、行为事件、ZIP及异地导入。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_materialize",
+        "i296",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "Rust展开、JS规划、界面编排和既有创建事务分别负责；Godot执行及交付仍沿既有接口，第二原生视图尚未验。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_materialize",
+        "i296",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_materialize",
+        "i297",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "已保存配方到独立Scene2D、行为、运行及工程交付形成明确链路；自动同步和独立游戏发行仍未接入。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_materialize",
+        "i297",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "纯规则、界面、真实构建宿主与Chrome／Godot连续实测覆盖创建、原数据保持、行为事件、ZIP及异地导入。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_materialize",
+        "i297",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "Rust展开、JS规划、界面编排和既有创建事务分别负责；Godot执行及交付仍沿既有接口，第二原生视图尚未验。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_materialize",
+        "i297",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "behavior.bevy_rust",
+        "i299",
+        "implementation"
+      ],
+      "value": 1,
+      "reason": "已有明确需求与边界，尚无产品实现。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "behavior.bevy_rust",
+        "i299",
+        "verification"
+      ],
+      "value": 0,
+      "reason": "没有该目标能力的可执行产品验证；图谱工具测试不计作功能验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "behavior.bevy_rust",
+        "i299",
+        "decoupling"
+      ],
+      "value": null,
+      "reason": "尚无实现，不能给解耦打分。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "behavior.bevy_rust",
+        "i299",
+        "delivery"
+      ],
+      "value": 0,
+      "reason": "尚无产品交付。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_materialize",
+        "i071",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "配方生成的v3文档已通过既有创建事务接入构建；原配方不改写。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_materialize",
+        "i071",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "二维工作流真实浏览器／Godot记录及场景创建规划测试验证新正文、登记和依赖；本轮仅补映射，不重跑这些产品流程。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_materialize",
+        "i071",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "共享作者事务与Rust展开、界面及后端执行独立；沿既有版本围栏提交。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_materialize",
+        "i071",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_create",
+        "i298",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "多演员起步和可选纯坐标排布闭合，含显式预览/应用/一次撤销、来源守护、继承和普通保存保护。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_create",
+        "i298",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "旧单演员/多演员及新排布专项、完整应用和真实Chrome网格三演员到Godot；不计新安装或Android验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_create",
+        "i298",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "只读目录、可移植规划、共享Rust语义、独立视图与普通草稿宿主接口分离。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.composition_create",
+        "i298",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition_create",
+        "i300",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "多演员起步和可选纯坐标排布闭合，含显式预览/应用/一次撤销、来源守护、继承和普通保存保护。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition_create",
+        "i300",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "旧单演员/多演员及新排布专项、完整应用和真实Chrome网格三演员到Godot；不计新安装或Android验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition_create",
+        "i300",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "只读目录、可移植规划、共享Rust语义、独立视图与普通草稿宿主接口分离。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "scene.composition_create",
+        "i300",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_create",
+        "i301",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "多演员起步和可选纯坐标排布闭合，含显式预览/应用/一次撤销、来源守护、继承和普通保存保护。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_create",
+        "i301",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "旧单演员/多演员及新排布专项、完整应用和真实Chrome网格三演员到Godot；不计新安装或Android验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_create",
+        "i301",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "只读目录、可移植规划、共享Rust语义、独立视图与普通草稿宿主接口分离。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_create",
+        "i301",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_create",
+        "i004",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "多演员起步和可选纯坐标排布闭合，含显式预览/应用/一次撤销、来源守护、继承和普通保存保护。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_create",
+        "i004",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "旧单演员/多演员及新排布专项、完整应用和真实Chrome网格三演员到Godot；不计新安装或Android验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_create",
+        "i004",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "只读目录、可移植规划、共享Rust语义、独立视图与普通草稿宿主接口分离。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.composition_create",
+        "i004",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition_create",
+        "i111",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "多演员起步和可选纯坐标排布闭合，含显式预览/应用/一次撤销、来源守护、继承和普通保存保护。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition_create",
+        "i111",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "旧单演员/多演员及新排布专项、完整应用和真实Chrome网格三演员到Godot；不计新安装或Android验收。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition_create",
+        "i111",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "只读目录、可移植规划、共享Rust语义、独立视图与普通草稿宿主接口分离。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.composition_create",
+        "i111",
+        "delivery"
+      ],
+      "value": 3,
+      "reason": "该范围纳入0.1.2源码版本，版本、源码归档及相关修复回归见发布预检；本次未生成或验收新的安装产物。"
     }
   ],
   "evidence": [
@@ -47023,6 +48298,498 @@
       "kind": "report",
       "path": "docs/test-results/release-0.1.1/preflight.json",
       "note": "0.1.1版本与归档回归、语法、API及功能代码保留检查。"
+    },
+    {
+      "id": "e1833",
+      "kind": "source",
+      "path": "engine/source-search.mjs",
+      "note": "不可变字面匹配与替换计划。"
+    },
+    {
+      "id": "e1834",
+      "kind": "source",
+      "path": "web/modules/app-source-search.js",
+      "note": "独立来源守护、原生事务与查找视图。"
+    },
+    {
+      "id": "e1835",
+      "kind": "source",
+      "path": "web/source-search.css",
+      "note": "查找区三语窄屏布局。"
+    },
+    {
+      "id": "e1836",
+      "kind": "source",
+      "path": "web/modules/app-runtime.js",
+      "note": "普通输入、来源令牌和保存接线。"
+    },
+    {
+      "id": "e1837",
+      "kind": "source",
+      "path": "web/modules/app-media-editor.js",
+      "note": "媒体事件以宿主输入身份划定归属。"
+    },
+    {
+      "id": "e1838",
+      "kind": "test",
+      "path": "scripts/tests/source-search.test.mjs",
+      "note": "字面语义、Unicode边界与完整预算回归。"
+    },
+    {
+      "id": "e1839",
+      "kind": "test",
+      "path": "scripts/tests/source-search-ui.test.mjs",
+      "note": "导航、原生事务、IME、重入、语言与生命周期回归。"
+    },
+    {
+      "id": "e1840",
+      "kind": "test",
+      "path": "scripts/tests/source-search-host.test.mjs",
+      "note": "实际编辑宿主的草稿、保存、BOM／CRLF及冲突回归。"
+    },
+    {
+      "id": "e1841",
+      "kind": "test",
+      "path": "scripts/tests/media-drop.test.mjs",
+      "note": "实际媒体／编辑宿主的辅助输入隔离与原目标保留。"
+    },
+    {
+      "id": "e1842",
+      "kind": "test",
+      "path": "scripts/tests/source-search-smoke.mjs",
+      "note": "真实Chrome最终实测脚本。"
+    },
+    {
+      "id": "e1843",
+      "kind": "report",
+      "path": "docs/test-results/source-search/browser-1791869406177/report.json",
+      "note": "真实Chrome10组流程与4项合成图片事件，16项最终源码指纹。"
+    },
+    {
+      "id": "e1844",
+      "kind": "report",
+      "path": "docs/test-results/source-search/full-final.log",
+      "note": "4474项：4368通过／106条件跳过；748文件语法及API／版本一致性。"
+    },
+    {
+      "id": "e1845",
+      "kind": "report",
+      "path": "docs/test-results/source-search/resources.json",
+      "note": "18组桌面／移动准备资源一致，不代表安装或设备验收。"
+    },
+    {
+      "id": "e1846",
+      "kind": "report",
+      "path": "docs/test-results/source-search/summary.json",
+      "note": "最终来源摘要、检查范围与早期证据区分。"
+    },
+    {
+      "id": "e1847",
+      "kind": "design",
+      "path": "docs/test-results/source-search/README.md",
+      "note": "验证入口、修复经过及平台限制。"
+    },
+    {
+      "id": "e1848",
+      "kind": "design",
+      "path": "docs/SCENE_BEHAVIORS.md",
+      "note": "单文档字面查找替换使用说明。"
+    },
+    {
+      "id": "e1849",
+      "kind": "design",
+      "path": "docs/ARCHITECTURE.md",
+      "note": "纯规则、原生编辑和媒体输入归属边界。"
+    },
+    {
+      "id": "e1850",
+      "kind": "source",
+      "path": "engine/project-problems.mjs",
+      "note": "严格不可变单任务快照与字面筛选。"
+    },
+    {
+      "id": "e1851",
+      "kind": "source",
+      "path": "web/modules/app-project-problems.js",
+      "note": "独立列表、稳定节点、本地化与导航归属。"
+    },
+    {
+      "id": "e1852",
+      "kind": "source",
+      "path": "web/project-problems.css",
+      "note": "三语窄屏问题列表样式。"
+    },
+    {
+      "id": "e1853",
+      "kind": "source",
+      "path": "web/modules/app-project-build.js",
+      "note": "当前任务数据映射、后端和窗口身份。"
+    },
+    {
+      "id": "e1854",
+      "kind": "source",
+      "path": "web/modules/app-runtime.js",
+      "note": "来源读取和摘要后的归属复验。"
+    },
+    {
+      "id": "e1855",
+      "kind": "test",
+      "path": "scripts/tests/project-problems.test.mjs",
+      "note": "20项纯规则、预算、来源与只读回归。"
+    },
+    {
+      "id": "e1856",
+      "kind": "test",
+      "path": "scripts/tests/project-problems-ui.test.mjs",
+      "note": "19项列表、筛选、语言、轮询与旧导航回归。"
+    },
+    {
+      "id": "e1857",
+      "kind": "test",
+      "path": "scripts/tests/project-build-ui.test.mjs",
+      "note": "实际构建窗口、旧任务与任务归属回归。"
+    },
+    {
+      "id": "e1858",
+      "kind": "test",
+      "path": "scripts/tests/source-location-ui.test.mjs",
+      "note": "实际原文宿主的读取、摘要与关闭焦点交接。"
+    },
+    {
+      "id": "e1859",
+      "kind": "test",
+      "path": "scripts/tests/project-problems-smoke.mjs",
+      "note": "真实Chrome静态计划错误到列表、筛选和原文导航。"
+    },
+    {
+      "id": "e1860",
+      "kind": "report",
+      "path": "docs/test-results/project-problems/browser-1791870888844/report.json",
+      "note": "4组真实浏览器流程，19项来源指纹，三语390px及只读作品边界。"
+    },
+    {
+      "id": "e1861",
+      "kind": "report",
+      "path": "docs/test-results/project-problems/full-final.log",
+      "note": "4519项：4413通过／106条件跳过，753文件语法及API／版本检查。"
+    },
+    {
+      "id": "e1862",
+      "kind": "report",
+      "path": "docs/test-results/project-problems/resources.json",
+      "note": "17组桌面／移动准备资源一致，不等于安装。"
+    },
+    {
+      "id": "e1863",
+      "kind": "report",
+      "path": "docs/test-results/project-problems/summary.json",
+      "note": "最终测试范围、来源指纹与平台限制。"
+    },
+    {
+      "id": "e1864",
+      "kind": "design",
+      "path": "docs/PROJECT_BUILD.md",
+      "note": "当前任务问题使用说明。"
+    },
+    {
+      "id": "e1865",
+      "kind": "design",
+      "path": "docs/ARCHITECTURE.md",
+      "note": "独立快照、视图和来源宿主边界。"
+    },
+    {
+      "id": "e1866",
+      "kind": "source",
+      "path": "engine/scene-composition-materialize.mjs",
+      "note": "保存态配方、修订围栏、Rust展开及创建请求。"
+    },
+    {
+      "id": "e1867",
+      "kind": "source",
+      "path": "web/modules/app-scene-materialize.js",
+      "note": "独立审阅界面、来源守护、创建及只读保存核对。"
+    },
+    {
+      "id": "e1868",
+      "kind": "source",
+      "path": "web/scene-materialize.css",
+      "note": "三语窄屏布局与常驻操作。"
+    },
+    {
+      "id": "e1869",
+      "kind": "source",
+      "path": "web/modules/app-project-build.js",
+      "note": "新入口和成功后的场景选择／旧计划撤销。"
+    },
+    {
+      "id": "e1870",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-materialize.test.mjs",
+      "note": "19项纯规划、真实展开、依赖、冲突与现有事务集成。"
+    },
+    {
+      "id": "e1871",
+      "kind": "test",
+      "path": "scripts/tests/scene-materialize-ui.test.mjs",
+      "note": "20项来源、审阅、回执、未知结果和生命周期回归。"
+    },
+    {
+      "id": "e1872",
+      "kind": "test",
+      "path": "scripts/tests/project-build-ui.test.mjs",
+      "note": "31项构建工作台回归，包含3项新入口、选择和会话测试。"
+    },
+    {
+      "id": "e1873",
+      "kind": "test",
+      "path": "scripts/tests/scene-materialize-smoke.mjs",
+      "note": "真实浏览器、Godot和迁移工程包的连续验证。"
+    },
+    {
+      "id": "e1874",
+      "kind": "report",
+      "path": "docs/test-results/two-dimensional-workflow/summary.json",
+      "note": "最终范围、源码指纹和平台限制。"
+    },
+    {
+      "id": "e1875",
+      "kind": "report",
+      "path": "docs/test-results/two-dimensional-workflow/full.log",
+      "note": "完整应用、语法、API及版本检查。"
+    },
+    {
+      "id": "e1876",
+      "kind": "report",
+      "path": "docs/test-results/two-dimensional-workflow/resources.json",
+      "note": "桌面和移动准备资源内容一致。"
+    },
+    {
+      "id": "e1877",
+      "kind": "report",
+      "path": "docs/test-results/two-dimensional-workflow/README.md",
+      "note": "运行顺序、重试原因与全部验证证据。"
+    },
+    {
+      "id": "e1878",
+      "kind": "design",
+      "path": "docs/SCENE_COMPOSITION.md",
+      "note": "配方到运行场景使用指南与独立副本边界。"
+    },
+    {
+      "id": "e1879",
+      "kind": "design",
+      "path": "docs/ARCHITECTURE.md",
+      "note": "纯规划、界面、创建事务与构建接口分工。"
+    },
+    {
+      "id": "e1880",
+      "kind": "design",
+      "path": "docs/FUNCTION_MAPPING_2D.md",
+      "note": "本轮二维创作、执行和交付映射；按真实描述符区分Godot与Bevy，非新增运行支持。"
+    },
+    {
+      "id": "e1881",
+      "kind": "design",
+      "path": "docs/SCENE_COMPOSITION.md",
+      "note": "新建配方助手与保存态配方生成的边界。"
+    },
+    {
+      "id": "e1882",
+      "kind": "source",
+      "path": "scripts/function-atlas.mjs",
+      "note": "工作流缺口、优先项引用和派生Markdown校验；工具检查不证明产品功能已完成。"
+    },
+    {
+      "id": "e1883",
+      "kind": "source",
+      "path": "scripts/function-atlas-view.mjs",
+      "note": "离线步骤、缺口、原始绑定评分、优先项与可分享定位。"
+    },
+    {
+      "id": "e1884",
+      "kind": "test",
+      "path": "scripts/tests/function-atlas.test.mjs",
+      "note": "图谱CLI完整性和非法引用回归，不作为游戏能力验证。"
+    },
+    {
+      "id": "e1885",
+      "kind": "test",
+      "path": "scripts/tests/function-atlas-view.test.mjs",
+      "note": "离线映射视图和定位规则回归，不作为运行后端验证。"
+    },
+    {
+      "id": "e1886",
+      "kind": "test",
+      "path": "scripts/tests/function-atlas-smoke.mjs",
+      "note": "真实Chrome离线映射交互与窄屏复现。"
+    },
+    {
+      "id": "e1887",
+      "kind": "report",
+      "path": "docs/test-results/functional-mapping/summary.json",
+      "note": "本轮工具验证范围、源指纹及未重跑产品引擎的限制。"
+    },
+    {
+      "id": "e1888",
+      "kind": "source",
+      "path": "web/modules/app-source-history.js",
+      "note": "当前源码原生历史快捷键接线；仅路由浏览器历史，不新增正文历史或领域状态。"
+    },
+    {
+      "id": "e1889",
+      "kind": "test",
+      "path": "scripts/tests/source-history.test.mjs",
+      "note": "原生历史快捷键、焦点/IME/忙碌/弹窗/来源归属与事件去重回归。"
+    },
+    {
+      "id": "e1890",
+      "kind": "test",
+      "path": "desktop/tests/native_workflow_2d.py",
+      "note": "已安装Linux的配方生成、精确撤销/重做、问题回源和Godot有限无头链；上游OC/图片/配方为隔离预置样例。"
+    },
+    {
+      "id": "e1891",
+      "kind": "report",
+      "path": "docs/test-results/native-installed-0.1.1/summary.json",
+      "note": "实际Linux 0.1.1工作树安装包、原生编辑/媒体/作品库/导出及Godot无头验收；不升版、不外推其他平台或全部功能。"
+    },
+    {
+      "id": "e1892",
+      "kind": "source",
+      "path": "web/editor-layout.css",
+      "note": "窄窗口媒体分配保留正文编辑空间；不改变文档或素材数据。"
+    },
+    {
+      "id": "e1893",
+      "kind": "source",
+      "path": "engine/scene-composition-create.mjs",
+      "note": "可移植普通草稿规划及复核，复用Rust验证。"
+    },
+    {
+      "id": "e1894",
+      "kind": "source",
+      "path": "scripts/lib/scene-composition-create-service.mjs",
+      "note": "保存态只读目录，不接执行后端。"
+    },
+    {
+      "id": "e1895",
+      "kind": "source",
+      "path": "web/modules/app-scene-composition-create.js",
+      "note": "独立表单、取消和完整JSON审阅。"
+    },
+    {
+      "id": "e1896",
+      "kind": "source",
+      "path": "web/modules/app-runtime.js",
+      "note": "专属提案验证后复用普通草稿与保存。"
+    },
+    {
+      "id": "e1897",
+      "kind": "source",
+      "path": "web/modules/app-studio-system.js",
+      "note": "独立模块及能力门槛。"
+    },
+    {
+      "id": "e1898",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-create.test.mjs",
+      "note": "纯候选及冲突回归。"
+    },
+    {
+      "id": "e1899",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-create-service.test.mjs",
+      "note": "保存态只读目录回归。"
+    },
+    {
+      "id": "e1900",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-create-http.test.mjs",
+      "note": "HTTP边界回归。"
+    },
+    {
+      "id": "e1901",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-create-ui.test.mjs",
+      "note": "表单与异步归属回归。"
+    },
+    {
+      "id": "e1902",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-create-host.test.mjs",
+      "note": "普通保存与冲突重试回归。"
+    },
+    {
+      "id": "e1903",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-create-system.test.mjs",
+      "note": "独立能力与模块门槛回归。"
+    },
+    {
+      "id": "e1904",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-create-smoke.mjs",
+      "note": "空工程GUI到Godot无头。"
+    },
+    {
+      "id": "e1905",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-create/summary.json",
+      "note": "本轮完整验证范围、结果与未安装边界。"
+    },
+    {
+      "id": "e1906",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-create/browser-acceptance.json",
+      "note": "6组实际Chrome与Godot流程、14截图和17项来源一致。"
+    },
+    {
+      "id": "e1907",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-multi-create/summary.json",
+      "note": "多演员起始配方的核心、UI、普通保存、全应用、准备副本及真实Godot验收，未安装。"
+    },
+    {
+      "id": "e1908",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-multi-create-smoke.mjs",
+      "note": "空工程GUI创建混合三演员配方，增删身份保护、取消、预览、材料化及Godot运行。"
+    },
+    {
+      "id": "e1909",
+      "kind": "source",
+      "path": "engine/scene-composition-create-layout.mjs",
+      "note": "无宿主纯坐标规划，严格预算与身份，整体越界拒绝，不生成作者文件或身份。"
+    },
+    {
+      "id": "e1910",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-create-layout.test.mjs",
+      "note": "行列网格、64项、顺序身份、坐标边界、冻结输出与无输入修改。"
+    },
+    {
+      "id": "e1911",
+      "kind": "test",
+      "path": "scripts/tests/scene-composition-create-layout-smoke.mjs",
+      "note": "真实界面排布预览/应用/撤销和原输入保护，最终网格到普通保存与Godot。"
+    },
+    {
+      "id": "e1912",
+      "kind": "report",
+      "path": "docs/test-results/scene-composition-create-layout/summary.json",
+      "note": "起始排布专项、完整应用、实际浏览器/Godot及准备副本；未安装。"
+    },
+    {
+      "id": "e1913",
+      "kind": "report",
+      "path": "docs/test-results/release-0.1.2/preflight.json",
+      "note": "0.1.2版本、语法、API、源码归档、退出保护补验与已有证据保护；源码交付，不增加安装或设备验收。"
+    },
+    {
+      "id": "e1914",
+      "kind": "report",
+      "path": "docs/test-results/release-0.1.2/close-guard.log",
+      "note": "执行实际桌面嵌入关闭脚本和浏览器beforeunload回调；生成场景的未保存设置、忙碌与干净状态及相关回归103项通过。"
     }
   ],
   "dependencies": [
@@ -48701,12 +50468,6 @@
       "reason": "绑定目标取已保存场景稳定实例，不把同一OC的重复实例合并。"
     },
     {
-      "from": "behavior.creation",
-      "to": "behavior.authoring",
-      "relation": "requires",
-      "reason": "首次保存后打开新声明原文，继续已有typed参数／信号审阅、草稿应用与普通保存。"
-    },
-    {
       "from": "authoring.document-edit",
       "to": "script.authoring",
       "relation": "requires",
@@ -48741,6 +50502,66 @@
       "to": "authoring.source-diagnostic",
       "relation": "requires",
       "reason": "构建窗口仅把选中诊断的标量描述交给已核对来源，不共享构建任务或自动重跑权限。"
+    },
+    {
+      "from": "authoring.document-edit",
+      "to": "authoring.source-search",
+      "relation": "requires",
+      "reason": "查找替换使用当前源码会话及原生编辑，草稿、脏状态、保存与冲突继续由普通文档宿主负责。"
+    },
+    {
+      "from": "build.workbench_lifecycle",
+      "to": "build.task-problems",
+      "relation": "requires",
+      "reason": "当前任务列表消费构建宿主已经接受的任务结果与后端身份，不自行查询或启动任务。"
+    },
+    {
+      "from": "scene.composition",
+      "to": "scene.composition_materialize",
+      "relation": "requires",
+      "reason": "共享Rust展开与保存态完整依赖预览提供作者输入。"
+    },
+    {
+      "from": "scene.instances_v2",
+      "to": "scene.composition_materialize",
+      "relation": "requires",
+      "reason": "生成场景保留稳定实例，并复用共享scene.create规划与事务。"
+    },
+    {
+      "from": "scene.groups_v3",
+      "to": "scene.composition_materialize",
+      "relation": "requires",
+      "reason": "展开结果是作者Scene2D v3，保留逻辑组与实例归属；并非必然生成行为plan3。"
+    },
+    {
+      "from": "world.query",
+      "to": "scene.composition_materialize",
+      "relation": "requires",
+      "reason": "来源和依赖由保存态World观察与修订围栏核对。"
+    },
+    {
+      "from": "scene.composition",
+      "to": "scene.composition_create",
+      "relation": "requires",
+      "reason": "创建助手复用既有配方格式与共享Rust展开检查。"
+    },
+    {
+      "from": "runtime.bevy_rust",
+      "to": "behavior.bevy_rust",
+      "relation": "planned",
+      "reason": "未来作者Rust行为需扩展独立Bevy执行适配，当前数据运行程序不提供源码编译。"
+    },
+    {
+      "from": "authoring.document-edit",
+      "to": "scene.composition_create",
+      "relation": "requires",
+      "reason": "草稿交接和最终保存沿普通文档宿主。"
+    },
+    {
+      "from": "world.query",
+      "to": "scene.composition_create",
+      "relation": "requires",
+      "reason": "起始目录仅消费保存态对象、修订与投影资格。"
     }
   ],
   "workflows": [
@@ -49007,7 +50828,11 @@
         "runtime.bevy_rust",
         "build.workbench_lifecycle"
       ],
-      "boundary": "同定义两实例无图plan2→显式CLI/host backend与可信tool→scene-check→Bevy ECS固定步/中立事件→冻结源离线回放。Godot同plan比较，不跨译作者脚本；HTTP不收新路径/代码，无window/image/作者Rust/GPU。"
+      "boundary": "Linux宿主显式选择固定Bevy后端；支持无图Scene2D plan1/2、有限移动／控制和只读样本。没有图片、窗口、作者Rust编译或GDScript行为；不是通用游戏引擎能力已全部接入。",
+      "gaps": [
+        "behavior.bevy_rust",
+        "build.standalone_distribution"
+      ]
     },
     {
       "id": "runtime-object-inspection",
@@ -49510,18 +51335,25 @@
     },
     {
       "id": "author-to-delivery",
-      "label": "设定→投影→场景→构建→审阅→交付",
+      "label": "普通二维创作→Godot运行→工程交付",
       "steps": [
         "authoring.document-edit",
-        "world.query",
+        "world.object-create",
         "projection.authoring",
+        "scene.instances_v2",
+        "scene.saved_preview",
         "build.snapshot_plan",
+        "execution.backend_middleware",
         "build.workbench_lifecycle",
+        "runtime.godot_generated_project",
         "backend.project_management",
         "backend.project_catalog",
         "backend.project_delivery"
       ],
-      "boundary": "作者数据与派生工程分别打包；现阶段Scene2D走统一构建目录，独立游戏发行、3D统一交付和LSP仍为待接能力。"
+      "boundary": "主路径明确包含普通Scene2D创建／编辑。对象创建、投影与静态预览按需求选择，步骤不是强制逐项调用或原子事务；脚本／行为见独立分支。作者v3逻辑分组不等于运行plan3。接收方需要Godot，独立发行另列缺口。",
+      "gaps": [
+        "build.standalone_distribution"
+      ]
     },
     {
       "id": "scene-behavior-authoring",
@@ -49534,7 +51366,7 @@
         "build.workbench_lifecycle",
         "backend.project_delivery"
       ],
-      "boundary": "表单核对已有声明和登记依赖；应用只更新当前源码草稿，普通保存后再进入既有构建与生成工程交付。新建清单／关联、其他后端作者行为和LSP仍分别待接，编辑验证不代替运行验收。"
+      "boundary": "已有绑定JSON可直接进入编辑，不以本轮首次创建为前置。表单核对现有声明及依赖，只应用原文草稿；普通保存后继续构建。首次创建与关联见behavior.creation，其他后端作者行为及LSP仍待接。"
     },
     {
       "id": "scene-behavior-creation",
@@ -49599,6 +51431,107 @@
         "authoring.document-edit"
       ],
       "boundary": "此次实际静态计划错误；既有引擎执行验收独立。面板保留单条观察，不是全工程问题总表或LSP服务，不自动保存或重新运行。"
+    },
+    {
+      "id": "source-search",
+      "label": "普通源码→字面查找／匹配导航→当前或全部替换→原生历史→普通保存",
+      "steps": [
+        "script.authoring",
+        "authoring.source-search",
+        "authoring.document-edit"
+      ],
+      "boundary": "所有普通文本均可进入，不要求创建脚本；单文档字面操作不执行语言服务或后端，当前或全部替换先进入普通草稿。"
+    },
+    {
+      "id": "task-problems",
+      "label": "当前任务→问题筛选／详情→来源定位→普通编辑与显式重验",
+      "steps": [
+        "build.workbench_lifecycle",
+        "build.task-problems",
+        "authoring.source-diagnostic",
+        "authoring.source-search",
+        "authoring.document-edit"
+      ],
+      "boundary": "只读筛选与详情不要求导航或编辑；存在来源时复用原文诊断上下文，查找替换可选，普通保存与下一次检查须明确执行。此次浏览器采用静态计划错误，无引擎执行。"
+    },
+    {
+      "id": "composition-to-delivery",
+      "label": "保存配方→独立二维场景→Godot工程交付",
+      "steps": [
+        "scene.composition_create",
+        "scene.composition",
+        "scene.saved_preview",
+        "scene.composition_materialize",
+        "build.snapshot_plan",
+        "execution.backend_middleware",
+        "build.workbench_lifecycle",
+        "runtime.godot_generated_project",
+        "backend.project_management",
+        "backend.project_delivery"
+      ],
+      "boundary": "从已登记配方开始，生成独立v3场景；无行为场景可直接构建，脚本与行为不是必经步骤。保存态配方生成已真实验证，最新完整带行为路径见composition-godot-behaviors；不宣称上游创作全程GUI或配方自动同步。 新配方助手已另轮验收至Godot；这里ZIP与行为证据保留原起点，不能拼接为同轮上游到交付全程。",
+      "gaps": [
+        "build.standalone_distribution"
+      ]
+    },
+    {
+      "id": "composition-godot-behaviors",
+      "label": "配方场景→内置脚本／行为→Godot实测→工程交付",
+      "steps": [
+        "scene.composition_create",
+        "scene.composition",
+        "scene.composition_materialize",
+        "script.authoring",
+        "authoring.document-edit",
+        "behavior.creation",
+        "behavior.authoring",
+        "behavior.scene_runtime",
+        "build.snapshot_plan",
+        "build.workbench_lifecycle",
+        "runtime.godot_generated_project",
+        "backend.project_delivery"
+      ],
+      "boundary": "二维专题真实Chrome从服务夹具准备的OC／素材／已登记配方出发，GUI创建独立场景和TXT脚本，普通保存并绑定行为，Godot无头事件与工程ZIP异地导入通过。不是上游全程GUI、图形游戏或Bevy行为验收。 新配方助手已另轮验收至Godot；这里ZIP与行为证据保留原起点，不能拼接为同轮上游到交付全程。",
+      "gaps": [
+        "build.standalone_distribution"
+      ]
+    },
+    {
+      "id": "bevy-data-delivery",
+      "label": "无图二维场景→Bevy数据运行→工程交付",
+      "steps": [
+        "scene.instances_v2",
+        "build.snapshot_plan",
+        "execution.backend_middleware",
+        "runtime.bevy_rust",
+        "build.workbench_lifecycle",
+        "backend.project_catalog",
+        "backend.project_delivery"
+      ],
+      "boundary": "已有Bevy专题验证由可信固定运行程序消费scene-data.json；交付是需该运行程序的数据工程包，不是Cargo工程或独立可执行文件。图片、行为或窗口要求会被准入检查拒绝；Godot专题不能作为Bevy证据。",
+      "gaps": [
+        "behavior.bevy_rust",
+        "build.standalone_distribution"
+      ]
+    },
+    {
+      "id": "oc-projection-composition-runtime",
+      "label": "空工程→OC与投影→多演员配方／起始排布→独立场景→Godot无头",
+      "steps": [
+        "world.object-create",
+        "projection.authoring",
+        "scene.composition_create",
+        "authoring.document-edit",
+        "scene.saved_preview",
+        "scene.composition_materialize",
+        "build.snapshot_plan",
+        "build.workbench_lifecycle",
+        "runtime.godot_generated_project"
+      ],
+      "boundary": "空工程GUI创建OC、游戏投影和三演员配方；起始排布预览／应用／撤销及坐标失效保护另有真实浏览器证据，最终网格生成Scene2D并运行Godot。共享输入使两个投影演员各移动45px、普通OC40px；不代表图形游戏、行为脚本、ZIP或安装验收。",
+      "gaps": [
+        "build.standalone_distribution"
+      ]
     }
   ],
   "legacyCoverage": [
@@ -50022,6 +51955,17 @@
   ],
   "priorities": [
     {
+      "label": "扩展起始组合与完整创作交付验收",
+      "functions": [
+        "scene.composition_create",
+        "scene.composition",
+        "scene.composition_materialize",
+        "projection.authoring"
+      ],
+      "reason": "多演员清单与显式起始排布已接通；更多片段组合、可选局部排布，以及全部上游到行为／ZIP的同轮流程仍需独立推进。",
+      "acceptance": "继续保留手调位置和身份；单一临时工程连续完成对象／投影／配方、行为到工程交付，来源失效时拒绝覆盖。"
+    },
+    {
       "label": "在字段与独立结构创作之后推进空间层次和跨视图历史",
       "functions": [
         "scene.composition",
@@ -50047,17 +51991,26 @@
       "acceptance": "逐条对照既有JS完整语义与源码/注册/恢复契约，保持BOM/行尾、UUID、来源范围及事务兼容，不把受限source检查冒充完整模型。"
     },
     {
-      "label": "完善已接通的GDScript行为创作",
+      "label": "在已有脚本与行为表单之后推进关联管理及第二后端作者行为",
       "functions": [
+        "script.authoring",
+        "behavior.creation",
+        "behavior.authoring",
         "behavior.scene_runtime",
-        "execution.backend_middleware",
-        "runtime.bevy_rust",
-        "runtime.objects_inspection",
-        "runtime.control_replay",
-        "runtime.instance_control"
+        "behavior.bevy_rust",
+        "execution.backend_middleware"
       ],
-      "reason": "显式清单、参数/信号、冻结执行、诊断与迁移已接通；作者表单、动态解绑/热更新及规模验证仍需独立设计，Bevy第二后端已接无图ECS数据计划，作者Rust行为仍未实现。 当前只读实例观察已接通，连续采样与反射仍独立。 有限方向回放与固定步采样已接入；连续实时通道与反射仍需独立设计。 按实例有限方向现已独立接入，每步未列释放、目标与双预算明确；仍不是实时对象编辑。",
-      "acceptance": "保留实例/绑定稳定身份、类型检查、来源和依赖闭包；参数辅助与生命周期变更分别验收，按真实两引擎共同需求逐项验证Rust行为与运行资源。"
+      "reason": "Godot首次绑定、参数／信号表单与冻结运行已实现；现有清单迁移、追加关联、解绑／热更新和作者Bevy Rust仍需独立契约。",
+      "acceptance": "每个新接口核对实例、源码、工具及来源；Godot与Bevy分别用真实输入和运行证据验收，不由引擎原生能力推断接入。"
+    },
+    {
+      "label": "区分可迁移工程交付与独立游戏发行",
+      "functions": [
+        "backend.project_delivery",
+        "build.standalone_distribution"
+      ],
+      "reason": "生成工程ZIP已可核验和迁移；Godot工程或Bevy数据包仍需对应工具，不能标为独立游戏发行。",
+      "acceptance": "定义目标平台导出预设、工具模板和冻结资源清单，并在没有开发引擎的目标环境运行产物。"
     },
     {
       "label": "补真实交付与目标平台证据",
@@ -50076,23 +52029,13 @@
       "acceptance": "对对应实际安装包重跑Linux关键流程及Android设备范围；Windows/macOS单独验收。"
     },
     {
-      "label": "后端工程可见之后定义持久目录管理",
-      "functions": [
-        "backend.project_management",
-        "execution.backend_middleware",
-        "build.standalone_distribution"
-      ],
-      "reason": "当前服务清单、源映射与清理边界已规范，下一步跨服务所有权恢复与发行工程不能成为缓存扫描或生成输出回写。",
-      "acceptance": "持久创建者索引原子更新，重启／迁移后完整核对与失效记录处理，保留未知和外部编辑，独立描述工具链与项目类型。"
-    },
-    {
-      "label": "持久工程运行对接之后明确登记与删除审阅",
+      "label": "在已有持久目录之上补删除审阅与缓存迁移",
       "functions": [
         "backend.project_catalog",
         "backend.project_management"
       ],
-      "reason": "本机跨服务恢复与执行选择已接入；作者权威、恢复身份、清理凭据和旧会话历史应继续分离。",
-      "acceptance": "显式移除／删除的可审阅计划，跨路径迁移与容量预算，损坏／外部修改／会话报告保留验证。"
+      "reason": "跨服务工程登记、恢复与显式运行选择已接入，不再将它们写为未来任务；当前缺少手动移除／删除审阅、跨路径迁移及可见容量预算。",
+      "acceptance": "只处理应用拥有且经审阅的派生产物；保留作者数据、外部修改、未知文件和旧会话报告，分别验收取消／恢复。"
     }
   ],
   "sourceSnapshot": {
@@ -50139,23 +52082,25 @@
     "desktop/clean.mjs": "9e876271815acf59aebb343a9ec229d8f1a38d59896722aeaf2cf2bc2fb12648",
     "desktop/package-source.py": "7febfc7edbb828a0da34f34bde171a257dd9439120bc578b14b0058e4d84707c",
     "desktop/prepare.mjs": "e7a6b2713b288b600c75ad542e260c2cf194e3fc1f2749556dd67309f1edbaa4",
-    "desktop/tests/native-library.py": "7bcdaf1283b0e7b9691819e7a494df065d5b8b39d6aba5fa7b772f6ebda1dafe",
-    "desktop/tests/native-smoke.py": "931080c878f369a9993ee6e1b8571537fee117b79139b23ac7fcc1f87252ba8d",
+    "desktop/tests/native-library.py": "923e991ff9a7427bb927466afb37b754e71b8fd7d18d6acf7b960842063ed0f4",
+    "desktop/tests/native-smoke.py": "59fccd52af86b7fcdd15ed4fafab4d4d7e10b108926c1b3c3d48c467aa724027",
+    "desktop/tests/native_workflow_2d.py": "d1d1c78ddec1bc1f5c036ce032d9fb232df8b0eecec73125b389bee2aa014091",
     "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
-    "docs/ARCHITECTURE.md": "0c454f783b4b50215ba8ef811cf0ad786fca1e7abf468ee5a37eb2e54043523b",
+    "docs/ARCHITECTURE.md": "3434e2f643244da1612bf2389c2abe00ed08d8fcbdf446e3ccd7ce3372a84418",
     "docs/BACKEND_MIDDLEWARE.md": "e4a239ded68f471b4bc035313bfa8f2d554a433b967be8d69ba4e4c8bc38c68b",
     "docs/BACKEND_PROJECTS.md": "b4f0ba4f7fe8b93d8b42c05f31b1c7c532ee4d33694016c5b21ee26469c2309f",
     "docs/BEVY_BACKEND.md": "282e1cfc840a7ca34095d809402ed9cb616c644620bb95295611c09dcf8f2d6b",
+    "docs/FUNCTION_MAPPING_2D.md": "4522709e8c446e19e7b77015cb64182a593685394724f22fb13cf52ce2b30876",
     "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
     "docs/NEXT_ARCHITECTURE.zh-CN.md": "1ca5d0336fdbdd6582ca0219e29a265c8115c1bee1dcc7ff386944d4be4ced30",
-    "docs/PROJECT_BUILD.md": "6534a7f83566803a1cedab9a5452762c74388c7c72e295f80539541ff5c3f8c8",
-    "docs/PROJECT_WORKFLOW.md": "c488bb38b6fdca7cdbf01b5d43fcbe88d7da9f0596d1bffa5c52a60d8f870f6d",
+    "docs/PROJECT_BUILD.md": "6326ea0fefe2c7334684cd05186925288b459a15b7147a4c7558c34be3e0bca6",
+    "docs/PROJECT_WORKFLOW.md": "237b7619e636fddb920d7c8fecafc39734a88f042ce0fe4ec6d2a4d9d760c8e0",
     "docs/RELEASE_0.0.10.md": "6d2bdaa7d2998c13c3eb6be4843a88b90a6168d829c7457444acb94f1da239f4",
     "docs/RELEASE_0.0.7.md": "2fd35d702ddcf55edb8813fef0646f6d3d3a846a0e6f33f64c6fc44399e0375e",
     "docs/RELEASE_0.0.8.md": "dfc6b4e1fb850f3f7d5888f89c0a7ceffdad9e0c5b2c6fc68f9f8e65b114fe7b",
     "docs/RELEASE_0.0.9.md": "952dd3bb0602cc58b522d19099f1e582eb637f13b306b72431aae38a9e0b5ed0",
     "docs/RELEASE_0.1.1.md": "70180a8509ae1a3ae6f80cc905e69615bf1bc667147aac468ba9f0f03f522abb",
-    "docs/ROADMAP.md": "2a36d821562f4c4a2c6fdfcb5d40b4e7f507474c846795c268e9d1a70920cb32",
+    "docs/ROADMAP.md": "d776e2d4fbe9de40425b0a4a317c6320262578b666e4fedaa43f7dc2166c5cc9",
     "docs/RUNTIME_CASES.md": "0000344399cc3a6afd6094b10b1679f4f928ab847467af4b9444ff7f84bb4e1f",
     "docs/RUNTIME_CASE_REPORTS.md": "42b67098cefebfa016f68e184499962afea7feda0607c8dbd461e647fff40f04",
     "docs/RUNTIME_CASE_SUITES.md": "6d5e783d87fd54df5e7f981b741de03a360c9ef690b3298cb0c4c7e28ea36f70",
@@ -50163,10 +52108,10 @@
     "docs/RUNTIME_OBJECTS.md": "00ff9006369439642be27b20a4c0d380b22b238a153aac1e621ae812cc4d8651",
     "docs/SCENE3D.md": "6794482ad92873939cafc5a363ae751d724c751565599dc81176cb94f45a46c4",
     "docs/SCENE_AUTHORING.md": "8bf4f5f2611d05c0fc42aa025eeac9376afe7e6146cf6c5f89540ede66df9c7b",
-    "docs/SCENE_BEHAVIORS.md": "b39dc2ba7876ac73e91d4940bbc2de5219011e575580240d978e7b31ed53472e",
-    "docs/SCENE_COMPOSITION.md": "913fe867596f5c4b965f32647504ad2494b606fa52bfea90a6933b606ba13bed",
-    "docs/STATUS.md": "f6126313c89e55dbc604058d3f53e3e78aa0a09d164edffb043ad4ff8949bd40",
-    "docs/STUDIO_MODULES.md": "d9d848f4cac61a5c08accdf5ad7a0d5b228f0d2f747080df8f580de46a1ea6c5",
+    "docs/SCENE_BEHAVIORS.md": "16ef06fee7e46586ede5e43e21072f82f741adcc99329ec59f9f0a6bce0dcf08",
+    "docs/SCENE_COMPOSITION.md": "90e1954c2f5e57a5c7e2a4d5d97179f6177832ec8e1f59983eabb6cbd6cc8d5a",
+    "docs/STATUS.md": "f6e978965acc134ecac5b6ee6fb3fe2021ea43bcaaea60f39cbd19af86b3fdee",
+    "docs/STUDIO_MODULES.md": "e92b3458ef48b60bb9a7b228d0219cda3248bb842426bf71c82ff094e0b10bd4",
     "docs/WORLD_TRANSACTIONS.md": "9463c94035a951656f26e7f1d7c9050b1b2a51be444cb38241cb42ad4b8cb8ad",
     "docs/adr/0008-native-nuis-and-bootstrap-runtime.md": "7fbaba85e92b981b584f0d7cefc525b70890bb4d951a5727797b2c46381fde60",
     "docs/function-network.html": "bf42bb7b77083ed40316cd12ba21544e07b5a3b45f045b88ac0b24af056039d9",
@@ -50230,12 +52175,18 @@
     "docs/test-results/export-downloads-2026-09-24/results.json": "446df5760100c8bc36758b1fe265048a61bfe979bbec4469842c4bc14d64b478",
     "docs/test-results/export-references-2026-09-23/results.json": "6224d3e3e547a139e7224c20d8c52e1561b383b237984932888399908649fcee",
     "docs/test-results/field-editing-2026-09-24/results.json": "ad52ab94c46a3450e939e4803531f0cf6e95db67ea126fd08f382926fe07b246",
+    "docs/test-results/functional-mapping/summary.json": "868ac28b2836d3c93ab77455639a8e6f0d23f0029c36c0014058ee587cd61a48",
     "docs/test-results/media-insertion-2026-09-23/results.json": "42c29f11bfdc0149b1805df646db2c0909e1040b7db7a9d9a054eb63e4cc6c8d",
     "docs/test-results/native-current-2026-09-24/results.json": "9c876c1b42389b2f2ba4a79ba155bb63fbeca435644c836612a846af35c67663",
+    "docs/test-results/native-installed-0.1.1/summary.json": "76daecabb73fcc97139a3f04ee4b922abd780ef97d0a01b2caf614cd0c70e6bc",
     "docs/test-results/oc-projection-edit/results.json": "5609ca2fc6267ffe95e7e8d35b47836a4aa8ae2a84d5f975997df30177647788",
     "docs/test-results/oc-projections/results.json": "8d5bae4b828e98536a219e846e13d86f8f710653de293017a2340c3ac2a00976",
     "docs/test-results/oc-templates/results.json": "b8b5e31fa59635310d27859d8e562d77d5232de68818cf296ff71a64a2cf8812",
     "docs/test-results/project-definition-2026-09-23/results.json": "41b7d650c23de2c08bbda2aae37bb95abf3e2add7640c058983e848783ba2271",
+    "docs/test-results/project-problems/browser-1791870888844/report.json": "e954da7b225c0826e73bc0e56622db203e9ab42610f9f3f7d98aeabe14744c13",
+    "docs/test-results/project-problems/full-final.log": "cf75ea191c49ede517831764819ead6b58eefeb4cff4dc47b4358d00e5e55292",
+    "docs/test-results/project-problems/resources.json": "e0bdafc59197d72d4cf37bf36a1ff5278aa1058a14c19bf608f786a048c98463",
+    "docs/test-results/project-problems/summary.json": "ce5a61fc4b5e0bbf483dbc2e3a84aa81626fe70447b44192aa65d926010ddbd1",
     "docs/test-results/project-settings-2026-09-23/results.json": "49e8983f8a05955a9422e1f5bb5316500fd781ca59882b322ba042299c3c10a9",
     "docs/test-results/project-snapshot-2026-09-23/results.json": "cb054dddc014f746f378cee71c841c96fc26d9b23fcc177f2760b774ec1162e0",
     "docs/test-results/project-templates/results.json": "11de2afd4ff7e8c2a42aa9dfb00d31917aaaa449e16c7f4aff5da26a88296962",
@@ -50264,6 +52215,8 @@
     "docs/test-results/release-0.0.9/source-archive.json": "ddde6246f1f4b7a1e895d9a5ccfdd3bee8980ea2512f8fe5e00bcbabf84178be",
     "docs/test-results/release-0.0.9/source-hashes.json": "db2822f90b8b697a9c4e11255109f48616de17b4d2c25806b2d053b8ec2baaf9",
     "docs/test-results/release-0.1.1/preflight.json": "c6528214f16cf88cee8440749660651164e274d96a9da9a43b61d6b58805d580",
+    "docs/test-results/release-0.1.2/close-guard.log": "aa1f6f03ceac7101863e59a0e2e2dc232be707e147e1e13b3870768590ee35e1",
+    "docs/test-results/release-0.1.2/preflight.json": "ee25108dc8bac30336057919ddd455e136f63978df519c9140932fb439a53ceb",
     "docs/test-results/resource-packages/results.json": "8a1a13357a461cd249efe5178b7c5bf06d2f950b377b0e25afb73abf84cdb3f9",
     "docs/test-results/runtime-case-documents/browser/browser.json": "06b19cd5fd9ef6e5fd2dbbb698d89ff887324af123eb472f4d534d590bb53203",
     "docs/test-results/runtime-case-documents/cleanup.json": "e4911d39652c0a64767b3861edd6e0b8426e4092e3822b937bd76a3efe9fb387",
@@ -50397,6 +52350,9 @@
     "docs/test-results/scene-composition-canvas/packaged-resources.json": "9d603155b5c3efa8f9251be318aac4dc75aa0bd536bf5bae764e418f30647e69",
     "docs/test-results/scene-composition-canvas/results.json": "b6d8a8554ecb0b6df04589bcb29ed4c805eb3af691ce177e16efc5873e232ecc",
     "docs/test-results/scene-composition-canvas/source-hashes.json": "88cb929e1feb548658b07434c34fe5c1c97047abdd735b32abca5384fa9afa02",
+    "docs/test-results/scene-composition-create-layout/summary.json": "265170b2475bde9d8ebbc7284b2e194260e345328d5af3d837327e8b849c0fba",
+    "docs/test-results/scene-composition-create/browser-acceptance.json": "117bc6ac41b20f9bd6a2813e9b06c718f671a8d91b7b23773a8f1456abd952d8",
+    "docs/test-results/scene-composition-create/summary.json": "4a8dafb9e8df69af6e496414d044a00a8d588816b912b272a18585ee9ce83eda",
     "docs/test-results/scene-composition-definition-authoring/app-check-initial.log": "e2220aaaef8af8b8d15b63bf85d0841dc7b5f2d225ccce4764c3884568c8f2d4",
     "docs/test-results/scene-composition-definition-authoring/app-check.log": "202736bf9479a16d1b88aaf3b27bebedf5be1e39459270575470d0b0f402a935",
     "docs/test-results/scene-composition-definition-authoring/boundary-cases.mjs": "efbac1755d212a73c08e384c89788f54d113e02025f6ff728b784f8211f02430",
@@ -50546,6 +52502,7 @@
     "docs/test-results/scene-composition-inheritance/focused-tests.log": "7ea5ca8fce7ac9aa0dd9b40681d326d1e6bd0d79b1dbda0399dface36b3b8ba1",
     "docs/test-results/scene-composition-inheritance/prepared-resources.json": "44d194dc61fc756d8e3f0693a4e2af6e48a827689028373e6445d0efce7173d4",
     "docs/test-results/scene-composition-inheritance/results.json": "180e56b5251d946439be93b7bdc481cb18eb11e7ea52235b68de94bfe764ca11",
+    "docs/test-results/scene-composition-multi-create/summary.json": "f928c6b8563808d623209c8b8235512820ca732c0c2be03d76af2ce68fe875ad",
     "docs/test-results/scene-composition-overrides/browser/browser.json": "778b360bd9e39b493e1499eb28eb1e48de82499bf16da52b7404fdddc128145e",
     "docs/test-results/scene-composition-overrides/core-bridge.log": "40673895643c5193b30f4059c97df8dd941b10823edf30746f198676720667ff",
     "docs/test-results/scene-composition-overrides/packaged-resources.json": "bbb87df7df29543717a2d9dabeb264d0829d97fb6e59e1dc883a9f0f3a7f4471",
@@ -50989,6 +52946,11 @@
     "docs/test-results/source-navigation/full-final.log": "f0d8b468db5e49f679f255743eb6b73cba5f32242d61b685e23cb7babb806d31",
     "docs/test-results/source-navigation/resources.json": "9a60887ffc612147f831d1e8e8a53c3bd17f0b11a29b7fc0229dbc1199de775d",
     "docs/test-results/source-navigation/summary.json": "a58fa6e8127a00646498c667c20f70d3ab422cb276d1998317b9c06a5004ff4b",
+    "docs/test-results/source-search/README.md": "283bb4d56b7f91957b2cc829d1f503fc06f1700dde814925731af8e2fca586b3",
+    "docs/test-results/source-search/browser-1791869406177/report.json": "fadf922090598d0e0dcf1f42302e884c25f8845942c05f808471fbf19431393a",
+    "docs/test-results/source-search/full-final.log": "c2b6fc14d12f3fb682f85a9adc3abfde8a29b9225c1c6bb0f93935479c3daef7",
+    "docs/test-results/source-search/resources.json": "b3db471060c4fa3db49581d625a7a4fa8251a558d274695c7eca0f84bb0ba202",
+    "docs/test-results/source-search/summary.json": "329bb54654c35cd8e2f38d0f938e6717c3f086fcfc3f1375805bca0953ff1b96",
     "docs/test-results/studio-system-modules/app-check.log": "d541e579039f899c173c48c0d811f7a81fa9be52eefd871b04c8477f1a611c04",
     "docs/test-results/studio-system-modules/browser-system/browser.json": "1e1bc509977baf540d57878379cc41dd720f53716e943872dd281c5d20de9fd8",
     "docs/test-results/studio-system-modules/cleanup.json": "a56c580eeef09fdc312a9ebd14e823a1a82160acb94957ebbb14694d194b1a09",
@@ -51011,6 +52973,10 @@
     "docs/test-results/template-http-2026-09-23/results.json": "ea729dc55712f87d0dd0cd903637f25bbf14187de4142ab7bd9760bdc6752f9f",
     "docs/test-results/translation-refinement-2026-09-24/results.json": "8216dc733563e16b4fecd5bf0ff44948fb7d37646afc2da3a6704c9bf0a9066d",
     "docs/test-results/trilingual-2026-09-24/results.json": "7e5d8526b0c4976dc8bd3dd62844116ca114dacfdfe7f61efa7a33162d6ee486",
+    "docs/test-results/two-dimensional-workflow/README.md": "5ef27ff91e11d06ab707c8f623e6d3812830a1528e7b1479c721e48b1c4e911b",
+    "docs/test-results/two-dimensional-workflow/full.log": "352aeee6a6325c20e63c332884edb56a418bfbfb1fd4d9f3f49d48e4c7108172",
+    "docs/test-results/two-dimensional-workflow/resources.json": "0e51af6111b4a2e125f5a407466f42cd804c80bf455b01c8525099c9865de083",
+    "docs/test-results/two-dimensional-workflow/summary.json": "46bfd49ca6c543603828ffb78def00dca98432e6bec0cdc320126ffcf3a2cd6e",
     "docs/test-results/workflow-b.4.5/results.json": "dc924a7e49b187e50f7aaab24e835b125b3b2e30fcf76738d0db4269ea20ddca",
     "docs/test-results/world-create/results.json": "cd7eb7a6cfdf81a411cd9ecc7af8ce9e30fbe8e9a940d6746a8fdd151a94fb27",
     "docs/test-results/world-m1/results.json": "6013e4421028de09fd37c480e8c32b76c21333e5e693a81e2f76581906926711",
@@ -51018,7 +52984,7 @@
     "docs/test-results/world-m3/results.json": "aa4491e956bfe0f23f61158c5cf9a8ffeff6b48a4aa435f485acaeab74311d59",
     "docs/test-results/world-relations/results.json": "91d13aa1fbff592cc96cbbe3622d859b0151c38ca32f4d752d8cc29a2be20524",
     "docs/test-results/world-resources/results.json": "8dcb109a0bf9b4005240173cdac94b77ac9c5b67ebeb747dcf73dddf1ab4ffee",
-    "engine/README.md": "4557a495ae3edeec6c036c00230b4f373399e35eca1ce14c97b87f810c545438",
+    "engine/README.md": "b3eb17fec593b6b3a07248e8359062f6ed74810343871a5c08b7bc009ddc5b3e",
     "engine/backend-capabilities.mjs": "ffa235fc1f3de1c518c7f1136e1cb3e1e6cd44d38583288d67469ccf067047a4",
     "engine/backend-project-delivery.mjs": "14a024784311df069b3c9834779df7f73797e3ddf62ddfcf33ce4461b4bebd51",
     "engine/backend-project.mjs": "650202291ece923cde5d39005d1ad0da6e09c1afba4b8260035fc6ec22e53f4e",
@@ -51038,6 +53004,7 @@
     "engine/parse.mjs": "86f8ac2e19e821f77617e355da145c02e742deae399169853fdd8940fe69ef10",
     "engine/parser.mjs": "240dd8d16b5e2b13c5e297fab31f5c7c129a766fc429b79d2c8be4d94d1721fe",
     "engine/project-build-contract.mjs": "792c49457f9af1bbfa3a0a04b1ba07c0888237dff9c8c4d8f97ea32ae1d91f3f",
+    "engine/project-problems.mjs": "5b67e49504c1996c507f77fb4a4dc5541d5229aadfdf014211f6cce4f2dd1874",
     "engine/project.mjs": "a7e6418c10226757a481f77e3f066714fad5a64f41aac92e779a936e42347c41",
     "engine/resource-package.mjs": "fe7eee206331ec6d5dd16c90e76474b1483742e1796921392529b9521db4ac92",
     "engine/runtime-case-document.mjs": "847097f91a549f57fd9acc217b5cfa78139f086b5c41b187805d4e9ab8e4da11",
@@ -51052,11 +53019,14 @@
     "engine/scene-behaviors-edit.mjs": "b5d8cd3ebb04f77306a03a2931d6b00fbdee0428eb77ced98914e9b5d653d50c",
     "engine/scene-behaviors.mjs": "d1316c6050cf1c82ec05adcbe10518e7c4602981b376f8b4a757c7310478a80e",
     "engine/scene-composition-batch-layout.mjs": "353da8cd6b54394a69fb3a8ec66a6bb746090fe9a3dbf3d086a4219fd4261e74",
+    "engine/scene-composition-create-layout.mjs": "d72f5d1f70f791aff391921327fb0ca0a009898711f10e6978105738a7683104",
+    "engine/scene-composition-create.mjs": "caf3cae7f2ca6bbd4f35ece2e237924f0e02e2f5cfa68753eeac98065ecc7ddc",
     "engine/scene-composition-definitions.mjs": "ebfd57e058b1dc708d1d87f1930042d545d8f515503a9f75f14f3671ccbb37fa",
     "engine/scene-composition-document.mjs": "1a347770d48baa9faf5d412f556e99efa5b305f417b4b667102d0729f1878ff6",
     "engine/scene-composition-fragments.mjs": "39de0c7aad686cbe41b1fb396cccebe9834a89d1258f33c946c0e2b990b60ec8",
     "engine/scene-composition-groups.mjs": "5f056f598340838fe1448577b31479fc6d5775766a725fe75ca3d8a9bde6741a",
     "engine/scene-composition-layout.mjs": "b0c3516c832fb0269545955b72165fdc1556074e9263a920dc46936ec6f6d2f5",
+    "engine/scene-composition-materialize.mjs": "2a08bc44e9c96a0717f6a6b61f0d8e0f767f346c807b03877aca2bb393cc7d6d",
     "engine/scene-composition-overrides.mjs": "df009572489f19369106fb5e8ce2f8e9ef8146ee2bf989fd442f9c3cbb9d0977",
     "engine/scene-composition-placement.mjs": "73f899bfb2a4ce7d08051f4a3670bee8c98b609db202113005789e0f4516ed53",
     "engine/scene-composition-placements.mjs": "200f30ef0456ff0245c86e19c3cf8aba1340a67d4538480a3bb9b82df2366b47",
@@ -51092,8 +53062,9 @@
     "engine/source-draft.mjs": "aa67dd9d5829b0f2fb3ac46388745dfe271c02e49bc6d079bb753e55b5864c74",
     "engine/source-indentation.mjs": "a712e496a6504649064254d48ae98ce13b455de2964d2582790e5f2f9aabd8b5",
     "engine/source-position.mjs": "204a0b68649937a0fffd552fbe5a384058c42f51447884b73023871be6f15cc3",
+    "engine/source-search.mjs": "6ae79219b7dfcf5d1bb4248933159151ad1e11b2b307c9f105aa728cb11dd1a9",
     "engine/studio-core.mjs": "2e0aa9235d700e1246bd3a529554b762ea6d034b4635d339b36917d9020fad64",
-    "engine/studio-modules.mjs": "5775a073516f5f9e1025ee5fee67faa2b373c3947be59aa9d032991ab45ab3ec",
+    "engine/studio-modules.mjs": "cbdc4dda86a6ce6cdedbe87c0915bc0ee359c266600c77b95ba49651ebd1b34f",
     "engine/world-behavior-create.mjs": "cc26e688ddbfc3cd14fd60bad657e8990e8ce7e6ec9a3467c491fa2e07424c37",
     "engine/world-changeset.mjs": "c89c51ef9b019d4b11b902b37050de849ac01ab70ecd1c0228e4ad5dae887829",
     "engine/world-command-contract.mjs": "5ab2e67fa895fd596bdfe56c687c8312368d9f3f1d162d2b41f52e8a4a3fa3dd",
@@ -51154,12 +53125,14 @@
     "scripts/build-studio-core.mjs": "a6356c18fd5ba25fd46f67cad17fa7c441dc8b780d37c9d51fa3437512f67452",
     "scripts/check-project.mjs": "c9f490f1dd0683f4ac452c202ed35292609c4b9e19c6eafabb3d90bcbc846e77",
     "scripts/doc-site-server.mjs": "5b46e7846e3cc3c9d6dd374a61ef856be9e4b7386145ecf16ac23aa649f9088e",
+    "scripts/function-atlas-view.mjs": "75ee3fa52660721638aa561f62753ffa0bf71b96b11fd1aaa2a7f725bbe70e48",
+    "scripts/function-atlas.mjs": "0671bfe401713bb187decf610a6bc410c2a97c8c19720a099486113ad60b591d",
     "scripts/lib/app-storage.mjs": "e1f15af0cb258763058492e0953652c613e122fcdc6f6905ea573a978f86e540",
     "scripts/lib/build-process.mjs": "1b541d1233e787f89a2f0be0c169a8e0caec13d308696e234b3670d2ef86a984",
     "scripts/lib/desktop-session.mjs": "3c2e5c1e206110721ed90784589d03ba7c8b70faeb62c637723280165f0bfe10",
     "scripts/lib/doc-api-contract.mjs": "fb0333e2d1523f7d3c8eaff8858e895feacd74e61bd6924fa6f1a80910896b1c",
-    "scripts/lib/doc-api-service.mjs": "2c0decebb38b37f6ee9d791d34b0c1c5a63a2424a2a30593b5984c9f9e78455b",
-    "scripts/lib/doc-server-routes.mjs": "fa6df369f4428331a357fb299772971f1a2fea9622890c66dc7223e44ec9de83",
+    "scripts/lib/doc-api-service.mjs": "bfbde011e732187d3a7f7e584361a17889fc25c7ac0bc173d398b3aac65b67a3",
+    "scripts/lib/doc-server-routes.mjs": "3d9e01641cb93663c019b5bbb4423e7cb24b32bbb0f7aea7d98f544027948a82",
     "scripts/lib/doc-server-static-routes.mjs": "a5b6b35796680ac7865b6da28123a4a112a699df4c378b449d6af1c64f82d01b",
     "scripts/lib/doc-server.mjs": "d480e0db99c68f8a9225a37db91de9916f5458e63b845edc1914ebe0604f6d94",
     "scripts/lib/document-field-draft.mjs": "16442bb4673ab321684c925e1c19be4c7027d34b4ff4d136f943abd8e2e71e76",
@@ -51187,6 +53160,7 @@
     "scripts/lib/runtime-case-suites.mjs": "d38fc9bfef4a3684b101d13bb25c0faf6c4d7d6ac6652cc86ee3baf0ef8c462e",
     "scripts/lib/scene-behavior-authoring-service.mjs": "d10774500586c0eb6c2156e0cd1d4517bff72d99b5bc13edc971c0a2fc81941e",
     "scripts/lib/scene-behavior-creation-service.mjs": "df27d24ce2165a0ac74869a8b06bac43ae3e5b99001806689c7374c094ce3c14",
+    "scripts/lib/scene-composition-create-service.mjs": "1a2d2cb7d5d84cf0f9f8539130b3c04f2b27fa850cdf5e765b78a0cfb943a02e",
     "scripts/lib/scene-preview-service.mjs": "2a85f07a7b544b1fa910d054e3291d7e1b9a0bd9447b3182836ad9a0f5525c5b",
     "scripts/lib/site-launcher.mjs": "be7335962d296619a20361da5fe63e833396666d6ce87d92dacf03ebe7c9a313",
     "scripts/lib/static-index.mjs": "10916a3bc484cbf01eac53027bc0a877de081d8fb18efaab53814b1acade71f3",
@@ -51237,7 +53211,7 @@
     "scripts/tests/build.test.mjs": "3e241da1a1ac5798fbdc075ca8f64eb55e2322d8d121e2a0d4c110ded7a84dcc",
     "scripts/tests/call-paths.test.mjs": "a5559e1f56c77918b96d1a33f44b62a891870fb448d7f68ce4dedeea41140d2f",
     "scripts/tests/control-replay-smoke.mjs": "d395f5684779bc5635af1a87f958853c63891c3ea896f8585a4738ce4452e837",
-    "scripts/tests/desktop-close.test.mjs": "aedbf93021a6b0432514081fd8280ec2d64bc2361f2be712bddde5660039de7a",
+    "scripts/tests/desktop-close.test.mjs": "7c934d477510662397be011237bdfc79e9c90504fb7867398868c9ed19975026",
     "scripts/tests/desktop-library.test.mjs": "1f600e7a2010d7be6d506eade9684edc42a215eb7c8c56c224f2f780fe9d3481",
     "scripts/tests/desktop-workspace.test.mjs": "95a79fabec528755b749c2e40a373315ab36e09050e294cb867d606ed7bd09ac",
     "scripts/tests/doc-api.test.mjs": "1b7ec1a5e0081840789af02e7d39c01afde0a6b8e8b5f5762c5af5b68e899a2b",
@@ -51265,11 +53239,15 @@
     "scripts/tests/fixtures/scene-model/legacy-plan-v1.json": "929b2ebec2f32466026d3ccb4bec55371eb52b680f1f4a8ece9338e3958913a4",
     "scripts/tests/fixtures/scene-model/legacy-plan-v2.json": "eed953ffadac02c98fb52225254afb85c501e9ef7cd597c4d29810aac61f979d",
     "scripts/tests/fixtures/studio-core-source/legacy-patches.json": "5a8a13a3a987cee41c24f1147fc928f295246a6cb608f69e3283bd6771515f6a",
+    "scripts/tests/function-atlas-smoke.mjs": "616a725fcfa199f15d9e9b577072c49d34b615a8098572bbc7405de510caf530",
+    "scripts/tests/function-atlas-view.test.mjs": "424df7a656adb48a57570c3f53d5677cec980292654cb9ba50fc1a377c69d764",
+    "scripts/tests/function-atlas.test.mjs": "f66d6b898ccc0020b9cb065de64b8fd352240b5010896dbd5c3afb86f6122987",
     "scripts/tests/godot4-adapter.test.mjs": "59844324cf0e3d18431217304ae6ff61e7f7e17311b92607d6c0270359ee5fb5",
     "scripts/tests/godot4-behaviors.test.mjs": "addbed9b220c3ee298f0be51648c24b80b98d2473c3918aafc7b7e4eac87ceb4",
     "scripts/tests/i18n-diagnostics.test.mjs": "9afce6184f6ac3d9a5a314bea0b3abe070b0852c988f6c524b95b2ba3d2c1ff0",
     "scripts/tests/instance-control-smoke.mjs": "29d6425d5f43fcb3bff1766ce021cdb08c4933f4d755de73f53a007d2aa06b93",
     "scripts/tests/json-source.test.mjs": "224c1016f8665e92ec496324c150aa669703f3bee4ba90662cf83681ba98f59e",
+    "scripts/tests/media-drop.test.mjs": "a603228ef9029b0f722782567ca493a3f4c9dad12a5a4c84e042ef1ed2fa0db4",
     "scripts/tests/media-loading.test.mjs": "e0b48deacd1aca829665ba39692d1df1c74f7331c96886a3a7dfad67007835ed",
     "scripts/tests/media-preview-content.test.mjs": "78a4b9dc4ca029b55b75ff8fddfde1abfb39bbb5a849dd22cbcc1c08745b7242",
     "scripts/tests/media.test.mjs": "def47929535b3108c1b36adc5617c6384d2fe67ed18571b23b1914f6c0e6917b",
@@ -51286,9 +53264,12 @@
     "scripts/tests/project-build-service.test.mjs": "41c6bb3ff7d275fd4b003cbba7487de0366ea304205c81fc226448e12c83fe4c",
     "scripts/tests/project-build-smoke.mjs": "ec77400298cdc28c948ee42a7d8527e2389a13623acc5a70c387bb4558a25e77",
     "scripts/tests/project-build-tabs.test.mjs": "534306ec70a609d794edc0c435830dbc58e12f83301a8e7a4138910e00a2c32c",
-    "scripts/tests/project-build-ui.test.mjs": "8be331693151d45d7c354c568e5703c2a060a6600d35a727b6b5a326f4856503",
+    "scripts/tests/project-build-ui.test.mjs": "0ac492b7cf934bd1e32e1ba989a474197272c24e80b05e091cfc80be2c50ee57",
     "scripts/tests/project-build.test.mjs": "8e55a93642b833f83b3b8da3353a8074694a633702e9b11b7728eeec40a7cc4c",
     "scripts/tests/project-definition.test.mjs": "46ff91af400a9b78c20ec7d4fed122faa7037bd292850abeb3b29dcd12376f0f",
+    "scripts/tests/project-problems-smoke.mjs": "c2c427b2047de9be1f8c3c1ae3021262b2e2e4fb125d3dcdb38cf8c9cf6824a6",
+    "scripts/tests/project-problems-ui.test.mjs": "7fe61637410506de0f85055021d49f4496ed9ee3024aee74a1fa72eb6049d9e3",
+    "scripts/tests/project-problems.test.mjs": "2450a42479814bfe4e55d71ac6dc944f4032c8ed49a104d425727c0c8350d397",
     "scripts/tests/project-snapshot.test.mjs": "442fd8529e7f09011fee3ccf18df1c909206f3d677fcde0f0b8c38e052868da8",
     "scripts/tests/project-templates-smoke.mjs": "e2089287afadeb1d532f3464c8dd2f31fdbaf941c7f8e2b2120ea52afb1a070b",
     "scripts/tests/project-templates.test.mjs": "5cb420734d22c505979e8cfd04cef5a6287073df42b4f1f78cd5ad2115d337e4",
@@ -51333,7 +53314,7 @@
     "scripts/tests/scene-behavior-creation-system-ports.test.mjs": "9ec156ae952e2693ce186e7df94b46e58e39f55513ec9fe919fe6d330e558318",
     "scripts/tests/scene-behavior-packages.test.mjs": "ac1603141a64e6d1f8ce4ffbae977523c9dfbbee58b8bf8336d94972a9cc7147",
     "scripts/tests/scene-behavior-smoke.mjs": "b55d43740e202de9510b2c89fedad151849e4e50ed40981be4bbceca9342d30c",
-    "scripts/tests/scene-behavior-ui.test.mjs": "e65a333d321e7bb0437ba510c5a0b5fe447f7c4b2835e0179b48f846e4300bc6",
+    "scripts/tests/scene-behavior-ui.test.mjs": "d79ab4ed3b639d8bc8bf8859ff768403a5df2186f71be66d8bf0fca3581f4667",
     "scripts/tests/scene-behavior-workflow.test.mjs": "24003ef3309cf1a65d83db793cbfcf1034e9c5facd039808a68c984f2cf8c10c",
     "scripts/tests/scene-behaviors-edit.test.mjs": "a6c5c62af72939d058de0519f8f502571b279424ecf33a1d3745fb80f83fc447",
     "scripts/tests/scene-behaviors-editor-ui.test.mjs": "40c66d8db83f245d22ef976bca1d2596c2cca7692c05b88c214ff49e470690e4",
@@ -51344,6 +53325,15 @@
     "scripts/tests/scene-composition-batch-layout-ui.test.mjs": "96347e2b4205f6b6c5b3f9ab98b2a145aac8ba3a85adaa59ea034e252d1691f5",
     "scripts/tests/scene-composition-batch-layout.test.mjs": "46bcf83c9d0224ec53802397b9d7feb8cf7a8e4fe5ce2dd02d3a6d92e7c84ef7",
     "scripts/tests/scene-composition-canvas-smoke.mjs": "7d309bd0a455a1717d96c63c82467cc5165656189d1ef2e4ce6ada1897713cbb",
+    "scripts/tests/scene-composition-create-host.test.mjs": "f8e2afb985440cca69dd3b793bbccdd3287f83cb8bed69e6b8a41d9cdc264c9a",
+    "scripts/tests/scene-composition-create-http.test.mjs": "716a87d3ff9bee17bbe83bda3a59f5f399fea42ffb8c485d77fc1844e34941bf",
+    "scripts/tests/scene-composition-create-layout-smoke.mjs": "5e2a75120fcf207afb9aea7944f87fb2541017e7d9fc133e7d0d44b8f7f0a7dd",
+    "scripts/tests/scene-composition-create-layout.test.mjs": "b6a19a4c6065bc9e1dcc5e13fa1cfd2a801cddee2a6d5fd9b9a9a8964070656c",
+    "scripts/tests/scene-composition-create-service.test.mjs": "4115a35c185bb498d9e0c872000028733fd5572a4d0aba84dc35ff747db503e8",
+    "scripts/tests/scene-composition-create-smoke.mjs": "748b963bee4a3ba055782356e69963555d547efaf20cfc45fe242d89ff80a583",
+    "scripts/tests/scene-composition-create-system.test.mjs": "3d5e121975acf0680e7331bea8a557d6f07826965c3e236204822a2afe8846ee",
+    "scripts/tests/scene-composition-create-ui.test.mjs": "916c0e2202e8634ed82c84906d118034ea430003a97c633dc03b11239ee061d2",
+    "scripts/tests/scene-composition-create.test.mjs": "f9e087b0219f1232fc7473f0a87afe246f1a01bedc1258746610ab428e3b046c",
     "scripts/tests/scene-composition-definition-rename-smoke.mjs": "c19e17df51f73e24ffcc4ba71e4ac26ac012914a6de902435543e6cfec346621",
     "scripts/tests/scene-composition-definition-rename-ui.test.mjs": "152c165ff44d6798a058502a419af1dec9afb2db58f990f9d3242a2444aa108b",
     "scripts/tests/scene-composition-definition-rename-workflow.test.mjs": "3260207c2871070fabdb2499c6f8ca897d5699edd11f5743db3e9e75661d6f38",
@@ -51375,6 +53365,8 @@
     "scripts/tests/scene-composition-inheritance-smoke.mjs": "1ad5d70ac91a24bc1e5152647f30fea6c74d51852930d2b95d9fc3b8d8da162e",
     "scripts/tests/scene-composition-layout-ui.test.mjs": "4ad73a3d3b45287048aed016c2f02204c31dd74ac5b117f4e7cef1181ce066ee",
     "scripts/tests/scene-composition-layout.test.mjs": "7a9ff0c06a70679469f462263340bd87e038338864b374f472eb69cbb7c03ef3",
+    "scripts/tests/scene-composition-materialize.test.mjs": "b743c96f345d9b73d4eb7426ea03c7fc87a2745888307b8e77f90c71f8a5a95e",
+    "scripts/tests/scene-composition-multi-create-smoke.mjs": "10c4d557c0c427f7b7175a37497b3309632be3c0afcb4e8d587f2dde6eb9cd3a",
     "scripts/tests/scene-composition-overrides-bridge.test.mjs": "0324be1a08205d75d8b90dee0f47dd7b1e49715fca25684dbdff22cf5ccc4709",
     "scripts/tests/scene-composition-overrides-host.test.mjs": "f2ee0f5c78599ff333ddc08ed36b73d88e921fd5769a7268f5ce521d22de3b9f",
     "scripts/tests/scene-composition-overrides-smoke.mjs": "c652d8f6fe91696ef4299f3fd017145f08c1f300d01b08c0b9ca0c16fab54580",
@@ -51428,6 +53420,8 @@
     "scripts/tests/scene-layout-integration.test.mjs": "94a2e7199e53b130abb7c48ac4b6d17658c52b72f79a47778b692490f0336217",
     "scripts/tests/scene-layout-ui.test.mjs": "7c25646be382d62a768498d791483eb32c67a5059349609c24f2575a7ee7d732",
     "scripts/tests/scene-layout.test.mjs": "8009722553fc0498fb90f78ab96440c2693a4a7cad5da8f8e5e5e6142ec9d6c4",
+    "scripts/tests/scene-materialize-smoke.mjs": "2a5edfeb81f7a121af7eabbb96f964d150a565d290ee4da20dcb5d975176e032",
+    "scripts/tests/scene-materialize-ui.test.mjs": "8e7e079315dd90f5e623fe91fa26e5418c851974ff181964f09ee9db84e7dc7a",
     "scripts/tests/scene-model.test.mjs": "439eae373d39daba000cabce9e13360a4d759ad52918c576e253f86e310b7239",
     "scripts/tests/scene-outline-ui.test.mjs": "cbd8ff7d42d9b6d93ca8abd655c073862023addbc407a9ea7988bfe01bc3a4a5",
     "scripts/tests/scene-preview-http.test.mjs": "2d7c3747feb6a27531d2cd94e73799b2929ebf26a0a46f55e6ca62afea13bf42",
@@ -51445,22 +53439,22 @@
     "scripts/tests/scene-source-layout.test.mjs": "2c6b53cc4f156e5c64370eb2fc5a8c6802a679f0a582486530e0a4b13b9f2b34",
     "scripts/tests/scene3d-alignment-smoke.mjs": "264cc25d44461a829e493036b513f7597c432b4dcc535b21a7dba3d9ae63041e",
     "scripts/tests/scene3d-alignment-source-host.test.mjs": "e0cc5f2e4d3108383b643cd952572f1fd433e3aed00f1ec73ff66a6c130e42bc",
-    "scripts/tests/scene3d-alignment-system-ports.test.mjs": "f0f1cfdefdb7b9fa128115c8597117963d12b9999919d2b2a3957f54902e1163",
+    "scripts/tests/scene3d-alignment-system-ports.test.mjs": "04bfab8c4457d30c71f66177dfe4d3aff42e5f3568873d144ca61c3929ef7664",
     "scripts/tests/scene3d-alignment-ui.test.mjs": "908e98745c64907c06328e729a6b5cfd02a4f418702c1bf788c65ed7ab17b571",
     "scripts/tests/scene3d-alignment.test.mjs": "c847f3dc92758d9fd7109ae044f77eccf9672d09a5c4b70d31d5ba91362e2d85",
     "scripts/tests/scene3d-copy-smoke.mjs": "74b0c2122a21b608113c0eac73b545b831e096166644edd3167e91fb1a8fbeb6",
     "scripts/tests/scene3d-copy-source-host.test.mjs": "68aadb8015b39633c68aa2d4408ab1558b9479235bc912f887d3c99584891d29",
-    "scripts/tests/scene3d-copy-system-ports.test.mjs": "a7cf43276ab94b6e11cad5bcab89d10080e8d63d03bc542d452a8979e3c7df2c",
+    "scripts/tests/scene3d-copy-system-ports.test.mjs": "f583308bbcc17561828f5092801dcb7aa104dd33831763fbb802f99de93162cb",
     "scripts/tests/scene3d-copy-ui.test.mjs": "7478414d58a651ff50059d20fee94543719481aac7d0e356fdd16372c3b8319c",
     "scripts/tests/scene3d-copy.test.mjs": "d3a8c688f8453c2a1e5587ace813dba558e228d025efefa6b28519cff7a518b6",
     "scripts/tests/scene3d-distribution-smoke.mjs": "52e156e538df7df201e70076d8a09dcf22cb7122273c74f2a4cff9701e7869bc",
     "scripts/tests/scene3d-distribution-source-host.test.mjs": "facb0652cc115702379899240125dbff06159341b6a7a62fd0f4cad2af74b5d8",
-    "scripts/tests/scene3d-distribution-system-ports.test.mjs": "bb44174b91ffaf4dc2e8f1a164c88cdc8ce1923a95f602090b319e686663a40c",
+    "scripts/tests/scene3d-distribution-system-ports.test.mjs": "dfb9434a7b781e85a0b2649dd5bd4699a45c2a333e090d2cbf38e82abede3234",
     "scripts/tests/scene3d-distribution-ui.test.mjs": "de4d36dac6159c5bb5f24fae2b202060ed3c88aeca39eefaf106a83adfbfac7b",
     "scripts/tests/scene3d-distribution.test.mjs": "755284e62635778f69fcec3730377a15fff82aa8ecd429825ad38d444db577c1",
     "scripts/tests/scene3d-environment-smoke.mjs": "ebce0354b5f18db44f5ab52c92a5844345293a22f9fd536d40421f7c4186f560",
     "scripts/tests/scene3d-environment-source-host.test.mjs": "94e0e145fde792d4bb6991fb987d405ff99004b87d61dbbd255016e617a068be",
-    "scripts/tests/scene3d-environment-system-ports.test.mjs": "e3c8e6f388ad7b513cb740bccce09f50d5bb0be18108e0bd81aca0f74c5f65ae",
+    "scripts/tests/scene3d-environment-system-ports.test.mjs": "7983f3d41dd0c02e49d4baed56b038c1e9772acf64e1bab11e3d36d7c1074204",
     "scripts/tests/scene3d-environment-ui.test.mjs": "62ae633ca200ade2e80c764692ba4443e865b2ccb4e6ad6499c0b545cfcecb39",
     "scripts/tests/scene3d-environment.test.mjs": "dd001ee68906e54542bba7745e7c5c4c0a9cc12fd91595be95c44077da4a3fab",
     "scripts/tests/scene3d-export.test.mjs": "90604da81ab36474a75f2db6929d2cffbb7e2b4cb3d3a41cce1d326e7e445ad1",
@@ -51473,7 +53467,7 @@
     "scripts/tests/scene3d-math-navigation.test.mjs": "8a5d62398098c9d1d3996440f9a4e0403dd335e5c960719eaafbf51bd1083860",
     "scripts/tests/scene3d-module-boundary.test.mjs": "322775065c9f8e349fd5faeb43fa46d1152279b1b640498fd7da88f9f93aa6c2",
     "scripts/tests/scene3d-navigation-smoke.mjs": "2d00770478969253b447f4217692562ecd3992404647500f597b6e32c05f5109",
-    "scripts/tests/scene3d-navigation-source-host.test.mjs": "90d349b07c931f42f64ea952275df9c682de8ffab269a5e431d56e236a4b0570",
+    "scripts/tests/scene3d-navigation-source-host.test.mjs": "fb02ca29cb47bbe3bfa27b65ae4fe7b8659ed92ca705b5cc983fff6460a5a675",
     "scripts/tests/scene3d-navigation.test.mjs": "f2e3e6dc874b000428f649de8c7504c07c4bc0324335148ef40d14d865c5f51c",
     "scripts/tests/scene3d-objects-smoke.mjs": "d6d546481ae49a89ab167630f7a07059a5b7601ceb367d868d1b4eda88bf3663",
     "scripts/tests/scene3d-objects-source-host.test.mjs": "392617b9f17e8c9c5ccae9b2e0828d289f4e548e06de62aeb0c0c682bc18c3bd",
@@ -51504,10 +53498,10 @@
     "scripts/tests/scene3d-properties-ui.test.mjs": "b12c402c4881eae322b3ac34e9f4a91851d9cd7143a1edf6c926ad1a313273ea",
     "scripts/tests/scene3d-properties.test.mjs": "6178a826f949e514bbfc88ffe29f857d5fc3eddf1055457dead4d38a87ab9dda",
     "scripts/tests/scene3d-property-source-host.test.mjs": "7f40b4330bf6ee5a6e0bba98a6a5a30f011400412dde3b00c8676f9d512ecd4e",
-    "scripts/tests/scene3d-property-system-ports.test.mjs": "21684e9001d46a5db6ad126c39a7b7b8fac7400ce4df9978908767141bd0cda6",
+    "scripts/tests/scene3d-property-system-ports.test.mjs": "6d87ee64c0594f441f1d297d2a6ae277bc81fd8e0ded86c7e39ab619aa4574de",
     "scripts/tests/scene3d-removal-smoke.mjs": "20a1590d0ebf57534fb86d44c83c0488c9c9d991bcb4515ce82eb3bcd7b4a0c7",
     "scripts/tests/scene3d-removal-source-host.test.mjs": "ef4300d60e9c597f070aca24d4e8f312380555d5399fdc5840bf9288228acf4e",
-    "scripts/tests/scene3d-removal-system-ports.test.mjs": "fa95d7d3f4060fad1d8be3a9764fd51a7557ccbaddd3ccca3dbbedcf43dbf7f0",
+    "scripts/tests/scene3d-removal-system-ports.test.mjs": "6a22d8a4bf276c8059b4f14e38370814f987cb227842b670736cfb0d825de225",
     "scripts/tests/scene3d-removal-ui.test.mjs": "f159616361fe3841668b8375e72e02a86c3dd0e7b8a6fca2d1c6e746cb841337",
     "scripts/tests/scene3d-removal.test.mjs": "d13576d46653456f2b6bc67e19e12cb7be832dc5d2f585a29b82557013cac846",
     "scripts/tests/scene3d-renderer.test.mjs": "95099eb58843d7794c78d00811d19e0bcb2f49bf08174827f9cfd2c3361f9563",
@@ -51528,7 +53522,7 @@
     "scripts/tests/scene3d-transforms-ui.test.mjs": "08f8048c5fb705ac6691005b38a21bf55f3fadf4a0f85e4c69e24063d367d975",
     "scripts/tests/scene3d-translation-smoke.mjs": "6f1e915884c239d06d2886c631bed8c1b816a6a4c36488be8a095134b30df951",
     "scripts/tests/scene3d-translation-source-host.test.mjs": "3959f288ff55e2e2bae7b691b2453a2b8cb948abb8124ab6cb3feda525ed0ea3",
-    "scripts/tests/scene3d-translation-system-ports.test.mjs": "a30782e2c81e8019d0f1634a110d6ea2940c040b418c81d59fb6d822e1e9a0b0",
+    "scripts/tests/scene3d-translation-system-ports.test.mjs": "c1dbfbd43c2b59b635f51d28469c20b6a2b788c9adb1f7a5b1c354745fb65751",
     "scripts/tests/scene3d-translation-ui.test.mjs": "d80b40548cb4b9267a54a895172cef3d714be111d62b240a2090a8b0f9aa98f2",
     "scripts/tests/scene3d-translation.test.mjs": "6ce3f7f3476d7cf93abd5372534334b6737cd2bf38285c3f501430034ad722ab",
     "scripts/tests/scene3d.test.mjs": "326fea22720a1241bcf8936f4a3d753e4e11d59b9558e3ba9a3466fbd3bee7db",
@@ -51542,16 +53536,21 @@
     "scripts/tests/source-diagnostic-smoke.mjs": "850f74963b20f69cc4b7140c2f56918c72f3636fb47a63e219964ce564db91d4",
     "scripts/tests/source-diagnostic-ui.test.mjs": "46bb248dae44a99f9ba5fa0763940cc489a142fefc4028eb0f0cd98f638858e9",
     "scripts/tests/source-diagnostic.test.mjs": "2dbcf4706c3cf980b8e3f1c18c224fc0100143f0686f2ca80f12ab58ef892b6c",
+    "scripts/tests/source-history.test.mjs": "217754f8709f179fee79b2614c58a1b06cfe7d29661afefb2df112f4c8a75e4c",
     "scripts/tests/source-indentation-host.test.mjs": "af5cbb414fac394e7a4a1373072f032408ace402b3c09ee6f0a254470265ae02",
     "scripts/tests/source-indentation-smoke.mjs": "4cf8a721ea353923088f9f581d1ed2ccd02d606cd35de5e10b93e727dc3e5d30",
     "scripts/tests/source-indentation-ui.test.mjs": "c7af00107397d9fad8f2d399cf6a297029b31e89e8b9cda1ab1318dc102e7701",
     "scripts/tests/source-indentation.test.mjs": "20d579592f493ee96901a1eaed13070f4f032b5087e561ce7ec1cf21fb38ffd8",
-    "scripts/tests/source-location-ui.test.mjs": "0c11b5574da306312ac58519b47036315f36a103624cd5bdab6193e8cd0afc64",
+    "scripts/tests/source-location-ui.test.mjs": "67d716b7758baa9bafc3fcba95e1c2dadf9482a437669b7a7f9021af5d1b7cdc",
     "scripts/tests/source-position-host.test.mjs": "c80f24de92778ed579e6d821617a7d71e1d64e862a5bb137dec94e72c0f6e9a7",
     "scripts/tests/source-position-smoke.mjs": "4700dc4383e6d911fc2e6183e4caa4029d9f32a590d9e7fc3be87082e6563660",
     "scripts/tests/source-position-ui.test.mjs": "ed4be2e36f9e67e5a5d5f84c39eb0ca20dd09eed851a6f3201220e9235046d92",
     "scripts/tests/source-position.test.mjs": "8058c701b3e55fa764ca659579ea0d1c20f3cbc5e39c88009f8d6a102aa3dfcc",
     "scripts/tests/source-reveal.test.mjs": "b322a904122002e3cd4f2412ce19ec837d27953459df80788d8b0d07c0eb2e8e",
+    "scripts/tests/source-search-host.test.mjs": "5a3848c7d6fc26d0d1a0f224c3883466244feaf2cb858da5f8ed7127886876d2",
+    "scripts/tests/source-search-smoke.mjs": "d080575dfe2dabc1ef77b25dde5e2ed14d331deb95c324317bf2f45dc4ef740b",
+    "scripts/tests/source-search-ui.test.mjs": "b8518005c09550ee07d4f7cf3c6286e1f4751742274d1e6d577313aac6bbfd1c",
+    "scripts/tests/source-search.test.mjs": "d918b22b981c5a84c9a098efefcac36057cfce674e45060ddc8cd131b078f395",
     "scripts/tests/studio-core-composition-batch-patch.test.mjs": "b725c4e0aa218a1c429166712d9648db7e0827a8c5c82e84196e2a221bf653dd",
     "scripts/tests/studio-core-composition-definition-rename.test.mjs": "6ff1d573419a2bd5960e74c32a6ac38b6ef0209df7114227278e5f28c119564d",
     "scripts/tests/studio-core-composition-fragment-edit.test.mjs": "c3880d24d2e0800e98f94eb75530b7f277076a3bb38db1f4952f92824b5b7775",
@@ -51577,10 +53576,10 @@
     "scripts/tests/studio-core-scene3d.test.mjs": "f4abdde8eba1b8ab1de9343e1420408e02d4a07d391c8dc0470c0fb09039daf4",
     "scripts/tests/studio-core-source.test.mjs": "edeaa3ed65fd986cdc0ad5b2b780a3ebfbc63596518c8a307d515272a44969d2",
     "scripts/tests/studio-core.test.mjs": "7d329d0bca6d9dc6b0d11ab6236f91058ac59250919e8e0d9a41b1c2a299824a",
-    "scripts/tests/studio-modules.test.mjs": "01cdaa3886c62993f204a5de12e6b97c6f8bc24b36c766b989b6eb32c9542718",
+    "scripts/tests/studio-modules.test.mjs": "b34616410bb23683b7c1b520a7c1dc7f35c1448d19944ffab2f038c5a9038610",
     "scripts/tests/studio-profile-project.test.mjs": "7507675fa5d71d5b4617513db8cb351ef4af01420a918a005872096dde7f445b",
     "scripts/tests/studio-system-smoke.mjs": "86b091705f5b0880d44e2ff71b923f8637a7e4e675d5e0e08aa0e4b0eceaaa9b",
-    "scripts/tests/studio-system-ui.test.mjs": "8e1addbc54f4a4846be572e27b654827ad1ed9a4b13fe3066901051b4f2eef66",
+    "scripts/tests/studio-system-ui.test.mjs": "7a77cab8cc7b04e44e56bb3dc8f85cedd0604bc2116e00d3419b4f880c2e3859",
     "scripts/tests/template-http.test.mjs": "4df2ae99351f06a31c92a8d2a838903435c579fc42ec8800fe176053ae6e7f09",
     "scripts/tests/templates.test.mjs": "a64400f2cd43f8c263f3cfeb631e527645bd99934edf1dc31846442d514f2305",
     "scripts/tests/version.test.mjs": "811f5d49fb9470e4fe04feffa4f0f49450a1cb17d5e7e0ab2aa0aacb2eb0ccdf",
@@ -51604,7 +53603,7 @@
     "scripts/world.mjs": "5f1f1b1f6e145b0738112856ee08f59aa5f5835e58ec6adaafc6d6365fe4667c",
     "src-tauri/gen/android/app/src/main/java/io/viento/studio/ArchiveTransferPlugin.kt": "309b6dea7b8085b935673f160e7ba3d7c37deb855f177df673c4a62fafba0a0e",
     "src-tauri/src/close_state.rs": "06f5639c1f9f9e086ee73de9b81e1a3a9a09a4b2436980826c4b5c92c891c11b",
-    "src-tauri/src/desktop_host.rs": "57b530a2926d2625067e25fafff4a9a19fb85ec05de7bc7d23f0f70f62f8078f",
+    "src-tauri/src/desktop_host.rs": "d0ecbc30e399ca4e56041a47241d18fed8ebd5220e53521fdf680906a8d7346b",
     "src-tauri/src/export.rs": "f050442c347327ec0cab6c1cd6f871eb5765d801783216d28376b88f7d46e96e",
     "src-tauri/src/mobile_archive.rs": "793586b7e5a11301e1b8a096b66d2ae3931710d8508d486d7ad3628604b842a1",
     "src-tauri/src/mobile_host.rs": "c67f0605e004c3aa7e3f4b50ac7f808803e4f8c4825f88596f7153ef60f4c072",
@@ -51613,9 +53612,10 @@
     "src-tauri/src/preferences.rs": "21cd709cf08108333dbd039507fc23a802e7d221309937bb4416a753b0eeba8e",
     "src-tauri/src/project_templates.rs": "ba7ca8372c4ac6a5e5d3a3fe547bcfaa5c5736fa3c7865fdb753bcfa82111410",
     "src-tauri/src/workspace.rs": "96d18ed684189f69b7af979e2ad831033cf1b4a1f8a11336dd1da893e77a7f89",
-    "web/i18n/en.js": "846d786dbc0d9d5ec1f4eb6a522ed7ab35b5299acd3f0b30fbe38ce0a75b6b19",
+    "web/editor-layout.css": "2849fe419c6652474f4e49d77c382be1bba8d07f7b85649896b04af0116da8ef",
+    "web/i18n/en.js": "f14cbdca3b189fe72748156e365a965ddf57dfeec1d48909955f5c5f407b4335",
     "web/i18n/index.js": "74c86ed56017e915280972d1bceb0e06574b9dadaad73e92b4bb09a3c7017567",
-    "web/i18n/ja.js": "d6abd086c680ef39f754de2e967bdd9a7395a66988e80a35f1023d50401578bd",
+    "web/i18n/ja.js": "99c9763475a701e4745b4e9945553b6d2676b9d99da2293b5e93d5a66b5e9ff1",
     "web/modules/app-backend-project-delivery.js": "30733b94e4cd6e9553517cefbd960aef368b2e20eb2d3a05e33ea53ffd00130b",
     "web/modules/app-backend-project.js": "cd3115bddc5bd18d320d894cee7c995904ce1c80aa23078ad5dc3332452d2a67",
     "web/modules/app-behavior-source.js": "faf1449d3460f2a87c60355dd25544d3c5590c5cbcbba523ddca13fee7cb5a4e",
@@ -51624,21 +53624,23 @@
     "web/modules/app-export.js": "5c0d7f38f9d864c1a3ea571b3a9f04d66690708b2cbe8e348e53ce9b651f65fd",
     "web/modules/app-field-draft.js": "c39eaefce71275942a94761902d39799f94a701cadddcecde879203e4ba129ce",
     "web/modules/app-field-editor.js": "d280039f0e9a28cfd13fbff6c821c1e5e9a06b13d28518999499328be5836fd2",
-    "web/modules/app-media-editor.js": "91a54f063af412835e7f19d768370a406bb250e4455a9fd92f9553176af23b53",
+    "web/modules/app-media-editor.js": "514c629a0baeab519313898206c52e68fe0dfd8c9cf84bf50da0765451cfcc99",
     "web/modules/app-media-render.js": "a8b3b1aff81deaf915de895ad45ca9c6e61b3e4abd54d3f42aebc7dc1ba42231",
     "web/modules/app-object-projection.js": "303d41e05d5fbea2f9311d6ab3bfa7773711b4f762c6e61a1148236777467cb7",
-    "web/modules/app-project-build.js": "a5201cf7b8430d481b850451657f7c2b2050235602a64ea9b6e5dc7d17174a3e",
+    "web/modules/app-project-build.js": "f5d69bebcca112a355dadd63959c78c621bdd258c82e7e7023658fb1a095dc03",
+    "web/modules/app-project-problems.js": "31e7510d42480bb047a488465a06326e9abb7dd85a1d005915b029ff4fa723d3",
     "web/modules/app-project-settings.js": "96ae129e3e4f97eab2e50e26650f2790206a491df39ad0140a54916c25875d9b",
     "web/modules/app-render.js": "da76d685f52d9603a0b12e39e418804fbaf8e71f80dbc993a16af0ba06328010",
     "web/modules/app-resource-packages.js": "b0e06e1f771447c8fe8b3973f0ad3d2ef4b01299ecab073c5f9f5b692bdfc676",
     "web/modules/app-runtime-case-documents.js": "471b655a6ab2117f98ac62e52ba8fb8f8fc8f73e416cb0f218edaf7270bc4732",
     "web/modules/app-runtime-case-report.js": "6cda8e8bb74a251879195efe6bc1b8312825d83e40fb702f4843e2afd5028c2e",
     "web/modules/app-runtime-case-suites.js": "81d9ac9d6d8543c69dc0e590f2e018c15bdc75ec3e35ab9e764eff53b7c510fb",
-    "web/modules/app-runtime.js": "6a3ca6b802677048e6d07fe61033af60f51377d76a8da7e418196cc2ca329215",
+    "web/modules/app-runtime.js": "ac0e49e937256b0d0db5631a435ef2002f8b6f89371856dd585d78a9ff6e4342",
     "web/modules/app-scene-authoring.js": "791f84a9aa3a4b92d9c1bfc1a62b5754d3c75e6803298f7f45331ce3ac70da21",
     "web/modules/app-scene-behavior-create.js": "e060d1ab43ad5450f15fa9e31e75a659260dbea44f3ac6ffe6deed23bcbcf231",
     "web/modules/app-scene-behaviors.js": "44e35daea36cf246a4ff25f7f1b5b33d1e7c7cc87e3cef60508b75757800874c",
     "web/modules/app-scene-composition-batch-layout.js": "f2e5eead553c2c33ad4f9797044cd889a289968d9a26d65371643f014748d442",
+    "web/modules/app-scene-composition-create.js": "39ebd25bcc5b9800f05e40093948b0f3afdf9bdb4a62cf9aa1d1ca83802e46d9",
     "web/modules/app-scene-composition-definitions.js": "d94b996917e3181105f57629325a53fcbdb62224c892849b25d34dc69dab4947",
     "web/modules/app-scene-composition-fragments.js": "d466469571ec6f57d7e88e807bf483c88faef335dc1f766834adf2586a826303",
     "web/modules/app-scene-composition-groups.js": "15182b125b55081f00086b14e4603839823e984b2e17601636247b0123253e7a",
@@ -51649,6 +53651,7 @@
     "web/modules/app-scene-composition-structure.js": "25f48e525dc605d08f61adc989c7d6cee4de34682980718779e0752d857281b7",
     "web/modules/app-scene-create.js": "a4e1821ed35754a0f87bf90e232f44e3b645f45e697c55bab06f5108550257cd",
     "web/modules/app-scene-layout.js": "1e6b5bc5df5ddfacd92bf9ae982c10c08e966d38825acefd725a25591dd5d10f",
+    "web/modules/app-scene-materialize.js": "573aa564285a3a81d8d370c274d62440a0bd31b11ed98dd29948ba365f599a88",
     "web/modules/app-scene-outline.js": "93db8f0b3c7951e2a6631abfc09a87261522c3a1bb12401b9e47307c317b5264",
     "web/modules/app-scene-preview-canvas.js": "ad36101025726abb723a1d44da16d05bd165a814eaa3d3cac562ae61a0007a58",
     "web/modules/app-scene-preview.js": "ed0f88713acc9e2da2152132d488a4ec2f8c619833b4af1c9ac3f8885f821228",
@@ -51664,12 +53667,14 @@
     "web/modules/app-scene3d-translation.js": "584a3ee52665ed8484747bfd714238352e3e6dbdc7d8adfb2c9b5a80588ce282",
     "web/modules/app-script-create.js": "90d7fc0371c42db2a11467f3d31adf32498a78f8e964eec32c0dd02da527f0a7",
     "web/modules/app-source-diagnostic.js": "378ec9944ce4a5273253bde4d685b058ce2c56bb830331564e68a2c6747cc68a",
+    "web/modules/app-source-history.js": "3982af7ea270864ab0d090f65c71201de42d34cefc261b8a93610f044bd2423f",
     "web/modules/app-source-indentation.js": "1621b50e162c19cb82a9315bc79e9912d1e390274059f64f9ec6e292cd6568a0",
     "web/modules/app-source-location.js": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70",
     "web/modules/app-source-position.js": "83cd287e97da59b7bcb97208bcf08cb5801ddd3acb2b4e3beceeddf83842e5bb",
     "web/modules/app-source-reveal.js": "7c301fce690ef928446c0503f209d215ecd5f3d5c98ef98e31ef3996e7e2fa8b",
+    "web/modules/app-source-search.js": "ce2f78e29b37dbb86f843816420e9f3e18c03f65d69c9d6b667d2da7f8eca7fd",
     "web/modules/app-studio-core.js": "dbc282577a11f5930f4560c0e175b50dbcebbae10f915a1faa994aa740acabcc",
-    "web/modules/app-studio-system.js": "68008b116b93d5bf7d4ea75c1c60b071094456fce911de991d5e48f08720b447",
+    "web/modules/app-studio-system.js": "47528297b7fd5f4f30075b2ef2353f2905533b0b81dd7aab90998db8cf3f4aad",
     "web/modules/app-world-browser.js": "db99e5a7584992ee4dfe4e575fbe7bc7db966b3c8514a48ecdfb2e489eb407b0",
     "web/modules/scene3d-math.js": "342e636b2cbbec00e8be5b9c91cee5a975239aea66a6189c5991e8fa22e354ba",
     "web/modules/scene3d-orientation.js": "767380e86ce9d97a1d0755d1b3b66d32046d317203d28d53e78806a72b2ca75b",
@@ -51679,6 +53684,9 @@
     "web/modules/scene3d-playback.js": "98de83b65924e028dc8e3aa67873fa874a6bb984b8f237cc6b75f9d605ddddeb",
     "web/modules/scene3d-renderer.js": "4e3713d2c135d2495b1794664883e0c3a1fce2243a007c87b77a23177c8ad7aa",
     "web/project-build.css": "2e7a99e24347cfa6edf0dde98295c253a8a6fe60352b45e059b95f87ec079464",
+    "web/project-problems.css": "39aebea6356895a5c2aa26aad9d1e0f4ddf18bb03fbbd66730db4d56c38c78ad",
+    "web/scene-composition-create.css": "fc419879c7130eac5fb339d223fd6997beab89e7e4acb7e109f0bf9e0ec9f209",
+    "web/scene-materialize.css": "437f1fdec5571fa9d2bda34b2356d9f32d1048c13a981c402f41786a5927593e",
     "web/scene3d-alignment.css": "911ca7d4c6af85a1238a1661ba7d3ac81c47efcb26107a55cb26b1f1659c1878",
     "web/scene3d-copy.css": "bbf6fe77a3977b88165dca22d00a158b77d73ed48731fb84f7c8a422fcc4c83f",
     "web/scene3d-distribution.css": "821ec24b480c6ace0695128e7983c5b14cc7ba3b41d9d03aeb24adf4e121964f",
@@ -51692,6 +53700,7 @@
     "web/script-create.css": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f",
     "web/source-diagnostic.css": "a828c9e3715289ea58cc3368d53f1874e1c2f357ee5c85aefa0c1bd479ed011f",
     "web/source-indentation.css": "ca24d4adc974587d3204dc10ffe7d7dc0a9c7da6914916998cabcb8539de6f94",
-    "web/source-position.css": "ae0327cf02712f42bb1c95ee1ecc04e2788b3288cf098a01134b31f274ce01a0"
+    "web/source-position.css": "ae0327cf02712f42bb1c95ee1ecc04e2788b3288cf098a01134b31f274ce01a0",
+    "web/source-search.css": "23bf315ff971e0a21caa3ba677123c93f371becaf2167a9605b5c54048bfa615"
   }
 }
