@@ -6,6 +6,7 @@ import { constants } from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { createScene3DPlan, parseScene3DSource } from '../../engine/scene3d.mjs';
+import { prepareScene3DParticleField, sampleScene3DParticleField } from '../../engine/scene3d-particles.mjs';
 import { generateGodotScene3DProject } from '../backends/godot4-scene3d.mjs';
 import { runBuildProcess } from '../lib/build-process.mjs';
 
@@ -89,7 +90,7 @@ export async function exportScene3DProject({ input, output, signal } = {}) {
     const inventory = [];
     for (const [name, bytes] of files) { abort(signal); await writeOwned(pin, name, bytes); inventory.push({ path: name, bytes: bytes.length, sha256: hash(bytes), role: name === 'source.json' ? 'author-source' : name === 'plan.json' ? 'neutral-plan' : 'generated-backend' }); }
     const manifest = freeze({ format: 'viento-scene3d-project', schemaVersion: 1,
-      backend: { id: 'org.viento.godot4', majorVersion: 4, prototype: true, capabilities: ['scene3d.static-boxes', 'scene3d.camera', 'scene3d.directional-light', 'scene3d.xyz-transforms', 'scene3d.finite-probe'] },
+      backend: { id: 'org.viento.godot4', majorVersion: 4, prototype: true, capabilities: ['scene3d.static-boxes', 'scene3d.camera', 'scene3d.directional-light', 'scene3d.xyz-transforms', 'scene3d.finite-probe', ...(captured.plan.scene.fog ? ['scene3d.distance-fog'] : []), ...(captured.plan.scene.particleField ? ['scene3d.particle-field'] : [])] },
       coordinateSystem: { handedness: 'right', up: '+Y', forward: '-Z', rotation: 'EulerXYZ-degrees' },
       source: { path: 'source.json', bytes: sourceBytes.length, sha256: captured.sourceSha256 }, plan: { path: 'plan.json', bytes: planBytes.length, sha256: hash(planBytes) },
       project: { entry: 'project.godot', scene: 'scene.tscn', runtime: 'runtime.gd' }, files: inventory });
@@ -115,15 +116,49 @@ async function assertReceipt(receipt) {
   }};
   await inspect(pin.directory);await assertRoot(pin);return pin;
 }
-function matchesProbe(plan, probe) {
+function matchesProbe(plan, probe, unavailableParticleData = false) {
   const record=(value,keys)=>value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).length===keys.length&&keys.every(key=>Object.hasOwn(value,key));
   const approximate=(actual,expected,tolerance=3e-7)=>typeof actual==='number'&&Number.isFinite(actual)&&Math.abs(actual-expected)<=tolerance*Math.max(1,Math.abs(expected));
   const vector=(actual,expected,tolerance)=>Array.isArray(actual)&&actual.length===expected.length&&actual.every((value,index)=>approximate(value,expected[index],tolerance));
   const direction=value=>{const scale=Math.max(...value.map(Math.abs)),scaled=value.map(component=>component/scale),length=Math.hypot(...scaled);return scaled.map(component=>component/length);};
   const rgba=value=>[...([1,3,5].map(start=>parseInt(value.slice(start,start+2),16)/255)),1];
   const basis=angles=>{const[x,y,z]=angles.map(value=>value*Math.PI/180),cx=Math.cos(x),sx=Math.sin(x),cy=Math.cos(y),sy=Math.sin(y),cz=Math.cos(z),sz=Math.sin(z);return [[cy*cz,cx*sz+sx*sy*cz,sx*sz-cx*sy*cz],[-cy*sz,cx*cz-sx*sy*sz,sx*cz+cx*sy*sz],[sy,-sx*cy,cx*cy]];};
-  const scene=plan.scene;
-  return record(probe,['format','schemaVersion','ok','issues','objectCount','objects','camera','light','coordinateSystem','rotationOrder','scope'])
+  const scene=plan.scene, fogKeys=['mode','enabled','density','color','lightEnergy','heightDensity','sunScatter','aerialPerspective','skyAffect'];
+  // Godot stores density as float32. A relative check preserves tiny authored
+  // values without accepting a forged zero through a broad absolute tolerance.
+  const densityMatches=(actual,expected)=>typeof actual==='number'&&Number.isFinite(actual)
+    &&Math.abs(actual-Math.fround(expected))<=3e-7*Math.max(Math.abs(Math.fround(expected)),1e-45);
+  const fogMatches=!scene.fog||(record(probe?.fog,fogKeys)&&probe.fog.mode===0&&probe.fog.enabled===(scene.fog.density>0)
+    &&densityMatches(probe.fog.density,scene.fog.density)&&vector(probe.fog.color,rgba(scene.fog.color))
+    &&probe.fog.lightEnergy===1&&['heightDensity','sunScatter','aerialPerspective','skyAffect'].every(key=>probe.fog[key]===0));
+  let particlesMatch = true;
+  if (scene.particleField) {
+    const { field, phases } = prepareScene3DParticleField(scene.particleField), actual = probe?.particleField;
+    const keys = ['instanceCount','visibleInstanceCount','transformFormat','useCustomData','center','extent','size','color','aabb','phases','basesIdentity','samples','clock','nodePosition','displayDriver','instanceDataAvailable'];
+    const bounds = field.extent.map((value, axis) => value + field.size[axis]), times = [0, .5, 2, 3600];
+    // Every uploaded phase must be exactly the Rust-generated float32 value.
+    // Offset is independently recomputed by the pure core, never trusted from
+    // the generated plan or a shader's unobservable deformed vertex position.
+    const exactFloatVector = (value, expected) => Array.isArray(value) && value.length === expected.length
+      && value.every((component, axis) => component === Math.fround(expected[axis]));
+    particlesMatch = Boolean(record(actual, keys) && actual.instanceCount === field.count && actual.visibleInstanceCount === field.count
+      && typeof actual.displayDriver === 'string' && actual.displayDriver.length > 0
+      && actual.instanceDataAvailable === !unavailableParticleData
+      && actual.instanceDataAvailable === (field.count === 0 || actual.displayDriver !== 'headless')
+      && (!unavailableParticleData || field.count > 0 && actual.displayDriver === 'headless')
+      && actual.transformFormat === 1 && actual.useCustomData === false && actual.basesIdentity === true && vector(actual.nodePosition, [0,0,0])
+      && record(actual.clock, ['timeSeconds','processing']) && actual.clock.timeSeconds === 3600 && actual.clock.processing === false
+      && vector(actual.center, field.center) && vector(actual.extent, field.extent) && vector(actual.size, field.size)
+      && vector(actual.color, rgba(field.color)) && record(actual.aabb, ['position','size'])
+      && vector(actual.aabb.position, bounds.map((value, axis) => field.center[axis] - value / 2)) && vector(actual.aabb.size, bounds)
+      && Array.isArray(actual.phases) && actual.phases.length === field.count
+      && actual.phases.every((phase, index) => exactFloatVector(phase, unavailableParticleData ? [0,0,0] : phases[index]))
+      && Array.isArray(actual.samples) && actual.samples.length === times.length
+      && actual.samples.every((sample, index) => record(sample, ['timeSeconds','offset']) && sample.timeSeconds === times[index]
+        && exactFloatVector(sample.offset, sampleScene3DParticleField(field, times[index]).offset)));
+  }
+  return record(probe,['format','schemaVersion','ok','issues','objectCount','objects','camera','light','coordinateSystem','rotationOrder','scope',...(scene.fog?['fog']:[]),...(scene.particleField?['particleField']:[])])
+    &&fogMatches&&particlesMatch
     &&probe.format==='viento-scene3d-probe'&&probe.schemaVersion===1&&probe.ok===true&&Array.isArray(probe.issues)&&!probe.issues.length
     &&probe.coordinateSystem==='RH-Y-up-negative-Z-forward'&&probe.rotationOrder==='XYZ'&&typeof probe.scope==='string'
     &&probe.objectCount===scene.objects.length&&Array.isArray(probe.objects)&&probe.objects.length===scene.objects.length
@@ -162,6 +197,9 @@ export async function executeScene3DProject(receipt, { godotBin, run = false, si
   let probe; try { if (lines.length === 1) probe = JSON.parse(lines[0].slice('VIENTO_SCENE3D_PROBE '.length)); } catch { /* Invalid receipt fails closed below. */ }
   if (!probe || probe.format !== 'viento-scene3d-probe' || probe.schemaVersion !== 1 || probe.ok !== true || !Array.isArray(probe.issues) || probe.issues.length || !Array.isArray(probe.objects)) return { ok: false, phases, errorCode: 'scene3d_probe_invalid' };
   const plan = JSON.parse((await regularBytes(path.join(pin.directory, 'plan.json'), 1024 * 1024, pin.files.find(file => file.path === 'plan.json'))).bytes);
-  if (!matchesProbe(plan,probe)) return { ok: false, phases, errorCode: 'scene3d_probe_invalid' };
-  return { ok: true, phases, tool: { path: tool, sha256: toolPin.sha256, version: phases[0].stdout.trim() }, probe, scope: 'Actual headless Godot static tree/transform/material probe; no installed editor, GPU pixel capture or 2D runtime protocol acceptance.' };
+  const unavailableParticleData = plan.scene.particleField?.count > 0 && probe.particleField?.displayDriver === 'headless' && probe.particleField?.instanceDataAvailable === false;
+  if (!matchesProbe(plan,probe,unavailableParticleData)) return { ok: false, phases, errorCode: 'scene3d_probe_invalid' };
+  if (unavailableParticleData) return { ok: false, phases, probe, errorCode: 'scene3d_particle_probe_unavailable',
+    scope: 'Godot headless uses a dummy renderer and cannot read back MultiMesh instance buffers. Import/script checks and environment/material/bounds/time uniforms were validated; particle instance data and deformed GPU pixels require a separately authorized rendering proof. No display process was started.' };
+  return { ok: true, phases, tool: { path: tool, sha256: toolPin.sha256, version: phases[0].stdout.trim() }, probe, scope: plan.scene.particleField ? 'Actual headless Godot scene and MultiMesh data/material/bounds plus explicit-time offset probe checked against the Rust core; no shader-deformed GPU pixel verification, cross-renderer pixel equivalence, physics, gameplay or 2D runtime protocol acceptance.' : plan.scene.fog ? 'Actual headless Godot static tree/transform/material and declared environment-property probe; no installed editor, GPU pixel capture, WebGL/Godot pixel equivalence or 2D runtime protocol acceptance.' : 'Actual headless Godot static tree/transform/material probe; no installed editor, GPU pixel capture or 2D runtime protocol acceptance.' };
 }

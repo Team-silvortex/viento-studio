@@ -1,0 +1,83 @@
+{
+  "format": "viento-scene3d-fog-core-verification",
+  "version": "0.1.0",
+  "ok": true,
+  "scope": "Native shared scene3d parsing/environment patching, real WASM bridge and private proposal/apply, forged receipt rejection, and fresh native/WASM conformance. No renderer, UI, backend engine, installation or device claim.",
+  "native": {
+    "passed": 317,
+    "failed": 0,
+    "ignored": 0,
+    "targets": 9,
+    "newFogTests": 10,
+    "command": "CARGO_NET_OFFLINE=true CARGO_TARGET_DIR=<temporary core target> cargo test --locked --manifest-path crates/viento-studio-core/Cargo.toml",
+    "binarySha256": "82af81b311448778018fc4c6693b296774e7cf212970776f9fa85340b8c85bc0"
+  },
+  "javascript": {
+    "compatibility": {
+      "tests": 40,
+      "pass": 40,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "fogCoreAndBridge": {
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "reporter": "spec"
+    },
+    "fogNativeWasmParity": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "requests": 28
+    },
+    "node": "v24.21.0",
+    "nativeEnvironment": "VIENTO_STUDIO_CORE_BIN=<temporary core target>/debug/viento-core"
+  },
+  "wasm": {
+    "bytes": 605841,
+    "sha256": "ce6a089280ce8b64169a27fc69b8a923dc7307531f561913d5d4248c77c583cf",
+    "sourceHash": "30d39a3274a99ce8b40fe03ff0117df50b2c3baf9186511b99a3065599b8cc8f",
+    "buildMetadataSha256": "59b904da58b831260f4db2500c909062fc12589bc4c8b9634ddeae2e47409ce7",
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "export": "viento_core_scene3d_fog_version",
+    "fogVersion": 1
+  },
+  "files": {
+    "crates/viento-studio-core/src/scene3d.rs": "4238e39c3940fa7f3178299ce50c5a1f452d2975b95ef92ab3836471f31bd812",
+    "crates/viento-studio-core/src/scene3d_environment_patch.rs": "e541992440dca061892644a4f41fd4b6278f2ea8acdec16b4f24260fd6f09f3b",
+    "crates/viento-studio-core/src/lib.rs": "f5716e84a17c1425248fb4f464eed48cacc03221e40e5e621a5d298447fd95d8",
+    "engine/studio-core.mjs": "a4cdf5c356dc0f1a470d3fb0bc5832ea28b4da2afa386b05d6c5a74336defd01",
+    "engine/scene3d-environment.mjs": "48aad288be91354033ca73d5d159171a8728da9351bc98481110c2af5173be4f",
+    "schemas/scene3d-v1.schema.json": "0d687ed4a699750fd8a2d7515491bc2f812dd7bbaf2a42f60eb0be7e5c09e685",
+    "scripts/tests/scene3d-fog-core.test.mjs": "d95ba7e808ec3ef412e0314dd5ffd0c64cbec34de6a08a25bfc38b43cb84ba43",
+    "scripts/tests/scene3d-fog-bridge.test.mjs": "ceeb65f0d43d5d07addc40370a393c1a98e90f7a9c7d1bb2828371a189b9313b",
+    "scripts/tests/studio-core-scene3d-fog-parity.test.mjs": "f68ee6ceef3cd27abe23753ec51bca6dbba14e9f8db3bd3679b451e28c6292f5"
+  },
+  "evidence": {
+    "core/fog-core-tests-final.log": "a852c517ecfbc1605aa016acb027af7de9601a70fb308ef39356ead754674420",
+    "core/fog-parity-tests.tap": "483142e91e85304f6b8c85c49dc874d1478a2a59969c990d31e5de9fa4d8e3c9",
+    "core/core-compatibility-tests.tap": "d24ebae3523a13bbfb2d79fd26848122509f88c6ed172769f1b7084ef747f4e3",
+    "core/wasm-build.log": "1fa342d9bde593b047c3324d2b6811fbacc042b411fffc807668b7486844351e",
+    "core/native-tests.log": "ec42664e3e87105a3ea0320078a8353830cfe77feb0fa36bc12da86591e680c5"
+  },
+  "boundaries": [
+    "schemaVersion 1 retains absent fog and supports optional exact color/density only; zero disables without removing author declaration.",
+    "Complete fog edits add one canonical root-end span or change existing leaf tokens; old raw keys, numeric spellings, BOM, CRLF and unrelated bytes remain bound.",
+    "Insertion is independently checked and stripped before the unchanged original leaf/token inventory checks; native full-model admission binds final semantics.",
+    "Missing fog probe rejects fog edit or forged fog parse receipts while old no-fog parsing and ordinary environment editing remain available.",
+    "Native/WASM parity includes subnormal density, escaped source, duplicate raw requests, complete-source budget, and old transform/copy domains on fog scenes."
+  ],
+  "detailedReport": {
+    "path": "core/core-report.json",
+    "sha256": "a10c1f6c611f0ca81ccf308f36d2eae3a42145db6592f5d3fb988dcb1060cc7e"
+  }
+}

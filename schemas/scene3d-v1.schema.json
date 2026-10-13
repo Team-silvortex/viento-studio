@@ -184,6 +184,96 @@
           }
         }
       }
+    },
+    "fog": {
+      "type": "object",
+      "description": "Optional exponential distance fog. Density is inverse scene units; absent fog or density 0 disables it.",
+      "additionalProperties": false,
+      "required": [
+        "color",
+        "density"
+      ],
+      "properties": {
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "density": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "particleField": {
+      "type": "object",
+      "description": "Optional deterministic repeating box particle field. Count zero disables; absent stays absent. Each size component must not exceed its extent component (enforced by the shared Rust core).",
+      "additionalProperties": false,
+      "required": [
+        "center",
+        "extent",
+        "velocity",
+        "size",
+        "color",
+        "count",
+        "seed"
+      ],
+      "properties": {
+        "center": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number",
+            "minimum": -100000,
+            "maximum": 100000
+          }
+        },
+        "extent": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 10000
+          }
+        },
+        "velocity": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number",
+            "minimum": -1000,
+            "maximum": 1000
+          }
+        },
+        "size": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number",
+            "minimum": 0.001,
+            "maximum": 1000
+          }
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{6}$"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      }
     }
   }
 }

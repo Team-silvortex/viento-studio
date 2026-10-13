@@ -116,19 +116,23 @@ pub(crate) fn parse(content: &str) -> Result<Scene3DResponse, CoreError> {
     let node = parse_json_source(content).map_err(|_| invalid())?;
     let source: Value = serde_json::from_str(content.strip_prefix('\u{feff}').unwrap_or(content))
         .map_err(|_| invalid())?;
-    exact(
-        &source,
-        &[
-            "format",
-            "schemaVersion",
-            "name",
-            "viewport",
-            "background",
-            "camera",
-            "light",
-            "objects",
-        ],
-    )?;
+    let mut keys = vec![
+        "format",
+        "schemaVersion",
+        "name",
+        "viewport",
+        "background",
+        "camera",
+        "light",
+        "objects",
+    ];
+    if source.get("fog").is_some() {
+        keys.push("fog");
+    }
+    if source.get("particleField").is_some() {
+        keys.push("particleField");
+    }
+    exact(&source, &keys)?;
     if source["format"].as_str() != Some("viento-scene3d")
         || source["schemaVersion"].as_f64() != Some(1.0)
     {
@@ -136,6 +140,14 @@ pub(crate) fn parse(content: &str) -> Result<Scene3DResponse, CoreError> {
     }
     name(&source["name"])?;
     color(&source["background"])?;
+    if let Some(fog) = source.get("fog") {
+        exact(fog, &["color", "density"])?;
+        color(&fog["color"])?;
+        number(&fog["density"], 0.0, 1.0)?;
+    }
+    if let Some(field) = source.get("particleField") {
+        crate::scene3d_particles::validate_field(field).map_err(|_| invalid())?;
+    }
     let viewport = source["viewport"].as_array().ok_or_else(invalid)?;
     if viewport.len() != 2 {
         return Err(invalid());
@@ -471,5 +483,95 @@ mod tests {
         assert!(parse(&content).is_ok());
         content.push(' ');
         assert_eq!(parse(&content).unwrap_err().error_code, "scene3d_limit");
+    }
+}
+
+#[cfg(test)]
+mod fog_tests {
+    use super::*;
+    fn scene() -> Value {
+        serde_json::from_str(include_str!("../../../examples/scene3d/scene.json")).unwrap()
+    }
+    #[test]
+    fn optional_fog_preserves_presence_zero_and_full_precision_without_adding_defaults() {
+        let original = scene();
+        assert!(parse(&original.to_string())
+            .unwrap()
+            .model
+            .get("fog")
+            .is_none());
+        for density in [0.0, 1.0, 0.0000001, 0.12345678901234566] {
+            let mut value = original.clone();
+            value["fog"] = json!({"color":"#ab12EF","density":density});
+            let result = parse(&value.to_string()).unwrap();
+            assert_eq!(result.model["fog"], value["fog"]);
+            assert_eq!(result.model["objects"], original["objects"]);
+        }
+    }
+    #[test]
+    fn fog_is_an_exact_complete_record_with_bounded_finite_density_and_six_digit_color() {
+        for fog in [
+            json!(null),
+            json!(false),
+            json!([]),
+            json!({}),
+            json!({"color":"#ffffff"}),
+            json!({"density":0.1}),
+            json!({"color":"#ffffff","density":0.1,"enabled":true}),
+            json!({"color":"#ffff","density":0.1}),
+            json!({"color":"red","density":0.1}),
+            json!({"color":"#ffffff","density":-0.01}),
+            json!({"color":"#ffffff","density":1.01}),
+            json!({"color":"#ffffff","density":"0.1"}),
+            json!({"color":"#ffffff","density":null}),
+        ] {
+            let mut value = scene();
+            value["fog"] = fog;
+            assert_eq!(
+                parse(&value.to_string()).unwrap_err().error_code,
+                "scene3d_invalid"
+            );
+        }
+    }
+    #[test]
+    fn fog_decoded_duplicates_and_nonfinite_wire_numbers_fail_native_admission() {
+        let source = scene().to_string();
+        let root = source.rfind('}').unwrap();
+        for suffix in [
+            r##", "fog":{"color":"#ffffff","density":0.1},"fo\u0067":{"color":"#ffffff","density":0.2}"##,
+            r##", "fog":{"color":"#ffffff","co\u006cor":"#000000","density":0.1}"##,
+            r##", "fog":{"color":"#ffffff","density":0,"den\u0073ity":0.1}"##,
+            r##", "fog":{"color":"#ffffff","density":1e999}"##,
+        ] {
+            let input = format!("{}{}{}", &source[..root], suffix, &source[root..]);
+            assert_eq!(parse(&input).unwrap_err().error_code, "scene3d_invalid");
+        }
+    }
+    #[test]
+    fn escaped_fog_declaration_keeps_utf16_object_locations_and_all_author_values() {
+        let mut value = scene();
+        value["name"] = json!("霧 / Fog / 🦊");
+        value["fog"] = json!({"color":"#abcdef","density":0.125});
+        let content = format!(
+            "\u{feff}{}\r\n \t",
+            serde_json::to_string_pretty(&value)
+                .unwrap()
+                .replace('\n', "\r\n")
+        )
+        .replace("\"fog\"", "\"fo\\u0067\"")
+        .replace("\"density\": 0.125", "\"den\\u0073ity\": 125e-3")
+        .replace("#abcdef", "#abcd\\u0065f");
+        let response = parse(&content).unwrap();
+        assert_eq!(response.model["fog"], value["fog"]);
+        let units = content.encode_utf16().collect::<Vec<_>>();
+        for (index, location) in response.source_locations.objects.iter().enumerate() {
+            let raw =
+                String::from_utf16(&units[location.source_range.start..location.source_range.end])
+                    .unwrap();
+            assert_eq!(
+                serde_json::from_str::<Value>(&raw).unwrap(),
+                value["objects"][index]
+            );
+        }
     }
 }

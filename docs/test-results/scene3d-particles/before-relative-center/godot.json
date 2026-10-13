@@ -1,0 +1,3537 @@
+{
+  "format": "viento-scene3d-particles-godot-evidence",
+  "schemaVersion": 1,
+  "ok": true,
+  "scope": "Actual pinned Linux Godot identify/import/script-check and headless MultiMesh resource/data/material/AABB plus explicit-time shader-uniform probe. Host compares phases and offsets to the independent Rust core. No headless proof of shader-deformed GPU pixels, visual rain/snow realism, WebGL/Godot pixel equality, physics, gameplay, Android or installation.",
+  "node": {
+    "executable": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+    "dev": 66306,
+    "ino": 4460413,
+    "bytes": 146414384,
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "sourcesBefore": {
+    "scripts/backends/godot4-scene3d.mjs": {
+      "bytes": 8498,
+      "sha256": "86b320a610c26e3f85a5a72569cff1c4ddc38fcbbb6658dac6a0be8121f1c41a"
+    },
+    "scripts/backends/godot3d/runtime.gd": {
+      "bytes": 11143,
+      "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+    },
+    "scripts/adapters/node-scene3d-export.mjs": {
+      "bytes": 20980,
+      "sha256": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8"
+    },
+    "scripts/tests/scene3d-particles-backend.test.mjs": {
+      "bytes": 13146,
+      "sha256": "f71c501ca7c25140223d9710c5d5e9dfae534807ced9ad98ce8fa9b36e0d49fc"
+    },
+    "engine/scene3d.mjs": {
+      "bytes": 1569,
+      "sha256": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06"
+    },
+    "engine/scene3d-particles.mjs": {
+      "bytes": 861,
+      "sha256": "60d040e773ddfee5803aacba49b6a9456f5e6de7f2eb3265e2ef09cbcc03f509"
+    },
+    "engine/studio-core.mjs": {
+      "bytes": 143630,
+      "sha256": "2e0aa9235d700e1246bd3a529554b762ea6d034b4635d339b36917d9020fad64"
+    },
+    "engine/studio-core.wasm": {
+      "bytes": 628825,
+      "sha256": "47ca1f48b07a5e9dc6a02052860b2ddc633fc92dd20e14f1139ba761fd446e0f"
+    }
+  },
+  "cases": [
+    {
+      "name": "absent",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-godot-uVte58",
+        "dev": 50,
+        "ino": 7046110,
+        "removed": true
+      },
+      "sourceSha256": "70953291192d0c4bbd9483610aa89a9dabc0faa8f7df338e40f2ec925e1c9d5d",
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1649,
+          "sha256": "70953291192d0c4bbd9483610aa89a9dabc0faa8f7df338e40f2ec925e1c9d5d"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 1778,
+          "sha256": "6f1a150b191aed556346dfdd2daafa9dd043226692902e4af50ec3b0ede0ca5e"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1649,
+            "sha256": "70953291192d0c4bbd9483610aa89a9dabc0faa8f7df338e40f2ec925e1c9d5d",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 1778,
+            "sha256": "6f1a150b191aed556346dfdd2daafa9dd043226692902e4af50ec3b0ede0ca5e",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 2854,
+            "sha256": "f64dcbf82c14198c5fe83b2d5e026914089b9488453f274c651f43e16b97e190",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 11143,
+            "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "execution": {
+        "ok": true,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 32,
+              "sha256": "edff16c1721dd4ae989cadf29a01f574ae8d51b118221f664725bd6980bbba5d"
+            },
+            "stderr": "",
+            "durationMs": 60
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 1017,
+              "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+            },
+            "stderr": "",
+            "durationMs": 3514
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 73,
+              "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+            },
+            "stderr": "",
+            "durationMs": 268
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 1939,
+              "sha256": "ca7cfc8f6734609bcfe9cb4f0c2ea661280ac98a385d565e68c52cb5a7b91566"
+            },
+            "stderr": "",
+            "durationMs": 263
+          }
+        ],
+        "tool": {
+          "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+          "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+          "version": "4.7.2.stable.official.ed1daf0bf"
+        },
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.610959827899933,
+              -0.407306551933289,
+              -0.678844213485718
+            ],
+            "fovDegrees": 50,
+            "near": 0.100000001490116,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.20000004768372,
+            "forward": [
+              -0.268328160047531,
+              -0.894427239894867,
+              -0.357770889997482
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.196078434586525,
+                0.278431385755539,
+                0.380392163991928,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.150000005960464,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.300000011920929,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.906307756900787,
+                  0,
+                  -0.422618269920349
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.422618269920349,
+                  0,
+                  0.906307756900787
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.847058832645416,
+                0.725490212440491,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.806707262992859,
+                  0.356370270252228,
+                  -0.471406012773514
+                ],
+                [
+                  -0.142244264483452,
+                  0.891351163387299,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479,
+                  -0.280166476964951,
+                  0.769751131534576
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.945098042488098,
+                0.768627464771271,
+                0.431372553110123,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.79999995231628,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.600000023841858,
+                0.600000023841858,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "scope": "Actual headless Godot static tree/transform/material probe; no installed editor, GPU pixel capture or 2D runtime protocol acceptance."
+      },
+      "outcome": "verified",
+      "generatedFiles": [
+        {
+          "path": "source.json",
+          "bytes": 1649,
+          "sha256": "70953291192d0c4bbd9483610aa89a9dabc0faa8f7df338e40f2ec925e1c9d5d"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 1778,
+          "sha256": "6f1a150b191aed556346dfdd2daafa9dd043226692902e4af50ec3b0ede0ca5e"
+        },
+        {
+          "path": "project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "scene.tscn",
+          "bytes": 2854,
+          "sha256": "f64dcbf82c14198c5fe83b2d5e026914089b9488453f274c651f43e16b97e190"
+        },
+        {
+          "path": "runtime.gd",
+          "bytes": 11143,
+          "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+        },
+        {
+          "path": "scene3d-project.json",
+          "bytes": 1770,
+          "sha256": "dbb212ba00743ea5fd627ad58211707ebff3c893337e0d65ba61762f57f3c5f1"
+        }
+      ]
+    },
+    {
+      "name": "disabled",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-godot-MQ4kcU",
+        "dev": 50,
+        "ino": 7047768,
+        "removed": true
+      },
+      "sourceSha256": "becc17acb56f9ff5fe3e7af8a57db2a26e59ce24680c6521bd5a341c167d970d",
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.particle-field"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1974,
+          "sha256": "becc17acb56f9ff5fe3e7af8a57db2a26e59ce24680c6521bd5a341c167d970d"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 2128,
+          "sha256": "790329d8aa7dee1cdd4794286a06b2e3ecdb0d20fccbcd51fc996f7a036908dc"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1974,
+            "sha256": "becc17acb56f9ff5fe3e7af8a57db2a26e59ce24680c6521bd5a341c167d970d",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 2128,
+            "sha256": "790329d8aa7dee1cdd4794286a06b2e3ecdb0d20fccbcd51fc996f7a036908dc",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 4468,
+            "sha256": "9f5936e0a5c3b3adad70db3a0e9b0ec1cdc252f63190054dde6de88bfe923e46",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 11143,
+            "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "execution": {
+        "ok": true,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 32,
+              "sha256": "edff16c1721dd4ae989cadf29a01f574ae8d51b118221f664725bd6980bbba5d"
+            },
+            "stderr": "",
+            "durationMs": 35
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 1017,
+              "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+            },
+            "stderr": "",
+            "durationMs": 3079
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 73,
+              "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+            },
+            "stderr": "",
+            "durationMs": 277
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 2836,
+              "sha256": "40743c8cf06fa94e64392488bffb1d1097f0432cf7d439d43465a3b6468fefdd"
+            },
+            "stderr": "",
+            "durationMs": 275
+          }
+        ],
+        "tool": {
+          "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+          "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+          "version": "4.7.2.stable.official.ed1daf0bf"
+        },
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.6109598278999329,
+              -0.4073065519332886,
+              -0.6788442134857178
+            ],
+            "fovDegrees": 50,
+            "near": 0.10000000149011612,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.2000000476837158,
+            "forward": [
+              -0.26832816004753113,
+              -0.8944272398948669,
+              -0.3577708899974823
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.19607843458652496,
+                0.27843138575553894,
+                0.3803921639919281,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.15000000596046448,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.30000001192092896,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.9063077569007874,
+                  0,
+                  -0.4226182699203491
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.4226182699203491,
+                  0,
+                  0.9063077569007874
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.8470588326454163,
+                0.7254902124404907,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.8067072629928589,
+                  0.3563702702522278,
+                  -0.4714060127735138
+                ],
+                [
+                  -0.14224426448345184,
+                  0.8913511633872986,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479004,
+                  -0.28016647696495056,
+                  0.7697511315345764
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.9450980424880981,
+                0.7686274647712708,
+                0.4313725531101227,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.7999999523162842,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.6000000238418579,
+                0.6000000238418579,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "particleField": {
+            "aabb": {
+              "position": [
+                -5.017499923706055,
+                -1.3250000476837158,
+                -5.017499923706055
+              ],
+              "size": [
+                10.03499984741211,
+                8.649999618530273,
+                10.03499984741211
+              ]
+            },
+            "basesIdentity": true,
+            "center": [
+              0,
+              3,
+              0
+            ],
+            "clock": {
+              "processing": false,
+              "timeSeconds": 3600
+            },
+            "color": [
+              0.6666666865348816,
+              0.800000011920929,
+              0.9333333373069763,
+              1
+            ],
+            "displayDriver": "headless",
+            "extent": [
+              10,
+              8,
+              10
+            ],
+            "instanceCount": 0,
+            "instanceDataAvailable": true,
+            "nodePosition": [
+              0,
+              0,
+              0
+            ],
+            "phases": {
+              "count": 0,
+              "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+            },
+            "samples": [
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 0
+              },
+              {
+                "offset": [
+                  0.012500000186264515,
+                  0.625,
+                  0.9750000238418579
+                ],
+                "timeSeconds": 0.5
+              },
+              {
+                "offset": [
+                  0.05000000074505806,
+                  0.5,
+                  0.8999999761581421
+                ],
+                "timeSeconds": 2
+              },
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 3600
+              }
+            ],
+            "size": [
+              0.03500000014901161,
+              0.6499999761581421,
+              0.03500000014901161
+            ],
+            "transformFormat": 1,
+            "useCustomData": false,
+            "visibleInstanceCount": 0
+          },
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "scope": "Actual headless Godot scene and MultiMesh data/material/bounds plus explicit-time offset probe checked against the Rust core; no shader-deformed GPU pixel verification, cross-renderer pixel equivalence, physics, gameplay or 2D runtime protocol acceptance."
+      },
+      "outcome": "verified",
+      "generatedFiles": [
+        {
+          "path": "source.json",
+          "bytes": 1974,
+          "sha256": "becc17acb56f9ff5fe3e7af8a57db2a26e59ce24680c6521bd5a341c167d970d"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 2128,
+          "sha256": "790329d8aa7dee1cdd4794286a06b2e3ecdb0d20fccbcd51fc996f7a036908dc"
+        },
+        {
+          "path": "project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "scene.tscn",
+          "bytes": 4468,
+          "sha256": "9f5936e0a5c3b3adad70db3a0e9b0ec1cdc252f63190054dde6de88bfe923e46"
+        },
+        {
+          "path": "runtime.gd",
+          "bytes": 11143,
+          "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+        },
+        {
+          "path": "scene3d-project.json",
+          "bytes": 1802,
+          "sha256": "f72dd3333b92713e59114ca5cd606eeb1cf086639233d6edede23cb5cda1ade9"
+        }
+      ]
+    },
+    {
+      "name": "rain",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-godot-2LBWeQ",
+        "dev": 50,
+        "ino": 7049419,
+        "removed": true
+      },
+      "sourceSha256": "0e11578198c3e216ec70edfacde8bdbe66061436d697262c5aeb60e77689556f",
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.particle-field"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1975,
+          "sha256": "0e11578198c3e216ec70edfacde8bdbe66061436d697262c5aeb60e77689556f"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 2129,
+          "sha256": "d2da31744e498a9b03b70e82f6ddf8d2581f197342aaf205ae2a9077cbb8a581"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1975,
+            "sha256": "0e11578198c3e216ec70edfacde8bdbe66061436d697262c5aeb60e77689556f",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 2129,
+            "sha256": "d2da31744e498a9b03b70e82f6ddf8d2581f197342aaf205ae2a9077cbb8a581",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 6410,
+            "sha256": "68392f6a04e279453b6820939c62e25f7ca88393c0398435d06eda8a65bfd923",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 11143,
+            "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "execution": {
+        "ok": false,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 32,
+              "sha256": "edff16c1721dd4ae989cadf29a01f574ae8d51b118221f664725bd6980bbba5d"
+            },
+            "stderr": "",
+            "durationMs": 41
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 1017,
+              "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+            },
+            "stderr": "",
+            "durationMs": 3060
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 73,
+              "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+            },
+            "stderr": "",
+            "durationMs": 274
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 3286,
+              "sha256": "48eb473420fc66277131d996ee7d1c4b58fb7a2159ee18b90e0e327d8ef81b18"
+            },
+            "stderr": "",
+            "durationMs": 272
+          }
+        ],
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.6109598278999329,
+              -0.4073065519332886,
+              -0.6788442134857178
+            ],
+            "fovDegrees": 50,
+            "near": 0.10000000149011612,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.2000000476837158,
+            "forward": [
+              -0.26832816004753113,
+              -0.8944272398948669,
+              -0.3577708899974823
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.19607843458652496,
+                0.27843138575553894,
+                0.3803921639919281,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.15000000596046448,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.30000001192092896,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.9063077569007874,
+                  0,
+                  -0.4226182699203491
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.4226182699203491,
+                  0,
+                  0.9063077569007874
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.8470588326454163,
+                0.7254902124404907,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.8067072629928589,
+                  0.3563702702522278,
+                  -0.4714060127735138
+                ],
+                [
+                  -0.14224426448345184,
+                  0.8913511633872986,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479004,
+                  -0.28016647696495056,
+                  0.7697511315345764
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.9450980424880981,
+                0.7686274647712708,
+                0.4313725531101227,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.7999999523162842,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.6000000238418579,
+                0.6000000238418579,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "particleField": {
+            "aabb": {
+              "position": [
+                -5.017499923706055,
+                -1.3250000476837158,
+                -5.017499923706055
+              ],
+              "size": [
+                10.03499984741211,
+                8.649999618530273,
+                10.03499984741211
+              ]
+            },
+            "basesIdentity": true,
+            "center": [
+              0,
+              3,
+              0
+            ],
+            "clock": {
+              "processing": false,
+              "timeSeconds": 3600
+            },
+            "color": [
+              0.6666666865348816,
+              0.800000011920929,
+              0.9333333373069763,
+              1
+            ],
+            "displayDriver": "headless",
+            "extent": [
+              10,
+              8,
+              10
+            ],
+            "instanceCount": 32,
+            "instanceDataAvailable": false,
+            "nodePosition": [
+              0,
+              0,
+              0
+            ],
+            "phases": {
+              "count": 32,
+              "sha256": "df280e7b54fbba9a1e113309fa17ed0940efdff0720eccf5ac75aa97bb1e6259",
+              "first": [
+                0,
+                0,
+                0
+              ],
+              "last": [
+                0,
+                0,
+                0
+              ]
+            },
+            "samples": [
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 0
+              },
+              {
+                "offset": [
+                  0.012500000186264515,
+                  0.625,
+                  0.9750000238418579
+                ],
+                "timeSeconds": 0.5
+              },
+              {
+                "offset": [
+                  0.05000000074505806,
+                  0.5,
+                  0.8999999761581421
+                ],
+                "timeSeconds": 2
+              },
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 3600
+              }
+            ],
+            "size": [
+              0.03500000014901161,
+              0.6499999761581421,
+              0.03500000014901161
+            ],
+            "transformFormat": 1,
+            "useCustomData": false,
+            "visibleInstanceCount": 32
+          },
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "errorCode": "scene3d_particle_probe_unavailable",
+        "scope": "Godot headless uses a dummy renderer and cannot read back MultiMesh instance buffers. Import/script checks and environment/material/bounds/time uniforms were validated; particle instance data and deformed GPU pixels require a separately authorized rendering proof. No display process was started."
+      },
+      "outcome": "expected-dummy-instance-data-unavailable",
+      "generatedFiles": [
+        {
+          "path": "source.json",
+          "bytes": 1975,
+          "sha256": "0e11578198c3e216ec70edfacde8bdbe66061436d697262c5aeb60e77689556f"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 2129,
+          "sha256": "d2da31744e498a9b03b70e82f6ddf8d2581f197342aaf205ae2a9077cbb8a581"
+        },
+        {
+          "path": "project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "scene.tscn",
+          "bytes": 6410,
+          "sha256": "68392f6a04e279453b6820939c62e25f7ca88393c0398435d06eda8a65bfd923"
+        },
+        {
+          "path": "runtime.gd",
+          "bytes": 11143,
+          "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+        },
+        {
+          "path": "scene3d-project.json",
+          "bytes": 1802,
+          "sha256": "05929016010acf56175460a208b478e2ecf5ab54f0436f54b48bc17c38257d46"
+        }
+      ]
+    },
+    {
+      "name": "snow",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-godot-ovpteq",
+        "dev": 50,
+        "ino": 7055875,
+        "removed": true
+      },
+      "sourceSha256": "35034629ddf32dfeff1ff56802cc9f8526f304ce7387bedd2fbcd8615e1a9d62",
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.particle-field"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1971,
+          "sha256": "35034629ddf32dfeff1ff56802cc9f8526f304ce7387bedd2fbcd8615e1a9d62"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 2125,
+          "sha256": "356142a7d0e3e79a05e567a9d0d0490d622a0eff1726aa96c08ca025b590e9e2"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1971,
+            "sha256": "35034629ddf32dfeff1ff56802cc9f8526f304ce7387bedd2fbcd8615e1a9d62",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 2125,
+            "sha256": "356142a7d0e3e79a05e567a9d0d0490d622a0eff1726aa96c08ca025b590e9e2",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 8345,
+            "sha256": "ab1679ffdacec7a180a480bbf69f5e99afbaa9a2c12f1552cbc187b20854412f",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 11143,
+            "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "execution": {
+        "ok": false,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 32,
+              "sha256": "edff16c1721dd4ae989cadf29a01f574ae8d51b118221f664725bd6980bbba5d"
+            },
+            "stderr": "",
+            "durationMs": 40
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 1017,
+              "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+            },
+            "stderr": "",
+            "durationMs": 3115
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 73,
+              "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+            },
+            "stderr": "",
+            "durationMs": 268
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 3749,
+              "sha256": "e44ce79f11d6c8615ba5fc9ee82f986797f006b22a0d9e559a850a5e2429bc23"
+            },
+            "stderr": "",
+            "durationMs": 272
+          }
+        ],
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.6109598278999329,
+              -0.4073065519332886,
+              -0.6788442134857178
+            ],
+            "fovDegrees": 50,
+            "near": 0.10000000149011612,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.2000000476837158,
+            "forward": [
+              -0.26832816004753113,
+              -0.8944272398948669,
+              -0.3577708899974823
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.19607843458652496,
+                0.27843138575553894,
+                0.3803921639919281,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.15000000596046448,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.30000001192092896,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.9063077569007874,
+                  0,
+                  -0.4226182699203491
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.4226182699203491,
+                  0,
+                  0.9063077569007874
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.8470588326454163,
+                0.7254902124404907,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.8067072629928589,
+                  0.3563702702522278,
+                  -0.4714060127735138
+                ],
+                [
+                  -0.14224426448345184,
+                  0.8913511633872986,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479004,
+                  -0.28016647696495056,
+                  0.7697511315345764
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.9450980424880981,
+                0.7686274647712708,
+                0.4313725531101227,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.7999999523162842,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.6000000238418579,
+                0.6000000238418579,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "particleField": {
+            "aabb": {
+              "position": [
+                -5.059999942779541,
+                -1.059999942779541,
+                -5.059999942779541
+              ],
+              "size": [
+                10.119999885559082,
+                8.119999885559082,
+                10.119999885559082
+              ]
+            },
+            "basesIdentity": true,
+            "center": [
+              0,
+              3,
+              0
+            ],
+            "clock": {
+              "processing": false,
+              "timeSeconds": 3600
+            },
+            "color": [
+              0.9333333373069763,
+              0.9333333373069763,
+              1,
+              1
+            ],
+            "displayDriver": "headless",
+            "extent": [
+              10,
+              8,
+              10
+            ],
+            "instanceCount": 64,
+            "instanceDataAvailable": false,
+            "nodePosition": [
+              0,
+              0,
+              0
+            ],
+            "phases": {
+              "count": 64,
+              "sha256": "1b13c9cd3ec872f6073ebc03e64105d43978846e4ff4e1383f429edfc0fb8cd9",
+              "first": [
+                0,
+                0,
+                0
+              ],
+              "last": [
+                0,
+                0,
+                0
+              ]
+            },
+            "samples": [
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 0
+              },
+              {
+                "offset": [
+                  0.9900000095367432,
+                  0.956250011920929,
+                  0.007499999832361937
+                ],
+                "timeSeconds": 0.5
+              },
+              {
+                "offset": [
+                  0.9599999785423279,
+                  0.824999988079071,
+                  0.029999999329447746
+                ],
+                "timeSeconds": 2
+              },
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 3600
+              }
+            ],
+            "size": [
+              0.11999999731779099,
+              0.11999999731779099,
+              0.11999999731779099
+            ],
+            "transformFormat": 1,
+            "useCustomData": false,
+            "visibleInstanceCount": 64
+          },
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "errorCode": "scene3d_particle_probe_unavailable",
+        "scope": "Godot headless uses a dummy renderer and cannot read back MultiMesh instance buffers. Import/script checks and environment/material/bounds/time uniforms were validated; particle instance data and deformed GPU pixels require a separately authorized rendering proof. No display process was started."
+      },
+      "outcome": "expected-dummy-instance-data-unavailable",
+      "generatedFiles": [
+        {
+          "path": "source.json",
+          "bytes": 1971,
+          "sha256": "35034629ddf32dfeff1ff56802cc9f8526f304ce7387bedd2fbcd8615e1a9d62"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 2125,
+          "sha256": "356142a7d0e3e79a05e567a9d0d0490d622a0eff1726aa96c08ca025b590e9e2"
+        },
+        {
+          "path": "project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "scene.tscn",
+          "bytes": 8345,
+          "sha256": "ab1679ffdacec7a180a480bbf69f5e99afbaa9a2c12f1552cbc187b20854412f"
+        },
+        {
+          "path": "runtime.gd",
+          "bytes": 11143,
+          "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+        },
+        {
+          "path": "scene3d-project.json",
+          "bytes": 1802,
+          "sha256": "1096144ee1c1f43aedba7876396bff1ef5994084a77f44c65c18072a1f207669"
+        }
+      ]
+    },
+    {
+      "name": "negative-wrap",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-godot-QqYPJD",
+        "dev": 50,
+        "ino": 7063550,
+        "removed": true
+      },
+      "sourceSha256": "c58b5ee27fa7c8d22f48905a708fd18ced56714252f8694c83065cfa10e5d632",
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.particle-field"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1986,
+          "sha256": "c58b5ee27fa7c8d22f48905a708fd18ced56714252f8694c83065cfa10e5d632"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 2140,
+          "sha256": "8e6562f9f7af356d37c84947b0d8d32f105b55c132bfa9a30901c47273dbda14"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1986,
+            "sha256": "c58b5ee27fa7c8d22f48905a708fd18ced56714252f8694c83065cfa10e5d632",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 2140,
+            "sha256": "8e6562f9f7af356d37c84947b0d8d32f105b55c132bfa9a30901c47273dbda14",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 6415,
+            "sha256": "8ac9520589f022cd16ee81a3b649e78758cb877ad54cf8e3e53e200355749fb4",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 11143,
+            "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "execution": {
+        "ok": false,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 32,
+              "sha256": "edff16c1721dd4ae989cadf29a01f574ae8d51b118221f664725bd6980bbba5d"
+            },
+            "stderr": "",
+            "durationMs": 40
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 1017,
+              "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+            },
+            "stderr": "",
+            "durationMs": 3115
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 73,
+              "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+            },
+            "stderr": "",
+            "durationMs": 271
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 3263,
+              "sha256": "0e77d9d3106a4dc9b18213d309a30239758706eff32571a8b9174df5d2ad0974"
+            },
+            "stderr": "",
+            "durationMs": 267
+          }
+        ],
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.6109598278999329,
+              -0.4073065519332886,
+              -0.6788442134857178
+            ],
+            "fovDegrees": 50,
+            "near": 0.10000000149011612,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.2000000476837158,
+            "forward": [
+              -0.26832816004753113,
+              -0.8944272398948669,
+              -0.3577708899974823
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.19607843458652496,
+                0.27843138575553894,
+                0.3803921639919281,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.15000000596046448,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.30000001192092896,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.9063077569007874,
+                  0,
+                  -0.4226182699203491
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.4226182699203491,
+                  0,
+                  0.9063077569007874
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.8470588326454163,
+                0.7254902124404907,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.8067072629928589,
+                  0.3563702702522278,
+                  -0.4714060127735138
+                ],
+                [
+                  -0.14224426448345184,
+                  0.8913511633872986,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479004,
+                  -0.28016647696495056,
+                  0.7697511315345764
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.9450980424880981,
+                0.7686274647712708,
+                0.4313725531101227,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.7999999523162842,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.6000000238418579,
+                0.6000000238418579,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "particleField": {
+            "aabb": {
+              "position": [
+                -5.017499923706055,
+                -1.3250000476837158,
+                -5.017499923706055
+              ],
+              "size": [
+                10.03499984741211,
+                8.649999618530273,
+                10.03499984741211
+              ]
+            },
+            "basesIdentity": true,
+            "center": [
+              0,
+              3,
+              0
+            ],
+            "clock": {
+              "processing": false,
+              "timeSeconds": 3600
+            },
+            "color": [
+              0.6666666865348816,
+              0.800000011920929,
+              0.9333333373069763,
+              1
+            ],
+            "displayDriver": "headless",
+            "extent": [
+              10,
+              8,
+              10
+            ],
+            "instanceCount": 32,
+            "instanceDataAvailable": false,
+            "nodePosition": [
+              0,
+              0,
+              0
+            ],
+            "phases": {
+              "count": 32,
+              "sha256": "df280e7b54fbba9a1e113309fa17ed0940efdff0720eccf5ac75aa97bb1e6259",
+              "first": [
+                0,
+                0,
+                0
+              ],
+              "last": [
+                0,
+                0,
+                0
+              ]
+            },
+            "samples": [
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 0
+              },
+              {
+                "offset": [
+                  0.9375,
+                  0.578125,
+                  0.9937499761581421
+                ],
+                "timeSeconds": 0.5
+              },
+              {
+                "offset": [
+                  0.75,
+                  0.3125,
+                  0.9750000238418579
+                ],
+                "timeSeconds": 2
+              },
+              {
+                "offset": [
+                  0,
+                  0.5,
+                  0
+                ],
+                "timeSeconds": 3600
+              }
+            ],
+            "size": [
+              0.03500000014901161,
+              0.6499999761581421,
+              0.03500000014901161
+            ],
+            "transformFormat": 1,
+            "useCustomData": false,
+            "visibleInstanceCount": 32
+          },
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "errorCode": "scene3d_particle_probe_unavailable",
+        "scope": "Godot headless uses a dummy renderer and cannot read back MultiMesh instance buffers. Import/script checks and environment/material/bounds/time uniforms were validated; particle instance data and deformed GPU pixels require a separately authorized rendering proof. No display process was started."
+      },
+      "outcome": "expected-dummy-instance-data-unavailable",
+      "generatedFiles": [
+        {
+          "path": "source.json",
+          "bytes": 1986,
+          "sha256": "c58b5ee27fa7c8d22f48905a708fd18ced56714252f8694c83065cfa10e5d632"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 2140,
+          "sha256": "8e6562f9f7af356d37c84947b0d8d32f105b55c132bfa9a30901c47273dbda14"
+        },
+        {
+          "path": "project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "scene.tscn",
+          "bytes": 6415,
+          "sha256": "8ac9520589f022cd16ee81a3b649e78758cb877ad54cf8e3e53e200355749fb4"
+        },
+        {
+          "path": "runtime.gd",
+          "bytes": 11143,
+          "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+        },
+        {
+          "path": "scene3d-project.json",
+          "bytes": 1802,
+          "sha256": "b5031e4efe096b3cb40f909edcadb887cf64d93e37c7f1117fbac63ddbc60770"
+        }
+      ]
+    },
+    {
+      "name": "maximum",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-godot-2GvrDW",
+        "dev": 50,
+        "ino": 7073152,
+        "removed": true
+      },
+      "sourceSha256": "922954fffc06ed941583da72fd09d695abc27b9b15acf40f86421023255737df",
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.distance-fog",
+            "scene3d.particle-field"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 2047,
+          "sha256": "922954fffc06ed941583da72fd09d695abc27b9b15acf40f86421023255737df"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 2205,
+          "sha256": "4aeccba3c900f98c691383442938a0ddf1f6f5016d31c91e2d46df0473d53f46"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 2047,
+            "sha256": "922954fffc06ed941583da72fd09d695abc27b9b15acf40f86421023255737df",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 2205,
+            "sha256": "4aeccba3c900f98c691383442938a0ddf1f6f5016d31c91e2d46df0473d53f46",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 253799,
+            "sha256": "fd151d6a7582e188517356003aa6110ad66cb8cd72dd0e3f941a4361348dcd27",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 11143,
+            "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "execution": {
+        "ok": false,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 32,
+              "sha256": "edff16c1721dd4ae989cadf29a01f574ae8d51b118221f664725bd6980bbba5d"
+            },
+            "stderr": "",
+            "durationMs": 38
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 1017,
+              "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+            },
+            "stderr": "",
+            "durationMs": 3109
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 73,
+              "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+            },
+            "stderr": "",
+            "durationMs": 270
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 60413,
+              "sha256": "e006b7be9ef167a9e8167e1b7b0d033c3275a9067c30203549522e96de6a439e"
+            },
+            "stderr": "",
+            "durationMs": 273
+          }
+        ],
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.6109598278999329,
+              -0.4073065519332886,
+              -0.6788442134857178
+            ],
+            "fovDegrees": 50,
+            "near": 0.10000000149011612,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "fog": {
+            "aerialPerspective": 0,
+            "color": [
+              0.6666666865348816,
+              0.7333333492279053,
+              0.800000011920929,
+              1
+            ],
+            "density": 0.07500000298023224,
+            "enabled": true,
+            "heightDensity": 0,
+            "lightEnergy": 1,
+            "mode": 0,
+            "skyAffect": 0,
+            "sunScatter": 0
+          },
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.2000000476837158,
+            "forward": [
+              -0.26832816004753113,
+              -0.8944272398948669,
+              -0.3577708899974823
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.19607843458652496,
+                0.27843138575553894,
+                0.3803921639919281,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.15000000596046448,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.30000001192092896,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.9063077569007874,
+                  0,
+                  -0.4226182699203491
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.4226182699203491,
+                  0,
+                  0.9063077569007874
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.8470588326454163,
+                0.7254902124404907,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.8067072629928589,
+                  0.3563702702522278,
+                  -0.4714060127735138
+                ],
+                [
+                  -0.14224426448345184,
+                  0.8913511633872986,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479004,
+                  -0.28016647696495056,
+                  0.7697511315345764
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.9450980424880981,
+                0.7686274647712708,
+                0.4313725531101227,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.7999999523162842,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.6000000238418579,
+                0.6000000238418579,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "particleField": {
+            "aabb": {
+              "position": [
+                -5.017499923706055,
+                -1.3250000476837158,
+                -5.017499923706055
+              ],
+              "size": [
+                10.03499984741211,
+                8.649999618530273,
+                10.03499984741211
+              ]
+            },
+            "basesIdentity": true,
+            "center": [
+              0,
+              3,
+              0
+            ],
+            "clock": {
+              "processing": false,
+              "timeSeconds": 3600
+            },
+            "color": [
+              0.6666666865348816,
+              0.800000011920929,
+              0.9333333373069763,
+              1
+            ],
+            "displayDriver": "headless",
+            "extent": [
+              10,
+              8,
+              10
+            ],
+            "instanceCount": 4096,
+            "instanceDataAvailable": false,
+            "nodePosition": [
+              0,
+              0,
+              0
+            ],
+            "phases": {
+              "count": 4096,
+              "sha256": "d893020ac30b4124ad9e6a16aaa00aefa99bf0207dd7e894c66107a830cec596",
+              "first": [
+                0,
+                0,
+                0
+              ],
+              "last": [
+                0,
+                0,
+                0
+              ]
+            },
+            "samples": [
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 0
+              },
+              {
+                "offset": [
+                  0.012500000186264515,
+                  0.625,
+                  0.9750000238418579
+                ],
+                "timeSeconds": 0.5
+              },
+              {
+                "offset": [
+                  0.05000000074505806,
+                  0.5,
+                  0.8999999761581421
+                ],
+                "timeSeconds": 2
+              },
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 3600
+              }
+            ],
+            "size": [
+              0.03500000014901161,
+              0.6499999761581421,
+              0.03500000014901161
+            ],
+            "transformFormat": 1,
+            "useCustomData": false,
+            "visibleInstanceCount": 4096
+          },
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "errorCode": "scene3d_particle_probe_unavailable",
+        "scope": "Godot headless uses a dummy renderer and cannot read back MultiMesh instance buffers. Import/script checks and environment/material/bounds/time uniforms were validated; particle instance data and deformed GPU pixels require a separately authorized rendering proof. No display process was started."
+      },
+      "outcome": "expected-dummy-instance-data-unavailable",
+      "generatedFiles": [
+        {
+          "path": "source.json",
+          "bytes": 2047,
+          "sha256": "922954fffc06ed941583da72fd09d695abc27b9b15acf40f86421023255737df"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 2205,
+          "sha256": "4aeccba3c900f98c691383442938a0ddf1f6f5016d31c91e2d46df0473d53f46"
+        },
+        {
+          "path": "project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "scene.tscn",
+          "bytes": 253799,
+          "sha256": "fd151d6a7582e188517356003aa6110ad66cb8cd72dd0e3f941a4361348dcd27"
+        },
+        {
+          "path": "runtime.gd",
+          "bytes": 11143,
+          "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+        },
+        {
+          "path": "scene3d-project.json",
+          "bytes": 1834,
+          "sha256": "daacb4381fb309dab29c6612c9fb36a09a98470602358ba2b82db8a518ce5401"
+        }
+      ]
+    },
+    {
+      "name": "small-fast",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-godot-BMUfVA",
+        "dev": 50,
+        "ino": 7086461,
+        "removed": true
+      },
+      "sourceSha256": "2dac8320cde5ef0388541ec5588257f9f98157b3cd846168ad436d4443363c02",
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.particle-field"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 2003,
+          "sha256": "2dac8320cde5ef0388541ec5588257f9f98157b3cd846168ad436d4443363c02"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 2157,
+          "sha256": "7da8b8c9b2c5895508502bcac942d1ba46bb46584add064caf90734105cbda00"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 2003,
+            "sha256": "2dac8320cde5ef0388541ec5588257f9f98157b3cd846168ad436d4443363c02",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 2157,
+            "sha256": "7da8b8c9b2c5895508502bcac942d1ba46bb46584add064caf90734105cbda00",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 4745,
+            "sha256": "2b96fbdb90272049d2e1d00e53b5df9a7828de81b25f5d126e5b73138252b167",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 11143,
+            "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "execution": {
+        "ok": false,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 32,
+              "sha256": "edff16c1721dd4ae989cadf29a01f574ae8d51b118221f664725bd6980bbba5d"
+            },
+            "stderr": "",
+            "durationMs": 38
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 1017,
+              "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+            },
+            "stderr": "",
+            "durationMs": 3116
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 73,
+              "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+            },
+            "stderr": "",
+            "durationMs": 279
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 2925,
+              "sha256": "4f1ee87465594e89f9da8bbb9de5a2e142eafe6fb17c0d433d4bf9a8b7895e28"
+            },
+            "stderr": "",
+            "durationMs": 272
+          }
+        ],
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.6109598278999329,
+              -0.4073065519332886,
+              -0.6788442134857178
+            ],
+            "fovDegrees": 50,
+            "near": 0.10000000149011612,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.2000000476837158,
+            "forward": [
+              -0.26832816004753113,
+              -0.8944272398948669,
+              -0.3577708899974823
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.19607843458652496,
+                0.27843138575553894,
+                0.3803921639919281,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.15000000596046448,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.30000001192092896,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.9063077569007874,
+                  0,
+                  -0.4226182699203491
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.4226182699203491,
+                  0,
+                  0.9063077569007874
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.8470588326454163,
+                0.7254902124404907,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.8067072629928589,
+                  0.3563702702522278,
+                  -0.4714060127735138
+                ],
+                [
+                  -0.14224426448345184,
+                  0.8913511633872986,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479004,
+                  -0.28016647696495056,
+                  0.7697511315345764
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.9450980424880981,
+                0.7686274647712708,
+                0.4313725531101227,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.7999999523162842,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.6000000238418579,
+                0.6000000238418579,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "particleField": {
+            "aabb": {
+              "position": [
+                99999.9921875,
+                -100000.0078125,
+                99999.9921875
+              ],
+              "size": [
+                0.010999999940395355,
+                0.01600000075995922,
+                0.020999999716877937
+              ]
+            },
+            "basesIdentity": true,
+            "center": [
+              100000,
+              -100000,
+              100000
+            ],
+            "clock": {
+              "processing": false,
+              "timeSeconds": 3600
+            },
+            "color": [
+              0.6666666865348816,
+              0.800000011920929,
+              0.9333333373069763,
+              1
+            ],
+            "displayDriver": "headless",
+            "extent": [
+              0.009999999776482582,
+              0.014999999664723873,
+              0.019999999552965164
+            ],
+            "instanceCount": 4,
+            "instanceDataAvailable": false,
+            "nodePosition": [
+              0,
+              0,
+              0
+            ],
+            "phases": {
+              "count": 4,
+              "sha256": "b5a4090ced34148644f4b28174bfbd5f88d11d0d007ad515d6d3d547d89aa225",
+              "first": [
+                0,
+                0,
+                0
+              ],
+              "last": [
+                0,
+                0,
+                0
+              ]
+            },
+            "samples": [
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 0
+              },
+              {
+                "offset": [
+                  0,
+                  0.6666666865348816,
+                  0.125
+                ],
+                "timeSeconds": 0.5
+              },
+              {
+                "offset": [
+                  0,
+                  0.6666666865348816,
+                  0.5
+                ],
+                "timeSeconds": 2
+              },
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 3600
+              }
+            ],
+            "size": [
+              0.0010000000474974513,
+              0.0010000000474974513,
+              0.0010000000474974513
+            ],
+            "transformFormat": 1,
+            "useCustomData": false,
+            "visibleInstanceCount": 4
+          },
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "errorCode": "scene3d_particle_probe_unavailable",
+        "scope": "Godot headless uses a dummy renderer and cannot read back MultiMesh instance buffers. Import/script checks and environment/material/bounds/time uniforms were validated; particle instance data and deformed GPU pixels require a separately authorized rendering proof. No display process was started."
+      },
+      "outcome": "expected-dummy-instance-data-unavailable",
+      "generatedFiles": [
+        {
+          "path": "source.json",
+          "bytes": 2003,
+          "sha256": "2dac8320cde5ef0388541ec5588257f9f98157b3cd846168ad436d4443363c02"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 2157,
+          "sha256": "7da8b8c9b2c5895508502bcac942d1ba46bb46584add064caf90734105cbda00"
+        },
+        {
+          "path": "project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "scene.tscn",
+          "bytes": 4745,
+          "sha256": "2b96fbdb90272049d2e1d00e53b5df9a7828de81b25f5d126e5b73138252b167"
+        },
+        {
+          "path": "runtime.gd",
+          "bytes": 11143,
+          "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+        },
+        {
+          "path": "scene3d-project.json",
+          "bytes": 1802,
+          "sha256": "5148d63877aa8807f32f76726378810b4187168e58270ee17fdb2ab549889b84"
+        }
+      ]
+    },
+    {
+      "name": "tiny-velocity",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-godot-JQsqu4",
+        "dev": 50,
+        "ino": 7103632,
+        "removed": true
+      },
+      "sourceSha256": "13a702582f30ae2cdea1844ff9ebb6d384350e829ad2d619e2e1b98c413d0d66",
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.particle-field"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1981,
+          "sha256": "13a702582f30ae2cdea1844ff9ebb6d384350e829ad2d619e2e1b98c413d0d66"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 2135,
+          "sha256": "f8f0e2e0e7cd6f9e2c358054293cb03fa256758a417c7f3d15771d0768e4516a"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1981,
+            "sha256": "13a702582f30ae2cdea1844ff9ebb6d384350e829ad2d619e2e1b98c413d0d66",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 2135,
+            "sha256": "f8f0e2e0e7cd6f9e2c358054293cb03fa256758a417c7f3d15771d0768e4516a",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 4533,
+            "sha256": "54e1b6815b7ab8f0d701276b9bca6b0c5e9b141d1a13d1d9ee976c65c237b5aa",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 11143,
+            "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "execution": {
+        "ok": false,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 32,
+              "sha256": "edff16c1721dd4ae989cadf29a01f574ae8d51b118221f664725bd6980bbba5d"
+            },
+            "stderr": "",
+            "durationMs": 38
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 1017,
+              "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+            },
+            "stderr": "",
+            "durationMs": 3101
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 73,
+              "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+            },
+            "stderr": "",
+            "durationMs": 268
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": {
+              "bytes": 2839,
+              "sha256": "5d1380ff4f5b099b6b72eea47e018917fedadfa112715ff4a08ff614cdc5b773"
+            },
+            "stderr": "",
+            "durationMs": 275
+          }
+        ],
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.6109598278999329,
+              -0.4073065519332886,
+              -0.6788442134857178
+            ],
+            "fovDegrees": 50,
+            "near": 0.10000000149011612,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.2000000476837158,
+            "forward": [
+              -0.26832816004753113,
+              -0.8944272398948669,
+              -0.3577708899974823
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.19607843458652496,
+                0.27843138575553894,
+                0.3803921639919281,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.15000000596046448,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.30000001192092896,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.9063077569007874,
+                  0,
+                  -0.4226182699203491
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.4226182699203491,
+                  0,
+                  0.9063077569007874
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.8470588326454163,
+                0.7254902124404907,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.8067072629928589,
+                  0.3563702702522278,
+                  -0.4714060127735138
+                ],
+                [
+                  -0.14224426448345184,
+                  0.8913511633872986,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479004,
+                  -0.28016647696495056,
+                  0.7697511315345764
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.9450980424880981,
+                0.7686274647712708,
+                0.4313725531101227,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.7999999523162842,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.6000000238418579,
+                0.6000000238418579,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "particleField": {
+            "aabb": {
+              "position": [
+                -5.017499923706055,
+                -1.3250000476837158,
+                -5.017499923706055
+              ],
+              "size": [
+                10.03499984741211,
+                8.649999618530273,
+                10.03499984741211
+              ]
+            },
+            "basesIdentity": true,
+            "center": [
+              0,
+              3,
+              0
+            ],
+            "clock": {
+              "processing": false,
+              "timeSeconds": 3600
+            },
+            "color": [
+              0.6666666865348816,
+              0.800000011920929,
+              0.9333333373069763,
+              1
+            ],
+            "displayDriver": "headless",
+            "extent": [
+              10,
+              8,
+              10
+            ],
+            "instanceCount": 1,
+            "instanceDataAvailable": false,
+            "nodePosition": [
+              0,
+              0,
+              0
+            ],
+            "phases": {
+              "count": 1,
+              "sha256": "ded0200ff50b352eac04bba48234b23cfe567fb226d66457454123be3f63c8db",
+              "first": [
+                0,
+                0,
+                0
+              ],
+              "last": [
+                0,
+                0,
+                0
+              ]
+            },
+            "samples": [
+              {
+                "offset": [
+                  0,
+                  0,
+                  0
+                ],
+                "timeSeconds": 0
+              },
+              {
+                "offset": [
+                  0,
+                  6.249791150888684e-42,
+                  0
+                ],
+                "timeSeconds": 0.5
+              },
+              {
+                "offset": [
+                  0,
+                  2.500056590201906e-41,
+                  0
+                ],
+                "timeSeconds": 2
+              },
+              {
+                "offset": [
+                  0,
+                  4.500000128094921e-38,
+                  0
+                ],
+                "timeSeconds": 3600
+              }
+            ],
+            "size": [
+              0.03500000014901161,
+              0.6499999761581421,
+              0.03500000014901161
+            ],
+            "transformFormat": 1,
+            "useCustomData": false,
+            "visibleInstanceCount": 1
+          },
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "errorCode": "scene3d_particle_probe_unavailable",
+        "scope": "Godot headless uses a dummy renderer and cannot read back MultiMesh instance buffers. Import/script checks and environment/material/bounds/time uniforms were validated; particle instance data and deformed GPU pixels require a separately authorized rendering proof. No display process was started."
+      },
+      "outcome": "expected-dummy-instance-data-unavailable",
+      "generatedFiles": [
+        {
+          "path": "source.json",
+          "bytes": 1981,
+          "sha256": "13a702582f30ae2cdea1844ff9ebb6d384350e829ad2d619e2e1b98c413d0d66"
+        },
+        {
+          "path": "plan.json",
+          "bytes": 2135,
+          "sha256": "f8f0e2e0e7cd6f9e2c358054293cb03fa256758a417c7f3d15771d0768e4516a"
+        },
+        {
+          "path": "project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "scene.tscn",
+          "bytes": 4533,
+          "sha256": "54e1b6815b7ab8f0d701276b9bca6b0c5e9b141d1a13d1d9ee976c65c237b5aa"
+        },
+        {
+          "path": "runtime.gd",
+          "bytes": 11143,
+          "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+        },
+        {
+          "path": "scene3d-project.json",
+          "bytes": 1802,
+          "sha256": "232486a8cabb64e720f95b42495d2e471d0970596a226647fb93ec6ed823a368"
+        }
+      ]
+    }
+  ],
+  "sourcesAfter": {
+    "scripts/backends/godot4-scene3d.mjs": {
+      "bytes": 8498,
+      "sha256": "86b320a610c26e3f85a5a72569cff1c4ddc38fcbbb6658dac6a0be8121f1c41a"
+    },
+    "scripts/backends/godot3d/runtime.gd": {
+      "bytes": 11143,
+      "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+    },
+    "scripts/adapters/node-scene3d-export.mjs": {
+      "bytes": 20980,
+      "sha256": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8"
+    },
+    "scripts/tests/scene3d-particles-backend.test.mjs": {
+      "bytes": 13146,
+      "sha256": "f71c501ca7c25140223d9710c5d5e9dfae534807ced9ad98ce8fa9b36e0d49fc"
+    },
+    "engine/scene3d.mjs": {
+      "bytes": 1569,
+      "sha256": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06"
+    },
+    "engine/scene3d-particles.mjs": {
+      "bytes": 861,
+      "sha256": "60d040e773ddfee5803aacba49b6a9456f5e6de7f2eb3265e2ef09cbcc03f509"
+    },
+    "engine/studio-core.mjs": {
+      "bytes": 143630,
+      "sha256": "2e0aa9235d700e1246bd3a529554b762ea6d034b4635d339b36917d9020fad64"
+    },
+    "engine/studio-core.wasm": {
+      "bytes": 628825,
+      "sha256": "47ca1f48b07a5e9dc6a02052860b2ddc633fc92dd20e14f1139ba761fd446e0f"
+    }
+  },
+  "toolAfter": {
+    "dev": 66306,
+    "ino": 4460413,
+    "bytes": 146414384,
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  }
+}

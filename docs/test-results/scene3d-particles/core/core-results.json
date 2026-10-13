@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "scope": "Rust core, WASM bridge, pure engine, schema and compatibility only; no GPU, UI, backend or installed-device claims",
+  "contract": {
+    "optional": "particleField",
+    "schemaVersion": 1,
+    "phaseShape": "count nested Float32-exact xyz arrays",
+    "samplePrecision": "f64",
+    "maxCount": 4096,
+    "maxTimeSeconds": 3600,
+    "missingDoesNotInsertDefaults": true,
+    "countZeroRetainsDeclaration": true
+  },
+  "native": {
+    "passed": 327,
+    "failed": 0,
+    "ignored": 0,
+    "groups": [
+      278,
+      0,
+      2,
+      8,
+      9,
+      13,
+      9,
+      8,
+      0
+    ],
+    "newParticleUnitTests": 10
+  },
+  "focusedJS": {
+    "tests": 20,
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0
+  },
+  "parityAndCompatibilityJS": {
+    "tests": 62,
+    "passed": 62,
+    "failed": 0,
+    "skipped": 0,
+    "newParticleNativeWasmRequests": 41,
+    "historicalFogNativeWasmRequests": 28
+  },
+  "wasm": {
+    "protocolVersion": 1,
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)",
+    "sourceHash": "917d3e0e67e40d9a5a9730592c510f88e4dcbdfd8f630f7c79625a7cb56a1e7d",
+    "wasmSha256": "47ca1f48b07a5e9dc6a02052860b2ddc633fc92dd20e14f1139ba761fd446e0f",
+    "bytes": 628825,
+    "sources": {
+      "Cargo.lock": "1e20cad8bf8ad24bd85a25432fa739f1357894b7e6d87a5ec6ec1f0de6436396",
+      "Cargo.toml": "c6678822a9daa9f9292dd0153ac881292f5784f836333e43bfb55a72539a6095",
+      "src/layout_draft.rs": "dfb72651a8787fed4410eb3e24dd4c82741fee3c18aca315530e304c436cb9aa",
+      "src/layout_save.rs": "8ebbc7c48366381c527031e1a12e35f13fc89f156c3d7162499489f1d5a0156c",
+      "src/lib.rs": "789d995bc62c8c2d5264d0439edfa437c7ce77bc2fa1ac5b5425beba6c3ad916",
+      "src/main.rs": "f83f78f6d29d557f30d110e4da08ed756d0ef1d58258103d7b53f35544268178",
+      "src/scene3d.rs": "e73ebf4c3a56d60c55155b608364d29c88608985b96330f83d9f308b0c9445ab",
+      "src/scene3d_alignment_patch.rs": "8ffd4c71fe9f5d213003c142a31b17d87248676583b51addff71899b1e104863",
+      "src/scene3d_copy_patch.rs": "feec560aac8c150e1f7c2f41e096cc421bf714b52e90e71e08c673d73d894705",
+      "src/scene3d_distribution_patch.rs": "e8fcc42bc5c5a96ea3a4afc20b3cc8f6820013fb565f5f9ee52e164f165912d4",
+      "src/scene3d_environment_patch.rs": "068c3f95c8b32ae738b736375dd065f5f83d1fcb89587b136b9df0afb4898f16",
+      "src/scene3d_objects_patch.rs": "e3a38afc5b6370e35a52845762461c748fff02627867492f92df4431883f8eb4",
+      "src/scene3d_particles.rs": "8832befa6e7d2e07104653549e26cc19a986fbb5dd027a2694e9b9fa0f2f3abb",
+      "src/scene3d_patch.rs": "31f6d0278e0bcaa203efcc1da80725fe8ae601ae0a2eb3dedf3bc7a14dc09465",
+      "src/scene3d_properties_patch.rs": "bad11b0d71a45d9b06468908ddccab1b49611608ac2cec555448b58d048d9aca",
+      "src/scene3d_removal_patch.rs": "c6b67a5be9c973841b0c1d35a6bc64e90baba2a08db656199bef1f0764c7c2c6",
+      "src/scene3d_translation_patch.rs": "4c794b6c41b03ce99b15bedd471c1e5b197faac6288a126079b9990f97c8254c",
+      "src/scene_composition.rs": "1ca6bcf535886103af8ee2111b808c2ec974362ceeab8fe5924f55ef16a9dfab",
+      "src/scene_composition_definition_rename.rs": "2b4cad0dc8502a31d7c7d40b22758b6daa5c6835a1cc5671521cacd8be6aad4c",
+      "src/scene_composition_definitions_patch.rs": "29c84ddd6eb6779e0477351abf42dc5f5dcaf8a1a1ea2daaf67f8f7411aa81de",
+      "src/scene_composition_fragment_patch.rs": "fe7421ca1ba86992a018042169d5bc0f5a652c72d2f9e4ac802b1bcf766eeeb1",
+      "src/scene_composition_groups_patch.rs": "c6fd8690fc2a0c5b59ba984a18a3e10d7aa00f9c60393dac94b9768e945e19d2",
+      "src/scene_composition_patch.rs": "be5702bae8133271c1703a134966549df906949577c87bab78e926e05db46162",
+      "src/scene_composition_placement_patch.rs": "4717c99c5bcf8cd0f957de16e17702d84e06b53cbdde2d3a9e8fa4eb434183d2",
+      "src/scene_composition_placements_patch.rs": "b287796d5c8a57657ad89c1524b9de9961943650fcd45e044ea8a35e87097152",
+      "src/scene_composition_structure_patch.rs": "538b7b2ef74624453a6986d3f6064e604d379c8892eb5a71304a6b07d7b91fb0",
+      "src/scene_layout.rs": "b7bc1be799e29192c2035d6539f41f7f54024ff8f626c26c2355bf5fd610d987",
+      "src/scene_source.rs": "51eb8792dbc777a157e73c0cbfcba4724a5c843ed6ccbde77ca22998c0f7bb96",
+      "src/wasm.rs": "30eff24e802dff307f655de3dbf4fad4a75974769025df2e713f66108f1cf0b6",
+      "build-script": "a6356c18fd5ba25fd46f67cad17fa7c441dc8b780d37c9d51fa3437512f67452"
+    }
+  },
+  "files": {
+    "crates/viento-studio-core/src/scene3d.rs": "e73ebf4c3a56d60c55155b608364d29c88608985b96330f83d9f308b0c9445ab",
+    "crates/viento-studio-core/src/scene3d_environment_patch.rs": "068c3f95c8b32ae738b736375dd065f5f83d1fcb89587b136b9df0afb4898f16",
+    "crates/viento-studio-core/src/lib.rs": "789d995bc62c8c2d5264d0439edfa437c7ce77bc2fa1ac5b5425beba6c3ad916",
+    "crates/viento-studio-core/src/scene3d_particles.rs": "8832befa6e7d2e07104653549e26cc19a986fbb5dd027a2694e9b9fa0f2f3abb",
+    "engine/studio-core.mjs": "2e0aa9235d700e1246bd3a529554b762ea6d034b4635d339b36917d9020fad64",
+    "engine/scene3d-environment.mjs": "ab72442de493fd632d21cffe0f9ce79b55b49174c2d72a11c0d1fa85bff27a8d",
+    "engine/scene3d-particles.mjs": "60d040e773ddfee5803aacba49b6a9456f5e6de7f2eb3265e2ef09cbcc03f509",
+    "schemas/scene3d-v1.schema.json": "a68b9c135af6d06b674f0e539665b4f2100a1264ac274fc5112b95ca44df73af",
+    "scripts/tests/scene3d-particles-core.test.mjs": "0625ca3073acbee232f9996e6a34c46b216adf6efb36b1a7c170bb974b905c47",
+    "scripts/tests/scene3d-particles-bridge.test.mjs": "3e5d42687058be9ac8e59fb79cfa13033231d92b6119b10cc877d2628dc2e6d1",
+    "scripts/tests/studio-core-scene3d-particles-parity.test.mjs": "d1a920f02a82610313ba81a3167d69ba2a1569e2888ecbdb79600dc4eb942fc0"
+  },
+  "proof": {
+    "native-tests.log": "73000a58a5174212c64979cab19cb1d5a754317455f9adc3aef81536a3b5bb5a",
+    "wasm-build.log": "8ab49ec7985e4885d4049fab69e1aed25e119e6fcf44b054c696f010e2fa9ecb",
+    "particles-focused-tests.tap": "d1cab0bee5fc8667f67cd998c0544046ceea032142e2921f05e20605ae45c42d",
+    "particles-parity-compatibility.tap": "669407211af071418255c5e8567a4f2e3d9fb7f09353f3cc5ee96c18ba911513"
+  }
+}

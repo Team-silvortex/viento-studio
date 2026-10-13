@@ -1,0 +1,45 @@
+✔ native preferences and the shared browser/API registry accept the same language IDs (3.459598ms)
+✔ translation catalogues have identical keys, no duplicate entries and intact parameters (33.751958ms)
+✖ marked interface messages are covered in English and Japanese (398.064262ms)
+✔ nested interface diagnostics switch language while paths, punctuation and UI-like authored names stay literal (1.815171ms)
+✔ message tracking does not confuse fullwidth or whitespace-distinct authored filenames (1.198912ms)
+✔ invalid or unknown diagnostic descriptors fall back to literal diagnostics without interpreting parameters (0.483797ms)
+✔ HTTP template, field and export failures provide translated reasons without changing project data (401.213561ms)
+✔ language changes update retained UI references while preserving authored labels and interpolation values (2.123314ms)
+✔ English and Japanese catalogues preserve all message parameters (10.439309ms)
+✔ unknown messages cannot resolve inherited object properties in either catalogue (0.468939ms)
+✔ desktop language preferences require the local session and stay outside the project (412.89336ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 10
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 512.235506
+
+✖ failing tests:
+
+test at scripts/tests/i18n-coverage.test.mjs:59:1
+✖ marked interface messages are covered in English and Japanese (398.064262ms)
+  AssertionError [ERR_ASSERTION]: Add each marked message to both translation catalogues
+  + actual - expected
+  
+  + [
+  +   [
+  +     '当前会话不支持工程交付',
+  +     'scripts/lib/export-service.mjs'
+  +   ]
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///tmp/viento-delivery-xuw5l6mq/candidate/scripts/tests/i18n-coverage.test.mjs:91:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ [ '当前会话不支持工程交付', 'scripts/lib/export-service.mjs' ] ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

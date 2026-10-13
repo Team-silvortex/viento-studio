@@ -1,0 +1,1307 @@
+{
+  "startedAt": "2026-10-12T11:53:30.631Z",
+  "steps": [
+    "Native fog review and Cancel preserve both draft and saved source.",
+    "Fog applies to the unsaved draft, ordinary Save persists it, and reopening restores the values. Density zero restores the exact no-fog preview pixels.",
+    "24 real GPU samples cover both projection modes, two camera distances, zero and positive densities, and a 90000-unit translated origin. Pixel channels match the exponential radial-distance formula within 2/255; background and picking stay independent."
+  ],
+  "errors": [],
+  "screenshots": [
+    "fog-zh-CN-390.png",
+    "fog-en-390.png",
+    "fog-ja-390.png",
+    "fog-preview.png"
+  ],
+  "modules": [
+    "/web/modules/app-backend-project.js",
+    "/web/modules/app-doc-service.js",
+    "/web/modules/app-document-layout.js",
+    "/web/modules/app-editor-draft.js",
+    "/web/modules/app-export.js",
+    "/web/modules/app-field-draft.js",
+    "/web/modules/app-field-editor.js",
+    "/web/modules/app-helpers.js",
+    "/web/modules/app-keyboard.js",
+    "/web/modules/app-media-editor.js",
+    "/web/modules/app-media-render.js",
+    "/web/modules/app-object-projection.js",
+    "/web/modules/app-project-build.js",
+    "/web/modules/app-project-settings.js",
+    "/web/modules/app-render.js",
+    "/web/modules/app-resource-packages.js",
+    "/web/modules/app-runtime-case-documents.js",
+    "/web/modules/app-runtime-case-report.js",
+    "/web/modules/app-runtime-case-suites.js",
+    "/web/modules/app-runtime.js",
+    "/web/modules/app-scene-authoring.js",
+    "/web/modules/app-scene-composition-batch-layout.js",
+    "/web/modules/app-scene-composition-definitions.js",
+    "/web/modules/app-scene-composition-fragments.js",
+    "/web/modules/app-scene-composition-groups.js",
+    "/web/modules/app-scene-composition-layout.js",
+    "/web/modules/app-scene-composition-overrides.js",
+    "/web/modules/app-scene-composition-placement.js",
+    "/web/modules/app-scene-composition-placements.js",
+    "/web/modules/app-scene-composition-structure.js",
+    "/web/modules/app-scene-create.js",
+    "/web/modules/app-scene-layout.js",
+    "/web/modules/app-scene-outline.js",
+    "/web/modules/app-scene-preview-canvas.js",
+    "/web/modules/app-scene-preview.js",
+    "/web/modules/app-scene3d-alignment.js",
+    "/web/modules/app-scene3d-copy.js",
+    "/web/modules/app-scene3d-distribution.js",
+    "/web/modules/app-scene3d-environment.js",
+    "/web/modules/app-scene3d-objects.js",
+    "/web/modules/app-scene3d-preview.js",
+    "/web/modules/app-scene3d-properties.js",
+    "/web/modules/app-scene3d-removal.js",
+    "/web/modules/app-scene3d-transforms.js",
+    "/web/modules/app-scene3d-translation.js",
+    "/web/modules/app-services.js",
+    "/web/modules/app-source-location.js",
+    "/web/modules/app-state.js",
+    "/web/modules/app-structured.js",
+    "/web/modules/app-studio-core.js",
+    "/web/modules/app-studio-system.js",
+    "/web/modules/app-type-templates.js",
+    "/web/modules/app-world-browser.js",
+    "/web/modules/desktop-bridge.js",
+    "/web/modules/scene3d-math.js",
+    "/web/modules/scene3d-orientation.js",
+    "/web/modules/scene3d-picking.js",
+    "/web/modules/scene3d-renderer.js"
+  ],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "丢弃本次3D环境修改？原文草稿不会改变。"
+    },
+    {
+      "type": "confirm",
+      "message": "丢弃本次3D环境修改？原文草稿不会改变。"
+    },
+    {
+      "type": "confirm",
+      "message": "Discard these 3D environment changes? The source draft will remain unchanged."
+    },
+    {
+      "type": "confirm",
+      "message": "今回の3D環境の変更を破棄しますか？原文の下書きは変更されません。"
+    }
+  ],
+  "svgRequests": [],
+  "cspViolations": [],
+  "limitations": [
+    "Real HTTP editor, native/WASM source semantics and WebGL2 draws/readPixels; no installed desktop, Android or hardware-GPU claim.",
+    "Browser renderer/vendor are recorded explicitly; headless Chrome may use a software GPU implementation.",
+    "Godot probe evidence is separate; this does not claim cross-engine pixel equality.",
+    "Independent background, author camera and light changes apply only to the source draft. Native source operations do not grant renderer, backend or implicit Save authority."
+  ],
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "sources": {
+    "scripts/tests/scene3d-fog-smoke.mjs": "f6191e2f6c7f8c8a7b9f81c7efb72f0480490be4cc1389fef1d85fedec25d841",
+    "engine/scene3d-environment.mjs": "48aad288be91354033ca73d5d159171a8728da9351bc98481110c2af5173be4f",
+    "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+    "web/modules/app-scene3d-environment.js": "9967528e5c55c485060cf878936b25b6c81e3bb9a218e9173a7d4bc8fe64938c",
+    "web/scene3d-environment.css": "3e44070b5241196d60385bd3a055a1b472d3e8051a819df055e5e71dfce08ce7",
+    "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
+    "web/modules/app-scene3d-transforms.js": "44082449bd8f7514412af1853523c9282527348fc76eda04c0822f6d91321a72",
+    "web/scene3d-transforms.css": "f8fae6e364087a4986fbfdf99a884f34dfb513f26cfeb8c3536ca90144c7cc29",
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.mjs": "a4cdf5c356dc0f1a470d3fb0bc5832ea28b4da2afa386b05d6c5a74336defd01",
+    "engine/studio-modules.mjs": "2883e038fec75106e244f8628b02c2d2394dc5629e16d0cc28402ad4486876dc",
+    "web/modules/app-scene3d-preview.js": "1b1bfada9b642a288a9122a635932329a1f94867bee7eeb5d7b7b33472962dd5",
+    "web/modules/scene3d-renderer.js": "4a0f2f4031fa2cc7c0114eba786e2e367f8ddae55b3493d5d0b4b49a9828d78c",
+    "web/modules/scene3d-math.js": "342e636b2cbbec00e8be5b9c91cee5a975239aea66a6189c5991e8fa22e354ba",
+    "web/modules/app-studio-system.js": "34b0d57b1a287b8ab1a9b099ab54ffb9c40726d7c866aefef975e951c0dee3b7",
+    "web/modules/app-runtime.js": "24129665fcdecc426bc3f5b880bc61ffce6af647a47eec2b765f7ad8feebe7fe",
+    "web/scene3d.css": "cb1e294806c00be2da600cb7c9bda49ae626cb0758588f47c2562e70414bf204",
+    "web/i18n/en.js": "ca0240f72989fb10863b230766a39ec12fcc795362089fab819522595b41f097",
+    "web/i18n/ja.js": "bdea43276d7579587af498ff9d78f6bb7dfb00e73e01b75b4f73f2d71ddfd19e"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "system": {
+    "format": "viento-studio-system",
+    "schemaVersion": 1,
+    "lifecycle": "boot-only",
+    "hotReload": false,
+    "initializedModules": [
+      "org.viento.document",
+      "org.viento.settings",
+      "org.viento.world",
+      "org.viento.build",
+      "org.viento.project",
+      "org.viento.export",
+      "org.viento.media",
+      "org.viento.scene3d",
+      "org.viento.scene3d-transforms",
+      "org.viento.scene3d-objects",
+      "org.viento.scene3d-environment",
+      "org.viento.scene3d-properties",
+      "org.viento.scene3d-translation",
+      "org.viento.scene3d-alignment",
+      "org.viento.scene3d-distribution",
+      "org.viento.scene3d-copy",
+      "org.viento.scene3d-removal"
+    ],
+    "plan": {
+      "format": "viento-studio-module-plan",
+      "schemaVersion": 1,
+      "modules": [
+        {
+          "id": "org.viento.document",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.settings",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.project",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.world",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.export",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.media",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.build",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-transforms",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-objects",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-environment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-properties",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-translation",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-alignment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-distribution",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-copy",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-removal",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        }
+      ],
+      "capabilities": [
+        {
+          "capability": "document.read",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "document.edit",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.markdown",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.text",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.json",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.yaml",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "workbench.settings",
+          "apiVersion": 1,
+          "domain": "workbench",
+          "moduleId": "org.viento.settings",
+          "active": true
+        },
+        {
+          "capability": "project.types",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "project.templates",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "world.query",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "world.commands",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.object",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.projection",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.scene2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "project.export",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.package",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.reference",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.media",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene2d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.composition2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.project",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.execution",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "behavior.gdscript",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.preview.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.transforms3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-transforms",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.objects3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-objects",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.environment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-environment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.properties3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-properties",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.translation3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-translation",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.alignment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-alignment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.distribution3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-distribution",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.copy3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-copy",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.removal3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-removal",
+          "active": true
+        }
+      ],
+      "requests": [
+        {
+          "capability": "scene.preview.scene3d",
+          "apiVersion": 1,
+          "required": true,
+          "status": "supported",
+          "moduleId": "org.viento.scene3d"
+        },
+        {
+          "capability": "scene.authoring.transforms3d",
+          "apiVersion": 1,
+          "required": true,
+          "status": "supported",
+          "moduleId": "org.viento.scene3d-transforms"
+        },
+        {
+          "capability": "scene.authoring.objects3d",
+          "apiVersion": 1,
+          "required": true,
+          "status": "supported",
+          "moduleId": "org.viento.scene3d-objects"
+        },
+        {
+          "capability": "scene.authoring.environment3d",
+          "apiVersion": 1,
+          "required": true,
+          "status": "supported",
+          "moduleId": "org.viento.scene3d-environment"
+        }
+      ],
+      "satisfied": true,
+      "diagnostics": []
+    },
+    "hostCapabilities": {
+      "semanticProjection": true,
+      "semanticCommands": [
+        "property.set",
+        "changeset.apply",
+        "object.create",
+        "scene.create",
+        "projection.create",
+        "projection.update",
+        "scene.update",
+        "relation.add",
+        "resource.bind",
+        "world.recover"
+      ],
+      "projectBuild": true,
+      "scenePreview": true
+    }
+  },
+  "clearPixels": {
+    "hash": 315082544,
+    "nonBackground": 47755,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0,
+    "background": "#142538"
+  },
+  "columnChecks": [
+    {
+      "viewport": 1440,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 390,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 390,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 390,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 1440,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 1440,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    }
+  ],
+  "languages": [
+    {
+      "language": "zh-CN",
+      "width": 349,
+      "scrollWidth": 349,
+      "density": "0.15",
+      "label": "雾密度（每场景单位）"
+    },
+    {
+      "language": "en",
+      "width": 349,
+      "scrollWidth": 349,
+      "density": "0.15",
+      "label": "Fog density (per scene unit)"
+    },
+    {
+      "language": "ja",
+      "width": 349,
+      "scrollWidth": 349,
+      "density": "0.15",
+      "label": "フォグ密度（シーン単位あたり）"
+    }
+  ],
+  "fogPixels": {
+    "hash": 3972913929,
+    "nonBackground": 47755,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0,
+    "background": "#142538"
+  },
+  "offPixels": {
+    "hash": 315082544,
+    "nonBackground": 47755,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0,
+    "background": "#142538"
+  },
+  "gpuFormula": [
+    {
+      "projection": "perspective",
+      "z": 8,
+      "density": 0,
+      "shift": 0,
+      "got": [
+        51,
+        0,
+        0,
+        255
+      ],
+      "expected": [
+        51,
+        0,
+        0
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 8,
+      "density": 0,
+      "shift": 90000,
+      "got": [
+        51,
+        0,
+        0,
+        255
+      ],
+      "expected": [
+        51,
+        0,
+        0
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 8,
+      "density": 0.1,
+      "shift": 0,
+      "got": [
+        143,
+        115,
+        115,
+        255
+      ],
+      "expected": [
+        143,
+        115,
+        115
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 8,
+      "density": 0.1,
+      "shift": 90000,
+      "got": [
+        143,
+        115,
+        115,
+        255
+      ],
+      "expected": [
+        143,
+        115,
+        115
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 8,
+      "density": 0.5,
+      "shift": 0,
+      "got": [
+        245,
+        242,
+        242,
+        255
+      ],
+      "expected": [
+        245,
+        242,
+        242
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 8,
+      "density": 0.5,
+      "shift": 90000,
+      "got": [
+        245,
+        242,
+        242,
+        255
+      ],
+      "expected": [
+        245,
+        242,
+        242
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 12,
+      "density": 0,
+      "shift": 0,
+      "got": [
+        51,
+        0,
+        0,
+        255
+      ],
+      "expected": [
+        51,
+        0,
+        0
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 12,
+      "density": 0,
+      "shift": 90000,
+      "got": [
+        51,
+        0,
+        0,
+        255
+      ],
+      "expected": [
+        51,
+        0,
+        0
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 12,
+      "density": 0.1,
+      "shift": 0,
+      "got": [
+        180,
+        161,
+        161,
+        255
+      ],
+      "expected": [
+        180,
+        161,
+        161
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 12,
+      "density": 0.1,
+      "shift": 90000,
+      "got": [
+        180,
+        161,
+        161,
+        255
+      ],
+      "expected": [
+        180,
+        161,
+        161
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 12,
+      "density": 0.5,
+      "shift": 0,
+      "got": [
+        254,
+        253,
+        253,
+        255
+      ],
+      "expected": [
+        254,
+        253,
+        253
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "perspective",
+      "z": 12,
+      "density": 0.5,
+      "shift": 90000,
+      "got": [
+        254,
+        253,
+        253,
+        255
+      ],
+      "expected": [
+        254,
+        253,
+        253
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 8,
+      "density": 0,
+      "shift": 0,
+      "got": [
+        51,
+        0,
+        0,
+        255
+      ],
+      "expected": [
+        51,
+        0,
+        0
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 8,
+      "density": 0,
+      "shift": 90000,
+      "got": [
+        51,
+        0,
+        0,
+        255
+      ],
+      "expected": [
+        51,
+        0,
+        0
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 8,
+      "density": 0.1,
+      "shift": 0,
+      "got": [
+        143,
+        115,
+        115,
+        255
+      ],
+      "expected": [
+        143,
+        115,
+        115
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 8,
+      "density": 0.1,
+      "shift": 90000,
+      "got": [
+        143,
+        115,
+        115,
+        255
+      ],
+      "expected": [
+        143,
+        115,
+        115
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 8,
+      "density": 0.5,
+      "shift": 0,
+      "got": [
+        245,
+        242,
+        242,
+        255
+      ],
+      "expected": [
+        245,
+        242,
+        242
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 8,
+      "density": 0.5,
+      "shift": 90000,
+      "got": [
+        245,
+        242,
+        242,
+        255
+      ],
+      "expected": [
+        245,
+        242,
+        242
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 12,
+      "density": 0,
+      "shift": 0,
+      "got": [
+        51,
+        0,
+        0,
+        255
+      ],
+      "expected": [
+        51,
+        0,
+        0
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 12,
+      "density": 0,
+      "shift": 90000,
+      "got": [
+        51,
+        0,
+        0,
+        255
+      ],
+      "expected": [
+        51,
+        0,
+        0
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 12,
+      "density": 0.1,
+      "shift": 0,
+      "got": [
+        180,
+        161,
+        161,
+        255
+      ],
+      "expected": [
+        180,
+        161,
+        161
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 12,
+      "density": 0.1,
+      "shift": 90000,
+      "got": [
+        180,
+        161,
+        161,
+        255
+      ],
+      "expected": [
+        180,
+        161,
+        161
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 12,
+      "density": 0.5,
+      "shift": 0,
+      "got": [
+        254,
+        253,
+        253,
+        255
+      ],
+      "expected": [
+        254,
+        253,
+        253
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    },
+    {
+      "projection": "orthographic",
+      "z": 12,
+      "density": 0.5,
+      "shift": 90000,
+      "got": [
+        254,
+        253,
+        253,
+        255
+      ],
+      "expected": [
+        254,
+        253,
+        253
+      ],
+      "background": [
+        18,
+        52,
+        86,
+        255
+      ],
+      "error": 0,
+      "hit": "00000000-0000-4000-8000-000000000001"
+    }
+  ],
+  "savedSourceSha256": "4cf97a760bbb82d5412564b7d18f04bf1c7ab623b88b28dc68870bfd7aa6de6a",
+  "coreWasmSha256": "ce6a089280ce8b64169a27fc69b8a923dc7307531f561913d5d4248c77c583cf",
+  "sourcesFinal": {
+    "scripts/tests/scene3d-fog-smoke.mjs": "f6191e2f6c7f8c8a7b9f81c7efb72f0480490be4cc1389fef1d85fedec25d841",
+    "engine/scene3d-environment.mjs": "48aad288be91354033ca73d5d159171a8728da9351bc98481110c2af5173be4f",
+    "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+    "web/modules/app-scene3d-environment.js": "9967528e5c55c485060cf878936b25b6c81e3bb9a218e9173a7d4bc8fe64938c",
+    "web/scene3d-environment.css": "3e44070b5241196d60385bd3a055a1b472d3e8051a819df055e5e71dfce08ce7",
+    "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
+    "web/modules/app-scene3d-transforms.js": "44082449bd8f7514412af1853523c9282527348fc76eda04c0822f6d91321a72",
+    "web/scene3d-transforms.css": "f8fae6e364087a4986fbfdf99a884f34dfb513f26cfeb8c3536ca90144c7cc29",
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.mjs": "a4cdf5c356dc0f1a470d3fb0bc5832ea28b4da2afa386b05d6c5a74336defd01",
+    "engine/studio-modules.mjs": "2883e038fec75106e244f8628b02c2d2394dc5629e16d0cc28402ad4486876dc",
+    "web/modules/app-scene3d-preview.js": "1b1bfada9b642a288a9122a635932329a1f94867bee7eeb5d7b7b33472962dd5",
+    "web/modules/scene3d-renderer.js": "4a0f2f4031fa2cc7c0114eba786e2e367f8ddae55b3493d5d0b4b49a9828d78c",
+    "web/modules/scene3d-math.js": "342e636b2cbbec00e8be5b9c91cee5a975239aea66a6189c5991e8fa22e354ba",
+    "web/modules/app-studio-system.js": "34b0d57b1a287b8ab1a9b099ab54ffb9c40726d7c866aefef975e951c0dee3b7",
+    "web/modules/app-runtime.js": "24129665fcdecc426bc3f5b880bc61ffce6af647a47eec2b765f7ad8feebe7fe",
+    "web/scene3d.css": "cb1e294806c00be2da600cb7c9bda49ae626cb0758588f47c2562e70414bf204",
+    "web/i18n/en.js": "ca0240f72989fb10863b230766a39ec12fcc795362089fab819522595b41f097",
+    "web/i18n/ja.js": "bdea43276d7579587af498ff9d78f6bb7dfb00e73e01b75b4f73f2d71ddfd19e"
+  },
+  "sourceStableDuringProof": true,
+  "ok": true,
+  "status": "passed",
+  "finishedAt": "2026-10-12T11:53:46.461Z"
+}

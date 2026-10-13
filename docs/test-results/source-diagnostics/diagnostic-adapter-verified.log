@@ -1,0 +1,39 @@
+✔ build UI checks a frozen plan, submits that snapshot, and waits for an explicit run (155.791564ms)
+✔ tool identity checks preserve approved plans, author drafts and control input through closing and reopening (131.373147ms)
+✔ tool failures disable execution, preserve plan checks and render only safe status text (125.510808ms)
+✔ external tool checks use read polling and cannot start build jobs or another probe (66.292502ms)
+✔ legacy hosts hide tool checking and malformed identities cannot replace accepted build state (105.184178ms)
+✔ a lost tool-check response is reconciled by reading status without repeating the process (78.60955ms)
+✔ offline author catalog blocks new plans and builds while preserving frozen execution, tools and runtime observations (103.417032ms)
+✔ scene switching cannot reuse another scene plan or artifact (123.761606ms)
+✔ saving a layout refreshes preview and invalidates the approved build plan without submitting a job (120.745521ms)
+✔ draft, creation, busy and browse guards prevent task submission even when context changed after rendering (113.881971ms)
+✔ closing a running task preserves it and polling, while dirty drafts still allow cancellation (91.921436ms)
+✔ a lost submission response is reconciled with GET without resubmitting the task (68.481006ms)
+✔ diagnostics retain exact source coordinates, protect declined navigation, and render details as text (39.917893ms)
+✔ preview and diagnostic navigation focus the source editor after the dialog closes, preserving legacy callbacks (129.575534ms)
+✔ late source navigation cannot close a reopened dialog or replace a newer navigation focus (104.35342ms)
+✔ queued dialog-close focus is discarded when the dialog is reopened before the close event (61.649447ms)
+✔ multiple queued close events focus the final closed session only once (62.011901ms)
+✔ snapshot conflicts invalidate the approved plan and preserve original error details (67.501647ms)
+✔ an unconfigured tool permits planning and blocks build/run; unsupported hosts hide the entry (61.343129ms)
+✔ all build dialog user messages have English and Japanese translations (2.007661ms)
+✔ asynchronous snapshot conflicts invalidate the plan after the job completes (86.213819ms)
+✔ editor build context resolves generated source paths without changing the active draft (19.184204ms)
+✔ source layout bridge uses the active draft, refreshes draft preview, and does not require a disk-write command (75.734392ms)
+✔ source layout bridge discards delayed opens after scene or dialog ownership changes (162.18595ms)
+✔ source apply propagates live origin ownership to the asynchronous editor host (216.185802ms)
+✔ behavior plan counts appear only with valid explicit counts and retain legacy actor/resource summaries (175.611438ms)
+✔ shared behavior script instances keep their own event identities and scalar arguments in all three languages (232.426937ms)
+✔ behavior event text never interprets markup and structured/non-scalar payloads remain raw diagnostics only (45.633815ms)
+✔ behavior diagnostics use localized guidance and preserve exact manifest or script source locations (290.917329ms)
+✔ dirty script or manifest drafts prevent all execution at click time and stay untouched when returning (201.378182ms)
+✔ behavior-specific UI messages have English and Japanese entries (0.393754ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2492.052275

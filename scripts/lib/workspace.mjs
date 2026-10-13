@@ -168,8 +168,17 @@ export async function fingerprint(file) {
   return { size: before.size, sha256: hash.digest('hex') };
 }
 
-export async function readRegistry(root, { signal, allowPendingWorldTransaction = false, recoveryTemporaryRecord = null } = {}) {
+export async function readRegistry(root, { signal, allowPendingWorldTransaction = false, recoveryTemporaryRecord = null, recoveryTemporaryRecords = [] } = {}) {
   signal?.throwIfAborted();
+  // v9 has two metadata entries. Only its exact transaction-named temporary
+  // paths may be ignored; this option cannot hide an ordinary registration.
+  const recoveryTemps = new Set();
+  if (!Array.isArray(recoveryTemporaryRecords) || recoveryTemporaryRecords.length > 2) throw new Error('Invalid recovery temporary records');
+  for (const relative of recoveryTemporaryRecords) {
+    if (!allowPendingWorldTransaction || typeof relative !== 'string'
+      || !/^metadata\/documents\/\.viento-[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}-[12]\.tmp$/.test(relative)) throw new Error('Invalid recovery temporary record');
+    recoveryTemps.add(relative);
+  }
   // Only the transaction recovery validator opts out, while holding the lock.
   // Public readers retain the barrier; this flag is never an HTTP input.
   const fence = allowPendingWorldTransaction ? null : await readWorldFence(root);
@@ -186,9 +195,10 @@ export async function readRegistry(root, { signal, allowPendingWorldTransaction 
       if (!fs.existsSync(folder)) continue;
       for (const file of await walkFiles(folder, { signal })) {
         signal?.throwIfAborted();
-        // Recovery names its one validated, transaction-owned temporary file.
+        // Recovery names validated, transaction-owned temporary files.
         // walkFiles still rejects links; any other extra file remains invalid.
-        if (allowPendingWorldTransaction && `metadata/${kind}/${file}` === recoveryTemporaryRecord) continue;
+        if (allowPendingWorldTransaction && (`metadata/${kind}/${file}` === recoveryTemporaryRecord
+          || recoveryTemps.has(`metadata/${kind}/${file}`))) continue;
         if (!file.endsWith('.json')) throw new Error(`登记目录只能包含 JSON：${kind}/${file}`);
         const raw = await fsp.readFile(path.join(folder, file), { encoding: 'utf8', signal });
         signal?.throwIfAborted();

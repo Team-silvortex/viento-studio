@@ -1,0 +1,586 @@
+TAP version 13
+# Subtest: fog GPU state is replaced per frame and absent old scenes explicitly disable it
+ok 1 - fog GPU state is replaced per frame and absent old scenes explicitly disable it
+  ---
+  duration_ms: 3.653922
+  type: 'test'
+  ...
+# Subtest: fog follows current view position with a floating origin and retains hit testing in both projections
+ok 2 - fog follows current view position with a floating origin and retains hit testing in both projections
+  ---
+  duration_ms: 4.691366
+  type: 'test'
+  ...
+# Subtest: particle GPU packet capture freezes detached exact arrays without generating phases
+ok 3 - particle GPU packet capture freezes detached exact arrays without generating phases
+  ---
+  duration_ms: 4.063732
+  type: 'test'
+  ...
+# Subtest: packet validation rejects mismatches bad phase shapes budgets non-Float32 values and accessors without execution
+ok 4 - packet validation rejects mismatches bad phase shapes budgets non-Float32 values and accessors without execution
+  ---
+  duration_ms: 1.816236
+  type: 'test'
+  ...
+# Subtest: native-prepared 4096 phases upload one static instance buffer and one bounded instanced draw
+ok 5 - native-prepared 4096 phases upload one static instance buffer and one bounded instanced draw
+  ---
+  duration_ms: 18.121589
+  type: 'test'
+  ...
+# Subtest: count zero and absent scenes do not allocate instance resources or draw particles and replacing models releases them
+ok 6 - count zero and absent scenes do not allocate instance resources or draw particles and replacing models releases them
+  ---
+  duration_ms: 1.295935
+  type: 'test'
+  ...
+# Subtest: mismatched or missing prepared packet fails closed before allocating particle resources
+ok 7 - mismatched or missing prepared packet fails closed before allocating particle resources
+  ---
+  duration_ms: 0.67804
+  type: 'test'
+  ...
+# Subtest: particle uploads share floating origin camera depth fog lighting and both projection matrices
+ok 8 - particle uploads share floating origin camera depth fog lighting and both projection matrices
+  ---
+  duration_ms: 1.900667
+  type: 'test'
+  ...
+# Subtest: offset updates reject sparse accessors extras typed arrays and out-of-range values without redraw or state mutation
+ok 9 - offset updates reject sparse accessors extras typed arrays and out-of-range values without redraw or state mutation
+  ---
+  duration_ms: 0.700032
+  type: 'test'
+  ...
+# Subtest: offset animation preserves qualified single taps and active mouse and two-finger gestures
+ok 10 - offset animation preserves qualified single taps and active mouse and two-finger gestures
+  ---
+  duration_ms: 2.457185
+  type: 'test'
+  ...
+# Subtest: particle draw failure invalidates picking and view receipts without leaking the failed offset
+ok 11 - particle draw failure invalidates picking and view receipts without leaking the failed offset
+  ---
+  duration_ms: 0.616122
+  type: 'test'
+  ...
+# Subtest: allocation compilation and link failure clean up every particle allocation exactly once
+ok 12 - allocation compilation and link failure clean up every particle allocation exactly once
+  ---
+  duration_ms: 0.861299
+  type: 'test'
+  ...
+# Subtest: dispose and context loss revoke offsets and particle resources without late GPU work
+ok 13 - dispose and context loss revoke offsets and particle resources without late GPU work
+  ---
+  duration_ms: 0.390924
+  type: 'test'
+  ...
+# Subtest: matrix composition keeps column-major identity and translated scaled box positions
+ok 14 - matrix composition keeps column-major identity and translated scaled box positions
+  ---
+  duration_ms: 0.140337
+  type: 'test'
+  ...
+# Subtest: mixed-axis Euler XYZ matches Godot Rx*(Ry*Rz) analytical columns
+ok 15 - mixed-axis Euler XYZ matches Godot Rx*(Ry*Rz) analytical columns
+  ---
+  duration_ms: 0.154724
+  type: 'test'
+  ...
+# Subtest: lookAt puts the camera at origin and its target along negative Z
+ok 16 - lookAt puts the camera at origin and its target along negative Z
+  ---
+  duration_ms: 0.075895
+  type: 'test'
+  ...
+# Subtest: perspective uses WebGL clipping and source near/far values
+ok 17 - perspective uses WebGL clipping and source near/far values
+  ---
+  duration_ms: 0.102756
+  type: 'test'
+  ...
+# Subtest: orbit is detached, preserves target and clamps polar and distance singularities
+ok 18 - orbit is detached, preserves target and clamps polar and distance singularities
+  ---
+  duration_ms: 0.150086
+  type: 'test'
+  ...
+# Subtest: hex conversion preserves authored case and color channels
+ok 19 - hex conversion preserves authored case and color channels
+  ---
+  duration_ms: 0.057219
+  type: 'test'
+  ...
+# Subtest: subnormal accepted directional light normalizes to a finite unit vector
+ok 20 - subnormal accepted directional light normalizes to a finite unit vector
+  ---
+  duration_ms: 0.564584
+  type: 'test'
+  ...
+# Subtest: unsupported WebGL2 returns no renderer and does not allocate fake geometry
+ok 21 - unsupported WebGL2 returns no renderer and does not allocate fake geometry
+  ---
+  duration_ms: 0.10486
+  type: 'test'
+  ...
+# Subtest: actual renderer draws each box with source matrices, light and camera uniforms
+ok 22 - actual renderer draws each box with source matrices, light and camera uniforms
+  ---
+  duration_ms: 0.281816
+  type: 'test'
+  ...
+# Subtest: drawing buffer bounds DPR and dimension allocations on initial render and resize
+ok 23 - drawing buffer bounds DPR and dimension allocations on initial render and resize
+  ---
+  duration_ms: 0.932454
+  type: 'test'
+  ...
+# Subtest: pointer orbit and wheel zoom never mutate the supplied model; view reset restores source camera
+ok 24 - pointer orbit and wheel zoom never mutate the supplied model; view reset restores source camera
+  ---
+  duration_ms: 0.701655
+  type: 'test'
+  ...
+# Subtest: unrelated pointer and right click cannot change the view
+ok 25 - unrelated pointer and right click cannot change the view
+  ---
+  duration_ms: 0.229417
+  type: 'test'
+  ...
+# Subtest: dispose releases every shader/program/VAO/buffer, observer and interaction listener exactly once
+ok 26 - dispose releases every shader/program/VAO/buffer, observer and interaction listener exactly once
+  ---
+  duration_ms: 0.26278
+  type: 'test'
+  ...
+# Subtest: shader compile failure still releases the partially allocated program and shader
+ok 27 - shader compile failure still releases the partially allocated program and shader
+  ---
+  duration_ms: 0.167338
+  type: 'test'
+  ...
+# Subtest: link failure releases both shaders without leaving geometry or listeners
+ok 28 - link failure releases both shaders without leaving geometry or listeners
+  ---
+  duration_ms: 0.148423
+  type: 'test'
+  ...
+# Subtest: buffer allocation failure releases the VAO and all compilation resources
+ok 29 - buffer allocation failure releases the VAO and all compilation resources
+  ---
+  duration_ms: 0.171125
+  type: 'test'
+  ...
+# Subtest: unexpected context loss is reported and stops further draw calls
+ok 30 - unexpected context loss is reported and stops further draw calls
+  ---
+  duration_ms: 0.279622
+  type: 'test'
+  ...
+# Subtest: focusObject fits actual GPU corners using rotated box current heading and actual canvas aspect without author edits
+ok 31 - focusObject fits actual GPU corners using rotated box current heading and actual canvas aspect without author edits
+  ---
+  duration_ms: 0.805693
+  type: 'test'
+  ...
+# Subtest: focus handles minimum and maximum object extents at distant coordinates and extreme viewport FOV through actual float32 matrices
+ok 32 - focus handles minimum and maximum object extents at distant coordinates and extreme viewport FOV through actual float32 matrices
+  ---
+  duration_ms: 3.576555
+  type: 'test'
+  ...
+# Subtest: view-local floating origin makes translated large-coordinate scenes upload identical geometry light and view matrices
+ok 33 - view-local floating origin makes translated large-coordinate scenes upload identical geometry light and view matrices
+  ---
+  duration_ms: 0.580915
+  type: 'test'
+  ...
+# Subtest: focused very long or very short views retain smooth first wheel distance and safe clipping rather than author orbit limits
+ok 34 - focused very long or very short views retain smooth first wheel distance and safe clipping rather than author orbit limits
+  ---
+  duration_ms: 0.639917
+  type: 'test'
+  ...
+# Subtest: focus after resize uses current drawing dimensions including DPR limit and not author viewport
+ok 35 - focus after resize uses current drawing dimensions including DPR limit and not author viewport
+  ---
+  duration_ms: 0.339656
+  type: 'test'
+  ...
+# Subtest: invalid missing and disposed focus requests are false no-ops and never allocate or draw
+ok 36 - invalid missing and disposed focus requests are false no-ops and never allocate or draw
+  ---
+  duration_ms: 0.205561
+  type: 'test'
+  ...
+# Subtest: lost context cannot change focus target heading clipping or draw count
+ok 37 - lost context cannot change focus target heading clipping or draw count
+  ---
+  duration_ms: 0.178079
+  type: 'test'
+  ...
+# Subtest: focus reset and model refresh stop the old pointer drag and return author camera without retaining focused range
+ok 38 - focus reset and model refresh stop the old pointer drag and return author camera without retaining focused range
+  ---
+  duration_ms: 0.439767
+  type: 'test'
+  ...
+# Subtest: hitTest uses last actual viewport uniforms without rendering changing view or mutating the scene
+ok 39 - hitTest uses last actual viewport uniforms without rendering changing view or mutating the scene
+  ---
+  duration_ms: 0.592868
+  type: 'test'
+  ...
+# Subtest: sub-threshold jitter is one primary tap and never rotates the camera before selection
+ok 40 - sub-threshold jitter is one primary tap and never rotates the camera before selection
+  ---
+  duration_ms: 0.372118
+  type: 'test'
+  ...
+# Subtest: drag exceeding four CSS pixels and returning to start never becomes tap or double click
+ok 41 - drag exceeding four CSS pixels and returning to start never becomes tap or double click
+  ---
+  duration_ms: 0.461849
+  type: 'test'
+  ...
+# Subtest: blank clicks wrong buttons and nonprimary starts cannot select or qualify focus
+ok 42 - blank clicks wrong buttons and nonprimary starts cannot select or qualify focus
+  ---
+  duration_ms: 0.246419
+  type: 'test'
+  ...
+# Subtest: a second pointer revokes both active primary tap and previously approved double click eligibility
+ok 43 - a second pointer revokes both active primary tap and previously approved double click eligibility
+  ---
+  duration_ms: 1.4189
+  type: 'test'
+  ...
+# Subtest: normal pointerup capture release preserves genuine double click eligibility while renderer never focuses itself
+ok 44 - normal pointerup capture release preserves genuine double click eligibility while renderer never focuses itself
+  ---
+  duration_ms: 0.458673
+  type: 'test'
+  ...
+# Subtest: synthetic standalone mismatched expired repeated or nonleft double clicks never forge focus
+ok 45 - synthetic standalone mismatched expired repeated or nonleft double clicks never forge focus
+  ---
+  duration_ms: 0.573592
+  type: 'test'
+  ...
+# Subtest: unexpected capture loss and pointercancel clear active gestures and recent tap eligibility
+ok 46 - unexpected capture loss and pointercancel clear active gestures and recent tap eligibility
+  ---
+  duration_ms: 0.262349
+  type: 'test'
+  ...
+# Subtest: wheel resize refresh reset focus and replacement render invalidate the old double click frame
+ok 47 - wheel resize refresh reset focus and replacement render invalidate the old double click frame
+  ---
+  duration_ms: 1.118258
+  type: 'test'
+  ...
+# Subtest: stale CSS size DPR or backing allocation refuses hitTest until a matching new draw
+ok 48 - stale CSS size DPR or backing allocation refuses hitTest until a matching new draw
+  ---
+  duration_ms: 0.417023
+  type: 'test'
+  ...
+# Subtest: position-only scrolling picks through the same drawn float32 matrices without a redraw
+ok 49 - position-only scrolling picks through the same drawn float32 matrices without a redraw
+  ---
+  duration_ms: 0.353533
+  type: 'test'
+  ...
+# Subtest: canvas position changes during a gesture or after a tap cancel selection and double click eligibility
+ok 50 - canvas position changes during a gesture or after a tap cancel selection and double click eligibility
+  ---
+  duration_ms: 0.257701
+  type: 'test'
+  ...
+# Subtest: late disposed or contextlost hit requests and gestures do not callback or change camera
+ok 51 - late disposed or contextlost hit requests and gestures do not callback or change camera
+  ---
+  duration_ms: 0.241119
+  type: 'test'
+  ...
+# Subtest: callback reentrancy cannot keep stale double click eligibility across model refresh or disposal
+ok 52 - callback reentrancy cannot keep stale double click eligibility across model refresh or disposal
+  ---
+  duration_ms: 0.413587
+  type: 'test'
+  ...
+# Subtest: without a consumer or when a view callback throws the adapter keeps rendering and releasing normally
+ok 53 - without a consumer or when a view callback throws the adapter keeps rendering and releasing normally
+  ---
+  duration_ms: 0.578551
+  type: 'test'
+  ...
+# Subtest: selection setter is a view-only stable identity update and same selection is a no-draw success
+ok 54 - selection setter is a view-only stable identity update and same selection is a no-draw success
+  ---
+  duration_ms: 0.49431
+  type: 'test'
+  ...
+# Subtest: selection repaint preserves the actual Float32 models and camera with a single original depth pass in source order
+ok 55 - selection repaint preserves the actual Float32 models and camera with a single original depth pass in source order
+  ---
+  duration_ms: 0.618918
+  type: 'test'
+  ...
+# Subtest: selection shader identifies the six flat face axes and physical box edges without triangle or outline geometry
+ok 56 - selection shader identifies the six flat face axes and physical box edges without triangle or outline geometry
+  ---
+  duration_ms: 0.734909
+  type: 'test'
+  ...
+# Subtest: reset preserves selected identity and replacement model explicitly clears feedback before UI resynchronizes
+ok 57 - reset preserves selected identity and replacement model explicitly clears feedback before UI resynchronizes
+  ---
+  duration_ms: 0.434367
+  type: 'test'
+  ...
+# Subtest: unknown invalid lost-context and disposed selection setters return false without changing feedback camera or draws
+ok 58 - unknown invalid lost-context and disposed selection setters return false without changing feedback camera or draws
+  ---
+  duration_ms: 0.311623
+  type: 'test'
+  ...
+# Subtest: selection feedback from pointerup preserves native capture-release and double-click eligibility on unchanged geometry
+ok 59 - selection feedback from pointerup preserves native capture-release and double-click eligibility on unchanged geometry
+  ---
+  duration_ms: 0.560317
+  type: 'test'
+  ...
+# Subtest: selection feedback does not broaden public redraw or stale geometry and size approval
+ok 60 - selection feedback does not broaden public redraw or stale geometry and size approval
+  ---
+  duration_ms: 1.80252
+  type: 'test'
+  ...
+# Subtest: selection-only redraw keeps scroll mapping but cannot approve a moved pointer gesture
+ok 61 - selection-only redraw keeps scroll mapping but cannot approve a moved pointer gesture
+  ---
+  duration_ms: 0.468511
+  type: 'test'
+  ...
+# Subtest: selection setter never emits picks and supports the adapter without a view callback
+ok 62 - selection setter never emits picks and supports the adapter without a view callback
+  ---
+  duration_ms: 0.502125
+  type: 'test'
+  ...
+# Subtest: touch navigation is an immutable renderer feature hint and adds no author methods
+ok 63 - touch navigation is an immutable renderer feature hint and adds no author methods
+  ---
+  duration_ms: 1.430372
+  type: 'test'
+  ...
+# Subtest: off-centre pinch and translation form one GPU frame with anchored target-plane geometry in both projections
+ok 64 - off-centre pinch and translation form one GPU frame with anchored target-plane geometry in both projections
+  ---
+  duration_ms: 2.867927
+  type: 'test'
+  ...
+# Subtest: six directions and free orbit keep heading up projection selection and picking through touch navigation
+ok 65 - six directions and free orbit keep heading up projection selection and picking through touch navigation
+  ---
+  duration_ms: 7.972689
+  type: 'test'
+  ...
+# Subtest: two fingers override either single-finger drag mode without changing its selected value
+ok 66 - two fingers override either single-finger drag mode without changing its selected value
+  ---
+  duration_ms: 0.687668
+  type: 'test'
+  ...
+# Subtest: one finger promotes from its latest point and already rotated camera without a promotion jump
+ok 67 - one finger promotes from its latest point and already rotated camera without a promotion jump
+  ---
+  duration_ms: 0.69928
+  type: 'test'
+  ...
+# Subtest: pair movement waits for four CSS pixels and stationary duplicate events do not redraw
+ok 68 - pair movement waits for four CSS pixels and stationary duplicate events do not redraw
+  ---
+  duration_ms: 0.353503
+  type: 'test'
+  ...
+# Subtest: either lift order releases both captures and cannot continue as one finger or select on delayed events
+ok 69 - either lift order releases both captures and cannot continue as one finger or select on delayed events
+  ---
+  duration_ms: 1.628609
+  type: 'test'
+  ...
+# Subtest: pair cancellation capture loss third pointer mixed type and button chords never leave a late gesture
+ok 70 - pair cancellation capture loss third pointer mixed type and button chords never leave a late gesture
+  ---
+  duration_ms: 1.090775
+  type: 'test'
+  ...
+# Subtest: non-touch mixed duplicate and non-primary first contacts cannot promote the old gesture
+ok 71 - non-touch mixed duplicate and non-primary first contacts cannot promote the old gesture
+  ---
+  duration_ms: 2.444361
+  type: 'test'
+  ...
+# Subtest: tiny coincident and invalid second contacts terminate before capture or a GPU transition
+ok 72 - tiny coincident and invalid second contacts terminate before capture or a GPU transition
+  ---
+  duration_ms: 0.771167
+  type: 'test'
+  ...
+# Subtest: capture failures during first contact promotion and release cannot escape or keep a live session
+ok 73 - capture failures during first contact promotion and release cannot escape or keep a live session
+  ---
+  duration_ms: 2.172233
+  type: 'test'
+  ...
+# Subtest: reset refresh projection drag choice framing wheel scroll resize render and disposal end both touches
+ok 74 - reset refresh projection drag choice framing wheel scroll resize render and disposal end both touches
+  ---
+  duration_ms: 1.640431
+  type: 'test'
+  ...
+# Subtest: stale dimensions DPR canvas buffer and page position cancel before promotion or pair motion
+ok 75 - stale dimensions DPR canvas buffer and page position cancel before promotion or pair motion
+  ---
+  duration_ms: 0.794402
+  type: 'test'
+  ...
+# Subtest: a changed selection redraw retains the pair only on unchanged geometry
+ok 76 - a changed selection redraw retains the pair only on unchanged geometry
+  ---
+  duration_ms: 0.288218
+  type: 'test'
+  ...
+# Subtest: clamped pinch updates its reference immediately so reversing has no dead zone and clipping stays valid
+ok 77 - clamped pinch updates its reference immediately so reversing has no dead zone and clipping stays valid
+  ---
+  duration_ms: 1.576269
+  type: 'test'
+  ...
+# Subtest: nonfinite coordinates math overflow or Float32 preflight rejection cancel without changing the valid frame
+ok 78 - nonfinite coordinates math overflow or Float32 preflight rejection cancel without changing the valid frame
+  ---
+  duration_ms: 0.627594
+  type: 'test'
+  ...
+# Subtest: GPU touch failure rolls back the camera selection and draw count while revoking picking and view receipts
+ok 79 - GPU touch failure rolls back the camera selection and draw count while revoking picking and view receipts
+  ---
+  duration_ms: 0.969034
+  type: 'test'
+  ...
+# Subtest: context loss without an event ends the pair and recovery cannot resume old pointers
+ok 80 - context loss without an event ends the pair and recovery cannot resume old pointers
+  ---
+  duration_ms: 0.19425
+  type: 'test'
+  ...
+# Subtest: a view callback disposing the renderer cannot rebase or revive the completed touch session
+ok 81 - a view callback disposing the renderer cannot rebase or revive the completed touch session
+  ---
+  duration_ms: 0.259394
+  type: 'test'
+  ...
+# Subtest: disposal from a failed-frame notification cannot restore a camera into the released renderer
+ok 82 - disposal from a failed-frame notification cannot restore a camera into the released renderer
+  ---
+  duration_ms: 0.260666
+  type: 'test'
+  ...
+# Subtest: minimum focused distance also rebases during clamping and reverses immediately
+ok 83 - minimum focused distance also rebases during clamping and reverses immediately
+  ---
+  duration_ms: 0.397657
+  type: 'test'
+  ...
+# Subtest: explicit primary single touch still picks or follows the selected one-finger drag mode
+ok 84 - explicit primary single touch still picks or follows the selected one-finger drag mode
+  ---
+  duration_ms: 0.484973
+  type: 'test'
+  ...
+# Subtest: legal distant authored cameras and near-minimum cameras pan and lightly pinch without snapping to orbit bounds
+ok 85 - legal distant authored cameras and near-minimum cameras pan and lightly pinch without snapping to orbit bounds
+  ---
+  duration_ms: 1.857063
+  type: 'test'
+  ...
+# Subtest: unfocused view distances below the ordinary minimum retain a bounded proportional gesture range
+ok 86 - unfocused view distances below the ordinary minimum retain a bounded proportional gesture range
+  ---
+  duration_ms: 0.680063
+  type: 'test'
+  ...
+# Subtest: a distant authored session locks its enlarged upper limit instead of growing it after every frame
+ok 87 - a distant authored session locks its enlarged upper limit instead of growing it after every frame
+  ---
+  duration_ms: 0.926623
+  type: 'test'
+  ...
+# Subtest: same-frame dual moves pan without unintended zoom at either focused distance clamp
+ok 88 - same-frame dual moves pan without unintended zoom at either focused distance clamp
+  ---
+  duration_ms: 2.858639
+  type: 'test'
+  ...
+# Subtest: a quick lift synchronously commits the last valid pair once and invalidates its queued callback
+ok 89 - a quick lift synchronously commits the last valid pair once and invalidates its queued callback
+  ---
+  duration_ms: 0.503869
+  type: 'test'
+  ...
+# Subtest: all gesture cancellation routes discard pending touch frames and cannot revive on a late scheduler callback
+ok 90 - all gesture cancellation routes discard pending touch frames and cannot revive on a late scheduler callback
+  ---
+  duration_ms: 2.666583
+  type: 'test'
+  ...
+# Subtest: stale pending dimensions lost GPU context and replaced frames fail before a scheduled camera commit
+ok 91 - stale pending dimensions lost GPU context and replaced frames fail before a scheduled camera commit
+  ---
+  duration_ms: 0.533786
+  type: 'test'
+  ...
+# Subtest: a late frame from an older pair cannot update a newer pair using the same contact identifiers
+ok 92 - a late frame from an older pair cannot update a newer pair using the same contact identifiers
+  ---
+  duration_ms: 0.226811
+  type: 'test'
+  ...
+# Subtest: a queued pair validates only its complete positions and coalesces a temporary near-overlap within a frame
+ok 93 - a queued pair validates only its complete positions and coalesces a temporary near-overlap within a frame
+  ---
+  duration_ms: 0.246459
+  type: 'test'
+  ...
+# Subtest: queued camera failure and reentrant disposal never publish or retain a partial pair
+ok 94 - queued camera failure and reentrant disposal never publish or retain a partial pair
+  ---
+  duration_ms: 0.441921
+  type: 'test'
+  ...
+# Subtest: single-finger and mouse navigation stay synchronous and never request a dual-touch frame
+ok 95 - single-finger and mouse navigation stay synchronous and never request a dual-touch frame
+  ---
+  duration_ms: 0.206332
+  type: 'test'
+  ...
+# Subtest: scheduler exceptions and failed cancellation still cannot revive a queued pair
+ok 96 - scheduler exceptions and failed cancellation still cannot revive a queued pair
+  ---
+  duration_ms: 0.344145
+  type: 'test'
+  ...
+1..96
+# tests 96
+# suites 0
+# pass 96
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 146.032619

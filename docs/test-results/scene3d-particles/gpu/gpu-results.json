@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "scope": "GPU adapter contract fake-WebGL tests and old renderer/touch/fog regressions; actual pixel rendering is reported separately by browser integration",
+  "tests": 96,
+  "passed": 96,
+  "failed": 0,
+  "skipped": 0,
+  "newParticleTests": 11,
+  "packet": "native-prepared frozen count nested xyz Float32 phases; one static instance buffer",
+  "animation": "explicit offset update redraws with unchanged object picking frame; no clock or core import",
+  "checks": [
+    "packet/offset accessors and sparse arrays rejected before execution",
+    "count0/absence allocate no particle GPU resources",
+    "max4096 bounded instanced draw and static buffers",
+    "floating origin shared with object camera and fog",
+    "single tap mouse and touch gestures retained during offset updates",
+    "draw failure clears pick and view receipts; previous offset restored",
+    "allocation/compile/link failure/dispose/context loss release resources"
+  ],
+  "files": {
+    "web/modules/scene3d-particles-renderer.js": "5d5958b875f541d53efb273ef249bac4453e420587975c36605321d4a99d37b1",
+    "web/modules/scene3d-renderer.js": "4e3713d2c135d2495b1794664883e0c3a1fce2243a007c87b77a23177c8ad7aa",
+    "scripts/tests/scene3d-particles-renderer.test.mjs": "e4c06ed5ac10ccebcb2fede68d38fd57cd18b19ef3d3db2e173630c1352dd349"
+  },
+  "proof": {
+    "renderer-tests.tap": "1a72b807a6589f5648e647802cca8b66ad2bd55c5213ec871c463c94f5d5fd20"
+  }
+}

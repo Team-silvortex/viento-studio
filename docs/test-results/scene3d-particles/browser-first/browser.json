@@ -1,0 +1,766 @@
+{
+  "startedAt": "2026-10-12T12:54:06.337Z",
+  "steps": [
+    "Native particle review and Cancel preserve both draft and saved source.",
+    "Real WebGL rain: play advances, pause remains stable, seek and rewind reproduce pixels exactly; playback does not edit or save source.",
+    "Snow uses the same parameter fields. Count zero restores exact old-scene pixels. Saved values reopen correctly; three languages fit a 390px viewport."
+  ],
+  "errors": [],
+  "screenshots": [
+    "particles-zh-CN-390.png",
+    "particles-en-390.png",
+    "particles-ja-390.png",
+    "rain-preview.png",
+    "snow-preview.png",
+    "playback-zh-CN-390.png",
+    "playback-en-390.png",
+    "playback-ja-390.png"
+  ],
+  "modules": [
+    "/web/modules/app-backend-project.js",
+    "/web/modules/app-doc-service.js",
+    "/web/modules/app-document-layout.js",
+    "/web/modules/app-editor-draft.js",
+    "/web/modules/app-export.js",
+    "/web/modules/app-field-draft.js",
+    "/web/modules/app-field-editor.js",
+    "/web/modules/app-helpers.js",
+    "/web/modules/app-keyboard.js",
+    "/web/modules/app-media-editor.js",
+    "/web/modules/app-media-render.js",
+    "/web/modules/app-object-projection.js",
+    "/web/modules/app-project-build.js",
+    "/web/modules/app-project-settings.js",
+    "/web/modules/app-render.js",
+    "/web/modules/app-resource-packages.js",
+    "/web/modules/app-runtime-case-documents.js",
+    "/web/modules/app-runtime-case-report.js",
+    "/web/modules/app-runtime-case-suites.js",
+    "/web/modules/app-runtime.js",
+    "/web/modules/app-scene-authoring.js",
+    "/web/modules/app-scene-composition-batch-layout.js",
+    "/web/modules/app-scene-composition-definitions.js",
+    "/web/modules/app-scene-composition-fragments.js",
+    "/web/modules/app-scene-composition-groups.js",
+    "/web/modules/app-scene-composition-layout.js",
+    "/web/modules/app-scene-composition-overrides.js",
+    "/web/modules/app-scene-composition-placement.js",
+    "/web/modules/app-scene-composition-placements.js",
+    "/web/modules/app-scene-composition-structure.js",
+    "/web/modules/app-scene-create.js",
+    "/web/modules/app-scene-layout.js",
+    "/web/modules/app-scene-outline.js",
+    "/web/modules/app-scene-preview-canvas.js",
+    "/web/modules/app-scene-preview.js",
+    "/web/modules/app-scene3d-alignment.js",
+    "/web/modules/app-scene3d-copy.js",
+    "/web/modules/app-scene3d-distribution.js",
+    "/web/modules/app-scene3d-environment.js",
+    "/web/modules/app-scene3d-objects.js",
+    "/web/modules/app-scene3d-preview.js",
+    "/web/modules/app-scene3d-properties.js",
+    "/web/modules/app-scene3d-removal.js",
+    "/web/modules/app-scene3d-transforms.js",
+    "/web/modules/app-scene3d-translation.js",
+    "/web/modules/app-services.js",
+    "/web/modules/app-source-location.js",
+    "/web/modules/app-state.js",
+    "/web/modules/app-structured.js",
+    "/web/modules/app-studio-core.js",
+    "/web/modules/app-studio-system.js",
+    "/web/modules/app-type-templates.js",
+    "/web/modules/app-world-browser.js",
+    "/web/modules/desktop-bridge.js",
+    "/web/modules/scene3d-math.js",
+    "/web/modules/scene3d-orientation.js",
+    "/web/modules/scene3d-particle-preview.js",
+    "/web/modules/scene3d-particles-renderer.js",
+    "/web/modules/scene3d-picking.js",
+    "/web/modules/scene3d-playback.js",
+    "/web/modules/scene3d-renderer.js"
+  ],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "丢弃本次3D环境修改？原文草稿不会改变。"
+    },
+    {
+      "type": "confirm",
+      "message": "丢弃本次3D环境修改？原文草稿不会改变。"
+    },
+    {
+      "type": "confirm",
+      "message": "Discard these 3D environment changes? The source draft will remain unchanged."
+    },
+    {
+      "type": "confirm",
+      "message": "今回の3D環境の変更を破棄しますか？原文の下書きは変更されません。"
+    }
+  ],
+  "svgRequests": [],
+  "cspViolations": [],
+  "limitations": [
+    "Real HTTP editor, native/WASM source semantics and WebGL2 draws/readPixels; no installed desktop, Android or hardware-GPU claim.",
+    "Browser renderer/vendor are recorded explicitly; headless Chrome may use a software GPU implementation.",
+    "Godot probe evidence is separate; this does not claim cross-engine pixel equality.",
+    "Independent background, author camera and light changes apply only to the source draft. Native source operations do not grant renderer, backend or implicit Save authority."
+  ],
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "sources": {
+    "engine/scene3d-particles.mjs": "60d040e773ddfee5803aacba49b6a9456f5e6de7f2eb3265e2ef09cbcc03f509",
+    "web/modules/scene3d-particle-preview.js": "f19959ba09ff344bd3869af7ae27403d0f6e00bd941fa806a9cbb34cf0de1635",
+    "web/modules/scene3d-playback.js": "98de83b65924e028dc8e3aa67873fa874a6bb984b8f237cc6b75f9d605ddddeb",
+    "web/modules/scene3d-particles-renderer.js": "911ee121e9f807da0f1d467f0b2546e9aaf8144f23e0fbe8d2143ba6ab9ad7f1",
+    "scripts/tests/scene3d-particles-smoke.mjs": "fdccaa6e955c7f9fcf1ae030dda4f1790c013243c6201e5f64d2672f4587ed40",
+    "engine/scene3d-environment.mjs": "ab72442de493fd632d21cffe0f9ce79b55b49174c2d72a11c0d1fa85bff27a8d",
+    "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+    "web/modules/app-scene3d-environment.js": "21a9d0e0b259b1442f74b2c9fad5c39b9dfc7a134a670e36930a6dcaddc200ac",
+    "web/scene3d-environment.css": "413a8deff3a94b709ac95b08f33a0e686d86271db87581d8b78d03a533af1f3e",
+    "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
+    "web/modules/app-scene3d-transforms.js": "44082449bd8f7514412af1853523c9282527348fc76eda04c0822f6d91321a72",
+    "web/scene3d-transforms.css": "f8fae6e364087a4986fbfdf99a884f34dfb513f26cfeb8c3536ca90144c7cc29",
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.mjs": "2e0aa9235d700e1246bd3a529554b762ea6d034b4635d339b36917d9020fad64",
+    "engine/studio-modules.mjs": "2883e038fec75106e244f8628b02c2d2394dc5629e16d0cc28402ad4486876dc",
+    "web/modules/app-scene3d-preview.js": "9687f833f54e68e355d51fea3ef7e784afd2715cdc0a8642c137b3abc6436bc0",
+    "web/modules/scene3d-renderer.js": "e9b19f7570543936039882602a4aaf6958a6ef698ca12e8171382f4d436420be",
+    "web/modules/scene3d-math.js": "342e636b2cbbec00e8be5b9c91cee5a975239aea66a6189c5991e8fa22e354ba",
+    "web/modules/app-studio-system.js": "34b0d57b1a287b8ab1a9b099ab54ffb9c40726d7c866aefef975e951c0dee3b7",
+    "web/modules/app-runtime.js": "24129665fcdecc426bc3f5b880bc61ffce6af647a47eec2b765f7ad8feebe7fe",
+    "web/scene3d.css": "ce2488dadaf3841c9e3cede0c74c7163bf18a73ef8ef7188b50b32ceb39f2d87",
+    "web/i18n/en.js": "bc770dc884a992873f8608e67ff691a815af635aa130597bac396b2717b24b41",
+    "web/i18n/ja.js": "d18404db2986128e170b658872600db97fd47e5c38f8d48399f1db5e4bb5b920"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "system": {
+    "format": "viento-studio-system",
+    "schemaVersion": 1,
+    "lifecycle": "boot-only",
+    "hotReload": false,
+    "initializedModules": [
+      "org.viento.document",
+      "org.viento.settings",
+      "org.viento.world",
+      "org.viento.build",
+      "org.viento.project",
+      "org.viento.export",
+      "org.viento.media",
+      "org.viento.scene3d",
+      "org.viento.scene3d-transforms",
+      "org.viento.scene3d-objects",
+      "org.viento.scene3d-environment",
+      "org.viento.scene3d-properties",
+      "org.viento.scene3d-translation",
+      "org.viento.scene3d-alignment",
+      "org.viento.scene3d-distribution",
+      "org.viento.scene3d-copy",
+      "org.viento.scene3d-removal"
+    ],
+    "plan": {
+      "format": "viento-studio-module-plan",
+      "schemaVersion": 1,
+      "modules": [
+        {
+          "id": "org.viento.document",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.settings",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.project",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.world",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.export",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.media",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.build",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-transforms",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-objects",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-environment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-properties",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-translation",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-alignment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-distribution",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-copy",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-removal",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        }
+      ],
+      "capabilities": [
+        {
+          "capability": "document.read",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "document.edit",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.markdown",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.text",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.json",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.yaml",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "workbench.settings",
+          "apiVersion": 1,
+          "domain": "workbench",
+          "moduleId": "org.viento.settings",
+          "active": true
+        },
+        {
+          "capability": "project.types",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "project.templates",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "world.query",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "world.commands",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.object",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.projection",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.scene2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "project.export",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.package",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.reference",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.media",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene2d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.composition2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.project",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.execution",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "behavior.gdscript",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.preview.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.transforms3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-transforms",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.objects3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-objects",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.environment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-environment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.properties3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-properties",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.translation3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-translation",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.alignment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-alignment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.distribution3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-distribution",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.copy3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-copy",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.removal3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-removal",
+          "active": true
+        }
+      ],
+      "requests": [
+        {
+          "capability": "scene.preview.scene3d",
+          "apiVersion": 1,
+          "required": true,
+          "status": "supported",
+          "moduleId": "org.viento.scene3d"
+        },
+        {
+          "capability": "scene.authoring.transforms3d",
+          "apiVersion": 1,
+          "required": true,
+          "status": "supported",
+          "moduleId": "org.viento.scene3d-transforms"
+        },
+        {
+          "capability": "scene.authoring.objects3d",
+          "apiVersion": 1,
+          "required": true,
+          "status": "supported",
+          "moduleId": "org.viento.scene3d-objects"
+        },
+        {
+          "capability": "scene.authoring.environment3d",
+          "apiVersion": 1,
+          "required": true,
+          "status": "supported",
+          "moduleId": "org.viento.scene3d-environment"
+        }
+      ],
+      "satisfied": true,
+      "diagnostics": []
+    },
+    "hostCapabilities": {
+      "semanticProjection": true,
+      "semanticCommands": [
+        "property.set",
+        "changeset.apply",
+        "object.create",
+        "scene.create",
+        "projection.create",
+        "projection.update",
+        "scene.update",
+        "relation.add",
+        "resource.bind",
+        "world.recover"
+      ],
+      "projectBuild": true,
+      "scenePreview": true
+    }
+  },
+  "clearPixels": {
+    "hash": 315082544,
+    "nonBackground": 47755,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0,
+    "background": "#142538"
+  },
+  "columnChecks": [
+    {
+      "viewport": 1440,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 390,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 390,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 390,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 1440,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 1440,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    },
+    {
+      "viewport": 1440,
+      "columns": {
+        "CameraPositionX": 3,
+        "CameraTargetX": 3,
+        "LightDirectionX": 3,
+        "Near": 2,
+        "Background": 1,
+        "Fov": 1,
+        "LightColor": 1,
+        "LightEnergy": 1
+      }
+    }
+  ],
+  "languages": [
+    {
+      "language": "zh-CN",
+      "width": 349,
+      "scrollWidth": 349,
+      "seed": "1",
+      "label": "随机种子"
+    },
+    {
+      "language": "en",
+      "width": 349,
+      "scrollWidth": 349,
+      "seed": "1",
+      "label": "Random seed"
+    },
+    {
+      "language": "ja",
+      "width": 349,
+      "scrollWidth": 349,
+      "seed": "1",
+      "label": "乱数シード"
+    }
+  ],
+  "rainStart": {
+    "hash": 1992041014,
+    "nonBackground": 78779,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0,
+    "background": "#142538"
+  },
+  "rainLater": {
+    "hash": 2407380656,
+    "nonBackground": 83032,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0,
+    "background": "#142538"
+  },
+  "snowStart": {
+    "hash": 4027601826,
+    "nonBackground": 78872,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0,
+    "background": "#142538"
+  },
+  "snowLater": {
+    "hash": 3021398176,
+    "nonBackground": 82945,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0,
+    "background": "#142538"
+  },
+  "offPixels": {
+    "hash": 315082544,
+    "nonBackground": 47755,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0,
+    "background": "#142538"
+  },
+  "savedSourceSha256": "5da8f14b951ef5331f5c4eccdcca7c84131fa4424067556810d10785e3511190",
+  "coreWasmSha256": "47ca1f48b07a5e9dc6a02052860b2ddc633fc92dd20e14f1139ba761fd446e0f",
+  "sourcesFinal": {
+    "engine/scene3d-particles.mjs": "60d040e773ddfee5803aacba49b6a9456f5e6de7f2eb3265e2ef09cbcc03f509",
+    "web/modules/scene3d-particle-preview.js": "f19959ba09ff344bd3869af7ae27403d0f6e00bd941fa806a9cbb34cf0de1635",
+    "web/modules/scene3d-playback.js": "98de83b65924e028dc8e3aa67873fa874a6bb984b8f237cc6b75f9d605ddddeb",
+    "web/modules/scene3d-particles-renderer.js": "911ee121e9f807da0f1d467f0b2546e9aaf8144f23e0fbe8d2143ba6ab9ad7f1",
+    "scripts/tests/scene3d-particles-smoke.mjs": "fdccaa6e955c7f9fcf1ae030dda4f1790c013243c6201e5f64d2672f4587ed40",
+    "engine/scene3d-environment.mjs": "ab72442de493fd632d21cffe0f9ce79b55b49174c2d72a11c0d1fa85bff27a8d",
+    "engine/scene3d-authoring.mjs": "07faa2f3b422b9408f4c8a2c19b3762c62d1b74bbf4a53a90f0be1efd64544f8",
+    "web/modules/app-scene3d-environment.js": "21a9d0e0b259b1442f74b2c9fad5c39b9dfc7a134a670e36930a6dcaddc200ac",
+    "web/scene3d-environment.css": "413a8deff3a94b709ac95b08f33a0e686d86271db87581d8b78d03a533af1f3e",
+    "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
+    "web/modules/app-scene3d-transforms.js": "44082449bd8f7514412af1853523c9282527348fc76eda04c0822f6d91321a72",
+    "web/scene3d-transforms.css": "f8fae6e364087a4986fbfdf99a884f34dfb513f26cfeb8c3536ca90144c7cc29",
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.mjs": "2e0aa9235d700e1246bd3a529554b762ea6d034b4635d339b36917d9020fad64",
+    "engine/studio-modules.mjs": "2883e038fec75106e244f8628b02c2d2394dc5629e16d0cc28402ad4486876dc",
+    "web/modules/app-scene3d-preview.js": "9687f833f54e68e355d51fea3ef7e784afd2715cdc0a8642c137b3abc6436bc0",
+    "web/modules/scene3d-renderer.js": "e9b19f7570543936039882602a4aaf6958a6ef698ca12e8171382f4d436420be",
+    "web/modules/scene3d-math.js": "342e636b2cbbec00e8be5b9c91cee5a975239aea66a6189c5991e8fa22e354ba",
+    "web/modules/app-studio-system.js": "34b0d57b1a287b8ab1a9b099ab54ffb9c40726d7c866aefef975e951c0dee3b7",
+    "web/modules/app-runtime.js": "24129665fcdecc426bc3f5b880bc61ffce6af647a47eec2b765f7ad8feebe7fe",
+    "web/scene3d.css": "ce2488dadaf3841c9e3cede0c74c7163bf18a73ef8ef7188b50b32ceb39f2d87",
+    "web/i18n/en.js": "bc770dc884a992873f8608e67ff691a815af635aa130597bac396b2717b24b41",
+    "web/i18n/ja.js": "d18404db2986128e170b658872600db97fd47e5c38f8d48399f1db5e4bb5b920"
+  },
+  "sourceStableDuringProof": true,
+  "ok": true,
+  "status": "passed",
+  "finishedAt": "2026-10-12T12:54:25.231Z"
+}

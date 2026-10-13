@@ -160,6 +160,7 @@ export async function dialogHarness(module, overrides = {}) {
     setupSceneCompositionPlacements: () => ({ open() {}, refresh() {}, destroy() {} }),
     setupSceneCompositionGroups: () => ({ open() {}, refresh() {}, destroy() {} }),
     setupSceneCompositionDefinitions: () => ({ open() {}, refresh() {}, destroy() {} }),
+    setupBackendProjectDelivery: () => ({ open() {}, close: () => true, refresh() {}, dispose() {}, isBusy: () => false }),
     setupBackendProject: () => ({ open() {}, render() {}, closed() {}, dispose() {} }),
     setupScenePreview: () => ({ setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {}, destroy() {} }),
     ...overrides,

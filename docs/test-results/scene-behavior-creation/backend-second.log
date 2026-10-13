@@ -1,0 +1,49 @@
+✔ behavior.create workspace v2 preview predicts all three owned files and apply preserves every other author byte (163.003624ms)
+✔ behavior.create workspace v3 preview predicts all three owned files and apply preserves every other author byte (109.704614ms)
+✔ behavior creation treats implementation text as inert source and never adds author script content (78.451849ms)
+✔ scene script actor and metadata edits invalidate preview before any of the three targets publishes (166.670916ms)
+✔ a dependency edit at beforeIntent keeps all author targets unchanged and removes unpublished staging (63.038541ms)
+✔ request extensions paths malformed declarations identities and stale scene revisions refuse all writes (95.471044ms)
+✖ parallel in-process and real multi-process requests cannot create two first behavior manifests (253.461408ms)
+✔ occupied portable aliases and filesystem links outside source keep foreign files intact (45.775479ms)
+✔ behavior.create v9 SIGKILL intent/- restores two absences and the exact old scene record (201.623368ms)
+✔ behavior.create v9 SIGKILL source-ready/0 restores two absences and the exact old scene record (198.451414ms)
+✔ behavior.create v9 SIGKILL data/0 restores two absences and the exact old scene record (202.871215ms)
+✔ behavior.create v9 SIGKILL source-ready/1 restores two absences and the exact old scene record (204.253494ms)
+✔ behavior.create v9 SIGKILL data/1 restores two absences and the exact old scene record (201.892626ms)
+✔ behavior.create v9 SIGKILL source-ready/2 restores two absences and the exact old scene record (203.204606ms)
+✔ behavior.create v9 SIGKILL data/2 restores two absences and the exact old scene record (201.43376ms)
+✔ behavior.create v9 SIGKILL commit/- restores all three after-images (214.509301ms)
+✔ behavior.create v9 SIGKILL head/- restores all three after-images (215.513739ms)
+✔ recovery is restartable during reverse rollback and forward publication without restoring author dependencies (542.319775ms)
+✔ ordinary data-phase failures roll back and lost completion after commit returns the committed receipt (143.522883ms)
+✔ external edits to owned after-images or other registrations preserve conflicts and never publish recovery files (343.536715ms)
+✔ v9 refuses unknown journal fields mutated metadata snapshots extra stage files and rehashed frozen dependency forgeries (1557.764848ms)
+✔ foreign metadata temp names and symlinks are not hidden by the two-path v9 recovery exception (362.52754ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 21
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5826.404868
+
+✖ failing tests:
+
+test at scripts/tests/world-behavior-create-service.test.mjs:72:1
+✖ parallel in-process and real multi-process requests cannot create two first behavior manifests (253.461408ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /world_revision_conflict|world_write_busy/. Input:
+  
+  ''
+  
+      at TestContext.<anonymous> (file:///tmp/viento-behavior-create-2qx88f46/candidate/scripts/tests/world-behavior-create-service.test.mjs:79:100)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: /world_revision_conflict|world_write_busy/,
+    operator: 'match',
+    diff: 'simple'
+  }

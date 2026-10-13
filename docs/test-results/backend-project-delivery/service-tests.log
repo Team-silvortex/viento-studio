@@ -1,0 +1,36 @@
+✔ history detail reads remain independent from the approved latest build used by Run (115.548566ms)
+✔ old host state has no new list but keeps the existing latest-build Run available (45.237952ms)
+✔ parent close and reopen discard a delayed inspection without losing latest Run ownership (97.269909ms)
+✔ scene and preview-tab changes hide details and invalidate delayed reads (130.0246ms)
+✔ descriptor changes invalidate an existing detail even when backend ID and list rows remain the same (102.773994ms)
+✔ read failure stays inside details and cannot consume a previous successful build (64.59479ms)
+✔ unsaved author input blocks execution while readonly details preserve text and caret (79.428882ms)
+✔ parent explicit activation changes the one frozen execution target used by existing headless run (116.205781ms)
+✔ readonly inspection of restored history cannot choose a new execution target (94.912425ms)
+✔ failed selection reconciles with GET only and does not repeat the mutation or lose prior run build (104.42501ms)
+✔ lost select response reconciles a host-confirmed target by GET without a second select (94.44532ms)
+✔ close/reopen and scene/tab changes discard selection completion from the previous parent owner (225.146312ms)
+✔ descriptor or request epoch change invalidates pending select even when scene and IDs remain the same (178.41381ms)
+✔ frozen-only scene permits explicit run selection and run while denying plan/build/edit/create from offline authors (93.534606ms)
+✔ frozen-only row blocks author plan even when another live scene keeps the author catalog available (54.940958ms)
+✔ selected history updates existing control replay target and keeps the raw input intact (87.368699ms)
+✔ draft data is preserved during runtime selection and existing unsaved-input execution gate remains active (76.340814ms)
+✔ explicit status refresh bypasses host catalog cache and immediately reconciles offline gates or a removed target (145.290952ms)
+✔ delivery service: build, review, export, independent verification and release leave author sources intact (155.110338ms)
+✔ delivery service: review mismatch, arbitrary path, unknown build and disabled capability cannot authorize export (112.190436ms)
+✔ delivery service: ZIP preparation owns the task slot until disposed, preventing concurrent retention (133.29803ms)
+✔ delivery service: close aborts an admitted writer and waits for its lease release (88.226614ms)
+✔ delivery service: workspace replacement or registered file mutation between review and export is rejected (60.905714ms)
+✔ delivery service: cancellation during preparation releases task slot and creates no downloadable job (82.224277ms)
+✔ delivery service: writer failure releases slot and removes partial package (83.385666ms)
+✔ late export cancellation removes the completed document ZIP and leaves all three job slots available (267.246623ms)
+✔ late export cancellation removes the completed workspace ZIP and leaves all three job slots available (250.226852ms)
+✔ disconnecting HTTP after ZIP completion cancels publication and permits a fresh download and release (284.280122ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2199.726829

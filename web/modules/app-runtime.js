@@ -1,3 +1,9 @@
+import { setupSourceDiagnostic } from './app-source-diagnostic.js';
+import { revealSourceOffset } from './app-source-reveal.js';
+import { setupSourcePosition } from './app-source-position.js';
+import { setupSourceIndentation } from './app-source-indentation.js';
+import { prepareScriptDraftApply } from '../../engine/script-authoring.mjs';
+import { createSceneBehaviorSourceHost } from './app-behavior-source.js';
 import { t, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage } from '../i18n/index.js';
 import { diagnosticMessage } from '../i18n/diagnostics.js';
 import {
@@ -74,9 +80,17 @@ import {
   rebuildDocIndex,
   writeDoc,
   loadDocumentFields,
+  inspectSceneBehaviorAuthoring,
 } from './app-doc-service.js';
 
 let studioSystem = null;
+let sourceIndentationController = null;
+let sourcePositionController = null;
+let sourceDiagnosticController = null;
+let sourceInteractionEpoch = 0;
+function markSourceInteraction() { sourceInteractionEpoch++; }
+let sourceEditorContentEpoch = 0;
+let sceneBehaviorAuthoringAvailable = false;
 let fieldEditorController = null;
 let fieldDraftSourcePath = '';
 let fieldLoadToken = 0;
@@ -1519,6 +1533,9 @@ function syncEditorBusyUi() {
     if (editRebuildBtnEl) editRebuildBtnEl.disabled = true;
   }
   syncModeButtons(writeBusy);
+  sourceIndentationController?.refresh();
+  sourcePositionController?.refresh();
+  sourceDiagnosticController?.refresh();
   studioSystem?.refreshMedia();
 }
 
@@ -1990,7 +2007,9 @@ async function detectEditBackend() {
   const normalizedDetection = normalizeEditBackendState(detection);
   detectedEditBackendState = normalizedDetection;
   state.editBackendAvailable = Boolean(normalizedDetection.available);
+  sceneBehaviorAuthoringAvailable = normalizedDetection.available === true && detection.payload?.sceneBehaviorAuthoring === true;
   studioSystem?.updateCapabilities(detection.payload || null);
+  studioSystem?.refreshMedia();
 }
 
 function resolveInitialMode() {
@@ -2628,6 +2647,10 @@ function buildSourceFromBlockDrafts() {
 function setSourceEditorContent(content) {
   sourceEditorDraft = content;
   if (editEditorEl) editEditorEl.value = content;
+  sourceEditorContentEpoch++;
+  sourceIndentationController?.refresh();
+  sourcePositionController?.refresh();
+  sourceDiagnosticController?.refresh();
 }
 
 function getSourceEditorContent() {
@@ -2821,7 +2844,7 @@ function setEditInputMode(mode, options = {}) {
       if (options.forceSourceRefresh && !state.isCreating) {
         fillSourcePreview(doc, getSourcePath(doc));
       }
-      editEditorEl.focus();
+      if (options.focus !== false) editEditorEl.focus();
     }
     if (editStatusEl) {
       setEditorStatus('');
@@ -3590,7 +3613,7 @@ function setEditButtons({ isEditing, isCreating, canEdit }) {
   syncEditorBusyUi();
 }
 
-function applyEditMode(doc, isEditing) {
+function applyEditMode(doc, isEditing, { focus = true } = {}) {
   if (!isEditModeActive()) {
     resetDocEditorState();
     setEditorPanelVisibility(false);
@@ -3605,7 +3628,6 @@ function applyEditMode(doc, isEditing) {
     state.activeEditSourceVersion = '';
     editSessionBaselineContent = '';
     editSessionVersion = '';
-    updateEditUnsavedUi();
   }
   setEditButtons({
     isEditing,
@@ -3628,8 +3650,30 @@ function applyEditMode(doc, isEditing) {
   } else if (editEditorEl) {
     contentEl.classList.add('is-hidden');
     contentEl.hidden = true;
-    setEditInputMode(state.editInputMode || 'source', { doc });
+    setEditInputMode(state.editInputMode || 'source', { doc, focus });
   }
+  contentEl.classList.toggle('is-empty', false);
+  // Publish the completed exit, including the cleared source and input mode.
+  // A later language repaint must not invalidate a newly opened scene dialog.
+  if (!isEditing) updateEditUnsavedUi();
+}
+
+function initializeCreateSession(sourcePath) {
+  state.isEditing = true;
+  state.isCreating = true;
+  state.editInputMode = 'source';
+  state.editBlockDrafts = [];
+  blockDraftSourcePath = '';
+  state.activeEditPath = '__new__';
+  state.activeCreatePath = sourcePath;
+  setEditButtons({
+    isEditing: false,
+    isCreating: true,
+    canEdit: true,
+  });
+  setEditInputMode('source');
+  contentEl.classList.add('is-hidden');
+  contentEl.hidden = true;
   contentEl.classList.toggle('is-empty', false);
 }
 
@@ -3655,22 +3699,7 @@ async function enterCreateMode() {
   const defaultCreateType = getCreateDefaultTypeFromActiveContext();
   const suggestedPath = getSuggestedCreatePath(baseSourcePath, defaultCreateType);
 
-  state.isEditing = true;
-  state.isCreating = true;
-  state.editInputMode = 'source';
-  state.editBlockDrafts = [];
-  blockDraftSourcePath = '';
-  state.activeEditPath = '__new__';
-  state.activeCreatePath = suggestedPath;
-  setEditButtons({
-    isEditing: false,
-    isCreating: true,
-    canEdit: true,
-  });
-  setEditInputMode('source');
-  contentEl.classList.add('is-hidden');
-  contentEl.hidden = true;
-  contentEl.classList.toggle('is-empty', false);
+  initializeCreateSession(suggestedPath);
   const createState = await setCreateTypeState(defaultCreateType, {
     referenceSourcePath: baseSourcePath,
     loadTemplate: true,
@@ -3680,6 +3709,62 @@ async function enterCreateMode() {
   updateCreatePathValidation();
   editEditorEl?.setSelectionRange?.(0, 0);
   if (editEditorEl) editEditorEl.scrollTop = 0;
+}
+
+// Script creation delegates only an in-memory draft to the ordinary document
+// editor. No template read, write API, registration or execution is performed.
+let scriptCreateGeneration = 0, scriptCreateObservation = null;
+function scriptCreateContext() {
+  const content = isInEditSession() ? getCurrentEditContent() : '';
+  const documentRoot = getProjectDocumentsPath();
+  const documentTypes = (state.workspace?.documentTypes || []).map(type => ({ id: type.id, label: type.label }));
+  const editable = isEditModeActive() && state.editBackendAvailable && [2, 3].includes(state.workspace?.version);
+  const dirty = Boolean(state.editHasUnsavedChanges || isInEditSession() && content !== editSessionBaselineContent);
+  const busy = Boolean(isEditorBusy()), creating = Boolean(state.isCreating);
+  const observed = [state.workspace, getActiveDoc(), state.activePath, state.activeEditPath, state.editInputMode,
+    editorLoadToken, content, editSessionBaselineContent, editSessionVersion,
+    editable, busy, dirty, creating, documentRoot, JSON.stringify(documentTypes)];
+  if (!scriptCreateObservation || observed.some((value, index) => value !== scriptCreateObservation[index])) {
+    scriptCreateGeneration++; scriptCreateObservation = observed;
+  }
+  return { editable, busy, dirty, creating, sourceToken: `script:${scriptCreateGeneration}`, documentRoot, documentTypes };
+}
+
+function createScriptDraft(proposal, { isCurrent = () => true } = {}) {
+  const conflict = () => { throw Object.assign(new Error('Script creation no longer owns this editor session.'), { errorCode: 'script_authoring_conflict' }); };
+  if (typeof isCurrent !== 'function' || isCurrent() !== true) conflict();
+  const context = scriptCreateContext();
+  if (!context.editable || context.busy || context.dirty || context.creating) conflict();
+  const prepared = prepareScriptDraftApply({ sourceToken: context.sourceToken, documentRoot: context.documentRoot, documentTypes: context.documentTypes }, proposal);
+  if (isCurrent() !== true || scriptCreateContext().sourceToken !== context.sourceToken) conflict();
+  // Keep admission and the complete new-session transition synchronous. Invalidate
+  // any old template/source load before replacing the clean editor session.
+  invalidateEditorLoads();
+  initializeCreateSession(prepared.sourcePath);
+  state.activeEditSource = ''; state.activeEditSourceVersion = '';
+  state.activeCreateType = prepared.documentType;
+  if (createTypeSelectEl) createTypeSelectEl.value = prepared.documentType;
+  state.activeCreatePath = setCreatePath(prepared.sourcePath);
+  setStoredCreateType(prepared.documentType);
+  if (editPathEl) editPathEl.textContent = `${APP_RUNTIME_TEXTS.create.sourcePrefix}${getCreateTypeLabel(prepared.documentType)}${APP_RUNTIME_TEXTS.create.sourceTypeSuffix}${prepared.sourcePath}`;
+  setEditorPanelVisibility(true);
+  // An unsaved generated script must participate in exit/recovery protection.
+  // Its baseline is empty, rather than treating the template as already saved.
+  setSourceEditorContent(''); setEditSessionClean('', '');
+  setSourceEditorContent(prepared.content);
+  updateCreatePathValidation(); refreshEditSessionDirtyState(); refreshEditButtons();
+  setEditorStatus(t('脚本草稿已准备好。可继续编辑，点击保存后才会登记到工程。'));
+  editEditorEl?.setSelectionRange?.(0, 0); if (editEditorEl) editEditorEl.scrollTop = 0;
+  const appliedToken = scriptCreateContext().sourceToken; let focused = false;
+  return Object.freeze({ applied: true, sourcePath: prepared.sourcePath, content: prepared.content, focus() {
+    if (focused || document.querySelector?.('dialog[open]') || scriptCreateContext().sourceToken !== appliedToken
+      || !isEditModeActive() || !state.isCreating || isEditorBusy() || getCurrentEditContent() !== prepared.content
+      || getCreateInputPath() !== prepared.sourcePath || state.activeCreateType !== prepared.documentType) return false;
+    // The chooser close event may arrive after the author has already moved
+    // the caret. Initial placement happened during draft creation; a delayed
+    // focus receipt must preserve subsequent navigation and scrolling.
+    focused = true; editEditorEl.focus({ preventScroll: true }); return true;
+  } });
 }
 
 async function fetchEditableSource(pathValue) {
@@ -3752,7 +3837,7 @@ async function enterEditMode() {
   activateSourceEditor(doc, sourcePath);
 }
 
-function activateSourceEditor(doc, sourcePath) {
+function activateSourceEditor(doc, sourcePath, { focus = true } = {}) {
   state.activeEditPath = doc.path;
   state.activeEditSource = sourcePath;
   state.activeEditSourceVersion = normalizeEditSessionVersion(
@@ -3761,13 +3846,13 @@ function activateSourceEditor(doc, sourcePath) {
   state.editInputMode = 'source';
   state.editBlockDrafts = [];
   blockDraftSourcePath = '';
-  applyEditMode(doc, true);
-  setEditInputMode('source', { doc });
+  applyEditMode(doc, true, { focus });
+  setEditInputMode('source', { doc, focus });
   if (editEditorEl) {
     fillSourcePreview(doc, sourcePath);
     editEditorEl.setSelectionRange?.(0, 0);
     editEditorEl.scrollTop = 0;
-    editEditorEl.focus();
+    if (focus) editEditorEl.focus();
   }
   syncEditSessionBaseline();
   studioSystem?.refreshMedia();
@@ -4121,94 +4206,117 @@ async function openSceneDraftSource(sourcePath, location) {
       : '草稿没有可精确定位的字段范围；当前内容和光标已保留。'));
     return true;
   }
-  const row = value.slice(0, selection.start).split('\n').length - 1;
-  const lineHeight = Number.parseFloat(globalThis.getComputedStyle?.(editEditorEl)?.lineHeight) || 20;
-  const scroll = Math.max(0, row * lineHeight - (editEditorEl.clientHeight || 0) / 2);
-  editEditorEl.setSelectionRange?.(selection.start, selection.end); editEditorEl.scrollTop = scroll;
+  const interaction = sourceInteractionEpoch;
+  const canFocus = () => owns() && sourceInteractionEpoch === interaction && state.editInputMode === 'source'
+    && getCurrentEditContent() === content && editEditorEl.value === value;
+  editEditorEl.setSelectionRange?.(selection.start, selection.end);
+  revealSourceOffset(editEditorEl, value, selection.start);
   setEditorStatus(t('已定位草稿字段：{0}', location.propertyPath || '/'));
   let focused = false;
   return { focus: () => {
-    if (focused || !owns() || state.editInputMode !== 'source' || getCurrentEditContent() !== content || editEditorEl.value !== value) return false;
-    focused = true; editEditorEl.focus(); editEditorEl.setSelectionRange?.(selection.start, selection.end);
-    editEditorEl.scrollTop = scroll; editEditorEl.scrollIntoView?.({ block: 'nearest' }); return true;
+    if (focused || !canFocus() || document.querySelector?.('dialog[open]')) return false;
+    focused = true; editEditorEl.focus({ preventScroll: true });
+    if (!canFocus() || document.querySelector?.('dialog[open]')) return false;
+    editEditorEl.setSelectionRange?.(selection.start, selection.end);
+    revealSourceOffset(editEditorEl, value, selection.start);
+    editEditorEl.scrollIntoView?.({ block: 'nearest' }); return true;
   } };
 }
 
-async function openBuildSource(sourcePath, location = null) {
+async function openAuthorSource(sourcePath, { sourceRevision, isCurrent = () => true } = {}) {
+  if (typeof sourceRevision !== 'string' || !/^sha256:[a-f0-9]{64}$/.test(sourceRevision)
+    || typeof isCurrent !== 'function' || !isCurrent() || state.editHasUnsavedChanges || state.isCreating || isEditorBusy()) return false;
+  return openSavedSource(sourcePath, null, { sourceRevision, isCurrent });
+}
+
+async function openBuildSource(sourcePath, location = null, context = null) {
+  return openSavedSource(sourcePath, location, null, context?.diagnostic);
+}
+
+async function openSavedSource(sourcePath, location = null, sourceEdit = null, diagnostic = null) {
   if (location?.previewDraft === true) return openSceneDraftSource(sourcePath, location);
   const doc = getDocBySourcePath(sourcePath);
   if (!doc) throw new Error('Source document is unavailable');
   const request = ++sourceNavigationToken;
-  const located = Boolean(location?.sourceRange);
-  selectDoc(doc.path, { deferSourceRead: located });
+  const located = Boolean(location?.sourceRange) || Boolean(diagnostic);
+  selectDoc(doc.path, { deferSourceRead: located || Boolean(sourceEdit) });
   if (state.activePath !== doc.path) return false;
-  if (!located) return true;
-  const unavailable = () => setEditorStatus(t('已打开文档，但无法精确定位来源。请刷新构建或场景预览后重试。'));
+  if (!located && !sourceEdit) return true;
+  const unavailable = () => setEditorStatus(t(sourceEdit ? '无法打开已创建的行为原文，请刷新目录后重试。' : '已打开文档，但无法精确定位来源。请刷新构建或场景预览后重试。'));
   const dirty = () => isInEditSession() && (state.editHasUnsavedChanges || state.isCreating);
   const protectDraft = () => setEditorStatus(t('当前文档有未保存草稿，已保留内容和光标；请保存或取消修改后再定位来源。'));
-  if (dirty()) { protectDraft(); return true; }
+  if (dirty()) { protectDraft(); return sourceEdit ? false : true; }
   const ownLoading = sourceNavigationRequest?.doc === doc && state.isLoadingSource;
   if (!isEditModeActive() || !isEditableSourceAvailable(getSourcePath(doc))
-    || canonicalizeSourcePath(location.sourcePath) !== canonicalizeSourcePath(sourcePath)
+    || !sourceEdit && canonicalizeSourcePath(location.sourcePath) !== canonicalizeSourcePath(sourcePath)
     || isEditorWriteBusy() || state.isLoadingTemplate || state.isLoadingFields || state.isLoadingSource && !ownLoading) {
-    unavailable(); return true;
+    unavailable(); return sourceEdit ? false : true;
   }
   const owner = { doc, request, editorToken: ++editorLoadToken };
   sourceNavigationRequest = owner;
   const owns = () => sourceNavigationRequest === owner && sourceNavigationToken === request
     && editorLoadToken === owner.editorToken && state.activePath === doc.path && getDocByPath(doc.path) === doc
-    && isEditModeActive() && canonicalizeSourcePath(getSourcePath(doc)) === canonicalizeSourcePath(sourcePath);
+    && isEditModeActive() && (!sourceEdit || sourceEdit.isCurrent()) && canonicalizeSourcePath(getSourcePath(doc)) === canonicalizeSourcePath(sourcePath);
   state.isLoadingSource = true; setEditorStatus(APP_ERROR_MESSAGES.loadingSource); refreshEditButtons();
   try {
     const sourceInfo = await fetchEditableSource(getSourcePath(doc));
     if (!owns()) return false;
-    if (dirty()) { protectDraft(); return true; }
-    if (sourceInfo?.error || typeof sourceInfo?.content !== 'string') { unavailable(); return true; }
+    if (dirty()) { protectDraft(); return sourceEdit ? false : true; }
+    if (sourceInfo?.error || typeof sourceInfo?.content !== 'string') { unavailable(); return sourceEdit ? false : true; }
     const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(sourceInfo.content));
     if (!owns()) return false;
-    if (dirty()) { protectDraft(); return true; }
+    if (dirty()) { protectDraft(); return sourceEdit ? false : true; }
     const currentRevision = `sha256:${[...new Uint8Array(hash)].map(byte => byte.toString(16).padStart(2, '0')).join('')}`;
-    const selection = sourceLocationSelection(sourceInfo.content, location, currentRevision);
+    if (sourceEdit && currentRevision !== sourceEdit.sourceRevision) { unavailable(); return false; }
+    const selection = sourceEdit ? { status: 'source' } : sourceLocationSelection(sourceInfo.content, location, currentRevision);
     doc._editorSource = getSourcePath(doc); doc._sourceCachedText = sourceInfo.content;
     doc._sourceLastModified = sourceInfo.lastModified || ''; doc._sourceVersion = sourceInfo.version || '';
     doc._renderSignature = makeDocRenderSignature(doc);
-    activateSourceEditor(doc, getSourcePath(doc));
-    if (selection.status === 'exact') {
-      editEditorEl.setSelectionRange?.(selection.start, selection.end); editEditorEl.focus();
-      const row = editEditorEl.value.slice(0, selection.start).split('\n').length - 1;
-      const lineHeight = Number.parseFloat(globalThis.getComputedStyle?.(editEditorEl)?.lineHeight) || 20;
-      editEditorEl.scrollTop = Math.max(0, row * lineHeight - (editEditorEl.clientHeight || 0) / 2);
-      editEditorEl.scrollIntoView?.({ block: 'nearest' });
+    activateSourceEditor(doc, getSourcePath(doc), { focus: false });
+    if (!owns() || dirty() || getCurrentEditContent() !== sourceInfo.content) return false;
+    if (selection.status === 'source') { editEditorEl.setSelectionRange?.(0, 0); setEditorStatus(t('已打开行为原文，可继续编辑参数与信号。')); }
+    else if (selection.status === 'exact') {
+      editEditorEl.setSelectionRange?.(selection.start, selection.end);
+      revealSourceOffset(editEditorEl, editEditorEl.value, selection.start);
       setEditorStatus(t('已定位来源字段：{0}', location.propertyPath || '/'));
     } else if (selection.status === 'stale') setEditorStatus(t('原文已变化，已打开当前文档；请刷新构建或场景预览后重新定位。'));
     else if (selection.status === 'approximate') setEditorStatus(t('该字段没有独立的原文位置，已打开来源文档，未选择近似范围。'));
     else unavailable();
+    if (diagnostic && typeof diagnostic === 'object') {
+      sourceDiagnosticController?.show({ sourcePath: canonicalizeSourcePath(sourcePath),
+        propertyPath: typeof location?.propertyPath === 'string' ? location.propertyPath : '',
+        sourceRevision: typeof location?.sourceRevision === 'string' && /^sha256:[a-f0-9]{64}$/.test(location.sourceRevision) ? location.sourceRevision : '',
+        code: diagnostic.code, severity: diagnostic.severity || 'error', messageKey: diagnostic.messageKey,
+        detail: typeof diagnostic.detail === 'string' ? diagnostic.detail.slice(0, 8192) : '',
+        status: selection.status,
+        ...(selection.status === 'exact' ? { range: { start: selection.start, end: selection.end } } : {}) });
+    }
     const locatedContent = editEditorEl.value;
     const locatedRange = selection.status === 'exact' ? [selection.start, selection.end] : [0, 0];
-    const locatedScroll = editEditorEl.scrollTop;
+    const interaction = sourceInteractionEpoch;
+    const canFocus = () => sourceInteractionEpoch === interaction && sourceNavigationToken === request && editorLoadToken === owner.editorToken
+      && state.activePath === doc.path && getDocByPath(doc.path) === doc && isEditModeActive()
+      && state.isEditing && state.activeEditPath === doc.path && state.editInputMode === 'source' && !dirty() && !isEditorBusy()
+      && editEditorEl.value === locatedContent && doc._sourceCachedText === sourceInfo.content
+      && canonicalizeSourcePath(getSourcePath(doc)) === canonicalizeSourcePath(sourcePath);
     let focused = false;
     return { focus: () => {
-      // The host dialog must close before its formerly inert editor can focus.
-      // Do not let a queued close event steal focus from a newer editor session.
-      if (focused || sourceNavigationToken !== request || editorLoadToken !== owner.editorToken
-        || state.activePath !== doc.path || getDocByPath(doc.path) !== doc || !isEditModeActive()
-        || !state.isEditing || state.activeEditPath !== doc.path || state.editInputMode !== 'source' || dirty()
-        || editEditorEl.value !== locatedContent || doc._sourceCachedText !== sourceInfo.content
-        || canonicalizeSourcePath(getSourcePath(doc)) !== canonicalizeSourcePath(sourcePath)) return false;
-      focused = true;
-      editEditorEl.focus();
-      // Native dialog focus restoration can collapse the selection of this
-      // reused textarea. Reapply only the range verified for this same content.
+      // Native close may collapse a selection, but newer user interaction or
+      // a synchronous focus handler changing sources takes precedence.
+      if (focused || document.querySelector?.('dialog[open]') || !canFocus()) return false;
+      focused = true; editEditorEl.focus({ preventScroll: true });
+      if (!canFocus() || document.querySelector?.('dialog[open]')) return false;
       editEditorEl.setSelectionRange?.(...locatedRange);
-      editEditorEl.scrollTop = locatedScroll;
+      revealSourceOffset(editEditorEl, locatedContent, locatedRange[0]);
       editEditorEl.scrollIntoView?.({ block: 'nearest' });
+      sourcePositionController?.refresh();
       return true;
     } };
   } catch {
     if (!owns()) return false;
     if (dirty()) protectDraft();
     else unavailable();
-    return true;
+    return sourceEdit ? false : true;
   } finally {
     if (sourceNavigationRequest === owner) sourceNavigationRequest = null;
     if (editorLoadToken === owner.editorToken) { state.isLoadingSource = false; refreshEditButtons(); }
@@ -4228,6 +4336,26 @@ function handleEditorSaveShortcut(event) {
   if (key !== 's' && !(key === 'enter' && inEditor)) return;
   event.preventDefault();
   if (!event.repeat) void saveCurrentDoc();
+}
+
+// Source tools can edit only the active text surface. They receive neither a
+// persistence API nor a scene/backend controller; ordinary input owns drafts.
+function sourceEditorContext() {
+  return {
+    editable: Boolean(isEditModeActive() && state.editBackendAvailable && isInEditSession()
+      && state.editInputMode === 'source' && !isEditorBusy()),
+    sourceToken: `${editorLoadToken}:${sourceEditorContentEpoch}:${state.isCreating ? state.activeCreatePath : state.activeEditSource || state.activeEditPath}`,
+  };
+}
+
+function handleSourceInput() {
+  if (!isInEditSession()) return;
+  refreshEditSessionDirtyState();
+  sourceIndentationController?.refresh();
+  sourcePositionController?.refresh();
+  sourceDiagnosticController?.refresh();
+  // Ordinary typing, native undo and source tools update the same draft views.
+  studioSystem?.refreshMedia();
 }
 
 function handleCreatePathKeydown(event) {
@@ -5653,10 +5781,31 @@ async function loadData(preferredPath = '', options = {}) {
 }
 
 async function initApp(options = {}) {
+  const behaviorSourceHost = createSceneBehaviorSourceHost({
+    getState: () => {
+      const doc = getActiveDoc(), sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
+      return { document: doc, sourcePath, token: `${editorLoadToken}:${scenePreviewDraftEpoch}`, content: getCurrentEditContent(),
+        baseline: editSessionBaselineContent, version: editSessionVersion,
+        editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
+        creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath), available: sceneBehaviorAuthoringAvailable };
+    },
+    digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
+    inspect: payload => inspectSceneBehaviorAuthoring(payload),
+    writeDraft: content => {
+      const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, scroll = editEditorEl.scrollTop;
+      setSourceEditorContent(content);
+      if (Number.isInteger(start) && Number.isInteger(end)) editEditorEl.setSelectionRange?.(Math.min(start, content.length), Math.min(end, content.length));
+      editEditorEl.scrollTop = scroll;
+      refreshEditSessionDirtyState(); refreshEditButtons();
+      setEditorStatus(t(state.editHasUnsavedChanges ? '行为修改已应用到原文草稿；尚未保存。' : '行为修改已应用；文本与已保存版本一致。'));
+    }, focus: () => editEditorEl.focus(),
+  });
   studioSystem = await setupStudioSystem({
     settings: options.settings,
     features: options.features,
     ports: {
+      scripts: { getContext: scriptCreateContext, createDraft: createScriptDraft },
+      sceneBehaviors: { ...behaviorSourceHost, inspect: payload => inspectSceneBehaviorAuthoring(payload) },
       scene3d: { getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot, locateSource: locateScene3DSource },
       scene3dTransforms: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DTransformDraft },
       scene3dObjects: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DObjectsDraft },
@@ -5668,7 +5817,8 @@ async function initApp(options = {}) {
       scene3dCopy: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DCopyDraft },
       scene3dRemoval: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DRemovalDraft },
       build: {
-        getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())),
+        getContext: () => ({ editable: isEditModeActive(), dirty: state.editHasUnsavedChanges, creating: state.isCreating, busy: isEditorBusy(),
+          nonWorldBusy: Boolean(state.isSaving || state.isRebuilding || state.isImportingMedia || state.isExporting || state.isConfiguringProject || state.isLoadingSource || state.isLoadingTemplate || state.isLoadingFields), path: canonicalizeSourcePath(getSourcePath(getActiveDoc())),
           sceneDraftPath: state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '',
           sceneDraftWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source' && state.editHasUnsavedChanges,
           compositionSourceWritable: state.isEditing && !state.isCreating && state.editInputMode === 'source',
@@ -5687,10 +5837,11 @@ async function initApp(options = {}) {
         setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
         applied: async result => {
           const sourcePath = result.changes?.[0]?.sourcePath || result.object?.documentRefs?.[0]?.sourcePath || '';
-          await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: toRebuildFilter(sourcePath), requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
+          await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: result.changes?.length > 1 ? '' : toRebuildFilter(sourcePath), requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
           await loadData(state.activePath, { preferredSourcePath: sourcePath, forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
         },
         openSource: openBuildSource,
+        openAuthorSource,
       },
       world: {
         openSource: sourcePath => {
@@ -5894,16 +6045,18 @@ async function initApp(options = {}) {
   }
 
   if (editEditorEl) {
-    const onSourceInput = () => {
-      if (!isInEditSession()) {
-        return;
-      }
-      refreshEditSessionDirtyState();
-      // Notify independent source views through the composition root so their
-      // visible selection/navigation state follows ordinary text edits.
-      studioSystem?.refreshMedia();
-    };
-    editEditorEl.addEventListener('input', onSourceInput);
+    editEditorEl.addEventListener('input', handleSourceInput);
+    sourceIndentationController = setupSourceIndentation({
+      textarea: editEditorEl, container: docEditorWrapEl, getContext: sourceEditorContext,
+    });
+    sourcePositionController = setupSourcePosition({
+      textarea: editEditorEl, container: docEditorWrapEl, getContext: sourceEditorContext,
+    });
+    sourceDiagnosticController = setupSourceDiagnostic({
+      textarea: editEditorEl, container: docEditorWrapEl,
+      getContext: () => ({ ...sourceEditorContext(), visible: isEditModeActive() && isInEditSession() && state.editInputMode === 'source' }),
+    });
+    for (const event of ['pointerdown', 'click', 'keydown']) document.addEventListener(event, markSourceInteraction, true);
   }
 
   if (editBlockEditorEl) {
@@ -6002,7 +6155,7 @@ async function initApp(options = {}) {
     window.addEventListener('keydown', handleWindowKeydown);
 
     window.addEventListener('beforeunload', (event) => {
-      if (!state.editHasUnsavedChanges && !document.querySelector('#projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[data-dirty="true"], #sceneLayoutDialog[data-dirty="true"], #sceneCreateDialog[aria-busy="true"], #sceneLayoutDialog[aria-busy="true"], #objectProjectionDialog[data-dirty="true"], #objectProjectionDialog[aria-busy="true"]')) {
+      if (!state.editHasUnsavedChanges && !document.querySelector('#scriptCreateDialog[data-dirty="true"], #scriptCreateDialog[aria-busy="true"], #sceneBehaviorCreateDialog[data-dirty="true"], #sceneBehaviorCreateDialog[aria-busy="true"], #sceneBehaviorsDialog[data-dirty="true"], #sceneBehaviorsDialog[aria-busy="true"], #projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[data-dirty="true"], #sceneLayoutDialog[data-dirty="true"], #sceneCreateDialog[aria-busy="true"], #sceneLayoutDialog[aria-busy="true"], #objectProjectionDialog[data-dirty="true"], #objectProjectionDialog[aria-busy="true"]')) {
         return;
       }
       event.preventDefault();

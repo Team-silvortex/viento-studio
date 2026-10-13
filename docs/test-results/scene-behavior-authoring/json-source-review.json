@@ -1,0 +1,38 @@
+{
+  "reportKind": "completed-test-run-summary",
+  "rawOutput": "The focused runs wrote to the tool terminal; the root agent's full-final.log is the retained complete regression log.",
+  "workdir": "/tmp/viento-behavior-authoring-93wj2qhh/candidate",
+  "changes": ["engine/json-source.mjs", "scripts/tests/json-source.test.mjs"],
+  "sourceHashes": {
+    "engine/json-source.mjs": "2a7b27c150f53d255176c7c6185eebd1d0ac1ba6312e355769f02b3f83cb15f9",
+    "scripts/tests/json-source.test.mjs": "224c1016f8665e92ec496324c150aa669703f3bee4ba90662cf83681ba98f59e"
+  },
+  "runs": [
+    {
+      "command": "node --test --test-isolation=none scripts/tests/json-source.test.mjs scripts/tests/browser-module-graph.test.mjs scripts/tests/scene-behaviors-edit.test.mjs scripts/tests/scene-behavior-authoring-service.test.mjs scripts/tests/scene-behavior-authoring-host.test.mjs",
+      "exitCode": 0,
+      "tests": 48,
+      "passed": 48,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node --test --test-isolation=none scripts/tests/scene-instances.test.mjs scripts/tests/scene-source-model.test.mjs scripts/tests/scene-groups.test.mjs scripts/tests/scene3d.test.mjs scripts/tests/scene3d-properties.test.mjs",
+      "exitCode": 0,
+      "tests": 55,
+      "passed": 55,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "scope": {
+    "jsonSourceTests": 14,
+    "newJsonSourceTests": 4,
+    "browserModuleGraph": "passed",
+    "syntaxAndValueAuthority": "JSON.parse",
+    "sourceRanges": "UTF-16 offsets in the original bytes-as-text, including BOM",
+    "budgetsAndWeakMap": "existing behavior preserved",
+    "dependencyImports": "none",
+    "rustOrProtocolChanges": "none"
+  }
+}

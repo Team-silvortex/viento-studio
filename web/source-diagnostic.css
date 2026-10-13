@@ -1,0 +1,29 @@
+.doc-editor-wrap.source-diagnostic-container { display:flex; flex-direction:column; min-width:0; min-height:0; }
+.doc-editor-wrap.source-diagnostic-container[hidden] { display:none; }
+.doc-editor-wrap.source-diagnostic-container > .doc-editor { flex:1 1 auto; height:auto; min-height:0; }
+.source-diagnostic-panel { flex:0 0 auto; min-height:0; max-height:140px; box-sizing:border-box; overflow:auto; padding:7px 16px; border-top:1px solid #43506a; background:#101b2a; color:#c4d3e5; font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.source-diagnostic-panel[hidden] { display:none; }
+.source-diagnostic-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.source-diagnostic-heading strong { min-width:0; }
+.source-diagnostic-panel .doc-btn { flex:0 0 auto; min-height:28px; padding:3px 7px; font-size:12px; }
+.source-diagnostic-panel p { margin:3px 0; }
+.source-diagnostic-panel[data-severity="error"] #sourceDiagnosticTitle { color:#ffb6b6; }
+.source-diagnostic-panel[data-severity="warning"] #sourceDiagnosticTitle { color:#edcc8c; }
+.source-diagnostic-panel[data-severity="info"] #sourceDiagnosticTitle { color:#abd7fa; }
+#sourceDiagnosticMessage { color:#e3ecf7; }
+#sourceDiagnosticLocation { color:#99b4d1; }
+#sourceDiagnosticState { color:#c6bd99; }
+.source-diagnostic-panel summary { cursor:pointer; width:fit-content; }
+.source-diagnostic-panel code, .source-diagnostic-panel pre { white-space:pre-wrap; overflow-wrap:anywhere; font:inherit; }
+.source-diagnostic-panel pre { margin:4px 0; }
+@media(max-width:480px) {
+  .source-diagnostic-panel { padding:6px 10px; max-height:130px; }
+  /* Translated toolbars can fill a phone viewport. Keep the source and result
+     readable together, and let the existing document pane scroll to them. */
+  .is-writing .content-frame:has(.source-diagnostic-panel:not([hidden])) { overflow:auto; }
+  .is-writing .doc-meta:has(.source-diagnostic-panel:not([hidden])),
+  .is-writing .doc-edit-panel:has(.source-diagnostic-panel:not([hidden])),
+  .is-writing .doc-editor-surface:has(.source-diagnostic-panel:not([hidden])) { flex:1 0 auto; }
+  .is-writing .doc-editor-surface:has(.source-diagnostic-panel:not([hidden])) { min-height:380px; }
+  .doc-editor-wrap.source-diagnostic-container:has(> .source-diagnostic-panel:not([hidden])) > .doc-editor { min-height:120px; }
+}

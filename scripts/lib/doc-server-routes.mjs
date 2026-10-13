@@ -1,3 +1,5 @@
+import { SCENE_BEHAVIOR_CREATION_API_PATH } from '../../engine/scene-behavior-creation-contract.mjs';
+import { SCENE_BEHAVIOR_AUTHORING_API_PATH } from '../../engine/scene-behavior-authoring-contract.mjs';
 import {
   API_PATHS,
   API_METHODS,
@@ -313,6 +315,7 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
+  if ([SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
   if (pathname === SCENE_PREVIEW_API_PATH && ['POST', 'DELETE'].includes(method)) return true;
   if (pathname === PROJECT_BUILD_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === RESOURCE_PACKAGE_API && method === API_METHODS.POST) return true;
@@ -391,6 +394,10 @@ async function handleExport(response, request, requestUrl, service, requestId = 
       });
     } else {
       const payload = await readRequestJsonBody(request);
+      if (payload?.kind === 'backend-project' && (!service.projectBuild || !isLocalBuildRequest(request))) {
+        sendApiError(response, 403, 'Project delivery requires a local editor session.', { errorCode: 'build_local_only' }, requestId);
+        return 403;
+      }
       const result = payload?.action === 'release'
         ? await service.exports.release(payload.id).then(() => ({ released: true }))
         : await service.exports.create(payload, controller.signal);
@@ -560,6 +567,28 @@ async function handleApiRequest({
   let requestId = '';
 
   const route = {
+    [SCENE_BEHAVIOR_CREATION_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.sceneBehaviorCreation) throw Object.assign(new Error('Behavior creation requires an editor session.'), { statusCode: 403, errorCode: 'world_behavior_create_unavailable' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid behavior creation query.'), { statusCode: 400, errorCode: 'world_command_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.sceneBehaviorCreation.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
+    [SCENE_BEHAVIOR_AUTHORING_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.sceneBehaviorAuthoring) throw Object.assign(new Error('Behavior authoring requires an editor session.'), { statusCode: 403, errorCode: 'scene_behavior_authoring_unavailable' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid behavior authoring query.'), { statusCode: 400, errorCode: 'scene_behavior_authoring_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.sceneBehaviorAuthoring.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
     [SCENE_PREVIEW_API_PATH]: {
       [API_METHODS.POST]: async () => {
         const controller = new AbortController();

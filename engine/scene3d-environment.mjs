@@ -11,7 +11,9 @@ const freeze = value => {
   return value;
 };
 const snapshot = input => captureScene3DAuthoringSource(input, error);
-const environment = model => ({ background: model.background, camera: model.camera, light: model.light });
+const environment = model => ({ background: model.background, camera: model.camera, light: model.light,
+  ...(Object.hasOwn(model, 'fog') ? { fog: model.fog } : {}),
+  ...(Object.hasOwn(model, 'particleField') ? { particleField: model.particleField } : {}) });
 const request = (content, values) => ({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.patchEnvironment', content, values });
 
 export function createScene3DEnvironmentProposal(source, edit) {

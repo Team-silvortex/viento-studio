@@ -1,0 +1,1570 @@
+{
+  "format": "viento-scene3d-fog-godot-evidence",
+  "schemaVersion": 1,
+  "ok": false,
+  "scope": "Actual pinned Linux Godot identify/import/script-check/headless environment-property and static-scene probes. Fog values are read from the instantiated Environment and checked against original authored data. No GPU pixels, WebGL/Godot pixel equivalence, Android device, installation, gameplay or temporal weather claim.",
+  "formulaReference": {
+    "formula": "1 - exp(-density * radial camera distance)",
+    "source": "https://raw.githubusercontent.com/godotengine/godot/4.5-stable/drivers/gles3/shaders/scene.glsl",
+    "lines": [
+      1479,
+      1484
+    ]
+  },
+  "node": {
+    "executable": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+    "dev": 66306,
+    "ino": 4460413,
+    "bytes": 146414384,
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "sourcesBefore": {
+    "scripts/backends/godot4-scene3d.mjs": {
+      "bytes": 5995,
+      "sha256": "6521637c8e9b27c8c9e84d766d64b6fcb7f09a8fb36ffb1ddcb62a244bb970d3"
+    },
+    "scripts/backends/godot3d/runtime.gd": {
+      "bytes": 6900,
+      "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691"
+    },
+    "scripts/adapters/node-scene3d-export.mjs": {
+      "bytes": 17220,
+      "sha256": "67ac27ff2e84d206cb29a895a0bda46c000f89ffd3c048a21be85cba10f4bf25"
+    },
+    "scripts/tests/scene3d-fog-backend.test.mjs": {
+      "bytes": 10291,
+      "sha256": "e7af4fe713ce506a456d08908a49ef3ef098f3e0155096047aae40b9251ec605"
+    },
+    "engine/scene3d.mjs": {
+      "bytes": 1569,
+      "sha256": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06"
+    },
+    "engine/studio-core.mjs": {
+      "bytes": 138516,
+      "sha256": "a4cdf5c356dc0f1a470d3fb0bc5832ea28b4da2afa386b05d6c5a74336defd01"
+    },
+    "engine/studio-core.wasm": {
+      "bytes": 605841,
+      "sha256": "ce6a089280ce8b64169a27fc69b8a923dc7307531f561913d5d4248c77c583cf"
+    }
+  },
+  "cases": [
+    {
+      "name": "absent",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-fog-godot-QtPSZW",
+        "dev": 50,
+        "ino": 6842681,
+        "removed": true
+      },
+      "execution": {
+        "ok": true,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "4.7.2.stable.official.ed1daf0bf\n",
+            "stderr": "",
+            "durationMs": 33
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n",
+            "stderr": "",
+            "durationMs": 3032
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n",
+            "stderr": "",
+            "durationMs": 260
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_SCENE3D_PROBE {\"camera\":{\"far\":1000.0,\"forward\":[-0.610959827899933,-0.407306551933289,-0.678844213485718],\"fovDegrees\":50.0,\"near\":0.100000001490116,\"position\":[9.0,7.0,10.0]},\"coordinateSystem\":\"RH-Y-up-negative-Z-forward\",\"format\":\"viento-scene3d-probe\",\"issues\":[],\"light\":{\"color\":[1.0,1.0,1.0,1.0],\"energy\":1.20000004768372,\"forward\":[-0.268328160047531,-0.894427239894867,-0.357770889997482]},\"objectCount\":3,\"objects\":[{\"basisColumns\":[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]],\"color\":\"#324761\",\"declaredRotationDegrees\":[0.0,0.0,0.0],\"instanceId\":\"40000000-1111-4111-8111-111111111111\",\"materialColor\":[0.196078434586525,0.278431385755539,0.380392163991928,1.0],\"name\":\"Ground · 地面\",\"position\":[0.0,-0.150000005960464,0.0],\"rotationOrder\":\"XYZ\",\"size\":[12.0,0.300000011920929,12.0]},{\"basisColumns\":[[0.906307756900787,0.0,-0.422618269920349],[0.0,1.0,0.0],[0.422618269920349,0.0,0.906307756900787]],\"color\":\"#87d8b9\",\"declaredRotationDegrees\":[0.0,25.0,0.0],\"instanceId\":\"40000001-1111-4111-8111-111111111111\",\"materialColor\":[0.529411792755127,0.847058832645416,0.725490212440491,1.0],\"name\":\"Tower · 方柱\",\"position\":[-2.0,1.5,0.0],\"rotationOrder\":\"XYZ\",\"size\":[1.5,3.0,1.5]},{\"basisColumns\":[[0.806707262992859,0.356370270252228,-0.471406012773514],[-0.142244264483452,0.891351163387299,0.4304179251194],[0.5735764503479,-0.280166476964951,0.769751131534576]],\"color\":\"#f1c46e\",\"declaredRotationDegrees\":[20.0,35.0,10.0],\"instanceId\":\"40000002-1111-4111-8111-111111111111\",\"materialColor\":[0.945098042488098,0.768627464771271,0.431372553110123,1.0],\"name\":\"Beam · 倾斜梁\",\"position\":[1.5,1.79999995231628,1.0],\"rotationOrder\":\"XYZ\",\"size\":[0.600000023841858,0.600000023841858,4.0]}],\"ok\":true,\"rotationOrder\":\"XYZ\",\"schemaVersion\":1,\"scope\":\"Static Godot tree/transform/material probe; no 2D runtime events or behavior execution.\"}\n",
+            "stderr": "",
+            "durationMs": 258
+          }
+        ],
+        "tool": {
+          "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+          "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+          "version": "4.7.2.stable.official.ed1daf0bf"
+        },
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.610959827899933,
+              -0.407306551933289,
+              -0.678844213485718
+            ],
+            "fovDegrees": 50,
+            "near": 0.100000001490116,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.20000004768372,
+            "forward": [
+              -0.268328160047531,
+              -0.894427239894867,
+              -0.357770889997482
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.196078434586525,
+                0.278431385755539,
+                0.380392163991928,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.150000005960464,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.300000011920929,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.906307756900787,
+                  0,
+                  -0.422618269920349
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.422618269920349,
+                  0,
+                  0.906307756900787
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.847058832645416,
+                0.725490212440491,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.806707262992859,
+                  0.356370270252228,
+                  -0.471406012773514
+                ],
+                [
+                  -0.142244264483452,
+                  0.891351163387299,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479,
+                  -0.280166476964951,
+                  0.769751131534576
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.945098042488098,
+                0.768627464771271,
+                0.431372553110123,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.79999995231628,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.600000023841858,
+                0.600000023841858,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "scope": "Actual headless Godot static tree/transform/material probe; no installed editor, GPU pixel capture or 2D runtime protocol acceptance."
+      },
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1649,
+          "sha256": "70953291192d0c4bbd9483610aa89a9dabc0faa8f7df338e40f2ec925e1c9d5d"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 1778,
+          "sha256": "6f1a150b191aed556346dfdd2daafa9dd043226692902e4af50ec3b0ede0ca5e"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1649,
+            "sha256": "70953291192d0c4bbd9483610aa89a9dabc0faa8f7df338e40f2ec925e1c9d5d",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 1778,
+            "sha256": "6f1a150b191aed556346dfdd2daafa9dd043226692902e4af50ec3b0ede0ca5e",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 2854,
+            "sha256": "f64dcbf82c14198c5fe83b2d5e026914089b9488453f274c651f43e16b97e190",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 6900,
+            "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "sourceSha256": "70953291192d0c4bbd9483610aa89a9dabc0faa8f7df338e40f2ec925e1c9d5d",
+      "generatedFiles": [
+        {
+          "path": "godot-projects/absent/source.json",
+          "bytes": 1649,
+          "sha256": "70953291192d0c4bbd9483610aa89a9dabc0faa8f7df338e40f2ec925e1c9d5d"
+        },
+        {
+          "path": "godot-projects/absent/plan.json",
+          "bytes": 1778,
+          "sha256": "6f1a150b191aed556346dfdd2daafa9dd043226692902e4af50ec3b0ede0ca5e"
+        },
+        {
+          "path": "godot-projects/absent/project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "godot-projects/absent/scene.tscn",
+          "bytes": 2854,
+          "sha256": "f64dcbf82c14198c5fe83b2d5e026914089b9488453f274c651f43e16b97e190"
+        },
+        {
+          "path": "godot-projects/absent/runtime.gd",
+          "bytes": 6900,
+          "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691"
+        },
+        {
+          "path": "godot-projects/absent/scene3d-project.json",
+          "bytes": 1769,
+          "sha256": "dd12c56bd8d8a730ab4baaac8f9bf8b7b0e700d2873cb6749958af9b12a767df"
+        }
+      ]
+    },
+    {
+      "name": "disabled",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-fog-godot-X2MUBg",
+        "dev": 50,
+        "ino": 6843144,
+        "removed": true
+      },
+      "execution": {
+        "ok": true,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "4.7.2.stable.official.ed1daf0bf\n",
+            "stderr": "",
+            "durationMs": 34
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n",
+            "stderr": "",
+            "durationMs": 2992
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n",
+            "stderr": "",
+            "durationMs": 256
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_SCENE3D_PROBE {\"camera\":{\"far\":1000.0,\"forward\":[-0.610959827899933,-0.407306551933289,-0.678844213485718],\"fovDegrees\":50.0,\"near\":0.100000001490116,\"position\":[9.0,7.0,10.0]},\"coordinateSystem\":\"RH-Y-up-negative-Z-forward\",\"fog\":{\"aerialPerspective\":0.0,\"color\":[0.47843137383461,0.627451002597809,0.811764717102051,1.0],\"density\":0.0,\"enabled\":false,\"heightDensity\":0.0,\"lightEnergy\":1.0,\"mode\":0,\"skyAffect\":0.0,\"sunScatter\":0.0},\"format\":\"viento-scene3d-probe\",\"issues\":[],\"light\":{\"color\":[1.0,1.0,1.0,1.0],\"energy\":1.20000004768372,\"forward\":[-0.268328160047531,-0.894427239894867,-0.357770889997482]},\"objectCount\":3,\"objects\":[{\"basisColumns\":[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]],\"color\":\"#324761\",\"declaredRotationDegrees\":[0.0,0.0,0.0],\"instanceId\":\"40000000-1111-4111-8111-111111111111\",\"materialColor\":[0.196078434586525,0.278431385755539,0.380392163991928,1.0],\"name\":\"Ground · 地面\",\"position\":[0.0,-0.150000005960464,0.0],\"rotationOrder\":\"XYZ\",\"size\":[12.0,0.300000011920929,12.0]},{\"basisColumns\":[[0.906307756900787,0.0,-0.422618269920349],[0.0,1.0,0.0],[0.422618269920349,0.0,0.906307756900787]],\"color\":\"#87d8b9\",\"declaredRotationDegrees\":[0.0,25.0,0.0],\"instanceId\":\"40000001-1111-4111-8111-111111111111\",\"materialColor\":[0.529411792755127,0.847058832645416,0.725490212440491,1.0],\"name\":\"Tower · 方柱\",\"position\":[-2.0,1.5,0.0],\"rotationOrder\":\"XYZ\",\"size\":[1.5,3.0,1.5]},{\"basisColumns\":[[0.806707262992859,0.356370270252228,-0.471406012773514],[-0.142244264483452,0.891351163387299,0.4304179251194],[0.5735764503479,-0.280166476964951,0.769751131534576]],\"color\":\"#f1c46e\",\"declaredRotationDegrees\":[20.0,35.0,10.0],\"instanceId\":\"40000002-1111-4111-8111-111111111111\",\"materialColor\":[0.945098042488098,0.768627464771271,0.431372553110123,1.0],\"name\":\"Beam · 倾斜梁\",\"position\":[1.5,1.79999995231628,1.0],\"rotationOrder\":\"XYZ\",\"size\":[0.600000023841858,0.600000023841858,4.0]}],\"ok\":true,\"rotationOrder\":\"XYZ\",\"schemaVersion\":1,\"scope\":\"Static Godot tree/transform/material probe; no 2D runtime events or behavior execution.\"}\n",
+            "stderr": "",
+            "durationMs": 256
+          }
+        ],
+        "tool": {
+          "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+          "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+          "version": "4.7.2.stable.official.ed1daf0bf"
+        },
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.610959827899933,
+              -0.407306551933289,
+              -0.678844213485718
+            ],
+            "fovDegrees": 50,
+            "near": 0.100000001490116,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "fog": {
+            "aerialPerspective": 0,
+            "color": [
+              0.47843137383461,
+              0.627451002597809,
+              0.811764717102051,
+              1
+            ],
+            "density": 0,
+            "enabled": false,
+            "heightDensity": 0,
+            "lightEnergy": 1,
+            "mode": 0,
+            "skyAffect": 0,
+            "sunScatter": 0
+          },
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.20000004768372,
+            "forward": [
+              -0.268328160047531,
+              -0.894427239894867,
+              -0.357770889997482
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.196078434586525,
+                0.278431385755539,
+                0.380392163991928,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.150000005960464,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.300000011920929,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.906307756900787,
+                  0,
+                  -0.422618269920349
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.422618269920349,
+                  0,
+                  0.906307756900787
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.847058832645416,
+                0.725490212440491,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.806707262992859,
+                  0.356370270252228,
+                  -0.471406012773514
+                ],
+                [
+                  -0.142244264483452,
+                  0.891351163387299,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479,
+                  -0.280166476964951,
+                  0.769751131534576
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.945098042488098,
+                0.768627464771271,
+                0.431372553110123,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.79999995231628,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.600000023841858,
+                0.600000023841858,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "scope": "Actual headless Godot static tree/transform/material and declared environment-property probe; no installed editor, GPU pixel capture, WebGL/Godot pixel equivalence or 2D runtime protocol acceptance."
+      },
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.distance-fog"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1710,
+          "sha256": "58fc08fe12bd7314f178d0a6ca47fd4881e0c081b0897c6fb750b401621eb2e4"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 1843,
+          "sha256": "23a584e393e7f7dc3c88c49f4f5d904521eeda4b42c30c7c56bc84121ee7c840"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1710,
+            "sha256": "58fc08fe12bd7314f178d0a6ca47fd4881e0c081b0897c6fb750b401621eb2e4",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 1843,
+            "sha256": "23a584e393e7f7dc3c88c49f4f5d904521eeda4b42c30c7c56bc84121ee7c840",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 3112,
+            "sha256": "523f6029f056a6f6b2bcb1d0fe90e5e27a522af3a4664d082bb0ced4f9356677",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 6900,
+            "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "sourceSha256": "58fc08fe12bd7314f178d0a6ca47fd4881e0c081b0897c6fb750b401621eb2e4",
+      "generatedFiles": [
+        {
+          "path": "godot-projects/disabled/source.json",
+          "bytes": 1710,
+          "sha256": "58fc08fe12bd7314f178d0a6ca47fd4881e0c081b0897c6fb750b401621eb2e4"
+        },
+        {
+          "path": "godot-projects/disabled/plan.json",
+          "bytes": 1843,
+          "sha256": "23a584e393e7f7dc3c88c49f4f5d904521eeda4b42c30c7c56bc84121ee7c840"
+        },
+        {
+          "path": "godot-projects/disabled/project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "godot-projects/disabled/scene.tscn",
+          "bytes": 3112,
+          "sha256": "523f6029f056a6f6b2bcb1d0fe90e5e27a522af3a4664d082bb0ced4f9356677"
+        },
+        {
+          "path": "godot-projects/disabled/runtime.gd",
+          "bytes": 6900,
+          "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691"
+        },
+        {
+          "path": "godot-projects/disabled/scene3d-project.json",
+          "bytes": 1799,
+          "sha256": "bec4cceb03415eda8afa571485167a64226c2bebadb69c8ad8ae85ab26e9b9ca"
+        }
+      ]
+    },
+    {
+      "name": "exponential",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-fog-godot-cXlXeF",
+        "dev": 50,
+        "ino": 6843201,
+        "removed": true
+      },
+      "execution": {
+        "ok": true,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "4.7.2.stable.official.ed1daf0bf\n",
+            "stderr": "",
+            "durationMs": 36
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n",
+            "stderr": "",
+            "durationMs": 3046
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n",
+            "stderr": "",
+            "durationMs": 251
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_SCENE3D_PROBE {\"camera\":{\"far\":1000.0,\"forward\":[-0.610959827899933,-0.407306551933289,-0.678844213485718],\"fovDegrees\":50.0,\"near\":0.100000001490116,\"position\":[9.0,7.0,10.0]},\"coordinateSystem\":\"RH-Y-up-negative-Z-forward\",\"fog\":{\"aerialPerspective\":0.0,\"color\":[0.47843137383461,0.627451002597809,0.811764717102051,1.0],\"density\":0.0750000029802322,\"enabled\":true,\"heightDensity\":0.0,\"lightEnergy\":1.0,\"mode\":0,\"skyAffect\":0.0,\"sunScatter\":0.0},\"format\":\"viento-scene3d-probe\",\"issues\":[],\"light\":{\"color\":[1.0,1.0,1.0,1.0],\"energy\":1.20000004768372,\"forward\":[-0.268328160047531,-0.894427239894867,-0.357770889997482]},\"objectCount\":3,\"objects\":[{\"basisColumns\":[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]],\"color\":\"#324761\",\"declaredRotationDegrees\":[0.0,0.0,0.0],\"instanceId\":\"40000000-1111-4111-8111-111111111111\",\"materialColor\":[0.196078434586525,0.278431385755539,0.380392163991928,1.0],\"name\":\"Ground · 地面\",\"position\":[0.0,-0.150000005960464,0.0],\"rotationOrder\":\"XYZ\",\"size\":[12.0,0.300000011920929,12.0]},{\"basisColumns\":[[0.906307756900787,0.0,-0.422618269920349],[0.0,1.0,0.0],[0.422618269920349,0.0,0.906307756900787]],\"color\":\"#87d8b9\",\"declaredRotationDegrees\":[0.0,25.0,0.0],\"instanceId\":\"40000001-1111-4111-8111-111111111111\",\"materialColor\":[0.529411792755127,0.847058832645416,0.725490212440491,1.0],\"name\":\"Tower · 方柱\",\"position\":[-2.0,1.5,0.0],\"rotationOrder\":\"XYZ\",\"size\":[1.5,3.0,1.5]},{\"basisColumns\":[[0.806707262992859,0.356370270252228,-0.471406012773514],[-0.142244264483452,0.891351163387299,0.4304179251194],[0.5735764503479,-0.280166476964951,0.769751131534576]],\"color\":\"#f1c46e\",\"declaredRotationDegrees\":[20.0,35.0,10.0],\"instanceId\":\"40000002-1111-4111-8111-111111111111\",\"materialColor\":[0.945098042488098,0.768627464771271,0.431372553110123,1.0],\"name\":\"Beam · 倾斜梁\",\"position\":[1.5,1.79999995231628,1.0],\"rotationOrder\":\"XYZ\",\"size\":[0.600000023841858,0.600000023841858,4.0]}],\"ok\":true,\"rotationOrder\":\"XYZ\",\"schemaVersion\":1,\"scope\":\"Static Godot tree/transform/material probe; no 2D runtime events or behavior execution.\"}\n",
+            "stderr": "",
+            "durationMs": 256
+          }
+        ],
+        "tool": {
+          "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+          "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+          "version": "4.7.2.stable.official.ed1daf0bf"
+        },
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.610959827899933,
+              -0.407306551933289,
+              -0.678844213485718
+            ],
+            "fovDegrees": 50,
+            "near": 0.100000001490116,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "fog": {
+            "aerialPerspective": 0,
+            "color": [
+              0.47843137383461,
+              0.627451002597809,
+              0.811764717102051,
+              1
+            ],
+            "density": 0.0750000029802322,
+            "enabled": true,
+            "heightDensity": 0,
+            "lightEnergy": 1,
+            "mode": 0,
+            "skyAffect": 0,
+            "sunScatter": 0
+          },
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.20000004768372,
+            "forward": [
+              -0.268328160047531,
+              -0.894427239894867,
+              -0.357770889997482
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.196078434586525,
+                0.278431385755539,
+                0.380392163991928,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.150000005960464,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.300000011920929,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.906307756900787,
+                  0,
+                  -0.422618269920349
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.422618269920349,
+                  0,
+                  0.906307756900787
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.847058832645416,
+                0.725490212440491,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.806707262992859,
+                  0.356370270252228,
+                  -0.471406012773514
+                ],
+                [
+                  -0.142244264483452,
+                  0.891351163387299,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479,
+                  -0.280166476964951,
+                  0.769751131534576
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.945098042488098,
+                0.768627464771271,
+                0.431372553110123,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.79999995231628,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.600000023841858,
+                0.600000023841858,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "scope": "Actual headless Godot static tree/transform/material and declared environment-property probe; no installed editor, GPU pixel capture, WebGL/Godot pixel equivalence or 2D runtime protocol acceptance."
+      },
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.distance-fog"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1714,
+          "sha256": "f68b864d6f680a3cf630e3cc9befc95497d71c177aafb7e8c19d5ef9315532c2"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 1847,
+          "sha256": "7abbbc8a891ee371305f9700b7ae537d199d6c67105250f455e3449fa015fb7a"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1714,
+            "sha256": "f68b864d6f680a3cf630e3cc9befc95497d71c177aafb7e8c19d5ef9315532c2",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 1847,
+            "sha256": "7abbbc8a891ee371305f9700b7ae537d199d6c67105250f455e3449fa015fb7a",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 3115,
+            "sha256": "91f0d8ebdb44900a88d9cd0cc4a222714e92740fde29da8d240cdeb8e5893d1e",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 6900,
+            "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "sourceSha256": "f68b864d6f680a3cf630e3cc9befc95497d71c177aafb7e8c19d5ef9315532c2",
+      "generatedFiles": [
+        {
+          "path": "godot-projects/exponential/source.json",
+          "bytes": 1714,
+          "sha256": "f68b864d6f680a3cf630e3cc9befc95497d71c177aafb7e8c19d5ef9315532c2"
+        },
+        {
+          "path": "godot-projects/exponential/plan.json",
+          "bytes": 1847,
+          "sha256": "7abbbc8a891ee371305f9700b7ae537d199d6c67105250f455e3449fa015fb7a"
+        },
+        {
+          "path": "godot-projects/exponential/project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "godot-projects/exponential/scene.tscn",
+          "bytes": 3115,
+          "sha256": "91f0d8ebdb44900a88d9cd0cc4a222714e92740fde29da8d240cdeb8e5893d1e"
+        },
+        {
+          "path": "godot-projects/exponential/runtime.gd",
+          "bytes": 6900,
+          "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691"
+        },
+        {
+          "path": "godot-projects/exponential/scene3d-project.json",
+          "bytes": 1799,
+          "sha256": "d0bc3d818a168ec8ed043b7fa29fa7b8a479c0d43c163b99adbe6e932499c18e"
+        }
+      ]
+    },
+    {
+      "name": "maximum",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-fog-godot-hsgjkN",
+        "dev": 50,
+        "ino": 6843269,
+        "removed": true
+      },
+      "execution": {
+        "ok": true,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "4.7.2.stable.official.ed1daf0bf\n",
+            "stderr": "",
+            "durationMs": 34
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n",
+            "stderr": "",
+            "durationMs": 3150
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n",
+            "stderr": "",
+            "durationMs": 319
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_SCENE3D_PROBE {\"camera\":{\"far\":1000.0,\"forward\":[-0.610959827899933,-0.407306551933289,-0.678844213485718],\"fovDegrees\":50.0,\"near\":0.100000001490116,\"position\":[9.0,7.0,10.0]},\"coordinateSystem\":\"RH-Y-up-negative-Z-forward\",\"fog\":{\"aerialPerspective\":0.0,\"color\":[0.47843137383461,0.627451002597809,0.811764717102051,1.0],\"density\":1.0,\"enabled\":true,\"heightDensity\":0.0,\"lightEnergy\":1.0,\"mode\":0,\"skyAffect\":0.0,\"sunScatter\":0.0},\"format\":\"viento-scene3d-probe\",\"issues\":[],\"light\":{\"color\":[1.0,1.0,1.0,1.0],\"energy\":1.20000004768372,\"forward\":[-0.268328160047531,-0.894427239894867,-0.357770889997482]},\"objectCount\":3,\"objects\":[{\"basisColumns\":[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]],\"color\":\"#324761\",\"declaredRotationDegrees\":[0.0,0.0,0.0],\"instanceId\":\"40000000-1111-4111-8111-111111111111\",\"materialColor\":[0.196078434586525,0.278431385755539,0.380392163991928,1.0],\"name\":\"Ground · 地面\",\"position\":[0.0,-0.150000005960464,0.0],\"rotationOrder\":\"XYZ\",\"size\":[12.0,0.300000011920929,12.0]},{\"basisColumns\":[[0.906307756900787,0.0,-0.422618269920349],[0.0,1.0,0.0],[0.422618269920349,0.0,0.906307756900787]],\"color\":\"#87d8b9\",\"declaredRotationDegrees\":[0.0,25.0,0.0],\"instanceId\":\"40000001-1111-4111-8111-111111111111\",\"materialColor\":[0.529411792755127,0.847058832645416,0.725490212440491,1.0],\"name\":\"Tower · 方柱\",\"position\":[-2.0,1.5,0.0],\"rotationOrder\":\"XYZ\",\"size\":[1.5,3.0,1.5]},{\"basisColumns\":[[0.806707262992859,0.356370270252228,-0.471406012773514],[-0.142244264483452,0.891351163387299,0.4304179251194],[0.5735764503479,-0.280166476964951,0.769751131534576]],\"color\":\"#f1c46e\",\"declaredRotationDegrees\":[20.0,35.0,10.0],\"instanceId\":\"40000002-1111-4111-8111-111111111111\",\"materialColor\":[0.945098042488098,0.768627464771271,0.431372553110123,1.0],\"name\":\"Beam · 倾斜梁\",\"position\":[1.5,1.79999995231628,1.0],\"rotationOrder\":\"XYZ\",\"size\":[0.600000023841858,0.600000023841858,4.0]}],\"ok\":true,\"rotationOrder\":\"XYZ\",\"schemaVersion\":1,\"scope\":\"Static Godot tree/transform/material probe; no 2D runtime events or behavior execution.\"}\n",
+            "stderr": "",
+            "durationMs": 319
+          }
+        ],
+        "tool": {
+          "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+          "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+          "version": "4.7.2.stable.official.ed1daf0bf"
+        },
+        "probe": {
+          "camera": {
+            "far": 1000,
+            "forward": [
+              -0.610959827899933,
+              -0.407306551933289,
+              -0.678844213485718
+            ],
+            "fovDegrees": 50,
+            "near": 0.100000001490116,
+            "position": [
+              9,
+              7,
+              10
+            ]
+          },
+          "coordinateSystem": "RH-Y-up-negative-Z-forward",
+          "fog": {
+            "aerialPerspective": 0,
+            "color": [
+              0.47843137383461,
+              0.627451002597809,
+              0.811764717102051,
+              1
+            ],
+            "density": 1,
+            "enabled": true,
+            "heightDensity": 0,
+            "lightEnergy": 1,
+            "mode": 0,
+            "skyAffect": 0,
+            "sunScatter": 0
+          },
+          "format": "viento-scene3d-probe",
+          "issues": [],
+          "light": {
+            "color": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "energy": 1.20000004768372,
+            "forward": [
+              -0.268328160047531,
+              -0.894427239894867,
+              -0.357770889997482
+            ]
+          },
+          "objectCount": 3,
+          "objects": [
+            {
+              "basisColumns": [
+                [
+                  1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0,
+                  0,
+                  1
+                ]
+              ],
+              "color": "#324761",
+              "declaredRotationDegrees": [
+                0,
+                0,
+                0
+              ],
+              "instanceId": "40000000-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.196078434586525,
+                0.278431385755539,
+                0.380392163991928,
+                1
+              ],
+              "name": "Ground · 地面",
+              "position": [
+                0,
+                -0.150000005960464,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                12,
+                0.300000011920929,
+                12
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.906307756900787,
+                  0,
+                  -0.422618269920349
+                ],
+                [
+                  0,
+                  1,
+                  0
+                ],
+                [
+                  0.422618269920349,
+                  0,
+                  0.906307756900787
+                ]
+              ],
+              "color": "#87d8b9",
+              "declaredRotationDegrees": [
+                0,
+                25,
+                0
+              ],
+              "instanceId": "40000001-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.529411792755127,
+                0.847058832645416,
+                0.725490212440491,
+                1
+              ],
+              "name": "Tower · 方柱",
+              "position": [
+                -2,
+                1.5,
+                0
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                1.5,
+                3,
+                1.5
+              ]
+            },
+            {
+              "basisColumns": [
+                [
+                  0.806707262992859,
+                  0.356370270252228,
+                  -0.471406012773514
+                ],
+                [
+                  -0.142244264483452,
+                  0.891351163387299,
+                  0.4304179251194
+                ],
+                [
+                  0.5735764503479,
+                  -0.280166476964951,
+                  0.769751131534576
+                ]
+              ],
+              "color": "#f1c46e",
+              "declaredRotationDegrees": [
+                20,
+                35,
+                10
+              ],
+              "instanceId": "40000002-1111-4111-8111-111111111111",
+              "materialColor": [
+                0.945098042488098,
+                0.768627464771271,
+                0.431372553110123,
+                1
+              ],
+              "name": "Beam · 倾斜梁",
+              "position": [
+                1.5,
+                1.79999995231628,
+                1
+              ],
+              "rotationOrder": "XYZ",
+              "size": [
+                0.600000023841858,
+                0.600000023841858,
+                4
+              ]
+            }
+          ],
+          "ok": true,
+          "rotationOrder": "XYZ",
+          "schemaVersion": 1,
+          "scope": "Static Godot tree/transform/material probe; no 2D runtime events or behavior execution."
+        },
+        "scope": "Actual headless Godot static tree/transform/material and declared environment-property probe; no installed editor, GPU pixel capture, WebGL/Godot pixel equivalence or 2D runtime protocol acceptance."
+      },
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.distance-fog"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1710,
+          "sha256": "67ac2c893bc08ce3e0db8c5507db48a0b05e5d2b2dc4dbddcf2ba07b25a1d6e3"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 1843,
+          "sha256": "df90675dfc82b41585ef9a2e071acc65327cc58c86dd943e200b3ce18b67c64c"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1710,
+            "sha256": "67ac2c893bc08ce3e0db8c5507db48a0b05e5d2b2dc4dbddcf2ba07b25a1d6e3",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 1843,
+            "sha256": "df90675dfc82b41585ef9a2e071acc65327cc58c86dd943e200b3ce18b67c64c",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 3111,
+            "sha256": "455e80aefa3d35aaaafa83f9400ac0977184b1ebc2dc4fca29028337d794bb9d",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 6900,
+            "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "sourceSha256": "67ac2c893bc08ce3e0db8c5507db48a0b05e5d2b2dc4dbddcf2ba07b25a1d6e3",
+      "generatedFiles": [
+        {
+          "path": "godot-projects/maximum/source.json",
+          "bytes": 1710,
+          "sha256": "67ac2c893bc08ce3e0db8c5507db48a0b05e5d2b2dc4dbddcf2ba07b25a1d6e3"
+        },
+        {
+          "path": "godot-projects/maximum/plan.json",
+          "bytes": 1843,
+          "sha256": "df90675dfc82b41585ef9a2e071acc65327cc58c86dd943e200b3ce18b67c64c"
+        },
+        {
+          "path": "godot-projects/maximum/project.godot",
+          "bytes": 367,
+          "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8"
+        },
+        {
+          "path": "godot-projects/maximum/scene.tscn",
+          "bytes": 3111,
+          "sha256": "455e80aefa3d35aaaafa83f9400ac0977184b1ebc2dc4fca29028337d794bb9d"
+        },
+        {
+          "path": "godot-projects/maximum/runtime.gd",
+          "bytes": 6900,
+          "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691"
+        },
+        {
+          "path": "godot-projects/maximum/scene3d-project.json",
+          "bytes": 1799,
+          "sha256": "69c16631b4fee0b9a77d01416d0d4337ff49552e92e744b98900db1b59c2dfde"
+        }
+      ]
+    },
+    {
+      "name": "float32-small",
+      "ok": false,
+      "fixture": {
+        "path": "/tmp/viento-fog-godot-vuDHeq",
+        "dev": 50,
+        "ino": 6844419,
+        "removed": true
+      },
+      "execution": {
+        "ok": false,
+        "phases": [
+          {
+            "phase": "identify",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "4.7.2.stable.official.ed1daf0bf\n",
+            "stderr": "",
+            "durationMs": 49
+          },
+          {
+            "phase": "import",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n",
+            "stderr": "",
+            "durationMs": 4337
+          },
+          {
+            "phase": "script-check",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n",
+            "stderr": "",
+            "durationMs": 256
+          },
+          {
+            "phase": "probe",
+            "status": "succeeded",
+            "exitCode": 0,
+            "exitSignal": null,
+            "stdout": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_SCENE3D_PROBE {\"camera\":{\"far\":1000.0,\"forward\":[-0.610959827899933,-0.407306551933289,-0.678844213485718],\"fovDegrees\":50.0,\"near\":0.100000001490116,\"position\":[9.0,7.0,10.0]},\"coordinateSystem\":\"RH-Y-up-negative-Z-forward\",\"fog\":{\"aerialPerspective\":0.0,\"color\":[0.47843137383461,0.627451002597809,0.811764717102051,1.0],\"density\":0.0,\"enabled\":true,\"heightDensity\":0.0,\"lightEnergy\":1.0,\"mode\":0,\"skyAffect\":0.0,\"sunScatter\":0.0},\"format\":\"viento-scene3d-probe\",\"issues\":[],\"light\":{\"color\":[1.0,1.0,1.0,1.0],\"energy\":1.20000004768372,\"forward\":[-0.268328160047531,-0.894427239894867,-0.357770889997482]},\"objectCount\":3,\"objects\":[{\"basisColumns\":[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]],\"color\":\"#324761\",\"declaredRotationDegrees\":[0.0,0.0,0.0],\"instanceId\":\"40000000-1111-4111-8111-111111111111\",\"materialColor\":[0.196078434586525,0.278431385755539,0.380392163991928,1.0],\"name\":\"Ground · 地面\",\"position\":[0.0,-0.150000005960464,0.0],\"rotationOrder\":\"XYZ\",\"size\":[12.0,0.300000011920929,12.0]},{\"basisColumns\":[[0.906307756900787,0.0,-0.422618269920349],[0.0,1.0,0.0],[0.422618269920349,0.0,0.906307756900787]],\"color\":\"#87d8b9\",\"declaredRotationDegrees\":[0.0,25.0,0.0],\"instanceId\":\"40000001-1111-4111-8111-111111111111\",\"materialColor\":[0.529411792755127,0.847058832645416,0.725490212440491,1.0],\"name\":\"Tower · 方柱\",\"position\":[-2.0,1.5,0.0],\"rotationOrder\":\"XYZ\",\"size\":[1.5,3.0,1.5]},{\"basisColumns\":[[0.806707262992859,0.356370270252228,-0.471406012773514],[-0.142244264483452,0.891351163387299,0.4304179251194],[0.5735764503479,-0.280166476964951,0.769751131534576]],\"color\":\"#f1c46e\",\"declaredRotationDegrees\":[20.0,35.0,10.0],\"instanceId\":\"40000002-1111-4111-8111-111111111111\",\"materialColor\":[0.945098042488098,0.768627464771271,0.431372553110123,1.0],\"name\":\"Beam · 倾斜梁\",\"position\":[1.5,1.79999995231628,1.0],\"rotationOrder\":\"XYZ\",\"size\":[0.600000023841858,0.600000023841858,4.0]}],\"ok\":true,\"rotationOrder\":\"XYZ\",\"schemaVersion\":1,\"scope\":\"Static Godot tree/transform/material probe; no 2D runtime events or behavior execution.\"}\n",
+            "stderr": "",
+            "durationMs": 251
+          }
+        ],
+        "errorCode": "scene3d_probe_invalid"
+      },
+      "manifest": {
+        "format": "viento-scene3d-project",
+        "schemaVersion": 1,
+        "backend": {
+          "id": "org.viento.godot4",
+          "majorVersion": 4,
+          "prototype": true,
+          "capabilities": [
+            "scene3d.static-boxes",
+            "scene3d.camera",
+            "scene3d.directional-light",
+            "scene3d.xyz-transforms",
+            "scene3d.finite-probe",
+            "scene3d.distance-fog"
+          ]
+        },
+        "coordinateSystem": {
+          "handedness": "right",
+          "up": "+Y",
+          "forward": "-Z",
+          "rotation": "EulerXYZ-degrees"
+        },
+        "source": {
+          "path": "source.json",
+          "bytes": 1714,
+          "sha256": "1934fc371ebabae98dfb530b23081839a618bea6d358da680f004a4a46697a26"
+        },
+        "plan": {
+          "path": "plan.json",
+          "bytes": 1847,
+          "sha256": "2ea7842cfb3296f93e44a5d89bf90fe5090621cc76151b9cde27f50a61765e01"
+        },
+        "project": {
+          "entry": "project.godot",
+          "scene": "scene.tscn",
+          "runtime": "runtime.gd"
+        },
+        "files": [
+          {
+            "path": "source.json",
+            "bytes": 1714,
+            "sha256": "1934fc371ebabae98dfb530b23081839a618bea6d358da680f004a4a46697a26",
+            "role": "author-source"
+          },
+          {
+            "path": "plan.json",
+            "bytes": 1847,
+            "sha256": "2ea7842cfb3296f93e44a5d89bf90fe5090621cc76151b9cde27f50a61765e01",
+            "role": "neutral-plan"
+          },
+          {
+            "path": "project.godot",
+            "bytes": 367,
+            "sha256": "068520ed2e3be64ca5844dc065a640d1a6b3fa8cc5a009ee51f5110b223f5da8",
+            "role": "generated-backend"
+          },
+          {
+            "path": "scene.tscn",
+            "bytes": 3115,
+            "sha256": "2c2545891f7882738de690f65d5a677421bedc015471574545c8f68364b72819",
+            "role": "generated-backend"
+          },
+          {
+            "path": "runtime.gd",
+            "bytes": 6900,
+            "sha256": "fb7c2fdbf9873c961bf055c115050c7e9820d52865cb8eda4ed6c61753d3b691",
+            "role": "generated-backend"
+          }
+        ]
+      },
+      "sourceSha256": "1934fc371ebabae98dfb530b23081839a618bea6d358da680f004a4a46697a26",
+      "error": {
+        "name": "AssertionError",
+        "message": "{\"ok\":false,\"phases\":[{\"phase\":\"identify\",\"status\":\"succeeded\",\"exitCode\":0,\"exitSignal\":null,\"stdout\":\"4.7.2.stable.official.ed1daf0bf\\n\",\"stderr\":\"\",\"durationMs\":49},{\"phase\":\"import\",\"status\":\"succeeded\",\"exitCode\":0,\"exitSignal\":null,\"stdout\":\"Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\\n\\n[   0% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Started Project initialization (5 steps)\\u001b[39m\\u001b[0m\\n[   0% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Scanning file structure...\\u001b[39m\\u001b[0m\\n[  16% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Loading global class names...\\u001b[39m\\u001b[0m\\n[  33% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Verifying GDExtensions...\\u001b[39m\\u001b[0m\\n[  50% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Creating autoload scripts...\\u001b[39m\\u001b[0m\\n[  66% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Initializing plugins...\\u001b[39m\\u001b[0m\\n[  83% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Starting file scan...\\u001b[39m\\u001b[0m\\n\\u001b[92m[ DONE ]\\u001b[39m \\u001b[1mfirst_scan_filesystem\\u001b[22m\\n\\u001b[0m\\n[   0% ] \\u001b[90m\\u001b[1mloading_editor_layout\\u001b[22m | Started Loading editor (5 steps)\\u001b[39m\\u001b[0m\\n[   0% ] \\u001b[90m\\u001b[1mloading_editor_layout\\u001b[22m | Loading editor layout...\\u001b[39m\\u001b[0m\\n[  16% ] \\u001b[90m\\u001b[1mloading_editor_layout\\u001b[22m | Loading docks...\\u001b[39m\\u001b[0m\\n\\u001b[92m[ DONE ]\\u001b[39m \\u001b[1mloading_editor_layout\\u001b[22m\\n\\u001b[0m\\n\",\"stderr\":\"\",\"durationMs\":4337},{\"phase\":\"script-check\",\"status\":\"succeeded\",\"exitCode\":0,\"exitSignal\":null,\"stdout\":\"Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\\n\\n\",\"stderr\":\"\",\"durationMs\":256},{\"phase\":\"probe\",\"status\":\"succeeded\",\"exitCode\":0,\"exitSignal\":null,\"stdout\":\"Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\\n\\nVIENTO_SCENE3D_PROBE {\\\"camera\\\":{\\\"far\\\":1000.0,\\\"forward\\\":[-0.610959827899933,-0.407306551933289,-0.678844213485718],\\\"fovDegrees\\\":50.0,\\\"near\\\":0.100000001490116,\\\"position\\\":[9.0,7.0,10.0]},\\\"coordinateSystem\\\":\\\"RH-Y-up-negative-Z-forward\\\",\\\"fog\\\":{\\\"aerialPerspective\\\":0.0,\\\"color\\\":[0.47843137383461,0.627451002597809,0.811764717102051,1.0],\\\"density\\\":0.0,\\\"enabled\\\":true,\\\"heightDensity\\\":0.0,\\\"lightEnergy\\\":1.0,\\\"mode\\\":0,\\\"skyAffect\\\":0.0,\\\"sunScatter\\\":0.0},\\\"format\\\":\\\"viento-scene3d-probe\\\",\\\"issues\\\":[],\\\"light\\\":{\\\"color\\\":[1.0,1.0,1.0,1.0],\\\"energy\\\":1.20000004768372,\\\"forward\\\":[-0.268328160047531,-0.894427239894867,-0.357770889997482]},\\\"objectCount\\\":3,\\\"objects\\\":[{\\\"basisColumns\\\":[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]],\\\"color\\\":\\\"#324761\\\",\\\"declaredRotationDegrees\\\":[0.0,0.0,0.0],\\\"instanceId\\\":\\\"40000000-1111-4111-8111-111111111111\\\",\\\"materialColor\\\":[0.196078434586525,0.278431385755539,0.380392163991928,1.0],\\\"name\\\":\\\"Ground · 地面\\\",\\\"position\\\":[0.0,-0.150000005960464,0.0],\\\"rotationOrder\\\":\\\"XYZ\\\",\\\"size\\\":[12.0,0.300000011920929,12.0]},{\\\"basisColumns\\\":[[0.906307756900787,0.0,-0.422618269920349],[0.0,1.0,0.0],[0.422618269920349,0.0,0.906307756900787]],\\\"color\\\":\\\"#87d8b9\\\",\\\"declaredRotationDegrees\\\":[0.0,25.0,0.0],\\\"instanceId\\\":\\\"40000001-1111-4111-8111-111111111111\\\",\\\"materialColor\\\":[0.529411792755127,0.847058832645416,0.725490212440491,1.0],\\\"name\\\":\\\"Tower · 方柱\\\",\\\"position\\\":[-2.0,1.5,0.0],\\\"rotationOrder\\\":\\\"XYZ\\\",\\\"size\\\":[1.5,3.0,1.5]},{\\\"basisColumns\\\":[[0.806707262992859,0.356370270252228,-0.471406012773514],[-0.142244264483452,0.891351163387299,0.4304179251194],[0.5735764503479,-0.280166476964951,0.769751131534576]],\\\"color\\\":\\\"#f1c46e\\\",\\\"declaredRotationDegrees\\\":[20.0,35.0,10.0],\\\"instanceId\\\":\\\"40000002-1111-4111-8111-111111111111\\\",\\\"materialColor\\\":[0.945098042488098,0.768627464771271,0.431372553110123,1.0],\\\"name\\\":\\\"Beam · 倾斜梁\\\",\\\"position\\\":[1.5,1.79999995231628,1.0],\\\"rotationOrder\\\":\\\"XYZ\\\",\\\"size\\\":[0.600000023841858,0.600000023841858,4.0]}],\\\"ok\\\":true,\\\"rotationOrder\\\":\\\"XYZ\\\",\\\"schemaVersion\\\":1,\\\"scope\\\":\\\"Static Godot tree/transform/material probe; no 2D runtime events or behavior execution.\\\"}\\n\",\"stderr\":\"\",\"durationMs\":251}],\"errorCode\":\"scene3d_probe_invalid\"}\n\nfalse !== true\n",
+        "code": "ERR_ASSERTION"
+      }
+    }
+  ],
+  "error": {
+    "name": "AssertionError",
+    "message": "{\"ok\":false,\"phases\":[{\"phase\":\"identify\",\"status\":\"succeeded\",\"exitCode\":0,\"exitSignal\":null,\"stdout\":\"4.7.2.stable.official.ed1daf0bf\\n\",\"stderr\":\"\",\"durationMs\":49},{\"phase\":\"import\",\"status\":\"succeeded\",\"exitCode\":0,\"exitSignal\":null,\"stdout\":\"Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\\n\\n[   0% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Started Project initialization (5 steps)\\u001b[39m\\u001b[0m\\n[   0% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Scanning file structure...\\u001b[39m\\u001b[0m\\n[  16% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Loading global class names...\\u001b[39m\\u001b[0m\\n[  33% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Verifying GDExtensions...\\u001b[39m\\u001b[0m\\n[  50% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Creating autoload scripts...\\u001b[39m\\u001b[0m\\n[  66% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Initializing plugins...\\u001b[39m\\u001b[0m\\n[  83% ] \\u001b[90m\\u001b[1mfirst_scan_filesystem\\u001b[22m | Starting file scan...\\u001b[39m\\u001b[0m\\n\\u001b[92m[ DONE ]\\u001b[39m \\u001b[1mfirst_scan_filesystem\\u001b[22m\\n\\u001b[0m\\n[   0% ] \\u001b[90m\\u001b[1mloading_editor_layout\\u001b[22m | Started Loading editor (5 steps)\\u001b[39m\\u001b[0m\\n[   0% ] \\u001b[90m\\u001b[1mloading_editor_layout\\u001b[22m | Loading editor layout...\\u001b[39m\\u001b[0m\\n[  16% ] \\u001b[90m\\u001b[1mloading_editor_layout\\u001b[22m | Loading docks...\\u001b[39m\\u001b[0m\\n\\u001b[92m[ DONE ]\\u001b[39m \\u001b[1mloading_editor_layout\\u001b[22m\\n\\u001b[0m\\n\",\"stderr\":\"\",\"durationMs\":4337},{\"phase\":\"script-check\",\"status\":\"succeeded\",\"exitCode\":0,\"exitSignal\":null,\"stdout\":\"Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\\n\\n\",\"stderr\":\"\",\"durationMs\":256},{\"phase\":\"probe\",\"status\":\"succeeded\",\"exitCode\":0,\"exitSignal\":null,\"stdout\":\"Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\\n\\nVIENTO_SCENE3D_PROBE {\\\"camera\\\":{\\\"far\\\":1000.0,\\\"forward\\\":[-0.610959827899933,-0.407306551933289,-0.678844213485718],\\\"fovDegrees\\\":50.0,\\\"near\\\":0.100000001490116,\\\"position\\\":[9.0,7.0,10.0]},\\\"coordinateSystem\\\":\\\"RH-Y-up-negative-Z-forward\\\",\\\"fog\\\":{\\\"aerialPerspective\\\":0.0,\\\"color\\\":[0.47843137383461,0.627451002597809,0.811764717102051,1.0],\\\"density\\\":0.0,\\\"enabled\\\":true,\\\"heightDensity\\\":0.0,\\\"lightEnergy\\\":1.0,\\\"mode\\\":0,\\\"skyAffect\\\":0.0,\\\"sunScatter\\\":0.0},\\\"format\\\":\\\"viento-scene3d-probe\\\",\\\"issues\\\":[],\\\"light\\\":{\\\"color\\\":[1.0,1.0,1.0,1.0],\\\"energy\\\":1.20000004768372,\\\"forward\\\":[-0.268328160047531,-0.894427239894867,-0.357770889997482]},\\\"objectCount\\\":3,\\\"objects\\\":[{\\\"basisColumns\\\":[[1.0,0.0,0.0],[0.0,1.0,0.0],[0.0,0.0,1.0]],\\\"color\\\":\\\"#324761\\\",\\\"declaredRotationDegrees\\\":[0.0,0.0,0.0],\\\"instanceId\\\":\\\"40000000-1111-4111-8111-111111111111\\\",\\\"materialColor\\\":[0.196078434586525,0.278431385755539,0.380392163991928,1.0],\\\"name\\\":\\\"Ground · 地面\\\",\\\"position\\\":[0.0,-0.150000005960464,0.0],\\\"rotationOrder\\\":\\\"XYZ\\\",\\\"size\\\":[12.0,0.300000011920929,12.0]},{\\\"basisColumns\\\":[[0.906307756900787,0.0,-0.422618269920349],[0.0,1.0,0.0],[0.422618269920349,0.0,0.906307756900787]],\\\"color\\\":\\\"#87d8b9\\\",\\\"declaredRotationDegrees\\\":[0.0,25.0,0.0],\\\"instanceId\\\":\\\"40000001-1111-4111-8111-111111111111\\\",\\\"materialColor\\\":[0.529411792755127,0.847058832645416,0.725490212440491,1.0],\\\"name\\\":\\\"Tower · 方柱\\\",\\\"position\\\":[-2.0,1.5,0.0],\\\"rotationOrder\\\":\\\"XYZ\\\",\\\"size\\\":[1.5,3.0,1.5]},{\\\"basisColumns\\\":[[0.806707262992859,0.356370270252228,-0.471406012773514],[-0.142244264483452,0.891351163387299,0.4304179251194],[0.5735764503479,-0.280166476964951,0.769751131534576]],\\\"color\\\":\\\"#f1c46e\\\",\\\"declaredRotationDegrees\\\":[20.0,35.0,10.0],\\\"instanceId\\\":\\\"40000002-1111-4111-8111-111111111111\\\",\\\"materialColor\\\":[0.945098042488098,0.768627464771271,0.431372553110123,1.0],\\\"name\\\":\\\"Beam · 倾斜梁\\\",\\\"position\\\":[1.5,1.79999995231628,1.0],\\\"rotationOrder\\\":\\\"XYZ\\\",\\\"size\\\":[0.600000023841858,0.600000023841858,4.0]}],\\\"ok\\\":true,\\\"rotationOrder\\\":\\\"XYZ\\\",\\\"schemaVersion\\\":1,\\\"scope\\\":\\\"Static Godot tree/transform/material probe; no 2D runtime events or behavior execution.\\\"}\\n\",\"stderr\":\"\",\"durationMs\":251}],\"errorCode\":\"scene3d_probe_invalid\"}\n\nfalse !== true\n",
+    "code": "ERR_ASSERTION"
+  }
+}

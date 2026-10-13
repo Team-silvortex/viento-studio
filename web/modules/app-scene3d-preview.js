@@ -1,7 +1,10 @@
 import { parseScene3DSource } from '../../engine/scene3d.mjs';
 import { createScene3DObjectIndex, queryScene3DObjects } from '../../engine/scene3d-navigation.mjs';
-import { supportsStudioCoreScene3D } from '../../engine/studio-core.mjs';
+import { prepareScene3DParticleField, sampleScene3DParticleField } from '../../engine/scene3d-particles.mjs';
+import { createScene3DParticlePreview } from './scene3d-particle-preview.js';
+import { supportsStudioCoreScene3D, supportsStudioCoreScene3DParticles } from '../../engine/studio-core.mjs';
 import { createScene3DRenderer } from './scene3d-renderer.js';
+import { createScene3DOrientationIndicator } from './scene3d-orientation.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 
 // This independent view receives read-only document snapshots. Camera gestures
@@ -18,12 +21,25 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
   const dialog = document.createElement('dialog'); dialog.id = 'scene3dDialog'; dialog.className = 'scene3d-dialog'; dialog.setAttribute('aria-labelledby', 'scene3dTitle');
   dialog.innerHTML = `<header class="scene3d-header"><h2 id="scene3dTitle" data-i18n="3D场景预览"></h2>
     <button id="scene3dClose" type="button" class="doc-btn doc-btn-ghost" data-i18n="返回编辑器"></button></header>
-    <p class="scene3d-note" data-i18n="只读预览当前JSON原文草稿。旋转和缩放只改变视角；修改仍在编辑器中普通保存。"></p>
+    <p class="scene3d-note" data-i18n="只读预览当前JSON草稿；所有视图操作都不修改原文。"></p>
     <p id="scene3dSource" class="scene3d-source"></p><p id="scene3dStatus" role="status" aria-live="polite"></p>
     <ul id="scene3dDiagnostics" class="scene3d-diagnostics"></ul>
-    <div class="scene3d-layout"><section class="scene3d-viewport" aria-label="3D"><div id="scene3dSurface"></div>
+    <div class="scene3d-layout"><section class="scene3d-viewport" aria-label="3D">
+      <div class="scene3d-direction-controls scene3d-projection-controls"><label for="scene3dProjectionMode" data-i18n="视图投影"></label>
+        <select id="scene3dProjectionMode" aria-describedby="scene3dDirectionNote"><option value="perspective" data-i18n="透视"></option><option value="orthographic" data-i18n="正交"></option></select></div>
+      <div class="scene3d-direction-controls"><label for="scene3dDirection" data-i18n="观察方向"></label>
+        <select id="scene3dDirection" aria-describedby="scene3dDirectionNote">
+          <option value="front" data-i18n="前视（+Z）"></option><option value="back" data-i18n="后视（−Z）"></option>
+          <option value="left" data-i18n="左视（−X）"></option><option value="right" data-i18n="右视（+X）"></option>
+          <option value="top" data-i18n="俯视（+Y）"></option><option value="bottom" data-i18n="仰视（−Y）"></option>
+        </select><button id="scene3dSetDirection" type="button" class="doc-btn doc-btn-ghost" data-i18n="按方向查看"></button></div>
+      <div class="scene3d-direction-controls scene3d-drag-controls"><label for="scene3dDragMode" data-i18n="拖动方式"></label>
+        <select id="scene3dDragMode" aria-describedby="scene3dGestures"><option value="orbit" data-i18n="旋转视角"></option><option value="pan" data-i18n="平移视角"></option></select></div>
+      <p id="scene3dDirectionNote" class="scene3d-note" data-i18n="标准方向会包住全部对象。透视显示远近；正交方便比较布局。"></p>
+      <div id="scene3dSurface"><div id="scene3dOrientation" class="scene3d-orientation" hidden></div></div>
       <p id="scene3dFallback" hidden data-i18n="此设备无法使用WebGL2，未绘制3D画面。对象声明仍可查看。"></p>
       <p id="scene3dGestures" class="scene3d-note" data-i18n="单击方块选择，双击聚焦；拖动旋转视角，滚轮缩放。Y轴向上，右手坐标系，欧拉旋转XYZ。"></p>
+      <section id="scene3dParticles" hidden></section>
       <p id="scene3dSelectionNote" class="scene3d-note" data-i18n="选中方块的可见边缘会高亮；被遮挡的部分不会透视显示。选择只影响预览，不修改原文。"></p></section>
       <aside class="scene3d-sidebar"><h3 data-i18n="场景对象"></h3>
         <label class="scene3d-search"><span data-i18n="按名称或UUID查找对象"></span><input id="scene3dSearch" type="search" autocomplete="off" spellcheck="false"></label>
@@ -40,13 +56,32 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
       <button id="scene3dLocate" type="button" class="doc-btn doc-btn-ghost" data-i18n="定位对象原文"></button></footer>`;
   document.body.append(dialog);
   const el = suffix => dialog.querySelector(`#scene3d${suffix}`);
+  const orientation = createScene3DOrientationIndicator(el('Orientation'), { t });
   const node = (tag, text = '') => { const item = document.createElement(tag); item.textContent = text; return item; };
   let epoch = 0, disposed = false, pending = false, session = null, renderer = null, canvas = null, opener = null;
-  let selected = '', message = '', diagnostic = '', rendererFailed = false, viewPath = '', locating = false;
+  let selected = '', message = '', diagnostic = '', rendererFailed = false, viewPath = '', locating = false, dragMode = 'orbit', projectionMode = 'perspective', viewReceipt = null;
   const supported = () => typeof supportsStudioCoreScene3D === 'function' && supportsStudioCoreScene3D();
   const eligible = context => Boolean(context.editable && !context.creating && context.sourceJSON === true && typeof context.sourcePath === 'string' && context.sourcePath && typeof context.sourceToken === 'string');
   const owns = (request, owner) => { const context = getContext(); return !disposed && dialog.open && request === epoch && eligible(context)
     && context.sourcePath === owner.sourcePath && context.sourceToken === owner.sourceToken; };
+  function canSampleParticles() {
+    const context = getContext();
+    return !disposed && dialog.open && !pending && !context.busy && eligible(context) && supported()
+      && typeof supportsStudioCoreScene3DParticles === 'function' && supportsStudioCoreScene3DParticles()
+      && session?.parsed.model.particleField && context.sourcePath === session.snapshot.sourcePath && context.sourceToken === session.snapshot.token
+      && renderer?.supportsParticleFields === true && !rendererFailed && typeof renderer.setParticleFieldOffset === 'function';
+  }
+  const particles = createScene3DParticlePreview(el('Particles'), { document, t, onSample: seconds => {
+    if (!canSampleParticles()) return false;
+    try { return renderer.setParticleFieldOffset(sampleScene3DParticleField(session.parsed.model.particleField, seconds).offset) === true && !rendererFailed; }
+    catch (error) { diagnostic = error.message; repaint(); return false; }
+  } });
+  function syncOrientation() {
+    const context = getContext();
+    const visible = !disposed && dialog.open && session && renderer && !rendererFailed && eligible(context)
+      && supported() && context.sourcePath === session.sourcePath;
+    orientation.update(visible ? viewReceipt?.camera : null);
+  }
   function syncSelectedObject() {
     if (renderer && !rendererFailed && typeof renderer.setSelectedObject === 'function') renderer.setSelectedObject(selected || null);
   }
@@ -66,6 +101,49 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
     if (rendererFailed) return false; // Preserve synchronous GPU failure diagnostics.
     message = focused ? '已聚焦当前预览的全部对象；筛选不影响取景，原文保持不变。' : '无法聚焦全部对象，当前视角与原文保持不变。';
     repaint(); return focused;
+  }
+  const standardDirections = new Set(['front', 'back', 'left', 'right', 'top', 'bottom']);
+  function canSetDirection(context = getContext()) {
+    return !disposed && dialog.open && Boolean(session) && !pending && eligible(context) && !context.busy && supported()
+      && context.sourcePath === session.sourcePath && Boolean(renderer) && !rendererFailed && typeof renderer.setViewDirection === 'function';
+  }
+  function setDirection() {
+    const direction = el('Direction').value;
+    if (!canSetDirection() || !standardDirections.has(direction)) return false;
+    const changed = renderer.setViewDirection(direction) === true;
+    if (rendererFailed) return false;
+    message = changed ? '已按所选方向查看全部对象；选择、筛选和原文保持不变。' : '无法切换观察方向，当前视角与原文保持不变。';
+    repaint(); return changed;
+  }
+  function canSetDragMode(context = getContext()) {
+    return !disposed && dialog.open && Boolean(session) && !pending && eligible(context) && !context.busy && supported()
+      && context.sourcePath === session.sourcePath && Boolean(renderer) && !rendererFailed && typeof renderer.setDragMode === 'function';
+  }
+  function setDragMode() {
+    const next = el('DragMode').value;
+    if (!canSetDragMode() || !['orbit', 'pan'].includes(next)) { el('DragMode').value = dragMode; return false; }
+    const changed = renderer.setDragMode(next) === true;
+    if (changed) dragMode = next;
+    el('DragMode').value = dragMode;
+    if (canvas) canvas.dataset.dragMode = dragMode;
+    if (rendererFailed) return false;
+    message = changed ? (dragMode === 'pan' ? '已切换为平移视角；拖动仅移动临时镜头。' : '已切换为旋转视角；单击选择，拖动旋转。') : '无法切换拖动方式，当前视图与原文保持不变。';
+    repaint(); return changed;
+  }
+  function canSetProjectionMode(context = getContext()) {
+    return !disposed && dialog.open && Boolean(session) && !pending && eligible(context) && !context.busy && supported()
+      && context.sourcePath === session.sourcePath && Boolean(renderer) && !rendererFailed && typeof renderer.setProjectionMode === 'function';
+  }
+  function setProjectionMode() {
+    const next = el('ProjectionMode').value;
+    if (!canSetProjectionMode() || !['perspective', 'orthographic'].includes(next)) { el('ProjectionMode').value = projectionMode; return false; }
+    let changed = false;
+    try { changed = renderer.setProjectionMode(next) === true; } catch { /* A refused adapter action leaves the accepted UI mode intact. */ }
+    if (changed && !rendererFailed) projectionMode = next;
+    el('ProjectionMode').value = projectionMode;
+    if (rendererFailed) return false;
+    message = changed ? (projectionMode === 'orthographic' ? '已切换为正交观察；仅影响预览，不修改作者相机。' : '已切换为透视观察；仅影响预览，不修改作者相机。') : '无法切换投影方式，当前视图与原文保持不变。';
+    repaint(); return changed;
   }
   function selectObject(instanceId, { owner = session, focus = false } = {}) {
     const context = getContext();
@@ -103,12 +181,18 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
     }
     inspect();
   }
-  function release() { renderer?.dispose(); renderer = null; canvas?.remove(); canvas = null; rendererFailed = false; }
+  function release() { particles.setField(null); viewReceipt = null; orientation.update(null); renderer?.dispose(); renderer = null; canvas?.remove(); canvas = null; rendererFailed = false; }
   function repaint() {
     if (disposed) return;
     const context = getContext(); button.hidden = !eligible(context); button.disabled = context.busy === true || !supported();
     button.title = supported() ? t('3D预览') : t('当前核心不支持3D场景预览，原文编辑和2D功能仍可使用。');
     unavailable.hidden = !eligible(context) || supported(); unavailable.textContent = t('当前核心不支持3D预览');
+    el('Gestures').dataset.i18n = renderer?.supportsTouchNavigation === true
+      ? '旋转模式下单击选择、双击聚焦。平移模式、Shift+拖动或鼠标中键只移动视角，不选择对象；滚轮缩放。双指拖动平移，捏合缩放；松开任一手指结束。'
+      : renderer && typeof renderer.setDragMode === 'function'
+      ? '旋转模式下单击选择、双击聚焦。平移模式、Shift+拖动或鼠标中键只移动视角，不选择对象；滚轮缩放。'
+      : '单击方块选择，双击聚焦；拖动旋转视角，滚轮缩放。Y轴向上，右手坐标系，欧拉旋转XYZ。';
+    syncOrientation(); orientation.refresh(); particles.setAvailable(canSampleParticles());
     translatePage(dialog); button.textContent = t('3D预览');
     el('Status').textContent = t(message); el('Diagnostics').replaceChildren();
     if (diagnostic) el('Diagnostics').append(node('li', diagnostic));
@@ -116,6 +200,11 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
     el('Refresh').disabled = pending || !eligible(context) || context.busy === true || !supported();
     el('Reset').disabled = pending || !renderer || rendererFailed;
     el('FocusAll').disabled = !canFocusAll(context);
+    el('Direction').disabled = el('SetDirection').disabled = !canSetDirection(context);
+    el('ProjectionMode').disabled = !canSetProjectionMode(context); el('ProjectionMode').value = projectionMode;
+    el('ProjectionMode').title = renderer && typeof renderer.setProjectionMode === 'function' ? t('视图投影') : t('当前渲染器不支持切换投影方式。');
+    el('DragMode').disabled = !canSetDragMode(context); el('DragMode').value = dragMode;
+    el('DragMode').title = renderer && typeof renderer.setDragMode === 'function' ? t('拖动方式') : t('当前渲染器不支持切换拖动方式。');
     el('Focus').disabled = pending || !selected || !renderer || rendererFailed || typeof renderer.focusObject !== 'function';
     const navigable = Boolean(session && selected && eligible(context) && !context.busy && supported()
       && context.sourcePath === session.snapshot.sourcePath && context.sourceToken === session.snapshot.token);
@@ -135,15 +224,20 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
       if (!snapshot || typeof snapshot.content !== 'string' || snapshot.sourcePath !== context.sourcePath || snapshot.token !== context.sourceToken) throw new Error(t('当前草稿已变化，请重新刷新预览。'));
       const parsed = parseScene3DSource(snapshot.content);
       if (!owns(request, context)) return false;
+      const prepared = parsed.model.particleField ? prepareScene3DParticleField(parsed.model.particleField) : null;
       const captured = Object.freeze({ sourcePath: snapshot.sourcePath, token: snapshot.token, content: snapshot.content });
       session = { parsed, index: createScene3DObjectIndex(parsed), snapshot: captured, sourcePath: captured.sourcePath, token: captured.token };
       el('Surface').style.aspectRatio = `${parsed.model.viewport[0]} / ${parsed.model.viewport[1]}`;
       if (!parsed.model.objects.some(item => item.instanceId === selected)) selected = parsed.model.objects[0].instanceId;
       if (!renderer && !rendererFailed) {
-        canvas = node('canvas'); canvas.id = 'scene3dCanvas'; canvas.setAttribute('aria-label', t('3D场景画面')); canvas.setAttribute('aria-describedby', 'scene3dGestures'); canvas.tabIndex = 0; el('Surface').append(canvas);
+        canvas = node('canvas'); canvas.id = 'scene3dCanvas'; canvas.dataset.dragMode = dragMode; canvas.setAttribute('aria-label', t('3D场景画面')); canvas.setAttribute('aria-describedby', 'scene3dGestures'); canvas.tabIndex = 0; el('Surface').append(canvas);
         const ownerCanvas = canvas; let ownerRenderer = null;
         try { renderer = createScene3DRenderer(canvas, {
-          onError: error => { if (disposed || !dialog.open || canvas !== ownerCanvas) return; rendererFailed = true; diagnostic = error.message; message = '3D绘制中断；请关闭后重新打开预览。'; repaint(); },
+          onViewChange: receipt => {
+            if (!ownerRenderer || disposed || !dialog.open || canvas !== ownerCanvas || renderer !== ownerRenderer) return;
+            viewReceipt = receipt; syncOrientation();
+          },
+          onError: error => { if (disposed || !dialog.open || canvas !== ownerCanvas) return; viewReceipt = null; orientation.update(null); rendererFailed = true; diagnostic = error.message; message = '3D绘制中断；请关闭后重新打开预览。'; repaint(); },
           onPick: (instanceId, hint) => {
             if (!ownerRenderer || disposed || !dialog.open || pending || rendererFailed || canvas !== ownerCanvas || renderer !== ownerRenderer) return false;
             const descriptor = hint && typeof hint === 'object' ? Object.getOwnPropertyDescriptor(hint, 'focus') : null;
@@ -152,7 +246,19 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
         }); ownerRenderer = renderer; }
         catch (error) { diagnostic = error.message; rendererFailed = true; }
       }
-      if (renderer && !rendererFailed) { renderer.setModel(parsed.model); syncSelectedObject(); }
+      particles.setField(parsed.model.particleField || null);
+      if (renderer && !rendererFailed) {
+        if (prepared && renderer.supportsParticleFields !== true) {
+          rendererFailed = true; diagnostic = t('当前渲染器不支持粒子场，请重新打开预览或更新应用。');
+        } else {
+          try {
+            const accepted = prepared ? renderer.setModel(parsed.model, { particleField: prepared }) : renderer.setModel(parsed.model);
+            if (accepted === false) { rendererFailed = true; diagnostic = t('场景画面未能刷新，请关闭后重新打开预览。'); }
+            syncSelectedObject();
+          } catch (error) { rendererFailed = true; diagnostic = error.message || String(error); }
+          if (rendererFailed) { viewReceipt = null; orientation.update(null); }
+        }
+      }
       message = renderer && !rendererFailed ? '3D预览已刷新；未修改原文。' : '3D声明已检查；此设备未绘制3D画面。';
       renderObjects(); return true;
     } catch (error) {
@@ -166,7 +272,7 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
   async function open() {
     if (disposed || dialog.open) return false;
     const context = getContext(); if (!eligible(context) || context.busy || !supported()) return false;
-    opener = document.activeElement; viewPath = context.sourcePath; message = ''; diagnostic = ''; selected = ''; session = null; el('Search').value = ''; dialog.showModal(); repaint();
+    opener = document.activeElement; dragMode = 'orbit'; projectionMode = 'perspective'; viewPath = context.sourcePath; message = ''; diagnostic = ''; selected = ''; session = null; el('Search').value = ''; el('Direction').value = 'front'; dialog.showModal(); repaint();
     return load();
   }
   function close({ restoreFocus = true } = {}) {
@@ -216,6 +322,9 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
     renderer.resetView(); message = '视角已重置为作者相机；原文保持不变。'; repaint();
   });
   el('FocusAll').addEventListener('click', focusAll);
+  el('SetDirection').addEventListener('click', setDirection);
+  el('DragMode').addEventListener('change', setDragMode);
+  el('ProjectionMode').addEventListener('change', setProjectionMode);
   el('Focus').addEventListener('click', focusSelected);
   el('Locate').addEventListener('click', () => void locate());
   el('Search').addEventListener('input', () => { if (!pending) repaint(); });
@@ -224,6 +333,6 @@ export function setupScene3DPreview({ getContext = () => ({}), getSource = async
   dialog.addEventListener('close', () => { if (!dialog.open && (session || renderer || pending)) close(); });
   const unsubscribe = onLanguageChange(() => { if (disposed) return; repaint(); renderObjects(); if (canvas) canvas.setAttribute('aria-label', t('3D场景画面')); });
   repaint();
-  function dispose() { if (disposed) return; close(); disposed = true; unsubscribe?.(); button.remove(); unavailable.remove(); dialog.remove(); }
+  function dispose() { if (disposed) return; close(); disposed = true; particles.dispose(); orientation.dispose(); unsubscribe?.(); button.remove(); unavailable.remove(); dialog.remove(); }
   return Object.freeze({ open, close, refresh, dispose, destroy: dispose });
 }

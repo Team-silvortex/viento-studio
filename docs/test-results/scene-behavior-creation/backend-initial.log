@@ -1,0 +1,63 @@
+✔ behavior.create workspace v2 preview predicts all three owned files and apply preserves every other author byte (162.777642ms)
+✔ behavior.create workspace v3 preview predicts all three owned files and apply preserves every other author byte (129.591875ms)
+✔ behavior creation treats implementation text as inert source and never adds author script content (80.112666ms)
+✖ scene script actor and metadata edits invalidate preview before any of the three targets publishes (213.239074ms)
+✔ a dependency edit at beforeIntent keeps all author targets unchanged and removes unpublished staging (59.532222ms)
+✔ request extensions paths malformed declarations identities and stale scene revisions refuse all writes (97.716346ms)
+✖ parallel in-process and real multi-process requests cannot create two first behavior manifests (259.445447ms)
+✔ occupied portable aliases and filesystem links outside source keep foreign files intact (44.435456ms)
+✔ behavior.create v9 SIGKILL intent/- restores two absences and the exact old scene record (206.647653ms)
+✔ behavior.create v9 SIGKILL source-ready/0 restores two absences and the exact old scene record (197.929184ms)
+✔ behavior.create v9 SIGKILL data/0 restores two absences and the exact old scene record (206.52206ms)
+✔ behavior.create v9 SIGKILL source-ready/1 restores two absences and the exact old scene record (199.198952ms)
+✔ behavior.create v9 SIGKILL data/1 restores two absences and the exact old scene record (211.023324ms)
+✔ behavior.create v9 SIGKILL source-ready/2 restores two absences and the exact old scene record (209.309676ms)
+✔ behavior.create v9 SIGKILL data/2 restores two absences and the exact old scene record (202.074039ms)
+✔ behavior.create v9 SIGKILL commit/- restores all three after-images (204.379602ms)
+✔ behavior.create v9 SIGKILL head/- restores all three after-images (206.550014ms)
+✔ recovery is restartable during reverse rollback and forward publication without restoring author dependencies (541.604126ms)
+✔ ordinary data-phase failures roll back and lost completion after commit returns the committed receipt (142.909588ms)
+✔ external edits to owned after-images or other registrations preserve conflicts and never publish recovery files (346.506494ms)
+✔ v9 refuses unknown journal fields mutated metadata snapshots extra stage files and rehashed frozen dependency forgeries (1596.7082ms)
+✔ foreign metadata temp names and symlinks are not hidden by the two-path v9 recovery exception (339.70715ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 20
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5917.430128
+
+✖ failing tests:
+
+test at scripts/tests/world-behavior-create-service.test.mjs:37:1
+✖ scene script actor and metadata edits invalidate preview before any of the three targets publishes (213.239074ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///tmp/viento-behavior-create-2qx88f46/candidate/scripts/tests/world-behavior-create-service.test.mjs:42:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: [Object],
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/tests/world-behavior-create-service.test.mjs:70:1
+✖ parallel in-process and real multi-process requests cannot create two first behavior manifests (259.445447ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /world_revision_conflict|world_write_busy/. Input:
+  
+  ''
+  
+      at TestContext.<anonymous> (file:///tmp/viento-behavior-create-2qx88f46/candidate/scripts/tests/world-behavior-create-service.test.mjs:77:100)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: /world_revision_conflict|world_write_busy/,
+    operator: 'match',
+    diff: 'simple'
+  }

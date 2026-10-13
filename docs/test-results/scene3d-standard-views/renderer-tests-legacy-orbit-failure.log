@@ -1,0 +1,569 @@
+TAP version 13
+# Subtest: literal CSS client coordinates hit the box and leave blank border outside and invalid coordinates empty
+ok 1 - literal CSS client coordinates hit the box and leave blank border outside and invalid coordinates empty
+  ---
+  duration_ms: 2.108793
+  type: 'test'
+  ...
+# Subtest: nearest visible surface wins independent of declaration order and occludes farther boxes
+ok 2 - nearest visible surface wins independent of declaration order and occludes farther boxes
+  ---
+  duration_ms: 0.63268
+  type: 'test'
+  ...
+# Subtest: exactly equal surface depth uses later declaration matching existing LEQUAL drawing
+ok 3 - exactly equal surface depth uses later declaration matching existing LEQUAL drawing
+  ---
+  duration_ms: 0.452522
+  type: 'test'
+  ...
+# Subtest: mixed XYZ rotated nonuniform boxes are intersected as actual transformed boxes rather than their enclosing AABB
+ok 4 - mixed XYZ rotated nonuniform boxes are intersected as actual transformed boxes rather than their enclosing AABB
+  ---
+  duration_ms: 0.484458
+  type: 'test'
+  ...
+# Subtest: near and far clipped objects behind or outside the camera produce no visible surface
+ok 5 - near and far clipped objects behind or outside the camera produce no visible surface
+  ---
+  duration_ms: 0.444437
+  type: 'test'
+  ...
+# Subtest: when the near plane is inside a box only the real positive exit face is visible
+ok 6 - when the near plane is inside a box only the real positive exit face is visible
+  ---
+  duration_ms: 0.834377
+  type: 'test'
+  ...
+# Subtest: a clipped entry face cannot occlude a valid foreground exit or another real visible surface
+ok 7 - a clipped entry face cannot occlude a valid foreground exit or another real visible surface
+  ---
+  duration_ms: 0.208058
+  type: 'test'
+  ...
+# Subtest: legal extreme Float32 clip ratio with an infinite far unprojection still picks finite geometry
+ok 8 - legal extreme Float32 clip ratio with an infinite far unprojection still picks finite geometry
+  ---
+  duration_ms: 0.160093
+  type: 'test'
+  ...
+# Subtest: actual rounded drawing allocation aspect controls projection separately from CSS or author viewport
+ok 9 - actual rounded drawing allocation aspect controls projection separately from CSS or author viewport
+  ---
+  duration_ms: 0.25954
+  type: 'test'
+  ...
+# Subtest: focused temporary cameras and far-coordinate floating origins pick both minimum and maximum rotated boxes
+ok 10 - focused temporary cameras and far-coordinate floating origins pick both minimum and maximum rotated boxes
+  ---
+  duration_ms: 1.957696
+  type: 'test'
+  ...
+# Subtest: translated camera and objects preserve hits while stable IDs do not depend on their source numeric index
+ok 11 - translated camera and objects preserve hits while stable IDs do not depend on their source numeric index
+  ---
+  duration_ms: 1.226882
+  type: 'test'
+  ...
+# Subtest: matrix payloads and all caller frame objects remain unchanged after successful or missing hits
+ok 12 - matrix payloads and all caller frame objects remain unchanged after successful or missing hits
+  ---
+  duration_ms: 0.227713
+  type: 'test'
+  ...
+# Subtest: missing empty malformed singular and nonfinite drawing frames fail closed
+ok 13 - missing empty malformed singular and nonfinite drawing frames fail closed
+  ---
+  duration_ms: 0.254079
+  type: 'test'
+  ...
+# Subtest: matrix composition keeps column-major identity and translated scaled box positions
+ok 14 - matrix composition keeps column-major identity and translated scaled box positions
+  ---
+  duration_ms: 0.183435
+  type: 'test'
+  ...
+# Subtest: mixed-axis Euler XYZ matches Godot Rx*(Ry*Rz) analytical columns
+ok 15 - mixed-axis Euler XYZ matches Godot Rx*(Ry*Rz) analytical columns
+  ---
+  duration_ms: 0.118339
+  type: 'test'
+  ...
+# Subtest: lookAt puts the camera at origin and its target along negative Z
+ok 16 - lookAt puts the camera at origin and its target along negative Z
+  ---
+  duration_ms: 0.07877
+  type: 'test'
+  ...
+# Subtest: perspective uses WebGL clipping and source near/far values
+ok 17 - perspective uses WebGL clipping and source near/far values
+  ---
+  duration_ms: 0.10753
+  type: 'test'
+  ...
+# Subtest: orbit is detached, preserves target and clamps polar and distance singularities
+not ok 18 - orbit is detached, preserves target and clamps polar and distance singularities
+  ---
+  duration_ms: 0.416437
+  type: 'test'
+  location: '/tmp/viento-standard-views-zf0c5t31/workspace/scripts/tests/scene3d-renderer.test.mjs:47:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of null (reading 'target')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/viento-standard-views-zf0c5t31/workspace/scripts/tests/scene3d-renderer.test.mjs:49:60)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: hex conversion preserves authored case and color channels
+ok 19 - hex conversion preserves authored case and color channels
+  ---
+  duration_ms: 0.090711
+  type: 'test'
+  ...
+# Subtest: subnormal accepted directional light normalizes to a finite unit vector
+ok 20 - subnormal accepted directional light normalizes to a finite unit vector
+  ---
+  duration_ms: 1.06226
+  type: 'test'
+  ...
+# Subtest: unsupported WebGL2 returns no renderer and does not allocate fake geometry
+ok 21 - unsupported WebGL2 returns no renderer and does not allocate fake geometry
+  ---
+  duration_ms: 0.103894
+  type: 'test'
+  ...
+# Subtest: actual renderer draws each box with source matrices, light and camera uniforms
+ok 22 - actual renderer draws each box with source matrices, light and camera uniforms
+  ---
+  duration_ms: 0.358926
+  type: 'test'
+  ...
+# Subtest: drawing buffer bounds DPR and dimension allocations on initial render and resize
+ok 23 - drawing buffer bounds DPR and dimension allocations on initial render and resize
+  ---
+  duration_ms: 0.245926
+  type: 'test'
+  ...
+# Subtest: pointer orbit and wheel zoom never mutate the supplied model; view reset restores source camera
+ok 24 - pointer orbit and wheel zoom never mutate the supplied model; view reset restores source camera
+  ---
+  duration_ms: 0.748846
+  type: 'test'
+  ...
+# Subtest: unrelated pointer and right click cannot change the view
+ok 25 - unrelated pointer and right click cannot change the view
+  ---
+  duration_ms: 0.210182
+  type: 'test'
+  ...
+# Subtest: dispose releases every shader/program/VAO/buffer, observer and interaction listener exactly once
+ok 26 - dispose releases every shader/program/VAO/buffer, observer and interaction listener exactly once
+  ---
+  duration_ms: 0.241558
+  type: 'test'
+  ...
+# Subtest: shader compile failure still releases the partially allocated program and shader
+ok 27 - shader compile failure still releases the partially allocated program and shader
+  ---
+  duration_ms: 0.351983
+  type: 'test'
+  ...
+# Subtest: link failure releases both shaders without leaving geometry or listeners
+ok 28 - link failure releases both shaders without leaving geometry or listeners
+  ---
+  duration_ms: 0.128388
+  type: 'test'
+  ...
+# Subtest: buffer allocation failure releases the VAO and all compilation resources
+ok 29 - buffer allocation failure releases the VAO and all compilation resources
+  ---
+  duration_ms: 0.134448
+  type: 'test'
+  ...
+# Subtest: unexpected context loss is reported and stops further draw calls
+ok 30 - unexpected context loss is reported and stops further draw calls
+  ---
+  duration_ms: 0.220651
+  type: 'test'
+  ...
+# Subtest: focusObject fits actual GPU corners using rotated box current heading and actual canvas aspect without author edits
+ok 31 - focusObject fits actual GPU corners using rotated box current heading and actual canvas aspect without author edits
+  ---
+  duration_ms: 0.67219
+  type: 'test'
+  ...
+# Subtest: focus handles minimum and maximum object extents at distant coordinates and extreme viewport FOV through actual float32 matrices
+ok 32 - focus handles minimum and maximum object extents at distant coordinates and extreme viewport FOV through actual float32 matrices
+  ---
+  duration_ms: 3.471867
+  type: 'test'
+  ...
+# Subtest: view-local floating origin makes translated large-coordinate scenes upload identical geometry light and view matrices
+ok 33 - view-local floating origin makes translated large-coordinate scenes upload identical geometry light and view matrices
+  ---
+  duration_ms: 0.590636
+  type: 'test'
+  ...
+# Subtest: focused very long or very short views retain smooth first wheel distance and safe clipping rather than author orbit limits
+ok 34 - focused very long or very short views retain smooth first wheel distance and safe clipping rather than author orbit limits
+  ---
+  duration_ms: 0.532633
+  type: 'test'
+  ...
+# Subtest: focus after resize uses current drawing dimensions including DPR limit and not author viewport
+ok 35 - focus after resize uses current drawing dimensions including DPR limit and not author viewport
+  ---
+  duration_ms: 0.29941
+  type: 'test'
+  ...
+# Subtest: invalid missing and disposed focus requests are false no-ops and never allocate or draw
+ok 36 - invalid missing and disposed focus requests are false no-ops and never allocate or draw
+  ---
+  duration_ms: 0.757451
+  type: 'test'
+  ...
+# Subtest: lost context cannot change focus target heading clipping or draw count
+ok 37 - lost context cannot change focus target heading clipping or draw count
+  ---
+  duration_ms: 0.144386
+  type: 'test'
+  ...
+# Subtest: focus reset and model refresh stop the old pointer drag and return author camera without retaining focused range
+ok 38 - focus reset and model refresh stop the old pointer drag and return author camera without retaining focused range
+  ---
+  duration_ms: 0.350781
+  type: 'test'
+  ...
+# Subtest: hitTest uses last actual viewport uniforms without rendering changing view or mutating the scene
+ok 39 - hitTest uses last actual viewport uniforms without rendering changing view or mutating the scene
+  ---
+  duration_ms: 0.556465
+  type: 'test'
+  ...
+# Subtest: sub-threshold jitter is one primary tap and never rotates the camera before selection
+ok 40 - sub-threshold jitter is one primary tap and never rotates the camera before selection
+  ---
+  duration_ms: 0.362442
+  type: 'test'
+  ...
+# Subtest: drag exceeding four CSS pixels and returning to start never becomes tap or double click
+ok 41 - drag exceeding four CSS pixels and returning to start never becomes tap or double click
+  ---
+  duration_ms: 0.346563
+  type: 'test'
+  ...
+# Subtest: blank clicks wrong buttons and nonprimary starts cannot select or qualify focus
+ok 42 - blank clicks wrong buttons and nonprimary starts cannot select or qualify focus
+  ---
+  duration_ms: 0.214049
+  type: 'test'
+  ...
+# Subtest: a second pointer revokes both active primary tap and previously approved double click eligibility
+ok 43 - a second pointer revokes both active primary tap and previously approved double click eligibility
+  ---
+  duration_ms: 0.222714
+  type: 'test'
+  ...
+# Subtest: normal pointerup capture release preserves genuine double click eligibility while renderer never focuses itself
+ok 44 - normal pointerup capture release preserves genuine double click eligibility while renderer never focuses itself
+  ---
+  duration_ms: 0.347726
+  type: 'test'
+  ...
+# Subtest: synthetic standalone mismatched expired repeated or nonleft double clicks never forge focus
+ok 45 - synthetic standalone mismatched expired repeated or nonleft double clicks never forge focus
+  ---
+  duration_ms: 0.668513
+  type: 'test'
+  ...
+# Subtest: unexpected capture loss and pointercancel clear active gestures and recent tap eligibility
+ok 46 - unexpected capture loss and pointercancel clear active gestures and recent tap eligibility
+  ---
+  duration_ms: 0.288681
+  type: 'test'
+  ...
+# Subtest: wheel resize refresh reset focus and replacement render invalidate the old double click frame
+ok 47 - wheel resize refresh reset focus and replacement render invalidate the old double click frame
+  ---
+  duration_ms: 1.452872
+  type: 'test'
+  ...
+# Subtest: stale CSS size DPR or backing allocation refuses hitTest until a matching new draw
+ok 48 - stale CSS size DPR or backing allocation refuses hitTest until a matching new draw
+  ---
+  duration_ms: 0.479429
+  type: 'test'
+  ...
+# Subtest: position-only scrolling picks through the same drawn float32 matrices without a redraw
+ok 49 - position-only scrolling picks through the same drawn float32 matrices without a redraw
+  ---
+  duration_ms: 0.456307
+  type: 'test'
+  ...
+# Subtest: canvas position changes during a gesture or after a tap cancel selection and double click eligibility
+ok 50 - canvas position changes during a gesture or after a tap cancel selection and double click eligibility
+  ---
+  duration_ms: 0.295874
+  type: 'test'
+  ...
+# Subtest: late disposed or contextlost hit requests and gestures do not callback or change camera
+ok 51 - late disposed or contextlost hit requests and gestures do not callback or change camera
+  ---
+  duration_ms: 0.835189
+  type: 'test'
+  ...
+# Subtest: callback reentrancy cannot keep stale double click eligibility across model refresh or disposal
+ok 52 - callback reentrancy cannot keep stale double click eligibility across model refresh or disposal
+  ---
+  duration_ms: 0.436372
+  type: 'test'
+  ...
+# Subtest: without a consumer or when a view callback throws the adapter keeps rendering and releasing normally
+ok 53 - without a consumer or when a view callback throws the adapter keeps rendering and releasing normally
+  ---
+  duration_ms: 0.476874
+  type: 'test'
+  ...
+# Subtest: selection setter is a view-only stable identity update and same selection is a no-draw success
+ok 54 - selection setter is a view-only stable identity update and same selection is a no-draw success
+  ---
+  duration_ms: 0.4291
+  type: 'test'
+  ...
+# Subtest: selection repaint preserves the actual Float32 models and camera with a single original depth pass in source order
+ok 55 - selection repaint preserves the actual Float32 models and camera with a single original depth pass in source order
+  ---
+  duration_ms: 0.530389
+  type: 'test'
+  ...
+# Subtest: selection shader identifies the six flat face axes and physical box edges without triangle or outline geometry
+ok 56 - selection shader identifies the six flat face axes and physical box edges without triangle or outline geometry
+  ---
+  duration_ms: 0.611453
+  type: 'test'
+  ...
+# Subtest: reset preserves selected identity and replacement model explicitly clears feedback before UI resynchronizes
+ok 57 - reset preserves selected identity and replacement model explicitly clears feedback before UI resynchronizes
+  ---
+  duration_ms: 0.354879
+  type: 'test'
+  ...
+# Subtest: unknown invalid lost-context and disposed selection setters return false without changing feedback camera or draws
+ok 58 - unknown invalid lost-context and disposed selection setters return false without changing feedback camera or draws
+  ---
+  duration_ms: 0.288851
+  type: 'test'
+  ...
+# Subtest: selection feedback from pointerup preserves native capture-release and double-click eligibility on unchanged geometry
+ok 59 - selection feedback from pointerup preserves native capture-release and double-click eligibility on unchanged geometry
+  ---
+  duration_ms: 0.528847
+  type: 'test'
+  ...
+# Subtest: selection feedback does not broaden public redraw or stale geometry and size approval
+ok 60 - selection feedback does not broaden public redraw or stale geometry and size approval
+  ---
+  duration_ms: 1.529027
+  type: 'test'
+  ...
+# Subtest: selection-only redraw keeps scroll mapping but cannot approve a moved pointer gesture
+ok 61 - selection-only redraw keeps scroll mapping but cannot approve a moved pointer gesture
+  ---
+  duration_ms: 0.392225
+  type: 'test'
+  ...
+# Subtest: selection setter never emits picks and supports the adapter without a view callback
+ok 62 - selection setter never emits picks and supports the adapter without a view callback
+  ---
+  duration_ms: 0.706431
+  type: 'test'
+  ...
+# Subtest: focusAll frames all objects while preserving source model current orbit heading FOV and selection
+ok 63 - focusAll frames all objects while preserving source model current orbit heading FOV and selection
+  ---
+  duration_ms: 2.084119
+  type: 'test'
+  ...
+# Subtest: actual Float32 matrices enclose 128 remote objects for minimum and maximum FOV and drawing aspects
+ok 64 - actual Float32 matrices enclose 128 remote objects for minimum and maximum FOV and drawing aspects
+  ---
+  duration_ms: 37.606318
+  type: 'test'
+  ...
+# Subtest: far-coordinate millimetre scene keeps floating-origin GPU transforms finite and contained
+ok 65 - far-coordinate millimetre scene keeps floating-origin GPU transforms finite and contained
+  ---
+  duration_ms: 2.181633
+  type: 'test'
+  ...
+# Subtest: fresh focusAll uses rounded drawing-buffer aspect after resize rather than author viewport or CSS ratio
+ok 66 - fresh focusAll uses rounded drawing-buffer aspect after resize rather than author viewport or CSS ratio
+  ---
+  duration_ms: 0.807159
+  type: 'test'
+  ...
+# Subtest: first wheel after huge or tiny whole-scene focus follows relative focused range and resets to author limits
+ok 67 - first wheel after huge or tiny whole-scene focus follows relative focused range and resets to author limits
+  ---
+  duration_ms: 0.635275
+  type: 'test'
+  ...
+# Subtest: focused scene zoom bounds stay relative to its fitted distance while preserving selected identity
+ok 68 - focused scene zoom bounds stay relative to its fitted distance while preserving selected identity
+  ---
+  duration_ms: 0.495938
+  type: 'test'
+  ...
+# Subtest: setModel and resetView restore authored camera and clear fitted range without changing old source data
+ok 69 - setModel and resetView restore authored camera and clear fitted range without changing old source data
+  ---
+  duration_ms: 0.496218
+  type: 'test'
+  ...
+# Subtest: focusAll success clears an old pointer drag and old qualified double-click tap
+ok 70 - focusAll success clears an old pointer drag and old qualified double-click tap
+  ---
+  duration_ms: 0.422808
+  type: 'test'
+  ...
+# Subtest: lost-context missing-model and disposed full-scene requests remain camera draw and selection no-ops
+ok 71 - lost-context missing-model and disposed full-scene requests remain camera draw and selection no-ops
+  ---
+  duration_ms: 0.278162
+  type: 'test'
+  ...
+# Subtest: one malformed object empty inventory invalid pole or numeric overflow atomically refuses without skipping objects
+ok 72 - one malformed object empty inventory invalid pole or numeric overflow atomically refuses without skipping objects
+  ---
+  duration_ms: 1.452191
+  type: 'test'
+  ...
+# Subtest: failed drawing rolls camera and focused range back and invalidates picking instead of exposing partially drawn matrices
+ok 73 - failed drawing rolls camera and focused range back and invalidates picking instead of exposing partially drawn matrices
+  ---
+  duration_ms: 0.554472
+  type: 'test'
+  ...
+# Subtest: a failing full-scene attempt clears pending drag and qualified tap even though its camera is unchanged
+ok 74 - a failing full-scene attempt clears pending drag and qualified tap even though its camera is unchanged
+  ---
+  duration_ms: 0.311261
+  type: 'test'
+  ...
+# Subtest: failed draw reports through onError after rollback even if its consumer throws, while invalid framing remains a quiet refusal
+ok 75 - failed draw reports through onError after rollback even if its consumer throws, while invalid framing remains a quiet refusal
+  ---
+  duration_ms: 1.03345
+  type: 'test'
+  ...
+# Subtest: context changing during a focus draw returns false and reports failure without leaving a new camera or live picking frame
+ok 76 - context changing during a focus draw returns false and reports failure without leaving a new camera or live picking frame
+  ---
+  duration_ms: 0.33886
+  type: 'test'
+  ...
+# Subtest: six standard views fit every object at exact axes while preserving authored data FOV and selected identity
+ok 77 - six standard views fit every object at exact axes while preserving authored data FOV and selected identity
+  ---
+  duration_ms: 46.062889
+  type: 'test'
+  ...
+# Subtest: all six preset views contain actual Float32 geometry at extreme FOV and rounded drawing aspects
+ok 78 - all six preset views contain actual Float32 geometry at extreme FOV and rounded drawing aspects
+  ---
+  duration_ms: 159.504424
+  type: 'test'
+  ...
+# Subtest: millimetre boxes at far coordinates stay visible with finite view-local uploads in all presets
+ok 79 - millimetre boxes at far coordinates stay visible with finite view-local uploads in all presets
+  ---
+  duration_ms: 1.674284
+  type: 'test'
+  ...
+# Subtest: top and bottom remain exact after whole-scene focus object focus and wheel and use their actual drawn picking frame
+ok 80 - top and bottom remain exact after whole-scene focus object focus and wheel and use their actual drawn picking frame
+  ---
+  duration_ms: 2.057021
+  type: 'test'
+  ...
+# Subtest: pole picking chooses the physically nearest box for each direction and still supports ordinary tap and double-click notifications
+ok 81 - pole picking chooses the physically nearest box for each direction and still supports ordinary tap and double-click notifications
+  ---
+  duration_ms: 1.200024
+  type: 'test'
+  ...
+# Subtest: dragging through a pole retains a finite orthogonal camera basis and can frame or pick afterwards
+ok 82 - dragging through a pole retains a finite orthogonal camera basis and can frame or pick afterwards
+  ---
+  duration_ms: 1.384021
+  type: 'test'
+  ...
+# Subtest: snapshots cannot mutate the retained up vector and authored reset or model refresh discards the temporary preset
+ok 83 - snapshots cannot mutate the retained up vector and authored reset or model refresh discards the temporary preset
+  ---
+  duration_ms: 0.512347
+  type: 'test'
+  ...
+# Subtest: a supplied explicit camera up vector is detached on model and snapshot boundaries
+ok 84 - a supplied explicit camera up vector is detached on model and snapshot boundaries
+  ---
+  duration_ms: 0.202188
+  type: 'test'
+  ...
+# Subtest: changing preset after resize uses the current rounded drawing dimensions
+ok 85 - changing preset after resize uses the current rounded drawing dimensions
+  ---
+  duration_ms: 1.051672
+  type: 'test'
+  ...
+# Subtest: successful and invalid preset requests revoke old drag and double-click eligibility without author or selection edits
+ok 86 - successful and invalid preset requests revoke old drag and double-click eligibility without author or selection edits
+  ---
+  duration_ms: 0.88122
+  type: 'test'
+  ...
+# Subtest: missing model invalid directions lost context and disposed requests cannot report a successful new view
+ok 87 - missing model invalid directions lost context and disposed requests cannot report a successful new view
+  ---
+  duration_ms: 0.730853
+  type: 'test'
+  ...
+# Subtest: malformed or empty geometry and finite GPU overflow are atomic refusals for preset framing
+ok 88 - malformed or empty geometry and finite GPU overflow are atomic refusals for preset framing
+  ---
+  duration_ms: 1.384
+  type: 'test'
+  ...
+# Subtest: preset GPU failure rolls camera and prior fitted zoom range back and invalidates the partially drawn picking frame
+ok 89 - preset GPU failure rolls camera and prior fitted zoom range back and invalidates the partially drawn picking frame
+  ---
+  duration_ms: 1.727609
+  type: 'test'
+  ...
+# Subtest: context loss during upload refuses the view and cannot publish a live frame or increment successful draws
+ok 90 - context loss during upload refuses the view and cannot publish a live frame or increment successful draws
+  ---
+  duration_ms: 0.342937
+  type: 'test'
+  ...
+# Subtest: nonfinite wheel input cannot corrupt or redraw an explicit standard-view camera
+ok 91 - nonfinite wheel input cannot corrupt or redraw an explicit standard-view camera
+  ---
+  duration_ms: 0.272623
+  type: 'test'
+  ...
+1..91
+# tests 91
+# suites 0
+# pass 90
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 333.251644

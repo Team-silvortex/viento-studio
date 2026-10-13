@@ -1,6 +1,5 @@
-// Strict JSON values plus source ranges supplied by the existing YAML CST.
+// Strict JSON values plus dependency-free ranges of the original JSON tokens.
 // This module owns no document I/O, author identities, scene rules or rendering.
-import { parseDocument, isMap, isSeq, isScalar } from '../node_modules/yaml/browser/index.js';
 
 export const JSON_SOURCE_LIMITS = Object.freeze({ characters: 8 * 1024 * 1024, depth: 64, nodes: 100000 });
 const indexes = new WeakMap();
@@ -11,7 +10,7 @@ const diagnostic = (code, message, propertyPath = '') => ({ code, message, prope
 const failure = issue => ({ ok: false, value: null, ambiguous: false, diagnostics: [issue] });
 
 // JSON.parse is the sole syntax gate. This scan only budgets already-valid
-// tokens before CST construction, including values hidden by duplicate keys.
+// tokens before source indexing, including values hidden by duplicate keys.
 // Walking the parsed value alone would miss those discarded subtrees.
 function checkBudget(source) {
   let containers = 0, nodes = 0;
@@ -50,46 +49,65 @@ export function parseJsonSource(content, { allowDuplicateKeys = false } = {}) {
   if (exceeded) return failure(exceeded);
   let root, duplicate = null;
   try {
-    // Values come exclusively from JSON.parse. A failsafe CST avoids allocating
-    // BigInts or otherwise interpreting numeric tokens just to find their spans.
-    const parsed = parseDocument(source, { keepSourceTokens: true, uniqueKeys: false, schema: 'failsafe' });
-    if (parsed.errors.length) return failure(diagnostic('json_source_index_invalid', 'Cannot derive reliable source ranges from this JSON.'));
-    const range = node => {
-      const start = node?.range?.[0], end = node?.range?.[1];
-      if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end <= start || end > source.length) {
-        throw new Error('Invalid CST range.');
+    // JSON.parse above already accepted the complete text and owns every
+    // semantic value. This bounded scan only indexes token boundaries; numbers
+    // and literals are never interpreted again or normalized into new text.
+    let cursor = 0;
+    const skipWhitespace = () => { while (whitespace(source[cursor])) cursor++; };
+    const stringEnd = () => {
+      if (source[cursor++] !== '"') throw new Error('Invalid string token boundary.');
+      while (cursor < source.length) {
+        const character = source[cursor++];
+        if (character === '\\') cursor++;
+        else if (character === '"') return;
       }
-      return { start: start + bom, end: end + bom, encoding: 'utf-16' };
+      throw new Error('Missing string token boundary.');
     };
-    const visit = (node, parts = []) => {
-      const span = range(node), container = isMap(node) || isSeq(node);
-      const entry = { ...span, container, children: new Map() };
-      if (isMap(node)) {
-        for (const pair of node.items) {
-          if (!isScalar(pair.key)) throw new Error('Invalid JSON key node.');
-          const keyRange = range(pair.key);
-          // Decode the original JSON token, including escaped and surrogate keys.
-          const key = JSON.parse(content.slice(keyRange.start, keyRange.end));
+    const visit = (parts = []) => {
+      skipWhitespace();
+      const start = cursor, character = source[cursor], container = character === '{' || character === '[';
+      const entry = { start: start + bom, end: 0, encoding: 'utf-16', container, children: new Map() };
+      if (container) {
+        const object = character === '{', closing = object ? '}' : ']';
+        cursor++; skipWhitespace();
+        let index = 0;
+        while (source[cursor] !== closing) {
+          let key;
+          if (object) {
+            const keyStart = cursor;
+            stringEnd();
+            // Decode keys only, including escapes and surrogate pairs, so the
+            // pointer and duplicate rules agree exactly with JSON.parse.
+            key = JSON.parse(source.slice(keyStart, cursor));
+            skipWhitespace();
+            if (source[cursor++] !== ':') throw new Error('Missing key boundary.');
+          } else key = String(index++);
           if (typeof key !== 'string') throw new Error('Invalid JSON key.');
           const next = [...parts, key];
           if (entry.children.has(key)) {
             duplicate = diagnostic('json_source_duplicate_key', 'JSON object contains a duplicate decoded key.', pointerFor(next));
             return null;
           }
-          const child = visit(pair.value, next);
+          const child = visit(next);
           if (!child) return null;
           entry.children.set(key, child);
+          skipWhitespace();
+          if (source[cursor] === closing) break;
+          if (source[cursor++] !== ',') throw new Error('Missing value boundary.');
+          skipWhitespace();
         }
-      } else if (isSeq(node)) {
-        for (const [index, item] of node.items.entries()) {
-          const key = String(index), child = visit(item, [...parts, key]);
-          if (!child) return null;
-          entry.children.set(key, child);
-        }
-      } else if (!isScalar(node)) throw new Error('Invalid JSON value node.');
+        cursor++;
+      } else if (character === '"') stringEnd();
+      else while (cursor < source.length && !whitespace(source[cursor]) && ![',', '}', ']'].includes(source[cursor])) cursor++;
+      if (cursor <= start || cursor > source.length) throw new Error('Invalid value token boundary.');
+      entry.end = cursor + bom;
       return entry;
     };
-    root = visit(parsed.contents);
+    root = visit();
+    if (!duplicate) {
+      skipWhitespace();
+      if (cursor !== source.length) throw new Error('Unexpected text after indexed root.');
+    }
   } catch {
     return failure(diagnostic('json_source_index_invalid', 'Cannot derive reliable source ranges from this JSON.'));
   }

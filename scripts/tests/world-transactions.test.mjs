@@ -49,18 +49,40 @@ async function crash(t, f, point, index = '-', recover = false, observe) {
   const child = fork(new URL('./world-transaction-crash-worker.mjs', import.meta.url), [f.root, recover ? 'recover' : requestFile, point, String(index)], { silent: true });
   let stderr = ''; child.stderr.on('data', chunk => { stderr += chunk; });
   const exited = once(child, 'exit');
-  let timeout;
+  let timeout, observed = false;
   try {
     const event = await Promise.race([once(child, 'message').then(([value]) => value),
       exited.then(() => { throw new Error(`Worker exited: ${stderr}`); }),
       new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error(`Worker timed out: ${stderr}`)), 15000); })]);
     assert.equal(event.stage, point, JSON.stringify(event));
-    if (observe) await observe();
+    assert.equal(child.exitCode, null, `Worker exited before observation: ${stderr}`);
+    assert.equal(child.signalCode, null);
+    if (observe) await observe(child);
+    assert.equal(child.exitCode, null, `Worker exited during observation: ${stderr}`);
+    assert.equal(child.signalCode, null);
+    observed = true;
   } finally {
-    clearTimeout(timeout); child.kill('SIGKILL'); await exited;
+    clearTimeout(timeout); child.kill('SIGKILL'); const [code, signal] = await exited;
     await fs.rm(requestFile, { force: true });
+    if (observed) {
+      assert.equal(code, null, `Worker must remain paused until parent SIGKILL: ${stderr}`);
+      assert.equal(signal, 'SIGKILL');
+    }
   }
 }
+
+test('the crash checkpoint stays alive across a delayed observer until the parent kills it', async t => {
+  const f = await materialize(t);
+  await crash(t, f, 'data', 0, false, async child => {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    assert.equal(child.exitCode, null); assert.equal(child.signalCode, null);
+    await assert.rejects(recoverWorldTransaction(f.root), error => error.errorCode === 'registry_busy');
+    assert.equal(child.exitCode, null);
+  });
+  assert.equal((await readTransactionStatus(f.root)).pending, true);
+  assert.equal((await recoverWorldTransaction(f.root)).status, 'rolled-back');
+  assert.deepEqual(await contents(f), f.before);
+});
 
 for (const version of [2, 3]) test(`ChangeSet v${version}: preview, exact two-source commit, receipt, no-op and inverse`, async t => {
   const f = await materialize(t, version);

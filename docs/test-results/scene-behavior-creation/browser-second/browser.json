@@ -1,0 +1,662 @@
+{
+  "startedAt": "2026-10-13T00:50:30.984Z",
+  "steps": [
+    "A saved Scene2D without any behavior opens first-behavior creation. Full source and all three relationships are reviewed, then Cancel writes nothing. Chinese, English and Japanese at 390px preserve fields and review, keep Return/Review/Save visible, and allow body scrolling without horizontal overflow.",
+    "One reviewed transaction creates exactly the manifest and its registration and appends the scene behavior relationship, retaining the scene metadata CRLF. Scene/script/asset source bytes are unchanged. The explicit Open button enters the real source editor and exposes the existing behavior editor.",
+    "The existing behavior editor adds text/number parameters and a signal alias. Apply only changes the draft; ordinary Save persists those exact reviewed bytes and changes no other author files."
+  ],
+  "screenshots": [
+    "behavior-create-review-desktop.png",
+    "behavior-create-zh-CN-390.png",
+    "behavior-create-en-390.png",
+    "behavior-create-ja-390.png",
+    "behavior-create-parameters-review.png",
+    "failure.png"
+  ],
+  "jobs": [],
+  "errors": [],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "今回の動作作成の設定を破棄しますか？未送信の内容はプロジェクトに書き込まれません。"
+    }
+  ],
+  "layout": {
+    "zh-CN": {
+      "noHorizontalOverflow": true,
+      "close": {
+        "top": 25,
+        "bottom": 54,
+        "left": 294.984375,
+        "right": 365
+      },
+      "check": {
+        "top": 775,
+        "bottom": 821,
+        "left": 25,
+        "right": 121
+      },
+      "save": {
+        "top": 775,
+        "bottom": 821,
+        "left": 129,
+        "right": 225
+      },
+      "title": "为场景添加行为",
+      "bodyScrollable": true
+    },
+    "en": {
+      "noHorizontalOverflow": true,
+      "close": {
+        "top": 25,
+        "bottom": 51,
+        "left": 274.28125,
+        "right": 365
+      },
+      "check": {
+        "top": 767,
+        "bottom": 821,
+        "left": 25,
+        "right": 133
+      },
+      "save": {
+        "top": 767,
+        "bottom": 821,
+        "left": 141,
+        "right": 249
+      },
+      "title": "Add behavior to scene",
+      "bodyScrollable": true
+    },
+    "ja": {
+      "noHorizontalOverflow": true,
+      "close": {
+        "top": 25,
+        "bottom": 54,
+        "left": 270.984375,
+        "right": 365
+      },
+      "check": {
+        "top": 775,
+        "bottom": 821,
+        "left": 25,
+        "right": 133
+      },
+      "save": {
+        "top": 775,
+        "bottom": 821,
+        "left": 141,
+        "right": 249
+      },
+      "title": "シーンに動作を追加",
+      "bodyScrollable": true
+    }
+  },
+  "limitations": [
+    "Actual Chrome with local HTTP editor and a trusted Godot binary. No installed Tauri window, native picker, Android or other desktop OS claim.",
+    "An existing saved Scene2D example is copied and its behavior manifest/opt-in removed. This tests first behavior creation, not upstream OC/projection/scene creation.",
+    "Godot executes headless logic. No rendering, Bevy author behavior, hot reload, LSP or standalone game export is claimed."
+  ],
+  "sources": {
+    "web/modules/app-scene-behavior-create.js": "e060d1ab43ad5450f15fa9e31e75a659260dbea44f3ac6ffe6deed23bcbcf231",
+    "web/scene-behavior-create.css": "9f727852c1e579eb4f1ca810616ac7d9571a5a2c68bd40d8cc83c92cbc652fc8",
+    "web/modules/app-scene-behaviors.js": "44e35daea36cf246a4ff25f7f1b5b33d1e7c7cc87e3cef60508b75757800874c",
+    "web/modules/app-behavior-source.js": "faf1449d3460f2a87c60355dd25544d3c5590c5cbcbba523ddca13fee7cb5a4e",
+    "web/modules/app-runtime.js": "d7d450d246020661b28f68eb1d72249a454b7e6bdd3762306158a8202544dfdf",
+    "web/modules/app-project-build.js": "2511139f2df475852bfa23194d59a3efd527885c43bd11aff45b8e5b253ba4fb",
+    "engine/world-behavior-create.mjs": "cc26e688ddbfc3cd14fd60bad657e8990e8ce7e6ec9a3467c491fa2e07424c37",
+    "engine/world-command-contract.mjs": "5ab2e67fa895fd596bdfe56c687c8312368d9f3f1d162d2b41f52e8a4a3fa3dd",
+    "engine/scene-behavior-creation-contract.mjs": "c2ae49d7ba16d33a67af6faea23c44bf42a5108dc86297504e2badb24d4a8d65",
+    "scripts/lib/scene-behavior-creation-service.mjs": "df27d24ce2165a0ac74869a8b06bac43ae3e5b99001806689c7374c094ce3c14",
+    "scripts/adapters/node-world-commands.mjs": "303c46d52d5d524638d9b2361c58fb98e36830c86b833dc3fa50180566f02eb1",
+    "engine/json-source.mjs": "2a7b27c150f53d255176c7c6185eebd1d0ac1ba6312e355769f02b3f83cb15f9",
+    "web/i18n/en.js": "6b2f67bdd7bc17f15dc53e450ffd579a6e3dd46e4f2cececbd2d756b2615e0dd",
+    "web/i18n/ja.js": "6ea956aa3a3f1fe81d07b16dc778f9c1d287ce26296e61e1b05f0d1022e01fe6",
+    "scripts/tests/scene-behavior-creation-smoke.mjs": "7b87f5cd978281757e2cbde356f12fb0ffc056fb9d2d121b4221dda1415dae7c"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "creation": {
+    "objectId": "02c426eb-de10-4ab4-94b3-f32681f6db7d",
+    "bindingId": "cc42f375-0883-45df-8ea6-fb3aa028e4e8",
+    "changedAuthorPaths": [
+      "documents/behaviors/created-in-studio.json",
+      "metadata/documents/02c426eb-de10-4ab4-94b3-f32681f6db7d.json",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json"
+    ],
+    "sourceRevision": "sha256:c4c0cceb8cddefb4bcbf3af12ae1ece14704a8614dd4bdf7dd52bf0af9a6b720",
+    "relations": [
+      {
+        "kind": "references",
+        "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "slot": ""
+      },
+      {
+        "kind": "references",
+        "targetId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+        "slot": ""
+      }
+    ],
+    "sceneRelation": {
+      "kind": "behavior",
+      "targetId": "02c426eb-de10-4ab4-94b3-f32681f6db7d",
+      "slot": ""
+    }
+  },
+  "saved": {
+    "beforeSha256": "c4c0cceb8cddefb4bcbf3af12ae1ece14704a8614dd4bdf7dd52bf0af9a6b720",
+    "afterSha256": "5028fcfb2cdff18fb2bf04d4004c586b8f9520c8bf203f94fb53bae1a5d2f7a1",
+    "onlyChangedAuthorPath": "documents/behaviors/created-in-studio.json"
+  },
+  "ok": false,
+  "failure": "Error: Timed out: #projectBuildPlan enabled\n    at wait (file:///tmp/viento-behavior-create-2qx88f46/candidate/scripts/tests/scene-behavior-creation-smoke.mjs:34:167)\n    at async file:///tmp/viento-behavior-create-2qx88f46/candidate/scripts/tests/scene-behavior-creation-smoke.mjs:155:36",
+  "pageFailure": {
+    "text": "收起目录\nV\nViento Studio\n0.1.0\n设置\n项目类型与模板\n世界与对象\n构建与运行\n导出\n浏览\n编辑\n编辑场景行为\n3D预览\n编辑3D变换\n管理3D对象\n编辑3D环境\n编辑3D属性\n整体移动3D对象\n对齐3D位置\n等距分布3D位置\n批量复制3D对象\n批量移除3D对象\n×\n全部（4）\n角色 / ACTOR（1）\n场景 / SCENE（1）\n行为绑定 / BEHAVIOR（1）\n行为源码 / SCRIPT（1）\n当前显示 4 个文档（共 4 个） （静态生成 2026/10/13 08:50:35）\n分类 角色 / ACTOR（1）\n角色 / ACTOR（1）\ntraveler\n角色 / Actor · 角色 / Actor\n可编辑\n分类 场景 / SCENE（1）\n场景 / SCENE（1）\ndemo\n场景 / Scene · 场景 / Scene\n可编辑\n分类 行为绑定 / BEHAVIOR（1）\n行为绑定 / BEHAVIOR（1）\ncreated-in-studio\n行为绑定 / Behavior · 行为绑定 / Behavior\n可编辑\n分类 行为源码 / SCRIPT（1）\n行为源码 / SCRIPT（1）\ncheckpoint\n行为源码 / Script · 行为源码 / Script\n可编辑\ncreated-in-studio\n源码编辑\n分段编辑\n字段编辑\n返回阅读\n插入素材\n保存修改\n源文件：documents/behaviors/created-in-studio.json\n与文件一致\n重建完成，文档已刷新（耗时 0.2s）\n477 字 · 19 行\nCtrl / ⌘ + S 保存\n构建与运行\n\nGodot 4 · 0.5.0\n\n返回编辑器\n\n从已保存的场景生成独立产物。关闭面板后任务继续，可随时返回查看。\n\n已声明能力：构建场景 · 无头逻辑测试 · 独立窗口预览 · 窗口截图\n\n工具身份尚未检查。\n\n检查工具身份\n构建场景文档\nIndependent GDScript Behaviors · documents/scenes/demo.json\n刷新状态\n编辑场景 创建场景 添加场景行为\n场景预览\n构建任务\n检查计划\n构建场景\n无头测试\n控制回放\n运行验收\n窗口预览\n编辑控制回放\n编辑运行验收\n批量运行验收\n\n请选择场景并检查计划。\n\n新设计先检查计划再构建；历史工程需明确设为运行工程。所有测试、控制与预览使用当前运行工程的冻结快照，无头测试不验证画面。\n\n构建诊断\n暂无构建诊断。\n原始细节与日志",
+    "source": "{\n  \"format\": \"viento-scene-behaviors\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"bindings\": [\n    {\n      \"bindingId\": \"cc42f375-0883-45df-8ea6-fb3aa028e4e8\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\n      \"implementation\": {\n        \"backendId\": \"org.viento.godot4\",\n        \"language\": \"gdscript\",\n        \"sourceObjectId\": \"ffffffff-ffff-4fff-8fff-ffffffffffff\"\n      },\n      \"parameters\": {\"checkpoint\":\"created_in_studio\",\"amount\":65},\n      \"events\": [{\"signal\":\"arrived\",\"event\":\"creation_checkpoint\"}]\n    }\n  ]\n}\n",
+    "system": {
+      "format": "viento-studio-system",
+      "schemaVersion": 1,
+      "lifecycle": "boot-only",
+      "hotReload": false,
+      "initializedModules": [
+        "org.viento.document",
+        "org.viento.settings",
+        "org.viento.scene-behaviors",
+        "org.viento.world",
+        "org.viento.build",
+        "org.viento.project",
+        "org.viento.export",
+        "org.viento.media",
+        "org.viento.scene3d",
+        "org.viento.scene3d-transforms",
+        "org.viento.scene3d-objects",
+        "org.viento.scene3d-environment",
+        "org.viento.scene3d-properties",
+        "org.viento.scene3d-translation",
+        "org.viento.scene3d-alignment",
+        "org.viento.scene3d-distribution",
+        "org.viento.scene3d-copy",
+        "org.viento.scene3d-removal"
+      ],
+      "plan": {
+        "format": "viento-studio-module-plan",
+        "schemaVersion": 1,
+        "modules": [
+          {
+            "id": "org.viento.document",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.settings",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.project",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.world",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.export",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.media",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.build",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-transforms",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-objects",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-environment",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-properties",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-translation",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-alignment",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-distribution",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-copy",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-removal",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene-behaviors",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          }
+        ],
+        "capabilities": [
+          {
+            "capability": "document.read",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "document.edit",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.markdown",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.text",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.json",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.yaml",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "workbench.settings",
+            "apiVersion": 1,
+            "domain": "workbench",
+            "moduleId": "org.viento.settings",
+            "active": true
+          },
+          {
+            "capability": "project.types",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.project",
+            "active": true
+          },
+          {
+            "capability": "project.templates",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.project",
+            "active": true
+          },
+          {
+            "capability": "world.query",
+            "apiVersion": 1,
+            "domain": "world",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "world.commands",
+            "apiVersion": 1,
+            "domain": "world",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.object",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.projection",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.scene2d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "project.export",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.export",
+            "active": true
+          },
+          {
+            "capability": "resource.package",
+            "apiVersion": 1,
+            "domain": "resource",
+            "moduleId": "org.viento.export",
+            "active": true
+          },
+          {
+            "capability": "resource.reference",
+            "apiVersion": 1,
+            "domain": "resource",
+            "moduleId": "org.viento.media",
+            "active": true
+          },
+          {
+            "capability": "scene.representation.scene2d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.behavior-creation",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.composition2d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "backend.project",
+            "apiVersion": 1,
+            "domain": "backend",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "backend.execution",
+            "apiVersion": 1,
+            "domain": "backend",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "behavior.gdscript",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.representation.scene3d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.scene3d",
+            "active": true
+          },
+          {
+            "capability": "scene.preview.scene3d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.scene3d",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.transforms3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-transforms",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.objects3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-objects",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.environment3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-environment",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.properties3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-properties",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.translation3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-translation",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.alignment3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-alignment",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.distribution3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-distribution",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.copy3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-copy",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.removal3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-removal",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.behaviors",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene-behaviors",
+            "active": true
+          }
+        ],
+        "requests": [],
+        "satisfied": true,
+        "diagnostics": []
+      },
+      "hostCapabilities": {
+        "semanticProjection": true,
+        "semanticCommands": [
+          "property.set",
+          "changeset.apply",
+          "object.create",
+          "scene.create",
+          "behavior.create",
+          "projection.create",
+          "projection.update",
+          "scene.update",
+          "relation.add",
+          "resource.bind",
+          "world.recover"
+        ],
+        "projectBuild": true,
+        "scenePreview": true
+      }
+    }
+  },
+  "serviceFailure": {
+    "supported": true,
+    "available": true,
+    "reason": null,
+    "toolStatus": {
+      "format": "viento-execution-tool-status",
+      "schemaVersion": 1,
+      "backendId": "org.viento.godot4",
+      "status": "unchecked",
+      "reason": null,
+      "identity": null
+    },
+    "platform": "linux",
+    "backend": {
+      "format": "viento-execution-backend",
+      "schemaVersion": 1,
+      "id": "org.viento.godot4",
+      "label": "Godot 4",
+      "version": "0.5.0",
+      "platforms": [
+        "linux"
+      ],
+      "plans": [
+        {
+          "kind": "scene2d",
+          "schemaVersion": 1,
+          "runtimeProtocolVersion": 1
+        },
+        {
+          "kind": "scene2d",
+          "schemaVersion": 2,
+          "runtimeProtocolVersion": 2
+        },
+        {
+          "kind": "scene2d",
+          "schemaVersion": 3,
+          "runtimeProtocolVersion": 3
+        }
+      ],
+      "capabilities": [
+        "scene2d",
+        "input.arrows",
+        "state.movement",
+        "image",
+        "behavior.bindings",
+        "behavior.gdscript",
+        "runtime.control-replay",
+        "runtime.control-replay.instances"
+      ],
+      "execution": {
+        "build": true,
+        "headlessLogic": true,
+        "windowPreview": true,
+        "windowCapture": true,
+        "offscreenRender": false,
+        "embeddedViewport": false,
+        "gpuCompute": false
+      },
+      "extensions": []
+    },
+    "scenes": [
+      {
+        "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sourcePath": "documents/scenes/demo.json",
+        "title": "Independent GDScript Behaviors"
+      }
+    ],
+    "previewDocuments": [
+      {
+        "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sourcePath": "documents/scenes/demo.json",
+        "title": "Independent GDScript Behaviors",
+        "kind": "scene"
+      }
+    ],
+    "catalogDiagnostic": null,
+    "job": null,
+    "latestBuild": null,
+    "projects": [],
+    "projectManagement": {
+      "format": "viento-backend-project-management",
+      "schemaVersion": 1,
+      "scope": "host-catalog",
+      "retentionLimit": 3,
+      "preservedCount": 0,
+      "previousSessions": "explicit-verify",
+      "delivery": "viento-build-delivery-v1",
+      "catalogDiagnostic": null
+    }
+  },
+  "finishedAt": "2026-10-13T00:51:20.770Z"
+}

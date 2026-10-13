@@ -17,6 +17,16 @@ const CAMERA_FIELDS: [(&str, bool); 5] = [
     ("far", false),
 ];
 const LIGHT_FIELDS: [(&str, bool); 3] = [("direction", true), ("color", false), ("energy", false)];
+const FOG_FIELDS: [(&str, bool); 2] = [("color", false), ("density", false)];
+const PARTICLE_FIELDS: [(&str, bool); 7] = [
+    ("center", true),
+    ("extent", true),
+    ("velocity", true),
+    ("size", true),
+    ("color", false),
+    ("count", false),
+    ("seed", false),
+];
 
 fn invalid() -> CoreError {
     CoreError {
@@ -48,6 +58,18 @@ struct StrictValues {
     _camera: Option<StrictCamera>,
     #[serde(rename = "light")]
     _light: Option<StrictLight>,
+    #[serde(rename = "fog")]
+    _fog: Option<StrictFog>,
+    #[serde(rename = "particleField")]
+    _particle_field: Option<crate::scene3d_particles::StrictField>,
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct StrictFog {
+    #[serde(rename = "color")]
+    _color: Value,
+    #[serde(rename = "density")]
+    _density: Value,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -190,9 +212,9 @@ pub(crate) fn dispatch(request: &Value) -> Result<Scene3DEnvironmentPatchRespons
     let before = parse(content)?;
     let values = request["values"].as_object().ok_or_else(invalid)?;
     if values.is_empty()
-        || values
-            .keys()
-            .any(|key| !["background", "camera", "light"].contains(&key.as_str()))
+        || values.keys().any(|key| {
+            !["background", "camera", "light", "fog", "particleField"].contains(&key.as_str())
+        })
     {
         return Err(invalid());
     }
@@ -231,6 +253,75 @@ pub(crate) fn dispatch(request: &Value) -> Result<Scene3DEnvironmentPatchRespons
             &mut edits,
             &mut changed_paths,
         )?;
+    }
+    if let Some(values) = values.get("fog") {
+        let fields = values.as_object().ok_or_else(invalid)?;
+        if fields.len() != 2 || !fields.contains_key("color") || !fields.contains_key("density") {
+            return Err(invalid());
+        }
+        if before.model.get("fog").is_some() {
+            nested(
+                "fog",
+                &FOG_FIELDS,
+                values,
+                &before.model,
+                &root,
+                &mut edits,
+                &mut changed_paths,
+            )?;
+        } else {
+            // Source admission above proves this byte is the root closing
+            // brace. A canonical additive span leaves every original byte,
+            // including BOM, line endings and root indentation, untouched.
+            let at = root.span.end - 1;
+            let color = serde_json::to_string(&values["color"]).map_err(|_| invalid())?;
+            let density = js_number(number(&values["density"])?);
+            edits.push((
+                at..at,
+                format!(",\"fog\":{{\"color\":{color},\"density\":{density}}}"),
+            ));
+            changed_paths.push("/fog".to_owned());
+        }
+    }
+    if let Some(values) = values.get("particleField") {
+        crate::scene3d_particles::validate_field(values).map_err(|_| invalid())?;
+        if before.model.get("particleField").is_some() {
+            nested(
+                "particleField",
+                &PARTICLE_FIELDS,
+                values,
+                &before.model,
+                &root,
+                &mut edits,
+                &mut changed_paths,
+            )?;
+        } else {
+            let mut entries = vec![];
+            for (field, vector) in PARTICLE_FIELDS {
+                let text = if vector {
+                    let components = values[field].as_array().ok_or_else(invalid)?;
+                    format!(
+                        "[{}]",
+                        components
+                            .iter()
+                            .map(|value| number(value).map(js_number))
+                            .collect::<Result<Vec<_>, _>>()?
+                            .join(",")
+                    )
+                } else if field == "color" {
+                    serde_json::to_string(&values[field]).map_err(|_| invalid())?
+                } else {
+                    js_number(number(&values[field])?)
+                };
+                entries.push(format!("\"{field}\":{text}"));
+            }
+            let at = root.span.end - 1;
+            edits.push((
+                at..at,
+                format!(",\"particleField\":{{{}}}", entries.join(",")),
+            ));
+            changed_paths.push("/particleField".to_owned());
+        }
     }
     // No intermediate scene is checked: dependent fields change atomically.
     edits.sort_by_key(|(span, _)| span.start);
@@ -546,5 +637,166 @@ mod tests {
         assert_eq!(receipt["afterContent"], content);
         assert_eq!(receipt["beforeContent"], content);
         assert_eq!(receipt["changedPaths"], json!([]));
+    }
+}
+
+#[cfg(test)]
+mod fog_tests {
+    use super::*;
+    use serde_json::json;
+    fn source() -> String {
+        let value: Value =
+            serde_json::from_str(include_str!("../../../examples/scene3d/scene.json")).unwrap();
+        format!(
+            "\u{feff}{}\r\n \t",
+            serde_json::to_string_pretty(&value)
+                .unwrap()
+                .replace('\n', "\r\n")
+        )
+        .replace("\"background\"", "\"back\\u0067round\"")
+        .replace("\"far\": 1000", "\"far\": 1e3")
+    }
+    fn request(content: &str, values: Value) -> Value {
+        json!({"protocolVersion":1,"operation":"scene3d.patchEnvironment","content":content,"values":values})
+    }
+    #[test]
+    fn fog_insertion_and_old_leaf_changes_form_one_exact_atomic_raw_splice() {
+        let before = source();
+        let values = json!({"fog":{"density":0.125,"color":"#Ab12Ef"},"background":"#112233","camera":{"fovDegrees":65}});
+        let response = dispatch(&request(&before, values)).unwrap();
+        let old = parse(&before).unwrap().model;
+        let replaced = before
+            .replace(old["background"].as_str().unwrap(), "#112233")
+            .replace(
+                &format!("\"fovDegrees\": {}", old["camera"]["fovDegrees"]),
+                "\"fovDegrees\": 65",
+            );
+        let root_end = replaced.rfind('}').unwrap();
+        let expected = format!(
+            "{},\"fog\":{{\"color\":\"#Ab12Ef\",\"density\":0.125}}{}",
+            &replaced[..root_end],
+            &replaced[root_end..]
+        );
+        assert_eq!(response.before_content, before);
+        assert_eq!(response.after_content, expected);
+        assert_eq!(
+            response.changed_paths,
+            ["/background", "/camera/fovDegrees", "/fog"]
+        );
+        assert_eq!(
+            parse(&response.after_content).unwrap().model["objects"],
+            old["objects"]
+        );
+    }
+    #[test]
+    fn existing_fog_edits_only_requested_changed_leaves_and_zero_disables_without_removal() {
+        let before = source();
+        let at = before.rfind('}').unwrap();
+        let before = format!(
+            "{},\"fo\\u0067\":{{\"co\\u006cor\":\"#ff\\u0066fff\",\"den\\u0073ity\":1.25e-1}}{}",
+            &before[..at],
+            &before[at..]
+        );
+        let same = dispatch(&request(
+            &before,
+            json!({"fog":{"color":"#ffffff","density":0.125}}),
+        ))
+        .unwrap();
+        assert_eq!(same.after_content, before);
+        assert!(same.changed_paths.is_empty());
+        let changed = dispatch(&request(
+            &before,
+            json!({"fog":{"color":"#ABCDEF","density":0}}),
+        ))
+        .unwrap();
+        assert_eq!(
+            changed.after_content,
+            before
+                .replace("\"#ff\\u0066fff\"", "\"#ABCDEF\"")
+                .replace("1.25e-1", "0")
+        );
+        assert_eq!(changed.changed_paths, ["/fog/color", "/fog/density"]);
+        assert_eq!(
+            parse(&changed.after_content).unwrap().model["fog"],
+            json!({"color":"#ABCDEF","density":0})
+        );
+    }
+    #[test]
+    fn adding_disabled_fog_is_explicit_while_ordinary_environment_edits_never_add_it() {
+        let before = source();
+        let absent = dispatch(&request(&before, json!({"background":"#aabbcc"}))).unwrap();
+        assert!(parse(&absent.after_content)
+            .unwrap()
+            .model
+            .get("fog")
+            .is_none());
+        let added = dispatch(&request(
+            &before,
+            json!({"fog":{"color":"#ffffff","density":0}}),
+        ))
+        .unwrap();
+        assert_eq!(added.changed_paths, ["/fog"]);
+        assert_eq!(
+            parse(&added.after_content).unwrap().model["fog"]["density"],
+            0
+        );
+        let disabled = dispatch(&request(
+            &added.after_content,
+            json!({"fog":{"color":"#ffffff","density":0}}),
+        ))
+        .unwrap();
+        assert!(disabled.changed_paths.is_empty());
+        assert_eq!(disabled.after_content, added.after_content);
+    }
+    #[test]
+    fn invalid_fog_never_commits_other_valid_environment_fields() {
+        let before = source();
+        for fog in [
+            json!(null),
+            json!({}),
+            json!({"density":0}),
+            json!({"color":"#ffffff"}),
+            json!({"color":"#ffffff","density":-0.1}),
+            json!({"color":"#ffffff","density":1.1}),
+            json!({"color":"#ffffff","density":0,"enabled":false}),
+            json!({"color":"red","density":0}),
+        ] {
+            assert!(
+                dispatch(&request(&before, json!({"background":"#112233","fog":fog}))).is_err()
+            );
+        }
+        assert!(parse(&before).unwrap().model.get("fog").is_none());
+    }
+    #[test]
+    fn raw_fog_request_duplicates_unknown_keys_null_and_missing_fields_are_rejected() {
+        let content = serde_json::to_string(&source()).unwrap();
+        for values in [
+            r##"{"fog":null,"fo\u0067":{"color":"#ffffff","density":0}}"##,
+            r##"{"fog":{"color":null,"co\u006cor":"#ffffff","density":0}}"##,
+            r##"{"fog":{"color":"#ffffff","density":null,"den\u0073ity":0}}"##,
+            r##"{"fog":{"color":"#ffffff","density":0,"unknown":0}}"##,
+            r##"{"fog":{"color":"#ffffff"}}"##,
+        ] {
+            let wire = format!("{{\"protocolVersion\":1,\"operation\":\"scene3d.patchEnvironment\",\"content\":{content},\"values\":{values}}}");
+            let response: Value =
+                serde_json::from_slice(&crate::dispatch_json(wire.as_bytes())).unwrap();
+            assert_eq!(response["ok"], false, "{values}");
+            assert_eq!(response["errorCode"], "studio_core_request_invalid");
+        }
+    }
+    #[test]
+    fn additive_fog_cannot_exceed_the_complete_scene_byte_limit() {
+        let original = source();
+        let content = format!("{}{}", original, " ".repeat(128 * 1024 - original.len()));
+        assert!(parse(&content).is_ok());
+        assert_eq!(
+            dispatch(&request(
+                &content,
+                json!({"fog":{"color":"#abcdef","density":0.1}})
+            ))
+            .unwrap_err()
+            .error_code,
+            "scene3d_limit"
+        );
     }
 }

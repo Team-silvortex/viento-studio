@@ -1,0 +1,97 @@
+{
+  "ok": true,
+  "generatedAt": "2026-10-12T11:09:12.380170+00:00",
+  "version": "0.1.0",
+  "baseCommit": "cc3c3b79c292d4d2c2db1edd4b8dae519810b641",
+  "stage": "Working tree after standard views, pan and orthographic projection; no release, commit, push or installation.",
+  "feature": "Passive positive X/Y/Z orientation indicator consuming successful renderer camera receipts.",
+  "behavior": [
+    "Independent math, optional immutable renderer receipt, standalone SVG and guarded UI wiring; no source/model/host ports in the indicator.",
+    "World positive axes track the actual view; screen Y is downward and positive depth points toward the observer. Hollow endpoints point away.",
+    "Close, invalid receipts, unavailable frames and drawing failures hide the indicator; invalid drafts retain the last valid view.",
+    "Labels remain legible at poles and collinear projections. Three-language accessibility is not live; the overlay passes pointer input to the canvas."
+  ],
+  "targeted": {
+    "passed": 354,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "newCases": 35,
+    "runner": "Node v24.21.0 --test --test-isolation=none --test-reporter=tap",
+    "log": "targeted-tests.tap"
+  },
+  "preflight": {
+    "syntaxFiles": 661,
+    "api": true,
+    "versions": {
+      "version": "0.1.0",
+      "buildVersion": "0.1.0"
+    },
+    "report": "preflight.json"
+  },
+  "prepared": {
+    "identicalCopies": 18,
+    "orientationCases": 14,
+    "report": "prepared.json",
+    "nativeBuild": false
+  },
+  "browser": {
+    "report": "browser/browser.json",
+    "browser": "Chrome/154.0.8037.97",
+    "orientationGPUComparisons": 46,
+    "panGestures": 15,
+    "visibleCompositingProbes": 356,
+    "compositingMismatches": 0,
+    "screenshotsVisuallyInspected": [
+      "orientation-top-desktop.png",
+      "orientation-bottom-desktop.png",
+      "orientation-zh-CN-390.png",
+      "orientation-en-390.png",
+      "orientation-ja-390.png",
+      "orientation-no-webgl.png"
+    ],
+    "softwareRendering": "Explicit ANGLE / SwiftShader",
+    "sourceStable": true
+  },
+  "boundaries": {
+    "modules": 17,
+    "capabilities": 33,
+    "wasmBytes": 599948,
+    "wasmSha256": "49c4dc243e05c69d2b53b9cd144e9ad8e054c1c1edf8531d5808800bbb9c05b6",
+    "rustChanged": false,
+    "authorFormatChanged": false,
+    "sourceAndSavedFixtureUnchanged": true
+  },
+  "atlas": {
+    "functions": 100,
+    "implementations": 252,
+    "bindings": 390,
+    "cells": 1560
+  },
+  "limitations": [
+    "Passive orientation only; no clickable navigation cube, transforms, measurement or grid.",
+    "Targeted regression and real HTTP browser proof only; no full application or Rust suite rerun.",
+    "Software WebGL2 and touch emulation do not establish hardware-GPU, installed desktop or Android-device support.",
+    "Prepared desktop/mobile resources were temporary; no installer was rebuilt or installed."
+  ],
+  "files": {
+    "docs/ARCHITECTURE.md": "8ed210c51fb05432352d8332a809de58b4783eae256b778cf5f305de71170165",
+    "docs/ROADMAP.md": "902d475a265bf4671c7d45a17028aa182b7c3ec37eb515127fae86c34f11fcb2",
+    "docs/SCENE3D.md": "601a0ad456898002b5496e68460f71be22be4ce2d900260ef257ce73c65b18a1",
+    "docs/STATUS.md": "d40f0e091a2dd37cb48edaef8a56ff2217466cbf8f4b5cb4f7b0f0362a03c88a",
+    "docs/STUDIO_MODULES.md": "0734387555e60caf648d371159fa11aede249c197d710b1213b767e2011d0e78",
+    "engine/README.md": "90239f471c264eb44626c24285e767d7fbf5f8c0b5e00f48ed0522fdb08a424b",
+    "scripts/tests/scene3d-preview-ui.test.mjs": "9e239507ecd07523586826db17d23e7aee81f3fee27efd423e6c53768f7c82b6",
+    "web/i18n/en.js": "70410911f0cea24dff0a614c3cc1d68a81b72f702672b6ace9c194180560afc6",
+    "web/i18n/ja.js": "aaff020ad87512ce9124f9cebebe8f09dd1fae25c05b0fb7151ed67faf1aa737",
+    "web/modules/app-scene3d-preview.js": "3f72262bbf60d8d505e46a680c426816e2be598df6f4e8aa94c6fc03c8a9310b",
+    "web/modules/scene3d-math.js": "35446d46ee5edb07db01b8a23e1003a58fbbae2912da88aece075040c34efe67",
+    "web/modules/scene3d-renderer.js": "059d27104b2d7c2ec300ba8bb069418d168a403f112499072d60c9ce5e3e34d7",
+    "web/scene3d.css": "cb1e294806c00be2da600cb7c9bda49ae626cb0758588f47c2562e70414bf204",
+    "web/modules/scene3d-orientation.js": "767380e86ce9d97a1d0755d1b3b66d32046d317203d28d53e78806a72b2ca75b",
+    "scripts/tests/scene3d-orientation-math.test.mjs": "412604409cc2550cced1e860fb9486347a0f8759232461e8bbe21af12069fa59",
+    "scripts/tests/scene3d-orientation-indicator.test.mjs": "91a4dc785c1f0fce8c2e9e546e39d0b7d7cd38b88a777a4751b3020d2a419157",
+    "scripts/tests/scene3d-orientation-renderer.test.mjs": "04371df91297728a58e252d847f8d6b70edd33291a4ad47b9fc7122a89a40bdf",
+    "scripts/tests/scene3d-orientation-smoke.mjs": "5bce9a14173cdfffcc0df3fb8e3d87ec447fa2e3c2b063fbd223b0404e70d3aa"
+  }
+}

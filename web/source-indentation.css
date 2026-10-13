@@ -1,0 +1,42 @@
+.doc-editor-wrap.source-indentation-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.doc-editor-wrap.source-indentation-container[hidden] { display: none; }
+.doc-editor-wrap.source-indentation-container > .doc-editor {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 0;
+  tab-size: 4;
+}
+.source-indent-toolbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  padding: 8px 16px;
+  border-bottom: 1px solid #29384f;
+  color: #bacbe3;
+  font-size: 12px;
+}
+.source-indent-toolbar[hidden] { display: none; }
+.source-indent-toolbar select {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 32px;
+  padding: 4px 7px;
+  color: inherit;
+  border: 1px solid #354d69;
+  border-radius: 6px;
+  background: #111d30;
+  font: inherit;
+}
+.source-indent-toolbar .doc-btn { min-height: 32px; padding: 5px 9px; font-size: 12px; }
+#sourceIndentStatus { flex-basis: 100%; line-height: 1.5; overflow-wrap: anywhere; }
+#sourceIndentStatus:empty { display: none; }
+@media (max-width: 480px) {
+  .source-indent-toolbar { padding: 7px 10px; gap: 6px; }
+}

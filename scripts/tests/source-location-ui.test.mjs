@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash, webcrypto } from 'node:crypto';
+import vm from 'node:vm';
 import { sourceLocationSelection } from '../../web/modules/app-source-location.js';
+import { createSourceDiagnosticSnapshot } from '../../engine/source-diagnostic.mjs';
 import { deferred, editorHarness } from './editor-harness.mjs';
 import en from '../../web/i18n/en.js';
 import ja from '../../web/i18n/ja.js';
@@ -309,4 +311,195 @@ test('unchanged editor UI refreshes do not invalidate a pending draft hash or it
   const draft = source.replace('160', '250'); current.source.value = normalize(draft); current.runtime.refreshEditSessionDirtyState();
   const result = await current.runtime.openBuildSource(current.doc.sourcePath, { ...location(draft, current.doc.sourcePath, '250'), previewDraft: true });
   current.runtime.updateEditUnsavedUi(); assert.equal(result.focus(), true); assert.equal(selected(current), '250');
+});
+
+test('created behavior source navigation pins bytes and enters the source editor with a deferred focus receipt', async () => {
+  const h = await harness({crypto:webcrypto}), result = await h.runtime.openAuthorSource(h.doc.sourcePath,{sourceRevision:digest(source)});
+  opened(result); assert.equal(h.state.isEditing,true); assert.equal(h.state.editInputMode,'source');
+  assert.equal(h.runtime.getSourceEditorContent(),source); assert.equal(h.state.editHasUnsavedChanges,false); assert.equal(h.reads.length,1); assert.equal(h.writes.length,0);
+  assert.equal(result.focus(),true); assert.equal(result.focus(),false); assert.match(h.element('docEditStatus').textContent,/已打开行为原文/);
+});
+test('author navigation refuses stale bytes, failed reads, dirty drafts and busy host state',async()=>{
+ for(const mode of ['stale','failed','dirty','busy','invalid']){
+  const h=await harness({crypto:webcrypto,read:()=>mode==='failed'?{error:'unavailable'}:{content:source,version:'2'}});
+  if(mode==='dirty'){h.begin(source,'baseline');h.source.value+='draft';h.runtime.refreshEditSessionDirtyState();}
+  if(mode==='busy')h.state.isSaving=true;
+  const result=await h.runtime.openAuthorSource(h.doc.sourcePath,{sourceRevision:mode==='invalid'?'bad':digest(mode==='stale'?'different':source)});
+  assert.equal(result,false,mode);assert.equal(h.writes.length,0);if(mode==='dirty')assert.match(h.source.value,/draft$/);
+ }
+});
+test('late author navigation cannot activate after its owning dialog closes or a newer document wins',async()=>{
+ for(const mode of ['closed','navigate','dirty']){
+  const waiting=deferred(),h=await harness({crypto:webcrypto,read:()=>waiting.promise});let current=true;
+  const pending=h.runtime.openAuthorSource(h.doc.sourcePath,{sourceRevision:digest(source),isCurrent:()=>current});
+  if(mode==='closed')current=false;
+  if(mode==='navigate')await h.runtime.openBuildSource(h.addDoc().sourcePath);
+  if(mode==='dirty'){h.begin(source,'baseline');h.source.value+='draft';h.runtime.refreshEditSessionDirtyState();}
+  waiting.resolve({content:source,version:'2'});assert.equal(await pending,false,mode);assert.equal(h.writes.length,0);if(mode==='dirty')assert.match(h.source.value,/draft$/);
+ }
+});
+
+test('created author source focus receipt is not consumed while a nested dialog still makes the editor inert',async()=>{
+ const h=await harness({crypto:webcrypto}),result=await h.runtime.openAuthorSource(h.doc.sourcePath,{sourceRevision:digest(source)});
+ const original=h.runtime.document.querySelector;h.runtime.document.querySelector=selector=>selector==='dialog[open]'?{}:original?.(selector);
+ assert.equal(result.focus(),false);h.runtime.document.querySelector=original;assert.equal(result.focus(),true);assert.equal(result.focus(),false);
+});
+
+test('created author source transfers focus ownership after its initiating dialog closes normally', async () => {
+  const h = await harness(); let dialogOpen = true, focuses = 0;
+  h.source.focus = () => { focuses++; h.source.setSelectionRange(0, 0); };
+  // The build host supplies dialog.open as part of isCurrent while source is
+  // loading, then closes that dialog before invoking the returned focus receipt.
+  const receipt = await h.runtime.openAuthorSource(h.doc.sourcePath, {
+    sourceRevision: digest(source), isCurrent: () => dialogOpen,
+  });
+  opened(receipt); assert.equal(focuses, 0);
+  const token = h.runtime.sourceEditorContext().sourceToken;
+  dialogOpen = false;
+  assert.equal(receipt.focus(), true);
+  assert.equal(focuses, 1); assert.equal(receipt.focus(), false);
+  assert.equal(h.runtime.sourceEditorContext().sourceToken, token);
+  assert.equal(h.runtime.getSourceEditorContent(), source); assert.equal(h.writes.length, 0);
+});
+
+async function diagnosticHarness(options) {
+  const h = await harness(options), snapshots = [];
+  h.runtime.__captureDiagnostic = value => { snapshots.push(createSourceDiagnosticSnapshot(value)); };
+  vm.runInContext('sourceDiagnosticController = { refresh() {}, show(value) { __captureDiagnostic(value); } };', h.runtime);
+  return { ...h, snapshots };
+}
+const diagnosticContext = () => ({ diagnostic: { code: 'build_actor_value', severity: 'warning',
+  messageKey: '角色字段的值不符合要求，请检查标出的位置。', detail: '原始细节 <img src=x onerror=bad()> 😀' } });
+
+test('saved and draft focus receipts cannot apply old selection after a synchronous focus listener changes ownership', async () => {
+  for (const draft of [false, true]) {
+    for (const change of ['document', 'text', 'mode', 'busy', 'interaction', 'modal']) {
+      const h = await harness();
+      if (draft) { h.begin(source, digest(source)); h.state.activeEditSource = h.doc.sourcePath; }
+      const receipt = await h.runtime.openBuildSource(h.doc.sourcePath, { ...location(), ...(draft ? { previewDraft: true } : {}) });
+      let oldSelectionWrites = 0;
+      h.source.focus = () => {
+        h.source.selectionStart = 2; h.source.selectionEnd = 5; h.source.scrollTop = 147;
+        if (change === 'document') h.state.activePath = 'other/document';
+        if (change === 'text') h.source.value += 'replacement';
+        if (change === 'mode') h.state.editInputMode = 'fields';
+        if (change === 'busy') h.state.isSaving = true;
+        if (change === 'interaction') h.runtime.markSourceInteraction();
+        if (change === 'modal') h.runtime.document.querySelector = () => ({});
+      };
+      h.source.setSelectionRange = () => { oldSelectionWrites++; };
+      assert.equal(receipt.focus(), false, `${draft}:${change}`);
+      assert.equal(oldSelectionWrites, 0); assert.deepEqual([h.source.selectionStart, h.source.selectionEnd], [2, 5]);
+      assert.equal(h.source.scrollTop, 147); assert.equal(h.writes.length, 0);
+    }
+  }
+});
+
+test('new user interaction prevents deferred saved and draft navigation from replacing a newer caret', async () => {
+  for (const draft of [false, true]) {
+    const h = await harness();
+    if (draft) { h.begin(source, digest(source)); h.state.activeEditSource = h.doc.sourcePath; }
+    const receipt = await h.runtime.openBuildSource(h.doc.sourcePath, { ...location(), ...(draft ? { previewDraft: true } : {}) });
+    h.source.setSelectionRange(4, 9); h.source.scrollTop = 31; h.source.focused = false;
+    h.runtime.markSourceInteraction();
+    assert.equal(receipt.focus(), false); assert.equal(h.source.focused, false);
+    assert.deepEqual([h.source.selectionStart, h.source.selectionEnd], [4, 9]); assert.equal(h.source.scrollTop, 31);
+    assert.equal(h.writes.length, 0);
+  }
+});
+
+test('busy and modal gates defer focus without consuming the current source receipt', async () => {
+  for (const draft of [false, true]) {
+    const h = await harness();
+    if (draft) { h.begin(source, digest(source)); h.state.activeEditSource = h.doc.sourcePath; }
+    const receipt = await h.runtime.openBuildSource(h.doc.sourcePath, { ...location(), ...(draft ? { previewDraft: true } : {}) });
+    h.source.setSelectionRange(1, 1); h.source.focused = false; h.state.isSaving = true;
+    assert.equal(receipt.focus(), false); assert.equal(h.source.focused, false);
+    h.state.isSaving = false; h.runtime.document.querySelector = () => ({});
+    assert.equal(receipt.focus(), false); assert.equal(h.source.focused, false);
+    h.runtime.document.querySelector = () => null;
+    assert.equal(receipt.focus(), true); assert.equal(selected(h), '160'); assert.equal(receipt.focus(), false);
+    assert.equal(h.writes.length, 0);
+  }
+});
+
+test('only explicit diagnostic navigation binds a normalized snapshot after owned source verification', async () => {
+  const h = await diagnosticHarness(), context = diagnosticContext();
+  opened(await h.runtime.openBuildSource(h.doc.sourcePath, location()));
+  assert.equal(h.snapshots.length, 0, 'scene and legacy source links do not fabricate diagnostics');
+  const beforeWrites = h.writes.length;
+  opened(await h.runtime.openBuildSource(h.doc.sourcePath, location(), context));
+  assert.equal(h.snapshots.length, 1);
+  const result = h.snapshots[0], expected = sourceLocationSelection(source, location(), digest(source));
+  assert.deepEqual(result, { sourcePath: h.doc.sourcePath, propertyPath: '/actors/0/speed',
+    sourceRevision: digest(source), ...context.diagnostic, status: 'exact', range: { start: expected.start, end: expected.end } });
+  assert.equal(h.source.value.slice(result.range.start, result.range.end), '160');
+  assert.ok(Object.isFrozen(result)); assert.ok(Object.isFrozen(result.range));
+  assert.equal(h.runtime.getSourceEditorContent(), source); assert.equal(h.state.editHasUnsavedChanges, false);
+  assert.equal(h.writes.length, beforeWrites);
+});
+
+test('stale approximate and unavailable diagnostics keep their explicit state without an exact range', async () => {
+  for (const status of ['stale', 'approximate', 'unavailable']) {
+    const content = status === 'stale' ? source.replace('160', '240') : source;
+    const h = await diagnosticHarness({ read: () => ({ content, version: '3' }) }), info = location();
+    if (status === 'approximate') info.sourceRange.exact = false;
+    if (status === 'unavailable') info.sourceRange.start = -1;
+    opened(await h.runtime.openBuildSource(h.doc.sourcePath, info, diagnosticContext()));
+    assert.equal(h.snapshots.length, 1); assert.equal(h.snapshots[0].status, status);
+    assert.equal(Object.hasOwn(h.snapshots[0], 'range'), false); assert.equal(selected(h), '');
+    assert.equal(h.source.value, normalize(content)); assert.equal(h.state.editHasUnsavedChanges, false); assert.equal(h.writes.length, 0);
+  }
+});
+
+test('failed reads and protected drafts cannot bind diagnostic context', async () => {
+  for (const failure of ['read', 'digest', 'dirty', 'busy']) {
+    const h = await diagnosticHarness(failure === 'read' ? { read: () => { throw Error('missing'); } }
+      : failure === 'digest' ? { crypto: { subtle: { digest: async () => { throw Error('failed'); } } } } : {});
+    if (failure === 'dirty') { h.begin(source, digest(source)); h.source.value += 'draft'; h.runtime.refreshEditSessionDirtyState(); }
+    if (failure === 'busy') h.state.isSaving = true;
+    const text = h.source.value;
+    await h.runtime.openBuildSource(h.doc.sourcePath, location(), diagnosticContext());
+    assert.equal(h.snapshots.length, 0, failure); assert.equal(h.writes.length, 0);
+    if (failure === 'dirty') { assert.equal(h.source.value, text); assert.equal(h.state.editHasUnsavedChanges, true); }
+    else { assert.equal(h.state.isEditing, false); assert.equal(h.doc._sourceCachedText, 'old cached text'); }
+  }
+});
+
+test('late superseded reads cannot publish a diagnostic on the newly active document', async () => {
+  const waiting = deferred(), h = await diagnosticHarness({ read: () => waiting.promise });
+  const pending = h.runtime.openBuildSource(h.doc.sourcePath, location(), diagnosticContext());
+  assert.equal(h.snapshots.length, 0);
+  await h.runtime.openBuildSource(h.addDoc().sourcePath);
+  waiting.resolve({ content: source, version: 'late' });
+  assert.equal(await pending, false); assert.equal(h.snapshots.length, 0); assert.equal(h.writes.length, 0);
+});
+
+test('diagnostic activation defers all focus until its guarded receipt is used', async () => {
+  const h = await diagnosticHarness(); let focuses = 0;
+  h.source.focus = () => { focuses++; };
+  const receipt = await h.runtime.openBuildSource(h.doc.sourcePath, location(), diagnosticContext());
+  opened(receipt); assert.equal(focuses, 0); assert.equal(h.snapshots.length, 1); assert.equal(selected(h), '160');
+  assert.equal(receipt.focus(), true); assert.equal(focuses, 1); assert.equal(h.writes.length, 0);
+});
+
+test('synchronous activation callbacks cannot bind or select an old diagnostic after source ownership changes', async () => {
+  const h = await diagnosticHarness(), activate = h.runtime.activateSourceEditor;
+  h.runtime.activateSourceEditor = (...args) => {
+    activate(...args); h.state.activePath = 'other/document'; h.source.value = 'replacement source';
+    h.source.setSelectionRange(2, 4); h.source.scrollTop = 119;
+  };
+  const result = await h.runtime.openBuildSource(h.doc.sourcePath, location(), diagnosticContext());
+  assert.equal(result, false); assert.equal(h.snapshots.length, 0);
+  assert.equal(h.source.value, 'replacement source'); assert.deepEqual([h.source.selectionStart, h.source.selectionEnd], [2, 4]);
+  assert.equal(h.source.scrollTop, 119); assert.equal(h.writes.length, 0);
+});
+
+test('a diagnostic without source coordinates opens its text and binds only an unavailable location', async () => {
+  const h = await diagnosticHarness();
+  opened(await h.runtime.openBuildSource(h.doc.sourcePath, { sourcePath: h.doc.sourcePath }, diagnosticContext()));
+  assert.equal(h.reads.length, 1); assert.equal(h.snapshots.length, 1);
+  assert.equal(h.snapshots[0].status, 'unavailable'); assert.equal(h.snapshots[0].propertyPath, '');
+  assert.equal(h.snapshots[0].sourceRevision, ''); assert.equal(Object.hasOwn(h.snapshots[0], 'range'), false);
+  assert.equal(selected(h), ''); assert.equal(h.source.value, normalize(source)); assert.equal(h.writes.length, 0);
 });

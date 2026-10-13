@@ -1,3 +1,5 @@
+import { setupSceneBehaviorCreate } from './app-scene-behavior-create.js';
+import { inspectSceneBehaviorCreation, requestWorldCommand } from './app-doc-service.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 import { fetchJsonApiRequest } from './app-services.js';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
@@ -12,9 +14,10 @@ import { validateSceneControlProgram, validateSceneControlPlan } from '../../eng
 import { validateExecutionToolStatus } from '../../engine/execution-tool-status.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
 import { setupRuntimeCaseDocuments } from './app-runtime-case-documents.js';
-import { requestProjectBuildDocument } from './app-doc-service.js';
+import { requestProjectBuildDocument, requestExport, checkExport, releaseExport } from './app-doc-service.js';
 import { setupRuntimeCaseSuites } from './app-runtime-case-suites.js';
 import { setupRuntimeCaseReport } from './app-runtime-case-report.js';
+import { setupBackendProjectDelivery } from './app-backend-project-delivery.js';
 import { setupBackendProject } from './app-backend-project.js';
 const errorLabels = {
   build_projection_invalid: '场景引用的投影无效，请检查投影原文。',
@@ -108,7 +111,7 @@ const toolReasonLabels = { platform_unsupported: errorLabels.build_platform_unsu
   tool_failed: '构建工具身份检查失败，请检查宿主工具配置。', tool_output_limit: '工具返回内容超出限制，检查已停止。',
   tool_cancelled: '工具检查已取消。', tool_changed: '构建工具已变化，请重新检查。' };
 
-export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = async () => null, applySceneDraft = async () => ({ applied: false }), getCompositionSource = async () => null, applyCompositionDraft = async () => ({ applied: false }), applyCompositionBatchDraft = async () => ({ applied: false }), applyCompositionFragmentDraft = async () => ({ applied: false }), applyCompositionPlacementDraft = async () => ({ applied: false }), applyCompositionStructureDraft = async () => ({ applied: false }), applyCompositionPlacementsDraft = async () => ({ applied: false }), applyCompositionGroupsDraft = async () => ({ applied: false }), applyCompositionDefinitionsDraft = async () => ({ applied: false }), openSource = () => false, setBusy = () => {}, applied = async () => {} } = {}) {
+export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = async () => null, applySceneDraft = async () => ({ applied: false }), getCompositionSource = async () => null, applyCompositionDraft = async () => ({ applied: false }), applyCompositionBatchDraft = async () => ({ applied: false }), applyCompositionFragmentDraft = async () => ({ applied: false }), applyCompositionPlacementDraft = async () => ({ applied: false }), applyCompositionStructureDraft = async () => ({ applied: false }), applyCompositionPlacementsDraft = async () => ({ applied: false }), applyCompositionGroupsDraft = async () => ({ applied: false }), applyCompositionDefinitionsDraft = async () => ({ applied: false }), openSource = () => false, openAuthorSource = () => false, setBusy = () => {}, applied = async () => {} } = {}) {
   const button = document.getElementById('projectBuildBtn');
   if (!button) return { setAvailable() {} };
   const dialog = document.createElement('dialog');
@@ -125,6 +128,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <button id="projectBuildRefresh" type="button" class="doc-btn doc-btn-ghost" data-i18n="刷新状态"></button></div>
     <button id="projectBuildEditScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="编辑场景" hidden></button>
     <button id="projectBuildCreateScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="创建场景" hidden></button>
+    <button id="projectBuildCreateBehavior" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加场景行为" hidden></button>
     <p id="projectBuildEmpty" hidden data-i18n="暂无可构建场景。请添加已登记的 viento-scene2d JSON 场景文档。"></p>
     <div id="projectBuildTabs" class="build-tabs" role="tablist" data-i18n-aria-label="场景与构建选项卡" hidden>
       <button id="projectBuildTabPreview" type="button" role="tab" aria-controls="projectBuildPreviewPanel" aria-selected="false" tabindex="-1" data-i18n="场景预览"></button>
@@ -254,7 +258,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildControlError').hidden = !controlError;
     el('projectBuildControlError').textContent = controlError ? t(controlError) : '';
   }
-  let caseError = '', caseDocuments = null, caseSuites = null, caseReport = null, backendProjects = null;
+  let caseError = '', caseDocuments = null, caseSuites = null, caseReport = null, backendProjects = null, delivery = null;
   function runtimeCasePlan() {
     const targets = instanceControlTargets(false);
     return targets.length ? { format: 'viento-build-plan', kind: 'scene2d', schemaVersion: 2,
@@ -318,7 +322,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       }
     } catch { el('projectBuildCaseSummary').textContent = t('验收结果不可读取，请刷新状态。'); }
   }
-  let available = false, creationSupported = false, updateSupported = false, data = null, selected = '', requestBusy = false, timer = null, requestEpoch = 0;
+  let available = false, creationSupported = false, updateSupported = false, behaviorCreationSupported = false, behaviorCreationBusy = false, data = null, selected = '', requestBusy = false, timer = null, requestEpoch = 0;
   let toolCheckBusy = false;
   let previewSupported = false, activeTab = 'build';
   const selections = { build: '', preview: '' };
@@ -355,11 +359,28 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     if (errorMessage || !data?.scenes.some(scene => scene.id === createdId)) throw new Error(t('场景已创建，但目录或构建列表刷新失败。请刷新核对，勿重复创建。'));
   };
   const sceneCreator = setupSceneCreate({ getContext, setBusy: value => { setBusy(value); render(); }, applied: sceneApplied });
+  const behaviorCreator = typeof setupSceneBehaviorCreate === 'function' ? setupSceneBehaviorCreate({
+    getContext: () => { const context = getContext(); return { ...context,
+      busy: (behaviorCreationBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || data?.job?.status === 'running',
+      session: String(dialogSession), sceneId: selected, visible: dialog.open, sourceToken: context.sceneDraftToken }; },
+    setBusy: value => { behaviorCreationBusy = value === true; setBusy(value); render(); },
+    inspect: payload => inspectSceneBehaviorCreation(payload), command: payload => requestWorldCommand(payload),
+    applied: async result => {
+      let failure; try { await applied(result); } catch (error) { failure = error; }
+      invalidatedPlanJob = planJob || (data?.job?.kind === 'plan' ? data.job.id : '');
+      invalidatedSnapshot = plan?.snapshotId || data?.job?.plan?.snapshotId || ''; plan = null; planScene = '';
+      scenePreview.invalidate(); await refresh(true);
+      if (failure) throw failure;
+      if (errorMessage || !data?.scenes.some(scene => scene.id === result.changes?.[1]?.objectId)) throw new Error(t('行为已保存，但目录刷新失败。请重新读取工程，勿重复创建。'));
+    },
+    openSource: (sourcePath, options) => navigateOwnedSource([sourcePath, options], () => true, openAuthorSource, true),
+  }) : { open() {}, setAvailable() {} };
+
   const running = () => data?.job?.status === 'running';
   const catalogUnavailable = () => data?.catalogDiagnostic?.code === 'build_catalog_unavailable';
   const checkingTool = () => toolCheckBusy || data?.toolStatus?.status === 'checking';
   const mayCheckTool = () => activeTab === 'build' && available && data?.supported && Boolean(data?.toolStatus)
-    && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.();
+    && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.() && !delivery?.isBusy();
   const ready = () => {
     const context = getContext();
     return available && data?.supported && context.editable && !context.dirty && !context.creating && !context.busy;
@@ -371,12 +392,12 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   async function navigateSource(...args) {
     return navigateOwnedSource(args);
   }
-  async function navigateOwnedSource(args, isCurrent = () => true) {
+  async function navigateOwnedSource(args, isCurrent = () => true, sourceOpener = openSource, guardSource = false) {
     const session = dialogSession, epoch = ++sourceNavigationEpoch;
     const owns = () => dialog.open && dialogSession === session && sourceNavigationEpoch === epoch && isCurrent();
     try {
       if (!owns()) return false;
-      const opened = await openSource(...args);
+      const opened = await (guardSource ? sourceOpener(args[0], { ...args[1], isCurrent: owns }) : sourceOpener(...args));
       if (!owns()) return false;
       if (opened !== false) {
         pendingSourceFocus = typeof opened?.focus === 'function' ? { session, epoch, focus: opened.focus } : null;
@@ -537,13 +558,14 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       if (source && !source.disabled) source.focus();
     }
   }
-  const mayStart = (action, mode) => activeTab === 'build' && !errorMessage && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.() && ready() && Boolean(selectedScene())
+  const mayStart = (action, mode) => activeTab === 'build' && !errorMessage && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.() && !delivery?.isBusy() && ready() && Boolean(selectedScene())
     && (action === 'run' || liveScene())
     && (action === 'plan' || data.available && backendUnchanged() && (action === 'build'
       ? supportsExecution('build') && planBackend === acceptedBackend && planScene === selected && Boolean(plan)
       : action === 'run' && supportsExecution(mode === 'headless' ? 'headlessLogic' : mode === 'window' ? 'windowPreview' : '') && Boolean(matchedBuild())));
-  const friendly = code => t(errorLabels[code] || (typeof code === 'string' && /^(?:build_|runtime_)?behavior_/.test(code)
-    ? '行为绑定或脚本有误，请检查标出的位置和原始日志。' : '构建请求未完成，请刷新状态核对结果。'));
+  const diagnosticLabel = code => errorLabels[code] || (typeof code === 'string' && /^(?:build_|runtime_)?behavior_/.test(code)
+    ? '行为绑定或脚本有误，请检查标出的位置和原始日志。' : '构建请求未完成，请刷新状态核对结果。');
+  const friendly = code => t(diagnosticLabel(code));
   function render() {
     translatePage(dialog);
     const context = getContext(), job = data?.job;
@@ -595,6 +617,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildEditScene').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildCreateScene').hidden = activeTab === 'preview' || !creationSupported;
     el('projectBuildCreateScene').disabled = requestBusy || running() || !ready() || catalogUnavailable();
+    el('projectBuildCreateBehavior').hidden = activeTab === 'preview' || !behaviorCreationSupported;
+    el('projectBuildCreateBehavior').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildPlan').disabled = !mayStart('plan');
     el('projectBuildGenerate').disabled = !mayStart('build');
     el('projectBuildHeadless').disabled = !mayStart('run', 'headless'); el('projectBuildWindow').disabled = !mayStart('run', 'window');
@@ -604,6 +628,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     caseSuites?.render();
     caseReport?.render();
     backendProjects?.render();
+    delivery?.refresh();
     if (data?.projectManagement?.scope === 'host-catalog') el('projectBuildRunNote').textContent = t('新设计先检查计划再构建；历史工程需明确设为运行工程。所有测试、控制与预览使用当前运行工程的冻结快照，无头测试不验证画面。');
     el('projectBuildCancel').hidden = !active;
     el('projectBuildCancel').disabled = requestBusy || cancelling;
@@ -627,7 +652,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
         link.type = 'button';
         link.addEventListener('click', async () => {
           try {
-            await navigateSource(diagnostic.sourcePath, diagnostic);
+            await navigateSource(diagnostic.sourcePath, diagnostic, { diagnostic: {
+              code: diagnostic.code, severity: diagnostic.severity || 'error',
+              messageKey: diagnosticLabel(diagnostic.code), detail: typeof diagnostic.message === 'string' ? diagnostic.message.slice(0, 8192) : '',
+            } });
           } catch { errorMessage = t('无法打开原文，请返回编辑器查找该文档。'); render(); }
         });
         item.append(link);
@@ -799,12 +827,21 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('读取用例报告'))).payload,
   });
+  delivery = setupBackendProjectDelivery({
+    getContext: () => ({ available: available && data?.projectManagement?.delivery === 'viento-build-delivery-v1', visible: dialog.open && activeTab === 'build', session: dialogSession,
+      sceneId: selectedScene()?.id || '', backendId: data?.backend?.id || '', backendIdentity: acceptedBackend,
+      busy: requestBusy || running() || checkingTool() || caseDocuments?.isBusy() || caseSuites?.isBusy() }),
+    prepare: (payload, signal) => requestExport(payload, signal),
+    checkDownload: (id, signal) => checkExport(id, signal), release: id => releaseExport(id), onChange: render,
+  });
   backendProjects = setupBackendProject({ container: el('projectBuildBackendProjects'),
     getState: () => ({ available, visible: dialog.open && activeTab === 'build', session: dialogSession,
       sceneId: selectedScene()?.id || '', backendId: data?.backend?.id || '', backendIdentity: acceptedBackend, requestEpoch,
       projects: data?.projects, projectManagement: data?.projectManagement, latestBuild: matchedBuild(),
-      canSelect: !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() }),
+      busy: requestBusy || running() || checkingTool() || delivery?.isBusy(),
+      canSelect: !delivery?.isBusy() && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() }),
     onChange: render,
+    onDeliver: (receipt, owner) => delivery.open(receipt, owner),
     onSelect: (status, owner) => {
       if (!dialog.open || activeTab !== 'build' || dialogSession !== owner.session || selected !== owner.sceneId
         || acceptedBackend !== owner.backendIdentity || requestEpoch !== owner.requestEpoch || backendSignature(status.backend) !== acceptedBackend) return false;
@@ -831,9 +868,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     render(); dialog.showModal(); void refresh();
   } });
   el('projectBuildEditScene').addEventListener('click', editScene);
+  el('projectBuildCreateBehavior').addEventListener('click', () => { if (behaviorCreationSupported && !requestBusy && !running() && ready() && liveScene()) void behaviorCreator.open(selected); });
   el('projectBuildCreateScene').addEventListener('click', () => { if (creationSupported && !requestBusy && !running() && ready() && !catalogUnavailable()) sceneCreator.open(); });
-  el('projectBuildClose').addEventListener('click', () => dialog.close());
-  dialog.addEventListener('cancel', event => { event.preventDefault(); dialog.close(); });
+  el('projectBuildClose').addEventListener('click', () => { if (delivery.close()) dialog.close(); });
+  dialog.addEventListener('cancel', event => { event.preventDefault(); if (delivery.close()) dialog.close(); });
   dialog.addEventListener('close', () => {
     if (dialog.open || handledCloseSession === dialogSession) return;
     handledCloseSession = dialogSession;
@@ -841,6 +879,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     caseSuites.closed();
     caseReport.closed();
     backendProjects.closed();
+    delivery.close();
     sceneAuthoring.closed();
     const pending = pendingSourceFocus; pendingSourceFocus = null;
     const current = pending?.session === dialogSession && pending.epoch === sourceNavigationEpoch;
@@ -906,6 +945,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   onLanguageChange(render);
   return { setAvailable(value, commands = [], capabilities = {}) {
     creationSupported = commands.includes('scene.create'); updateSupported = commands.includes('scene.update'); sceneCreator.setAvailable(value === true && (creationSupported || updateSupported), commands);
+    behaviorCreationSupported = commands.includes('behavior.create'); behaviorCreator.setAvailable(value === true && behaviorCreationSupported, commands);
     available = value === true; button.hidden = !available;
     previewSupported = available && capabilities.scenePreview === true;
     if (!previewSupported && activeTab !== 'build') { selections[activeTab] = selected; activeTab = 'build'; selectDocument(); }

@@ -1,0 +1,28 @@
+✖ leaving saved source editing settles scene ownership before later language UI refreshes (23.460676ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 90.541189
+
+✖ failing tests:
+
+test at scripts/tests/script-authoring-host.test.mjs:86:1
+✖ leaving saved source editing settles scene ownership before later language UI refreshes (23.460676ms)
+  AssertionError [ERR_ASSERTION]: language/status repaint must not discover a deferred source transition
+  
+  '1:5:0' !== '1:4:0'
+  
+      at TestContext.<anonymous> (file:///tmp/viento-script-authoring-9tq5xee0/candidate/scripts/tests/script-authoring-host.test.mjs:95:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '1:5:0',
+    expected: '1:4:0',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

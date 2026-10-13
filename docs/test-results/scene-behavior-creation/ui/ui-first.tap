@@ -1,0 +1,66 @@
+✔ creation is capability-gated and refuses dirty, busy, creating, hidden or different-scene owners without reading (30.838854ms)
+✖ one empty binding uses the selected stable instance and existing script; all three relationships and full exact source are reviewed (20.239403ms)
+✔ apply preserves exactly reviewed bytes and IDs, refreshes once, then explicitly opens the saved source revision (16.099049ms)
+✖ editing and silent DOM changes invalidate approval and cannot submit hidden changed values (6.463356ms)
+✔ raw unfinished values and stable IDs survive language changes, failed validation and refreshed catalogs (11.411665ms)
+✔ safe JSON path and catalog membership are enforced before issuing a command (67.075659ms)
+✔ empty script catalog explains the required saved TXT document and never creates one implicitly (7.821157ms)
+✔ unknown or malformed catalog versions, duplicates and unsafe source paths fail closed (33.734526ms)
+✔ stale scene, session, source, capability or dirty state cannot accept a late catalog (25.533423ms)
+✔ late previews and silently edited pending forms never enable save (43.050259ms)
+✔ forged preview source, source revision, identity, proposal, or relationship cannot be approved (63.286295ms)
+✔ known revision conflict keeps IDs and draft, requires rereading and fresh approval (15.485741ms)
+✔ an uncertain apply, including malformed success, remains locked after rereading and cannot repeat the write (23.930596ms)
+✔ successful save followed by catalog-refresh failure is never resubmitted and refresh can retry separately (11.851507ms)
+✔ owner changes during apply never refresh or navigate a different parent session (8.827888ms)
+✔ save refresh may change source token itself; saved navigation still protects new dirty drafts (11.358151ms)
+✔ close and Escape confirm local unsaved settings; pending operations block closing and shortcuts do not save the editor (8.773132ms)
+✔ dispose invalidates pending operations, releases its busy guard once and removes the dialog (7.896533ms)
+✔ failed navigation retains the saved state for a safe retry and never repeats creation (11.642733ms)
+✔ all fixed creation copy is translated and dynamic catalog labels remain text (5.533894ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 18
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 473.977362
+
+✖ failing tests:
+
+test at scripts/tests/scene-behavior-create-ui.test.mjs:47:1
+✖ one empty binding uses the selected stable instance and existing script; all three relationships and full exact source are reviewed (20.239403ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(pending)
+  
+      at Object.review (file:///tmp/viento-behavior-create-2qx88f46/candidate/scripts/tests/scene-behavior-create-ui.test.mjs:38:92)
+      at async TestContext.<anonymous> (file:///tmp/viento-behavior-create-2qx88f46/candidate/scripts/tests/scene-behavior-create-ui.test.mjs:48:159)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-behavior-create-ui.test.mjs:62:1
+✖ editing and silent DOM changes invalidate approval and cannot submit hidden changed values (6.463356ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(pending)
+  
+      at Object.review (file:///tmp/viento-behavior-create-2qx88f46/candidate/scripts/tests/scene-behavior-create-ui.test.mjs:38:92)
+      at async TestContext.<anonymous> (file:///tmp/viento-behavior-create-2qx88f46/candidate/scripts/tests/scene-behavior-create-ui.test.mjs:63:41)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

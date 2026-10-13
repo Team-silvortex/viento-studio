@@ -21,6 +21,8 @@ const createProperties = { mode: properties.mode, worldId: identifier, baseRevis
   objectId: { type: 'string', pattern: '^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$' },
   documentType: { type: 'string', pattern: '^[a-z][a-z0-9_-]{0,63}$' },
   sourcePath: { type: 'string', minLength: 1, maxLength: 1024 }, content: { type: 'string', maxLength: 262144 } };
+const behaviorCreateProperties = { ...createProperties, content: { type: 'string', maxLength: 32768 },
+  sceneObjectId: createProperties.objectId, sceneObjectRevision: revision, sceneSourceRevision: revision };
 const projectionUpdateProperties = { mode: properties.mode, worldId: identifier, baseRevision: revision, actorRef: properties.actorRef,
   objectId: createProperties.objectId, objectRevision: revision, sourceRevision: revision, content: createProperties.content };
 export const RELATION_KINDS = Object.freeze(['part-of', 'references']);
@@ -56,6 +58,13 @@ export function worldMutationDescriptors() {
       properties: { status: { enum: ['preview', 'applied'] }, worldId: identifier, baseRevision: revision, revision } },
     targetTypes: ['io.viento.document/*'], preconditions: ['registered-workspace', 'known-document-type', 'matching-world-revision', 'unused-identity-and-source-path', 'valid-scene2d', 'registered-actor-and-image-dependencies'],
     effects: ['create-scene-and-dependency-registration-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
+  { format: 'viento-command', schemaVersion: 1, id: 'behavior.create', version: 1,
+    inputSchema: { type: 'object', properties: behaviorCreateProperties, required: Object.keys(behaviorCreateProperties), additionalProperties: false },
+    outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'object', 'scene', 'relation'],
+      properties: { status: { enum: ['preview', 'applied'] }, worldId: identifier, baseRevision: revision, revision } },
+    targetTypes: ['io.viento.document/*'], preconditions: ['registered-workspace', 'known-document-type', 'matching-world-and-scene-revisions', 'unused-identity-and-source-path',
+      'valid-scene2d-instances', 'no-existing-behavior-relation', 'valid-behavior-declaration', 'registered-script-and-actor-dependencies'],
+    effects: ['create-behavior-and-append-scene-opt-in-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
   { format: 'viento-command', schemaVersion: 1, id: 'scene.update', version: 1,
     inputSchema: { type: 'object', properties: projectionUpdateProperties, required: Object.keys(projectionUpdateProperties), additionalProperties: false },
     outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'object'],
@@ -91,11 +100,36 @@ export function worldMutationDescriptors() {
 export function validateWorldCommand(request) {
   const invalid = () => fail(400, 'world_command_invalid', 'Invalid world command request');
   if (!request || typeof request !== 'object' || Array.isArray(request) || !Object.hasOwn(request, 'command')) invalid();
+  const command = Object.getOwnPropertyDescriptor(request, 'command');
+  if (!command || !Object.hasOwn(command, 'value')) invalid();
+  if (command.value === 'behavior.create') {
+    // This authoring entry accepts data only. Detach before any planner await;
+    // neither accessors, inherited serializers nor late caller edits run here.
+    const copy = (value, depth = 0) => {
+      if (typeof value === 'string') {
+        if (/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(value)) invalid();
+        return value;
+      }
+      if (!value || typeof value !== 'object' || Array.isArray(value) || depth > 1
+        || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) invalid();
+      const descriptors = Object.getOwnPropertyDescriptors(value), output = {};
+      const keys = Reflect.ownKeys(descriptors);
+      if (keys.length > 16) invalid();
+      for (const key of keys) {
+        const descriptor = descriptors[key];
+        if (typeof key !== 'string' || ['__proto__', 'constructor', 'prototype'].includes(key)
+          || !descriptor.enumerable || !Object.hasOwn(descriptor, 'value')) invalid();
+        output[key] = copy(descriptor.value, depth + 1);
+      }
+      return output;
+    };
+    request = copy(request);
+  }
   if (request.command === 'world.recover') {
     if (Object.keys(request).length !== 2 || !Object.hasOwn(request, 'mode') || request.mode !== 'apply') invalid();
     return { command: 'world.recover', mode: 'apply' };
   }
-  if (!['property.set', 'changeset.apply', 'object.create', 'scene.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind'].includes(request.command)) invalid();
+  if (!['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind'].includes(request.command)) invalid();
   const check = (value, rule) => {
     if (rule.const) return value === rule.const;
     if (rule.enum) return rule.enum.includes(value);
@@ -107,7 +141,7 @@ export function validateWorldCommand(request) {
     return typeof value === 'string' && value.length >= (rule.minLength || 0) && value.length <= (rule.maxLength || 200)
       && (!rule.pattern || new RegExp(rule.pattern).test(value));
   };
-  const rules = request.command === 'changeset.apply' ? batchProperties : ['object.create', 'scene.create', 'projection.create'].includes(request.command) ? createProperties
+  const rules = request.command === 'changeset.apply' ? batchProperties : request.command === 'behavior.create' ? behaviorCreateProperties : ['object.create', 'scene.create', 'projection.create'].includes(request.command) ? createProperties
     : ['projection.update', 'scene.update'].includes(request.command) ? projectionUpdateProperties : request.command === 'relation.add' ? relationProperties : request.command === 'resource.bind' ? resourceProperties : properties;
   if (Object.keys(request).length !== Object.keys(rules).length + 1
     || !Object.entries(rules).every(([key, rule]) => Object.hasOwn(request, key) && check(request[key], rule))) invalid();

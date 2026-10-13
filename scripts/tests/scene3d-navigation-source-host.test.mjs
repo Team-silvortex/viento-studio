@@ -139,12 +139,13 @@ test('readonly snapshot remains strict three-field and runtime port adds only se
 });
 
 test('ordinary source input refreshes independent views through the root without changing editor selection or granting write ports', () => {
-  const start = runtime.indexOf('    const onSourceInput = () => {'), end = runtime.indexOf("    editEditorEl.addEventListener('input', onSourceInput);", start);
+  const start = runtime.indexOf('function handleSourceInput() {'), end = runtime.indexOf('\nfunction handleCreatePathKeydown', start);
   assert.ok(start > 0 && end > start);
+  assert.match(runtime, /editEditorEl\.addEventListener\('input', handleSourceInput\)/);
   const handler = runtime.slice(start, end); let inSession = true, dirty = 0, refresh = 0;
-  const context = vm.createContext({ isInEditSession: () => inSession, refreshEditSessionDirtyState: () => { dirty++; },
+  const context = vm.createContext({ sourceIndentationController: null, sourcePositionController: null, sourceDiagnosticController: null, isInEditSession: () => inSession, refreshEditSessionDirtyState: () => { dirty++; },
     studioSystem: { refreshMedia: () => { refresh++; } } });
-  vm.runInContext(handler + '\nthis.onInput = onSourceInput;', context);
+  vm.runInContext(handler + '\nthis.onInput = handleSourceInput;', context);
   context.onInput(); assert.equal(dirty, 1); assert.equal(refresh, 1);
   inSession = false; context.onInput(); assert.equal(dirty, 1); assert.equal(refresh, 1);
   inSession = true; context.studioSystem = null; context.onInput(); assert.equal(dirty, 2); assert.equal(refresh, 1);

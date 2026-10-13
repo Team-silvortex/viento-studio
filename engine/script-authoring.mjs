@@ -1,0 +1,111 @@
+// Known starters prepare ordinary text drafts. Saving, registration, scene
+// relationships, language services and execution belong to their own hosts.
+import { getCreatePathError } from './document-contract.mjs';
+
+const proposals = new WeakSet();
+const contextKeys = ['sourceToken', 'documentRoot', 'documentTypes'];
+const requestKeys = ['starterId', 'documentType', 'sourcePath'];
+const reserved = new Set(['constructor', '__proto__', 'prototype']);
+const error = (kind = 'invalid') => Object.assign(new TypeError('The script draft does not match the current creation context.'), {
+  errorCode: `script_authoring_${kind}`,
+});
+const fail = () => { throw error(); };
+const freeze = value => {
+  if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
+  return value;
+};
+const starters = freeze([
+  { id: 'godot-node', languageId: 'gdscript', backendId: 'org.viento.godot4', label: '空 Node',
+    description: '从空 Node 开始编写行为。', content: 'extends Node\n' },
+  { id: 'godot-signal', languageId: 'gdscript', backendId: 'org.viento.godot4', label: '参数与信号示例',
+    description: '使用参数并在就绪时发出信号；参数和信号映射需在行为文档中设置。',
+    content: 'extends Node\n\nsignal arrived(checkpoint: String, amount: float)\n@export var checkpoint: String = "dock"\n@export var amount: float = 0.0\n\nfunc _ready() -> void:\n\tarrived.emit(checkpoint, amount)\n' },
+]);
+
+// Inspect own data descriptors before reading values. Unknown keys, accessors,
+// serializers and inherited records never acquire draft authority.
+function record(input, keys) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)
+    || ![Object.prototype, null].includes(Object.getPrototypeOf(input))) fail();
+  const names = Reflect.ownKeys(input);
+  if (names.length !== keys.length || names.some(key => typeof key !== 'string' || !keys.includes(key))) fail();
+  const output = {};
+  for (const key of keys) {
+    const descriptor = Object.getOwnPropertyDescriptor(input, key);
+    if (!descriptor?.enumerable || !Object.hasOwn(descriptor, 'value')) fail();
+    output[key] = descriptor.value;
+  }
+  return output;
+}
+function text(value, maximum, budget) {
+  if (typeof value !== 'string' || !value.length || value.length > maximum) fail();
+  for (const character of value) {
+    const code = character.codePointAt(0);
+    if (code >= 0xd800 && code <= 0xdfff) fail();
+  }
+  if ((budget.bytes += new TextEncoder().encode(value).length) > 32768) fail();
+  return value;
+}
+function captureTypes(input, budget) {
+  if (!Array.isArray(input) || ![Array.prototype, null].includes(Object.getPrototypeOf(input))) fail();
+  const length = Object.getOwnPropertyDescriptor(input, 'length')?.value;
+  if (!Number.isInteger(length) || length < 1 || length > 256) fail();
+  const names = Reflect.ownKeys(input);
+  if (names.length !== length + 1 || names.some(key => key !== 'length'
+    && (typeof key !== 'string' || !/^(0|[1-9]\d*)$/.test(key) || Number(key) >= length))) fail();
+  const ids = new Set(), output = [];
+  for (let index = 0; index < length; index++) {
+    const descriptor = Object.getOwnPropertyDescriptor(input, String(index));
+    if (!descriptor?.enumerable || !Object.hasOwn(descriptor, 'value')) fail();
+    const item = record(descriptor.value, ['id', 'label']);
+    text(item.id, 64, budget); text(item.label, 4096, budget);
+    if (!/^[a-z][a-z0-9_-]{0,63}$/.test(item.id) || reserved.has(item.id) || ids.has(item.id)) fail();
+    ids.add(item.id); output.push(item);
+  }
+  return output;
+}
+function captureContext(input, budget = { bytes: 0 }) {
+  const value = record(input, contextKeys);
+  text(value.sourceToken, 256, budget); text(value.documentRoot, 900, budget);
+  if (value.documentRoot.split('/')[0] === 'docs-standard' || getCreatePathError(`${value.documentRoot}/script.txt`)) fail();
+  value.documentTypes = captureTypes(value.documentTypes, budget);
+  return value;
+}
+function captureRequest(input, context, budget) {
+  const value = record(input, requestKeys);
+  text(value.starterId, 64, budget); text(value.documentType, 64, budget); text(value.sourcePath, 1024, budget);
+  if (!starters.some(starter => starter.id === value.starterId)
+    || !context.documentTypes.some(type => type.id === value.documentType)
+    || !value.sourcePath.startsWith(`${context.documentRoot}/`) || !/\.txt$/i.test(value.sourcePath)
+    || value.sourcePath.split('/')[0] === 'docs-standard' || getCreatePathError(value.sourcePath)) fail();
+  return value;
+}
+function sameContext(left, right) {
+  return left.sourceToken === right.sourceToken && left.documentRoot === right.documentRoot
+    && left.documentTypes.length === right.documentTypes.length
+    && left.documentTypes.every((type, index) => type.id === right.documentTypes[index].id && type.label === right.documentTypes[index].label);
+}
+
+export function listScriptStarters() { return starters; }
+
+export function prepareScriptDraft(context, request) {
+  const budget = { bytes: 0 }, captured = captureContext(context, budget), selected = captureRequest(request, captured, budget);
+  const starter = starters.find(item => item.id === selected.starterId);
+  const proposal = freeze({ format: 'viento-script-draft', schemaVersion: 1, ...captured, ...selected,
+    languageId: starter.languageId, backendId: starter.backendId, content: starter.content });
+  proposals.add(proposal);
+  return proposal;
+}
+
+export function isScriptDraftProposal(value) {
+  return Boolean(value && typeof value === 'object' && proposals.has(value));
+}
+
+export function prepareScriptDraftApply(currentContext, proposal) {
+  if (!isScriptDraftProposal(proposal)) throw error('conflict');
+  let current;
+  try { current = captureContext(currentContext); } catch { throw error('conflict'); }
+  if (!sameContext(current, proposal)) throw error('conflict');
+  const { starterId, languageId, backendId, documentType, sourcePath, content } = proposal;
+  return freeze({ starterId, languageId, backendId, documentType, sourcePath, content });
+}

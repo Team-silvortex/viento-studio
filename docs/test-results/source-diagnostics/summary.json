@@ -1,0 +1,231 @@
+{
+  "date": "2026-10-13",
+  "version": "0.1.0",
+  "baseCommit": "cc3c3b79c292d4d2c2db1edd4b8dae519810b641",
+  "scope": "One read-only diagnostic context after explicit build source navigation; immutable display DTO, shared full-text wrapped viewport reveal and guarded source-focus handoff.",
+  "full": {
+    "tests": 4419,
+    "pass": 4313,
+    "fail": 0,
+    "skipped": 106,
+    "cancelled": 0
+  },
+  "addedTests": 49,
+  "focused": {
+    "tests": 164,
+    "pass": 164,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "focusedTiming": "Before the final author-dialog focus handoff fix; final source-location file passes 36 tests, and full-verified.log covers frozen final source.",
+  "adapterFocused": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "syntaxFiles": 742,
+  "apiContract": "pass",
+  "versionConsistency": "pass",
+  "browser": {
+    "reports": [
+      "browser-1791864433041/report.json",
+      "position-regression-final/report.json"
+    ],
+    "passed": true,
+    "browser": "Chrome/154.0.8037.97",
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "errors": 0,
+    "languages": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "width": 390,
+    "sourceFingerprintsVerified": true,
+    "wrappedSelection": {
+      "top": 2166.5,
+      "bottom": 2184.5,
+      "scrollTop": 1936,
+      "clientHeight": 424,
+      "lineHeight": 28.5,
+      "logicalRow": 22,
+      "textareaWidth": 1107,
+      "selected": "\"invalid speed\"",
+      "visible": true
+    },
+    "layout": {
+      "zh-CN": {
+        "noHorizontalOverflow": true,
+        "panel": {
+          "left": 9,
+          "right": 366,
+          "top": 709.65625,
+          "bottom": 834.65625,
+          "width": 357,
+          "height": 125,
+          "unobscured": true
+        },
+        "editor": {
+          "left": 9,
+          "right": 366,
+          "top": 207.1875,
+          "bottom": 668.65625,
+          "width": 357,
+          "height": 461.46875,
+          "unobscured": true
+        },
+        "dismiss": {
+          "left": 291.984375,
+          "right": 356,
+          "top": 716.65625,
+          "bottom": 744.65625,
+          "width": 64.015625,
+          "height": 28,
+          "unobscured": true
+        },
+        "panelOverflow": false,
+        "labels": "原文诊断：错误\n关闭诊断\n\n角色字段的值不符合要求，请检查标出的位置。\n\ndocuments/scenes/demo.json · /actors/0/speed\n\n原文已修改，此诊断尚未重新检查。\n\n诊断详情"
+      },
+      "en": {
+        "noHorizontalOverflow": true,
+        "panel": {
+          "left": 9,
+          "right": 366,
+          "top": 705.421875,
+          "bottom": 835.421875,
+          "width": 357,
+          "height": 130,
+          "unobscured": true
+        },
+        "editor": {
+          "left": 9,
+          "right": 366,
+          "top": 202.953125,
+          "bottom": 664.421875,
+          "width": 357,
+          "height": 461.46875,
+          "unobscured": true
+        },
+        "dismiss": {
+          "left": 225.625,
+          "right": 341,
+          "top": 712.421875,
+          "bottom": 740.421875,
+          "width": 115.375,
+          "height": 28,
+          "unobscured": true
+        },
+        "panelOverflow": false,
+        "labels": "Source diagnostic: Error\nDismiss diagnostic\n\nAn actor field has an invalid value. Check the indicated location.\n\ndocuments/scenes/demo.json · /actors/0/speed\n\nThe source was edited. This diagnostic has not been checked again.\n\nDiagnostic details"
+      },
+      "ja": {
+        "noHorizontalOverflow": true,
+        "panel": {
+          "left": 9,
+          "right": 366,
+          "top": 704.65625,
+          "bottom": 834.65625,
+          "width": 357,
+          "height": 130,
+          "unobscured": true
+        },
+        "editor": {
+          "left": 9,
+          "right": 366,
+          "top": 202.1875,
+          "bottom": 663.65625,
+          "width": 357,
+          "height": 461.46875,
+          "unobscured": true
+        },
+        "dismiss": {
+          "left": 252.984375,
+          "right": 341,
+          "top": 711.65625,
+          "bottom": 739.65625,
+          "width": 88.015625,
+          "height": 28,
+          "unobscured": true
+        },
+        "panelOverflow": false,
+        "labels": "原文の診断：エラー\n診断を閉じる\n\nアクターのフィールド値が無効です。表示された位置を確認してください。\n\ndocuments/scenes/demo.json · /actors/0/speed\n\n原文が編集されました。この診断はまだ再確認されていません。\n\n診断の詳細"
+      }
+    },
+    "nativeUndoRedo": "verified; editing then undo does not clear pending-recheck state",
+    "saveOnlyChanged": [
+      "documents/scenes/demo.json"
+    ],
+    "preservedBom": true,
+    "onlyCrlf": true
+  },
+  "fixedRegressions": [
+    "Source navigation used logical-row times line-height despite wrapping; shared adapter now measures the full text including words after the target.",
+    "Source activation focused repeatedly before the modal closed; explicit focus option propagates through activation, edit mode and input mode.",
+    "Deferred focus could set a verified range on a replacement source; check ownership, busy state, modal state and subsequent user interaction before and after focus.",
+    "390px translated toolbars squeezed the diagnostic panel and editor; scoped flex/scroll rules preserve both."
+  ],
+  "testUpdates": "Author dialog handoff regression reproduces before fix; 36 source-location host tests and both browser flows pass after fix. Crash-worker fixture now remains alive until parent SIGKILL, exits on parent disconnect, and adds a delayed-observer regression (22 transaction tests pass); production transaction code unchanged. Existing behavior diagnostic adapter expectation extended with the independent scalar display descriptor, preserving complete original location; cross-VM data compared as plain snapshots. Initial failing logs retained.",
+  "resources": "resources.json",
+  "moduleCount": 19,
+  "declaredCapabilityCount": 36,
+  "atlas": {
+    "architecture": 11,
+    "function": 110,
+    "implementation": 288,
+    "bindings": 433,
+    "cells": 1732,
+    "dependencies": 286,
+    "workflows": 73
+  },
+  "preserved": {
+    "historicalEvidenceFiles": 6198,
+    "oldAtlasCells": 1716,
+    "coreWasmSha256": "47ca1f48b07a5e9dc6a02052860b2ddc633fc92dd20e14f1139ba761fd446e0f",
+    "version": true
+  },
+  "notClaimed": [
+    "Full workspace problem list",
+    "Continuous or automatic checking",
+    "LSP",
+    "New language or backend execution",
+    "Installed Tauri or other WebView acceptance",
+    "Android build-workbench entry or device acceptance",
+    "Operating-system IME candidate window"
+  ],
+  "sourceSha256": {
+    "docs/ARCHITECTURE.md": "0c454f783b4b50215ba8ef811cf0ad786fca1e7abf468ee5a37eb2e54043523b",
+    "docs/PROJECT_BUILD.md": "6534a7f83566803a1cedab9a5452762c74388c7c72e295f80539541ff5c3f8c8",
+    "docs/PROJECT_WORKFLOW.md": "c488bb38b6fdca7cdbf01b5d43fcbe88d7da9f0596d1bffa5c52a60d8f870f6d",
+    "docs/ROADMAP.md": "cedfb1c93eb4d562a2cfcdac342686007b9660174b322a29c4e40eceb9219d68",
+    "docs/SCENE_BEHAVIORS.md": "abb5a266265a034c34067b84ffe2da05136f71f01a991fdffe6a50f095dd9c64",
+    "docs/STATUS.md": "ab8d289541a68bd7f8741708df4e8a7de022d980e62700cb17f6c915ba8d8551",
+    "engine/README.md": "4557a495ae3edeec6c036c00230b4f373399e35eca1ce14c97b87f810c545438",
+    "engine/source-diagnostic.mjs": "5060a7cddc502fb3e4a664914ec01257afb299ffa2ef9ce6fbc11812ac492e90",
+    "scripts/tests/editor-harness.mjs": "93497aaa6c18ad82c329dc2e81d2af7a138ccaff6f291a02d037ae545e40cef1",
+    "scripts/tests/project-build-ui.test.mjs": "8be331693151d45d7c354c568e5703c2a060a6600d35a727b6b5a326f4856503",
+    "scripts/tests/scene-behavior-ui.test.mjs": "e65a333d321e7bb0437ba510c5a0b5fe447f7c4b2835e0179b48f846e4300bc6",
+    "scripts/tests/scene3d-navigation-source-host.test.mjs": "90d349b07c931f42f64ea952275df9c682de8ffab269a5e431d56e236a4b0570",
+    "scripts/tests/source-diagnostic-smoke.mjs": "850f74963b20f69cc4b7140c2f56918c72f3636fb47a63e219964ce564db91d4",
+    "scripts/tests/source-diagnostic-ui.test.mjs": "46bb248dae44a99f9ba5fa0763940cc489a142fefc4028eb0f0cd98f638858e9",
+    "scripts/tests/source-diagnostic.test.mjs": "2dbcf4706c3cf980b8e3f1c18c224fc0100143f0686f2ca80f12ab58ef892b6c",
+    "scripts/tests/source-location-ui.test.mjs": "0c11b5574da306312ac58519b47036315f36a103624cd5bdab6193e8cd0afc64",
+    "scripts/tests/source-position-ui.test.mjs": "ed4be2e36f9e67e5a5d5f84c39eb0ca20dd09eed851a6f3201220e9235046d92",
+    "scripts/tests/source-reveal.test.mjs": "b322a904122002e3cd4f2412ce19ec837d27953459df80788d8b0d07c0eb2e8e",
+    "scripts/tests/world-transaction-crash-worker.mjs": "3dcd3cd6336602de4c3bf69036d6e73718c79bbd2da48252a83332fca6126e6d",
+    "scripts/tests/world-transactions.test.mjs": "02427bc668beb9b84ec4ba1fe3fcedf1a4293869ed09d08e0ff213dc31afd7c3",
+    "web/i18n/en.js": "846d786dbc0d9d5ec1f4eb6a522ed7ab35b5299acd3f0b30fbe38ce0a75b6b19",
+    "web/i18n/ja.js": "d6abd086c680ef39f754de2e967bdd9a7395a66988e80a35f1023d50401578bd",
+    "web/modules/app-project-build.js": "a5201cf7b8430d481b850451657f7c2b2050235602a64ea9b6e5dc7d17174a3e",
+    "web/modules/app-runtime.js": "6a3ca6b802677048e6d07fe61033af60f51377d76a8da7e418196cc2ca329215",
+    "web/modules/app-source-diagnostic.js": "378ec9944ce4a5273253bde4d685b058ce2c56bb830331564e68a2c6747cc68a",
+    "web/modules/app-source-position.js": "83cd287e97da59b7bcb97208bcf08cb5801ddd3acb2b4e3beceeddf83842e5bb",
+    "web/modules/app-source-reveal.js": "7c301fce690ef928446c0503f209d215ecd5f3d5c98ef98e31ef3996e7e2fa8b",
+    "web/source-diagnostic.css": "a828c9e3715289ea58cc3368d53f1874e1c2f357ee5c85aefa0c1bd479ed011f"
+  }
+}

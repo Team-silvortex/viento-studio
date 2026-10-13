@@ -1,6 +1,6 @@
 # 可移植引擎
 
-0.1.0 的独立 3D 作者接口分别覆盖变换、对象结构、环境、属性、整体移动、参照对齐、等距分布、批量复制和批量移除。九个可选 Rust 能力经可移植私有提案与文档来源守护接到独立界面；只更新原文草稿，普通保存保持持久权威。只读预览、数学与 GPU 适配不取得这些作者接口。当前 17 模块、33 项声明能力；交付与历史验证条件见[版本记录](../docs/RELEASE_0.1.0.md)。
+0.1.0 的独立 3D 作者接口分别覆盖变换、对象结构、环境、属性、整体移动、参照对齐、等距分布、批量复制和批量移除。九个可选 Rust 能力经可移植私有提案与文档来源守护接到独立界面；只更新原文草稿，普通保存保持持久权威。只读预览、数学与 GPU 适配不取得这些作者接口。0.1.0 发布时为 17 模块、33 项声明能力；之后的行为编辑、首次行为创建及独立脚本创建使当前工作树增至 19／36。交付与历史验证条件见[版本记录](../docs/RELEASE_0.1.0.md)。
 
 `studio-modules.mjs` 提供固定系统模块注册与增量需求规划：描述符、依赖、提供者和 API 版本确定性检查，不读取 DOM／文件／网络或执行引擎。模板的 `studioProfile` 只请求能力，普通文档继续可用；模块装配状态和宿主执行权限分开，见[系统边界](../docs/STUDIO_MODULES.md)。
 
@@ -51,6 +51,9 @@
 - `scene-model.mjs`：`resolveScene2DModel` 解析 Scene2D v1／v2／v3、投影有效值和依赖，返回对应版本的模型与文件／修订／字段范围；v2 以 `instanceId` 区分同一定义的多个实例，`objectId` 继续引用登记文档。登记恢复模式不重读投影语义，仅 v1 保留历史重复键／索引预算兼容。
 - `build-plan.mjs`：`scene2DModelToPlan` 将作者 v1 发射为 plan v1、作者 v2／v3 发射为 plan v2；旧 DTO 保持原样，v3 分组从运行计划剔除，`createScene2DPlan` 保留原入口，并在场景明确关联有效行为清单时组合 plan／runtime 3；没有行为时旧计划逐字段不变。几何来源附加信息不进入冻结计划，能力与 Godot 适配分离。冻结资源、构建与运行属于 Node 适配层，见 [二维场景构建](../docs/PROJECT_BUILD.md)。
 - `scene-behaviors.mjs`：识别并严格检查注册行为清单、场景实例、TXT 源码、标量参数与信号声明；解析明确 `behavior` 关系，派生并核验资源包依赖，生成可冻结的行为 DTO。无 Node／DOM／Godot 调用，不执行或解析 GDScript；静态预览继续只消费几何模型。当前格式与预算见[场景行为](../docs/SCENE_BEHAVIORS.md)。
+- `script-authoring.mjs`：`listScriptStarters()` 返回冻结的空 Node 与参数／信号示例；`prepareScriptDraft(context, request)` 接受 `{ sourceToken, documentRoot, documentTypes: [{ id, label }] }` 和 `{ starterId, documentType, sourcePath }`，仅允许正文目录内可迁移的 TXT 路径与当前工程类型。提案深冻结并带私有品牌；`isScriptDraftProposal`／`prepareScriptDraftApply(currentContext, proposal)` 拒绝克隆、序列化及会话／目录／类型目录变化，返回普通新建草稿所需数据。语言与后端标识不授予执行能力，不读取文件、创建 UUID、改项目模板或关联场景；普通保存负责登记，未来语言服务另经独立文档接口接入。见[内置脚本创建](../docs/SCENE_BEHAVIORS.md#内置脚本创建)。
+- `scene-behaviors-edit.mjs`：已有行为清单的私有审阅提案、稳定绑定身份及保真草稿补丁；复用无浏览器第三方依赖的 JSON 源码索引，固定场景／后端／语言，未知格式停止表单改写。依赖核对、编辑会话、普通保存与执行各属宿主接口，不新增 Rust ABI。
+- `world-behavior-create.mjs`：已保存 Scene2D v2／v3 首次启用行为的纯规划，复用严格声明、依赖和完整构建计划校验。调用者提供稳定文档／绑定 UUID，生成新正文、新登记和既有场景登记追加的三文件计划；冻结只读依赖证据供宿主恢复，原场景与脚本源码保持。核心不硬编码执行引擎；界面首入口限定 Godot／GDScript 单绑定，持久化和执行由各自宿主处理，通用 `relation.add` 不增加 `behavior` 权限。
 
 - `backend-capabilities.mjs`：校验并分离冻结 `viento-execution-backend` schema 1 纯数据描述符；分别判断七种执行操作、平台、plan kind／schema 和功能需求。没有 Godot 回退、工具探测或进程调用；描述符格式／字段或操作不合法时拒绝，UI 的 `canExecuteBackend` 失败时返回 `false`。宿主注册表与具体引擎实现见[执行后端中间层](../docs/BACKEND_MIDDLEWARE.md)。
 - `scene-control-program.mjs`：分离并深冻结严格方向布尔程序；schema 1 保留全局输入，schema 2 每步按冻结 plan 2 实例 UUID 独立输入，未列实例释放，重复／未知目标拒绝且输入总行数至多 1024。核对 1–64 步、`0 < fixedDelta <= 0.25` 秒、总时长 8 秒、最后全释放及演员 × 步数 1024 联合预算；逐行准入协议 1／2 完整步骤样本与生命周期，回调按原顺序进入既有事件读取器和观察。没有 I/O、引擎句柄或移动模拟，见[有限控制回放](../docs/RUNTIME_CONTROL.md)。
@@ -205,6 +208,48 @@ Android 预览宿主已接入：`mobile/platform.mjs` 在 WebView 中复用本�
 ## 独立 3D 原始表示
 
 `scene3d.mjs` 的 `parseScene3DSource(content)` 返回冻结的 `{ model, sourceLocations }`；独立可选 `viento_core_scene3d_version() === 1`、`supportsStudioCoreScene3D()` 和 `dispatchStudioCoreScene3D()` 提供 `scene3d.parse`。Rust 校验严格作者结构、预算、稳定身份、相机／灯光与裁剪约束，并定位原始对象 UTF-16 范围。`createScene3DPlan(content)` 派生独立 `kind: 'scene3d'` schema 1 计划；纯层没有 DOM、文件或具体引擎依赖。原文仍为普通文档保存权威，GUI 的 WebGL2 和 Godot 导出适配分别消费同一模型／计划。原 2D 格式、创作域和执行协议不变。规则见[3D 初步接入](../docs/SCENE3D.md)。
+
+### 3D 双指导航接口（0.1.0 之后的工作树）
+
+纯函数 `touchCamera(camera, startPoints, currentPoints, viewport, distanceLimit = 200000, distanceMinimum = 0.01)` 返回分离、冻结的临时相机或 `null`。每组触点为两个局部 CSS `[x, y]`，`viewport` 使用 CSS `width/height` 与实际绘图缓冲 `aspect`。两组间距均至少 4px；有效相机基底直接按正比例缩放，不经 Euler 轨道的俯仰限制，再复用 `panCamera` 使起始两指中心的目标深度世界点落到当前中心。锚点修正使用实际可表示且受限的距离比例；保持原方向、可选 `up`、FOV 和裁剪声明。非法／退化输入、溢出、不可表示缩放与明显精度损失拒绝整个结果，不修改输入。规则同时适用透视与正交；透视其他深度仍按自身深度产生视差。
+
+渲染器只有在两个明确的 touch 指针组合时升级手势，任一触点累计移动超过 4 CSS px 后开始。同一浏览器动画帧内先合并两指最新坐标，成功绘图后再更新相机和触点基准，避免缩放限幅下两个移动事件的先后顺序改变纯平移尺度；取景的临时距离边界沿用既有聚焦／缩放规则。平移和缩放形成一个完整候选，一次最终绘制；预检拒绝不改变旧相机，实际绘图失败另外清除命中帧与视图回执。任意抬指／取消／捕获丢失、第三触点或混合输入，以及滚动、尺寸／模型／模式／焦点变化或滚轮都会结束整次手势，不降级为残留单指点选或拖动。正常抬指先提交最后一批待处理的有效位移；取消、视口／模式／模型变更、重置、滚轮、销毁或上下文丢失则丢弃待处理输入并取消排帧，晚回调核对手势会话后才可执行。调度只由输入触发，不轮询；缺少帧调度的适配环境可同步执行，鼠标和单指路径保持。
+
+`supportsTouchNavigation: true` 是渲染器本地只读提示，界面据此显示三语说明，不是 Studio 声明能力。数学没有 DOM，渲染器没有作者原文或保存接口，UI 不维护触点状态。鼠标和单指路径保留，没有新模块、Rust ABI、作者 schema 或后端协议；双指旋转、惯性与对象变换仍未接入。用户操作与各项验证范围见[双指导航](../docs/SCENE3D.md#双指导航010-之后的工作树)。
+
+### 3D 坐标方向观察接口（0.1.0 之后的工作树）
+
+纯函数 `orientationAxes(camera)` 仅消费有效相机基底，返回冻结的三项数组或 `null`。每项为 `{ axis: 'X' | 'Y' | 'Z', x, y, depth }`，分别对应正轴在屏幕右方向、屏幕向下方向及观察者方向的分量；`depth > 0` 表示朝向观察者。结果与 FOV、投影和作者语义无关，整体平移或改变镜头距离不改变方向；显式临时 `up` 保持精确极点与自由滚转的一致性。
+
+`createScene3DRenderer` 的可选 `onViewChange(receipt)` 在完整成功帧后发布深冻结的 `{ camera, projectionMode }`，相同视图不会重复通知。相机字段、position/target 和可选 up 都与内部状态分离；没有源字节、模型、对象或编辑权限。有效画面失效、上下文丢失或销毁时发布 `null`，重复失效通知去重。观察者异常被隔离，不能把成功绘制改为失败或阻止资源释放。
+
+独立 `createScene3DOrientationIndicator(container, { t })` 使用 `container.ownerDocument` 创建被动 SVG，返回冻结的 `{ update(camera), refresh(), dispose() }`。有效更新显示三根正轴，非法值隐藏；`refresh()` 只翻译固定词说明，`dispose()` 删除自身 SVG 并拒绝后续更新。轴组按深度排序，端点用实心／空心辅助区分朝向，固定 `+X/+Y/+Z` 标签在极点或共线时仍可分辨；颜色不是唯一标识。容器使用三语 `aria-label`，不设置 live 区域，不拦截指针。
+
+预览入口保存所属渲染器的有效回执并守护当前会话；关闭、失效或无 GPU 时隐藏，无效草稿保留最后有效画面的朝向。组件不读取渲染器、不轮询、不重新解析原文，也不接入作者、保存或后端接口。它是方向观察提示，不提供点击方向、对象操纵、测量或网格。操作与专题证据见[坐标方向提示](../docs/SCENE3D.md#坐标方向提示010-之后的工作树)。
+
+### 3D 正交投影视图接口（0.1.0 之后的工作树）
+
+`cameraProjection4(camera, aspect, projectionMode = 'perspective')` 返回冻结的 16 元素列主序投影矩阵或 `null`，不包含 `lookAt4`。只接受 `perspective/orthographic`；透视路径保留既有 `perspective4` 的逐项输出。正交高度为 `2 * distance * tan(FOV / 2)`，宽度为高度乘实际绘图缓冲比例，沿右手 OpenGL 约定使用原 near/far。因此切换模式保留目标深度的显示中心和尺度，其他深度的尺寸会按投影规则改变。
+
+`frameCamera(camera, object, aspect, projectionMode = 'perspective')` 与 `frameSceneCamera(camera, objects, aspect, projectionMode = 'perspective')` 按当前模式框定旋转几何。正交距离采用 `max(2 * radius, 1.2 * radius / (tan(FOV / 2) * min(1, aspect)))`，保持方向与临时 `up`，另生成安全近／远裁剪。`panCamera` 的签名与规则不变：目标深度尺度在两种模式一致，正交下所有深度的屏幕位移相同。数学层不取得 DOM、作者文本、宿主或执行后端。
+
+渲染器可选 `setProjectionMode('perspective' | 'orthographic')` 返回布尔值，当前状态由 `snapshot().projectionMode` 显式报告。切换保留临时 camera、聚焦距离边界、选择和拖动方式，停止旧手势，并在矩阵与实际 Float32 上传预检后提交；绘制失败恢复原模式，部分绘图失败另使命中帧失效并报告。普通绘图、点选、选择提示及模式相关聚焦使用相同的矩阵生成路径。重置或换模型恢复作者 camera 并保留投影模式，关闭重开预览恢复默认透视。
+
+投影模式不写入作者 schema、原文、元数据、保存、构建计划或 Godot 导出，没有新增 Rust ABI、模块、声明能力或后端协议。实际用户边界与专题证据见[正交观察](../docs/SCENE3D.md#正交观察010-之后的工作树)。
+
+### 3D 临时镜头平移接口（0.1.0 之后的工作树）
+
+`web/modules/scene3d-math.js` 的 `panCamera(camera, deltaX, deltaY, { width, height, aspect })` 是纯视图函数，返回分离、冻结的相机或 `null`。位移与 `width/height` 使用 CSS 像素，`aspect` 使用实际绘图缓冲宽高比。函数在当前相机基底内同时平移位置和目标，使目标深度处的几何跟随指针；正交模式下所有深度采用相同屏幕位移。保持原方向、距离、FOV、near/far 和可选临时 `up`；零拖动返回分离的无变化结果。它不使用作者坐标上限或普通轨道默认距离边界。非法输入、溢出、消失的拖动与明显精度损失拒绝整次计算；远坐标小物体允许正常舍入。
+
+渲染器可选 `setDragMode('orbit' | 'pan')` 返回布尔值，模式由 `snapshot().dragMode` 显式报告。模式切换取消旧手势，模式本身不改相机；Shift 左键／中键在按下时选择一次性平移。平移不发出点选或聚焦回调，保留已有聚焦的距离边界与裁剪，先检查实际 Float32 上传再绘制；失败恢复上次相机，部分绘图失败另使命中帧失效并报告。模式在重置或换模型时保留，关闭重开预览恢复默认旋转；手势和临时相机都不进入作者模型。
+
+这组接口位于已有只读预览边界，没有新增 Rust 操作、作者格式、系统能力或后端协议。操作与专题证据见[临时镜头平移](../docs/SCENE3D.md#临时镜头平移010-之后的工作树)。
+
+### 3D 标准方向的视图接口（0.1.0 之后的工作树）
+
+纯视图数学 `standardViewCamera(camera, direction)` 只接受 `front/back/left/right/top/bottom`，返回分离、冻结的相机或 `null`；临时 `up` 为显式三元向量。俯视为+Y侧／上方−Z，仰视为−Y侧／上方+Z，其他方向上方+Y。`lookAt4(position, target, up)`、对象／整景聚焦和 `orbitCamera` 共用该基底；没有显式up的作者相机保持原世界Y轨道与极点拒绝。带up的轨道使用屏幕局部轴连续旋转，零旋转缩放保持精确极点，聚焦结果与renderer快照复制up以隔离外部修改。
+
+GPU适配器的可选 `setViewDirection(direction)` 返回布尔值，使用全部当前有效对象与实际绘图缓冲比例取景，保持FOV、身份选择和作者模型。它与 `focusAll()` 共享相机、临时裁剪、缩放范围和失败回滚；旧手势撤销，部分绘图失败清除命中帧并通知原错误端口。重置或新模型恢复作者相机，不保留临时up。标准方向专题最初仅覆盖透视；当前通过独立 `projectionMode` 选择透视或正交。作者 schema 不增加 up 或投影模式，也没有新的 Rust ABI、模型语义、宿主或执行权限。用户操作与实际验证见[标准方向](../docs/SCENE3D.md#标准观察方向010-之后的工作树)。
 
 <a id="3d-只读浏览导航未发布增量"></a>
 
@@ -475,4 +520,26 @@ dispatchStudioCoreScene3DAlignmentPatch({
 
 `scene3d-removal.mjs`提供`createScene3DRemovalProposal(source, { instanceIds })`、`isScene3DRemovalProposal()`及`prepareScene3DRemovalApply(source, proposal, { digest })`。五字段来源在await前分离；第九私有WeakSet品牌和深冻结提案有11键：`kind: 'scene3d-removal'`、`sourcePath`、`sourceToken`、`baseSourceRevision`、`sourceRevision`、`instanceIds`、`beforeContent`、`afterContent`、`changedPaths`、`removedObjects`、`remainingObjects`。前者为源序待删对象，后者为全部源序幸存对象。准备核对摘要／身份／修订并重算完整补丁；宿主等待后复核会话和审批，才更新草稿，普通保存处理磁盘和冲突。旧八域及克隆不授予本域权限，没有无变化审批。
 
-`org.viento.scene3d-removal`仅依赖文档模块，贡献`scene.authoring.removal3d`并装配独立`scene3dRemoval`来源端口。当前17模块、33项声明能力；预览、schema、2D、执行后端及旧八作者域保持，用户步骤见[批量移除](../docs/SCENE3D.md#批量移除对象未发布增量)。
+`org.viento.scene3d-removal`仅依赖文档模块，贡献`scene.authoring.removal3d`并装配独立`scene3dRemoval`来源端口。该移除专题当时为17模块、33项声明能力；预览、schema、2D、执行后端及旧八作者域保持，用户步骤见[批量移除](../docs/SCENE3D.md#批量移除对象未发布增量)。
+
+### 可选距离雾（0.1.0 之后的工作树）
+
+作者 schema 1 与独立 scene3d plan 1 允许可选 `fog: { color, density }`，其中 color 为六位 hex，density 是 `0..1` 的每场景单位衰减系数。缺省或零关闭；不改变模板包，不隐式填充旧模型。`supportsStudioCoreScene3DFog()` 检查独立 `viento_core_scene3d_fog_version() === 1`。含雾解析及雾修改需要该能力，原环境能力保持可用。
+
+`scene3d.patchEnvironment` 接受完整的 `values.fog`。首次插入在已验证的根对象结束括号前追加规范组件，变化路径为 `/fog`；已有组件仅改 `/fog/color`、`/fog/density` 净变化叶值。桥接层对新增片段做精确定位和内容绑定，剥离该片段后复用旧 token／间隙清单检查，再核对重解析模型；其余字段与原字节仍受原规则保护。before／afterEnvironment 仅在模型实际有雾时带 fog。普通保存、来源修订和审批守护沿用已有环境域。
+
+密度按 `1 - exp(-density * distance)` 作用于物体表面。WebGL2 与 Godot 分别适配，核心没有渲染／时间／宿主权限；距离来自当前镜头，不写回作者相机。格式、编辑步骤与实测边界见[距离雾](../docs/SCENE3D.md#距离雾)。
+
+### 通用粒子场（0.1.0 之后的工作树）
+
+`supportsStudioCoreScene3DParticles()` 检查可选 `viento_core_scene3d_particles_version() === 1`。scene3d schema 1／plan 1 的可选 `particleField` 具有完整 center／extent／velocity／size／color／count／seed，严格拒绝额外或缺失字段。缺省保持缺省，count=0 关闭。
+
+`prepareScene3DParticleField(field)` 调用 `scene3d.prepareParticleField`，返回冻结 `{field, phases}`。phases 为 count×3 的精确 float32 数组；Rust 以 seed XOR 0x9e3779b9（零状态改用 0x6d2b79f5）运行 u32 xorshift32 13/17/5，每分量取高24位除以16777216。`sampleScene3DParticleField(field,timeSeconds)` 调用 `scene3d.sampleParticleField`，返回冻结 `{timeSeconds, offset}`，时刻限 0–3600；偏移为各轴 `(velocity*time/extent).rem_euclid(1)`。归一化坐标为 `fract(phase+offset)`，位置为 `center+extent*(coordinate-.5)`。桥接验证回执，不提供缺能力的 JS 采样替代。
+
+两个纯操作的回复容器为 `scene3dParticles`；不取得时钟、I/O 或渲染权限。宿主拥有时刻，GPU 适配器负责实例绘制。环境补丁接受完整 `values.particleField`；首次规范插入路径 `/particleField`，已有组件只替换净变化叶值。与雾同时新增时按 fog、particleField 顺序插入；桥接先绑定规范插入片段，再验证原 token／间隙及重解析模型，其余字节不变。字段范围和交互见[通用粒子场](../docs/SCENE3D.md#通用粒子场)。
+
+`source-indentation.mjs` 提供与语言和浏览器无关的规范 LF 原文缩进规划、UTF-16 选区映射及初始缩进提示。DOM 层采用原生文本事务以沿用撤销，普通正文保存保留原有序列化和冲突处理；不自动格式化或执行脚本。
+
+`source-position.mjs` 的 `createSourceLineIndex(text)` 接受至多 4 Mi UTF-16 码元的规范 LF 文本，返回冻结的 `length`、`lineCount`、`position(offset)` 和 `lineRange(line)` 接口。位置从 1 开始，偏移及列使用 UTF-16；首个 BOM 不计列，第一行可导航起点越过 BOM。换行符属于前一行，末尾 LF 产生可定位的空行。索引内部保存有界行起点，查询不暴露可变存储，非法输入返回 `source_position_invalid`；不读取文档、DOM、保存状态或后端。
+
+`source-diagnostic.mjs` 的 `createSourceDiagnosticSnapshot(input)` 返回脱离输入对象的冻结展示快照：来源路径、字段、修订、代码、级别、消息键、原始详情和定位状态。仅 `exact` 状态可携带已转换的 LF／UTF-16 范围；输入只允许普通数据属性，各字段有独立预算，不接受构建任务、访问器、函数或执行权限。它不计算源码摘要或判断错误是否解决：版本及字符边界由来源宿主核对，视图另核对当前文本范围。首次面板消费者见[诊断说明](../docs/SCENE_BEHAVIORS.md#原文诊断上下文)。

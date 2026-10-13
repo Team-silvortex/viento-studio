@@ -6,7 +6,7 @@
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.0 版本记录](RELEASE_0.1.0.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.1 版本记录](RELEASE_0.1.1.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 

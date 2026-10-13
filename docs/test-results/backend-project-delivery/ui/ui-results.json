@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "scope": "Delivery controller and entrypoint DOM/transport contract tests with existing backend project and catalog UI regressions; real browser layout, native picker, filesystem and archive verification are separate",
+  "tests": 53,
+  "passed": 53,
+  "failed": 0,
+  "skipped": 0,
+  "newDeliveryTests": 16,
+  "checks": [
+    "exact reviewed build/snapshot/manifest binding",
+    "late prepare/cancel/close/dispose/stale identity revocation",
+    "strict fileName/jobID/counts/review receipt validation",
+    "repeated downloads keep frozen job; browser handoff uses service TTL to avoid GET admission race",
+    "native request ID binding and retryable cancellation; close blocked and dispose deferred during picker",
+    "no author source/draft saves",
+    "Chinese English Japanese labels and status/error changes",
+    "legacy inspection/select permissions unchanged"
+  ],
+  "files": {
+    "web/modules/app-backend-project.js": "cd3115bddc5bd18d320d894cee7c995904ce1c80aa23078ad5dc3332452d2a67",
+    "web/modules/app-backend-project-delivery.js": "7e72c7fbf575cbe9e7bb44601210f9313f25cfb4c78d8837cc1627fc7a3fcc01",
+    "web/i18n/en.js": "d4e9b4112b2bedb360ce3b6795ee74a06f6599a09249c9821ebb2e85e181c444",
+    "web/i18n/ja.js": "fcb9a1e8c19bb7282843afe99424201fc72f3799e72b096ae8e7f0483845e98b",
+    "web/project-build.css": "3deb4626375a381c8e788517cda1b72aabb18f84840e75d192ba28717dcf7df2",
+    "scripts/tests/backend-project-delivery-ui.test.mjs": "7bb8ce040dbc85c9f81805c620b71dd5fb9cbf53aa947c5c75379ff7b8c93763"
+  },
+  "proof": {
+    "ui-tests.tap": "d28f7285087d8c0a949ac69664943d0e34dc029415298f99eed41b2d550ade7c"
+  }
+}

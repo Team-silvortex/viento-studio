@@ -214,3 +214,17 @@
 .scene-composition-definitions-targets p { margin: .35rem 0; }
 .scene-composition-definitions-targets pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .85rem; }
 #sceneCompositionDefinitionsActorFields { border: 0; margin: .75rem 0 0; padding: 0; min-width: 0; }
+
+.backend-delivery { width: min(860px, calc(100vw - 24px)); }
+.backend-delivery .backend-project-facts dd { overflow-wrap: anywhere; min-width: 0; margin-inline-start: 0; }
+.backend-delivery .backend-project-files { max-height: 36dvh; overflow: auto; padding-inline-start: 22px; }
+.backend-delivery .backend-project-files p { margin-block: 4px; overflow-wrap: anywhere; font-size: 12px; }
+.backend-delivery footer { margin-top: 18px; }
+.backend-delivery .doc-btn { max-width: 100%; white-space: normal; }
+@media (max-width: 600px) { .backend-delivery .backend-project-facts { grid-template-columns: minmax(0, 1fr); } .backend-delivery .build-heading h2 { font-size: 23px; } }
+
+/* Keep return, status and delivery actions visible while long inventories scroll. */
+.backend-delivery[open] { display: flex; flex-direction: column; overflow: hidden; }
+.backend-delivery-body { min-height: 0; overflow: auto; }
+.backend-delivery .build-heading, .backend-delivery .build-actions { flex: 0 0 auto; }
+.backend-delivery #backendDeliveryStatus, .backend-delivery #backendDeliveryError { flex: 0 0 auto; overflow-wrap: anywhere; }

@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-12**。源码版本 **0.1.0**；审查基线为提交 `3a91e84a5cd543ebb4a6f416f727c544cf9ff083`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-13**。源码版本 **0.1.1**；审查基线为提交 `cc3c3b79c292d4d2c2db1edd4b8dae519810b641`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -19,14 +19,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 96 |
-| 实现单元（含规划占位） | 239 |
-| 已审查实现关系 | 373 |
-| 显式评分单元 | 1492 |
-| 语义依赖边 | 252 |
-| 工作流切片 | 59 |
+| 功能 | 110 |
+| 实现单元（含规划占位） | 288 |
+| 已审查实现关系 | 433 |
+| 显式评分单元 | 1732 |
+| 语义依赖边 | 286 |
+| 工作流切片 | 73 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 1437 |
+| 引用并校验指纹的文件 | 1597 |
 
 ## 评分锚点
 
@@ -156,6 +156,20 @@
 | 来源选择／新UUID／共同位移→整批检查→完整审阅→一次草稿应用→普通保存／冲突 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D多对象原文保真批量复制](#scene.copy_authoring3d) | 零偏移仍创建副本；所有原声明不变，新副本仅身份和净位置变化。一项失败整批拒绝，来源归属守护只授权草稿。 |
 | 显式来源选择→整批移除检查→删除／保留声明与完整原文审阅→一次草稿应用→普通保存／冲突 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Studio 系统装配与工程增量能力需求](#studio.system_modules) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D多对象原文保真原子批量移除](#scene.removal_authoring3d) | 至少保留一个对象；全选、重复、未知或空选择整批拒绝。删除路径沿用原声明索引，保留声明与区间外字节不变；来源归属与私牌守护只授权草稿。 |
 | 有效预览→全场景取景→筛选与单对象浏览→重置作者相机 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D对象检索、临时聚焦与原文定位](#scene.navigation3d) → [3D全场景临时取景](#scene.framing3d) | 始终只操作临时视角，保留正文、选择和保存基线；无效草稿继续查看最近有效模型。 |
+| 有效预览→六方向取景→极点交互与对象选择→恢复作者相机 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D对象检索、临时聚焦与原文定位](#scene.navigation3d) → [3D全场景临时取景](#scene.framing3d) → [3D六向标准观察与极点导航](#scene.standard_views3d) | 始终操作临时视图，保留作者原文、元数据、筛选和身份；up不进入作者格式。 |
+| 有效预览→旋转／平移模式→镜头平移与选择隔离→恢复作者相机 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D对象检索、临时聚焦与原文定位](#scene.navigation3d) → [3D六向标准观察与极点导航](#scene.standard_views3d) → [3D临时镜头平移与独立手势模式](#scene.pan3d) | 手势只改变临时位置和目标，保留方向、距离、来源与身份；模式不进入作者格式，普通保存不参与。 |
+| 有效预览→透视／正交切换→六向聚焦与平移点选→恢复作者相机 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D六向标准观察与极点导航](#scene.standard_views3d) → [3D临时镜头平移与独立手势模式](#scene.pan3d) → [3D只读正交观察与模式相关取景](#scene.orthographic3d) | 投影仅属于当前视图，保留来源与身份；目标平面切换尺度一致，其他深度按投影变化，保存和导出不消费模式。 |
+| 有效预览→成功绘图回执→三轴朝向提示→失效与关闭隐藏 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D对象检索、临时聚焦与原文定位](#scene.navigation3d) → [3D坐标方向提示与成功视图观察](#scene.orientation3d) | 被动组件只消费当前有效相机回执与固定词翻译，旋转更新朝向，作者、选择、保存和导出不变。 |
+| 有效预览→双指升级→中心锚定平移与缩放→成功绘图→结束不误选 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [3D对象检索、临时聚焦与原文定位](#scene.navigation3d) → [3D临时镜头平移与独立手势模式](#scene.pan3d) → [3D双指目标平面平移与捏合导航](#scene.touch_navigation3d) | 两触控只改变临时镜头，以真实缩放边界守护目标平面锚点；任意结束不残留单指操作，来源、作者模型和保存不变。 |
+| 可选雾→完整审阅→普通保存→只读绘图／Godot属性核对 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [可组合3D距离雾声明、编辑与引擎适配](#scene.fog3d) | 新增fog显式勾选；作者原文是保存权威，临时镜头只影响当前观察，各引擎独立声明支持。 |
+| 粒子参数→完整审阅→普通保存→确定性时间预览／引擎工程 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立 3D 方块表示、只读 GPU 预览与静态 Godot 导出](#scene.primitives3d) → [通用3D粒子场、雨雪参数与显式时刻预览](#scene.particles3d) | 作者字段是保存权威，播放时刻只属于预览；生成工程和实际引擎验证分别声明。 |
+| 设定→投影→场景→构建→审阅→交付 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [World／Object／Resource 观察投影与查询](#world.query) → [同一 OC 的子模板及多份用途投影创建／编辑](#projection.authoring) → [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [后端派生工程清单、只读核对与服务回收](#backend.project_management) → [后端工程持久列表、冻结选择与旧执行链对接](#backend.project_catalog) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 作者数据与派生工程分别打包；现阶段Scene2D走统一构建目录，独立游戏发行、3D统一交付和LSP仍为待接能力。 |
+| 已有行为清单→实例／脚本／参数／信号→审阅→草稿→保存→构建交付 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [场景实例的GDScript参数、信号与冻结迁移](#behavior.scene_runtime) → [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 表单核对已有声明和登记依赖；应用只更新当前源码草稿，普通保存后再进入既有构建与生成工程交付。新建清单／关联、其他后端作者行为和LSP仍分别待接，编辑验证不代替运行验收。 |
+| 已保存场景→首次声明与关系→可恢复保存→参数／信号编辑→构建→工程交付 | [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [从已保存场景首次创建行为声明与关联](#behavior.creation) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [场景实例的GDScript参数、信号与冻结迁移](#behavior.scene_runtime) → [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 首次创建只提交新声明／登记及场景opt-in，后续编辑仍先草稿后普通保存；核心中立，首界面Godot/GDScript单绑定，不执行脚本、不生成脚本或获得LSP/3D/Android权限。 |
+| 起始脚本→普通草稿保存→首次行为→参数信号→运行→工程交付 | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [从已保存场景首次创建行为声明与关联](#behavior.creation) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [场景实例的GDScript参数、信号与冻结迁移](#behavior.scene_runtime) → [冻结输入、可移植计划与能力检查](#build.snapshot_plan) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 脚本草稿与保存分离；先登记TXT再在首次行为界面选择，绑定关系不由脚本助手自动创建。真实Linux浏览器／Godot验证不等于移动实机或新安装包交付。 |
+| 普通原文→单位与选区→缩进／原生历史→普通保存 | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [通用原文多行缩进与原生撤销](#authoring.source-indentation) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [从已保存场景首次创建行为声明与关联](#behavior.creation) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) | 可从新脚本或任何既有文本进入，不要求行为关联；本轮实测止于普通保存与脚本创建交接，后续行为运行仍引用其独立历史验收。 |
+| 源码→逻辑位置→只读跳转→继续编辑与普通保存 | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [通用原文多行缩进与原生撤销](#authoring.source-indentation) → [通用原文行列位置与只读跳转](#authoring.source-position) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) | 可从任何普通原文进入，不要求脚本创建或缩进；导航不触发保存，脚本生成与后端运行仍有独立验收。 |
+| 显式检查→诊断原文→只读上下文→修改保存→再检查 | [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [源码旁的单条诊断上下文与安全定位](#authoring.source-diagnostic) → [通用原文行列位置与只读跳转](#authoring.source-position) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) | 此次实际静态计划错误；既有引擎执行验收独立。面板保留单条观察，不是全工程问题总表或LSP服务，不自动保存或重新运行。 |
 
 ## 功能与实现切片
 
@@ -1876,7 +1890,263 @@
 
 平台：本机浏览器和桌面源码；实际Chrome显式ANGLE/SwiftShader，默认headless合成异常单独保留、桌面与移动准备副本的纯模块；设备未验收。边界：完整当前有效预览的1–128个方块参与，不受搜索、隐藏选择或当前所选对象影响。；纯数学保守包围、GPU适配和可选界面方法分开；17模块／33能力，无新作者ABI、宿主端口或引擎协议。；取景保持当前观看方向与FOV，临时裁剪及缩放范围独立；重置与成功刷新恢复作者相机。；无效草稿继续查看旧有效模型且保留诊断；取景不会授权原文定位、草稿应用或普通保存。；实际绘图失败清除命中资格并报告绘制中断，校验拒绝不修改相机；细小远物体不承诺像素可辨识。；只验证源码、复制资源与软件WebGL，不提升安装、设备或硬件GPU验收。。
 
-下一步：标准方向需要独立相机上方向及极点导航约定；模型素材、空间层级另行接入。
+下一步：六向标准观察已由独立工作树功能接入；相机平移、正交观察、模型素材和空间层级继续分别推进。
+
+<a id="scene.standard_views3d"></a>
+### 3D六向标准观察与极点导航
+
+`scene.standard_views3d` · 场景与构建 · 源码交付
+
+入口：有效预览→方向选择→临时up与整景取景→极点缩放／拖动／点选→作者相机重置
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **六向临时相机基底与极点连续轨道**；Explicit temporary view basis and six-direction navigation only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-standard-views/results.json](../docs/test-results/scene3d-standard-views/results.json)、[docs/test-results/scene3d-standard-views/browser/browser.json](../docs/test-results/scene3d-standard-views/browser/browser.json)、[docs/test-results/scene3d-standard-views/prepared.json](../docs/test-results/scene3d-standard-views/prepared.json) |
+| 交互与渲染 | **六向临时相机基底与极点连续轨道**；Explicit temporary view basis and six-direction navigation only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-standard-views/results.json](../docs/test-results/scene3d-standard-views/results.json)、[docs/test-results/scene3d-standard-views/browser/browser.json](../docs/test-results/scene3d-standard-views/browser/browser.json)、[docs/test-results/scene3d-standard-views/prepared.json](../docs/test-results/scene3d-standard-views/prepared.json) |
+| 交互与渲染 | **标准方向GPU适配与共享原子取景**；Explicit temporary view basis and six-direction navigation only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-standard-views/results.json](../docs/test-results/scene3d-standard-views/results.json)、[docs/test-results/scene3d-standard-views/browser/browser.json](../docs/test-results/scene3d-standard-views/browser/browser.json)、[docs/test-results/scene3d-standard-views/prepared.json](../docs/test-results/scene3d-standard-views/prepared.json) |
+| 交互与渲染 | **三语方向选择与只读会话守卫**；Explicit temporary view basis and six-direction navigation only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-standard-views/results.json](../docs/test-results/scene3d-standard-views/results.json)、[docs/test-results/scene3d-standard-views/browser/browser.json](../docs/test-results/scene3d-standard-views/browser/browser.json)、[docs/test-results/scene3d-standard-views/prepared.json](../docs/test-results/scene3d-standard-views/prepared.json) |
+
+平台：实际HTTP浏览器与显式ANGLE/SwiftShader软件WebGL2、桌面／移动资源副本纯模块，未验安装或Android设备。边界：前后左右俯仰六向精确观察，透视投影与全部当前有效对象，筛选和选择不缩小范围。；纯数学、GPU适配、三语界面独立，显式up仅属于临时视图；作者schema、Rust、宿主和后端不变。；俯视上方−Z、仰视上方+Z；屏幕局部轴连续旋转，滚轮保持精确方向，reset/refresh恢复作者相机。；失效来源保留最近有效预览与诊断，不授予来源定位或草稿写入权；部分绘图失败撤销命中帧并报告。；254项相关回归、真实Chrome软件WebGL七类流程、520截图像素检查与资源副本分证；无全量／安装／设备新结论。。
+
+下一步：相机平移、正交观察及坐标提示分别定义视图状态；模型素材与空间层级继续独立推进。
+
+<a id="scene.pan3d"></a>
+### 3D临时镜头平移与独立手势模式
+
+`scene.pan3d` · 场景与构建 · 源码交付
+
+入口：有效预览→选择旋转／平移或临时修饰手势→屏幕平面移动镜头→保持选择与原文→恢复作者相机
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **屏幕平面临时相机平移与逐轴精度守护**；Temporary screen-plane camera translation and independent drag-mode handling only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-pan/report.json](../docs/test-results/scene3d-pan/report.json)、[docs/test-results/scene3d-pan/targeted-tests.tap](../docs/test-results/scene3d-pan/targeted-tests.tap)、[docs/test-results/scene3d-pan/browser/browser.json](../docs/test-results/scene3d-pan/browser/browser.json) |
+| 交互与渲染 | **屏幕平面临时相机平移与逐轴精度守护**；Temporary screen-plane camera translation and independent drag-mode handling only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-pan/report.json](../docs/test-results/scene3d-pan/report.json)、[docs/test-results/scene3d-pan/targeted-tests.tap](../docs/test-results/scene3d-pan/targeted-tests.tap)、[docs/test-results/scene3d-pan/browser/browser.json](../docs/test-results/scene3d-pan/browser/browser.json) |
+| 交互与渲染 | **独立拖动模式、修饰手势与GPU平移回滚**；Temporary screen-plane camera translation and independent drag-mode handling only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-pan/report.json](../docs/test-results/scene3d-pan/report.json)、[docs/test-results/scene3d-pan/targeted-tests.tap](../docs/test-results/scene3d-pan/targeted-tests.tap)、[docs/test-results/scene3d-pan/browser/browser.json](../docs/test-results/scene3d-pan/browser/browser.json) |
+| 交互与渲染 | **三语拖动方式切换与只读会话接线**；Temporary screen-plane camera translation and independent drag-mode handling only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-pan/report.json](../docs/test-results/scene3d-pan/report.json)、[docs/test-results/scene3d-pan/targeted-tests.tap](../docs/test-results/scene3d-pan/targeted-tests.tap)、[docs/test-results/scene3d-pan/browser/browser.json](../docs/test-results/scene3d-pan/browser/browser.json) |
+
+平台：HTTP 浏览器／WebGL2 只读视图；实际环境见专题记录、桌面／移动资源副本，未验新安装或 Android 设备。边界：相机与目标一起在当前屏幕平面平移，保持方向、距离、FOV、裁剪和临时 up；目标深度几何跟随 CSS 拖动。；CSS 画布尺寸与实际绘图缓冲比例分开，支持六向和自由视角；溢出、位移精度丢失及 Float32 上传失败拒绝。；setDragMode/snapshot.dragMode 显式报告临时手势模式；Shift 左拖和中键仅对按下时的手势生效，平移不点选或双击聚焦。；纯数学、GPU 手势适配和三语只读界面分开，旧手势停止与绘制失败回滚均不取得作者、保存、World 或执行权限。；专题回归、浏览器与准备副本各自记录实际范围，不将旧证据重标为本轮全量、安装、Android 设备或硬件 GPU 验收。。
+
+下一步：正交观察、坐标提示和多指手势分别定义新边界；作者对象移动、空间层级与模型素材继续独立推进。
+
+<a id="scene.orthographic3d"></a>
+### 3D只读正交观察与模式相关取景
+
+`scene.orthographic3d` · 场景与构建 · 源码交付
+
+入口：有效预览→透视／正交切换→模式相关观察／聚焦／平移→保持作者相机与来源
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **纯投影矩阵与正交旋转几何取景**；Temporary projection matrices, mode-aware framing and read-only projection switching only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-orthographic/report.json](../docs/test-results/scene3d-orthographic/report.json)、[docs/test-results/scene3d-orthographic/targeted-tests.tap](../docs/test-results/scene3d-orthographic/targeted-tests.tap)、[docs/test-results/scene3d-orthographic/browser/browser.json](../docs/test-results/scene3d-orthographic/browser/browser.json) |
+| 交互与渲染 | **纯投影矩阵与正交旋转几何取景**；Temporary projection matrices, mode-aware framing and read-only projection switching only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-orthographic/report.json](../docs/test-results/scene3d-orthographic/report.json)、[docs/test-results/scene3d-orthographic/targeted-tests.tap](../docs/test-results/scene3d-orthographic/targeted-tests.tap)、[docs/test-results/scene3d-orthographic/browser/browser.json](../docs/test-results/scene3d-orthographic/browser/browser.json) |
+| 交互与渲染 | **私有投影模式、共享绘图命中与失败回滚**；Temporary projection matrices, mode-aware framing and read-only projection switching only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-orthographic/report.json](../docs/test-results/scene3d-orthographic/report.json)、[docs/test-results/scene3d-orthographic/targeted-tests.tap](../docs/test-results/scene3d-orthographic/targeted-tests.tap)、[docs/test-results/scene3d-orthographic/browser/browser.json](../docs/test-results/scene3d-orthographic/browser/browser.json) |
+| 交互与渲染 | **三语透视／正交切换与只读会话守护**；Temporary projection matrices, mode-aware framing and read-only projection switching only; no author state, source writes, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-orthographic/report.json](../docs/test-results/scene3d-orthographic/report.json)、[docs/test-results/scene3d-orthographic/targeted-tests.tap](../docs/test-results/scene3d-orthographic/targeted-tests.tap)、[docs/test-results/scene3d-orthographic/browser/browser.json](../docs/test-results/scene3d-orthographic/browser/browser.json) |
+
+平台：HTTP 浏览器／WebGL2 只读视图；实际环境见专题记录、桌面／移动资源副本，未验新安装或 Android 设备。边界：纯 cameraProjection4 只返回投影矩阵，lookAt 单独负责相机基底；默认透视逐项保持，正交尺度匹配当前目标深度。；模式切换保留临时 camera、目标中心、裁剪、选择、拖动方式和聚焦距离边界，停止旧手势；其他深度尺寸依投影改变。；单对象和整景聚焦按当前投影框定旋转角点，平移接口不变；正交不同深度几何采用相同屏幕位移。；setProjectionMode/snapshot.projectionMode 显式隔离视图状态，Float32 预检与绘制失败回滚不取得作者、保存或后端权限。；重置／成功刷新恢复作者 camera 并保留投影，关闭重开默认透视；不写入 schema、元数据或 Godot 导出。；专题回归、浏览器与准备副本分别记录实际范围，旧证据不重标，不推断全量、安装、Android 设备或硬件 GPU 验收。。
+
+下一步：坐标提示、多指导航与视图状态管理分别定义边界；作者投影格式、模型素材和空间层级继续独立推进。
+
+<a id="scene.orientation3d"></a>
+### 3D坐标方向提示与成功视图观察
+
+`scene.orientation3d` · 场景与构建 · 源码交付
+
+入口：有效绘图→冻结视图回执→纯三轴朝向→被动三语SVG提示→失效隐藏
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **纯相机基底到世界正轴方向**；Pure world-axis orientation, frozen successful-view observation and passive indicator only; no author source, save, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-orientation/report.json](../docs/test-results/scene3d-orientation/report.json)、[docs/test-results/scene3d-orientation/targeted-tests.tap](../docs/test-results/scene3d-orientation/targeted-tests.tap)、[docs/test-results/scene3d-orientation/browser/browser.json](../docs/test-results/scene3d-orientation/browser/browser.json) |
+| 交互与渲染 | **纯相机基底到世界正轴方向**；Pure world-axis orientation, frozen successful-view observation and passive indicator only; no author source, save, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-orientation/report.json](../docs/test-results/scene3d-orientation/report.json)、[docs/test-results/scene3d-orientation/targeted-tests.tap](../docs/test-results/scene3d-orientation/targeted-tests.tap)、[docs/test-results/scene3d-orientation/browser/browser.json](../docs/test-results/scene3d-orientation/browser/browser.json) |
+| 交互与渲染 | **成功视图冻结回执与失效观察隔离**；Pure world-axis orientation, frozen successful-view observation and passive indicator only; no author source, save, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-orientation/report.json](../docs/test-results/scene3d-orientation/report.json)、[docs/test-results/scene3d-orientation/targeted-tests.tap](../docs/test-results/scene3d-orientation/targeted-tests.tap)、[docs/test-results/scene3d-orientation/browser/browser.json](../docs/test-results/scene3d-orientation/browser/browser.json) |
+| 交互与渲染 | **独立被动SVG方向提示与三语无障碍说明**；Pure world-axis orientation, frozen successful-view observation and passive indicator only; no author source, save, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-orientation/report.json](../docs/test-results/scene3d-orientation/report.json)、[docs/test-results/scene3d-orientation/targeted-tests.tap](../docs/test-results/scene3d-orientation/targeted-tests.tap)、[docs/test-results/scene3d-orientation/browser/browser.json](../docs/test-results/scene3d-orientation/browser/browser.json) |
+| 交互与渲染 | **预览所属视图回执守护与三语角落接线**；Pure world-axis orientation, frozen successful-view observation and passive indicator only; no author source, save, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-orientation/report.json](../docs/test-results/scene3d-orientation/report.json)、[docs/test-results/scene3d-orientation/targeted-tests.tap](../docs/test-results/scene3d-orientation/targeted-tests.tap)、[docs/test-results/scene3d-orientation/browser/browser.json](../docs/test-results/scene3d-orientation/browser/browser.json) |
+
+平台：HTTP 浏览器／WebGL2 有效视图与独立 SVG；实际环境见专题记录、桌面／移动资源副本，未验新安装或 Android 设备。边界：orientationAxes 仅使用相机基底，输出冻结正 X/Y/Z 的屏幕右／下分量和朝观察者为正的 depth，独立于投影、FOV 与作者语义。；onViewChange 只发布成功视图的冻结 camera/projectionMode 或失效 null；同状态去重，观察者异常不改变绘图或释放结果。；独立组件使用 ownerDocument，三轴端点按深度排序；正方向标签与颜色同时可辨，空心背向、实心朝向或处于平面，极点及共线标签避免重叠。；约 96px 被动 SVG 不拦截指针，无 live 朗读；三语说明只翻译固定词，不读取作者名称或文本。；会话入口守护所属实例和当前有效画面；无 GPU、失效、失败或关闭时隐藏，无效新草稿仍对应最近有效预览。；无定时轮询、原文重解析、保存、点击方向、对象操纵、测量或坐标网格；不增加 schema、Rust、模块、能力或后端权限。；专题回归、浏览器与准备副本分别保留实际范围，旧证据不重标，不推断全量、安装、Android 设备或硬件 GPU 验收。。
+
+下一步：多指导航、视图状态管理与独立网格分别定义边界；可交互方向控件、测量及对象操纵需要另行设计。
+
+<a id="scene.touch_navigation3d"></a>
+### 3D双指目标平面平移与捏合导航
+
+`scene.touch_navigation3d` · 场景与构建 · 源码交付
+
+入口：有效预览→两触控升级→越过阈值→中心锚定的平移与捏合→成功绘图→整次结束不误选
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **目标平面中心锚定的纯双指相机数学**；Pure target-plane touch camera math, renderer-owned touch lifecycle and conditional UI hint; no author source, save, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-touch/report.json](../docs/test-results/scene3d-touch/report.json)、[docs/test-results/scene3d-touch/targeted-tests.tap](../docs/test-results/scene3d-touch/targeted-tests.tap)、[docs/test-results/scene3d-touch/browser/browser.json](../docs/test-results/scene3d-touch/browser/browser.json) |
+| 交互与渲染 | **目标平面中心锚定的纯双指相机数学**；Pure target-plane touch camera math, renderer-owned touch lifecycle and conditional UI hint; no author source, save, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-touch/report.json](../docs/test-results/scene3d-touch/report.json)、[docs/test-results/scene3d-touch/targeted-tests.tap](../docs/test-results/scene3d-touch/targeted-tests.tap)、[docs/test-results/scene3d-touch/browser/browser.json](../docs/test-results/scene3d-touch/browser/browser.json) |
+| 交互与渲染 | **两触控输入生命周期与单次GPU提交**；Pure target-plane touch camera math, renderer-owned touch lifecycle and conditional UI hint; no author source, save, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-touch/report.json](../docs/test-results/scene3d-touch/report.json)、[docs/test-results/scene3d-touch/targeted-tests.tap](../docs/test-results/scene3d-touch/targeted-tests.tap)、[docs/test-results/scene3d-touch/browser/browser.json](../docs/test-results/scene3d-touch/browser/browser.json) |
+| 交互与渲染 | **按本地渲染支持显示三语触控说明**；Pure target-plane touch camera math, renderer-owned touch lifecycle and conditional UI hint; no author source, save, host IO or execution-backend authority. | 4 / 3 / 3 / 3 | [docs/test-results/scene3d-touch/report.json](../docs/test-results/scene3d-touch/report.json)、[docs/test-results/scene3d-touch/targeted-tests.tap](../docs/test-results/scene3d-touch/targeted-tests.tap)、[docs/test-results/scene3d-touch/browser/browser.json](../docs/test-results/scene3d-touch/browser/browser.json) |
+
+平台：HTTP 浏览器／WebGL2 触控指针流程，具体环境见专题记录、桌面／移动资源副本，未验新安装或 Android 实机。边界：touchCamera 只消费临时相机、两组 CSS 触点、视口尺寸／绘图比例和距离界限；返回冻结相机或 null，不取得 DOM、来源或设备状态。；两组间距至少 4 CSS px，目标深度世界锚点跟随两指中心；使用实际夹取的缩放比例，方向与临时 up 保持，透视其他深度仍有视差。；渲染器只由两个明确 touch 指针升级，任一指累计移动超过 4px 后启动；同一动画帧合并两指最新坐标后一次绘制并更新基准，避免缩放限幅下事件先后造成纯平移尺度漂移，反向捏合立即响应。；平移与缩放作为单次完整候选预检和绘制；失败不部分提交，实际绘图失败清除命中帧与方向回执，既有取景边界保持。超出默认缩放区间的作者视角在本段使用相对距离范围，避免开始双指时跳动；范围在本段固定，已有聚焦范围原样沿用。；任意抬指、取消、丢失捕获、第三指或混合输入及视口／模型／视图变更结束整轮，不降级为残留单指误选；重新主触点才可开始。正常抬指提交末批有效位移；取消／视图变更撤销待处理输入与排帧，晚回调按手势会话守护。只有输入触发排帧，无轮询；无帧调度环境可同步适配。；supportsTouchNavigation 仅为渲染器本地 UI 提示，三语说明按支持显示；鼠标及单指原路径保持，无新按钮、module、声明能力、Rust、schema、保存或后端权限。；无双指旋转、惯性或作者变换；专题记录说明实际范围，不推断 Android 实机、硬件 GPU 或新安装产物验收。。
+
+下一步：视图状态管理、独立网格、双指旋转与惯性分别定义交互边界；模型素材、空间层级与作者变换继续独立推进。
+
+<a id="scene.fog3d"></a>
+### 可组合3D距离雾声明、编辑与引擎适配
+
+`scene.fog3d` · 场景与构建 · 源码交付
+
+入口：环境表单→Rust保真提案→草稿与普通保存→只读预览／Godot工程与实际属性探针
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **Rust距离雾声明与保真补丁**；雾组件声明、来源绑定、渲染和宿主执行分别适配；复用既有环境域，不新增模板或隐式保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-fog/results.json](../docs/test-results/scene3d-fog/results.json)、[docs/test-results/scene3d-fog/browser-aligned/browser.json](../docs/test-results/scene3d-fog/browser-aligned/browser.json)、[docs/test-results/scene3d-fog/godot.json](../docs/test-results/scene3d-fog/godot.json) |
+| 工程定义与格式 | **Rust距离雾声明与保真补丁**；雾组件声明、来源绑定、渲染和宿主执行分别适配；复用既有环境域，不新增模板或隐式保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-fog/results.json](../docs/test-results/scene3d-fog/results.json)、[docs/test-results/scene3d-fog/browser-aligned/browser.json](../docs/test-results/scene3d-fog/browser-aligned/browser.json)、[docs/test-results/scene3d-fog/godot.json](../docs/test-results/scene3d-fog/godot.json) |
+| 可移植 JS 语义 | **雾组件提案与三语环境表单**；雾组件声明、来源绑定、渲染和宿主执行分别适配；复用既有环境域，不新增模板或隐式保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-fog/results.json](../docs/test-results/scene3d-fog/results.json)、[docs/test-results/scene3d-fog/browser-aligned/browser.json](../docs/test-results/scene3d-fog/browser-aligned/browser.json)、[docs/test-results/scene3d-fog/godot.json](../docs/test-results/scene3d-fog/godot.json) |
+| 交互与渲染 | **雾组件提案与三语环境表单**；雾组件声明、来源绑定、渲染和宿主执行分别适配；复用既有环境域，不新增模板或隐式保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-fog/results.json](../docs/test-results/scene3d-fog/results.json)、[docs/test-results/scene3d-fog/browser-aligned/browser.json](../docs/test-results/scene3d-fog/browser-aligned/browser.json)、[docs/test-results/scene3d-fog/godot.json](../docs/test-results/scene3d-fog/godot.json) |
+| 交互与渲染 | **只读WebGL指数雾适配**；雾组件声明、来源绑定、渲染和宿主执行分别适配；复用既有环境域，不新增模板或隐式保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-fog/results.json](../docs/test-results/scene3d-fog/results.json)、[docs/test-results/scene3d-fog/browser-aligned/browser.json](../docs/test-results/scene3d-fog/browser-aligned/browser.json)、[docs/test-results/scene3d-fog/godot.json](../docs/test-results/scene3d-fog/godot.json) |
+| 执行后端 | **Godot原生雾映射与实际属性核对**；雾组件声明、来源绑定、渲染和宿主执行分别适配；复用既有环境域，不新增模板或隐式保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-fog/results.json](../docs/test-results/scene3d-fog/results.json)、[docs/test-results/scene3d-fog/browser-aligned/browser.json](../docs/test-results/scene3d-fog/browser-aligned/browser.json)、[docs/test-results/scene3d-fog/godot.json](../docs/test-results/scene3d-fog/godot.json) |
+| 本机服务与适配 | **Godot原生雾映射与实际属性核对**；雾组件声明、来源绑定、渲染和宿主执行分别适配；复用既有环境域，不新增模板或隐式保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-fog/results.json](../docs/test-results/scene3d-fog/results.json)、[docs/test-results/scene3d-fog/browser-aligned/browser.json](../docs/test-results/scene3d-fog/browser-aligned/browser.json)、[docs/test-results/scene3d-fog/godot.json](../docs/test-results/scene3d-fog/godot.json) |
+
+平台：HTTP浏览器／WebGL2软件GPU实际像素、Godot4有限无头属性探针、桌面／移动资源副本，未验安装或Android实机。边界：可选fog颜色／密度组件直接属于场景，不按游戏类型细分模板；旧场景不自动添加。；Rust负责schema1增量与原文修改，可选能力独立；共享提案和现有环境编辑器守护来源、审阅和草稿应用，普通保存独立。；WebGL2按当前临时相机的径向距离绘制指数雾，背景独立、选择边缘可读；Godot使用原生Environment并核对实际属性。；不包含时间采样、雨雪粒子、天气玩法订阅、3D Bevy 或跨引擎像素等价；本轮仅源码与资源副本。。
+
+下一步：按实际场景需要独立接入粒子与资源、空间区域、时间变化及玩法读取，继续保持作者声明和引擎渲染分离。
+
+<a id="scene.particles3d"></a>
+### 通用3D粒子场、雨雪参数与显式时刻预览
+
+`scene.particles3d` · 场景与构建 · 源码交付
+
+入口：环境参数→Rust确定性分布／时刻→草稿普通保存→WebGL实例绘制／Godot工程
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **Rust粒子声明、保真补丁与确定性采样**；声明、采样、时钟、作者编辑、绘制与执行宿主各有独立接口，不共享保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-particles/results.json](../docs/test-results/scene3d-particles/results.json)、[docs/test-results/scene3d-particles/core/core-results.json](../docs/test-results/scene3d-particles/core/core-results.json)、[docs/test-results/scene3d-particles/prepared.json](../docs/test-results/scene3d-particles/prepared.json) |
+| 工程定义与格式 | **Rust粒子声明、保真补丁与确定性采样**；声明、采样、时钟、作者编辑、绘制与执行宿主各有独立接口，不共享保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-particles/results.json](../docs/test-results/scene3d-particles/results.json)、[docs/test-results/scene3d-particles/core/core-results.json](../docs/test-results/scene3d-particles/core/core-results.json)、[docs/test-results/scene3d-particles/prepared.json](../docs/test-results/scene3d-particles/prepared.json) |
+| 可移植 JS 语义 | **粒子严格桥接与环境作者表单**；声明、采样、时钟、作者编辑、绘制与执行宿主各有独立接口，不共享保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-particles/results.json](../docs/test-results/scene3d-particles/results.json)、[docs/test-results/scene3d-particles/core/core-results.json](../docs/test-results/scene3d-particles/core/core-results.json)、[docs/test-results/scene3d-particles/prepared.json](../docs/test-results/scene3d-particles/prepared.json) |
+| 交互与渲染 | **粒子严格桥接与环境作者表单**；声明、采样、时钟、作者编辑、绘制与执行宿主各有独立接口，不共享保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-particles/results.json](../docs/test-results/scene3d-particles/results.json)、[docs/test-results/scene3d-particles/core/core-results.json](../docs/test-results/scene3d-particles/core/core-results.json)、[docs/test-results/scene3d-particles/prepared.json](../docs/test-results/scene3d-particles/prepared.json) |
+| 交互与渲染 | **独立临时播放时钟与来源会话协调**；声明、采样、时钟、作者编辑、绘制与执行宿主各有独立接口，不共享保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-particles/results.json](../docs/test-results/scene3d-particles/results.json)、[docs/test-results/scene3d-particles/core/core-results.json](../docs/test-results/scene3d-particles/core/core-results.json)、[docs/test-results/scene3d-particles/prepared.json](../docs/test-results/scene3d-particles/prepared.json) |
+| 交互与渲染 | **WebGL粒子实例渲染适配**；声明、采样、时钟、作者编辑、绘制与执行宿主各有独立接口，不共享保存权限。 | 4 / 4 / 4 / 3 | [docs/test-results/scene3d-particles/results.json](../docs/test-results/scene3d-particles/results.json)、[docs/test-results/scene3d-particles/core/core-results.json](../docs/test-results/scene3d-particles/core/core-results.json)、[docs/test-results/scene3d-particles/prepared.json](../docs/test-results/scene3d-particles/prepared.json) |
+| 执行后端 | **Godot粒子工程与受限验证适配**；声明、采样、时钟、作者编辑、绘制与执行宿主各有独立接口，不共享保存权限。 | 3 / 3 / 4 / 3 | [docs/test-results/scene3d-particles/results.json](../docs/test-results/scene3d-particles/results.json)、[docs/test-results/scene3d-particles/core/core-results.json](../docs/test-results/scene3d-particles/core/core-results.json)、[docs/test-results/scene3d-particles/prepared.json](../docs/test-results/scene3d-particles/prepared.json) |
+| 本机服务与适配 | **Godot粒子工程与受限验证适配**；声明、采样、时钟、作者编辑、绘制与执行宿主各有独立接口，不共享保存权限。 | 3 / 3 / 4 / 3 | [docs/test-results/scene3d-particles/results.json](../docs/test-results/scene3d-particles/results.json)、[docs/test-results/scene3d-particles/core/core-results.json](../docs/test-results/scene3d-particles/core/core-results.json)、[docs/test-results/scene3d-particles/prepared.json](../docs/test-results/scene3d-particles/prepared.json) |
+
+平台：HTTP浏览器／WebGL2软件GPU、Godot4可检查工程与隔离图形验证、桌面／移动准备副本，未验安装或实机。边界：可选粒子场属于场景；范围、尺寸和速度组合表现雨雪，不细分模板、不自动添加旧声明。；Rust无时钟；纯桥接、表单、临时播放控制与渲染器分离，播放不取得写入或后端执行权限。；粒子不成为可选中作者对象；Godot默认无头dummy无法回读非空实例时明确报告验证不可用，图形验证单独记录。；当前轴对齐盒状粒子，无纹理、透明度、碰撞、天气玩法或Bevy3D。。
+
+下一步：按实际场景需求接入粒子素材、空间区域和玩法读取，保留中立采样与引擎扩展边界。
+
+<a id="backend.project_delivery"></a>
+### 已核对生成工程的可移植交付包
+
+`backend.project_delivery` · 场景与构建 · 源码交付
+
+入口：冻结构建→只读核对→三语交付审阅→准备ZIP→浏览器／桌面保存→独立内容核验
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **交付审阅纯契约**；纯审阅契约、宿主字节及生命周期、交互渲染分别持有独立接口。 | 3 / 3 / 4 / 3 | [docs/test-results/backend-project-delivery/results.json](../docs/test-results/backend-project-delivery/results.json)、[docs/test-results/backend-project-delivery/browser-release/browser.json](../docs/test-results/backend-project-delivery/browser-release/browser.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+| 本机服务与适配 | **宿主交付计划、ZIP核验与任务生命周期**；纯审阅契约、宿主字节及生命周期、交互渲染分别持有独立接口。 | 3 / 3 / 4 / 3 | [docs/test-results/backend-project-delivery/results.json](../docs/test-results/backend-project-delivery/results.json)、[docs/test-results/backend-project-delivery/browser-release/browser.json](../docs/test-results/backend-project-delivery/browser-release/browser.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+| 交互与渲染 | **内置交付审阅、下载和保存控制器**；纯审阅契约、宿主字节及生命周期、交互渲染分别持有独立接口。 | 3 / 3 / 4 / 3 | [docs/test-results/backend-project-delivery/results.json](../docs/test-results/backend-project-delivery/results.json)、[docs/test-results/backend-project-delivery/browser-release/browser.json](../docs/test-results/backend-project-delivery/browser-release/browser.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+
+平台：本地HTTP浏览器下载与Godot重定位导入、桌面保存协议回归与资源副本；无新安装／Android实机验收。边界：只消费宿主已登记且完整核对的成功构建；请求绑定构建、快照与清单指纹，不接受目录或工具路径。；交付仅包含登记的project文件、素材／脚本副本、三语说明和SHA清单；作者快照、缓存、日志与清单外文件不入包。；准备持有任务占用直到流结束，服务关闭取消并等待；原生保存窗口阻止关闭，浏览器发起下载后由TTL清理，避免下载准入竞争。；纯清单契约、Node文件与ZIP适配、UI和宿主注入接口分离；校验只证明包内一致性，不授予执行或导入权限。；Godot生成工程仍需兼容Godot；Bevy是需可信运行程序的场景数据，非Cargo工程或独立发行程序。；本轮只接当前Scene2D后端构建目录；Scene3D/Composition统一打包、可执行发行与LSP服务另行接入。。
+
+下一步：补齐内置实例行为绑定与参数编辑，再接中立组装描述和3D交付；外部IDE/LSP只通过独立文档与诊断端口。
+
+<a id="behavior.authoring"></a>
+### 内置行为绑定、参数与信号原文编辑
+
+`behavior.authoring` · 场景与构建 · 源码交付
+
+入口：已有登记绑定JSON→编辑场景行为→稳定实例／已关联TXT／typed参数／信号→依赖核对与完整审阅→应用源码草稿→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **行为原文补丁、私有提案与共享JSON索引**；行为语义保持现有严格协议，纯提案仅持有原文和稳定身份，不进入宿主IO。 | 3 / 4 / 3 / 3 | [docs/test-results/scene-behavior-authoring/summary.json](../docs/test-results/scene-behavior-authoring/summary.json)、[docs/test-results/scene-behavior-authoring/browser-smoke.json](../docs/test-results/scene-behavior-authoring/browser-smoke.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+| 本机服务与适配 | **只读行为选项、登记依赖与摘要核对**；只读依赖选项与候选复验沿既有World观察和关系规则，不扩展执行或元数据写入。 | 3 / 4 / 3 / 3 | [docs/test-results/scene-behavior-authoring/summary.json](../docs/test-results/scene-behavior-authoring/summary.json)、[docs/test-results/scene-behavior-authoring/browser-smoke.json](../docs/test-results/scene-behavior-authoring/browser-smoke.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+| 交互与渲染 | **独立文档来源与内存草稿应用宿主**；文档宿主在异步工作后再次核对来源与依赖，只同步替换当前内存草稿。 | 3 / 4 / 3 / 3 | [docs/test-results/scene-behavior-authoring/summary.json](../docs/test-results/scene-behavior-authoring/summary.json)、[docs/test-results/scene-behavior-authoring/browser-smoke.json](../docs/test-results/scene-behavior-authoring/browser-smoke.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+| 交互与渲染 | **三语行为表单与独立系统装配**；独立表单、翻译和模块装配通过各自端口接入，不取得兄弟控制器或Save权威。 | 3 / 4 / 3 / 3 | [docs/test-results/scene-behavior-authoring/summary.json](../docs/test-results/scene-behavior-authoring/summary.json)、[docs/test-results/scene-behavior-authoring/browser-smoke.json](../docs/test-results/scene-behavior-authoring/browser-smoke.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+
+平台：当前本机编辑服务与浏览器；实测范围以新专题为准、已有运行后端验收仍沿原专题，本轮不新增执行、安装或Android实机声明。边界：独立第18模块org.viento.scene-behaviors提供scene.authoring.behaviors；仅当前本机编辑服务，不代表Android行为编辑或新安装验收。；固定原场景、后端和语言；新增UUID由界面分配，保留已有bindingId，同实例可多行为，1–32条绑定且不能删除最后一条。；只选择已登记且由清单引用的TXT与所属场景实例；沿既有场景／角色／源码关系规则核对，不建立关联、不新建绑定文档。；参数保留文本／数字／布尔类型，信号映射遵守原预算；具体脚本导出类型和实际信号仍由后端构建／运行验证，界面不执行脚本。；JS私有提案与无浏览器第三方依赖的JSON索引保留未修改原文；同结构只改叶值，集合结构变化只重写选中容器，未知schema或重复键不自动清洗。；检查／应用核对原文字节、来源修订、保存基线、编辑会话与依赖摘要；仅同步修改内存，普通保存持有磁盘写入与外部冲突权限。；新建清单、变更所属场景／后端／语言、增加关联、LSP、热更新及作者Bevy Rust／3D行为尚未接入。。
+
+下一步：首次创建与必要关联见behavior.creation，内置TXT起始草稿见script.authoring；后续推进已有声明迁移与关联管理、源码体验、标准诊断及LSP接口。
+
+<a id="behavior.creation"></a>
+### 从已保存场景首次创建行为声明与关联
+
+`behavior.creation` · 场景与构建 · 源码交付
+
+入口：构建与运行选择已保存Scene2D→添加场景行为→已登记TXT与稳定实例→完整原文及关联审阅→三文件可恢复保存→打开原文→既有参数／信号编辑
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **中立首次行为创建、三文件规划及冻结依赖校验**；无副作用规则只规划声明、登记和恢复所需观察，具体提交与执行留在宿主。 | 3 / 4 / 3 / 3 | [docs/test-results/scene-behavior-creation/README.md](../docs/test-results/scene-behavior-creation/README.md)、[docs/test-results/scene-behavior-creation/summary.json](../docs/test-results/scene-behavior-creation/summary.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+| 本机服务与适配 | **World命令适配、混合创建事务与v9恢复**；单命令将三目标变更交给受锁和摘要守护的v9事务；冻结只读依赖不作为恢复写入目标。 | 3 / 4 / 3 / 3 | [docs/test-results/scene-behavior-creation/README.md](../docs/test-results/scene-behavior-creation/README.md)、[docs/test-results/scene-behavior-creation/summary.json](../docs/test-results/scene-behavior-creation/summary.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+| 本机服务与适配 | **首次创建只读实例与TXT目录服务**；只读目录共用核心场景准入和World快照，不分配UUID、不生成文件、不检测或运行工具。 | 3 / 4 / 3 / 3 | [docs/test-results/scene-behavior-creation/README.md](../docs/test-results/scene-behavior-creation/README.md)、[docs/test-results/scene-behavior-creation/summary.json](../docs/test-results/scene-behavior-creation/summary.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+| 交互与渲染 | **三语首次创建控制器、构建入口与原文导航宿主**；首次创建控制器、构建父宿主和原文导航独立归属；后续已有清单编辑仍走原私有草稿提案。 | 3 / 4 / 3 / 3 | [docs/test-results/scene-behavior-creation/README.md](../docs/test-results/scene-behavior-creation/README.md)、[docs/test-results/scene-behavior-creation/summary.json](../docs/test-results/scene-behavior-creation/summary.json)、[docs/RELEASE_0.1.1.md](../docs/RELEASE_0.1.1.md) |
+
+平台：本机Linux编辑服务、HTTP与浏览器；验证范围以首次创建专题为准、工作树功能；未声明新安装产物或Android设备可用。边界：现有org.viento.build模块提供scene.authoring.behavior-creation；当前19模块／36项声明能力，入口实际可用仍取决于宿主behavior.create命令。；当前界面从Scene2D v2／v3生成一条Godot4／GDScript绑定，参数和信号初始为空；纯规划接受中立后端与语言，不据此声明新运行后端。；新文档UUID与bindingId由界面一次分配，输入修改撤销预览但保持身份；已有任何behavior关联，包括失效关联，都不允许再首次创建。；可移植规划复用严格行为声明、角色实例、已登记TXT、完整Scene2D计划和版本检查；只读选项不暴露脚本正文或本机路径。；一次事务只新建声明正文和登记，并保真追加原场景登记的唯一behavior边；新声明只派生场景与脚本references，原场景、角色和脚本正文保持。；宿主以登记锁和完整World重查提交三文件；v9恢复先核摘要和冻结依赖证据，再整体回退或补齐，不读取或覆盖当前只读作者依赖。；保存后的原文导航独立核身份、路径、修订和会话；继续使用既有行为编辑器的typed参数／信号审阅、草稿应用与普通保存。创建不解析或执行脚本，也不取得工具路径。；限当前本机Linux编辑服务；无自动创建脚本、既有声明场景／后端／语言迁移、LSP、Scene3D行为、作者Bevy Rust行为、安装更新或Android实机验收。。
+
+下一步：内置TXT起始脚本已由独立script.authoring链路接入；后续增强源码体验、已有声明关联管理与标准LSP接口，其他后端及3D行为分别验收。
+
+<a id="script.authoring"></a>
+### 内置脚本起始内容与普通TXT草稿保存
+
+`script.authoring` · 编辑与创作 · 源码交付
+
+入口：新建脚本→起始内容／工程类型／TXT路径→完整预览→普通原文草稿→编辑与保存→首次行为创建→参数／信号→运行交付
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **已知脚本起始内容与纯草稿提案**；可移植纯规划只选择起始内容和校验当前TXT草稿上下文；保存与执行归宿主。 | 4 / 4 / 3 / 3 | [docs/test-results/script-authoring/focused-final.log](../docs/test-results/script-authoring/focused-final.log)、[docs/test-results/script-authoring/full-check.log](../docs/test-results/script-authoring/full-check.log)、[docs/test-results/script-authoring/browser-verified/browser.json](../docs/test-results/script-authoring/browser-verified/browser.json) |
+| 交互与渲染 | **独立三语脚本创建与完整原文预览**；独立视图保存本地设置、展示全文、检查归属并交接普通草稿。 | 4 / 4 / 3 / 3 | [docs/test-results/script-authoring/focused-final.log](../docs/test-results/script-authoring/focused-final.log)、[docs/test-results/script-authoring/full-check.log](../docs/test-results/script-authoring/full-check.log)、[docs/test-results/script-authoring/browser-verified/browser.json](../docs/test-results/script-authoring/browser-verified/browser.json) |
+| 交互与渲染 | **编辑器同步草稿交接与独立模块装配**；最小同步宿主端口复用普通新文档保存与登记，独立模块不依赖构建或行为控制器。 | 4 / 4 / 3 / 3 | [docs/test-results/script-authoring/focused-final.log](../docs/test-results/script-authoring/focused-final.log)、[docs/test-results/script-authoring/full-check.log](../docs/test-results/script-authoring/full-check.log)、[docs/test-results/script-authoring/browser-verified/browser.json](../docs/test-results/script-authoring/browser-verified/browser.json) |
+
+平台：本机编辑服务与Chrome；中英日和390px布局、工作树功能；桌面／移动仅资源准备核对。边界：独立org.viento.scripts模块声明authoring.script；当前19模块／36项声明能力，入口仍取决于当前工程、编辑宿主及未保存状态。；当前两份明确标记的Godot/GDScript起始内容：空Node、参数与信号示例；已有工程文档类型均可承载TXT，无需新增专用script类型。；纯JS规划只验证有界上下文、类型目录与正文目录内TXT路径，返回深冻结私有提案；没有文件IO、UUID、自动绑定、工具安装或执行。；独立三语弹窗保留本地选择与全文预览；取消、失效会话、原有未保存草稿或后台保存期间不能覆盖编辑器。；宿主同步交接为有未保存保护的普通源码草稿；普通保存独占正文及元数据登记，重名或保存失败仍保留草稿供修正。；保存后的脚本可由现有首次行为创建目录选择；已有清单的脚本关系管理、语法高亮、LSP、作者Rust行为与Scene3D行为仍待分别接入。；本轮真实Linux浏览器与Godot流程；桌面／移动资源准备不等于安装包或Android实机验收。。
+
+下一步：通用缩进与原生撤销见authoring.source-indentation；后续分开推进源码行号／诊断、已有清单关联管理及标准LSP接口。
+
+<a id="authoring.source-indentation"></a>
+### 通用原文多行缩进与原生撤销
+
+`authoring.source-indentation` · 编辑与创作 · 源码交付
+
+入口：普通源码／新脚本草稿→缩进单位与当前行／选区→增加或减少缩进→原生撤销／重做→普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **纯原文缩进、初始单位提示与UTF-16选区规划**；纯文本变换独立于语言、DOM和持久化；映射UTF-16选区及全文预算。 | 4 / 4 / 3 / 3 | [docs/test-results/source-editing/browser-1791856760717/report.json](../docs/test-results/source-editing/browser-1791856760717/report.json)、[docs/test-results/source-editing/focused-final.log](../docs/test-results/source-editing/focused-final.log)、[docs/test-results/source-editing/full-check.log](../docs/test-results/source-editing/full-check.log) |
+| 交互与渲染 | **原生文本事务、独立缩进工具条与三语视图**；独立DOM控制器只处理用户选择、原生事务及浏览器历史，不取得保存或后端接口。 | 4 / 4 / 3 / 3 | [docs/test-results/source-editing/browser-1791856760717/report.json](../docs/test-results/source-editing/browser-1791856760717/report.json)、[docs/test-results/source-editing/focused-final.log](../docs/test-results/source-editing/focused-final.log)、[docs/test-results/source-editing/full-check.log](../docs/test-results/source-editing/full-check.log) |
+| 交互与渲染 | **正文编辑来源及普通input草稿宿主**；原文宿主仅提供编辑状态／来源，input沿现有草稿和普通保存。 | 4 / 4 / 3 / 3 | [docs/test-results/source-editing/browser-1791856760717/report.json](../docs/test-results/source-editing/browser-1791856760717/report.json)、[docs/test-results/source-editing/focused-final.log](../docs/test-results/source-editing/focused-final.log)、[docs/test-results/source-editing/full-check.log](../docs/test-results/source-editing/full-check.log) |
+
+平台：Linux本机编辑服务与真实Chrome、桌面／移动仅准备资源，其他WebView原生撤销兼容性另验。边界：属于既有正文编辑模块；保持19模块、36项声明能力，不依赖脚本类型、Godot或行为绑定。；纯规则只接收规范LF文本、UTF-16选区、方向和显式单位，返回单一整行替换与新选区；输入及结果全文上限4Mi UTF-16。；可选Tab、2或4空格；新载入正文的首处非空行缩进仅提供初始提示，不是语言识别或自动格式化。首行BOM保持字节0，后续行不隐式清洗。；仅可写源码界面可用，Ctrl／Cmd方括号不占用普通Tab或Shift／Alt组合；IME、模态、保存／加载与readOnly均保护原文。；一次原生insertText事务沿浏览器历史撤销重做；无法编辑时不以.value或setRangeText覆盖回退。有原生input时不额外合成事件。；普通input继续脏状态、草稿恢复与普通保存；沿用现有换行序列化，改动区采用首个原换行，未改前后行保持字节。；Linux Chrome验证了真实输入、选区、撤销、三语390px与BOM／CRLF保存；资源准备不等于Tauri或Android安装验收，也不增加LSP、语法高亮或执行能力。。
+
+下一步：继续独立接入源码行号／诊断呈现与标准文档／LSP端口；已有行为关系管理属于另一路径，不扩展文本工具权限。
+
+<a id="authoring.source-position"></a>
+### 通用原文行列位置与只读跳转
+
+`authoring.source-position` · 编辑与创作 · 源码交付
+
+入口：当前源码选区→逻辑行列与总行数→按行定位／取消→继续原生编辑与普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **纯LF／UTF-16有界行索引与位置查询**；只读LF／UTF-16索引，不持有正文写入或宿主接口。 | 4 / 4 / 3 / 3 | [docs/test-results/source-navigation/browser-1791861708197/report.json](../docs/test-results/source-navigation/browser-1791861708197/report.json)、[docs/test-results/source-navigation/full-final.log](../docs/test-results/source-navigation/full-final.log)、[docs/test-results/source-navigation/summary.json](../docs/test-results/source-navigation/summary.json) |
+| 交互与渲染 | **只读源码位置栏、跳转窗口与软换行测量**；独立行列栏和模态导航，只改选区与滚动。 | 4 / 4 / 3 / 3 | [docs/test-results/source-navigation/browser-1791861708197/report.json](../docs/test-results/source-navigation/browser-1791861708197/report.json)、[docs/test-results/source-navigation/full-final.log](../docs/test-results/source-navigation/full-final.log)、[docs/test-results/source-navigation/focused-handoff-final.log](../docs/test-results/source-navigation/focused-handoff-final.log) |
+| 交互与渲染 | **共同正文来源上下文与延迟脚本焦点保护**；正文来源及编辑门禁共享，延迟脚本焦点保留新位置。 | 4 / 4 / 3 / 3 | [docs/test-results/source-navigation/browser-1791861708197/report.json](../docs/test-results/source-navigation/browser-1791861708197/report.json)、[docs/test-results/source-navigation/full-final.log](../docs/test-results/source-navigation/full-final.log)、[docs/test-results/source-navigation/focused-handoff-final.log](../docs/test-results/source-navigation/focused-handoff-final.log) |
+
+平台：Linux本机编辑服务与真实Chrome、桌面／移动仅准备资源，其他WebView与设备另验。边界：属于既有正文模块，保持19模块／36项声明能力；不依赖语言、工程模板、行为绑定或执行后端。；纯索引接受最大4Mi UTF-16的规范LF文本，冻结查询接口；1基逻辑行和UTF-16列，初始BOM不计列，尾LF保留空行。；界面仅读取正文并改变选区／滚动，不写value、合成input、执行文本事务或调用保存；反向选区使用活动端。；跳转绑定来源标识和精确原文；关闭与焦点恢复后再核对归属，失效会话不能定位另一份文档。；保留原生软换行，用可丢弃的实际排版镜像测量目标；Ctrl／Cmd+G局限正文，IME、模态、加载／保存及只读状态受保护。；真实Chrome验证只读导航、原生撤销重做、三语390px与BOM／CRLF普通保存；修复脚本窗口延迟关闭回调覆盖新光标的竞态。；资源准备不等于安装或设备验收；侧边逐行行号、诊断呈现、LSP和其他WebView兼容性另行推进。。
+
+下一步：继续以独立视图接入诊断呈现和标准LSP端口；侧边行号需单独适配软换行布局。
+
+<a id="authoring.source-diagnostic"></a>
+### 源码旁的单条诊断上下文与安全定位
+
+`authoring.source-diagnostic` · 编辑与创作 · 源码交付
+
+入口：构建诊断→核对来源与精确范围→源码旁保留诊断→修改后待复验→普通保存与显式重新检查
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **冻结诊断展示快照与有界标量契约**；有界展示数据，无宿主、构建与执行依赖。 | 4 / 4 / 3 / 3 | [docs/test-results/source-diagnostics/browser-1791864433041/report.json](../docs/test-results/source-diagnostics/browser-1791864433041/report.json)、[docs/test-results/source-diagnostics/full-verified.log](../docs/test-results/source-diagnostics/full-verified.log)、[docs/test-results/source-diagnostics/summary.json](../docs/test-results/source-diagnostics/summary.json) |
+| 交互与渲染 | **独立只读诊断面板、失效状态与三语窄屏布局**；只读当前上下文，不获取保存或重新检查接口。 | 4 / 4 / 3 / 3 | [docs/test-results/source-diagnostics/browser-1791864433041/report.json](../docs/test-results/source-diagnostics/browser-1791864433041/report.json)、[docs/test-results/source-diagnostics/full-verified.log](../docs/test-results/source-diagnostics/full-verified.log)、[docs/test-results/source-diagnostics/focused-final.log](../docs/test-results/source-diagnostics/focused-final.log) |
+| 交互与渲染 | **全文折行测量与共享源码显露适配器**；独立DOM全文测量，供多个导航入口复用。 | 4 / 4 / 3 / 3 | [docs/test-results/source-diagnostics/browser-1791864433041/report.json](../docs/test-results/source-diagnostics/browser-1791864433041/report.json)、[docs/test-results/source-diagnostics/position-regression-final/report.json](../docs/test-results/source-diagnostics/position-regression-final/report.json)、[docs/test-results/source-diagnostics/full-verified.log](../docs/test-results/source-diagnostics/full-verified.log) |
+| 交互与渲染 | **构建诊断映射、原文核对与焦点交接守护**；来源核对、标量映射和焦点恢复权限属于宿主。 | 4 / 4 / 3 / 3 | [docs/test-results/source-diagnostics/browser-1791864433041/report.json](../docs/test-results/source-diagnostics/browser-1791864433041/report.json)、[docs/test-results/source-diagnostics/full-verified.log](../docs/test-results/source-diagnostics/full-verified.log)、[docs/test-results/source-diagnostics/focused-final.log](../docs/test-results/source-diagnostics/focused-final.log) |
+
+平台：Linux本机编辑服务与真实Chrome、桌面／移动仅准备资源；Android构建入口及设备另验。边界：属于现有正文模块，保持19模块／36项声明能力；独立诊断快照不接收构建任务、后端对象或执行权限。；冻结且有界的标量快照描述代码、级别、消息、来源和定位状态；仅exact含规范LF／UTF-16范围。版本及字符边界由宿主和视图各自核对。；面板只展示和清理，不能保存、重新构建或编辑正文；首次输入后持续标记待复验，撤销相同原文也不认定错误解决。；明确区分精确、旧版本、近似及无范围；文档切换清除旧上下文，失败读取、未保存草稿和过期导航不能错误绑定。；独立DOM显露适配器为行号／来源跳转测量完整排版，保留软换行；来源激活延迟焦点，并在focus后重新核对归属和新弹窗。；后续用户点击、按键或指针操作取消旧延迟焦点的选区恢复；普通原生撤销、草稿、保存及冲突规则继续由正文宿主维护。；Linux Chrome实测静态构建错误到源码、三语390px、只读上下文、原生历史及BOM／CRLF保存；准备资源不代表安装、设备或新语言执行验收。。
+
+下一步：工程问题总表、持续诊断和标准LSP文档端口分别推进；不会由这一展示组件隐式执行。
 
 ## 旧功能链路映射
 

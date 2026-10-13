@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: generator preserves source plan semantics and explicitly uses XYZ independent static nodes
+ok 1 - generator preserves source plan semantics and explicitly uses XYZ independent static nodes
+  ---
+  duration_ms: 8.353685
+  type: 'test'
+  ...
+# Subtest: generator rejects wrong kind, scene keys, non-data accessors and extra nested behavior
+ok 2 - generator rejects wrong kind, scene keys, non-data accessors and extra nested behavior
+  ---
+  duration_ms: 1.355327
+  type: 'test'
+  ...
+# Subtest: export stores exact BOM/CRLF source, neutral plan and a full five-file inventory
+ok 3 - export stores exact BOM/CRLF source, neutral plan and a full five-file inventory
+  ---
+  duration_ms: 13.03477
+  type: 'test'
+  ...
+# Subtest: existing output directories and files are never adopted or overwritten
+ok 4 - existing output directories and files are never adopted or overwritten
+  ---
+  duration_ms: 7.041089
+  type: 'test'
+  ...
+# Subtest: invalid UTF8, malformed schema and oversized source do not create output
+ok 5 - invalid UTF8, malformed schema and oversized source do not create output
+  ---
+  duration_ms: 3.100125
+  type: 'test'
+  ...
+# Subtest: input or output symlink ancestors are rejected without changing the target
+ok 6 - input or output symlink ancestors are rejected without changing the target
+  ---
+  duration_ms: 3.167712
+  type: 'test'
+  ...
+# Subtest: copied receipt JSON and an arbitrary existing project cannot execute a tool
+ok 7 - copied receipt JSON and an arbitrary existing project cannot execute a tool
+  ---
+  duration_ms: 454.310461
+  type: 'test'
+  ...
+# Subtest: modified, replaced or hardlinked generated source prevents execution
+ok 8 - modified, replaced or hardlinked generated source prevents execution
+  ---
+  duration_ms: 782.31683
+  type: 'test'
+  ...
+# Subtest: unregistered source or pre-existing cache symlink cannot authorize execution
+ok 9 - unregistered source or pre-existing cache symlink cannot authorize execution
+  ---
+  duration_ms: 824.581131
+  type: 'test'
+  ...
+# Subtest: an owned write failure cleans only its own unchanged files and empty directory
+ok 10 - an owned write failure cleans only its own unchanged files and empty directory
+  ---
+  duration_ms: 13.669792
+  type: 'test'
+  ...
+# Subtest: failure cleanup preserves an edited source and user-added files in its own output
+ok 11 - failure cleanup preserves an edited source and user-added files in its own output
+  ---
+  duration_ms: 13.279569
+  type: 'test'
+  ...
+# Subtest: CLI readonly emit works without output and invalid flag combinations never create output
+ok 12 - CLI readonly emit works without output and invalid flag combinations never create output
+  ---
+  duration_ms: 9.212228
+  type: 'test'
+  ...
+# Subtest: aborted capture or export creates no output
+ok 13 - aborted capture or export creates no output
+  ---
+  duration_ms: 3.633627
+  type: 'test'
+  ...
+# Subtest: explicit tool receipts cannot forge instance geometry, basis, camera, UUID, count or schema
+ok 14 - explicit tool receipts cannot forge instance geometry, basis, camera, UUID, count or schema
+  ---
+  duration_ms: 1677.951366
+  type: 'test'
+  ...
+# Subtest: execution receipts authorize one finite attempt, including check then run in one operation
+ok 15 - execution receipts authorize one finite attempt, including check then run in one operation
+  ---
+  duration_ms: 246.301721
+  type: 'test'
+  ...
+# Subtest: tool timeout and zero-exit script errors fail closed while retaining exact source
+ok 16 - tool timeout and zero-exit script errors fail closed while retaining exact source
+  ---
+  duration_ms: 1149.345306
+  type: 'test'
+  ...
+# Subtest: actual Godot imports and probes the three-box example with ordered UUIDs and noncommuting XYZ transforms
+ok 17 - actual Godot imports and probes the three-box example with ordered UUIDs and noncommuting XYZ transforms
+  ---
+  duration_ms: 5377.83539
+  type: 'test'
+  ...
+# Subtest: actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits
+ok 18 - actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits
+  ---
+  duration_ms: 5657.702629
+  type: 'test'
+  ...
+# Subtest: Godot generation declares bounded exponential distance fog without height sun sky or aerial contributions
+ok 19 - Godot generation declares bounded exponential distance fog without height sun sky or aerial contributions
+  ---
+  duration_ms: 5.060156
+  type: 'test'
+  ...
+# Subtest: adapter accepts only the optional fog record and rejects unknown dimensions engine fields and accessors
+ok 20 - adapter accepts only the optional fog record and rejects unknown dimensions engine fields and accessors
+  ---
+  duration_ms: 1.933903
+  type: 'test'
+  ...
+# Subtest: fog export retains exact source and neutral data with a truthful artifact capability and full inventory
+ok 21 - fog export retains exact source and neutral data with a truthful artifact capability and full inventory
+  ---
+  duration_ms: 13.560937
+  type: 'test'
+  ...
+# Subtest: host accepts actual-property fog receipts including disabled zero and float32 tiny values
+ok 22 - host accepts actual-property fog receipts including disabled zero and float32 tiny values
+  ---
+  duration_ms: 819.86507
+  type: 'test'
+  ...
+# Subtest: host rejects omitted forged extra or mismatched fog properties without widening probe admission
+ok 23 - host rejects omitted forged extra or mismatched fog properties without widening probe admission
+  ---
+  duration_ms: 2318.895805
+  type: 'test'
+  ...
+# Subtest: no-fog source retains the old exact probe shape and refuses a newly injected fog receipt
+ok 24 - no-fog source retains the old exact probe shape and refuses a newly injected fog receipt
+  ---
+  duration_ms: 246.712478
+  type: 'test'
+  ...
+# Subtest: fog receipts retain single-use ownership and altered source or generated fog cannot authorize execution
+ok 25 - fog receipts retain single-use ownership and altered source or generated fog cannot authorize execution
+  ---
+  duration_ms: 292.170086
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19975.727124

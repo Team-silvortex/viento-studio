@@ -88,7 +88,9 @@ test('behavior diagnostics use localized guidance and preserve exact manifest or
     const h = await harness(state, dictionary), message = '行为绑定或脚本有误，请检查标出的位置和原始日志。';
     assert.ok(h.element('projectBuildDiagnostics').textContent.includes(dictionary[message] || message));
     h.element('projectBuildDiagnostics').querySelector('button').click(); await flushDialogs();
-    assert.deepEqual(h.opened[0], [diagnostic.sourcePath, diagnostic]);
+    assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0])), [diagnostic.sourcePath, diagnostic, { diagnostic: {
+      code: diagnostic.code, severity: 'error', messageKey: message, detail: diagnostic.message,
+    } }]);
     assert.equal(h.element('projectBuildDialog').open, false);
     assert.equal(h.element('projectBuildLogs').querySelector('script'), null);
   }

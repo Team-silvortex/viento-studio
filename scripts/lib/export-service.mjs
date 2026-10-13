@@ -29,7 +29,7 @@ function recordDownload(job, result) {
   job.ranges = job.downloaded ? [] : merged.slice(0, 128);
 }
 
-export function createExportService(root, { ttlMs = 15 * 60 * 1000 } = {}) {
+export function createExportService(root, { ttlMs = 15 * 60 * 1000, planBackendProjectDelivery } = {}) {
   const jobs = new Map();
   let busy = false;
   function scheduleRelease(job, delay) {
@@ -87,7 +87,7 @@ export function createExportService(root, { ttlMs = 15 * 60 * 1000 } = {}) {
     signal?.throwIfAborted();
     if (busy) throw exportError('正在准备另一份导出，请稍候', 409);
     busy = true;
-    let directory, id;
+    let directory, id, plan;
     try {
       const fence = await readWorldFence(root);
       // Keep prepared and interrupted downloads retryable. Only completed,
@@ -99,7 +99,10 @@ export function createExportService(root, { ttlMs = 15 * 60 * 1000 } = {}) {
         if (job.released || (job.downloaded && !job.readers)) await release(job.id);
       }
       if (jobs.size >= 3) throw exportError('请先下载或关闭已有导出，再继续', 409);
-      const plan = await planExport(root, options, signal);
+      if (options?.kind === 'backend-project') {
+        if (typeof planBackendProjectDelivery !== 'function') throw exportError('当前会话不支持工程交付', 403);
+        plan = await planBackendProjectDelivery(options, signal);
+      } else plan = await planExport(root, options, signal);
       signal?.throwIfAborted();
       const cache = await resolveContainedPath(root, path.join(root, '.viento/cache/exports'), { allowMissing: true });
       await fs.mkdir(cache, { recursive: true, mode: 0o700 });
@@ -117,7 +120,7 @@ export function createExportService(root, { ttlMs = 15 * 60 * 1000 } = {}) {
       // A fixed private pathname is shared with the native save bridge. Raw
       // exports keep their bytes here too; the public filename determines type.
       const file = path.join(directory, 'payload.zip');
-      await (plan.raw ? writeExportFile : writeExportZip)(plan, file, signal);
+      await (plan.raw ? writeExportFile : writeExportZip)(plan, file, plan.signal || signal);
       const bytes = (await fs.stat(file)).size;
       // Cancellation can arrive after the ZIP writer removed its listener,
       // while the final stat is pending. Recheck before publishing the job.
@@ -125,9 +128,11 @@ export function createExportService(root, { ttlMs = 15 * 60 * 1000 } = {}) {
       const job = { id, directory, file, kind: options.kind, fileName: plan.fileName, bytes, documentCount: plan.documentCount, assetCount: plan.assetCount,
         readers: 0, downloaded: false, released: false };
       await assertWorldFence(root, fence);
+      signal?.throwIfAborted();
+      plan.signal?.throwIfAborted();
       jobs.set(id, job);
       retain(job);
-      return { id, fileName: job.fileName, bytes, documentCount: job.documentCount, assetCount: job.assetCount };
+      return { id, fileName: job.fileName, bytes, documentCount: job.documentCount, assetCount: job.assetCount, ...(plan.delivery ? { delivery: plan.delivery } : {}) };
     } catch (error) {
       if (directory) {
         // A cancelled/failed build has no public job, but still owns its staging
@@ -137,7 +142,7 @@ export function createExportService(root, { ttlMs = 15 * 60 * 1000 } = {}) {
       }
       if (error.code === 'ENOSPC') throw exportError('磁盘空间不足，无法准备导出文件');
       throw error;
-    } finally { busy = false; }
+    } finally { try { await plan?.dispose?.(); } finally { busy = false; } }
   }
   return { create, get, download, release };
 }

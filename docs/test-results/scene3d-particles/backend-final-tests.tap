@@ -1,0 +1,208 @@
+TAP version 13
+# Subtest: generator preserves source plan semantics and explicitly uses XYZ independent static nodes
+ok 1 - generator preserves source plan semantics and explicitly uses XYZ independent static nodes
+  ---
+  duration_ms: 7.688146
+  type: 'test'
+  ...
+# Subtest: generator rejects wrong kind, scene keys, non-data accessors and extra nested behavior
+ok 2 - generator rejects wrong kind, scene keys, non-data accessors and extra nested behavior
+  ---
+  duration_ms: 1.209651
+  type: 'test'
+  ...
+# Subtest: export stores exact BOM/CRLF source, neutral plan and a full five-file inventory
+ok 3 - export stores exact BOM/CRLF source, neutral plan and a full five-file inventory
+  ---
+  duration_ms: 10.708273
+  type: 'test'
+  ...
+# Subtest: existing output directories and files are never adopted or overwritten
+ok 4 - existing output directories and files are never adopted or overwritten
+  ---
+  duration_ms: 5.352393
+  type: 'test'
+  ...
+# Subtest: invalid UTF8, malformed schema and oversized source do not create output
+ok 5 - invalid UTF8, malformed schema and oversized source do not create output
+  ---
+  duration_ms: 2.240963
+  type: 'test'
+  ...
+# Subtest: input or output symlink ancestors are rejected without changing the target
+ok 6 - input or output symlink ancestors are rejected without changing the target
+  ---
+  duration_ms: 2.425915
+  type: 'test'
+  ...
+# Subtest: copied receipt JSON and an arbitrary existing project cannot execute a tool
+ok 7 - copied receipt JSON and an arbitrary existing project cannot execute a tool
+  ---
+  duration_ms: 328.660875
+  type: 'test'
+  ...
+# Subtest: modified, replaced or hardlinked generated source prevents execution
+ok 8 - modified, replaced or hardlinked generated source prevents execution
+  ---
+  duration_ms: 527.06008
+  type: 'test'
+  ...
+# Subtest: unregistered source or pre-existing cache symlink cannot authorize execution
+ok 9 - unregistered source or pre-existing cache symlink cannot authorize execution
+  ---
+  duration_ms: 506.870097
+  type: 'test'
+  ...
+# Subtest: an owned write failure cleans only its own unchanged files and empty directory
+ok 10 - an owned write failure cleans only its own unchanged files and empty directory
+  ---
+  duration_ms: 4.258051
+  type: 'test'
+  ...
+# Subtest: failure cleanup preserves an edited source and user-added files in its own output
+ok 11 - failure cleanup preserves an edited source and user-added files in its own output
+  ---
+  duration_ms: 5.43465
+  type: 'test'
+  ...
+# Subtest: CLI readonly emit works without output and invalid flag combinations never create output
+ok 12 - CLI readonly emit works without output and invalid flag combinations never create output
+  ---
+  duration_ms: 3.086071
+  type: 'test'
+  ...
+# Subtest: aborted capture or export creates no output
+ok 13 - aborted capture or export creates no output
+  ---
+  duration_ms: 0.65185
+  type: 'test'
+  ...
+# Subtest: explicit tool receipts cannot forge instance geometry, basis, camera, UUID, count or schema
+ok 14 - explicit tool receipts cannot forge instance geometry, basis, camera, UUID, count or schema
+  ---
+  duration_ms: 1018.581556
+  type: 'test'
+  ...
+# Subtest: execution receipts authorize one finite attempt, including check then run in one operation
+ok 15 - execution receipts authorize one finite attempt, including check then run in one operation
+  ---
+  duration_ms: 142.750021
+  type: 'test'
+  ...
+# Subtest: tool timeout and zero-exit script errors fail closed while retaining exact source
+ok 16 - tool timeout and zero-exit script errors fail closed while retaining exact source
+  ---
+  duration_ms: 1076.092339
+  type: 'test'
+  ...
+# Subtest: actual Godot imports and probes the three-box example with ordered UUIDs and noncommuting XYZ transforms
+ok 17 - actual Godot imports and probes the three-box example with ordered UUIDs and noncommuting XYZ transforms
+  ---
+  duration_ms: 5272.065618
+  type: 'test'
+  ...
+# Subtest: actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits
+ok 18 - actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits
+  ---
+  duration_ms: 5261.740116
+  type: 'test'
+  ...
+# Subtest: Godot generation declares bounded exponential distance fog without height sun sky or aerial contributions
+ok 19 - Godot generation declares bounded exponential distance fog without height sun sky or aerial contributions
+  ---
+  duration_ms: 5.92927
+  type: 'test'
+  ...
+# Subtest: adapter accepts only the optional fog record and rejects unknown dimensions engine fields and accessors
+ok 20 - adapter accepts only the optional fog record and rejects unknown dimensions engine fields and accessors
+  ---
+  duration_ms: 2.405426
+  type: 'test'
+  ...
+# Subtest: fog export retains exact source and neutral data with a truthful artifact capability and full inventory
+ok 21 - fog export retains exact source and neutral data with a truthful artifact capability and full inventory
+  ---
+  duration_ms: 13.20382
+  type: 'test'
+  ...
+# Subtest: host accepts actual-property fog receipts including disabled zero and float32 tiny values
+ok 22 - host accepts actual-property fog receipts including disabled zero and float32 tiny values
+  ---
+  duration_ms: 737.295117
+  type: 'test'
+  ...
+# Subtest: host rejects omitted forged extra or mismatched fog properties without widening probe admission
+ok 23 - host rejects omitted forged extra or mismatched fog properties without widening probe admission
+  ---
+  duration_ms: 2113.317166
+  type: 'test'
+  ...
+# Subtest: no-fog source retains the old exact probe shape and refuses a newly injected fog receipt
+ok 24 - no-fog source retains the old exact probe shape and refuses a newly injected fog receipt
+  ---
+  duration_ms: 217.102154
+  type: 'test'
+  ...
+# Subtest: fog receipts retain single-use ownership and altered source or generated fog cannot authorize execution
+ok 25 - fog receipts retain single-use ownership and altered source or generated fog cannot authorize execution
+  ---
+  duration_ms: 289.066496
+  type: 'test'
+  ...
+# Subtest: particle adapter generates one bounded MultiMesh and consumes exact Rust phases without engine RNG or TIME
+ok 26 - particle adapter generates one bounded MultiMesh and consumes exact Rust phases without engine RNG or TIME
+  ---
+  duration_ms: 20.114517
+  type: 'test'
+  ...
+# Subtest: strict particle source rejects unknown keys getters invalid count seed extent and size
+ok 27 - strict particle source rejects unknown keys getters invalid count seed extent and size
+  ---
+  duration_ms: 4.211603
+  type: 'test'
+  ...
+# Subtest: particle exports preserve BOM CRLF source neutral data six-file inventory and additive capability
+ok 28 - particle exports preserve BOM CRLF source neutral data six-file inventory and additive capability
+  ---
+  duration_ms: 13.015352
+  type: 'test'
+  ...
+# Subtest: particle probe host accepts disabled max and negative wrap sampled field with independent Rust values
+ok 29 - particle probe host accepts disabled max and negative wrap sampled field with independent Rust values
+  ---
+  duration_ms: 688.478713
+  type: 'test'
+  ...
+# Subtest: particle probe rejects omissions extra data altered phases transforms bounds material and time samples
+ok 30 - particle probe rejects omissions extra data altered phases transforms bounds material and time samples
+  ---
+  duration_ms: 3558.144161
+  type: 'test'
+  ...
+# Subtest: no-field and fog-only projects retain old probe shape and reject injected particle authority
+ok 31 - no-field and fog-only projects retain old probe shape and reject injected particle authority
+  ---
+  duration_ms: 447.577842
+  type: 'test'
+  ...
+# Subtest: particle receipts keep ownership single-use and generated shader hash protections
+ok 32 - particle receipts keep ownership single-use and generated shader hash protections
+  ---
+  duration_ms: 294.302236
+  type: 'test'
+  ...
+# Subtest: known dummy renderer reports unavailable instance proof without accepting it or concealing other mismatches
+ok 33 - known dummy renderer reports unavailable instance proof without accepting it or concealing other mismatches
+  ---
+  duration_ms: 571.58279
+  type: 'test'
+  ...
+1..33
+# tests 33
+# suites 0
+# pass 33
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 23183.094641

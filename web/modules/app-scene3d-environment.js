@@ -1,6 +1,6 @@
 import { parseScene3DSource } from '../../engine/scene3d.mjs';
 import { createScene3DEnvironmentProposal } from '../../engine/scene3d-environment.mjs';
-import { supportsStudioCoreScene3DEnvironmentPatch } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreScene3DEnvironmentPatch, supportsStudioCoreScene3DFog, supportsStudioCoreScene3DParticles } from '../../engine/studio-core.mjs';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 
 // This form owns author declarations and a local review. Source application
@@ -22,18 +22,31 @@ export function setupScene3DEnvironment({ getContext = () => ({}), getSource = a
     { id: 'LightDirection', label: '光照方向 XYZ', fields: ['X', 'Y', 'Z'].map((axis, index) => ({ id: 'LightDirection' + axis, path: ['light', 'direction', index], label: axis, min: -100000, max: 100000 })) },
     { id: 'LightColor', label: '光照颜色', fields: [{ id: 'LightColor', path: ['light', 'color'], hex: true }] },
     { id: 'LightEnergy', label: '光照强度', fields: [{ id: 'LightEnergy', path: ['light', 'energy'], min: 0, max: 16 }] },
+    { id: 'Particles', label: '粒子场', particles: true, fields: [
+      ...[['Center', 'center', '中心', -100000, 100000, [0, 3, 0]], ['Extent', 'extent', '范围', .01, 10000, [12, 8, 12]],
+        ['Velocity', 'velocity', '速度', -1000, 1000, [0, -8, 0]], ['Size', 'size', '尺寸', .001, 1000, [.03, .45, .03]]]
+        .flatMap(([id, path, label, min, max, defaults]) => ['X', 'Y', 'Z'].map((axis, index) => ({ id: 'Particle' + id + axis,
+          path: ['particleField', path, index], label: label + ' ' + axis, min, max, fallback: defaults[index] }))),
+      { id: 'ParticleColor', path: ['particleField', 'color'], label: '粒子颜色', hex: true, fallback: '#c5ddff' },
+      { id: 'ParticleCount', path: ['particleField', 'count'], label: '粒子数量', min: 0, max: 4096, integer: true, fallback: 512 },
+      { id: 'ParticleSeed', path: ['particleField', 'seed'], label: '随机种子', min: 0, max: 4294967295, integer: true, fallback: 1 },
+    ] },
+    { id: 'Fog', label: '距离雾', fog: true, fields: [
+      { id: 'FogColor', path: ['fog', 'color'], label: '雾颜色', hex: true, fallback: '#aabbcc' },
+      { id: 'FogDensity', path: ['fog', 'density'], label: '雾密度（每场景单位）', min: 0, max: 1, fallback: .05 },
+    ] },
   ];
   const dialog = document.createElement('dialog'); dialog.id = 'scene3dEnvironmentDialog'; dialog.className = 'scene3d-environment-dialog';
   dialog.setAttribute('aria-labelledby', 'scene3dEnvironmentTitle');
   dialog.innerHTML = `<header class="scene3d-environment-header"><h2 id="scene3dEnvironmentTitle" data-i18n="编辑3D环境"></h2>
     <button id="scene3dEnvironmentClose" type="button" class="doc-btn doc-btn-ghost" data-i18n="返回编辑器"></button></header>
-    <p class="scene3d-environment-note" data-i18n="逐项勾选要修改的背景、相机或光照。检查完整候选原文后应用到草稿，再由编辑器普通保存。"></p>
+    <p class="scene3d-environment-note" data-i18n="逐项勾选要修改的背景、相机、光照、雾或粒子。检查完整候选原文后应用到草稿，再由编辑器普通保存。"></p>
     <p class="scene3d-environment-note" data-i18n="这里修改作者相机声明；预览中的临时旋转和缩放不会填入此表单。保存后才会保留作者环境值。"></p>
     <p id="scene3dEnvironmentPath" class="scene3d-environment-note"></p><p id="scene3dEnvironmentStatus" role="status" aria-live="polite"></p>
     <p id="scene3dEnvironmentDiagnostic" class="scene3d-environment-diagnostic"></p>
-    <section id="scene3dEnvironmentFields" class="scene3d-environment-fields">${groups.map(group => `<fieldset><legend><label><input id="scene3dEnvironment${group.id}Selected" type="checkbox">
+    <section id="scene3dEnvironmentFields" class="scene3d-environment-fields">${groups.map(group => `<fieldset${group.particles ? ' class="scene3d-environment-particles"' : ''}><legend><label><input id="scene3dEnvironment${group.id}Selected" type="checkbox">
       <span data-i18n="${group.label}"></span> · <span data-i18n="修改"></span></label></legend><div class="scene3d-environment-inputs scene3d-environment-inputs-${group.fields.length}">${group.fields.map(field => `<label for="scene3dEnvironment${field.id}">
-        ${field.label ? (['X', 'Y', 'Z'].includes(field.label) ? `<span>${field.label}</span>` : `<span data-i18n="${field.label}"></span>`) : `<span data-i18n="${group.label}"></span>`}<input id="scene3dEnvironment${field.id}" ${field.hex ? 'type="text" spellcheck="false" maxlength="7" placeholder="#ffffff"' : `type="number" step="any" min="${field.min}" max="${field.max}"`} aria-label="${field.label || group.label}"></label>`).join('')}</div></fieldset>`).join('')}
+        ${field.label ? (['X', 'Y', 'Z'].includes(field.label) ? `<span>${field.label}</span>` : `<span data-i18n="${field.label}"></span>`) : `<span data-i18n="${group.label}"></span>`}<input id="scene3dEnvironment${field.id}" ${field.hex ? 'type="text" spellcheck="false" maxlength="7" placeholder="#ffffff"' : `type="number" step="${field.integer ? 1 : 'any'}" min="${field.min}" max="${field.max}"`} aria-label="${field.label || group.label}"></label>`).join('')}</div>${group.fog ? '<p class="scene3d-environment-note" data-i18n="雾密度越高，远处物体越模糊；设为0关闭。未勾选时不会加入场景。"></p><p id="scene3dEnvironmentFogUnavailable" class="scene3d-environment-note" data-i18n="当前核心不支持雾编辑，其他环境字段仍可修改。" hidden></p>' : ''}${group.particles ? '<p class="scene3d-environment-note" data-i18n="粒子在范围内循环移动。调整尺寸与速度可表现雨雪；数量设为0关闭，尺寸不能超过对应范围。"></p><p id="scene3dEnvironmentParticlesUnavailable" class="scene3d-environment-note" data-i18n="当前核心不支持粒子场编辑，其他环境字段仍可修改。" hidden></p>' : ''}</fieldset>`).join('')}
       <p class="scene3d-environment-note" data-i18n="近、远裁剪面一起修改；未勾选字段、对象声明和其他场景设置保持原文。"></p></section>
     <section id="scene3dEnvironmentReview" hidden><h3 data-i18n="3D环境审阅"></h3>
       <div class="scene3d-environment-comparison"><section><h4 data-i18n="修改前的环境声明"></h4><pre id="scene3dEnvironmentBefore"></pre></section>
@@ -50,10 +63,12 @@ export function setupScene3DEnvironment({ getContext = () => ({}), getSource = a
   let epoch = 0, formEpoch = 0, disposed = false, pending = false, session = null, opener = null, viewPath = '';
   let proposal = null, approved = null, rawSignature = '', proposalSignature = '', message = '', diagnostic = '';
   const supported = () => typeof supportsStudioCoreScene3DEnvironmentPatch === 'function' && supportsStudioCoreScene3DEnvironmentPatch();
+  const fogSupported = () => typeof supportsStudioCoreScene3DFog === 'function' && supportsStudioCoreScene3DFog();
+  const particlesSupported = () => typeof supportsStudioCoreScene3DParticles === 'function' && supportsStudioCoreScene3DParticles();
   const eligible = context => Boolean(context.editable && !context.creating && context.sourceJSON === true
     && typeof context.sourcePath === 'string' && context.sourcePath && typeof context.sourceToken === 'string');
   const current = () => { const context = getContext(); return Boolean(session && !disposed && dialog.open && eligible(context)
-    && !context.busy && supported() && context.sourcePath === session.snapshot.sourcePath && context.sourceToken === session.snapshot.token); };
+    && !context.busy && supported() && (!el('FogSelected').checked || fogSupported()) && (!el('ParticlesSelected').checked || particlesSupported()) && context.sourcePath === session.snapshot.sourcePath && context.sourceToken === session.snapshot.token); };
   const changed = () => groups.some(group => el(group.id + 'Selected').checked);
   const signature = () => JSON.stringify(groups.map(group => [el(group.id + 'Selected').checked, ...group.fields.map(field => el(field.id).value)]));
   const approvalMatches = () => Boolean(proposal && approved === proposal && signature() === rawSignature && JSON.stringify(proposal) === proposalSignature);
@@ -70,10 +85,12 @@ export function setupScene3DEnvironment({ getContext = () => ({}), getSource = a
     translatePage(dialog); dialog.setAttribute('aria-busy', String(pending)); dialog.dataset.dirty = String(changed());
     el('Path').textContent = session?.snapshot.sourcePath || viewPath; el('Status').textContent = t(message); el('Diagnostic').textContent = diagnostic;
     el('Fields').hidden = !session; const locked = pending || !current();
+    el('FogUnavailable').hidden = fogSupported(); el('ParticlesUnavailable').hidden = particlesSupported();
     for (const group of groups) {
-      el(group.id + 'Selected').disabled = locked;
+      const groupLocked = Boolean(locked || group.fog && !fogSupported() || group.particles && !particlesSupported());
+      el(group.id + 'Selected').disabled = groupLocked;
       for (const field of group.fields) {
-        el(field.id).disabled = locked || !el(group.id + 'Selected').checked;
+        el(field.id).disabled = groupLocked || !el(group.id + 'Selected').checked;
         el(field.id).setAttribute('aria-label', t(field.label || group.label));
       }
     }
@@ -113,13 +130,15 @@ export function setupScene3DEnvironment({ getContext = () => ({}), getSource = a
       session = { snapshot, model: parsed.model };
       for (const group of groups) {
         el(group.id + 'Selected').checked = false;
-        for (const field of group.fields) el(field.id).value = String(field.path.reduce((value, key) => value[key], parsed.model));
+        for (const field of group.fields) el(field.id).value = String(field.path.reduce((value, key) => value?.[key], parsed.model) ?? field.fallback);
       }
       invalidate(); message = '勾选要修改的3D环境字段，再检查完整原文。'; return true;
     } catch (error) { if (owns()) report(error, '无法读取有效的3D场景；请检查原文后重新打开。'); return false; }
     finally { if (epoch === request && dialog.open) { pending = false; refresh(); } }
   }
   function values() {
+    if (el('FogSelected').checked && !fogSupported()) throw Error(t('当前核心不支持雾编辑，其他环境字段仍可修改。'));
+    if (el('ParticlesSelected').checked && !particlesSupported()) throw Error(t('当前核心不支持粒子场编辑，其他环境字段仍可修改。'));
     const result = {};
     for (const group of groups) if (el(group.id + 'Selected').checked) for (const field of group.fields) {
       const raw = el(field.id).value; let value;
@@ -128,7 +147,7 @@ export function setupScene3DEnvironment({ getContext = () => ({}), getSource = a
         value = raw;
       } else {
         value = Number(raw.trim());
-        if (!raw.trim() || !Number.isFinite(value) || value < field.min || value > field.max) throw Error(t('所选环境字段的数值尚未完整或超出范围。'));
+        if (!raw.trim() || !Number.isFinite(value) || value < field.min || value > field.max || field.integer && !Number.isSafeInteger(value)) throw Error(t('所选环境字段的数值尚未完整或超出范围。'));
       }
       let target = result;
       for (let index = 0; index < field.path.length - 1; index++) {
@@ -151,7 +170,7 @@ export function setupScene3DEnvironment({ getContext = () => ({}), getSource = a
         || !candidate.beforeEnvironment || !candidate.afterEnvironment) throw Error('The complete environment source proposal was not confirmed.');
       proposal = candidate; rawSignature = raw; proposalSignature = JSON.stringify(candidate); approved = candidate;
       message = '3D环境已检查，请审阅环境声明与完整原文后应用。'; el('SourceReview').open = true; return true;
-    } catch (error) { report(error, '3D环境有误，请检查颜色、相机和光照范围后重试。'); return false; }
+    } catch (error) { report(error, '3D环境有误，请检查颜色、相机、光照、雾和粒子范围后重试。'); return false; }
     finally { refresh(); }
   }
   async function apply() {

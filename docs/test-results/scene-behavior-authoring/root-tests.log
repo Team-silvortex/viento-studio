@@ -1,0 +1,200 @@
+✔ behavior host applies only an owned reviewed draft and preserves saved authority (23.601372ms)
+✔ behavior host rejects cloned proposals without requesting dependency review (3.374399ms)
+✔ behavior host revokes approval at every digest boundary on context or source changes (106.187359ms)
+✔ late dependency review and caller cancellation cannot write another owner (13.701818ms)
+✔ reader and entry recognition require current editable behavior JSON with matching save revision (4.427226ms)
+✖ behavior authoring HTTP is advertised independently of engines and requires editor write authentication (254.661383ms)
+✔ behavior HTTP dependency revision changes with saved source edits and never saves the candidate (241.445624ms)
+✖ read-only browse service cannot offer the authoring inspector (139.886224ms)
+✔ behavior editor mounts with its own source ports independently of scene preview and execution (4.881348ms)
+✔ disabled or missing behavior ports cannot mount via a declarative project request (3.445168ms)
+✖ builtin composition declares thirteen stable modules and keeps contribution domains separate (2.134004ms)
+✔ module registration and plan results own detached immutable snapshots (2.942408ms)
+✔ absent, null and empty additive profiles preserve legacy module composition (1.196947ms)
+✔ required and optional requests preserve declaration order and have independent severity (1.621346ms)
+✔ unknown representations and behavior requirements never fall back to Scene2D or authorize a backend (0.880986ms)
+✔ capability API mismatch is explicit and does not reactivate a disabled module (0.571615ms)
+✔ module feature projection propagates required dependencies but keeps optional media/export ports independent (0.681634ms)
+✔ dependency order is deterministic even when declarations arrive in reverse order (0.274447ms)
+✔ duplicate modules, ambiguous providers, missing/versioned dependencies and cycles fail registration (0.559292ms)
+✔ explicit host registration can provide a future representation without claiming an executable provider (3.985837ms)
+✔ strict profile validates detached declarative requests but rejects paths, scripts and unknown keys (0.891815ms)
+✔ malformed or future profiles produce local diagnostics and preserve ordinary document availability (0.905079ms)
+✔ module descriptors reject dynamic implementations, unversioned capabilities and malformed domains (0.391238ms)
+✔ feature options are strict metadata and reject unknown modules or forged enable flags (0.672538ms)
+✔ accessors, serialization hooks, inherited objects, hidden fields, symbols, sparse arrays and cycles never gain authority (1.108497ms)
+✔ profile and registry budgets reject excessive declarations instead of dropping requests (1.513711ms)
+✔ drama scene and custom document types stay document definitions and never infer representation requirements (0.784861ms)
+✔ declared future module profiles cannot mutate original author payload or the registered providers (0.694327ms)
+✔ settings finish before localized areas mount, with the document authority already host-owned (5.367067ms)
+✔ a failed language initialization does not partly mount domain views (1.575562ms)
+✔ each area receives only its own frozen options and unchanged author callbacks (2.013276ms)
+✔ port configuration is captured before awaiting settings and caller mutation cannot replace source authority (1.385239ms)
+✔ the public system surface and snapshots never expose controllers, functions or source text (1.510576ms)
+✔ media receives the declared export provider rather than a caller-supplied sibling override (1.604155ms)
+✔ disabling export leaves reference editing active and gives media no phantom export provider (1.185366ms)
+✔ an exporter without an asset provider does not disable or invent the optional media service (1.289916ms)
+✔ disabling project settings does not disable the document, world or build modules (1.505286ms)
+✔ disabling media leaves package exporting available and refresh performs no hidden media setup (1.688798ms)
+✔ all legacy optional features may be disabled while base source and execution views stay assembled (1.183663ms)
+✔ module assembly does not grant host World writes, execution or preview availability (1.560516ms)
+✔ World access, execution and scene preview are independent host capabilities (1.563721ms)
+✔ host capability refresh fails closed for non-booleans and revokes previous grants (1.261484ms)
+✔ command arrays are isolated from the caller and every receiving area (1.459793ms)
+✔ snapshot mutation cannot change future module plans or capability delivery (1.917392ms)
+✖ a future required 3D request reports the missing capability without unmounting current authoring (2.524251ms)
+✔ optional missing or unsupported capabilities remain diagnostics and never imply Rust author compilation (1.447851ms)
+✔ a disabled requested module is inactive while its independent sibling still supports author resources (1.706931ms)
+✖ malformed project profiles report a local diagnostic and preserve the already mounted editor (1.410003ms)
+✖ an explicitly null profile is invalid while an absent profile remains legacy, without rewriting author data (1.39703ms)
+✖ a future profile schema preserves authored requests and assembled modules with a local invalid diagnostic (1.879543ms)
+✔ moving between additive profiles and a legacy project changes only plan diagnostics (1.349854ms)
+✔ refresh affects only the mounted media controller and does not remount any functional area (1.169508ms)
+✔ assembly and metadata refresh preserve injected source callbacks without invoking ordinary Save (1.343092ms)
+✔ settings fallback is used once and the explicit runtime settings remain authoritative (2.457109ms)
+ℹ tests 54
+ℹ suites 0
+ℹ pass 47
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 694.616012
+
+✖ failing tests:
+
+test at scripts/tests/scene-behavior-authoring-http.test.mjs:17:1
+✖ behavior authoring HTTP is advertised independently of engines and requires editor write authentication (254.661383ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'no-store, no-cache, must-revalidate, max-age=0'
+  - 'no-store'
+             ^
+  
+      at TestContext.<anonymous> (file:///tmp/viento-behavior-authoring-93wj2qhh/candidate/scripts/tests/scene-behavior-authoring-http.test.mjs:20:82)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'no-store, no-cache, must-revalidate, max-age=0',
+    expected: 'no-store',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-behavior-authoring-http.test.mjs:35:1
+✖ read-only browse service cannot offer the authoring inspector (139.886224ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  405 !== 403
+  
+      at TestContext.<anonymous> (file:///tmp/viento-behavior-authoring-93wj2qhh/candidate/scripts/tests/scene-behavior-authoring-http.test.mjs:36:91)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 405,
+    expected: 403,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/studio-modules.test.mjs:17:1
+✖ builtin composition declares thirteen stable modules and keeps contribution domains separate (2.134004ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      'org.viento.document',
+      'org.viento.settings',
+      'org.viento.project',
+      'org.viento.world',
+  ...
+      'org.viento.scene3d-removal',
+  +   'org.viento.scene-behaviors'
+    ]
+  
+      at TestContext.<anonymous> (file:///tmp/viento-behavior-authoring-93wj2qhh/candidate/scripts/tests/studio-modules.test.mjs:19:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'org.viento.document', 'org.viento.settings', 'org.viento.project', 'org.viento.world', 'org.viento.export', 'org.viento.media', 'org.viento.build', 'org.viento.scene3d', 'org.viento.scene3d-transforms', 'org.viento.scene3d-objects', 'org.viento.scene3d-environment', 'org.viento.scene3d-properties', 'org.viento.scene3d-translation', 'org.viento.scene3d-alignment', 'org.viento.scene3d-distribution', 'org.viento.scene3d-copy', 'org.viento.scene3d-removal', 'org.viento.scene-behaviors' ],
+    expected: [ 'org.viento.document', 'org.viento.settings', 'org.viento.project', 'org.viento.world', 'org.viento.export', 'org.viento.media', 'org.viento.build', 'org.viento.scene3d', 'org.viento.scene3d-transforms', 'org.viento.scene3d-objects', 'org.viento.scene3d-environment', 'org.viento.scene3d-properties', 'org.viento.scene3d-translation', 'org.viento.scene3d-alignment', 'org.viento.scene3d-distribution', 'org.viento.scene3d-copy', 'org.viento.scene3d-removal' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/studio-system-ui.test.mjs:174:1
+✖ a future required 3D request reports the missing capability without unmounting current authoring (2.524251ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///tmp/viento-behavior-authoring-93wj2qhh/candidate/scripts/tests/studio-system-ui.test.mjs:178:71)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/studio-system-ui.test.mjs:199:1
+✖ malformed project profiles report a local diagnostic and preserve the already mounted editor (1.410003ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///tmp/viento-behavior-authoring-93wj2qhh/candidate/scripts/tests/studio-system-ui.test.mjs:206:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/studio-system-ui.test.mjs:209:1
+✖ an explicitly null profile is invalid while an absent profile remains legacy, without rewriting author data (1.39703ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///tmp/viento-behavior-authoring-93wj2qhh/candidate/scripts/tests/studio-system-ui.test.mjs:214:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/studio-system-ui.test.mjs:219:1
+✖ a future profile schema preserves authored requests and assembled modules with a local invalid diagnostic (1.879543ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///tmp/viento-behavior-authoring-93wj2qhh/candidate/scripts/tests/studio-system-ui.test.mjs:227:70)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,3 +1,5 @@
+import { SCENE_BEHAVIOR_CREATION_API_PATH } from '../../engine/scene-behavior-creation-contract.mjs';
+import { SCENE_BEHAVIOR_AUTHORING_API_PATH } from '../../engine/scene-behavior-authoring-contract.mjs';
 import { t } from '../i18n/index.js';
 import { translateDiagnostic } from '../i18n/diagnostics.js';
 import { API_PATHS, API_REQUEST_KEYS, DOC_CAPABILITIES_FIELDS } from '../../scripts/lib/doc-api-contract.mjs';
@@ -6,6 +8,12 @@ import { RESOURCE_PACKAGE_API } from '../../engine/resource-package.mjs';
 import { APP_ERROR_MESSAGES, APP_REQUEST_LABELS } from './app-state.js';
 import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
+
+export async function inspectSceneBehaviorAuthoring(payload) {
+  return (await fetchJsonApiRequest(SCENE_BEHAVIOR_AUTHORING_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('核对行为依赖'))).payload;
+}
 
 export async function requestProjectBuildDocument(payload) {
   return (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, withAuthHeaders({
@@ -547,4 +555,10 @@ export function uploadMediaFile(file, { signal, onProgress = () => {} } = {}) {
     signal?.addEventListener('abort', abort, { once: true });
     xhr.send(file);
   });
+}
+
+export async function inspectSceneBehaviorCreation(payload) {
+  return (await fetchJsonApiRequest(SCENE_BEHAVIOR_CREATION_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('核对行为依赖'))).payload;
 }

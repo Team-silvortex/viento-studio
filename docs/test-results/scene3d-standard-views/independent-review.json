@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "scope": "Independent agent read-only review of UI/session guards and browser proof; root review of renderer/math diffs and six screenshots. Not a separate application suite.",
+  "findings": [],
+  "reviewedProductSha256": {
+    "web/i18n/en.js": "c4bd57a45be033946099aaf3ebbd12ea306533eba07dcf7078cb2b07e6f0c1a3",
+    "web/i18n/ja.js": "38e698d99b5180f4fb5a84edd23c733b13c08d650863bc4ff585c1bd5b1647bf",
+    "web/modules/app-scene3d-preview.js": "0c2e92961dce9451b692843a5f67fb64d51bf22afd8be9122fff87b64c6073b2",
+    "web/modules/scene3d-math.js": "f15207de49b55a6dac15d47a6c81fa196db34f06ada34cf4ee47120f4c430357",
+    "web/modules/scene3d-renderer.js": "c67b23d193e589508f04f5683b2f6abeda9aa47051c5fdda9b8247155f279002",
+    "web/scene3d.css": "2a0c655e0ebe4e9ea53782ebfa73bb1a4b889519e3004c9161edffc82ff48cd8"
+  },
+  "checks": [
+    "Fixed direction enum and live read-only session guard; last valid preview remains intentional on source mismatch.",
+    "Explicit temporary camera up detached across presets, focus, orbit and snapshots; authored data unchanged.",
+    "Browser proof derives independent directions from actual GPU matrices, checks all corners, pointer actions and screenshot pixels.",
+    "Legacy no-up scale clamp regression corrected with final targeted tests."
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "generatedAt": "2026-10-12T10:52:46.152362+00:00",
+  "version": "0.1.0",
+  "baseCommit": "cc3c3b79c292d4d2c2db1edd4b8dae519810b641",
+  "stage": "working-tree after standard views and pan; no release, commit, push or installed app update",
+  "feature": "Read-only perspective/orthographic preview with independent projection math, renderer mode, and guarded UI",
+  "behavior": [
+    "Target-plane scale and camera unchanged on switching; other depths change size according to projection.",
+    "Projection-aware focus and six directions; pan, orbit, zoom, picking and occlusion use actual uploaded matrices.",
+    "Reset and valid refresh preserve projection and drag modes while restoring authored camera; reopen defaults to perspective.",
+    "Projection mode is not serialized or exported as an authored camera."
+  ],
+  "targeted": {
+    "passed": 319,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "newCases": 32,
+    "runner": "Node v24.21.0 --test --test-isolation=none --test-reporter=tap",
+    "log": "targeted-tests.tap"
+  },
+  "preflight": {
+    "syntaxFiles": 656,
+    "api": true,
+    "versions": true,
+    "report": "preflight.json"
+  },
+  "prepared": {
+    "identicalCopies": 16,
+    "directionCases": 12,
+    "projectedObjectWitnesses": 24,
+    "report": "prepared.json",
+    "nativeBuild": false
+  },
+  "browser": {
+    "report": "browser/browser.json",
+    "browser": "Chrome/154.0.8037.97",
+    "orthographicPanGestures": 15,
+    "projectedObjectWitnesses": 45,
+    "visibleCompositingProbes": 416,
+    "compositingMismatches": 0,
+    "screenshotsVisuallyInspected": [
+      "orthographic-top-desktop.png",
+      "orthographic-bottom-desktop.png",
+      "orthographic-zh-CN-390.png",
+      "orthographic-en-390.png",
+      "orthographic-ja-390.png",
+      "orthographic-no-webgl.png"
+    ],
+    "softwareRendering": "Explicit ANGLE / SwiftShader",
+    "sourceStable": true
+  },
+  "initialBrowserAttempt": {
+    "report": "initial-browser/browser.json",
+    "harness": "initial-browser/initial-harness.mjs",
+    "initialUI": "initial-browser/initial-ui.js",
+    "reason": "Japanese 390px viewport exposed excessive repeated explanations, leaving fewer than 31 visible canvas sampling points. Merged projection and direction hints and shortened the introduction. Final browser reuses the same assertions and exceeds the sampling requirement in all three languages."
+  },
+  "boundaries": {
+    "modules": 17,
+    "capabilities": 33,
+    "wasmBytes": 599948,
+    "wasmSha256": "49c4dc243e05c69d2b53b9cd144e9ad8e054c1c1edf8531d5808800bbb9c05b6",
+    "rustChanged": false,
+    "authorFormatChanged": false,
+    "sourceAndSavedFixtureUnchanged": true
+  },
+  "atlas": {
+    "functions": 99,
+    "implementations": 248,
+    "bindings": 385,
+    "cells": 1540
+  },
+  "limitations": [
+    "Targeted checks only; no full application or Rust suite rerun.",
+    "Browser touch emulation and software WebGL2 are not hardware-GPU, installed desktop or Android-device proof.",
+    "Orthographic mode belongs only to the preview, with display span derived from target distance and FOV. Switching does not automatically frame the scene.",
+    "Prepared resources are temporary; no installer was rebuilt or installed."
+  ],
+  "files": {
+    "docs/ARCHITECTURE.md": "c5f31fe76df467913ef2dafe90dacf47e07c21bff8102929530a066de8a5e7fc",
+    "docs/ROADMAP.md": "679702986bd591774a0eaa63becc16ce8d27e8a0f9d13d71c0a6cda42750fb94",
+    "docs/SCENE3D.md": "f7091857519db98753906dccbb715359b63610e8525e1f810e69f727e005f57a",
+    "docs/STATUS.md": "6542ea1e2dbdabff3a8008e2da6b0747f2119d358e344af1fd7f23425a6367c6",
+    "docs/STUDIO_MODULES.md": "60221a5187543ec1991cbf2b60666fac2205c347f76b34ee8ac897872d2acd86",
+    "engine/README.md": "12d603aec4a84325b572d29f7c72a673c298925cdcf5a51998759be65ef54597",
+    "scripts/tests/scene3d-preview-ui.test.mjs": "c76e71a8b041122d8be45e461610537c776099adca7dae3af4f34848ca1e6d77",
+    "web/i18n/en.js": "491d22a80056a0175d426aa0ea4557be207784355f8e7a2c8bb9094c6df571f4",
+    "web/i18n/ja.js": "0c5bb2596ef9153a1c44e948eb990adfbd04188f1dd912299493819d80877ba0",
+    "web/modules/app-scene3d-preview.js": "08ef47c25d83436bf11bb94f6b0228661a62d88ce8cc489962bf7191dbc2f45b",
+    "web/modules/scene3d-math.js": "af2fb38d7d6dc44531e655e7c1a56c7833b0fe64207bcb6ddaa7668804b4f515",
+    "web/modules/scene3d-renderer.js": "887a4579dded704e50be8c67e904ab8316d28d33ded4e511e5e1401c7ef2d87f",
+    "scripts/tests/scene3d-orthographic-math.test.mjs": "fb431b7468b2ca05e0577f6ad2480835d14c8fc43483a6d586785208739ffe2a",
+    "scripts/tests/scene3d-orthographic-renderer.test.mjs": "07d58362456e55d832c7aef9adb9c131cbe359b31baf5ae1df90b81d26b50b74",
+    "scripts/tests/scene3d-orthographic-smoke.mjs": "9f9354d3334ef1beadcd52d7624663e90de60063229b5438894bad9b5fb27b07"
+  }
+}

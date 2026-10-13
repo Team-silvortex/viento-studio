@@ -36,14 +36,14 @@ function stubProposal(snapshot, { values }) {
     beforeEnvironment: environment(before), afterEnvironment: environment(after) });
 }
 async function fixture(t, options = {}) {
-  let language = options.language || 'zh', listener = () => {}, supported = options.supported ?? true, unsubscribed = 0, loads = 0;
-  const original = serialize(author()); let content = original;
+  let language = options.language || 'zh', listener = () => {}, supported = options.supported ?? true, fogSupported = options.fogSupported ?? true, unsubscribed = 0, loads = 0;
+  const original = serialize(options.author || author()); let content = original;
   const context = { editable: true, creating: false, busy: false, sourceJSON: true, sourcePath: 'documents/boxes.scene3d.json', sourceToken: '1:0:0' };
   const calls = [], proposals = [], confirmations = [], alerts = [];
   const snapshot = () => ({ sourcePath: context.sourcePath, token: context.sourceToken, content, baseSourceRevision: hash(original), sourceRevision: hash(content) });
   const translate = value => ({ en, ja }[language]?.[value] || value);
   const h = await dialogHarness('app-scene3d-environment', {
-    queueMicrotask, supportsStudioCoreScene3DEnvironmentPatch: () => supported, parseScene3DSource,
+    queueMicrotask, supportsStudioCoreScene3DParticles: () => options.particlesSupported !== false, supportsStudioCoreScene3DEnvironmentPatch: () => supported, supportsStudioCoreScene3DFog: () => fogSupported, parseScene3DSource,
     createScene3DEnvironmentProposal(source, edit) { const result = (options.propose || stubProposal)(copy(source), copy(edit)); proposals.push(result); return result; },
     t: translate, translatePage(root) { for (const node of root.querySelectorAll('[data-i18n]')) node.textContent = translate(node.dataset.i18n); },
     onLanguageChange(fn) { listener = fn; return () => { unsubscribed++; listener = () => {}; }; },
@@ -63,7 +63,7 @@ async function fixture(t, options = {}) {
   t.after(() => controller.dispose());
   return { ...h, controller, context, el, settle, set, select, check, apply, calls, proposals, alerts, confirmations, original, snapshot,
     loads: () => loads, unsubscribed: () => unsubscribed, open: () => controller.open(), content: () => content,
-    setSupported(value) { supported = value; }, setLanguage(value) { language = value; listener(); } };
+    setSupported(value) { supported = value; }, setFogSupported(value) { fogSupported = value; }, setLanguage(value) { language = value; listener(); } };
 }
 const changeBackground = h => { h.select('Background'); h.set('Background', '#Ab12Cd'); h.check(); };
 
@@ -269,4 +269,70 @@ test('mixed background, camera clipping and light changes use real portable nati
   assert.equal(candidate.beforeContent, h.original); assert.equal(candidate.afterContent.startsWith('\ufeff'), true); assert.match(candidate.afterContent, /\r\n/);
   const after = parseScene3DSource(candidate.afterContent).model; assert.deepEqual(after.objects, author().objects); assert.deepEqual(after.light.direction, author().light.direction); assert.equal(after.camera.fovDegrees, 50);
   assert.equal(h.content(), h.original); await h.apply(); assert.equal(h.calls.length, 1); assert.equal(isScene3DEnvironmentProposal(h.calls[0].proposal), true); assert.equal(h.el('Dialog').open, false);
+});
+
+
+test('fog is an opt-in environment component: native review, draft-only apply and reopen', async t => {
+  const h = await fixture(t, { propose: createScene3DEnvironmentProposal }); await h.open();
+  assert.equal(h.el('FogSelected').checked, false); assert.equal(h.el('FogDensity').disabled, true);
+  changeBackground(h); assert.equal(Object.hasOwn(JSON.parse(h.el('Source').textContent.replace(/^\ufeff/, '')), 'fog'), false);
+  h.select('Background', false); h.select('Fog'); h.set('FogColor', '#BaCcDd'); h.set('FogDensity', .2); h.check();
+  assert.equal(h.el('Apply').disabled, false); const proposal = h.proposals.at(-1);
+  assert.equal(Object.hasOwn(proposal.beforeEnvironment, 'fog'), false); assert.deepEqual(proposal.afterEnvironment.fog, { color: '#BaCcDd', density: .2 });
+  assert.deepEqual(proposal.changedPaths, ['/fog']); assert.equal(h.content(), h.original);
+  await h.apply(); assert.equal(h.content(), proposal.afterContent); await h.open();
+  assert.equal(h.el('FogColor').value, '#BaCcDd'); assert.equal(h.el('FogDensity').value, '0.2');
+  h.select('Fog'); h.set('FogDensity', 0); h.check(); assert.deepEqual(h.proposals.at(-1).changedPaths, ['/fog/density']);
+  assert.equal(h.proposals.at(-1).afterEnvironment.fog.density, 0);
+});
+
+test('fog cancellation and rejected density retain original source', async t => {
+  for (const value of ['', -1, 1.01, 'NaN']) {
+    const h = await fixture(t, { propose: createScene3DEnvironmentProposal }); await h.open();
+    h.select('Fog'); h.set('FogDensity', value); h.check(); assert.equal(h.el('Apply').disabled, true);
+    assert.equal(h.content(), h.original); h.controller.close(true);
+  }
+  const h = await fixture(t, { propose: createScene3DEnvironmentProposal }); await h.open(); h.select('Fog'); h.check();
+  assert.equal(h.el('Apply').disabled, false); h.el('Cancel').click(); assert.equal(h.content(), h.original); assert.equal(h.calls.length, 0);
+});
+
+test('optional fog capability loss revokes approval but old core retains other environment fields', async t => {
+  const h = await fixture(t, { fogSupported: false, propose: createScene3DEnvironmentProposal }); await h.open();
+  assert.equal(h.el('FogSelected').disabled, true); assert.equal(h.el('FogUnavailable').hidden, false);
+  changeBackground(h); assert.equal(h.el('Apply').disabled, false); assert.equal(h.proposals.at(-1).values.fog, undefined);
+  h.select('Background', false); h.setFogSupported(true); h.controller.refresh(); h.select('Fog'); h.check();
+  assert.equal(h.el('Apply').disabled, false); h.setFogSupported(false); h.controller.refresh();
+  assert.equal(h.el('Apply').disabled, true); await h.apply(); assert.equal(h.calls.length, 0); assert.equal(h.content(), h.original);
+});
+
+test('fog labels and density survive Chinese English Japanese switching without reauthoring', async t => {
+  const h = await fixture(t, { propose: createScene3DEnvironmentProposal }); await h.open(); h.select('Fog'); h.set('FogDensity', .075); h.check();
+  const source = h.el('Source').textContent;
+  for (const lang of ['en', 'ja', 'zh']) {
+    h.setLanguage(lang); assert.equal(h.el('FogDensity').value, '0.075'); assert.equal(h.el('Source').textContent, source); assert.equal(h.el('Apply').disabled, false);
+    assert.equal(h.el('FogDensity').getAttribute('aria-label'), ({ en, ja }[lang]?.['雾密度（每场景单位）'] || '雾密度（每场景单位）'));
+  }
+});
+
+test('particle author form reviews a complete Rust proposal and ordinary application preserves author objects', async t => {
+  const h = await fixture(t, { propose: createScene3DEnvironmentProposal }); await h.open();
+  assert.equal(h.el('ParticlesSelected').checked, false); assert.equal(h.el('ParticleCount').value, '512');
+  h.select('Particles'); h.check(); assert.equal(h.el('Apply').disabled, false);
+  const proposal = h.proposals.at(-1); assert.deepEqual(proposal.changedPaths, ['/particleField']);
+  assert.equal(proposal.values.particleField.count, 512); assert.deepEqual(JSON.parse(proposal.afterContent.replace(/^\ufeff/, '')).objects, author().objects);
+  assert.equal(h.content(), h.original); await h.apply(); assert.equal(h.calls.length, 1);
+  await h.open(); assert.equal(h.el('ParticleVelocityY').value, '-8'); h.select('Particles'); h.set('ParticleCount', 0); h.check();
+  assert.deepEqual(h.proposals.at(-1).changedPaths, ['/particleField/count']);
+});
+test('particle form bounds, integers and size/extent constraints reject invalid drafts without applying', async t => {
+  const h = await fixture(t, { propose: createScene3DEnvironmentProposal }); await h.open(); h.select('Particles');
+  for (const [id, value] of [['ParticleCount', .5], ['ParticleCount', 4097], ['ParticleSeed', -1], ['ParticleSeed', 4294967296], ['ParticleSizeX', 20]]) {
+    const old = h.el(id).value; h.set(id, value); h.check(); assert.equal(h.el('Apply').disabled, true, id); h.set(id, old);
+  }
+  assert.equal(h.calls.length, 0); assert.equal(h.content(), h.original);
+});
+test('legacy core disables only particle authoring, while languages retain author values', async t => {
+  const h = await fixture(t, { particlesSupported: false }); await h.open(); assert.equal(h.el('ParticlesSelected').disabled, true); assert.equal(h.el('BackgroundSelected').disabled, false);
+  const next = await fixture(t, { propose: createScene3DEnvironmentProposal }); await next.open(); next.select('Particles'); next.set('ParticleSeed', 4242);
+  for (const language of ['en', 'ja', 'zh']) { next.setLanguage(language); assert.equal(next.el('ParticleSeed').value, '4242'); }
 });

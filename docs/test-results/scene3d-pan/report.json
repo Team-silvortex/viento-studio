@@ -1,0 +1,90 @@
+{
+  "ok": true,
+  "generatedAt": "2026-10-12T10:39:11.098698+00:00",
+  "version": "0.1.0",
+  "baseCommit": "cc3c3b79c292d4d2c2db1edd4b8dae519810b641",
+  "stage": "working-tree after standard views; no release, commit, push or installed app update",
+  "feature": "Read-only screen-plane camera pan, mode selector, Shift-left and middle mouse temporary pan, single-finger pan",
+  "targeted": {
+    "passed": 287,
+    "failed": 0,
+    "skipped": 0,
+    "newCases": 33,
+    "runner": "Node v24.21.0 --test --test-isolation=none --test-reporter=tap",
+    "log": "targeted-tests.tap"
+  },
+  "preflight": {
+    "syntaxFiles": 653,
+    "api": true,
+    "versions": true,
+    "report": "preflight.json"
+  },
+  "prepared": {
+    "identicalCopies": 16,
+    "directionCases": 12,
+    "report": "prepared.json",
+    "nativeBuild": false
+  },
+  "browser": {
+    "report": "browser/browser.json",
+    "browser": "Chrome/154.0.8037.97",
+    "panGestures": 15,
+    "objectProjectionWitnesses": 45,
+    "visibleCompositingProbes": 455,
+    "compositingMismatches": 0,
+    "screenshotsVisuallyInspected": [
+      "pan-top-desktop.png",
+      "pan-bottom-desktop.png",
+      "pan-zh-CN-390.png",
+      "pan-en-390.png",
+      "pan-ja-390.png",
+      "pan-no-webgl.png"
+    ],
+    "softwareRendering": "Explicit ANGLE / SwiftShader",
+    "sourceStable": true
+  },
+  "initialBrowserAttempt": {
+    "report": "initial-browser/browser.json",
+    "harness": "initial-browser/failed-harness.mjs",
+    "reason": "The old standard-view assertion expected toolbar on screen immediately after the pan helper intentionally scrolled to the canvas. Corrected harness to scroll mode selector into view before checking its accessibility; product source unchanged between attempts."
+  },
+  "boundaries": {
+    "modules": 17,
+    "capabilities": 33,
+    "wasmBytes": 599948,
+    "wasmSha256": "49c4dc243e05c69d2b53b9cd144e9ad8e054c1c1edf8531d5808800bbb9c05b6",
+    "rustChanged": false,
+    "authorFormatChanged": false,
+    "sourceAndSavedFixtureUnchanged": true
+  },
+  "atlas": {
+    "functions": 98,
+    "implementations": 245,
+    "bindings": 381,
+    "cells": 1524
+  },
+  "limitations": [
+    "Targeted checks only; no full application or Rust suite rerun.",
+    "Browser touch emulation and software WebGL2 are not hardware-GPU, installed desktop or Android-device proof.",
+    "No pinch zoom, orthographic camera, authored camera edit or object movement in this feature.",
+    "Prepared resources are temporary; no installer was rebuilt or installed."
+  ],
+  "files": {
+    "docs/ARCHITECTURE.md": "678b0d41d76cefb73a653a05ff07ab06349f84fd7e6c0b84b71fadbefd02e624",
+    "docs/ROADMAP.md": "976ee283e1dc5fc822041038604cd4ccae7981511cb3659a2e3f8100734ab372",
+    "docs/SCENE3D.md": "475f452e5f73c6340a366d55910c8efa54f46ec84ae9578f549cffc3ea2d6e2f",
+    "docs/STATUS.md": "c4b7df9fdb9c5cfb9c1fcb7a591edf23b4822617d1e8f3b73d4b79a9e264ddd0",
+    "docs/STUDIO_MODULES.md": "1384e94fcba58e73658d86ebb39172ac1f4ebf471c60dba84f1a2968eef0ddf7",
+    "engine/README.md": "171c89b0db9db8c4ff5d7dbb0fd1c5e8e4ba9a0903517bd8ff2461b687aace23",
+    "scripts/tests/scene3d-preview-ui.test.mjs": "4f601f0a5f85c5d5ad3584cf77d19520f8d839d8b81c5720e08c21e941fa2915",
+    "web/i18n/en.js": "40ba5785e716196c8d660422604a60cc83b93200204cddba55849717d1873058",
+    "web/i18n/ja.js": "aa0f77cf0f141544fba14b8ccb192f936d5e9ba9c5c195efd494cf224aa6302f",
+    "web/modules/app-scene3d-preview.js": "ca586389980bad14067d1aea1a2bd69d5025ca623a8606f8f6a410e802595370",
+    "web/modules/scene3d-math.js": "62c3cfc180afda1ead244639e708193eb5ce855654da96e4e5c59c23aa3957e8",
+    "web/modules/scene3d-renderer.js": "c28d67857a7038935eebb3973138403231deb16a0040c3bd8c91670a520bee67",
+    "web/scene3d.css": "79b7c2d7a1a3fb0cdb17c44b82321734c2725eb1780796e7c51e2dd7bba179f4",
+    "scripts/tests/scene3d-pan-math.test.mjs": "b9464d1bf826d6758610623987fe2a5865a347919ea26cfeb85fc1659ef0c6c3",
+    "scripts/tests/scene3d-pan-renderer.test.mjs": "b91c1313d07c31b305964e66bc679a64b8df7b0eeeefa4da92c214819da70398",
+    "scripts/tests/scene3d-pan-smoke.mjs": "20ad75199329e16ba50f96dfd8e3c26db322e1bc6856a96faa9db05cfdce30fe"
+  }
+}

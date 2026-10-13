@@ -1,3 +1,5 @@
+import { createSceneBehaviorCreationService } from './scene-behavior-creation-service.mjs';
+import { createSceneBehaviorAuthoringService } from './scene-behavior-authoring-service.mjs';
 import {
   EDIT_ROOT_PREFIXES,
   normalizeStandardizeSourceFilter,
@@ -47,11 +49,13 @@ function getDefaultIndexCacheTtl(rawTtl) {
 }
 
 function createDocumentService(options = {}) {
+  const sceneBehaviorAuthoring = createSceneBehaviorAuthoringService(PROJECT_ROOT);
+  const sceneBehaviorCreation = createSceneBehaviorCreationService(PROJECT_ROOT);
   const queryWorld = createWorldQueryService(PROJECT_ROOT);
   const commandWorld = createWorldCommandService(PROJECT_ROOT);
-  const exports = createExportService(PROJECT_ROOT);
   const projectBuildEnabled = options.projectBuildEnabled ?? process.platform === 'linux';
-  const projectBuild = createProjectBuildService(PROJECT_ROOT, { enabled: projectBuildEnabled, ...executionHostConfiguration(), onAuthorWrite: invalidateIndexCache });
+  const projectBuild = createProjectBuildService(PROJECT_ROOT, { enabled: projectBuildEnabled, ...executionHostConfiguration(), onAuthorWrite: invalidateIndexCache, deliveryEnabled: true });
+  const exports = createExportService(PROJECT_ROOT, { planBackendProjectDelivery: (payload, signal) => projectBuild.deliveryPlan(payload, signal) });
   const scenePreview = createScenePreviewService(PROJECT_ROOT, { enabled: projectBuildEnabled });
   const resourcePackages = createResourcePackageService(PROJECT_ROOT, { imported: () => { reloadWorkspaceManifest(); invalidateIndexCache(); } });
   const sharedState = options.state || {};
@@ -75,7 +79,7 @@ function createDocumentService(options = {}) {
   });
 
   async function getCapabilities() {
-    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
+    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, sceneBehaviorAuthoring: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
   }
 
   function getRuntimeConfig() {
@@ -252,6 +256,8 @@ function createDocumentService(options = {}) {
   return {
     projectBuild,
     scenePreview,
+    sceneBehaviorAuthoring,
+    sceneBehaviorCreation,
     queryWorld,
     async transactionStatus() {
       const { pending, receipt } = await readTransactionStatus(PROJECT_ROOT);

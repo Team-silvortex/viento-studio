@@ -1,0 +1,107 @@
+{
+  "ok": true,
+  "version": "0.1.0",
+  "delivery": "working-tree-after-0.1.0",
+  "baselineCommit": "cc3c3b79c292d4d2c2db1edd4b8dae519810b641",
+  "finishedAt": "2026-10-12T10:20:07.845641+00:00",
+  "scope": "Six perspective standard directions, explicit view-only up, exact poles, local screen-axis orbit, focus, picking and read-only UI. Source/schema/core/backend versions unchanged.",
+  "relatedTests": {
+    "tests": 254,
+    "pass": 254,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "newCases": {
+    "math": 12,
+    "renderer": 15,
+    "ui": 8,
+    "includedInRelatedTotal": true
+  },
+  "preflight": {
+    "ok": true,
+    "version": "0.1.0",
+    "node": "v24.21.0",
+    "syntaxFiles": 650,
+    "apiAndVersionPreflight": true
+  },
+  "browser": {
+    "report": "browser/browser.json",
+    "flows": 7,
+    "browser": "Chrome/154.0.8037.97",
+    "sourceStableDuringProof": true,
+    "servedFiles": 11,
+    "directionWitnesses": 16,
+    "cornerWitnesses": 360,
+    "compositingSamples": 520,
+    "compositingMismatches": 0,
+    "inspectedScreenshots": [
+      "top-desktop.png",
+      "bottom-desktop.png",
+      "standard-views-zh-CN-390.png",
+      "standard-views-en-390.png",
+      "standard-views-ja-390.png",
+      "standard-views-no-webgl.png"
+    ],
+    "visualNotes": "Six images inspected. Direction labels wrap at 390px; tall authored viewport is vertically scrollable and screenshots show only its visible portion. No horizontal page/dialog overflow or unexpected compositor white blocks.",
+    "scope": "Actual isolated HTTP editor with explicit ANGLE/SwiftShader software WebGL; missing-WebGL phase explicitly injected. No hardware/installer/device claim."
+  },
+  "preparedResources": {
+    "report": "prepared.json",
+    "copiedFileChecks": 16,
+    "pureDirectionExecutions": 12,
+    "scope": "Desktop and mobile generated resource copies, no installer or device."
+  },
+  "initialCompatibilityFailure": {
+    "log": "renderer-tests-legacy-orbit-failure.log",
+    "cause": "A new pure-math validator rejected legacy zero scale, which previously clamped to minimum. Restored legacy finite zero/negative behavior, added explicit assertions; final related suite passes.",
+    "historicalEvidenceUnchanged": true
+  },
+  "boundaries": [
+    "No application full-suite rerun, Rust native test rerun, installation, Android-device or hardware-GPU acceptance.",
+    "Author scene schema 1, Rust/WASM code and artifact, module inventory17/capabilities33 and engine protocols unchanged.",
+    "Default headless compositor limitation remains at its historical evidence; this run uses explicit software path.",
+    "New temporary up and local orbit live only in preview; author world-Y orbit restored by reset/refresh."
+  ],
+  "files": {
+    "docs/ARCHITECTURE.md": "71d844ff82ac0b39790860997601795bbb6d2147b26d6fe1ab9ae516b97fe3a0",
+    "docs/ROADMAP.md": "928918ba8eda4b1f7704cef7ea1fc19211fb15141816aa839b8ec26137f86da7",
+    "docs/SCENE3D.md": "ece5800deb1fc0becf0c11e1617220921cc7c2d3e2aa8b134b2c81bcef1a8a2f",
+    "docs/STATUS.md": "d79ea3292377c4ca812dc948a47fb26f46e7cd2405c6a0f461591916635efcf3",
+    "docs/STUDIO_MODULES.md": "b0eeb5701a8ee8208d2a1c258cb38663d816f202c3a5433218f439695795771a",
+    "engine/README.md": "191847b029136766fa51c516c3a34d020920b65f2853e5f659e25adf4a436b04",
+    "scripts/tests/scene3d-preview-ui.test.mjs": "55d0d7dcd85b1bb2e60d85ada7bb8f934995e6ec0efb27b8df284de10ac7e267",
+    "web/i18n/en.js": "c4bd57a45be033946099aaf3ebbd12ea306533eba07dcf7078cb2b07e6f0c1a3",
+    "web/i18n/ja.js": "38e698d99b5180f4fb5a84edd23c733b13c08d650863bc4ff585c1bd5b1647bf",
+    "web/modules/app-scene3d-preview.js": "0c2e92961dce9451b692843a5f67fb64d51bf22afd8be9122fff87b64c6073b2",
+    "web/modules/scene3d-math.js": "f15207de49b55a6dac15d47a6c81fa196db34f06ada34cf4ee47120f4c430357",
+    "web/modules/scene3d-renderer.js": "c67b23d193e589508f04f5683b2f6abeda9aa47051c5fdda9b8247155f279002",
+    "web/scene3d.css": "2a0c655e0ebe4e9ea53782ebfa73bb1a4b889519e3004c9161edffc82ff48cd8",
+    "scripts/tests/scene3d-standard-views-math.test.mjs": "5ed6d7c5ecf7db4678e604d4448ccf54bc82e1bf7efc391c480d0ff48981f622",
+    "scripts/tests/scene3d-standard-views-renderer.test.mjs": "7648c186042ceb2885c94b217d179bdc99d2b3adda6726d045d3c93c9d9e39ed",
+    "scripts/tests/scene3d-standard-views-smoke.mjs": "8b6fcba1c175a8ce373a1051a04e0c0f483acf85cdd9e446c981bb7d0cd585f9"
+  },
+  "testRunner": {
+    "node": "v24.21.0",
+    "flags": [
+      "--test",
+      "--test-isolation=none",
+      "--test-reporter=tap"
+    ],
+    "files": [
+      "scripts/tests/scene3d-standard-views-math.test.mjs",
+      "scripts/tests/scene3d-standard-views-renderer.test.mjs",
+      "scripts/tests/scene3d-math-navigation.test.mjs",
+      "scripts/tests/scene3d-scene-framing-math.test.mjs",
+      "scripts/tests/scene3d-scene-framing-renderer.test.mjs",
+      "scripts/tests/scene3d-renderer.test.mjs",
+      "scripts/tests/scene3d-picking.test.mjs",
+      "scripts/tests/scene3d-preview-ui.test.mjs",
+      "scripts/tests/scene3d-module-boundary.test.mjs",
+      "scripts/tests/scene3d-system-ports.test.mjs",
+      "scripts/tests/studio-system-ui.test.mjs",
+      "scripts/tests/studio-modules.test.mjs"
+    ]
+  }
+}

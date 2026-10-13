@@ -9,9 +9,12 @@ import { appendRelationRecord, relationRegistryGuard } from '../../engine/world-
 import { appendResourceBinding } from '../../engine/world-resources.mjs';
 import { updateSceneContent, appendSceneDependencies } from '../../engine/world-scene-update.mjs';
 import { sceneCreateRegistration, validateSceneCreateRegistration } from '../../engine/world-scene-create.mjs';
+import { appendSceneBehaviorRelation, behaviorCreateRegistration, behaviorCreationRegistryGuard,
+  validateBehaviorCreateRecovery, BEHAVIOR_CREATE_RECOVERY_LIMITS } from '../../engine/world-behavior-create.mjs';
 import { validateObjectProjection, projectionRegistration, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 import { updateObjectProjectionContent, appendProjectionImageBindings } from '../../engine/world-projection-update.mjs';
 import { validateDocumentModels } from '../../engine/document-model.mjs';
+import { inspectSceneBehaviors } from '../../engine/scene-behaviors.mjs';
 import { checkFilesystemLocation } from './project-documents.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
 import { writeDocumentAtomically } from './doc-file-store.mjs';
@@ -24,6 +27,10 @@ const conflict = () => transactionError('world_recovery_conflict', 'Transaction 
 const invalid = () => transactionError('world_journal_invalid', 'Transaction journal is invalid; no recovery files were published');
 const noop = async () => {};
 const createsFiles = intent => [2, 5, 6].includes(intent.version);
+const entryCreatesFile = (intent, entry) => createsFiles(intent) || intent.version === 9 && entry.before === null;
+const exactKeys = (value, keys) => value && typeof value === 'object' && !Array.isArray(value)
+  && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
+const utf8Text = bytes => new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
 
 async function syncDirectory(directory) {
   const handle = await fs.open(directory, 'r');
@@ -65,7 +72,7 @@ async function sourceTemporary(root, intent, index) {
 }
 async function publishSource(root, intent, index, bytes, expectedRevision, ready = noop) {
   const entry = intent.entries[index];
-  const creating = createsFiles(intent);
+  const creating = entryCreatesFile(intent, entry);
   if (creating) await checkFilesystemLocation(root, entry.sourcePath, { allowExisting: true });
   const previous = await sourceSnapshot(root, entry.sourcePath, creating);
   if (previous.revision !== expectedRevision) throw conflict();
@@ -97,16 +104,92 @@ async function retire(root, intent) {
   // Once retired, this directory is garbage, never an input to recovery.
   await fs.rm(retired, { recursive: true, force: true }).catch(() => {});
 }
+
+// v9 is a closed three-entry protocol, not a generic mixed changeset. Frozen
+// dependencies prove the originally reviewed declaration; recovery never reads
+// or restores current scene, actor-definition or implementation source bytes.
+async function loadBehaviorCreateIntent(root, intent, intentBytes, workspace, journal = 'active') {
+  const keys = ['format', 'version', 'id', 'projectId', 'manifestHash', 'worldId', 'proposalId', 'baseRevision', 'revision',
+    'previousHead', 'entries', 'registryHash', 'behaviorRecovery'];
+  if (!exactKeys(intent, keys) || !Buffer.from(JSON.stringify(intent)).equals(intentBytes) || ![2, 3].includes(workspace.version)
+    || intent.entries.length !== 3 || !hash.test(intent.registryHash)
+    || !exactKeys(intent.behaviorRecovery, ['size', 'sha256']) || !Number.isSafeInteger(intent.behaviorRecovery.size)
+    || intent.behaviorRecovery.size < 1 || intent.behaviorRecovery.size > BEHAVIOR_CREATE_RECOVERY_LIMITS.bytes
+    || !hash.test(intent.behaviorRecovery.sha256)) throw invalid();
+  const documents = workspacePaths(workspace).documents, seen = new Set(), images = [];
+  const manifestId = intent.entries[0]?.objectId, sceneId = intent.entries[2]?.objectId;
+  if (!uuid.test(manifestId) || !uuid.test(sceneId) || manifestId === sceneId) throw invalid();
+  for (const [index, entry] of intent.entries.entries()) {
+    if (!exactKeys(entry, ['objectId', 'sourcePath', 'before', 'after', 'mode']) || !uuid.test(entry.objectId)
+      || entry.objectId !== (index < 2 ? manifestId : sceneId) || typeof entry.sourcePath !== 'string'
+      || seen.has(entry.sourcePath) || !hash.test(entry.after) || !Number.isInteger(entry.mode) || entry.mode < 0 || entry.mode > 0o777
+      || (index < 2 ? entry.before !== null : !hash.test(entry.before))) throw invalid();
+    if (index === 0 ? !entry.sourcePath.startsWith(`${documents}/`) || !entry.sourcePath.toLowerCase().endsWith('.json') || getCreatePathError(entry.sourcePath)
+      : entry.sourcePath !== `metadata/documents/${entry.objectId}.json`) throw invalid();
+    seen.add(entry.sourcePath);
+    const limit = index === 0 ? 32768 : 1024 * 1024;
+    const before = index < 2 ? null : await readTransactionFile(root, `${journal}/${index}.before`, limit);
+    const after = await readTransactionFile(root, `${journal}/${index}.after`, limit);
+    if (index === 2 && transactionHash(before) !== entry.before || transactionHash(after) !== entry.after) throw invalid();
+    images.push({ before, after });
+  }
+  const allowed = new Set(['intent.json', '0.after', '1.after', '2.before', '2.after', 'behavior-dependencies.json', 'commit.json']);
+  for (const file of await fs.readdir(await transactionPath(root, journal), { withFileTypes: true })) {
+    if (!file.isFile() || !allowed.has(file.name)) throw invalid();
+  }
+  const recoveryBytes = await readTransactionFile(root, `${journal}/behavior-dependencies.json`, BEHAVIOR_CREATE_RECOVERY_LIMITS.bytes);
+  if (recoveryBytes.length !== intent.behaviorRecovery.size || transactionHash(recoveryBytes) !== intent.behaviorRecovery.sha256) throw invalid();
+  let recovery, manifest, beforeScene, afterScene, edit;
+  try {
+    recovery = JSON.parse(utf8Text(recoveryBytes));
+    // This is host-generated protocol data. Exact re-encoding also refuses
+    // duplicate decoded keys, whitespace repair and alternate number tokens.
+    if (!Buffer.from(JSON.stringify(recovery)).equals(recoveryBytes)) throw invalid();
+    manifest = JSON.parse(utf8Text(images[1].after)); beforeScene = JSON.parse(utf8Text(images[2].before));
+    const type = projectDefinition(workspace).documentTypes.find(item => item.id === manifest.documentType);
+    const checked = inspectSceneBehaviors(utf8Text(images[0].after));
+    if (!type || !checked.recognized || !checked.ok || checked.value.sceneObjectId !== sceneId) throw invalid();
+    const expected = behaviorCreateRegistration({ format: 'viento-document', version: 1, id: manifestId,
+      sourcePath: intent.entries[0].sourcePath, documentType: type.id, parserProfile: type.parserProfile, relations: [], assetBindings: [] }, checked.value);
+    if (canonicalJson(manifest) !== canonicalJson(expected) || beforeScene.format !== 'viento-document' || beforeScene.version !== 1
+      || beforeScene.id !== sceneId || beforeScene.sourcePath !== recovery.scene?.sourcePath
+      || !beforeScene.sourcePath.startsWith(`${documents}/`) || !beforeScene.sourcePath.toLowerCase().endsWith('.json')
+      || !portablePath(beforeScene.sourcePath) || !projectDefinition(workspace).documentTypes.some(item => item.id === beforeScene.documentType)) throw invalid();
+    edit = appendSceneBehaviorRelation(utf8Text(images[2].before), manifestId); afterScene = edit.after;
+    if (!Buffer.from(edit.afterContent).equals(images[2].after)) throw invalid();
+  } catch { throw invalid(); }
+  const registry = await readRegistry(root, { allowPendingWorldTransaction: true,
+    recoveryTemporaryRecords: [1, 2].map(index => `metadata/documents/${sourceTemporaryName(intent, index)}`) });
+  if (transactionHash(behaviorCreationRegistryGuard(registry, manifestId, sceneId)) !== intent.registryHash) throw conflict();
+  const currentScene = registry.documents.find(record => record.id === sceneId), currentManifest = registry.documents.find(record => record.id === manifestId);
+  if (!currentScene || ![beforeScene, afterScene].some(record => canonicalJson(record) === canonicalJson(currentScene))
+    || currentManifest && canonicalJson(currentManifest) !== canonicalJson(manifest)) throw conflict();
+  const checked = await validateBehaviorCreateRecovery(manifest, utf8Text(images[0].after), afterScene, recovery, registry,
+    { digest: value => transactionHash(value).slice(7) });
+  if (!checked.ok) throw invalid();
+  validateDocumentModels([...registry.documents.filter(record => ![manifestId, sceneId].includes(record.id)), manifest, afterScene]);
+  let committed = false;
+  try {
+    const markerBytes = await readTransactionFile(root, `${journal}/commit.json`, 1024), marker = JSON.parse(utf8Text(markerBytes));
+    if (!exactKeys(marker, ['id', 'intentHash']) || !Buffer.from(JSON.stringify(marker)).equals(markerBytes)
+      || marker.id !== intent.id || marker.intentHash !== transactionHash(intentBytes)) throw invalid();
+    committed = true;
+  } catch (error) { if (error.code !== 'ENOENT') throw error; }
+  const { token, receipt } = await readTransactionStatus(root);
+  if (token !== intent.previousHead && canonicalJson(receipt) !== canonicalJson(receiptFor(intent, committed))) throw invalid();
+  return { intent, images, committed };
+}
 async function loadIntent(root) {
   const bytes = await readTransactionFile(root, 'active/intent.json', 65536);
   const intent = JSON.parse(bytes), workspace = readWorkspace(root);
   const documents = workspacePaths(workspace).documents;
-  if (intent.format !== 'viento-source-transaction' || ![1, 2, 3, 4, 5, 6, 7, 8].includes(intent.version) || !uuid.test(intent.id)
+  if (intent.format !== 'viento-source-transaction' || ![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(intent.version) || !uuid.test(intent.id)
     || intent.projectId !== workspace?.id || intent.manifestHash !== transactionHash(canonicalJson(workspace))
     || typeof intent.worldId !== 'string' || !/^proposal:[a-f0-9]{64}$/.test(intent.proposalId)
     || !hash.test(intent.baseRevision) || !hash.test(intent.revision)
     || intent.previousHead !== null && !hash.test(intent.previousHead)
     || !Array.isArray(intent.entries) || !intent.entries.length || intent.entries.length > 32) throw invalid();
+  if (intent.version === 9) return loadBehaviorCreateIntent(root, intent, bytes, workspace);
   const creating = createsFiles(intent), sceneCreating = intent.version === 5, projectionCreating = intent.version === 6, projectionUpdating = intent.version === 7, sceneUpdating = intent.version === 8, updating = projectionUpdating || sceneUpdating,
     relating = [3, 4].includes(intent.version), binding = intent.version === 4;
   if (creating && (intent.entries.length !== 2 || ![2, 3].includes(workspace.version))) throw invalid();
@@ -266,8 +349,9 @@ async function recoverLocked(root, checkpoint = noop) {
     const { intent, images, committed } = await loadIntent(root);
     const current = [], temporary = [];
     for (const [index, entry] of intent.entries.entries()) {
-      if (createsFiles(intent)) await checkFilesystemLocation(root, entry.sourcePath, { allowExisting: true });
-      const snapshot = await sourceSnapshot(root, entry.sourcePath, createsFiles(intent));
+      const creating = entryCreatesFile(intent, entry);
+      if (creating) await checkFilesystemLocation(root, entry.sourcePath, { allowExisting: true });
+      const snapshot = await sourceSnapshot(root, entry.sourcePath, creating);
       if (![entry.before, entry.after].includes(snapshot.revision)) throw conflict();
       current.push(snapshot.revision);
       temporary.push(await sourceTemporary(root, intent, index));
@@ -275,14 +359,14 @@ async function recoverLocked(root, checkpoint = noop) {
     // Creation publishes source before registration; rollback removes the
     // registration first. A restart never needs a dangling record to open.
     const ordered = [...intent.entries.entries()];
-    if (createsFiles(intent) && !committed) ordered.reverse();
+    if ((createsFiles(intent) || intent.version === 9) && !committed) ordered.reverse();
     for (const [index, entry] of ordered) {
       const target = committed ? entry.after : entry.before;
       await fs.rm(temporary[index], { force: true });
       if (current[index] !== target) await publishSource(root, intent, index, committed ? images[index].after : images[index].before, current[index]);
       await checkpoint('recovery-file', { index, committed });
     }
-    for (const entry of intent.entries) if ((await sourceSnapshot(root, entry.sourcePath, createsFiles(intent))).revision !== (committed ? entry.after : entry.before)) throw conflict();
+    for (const entry of intent.entries) if ((await sourceSnapshot(root, entry.sourcePath, entryCreatesFile(intent, entry))).revision !== (committed ? entry.after : entry.before)) throw conflict();
     const receipt = receiptFor(intent, committed);
     await durableWrite(await transactionPath(root, 'head.json'), JSON.stringify(receipt));
     await checkpoint('recovery-head', { committed });
@@ -313,11 +397,15 @@ export async function commitWorldTransaction(root, plan, { checkpoint = noop, be
   const workspace = readWorkspace(root);
   const sceneCreating = plan.kind === 'scene.create', projectionCreating = plan.kind === 'projection.create', projectionUpdating = plan.kind === 'projection.update', sceneUpdating = plan.kind === 'scene.update', updating = projectionUpdating || sceneUpdating,
     creating = sceneCreating || projectionCreating || plan.kind === 'object.create', relating = ['relation.add', 'resource.bind'].includes(plan.kind);
-  const intent = { format: 'viento-source-transaction', version: sceneUpdating ? 8 : projectionUpdating ? 7 : projectionCreating ? 6 : sceneCreating ? 5 : creating ? 2 : plan.kind === 'resource.bind' ? 4 : relating ? 3 : 1, id, projectId: workspace.id,
+  const behaviorCreating = plan.kind === 'behavior.create';
+  const recoveryBytes = behaviorCreating ? Buffer.from(JSON.stringify(plan.behaviorRecovery)) : null;
+  if (behaviorCreating && (plans.length !== 3 || !recoveryBytes.length || recoveryBytes.length > BEHAVIOR_CREATE_RECOVERY_LIMITS.bytes)) throw invalid();
+  const intent = { format: 'viento-source-transaction', version: behaviorCreating ? 9 : sceneUpdating ? 8 : projectionUpdating ? 7 : projectionCreating ? 6 : sceneCreating ? 5 : creating ? 2 : plan.kind === 'resource.bind' ? 4 : relating ? 3 : 1, id, projectId: workspace.id,
     manifestHash: transactionHash(canonicalJson(workspace)), worldId: result.worldId, proposalId: result.proposal.id,
     baseRevision: result.baseRevision, revision: result.revision, previousHead: state.token, entries: [],
     ...(relating ? { mutation: plan.mutation, registryHash: plan.registryHash } : {}),
-    ...(sceneCreating || projectionCreating || updating ? { registryHash: plan.registryHash } : {}) };
+    ...(sceneCreating || projectionCreating || updating ? { registryHash: plan.registryHash } : {}),
+    ...(behaviorCreating ? { registryHash: plan.registryHash, behaviorRecovery: { size: recoveryBytes.length, sha256: transactionHash(recoveryBytes) } } : {}) };
   let active = false, committed = false;
   try {
     await fs.mkdir(directory, { recursive: true, mode: 0o700 });
@@ -327,17 +415,23 @@ export async function commitWorldTransaction(root, plan, { checkpoint = noop, be
     await syncDirectory(root); await syncDirectory(path.dirname(directory)); await syncDirectory(directory);
     await fs.mkdir(stage, { mode: 0o700 });
     for (const [index, item] of plans.entries()) {
-      const snapshot = await sourceSnapshot(root, item.sourcePath, creating);
+      const entryCreating = creating || behaviorCreating && item.change.beforeSourceRevision === null;
+      const snapshot = await sourceSnapshot(root, item.sourcePath, entryCreating);
       if (snapshot.revision !== item.change.beforeSourceRevision) throw conflict();
       intent.entries.push({ objectId: item.change.objectId, sourcePath: item.sourcePath,
         before: item.change.beforeSourceRevision, after: item.change.afterSourceRevision, mode: snapshot.stats ? snapshot.stats.mode & 0o777 : 0o644 & ~process.umask() });
       try { await fs.lstat(await sourceTemporary(root, intent, index)); throw conflict(); }
       catch (error) { if (error.code !== 'ENOENT') throw error; }
-      if (!creating) await durableWrite(path.join(stage, `${index}.before`), item.beforeContent);
+      if (!entryCreating) await durableWrite(path.join(stage, `${index}.before`), item.beforeContent);
       await durableWrite(path.join(stage, `${index}.after`), item.afterContent);
     }
     const intentBytes = JSON.stringify(intent);
+    if (behaviorCreating && Buffer.byteLength(intentBytes) > 65536) throw invalid();
     await durableWrite(path.join(stage, 'intent.json'), intentBytes);
+    if (behaviorCreating) {
+      await durableWrite(path.join(stage, 'behavior-dependencies.json'), recoveryBytes);
+      await loadBehaviorCreateIntent(root, intent, Buffer.from(intentBytes), workspace, `staging-${id}`);
+    }
     await beforeIntent();
     await fs.rename(stage, await transactionPath(root, 'active')); active = true;
     await syncDirectory(directory); await checkpoint('intent', { id });
@@ -348,7 +442,7 @@ export async function commitWorldTransaction(root, plan, { checkpoint = noop, be
       } else await publishSource(root, intent, index, plans[index].afterContent, entry.before, () => checkpoint('source-ready', { index, id }));
       await checkpoint('data', { index, id });
     }
-    for (const entry of intent.entries) if ((await sourceSnapshot(root, entry.sourcePath, creating)).revision !== entry.after) throw conflict();
+    for (const entry of intent.entries) if ((await sourceSnapshot(root, entry.sourcePath, entryCreatesFile(intent, entry))).revision !== entry.after) throw conflict();
     await durableWrite(await transactionPath(root, 'active/commit.json'), JSON.stringify({ id, intentHash: transactionHash(intentBytes) }));
     committed = true; await checkpoint('commit', { id });
     const receipt = receiptFor(intent, true);

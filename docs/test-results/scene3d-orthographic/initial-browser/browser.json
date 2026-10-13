@@ -1,0 +1,4106 @@
+{
+  "startedAt": "2026-10-12T10:48:22.532Z",
+  "steps": [
+    "Perspective/orthographic switches preserve target-plane scale and model matrices; switching back restores exact perspective uploads without source writes.",
+    "Actual orthographic GPU projection keeps equal-size segments identical at three depths. Selected/all focus and wheel zoom preserve orthographic mode and heading.",
+    "Real pointer panning in free heading and all six directions preserves orientation/depth; independent reprojection checks actual uploaded GPU matrices against CSS drag at every depth for all three objects. Panning does not select or write source.",
+    "Shift-left and middle mouse pan temporarily while the dropdown stays orbit. Ordinary orbit dragging still rotates; pan double-taps never select/focus; switching to orbit selects the intended box at its new projected location.",
+    "Reset retains both projection and drag mode while restoring the authored camera; choosing perspective restores exact original GPU matrices.",
+    "An invalid edited source keeps native diagnostics and disables exact source location; panning continues on the last valid model without saving or clearing that diagnostic."
+  ],
+  "errors": [],
+  "screenshots": [
+    "orthographic-top-desktop.png",
+    "orthographic-bottom-desktop.png",
+    "orthographic-zh-CN-390.png",
+    "orthographic-en-390.png",
+    "failure.png"
+  ],
+  "modules": [
+    "/web/modules/desktop-bridge.js",
+    "/web/modules/app-state.js",
+    "/web/modules/app-runtime.js",
+    "/web/modules/app-helpers.js",
+    "/web/modules/app-render.js",
+    "/web/modules/app-structured.js",
+    "/web/modules/app-type-templates.js",
+    "/web/modules/app-editor-draft.js",
+    "/web/modules/app-studio-system.js",
+    "/web/modules/app-source-location.js",
+    "/web/modules/app-keyboard.js",
+    "/web/modules/app-field-editor.js",
+    "/web/modules/app-doc-service.js",
+    "/web/modules/app-media-render.js",
+    "/web/modules/app-document-layout.js",
+    "/web/modules/app-media-editor.js",
+    "/web/modules/app-export.js",
+    "/web/modules/app-project-settings.js",
+    "/web/modules/app-world-browser.js",
+    "/web/modules/app-project-build.js",
+    "/web/modules/app-scene3d-preview.js",
+    "/web/modules/app-scene3d-transforms.js",
+    "/web/modules/app-scene3d-objects.js",
+    "/web/modules/app-scene3d-environment.js",
+    "/web/modules/app-scene3d-properties.js",
+    "/web/modules/app-scene3d-translation.js",
+    "/web/modules/app-scene3d-alignment.js",
+    "/web/modules/app-scene3d-distribution.js",
+    "/web/modules/app-scene3d-copy.js",
+    "/web/modules/app-scene3d-removal.js",
+    "/web/modules/app-field-draft.js",
+    "/web/modules/app-services.js",
+    "/web/modules/app-resource-packages.js",
+    "/web/modules/app-object-projection.js",
+    "/web/modules/scene3d-renderer.js",
+    "/web/modules/app-scene-create.js",
+    "/web/modules/app-scene-preview.js",
+    "/web/modules/app-scene-layout.js",
+    "/web/modules/app-scene-authoring.js",
+    "/web/modules/app-runtime-case-documents.js",
+    "/web/modules/app-runtime-case-suites.js",
+    "/web/modules/app-runtime-case-report.js",
+    "/web/modules/app-backend-project.js",
+    "/web/modules/scene3d-math.js",
+    "/web/modules/scene3d-picking.js",
+    "/web/modules/app-scene-outline.js",
+    "/web/modules/app-scene-preview-canvas.js",
+    "/web/modules/app-scene-composition-overrides.js",
+    "/web/modules/app-scene-composition-layout.js",
+    "/web/modules/app-scene-composition-batch-layout.js",
+    "/web/modules/app-scene-composition-fragments.js",
+    "/web/modules/app-scene-composition-placement.js",
+    "/web/modules/app-scene-composition-structure.js",
+    "/web/modules/app-scene-composition-placements.js",
+    "/web/modules/app-scene-composition-groups.js",
+    "/web/modules/app-scene-composition-definitions.js",
+    "/web/modules/app-studio-core.js"
+  ],
+  "limitations": [
+    "Real HTTP editor, native/WASM source semantics and WebGL2 draws/readPixels; no installed desktop, Android or hardware-GPU claim.",
+    "Chrome flags and renderer/vendor are recorded explicitly. This run pins ANGLE/SwiftShader; the automatic headless fallback exhibited compositor corruption in a separate retained comparison. No hardware-GPU claim.",
+    "Unsupported-renderer phase injects getContext(webgl2)=null only; all source semantics and editor Save remain real.",
+    "Orthographic projection and gestures only navigate the last valid preview; no author camera or source writes. Instrumentation records actual uploaded matrices and forwards WebGL calls unchanged."
+  ],
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "sources": {
+    "scripts/tests/scene3d-orthographic-smoke.mjs": "9f9354d3334ef1beadcd52d7624663e90de60063229b5438894bad9b5fb27b07",
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.mjs": "faed6f4504481ef4c21a8e705d63ea8475c418279961921a3ac0457a603576e5",
+    "engine/studio-modules.mjs": "2883e038fec75106e244f8628b02c2d2394dc5629e16d0cc28402ad4486876dc",
+    "web/modules/app-scene3d-preview.js": "0438e607f9c8d534e4f0e0f2b47a92baefc2cdbee1823e2b38f0c730501ac72e",
+    "web/modules/scene3d-renderer.js": "887a4579dded704e50be8c67e904ab8316d28d33ded4e511e5e1401c7ef2d87f",
+    "web/modules/scene3d-math.js": "af2fb38d7d6dc44531e655e7c1a56c7833b0fe64207bcb6ddaa7668804b4f515",
+    "web/modules/app-studio-system.js": "34b0d57b1a287b8ab1a9b099ab54ffb9c40726d7c866aefef975e951c0dee3b7",
+    "web/modules/app-runtime.js": "24129665fcdecc426bc3f5b880bc61ffce6af647a47eec2b765f7ad8feebe7fe",
+    "web/scene3d.css": "79b7c2d7a1a3fb0cdb17c44b82321734c2725eb1780796e7c51e2dd7bba179f4",
+    "web/i18n/en.js": "69ea62260abb92dd3eed6e0d771c74e1184583ab90fff85dfb7e042634577e0d",
+    "web/i18n/ja.js": "3d3d756f2a04df2f39b97ec2137fe67cedcaf77ed1c7c894e0a3aa038b2469a4"
+  },
+  "servedSources": {
+    "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
+    "engine/studio-core.mjs": "faed6f4504481ef4c21a8e705d63ea8475c418279961921a3ac0457a603576e5",
+    "engine/studio-modules.mjs": "2883e038fec75106e244f8628b02c2d2394dc5629e16d0cc28402ad4486876dc",
+    "web/modules/app-scene3d-preview.js": "0438e607f9c8d534e4f0e0f2b47a92baefc2cdbee1823e2b38f0c730501ac72e",
+    "web/modules/scene3d-renderer.js": "887a4579dded704e50be8c67e904ab8316d28d33ded4e511e5e1401c7ef2d87f",
+    "web/modules/scene3d-math.js": "af2fb38d7d6dc44531e655e7c1a56c7833b0fe64207bcb6ddaa7668804b4f515",
+    "web/modules/app-studio-system.js": "34b0d57b1a287b8ab1a9b099ab54ffb9c40726d7c866aefef975e951c0dee3b7",
+    "web/modules/app-runtime.js": "24129665fcdecc426bc3f5b880bc61ffce6af647a47eec2b765f7ad8feebe7fe",
+    "web/scene3d.css": "79b7c2d7a1a3fb0cdb17c44b82321734c2725eb1780796e7c51e2dd7bba179f4",
+    "web/i18n/en.js": "69ea62260abb92dd3eed6e0d771c74e1184583ab90fff85dfb7e042634577e0d",
+    "web/i18n/ja.js": "3d3d756f2a04df2f39b97ec2137fe67cedcaf77ed1c7c894e0a3aa038b2469a4"
+  },
+  "chromeArguments": [
+    "--headless=new",
+    "--no-sandbox",
+    "--enable-unsafe-swiftshader",
+    "--use-gl=angle",
+    "--use-angle=swiftshader",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--user-data-dir=/tmp/viento-scene3d-orthographic-browser-FKER4u/chrome",
+    "--remote-debugging-port=0",
+    "--window-size=1440,1080",
+    "about:blank"
+  ],
+  "browser": "Chrome/154.0.8037.97",
+  "system": {
+    "format": "viento-studio-system",
+    "schemaVersion": 1,
+    "lifecycle": "boot-only",
+    "hotReload": false,
+    "initializedModules": [
+      "org.viento.document",
+      "org.viento.settings",
+      "org.viento.world",
+      "org.viento.build",
+      "org.viento.project",
+      "org.viento.export",
+      "org.viento.media",
+      "org.viento.scene3d",
+      "org.viento.scene3d-transforms",
+      "org.viento.scene3d-objects",
+      "org.viento.scene3d-environment",
+      "org.viento.scene3d-properties",
+      "org.viento.scene3d-translation",
+      "org.viento.scene3d-alignment",
+      "org.viento.scene3d-distribution",
+      "org.viento.scene3d-copy",
+      "org.viento.scene3d-removal"
+    ],
+    "plan": {
+      "format": "viento-studio-module-plan",
+      "schemaVersion": 1,
+      "modules": [
+        {
+          "id": "org.viento.document",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.settings",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.project",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.world",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.export",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.media",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.build",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-transforms",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-objects",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-environment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-properties",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-translation",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-alignment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-distribution",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-copy",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-removal",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        }
+      ],
+      "capabilities": [
+        {
+          "capability": "document.read",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "document.edit",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.markdown",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.text",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.json",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.yaml",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "workbench.settings",
+          "apiVersion": 1,
+          "domain": "workbench",
+          "moduleId": "org.viento.settings",
+          "active": true
+        },
+        {
+          "capability": "project.types",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "project.templates",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "world.query",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "world.commands",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.object",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.projection",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.scene2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "project.export",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.package",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.reference",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.media",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene2d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.composition2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.project",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.execution",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "behavior.gdscript",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.preview.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.transforms3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-transforms",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.objects3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-objects",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.environment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-environment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.properties3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-properties",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.translation3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-translation",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.alignment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-alignment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.distribution3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-distribution",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.copy3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-copy",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.removal3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-removal",
+          "active": true
+        }
+      ],
+      "requests": [
+        {
+          "capability": "scene.preview.scene3d",
+          "apiVersion": 1,
+          "required": true,
+          "status": "supported",
+          "moduleId": "org.viento.scene3d"
+        }
+      ],
+      "satisfied": true,
+      "diagnostics": []
+    },
+    "hostCapabilities": {
+      "semanticProjection": true,
+      "semanticCommands": [
+        "property.set",
+        "changeset.apply",
+        "object.create",
+        "scene.create",
+        "projection.create",
+        "projection.update",
+        "scene.update",
+        "relation.add",
+        "resource.bind",
+        "world.recover"
+      ],
+      "projectBuild": true,
+      "scenePreview": true
+    }
+  },
+  "gpu": {
+    "hash": 1493892812,
+    "nonBackground": 19600,
+    "width": 801,
+    "height": 600,
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "vendor": "Google Inc. (Google)",
+    "error": 0
+  },
+  "panChecks": [
+    {
+      "label": "orthographic-free-heading",
+      "projection": "orthographic",
+      "dx": 28,
+      "dy": 18,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            28.000006561347732,
+            17.999999381056114
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            28.000003948236895,
+            18.00000073000183
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            28.000002380370347,
+            17.99999779293563
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "label": "front",
+      "projection": "orthographic",
+      "dx": 28,
+      "dy": 18,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            28.000001756157985,
+            17.999999247628352
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            28.000001756157985,
+            17.99999924762841
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            27.999999290954293,
+            17.999999864186123
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "label": "back",
+      "projection": "orthographic",
+      "dx": 28,
+      "dy": 18,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            28.0000017561581,
+            17.999999247628352
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            28.000001756158042,
+            17.99999924762841
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            27.999999290954293,
+            17.999999864186123
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "label": "left",
+      "projection": "orthographic",
+      "dx": 28,
+      "dy": 18,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            27.999991895342873,
+            17.999999247628352
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            27.999996825750486,
+            17.99999924762841
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            27.99999682575043,
+            17.999999864186123
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "label": "right",
+      "projection": "orthographic",
+      "dx": 28,
+      "dy": 18,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            28.000001756158042,
+            17.999999247628352
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            27.999999290954236,
+            17.99999924762841
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            28.000001756157985,
+            17.999999864186123
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "label": "top",
+      "projection": "orthographic",
+      "dx": 28,
+      "dy": 18,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            28.000001756157985,
+            17.999993698608705
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            28.000001756157985,
+            17.99999863107064
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            27.999999290954293,
+            17.999993698608762
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "label": "bottom",
+      "projection": "orthographic",
+      "dx": 28,
+      "dy": 18,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            28.000001756157985,
+            18.00000356353246
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            28.000001756157985,
+            17.999998631070582
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            27.999999290954293,
+            18.000003563532573
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "label": "shift-left",
+      "projection": "orthographic",
+      "dx": -24,
+      "dy": 12,
+      "button": "left",
+      "modifiers": 8,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            -24.000001505278306,
+            11.999999703938158
+          ],
+          "expected": [
+            -24,
+            12
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            -24.000001505278306,
+            11.999999395659302
+          ],
+          "expected": [
+            -24,
+            12
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            -23.9999990400745,
+            11.999999087380445
+          ],
+          "expected": [
+            -24,
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "label": "middle",
+      "projection": "orthographic",
+      "dx": 15,
+      "dy": -13,
+      "button": "middle",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            14.999996010391328,
+            -12.999999627886552
+          ],
+          "expected": [
+            15,
+            -13
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            14.999996010391328,
+            -13.000000552723122
+          ],
+          "expected": [
+            15,
+            -13
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            14.999998475595135,
+            -12.999999011328782
+          ],
+          "expected": [
+            15,
+            -13
+          ]
+        }
+      ]
+    },
+    {
+      "label": "pre-picking",
+      "projection": "orthographic",
+      "dx": 28,
+      "dy": 18,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            28.000001756157985,
+            17.999999247628352
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            28.000001756157985,
+            17.99999924762841
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            27.999999290954293,
+            17.999999864186123
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "label": "invalid-draft-last-valid",
+      "projection": "orthographic",
+      "dx": 28,
+      "dy": 18,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            28.000001756157985,
+            18.00000356353246
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            28.000001756157985,
+            17.999998631070582
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            27.999999290954293,
+            18.000003563532573
+          ],
+          "expected": [
+            28,
+            18
+          ]
+        }
+      ]
+    },
+    {
+      "label": "zh-CN-390",
+      "projection": "orthographic",
+      "dx": 12,
+      "dy": 8,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            12.000001156187295,
+            7.9999978136623895
+          ],
+          "expected": [
+            12,
+            8
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            12.000001156187352,
+            7.999999908106588
+          ],
+          "expected": [
+            12,
+            8
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            11.99999906174304,
+            7.9999978136623895
+          ],
+          "expected": [
+            12,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "label": "en-390",
+      "projection": "orthographic",
+      "dx": 12,
+      "dy": 8,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            12.000001156187295,
+            8.000002002550843
+          ],
+          "expected": [
+            12,
+            8
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            12.000001156187352,
+            7.999998860884546
+          ],
+          "expected": [
+            12,
+            8
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            11.99999906174304,
+            8.000002002550843
+          ],
+          "expected": [
+            12,
+            8
+          ]
+        }
+      ]
+    },
+    {
+      "label": "ja-390",
+      "projection": "orthographic",
+      "dx": 12,
+      "dy": 8,
+      "button": "left",
+      "modifiers": 0,
+      "touch": false,
+      "checks": [
+        {
+          "object": 0,
+          "actual": [
+            12.000001156187295,
+            7.9999978136623895
+          ],
+          "expected": [
+            12,
+            8
+          ]
+        },
+        {
+          "object": 1,
+          "actual": [
+            12.000001156187352,
+            7.999999908106588
+          ],
+          "expected": [
+            12,
+            8
+          ]
+        },
+        {
+          "object": 2,
+          "actual": [
+            11.99999906174304,
+            7.9999978136623895
+          ],
+          "expected": [
+            12,
+            8
+          ]
+        }
+      ]
+    }
+  ],
+  "directionChecks": [
+    {
+      "label": "front",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "back": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "label": "front-after-pan",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "back": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "label": "back",
+      "actual": {
+        "right": [
+          -1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "back": [
+          0,
+          0,
+          -1
+        ]
+      }
+    },
+    {
+      "label": "back-after-pan",
+      "actual": {
+        "right": [
+          -1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "back": [
+          0,
+          0,
+          -1
+        ]
+      }
+    },
+    {
+      "label": "left",
+      "actual": {
+        "right": [
+          0,
+          0,
+          1
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "back": [
+          -1,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "label": "left-after-pan",
+      "actual": {
+        "right": [
+          0,
+          0,
+          1
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "back": [
+          -1,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "label": "right",
+      "actual": {
+        "right": [
+          0,
+          0,
+          -1
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "back": [
+          1,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "label": "right-after-pan",
+      "actual": {
+        "right": [
+          0,
+          0,
+          -1
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "back": [
+          1,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "label": "top",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          0,
+          -1
+        ],
+        "back": [
+          0,
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "label": "top-after-pan",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          0,
+          -1
+        ],
+        "back": [
+          0,
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "label": "bottom",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          0,
+          1
+        ],
+        "back": [
+          0,
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "label": "bottom-after-pan",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          0,
+          1
+        ],
+        "back": [
+          0,
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "label": "orthographic-wheel",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          1,
+          0
+        ],
+        "back": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "label": "invalid-draft-last-valid",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          0,
+          1
+        ],
+        "back": [
+          0,
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "label": "zh-CN-390",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          0,
+          -1
+        ],
+        "back": [
+          0,
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "label": "en-390",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          0,
+          1
+        ],
+        "back": [
+          0,
+          -1,
+          0
+        ]
+      }
+    },
+    {
+      "label": "ja-390",
+      "actual": {
+        "right": [
+          1,
+          0,
+          0
+        ],
+        "up": [
+          0,
+          0,
+          -1
+        ],
+        "back": [
+          0,
+          1,
+          0
+        ]
+      }
+    }
+  ],
+  "geometryChecks": [
+    {
+      "label": "front",
+      "corners": 24,
+      "width": 801,
+      "height": 600
+    },
+    {
+      "label": "back",
+      "corners": 24,
+      "width": 801,
+      "height": 600
+    },
+    {
+      "label": "left",
+      "corners": 24,
+      "width": 801,
+      "height": 600
+    },
+    {
+      "label": "right",
+      "corners": 24,
+      "width": 801,
+      "height": 600
+    },
+    {
+      "label": "top",
+      "corners": 24,
+      "width": 801,
+      "height": 600
+    },
+    {
+      "label": "bottom",
+      "corners": 24,
+      "width": 801,
+      "height": 600
+    },
+    {
+      "label": "orthographic-focus-all",
+      "corners": 24,
+      "width": 801,
+      "height": 600
+    },
+    {
+      "label": "invalid-draft-last-valid",
+      "corners": 24,
+      "width": 801,
+      "height": 600
+    },
+    {
+      "label": "changed-unsaved-model",
+      "corners": 24,
+      "width": 801,
+      "height": 1604
+    },
+    {
+      "label": "zh-CN-390",
+      "corners": 24,
+      "width": 319,
+      "height": 640
+    },
+    {
+      "label": "en-390",
+      "corners": 24,
+      "width": 319,
+      "height": 640
+    },
+    {
+      "label": "ja-390",
+      "corners": 24,
+      "width": 319,
+      "height": 640
+    }
+  ],
+  "equalScaleAcrossDepth": {
+    "depths": [
+      -20,
+      0,
+      15
+    ],
+    "widths": [
+      0.1032690554857254,
+      0.1032690554857254,
+      0.1032690554857254
+    ]
+  },
+  "compositingProbes": [
+    {
+      "file": "orthographic-zh-CN-390.png",
+      "rect": {
+        "x": 28,
+        "y": 501.46875,
+        "width": 319,
+        "height": 640
+      },
+      "width": 319,
+      "height": 640,
+      "error": 0,
+      "samples": [
+        {
+          "x": 38,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 512,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 535,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 558,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 581,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 604,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 627,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 650,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 673,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 696,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 719,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        }
+      ]
+    },
+    {
+      "file": "orthographic-en-390.png",
+      "rect": {
+        "x": 28,
+        "y": 553.46875,
+        "width": 319,
+        "height": 640
+      },
+      "width": 319,
+      "height": 640,
+      "error": 0,
+      "samples": [
+        {
+          "x": 38,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 564,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 587,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 610,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 633,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 656,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 38,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 61,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 84,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 107,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 130,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 153,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 176,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 199,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 222,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 245,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 268,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 291,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        },
+        {
+          "x": 314,
+          "y": 679,
+          "rgba": [
+            20,
+            37,
+            56,
+            255
+          ]
+        }
+      ]
+    }
+  ],
+  "compositingChecks": [
+    {
+      "file": "orthographic-zh-CN-390.png",
+      "samples": 130,
+      "tolerance": 3,
+      "mismatches": 0
+    },
+    {
+      "file": "orthographic-en-390.png",
+      "samples": 78,
+      "tolerance": 3,
+      "mismatches": 0
+    }
+  ],
+  "savedBytes": "﻿{\r\n  \"format\": \"viento-scene3d\",\r\n  \"schemaVersion\": 1,\r\n  \"name\": \"Three shaded boxes\",\r\n  \"viewport\": [\r\n    800,\r\n    600\r\n  ],\r\n  \"background\": \"#142538\",\r\n  \"camera\": {\r\n    \"position\": [\r\n      5,\r\n      4,\r\n      8\r\n    ],\r\n    \"target\": [\r\n      0,\r\n      0,\r\n      0\r\n    ],\r\n    \"fovDegrees\": 50,\r\n    \"near\": 0.1,\r\n    \"far\": 100\r\n  },\r\n  \"light\": {\r\n    \"direction\": [\r\n      1,\r\n      -2,\r\n      -1\r\n    ],\r\n    \"color\": \"#ffffff\",\r\n    \"energy\": 1\r\n  },\r\n  \"objects\": [\r\n    {\r\n      \"instanceId\": \"5557438b-2022-4c8a-a116-59139702b191\",\r\n      \"name\": \"Copper box\",\r\n      \"primitive\": \"box\",\r\n      \"position\": [\r\n        -18,\r\n        0,\r\n        0\r\n      ],\r\n      \"rotationDegrees\": [\r\n        23,\r\n        -41,\r\n        67\r\n      ],\r\n      \"size\": [\r\n        4,\r\n        7,\r\n        3\r\n      ],\r\n      \"color\": \"#eb9869\"\r\n    },\r\n    {\r\n      \"instanceId\": \"0fbb69fa-5361-41b9-bd05-caef09247052\",\r\n      \"name\": \"Mint box\",\r\n      \"primitive\": \"box\",\r\n      \"position\": [\r\n        20,\r\n        2,\r\n        -3\r\n      ],\r\n      \"rotationDegrees\": [\r\n        0,\r\n        20,\r\n        0\r\n      ],\r\n      \"size\": [\r\n        5,\r\n        6,\r\n        4\r\n      ],\r\n      \"color\": \"#85d7bb\"\r\n    },\r\n    {\r\n      \"instanceId\": \"22bc26ee-d5dd-4477-893d-8a540d47f4d2\",\r\n      \"name\": \"Blue box\",\r\n      \"primitive\": \"box\",\r\n      \"position\": [\r\n        0,\r\n        4,\r\n        -20\r\n      ],\r\n      \"rotationDegrees\": [\r\n        0,\r\n        0,\r\n        0\r\n      ],\r\n      \"size\": [\r\n        9,\r\n        3,\r\n        6\r\n      ],\r\n      \"color\": \"#5599dd\"\r\n    }\r\n  ]\r\n}\r\n",
+  "saveEvents": [],
+  "failureState": {
+    "text": "Viento Studio\n0.1.0\n設定\nプロジェクトの種類とテンプレート\nワールドとオブジェクト\nビルドと実行\n書き出し\n閲覧\n編集\n3Dプレビュー\n3D変換を編集\n3Dオブジェクトを管理\n3D環境を編集\n3D属性を編集\n3Dオブジェクトをまとめて移動\n3D位置を整列\n3D位置を等間隔に配置\n3Dオブジェクトを一括複製\n3Dオブジェクトを一括削除\n×\nすべて（1）\n设计文档（0）\n角色（0）\n能力（0）\n道具（0）\n关卡（1）\n任务（0）\n阵营（0）\n规则（0）\n1 件中 1 件のドキュメントを表示 （生成日時：2026/10/12 18:48:22）\nカテゴリ 关卡（1）\n关卡（1）\nthree-boxes\n关卡 · 关卡\n編集可能\nthree-boxes\nソース編集\nブロック編集\nフィールド編集\n閲覧に戻る\n素材を挿入\n変更を保存\n編集元：documents/scenes/three-boxes.json\n未保存\n786 文字 · 100 行\n3Dシーンのプレビュー\nエディターに戻る\n\n現在のJSON原文の下書きを読み取り専用で表示します。投影と視点の操作はプレビューだけに反映されます。編集内容はエディターで通常どおり保存してください。\n\ndocuments/scenes/three-boxes.json\n\n選択した方向から全オブジェクトを表示しました。選択、絞り込み、原文は変更されません。\n\nビューの投影\n透視\n平行投影\n\n透視投影では遠近感を保ちます。平行投影では距離によって表示倍率が変わらず、配置を比較しやすくなります。\n\n表示方向\n正面（+Z）\n背面（−Z）\n左側（−X）\n右側（+X）\n上面（+Y）\n下面（−Y）\nこの方向から表示\nドラッグ操作\n視点を回転\n視点を平行移動\n\n標準方向ではすべてのオブジェクトを表示します。投影と視点の操作はプレビューだけに反映され、原文は変更されません。\n\n回転モードではクリックで選択、ダブルクリックでフォーカスします。平行移動モード、Shift＋ドラッグ、マウス中ボタンでは視点のみを移動し、オブジェクトは選択しません。ホイールで拡大・縮小します。\n\n選択したボックスの見える辺を強調表示します。隠れた部分は透過表示しません。選択はプレビューだけに影響し、原文は変わりません。\n\nシーン内のオブジェクト\n名前またはUUIDでオブジェクトを検索\n\n一致するオブジェクト：3 / 3\n\n検索をクリア\nCopper box\n5557438b-2022-4c8a-a116-59139702b191\nMint box\n0fbb69fa-5361-41b9-bd05-caef09247052\nBlue box\n22bc26ee-d5dd-4477-893d-8a540d47f4d2\nオブジェクトの宣言\n名前\nMint box\nインスタンス ID\n0fbb69fa-5361-41b9-bd05-caef09247052\nプリミティブ\nbox\n位置 XYZ\n20, 2, -3\n回転 XYZ（度）\n0, 20, 0\nサイズ XYZ\n5, 6, 4\n色\n#85d7bb\n原文内の位置\n/objects/1\n原文の文字範囲\n855–1208 (UTF-16)\n現在の下書きを更新\n視点をリセット\nすべてのオブジェクトを表示\n選択オブジェクトにフォーカス\n原文のオブジェクトへ移動",
+    "source": "﻿{\n  \"format\": \"viento-scene3d\",\n  \"schemaVersion\": 1,\n  \"name\": \"Three shaded boxes\",\n  \"viewport\": [\n    400,\n    800\n  ],\n  \"background\": \"#142538\",\n  \"camera\": {\n    \"position\": [\n      5,\n      4,\n      8\n    ],\n    \"target\": [\n      0,\n      0,\n      0\n    ],\n    \"fovDegrees\": 50,\n    \"near\": 0.1,\n    \"far\": 100\n  },\n  \"light\": {\n    \"direction\": [\n      1,\n      -2,\n      -1\n    ],\n    \"color\": \"#ffffff\",\n    \"energy\": 1\n  },\n  \"objects\": [\n    {\n      \"instanceId\": \"5557438b-2022-4c8a-a116-59139702b191\",\n      \"name\": \"Copper box\",\n      \"primitive\": \"box\",\n      \"position\": [\n        -30,\n        1,\n        4\n      ],\n      \"rotationDegrees\": [\n        23,\n        -41,\n        67\n      ],\n      \"size\": [\n        4,\n        7,\n        3\n      ],\n      \"color\": \"#eb9869\"\n    },\n    {\n      \"instanceId\": \"0fbb69fa-5361-41b9-bd05-caef09247052\",\n      \"name\": \"Mint box\",\n      \"primitive\": \"box\",\n      \"position\": [\n        20,\n        2,\n        -3\n      ],\n      \"rotationDegrees\": [\n        0,\n        20,\n        0\n      ],\n      \"size\": [\n        5,\n        6,\n        4\n      ],\n      \"color\": \"#85d7bb\"\n    },\n    {\n      \"instanceId\": \"22bc26ee-d5dd-4477-893d-8a540d47f4d2\",\n      \"name\": \"Blue box\",\n      \"primitive\": \"box\",\n      \"position\": [\n        0,\n        4,\n        -20\n      ],\n      \"rotationDegrees\": [\n        0,\n        0,\n        0\n      ],\n      \"size\": [\n        9,\n        3,\n        6\n      ],\n      \"color\": \"#5599dd\"\n    }\n  ]\n}\n",
+    "system": {
+      "format": "viento-studio-system",
+      "schemaVersion": 1,
+      "lifecycle": "boot-only",
+      "hotReload": false,
+      "initializedModules": [
+        "org.viento.document",
+        "org.viento.settings",
+        "org.viento.world",
+        "org.viento.build",
+        "org.viento.project",
+        "org.viento.export",
+        "org.viento.media",
+        "org.viento.scene3d",
+        "org.viento.scene3d-transforms",
+        "org.viento.scene3d-objects",
+        "org.viento.scene3d-environment",
+        "org.viento.scene3d-properties",
+        "org.viento.scene3d-translation",
+        "org.viento.scene3d-alignment",
+        "org.viento.scene3d-distribution",
+        "org.viento.scene3d-copy",
+        "org.viento.scene3d-removal"
+      ],
+      "plan": {
+        "format": "viento-studio-module-plan",
+        "schemaVersion": 1,
+        "modules": [
+          {
+            "id": "org.viento.document",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.settings",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.project",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.world",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.export",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.media",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.build",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-transforms",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-objects",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-environment",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-properties",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-translation",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-alignment",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-distribution",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-copy",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-removal",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          }
+        ],
+        "capabilities": [
+          {
+            "capability": "document.read",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "document.edit",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.markdown",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.text",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.json",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.yaml",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "workbench.settings",
+            "apiVersion": 1,
+            "domain": "workbench",
+            "moduleId": "org.viento.settings",
+            "active": true
+          },
+          {
+            "capability": "project.types",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.project",
+            "active": true
+          },
+          {
+            "capability": "project.templates",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.project",
+            "active": true
+          },
+          {
+            "capability": "world.query",
+            "apiVersion": 1,
+            "domain": "world",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "world.commands",
+            "apiVersion": 1,
+            "domain": "world",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.object",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.projection",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.scene2d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "project.export",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.export",
+            "active": true
+          },
+          {
+            "capability": "resource.package",
+            "apiVersion": 1,
+            "domain": "resource",
+            "moduleId": "org.viento.export",
+            "active": true
+          },
+          {
+            "capability": "resource.reference",
+            "apiVersion": 1,
+            "domain": "resource",
+            "moduleId": "org.viento.media",
+            "active": true
+          },
+          {
+            "capability": "scene.representation.scene2d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.composition2d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "backend.project",
+            "apiVersion": 1,
+            "domain": "backend",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "backend.execution",
+            "apiVersion": 1,
+            "domain": "backend",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "behavior.gdscript",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.representation.scene3d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.scene3d",
+            "active": true
+          },
+          {
+            "capability": "scene.preview.scene3d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.scene3d",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.transforms3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-transforms",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.objects3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-objects",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.environment3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-environment",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.properties3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-properties",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.translation3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-translation",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.alignment3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-alignment",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.distribution3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-distribution",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.copy3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-copy",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.removal3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-removal",
+            "active": true
+          }
+        ],
+        "requests": [
+          {
+            "capability": "scene.preview.scene3d",
+            "apiVersion": 1,
+            "required": true,
+            "status": "supported",
+            "moduleId": "org.viento.scene3d"
+          }
+        ],
+        "satisfied": true,
+        "diagnostics": []
+      },
+      "hostCapabilities": {
+        "semanticProjection": true,
+        "semanticCommands": [
+          "property.set",
+          "changeset.apply",
+          "object.create",
+          "scene.create",
+          "projection.create",
+          "projection.update",
+          "scene.update",
+          "relation.add",
+          "resource.bind",
+          "world.recover"
+        ],
+        "projectBuild": true,
+        "scenePreview": true
+      }
+    }
+  },
+  "status": "failed",
+  "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(probes.samples.length>30)\n\n    at file:///tmp/viento-orthographic-qx8g3u16/workspace/scripts/tests/scene3d-orthographic-smoke.mjs:149:9",
+  "finishedAt": "2026-10-12T10:48:40.774Z"
+}

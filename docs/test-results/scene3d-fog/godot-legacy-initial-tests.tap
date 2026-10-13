@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: generator preserves source plan semantics and explicitly uses XYZ independent static nodes
+ok 1 - generator preserves source plan semantics and explicitly uses XYZ independent static nodes
+  ---
+  duration_ms: 7.38251
+  type: 'test'
+  ...
+# Subtest: generator rejects wrong kind, scene keys, non-data accessors and extra nested behavior
+ok 2 - generator rejects wrong kind, scene keys, non-data accessors and extra nested behavior
+  ---
+  duration_ms: 1.155543
+  type: 'test'
+  ...
+# Subtest: export stores exact BOM/CRLF source, neutral plan and a full five-file inventory
+ok 3 - export stores exact BOM/CRLF source, neutral plan and a full five-file inventory
+  ---
+  duration_ms: 11.090231
+  type: 'test'
+  ...
+# Subtest: existing output directories and files are never adopted or overwritten
+ok 4 - existing output directories and files are never adopted or overwritten
+  ---
+  duration_ms: 5.514889
+  type: 'test'
+  ...
+# Subtest: invalid UTF8, malformed schema and oversized source do not create output
+ok 5 - invalid UTF8, malformed schema and oversized source do not create output
+  ---
+  duration_ms: 2.28198
+  type: 'test'
+  ...
+# Subtest: input or output symlink ancestors are rejected without changing the target
+ok 6 - input or output symlink ancestors are rejected without changing the target
+  ---
+  duration_ms: 2.845711
+  type: 'test'
+  ...
+# Subtest: copied receipt JSON and an arbitrary existing project cannot execute a tool
+ok 7 - copied receipt JSON and an arbitrary existing project cannot execute a tool
+  ---
+  duration_ms: 327.950194
+  type: 'test'
+  ...
+# Subtest: modified, replaced or hardlinked generated source prevents execution
+ok 8 - modified, replaced or hardlinked generated source prevents execution
+  ---
+  duration_ms: 501.286665
+  type: 'test'
+  ...
+# Subtest: unregistered source or pre-existing cache symlink cannot authorize execution
+ok 9 - unregistered source or pre-existing cache symlink cannot authorize execution
+  ---
+  duration_ms: 498.416987
+  type: 'test'
+  ...
+# Subtest: an owned write failure cleans only its own unchanged files and empty directory
+ok 10 - an owned write failure cleans only its own unchanged files and empty directory
+  ---
+  duration_ms: 3.937953
+  type: 'test'
+  ...
+# Subtest: failure cleanup preserves an edited source and user-added files in its own output
+ok 11 - failure cleanup preserves an edited source and user-added files in its own output
+  ---
+  duration_ms: 4.98872
+  type: 'test'
+  ...
+# Subtest: CLI readonly emit works without output and invalid flag combinations never create output
+ok 12 - CLI readonly emit works without output and invalid flag combinations never create output
+  ---
+  duration_ms: 3.106421
+  type: 'test'
+  ...
+# Subtest: aborted capture or export creates no output
+ok 13 - aborted capture or export creates no output
+  ---
+  duration_ms: 0.667254
+  type: 'test'
+  ...
+# Subtest: explicit tool receipts cannot forge instance geometry, basis, camera, UUID, count or schema
+ok 14 - explicit tool receipts cannot forge instance geometry, basis, camera, UUID, count or schema
+  ---
+  duration_ms: 937.694947
+  type: 'test'
+  ...
+# Subtest: execution receipts authorize one finite attempt, including check then run in one operation
+ok 15 - execution receipts authorize one finite attempt, including check then run in one operation
+  ---
+  duration_ms: 134.640985
+  type: 'test'
+  ...
+# Subtest: tool timeout and zero-exit script errors fail closed while retaining exact source
+ok 16 - tool timeout and zero-exit script errors fail closed while retaining exact source
+  ---
+  duration_ms: 1094.916686
+  type: 'test'
+  ...
+# Subtest: actual Godot imports and probes the three-box example with ordered UUIDs and noncommuting XYZ transforms
+ok 17 - actual Godot imports and probes the three-box example with ordered UUIDs and noncommuting XYZ transforms
+  ---
+  duration_ms: 5148.071764
+  type: 'test'
+  ...
+# Subtest: actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits
+ok 18 - actual Godot handles large camera positions, near-vertical bases, subnormal light and full rotation limits
+  ---
+  duration_ms: 5145.676795
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13855.48641

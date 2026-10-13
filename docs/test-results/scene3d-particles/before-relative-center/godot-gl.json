@@ -1,0 +1,353 @@
+{
+  "format": "viento-scene3d-particles-godot-gl-evidence",
+  "schemaVersion": 1,
+  "ok": true,
+  "tools": {
+    "godot": {
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+      "dev": 66306,
+      "ino": 4460413,
+      "bytes": 146414384,
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "xvfb": {
+      "path": "/usr/bin/Xvfb",
+      "dev": 66306,
+      "ino": 282624,
+      "bytes": 2142760,
+      "sha256": "0f3651d7115c354cdef742a1ad609d874e4dbae651bae2976e061aeeaf4042c8"
+    }
+  },
+  "sourcesBefore": {
+    "scripts/backends/godot4-scene3d.mjs": "86b320a610c26e3f85a5a72569cff1c4ddc38fcbbb6658dac6a0be8121f1c41a",
+    "scripts/backends/godot3d/runtime.gd": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+    "scripts/adapters/node-scene3d-export.mjs": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8",
+    "engine/studio-core.wasm": "47ca1f48b07a5e9dc6a02052860b2ddc633fc92dd20e14f1139ba761fd446e0f",
+    "engine/studio-core.mjs": "2e0aa9235d700e1246bd3a529554b762ea6d034b4635d339b36917d9020fad64",
+    "engine/scene3d-particles.mjs": "60d040e773ddfee5803aacba49b6a9456f5e6de7f2eb3265e2ef09cbcc03f509"
+  },
+  "scope": "Isolated Xvfb with actual Godot Compatibility/OpenGL software rendering. Exact live MultiMesh phase/offset inputs plus rendered particle-center samples at three explicit times. No physical GPU, cross-renderer pixel equality, installation, Android, physics or gameplay claim.",
+  "cases": [
+    {
+      "name": "rain",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-gpu-Ad30dR",
+        "dev": 50,
+        "ino": 7178422,
+        "removed": true
+      },
+      "instances": {
+        "count": 12,
+        "phaseSha256": "f3e6873c4ad386392f26a84e500359302daa3626617d08539ef79cd6fc1975ed",
+        "samples": [
+          {
+            "offset": [
+              0,
+              0,
+              0
+            ],
+            "timeSeconds": 0
+          },
+          {
+            "offset": [
+              0.05833333358168602,
+              0.84375,
+              0.949999988079071
+            ],
+            "timeSeconds": 0.5
+          },
+          {
+            "offset": [
+              0.23333333432674408,
+              0.375,
+              0.800000011920929
+            ],
+            "timeSeconds": 2
+          },
+          {
+            "offset": [
+              0,
+              0,
+              0
+            ],
+            "timeSeconds": 3600
+          }
+        ],
+        "clock": {
+          "processing": false,
+          "timeSeconds": 3600
+        },
+        "stdoutBytes": 2649,
+        "stdoutSha256": "4be2b31e6709a6aa9d56f491bc2b44166a719f442ebcc4a24394879872f182e6",
+        "adapterHeader": [
+          "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+          "OpenGL API 4.5 (Core Profile) Mesa 26.0.8-1ubuntu0.3 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 21.1.8, 256 bits)",
+          ""
+        ]
+      },
+      "rendered": {
+        "adapter": "llvmpipe (LLVM 21.1.8, 256 bits)",
+        "driver": "X11",
+        "frames": [
+          {
+            "checked": 12,
+            "height": 480,
+            "image": "godot-gl-rain-0.png",
+            "missed": [],
+            "timeSeconds": 0,
+            "width": 640,
+            "sha256": "e0f10fd3c996be456cc181c15d37639b42eba4d7bdece564205075fd91b19922"
+          },
+          {
+            "checked": 12,
+            "height": 480,
+            "image": "godot-gl-rain-0.5.png",
+            "missed": [],
+            "timeSeconds": 0.5,
+            "width": 640,
+            "sha256": "4f96a6b0ee1e4e0f404c81297a1f3dae30682f99a5735318ab6ae37df356d6af"
+          },
+          {
+            "checked": 12,
+            "height": 480,
+            "image": "godot-gl-rain-2.png",
+            "missed": [],
+            "timeSeconds": 2,
+            "width": 640,
+            "sha256": "8742a2b624c7e158aa1d6677fcf183d4c9c1848b6de0f6bd3384693886a48dbc"
+          }
+        ],
+        "ok": true
+      },
+      "helperSha256": "e1ab1e7ce06b97ee83f951646a739cd8a8d25d93841fd9889b1f774f5e77d3d9",
+      "sampleInputSha256": "42be19fbf19a79ad318b2c8b88ec48ce227a1c301d0569be46376c12a6b29927"
+    },
+    {
+      "name": "snow",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-gpu-jqJWMy",
+        "dev": 50,
+        "ino": 7179394,
+        "removed": true
+      },
+      "instances": {
+        "count": 64,
+        "phaseSha256": "49a1ed6de7208f9899d41f9bbf4400a9626e43bfe6081b75247e7f31be412e88",
+        "samples": [
+          {
+            "offset": [
+              0,
+              0,
+              0
+            ],
+            "timeSeconds": 0
+          },
+          {
+            "offset": [
+              0.9833333492279053,
+              0.949999988079071,
+              0.02500000037252903
+            ],
+            "timeSeconds": 0.5
+          },
+          {
+            "offset": [
+              0.9333333373069763,
+              0.800000011920929,
+              0.10000000149011612
+            ],
+            "timeSeconds": 2
+          },
+          {
+            "offset": [
+              0,
+              0,
+              0
+            ],
+            "timeSeconds": 3600
+          }
+        ],
+        "clock": {
+          "processing": false,
+          "timeSeconds": 3600
+        },
+        "stdoutBytes": 5776,
+        "stdoutSha256": "ce8e2e3c18647c45820d78b3bf7ca23c2b694b1a35551f69fdcfae83922e7422",
+        "adapterHeader": [
+          "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+          "OpenGL API 4.5 (Core Profile) Mesa 26.0.8-1ubuntu0.3 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 21.1.8, 256 bits)",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "maximum",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-gpu-Lu7WxO",
+        "dev": 50,
+        "ino": 7180078,
+        "removed": true
+      },
+      "instances": {
+        "count": 4096,
+        "phaseSha256": "bbfe88b8143349631bb29d3c4fe26954a4cf9c6e06ebb86b25fe529068a82f0b",
+        "samples": [
+          {
+            "offset": [
+              0,
+              0,
+              0
+            ],
+            "timeSeconds": 0
+          },
+          {
+            "offset": [
+              0.05833333358168602,
+              0.84375,
+              0.949999988079071
+            ],
+            "timeSeconds": 0.5
+          },
+          {
+            "offset": [
+              0.23333333432674408,
+              0.375,
+              0.800000011920929
+            ],
+            "timeSeconds": 2
+          },
+          {
+            "offset": [
+              0,
+              0,
+              0
+            ],
+            "timeSeconds": 3600
+          }
+        ],
+        "clock": {
+          "processing": false,
+          "timeSeconds": 3600
+        },
+        "stdoutBytes": 246946,
+        "stdoutSha256": "8ea1c3c9f79e0671ab6278109341d9016e3bffbf859d842916491a856e294975",
+        "adapterHeader": [
+          "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+          "OpenGL API 4.5 (Core Profile) Mesa 26.0.8-1ubuntu0.3 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 21.1.8, 256 bits)",
+          ""
+        ]
+      }
+    },
+    {
+      "name": "translated",
+      "ok": true,
+      "fixture": {
+        "path": "/tmp/viento-particle-gpu-IJgtGZ",
+        "dev": 50,
+        "ino": 7180493,
+        "removed": true
+      },
+      "instances": {
+        "count": 12,
+        "phaseSha256": "f3e6873c4ad386392f26a84e500359302daa3626617d08539ef79cd6fc1975ed",
+        "samples": [
+          {
+            "offset": [
+              0,
+              0,
+              0
+            ],
+            "timeSeconds": 0
+          },
+          {
+            "offset": [
+              0.05833333358168602,
+              0.84375,
+              0.949999988079071
+            ],
+            "timeSeconds": 0.5
+          },
+          {
+            "offset": [
+              0.23333333432674408,
+              0.375,
+              0.800000011920929
+            ],
+            "timeSeconds": 2
+          },
+          {
+            "offset": [
+              0,
+              0,
+              0
+            ],
+            "timeSeconds": 3600
+          }
+        ],
+        "clock": {
+          "processing": false,
+          "timeSeconds": 3600
+        },
+        "stdoutBytes": 2665,
+        "stdoutSha256": "b5e415b530860c6c1d8bc2ad058f0e4e096508e0e5da7d5097f56a6430807c15",
+        "adapterHeader": [
+          "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org",
+          "OpenGL API 4.5 (Core Profile) Mesa 26.0.8-1ubuntu0.3 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 21.1.8, 256 bits)",
+          ""
+        ]
+      },
+      "rendered": {
+        "adapter": "llvmpipe (LLVM 21.1.8, 256 bits)",
+        "driver": "X11",
+        "frames": [
+          {
+            "checked": 12,
+            "height": 480,
+            "image": "godot-gl-translated-0.png",
+            "missed": [],
+            "timeSeconds": 0,
+            "width": 640,
+            "sha256": "e0f10fd3c996be456cc181c15d37639b42eba4d7bdece564205075fd91b19922"
+          },
+          {
+            "checked": 12,
+            "height": 480,
+            "image": "godot-gl-translated-0.5.png",
+            "missed": [],
+            "timeSeconds": 0.5,
+            "width": 640,
+            "sha256": "90f8e229c6b6fbe6fde30326d7755f868eced5706a7aa6ea1cc42855d966c6e6"
+          },
+          {
+            "checked": 12,
+            "height": 480,
+            "image": "godot-gl-translated-2.png",
+            "missed": [],
+            "timeSeconds": 2,
+            "width": 640,
+            "sha256": "8742a2b624c7e158aa1d6677fcf183d4c9c1848b6de0f6bd3384693886a48dbc"
+          }
+        ],
+        "ok": true
+      },
+      "helperSha256": "e1ab1e7ce06b97ee83f951646a739cd8a8d25d93841fd9889b1f774f5e77d3d9",
+      "sampleInputSha256": "f319e56b697d512a7074b672db87fdb193daa7cb2404450515d629b358cdbcd4"
+    }
+  ],
+  "sourcesAfter": {
+    "scripts/backends/godot4-scene3d.mjs": "86b320a610c26e3f85a5a72569cff1c4ddc38fcbbb6658dac6a0be8121f1c41a",
+    "scripts/backends/godot3d/runtime.gd": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+    "scripts/adapters/node-scene3d-export.mjs": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8",
+    "engine/studio-core.wasm": "47ca1f48b07a5e9dc6a02052860b2ddc633fc92dd20e14f1139ba761fd446e0f",
+    "engine/studio-core.mjs": "2e0aa9235d700e1246bd3a529554b762ea6d034b4635d339b36917d9020fad64",
+    "engine/scene3d-particles.mjs": "60d040e773ddfee5803aacba49b6a9456f5e6de7f2eb3265e2ef09cbcc03f509"
+  },
+  "display": {
+    "isolated": true,
+    "serverExited": true,
+    "stderr": "_XSERVTransSocketUNIXCreateListener: ...SocketCreateListener() failed\n_XSERVTransMakeAllCOTSServerListeners: server already running\n_XSERVTransSocketUNIXCreateListener: ...SocketCreateListener() failed\n_XSERVTransMakeAllCOTSServerListeners: server already running\n"
+  }
+}

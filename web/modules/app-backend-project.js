@@ -3,7 +3,7 @@ import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { validateBackendProjectManifest } from '../../engine/backend-project.mjs';
 
 // Viewing is independent of execution; only an explicit verified selection changes its target.
-export function setupBackendProject({ container, request, getState, onChange = () => {}, onSelect = () => false, onSelectSettled = () => {} }) {
+export function setupBackendProject({ container, request, getState, onChange = () => {}, onSelect = () => false, onSelectSettled = () => {}, onDeliver }) {
   container.innerHTML = `<section id="backendProjectPanel" class="backend-project" hidden aria-labelledby="backendProjectTitle">
     <h3 id="backendProjectTitle" data-i18n="后端工程"></h3>
     <p id="backendProjectIntroduction" class="build-hint"></p>
@@ -16,6 +16,7 @@ export function setupBackendProject({ container, request, getState, onChange = (
     <p id="backendProjectRetention" class="build-hint"></p><p id="backendProjectSelection" class="build-hint"></p>
     <section id="backendProjectDetails" hidden aria-labelledby="backendProjectDetailsTitle">
       <div class="build-actions"><h3 id="backendProjectDetailsTitle" data-i18n="后端工程详情"></h3><button id="backendProjectClose" type="button" class="doc-btn doc-btn-ghost" data-i18n="关闭工程详情"></button></div>
+      <button id="backendProjectDeliver" type="button" class="doc-btn" data-i18n="交付工程" hidden></button><p id="backendProjectDeliveryHint" class="build-hint" hidden></p>
       <p id="backendProjectStatus" role="status" aria-live="polite"></p><p id="backendProjectError" role="alert" hidden></p>
       <div id="backendProjectContent"></div>
     </section></section>`;
@@ -224,6 +225,10 @@ export function setupBackendProject({ container, request, getState, onChange = (
     el('Error').hidden = !errorKey; el('Error').textContent = errorKey ? t(errorKey) : '';
     el('Status').textContent = !detailId ? '' : busy ? t(busyAction === 'select' ? '正在核对并选择运行工程…' : '正在读取后端工程详情…')
       : response ? t(response.inspection.complete ? '冻结工程清单与生成文件已核对；未启动引擎或检查当前工具。' : '工程记录已读取，但文件核对未完整通过。') : '';
+    const canDeliver = Boolean(response && owns() && response.inspection.recorded && response.inspection.manifestSha256);
+    const deliverySupported = state.projectManagement?.delivery === 'viento-build-delivery-v1' && typeof onDeliver === 'function';
+    el('Deliver').hidden = !canDeliver; el('Deliver').disabled = busy || state.busy === true || !deliverySupported;
+    el('DeliveryHint').hidden = !canDeliver; el('DeliveryHint').textContent = t(deliverySupported ? '交付已核对的生成工程；接收方仍需相应运行工具。' : '当前宿主不支持工程交付；仍可查看工程详情。');
     el('Content').replaceChildren();
     if (response && owns()) renderProject();
   }
@@ -305,6 +310,11 @@ export function setupBackendProject({ container, request, getState, onChange = (
   el('Select').addEventListener('change', () => { if (busy) return; clear(); selected = el('Select').value; render(); });
   el('Inspect').addEventListener('click', () => void open());
   el('Activate').addEventListener('click', () => void activate());
+  el('Deliver').addEventListener('click', () => {
+    if (disposed || busy || getState().busy === true || !response || !owns() || !response.inspection.recorded || !response.inspection.manifestSha256
+      || getState().projectManagement?.delivery !== 'viento-build-delivery-v1' || typeof onDeliver !== 'function') return;
+    onDeliver(response, Object.freeze({ ...origin }));
+  });
   el('Close').addEventListener('click', () => { clear(); render(); el('Inspect').focus(); onChange(); });
   const unsubscribe = onLanguageChange(render); render();
   return { open, activate, render, isBusy: () => busy, closed() { clear(); render(); }, dispose() { if (disposed) return; clear(); disposed = true; unsubscribe?.(); container.replaceChildren(); }, destroy() { this.dispose(); } };

@@ -118,6 +118,7 @@ export const STUDIO_MODULES = freeze([
     ['document.read', 'authoring'], ['document.edit', 'authoring'],
     ['language.markdown', 'language'], ['language.text', 'language'], ['language.json', 'language'], ['language.yaml', 'language'],
   ], []),
+  moduleDescriptor('org.viento.scripts', [['authoring.script', 'authoring']]),
   moduleDescriptor('org.viento.settings', [['workbench.settings', 'workbench']], []),
   moduleDescriptor('org.viento.project', [['project.types', 'project'], ['project.templates', 'project']]),
   moduleDescriptor('org.viento.world', [
@@ -127,7 +128,7 @@ export const STUDIO_MODULES = freeze([
   moduleDescriptor('org.viento.export', [['project.export', 'project'], ['resource.package', 'resource']]),
   moduleDescriptor('org.viento.media', [['resource.reference', 'resource']]),
   moduleDescriptor('org.viento.build', [
-    ['scene.representation.scene2d', 'scene'], ['scene.authoring.composition2d', 'authoring'],
+    ['scene.representation.scene2d', 'scene'], ['scene.authoring.behavior-creation', 'authoring'], ['scene.authoring.composition2d', 'authoring'],
     ['backend.project', 'backend'], ['backend.execution', 'backend'], ['behavior.gdscript', 'language'],
   ], ['org.viento.document', 'org.viento.world']),
   moduleDescriptor('org.viento.scene3d', [
@@ -160,6 +161,7 @@ export const STUDIO_MODULES = freeze([
   moduleDescriptor('org.viento.scene3d-removal', [
     ['scene.authoring.removal3d', 'authoring'],
   ]),
+  moduleDescriptor('org.viento.scene-behaviors', [['scene.authoring.behaviors', 'authoring']]),
 ]);
 
 export function createStudioModuleRegistry(input = STUDIO_MODULES) {

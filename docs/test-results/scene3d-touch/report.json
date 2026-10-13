@@ -1,0 +1,115 @@
+{
+  "ok": true,
+  "generatedAt": "2026-10-12T11:32:43.461463+00:00",
+  "version": "0.1.0",
+  "baseCommit": "cc3c3b79c292d4d2c2db1edd4b8dae519810b641",
+  "stage": "Working tree; no release, commit, push or installation.",
+  "feature": "Two-finger pan and centroid-anchored pinch with independent camera math and guarded renderer sessions.",
+  "behavior": [
+    "Explicit touch pointers promote the existing single-finger gesture; mouse and single-finger behavior stays available.",
+    "Target-depth world position follows the two-finger midpoint in both projections; heading remains unchanged. Perspective other depths retain parallax.",
+    "Input-driven animation frames combine the latest pair coordinates before one atomic draw and reference update. Normal up flushes pending input; cancellation discards it.",
+    "Either release ends the pair, with no residual selection or drag. Third pointers, mixed input, capture loss, view changes and disposal cancel owned pending work.",
+    "Focused bounds remain authoritative. Distant authored cameras outside the usual interval receive a locked proportional gesture range, avoiding a starting jump.",
+    "Only explicitly supported renderers show three-language touch instructions; no author text, save, Rust ABI, schema, backend or Studio capability changes."
+  ],
+  "targeted": {
+    "tests": 402,
+    "pass": 402,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "newCases": 48,
+    "runner": "Node v24.21.0 --test --test-isolation=none --test-reporter=tap",
+    "log": "targeted-tests.tap"
+  },
+  "preflight": {
+    "syntaxFiles": 664,
+    "api": {
+      "ok": true,
+      "checksPassed": true,
+      "issues": []
+    },
+    "versions": {
+      "version": "0.1.0",
+      "buildVersion": "0.1.0"
+    },
+    "report": "preflight.json"
+  },
+  "prepared": {
+    "identicalCopies": 18,
+    "orientationAndAnchorCases": 14,
+    "report": "prepared.json",
+    "nativeBuild": false
+  },
+  "browser": {
+    "report": "browser/browser.json",
+    "browser": "Chrome/154.0.8037.97",
+    "twoFingerGPUChecks": 30,
+    "orientationGPUChecks": 100,
+    "visibleCompositingProbes": 356,
+    "compositingMismatches": 0,
+    "screenshotsVisuallyInspected": [
+      "touch-top-desktop.png",
+      "touch-bottom-desktop.png",
+      "touch-zh-CN-390.png",
+      "touch-en-390.png",
+      "touch-ja-390.png",
+      "touch-no-webgl.png"
+    ],
+    "softwareRendering": "Explicit ANGLE / SwiftShader",
+    "sourceStable": true
+  },
+  "earlierProofs": [
+    {
+      "report": "initial-browser/browser.json",
+      "source": "initial-browser/renderer-before-range-fix.js",
+      "harness": "initial-browser/smoke-before-range-fix.mjs",
+      "reason": "Initial normal navigation proof passed. Independent review then found legal distant authored cameras snapped into the default distance range; added locked gesture bounds and regression cases."
+    },
+    {
+      "report": "pre-frame-browser/browser.json",
+      "source": "pre-frame-browser/renderer-before-frame-coalescing.js",
+      "harness": "pre-frame-browser/smoke-before-frame-coalescing.mjs",
+      "reason": "Distant and near-minimum camera proof passed. Review of exact zoom limits found serial pointer updates could introduce small unwanted zoom during translation; frame coalescing and exact-limit checks were added."
+    }
+  ],
+  "boundaries": {
+    "modules": 17,
+    "capabilities": 33,
+    "wasmBytes": 599948,
+    "wasmSha256": "49c4dc243e05c69d2b53b9cd144e9ad8e054c1c1edf8531d5808800bbb9c05b6",
+    "rustChanged": false,
+    "authorFormatChanged": false,
+    "sourceAndSavedFixtureUnchanged": true
+  },
+  "atlas": {
+    "functions": 101,
+    "implementations": 255,
+    "bindings": 394,
+    "cells": 1576
+  },
+  "limitations": [
+    "No two-finger twist, inertia or author-object manipulation.",
+    "Browser software WebGL2 and touch emulation do not establish hardware-GPU, installed desktop or Android-device support.",
+    "Targeted regression only; no full application or Rust suite rerun.",
+    "Prepared resources are temporary; no installer built or installed."
+  ],
+  "files": {
+    "docs/ARCHITECTURE.md": "39c25c01cb4aa8de96508eb2cd148144aeb26b79987e956fdd0072671e5a11ce",
+    "docs/ROADMAP.md": "e5d77646cff0df71c658177f7a57c9522af001e06574e2d1fc5e87eb54e8ea3c",
+    "docs/SCENE3D.md": "9ceca5ebfd47dc245e14eaf539c1cb9657b42976c2cd273f85732a6827fd75d5",
+    "docs/STATUS.md": "e89d32b5a374cfbd46d08ca378a7565c91449c9fb32b0ac7b480c72b8c649189",
+    "docs/STUDIO_MODULES.md": "4b0d7eb7961f4029071d54006c175c39b15341dfecfad2bc984c6b7f57dfaf87",
+    "engine/README.md": "1789ae11831a313be1017398f214208fd00bd6f2f2625a4e41224c4883a1a3f3",
+    "scripts/tests/scene3d-preview-ui.test.mjs": "81b62711e044286cca78a02844a49ebe37d7149c94dcdc394c255bc763227d83",
+    "web/i18n/en.js": "575015215439574c51ecebb39508012eaea18494899f5412964a1ecafcd13321",
+    "web/i18n/ja.js": "c3e201870f44c6c0894e0173353ccaa5da09dc6742def33060eeaf268319aeae",
+    "web/modules/app-scene3d-preview.js": "1b1bfada9b642a288a9122a635932329a1f94867bee7eeb5d7b7b33472962dd5",
+    "web/modules/scene3d-math.js": "342e636b2cbbec00e8be5b9c91cee5a975239aea66a6189c5991e8fa22e354ba",
+    "web/modules/scene3d-renderer.js": "db2c702d0d2caac923d98c236a9bf6aa33f549bf9002ba4c4ea024549d94fde0",
+    "scripts/tests/scene3d-touch-math.test.mjs": "ff8f297025d3449e11d1cf0511349ee6e5a1db820a49b99cd19b44012d74be76",
+    "scripts/tests/scene3d-touch-renderer.test.mjs": "dc16bf4ef152824a2f9e5beffdc70ff812a093cbfef8b2b4ee289b8d55f8a914",
+    "scripts/tests/scene3d-touch-smoke.mjs": "852ae9b8d2e4e749ddbc3e8f61d621e458e00680f28960ced2219fb056f7bd06"
+  }
+}

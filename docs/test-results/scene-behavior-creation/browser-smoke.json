@@ -1,0 +1,216 @@
+{
+  "format": "viento-scene-behavior-creation-browser-smoke",
+  "schemaVersion": 1,
+  "ok": true,
+  "startedAt": "2026-10-13T00:53:53.233Z",
+  "finishedAt": "2026-10-13T00:54:10.221Z",
+  "report": "browser-final/browser.json",
+  "reportSha256": "d719ebba91a20f0057453a1367cbafa9b068c7a23dcea2ab578ea18f26d042a6",
+  "sources": {
+    "web/modules/app-scene-behavior-create.js": "e060d1ab43ad5450f15fa9e31e75a659260dbea44f3ac6ffe6deed23bcbcf231",
+    "web/scene-behavior-create.css": "9f727852c1e579eb4f1ca810616ac7d9571a5a2c68bd40d8cc83c92cbc652fc8",
+    "web/modules/app-scene-behaviors.js": "44e35daea36cf246a4ff25f7f1b5b33d1e7c7cc87e3cef60508b75757800874c",
+    "web/modules/app-behavior-source.js": "faf1449d3460f2a87c60355dd25544d3c5590c5cbcbba523ddca13fee7cb5a4e",
+    "web/modules/app-runtime.js": "912a3444634666676c206f812056c35893f5083933c3f293c25a6bd79668697b",
+    "web/modules/app-project-build.js": "cd2f3028015f9d5a7037e57272d138c4cb70c577d7cd62dc4ec95e58ba05aa53",
+    "engine/world-behavior-create.mjs": "cc26e688ddbfc3cd14fd60bad657e8990e8ce7e6ec9a3467c491fa2e07424c37",
+    "engine/world-command-contract.mjs": "5ab2e67fa895fd596bdfe56c687c8312368d9f3f1d162d2b41f52e8a4a3fa3dd",
+    "engine/scene-behavior-creation-contract.mjs": "c2ae49d7ba16d33a67af6faea23c44bf42a5108dc86297504e2badb24d4a8d65",
+    "scripts/lib/scene-behavior-creation-service.mjs": "df27d24ce2165a0ac74869a8b06bac43ae3e5b99001806689c7374c094ce3c14",
+    "scripts/adapters/node-world-commands.mjs": "303c46d52d5d524638d9b2361c58fb98e36830c86b833dc3fa50180566f02eb1",
+    "engine/json-source.mjs": "2a7b27c150f53d255176c7c6185eebd1d0ac1ba6312e355769f02b3f83cb15f9",
+    "web/i18n/en.js": "6b2f67bdd7bc17f15dc53e450ffd579a6e3dd46e4f2cececbd2d756b2615e0dd",
+    "web/i18n/ja.js": "6ea956aa3a3f1fe81d07b16dc778f9c1d287ce26296e61e1b05f0d1022e01fe6",
+    "scripts/tests/scene-behavior-creation-smoke.mjs": "162337bc37960168710f9dfdc49e2a0fdc7c1653736f2202e318a8e5b06cefd0"
+  },
+  "sourceSnapshotUnchanged": true,
+  "sourceFocus": "docSourceEditor",
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "steps": [
+    "A saved Scene2D without any behavior opens first-behavior creation. Full source and all three relationships are reviewed, then Cancel writes nothing. Chinese, English and Japanese at 390px preserve fields and review, keep Return/Review/Save visible, and allow body scrolling without horizontal overflow.",
+    "One reviewed transaction creates exactly the manifest and its registration and appends the scene behavior relationship, retaining the scene metadata CRLF. Scene/script/asset source bytes are unchanged. The explicit Open button enters the real source editor and exposes the existing behavior editor.",
+    "The existing behavior editor adds text/number parameters and a signal alias. Apply only changes the draft; ordinary Save persists those exact reviewed bytes and changes no other author files.",
+    "The newly created and edited manifest drives real Godot plan → build → headless run: the selected instance emits creation_checkpoint with created_in_studio/65, bound to the newly created stable binding ID.",
+    "The resulting generated project is inspected, delivered through a real browser download, independently verified and extracted, then imported by real Godot at a new location. Scripts and image resources are present; no further author writes occur."
+  ],
+  "creation": {
+    "objectId": "e69d50db-3e13-43d1-914b-c8625dd46baa",
+    "bindingId": "2ffd1a61-38ae-44ba-924b-539568bf84c0",
+    "changedAuthorPaths": [
+      "documents/behaviors/created-in-studio.json",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json",
+      "metadata/documents/e69d50db-3e13-43d1-914b-c8625dd46baa.json"
+    ],
+    "sourceRevision": "sha256:e612215bdc312a17c54b302d9798752fe3e4e65b2e928ba4fa3a978902a72b7b",
+    "relations": [
+      {
+        "kind": "references",
+        "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "slot": ""
+      },
+      {
+        "kind": "references",
+        "targetId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+        "slot": ""
+      }
+    ],
+    "sceneRelation": {
+      "kind": "behavior",
+      "targetId": "e69d50db-3e13-43d1-914b-c8625dd46baa",
+      "slot": ""
+    }
+  },
+  "saved": {
+    "beforeSha256": "e612215bdc312a17c54b302d9798752fe3e4e65b2e928ba4fa3a978902a72b7b",
+    "afterSha256": "af0b1024e75fff237614f0be53a5ab432e02b3db1258cb47f65ae666b45cfc70",
+    "onlyChangedAuthorPath": "documents/behaviors/created-in-studio.json"
+  },
+  "behaviorEvents": [
+    {
+      "arguments": [
+        "created_in_studio",
+        65
+      ],
+      "bindingId": "2ffd1a61-38ae-44ba-924b-539568bf84c0",
+      "event": "behavior",
+      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "name": "creation_checkpoint",
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "protocol": 3
+    }
+  ],
+  "delivery": {
+    "fileName": "viento-de254552-56fd-4b81-9ce4-b9852d9a8c36.viento-build.zip",
+    "bytes": 17564,
+    "sha256": "b7e7339a0adc67fde25bdbeccb258fda0885777ec6ba3cb20fe9357eee7713ee",
+    "fileCount": 9,
+    "assetCount": 1,
+    "projectKind": "godot-project",
+    "relocatedGodotImportCode": 0
+  },
+  "layout": {
+    "zh-CN": {
+      "noHorizontalOverflow": true,
+      "close": {
+        "top": 25,
+        "bottom": 54,
+        "left": 294.984375,
+        "right": 365
+      },
+      "check": {
+        "top": 775,
+        "bottom": 821,
+        "left": 25,
+        "right": 123.546875
+      },
+      "save": {
+        "top": 775,
+        "bottom": 821,
+        "left": 131.546875,
+        "right": 230.09375
+      },
+      "title": "为场景添加行为",
+      "bodyScrollable": true
+    },
+    "en": {
+      "noHorizontalOverflow": true,
+      "close": {
+        "top": 25,
+        "bottom": 51,
+        "left": 274.28125,
+        "right": 365
+      },
+      "check": {
+        "top": 767,
+        "bottom": 821,
+        "left": 25,
+        "right": 133
+      },
+      "save": {
+        "top": 767,
+        "bottom": 821,
+        "left": 141,
+        "right": 249
+      },
+      "title": "Add behavior to scene",
+      "bodyScrollable": true
+    },
+    "ja": {
+      "noHorizontalOverflow": true,
+      "close": {
+        "top": 25,
+        "bottom": 54,
+        "left": 270.984375,
+        "right": 365
+      },
+      "check": {
+        "top": 775,
+        "bottom": 821,
+        "left": 25,
+        "right": 133
+      },
+      "save": {
+        "top": 775,
+        "bottom": 821,
+        "left": 141,
+        "right": 249
+      },
+      "title": "シーンに動作を追加",
+      "bodyScrollable": true
+    }
+  },
+  "screenshots": [
+    {
+      "path": "browser-final/behavior-create-review-desktop.png",
+      "sha256": "0d9df0d33e18e99154ef42ff815375682f7b1b3c4c5fa122469daa3122b45aea"
+    },
+    {
+      "path": "browser-final/behavior-create-zh-CN-390.png",
+      "sha256": "13b9754faf0997522df171d476648107a8d467f92d8d72e6cf440764752e6f30"
+    },
+    {
+      "path": "browser-final/behavior-create-en-390.png",
+      "sha256": "ffd3dc307fa2eb23caed02d157b504975260282f2e888247252ab72d6a0e2556"
+    },
+    {
+      "path": "browser-final/behavior-create-ja-390.png",
+      "sha256": "55a7a5be4debf31341b4b0740019b8522133ec158580de80094a38a9728f38fe"
+    },
+    {
+      "path": "browser-final/behavior-create-parameters-review.png",
+      "sha256": "6ccef4ae0d14e878ebc45169e079c2f03888fa0e7c5691eb7d1af9ec795814f0"
+    },
+    {
+      "path": "browser-final/behavior-create-godot-events.png",
+      "sha256": "4e088b00a2d079e242baba638ce255c68fa1754942b596a9ede4b5f14adb7eb0"
+    }
+  ],
+  "browserExceptions": 0,
+  "limitations": [
+    "Actual Chrome with local HTTP editor and a trusted Godot binary. No installed Tauri window, native picker, Android or other desktop OS claim.",
+    "An existing saved Scene2D example is copied and its behavior manifest/opt-in removed. This tests first behavior creation, not upstream OC/projection/scene creation.",
+    "Godot executes headless logic. No rendering, Bevy author behavior, hot reload, LSP or standalone game export is claimed.",
+    "Scene registration CRLF was exercised end to end. BOM registration remains unsupported by the existing workspace registry reader; the first exploratory run records that limitation."
+  ],
+  "exploratoryRuns": [
+    {
+      "report": "browser-first/browser.json",
+      "outcome": "unsupported extra BOM fixture rejected before browser startup; no product code changed"
+    },
+    {
+      "report": "browser-second/browser.json",
+      "outcome": "creation/editor passed; smoke omitted waiting for ordinary-save/index-refresh completion before building; test wait corrected"
+    },
+    {
+      "report": "browser-third/browser.json",
+      "outcome": "full flow passed before final source-navigation focus assertion was added"
+    }
+  ]
+}

@@ -30,6 +30,20 @@ const SCENE3D_ALIGNMENT_OPERATIONS = new Set(['scene3d.alignObjects']);
 const SCENE3D_DISTRIBUTION_OPERATIONS = new Set(['scene3d.distributeObjects']);
 const SCENE3D_COPY_OPERATIONS = new Set(['scene3d.copyObjects']);
 const SCENE3D_REMOVAL_OPERATIONS = new Set(['scene3d.removeObjects']);
+const SCENE3D_PARTICLE_OPERATIONS = new Set(['scene3d.prepareParticleField', 'scene3d.sampleParticleField']);
+const PARTICLE_FIELDS = [['center', 'vector'], ['extent', 'vector'], ['velocity', 'vector'], ['size', 'vector'], ['color', 'color'], ['count', 'number'], ['seed', 'number']];
+
+function validParticleField(field) {
+  if (!record(field, PARTICLE_FIELDS.map(([name]) => name))) return false;
+  const vector = (value, min, max) => Array.isArray(value) && value.length === 3
+    && value.every(number => Number.isFinite(number) && number >= min && number <= max);
+  return vector(field.center, -100000, 100000) && vector(field.extent, .01, 10000)
+    && vector(field.velocity, -1000, 1000) && vector(field.size, .001, 1000)
+    && field.size.every((size, axis) => size <= field.extent[axis])
+    && typeof field.color === 'string' && /^#[a-fA-F0-9]{6}$/.test(field.color)
+    && Number.isInteger(field.count) && field.count >= 0 && field.count <= 4096
+    && Number.isInteger(field.seed) && field.seed >= 0 && field.seed <= 4294967295;
+}
 
 const fail = (errorCode, message, cause) => Object.assign(new Error(message, cause ? { cause } : undefined), { errorCode });
 const unavailable = () => fail('studio_core_unavailable', 'The Rust scene layout core is unavailable.', loadError);
@@ -990,9 +1004,14 @@ export function dispatchStudioCoreScene3D(request) {
     if (!record(result, ['protocolVersion', 'ok', 'scene3d']) || !record(input, ['protocolVersion', 'operation', 'content'])
       || typeof input.content !== 'string' || encoder.encode(input.content).length > 128 * 1024 || !record(result.scene3d, ['model', 'sourceLocations'])) invalid();
     const original = JSON.parse(input.content.replace(/^\uFEFF/, '')), { model, sourceLocations } = result.scene3d;
+    if (Object.hasOwn(original, 'fog')) keys.push('fog');
+    if (Object.hasOwn(original, 'particleField')) keys.push('particleField');
     if (!record(original, keys) || original.format !== 'viento-scene3d' || original.schemaVersion !== 1 || !record(model, keys)
       || model.format !== 'viento-scene3d-model' || model.schemaVersion !== 1 || !name(model.name) || !color(model.background)
       || !Array.isArray(model.viewport) || model.viewport.length !== 2 || !model.viewport.every(item => Number.isInteger(item) && number(item, 1, 8192))) invalid();
+    if (Object.hasOwn(model, 'fog') && (!supportsStudioCoreScene3DFog() || !record(model.fog, ['color', 'density'])
+      || !color(model.fog.color) || !number(model.fog.density, 0, 1))) invalid();
+    if (Object.hasOwn(model, 'particleField') && (!supportsStudioCoreScene3DParticles() || !validParticleField(model.particleField))) invalid();
     const camera = model.camera, light = model.light;
     if (!record(camera, ['position', 'target', 'fovDegrees', 'near', 'far']) || !triple(camera.position, -100000, 100000) || !triple(camera.target, -100000, 100000)
       || !direction(camera.target.map((value, index) => value - camera.position[index]), 0.01) || !number(camera.fovDegrees, 1, 179)
@@ -1218,10 +1237,63 @@ export function supportsStudioCoreScene3DEnvironmentPatch() {
     && typeof runtime.viento_core_scene3d_environment_version === 'function'
     && runtime.viento_core_scene3d_environment_version() === 1);
 }
+export function supportsStudioCoreScene3DFog() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_fog_version === 'function'
+    && runtime.viento_core_scene3d_fog_version() === 1);
+}
+export function supportsStudioCoreScene3DParticles() {
+  return Boolean(supportsStudioCoreScene3D() && runtime
+    && typeof runtime.viento_core_scene3d_particles_version === 'function'
+    && runtime.viento_core_scene3d_particles_version() === 1);
+}
+export function dispatchStudioCoreScene3DParticles(request) {
+  assertJson(request);
+  const sample = request?.operation === 'scene3d.sampleParticleField';
+  if (!record(request, ['protocolVersion', 'operation', 'field', ...(sample ? ['timeSeconds'] : [])])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_PARTICLE_OPERATIONS.has(request.operation)
+    || !validParticleField(request.field) || sample && (!Number.isFinite(request.timeSeconds) || request.timeSeconds < 0 || request.timeSeconds > 3600)) {
+    throw fail('studio_core_request_invalid', 'Expected a complete bounded particle field and explicit sampling time.');
+  }
+  if (!supportsStudioCoreScene3DParticles()) throw unavailable();
+  return dispatch(request, SCENE3D_PARTICLE_OPERATIONS, (result, input) => {
+    const invalid = () => { throw new Error('Rust core returned an unbound particle field result.'); };
+    if (!record(result, ['protocolVersion', 'ok', 'scene3dParticles'])) invalid();
+    const value = result.scene3dParticles;
+    if (sample) {
+      if (!record(value, ['timeSeconds', 'offset']) || value.timeSeconds !== input.timeSeconds
+        || !Array.isArray(value.offset) || value.offset.length !== 3) invalid();
+      for (let axis = 0; axis < 3; axis++) {
+        let expected = (input.field.velocity[axis] * input.timeSeconds / input.field.extent[axis]) % 1;
+        if (expected < 0) expected += 1;
+        if (expected >= 1 || expected === 0) expected = 0;
+        if (!Number.isFinite(value.offset[axis]) || value.offset[axis] < 0 || value.offset[axis] >= 1 || value.offset[axis] !== expected) invalid();
+      }
+    } else {
+      if (!record(value, ['field', 'phases']) || !validParticleField(value.field)
+        || !PARTICLE_FIELDS.every(([key, type]) => type === 'vector'
+          ? value.field[key].every((number, axis) => number === input.field[key][axis]) : value.field[key] === input.field[key])
+        || !Array.isArray(value.phases) || value.phases.length !== input.field.count) invalid();
+      // This is a receipt witness only: output always comes from the native
+      // call. No seed sequence or sampled value substitutes a missing core.
+      let state = (input.field.seed ^ 0x9e3779b9) >>> 0;
+      if (state === 0) state = 0x6d2b79f5;
+      for (const phase of value.phases) {
+        if (!Array.isArray(phase) || phase.length !== 3) invalid();
+        for (const component of phase) {
+          state ^= state << 13; state ^= state >>> 17; state ^= state << 5;
+          const expected = (state >>> 8) / 16777216;
+          if (!Number.isFinite(component) || component < 0 || component >= 1 || Math.fround(component) !== component || component !== expected) invalid();
+        }
+      }
+    }
+  }).scene3dParticles;
+}
 export function dispatchStudioCoreScene3DEnvironmentPatch(request) {
   assertJson(request);
   const camera = [['position', 'vector'], ['target', 'vector'], ['fovDegrees', 'number'], ['near', 'number'], ['far', 'number']];
   const light = [['direction', 'vector'], ['color', 'color'], ['energy', 'number']];
+  const fog = [['color', 'color'], ['density', 'number']];
   const scalar = (value, type) => type === 'color' ? typeof value === 'string' && /^#[a-fA-F0-9]{6}$/.test(value)
     : typeof value === 'number' && Number.isFinite(value);
   const subset = (value, fields) => Boolean(value && typeof value === 'object' && !Array.isArray(value)
@@ -1232,21 +1304,28 @@ export function dispatchStudioCoreScene3DEnvironmentPatch(request) {
   if (!record(request, ['protocolVersion', 'operation', 'content', 'values'])
     || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE3D_ENVIRONMENT_OPERATIONS.has(request.operation)
     || typeof request.content !== 'string' || !request.values || typeof request.values !== 'object' || Array.isArray(request.values)
-    || !Object.keys(request.values).length || Object.keys(request.values).some(key => !['background', 'camera', 'light'].includes(key))
+    || !Object.keys(request.values).length || Object.keys(request.values).some(key => !['background', 'camera', 'light', 'fog', 'particleField'].includes(key))
     || Object.hasOwn(request.values, 'background') && !scalar(request.values.background, 'color')
     || Object.hasOwn(request.values, 'camera') && !subset(request.values.camera, camera)
-    || Object.hasOwn(request.values, 'light') && !subset(request.values.light, light)) {
-    throw fail('studio_core_request_invalid', 'Expected explicit nonempty 3D background, camera or light values.');
+    || Object.hasOwn(request.values, 'light') && !subset(request.values.light, light)
+    || Object.hasOwn(request.values, 'fog') && (!record(request.values.fog, ['color', 'density']) || !subset(request.values.fog, fog))
+    || Object.hasOwn(request.values, 'particleField') && !validParticleField(request.values.particleField)) {
+    throw fail('studio_core_request_invalid', 'Expected explicit 3D environment groups or complete fog and particle field values.');
   }
-  if (!supportsStudioCoreScene3DEnvironmentPatch()) throw unavailable();
+  if (!supportsStudioCoreScene3DEnvironmentPatch() || Object.hasOwn(request.values, 'fog') && !supportsStudioCoreScene3DFog()
+    || Object.hasOwn(request.values, 'particleField') && !supportsStudioCoreScene3DParticles()) throw unavailable();
   const input = JSON.parse(JSON.stringify(request));
   const before = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: input.content });
   const expected = JSON.parse(JSON.stringify(before.model)), paths = [];
   if (Object.hasOwn(input.values, 'background') && expected.background !== input.values.background) {
     expected.background = input.values.background; paths.push('/background');
   }
-  for (const [parent, fields] of [['camera', camera], ['light', light]]) {
+  const addFog = Object.hasOwn(input.values, 'fog') && !Object.hasOwn(expected, 'fog');
+  const addParticles = Object.hasOwn(input.values, 'particleField') && !Object.hasOwn(expected, 'particleField');
+  for (const [parent, fields] of [['camera', camera], ['light', light], ['fog', fog], ['particleField', PARTICLE_FIELDS]]) {
     if (!Object.hasOwn(input.values, parent)) continue;
+    if (parent === 'fog' && addFog) { expected.fog = { ...input.values.fog }; paths.push('/fog'); continue; }
+    if (parent === 'particleField' && addParticles) { expected.particleField = JSON.parse(JSON.stringify(input.values.particleField)); paths.push('/particleField'); continue; }
     for (const [field, type] of fields) {
       if (!Object.hasOwn(input.values[parent], field)) continue;
       if (type === 'vector') {
@@ -1299,7 +1378,22 @@ export function dispatchStudioCoreScene3DEnvironmentPatch(request) {
       }
       between.push(content.slice(last)); return { tokens, between };
     };
-    const original = inventory(input.content), changed = inventory(patch.afterContent);
+    let leafContent = patch.afterContent;
+    if (addFog || addParticles) {
+      // The input has already passed native admission. Only its final root
+      // brace may receive this exact additive span; stripping it must restore
+      // the original complete token/gap inventory below, including the suffix.
+      const rootEnd = input.content.lastIndexOf('}'), suffix = input.content.slice(rootEnd);
+      let insertion = addFog ? `,"fog":{"color":${JSON.stringify(input.values.fog.color)},"density":${String(input.values.fog.density)}}` : '';
+      if (addParticles) {
+        const entries = PARTICLE_FIELDS.map(([key]) => `${JSON.stringify(key)}:${JSON.stringify(input.values.particleField[key])}`);
+        insertion += `,"particleField":{${entries.join(',')}}`;
+      }
+      const end = leafContent.length - suffix.length, start = end - insertion.length;
+      if (rootEnd < 0 || start < 0 || !leafContent.endsWith(suffix) || leafContent.slice(start, end) !== insertion) invalid();
+      leafContent = leafContent.slice(0, start) + suffix;
+    }
+    const original = inventory(input.content), changed = inventory(leafContent);
     if (!same(original.between, changed.between) || original.tokens.length !== changed.tokens.length) invalid();
     let count = 0;
     for (let i = 0; i < original.tokens.length; i++) {
@@ -1312,7 +1406,7 @@ export function dispatchStudioCoreScene3DEnvironmentPatch(request) {
       } else if (JSON.parse(old.text) === JSON.parse(next.text) || next.text !== JSON.stringify(JSON.parse(next.text))) invalid();
       count++;
     }
-    if (count !== paths.length) invalid();
+    if (count !== paths.length - Number(addFog) - Number(addParticles)) invalid();
   }).scene3dEnvironmentPatch;
   try {
     const after = dispatchStudioCoreScene3D({ protocolVersion: STUDIO_CORE_PROTOCOL_VERSION, operation: 'scene3d.parse', content: patch.afterContent });

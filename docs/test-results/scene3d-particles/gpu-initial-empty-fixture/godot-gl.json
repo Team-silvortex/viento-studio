@@ -1,0 +1,55 @@
+{
+  "format": "viento-scene3d-particles-godot-gl-evidence",
+  "schemaVersion": 1,
+  "ok": false,
+  "tools": {
+    "godot": {
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+      "dev": 66306,
+      "ino": 4460413,
+      "bytes": 146414384,
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "xvfb": {
+      "path": "/usr/bin/Xvfb",
+      "dev": 66306,
+      "ino": 282624,
+      "bytes": 2142760,
+      "sha256": "0f3651d7115c354cdef742a1ad609d874e4dbae651bae2976e061aeeaf4042c8"
+    }
+  },
+  "sourcesBefore": {
+    "scripts/backends/godot4-scene3d.mjs": "86b320a610c26e3f85a5a72569cff1c4ddc38fcbbb6658dac6a0be8121f1c41a",
+    "scripts/backends/godot3d/runtime.gd": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
+    "scripts/adapters/node-scene3d-export.mjs": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8",
+    "engine/studio-core.wasm": "47ca1f48b07a5e9dc6a02052860b2ddc633fc92dd20e14f1139ba761fd446e0f",
+    "engine/studio-core.mjs": "2e0aa9235d700e1246bd3a529554b762ea6d034b4635d339b36917d9020fad64",
+    "engine/scene3d-particles.mjs": "60d040e773ddfee5803aacba49b6a9456f5e6de7f2eb3265e2ef09cbcc03f509"
+  },
+  "scope": "Isolated Xvfb with actual Godot Compatibility/OpenGL software rendering. Exact live MultiMesh phase/offset inputs plus rendered particle-center samples at three explicit times. No physical GPU, cross-renderer pixel equality, installation, Android, physics or gameplay claim.",
+  "cases": [
+    {
+      "name": "rain",
+      "ok": false,
+      "fixture": {
+        "path": "/tmp/viento-particle-gpu-IgVdkn",
+        "dev": 50,
+        "ino": 7046616,
+        "removed": true
+      },
+      "error": {
+        "name": "Error",
+        "message": "Expected a valid bounded 3D box scene, usable camera and directional light."
+      }
+    }
+  ],
+  "error": {
+    "name": "Error",
+    "message": "Expected a valid bounded 3D box scene, usable camera and directional light."
+  },
+  "display": {
+    "isolated": true,
+    "serverExited": true,
+    "stderr": "_XSERVTransSocketUNIXCreateListener: ...SocketCreateListener() failed\n_XSERVTransMakeAllCOTSServerListeners: server already running\n_XSERVTransSocketUNIXCreateListener: ...SocketCreateListener() failed\n_XSERVTransMakeAllCOTSServerListeners: server already running\n"
+  }
+}

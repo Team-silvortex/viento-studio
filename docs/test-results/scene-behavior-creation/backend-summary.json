@@ -1,0 +1,92 @@
+{
+  "format": "viento-behavior-create-backend-proof",
+  "schemaVersion": 1,
+  "final": {
+    "tests": 22,
+    "pass": 22,
+    "fail": 0,
+    "skip": 0,
+    "exitCode": 0,
+    "log": "backend-final.log",
+    "command": "node --test --test-isolation=none scripts/tests/world-behavior-create-service.test.mjs scripts/tests/world-behavior-create-transaction.test.mjs"
+  },
+  "fileSha256": {
+    "scripts/adapters/node-world-commands.mjs": "303c46d52d5d524638d9b2361c58fb98e36830c86b833dc3fa50180566f02eb1",
+    "scripts/lib/world-transactions.mjs": "fb5e76827b52fcc1bc7f92a9263c7d8721d63bca266c547983f8df0617bc981d",
+    "scripts/lib/workspace.mjs": "a409647af206327c56f2e434bf186cdcb32c2401c3566a9e6038407028c5214b",
+    "scripts/tests/world-behavior-create-service.test.mjs": "b897594b1629ca67c7cdfc3414c4885d57bb71909d1865716f03173213d28ef7",
+    "scripts/tests/world-behavior-create-transaction.test.mjs": "8b97e7b8bdaaf6a3c14353725b934f3779ab419131ee2e67e6683682ff9ebf4c",
+    "scripts/tests/helpers/world-behavior-create-fixture.mjs": "d456347f7c16d2d60a0d2ee59ea68328a4f7ec65550ea8d31dbb005c3422e033",
+    "scripts/tests/helpers/world-behavior-create-worker.mjs": "4499ba0066bf5b3d790fff1013521af27c67dbe0cd53038974f2053432e17592"
+  },
+  "attempts": [
+    {
+      "log": "backend-initial.log",
+      "pass": 20,
+      "fail": 2,
+      "explanation": "One metadata test assumed whitespace affects the semantic World revision; changed to an actual registration field change. The multi-process assertion relied on child stderr."
+    },
+    {
+      "log": "backend-second.log",
+      "pass": 21,
+      "fail": 1,
+      "explanation": "Test helper waited for close to drain stderr, but stderr remained unreliable under the inherited test harness."
+    },
+    {
+      "log": "backend-third.log",
+      "pass": 21,
+      "fail": 1,
+      "explanation": "Test helper removed NODE_TEST_CONTEXT, but stderr remained unreliable."
+    },
+    {
+      "log": "backend-final.log",
+      "pass": 22,
+      "fail": 0,
+      "explanation": "Deterministic IPC result/failure worker; actual multi-process error code and status asserted."
+    }
+  ],
+  "scope": {
+    "workspaceVersions": [
+      2,
+      3
+    ],
+    "intentVersion": 9,
+    "targets": [
+      "new behavior source",
+      "new behavior registration",
+      "existing scene registration"
+    ],
+    "beforeImages": [
+      "null",
+      "null",
+      "existing exact bytes"
+    ],
+    "crashCheckpoints": [
+      "intent",
+      "source-ready:0",
+      "data:0",
+      "source-ready:1",
+      "data:1",
+      "source-ready:2",
+      "data:2",
+      "commit",
+      "head"
+    ],
+    "verified": [
+      "preview without writes",
+      "apply World CAS",
+      "beforeIntent dependency changes",
+      "same OC with multiple instances",
+      "inert TXT implementation contents",
+      "true SIGKILL recovery and second interruption",
+      "unknown journal/snapshot fields",
+      "foreign owned-target and registry changes",
+      "temporary path and symlink handling",
+      "real multi-process conflict",
+      "metadata source preservation"
+    ],
+    "recoveryBoundary": "Preview, apply and beforeIntent guard the current complete World revision. Recovery checks frozen dependency evidence and registry identity and only restores the three owned targets; later changes to scene, script and definition author sources are retained. Existing intent versions 1 through 8 are not broadened.",
+    "productionChangesBetweenAttempts": false,
+    "oldCrashWorkerEdited": false
+  }
+}

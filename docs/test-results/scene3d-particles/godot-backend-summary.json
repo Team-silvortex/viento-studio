@@ -1,0 +1,237 @@
+{
+  "format": "viento-scene3d-particles-godot-backend-summary",
+  "schemaVersion": 1,
+  "sourceFrozen": true,
+  "files": {
+    "scripts/backends/godot4-scene3d.mjs": {
+      "bytes": 8552,
+      "sha256": "2e9c29b62868b643036df67f0fbb09b77c6710247764bf5c837277200f53876a"
+    },
+    "scripts/backends/godot3d/runtime.gd": {
+      "bytes": 11143,
+      "sha256": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472"
+    },
+    "scripts/adapters/node-scene3d-export.mjs": {
+      "bytes": 20980,
+      "sha256": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8"
+    },
+    "scripts/tests/scene3d-particles-backend.test.mjs": {
+      "bytes": 13146,
+      "sha256": "f71c501ca7c25140223d9710c5d5e9dfae534807ced9ad98ce8fa9b36e0d49fc"
+    },
+    "docs/test-results/scene3d-particles/godot-proof.mjs": {
+      "bytes": 6918,
+      "sha256": "f952ebf36c1f7ec56e7bf4a0530dfbe9c76c43453a4b40d2a26f64cca11da4f5"
+    },
+    "docs/test-results/scene3d-particles/godot-gpu-proof.mjs": {
+      "bytes": 11160,
+      "sha256": "93c329bb7278ce39f879347a0ab6dfc66aa5ff1d090a2b3a4d520fa69689b6cf"
+    }
+  },
+  "targetedTests": {
+    "total": 33,
+    "passed": 33,
+    "failed": 0,
+    "skipped": 0,
+    "log": "backend-final-tests.tap",
+    "composition": "8 new particle tests + 7 fog tests + 18 legacy export tests; fixed real Godot legacy tests enabled"
+  },
+  "headless": {
+    "cases": 8,
+    "verifiedWithoutLiveParticles": 2,
+    "expectedInstanceDataUnavailable": 6,
+    "report": "godot.json",
+    "scope": "Default dummy renderer validates import/script/material/bounds/explicit-time offset and stop boundary. Positive particle counts return scene3d_particle_probe_unavailable, not acceptance of instance data. This 8-case proof preceded the final shader-only center/view precision correction; final 33 targeted tests and GL proof below cover the correction."
+  },
+  "realRendering": {
+    "cases": 4,
+    "maxInstanceCount": 4096,
+    "maxProbeBytes": 246946,
+    "pixelCentersChecked": 72,
+    "misses": 0,
+    "report": "godot-gl.json",
+    "scope": "Actual Compatibility OpenGL via isolated Xvfb and Mesa llvmpipe software rendering; 4096 exact float32 phases, four offset times, stop boundary, size/color/extent/AABB, and rain/translated field pixels at 0/.5/2s. No physical GPU, cross-renderer pixel equality, gameplay, installation or mobile claim."
+  },
+  "corrections": [
+    {
+      "record": "initial-custom-data",
+      "reason": "Compatibility custom data has a documented half-precision boundary; changed transport to exact float32 Transform3D origins. Initial dummy readback returned zero and was strictly rejected."
+    },
+    {
+      "record": "initial-dummy-transforms",
+      "reason": "Confirmed dummy RenderingServer also omits transform buffers. Added explicit unavailable diagnostic without starting display processes or relaxing mismatches."
+    },
+    {
+      "record": "gpu-initial-empty-fixture",
+      "reason": "Test fixture had empty objects, invalid under existing core contract; retained one static object outside view."
+    },
+    {
+      "record": "before-relative-center",
+      "reason": "Final shader applies camera transform to center separately before adding local particle coordinates, avoiding premature large-center addition losing small local geometry. Revalidated final 33 tests and four GL cases."
+    }
+  ],
+  "cleanup": {
+    "ownedTemporaryDirectoriesVerifiedAbsent": 26,
+    "fixtures": [
+      {
+        "path": "/tmp/viento-particle-godot-JQsqu4",
+        "dev": 50,
+        "ino": 7103632,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-BMUfVA",
+        "dev": 50,
+        "ino": 7086461,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-2GvrDW",
+        "dev": 50,
+        "ino": 7073152,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-QqYPJD",
+        "dev": 50,
+        "ino": 7063550,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-ovpteq",
+        "dev": 50,
+        "ino": 7055875,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-hrw1RJ",
+        "dev": 50,
+        "ino": 7216890,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-VgrOgR",
+        "dev": 50,
+        "ino": 7217093,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-6lUqen",
+        "dev": 50,
+        "ino": 7217283,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-WrHF9S",
+        "dev": 50,
+        "ino": 7217849,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-uVte58",
+        "dev": 50,
+        "ino": 7046110,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-MQ4kcU",
+        "dev": 50,
+        "ino": 7047768,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-2LBWeQ",
+        "dev": 50,
+        "ino": 7049419,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-Ad30dR",
+        "dev": 50,
+        "ino": 7178422,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-jqJWMy",
+        "dev": 50,
+        "ino": 7179394,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-Lu7WxO",
+        "dev": 50,
+        "ino": 7180078,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-IJgtGZ",
+        "dev": 50,
+        "ino": 7180493,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-B73yaA",
+        "dev": 50,
+        "ino": 7125295,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-Dr1n6e",
+        "dev": 50,
+        "ino": 7134830,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-xikznS",
+        "dev": 50,
+        "ino": 7138318,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-gpu-IgVdkn",
+        "dev": 50,
+        "ino": 7046616,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-bL6bIl",
+        "dev": 50,
+        "ino": 7036671,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-6rVchw",
+        "dev": 50,
+        "ino": 7036606,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-2RVz2r",
+        "dev": 50,
+        "ino": 7036149,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-8Rvh84",
+        "dev": 50,
+        "ino": 7034493,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-DVC2Ft",
+        "dev": 50,
+        "ino": 7034432,
+        "removed": true
+      },
+      {
+        "path": "/tmp/viento-particle-godot-LTMwWy",
+        "dev": 50,
+        "ino": 7034157,
+        "removed": true
+      }
+    ],
+    "cachePathsInEvidence": [],
+    "xvfbExited": true,
+    "scope": "Only proof-owned temporary projects/XDG cache directories and the proof-owned Xvfb child were removed. Pinned installed tools and actual repository untouched."
+  }
+}

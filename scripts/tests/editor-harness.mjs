@@ -1,3 +1,5 @@
+import { revealSourceOffset } from '../../web/modules/app-source-reveal.js';
+import { prepareScriptDraftApply } from '../../engine/script-authoring.mjs';
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import { webcrypto } from 'node:crypto';
@@ -77,13 +79,15 @@ export async function editorHarness(overrides = {}) {
     createDocumentFragment: () => new Element('fragment'),
   };
   const context = vm.createContext({
-    URL, Set, Map, console, crypto: webcrypto, TextEncoder, sourceLocationSelection, setTimeout, clearTimeout, setInterval, clearInterval, document, AbortController,
+    URL, Set, Map, console, crypto: webcrypto, TextEncoder, sourceLocationSelection, revealSourceOffset, setTimeout, clearTimeout, setInterval, clearInterval, document, AbortController,
     location: { href: 'http://127.0.0.1/web/?mode=edit', search: '?mode=edit' },
     history: { replaceState() {} },
     localStorage: { getItem: () => null, setItem() {} },
     window: { confirm: () => false },
     API_PATHS, API_ERRORS, API_RESPONSE, getCreatePathError, normalizeDocumentVersion, getDocTemplate, DOC_TYPE_TEMPLATE_DEFS, createBlockDraft, serializeBlockDraft, serializeSourceDraft,
     t, localize, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage, diagnosticMessage, isComposingInput, createFieldEditor,
+    prepareScriptDraftApply: (context, proposal) => prepareScriptDraftApply(structuredClone(context), proposal),
+    createSceneBehaviorSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),
     setupStudioSystem: async () => ({ refreshMedia() {}, updateCapabilities() {}, updateProject() {}, snapshot: () => ({}) }),
     refreshHeroBannerLabels() {},
     toDisplayValue: (value) => String(value ?? ''),

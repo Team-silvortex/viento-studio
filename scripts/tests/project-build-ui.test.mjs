@@ -249,6 +249,7 @@ test('diagnostics retain exact source coordinates, protect declined navigation, 
   assert.equal(h.element('projectBuildDialog').open, true);
   assert.equal(h.opened[0][0], scenes[0].sourcePath);
   assert.equal(h.opened[0][1].propertyPath, diagnostic.propertyPath);
+  assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0][2])), { diagnostic: { code: 'build_actor_value', severity: 'error', messageKey: '角色字段的值不符合要求，请检查标出的位置。', detail: diagnostic.message } });
   assert.equal(h.element('projectBuildLogs').children.length, 0);
   assert.match(h.element('projectBuildLogs').textContent, /<script>/);
   allow = true; link.click(); await flushDialogs();

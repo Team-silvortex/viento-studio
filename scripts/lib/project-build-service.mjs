@@ -19,6 +19,7 @@ import { createRuntimeCaseDocumentService } from './runtime-case-documents.mjs';
 import { createRuntimeCaseSuiteDocumentService, captureRuntimeCaseSuite } from './runtime-case-suites.mjs';
 import { summarizeRuntimeCaseSuite } from '../../engine/runtime-case-suite.mjs';
 import { readRuntimeCaseReport } from './runtime-case-reports.mjs';
+import { planBackendProjectDelivery } from '../adapters/node-backend-project-delivery.mjs';
 import { inspectBackendProject } from '../adapters/node-backend-project.mjs';
 import { PROJECT_RETENTION_PIN, assertProjectOwnership, inspectProjectRetention } from '../adapters/node-backend-project-retention.mjs';
 import { createBackendProjectCatalog, assertCatalogProject } from '../adapters/node-backend-project-catalog.mjs';
@@ -38,7 +39,7 @@ export async function stopProjectBuildServices() {
 // or cache root; HTTP receives opaque IDs and never supplies executable paths.
 export function createProjectBuildService(root, {
   enabled = process.platform === 'linux', godot = process.env.VIENTO_GODOT_BIN,
-  tool = godot, backendId = DEFAULT_EXECUTION_BACKEND, backendRegistry = createExecutionBackendRegistry(), cacheRoot = projectBuildCacheRoot(), onAuthorWrite,
+  tool = godot, backendId = DEFAULT_EXECUTION_BACKEND, backendRegistry = createExecutionBackendRegistry(), cacheRoot = projectBuildCacheRoot(), onAuthorWrite, deliveryEnabled = false,
 } = {}) {
   const adapter = backendRegistry.resolve(backendId);
   const caseDocuments = createRuntimeCaseDocumentService(root, { onWrite: onAuthorWrite });
@@ -49,7 +50,7 @@ export function createProjectBuildService(root, {
     try { return await pending; } finally { caseOperations.delete(pending); }
   };
   let closed = false, closePromise, job = null, active = null, latestBuild = null;
-  let probe = null, candidateKey;
+  let probe = null, candidateKey, deliveryOperation = null;
   let toolStatus = createExecutionToolStatus({ backendId, status: 'unchecked' });
   let scenes = [], previewDocuments = [], catalogAt = 0, catalogRead, catalogObserved = false, catalogDiagnostic = null;
   const builds = new Map(), ownedOutputs = [], projects = new Map();
@@ -76,14 +77,14 @@ export function createProjectBuildService(root, {
         const storedIds = new Set(catalog.entries.map(entry => entry.buildId));
         // A refresh reconciles only restored rows, never current write receipts.
         // Active jobs keep the frozen entry they already admitted until exit.
-        if (!active) for (const [id, summary] of projects) {
+        if (!active && !deliveryOperation) for (const [id, summary] of projects) {
           if (summary.origin !== 'previous-session' || storedIds.has(id)) continue;
           projects.delete(id); builds.delete(id);
           if (latestBuild?.id === id) latestBuild = null;
         }
         for (const entry of catalog.entries) {
           const existing = projects.get(entry.buildId);
-          if (existing && (existing.origin === 'current-session' || active
+          if (existing && (existing.origin === 'current-session' || active || deliveryOperation
             || canonicalJson(existing.catalogEntry) === canonicalJson(entry))) continue;
           if (existing) {
             builds.delete(entry.buildId);
@@ -281,11 +282,11 @@ export function createProjectBuildService(root, {
       job: clone(job), latestBuild: clone(latestBuild), projects: publicProjects(),
       projectManagement: { format: 'viento-backend-project-management', schemaVersion: 1, scope: 'host-catalog',
         retentionLimit: 3, preservedCount: [...projects.values()].filter(entry => entry.retention === 'preserved').length,
-        previousSessions: 'explicit-verify', catalogDiagnostic: clone(projectCatalogDiagnostic) } };
+        previousSessions: 'explicit-verify', ...(enabled && deliveryEnabled ? { delivery: 'viento-build-delivery-v1' } : {}), catalogDiagnostic: clone(projectCatalogDiagnostic) } };
   }
 
   async function checkTool() {
-    if (active || probe) throw fail('build_busy', 'A build task or tool check is already active.', 409);
+    if (active || probe || deliveryOperation) throw fail('build_busy', 'A build task or tool check is already active.', 409);
     const owner = { controller: new AbortController(), promise: null };
     probe = owner;
     toolStatus = createExecutionToolStatus({ backendId, status: 'checking' });
@@ -418,7 +419,7 @@ export function createProjectBuildService(root, {
     const request={buildId:raw.buildId,suiteDocumentId:raw.suiteDocumentId,expectedVersion:raw.expectedVersion};
     if(!uuid(request.buildId)||!uuid(request.suiteDocumentId)||typeof request.expectedVersion!=='string'
       ||!/^sha256:[a-f0-9]{64}$/.test(request.expectedVersion))throw fail('runtime_suite_document_request','Select an owned build and a saved suite revision.');
-    if(active||probe)throw fail('build_busy','A build task or tool check is already active.',409);
+    if(active||probe||deliveryOperation)throw fail('build_busy','A build task or tool check is already active.',409);
     const state=await toolState();
     if(!state.supported)throw fail('build_platform_unsupported','Project builds are not enabled on this host.',403);
     if(!state.available)throw fail('build_tool_required','Configure the selected backend tool before running.',422);
@@ -439,7 +440,7 @@ export function createProjectBuildService(root, {
     // All member identities, budgets and definitions are detached before a slot
     // is allocated. Competing requests and a concurrent close recheck here.
     if(closed)throw fail('build_service_closed','Build service is closing.',503);
-    if(active||probe)throw fail('build_busy','A build task or tool check is already active.',409);
+    if(active||probe||deliveryOperation)throw fail('build_busy','A build task or tool check is already active.',409);
     if(builds.get(request.buildId)!==entry)throw fail('build_artifact_missing','This build is no longer available; rebuild the scene.',404);
     const controller=new AbortController(),entries=capture.cases.map(item=>({documentId:item.documentId,title:item.title,
       sourceVersion:item.sourceVersion,state:'queued',executionStatus:null,sessionId:null,checkCount:item.document.case.checks.length,
@@ -474,7 +475,7 @@ export function createProjectBuildService(root, {
       if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
       const summary = projects.get(requestId);
       if (!summary || summary.status !== 'succeeded') throw fail('build_artifact_missing', 'This successful backend project is no longer available.', 404);
-      if (selecting && (active || probe)) throw fail('build_busy', 'A build task or tool check is already active.', 409);
+      if (selecting && (active || probe || deliveryOperation)) throw fail('build_busy', 'A build task or tool check is already active.', 409);
       const selectionOwner = selecting ? { epoch: ++selectionEpoch, latestBuild, job } : null;
       return caseOperation(async () => {
         try {
@@ -486,7 +487,7 @@ export function createProjectBuildService(root, {
           }
           await assertRunnableEntry(summary);
           if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
-          if (active || probe) throw fail('build_busy', 'A build task or tool check is already active.', 409);
+          if (active || probe || deliveryOperation) throw fail('build_busy', 'A build task or tool check is already active.', 409);
           if (selectionOwner.epoch !== selectionEpoch || selectionOwner.latestBuild !== latestBuild || selectionOwner.job !== job) {
             throw fail('backend_project_selection_changed', 'The runtime project selection changed during verification.', 409);
           }
@@ -563,7 +564,7 @@ export function createProjectBuildService(root, {
       if (active) { job.phase = 'cancelling'; active.controller.abort(); }
       return status();
     }
-    if (active || probe) throw fail('build_busy', 'A build task or tool check is already active.', 409);
+    if (active || probe || deliveryOperation) throw fail('build_busy', 'A build task or tool check is already active.', 409);
     const tool = await toolState();
     if (!tool.supported) throw fail('build_platform_unsupported', 'Project builds are not enabled on this host.', 403);
     if (payload.action !== 'plan' && !tool.available) throw fail('build_tool_required', 'Configure the selected backend tool on the local host before building.', 422);
@@ -604,7 +605,7 @@ export function createProjectBuildService(root, {
     }
     // Recheck after await: simultaneous POSTs cannot both acquire the slot.
     if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
-    if (active || probe) throw fail('build_busy', 'A build task or tool check is already active.', 409);
+    if (active || probe || deliveryOperation) throw fail('build_busy', 'A build task or tool check is already active.', 409);
     const controller = new AbortController();
     memberReports.clear();
     job = { id: randomUUID(), kind: payload.action, sceneId: payload.sceneId || builds.get(payload.buildId).sceneId,
@@ -623,12 +624,64 @@ export function createProjectBuildService(root, {
     return status();
   }
 
-  const service = { status, command, close() {
+  // Delivery owns the same host task slot through the ZIP writer's final check.
+  // Retention cannot prune its source, and close cancels and awaits its streams.
+  async function deliveryPlan(payload, signal) {
+    signal?.throwIfAborted();
+    if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
+    if (!enabled || !deliveryEnabled) throw fail('backend_project_delivery_unavailable', 'Project delivery is unavailable on this host.', 403);
+    const keys = ['kind', 'buildId', 'expectedSnapshotId', 'expectedManifestSha256'];
+    if (!payload || Object.getPrototypeOf(payload) !== Object.prototype || Object.keys(payload).length !== keys.length
+      || keys.some(key => !Object.hasOwn(payload, key) || !Object.hasOwn(Object.getOwnPropertyDescriptor(payload, key), 'value'))
+      || payload.kind !== 'backend-project' || !uuid(payload.buildId)
+      || typeof payload.expectedSnapshotId !== 'string' || !/^sha256:[a-f0-9]{64}$/.test(payload.expectedSnapshotId)
+      || typeof payload.expectedManifestSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(payload.expectedManifestSha256)) {
+      throw fail('build_request_invalid', 'Select a verified backend project delivery.');
+    }
+    const request = { ...payload };
+    if (active || probe || deliveryOperation) throw fail('build_busy', 'A build task, tool check or delivery is already active.', 409);
+    const controller = new AbortController();
+    let finish;
+    const owner = { controller, promise: new Promise(resolve => { finish = resolve; }) };
+    deliveryOperation = owner;
+    const cancel = () => controller.abort(signal.reason);
+    signal?.addEventListener('abort', cancel, { once: true });
+    const dispose = () => {
+      signal?.removeEventListener('abort', cancel);
+      if (deliveryOperation === owner) deliveryOperation = null;
+      finish();
+    };
+    try {
+      await readProjectCatalog();
+      controller.signal.throwIfAborted();
+      const summary = projects.get(request.buildId);
+      if (!summary || summary.status !== 'succeeded') throw fail('build_artifact_missing', 'This successful backend project is no longer available.', 404);
+      const inspection = await inspectProject(summary);
+      if (!inspection.inspection.recorded || inspection.project.snapshotId !== request.expectedSnapshotId
+        || inspection.inspection.manifestSha256 !== request.expectedManifestSha256) {
+        throw fail('backend_project_delivery_changed', 'Review the current backend project before delivery.', 409);
+      }
+      const assertCurrent = async checkSignal => {
+        controller.signal.throwIfAborted(); checkSignal?.throwIfAborted();
+        if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
+        if (projects.get(summary.id) !== summary || summary.directory !== inspection.buildDirectory) {
+          throw fail('backend_project_delivery_changed', 'The backend project changed during delivery.', 409);
+        }
+        await assertRunnableEntry(summary);
+        controller.signal.throwIfAborted(); checkSignal?.throwIfAborted();
+      };
+      const plan = await planBackendProjectDelivery({ inspection, assertCurrent, signal: controller.signal });
+      return { ...plan, signal: controller.signal, dispose };
+    } catch (error) { dispose(); throw error; }
+  }
+
+  const service = { status, command, deliveryPlan, close() {
     if (closePromise) return closePromise;
     closed = true;
     if (active) { job.phase = 'cancelling'; active.controller.abort(); }
     if (probe) probe.controller.abort();
-    closePromise = Promise.allSettled([active?.promise, probe?.promise, projectCatalogRead, ...caseOperations]).finally(() => { memberReports.clear();services.delete(service); });
+    if (deliveryOperation) deliveryOperation.controller.abort();
+    closePromise = Promise.allSettled([active?.promise, probe?.promise, deliveryOperation?.promise, projectCatalogRead, ...caseOperations]).finally(() => { memberReports.clear();services.delete(service); });
     return closePromise;
   } };
   services.add(service);

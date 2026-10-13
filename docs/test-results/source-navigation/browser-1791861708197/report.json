@@ -1,0 +1,194 @@
+{
+  "startedAt": "2026-10-13T03:21:48.197Z",
+  "steps": [
+    "Clean BOM/CRLF text with CJK, emoji, tabs and a very long soft-wrapped row reports UTF-16 logical positions, including the active backward-selection end. Cancel preserves selection; invalid rows cannot navigate. Ctrl+G and far-row/EOF/first-row navigation are read-only and target the visible caret after BOM.",
+    "An independent full-text DOM Range geometry measurement verifies the far logical row is visible after long soft wrapping; navigation emits no input event, API request, dirty state or author file write.",
+    "Real typed input remains a native undoable operation after jumping to a distant line: Ctrl+Z removes only the typed edit and Ctrl+Y restores it.",
+    "Chinese, English and Japanese bar/dialog controls fit 390px. Switching language and opening/cancelling the dialog preserve source, selection and native undo/redo history.",
+    "Composition state, including a key event lacking isComposing and legacy keyCode 229, leaves source navigation inactive. Normal Tab moves focus without inserting text.",
+    "Only ordinary Save writes the typed source: exactly one document request, only target TXT changed, BOM/CRLF preserved, clean state restored. Navigation never writes source, registry, templates or assets.",
+    "New-script handoff and settings language changes restore source-navigation availability after modal close. Navigating the new script draft does not register or write it."
+  ],
+  "screenshots": [
+    "source-navigation-desktop.png",
+    "source-navigation-zh-CN-390.png",
+    "source-navigation-dialog-zh-CN-390.png",
+    "source-navigation-en-390.png",
+    "source-navigation-dialog-en-390.png",
+    "source-navigation-ja-390.png",
+    "source-navigation-dialog-ja-390.png"
+  ],
+  "errors": [],
+  "dialogs": [],
+  "layout": {
+    "zh-CN": {
+      "noHorizontalOverflow": true,
+      "bar": {
+        "left": 9,
+        "right": 381,
+        "top": 735,
+        "bottom": 776,
+        "width": 372,
+        "height": 41,
+        "unobscured": true
+      },
+      "editor": {
+        "left": 9,
+        "right": 381,
+        "top": 416.1875,
+        "bottom": 735,
+        "width": 372,
+        "height": 318.8125,
+        "unobscured": true
+      },
+      "open": {
+        "left": 304.984375,
+        "right": 371,
+        "top": 741,
+        "bottom": 771,
+        "width": 66.015625,
+        "height": 30,
+        "unobscured": true
+      },
+      "labels": "第 22 行，第 9 列 · 共 131 行\n跳转到行"
+    },
+    "en": {
+      "noHorizontalOverflow": true,
+      "bar": {
+        "left": 9,
+        "right": 381,
+        "top": 743,
+        "bottom": 784,
+        "width": 372,
+        "height": 41,
+        "unobscured": true
+      },
+      "editor": {
+        "left": 9,
+        "right": 381,
+        "top": 423.1875,
+        "bottom": 743,
+        "width": 372,
+        "height": 319.8125,
+        "unobscured": true
+      },
+      "open": {
+        "left": 301.625,
+        "right": 371,
+        "top": 749,
+        "bottom": 779,
+        "width": 69.375,
+        "height": 30,
+        "unobscured": true
+      },
+      "labels": "Line 22, column 9 · 131 lines\nGo to line"
+    },
+    "ja": {
+      "noHorizontalOverflow": true,
+      "bar": {
+        "left": 9,
+        "right": 381,
+        "top": 735,
+        "bottom": 776,
+        "width": 372,
+        "height": 41,
+        "unobscured": true
+      },
+      "editor": {
+        "left": 9,
+        "right": 381,
+        "top": 497.1875,
+        "bottom": 735,
+        "width": 372,
+        "height": 237.8125,
+        "unobscured": true
+      },
+      "open": {
+        "left": 304.984375,
+        "right": 371,
+        "top": 741,
+        "bottom": 771,
+        "width": 66.015625,
+        "height": 30,
+        "unobscured": true
+      },
+      "labels": "22 行、9 列 · 全 131 行\n行へ移動"
+    }
+  },
+  "limitations": [
+    "Actual Chrome and local HTTP editor. No installed Tauri window, mobile WebView, Android, or other desktop OS claim.",
+    "Only logical source position/navigation and ordinary source saving are exercised. No code execution, language server, visual line gutter or backend build is claimed.",
+    "The existing source serializer retains BOM and source newline style; it does not guarantee every mixed ending inside an edited middle region remains byte-identical."
+  ],
+  "browser": "Chrome/154.0.8037.97",
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "sources": {
+    "engine/source-position.mjs": "204a0b68649937a0fffd552fbe5a384058c42f51447884b73023871be6f15cc3",
+    "engine/source-draft.mjs": "aa67dd9d5829b0f2fb3ac46388745dfe271c02e49bc6d079bb753e55b5864c74",
+    "web/modules/app-source-position.js": "0baee688028beee739332518f1f76608a4e34d2ea8ccaf2a8c3018beabcfb5e6",
+    "web/modules/app-runtime.js": "374fed28340fd5c21fd67b28baa16dbe07ef268b29f4d6649128ef7ced63ef6d",
+    "web/source-position.css": "ae0327cf02712f42bb1c95ee1ecc04e2788b3288cf098a01134b31f274ce01a0",
+    "web/source-indentation.css": "ca24d4adc974587d3204dc10ffe7d7dc0a9c7da6914916998cabcb8539de6f94",
+    "web/editor-layout.css": "e76ee7c80448a903a3a6bfad00b959b7410f0fb580f189c4da51436ddb56d293",
+    "web/i18n/en.js": "7f2cc30bed053df3bbf8811bc2b25f7e436895c162b34c66eb5fb1e4df3664f6",
+    "web/i18n/ja.js": "d594a696e1f00f32d24751e4b2fb23fea58594b2c4ed2c03d5372b6ea50a1279",
+    "scripts/tests/source-position-smoke.mjs": "4700dc4383e6d911fc2e6183e4caa4029d9f32a590d9e7fc3be87082e6563660"
+  },
+  "wrappedCaret": {
+    "top": 4047.5,
+    "bottom": 4065.5,
+    "scrollTop": 3766,
+    "clientHeight": 582,
+    "lineHeight": 28.5,
+    "logicalRow": 94,
+    "textareaWidth": 1107,
+    "visible": true
+  },
+  "saved": {
+    "sourcePath": "documents/scripts/checkpoint.txt",
+    "beforeHash": "c6dd25db82856d020a60fc499fc33a33fa3bda392d6547b483965751cca9b411",
+    "afterHash": "0f31f13b638e976abbe65569157684b94cb28439c5d14c2b09a277c2877f9ba9",
+    "authorFilesChanged": [
+      "documents/scripts/checkpoint.txt"
+    ],
+    "bytes": 12379,
+    "preservedBom": true,
+    "onlyCrlf": true,
+    "response": {
+      "body": {
+        "path": "docs-standard/documents/scripts/checkpoint.txt",
+        "content": "﻿# 导航示范 😀\r\nextends Node\r\n# 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 柔软换行\t場景🙂 \r\n# row 4 · 場景🙂\t目标\r\n# row 5 · 場景🙂\t目标\r\n# row 6 · 場景🙂\t目标\r\n# row 7 · 場景🙂\t目标\r\n# row 8 · 場景🙂\t目标\r\n# row 9 · 場景🙂\t目标\r\n# row 10 · 場景🙂\t目标\r\n# row 11 · 場景🙂\t目标\r\n# row 12 · 場景🙂\t目标\r\n# row 13 · 場景🙂\t目标\r\n# row 14 · 場景🙂\t目标\r\n# row 15 · 場景🙂\t目标\r\n# row 16 · 場景🙂\t目标\r\n# row 17 · 場景🙂\t目标\r\n# row 18 · 場景🙂\t目标\r\n# row 19 · 場景🙂\t目标\r\n# row 20 · 場景🙂\t目标\r\n# row 21 · 場景🙂\t目标\r\n# typed # row 22 · 場景🙂\t目标\r\n# row 23 · 場景🙂\t目标\r\n# row 24 · 場景🙂\t目标\r\n# row 25 · 場景🙂\t目标\r\n# row 26 · 場景🙂\t目标\r\n# row 27 · 場景🙂\t目标\r\n# row 28 · 場景🙂\t目标\r\n# row 29 · 場景🙂\t目标\r\n# row 30 · 場景🙂\t目标\r\n# row 31 · 場景🙂\t目标\r\n# row 32 · 場景🙂\t目标\r\n# row 33 · 場景🙂\t目标\r\n# row 34 · 場景🙂\t目标\r\n# row 35 · 場景🙂\t目标\r\n# row 36 · 場景🙂\t目标\r\n# row 37 · 場景🙂\t目标\r\n# row 38 · 場景🙂\t目标\r\n# row 39 · 場景🙂\t目标\r\n# row 40 · 場景🙂\t目标\r\n# row 41 · 場景🙂\t目标\r\n# row 42 · 場景🙂\t目标\r\n# row 43 · 場景🙂\t目标\r\n# row 44 · 場景🙂\t目标\r\n# row 45 · 場景🙂\t目标\r\n# row 46 · 場景🙂\t目标\r\n# row 47 · 場景🙂\t目标\r\n# row 48 · 場景🙂\t目标\r\n# row 49 · 場景🙂\t目标\r\n# row 50 · 場景🙂\t目标\r\n# row 51 · 場景🙂\t目标\r\n# row 52 · 場景🙂\t目标\r\n# row 53 · 場景🙂\t目标\r\n# row 54 · 場景🙂\t目标\r\n# row 55 · 場景🙂\t目标\r\n# row 56 · 場景🙂\t目标\r\n# row 57 · 場景🙂\t目标\r\n# row 58 · 場景🙂\t目标\r\n# row 59 · 場景🙂\t目标\r\n# row 60 · 場景🙂\t目标\r\n# row 61 · 場景🙂\t目标\r\n# row 62 · 場景🙂\t目标\r\n# row 63 · 場景🙂\t目标\r\n# row 64 · 場景🙂\t目标\r\n# row 65 · 場景🙂\t目标\r\n# row 66 · 場景🙂\t目标\r\n# row 67 · 場景🙂\t目标\r\n# row 68 · 場景🙂\t目标\r\n# row 69 · 場景🙂\t目标\r\n# row 70 · 場景🙂\t目标\r\n# row 71 · 場景🙂\t目标\r\n# row 72 · 場景🙂\t目标\r\n# row 73 · 場景🙂\t目标\r\n# row 74 · 場景🙂\t目标\r\n# row 75 · 場景🙂\t目标\r\n# row 76 · 場景🙂\t目标\r\n# row 77 · 場景🙂\t目标\r\n# row 78 · 場景🙂\t目标\r\n# row 79 · 場景🙂\t目标\r\n# row 80 · 場景🙂\t目标\r\n# row 81 · 場景🙂\t目标\r\n# row 82 · 場景🙂\t目标\r\n# row 83 · 場景🙂\t目标\r\n# row 84 · 場景🙂\t目标\r\n# row 85 · 場景🙂\t目标\r\n# row 86 · 場景🙂\t目标\r\n# row 87 · 場景🙂\t目标\r\n# row 88 · 場景🙂\t目标\r\n# row 89 · 場景🙂\t目标\r\n# row 90 · 場景🙂\t目标\r\n# row 91 · 場景🙂\t目标\r\n# row 92 · 場景🙂\t目标\r\n# row 93 · 場景🙂\t目标\r\n# row 94 · 場景🙂\t目标\r\n# row 95 · 場景🙂\t目标\r\n# row 96 · 場景🙂\t目标\r\n# row 97 · 場景🙂\t目标\r\n# row 98 · 場景🙂\t目标\r\n# row 99 · 場景🙂\t目标\r\n# row 100 · 場景🙂\t目标\r\n# row 101 · 場景🙂\t目标\r\n# row 102 · 場景🙂\t目标\r\n# row 103 · 場景🙂\t目标\r\n# row 104 · 場景🙂\t目标\r\n# row 105 · 場景🙂\t目标\r\n# row 106 · 場景🙂\t目标\r\n# row 107 · 場景🙂\t目标\r\n# row 108 · 場景🙂\t目标\r\n# row 109 · 場景🙂\t目标\r\n# row 110 · 場景🙂\t目标\r\n# row 111 · 場景🙂\t目标\r\n# row 112 · 場景🙂\t目标\r\n# row 113 · 場景🙂\t目标\r\n# row 114 · 場景🙂\t目标\r\n# row 115 · 場景🙂\t目标\r\n# row 116 · 場景🙂\t目标\r\n# row 117 · 場景🙂\t目标\r\n# row 118 · 場景🙂\t目标\r\n# row 119 · 場景🙂\t目标\r\n# row 120 · 場景🙂\t目标\r\n# row 121 · 場景🙂\t目标\r\n# row 122 · 場景🙂\t目标\r\n# row 123 · 場景🙂\t目标\r\n# row 124 · 場景🙂\t目标\r\n# row 125 · 場景🙂\t目标\r\n# row 126 · 場景🙂\t目标\r\n# row 127 · 場景🙂\t目标\r\n# row 128 · 場景🙂\t目标\r\nfunc _ready() -> void:\r\n\tpass\r\n",
+        "expectedLastModified": "sha256:c6dd25db82856d020a60fc499fc33a33fa3bda392d6547b483965751cca9b411"
+      },
+      "status": 200
+    },
+    "state": {
+      "dirty": false,
+      "saving": false,
+      "rebuilding": false,
+      "creating": false
+    }
+  },
+  "newDraftSelections": [
+    {
+      "args": [
+        0,
+        0
+      ],
+      "stack": "Error\n    at e.setSelectionRange (<anonymous>:1:212)\n    at createScriptDraft (http://127.0.0.1:42825/web/modules/app-runtime.js:3750:36)\n    at apply (http://127.0.0.1:42825/web/modules/app-script-create.js:115:28)\n    at HTMLButtonElement.<anonymous> (http://127.0.0.1:42825/web/modules/app-script-create.js:156:52)\n    at <anonymous>:1:60\n    at <anonymous>:1:69"
+    },
+    {
+      "args": [
+        14,
+        14,
+        "none"
+      ],
+      "stack": "Error\n    at e.setSelectionRange (<anonymous>:1:212)\n    at finish (http://127.0.0.1:42825/web/modules/app-source-position.js:129:20)\n    at HTMLFormElement.submit (http://127.0.0.1:42825/web/modules/app-source-position.js:143:5)\n    at <anonymous>:1:59\n    at <anonymous>:1:68"
+    }
+  ],
+  "completedAt": "2026-10-13T03:21:52.420Z",
+  "passed": true
+}

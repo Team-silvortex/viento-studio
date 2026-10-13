@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
-import { parseDocument, isMap, isSeq, isScalar } from 'yaml';
 import { parseJsonSource, locateJsonSource, JSON_SOURCE_LIMITS } from '../../engine/json-source.mjs';
 
 const parse = content => {
@@ -127,7 +126,7 @@ test('only complete strict JSON passes syntax validation despite YAML accepting 
   }
 });
 
-test('character, depth and node limits include overwritten duplicate values before CST parsing', () => {
+test('character, depth and node limits include overwritten duplicate values before source indexing', () => {
   const characters = JSON_SOURCE_LIMITS.characters;
   const atLimit = '"' + 'x'.repeat(characters - 2) + '"';
   assert.equal(parseJsonSource(atLimit).ok, true);
@@ -146,24 +145,18 @@ test('character, depth and node limits include overwritten duplicate values befo
 
 async function isolated(overrides = {}) {
   const source = await fs.readFile(new URL('../../engine/json-source.mjs', import.meta.url), 'utf8');
-  assert.doesNotMatch(source, /\bfrom\s+['"]node:/);
-  return vm.runInNewContext(source.replace(/^import .*\n/m, '').replaceAll('export ', '') + '\n({parseJsonSource,locateJsonSource})', {
-    parseDocument, isMap, isSeq, isScalar, ...overrides,
-  });
+  assert.doesNotMatch(source, /^\s*import\s/m);
+  return vm.runInNewContext(source.replaceAll('export ', '') + '\n({parseJsonSource,locateJsonSource})', overrides);
 }
 
-test('source indexing works without Node or DOM globals and catches CST failures', async () => {
+test('source indexing works without Node DOM or any library globals', async () => {
   const portable = await isolated();
   const result = portable.parseJsonSource('\uFEFF{"值":null}');
   assert.equal(result.ok, true);
   assert.deepEqual(JSON.parse(JSON.stringify(portable.locateJsonSource(result, '/值'))),
     { start: 6, end: 10, encoding: 'utf-16', propertyPath: '/值', exact: true });
-  for (const parseDocument of [() => { throw new Error('Parser failure'); }, () => ({ errors: [{ code: 'BROKEN' }] }), () => ({ errors: [], contents: { range: [99,100] } })]) {
-    const broken = await isolated({ parseDocument });
-    const parsed = broken.parseJsonSource('{"a":1}');
-    assert.equal(parsed.ok, false); assert.equal(parsed.diagnostics[0].code, 'json_source_index_invalid');
-    assert.equal(broken.locateJsonSource(parsed, ''), null);
-  }
+  assert.equal(portable.parseJsonSource('{"x":1,}').diagnostics[0].code, 'json_source_syntax');
+  assert.equal(portable.parseJsonSource('{"x":1,"x":2}').diagnostics[0].code, 'json_source_duplicate_key');
 });
 
 test('returned spans are detached and foreign or serialized results cannot supply a forged index', () => {
@@ -172,4 +165,61 @@ test('returned spans are detached and foreign or serialized results cannot suppl
   assert.equal(token(source, parsed, '/a'), '1');
   assert.equal(locateJsonSource(JSON.parse(JSON.stringify(parsed)), '/a'), null);
   assert.equal(locateJsonSource({ ok: true, value: { a: 1 }, ambiguous: false }, '/a'), null);
+});
+
+test('escaped delimiters Unicode keys and empty containers keep exact token ranges across mixed nesting', () => {
+  const value = { 'quote"\\{}[]:,\t': ['comma, brace} bracket] quote" slash\\', {}, [], { '\uD83E\uDD8A/~': 'x\t\ny' }],
+    '': { '0': [], '01': {} }, '\ud800': null };
+  const source = '\uFEFF \r\n' + JSON.stringify(value, null, '\t').replaceAll('\n', '\r\n') + '\r\n\t ';
+  const parsed = parse(source), escape = key => key.replaceAll('~', '~0').replaceAll('/', '~1');
+  function verify(node, pointer = '') {
+    const range = locateJsonSource(parsed, pointer);
+    assert.equal(range.exact, true); assert.equal(range.propertyPath, pointer);
+    assert.deepEqual(JSON.parse(source.slice(range.start, range.end)), node);
+    assert.ok(range.start >= 3 && range.end <= source.lastIndexOf('}') + 1);
+    if (node && typeof node === 'object') for (const [key, child] of Object.entries(node)) verify(child, `${pointer}/${escape(key)}`);
+  }
+  verify(value);
+  assert.equal(token(source, parsed, '//0'), '[]'); assert.equal(token(source, parsed, '//01'), '{}');
+  assert.equal(token(source, parsed, '/\ud800'), 'null');
+});
+
+test('decoded surrogate keys and nested overwritten containers reject ambiguously without any usable index', () => {
+  for (const [source, pointer] of [
+    ['{"🦊":[],"\\ud83e\\udd8a":{}}', '/🦊'],
+    ['{"root":[{"a\\u002fb":{"~":1},"a/b":[]}]}', '/root/0/a~1b'],
+    ['{"\\ud800":null,"\\uD800":false}', '/\ud800'],
+  ]) {
+    for (const allowDuplicateKeys of [false, true]) {
+      const parsed = parseJsonSource(source, { allowDuplicateKeys });
+      assert.equal(parsed.ok, allowDuplicateKeys); assert.equal(parsed.ambiguous, true);
+      assert.equal(parsed.diagnostics[0].propertyPath, pointer);
+      assert.equal(locateJsonSource(parsed, pointer, { nearest: true }), null);
+      if (allowDuplicateKeys) assert.deepEqual(parsed.value, JSON.parse(source));
+    }
+  }
+});
+
+test('very long numeric tokens are indexed as original text and edits preserve every untouched source byte', () => {
+  const source = '\uFEFF\r\n{ "huge": ' + '9'.repeat(4096) + ', "amount": 1.25000e+1, "negative": -0, "text":"😀\\u6587", "empty": [ {}, [] ] }\r\n';
+  const parsed = parse(source), huge = locateJsonSource(parsed, '/huge'), amount = locateJsonSource(parsed, '/amount');
+  assert.equal(parsed.value.huge, Infinity); assert.equal(source.slice(huge.start, huge.end), '9'.repeat(4096));
+  const after = source.slice(0, amount.start) + '14.5' + source.slice(amount.end), updated = parse(after);
+  assert.equal(updated.value.amount, 14.5);
+  assert.equal(after.slice(0, amount.start), source.slice(0, amount.start));
+  assert.equal(after.slice(amount.start + '14.5'.length), source.slice(amount.end));
+  for (const pointer of ['/huge', '/negative', '/text', '/empty', '/empty/0', '/empty/1']) assert.equal(token(after, updated, pointer), token(source, parsed, pointer));
+});
+
+test('JSON.parse remains the sole value gate and string decoding is confined to original object keys', async () => {
+  const calls = [];
+  const portable = await isolated({ JSON: { parse(source) { calls.push(source); return JSON.parse(source); } } });
+  const source = '{"key\\u002fwith\\u007eescapes":[-0,1e1000,"braces{}",false,null]}';
+  const parsed = portable.parseJsonSource(source); assert.equal(parsed.ok, true);
+  assert.deepEqual(calls, [source, '"key\\u002fwith\\u007eescapes"']);
+  assert.equal(Object.is(parsed.value['key/with~escapes'][0], -0), true);
+  assert.equal(parsed.value['key/with~escapes'][1], Infinity);
+  const range = portable.locateJsonSource(parsed, '/key~1with~0escapes/1');
+  assert.equal(source.slice(range.start, range.end), '1e1000');
+  assert.equal(portable.locateJsonSource({ ...parsed }, '/key~1with~0escapes/1'), null);
 });

@@ -1,0 +1,239 @@
+{
+  "startedAt": "2026-10-13T01:57:08.730Z",
+  "steps": [
+    "A real typed insertion followed by one execCommand insertText range replacement emits native input events, undoes separately from prior typing, and redoes with native Ctrl+Y.",
+    "A saved BOM/CRLF TXT opens in the ordinary source editor. Automatic indentation uses its existing tabs. Real text input, backward multi-line toolbar indentation and native undo/redo preserve prior typing and set ordinary draft dirty state.",
+    "Chinese, English and Japanese controls fit a 390px viewport; language changes retain source, selection and the browser native undo/redo history.",
+    "Real Ctrl+[ / Ctrl+] and toolbar outdent handle multi-line selection; selection ending at the next line start excludes that line. Explicit two/four-space indentation on the first line keeps BOM at byte zero.",
+    "During an explicit IME composition, toolbar clicks and composing keyboard events make no text edit; legacy keyCode 229 is also left untouched. A real Tab key navigates focus without inserting text.",
+    "All editing before Save leaves source, registry, templates and assets byte-identical. Ordinary Save makes exactly one document request, retains BOM/CRLF and changes only the selected TXT source; draft becomes clean after index refresh."
+  ],
+  "screenshots": [
+    "source-indentation-desktop.png",
+    "source-indentation-zh-CN-390.png",
+    "source-indentation-en-390.png",
+    "source-indentation-ja-390.png",
+    "source-indentation-saved.png",
+    "failure.png"
+  ],
+  "errors": [],
+  "dialogs": [],
+  "layout": {
+    "zh-CN": {
+      "noHorizontalOverflow": true,
+      "toolbar": {
+        "left": 9,
+        "right": 381,
+        "top": 369.1875,
+        "bottom": 416.1875,
+        "width": 372,
+        "height": 47
+      },
+      "editor": {
+        "left": 9,
+        "right": 381,
+        "top": 416.1875,
+        "bottom": 776,
+        "width": 372,
+        "height": 359.8125
+      },
+      "indent": {
+        "left": 161.015625,
+        "right": 229.03125,
+        "top": 376.1875,
+        "bottom": 408.1875,
+        "width": 68.015625,
+        "height": 32
+      },
+      "outdent": {
+        "left": 235.03125,
+        "right": 303.046875,
+        "top": 376.1875,
+        "bottom": 408.1875,
+        "width": 68.015625,
+        "height": 32
+      },
+      "unit": {
+        "left": 73.015625,
+        "right": 155.015625,
+        "top": 376.1875,
+        "bottom": 408.1875,
+        "width": 82,
+        "height": 32
+      },
+      "labels": "缩进单位\n制表符\n2 个空格\n4 个空格\n增加缩进\n减少缩进"
+    },
+    "en": {
+      "noHorizontalOverflow": true,
+      "toolbar": {
+        "left": 9,
+        "right": 381,
+        "top": 376.1875,
+        "bottom": 423.1875,
+        "width": 372,
+        "height": 47
+      },
+      "editor": {
+        "left": 9,
+        "right": 381,
+        "top": 423.1875,
+        "bottom": 784,
+        "width": 372,
+        "height": 360.8125
+      },
+      "indent": {
+        "left": 174.046875,
+        "right": 227.421875,
+        "top": 383.1875,
+        "bottom": 415.1875,
+        "width": 53.375,
+        "height": 32
+      },
+      "outdent": {
+        "left": 233.421875,
+        "right": 296.125,
+        "top": 383.1875,
+        "bottom": 415.1875,
+        "width": 62.703125,
+        "height": 32
+      },
+      "unit": {
+        "left": 83.046875,
+        "right": 168.046875,
+        "top": 383.1875,
+        "bottom": 415.1875,
+        "width": 85,
+        "height": 32
+      },
+      "labels": "Indent size\nTab\n2 spaces\n4 spaces\nIndent\nOutdent"
+    },
+    "ja": {
+      "noHorizontalOverflow": true,
+      "toolbar": {
+        "left": 9,
+        "right": 381,
+        "top": 412.1875,
+        "bottom": 497.1875,
+        "width": 372,
+        "height": 85
+      },
+      "editor": {
+        "left": 9,
+        "right": 381,
+        "top": 497.1875,
+        "bottom": 776,
+        "width": 372,
+        "height": 278.8125
+      },
+      "indent": {
+        "left": 212.015625,
+        "right": 340.03125,
+        "top": 419.1875,
+        "bottom": 451.1875,
+        "width": 128.015625,
+        "height": 32
+      },
+      "outdent": {
+        "left": 19,
+        "right": 146.765625,
+        "top": 457.1875,
+        "bottom": 489.1875,
+        "width": 127.765625,
+        "height": 32
+      },
+      "unit": {
+        "left": 97.015625,
+        "right": 206.015625,
+        "top": 419.1875,
+        "bottom": 451.1875,
+        "width": 109,
+        "height": 32
+      },
+      "labels": "インデント幅\nタブ\nスペース 2 個\nスペース 4 個\nインデントを増やす\nインデントを減らす"
+    }
+  },
+  "limitations": [
+    "Actual Chrome and local HTTP editor. No installed Tauri window, mobile WebView, Android, or other desktop OS claim.",
+    "Only generic source indentation and ordinary source saving are exercised. No code execution, formatter, language server, or backend build is claimed.",
+    "The existing source serializer retains BOM and source newline style; it does not guarantee every mixed ending inside an edited middle region remains byte-identical."
+  ],
+  "browser": "Chrome/154.0.8037.97",
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "nativeProbe": {
+    "commandAccepted": true,
+    "oneUndoPreservesPriorTyping": true,
+    "nativeRedo": true,
+    "inputEvents": [
+      {
+        "type": "insertText",
+        "value": "first\nsecond typed"
+      },
+      {
+        "type": "insertText",
+        "value": "  first\n  second typed"
+      },
+      {
+        "type": "insertText",
+        "value": "  first\n  second typed"
+      },
+      {
+        "type": "insertText",
+        "value": "  first\n  second typed"
+      },
+      {
+        "type": "historyUndo",
+        "value": "first\nsecond typed"
+      },
+      {
+        "type": "historyRedo",
+        "value": "  first\n  second typed"
+      }
+    ]
+  },
+  "sources": {
+    "engine/source-indentation.mjs": "8e3b05c1835cc12dad604ec1ff602660a826fa2f8cc095af9b5703d483b310c6",
+    "engine/source-draft.mjs": "aa67dd9d5829b0f2fb3ac46388745dfe271c02e49bc6d079bb753e55b5864c74",
+    "web/modules/app-source-indentation.js": "47d01c447c5cc3dd832b44cc91bde78cceb609ed8ae7e41cc7438b1881ab8706",
+    "web/modules/app-runtime.js": "d585f6ed362f1edb1d59437d6a1f0f3a975f8799a50c529bd39be95bfe4e6dc2",
+    "web/source-indentation.css": "ca24d4adc974587d3204dc10ffe7d7dc0a9c7da6914916998cabcb8539de6f94",
+    "web/editor-layout.css": "e76ee7c80448a903a3a6bfad00b959b7410f0fb580f189c4da51436ddb56d293",
+    "web/i18n/en.js": "48344df35c6b6bec0106f87c31b77e515958bfc930faece620821a81091f812d",
+    "web/i18n/ja.js": "fad78d26c25599670e557bcc57aca0e84375e196f03e0b200d7b21a35cff3330",
+    "scripts/tests/source-indentation-smoke.mjs": "1063052efa51b2a88ea71cb73d594345e227c91199e3ceaa4e5d9572a54a8721"
+  },
+  "saved": {
+    "sourcePath": "documents/scripts/checkpoint.txt",
+    "beforeHash": "914866fe6e0fe2a96241be429c9733ed73fe0fd58db1252d070ef75ddb00718d",
+    "afterHash": "6831c27fe348c2089ae00df5ec0f9889e106c8601d9d72fb88adfcd21c052d09",
+    "authorFilesChanged": [
+      "documents/scripts/checkpoint.txt"
+    ],
+    "bytes": 88,
+    "preservedBom": true,
+    "onlyCrlf": true,
+    "state": {
+      "dirty": false,
+      "saving": false,
+      "rebuilding": false,
+      "creating": false
+    },
+    "response": {
+      "body": {
+        "path": "docs-standard/documents/scripts/checkpoint.txt",
+        "content": "﻿extends Node\r\n\r\nfunc _ready() -> void:\r\n\tprint(\"原文 typed\")\r\n\tprint(\"第二行\")\r\n",
+        "expectedLastModified": "sha256:914866fe6e0fe2a96241be429c9733ed73fe0fd58db1252d070ef75ddb00718d"
+      },
+      "status": 200
+    }
+  },
+  "passed": false,
+  "failure": "Error: Timed out: #sourceIndent enabled\n    at wait (file:///tmp/viento-source-editing-75ez1khx/candidate/scripts/tests/source-indentation-smoke.mjs:28:167)\n    at async file:///tmp/viento-source-editing-75ez1khx/candidate/scripts/tests/source-indentation-smoke.mjs:184:5",
+  "pageFailure": {
+    "text": "收起目录\nV\nViento Studio\n0.1.0\n设置\n项目类型与模板\n世界与对象\n构建与运行\n导出\n浏览\n编辑\n×\n全部（4）\n角色 / ACTOR（1）\n场景 / SCENE（1）\n行为绑定 / BEHAVIOR（1）\n行为源码 / SCRIPT（1）\n当前显示 4 个文档（共 4 个） （静态生成 2026/10/13 09:57:11）\n分类 角色 / ACTOR（1）\n角色 / ACTOR（1）\ntraveler\n角色 / Actor · 角色 / Actor\n可编辑\n分类 场景 / SCENE（1）\n场景 / SCENE（1）\ndemo\n场景 / Scene · 场景 / Scene\n可编辑\n分类 行为绑定 / BEHAVIOR（1）\n行为绑定 / BEHAVIOR（1）\ndemo\n行为绑定 / Behavior · 行为绑定 / Behavior\n可编辑\n分类 行为源码 / SCRIPT（1）\n行为源码 / SCRIPT（1）\ncheckpoint\n行为源码 / Script · 行为源码 / Script\n可编辑\n新建文档\n源码编辑\n分段编辑\n字段编辑\n取消新建\n插入素材\n创建文档\n新建脚本\n文档类型\n角色 / Actor\n场景 / Scene\n行为绑定 / Behavior\n行为源码 / Script\n保存位置 · 可修改文件名和目录\n缩进单位\n制表符\n2 个空格\n4 个空格\n增加缩进\n减少缩进\n未保存\n脚本草稿已准备好。可继续编辑，点击保存后才会登记到工程。\n166 字 · 9 行\nCtrl / ⌘ + S 保存",
+    "source": "extends Node\n\nsignal arrived(checkpoint: String, amount: float)\n@export var checkpoint: String = \"dock\"\n@export var amount: float = 0.0\n\nfunc _ready() -> void:\n\tarrived.emit(checkpoint, amount)\n",
+    "toolbar": "<div id=\"sourceIndentToolbar\" class=\"source-indent-toolbar\" aria-label=\"原文缩进\"><label for=\"sourceIndentUnit\" id=\"sourceIndentLabel\">缩进单位</label><select id=\"sourceIndentUnit\" disabled=\"\"><option value=\"tab\">制表符</option><option value=\"spaces-2\">2 个空格</option><option value=\"spaces-4\">4 个空格</option></select><button id=\"sourceIndent\" type=\"button\" class=\"doc-btn doc-btn-ghost\" title=\"增加缩进（Ctrl / ⌘ + ]）\" disabled=\"\">增加缩进</button><button id=\"sourceOutdent\" type=\"button\" class=\"doc-btn doc-btn-ghost\" title=\"减少缩进（Ctrl / ⌘ + [）\" disabled=\"\">减少缩进</button><span id=\"sourceIndentStatus\" role=\"status\" aria-live=\"polite\"></span></div>"
+  }
+}

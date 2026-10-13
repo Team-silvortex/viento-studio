@@ -1,6 +1,12 @@
 # Studio 系统模块与工程需求
 
-0.1.0 源码保留 0.0.10 接入的独立装配入口，并交付九个独立 3D 作者域：变换、对象管理、环境、属性、整体移动、位置对齐、等距分布、批量复制和批量移除。加上原有功能区与[独立只读预览](SCENE3D.md)，当前共 **17** 个固定模块、**33** 项声明能力。工程类型、模块实现、宿主权限、场景表示和执行后端分别描述自己的边界；预览导航与选择不增加作者权限。动态插件运行器仍未实现。
+0.1.0 源码保留 0.0.10 接入的独立装配入口，并交付九个独立 3D 作者域：变换、对象管理、环境、属性、整体移动、位置对齐、等距分布、批量复制和批量移除。加上原有功能区与[独立只读预览](SCENE3D.md)，0.1.0 发布时共 17 个固定模块、33 项声明能力。之后的[独立行为编辑](SCENE_BEHAVIORS.md#内置行为编辑010-之后的工作树)增至 18／34，[首次创建行为](SCENE_BEHAVIORS.md#从场景首次添加行为)增至 18／35；当前再加入[内置脚本创建](SCENE_BEHAVIORS.md#内置脚本创建)，现为 **19** 个固定模块、**36** 项声明能力。工程类型、模块实现、宿主权限、场景表示和执行后端分别描述自己的边界；预览导航与选择不增加作者权限。动态插件运行器仍未实现。
+
+0.1.0 之后的标准方向、临时镜头平移、正交观察、坐标方向提示与双指导航只扩展现有 `scene3d` 只读预览内部接口。可选 `setViewDirection`、`setDragMode`、`setProjectionMode` 分别接受固定方向、`orbit/pan` 拖动模式与 `perspective/orthographic` 投影模式，界面按各自接口可用性启用控件；缺少其中一项不会禁用已有检索与声明。数学函数不取得 DOM 或宿主，渲染器不取得作者草稿、World 或保存接口。该导航阶段仍为 17 模块、33 项声明能力，没有新增作者权限或宿主端口。投影状态不进入工程需求、作者相机或导出，见[正交边界](SCENE3D.md#正交观察010-之后的工作树)与[平移边界](SCENE3D.md#临时镜头平移010-之后的工作树)。
+
+方向提示使用可选 `onViewChange` 绘图观察接口，不注册新的系统模块或声明能力。渲染器只发布当前有效视图的冻结快照或失效 `null`；独立组件取得相机和固定词翻译，预览入口守护所属画布、渲染实例和当前会话。没有回执时隐藏提示，不影响已有声明、来源定位或作者编辑。组件没有作者文本、World、宿主或执行后端接口，见[方向提示](SCENE3D.md#坐标方向提示010-之后的工作树)。
+
+双指导航的 `supportsTouchNavigation === true` 仅是当前渲染器给界面的操作提示，不是注册表中的声明能力或宿主权限。触点状态、阈值、捕获和取消属于渲染适配器，纯数学只组合临时相机；预览入口按本地提示显示中英日说明，不增加按钮。缺少提示时旧渲染器继续原有导航，作者、来源定位及普通保存接口保持，见[双指导航](SCENE3D.md#双指导航010-之后的工作树)。
 
 ## 系统的五层边界
 
@@ -35,22 +41,24 @@ flowchart TD
 | 固定模块 ID | 当前职责 |
 | --- | --- |
 | `org.viento.document` | 普通文档读取、编辑与 Markdown / 文本 / JSON / YAML 解析；原文保存留在现有宿主 |
+| `org.viento.scripts` | 两份 GDScript 起始内容的完整预览与普通 TXT 草稿创建；仅依赖文档模块，提供 `authoring.script`，保存、登记、场景关联与执行各走原接口 |
 | `org.viento.settings` | 工作台设置和语言初始化 |
 | `org.viento.project` | 工程类型与模板配置 |
 | `org.viento.world` | 世界查询、命令、对象和投影创作 |
 | `org.viento.export` | 工程导出与资源包 |
 | `org.viento.media` | 图片、视频、音频的资源引用 |
-| `org.viento.build` | 当前聚合的 2D 场景、配方、后端工程和执行工作区 |
+| `org.viento.build` | 当前聚合的 2D 场景、配方、后端工程和执行工作区；独立控制器提供首次创建行为入口及 `scene.authoring.behavior-creation` |
 | `org.viento.scene3d` | 独立 3D 方块表示与只读 WebGL2 预览；只依赖文档模块 |
 | `org.viento.scene3d-transforms` | 独立单对象位置／旋转／尺寸原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.transforms3d` |
 | `org.viento.scene3d-objects` | 独立方块新增／复制／移除的完整原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.objects3d` |
-| `org.viento.scene3d-environment` | 独立作者相机、方向光和背景的完整候选审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.environment3d` |
+| `org.viento.scene3d-environment` | 独立作者相机、方向光、背景、可选距离雾及粒子场的完整候选审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.environment3d` |
 | `org.viento.scene3d-properties` | 独立现有对象名称／颜色原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.properties3d` |
 | `org.viento.scene3d-translation` | 独立 1–128 个现有对象的共同偏移、完整原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.translation3d` |
 | `org.viento.scene3d-alignment` | 独立 2–128 个所选对象沿作者单轴对齐到明确所选参照，完整审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.alignment3d` |
 | `org.viento.scene3d-distribution` | 独立 3–128 个所选对象按原坐标／声明序排序、保留两端的单轴等距分布；完整审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.distribution3d` |
 | `org.viento.scene3d-copy` | 独立现有对象的一对一新身份及共同偏移、保真批量复制；总数最多128，完整审阅与草稿应用；仅依赖文档模块，提供 `scene.authoring.copy3d` |
 | `org.viento.scene3d-removal` | 独立多选保真移除，至少保留一个对象；明确删除与幸存声明、完整审阅及草稿应用；仅依赖文档模块，提供 `scene.authoring.removal3d` |
+| `org.viento.scene-behaviors` | 已有绑定文档的稳定绑定／实例／关联 TXT 选择、带类型参数和信号编辑；完整审阅后只应用原文草稿，仅依赖文档模块，提供 `scene.authoring.behaviors` |
 
 描述符是固定的 `viento-studio-module` schema 1 数据，包含 ID、API 版本、依赖和贡献能力。注册时拒绝重复提供者、未知依赖、版本冲突和依赖循环。工程声明不能注册模块，也不能加载代码；本轮没有第三方模块安装入口。
 
@@ -82,7 +90,7 @@ flowchart TD
 
 ## 视图接入与诊断接口
 
-`setupStudioSystem({ settings, features, ports })` 只在启动时装配。`ports` 按 `world`、`build`、`project`、`export`、`media`、`scene3d`、`scene3dTransforms`、`scene3dObjects`、`scene3dEnvironment`、`scene3dProperties`、`scene3dTranslation`、`scene3dAlignment`、`scene3dDistribution`、`scene3dCopy`、`scene3dRemoval` 分开注入，设置在其他视图之前完成。返回控制接口只有 `refreshMedia()`、`updateCapabilities(payload)`、`updateProject(workspace)` 和 `snapshot()`；不返回控制器。
+`setupStudioSystem({ settings, features, ports })` 只在启动时装配。`ports` 按 `scripts`、`sceneBehaviors`、`world`、`build`、`project`、`export`、`media`、`scene3d`、`scene3dTransforms`、`scene3dObjects`、`scene3dEnvironment`、`scene3dProperties`、`scene3dTranslation`、`scene3dAlignment`、`scene3dDistribution`、`scene3dCopy`、`scene3dRemoval` 分开注入，设置在其他视图之前完成。返回控制接口只有 `refreshMedia()`、`updateCapabilities(payload)`、`updateProject(workspace)` 和 `snapshot()`；不返回控制器。
 
 实际正文宿主调用该入口，并在能力检测和工程加载时更新它。`getStudioSystemSnapshot()` 只读导出当前实例的分离快照，包含装配计划、需求诊断和宿主能力，不包含正文、端口或控制器。它为后续诊断面板提供数据；本轮没有新增可视化模块配置或缺失能力提示面板。
 
@@ -99,6 +107,12 @@ flowchart TD
 视觉反馈通过可选 `renderer.setSelectedObject(instanceId | null)` 同步同一稳定选择。它只控制实体表面的临时边缘颜色，渲染器不查询列表、正文或兄弟编辑区；没有该方法的旧渲染适配器仍可使用列表与原有预览。筛选、翻译和重复选择不会触发重复反馈重绘，模型刷新后重新同步；重置相机保留选择。提示按原实体深度和顺序显示，没有透视隐藏对象的权限，详见[视觉反馈](SCENE3D.md#选中对象的视觉反馈未发布增量)。
 
 `snapshot.plan.modules[].active` 表示已实现模块的装配状态，`hostCapabilities` 表示宿主服务检测结果。执行后端的表示／schema／功能支持还由原来的后端能力协议单独检查。三个结果不能互相替代。
+
+`scripts` 独立注入 `getContext`／`createDraft`，缺端口或 `features.scripts: false` 只关闭脚本创建。`app-script-create.js` 在正文操作栏装配 **新建脚本**，取得当前会话、正文目录与类型目录；纯 `script-authoring.mjs` 提供固定起始内容和深冻结私有提案，正文宿主核对上下文后建立普通 TXT 草稿。界面不取得保存、登记、World、行为关系或执行接口，构建与行为编辑模块关闭时仍可独立创建。工程无需 `script` 类型，模板选择不修改项目模板；语言／后端标识只描述当前起始内容，不代表已提供 LSP、其他语言执行或作者 Rust 编译。
+
+`sceneBehaviors` 单独注入 `getContext`／`getSource`／`inspect`／`applyDraft`，缺端口或 `features.sceneBehaviors: false` 只关闭行为编辑。独立可移植提案保存当前原文及修订，来源宿主另做依赖摘要重验；界面没有普通保存、元数据关系写入、World 命令或执行后端接口。关闭 World、构建或 3D 区不会把行为控制器的权限交给其他模块。当前本机只读检查接口为 `/api/scene-behavior-authoring`，不接收工具路径、不执行脚本；宿主缺少服务能力时保留普通源码编辑。当前证据见[行为编辑专题](test-results/scene-behavior-authoring/summary.json)。
+
+首次创建位于构建模块，由 `app-scene-behavior-create.js` 独立管理目录、稳定创建身份、预览、保存和关闭。它提供 `scene.authoring.behavior-creation`，仍需宿主实际支持 `behavior.create`，声明能力本身不授予文件写入权。创建通过窄命令一次提交新正文、新登记和既有场景关联；不借用已有行为草稿控制器，也不获得脚本执行接口。缺少创建能力不妨碍已有文档的参数／信号编辑，关闭独立行为编辑模块也不把草稿接口转交给构建区。首次 UI 限 Godot／GDScript 单绑定，创建核心接受中立声明；运行是否支持继续由执行适配器判断。见[首次创建专题](test-results/scene-behavior-creation/)。
 
 ## 后续扩展的顺序
 
@@ -121,3 +135,5 @@ flowchart TD
 `scene3dCopy`独立取得`getContext`／`getSource`／`applyDraft`，缺端口或同名feature为false仅关闭本区。第八私有作者品牌与旧七域互拒；来源五字段和最后内存守护属于共享文档宿主，不共享控制器或审批。UUID按本次会话每来源一次分配，检查不会再生；Rust一次追加完整副本，普通保存负责磁盘及外部冲突。见[批量复制](SCENE3D.md#批量复制对象未发布增量)。
 
 `scene3dRemoval`独立取得`getContext`／`getSource`／`applyDraft`。缺端口或同名feature为false只关闭本区，第九私有作者品牌与旧八域互拒。来源五字段与最后内存守护属于文档宿主，不共享选择或审批。Rust一次计算完整删除区间及最终候选，UI不循环单对象remove，也不删除资源。普通保存仍是持久化入口；见[批量移除](SCENE3D.md#批量移除对象未发布增量)。
+
+粒子预览沿用 `org.viento.scene3d`，作者编辑沿用 `org.viento.scene3d-environment`。`scene3d-playback.js` 只管理临时时刻，`scene3d-particle-preview.js` 管理本地控件，`scene3d-particles-renderer.js` 只消费已验证的分布与偏移；均不取得作者写入、普通保存或执行后端端口。可选核心粒子 ABI 和实际渲染支持分别检查，不新增模块或全局权限。

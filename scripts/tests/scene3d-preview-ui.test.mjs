@@ -6,6 +6,9 @@ import { deferred } from './editor-harness.mjs';
 import { createScene3DObjectIndex, queryScene3DObjects } from '../../engine/scene3d-navigation.mjs';
 import en from '../../web/i18n/en.js';
 import ja from '../../web/i18n/ja.js';
+import { createScene3DParticlePreview } from '../../web/modules/scene3d-particle-preview.js';
+import { prepareScene3DParticleField, sampleScene3DParticleField } from '../../engine/scene3d-particles.mjs';
+import { createScene3DOrientationIndicator } from '../../web/modules/scene3d-orientation.js';
 
 const copy = value => JSON.parse(JSON.stringify(value));
 const one = '00000000-0000-4000-8000-000000000001', two = '00000000-0000-4000-8000-000000000002';
@@ -19,22 +22,39 @@ async function fixture(t, options = {}) {
   const context = { editable: true, creating: false, busy: false, sourceJSON: true, sourcePath: 'documents/scenes/boxes.json', sourceToken: '1:0' };
   const renders = [], instances = [], errors = [], navigationCalls = []; let language = 'zh', supported = options.supported !== false, content = 'valid', listener = () => {}, loads = 0, parses = 0;
   const translate = key => ({ en, ja }[language]?.[key] || key);
-  const h = await dialogHarness('app-scene3d-preview', { supportsStudioCoreScene3D: () => supported,
-    createScene3DObjectIndex, queryScene3DObjects,
+  const h = await dialogHarness('app-scene3d-preview', { createScene3DOrientationIndicator, supportsStudioCoreScene3D: () => supported,
+    createScene3DObjectIndex, queryScene3DObjects, prepareScene3DParticleField, sampleScene3DParticleField,
+    supportsStudioCoreScene3DParticles: () => options.particlesSupported !== false,
+    createScene3DParticlePreview(container, ports) {
+      ports.document.addEventListener = (...args) => ports.document.body.addEventListener(...args);
+      ports.document.removeEventListener = (...args) => ports.document.body.removeEventListener(...args);
+      return createScene3DParticlePreview(container, { ...ports, requestFrame: options.requestFrame || (() => 1), cancelFrame: options.cancelFrame || (() => {}) });
+    },
     parseScene3DSource(raw) { parses++; if (options.parse) return options.parse(raw); if (raw !== 'valid') throw new Error('Invalid scene at /objects/0/size'); return parsed(); },
     createScene3DRenderer(canvas, ports) { if (options.rendererError) throw Error('Shader failed'); if (options.unsupported) return null;
       const renderer = { canvas, disposed: 0, resets: 0, focuses: [], ports, setModel(model) { renders.push(copy(model)); }, dispose() { this.disposed++; }, resetView() { this.resets++; },
         focusObject(id) { this.focuses.push(id); return options.focusResult !== false; } };
+      if (options.particles) { renderer.supportsParticleFields = true; renderer.offsets = []; renderer.packets = [];
+        renderer.setModel = (model, packet) => { renders.push(copy(model)); renderer.packets.push(copy(packet || {})); return true; };
+        renderer.setParticleFieldOffset = offset => { renderer.offsets.push(copy(offset)); return options.particleDraw !== false; };
+      }
+      if (options.touchNavigation !== undefined) renderer.supportsTouchNavigation = options.touchNavigation;
+      if (options.projectionModes) { renderer.projections = []; renderer.projectionMode = 'perspective'; renderer.setProjectionMode = mode => { renderer.projections.push(mode); if (options.projectionThrow) throw Error('Refused projection'); if (options.projectionError) ports.onError(Error('Projection draw failed')); if (options.projectionResult === false) return false; renderer.projectionMode = mode; return true; }; }
+      if (options.dragModes) { renderer.modes = []; renderer.dragMode = 'orbit'; renderer.setDragMode = mode => { renderer.modes.push(mode); if (options.dragError) ports.onError(Error('Drag mode failed')); if (options.dragResult === false) return false; renderer.dragMode = mode; return true; }; }
+      if (options.standardViews) { renderer.directions = []; renderer.setViewDirection = direction => { renderer.directions.push(direction); if (options.directionError) ports.onError(Error('Direction draw failed')); return options.directionResult ?? true; }; }
       if (options.wholeScene) { renderer.focusAllCalls = 0; renderer.focusAll = () => { renderer.focusAllCalls++; return options.allResult !== false; }; }
       if (options.selectionFeedback) {
         renderer.selections = []; renderer.selectedInstanceId = null; renderer.events = [];
         renderer.setModel = model => { renders.push(copy(model)); renderer.selectedInstanceId = null; renderer.events.push('model'); };
         renderer.setSelectedObject = id => { renderer.selections.push(id); renderer.selectedInstanceId = id; renderer.events.push('selection:' + id); return true; };
       }
+      if (options.modelThrow) renderer.setModel = () => { throw Error('Model draw failed'); };
+      if (options.viewNotifications) { const setModel = renderer.setModel.bind(renderer); renderer.setModel = model => { setModel(model); ports.onViewChange(Object.freeze({ camera: Object.freeze(copy(model.camera)), projectionMode: renderer.projectionMode || 'perspective' })); }; }
       instances.push(renderer); return renderer; },
     t: translate, translatePage(root) { for (const node of root.querySelectorAll('[data-i18n]')) node.textContent = translate(node.dataset.i18n); },
     onLanguageChange(fn) { listener = fn; return () => { listener = () => {}; }; },
   });
+  h.document.createElementNS = (_, tag) => h.document.createElement(tag);
   h.runtime.window.alert = value => errors.push(value);
   const controller = h.runtime.setupScene3DPreview({ getContext: () => context, async getSource() { loads++; if (options.source) return options.source(context);
     return { content, sourcePath: context.sourcePath, token: context.sourceToken }; },
@@ -460,4 +480,260 @@ test('whole-scene framing preserves a synchronous GPU error instead of reporting
   const h=await fixture(t,{wholeScene:true});await h.open();const renderer=h.instances[0];
   renderer.focusAll=()=>{renderer.ports.onError(Error('Partial GPU draw failed'));return false;};
   h.el('FocusAll').click();assert.match(h.el('Status').textContent,/3D绘制中断/);assert.match(h.el('Diagnostics').textContent,/Partial GPU draw failed/);assert.equal(h.el('FocusAll').disabled,true);assert.equal(h.el('Fallback').hidden,false);
+});
+
+
+test('standard directions are explicit read-only requests independent of the whole-scene button', async t => {
+  const h = await fixture(t, { standardViews: true }); await h.open(); const renderer = h.instances[0], source = copy(h.renders[0]);
+  assert.equal(h.el('FocusAll').disabled, true); assert.equal(h.el('SetDirection').disabled, false);
+  assert.equal(h.el('Direction').value, 'front');
+  assert.deepEqual(h.el('Direction').querySelectorAll('option').map(item => item.value), ['front', 'back', 'left', 'right', 'top', 'bottom']);
+  for (const direction of ['front', 'back', 'left', 'right', 'top', 'bottom']) {
+    h.el('Direction').value = direction; h.el('Direction').dispatch('change');
+    const calls = renderer.directions.length; h.el('SetDirection').click(); assert.equal(renderer.directions.length, calls + 1); assert.equal(renderer.directions.at(-1), direction);
+  }
+  assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1); assert.deepEqual(h.renders[0], source); assert.equal(h.context.sourceToken, '1:0');
+  assert.match(h.el('Status').textContent, /原文保持不变/);
+});
+test('standard directions preserve hidden selection search and last valid model after invalid source', async t => {
+  const h = await fixture(t, { standardViews: true, selectionFeedback: true }); await h.open();
+  h.el('Objects').querySelectorAll('button')[1].click(); h.el('Search').value = 'no matches'; h.el('Search').dispatch('input');
+  h.context.sourceToken = '1:1'; h.setContent('invalid'); h.el('Refresh').click(); await h.settle();
+  const diagnostic = h.el('Diagnostics').textContent; assert.ok(diagnostic); h.el('Direction').value = 'top'; h.el('SetDirection').click();
+  assert.equal(h.instances[0].selectedInstanceId, two); assert.equal(h.el('Search').value, 'no matches'); assert.equal(h.el('Direction').value, 'top');
+  assert.equal(h.el('Diagnostics').textContent, diagnostic); assert.equal(h.el('Locate').disabled, true); assert.equal(h.renders.length, 1);
+  assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.deepEqual(h.instances[0].directions, ['top']);
+});
+test('older or unavailable renderers expose disabled standard directions without blocking declarations', async t => {
+  for (const options of [{}, { unsupported: true }, { rendererError: true }]) {
+    const h = await fixture(t, options); await h.open(); assert.equal(h.el('Direction').disabled, true); assert.equal(h.el('SetDirection').disabled, true);
+    h.el('SetDirection').dispatch('click'); assert.equal(h.loads(), 1); assert.equal(h.el('Objects').querySelectorAll('button').length, 2);
+  }
+});
+test('standard direction guard rejects busy unsupported stale-path and invalid forged values', async t => {
+  const h = await fixture(t, { standardViews: true }); await h.open(); const renderer = h.instances[0];
+  h.context.busy = true; h.el('SetDirection').dispatch('click'); h.context.busy = false;
+  h.setSupported(false); h.el('SetDirection').dispatch('click'); h.setSupported(true);
+  h.context.sourcePath = 'other'; h.el('SetDirection').dispatch('click'); h.context.sourcePath = 'documents/scenes/boxes.json';
+  for (const value of ['', 'TOP', '__proto__', 'diagonal']) { h.el('Direction').value = value; h.el('SetDirection').dispatch('click'); }
+  assert.deepEqual(renderer.directions, []); h.el('Direction').value = 'bottom'; h.el('SetDirection').click(); assert.deepEqual(renderer.directions, ['bottom']);
+});
+test('pending refreshed source blocks standard directions until its own completion', async t => {
+  const gate = deferred(); let wait = false;
+  const h = await fixture(t, { standardViews: true, source: context => wait ? gate.promise : { content: 'valid', sourcePath: context.sourcePath, token: context.sourceToken } });
+  await h.open(); wait = true; h.el('Refresh').click(); assert.equal(h.el('Direction').disabled, true); assert.equal(h.el('SetDirection').disabled, true);
+  h.el('SetDirection').dispatch('click'); assert.deepEqual(h.instances[0].directions, []);
+  gate.resolve({ content: 'valid', sourcePath: h.context.sourcePath, token: h.context.sourceToken }); await h.settle(); assert.equal(h.el('SetDirection').disabled, false);
+});
+test('failed direction does not claim success and synchronous GPU failure preserves its diagnosis', async t => {
+  const h = await fixture(t, { standardViews: true, directionResult: false }); await h.open(); h.el('SetDirection').click(); assert.match(h.el('Status').textContent, /无法切换/);
+  const failed = await fixture(t, { standardViews: true, directionError: true }); await failed.open(); failed.el('SetDirection').click();
+  assert.match(failed.el('Status').textContent, /绘制中断/); assert.match(failed.el('Diagnostics').textContent, /Direction draw failed/); assert.equal(failed.el('SetDirection').disabled, true);
+});
+test('language changes translate all six options and preserve direction without drawing', async t => {
+  const h = await fixture(t, { standardViews: true }); await h.open(); h.el('Direction').value = 'bottom';
+  for (const language of ['en', 'ja', 'zh']) {
+    h.setLanguage(language); assert.equal(h.el('Direction').value, 'bottom');
+    for (const option of h.el('Direction').querySelectorAll('option')) assert.equal(option.textContent, ({ en, ja }[language]?.[option.dataset.i18n] || option.dataset.i18n));
+    assert.equal(h.el('SetDirection').textContent, ({ en, ja }[language]?.['按方向查看'] || '按方向查看'));
+  }
+  assert.deepEqual(h.instances[0].directions, []);
+});
+test('closed or disposed controls cannot invoke old renderer and reopen starts with front choice', async t => {
+  const h = await fixture(t, { standardViews: true }); await h.open(); h.el('Direction').value = 'top'; const oldButton = h.el('SetDirection'), old = h.instances[0];
+  h.controller.close(); oldButton.dispatch('click'); assert.deepEqual(old.directions, []); await h.open(); assert.equal(h.el('Direction').value, 'front');
+  h.controller.dispose(); oldButton.dispatch('click'); assert.deepEqual(h.instances[1].directions, []);
+});
+
+
+test('drag mode switch is view-only and preserves mode through reset and source refresh', async t => {
+  const h = await fixture(t, { dragModes: true }); await h.open(); const renderer = h.instances[0];
+  assert.equal(h.el('DragMode').value, 'orbit'); assert.equal(h.el('DragMode').disabled, false);
+  assert.deepEqual(h.el('DragMode').querySelectorAll('option').map(item => item.value), ['orbit', 'pan']);
+  h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change'); assert.equal(renderer.dragMode, 'pan'); assert.equal(h.el('Canvas').dataset.dragMode, 'pan');
+  assert.match(h.el('Status').textContent, /仅移动临时镜头/); assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1); assert.equal(h.context.sourceToken, '1:0');
+  h.el('Reset').click(); assert.equal(h.el('DragMode').value, 'pan'); h.el('Refresh').click(); await h.settle(); assert.equal(h.el('DragMode').value, 'pan'); assert.equal(renderer.dragMode, 'pan');
+  assert.deepEqual(renderer.modes, ['pan']); h.el('DragMode').value = 'orbit'; h.el('DragMode').dispatch('change'); assert.equal(h.el('Canvas').dataset.dragMode, 'orbit');
+});
+test('drag mode change preserves hidden selection query and invalid draft diagnostics', async t => {
+  const h = await fixture(t, { dragModes: true, selectionFeedback: true }); await h.open(); h.el('Objects').querySelectorAll('button')[1].click();
+  h.el('Search').value = 'nothing'; h.el('Search').dispatch('input'); h.setContent('invalid'); h.context.sourceToken = '1:1'; h.el('Refresh').click(); await h.settle(); const diagnostic = h.el('Diagnostics').textContent;
+  h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change'); assert.ok(diagnostic); assert.equal(h.el('Diagnostics').textContent, diagnostic); assert.equal(h.el('Search').value, 'nothing'); assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.equal(h.instances[0].selectedInstanceId, two); assert.equal(h.renders.length, 1);
+});
+test('missing pan method or GPU disables drag choice and keeps the legacy gesture hint', async t => {
+  for (const options of [{}, { unsupported: true }, { rendererError: true }]) {
+    const h = await fixture(t, options); await h.open(); assert.equal(h.el('DragMode').disabled, true); assert.match(h.el('DragMode').title, /不支持切换/);
+    assert.doesNotMatch(h.el('Gestures').textContent, /Shift/); h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change'); assert.equal(h.el('DragMode').value, 'orbit'); assert.equal(h.el('Objects').querySelectorAll('button').length, 2);
+  }
+});
+test('drag mode guard restores accepted UI choice on busy unsupported wrong-path and forged changes', async t => {
+  const h = await fixture(t, { dragModes: true }); await h.open(); const change = () => { h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change'); assert.equal(h.el('DragMode').value, 'orbit'); };
+  h.context.busy = true; change(); h.context.busy = false; h.setSupported(false); change(); h.setSupported(true);
+  const path = h.context.sourcePath; h.context.sourcePath = 'other'; change(); h.context.sourcePath = path;
+  for (const value of ['', 'PAN', 'constructor']) { h.el('DragMode').value = value; h.el('DragMode').dispatch('change'); assert.equal(h.el('DragMode').value, 'orbit'); }
+  assert.deepEqual(h.instances[0].modes, []);
+});
+test('pending source load prevents drag mode changes until current receipt completes', async t => {
+  const gate = deferred(); let wait = false; const h = await fixture(t, { dragModes: true, source: context => wait ? gate.promise : { content: 'valid', sourcePath: context.sourcePath, token: context.sourceToken } }); await h.open(); wait = true; h.el('Refresh').click(); assert.equal(h.el('DragMode').disabled, true);
+  h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change'); assert.deepEqual(h.instances[0].modes, []); assert.equal(h.el('DragMode').value, 'orbit'); gate.resolve({ content: 'valid', sourcePath: h.context.sourcePath, token: h.context.sourceToken }); await h.settle(); assert.equal(h.el('DragMode').disabled, false);
+});
+test('refused drag mode restores prior choice while synchronous render failure keeps diagnosis', async t => {
+  const h = await fixture(t, { dragModes: true, dragResult: false }); await h.open(); h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change'); assert.equal(h.el('DragMode').value, 'orbit'); assert.match(h.el('Status').textContent, /无法切换拖动方式/); assert.equal(h.el('Canvas').dataset.dragMode, 'orbit');
+  const failed = await fixture(t, { dragModes: true, dragError: true }); await failed.open(); failed.el('DragMode').value = 'pan'; failed.el('DragMode').dispatch('change'); assert.match(failed.el('Status').textContent, /绘制中断/); assert.match(failed.el('Diagnostics').textContent, /Drag mode failed/); assert.equal(failed.el('DragMode').disabled, true);
+});
+test('three languages preserve selected drag mode and translate mode-aware gesture hint without side effects', async t => {
+  const h = await fixture(t, { dragModes: true }); await h.open(); h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change');
+  for (const language of ['en', 'ja', 'zh']) { h.setLanguage(language); assert.equal(h.el('DragMode').value, 'pan'); for (const option of h.el('DragMode').querySelectorAll('option')) assert.equal(option.textContent, ({ en, ja }[language]?.[option.dataset.i18n] || option.dataset.i18n)); assert.match(h.el('Gestures').textContent, /Shift/); }
+  assert.deepEqual(h.instances[0].modes, ['pan']); assert.equal(h.loads(), 1);
+});
+test('close and disposal revoke old mode callbacks and reopening starts a new orbit gesture mode', async t => {
+  const h = await fixture(t, { dragModes: true }); await h.open(); h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change'); const select = h.el('DragMode'), old = h.instances[0]; h.controller.close(); select.dispatch('change'); assert.deepEqual(old.modes, ['pan']); await h.open(); assert.equal(h.el('DragMode').value, 'orbit'); assert.equal(h.instances[1].dragMode, 'orbit'); h.controller.dispose(); select.dispatch('change'); assert.deepEqual(h.instances[1].modes, []);
+});
+
+
+test('projection choices affect only preview and preserve accepted mode through reset refresh and other view operations', async t => {
+  const h = await fixture(t, { projectionModes: true, dragModes: true, standardViews: true, wholeScene: true }); await h.open(); const renderer = h.instances[0];
+  assert.equal(h.el('ProjectionMode').value, 'perspective'); assert.equal(h.el('ProjectionMode').disabled, false);
+  assert.deepEqual(h.el('ProjectionMode').querySelectorAll('option').map(item => item.value), ['perspective', 'orthographic']);
+  h.el('ProjectionMode').value = 'orthographic'; h.el('ProjectionMode').dispatch('change'); assert.equal(renderer.projectionMode, 'orthographic'); assert.match(h.el('Status').textContent, /仅影响预览/);
+  h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change'); h.el('SetDirection').click(); h.el('FocusAll').click(); h.el('Focus').click(); h.el('Reset').click();
+  h.el('Refresh').click(); await h.settle(); assert.equal(h.el('ProjectionMode').value, 'orthographic'); assert.equal(h.el('DragMode').value, 'pan');
+  assert.deepEqual(renderer.projections, ['orthographic']); assert.equal(h.loads(), 2); assert.equal(h.renders.length, 2); assert.equal(h.context.sourceToken, '1:0');
+  h.el('ProjectionMode').value = 'perspective'; h.el('ProjectionMode').dispatch('change'); assert.equal(renderer.projectionMode, 'perspective');
+});
+test('orthographic mode preserves hidden selection filter last valid source diagnosis and source-location guard', async t => {
+  const h = await fixture(t, { projectionModes: true, selectionFeedback: true }); await h.open(); h.el('Objects').querySelectorAll('button')[1].click();
+  h.el('Search').value = 'nothing'; h.el('Search').dispatch('input'); h.setContent('invalid'); h.context.sourceToken = '1:1'; h.el('Refresh').click(); await h.settle(); const diagnostic = h.el('Diagnostics').textContent;
+  h.el('ProjectionMode').value = 'orthographic'; h.el('ProjectionMode').dispatch('change'); assert.ok(diagnostic); assert.equal(h.el('Diagnostics').textContent, diagnostic); assert.equal(h.el('Search').value, 'nothing'); assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.equal(h.instances[0].selectedInstanceId, two); assert.equal(h.renders.length, 1); assert.equal(h.el('Locate').disabled, true);
+});
+test('missing projection interface does not disable independently supported pan and standard directions', async t => {
+  const h = await fixture(t, { dragModes: true, standardViews: true }); await h.open(); assert.equal(h.el('ProjectionMode').disabled, true); assert.match(h.el('ProjectionMode').title, /不支持切换/); assert.equal(h.el('DragMode').disabled, false); assert.equal(h.el('SetDirection').disabled, false);
+  h.el('ProjectionMode').value = 'orthographic'; h.el('ProjectionMode').dispatch('change'); assert.equal(h.el('ProjectionMode').value, 'perspective'); assert.equal(h.el('Objects').querySelectorAll('button').length, 2);
+  for (const options of [{ unsupported: true }, { rendererError: true }]) { const failed = await fixture(t, { projectionModes: true, ...options }); await failed.open(); assert.equal(failed.el('ProjectionMode').disabled, true); assert.equal(failed.el('Objects').querySelectorAll('button').length, 2); }
+});
+test('projection guard rejects busy unsupported wrong-path and forged choices and restores last accepted mode', async t => {
+  const h = await fixture(t, { projectionModes: true }); await h.open(); h.el('ProjectionMode').value = 'orthographic'; h.el('ProjectionMode').dispatch('change');
+  const change = () => { h.el('ProjectionMode').value = 'perspective'; h.el('ProjectionMode').dispatch('change'); assert.equal(h.el('ProjectionMode').value, 'orthographic'); };
+  h.context.busy = true; change(); h.context.busy = false; h.setSupported(false); change(); h.setSupported(true);
+  const path = h.context.sourcePath; h.context.sourcePath = 'other'; change(); h.context.sourcePath = path;
+  for (const value of ['', 'Orthographic', '__proto__', 'constructor']) { h.el('ProjectionMode').value = value; h.el('ProjectionMode').dispatch('change'); assert.equal(h.el('ProjectionMode').value, 'orthographic'); }
+  assert.deepEqual(h.instances[0].projections, ['orthographic']);
+});
+test('pending source refresh blocks projection changes until the current receipt completes', async t => {
+  const gate = deferred(); let wait = false; const h = await fixture(t, { projectionModes: true, source: context => wait ? gate.promise : { content: 'valid', sourcePath: context.sourcePath, token: context.sourceToken } }); await h.open(); wait = true; h.el('Refresh').click(); assert.equal(h.el('ProjectionMode').disabled, true);
+  h.el('ProjectionMode').value = 'orthographic'; h.el('ProjectionMode').dispatch('change'); assert.deepEqual(h.instances[0].projections, []); assert.equal(h.el('ProjectionMode').value, 'perspective'); gate.resolve({ content: 'valid', sourcePath: h.context.sourcePath, token: h.context.sourceToken }); await h.settle(); assert.equal(h.el('ProjectionMode').disabled, false);
+});
+test('projection refusals and thrown adapters restore prior UI while GPU errors preserve drawing diagnosis', async t => {
+  for (const failure of [{ projectionResult: false }, { projectionThrow: true }]) { const h = await fixture(t, { projectionModes: true, ...failure }); await h.open(); h.el('ProjectionMode').value = 'orthographic'; h.el('ProjectionMode').dispatch('change'); assert.equal(h.el('ProjectionMode').value, 'perspective'); assert.match(h.el('Status').textContent, /无法切换投影方式/); }
+  const failed = await fixture(t, { projectionModes: true, projectionError: true }); await failed.open(); failed.el('ProjectionMode').value = 'orthographic'; failed.el('ProjectionMode').dispatch('change'); assert.match(failed.el('Status').textContent, /绘制中断/); assert.match(failed.el('Diagnostics').textContent, /Projection draw failed/); assert.equal(failed.el('ProjectionMode').disabled, true); assert.equal(failed.el('ProjectionMode').value, 'perspective');
+});
+test('projection labels explanatory text and accepted mode survive all three languages without drawing or reloading', async t => {
+  const h = await fixture(t, { projectionModes: true }); await h.open(); h.el('ProjectionMode').value = 'orthographic'; h.el('ProjectionMode').dispatch('change');
+  for (const language of ['en', 'ja', 'zh']) { h.setLanguage(language); assert.equal(h.el('ProjectionMode').value, 'orthographic'); for (const option of h.el('ProjectionMode').querySelectorAll('option')) assert.equal(option.textContent, ({ en, ja }[language]?.[option.dataset.i18n] || option.dataset.i18n)); const note = h.el('DirectionNote'); assert.equal(note.textContent, ({ en, ja }[language]?.[note.dataset.i18n] || note.dataset.i18n)); }
+  assert.deepEqual(h.instances[0].projections, ['orthographic']); assert.equal(h.loads(), 1);
+});
+test('close and disposal cannot revive old projection controls; reopen starts perspective', async t => {
+  const h = await fixture(t, { projectionModes: true }); await h.open(); h.el('ProjectionMode').value = 'orthographic'; h.el('ProjectionMode').dispatch('change'); const select = h.el('ProjectionMode'), old = h.instances[0]; h.controller.close(); select.dispatch('change'); assert.deepEqual(old.projections, ['orthographic']); await h.open(); assert.equal(h.el('ProjectionMode').value, 'perspective'); assert.equal(h.instances[1].projectionMode, 'perspective'); h.controller.dispose(); select.dispatch('change'); assert.deepEqual(h.instances[1].projections, []);
+});
+
+
+test('orientation indicator waits for a real view receipt and does not infer a frame from parsed author data', async t => {
+  const legacy = await fixture(t); await legacy.open(); assert.equal(legacy.el('Orientation').hidden, true);
+  const h = await fixture(t, { viewNotifications: true }); await h.open(); assert.equal(h.el('Orientation').hidden, false);
+  for (const axis of ['X', 'Y', 'Z']) assert.match(h.el('Orientation').textContent, new RegExp('\\+' + axis));
+  assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1); assert.equal(h.context.sourceToken, '1:0');
+});
+test('view notifications update only the coordinate indicator preserving selection filter source and draw count', async t => {
+  const h = await fixture(t, { viewNotifications: true, selectionFeedback: true }); await h.open(); h.el('Objects').querySelectorAll('button')[1].click(); h.el('Search').value = 'hidden'; h.el('Search').dispatch('input'); const renderer = h.instances[0], before = h.el('Orientation').getAttribute('aria-label');
+  renderer.ports.onViewChange({ camera: { position: [0, 10, 0], target: [0, 0, 0], up: [0, 0, -1] }, projectionMode: 'orthographic' });
+  assert.equal(h.el('Orientation').hidden, false); assert.notEqual(h.el('Orientation').getAttribute('aria-label'), before); assert.equal(renderer.selectedInstanceId, two); assert.equal(h.el('Search').value, 'hidden'); assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.equal(h.renders.length, 1); assert.equal(h.loads(), 1);
+});
+test('invalid new draft retains the indicator for the last successful view while source location remains disabled', async t => {
+  const h = await fixture(t, { viewNotifications: true }); await h.open(); const before = h.el('Orientation').getAttribute('aria-label'); h.setContent('invalid'); h.context.sourceToken = '1:1'; h.el('Refresh').click(); await h.settle();
+  assert.equal(h.el('Orientation').hidden, false); assert.equal(h.el('Orientation').getAttribute('aria-label'), before); assert.ok(h.el('Diagnostics').textContent); assert.equal(h.el('Locate').disabled, true); assert.equal(h.renders.length, 1);
+});
+test('null and invalid view receipts hide direction hints until a new valid frame arrives', async t => {
+  const h = await fixture(t, { viewNotifications: true }); await h.open(); const emit = h.instances[0].ports.onViewChange;
+  for (const receipt of [null, {}, { camera: { position: [0, 0, 0], target: [0, 0, 0] } }]) { emit(receipt); assert.equal(h.el('Orientation').hidden, true); }
+  emit({ camera: parsed().model.camera }); assert.equal(h.el('Orientation').hidden, false); assert.equal(h.renders.length, 1);
+});
+test('GPU absence errors and unsupported core never show a misleading orientation indicator', async t => {
+  for (const failure of [{ unsupported: true }, { rendererError: true }]) { const h = await fixture(t, { viewNotifications: true, ...failure }); await h.open(); assert.equal(h.el('Orientation').hidden, true); }
+  const h = await fixture(t, { viewNotifications: true }); await h.open(); h.setSupported(false); h.controller.refresh(); assert.equal(h.el('Orientation').hidden, true); h.setSupported(true); h.controller.refresh(); assert.equal(h.el('Orientation').hidden, false);
+  h.instances[0].ports.onError(Error('lost')); assert.equal(h.el('Orientation').hidden, true); h.instances[0].ports.onViewChange({ camera: parsed().model.camera }); assert.equal(h.el('Orientation').hidden, true); assert.match(h.el('Diagnostics').textContent, /lost/);
+});
+test('language refresh translates coordinate accessibility without requesting source or drawing a new frame', async t => {
+  const h = await fixture(t, { viewNotifications: true }); await h.open();
+  for (const language of ['en', 'ja', 'zh']) { h.setLanguage(language); const expected = ({ en, ja }[language]?.['坐标方向'] || '坐标方向'); assert.ok(h.el('Orientation').getAttribute('aria-label').includes(expected)); assert.equal(h.el('Orientation').hidden, false); }
+  assert.equal(h.renders.length, 1); assert.equal(h.loads(), 1);
+});
+test('closed disposed and replaced renderer callbacks cannot repopulate a newer orientation indicator', async t => {
+  const h = await fixture(t, { viewNotifications: true }); await h.open(); const old = h.instances[0], indicator = h.el('Orientation'); h.controller.close(); old.ports.onViewChange({ camera: parsed().model.camera }); assert.equal(indicator.hidden, true);
+  await h.open(); const currentLabel = indicator.getAttribute('aria-label'); old.ports.onViewChange(null); assert.equal(indicator.hidden, false); assert.equal(indicator.getAttribute('aria-label'), currentLabel);
+  old.ports.onViewChange({ camera: { position: [0, 8, 0], target: [0, 0, 0], up: [0, 0, -1] } }); assert.equal(indicator.getAttribute('aria-label'), currentLabel);
+  h.controller.dispose(); h.instances[1].ports.onViewChange({ camera: parsed().model.camera }); assert.equal(indicator.hidden, true);
+});
+test('pending replacement source cannot use a callback to cross into a different document', async t => {
+  const gate = deferred(); let wait = false; const h = await fixture(t, { viewNotifications: true, source: context => wait ? gate.promise : { content: 'valid', sourcePath: context.sourcePath, token: context.sourceToken } }); await h.open(); const old = h.instances[0]; wait = true; h.el('Refresh').click(); h.context.sourcePath = 'documents/other.json'; h.controller.refresh(); assert.equal(h.el('Orientation').hidden, true);
+  old.ports.onViewChange({ camera: parsed().model.camera }); gate.resolve({ content: 'valid', sourcePath: 'documents/scenes/boxes.json', token: '1:0' }); await h.settle(); assert.equal(h.el('Orientation').hidden, true); assert.equal(h.el('Dialog').open, false);
+});
+
+test('two-finger help is localized only for an explicit supported renderer and does not touch the source', async t => {
+  const h = await fixture(t, { touchNavigation: true, dragModes: true, projectionModes: true }); await h.open();
+  h.el('DragMode').value = 'pan'; h.el('DragMode').dispatch('change'); h.el('ProjectionMode').value = 'orthographic'; h.el('ProjectionMode').dispatch('change');
+  h.el('Objects').querySelectorAll('button')[1].click(); const token = h.context.sourceToken;
+  for (const [language, expected] of [['zh', /双指拖动平移/], ['en', /Two fingers pan and pinch/], ['ja', /2本指で平行移動/]]) {
+    h.setLanguage(language); assert.match(h.el('Gestures').textContent, expected);
+    assert.equal(h.el('DragMode').value, 'pan'); assert.equal(h.el('ProjectionMode').value, 'orthographic');
+    assert.match(h.el('Inspector').textContent, new RegExp(two)); assert.equal(h.el('Canvas').getAttribute('aria-describedby'), 'scene3dGestures');
+  }
+  assert.equal(h.context.sourceToken, token); assert.equal(h.loads(), 1); assert.equal(h.renders.length, 1);
+});
+test('legacy missing failed and non-boolean touch capabilities never advertise a two-finger gesture', async t => {
+  for (const options of [{ dragModes: true }, { unsupported: true }, { rendererError: true }, { touchNavigation: false, dragModes: true }, { touchNavigation: 'true', dragModes: true }]) {
+    const h = await fixture(t, options); await h.open();
+    for (const language of ['zh', 'en', 'ja']) { h.setLanguage(language); assert.doesNotMatch(h.el('Gestures').textContent, /双指|Two fingers|2本指/); }
+  }
+});
+
+const particleField = () => ({ center: [0, 3, 0], extent: [12, 8, 12], velocity: [0, -8, 0], size: [.03, .45, .03], color: '#c5ddff', count: 64, seed: 1 });
+test('particle time controls send Rust samples to the renderer without altering author objects or source', async t => {
+  const scene = parsed(); scene.model.particleField = particleField(); const h = await fixture(t, { particles: true, parse: () => scene });
+  await h.open(); assert.equal(h.el('Particles').hidden, false); assert.equal(h.instances[0].packets[0].particleField.phases.length, 64);
+  h.el('ParticleTime').value = '.5'; h.el('ParticleSeek').click(); assert.deepEqual(h.instances[0].offsets.at(-1), [0, .5, 0]);
+  assert.equal(h.el('Objects').querySelectorAll('button').length, 2); assert.equal(h.context.sourceToken, '1:0');
+  h.setLanguage('ja'); assert.equal(h.el('ParticleTime').value, '0.5'); assert.equal(h.el('ParticlePlay').textContent, ja['播放粒子']);
+  h.el('ParticleReset').click(); assert.deepEqual(h.instances[0].offsets.at(-1), [0, 0, 0]);
+  const count = h.instances[0].offsets.length; h.el('ParticleTime').value = ''; h.el('ParticleSeek').click(); assert.equal(h.el('ParticleError').hidden, false); assert.equal(h.instances[0].offsets.length, count);
+  h.context.sourceToken = '1:1'; h.controller.refresh(); assert.equal(h.el('ParticlePlay').disabled, true); h.el('ParticleSeek').click(); assert.equal(h.instances[0].offsets.length, count);
+});
+test('particle callbacks stop after source becomes busy, hidden, stale, closed or disposed', async t => {
+  for (const action of ['busy', 'stale', 'hidden', 'close', 'dispose']) {
+    const scene = parsed(); scene.model.particleField = particleField(); const frames = [];
+    const h = await fixture(t, { particles: true, parse: () => scene, requestFrame: fn => { frames.push(fn); return frames.length; } });
+    await h.open(); h.el('ParticlePlay').click(); const render = h.instances[0], count = render.offsets.length;
+    if (action === 'busy') h.context.busy = true;
+    if (action === 'stale') h.context.sourceToken = 'other';
+    if (action === 'hidden') { h.document.hidden = true; h.document.body.dispatch('visibilitychange'); }
+    if (action === 'close') h.controller.close();
+    if (action === 'dispose') h.controller.dispose();
+    frames[0](100); assert.equal(render.offsets.length, count, action); assert.equal(frames.length, 1, action);
+  }
+});
+test('missing or disabled particle field cannot play; a renderer without particle support reports a diagnostic', async t => {
+  const old = await fixture(t); await old.open(); assert.equal(old.el('Particles').hidden, true);
+  const scene = parsed(); scene.model.particleField = { ...particleField(), count: 0 };
+  const off = await fixture(t, { particles: true, parse: () => scene }); await off.open(); assert.equal(off.el('ParticlePlay').disabled, true);
+  const unsupported = await fixture(t, { parse: () => scene }); await unsupported.open(); assert.match(unsupported.el('Diagnostics').textContent, /不支持粒子场/); assert.equal(unsupported.el('ParticlePlay').disabled, true);
+});
+test('all particle control messages have English and Japanese translations', async () => {
+  const source = await fs.readFile(new URL('../../web/modules/scene3d-particle-preview.js', import.meta.url), 'utf8');
+  for (const [key] of [...source.matchAll(/'([^']*[\u4e00-\u9fff][^']*)'/g)].map(m => [m[1]])) for (const locale of [en, ja]) assert.ok(locale[key], key);
+});
+
+test('thrown model draw fails closed without exposing particle playback or a stale view receipt', async t => {
+  const scene = parsed(); scene.model.particleField = particleField();
+  const h = await fixture(t, { particles: true, modelThrow: true, parse: () => scene }); await h.open();
+  assert.match(h.el('Diagnostics').textContent, /Model draw failed/); assert.equal(h.el('ParticlePlay').disabled, true);
+  assert.equal(h.el('Orientation').hidden, true); assert.equal(h.el('Reset').disabled, true); assert.equal(h.el('Fallback').hidden, false);
 });

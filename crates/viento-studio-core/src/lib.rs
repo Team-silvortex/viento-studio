@@ -9,6 +9,7 @@ mod scene3d_copy_patch;
 mod scene3d_distribution_patch;
 mod scene3d_environment_patch;
 mod scene3d_objects_patch;
+mod scene3d_particles;
 mod scene3d_patch;
 mod scene3d_properties_patch;
 mod scene3d_removal_patch;
@@ -151,6 +152,18 @@ pub extern "C" fn viento_core_scene3d_environment_version() -> u32 {
     1
 }
 
+/// Optional additive fog declaration and source-preserving environment edits.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_fog_version() -> u32 {
+    1
+}
+
+/// Optional bounded field preparation and explicit-time particle sampling.
+#[no_mangle]
+pub extern "C" fn viento_core_scene3d_particles_version() -> u32 {
+    1
+}
+
 /// Optional name/color string edits; transforms and environment stay separate.
 #[no_mangle]
 pub extern "C" fn viento_core_scene3d_properties_version() -> u32 {
@@ -277,6 +290,13 @@ pub enum CoreResponse {
         ok: bool,
         scene3d: scene3d::Scene3DResponse,
     },
+    Scene3DParticlesSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scene3dParticles")]
+        scene3d_particles: scene3d_particles::ParticleFieldResponse,
+    },
     Scene3DPatchSuccess {
         #[serde(rename = "protocolVersion")]
         protocol_version: u32,
@@ -374,6 +394,16 @@ impl CoreResponse {
 }
 
 fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
+    if matches!(
+        value["operation"].as_str(),
+        Some("scene3d.prepareParticleField" | "scene3d.sampleParticleField")
+    ) {
+        return Ok(CoreResponse::Scene3DParticlesSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene3d_particles: scene3d_particles::dispatch(value)?,
+        });
+    }
     if !value.is_object() || value["protocolVersion"].as_f64() != Some(f64::from(PROTOCOL_VERSION))
     {
         return Err(CoreError::request());
@@ -638,6 +668,12 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
                 }
                 if value["operation"].as_str() == Some("scene3d.patchEnvironment") {
                     scene3d_environment_patch::validate_request_bytes(input)?;
+                }
+                if matches!(
+                    value["operation"].as_str(),
+                    Some("scene3d.prepareParticleField" | "scene3d.sampleParticleField")
+                ) {
+                    scene3d_particles::validate_request_bytes(input)?;
                 }
                 if value["operation"].as_str() == Some("scene3d.patchProperties") {
                     scene3d_properties_patch::validate_request_bytes(input)?;

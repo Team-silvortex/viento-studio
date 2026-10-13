@@ -1,0 +1,328 @@
+TAP version 13
+# Subtest: catalog restores unchecked histories without automatically selecting an execution target
+ok 1 - catalog restores unchecked histories without automatically selecting an execution target
+  ---
+  duration_ms: 14.00818
+  type: 'test'
+  ...
+# Subtest: inspect history is readonly; only explicit select command changes the runtime identity
+ok 2 - inspect history is readonly; only explicit select command changes the runtime identity
+  ---
+  duration_ms: 14.745106
+  type: 'test'
+  ...
+# Subtest: unavailable historical entries permit explicit retry while failed builds do not
+ok 3 - unavailable historical entries permit explicit retry while failed builds do not
+  ---
+  duration_ms: 9.103091
+  type: 'test'
+  ...
+# Subtest: catalog diagnostics are visible even without rows and never disclose raw errors or paths
+ok 4 - catalog diagnostics are visible even without rows and never disclose raw errors or paths
+  ---
+  duration_ms: 4.661859
+  type: 'test'
+  ...
+# Subtest: activation locks picker/inspect/selection and failure preserves previously selected execution target
+ok 5 - activation locks picker/inspect/selection and failure preserves previously selected execution target
+  ---
+  duration_ms: 6.228306
+  type: 'test'
+  ...
+# Subtest: late selection success after close or dispose cannot authorize a detached view
+ok 6 - late selection success after close or dispose cannot authorize a detached view
+  ---
+  duration_ms: 12.042447
+  type: 'test'
+  ...
+# Subtest: scene/session/backend/hidden owner changes suppress late activation and late errors
+ok 7 - scene/session/backend/hidden owner changes suppress late activation and late errors
+  ---
+  duration_ms: 22.256021
+  type: 'test'
+  ...
+# Subtest: catalog row origin/snapshot changes invalidate selection but availability verification alone does not
+ok 8 - catalog row origin/snapshot changes invalidate selection but availability verification alone does not
+  ---
+  duration_ms: 12.25453
+  type: 'test'
+  ...
+# Subtest: forged select status cannot change runtime target or be accepted by parent
+ok 9 - forged select status cannot change runtime target or be accepted by parent
+  ---
+  duration_ms: 28.778725
+  type: 'test'
+  ...
+# Subtest: old host retains readonly workflow and does not expose unsupported selection command
+ok 10 - old host retains readonly workflow and does not expose unsupported selection command
+  ---
+  duration_ms: 6.725497
+  type: 'test'
+  ...
+# Subtest: pending external jobs disable selection without making readonly inspection unavailable
+ok 11 - pending external jobs disable selection without making readonly inspection unavailable
+  ---
+  duration_ms: 5.133613
+  type: 'test'
+  ...
+# Subtest: offline author input and missing installed tool do not hide verification or rewrite author data
+ok 12 - offline author input and missing installed tool do not hide verification or rewrite author data
+  ---
+  duration_ms: 5.461303
+  type: 'test'
+  ...
+# Subtest: new catalog wording translates at each language switch, including unchanged picker and runtime identity
+ok 13 - new catalog wording translates at each language switch, including unchanged picker and runtime identity
+  ---
+  duration_ms: 6.103189
+  type: 'test'
+  ...
+# Subtest: catalog malformed identity and availability cannot expose commands
+ok 14 - catalog malformed identity and availability cannot expose commands
+  ---
+  duration_ms: 2.884102
+  type: 'test'
+  ...
+# Subtest: catalog selection errors have explicit localized concurrency/owner diagnostics
+ok 15 - catalog selection errors have explicit localized concurrency/owner diagnostics
+  ---
+  duration_ms: 10.714893
+  type: 'test'
+  ...
+# Subtest: delivery review lists exact project files and identities without exposing cache paths snapshots logs or source authority
+ok 16 - delivery review lists exact project files and identities without exposing cache paths snapshots logs or source authority
+  ---
+  duration_ms: 5.16962
+  type: 'test'
+  ...
+# Subtest: unrecorded mismatched unavailable busy and forged review inputs cannot start delivery
+ok 17 - unrecorded mismatched unavailable busy and forged review inputs cannot start delivery
+  ---
+  duration_ms: 13.253821
+  type: 'test'
+  ...
+# Subtest: prepare sends only approved build identities and explicit download can retry the same frozen package
+ok 18 - prepare sends only approved build identities and explicit download can retry the same frozen package
+  ---
+  duration_ms: 10.579637
+  type: 'test'
+  ...
+# Subtest: scene service backend identity and visibility changes revoke pending preparation and release every late package
+ok 19 - scene service backend identity and visibility changes revoke pending preparation and release every late package
+  ---
+  duration_ms: 31.717551
+  type: 'test'
+  ...
+# Subtest: close dispose and cancellation abort requests and never publish a late prepared receipt
+ok 20 - close dispose and cancellation abort requests and never publish a late prepared receipt
+  ---
+  duration_ms: 19.267361
+  type: 'test'
+  ...
+# Subtest: forged job filename IDs counts nested review or extra fields fail closed and keep preparation retryable
+ok 21 - forged job filename IDs counts nested review or extra fields fail closed and keep preparation retryable
+  ---
+  duration_ms: 64.727991
+  type: 'test'
+  ...
+# Subtest: cancelled stale closed or expired download checks cannot dispatch a browser download
+ok 22 - cancelled stale closed or expired download checks cannot dispatch a browser download
+  ---
+  duration_ms: 23.224435
+  type: 'test'
+  ...
+# Subtest: native save binds requestId keeps cancelled jobs retryable and blocks close until the picker settles
+ok 23 - native save binds requestId keeps cancelled jobs retryable and blocks close until the picker settles
+  ---
+  duration_ms: 8.717571
+  type: 'test'
+  ...
+# Subtest: dispose during a native picker keeps its pending job until matching completion then removes listeners and UI
+ok 24 - dispose during a native picker keeps its pending job until matching completion then removes listeners and UI
+  ---
+  duration_ms: 7.231857
+  type: 'test'
+  ...
+# Subtest: native request failures preserve retryability and stale context releases only after the picker completes
+ok 25 - native request failures preserve retryability and stale context releases only after the picker completes
+  ---
+  duration_ms: 11.562549
+  type: 'test'
+  ...
+# Subtest: busy and language changes preserve ready packages source independence and translated review state
+ok 26 - busy and language changes preserve ready packages source independence and translated review state
+  ---
+  duration_ms: 7.765727
+  type: 'test'
+  ...
+# Subtest: delivery messages have English and Japanese translations and narrow layout rules are present
+ok 27 - delivery messages have English and Japanese translations and narrow layout rules are present
+  ---
+  duration_ms: 1.887004
+  type: 'test'
+  ...
+# Subtest: delivery launcher requires recorded verification manifest hash capability and a port without altering ordinary inspection
+ok 28 - delivery launcher requires recorded verification manifest hash capability and a port without altering ordinary inspection
+  ---
+  duration_ms: 16.268181
+  type: 'test'
+  ...
+# Subtest: delivery launcher rechecks capability busy and ownership when clicked even without repaint
+ok 29 - delivery launcher rechecks capability busy and ownership when clicked even without repaint
+  ---
+  duration_ms: 19.004584
+  type: 'test'
+  ...
+# Subtest: closing a prepared package before any download cleans it while closing after browser handoff leaves TTL ownership
+ok 30 - closing a prepared package before any download cleans it while closing after browser handoff leaves TTL ownership
+  ---
+  duration_ms: 11.363832
+  type: 'test'
+  ...
+# Subtest: a rejected receipt diagnostic changes language without preparing again
+ok 31 - a rejected receipt diagnostic changes language without preparing again
+  ---
+  duration_ms: 5.467015
+  type: 'test'
+  ...
+# Subtest: legacy hosts, foreign scene/backend, malformed and duplicate summaries cannot expose a project read
+ok 32 - legacy hosts, foreign scene/backend, malformed and duplicate summaries cannot expose a project read
+  ---
+  duration_ms: 6.030942
+  type: 'test'
+  ...
+# Subtest: older project selection is independent of the latest run build and authored labels stay text
+ok 33 - older project selection is independent of the latest run build and authored labels stay text
+  ---
+  duration_ms: 6.111945
+  type: 'test'
+  ...
+# Subtest: successful Godot details expose exact frozen source, tool and adapter plus classified files and evidence
+ok 34 - successful Godot details expose exact frozen source, tool and adapter plus classified files and evidence
+  ---
+  duration_ms: 7.155452
+  type: 'test'
+  ...
+# Subtest: Bevy details distinguish scene data from Cargo, author Rust and a standalone distribution
+ok 35 - Bevy details distinguish scene data from Cargo, author Rust and a standalone distribution
+  ---
+  duration_ms: 4.976786
+  type: 'test'
+  ...
+# Subtest: old unrecorded manifests disclose read-only reconstruction and missing adapter facts
+ok 36 - old unrecorded manifests disclose read-only reconstruction and missing adapter facts
+  ---
+  duration_ms: 5.389808
+  type: 'test'
+  ...
+# Subtest: read-only inspection is available with dirty author drafts, offline sources, unavailable tools and active runs
+ok 37 - read-only inspection is available with dirty author drafts, offline sources, unavailable tools and active runs
+  ---
+  duration_ms: 4.92661
+  type: 'test'
+  ...
+# Subtest: failed, cancelled and timeout records are visible but never authorize inspecting or running an intact project
+ok 38 - failed, cancelled and timeout records are visible but never authorize inspecting or running an intact project
+  ---
+  duration_ms: 9.043849
+  type: 'test'
+  ...
+# Subtest: all six preserved reasons explain why a project is outside automatic cleanup
+ok 39 - all six preserved reasons explain why a project is outside automatic cleanup
+  ---
+  duration_ms: 13.852415
+  type: 'test'
+  ...
+# Subtest: pending reads lock picker and repeated inspect while close cancels only the view
+ok 40 - pending reads lock picker and repeated inspect while close cancels only the view
+  ---
+  duration_ms: 5.150284
+  type: 'test'
+  ...
+# Subtest: new open survives a late closed read and late failure never alerts or damages the new view
+ok 41 - new open survives a late closed read and late failure never alerts or damages the new view
+  ---
+  duration_ms: 7.515865
+  type: 'test'
+  ...
+# Subtest: scene, descriptor and parent session changes invalidate a pending response and existing detail
+ok 42 - scene, descriptor and parent session changes invalidate a pending response and existing detail
+  ---
+  duration_ms: 23.653809
+  type: 'test'
+  ...
+# Subtest: pruned, retention-changed or mismatched summary ownership cannot retain an old approval
+ok 43 - pruned, retention-changed or mismatched summary ownership cannot retain an old approval
+  ---
+  duration_ms: 26.765272
+  type: 'test'
+  ...
+# Subtest: forged build, scene, snapshot and backend manifests are rejected before any detail content
+ok 44 - forged build, scene, snapshot and backend manifests are rejected before any detail content
+  ---
+  duration_ms: 23.608694
+  type: 'test'
+  ...
+# Subtest: unvalidated generated paths, roles and resource mismatches cannot be rendered as inventory
+ok 45 - unvalidated generated paths, roles and resource mismatches cannot be rendered as inventory
+  ---
+  duration_ms: 17.870475
+  type: 'test'
+  ...
+# Subtest: partial directory inventories visibly remain incomplete, and contradictory complete receipts fail closed
+ok 46 - partial directory inventories visibly remain incomplete, and contradictory complete receipts fail closed
+  ---
+  duration_ms: 8.578006
+  type: 'test'
+  ...
+# Subtest: unknown Linux names are visibly escaped, and the inspection inventory budget matches the host
+ok 47 - unknown Linux names are visibly escaped, and the inspection inventory budget matches the host
+  ---
+  duration_ms: 56.330106
+  type: 'test'
+  ...
+# Subtest: unsafe extra inventory paths fail closed and directory ownership errors receive a specific explanation
+ok 48 - unsafe extra inventory paths fail closed and directory ownership errors receive a specific explanation
+  ---
+  duration_ms: 17.695654
+  type: 'test'
+  ...
+# Subtest: invalid inspection receipts and unsafe display directories fail closed without path navigation
+ok 49 - invalid inspection receipts and unsafe display directories fail closed without path navigation
+  ---
+  duration_ms: 14.063576
+  type: 'test'
+  ...
+# Subtest: changed engineering files produce a specific safe explanation and preserve the selected row
+ok 50 - changed engineering files produce a specific safe explanation and preserve the selected row
+  ---
+  duration_ms: 7.046405
+  type: 'test'
+  ...
+# Subtest: Chinese, English and Japanese retranslate structured details while author paths and versions stay literal
+ok 51 - Chinese, English and Japanese retranslate structured details while author paths and versions stay literal
+  ---
+  duration_ms: 19.711813
+  type: 'test'
+  ...
+# Subtest: all interface keys in the new view and retention reasons have English and Japanese entries
+ok 52 - all interface keys in the new view and retention reasons have English and Japanese entries
+  ---
+  duration_ms: 15.505416
+  type: 'test'
+  ...
+# Subtest: destroy is idempotent and detached read completion cannot recreate UI
+ok 53 - destroy is idempotent and detached read completion cannot recreate UI
+  ---
+  duration_ms: 3.291814
+  type: 'test'
+  ...
+1..53
+# tests 53
+# suites 0
+# pass 53
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 774.534629

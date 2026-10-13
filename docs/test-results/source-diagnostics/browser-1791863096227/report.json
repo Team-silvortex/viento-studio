@@ -1,0 +1,219 @@
+{
+  "startedAt": "2026-10-13T03:44:56.227Z",
+  "steps": [],
+  "screenshots": [
+    "failure.png"
+  ],
+  "errors": [],
+  "dialogs": [],
+  "layout": {},
+  "limitations": [
+    "Actual Chrome and local HTTP editor. No installed Tauri window, mobile WebView, Android, or other desktop OS claim.",
+    "Build planning and its static source diagnostics are exercised. No backend generation, engine execution, language server, packaged Tauri, mobile WebView or Android claim.",
+    "The existing source serializer retains BOM and source newline style; it does not guarantee every mixed ending inside an edited middle region remains byte-identical."
+  ],
+  "browser": "Chrome/154.0.8037.97",
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "sources": {
+    "engine/source-diagnostic.mjs": "5060a7cddc502fb3e4a664914ec01257afb299ffa2ef9ce6fbc11812ac492e90",
+    "engine/source-position.mjs": "204a0b68649937a0fffd552fbe5a384058c42f51447884b73023871be6f15cc3",
+    "engine/source-draft.mjs": "aa67dd9d5829b0f2fb3ac46388745dfe271c02e49bc6d079bb753e55b5864c74",
+    "web/modules/app-source-diagnostic.js": "378ec9944ce4a5273253bde4d685b058ce2c56bb830331564e68a2c6747cc68a",
+    "web/source-diagnostic.css": "890b14e29198f94f69c440d7e6e062a69cfe8771e9fe67c689125b924d4b6a6b",
+    "web/modules/app-source-reveal.js": "7c301fce690ef928446c0503f209d215ecd5f3d5c98ef98e31ef3996e7e2fa8b",
+    "web/modules/app-source-location.js": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70",
+    "web/modules/app-source-position.js": "83cd287e97da59b7bcb97208bcf08cb5801ddd3acb2b4e3beceeddf83842e5bb",
+    "web/modules/app-runtime.js": "1433215b610c6cb8757ee88f44dde68babd28ebf61ca6172c3e65040e5477025",
+    "web/modules/app-project-build.js": "a5201cf7b8430d481b850451657f7c2b2050235602a64ea9b6e5dc7d17174a3e",
+    "web/i18n/en.js": "846d786dbc0d9d5ec1f4eb6a522ed7ab35b5299acd3f0b30fbe38ce0a75b6b19",
+    "web/i18n/ja.js": "d6abd086c680ef39f754de2e967bdd9a7395a66988e80a35f1023d50401578bd",
+    "scripts/tests/source-diagnostic-smoke.mjs": "52af32e21aaa4294f2a3bce84e22b26b93f50b87b000b8bd723b4aa983305168"
+  },
+  "plan": {
+    "id": "e63b8a75-03c1-409e-b2af-d09fdda69d79",
+    "kind": "plan",
+    "status": "failed",
+    "diagnostics": [
+      {
+        "severity": "error",
+        "code": "build_scene_value",
+        "message": "Provide a scene title of 1–160 characters.",
+        "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sourcePath": "documents/scenes/demo.json",
+        "propertyPath": "/title",
+        "sourceRevision": "sha256:2132a610d2ca034cdc9768edce36555423f69cce080c154623374c63a75b35a4",
+        "sourceRange": {
+          "start": 69,
+          "end": 4621,
+          "encoding": "utf-16",
+          "propertyPath": "/title",
+          "exact": true
+        }
+      },
+      {
+        "severity": "error",
+        "code": "build_actor_value",
+        "message": "Speed must be from 0 to 2000.",
+        "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sourcePath": "documents/scenes/demo.json",
+        "propertyPath": "/actors/0/speed",
+        "sourceRevision": "sha256:2132a610d2ca034cdc9768edce36555423f69cce080c154623374c63a75b35a4",
+        "sourceRange": {
+          "start": 4927,
+          "end": 4942,
+          "encoding": "utf-16",
+          "propertyPath": "/actors/0/speed",
+          "exact": true
+        }
+      }
+    ]
+  },
+  "passed": false,
+  "failure": "Error: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":8,\"columnNumber\":172,\"scriptId\":\"177\",\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"SyntaxError\",\"description\":\"SyntaxError: Invalid or unexpected token\",\"objectId\":\"-1034710809306093014.1.2\"}}\n    at evaluate (file:///tmp/viento-source-diagnostics-mdoe9xlq/candidate/scripts/tests/source-diagnostic-smoke.mjs:59:39)\n    at async file:///tmp/viento-source-diagnostics-mdoe9xlq/candidate/scripts/tests/source-diagnostic-smoke.mjs:136:20",
+  "pageFailure": {
+    "text": "收起目录\nV\nViento Studio\n0.1.0\n设置\n项目类型与模板\n世界与对象\n构建与运行\n导出\n浏览\n编辑\n3D预览\n编辑3D变换\n管理3D对象\n编辑3D环境\n编辑3D属性\n整体移动3D对象\n对齐3D位置\n等距分布3D位置\n批量复制3D对象\n批量移除3D对象\n×\n全部（2）\n角色 / ACTOR（1）\n场景 / SCENE（1）\n当前显示 2 个文档（共 2 个） （静态生成 2026/10/13 11:44:57）\n分类 角色 / ACTOR（1）\n角色 / ACTOR（1）\ntraveler\n角色 / Actor · 角色 / Actor\n可编辑\n分类 场景 / SCENE（1）\n场景 / SCENE（1）\ndemo\n场景 / Scene · 场景 / Scene\n可编辑\ndemo\n源码编辑\n分段编辑\n字段编辑\n返回阅读\n插入素材\n保存修改\n新建脚本\n源文件：documents/scenes/demo.json\n缩进单位\n制表符\n2 个空格\n4 个空格\n增加缩进\n减少缩进\n第 22 行，第 31 列 · 共 28 行\n跳转到行\n原文诊断：错误\n关闭诊断\n\n角色字段的值不符合要求，请检查标出的位置。\n\ndocuments/scenes/demo.json · /actors/0/speed · 第 22 行，第 16 列\n\n此位置来自已核对的原文；修改后请重新检查。\n\n诊断详情\n与文件一致\n已定位来源字段：/actors/0/speed\n3,567 字 · 28 行\nCtrl / ⌘ + S 保存",
+    "source": "﻿{\n  \"format\": \"viento-scene2d\",\n  \"schemaVersion\": 1,\n  \"title\": \"换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 \",\n  \"viewport\": [\n    800,\n    480\n  ],\n  \"background\": \"#0d1829\",\n  \"actors\": [\n    {\n      \"objectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\n      \"position\": [\n        200,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": \"invalid speed\",\n      \"controls\": \"arrows\",\n      \"imageResourceId\": \"cccccccc-cccc-4ccc-8ccc-cccccccccccc\"\n    }\n  ]\n}\n",
+    "panel": "<section id=\"sourceDiagnosticPanel\" class=\"source-diagnostic-panel\" aria-labelledby=\"sourceDiagnosticTitle\" data-status=\"exact\" data-severity=\"error\"><div class=\"source-diagnostic-heading\"><strong id=\"sourceDiagnosticTitle\">原文诊断：错误</strong><button id=\"sourceDiagnosticDismiss\" type=\"button\" class=\"doc-btn doc-btn-ghost\">关闭诊断</button></div><p id=\"sourceDiagnosticMessage\">角色字段的值不符合要求，请检查标出的位置。</p><p id=\"sourceDiagnosticLocation\">documents/scenes/demo.json · /actors/0/speed · 第 22 行，第 16 列</p><p id=\"sourceDiagnosticState\" role=\"status\" aria-live=\"polite\">此位置来自已核对的原文；修改后请重新检查。</p><details id=\"sourceDiagnosticDetails\"><summary id=\"sourceDiagnosticDetailsLabel\">诊断详情</summary><code id=\"sourceDiagnosticCode\">build_actor_value</code><pre id=\"sourceDiagnosticDetailText\">Speed must be from 0 to 2000.</pre></details></section>",
+    "dialog": "<dialog id=\"projectBuildDialog\" class=\"project-build\" aria-labelledby=\"projectBuildTitle\" aria-busy=\"false\"><header class=\"build-heading\"><div><h2 id=\"projectBuildTitle\" data-i18n=\"构建与运行\">构建与运行</h2><p id=\"projectBuildBackend\">Godot 4 · 0.5.0</p></div>\n    <button id=\"projectBuildClose\" type=\"button\" class=\"doc-btn\" data-i18n=\"返回编辑器\">返回编辑器</button></header>\n    <p id=\"projectBuildNote\" class=\"build-note\" data-i18n=\"从已保存的场景生成独立产物。关闭面板后任务继续，可随时返回查看。\">从已保存的场景生成独立产物。关闭面板后任务继续，可随时返回查看。</p>\n    <p id=\"projectBuildCapabilities\" class=\"build-note\">已声明能力：构建场景 · 无头逻辑测试 · 独立窗口预览 · 窗口截图</p><p id=\"projectBuildAvailability\" role=\"status\" aria-live=\"polite\">宿主尚未配置构建工具，可先检查计划。</p>\n    <button id=\"projectBuildToolCheck\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"检查工具身份\">检查工具身份</button>\n    <p id=\"projectBuildCatalogDiagnostic\" class=\"build-note\" role=\"status\" hidden=\"\" data-i18n=\"工程来源暂时不可读取。可以查看或运行已有构建；恢复来源并刷新后才能检查计划或构建。\">工程来源暂时不可读取。可以查看或运行已有构建；恢复来源并刷新后才能检查计划或构建。</p>\n    <p id=\"projectBuildDraft\" class=\"build-note\" hidden=\"\" data-i18n=\"请先保存或结束编辑草稿，再检查、构建或运行。当前草稿会保留。\">请先保存或结束编辑草稿，再检查、构建或运行。当前草稿会保留。</p>\n    <div class=\"build-scene-picker\"><label id=\"projectBuildSceneLabel\" for=\"projectBuildScene\">构建场景文档</label><select id=\"projectBuildScene\" data-scenes=\"[[{&quot;id&quot;:&quot;dddddddd-dddd-4ddd-8ddd-dddddddddddd&quot;,&quot;sourcePath&quot;:&quot;documents/scenes/demo.json&quot;,&quot;title&quot;:&quot;换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀&quot;},&quot;&quot;]]\"><option class=\"\" value=\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\">换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 · documents/scenes/demo.json</option></select>\n    <button id=\"projectBuildRefresh\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"刷新状态\">刷新状态</button></div>\n    <button id=\"projectBuildEditScene\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"编辑场景\">编辑场景</button>\n    <button id=\"projectBuildCreateScene\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"创建场景\">创建场景</button>\n    <button id=\"projectBuildCreateBehavior\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"添加场景行为\">添加场景行为</button>\n    <p id=\"projectBuildEmpty\" hidden=\"\" data-i18n=\"暂无可构建场景。请添加已登记的 viento-scene2d JSON 场景文档。\">暂无可构建场景。点击创建场景，选择已有对象开始。</p>\n    <div id=\"projectBuildTabs\" class=\"build-tabs\" role=\"tablist\" data-i18n-aria-label=\"场景与构建选项卡\" aria-label=\"场景与构建选项卡\">\n      <button id=\"projectBuildTabPreview\" type=\"button\" role=\"tab\" aria-controls=\"projectBuildPreviewPanel\" aria-selected=\"false\" tabindex=\"-1\" data-i18n=\"场景预览\">场景预览</button>\n      <button id=\"projectBuildTabBuild\" type=\"button\" role=\"tab\" aria-controls=\"projectBuildTaskPanel\" aria-selected=\"true\" tabindex=\"0\" data-i18n=\"构建任务\">构建任务</button>\n    </div>\n    <section id=\"projectBuildPreviewPanel\" role=\"tabpanel\" aria-labelledby=\"projectBuildTabPreview\" hidden=\"\" class=\"scene-preview\" data-scene-preview-state=\"empty\" aria-busy=\"false\"><p class=\"build-note\" data-i18n=\"查看已保存场景或当前原文草稿的静态布局，无需构建或安装运行引擎。移动、输入和状态变化请使用运行测试。\">查看已保存场景或当前原文草稿的静态布局，无需构建或安装运行引擎。移动、输入和状态变化请使用运行测试。</p>\n    <p id=\"scenePreviewDraft\" class=\"build-hint\" hidden=\"\" data-i18n=\"存在未保存草稿；预览仍使用上次保存的场景和投影。\">存在未保存草稿；预览仍使用上次保存的场景和投影。</p>\n    <div class=\"scene-preview-toolbar\"><button id=\"scenePreviewRefresh\" type=\"button\" class=\"doc-btn\">预览已保存场景</button>\n    <button id=\"scenePreviewDraftRefresh\" type=\"button\" class=\"doc-btn\" data-i18n=\"预览当前草稿\" disabled=\"\">预览当前草稿</button>\n    <button id=\"scenePreviewFit\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"适应画布\" disabled=\"\">适应画布</button>\n    <button id=\"scenePreviewZoomOut\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"缩小\" disabled=\"\">缩小</button>\n    <output id=\"scenePreviewZoom\" aria-live=\"off\"></output>\n    <button id=\"scenePreviewZoomIn\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"放大\" disabled=\"\">放大</button>\n    <label class=\"scene-preview-grid\"><input id=\"scenePreviewGrid\" type=\"checkbox\" disabled=\"\"><span data-i18n=\"显示网格\">显示网格</span></label></div>\n    <p id=\"scenePreviewMessage\" role=\"status\" aria-live=\"polite\">请选择场景以查看预览。</p>\n    <p id=\"scenePreviewProvenance\" class=\"build-hint\"></p>\n    <p id=\"scenePreviewSummary\" class=\"build-hint\"></p>\n    <p id=\"scenePreviewComposition\" class=\"build-hint\" hidden=\"\">配方预览（只读） · 该预览由配方展开生成；请编辑配方原文以修改布局。</p><div id=\"scenePreviewSceneSources\" class=\"scene-preview-toolbar\" hidden=\"\"></div>\n    <p class=\"build-hint\" id=\"scenePreviewHelp\" data-i18n=\"点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。\" hidden=\"\">点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。</p>\n    <div class=\"scene-preview-layout\"><canvas id=\"scenePreviewCanvas\" tabindex=\"0\" aria-describedby=\"scenePreviewHelp\" data-i18n-aria-label=\"已保存的二维场景预览\" aria-label=\"已保存的二维场景预览\" hidden=\"\"></canvas>\n    <aside><h3 data-i18n=\"场景对象\">场景对象</h3><label class=\"scene-field\"><span data-i18n=\"搜索场景对象与分组\">搜索场景对象与分组</span><input id=\"scenePreviewSearch\" type=\"search\"></label><ol id=\"scenePreviewObjects\"><li class=\"build-hint\">没有匹配的场景对象或分组。</li></ol><p id=\"scenePreviewSelection\" role=\"status\" aria-live=\"polite\">从画布或对象列表选择角色。</p>\n    <section id=\"scenePreviewInspector\" aria-labelledby=\"scenePreviewInspectorTitle\" hidden=\"\"><h3 id=\"scenePreviewInspectorTitle\" data-i18n=\"对象属性\">对象属性</h3><div id=\"scenePreviewProperties\"></div><button id=\"scenePreviewCompositionOverride\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"编辑此实例覆盖\" disabled=\"\">编辑此实例覆盖</button><button id=\"scenePreviewCompositionLayout\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"调整此实例布局\" disabled=\"\">调整此实例布局</button><button id=\"scenePreviewCompositionFragment\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"编辑共享片段\" disabled=\"\">编辑共享片段</button><button id=\"scenePreviewCompositionPlacement\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"调整整组偏移\" disabled=\"\">调整整组偏移</button><p id=\"scenePreviewCompositionOverrideHint\" class=\"build-hint\" hidden=\"\">请先在源码模式打开同一配方，再编辑此实例覆盖。</p></section></aside></div>\n    <div class=\"scene-preview-toolbar\"><button id=\"scenePreviewCompositionDefinitions\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"管理片段定义\" disabled=\"\">管理片段定义</button><button id=\"scenePreviewCompositionGroups\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"编辑组织分组\" disabled=\"\">编辑组织分组</button><button id=\"scenePreviewCompositionPlacements\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"管理片段放置\" disabled=\"\">管理片段放置</button><button id=\"scenePreviewCompositionStructure\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"编辑片段结构\" disabled=\"\">编辑片段结构</button><button id=\"scenePreviewCompositionBatchLayout\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"调整配方布局\" disabled=\"\">调整配方布局</button><button id=\"scenePreviewDraftLayoutEdit\" type=\"button\" class=\"doc-btn\" hidden=\"\" data-i18n=\"调整草稿布局\" disabled=\"\">调整草稿布局</button><button id=\"scenePreviewLayoutEdit\" type=\"button\" class=\"doc-btn\" data-i18n=\"编辑场景布局\" hidden=\"\" disabled=\"\">编辑场景布局</button><button id=\"scenePreviewEdit\" type=\"button\" class=\"doc-btn\" data-i18n=\"编辑场景\" disabled=\"\">编辑场景</button>\n    <button id=\"scenePreviewSource\" type=\"button\" class=\"doc-btn doc-btn-ghost\" disabled=\"\">打开场景原文</button></div>\n    <ul id=\"scenePreviewDiagnostics\" class=\"scene-diagnostics\"></ul></section>\n    <section id=\"projectBuildTaskPanel\" role=\"tabpanel\" aria-labelledby=\"projectBuildTabBuild\">\n    <div class=\"build-actions\"><button id=\"projectBuildPlan\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"检查计划\">检查计划</button>\n    <button id=\"projectBuildGenerate\" type=\"button\" class=\"doc-btn\" data-i18n=\"构建场景\" disabled=\"\">构建场景</button>\n    <button id=\"projectBuildHeadless\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"无头测试\" disabled=\"\">无头测试</button>\n    <button id=\"projectBuildControl\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"控制回放\" disabled=\"\">控制回放</button>\n    <button id=\"projectBuildCaseRun\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"运行验收\" disabled=\"\">运行验收</button>\n    <button id=\"projectBuildWindow\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"窗口预览\" disabled=\"\">窗口预览</button>\n    <button id=\"projectBuildCancel\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"取消任务\" hidden=\"\">取消任务</button></div>\n    <details id=\"projectBuildControlEditor\" class=\"build-control-editor\"><summary data-i18n=\"编辑控制回放\">编辑控制回放</summary>\n    <p class=\"build-hint\" data-i18n=\"方向键按固定步长逐步回放；仅用于本次无头测试，不写入作品文件。\">方向键按固定步长逐步回放；仅用于本次无头测试，不写入作品文件。</p>\n    <div class=\"build-control-target\"><label for=\"projectBuildControlTarget\" data-i18n=\"输入示例的目标\">输入示例的目标</label><select id=\"projectBuildControlTarget\" data-targets=\"[&quot;&quot;,[],&quot;全部方向键实例（全局）&quot;]\" disabled=\"\"><option class=\"\" value=\"\">全部方向键实例（全局）</option></select>\n    <button id=\"projectBuildControlExample\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"生成输入示例\" disabled=\"\">生成输入示例</button></div>\n    <p id=\"projectBuildControlTargetHint\" class=\"build-hint\" hidden=\"\" data-i18n=\"实例输入按步骤独立生效；某一步未列出的实例会释放方向键，不延续上一步输入。\">实例输入按步骤独立生效；某一步未列出的实例会释放方向键，不延续上一步输入。</p>\n    <label for=\"projectBuildControlProgram\" data-i18n=\"控制步骤（JSON）\">控制步骤（JSON）</label><textarea id=\"projectBuildControlProgram\" spellcheck=\"false\" maxlength=\"262144\" rows=\"9\" aria-describedby=\"projectBuildControlBudget projectBuildControlError\"></textarea>\n    <p id=\"projectBuildControlBudget\" class=\"build-hint\">4 步 · 每步 0.25 秒 · 共 1 秒</p><p id=\"projectBuildControlError\" role=\"alert\" hidden=\"\"></p></details>\n    <details id=\"projectBuildCaseEditor\" class=\"build-control-editor\"><summary data-i18n=\"编辑运行验收\">编辑运行验收</summary>\n    <p class=\"build-hint\" data-i18n=\"按实例和步骤检查位置或状态；运行使用冻结构建，保存用例需明确操作。执行完成与验收通过分别显示。\">按实例和步骤检查位置或状态；运行使用冻结构建，保存用例需明确操作。执行完成与验收通过分别显示。</p>\n    <div id=\"projectBuildCaseDocuments\"><div class=\"build-case-documents\"><h4 data-i18n=\"工程验收用例\">工程验收用例</h4>\n    <p class=\"build-hint\" data-i18n=\"用例保存到工程正文，可随工程或资源包迁移。载入不会改动控制回放文本。\">用例保存到工程正文，可随工程或资源包迁移。载入不会改动控制回放文本。</p>\n    <div class=\"build-case-document-picker\"><label for=\"projectBuildCaseDocumentSelect\" data-i18n=\"已保存用例\">已保存用例</label>\n    <select id=\"projectBuildCaseDocumentSelect\" data-signature=\"[[],&quot;&quot;,&quot;请先刷新用例列表&quot;,&quot;暂无已保存用例&quot;,&quot;需要修复&quot;]\" disabled=\"\"><option value=\"\">请先刷新用例列表</option></select>\n    <button id=\"projectBuildCaseDocumentRefresh\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"刷新用例\" disabled=\"\">刷新用例</button>\n    <button id=\"projectBuildCaseDocumentLoad\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"载入用例\" disabled=\"\">载入用例</button></div>\n    <div class=\"build-case-document-fields\"><label for=\"projectBuildCaseDocumentPath\" data-i18n=\"用例保存位置\">用例保存位置</label>\n    <input id=\"projectBuildCaseDocumentPath\" type=\"text\" maxlength=\"2048\" autocomplete=\"off\">\n    <label for=\"projectBuildCaseDocumentType\" data-i18n=\"用例文档类型\">用例文档类型</label><select id=\"projectBuildCaseDocumentType\" data-signature=\"[]\"></select></div>\n    <div class=\"build-actions\"><button id=\"projectBuildCaseDocumentSave\" type=\"button\" class=\"doc-btn\" data-i18n=\"保存用例\" disabled=\"\">保存用例</button>\n    <button id=\"projectBuildCaseDocumentSaveAs\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"用例另存为\" disabled=\"\">用例另存为</button>\n    <button id=\"projectBuildCaseDocumentNew\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"作为新用例\">作为新用例</button></div>\n    <p id=\"projectBuildCaseDocumentStatus\" class=\"build-hint\" role=\"status\" aria-live=\"polite\">先刷新用例列表，即可选择或保存工程用例。</p>\n    <p id=\"projectBuildCaseDocumentError\" role=\"alert\" hidden=\"\"></p></div></div>\n    <button id=\"projectBuildCaseGenerate\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"从完整控制采样生成验收\" disabled=\"\">从完整控制采样生成验收</button>\n    <p id=\"projectBuildCaseHint\" class=\"build-hint\" data-i18n=\"可以粘贴验收 JSON，或先完成一次控制回放，再明确生成最后一步的预期检查。生成会替换当前验收文本。\">可以粘贴验收 JSON，或先完成一次控制回放，再明确生成最后一步的预期检查。生成会替换当前验收文本。</p>\n    <label for=\"projectBuildCaseProgram\" data-i18n=\"验收定义（JSON）\">验收定义（JSON）</label><textarea id=\"projectBuildCaseProgram\" spellcheck=\"false\" maxlength=\"262144\" rows=\"9\" aria-describedby=\"projectBuildCaseHint projectBuildCaseError\"></textarea>\n    <p id=\"projectBuildCaseError\" role=\"alert\" hidden=\"\"></p></details>\n    <div id=\"projectBuildSuites\"><details id=\"projectBuildSuiteEditor\" class=\"build-control-editor\"><summary data-i18n=\"批量运行验收\">批量运行验收</summary>\n    <p class=\"build-hint\" data-i18n=\"将同一场景的已保存用例组成有序验收组。保存后由宿主逐份运行；断言失败继续，执行失败或取消停止剩余用例。\">将同一场景的已保存用例组成有序验收组。保存后由宿主逐份运行；断言失败继续，执行失败或取消停止剩余用例。</p>\n    <div class=\"build-case-document-picker\"><label for=\"projectBuildSuiteSelect\" data-i18n=\"已保存验收组\">已保存验收组</label><select id=\"projectBuildSuiteSelect\" data-signature=\"[[],&quot;&quot;,&quot;请先刷新验收组列表&quot;,&quot;暂无已保存验收组&quot;,&quot;需要修复&quot;]\" disabled=\"\"><option value=\"\">请先刷新验收组列表</option></select>\n    <button id=\"projectBuildSuiteRefresh\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"刷新验收组与用例\" disabled=\"\">刷新验收组与用例</button>\n    <button id=\"projectBuildSuiteLoad\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"载入验收组\" disabled=\"\">载入验收组</button></div>\n    <fieldset class=\"build-suite-members\"><legend data-i18n=\"选择组内用例\">选择组内用例</legend><p id=\"projectBuildSuiteCount\" class=\"build-hint\">已选 0/16 份用例，按显示顺序执行。</p>\n    <div id=\"projectBuildSuiteCases\" data-signature=\"[[],[],false,&quot;需要修复&quot;,&quot;已选第 {0} 项&quot;,&quot;未选入验收组&quot;]\"></div></fieldset>\n    <div class=\"build-case-document-fields\"><label for=\"projectBuildSuitePath\" data-i18n=\"验收组保存位置\">验收组保存位置</label><input id=\"projectBuildSuitePath\" type=\"text\" maxlength=\"2048\" autocomplete=\"off\">\n    <label for=\"projectBuildSuiteType\" data-i18n=\"验收组文档类型\">验收组文档类型</label><select id=\"projectBuildSuiteType\" data-signature=\"[]\"></select></div>\n    <div class=\"build-actions\"><button id=\"projectBuildSuiteSave\" type=\"button\" class=\"doc-btn\" data-i18n=\"保存验收组\" disabled=\"\">保存验收组</button>\n    <button id=\"projectBuildSuiteSaveAs\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"验收组另存为\" disabled=\"\">验收组另存为</button>\n    <button id=\"projectBuildSuiteNew\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"作为新验收组\">作为新验收组</button>\n    <button id=\"projectBuildSuiteRun\" type=\"button\" class=\"doc-btn\" data-i18n=\"运行已保存验收组\" disabled=\"\">运行已保存验收组</button></div>\n    <p id=\"projectBuildSuiteStatus\" class=\"build-hint\" role=\"status\" aria-live=\"polite\">先刷新验收组与用例列表；选择成员不会改动用例原文。</p><p id=\"projectBuildSuiteError\" role=\"alert\" hidden=\"\"></p></details>\n    <section id=\"projectBuildSuiteResult\" class=\"build-case-result\" hidden=\"\" aria-labelledby=\"projectBuildSuiteResultTitle\"><h3 id=\"projectBuildSuiteResultTitle\" data-i18n=\"批量验收结果\">批量验收结果</h3>\n    <p id=\"projectBuildSuiteSummary\" role=\"status\" aria-live=\"polite\"></p><ol id=\"projectBuildSuiteEntries\" data-signature=\"\"></ol></section></div>\n    <div id=\"projectBuildCaseReport\"><section id=\"projectBuildCaseReportPanel\" class=\"build-case-report\" hidden=\"\" aria-labelledby=\"projectBuildCaseReportTitle\">\n    <div class=\"build-actions\"><h3 id=\"projectBuildCaseReportTitle\" data-i18n=\"用例验收详情\">用例验收详情</h3>\n    <button id=\"projectBuildCaseReportClose\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"关闭用例详情\">关闭用例详情</button></div>\n    <p class=\"build-hint\" data-i18n=\"这是本批次已完成成员的只读报告。导出保留捕获的定义和采样，不会更新用例或生成新的预期。\">这是本批次已完成成员的只读报告。导出保留捕获的定义和采样，不会更新用例或生成新的预期。</p>\n    <p id=\"projectBuildCaseReportStatus\" role=\"status\" aria-live=\"polite\"></p><p id=\"projectBuildCaseReportError\" role=\"alert\" hidden=\"\"></p>\n    <div id=\"projectBuildCaseReportContext\" class=\"build-monospace\"></div><ol id=\"projectBuildCaseReportChecks\"></ol>\n    <button id=\"projectBuildCaseReportExport\" type=\"button\" class=\"doc-btn\" data-i18n=\"导出用例报告 JSON\" disabled=\"\">导出用例报告 JSON</button></section></div>\n    <section id=\"projectBuildCaseResult\" class=\"build-case-result\" hidden=\"\" aria-labelledby=\"projectBuildCaseTitle\"><h3 id=\"projectBuildCaseTitle\" data-i18n=\"运行验收结果\">运行验收结果</h3>\n    <p id=\"projectBuildCaseSummary\" role=\"status\" aria-live=\"polite\"></p><ul id=\"projectBuildCaseChecks\"></ul></section>\n    <p id=\"projectBuildStatus\" role=\"status\" aria-live=\"polite\">检查计划 · 失败</p><p id=\"projectBuildError\" role=\"alert\" hidden=\"\"></p>\n    <div id=\"projectBuildBackendProjects\"><section id=\"backendProjectPanel\" class=\"backend-project\" hidden=\"\" aria-labelledby=\"backendProjectTitle\">\n    <h3 id=\"backendProjectTitle\" data-i18n=\"后端工程\">后端工程</h3>\n    <p id=\"backendProjectIntroduction\" class=\"build-hint\">这里列出当前及以前服务为此场景记录的后端工程。查看详情不会切换运行工程；请明确设为运行工程。</p>\n    <p id=\"backendProjectDiagnostic\" class=\"build-hint\" role=\"status\" hidden=\"\"></p>\n    <p id=\"backendProjectRuntime\" class=\"backend-project-runtime\" role=\"status\">当前场景尚未设置运行工程。</p>\n    <div class=\"backend-project-picker\"><label for=\"backendProjectSelect\" data-i18n=\"选择后端工程\">选择后端工程</label><select id=\"backendProjectSelect\" data-projects=\"[]\"></select>\n    <button id=\"backendProjectInspect\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"查看工程详情\" disabled=\"\">查看工程详情</button></div>\n    <button id=\"backendProjectActivate\" type=\"button\" class=\"doc-btn\" data-i18n=\"设为运行工程\" disabled=\"\">设为运行工程</button>\n    <p id=\"backendProjectOrigin\" class=\"build-hint\"></p><p id=\"backendProjectAvailability\" class=\"build-hint\"></p>\n    <p id=\"backendProjectRetention\" class=\"build-hint\">本次服务最多自动保留 3 份未改变的工程；修改过的工程与历史工程会保留。</p><p id=\"backendProjectSelection\" class=\"build-hint\"></p>\n    <section id=\"backendProjectDetails\" hidden=\"\" aria-labelledby=\"backendProjectDetailsTitle\">\n      <div class=\"build-actions\"><h3 id=\"backendProjectDetailsTitle\" data-i18n=\"后端工程详情\">后端工程详情</h3><button id=\"backendProjectClose\" type=\"button\" class=\"doc-btn doc-btn-ghost\" data-i18n=\"关闭工程详情\">关闭工程详情</button></div>\n      <button id=\"backendProjectDeliver\" type=\"button\" class=\"doc-btn\" data-i18n=\"交付工程\" hidden=\"\">交付工程</button><p id=\"backendProjectDeliveryHint\" class=\"build-hint\" hidden=\"\">交付已核对的生成工程；接收方仍需相应运行工具。</p>\n      <p id=\"backendProjectStatus\" role=\"status\" aria-live=\"polite\"></p><p id=\"backendProjectError\" role=\"alert\" hidden=\"\"></p>\n      <div id=\"backendProjectContent\"></div>\n    </section></section></div>\n    <section id=\"projectBuildPlanSummary\" class=\"build-summary\" hidden=\"\" aria-labelledby=\"projectBuildPlanTitle\"><h3 id=\"projectBuildPlanTitle\" data-i18n=\"构建计划\">构建计划</h3><p id=\"projectBuildPlanCounts\"></p><p id=\"projectBuildBehaviorCounts\" hidden=\"\"></p><p id=\"projectBuildSnapshot\" class=\"build-monospace\"></p></section>\n    <p id=\"projectBuildRunNote\" class=\"build-hint\" data-i18n=\"先检查计划，再构建。测试与预览使用最近成功构建的快照；编辑后需重新构建。无头测试不验证画面。\">新设计先检查计划再构建；历史工程需明确设为运行工程。所有测试、控制与预览使用当前运行工程的冻结快照，无头测试不验证画面。</p>\n    <section aria-labelledby=\"projectBuildDiagnosticsTitle\"><h3 id=\"projectBuildDiagnosticsTitle\" data-i18n=\"构建诊断\">构建诊断</h3><ul id=\"projectBuildDiagnostics\"><li class=\"build-diagnostic\"><p class=\"\">场景字段的值不符合要求，请检查标出的位置。</p><button class=\"doc-btn doc-btn-ghost\" type=\"button\">打开原文 · documents/scenes/demo.json/title</button></li><li class=\"build-diagnostic\"><p class=\"\">角色字段的值不符合要求，请检查标出的位置。</p><button class=\"doc-btn doc-btn-ghost\" type=\"button\">打开原文 · documents/scenes/demo.json/actors/0/speed</button></li></ul></section>\n    <p id=\"projectBuildEvents\" hidden=\"\">已收到 0 条运行事件；完整内容见原始细节。</p>\n    <section id=\"projectBuildRuntimeObjects\" class=\"build-runtime-objects\" hidden=\"\" aria-labelledby=\"projectBuildRuntimeObjectsTitle\"><h3 id=\"projectBuildRuntimeObjectsTitle\" data-i18n=\"运行对象\">运行对象</h3>\n    <p class=\"build-hint\" data-i18n=\"只读查看本次运行收到的对象状态与位置样本；控制回放按步骤采样，不代表实时坐标。\">只读查看本次运行收到的对象状态与位置样本；控制回放按步骤采样，不代表实时坐标。</p>\n    <p id=\"projectBuildRuntimePhase\" role=\"status\" aria-live=\"polite\"></p>\n    <label for=\"projectBuildRuntimeSearch\" data-i18n=\"查找运行对象\">查找运行对象</label><input id=\"projectBuildRuntimeSearch\" type=\"search\" maxlength=\"512\" autocomplete=\"off\" data-i18n-placeholder=\"按名称、实例或对象标识查找\" placeholder=\"按名称、实例或对象标识查找\">\n    <p id=\"projectBuildRuntimeCount\"></p><p id=\"projectBuildRuntimeEmpty\" hidden=\"\"></p><ul id=\"projectBuildRuntimeObjectList\"></ul></section>\n    <section id=\"projectBuildBehaviorEvents\" hidden=\"\" aria-labelledby=\"projectBuildBehaviorEventsTitle\"><h3 id=\"projectBuildBehaviorEventsTitle\" data-i18n=\"行为事件\">行为事件</h3><ul id=\"projectBuildBehaviorEventList\"></ul></section>\n    <details class=\"build-raw\"><summary data-i18n=\"原始细节与日志\">原始细节与日志</summary><pre id=\"projectBuildLogs\" tabindex=\"0\">{\n  \"severity\": \"error\",\n  \"code\": \"build_scene_value\",\n  \"message\": \"Provide a scene title of 1–160 characters.\",\n  \"objectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"sourcePath\": \"documents/scenes/demo.json\",\n  \"propertyPath\": \"/title\",\n  \"sourceRevision\": \"sha256:2132a610d2ca034cdc9768edce36555423f69cce080c154623374c63a75b35a4\",\n  \"sourceRange\": {\n    \"start\": 69,\n    \"end\": 4621,\n    \"encoding\": \"utf-16\",\n    \"propertyPath\": \"/title\",\n    \"exact\": true\n  }\n}\n\n{\n  \"severity\": \"error\",\n  \"code\": \"build_actor_value\",\n  \"message\": \"Speed must be from 0 to 2000.\",\n  \"objectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"sourcePath\": \"documents/scenes/demo.json\",\n  \"propertyPath\": \"/actors/0/speed\",\n  \"sourceRevision\": \"sha256:2132a610d2ca034cdc9768edce36555423f69cce080c154623374c63a75b35a4\",\n  \"sourceRange\": {\n    \"start\": 4927,\n    \"end\": 4942,\n    \"encoding\": \"utf-16\",\n    \"propertyPath\": \"/actors/0/speed\",\n    \"exact\": true\n  }\n}</pre></details></section></dialog>"
+  },
+  "serviceFailure": {
+    "supported": true,
+    "available": false,
+    "reason": "tool_missing",
+    "toolStatus": {
+      "format": "viento-execution-tool-status",
+      "schemaVersion": 1,
+      "backendId": "org.viento.godot4",
+      "status": "unchecked",
+      "reason": null,
+      "identity": null
+    },
+    "platform": "linux",
+    "backend": {
+      "format": "viento-execution-backend",
+      "schemaVersion": 1,
+      "id": "org.viento.godot4",
+      "label": "Godot 4",
+      "version": "0.5.0",
+      "platforms": [
+        "linux"
+      ],
+      "plans": [
+        {
+          "kind": "scene2d",
+          "schemaVersion": 1,
+          "runtimeProtocolVersion": 1
+        },
+        {
+          "kind": "scene2d",
+          "schemaVersion": 2,
+          "runtimeProtocolVersion": 2
+        },
+        {
+          "kind": "scene2d",
+          "schemaVersion": 3,
+          "runtimeProtocolVersion": 3
+        }
+      ],
+      "capabilities": [
+        "scene2d",
+        "input.arrows",
+        "state.movement",
+        "image",
+        "behavior.bindings",
+        "behavior.gdscript",
+        "runtime.control-replay",
+        "runtime.control-replay.instances"
+      ],
+      "execution": {
+        "build": true,
+        "headlessLogic": true,
+        "windowPreview": true,
+        "windowCapture": true,
+        "offscreenRender": false,
+        "embeddedViewport": false,
+        "gpuCompute": false
+      },
+      "extensions": []
+    },
+    "scenes": [
+      {
+        "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sourcePath": "documents/scenes/demo.json",
+        "title": "换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀"
+      }
+    ],
+    "previewDocuments": [
+      {
+        "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sourcePath": "documents/scenes/demo.json",
+        "title": "换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀 换行場景😀",
+        "kind": "scene"
+      }
+    ],
+    "catalogDiagnostic": null,
+    "job": {
+      "id": "e63b8a75-03c1-409e-b2af-d09fdda69d79",
+      "kind": "plan",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.godot4",
+      "status": "failed",
+      "phase": "completed",
+      "createdAt": "2026-10-13T03:44:57.864Z",
+      "diagnostics": [
+        {
+          "severity": "error",
+          "code": "build_scene_value",
+          "message": "Provide a scene title of 1–160 characters.",
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/demo.json",
+          "propertyPath": "/title",
+          "sourceRevision": "sha256:2132a610d2ca034cdc9768edce36555423f69cce080c154623374c63a75b35a4",
+          "sourceRange": {
+            "start": 69,
+            "end": 4621,
+            "encoding": "utf-16",
+            "propertyPath": "/title",
+            "exact": true
+          }
+        },
+        {
+          "severity": "error",
+          "code": "build_actor_value",
+          "message": "Speed must be from 0 to 2000.",
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/demo.json",
+          "propertyPath": "/actors/0/speed",
+          "sourceRevision": "sha256:2132a610d2ca034cdc9768edce36555423f69cce080c154623374c63a75b35a4",
+          "sourceRange": {
+            "start": 4927,
+            "end": 4942,
+            "encoding": "utf-16",
+            "propertyPath": "/actors/0/speed",
+            "exact": true
+          }
+        }
+      ],
+      "events": [],
+      "logs": "",
+      "plan": null,
+      "runtime": null,
+      "finishedAt": "2026-10-13T03:44:57.878Z"
+    },
+    "latestBuild": null,
+    "projects": [],
+    "projectManagement": {
+      "format": "viento-backend-project-management",
+      "schemaVersion": 1,
+      "scope": "host-catalog",
+      "retentionLimit": 3,
+      "preservedCount": 0,
+      "previousSessions": "explicit-verify",
+      "delivery": "viento-build-delivery-v1",
+      "catalogDiagnostic": null
+    }
+  }
+}
