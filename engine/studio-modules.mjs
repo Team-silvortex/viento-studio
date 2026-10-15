@@ -163,6 +163,7 @@ export const STUDIO_MODULES = freeze([
     ['scene.authoring.removal3d', 'authoring'],
   ]),
   moduleDescriptor('org.viento.scene-behaviors', [['scene.authoring.behaviors', 'authoring']]),
+  moduleDescriptor('org.viento.scene-audio', [['scene.authoring.audio', 'authoring']]),
 ]);
 
 export function createStudioModuleRegistry(input = STUDIO_MODULES) {

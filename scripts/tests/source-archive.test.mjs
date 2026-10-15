@@ -57,7 +57,9 @@ test('source archives retain both Rust crates and official examples while exclud
       await retain(`${crate}/${relative.replaceAll(path.sep, '/')}`);
     }
   }
-  const examples = ['scene2d', 'scene-composition', 'scene-behaviors', 'bevy-headless', 'scene3d'];
+  const examples = ['scene2d', 'scene-composition', 'scene-behaviors', 'scene-audio', 'bevy-headless', 'scene3d'];
+  for (const name of ['Cargo.toml', 'Cargo.lock', ...(await fs.readdir(path.join(application, 'scripts/backends/bevy-rust/src'), { recursive: true }))
+    .filter(file => file.endsWith('.rs')).map(file => `src/${file.replaceAll(path.sep, '/')}`)]) await retain(`scripts/backends/bevy-rust/${name}`);
   for (const example of examples) {
     const base = `examples/${example}`;
     for (const file of await fs.readdir(path.join(application, base), { recursive: true })) {
@@ -68,6 +70,7 @@ test('source archives retain both Rust crates and official examples while exclud
     'crates/viento-studio-core/target/debug/viento-core', 'crates/viento-studio-core/target/wasm32-unknown-unknown/release/viento_studio_core.wasm',
     'crates/viento-bevy-runtime/target/release/viento-bevy-runtime', 'crates/viento-bevy-runtime/target/debug/cache',
     'engine/studio-core.wasm', 'engine/studio-core.build.json', 'crates/scratch/notes.txt',
+    'scripts/backends/bevy-rust/target/debug/viento-bevy-behaviors',
     'workspaces/story/documents/private.md', 'src-tauri/target/debug/cache', 'desktop/resources/engine/studio-core.wasm',
     'examples/private-story/documents/private.md',
     ...examples.flatMap(example => [`.viento/local.json`, `.viento/cache/builds/build/scene-data.json`,

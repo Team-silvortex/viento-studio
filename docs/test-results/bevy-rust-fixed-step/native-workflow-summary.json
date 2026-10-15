@@ -1,0 +1,61 @@
+{
+  "format": "viento-bevy-fixed-step-native-evidence",
+  "schemaVersion": 1,
+  "toolchain": {
+    "cargo": {
+      "version": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)",
+      "sha256": "841072d1d92f9e841d9ba5b0814182a0adf064acf4527cd120967b7bc49dcb66"
+    },
+    "rustc": {
+      "version": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "sha256": "bff349e72704ff70bc08a234a3847338e797065bbedde5e556808bc87b7bf7c6"
+    }
+  },
+  "fixedStepBuildCount": 1,
+  "fixedStepRelocatedSceneCount": 19,
+  "suites": {
+    "fixedStep": {
+      "log": "native-workflow.log",
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0
+    },
+    "legacyReady": {
+      "log": "legacy-generator.log",
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "sourceSha256": {
+    "scripts/tests/bevy-rust-fixed-step.test.mjs": "49021b32a69c41a7d83f506ba9239733ffafedf8e11d615e307051253a29b5c0",
+    "scripts/tests/bevy-rust-project.test.mjs": "5e657c1944cb5800c327bec53ae79fcbf1227de64174cf7d1bc6d2128b90fedd",
+    "scripts/backends/bevy-rust/src/runtime.rs": "566e585520914e36850eca9318170993db38b4aa7379879eae32f0a2e91f6f7b",
+    "scripts/backends/bevy-rust/Cargo.toml": "074dc7863724868e2bae47a2146ed88ef6ff543b9c5a964d10dde0147f5d5cf4",
+    "scripts/backends/bevy-rust/Cargo.lock": "6e10bacff1b1e21af9e72a4026edfc7edf06ba5e28dc4e7eb32358e015c7e25f",
+    "scripts/backends/bevy-rust-project.mjs": "68d90b49a02686926178f8c451be66933f95ea07e1a1046f3c38160d84ab9971",
+    "engine/scene-behavior-events.mjs": "f94299bfa1a23a6f16911ff7cff82bb0df6574751dc8bcff5c2400571f4eb735"
+  },
+  "scope": [
+    "legacy ready compatibility",
+    "controls-none Rust motion",
+    "independent instances sharing a source",
+    "ready position initialization",
+    "same-instance declaration order",
+    "builtin input addition and cancellation",
+    "state from actual displacement",
+    "error and panic preserve previously committed events",
+    "invalid position writes stay sticky",
+    "trusted binding and parameter provenance",
+    "duplicate and late callback registration",
+    "cumulative per-binding 64-event budget",
+    "32 binding neutral reader budget",
+    "frozen source byte preservation and relocation"
+  ],
+  "limits": [
+    "Native callback position rollback is checked by the separate Rust unit suite; process-level failing cases verify event rollback and no finished frame.",
+    "No graphic window, control replay, GPU, captured callback state, or author OS sandbox is exercised."
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "format": "viento-bevy-fixed-step-evidence",
+  "schemaVersion": 1,
+  "date": "2026-10-13",
+  "productVersion": "0.1.2",
+  "backendId": "org.viento.bevy-rust",
+  "backendVersion": "0.2.0",
+  "bevyVersion": "0.19.1",
+  "modules": 20,
+  "declaredCapabilities": 37,
+  "release": false,
+  "installed": false,
+  "checks": {
+    "app": {
+      "tests": 4859,
+      "passed": 4751,
+      "failed": 0,
+      "skipped": 108,
+      "javascriptFiles": 799,
+      "versionAndApiPreflight": true,
+      "log": "app-check.log"
+    },
+    "runtimeRust": {
+      "tests": 17,
+      "passed": 17,
+      "failed": 0,
+      "fmt": true,
+      "clippyWarningsDenied": true,
+      "log": "rust-test.log"
+    },
+    "native": {
+      "fixedStep": {
+        "log": "native-workflow.log",
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      "legacyReady": {
+        "log": "legacy-generator.log",
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    "nativeScenarios": 19,
+    "nativeBuilds": 1,
+    "authoring": {
+      "tests": 37,
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0,
+      "log": "authoring.log"
+    },
+    "backendRegression": {
+      "tests": 42,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 1,
+      "log": "backend-regression.log"
+    },
+    "browser": {
+      "ok": true,
+      "workflowGroups": 7,
+      "screenshots": 10,
+      "errors": 0,
+      "summary": "browser-summary.json"
+    },
+    "prepared": {
+      "comparisons": 31,
+      "moduleChecks": 8,
+      "ok": true,
+      "report": "prepared.json"
+    }
+  },
+  "initialFailure": {
+    "log": "backend-regression-initial.log",
+    "cause": "Source-regex assertion required the previous tuple ECS component syntax. Removed implementation-shape assertion; real ECS execution and source integrity remain checked."
+  },
+  "preservation": {
+    "ok": true,
+    "historicalEvidenceAndExampleFiles": 6956,
+    "changed": [],
+    "installedAppImageSha256": "22fb45a03fe2a698ad1eec0b7c655161bd47d1769b5cf6ca7f65b12bce5ccc48",
+    "installationChanged": false
+  },
+  "cleanup": {
+    "ok": true,
+    "removed": [
+      {
+        "path": "/home/chiharukiryu/cdev/viento-studio/desktop/resources",
+        "files": 638,
+        "bytes": 8877511,
+        "proof": "desktop-cleanup-plan.json"
+      },
+      {
+        "path": "/tmp/viento-bevy-fixed-target",
+        "files": 1329,
+        "bytes": 467224766,
+        "proof": "runtime-cleanup-plan.json"
+      }
+    ],
+    "removedBytes": 476102277,
+    "preserved": [
+      "historical evidence",
+      "examples",
+      "installed app",
+      "author workspaces",
+      "Cargo registry",
+      "mobile prepared resources",
+      "desktop UI and i18n"
+    ]
+  },
+  "limits": [
+    "Linux headless Bevy only; Studio runs two 0.25-second fixed steps.",
+    "Current callback host API stages own-position, registration and events; arbitrary native side effects are outside rollback.",
+    "No new image/GPU/window, input replay, LSP, hot reload, Android or installed Tauri validation.",
+    "Cargo source delivery requires a matching toolchain and dependency cache.",
+    "Focused and native suites overlap with full application tests; counts must not be summed."
+  ]
+}

@@ -8,9 +8,11 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 
 ## 当前状态
 
-源码版本为 **0.1.2**。本版补齐源码查找替换、当前任务问题列表，以及从对象／投影创建多演员配方、起始排布、生成独立二维场景到 Godot 运行与工程交付的工作流；详见 [版本记录](docs/RELEASE_0.1.2.md)。
+源码版本为 **0.1.3**，收录多实例／多脚本首次行为创建、已有行为脚本引用管理、Bevy Rust 就绪与固定步行为，以及独立场景声音和 Godot 资源工程交付；详见[版本记录](docs/RELEASE_0.1.3.md)。当前为 **21 模块／38 项声明能力**。
 
-本次交付源码，新功能可从源码启动或自行构建安装包。本机最近的 [Linux 安装验收为 0.1.1 工作树](docs/test-results/native-installed-0.1.1/README.md)，早于新配方创建、演员清单和起始排布助手；该安装记录不代表 0.1.2 安装验收。
+[行为创作](docs/SCENE_BEHAVIORS.md)支持清单审阅、独立参数／信号编辑与普通保存。[Bevy Rust 通道](docs/BEVY_BACKEND.md#rust-作者行为通道012-后工作树)接通离线编译、原文诊断、有限无头运行和 Cargo 源工程交付；[场景声音](docs/SCENE_AUDIO.md)以独立 Rust 规则、已有 JSON 字段面板及 Godot 播放器接通非空间音轨与时间提示。具体工具条件和验收边界在各指南中说明。
+
+本次交付源码，新功能可从源码启动或自行构建安装包。本机最近的 [Linux 安装验收为 0.1.1 工作树](docs/test-results/native-installed-0.1.1/README.md)，早于本版新增功能；该安装记录不代表 0.1.3 安装验收。专题中标为“0.1.2 后未发布工作树”的增量已收录本版，旧证据保留原版本与执行条件。
 
 当前已有：
 
@@ -18,17 +20,18 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 - 空白、游戏、文学、戏剧和软件设计起始模板；工程独立维护类型与模板，角色背景及共享内容有明确归属。
 - 同一 OC 的多份独立投影，可创建／编辑 RPG、视觉小说、文学和戏剧配置；RPG 投影可在 Scene2D 中继承或覆盖运行字段。
 - 对象查询、属性修改、批量提交、对象创建、关系和资源绑定；版本冲突检查与中断恢复。
+- [场景声音](docs/SCENE_AUDIO.md)：独立音轨与播放／停止时间提示，已有 JSON 字段编辑、Godot PCM 混音及带资源的工程交付。
 - [图片／视频／音频引用](docs/MEDIA_RESOURCES.md)，文档分享、选择式资源包、单素材导出及完整工程迁移。
 - 实验性 Scene2D 场景创建／编辑、独立实例、嵌套组织分组，单选／多选布局和局部撤销历史；保存状态及原文草稿预览，精确坐标回写与普通保存。
 - 共享 Rust/WASM 编辑核心；[场景片段配方](docs/SCENE_COMPOSITION.md)的展开、保存态／草稿预览，以及共享覆盖、布局、实例、片段、放置、分组与定义的独立创作工作流。
 - [新建配方助手](docs/SCENE_COMPOSITION.md#新建场景配方)：1–64 项演员、同对象独立实例、投影继承；横排／竖排／网格先预览后应用。完整 JSON 审阅与普通保存后，可显式生成独立 Scene2D，继续行为、构建与交付。
-- 计划检查、Godot 构建、[GDScript 行为绑定](docs/SCENE_BEHAVIORS.md)、无头测试、独立窗口、[当前任务问题列表与原文定位](docs/PROJECT_BUILD.md#当前任务问题列表)和任务取消；[可信执行中间层](docs/BACKEND_MIDDLEWARE.md)复用冻结计划与工具校验。
+- 计划检查、Godot 构建、[GDScript／Bevy Rust 行为绑定](docs/SCENE_BEHAVIORS.md)、无头测试、独立窗口、[当前任务问题列表与原文定位](docs/PROJECT_BUILD.md#当前任务问题列表)和任务取消；[可信执行中间层](docs/BACKEND_MIDDLEWARE.md)复用冻结计划与工具校验。
 - Godot／Bevy [有限控制回放](docs/RUNTIME_CONTROL.md)：全局或按实例独立方向输入、固定步骤采样和冻结运行对象观察。
 - 可检查、迁移及导出 `.viento-build.zip` 的[后端派生工程](docs/BACKEND_PROJECTS.md)，独立[模块装配与模板需求](docs/STUDIO_MODULES.md)。
 - [3D 场景创作与预览](docs/SCENE3D.md)：严格场景文本、九类独立作者编辑、只读 WebGL2 标准方向／平移／正交／双指导航、整景取景、距离雾与通用粒子场，以及可检查的 Godot 源工程导出。
 - 显式工具身份检查、[验收用例](docs/RUNTIME_CASES.md)的保存与稳定身份迁移、[有序验收组](docs/RUNTIME_CASE_SUITES.md)，以及当前批次[成员详情与 JSON 导出](docs/RUNTIME_CASE_REPORTS.md)。
 
-各平台的接入和实测范围见 [能力矩阵](docs/STATUS.md#平台接入)。Godot 产物需要 Godot 工具；Bevy 无头产物需要单独构建的可信运行程序，不编译工程中的 Rust 文本，也不提供图片或窗口渲染。原生 Nuis 执行、嵌入运行视口、GPU 计算及独立游戏程序导出仍在路线内。
+各平台的接入和实测范围见 [能力矩阵](docs/STATUS.md#平台接入)。Godot 产物需要 Godot 工具；Bevy 数据产物需要单独构建的可信运行程序；独立 Bevy Rust 源工程需要固定 Rust 工具链与预缓存依赖，运行时临时编译作者代码，ZIP 不含二进制或缓存。两条 Bevy 通道均未提供图片或窗口渲染。原生 Nuis 执行、嵌入运行视口、GPU 计算及独立游戏程序导出仍在路线内。
 
 ## 从源码开始
 

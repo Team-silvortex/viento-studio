@@ -5,6 +5,7 @@ import { buildError } from './node-build-snapshot.mjs';
 const toolEnvironments = Object.freeze({
   'org.viento.godot4': 'VIENTO_GODOT_BIN',
   'org.viento.bevy': 'VIENTO_BEVY_BIN',
+  'org.viento.bevy-rust': 'VIENTO_BEVY_RUST_CARGO',
 });
 
 export function executionHostConfiguration({ env = process.env, backendId, tool } = {}) {

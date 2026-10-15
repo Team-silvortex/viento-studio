@@ -179,3 +179,19 @@ test('all script dialog and starter messages have English and Japanese translati
   for (const starter of listScriptStarters()) { keys.add(starter.label); keys.add(starter.description); }
   for (const key of keys) { assert.ok(en[key], `English: ${key}`); assert.ok(ja[key], `Japanese: ${key}`); }
 });
+
+
+test('Bevy Rust drafts retain the selected backend, exact TXT contents and local review across language changes', async t => {
+  for (const starterId of ['bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion']) {
+    const h = await fixture(t); h.open(); h.set('Starter', starterId, 'change'); h.set('Path', `documents/scripts/${starterId}.txt`);
+    const before = h.el('Source').textContent;
+    for (const locale of ['en', 'ja', 'zh']) {
+      h.language(locale); assert.equal(h.el('Starter').value, starterId); assert.equal(h.el('Source').textContent, before);
+      assert.equal(h.el('Apply').disabled, false); assert.equal(h.calls.length, 0);
+    }
+    await h.click('Apply'); assert.equal(h.calls.length, 1); const proposal = h.calls[0].proposal;
+    assert.equal(proposal.backendId, 'org.viento.bevy-rust'); assert.equal(proposal.languageId, 'rust'); assert.equal(proposal.content, before);
+    assert.equal(proposal.sourcePath, `documents/scripts/${starterId}.txt`); assert.equal(h.el('Dialog').open, false);
+    assert.equal(proposal.content, listScriptStarters().find(item => item.id === starterId).content);
+  }
+});

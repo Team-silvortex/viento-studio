@@ -20,6 +20,15 @@ const starters = freeze([
   { id: 'godot-signal', languageId: 'gdscript', backendId: 'org.viento.godot4', label: '参数与信号示例',
     description: '使用参数并在就绪时发出信号；参数和信号映射需在行为文档中设置。',
     content: 'extends Node\n\nsignal arrived(checkpoint: String, amount: float)\n@export var checkpoint: String = "dock"\n@export var amount: float = 0.0\n\nfunc _ready() -> void:\n\tarrived.emit(checkpoint, amount)\n' },
+  { id: 'bevy-rust', languageId: 'rust', backendId: 'org.viento.bevy-rust', label: 'Bevy Rust / 空行为',
+    description: '从空 ready 函数开始编写 Bevy Rust 行为。',
+    content: 'use crate::runtime::BehaviorContext;\n\npub fn ready(_ctx: &mut BehaviorContext) -> Result<(), String> {\n    Ok(())\n}\n' },
+  { id: 'bevy-rust-signal', languageId: 'rust', backendId: 'org.viento.bevy-rust', label: 'Bevy Rust / 参数与信号示例',
+    description: '使用 Bevy Rust 参数接口并在就绪时发出信号；参数和信号映射需在行为文档中设置。',
+    content: 'use crate::runtime::BehaviorContext;\n\npub fn ready(ctx: &mut BehaviorContext) -> Result<(), String> {\n    let checkpoint = ctx.string("checkpoint")?.to_owned();\n    let amount = ctx.number("amount")?;\n    ctx.emit("arrived", vec![checkpoint.into(), amount.into()])?;\n    Ok(())\n}\n' },
+  { id: 'bevy-rust-motion', languageId: 'rust', backendId: 'org.viento.bevy-rust', label: 'Bevy Rust / 固定步移动',
+    description: '按固定时间步移动当前实例并发出 moved 信号；速度参数和信号映射需在行为文档中设置。',
+    content: 'use crate::runtime::{BehaviorContext, FixedStep};\n\npub fn ready(ctx: &mut BehaviorContext) -> Result<(), String> {\n    ctx.on_fixed_update(fixed_update)\n}\n\nfn fixed_update(ctx: &mut BehaviorContext, step: FixedStep) -> Result<(), String> {\n    let vx = ctx.number("velocity_x")?;\n    let vy = ctx.number("velocity_y")?;\n    ctx.translate([vx * step.delta_seconds, vy * step.delta_seconds])?;\n    let [x, y] = ctx.position();\n    ctx.emit("moved", vec![x.into(), y.into()])?;\n    Ok(())\n}\n' },
 ]);
 
 // Inspect own data descriptors before reading values. Unknown keys, accessors,

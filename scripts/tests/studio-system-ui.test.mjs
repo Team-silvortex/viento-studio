@@ -132,24 +132,24 @@ test('all legacy optional features may be disabled while base source and executi
 test('module assembly does not grant host World writes, execution or preview availability', async () => {
   const h = fixture(), system = await h.setup(); system.updateProject({ studioProfile: profile(['world.commands', 'backend.execution']) });
   assert.equal(h.snapshot(system).plan.satisfied, true);
-  assert.deepEqual(h.worldAvailability.at(-1), [false, []]); assert.deepEqual(h.buildAvailability.at(-1), [false, [], { scenePreview: false }]);
+  assert.deepEqual(h.worldAvailability.at(-1), [false, []]); assert.deepEqual(h.buildAvailability.at(-1), [false, [], { scenePreview: false, sceneBehaviorDirectory: false }]);
 });
 
 test('World access, execution and scene preview are independent host capabilities', async () => {
   const h = fixture(), system = await h.setup();
   system.updateCapabilities({ semanticProjection: true, semanticCommands: ['scene.create'], projectBuild: false, scenePreview: true });
   assert.deepEqual(h.worldAvailability.at(-1), [true, ['scene.create']]);
-  assert.deepEqual(h.buildAvailability.at(-1), [false, ['scene.create'], { scenePreview: true }]);
+  assert.deepEqual(h.buildAvailability.at(-1), [false, ['scene.create'], { scenePreview: true, sceneBehaviorDirectory: false }]);
   system.updateCapabilities({ semanticProjection: false, semanticCommands: [], projectBuild: true, scenePreview: false });
-  assert.deepEqual(h.worldAvailability.at(-1), [false, []]); assert.deepEqual(h.buildAvailability.at(-1), [true, [], { scenePreview: false }]);
+  assert.deepEqual(h.worldAvailability.at(-1), [false, []]); assert.deepEqual(h.buildAvailability.at(-1), [true, [], { scenePreview: false, sceneBehaviorDirectory: false }]);
 });
 
 test('host capability refresh fails closed for non-booleans and revokes previous grants', async () => {
   const h = fixture(), system = await h.setup();
   system.updateCapabilities({ semanticProjection: true, semanticCommands: ['scene.update'], projectBuild: true, scenePreview: true });
   system.updateCapabilities({ semanticProjection: 'true', semanticCommands: 'scene.update', projectBuild: 1, scenePreview: 'yes' });
-  assert.deepEqual(h.snapshot(system).hostCapabilities, { semanticProjection: false, semanticCommands: [], projectBuild: false, scenePreview: false });
-  assert.deepEqual(h.worldAvailability.at(-1), [false, []]); assert.deepEqual(h.buildAvailability.at(-1), [false, [], { scenePreview: false }]);
+  assert.deepEqual(h.snapshot(system).hostCapabilities, { semanticProjection: false, semanticCommands: [], projectBuild: false, scenePreview: false, sceneBehaviorDirectory: false });
+  assert.deepEqual(h.worldAvailability.at(-1), [false, []]); assert.deepEqual(h.buildAvailability.at(-1), [false, [], { scenePreview: false, sceneBehaviorDirectory: false }]);
 });
 
 test('command arrays are isolated from the caller and every receiving area', async () => {
@@ -175,7 +175,7 @@ test('a future required 3D request reports the missing capability without unmoun
   const h = fixture(), system = await h.setup(); system.updateProject({ studioProfile: profile(['scene.representation.scene4d', 'document.edit']) });
   const snapshot = h.snapshot(system);
   assert.equal(snapshot.plan.satisfied, false); assert.equal(snapshot.plan.requests[0].status, 'missing');
-  assert.equal(snapshot.plan.requests[1].status, 'supported'); assert.equal(snapshot.plan.modules.filter(module => module.id !== 'org.viento.scene-composition-create' && module.id !== id('scripts') && module.id !== id('scene3d') && module.id !== 'org.viento.scene3d-transforms' && module.id !== 'org.viento.scene3d-objects' && module.id !== 'org.viento.scene3d-environment' && module.id !== 'org.viento.scene3d-properties' && module.id !== 'org.viento.scene3d-translation' && module.id !== 'org.viento.scene3d-alignment' && module.id !== 'org.viento.scene3d-distribution' && module.id !== 'org.viento.scene3d-copy' && module.id !== 'org.viento.scene3d-removal' && module.id !== 'org.viento.scene-behaviors').every(module => module.active), true);
+  assert.equal(snapshot.plan.requests[1].status, 'supported'); assert.equal(snapshot.plan.modules.filter(module => module.id !== 'org.viento.scene-composition-create' && module.id !== id('scripts') && module.id !== id('scene3d') && module.id !== 'org.viento.scene3d-transforms' && module.id !== 'org.viento.scene3d-objects' && module.id !== 'org.viento.scene3d-environment' && module.id !== 'org.viento.scene3d-properties' && module.id !== 'org.viento.scene3d-translation' && module.id !== 'org.viento.scene3d-alignment' && module.id !== 'org.viento.scene3d-distribution' && module.id !== 'org.viento.scene3d-copy' && module.id !== 'org.viento.scene3d-removal' && module.id !== 'org.viento.scene-behaviors' && module.id !== 'org.viento.scene-audio').every(module => module.active), true);
   assert.equal(snapshot.plan.capabilities.find(item => item.capability === 'scene.authoring.composition2d').active, true);
   assert.equal(h.calls.get('build').length, 1);
 });
@@ -203,7 +203,7 @@ test('malformed project profiles report a local diagnostic and preserve the alre
   assert.equal(snapshot.plan.satisfied, false); assert.equal(snapshot.plan.diagnostics[0].code, 'studio_profile_invalid');
   assert.equal(snapshot.plan.modules.find(module => module.id === 'org.viento.scene3d-translation').active, false);
   assert.equal(snapshot.plan.modules.find(module => module.id === 'org.viento.scene3d-alignment').active, false);
-  assert.equal(snapshot.plan.modules.filter(module => module.id !== 'org.viento.scene-composition-create' && module.id !== id('scripts') && module.id !== id('scene3d') && module.id !== 'org.viento.scene3d-transforms' && module.id !== 'org.viento.scene3d-objects' && module.id !== 'org.viento.scene3d-environment' && module.id !== 'org.viento.scene3d-properties' && module.id !== 'org.viento.scene3d-translation' && module.id !== 'org.viento.scene3d-alignment' && module.id !== 'org.viento.scene3d-distribution' && module.id !== 'org.viento.scene3d-copy' && module.id !== 'org.viento.scene3d-removal' && module.id !== 'org.viento.scene-behaviors').every(module => module.active), true); assert.deepEqual(h.events, mounted);
+  assert.equal(snapshot.plan.modules.filter(module => module.id !== 'org.viento.scene-composition-create' && module.id !== id('scripts') && module.id !== id('scene3d') && module.id !== 'org.viento.scene3d-transforms' && module.id !== 'org.viento.scene3d-objects' && module.id !== 'org.viento.scene3d-environment' && module.id !== 'org.viento.scene3d-properties' && module.id !== 'org.viento.scene3d-translation' && module.id !== 'org.viento.scene3d-alignment' && module.id !== 'org.viento.scene3d-distribution' && module.id !== 'org.viento.scene3d-copy' && module.id !== 'org.viento.scene3d-removal' && module.id !== 'org.viento.scene-behaviors' && module.id !== 'org.viento.scene-audio').every(module => module.active), true); assert.deepEqual(h.events, mounted);
 });
 
 test('an explicitly null profile is invalid while an absent profile remains legacy, without rewriting author data', async () => {
@@ -211,7 +211,7 @@ test('an explicitly null profile is invalid while an absent profile remains lega
   system.updateProject(workspace);
   assert.equal(h.snapshot(system).plan.satisfied, false);
   assert.equal(h.snapshot(system).plan.diagnostics[0].code, 'studio_profile_invalid'); assert.deepEqual(workspace, before);
-  assert.equal(h.snapshot(system).plan.modules.filter(module => module.id !== 'org.viento.scene-composition-create' && module.id !== id('scripts') && module.id !== id('scene3d') && module.id !== 'org.viento.scene3d-transforms' && module.id !== 'org.viento.scene3d-objects' && module.id !== 'org.viento.scene3d-environment' && module.id !== 'org.viento.scene3d-properties' && module.id !== 'org.viento.scene3d-translation' && module.id !== 'org.viento.scene3d-alignment' && module.id !== 'org.viento.scene3d-distribution' && module.id !== 'org.viento.scene3d-copy' && module.id !== 'org.viento.scene3d-removal' && module.id !== 'org.viento.scene-behaviors').every(module => module.active), true);
+  assert.equal(h.snapshot(system).plan.modules.filter(module => module.id !== 'org.viento.scene-composition-create' && module.id !== id('scripts') && module.id !== id('scene3d') && module.id !== 'org.viento.scene3d-transforms' && module.id !== 'org.viento.scene3d-objects' && module.id !== 'org.viento.scene3d-environment' && module.id !== 'org.viento.scene3d-properties' && module.id !== 'org.viento.scene3d-translation' && module.id !== 'org.viento.scene3d-alignment' && module.id !== 'org.viento.scene3d-distribution' && module.id !== 'org.viento.scene3d-copy' && module.id !== 'org.viento.scene3d-removal' && module.id !== 'org.viento.scene-behaviors' && module.id !== 'org.viento.scene-audio').every(module => module.active), true);
   system.updateProject({ title: 'Legacy project' });
   assert.equal(h.snapshot(system).plan.satisfied, true); assert.deepEqual(h.snapshot(system).plan.diagnostics, []);
 });
@@ -224,7 +224,7 @@ test('a future profile schema preserves authored requests and assembled modules 
   assert.equal(snapshot.plan.diagnostics[0].code, 'studio_profile_invalid');
   assert.equal(snapshot.plan.modules.find(module => module.id === 'org.viento.scene3d-translation').active, false);
   assert.equal(snapshot.plan.modules.find(module => module.id === 'org.viento.scene3d-alignment').active, false); assert.deepEqual(workspace, before);
-  assert.deepEqual(snapshot.initializedModules, initialized); assert.equal(snapshot.plan.modules.filter(module => module.id !== 'org.viento.scene-composition-create' && module.id !== id('scripts') && module.id !== id('scene3d') && module.id !== 'org.viento.scene3d-transforms' && module.id !== 'org.viento.scene3d-objects' && module.id !== 'org.viento.scene3d-environment' && module.id !== 'org.viento.scene3d-properties' && module.id !== 'org.viento.scene3d-translation' && module.id !== 'org.viento.scene3d-alignment' && module.id !== 'org.viento.scene3d-distribution' && module.id !== 'org.viento.scene3d-copy' && module.id !== 'org.viento.scene3d-removal' && module.id !== 'org.viento.scene-behaviors').every(module => module.active), true);
+  assert.deepEqual(snapshot.initializedModules, initialized); assert.equal(snapshot.plan.modules.filter(module => module.id !== 'org.viento.scene-composition-create' && module.id !== id('scripts') && module.id !== id('scene3d') && module.id !== 'org.viento.scene3d-transforms' && module.id !== 'org.viento.scene3d-objects' && module.id !== 'org.viento.scene3d-environment' && module.id !== 'org.viento.scene3d-properties' && module.id !== 'org.viento.scene3d-translation' && module.id !== 'org.viento.scene3d-alignment' && module.id !== 'org.viento.scene3d-distribution' && module.id !== 'org.viento.scene3d-copy' && module.id !== 'org.viento.scene3d-removal' && module.id !== 'org.viento.scene-behaviors' && module.id !== 'org.viento.scene-audio').every(module => module.active), true);
 });
 
 test('moving between additive profiles and a legacy project changes only plan diagnostics', async () => {
@@ -260,4 +260,14 @@ test('settings fallback is used once and the explicit runtime settings remain au
   const explicit = { preferredLanguage: 'en' }, other = fixture(), system = await other.setup({ settings: explicit, ports: { settings: fallback } });
   system.updateProject({}); system.updateCapabilities({}); assert.equal(other.calls.get('settings')[0], explicit);
   assert.equal(other.calls.get('settings').length, 1);
+});
+
+
+test('behavior directory reads are an explicit host grant independent of relationship writes', async () => {
+  const h = fixture(), system = await h.setup();
+  system.updateCapabilities({ projectBuild: true, sceneBehaviorDirectory: true });
+  assert.deepEqual(h.buildAvailability.at(-1), [true, [], { scenePreview: false, sceneBehaviorDirectory: true }]);
+  assert.equal(h.snapshot(system).hostCapabilities.sceneBehaviorDirectory, true);
+  system.updateCapabilities({ projectBuild: true, sceneBehaviorDirectory: 'true', semanticCommands: ['relation.add'] });
+  assert.deepEqual(h.buildAvailability.at(-1), [true, ['relation.add'], { scenePreview: false, sceneBehaviorDirectory: false }]);
 });

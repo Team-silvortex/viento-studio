@@ -1,7 +1,8 @@
 import { createProjectProblemsSnapshot } from '../../engine/project-problems.mjs';
 import { setupProjectProblems } from './app-project-problems.js';
+import { setupSceneBehaviorLinks } from './app-scene-behavior-links.js';
 import { setupSceneBehaviorCreate } from './app-scene-behavior-create.js';
-import { inspectSceneBehaviorCreation, requestWorldCommand } from './app-doc-service.js';
+import { inspectSceneBehaviorCreation, inspectSceneBehaviorDirectory, requestWorldCommand } from './app-doc-service.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 import { fetchJsonApiRequest } from './app-services.js';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
@@ -103,7 +104,7 @@ const errorLabels = {
   world_recovery_required: '工程存在未完成的提交，请先在世界与对象中恢复。',
 };
 const phaseLabels = { snapshot: '正在冻结工程快照…', tool: '正在检查构建工具…', generate: '正在生成产物…',
-  import: '正在导入资源…', 'script-check': '正在检查生成的脚本…', starting: '正在启动任务…',
+  import: '正在导入资源…', 'script-check': '正在检查生成的脚本…', 'cargo-check': '正在编译检查 Rust 行为…', starting: '正在启动任务…',
   running: '任务正在运行…', cancelling: '正在取消任务…', completed: '任务已结束。' };
 const kindLabels = { plan: '检查计划', build: '构建场景', run: '运行场景', suite: '批量运行验收' };
 const statusLabels = { running: '进行中', succeeded: '已完成', failed: '失败', cancelled: '已取消', timeout: '超时' };
@@ -132,6 +133,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <button id="projectBuildEditScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="编辑场景" hidden></button>
     <button id="projectBuildCreateScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="创建场景" hidden></button>
     <button id="projectBuildMaterialize" type="button" class="doc-btn doc-btn-ghost" data-i18n="从配方创建场景" hidden></button>
+    <button id="projectBuildManageBehavior" type="button" class="doc-btn doc-btn-ghost" data-i18n="管理已有行为" hidden></button>
     <button id="projectBuildCreateBehavior" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加场景行为" hidden></button>
     <p id="projectBuildEmpty" hidden data-i18n="暂无可构建场景。请添加已登记的 viento-scene2d JSON 场景文档。"></p>
     <div id="projectBuildTabs" class="build-tabs" role="tablist" data-i18n-aria-label="场景与构建选项卡" hidden>
@@ -326,7 +328,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       }
     } catch { el('projectBuildCaseSummary').textContent = t('验收结果不可读取，请刷新状态。'); }
   }
-  let available = false, creationSupported = false, updateSupported = false, behaviorCreationSupported = false, behaviorCreationBusy = false, data = null, selected = '', requestBusy = false, timer = null, requestEpoch = 0;
+  let available = false, creationSupported = false, updateSupported = false, behaviorCreationSupported = false, behaviorCreationBusy = false, behaviorDirectorySupported = false, behaviorLinksBusy = false, data = null, selected = '', requestBusy = false, timer = null, requestEpoch = 0;
   let toolCheckBusy = false, materializationBusy = false;
   let previewSupported = false, activeTab = 'build';
   const selections = { build: '', preview: '' };
@@ -389,6 +391,24 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       if (errorMessage || !data?.scenes.some(scene => scene.id === result.changes?.[1]?.objectId)) throw new Error(t('行为已保存，但目录刷新失败。请重新读取工程，勿重复创建。'));
     },
     openSource: (sourcePath, options) => navigateOwnedSource([sourcePath, options], () => true, openAuthorSource, true),
+  }) : { open() {}, setAvailable() {} };
+
+  const behaviorLinks = typeof setupSceneBehaviorLinks === 'function' ? setupSceneBehaviorLinks({
+    getContext: () => { const context = getContext(); return { ...context,
+      busy: (behaviorLinksBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || data?.job?.status === 'running',
+      session: String(dialogSession), sceneId: selected, visible: dialog.open && activeTab === 'build', sourceToken: context.sceneDraftToken }; },
+    setBusy: value => { behaviorLinksBusy = value === true; setBusy(value); render(); },
+    inspect: payload => inspectSceneBehaviorDirectory(payload), command: payload => requestWorldCommand(payload),
+    applied: async result => {
+      const sceneId = selected;
+      let failure; try { await applied(result || { status: 'observed', changes: [] }); } catch (error) { failure = error; }
+      invalidatedPlanJob = planJob || (data?.job?.kind === 'plan' ? data.job.id : '');
+      invalidatedSnapshot = plan?.snapshotId || data?.job?.plan?.snapshotId || ''; plan = null; planScene = '';
+      scenePreview.invalidate(); await refresh(true);
+      if (failure) throw failure;
+      if (errorMessage || !data?.scenes.some(scene => scene.id === sceneId)) throw new Error(t('行为已保存，但目录刷新失败。请重新读取工程，勿重复创建。'));
+    },
+    openSource: (sourcePath, options = {}) => navigateOwnedSource([sourcePath, options], typeof options.isCurrent === 'function' ? options.isCurrent : () => true, openAuthorSource, true),
   }) : { open() {}, setAvailable() {} };
 
   const running = () => data?.job?.status === 'running';
@@ -662,6 +682,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildCreateScene').disabled = requestBusy || running() || !ready() || catalogUnavailable();
     el('projectBuildMaterialize').hidden = !previewSupported || !creationSupported || activeTab !== 'preview' || selectedDocument()?.kind !== 'composition';
     el('projectBuildMaterialize').disabled = !mayMaterialize();
+    el('projectBuildManageBehavior').hidden = activeTab === 'preview' || !behaviorDirectorySupported;
+    el('projectBuildManageBehavior').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildCreateBehavior').hidden = activeTab === 'preview' || !behaviorCreationSupported;
     el('projectBuildCreateBehavior').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildPlan').disabled = !mayStart('plan');
@@ -894,6 +916,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     render(); dialog.showModal(); void refresh();
   } });
   el('projectBuildEditScene').addEventListener('click', editScene);
+  el('projectBuildManageBehavior').addEventListener('click', () => { if (behaviorDirectorySupported && activeTab === 'build' && !requestBusy && !running() && ready() && liveScene()) void behaviorLinks.open(selected); });
   el('projectBuildCreateBehavior').addEventListener('click', () => { if (behaviorCreationSupported && !requestBusy && !running() && ready() && liveScene()) void behaviorCreator.open(selected); });
   el('projectBuildCreateScene').addEventListener('click', () => { if (creationSupported && !requestBusy && !running() && ready() && !catalogUnavailable()) sceneCreator.open(); });
   el('projectBuildClose').addEventListener('click', () => { if (delivery.close()) dialog.close(); });
@@ -974,6 +997,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   return { setAvailable(value, commands = [], capabilities = {}) {
     creationSupported = commands.includes('scene.create'); updateSupported = commands.includes('scene.update'); sceneCreator.setAvailable(value === true && (creationSupported || updateSupported), commands);
     behaviorCreationSupported = commands.includes('behavior.create'); behaviorCreator.setAvailable(value === true && behaviorCreationSupported, commands);
+    behaviorDirectorySupported = value === true && capabilities.sceneBehaviorDirectory === true;
+    behaviorLinks.setAvailable(behaviorDirectorySupported, commands);
     available = value === true; button.hidden = !available;
     previewSupported = available && capabilities.scenePreview === true;
     if (!previewSupported && activeTab !== 'build') { selections[activeTab] = selected; activeTab = 'build'; selectDocument(); }

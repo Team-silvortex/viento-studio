@@ -3,6 +3,7 @@
 import { validateExecutionBackendDescriptor, checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
 import { GODOT4_EXECUTION_ADAPTER } from '../backends/godot4-adapter.mjs';
 import { BEVY_EXECUTION_ADAPTER } from '../backends/bevy-adapter.mjs';
+import { BEVY_RUST_EXECUTION_ADAPTER } from '../backends/bevy-rust-adapter.mjs';
 import { buildError } from './node-build-snapshot.mjs';
 import { parseJsonSource, locateJsonSource } from '../../engine/json-source.mjs';
 
@@ -19,7 +20,7 @@ const freeze = value => {
   return value;
 };
 
-export function createExecutionBackendRegistry(implementations = [GODOT4_EXECUTION_ADAPTER, BEVY_EXECUTION_ADAPTER]) {
+export function createExecutionBackendRegistry(implementations = [GODOT4_EXECUTION_ADAPTER, BEVY_EXECUTION_ADAPTER, BEVY_RUST_EXECUTION_ADAPTER]) {
   if (!Array.isArray(implementations) || implementations.length > 8) invalid('Invalid host backend registry.');
   const adapters = new Map();
   for (const implementation of implementations) {

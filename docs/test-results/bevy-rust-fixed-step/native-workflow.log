@@ -1,0 +1,108 @@
+TAP version 13
+# Subtest: real Bevy fixed callbacks preserve ready scripts and drive bounded independent instance state
+    # Subtest: ready-only sources retain legacy arrows movement and event order
+    ok 1 - ready-only sources retain legacy arrows movement and event order
+      ---
+      duration_ms: 15.277003
+      type: 'test'
+      ...
+    # Subtest: fixed behavior drives its own instance without controls; same source bindings stay independent
+    ok 2 - fixed behavior drives its own instance without controls; same source bindings stay independent
+      ---
+      duration_ms: 12.834349
+      type: 'test'
+      ...
+    # Subtest: ready writes establish per-instance initial state before fixed callbacks
+    ok 3 - ready writes establish per-instance initial state before fixed callbacks
+      ---
+      duration_ms: 12.299905
+      type: 'test'
+      ...
+    # Subtest: same-instance bindings observe declaration order, including absolute writes
+    ok 4 - same-instance bindings observe declaration order, including absolute writes
+      ---
+      duration_ms: 25.625296
+      type: 'test'
+      ...
+    # Subtest: fixed movement composes with arrows and movement state follows actual displacement
+    ok 5 - fixed movement composes with arrows and movement state follows actual displacement
+      ---
+      duration_ms: 35.937059
+      type: 'test'
+      ...
+    # Subtest: error failure discards the current callback events and resolves trusted binding provenance
+    ok 6 - error failure discards the current callback events and resolves trusted binding provenance
+      ---
+      duration_ms: 12.032122
+      type: 'test'
+      ...
+    # Subtest: panic failure discards the current callback events and resolves trusted binding provenance
+    ok 7 - panic failure discards the current callback events and resolves trusted binding provenance
+      ---
+      duration_ms: 13.472917
+      type: 'test'
+      ...
+    # Subtest: nan failure discards the current callback events and resolves trusted binding provenance
+    ok 8 - nan failure discards the current callback events and resolves trusted binding provenance
+      ---
+      duration_ms: 11.215881
+      type: 'test'
+      ...
+    # Subtest: infinity failure discards the current callback events and resolves trusted binding provenance
+    ok 9 - infinity failure discards the current callback events and resolves trusted binding provenance
+      ---
+      duration_ms: 11.432767
+      type: 'test'
+      ...
+    # Subtest: bounds failure discards the current callback events and resolves trusted binding provenance
+    ok 10 - bounds failure discards the current callback events and resolves trusted binding provenance
+      ---
+      duration_ms: 10.970189
+      type: 'test'
+      ...
+    # Subtest: typed parameter failure in fixed update resolves the exact parameter declaration
+    ok 11 - typed parameter failure in fixed update resolves the exact parameter declaration
+      ---
+      duration_ms: 12.752495
+      type: 'test'
+      ...
+    # Subtest: duplicate registration remains an error even when author code ignores the Result
+    ok 12 - duplicate registration remains an error even when author code ignores the Result
+      ---
+      duration_ms: 9.863152
+      type: 'test'
+      ...
+    # Subtest: late registration remains an error even when author code ignores the Result
+    ok 13 - late registration remains an error even when author code ignores the Result
+      ---
+      duration_ms: 10.539161
+      type: 'test'
+      ...
+    # Subtest: 64-event budget spans ready and both fixed callbacks; the failing callback is atomic
+    ok 14 - 64-event budget spans ready and both fixed callbacks; the failing callback is atomic
+      ---
+      duration_ms: 25.585891
+      type: 'test'
+      ...
+    # Subtest: maximum binding count stays within neutral runtime frame and source budgets
+    ok 15 - maximum binding count stays within neutral runtime frame and source budgets
+      ---
+      duration_ms: 59.563954
+      type: 'test'
+      ...
+    1..15
+ok 1 - real Bevy fixed callbacks preserve ready scripts and drive bounded independent instance state
+  ---
+  duration_ms: 1180.205202
+  type: 'test'
+  ...
+# One offline Cargo build; 19 relocated native scenarios; source modules retained byte-for-byte.
+1..1
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1273.330015

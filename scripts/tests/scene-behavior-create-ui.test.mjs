@@ -4,6 +4,8 @@ import fs from 'node:fs/promises';
 import { createHash, webcrypto } from 'node:crypto';
 import { dialogHarness, flushDialogs } from './dialog-harness.mjs';
 import { deferred } from './editor-harness.mjs';
+import { createSceneBehaviorCreationDraft } from '../../engine/scene-behavior-create-plan.mjs';
+import { SCENE_BEHAVIOR_LIMITS } from '../../engine/scene-behaviors.mjs';
 import en from '../../web/i18n/en.js';
 import ja from '../../web/i18n/ja.js';
 const ids = ['aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'dddddddd-dddd-4ddd-8ddd-dddddddddddd', 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee'];
@@ -16,17 +18,17 @@ const catalog = () => ({ format: 'viento-behavior-creation-context', schemaVersi
  sources:[{objectId:ids[4],sourcePath:'documents/scripts/first.txt',sourceRevision:revision('d'),name:'Script'}] });
 function receipt(request, source = catalog()) {
  const input=copy(request); delete input.mode;
- const sourceId=JSON.parse(request.content).bindings[0].implementation.sourceObjectId;
+ const sourceIds=[...new Set(JSON.parse(request.content).bindings.map(binding=>binding.implementation.sourceObjectId))];
  return {status:request.mode==='apply'?'applied':'preview',worldId:request.worldId,baseRevision:request.baseRevision,revision:revision('e'),proposal:{commands:[{id:'behavior.create',input}]},
  object:{id:request.objectId,documentRefs:[{sourcePath:request.sourcePath,sourceRevision:hash(request.content)}]},
- changes:[{kind:'behavior.create',objectId:request.objectId,sourcePath:request.sourcePath,beforeSourceRevision:null,afterSourceRevision:hash(request.content),beforeText:null,afterText:request.content,recordPath:`metadata/documents/${request.objectId}.json`,record:{id:request.objectId,sourcePath:request.sourcePath,documentType:request.documentType,relations:[request.sceneObjectId,sourceId].sort().map(targetId=>({kind:'references',targetId,slot:''}))}},
+ changes:[{kind:'behavior.create',objectId:request.objectId,sourcePath:request.sourcePath,beforeSourceRevision:null,afterSourceRevision:hash(request.content),beforeText:null,afterText:request.content,recordPath:`metadata/documents/${request.objectId}.json`,record:{id:request.objectId,sourcePath:request.sourcePath,documentType:request.documentType,relations:[...new Set([request.sceneObjectId,...sourceIds])].sort().map(targetId=>({kind:'references',targetId,slot:''}))}},
  {kind:'relation.add',objectId:request.sceneObjectId,sourcePath:source.scene.sourcePath,targetObjectId:request.objectId,targetSourcePath:request.sourcePath,relation:{kind:'behavior',targetId:request.objectId,slot:''}}]};
 }
 async function settle() { for(let i=0;i<3;i++) { await flushDialogs(); await new Promise(resolve=>setTimeout(resolve,2)); } }
 async function harness(options={}) {
  let locale='zh-CN', currentCatalog=options.catalog||catalog(), uuidCount=0; const language=[],requests=[],reads=[],applied=[],opened=[],busy=[];
  const context={editable:true,dirty:false,creating:false,busy:false,visible:true,session:'1',sceneId:ids[0],sourceToken:'draft-1',...options.context};
- const h=await dialogHarness('app-scene-behavior-create',{crypto:{subtle:webcrypto.subtle,randomUUID:()=>{uuidCount++;return uuidCount===1?'11111111-1111-4111-8111-111111111111':'22222222-2222-4222-8222-222222222222';}},
+ const h=await dialogHarness('app-scene-behavior-create',{SCENE_BEHAVIOR_LIMITS,createSceneBehaviorCreationDraft:input=>createSceneBehaviorCreationDraft(copy(input)),crypto:{subtle:webcrypto.subtle,randomUUID:()=>{uuidCount++;return uuidCount===1?'11111111-1111-4111-8111-111111111111':`22222222-2222-4222-8222-${String(uuidCount).padStart(12,'0')}`;}},
  t:(key,...args)=>(locale==='en'?en[key]||key:locale==='ja'?ja[key]||key:key).replace(/\{(\d+)\}/g,(_,i)=>String(args[i])),onLanguageChange:fn=>language.push(fn)});
  const controller=h.runtime.setupSceneBehaviorCreate({getContext:()=>context,setBusy:value=>busy.push(value),inspect:payload=>{reads.push(copy(payload));return options.inspect?options.inspect(payload):Promise.resolve(copy(currentCatalog));},
  command:request=>{const pending=deferred();requests.push({request:copy(request),...pending});return pending.promise;},
@@ -131,4 +133,193 @@ test('all fixed creation copy is translated and dynamic catalog labels remain te
 
 test('capability withdrawal remains invalidating even if the host restores it before the pending response',async()=>{
  const h=await harness();await h.open();h.click('Check');await settle();h.controller.setAvailable(false,[]);h.controller.setAvailable(true,['behavior.create']);h.requests[0].resolve(receipt(h.requests[0].request));await settle();assert.equal(h.element('sceneBehaviorCreateSave').disabled,true);assert.equal(h.busy.at(-1),false);h.click('Close');assert.equal(await h.open(),true);
+});
+
+const secondSourceId = 'f0000000-0000-4000-8000-000000000001';
+function multiCatalog(sourceCount = 2) {
+  const data = catalog();
+  for (let index = 1; index < sourceCount; index++) data.sources.push({ objectId: `f0000000-0000-4000-8000-${String(index).padStart(12, '0')}`,
+    sourcePath: `documents/scripts/source-${index}.txt`, sourceRevision: revision('d'), name: `Script ${index + 1}` });
+  return data;
+}
+const bindingElement = (h, suffix) => h.element('sceneBehaviorCreate' + suffix);
+const bindingIds = h => bindingElement(h, 'BindingList').children.map(item => item.value);
+async function multiHarness() {
+  const h = await harness({ catalog: multiCatalog() }); await h.open(); h.click('AddBinding'); h.set('Source', secondSourceId, 'change'); h.click('AddBinding'); return h;
+}
+
+test('new bindings prefer unused instances, then permit independent behaviors on the same instance', async () => {
+  const h = await harness({ catalog: multiCatalog() }); await h.open(); const firstId = bindingElement(h, 'BindingList').value;
+  assert.equal(bindingElement(h, 'RemoveBinding').disabled, true); h.click('AddBinding'); const secondId = bindingElement(h, 'BindingList').value;
+  assert.equal(bindingElement(h, 'Instance').value, ids[3]); assert.equal(bindingElement(h, 'Source').value, ids[4]);
+  h.set('Source', secondSourceId, 'change'); h.click('AddBinding'); const thirdId = bindingElement(h, 'BindingList').value;
+  assert.equal(bindingElement(h, 'Instance').value, ids[3]); assert.equal(bindingElement(h, 'Source').value, secondSourceId);
+  assert.equal(new Set([firstId, secondId, thirdId]).size, 3); assert.equal(h.uuidCount(), 4);
+  await h.review(); const document = JSON.parse(h.requests[0].request.content);
+  assert.deepEqual(document.bindings.map(binding => binding.bindingId), [firstId, secondId, thirdId]);
+  assert.deepEqual(document.bindings.map(binding => binding.instanceId), [ids[1], ids[3], ids[3]]);
+  assert.deepEqual(document.bindings.map(binding => binding.implementation.sourceObjectId), [ids[4], secondSourceId, secondSourceId]);
+  for (const binding of document.bindings) { assert.deepEqual(binding.parameters, {}); assert.deepEqual(binding.events, []); }
+});
+
+test('multiple scripts produce the complete deduplicated relationship review and exactly reviewed save request', async () => {
+  const h = await multiHarness(); await h.review(); const preview = h.requests[0].request;
+  assert.equal(bindingElement(h, 'Relations').children.length, 4);
+  const references = bindingElement(h, 'Relations').children.filter(item => item.textContent.includes('references'));
+  assert.deepEqual(references.map(item => item.textContent.split(' → ').at(-1)), [ids[0], ids[4], secondSourceId].sort());
+  assert.equal(bindingElement(h, 'SourceText').textContent, preview.content); assert.equal(h.applied.length, 0);
+  h.click('Save'); await settle(); assert.deepEqual(h.requests[1].request, { ...preview, mode: 'apply' });
+  h.requests[1].resolve(receipt(h.requests[1].request, multiCatalog())); await settle(); assert.equal(h.applied.length, 1);
+  assert.equal(bindingElement(h, 'Open').disabled, false); assert.equal(bindingElement(h, 'BindingList').disabled, true);
+  assert.equal(bindingElement(h, 'AddBinding').disabled, true); assert.equal(bindingElement(h, 'RemoveBinding').disabled, true);
+});
+
+test('a receipt missing, duplicating or replacing any additional script reference cannot be approved', async () => {
+  for (const change of [result => result.changes[0].record.relations.pop(), result => result.changes[0].record.relations.push({ ...result.changes[0].record.relations[1] }),
+    result => result.changes[0].record.relations.at(-1).targetId = ids[2]]) {
+    const h = await multiHarness(); h.click('Check'); await settle(); const result = receipt(h.requests[0].request, multiCatalog()); change(result);
+    h.requests[0].resolve(result); await settle(); assert.equal(bindingElement(h, 'Save').disabled, true); assert.equal(h.applied.length, 0);
+  }
+  const h = await multiHarness(); await h.review(); h.click('Save'); await settle(); const result = receipt(h.requests[1].request, multiCatalog());
+  result.changes[0].record.relations.pop(); h.requests[1].resolve(result); await settle();
+  assert.equal(bindingElement(h, 'Check').disabled, true); assert.equal(bindingElement(h, 'Save').disabled, true); assert.equal(h.applied.length, 0);
+  assert.match(bindingElement(h, 'Status').textContent, /尚未确认/);
+});
+
+test('switching and translating bindings preserves reviewed bytes, identities and the chosen script of each row', async () => {
+  const h = await multiHarness(); await h.review(); const before = h.requests[0].request.content, identities = bindingIds(h);
+  for (const language of ['en', 'ja', 'zh-CN']) {
+    h.setLanguage(language);
+    for (const [index, id] of identities.entries()) {
+      h.set('BindingList', id, 'change'); assert.equal(bindingElement(h, 'Source').value, index === 0 ? ids[4] : secondSourceId);
+      assert.equal(bindingElement(h, 'SourceText').textContent, before); assert.equal(bindingElement(h, 'Save').disabled, false);
+    }
+    assert.deepEqual(bindingIds(h), identities);
+  }
+  assert.equal(h.uuidCount(), 4); assert.equal(h.requests.length, 1);
+});
+
+test('binding removal chooses a neighbor and preserves surviving identities; new entries never reuse removed IDs', async () => {
+  const h = await multiHarness(), [firstId, secondId, thirdId] = bindingIds(h); await h.review();
+  h.set('BindingList', secondId, 'change'); h.click('RemoveBinding'); assert.equal(bindingElement(h, 'BindingList').value, thirdId);
+  assert.deepEqual(bindingIds(h), [firstId, thirdId]); assert.equal(bindingElement(h, 'Source').value, secondSourceId); assert.equal(bindingElement(h, 'Save').disabled, true);
+  h.click('AddBinding'); const replacement = bindingElement(h, 'BindingList').value; assert.notEqual(replacement, secondId);
+  h.click('RemoveBinding'); assert.equal(bindingElement(h, 'BindingList').value, thirdId); h.click('RemoveBinding');
+  assert.equal(bindingElement(h, 'BindingList').value, firstId); assert.equal(bindingElement(h, 'RemoveBinding').disabled, true);
+  assert.equal(bindingElement(h, 'Dialog').dataset.dirty, 'false'); h.click('RemoveBinding'); assert.deepEqual(bindingIds(h), [firstId]);
+});
+
+test('the binding list enforces the existing 32-item limit and still permits repeated instance and script references', async () => {
+  const h = await harness(); await h.open();
+  for (let count = 1; count < SCENE_BEHAVIOR_LIMITS.bindings; count++) h.click('AddBinding');
+  assert.equal(bindingIds(h).length, 32); assert.equal(h.uuidCount(), 33); assert.equal(bindingElement(h, 'AddBinding').disabled, true);
+  h.click('AddBinding'); assert.equal(h.uuidCount(), 33); await h.review();
+  const document = JSON.parse(h.requests[0].request.content); assert.equal(document.bindings.length, 32);
+  assert.equal(new Set(document.bindings.map(binding => binding.bindingId)).size, 32); assert.equal(bindingElement(h, 'Relations').children.length, 3);
+  h.click('RemoveBinding'); assert.equal(bindingElement(h, 'AddBinding').disabled, false); assert.equal(bindingElement(h, 'Save').disabled, true);
+});
+
+test('nine distinct scripts are rejected before a command, then correction retains all bindings and IDs', async () => {
+  const data = multiCatalog(9), h = await harness({ catalog: data }); await h.open();
+  for (let index = 1; index < data.sources.length; index++) { h.click('AddBinding'); h.set('Source', data.sources[index].objectId, 'change'); }
+  const identities = bindingIds(h); h.click('Check'); await settle(); assert.equal(h.requests.length, 0); assert.equal(bindingElement(h, 'Save').disabled, true);
+  assert.match(bindingElement(h, 'Status').textContent, /8 份脚本/); assert.match(bindingElement(h, 'BindingCount').textContent, /9\/8/);
+  h.set('Source', data.sources[0].objectId, 'change'); await h.review(); assert.equal(bindingElement(h, 'Save').disabled, false);
+  assert.deepEqual(JSON.parse(h.requests[0].request.content).bindings.map(binding => binding.bindingId), identities);
+  assert.equal(bindingElement(h, 'Relations').children.length, 10); assert.match(bindingElement(h, 'BindingCount').textContent, /8\/8/);
+});
+
+test('unfinished choices on an unselected binding survive language refresh and block whole-document review', async () => {
+  const h = await multiHarness(), identities = bindingIds(h);
+  h.set('BindingList', identities[1], 'change'); h.set('Source', '', 'change'); h.set('Instance', '', 'change'); h.set('Path', 'documents/../unfinished');
+  h.set('BindingList', identities[0], 'change'); h.setLanguage('ja'); h.click('Refresh'); await settle();
+  assert.deepEqual(bindingIds(h), identities); assert.equal(bindingElement(h, 'Path').value, 'documents/../unfinished');
+  h.set('Path', 'documents/behaviors/complete.json'); h.click('Check'); await settle(); assert.equal(h.requests.length, 0);
+  h.set('BindingList', identities[1], 'change'); assert.equal(bindingElement(h, 'Source').value, ''); assert.equal(bindingElement(h, 'Instance').value, '');
+  h.set('Source', secondSourceId, 'change'); h.set('Instance', ids[1], 'change'); await h.review();
+  assert.equal(bindingElement(h, 'Save').disabled, false); assert.equal(h.uuidCount(), 4);
+});
+
+test('refreshed catalogs keep missing scripts and instances visible on every affected binding until corrected', async () => {
+  const h = await multiHarness(), identities = bindingIds(h); h.set('BindingList', identities[0], 'change');
+  const next = catalog(); next.scene.instances.pop(); h.setCatalog(next); h.click('Refresh'); await settle();
+  assert.deepEqual(bindingIds(h), identities); assert.match(bindingElement(h, 'BindingList').children[1].textContent, /已不可用/);
+  h.click('Check'); await settle(); assert.equal(h.requests.length, 0);
+  for (const id of identities.slice(1)) {
+    h.set('BindingList', id, 'change'); assert.equal(bindingElement(h, 'Source').value, secondSourceId); assert.equal(bindingElement(h, 'Instance').value, ids[3]);
+    assert.match(bindingElement(h, 'Source').children[0].textContent, /已不可用/); assert.match(bindingElement(h, 'Instance').children[0].textContent, /已不可用/);
+    h.set('Source', ids[4], 'change'); h.set('Instance', ids[1], 'change');
+  }
+  await h.review(); assert.equal(bindingElement(h, 'Save').disabled, false); assert.equal(h.uuidCount(), 4);
+});
+
+test('pending reviews lock list selection and topology, and silent selected-binding edits invalidate late responses', async () => {
+  const h = await multiHarness(), identities = bindingIds(h); h.click('Check'); await settle();
+  for (const suffix of ['BindingList', 'AddBinding', 'RemoveBinding', 'Instance', 'Source']) assert.equal(bindingElement(h, suffix).disabled, true);
+  h.set('BindingList', identities[0], 'change'); assert.equal(bindingElement(h, 'BindingList').value, identities[2]);
+  h.click('AddBinding'); h.click('RemoveBinding'); assert.deepEqual(bindingIds(h), identities); assert.equal(h.uuidCount(), 4);
+  bindingElement(h, 'Source').value = ids[4]; h.requests[0].resolve(receipt(h.requests[0].request, multiCatalog())); await settle();
+  assert.equal(bindingElement(h, 'Save').disabled, true); assert.equal(h.applied.length, 0);
+});
+
+test('cancellation protects the complete binding list and discards it without commands when confirmed', async () => {
+  const h = await multiHarness(), identities = bindingIds(h); let confirmations = 0;
+  h.set('Source', '', 'change'); h.set('BindingList', identities[0], 'change'); h.runtime.window.confirm = () => { confirmations++; return false; };
+  h.click('Cancel'); assert.equal(confirmations, 1); assert.equal(bindingElement(h, 'Dialog').open, true);
+  h.set('BindingList', identities[2], 'change'); assert.equal(bindingElement(h, 'Source').value, ''); assert.deepEqual(bindingIds(h), identities);
+  h.runtime.window.confirm = () => true; h.click('Close'); assert.equal(bindingElement(h, 'Dialog').open, false); assert.equal(h.requests.length, 0);
+});
+
+
+test('backend selection invalidates approval and preserves every binding identity and selected script', async () => {
+  const h = await multiHarness(), identities = bindingIds(h); await h.review();
+  const godot = h.requests[0].request, before = JSON.parse(godot.content);
+  assert.equal(bindingElement(h, 'Profile').value, 'godot-gdscript');
+  assert.deepEqual(bindingElement(h, 'Profile').children.map(option => option.value), ['godot-gdscript', 'bevy-rust']);
+  h.set('Profile', 'bevy-rust', 'change'); assert.equal(bindingElement(h, 'Save').disabled, true); assert.equal(bindingElement(h, 'Review').hidden, true);
+  h.click('Save'); await settle(); assert.equal(h.requests.length, 1); assert.deepEqual(bindingIds(h), identities);
+  await h.review(); const rust = h.requests[1].request, document = JSON.parse(rust.content);
+  assert.equal(rust.objectId, godot.objectId); assert.equal(rust.sourcePath, godot.sourcePath);
+  assert.deepEqual(document.bindings.map(binding => ({ ...binding, implementation: { ...binding.implementation, backendId: 'org.viento.godot4', language: 'gdscript' } })), before.bindings);
+  for (const binding of document.bindings) { assert.equal(binding.implementation.backendId, 'org.viento.bevy-rust'); assert.equal(binding.implementation.language, 'rust'); }
+  assert.equal(bindingElement(h, 'SourceText').textContent, rust.content); assert.equal(h.uuidCount(), 4);
+  h.click('Save'); await settle(); assert.deepEqual(h.requests[2].request, { ...rust, mode: 'apply' });
+  h.requests[2].resolve(receipt(h.requests[2].request, multiCatalog())); await settle(); assert.equal(h.applied.length, 1);
+  assert.equal(bindingElement(h, 'Profile').disabled, true); assert.equal(bindingElement(h, 'Open').disabled, false);
+});
+
+test('a silent backend switch cannot submit a reviewed profile or approve a late pending response', async () => {
+  const reviewed = await harness(); await reviewed.open(); await reviewed.review();
+  bindingElement(reviewed, 'Profile').value = 'bevy-rust'; reviewed.click('Save'); await settle();
+  assert.equal(reviewed.requests.length, 1); assert.equal(bindingElement(reviewed, 'Save').disabled, true);
+  const pending = await harness(); await pending.open(); pending.click('Check'); await settle();
+  assert.equal(bindingElement(pending, 'Profile').disabled, true); bindingElement(pending, 'Profile').value = 'bevy-rust';
+  pending.requests[0].resolve(receipt(pending.requests[0].request)); await settle();
+  assert.equal(bindingElement(pending, 'Save').disabled, true); assert.equal(bindingElement(pending, 'Review').hidden, true); assert.equal(pending.applied.length, 0);
+  await pending.review(); assert.equal(JSON.parse(pending.requests[1].request.content).bindings[0].implementation.backendId, 'org.viento.bevy-rust');
+});
+
+test('unknown behavior profiles fail before command execution rather than falling back to Godot', async () => {
+  const h = await harness(); await h.open(); const identities = bindingIds(h);
+  for (const value of ['', 'org.viento.bevy', 'rust', 'godot-rust', 'bevy-gdscript']) {
+    h.set('Profile', value, 'change'); h.click('Check'); await settle();
+    assert.equal(h.requests.length, 0); assert.equal(bindingElement(h, 'Save').disabled, true); assert.deepEqual(bindingIds(h), identities);
+    assert.match(bindingElement(h, 'Status').textContent, /请选择已支持/);
+  }
+  h.set('Profile', 'bevy-rust', 'change'); await h.review(); assert.equal(bindingElement(h, 'Save').disabled, false);
+});
+
+test('profile and exact reviewed source survive language changes, binding selection and catalog refresh', async () => {
+  const h = await multiHarness(), identities = bindingIds(h); h.set('Profile', 'bevy-rust', 'change'); await h.review();
+  const before = h.requests[0].request.content;
+  for (const locale of ['en', 'ja', 'zh-CN']) {
+    h.setLanguage(locale); h.set('BindingList', identities[0], 'change');
+    assert.equal(bindingElement(h, 'Profile').value, 'bevy-rust'); assert.equal(bindingElement(h, 'SourceText').textContent, before);
+    assert.equal(bindingElement(h, 'Save').disabled, false); assert.deepEqual(bindingIds(h), identities);
+  }
+  h.click('Refresh'); await settle(); assert.equal(bindingElement(h, 'Profile').value, 'bevy-rust'); assert.equal(bindingElement(h, 'Save').disabled, true);
+  await h.review(); assert.equal(h.requests[1].request.content, before); assert.equal(h.uuidCount(), 4);
+  h.set('Profile', 'godot-gdscript', 'change'); await h.review();
+  assert.deepEqual(JSON.parse(h.requests[2].request.content).bindings.map(binding => binding.implementation.language), ['gdscript', 'gdscript', 'gdscript']);
+  assert.deepEqual(bindingIds(h), identities);
 });

@@ -11,15 +11,23 @@
 .scene-behavior-create-feedback p { margin:6px 0; overflow-wrap:anywhere; }
 .scene-behavior-create-footer { flex:none; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; padding:12px 20px; border-top:1px solid #33536a; }
 .scene-behavior-create-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.scene-behavior-create-profile { grid-column:1/-1; }
 .scene-behavior-create-dialog fieldset { margin:14px 0; padding:12px; min-width:0; border:1px solid #33536a; }
 .scene-behavior-create-dialog label { display:grid; gap:5px; min-width:0; }
 .scene-behavior-create-dialog input,.scene-behavior-create-dialog select { width:100%; min-width:0; box-sizing:border-box; padding:8px; border:1px solid #33536a; border-radius:6px; color:inherit; background:#0a1422; font:inherit; }
 .scene-behavior-create-dialog select { text-overflow:ellipsis; }
 .scene-behavior-create-dialog .doc-btn { white-space:normal; overflow-wrap:anywhere; }
 .scene-behavior-create-dialog pre { margin:8px 0; padding:10px; border:1px solid #33536a; border-radius:6px; color:#bdd1e4; background:#0a1422; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.8rem; }
+.scene-behavior-create-bindings { display:grid; grid-template-columns:minmax(180px,.8fr) minmax(0,1.2fr); gap:16px; align-items:start; }
+.scene-behavior-create-binding-list { display:grid; gap:10px; min-width:0; }
+.scene-behavior-create-binding-list select { height:180px; padding:4px; }
+.scene-behavior-create-binding-list option { padding:6px 4px; overflow:hidden; text-overflow:ellipsis; }
+.scene-behavior-create-binding-actions { display:flex; flex-wrap:wrap; gap:8px; }
+.scene-behavior-create-binding-actions .doc-btn { flex:1 1 100px; }
 @media(max-width:700px) {
  .scene-behavior-create-header { padding:12px; } .scene-behavior-create-header h2 { font-size:1.05rem; }
  .scene-behavior-create-body { padding:0 12px 12px; } .scene-behavior-create-feedback { padding:0 12px; }
  .scene-behavior-create-footer { padding:10px 12px; justify-content:flex-start; } .scene-behavior-create-footer .doc-btn { flex:1 1 96px; }
- .scene-behavior-create-grid { grid-template-columns:minmax(0,1fr); }
+ .scene-behavior-create-grid,.scene-behavior-create-bindings { grid-template-columns:minmax(0,1fr); }
+ .scene-behavior-create-binding-list select { height:132px; }
 }

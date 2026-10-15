@@ -19,7 +19,7 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
   dialog.setAttribute('aria-labelledby', 'scriptCreateTitle');
   dialog.innerHTML = `<header class="script-create-header"><h2 id="scriptCreateTitle" data-i18n="新建脚本"></h2><button id="scriptCreateClose" type="button" class="doc-btn doc-btn-ghost" data-i18n="返回编辑器"></button></header>
     <div class="script-create-body"><p data-i18n="选择起始内容，在原文编辑器中继续编写，再用保存登记 TXT 脚本。"></p>
-      <p class="script-create-note" data-i18n="本次只创建草稿，不保存、不运行脚本，也不关联场景。起始内容使用 Godot 4 / GDScript，无需先安装 Godot。"></p>
+      <p class="script-create-note" data-i18n="选择 Godot 4 / GDScript 或 Bevy / Rust 起始内容，无需先安装对应工具链。本次只创建草稿；保存和场景关联分别在编辑器中完成。"></p>
       <fieldset id="scriptCreateFields"><legend data-i18n="脚本草稿设置"></legend><div class="script-create-grid">
         <label><span data-i18n="起始内容"></span><select id="scriptCreateStarter"></select></label>
         <label><span data-i18n="文档类型"></span><select id="scriptCreateType"></select></label>

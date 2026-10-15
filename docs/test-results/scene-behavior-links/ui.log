@@ -1,0 +1,36 @@
+✔ capability and clean scene ownership guard initial reads, while a read-only host may view the directory (35.930939ms)
+✔ empty directory provides a creation route without changing metadata or source (8.287576ms)
+✔ linked scripts distinguish used bindings from only available sources and are excluded from choices (8.234657ms)
+✔ review delegates the exact metadata-only reference and renders all endpoints without writing (10.291973ms)
+✔ apply uses the reviewed endpoints, refreshes the host and directory, and marks the script available without binding it (11.355374ms)
+✔ changing or silently changing the script invalidates approval before apply (13.62069ms)
+✔ linked, nonexistent or stale selected scripts cannot be reviewed even through synthetic selection (10.211147ms)
+✔ directory reads reject invalid versions and mismatched manifest or source declarations (16.305916ms)
+✔ late initial directory responses cannot cross source, session, scene, dirty or capability changes (27.730303ms)
+✔ late previews are discarded for changed owner or silently edited input (35.987035ms)
+✔ pure receipt checking blocks forged relations, proposal commands, endpoints and apply receipts (41.690135ms)
+✔ known conflict allows fresh read and review but never repeats the old approval (13.259703ms)
+✔ unknown apply remains locked after unconfirmed refresh; no duplicate write is issued (10.307316ms)
+✔ unknown apply converges only by rereading a linked target and passes a read-only observed notification (11.304548ms)
+✔ a linked target under another manifest or world cannot settle an unknown transaction (19.814776ms)
+✔ known committed writes remain locked across host refresh failure and retry only synchronization (10.876943ms)
+✔ post-save catalog failure preserves committed state until a read retry succeeds without another callback (11.005109ms)
+✔ owner changes during save or its refresh never synchronize a different scene or session (21.70193ms)
+✔ opening source rereads its current revision and hands off navigation without fighting host busy and token changes (5.944579ms)
+✔ opening a replaced or removed behavior relation first updates the directory without navigating an old path (14.747131ms)
+✔ navigation never accepts dirty, changed-session or replaced-source ownership during the fresh read (21.56643ms)
+✔ navigation handoff remains invalid for a dirty editor, new scene or disposed window (21.114715ms)
+✔ failed source navigation preserves the window and can be retried without issuing metadata commands (6.098428ms)
+✔ local selection and approval ask before close or source navigation and in-flight operations block exit (9.320473ms)
+✔ ordinary close restores focus after its native event, whereas source navigation preserves the destination focus (8.442748ms)
+✔ an old close event cannot reset a reopened window or steal its current focus (6.030477ms)
+✔ external native close and dispose invalidate pending requests and release the busy lock (13.258341ms)
+✔ translations retain selections and review; dynamic names remain text and every fixed message has English and Japanese copy (12.176112ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 522.524998

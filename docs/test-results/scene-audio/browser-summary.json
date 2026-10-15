@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "report": "docs/test-results/scene-audio/browser-1791896049034/browser.json",
+  "previousReports": [
+    {
+      "report": "docs/test-results/scene-audio/browser-1791894941122/browser.json",
+      "ok": true,
+      "purpose": "Initial integration before final runtime clock and precise-number fixes; preserved unchanged."
+    }
+  ],
+  "browser": "Chrome/154.0.8037.97",
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "workflowGroups": 4,
+  "screenshots": 10,
+  "sourceFiles": 25,
+  "sourceSnapshotUnchanged": true,
+  "sourceHashesRecheckedAfterRun": true,
+  "consoleErrors": 0,
+  "changedAuthorPaths": [
+    "documents/audio/demo.json"
+  ],
+  "commands": [
+    {
+      "action": "play",
+      "atSeconds": 0,
+      "trackId": "77777777-7777-4777-8777-000000000001",
+      "cueId": "66666666-6666-4666-8666-000000000001"
+    },
+    {
+      "action": "play",
+      "atSeconds": 0.125,
+      "trackId": "77777777-7777-4777-8777-000000000002",
+      "cueId": "66666666-6666-4666-8666-000000000002"
+    },
+    {
+      "action": "play",
+      "atSeconds": 0.5,
+      "trackId": "77777777-7777-4777-8777-000000000001",
+      "cueId": "66666666-6666-4666-8666-000000000003"
+    }
+  ],
+  "smallScreenLanguages": [
+    "zh-CN",
+    "en",
+    "ja"
+  ],
+  "delivery": {
+    "fileName": "viento-95c65c94-9210-434c-b2ca-70071b0688d1.viento-build.zip",
+    "bytes": 58450,
+    "sha256": "0c95be45e3adee3e525a6eea5269f6fcc788813249bd0f2db8452f2e220dbb0a",
+    "fileCount": 8,
+    "assetCount": 1,
+    "buildId": "95c65c94-9210-434c-b2ca-70071b0688d1",
+    "projectKind": "godot-project",
+    "importCode": 0,
+    "runCode": 0
+  },
+  "limitations": [
+    "Actual Chrome using the local HTTP editor and trusted native Godot. No installed Tauri window, native file picker, Android or other desktop OS claim.",
+    "The bundled scene-audio example is copied into a disposable workspace. Existing tracks and cues are edited; this does not test new audio-document creation or resource import.",
+    "Godot runs bounded headless logic with three audio commands. This browser workflow makes no speaker or audible-output claim; native PCM mixer capture is verified separately.",
+    "Generated project ZIP is downloaded by Chrome, independently verified, extracted and run at a new path. It is source-engineering delivery, not a standalone game executable."
+  ]
+}

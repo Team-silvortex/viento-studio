@@ -1,0 +1,210 @@
+✖ Rust descriptor remains an explicit source-project route with no graphics or replay claims (4.24599ms)
+✔ availability only observes concrete adjacent Cargo/rustc files; identify pins both executable identities (36.590417ms)
+✔ wrong compiler version, noisy probes, rustup-like executables and foreign rustc paths are rejected (103.721017ms)
+✔ offline check isolates Cargo configuration and target output while preserving literal project arguments (105.640648ms)
+✖ run compiles the frozen source first and starts only the exact generated executable, with separate output streams (124.265554ms)
+▶ compile failure, timeout and cancellation preserve phase outcomes and remove disposable directories
+  ✔ failed (101.299899ms)
+  ✔ timeout (237.348662ms)
+  ✖ cancelled (82.91134ms)
+✖ compile failure, timeout and cancellation preserve phase outcomes and remove disposable directories (422.634067ms)
+▶ runtime failure, timeout, cancellation and observer errors clean the same compiler workspace
+  ✖ failed (135.479007ms)
+  ✖ timeout (133.856255ms)
+  ✖ cancelled (120.294002ms)
+  ✖ observer-failed (121.103308ms)
+✖ runtime failure, timeout, cancellation and observer errors clean the same compiler workspace (511.691431ms)
+✔ changed tool bytes are refused both before compilation and after a compiler replaced its companion (155.467786ms)
+✔ unsupported phases, windows, captures, replay and directory symlinks cannot invoke a tool (1.472848ms)
+✔ symlinked compiler output is rejected and never executed (101.37432ms)
+✖ compiler diagnostics map only approved UUID paths to frozen author UTF-16 positions (0.929955ms)
+✖ untrusted compiler paths and malformed spans never become author navigation (0.321907ms)
+✔ compiler diagnostics stay bounded and shared phase handling preserves failures without compiler messages (4.120764ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 9
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1672.337568
+
+✖ failing tests:
+
+test at scripts/tests/bevy-rust-adapter.test.mjs:66:1
+✖ Rust descriptor remains an explicit source-project route with no graphics or replay claims (4.24599ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(Object.isFrozen(value))
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:73:105)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/tests/bevy-rust-adapter.test.mjs:116:1
+✖ run compiles the frozen source first and starts only the exact generated executable, with separate output streams (124.265554ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'failed'
+  - 'succeeded'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:119:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'succeeded',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/bevy-rust-adapter.test.mjs:130:13
+✖ cancelled (82.91134ms)
+  AbortError: This operation was aborted
+      at new DOMException (node:internal/per_context/domexception:76:18)
+      at AbortController.abort (node:internal/abort_controller:572:18)
+      at onOutput (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:133:142)
+      at onOutput (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/bevy-rust-adapter.mjs:85:37)
+      at observe (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/build-process.mjs:37:13)
+      at append (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/build-process.mjs:43:7)
+      at Socket.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/build-process.mjs:47:7)
+      at Socket.emit (node:events:514:28)
+      at addChunk (node:internal/streams/readable:568:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:519:3)
+
+test at scripts/tests/bevy-rust-adapter.test.mjs:142:13
+✖ failed (135.479007ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:148:61)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:142:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/bevy-rust-adapter.test.mjs:142:13
+✖ timeout (133.856255ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'failed'
+  - 'timeout'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:147:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:142:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'timeout',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/bevy-rust-adapter.test.mjs:142:13
+✖ cancelled (120.294002ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'failed'
+  - 'cancelled'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:147:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:142:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'cancelled',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/bevy-rust-adapter.test.mjs:142:13
+✖ observer-failed (121.103308ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'failed'
+  - 'observer-failed'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:147:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:142:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'observer-failed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/bevy-rust-adapter.test.mjs:180:1
+✖ compiler diagnostics map only approved UUID paths to frozen author UTF-16 positions (0.929955ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   column: 1,
+  -   encoding: 'utf-16',
+      end: 34,
+  +   endColumn: 17,
+  +   endLine: 2,
+  +   line: 2,
+  -   exact: true,
+  -   propertyPath: '',
+      start: 18
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:184:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { start: 18, end: 34, line: 2, column: 1, endLine: 2, endColumn: 17 },
+    expected: { start: 18, end: 34, encoding: 'utf-16', propertyPath: '', exact: true },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/bevy-rust-adapter.test.mjs:188:1
+✖ untrusted compiler paths and malformed spans never become author navigation (0.321907ms)
+  TypeError: message.spans?.find is not a function
+      at Object.diagnostics (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/bevy-rust-adapter.mjs:102:33)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-adapter.test.mjs:195:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

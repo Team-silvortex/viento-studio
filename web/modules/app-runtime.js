@@ -6,6 +6,7 @@ import { setupSourcePosition } from './app-source-position.js';
 import { setupSourceIndentation } from './app-source-indentation.js';
 import { prepareScriptDraftApply } from '../../engine/script-authoring.mjs';
 import { prepareCompositionDraftApply } from '../../engine/scene-composition-create.mjs';
+import { createSceneAudioSourceHost } from './app-scene-audio-source.js';
 import { createSceneBehaviorSourceHost } from './app-behavior-source.js';
 import { t, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage } from '../i18n/index.js';
 import { diagnosticMessage } from '../i18n/diagnostics.js';
@@ -5826,12 +5827,31 @@ async function initApp(options = {}) {
       setEditorStatus(t(state.editHasUnsavedChanges ? '行为修改已应用到原文草稿；尚未保存。' : '行为修改已应用；文本与已保存版本一致。'));
     }, focus: () => editEditorEl.focus(),
   });
+  const audioSourceHost = createSceneAudioSourceHost({
+    getState: () => {
+      const doc = getActiveDoc(), sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
+      return { document: doc, sourcePath, token: `${editorLoadToken}:${scenePreviewDraftEpoch}`, content: getCurrentEditContent(),
+        baseline: editSessionBaselineContent, version: editSessionVersion,
+        editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
+        creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath), available: true };
+    },
+    digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
+    writeDraft: content => {
+      const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, scroll = editEditorEl.scrollTop;
+      setSourceEditorContent(content);
+      if (Number.isInteger(start) && Number.isInteger(end)) editEditorEl.setSelectionRange?.(Math.min(start, content.length), Math.min(end, content.length));
+      editEditorEl.scrollTop = scroll;
+      refreshEditSessionDirtyState(); refreshEditButtons();
+      setEditorStatus(t(state.editHasUnsavedChanges ? '声音修改已应用到原文草稿；尚未保存。' : '声音修改已应用；文本与已保存版本一致。'));
+    }, focus: () => editEditorEl.focus(),
+  });
   studioSystem = await setupStudioSystem({
     settings: options.settings,
     features: options.features,
     ports: {
       scripts: { getContext: scriptCreateContext, createDraft: createScriptDraft },
       compositionCreate: { getContext: compositionCreateContext, createDraft: createCompositionDraft },
+      sceneAudio: audioSourceHost,
       sceneBehaviors: { ...behaviorSourceHost, inspect: payload => inspectSceneBehaviorAuthoring(payload) },
       scene3d: { getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot, locateSource: locateScene3DSource },
       scene3dTransforms: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DTransformDraft },
@@ -5864,7 +5884,7 @@ async function initApp(options = {}) {
         setBusy: busy => { state.isMutatingWorld = busy; refreshEditButtons(); },
         applied: async result => {
           const sourcePath = result.changes?.[0]?.sourcePath || result.object?.documentRefs?.[0]?.sourcePath || '';
-          await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: result.changes?.length > 1 ? '' : toRebuildFilter(sourcePath), requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
+          await rebuildDocIndex({ rebuildUrl: DOC_REBUILD_URL, sourceFilter: result.changes?.length !== 1 || ['relation.add', 'resource.bind'].includes(result.changes[0]?.kind) ? '' : toRebuildFilter(sourcePath), requestTimeoutMs: DATA_INDEX_REQUEST_TIMEOUT_MS });
           await loadData(state.activePath, { preferredSourcePath: sourcePath, forceCacheBust: true, allowDuringWrite: true, throwOnError: true });
         },
         openSource: openBuildSource,
@@ -6186,7 +6206,7 @@ async function initApp(options = {}) {
     window.addEventListener('keydown', handleWindowKeydown);
 
     window.addEventListener('beforeunload', (event) => {
-      if (!state.editHasUnsavedChanges && !document.querySelector('#sceneMaterializeDialog[data-dirty="true"], #sceneMaterializeDialog[aria-busy="true"], #sceneCompositionCreateDialog[data-dirty="true"], #sceneCompositionCreateDialog[aria-busy="true"], #scriptCreateDialog[data-dirty="true"], #scriptCreateDialog[aria-busy="true"], #sceneBehaviorCreateDialog[data-dirty="true"], #sceneBehaviorCreateDialog[aria-busy="true"], #sceneBehaviorsDialog[data-dirty="true"], #sceneBehaviorsDialog[aria-busy="true"], #projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[data-dirty="true"], #sceneLayoutDialog[data-dirty="true"], #sceneCreateDialog[aria-busy="true"], #sceneLayoutDialog[aria-busy="true"], #objectProjectionDialog[data-dirty="true"], #objectProjectionDialog[aria-busy="true"]')) {
+      if (!state.editHasUnsavedChanges && !document.querySelector('#sceneAudioDialog[data-dirty="true"], #sceneAudioDialog[aria-busy="true"], #sceneBehaviorLinksDialog[data-dirty="true"], #sceneMaterializeDialog[data-dirty="true"], #sceneBehaviorLinksDialog[aria-busy="true"], #sceneMaterializeDialog[aria-busy="true"], #sceneCompositionCreateDialog[data-dirty="true"], #sceneCompositionCreateDialog[aria-busy="true"], #scriptCreateDialog[data-dirty="true"], #scriptCreateDialog[aria-busy="true"], #sceneBehaviorCreateDialog[data-dirty="true"], #sceneBehaviorCreateDialog[aria-busy="true"], #sceneBehaviorsDialog[data-dirty="true"], #sceneBehaviorsDialog[aria-busy="true"], #projectSettingsDialog[data-dirty="true"], #worldBrowserDialog[data-dirty="true"], #worldBrowserDialog[aria-busy="true"], #sceneCreateDialog[data-dirty="true"], #sceneLayoutDialog[data-dirty="true"], #sceneCreateDialog[aria-busy="true"], #sceneLayoutDialog[aria-busy="true"], #objectProjectionDialog[data-dirty="true"], #objectProjectionDialog[aria-busy="true"]')) {
         return;
       }
       event.preventDefault();

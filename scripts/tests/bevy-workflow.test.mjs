@@ -51,11 +51,12 @@ test('host selection keeps Godot default, uses separate trusted tools and never 
   assert.deepEqual(executionHostConfiguration({ env: {} }), { backendId: 'org.viento.godot4', tool: undefined });
   assert.deepEqual(executionHostConfiguration({ env: { VIENTO_EXECUTION_BACKEND: backendId, VIENTO_BEVY_BIN: '/bevy', VIENTO_GODOT_BIN: '/godot' } }), { backendId, tool: '/bevy' });
   assert.deepEqual(executionHostConfiguration({ env: {}, backendId, tool: '/explicit' }), { backendId, tool: '/explicit' });
+  assert.deepEqual(executionHostConfiguration({ env: { VIENTO_EXECUTION_BACKEND: 'org.viento.bevy-rust', VIENTO_BEVY_RUST_CARGO: '/rust/cargo', VIENTO_BEVY_BIN: '/old-bevy' } }), { backendId: 'org.viento.bevy-rust', tool: '/rust/cargo' });
   for (const selected of ['org.viento.unknown', '__proto__', '']) {
     assert.throws(() => executionHostConfiguration({ env: { VIENTO_EXECUTION_BACKEND: selected } }), { errorCode: 'build_backend_missing' });
   }
   const descriptors = createExecutionBackendRegistry().descriptors();
-  assert.deepEqual(descriptors.map(item => item.id), ['org.viento.godot4', backendId]);
+  assert.deepEqual(descriptors.map(item => item.id), ['org.viento.godot4', backendId, 'org.viento.bevy-rust']);
   assert.equal(descriptors[1].execution.headlessLogic, true); assert.equal(descriptors[1].execution.windowPreview, false);
 });
 

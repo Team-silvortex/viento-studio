@@ -12,11 +12,12 @@ const propose = (source = context(), selection = request()) => prepareScriptDraf
 
 test('known starters are immutable data and the minimal Node contains no lifecycle or execution instructions', () => {
   const all = listScriptStarters();
-  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal']);
+  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal', 'bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion']);
   assert.equal(all[0].content, 'extends Node\n');
   for (const starter of all) {
     assert.deepEqual(Object.keys(starter), ['id', 'languageId', 'backendId', 'label', 'description', 'content']);
-    assert.equal(starter.languageId, 'gdscript'); assert.equal(starter.backendId, 'org.viento.godot4');
+    const rust = starter.id.startsWith('bevy-rust');
+    assert.equal(starter.languageId, rust ? 'rust' : 'gdscript'); assert.equal(starter.backendId, rust ? 'org.viento.bevy-rust' : 'org.viento.godot4');
     assert.equal(Object.isFrozen(starter), true);
     assert.throws(() => { starter.content = 'changed'; }, TypeError);
   }
@@ -206,4 +207,24 @@ test('accepted drafts expose only frozen creation data and keep saved identifier
   assert.throws(() => { proposal.sourcePath = 'documents/other.txt'; }, TypeError);
   assert.equal(isScriptDraftProposal(accepted), false);
   assert.deepEqual(prepareScriptDraftApply(context(), proposal), accepted);
+});
+
+
+test('Bevy Rust starters create ordinary reviewed TXT drafts with their exact profile and no world or build authority', () => {
+  for (const starter of listScriptStarters().filter(item => item.languageId === 'rust')) {
+    const selected = { ...request(), starterId: starter.id }, proposal = propose(context(), selected);
+    assert.equal(proposal.backendId, 'org.viento.bevy-rust'); assert.equal(proposal.languageId, 'rust');
+    assert.equal(proposal.sourcePath, 'documents/scripts/new.txt'); assert.equal(proposal.content, starter.content);
+    assert.equal(isScriptDraftProposal(proposal), true); assert.equal(Object.isFrozen(proposal), true);
+    assert.deepEqual(prepareScriptDraftApply(context(), proposal), { ...selected, languageId: 'rust', backendId: 'org.viento.bevy-rust', content: starter.content });
+    for (const key of ['parameters', 'events', 'relations', 'objectId', 'bindingId', 'dependencies', 'buildCommand']) assert.equal(Object.hasOwn(proposal, key), false);
+    assert.throws(() => prepareScriptDraftApply({ ...context(), sourceToken: 'different-source' }, proposal), conflict);
+  }
+});
+
+test('the Bevy Rust signal starter owns borrowed strings before emission and propagates parameter or signal errors', () => {
+  const empty = listScriptStarters().find(item => item.id === 'bevy-rust');
+  assert.equal(empty.content, 'use crate::runtime::BehaviorContext;\n\npub fn ready(_ctx: &mut BehaviorContext) -> Result<(), String> {\n    Ok(())\n}\n');
+  const signal = listScriptStarters().find(item => item.id === 'bevy-rust-signal');
+  assert.equal(signal.content, 'use crate::runtime::BehaviorContext;\n\npub fn ready(ctx: &mut BehaviorContext) -> Result<(), String> {\n    let checkpoint = ctx.string("checkpoint")?.to_owned();\n    let amount = ctx.number("amount")?;\n    ctx.emit("arrived", vec![checkpoint.into(), amount.into()])?;\n    Ok(())\n}\n');
 });

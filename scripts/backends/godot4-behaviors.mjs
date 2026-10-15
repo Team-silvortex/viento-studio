@@ -2,6 +2,7 @@
 import fs from 'node:fs/promises';
 import { buildHash, buildError } from '../adapters/node-build-snapshot.mjs';
 import * as instances from './godot4-instances.mjs';
+import { createSceneBehaviorEventReader } from '../../engine/scene-behavior-events.mjs';
 
 const id = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
 const name = value => typeof value === 'string' && /^[A-Za-z_][A-Za-z0-9_]{0,63}$/.test(value);
@@ -67,11 +68,6 @@ export async function generateGodotBehaviorProject(input) {
   return generated;
 }
 
-function bindingLocation(binding, property) {
-  return { ...binding.declaration, propertyPath: `${binding.declaration.propertyPath}${property ? `/parameters/${property}` : ''}`,
-    bindingId: binding.bindingId, instanceId: binding.instanceId, relatedObjectId: binding.objectId };
-}
-
 export function godotBehaviorDiagnostics(result, plan) {
   const diagnostics = instances.godotDiagnostics(result, basePlan(plan));
   const output = `${result.stdout}\n${result.stderr}`.replace(/\x1b\[[0-9;]*m/g, '');
@@ -96,59 +92,7 @@ export function godotBehaviorDiagnostics(result, plan) {
   return diagnostics;
 }
 
-export function createBehaviorRuntimeEventReader(input, { onEvent } = {}) {
-  const plan = structuredClone(input), value = validateGodotBehaviorPlan(plan);
-  const events = [], diagnostics = [], bindings = new Map(value.bindings.map(binding => [binding.bindingId, binding]));
-  const legacy = instances.createRuntimeEventReader(basePlan(plan));
-  const prefix = 'VIENTO_RUNTIME:', maxLineLength = 65536, maxEvents = 4096;
-  let pending = '', dropping = false, ended = false, ready = false, finished = false, limitReported = false;
-  const invalidFrame = () => { if (diagnostics.length < 128) diagnostics.push({ severity: 'error', code: 'runtime_protocol_invalid',
-    message: 'Invalid behavior runtime protocol frame.', objectId: plan.scene.objectId, sourcePath: plan.scene.sourcePath, propertyPath: '' }); };
-  const accept = text => {
-    if (!text.startsWith(prefix)) return null;
-    if (events.length >= maxEvents) { if (!limitReported) { limitReported = true; invalidFrame(); } return null; }
-    let frame;
-    try { frame = JSON.parse(text.slice(prefix.length)); } catch { invalidFrame(); return null; }
-    if (!plain(frame) || frame.protocol !== 3 || finished) { invalidFrame(); return null; }
-    const binding = bindings.get(frame.bindingId);
-    const identified = binding && binding.instanceId === frame.instanceId && binding.objectId === frame.objectId;
-    if (frame.event === 'behavior') {
-      if (!ready || !exact(frame, ['protocol', 'event', 'bindingId', 'instanceId', 'objectId', 'name', 'arguments']) || !identified
-        || !binding.events.some(event => event.event === frame.name) || !Array.isArray(frame.arguments)
-        || frame.arguments.length > 4 || !frame.arguments.every(scalar)) { invalidFrame(); return null; }
-    } else if (frame.event === 'diagnostic' && frame.bindingId !== undefined) {
-      if (!exact(frame, ['protocol', 'event', 'bindingId', 'instanceId', 'objectId', 'severity', 'code', 'message', 'parameter']) || !identified
-        || frame.severity !== 'error' || typeof frame.code !== 'string' || !/^runtime_behavior_[a-z_]{1,80}$/.test(frame.code)
-        || typeof frame.message !== 'string' || !frame.message.length || frame.message.length > 4096
-        || frame.parameter !== undefined && (typeof frame.parameter !== 'string' || !Object.hasOwn(binding.parameters, frame.parameter))) { invalidFrame(); return null; }
-      diagnostics.push({ severity: frame.severity, code: frame.code, message: frame.message, ...bindingLocation(binding, frame.parameter) });
-    } else {
-      const count = legacy.diagnostics.length;
-      const accepted = legacy.push(prefix + JSON.stringify({ ...frame, protocol: 2 }) + '\n');
-      diagnostics.push(...legacy.diagnostics.slice(count));
-      if (!accepted.length) return null;
-      if (frame.event === 'ready') ready = true;
-      if (frame.event === 'finished') finished = true;
-    }
-    events.push(frame); onEvent?.(frame); return frame;
-  };
-  return { events, diagnostics,
-    push(text) {
-      if (ended) return [];
-      const accepted = [];
-      for (const part of text.split(/(?<=\n)/)) {
-        const complete = part.endsWith('\n');
-        if (!dropping) {
-          if (pending.length + part.length > maxLineLength) { if ((pending + part.slice(0, prefix.length)).startsWith(prefix)) invalidFrame(); pending = ''; dropping = true; }
-          else pending += part;
-        }
-        if (complete) {
-          if (!dropping) { const frame = accept(pending.replace(/\r?\n$/, '')); if (frame) accepted.push(frame); }
-          pending = ''; dropping = false;
-        }
-      }
-      return accepted;
-    },
-    finish() { if (!ended && pending && !dropping) accept(pending); pending = ''; ended = true; return { events, diagnostics }; },
-  };
+export function createBehaviorRuntimeEventReader(input, options = {}) {
+  validateGodotBehaviorPlan(input);
+  return createSceneBehaviorEventReader(input, options);
 }

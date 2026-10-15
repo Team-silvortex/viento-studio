@@ -14,6 +14,7 @@ mod scene3d_patch;
 mod scene3d_properties_patch;
 mod scene3d_removal_patch;
 mod scene3d_translation_patch;
+mod scene_audio;
 mod scene_composition;
 mod scene_composition_definition_rename;
 mod scene_composition_definitions_patch;
@@ -158,6 +159,12 @@ pub extern "C" fn viento_core_scene3d_fog_version() -> u32 {
     1
 }
 
+/// Optional bounded engine-independent soundtrack inspection and sampling.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_audio_version() -> u32 {
+    1
+}
+
 /// Optional bounded field preparation and explicit-time particle sampling.
 #[no_mangle]
 pub extern "C" fn viento_core_scene3d_particles_version() -> u32 {
@@ -290,6 +297,13 @@ pub enum CoreResponse {
         ok: bool,
         scene3d: scene3d::Scene3DResponse,
     },
+    SceneAudioSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "sceneAudio")]
+        scene_audio: scene_audio::SceneAudioResponse,
+    },
     Scene3DParticlesSuccess {
         #[serde(rename = "protocolVersion")]
         protocol_version: u32,
@@ -394,6 +408,16 @@ impl CoreResponse {
 }
 
 fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
+    if matches!(
+        value["operation"].as_str(),
+        Some("sceneAudio.inspect" | "sceneAudio.sample")
+    ) {
+        return Ok(CoreResponse::SceneAudioSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene_audio: scene_audio::dispatch(value)?,
+        });
+    }
     if matches!(
         value["operation"].as_str(),
         Some("scene3d.prepareParticleField" | "scene3d.sampleParticleField")
@@ -658,6 +682,12 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
         serde_json::from_slice::<Value>(input)
             .map_err(|_| CoreError::request())
             .and_then(|value| {
+                if matches!(
+                    value["operation"].as_str(),
+                    Some("sceneAudio.inspect" | "sceneAudio.sample")
+                ) {
+                    scene_audio::validate_request_bytes(input)?;
+                }
                 // Keep legacy request admission unchanged. The new exact DTO
                 // also rejects duplicate raw keys before Value can hide them.
                 if value["operation"].as_str() == Some("scene3d.patchObjectTransform") {

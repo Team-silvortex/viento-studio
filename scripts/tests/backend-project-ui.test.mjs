@@ -258,3 +258,25 @@ test('destroy is idempotent and detached read completion cannot recreate UI', as
   h.controller.dispose(); h.controller.destroy(); waiting.resolve(receipt()); assert.equal(await open, false);
   assert.equal(h.container.children.length, 0); h.language(en); assert.equal(h.container.children.length, 0);
 });
+
+
+test('the Bevy Rust source project reports its Cargo entry, frozen authors and source-only delivery in all three languages', async () => {
+  const project = clone(manifest({ backend: 'org.viento.bevy-rust', images: false }));
+  project.project.kind = 'bevy-rust-project'; project.project.entry = 'project/Cargo.toml';
+  project.tool.version = 'rustc 1.93.0';
+  const generated = project.files.find(file => file.role === 'generated');
+  project.files = [
+    { ...generated, path: 'project/Cargo.lock' }, { ...generated, path: 'project/Cargo.toml' },
+    { ...generated, path: 'project/src/main.rs' },
+    { ...project.files.find(file => file.role === 'author-source-copy'), path: `project/src/behavior_${scriptId.replaceAll('-', '_')}.rs` },
+  ].sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
+  const h = await view({ project: validateBackendProjectManifest(project) }); await h.open();
+  const hint = '这是包含作者 Rust 行为的 Cargo 源工程。需要匹配的 Rust 工具链与锁定依赖；编译缓存和可执行文件不随工程交付。';
+  for (const dictionary of [{}, en, ja]) {
+    h.language(dictionary); const text = h.element('backendProjectContent').textContent;
+    assert.ok(text.includes(dictionary['Bevy Rust 源工程'] || 'Bevy Rust 源工程'));
+    assert.ok(text.includes(dictionary[hint] || hint));
+    for (const value of ['project/Cargo.toml', 'project/Cargo.lock', 'rustc 1.93.0', 'org.viento.bevy-rust', 'documents/behaviors/mover.txt']) assert.ok(text.includes(value), value);
+    assert.ok(!text.includes('Bevy 工程只有场景数据')); assert.equal(h.calls.length, 1);
+  }
+});

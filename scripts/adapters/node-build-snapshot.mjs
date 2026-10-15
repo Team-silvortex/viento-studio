@@ -8,6 +8,8 @@ import { createHash } from 'node:crypto';
 import { readWorldSnapshot } from './node-world-projection.mjs';
 import { scene2DModelToPlan, attachSceneBehaviorPlan, buildActorFieldLocation } from '../../engine/build-plan.mjs';
 import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
+import { audioResourceLocation } from '../../engine/scene-audio.mjs';
+import { validatePcmWave } from '../lib/audio-wav.mjs';
 import { resolveScene2DModel } from '../../engine/scene-model.mjs';
 import { resolveSceneCompositionPreview } from '../../engine/scene-composition-preview.mjs';
 import { canonicalJson } from '../../engine/world-projection.mjs';
@@ -96,16 +98,17 @@ async function captureScene(root, sceneRef, { signal, draft, compositionPreview 
     const record = observed.source.assets.find(item => item.record.id === resource.id).record;
     try {
       const file = await resolveContainedPath(boundary, path.join(assetRoot, record.location.path));
-      if ((totalBytes += resource.size) > 128 * 1024 * 1024) throw buildError('build_input_limit', 'Selected images exceed 128 MiB.');
+      if ((totalBytes += resource.size) > 128 * 1024 * 1024) throw buildError('build_input_limit', 'Selected resources exceed 128 MiB.');
       const bytes = await readBuildFile(file, 32 * 1024 * 1024, signal);
-      if (bytes.length !== resource.size || buildHash(bytes) !== resource.sha256) throw buildError('build_resource_changed', 'Image bytes no longer match the registered content hash.');
+      if (bytes.length !== resource.size || buildHash(bytes) !== resource.sha256) throw buildError('build_resource_changed', 'Resource bytes no longer match the registered content hash.');
+      if (resource.kind === 'audio') validatePcmWave(bytes);
       resources.set(resource.id, bytes);
     } catch (error) {
       signal?.throwIfAborted();
       const actor = planned.plan.actors.find(actor => actor.imageResourceId === resource.id);
       return finishInvalidPreview({ ok: false, plan: planned.plan, diagnostics: [{ severity: 'error', code: error.errorCode || 'build_resource_unavailable',
-        message: 'Cannot freeze image bytes; check availability and the registered hash.', resourceId: resource.id,
-        ...(resolved.model.sourceLocations.actors.find(item => sceneActorIdentity(item) === sceneActorIdentity(actor))?.fields.imageResourceId
+        message: resource.kind === 'audio' ? (error.errorCode === 'build_audio_format' ? error.message : 'Cannot freeze audio bytes; check availability and the registered hash.') : 'Cannot freeze image bytes; check availability and the registered hash.', resourceId: resource.id,
+        ...(audioResourceLocation(planned.plan, resource.id) || resolved.model.sourceLocations.actors.find(item => sceneActorIdentity(item) === sceneActorIdentity(actor))?.fields.imageResourceId
           || buildActorFieldLocation(actor, 'imageResourceId')) }] });
     }
   }

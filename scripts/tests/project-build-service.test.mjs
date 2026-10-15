@@ -39,7 +39,7 @@ async function fingerprint(root) {
   return values;
 }
 
-async function probeFixture(t, identify, adapterOverrides = {}) {
+async function probeFixture(t, identify, adapterOverrides = {}, serviceOptions = {}) {
   const toolDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'viento-service-tool-'));
   t.after(() => fs.rm(toolDirectory, { recursive: true, force: true }));
   const tool = path.join(toolDirectory, 'host-owned-tool');
@@ -51,7 +51,7 @@ async function probeFixture(t, identify, adapterOverrides = {}) {
       if (identify) return identify(executable, options);
       return { executable, version: '4.7.2.stable', sha256: buildHash(await fs.readFile(executable)), platform: process.platform, arch: process.arch };
     } }]);
-  return { ...(await fixture(t, { tool, backendRegistry })), tool, identifications: () => identifications };
+  return { ...(await fixture(t, { tool, backendRegistry, ...serviceOptions })), tool, identifications: () => identifications };
 }
 
 test('editor build jobs: plans work without an engine and never write the project or cache', { skip: process.platform !== 'linux' }, async t => {
@@ -297,4 +297,39 @@ test('editor catalog failures still reject first discovery and source-only sessi
   await readOnly.service.command({ action: 'plan', sceneId }); await settled(readOnly.service);
   await fs.rename(readOnly.root, path.join(readOnly.base, 'offline-plan'));
   await assert.rejects(readOnly.service.status({ refresh: true }), { errorCode: 'world_unavailable' });
+});
+
+
+test('host compile budgets reach both build and run phases while HTTP cannot override them', { skip: process.platform !== 'linux' }, async t => {
+  for (const executionTimeoutMs of [30000, 300000]) {
+    const budgets = [];
+    const { service } = await probeFixture(t, undefined, {
+      async executePhase({ phase, directory, timeoutMs, onOutput }) {
+        budgets.push({ phase, timeoutMs });
+        let stdout = '';
+        if (phase === 'run') {
+          const scene = JSON.parse(await fs.readFile(path.join(directory, 'scene.json'), 'utf8'));
+          const actors = scene.actors.map(actor => ({ objectId: actor.objectId, position: actor.position, state: 'idle' }));
+          stdout = [{ protocol: 1, event: 'ready', sceneObjectId: scene.objectId, actors },
+            { protocol: 1, event: 'finished', actors, fixedDelta: 0.25 }].map(event => `VIENTO_RUNTIME:${JSON.stringify(event)}\n`).join('');
+          onOutput({ stream: 'stdout', text: stdout });
+        }
+        return { status: 'succeeded', exitCode: 0, stdout, stderr: '' };
+      },
+    }, executionTimeoutMs === 30000 ? {} : { executionTimeoutMs });
+    await assert.rejects(service.command({ action: 'build', sceneId, timeoutMs: 300000 }), { errorCode: 'build_request_invalid' });
+    await service.command({ action: 'build', sceneId });
+    const built = await settled(service); assert.equal(built.job.status, 'succeeded');
+    await service.command({ action: 'run', buildId: built.latestBuild.id, mode: 'headless' });
+    const ran = await settled(service); assert.equal(ran.job.status, 'succeeded', JSON.stringify(ran.job.diagnostics));
+    assert.ok(budgets.some(item => item.phase === 'run'));
+    assert.ok(budgets.some(item => item.phase !== 'run'));
+    assert.ok(budgets.every(item => item.timeoutMs === executionTimeoutMs), JSON.stringify(budgets));
+  }
+});
+
+test('host compile budgets reject invalid configuration before creating a build service', () => {
+  for (const executionTimeoutMs of [0, -1, 300001, 1.5, NaN, Infinity, '300000', null]) {
+    assert.throws(() => createProjectBuildService('/unused-author-root', { executionTimeoutMs }), { errorCode: 'build_timeout_invalid' });
+  }
 });

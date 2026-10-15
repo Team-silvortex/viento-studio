@@ -1,12 +1,20 @@
 # 系统架构：当前实现
 
-**0.1.2 当前源码**为 20 模块／37 项声明能力，查找、诊断列表、配方创建与生成场景分别维持纯规则、视图及宿主边界。下列专题中的旧版本和当时模块数保留演进时点，当前交付范围见[版本记录](RELEASE_0.1.2.md)。
+**0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；当前为 21 模块／38 项声明能力，本次未制作或更新安装包。
+
+**0.1.2 发布源码**为 20 模块／37 项声明能力，查找、诊断列表、配方创建与生成场景分别维持纯规则、视图及宿主边界。下列专题中的旧版本和当时模块数保留演进时点，当前交付范围见[版本记录](RELEASE_0.1.2.md)。
+
+**场景声音工作树增量**新增独立[音轨与时间提示](SCENE_AUDIO.md)：Rust 负责非空间声音的严格声明和显式时刻采样，来源补丁／表单只编辑已有 JSON，普通保存仍拥有持久化权限。场景通过登记中的 `audio` 关系选择一份声音文档；构建冻结实际 PCM WAV，Godot 适配器 `0.6.0` 生成播放器和时间驱动并交付完整资源。当前工作树为 **21 模块／38 项声明能力**，应用版本仍为 `0.1.2`；Bevy 两条通道明确拒绝声音能力。`role` 的 `music`／`effect` 仅表示用途，不构成混音总线。实际测试及设备边界见[声音验收](test-results/scene-audio/README.md)。
+
+**0.1.2 之后的未发布工作树**扩展首次行为清单至 1–32 个绑定、最多 8 份去重脚本，纯正文规划、列表交互和原 `behavior.create` 事务继续分离。该行为阶段仍为 20 模块／37 项声明能力，没有新增作者格式、运行协议或执行后端；使用范围见[首次行为指南](SCENE_BEHAVIORS.md#从场景首次添加行为)，验证记录见[独立专题](test-results/scene-behavior-multi-create/README.md)。同一工作树另接[已有行为管理](SCENE_BEHAVIORS.md#管理已有行为)：只读目录、脚本引用事务、受守护来源导航和绑定草稿编辑分开；[关联专题](test-results/scene-behavior-links/README.md)单独记录，本轮未安装新包。
+
+**Bevy Rust 作者行为增量**另登记 `org.viento.bevy-rust`：通用宿主仍负责冻结、库存、工具身份、任务和交付；独立适配器负责 Cargo 源工程、锁定离线编译及临时目录回收，模板内运行实现负责 `ready`、显式固定步回调及自身实例位置／事件的单次提交。适配器与模板当前为 `0.2.0`，固定两步测试不等同于连续游戏循环。该 Bevy 专题保持行为 schema 1、plan／runtime 3 及当时 20 模块／37 项声明能力；旧 `org.viento.bevy` `0.3.0` 数据通道不改为作者编译器。当前限 Linux 无图场景，未增加窗口、有限输入回放、热更新或安装交付；配置与证据见[Bevy 指南](BEVY_BACKEND.md#rust-作者行为通道012-后工作树)、[首次通道记录](test-results/bevy-rust-behaviors/README.md)及[固定步记录](test-results/bevy-rust-fixed-step/README.md)。
 
 0.1.2 增加独立配方创建链：Node 只读目录检查已登记对象与兼容投影，便携规划调用既有 Rust 配方校验，独立表单提交品牌化草稿，正文宿主执行共同的新建状态切换；普通保存单独负责落盘。起始排布另由无宿主的坐标规划器处理，只产生按身份对应的位置；视图管理显式预览、应用和一次回退，不取得作者保存权限。同一规划器兼容原单演员请求及有界多演员请求，列表视图不分配后端权限；保存仍只提交一份配方正文。新 `org.viento.scene-composition-create` 模块不依赖构建控制器，也不新增 World 写命令，见[系统模块](STUDIO_MODULES.md)与[配方指南](SCENE_COMPOSITION.md#新建场景配方)。
 
-当前 0.1.0 之后工作树增加[内置脚本创建](SCENE_BEHAVIORS.md#内置脚本创建)：主编辑器的 **新建脚本** 提供空 Node 与参数／信号两份 GDScript 起始内容，完整预览后进入普通 TXT 原文草稿，再用普通保存登记。可选择工程已有文档类型，无需专门的 `script` 类型；创建不执行源码，也不自动关联场景。独立 `org.viento.scripts` 模块提供 `authoring.script`，当前为 **19** 模块、**36** 项声明能力；LSP 与其他语言作者行为仍待接入。
+此前 0.1.0 之后工作树增加[内置脚本创建](SCENE_BEHAVIORS.md#内置脚本创建)：主编辑器的 **新建脚本** 提供空 Node 与参数／信号两份 GDScript 起始内容，完整预览后进入普通 TXT 原文草稿，再用普通保存登记。可选择工程已有文档类型，无需专门的 `script` 类型；创建不执行源码，也不自动关联场景。独立 `org.viento.scripts` 模块提供 `authoring.script`，该专题当时为 **19** 模块、**36** 项声明能力；当前另有 Bevy Rust 起始内容，LSP 仍待接入。
 
-此前 0.1.0 之后工作树补上[从场景首次添加行为](SCENE_BEHAVIORS.md#从场景首次添加行为)：在构建与运行中选择已保存 Scene2D、稳定实例和已登记 TXT，审阅后一次保存新声明、新登记及场景关联，再打开原文继续编辑参数、信号和更多绑定。首次界面限定 Godot／GDScript 单绑定，纯规划核心保持后端中立；创建不执行脚本。该专题当时为 **18** 模块、**35** 项声明能力，第 35 项 `scene.authoring.behavior-creation` 由构建模块提供。证据见[首次创建专题](test-results/scene-behavior-creation/)。
+此前 0.1.0 之后工作树补上[从场景首次添加行为](SCENE_BEHAVIORS.md#从场景首次添加行为)：在构建与运行中选择已保存 Scene2D、稳定实例和已登记 TXT，审阅后一次保存新声明、新登记及场景关联，再打开原文继续编辑参数、信号和更多绑定。当时的首次界面限定 Godot／GDScript 单绑定，纯规划核心保持后端中立；创建不执行脚本。该专题当时为 **18** 模块、**35** 项声明能力，第 35 项 `scene.authoring.behavior-creation` 由构建模块提供。证据见[首次创建专题](test-results/scene-behavior-creation/)。
 
 此前[内置行为编辑](SCENE_BEHAVIORS.md#内置行为编辑010-之后的工作树)专题接入第 18 模块和第 34 项声明能力：已有绑定文档的带类型参数、信号及绑定修改，经完整审阅后仅应用原文草稿，再普通保存。这条独立编辑路径及其[既有证据](test-results/scene-behavior-authoring/summary.json)保持；已有声明的场景／后端／语言迁移及 LSP 仍未接入；脚本创建另走独立草稿入口。
 
@@ -85,6 +93,13 @@ Viento 正从通用文档设计工具演进为设计优先的 IDE。当前 GUI �
 
 首次创建另由 `world-behavior-create.mjs` 规划 `behavior.create`，复用 World／场景修订、声明及依赖规则，派生新行为登记并保真追加场景的唯一 `behavior` 边；通用 `relation.add` 的种类保持。稳定 UUID 由调用者持有，预览不分配磁盘文件。Node 宿主以登记锁和完整 World 再检查执行固定三文件事务，v9 日志区分两个新建目标与一个既有登记，按摘要验证后整体回退或补齐。恢复使用单独冻结的场景／脚本／角色定义证据验证，不解析当前只读依赖原文，也不恢复或覆盖这些依赖文件。构建区中的创建控制器只取得只读目录、该命令及已保存原文导航接口；创建不启动后端，后续参数编辑仍走独立草稿模块。
 
+
+0.1.2 后增量的 `engine/scene-behavior-create-plan.mjs` 接收明确的场景、后端／语言以及已分配身份的绑定列表，调用既有 `inspectSceneBehaviors` 生成普通行为 JSON 和排序去重的脚本身份。它不读取文件、DOM、宿主或后端状态，也不分配 UUID。独立视图持有新增项身份和逐项表单，在切换、增删、重检时保护其余内容；一次审阅固定完整清单及依赖，事务仍负责同时写入新正文、新登记和原场景登记。一个实例可有多份行为，一份脚本可被多个绑定引用；参数与信号的后续修改继续经过原行为草稿宿主。已有绑定文档新增脚本引用另走独立管理入口，首次创建规划不取得既有登记的任意关联写权限。
+
+已有行为目录由 `scripts/lib/scene-behavior-directory-service.mjs` 从一次受读取屏障保护的 World 快照取得：输入仅为场景 UUID，沿唯一显式 `behavior` 边核对完整清单和依赖，返回身份、相对路径、修订及脚本使用关系，不返回正文。没有关联时明确为空，多个关联、缺失或无效依赖阻止操作；不调用构建计划、渲染器或模板来猜测后端。候选是至多 256 份、每份至多 64 KiB 的已登记 TXT；实际绑定仍为 1–32 条、最多 8 份源码。
+
+`engine/scene-behavior-directory.mjs` 捕获严格冻结目录，规划既有 `relation.add` 的 `references` 请求并核对命令回执，无文件、DOM、宿主读取或后端调用。独立 `app-scene-behavior-links.js` 只管理选择、审阅与结果确认；Node 事务保真追加一份行为登记，打开原文另经来源修订与编辑会话守护。随后绑定编辑只应用内存草稿，普通保存才持久化正文。该关联管理阶段保持当时的 20 模块／37 项声明能力，未新增 World 命令、模块、声明能力、作者格式或运行协议。
+
 ## 创作与交付的接口
 
 脚本创建由 `engine/script-authoring.mjs` 的已知起始内容和私有提案、独立 `app-script-create.js` 界面及正文宿主 `scripts` 端口组成。`getContext` 提供文档会话、正文目录和类型目录；`createDraft` 重新核对提案品牌及完整上下文后同步建立普通 TXT 内存草稿。纯模块返回语言与后端标识，不读取文件、分配 UUID、执行源码或生成关系；持久登记继续走普通保存。该入口不改项目类型模板，不把 TXT 后缀当成 GDScript 语法识别，也不扩充现有 `behavior.create` 事务。
@@ -106,7 +121,7 @@ Viento 正从通用文档设计工具演进为设计优先的 IDE。当前 GUI �
 | `scripts/adapters/` | Node 文档读写、World 快照／命令执行、冻结构建输入、可信执行后端注册表、通用构建与运行编排 | 落实路径、修订号、锁、资源字节、适配器身份和生成物校验；具体引擎命令留在后端 |
 | `crates/viento-studio-core/` | 独立 Rust 布局、位置草稿／历史／保存、源码坐标补丁及实验性文件内片段组合；原生库／CLI 和 WASM 共用 | 不依赖 DOM、Tauri 或 Godot，不读写作品；当前编辑器使用 WASM 同步调用 |
 | `crates/viento-bevy-runtime/` | 固定 Bevy 0.19.1 的可信无头运行程序，用 ECS 执行已生成场景数据及受控输入／移动，0.3.0 可消费全局与按实例有限控制程序 | 独立于编辑核心；不编译作者 Rust 文本、不加载图片／渲染插件，二进制作为本机工具配置 |
-| `scripts/backends/` | Godot 4 与 Bevy 无头适配器的产物生成、执行阶段／参数／环境、工具识别、诊断和缓存回收 | 引擎节点／实体只属于运行实现，不改变作者对象身份；图片与作者行为能力按后端分别声明 |
+| `scripts/backends/` | Godot 4、Bevy 数据与 Bevy Rust 源工程适配器的产物生成、阶段／参数／环境、工具识别、诊断和缓存回收 | 引擎节点／实体只属于运行实现，不改变作者对象身份；图片与作者行为能力按后端分别声明 |
 | `scripts/lib/`、`scripts/ops/` | HTTP 服务、项目／模板、索引、素材、导出、事务恢复、构建任务和启动编排 | 把宿主操作交给相应适配器，不把领域规则放进路由 |
 | `desktop/`、`src-tauri/src/desktop_host.rs` | 桌面作品库、内置 Node、窗口／会话和进程生命周期、原生保存与归档 | 编辑 WebView 不直接获得文件系统或 Shell 权限 |
 | `mobile/`、移动端 Rust 模块 | Android 作品库、WebView 请求桥、私有存储、即时索引、草稿恢复和完整迁移 | 不启动 Node／HTTP；支持范围单独声明 |
@@ -133,9 +148,11 @@ flowchart TB
   Build --> Admission[可移植执行能力检查]
   Build --> Registry[可信宿主后端注册表]
   Registry --> Godot[Godot 4 适配器与独立进程]
-  Registry --> Bevy[Bevy 适配器与可信 ECS 程序]
+  Registry --> Bevy[Bevy 数据适配器与可信 ECS 程序]
+  Registry --> BevyRust[Bevy Rust 适配器与临时 Cargo 编译]
   Godot --> Output[独立生成物与运行会话]
   Bevy --> Output
+  BevyRust --> Output
   Output --> Observation[纯运行对象观察]
   Observation --> Web
 ```
@@ -212,7 +229,7 @@ Node 语义命令与旧文档保存共享登记锁。多记录发布先保存意
 
 ## 构建与运行
 
-现有 2D 构建工作台是一条明确的 Scene2D 链路：场景 JSON 引用已登记角色 UUID 和图片，支持方向键输入与 `idle`／`moving` 状态。它不会从故事正文推断程序。明确关联行为清单的 v2／v3 场景现可执行已登记 GDScript 的受限参数／信号绑定；Nuis 与其他执行语言尚未接入。
+现有 2D 构建工作台是一条明确的 Scene2D 链路：场景 JSON 引用已登记角色 UUID 和图片，支持方向键输入与 `idle`／`moving` 状态。它不会从故事正文推断程序。明确关联行为清单的 v2／v3 场景可通过 Godot GDScript 或工作树 Bevy Rust 通道执行受限参数／信号绑定；Nuis 与其他执行语言尚未接入。
 
 ```text
 已保存的场景、对象和登记
@@ -222,7 +239,7 @@ Node 语义命令与旧文档保存共享登记锁。多记录发布先保存意
   → engine/build-plan：按来源发射 v1／v2 几何计划；明确行为场景组合为 v3
   → engine/backend-capabilities：分别核对执行操作、平台、计划与功能需求
   → 可信宿主注册表／通用执行器：固定实现与输出验证
-  → 所选适配器：Godot 生成／导入／脚本检查，或 Bevy 数据生成／场景检查
+  → 所选适配器：Godot 生成／导入／脚本检查、Bevy 数据检查，或 Bevy Rust Cargo 源工程／离线编译检查
   → build.json + snapshot.json + source-map.json + 生成项目
   → 校验冻结产物并创建独立运行副本
   → 所选引擎的独立进程 → 状态事件、诊断、session.json
@@ -232,7 +249,7 @@ Node 语义命令与旧文档保存共享登记锁。多记录发布先保存意
 
 新构建／会话记录另有 `executionAdapter` 指纹，和旧生成器 `backend.sha256` 分别检查；已知 Godot 明确允许无新字段的旧记录，其余冻结检查不变。Bevy 不接受缺少适配器指纹的历史记录。原 Godot v1／v2 生成器和运行脚本字节、作者格式及无行为 plan／runtime 协议均保持。Godot 显式行为另用 plan／runtime 3，不复用旧协议承载新事件。服务返回平台、完整描述符及任务／产物后端身份，UI 按操作分别判断并在描述符变化时撤销旧批准。Bevy 以独立工具链验证第二实现，旧替代测试夹具仍只证明宿主接口可注入。
 
-Bevy 适配器生成 `scene-data.json`，由单独预编译的可信 Rust 程序检查和运行。`engine/scene-runtime-events.mjs` 只处理与渲染无关的 plan 1／2 事件准入：实例／定义配对、有限坐标、运动状态及 ready／finished 生命周期；源码导航来自冻结计划，不能来自进程输出任意路径。Godot 保留自己的历史协议读取实现。这条链路不增加动态 Cargo 编译、BRP、反射或作者 Rust 行为，具体边界见 [Bevy 后端](BEVY_BACKEND.md)。
+Bevy 适配器生成 `scene-data.json`，由单独预编译的可信 Rust 程序检查和运行。`engine/scene-runtime-events.mjs` 只处理与渲染无关的 plan 1／2 事件准入：实例／定义配对、有限坐标、运动状态及 ready／finished 生命周期；源码导航来自冻结计划，不能来自进程输出任意路径。Godot 保留自己的历史协议读取实现。这条数据链路不增加动态 Cargo 编译、BRP、反射或作者 Rust 行为。独立 `bevy-rust-adapter.mjs` 则只接无图行为 plan 3，`bevy-rust-project.mjs` 原字节复制 TXT 并生成 UUID 分派，`bevy-rust/` 模板提供类型化上下文、ECS 就绪与固定步回调：每个绑定只操作自身实例，单次成功才提交候选位置与事件，累计预算覆盖完整运行。固定步回调的调度和错误处理留在运行实现，通用宿主继续只处理冻结计划、工具、进程与既有事件协议。编译／运行阶段由适配器在作者目录外维护临时 Cargo home 与 target，复用预缓存 registry 并使用 `--locked --offline`；源码工程清单只记录可迁移源码。两条通道分别核对工具和适配器身份，具体边界见 [Bevy 后端](BEVY_BACKEND.md)。
 
 场景预览从相同冻结快照读取可移植计划，`scene-preview-service.mjs` 提供有限期的图片字节，`app-scene-preview.js` 和 Canvas 视图消费有效字段。预览与构建任务使用独立生命周期，读取和查看无需启动引擎或写入作者数据。捕获结果在冻结 `snapshot` 外另外携带 `sceneEditing`、`sourceLocations` 和 v3 的 `sceneStructure`：前者提供场景原文及 World／对象／正文修订，后者为场景、对象定义、场景声明与有效字段提供来源。`sceneStructure` 只携带组织分组与实例归属，`scene-structure.mjs` 严格验证后供视图使用，不进入计划或快照容器。预览服务复制这些编辑信息，本身不承担保存。
 
@@ -280,7 +297,7 @@ Scene2D v2 在扁平 `actors` 中要求唯一小写 UUID `instanceId`，同一 `
 
 Godot 适配器把 TXT 源码复制为按 UUID 命名的 `.gd` 文件，逐份编译，再为每个绑定创建独立 Node。导出参数和映射信号由真实反射检查；protocol 3 事件只能带已批准绑定的实例／定义身份及至多四个类型化标量。编译错误映射回 TXT，参数错误映射回清单 JSON Pointer，精确范围由冻结原文补充；界面只显示 DTO 与日志。选择式资源包重新派生并验证清单的场景／源码闭包，完整备份保留未完成正文。静态预览仍只生成几何计划，不校验或执行行为绑定。
 
-当前每个绑定独立实例化，不反复替换场景演员脚本；参数注入和信号连接先于激活，运行事件核对 ready／finished 生命周期。脚本在 Godot 进程以用户权限运行，这不是沙箱；源码不进入 GUI 执行。当前通用参数与信号表单只编辑已有行为声明；尚无任意方法 RPC、热重载、状态机、运行值回写或脚本导出属性自动发现。C# 暂缓；Bevy 无头后端只消费无行为数据计划，作者 Rust 行为与 Nuislang／ns-nova／yalivia 都需独立实现和验收，共享身份契约不承诺源码互译。选型与旧隔离探针仍保留于[构建文档](PROJECT_BUILD.md#行为绑定选型历史预研)。
+当前每个绑定独立实例化，不反复替换场景演员脚本；参数注入和信号连接先于激活，运行事件核对 ready／finished 生命周期。脚本在 Godot 进程以用户权限运行，这不是沙箱；源码不进入 GUI 执行。当前通用参数与信号表单只编辑已有行为声明；尚无任意方法 RPC、热重载、状态机、运行值回写或脚本导出属性自动发现。C# 暂缓；Bevy 数据通道只消费无行为计划，新增 Rust 通道以独立身份接入就绪及固定步自身位置回调，不获得旧有限输入回放能力。Nuislang／ns-nova／yalivia 继续单独实现与验收，共享身份契约不承诺源码互译。选型与旧隔离探针仍保留于[构建文档](PROJECT_BUILD.md#行为绑定选型历史预研)。
 
 `web/modules/app-scene-create.js` 共用创建／编辑场景表单，按字段维护投影继承与显式覆盖，提供实例复制、重排、分组管理和旧场景显式升级。`engine/world-scene-create.mjs` 和 `world-scene-update.mjs` 复用 Scene2D 规划器；宿主分别执行第 5 版创建和第 8 版更新事务，既有原文／字段编辑器继续可用。
 
@@ -290,11 +307,11 @@ Godot 适配器把 TXT 源码复制为按 UUID 命名的 `.gd` 文件，逐份�
 
 当前运行对象来自 `engine/scene-runtime-query.mjs` 的分离观察 DTO，通用执行器在冻结构建全部验证后才建立它，任务视图独立于原始事件环。服务的 inspect 仅查询当前 owned run，UUID 过滤不变为引擎反射请求；`app-project-build.js` 检查任务／构建／快照归属，再本地检索和返回冻结声明。采样、取消与来源边界见[运行对象](RUNTIME_OBJECTS.md)。
 
-宿主通过 `VIENTO_EXECUTION_BACKEND` 固定已登记的后端，再使用对应的 `VIENTO_GODOT_BIN` 或 `VIENTO_BEVY_BIN` 配置工具；未设置时默认 Godot。`/api/project-build` 限制回环连接与本机 Host／Origin，POST 沿用写鉴权；浏览器不能指定任意二进制、环境或磁盘输出目录。远程绑定的编辑服务、只读浏览服务与 Android 不提供执行能力。
+宿主通过 `VIENTO_EXECUTION_BACKEND` 固定已登记的后端，再使用对应的 `VIENTO_GODOT_BIN`、`VIENTO_BEVY_BIN` 或 `VIENTO_BEVY_RUST_CARGO` 配置工具；未设置时默认 Godot。`/api/project-build` 限制回环连接与本机 Host／Origin，POST 沿用写鉴权；浏览器不能指定任意二进制、环境或磁盘输出目录。远程绑定的编辑服务、只读浏览服务与 Android 不提供执行能力。
 
 构建记录固定输入、适配器与真实工具的版本／摘要，运行前重验生成文件，并从冻结产物创建隔离副本。运行节点与作者 UUID 的映射只保存在生成记录中，运行值不会自动改写原文。进程输出有界，取消、超时、SIGINT／SIGTERM 和桌面 owner 关闭会回收引擎；运行工作副本与引擎缓存随后清理。强制杀死宿主或断电后的会话恢复仍未实现。
 
-产物仍需要对应本机工具：Godot 生成工程需要 Godot，Bevy 数据工程需要固定运行程序，均非独立发行程序。无头测试只验逻辑，Godot 正常窗口预览验图形路径；Bevy 图片／窗口、内嵌运行视口、原生 GPU 计算、Live Build 与 Nuis／yalivia 仍是后续工作。参数、使用和验证入口见 [构建与运行](PROJECT_BUILD.md)。
+产物仍需要对应本机工具：Godot 生成工程需要 Godot，Bevy 数据工程需要固定运行程序，Bevy Rust Cargo 源工程需要匹配工具链和锁定依赖；均非独立发行程序。无头测试只验逻辑，Godot 正常窗口预览验图形路径；Bevy 图片／窗口、内嵌运行视口、原生 GPU 计算、Live Build 与 Nuis／yalivia 仍是后续工作。参数、使用和验证入口见 [构建与运行](PROJECT_BUILD.md)。
 
 ## 共享 Rust 核心的运行边界
 
@@ -480,3 +497,13 @@ stateDiagram-v2
 `scene-composition-materialize.mjs` 消费保存态预览、已登记来源原文和读取前后的同一 World 修订，复用 Rust 展开，生成独立 Scene2D 及已有 `scene.create` 请求。它不从预览渲染模型反推作者声明，也不读取文件、执行后端或取得保存权限。`app-scene-materialize.js` 独立负责来源读取、目的地审阅、保存结果核对与会话守护；构建父窗口仅提供可用性、选中身份和保存后的目录交接。
 
 配方依赖先经原有只读预览校验，目的场景再经原有创建事务校验。原配方不修改，新场景保留展开后的稳定实例身份与投影继承；行为关联、构建快照、后端输出及交付沿现有接口进行。不新增系统模块、Rust 协议或作品格式。
+
+## 场景声音的独立边界
+
+声音作者文档使用 `viento-scene-audio` schema 1，含稳定场景、轨道、资源与提示 UUID。共享 Rust 的 `sceneAudio.inspect`／`sceneAudio.sample` 严格校验 1–16 条轨道、1–64 个提示、0–60 秒及 0–1 音量；同刻提示保留作者顺序，采样只返回命令和声明状态，不推断素材自然结束。可选 WASM 能力缺失时明确失败，没有 JavaScript 规则替代。原文补丁仍按作者数组位置修改叶 token，不使用排序后的运行数组重写文档。
+
+`org.viento.scene-audio` 仅依赖文档模块，独立提供 `scene.authoring.audio@1`。视图只接收来源读取／草稿应用端口，负责三语言表单、完整原文审阅和取消；来源宿主在每个异步边界检查 owner／token／修订，最终同步更新普通草稿。界面不持有行为控制器、资源解码器、后端运行或保存权限，也不自动播放。
+
+可移植计划解析器沿 Scene2D 的唯一 `audio` 登记关系取得声音文档，并核对声音到场景的依赖引用及资源绑定。来源映射按稳定身份回到作者原始 JSON Pointer；无声音关系时旧计划保持原样。新增 `audio.nonspatial`／`audio.timeline` 执行能力必须显式准入，Bevy 数据与 Rust 行为适配器均拒绝。冻结宿主才校验实际哈希和 WAV 容器：PCM16、8–96 kHz、单／双声道、每份不超过 32 MiB，不转码或改写作者素材。
+
+Godot 生成器负责资源路径、播放器和时间驱动；每条轨道独立设置流实例、音量和循环。中立事件读取器独立核对声音就绪、提示顺序、终止与冻结来源，不把声音事件当演员状态。真实 Godot 混音缓冲测试区分零增益、停止和循环，其结果不代表物理扬声器验收；详情见[场景声音](SCENE_AUDIO.md)。行为事件触发声音、空间音频、混音总线、新建向导以及声音与有限控制回放的组合不在本切片。

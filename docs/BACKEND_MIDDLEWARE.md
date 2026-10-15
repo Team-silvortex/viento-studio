@@ -1,5 +1,11 @@
 # 执行后端中间层
 
+**0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；当前为 21 模块／38 项声明能力，本次未制作或更新安装包。
+
+0.1.2 后工作树另接[独立场景声音](SCENE_AUDIO.md)。通用计划通过唯一 `audio` 登记关系显式附加声音声明、稳定来源与已登记 WAV 资源，并要求 `audio.nonspatial`／`audio.timeline`；不改变无声音计划。Godot 适配器升至 `0.6.0`，消费独立生成器／播放器和声音事件读取器；Bevy 两条通道均在准入阶段明确拒绝，不能静默丢弃声音。应用版本仍为 `0.1.2`，旧生成工程需按适配器身份重新构建。
+
+0.1.2 后工作树新增独立 `org.viento.bevy-rust`：复用冻结 plan／runtime 3、行为参数与事件，以及通用后端工程管理／交付。Cargo 项目生成、工具身份与临时编译留在适配器；中立行为事件校验沉淀到 `engine/scene-behavior-events.mjs`，Godot 与 Bevy Rust 共用。旧 `org.viento.bevy` 数据通道及其能力保持；具体范围见 [Bevy 指南](BEVY_BACKEND.md)。
+
 [工程持久管理](BACKEND_PROJECTS.md)位于 Node 宿主与 GUI 的独立对接层：统一恢复登记与选择协议，不加入后端能力描述符，不改变工具识别、生成格式或运行协议。持久 read/run 身份凭据与创建者清理 ledger 分开；Godot／Bevy 复用冻结选择上下文，原生 ns-nova 能力仍待接入。
 
 后端工程的来源与库存由独立[工程管理层](BACKEND_PROJECTS.md)记录和检查。它不把引擎特定生成器规则放进 GUI，也不改变执行适配器指纹或已有冻结产物的准入。
@@ -21,7 +27,11 @@ flowchart LR
   Service --> Executor[通用冻结构建与会话编排]
   Executor --> Registry[宿主固定后端注册表]
   Registry --> Godot[Godot 4 执行适配器]
-  Registry --> Bevy[Bevy 无头执行适配器]
+  Registry --> Bevy[Bevy 数据执行适配器]
+  Registry --> Rust[Bevy Rust 执行适配器]
+  Rust --> Cargo[冻结 Cargo 源工程与临时编译]
+  Rust --> BehaviorEvents[中立行为事件校验]
+  Behaviors --> BehaviorEvents
   Godot --> Dispatch[保留原字节的 v1/v2 生成器与运行脚本]
   Godot --> Behaviors[显式行为的 v3 生成与事件协议]
   Bevy --> Host[预编译可信 Rust/Bevy 运行程序]
@@ -36,9 +46,9 @@ flowchart LR
 | 可移植能力契约 | `engine/backend-capabilities.mjs` | 校验纯数据描述符，分别检查执行操作、平台、计划版本和功能需求；不接触文件、进程、DOM 或具体引擎 |
 | 可移植工具状态 | `engine/execution-tool-status.mjs` | 严格校验身份检查状态及版本／摘要；不携工具路径、进程输出或执行权限 |
 | 宿主中间层 | `scripts/adapters/node-execution-backends.mjs`、`node-project-build.mjs`、`scripts/lib/project-build-service.mjs` | 捕获已保存输入，固定后端身份与可信实现，校验输出与冻结回放，管理任务、取消、进程结果及记录 |
-| 具体执行适配器 | `scripts/backends/godot4-adapter.mjs`、`bevy-adapter.mjs` | 各引擎的工具识别、生成入口、阶段、命令行参数、环境、协议事件、诊断和缓存回收 |
+| 具体执行适配器 | `scripts/backends/godot4-adapter.mjs`、`bevy-adapter.mjs`、`bevy-rust-adapter.mjs` | 各引擎的工具识别、生成入口、阶段、命令行参数、环境、协议事件、诊断和缓存回收 |
 
-注册表由本机程序以可信实现创建；它复制并冻结描述符、阶段列表和调用入口。HTTP 和工程文件不能注册代码、加载模块或传入可执行文件与输出路径。服务由宿主选择一个后端，网页没有引擎选择下拉框；源码 CLI 可以明确选择已登记的后端与本机工具。Bevy 沿用相同输入、输出与回放检查，不增加通用动态 Cargo 编译或编译后产物钩子。这不是已冻结的通用插件 ABI。
+注册表由本机程序以可信实现创建；它复制并冻结描述符、阶段列表和调用入口。HTTP 和工程文件不能注册代码、加载模块或传入可执行文件与输出路径。服务由宿主选择一个后端，网页没有引擎选择下拉框；源码 CLI 可以明确选择已登记的后端与本机工具。Bevy Rust 也沿用相同输入、输出和冻结运行检查，Cargo 编译只存在于其固定适配器内部，不增加通用动态编译或可执行文件交付钩子。这不是已冻结的通用插件 ABI。
 
 ## 描述符与能力检查
 
@@ -53,17 +63,19 @@ flowchart LR
 | `execution` | 下表七个键都必须存在并为布尔值 |
 | `extensions` | `{ id, version }` 数组，ID 必须处于后端自身命名空间；仅描述能力扩展身份，不含代码或路径 |
 
-| 执行操作 | Godot 4 | Bevy 无头 | 含义 |
-| --- | --- | --- | --- |
-| `build` | `true` | `true` | Godot 生成／导入／检查脚本；Bevy 生成数据并检查场景 |
-| `headlessLogic` | `true` | `true` | 独立进程执行无头逻辑测试 |
-| `windowPreview` | `true` | `false` | 独立正常窗口运行 |
-| `windowCapture` | `true` | `false` | 窗口 smoke 运行生成截图；也必须声明窗口预览能力 |
-| `offscreenRender` | `false` | `false` | 当前没有离屏渲染实现 |
-| `embeddedViewport` | `false` | `false` | 当前没有嵌入编辑器的运行视口 |
-| `gpuCompute` | `false` | `false` | 当前没有 GPU 计算接口 |
+| 执行操作 | Godot 4 | Bevy 数据 | Bevy Rust | 含义 |
+| --- | --- | --- | --- | --- |
+| `build` | `true` | `true` | `true` | Godot 导入／检查脚本；Bevy 数据检查场景；Bevy Rust 检查 Cargo 源工程 |
+| `headlessLogic` | `true` | `true` | `true` | 独立进程执行无头逻辑测试 |
+| `windowPreview` | `true` | `false` | `false` | 独立正常窗口运行 |
+| `windowCapture` | `true` | `false` | `false` | 窗口 smoke 运行生成截图；也必须声明窗口预览能力 |
+| `offscreenRender` | `false` | `false` | `false` | 当前没有离屏渲染实现 |
+| `embeddedViewport` | `false` | `false` | `false` | 当前没有嵌入编辑器的运行视口 |
+| `gpuCompute` | `false` | `false` | `false` | 当前没有 GPU 计算接口 |
 
 上方字段表列出 Godot 声明。Bevy 的 ID 为 `org.viento.bevy`、适配器／可信运行程序版本为 `0.3.0`，仅声明 Linux、scene2d plan／runtime 1／2，以及 `scene2d`、`input.arrows`、`state.movement`、`runtime.control-replay`、`runtime.control-replay.instances`；`extensions` 为空。带图片或行为的计划不能因同为 Scene2D 而绕过能力检查。
+
+Bevy Rust 的适配器版本为 `0.2.0`，仅支持无图 plan／runtime 3，声明 `scene2d`、`input.arrows`、`state.movement`、`behavior.bindings`、`behavior.rust`。固定步接口是 Rust 运行模板内的实例能力：`ready` 显式登记更新函数，固定时间步与自身位置命令由运行时管理；通用宿主仍只接收已有协议事件，不识别作者 Rust 函数。编译缓存属于可回收宿主临时目录；工程清单只含冻结源码。
 
 无头逻辑能力不推导出渲染能力；命名空间中的原生扩展信息也不表示已经能执行原生代码。当前 Godot 的 `extensions` 为空。生成器保留其历史后端元数据与摘要，描述符 `version` 不替换历史生成器版本。
 
@@ -79,7 +91,7 @@ flowchart LR
 
 生成结果通过 `files`、中立的 `resourceFiles`（资源 UUID → 相对文件路径）、`sourceMap`、历史 `backend` 元数据和 `artifact` 描述交付。宿主先校验并复制结果，再创建输出目录：拒绝绝对路径、路径逃逸、文件与资源冲突、同一路径同时作文件和目录、缺少入口及预算超限。构建输出始终位于作者工程和实际素材目录之外。具体引擎如何组织自己的生成项目，属于适配器职责。
 
-新 `build.json` 和 `session.json` 增加独立的 `executionAdapter: { id, contractVersion, sha256 }`。Godot 适配器指纹覆盖十份文件：`godot4-adapter.mjs`、`backend-capabilities.mjs`、`node-execution-backends.mjs`、`godot4-behaviors.mjs`、`godot4/behavior-runtime.gd`、`scene-behaviors.mjs` 、`build-plan.mjs`、`scene-control-program.mjs`、`godot4/control-runtime.gd` 和 `godot4/control.tscn`；它与旧 `backend.sha256` 的生成器／运行脚本摘要分别核对。运行仍从冻结原文重建计划，核对后端、协议、工具版本与二进制摘要、生成文件清单和每份字节，才创建独立运行副本。源工程离线后可重放，工具或适配器变化要求重建。
+新 `build.json` 和 `session.json` 增加独立的 `executionAdapter: { id, contractVersion, sha256 }`。Godot 适配器指纹覆盖十二份文件：`scene-behavior-events.mjs`、`scene-runtime-events.mjs`、`godot4-adapter.mjs`、`backend-capabilities.mjs`、`node-execution-backends.mjs`、`godot4-behaviors.mjs`、`godot4/behavior-runtime.gd`、`scene-behaviors.mjs` 、`build-plan.mjs`、`scene-control-program.mjs`、`godot4/control-runtime.gd` 和 `godot4/control.tscn`；它与旧 `backend.sha256` 的生成器／运行脚本摘要分别核对。运行仍从冻结原文重建计划，核对后端、协议、工具版本与二进制摘要、生成文件清单和每份字节，才创建独立运行副本。源工程离线后可重放，工具或适配器变化要求重建。
 
 显式兼容旧记录的已知 Godot 适配器允许没有 `executionAdapter` 字段的历史构建，仍执行旧生成器、工具和产物检查。新字段存在时必须精确匹配；其他后端不能因为字段缺失而自动获得兼容。原作者正文、UUID、登记、图片、Scene2D 格式和历史生成脚本不因此迁移。原无行为 plan／runtime 1／2 保持，行为清单明确选择新增 plan／runtime 3。
 
@@ -118,3 +130,11 @@ HTTP inspect 只接受当前任务 UUID 及可选实例／定义 UUID，绕过�
 专项命令和平台要求见 [验证指南](TESTING.md#执行后端中间层)。GDScript 源码、参数、事件与来源的独立范围见[场景行为](SCENE_BEHAVIORS.md)；Bevy 实际工具链、同计划双引擎比较和受限能力见 [Bevy 指南](BEVY_BACKEND.md)。`engine/scene-runtime-events.mjs` 独立校验 Scene2D 运行身份、状态和生命周期；Bevy 不导入 Godot 生成器或事件读取器，旧 Godot 文件保持原字节。现有实例观察已由两个真实后端共同验证；有限控制只增加固定步骤采样，后续连续实时采样、资源或行为能力仍由真实需求推动，不提前授予 BRP、反射、作者 Rust 行为或资源通道。作者数据仍由原文、登记和素材维护，设备句柄与执行实现不进入工程迁移包。
 
 运行验收的工程保存层见[用例文档](RUNTIME_CASES.md#工程内保存与迁移未发布增量)：只保存场景稳定身份与纯用例，文档读写／包迁移由作者宿主处理；Godot 和 Bevy 继续收到原控制程序，不读取项目路径、包装或登记元数据。
+
+## 声音领域的具体适配
+
+共享 Rust 只定义音轨、播放／停止提示及显式时刻的声明状态；可移植计划层核对关联与来源，宿主冻结层读取真实资源并校验哈希及 PCM16 WAV 容器。音频文件限制单／双声道、8–96 kHz、每份不超过 32 MiB；文档播放器支持的其他音频格式不自动成为执行后端能力。
+
+Godot 生成工程把音频映射至独立资源路径，普通图像及行为生成保持各自模块。运行器使用独立 `AudioStreamPlayer` 与每轨流副本处理音量、循环和 play／stop；有限 smoke 观察 0、0.25、0.5 秒，窗口运行由实际场景时间推进。`music`／`effect` 不映射为混音总线或空间节点。声音帧使用独立 `VIENTO_AUDIO` 协议 1，由 `scene-audio-events.mjs` 与已有演员／行为读取器组合；受冻结身份、顺序、预算与来源限制，不给 GUI 发引擎对象句柄。有限运行结束时刻另与演员固定步数交叉核对；提示保留 IEEE-754 精度，包括 0.5 秒两侧相邻 double 的触发差异。
+
+工程库存和 ZIP 交付包含冻结的 WAV 原字节、声音清单及运行脚本。真实测试已核对异地工程文件／资源，并在 Godot 的隔离混音缓冲验证非零 PCM、零增益、停止与独立循环；这不验证实际扬声器。当前音频与有限控制回放组合明确拒绝；行为事件触发、空间声音、总线、Bevy 音频及独立游戏发行仍需单独对接。见[声音指南](SCENE_AUDIO.md)和[专项验收](test-results/scene-audio/README.md)。

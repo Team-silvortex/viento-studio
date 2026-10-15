@@ -89,6 +89,7 @@ export async function editorHarness(overrides = {}) {
     t, localize, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage, diagnosticMessage, isComposingInput, createFieldEditor,
     prepareCompositionDraftApply: (context, catalog, proposal) => prepareCompositionDraftApply(structuredClone(context), structuredClone(catalog), proposal),
     prepareScriptDraftApply: (context, proposal) => prepareScriptDraftApply(structuredClone(context), proposal),
+    createSceneAudioSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),
     createSceneBehaviorSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),
     setupStudioSystem: async () => ({ refreshMedia() {}, updateCapabilities() {}, updateProject() {}, snapshot: () => ({}) }),
     refreshHeroBannerLabels() {},

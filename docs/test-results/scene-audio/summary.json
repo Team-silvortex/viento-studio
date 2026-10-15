@@ -1,0 +1,73 @@
+{
+  "format": "viento-scene-audio-verification",
+  "schemaVersion": 1,
+  "date": "2026-10-13",
+  "applicationVersion": "0.1.2",
+  "published": false,
+  "installedUpdated": false,
+  "moduleCount": 21,
+  "declaredCapabilityCount": 38,
+  "godotAdapterVersion": "0.6.0",
+  "application": {
+    "tests": 4920,
+    "pass": 4807,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 113,
+    "todo": 0,
+    "javascriptFiles": 814,
+    "versionAndApiChecks": "passed",
+    "nativeCoreParityEnabled": true,
+    "log": "app-check.log",
+    "scope": "Full application suite with native audio core parity. Engine-dependent cases requiring explicit tool configuration may skip; real Godot tests are run separately."
+  },
+  "rust": {
+    "tests": 334,
+    "passed": 334,
+    "failed": 0,
+    "fmt": "passed",
+    "clippy": "passed",
+    "report": "core-summary.json"
+  },
+  "planningRegression": {
+    "tests": 27,
+    "passed": 27,
+    "log": "planning-tests.log"
+  },
+  "editorAndNeighborRegression": {
+    "tests": 201,
+    "passed": 201,
+    "report": "editor-summary.json"
+  },
+  "actualGodot": {
+    "tests": 11,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "report": "godot-summary.json"
+  },
+  "browser": {
+    "groups": 4,
+    "screenshots": 10,
+    "consoleErrors": 0,
+    "report": "browser-summary.json"
+  },
+  "preparedResources": {
+    "fileComparisons": 37,
+    "actualCopiedModuleChecks": 7,
+    "report": "prepared.json"
+  },
+  "preservation": {
+    "files": 6993,
+    "report": "preservation.json"
+  },
+  "overlap": "Focused JavaScript tests are included in or overlap the application suite; totals are not added. Rust, browser, actual engine and prepared copies are distinct evidence levels.",
+  "boundaries": [
+    "Independent non-spatial music/effect tracks with volume, looping and timed play/stop cues; role is a label, not a mixer bus.",
+    "Runtime resources are bounded standard PCM16 WAV; media-library support remains separate.",
+    "Existing audio-document scalar editing only; no first-creation wizard or track/cue structural UI.",
+    "Godot PCM was captured through its native mixer using an isolated muted bus and Dummy driver; physical speakers were not verified.",
+    "Bevy audio, behavior-event-triggered sounds, spatial audio, control-replay composition and Android audio runtime are not implemented.",
+    "Browser and prepared-module checks do not claim a new installed Tauri build, Android device or standalone game binary."
+  ]
+}

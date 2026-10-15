@@ -99,13 +99,15 @@ export function setupBackendProject({ container, request, getState, onChange = (
     renderManifest(project, { section, field, node, facts });
   }
   function renderManifest(project, view) {
-    const kinds = { 'godot-project': 'Godot 生成工程', 'bevy-scene': 'Bevy 场景数据工程' };
+    const kinds = { 'godot-project': 'Godot 生成工程', 'bevy-scene': 'Bevy 场景数据工程', 'bevy-rust-project': 'Bevy Rust 源工程' };
     view.field(view.facts, '工程类型', kinds[project.project.kind] ? t(kinds[project.project.kind]) : project.project.kind);
     view.field(view.facts, '生成入口', project.project.entry, true);
     view.field(view.facts, '运行依赖宿主工具', t(project.project.requiresTool ? '是' : '否'));
     const explanation = project.project.kind === 'bevy-scene'
       ? 'Bevy 工程只有场景数据，由已安装的可信运行程序读取；它不是 Cargo 工程，不编译作者 Rust，也不是独立发行程序。'
-      : '这是从已保存作者输入生成的派生工程。请在作者工程修改设计，再重新检查和构建；生成文件不是作者原文。';
+      : project.project.kind === 'bevy-rust-project'
+        ? '这是包含作者 Rust 行为的 Cargo 源工程。需要匹配的 Rust 工具链与锁定依赖；编译缓存和可执行文件不随工程交付。'
+        : '这是从已保存作者输入生成的派生工程。请在作者工程修改设计，再重新检查和构建；生成文件不是作者原文。';
     view.facts.parentElement.append(view.node('p', t(explanation), 'build-hint'));
     const source = view.section('来源与锁定输入', '详情按构建时捕获的来源与文件清单展示；当前作者编辑和工具检查不会改写此工程。');
     const sourceFacts = view.node('dl', '', 'backend-project-facts'); source.append(sourceFacts);

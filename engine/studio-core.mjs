@@ -30,6 +30,7 @@ const SCENE3D_ALIGNMENT_OPERATIONS = new Set(['scene3d.alignObjects']);
 const SCENE3D_DISTRIBUTION_OPERATIONS = new Set(['scene3d.distributeObjects']);
 const SCENE3D_COPY_OPERATIONS = new Set(['scene3d.copyObjects']);
 const SCENE3D_REMOVAL_OPERATIONS = new Set(['scene3d.removeObjects']);
+const SCENE_AUDIO_OPERATIONS = new Set(['sceneAudio.inspect', 'sceneAudio.sample']);
 const SCENE3D_PARTICLE_OPERATIONS = new Set(['scene3d.prepareParticleField', 'scene3d.sampleParticleField']);
 const PARTICLE_FIELDS = [['center', 'vector'], ['extent', 'vector'], ['velocity', 'vector'], ['size', 'vector'], ['color', 'color'], ['count', 'number'], ['seed', 'number']];
 
@@ -1943,4 +1944,79 @@ export function dispatchStudioCoreScene3DRemovalPatch(request) {
     if (!same(expectedModel, after.model)) throw new Error('Rust core changed an unauthorized surviving 3D scene value.');
   } catch (error) { runtime = null; loadError = error; throw unavailable(); }
   return patch;
+}
+
+
+/** Optional audio rules are independent of scene dimension and rendering.
+ * Every result comes from Rust; JavaScript only checks its receipt against the
+ * submitted manifest and cannot produce a substitute when the core is absent. */
+export function supportsStudioCoreSceneAudio() {
+  return Boolean(runtime && typeof runtime.viento_core_scene_audio_version === 'function'
+    && runtime.viento_core_scene_audio_version() === 1);
+}
+export function dispatchStudioCoreSceneAudio(request) {
+  assertJson(request);
+  const sample = request?.operation === 'sceneAudio.sample';
+  if (!record(request, ['protocolVersion', 'operation', 'document', ...(sample ? ['timeSeconds'] : [])])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE_AUDIO_OPERATIONS.has(request.operation)) {
+    throw fail('studio_core_request_invalid', 'Expected an explicit scene audio request.');
+  }
+  if (!supportsStudioCoreSceneAudio()) throw unavailable();
+  return dispatch(request, SCENE_AUDIO_OPERATIONS, (result, input) => {
+    const invalid = () => { throw new Error('Rust core returned an unbound scene audio receipt.'); };
+    const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/.test(value);
+    const bounded = (value, max) => Number.isFinite(value) && value >= 0 && value <= max;
+    const trackKeys = ['id', 'resourceId', 'role', 'volume', 'loop'];
+    const cueKeys = ['id', 'trackId', 'atSeconds', 'action'];
+    const source = input.document;
+    if (!record(result, ['protocolVersion', 'ok', 'sceneAudio'])
+      || !record(source, ['format', 'schemaVersion', 'sceneObjectId', 'tracks', 'cues'])
+      || source.format !== 'viento-scene-audio' || source.schemaVersion !== 1 || !uuid(source.sceneObjectId)
+      || !Array.isArray(source.tracks) || source.tracks.length < 1 || source.tracks.length > 16
+      || !Array.isArray(source.cues) || source.cues.length < 1 || source.cues.length > 64) invalid();
+    const trackIds = new Set(), cueIds = new Set();
+    for (const track of source.tracks) {
+      if (!record(track, trackKeys) || !uuid(track.id) || trackIds.has(track.id) || !uuid(track.resourceId)
+        || !['music', 'effect'].includes(track.role) || !bounded(track.volume, 1) || typeof track.loop !== 'boolean') invalid();
+      trackIds.add(track.id);
+    }
+    for (const cue of source.cues) {
+      if (!record(cue, cueKeys) || !uuid(cue.id) || cueIds.has(cue.id) || !trackIds.has(cue.trackId)
+        || !bounded(cue.atSeconds, 60) || !['play', 'stop'].includes(cue.action)) invalid();
+      cueIds.add(cue.id);
+    }
+    const ordered = [...source.cues].sort((a, b) => a.atSeconds - b.atSeconds), value = result.sceneAudio;
+    const equalFields = (value, original, keys) => record(value, keys) && keys.every(key => value[key] === original[key]);
+    if (!sample) {
+      if (!record(value, ['document', 'diagnostics']) || !Array.isArray(value.diagnostics) || value.diagnostics.length
+        || !record(value.document, ['format', 'schemaVersion', 'sceneObjectId', 'tracks', 'cues'])) invalid();
+      const returned = value.document;
+      if (returned.format !== source.format || returned.schemaVersion !== source.schemaVersion || returned.sceneObjectId !== source.sceneObjectId
+        || !Array.isArray(returned.tracks) || returned.tracks.length !== source.tracks.length
+        || !returned.tracks.every((track, index) => equalFields(track, source.tracks[index], trackKeys))
+        || !Array.isArray(returned.cues) || returned.cues.length !== ordered.length
+        || !returned.cues.every((cue, index) => equalFields(cue, ordered[index], cueKeys))) invalid();
+      return;
+    }
+    const commands = ordered.filter(cue => cue.atSeconds <= input.timeSeconds);
+    if (!bounded(input.timeSeconds, 60) || !record(value, ['timeSeconds', 'commands', 'states']) || value.timeSeconds !== input.timeSeconds
+      || !Array.isArray(value.commands) || value.commands.length !== commands.length
+      || !Array.isArray(value.states) || value.states.length !== source.tracks.length) invalid();
+    const commandKeys = ['cueId', 'trackId', 'resourceId', 'atSeconds', 'action', 'role', 'volume', 'loop'];
+    for (let index = 0; index < commands.length; index++) {
+      const cue = commands[index], command = value.commands[index], track = source.tracks.find(track => track.id === cue.trackId);
+      if (!record(command, commandKeys) || command.cueId !== cue.id || command.trackId !== cue.trackId
+        || command.atSeconds !== cue.atSeconds || command.action !== cue.action
+        || !['resourceId', 'role', 'volume', 'loop'].every(key => command[key] === track[key])) invalid();
+    }
+    const stateKeys = ['trackId', 'resourceId', 'role', 'volume', 'loop', 'status', 'startedAtSeconds', 'lastCueId'];
+    for (let index = 0; index < source.tracks.length; index++) {
+      const track = source.tracks[index], state = value.states[index], last = commands.findLast(cue => cue.trackId === track.id);
+      if (!record(state, stateKeys) || state.trackId !== track.id
+        || !['resourceId', 'role', 'volume', 'loop'].every(key => state[key] === track[key])
+        || state.status !== (last?.action === 'play' ? 'playing' : 'stopped')
+        || state.startedAtSeconds !== (last?.action === 'play' ? last.atSeconds : null)
+        || state.lastCueId !== (last?.id ?? null)) invalid();
+    }
+  }).sceneAudio;
 }

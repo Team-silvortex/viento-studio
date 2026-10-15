@@ -75,6 +75,45 @@ test('browser unload protects materialization settings and pending creation whil
   }
 });
 
+test('desktop close protects behavior-link selections and in-flight metadata work until both are settled', async () => {
+  for (const [scenario, dirty, busy] of [['clean', false, false], ['selected', true, false], ['reading', false, true],
+    ['reviewing', true, true], ['saving', true, true], ['saved', false, false]]) {
+    const { runtime, document, element } = await closeHarness();
+    document.body.inert = false;
+    const dialog = document.createElement('dialog'); dialog.id = 'sceneBehaviorLinksDialog'; dialog.open = true;
+    dialog.dataset.dirty = String(dirty); dialog.setAttribute('aria-busy', String(busy)); document.body.appendChild(dialog);
+    const selection = document.createElement('input'); selection.value = 'documents/scripts/new-behavior.txt'; dialog.appendChild(selection);
+    element('docSourceEditor').value = '正文保持原样';
+    const id = randomUUID(), sent = [];
+    runtime.fetch = async (url, options) => { sent.push({ url, ...JSON.parse(options.body) }); return { ok: true }; };
+    await vm.runInContext(closeScript.replace('__VIENTO_CLOSE_ID__', JSON.stringify(id)), runtime);
+    assert.deepEqual(sent, [{ url: '/__desktop/close-response', id, busy, dirty }], scenario);
+    assert.equal(document.body.inert, true, scenario);
+    assert.equal(runtime.window.__vientoCloseGuard.inert, false, scenario);
+    assert.equal(selection.value, 'documents/scripts/new-behavior.txt', scenario);
+    assert.equal(element('docSourceEditor').value, '正文保持原样', scenario);
+    assert.equal(dialog.dataset.dirty, String(dirty), scenario);
+    assert.equal(dialog.getAttribute('aria-busy'), String(busy), scenario);
+  }
+});
+
+test('browser unload protects behavior-link selection or work without blocking a clean completed dialog', async () => {
+  for (const [scenario, dirty, busy] of [['clean', false, false], ['selected', true, false], ['reading', false, true],
+    ['reviewing', true, true], ['saving', true, true], ['saved', false, false]]) {
+    const { runtime, document } = await closeHarness(); runtime.state = { editHasUnsavedChanges: false };
+    const dialog = document.createElement('dialog'); dialog.id = 'sceneBehaviorLinksDialog'; dialog.open = true;
+    dialog.dataset.dirty = String(dirty); dialog.setAttribute('aria-busy', String(busy)); document.body.appendChild(dialog);
+    const selection = document.createElement('input'); selection.value = 'documents/scripts/new-behavior.txt'; dialog.appendChild(selection);
+    let prevented = false; const event = { preventDefault() { prevented = true; } };
+    vm.runInContext(`(${beforeUnload})`, runtime)(event);
+    assert.equal(prevented, dirty || busy, scenario);
+    assert.equal(event.returnValue, dirty || busy ? '' : undefined, scenario);
+    assert.equal(selection.value, 'documents/scripts/new-behavior.txt', scenario);
+    assert.equal(dialog.dataset.dirty, String(dirty), scenario);
+    assert.equal(dialog.getAttribute('aria-busy'), String(busy), scenario);
+  }
+});
+
 test('an incomplete editor or an unavailable bridge cannot report that it is safe to close', async () => {
   for (const failed of ['missing-panel', 'missing-indicator', 'offline', 'unauthorized']) {
     const { runtime, document, element } = await closeHarness();

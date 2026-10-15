@@ -1,5 +1,17 @@
 # 验证指南
 
+**0.1.3 源码交付**收录下列五项 0.1.2 工作树开发专题。[本版发布预检](test-results/release-0.1.3/preflight.json)记录版本／源码归档回归 **8／8**、**814** 个应用 JS 及 **2** 个桌面脚本语法／API 检查、真实 `target` 缓存排除探针，以及 **37 项准备字节比对／7 项复制模块调用**。本次不重跑功能全量；专题日志、截图、计数和来源指纹保持原样，不把开发验收重标为新版功能重跑。交付边界见[版本记录](RELEASE_0.1.3.md)。
+
+新增[场景声音验收](test-results/scene-audio/README.md)：严格 Rust／WASM／原生规则、保真字段编辑、冻结 PCM16 WAV、来源诊断、独立协议和工程迁移。完整应用 **4920 项（4807 通过／113 条件跳过／0 失败）**、**814 个 JS**；共享 Rust **334／334**，真实 Godot 声音 **11／11**，Chrome **4 组／10 图**，准备资源 **37 项比对／7 项调用**。真实引擎另验混音 PCM、零音量、循环、停止及双精度时间边界；浏览器完成取消、保存、三语与 ZIP 异地重建。条件跳过和各层证据分别记录，专项与全量不累加；不代表物理扬声器、新安装或 Android 声音验收。
+
+新增 [Bevy Rust 固定步验收](test-results/bevy-rust-fixed-step/README.md)：自身实例位置、固定步顺序、回调失败回滚、累计事件预算和旧就绪脚本兼容。完整应用 **4859 项（4751 通过／108 条件跳过／0 失败）**、**799 个 JS**；真实 Rust 模板 17／17，实际 Cargo 固定步 16／16（19 场景）及旧生成器 8／8，Chrome 7 组流程含原样移动模板与 ZIP 异地重建。准备资源 31 项比对／8 项调用。专项与全量重叠；Linux 有限无头结果不代表窗口、GPU、Android 或新安装验收。
+
+新增 [Bevy Rust 行为验收](test-results/bevy-rust-behaviors/README.md)：独立适配器工具身份与取消边界、Cargo 原文诊断、固定 Bevy ECS／就绪接口、共用中立事件，以及真实浏览器创建、编辑、运行、ZIP 异地重建。完整应用 4858 项（4751 通过／107 条件跳过），797 个 JS；独立实际 Cargo 和浏览器、Godot 回归与准备副本分别记证据。当前未更新安装，不扩大到图片／窗口／GPU 或 Android 执行。
+
+新增[已有行为脚本引用验收](test-results/scene-behavior-links/README.md)：单快照目录、固定关系请求、完整回执、鉴权、取消／未知提交和独立编辑交接。真实流程使用 `VIENTO_GODOT_BIN=/可信/Godot路径 node scripts/tests/scene-behavior-links-smoke.mjs /usr/bin/google-chrome`，复制示例并创建第二脚本，关联后新增第三绑定，普通保存、Godot运行及ZIP异地导入。完整应用4806项（4700通过／106条件跳过）、790个JS；桌面Rust59通过／1忽略；准备资源另留证据，不代表安装窗口或Android设备。
+
+新增[首次多绑定行为验收](test-results/scene-behavior-multi-create/README.md)：独立纯规划与界面、真实 Workspace v2／v3 事务、脚本并发变化和路径占用保护；实际脚本为 `VIENTO_GODOT_BIN=/可信/Godot路径 node scripts/tests/scene-behavior-multi-create-smoke.mjs /usr/bin/google-chrome`。本轮完整回归 4727 项（4621 通过／106 条件跳过）、781 个 JS；真实浏览器的第二脚本创建、三绑定、三语窄屏、Godot 事件及工程交付另留独立证据，不增加安装或设备声明。
+
 **0.1.2 发布检查**单独保存在[发布预检](test-results/release-0.1.2/preflight.json)，验证版本、源码归档、JavaScript 语法、API 契约及本次退出保护修复。下列 4698 项完整回归运行于升版前 0.1.1 工作树，保留其原始版本、指纹和条件；本次不将历史结果改标为新版重跑。
 
 新增[起始排布验收](test-results/scene-composition-create-layout/README.md)：纯位置规划检查横排／竖排／网格、预算、原子越界拒绝，界面检查显式预览／应用、精确一次撤销及过期保护，普通宿主检查保存内容保留身份和继承。真实脚本为 `node scripts/tests/scene-composition-create-layout-smoke.mjs /usr/bin/google-chrome`，需设置可信 `VIENTO_GODOT_BIN`。本轮完整应用 4698 项中4592通过、106条件跳过；8组真实流程和准备副本另记，不代表安装或Android设备。

@@ -1,5 +1,6 @@
 import { setupSceneCompositionCreate } from './app-scene-composition-create.js';
 import { setupScriptCreate } from './app-script-create.js';
+import { setupSceneAudio } from './app-scene-audio.js';
 import { setupSceneBehaviors } from './app-scene-behaviors.js';
 import { createStudioModuleRegistry } from '../../engine/studio-modules.mjs';
 import { setupSettings } from '../i18n/settings.js';
@@ -19,7 +20,7 @@ import { setupScene3DDistribution } from './app-scene3d-distribution.js';
 import { setupScene3DCopy } from './app-scene3d-copy.js';
 import { setupScene3DRemoval } from './app-scene3d-removal.js';
 
-const IDS = Object.freeze({ compositionCreate: 'org.viento.scene-composition-create', scripts: 'org.viento.scripts', sceneBehaviors: 'org.viento.scene-behaviors', document: 'org.viento.document', settings: 'org.viento.settings', world: 'org.viento.world',
+const IDS = Object.freeze({ compositionCreate: 'org.viento.scene-composition-create', scripts: 'org.viento.scripts', sceneBehaviors: 'org.viento.scene-behaviors', sceneAudio: 'org.viento.scene-audio', document: 'org.viento.document', settings: 'org.viento.settings', world: 'org.viento.world',
   project: 'org.viento.project', export: 'org.viento.export', media: 'org.viento.media', build: 'org.viento.build', scene3d: 'org.viento.scene3d',
   scene3dTransforms: 'org.viento.scene3d-transforms', scene3dObjects: 'org.viento.scene3d-objects', scene3dEnvironment: 'org.viento.scene3d-environment', scene3dProperties: 'org.viento.scene3d-properties',
   scene3dTranslation: 'org.viento.scene3d-translation', scene3dAlignment: 'org.viento.scene3d-alignment', scene3dDistribution: 'org.viento.scene3d-distribution', scene3dCopy: 'org.viento.scene3d-copy', scene3dRemoval: 'org.viento.scene3d-removal' });
@@ -33,7 +34,7 @@ const copy = value => JSON.parse(JSON.stringify(value));
  */
 export async function setupStudioSystem({ settings, features = {}, ports = {} } = {}) {
   const registry = createStudioModuleRegistry();
-  const enabledModules = { [IDS.compositionCreate]: Boolean(ports.compositionCreate) && features.compositionCreate !== false, [IDS.scripts]: Boolean(ports.scripts) && features.scripts !== false, [IDS.sceneBehaviors]: Boolean(ports.sceneBehaviors) && features.sceneBehaviors !== false, [IDS.project]: features.project !== false, [IDS.export]: features.export !== false, [IDS.media]: features.media !== false,
+  const enabledModules = { [IDS.sceneAudio]: Boolean(ports.sceneAudio) && features.sceneAudio !== false, [IDS.compositionCreate]: Boolean(ports.compositionCreate) && features.compositionCreate !== false, [IDS.scripts]: Boolean(ports.scripts) && features.scripts !== false, [IDS.sceneBehaviors]: Boolean(ports.sceneBehaviors) && features.sceneBehaviors !== false, [IDS.project]: features.project !== false, [IDS.export]: features.export !== false, [IDS.media]: features.media !== false,
     [IDS.scene3d]: Boolean(ports.scene3d) && features.scene3d !== false,
     [IDS.scene3dTransforms]: Boolean(ports.scene3dTransforms) && features.scene3dTransforms !== false,
     [IDS.scene3dObjects]: Boolean(ports.scene3dObjects) && features.scene3dObjects !== false,
@@ -45,10 +46,10 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
     [IDS.scene3dCopy]: Boolean(ports.scene3dCopy) && features.scene3dCopy !== false,
     [IDS.scene3dRemoval]: Boolean(ports.scene3dRemoval) && features.scene3dRemoval !== false };
   let profile = null, plan = registry.plan(profile, { enabledModules });
-  let hostCapabilities = { semanticProjection: false, semanticCommands: [], projectBuild: false, scenePreview: false };
+  let hostCapabilities = { semanticProjection: false, semanticCommands: [], projectBuild: false, scenePreview: false, sceneBehaviorDirectory: false };
   const controllers = new Map(), initialized = [IDS.document];
   const active = id => plan.modules.some(module => module.id === id && module.active);
-  const injectedPorts = Object.fromEntries(['compositionCreate', 'scripts', 'sceneBehaviors', 'world', 'build', 'project', 'export', 'media', 'scene3d', 'scene3dTransforms', 'scene3dObjects', 'scene3dEnvironment', 'scene3dProperties', 'scene3dTranslation', 'scene3dAlignment', 'scene3dDistribution', 'scene3dCopy', 'scene3dRemoval']
+  const injectedPorts = Object.fromEntries(['compositionCreate', 'scripts', 'sceneBehaviors', 'sceneAudio', 'world', 'build', 'project', 'export', 'media', 'scene3d', 'scene3dTransforms', 'scene3dObjects', 'scene3dEnvironment', 'scene3dProperties', 'scene3dTranslation', 'scene3dAlignment', 'scene3dDistribution', 'scene3dCopy', 'scene3dRemoval']
     .map(name => [name, Object.freeze({ ...(ports[name] || {}) })]));
   const options = name => injectedPorts[name];
   function mount(id, setup, injected) {
@@ -60,6 +61,7 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
   if (typeof setupSceneCompositionCreate === 'function') mount(IDS.compositionCreate, setupSceneCompositionCreate, options('compositionCreate'));
   if (typeof setupScriptCreate === 'function') mount(IDS.scripts, setupScriptCreate, options('scripts'));
   if (typeof setupSceneBehaviors === 'function') mount(IDS.sceneBehaviors, setupSceneBehaviors, options('sceneBehaviors'));
+  if (typeof setupSceneAudio === 'function') mount(IDS.sceneAudio, setupSceneAudio, options('sceneAudio'));
   mount(IDS.world, setupWorldBrowser, options('world'));
   mount(IDS.build, setupProjectBuild, options('build'));
   mount(IDS.project, setupProjectSettings, options('project'));
@@ -88,12 +90,12 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
     controllers.get(IDS.compositionCreate)?.setAvailable?.(active(IDS.compositionCreate) && hostCapabilities.semanticProjection);
     controllers.get(IDS.world)?.setAvailable?.(active(IDS.world) && hostCapabilities.semanticProjection, [...hostCapabilities.semanticCommands]);
     controllers.get(IDS.build)?.setAvailable?.(active(IDS.build) && hostCapabilities.projectBuild, [...hostCapabilities.semanticCommands],
-      { scenePreview: active(IDS.build) && hostCapabilities.scenePreview });
+      { scenePreview: active(IDS.build) && hostCapabilities.scenePreview, sceneBehaviorDirectory: active(IDS.build) && hostCapabilities.sceneBehaviorDirectory });
   }
   function updateCapabilities(payload) {
     hostCapabilities = { semanticProjection: payload?.semanticProjection === true,
       semanticCommands: Array.isArray(payload?.semanticCommands) ? payload.semanticCommands.filter(command => typeof command === 'string') : [],
-      projectBuild: payload?.projectBuild === true, scenePreview: payload?.scenePreview === true };
+      projectBuild: payload?.projectBuild === true, scenePreview: payload?.scenePreview === true, sceneBehaviorDirectory: payload?.sceneBehaviorDirectory === true };
     applyCapabilities();
     return snapshot();
   }
@@ -112,6 +114,7 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
     controllers.get(IDS.compositionCreate)?.refresh?.();
     controllers.get(IDS.scripts)?.refresh?.();
     controllers.get(IDS.sceneBehaviors)?.refresh?.();
+    controllers.get(IDS.sceneAudio)?.refresh?.();
     controllers.get(IDS.media)?.refresh?.(); controllers.get(IDS.scene3d)?.refresh?.(); controllers.get(IDS.scene3dTransforms)?.refresh?.(); controllers.get(IDS.scene3dObjects)?.refresh?.(); controllers.get(IDS.scene3dEnvironment)?.refresh?.(); controllers.get(IDS.scene3dProperties)?.refresh?.(); controllers.get(IDS.scene3dTranslation)?.refresh?.(); controllers.get(IDS.scene3dAlignment)?.refresh?.(); controllers.get(IDS.scene3dDistribution)?.refresh?.(); controllers.get(IDS.scene3dCopy)?.refresh?.(); controllers.get(IDS.scene3dRemoval)?.refresh?.();
   }
   function snapshot() {

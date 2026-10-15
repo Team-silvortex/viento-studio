@@ -1,0 +1,113 @@
+{
+  "ok": true,
+  "verifiedAt": "2026-10-13T11:44:48.542627+00:00",
+  "version": "0.1.2",
+  "scope": "Unreleased Linux source workflow; no new installation or device validation.",
+  "backend": "org.viento.bevy-rust",
+  "runtime": "Bevy 0.19.1",
+  "toolchain": "Cargo/rustc 1.95.0",
+  "fullApp": {
+    "tests": 4858,
+    "passed": 4751,
+    "skipped": 107,
+    "failed": 0,
+    "javascriptFiles": 797,
+    "log": "app-check.log"
+  },
+  "focused": {
+    "adapter": {
+      "passed": 21,
+      "log": "adapter-final-after-json.log"
+    },
+    "generator": {
+      "passed": 8,
+      "realCargo": true,
+      "log": "generator-tests.log"
+    },
+    "rust": {
+      "passed": 5,
+      "clippy": true,
+      "format": true
+    },
+    "neutralEvents": {
+      "passed": 31,
+      "realGodot": true
+    },
+    "ui": {
+      "passed": 96
+    },
+    "host": {
+      "passed": 16,
+      "skipped": 4
+    },
+    "godotControl": {
+      "passed": 6,
+      "skipped": 2,
+      "realGodot": true
+    },
+    "overlap": "Focused counts overlap the full application suite and must not be summed."
+  },
+  "browser": {
+    "groups": 7,
+    "screenshots": 10,
+    "sourceFilesChecked": 25,
+    "sourceSnapshotUnchanged": true,
+    "report": "browser-1791891439479/browser.json",
+    "delivery": {
+      "fileName": "viento-415a0bb7-b591-4fe6-8a12-33d240dc1b8f.viento-build.zip",
+      "bytes": 77406,
+      "sha256": "17f4206089e34afc827038cd928f599b937e1735b087d516cc109cab0b1fc9c2",
+      "fileCount": 10,
+      "assetCount": 0,
+      "buildId": "415a0bb7-b591-4fe6-8a12-33d240dc1b8f",
+      "projectKind": "bevy-rust-project"
+    },
+    "independentCargoRebuild": true,
+    "independentEventsMatch": true
+  },
+  "prepared": {
+    "byteComparisons": 31,
+    "executionChecks": 8,
+    "report": "prepared.json"
+  },
+  "preservation": {
+    "baselineFiles": 6885,
+    "changedFiles": [],
+    "installedVersion": "0.1.1",
+    "installedSha256": "22fb45a03fe2a698ad1eec0b7c655161bd47d1769b5cf6ca7f65b12bce5ccc48",
+    "versionFile": "0.1.2",
+    "scope": "Old reports and examples were hashed; actual author workspaces were not used by these tests."
+  },
+  "cleanup": {
+    "desktop": "desktop-cleanup.json",
+    "runtime": "runtime-cleanup.json"
+  },
+  "limitations": [
+    "Linux only",
+    "headless Scene2D behavior plan/runtime 3 only",
+    "ready callbacks, no per-frame author hook",
+    "No media/window/GPU/control replay/hot reload/LSP",
+    "Cargo source delivery requires a toolchain and cached dependencies; not a standalone game executable"
+  ],
+  "sourceSha256": {
+    "engine/scene-behavior-events.mjs": "f94299bfa1a23a6f16911ff7cff82bb0df6574751dc8bcff5c2400571f4eb735",
+    "engine/script-authoring.mjs": "91851f8f716e44505a403bf3ca849b4c27068047de887b89b850e5889600dae2",
+    "scripts/backends/bevy-rust-adapter.mjs": "b35609d248e3d7071dd7d374cc05dad24c0f718ca3aaf7f017ed83c2be3fa5bc",
+    "scripts/backends/bevy-rust-project.mjs": "f3bb17d6a82941a4d09d622b387f6c0b57f2c8ab6f71adfe560f7a2c7a7dce80",
+    "scripts/backends/bevy-rust/Cargo.toml": "9376978583bb5d90b5f3cbf6115bedd1c79dfc7f8e65f5511351f7af84283a8f",
+    "scripts/backends/bevy-rust/Cargo.lock": "0d60a8cc129f4ffde7f50ce589cd75d71fad6383ff93b801bc300a78145126b7",
+    "scripts/backends/bevy-rust/src/main.rs": "59c64d0ff86ee7d5e8adae1b431919cc2107577dc6122fa66c4b6b460de69379",
+    "scripts/backends/bevy-rust/src/runtime.rs": "6c5d850bac810448517659fc7d255adac3033eb5416007260bb5fe74a8d414b6",
+    "scripts/backends/godot4-adapter.mjs": "ecdf652ee445e4bb0adbd4d7cee8a581419efddc75ce4be5654ac0316f0a2b49",
+    "scripts/backends/godot4-behaviors.mjs": "e869876514f53d75858ad981fb2abc3c729e43a8c5b1a9d9ab2fc69a34a22b58",
+    "scripts/adapters/node-execution-backends.mjs": "fba4ce5bf7710fdd912330f7bd1596bdec855abb1341a7f9ec1801e95b48f9e6",
+    "scripts/adapters/node-execution-tool.mjs": "6c807296f257df7354d46c5f0576a5f3e469acb239b46162546e543eaa73e6ac",
+    "scripts/adapters/node-backend-project-delivery.mjs": "8ef8e23d80b6d293397f9e501920155d25df2294b60c6df54e7553a949413098",
+    "scripts/lib/project-build-service.mjs": "715b101b32fa0b9da3d903d6d94c36543ecae0e973e662d74352645e1733c607",
+    "web/modules/app-scene-behavior-create.js": "0e4e602632062ded566f323036eafe3f5525ab80cd24d0a545de358fefe4137f",
+    "web/modules/app-backend-project.js": "b63190bef8819de5b8e9e64c17697f1a6fa8919306b283440297c78190fc97ed",
+    "web/modules/app-project-build.js": "72d8a0c92ea951116f3145fcafd391c0a66352e7870108d39249781483fdeab7",
+    "web/i18n/en.js": "a70b9dfa67ac660ac654194d6eabd2f44e8174d4f8b2c02904afdcdfae2ebc68",
+    "web/i18n/ja.js": "4bac57a49a04b58c0af85ccaf31ab762cab14068840803cc4b45599b60789fbd"
+  }
+}

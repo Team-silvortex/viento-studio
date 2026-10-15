@@ -39,8 +39,9 @@ export async function stopProjectBuildServices() {
 // or cache root; HTTP receives opaque IDs and never supplies executable paths.
 export function createProjectBuildService(root, {
   enabled = process.platform === 'linux', godot = process.env.VIENTO_GODOT_BIN,
-  tool = godot, backendId = DEFAULT_EXECUTION_BACKEND, backendRegistry = createExecutionBackendRegistry(), cacheRoot = projectBuildCacheRoot(), onAuthorWrite, deliveryEnabled = false,
+  tool = godot, backendId = DEFAULT_EXECUTION_BACKEND, backendRegistry = createExecutionBackendRegistry(), cacheRoot = projectBuildCacheRoot(), onAuthorWrite, deliveryEnabled = false, executionTimeoutMs = Number(process.env.VIENTO_EXECUTION_TIMEOUT_MS || 30000),
 } = {}) {
+  if (!Number.isSafeInteger(executionTimeoutMs) || executionTimeoutMs < 1 || executionTimeoutMs > 300000) throw fail('build_timeout_invalid', 'Execution phase timeout must be 1–300000 ms.');
   const adapter = backendRegistry.resolve(backendId);
   const caseDocuments = createRuntimeCaseDocumentService(root, { onWrite: onAuthorWrite });
   const suiteDocuments = createRuntimeCaseSuiteDocumentService(root, { onWrite:onAuthorWrite });
@@ -360,7 +361,7 @@ export function createProjectBuildService(root, {
       } else if (payload.action === 'build') {
         const output = path.join(namespace, job.id);
         result = await buildProject({ root, scene: sceneId, tool, backendId, backendRegistry, output, signal: controller.signal,
-          expectedSnapshotId: payload.expectedSnapshotId, onProgress: progress });
+          expectedSnapshotId: payload.expectedSnapshotId, timeoutMs: executionTimeoutMs, onProgress: progress });
         if (result.buildDirectory) {
           const summary = { id: result.record.buildId, sceneId, backendId, snapshotId: result.record.snapshotId,
             title: scenes.find(scene => scene.id === sceneId)?.title || sceneId,
@@ -384,7 +385,7 @@ export function createProjectBuildService(root, {
         result = await runProjectBuild({ buildDirectory: entry.directory, tool, backendId, backendRegistry, signal: controller.signal,
           expectedBuildId:entry.id,expectedSnapshotId:entry.snapshotId,
           headless: payload.mode === 'headless', smoke: payload.mode === 'headless',
-          timeoutMs: payload.mode === 'window' ? 300000 : 30000,
+          timeoutMs: payload.mode === 'window' ? 300000 : executionTimeoutMs,
           ...(payload.controlProgram !== undefined ? { controlProgram: payload.controlProgram } : {}),
           ...(payload.runtimeCase !== undefined ? { runtimeCase: payload.runtimeCase } : {}),
           ...(payload.runtimeCaseSceneId ? { runtimeCaseSceneId: payload.runtimeCaseSceneId } : {}), onProgress: progress });

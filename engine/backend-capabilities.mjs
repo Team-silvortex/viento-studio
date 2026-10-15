@@ -142,6 +142,7 @@ function supportRequest(input) {
     if (!plain(plan.scene)) throw invalid();
     text(plan.scene.objectId, 256);
     text(plan.scene.sourcePath, 4096);
+    if (Object.hasOwn(plan, 'audio') && (!plain(plan.audio) || plan.audio.format !== 'viento-audio-plan' || plan.audio.schemaVersion !== 1)) throw invalid();
     if (Object.hasOwn(plan, 'behaviors')) {
       if (!plain(plan.behaviors) || plan.behaviors.format !== 'viento-behavior-plan' || plan.behaviors.schemaVersion !== 1) throw invalid();
       token(plan.behaviors.backendId, NAMESPACE, 192);
@@ -166,6 +167,14 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
     if (plan.format !== 'viento-build-plan' || !backend.plans.some(item => item.kind === plan.kind && item.schemaVersion === plan.schemaVersion)) {
       diagnostics.push(diagnostic('build_backend_plan_unsupported', 'Backend does not support this build plan kind and schema.',
         { kind: plan.kind, schemaVersion: plan.schemaVersion }));
+    }
+    if (plan.audio) {
+      for (const capability of ['audio.nonspatial', 'audio.timeline']) {
+        if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_audio_invalid',
+          'Audio plans must explicitly require their playback capabilities.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
     }
     for (const capability of plan.requiredCapabilities) {
       if (!backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing', `Backend lacks capability: ${capability}`, { capability }));

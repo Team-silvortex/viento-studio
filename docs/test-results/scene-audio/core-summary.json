@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "scope": "Engine-independent strict declaration inspection and explicit-time command-state sampling; no decoding, audio device, duration, or audible playback claim.",
+  "manifest": {
+    "format": "viento-scene-audio",
+    "schemaVersion": 1,
+    "tracks": [
+      1,
+      16
+    ],
+    "cues": [
+      1,
+      64
+    ],
+    "timeSeconds": [
+      0,
+      60
+    ],
+    "volume": [
+      0,
+      1
+    ],
+    "uuid": "canonical lowercase hexadecimal 8-4-4-4-12",
+    "ordering": "stable timestamp, declaration order at equal times including positive and negative zero"
+  },
+  "semantics": {
+    "play": "restart own track at cue time",
+    "stop": "idempotent stopped state; reset startedAtSeconds to null",
+    "naturalCompletion": "unknown; never inferred",
+    "resourceReuse": "separate track identities may reference the same resource",
+    "diagnostics": "empty on accepted complete declarations; invalid declarations fail closed"
+  },
+  "validation": {
+    "rust": {
+      "passed": 334,
+      "failed": 0,
+      "newTests": 7
+    },
+    "javascriptActualWasmAndNative": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    "legacyParticles": {
+      "passed": 20,
+      "failed": 0,
+      "skipped": 0
+    },
+    "fmt": "passed",
+    "clippy": "passed with all targets and denied warnings",
+    "nativeBinary": "/tmp/viento-audio-core-target/debug/viento-core",
+    "nativeConditionalTestEnvironment": "VIENTO_AUDIO_CORE_NATIVE"
+  },
+  "wasm": {
+    "bytes": 651929,
+    "sha256": "d95fd53fd91186461445a2449ec0c7339fdd6bcb1aa9c3a94109d6e397ac2b91",
+    "sourceHash": "9a7b838bc6d1419bc89c452a7543695b8d2ab68c216bde82c93569f4a57d5ef4",
+    "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)"
+  },
+  "sources": {
+    "crates/viento-studio-core/src/scene_audio.rs": "fb81bd502a5cda69d70b7f80254e7c4ae3e370acaf08c80e8f5e3e27c838d6d3",
+    "crates/viento-studio-core/src/lib.rs": "7b395297396f590047aa603381210124bdd2409400aa0819984494b0616fc0b0",
+    "engine/studio-core.mjs": "ef3d1cb7860bba5958fdfa7dbe555574de02daf25117da1993af9bda245fd674",
+    "engine/scene-audio-core.mjs": "a552d813ae2ad86cf6a1d4c60bec0e620a419d9add53e3d535f66d300e05b508",
+    "engine/studio-core.wasm": "d95fd53fd91186461445a2449ec0c7339fdd6bcb1aa9c3a94109d6e397ac2b91",
+    "engine/studio-core.build.json": "762711b50691a0fb7457ea8487392650fb38b9680c7ca16eef9d1c8ee93d8488",
+    "scripts/tests/scene-audio-core.test.mjs": "cd1a509877ccd45cb967695ed1b46b4c419156f753649fbfa43ebd94032b4a3c",
+    "scripts/tests/scene-audio-bridge.test.mjs": "d00cd9a656ddd678b034f1e9491f6079d53eb5acec5669c92ce6a83d2454c402"
+  }
+}

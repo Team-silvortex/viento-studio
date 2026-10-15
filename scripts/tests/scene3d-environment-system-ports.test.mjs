@@ -42,7 +42,7 @@ test('missing or disabled environment leaves readonly preview and both existing 
   }
   const h = fixture(), system = await h.setup({ ports: { scene3d: {}, scene3dTransforms: {}, scene3dObjects: {}, scene3dEnvironment: {} } });
   const snapshot = copy(system.snapshot()); assert.equal(snapshot.initializedModules.length, 11);
-  assert.equal(snapshot.plan.modules.length, 20); assert.equal(snapshot.plan.capabilities.length, 37);
+  assert.equal(snapshot.plan.modules.length, 21); assert.equal(snapshot.plan.capabilities.length, 38);
 });
 
 test('all four source ports are detached before settings await and controller references never escape', async () => {

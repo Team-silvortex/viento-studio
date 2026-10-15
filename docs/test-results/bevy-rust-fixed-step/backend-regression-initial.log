@@ -1,0 +1,348 @@
+✔ Rust descriptor remains an explicit source-project route with no graphics or replay claims (1.371213ms)
+✔ availability only observes concrete adjacent Cargo/rustc files; identify pins both executable identities (48.132838ms)
+✔ wrong compiler version, noisy probes, rustup-like executables and foreign rustc paths are rejected (118.318039ms)
+✔ offline check isolates Cargo configuration and target output while preserving literal project arguments (115.018079ms)
+✔ run compiles the frozen source first and starts only the exact generated executable, with separate output streams (139.359378ms)
+▶ compile failure, timeout and cancellation preserve phase outcomes and remove disposable directories
+  ✔ failed (81.346023ms)
+  ✔ timeout (561.795189ms)
+  ✔ cancelled (79.821432ms)
+  ✔ observer-failed (90.1066ms)
+✔ compile failure, timeout and cancellation preserve phase outcomes and remove disposable directories (814.124584ms)
+▶ runtime failure, timeout, cancellation and observer errors clean the same compiler workspace
+  ✔ failed (140.684966ms)
+  ✔ timeout (615.574114ms)
+  ✔ cancelled (139.118568ms)
+  ✔ observer-failed (137.124646ms)
+✔ runtime failure, timeout, cancellation and observer errors clean the same compiler workspace (1033.293488ms)
+✔ changed tool bytes are refused both before compilation and after a compiler replaced its companion (172.171372ms)
+✔ unsupported phases, windows, captures, replay and directory symlinks cannot invoke a tool (3.247994ms)
+✔ symlinked compiler output is rejected and never executed (114.093695ms)
+✔ compiler diagnostics map only approved UUID paths to frozen author UTF-16 positions (0.664797ms)
+✔ untrusted compiler paths and malformed spans never become author navigation (0.546305ms)
+✔ compiler diagnostics stay bounded and shared phase handling preserves failures without compiler messages (3.886703ms)
+✖ new backend delivers locked Cargo source, exact author bytes, and complete behavior provenance (17.682076ms)
+✔ generated source copies preserve CRLF and Unicode without injecting author names into Rust dispatch (6.030574ms)
+✔ Rust generator strictly refuses unsupported plans, media, languages, and backends (3.202088ms)
+✔ source bytes, paths, identities, used-source inventory and declaration revisions are checked before generation (6.809416ms)
+✔ parameters, signal budgets and scene geometry retain existing neutral limits (1.987328ms)
+✔ generation detaches inputs before asynchronous template reads (3.316873ms)
+✔ two generations are byte-stable and source edits change copies while preserving fixed backend identity (4.038547ms)
+﹣ real offline Cargo build runs independent ECS bindings and exact author Rust after relocation (0.241393ms) # Set VIENTO_BEVY_RUST_TEST_CARGO for native Rust behavior execution
+✔ neutral protocol 3 accepts identical paired events for Rust and GDScript, including several bindings on one instance (7.553752ms)
+✔ Godot compatibility export keeps the same event and source diagnostics as neutral admission (2.081616ms)
+✔ input mutations cannot rewrite binding authority or diagnostic navigation after capture (1.574595ms)
+✔ shared author schema rejects mixed implementations, duplicate IDs, reserved parameters and invalid scalar/event definitions (2.738147ms)
+✔ plan admission verifies paired instances, source inventory and frozen binding declaration locations (3.225812ms)
+✔ caller accessors, inherited serializers and sparse plans are refused without executing them (0.587513ms)
+✔ binding frames cannot forge identity, event names, arguments or author paths (6.382515ms)
+✔ zero through four scalar event arguments keep type and order (0.636785ms)
+✔ diagnostics resolve only a declared binding parameter and never accept output-owned source navigation (3.44273ms)
+✔ lifecycle admission rejects behavior before ready, duplicate ready and all frames after finished (1.026015ms)
+✔ stream fragmentation, CRLF and unfinished final frames keep event order and finish is idempotent (1.112257ms)
+✔ event floods and oversized lines remain bounded while ordinary logs cannot inject events (23.830641ms)
+✔ portable behavior reader runs without Node, DOM or an engine runtime (8.40546ms)
+ℹ tests 42
+ℹ suites 0
+ℹ pass 40
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 2675.613567
+
+✖ failing tests:
+
+test at scripts/tests/bevy-rust-project.test.mjs:51:1
+✖ new backend delivers locked Cargo source, exact author bytes, and complete behavior provenance (17.682076ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /BehaviorBinding\(binding.clone\(\)\)/. Input:
+  
+  '//! Fixed Bevy host for generated Rust behaviors. This is native author code,\n' +
+    '//! not a sandbox: the adapter owns process execution and source provenance.\n' +
+    'use bevy::prelude::*;\n' +
+    'use serde::Deserialize;\n' +
+    'use serde_json::{Value, json};\n' +
+    'use sha2::{Digest, Sha256};\n' +
+    'use std::{\n' +
+    '    collections::{HashMap, HashSet},\n' +
+    '    fs,\n' +
+    '    io::{self, Read, Write},\n' +
+    '    path::Path,\n' +
+    '    thread,\n' +
+    '    time::Duration,\n' +
+    '};\n' +
+    '\n' +
+    'pub const VERSION: &str = "viento-bevy-behaviors 0.2.0 bevy 0.19.1";\n' +
+    'const MAX_SCENE_BYTES: u64 = 1024 * 1024;\n' +
+    'const MAX_SOURCE_BYTES: u64 = 65536;\n' +
+    '\n' +
+    '#[derive(Deserialize)]\n' +
+    '#[serde(deny_unknown_fields, rename_all = "camelCase")]\n' +
+    'struct SceneData {\n' +
+    '    format: String,\n' +
+    '    schema_version: u8,\n' +
+    '    scene: SceneDeclaration,\n' +
+    '    actors: Vec<ActorDeclaration>,\n' +
+    '    resources: Vec<Value>,\n' +
+    '    sources: Vec<SourceDeclaration>,\n' +
+    '    bindings: Vec<Binding>,\n' +
+    '}\n' +
+    '#[derive(Deserialize)]\n' +
+    '#[serde(deny_unknown_fields, rename_all = "camelCase")]\n' +
+    'struct SceneDeclaration {\n' +
+    '    object_id: String,\n' +
+    '    title: String,\n' +
+    '    viewport: [u32; 2],\n' +
+    '    background: String,\n' +
+    '}\n' +
+    '#[derive(Clone, Deserialize)]\n' +
+    '#[serde(deny_unknown_fields, rename_all = "camelCase")]\n' +
+    'struct ActorDeclaration {\n' +
+    '    instance_id: String,\n' +
+    '    object_id: String,\n' +
+    '    position: [f64; 2],\n' +
+    '    size: [f64; 2],\n' +
+    '    color: String,\n' +
+    '    speed: f64,\n' +
+    '    controls: String,\n' +
+    '}\n' +
+    '#[derive(Deserialize)]\n' +
+    '#[serde(deny_unknown_fields, rename_all = "camelCase")]\n' +
+    'struct SourceDeclaration {\n' +
+    '    object_id: String,\n' +
+    '    file: String,\n' +
+    '    sha256: String,\n' +
+    '    size: u64,\n' +
+    '}\n' +
+    '#[derive(Clone, Debug, Deserialize)]\n' +
+    '#[serde(deny_unknown_fields, rename_all = "camelCase")]\n' +
+    'struct Binding {\n' +
+    '    binding_id: String,\n' +
+    '    instance_id: String,\n' +
+    '    object_id: String,\n' +
+    '    implementation: Implementation,\n' +
+    '    parameters: HashMap<String, Value>,\n' +
+    '    events: Vec<Signal>,\n' +
+    '}\n' +
+    '#[derive(Clone, Debug, Deserialize)]\n' +
+    '#[serde(deny_unknown_fields, rename_all = "camelCase")]\n' +
+    'struct Implementation {\n' +
+    '    backend_id: String,\n' +
+    '    language: String,\n' +
+    '    source_object_id: String,\n' +
+    '}\n' +
+    '#[derive(Clone, Debug, Deserialize)]\n' +
+    '#[serde(deny_unknown_fields)]\n' +
+    'struct Signal {\n' +
+    '    signal: String,\n' +
+    '    event: String,\n' +
+    '}\n' +
+    '\n' +
+    'fn uuid(value: &str) -> bool {\n' +
+    '    value.len() == 36\n' +
+    '        && value.bytes().enumerate().all(|(index, byte)| {\n' +
+    '            if [8, 13, 18, 23].contains(&index) {\n' +
+    "                byte == b'-'\n" +
+    '            } else {\n' +
+    "                byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)\n" +
+    '            }\n' +
+    '        })\n' +
+    '}\n' +
+    'fn hash(value: &str) -> bool {\n' +
+    '    value.len() == 64\n' +
+    '        && value\n' +
+    '            .bytes()\n' +
+    "            .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))\n" +
+    '}\n' +
+    'fn name(value: &str) -> bool {\n' +
+    '    !value.is_empty()\n' +
+    '        && value.len() <= 64\n' +
+    '        && value.bytes().enumerate().all(|(index, byte)| {\n' +
+    "            byte.is_ascii_alphabetic() || byte == b'_' || index > 0 && byte.is_ascii_digit()\n" +
+    '        })\n' +
+    '}\n' +
+    'fn scalar(value: &Value) -> bool {\n' +
+    '    match value {\n' +
+    '        Value::Bool(_) => true,\n' +
+    '        Value::String(text) => text.encode_utf16().count() <= 4096,\n' +
+    '        Value::Number(number) => number.as_f64().is_some_and(|value| {\n' +
+    '            value.is_finite() && (value.fract() != 0.0 || value.abs() <= 9007199254740991.0)\n' +
+    '        }),\n' +
+    '        _ => false,\n' +
+    '    }\n' +
+    '}\n' +
+    'fn color(value: &str) -> bool {\n' +
+    '    matches!(value.len(), 7 | 9)\n' +
+    "        && value.starts_with('#')\n" +
+    '        && value.as_bytes()[1..].iter().all(u8::is_ascii_hexdigit)\n' +
+    '}\n' +
+    'fn pair(value: [f64; 2], min: f64, max: f64) -> bool {\n' +
+    '    value\n' +
+    '        .into_iter()\n' +
+    '        .all(|number| number.is_finite() && (min..=max).contains(&number))\n' +
+    '}\n' +
+    'impl SceneData {\n' +
+    '    fn validate(&self) -> Result<(), String> {\n' +
+    '        if self.format != "viento-bevy-rust-scene"\n' +
+    '            || self.schema_version != 1\n' +
+    '            || !self.resources.is_empty()\n' +
+    '            || !uuid(&self.scene.object_id)\n' +
+    '            || self.scene.title.trim().is_empty()\n' +
+    '            || self.scene.title.encode_utf16().count() > 160\n' +
+    '            || self.scene.title.chars().any(|c| (c as u32) < 32)\n' +
+    '            || !self\n' +
+    '                .scene\n' +
+    '                .viewport\n' +
+    '                .into_iter()\n' +
+    '                .all(|n| (64..=4096).contains(&n))\n' +
+    '            || !color(&self.scene.background)\n' +
+    '            || !(1..=128).contains(&self.actors.len())\n' +
+    '            || !(1..=8).contains(&self.sources.len())\n' +
+    '            || !(1..=32).contains(&self.bindings.len())\n' +
+    '        {\n' +
+    '            return Err("Invalid generated Rust behavior scene or unsupported capability.".into());\n' +
+    '        }\n' +
+    '        let mut actors = HashMap::new();\n' +
+    '        for actor in &self.actors {\n' +
+    '            if !uuid(&actor.instance_id)\n' +
+    '                || !uuid(&actor.object_id)\n' +
+    '                || actors\n' +
+    '                    .insert(actor.instance_id.as_str(), actor.object_id.as_str())\n' +
+    '                    .is_some()\n' +
+    '                || !pair(actor.position, -100000.0, 100000.0)\n' +
+    '                || !pair(actor.size, 1.0, 2048.0)\n' +
+    '                || !color(&actor.color)\n' +
+    '                || !actor.speed.is_finite()\n' +
+    '                || !(0.0..=2000.0).contains(&actor.speed)\n' +
+    '                || !["arrows", "none"].contains(&actor.controls.as_str())\n' +
+    '            {\n' +
+    '                return Err("Invalid generated actor declaration.".into());\n' +
+    '            }\n' +
+    '        }\n' +
+    '        let mut sources = HashSet::new();\n' +
+    '        for source in &self.sources {\n' +
+    '            if !uuid(&source.object_id)\n' +
+    '                || !sources.insert(source.object_id.as_str())\n' +
+    '                || !hash(&source.sha256)\n' +
+    '                || !(1..=MAX_SOURCE_BYTES).contains(&source.size)\n' +
+    '                || source.file\n' +
+    `                    != format!("src/behaviors/b_{}.rs", source.object_id.replace('-', "_"))\n` +
+    '            {\n' +
+    '                return Err("Invalid generated behavior source inventory.".into());\n' +
+    '            }\n' +
+    '        }\n' +
+    '        let mut bindings = HashSet::new();\n' +
+    '        let mut used = HashSet::new();\n' +
+    '        for binding in &self.bindings {\n' +
+    '            if !uuid(&binding.binding_id)\n' +
+    '                || !bindings.insert(&binding.binding_id)\n' +
+    '                || actors.get(binding.instance_id.as_str()) != Some(&binding.object_id.as_str())\n' +
+    '                || binding.implementation.backend_id != "org.viento.bevy-rust"\n' +
+    '                || binding.implementation.language != "rust"\n' +
+    '                || !sources.contains(binding.implementation.source_object_id.as_str())\n' +
+    '                || binding.parameters.len() > 32\n' +
+    '                || binding.parameters.iter().any(|(key, value)| {\n' +
+    '                    !name(key)\n' +
+    '                        || ["constructor", "__proto__", "prototype"].contains(&key.as_str())\n' +
+    '                        || !scalar(value)\n' +
+    '                })\n' +
+    '                || binding.events.len() > 8\n' +
+    '            {\n' +
+    '                return Err("Invalid generated behavior binding.".into());\n' +
+    '            }\n' +
+    '            used.insert(binding.implementation.source_object_id.as_str());\n' +
+    '            let mut signals = HashSet::new();\n' +
+    '            for signal in &binding.events {\n' +
+    '                if !name(&signal.signal)\n' +
+    '                    || !name(&signal.event)\n' +
+    '                    || !signals.insert(signal.signal.as_str())\n' +
+    '                {\n' +
+    '                    return Err("Invalid or duplicate signal declaration.".into());\n' +
+    '                }\n' +
+    '            }\n' +
+    '        }\n' +
+    '        if used != sources {\n' +
+    '            return Err("Generated source inventory contains unused entries.".into());\n' +
+    '        }\n' +
+    '        Ok(())\n' +
+    '    }\n' +
+    '}\n' +
+    '\n' +
+    'fn bounded_read(path: &Path, limit: u64) -> Result<Vec<u8>, String> {\n' +
+    '    let metadata = fs::symlink_metadata(path).map_err(|_| "Cannot read generated project file.")?;\n' +
+    '    if !metadata.file_type().is_file() || metadata.len() > limit {\n' +
+    '        return Err("Expected a bounded regular generated project file.".into());\n' +
+    '    }\n' +
+    '    let mut bytes = Vec::new();\n' +
+    '    fs::File::open(path)\n' +
+    '        .map_err(|_| "Cannot open generated project file.")?\n' +
+    '        .take(limit + 1)\n' +
+    '        .read_to_end(&mut bytes)\n' +
+    '        .map_err(|_| "Cannot read generated project file.")?;\n' +
+    '    if bytes.len() as u64 > limit {\n' +
+    '        return Err("Generated project file exceeds its byte budget.".into());\n' +
+    '    }\n' +
+    '    Ok(bytes)\n' +
+    '}\n' +
+    'fn read_scene(path: &Path) -> Result<SceneData, String> {\n' +
+    '    if !path.is_absolute() {\n' +
+    '        return Err("Scene path must be absolute.".into());\n' +
+    '    }\n' +
+    '    let bytes = bounded_read(path, MAX_SCENE_BYTES)?;\n' +
+    '    let scene: SceneData =\n' +
+    '        serde_json::from_slice(&bytes).map_err(|_| "Invalid generated scene JSON.")?;\n' +
+    '    scene.validate()?;\n' +
+    '    let root = path.parent().ok_or("Missing generated project root.")?;\n' +
+    '    let compiled: HashMap<_, _> = crate::behavior_sources::SOURCES.iter().copied().collect();\n' +
+    '    if compiled.len() != scene.sources.len() {\n' +
+    '        return Err("Compiled behavior inventory differs from the scene.".into());\n' +
+    '    }\n' +
+    '    for folder in [root.join("src"), root.join("src/behaviors")] {\n' +
+    '        if !fs::symlink_metadata(folder)\n' +
+    '            .map_err(|_| "Missing generated source directory.")?\n' +
+    '            .file_type()\n' +
+    '            .is_dir()\n' +
+    '        {\n' +
+    '            return Err("Expected regular generated source directories.".into());\n' +
+    '        }\n' +
+    '    }\n' +
+    '    for source in &scene.sources {\n' +
+    '        if compiled.get(source.object_id.as_str()) != Some(&source.sha256.as_str()) {\n' +
+    '            return Err("Compiled source revision differs from the scene.".into());\n' +
+    '        }\n' +
+    '        let bytes = bounded_read(&root.join(&source.file), MAX_SOURCE_BYTES)?;\n' +
+    '        if bytes.len() as u64 != source.size\n' +
+    '            || format!("{:x}", Sha256::digest(&bytes)) != source.sha256\n' +
+    '        {\n' +
+    '            return Err("Generated source integrity mismatch.".into());\n' +
+    '        }\n' +
+    '    }\n' +
+    '    Ok(scene)\n' +
+    '}\n' +
+    '\n' +
+    '#[derive(Clone, Debug)]\n' +
+    'struct Failure {\n' +
+    "    code: &'static str,\n" +
+    '    message: String,\n' +
+    '    parameter: Option<String>,\n' +
+    '}\n' +
+    '/// A host-owned fixed step. The first step has tick 0; modifying a local copy\n' +
+    "/// cannot change the host clock or another binding's step.\n" +
+    '#[derive(Clone, Copy, Debug, PartialEq)]\n' +
+    'pub struct FixedStep {\n' +
+    '    pub tick: u64,\n' +
+    '    pub delta_seconds: f64,\n' +
+    '}\n' +
+    '/// Plain function pointers keep callback registration explicit and independent\n' +
+    '/// of author source parsing. Per-binding state belongs in declared parameters'... 36275 more characters
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/bevy-rust-project.test.mjs:62:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: `//! Fixed Bevy host for generated Rust behaviors. This is native author code,\n//! not a sandbox: the adapter owns process execution and source provenance.\nuse bevy::prelude::*;\nuse serde::Deserialize;\nuse serde_json::{Value, json};\nuse sha2::{Digest, Sha256};\nuse std::{\n    collections::{HashMap, HashSet},\n    fs,\n    io::{self, Read, Write},\n    path::Path,\n    thread,\n    time::Duration,\n};\n\npub const VERSION: &str = "viento-bevy-behaviors 0.2.0 bevy 0.19.1";\nconst MAX_SCENE_BYTES: u64 = 1024 * 1024;\nconst MAX_SOURCE_BYTES: u64 = 65536;\n\n#[derive(Deserialize)]\n#[serde(deny_unknown_fields, rename_all = "camelCase")]\nstruct SceneData {\n    format: String,\n    schema_version: u8,\n    scene: SceneDeclaration,\n    actors: Vec<ActorDeclaration>,\n    resources: Vec<Value>,\n    sources: Vec<SourceDeclaration>,\n    bindings: Vec<Binding>,\n}\n#[derive(Deserialize)]\n#[serde(deny_unknown_fields, rename_all = "camelCase")]\nstruct SceneDeclaration {\n    object_id: String,\n    title: String,\n    viewport: [u32; 2],\n    background: String,\n}\n#[derive(Clone, Deserialize)]\n#[serde(deny_unknown_fields, rename_all = "camelCase")]\nstruct ActorDeclaration {\n    instance_id: String,\n    object_id: String,\n    position: [f64; 2],\n    size: [f64; 2],\n    color: String,\n    speed: f64,\n    controls: String,\n}\n#[derive(Deserialize)]\n#[serde(deny_unknown_fields, rename_all = "camelCase")]\nstruct SourceDeclaration {\n    object_id: String,\n    file: String,\n    sha256: String,\n    size: u64,\n}\n#[derive(Clone, Debug, Deserialize)]\n#[serde(deny_unknown_fields, rename_all = "camelCase")]\nstruct Binding {\n    binding_id: String,\n    instance_id: String,\n    object_id: String,\n    implementation: Implementation,\n    parameters: HashMap<String, Value>,\n    events: Vec<Signal>,\n}\n#[derive(Clone, Debug, Deserialize)]\n#[serde(deny_unknown_fields, rename_all = "camelCase")]\nstruct Implementation {\n    backend_id: String,\n    language: String,\n    source_object_id: String,\n}\n#[derive(Clone, Debug, Deserialize)]\n#[serde(deny_unknown_fields)]\nstruct Signal {\n    signal: String,\n    event: String,\n}\n\nfn uuid(value: &str) -> bool {\n    value.len() == 36\n        && value.bytes().enumerate().all(|(index, byte)| {\n            if [8, 13, 18, 23].contains(&index) {\n                byte == b'-'\n            } else {\n                byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)\n            }\n        })\n}\nfn hash(value: &str) -> bool {\n    value.len() == 64\n        && value\n            .bytes()\n            .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))\n}\nfn name(value: &str) -> bool {\n    !value.is_empty()\n        && value.len() <= 64\n        && value.bytes().enumerate().all(|(index, byte)| {\n            byte.is_ascii_alphabetic() || byte == b'_' || index > 0 && byte.is_ascii_digit()\n        })\n}\nfn scalar(value: &Value) -> bool {\n    match value {\n        Value::Bool(_) => true,\n        Value::String(text) => text.encode_utf16().count() <= 4096,\n        Value::Number(number) => number.as_f64().is_some_and(|value| {\n            value.is_finite() && (value.fract() != 0.0 || value.abs() <= 9007199254740991.0)\n        }),\n        _ => false,\n    }\n}\nfn color(value: &str) -> bool {\n    matches!(value.len(), 7 | 9)\n        && value.starts_with('#')\n        && value.as_bytes()[1..].iter().all(u8::is_ascii_hexdigit)\n}\nfn pair(value: [f64; 2], min: f64, max: f64) -> bool {\n    value\n        .into_iter()\n        .all(|number| number.is_finite() && (min..=max).contains(&number))\n}\nimpl SceneData {\n    fn validate(&self) -> Result<(), String> {\n        if self.format != "viento-bevy-rust-scene"\n            || self.schema_version != 1\n            || !self.resources.is_empty()\n            || !uuid(&self.scene.object_id)\n            || self.scene.title.trim().is_empty()\n            || self.scene.title.encode_utf16().count() > 160\n            || self.scene.title.chars().any(|c| (c as u32) < 32)\n            || !self\n                .scene\n                .viewport\n                .into_iter()\n                .all(|n| (64..=4096).contains(&n))\n            || !color(&self.scene.background)\n            || !(1..=128).contains(&self.actors.len())\n            || !(1..=8).contains(&self.sources.len())\n            || !(1..=32).contains(&self.bindings.len())\n        {\n            return Err("Invalid generated Rust behavior scene or unsupported capability.".into());\n        }\n        let mut actors = HashMap::new();\n        for actor in &self.actors {\n            if !uuid(&actor.instance_id)\n                || !uuid(&actor.object_id)\n                || actors\n                    .insert(actor.instance_id.as_str(), actor.object_id.as_str())\n                    .is_some()\n                || !pair(actor.position, -100000.0, 100000.0)\n                || !pair(actor.size, 1.0, 2048.0)\n                || !color(&actor.color)\n                || !actor.speed.is_finite()\n                || !(0.0..=2000.0).contains(&actor.speed)\n                || !["arrows", "none"].contains(&actor.controls.as_str())\n            {\n                return Err("Invalid generated actor declaration.".into());\n            }\n        }\n        let mut sources = HashSet::new();\n        for source in &self.sources {\n            if !uuid(&source.object_id)\n                || !sources.insert(source.object_id.as_str())\n                || !hash(&source.sha256)\n                || !(1..=MAX_SOURCE_BYTES).contains(&source.size)\n                || source.file\n                    != format!("src/behaviors/b_{}.rs", source.object_id.replace('-', "_"))\n            {\n                return Err("Invalid generated behavior source inventory.".into());\n            }\n        }\n        let mut bindings = HashSet::new();\n        let mut used = HashSet::new();\n        for binding in &self.bindings {\n            if !uuid(&binding.binding_id)\n                || !bindings.insert(&binding.binding_id)\n                || actors.get(binding.instance_id.as_str()) != Some(&binding.object_id.as_str())\n                || binding.implementation.backend_id != "org.viento.bevy-rust"\n                || binding.implementation.language != "rust"\n                || !sources.contains(binding.implementation.source_object_id.as_str())\n                || binding.parameters.len() > 32\n                || binding.parameters.iter().any(|(key, value)| {\n                    !name(key)\n                        || ["constructor", "__proto__", "prototype"].contains(&key.as_str())\n                        || !scalar(value)\n                })\n                || binding.events.len() > 8\n            {\n                return Err("Invalid generated behavior binding.".into());\n            }\n            used.insert(binding.implementation.source_object_id.as_str());\n            let mut signals = HashSet::new();\n            for signal in &binding.events {\n                if !name(&signal.signal)\n                    || !name(&signal.event)\n                    || !signals.insert(signal.signal.as_str())\n                {\n                    return Err("Invalid or duplicate signal declaration.".into());\n                }\n            }\n        }\n        if used != sources {\n            return Err("Generated source inventory contains unused entries.".into());\n        }\n        Ok(())\n    }\n}\n\nfn bounded_read(path: &Path, limit: u64) -> Result<Vec<u8>, String> {\n    let metadata = fs::symlink_metadata(path).map_err(|_| "Cannot read generated project file.")?;\n    if !metadata.file_type().is_file() || metadata.len() > limit {\n        return Err("Expected a bounded regular generated project file.".into());\n    }\n    let mut bytes = Vec::new();\n    fs::File::open(path)\n        .map_err(|_| "Cannot open generated project file.")?\n        .take(limit + 1)\n        .read_to_end(&mut bytes)\n        .map_err(|_| "Cannot read generated project file.")?;\n    if bytes.len() as u64 > limit {\n        return Err("Generated project file exceeds its byte budget.".into());\n    }\n    Ok(bytes)\n}\nfn read_scene(path: &Path) -> Result<SceneData, String> {\n    if !path.is_absolute() {\n        return Err("Scene path must be absolute.".into());\n    }\n    let bytes = bounded_read(path, MAX_SCENE_BYTES)?;\n    let scene: SceneData =\n        serde_json::from_slice(&bytes).map_err(|_| "Invalid generated scene JSON.")?;\n    scene.validate()?;\n    let root = path.parent().ok_or("Missing generated project root.")?;\n    let compiled: HashMap<_, _> = crate::behavior_sources::SOURCES.iter().copied().collect();\n    if compiled.len() != scene.sources.len() {\n        return Err("Compiled behavior inventory differs from the scene.".into());\n    }\n    for folder in [root.join("src"), root.join("src/behaviors")] {\n        if !fs::symlink_metadata(folder)\n            .map_err(|_| "Missing generated source directory.")?\n            .file_type()\n            .is_dir()\n        {\n            return Err("Expected regular generated source directories.".into());\n        }\n    }\n    for source in &scene.sources {\n        if compiled.get(source.object_id.as_str()) != Some(&source.sha256.as_str()) {\n            return Err("Compiled source revision differs from the scene.".into());\n        }\n        let bytes = bounded_read(&root.join(&source.file), MAX_SOURCE_BYTES)?;\n        if bytes.len() as u64 != source.size\n            || format!("{:x}", Sha256::digest(&bytes)) != source.sha256\n        {\n            return Err("Generated source integrity mismatch.".into());\n        }\n    }\n    Ok(scene)\n}\n\n#[derive(Clone, Debug)]\nstruct Failure {\n    code: &'static str,\n    message: String,\n    parameter: Option<String>,\n}\n/// A host-owned fixed step. The first step has tick 0; modifying a local copy\n/// cannot change the host clock or another binding's step.\n#[derive(Clone, Copy, Debug, PartialEq)]\npub struct FixedStep {\n    pub tick: u64,\n    pub delta_seconds: f64,\n}\n/// Plain function pointers keep callback registration explicit and independent\n/// of author source parsing. Per-binding state belongs in declared parameters`... 36275 more characters,
+    expected: /BehaviorBinding\(binding.clone\(\)\)/,
+    operator: 'match',
+    diff: 'simple'
+  }

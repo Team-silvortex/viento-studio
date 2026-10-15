@@ -70,7 +70,8 @@ async function prepareResources() {
       await fs.cp(path.join(root, name), path.join(stage, name), {
         recursive: true,
         filter: (source) => !path.basename(source).startsWith('.')
-          && source !== path.join(root, 'scripts', 'tests') && source !== path.join(root, 'web', 'data'),
+          && source !== path.join(root, 'scripts', 'tests') && source !== path.join(root, 'web', 'data')
+          && source !== path.join(root, 'scripts', 'backends', 'bevy-rust', 'target'),
       });
     }
     await fs.mkdir(path.join(stage, 'node_modules'), { recursive: true });

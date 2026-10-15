@@ -1,0 +1,112 @@
+✖ real Godot preserves valid high precision cue timing through the audio protocol (4068.374765ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4179.206362
+
+✖ failing tests:
+
+test at scripts/tests/scene-audio-godot.test.mjs:264:1
+✖ real Godot preserves valid high precision cue timing through the audio protocol (4068.374765ms)
+  AssertionError [ERR_ASSERTION]: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+  
+  VIENTO_RUNTIME:{"actors":[{"instanceId":"11111111-1111-4111-8111-111111111111","objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","position":[100.25,200.0],"state":"idle"},{"instanceId":"22222222-2222-4222-8222-222222222222","objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","position":[340.0,220.0],"state":"idle"}],"event":"ready","protocol":2,"sceneObjectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd"}
+  VIENTO_AUDIO:{"event":"ready","protocol":1,"sceneObjectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","trackIds":["99999999-9999-4999-8999-000000000003","99999999-9999-4999-8999-000000000004"]}
+  VIENTO_AUDIO:{"action":"play","atSeconds":0.0,"cueId":"99999999-9999-4999-8999-000000000021","event":"command","protocol":1,"resourceId":"99999999-9999-4999-8999-000000000002","trackId":"99999999-9999-4999-8999-000000000004"}
+  VIENTO_RUNTIME:{"event":"state","instanceId":"11111111-1111-4111-8111-111111111111","objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","protocol":2,"state":"moving"}
+  VIENTO_RUNTIME:{"event":"state","instanceId":"22222222-2222-4222-8222-222222222222","objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","protocol":2,"state":"moving"}
+  VIENTO_AUDIO:{"action":"play","atSeconds":0.123456789012346,"cueId":"99999999-9999-4999-8999-000000000020","event":"command","protocol":1,"resourceId":"99999999-9999-4999-8999-000000000002","trackId":"99999999-9999-4999-8999-000000000003"}
+  VIENTO_AUDIO:{"action":"stop","atSeconds":0.2,"cueId":"99999999-9999-4999-8999-000000000022","event":"command","protocol":1,"resourceId":"99999999-9999-4999-8999-000000000002","trackId":"99999999-9999-4999-8999-000000000003"}
+  VIENTO_AUDIO:{"action":"play","atSeconds":0.25,"cueId":"99999999-9999-4999-8999-000000000023","event":"command","protocol":1,"resourceId":"99999999-9999-4999-8999-000000000002","trackId":"99999999-9999-4999-8999-000000000003"}
+  VIENTO_AUDIO:{"action":"stop","atSeconds":0.25,"cueId":"99999999-9999-4999-8999-000000000024","event":"command","protocol":1,"resourceId":"99999999-9999-4999-8999-000000000002","trackId":"99999999-9999-4999-8999-000000000004"}
+  VIENTO_RUNTIME:{"event":"state","instanceId":"11111111-1111-4111-8111-111111111111","objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","protocol":2,"state":"idle"}
+  VIENTO_RUNTIME:{"event":"state","instanceId":"22222222-2222-4222-8222-222222222222","objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","protocol":2,"state":"idle"}
+  VIENTO_AUDIO:{"action":"stop","atSeconds":0.5,"cueId":"99999999-9999-4999-8999-000000000025","event":"command","protocol":1,"resourceId":"99999999-9999-4999-8999-000000000002","trackId":"99999999-9999-4999-8999-000000000003"}
+  VIENTO_AUDIO:{"event":"finished","protocol":1,"timeSeconds":0.5}
+  VIENTO_RUNTIME:{"actors":[{"instanceId":"11111111-1111-4111-8111-111111111111","objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","position":[140.25,200.0],"state":"idle"},{"instanceId":"22222222-2222-4222-8222-222222222222","objectId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","position":[344.25,220.0],"state":"idle"}],"event":"finished","fixedDelta":0.25,"protocol":2}
+  WARNING: 5 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+     at: cleanup (core/object/object.cpp:2536)
+  
+  + actual - expected
+  
+  + [
+  +   {
+  +     code: 'runtime_audio_protocol_invalid',
+  +     message: 'Invalid audio runtime protocol frame.',
+  +     objectId: '99999999-9999-4999-8999-000000000001',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/scene-audio.json',
+  +     sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb'
+  +   },
+  +   {
+  +     code: 'runtime_audio_protocol_invalid',
+  +     message: 'Invalid audio runtime protocol frame.',
+  +     objectId: '99999999-9999-4999-8999-000000000001',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/scene-audio.json',
+  +     sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb'
+  +   },
+  +   {
+  +     code: 'runtime_audio_protocol_invalid',
+  +     message: 'Invalid audio runtime protocol frame.',
+  +     objectId: '99999999-9999-4999-8999-000000000001',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/scene-audio.json',
+  +     sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb'
+  +   },
+  +   {
+  +     code: 'runtime_audio_protocol_invalid',
+  +     message: 'Invalid audio runtime protocol frame.',
+  +     objectId: '99999999-9999-4999-8999-000000000001',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/scene-audio.json',
+  +     sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb'
+  +   },
+  +   {
+  +     code: 'runtime_audio_protocol_invalid',
+  +     message: 'Invalid audio runtime protocol frame.',
+  +     objectId: '99999999-9999-4999-8999-000000000001',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/scene-audio.json',
+  +     sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb'
+  +   },
+  +   {
+  +     code: 'runtime_audio_protocol_invalid',
+  +     message: 'Invalid audio runtime protocol frame.',
+  +     objectId: '99999999-9999-4999-8999-000000000001',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/scene-audio.json',
+  +     sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb'
+  +   },
+  +   {
+  +     code: 'runtime_audio_protocol_invalid',
+  +     message: 'Audio completion is missing.',
+  +     objectId: '99999999-9999-4999-8999-000000000001',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/scene-audio.json',
+  +     sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-audio-godot.test.mjs:269:83)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { severity: 'error', code: 'runtime_audio_protocol_invalid', message: 'Invalid audio runtime protocol frame.', objectId: '99999999-9999-4999-8999-000000000001', sourcePath: 'documents/scene-audio.json', sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb', propertyPath: '' }, { severity: 'error', code: 'runtime_audio_protocol_invalid', message: 'Invalid audio runtime protocol frame.', objectId: '99999999-9999-4999-8999-000000000001', sourcePath: 'documents/scene-audio.json', sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb', propertyPath: '' }, { severity: 'error', code: 'runtime_audio_protocol_invalid', message: 'Invalid audio runtime protocol frame.', objectId: '99999999-9999-4999-8999-000000000001', sourcePath: 'documents/scene-audio.json', sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb', propertyPath: '' }, { severity: 'error', code: 'runtime_audio_protocol_invalid', message: 'Invalid audio runtime protocol frame.', objectId: '99999999-9999-4999-8999-000000000001', sourcePath: 'documents/scene-audio.json', sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb', propertyPath: '' }, { severity: 'error', code: 'runtime_audio_protocol_invalid', message: 'Invalid audio runtime protocol frame.', objectId: '99999999-9999-4999-8999-000000000001', sourcePath: 'documents/scene-audio.json', sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb', propertyPath: '' }, { severity: 'error', code: 'runtime_audio_protocol_invalid', message: 'Invalid audio runtime protocol frame.', objectId: '99999999-9999-4999-8999-000000000001', sourcePath: 'documents/scene-audio.json', sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb', propertyPath: '' }, { severity: 'error', code: 'runtime_audio_protocol_invalid', message: 'Audio completion is missing.', objectId: '99999999-9999-4999-8999-000000000001', sourcePath: 'documents/scene-audio.json', sourceRevision: 'sha256:eb449b090efbd2fb38b451097ee95aa9c867588d786bd09b5a36d9460315b5bb', propertyPath: '' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

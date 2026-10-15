@@ -37,9 +37,9 @@ const linux = { skip: process.platform !== 'linux' ? 'Godot execution adapter is
 
 test('Godot descriptor and host contract are immutable, precise and independent of legacy build metadata', () => {
   assert.deepEqual(adapter.descriptor, { format: 'viento-execution-backend', schemaVersion: 1,
-    id: 'org.viento.godot4', label: 'Godot 4', version: '0.5.0', platforms: ['linux'],
+    id: 'org.viento.godot4', label: 'Godot 4', version: '0.6.0', platforms: ['linux'],
     plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }],
-    capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances'],
+    capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline'],
     execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false }, extensions: [] });
   assert.equal(adapter.contractVersion, 1); assert.equal(adapter.acceptsLegacyBuildRecords, true);
   assert.deepEqual(adapter.buildPhases, ['import', 'script-check']); assert.deepEqual(adapter.runtimePhases, ['import']);
@@ -176,9 +176,11 @@ test('cleanup removes only known generated caches and never follows their links 
 });
 
 test('execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators', async () => {
-  const files = ['scripts/backends/godot4-adapter.mjs', 'engine/backend-capabilities.mjs', 'scripts/adapters/node-execution-backends.mjs',
+  const files = ['engine/scene-behavior-events.mjs', 'engine/scene-runtime-events.mjs', 'scripts/backends/godot4-adapter.mjs', 'engine/backend-capabilities.mjs', 'scripts/adapters/node-execution-backends.mjs',
     'scripts/backends/godot4-behaviors.mjs', 'scripts/backends/godot4/behavior-runtime.gd', 'engine/scene-behaviors.mjs', 'engine/build-plan.mjs', 'engine/scene-control-program.mjs',
-    'scripts/backends/godot4/control-runtime.gd', 'scripts/backends/godot4/control.tscn'];
+    'scripts/backends/godot4/control-runtime.gd', 'scripts/backends/godot4/control.tscn',
+    'scripts/backends/godot4-audio.mjs', 'scripts/backends/godot4/audio-runtime.gd', 'engine/scene-audio-events.mjs', 'engine/scene-audio-core.mjs', 'engine/scene-audio.mjs',
+    'engine/studio-core.mjs', 'engine/studio-core.wasm', 'scripts/lib/audio-wav.mjs'];
   const identities = await Promise.all(files.map(async file => ({ path: file, sha256: hash(await fs.readFile(new URL(file, root))) })));
   assert.deepEqual(await adapter.fingerprint(), { id: adapter.descriptor.id, contractVersion: 1, sha256: hash(JSON.stringify(identities)) });
   assert.deepEqual(await adapter.fingerprint(), await adapter.fingerprint());

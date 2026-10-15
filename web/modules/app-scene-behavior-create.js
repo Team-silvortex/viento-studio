@@ -1,6 +1,13 @@
 import { canonicalJson } from '../../engine/canonical-json.mjs';
+import { createSceneBehaviorCreationDraft } from '../../engine/scene-behavior-create-plan.mjs';
+import { SCENE_BEHAVIOR_LIMITS } from '../../engine/scene-behaviors.mjs';
 import { getCreatePathError } from '../../engine/document-contract.mjs';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
+
+const behaviorProfiles = Object.freeze([
+  Object.freeze({ id: 'godot-gdscript', label: 'Godot 4 / GDScript', backendId: 'org.viento.godot4', language: 'gdscript' }),
+  Object.freeze({ id: 'bevy-rust', label: 'Bevy / Rust', backendId: 'org.viento.bevy-rust', language: 'rust' }),
+]);
 
 // Creation owns a local declaration and a single reviewed transaction. Source
 // navigation, world authority and author-file writes belong to injected ports.
@@ -13,15 +20,22 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
   const dialog = document.createElement('dialog'); dialog.id = 'sceneBehaviorCreateDialog'; dialog.className = 'scene-behavior-create-dialog';
   dialog.setAttribute('aria-labelledby', 'sceneBehaviorCreateTitle');
   dialog.innerHTML = `<header class="scene-behavior-create-header"><h2 id="sceneBehaviorCreateTitle" data-i18n="为场景添加行为"></h2><button id="sceneBehaviorCreateClose" class="doc-btn doc-btn-ghost" type="button" data-i18n="返回构建"></button></header>
-    <div class="scene-behavior-create-body"><p data-i18n="为已保存场景的一份实例创建行为文档，并一起登记关联关系。此操作不运行脚本。"></p>
-    <p id="sceneBehaviorCreateScene" class="scene-behavior-create-note"></p><p data-i18n="本次声明使用 Godot 4 / GDScript；创建不要求已安装 Godot。保存后可在行为编辑器中添加参数、信号和更多绑定。"></p>
+    <div class="scene-behavior-create-body"><p data-i18n="为已保存场景创建多条实例与脚本绑定，并一起登记行为文档和关联关系。此操作不运行脚本。"></p>
+    <p id="sceneBehaviorCreateScene" class="scene-behavior-create-note"></p><p data-i18n="整份行为文档使用所选后端与语言。请选择与脚本内容一致的选项；创建无需安装对应工具链，参数与信号可在保存后设置。"></p>
     <button id="sceneBehaviorCreateRefresh" class="doc-btn doc-btn-ghost" type="button" data-i18n="重新读取工程"></button>
     <p id="sceneBehaviorCreateEmpty" data-i18n="没有可用的已登记 TXT 脚本。请返回主编辑器，新建并保存 TXT 文档后再添加行为。" hidden></p>
     <fieldset id="sceneBehaviorCreateFields" hidden><legend data-i18n="行为文档设置"></legend><div class="scene-behavior-create-grid">
+      <label class="scene-behavior-create-profile"><span data-i18n="行为后端与脚本语言"></span><select id="sceneBehaviorCreateProfile"></select></label>
       <label><span data-i18n="文档类型"></span><select id="sceneBehaviorCreateType"></select></label>
       <label><span data-i18n="原文路径"></span><input id="sceneBehaviorCreatePath" type="text" maxlength="1024" spellcheck="false" /></label>
+      </div><h3 data-i18n="行为绑定清单"></h3><p id="sceneBehaviorCreateBindingCount" class="scene-behavior-create-note"></p>
+      <div class="scene-behavior-create-bindings"><div class="scene-behavior-create-binding-list">
+        <label><span data-i18n="选择要编辑的绑定"></span><select id="sceneBehaviorCreateBindingList" size="5"></select></label>
+        <div class="scene-behavior-create-binding-actions"><button id="sceneBehaviorCreateAddBinding" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加行为绑定"></button><button id="sceneBehaviorCreateRemoveBinding" type="button" class="doc-btn doc-btn-ghost" data-i18n="移除选中绑定"></button></div>
+      </div><div class="scene-behavior-create-grid">
       <label><span data-i18n="场景实例"></span><select id="sceneBehaviorCreateInstance"></select></label>
       <label><span data-i18n="已登记脚本"></span><select id="sceneBehaviorCreateSource"></select></label></div>
+      </div><p class="scene-behavior-create-note" data-i18n="每条绑定拥有独立身份；可复用同一脚本，也可为同一实例添加多个行为。新增时优先选择尚未分配的实例。"></p>
       <p id="sceneBehaviorCreateIdentity" class="scene-behavior-create-note"></p></fieldset>
     <section id="sceneBehaviorCreateReview" hidden><h3 data-i18n="创建行为审阅"></h3><p data-i18n="保存会新建下列完整原文和文档登记，并更新场景登记中的行为关系；场景正文与脚本正文保持原样。"></p>
       <h4 data-i18n="将登记的关系"></h4><ul id="sceneBehaviorCreateRelations"></ul><h4 data-i18n="将创建的完整原文"></h4><pre id="sceneBehaviorCreateSourceText" tabindex="0"></pre></section></div>
@@ -39,8 +53,12 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
   const fail = key => { throw Object.assign(new Error(t(key)), { uiKey: key }); };
   let enabled = false, supported = false, disposed = false, epoch = 0, owner = null, catalog = null, draft = null, baseline = '', preview = null;
   let phase = '', dirty = false, saved = null, refreshed = false, uncertain = false, needsRefresh = false, opener = null, message = '', details = '';
-  const fields = ['Type', 'Path', 'Instance', 'Source'];
-  const raw = () => Object.fromEntries(fields.map(key => [key, el(key).value]));
+  let selectedBindingId = '';
+  const fields = ['Profile', 'Type', 'Path', 'Instance', 'Source'];
+  const selectedBinding = () => draft?.bindings.find(binding => binding.bindingId === selectedBindingId);
+  const bindingFields = () => ({ instanceId: el('Instance').value, sourceObjectId: el('Source').value });
+  const raw = () => ({ Profile: el('Profile').value, Type: el('Type').value, Path: el('Path').value,
+    bindings: (draft?.bindings || []).map(binding => ({ ...binding, ...(binding.bindingId === selectedBindingId ? bindingFields() : {}) })) });
   const signature = () => JSON.stringify(raw());
   const eligible = () => { const c = getContext(); return Boolean(!disposed && enabled && supported && c.editable && !c.dirty && !c.creating && !c.busy && c.visible === true && uuid(c.sceneId) && typeof c.session === 'string'); };
   const owns = (generation = epoch, afterSave = Boolean(saved)) => {
@@ -53,24 +71,62 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
   function capture() { if (draft) Object.assign(draft, raw()); }
   function options(select, values, value) {
     select.replaceChildren();
-    if (!values.some(([id]) => id === value)) { const placeholder = document.createElement('option'); placeholder.value = ''; placeholder.textContent = t('请选择'); select.append(placeholder); }
+    if (!values.some(([id]) => id === value)) { const placeholder = document.createElement('option'); placeholder.value = value || ''; placeholder.textContent = value ? t('已不可用：{0}', value) : t('请选择'); select.append(placeholder); }
     for (const [id, label] of values) { const item = document.createElement('option'); item.value = id; item.textContent = label; select.append(item); }
     select.value = value;
   }
+  function renderBindingList() {
+    if (!draft || !catalog) return;
+    options(el('BindingList'), draft.bindings.map((binding, index) => {
+      const instance = catalog.scene.instances.find(item => item.instanceId === binding.instanceId);
+      const source = catalog.sources.find(item => item.objectId === binding.sourceObjectId);
+      return [binding.bindingId, `${index + 1}. ${instance?.name || t('已不可用：{0}', binding.instanceId)} · ${source?.name || (binding.sourceObjectId ? t('已不可用：{0}', binding.sourceObjectId) : t('请选择'))}`];
+    }), selectedBindingId);
+  }
   function renderFields() {
     if (!draft || !catalog) return;
+    options(el('Profile'), behaviorProfiles.map(item => [item.id, item.label]), draft.Profile);
     options(el('Type'), catalog.documentTypes.map(item => [item.id, item.label]), draft.Type); el('Path').value = draft.Path;
-    options(el('Instance'), catalog.scene.instances.map(item => [item.instanceId, `${item.name} · ${item.instanceId}`]), draft.Instance);
-    options(el('Source'), catalog.sources.map(item => [item.objectId, `${item.name} · ${item.sourcePath}`]), draft.Source);
+    const binding = selectedBinding();
+    options(el('Instance'), catalog.scene.instances.map(item => [item.instanceId, `${item.name} · ${item.instanceId}`]), binding?.instanceId || '');
+    options(el('Source'), catalog.sources.map(item => [item.objectId, `${item.name} · ${item.sourcePath}`]), binding?.sourceObjectId || '');
+    renderBindingList();
   }
+  function selectBinding() {
+    if (!canChange()) { el('BindingList').value = selectedBindingId; return; }
+    const next = draft.bindings.find(binding => binding.bindingId === el('BindingList').value); if (!next) return;
+    capture(); selectedBindingId = next.bindingId; renderFields(); update();
+  }
+  function addBinding() {
+    if (!canChange() || !catalog.sources.length || draft.bindings.length >= SCENE_BEHAVIOR_LIMITS.bindings) return;
+    capture(); const previous = selectedBinding(), used = new Set(draft.bindings.map(binding => binding.instanceId));
+    let bindingId; try { bindingId = crypto.randomUUID(); } catch { return; }
+    if (!uuid(bindingId) || bindingId === draft.objectId || draft.bindings.some(binding => binding.bindingId === bindingId)) return;
+    const instance = catalog.scene.instances.find(item => !used.has(item.instanceId))
+      || catalog.scene.instances.find(item => item.instanceId === previous?.instanceId) || catalog.scene.instances[0];
+    draft.bindings.push({ bindingId, instanceId: instance.instanceId, sourceObjectId: previous?.sourceObjectId || catalog.sources[0].objectId });
+    selectedBindingId = bindingId; renderFields(); invalidate(); update(); el('Instance').focus();
+  }
+  function removeBinding() {
+    if (!canChange() || draft.bindings.length <= 1) return;
+    capture(); const index = draft.bindings.findIndex(binding => binding.bindingId === selectedBindingId); if (index < 0) return;
+    draft.bindings.splice(index, 1); selectedBindingId = draft.bindings[Math.min(index, draft.bindings.length - 1)].bindingId;
+    renderFields(); invalidate(); update(); el('BindingList').focus();
+  }
+  const referenceIds = requested => [...new Set([requested.sceneObjectId,
+    ...JSON.parse(requested.content).bindings.map(binding => binding.implementation.sourceObjectId)])].sort();
   function update() {
     if (disposed) return;
     translatePage(dialog); dialog.dataset.dirty = String(!saved && (dirty || draft && signature() !== baseline)); dialog.setAttribute('aria-busy', String(Boolean(phase)));
     el('Fields').hidden = !catalog; el('Fields').disabled = !canChange();
     for (const name of fields) el(name).disabled = !canChange();
+    el('BindingList').disabled = !canChange();
+    el('AddBinding').disabled = !canChange() || !catalog.sources.length || draft.bindings.length >= SCENE_BEHAVIOR_LIMITS.bindings;
+    el('RemoveBinding').disabled = !canChange() || draft.bindings.length <= 1;
+    el('BindingCount').textContent = draft ? t('绑定 {0}/{1} · 脚本 {2}/{3}；至少保留一条绑定。', draft.bindings.length, SCENE_BEHAVIOR_LIMITS.bindings, new Set(raw().bindings.map(binding => binding.sourceObjectId).filter(Boolean)).size, SCENE_BEHAVIOR_LIMITS.sources) : '';
     el('Empty').hidden = !catalog || catalog.sources.length > 0;
     el('Scene').textContent = catalog ? t('场景：{0} · {1}', catalog.scene.sourcePath, catalog.scene.objectId) : '';
-    el('Identity').textContent = draft ? t('新文档身份：{0} · 绑定身份：{1}', draft.objectId, draft.bindingId) : '';
+    el('Identity').textContent = draft ? t('新文档身份：{0} · 绑定身份：{1}', draft.objectId, selectedBindingId) : '';
     el('Check').disabled = !canChange() || !catalog.sources.length;
     el('Save').disabled = !canChange() || !approval();
     el('Open').hidden = !saved; el('Open').disabled = Boolean(phase) || !saved || !refreshed || !owns();
@@ -79,7 +135,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     el('Close').disabled = Boolean(phase); el('Cancel').disabled = Boolean(phase);
     el('Review').hidden = !preview; el('SourceText').textContent = preview?.request.content || '';
     el('Relations').replaceChildren();
-    if (preview) for (const [from, kind, to] of [[catalog.scene.objectId, 'behavior', draft.objectId], [draft.objectId, 'references', catalog.scene.objectId], [draft.objectId, 'references', draft.Source]]) {
+    if (preview) for (const [from, kind, to] of [[catalog.scene.objectId, 'behavior', draft.objectId], ...referenceIds(preview.request).map(targetId => [draft.objectId, 'references', targetId])]) {
       const item = document.createElement('li'); item.textContent = `${from} → ${kind} → ${to}`; el('Relations').append(item);
     }
     el('Status').textContent = t(message); el('Details').textContent = details;
@@ -104,11 +160,14 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
   }
   function request() {
     capture();
-    if (!catalog.documentTypes.some(item => item.id === draft.Type) || !catalog.scene.instances.some(item => item.instanceId === draft.Instance)
-      || !catalog.sources.some(item => item.objectId === draft.Source)) fail('请选择当前工程中的文档类型、实例和脚本。');
+    if (!catalog.documentTypes.some(item => item.id === draft.Type) || draft.bindings.some(binding => !catalog.scene.instances.some(item => item.instanceId === binding.instanceId)
+      || !catalog.sources.some(item => item.objectId === binding.sourceObjectId))) fail('请选择当前工程中的文档类型、实例和脚本。');
     if (!text(draft.Path, 1024) || !draft.Path.startsWith(catalog.documentRoot + '/') || !/\.json$/i.test(draft.Path) || getCreatePathError(draft.Path)) fail('请使用正文目录内可迁移的 JSON 文件路径。');
-    const content = JSON.stringify({ format: 'viento-scene-behaviors', schemaVersion: 1, sceneObjectId: catalog.scene.objectId, bindings: [{ bindingId: draft.bindingId,
-      instanceId: draft.Instance, implementation: { backendId: 'org.viento.godot4', language: 'gdscript', sourceObjectId: draft.Source }, parameters: {}, events: [] }] }, null, 2) + '\n';
+    const profile = behaviorProfiles.find(item => item.id === draft.Profile);
+    if (!profile) fail('请选择已支持的行为后端与脚本语言。');
+    const planned = createSceneBehaviorCreationDraft({ sceneObjectId: catalog.scene.objectId, backendId: profile.backendId, language: profile.language, bindings: draft.bindings });
+    if (!planned.ok) fail('行为绑定设置无效，请检查独立绑定身份，以及最多 32 条绑定和 8 份脚本的限制。');
+    const content = planned.content;
     return { command: 'behavior.create', mode: 'preview', worldId: catalog.worldId, baseRevision: catalog.baseRevision, actorRef: { kind: 'user', id: 'studio-behavior-create' },
       objectId: draft.objectId, documentType: draft.Type, sourcePath: draft.Path, content, sceneObjectId: catalog.scene.objectId,
       sceneObjectRevision: catalog.scene.objectRevision, sceneSourceRevision: catalog.scene.sourceRevision };
@@ -116,7 +175,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
   function validateResult(result, requested, sourceRevision) {
     const first = result?.changes?.[0], relation = result?.changes?.[1], reference = result?.object?.documentRefs?.[0];
     const input = { ...requested }; delete input.mode;
-    const expectedRelations = [requested.sceneObjectId, JSON.parse(requested.content).bindings[0].implementation.sourceObjectId].sort()
+    const expectedRelations = referenceIds(requested)
       .map(targetId => ({ kind: 'references', targetId, slot: '' }));
     if (result?.status !== (requested.mode === 'apply' ? 'applied' : 'preview') || result.worldId !== requested.worldId || result.baseRevision !== requested.baseRevision || !revision(result.revision)
       || !Array.isArray(result.changes) || result.changes.length !== 2 || first?.kind !== 'behavior.create' || first.objectId !== requested.objectId || first.sourcePath !== requested.sourcePath
@@ -142,8 +201,9 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
         const result = await inspect({ sceneObjectId: owner.sceneId }); if (!owns(generation)) return;
         const next = validateCatalog(result); catalog = next; preview = null; needsRefresh = false;
         if (!draft) {
-          draft = { objectId: crypto.randomUUID(), bindingId: crypto.randomUUID(), Type: next.documentTypes[0].id,
-            Path: `${next.documentRoot}/behaviors/new-behavior.json`, Instance: next.scene.instances[0].instanceId, Source: next.sources[0]?.objectId || '' };
+          draft = { objectId: crypto.randomUUID(), Profile: behaviorProfiles[0].id, Type: next.documentTypes[0].id,
+            Path: `${next.documentRoot}/behaviors/new-behavior.json`, bindings: [{ bindingId: crypto.randomUUID(), instanceId: next.scene.instances[0].instanceId, sourceObjectId: next.sources[0]?.objectId || '' }] };
+          selectedBindingId = draft.bindings[0].bindingId;
           renderFields(); baseline = signature();
         } else renderFields();
         message = uncertain ? '保存结果尚未确认，请核对工程中的行为文档与关系，勿重复创建。' : '选择实例和脚本后，审阅新文档与关联关系。';
@@ -195,7 +255,8 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     } catch (error) { if (generation === epoch && !disposed) { message = '行为已保存，但原文未打开。请返回编辑器按路径查找。'; details = error.message || ''; } }
     finally { if (generation === epoch && !disposed) { phase = ''; update(); } }
   }
-  for (const key of fields) for (const event of ['input', 'change']) el(key).addEventListener(event, () => { if (canChange()) { capture(); invalidate(); update(); } });
+  for (const key of fields) for (const event of ['input', 'change']) el(key).addEventListener(event, () => { if (canChange()) { capture(); renderBindingList(); invalidate(); update(); } });
+  el('BindingList').addEventListener('change', selectBinding); el('AddBinding').addEventListener('click', addBinding); el('RemoveBinding').addEventListener('click', removeBinding);
   el('Check').addEventListener('click', () => void run('preview')); el('Save').addEventListener('click', () => void run('apply'));
   el('Refresh').addEventListener('click', () => void read()); el('Open').addEventListener('click', () => void navigate());
   el('Close').addEventListener('click', close); el('Cancel').addEventListener('click', close);
@@ -207,7 +268,7 @@ export function setupSceneBehaviorCreate({ getContext = () => ({}), setBusy = ()
     open(sceneId) {
       if (dialog.open || !eligible() || getContext().sceneId !== sceneId) return false;
       epoch++; const context = getContext(); owner = { session: context.session, sceneId, sourceToken: context.sourceToken }; opener = document.activeElement;
-      catalog = null; draft = null; preview = null; saved = null; refreshed = false; uncertain = false; needsRefresh = false; dirty = false; baseline = ''; phase = ''; message = ''; details = '';
+      catalog = null; draft = null; selectedBindingId = ''; preview = null; saved = null; refreshed = false; uncertain = false; needsRefresh = false; dirty = false; baseline = ''; phase = ''; message = ''; details = '';
       dialog.showModal(); update(); void read(); return true;
     },
     setAvailable(value, commands = []) { enabled = value === true; supported = Array.isArray(commands) && commands.includes('behavior.create'); if (dialog.open) { if (!enabled || !supported) { preview = null; if (owner) owner.invalidated = true; } update(); } },

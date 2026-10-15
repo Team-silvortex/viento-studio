@@ -1,10 +1,26 @@
 # 可移植引擎
 
+**0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](../docs/RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；当前为 21 模块／38 项声明能力，本次未制作或更新安装包。
+
+源码基线 0.1.2 发布时为 20 模块／37 项声明能力；当前场景声音工作树为 21 模块／38 项声明能力。0.1.2 后的未发布工作树也增加首次行为多绑定清单与已有脚本引用管理，均复用现有作者格式、事务和执行协议；本轮未安装新包。历史段落的模块数与验证范围保留原时点。
+
+[场景声音](../docs/SCENE_AUDIO.md)使用独立 `viento-scene-audio` schema 1：共享 Rust `sceneAudio.inspect`／`sceneAudio.sample` 校验稳定音轨和 0–60 秒 play／stop 提示，只返回声明及显式时刻的命令状态。`scene-audio-core.mjs` 经可选 WASM 能力调用同一核心，没有 JavaScript 规则回退；规则不包含资源解码、自然结束、设备或播放。
+
+`scene-audio-edit.mjs` 严格解析原文、防重复键并调用 Rust 验证，只替换现有音轨 role／volume／loop 和提示 atSeconds／action 的叶 token。运行采样可排序提示，编辑始终保留作者原数组、未变字节、场景／资源／全部身份。品牌化提案与来源修订复核仅授予普通内存草稿应用；独立 `org.viento.scene-audio` 模块及来源端口不拥有保存、行为或后端执行权。
+
+`scene-audio.mjs` 沿场景唯一 `audio` 关系解析已登记声明，核对反向场景依赖和资源绑定，生成独立可选声音计划与源映射。它要求 `audio.nonspatial`／`audio.timeline`，不把 `music`／`effect` 当作混音总线；无关联时不改变旧计划。`scene-audio-events.mjs` 从冻结声明验证声音帧及诊断归属，与演员／行为事件读取器组合。PCM16 WAV 容器、真实哈希、资源复制、Godot 播放与 ZIP 交付分别留在宿主和适配器；Bevy 当前明确拒绝声音。细节与有限范围见[声音指南](../docs/SCENE_AUDIO.md)。
+
+Bevy Rust 工作树增量只在已有纯声明中使用 `org.viento.bevy-rust`／`rust`，已有创建、目录、绑定编辑、`relation.add` 和普通保存继续共用；不新增系统模块、作者格式或运行协议。具体 Cargo 生成、工具身份、离线编译和临时回收位于 `scripts/backends/bevy-rust-*`，不进入可移植编辑核心。固定步增量复用同一 TXT 草稿契约，只增加 `bevy-rust-motion` 起始内容；回调注册、自身实例位置提交、固定时间步和累计事件预算由 Rust 运行模板负责，不进入作者编辑器。范围与证据见[Bevy 指南](../docs/BEVY_BACKEND.md#rust-作者行为通道012-后工作树)、[首次通道记录](../docs/test-results/bevy-rust-behaviors/README.md)及[固定步记录](../docs/test-results/bevy-rust-fixed-step/README.md)。
+
+`scene-behavior-create-plan.mjs` 为首次行为清单提供纯声明规划：已分配身份、明确后端／语言、1–32 条实例／脚本绑定、最多 8 份去重源码，经既有行为格式检查输出完整原文与去重脚本 ID。它不访问 DOM、工程、文件或工具；只读目录和 `behavior.create` 事务维持独立边界。
+
+`scene-behavior-directory.mjs` 为[已有行为管理](../docs/SCENE_BEHAVIORS.md#管理已有行为)提供严格目录捕获、`references` 请求规划与既有 `relation.add` 回执校验；只消费身份、路径、修订和使用关系，不读取宿主、文件、DOM 或执行后端。Node 服务独立读取同一次 World 快照，沿唯一显式行为关系校验清单与依赖，提供至多 256 份、每份至多 64 KiB 的已登记 TXT。空目录与无效关系分别处理；事务仅追加登记引用，绑定修改经原草稿接口和普通保存继续。验证范围见[关联专题](../docs/test-results/scene-behavior-links/README.md)。
+
 `scene-composition-create.mjs` 为初始配方准备冻结草稿：编辑上下文与只读对象目录分别核对，稳定身份由调用者明确提供；现有 Rust 展开器校验完整声明。它不读取磁盘、不登记文档、不选择引擎，普通正文宿主继续拥有保存权威。
 
 `scene-composition-create-layout.mjs` 独立规划起始横排／竖排／网格，只接收稳定实例身份及数值坐标，返回冻结的位置清单。它拒绝整体越界，不读取对象外观或推断碰撞；视图负责显式应用与一次回退，完整配方仍经原创建核心和 Rust 校验。
 
-0.1.0 的独立 3D 作者接口分别覆盖变换、对象结构、环境、属性、整体移动、参照对齐、等距分布、批量复制和批量移除。九个可选 Rust 能力经可移植私有提案与文档来源守护接到独立界面；只更新原文草稿，普通保存保持持久权威。只读预览、数学与 GPU 适配不取得这些作者接口。0.1.0 发布时为 17 模块、33 项声明能力；之后的行为编辑、首次行为创建及独立脚本创建使当前工作树增至 19／36。交付与历史验证条件见[版本记录](../docs/RELEASE_0.1.0.md)。
+0.1.0 的独立 3D 作者接口分别覆盖变换、对象结构、环境、属性、整体移动、参照对齐、等距分布、批量复制和批量移除。九个可选 Rust 能力经可移植私有提案与文档来源守护接到独立界面；只更新原文草稿，普通保存保持持久权威。只读预览、数学与 GPU 适配不取得这些作者接口。0.1.0 发布时为 17 模块、33 项声明能力；之后的行为编辑、首次行为创建及独立脚本创建使当时工作树增至 19／36。交付与历史验证条件见[版本记录](../docs/RELEASE_0.1.0.md)。
 
 `studio-modules.mjs` 提供固定系统模块注册与增量需求规划：描述符、依赖、提供者和 API 版本确定性检查，不读取 DOM／文件／网络或执行引擎。模板的 `studioProfile` 只请求能力，普通文档继续可用；模块装配状态和宿主执行权限分开，见[系统边界](../docs/STUDIO_MODULES.md)。
 
@@ -55,9 +71,9 @@
 - `scene-model.mjs`：`resolveScene2DModel` 解析 Scene2D v1／v2／v3、投影有效值和依赖，返回对应版本的模型与文件／修订／字段范围；v2 以 `instanceId` 区分同一定义的多个实例，`objectId` 继续引用登记文档。登记恢复模式不重读投影语义，仅 v1 保留历史重复键／索引预算兼容。
 - `build-plan.mjs`：`scene2DModelToPlan` 将作者 v1 发射为 plan v1、作者 v2／v3 发射为 plan v2；旧 DTO 保持原样，v3 分组从运行计划剔除，`createScene2DPlan` 保留原入口，并在场景明确关联有效行为清单时组合 plan／runtime 3；没有行为时旧计划逐字段不变。几何来源附加信息不进入冻结计划，能力与 Godot 适配分离。冻结资源、构建与运行属于 Node 适配层，见 [二维场景构建](../docs/PROJECT_BUILD.md)。
 - `scene-behaviors.mjs`：识别并严格检查注册行为清单、场景实例、TXT 源码、标量参数与信号声明；解析明确 `behavior` 关系，派生并核验资源包依赖，生成可冻结的行为 DTO。无 Node／DOM／Godot 调用，不执行或解析 GDScript；静态预览继续只消费几何模型。当前格式与预算见[场景行为](../docs/SCENE_BEHAVIORS.md)。
-- `script-authoring.mjs`：`listScriptStarters()` 返回冻结的空 Node 与参数／信号示例；`prepareScriptDraft(context, request)` 接受 `{ sourceToken, documentRoot, documentTypes: [{ id, label }] }` 和 `{ starterId, documentType, sourcePath }`，仅允许正文目录内可迁移的 TXT 路径与当前工程类型。提案深冻结并带私有品牌；`isScriptDraftProposal`／`prepareScriptDraftApply(currentContext, proposal)` 拒绝克隆、序列化及会话／目录／类型目录变化，返回普通新建草稿所需数据。语言与后端标识不授予执行能力，不读取文件、创建 UUID、改项目模板或关联场景；普通保存负责登记，未来语言服务另经独立文档接口接入。见[内置脚本创建](../docs/SCENE_BEHAVIORS.md#内置脚本创建)。
+- `script-authoring.mjs`：`listScriptStarters()` 返回冻结的 Godot GDScript 与 Bevy Rust 空行为／参数信号示例；`prepareScriptDraft(context, request)` 接受 `{ sourceToken, documentRoot, documentTypes: [{ id, label }] }` 和 `{ starterId, documentType, sourcePath }`，仅允许正文目录内可迁移的 TXT 路径与当前工程类型。提案深冻结并带私有品牌；`isScriptDraftProposal`／`prepareScriptDraftApply(currentContext, proposal)` 拒绝克隆、序列化及会话／目录／类型目录变化，返回普通新建草稿所需数据。语言与后端标识不授予执行能力，不读取文件、创建 UUID、改项目模板或关联场景；普通保存负责登记，未来语言服务另经独立文档接口接入。见[内置脚本创建](../docs/SCENE_BEHAVIORS.md#内置脚本创建)。
 - `scene-behaviors-edit.mjs`：已有行为清单的私有审阅提案、稳定绑定身份及保真草稿补丁；复用无浏览器第三方依赖的 JSON 源码索引，固定场景／后端／语言，未知格式停止表单改写。依赖核对、编辑会话、普通保存与执行各属宿主接口，不新增 Rust ABI。
-- `world-behavior-create.mjs`：已保存 Scene2D v2／v3 首次启用行为的纯规划，复用严格声明、依赖和完整构建计划校验。调用者提供稳定文档／绑定 UUID，生成新正文、新登记和既有场景登记追加的三文件计划；冻结只读依赖证据供宿主恢复，原场景与脚本源码保持。核心不硬编码执行引擎；界面首入口限定 Godot／GDScript 单绑定，持久化和执行由各自宿主处理，通用 `relation.add` 不增加 `behavior` 权限。
+- `world-behavior-create.mjs`：已保存 Scene2D v2／v3 首次启用行为的纯规划，复用严格声明、依赖和完整构建计划校验。调用者提供稳定文档／绑定 UUID，生成新正文、新登记和既有场景登记追加的三文件计划；冻结只读依赖证据供宿主恢复，原场景与脚本源码保持。核心不硬编码执行引擎；首版界面限定 Godot／GDScript 单绑定，0.1.2 后工作树已扩展为多绑定／多脚本清单及显式 Godot／GDScript、Bevy／Rust 选项；持久化和执行由各自宿主处理，通用 `relation.add` 不增加 `behavior` 权限。
 
 - `backend-capabilities.mjs`：校验并分离冻结 `viento-execution-backend` schema 1 纯数据描述符；分别判断七种执行操作、平台、plan kind／schema 和功能需求。没有 Godot 回退、工具探测或进程调用；描述符格式／字段或操作不合法时拒绝，UI 的 `canExecuteBackend` 失败时返回 `false`。宿主注册表与具体引擎实现见[执行后端中间层](../docs/BACKEND_MIDDLEWARE.md)。
 - `scene-control-program.mjs`：分离并深冻结严格方向布尔程序；schema 1 保留全局输入，schema 2 每步按冻结 plan 2 实例 UUID 独立输入，未列实例释放，重复／未知目标拒绝且输入总行数至多 1024。核对 1–64 步、`0 < fixedDelta <= 0.25` 秒、总时长 8 秒、最后全释放及演员 × 步数 1024 联合预算；逐行准入协议 1／2 完整步骤样本与生命周期，回调按原顺序进入既有事件读取器和观察。没有 I/O、引擎句柄或移动模拟，见[有限控制回放](../docs/RUNTIME_CONTROL.md)。

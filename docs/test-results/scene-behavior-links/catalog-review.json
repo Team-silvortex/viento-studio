@@ -1,0 +1,30 @@
+{
+  "newFunction": "behavior.script_links",
+  "newImplementations": [
+    "i303",
+    "i304",
+    "i305"
+  ],
+  "newBindings": [
+    "b455",
+    "b456",
+    "b457",
+    "b458",
+    "b459",
+    "b460"
+  ],
+  "existingDescriptionOnlyChanges": [
+    "behavior.creation",
+    "behavior.multi_creation",
+    "behavior.scene_runtime",
+    "behavior.authoring",
+    "script.authoring"
+  ],
+  "oldCellsPreserved": 1812,
+  "why": "Separate the new reference-management workflow from existing behavior editing and execution; no old verification, delivery or platform score increases.",
+  "newWorkflow": "existing-scene-behavior-links",
+  "newDependencies": [
+    "world.query → behavior.script_links",
+    "world.relation-add → behavior.script_links"
+  ]
+}

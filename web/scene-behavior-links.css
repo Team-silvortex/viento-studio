@@ -1,0 +1,24 @@
+.scene-behavior-links-dialog { width:min(900px,calc(100vw - 24px)); max-width:900px; max-height:calc(100dvh - 24px); margin:auto; padding:0; box-sizing:border-box; overflow:hidden; border:1px solid #33536a; border-radius:16px; color:#d8e9f8; background:#101c2b; }
+.scene-behavior-links-dialog[open] { display:flex; flex-direction:column; }
+.scene-behavior-links-dialog [hidden] { display:none!important; }
+.scene-behavior-links-dialog::backdrop { background:rgba(2,8,18,.76); }
+.scene-behavior-links-header { display:flex; flex:none; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid #33536a; }
+.scene-behavior-links-header h2 { margin:0; font-size:1.25rem; }
+.scene-behavior-links-body { min-height:0; overflow:auto; overscroll-behavior:contain; padding:0 20px 14px; }
+.scene-behavior-links-body p,.scene-behavior-links-body li { overflow-wrap:anywhere; }
+.scene-behavior-links-body li { margin:8px 0; }
+.scene-behavior-links-note { color:#a1bbcf; font-size:.88rem; overflow-wrap:anywhere; }
+.scene-behavior-links-path { color:#bdd1e4; padding:10px; background:#0a1422; border-radius:6px; }
+.scene-behavior-links-feedback { flex:none; padding:0 20px; max-height:20dvh; overflow:auto; }
+.scene-behavior-links-feedback p { margin:6px 0; overflow-wrap:anywhere; }
+.scene-behavior-links-footer { flex:none; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; padding:12px 20px; border-top:1px solid #33536a; }
+.scene-behavior-links-dialog fieldset { margin:14px 0; padding:12px; min-width:0; border:1px solid #33536a; }
+.scene-behavior-links-dialog label { display:grid; gap:5px; min-width:0; }
+.scene-behavior-links-dialog select { width:100%; min-width:0; box-sizing:border-box; padding:8px; border:1px solid #33536a; border-radius:6px; color:inherit; background:#0a1422; font:inherit; text-overflow:ellipsis; }
+.scene-behavior-links-dialog .doc-btn { white-space:normal; overflow-wrap:anywhere; }
+@media(max-width:700px) {
+ .scene-behavior-links-header { padding:12px; } .scene-behavior-links-header h2 { font-size:1.05rem; }
+ .scene-behavior-links-body { padding:0 12px 12px; } .scene-behavior-links-feedback { padding:0 12px; }
+ .scene-behavior-links-footer { padding:10px 12px; justify-content:flex-start; } .scene-behavior-links-footer .doc-btn { flex:1 1 96px; }
+ .scene-behavior-links-body ul { padding-left:20px; }
+}
