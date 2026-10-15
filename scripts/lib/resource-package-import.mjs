@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
+import { projectAssemblyDocumentIds, validateProjectAssemblyDependencies } from '../../engine/project-assembly.mjs';
 import path from 'node:path';
 import { readWorkspace, readRegistry, resolveAssetRoot, walkFiles, assertPortableFileTree, portablePath } from './workspace.mjs';
 import { workspacePaths, projectDefinition, resolveDocumentDefinition, validateProjectTypes } from './project-layout.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
 import { readPackageBytes, packageDigest, inspectPackageComposition, inspectPackageSceneBehaviors, inspectPackageRuntimeCase,
-  inspectPackageRuntimeCaseSuite, packageDocumentClassification } from './resource-package-catalog.mjs';
+  inspectPackageRuntimeCaseSuite, inspectPackageProjectAssembly, packageDocumentClassification } from './resource-package-catalog.mjs';
 import { packageFileHash } from './resource-package-export.mjs';
 import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
 import { appendRecordItem, replaceRecordString } from '../../engine/world-record-edit.mjs';
@@ -127,7 +128,7 @@ export async function planPackageImport(root, pack, signal) {
     const urls = [...media.urls, ...collectAssetImageRefs(media.text, sourcePath).map(file => `/${file.split('/').map(encodeURIComponent).join('/')}`)];
     for (const url of urls) if (!assetUrls.has(mediaUrl(url))) conflict(sourcePath, 'dependency');
   };
-  const projectionSources = new Map(), projectionChecks = [], compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], dependencySources = new Map();
+  const projectionSources = new Map(), projectionChecks = [], compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], assemblyChecks = [], dependencySources = new Map();
   const mappedById = new Map(mappedDocuments.map(record => [record.id, record]));
   for (const item of pack.manifest.documents) {
     const bytes = await readPackageBytes(pack.content, item.sourcePath, signal), record = mappedById.get(item.id);
@@ -137,6 +138,7 @@ export async function planPackageImport(root, pack, signal) {
     const behavior = inspectPackageSceneBehaviors(bytes, item.sourcePath);
     const runtimeCase = inspectPackageRuntimeCase(bytes, item.sourcePath);
     const suite = inspectPackageRuntimeCaseSuite(bytes, item.sourcePath);
+    const assembly = inspectPackageProjectAssembly(bytes, item.sourcePath);
     // Keep a classification, not every incoming source body. The dependency
     // validators need only availability and projection/composition identity;
     // the archive already pins the actual bytes separately.
@@ -146,6 +148,7 @@ export async function planPackageImport(root, pack, signal) {
     if (behavior.recognized) behaviorChecks.push({ record, checked: behavior });
     if (runtimeCase.recognized) caseChecks.push({ record, checked: runtimeCase });
     if (suite.recognized) suiteChecks.push({ record, checked: suite });
+    if (assembly.recognized) assemblyChecks.push({ record, checked: assembly });
   }
   for (const { record, checked } of compositionChecks) {
     // Repeat source-derived declaration checks even when a caller supplies an
@@ -334,6 +337,31 @@ export async function planPackageImport(root, pack, signal) {
     if (validateRuntimeCaseSuiteDependencies(checked.value, record, { documents: [...suiteSources.values()] }).length) {
       conflict(record.sourcePath, 'dependency');
     }
+  }
+  const assemblySources = new Map();
+  for (const { record, checked } of assemblyChecks) {
+    if (!checked.ok || projectAssemblyDocumentIds(checked.value).some(id => !declaredDocuments.has(id))) {
+      conflict(record.sourcePath, 'dependency'); continue;
+    }
+    for (const id of projectAssemblyDocumentIds(checked.value)) {
+      if (assemblySources.has(id)) continue;
+      const incoming = pack.manifest.documents.find(item => item.id === id), requirement = requiredById.get(id);
+      const member = incoming ? mappedById.get(id) : registry.documents.find(item => item.id === id);
+      if (!member || !incoming && requirement?.category !== 'document') continue;
+      let content = null;
+      try {
+        const bytes = incoming ? await readPackageBytes(pack.content, incoming.sourcePath, signal)
+          : await readPackageBytes(root, member.sourcePath, signal);
+        if (!incoming) {
+          const fingerprint = { size: bytes.length, sha256: packageDigest(bytes) };
+          if (canonicalJson(fingerprint) !== canonicalJson(requirement.content)) conflict(record.sourcePath, 'dependency');
+          dependencySources.set(id, { id, store: 'project', path: member.sourcePath, content: fingerprint });
+        }
+        content = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
+      } catch (error) { signal?.throwIfAborted(); if (error.code !== 'ENOENT' && !(error instanceof TypeError)) throw error; }
+      assemblySources.set(id, { record: member, sourcePath: member.sourcePath, content });
+    }
+    if (validateProjectAssemblyDependencies(checked.value, record, { documents: [...assemblySources.values()] }).length) conflict(record.sourcePath, 'dependency');
   }
   for (const type of pack.manifest.types) if (type.template) {
     const file = `${pack.manifest.source.paths.templates}/${type.template}`;

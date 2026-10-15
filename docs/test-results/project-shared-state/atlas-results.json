@@ -1,0 +1,75 @@
+{
+  "ok": true,
+  "date": "2026-10-15T11:48:17.401741+00:00",
+  "write": {
+    "ok": true,
+    "mode": "write",
+    "architectures": 11,
+    "functions": 125,
+    "implementations": 342,
+    "bindings": 518,
+    "cells": 2072,
+    "dependencyEdges": 329,
+    "workflows": 88,
+    "historicalChains": 50,
+    "referencedFiles": 1838
+  },
+  "check": {
+    "ok": true,
+    "mode": "check",
+    "architectures": 11,
+    "functions": 125,
+    "implementations": 342,
+    "bindings": 518,
+    "cells": 2072,
+    "dependencyEdges": 329,
+    "workflows": 88,
+    "historicalChains": 50,
+    "referencedFiles": 1838
+  },
+  "toolTests": {
+    "total": 28,
+    "passed": 28,
+    "failed": 0,
+    "skipped": 0,
+    "log": "atlas-tests.log",
+    "cliRegressions": 15,
+    "viewRegressions": 13,
+    "command": [
+      "node",
+      "--test",
+      "scripts/tests/function-atlas.test.mjs",
+      "scripts/tests/function-atlas-view.test.mjs"
+    ]
+  },
+  "preservation": {
+    "baseline": "/tmp/viento-project-shared-state-check/atlas.json",
+    "oldCells": 2044,
+    "addedCells": 28,
+    "totalCells": 2072,
+    "completeOldCellObjectsUnchanged": true,
+    "checkedBothOrderAndCoordinates": true,
+    "oldCellObjectsSha256": "a4b940c835f052373f2a6d77af380d8bd3f45c123def73ed3db0b020b08c1b35",
+    "hashEncoding": "UTF-8 sorted-key compact JSON"
+  },
+  "newFunction": "runtime.project_shared_state",
+  "newScores": {
+    "implementation": 4,
+    "verification": 3,
+    "decoupling": 3,
+    "delivery": 2
+  },
+  "sourceSnapshot": {
+    "files": 1838,
+    "sha256": "9d99b64a3b7a455dac4d787bf464dfa191b906c9c57c3f4d5549abf0f024fa3b",
+    "hashEncoding": "UTF-8 sorted-key compact JSON",
+    "storedIn": "docs/function-atlas.json#sourceSnapshot"
+  },
+  "artifactsSha256": {
+    "docs/function-atlas.json": "01f65ca23103f378ef115c99c5876aae484bb6587eef05ef482c8a45ccd2697a",
+    "docs/FUNCTION_ATLAS.md": "1110ed0394cc0e2eec72f171d054883d74ed0f7f1b3b0ab79567110d8ac2fd08",
+    "docs/function-atlas.html": "7c83a02a24fda00f079e4b2e0c7ac7727fb7ddbbb33a1dbd3541c9a75ad9591b",
+    "docs/function-atlas.mmd": "36eb8c3a42e9ca51e9b450bb146ea5c8ce2303c387b87fb27ae154e9c56f4511"
+  },
+  "boundary": "Only the 28 new project session shared-state cells receive this round's evidence. All 2044 existing cell objects retain every field, value and reason. The 15 CLI regressions and 13 atlas-view regressions are reported separately within the 28-test run; no installation, device or exact source-range maturity is inferred."
+}

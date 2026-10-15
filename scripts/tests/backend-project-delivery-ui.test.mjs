@@ -117,3 +117,9 @@ test('delivery host diagnostics translate after failure without retrying the ope
   h.language(en);assert.match(h.el('Error').textContent,english);h.language(ja);assert.match(h.el('Error').textContent,japanese);assert.equal(h.prepares.length,1);h.controller.dispose();
  }
 });
+
+test('assembly delivery checks its assembly identity rather than treating the entry scene as the selected target',async()=>{
+ const p=clone(project()),assemblyId=id(80);p.schemaVersion=2;p.source={workspaceId:'world-one',assemblyId,sourcePath:'documents/projects/game.json',sourceRevision:revision,planKind:'project',planSchemaVersion:1,entrySceneId:sceneId,scenes:[{sceneId,sourcePath:'documents/scenes/scene.json',sourceRevision:revision}]};p.dependencies.unshift({objectId:assemblyId,sourcePath:p.source.sourcePath,sourceRevision:revision,role:'assembly'});
+ const h=await view({context:{sceneId:assemblyId}}),r={...receipt(),project:validateBackendProjectManifest(p)};
+ assert.equal(h.open(r,{...owner(),sceneId:assemblyId}),true);assert.match(h.el('Facts').textContent,new RegExp(assemblyId));assert.match(h.el('Facts').textContent,/来源组装标识/);assert.equal(h.prepares.length,0);h.controller.close();assert.equal(h.open(r,owner()),false);
+});

@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-15",
+  "ok": true,
+  "checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+        "scripts/function-atlas.mjs",
+        "--check"
+      ],
+      "exitCode": 0,
+      "output": "{\n  \"ok\": true,\n  \"mode\": \"check\",\n  \"architectures\": 11,\n  \"functions\": 123,\n  \"implementations\": 331,\n  \"bindings\": 505,\n  \"cells\": 2020,\n  \"dependencyEdges\": 315,\n  \"workflows\": 86,\n  \"historicalChains\": 50,\n  \"referencedFiles\": 1787\n}\n"
+    }
+  ],
+  "finalBrowserSourceHashes": {
+    "files": 81,
+    "changed": []
+  },
+  "historicalBaseline": {
+    "files": 7135,
+    "changed": []
+  },
+  "independentReadOnlyReview": {
+    "confirmedDefects": 0,
+    "scope": [
+      "Declaration, nested project plan and target dispatch",
+      "All-member frozen snapshot and offline reconstruction",
+      "Resource package member and transitive dependency closure",
+      "Host execution and CLI integration"
+    ],
+    "limitations": "Source review with existing targeted tests; no additional concurrency stress tests or new platform validation."
+  },
+  "applicationVersion": "0.1.3",
+  "committed": false,
+  "pushed": false,
+  "installed": false
+}

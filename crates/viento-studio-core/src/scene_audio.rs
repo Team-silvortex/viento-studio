@@ -10,7 +10,7 @@ use serde_json::{json, Value};
 use std::{collections::HashSet, fmt};
 
 fn invalid() -> CoreError {
-    CoreError { error_code: "scene_audio_invalid", message: "Expected a complete scene audio manifest with 1–16 tracks, 1–64 cues, and times from zero to 60 seconds." }
+    CoreError { error_code: "scene_audio_invalid", message: "Expected a complete scene audio manifest with 1–16 tracks, 0–64 cues, and times from zero to 60 seconds." }
 }
 
 // Inspect raw bytes recursively before serde_json::Value can erase duplicate
@@ -104,7 +104,7 @@ fn document(value: &Value) -> Result<Value, CoreError> {
     uuid(&value["sceneObjectId"])?;
     let tracks = value["tracks"].as_array().ok_or_else(invalid)?;
     let cues = value["cues"].as_array().ok_or_else(invalid)?;
-    if !(1..=16).contains(&tracks.len()) || !(1..=64).contains(&cues.len()) {
+    if !(1..=16).contains(&tracks.len()) || cues.len() > 64 {
         return Err(invalid());
     }
     let mut track_ids = HashSet::new();
@@ -239,6 +239,19 @@ mod tests {
         assert_eq!(result["diagnostics"], json!([]));
     }
     #[test]
+    fn tracks_without_timeline_cues_remain_unstarted() {
+        let mut source = doc();
+        source["cues"] = json!([]);
+        assert_eq!(run(source.clone(), None)["document"], source);
+        for seconds in [0.0, 0.25, 60.0] {
+            let sample = run(source.clone(), Some(seconds));
+            assert_eq!(sample["commands"], json!([]));
+            assert_eq!(sample["states"][0]["status"], "stopped");
+            assert_eq!(sample["states"][0]["startedAtSeconds"], Value::Null);
+            assert_eq!(sample["states"][0]["lastCueId"], Value::Null);
+        }
+    }
+    #[test]
     fn stable_cues_and_restarts_and_idempotent_stop() {
         let mut d = doc();
         d["cues"] = json!([
@@ -342,7 +355,7 @@ mod tests {
         for name in ["tracks", "cues"] {
             let mut d = doc();
             d[name] = json!([]);
-            assert!(dispatch(&request(d, None)).is_err());
+            assert_eq!(dispatch(&request(d, None)).is_err(), name == "tracks");
             let mut d = doc();
             let item = d[name][0].clone();
             d[name].as_array_mut().unwrap().push(item);

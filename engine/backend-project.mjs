@@ -1,6 +1,6 @@
 // Portable descriptions only. A manifest grants no filesystem, cleanup, tool,
 // or executable authority; the host must bind its own ownership receipt.
-export const BACKEND_PROJECT_SCHEMA_VERSION = 1;
+export const BACKEND_PROJECT_SCHEMA_VERSION = 2;
 export const BACKEND_PROJECT_MANIFEST_MAX_BYTES = 4 * 1024 * 1024;
 const ROOT_KEYS = ['format', 'schemaVersion', 'buildId', 'snapshotId', 'source', 'backend', 'executionAdapter', 'tool', 'project', 'files', 'resources', 'dependencies', 'evidence', 'lifecycle'];
 const LIFECYCLE = Object.freeze({ authority: 'author-workspace', generatedProject: 'derived-read-only', resources: 'copies',
@@ -65,11 +65,26 @@ function ordered(items, field) {
 
 export function validateBackendProjectManifest(input) {
   const value = detach(input); exact(value, ROOT_KEYS);
-  if (value.format !== 'viento-backend-project' || value.schemaVersion !== BACKEND_PROJECT_SCHEMA_VERSION || !uuid(value.buildId) || !revision(value.snapshotId)) throw invalid();
-  exact(value.source, ['workspaceId', 'sceneId', 'sourcePath', 'sourceRevision', 'planKind', 'planSchemaVersion']);
+  if (value.format !== 'viento-backend-project' || ![1, BACKEND_PROJECT_SCHEMA_VERSION].includes(value.schemaVersion) || !uuid(value.buildId) || !revision(value.snapshotId)) throw invalid();
+  const assembly = value.schemaVersion === 2;
+  exact(value.source, assembly
+    ? ['workspaceId', 'assemblyId', 'sourcePath', 'sourceRevision', 'planKind', 'planSchemaVersion', 'entrySceneId', 'scenes']
+    : ['workspaceId', 'sceneId', 'sourcePath', 'sourceRevision', 'planKind', 'planSchemaVersion']);
   const source = value.source;
-  if (!text(source.workspaceId, 192) || !uuid(source.sceneId) || !sourcePath(source.sourcePath) || !revision(source.sourceRevision)
+  if (!text(source.workspaceId, 192) || !uuid(assembly ? source.assemblyId : source.sceneId) || !sourcePath(source.sourcePath) || !revision(source.sourceRevision)
     || !token(source.planKind) || !Number.isInteger(source.planSchemaVersion) || source.planSchemaVersion < 1 || source.planSchemaVersion > 65535) throw invalid();
+  if (assembly) {
+    if (source.planKind !== 'project' || source.planSchemaVersion !== 1 || !uuid(source.entrySceneId)
+      || !Array.isArray(source.scenes) || !source.scenes.length || source.scenes.length > 32) throw invalid();
+    const ids = new Set(), paths = new Set();
+    for (const scene of source.scenes) {
+      exact(scene, ['sceneId', 'sourcePath', 'sourceRevision']);
+      if (!uuid(scene.sceneId) || scene.sceneId === source.assemblyId || ids.has(scene.sceneId) || !sourcePath(scene.sourcePath)
+        || scene.sourcePath === source.sourcePath || paths.has(scene.sourcePath) || !revision(scene.sourceRevision)) throw invalid();
+      ids.add(scene.sceneId); paths.add(scene.sourcePath);
+    }
+    if (!ids.has(source.entrySceneId)) throw invalid();
+  } else if (source.planKind === 'project') throw invalid();
   exact(value.backend, ['id', 'version', 'protocolVersion', 'sha256']);
   const backend = value.backend;
   if (!namespace(backend.id) || typeof backend.version !== 'string' || backend.version.length > 32 || !/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/.test(backend.version)
@@ -117,13 +132,18 @@ export function validateBackendProjectManifest(input) {
   for (const dependency of value.dependencies) {
     exact(dependency, ['objectId', 'sourcePath', 'sourceRevision', 'role']);
     if (dependency.objectId !== null && (!uuid(dependency.objectId) || objects.has(dependency.objectId)) || !sourcePath(dependency.sourcePath)
-      || dependency.sourceRevision !== null && !revision(dependency.sourceRevision) || !['scene', 'behavior-source', 'author-document'].includes(dependency.role)) throw invalid();
+      || dependency.sourceRevision !== null && !revision(dependency.sourceRevision) || !(assembly ? ['assembly', 'scene', 'behavior-source', 'author-document'] : ['scene', 'behavior-source', 'author-document']).includes(dependency.role)) throw invalid();
     if (dependency.objectId) objects.add(dependency.objectId);
   }
   ordered(value.dependencies, 'sourcePath');
   const scenes = value.dependencies.filter(item => item.role === 'scene');
-  if (scenes.length !== 1 || scenes[0].objectId !== source.sceneId || scenes[0].sourcePath !== source.sourcePath || scenes[0].sourceRevision !== source.sourceRevision
-    || value.files.some(file => file.role === 'author-source-copy' && !value.dependencies.some(item => item.objectId === file.sourceObjectId && item.role === 'behavior-source' && item.sourceRevision !== null))) throw invalid();
+  if (assembly) {
+    const targets = value.dependencies.filter(item => item.role === 'assembly');
+    if (targets.length !== 1 || targets[0].objectId !== source.assemblyId || targets[0].sourcePath !== source.sourcePath || targets[0].sourceRevision !== source.sourceRevision
+      || scenes.length !== source.scenes.length || source.scenes.some(scene => !scenes.some(item => item.objectId === scene.sceneId
+        && item.sourcePath === scene.sourcePath && item.sourceRevision === scene.sourceRevision))) throw invalid();
+  } else if (scenes.length !== 1 || scenes[0].objectId !== source.sceneId || scenes[0].sourcePath !== source.sourcePath || scenes[0].sourceRevision !== source.sourceRevision) throw invalid();
+  if (value.files.some(file => file.role === 'author-source-copy' && !value.dependencies.some(item => item.objectId === file.sourceObjectId && item.role === 'behavior-source' && item.sourceRevision !== null))) throw invalid();
   if (!Array.isArray(value.evidence) || value.evidence.length !== 3) throw invalid();
   const evidencePaths = ['build.json', 'snapshot.json', 'source-map.json'];
   for (const [index, evidence] of value.evidence.entries()) {
@@ -140,8 +160,17 @@ export function validateBackendProjectManifest(input) {
 
 export function summarizeBackendProject(input) {
   const value = validateBackendProjectManifest(input);
-  return Object.freeze({ buildId: value.buildId, snapshotId: value.snapshotId, backendId: value.backend.id, sceneId: value.source.sceneId,
+  return Object.freeze({ buildId: value.buildId, snapshotId: value.snapshotId, backendId: value.backend.id, ...(value.schemaVersion === 1 ? { sceneId: value.source.sceneId }
+      : { assemblyId: value.source.assemblyId, entrySceneId: value.source.entrySceneId, sceneCount: value.source.scenes.length }),
     sourcePath: value.source.sourcePath, kind: value.project.kind, entry: value.project.entry,
     fileCount: value.files.length, resourceCount: value.resources.length, dependencyCount: value.dependencies.length,
     totalBytes: value.files.reduce((sum, file) => sum + file.size, 0) });
+}
+
+/** Uniform author identity without presenting an assembly as a scene. */
+export function backendProjectSourceIdentity(input) {
+  const { source, schemaVersion } = validateBackendProjectManifest(input);
+  return Object.freeze({ objectId: schemaVersion === 2 ? source.assemblyId : source.sceneId,
+    sourcePath: source.sourcePath, sourceRevision: source.sourceRevision, planKind: source.planKind, planSchemaVersion: source.planSchemaVersion,
+    entrySceneId: schemaVersion === 2 ? source.entrySceneId : source.sceneId, sceneCount: schemaVersion === 2 ? source.scenes.length : 1 });
 }

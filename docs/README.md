@@ -6,7 +6,7 @@
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.3 版本记录](RELEASE_0.1.3.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.4 版本记录](RELEASE_0.1.4.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -19,6 +19,10 @@
 | 使用图片、视频与音频，切换界面语言 | [图片／视频／音频](MEDIA_RESOURCES.md)、[三语设置](LANGUAGES.md) |
 | 分享文档、备份工程或保存单个素材 | [导出](EXPORT.md) |
 | 选择对象和资源，在工程之间复用 | [资源包](RESOURCE_PACKAGES.md) |
+| 多场景项目、启动入口、运行中切换与工程交付 | [项目组装](PROJECT_ASSEMBLY.md) |
+| 跨场景保留计数／标记，查看变更与行为来源 | [项目共享状态](PROJECT_SHARED_STATE.md) |
+| 行为间发布／订阅通知，查看处理顺序与双方来源 | [项目事件](PROJECT_EVENTS.md) |
+| [行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md) | 当前场景音轨的行为播放／停止、独立回执与双来源、工程交付 |
 | 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
 | 查看当前任务的问题、筛选诊断并返回原文修复 | [任务问题列表](PROJECT_BUILD.md#当前任务问题列表) |
 | 多实例挂载 GDScript／Rust、管理脚本引用、参数／信号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
@@ -94,4 +98,4 @@
 
 片段定义管理见[新增、复制、重命名与未引用删除](SCENE_COMPOSITION.md#管理片段定义)。先维护共享声明，再通过独立演员、组织组和放置入口完成场景；普通保存继续保留作者原文。
 
-新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.1.3 版本记录](RELEASE_0.1.3.md)。
+新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.1.4 版本记录](RELEASE_0.1.4.md)。

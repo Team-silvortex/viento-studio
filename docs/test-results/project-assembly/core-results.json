@@ -1,0 +1,62 @@
+{
+  "scope": "Portable assembly declarations, nested plans, fenced snapshots, resource package closure and module registration; no installation claim.",
+  "date": "2026-10-15",
+  "checks": [
+    {
+      "files": [
+        "project-assembly.test.mjs",
+        "project-assembly-snapshot.test.mjs",
+        "project-assembly-packages.test.mjs",
+        "backend-capabilities.test.mjs"
+      ],
+      "tests": 33,
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "files": [
+        "scene-model.test.mjs",
+        "project-build.test.mjs",
+        "scene-audio.test.mjs",
+        "resource-packages.test.mjs"
+      ],
+      "tests": 61,
+      "passed": 59,
+      "failed": 0,
+      "skipped": 2,
+      "skipReasons": [
+        "Real Godot integration requires VIENTO_GODOT_BIN.",
+        "Native resource package migration tool not supplied."
+      ]
+    },
+    {
+      "files": [
+        "studio-modules.test.mjs",
+        "scene3d-translation-system-ports.test.mjs",
+        "scene3d-removal-system-ports.test.mjs",
+        "scene3d-property-system-ports.test.mjs",
+        "scene3d-alignment-system-ports.test.mjs",
+        "scene3d-copy-system-ports.test.mjs",
+        "scene3d-distribution-system-ports.test.mjs",
+        "scene3d-environment-system-ports.test.mjs"
+      ],
+      "tests": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "preserved": [
+    "Single-scene v1 golden plan, snapshot and Godot file hashes.",
+    "Single-scene preview path and independent draft behavior.",
+    "Existing scene audio source and resource semantics.",
+    "Assembly members derived from author sceneIds without duplicate membership metadata."
+  ],
+  "limits": {
+    "assemblyScenes": 32,
+    "distinctResources": 128,
+    "resourceBytes": 134217728,
+    "assemblySourceBytes": 32768
+  }
+}

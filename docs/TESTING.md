@@ -1,5 +1,33 @@
 # 验证指南
 
+本轮[行为声音验收](test-results/project-audio-controls/README.md)分别验证 Rust 空提示、原生／WASM 一致性、项目协议 4、Godot 队列与实际混音、只读三语观察，以及 Chrome 到工程 ZIP 异地启动。工具条件跳过不计作真实后端通过。
+
+```sh
+node --test scripts/tests/project-audio-commands.test.mjs scripts/tests/project-audio-runtime.test.mjs scripts/tests/project-runtime-browser.test.mjs
+node --test scripts/tests/project-audio-observation-ui.test.mjs scripts/tests/project-audio-observation-build-ui.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node --test scripts/tests/project-audio-control-godot.test.mjs scripts/tests/project-audio-control-workflow.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/project-audio-control-smoke.mjs
+```
+
+新增[项目事件验收](test-results/project-events/README.md)：纯账本与协议 3、真实同步回调与 FIFO／注销、独立三语观察、宿主重置／冻结恢复及工程 ZIP 异地运行分别验证。
+
+```sh
+node --test scripts/tests/project-event-bus.test.mjs scripts/tests/project-events-runtime.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node --test scripts/tests/project-events-godot.test.mjs scripts/tests/project-events-workflow.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/project-events-smoke.mjs
+node scripts/check-project.mjs --app-only
+```
+
+新增[项目共享状态验收](test-results/project-shared-state/README.md)：纯协议与标量预算、真实 Godot 端口撤销／重置、宿主冻结协议、独立三语只读面板，以及 Chrome 到工程 ZIP 异地启动分别验证。实际引擎需显式设置 `VIENTO_GODOT_BIN`；全应用默认跳过这些工具条件测试，不能把跳过计作实际引擎通过。
+
+```sh
+node --test scripts/tests/project-shared-state.test.mjs scripts/tests/project-shared-state-runtime.test.mjs scripts/tests/project-runtime-browser.test.mjs
+node --test scripts/tests/project-state-observation-ui.test.mjs scripts/tests/project-state-observation-build-ui.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node --test scripts/tests/project-shared-state-godot.test.mjs scripts/tests/project-shared-state-workflow.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/project-shared-state-smoke.mjs
+node scripts/check-project.mjs --app-only
+```
+
 **0.1.3 源码交付**收录下列五项 0.1.2 工作树开发专题。[本版发布预检](test-results/release-0.1.3/preflight.json)记录版本／源码归档回归 **8／8**、**814** 个应用 JS 及 **2** 个桌面脚本语法／API 检查、真实 `target` 缓存排除探针，以及 **37 项准备字节比对／7 项复制模块调用**。本次不重跑功能全量；专题日志、截图、计数和来源指纹保持原样，不把开发验收重标为新版功能重跑。交付边界见[版本记录](RELEASE_0.1.3.md)。
 
 新增[场景声音验收](test-results/scene-audio/README.md)：严格 Rust／WASM／原生规则、保真字段编辑、冻结 PCM16 WAV、来源诊断、独立协议和工程迁移。完整应用 **4920 项（4807 通过／113 条件跳过／0 失败）**、**814 个 JS**；共享 Rust **334／334**，真实 Godot 声音 **11／11**，Chrome **4 组／10 图**，准备资源 **37 项比对／7 项调用**。真实引擎另验混音 PCM、零音量、循环、停止及双精度时间边界；浏览器完成取消、保存、三语与 ZIP 异地重建。条件跳过和各层证据分别记录，专项与全量不累加；不代表物理扬声器、新安装或 Android 声音验收。
@@ -863,3 +891,39 @@ VIENTO_COMPOSITION_STRUCTURE_OUTPUT=/empty/evidence/path node scripts/tests/scen
 ```
 
 真实浏览器脚本创建临时作品，检查固定两放置身份、投影／图片／组来源、取消／原始输入失效、普通保存与重开、移除覆盖和未放置片段、图片不可用及外部保存冲突，并保留中英日 390px 截图。未放置片段检查声明和登记依赖，没有渲染实例，不扩大为所有投影有效默认值验收。对应准备副本验证纯 helper 与实际 WASM，无 Node／DOM／网络全局；这是标准 VM 可移植性验证，不是恶意代码安全沙箱，也不代表 Android 设备编辑或新版安装窗口。新证据位于 [结构创作专题](test-results/scene-composition-structure/results.json)，旧证据和评分按原条件保留。
+
+## 首次场景声音创建（0.1.3 后工作树）
+
+[独立验收记录](test-results/scene-audio-creation/README.md)覆盖纯规划／目录契约、真实 Node 创建事务、独立窗口与桌面退出保护。音频样例复制到临时工程后移除原声音关联，再创建 1–16 轨的声音文档；测试不改原示例。
+
+```sh
+node --test scripts/tests/scene-audio-create-plan.test.mjs scripts/tests/scene-audio-creation-contract.test.mjs scripts/tests/world-audio-create-pure.test.mjs scripts/tests/world-audio-create-service.test.mjs scripts/tests/world-audio-create-transaction.test.mjs scripts/tests/scene-audio-creation-service.test.mjs scripts/tests/scene-audio-create-ui.test.mjs scripts/tests/scene-audio-create-system-ports.test.mjs scripts/tests/desktop-close.test.mjs
+VIENTO_GODOT_BIN=/可信绝对路径/Godot node scripts/tests/scene-audio-create-smoke.mjs
+```
+
+先检查下列宿主边界：同尺寸 WAV 替换与素材库切换必须在发布前拒绝；同场景并发首次创建只成功一份；进程在发布各阶段被强制结束后，可依据冻结证据恢复三个目标文件，素材离线或后来被作者修改也不得被覆盖。已有登记的额外合法信息、换行和数字原始字节要保留。锁忙等明确拒绝应保留表单供重审；响应未知只能重新读取核对，不能自动重复提交。
+
+真实 Chrome 检查新增双轨、完整审阅、取消、中英日 390px、三文件保存、回到既有字段编辑器、Godot 无头事件与下载 ZIP 异地导入运行。浏览器记录每次写入的作者文件路径和执行源码摘要；每次使用新的 `docs/test-results/scene-audio-creation/browser-*` 目录。该流程不覆盖实际扬声器、已安装 Tauri 窗口或 Android 设备；移动副本有界面和纯规则文件并不代表移动宿主获得 `audio.create`。
+
+## 项目组装工作树验证
+
+本轮声明／联合计划、单次冻结、资源包闭包、作者保存／冲突、独立界面、目标分派、工程清单 v2／目录兼容和真实 Godot 交付分别验收。
+
+```sh
+node --test scripts/tests/project-assembly*.test.mjs scripts/tests/godot4-project.test.mjs
+VIENTO_GODOT_BIN=/absolute/Godot node scripts/tests/project-assembly-smoke.mjs
+node scripts/check-project.mjs --app-only
+```
+
+真实浏览器只修改示例的临时副本；保留三语与390px、审阅／取消、组装保存、两个不同计划版本、共享资源去重、入口运行和工程ZIP异地导入证据。Godot环境测试检查非入口行为错误及声音／行为成员；未配置工具时会明确跳过。最终结果与边界见[组装验收](test-results/project-assembly/README.md)，源码验收不替代Tauri安装或Android设备验收。
+
+## 项目内场景切换验证
+
+```sh
+node --test scripts/tests/project-runtime*.test.mjs scripts/tests/project-scene-switching-ui.test.mjs
+VIENTO_GODOT_BIN=/absolute/Godot node --test scripts/tests/project-scene-switching-workflow.test.mjs
+VIENTO_GODOT_BIN=/absolute/Godot node scripts/tests/project-scene-switching-smoke.mjs
+node scripts/check-project.mjs --app-only
+```
+
+分别验证独立项目协议、每次访问的对象归属、迟到来源导航、真实 A→B→A、声音退出与工程 ZIP 异地运行。旧组装记录保持原结果，本轮另存[场景切换证据](test-results/project-scene-switching/README.md)。窗口预览与 Android／Tauri 安装验收分别标注。

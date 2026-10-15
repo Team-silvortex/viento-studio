@@ -77,6 +77,14 @@ test('plan schemas and runtime protocol schemas are explicit separate declaratio
   reject({ ...descriptor(), plans: [value.plans[0], { ...value.plans[0], runtimeProtocolVersion: 1 }] });
 });
 
+test('project plans admit explicit runtime protocols one through four without changing author schema', () => {
+  for (const runtimeProtocolVersion of [1, 2, 3, 4]) {
+    const value = { ...descriptor(), plans: [{ kind: 'project', schemaVersion: 1, runtimeProtocolVersion }] };
+    assert.equal(validateExecutionBackendDescriptor(value).plans[0].runtimeProtocolVersion, runtimeProtocolVersion);
+  }
+  for (const runtimeProtocolVersion of [0, 5, '2']) reject({ ...descriptor(), plans: [{ kind: 'project', schemaVersion: 1, runtimeProtocolVersion }] });
+});
+
 test('execution operations require seven explicit booleans without support inference', () => {
   for (const operation of operations) {
     const missing = descriptor(); delete missing.execution[operation]; reject(missing);

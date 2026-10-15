@@ -109,7 +109,8 @@ export function validateExecutionBackendDescriptor(input) {
   const plans = new Set();
   for (const plan of value.plans) {
     exact(plan, ['kind', 'schemaVersion', 'runtimeProtocolVersion']);
-    if (plan.kind !== 'scene2d' || ![1, 2, 3].includes(plan.schemaVersion) || ![1, 2, 3].includes(plan.runtimeProtocolVersion)) throw invalid();
+    if (!(plan.kind === 'scene2d' && [1, 2, 3].includes(plan.schemaVersion) && [1, 2, 3].includes(plan.runtimeProtocolVersion)
+      || plan.kind === 'project' && plan.schemaVersion === 1 && [1, 2, 3, 4].includes(plan.runtimeProtocolVersion))) throw invalid();
     const key = `${plan.kind}:${plan.schemaVersion}`;
     if (plans.has(key)) throw invalid();
     plans.add(key);
@@ -129,7 +130,9 @@ export function validateExecutionBackendDescriptor(input) {
 }
 
 function supportRequest(input) {
-  const value = detachData(input);
+  const suppliedPlan = input && typeof input === 'object' && Object.getOwnPropertyDescriptor(input, 'plan')?.value;
+  const project = suppliedPlan && typeof suppliedPlan === 'object' && Object.getOwnPropertyDescriptor(suppliedPlan, 'kind')?.value === 'project';
+  const value = detachData(input, project ? { maxNodes: 1000000, maxChars: 64 * 1024 * 1024 } : undefined);
   if (!plain(value) || Object.keys(value).some(key => !['operation', 'platform', 'plan'].includes(key))) throw invalid();
   if (Object.hasOwn(value, 'operation') && !OPERATIONS.includes(value.operation)) throw invalid();
   if (Object.hasOwn(value, 'platform')) token(value.platform, PLATFORM, 64);
@@ -139,9 +142,19 @@ function supportRequest(input) {
       || !Number.isSafeInteger(plan.schemaVersion) || plan.schemaVersion < 1) throw invalid();
     token(plan.kind, IDENTIFIER);
     tokens(plan.requiredCapabilities, IDENTIFIER, 128);
-    if (!plain(plan.scene)) throw invalid();
-    text(plan.scene.objectId, 256);
-    text(plan.scene.sourcePath, 4096);
+    const target = plan.kind === 'project' ? plan.assembly : plan.scene;
+    if (!plain(target)) throw invalid();
+    text(target.objectId, 256);
+    text(target.sourcePath, 4096);
+    if (plan.kind === 'project') {
+      if (plan.schemaVersion !== 1 || Object.hasOwn(plan, 'scene') || Object.hasOwn(plan, 'actors')
+        || Object.hasOwn(plan, 'behaviors') || Object.hasOwn(plan, 'audio')
+        || !Array.isArray(plan.scenes) || !plan.scenes.length || plan.scenes.length > 32
+        || new Set(plan.scenes.map(scene => scene?.scene?.objectId)).size !== plan.scenes.length
+        || !plan.scenes.some(scene => scene?.scene?.objectId === plan.entrySceneId)
+        || plan.scenes.some(scene => scene?.kind !== 'scene2d')) throw invalid();
+      for (const scene of plan.scenes) supportRequest({ plan: scene });
+    }
     if (Object.hasOwn(plan, 'audio') && (!plain(plan.audio) || plan.audio.format !== 'viento-audio-plan' || plan.audio.schemaVersion !== 1)) throw invalid();
     if (Object.hasOwn(plan, 'behaviors')) {
       if (!plain(plan.behaviors) || plan.behaviors.format !== 'viento-behavior-plan' || plan.behaviors.schemaVersion !== 1) throw invalid();
@@ -155,7 +168,8 @@ function supportRequest(input) {
 export function checkExecutionBackendSupport(descriptor, request = {}) {
   const backend = validateExecutionBackendDescriptor(descriptor);
   const value = supportRequest(request);
-  const location = { objectId: value.plan?.scene.objectId || null, sourcePath: value.plan?.scene.sourcePath || '', propertyPath: '' };
+  const target = value.plan?.kind === 'project' ? value.plan.assembly : value.plan?.scene;
+  const location = { objectId: target?.objectId || null, sourcePath: target?.sourcePath || '', propertyPath: '' };
   const diagnostic = (code, message, details = {}) => ({ severity: 'error', code, message, ...location, ...details });
   const diagnostics = [];
   if (!value.operation || !backend.execution[value.operation]) diagnostics.push(diagnostic('build_execution_unsupported',
@@ -167,6 +181,12 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
     if (plan.format !== 'viento-build-plan' || !backend.plans.some(item => item.kind === plan.kind && item.schemaVersion === plan.schemaVersion)) {
       diagnostics.push(diagnostic('build_backend_plan_unsupported', 'Backend does not support this build plan kind and schema.',
         { kind: plan.kind, schemaVersion: plan.schemaVersion }));
+    }
+    if (plan.kind === 'project') {
+      const required = new Set(['project.scenes', ...plan.scenes.flatMap(scene => scene.requiredCapabilities)]);
+      for (const capability of required) if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_assembly_invalid',
+        'Project plans must explicitly require every member capability.', { capability }));
+      for (const scene of plan.scenes) diagnostics.push(...checkExecutionBackendSupport(backend, { ...value, plan: scene }));
     }
     if (plan.audio) {
       for (const capability of ['audio.nonspatial', 'audio.timeline']) {

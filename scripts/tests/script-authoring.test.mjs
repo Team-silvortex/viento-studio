@@ -12,7 +12,7 @@ const propose = (source = context(), selection = request()) => prepareScriptDraf
 
 test('known starters are immutable data and the minimal Node contains no lifecycle or execution instructions', () => {
   const all = listScriptStarters();
-  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal', 'bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion']);
+  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal', 'bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion', 'godot-scene-switch', 'godot-project-state', 'godot-project-events', 'godot-project-audio']);
   assert.equal(all[0].content, 'extends Node\n');
   for (const starter of all) {
     assert.deepEqual(Object.keys(starter), ['id', 'languageId', 'backendId', 'label', 'description', 'content']);
@@ -227,4 +227,27 @@ test('the Bevy Rust signal starter owns borrowed strings before emission and pro
   assert.equal(empty.content, 'use crate::runtime::BehaviorContext;\n\npub fn ready(_ctx: &mut BehaviorContext) -> Result<(), String> {\n    Ok(())\n}\n');
   const signal = listScriptStarters().find(item => item.id === 'bevy-rust-signal');
   assert.equal(signal.content, 'use crate::runtime::BehaviorContext;\n\npub fn ready(ctx: &mut BehaviorContext) -> Result<(), String> {\n    let checkpoint = ctx.string("checkpoint")?.to_owned();\n    let amount = ctx.number("amount")?;\n    ctx.emit("arrived", vec![checkpoint.into(), amount.into()])?;\n    Ok(())\n}\n');
+});
+
+
+test('the audio starter remains a reviewed ordinary draft with an explicit track parameter and no registration authority', () => {
+  const starter = listScriptStarters().find(item => item.id === 'godot-project-audio');
+  const selected = { ...request(), starterId: starter.id }, proposal = propose(context(), selected);
+  assert.equal(starter.label, 'Godot / 事件声音'); assert.match(starter.description, /音轨 UUID/);
+  assert.equal(proposal.content, starter.content); assert.equal(proposal.backendId, 'org.viento.godot4');
+  assert.equal(prepareScriptDraftApply(context(), proposal).content, starter.content);
+  for (const key of ['parameters', 'audio', 'tracks', 'relations', 'trackId', 'objectId', 'bindingId', 'buildCommand']) assert.equal(Object.hasOwn(proposal, key), false);
+  assert.throws(() => prepareScriptDraftApply({ ...context(), sourceToken: 'another-task' }, proposal), conflict);
+});
+
+test('the audio starter guards missing project or track, defers publication and accepts only boolean play/stop requests', () => {
+  const content = listScriptStarters().find(item => item.id === 'godot-project-audio').content;
+  assert.match(content, /@export var track_id: String = ""/);
+  assert.match(content, /if track_id\.is_empty\(\) or not has_meta\("viento_project"\):\n\t\treturn/);
+  assert.match(content, /subscribe_event\("sound", _on_sound\) == 0/);
+  assert.match(content, /call_deferred\("_publish_sound"\)/);
+  assert.match(content, /func _publish_sound\(\) -> void:\n\t_project\.publish_event\("sound", true\)/);
+  assert.match(content, /func _on_sound\(value\) -> bool:\n\tif typeof\(value\) != TYPE_BOOL:\n\t\treturn false/);
+  assert.match(content, /if value:\n\t\treturn _project\.play_audio\(track_id\)\n\treturn _project\.stop_audio\(track_id\)\n$/);
+  assert.doesNotMatch(content, /AudioStreamPlayer|AudioServer|await |res:\/\/|\.wav/);
 });

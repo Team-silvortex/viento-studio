@@ -1,10 +1,13 @@
 # 二维功能对接表
 
+**0.1.3 之后的当前工作树**支持[项目组装](PROJECT_ASSEMBLY.md)、[场景切换](PROJECT_ASSEMBLY.md#运行中切换场景)、[共享状态](PROJECT_SHARED_STATE.md)、[项目事件](PROJECT_EVENTS.md)及[行为驱动声音](PROJECT_AUDIO_CONTROLS.md)。Godot 项目中的行为可请求播放／停止当前场景已声明的音轨；先处理事件，再执行声音请求，最后切场景或正常结束。编辑器独立显示实际声音命令及行为、音轨两份冻结来源，工程 ZIP 保留运行接口。当前为 **21 模块／40 项声明能力**，Godot 适配器 **0.11.0**、项目协议 **4**；应用仍为 0.1.3，未更新安装。Bevy 项目组装与声音、跨启动存档、事件留存重放及独立游戏发行仍待接入。
+
+
 **0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；当前为 21 模块／38 项声明能力，本次未制作或更新安装包。
 
-核对日期：2026-10-13；源码基线 0.1.2，配方创建／生成、查找替换和任务问题列表已纳入该版；其后未发布工作树增加首次行为多绑定／多脚本创建，以及已有行为的脚本引用管理；当前再接入独立 Bevy Rust 作者行为源工程通道、有界固定步位置／事件驱动，以及 Rust 音轨／时间提示到 Godot 播放与工程交付。本页说明当前二维工作流如何交接。功能身份、实现绑定和评分以 [功能图谱 JSON](function-atlas.json) 为准；这里不另设总分或完成率，也不把引擎原生能力当作 Studio 已接入能力。
+当前源码版本为 0.1.3；其后工作树已接入项目组装、场景切换、共享状态、事件发布订阅与行为声音控制。本页说明当前二维工作流如何交接。功能身份、实现绑定和评分以 [功能图谱 JSON](function-atlas.json) 为准；这里不另设总分或完成率，也不把引擎原生能力当作 Studio 已接入能力。
 
-[空工程到 Godot](function-atlas.html#workflow=oc-projection-composition-runtime) · [普通二维主线](function-atlas.html#workflow=author-to-delivery) · [配方到工程交付](function-atlas.html#workflow=composition-to-delivery) · [配方与 Godot 行为](function-atlas.html#workflow=composition-godot-behaviors) · [Bevy 数据交付](function-atlas.html#workflow=bevy-data-delivery) · [Bevy Rust 固定步与交付](function-atlas.html#workflow=bevy-rust-fixed-step-delivery) · [场景声音到工程交付](function-atlas.html#workflow=scene-audio-to-delivery)
+[空工程到 Godot](function-atlas.html#workflow=oc-projection-composition-runtime) · [普通二维主线](function-atlas.html#workflow=author-to-delivery) · [配方到工程交付](function-atlas.html#workflow=composition-to-delivery) · [配方与 Godot 行为](function-atlas.html#workflow=composition-godot-behaviors) · [Bevy 数据交付](function-atlas.html#workflow=bevy-data-delivery) · [Bevy Rust 固定步与交付](function-atlas.html#workflow=bevy-rust-fixed-step-delivery) · [场景声音到工程交付](function-atlas.html#workflow=scene-audio-to-delivery) · [项目行为声音控制](function-atlas.html#workflow=project-audio-controls-to-delivery)
 
 ## 从入口到实现
 
@@ -16,9 +19,11 @@
 | 配方创作 | 新建场景配方 → 多演员对象／投影清单 → 可选起始排布 → 完整 JSON 审阅 → 普通草稿与保存；九个独立编辑区继续丰富 | `scene.composition_create`、`scene.composition`、`scene.authoring_workflow`；只读目录、Rust 校验、独立助手与普通保存分别负责 |
 | 配方转运行场景 | 场景预览 → 从配方创建场景 → 审阅完整展开内容 → 保存新的 Scene2D | `scene.composition_materialize`；Rust 展开、JS 创建规划、独立对话框和共享创建事务分开。原配方不改写，生成场景不自动同步 |
 | 脚本与行为（可选） | TXT 草稿 → 普通保存；首次行为清单审阅／保存，或管理已有行为 → 审阅／保存脚本引用 → 打开行为原文 → 独立绑定编辑 → 普通保存 | `script.authoring`、`behavior.creation`、`behavior.authoring` 与既有 `relation.add`；首次清单和已有引用管理属于 0.1.2 后工作树。关联只改登记，绑定编辑只改草稿；显式声明 Godot/GDScript 或 Bevy/Rust，执行能力由对应宿主后端核对 |
-| 场景声音（可选） | 普通 JSON／声音示例 → 登记场景 `audio` 关系和素材绑定 → 编辑场景声音 → 审阅／应用草稿 → 普通保存 | `scene.audio_timeline`、`scene.audio_authoring`；Rust 校验音轨与时间提示，表单保持场景／资源／身份固定。当前没有声音新建向导，也不自动播放 |
+| 场景声音（可选） | 已保存场景 → 场景声音设置 → 选择 WAV 和 1–16 条轨道 → 审阅／一次保存正文与登记 → 打开原文 → 字段编辑／普通保存 | 首次创建由独立 `audio.create` 和三文件事务负责；已有 `scene.audio_timeline`、`scene.audio_authoring` 保持 Rust 规则与草稿编辑边界。编辑不自动播放 |
 | 静态预览（可选） | 场景预览可读取保存态或当前有效草稿 | `scene.saved_preview` 与草稿预览切片；预览不执行脚本，也不证明后端运行效果 |
-| 计划与构建 | 已保存 Scene2D → 检查计划 → 显式构建 | `build.snapshot_plan`、`execution.backend_middleware`、`build.workbench_lifecycle`；中立计划通过具体后端能力准入，再冻结依赖和工具身份 |
+| 项目组装 | 构建与运行 → 项目组装 → 成员与启动场景 → 审阅／保存 | `build.project_assembly`；正文 UUID 成员派生迁移依赖，Godot 合并工程，其他后端明确拒绝 |
+| 项目行为声音 | 已有音轨与绑定 → 事件声音脚本或直接请求 → 项目运行 → 声音控制记录及双方回源 | `runtime.project_audio_controls`；Rust 允许空时间提示，Godot 独立排队执行，可移植核心校验实际命令回执，UI 不取得播放器 |
+| 计划与构建 | 已保存 Scene2D 或项目组装 → 检查计划 → 显式构建 | `build.snapshot_plan`、`execution.backend_middleware`、`build.workbench_lifecycle`；中立计划通过具体后端能力准入，再冻结依赖和工具身份 |
 | 运行与诊断 | 显式无头测试／受支持的窗口预览；观察事件和任务问题，核对来源后打开原文 | `runtime.godot_generated_project` 或 `runtime.bevy_rust`；`build.task-problems` 保留单任务来源，修改后需要明确重验 |
 | 工程管理 | 后端工程详情、文件核对、持久列表与显式运行选择 | `backend.project_management`、`backend.project_catalog`；生成工程和本机缓存不回写作者工程 |
 | 工程交付 | 交付工程 → 准备包 → 下载／保存 | `backend.project_delivery`；仅打包成功登记且库存校验通过的生成文件。完整作者迁移另走作品备份，独立游戏发行仍是规划项 |
@@ -34,8 +39,10 @@
 | 后端标识 | `org.viento.godot4` | `org.viento.bevy` | `org.viento.bevy-rust` |
 | 无行为二维计划 | plan 1／2 | plan 1／2，仅无图 | 当前仅接行为 plan 3 |
 | 作者 Scene2D v3 逻辑分组 | 保留组织结构；无行为时生成 plan 2 | 同样生成无图 plan 2 | 有行为时生成无图 plan 3；组不是空间变换 |
+| 多场景组装／启动场景 | project plan 1；成员保留各自 plan 1／2／3 | 未接入，明确拒绝 | 未接入，明确拒绝 |
 | 图片资源 | 已接入 | 未接入，明确拒绝 | 未接入，明确拒绝 |
-| 非空间音轨与时间提示 | 适配器 0.6.0；PCM16 WAV、0–60 秒 play／stop、独立音量与循环 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 非空间音轨与时间提示 | 适配器 0.11.0，保留原声音子协议 1；1–16 音轨、0–64 提示、PCM16 WAV、0–60 秒 play／stop、独立音量与循环 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 项目行为播放／停止音轨 | `project.audio-control`，项目协议 4；访问内请求队列、实际回执及行为／音轨双来源 | 未接入，明确拒绝 | 未接入，明确拒绝 |
 | 参数／信号和作者脚本 | GDScript Node，plan 3 | 未接入作者代码 | Rust `ready`、显式固定步自身位置、类型化参数和映射事件，plan 3 |
 | 无头逻辑运行 | 已接入 | 可信固定运行程序 | 冻结 Cargo 源码临时编译与有界测试 |
 | 有限控制回放与按实例输入 | 无行为 plan 1／2；按实例输入限 plan 2；当前拒绝声音组合 | 同范围 | 未接入 |
@@ -48,7 +55,7 @@
 
 ## 映射出的下一步
 
-[场景声音](SCENE_AUDIO.md)已经作为独立领域接入：当前 21 模块／38 项声明能力。作者使用 1–16 条轨道和 1–64 个有限时间提示；Godot 执行并交付实际 PCM WAV。声音与行为编辑保持独立；新建／登记向导、行为事件触发、总线、空间音频和 Bevy 声音实现分别列为后续范围。
+[场景声音](SCENE_AUDIO.md)与[项目行为声音控制](PROJECT_AUDIO_CONTROLS.md)已分别接入；当前为 21 模块／40 项声明能力。作者使用 1–16 条轨道和 0–64 个有限时间提示，空提示支持纯行为触发；Godot 执行并交付实际 PCM WAV。声音声明编辑、项目控制与只读观察保持各自边界。总线、空间音频、暂停／跳转、自然结束观察和 Bevy 声音仍为后续范围。
 
 新建配方助手 `scene.composition_create` 已纳入 0.1.2 源码，初始一片段／1–64 演员／一放置；已有编辑区负责后续结构。横排／竖排／网格只修改起始表单坐标，预览、应用与撤销独立于普通保存。操作与范围见[创建指南](SCENE_COMPOSITION.md#新建场景配方)。
 
@@ -75,3 +82,7 @@ Bevy Rust 作者行为首轮验证见[独立专题](test-results/bevy-rust-behav
 前一轮映射工作只完善目录、依赖关系、步骤／缺口阅读与定位工具，没有增加引擎能力，也没有重跑上述历史产品测试。新增工具测试和真实离线浏览器验证见 [功能映射验证记录](test-results/functional-mapping/README.md)。原有评分、证据和旧 F01–F50 网络保持；本轮有意修订的说明、优先项和依赖边见 [映射审查记录](test-results/functional-mapping/catalog-review.json)。
 
 依赖图统一采用 **前置能力 `from` → 使用者 `to`**。仅表示可选后续操作的关系放进工作流，不作为所有使用者必需的前置条件。新增能力先登记唯一功能身份，再关联实现与证据；图谱检查通过只证明引用和派生文件一致，不证明人工评分正确或功能已经验收。
+
+首次添加声音的目录、资源核验、三文件恢复、独立界面和浏览器运行／工程交付另见[本轮验收](test-results/scene-audio-creation/README.md)。已有作品与旧验收记录保留原字节。
+
+项目行为声音的纯回执准入、Rust 空提示、实际 Godot 播放／停止、双来源导航与异地工程验证见[本轮专题](PROJECT_AUDIO_CONTROLS.md)。图谱新增 `runtime.project_audio_controls`，只为本轮新增绑定评分；旧声音与项目事件单元保留原证据和对象，不把命令回执当成持续播放、安装或物理扬声器验收。

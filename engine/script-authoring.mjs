@@ -29,6 +29,18 @@ const starters = freeze([
   { id: 'bevy-rust-motion', languageId: 'rust', backendId: 'org.viento.bevy-rust', label: 'Bevy Rust / 固定步移动',
     description: '按固定时间步移动当前实例并发出 moved 信号；速度参数和信号映射需在行为文档中设置。',
     content: 'use crate::runtime::{BehaviorContext, FixedStep};\n\npub fn ready(ctx: &mut BehaviorContext) -> Result<(), String> {\n    ctx.on_fixed_update(fixed_update)\n}\n\nfn fixed_update(ctx: &mut BehaviorContext, step: FixedStep) -> Result<(), String> {\n    let vx = ctx.number("velocity_x")?;\n    let vy = ctx.number("velocity_y")?;\n    ctx.translate([vx * step.delta_seconds, vy * step.delta_seconds])?;\n    let [x, y] = ctx.position();\n    ctx.emit("moved", vec![x.into(), y.into()])?;\n    Ok(())\n}\n' },
+  { id: 'godot-scene-switch', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 场景切换',
+    description: '在组装运行中请求切换到 target_scene_id 指定的成员场景；请在行为参数中填写目标场景标识。单场景运行时不切换。',
+    content: "extends Node\n\n@export var target_scene_id: String = \"\"\n\nfunc _ready() -> void:\n\tif target_scene_id.is_empty() or not has_meta(\"viento_project\"):\n\t\treturn\n\tget_meta(\"viento_project\").request_scene(target_scene_id)\n" },
+  { id: 'godot-project-state', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 共享状态',
+    description: '在当前项目运行中累加 visit_count；状态跨场景保留，重新运行后清空。单场景运行时不写入。',
+    content: "extends Node\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\tvar project = get_meta(\"viento_project\")\n\tvar previous = project.read_state(\"visit_count\")\n\tvar count := 0.0\n\tif previous is int or previous is float:\n\t\tcount = float(previous)\n\tproject.write_state(\"visit_count\", count + 1)\n" },
+  { id: 'godot-project-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 项目事件',
+    description: '订阅 checkpoint 并延迟发布一个值；接收后写入 last_event。仅项目运行生效，离开场景后撤销订阅。',
+    content: "extends Node\n\nvar _project\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\t_project.subscribe_event(\"checkpoint\", _on_checkpoint)\n\tcall_deferred(\"_publish_checkpoint\")\n\nfunc _publish_checkpoint() -> void:\n\t_project.publish_event(\"checkpoint\", \"hello\")\n\nfunc _on_checkpoint(value) -> bool:\n\treturn _project.write_state(\"last_event\", value)\n" },
+  { id: 'godot-project-audio', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 事件声音',
+    description: "填写已声明的音轨 UUID；订阅 sound 后，true 请求播放、false 请求停止。仅当前项目场景访问生效，也可在行为中直接调用声音接口。",
+    content: "extends Node\n\n@export var track_id: String = \"\"\nvar _project\n\nfunc _ready() -> void:\n\tif track_id.is_empty() or not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\tif _project.subscribe_event(\"sound\", _on_sound) == 0:\n\t\treturn\n\tcall_deferred(\"_publish_sound\")\n\nfunc _publish_sound() -> void:\n\t_project.publish_event(\"sound\", true)\n\nfunc _on_sound(value) -> bool:\n\tif typeof(value) != TYPE_BOOL:\n\t\treturn false\n\tif value:\n\t\treturn _project.play_audio(track_id)\n\treturn _project.stop_audio(track_id)\n" },
 ]);
 
 // Inspect own data descriptors before reading values. Unknown keys, accessors,

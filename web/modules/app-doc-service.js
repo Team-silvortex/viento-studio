@@ -1,3 +1,4 @@
+import { SCENE_AUDIO_CREATION_API_PATH } from '../../engine/scene-audio-creation-contract.mjs';
 import { SCENE_BEHAVIOR_DIRECTORY_API_PATH } from '../../engine/scene-behavior-directory.mjs';
 import { SCENE_BEHAVIOR_CREATION_API_PATH } from '../../engine/scene-behavior-creation-contract.mjs';
 import { SCENE_BEHAVIOR_AUTHORING_API_PATH } from '../../engine/scene-behavior-authoring-contract.mjs';
@@ -568,4 +569,10 @@ export async function inspectSceneBehaviorCreation(payload) {
   return (await fetchJsonApiRequest(SCENE_BEHAVIOR_CREATION_API_PATH, withAuthHeaders({
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
   }), 45000, t('核对行为依赖'))).payload;
+}
+
+export async function inspectSceneAudioCreation(payload) {
+  return (await fetchJsonApiRequest(SCENE_AUDIO_CREATION_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('核对场景声音'))).payload;
 }

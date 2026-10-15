@@ -138,3 +138,10 @@ test('audio labels have English and Japanese translations and the panel has a na
   const css = await fs.readFile(new URL('../../web/scene-audio.css', import.meta.url), 'utf8'); assert.match(css, /@media\(max-width:600px\)/); assert.match(css, /overflow:auto/);
   assert.doesNotMatch(source, /\.play\(|new Audio|fetch\(|getCurrentEditContent|app-scene-behaviors/);
 });
+
+test('tracks without scheduled cues remain editable without inventing a timeline entry', async t => {
+  const document=model();document.cues=[];
+  const h=await fixture(t,{content:JSON.stringify(document,null,2)+'\n'});assert.equal(await h.open(),true);
+  assert.equal(h.el('Cues').children.length,0);h.set('Track0Volume','0.3');await h.check();await h.apply();
+  const after=JSON.parse(h.content());assert.deepEqual(after.cues,[]);assert.equal(after.tracks[0].volume,.3);assert.equal(after.tracks[0].id,document.tracks[0].id);
+});

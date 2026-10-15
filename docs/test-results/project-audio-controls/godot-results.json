@@ -1,0 +1,128 @@
+{
+  "format": "viento-godot-test-results",
+  "schemaVersion": 1,
+  "suite": "project-audio-controls",
+  "recordedAt": "2026-10-15T13:17:45.594707+00:00",
+  "counts": {
+    "tests": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "newRealAudioControlTests": 13
+  },
+  "durationMs": 167258.407344,
+  "log": "godot-audio.log",
+  "tools": {
+    "node": {
+      "path": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "godot": {
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    }
+  },
+  "verifiedInvocation": {
+    "cwd": "/home/chiharukiryu/cdev/viento-studio",
+    "environment": {
+      "VIENTO_GODOT_BIN": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "executable": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+    "testFiles": [
+      "scripts/tests/project-audio-control-godot.test.mjs"
+    ],
+    "command": [
+      "node",
+      "--test",
+      "scripts/tests/project-audio-control-godot.test.mjs"
+    ]
+  },
+  "adapter": {
+    "id": "org.viento.godot4",
+    "version": "0.11.0",
+    "projectProtocolVersion": 4,
+    "generatedAssemblySchemaVersion": 5
+  },
+  "sourceFingerprintsAfterRun": [
+    {
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "sha256": "8f12ed8486289c5abd69d9146182fa37007ddc2f2e0f61826056bf544ab2d721"
+    },
+    {
+      "path": "scripts/backends/godot4-project.mjs",
+      "sha256": "20248e964bc039b401d30ab3e3f8555f0f686c14d16cfbd10440aa023a28ac81"
+    },
+    {
+      "path": "scripts/backends/godot4/project-runtime.gd",
+      "sha256": "e9a33b45cd9e35c2acf870fdf5fa24dca91dfd19f33fd25d3dd3bc18145abcf4"
+    },
+    {
+      "path": "scripts/backends/godot4/project-scene.gd",
+      "sha256": "22944abbaacbba0b3a735645486cd22123b0a796db2782e159183d4ee58aac0b"
+    },
+    {
+      "path": "scripts/backends/godot4/project-events.gd",
+      "sha256": "581d705cdd77c83bccbce58f46ac4351029dff263d8f8eef48e29856e44172bb"
+    },
+    {
+      "path": "scripts/backends/godot4/project-audio.gd",
+      "sha256": "ac770e453dd93041530bdd20b690023f48379371140ec32839124110b578acfa"
+    },
+    {
+      "path": "engine/backend-capabilities.mjs",
+      "sha256": "2c741bca7a0b7439886f2b353cbac2f54b94130c16d499fd6db412f9fd6d9b2f"
+    },
+    {
+      "path": "engine/project-runtime-contracts.mjs",
+      "sha256": "fa5b5faf29107f87fb5943b7fce0cbfb3399967e65a6af0dac953e41e0ebd8fe"
+    },
+    {
+      "path": "engine/project-runtime-events.mjs",
+      "sha256": "876da59dfaec12ad843d11076f7820c8197756e60b010e861cd389e8ea8d4e7d"
+    },
+    {
+      "path": "engine/project-runtime-query.mjs",
+      "sha256": "9c9347771d1f9fc4b4e277c220491bcb4fdbea16da754509c10b92a8c34831d2"
+    },
+    {
+      "path": "engine/project-audio-commands.mjs",
+      "sha256": "9845c1563d7cfae2d6509dba65a5edc3f62c905e8a04989f7a2ac53b164dc63a"
+    },
+    {
+      "path": "engine/scene-audio-core.mjs",
+      "sha256": "a552d813ae2ad86cf6a1d4c60bec0e620a419d9add53e3d535f66d300e05b508"
+    },
+    {
+      "path": "engine/studio-core.wasm",
+      "sha256": "4805b008219aeafffb160118060618dd550910807b2f8006fe955fd56c052d50"
+    },
+    {
+      "path": "scripts/tests/project-audio-control-godot.test.mjs",
+      "sha256": "b1540a75c6a74fb2b85c44610f3a63ecad3c84410430646eafa785e92b68db72"
+    },
+    {
+      "path": "scripts/tests/helpers/project-audio-control-author-fixture.mjs",
+      "sha256": "12fae0204e791f7c20b4cb183da4beef0d9d51f6858e7cf12814438dd9bf6ac8"
+    },
+    {
+      "path": "engine/script-authoring.mjs",
+      "sha256": "c7916833585645aeb64f21cced385e92f851b281354626f53057c1606331a792"
+    }
+  ],
+  "notes": [
+    "Receipts prove completed native play/stop calls, not playback device output.",
+    "The PCM test separately captures native mixed samples before a muted local bus, including loop, stop and zero gain.",
+    "Existing single-scene generation remains byte-compatible; child audio protocol stays 1.",
+    "Actual engine execution took place in the parent host; the subagent sandbox blocked Godot socket creation. No sandbox failure is counted as a product regression.",
+    "No previous evidence directory was modified."
+  ],
+  "nativePcm": {
+    "audiblePeak": 0.0146488891914487,
+    "loopPlayingAfterDuration": true,
+    "stoppedPeak": 0,
+    "zeroGainPeak": 0
+  }
+}

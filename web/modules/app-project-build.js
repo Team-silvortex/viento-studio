@@ -1,8 +1,13 @@
+import { setupProjectAudioObservation } from './app-project-audio-observation.js';
+import { setupProjectEventObservation } from './app-project-event-observation.js';
+import { setupProjectStateObservation } from './app-project-state-observation.js';
+import { setupProjectAssembly } from './app-project-assembly.js';
+import { setupSceneAudioCreate } from './app-scene-audio-create.js';
 import { createProjectProblemsSnapshot } from '../../engine/project-problems.mjs';
 import { setupProjectProblems } from './app-project-problems.js';
 import { setupSceneBehaviorLinks } from './app-scene-behavior-links.js';
 import { setupSceneBehaviorCreate } from './app-scene-behavior-create.js';
-import { inspectSceneBehaviorCreation, inspectSceneBehaviorDirectory, requestWorldCommand } from './app-doc-service.js';
+import { inspectSceneAudioCreation, inspectSceneBehaviorCreation, inspectSceneBehaviorDirectory, requestWorldCommand } from './app-doc-service.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 import { fetchJsonApiRequest } from './app-services.js';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
@@ -14,6 +19,7 @@ import { setupSceneAuthoring } from './app-scene-authoring.js';
 import { canExecuteBackend } from '../../engine/backend-capabilities.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { querySceneRuntimeObservation } from '../../engine/scene-runtime-query.mjs';
+import { queryProjectRuntimeObservation } from '../../engine/project-runtime-query.mjs';
 import { validateSceneControlProgram, validateSceneControlPlan } from '../../engine/scene-control-program.mjs';
 import { validateExecutionToolStatus } from '../../engine/execution-tool-status.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
@@ -130,11 +136,13 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <p id="projectBuildDraft" class="build-note" hidden data-i18n="请先保存或结束编辑草稿，再检查、构建或运行。当前草稿会保留。"></p>
     <div class="build-scene-picker"><label id="projectBuildSceneLabel" for="projectBuildScene"></label><select id="projectBuildScene"></select>
     <button id="projectBuildRefresh" type="button" class="doc-btn doc-btn-ghost" data-i18n="刷新状态"></button></div>
+    <button id="projectBuildAssembly" type="button" class="doc-btn doc-btn-ghost" data-i18n="项目组装" hidden></button>
     <button id="projectBuildEditScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="编辑场景" hidden></button>
     <button id="projectBuildCreateScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="创建场景" hidden></button>
     <button id="projectBuildMaterialize" type="button" class="doc-btn doc-btn-ghost" data-i18n="从配方创建场景" hidden></button>
     <button id="projectBuildManageBehavior" type="button" class="doc-btn doc-btn-ghost" data-i18n="管理已有行为" hidden></button>
     <button id="projectBuildCreateBehavior" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加场景行为" hidden></button>
+    <button id="projectBuildSceneAudio" type="button" class="doc-btn doc-btn-ghost" data-i18n="场景声音设置" hidden></button>
     <p id="projectBuildEmpty" hidden data-i18n="暂无可构建场景。请添加已登记的 viento-scene2d JSON 场景文档。"></p>
     <div id="projectBuildTabs" class="build-tabs" role="tablist" data-i18n-aria-label="场景与构建选项卡" hidden>
       <button id="projectBuildTabPreview" type="button" role="tab" aria-controls="projectBuildPreviewPanel" aria-selected="false" tabindex="-1" data-i18n="场景预览"></button>
@@ -175,9 +183,16 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <p id="projectBuildEvents" hidden></p>
     <section id="projectBuildRuntimeObjects" class="build-runtime-objects" hidden aria-labelledby="projectBuildRuntimeObjectsTitle"><h3 id="projectBuildRuntimeObjectsTitle" data-i18n="运行对象"></h3>
     <p class="build-hint" data-i18n="只读查看本次运行收到的对象状态与位置样本；控制回放按步骤采样，不代表实时坐标。"></p>
+    <p id="projectBuildRuntimeEntryNote" class="build-hint" hidden data-i18n="运行对象来自启动场景；其他成员场景尚未运行。"></p>
+    <div id="projectBuildRuntimeProject" hidden><p id="projectBuildRuntimeCurrentScene" class="build-monospace" role="status" aria-live="polite"></p>
+    <p id="projectBuildRuntimeScenePending" class="build-hint" hidden data-i18n="等待场景进入；旧场景的位置样本已清空。"></p>
+    <details open><summary data-i18n="场景访问记录"></summary><ol id="projectBuildRuntimeVisits"></ol></details></div>
     <p id="projectBuildRuntimePhase" role="status" aria-live="polite"></p>
     <label for="projectBuildRuntimeSearch" data-i18n="查找运行对象"></label><input id="projectBuildRuntimeSearch" type="search" maxlength="512" autocomplete="off" data-i18n-placeholder="按名称、实例或对象标识查找">
     <p id="projectBuildRuntimeCount"></p><p id="projectBuildRuntimeEmpty" hidden></p><ul id="projectBuildRuntimeObjectList"></ul></section>
+    <div id="projectSharedState"></div>
+    <div id="projectEventTrace"></div>
+    <div id="projectAudioCommands"></div>
     <section id="projectBuildBehaviorEvents" hidden aria-labelledby="projectBuildBehaviorEventsTitle"><h3 id="projectBuildBehaviorEventsTitle" data-i18n="行为事件"></h3><ul id="projectBuildBehaviorEventList"></ul></section>
     <details class="build-raw"><summary data-i18n="原始细节与日志"></summary><pre id="projectBuildLogs" tabindex="0"></pre></details></section>`;
   document.body.append(dialog);
@@ -187,7 +202,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     steps: [{ ...released(), right: true }, released(), { ...released(), left: true }, released()] });
   el('projectBuildControlProgram').value = JSON.stringify(defaultControlProgram(), null, 2);
   let controlError = '', controlTarget = '', controlTargetOwner = '';
-  const hasControlCapability = () => Boolean(data?.backend?.capabilities?.includes('runtime.control-replay')
+  const hasControlCapability = () => !projectTarget() && Boolean(data?.backend?.capabilities?.includes('runtime.control-replay')
     && supportsExecution('headlessLogic'));
   const hasInstanceControlCapability = () => hasControlCapability()
     && Boolean(data?.backend?.capabilities?.includes('runtime.control-replay.instances'));
@@ -266,6 +281,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   }
   let caseError = '', caseDocuments = null, caseSuites = null, caseReport = null, backendProjects = null, delivery = null;
   function runtimeCasePlan() {
+    if (projectTarget()) return null;
     const targets = instanceControlTargets(false);
     return targets.length ? { format: 'viento-build-plan', kind: 'scene2d', schemaVersion: 2,
       scene: { objectId: selected, sourcePath: selectedScene()?.sourcePath },
@@ -302,7 +318,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     const supported = Boolean(runtimeCasePlan()), permitted = mayStart('run', 'headless') && supported;
     el('projectBuildCaseRun').hidden = !hasControlCapability();
     el('projectBuildCaseRun').disabled = !permitted || Boolean(caseDocuments && !caseDocuments.runAllowed());
-    el('projectBuildCaseEditor').hidden = !selectedScene();
+    el('projectBuildCaseEditor').hidden = projectTarget() || !selectedScene();
     el('projectBuildCaseGenerate').disabled = !permitted || !sampledRuntimeCase();
     el('projectBuildCaseError').hidden = !caseError;
     el('projectBuildCaseError').textContent = caseError ? t(caseError) : '';
@@ -328,13 +344,15 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       }
     } catch { el('projectBuildCaseSummary').textContent = t('验收结果不可读取，请刷新状态。'); }
   }
+  let audioCreationSupported = false, audioCreationBusy = false, assemblyBusy = false;
   let available = false, creationSupported = false, updateSupported = false, behaviorCreationSupported = false, behaviorCreationBusy = false, behaviorDirectorySupported = false, behaviorLinksBusy = false, data = null, selected = '', requestBusy = false, timer = null, requestEpoch = 0;
   let toolCheckBusy = false, materializationBusy = false;
   let previewSupported = false, activeTab = 'build';
   const selections = { build: '', preview: '' };
-  const previewDocuments = () => data?.previewDocuments || (data?.scenes || []).filter(scene => scene.frozenOnly !== true).map(scene => ({ ...scene, kind: 'scene' }));
+  const previewDocuments = () => data?.previewDocuments || (data?.scenes || []).filter(scene => scene.frozenOnly !== true && scene.kind !== 'project').map(scene => ({ ...scene, kind: 'scene' }));
   const documentsForTab = () => activeTab === 'preview' ? previewDocuments() : data?.scenes || [];
   const selectedScene = () => data?.scenes?.find(scene => scene.id === selected);
+  const projectTarget = () => selectedScene()?.kind === 'project' || data?.latestBuild?.sceneId === selected && data.latestBuild.targetKind === 'project';
   const selectedDocument = () => previewDocuments().find(item => item.id === selected);
   function selectDocument() {
     const documents = documentsForTab();
@@ -376,6 +394,41 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       await sceneApplied(result);
     },
   });
+  const assemblyEditor = typeof setupProjectAssembly === 'function' ? setupProjectAssembly({
+    getContext: () => { const context = getContext(); return { ...context,
+      busy: (assemblyBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || running() || checkingTool(),
+      session: String(dialogSession), visible: dialog.open && activeTab === 'build', sourceToken: context.sceneDraftToken }; },
+    setBusy: value => { assemblyBusy = value === true; setBusy(value); render(); },
+    request: body => requestProjectBuildDocument(body),
+    applied: async result => {
+      let failure; try { await applied({ status: 'observed', changes: [] }); } catch (error) { failure = error; }
+      selected = result.id; selections.build = selected; activeTab = 'build';
+      invalidatedPlanJob = planJob || (data?.job?.kind === 'plan' ? data.job.id : '');
+      invalidatedSnapshot = plan?.snapshotId || ''; plan = null; planScene = ''; scenePreview.invalidate();
+      await refresh(true);
+      if (failure) throw failure;
+      if (errorMessage || !data?.scenes.some(target => target.id === result.id && target.kind === 'project')) throw Error(t('组装已保存，但构建目录刷新失败。请刷新状态核对。'));
+    },
+  }) : { open() {}, setAvailable() {}, refresh() {} };
+
+  const audioCreator = typeof setupSceneAudioCreate === 'function' ? setupSceneAudioCreate({
+    getContext: () => { const context = getContext(); return { ...context,
+      busy: (audioCreationBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || running() || checkingTool(),
+      session: String(dialogSession), sceneId: selected, visible: dialog.open && activeTab === 'build', sourceToken: context.sceneDraftToken }; },
+    setBusy: value => { audioCreationBusy = value === true; setBusy(value); render(); },
+    inspect: payload => inspectSceneAudioCreation(payload), command: payload => requestWorldCommand(payload),
+    applied: async result => {
+      const sceneId = selected;
+      let failure; try { await applied(result || { status: 'observed', changes: [] }); } catch (error) { failure = error; }
+      invalidatedPlanJob = planJob || (data?.job?.kind === 'plan' ? data.job.id : '');
+      invalidatedSnapshot = plan?.snapshotId || data?.job?.plan?.snapshotId || ''; plan = null; planScene = '';
+      scenePreview.invalidate(); await refresh(true);
+      if (failure) throw failure;
+      if (errorMessage || !data?.scenes.some(scene => scene.id === sceneId)) throw new Error(t('声音已保存，但目录刷新失败。请重新读取工程，勿重复创建。'));
+    },
+    openSource: (sourcePath, options = {}) => navigateOwnedSource([sourcePath, options], typeof options.isCurrent === 'function' ? options.isCurrent : () => true, openAuthorSource, true),
+  }) : { open() {}, setAvailable() {} };
+
   const behaviorCreator = typeof setupSceneBehaviorCreate === 'function' ? setupSceneBehaviorCreate({
     getContext: () => { const context = getContext(); return { ...context,
       busy: (behaviorCreationBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || data?.job?.status === 'running',
@@ -431,10 +484,13 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   }
   async function navigateOwnedSource(args, isCurrent = () => true, sourceOpener = openSource, guardSource = false) {
     const session = dialogSession, epoch = ++sourceNavigationEpoch;
-    const owns = () => dialog.open && dialogSession === session && sourceNavigationEpoch === epoch && isCurrent();
+    const sourceGuard = guardSource ? undefined : args[2]?.isCurrent;
+    const owns = () => dialog.open && dialogSession === session && sourceNavigationEpoch === epoch && isCurrent()
+      && (sourceGuard === undefined || typeof sourceGuard === 'function' && sourceGuard());
     try {
       if (!owns()) return false;
-      const opened = await (guardSource ? sourceOpener(args[0], { ...args[1], isCurrent: owns }) : sourceOpener(...args));
+      const opened = await (guardSource ? sourceOpener(args[0], { ...args[1], isCurrent: owns })
+        : sourceOpener(args[0], args[1], { ...args[2], isCurrent: owns }));
       if (!owns()) return false;
       if (opened !== false) {
         pendingSourceFocus = typeof opened?.focus === 'function' ? { session, epoch, focus: opened.focus } : null;
@@ -513,8 +569,27 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   const matchedBuild = () => backendUnchanged() && data?.latestBuild?.sceneId === selected
     && typeof data.latestBuild.id === 'string' && data.latestBuild.id.length > 0
     && data.latestBuild.backendId === data?.backend?.id && !invalidatedBuilds.has(data.latestBuild.id) ? data.latestBuild : null;
+  function frozenRuntimeMembers(build) {
+    if (!Array.isArray(build.scenes) || build.scenes.length < 1 || build.scenes.length > 32 || build.sceneCount !== build.scenes.length) return null;
+    const members = new Map(), uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+    const fields = ['sceneId', 'title', 'sourcePath', 'sourceRevision', 'planSchemaVersion', 'runtimeProtocolVersion'];
+    for (const member of build.scenes) {
+      if (!member || typeof member !== 'object' || Array.isArray(member) || Object.keys(member).length !== fields.length
+        || fields.some(field => !Object.hasOwn(member, field)) || !uuid(member.sceneId) || members.has(member.sceneId)
+        || typeof member.title !== 'string' || member.title.length > 4096
+        || typeof member.sourcePath !== 'string' || !member.sourcePath || member.sourcePath.length > 4096
+        || /[\\\0]/.test(member.sourcePath) || member.sourcePath.startsWith('/') || /^[A-Za-z]:\//.test(member.sourcePath)
+        || member.sourcePath.split('/').includes('..') || !member.sourcePath.split('/').some(part => part && part !== '.') || member.sourcePath.split('/').filter(part => part && part !== '.').join('/').startsWith('.')
+        || !/^sha256:[a-f0-9]{64}$/.test(member.sourceRevision || '')
+        || ![1, 2, 3].includes(member.planSchemaVersion) || ![1, 2, 3].includes(member.runtimeProtocolVersion)
+        || !data.backend.plans.some(plan => plan.kind === 'scene2d' && plan.schemaVersion === member.planSchemaVersion
+          && plan.runtimeProtocolVersion === member.runtimeProtocolVersion)) return null;
+      members.set(member.sceneId, member);
+    }
+    return members.has(build.entrySceneId) ? members : null;
+  }
   function runtimeObservation() {
-    const job = data?.job, build = matchedBuild();
+    const job = data?.job, build = matchedBuild(), project = projectTarget();
     if (!available || !data?.supported || activeTab !== 'build' || !['run', 'suite'].includes(job?.kind) || !job.runtime || !build
       || !supportsExecution('headlessLogic') && !supportsExecution('windowPreview')
       || typeof job.id !== 'string' || !job.id || invalidatedRuntimeJobs.has(job.id)
@@ -522,24 +597,88 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       || job.buildId !== build.id || job.snapshotId !== build.snapshotId
       || !/^sha256:[a-f0-9]{64}$/.test(job.snapshotId || '')) return null;
     try {
-      const view = querySceneRuntimeObservation(job.runtime);
-      if (view.sceneObjectId !== selected || !data.backend.plans.some(item => item.kind === 'scene2d'
+      const switching = project && (Object.hasOwn(build, 'scenes') || Object.hasOwn(job.runtime, 'project'));
+      const view = switching ? queryProjectRuntimeObservation(job.runtime) : querySceneRuntimeObservation(job.runtime);
+      if (project && (build.targetKind !== 'project' || job.targetKind !== 'project')) return null;
+      let members = null, visit = null;
+      const sceneObjectId = switching ? view.project.activeSceneId : project ? build.entrySceneId : selected;
+      if (switching) {
+        members = frozenRuntimeMembers(build);
+        if (!members || view.project.assemblyId !== selected || view.project.entrySceneId !== build.entrySceneId
+          || !members.has(sceneObjectId) || view.project.visits.some(item => !members.has(item.sceneId))
+          || members.get(sceneObjectId).runtimeProtocolVersion !== view.protocolVersion) return null;
+        visit = view.project.visits.at(-1) || null;
+      }
+      if (view.sceneObjectId !== sceneObjectId || !data.backend.plans.some(item => item.kind === 'scene2d'
         && item.runtimeProtocolVersion === view.protocolVersion)) return null;
-      return { view, owner: JSON.stringify([acceptedBackend, job.id, job.buildId, job.snapshotId, selected]) };
+      return { view, project, members, sessionOwner: JSON.stringify([acceptedBackend, job.id, job.buildId, job.snapshotId, selected]),
+        owner: JSON.stringify([acceptedBackend, job.id, job.buildId, job.snapshotId, selected, sceneObjectId,
+        visit?.index ?? 0, visit?.phase === 'left' ? 'between-scenes' : 'in-scene', members && [...members.values()]]) };
     } catch { return null; }
   }
-  const mayOpenRuntimeSource = () => {
+  const ownsRuntimeSourceContext = () => {
     const context = getContext();
-    return dialog.open && !context.dirty && !context.creating && !context.busy;
+    return dialog.open && !context.dirty && !context.creating;
   };
+  // Loading the admitted source makes the editor busy. Keep busy as a click
+  // admission check; the host owns its source read, editor token and writes.
+  const mayOpenRuntimeSource = () => ownsRuntimeSourceContext() && !getContext().busy;
+  const stateObservation = typeof setupProjectStateObservation === 'function' ? setupProjectStateObservation({
+    container: el('projectSharedState'),
+    getContext: () => {
+      const observed = runtimeObservation();
+      return { available: available && Boolean(observed?.members), visible: dialog.open && activeTab === 'build',
+        sessionOwner: observed?.sessionOwner || '', navigationOwner: observed?.owner || '', canOpenSource: mayOpenRuntimeSource() };
+    },
+    onOpen: async (origin, { isCurrent }) => {
+      if (!mayOpenRuntimeSource() || !isCurrent()) return false;
+      const owns = () => ownsRuntimeSourceContext() && isCurrent();
+      return navigateOwnedSource([origin.source.sourcePath, origin.source], owns);
+    },
+  }) : { setSnapshot() {}, refresh() {} };
+  const eventObservation = typeof setupProjectEventObservation === 'function' ? setupProjectEventObservation({
+    container: el('projectEventTrace'),
+    getContext: () => {
+      const observed = runtimeObservation();
+      return { available: available && Boolean(observed?.members), visible: dialog.open && activeTab === 'build',
+        sessionOwner: observed?.sessionOwner || '', navigationOwner: observed?.owner || '', canOpenSource: mayOpenRuntimeSource() };
+    },
+    onOpen: async (origin, { isCurrent }) => {
+      if (!mayOpenRuntimeSource() || !isCurrent()) return false;
+      const owns = () => ownsRuntimeSourceContext() && isCurrent();
+      return navigateOwnedSource([origin.source.sourcePath, origin.source], owns);
+    },
+  }) : { setSnapshot() {}, refresh() {} };
+  const audioObservation = typeof setupProjectAudioObservation === 'function' ? setupProjectAudioObservation({
+    container: el('projectAudioCommands'),
+    getContext: () => {
+      const observed = runtimeObservation();
+      return { available: available && Boolean(observed?.members), visible: dialog.open && activeTab === 'build',
+        sessionOwner: observed?.sessionOwner || '', navigationOwner: observed?.owner || '', canOpenSource: mayOpenRuntimeSource() };
+    },
+    onOpen: async (source, { isCurrent }) => {
+      if (!mayOpenRuntimeSource() || !isCurrent()) return false;
+      const owns = () => ownsRuntimeSourceContext() && isCurrent();
+      return navigateOwnedSource([source.sourcePath, source], owns);
+    },
+  }) : { setSnapshot() {}, refresh() {} };
   function renderRuntimeObjects() {
     const observation = runtimeObservation(), owner = observation?.owner || '';
+    stateObservation.setSnapshot([2, 3, 4].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
+    eventObservation.setSnapshot([3, 4].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
+    audioObservation.setSnapshot(observation?.view.project?.protocolVersion === 4 ? observation.view.project.audioCommands : null);
     const panel = el('projectBuildRuntimeObjects'), input = el('projectBuildRuntimeSearch'), list = el('projectBuildRuntimeObjectList');
-    if (runtimeOwner !== owner) { runtimeOwner = owner; runtimeSearch = ''; input.value = ''; runtimeCardSignature = ''; }
+    const ownerChanged = runtimeOwner !== owner;
+    if (ownerChanged) { runtimeOwner = owner; runtimeSearch = ''; input.value = ''; runtimeCardSignature = ''; }
     panel.hidden = !observation;
+    el('projectBuildRuntimeEntryNote').hidden = !observation?.project;
+    el('projectBuildRuntimeEntryNote').textContent = t(observation?.members
+      ? '运行对象来自当前场景；访问记录仅记录本次运行，不会切换编辑内容。' : '运行对象来自启动场景；其他成员场景尚未运行。');
+    el('projectBuildRuntimeProject').hidden = !observation?.members;
     el('projectBuildRuntimeEmpty').hidden = true;
     if (!observation) {
-      runtimeCardSignature = ''; list.replaceChildren();
+      runtimeCardSignature = ''; list.replaceChildren(); el('projectBuildRuntimeVisits').replaceChildren();
+      el('projectBuildRuntimeCurrentScene').textContent = '';
       el('projectBuildRuntimePhase').textContent = ''; el('projectBuildRuntimeCount').textContent = '';
       return;
     }
@@ -555,14 +694,40 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildRuntimeCount').textContent = t('显示 {0} / {1} 个运行对象', actors.length, view.actors.length);
     el('projectBuildRuntimeEmpty').hidden = actors.length > 0;
     el('projectBuildRuntimeEmpty').textContent = t(view.actors.length ? '没有匹配的运行对象。' : '本次运行没有对象。');
-    const signature = JSON.stringify([owner, view, search, mayOpenRuntimeSource(), t('运行对象')]);
+    const signature = JSON.stringify([owner, view, observation.members && [...observation.members.values()], search, mayOpenRuntimeSource(), t('运行对象')]);
     // A status poll should not detach a focused source button. Rebuild cards
     // only when observations, search, language or navigation guards change.
     if (runtimeCardSignature === signature) return;
     runtimeCardSignature = signature;
-    const focusedRow = list.children && [...list.children].find(item => item.querySelector('.build-runtime-source') === document.activeElement);
+    const focusedRow = ownerChanged ? null : [...list.children].find(item => item.querySelector('.build-runtime-source') === document.activeElement);
     const focusedIdentity = focusedRow?.dataset.instanceId || focusedRow?.dataset.objectId;
+    const focusedVisit = !ownerChanged && [...el('projectBuildRuntimeVisits').children].find(item => item.querySelector('button') === document.activeElement)?.dataset.visitIndex;
     list.replaceChildren();
+    const visitsList = el('projectBuildRuntimeVisits'); visitsList.replaceChildren();
+    if (observation.members) {
+      const current = observation.members.get(view.project.activeSceneId), last = view.project.visits.at(-1);
+      const pending = !last || last.phase === 'left', index = last ? last.index + (pending ? 1 : 0) : 1;
+      el('projectBuildRuntimeCurrentScene').textContent = t('当前场景：{0} · 第 {1} 次访问', current.title || current.sceneId, index);
+      el('projectBuildRuntimeScenePending').hidden = !pending;
+      const phases = { waiting: '等待场景就绪', ready: '场景运行中', left: '已离开场景', finished: '场景运行结束' };
+      for (const visit of view.project.visits) {
+        const member = observation.members.get(visit.sceneId), item = node('li', '', 'build-runtime-object');
+        item.dataset.visitIndex = String(visit.index); item.dataset.sceneId = visit.sceneId;
+        item.append(node('p', t('第 {0} 次 · {1} · {2}', visit.index, member.title || member.sceneId, t(phases[visit.phase]))));
+        if (visit.phase === 'left' || visit.phase === 'finished') item.append(node('p', t('本次访问时长：{0} 秒', visit.elapsedSeconds), 'build-runtime-sample'));
+        const source = node('button', t('打开场景原文'), 'doc-btn doc-btn-ghost build-runtime-source');
+        source.type = 'button'; source.disabled = !mayOpenRuntimeSource();
+        source.addEventListener('click', async () => {
+          const isCurrent = () => runtimeObservation()?.owner === owner && ownsRuntimeSourceContext();
+          if (!mayOpenRuntimeSource() || !isCurrent()) { renderRuntimeObjects(); return; }
+          try { await navigateOwnedSource([member.sourcePath, { objectId: member.sceneId, sourcePath: member.sourcePath,
+            sourceRevision: member.sourceRevision, propertyPath: '' }], isCurrent); }
+          catch { if (isCurrent()) { errorMessage = t('无法打开原文，请返回编辑器查找该文档。'); render(); } }
+        });
+        item.append(source); visitsList.append(item);
+      }
+      if (!view.project.visits.length) visitsList.append(node('li', t('尚未进入任何场景。')));
+    }
     for (const actor of actors) {
       const item = node('li', '', 'build-runtime-object');
       item.dataset.objectId = actor.objectId;
@@ -582,8 +747,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       const source = node('button', t(actor.instanceId ? '打开实例声明' : '打开对象声明'), 'doc-btn doc-btn-ghost build-runtime-source');
       source.type = 'button'; source.disabled = !mayOpenRuntimeSource();
       source.addEventListener('click', async () => {
-        const isCurrent = () => runtimeObservation()?.owner === owner && mayOpenRuntimeSource();
-        if (!isCurrent()) { renderRuntimeObjects(); return; }
+        const isCurrent = () => runtimeObservation()?.owner === owner && ownsRuntimeSourceContext();
+        if (!mayOpenRuntimeSource() || !isCurrent()) { renderRuntimeObjects(); return; }
         try { await navigateOwnedSource([actor.source.sourcePath, actor.source], isCurrent); }
         catch { if (isCurrent()) { errorMessage = t('无法打开原文，请返回编辑器查找该文档。'); render(); } }
       });
@@ -592,6 +757,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     if (focusedIdentity) {
       const row = [...list.children].find(item => (item.dataset.instanceId || item.dataset.objectId) === focusedIdentity);
       const source = row?.querySelector('.build-runtime-source');
+      if (source && !source.disabled) source.focus();
+    } else if (focusedVisit) {
+      const source = [...visitsList.children].find(item => item.dataset.visitIndex === focusedVisit)?.querySelector('button');
       if (source && !source.disabled) source.focus();
     }
   }
@@ -632,7 +800,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     translatePage(dialog);
     const context = getContext(), job = data?.job;
     const active = running();
-    el('projectBuildTabs').hidden = !previewSupported;
+    el('projectBuildTabs').hidden = !previewSupported || projectTarget();
     el('projectBuildTabs').setAttribute('aria-label', t('场景与构建选项卡'));
     for (const [name, id] of [['preview', 'projectBuildTabPreview'], ['build', 'projectBuildTabBuild']]) {
       el(id).setAttribute('aria-selected', String(activeTab === name)); el(id).tabIndex = activeTab === name ? 0 : -1;
@@ -649,6 +817,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     scenePreview.setVisible(Boolean(dialog.open && previewSupported && activeTab === 'preview'));
     sceneAuthoring.refresh();
     sceneMaterializer.refresh?.();
+    assemblyEditor.setAvailable(available && data?.assemblyDocuments === true);
+    assemblyEditor.refresh();
     button.textContent = active ? t('构建与运行 · 进行中') : t('构建与运行');
     button.setAttribute('aria-label', button.textContent);
     button.dataset.running = String(active);
@@ -664,35 +834,42 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildToolCheck').disabled = !mayCheckTool();
     el('projectBuildDraft').hidden = activeTab === 'preview' || !context.dirty && !context.creating;
     const scenes = documentsForTab(), picker = el('projectBuildScene');
-    el('projectBuildSceneLabel').textContent = t(activeTab === 'preview' ? '预览文档' : '构建场景文档');
+    el('projectBuildSceneLabel').textContent = t(activeTab === 'preview' ? '预览文档' : '构建目标');
     // Keep the focused option stable during polling; re-populating a select can close its popup.
     const signature = JSON.stringify(scenes.map(scene => [scene, scene.frozenOnly ? t('仅冻结工程') : '']));
     if (picker.dataset.scenes !== signature) {
       picker.replaceChildren();
-      for (const scene of scenes) { const option = node('option', `${scene.title} · ${scene.sourcePath}${scene.frozenOnly ? ` · ${t('仅冻结工程')}` : ''}`); option.value = scene.id; picker.append(option); }
+      for (const scene of scenes) { const option = node('option', `${scene.kind === 'project' ? t('项目组装') + ' · ' : ''}${scene.title} · ${scene.sourcePath}${scene.frozenOnly ? ` · ${t('仅冻结工程')}` : ''}`); option.value = scene.id; picker.append(option); }
       picker.dataset.scenes = signature;
     }
     picker.value = selected; picker.disabled = requestBusy || active || !scenes.length;
     el('projectBuildEmpty').hidden = !data || scenes.length > 0;
     el('projectBuildEmpty').textContent = t(activeTab === 'preview' ? '暂无可预览场景或配方。请添加已登记的场景或场景配方 JSON 文档。' : creationSupported ? '暂无可构建场景。点击创建场景，选择已有对象开始。' : '暂无可构建场景。请添加已登记的 viento-scene2d JSON 场景文档。');
     el('projectBuildRefresh').disabled = requestBusy;
-    el('projectBuildEditScene').hidden = activeTab === 'preview' || !updateSupported;
+    el('projectBuildAssembly').hidden = activeTab === 'preview' || data?.assemblyDocuments !== true;
+    el('projectBuildAssembly').disabled = requestBusy || running() || checkingTool() || !ready() || catalogUnavailable();
+    el('projectBuildEditScene').hidden = projectTarget() || activeTab === 'preview' || !updateSupported;
     el('projectBuildEditScene').disabled = requestBusy || running() || !ready() || !liveScene();
-    el('projectBuildCreateScene').hidden = activeTab === 'preview' || !creationSupported;
+    el('projectBuildCreateScene').hidden = projectTarget() || activeTab === 'preview' || !creationSupported;
     el('projectBuildCreateScene').disabled = requestBusy || running() || !ready() || catalogUnavailable();
     el('projectBuildMaterialize').hidden = !previewSupported || !creationSupported || activeTab !== 'preview' || selectedDocument()?.kind !== 'composition';
     el('projectBuildMaterialize').disabled = !mayMaterialize();
-    el('projectBuildManageBehavior').hidden = activeTab === 'preview' || !behaviorDirectorySupported;
+    el('projectBuildSceneAudio').hidden = projectTarget() || activeTab === 'preview' || !audioCreationSupported;
+    el('projectBuildSceneAudio').disabled = requestBusy || running() || checkingTool() || !ready() || !liveScene();
+    el('projectBuildManageBehavior').hidden = projectTarget() || activeTab === 'preview' || !behaviorDirectorySupported;
     el('projectBuildManageBehavior').disabled = requestBusy || running() || !ready() || !liveScene();
-    el('projectBuildCreateBehavior').hidden = activeTab === 'preview' || !behaviorCreationSupported;
+    el('projectBuildCreateBehavior').hidden = projectTarget() || activeTab === 'preview' || !behaviorCreationSupported;
     el('projectBuildCreateBehavior').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildPlan').disabled = !mayStart('plan');
+    el('projectBuildGenerate').textContent = t(projectTarget() ? '构建项目' : '构建场景');
     el('projectBuildGenerate').disabled = !mayStart('build');
     el('projectBuildHeadless').disabled = !mayStart('run', 'headless'); el('projectBuildWindow').disabled = !mayStart('run', 'window');
     renderControlProgram();
     renderRuntimeCase();
     caseDocuments?.render();
     caseSuites?.render();
+    el('projectBuildSuites').hidden = projectTarget();
+    el('projectBuildCaseReport').hidden = projectTarget();
     caseReport?.render();
     backendProjects?.render();
     delivery?.refresh();
@@ -704,7 +881,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildError').hidden = !errorMessage; el('projectBuildError').textContent = errorMessage;
     const summary = planScene === selected ? plan : null;
     el('projectBuildPlanSummary').hidden = !summary;
-    el('projectBuildPlanCounts').textContent = summary ? t('{0} · {1} 个角色 · {2} 个资源', summary.title, summary.actorCount, summary.resourceCount) : '';
+    el('projectBuildPlanCounts').textContent = summary ? summary.kind === 'project' ? t('{0} · {1} 个场景 · {2} 个角色 · {3} 个资源', summary.title, summary.sceneCount, summary.actorCount, summary.resourceCount) : t('{0} · {1} 个角色 · {2} 个资源', summary.title, summary.actorCount, summary.resourceCount) : '';
     const hasBehaviorCounts = Number.isSafeInteger(summary?.behaviorBindingCount) && summary.behaviorBindingCount >= 0
       && Number.isSafeInteger(summary?.behaviorSourceCount) && summary.behaviorSourceCount >= 0;
     el('projectBuildBehaviorCounts').hidden = !hasBehaviorCounts;
@@ -805,7 +982,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     const body = action === 'cancel' ? { action, jobId: data.job.id }
       : action === 'run' ? { action, buildId: matchedBuild().id, mode, ...(controlProgram ? { controlProgram } : {}),
         ...(runtimeCase ? { runtimeCase, ...(caseDocuments?.boundSceneId() ? { runtimeCaseSceneId: caseDocuments.boundSceneId() } : {}) } : {}) }
-      : { action, sceneId: selected, ...(action === 'build' ? { expectedSnapshotId: plan.snapshotId } : {}) };
+      : { action, ...(projectTarget() ? { targetId: selected } : { sceneId: selected }), ...(action === 'build' ? { expectedSnapshotId: plan.snapshotId } : {}) };
     if (action === 'cancel') cancelling = true;
     if (action === 'plan') { plan = null; planScene = ''; }
     const epoch = ++requestEpoch; requestBusy = true; errorMessage = ''; errorDetails = ''; render();
@@ -846,7 +1023,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   }
   caseDocuments = setupRuntimeCaseDocuments({
     container: el('projectBuildCaseDocuments'),
-    getState: () => ({ ...getContext(), sceneId: selectedScene()?.id || '', available,
+    getState: () => ({ ...getContext(), sceneId: projectTarget() ? '' : selectedScene()?.id || '', available: available && !projectTarget(),
       visible: dialog.open, session: dialogSession, active: requestBusy || running() || checkingTool() || caseSuites?.isBusy(), offline: catalogUnavailable() }),
     getText: () => el('projectBuildCaseProgram').value,
     setText: text => { el('projectBuildCaseProgram').value = text; caseError = ''; },
@@ -870,7 +1047,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     }
   }
   caseReport = setupRuntimeCaseReport({ container: el('projectBuildCaseReport'),
-    getState: () => ({ available, visible: dialog.open, session: dialogSession, sceneId: selectedScene()?.id || '',
+    getState: () => ({ available: available && !projectTarget(), visible: dialog.open && !projectTarget(), session: dialogSession, sceneId: projectTarget() ? '' : selectedScene()?.id || '',
       buildId: matchedBuild()?.id || '', backendId: data?.backend?.id || '', job: data?.job }),
     request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('读取用例报告'))).payload,
@@ -904,7 +1081,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       body: JSON.stringify(body) }, 15000, t('读取后端工程详情'))).payload,
   });
   caseSuites = setupRuntimeCaseSuites({ container: el('projectBuildSuites'),
-    getState: () => ({ ...getContext(), sceneId: selectedScene()?.id || '', available, visible: dialog.open, session: dialogSession,
+    getState: () => ({ ...getContext(), sceneId: projectTarget() ? '' : selectedScene()?.id || '', available: available && !projectTarget(), visible: dialog.open, session: dialogSession,
       active: requestBusy || running() || checkingTool() || caseDocuments?.isBusy(), offline: catalogUnavailable(),
       buildId: matchedBuild()?.id || '', backendId: data?.backend?.id || '', canRun: mayStart('run', 'headless') && Boolean(runtimeCasePlan()), job: data?.job }),
     request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
@@ -915,10 +1092,12 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     dialogSession++; sourceNavigationEpoch++; pendingSourceFocus = null;
     render(); dialog.showModal(); void refresh();
   } });
-  el('projectBuildEditScene').addEventListener('click', editScene);
-  el('projectBuildManageBehavior').addEventListener('click', () => { if (behaviorDirectorySupported && activeTab === 'build' && !requestBusy && !running() && ready() && liveScene()) void behaviorLinks.open(selected); });
-  el('projectBuildCreateBehavior').addEventListener('click', () => { if (behaviorCreationSupported && !requestBusy && !running() && ready() && liveScene()) void behaviorCreator.open(selected); });
-  el('projectBuildCreateScene').addEventListener('click', () => { if (creationSupported && !requestBusy && !running() && ready() && !catalogUnavailable()) sceneCreator.open(); });
+  el('projectBuildAssembly').addEventListener('click', () => { if (data?.assemblyDocuments === true && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && !catalogUnavailable()) void assemblyEditor.open(projectTarget() && liveScene() ? selected : ''); });
+  el('projectBuildEditScene').addEventListener('click', () => { if (!projectTarget()) editScene(); });
+  el('projectBuildSceneAudio').addEventListener('click', () => { if (!projectTarget() && audioCreationSupported && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void audioCreator.open(selected); });
+  el('projectBuildManageBehavior').addEventListener('click', () => { if (!projectTarget() && behaviorDirectorySupported && activeTab === 'build' && !requestBusy && !running() && ready() && liveScene()) void behaviorLinks.open(selected); });
+  el('projectBuildCreateBehavior').addEventListener('click', () => { if (!projectTarget() && behaviorCreationSupported && !requestBusy && !running() && ready() && liveScene()) void behaviorCreator.open(selected); });
+  el('projectBuildCreateScene').addEventListener('click', () => { if (!projectTarget() && creationSupported && !requestBusy && !running() && ready() && !catalogUnavailable()) sceneCreator.open(); });
   el('projectBuildClose').addEventListener('click', () => { if (delivery.close()) dialog.close(); });
   dialog.addEventListener('cancel', event => { event.preventDefault(); if (delivery.close()) dialog.close(); });
   dialog.addEventListener('close', () => {
@@ -931,6 +1110,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     delivery.close();
     sceneAuthoring.closed();
     problems.refresh();
+    stateObservation.refresh();
+    eventObservation.refresh();
+    audioObservation.refresh();
     const pending = pendingSourceFocus; pendingSourceFocus = null;
     const current = pending?.session === dialogSession && pending.epoch === sourceNavigationEpoch;
     sourceNavigationEpoch++;
@@ -940,7 +1122,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   });
   const tabs = ['projectBuildTabPreview', 'projectBuildTabBuild'];
   function selectTab(index, focus = false) {
-    if (!previewSupported) return;
+    if (!previewSupported || projectTarget() && index === 0) return;
     selections[activeTab] = selected; activeTab = index === 0 ? 'preview' : 'build'; selectDocument(); render();
     if (focus) el(tabs[index]).focus();
   }
@@ -996,6 +1178,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   onLanguageChange(render);
   return { setAvailable(value, commands = [], capabilities = {}) {
     creationSupported = commands.includes('scene.create'); updateSupported = commands.includes('scene.update'); sceneCreator.setAvailable(value === true && (creationSupported || updateSupported), commands);
+    audioCreationSupported = value === true && commands.includes('audio.create'); audioCreator.setAvailable(audioCreationSupported, commands);
     behaviorCreationSupported = commands.includes('behavior.create'); behaviorCreator.setAvailable(value === true && behaviorCreationSupported, commands);
     behaviorDirectorySupported = value === true && capabilities.sceneBehaviorDirectory === true;
     behaviorLinks.setAvailable(behaviorDirectorySupported, commands);

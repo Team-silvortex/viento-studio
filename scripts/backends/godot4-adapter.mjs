@@ -11,12 +11,14 @@ import { runBuildProcess } from '../lib/build-process.mjs';
 import { identifyGodot, generateGodotProject, godotDiagnostics, createRuntimeEventReader } from './godot4-dispatch.mjs';
 import { generateGodotBehaviorProject, godotBehaviorDiagnostics, createBehaviorRuntimeEventReader } from './godot4-behaviors.mjs';
 import { generateGodotAudioProject, godotAudioDiagnostics } from './godot4-audio.mjs';
+import { generateGodotAssemblyProject, godotAssemblyScripts, godotAssemblyDiagnostics } from './godot4-project.mjs';
+import { createProjectRuntimeEventReader } from '../../engine/project-runtime-events.mjs';
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.6.0',
-  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }],
-  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline'],
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.11.0',
+  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 4 }],
+  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -41,7 +43,7 @@ async function generate(plan) {
   support({ operation: 'build', plan });
   // Detach before the generator's asynchronous file reads so callers cannot
   // change an admitted plan while its project bytes are being produced.
-  const generated = await (plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
+  const generated = await (plan.kind === 'project' ? generateGodotAssemblyProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
   return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
     artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
 }
@@ -70,6 +72,20 @@ async function fingerprint() {
     ['engine/studio-core.mjs', new URL('../../engine/studio-core.mjs', import.meta.url)],
     ['engine/studio-core.wasm', new URL('../../engine/studio-core.wasm', import.meta.url)],
     ['scripts/lib/audio-wav.mjs', new URL('../lib/audio-wav.mjs', import.meta.url)],
+    ['scripts/backends/godot4-project.mjs', new URL('./godot4-project.mjs', import.meta.url)],
+    ['engine/project-assembly-plan.mjs', new URL('../../engine/project-assembly-plan.mjs', import.meta.url)],
+    ['engine/project-assembly-plan-contract.mjs', new URL('../../engine/project-assembly-plan-contract.mjs', import.meta.url)],
+    ['engine/project-assembly.mjs', new URL('../../engine/project-assembly.mjs', import.meta.url)],
+    ['engine/build-target.mjs', new URL('../../engine/build-target.mjs', import.meta.url)],
+    ['engine/project-runtime-contracts.mjs', new URL('../../engine/project-runtime-contracts.mjs', import.meta.url)],
+    ['engine/project-runtime-events.mjs', new URL('../../engine/project-runtime-events.mjs', import.meta.url)],
+    ['engine/project-shared-state.mjs', new URL('../../engine/project-shared-state.mjs', import.meta.url)],
+    ['engine/project-event-bus.mjs', new URL('../../engine/project-event-bus.mjs', import.meta.url)],
+    ['engine/project-audio-commands.mjs', new URL('../../engine/project-audio-commands.mjs', import.meta.url)],
+    ['scripts/backends/godot4/project-runtime.gd', new URL('./godot4/project-runtime.gd', import.meta.url)],
+    ['scripts/backends/godot4/project-scene.gd', new URL('./godot4/project-scene.gd', import.meta.url)],
+    ['scripts/backends/godot4/project-events.gd', new URL('./godot4/project-events.gd', import.meta.url)],
+    ['scripts/backends/godot4/project-audio.gd', new URL('./godot4/project-audio.gd', import.meta.url)],
   ];
   const identities = await Promise.all(files.map(async ([file, url]) => ({ path: file, sha256: buildHash(await fs.readFile(url)) })));
   return { id: descriptor.id, contractVersion: 1, sha256: buildHash(JSON.stringify(identities)) };
@@ -101,7 +117,9 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
       XDG_DATA_HOME: path.join(directory, '.host/data'), XDG_CONFIG_HOME: path.join(directory, '.host/config'), XDG_CACHE_HOME: path.join(directory, '.host/cache') },
     signal, timeoutMs, onOutput };
   if (phase === 'script-check') {
-    const scripts = ['runtime.gd'];
+    const assemblyScripts = await godotAssemblyScripts(directory, signal);
+    const scripts = assemblyScripts || ['runtime.gd'];
+    if (!assemblyScripts) {
     let manifest;
     try { manifest = JSON.parse(await readBuildFile(path.join(directory, 'behaviors.json'), 128 * 1024, signal)); }
     catch (error) { if (error.code !== 'ENOENT') throw buildError('build_behavior_invalid', 'Invalid generated behavior inventory.'); }
@@ -120,6 +138,7 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
     if (hasAudio) {
       await readBuildFile(await resolveContainedPath(directory, path.join(directory, 'audio-runtime.gd')), 65536, signal);
       scripts.push('audio-runtime.gd');
+    }
     }
     const started = Date.now(); let stdout = '', stderr = '', result;
     for (const script of scripts) {
@@ -192,8 +211,11 @@ async function cleanupProject(directory, { generatedFiles = [], resourceFiles = 
 export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
   descriptor, contractVersion: 1, acceptsLegacyBuildRecords: true, buildPhases, runtimePhases,
   availability, identify: identifyGodot, generate, fingerprint, executePhase,
-  diagnostics: (result, plan) => (plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
-  createEventReader: (plan, options) => {
+  diagnostics: (result, plan) => (plan.kind === 'project' ? godotAssemblyDiagnostics : plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
+  createEventReader: (input, options) => {
+    if (input.kind === 'project') return createProjectRuntimeEventReader(input, { protocolVersion: 4, ...options,
+      ...(options?.smoke === true ? { expectedTotalSeconds: 0.5 } : {}) });
+    const plan = input;
     const createBaseReader = plan.schemaVersion === 3 ? createBehaviorRuntimeEventReader : createRuntimeEventReader;
     return plan.audio ? createSceneAudioEventReader(plan, { ...options, createBaseReader }) : createBaseReader(plan, options);
   }, cleanupProject,

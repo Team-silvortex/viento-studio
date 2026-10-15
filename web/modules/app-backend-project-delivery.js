@@ -1,3 +1,4 @@
+import { backendProjectSourceIdentity } from '../../engine/backend-project.mjs';
 import { createBackendProjectDeliveryReview, validateBackendProjectDeliveryReview } from '../../engine/backend-project-delivery.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { API_PATHS } from '../../scripts/lib/doc-api-contract.mjs';
@@ -50,9 +51,9 @@ export function setupBackendProjectDelivery({ getContext, prepare, checkDownload
   }
   function facts() {
     el('Facts').replaceChildren(); el('Files').replaceChildren(); if (!review) return;
-    const project = review.project;
+    const project = review.project, sourceIdentity = backendProjectSourceIdentity(project);
     for (const [label, value] of [['交付文件名', review.fileName], ['构建标识', project.buildId], ['来源快照', project.snapshotId],
-      ['来源场景标识', project.source.sceneId], ['后端标识', project.backend.id], ['生成入口', project.project.entry],
+      [sourceIdentity.planKind === 'project' ? '来源组装标识' : '来源场景标识', sourceIdentity.objectId], ['后端标识', project.backend.id], ['生成入口', project.project.entry],
       ['运行工具版本', project.tool.version], ['工程清单指纹', review.manifestSha256], ['生成文件数量', project.files.length], ['素材数量', project.resources.length]]) {
       el('Facts').append(node('dt', t(label)), node('dd', String(value)));
     }
@@ -98,7 +99,7 @@ export function setupBackendProjectDelivery({ getContext, prepare, checkDownload
         || typeof identity.backendIdentity !== 'string' || !identity.backendIdentity
         || canonicalJson(contextIdentity(owner || {})) !== canonicalJson(identity)
         || next.project.buildId !== owner.buildId || next.project.snapshotId !== owner.snapshotId
-        || next.project.source.sceneId !== identity.sceneId || next.project.backend.id !== identity.backendId) return false;
+        || backendProjectSourceIdentity(next.project).objectId !== identity.sceneId || next.project.backend.id !== identity.backendId) return false;
       origin = Object.freeze(identity); review = next; epoch++; error = ''; status('请核对交付内容，再准备完整工程包。');
       opener = document.activeElement; dialog.showModal(); render(); notify(); return true;
     } catch { return false; }

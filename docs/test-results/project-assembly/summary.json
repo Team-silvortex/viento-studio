@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-15",
+  "applicationVersion": "0.1.3",
+  "releaseStatus": "Uncommitted working-tree increment; no install, version bump, commit or push.",
+  "feature": "Engine-neutral project assembly of 1–32 saved Scene2D members, one selected entry, one Godot project and relocatable project delivery.",
+  "application": {
+    "tests": 5067,
+    "passed": 4948,
+    "skipped": 119,
+    "failed": 0,
+    "javascriptSyntaxFiles": 851,
+    "apiContract": "passed",
+    "versionConsistency": "passed",
+    "log": "application.log"
+  },
+  "realGodotBackend": {
+    "tests": 117,
+    "passed": 117,
+    "skipped": 0,
+    "failed": 0,
+    "log": "godot-backend-tests.log"
+  },
+  "hostWorkflow": {
+    "tests": 4,
+    "passed": 4,
+    "skipped": 0,
+    "failed": 0,
+    "log": "workflow-real.log"
+  },
+  "browser": {
+    "report": "browser-1792059497612/browser.json",
+    "groups": 4,
+    "screenshots": 8,
+    "ok": true,
+    "sourceFiles": 81,
+    "sourceSnapshotUnchanged": true
+  },
+  "resourcePreparation": {
+    "comparisons": 62,
+    "callGroups": 4,
+    "report": "prepared-resources.json",
+    "notInstallation": true
+  },
+  "preservation": "preservation.json",
+  "cleanup": "cleanup.json",
+  "counting": "Targeted runs overlap the application suite and each other; do not sum totals. Initial failed checkpoints and earlier successful browser checkpoints remain historical evidence.",
+  "limitations": [
+    "Godot executes only the declared startup scene; runtime scene switching, cross-scene state/events and project replay remain future work.",
+    "Bevy rejects project plans; existing single-scene Bevy paths remain.",
+    "Engine project ZIP requires Godot; standalone executable distribution is not implemented.",
+    "Browser local HTTP and native Godot were exercised; installed Tauri, Android and other operating systems were not.",
+    "No new Rust/native desktop host changes in this increment; earlier uncommitted audio creation work and its historical evidence are preserved."
+  ]
+}

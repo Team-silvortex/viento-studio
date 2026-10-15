@@ -1,5 +1,8 @@
 # Studio 系统模块与工程需求
 
+**0.1.3 之后的当前工作树**支持[项目组装](PROJECT_ASSEMBLY.md)、[场景切换](PROJECT_ASSEMBLY.md#运行中切换场景)、[共享状态](PROJECT_SHARED_STATE.md)、[项目事件](PROJECT_EVENTS.md)及[行为驱动声音](PROJECT_AUDIO_CONTROLS.md)。Godot 项目中的行为可请求播放／停止当前场景已声明的音轨；先处理事件，再执行声音请求，最后切场景或正常结束。编辑器独立显示实际声音命令及行为、音轨两份冻结来源，工程 ZIP 保留运行接口。当前为 **21 模块／40 项声明能力**，Godot 适配器 **0.11.0**、项目协议 **4**；应用仍为 0.1.3，未更新安装。Bevy 项目组装与声音、跨启动存档、事件留存重放及独立游戏发行仍待接入。
+
+
 0.1.0 源码保留 0.0.10 接入的独立装配入口，并交付九个独立 3D 作者域：变换、对象管理、环境、属性、整体移动、位置对齐、等距分布、批量复制和批量移除。加上原有功能区与[独立只读预览](SCENE3D.md)，0.1.0 发布时共 17 个固定模块、33 项声明能力。之后的[独立行为编辑](SCENE_BEHAVIORS.md#内置行为编辑010-之后的工作树)增至 18／34，[首次创建行为](SCENE_BEHAVIORS.md#从场景首次添加行为)增至 18／35；当前再加入[内置脚本创建](SCENE_BEHAVIORS.md#内置脚本创建)，该阶段为 **19** 个固定模块、**36** 项声明能力。0.1.2 另接独立[配方创建助手](SCENE_COMPOSITION.md#新建场景配方)，增至 **20** 个固定模块、**37** 项声明能力。工程类型、模块实现、宿主权限、场景表示和执行后端分别描述自己的边界；预览导航与选择不增加作者权限。动态插件运行器仍未实现。
 
 0.1.0 之后的标准方向、临时镜头平移、正交观察、坐标方向提示与双指导航只扩展现有 `scene3d` 只读预览内部接口。可选 `setViewDirection`、`setDragMode`、`setProjectionMode` 分别接受固定方向、`orbit/pan` 拖动模式与 `perspective/orthographic` 投影模式，界面按各自接口可用性启用控件；缺少其中一项不会禁用已有检索与声明。数学函数不取得 DOM 或宿主，渲染器不取得作者草稿、World 或保存接口。该导航阶段仍为 17 模块、33 项声明能力，没有新增作者权限或宿主端口。投影状态不进入工程需求、作者相机或导出，见[正交边界](SCENE3D.md#正交观察010-之后的工作树)与[平移边界](SCENE3D.md#临时镜头平移010-之后的工作树)。
@@ -7,6 +10,8 @@
 方向提示使用可选 `onViewChange` 绘图观察接口，不注册新的系统模块或声明能力。渲染器只发布当前有效视图的冻结快照或失效 `null`；独立组件取得相机和固定词翻译，预览入口守护所属画布、渲染实例和当前会话。没有回执时隐藏提示，不影响已有声明、来源定位或作者编辑。组件没有作者文本、World、宿主或执行后端接口，见[方向提示](SCENE3D.md#坐标方向提示010-之后的工作树)。
 
 双指导航的 `supportsTouchNavigation === true` 仅是当前渲染器给界面的操作提示，不是注册表中的声明能力或宿主权限。触点状态、阈值、捕获和取消属于渲染适配器，纯数学只组合临时相机；预览入口按本地提示显示中英日说明，不增加按钮。缺少提示时旧渲染器继续原有导航，作者、来源定位及普通保存接口保持，见[双指导航](SCENE3D.md#双指导航010-之后的工作树)。
+
+首次声音创建接入时为 **21 模块／39 项声明能力**。独立 `org.viento.scene-audio` 提供已有声音的原文草稿编辑；构建模块另提供 `scene.authoring.audio-creation`，通过独立目录、审阅、语义命令和回源端口首次创建声音。创建控制器没有播放器、文件 IO 或其他编辑控制器，旧宿主缺少 `audio.create` 时仅隐藏该入口。见[场景声音](SCENE_AUDIO.md#从场景首次添加声音)。
 
 ## 系统的五层边界
 
@@ -48,7 +53,7 @@ flowchart TD
 | `org.viento.world` | 世界查询、命令、对象和投影创作 |
 | `org.viento.export` | 工程导出与资源包 |
 | `org.viento.media` | 图片、视频、音频的资源引用 |
-| `org.viento.build` | 当前聚合的 2D 场景、配方、后端工程和执行工作区；独立控制器提供首次创建行为入口及 `scene.authoring.behavior-creation` |
+| `org.viento.build` | 当前聚合的 2D 场景、配方、后端工程和执行工作区；独立控制器分别提供首次行为／声音入口及 `scene.authoring.behavior-creation`、`scene.authoring.audio-creation` |
 | `org.viento.scene3d` | 独立 3D 方块表示与只读 WebGL2 预览；只依赖文档模块 |
 | `org.viento.scene3d-transforms` | 独立单对象位置／旋转／尺寸原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.transforms3d` |
 | `org.viento.scene3d-objects` | 独立方块新增／复制／移除的完整原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.objects3d` |
@@ -60,6 +65,7 @@ flowchart TD
 | `org.viento.scene3d-copy` | 独立现有对象的一对一新身份及共同偏移、保真批量复制；总数最多128，完整审阅与草稿应用；仅依赖文档模块，提供 `scene.authoring.copy3d` |
 | `org.viento.scene3d-removal` | 独立多选保真移除，至少保留一个对象；明确删除与幸存声明、完整审阅及草稿应用；仅依赖文档模块，提供 `scene.authoring.removal3d` |
 | `org.viento.scene-behaviors` | 已有绑定文档的稳定绑定／实例／关联 TXT 选择、带类型参数和信号编辑；完整审阅后只应用原文草稿，仅依赖文档模块，提供 `scene.authoring.behaviors` |
+| `org.viento.scene-audio` | 已有声音轨道／提示的保真字段修改、完整审阅和原文草稿应用；只依赖文档模块，提供 `scene.authoring.audio`；保存与播放由原接口负责 |
 
 描述符是固定的 `viento-studio-module` schema 1 数据，包含 ID、API 版本、依赖和贡献能力。注册时拒绝重复提供者、未知依赖、版本冲突和依赖循环。工程声明不能注册模块，也不能加载代码；本轮没有第三方模块安装入口。
 
@@ -138,3 +144,9 @@ flowchart TD
 `scene3dRemoval`独立取得`getContext`／`getSource`／`applyDraft`。缺端口或同名feature为false只关闭本区，第九私有作者品牌与旧八域互拒。来源五字段与最后内存守护属于文档宿主，不共享选择或审批。Rust一次计算完整删除区间及最终候选，UI不循环单对象remove，也不删除资源。普通保存仍是持久化入口；见[批量移除](SCENE3D.md#批量移除对象未发布增量)。
 
 粒子预览沿用 `org.viento.scene3d`，作者编辑沿用 `org.viento.scene3d-environment`。`scene3d-playback.js` 只管理临时时刻，`scene3d-particle-preview.js` 管理本地控件，`scene3d-particles-renderer.js` 只消费已验证的分布与偏移；均不取得作者写入、普通保存或执行后端端口。可选核心粒子 ABI 和实际渲染支持分别检查，不新增模块或全局权限。
+
+## 项目运行中的声音观察
+
+[行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md) 沿用现有脚本、构建与声音作者模块。`project.audio-control` 属于 Godot 执行后端能力，当前 Studio 仍为 21 模块／40 项声明能力。`Godot / 事件声音` 只产生可审阅的普通脚本草稿；原音轨编辑模块继续拥有声明草稿入口，不取得项目运行端口。
+
+独立声音观察控制器只消费父层严格准入的 `project.audioCommands`，显示实际执行的播放／停止命令，分别通过受守护的来源端口打开行为绑定和音轨声明。它不解析日志、不发送声音命令，也不持有播放器、事件或状态面板控制器。三类运行观察共享任务身份守护，各自保留自己的数据与来源范围。

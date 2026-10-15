@@ -188,7 +188,7 @@ test('build HTTP requires write auth and JSON, rejects untrusted origins and unk
   assert.equal(initial.data.available, false); assert.equal(initial.data.job, null);
   assert.deepEqual(initial.data.scenes.map(scene => scene.id), [sceneId]);
   assert.ok(!JSON.stringify(initial.data).includes(h.temporary), 'host paths are not exposed in discovery');
-  for (const action of ['plan', 'build', 'run', 'cancel', 'tool-check', 'case-list', 'case-load', 'case-save', 'suite-list', 'suite-load', 'suite-save', 'suite-run', 'suite-report']) {
+  for (const action of ['plan', 'build', 'run', 'cancel', 'tool-check', 'case-list', 'case-load', 'case-save', 'suite-list', 'suite-load', 'suite-save', 'suite-run', 'suite-report', 'assembly-list', 'assembly-load', 'assembly-save']) {
     assert.equal((await h.request({ action, sceneId })).status, 401, action);
     assert.equal((await h.request({ action, sceneId }, { headers: { Authorization: 'Bearer wrong' } })).status, 403, action);
   }

@@ -1,5 +1,8 @@
 # 后端工程管理
 
+**0.1.3 之后的当前工作树**支持[项目组装](PROJECT_ASSEMBLY.md)、[场景切换](PROJECT_ASSEMBLY.md#运行中切换场景)、[共享状态](PROJECT_SHARED_STATE.md)、[项目事件](PROJECT_EVENTS.md)及[行为驱动声音](PROJECT_AUDIO_CONTROLS.md)。Godot 项目中的行为可请求播放／停止当前场景已声明的音轨；先处理事件，再执行声音请求，最后切场景或正常结束。编辑器独立显示实际声音命令及行为、音轨两份冻结来源，工程 ZIP 保留运行接口。当前为 **21 模块／40 项声明能力**，Godot 适配器 **0.11.0**、项目协议 **4**；应用仍为 0.1.3，未更新安装。Bevy 项目组装与声音、跨启动存档、事件留存重放及独立游戏发行仍待接入。
+
+
 **0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；当前为 21 模块／38 项声明能力，本次未制作或更新安装包。
 
 基础工程管理已随 0.0.10 源码交付，当前 0.1.0 之后的工作树另增加生成工程交付包。作者工程与后端生成工程分别管理，现有安装版的覆盖见[当前状态](STATUS.md)。Godot、Bevy 共用清单与宿主管理接口，具体生成格式和执行命令仍由[可信后端适配器](BACKEND_MIDDLEWARE.md)负责。
@@ -10,7 +13,7 @@
 
 | 后端 | 当前生成内容 | 使用方式 |
 | --- | --- | --- |
-| Godot 4 | `project.godot`、场景、运行脚本、图片副本；行为场景另含冻结的 GDScript 输入 | 由锁定的 Godot 工具导入、检查与运行 |
+| Godot 4 | `project.godot`、场景、运行脚本、图片／WAV 副本；行为场景另含冻结 GDScript，项目组装另含协调器及状态、事件、声音控制模块 | 由锁定的 Godot 工具导入、检查与运行 |
 | Bevy 数据通道 | `scene-data.json` 场景数据包 | 由锁定的可信 Bevy 无头运行程序检查与运行；当前不生成可编辑的 Cargo / Rust 作者工程 |
 | Bevy Rust | `Cargo.toml`、`Cargo.lock`、固定 Bevy 运行模板与冻结 Rust 作者源码副本 | 固定 Cargo／rustc 1.95.0 离线检查并临时编译；交付不带 `target` 或可执行文件 |
 | ns-nova / yalivia | 尚未接入 | 管理契约与具体后端分开；不把未来原生运行能力标成现有功能 |
@@ -56,15 +59,15 @@ Godot 包需要兼容的 Godot 打开入口；旧 Bevy 数据包供对应可信�
 
 ```text
 <build-directory>/
-  backend-project.json  # 统一后端工程清单，schemaVersion 1
+  backend-project.json  # 统一后端工程清单；单场景 schema 1，项目组装 schema 2
   build.json            # 构建状态、工具、执行适配器与生成文件库存
-  snapshot.json         # 冻结作者输入与中立场景计划
+  snapshot.json         # 冻结作者输入与中立场景／项目计划
   source-map.json       # 运行声明到冻结作者来源的映射
   project/              # 后端生成文件与资源副本
   sessions/             # 运行后留下的小型会话记录；临时运行工程结束时删除
 ```
 
-`viento-backend-project` 清单复用原构建身份与库存，记录来源、后端、执行适配器、工具、入口、文件角色、资源 UUID 到生成路径的映射及生命周期。三份证据文件另以精确字节摘要锁定；清单不包含本机工具路径，不授予执行权限或磁盘所有权。原 build-record / snapshot 格式不升级。Godot 导入为已知脚本／图片产生的 `.uid` / `.import` 辅助文件按可信输入路径清理，在运行临时副本中重新产生，不作为未登记文件留在生成工程里。本轮 Godot 执行适配器代码指纹因此变化，旧构建须按既有规则重建；生成器与原运行协议不变。
+`viento-backend-project` 清单复用原构建身份与库存，记录来源、后端、执行适配器、工具、入口、文件角色、资源 UUID 到生成路径的映射及生命周期。三份证据文件另以精确字节摘要锁定；清单不包含本机工具路径，不授予执行权限或磁盘所有权。原 build-record / snapshot 格式不升级。Godot 导入为已知脚本／图片产生的 `.uid` / `.import` 辅助文件按可信输入路径清理，在运行临时副本中重新产生，不作为未登记文件留在生成工程里。本轮 Godot 执行适配器代码指纹因此变化，旧构建须按既有规则重建；该工程管理首轮未改变生成器与运行协议，后续版本由冻结适配器分别核对。
 
 命令行可以检查已知目录，包括前一次服务或 CLI 创建的输出：
 
@@ -94,3 +97,9 @@ node scripts/project-build.mjs --command inspect --build /absolute/build-directo
 这些保留项不占后续三份普通输出的回收额度，因此列表可以超过三份。失败构建保留部分生成输入，只有内容与宿主写入凭据完全一致时才按同一规则回收。恢复的上一服务工程统一标为保留，即使重新选择运行也不会获得本服务的删除凭据。CLI 输出、工具缓存、作者正文和素材也不在这个自动清理范围中。
 
 当前不支持在生成目录里编辑后再回导作者工程、跨路径自动迁移／陌生目录认领、工程独立发行或任意缓存批量删除。构建与场景工作流见[构建与运行](PROJECT_BUILD.md)，后端能力边界见[Bevy 后端](BEVY_BACKEND.md)与[场景行为](SCENE_BEHAVIORS.md)。清单与回收原验收见[管理专题](test-results/backend-project-management/results.json)，持久恢复与运行对接另见[本轮验收](test-results/backend-project-catalog/results.json)。
+
+## 项目声音控制的交付边界
+
+当前 Godot 0.11.0 的项目工程携带独立声音请求队列、原声音播放器与冻结 WAV，接收方可以在新目录中导入并运行行为播放／停止接口。项目协议为 4，Godot 生成的 `assembly.json` 为 schema 5；这与统一 `backend-project.json` 的项目清单 schema 2、交付包格式 v1 分开。旧单场景生成字节及声音子协议保持。
+
+回执记录来自本次运行，不进入工程 ZIP，也不成为下一次运行的播放状态。升级适配器后，本机旧缓存仍按来源与生成字节指纹要求重建；已经导出的旧工程保留自己的运行代码。详见[行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md)，现有交付与清理权限不扩大。

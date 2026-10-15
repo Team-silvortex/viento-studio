@@ -23,7 +23,7 @@ function fixture(settings) {
 
 test('copy is a separate source authoring module with only document dependency', () => {
   const registry = createStudioModuleRegistry(), plan = registry.plan(), declaration = registry.descriptors().find(m => m.id === 'org.viento.scene3d-copy');
-  assert.equal(plan.modules.length, 21); assert.equal(plan.capabilities.length, 38);
+  assert.equal(plan.modules.length, 21); assert.equal(plan.capabilities.length, 40);
   assert.deepEqual(declaration.dependencies, [{ id: 'org.viento.document', apiVersion: 1 }]);
   assert.equal(plan.capabilities.find(c => c.capability === 'scene.authoring.copy3d').moduleId, declaration.id);
 });

@@ -2,6 +2,7 @@
 // workspace access, output repair, adoption or cleanup occurs in this module.
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { scenePlans } from '../../engine/build-target.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { validateBackendProjectManifest, BACKEND_PROJECT_MANIFEST_MAX_BYTES } from '../../engine/backend-project.mjs';
 import { buildHash, buildError, readBuildFile } from './node-build-snapshot.mjs';
@@ -54,10 +55,12 @@ export function createBackendProjectManifest({ build, snapshot, sourceMap, gener
       return { resourceId: resource.id, sourcePath: asset.location.path, generatedPath: `project/${generated.resourceFiles.get(resource.id)}`,
         size: resource.size, sha256: resource.sha256 };
     }).sort((a, b) => compare(a.generatedPath, b.generatedPath));
-    const behaviorSources = new Set(plan.behaviors?.sources.map(source => source.objectId) || []);
+    const children = scenePlans(plan), assembly = plan.kind === 'project';
+    const sceneIds = new Set(children.map(child => child.scene.objectId));
+    const behaviorSources = new Set(children.flatMap(child => child.behaviors?.sources.map(source => source.objectId) || []));
     const dependencies = snapshot.source.documents.map(document => ({ objectId: document.record?.id || null,
       sourcePath: document.sourcePath, sourceRevision: document.sourceRevision,
-      role: document.record?.id === plan.scene.objectId ? 'scene' : behaviorSources.has(document.record?.id) ? 'behavior-source' : 'author-document',
+      role: assembly && document.record?.id === plan.assembly.objectId ? 'assembly' : sceneIds.has(document.record?.id) ? 'scene' : behaviorSources.has(document.record?.id) ? 'behavior-source' : 'author-document',
     })).sort((a, b) => compare(a.sourcePath, b.sourcePath));
     const data = { 'build.json': build, 'snapshot.json': snapshot, 'source-map.json': sourceMap };
     const evidence = metadataNames.map(name => {
@@ -65,8 +68,10 @@ export function createBackendProjectManifest({ build, snapshot, sourceMap, gener
       if (!(bytes instanceof Uint8Array)) fail();
       return { path: name, size: bytes.byteLength, sha256: buildHash(bytes) };
     });
-    return validateBackendProjectManifest({ format: 'viento-backend-project', schemaVersion: 1, buildId: build.buildId, snapshotId: build.snapshotId,
-      source: { workspaceId: snapshot.source.workspace.id, sceneId: plan.scene.objectId, sourcePath: plan.scene.sourcePath,
+    return validateBackendProjectManifest({ format: 'viento-backend-project', schemaVersion: assembly ? 2 : 1, buildId: build.buildId, snapshotId: build.snapshotId,
+      source: assembly ? { workspaceId: snapshot.source.workspace.id, assemblyId: plan.assembly.objectId, sourcePath: plan.assembly.sourcePath,
+        sourceRevision: plan.assembly.sourceRevision, planKind: plan.kind, planSchemaVersion: plan.schemaVersion, entrySceneId: plan.entrySceneId,
+        scenes: children.map(child => ({ sceneId: child.scene.objectId, sourcePath: child.scene.sourcePath, sourceRevision: child.scene.sourceRevision })) } : { workspaceId: snapshot.source.workspace.id, sceneId: plan.scene.objectId, sourcePath: plan.scene.sourcePath,
         sourceRevision: plan.scene.sourceRevision, planKind: plan.kind, planSchemaVersion: plan.schemaVersion },
       backend: { id: build.backend.id, version: build.backend.version, protocolVersion: build.backend.protocolVersion, sha256: build.backend.sha256 },
       executionAdapter: build.executionAdapter || null,

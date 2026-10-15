@@ -181,15 +181,24 @@ test('real Godot: build/import, cold run from frozen input, movement states, saf
     assert.equal(rejected.ok, false); assert.match(rejected.diagnostics[0].code, /^build_output_/);
   }
   const controller = new AbortController();
-  const pending = runProjectBuild({ buildDirectory: output, godot, smoke: false, signal: controller.signal });
-  const timer = setTimeout(() => controller.abort(), 6000);
-  const cancelled = await pending; clearTimeout(timer);
+  let sawReady = false, reachedDeadline = false, cancelled;
+  const timer = setTimeout(() => { reachedDeadline = true; controller.abort(); }, 30000);
+  try {
+    cancelled = await runProjectBuild({ buildDirectory: output, godot, smoke: false, signal: controller.signal,
+      onProgress: ({ event }) => {
+        if (event?.event === 'ready') { sawReady = true; controller.abort(); }
+      } });
+  } finally { clearTimeout(timer); controller.abort(); }
+  assert.equal(reachedDeadline, false, 'real runtime must become ready within the bounded cancellation test');
+  assert.equal(sawReady, true, JSON.stringify(cancelled));
   assert.equal(cancelled.status, 'cancelled', JSON.stringify(cancelled));
-  assert.ok(cancelled.record.events.some(item => item.event === 'ready'), 'cancel after the real runtime starts');
+  assert.ok(cancelled.record.events.some(item => item.event === 'ready'), 'ready is admitted before cancellation');
   if (cancelled.sessionDirectory) await assert.rejects(fs.stat(path.join(cancelled.sessionDirectory, 'project')), { code: 'ENOENT' });
   const timeout = await runProjectBuild({ buildDirectory: output, godot, smoke: false, timeoutMs: 6000 });
   assert.equal(timeout.status, 'timeout', JSON.stringify(timeout));
-  assert.ok(timeout.record.events.some(item => item.event === 'ready'), 'timeout after the real runtime starts');
+  // The deadline governs actual engine phases, including a cold import. Unlike
+  // cancellation above, it does not promise the runtime became ready first.
+  assert.ok(timeout.record?.phases.some(item => ['import', 'script-check', 'run'].includes(item.phase) && item.status === 'timeout'), JSON.stringify(timeout));
   await assert.rejects(fs.stat(path.join(timeout.sessionDirectory, 'project')), { code: 'ENOENT' });
   await fs.appendFile(path.join(output, 'project/runtime.gd'), '\n# altered\n');
   const altered = await runProjectBuild({ buildDirectory: output, godot });

@@ -1,0 +1,38 @@
+{
+  "scope": "Project runtime scene switching portable contracts, per-visit event admission and current-scene observation/query.",
+  "result": {
+    "total": 70,
+    "passed": 70,
+    "failed": 0,
+    "skipped": 0,
+    "newProtocolAndObservationTests": 21
+  },
+  "tests": [
+    "scripts/tests/project-runtime-browser.test.mjs",
+    "scripts/tests/project-runtime-events.test.mjs",
+    "scripts/tests/project-runtime-query.test.mjs",
+    "scripts/tests/scene-runtime-query.test.mjs",
+    "scripts/tests/scene-behavior-events.test.mjs",
+    "scripts/tests/scene-audio.test.mjs",
+    "scripts/tests/project-assembly.test.mjs"
+  ],
+  "log": "core-tests.log",
+  "sourceSha256": {
+    "engine/project-assembly-plan-contract.mjs": "2519dab585678f46d633b728087c955ef7a858a7da4007d12dd1c42f753a1abe",
+    "engine/project-assembly-plan.mjs": "8b90a3030cdcd0a588550c76ab992f033383701e4c02efed8fd1967b1d203b4d",
+    "scripts/tests/project-runtime-browser.test.mjs": "882e024cec5491990514f24f1a5b38b22600aff2dc9a4b50cfd7d27b71bd024c",
+    "engine/project-runtime-contracts.mjs": "46b97fdc62c201635bc01f201c45eae2c7225b2dd7ffe0644f44a26fa10b4ccf",
+    "engine/project-runtime-events.mjs": "7d388743e492cd22f19d9f231ffc5eb29e68b426c9b629554c892310f6cef1da",
+    "engine/project-runtime-query.mjs": "5387168d166c77f415a031778f7379c223de65c5ad82b1880287519fde048ca0",
+    "scripts/tests/project-runtime-events.test.mjs": "006dc63c7cddaf5adae1c41474ccb729656ef168ffae1cbaba55372dc88cce2f",
+    "scripts/tests/project-runtime-query.test.mjs": "30aa91a9146b6f0d831c5ffe143902808cbfa27844ca80974a2b290c29fed7e3",
+    "scripts/tests/helpers/project-runtime-fixture.mjs": "9b21f59fc5b19b4e64576078fd047c7df3e73c44234c2182824dab1d4c2aa5e0"
+  },
+  "boundary": [
+    "No Node, DOM or backend process APIs in the new engine modules.",
+    "Legacy scene event readers, query format and assembly author schema remain unchanged.",
+    "This record does not claim real browser, Godot process, installed app or device validation.",
+    "Real transitive ES-module linking in a context without Node/DOM globals executes A→B→A and rejects bare packages and author build-plan imports; frozen validator is now in project-assembly-plan-contract.mjs.",
+    "Optional expectedTotalSeconds is a host-owned finite 0–60 second expectation. A smoke requirement of 0.5 rejects a coherent zero-time finished event with runtime_protocol_incomplete; unrestricted window sessions may close at zero. Previous 66-test evidence is preserved as checkpoint."
+  ]
+}

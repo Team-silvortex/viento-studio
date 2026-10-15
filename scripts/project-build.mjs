@@ -16,7 +16,7 @@ import { inspectRuntimeCaseDocument } from '../engine/runtime-case-document.mjs'
 
 export async function runProjectBuildCommand(argv, { signal } = {}) {
   const { values } = parseArgs({ args: argv, strict: true, options: {
-    command: { type: 'string', default: 'plan' }, root: { type: 'string' }, scene: { type: 'string' },
+    command: { type: 'string', default: 'plan' }, root: { type: 'string' }, scene: { type: 'string' }, target: { type: 'string' },
     godot: { type: 'string' }, backend: { type: 'string' }, tool: { type: 'string' },
     output: { type: 'string' }, build: { type: 'string' },
     'timeout-ms': { type: 'string' }, window: { type: 'boolean' },
@@ -43,7 +43,7 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
     throw new Error('--godot is the Godot-only legacy alias; use --backend <id> --tool <path> for the selected backend.');
   }
   if (checkingTool) {
-    if (['root', 'scene', 'output', 'build', 'window', 'interactive', 'capture', 'control-program', 'runtime-case', 'runtime-suite'].some(key => values[key] !== undefined)) {
+    if (['root', 'scene', 'target', 'output', 'build', 'window', 'interactive', 'capture', 'control-program', 'runtime-case', 'runtime-suite'].some(key => values[key] !== undefined)) {
       throw buildError('build_request_invalid', 'Tool checks accept only the host backend, tool and bounded timeout; omit project and execution inputs.');
     }
     const adapter = createExecutionBackendRegistry().resolve(configuration.backendId);
@@ -61,13 +61,14 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
   // Decide the mode before opening either input file or the frozen build.
   if(values['runtime-suite']!==undefined) {
     if(values.command!=='run'||values['runtime-case']!==undefined||values['control-program']!==undefined
-      ||values.window||values.interactive||values.capture||!values.root||!values.build||values.scene||values.output) {
+      ||values.window||values.interactive||values.capture||!values.root||!values.build||values.scene||values.target||values.output) {
       throw buildError('runtime_suite_unsupported','Suite runs require --root, --build and a registered --runtime-suite UUID or project-relative document path.');
     }
     if(timeoutMs>30000)throw buildError('runtime_suite_limit','Each suite member is limited to 30 seconds.');
     const backendRegistry=createExecutionBackendRegistry();
     const frozen=await readFrozenProjectBuild(values.build,{...(explicitBackend?{backendId:configuration.backendId}:{}),backendRegistry,signal});
     const selected=frozenConfiguration(frozen);
+    if (frozen.plan.kind === 'project') throw buildError('runtime_case_unsupported', 'Runtime case suites require a single scene build.');
     const capture=await captureRuntimeCaseSuite(values.root,{documentRef:values['runtime-suite'],plan:frozen.plan,signal});
     return executeRuntimeCaseSuite({capture,plan:frozen.plan,authorRoot:values.root,buildDirectory:frozen.buildDirectory,
       buildId:frozen.build.buildId,snapshotId:frozen.build.snapshotId,tool:selected.tool,backendId:selected.backendId,
@@ -109,7 +110,7 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
     }
   }
   if (values.command === 'run') {
-    if (!values.build || values.root || values.scene || values.output) throw new Error('Run requires --build <directory>; it runs frozen output without reopening source.');
+    if (!values.build || values.root || values.scene || values.target || values.output) throw new Error('Run requires --build <directory>; it runs frozen output without reopening source.');
     const backendRegistry = createExecutionBackendRegistry();
     let frozen;
     try {
@@ -130,10 +131,10 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
       ...(runtimeCaseSceneId ? { runtimeCaseSceneId } : {}),
       signal, timeoutMs, headless: !values.window, smoke: !values.interactive, capture: Boolean(values.capture) });
   }
-  if (!values.root || !values.scene || values.build || values.window || values.interactive || values.capture) throw new Error('Plan/build require --root <workspace> --scene <document UUID or source path>.');
-  if (values.command === 'build') return buildProject({ root: values.root, scene: values.scene, ...configuration, output: values.output, signal, timeoutMs });
+  if (!values.root || Boolean(values.scene) === Boolean(values.target) || values.build || values.window || values.interactive || values.capture) throw new Error('Plan/build require --root <workspace> and either --target <document UUID or source path> or legacy --scene.');
+  if (values.command === 'build') return buildProject({ root: values.root, targetId: values.target ?? values.scene, ...configuration, output: values.output, signal, timeoutMs });
   if (values.output) throw new Error('Plan does not write output; omit --output.');
-  const captured = await captureBuildSnapshot(values.root, values.scene, { signal });
+  const captured = await captureBuildSnapshot(values.root, values.target ?? values.scene, { signal });
   const diagnostics = captured.ok && explicitBackend ? checkExecutionBackendSupport(
     createExecutionBackendRegistry().resolve(configuration.backendId).descriptor,
     { operation: 'build', platform: process.platform, plan: captured.plan }) : captured.diagnostics;

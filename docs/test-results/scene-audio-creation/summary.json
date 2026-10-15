@@ -1,0 +1,208 @@
+{
+  "date": "2026-10-15",
+  "version": "0.1.3",
+  "baseCommit": "ed9c01d1be75d4f5272f8bfc5702a132bc6c15ad",
+  "scope": "Unreleased first audio creation from a registered Scene2D, with atomic three-file save and existing ordinary editing/runtime/delivery handoff. No release, push, installation, new audio schema or backend implementation.",
+  "feature": {
+    "modules": 21,
+    "capabilities": 39,
+    "command": "audio.create",
+    "api": "/api/scene-audio-creation",
+    "journalVersion": 10,
+    "writeFiles": 3,
+    "trackLimit": 16,
+    "resourceCandidates": 256,
+    "resourceBytesPerFile": 33554432,
+    "resourceBytesTotal": 134217728
+  },
+  "application": {
+    "command": "node scripts/check-project.mjs --app-only",
+    "log": "full-final.log",
+    "tests": 5007,
+    "pass": 4893,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 114,
+    "todo": 0,
+    "javascriptSyntaxFiles": 834,
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "conditionalTests": "Native core/archives/mobile helpers and trusted backend binaries were not supplied to full app checks; 114 conditional skips are not passes. Actual Godot browser run and native host tests are separately recorded."
+  },
+  "targeted": {
+    "pure": {
+      "log": "pure-test.log",
+      "tests": 24,
+      "pass": 24,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "legacyPure": {
+      "log": "legacy-pure-test.log",
+      "tests": 28,
+      "pass": 28,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "host": {
+      "log": "host-tests.log",
+      "tests": 34,
+      "pass": 34,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "ui": {
+      "log": "ui-tests.log",
+      "tests": 45,
+      "pass": 45,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "uiNeighbors": {
+      "log": "ui-neighbors.log",
+      "tests": 177,
+      "pass": 177,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "finalTranslationAndUi": {
+      "log": "i18n-final.log",
+      "tests": 27,
+      "pass": 27,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "finalLockAndPorts": {
+      "log": "ui-lock-final.log",
+      "tests": 27,
+      "pass": 27,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "close": {
+      "log": "close.log",
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "notAdditive": true
+  },
+  "native": {
+    "command": "cargo test --locked --offline --manifest-path src-tauri/Cargo.toml",
+    "log": "native.log",
+    "passed": 59,
+    "ignored": 1,
+    "failed": 0,
+    "scope": "Native host library and advisory regressions, not an installed GUI. Existing dependency warnings retained."
+  },
+  "browser": {
+    "report": "docs/test-results/scene-audio-creation/browser-1792056336902/browser.json",
+    "sha256": "d987183c2084a75462ccfa70cad924806b5980b7f6bfbbec3b2b6025c51f494f",
+    "ok": true,
+    "groups": 6,
+    "screenshots": 12,
+    "sourceFingerprints": 41,
+    "browser": "Chrome/154.0.8037.97",
+    "tool": {
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "delivery": {
+      "fileName": "viento-f11eff9b-e134-4ed9-b55f-c0055a611c08.viento-build.zip",
+      "bytes": 58542,
+      "sha256": "e573142b25301327a4413acebedf2e0625aa8d278859885af9a055ea1edecae0",
+      "fileCount": 8,
+      "assetCount": 1,
+      "buildId": "f11eff9b-e134-4ed9-b55f-c0055a611c08",
+      "projectKind": "godot-project",
+      "importCode": 0,
+      "runCode": 0,
+      "audioFrames": [
+        {
+          "event": "ready",
+          "protocol": 1,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "trackIds": [
+            "fc3d7c06-a00e-4b44-a9c6-4e6f4cb79f74",
+            "b9af7444-43ef-46b3-bfbc-6e375ba8765b"
+          ]
+        },
+        {
+          "action": "play",
+          "atSeconds": 0,
+          "cueId": "e4629ef8-ce5d-4fe4-a37e-f2dc207cb47d",
+          "event": "command",
+          "protocol": 1,
+          "resourceId": "99999999-9999-4999-8999-999999999999",
+          "trackId": "fc3d7c06-a00e-4b44-a9c6-4e6f4cb79f74"
+        },
+        {
+          "action": "play",
+          "atSeconds": 0.125,
+          "cueId": "9b74fdba-14b4-4eb3-ab3f-3599d371dac9",
+          "event": "command",
+          "protocol": 1,
+          "resourceId": "99999999-9999-4999-8999-999999999999",
+          "trackId": "b9af7444-43ef-46b3-bfbc-6e375ba8765b"
+        },
+        {
+          "event": "finished",
+          "protocol": 1,
+          "timeSeconds": 0.5
+        }
+      ]
+    },
+    "limitations": [
+      "Actual Chrome using the local HTTP editor and trusted native Godot. No installed Tauri window, native file picker, Android or other desktop OS claim.",
+      "The scene-audio example is copied and its audio document/opt-in removed. Two tracks are created using an already registered WAV; resource import and upstream scene creation are outside this test.",
+      "Godot runs bounded headless logic with two audio commands. This browser workflow makes no speaker or audible-output claim; native PCM mixer capture is verified separately.",
+      "Generated project ZIP is downloaded by Chrome, independently verified, extracted and run at a new path. It is source-engineering delivery, not a standalone game executable."
+    ]
+  },
+  "prepared": {
+    "report": "prepared.json",
+    "comparisons": 38,
+    "checks": 10,
+    "scope": "Prepared files and actual copied WASM/Node service; no installed Tauri window or Android runtime claim. Mobile does not gain audio.create."
+  },
+  "preservation": {
+    "ok": true,
+    "existingExampleAndEvidenceFiles": 7088,
+    "changedPaths": [],
+    "unchangedOldAtlasCells": 1960,
+    "newAtlasCells": 28,
+    "installed": {
+      "path": "/home/chiharukiryu/.local/opt/viento-studio/Viento-Studio.AppImage",
+      "bytes": 129309176,
+      "sha256": "22fb45a03fe2a698ad1eec0b7c655161bd47d1769b5cf6ca7f65b12bce5ccc48",
+      "unchanged": true
+    },
+    "baselineCommit": "ed9c01d1be75d4f5272f8bfc5702a132bc6c15ad"
+  },
+  "atlas": {
+    "functions": 122,
+    "implementations": 324,
+    "bindings": 497,
+    "cells": 1988,
+    "dependencies": 309,
+    "workflows": 85
+  }
+}

@@ -1,0 +1,27 @@
+✔ duplicate subscriptions reuse tokens, late registrations receive no replay and self-removal stays handled (10069.244461ms)
+✖ real 1025th reserved delivery fails before changing the accepted publication history (6423.857635ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16624.445253
+
+✖ failing tests:
+
+test at scripts/tests/project-events-godot.test.mjs:216:3
+✖ real 1025th reserved delivery fails before changing the accepted publication history (6423.857635ms)
+  AssertionError [ERR_ASSERTION]: {"ok":false,"status":"failed","diagnostics":[{"severity":"error","code":"runtime_adapter_changed","message":"Execution adapter changed; rebuild this project before running.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":""}]}
+      at rejected (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-events-godot.test.mjs:49:10)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-events-godot.test.mjs:226:34)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -1,0 +1,30 @@
+✔ the unchanged built-in event starter compiles in a project and safely guards a single scene (18138.438816ms)
+✔ duplicate subscriptions reuse tokens, late registrations receive no replay and self-removal stays handled (10002.448916ms)
+✖ a captured callback whose behavior was freed fails instead of fabricating a skipped delivery (10105.071217ms)
+✔ real boolean event name is rejected without an implicit conversion or accepted publication (10083.379937ms)
+✔ real non-finite event payload is rejected without an implicit conversion or accepted publication (10470.618276ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 58934.048785
+
+✖ failing tests:
+
+test at scripts/tests/project-events-godot.test.mjs:239:1
+✖ a captured callback whose behavior was freed fails instead of fabricating a skipped delivery (10105.071217ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"godot_error","message":"ERROR: Object is locked and can't be freed.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":"","sourceRevision":"sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d","title":"Two-scene project"},{"severity":"error","code":"godot_error","message":"SCRIPT ERROR: Attempted to free a locked object (calling or emitting).","objectId":"ffffffff-ffff-4fff-8fff-ffffffffffff","sourcePath":"documents/scripts/checkpoint.txt","propertyPath":"","sourceRevision":"sha256:edf9128f20532147fa7c0102beae6b3b67ad005700fcd45775108105f0407111","sourceLine":7,"sourceRange":{"start":224,"end":231,"encoding":"utf-16","propertyPath":"","exact":true}},{"severity":"error","code":"godot_error","message":"SCRIPT ERROR: Attempted to free a locked object (calling or emitting).","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":"","sourceRevision":"sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d","title":"Two-scene project"}]
+      at rejected (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-events-godot.test.mjs:50:10)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-events-godot.test.mjs:250:32)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

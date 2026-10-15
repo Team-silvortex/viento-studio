@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "completedAt": "2026-10-15T13:06:05.599935+00:00",
+  "scope": "Project protocol 4 executed audio-command observation, legacy UI preservation, two source roles and reviewed script starter",
+  "tests": 133,
+  "passed": 133,
+  "failed": 0,
+  "skipped": 0,
+  "newAudioUiTests": 15,
+  "newStarterTests": 2,
+  "newTestsAreIncludedInTotal": true,
+  "command": "node --test --test-isolation=none scripts/tests/project-audio-observation-ui.test.mjs scripts/tests/project-audio-observation-build-ui.test.mjs scripts/tests/project-event-observation-build-ui.test.mjs scripts/tests/project-event-observation-ui.test.mjs scripts/tests/project-state-observation-build-ui.test.mjs scripts/tests/project-state-observation-ui.test.mjs scripts/tests/project-scene-switching-ui.test.mjs scripts/tests/scene-runtime-query-ui.test.mjs scripts/tests/project-build-ui.test.mjs scripts/tests/project-assembly-build-ui.test.mjs scripts/tests/script-authoring.test.mjs scripts/tests/i18n-coverage.test.mjs",
+  "evidence": {
+    "ui-tests.log": "sha256:0508620b5701a93a0a29b4d2f094323ff03beae62f5ca303c0b83d3050bcbc6e"
+  },
+  "sources": {
+    "web/modules/app-project-audio-observation.js": "sha256:ba572fc0e6c868abc0db9432662d3b75f65531f04f4f08e4c4094e29ac42929f",
+    "web/project-audio-observation.css": "sha256:e56d7e9b16c31cf5d2864188e08ae3ef7c7d7073f49e712021903129cbd662d1",
+    "web/modules/app-project-build.js": "sha256:529fb0aa423a7d4c80c94dfc79cd8ee2f5b82a64e4438d1e15aba282891f0144",
+    "web/index.html": "sha256:0ff050a0f5dbf86bb2bbe3df8f7bc96f5ce3ec9b7cbba98e07719593e721cc20",
+    "web/i18n/en.js": "sha256:29adeefc4f6c57ea370b112efb42f6214b3617bbd092430342a2f5df9011edbd",
+    "web/i18n/ja.js": "sha256:39392b25fbe41da68c2ad82af01ab125f670561cde8effe7ee234acc7f878828",
+    "engine/script-authoring.mjs": "sha256:c7916833585645aeb64f21cced385e92f851b281354626f53057c1606331a792",
+    "scripts/tests/script-authoring.test.mjs": "sha256:45717c88587483e7172b7ceefff9ae2309e2b96b1ab81b4cf7fd2d62b945d502",
+    "scripts/tests/project-audio-observation-ui.test.mjs": "sha256:d1009f66d655dd8305c880f42e9aa51041744ed49e9acff355112683e7ac3253",
+    "scripts/tests/project-audio-observation-build-ui.test.mjs": "sha256:a5de43c18d9754be6f7dd3227f28890794a1ffa6e01b78945432e82511712f1c"
+  },
+  "verified": [
+    "Real project runtime query admits protocol 4 and preserves existing protocol 1, 2 and 3 presentation",
+    "Empty supported history is distinct from absent capability; command labels never infer current playback",
+    "Exact track provenance and optional sourceRange remain distinct from controlling behavior declaration",
+    "Receipt append preserves focused DOM and an admitted source ticket; changed row or owner cancels it",
+    "Initial busy blocks new reads; the host own-loading state does not revoke an admitted read",
+    "Dirty/creating, visit changes, new tasks, hidden view, removal and filters revoke stale navigation",
+    "Search is retained across visits and cleared for a new run",
+    "Chinese, English and Japanese labels; author strings remain literal text",
+    "New starter is an ordinary reviewed draft with no registration or execution authority; missing project/track guard, deferred event publication and strict boolean payloads"
+  ],
+  "limitations": [
+    "No native audio device, real Godot or Chrome is exercised by these UI tests; separate host/browser evidence covers those paths.",
+    "The i18n diagnostics service suite is delegated to root because this process cannot bind a local server.",
+    "The default child-process test IPC is unavailable under the subagent sandbox; test isolation is disabled to report each actual test."
+  ]
+}

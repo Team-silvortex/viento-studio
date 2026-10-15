@@ -11,6 +11,8 @@ import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
 import { audioResourceLocation } from '../../engine/scene-audio.mjs';
 import { validatePcmWave } from '../lib/audio-wav.mjs';
 import { resolveScene2DModel } from '../../engine/scene-model.mjs';
+import { inspectProjectAssembly } from '../../engine/project-assembly.mjs';
+import { createProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
 import { resolveSceneCompositionPreview } from '../../engine/scene-composition-preview.mjs';
 import { canonicalJson } from '../../engine/world-projection.mjs';
 import { resolveAssetRoot } from '../lib/workspace.mjs';
@@ -64,6 +66,10 @@ async function captureScene(root, sceneRef, { signal, draft, compositionPreview 
   await resolveContainedPath(root, path.join(root, '.viento/local.json'), { allowMissing: true });
   const observed = await readWorldSnapshot(root);
   signal?.throwIfAborted();
+  if (!draft && !compositionPreview) {
+    const target = observed.source.documents.find(item => item.record?.id === sceneRef || item.sourcePath === sceneRef);
+    if (inspectProjectAssembly(target?.content).recognized) return captureAssembly(root, sceneRef, observed, fence, signal);
+  }
   const effective = draft ? await overlaySceneDraftPreview(observed, sceneRef, draft, { digest: buildHash }) : observed;
   signal?.throwIfAborted();
   const composition = compositionPreview ? await resolveSceneCompositionPreview(effective, sceneRef, { digest: buildHash }) : null;
@@ -152,4 +158,46 @@ async function captureScene(root, sceneRef, { signal, draft, compositionPreview 
   return { ...planned, snapshot, snapshotId: `sha256:${buildHash(canonicalJson(snapshot))}`, resources, sceneEditing,
     sourceLocations: resolved.model.sourceLocations,
     ...(resolved.model.schemaVersion === 3 ? { sceneStructure: createSceneStructure(resolved.model) } : {}) };
+}
+
+// Assembly capture shares one observation and transaction fence across every
+// member. It does not call scene capture repeatedly or mix workspace revisions.
+async function captureAssembly(root, targetRef, observed, fence, signal) {
+  const planned = createProjectAssemblyPlan(observed, targetRef);
+  if (!planned.ok) return planned;
+  const resources = new Map(), assetRoot = resolveAssetRoot(root);
+  const boundary = assetRoot === path.join(root, 'assets') ? root : assetRoot;
+  let totalBytes = 0;
+  for (const resource of planned.plan.resources) {
+    const record = observed.source.assets.find(item => item.record.id === resource.id)?.record;
+    try {
+      if (!record) throw buildError('build_resource_unavailable', 'Resource registration is unavailable.');
+      const file = await resolveContainedPath(boundary, path.join(assetRoot, record.location.path));
+      if ((totalBytes += resource.size) > 128 * 1024 * 1024) throw buildError('build_input_limit', 'Selected resources exceed 128 MiB.');
+      const bytes = await readBuildFile(file, 32 * 1024 * 1024, signal);
+      if (bytes.length !== resource.size || buildHash(bytes) !== resource.sha256) throw buildError('build_resource_changed', 'Resource bytes no longer match the registered content hash.');
+      if (resource.kind === 'audio') validatePcmWave(bytes);
+      resources.set(resource.id, bytes);
+    } catch (error) {
+      signal?.throwIfAborted();
+      const member = planned.plan.scenes.find(scene => scene.resources.some(item => item.id === resource.id));
+      const actor = member?.actors.find(item => item.imageResourceId === resource.id);
+      const model = member && resolveScene2DModel(observed, member.scene.objectId).model;
+      const location = audioResourceLocation(member, resource.id)
+        || model?.sourceLocations.actors.find(item => sceneActorIdentity(item) === sceneActorIdentity(actor))?.fields.imageResourceId
+        || buildActorFieldLocation(actor, 'imageResourceId') || { ...planned.plan.assembly, propertyPath: '/sceneIds' };
+      return { ok: false, plan: planned.plan, diagnostics: [{ severity: 'error', code: error.errorCode || 'build_resource_unavailable',
+        message: resource.kind === 'audio' ? (error.errorCode === 'build_audio_format' ? error.message : 'Cannot freeze audio bytes; check availability and the registered hash.')
+          : 'Cannot freeze image bytes; check availability and the registered hash.', resourceId: resource.id, ...location }] };
+    }
+  }
+  signal?.throwIfAborted();
+  const after = await readWorldSnapshot(root);
+  if (canonicalJson(after.source) !== canonicalJson(observed.source) || resolveAssetRoot(root) !== assetRoot) {
+    throw buildError('build_input_changed', 'Workspace changed while freezing build inputs; retry.');
+  }
+  await assertWorldFence(root, fence);
+  signal?.throwIfAborted();
+  const snapshot = { format: 'viento-build-snapshot', schemaVersion: 1, source: observed.source, plan: planned.plan };
+  return { ...planned, snapshot, snapshotId: `sha256:${buildHash(canonicalJson(snapshot))}`, resources };
 }

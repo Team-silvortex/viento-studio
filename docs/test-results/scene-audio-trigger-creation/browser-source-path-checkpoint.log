@@ -1,0 +1,17 @@
+node:internal/fs/promises:1345
+  return new FileHandle(await PromisePrototypeThen(
+                        ^
+
+Error: ENOENT: no such file or directory, open '/home/chiharukiryu/cdev/viento-studio/engine/scene-audio-trigger-plan.mjs'
+    at async open (node:internal/fs/promises:1345:25)
+    at async Object.readFile (node:internal/fs/promises:1996:14)
+    at async file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-audio-trigger-smoke.mjs:29:93
+    at async Promise.all (index 25)
+    at async file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-audio-trigger-smoke.mjs:29:35 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/home/chiharukiryu/cdev/viento-studio/engine/scene-audio-trigger-plan.mjs'
+}
+
+Node.js v24.21.0

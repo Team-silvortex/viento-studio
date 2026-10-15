@@ -1,0 +1,32 @@
+{
+  "scope": "Project runtime scene switching portable contracts, per-visit event admission and current-scene observation/query.",
+  "result": {
+    "total": 64,
+    "passed": 64,
+    "failed": 0,
+    "skipped": 0,
+    "newProtocolAndObservationTests": 15
+  },
+  "tests": [
+    "scripts/tests/project-runtime-events.test.mjs",
+    "scripts/tests/project-runtime-query.test.mjs",
+    "scripts/tests/scene-runtime-query.test.mjs",
+    "scripts/tests/scene-behavior-events.test.mjs",
+    "scripts/tests/scene-audio.test.mjs",
+    "scripts/tests/project-assembly.test.mjs"
+  ],
+  "log": "core-tests.log",
+  "sourceSha256": {
+    "engine/project-runtime-contracts.mjs": "46b97fdc62c201635bc01f201c45eae2c7225b2dd7ffe0644f44a26fa10b4ccf",
+    "engine/project-runtime-events.mjs": "e0c25034a422a831871dfd2bb479878663ce2cc0973257b586c0d44f9c45ece9",
+    "engine/project-runtime-query.mjs": "1e6edd642bdeb38fb4923fa8bf586c9901b099d322c0112c52ad52836070e76d",
+    "scripts/tests/project-runtime-events.test.mjs": "a25c963d1e676247dbab15f3f650db8b0f528a7d169a706c678dff1f2e76102c",
+    "scripts/tests/project-runtime-query.test.mjs": "30aa91a9146b6f0d831c5ffe143902808cbfa27844ca80974a2b290c29fed7e3",
+    "scripts/tests/helpers/project-runtime-fixture.mjs": "9b21f59fc5b19b4e64576078fd047c7df3e73c44234c2182824dab1d4c2aa5e0"
+  },
+  "boundary": [
+    "No Node, DOM or backend process APIs in the new engine modules.",
+    "Legacy scene event readers, query format and assembly author schema remain unchanged.",
+    "This record does not claim real browser, Godot process, installed app or device validation."
+  ]
+}

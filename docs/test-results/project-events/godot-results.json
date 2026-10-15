@@ -1,0 +1,160 @@
+{
+  "format": "viento-godot-test-results",
+  "schemaVersion": 1,
+  "suite": "project-events",
+  "recordedAt": "2026-10-15T12:24:14.814005+00:00",
+  "counts": {
+    "tests": 85,
+    "passed": 83,
+    "failed": 0,
+    "skipped": 2,
+    "cancelled": 0,
+    "newRealEventTests": 21
+  },
+  "durationMs": 267613.834767,
+  "log": "godot-tests.log",
+  "tools": {
+    "node": {
+      "path": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "godot": {
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    }
+  },
+  "command": {
+    "cwd": "/home/chiharukiryu/cdev/viento-studio",
+    "environment": {
+      "VIENTO_GODOT_BIN": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "executable": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+    "args": [
+      "--test",
+      "--test-concurrency=2",
+      "scripts/tests/project-events-godot.test.mjs",
+      "scripts/tests/project-shared-state-godot.test.mjs",
+      "scripts/tests/project-scene-switching-godot.test.mjs",
+      "scripts/tests/scene-audio-godot.test.mjs",
+      "scripts/tests/godot4-adapter.test.mjs",
+      "scripts/tests/godot4-project.test.mjs",
+      "scripts/tests/backend-capabilities.test.mjs",
+      "scripts/tests/runtime-instance-backends.test.mjs"
+    ]
+  },
+  "skips": [
+    "Two existing cross-backend instance replay tests require the Bevy test environment; Godot is available."
+  ],
+  "confirmedFix": "Godot Callable equality and hash ignore bound argument differences. Subscription deduplication now also checks unbound count, bound argument count, each argument type and is_same identity; different bound closures retain distinct recipients.",
+  "checkpoints": [
+    {
+      "log": "godot-initial.log",
+      "reason": "Initial protocol/adapter and real roundtrip checks: 28 passed; before expanded edge coverage."
+    },
+    {
+      "log": "godot-boundaries-checkpoint.log",
+      "reason": "18 tests, 16 passed. Starter single-scene test used sceneId instead of the existing scene argument. Reserved-delivery test had no run record during concurrent source changes; its underlying rejection was not captured in this checkpoint, so no success is claimed."
+    },
+    {
+      "log": "godot-additions-checkpoint.log",
+      "reason": "5 tests, 4 passed. The invalid-callback fixture attempted self.free while Godot held its executing object locked; corrected fixture frees the subscriber from another behavior."
+    },
+    {
+      "log": "godot-closures-before-fix.log",
+      "reason": "2 tests, 1 passed. Confirmed bug: bound callbacks with different arguments were merged, so a publication expected to exceed 1024 reserved recipients was incorrectly accepted."
+    },
+    {
+      "log": "godot-closures-fingerprint-checkpoint.log",
+      "reason": "2 tests, 1 passed. Product edits during the run changed its execution fingerprint; runtime_adapter_changed correctly rejected execution before launching the frozen build."
+    },
+    {
+      "log": "godot-callable-probe.log",
+      "reason": "Independent real Godot probe confirms bind(0), bind(1), bind(2) compare equal and have the same native hash; is_same distinguishes scalar types and container identities."
+    }
+  ],
+  "sourceFingerprintsAfterRun": [
+    {
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "sha256": "4db8e28395b1e44fc222d6ed20d126c0b2fddf8acb75a10a3400176f915a03ec"
+    },
+    {
+      "path": "scripts/backends/godot4-project.mjs",
+      "sha256": "5a6afb13aedbd00781bc8e730f0d7c4041cf37e52428578a5ec2cfa9d6199997"
+    },
+    {
+      "path": "scripts/backends/godot4/project-events.gd",
+      "sha256": "19bed137d302b0ac7c7cdbfba99c1e1672502914d17c8c90862d457252c81b4e"
+    },
+    {
+      "path": "scripts/backends/godot4/project-runtime.gd",
+      "sha256": "e6cdfbadabeb94ad6b7376cfd123b86cadac76afc4e1f04644fe72c084f4db3e"
+    },
+    {
+      "path": "scripts/backends/godot4/project-scene.gd",
+      "sha256": "f50d6b15c555299cedcb27759ead5debe90e3cc49a1b400487acdad1600deb2e"
+    },
+    {
+      "path": "engine/backend-capabilities.mjs",
+      "sha256": "ca5ec603335ac816c3e9a0022fb8e12784a5332fff411f47130c0bf9ff2bf409"
+    },
+    {
+      "path": "engine/project-event-bus.mjs",
+      "sha256": "f6cfdd83d71d08e4e81a4f53a1fb6eac28739350288efd9b7f3928b5bbb0e566"
+    },
+    {
+      "path": "engine/project-runtime-contracts.mjs",
+      "sha256": "ea1e706edb634304e41b7238fe4c21e969b421bc8f93c88c8db6e6fbf6103acb"
+    },
+    {
+      "path": "engine/project-runtime-events.mjs",
+      "sha256": "d8db2d4123ea105bd1b24e8791f0dcb5a080b75485806e5518eb859d6c58fdb9"
+    },
+    {
+      "path": "engine/project-runtime-query.mjs",
+      "sha256": "1100776e327a3cf25ea06d7ca2979d8718bdb34c2e9ec2b5e1b3ae158ce3a7f7"
+    },
+    {
+      "path": "scripts/tests/helpers/project-events-author-fixture.mjs",
+      "sha256": "4d36f697abc3a83228fedf31d3705ede46572a258979484a3eafc5d1ddf08588"
+    },
+    {
+      "path": "scripts/tests/project-events-godot.test.mjs",
+      "sha256": "025419790dae307c00ac87a05aec5e09e1e5f5e93e7ca1256e494200dd68718c"
+    },
+    {
+      "path": "scripts/tests/project-shared-state-godot.test.mjs",
+      "sha256": "7f21246fc3865d45cfebbe331234ee8ce551d3367b341751a18bb644da8c2317"
+    },
+    {
+      "path": "scripts/tests/project-scene-switching-godot.test.mjs",
+      "sha256": "45699777a52e6955e9101f2067d3bda6732f913920844c70b04473324ec79a19"
+    },
+    {
+      "path": "scripts/tests/scene-audio-godot.test.mjs",
+      "sha256": "86bf4ca852e87f2aa50b71a40467c8ff13430906da64eb103497ddf7496e70b7"
+    },
+    {
+      "path": "scripts/tests/godot4-adapter.test.mjs",
+      "sha256": "6d7c7980efed9588118774ef8a55e79c9543a50837417c2bad631c43bdcf3cd8"
+    },
+    {
+      "path": "scripts/tests/godot4-project.test.mjs",
+      "sha256": "70ef79890f4595d28d827585537d5821367c3d303ae3dc295dabfc80204f81ee"
+    },
+    {
+      "path": "scripts/tests/backend-capabilities.test.mjs",
+      "sha256": "9fa1508df512c840e4ad12c993e9c943dedf435dbc7f3ac2d617cb09250fbe0a"
+    },
+    {
+      "path": "scripts/tests/runtime-instance-backends.test.mjs",
+      "sha256": "5dce710795b22d72e9170504c1ef0583f7907e703ad4740c8d4fc29517f66714"
+    }
+  ],
+  "notes": [
+    "No application version bump or commit. Previous evidence directories were not modified.",
+    "All 21 new event tests ran against the real Godot binary, including the unchanged starter in both project and single-scene contexts.",
+    "Source fingerprints are recorded after the completed run; generator/adapter identity is also validated by each build and run."
+  ]
+}

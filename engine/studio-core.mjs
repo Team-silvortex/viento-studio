@@ -1973,7 +1973,7 @@ export function dispatchStudioCoreSceneAudio(request) {
       || !record(source, ['format', 'schemaVersion', 'sceneObjectId', 'tracks', 'cues'])
       || source.format !== 'viento-scene-audio' || source.schemaVersion !== 1 || !uuid(source.sceneObjectId)
       || !Array.isArray(source.tracks) || source.tracks.length < 1 || source.tracks.length > 16
-      || !Array.isArray(source.cues) || source.cues.length < 1 || source.cues.length > 64) invalid();
+      || !Array.isArray(source.cues) || source.cues.length > 64) invalid();
     const trackIds = new Set(), cueIds = new Set();
     for (const track of source.tracks) {
       if (!record(track, trackKeys) || !uuid(track.id) || trackIds.has(track.id) || !uuid(track.resourceId)

@@ -1,5 +1,9 @@
 # 可移植引擎
 
+当前未发布工作树新增[项目事件](../docs/PROJECT_EVENTS.md)：`project-event-bus.mjs` 原子预留发布与接收预算，校验 FIFO 投递结果和冻结双方来源；项目运行读取器／查询显式接入协议 3，旧协议 1／2 语义保持。Godot 的具体订阅与回调在适配器专用模块，根协调器仅拥有场景生命周期；界面只读消费观察快照。当前仍为 21 模块／40 项声明能力。
+
+当前未发布工作树新增[项目共享状态](../docs/PROJECT_SHARED_STATE.md)：`project-shared-state.mjs` 负责有界标量账本、原子变更与来源 DTO；`project-runtime-events.mjs` 按显式项目协议 1／2 验证事件，状态来源仅从冻结绑定派生；`project-runtime-query.mjs` 保留当前对象、访问历史和共享状态。它们不读取文件、DOM 或执行引擎。Node 宿主依据验证后的冻结工程选择协议，Godot 端口与独立只读界面分别实现。当前为 21 模块／40 项声明能力。
+
 **0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](../docs/RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；当前为 21 模块／38 项声明能力，本次未制作或更新安装包。
 
 源码基线 0.1.2 发布时为 20 模块／37 项声明能力；当前场景声音工作树为 21 模块／38 项声明能力。0.1.2 后的未发布工作树也增加首次行为多绑定清单与已有脚本引用管理，均复用现有作者格式、事务和执行协议；本轮未安装新包。历史段落的模块数与验证范围保留原时点。
@@ -71,7 +75,7 @@ Bevy Rust 工作树增量只在已有纯声明中使用 `org.viento.bevy-rust`�
 - `scene-model.mjs`：`resolveScene2DModel` 解析 Scene2D v1／v2／v3、投影有效值和依赖，返回对应版本的模型与文件／修订／字段范围；v2 以 `instanceId` 区分同一定义的多个实例，`objectId` 继续引用登记文档。登记恢复模式不重读投影语义，仅 v1 保留历史重复键／索引预算兼容。
 - `build-plan.mjs`：`scene2DModelToPlan` 将作者 v1 发射为 plan v1、作者 v2／v3 发射为 plan v2；旧 DTO 保持原样，v3 分组从运行计划剔除，`createScene2DPlan` 保留原入口，并在场景明确关联有效行为清单时组合 plan／runtime 3；没有行为时旧计划逐字段不变。几何来源附加信息不进入冻结计划，能力与 Godot 适配分离。冻结资源、构建与运行属于 Node 适配层，见 [二维场景构建](../docs/PROJECT_BUILD.md)。
 - `scene-behaviors.mjs`：识别并严格检查注册行为清单、场景实例、TXT 源码、标量参数与信号声明；解析明确 `behavior` 关系，派生并核验资源包依赖，生成可冻结的行为 DTO。无 Node／DOM／Godot 调用，不执行或解析 GDScript；静态预览继续只消费几何模型。当前格式与预算见[场景行为](../docs/SCENE_BEHAVIORS.md)。
-- `script-authoring.mjs`：`listScriptStarters()` 返回冻结的 Godot GDScript 与 Bevy Rust 空行为／参数信号示例；`prepareScriptDraft(context, request)` 接受 `{ sourceToken, documentRoot, documentTypes: [{ id, label }] }` 和 `{ starterId, documentType, sourcePath }`，仅允许正文目录内可迁移的 TXT 路径与当前工程类型。提案深冻结并带私有品牌；`isScriptDraftProposal`／`prepareScriptDraftApply(currentContext, proposal)` 拒绝克隆、序列化及会话／目录／类型目录变化，返回普通新建草稿所需数据。语言与后端标识不授予执行能力，不读取文件、创建 UUID、改项目模板或关联场景；普通保存负责登记，未来语言服务另经独立文档接口接入。见[内置脚本创建](../docs/SCENE_BEHAVIORS.md#内置脚本创建)。
+- `script-authoring.mjs`：`listScriptStarters()` 返回冻结的 Godot GDScript 与 Bevy Rust 空行为／参数信号／固定步移动及 Godot 项目场景切换起始内容；`prepareScriptDraft(context, request)` 接受 `{ sourceToken, documentRoot, documentTypes: [{ id, label }] }` 和 `{ starterId, documentType, sourcePath }`，仅允许正文目录内可迁移的 TXT 路径与当前工程类型。提案深冻结并带私有品牌；`isScriptDraftProposal`／`prepareScriptDraftApply(currentContext, proposal)` 拒绝克隆、序列化及会话／目录／类型目录变化，返回普通新建草稿所需数据。语言与后端标识不授予执行能力，不读取文件、创建 UUID、改项目模板或关联场景；普通保存负责登记，未来语言服务另经独立文档接口接入。见[内置脚本创建](../docs/SCENE_BEHAVIORS.md#内置脚本创建)。
 - `scene-behaviors-edit.mjs`：已有行为清单的私有审阅提案、稳定绑定身份及保真草稿补丁；复用无浏览器第三方依赖的 JSON 源码索引，固定场景／后端／语言，未知格式停止表单改写。依赖核对、编辑会话、普通保存与执行各属宿主接口，不新增 Rust ABI。
 - `world-behavior-create.mjs`：已保存 Scene2D v2／v3 首次启用行为的纯规划，复用严格声明、依赖和完整构建计划校验。调用者提供稳定文档／绑定 UUID，生成新正文、新登记和既有场景登记追加的三文件计划；冻结只读依赖证据供宿主恢复，原场景与脚本源码保持。核心不硬编码执行引擎；首版界面限定 Godot／GDScript 单绑定，0.1.2 后工作树已扩展为多绑定／多脚本清单及显式 Godot／GDScript、Bevy／Rust 选项；持久化和执行由各自宿主处理，通用 `relation.add` 不增加 `behavior` 权限。
 
@@ -582,3 +586,7 @@ dispatchStudioCoreScene3DAlignmentPatch({
 ## 配方到独立运行场景
 
 `scene-composition-materialize.mjs` 以来源原文、登记投影、保存态预览和读取后的 World 修订规划独立 Scene2D。摘要由调用方注入，展开仍归共享 Rust 核心；生成新场景的命令复用 `scene.create`，原配方和元数据不写入。界面只编排读取、审阅、保存及结果核对，不把引擎或渲染依赖引入规划层。具体使用与边界见[配方指南](../docs/SCENE_COMPOSITION.md#从配方创建运行场景)。
+
+项目内运行的独立模块：`project-runtime-contracts.mjs` 约束身份、访问与事件预算；`project-runtime-events.mjs` 按访问复用既有场景／行为／音频读取器；`project-runtime-query.mjs` 将当前对象与访问历史组合为只读视图。它们不加载引擎、不编辑作者文件，Godot 元数据请求接口和节点清理由后端实现；具体边界见[项目内切换](../docs/PROJECT_ASSEMBLY.md#运行中切换场景)。
+
+`project-audio-commands.mjs` 保存有界的实际控制回执；项目协议 4 从冻结行为与音轨分别解析来源，查询保留跨访问历史。它不推断设备播放状态，不取得播放器或作者写入权限。声音声明与空时间线仍由 Rust 校验。

@@ -43,14 +43,20 @@ function physical(value) {
 }
 function directoryName(value) { return uuid(value) || typeof value === 'string' && value.startsWith('.viento-prune-') && uuid(value.slice(14)); }
 function entryValue(input) {
-  const value = exact(input, ['buildId', 'snapshotId', 'manifestSha256', 'directory', 'physical', 'workspaceId', 'sceneId', 'sourcePath', 'title', 'createdAt']);
+  const project = Object.hasOwn(input || {}, 'targetId');
+  const value = exact(input, ['buildId', 'snapshotId', 'manifestSha256', 'directory', 'physical', 'workspaceId',
+    ...(project ? ['targetId', 'targetKind'] : ['sceneId']), 'sourcePath', 'title', 'createdAt']);
   if (!uuid(value.buildId) || !revision(value.snapshotId) || !sha(value.manifestSha256) || !directoryName(value.directory)
-    || !text(value.workspaceId, 192) || !value.workspaceId || !uuid(value.sceneId) || !sourcePath(value.sourcePath)
+    || !text(value.workspaceId, 192) || !value.workspaceId || !uuid(project ? value.targetId : value.sceneId) || project && value.targetKind !== 'project' || !sourcePath(value.sourcePath)
     || !text(value.title, 160) || !text(value.createdAt, 24) || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value.createdAt)
     || !Number.isFinite(Date.parse(value.createdAt)) || new Date(value.createdAt).toISOString() !== value.createdAt) fail();
   value.physical = physical(value.physical);
   return Object.freeze(value);
 }
+export const catalogProjectTarget = entry => Object.freeze({ objectId: entry.targetId ?? entry.sceneId, planKind: entry.targetKind ?? 'scene2d' });
+const targetFields = project => project.schemaVersion === 2 ? { targetId: project.source.assemblyId, targetKind: 'project' } : { sceneId: project.source.sceneId };
+const sameTarget = (left, right) => catalogProjectTarget(left).objectId === catalogProjectTarget(right).objectId
+  && catalogProjectTarget(left).planKind === catalogProjectTarget(right).planKind;
 const statIdentity = stat => ({ dev: stat.dev.toString(), ino: stat.ino.toString() });
 const sameIdentity = (a, b) => a.dev === b.dev && a.ino === b.ino;
 
@@ -111,7 +117,7 @@ export async function assertCatalogProject(entry) {
     if (hash(stored.bytes) !== entry.manifestSha256) fail('backend_project_changed');
     const project = validateBackendProjectManifest(parse(stored.bytes));
     if (project.buildId !== entry.buildId || project.snapshotId !== entry.snapshotId || project.backend.id !== receipt.backendId
-      || project.source.workspaceId !== entry.workspaceId || project.source.sceneId !== entry.sceneId || project.source.sourcePath !== entry.sourcePath) fail('backend_project_changed');
+      || project.source.workspaceId !== entry.workspaceId || !sameTarget(targetFields(project), entry) || project.source.sourcePath !== entry.sourcePath) fail('backend_project_changed');
     const after = await ancestors(directory); await receipt.assertNamespace();
     if (!sameIdentity(after, entry.physical)) fail('backend_project_owner_changed');
     return { buildDirectory: directory, expectedBuildId: entry.buildId, expectedSnapshotId: entry.snapshotId, expectedManifestSha256: entry.manifestSha256 };
@@ -141,14 +147,16 @@ export function createBackendProjectCatalog(options) {
     return entry;
   }
   function document(entries) {
-    return Object.freeze({ format: 'viento-backend-project-catalog', schemaVersion: 1, namespaceSha256, backendId,
+    return Object.freeze({ format: 'viento-backend-project-catalog', schemaVersion: entries.some(entry => Object.hasOwn(entry, 'targetId')) ? 2 : 1, namespaceSha256, backendId,
       entries: Object.freeze(entries.sort((a, b) => compare(a.createdAt, b.createdAt) || compare(a.buildId, b.buildId))) });
   }
   function validateDocument(input) {
     const value = exact(input, ['format', 'schemaVersion', 'namespaceSha256', 'backendId', 'entries']);
-    if (value.format !== 'viento-backend-project-catalog' || value.schemaVersion !== 1 || value.namespaceSha256 !== namespaceSha256 || value.backendId !== backendId
+    if (value.format !== 'viento-backend-project-catalog' || ![1, 2].includes(value.schemaVersion)
+      || value.namespaceSha256 !== namespaceSha256 || value.backendId !== backendId
       || !Array.isArray(value.entries) || value.entries.length > BACKEND_PROJECT_CATALOG_MAX_RECORDS
-      || Reflect.ownKeys(value.entries).length !== value.entries.length + 1) fail();
+      || Reflect.ownKeys(value.entries).length !== value.entries.length + 1
+      || value.schemaVersion === 1 && value.entries.some(entry => Object.hasOwn(entry || {}, 'targetId'))) fail();
     const ids = new Set(), directories = new Set(), entries = value.entries.map(brand);
     for (const entry of entries) {
       if (ids.has(entry.buildId) || directories.has(entry.directory)) fail(); ids.add(entry.buildId); directories.add(entry.directory);
@@ -260,7 +268,7 @@ export function createBackendProjectCatalog(options) {
         else {
           const prior = entries[previous];
           if (prior.snapshotId !== input.snapshotId || prior.manifestSha256 !== input.manifestSha256 || !sameIdentity(prior.physical, input.physical)
-            || prior.workspaceId !== input.workspaceId || prior.sceneId !== input.sceneId || prior.sourcePath !== input.sourcePath
+            || prior.workspaceId !== input.workspaceId || !sameTarget(prior, input) || prior.sourcePath !== input.sourcePath
             || prior.createdAt !== input.createdAt || prior.title !== input.title) fail('backend_project_catalog_changed');
           entries[previous] = input;
         }
@@ -287,14 +295,14 @@ export function createBackendProjectCatalog(options) {
         values = { ...values, project: undefined, retentionPin: undefined };
         entryValue({ buildId: project.buildId, snapshotId: project.snapshotId, manifestSha256: values.manifestSha256,
           directory: path.basename(values.buildDirectory), physical: pin.physical, workspaceId: project.source.workspaceId,
-          sceneId: project.source.sceneId, sourcePath: project.source.sourcePath, title: values.title, createdAt: values.createdAt });
+          ...targetFields(project), sourcePath: project.source.sourcePath, title: values.title, createdAt: values.createdAt });
       } catch (cause) { return Promise.reject(cause.errorCode ? cause : error()); }
       return safe(async () => {
         await assertNamespace();
         if (!sameIdentity(await ancestors(pin.directory), pin.physical)) fail('backend_project_owner_changed');
         const entry = brand({ buildId: project.buildId, snapshotId: project.snapshotId, manifestSha256: values.manifestSha256,
           directory: path.basename(values.buildDirectory), physical: pin.physical, workspaceId: project.source.workspaceId,
-          sceneId: project.source.sceneId, sourcePath: project.source.sourcePath, title: values.title, createdAt: values.createdAt });
+          ...targetFields(project), sourcePath: project.source.sourcePath, title: values.title, createdAt: values.createdAt });
         await assertCatalogProject(entry);
         return entry;
       });

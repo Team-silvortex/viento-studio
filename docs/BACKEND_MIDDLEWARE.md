@@ -1,5 +1,7 @@
 # 执行后端中间层
 
+当前未发布工作树支持[项目组装](PROJECT_ASSEMBLY.md)、[共享状态](PROJECT_SHARED_STATE.md)、[项目事件](PROJECT_EVENTS.md)与[行为声音控制](PROJECT_AUDIO_CONTROLS.md)。中立 `project:1` 计划保留全部 Scene2D 子计划，Godot 适配器 `0.11.0` 声明 `project.scenes`、`project.scene-switching`、`project.shared-state`、`project.events`、`project.audio-control`，Bevy 两条通道尚不接收项目计划。独立 `VIENTO_PROJECT:` 协议 4 校验访问、嵌套事件、状态修订、事件 FIFO 投递及实际声音命令；宿主从已验证冻结工程显式选择协议。纯读取器保留协议 1／2／3，不放宽旧构建的指纹重建要求。纯账本与查询、Godot 的事件及声音队列、三类独立只读观察面板各自维护。
+
 **0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；当前为 21 模块／38 项声明能力，本次未制作或更新安装包。
 
 0.1.2 后工作树另接[独立场景声音](SCENE_AUDIO.md)。通用计划通过唯一 `audio` 登记关系显式附加声音声明、稳定来源与已登记 WAV 资源，并要求 `audio.nonspatial`／`audio.timeline`；不改变无声音计划。Godot 适配器升至 `0.6.0`，消费独立生成器／播放器和声音事件读取器；Bevy 两条通道均在准入阶段明确拒绝，不能静默丢弃声音。应用版本仍为 `0.1.2`，旧生成工程需按适配器身份重新构建。
@@ -56,10 +58,10 @@ flowchart LR
 
 | 字段 | 约定 |
 | --- | --- |
-| `id`、`label`、`version` | 点分命名空间身份、展示名称、无前导零的 `x.y.z` 适配器版本；当前为 `org.viento.godot4`、`Godot 4`、`0.5.0` |
+| `id`、`label`、`version` | 点分命名空间身份、展示名称、无前导零的 `x.y.z` 适配器版本；当前为 `org.viento.godot4`、`Godot 4`、`0.11.0` |
 | `platforms` | 无重复的平台标识数组；当前 Godot 适配器仅声明 `linux` |
-| `plans` | `{ kind: "scene2d", schemaVersion, runtimeProtocolVersion }` 数组，按 kind／schema 唯一；当前 plan 1／2／3 分别绑定 runtime 1／2／3；3 仅用于显式行为场景 |
-| `capabilities` | 无重复的功能标识数组；当前为 `scene2d`、`input.arrows`、`state.movement`、`image`、`behavior.bindings`、`behavior.gdscript`、`runtime.control-replay`、`runtime.control-replay.instances` |
+| `plans` | `{ kind, schemaVersion, runtimeProtocolVersion }` 数组，按 kind／schema 唯一；Scene2D plan 1／2／3 分别绑定 runtime 1／2／3，3 用于显式行为。另有 project plan 1／项目运行协议 4；每次访问嵌套对应子场景的原协议。通用描述符也接受 project runtime 1／2／3，由具体适配器显式声明 |
+| `capabilities` | 无重复的功能标识数组；当前为 `scene2d`、`input.arrows`、`state.movement`、`image`、`behavior.bindings`、`behavior.gdscript`、`runtime.control-replay`、`runtime.control-replay.instances`、`audio.nonspatial`、`audio.timeline`、`project.scenes`、`project.scene-switching`、`project.shared-state`、`project.events`、`project.audio-control` |
 | `execution` | 下表七个键都必须存在并为布尔值 |
 | `extensions` | `{ id, version }` 数组，ID 必须处于后端自身命名空间；仅描述能力扩展身份，不含代码或路径 |
 
@@ -133,8 +135,10 @@ HTTP inspect 只接受当前任务 UUID 及可选实例／定义 UUID，绕过�
 
 ## 声音领域的具体适配
 
-共享 Rust 只定义音轨、播放／停止提示及显式时刻的声明状态；可移植计划层核对关联与来源，宿主冻结层读取真实资源并校验哈希及 PCM16 WAV 容器。音频文件限制单／双声道、8–96 kHz、每份不超过 32 MiB；文档播放器支持的其他音频格式不自动成为执行后端能力。
+共享 Rust 定义音轨、播放／停止提示及显式时刻的声明状态；schema 1 允许 0–64 个提示，空提示不新增 ABI，也不替代项目声音命令账本。可移植计划层核对关联与来源，宿主冻结层读取真实资源并校验哈希及 PCM16 WAV 容器。音频文件限制单／双声道、8–96 kHz、每份不超过 32 MiB；文档播放器支持的其他音频格式不自动成为执行后端能力。
 
 Godot 生成工程把音频映射至独立资源路径，普通图像及行为生成保持各自模块。运行器使用独立 `AudioStreamPlayer` 与每轨流副本处理音量、循环和 play／stop；有限 smoke 观察 0、0.25、0.5 秒，窗口运行由实际场景时间推进。`music`／`effect` 不映射为混音总线或空间节点。声音帧使用独立 `VIENTO_AUDIO` 协议 1，由 `scene-audio-events.mjs` 与已有演员／行为读取器组合；受冻结身份、顺序、预算与来源限制，不给 GUI 发引擎对象句柄。有限运行结束时刻另与演员固定步数交叉核对；提示保留 IEEE-754 精度，包括 0.5 秒两侧相邻 double 的触发差异。
 
-工程库存和 ZIP 交付包含冻结的 WAV 原字节、声音清单及运行脚本。真实测试已核对异地工程文件／资源，并在 Godot 的隔离混音缓冲验证非零 PCM、零增益、停止与独立循环；这不验证实际扬声器。当前音频与有限控制回放组合明确拒绝；行为事件触发、空间声音、总线、Bevy 音频及独立游戏发行仍需单独对接。见[声音指南](SCENE_AUDIO.md)和[专项验收](test-results/scene-audio/README.md)。
+工程库存和 ZIP 交付包含冻结的 WAV 原字节、声音清单及运行脚本。真实测试已核对异地工程文件／资源，并在 Godot 的隔离混音缓冲验证非零 PCM、零增益、停止与独立循环；这不验证实际扬声器。当前音频与有限控制回放组合明确拒绝；项目内行为触发已通过[独立声音控制](PROJECT_AUDIO_CONTROLS.md)接入；空间声音、总线、Bevy 音频及独立游戏发行仍需单独对接。见[声音指南](SCENE_AUDIO.md)和[专项验收](test-results/scene-audio/README.md)。
+
+项目声音控制使用协议 4 的 `audio-command` 及起止命令计数，行为和音轨来源从当前冻结计划分别解析。原 `VIENTO_AUDIO` 协议 1 继续负责时间提示与声音生命周期；动态回执还需满足到期提示前缀、局部时钟及访问结束校验。Godot 独立声音队列在事件队列后排空，调用播放器后才发回执；核心没有播放器对象或磁盘读写。Godot 生成 `assembly.json` schema 5，作者组装与项目计划保持 1，旧单场景生成字节保持。

@@ -1,0 +1,98 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
+import { projectSharedStateAuthor } from './helpers/project-shared-state-author-fixture.mjs';
+import { createProjectBuildService } from '../lib/project-build-service.mjs';
+import { buildHash } from '../adapters/node-build-snapshot.mjs';
+
+async function settled(service) {
+  for (let index = 0; index < 3000; index++) {
+    const state = await service.status(); if (state.job?.status !== 'running') return state; await delay(20);
+  }
+  assert.fail('Shared-state job did not finish');
+}
+async function authorHashes(root) {
+  const entries = {};
+  for (const entry of await fs.readdir(root, { recursive: true, withFileTypes: true })) if (entry.isFile()) {
+    const file = path.join(entry.parentPath, entry.name), relative = path.relative(root, file);
+    if (!relative.startsWith('.viento/')) entries[relative] = buildHash(await fs.readFile(file));
+  }
+  return entries;
+}
+
+test('project shared-state service freezes mutation provenance, resets each run and restores author-offline execution', {
+  skip: !process.env.VIENTO_GODOT_BIN && 'Set VIENTO_GODOT_BIN for actual project switching',
+}, async t => {
+  const f = await projectSharedStateAuthor(t), [first, second] = f.sceneIds;
+  const options = { tool: process.env.VIENTO_GODOT_BIN, cacheRoot: path.join(f.temporary, 'host-cache') };
+  const service = createProjectBuildService(f.author, options); t.after(() => service.close());
+  const before = await authorHashes(f.author);
+  await service.command({ action: 'plan', targetId: f.assemblyId });
+  const planned = await settled(service); assert.equal(planned.job.status, 'succeeded', JSON.stringify(planned.job.diagnostics));
+  await service.command({ action: 'build', targetId: f.assemblyId, expectedSnapshotId: planned.job.plan.snapshotId });
+  const built = await settled(service); assert.equal(built.job.status, 'succeeded', JSON.stringify(built.job.diagnostics));
+  const frozenMembers = structuredClone(built.latestBuild.scenes);
+  assert.deepEqual(frozenMembers.map(row => row.sceneId), [first, second]);
+  for (const member of frozenMembers) {
+    assert.equal(member.planSchemaVersion, 3); assert.equal(member.runtimeProtocolVersion, 3);
+    assert.match(member.sourceRevision, /^sha256:[a-f0-9]{64}$/); assert.match(member.sourcePath, /^documents\/scenes\//);
+  }
+  const buildId = built.latestBuild.id;
+  await service.command({ action: 'run', buildId, mode: 'headless' });
+  const ran = await settled(service); assert.equal(ran.job.status, 'succeeded', JSON.stringify(ran.job.diagnostics));
+  assert.equal(ran.job.sceneId, f.assemblyId); assert.equal(ran.job.targetKind, 'project');
+  assert.equal(ran.job.runtime.sceneObjectId, first);
+  assert.equal(ran.job.runtime.project.assemblyId, f.assemblyId);
+  assert.equal(ran.job.runtime.project.activeSceneId, first);
+  assert.deepEqual(ran.job.runtime.project.visits.map(row => row.sceneId), [first, second, first]);
+  assert.deepEqual(ran.job.runtime.project.visits.map(row => row.index), [1, 2, 3]);
+  assert.equal(ran.job.runtime.project.visits.at(-1).phase, 'finished');
+  assert.ok(ran.job.runtime.actors.every(actor => actor.positionSample === 'finished'));
+  const shared = ran.job.runtime.project.sharedState;
+  assert.equal(ran.job.runtime.project.protocolVersion, 4); assert.equal(shared.revision, f.expectedRevision);
+  assert.deepEqual(shared.entries.map(({ key, value }) => ({ key, value })), f.expectedEntries);
+  assert.equal(shared.lastChange.operation, 'delete'); assert.equal(shared.lastChange.key, 'key_found');
+  assert.equal(shared.lastChange.origin.visitIndex, 3); assert.equal(shared.lastChange.origin.bindingId, f.firstBindingId);
+  assert.equal(shared.lastChange.origin.source.sourcePath, 'documents/behaviors/demo.json');
+  assert.match(shared.lastChange.origin.source.sourceRevision, /^sha256:[a-f0-9]{64}$/);
+  assert.deepEqual(ran.job.events.filter(event => event.event === 'state').map(event => event.revision), [1, 2, 3, 4, 5, 6]);
+  assert.equal(ran.job.events[0].stateRevision, 0); assert.equal(ran.job.events.at(-1).stateRevision, 6);
+
+  // The public query path must admit project observations and retain visit
+  // ownership when selecting an instance reused in more than one scene.
+  const actor = ran.job.runtime.actors[0];
+  const inspect = await service.command({ action: 'inspect', jobId: ran.job.id, instanceId: actor.instanceId });
+  assert.equal(inspect.jobId, ran.job.id); assert.equal(inspect.buildId, buildId);
+  assert.equal(inspect.sceneObjectId, first); assert.deepEqual(inspect.project, ran.job.runtime.project);
+  assert.deepEqual(inspect.actors, [actor]);
+  assert.deepEqual((await service.command({ action: 'inspect', jobId: ran.job.id, objectId: f.assemblyId })).actors, []);
+  await assert.rejects(service.command({ action: 'inspect', jobId: built.job.id }), { errorCode: 'runtime_query_job_missing' });
+  assert.deepEqual(await authorHashes(f.author), before);
+  const restart = await service.command({ action: 'run', buildId, mode: 'headless' });
+  assert.notEqual(restart.job.id, ran.job.id); assert.deepEqual(restart.job.events, []);
+  await assert.rejects(service.command({ action: 'inspect', jobId: ran.job.id }), { errorCode: 'runtime_query_job_missing' });
+  const repeated = await settled(service); assert.equal(repeated.job.status, 'succeeded', JSON.stringify(repeated.job.diagnostics));
+  assert.deepEqual(repeated.job.runtime.project.sharedState, shared);
+  assert.deepEqual(repeated.job.events.filter(event => event.event === 'state'), ran.job.events.filter(event => event.event === 'state'));
+  assert.deepEqual(await authorHashes(f.author), before);
+
+  // The current author catalog must never rewrite frozen provenance shown by
+  // a completed build, even if a scene's title or actor source later changes.
+  const sourcePath = path.join(f.author, frozenMembers[0].sourcePath);
+  const changed = JSON.parse(await fs.readFile(sourcePath)); changed.title = 'Edited after build';
+  await fs.writeFile(sourcePath, JSON.stringify(changed) + '\n');
+  assert.deepEqual((await service.status({ refresh: true })).latestBuild.scenes, frozenMembers);
+  await service.close();
+  await fs.rename(path.join(f.author, 'documents'), path.join(f.author, 'author-offline'));
+  const restored = createProjectBuildService(f.author, options); t.after(() => restored.close());
+  await restored.status(); await restored.command({ action: 'select-project', buildId });
+  assert.deepEqual((await restored.status()).latestBuild.scenes, frozenMembers);
+  await restored.command({ action: 'run', buildId, mode: 'headless' });
+  const again = await settled(restored); assert.equal(again.job.status, 'succeeded', JSON.stringify(again.job.diagnostics));
+  assert.deepEqual(again.job.runtime.project.visits, ran.job.runtime.project.visits);
+  assert.deepEqual(again.job.runtime.actors, ran.job.runtime.actors);
+  const restoredView = await restored.command({ action: 'inspect', jobId: again.job.id, instanceId: actor.instanceId });
+  assert.deepEqual(restoredView.project, inspect.project); assert.deepEqual(restoredView.actors, inspect.actors);
+});

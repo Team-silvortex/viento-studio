@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-15T13:18:25.448397+00:00",
+  "ok": true,
+  "method": "Direct inspection of actual captured Chrome images alongside automated overflow and exact source selection assertions.",
+  "screenshots": [
+    "project-audio-controls-desktop.png",
+    "project-audio-controls-zh-CN-390.png",
+    "project-audio-controls-en-390.png",
+    "project-audio-controls-ja-390.png",
+    "project-audio-controls-behavior-1-source.png",
+    "project-audio-controls-track-1-source.png",
+    "project-audio-controls-track-4-source.png"
+  ],
+  "directory": "browser-1792070078319",
+  "findings": [
+    "Desktop command cards show two distinct source actions and literal track/resource IDs.",
+    "Chinese, English and Japanese layouts at 390px wrap IDs, text and buttons without horizontal page or panel overflow.",
+    "Behavior action opens the correct complete document; no exact text-range claim.",
+    "Both scene-owned audio source actions select the declared /tracks/0 range exactly."
+  ],
+  "limits": [
+    "Seven representative screenshots inspected; full screenshots and automated navigation values retained in browser report.",
+    "This is local Chrome, not installed Tauri or Android visual acceptance."
+  ]
+}

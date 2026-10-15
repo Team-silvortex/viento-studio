@@ -65,6 +65,13 @@ export function worldMutationDescriptors() {
     targetTypes: ['io.viento.document/*'], preconditions: ['registered-workspace', 'known-document-type', 'matching-world-and-scene-revisions', 'unused-identity-and-source-path',
       'valid-scene2d-instances', 'no-existing-behavior-relation', 'valid-behavior-declaration', 'registered-script-and-actor-dependencies'],
     effects: ['create-behavior-and-append-scene-opt-in-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
+  { format: 'viento-command', schemaVersion: 1, id: 'audio.create', version: 1,
+    inputSchema: { type: 'object', properties: behaviorCreateProperties, required: Object.keys(behaviorCreateProperties), additionalProperties: false },
+    outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'object', 'scene', 'relation'],
+      properties: { status: { enum: ['preview', 'applied'] }, worldId: identifier, baseRevision: revision, revision } },
+    targetTypes: ['io.viento.document/*'], preconditions: ['registered-workspace', 'known-document-type', 'matching-world-and-scene-revisions', 'unused-identity-and-source-path',
+      'valid-scene2d-instances', 'no-existing-audio-relation', 'valid-audio-declaration', 'registered-audio-and-actor-dependencies'],
+    effects: ['create-audio-and-append-scene-opt-in-with-recovery'], requiredCapabilities: ['world.read', 'document.write'], undoMode: 'none' },
   { format: 'viento-command', schemaVersion: 1, id: 'scene.update', version: 1,
     inputSchema: { type: 'object', properties: projectionUpdateProperties, required: Object.keys(projectionUpdateProperties), additionalProperties: false },
     outputSchema: { type: 'object', required: ['status', 'worldId', 'baseRevision', 'revision', 'proposal', 'changes', 'object'],
@@ -102,7 +109,7 @@ export function validateWorldCommand(request) {
   if (!request || typeof request !== 'object' || Array.isArray(request) || !Object.hasOwn(request, 'command')) invalid();
   const command = Object.getOwnPropertyDescriptor(request, 'command');
   if (!command || !Object.hasOwn(command, 'value')) invalid();
-  if (command.value === 'behavior.create') {
+  if (['behavior.create', 'audio.create'].includes(command.value)) {
     // This authoring entry accepts data only. Detach before any planner await;
     // neither accessors, inherited serializers nor late caller edits run here.
     const copy = (value, depth = 0) => {
@@ -129,7 +136,7 @@ export function validateWorldCommand(request) {
     if (Object.keys(request).length !== 2 || !Object.hasOwn(request, 'mode') || request.mode !== 'apply') invalid();
     return { command: 'world.recover', mode: 'apply' };
   }
-  if (!['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind'].includes(request.command)) invalid();
+  if (!['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind'].includes(request.command)) invalid();
   const check = (value, rule) => {
     if (rule.const) return value === rule.const;
     if (rule.enum) return rule.enum.includes(value);
@@ -141,7 +148,7 @@ export function validateWorldCommand(request) {
     return typeof value === 'string' && value.length >= (rule.minLength || 0) && value.length <= (rule.maxLength || 200)
       && (!rule.pattern || new RegExp(rule.pattern).test(value));
   };
-  const rules = request.command === 'changeset.apply' ? batchProperties : request.command === 'behavior.create' ? behaviorCreateProperties : ['object.create', 'scene.create', 'projection.create'].includes(request.command) ? createProperties
+  const rules = request.command === 'changeset.apply' ? batchProperties : ['behavior.create', 'audio.create'].includes(request.command) ? behaviorCreateProperties : ['object.create', 'scene.create', 'projection.create'].includes(request.command) ? createProperties
     : ['projection.update', 'scene.update'].includes(request.command) ? projectionUpdateProperties : request.command === 'relation.add' ? relationProperties : request.command === 'resource.bind' ? resourceProperties : properties;
   if (Object.keys(request).length !== Object.keys(rules).length + 1
     || !Object.entries(rules).every(([key, rule]) => Object.hasOwn(request, key) && check(request[key], rule))) invalid();

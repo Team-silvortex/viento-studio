@@ -1,5 +1,6 @@
 import { createSceneCompositionCreateService } from './scene-composition-create-service.mjs';
 import { createSceneBehaviorDirectoryService } from './scene-behavior-directory-service.mjs';
+import { createSceneAudioCreationService } from './scene-audio-creation-service.mjs';
 import { createSceneBehaviorCreationService } from './scene-behavior-creation-service.mjs';
 import { createSceneBehaviorAuthoringService } from './scene-behavior-authoring-service.mjs';
 import {
@@ -53,6 +54,7 @@ function getDefaultIndexCacheTtl(rawTtl) {
 function createDocumentService(options = {}) {
   const sceneCompositionCreate = createSceneCompositionCreateService(PROJECT_ROOT);
   const sceneBehaviorAuthoring = createSceneBehaviorAuthoringService(PROJECT_ROOT);
+  const sceneAudioCreation = createSceneAudioCreationService(PROJECT_ROOT);
   const sceneBehaviorCreation = createSceneBehaviorCreationService(PROJECT_ROOT);
   const sceneBehaviorDirectory = createSceneBehaviorDirectoryService(PROJECT_ROOT);
   const queryWorld = createWorldQueryService(PROJECT_ROOT);
@@ -83,7 +85,7 @@ function createDocumentService(options = {}) {
   });
 
   async function getCapabilities() {
-    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, sceneBehaviorAuthoring: true, sceneBehaviorDirectory: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
+    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, sceneBehaviorAuthoring: true, sceneBehaviorDirectory: true, sceneAudioCreation: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
   }
 
   function getRuntimeConfig() {
@@ -262,6 +264,7 @@ function createDocumentService(options = {}) {
     scenePreview,
     sceneBehaviorAuthoring,
     sceneBehaviorCreation,
+    sceneAudioCreation,
     sceneBehaviorDirectory,
     sceneCompositionCreate,
     queryWorld,

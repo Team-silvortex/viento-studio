@@ -1,0 +1,14 @@
+{
+  "scope": "Independent read-only review of project-shared-state, project-runtime-events, project-runtime-query and frozen Node host admission",
+  "confirmedFindings": [],
+  "tests": 46,
+  "passed": 46,
+  "log": "boundary-review-tests.log",
+  "checks": [
+    "Explicit protocol 1 preserves previous DTO without sharedState or protocolVersion additions.",
+    "Host passes the verified frozen backend protocol to both event reader and observation; generator hashes remain mandatory.",
+    "State frames require current ready visit and exact frozen binding/instance/object identity; event-supplied source paths are rejected.",
+    "Rejected candidate mutations do not change revisions, live state or admitted state frames.",
+    "New scene visits retain project state with historical origins; new run observation starts empty."
+  ]
+}

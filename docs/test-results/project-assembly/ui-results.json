@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-15",
+  "runtime": "Node.js v24.21.0",
+  "scope": "Project assembly ordinary-document authoring, project build UI, v2 inspection/delivery and entry-scene read-only observation. No installation or full-suite claim.",
+  "counting": "These are overlapping incremental regression runs at the stages described below. Their counts must not be summed into a distinct-test or final full-suite total. Earlier logs remain unchanged; source hashes describe the final UI checkpoint only.",
+  "checks": [
+    {
+      "log": "ui-regressions.log",
+      "sha256": "8023a535aecc94b437ca10f7938edf08647e07d1280f0277e948bf6b91ce4e39",
+      "files": [
+        "scripts/tests/project-assembly-documents.test.mjs",
+        "scripts/tests/project-assembly-ui.test.mjs",
+        "scripts/tests/project-assembly-build-ui.test.mjs",
+        "scripts/tests/backend-project-ui.test.mjs",
+        "scripts/tests/backend-project-delivery-ui.test.mjs",
+        "scripts/tests/backend-project-build-ui.test.mjs",
+        "scripts/tests/backend-project-catalog-ui.test.mjs",
+        "scripts/tests/backend-project-catalog-build-ui.test.mjs",
+        "scripts/tests/project-build-ui.test.mjs",
+        "scripts/tests/i18n-coverage.test.mjs",
+        "scripts/tests/i18n-diagnostics.test.mjs"
+      ],
+      "tests": 134,
+      "passed": 134,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "Assembly author service/UI, build integration, v2 project inspection/delivery, legacy build/catalog and i18n. Before the later unknown-save type guard and entry observation change."
+    },
+    {
+      "log": "ui-author-bridges.log",
+      "sha256": "02d499befa792e95c1d469b6cdb5ba422e931fefa2303e1fd3a197e89f81e3c7",
+      "files": [
+        "scripts/tests/project-assembly-ui.test.mjs",
+        "scripts/tests/project-assembly-build-ui.test.mjs",
+        "scripts/tests/scene-audio-create-ui.test.mjs",
+        "scripts/tests/scene-audio-create-system-ports.test.mjs",
+        "scripts/tests/scene-behavior-create-ui.test.mjs",
+        "scripts/tests/scene-behavior-links-ui.test.mjs"
+      ],
+      "tests": 104,
+      "passed": 104,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "Assembly and existing audio/behavior author bridges after the stylesheet route correction; before the final unknown-save type guard."
+    },
+    {
+      "log": "ui-author-freeze.log",
+      "sha256": "05350fb326b7de1824a9859a3dc159155aa1889bd124ccb96f0eeab895af4872",
+      "files": [
+        "scripts/tests/project-assembly-ui.test.mjs",
+        "scripts/tests/project-assembly-build-ui.test.mjs",
+        "scripts/tests/i18n-coverage.test.mjs",
+        "scripts/tests/i18n-diagnostics.test.mjs"
+      ],
+      "tests": 21,
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "Final author draft and exact unknown-save confirmation checks, including registered document type, with build and i18n regression."
+    },
+    {
+      "log": "ui-runtime-observation.log",
+      "sha256": "e98142450bc93eb2ccc226fbd0dad5acf4e7cc137ff8d709e1de714104d20f57",
+      "files": [
+        "scripts/tests/scene-runtime-query-ui.test.mjs",
+        "scripts/tests/project-assembly-build-ui.test.mjs",
+        "scripts/tests/i18n-coverage.test.mjs",
+        "scripts/tests/i18n-diagnostics.test.mjs"
+      ],
+      "tests": 26,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "Final entry-scene read-only observation correction: supported protocols and translated scope, forged entry/task/build guards, source navigation, stale entry ownership, legacy observations, project build and i18n."
+    }
+  ],
+  "finalSourceHashes": {
+    "scripts/lib/project-assembly-documents.mjs": "912c40ec86c458fbe8a0f392ea2d8ea65d950775bcaaa464564c470be4418d49",
+    "web/modules/app-project-assembly.js": "b4ccf7a9f35d9d11e36b28a17e6999781abe14982cad32695a2f4c454e2e839e",
+    "web/project-assembly.css": "7f257b38cee1f43199af8e1be05e2b1a72b526a37759904d0adb4171ff5bc9c3",
+    "web/modules/app-project-build.js": "7de17852fbf7ffb9bb2615fc55abc22427d07f8b50a4e0776edff89434e6ab84",
+    "web/modules/app-backend-project.js": "1edc3a7e03e74a733735b7961182819417d8ef0cbe3e07e816f87a591cac64b7",
+    "web/modules/app-backend-project-delivery.js": "4b675d46c60914ba06703c09d461a492c0ee1cc42fb011625d9f46bec4021dfd",
+    "web/i18n/en.js": "b53584cde64d8a84295ba84a10b62b8f5bf89ff669e8fe52e3853c725b395edf",
+    "web/i18n/ja.js": "8f4a258e9913b99bd83574375b552a6944a8ad6cc84511c99156393e466e98f2",
+    "scripts/tests/project-assembly-documents.test.mjs": "a3a779799616009d5838268fd42e0183dcf7512d3067af66c0b539078bc61b9d",
+    "scripts/tests/project-assembly-ui.test.mjs": "bc79fa6ebbf0bbaf6ccb8716728695405977546c1a22edcf7c8a0c36ed9a2941",
+    "scripts/tests/project-assembly-build-ui.test.mjs": "290891f36db6a09f314cf47024165279d337156e72559a9a963fcaee3226ad20",
+    "scripts/tests/scene-runtime-query-ui.test.mjs": "a1ec4a8718bdeb23479daf62a15a8ef6386e8ed1f4d527f6b63e7e6758ec2a9b"
+  },
+  "diffCheck": "git diff --check passed",
+  "limitations": [
+    "Browser layout, real Godot execution and download/migration are recorded separately by the root smoke test.",
+    "Runtime observation covers only the frozen entry scene; project control, cases, suites and other single-scene author tools remain hidden.",
+    "Existing scene and resource source bytes are preserved by the ordinary-document service tests."
+  ]
+}

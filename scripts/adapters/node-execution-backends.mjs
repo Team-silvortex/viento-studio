@@ -4,6 +4,7 @@ import { validateExecutionBackendDescriptor, checkExecutionBackendSupport } from
 import { GODOT4_EXECUTION_ADAPTER } from '../backends/godot4-adapter.mjs';
 import { BEVY_EXECUTION_ADAPTER } from '../backends/bevy-adapter.mjs';
 import { BEVY_RUST_EXECUTION_ADAPTER } from '../backends/bevy-rust-adapter.mjs';
+import { buildTargetIdentity } from '../../engine/build-target.mjs';
 import { buildError } from './node-build-snapshot.mjs';
 import { parseJsonSource, locateJsonSource } from '../../engine/json-source.mjs';
 
@@ -68,7 +69,7 @@ export function executionPhaseDiagnostics(adapter, result, plan) {
   if (!Array.isArray(diagnostics)) invalid('Invalid execution phase diagnostics.');
   if (result.status !== 'succeeded' && !diagnostics.some(item => item.severity === 'error')) {
     return [...diagnostics, { severity: 'error', code: `build_process_${result.status.replaceAll('-', '_')}`,
-      message: 'The execution backend phase did not succeed.', objectId: plan.scene.objectId, sourcePath: plan.scene.sourcePath, propertyPath: '' }];
+      message: 'The execution backend phase did not succeed.', objectId: buildTargetIdentity(plan)?.objectId, sourcePath: buildTargetIdentity(plan)?.sourcePath, propertyPath: '' }];
   }
   return diagnostics;
 }

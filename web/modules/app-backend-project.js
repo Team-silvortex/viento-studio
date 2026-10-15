@@ -1,6 +1,6 @@
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
-import { validateBackendProjectManifest } from '../../engine/backend-project.mjs';
+import { validateBackendProjectManifest, backendProjectSourceIdentity } from '../../engine/backend-project.mjs';
 
 // Viewing is independent of execution; only an explicit verified selection changes its target.
 export function setupBackendProject({ container, request, getState, onChange = () => {}, onSelect = () => false, onSelectSettled = () => {}, onDeliver }) {
@@ -111,14 +111,21 @@ export function setupBackendProject({ container, request, getState, onChange = (
     view.facts.parentElement.append(view.node('p', t(explanation), 'build-hint'));
     const source = view.section('来源与锁定输入', '详情按构建时捕获的来源与文件清单展示；当前作者编辑和工具检查不会改写此工程。');
     const sourceFacts = view.node('dl', '', 'backend-project-facts'); source.append(sourceFacts);
-    for (const [label, value] of [['作者世界标识', project.source.workspaceId], ['来源场景标识', project.source.sceneId],
-      ['来源场景文件', project.source.sourcePath], ['来源场景修订', project.source.sourceRevision],
+    const sourceIdentity = backendProjectSourceIdentity(project);
+    for (const [label, value] of [['作者世界标识', project.source.workspaceId], [sourceIdentity.planKind === 'project' ? '来源组装标识' : '来源场景标识', sourceIdentity.objectId],
+      [sourceIdentity.planKind === 'project' ? '来源组装文件' : '来源场景文件', project.source.sourcePath], [sourceIdentity.planKind === 'project' ? '来源组装修订' : '来源场景修订', project.source.sourceRevision],
       ['计划种类', project.source.planKind], ['计划版本', project.source.planSchemaVersion]]) view.field(sourceFacts, label, value, true);
+    if (sourceIdentity.planKind === 'project') {
+      view.field(sourceFacts, '启动场景标识', sourceIdentity.entrySceneId, true); view.field(sourceFacts, '组装场景数量', sourceIdentity.sceneCount);
+      const members = view.node('ul', '', 'backend-project-files');
+      for (const scene of project.source.scenes) members.append(view.node('li', `${scene.sceneId} · ${scene.sourcePath} · ${scene.sourceRevision}`, 'build-monospace'));
+      source.append(members);
+    }
     const sources = view.node('details', '', 'backend-project-inventory'); sources.id = 'backendProjectSources';
     sources.append(view.node('summary', t('冻结的作者文件（{0}）', project.dependencies.length)));
     sources.append(view.node('p', t('这是冻结快照包含的作者文件，不是当前文件状态，也不代表每份文件都生成了引擎代码。'), 'build-hint'));
     const sourceList = view.node('ul', '', 'backend-project-files');
-    const sourceRoles = { scene: '场景原文', 'behavior-source': '行为原文', 'author-document': '作者文档' };
+    const sourceRoles = { assembly: '组装原文', scene: '场景原文', 'behavior-source': '行为原文', 'author-document': '作者文档' };
     for (const file of project.dependencies) {
       const item = view.node('li'); item.dataset.sourcePath = file.sourcePath;
       item.append(view.node('p', file.sourcePath, 'build-monospace'));
@@ -243,7 +250,7 @@ export function setupBackendProject({ container, request, getState, onChange = (
       const result = await request({ action: 'inspect-project', buildId: id });
       if (disposed || token !== epoch || !owns()) return false;
       const project = validateBackendProjectManifest(result?.project);
-      if (project.buildId !== origin.buildId || project.snapshotId !== origin.snapshotId || project.backend.id !== origin.backendId || project.source.sceneId !== origin.sceneId
+      if (project.buildId !== origin.buildId || project.snapshotId !== origin.snapshotId || project.backend.id !== origin.backendId || backendProjectSourceIdentity(project).objectId !== origin.sceneId
         || typeof result.buildDirectory !== 'string' || !result.buildDirectory || result.buildDirectory.length > 4096
         || /[\u0000-\u001f\u007f]/.test(result.buildDirectory)) throw Object.assign(new Error('Mismatched backend project.'), { errorCode: 'backend_project_invalid' });
       const inspection = readInspection(result.inspection);

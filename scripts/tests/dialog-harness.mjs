@@ -1,3 +1,4 @@
+import { backendProjectSourceIdentity } from '../../engine/backend-project.mjs';
 import { createProjectProblemsSnapshot, filterProjectProblems } from '../../engine/project-problems.mjs';
 import { createSceneAuthoringWorkflow } from '../../engine/scene-authoring-workflow.mjs';
 import { SCENE_PREVIEW_API_PATH } from '../../engine/scene-preview-contract.mjs';
@@ -134,6 +135,7 @@ export async function dialogHarness(module, overrides = {}) {
   let timerId = 0;
   const runtime = vm.createContext({
     document, window, URL, Blob, TextEncoder, SCENE_PREVIEW_API_PATH, WORLD_API_PATH,
+    backendProjectSourceIdentity: value => backendProjectSourceIdentity(JSON.parse(JSON.stringify(value))),
     // Browser modules share a realm. This VM fixture transports catalog/source
     // JSON DTOs into the host-imported workflow realm at injected port returns.
     createSceneAuthoringWorkflow: options => createSceneAuthoringWorkflow({ ...options,

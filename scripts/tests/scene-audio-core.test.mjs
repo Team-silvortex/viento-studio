@@ -41,7 +41,7 @@ test('all manifest fields are mandatory exact typed and bounded without referenc
     for(const key of Object.keys(object)){const doc=structuredClone(base);delete (container?doc[container][0]:doc)[key];assert.throws(()=>inspectSceneAudio(doc),{errorCode:'scene_audio_invalid'});}
     object.extra=true;assert.throws(()=>inspectSceneAudio(base),{errorCode:'scene_audio_invalid'});
   }
-  const invalid=[d=>d.format='audio',d=>d.schemaVersion=2,d=>d.sceneObjectId='bad',d=>d.tracks[0].id=id(2).toUpperCase().replace('00000002','AAAAAAAA'),d=>d.tracks[0].role='voice',d=>d.tracks[0].loop='false',d=>d.tracks[0].volume=1.001,d=>d.tracks[0].volume=-.001,d=>d.cues[0].action='pause',d=>d.cues[0].atSeconds=60.001,d=>d.cues[0].atSeconds=-.1,d=>d.cues[0].trackId=id(99),d=>d.tracks.push(d.tracks[0]),d=>d.cues.push(d.cues[0]),d=>d.tracks=[],d=>d.cues=[]];
+  const invalid=[d=>d.format='audio',d=>d.schemaVersion=2,d=>d.sceneObjectId='bad',d=>d.tracks[0].id=id(2).toUpperCase().replace('00000002','AAAAAAAA'),d=>d.tracks[0].role='voice',d=>d.tracks[0].loop='false',d=>d.tracks[0].volume=1.001,d=>d.tracks[0].volume=-.001,d=>d.cues[0].action='pause',d=>d.cues[0].atSeconds=60.001,d=>d.cues[0].atSeconds=-.1,d=>d.cues[0].trackId=id(99),d=>d.tracks.push(d.tracks[0]),d=>d.cues.push(d.cues[0]),d=>d.tracks=[]];
   for(const mutate of invalid){const doc=document();mutate(doc);assert.throws(()=>inspectSceneAudio(doc),{errorCode:'scene_audio_invalid'});}
   for(const time of [-1,60.1,'0',null])assert.throws(()=>sampleSceneAudio(document(),time),{errorCode:'scene_audio_invalid'});
   assert.equal(getStudioCoreMetadata().ready,true);
@@ -60,7 +60,17 @@ test('raw WASM rejects escaped duplicate keys and JS boundary rejects hidden ser
 });
 test('native CLI and actual WASM agree on valid invalid and duplicate-key audio requests', {skip:!process.env.VIENTO_AUDIO_CORE_NATIVE}, () => {
   const doc=document();doc.cues.push({id:id(5),trackId:id(2),atSeconds:1,action:'stop'});
-  const wires=[request(doc),request(doc,0),request(doc,1),request(doc,60),request({...doc,extra:1}),request(doc,-1),{...request(doc),timeSeconds:0}].map(JSON.stringify);
+  const wires=[request(doc),request(doc,0),request(doc,1),request(doc,60),request({...doc,cues:[]}),request({...doc,cues:[]},60),request({...doc,extra:1}),request(doc,-1),{...request(doc),timeSeconds:0}].map(JSON.stringify);
   wires.push(wires[0].replace('"volume":0.5','"volume":0,"volume":0.5'));
   const native=spawnSync(process.env.VIENTO_AUDIO_CORE_NATIVE,[],{input:wires.join('\n')+'\n',encoding:'utf8'});assert.equal(native.status,0,native.stderr);assert.deepEqual(native.stdout.trim().split('\n').map(JSON.parse),wires.map(wasm));
+});
+
+test('empty timelines preserve declared tracks and never fabricate playback commands', () => {
+  const doc=document();doc.cues=[];
+  assert.deepEqual(inspectSceneAudio(doc).document,doc);
+  for(const time of [0,.25,60]){
+    const result=sampleSceneAudio(doc,time);assert.deepEqual(result.commands,[]);
+    assert.equal(result.states[0].status,'stopped');assert.equal(result.states[0].startedAtSeconds,null);assert.equal(result.states[0].lastCueId,null);
+    assert.equal(wasm(request(doc,time)).ok,true);
+  }
 });

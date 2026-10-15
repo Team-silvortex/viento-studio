@@ -280,3 +280,14 @@ test('the Bevy Rust source project reports its Cargo entry, frozen authors and s
     assert.ok(!text.includes('Bevy 工程只有场景数据')); assert.equal(h.calls.length, 1);
   }
 });
+
+test('assembly manifest details retain assembly identity and disclose ordered scene members without authoring or execution', async () => {
+  const source = clone(manifest()), assemblyId = id(80), otherSceneId = id(81);
+  source.schemaVersion = 2; source.source = { workspaceId: 'frozen-author-workspace', assemblyId, sourcePath: 'documents/projects/game.json', sourceRevision: revision(80), planKind: 'project', planSchemaVersion: 1,
+    entrySceneId: otherSceneId, scenes: [{ sceneId, sourcePath: 'documents/scenes/frozen-scene.json', sourceRevision: revision(2) }, { sceneId: otherSceneId, sourcePath: 'documents/scenes/other.json', sourceRevision: revision(81) }] };
+  source.dependencies.push({ objectId: assemblyId, sourcePath: source.source.sourcePath, sourceRevision: source.source.sourceRevision, role: 'assembly' }, { objectId: otherSceneId, sourcePath: 'documents/scenes/other.json', sourceRevision: revision(81), role: 'scene' });
+  source.dependencies.sort((a,b)=>a.sourcePath<b.sourcePath?-1:1); const project = validateBackendProjectManifest(source);
+  const h=await view({project,rows:[summary(project,{sceneId:assemblyId,targetKind:'project'})],current:{sceneId:assemblyId}});assert.equal(await h.open(),true);
+  const text=h.element('backendProjectContent').textContent;for(const expected of ['来源组装标识',assemblyId,'启动场景标识',otherSceneId,'组装场景数量','documents/scenes/other.json','组装原文'])assert.ok(text.includes(expected),expected);
+  assert.deepEqual(h.calls,[{action:'inspect-project',buildId}]);h.setState({...h.state,sceneId});assert.equal(h.element('backendProjectDetails').hidden,true);
+});

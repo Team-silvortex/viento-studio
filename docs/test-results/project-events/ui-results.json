@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-15",
+  "scope": "Independent read-only project event history, protocol 3 shared-state compatibility, publisher/subscriber provenance and async source ownership.",
+  "runtime": "Node.js v24.21.0",
+  "tests": 99,
+  "passed": 99,
+  "failed": 0,
+  "skipped": 0,
+  "log": "ui-tests.log",
+  "logSha256": "78abd183c9c0d58e59963d184f029a4d67aa8d368e73d33362c35d7838b86cf3",
+  "testFiles": [
+    "scripts/tests/project-event-observation-build-ui.test.mjs",
+    "scripts/tests/project-event-observation-ui.test.mjs",
+    "scripts/tests/project-state-observation-build-ui.test.mjs",
+    "scripts/tests/project-state-observation-ui.test.mjs",
+    "scripts/tests/project-scene-switching-ui.test.mjs",
+    "scripts/tests/scene-runtime-query-ui.test.mjs",
+    "scripts/tests/project-build-ui.test.mjs",
+    "scripts/tests/project-assembly-build-ui.test.mjs",
+    "scripts/tests/i18n-coverage.test.mjs",
+    "scripts/tests/i18n-diagnostics.test.mjs"
+  ],
+  "newUiTests": 17,
+  "sourceHashes": {
+    "web/modules/app-project-event-observation.js": "1fe0d400c62429c1b82ae669d12fbb14a01d0c34579b77c1ff82a0098c2bf6dc",
+    "web/project-event-observation.css": "058fcbac4a63a470a0d9a24c1e6ed4342718b62004172f3ba98f09e7a68a160a",
+    "web/modules/app-project-build.js": "698f379190270b3e9a4acd541074b76d5417f8d02c5e0aaa9d22828ffcfdf953",
+    "web/index.html": "7276c22a2bdc0390adaa127a130c9d4f700b278a4feb1b61909171dcdf452812",
+    "web/i18n/en.js": "2ec579941ce6c17ebbd4c4329b18022194324891a7543d7eee6714bd74b27f97",
+    "web/i18n/ja.js": "4f4d6b6ac1209940def1c697aeb20cd6e86f346f2b13bfce259059b8240ffd32",
+    "scripts/tests/project-event-observation-ui.test.mjs": "2eca00d7dc2ff015c499074ef789a0bae5616c3ef9ec5a0b6a4b2799f5b06e1d",
+    "scripts/tests/project-event-observation-build-ui.test.mjs": "a21f82300a7fe7bd91d2efcfad04ffe1792244afb2e51029b04959692e417b7c"
+  },
+  "checks": [
+    "Independent event panel consumes a detached core-admitted event snapshot without raw log parsing, networking, publishing or subscription ports.",
+    "Protocol 3 shows event history and unchanged shared state; protocol 2 shows shared state only; protocol 1 retains its prior presentation.",
+    "Published entries preserve sequence, name, scalar payload and publisher source; recipients separately show pending, handled or skipped status and their own subscription source.",
+    "No recipients is explicitly displayed and is not interpreted as a successful callback.",
+    "Scene changes preserve history and event-name filtering; new tasks clear both.",
+    "Appended history preserves existing source tickets and focused DOM nodes; a changed recipient status at the same publication sequence revokes that recipient ticket without revoking the publisher or another recipient.",
+    "Past publisher/subscriber origins retain frozen declaration UUID, source revision and property path instead of the actor UUID or current scene.",
+    "Busy blocks click admission and duplicate navigation, while the host own-loading busy phase does not revoke an admitted read; dirty, creating, task and visit changes do revoke it.",
+    "Authored text, Unicode, markup, false, zero and empty strings remain literal across Chinese, English and Japanese.",
+    "Dedicated responsive stylesheet uses a single column below 600px and wraps long author content.",
+    "JavaScript syntax and git diff --check passed."
+  ],
+  "limits": [
+    "The 99 tests include 82 existing observation/build/language regressions and 17 new event tests; counts overlap earlier incremental runs.",
+    "DOM-controller admission uses the real protocol 3 core query; actual browser layout, Godot execution and relocated ZIP delivery are separate evidence.",
+    "Frozen binding origins currently provide document/property provenance without sourceRange, so these source actions promise document navigation, not a fabricated exact selection."
+  ]
+}

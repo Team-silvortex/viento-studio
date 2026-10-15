@@ -19,6 +19,8 @@ import { inspectRuntimeCaseDocument, runtimeCaseDocumentIds, validateRuntimeCase
 import { inspectRuntimeCaseSuite, runtimeCaseSuiteDocumentIds, validateRuntimeCaseSuiteDependencies,
   RUNTIME_CASE_SUITE_FILE_MAX_BYTES } from '../../engine/runtime-case-suite.mjs';
 
+import { inspectProjectAssembly, projectAssemblyDocumentIds, validateProjectAssemblyDependencies, PROJECT_ASSEMBLY_FILE_MAX_BYTES } from '../../engine/project-assembly.mjs';
+
 export const packageDigest = bytes => createHash('sha256').update(bytes).digest('hex');
 const stamp = stat => [stat.dev, stat.ino, stat.size, stat.mtimeMs, stat.ctimeMs];
 
@@ -71,6 +73,15 @@ export function inspectPackageRuntimeCaseSuite(bytes, sourcePath) {
     code: 'runtime_suite_invalid', message: 'A runtime case suite requires bounded UTF-8 JSON in a registered .json document.', propertyPath: '' }] };
 }
 
+export function inspectPackageProjectAssembly(bytes, sourcePath) {
+  const checked = inspectProjectAssembly(bytes.toString('utf8'));
+  if (!checked.recognized) return checked;
+  let valid = sourcePath.toLowerCase().endsWith('.json') && bytes.length <= PROJECT_ASSEMBLY_FILE_MAX_BYTES;
+  try { new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); } catch { valid = false; }
+  return valid ? checked : { recognized: true, ok: false, value: null, diagnostics: [{ severity: 'error',
+    code: 'build_assembly_invalid', message: 'A project assembly requires bounded UTF-8 JSON source in a .json document.', propertyPath: '' }] };
+}
+
 export async function readPackageBytes(base, relative, signal, limit = PACKAGE_LIMITS.jsonBytes) {
   signal?.throwIfAborted();
   const file = await resolveContainedPath(base, path.join(base, relative));
@@ -102,7 +113,7 @@ export async function readPackageCatalog(root, signal) {
   const registry = await readRegistry(root, { signal }), assetRoot = resolveAssetRoot(root);
   if (registry.documents.length + registry.assets.length > PACKAGE_LIMITS.files) throw packageError('导出文件过多');
   const entries = [], records = new Map(), sources = new Map(), templates = new Map(), revisions = [workspace, assetRoot];
-  const projectionChecks = [], compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], documentSources = [];
+  const projectionChecks = [], compositionChecks = [], behaviorChecks = [], caseChecks = [], suiteChecks = [], assemblyChecks = [], documentSources = [];
   let sourceBytes = 0;
   const countSource = bytes => {
     sourceBytes += bytes.length;
@@ -141,6 +152,7 @@ export async function readPackageCatalog(root, signal) {
         const behavior = inspectPackageSceneBehaviors(source, relative);
         const runtimeCase = inspectPackageRuntimeCase(source, relative);
         const suite = inspectPackageRuntimeCaseSuite(source, relative);
+        const assembly = inspectPackageProjectAssembly(source, relative);
         // Dependency validation only needs availability and the projection or
         // composition classification. Do not retain every source body.
         documentSources.push({ record, sourcePath: relative,
@@ -150,6 +162,7 @@ export async function readPackageCatalog(root, signal) {
         if (behavior.recognized) behaviorChecks.push({ item, record, behavior });
         if (runtimeCase.recognized) caseChecks.push({ item, record, checked: runtimeCase });
         if (suite.recognized) suiteChecks.push({ item, record, checked: suite });
+        if (assembly.recognized) assemblyChecks.push({ item, record, checked: assembly });
         const fingerprint = { size: source.length, sha256: packageDigest(source) };
         sources.set(record.id, fingerprint); revisions.push([record.id, fingerprint.sha256]);
         const parsed = parseSourceContent(source.toString('utf8'), relative, resolveDocumentDefinition(workspace, relative, record));
@@ -179,6 +192,7 @@ export async function readPackageCatalog(root, signal) {
         if (behavior.ok && behavior.recognized) for (const id of sceneBehaviorDocumentIds(behavior.value)) deps.add(id);
         if (runtimeCase.ok && runtimeCase.recognized) for (const id of runtimeCaseDocumentIds(runtimeCase.value)) deps.add(id);
         if (suite.ok && suite.recognized) for (const id of runtimeCaseSuiteDocumentIds(suite.value)) deps.add(id);
+        if (assembly.ok && assembly.recognized) for (const id of projectAssemblyDocumentIds(assembly.value)) deps.add(id);
         for (const url of urls) {
           const id = byUrl.get(mediaUrl(url));
           if (id) deps.add(id); else item.problems.push(url);
@@ -201,7 +215,8 @@ export async function readPackageCatalog(root, signal) {
   // ordinary author documents still retain only their thin classification.
   const bodyDependencyIds = new Set([...behaviorChecks.filter(item => item.behavior.ok).flatMap(item => sceneBehaviorDocumentIds(item.behavior.value)),
     ...caseChecks.filter(item => item.checked.ok).flatMap(item => runtimeCaseDocumentIds(item.checked.value)),
-    ...suiteChecks.filter(item => item.checked.ok).flatMap(item => runtimeCaseSuiteDocumentIds(item.checked.value))]);
+    ...suiteChecks.filter(item => item.checked.ok).flatMap(item => runtimeCaseSuiteDocumentIds(item.checked.value)),
+    ...assemblyChecks.filter(item => item.checked.ok).flatMap(item => projectAssemblyDocumentIds(item.checked.value))]);
   for (const id of bodyDependencyIds) {
     const document = documentSources.find(item => item.record.id === id);
     if (!document) continue;
@@ -226,6 +241,9 @@ export async function readPackageCatalog(root, signal) {
   }
   for (const { item, record, checked } of suiteChecks) {
     if (!checked.ok || validateRuntimeCaseSuiteDependencies(checked.value, record, projectionSource).length) item.problems.push('正文解析失败');
+  }
+  for (const { item, record, checked } of assemblyChecks) {
+    if (!checked.ok || validateProjectAssemblyDependencies(checked.value, record, projectionSource).length) item.problems.push('正文解析失败');
   }
   const byId = new Map(entries.map(item => [item.id, item]));
   for (const item of entries) for (const dependency of item.dependencies) if (!byId.has(dependency)) item.problems.push(dependency);

@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-15",
+  "scope": "Current project scene and visit history, frozen-member validation, repeated-visit navigation isolation, existing build/observation regressions and three-language coverage.",
+  "runtime": "Node.js v24.21.0",
+  "tests": 67,
+  "passed": 67,
+  "failed": 0,
+  "skipped": 0,
+  "log": "ui-tests.log",
+  "logSha256": "8c1743b93ecc2afd29f69acd295e288b9060fb9de90a0d1a27f7dca8441df53b",
+  "testFiles": [
+    "scripts/tests/project-scene-switching-ui.test.mjs",
+    "scripts/tests/scene-runtime-query-ui.test.mjs",
+    "scripts/tests/project-build-ui.test.mjs",
+    "scripts/tests/project-assembly-build-ui.test.mjs",
+    "scripts/tests/i18n-coverage.test.mjs",
+    "scripts/tests/i18n-diagnostics.test.mjs"
+  ],
+  "newUiTests": 10,
+  "sourceHashes": {
+    "web/modules/app-project-build.js": "e52d66d337df187688a5a69966bf56a95ddc26345da9401b2cc333cb9d25f514",
+    "web/i18n/en.js": "379e5760a2bc5e8ae77471c74b89a953c0793935febee1e73098c158a7e97309",
+    "web/i18n/ja.js": "85cf4f87103bd35254d9f45bc35d2adb9db58f58eebd7d2d77fa600c7f7f025e",
+    "scripts/tests/project-scene-switching-ui.test.mjs": "fbb6650bfaa0dc67cd548844a2852e1cb523e9e3d3fccf5b0e3f97a0287b6207",
+    "scripts/tests/scene-runtime-query-ui.test.mjs": "cbe6c160ccfb8c1292b6c1e43d59a9bdbb449375dd79cd35f9f3a2233799752f"
+  },
+  "checks": [
+    "A→B→A uses distinct visit ownership; returning to the same scene cannot revive an old source link.",
+    "Exit-to-enter waiting clears old coordinates and revokes navigation before the next ready frame.",
+    "Current child protocols 1, 2 and 3 are checked against frozen members and the backend descriptor.",
+    "Historical scene source and current actor source navigation share dialog, task, build, snapshot and visit guards, passed into the editor before asynchronous source writes.",
+    "Live author membership cannot rename or redirect frozen visits.",
+    "Existing single-scene observations and older entry-only project views remain supported.",
+    "Polling and language changes preserve focus/filter without sending execution commands.",
+    "git diff --check and product/translation syntax checks passed.",
+    "An admitted source read may make the editor busy without revoking itself; busy still blocks initial or duplicate clicks.",
+    "During own source loading, visit/dialog changes and dirty/creating drafts revoke the UI guard; independent host source-request/editor-token ownership still blocks superseded writes."
+  ],
+  "limits": [
+    "This is a DOM-controller regression run using the real core query functions; actual Chrome layout, runtime processes and ZIP migration are recorded separately.",
+    "Counts overlap prior debugging and incremental runs and must not be summed with those logs.",
+    "Project control replay, acceptance cases and single-scene authoring tools remain hidden."
+  ],
+  "previousCheckpoint": {
+    "report": "checkpoint-before-source-read-fix/ui-results.json",
+    "log": "checkpoint-before-source-read-fix/ui-tests.log",
+    "tests": 65,
+    "passed": 65,
+    "note": "Preserved unchanged before the own-source-loading busy guard correction. The final run repeats those tests and adds two; counts are not additive."
+  }
+}

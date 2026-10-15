@@ -3,8 +3,9 @@ import path from 'node:path';
 import os from 'node:os';
 import { randomUUID } from 'node:crypto';
 import { canonicalJson, createWorldProjection } from '../../engine/world-projection.mjs';
-import { createScene2DPlan } from '../../engine/build-plan.mjs';
+import { createBuildTargetPlan, buildTargetIdentity, scenePlans } from '../../engine/build-target.mjs';
 import { createSceneRuntimeObservation } from '../../engine/scene-runtime-query.mjs';
+import { createProjectRuntimeObservation } from '../../engine/project-runtime-query.mjs';
 import { validateSceneControlProgram, validateSceneControlPlan, createSceneControlTraceReader } from '../../engine/scene-control-program.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
 import { checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
@@ -19,7 +20,7 @@ import { PROJECT_RETENTION_PIN, createProjectRetentionPin, pinProjectFile } from
 const json = value => JSON.stringify(value, null, 2) + '\n';
 const within = (root, target) => { const relative = path.relative(root, target); return relative === '' || relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative); };
 const diagnostic = (error, plan) => ({ severity: 'error', code: error.errorCode || 'build_failed', message: error.errorCode ? error.message : 'Build operation failed.',
-  objectId: plan?.scene.objectId || null, sourcePath: plan?.scene.sourcePath || '', propertyPath: '' });
+  objectId: buildTargetIdentity(plan)?.objectId || null, sourcePath: buildTargetIdentity(plan)?.sourcePath || '', propertyPath: '' });
 const aborted = signal => { if (signal?.aborted) throw buildError('build_cancelled', 'Build operation cancelled.'); };
 
 export function projectBuildCacheRoot(env = process.env) {
@@ -63,13 +64,14 @@ async function saveRecord(directory, name, record, retentionPin) {
   finally { await fs.rm(temporary, { force: true }); }
 }
 
-export async function buildProject({ root, scene, godot, tool = godot, backendId = DEFAULT_EXECUTION_BACKEND,
+export async function buildProject({ root, scene, targetId, godot, tool = godot, backendId = DEFAULT_EXECUTION_BACKEND,
   backendRegistry = createExecutionBackendRegistry(), output, signal, timeoutMs = 30000, expectedSnapshotId, onProgress = () => {} }) {
   let directory, plan, record, retentionPin, adapter, generated;
   try {
+    if (targetId !== undefined && scene !== undefined) throw buildError('build_request_invalid', 'Choose one build target identity.');
     root = await fs.realpath(root);
     onProgress({ phase: 'snapshot' });
-    const captured = await captureBuildSnapshot(root, scene, { signal });
+    const captured = await captureBuildSnapshot(root, targetId ?? scene, { signal });
     plan = captured.plan;
     if (!captured.ok) return { ok: false, status: 'rejected', diagnostics: captured.diagnostics };
     if (expectedSnapshotId && expectedSnapshotId !== captured.snapshotId) throw buildError('build_snapshot_changed', 'Saved project inputs changed; check the build plan again.');
@@ -121,8 +123,8 @@ export async function buildProject({ root, scene, godot, tool = godot, backendId
     // Caches are regenerable. Keep the small generated project, not editor or
     // shader caches in every build. Runtime gets its own temporary project.
     await adapter.cleanupProject(project, { generatedFiles: [...generated.files.keys()], resourceFiles: [...generated.resourceFiles.values()] });
-    if (plan.behaviors) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, captured.snapshot.source.documents,
-      [plan.behaviors.manifest.objectId, ...plan.behaviors.sources.map(source => source.objectId)]);
+    const behaviorSources = scenePlans(plan).flatMap(scene => scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []);
+    if (behaviorSources.length) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, captured.snapshot.source.documents, behaviorSources);
     record.status = record.diagnostics.length ? (record.phases.some(item => item.status === 'cancelled') ? 'cancelled' : record.phases.some(item => item.status === 'timeout') ? 'timeout' : 'failed') : 'succeeded';
     await saveRecord(directory, 'build.json', record, retentionPin);
     if (record.status === 'succeeded') {
@@ -163,9 +165,9 @@ export async function readFrozenProjectBuild(buildDirectory, { backendId, backen
   if (backendId !== undefined && backendId !== build.backend.id) throw buildError('runtime_backend_changed', 'The selected execution backend differs from this frozen build.');
   const adapter = backendRegistry.resolve(build.backend.id);
   const projection = await createWorldProjection(snapshot.source, { digest: buildHash });
-  const restored = createScene2DPlan({ source: snapshot.source, projection }, snapshot.plan?.scene?.objectId);
+  const restored = createBuildTargetPlan({ source: snapshot.source, projection }, buildTargetIdentity(snapshot.plan)?.objectId);
   if (!restored.ok || canonicalJson(restored.plan) !== canonicalJson(snapshot.plan)
-    || restored.plan.resources.reduce((sum, item) => sum + item.size, 0) > 128 * 1024 * 1024) throw buildError('runtime_build_invalid', 'The frozen scene plan is invalid.');
+    || restored.plan.resources.reduce((sum, item) => sum + item.size, 0) > 128 * 1024 * 1024) throw buildError('runtime_build_invalid', 'The frozen build target plan is invalid.');
   return { buildDirectory, build, snapshot, adapter, plan:restored.plan };
 }
 
@@ -206,7 +208,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       || controlProgram.schemaVersion === 2 && !adapter.descriptor.capabilities.includes('runtime.control-replay.instances'))) {
       throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'This backend does not support control replay.');
     }
-    if (runtimeCaseSceneId !== undefined && plan.scene.objectId !== runtimeCaseSceneId) {
+    if (runtimeCaseSceneId !== undefined && buildTargetIdentity(plan)?.objectId !== runtimeCaseSceneId) {
       throw buildError('runtime_case_scene_mismatch', 'The runtime case belongs to a different frozen scene.');
     }
     if (runtimeCase) runtimeCase = validateRuntimeCasePlan(plan, runtimeCase);
@@ -244,7 +246,8 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     aborted(signal);
     // Runtime identities and navigation come only from the revalidated frozen
     // plan. No process frame can introduce an object or author location.
-    observation = createSceneRuntimeObservation(plan, { ...(controlProgram ? { controlProgram } : {}) });
+    observation = plan.kind === 'project' ? createProjectRuntimeObservation(plan, { protocolVersion: build.backend.protocolVersion })
+      : createSceneRuntimeObservation(plan, { ...(controlProgram ? { controlProgram } : {}) });
     const sessions = await resolveContainedPath(buildDirectory, path.join(buildDirectory, 'sessions'), { allowMissing: true });
     await fs.mkdir(sessions, { recursive: true });
     const sessionId = randomUUID(); sessionDirectory = path.join(sessions, sessionId);
@@ -253,6 +256,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       snapshotId: build.snapshotId, backendId: build.backend.id, executionAdapter, tool: build.tool,
       mode: headless ? 'headless-logic' : 'window-preview', smoke, status: 'starting', events: [], diagnostics: [], phases: [],
       runtime: observation.snapshot(),
+      ...(plan.kind === 'project' ? { target: { kind: 'project', objectId: plan.assembly.objectId, entrySceneId: plan.entrySceneId } } : {}),
       ...(controlProgram ? { control: { program: controlProgram, sha256: `sha256:${buildHash(canonicalJson(controlProgram))}`, samples: [] } } : {}),
       ...(runtimeCase ? { verification: { definition: runtimeCase, sha256: `sha256:${buildHash(canonicalJson(runtimeCase))}`,
         evaluation: evaluateRuntimeCase(plan, runtimeCase, [], { complete: false }) } } : {}) };
@@ -270,7 +274,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       if (record.diagnostics.length) break;
     }
     if (!record.diagnostics.length) {
-      const runtime = adapter.createEventReader(plan, { onEvent: event => {
+      const runtime = adapter.createEventReader(plan, { smoke, mode: operation, protocolVersion: build.backend.protocolVersion, onEvent: event => {
         if (observation.push(event)) {
           record.runtime = observation.snapshot();
           // A consumer may cancel in response to ready. Publish the corresponding
@@ -326,8 +330,8 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, [], { complete: false });
     }
   }
-  if (plan.behaviors) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, frozenSourceDocuments,
-    [plan.behaviors.manifest.objectId, ...plan.behaviors.sources.map(source => source.objectId)]);
+  const behaviorSources = scenePlans(plan).flatMap(scene => scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []);
+  if (behaviorSources.length) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, frozenSourceDocuments, behaviorSources);
   await saveRecord(sessionDirectory, 'session.json', record);
   // Final record persistence is the case commit point. Cancellation during
   // that awaited write must not leave a passed disk record behind.

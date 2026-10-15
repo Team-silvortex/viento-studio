@@ -1,0 +1,53 @@
+✔ real project events deliver FIFO across separate behaviors and drain before A→B→A (10014.318606ms)
+✖ the unchanged built-in event starter compiles in a project and safely guards a single scene (10049.921717ms)
+✔ duplicate subscriptions reuse tokens, late registrations receive no replay and self-removal stays handled (10092.53441ms)
+✔ stale visit event ports are revoked and subscription identities are never reused (10197.582944ms)
+✔ window close waits for every captured recipient and nested FIFO publication (10396.641035ms)
+✔ real false result is rejected without acknowledging delivery or rolling back earlier effects (10248.485373ms)
+✔ real void result is rejected without acknowledging delivery or rolling back earlier effects (10360.018654ms)
+✔ real runtime error is rejected without acknowledging delivery or rolling back earlier effects (10113.489133ms)
+✔ real async callback is rejected without acknowledging delivery or rolling back earlier effects (10110.475894ms)
+✔ real another node callback is rejected at the owning binding (10091.969012ms)
+✔ real wrong callback arity is rejected at the owning binding (10098.360297ms)
+✔ real 65th active subscription fails before changing the accepted publication history (10075.265979ms)
+✔ real 1025th lifetime registration fails before changing the accepted publication history (10065.797107ms)
+✔ real 65th queued message fails before changing the accepted publication history (10101.299431ms)
+✔ real pending payload bytes beyond 16384 fails before changing the accepted publication history (10024.057417ms)
+✖ real 1025th reserved delivery fails before changing the accepted publication history (6504.355076ms)
+✔ real session payload bytes beyond 524288 fails before changing the accepted publication history (10307.298271ms)
+✔ self-publishing callbacks terminate at the session publication limit without a recursive stack (10478.467961ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 16
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 179460.243911
+
+✖ failing tests:
+
+test at scripts/tests/project-events-godot.test.mjs:56:1
+✖ the unchanged built-in event starter compiles in a project and safely guards a single scene (10049.921717ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_scene_required","message":"Select an available, registered scene document.","objectId":null,"sourcePath":"","propertyPath":"","sourceRevision":null}]
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-events-godot.test.mjs:65:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-events-godot.test.mjs:198:3
+✖ real 1025th reserved delivery fails before changing the accepted publication history (6504.355076ms)
+  TypeError: Cannot read properties of undefined (reading 'diagnostics')
+      at rejected (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-events-godot.test.mjs:49:37)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-events-godot.test.mjs:208:34)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

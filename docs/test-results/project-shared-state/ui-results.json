@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-15",
+  "scope": "Read-only project shared state, session and visit ownership, exact frozen origin navigation, project observation compatibility, build and language regressions.",
+  "runtime": "Node.js v24.21.0",
+  "tests": 82,
+  "passed": 82,
+  "failed": 0,
+  "skipped": 0,
+  "log": "ui-tests.log",
+  "logSha256": "89f3dc53aebd31db76605bec318c181d07311ae7501e48e0dca08fc4acdf10f6",
+  "testFiles": [
+    "scripts/tests/project-state-observation-build-ui.test.mjs",
+    "scripts/tests/project-state-observation-ui.test.mjs",
+    "scripts/tests/project-scene-switching-ui.test.mjs",
+    "scripts/tests/scene-runtime-query-ui.test.mjs",
+    "scripts/tests/project-build-ui.test.mjs",
+    "scripts/tests/project-assembly-build-ui.test.mjs",
+    "scripts/tests/i18n-coverage.test.mjs",
+    "scripts/tests/i18n-diagnostics.test.mjs"
+  ],
+  "newUiTests": 15,
+  "sourceHashes": {
+    "web/modules/app-project-state-observation.js": "69f4b90fbb3d43edde85d898de86ba883faa208882c74425e8bb6b2fc310009d",
+    "web/project-state-observation.css": "e5a277e76c2a26ea7a10aba347a1f905358a0fb8c5f40251c82c0938ac035b6c",
+    "web/modules/app-project-build.js": "4b150b15deb7be7079b0c82181727bb0691636c5c2495396cf69d82cfd307274",
+    "web/index.html": "29a1edf7444f2f761aac39ade83b2e40f2cb8c230348dd87070adbf14dad30e3",
+    "web/i18n/en.js": "1c6b9b6deebe8801fd8e1bb0f48ba295865d9bdf4f1ebb94da617e9afa673715",
+    "web/i18n/ja.js": "43bb45e1e3bb2bff0530f37729440d166ad7d24361b7d872f305e636ae02be1f",
+    "scripts/tests/project-state-observation-ui.test.mjs": "b7916e84fd490ea04ec2c255708b2bc3f4788533ea9d4928ed22994ae4682128",
+    "scripts/tests/project-state-observation-build-ui.test.mjs": "925262849f73852b15a1621c8abc1d6276af209b7fbc0b313e9a5b741aaecec8"
+  },
+  "checks": [
+    "Independent read-only panel consumes admitted observation snapshots and has no game mutation or network port.",
+    "Project protocol 1 remains hidden; project protocol 2 supports child protocol 1 and distinguishes absent state from a supported empty revision 0.",
+    "Scene visits preserve state filtering and past origins; a new task resets state and filtering.",
+    "State keys and JSON values, including false, zero, Chinese, Japanese, emoji and markup, render as literal text.",
+    "Per-key revision and the last deletion remain visible; deletion does not fabricate a current value.",
+    "Source navigation uses origin.source from the frozen behavior declaration rather than the actor definition or current scene.",
+    "Source tickets bind task, build, snapshot, current visit, state revision and record identity; dirty and creating editor states block delayed navigation.",
+    "An admitted source read survives its own loading busy state; initial and duplicate busy clicks remain blocked.",
+    "Equivalent polling and language changes preserve focus, filter text and caret without execution commands.",
+    "Dedicated responsive CSS stacks rows below 600px; actual 390px layout is tested separately in Chrome.",
+    "Product JavaScript syntax and git diff --check passed."
+  ],
+  "limits": [
+    "DOM-controller tests use the real engine query for host admission; real runtime, browser screenshots and relocated ZIP execution are separate evidence.",
+    "These 82 tests include the previous 67 UI/language checks; incremental and historical counts must not be summed.",
+    "Current frozen origin.source has document and property provenance without a sourceRange, so the UI promises document navigation only."
+  ]
+}

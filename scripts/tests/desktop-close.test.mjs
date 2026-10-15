@@ -158,3 +158,39 @@ test('desktop close bridge requires a request identity and strictly typed editor
   assert.equal(response.status, 204);
   assert.deepEqual(events, [{ type: 'close-response', id, busy: false, dirty: true }]);
 });
+
+// New editor modules can join close protection without adding native controller IDs.
+test('desktop and browser protect opt-in editor drafts and operations, including closed uncertain dialogs', async () => {
+  for (const name of ['futureEditorDialog', 'sceneAudioDialog', 'scriptCreateDialog', 'sceneBehaviorCreateDialog', 'sceneBehaviorsDialog']) {
+    for (const [dirty, busy, open] of [[false, false, true], [true, false, true], [false, true, true], [true, true, true], [true, true, false]]) {
+      const { runtime, document } = await closeHarness(); runtime.state = { editHasUnsavedChanges: false };
+      document.body.inert = false;
+      const dialog = document.createElement('dialog'); dialog.id = name; dialog.open = open;
+      if (name === 'futureEditorDialog') dialog.setAttribute('data-viento-close-guard', 'true');
+      dialog.dataset.dirty = String(dirty); dialog.setAttribute('aria-busy', String(busy)); document.body.appendChild(dialog);
+      const input = document.createElement('input'); input.value = '尚未保存的声音设置'; dialog.appendChild(input);
+      let prevented = false; const event = { preventDefault() { prevented = true; } };
+      vm.runInContext(`(${beforeUnload})`, runtime)(event);
+      assert.equal(prevented, dirty || busy, `${name} browser`);
+      assert.equal(event.returnValue, dirty || busy ? '' : undefined);
+      const id = randomUUID(), sent = [];
+      runtime.fetch = async (url, options) => { sent.push({ url, ...JSON.parse(options.body) }); return { ok: true }; };
+      await vm.runInContext(closeScript.replace('__VIENTO_CLOSE_ID__', JSON.stringify(id)), runtime);
+      assert.deepEqual(sent, [{ url: '/__desktop/close-response', id, busy, dirty }], `${name} desktop`);
+      assert.equal(document.body.inert, true); assert.equal(runtime.window.__vientoCloseGuard.inert, false);
+      assert.equal(input.value, '尚未保存的声音设置'); assert.equal(dialog.open, open);
+      assert.equal(dialog.dataset.dirty, String(dirty)); assert.equal(dialog.getAttribute('aria-busy'), String(busy));
+    }
+  }
+});
+
+test('unrelated dirty dialogs do not silently opt into whole-window close protection', async () => {
+  const { runtime, document } = await closeHarness(); runtime.state = { editHasUnsavedChanges: false };
+  const dialog = document.createElement('dialog'); dialog.id = 'unrelatedDialog';
+  dialog.dataset.dirty = 'true'; dialog.setAttribute('aria-busy', 'true'); document.body.appendChild(dialog);
+  let prevented = false; vm.runInContext(`(${beforeUnload})`, runtime)({ preventDefault() { prevented = true; } });
+  assert.equal(prevented, false);
+  const sent = [], id = randomUUID(); runtime.fetch = async (_url, options) => { sent.push(JSON.parse(options.body)); return { ok: true }; };
+  await vm.runInContext(closeScript.replace('__VIENTO_CLOSE_ID__', JSON.stringify(id)), runtime);
+  assert.deepEqual(sent, [{ id, dirty: false, busy: false }]);
+});

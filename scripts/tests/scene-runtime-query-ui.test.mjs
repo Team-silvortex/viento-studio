@@ -36,7 +36,7 @@ function initial(view = observation()) {
 async function harness(state = initial(), options = {}) {
   let payload = state, dictionary = options.dictionary || {};
   const calls = [], opened = [], languages = [];
-  const context = { editable: true, dirty: false, busy: false, creating: false, path: 'documents/scenes/demo.json' };
+  const context = { editable: true, dirty: false, busy: false, creating: false, path: options.path || 'documents/scenes/demo.json' };
   const translated = (key, ...values) => (dictionary[key] || key).replace(/\{(\d+)\}/g, (_, index) => values[index] ?? '');
   const h = await dialogHarness('app-project-build', { PROJECT_BUILD_API_PATH: '/api/project-build', querySceneRuntimeObservation,
     t: translated, onLanguageChange: callback => languages.push(callback),
@@ -175,7 +175,8 @@ test('frozen declaration links navigate exact source and focus only after close;
     h.context[key] = false; h.controller.setAvailable(true);
   }
   h.rows()[1].querySelector('button').click(); await flushDialogs(); await flushDialogs();
-  assert.deepEqual(h.opened[0], ['documents/scenes/demo.json', source(1)]);
+  assert.deepEqual(h.opened[0].slice(0, 2), ['documents/scenes/demo.json', source(1)]);
+  assert.equal(typeof h.opened[0][2].isCurrent, 'function');
   assert.deepEqual(focused, [false]); assert.equal(h.runtime.document.activeElement, editor);
   assert.equal(editor.value, 'unsaved draft'); assert.equal(editor.selectionStart, 8);
 });
@@ -183,14 +184,21 @@ test('frozen declaration links navigate exact source and focus only after close;
 test('late source navigation cannot close a changed run, reopened panel or newly dirty editor', async () => {
   for (const interruption of ['job', 'scene', 'reopen', 'dirty']) {
     const pending = deferred(), focused = [];
-    const h = await harness(initial(), { openSource: () => pending.promise });
+    const writes = [];
+    const h = await harness(initial(), { openSource: async (path, location, context) => {
+      const result = await pending.promise;
+      if (!context.isCurrent()) return false;
+      writes.push(path); return result;
+    } });
     h.rows()[0].querySelector('button').click(); await flushDialogs();
+    assert.equal(h.opened[0][2].isCurrent(), true);
     if (interruption === 'job') { const next = initial(); next.job.id = 'run-next'; await h.refresh(next); }
     else if (interruption === 'scene') { h.element('projectBuildScene').value = otherSceneId; h.element('projectBuildScene').dispatch('change'); }
     else if (interruption === 'reopen') { h.element('projectBuildClose').click(); await flushDialogs(); h.element('projectBuildBtn').click(); await flushDialogs(); }
     else h.context.dirty = true;
     pending.resolve({ focus: () => focused.push(true) }); await flushDialogs();
     assert.equal(h.element('projectBuildDialog').open, true, interruption); assert.deepEqual(focused, [], interruption);
+    assert.deepEqual(writes, [], interruption); assert.equal(h.opened[0][2].isCurrent(), false);
   }
 });
 
@@ -232,4 +240,75 @@ test('runtime browsing sends no requests and existing run/cancel payloads retain
   await h.refresh(initial()); h.element('projectBuildCancel').click(); await flushDialogs();
   assert.deepEqual(h.calls.at(-1).body, { action: 'cancel', jobId: 'run-one' });
   assert.ok(h.calls.every(call => !call.body || !['runtime', 'instanceId', 'objectId', 'tool', 'backend', 'engineEntity'].some(key => key in call.body)));
+});
+
+const assemblyId = 'ffffffff-ffff-4fff-8fff-ffffffffffff';
+function projectState(protocol = 2) {
+  const view = observation('finished', protocol);
+  if (protocol === 1) view.actors = view.actors.slice(0, 1);
+  const state = initial(view);
+  state.backend.plans.push({ kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 1 });
+  state.backend.capabilities.push('runtime.control-replay', 'runtime.control-replay.instances');
+  state.scenes.unshift({ id: assemblyId, title: 'Assembly', sourcePath: 'documents/project.json', kind: 'project', entrySceneId: sceneId, sceneCount: 2 });
+  Object.assign(state.latestBuild, { sceneId: assemblyId, targetKind: 'project', targetId: assemblyId, entrySceneId: sceneId, sceneCount: 2 });
+  Object.assign(state.job, { sceneId: assemblyId, targetKind: 'project', targetId: assemblyId, status: 'succeeded' });
+  return state;
+}
+
+const projectHarness = (state, options = {}) => harness(state, { ...options, path: 'documents/project.json' });
+
+test('project runs observe only the frozen entry scene with supported scene protocols and translated scope', async () => {
+  for (const [index, dictionary] of [{}, en, ja].entries()) {
+    const state = projectState(index + 1), h = await projectHarness(state, { dictionary });
+    assert.equal(h.element('projectBuildScene').value, assemblyId);
+    assert.equal(h.element('projectBuildRuntimeObjects').hidden, false);
+    assert.equal(h.rows().length, index === 0 ? 1 : 2);
+    const note = '运行对象来自启动场景；其他成员场景尚未运行。';
+    assert.equal(h.element('projectBuildRuntimeEntryNote').hidden, false);
+    assert.equal(h.element('projectBuildRuntimeEntryNote').textContent, dictionary[note] || note);
+    for (const suffix of ['Control', 'CaseEditor', 'Suites']) assert.equal(h.element('projectBuild' + suffix).hidden, true, suffix);
+    // The current author document can select another entry after the build;
+    // observed samples still belong to the frozen build, not that live choice.
+    state.scenes[0].entrySceneId = otherSceneId;
+    await h.refresh(state); assert.equal(h.rows().length, index === 0 ? 1 : 2);
+  }
+});
+
+test('project observations reject forged entry, task, artifact, target kind and unsupported entry protocol', async () => {
+  const changes = [state => { delete state.latestBuild.entrySceneId; },
+    state => { state.latestBuild.entrySceneId = otherSceneId; },
+    state => { state.job.runtime.sceneObjectId = assemblyId; },
+    state => { state.job.sceneId = sceneId; }, state => { state.latestBuild.sceneId = sceneId; },
+    state => { delete state.job.targetKind; }, state => { delete state.latestBuild.targetKind; },
+    state => { state.job.buildId = 'foreign-build'; }, state => { state.job.snapshotId = `sha256:${'f'.repeat(64)}`; },
+    state => { state.backend.plans = state.backend.plans.filter(item => item.kind === 'project'); }];
+  for (const change of changes) {
+    const state = projectState(); change(state); const h = await projectHarness(state);
+    assert.equal(h.element('projectBuildRuntimeObjects').hidden, true, change.toString());
+    assert.equal(h.rows().length, 0); assert.equal(h.element('projectBuildRuntimeEntryNote').hidden, true);
+  }
+});
+
+test('project runtime source links retain entry declaration provenance and dirty editor protections', async () => {
+  const h = await projectHarness(projectState()), before = h.calls.length;
+  h.context.dirty = true; h.rows()[0].querySelector('button').dispatch('click'); await flushDialogs();
+  assert.equal(h.opened.length, 0); assert.equal(h.element('projectBuildDialog').open, true);
+  h.context.dirty = false; h.controller.setAvailable(true);
+  h.rows()[1].querySelector('button').click(); await flushDialogs();
+  assert.equal(h.opened.length, 1);
+  assert.deepEqual(h.opened[0].slice(0, 2), ['documents/scenes/demo.json', source(1)]);
+  assert.equal(typeof h.opened[0][2].isCurrent, 'function');
+  assert.equal(h.element('projectBuildDialog').open, false);
+  assert.equal(h.calls.length, before, 'read-only navigation does not start control or execution');
+});
+
+test('an in-flight project source link cannot focus after its frozen entry identity changes', async () => {
+  const pending = deferred(), focused = [], h = await projectHarness(projectState(), { openSource: () => pending.promise });
+  const oldButton = h.rows()[0].querySelector('button'); oldButton.click(); await flushDialogs();
+  const next = projectState(); next.latestBuild.entrySceneId = next.job.runtime.sceneObjectId = otherSceneId;
+  for (const actor of next.job.runtime.actors) actor.source.objectId = otherSceneId;
+  await h.refresh(next); assert.equal(h.rows().length, 2);
+  pending.resolve({ focus: () => focused.push(true) }); await flushDialogs();
+  assert.equal(h.element('projectBuildDialog').open, true); assert.deepEqual(focused, []);
+  oldButton.dispatch('click'); await flushDialogs(); assert.equal(h.opened.length, 1);
 });
