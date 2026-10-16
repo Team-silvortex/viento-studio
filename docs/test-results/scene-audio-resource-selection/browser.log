@@ -1,0 +1,12 @@
+{
+  "ok": true,
+  "output": "/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-audio-resource-selection/browser-1792117413819",
+  "steps": [
+    "Existing World resource binding previews without writes, then saves exactly one audio metadata file. Source and both WAV files stay unchanged; this saved binding is separate from subsequent source editing.",
+    "Both tracks choose the bound replacement WAV while retaining identities/cues. Chinese, English and Japanese at 390px retain selection and volume; Cancel leaves the source draft and author tree unchanged, including the separately saved metadata binding.",
+    "Apply changes only the ordinary unsaved source draft. Ordinary Save updates exactly the reviewed audio JSON; metadata, scene, referenced WAV and other author files remain byte-identical.",
+    "Saved audio reopens with both original track identities and cue bindings, the selected replacement resource and independent volumes. The old WAV remains in author assets and metadata.",
+    "The same scene plans, builds and runs through real Godot. The host validates both original tracks and three original cue commands with the replacement resource: music play, effect play and music stop, with independent actor/audio completion.",
+    "Chrome downloads the generated engine project ZIP. Independent verification confirms one deduplicated WAV resource, extraction preserves its exact bytes and settings, and fresh Godot import/run at another path produces identical audio events."
+  ]
+}

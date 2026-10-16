@@ -1,5 +1,82 @@
 # 验证指南
 
+本轮[行为音轨选择专题](test-results/scene-behavior-audio-picker/README.md)验证只读目录到普通文本参数的显式填入；执行数字、源码指纹和准备副本见[摘要](test-results/scene-behavior-audio-picker/summary.json)。
+
+```sh
+node --test scripts/tests/scene-audio-directory.test.mjs scripts/tests/scene-audio-directory-service.test.mjs scripts/tests/scene-audio-directory-http.test.mjs scripts/tests/scene-behavior-audio-host.test.mjs scripts/tests/scene-behavior-audio-transport.test.mjs scripts/tests/scene-behaviors-editor-ui.test.mjs
+node scripts/tests/scene-behavior-audio-picker-smoke.mjs
+```
+
+核对目录身份／品牌、空目录与坏关系区分、超过 256 个无关素材及缺失 WAV 仍可读编号、HTTP 鉴权和请求形状。宿主每次异步等待后检查来源及独立目录代次：撤回可选能力应拒绝旧目录，仍允许普通已审阅提案应用。目录不读音频字节，不代替构建或运行验证。
+
+UI 核对读取／选择不改输入或审阅，显式填入才撤销批准，任意文本参数可用且不猜测参数名；失败重试、绑定／类型／行身份变化、三语与关闭重开均保留正确归属。真实 Chrome 使用缺失 WAV 的隔离副本，检查零字节请求、取消不写、应用只改草稿、普通保存保持 BOM／CRLF 与其他作者文件。准备副本不外推安装或 Android 设备支持。
+
+此前[试听控制专题](test-results/scene-audio-audition-transport/README.md)覆盖既有单轨播放器的进度、暂停／继续与定位，实际数字、源码指纹和准备副本核对见[摘要](test-results/scene-audio-audition-transport/summary.json)。真实浏览器只验证素材试听控制；本轮不改 PCM／Godot，也不将旧后端或设备结果算作本轮执行。
+
+```sh
+node --test scripts/tests/scene-audio-audition-player.test.mjs scripts/tests/scene-audio-editor-ui.test.mjs
+node scripts/tests/scene-audio-audition-transport-smoke.mjs
+```
+
+验证应覆盖暂停位置冻结、继续从原位置、播放与暂停定位、循环取模、非循环定位末尾后暂停并显式从头继续，以及恢复中停止和迟到节点结束／恢复结果。三语界面检查进度不重建表单、不抢滑块输入、不改变审阅批准；编辑、目录刷新、检查、应用、关闭、hidden 与销毁仍释放暂停中的播放器。继续和定位不得重新读取或解码，且不声称持续验证磁盘。桌面／移动准备副本只核对模块分发内容，不代替安装或移动设备测试。
+
+此前[素材试听专题](test-results/scene-audio-audition/README.md)单独记录纯字节准备、受限 HTTP 读取、WebAudio 生命周期、来源宿主及三语表单；执行数字与源码时点见[摘要](test-results/scene-audio-audition/summary.json)。真实本机浏览器检查显式播放、当前音量、循环和停止的 WebAudio 输出；零增益另由播放器定向测试覆盖；共享校验器的完整来源指纹调整后追加真实 Godot 回归，两类证据分别记录；不据浏览器缓冲推导物理扬声器、安装或 Android 设备支持。
+
+```sh
+node --test scripts/tests/scene-audio-audition.test.mjs scripts/tests/scene-audio-audition-host.test.mjs scripts/tests/scene-audio-audition-player.test.mjs scripts/tests/scene-audio-audition-media.test.mjs
+node scripts/tests/scene-audio-audition-smoke.mjs
+```
+
+纯层核对实际 PCM WAV、品牌防伪、完整来源与 fresh catalog、bound 选择、size／hash／格式、32 MiB 上限、3 个 await 的取消／来源竞态，以及输入、摘要端口和 decoder ArrayBuffer 互不别名。原 validator 逐字迁到 engine，Node 旧路径重导出，原声音测试保持。
+
+读取适配器核对稳定 UUID 地址、完整响应、超时／取消和流式大小预算；播放适配器核对显式用户激活、解码前按重采样估算的 128 MiB 上限、当前音量／循环、零增益、单轨互斥、停止／自然结束与迟到结果。UI／宿主覆盖来源失效、编辑／目录刷新／检查／应用／关闭／hidden 停止、语言切换保留及没有接口时旧编辑继续。真实流程核对试听不改变正文、metadata、素材或普通保存基线；它不是 cues／行为／后端场景运行。目录 unverified 状态保持，验证只针对本次读取副本。
+
+此前[已绑定声音素材选择专题](test-results/scene-audio-resource-selection/README.md)验证既有 World 绑定与普通声音正文编辑之间的独立交接，执行数字和源码时点以[摘要](test-results/scene-audio-resource-selection/summary.json)为准。目录候选仍是 unverified，实际 PCM／哈希验证属于构建；不将绑定保存与正文保存表述为两文件原子事务。
+
+```sh
+node --test scripts/tests/scene-audio-resources.test.mjs scripts/tests/scene-audio-resource-host.test.mjs scripts/tests/scene-audio-edit.test.mjs scripts/tests/scene-audio-editor-ui.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/scene-audio-resource-smoke.mjs
+```
+
+纯层核对 `captureSceneAudioResources` 目录捕获与 `createSceneAudioResourceProposal` 的严格结构、绑定素材白名单、原文／场景身份、来源及目录修订守护、资源引用的保真补丁和旧四种 API 契约。宿主核对显式目录读取、每次异步后的来源检查，以及应用前 World／对象／目录变化拒绝；目录与提案不得取得登记或普通 Save 权限。
+
+三语界面核对显式读取不自动换素材、不丢失半成品，选择后审阅失效，取消不写正文，以及未知／未绑定资源不能成为有效选择。真实流程使用 World 先预览并保存绑定，再回到声音原文选择新素材、普通保存重开、构建运行和 ZIP 异地导入；绑定成功后取消正文编辑时，已保存绑定继续存在。
+
+旧资源绑定 v4 的恢复和冲突语义仍见原专题；本轮关注两步交接，不冒充新的跨文件原子性测试。构建检查实际 WAV 和登记哈希，旧绑定超集与资产保持，最终计划／冻结仍只含使用资源。准备副本、逻辑检查和浏览器不外推安装、Android 或物理扬声器验收。
+
+此前[已有声音轨道编辑专题](test-results/scene-audio-track-authoring/README.md)独立记录 `createSceneAudioTrackProposal`、同资源轨道复制与移除。旧 leaf、cue-only、timeline 三种提案的轨道范围保持；复制只拷贝当前设置，不复制提示。以下为该轮验证边界，实际执行、源码摘要与统计由专题记录，不预填数量。
+
+```sh
+node --test scripts/tests/scene-audio-edit.test.mjs scripts/tests/scene-audio-editor-ui.test.mjs scripts/tests/scene-audio-core.test.mjs scripts/tests/scene-audio.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/scene-audio-track-smoke.mjs
+```
+
+核心与来源覆盖完整 tracks 精确字段、保留轨道 ID／resourceId／相对顺序、只追加原资源新轨道、1／16／17 边界、跨类身份碰撞、残留 cue 拒绝，以及轨道结构和提示编排同批原文补丁。验证旧三种 API 仍拒轨道结构修改，私有模式重算、来源撤销、BOM／换行／未改片段和保存基线守护保持。
+
+界面核对复制当前未完成设置、独立 UUID、不复制 cue、当前轨道选项刷新、1 轨禁删与 16 轨禁复制、有 cue 引用禁删及静默输入变化后的 handler 复核；语言切换、焦点、取消与审阅失效继续覆盖。行为参数和脚本引用不声称静态验证；旧 ID 实际调用的失败边界沿既有运行测试核对。
+
+构建验证 metadata 绑定超集保持合法，移除最后一个使用某素材的轨道后仅从执行计划排除该资源，作者文件／资产／登记不删除；同资源复制在冻结和 ZIP 中仍去重。真实 Chrome 使用临时工程验证普通保存重开、三语窄屏、显式 Godot 运行及 ZIP 异地导入。准备副本和逻辑检查不推导安装、Android 或物理扬声器验收。
+
+此前[声音提示换轨与顺序专题](test-results/scene-audio-cue-arrangement/README.md)独立记录 `createSceneAudioTimelineProposal`、提示目标选择及 **上移／下移**。原叶提案和固定绑定／相对顺序的增删提案契约继续验证；不改 Rust 声音语义／ABI、schema 1、普通保存或后端版本。以下是该轮验收关注点，实际执行、源码指纹和统计以专题报告为准。
+
+```sh
+node --test scripts/tests/scene-audio-edit.test.mjs scripts/tests/scene-audio-editor-ui.test.mjs scripts/tests/scene-audio-core.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/scene-audio-cue-arrangement-smoke.mjs
+```
+
+核心核对单纯换轨的叶路径、换轨与重排的混合片段补丁、任意合法顺序与增删、保留身份及数组外原字节、重复／无效轨道拒绝、两种旧 API 的原限制，以及私有模式下的应用重算与来源守护。运行核对同刻 play／stop 重排的实际先后、非同刻仍时间优先，以及重排后来源索引；编辑不能自行播放。
+
+界面核对所有提示可选现有轨道、首末移动边界、半成品输入与 UUID 随行保留、语言重绘、移动后焦点、换轨／移动撤销审阅，以及 pending／来源变化不能恢复权限。真实浏览器应使用临时副本，分别记录取消、普通保存／重开、三语窄屏、Godot 命令与 ZIP 异地运行；不以 harness 或准备副本代替真实后端、安装或设备证明。
+
+此前 0.1.4 后工作树的[时间提示编辑专题](test-results/scene-audio-cue-authoring/README.md)单独记录增删提示与普通保存。旧叶编辑 API、Rust 语义／ABI、声音 schema 1 和后端协议保持；新增提案沿用既有来源宿主。实际测试数、工具与源码指纹以该专题报告为准，不将历史结果改标为本轮重跑。
+
+```sh
+node --test scripts/tests/scene-audio-edit.test.mjs scripts/tests/scene-audio-editor-ui.test.mjs scripts/tests/scene-audio-core.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/scene-audio-cue-smoke.mjs
+```
+
+核心与来源测试覆盖空数组添加、首／中／末移除、删至空、64／65 边界、同刻顺序、无效轨道／身份、原片段与 BOM／换行保持、伪造提案和异步来源撤销。界面核对新提示选轨、旧提示固定绑定、增删后重新审阅、语言切换保留未完成输入、取消与保存基线守护。真实 Chrome 使用示例临时副本，验证空时间线保存重开、重新添加提示、三语窄屏、普通保存仅改声音正文，以及显式 Godot 运行和 ZIP 异地导入；各层结果分别记录，不推导安装或声音设备验收。
+
 本轮[行为声音验收](test-results/project-audio-controls/README.md)分别验证 Rust 空提示、原生／WASM 一致性、项目协议 4、Godot 队列与实际混音、只读三语观察，以及 Chrome 到工程 ZIP 异地启动。工具条件跳过不计作真实后端通过。
 
 ```sh

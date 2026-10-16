@@ -6,7 +6,7 @@
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.4 版本记录](RELEASE_0.1.4.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.5 版本记录](RELEASE_0.1.5.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -25,8 +25,8 @@
 | [行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md) | 当前场景音轨的行为播放／停止、独立回执与双来源、工程交付 |
 | 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
 | 查看当前任务的问题、筛选诊断并返回原文修复 | [任务问题列表](PROJECT_BUILD.md#当前任务问题列表) |
-| 多实例挂载 GDScript／Rust、管理脚本引用、参数／信号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
-| 编辑已有音轨与时间提示、Godot 播放和携带 WAV 交付 | [场景声音](SCENE_AUDIO.md) |
+| 多实例挂载 GDScript／Rust、编辑参数／信号、选入音轨编号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
+| 编辑音轨与时间提示、选择 WAV 并试听／暂停／定位、Godot 播放及资源交付 | [场景声音](SCENE_AUDIO.md) |
 | 查看运行对象、检索实例／定义并返回冻结声明 | [运行对象与采样](RUNTIME_OBJECTS.md) |
 | 在 Godot／Bevy 上回放全局或独立实例方向并逐步观察 | [有限控制回放](RUNTIME_CONTROL.md) |
 | 保存、迁移用例并在冻结实例场景上检查逐步位置／状态预期 | [运行验收用例](RUNTIME_CASES.md) |
@@ -98,4 +98,4 @@
 
 片段定义管理见[新增、复制、重命名与未引用删除](SCENE_COMPOSITION.md#管理片段定义)。先维护共享声明，再通过独立演员、组织组和放置入口完成场景；普通保存继续保留作者原文。
 
-新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.1.4 版本记录](RELEASE_0.1.4.md)。
+新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.1.5 版本记录](RELEASE_0.1.5.md)。

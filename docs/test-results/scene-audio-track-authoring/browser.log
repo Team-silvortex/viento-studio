@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "output": "/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-audio-track-authoring/browser-1792116278927",
+  "steps": [
+    "A current track is cloned with a new stable identity and the same resource/settings, without adding cues. A cue is explicitly rebound before removing its old track. Chinese/English/Japanese at 390px preserve all inputs and visible controls; review and Cancel leave both the draft and author tree unchanged.",
+    "Apply changes only the ordinary unsaved source draft. Ordinary Save updates exactly the reviewed audio JSON; metadata, scene, referenced WAV and other author files remain byte-identical.",
+    "Saved tracks reopen with the new stable clone identity and the removed track absent. Old cue identities remain and the new stop cue targets the clone; shared Rust sampling confirms both tracks stop at 0.5 seconds.",
+    "The same scene plans, builds and runs through real Godot. The host validates the two current tracks and four audio commands: music play, cloned effect play, then both stops at 0.5 seconds, with independent actor/audio completion.",
+    "Chrome downloads the generated engine project ZIP. Independent verification confirms one deduplicated WAV resource, extraction preserves its exact bytes and settings, and fresh Godot import/run at another path produces identical audio events."
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "ok": true,
+  "date": "2026-10-16T03:16:53.710608+00:00",
+  "clientDate": "2026-10-16",
+  "version": "0.1.4",
+  "unreleased": true,
+  "application": {
+    "tests": 5536,
+    "pass": 5378,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 158
+  },
+  "syntaxFiles": 918,
+  "targeted": {
+    "tests": 186,
+    "pass": 186,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "report": "browser-1792120453219/browser.json",
+    "groups": 7,
+    "screenshots": 5,
+    "sourceFingerprints": 20,
+    "rendered": {
+      "sampleRate": 48000,
+      "frames": 1024,
+      "offset": 3.25,
+      "gain": 0.11999999731779099,
+      "peak": 0.004761734511703253,
+      "error": 2.3121882186671883e-10
+    },
+    "keyboardFocus": {
+      "pauseToResume": true,
+      "resumeToPause": true,
+      "rangeRetained": true
+    },
+    "fractionalDuration": 1.234375,
+    "counts": {
+      "reads": 13,
+      "decodes": 12,
+      "nodes": 22
+    },
+    "closedSources": 22,
+    "unsavedDraft": {
+      "onlyExplicitApply": true,
+      "volume": 0.25,
+      "resumedOffset": 1.5
+    }
+  },
+  "prepared": {
+    "comparisons": 26,
+    "calls": 3,
+    "scope": "Actual prepared module imports and WASM; injected audio device for transport, not native playback."
+  },
+  "atlas": {
+    "functions": 128,
+    "implementations": 355,
+    "bindings": 539,
+    "cells": 2156,
+    "workflows": 90,
+    "allOldCellsPreserved": true
+  },
+  "unchanged": {
+    "modules": 21,
+    "capabilities": 40,
+    "rustAbi": true,
+    "audioSchema": 1,
+    "godotAdapter": "0.11.0",
+    "projectProtocol": 4,
+    "installedAppImage": true
+  },
+  "limits": [
+    "Overlapping test scopes are not summed. Conditional skips are not passing device/backend tests.",
+    "This is one WAV buffer transport, not scene timeline pause/seek or Godot/Bevy runtime control.",
+    "Paused playback retains the verified buffer until stop; resume/seek do not revalidate current disk data.",
+    "Actual WebAudio, offset sample output, DOM focus and lifecycle tested; physical speakers and installed Tauri/Android were not tested.",
+    "No new native Godot/Rust/ZIP run claimed; their code and protocol did not change in this slice."
+  ]
+}

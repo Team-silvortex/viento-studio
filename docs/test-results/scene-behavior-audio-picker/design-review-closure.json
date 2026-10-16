@@ -1,0 +1,44 @@
+{
+  "format": "viento-review-closure",
+  "schemaVersion": 1,
+  "findingId": "audio-directory-capability-coupling",
+  "status": "verified-closed",
+  "sourceSha256": {
+    "web/modules/app-behavior-source.js": "a654eabb8dd515f4de7fc54e8be82219ee22080bbb09a595a27ff1d11a882fb6",
+    "scripts/tests/scene-behavior-audio-host.test.mjs": "4bf0ba3fcb86b6959637ab00d0b57b1f7a71176b4f2520d775b087b95949d451"
+  },
+  "checks": [
+    {
+      "check": "Ordinary source generation excludes audioTracksAvailable.",
+      "result": "pass"
+    },
+    {
+      "check": "Audio-only generation changes when optional capability changes.",
+      "result": "pass"
+    },
+    {
+      "check": "Pending directory reads require both ordinary source ownership and unchanged audioGeneration at both digests and both service awaits.",
+      "result": "pass"
+    },
+    {
+      "check": "Observed withdraw-and-restore rejects old pending directory operations while a fresh operation can use the same ordinary source.",
+      "result": "pass",
+      "evidence": "scripts/tests/scene-behavior-audio-host.test.mjs: observed optional capability disappearance and return rejects pending directories without changing the ordinary source"
+    },
+    {
+      "check": "Ordinary apply still succeeds after optional capability withdrawal before apply and at each digest/review boundary.",
+      "result": "pass",
+      "evidence": "scripts/tests/scene-behavior-audio-host.test.mjs: optional audio capability withdrawal leaves reviewed ordinary proposals applicable before and during each apply boundary"
+    }
+  ],
+  "executionEvidence": {
+    "path": "docs/test-results/scene-behavior-audio-picker/targeted.log",
+    "tests": 87,
+    "passed": 87,
+    "failed": 0,
+    "skipped": 0,
+    "reviewerReran": false
+  },
+  "remainingFindings": [],
+  "repositoryChangesByReviewer": false
+}

@@ -1,0 +1,36 @@
+{
+  "format": "viento-independent-review",
+  "schemaVersion": 1,
+  "scope": "Behavior audio ID picker: ownership, optional capability withdrawal, pending directory reads, parameter row identity and ordinary proposal isolation.",
+  "method": "Read-only source review and inspection of the completed targeted test log; no additional tests or repository changes performed by this follow-up review.",
+  "reviewedAt": "2026-10-16T04:00:51.387956+00:00",
+  "sourceSha256": {
+    "web/modules/app-behavior-source.js": "a654eabb8dd515f4de7fc54e8be82219ee22080bbb09a595a27ff1d11a882fb6",
+    "web/modules/app-scene-behaviors.js": "1979d09c66874bfbd91921b0bf6861f7d503264c975b8efdec9d5dd00d9f8679",
+    "scripts/tests/scene-behavior-audio-host.test.mjs": "4bf0ba3fcb86b6959637ab00d0b57b1f7a71176b4f2520d775b087b95949d451",
+    "scripts/tests/scene-behaviors-editor-ui.test.mjs": "ff5b8b7cf93fc34917d035640fc3f8a7fea698c03544b52a2cf7f16f19ebdca3",
+    "engine/scene-audio-directory.mjs": "7c41d2c60f1d5cfa6e652a4168f9f33b3271c26c91de5432dfde308bfcfbacff"
+  },
+  "findings": [
+    {
+      "id": "audio-directory-capability-coupling",
+      "severity": "medium",
+      "originalProblem": "The optional audioTracksAvailable flag changed the ordinary behavior source token, invalidating already reviewed ordinary edits when the track directory capability disappeared.",
+      "reproduction": [
+        "Open behavior editor and review an ordinary parameter change.",
+        "Withdraw only audioTracksAvailable while behavior authoring remains available.",
+        "Previously the ordinary source token changed and applying the reviewed behavior proposal failed."
+      ],
+      "status": "closed",
+      "closure": "Independent audioGeneration now revokes directory reads without changing the ordinary behavior source token."
+    }
+  ],
+  "confirmed": [
+    "API signatures and source-bound catalog checks agree.",
+    "Directory reads preserve current form values and approved ordinary edits.",
+    "Directory failures affect only picker state.",
+    "Private parameter row identities and current control membership prevent detached controls from writing into another row.",
+    "Closing, reopening and changing source ownership discard delayed directory results."
+  ],
+  "openFindings": []
+}

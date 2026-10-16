@@ -1,0 +1,264 @@
+{
+  "startedAt": "2026-10-16T03:12:54.847Z",
+  "steps": [
+    "Actual audio-clock progress advances, Pause freezes the position, Continue starts at that offset, and playing seek starts at 3.25s. The same verified buffer is reused without another resource read/decode. Offline rendering checks nonzero samples at the actual seek offset and gain.",
+    "Paused seeking creates no node or read. At 390px, Chinese/English/Japanese retain paused offset, form and approved proposal while Stop/Continue/range remain visible. Real keyboard Home and ArrowRight move only the temporary position; Cancel preserves the ordinary draft.",
+    "Looping crosses the end modulo duration; seeking its exact end returns to zero and a retired node ended callback cannot close the replacement. Non-looping End stays paused at duration, Continue restarts from zero, and natural completion returns idle. Native End also reaches the exact 1.234375s fractional duration.",
+    "A pending range input keeps the user target across progress ticks and does not create nodes until change. Editing the author form or refreshing the resource catalog releases paused playback without changing the ordinary draft or files.",
+    "Stop remains available during a held completion of real AudioContext.resume. Stopping and starting a new audition before releasing the old completion cannot start an extra source or disturb the new owner.",
+    "Continue uses only the previously verified snapshot, even if isolated disk bytes change while paused. A new explicit audition rereads and rejects changed bytes before starting; restoration leaves all author fingerprints intact.",
+    "Apply releases paused playback and updates only the ordinary draft. The reopened unsaved draft can pause/seek/continue with the new gain, and later Cancel keeps the already applied draft; no Save is performed."
+  ],
+  "screenshots": [
+    "transport-playing-desktop.png",
+    "transport-zh-CN-390.png",
+    "transport-en-390.png",
+    "transport-ja-390.png",
+    "transport-resuming-stop.png"
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "今回の音声フォームの変更を破棄しますか？原文の下書きは変更されません。"
+    },
+    {
+      "type": "confirm",
+      "message": "丢弃本次声音表单修改？原文草稿不会改变。"
+    }
+  ],
+  "layout": {
+    "zh-CN": {
+      "noHorizontalOverflow": true,
+      "stopVisible": true,
+      "resumeVisible": true,
+      "rangeVisible": true,
+      "time": "0:06.50 / 0:10.00"
+    },
+    "en": {
+      "noHorizontalOverflow": true,
+      "stopVisible": true,
+      "resumeVisible": true,
+      "rangeVisible": true,
+      "time": "0:06.50 / 0:10.00"
+    },
+    "ja": {
+      "noHorizontalOverflow": true,
+      "stopVisible": true,
+      "resumeVisible": true,
+      "rangeVisible": true,
+      "time": "0:06.50 / 0:10.00"
+    }
+  },
+  "limitations": [
+    "Actual Chrome WebAudio on a disposable author workspace. This tests decoded sample data and playback lifecycle, not physical speakers or installed Tauri/Android.",
+    "Audition is a single selected track at form volume/loop; no scene cue timeline, Godot/Bevy runtime, or source/metadata save is executed.",
+    "The separately saved author binding/catalog is read-only; successful audition verifies only the read WAV snapshot. Builds independently validate their own resources."
+  ],
+  "sources": {
+    "engine/studio-core.mjs": "e6370613ad569377ae4039aba633b0aabef8f3195e2288ae785aea5570e85d91",
+    "engine/studio-core.wasm": "4805b008219aeafffb160118060618dd550910807b2f8006fe955fd56c052d50",
+    "engine/audio-wav.mjs": "e11faaa850c20a2b63bcdfe987964c1223712b49ed5fb897262f855fb3ca1f35",
+    "engine/scene-audio-audition.mjs": "df9aa7bccb01bb20912ab4bf798e360337ddd311657e903bb442170d859a5943",
+    "engine/scene-audio-resources.mjs": "f41db2b5721ddc3daaf272c8d4f7a62173f419b9378f9ee36ae0268c9d29f5a1",
+    "engine/scene-audio-creation-contract.mjs": "c520144e9025982685046d7d7679d2ed7796bd7d57cef840ab3a97903317abf1",
+    "engine/scene-audio-edit.mjs": "b7eeb5f4e520b0c9407db5f156b97cc3c0a50dc2186ab04bc884542205945ed7",
+    "scripts/lib/audio-wav.mjs": "ab25e190d01508f8822a67faee44c6918628d8aaf05a8d7ee63ce265284d8eeb",
+    "scripts/lib/doc-server.mjs": "d480e0db99c68f8a9225a37db91de9916f5458e63b845edc1914ebe0604f6d94",
+    "scripts/lib/doc-server-static-routes.mjs": "a5b6b35796680ac7865b6da28123a4a112a699df4c378b449d6af1c64f82d01b",
+    "scripts/lib/scene-audio-creation-service.mjs": "cbf89e62b8395539734ec4dcc8b4adb2e0724783a06fd1c8358866e28a6ef184",
+    "web/modules/app-scene-audio-source.js": "58373e3f8e6ef337b00f12f7fdbc13936389d647ba678eb8ad115bc332f161a1",
+    "web/modules/app-scene-audio-media.js": "6648b6145a0fc9f2470e96f59283856448557ea87e36a8b3e53df1c893e25c88",
+    "web/modules/scene-audio-audition.js": "9539bdc2df944cd449981c3d6154fdd726f026ebba7a65e3effdb8ff199b21fe",
+    "web/modules/app-scene-audio.js": "2c0190954fe11d5ed0d5640c881b59372ac4140fa040d5406e252f96177db71a",
+    "web/modules/app-runtime.js": "4d6b045d5fac030683c933cffb24f8e71c5e4191eb3ebcb1950b69827409784e",
+    "web/i18n/en.js": "d6493a02c7a259647ff4a4f2cc740feaa4108155604c2d8f2b6bfd051bf26d25",
+    "web/i18n/ja.js": "3f6104f7e263af741c3e8b5173377fff04542403713009a57ce59ec65f85cd64",
+    "web/scene-audio.css": "ebf6f77e266639315add2b69e8117077760aa04fb5338586bd754fc925490d64",
+    "scripts/tests/scene-audio-audition-transport-smoke.mjs": "95d9a8a11fa9d926193ebc083445e05243f479fdc644b9ceff6edbcf107677a6"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "rendered": {
+    "sampleRate": 48000,
+    "frames": 1024,
+    "offset": 3.25,
+    "gain": 0.11999999731779099,
+    "peak": 0.004761734511703253,
+    "error": 2.3121882186671883e-10
+  },
+  "fractionalDuration": 1.234375,
+  "unsavedDraft": {
+    "onlyExplicitApply": true,
+    "volume": 0.25,
+    "resumedOffset": 1.5
+  },
+  "counts": {
+    "reads": 13,
+    "decodes": 12,
+    "nodes": 22
+  },
+  "playback": [
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 0.448,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 3.25,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.25,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 9.8,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": false,
+      "gain": 0.30000001192092896,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": false,
+      "gain": 0.30000001192092896,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": false,
+      "gain": 0.30000001192092896,
+      "offset": 9.85,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": false,
+      "gain": 0.30000001192092896,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": false,
+      "gain": 0.30000001192092896,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 4.5,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.20000000298023224,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.20000000298023224,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.20000000298023224,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "offset": 0.07466666666666666,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.25,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.25,
+      "offset": 0,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.25,
+      "offset": 1.5,
+      "stops": 1,
+      "contextState": "closed"
+    }
+  ],
+  "authorFilesPreserved": 14,
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-10-16T03:13:02.655Z"
+}

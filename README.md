@@ -8,11 +8,11 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 
 ## 当前状态
 
-源码版本为 **0.1.4**，收录首次声音创建与逐轨触发方式、多场景项目组装和切换、共享状态、项目事件与行为声音控制；详见[版本记录](docs/RELEASE_0.1.4.md)。当前为 **21 模块／40 项声明能力**。
+源码版本为 **0.1.5**，完善声音提示编排、轨道复制与移除、已绑定 WAV 选择、就地试听及暂停／定位，并可将场景音轨编号选入行为文本参数；详见[版本记录](docs/RELEASE_0.1.5.md)。当前为 **21 模块／40 项声明能力**。
 
 [项目组装](docs/PROJECT_ASSEMBLY.md)把已保存的二维场景组织为一个 Godot 工程；行为可切换场景、读写[会话状态](docs/PROJECT_SHARED_STATE.md)、发布[项目事件](docs/PROJECT_EVENTS.md)和控制[场景声音](docs/PROJECT_AUDIO_CONTROLS.md)。独立观察面板保留运行记录与作者来源，工程 ZIP 可在新目录导入运行。[Bevy Rust 通道](docs/BEVY_BACKEND.md#rust-作者行为通道012-后工作树)继续提供无图二维就绪／固定步行为和 Cargo 源工程交付，项目组装与声音尚未接入。
 
-本次交付源码，新功能可从源码启动或自行构建安装包。本机最近的 [Linux 安装验收为 0.1.1 工作树](docs/test-results/native-installed-0.1.1/README.md)，早于本版新增功能；该安装记录不代表 0.1.4 安装验收。专题中标为“0.1.3 后未发布工作树”的增量已收录本版，旧证据保留原版本与执行条件。
+本次交付源码，新功能可从源码启动或自行构建安装包。本机最近的 [Linux 安装验收为 0.1.1 工作树](docs/test-results/native-installed-0.1.1/README.md)，早于本版新增功能；该安装记录不代表 0.1.5 安装验收。专题中标为“0.1.4 后未发布工作树”的声音编辑增量已收录本版，旧证据保留原版本与执行条件。
 
 当前已有：
 
@@ -20,13 +20,13 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 - 空白、游戏、文学、戏剧和软件设计起始模板；工程独立维护类型与模板，角色背景及共享内容有明确归属。
 - 同一 OC 的多份独立投影，可创建／编辑 RPG、视觉小说、文学和戏剧配置；RPG 投影可在 Scene2D 中继承或覆盖运行字段。
 - 对象查询、属性修改、批量提交、对象创建、关系和资源绑定；版本冲突检查与中断恢复。
-- [场景声音](docs/SCENE_AUDIO.md)：首次创建、逐轨定时／行为触发、已有 JSON 字段编辑，Godot PCM 混音与[行为播放／停止](docs/PROJECT_AUDIO_CONTROLS.md)，带资源的工程交付。
+- [场景声音](docs/SCENE_AUDIO.md)：首次创建、逐轨定时／行为触发、提示增删／换轨／排序、轨道复制与移除、已绑定 WAV 选择和就地试听；试听支持暂停／继续／定位，修改经审阅应用草稿后普通保存。Godot 继续提供 PCM 混音、[行为播放／停止](docs/PROJECT_AUDIO_CONTROLS.md)及带资源的工程交付。
 - [项目组装与切换](docs/PROJECT_ASSEMBLY.md)：1–32 个二维场景和启动入口、[共享状态](docs/PROJECT_SHARED_STATE.md)、[事件发布订阅](docs/PROJECT_EVENTS.md)，独立运行观察与冻结来源。
 - [图片／视频／音频引用](docs/MEDIA_RESOURCES.md)，文档分享、选择式资源包、单素材导出及完整工程迁移。
 - 实验性 Scene2D 场景创建／编辑、独立实例、嵌套组织分组，单选／多选布局和局部撤销历史；保存状态及原文草稿预览，精确坐标回写与普通保存。
 - 共享 Rust/WASM 编辑核心；[场景片段配方](docs/SCENE_COMPOSITION.md)的展开、保存态／草稿预览，以及共享覆盖、布局、实例、片段、放置、分组与定义的独立创作工作流。
 - [新建配方助手](docs/SCENE_COMPOSITION.md#新建场景配方)：1–64 项演员、同对象独立实例、投影继承；横排／竖排／网格先预览后应用。完整 JSON 审阅与普通保存后，可显式生成独立 Scene2D，继续行为、构建与交付。
-- 计划检查、Godot 构建、[GDScript／Bevy Rust 行为绑定](docs/SCENE_BEHAVIORS.md)、无头测试、独立窗口、[当前任务问题列表与原文定位](docs/PROJECT_BUILD.md#当前任务问题列表)和任务取消；[可信执行中间层](docs/BACKEND_MIDDLEWARE.md)复用冻结计划与工具校验。
+- 计划检查、Godot 构建、[GDScript／Bevy Rust 行为绑定](docs/SCENE_BEHAVIORS.md)与文本参数音轨选择、无头测试、独立窗口、[当前任务问题列表与原文定位](docs/PROJECT_BUILD.md#当前任务问题列表)和任务取消；[可信执行中间层](docs/BACKEND_MIDDLEWARE.md)复用冻结计划与工具校验。
 - Godot／Bevy [有限控制回放](docs/RUNTIME_CONTROL.md)：全局或按实例独立方向输入、固定步骤采样和冻结运行对象观察。
 - 可检查、迁移及导出 `.viento-build.zip` 的[后端派生工程](docs/BACKEND_PROJECTS.md)，独立[模块装配与模板需求](docs/STUDIO_MODULES.md)。
 - [3D 场景创作与预览](docs/SCENE3D.md)：严格场景文本、九类独立作者编辑、只读 WebGL2 标准方向／平移／正交／双指导航、整景取景、距离雾与通用粒子场，以及可检查的 Godot 源工程导出。

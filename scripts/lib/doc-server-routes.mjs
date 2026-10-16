@@ -1,3 +1,4 @@
+import { SCENE_AUDIO_DIRECTORY_API_PATH } from '../../engine/scene-audio-directory.mjs';
 import { SCENE_COMPOSITION_CREATE_API_PATH } from '../../engine/scene-composition-create.mjs';
 import { SCENE_BEHAVIOR_DIRECTORY_API_PATH } from '../../engine/scene-behavior-directory.mjs';
 import { SCENE_AUDIO_CREATION_API_PATH } from '../../engine/scene-audio-creation-contract.mjs';
@@ -318,7 +319,7 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
-  if ([SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
+  if ([SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
   if (pathname === SCENE_PREVIEW_API_PATH && ['POST', 'DELETE'].includes(method)) return true;
   if (pathname === PROJECT_BUILD_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === RESOURCE_PACKAGE_API && method === API_METHODS.POST) return true;
@@ -588,6 +589,17 @@ async function handleApiRequest({
           if (requestUrl.search) throw Object.assign(new Error('Invalid behavior directory query.'), { statusCode: 400, errorCode: 'scene_behavior_directory_invalid' });
           response.setHeader('Cache-Control', 'no-store');
           sendApiResponse(response, await service.sceneBehaviorDirectory.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
+    [SCENE_AUDIO_DIRECTORY_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.sceneAudioDirectory) throw Object.assign(new Error('Audio directory requires an editor session.'), { statusCode: 403, errorCode: 'scene_audio_directory_unavailable' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid audio directory query.'), { statusCode: 400, errorCode: 'scene_audio_directory_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.sceneAudioDirectory.inspect(await readRequestJsonBody(request)), requestId);
           return 200;
         } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
       },

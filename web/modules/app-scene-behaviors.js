@@ -1,12 +1,13 @@
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { inspectSceneBehaviors } from '../../engine/scene-behaviors.mjs';
 import { createSceneBehaviorProposal, isSceneBehaviorProposal } from '../../engine/scene-behaviors-edit.mjs';
+import { isSceneBehaviorAudioTracks, sceneBehaviorAudioTracksMatchSource, sceneBehaviorAudioTrackValue } from '../../engine/scene-audio-directory.mjs';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 
 // This editor owns only its local form and review. The document host owns source
 // versions, dependency checks and applying the resulting unsaved draft.
 export function setupSceneBehaviors({ getContext = () => ({}), getSource = async () => null,
-  inspect = async () => null, applyDraft = async () => null } = {}) {
+  inspect = async () => null, applyDraft = async () => null, getAudioTracks } = {}) {
   if (!document.getElementById('sceneBehaviorsStyle')) {
     const style = document.createElement('link'); style.id = 'sceneBehaviorsStyle'; style.rel = 'stylesheet';
     style.href = '/web/scene-behaviors.css'; (document.head || document.body).append(style);
@@ -26,6 +27,11 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
       <label><span data-i18n="场景实例"></span><select id="sceneBehaviorsInstance"></select></label>
       <label><span data-i18n="已关联脚本"></span><select id="sceneBehaviorsSource"></select></label></div>
       <h3 data-i18n="行为参数"></h3><p class="scene-behaviors-note" data-i18n="参数使用文本、数字或布尔值；名称须为ASCII标识符，具体脚本类型在构建与运行时检查。"></p>
+      <section id="sceneBehaviorsAudioTracksTools" class="scene-behaviors-audio-tools" hidden>
+        <button id="sceneBehaviorsLoadAudioTracks" type="button" class="doc-btn doc-btn-ghost" data-i18n="读取场景音轨"></button>
+        <p class="scene-behaviors-note" data-i18n="将已保存的音轨编号填入文本参数；不会识别参数用途、执行声音或保护后续引用。"></p>
+        <p id="sceneBehaviorsAudioTracksStatus" class="scene-behaviors-note" role="status" aria-live="polite"></p>
+        <p id="sceneBehaviorsAudioTracksPath" class="scene-behaviors-note"></p></section>
       <div id="sceneBehaviorsParameters"></div><button id="sceneBehaviorsAddParameter" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加参数"></button>
       <h3 data-i18n="信号映射"></h3><div id="sceneBehaviorsEvents"></div><button id="sceneBehaviorsAddEvent" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加信号映射"></button>
       <p class="scene-behaviors-note" data-i18n="最多32条绑定、8份脚本；每条最多32个参数和8个信号。至少保留一条绑定。"></p></section>
@@ -53,6 +59,10 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
   const text = value => typeof value === 'string' && value.length <= 4096;
   let epoch = 0, disposed = false, pending = false, session = null, selected = '', draft = [], initialSignature = '';
   let proposal = null, approvalSignature = '', parameterInputs = [], eventInputs = [], opener = null, message = '', diagnostic = '';
+  const parameterIdentity = Symbol('parameterIdentity');
+  let rowSequence = 0, audioRequest = 0, audioPending = false, audioCatalog = null, audioMessage = '';
+  const audioChoices = new Map();
+  const audioAvailable = () => getContext().audioTracksAvailable === true && typeof getAudioTracks === 'function';
   const eligible = context => Boolean(context.editable && !context.creating && context.sourceJSON === true && context.behaviorSource === true
     && typeof context.sourcePath === 'string' && context.sourcePath && typeof context.sourceToken === 'string');
   const current = () => { const context = getContext(); return Boolean(!disposed && dialog.open && session && eligible(context)
@@ -61,7 +71,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
   const readVisible = () => {
     const binding = active(); if (!binding) return null;
     return { bindingId: binding.bindingId, instanceId: el('Instance').value, sourceObjectId: el('Source').value,
-      parameters: parameterInputs.map(row => ({ key: row.key.value, type: row.type.value, value: row.value.value === row.displayValue ? row.rawValue : row.value.value })),
+      parameters: parameterInputs.map(row => ({ key: row.key.value, type: row.type.value, value: row.value.value === row.displayValue ? row.rawValue : row.value.value, [parameterIdentity]: row.identity })),
       events: eventInputs.map(row => ({ signal: row.signal.value, event: row.event.value })) };
   };
   const raw = () => { const visible = readVisible(); return draft.map(binding => binding.bindingId === selected && visible ? visible : binding); };
@@ -81,6 +91,64 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     element.addEventListener('input', changed); return element;
   }
   function removeButton(label, action) { const element = node('button', t(label)); element.type = 'button'; element.className = 'doc-btn doc-btn-ghost'; element.addEventListener('click', action); return element; }
+  function resetAudioTracks() { audioRequest++; audioPending = false; audioCatalog = null; audioMessage = ''; audioChoices.clear(); }
+  function usableAudioTracks() { return Boolean(audioAvailable() && current() && isSceneBehaviorAudioTracks(audioCatalog)
+    && sceneBehaviorAudioTracksMatchSource(audioCatalog, session.source)); }
+  function audioRowCurrent(row) { return Boolean(!pending && !audioPending && usableAudioTracks() && selected === row.bindingId
+    && parameterInputs.includes(row) && row.type.value === 'string' && active()?.parameters.some(item => item[parameterIdentity] === row.identity)); }
+  function refreshAudioTracks() {
+    const available = audioAvailable();
+    if (!available || session && !current()) resetAudioTracks();
+    el('AudioTracksTools').hidden = !available || !session;
+    el('LoadAudioTracks').disabled = pending || audioPending || !current();
+    el('AudioTracksTools').setAttribute('aria-busy', String(audioPending));
+    const usable = usableAudioTracks(), ready = usable && audioCatalog.status === 'ready';
+    el('AudioTracksStatus').textContent = t(audioMessage);
+    el('AudioTracksStatus').dataset.status = audioPending ? 'loading' : usable ? audioCatalog.status : audioMessage ? 'error' : 'idle';
+    el('AudioTracksPath').textContent = usable && audioCatalog.manifest ? t('声音来源：{0}', audioCatalog.manifest.sourcePath) : '';
+    for (const row of parameterInputs) {
+      if (row.type.value !== 'string') continue;
+      if (!row.audio && ready) {
+        const wrapper = node('div'); wrapper.className = 'scene-behaviors-audio-picker';
+        const select = node('select'); select.id = `sceneBehaviorsParam${row.index}AudioTrack`;
+        const use = removeButton('填入音轨编号', () => {
+          if (!audioRowCurrent(row) || !select.value || audioChoices.get(row.identity) !== select.value) return;
+          try {
+            const value = sceneBehaviorAudioTrackValue(audioCatalog, select.value);
+            if (!audioRowCurrent(row)) return;
+            row.value.value = value; changed(); row.value.focus();
+          } catch { audioCatalog = null; audioMessage = '场景音轨已变化，请重新读取；参数与审阅保持不变。'; refresh(); }
+        });
+        use.id = `sceneBehaviorsParam${row.index}UseAudioTrack`;
+        select.addEventListener('change', () => { if (!audioRowCurrent(row)) return; audioChoices.set(row.identity, select.value); refresh(); });
+        wrapper.append(field('可选场景音轨', select), use); row.wrapper.append(wrapper); row.audio = { wrapper, select, use, catalog: null };
+      }
+      if (!row.audio) continue;
+      const { wrapper, select, use } = row.audio; wrapper.hidden = !ready;
+      if (ready && row.audio.catalog !== audioCatalog) {
+        const choice = audioChoices.get(row.identity) || '';
+        options(select, [['', t('请选择音轨')], ...audioCatalog.tracks.map((track, index) => [track.trackId,
+          t('音轨 {0} · {1} · {2}', index + 1, t(track.role === 'music' ? '音乐' : '音效'), track.trackId)])],
+          audioCatalog.tracks.some(track => track.trackId === choice) ? choice : '');
+        audioChoices.set(row.identity, select.value); row.audio.catalog = audioCatalog;
+      }
+      select.disabled = !audioRowCurrent(row); use.disabled = !audioRowCurrent(row) || !select.value;
+    }
+  }
+  async function loadAudioTracks() {
+    if (pending || audioPending || !current() || !audioAvailable()) return false;
+    const owner = session, request = ++audioRequest, opening = epoch;
+    const owns = () => !disposed && dialog.open && epoch === opening && request === audioRequest && session === owner && current() && audioAvailable();
+    audioPending = true; audioMessage = '正在读取已保存的场景音轨…'; refresh();
+    try {
+      const value = await getAudioTracks(owner.source); if (!owns()) return false;
+      if (!isSceneBehaviorAudioTracks(value) || !sceneBehaviorAudioTracksMatchSource(value, owner.source)
+        || value.scene.objectId !== owner.catalog.scene.objectId || value.scene.sourcePath !== owner.catalog.scene.sourcePath
+        || value.scene.sourceRevision !== owner.catalog.scene.sourceRevision) throw Error('Invalid scene audio directory.');
+      audioCatalog = value; audioMessage = value.status === 'empty' ? '当前场景没有已保存的音轨；文本参数仍可直接编辑。' : '选择音轨后，点击“填入音轨编号”才会修改参数。'; return true;
+    } catch { if (owns()) { audioCatalog = null; audioMessage = '无法读取场景音轨；输入和审阅已保留，可以重试。'; } return false; }
+    finally { if (!disposed && epoch === opening && request === audioRequest && session === owner) { audioPending = false; refresh(); } }
+  }
   function renderBinding() {
     const binding = active(); parameterInputs = []; eventInputs = []; el('Parameters').replaceChildren(); el('Events').replaceChildren();
     if (!session || !binding) return;
@@ -102,7 +170,8 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
       const remove = removeButton('移除参数', () => { if (pending || !current()) return; capture(); active().parameters.splice(index, 1); invalidate(); renderBinding(); refresh(); });
       remove.id = `sceneBehaviorsParam${index}Remove`;
       wrapper.append(field('参数名称', key), field('参数类型', type), field('参数值', value), remove);
-      el('Parameters').append(wrapper); parameterInputs.push({ key, type, value, rawValue: row.value, displayValue: value.value });
+      if (!row[parameterIdentity]) row[parameterIdentity] = ++rowSequence;
+      el('Parameters').append(wrapper); parameterInputs.push({ key, type, value, rawValue: row.value, displayValue: value.value, identity: row[parameterIdentity], bindingId: binding.bindingId, index, wrapper });
     }
     for (const [index, row] of binding.events.entries()) {
       const wrapper = node('div'); wrapper.className = 'scene-behaviors-event';
@@ -130,11 +199,12 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     el('ChangedPaths').replaceChildren(); for (const path of proposal?.changedPaths || []) el('ChangedPaths').append(node('li', path));
     el('Path').textContent = session?.source.sourcePath || context.sourcePath || '';
     el('Fixed').textContent = session ? t('场景：{0} · 后端：{1} · 语言：{2}', session.catalog.scene.sourcePath, session.backendId, session.language) : '';
+    refreshAudioTracks();
   }
   function close(force = false) {
     if (!force && dirty() && !window.confirm(t('丢弃本次行为表单修改？原文草稿不会改变。'))) return false;
     const target = opener, request = ++epoch; opener = null; session = null; draft = []; selected = ''; pending = false;
-    proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
+    resetAudioTracks(); proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
     if (dialog.open) dialog.close(); refresh();
     Promise.resolve().then(() => { if (!disposed && request === epoch && !dialog.open && target?.isConnected !== false) target?.focus?.(); }); return true;
   }
@@ -252,6 +322,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     const index = draft.findIndex(binding => binding.bindingId === selected); draft.splice(index, 1); selected = draft[Math.min(index, draft.length - 1)].bindingId; invalidate(); renderBinding(); refresh(); });
   el('AddParameter').addEventListener('click', () => { if (pending || !current() || active().parameters.length >= 32) return; capture(); active().parameters.push({ key: '', type: 'string', value: '' }); invalidate(); renderBinding(); refresh(); });
   el('AddEvent').addEventListener('click', () => { if (pending || !current() || active().events.length >= 8) return; capture(); active().events.push({ signal: '', event: '' }); invalidate(); renderBinding(); refresh(); });
+  el('LoadAudioTracks').addEventListener('click', () => void loadAudioTracks());
   button.addEventListener('click', () => void open()); el('Check').addEventListener('click', () => void check()); el('Apply').addEventListener('click', () => void apply());
   el('Close').addEventListener('click', () => close()); el('Cancel').addEventListener('click', () => close());
   dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });

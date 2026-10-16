@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "date": "2026-10-16T02:58:11.693954+00:00",
+  "clientDate": "2026-10-16",
+  "version": "0.1.4",
+  "unreleased": true,
+  "application": {
+    "tests": 5495,
+    "pass": 5337,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 158
+  },
+  "syntaxFiles": 917,
+  "targeted": {
+    "tests": 145,
+    "pass": 145,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "buildUiRegression": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "godotRegression": {
+    "tests": 22,
+    "pass": 22,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "report": "browser-1792118858691/browser.json",
+    "groups": 6,
+    "screenshots": 6,
+    "sources": 20,
+    "rendered": {
+      "channels": 1,
+      "frames": 48000,
+      "sampleRate": 48000,
+      "gain": 0.11999999731779099,
+      "loop": true,
+      "peak": 0.014649932272732258,
+      "error": 4.6564674338611667e-10
+    },
+    "closedContexts": 9,
+    "unsavedDraft": {
+      "sourceChangedOnlyByExplicitApply": true,
+      "savedSourceUnchanged": true,
+      "gain": 0.25
+    }
+  },
+  "prepared": {
+    "comparisons": 28,
+    "calls": 3
+  },
+  "atlas": {
+    "functions": 128,
+    "implementations": 355,
+    "bindings": 539,
+    "cells": 2156,
+    "newCells": 20,
+    "oldCellsPreserved": 2136,
+    "workflows": 90
+  },
+  "unchanged": {
+    "modules": 21,
+    "capabilities": 40,
+    "audioSchemaVersion": 1,
+    "rustAbi": true,
+    "backendProtocol": true,
+    "godotAdapterVersion": "0.11.0",
+    "installedAppImage": true
+  },
+  "resolvedHarnessFailures": [
+    {
+      "log": "browser-first-attempt.log",
+      "reason": "A CDP evaluate call contained statements instead of one expression; wrapped in an IIFE, then all six groups passed."
+    },
+    {
+      "log": "application-first-attempt.log",
+      "reason": "The existing editor VM harness strips imports and lacked the newly injected readSceneAudioBytes dependency; supplied an explicit unavailable stub and reran the full check."
+    }
+  ],
+  "limits": [
+    "Overlapping scopes are not summed. Conditional skips are not engine/device acceptance.",
+    "Actual Chrome decoding, OfflineAudioContext sample output and transient playback lifecycle were checked, not physical speakers or installed Tauri/Android.",
+    "Audition plays only one selected WAV at current volume/loop, not scene cues or a Godot/Bevy timeline.",
+    "The catalog remains unverified; successful audition verifies one copied resource-byte snapshot, not ongoing disk contents or permission to save.",
+    "Godot regression is separate from browser audition. No new backend capability, ZIP format or Rust ABI was introduced."
+  ]
+}

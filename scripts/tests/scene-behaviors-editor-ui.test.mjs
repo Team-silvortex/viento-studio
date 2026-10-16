@@ -5,6 +5,7 @@ import { createHash } from 'node:crypto';
 import { dialogHarness, flushDialogs } from './dialog-harness.mjs';
 import { inspectSceneBehaviors } from '../../engine/scene-behaviors.mjs';
 import { createSceneBehaviorProposal, isSceneBehaviorProposal } from '../../engine/scene-behaviors-edit.mjs';
+import { captureSceneBehaviorAudioTracks, isSceneBehaviorAudioTracks, sceneBehaviorAudioTracksMatchSource, sceneBehaviorAudioTrackValue } from '../../engine/scene-audio-directory.mjs';
 import en from '../../web/i18n/en.js';
 import ja from '../../web/i18n/ja.js';
 
@@ -19,16 +20,27 @@ const model = () => ({ format: 'viento-scene-behaviors', schemaVersion: 1, scene
 const contextData = () => ({ format: 'viento-behavior-authoring-context', schemaVersion: 1, sourcePath: 'documents/behaviors/demo.json', objectId: id(1),
   scene: { objectId: id(2), sourcePath: 'documents/scenes/demo.json', sourceRevision: hash('scene'), instances: [1, 2].map(n => ({ instanceId: id(200 + n), objectId: id(3), name: 'Actor <b>' + n })) },
   sources: [1, 2].map(n => ({ objectId: id(300 + n), sourcePath: `documents/scripts/source${n}.txt`, sourceRevision: hash('source' + n), name: 'Script ' + n })), dependencyRevision: hash('dependencies') });
+function audioDirectory(source, changes = {}) {
+  const audio = { format: 'viento-scene-audio', schemaVersion: 1, sceneObjectId: id(2),
+    tracks: [{ id: id(701), resourceId: id(801), role: 'music', volume: .2, loop: true },
+      { id: id(702), resourceId: id(801), role: 'effect', volume: .4, loop: false }], cues: [] };
+  const scene = { objectId: id(2), sourcePath: contextData().scene.sourcePath, sourceRevision: contextData().scene.sourceRevision };
+  const content = JSON.stringify(audio);
+  const raw = { format: 'viento-scene-audio-directory', schemaVersion: 1, status: 'ready', worldId: 'world:' + 'a'.repeat(64), revision: hash('directory'), scene,
+    manifest: { objectId: id(901), sourcePath: 'documents/audio/demo.json', sourceRevision: hash(content), content }, ...changes };
+  return captureSceneBehaviorAudioTracks(copy(source), raw, scene);
+}
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return { promise, resolve }; };
 async function fixture(t, settings = {}) {
   const original = settings.content ?? serialize(settings.model || model()); let content = original, language = 'zh', languageListener = () => {}, disposed = 0, ids = 0, loads = 0;
   const context = { editable: true, creating: false, busy: false, sourceJSON: true, behaviorSource: true, available: true,
-    sourcePath: 'documents/behaviors/demo.json', sourceToken: 'load:1:draft:0' };
-  const calls = [], checks = [], proposals = [], confirms = [], focused = [];
+    sourcePath: 'documents/behaviors/demo.json', sourceToken: 'load:1:draft:0', audioTracksAvailable: settings.audioAvailable === true };
+  const calls = [], checks = [], proposals = [], confirms = [], focused = [], audioLoads = [];
   const snapshot = () => ({ sourcePath: context.sourcePath, token: context.sourceToken, baseSourceRevision: hash(original), sourceRevision: hash(content), content });
   const translate = (key, ...args) => (({ en, ja }[language]?.[key] || key).replace(/\{(\d+)\}/g, (_, n) => String(args[n] ?? '')));
   const h = await dialogHarness('app-scene-behaviors', {
-    inspectSceneBehaviors, isSceneBehaviorProposal,
+    inspectSceneBehaviors, isSceneBehaviorProposal, isSceneBehaviorAudioTracks, sceneBehaviorAudioTrackValue,
+    sceneBehaviorAudioTracksMatchSource: (catalog, source) => sceneBehaviorAudioTracksMatchSource(catalog, copy(source)),
     createSceneBehaviorProposal: (source, edit) => { const proposal = createSceneBehaviorProposal(copy(source), copy(edit)); proposals.push(proposal); return settings.proposal ? settings.proposal(proposal) : proposal; },
     crypto: { randomUUID: () => { ids++; return settings.uuid || id(400 + ids); } },
     t: translate, translatePage: root => { for (const node of root.querySelectorAll('[data-i18n]')) node.textContent = translate(node.dataset.i18n); },
@@ -38,6 +50,7 @@ async function fixture(t, settings = {}) {
   let controller;
   controller = h.runtime.setupSceneBehaviors({ getContext: () => context,
     getSource: async () => { loads++; return settings.source ? settings.source(snapshot()) : snapshot(); },
+    ...(settings.audioPort === false ? {} : { getAudioTracks: async source => { audioLoads.push(copy(source)); return settings.audioTracks ? settings.audioTracks(copy(source), audioLoads.length) : audioDirectory(source); } }),
     inspect: async request => { checks.push(copy(request)); return settings.inspect ? settings.inspect(request, checks.length) : contextData(); },
     applyDraft: async (proposal, ports) => {
       calls.push({ proposal, ports }); if (settings.apply) return settings.apply(proposal, ports, { context, setContent: value => { content = value; }, refresh: () => controller.refresh() });
@@ -48,7 +61,7 @@ async function fixture(t, settings = {}) {
   const set = (suffix, value, event = 'input') => { el(suffix).value = value; if (event) el(suffix).dispatch(event); };
   const click = async suffix => { el(suffix).click(); await settle(); };
   t.after(() => controller.dispose());
-  return { ...h, controller, context, el, settle, set, click, original, calls, checks, proposals, confirms, focused, snapshot,
+  return { ...h, controller, context, el, settle, set, click, original, calls, checks, proposals, confirms, focused, snapshot, audioLoads,
     open: () => controller.open(), content: () => content, loads: () => loads, ids: () => ids, unsubscribed: () => disposed,
     language(value) { language = value; languageListener(); }, check: () => click('Check'), apply: () => click('Apply'),
     select: async value => { set('Binding', value, 'change'); await settle(); } };
@@ -223,4 +236,132 @@ test('dynamic source text is displayed literally and every new fixed message has
   for (const key of keys) { assert.ok(en[key], 'English: ' + key); assert.ok(ja[key], 'Japanese: ' + key); }
   for (const language of ['en', 'ja', 'zh']) { h.language(language); assert.equal(h.el('Btn').textContent, ({ en, ja }[language]?.['编辑场景行为'] || '编辑场景行为')); assert.equal(h.el('Param0Value').value, '<script>not executable</script>'); }
   h.controller.dispose(); assert.equal(h.unsubscribed(), 1);
+});
+
+
+test('audio ID picker is opt-in and does not affect ordinary editing when its capability or port is missing', async t => {
+  for (const settings of [{}, { audioAvailable: true, audioPort: false }, { audioAvailable: false }]) {
+    const h = await fixture(t, settings); await h.open(); assert.equal(h.el('AudioTracksTools').hidden, true);
+    h.el('LoadAudioTracks').dispatch('click'); await h.settle(); assert.equal(h.audioLoads.length, 0);
+    editTitle(h); await h.check(); assert.equal(h.el('Apply').disabled, false); await h.apply(); assert.equal(h.calls.length, 1);
+  }
+});
+test('loading tracks exposes authored ordering, roles, full IDs and source without changing text, dirty state or review', async t => {
+  const h = await fixture(t, { audioAvailable: true }); await h.open(); assert.equal(h.el('AudioTracksTools').hidden, false);
+  assert.equal(h.el('Param0AudioTrack'), null); await h.click('LoadAudioTracks');
+  assert.equal(h.audioLoads.length, 1); assert.deepEqual(h.audioLoads[0], h.snapshot());
+  assert.equal(h.el('AudioTracksStatus').dataset.status, 'ready'); assert.match(h.el('AudioTracksPath').textContent, /documents\/audio\/demo\.json/);
+  assert.deepEqual(h.el('Param0AudioTrack').children.map(item => item.value), ['', id(701), id(702)]);
+  assert.match(h.el('Param0AudioTrack').children[1].textContent, new RegExp('1.*音乐.*' + id(701)));
+  assert.match(h.el('Param0AudioTrack').children[2].textContent, new RegExp('2.*音效.*' + id(702)));
+  assert.equal(h.el('Param1AudioTrack'), null); assert.equal(h.el('Param2AudioTrack'), null);
+  assert.equal(h.el('Param0AudioTrack').value, ''); assert.equal(h.el('Param0UseAudioTrack').disabled, true);
+  assert.equal(h.el('Param0Value').value, 'east'); assert.equal(h.el('Dialog').dataset.dirty, 'false'); assert.equal(h.el('Check').disabled, true);
+  assert.equal(h.calls.length, 0); assert.equal(h.proposals.length, 0); assert.equal(h.content(), h.original);
+});
+test('any string name accepts explicit insertion while selecting alone preserves an approved review', async t => {
+  const h = await fixture(t, { audioAvailable: true }); await h.open(); h.set('Param0Name', 'arbitrary_description'); h.set('Param0Value', 'original text'); await h.check();
+  const approved = h.el('After').textContent; await h.click('LoadAudioTracks'); h.set('Param0AudioTrack', id(702), 'change');
+  assert.equal(h.el('Param0Value').value, 'original text'); assert.equal(h.el('Apply').disabled, false); assert.equal(h.el('After').textContent, approved);
+  await h.click('Param0UseAudioTrack'); assert.equal(h.el('Param0Value').value, id(702)); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true);
+  assert.equal(h.document.activeElement, h.el('Param0Value')); assert.equal(h.calls.length, 0); await h.check();
+  assert.equal(h.proposals.at(-1).bindings[0].parameters.arbitrary_description, id(702)); await h.apply(); assert.equal(h.calls.length, 1);
+  assert.equal(JSON.parse(h.content().replace(/^\ufeff/, '')).bindings[0].parameters.arbitrary_description, id(702));
+});
+test('audio selections and unfinished text survive language changes and binding switches without guessing a default', async t => {
+  const h = await fixture(t, { audioAvailable: true }); await h.open(); await h.click('LoadAudioTracks');
+  h.set('Param0AudioTrack', id(701), 'change'); h.set('Param1Value', '1e-'); h.set('Param0Value', 'unfinished first');
+  for (const language of ['en', 'ja', 'zh']) { h.language(language); assert.equal(h.el('Param0AudioTrack').value, id(701)); assert.equal(h.el('Param1Value').value, '1e-'); }
+  await h.select(id(102)); assert.equal(h.el('Param0AudioTrack').value, ''); h.set('Param0AudioTrack', id(702), 'change'); h.set('Param0Value', 'unfinished second');
+  await h.select(id(101)); assert.equal(h.el('Param0AudioTrack').value, id(701)); assert.equal(h.el('Param0Value').value, 'unfinished first'); assert.equal(h.el('Param1Value').value, '1e-');
+  await h.select(id(102)); assert.equal(h.el('Param0AudioTrack').value, id(702)); assert.equal(h.el('Param0Value').value, 'unfinished second');
+  assert.equal(h.audioLoads.length, 1); assert.equal(h.proposals.length, 0); assert.equal(h.content(), h.original);
+});
+test('empty, forged and failed track directories preserve form and review and permit an explicit retry', async t => {
+  for (const scenario of ['empty', 'forged', 'failure', 'wrong-source', 'wrong-scene-revision']) {
+    const h = await fixture(t, { audioAvailable: true, audioTracks: (source, count) => {
+      if (count > 1) return audioDirectory(source);
+      if (scenario === 'empty') return audioDirectory(source, { status: 'empty', manifest: null });
+      if (scenario === 'forged') return copy(audioDirectory(source));
+      if (scenario === 'failure') throw Error('Unavailable');
+      if (scenario === 'wrong-source') return audioDirectory({ ...source, token: source.token + ':old' });
+      const catalog = audioDirectory(source); return { ...catalog, scene: { ...catalog.scene, sourceRevision: hash('other scene') } };
+    } });
+    await h.open(); editTitle(h); await h.check(); const approved = h.el('After').textContent; await h.click('LoadAudioTracks');
+    assert.equal(h.el('AudioTracksStatus').dataset.status, scenario === 'empty' ? 'empty' : 'error', scenario);
+    assert.equal(h.el('Param0AudioTrack'), null); assert.equal(h.el('Param0Value').value, 'changed'); assert.equal(h.el('Apply').disabled, false); assert.equal(h.el('After').textContent, approved);
+    await h.click('LoadAudioTracks'); assert.equal(h.el('AudioTracksStatus').dataset.status, 'ready'); assert.equal(h.el('Apply').disabled, false); assert.equal(h.audioLoads.length, 2);
+    assert.equal(h.calls.length, 0); assert.equal(h.content(), h.original);
+  }
+});
+test('track loading only locks its controls, prevents duplicate reads and permits checking or applying ordinary edits', async t => {
+  for (const action of ['check', 'apply']) {
+    const gate = deferred(), h = await fixture(t, { audioAvailable: true, audioTracks: () => gate.promise }); await h.open(); editTitle(h);
+    if (action === 'apply') await h.check(); h.el('LoadAudioTracks').click(); await h.settle(); const requested = h.audioLoads[0];
+    assert.equal(h.el('Dialog').getAttribute('aria-busy'), 'false'); assert.equal(h.el('AudioTracksTools').getAttribute('aria-busy'), 'true'); assert.equal(h.el('LoadAudioTracks').disabled, true);
+    assert.equal(h.el('Param0Value').disabled, false); assert.equal(h.el('Binding').disabled, false); assert.equal(h.el(action === 'check' ? 'Check' : 'Apply').disabled, false);
+    h.el('LoadAudioTracks').dispatch('click'); await h.settle(); assert.equal(h.audioLoads.length, 1);
+    await h[action](); gate.resolve(audioDirectory(requested)); await h.settle();
+    if (action === 'check') { assert.equal(h.el('Apply').disabled, false); assert.equal(h.el('AudioTracksStatus').dataset.status, 'ready'); }
+    else { assert.equal(h.calls.length, 1); assert.equal(h.el('Dialog').open, false); }
+  }
+});
+test('late directory reads never populate a closed, reopened, disposed or differently owned source', async t => {
+  for (const mutation of ['close', 'reopen', 'dispose', 'path', 'token', 'capability', 'busy']) {
+    const gate = deferred(), h = await fixture(t, { audioAvailable: true, audioTracks: () => gate.promise }); await h.open(); h.el('LoadAudioTracks').click(); await h.settle();
+    const requested = h.audioLoads[0];
+    if (mutation === 'close' || mutation === 'reopen') await h.click('Close'); if (mutation === 'reopen') await h.open();
+    if (mutation === 'dispose') h.controller.dispose(); if (mutation === 'path') h.context.sourcePath = 'documents/other.json';
+    if (mutation === 'token') h.context.sourceToken += ':changed'; if (mutation === 'capability') h.context.audioTracksAvailable = false; if (mutation === 'busy') h.context.busy = true;
+    if (mutation !== 'dispose') h.controller.refresh(); gate.resolve(audioDirectory(requested)); await h.settle();
+    if (mutation !== 'dispose') { assert.notEqual(h.el('AudioTracksStatus').dataset.status, 'ready', mutation); assert.equal(h.el('Param0AudioTrack'), null); }
+    assert.equal(h.calls.length, 0); assert.equal(h.content(), h.original);
+  }
+});
+test('loading across form edits or a binding change only offers choices in the current row and retains all entered text', async t => {
+  const gate = deferred(), h = await fixture(t, { audioAvailable: true, audioTracks: () => gate.promise }); await h.open(); h.el('LoadAudioTracks').click(); await h.settle();
+  h.set('Param0Value', 'first waiting'); await h.select(id(102)); h.set('Param0Value', 'second waiting'); const input = h.el('Param0Value'); input.focus();
+  gate.resolve(audioDirectory(h.audioLoads[0])); await h.settle(); assert.equal(h.el('Param0Value'), input); assert.equal(h.document.activeElement, input);
+  assert.equal(h.el('Param0Value').value, 'second waiting'); assert.equal(h.el('Param0AudioTrack').value, '');
+  h.set('Param0AudioTrack', id(702), 'change'); await h.click('Param0UseAudioTrack'); await h.select(id(101)); assert.equal(h.el('Param0Value').value, 'first waiting');
+  assert.equal(h.el('Param0AudioTrack').value, ''); await h.select(id(102)); assert.equal(h.el('Param0Value').value, id(702));
+});
+test('parameter identity prevents detached row controls from filling another row after removal, type change or binding change', async t => {
+  for (const mutation of ['remove', 'type', 'binding', 'language']) {
+    const h = await fixture(t, { audioAvailable: true }); await h.open(); await h.click('AddParameter'); h.set('Param3Name', 'next'); h.set('Param3Value', 'survivor');
+    await h.click('LoadAudioTracks'); h.set('Param0AudioTrack', id(701), 'change'); h.set('Param3AudioTrack', id(702), 'change'); const stale = h.el('Param0UseAudioTrack');
+    if (mutation === 'remove') await h.click('Param0Remove'); if (mutation === 'type') h.set('Param0Type', 'number', 'change');
+    if (mutation === 'binding') await h.select(id(102)); if (mutation === 'language') h.language('en');
+    stale.dispatch('click'); await h.settle(); assert.notEqual(h.el('Param0Value').value, id(701), mutation);
+    if (mutation === 'remove') { assert.equal(h.el('Param2AudioTrack').value, id(702)); await h.click('Param2UseAudioTrack'); assert.equal(h.el('Param2Value').value, id(702)); }
+    if (mutation === 'type') assert.equal(h.el('Param0AudioTrack'), null);
+    assert.equal(h.calls.length, 0);
+  }
+});
+test('reloading does not write selected values and failure disables old choices without dropping approved edits', async t => {
+  const h = await fixture(t, { audioAvailable: true, audioTracks: (source, count) => { if (count === 2) throw Error('retry'); return audioDirectory(source); } });
+  await h.open(); editTitle(h); await h.check(); await h.click('LoadAudioTracks'); h.set('Param0AudioTrack', id(701), 'change'); const stale = h.el('Param0UseAudioTrack');
+  await h.click('LoadAudioTracks'); assert.equal(h.el('Apply').disabled, false); assert.equal(h.el('Param0Value').value, 'changed');
+  assert.equal(h.el('Param0AudioTrack').disabled, true); stale.dispatch('click'); assert.equal(h.el('Param0Value').value, 'changed');
+  await h.click('LoadAudioTracks'); assert.equal(h.el('Param0AudioTrack').value, id(701)); assert.equal(h.el('Apply').disabled, false);
+  assert.equal(h.el('Param0Value').value, 'changed'); await h.click('Cancel'); assert.equal(h.el('Dialog').open, false); assert.equal(h.calls.length, 0); assert.equal(h.content(), h.original);
+});
+test('forged option values and silently replaced choices cannot write arbitrary text through the track picker', async t => {
+  const h = await fixture(t, { audioAvailable: true }); await h.open(); await h.click('LoadAudioTracks');
+  h.set('Param0AudioTrack', id(999), 'change'); h.el('Param0UseAudioTrack').dispatch('click'); assert.equal(h.el('Param0Value').value, 'east');
+  await h.click('LoadAudioTracks'); h.set('Param0AudioTrack', id(701), 'change'); h.set('Param0AudioTrack', id(702), false); h.el('Param0UseAudioTrack').dispatch('click');
+  assert.equal(h.el('Param0Value').value, 'east'); assert.equal(h.calls.length, 0);
+});
+test('audio ID picker strings and status remain translated while current text and selection survive', async t => {
+  const h = await fixture(t, { audioAvailable: true }); await h.open(); await h.click('LoadAudioTracks'); h.set('Param0AudioTrack', id(701), 'change'); h.set('Param0Value', '中 English 日本語');
+  for (const language of ['en', 'ja', 'zh']) {
+    h.language(language); const dictionary = { en, ja }[language];
+    for (const [suffix, key] of [['LoadAudioTracks', '读取场景音轨'], ['Param0UseAudioTrack', '填入音轨编号']]) assert.equal(h.el(suffix).textContent, dictionary?.[key] || key);
+    assert.equal(h.el('Param0AudioTrack').value, id(701)); assert.equal(h.el('Param0Value').value, '中 English 日本語');
+    assert.ok(h.el('Param0AudioTrack').children[1].textContent.includes(dictionary?.['音乐'] || '音乐'));
+  }
+  const source = await fs.readFile(new URL('../../web/modules/app-scene-behaviors.js', import.meta.url), 'utf8');
+  for (const key of [...source.matchAll(/(?:t|removeButton|field)\('([^']+)'/g)].map(match => match[1]).filter(key => /音轨|声音来源/.test(key))) {
+    assert.ok(en[key], 'English: ' + key); assert.ok(ja[key], 'Japanese: ' + key);
+  }
 });

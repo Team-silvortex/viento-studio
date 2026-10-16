@@ -1,0 +1,589 @@
+{
+  "startedAt": "2026-10-16T02:23:33.820Z",
+  "steps": [
+    "Existing World resource binding previews without writes, then saves exactly one audio metadata file. Source and both WAV files stay unchanged; this saved binding is separate from subsequent source editing.",
+    "Both tracks choose the bound replacement WAV while retaining identities/cues. Chinese, English and Japanese at 390px retain selection and volume; Cancel leaves the source draft and author tree unchanged, including the separately saved metadata binding.",
+    "Apply changes only the ordinary unsaved source draft. Ordinary Save updates exactly the reviewed audio JSON; metadata, scene, referenced WAV and other author files remain byte-identical.",
+    "Saved audio reopens with both original track identities and cue bindings, the selected replacement resource and independent volumes. The old WAV remains in author assets and metadata.",
+    "The same scene plans, builds and runs through real Godot. The host validates both original tracks and three original cue commands with the replacement resource: music play, effect play and music stop, with independent actor/audio completion.",
+    "Chrome downloads the generated engine project ZIP. Independent verification confirms one deduplicated WAV resource, extraction preserves its exact bytes and settings, and fresh Godot import/run at another path produces identical audio events."
+  ],
+  "screenshots": [
+    "audio-binding-preview.png",
+    "audio-review-desktop.png",
+    "audio-zh-CN-390.png",
+    "audio-zh-CN-390-resources.png",
+    "audio-en-390.png",
+    "audio-en-390-resources.png",
+    "audio-ja-390.png",
+    "audio-ja-390-resources.png",
+    "audio-unsaved-draft.png",
+    "audio-resources-reopened.png",
+    "audio-godot-run.png",
+    "audio-engineering-delivery.png"
+  ],
+  "jobs": [
+    {
+      "id": "fe770f4e-c69e-4d8e-8a52-8959ba9a4899",
+      "kind": "plan",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.godot4",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-16T02:23:39.159Z",
+      "diagnostics": [],
+      "events": [],
+      "logs": "",
+      "plan": {
+        "snapshotId": "sha256:02894037057d4c0156d264672bdd922e31714a8b77df27a96e18562418a1a2f8",
+        "title": "场景声音示例 / Scene audio",
+        "actorCount": 2,
+        "resourceCount": 1
+      },
+      "runtime": null,
+      "finishedAt": "2026-10-16T02:23:39.186Z"
+    },
+    {
+      "id": "84874ef6-5cb0-444e-bfac-9166ba7e2289",
+      "kind": "build",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.godot4",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-16T02:23:40.280Z",
+      "diagnostics": [],
+      "events": [],
+      "logs": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | Started Registering global classes... (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mupdate_scripts_classes\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (1 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing pre-reimport operations...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | 12345678-1111-4111-8111-000000000001.wav\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mreimport\u001b[22m | Finalizing Asset Import...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (1 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing post-reimport operations...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n",
+      "plan": null,
+      "runtime": null,
+      "buildId": "4e2c0b12-8f06-47ad-b342-2fa7f971c528",
+      "finishedAt": "2026-10-16T02:23:44.217Z"
+    },
+    {
+      "id": "689c054e-aa39-4695-8d3f-eacf56d50575",
+      "kind": "run",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "backendId": "org.viento.godot4",
+      "buildId": "4e2c0b12-8f06-47ad-b342-2fa7f971c528",
+      "snapshotId": "sha256:02894037057d4c0156d264672bdd922e31714a8b77df27a96e18562418a1a2f8",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-16T02:23:44.397Z",
+      "diagnostics": [],
+      "events": [
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "ready",
+          "protocol": 2,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        },
+        {
+          "event": "audio",
+          "protocol": 2,
+          "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "trackIds": [
+            "77777777-7777-4777-8777-000000000001",
+            "77777777-7777-4777-8777-000000000002"
+          ],
+          "audioEvent": "ready"
+        },
+        {
+          "action": "play",
+          "atSeconds": 0,
+          "cueId": "66666666-6666-4666-8666-000000000001",
+          "event": "audio",
+          "protocol": 2,
+          "resourceId": "12345678-1111-4111-8111-000000000001",
+          "trackId": "77777777-7777-4777-8777-000000000001",
+          "audioEvent": "command"
+        },
+        {
+          "action": "play",
+          "atSeconds": 0.25,
+          "cueId": "66666666-6666-4666-8666-000000000002",
+          "event": "audio",
+          "protocol": 2,
+          "resourceId": "12345678-1111-4111-8111-000000000001",
+          "trackId": "77777777-7777-4777-8777-000000000002",
+          "audioEvent": "command"
+        },
+        {
+          "action": "stop",
+          "atSeconds": 0.5,
+          "cueId": "66666666-6666-4666-8666-000000000003",
+          "event": "audio",
+          "protocol": 2,
+          "resourceId": "12345678-1111-4111-8111-000000000001",
+          "trackId": "77777777-7777-4777-8777-000000000001",
+          "audioEvent": "command"
+        },
+        {
+          "event": "audio",
+          "protocol": 2,
+          "timeSeconds": 0.5,
+          "audioEvent": "finished"
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "event": "finished",
+          "fixedDelta": 0.25,
+          "protocol": 2
+        }
+      ],
+      "logs": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | Started Registering global classes... (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mupdate_scripts_classes\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (1 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing pre-reimport operations...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | 12345678-1111-4111-8111-000000000001.wav\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mreimport\u001b[22m | Finalizing Asset Import...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (1 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing post-reimport operations...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":2,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"}\nVIENTO_AUDIO:{\"event\":\"ready\",\"protocol\":1,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"trackIds\":[\"77777777-7777-4777-8777-000000000001\",\"77777777-7777-4777-8777-000000000002\"]}\nVIENTO_AUDIO:{\"action\":\"play\",\"atSeconds\":0.0,\"cueId\":\"66666666-6666-4666-8666-000000000001\",\"event\":\"command\",\"protocol\":1,\"resourceId\":\"12345678-1111-4111-8111-000000000001\",\"trackId\":\"77777777-7777-4777-8777-000000000001\"}\nVIENTO_AUDIO:{\"action\":\"play\",\"atSeconds\":0.25,\"cueId\":\"66666666-6666-4666-8666-000000000002\",\"event\":\"command\",\"protocol\":1,\"resourceId\":\"12345678-1111-4111-8111-000000000001\",\"trackId\":\"77777777-7777-4777-8777-000000000002\"}\nVIENTO_AUDIO:{\"action\":\"stop\",\"atSeconds\":0.5,\"cueId\":\"66666666-6666-4666-8666-000000000003\",\"event\":\"command\",\"protocol\":1,\"resourceId\":\"12345678-1111-4111-8111-000000000001\",\"trackId\":\"77777777-7777-4777-8777-000000000001\"}\nVIENTO_AUDIO:{\"event\":\"finished\",\"protocol\":1,\"timeSeconds\":0.5}\nVIENTO_RUNTIME:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"finished\",\"fixedDelta\":0.25,\"protocol\":2}\nWARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).\n   at: cleanup (core/object/object.cpp:2536)\n",
+      "plan": null,
+      "runtime": {
+        "format": "viento-runtime-observation",
+        "schemaVersion": 1,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "protocolVersion": 2,
+        "phase": "finished",
+        "sequence": 2,
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              200,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/0",
+              "sourceRevision": "sha256:1cec3ad0f04db19e0434518c2023186f563e3ade549c2a46356f17b44d9f1064"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              500,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/1",
+              "sourceRevision": "sha256:1cec3ad0f04db19e0434518c2023186f563e3ade549c2a46356f17b44d9f1064"
+            }
+          }
+        ]
+      },
+      "finishedAt": "2026-10-16T02:23:48.105Z"
+    }
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "今回の音声フォームの変更を破棄しますか？原文の下書きは変更されません。"
+    }
+  ],
+  "layout": {
+    "zh-CN": {
+      "noHorizontalOverflow": true,
+      "close": {
+        "top": 25,
+        "bottom": 54,
+        "left": 282.984375,
+        "right": 365
+      },
+      "check": {
+        "top": 775,
+        "bottom": 821,
+        "left": 25,
+        "right": 125
+      },
+      "apply": {
+        "top": 775,
+        "bottom": 821,
+        "left": 133,
+        "right": 233
+      },
+      "cancel": {
+        "top": 775,
+        "bottom": 821,
+        "left": 241,
+        "right": 341
+      },
+      "title": "编辑场景声音",
+      "bodyScrollable": true,
+      "lastTrack": {
+        "visible": true,
+        "withinWidth": true
+      }
+    },
+    "en": {
+      "noHorizontalOverflow": true,
+      "close": {
+        "top": 25,
+        "bottom": 51,
+        "left": 269.625,
+        "right": 365
+      },
+      "check": {
+        "top": 781,
+        "bottom": 821,
+        "left": 25,
+        "right": 133
+      },
+      "apply": {
+        "top": 781,
+        "bottom": 821,
+        "left": 141,
+        "right": 249
+      },
+      "cancel": {
+        "top": 781,
+        "bottom": 821,
+        "left": 257,
+        "right": 365
+      },
+      "title": "Edit scene audio",
+      "bodyScrollable": true,
+      "lastTrack": {
+        "visible": true,
+        "withinWidth": true
+      }
+    },
+    "ja": {
+      "noHorizontalOverflow": true,
+      "close": {
+        "top": 25,
+        "bottom": 54,
+        "left": 247.828125,
+        "right": 365
+      },
+      "check": {
+        "top": 775,
+        "bottom": 821,
+        "left": 25,
+        "right": 133
+      },
+      "apply": {
+        "top": 775,
+        "bottom": 821,
+        "left": 141,
+        "right": 249
+      },
+      "cancel": {
+        "top": 775,
+        "bottom": 821,
+        "left": 257,
+        "right": 365
+      },
+      "title": "シーン音声を編集",
+      "bodyScrollable": true,
+      "lastTrack": {
+        "visible": true,
+        "withinWidth": true
+      }
+    }
+  },
+  "limitations": [
+    "Actual Chrome using the local HTTP editor and trusted native Godot. No installed Tauri window, native file picker, Android or other desktop OS claim.",
+    "The bundled scene-audio example is copied into a disposable workspace. An additional generated WAV is registered in the disposable fixture; existing World UI binds it, then both tracks select it through the audio editor. Track and cue identities remain intact. Catalog metadata does not verify audio bytes; build does.",
+    "Godot runs bounded headless logic with three audio commands. This browser workflow makes no speaker or audible-output claim; native PCM mixer capture is verified separately.",
+    "Generated project ZIP is downloaded by Chrome, independently verified, extracted and run at a new path. It is source-engineering delivery, not a standalone game executable."
+  ],
+  "sources": {
+    "crates/viento-studio-core/src/scene_audio.rs": "aec9be52b48f183674cf32c138390add7759df02b7f8c4464244ee7f2634a6b8",
+    "crates/viento-studio-core/src/lib.rs": "7b395297396f590047aa603381210124bdd2409400aa0819984494b0616fc0b0",
+    "engine/studio-core.mjs": "e6370613ad569377ae4039aba633b0aabef8f3195e2288ae785aea5570e85d91",
+    "engine/studio-core.wasm": "4805b008219aeafffb160118060618dd550910807b2f8006fe955fd56c052d50",
+    "engine/scene-audio-core.mjs": "a552d813ae2ad86cf6a1d4c60bec0e620a419d9add53e3d535f66d300e05b508",
+    "engine/scene-audio.mjs": "72b5111fe5caf1b39d38261bada84d17d4ae7c484034ff3ac4850468e64f3f3a",
+    "engine/scene-audio-edit.mjs": "b7eeb5f4e520b0c9407db5f156b97cc3c0a50dc2186ab04bc884542205945ed7",
+    "engine/scene-audio-resources.mjs": "f41db2b5721ddc3daaf272c8d4f7a62173f419b9378f9ee36ae0268c9d29f5a1",
+    "engine/scene-audio-creation-contract.mjs": "c520144e9025982685046d7d7679d2ed7796bd7d57cef840ab3a97903317abf1",
+    "scripts/lib/scene-audio-creation-service.mjs": "cbf89e62b8395539734ec4dcc8b4adb2e0724783a06fd1c8358866e28a6ef184",
+    "engine/scene-audio-events.mjs": "45215960d59a7606e887d4796ac2b60e83c4216bd2f963cb2b757540b073c225",
+    "engine/backend-capabilities.mjs": "2c741bca7a0b7439886f2b353cbac2f54b94130c16d499fd6db412f9fd6d9b2f",
+    "engine/project-build-contract.mjs": "792c49457f9af1bbfa3a0a04b1ba07c0888237dff9c8c4d8f97ea32ae1d91f3f",
+    "engine/studio-modules.mjs": "02635a07e833207a8da91dd551adad715ebe056d007b2aca04f7db0fc98d66d7",
+    "scripts/adapters/node-build-snapshot.mjs": "5e903260e2806e832d0b5dfa2c3e890b003d80a1cffcf7f3b95bd900fad87966",
+    "scripts/adapters/node-project-build.mjs": "3d5d0381c19c193574be2bbbbcb71a02b0d5733be8f500ea92685afe2cdd189d",
+    "scripts/backends/godot4-audio.mjs": "7bc6b162f37946ab5c5b85f6ca2e20e603ee6e7fddd395271cbd4195b983e7f0",
+    "scripts/backends/godot4/audio-runtime.gd": "3cb01c0c8dffe90b3326be6371cf559de7e2d641125a512b16f3745f970dabf8",
+    "scripts/backends/godot4-adapter.mjs": "8f12ed8486289c5abd69d9146182fa37007ddc2f2e0f61826056bf544ab2d721",
+    "web/modules/app-scene-audio.js": "4761f4efb0faf44a37c12b19c0714c3744212378a50c4482b76b4680df22d641",
+    "web/scene-audio.css": "0c893e0b999fa449b5ffbbdac4252e9a4a30ad8d963a32c76360333eac2268af",
+    "web/modules/app-scene-audio-source.js": "4c6ab4fe3bf66067b841053e33e84d019cc004ace378462da22b216a10eb5595",
+    "web/modules/app-studio-system.js": "57940f5a5999045ad48d6f3efc98418099906d2c859fa71781c9b15e8555ab84",
+    "web/modules/app-runtime.js": "5a9cd37e03b86d9ae9cce23d46a5bb42ab77e226d823e162bebfdc0ae85bfc3d",
+    "web/modules/app-project-build.js": "529fb0aa423a7d4c80c94dfc79cd8ee2f5b82a64e4438d1e15aba282891f0144",
+    "web/i18n/en.js": "d6c88bfb9e45e102a1405078fddfd2d40920625c7bc6e017ace82c99189f7f23",
+    "web/i18n/ja.js": "a8ed3d676133f47ced1a338fb103500e6ddea2a6172dc80fc8950cfefdbce04a",
+    "scripts/tests/scene-audio-resource-smoke.mjs": "f938ed4449fb872d11f6435b3b991947541acd6e581c303cea08120bf0516e9c"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "binding": {
+    "path": "metadata/documents/88888888-8888-4888-8888-888888888888.json",
+    "before": "9a6da49e6f0a4f5e8d684cc60a5cd41fb211c3b0e3344340c582ffaba022a711",
+    "after": "55341e0eb3331569b5c7b5d52ca33938b163cb57287b3935f154cc5202ed179d",
+    "assetId": "12345678-1111-4111-8111-000000000001"
+  },
+  "sample": {
+    "timeSeconds": 0.5,
+    "commands": [
+      {
+        "action": "play",
+        "atSeconds": 0,
+        "cueId": "66666666-6666-4666-8666-000000000001",
+        "loop": true,
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "role": "music",
+        "trackId": "77777777-7777-4777-8777-000000000001",
+        "volume": 0.2
+      },
+      {
+        "action": "play",
+        "atSeconds": 0.25,
+        "cueId": "66666666-6666-4666-8666-000000000002",
+        "loop": false,
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "role": "effect",
+        "trackId": "77777777-7777-4777-8777-000000000002",
+        "volume": 0.15
+      },
+      {
+        "action": "stop",
+        "atSeconds": 0.5,
+        "cueId": "66666666-6666-4666-8666-000000000003",
+        "loop": true,
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "role": "music",
+        "trackId": "77777777-7777-4777-8777-000000000001",
+        "volume": 0.2
+      }
+    ],
+    "states": [
+      {
+        "lastCueId": "66666666-6666-4666-8666-000000000003",
+        "loop": true,
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "role": "music",
+        "startedAtSeconds": null,
+        "status": "stopped",
+        "trackId": "77777777-7777-4777-8777-000000000001",
+        "volume": 0.2
+      },
+      {
+        "lastCueId": "66666666-6666-4666-8666-000000000002",
+        "loop": false,
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "role": "effect",
+        "startedAtSeconds": 0.25,
+        "status": "playing",
+        "trackId": "77777777-7777-4777-8777-000000000002",
+        "volume": 0.15
+      }
+    ]
+  },
+  "saved": {
+    "beforeSha256": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+    "afterSha256": "1c690e0ff8c2393b5f1d4f6f12e870d4789596a9b324987aaa77be0b0e177723",
+    "onlyChangedAuthorPath": "documents/audio/demo.json",
+    "tracks": [
+      {
+        "id": "77777777-7777-4777-8777-000000000001",
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "role": "music",
+        "volume": 0.2,
+        "loop": true
+      },
+      {
+        "id": "77777777-7777-4777-8777-000000000002",
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "role": "effect",
+        "volume": 0.15,
+        "loop": false
+      }
+    ],
+    "cues": [
+      {
+        "id": "66666666-6666-4666-8666-000000000001",
+        "trackId": "77777777-7777-4777-8777-000000000001",
+        "atSeconds": 0,
+        "action": "play"
+      },
+      {
+        "id": "66666666-6666-4666-8666-000000000002",
+        "trackId": "77777777-7777-4777-8777-000000000002",
+        "atSeconds": 0.25,
+        "action": "play"
+      },
+      {
+        "id": "66666666-6666-4666-8666-000000000003",
+        "trackId": "77777777-7777-4777-8777-000000000001",
+        "atSeconds": 0.5,
+        "action": "stop"
+      }
+    ]
+  },
+  "audioEvents": [
+    {
+      "event": "audio",
+      "protocol": 2,
+      "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "trackIds": [
+        "77777777-7777-4777-8777-000000000001",
+        "77777777-7777-4777-8777-000000000002"
+      ],
+      "audioEvent": "ready"
+    },
+    {
+      "action": "play",
+      "atSeconds": 0,
+      "cueId": "66666666-6666-4666-8666-000000000001",
+      "event": "audio",
+      "protocol": 2,
+      "resourceId": "12345678-1111-4111-8111-000000000001",
+      "trackId": "77777777-7777-4777-8777-000000000001",
+      "audioEvent": "command"
+    },
+    {
+      "action": "play",
+      "atSeconds": 0.25,
+      "cueId": "66666666-6666-4666-8666-000000000002",
+      "event": "audio",
+      "protocol": 2,
+      "resourceId": "12345678-1111-4111-8111-000000000001",
+      "trackId": "77777777-7777-4777-8777-000000000002",
+      "audioEvent": "command"
+    },
+    {
+      "action": "stop",
+      "atSeconds": 0.5,
+      "cueId": "66666666-6666-4666-8666-000000000003",
+      "event": "audio",
+      "protocol": 2,
+      "resourceId": "12345678-1111-4111-8111-000000000001",
+      "trackId": "77777777-7777-4777-8777-000000000001",
+      "audioEvent": "command"
+    },
+    {
+      "event": "audio",
+      "protocol": 2,
+      "timeSeconds": 0.5,
+      "audioEvent": "finished"
+    }
+  ],
+  "plan": {
+    "snapshotId": "sha256:02894037057d4c0156d264672bdd922e31714a8b77df27a96e18562418a1a2f8",
+    "title": "场景声音示例 / Scene audio",
+    "actorCount": 2,
+    "resourceCount": 1
+  },
+  "delivery": {
+    "fileName": "viento-4e2c0b12-8f06-47ad-b342-2fa7f971c528.viento-build.zip",
+    "bytes": 58467,
+    "sha256": "5d0bd23365e17a576160524bdc34afa333ebaa1a9a6b485c04d750df4e738a26",
+    "fileCount": 8,
+    "assetCount": 1,
+    "buildId": "4e2c0b12-8f06-47ad-b342-2fa7f971c528",
+    "projectKind": "godot-project",
+    "importCode": 0,
+    "runCode": 0,
+    "audioFrames": [
+      {
+        "event": "ready",
+        "protocol": 1,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "trackIds": [
+          "77777777-7777-4777-8777-000000000001",
+          "77777777-7777-4777-8777-000000000002"
+        ]
+      },
+      {
+        "action": "play",
+        "atSeconds": 0,
+        "cueId": "66666666-6666-4666-8666-000000000001",
+        "event": "command",
+        "protocol": 1,
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "trackId": "77777777-7777-4777-8777-000000000001"
+      },
+      {
+        "action": "play",
+        "atSeconds": 0.25,
+        "cueId": "66666666-6666-4666-8666-000000000002",
+        "event": "command",
+        "protocol": 1,
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "trackId": "77777777-7777-4777-8777-000000000002"
+      },
+      {
+        "action": "stop",
+        "atSeconds": 0.5,
+        "cueId": "66666666-6666-4666-8666-000000000003",
+        "event": "command",
+        "protocol": 1,
+        "resourceId": "12345678-1111-4111-8111-000000000001",
+        "trackId": "77777777-7777-4777-8777-000000000001"
+      },
+      {
+        "event": "finished",
+        "protocol": 1,
+        "timeSeconds": 0.5
+      }
+    ]
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-10-16T02:23:52.672Z"
+}

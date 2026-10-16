@@ -89,6 +89,8 @@ export async function editorHarness(overrides = {}) {
     t, localize, getLanguage, onLanguageChange, translatePage, translateMessage, asUiMessage, diagnosticMessage, isComposingInput, createFieldEditor,
     prepareCompositionDraftApply: (context, catalog, proposal) => prepareCompositionDraftApply(structuredClone(context), structuredClone(catalog), proposal),
     prepareScriptDraftApply: (context, proposal) => prepareScriptDraftApply(structuredClone(context), proposal),
+    inspectSceneAudioDirectory: async () => { throw new Error('Scene audio directory is not configured in this editor harness'); },
+    readSceneAudioBytes: async () => { throw new Error('Audio resource reading is not configured in this editor harness'); },
     createSceneAudioSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),
     createSceneBehaviorSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),
     setupStudioSystem: async () => ({ refreshMedia() {}, updateCapabilities() {}, updateProject() {}, snapshot: () => ({}) }),

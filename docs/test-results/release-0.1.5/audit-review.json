@@ -1,0 +1,115 @@
+{
+  "reviewedAt": "2026-10-16T04:11:55.259677+00:00",
+  "baseCommit": "cc4e5aa3cec993edfb57c77b259722eb6e4c922e",
+  "release": "0.1.5",
+  "readOnlyRepository": true,
+  "blockingFindings": [],
+  "scope": [
+    "Audio cue and track source-preserving proposals",
+    "Registered resource selection and host race guards",
+    "Shared PCM WAV validation and Godot adapter fingerprint",
+    "Verified byte snapshot, Web Audio lifecycle and pause/resume/seek",
+    "Read-only scene audio identity directory and authenticated HTTP integration",
+    "Behavior parameter track picker and source ownership",
+    "New evidence inventory and common credential patterns"
+  ],
+  "securityInventory": {
+    "changedFilesAtScan": 311,
+    "untrackedFilesAtScan": 277,
+    "untrackedBytesAtScan": 20674744,
+    "commonCredentialPatternHits": 0,
+    "unexpectedArtifactPaths": [],
+    "note": "New files are source/tests and seven evidence directories; logs/screenshots are intentional preserved evidence, not disposable build output. Pattern scan is a targeted review, not a proof that every possible secret is absent."
+  },
+  "sourceEvidence": {
+    "report": "docs/test-results/scene-behavior-audio-picker/browser-1792123199036/browser.json",
+    "fingerprintsChecked": 14,
+    "mismatches": []
+  },
+  "freshTests": {
+    "mode": "Direct node execution of each node:test file; two processes maximum",
+    "tests": 123,
+    "pass": 123,
+    "fail": 0,
+    "skipped": 0,
+    "files": [
+      {
+        "file": "scene-audio-audition.test.mjs",
+        "exitCode": 0,
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "file": "scene-audio-audition-player.test.mjs",
+        "exitCode": 0,
+        "tests": 42,
+        "pass": 42,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "file": "scene-audio-audition-media.test.mjs",
+        "exitCode": 0,
+        "tests": 9,
+        "pass": 9,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "file": "scene-audio-directory.test.mjs",
+        "exitCode": 0,
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "file": "scene-behavior-audio-host.test.mjs",
+        "exitCode": 0,
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "file": "scene-behaviors-editor-ui.test.mjs",
+        "exitCode": 0,
+        "tests": 35,
+        "pass": 35,
+        "fail": 0,
+        "skipped": 0
+      }
+    ],
+    "runnerNote": "An initial node --test call passed all six files but only reported file-level totals in this environment. Direct execution then verified 123 individual test cases; file summaries are kept separately."
+  },
+  "boundaries": [
+    {
+      "file": "engine/scene-audio-audition.mjs",
+      "line": 40,
+      "detail": "Audition verifies a copied byte snapshot and rechecks source/catalog before decoding. Pause/resume/seek reuse this verified buffer; they do not certify later on-disk changes."
+    },
+    {
+      "file": "web/modules/scene-audio-audition.js",
+      "line": 9,
+      "detail": "One transient WAV player; no cue timeline or Godot/Bevy runtime playback transport."
+    },
+    {
+      "file": "scripts/lib/scene-audio-directory-service.mjs",
+      "line": 27,
+      "detail": "Directory checks saved Scene2D v2/v3 registration, explicit audio relation and audio document semantics. It is not a WAV availability or full engine build check."
+    },
+    {
+      "file": "web/modules/app-scene-behaviors.js",
+      "line": 114,
+      "detail": "Explicitly inserted track IDs remain ordinary string parameters; no inferred track_id semantics or persistent reference protection."
+    },
+    {
+      "file": "docs/test-results/scene-behavior-audio-picker/README.md",
+      "line": 29,
+      "detail": "Existing evidence does not establish installed Tauri, physical audio output or Android device behavior. Release notes must keep these limitations distinct from source/browser/prepared-copy verification."
+    }
+  ],
+  "conclusion": "No reproducible release-blocking problem found in the audited increment. Historical evidence and author data should remain intact; version/release commit and full project check remain owned by root."
+}

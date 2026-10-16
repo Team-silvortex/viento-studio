@@ -30,3 +30,32 @@
 .scene-audio-cue { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .scene-audio-track > p,.scene-audio-cue > p { grid-column:1/-1; margin:0; }
 @media(max-width:600px) { .scene-audio-track,.scene-audio-cue { grid-template-columns:minmax(0,1fr); } }
+.scene-audio-cue-toolbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.scene-audio-cue-toolbar h3 { margin:16px 0; }
+.scene-audio-track-actions,.scene-audio-cue-actions { display:flex; flex-wrap:wrap; gap:8px; grid-column:1/-1; min-width:0; }
+.scene-audio-track-actions .doc-btn,.scene-audio-cue-actions .doc-btn { max-width:100%; }
+@media(max-width:600px) { .scene-audio-cue-toolbar .doc-btn { max-width:100%; } .scene-audio-track-actions .doc-btn,.scene-audio-cue-actions .doc-btn { flex:1 1 90px; } }
+
+.scene-audio-resource-field { grid-column:1/-1; }
+.scene-audio-resources { padding:10px 0; border-bottom:1px solid #294054; }
+.scene-audio-resources .doc-btn { max-width:100%; }
+
+.scene-audio-footer > .scene-audio-preview { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:6px 10px; margin:0 0 10px; padding-bottom:10px; border-bottom:1px solid #294054; }
+.scene-audio-preview p { margin:0; }
+.scene-audio-preview-help { grid-column:1/-1; }
+.scene-audio-preview [data-status="error"] { color:#ffcaab; }
+.scene-audio-preview [data-status="playing"] { color:#8bdcbd; }
+@media(max-width:600px) { .scene-audio-preview .doc-btn { min-width:90px; max-width:150px; } }
+
+.scene-audio-preview-transport { grid-column:1/-1; display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:end; gap:8px 12px; min-width:0; }
+.scene-audio-preview-actions { display:flex; min-width:0; }
+.scene-audio-preview-position span { font-size:.82rem; color:#a1bbcf; }
+.scene-audio-dialog input[type="range"] { padding:0; height:28px; accent-color:#8bdcbd; cursor:pointer; }
+.scene-audio-preview-transport output { align-self:end; line-height:28px; font-size:.8rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.scene-audio-preview [data-status="paused"] { color:#e5dba5; }
+@media(max-width:600px) {
+ .scene-audio-preview-transport { grid-template-columns:minmax(0,1fr) auto; gap:4px 8px; }
+ .scene-audio-preview-position { grid-column:1/-1; grid-row:1; }
+ .scene-audio-preview-actions { grid-column:1; grid-row:2; }
+ .scene-audio-preview-transport output { grid-column:2; grid-row:2; align-self:center; }
+}

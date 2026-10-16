@@ -1,0 +1,42 @@
+{
+  "reviewedFiles": [
+    {
+      "path": "/tmp/viento-audition-transport-player/web/modules/scene-audio-audition.js",
+      "sha256": "9539bdc2df944cd449981c3d6154fdd726f026ebba7a65e3effdb8ff199b21fe"
+    },
+    {
+      "path": "/tmp/viento-audition-transport-ui/web/modules/app-scene-audio.js",
+      "sha256": "717f555f9bd3cd1bbf29f87d1ced145ac4ec093052b02cc6cece54fb89be8a04"
+    },
+    {
+      "path": "/tmp/viento-audition-transport-ui/web/scene-audio.css",
+      "sha256": "ebf6f77e266639315add2b69e8117077760aa04fb5338586bd754fc925490d64"
+    }
+  ],
+  "findings": [
+    {
+      "area": "UI",
+      "issue": "Range max not reachable for noncentisecond duration with step 0.01",
+      "status": "UI agent changed step to duration/1000; real Chrome validation requested"
+    },
+    {
+      "area": "UI",
+      "issue": "Hiding the focused Pause/Resume button can lose keyboard continuation focus",
+      "status": "Reported to UI agent and root; pending decision/verification"
+    }
+  ],
+  "reviewedInvariants": [
+    "Owner+node+generation ignores stale onended",
+    "Resume state/operation and owner guards reject duplicates, stop and track replacement",
+    "release is idempotent and abort re-entry preserves newer active owner",
+    "Observer stop/replacement during publish cannot resurrect old decode or resume",
+    "Snapshot is side-effect-free and finite when audio clock becomes invalid",
+    "Progress updates do not rebuild form or review; language retains range DOM and owner",
+    "Existing source/capability and page-lifecycle checks stop paused owners"
+  ],
+  "limits": [
+    "Read-only review, no physical audio device claim",
+    "No code changed; agents are still updating temporary overlays",
+    "Footer geometry and native range/focus behavior require real browser validation"
+  ]
+}

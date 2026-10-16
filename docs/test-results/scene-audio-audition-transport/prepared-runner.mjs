@@ -1,0 +1,24 @@
+import fs from 'node:fs/promises';import path from 'node:path';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';import {fileURLToPath,pathToFileURL} from 'node:url';
+const root=path.resolve(fileURLToPath(new URL('../../../',import.meta.url))),out=path.dirname(fileURLToPath(import.meta.url));
+const hash=bytes=>createHash('sha256').update(bytes).digest('hex'),load=p=>import(pathToFileURL(path.join(root,p)).href);
+const report={ok:false,comparisons:[],calls:[],scope:'Actual source/desktop/mobile core and player module imports; real WASM preparation with an injected audio-clock/device fake for transport. Actual WebAudio is separately tested in Chrome, not here.'};
+const files=['engine/scene-audio-audition.mjs','engine/audio-wav.mjs','engine/scene-audio-resources.mjs','engine/studio-core.mjs','engine/studio-core.wasm','web/modules/scene-audio-audition.js','web/modules/app-scene-audio-media.js','web/modules/app-scene-audio-source.js','web/modules/app-runtime.js','web/modules/app-scene-audio.js','web/scene-audio.css','web/i18n/en.js','web/i18n/ja.js'];
+for(const base of ['desktop/resources','mobile/dist'])for(const file of files){const a=await fs.readFile(path.join(root,file)),b=await fs.readFile(path.join(root,base,file));assert.deepEqual(a,b);report.comparisons.push({base,file,sha256:hash(a)});}
+const {createSceneAudioCreationService}=await load('scripts/lib/scene-audio-creation-service.mjs'),fixture=path.join(root,'examples/scene-audio'),sceneObjectId='dddddddd-dddd-4ddd-8ddd-dddddddddddd';
+const raw=await createSceneAudioCreationService(fixture).inspect({sceneObjectId}),content=raw.manifest.content;
+const source={sourcePath:raw.manifest.sourcePath,token:'prepared:audition',sourceRevision:'sha256:'+hash(content),baseSourceRevision:'sha256:'+hash(content),content};
+const bytes=await fs.readFile(path.join(fixture,'assets/tone.wav')),resourceId=raw.resources[0].resourceId;let expected;
+for(const base of ['','desktop/resources','mobile/dist']){
+ const core=await load(path.join(base,'engine/studio-core.mjs'));await core.initializeStudioCore(()=>fs.readFile(path.join(root,base,'engine/studio-core.wasm')));
+ const resources=await load(path.join(base,'engine/scene-audio-resources.mjs')),audition=await load(path.join(base,'engine/scene-audio-audition.mjs'));
+ const catalog=resources.captureSceneAudioResources(source,raw),sound=await audition.prepareSceneAudioAudition(source,catalog,resourceId,{getResources:()=>resources.captureSceneAudioResources(source,raw),readBytes:()=>bytes,digestBytes:hash});
+ assert.equal(audition.isSceneAudioAudition(sound),true);assert.deepEqual(new Uint8Array(audition.sceneAudioAuditionBytes(sound)),new Uint8Array(bytes));const copied=new Uint8Array(audition.sceneAudioAuditionBytes(sound));copied[50]^=1;assert.equal(hash(new Uint8Array(audition.sceneAudioAuditionBytes(sound))),hash(bytes));assert.equal(audition.isSceneAudioAudition({...sound}),false);
+ let loads=0,decodes=0,closed=0;const starts=[],ctx={sampleRate:sound.sampleRate,currentTime:0,destination:{},resume:async()=>{},close:async()=>{closed++;},decodeAudioData:async()=>{decodes++;return{numberOfChannels:sound.channels,length:sound.frames,sampleRate:sound.sampleRate,duration:sound.durationSeconds};},createGain:()=>({gain:{value:1},connect(){},disconnect(){}}),createBufferSource:()=>({connect(){},disconnect(){},stop(){},start(when,offset){starts.push({when,offset});}})};
+ const {createSceneAudioAudition}=await load(path.join(base,'web/modules/scene-audio-audition.js'));
+ const player=createSceneAudioAudition({load:async()=>{loads++;return sound;},createContext:()=>ctx});
+ assert.equal(await player.play({source,catalog,resourceId,trackId:'77777777-7777-4777-8777-000000000001',volume:.12,loop:true}),true);
+ ctx.currentTime=sound.durationSeconds/4;assert.equal(player.pause(),true);assert.equal(player.snapshot().positionSeconds,sound.durationSeconds/4);ctx.currentTime+=1;assert.equal(player.snapshot().positionSeconds,sound.durationSeconds/4);
+ assert.equal(player.seek(sound.durationSeconds/2),true);assert.equal(starts.length,1);assert.equal(await player.resume(),true);assert.equal(starts.at(-1).offset,sound.durationSeconds/2);assert.equal(player.seek(sound.durationSeconds),true);assert.equal(starts.at(-1).offset,0);player.stop();assert.equal(player.snapshot().status,'idle');assert.equal(closed,1);assert.equal(loads,1);assert.equal(decodes,1);
+ if(expected)assert.deepEqual(sound,expected);else expected=sound;report.calls.push({base:base||'source',descriptor:sound,sha256:hash(bytes),privateBytesPreserved:true,forgedDescriptorRejected:true,transport:{loads,decodes,starts,closed}});
+}
+report.ok=true;await fs.writeFile(path.join(out,'prepared.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({ok:true,comparisons:report.comparisons.length,calls:report.calls.length}));

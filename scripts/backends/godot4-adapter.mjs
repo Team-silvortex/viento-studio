@@ -72,6 +72,7 @@ async function fingerprint() {
     ['engine/studio-core.mjs', new URL('../../engine/studio-core.mjs', import.meta.url)],
     ['engine/studio-core.wasm', new URL('../../engine/studio-core.wasm', import.meta.url)],
     ['scripts/lib/audio-wav.mjs', new URL('../lib/audio-wav.mjs', import.meta.url)],
+    ['engine/audio-wav.mjs', new URL('../../engine/audio-wav.mjs', import.meta.url)],
     ['scripts/backends/godot4-project.mjs', new URL('./godot4-project.mjs', import.meta.url)],
     ['engine/project-assembly-plan.mjs', new URL('../../engine/project-assembly-plan.mjs', import.meta.url)],
     ['engine/project-assembly-plan-contract.mjs', new URL('../../engine/project-assembly-plan-contract.mjs', import.meta.url)],

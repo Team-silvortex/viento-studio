@@ -180,7 +180,7 @@ test('execution fingerprint covers adapter, shared capability contract and host 
     'scripts/backends/godot4-behaviors.mjs', 'scripts/backends/godot4/behavior-runtime.gd', 'engine/scene-behaviors.mjs', 'engine/build-plan.mjs', 'engine/scene-control-program.mjs',
     'scripts/backends/godot4/control-runtime.gd', 'scripts/backends/godot4/control.tscn',
     'scripts/backends/godot4-audio.mjs', 'scripts/backends/godot4/audio-runtime.gd', 'engine/scene-audio-events.mjs', 'engine/scene-audio-core.mjs', 'engine/scene-audio.mjs',
-    'engine/studio-core.mjs', 'engine/studio-core.wasm', 'scripts/lib/audio-wav.mjs', 'scripts/backends/godot4-project.mjs',
+    'engine/studio-core.mjs', 'engine/studio-core.wasm', 'scripts/lib/audio-wav.mjs', 'engine/audio-wav.mjs', 'scripts/backends/godot4-project.mjs',
     'engine/project-assembly-plan.mjs', 'engine/project-assembly-plan-contract.mjs', 'engine/project-assembly.mjs', 'engine/build-target.mjs',
     'engine/project-runtime-contracts.mjs', 'engine/project-runtime-events.mjs', 'engine/project-shared-state.mjs', 'engine/project-event-bus.mjs', 'engine/project-audio-commands.mjs', 'scripts/backends/godot4/project-runtime.gd', 'scripts/backends/godot4/project-scene.gd', 'scripts/backends/godot4/project-events.gd', 'scripts/backends/godot4/project-audio.gd'];
   const identities = await Promise.all(files.map(async file => ({ path: file, sha256: hash(await fs.readFile(new URL(file, root))) })));

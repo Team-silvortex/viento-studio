@@ -1,0 +1,116 @@
+{
+  "topic": "scene-audio-audition",
+  "checkedAt": "2026-10-16T02:55:44.200537+00:00",
+  "mode": "read-only static audit; only this /tmp JSON was written",
+  "result": "pass-pending-report-files",
+  "blockingFindings": [],
+  "baseline": "/tmp/viento-audio-audition-check/atlas.json",
+  "atlas": {
+    "oldCellCount": 2136,
+    "oldCellObjectsUnchanged": true,
+    "addedCellCount": 20,
+    "newScores": {
+      "implementation": 4,
+      "verification": 3,
+      "decoupling": 4,
+      "delivery": 2
+    },
+    "counts": {
+      "functions": 128,
+      "implementations": 355,
+      "bindings": 539,
+      "cells": 2156,
+      "workflows": 90
+    },
+    "newImplementationIds": [
+      "i353",
+      "i354",
+      "i355"
+    ],
+    "newBindingIds": [
+      "b536",
+      "b537",
+      "b538",
+      "b539",
+      "b540"
+    ],
+    "priorEvidenceObjectsUnchanged": true,
+    "optionalWorkflowStep": true
+  },
+  "paths": {
+    "checked": 22,
+    "present": 20,
+    "pendingFinalReportPaths": [
+      "docs/test-results/scene-audio-audition/README.md",
+      "docs/test-results/scene-audio-audition/summary.json"
+    ],
+    "unexpectedMissing": []
+  },
+  "manualBoundaryReview": [
+    {
+      "scope": "source and resource authority",
+      "result": "pass",
+      "files": [
+        "docs/SCENE_AUDIO.md:68",
+        "docs/ARCHITECTURE.md:538",
+        "engine/README.md:23"
+      ],
+      "notes": "A fresh different branded catalog is compared in full; source is captured before awaits, and 32 MiB size/hash/PCM checks describe the current copied bytes only."
+    },
+    {
+      "scope": "playback and budgets",
+      "result": "pass",
+      "files": [
+        "docs/SCENE_AUDIO.md:66",
+        "docs/ARCHITECTURE.md:542",
+        "engine/README.md:25"
+      ],
+      "notes": "Explicit current gain/loop, one track, stop/cancel lifecycle and 128 MiB resampling estimate match the player; no cues, scene clock, engine execution or save authority is claimed."
+    },
+    {
+      "scope": "catalog and platform limits",
+      "result": "pass",
+      "files": [
+        "docs/SCENE_AUDIO.md:72",
+        "docs/SCENE_AUDIO.md:74",
+        "docs/STATUS.md:27"
+      ],
+      "notes": "unverified directory status, valid Scene2D opt-in, 256 qualifying project WAV candidates and absent Android reader remain explicit; 21 modules/40 capabilities, Rust ABI and runtime versions are unchanged."
+    },
+    {
+      "scope": "shared PCM and Godot fingerprint",
+      "result": "pass",
+      "files": [
+        "docs/ARCHITECTURE.md:540",
+        "engine/README.md:25",
+        "engine/README.md:33"
+      ],
+      "notes": "The corrected engine README assigns PCM rules to the pure validator. Full Godot fingerprint includes engine/audio-wav.mjs, old cache rebuild is stated, and extra Godot regression remains distinct from browser audition."
+    },
+    {
+      "scope": "evidence boundary",
+      "result": "pass-pending-report-files",
+      "files": [
+        "docs/TESTING.md:3",
+        "docs/STATUS.md:5"
+      ],
+      "notes": "Statistics are delegated to the final summary; old resource-selection results retain their original scope. Browser/WebAudio output is not extrapolated to physical hardware, installed artifacts or Bevy support."
+    }
+  ],
+  "documentSha256": {
+    "docs/SCENE_AUDIO.md": "6e6d375b913e9721e60f08d22d52e88aaeab810d1657d31fbb8679264ea709f7",
+    "docs/ARCHITECTURE.md": "f776cd67dd63a4bc1e89637260dcfcbf078950ed1ce583fa2d6b3ff9747e4ec0",
+    "docs/STATUS.md": "6a9166d0560baf74004a37688f6e8150d80e765961eae8c154e18e848ce7d3a6",
+    "docs/ROADMAP.md": "e650ab38259387caae3df7fe229906efa4807355833876e8cf8e9a8ca362666f",
+    "docs/PROJECT_WORKFLOW.md": "d7b10b9c20d4747f0e1053c8c6ce77dd175f83bad361bacfea620e251ad7d227",
+    "docs/FUNCTION_MAPPING_2D.md": "d5248007f04a44720a7d85266094a4360a2fb47ae8dc93f02c51ff5244907d94",
+    "docs/TESTING.md": "c31a4b6097e4fd34b0ffaa5c244427f67fd185d1d2daf6a28446287dfc0416f2",
+    "engine/README.md": "54f44662d31c381cb56ae6e8834d1e7c0f17e739e0f139c776b1cbe9f45f8a7c",
+    "docs/function-atlas.json": "9bd95c4bf67ff66ddf0dd90bbd6a16d5122b3b5f3c236351aa6b65dbd8c1adf0"
+  },
+  "notPerformed": [
+    "No full historical-document scan",
+    "No product tests rerun",
+    "Final generated atlas view/sourceSnapshot consistency remains for root after report creation"
+  ]
+}

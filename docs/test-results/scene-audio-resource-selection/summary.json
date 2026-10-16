@@ -1,0 +1,71 @@
+{
+  "ok": true,
+  "date": "2026-10-16T02:30:46.084906+00:00",
+  "clientDate": "2026-10-16",
+  "version": "0.1.4",
+  "unreleased": true,
+  "application": {
+    "tests": 5431,
+    "pass": 5273,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 158
+  },
+  "syntaxFiles": 908,
+  "targeted": {
+    "tests": 156,
+    "pass": 156,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "formatMatrix": {
+    "ok": true,
+    "cases": 464,
+    "formats": 4,
+    "tracks": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "boundResources": 3,
+    "verified": [
+      "Only intended resourceId value bytes changed",
+      "Original track and cue identities and array order retained",
+      "Fresh catalog and saved/source hash revalidation",
+      "Actual Rust WASM semantics"
+    ]
+  },
+  "browser": {
+    "report": "browser-1792117413819/browser.json",
+    "groups": 6,
+    "screenshots": 12,
+    "sources": 28,
+    "delivery": {
+      "bytes": 58467,
+      "fileCount": 8,
+      "assetCount": 1,
+      "sha256": "5d0bd23365e17a576160524bdc34afa333ebaa1a9a6b485c04d750df4e738a26"
+    }
+  },
+  "prepared": {
+    "comparisons": 22,
+    "calls": 3
+  },
+  "unchanged": {
+    "modules": 21,
+    "capabilities": 40,
+    "audioSchemaVersion": 1,
+    "rustAbi": true,
+    "backendProtocol": true,
+    "godotAdapterVersion": "0.11.0",
+    "installedAppImage": true
+  },
+  "limits": [
+    "Overlapping test scopes are not summed. Conditional skips are not engine/device acceptance.",
+    "The existing World resource binding and ordinary audio source Save are separate operations. Cancel leaves the already saved binding intact.",
+    "Read-only catalog confirms registrations and availability, not actual PCM bytes. Build independently checks WAV bytes/hash.",
+    "Real browser uses Godot Linux and relocated engineering ZIP; no installed-device or physical speaker acceptance."
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "topic": "scene-audio-audition-transport",
+  "status": "both-reviewed-findings-closed",
+  "reviewFile": "review.json",
+  "method": "Read-only inspection of final repository source and existing real-browser evidence; no tests rerun and no repository files changed.",
+  "sourceSha256": {
+    "web/modules/scene-audio-audition.js": "9539bdc2df944cd449981c3d6154fdd726f026ebba7a65e3effdb8ff199b21fe",
+    "web/modules/app-scene-audio.js": "2c0190954fe11d5ed0d5640c881b59372ac4140fa040d5406e252f96177db71a",
+    "web/scene-audio.css": "ebf6f77e266639315add2b69e8117077760aa04fb5338586bd754fc925490d64"
+  },
+  "matchesRecordedBrowserSources": true,
+  "browserEvidence": "docs/test-results/scene-audio-audition-transport/browser-1792120453219/browser.json",
+  "browserEvidenceSha256": "47032a926d6677f17085340837987294d7a1c6f34e967c3206b71241c7b58ca6",
+  "findings": [
+    {
+      "issue": "Native range step could make an exact noncentisecond endpoint unreachable",
+      "status": "closed",
+      "sourceResolution": "range.step now divides the actual duration into 1000 intervals, preserving the exact max endpoint.",
+      "browserEvidence": {
+        "fractionalDurationSeconds": 1.234375,
+        "check": "Recorded real keyboard End reaches the exact fractional duration and keeps non-looping playback paused at the end."
+      }
+    },
+    {
+      "issue": "Hiding the focused Pause/Resume button could interrupt keyboard continuation",
+      "status": "closed",
+      "sourceResolution": "refreshPreview transfers only the currently focused transport button; a same-owner resume-focus ticket handles disabled Resume blurring to body. Focus on the range or another editing control is not taken. stopPreview clears the ticket.",
+      "browserEvidence": {
+        "pauseToResume": true,
+        "resumeToPause": true,
+        "rangeRetained": true
+      }
+    }
+  ],
+  "relatedBrowserChecks": {
+    "ok": true,
+    "errors": [],
+    "layout": {
+      "zh-CN": {
+        "noHorizontalOverflow": true,
+        "stopVisible": true,
+        "resumeVisible": true,
+        "rangeVisible": true,
+        "time": "0:06.50 / 0:10.00"
+      },
+      "en": {
+        "noHorizontalOverflow": true,
+        "stopVisible": true,
+        "resumeVisible": true,
+        "rangeVisible": true,
+        "time": "0:06.50 / 0:10.00"
+      },
+      "ja": {
+        "noHorizontalOverflow": true,
+        "stopVisible": true,
+        "resumeVisible": true,
+        "rangeVisible": true,
+        "time": "0:06.50 / 0:10.00"
+      }
+    },
+    "sourceSnapshotUnchanged": true
+  },
+  "remainingFindings": [],
+  "limits": "Closure is limited to the two reviewed findings and the recorded local Chrome/source scope. It does not imply physical audio, Godot/Bevy, installation or mobile-device validation."
+}

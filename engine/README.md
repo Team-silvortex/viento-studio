@@ -1,5 +1,7 @@
 # 可移植引擎
 
+**0.1.4 源码归属**：项目组装、共享状态、事件及行为声音控制已收录[0.1.4](../docs/RELEASE_0.1.4.md)。当前为 21 模块／40 项声明能力；下文较早的工作树说明与测试证据保留原时点。0.1.4 后工作树先增加提示增删提案，随后增加提示换轨／顺序的完整编排提案及独立的轨道复制／移除提案与表单，随后接入已绑定素材选择，独立素材试听准备与浏览器适配器进一步支持进度、暂停／继续和定位，复用 Rust 语义、来源宿主和普通保存；未新增模块、能力、ABI 或后端协议。
+
 当前未发布工作树新增[项目事件](../docs/PROJECT_EVENTS.md)：`project-event-bus.mjs` 原子预留发布与接收预算，校验 FIFO 投递结果和冻结双方来源；项目运行读取器／查询显式接入协议 3，旧协议 1／2 语义保持。Godot 的具体订阅与回调在适配器专用模块，根协调器仅拥有场景生命周期；界面只读消费观察快照。当前仍为 21 模块／40 项声明能力。
 
 当前未发布工作树新增[项目共享状态](../docs/PROJECT_SHARED_STATE.md)：`project-shared-state.mjs` 负责有界标量账本、原子变更与来源 DTO；`project-runtime-events.mjs` 按显式项目协议 1／2 验证事件，状态来源仅从冻结绑定派生；`project-runtime-query.mjs` 保留当前对象、访问历史和共享状态。它们不读取文件、DOM 或执行引擎。Node 宿主依据验证后的冻结工程选择协议，Godot 端口与独立只读界面分别实现。当前为 21 模块／40 项声明能力。
@@ -10,9 +12,25 @@
 
 [场景声音](../docs/SCENE_AUDIO.md)使用独立 `viento-scene-audio` schema 1：共享 Rust `sceneAudio.inspect`／`sceneAudio.sample` 校验稳定音轨和 0–60 秒 play／stop 提示，只返回声明及显式时刻的命令状态。`scene-audio-core.mjs` 经可选 WASM 能力调用同一核心，没有 JavaScript 规则回退；规则不包含资源解码、自然结束、设备或播放。
 
-`scene-audio-edit.mjs` 严格解析原文、防重复键并调用 Rust 验证，只替换现有音轨 role／volume／loop 和提示 atSeconds／action 的叶 token。运行采样可排序提示，编辑始终保留作者原数组、未变字节、场景／资源／全部身份。品牌化提案与来源修订复核仅授予普通内存草稿应用；独立 `org.viento.scene-audio` 模块及来源端口不拥有保存、行为或后端执行权。
+`scene-audio-edit.mjs` 严格解析原文、防重复键并调用 Rust 验证。旧 `createSceneAudioProposal` 继续只替换既有音轨 role／volume／loop 和提示 atSeconds／action 的叶 token，保持定长、定身份契约。原 `createSceneAudioCueProposal` 继续接受完整提示行，只允许 0–64 提示的移除与末尾追加，保留既有提示的身份、trackId 和相对顺序，旧契约不放宽。原 `createSceneAudioTimelineProposal` 继续接受完整编排，在同批增删／字段修改之外允许既有提示换到当前已声明轨道并显式重排；提示身份、轨道顺序及资源声明保持。
 
-`scene-audio.mjs` 沿场景唯一 `audio` 关系解析已登记声明，核对反向场景依赖和资源绑定，生成独立可选声音计划与源映射。它要求 `audio.nonspatial`／`audio.timeline`，不把 `music`／`effect` 当作混音总线；无关联时不改变旧计划。`scene-audio-events.mjs` 从冻结声明验证声音帧及诊断归属，与演员／行为事件读取器组合。PCM16 WAV 容器、真实哈希、资源复制、Godot 播放与 ZIP 交付分别留在宿主和适配器；Bevy 当前明确拒绝声音。细节与有限范围见[声音指南](../docs/SCENE_AUDIO.md)。
+只换轨而未增删／重排时修改 trackId 叶 token；结构变化只重建 `/cues`，按 UUID 复用保留项原片段并更新明确改动的 trackId／时间／动作，空数组与删至空分别处理。同批轨道设置仍沿原叶补丁路径。运行采样仍按时间排序、同刻保留作者顺序，编辑不以排序结果改写作者数组。
+
+以上三种 API 继续固定轨道数量、身份、资源与顺序。原 `createSceneAudioTrackProposal` 单独接受完整 tracks 行（含 resourceId），允许保留原轨道的有序子序列，并在末尾追加只复用原文资源的新轨道；保留轨道的 id／resourceId 不变。最终须为 1–16 轨，提示可同批编排但必须引用最终轨道。轨道结构按 UUID 复用原片段，轨道和提示补丁分别按各自净变化生成；复制 UI 拷贝当前设置，不生成 cue。
+
+`scene-audio-resources.mjs` 的 `captureSceneAudioResources` 独立捕获已绑定 WAV 目录；`createSceneAudioResourceProposal(source, edit, catalog)` 限制资源选择并允许同批轨道／提示结构编辑；旧 leaf／cue-only／timeline／tracks 四种 API 保持原契约。宿主复用声音创建目录的只读 inspect，核对来源、保存基线、World／对象与候选目录修订；显式选择资源后保真修改 resourceId，再按原文审阅、应用普通草稿和普通 Save 继续。应用须使用重新读取后捕获的新目录实例，比较完整创建目录 DTO 与来源五字段，再核对草稿／保存正文两份摘要。素材目录不赋予登记、文件或播放权限。
+
+`scene-audio-audition.mjs` 独立提供 `prepareSceneAudioAudition(source, catalog, resourceId, { getResources, readBytes, digestBytes, isCurrent, signal })`。来源在首次 await 前按 data descriptor 捕获；必须选自当前品牌目录的已绑定 WAV，并通过新目录实例比较完整上下文。读取的 Uint8Array 复制后核对登记大小（至多 32 MiB）、SHA-256 和共享 PCM16 规则，各异步返回后检查来源／取消。私有品牌描述只有 resourceId／name／channels／sampleRate／frames／durationSeconds；`isSceneAudioAudition` 判断品牌，`sceneAudioAuditionBytes` 每次返回独立 ArrayBuffer，调用者和摘要实现不能改变私有字节快照。它不读 DOM、不播放、不保存，也不声称持续验证磁盘。
+
+`audio-wav.mjs` 是原 Node PCM 校验器的原样迁移，旧 `scripts/lib/audio-wav.mjs` 仅重导出；浏览器与 Node 使用同一容器规则。Godot 适配器完整来源指纹增加 `engine/audio-wav.mjs`，旧缓存需重建，版本／协议不变；追加的真实 Godot 回归与浏览器试听输出证据分别记录。来源宿主注入现有目录接口、稳定资源 UUID 的受限 GET 和字节摘要；独立 WebAudio 适配器管理 resume／decode／GainNode／循环及单轨暂停、继续、定位和停止，解码前另限重采样后的预计 float32 缓冲 128 MiB。当前表单的 volume／loop 可用于素材试听，cues、场景时钟与执行后端不参与。目录仍标 unverified，旧五种声音提案的编辑与普通保存契约保持。
+
+试听属于独立 `scene.audio_audition` 功能坐标，复用现有模块、来源宿主与三语表单；暂停及定位沿用同一已验证缓冲，继续不重新读取素材；进度由 AudioContext 时钟派生，播放器不获得文件或场景时间线权限。编辑、刷新目录、检查、应用、关闭和 hidden 释放包括暂停中的快照，语言切换保留。本轮的播放器控制与准备资源范围见[试听控制专题](../docs/test-results/scene-audio-audition-transport/README.md)，此前基础播放与 PCM 指纹回归保留在[原专题](../docs/test-results/scene-audio-audition/README.md)；不据此声称 Godot／Bevy、安装或物理设备通过。
+
+资源登记和文件不由声音提案修改。构建解析接受覆盖最终使用资源的 assetBindings 超集，只将当前轨道实际使用的资源去重送入计划和冻结；移除轨道保留旧绑定，不清理资产。动态行为参数／代码中的轨道 ID 不做静态解析，作者需在移除后自行更新；现有运行接口拒绝实际调用的未知轨道。
+
+原四种提案与新素材选择共享来源宿主，各自授权范围在应用时重新计算；来源修订复核仅授予普通内存草稿应用；场景、保留轨道身份、登记绑定及未修改原字节保持，资源引用只在新素材选择流程中显式改变。独立 `org.viento.scene-audio` 模块及来源端口不拥有保存、行为或后端执行权。操作见[轨道管理](../docs/SCENE_AUDIO.md#复制与移除已有声音轨道)与[声音提示编排](../docs/SCENE_AUDIO.md#调整提示目标轨道与顺序)；[旧增删专题](../docs/test-results/scene-audio-cue-authoring/README.md)、[换轨／顺序专题](../docs/test-results/scene-audio-cue-arrangement/README.md)与[轨道专题](../docs/test-results/scene-audio-track-authoring/README.md)分别记录各自时点与范围。此前素材选择边界另见[独立专题](../docs/test-results/scene-audio-resource-selection/README.md)：World 的 `resource.bind` 先独立保存 metadata，之后普通 Save 仅写声音正文，不宣称跨文件原子性；目录候选未验证实际 PCM／哈希，build 继续拥有字节检查与冻结。
+
+`scene-audio.mjs` 沿场景唯一 `audio` 关系解析已登记声明，核对反向场景依赖和资源绑定，生成独立可选声音计划与源映射。它要求 `audio.nonspatial`／`audio.timeline`，不把 `music`／`effect` 当作混音总线；无关联时不改变旧计划。`scene-audio-events.mjs` 从冻结声明验证声音帧及诊断归属，与演员／行为事件读取器组合。PCM16 WAV 容器规则由共享纯校验器提供；实际读取、哈希计算、资源复制、Godot 播放与 ZIP 交付分别留在宿主和适配器；Bevy 当前明确拒绝声音。细节与有限范围见[声音指南](../docs/SCENE_AUDIO.md)。
 
 Bevy Rust 工作树增量只在已有纯声明中使用 `org.viento.bevy-rust`／`rust`，已有创建、目录、绑定编辑、`relation.add` 和普通保存继续共用；不新增系统模块、作者格式或运行协议。具体 Cargo 生成、工具身份、离线编译和临时回收位于 `scripts/backends/bevy-rust-*`，不进入可移植编辑核心。固定步增量复用同一 TXT 草稿契约，只增加 `bevy-rust-motion` 起始内容；回调注册、自身实例位置提交、固定时间步和累计事件预算由 Rust 运行模板负责，不进入作者编辑器。范围与证据见[Bevy 指南](../docs/BEVY_BACKEND.md#rust-作者行为通道012-后工作树)、[首次通道记录](../docs/test-results/bevy-rust-behaviors/README.md)及[固定步记录](../docs/test-results/bevy-rust-fixed-step/README.md)。
 
@@ -77,6 +95,7 @@ Bevy Rust 工作树增量只在已有纯声明中使用 `org.viento.bevy-rust`�
 - `scene-behaviors.mjs`：识别并严格检查注册行为清单、场景实例、TXT 源码、标量参数与信号声明；解析明确 `behavior` 关系，派生并核验资源包依赖，生成可冻结的行为 DTO。无 Node／DOM／Godot 调用，不执行或解析 GDScript；静态预览继续只消费几何模型。当前格式与预算见[场景行为](../docs/SCENE_BEHAVIORS.md)。
 - `script-authoring.mjs`：`listScriptStarters()` 返回冻结的 Godot GDScript 与 Bevy Rust 空行为／参数信号／固定步移动及 Godot 项目场景切换起始内容；`prepareScriptDraft(context, request)` 接受 `{ sourceToken, documentRoot, documentTypes: [{ id, label }] }` 和 `{ starterId, documentType, sourcePath }`，仅允许正文目录内可迁移的 TXT 路径与当前工程类型。提案深冻结并带私有品牌；`isScriptDraftProposal`／`prepareScriptDraftApply(currentContext, proposal)` 拒绝克隆、序列化及会话／目录／类型目录变化，返回普通新建草稿所需数据。语言与后端标识不授予执行能力，不读取文件、创建 UUID、改项目模板或关联场景；普通保存负责登记，未来语言服务另经独立文档接口接入。见[内置脚本创建](../docs/SCENE_BEHAVIORS.md#内置脚本创建)。
 - `scene-behaviors-edit.mjs`：已有行为清单的私有审阅提案、稳定绑定身份及保真草稿补丁；复用无浏览器第三方依赖的 JSON 源码索引，固定场景／后端／语言，未知格式停止表单改写。依赖核对、编辑会话、普通保存与执行各属宿主接口，不新增 Rust ABI。
+- `scene-audio-directory.mjs`：独立的已保存音轨目录契约与行为来源品牌绑定。`captureSceneAudioDirectory` 校验场景／声音描述和既有声音声明；`captureSceneBehaviorAudioTracks` 要求目录场景三字段与行为依赖一致，输出冻结的音轨 UUID、资源 UUID 和用途。`sceneBehaviorAudioTrackValue` 仅返回目录内显式选择的普通字符串，不生成提案或赋予保存／播放权限。Node 只读服务和宿主来源守护独立接入，不读 WAV 或运行完整构建规划；Rust ABI、作者格式与后端版本保持。见[行为参数选入音轨](../docs/SCENE_BEHAVIORS.md#将音轨编号填入行为参数)及[验收记录](../docs/test-results/scene-behavior-audio-picker/README.md)。
 - `world-behavior-create.mjs`：已保存 Scene2D v2／v3 首次启用行为的纯规划，复用严格声明、依赖和完整构建计划校验。调用者提供稳定文档／绑定 UUID，生成新正文、新登记和既有场景登记追加的三文件计划；冻结只读依赖证据供宿主恢复，原场景与脚本源码保持。核心不硬编码执行引擎；首版界面限定 Godot／GDScript 单绑定，0.1.2 后工作树已扩展为多绑定／多脚本清单及显式 Godot／GDScript、Bevy／Rust 选项；持久化和执行由各自宿主处理，通用 `relation.add` 不增加 `behavior` 权限。
 
 - `backend-capabilities.mjs`：校验并分离冻结 `viento-execution-backend` schema 1 纯数据描述符；分别判断七种执行操作、平台、plan kind／schema 和功能需求。没有 Godot 回退、工具探测或进程调用；描述符格式／字段或操作不合法时拒绝，UI 的 `canExecuteBackend` 失败时返回 `false`。宿主注册表与具体引擎实现见[执行后端中间层](../docs/BACKEND_MIDDLEWARE.md)。

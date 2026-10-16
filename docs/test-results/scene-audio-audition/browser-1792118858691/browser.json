@@ -1,0 +1,162 @@
+{
+  "startedAt": "2026-10-16T02:47:38.692Z",
+  "steps": [
+    "Explicit Play loads the bound WAV through the existing GET route and starts a real WebAudio source. Offline rendering of the actual decoded buffer/gain verifies nonzero PCM, declared volume and looping beyond the first source duration; Stop cleans up. No source or metadata write.",
+    "At 390px in Chinese, English and Japanese, Stop remains visible, audition and current volume survive translation, and playback never changes the reviewed source proposal. Cancel discards the form without changing the ordinary draft or author files.",
+    "Changing a form field and reloading the catalog stop active playback. Non-looping audio ends naturally. Closing during looped playback stops the source and closes AudioContext; no source changes occur.",
+    "Stop remains available after the real GET response headers arrive but before that response is delivered to the reader. Releasing the late response after cancellation cannot decode or start another source.",
+    "Changing a WAV byte without updating its registration is rejected before AudioBufferSourceNode.start. Restoring the original bytes allows a new explicit audition; the catalog remains a registration snapshot, not a persistent verification badge.",
+    "Explicit Apply stops current audition and changes only the ordinary draft. Reopening that unsaved draft can audition with its new volume against the unchanged saved resource catalog. Subsequent Cancel retains the already applied draft; no Save or metadata write occurs."
+  ],
+  "screenshots": [
+    "audition-playing-desktop.png",
+    "audition-zh-CN-390.png",
+    "audition-en-390.png",
+    "audition-ja-390.png",
+    "audition-loading-stop.png",
+    "audition-changed-resource.png"
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "今回の音声フォームの変更を破棄しますか？原文の下書きは変更されません。"
+    },
+    {
+      "type": "confirm",
+      "message": "丢弃本次声音表单修改？原文草稿不会改变。"
+    }
+  ],
+  "layout": {
+    "zh-CN": {
+      "noHorizontalOverflow": true,
+      "stopVisible": true,
+      "status": "正在试听音轨 1。"
+    },
+    "en": {
+      "noHorizontalOverflow": true,
+      "stopVisible": true,
+      "status": "Previewing track 1."
+    },
+    "ja": {
+      "noHorizontalOverflow": true,
+      "stopVisible": true,
+      "status": "トラック 1 を試聴中。"
+    }
+  },
+  "limitations": [
+    "Actual Chrome WebAudio on a disposable author workspace. This tests decoded sample data and playback lifecycle, not physical speakers or installed Tauri/Android.",
+    "Audition is a single selected track at form volume/loop; no scene cue timeline, Godot/Bevy runtime, or source/metadata save is executed.",
+    "The separately saved author binding/catalog is read-only; successful audition verifies only the read WAV snapshot. Builds independently validate their own resources."
+  ],
+  "sources": {
+    "engine/studio-core.mjs": "e6370613ad569377ae4039aba633b0aabef8f3195e2288ae785aea5570e85d91",
+    "engine/studio-core.wasm": "4805b008219aeafffb160118060618dd550910807b2f8006fe955fd56c052d50",
+    "engine/audio-wav.mjs": "e11faaa850c20a2b63bcdfe987964c1223712b49ed5fb897262f855fb3ca1f35",
+    "engine/scene-audio-audition.mjs": "df9aa7bccb01bb20912ab4bf798e360337ddd311657e903bb442170d859a5943",
+    "engine/scene-audio-resources.mjs": "f41db2b5721ddc3daaf272c8d4f7a62173f419b9378f9ee36ae0268c9d29f5a1",
+    "engine/scene-audio-creation-contract.mjs": "c520144e9025982685046d7d7679d2ed7796bd7d57cef840ab3a97903317abf1",
+    "engine/scene-audio-edit.mjs": "b7eeb5f4e520b0c9407db5f156b97cc3c0a50dc2186ab04bc884542205945ed7",
+    "scripts/lib/audio-wav.mjs": "ab25e190d01508f8822a67faee44c6918628d8aaf05a8d7ee63ce265284d8eeb",
+    "scripts/lib/doc-server.mjs": "d480e0db99c68f8a9225a37db91de9916f5458e63b845edc1914ebe0604f6d94",
+    "scripts/lib/doc-server-static-routes.mjs": "a5b6b35796680ac7865b6da28123a4a112a699df4c378b449d6af1c64f82d01b",
+    "scripts/lib/scene-audio-creation-service.mjs": "cbf89e62b8395539734ec4dcc8b4adb2e0724783a06fd1c8358866e28a6ef184",
+    "web/modules/app-scene-audio-source.js": "58373e3f8e6ef337b00f12f7fdbc13936389d647ba678eb8ad115bc332f161a1",
+    "web/modules/app-scene-audio-media.js": "6648b6145a0fc9f2470e96f59283856448557ea87e36a8b3e53df1c893e25c88",
+    "web/modules/scene-audio-audition.js": "c069bc605071d4ffcb98eb82e06e80b49c2c5076c60d8102134ef59e70bf3670",
+    "web/modules/app-scene-audio.js": "28107aca7c8b7672d87dc7909f88fe762c6e0a79d3445b07a5f72066edd9f89b",
+    "web/modules/app-runtime.js": "4d6b045d5fac030683c933cffb24f8e71c5e4191eb3ebcb1950b69827409784e",
+    "web/i18n/en.js": "cfa2614ee82ae4fcc8fc0f551e68c863985ae82751f49edec89acde3f0b960bc",
+    "web/i18n/ja.js": "42674ec01da5497eabff4b059afc509861f51a1f73d64ca292410305249cc89e",
+    "web/scene-audio.css": "1e044dcec99bc3ab9830cda0aa1264f88db255fafd1b8da9765c84edc0f36944",
+    "scripts/tests/scene-audio-audition-smoke.mjs": "f0d8c73fac213f93c0c82a4591b4fdc60544a598150c98dd2fe45c013cb46c13"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "rendered": {
+    "channels": 1,
+    "frames": 48000,
+    "sampleRate": 48000,
+    "gain": 0.11999999731779099,
+    "loop": true,
+    "peak": 0.014649932272732258,
+    "error": 4.6564674338611667e-10
+  },
+  "unsavedDraft": {
+    "sourceChangedOnlyByExplicitApply": true,
+    "savedSourceUnchanged": true,
+    "gain": 0.25
+  },
+  "playback": [
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "sampleRate": 48000,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.25,
+      "sampleRate": 48000,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "sampleRate": 48000,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.20000000298023224,
+      "sampleRate": 48000,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": false,
+      "gain": 0.30000001192092896,
+      "sampleRate": 48000,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.20000000298023224,
+      "sampleRate": 48000,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.11999999731779099,
+      "sampleRate": 48000,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.25,
+      "sampleRate": 48000,
+      "stops": 1,
+      "contextState": "closed"
+    },
+    {
+      "loop": true,
+      "gain": 0.25,
+      "sampleRate": 48000,
+      "stops": 1,
+      "contextState": "closed"
+    }
+  ],
+  "authorFilesPreserved": 12,
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-10-16T02:47:45.156Z"
+}

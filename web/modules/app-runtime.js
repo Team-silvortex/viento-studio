@@ -1,3 +1,4 @@
+import { readSceneAudioBytes } from './app-scene-audio-media.js';
 import { setupSourceSearch } from './app-source-search.js';
 import { setupSourceHistory } from './app-source-history.js';
 import { setupSourceDiagnostic } from './app-source-diagnostic.js';
@@ -85,6 +86,8 @@ import {
   writeDoc,
   loadDocumentFields,
   inspectSceneBehaviorAuthoring,
+  inspectSceneAudioCreation,
+  inspectSceneAudioDirectory,
 } from './app-doc-service.js';
 
 let studioSystem = null;
@@ -96,6 +99,8 @@ let sourceInteractionEpoch = 0;
 function markSourceInteraction() { sourceInteractionEpoch++; }
 let sourceEditorContentEpoch = 0;
 let sceneBehaviorAuthoringAvailable = false;
+let sceneAudioResourcesAvailable = false;
+let sceneAudioDirectoryAvailable = false;
 let fieldEditorController = null;
 let fieldDraftSourcePath = '';
 let fieldLoadToken = 0;
@@ -2014,6 +2019,8 @@ async function detectEditBackend() {
   detectedEditBackendState = normalizedDetection;
   state.editBackendAvailable = Boolean(normalizedDetection.available);
   sceneBehaviorAuthoringAvailable = normalizedDetection.available === true && detection.payload?.sceneBehaviorAuthoring === true;
+  sceneAudioResourcesAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioCreation === true;
+  sceneAudioDirectoryAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioDirectory === true;
   studioSystem?.updateCapabilities(detection.payload || null);
   studioSystem?.refreshMedia();
 }
@@ -5814,10 +5821,12 @@ async function initApp(options = {}) {
       return { document: doc, sourcePath, token: `${editorLoadToken}:${scenePreviewDraftEpoch}`, content: getCurrentEditContent(),
         baseline: editSessionBaselineContent, version: editSessionVersion,
         editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
-        creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath), available: sceneBehaviorAuthoringAvailable };
+        creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath), available: sceneBehaviorAuthoringAvailable,
+        audioTracksAvailable: sceneAudioDirectoryAvailable };
     },
     digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
     inspect: payload => inspectSceneBehaviorAuthoring(payload),
+    inspectAudioDirectory: payload => inspectSceneAudioDirectory(payload),
     writeDraft: content => {
       const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, scroll = editEditorEl.scrollTop;
       setSourceEditorContent(content);
@@ -5828,12 +5837,16 @@ async function initApp(options = {}) {
     }, focus: () => editEditorEl.focus(),
   });
   const audioSourceHost = createSceneAudioSourceHost({
+    readAudioBytes: readSceneAudioBytes,
+    digestBytes: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', value))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
+    inspect: payload => inspectSceneAudioCreation(payload),
     getState: () => {
       const doc = getActiveDoc(), sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
       return { document: doc, sourcePath, token: `${editorLoadToken}:${scenePreviewDraftEpoch}`, content: getCurrentEditContent(),
         baseline: editSessionBaselineContent, version: editSessionVersion,
         editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
-        creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath), available: true };
+        creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath), available: true,
+        resourcesAvailable: sceneAudioResourcesAvailable };
     },
     digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
     writeDraft: content => {

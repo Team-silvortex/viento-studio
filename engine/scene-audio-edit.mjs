@@ -1,10 +1,13 @@
-// Audio authoring owns source-safe leaf patches only. Rust owns audio semantics;
+// Audio authoring owns source-safe leaf and array patches. Rust owns audio semantics;
 // the editor host retains Save, resource resolution and playback authority.
 import { inspectSceneAudio } from './scene-audio-core.mjs';
 import { parseJsonSource, locateJsonSource } from './json-source.mjs';
 import { canonicalJson } from './canonical-json.mjs';
+import { isSceneAudioResources, sceneAudioResourcesMatchSource, sceneAudioResourcesEqual, sceneAudioResourceIdentityIds } from './scene-audio-resources.mjs';
 const MAX_SOURCE_BYTES = 65536;
 const proposals = new WeakSet();
+const proposalModes = new WeakMap();
+const proposalResources = new WeakMap();
 const sourceKeys = ['sourcePath', 'token', 'baseSourceRevision', 'sourceRevision', 'content'];
 const revision = value => typeof value === 'string' && /^sha256:[0-9a-f]{64}$/.test(value);
 const error = (kind = 'invalid') => Object.assign(new TypeError('The audio edit does not match the reviewed source.'), {
@@ -80,11 +83,111 @@ export async function readSceneAudioDocument(content) {
   // order remains authoritative for editing, including cues at equal times.
   return parsed.value;
 }
-async function patchAudio(content, edit) {
+const trackFields = ['role', 'volume', 'loop'];
+const trackKeys = ['id', 'resourceId', ...trackFields];
+const cueFields = ['atSeconds', 'action'];
+const timelineFields = ['trackId', ...cueFields];
+const cueKeys = ['id', 'trackId', ...cueFields];
+function sourceRange(parsed, path) {
+  const range = locateJsonSource(parsed, path);
+  if (!range?.exact || range.encoding !== 'utf-16') fail();
+  return range;
+}
+function applyPatches(content, patches, offset = 0) {
+  for (const patch of [...patches].sort((a, b) => b.start - a.start)) {
+    content = content.slice(0, patch.start - offset) + patch.text + content.slice(patch.end - offset);
+  }
+  return content;
+}
+function leafPatches(parsed, before, after, path, fields) {
+  return fields.filter(key => canonicalJson(before[key]) !== canonicalJson(after[key]))
+    .map(key => ({ ...sourceRange(parsed, `${path}/${key}`), text: JSON.stringify(after[key]) }));
+}
+function captureTrackRows(before, inputs, catalog) {
+  if (!Array.isArray(inputs)) fail();
+  const originals = new Map(before.tracks.map((row, index) => [row.id, { row, index }]));
+  const resources = new Set(catalog ? catalog.resources.map(row => row.resourceId) : before.tracks.map(row => row.resourceId));
+  const reserved = new Set([before.sceneObjectId, ...before.tracks.flatMap(row => [row.id, row.resourceId]), ...before.cues.map(row => row.id),
+    ...(catalog ? sceneAudioResourceIdentityIds(catalog) : [])]);
+  let lastIndex = -1, appended = false;
+  return inputs.map(input => {
+    const row = record(input, trackKeys), existing = originals.get(row.id);
+    if (catalog && !resources.has(row.resourceId)) fail();
+    if (existing) {
+      if (appended || existing.index <= lastIndex || !catalog && row.resourceId !== existing.row.resourceId) fail();
+      lastIndex = existing.index;
+    } else {
+      // Ordinary duplication stays within the source resource set. A branded
+      // catalog adds only the already-bound choices checked by the host.
+      if (reserved.has(row.id) || !resources.has(row.resourceId)) fail();
+      appended = true;
+    }
+    return row;
+  });
+}
+function captureCueRows(before, inputs, arrangeTimeline = false, candidateTracks = before.tracks, resourceIdentities = []) {
+  if (!Array.isArray(inputs)) fail();
+  const originals = new Map(before.cues.map((row, index) => [row.id, { row, index }]));
+  const reserved = new Set([before.sceneObjectId, ...[...before.tracks, ...candidateTracks].flatMap(row => [row.id, row.resourceId]), ...resourceIdentities]);
+  let lastIndex = -1, appended = false;
+  return inputs.map(input => {
+    const row = record(input, cueKeys), existing = originals.get(row.id);
+    if (existing) {
+      // The cue-only API keeps its ordered-subsequence and fixed-binding
+      // contract. The separate timeline API permits arranging those identities.
+      if (!arrangeTimeline && (appended || existing.index <= lastIndex || row.trackId !== existing.row.trackId)) fail();
+      lastIndex = existing.index;
+    } else {
+      if (reserved.has(row.id)) fail();
+      appended = true;
+    }
+    return row;
+  });
+}
+function audioArrayPatch(content, parsed, kind, before, after, fields, keys) {
+  const range = sourceRange(parsed, `/${kind}`);
+  const originals = before.map((row, index) => ({ row, index, range: sourceRange(parsed, `/${kind}/${index}`) }));
+  const byId = new Map(originals.map(entry => [entry.row.id, entry]));
+  let prefix, suffix, separator, emptyTemplate;
+  if (originals.length) {
+    prefix = content.slice(range.start + 1, originals[0].range.start);
+    suffix = content.slice(originals.at(-1).range.end, range.end - 1);
+    separator = originals.length > 1
+      ? content.slice(originals.at(-2).range.end, originals.at(-1).range.start) : `,${prefix}`;
+  } else {
+    // An empty array has no cue to reuse. Follow the document's line ending
+    // and indentation, including the common pretty-printed "cues": [] case.
+    const newline = content.match(/\r\n|\n|\r/)?.[0];
+    const indentation = index => content.slice(0, index).split(/\r\n|\n|\r/).at(-1).match(/^[ \t]*/)[0];
+    const base = indentation(range.start), unit = indentation(sourceRange(parsed, '/format').start) || '  ';
+    const rowIndent = base + unit;
+    prefix = newline ? newline + rowIndent : '';
+    suffix = newline ? newline + base : '';
+    separator = `,${prefix}`;
+    emptyTemplate = row => newline
+      ? JSON.stringify(row, null, unit).replaceAll('\n', newline + rowIndent) : JSON.stringify(row);
+  }
+  const pieces = after.map((row, index) => {
+    const existing = byId.get(row.id), template = existing || originals[0];
+    const text = template
+      ? applyPatches(content.slice(template.range.start, template.range.end),
+        leafPatches(parsed, template.row, row, `/${kind}/${template.index}`, existing ? fields : keys), template.range.start)
+      : emptyTemplate(row);
+    const preceding = index === 0 ? prefix : existing?.index > 0
+      ? content.slice(originals[existing.index - 1].range.end, existing.range.start) : separator;
+    return preceding + text;
+  });
+  return { ...range, text: `[${pieces.join('')}${suffix}]` };
+}
+async function patchAudio(content, edit, mode = 'leaf', catalog) {
+  const editResources = mode === 'resources', editTracks = mode === 'tracks' || editResources;
+  const editCueStructure = mode !== 'leaf', arrangeTimeline = mode === 'timeline' || editTracks;
+  const editableCueFields = arrangeTimeline ? timelineFields : cueFields;
+  const editableTrackFields = editResources ? ['resourceId', ...trackFields] : trackFields;
   const before = await readSceneAudioDocument(content);
   const copied = copyData(edit), rows = record(copied, ['tracks', 'cues']);
   const candidate = JSON.parse(JSON.stringify(before));
-  for (const [kind, fields] of [['tracks', ['role', 'volume', 'loop']], ['cues', ['atSeconds', 'action']]]) {
+  for (const [kind, fields] of [...(editTracks ? [] : [['tracks', trackFields]]), ...(editCueStructure ? [] : [['cues', cueFields]])]) {
     if (!Array.isArray(rows[kind]) || rows[kind].length !== before[kind].length) fail();
     for (const [index, input] of rows[kind].entries()) {
       const row = record(input, ['id', ...fields]);
@@ -92,44 +195,61 @@ async function patchAudio(content, edit) {
       for (const key of fields) candidate[kind][index][key] = row[key];
     }
   }
+  if (editTracks) candidate.tracks = captureTrackRows(before, rows.tracks, editResources ? catalog : undefined);
+  if (editCueStructure) candidate.cues = captureCueRows(before, rows.cues, arrangeTimeline, candidate.tracks, editResources ? sceneAudioResourceIdentityIds(catalog) : []);
   await inspectSceneAudio(candidate);
   const parsed = parseJsonSource(content), patches = [], changedPaths = [];
-  for (const [kind, fields] of [['tracks', ['role', 'volume', 'loop']], ['cues', ['atSeconds', 'action']]]) {
-    for (const [index, row] of candidate[kind].entries()) {
-      for (const key of fields) {
-        if (canonicalJson(row[key]) === canonicalJson(before[kind][index][key])) continue;
-        const path = `/${kind}/${index}/${key}`, range = locateJsonSource(parsed, path);
-        if (!range?.exact || range.encoding !== 'utf-16') fail();
-        patches.push({ ...range, text: JSON.stringify(row[key]) }); changedPaths.push(path);
-      }
+  for (const [kind, fields, keys] of [['tracks', editableTrackFields, trackKeys], ['cues', editableCueFields, cueKeys]]) {
+    const structureChanged = candidate[kind].length !== before[kind].length || candidate[kind].some((row, index) => row.id !== before[kind][index].id);
+    if (structureChanged) patches.push(audioArrayPatch(content, parsed, kind, before[kind], candidate[kind], fields, keys));
+    else for (const [index, row] of candidate[kind].entries()) {
+      patches.push(...leafPatches(parsed, before[kind][index], row, `/${kind}/${index}`, fields));
     }
   }
+  changedPaths.push(...patches.map(patch => patch.propertyPath));
   if (!patches.length) throw error('unchanged');
-  let afterContent = content;
-  for (const patch of patches.sort((a, b) => b.start - a.start)) afterContent = afterContent.slice(0, patch.start) + patch.text + afterContent.slice(patch.end);
+  const afterContent = applyPatches(content, patches);
   const after = await readSceneAudioDocument(afterContent);
   if (canonicalJson(after) !== canonicalJson(candidate)) fail();
   return { beforeContent: content, afterContent, edit: copied, changedPaths };
 }
-export async function createSceneAudioProposal(source, edit) {
+async function createProposal(source, edit, mode, catalog) {
   // Capture caller-owned input before the first asynchronous core invocation.
   const captured = captureSource(source), copied = copyData(edit);
-  const patched = await patchAudio(captured.content, copied);
+  if (mode === 'resources' && !sceneAudioResourcesMatchSource(catalog, captured)) fail();
+  const patched = await patchAudio(captured.content, copied, mode, catalog);
   const proposal = freeze({ kind: 'scene-audio', sourcePath: captured.sourcePath, sourceToken: captured.token,
     baseSourceRevision: captured.baseSourceRevision, sourceRevision: captured.sourceRevision, ...patched });
-  proposals.add(proposal); return proposal;
+  proposals.add(proposal);
+  proposalModes.set(proposal, mode);
+  if (mode === 'resources') proposalResources.set(proposal, catalog);
+  return proposal;
 }
+// Keep the original API's exact leaf-only transport contract unchanged.
+export async function createSceneAudioProposal(source, edit) { return createProposal(source, edit, 'leaf'); }
+export async function createSceneAudioCueProposal(source, edit) { return createProposal(source, edit, 'cues'); }
+export async function createSceneAudioTimelineProposal(source, edit) { return createProposal(source, edit, 'timeline'); }
+export async function createSceneAudioTrackProposal(source, edit) { return createProposal(source, edit, 'tracks'); }
+export async function createSceneAudioResourceProposal(source, edit, catalog) { return createProposal(source, edit, 'resources', catalog); }
 export function isSceneAudioProposal(value) { return Boolean(value && typeof value === 'object' && proposals.has(value)); }
-export async function prepareSceneAudioApply(source, proposal, { digest } = {}) {
+export function sceneAudioProposalNeedsResources(value) { return isSceneAudioProposal(value) && proposalModes.get(value) === 'resources'; }
+export async function prepareSceneAudioApply(source, proposal, { digest, resources } = {}) {
   if (!isSceneAudioProposal(proposal) || typeof digest !== 'function') throw error('conflict');
   let captured;
   try { captured = captureSource(source); } catch { throw error('conflict'); }
   if (captured.sourcePath !== proposal.sourcePath || captured.token !== proposal.sourceToken
     || captured.baseSourceRevision !== proposal.baseSourceRevision || captured.sourceRevision !== proposal.sourceRevision
     || captured.content !== proposal.beforeContent) throw error('conflict');
+  const needsResources = sceneAudioProposalNeedsResources(proposal), reviewedResources = proposalResources.get(proposal);
+  if (needsResources && (!isSceneAudioResources(resources) || resources === reviewedResources
+    || !sceneAudioResourcesMatchSource(resources, captured) || !sceneAudioResourcesEqual(resources, reviewedResources))) throw error('conflict');
   const hash = await digest(captured.content);
   if (typeof hash !== 'string' || !/^[a-f0-9]{64}$/.test(hash) || `sha256:${hash}` !== captured.sourceRevision) throw error('conflict');
-  const repeated = await patchAudio(captured.content, proposal.edit);
+  if (needsResources) {
+    const savedHash = await digest(resources.savedContent);
+    if (typeof savedHash !== 'string' || !/^[a-f0-9]{64}$/.test(savedHash) || `sha256:${savedHash}` !== captured.baseSourceRevision) throw error('conflict');
+  }
+  const repeated = await patchAudio(captured.content, proposal.edit, proposalModes.get(proposal), needsResources ? resources : undefined);
   if (repeated.afterContent !== proposal.afterContent || canonicalJson(repeated.changedPaths) !== canonicalJson(proposal.changedPaths)) throw error('conflict');
   return freeze({ sourcePath: captured.sourcePath, afterContent: repeated.afterContent, changedPaths: repeated.changedPaths });
 }
