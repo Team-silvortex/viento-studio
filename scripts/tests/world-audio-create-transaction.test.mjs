@@ -110,15 +110,26 @@ test('foreign metadata temp names and symlinks are not hidden by the two-path v1
   }
 });
 
-test('BOM registrations remain rejected before preview or apply and preserve every source and asset byte', async t => {
-  const f = await audioFixture(t);
-  await fs.writeFile(path.join(f.root, f.files[2]), '\uFEFF' + f.sceneRecord);
-  const before = await fingerprint(f.root);
-  for (const mode of ['preview', 'apply']) {
-    await assert.rejects(f.execute({ ...f.input, mode }), { errorCode: 'world_unavailable' });
-    assert.deepEqual(await fingerprint(f.root), before);
-    assert.deepEqual((await targetContents(f)).slice(0, 2), [null, null]);
+for (const checkpoint of ['apply', 'data', 'commit']) test(`BOM scene metadata survives Audio creation ${checkpoint} with exact byte recovery`, async t => {
+  const f = await audioFixture(t); f.sceneRecord = '\uFEFF' + f.sceneRecord;
+  const file = path.join(f.root, f.files[2]); await fs.writeFile(file, f.sceneRecord); await fs.chmod(file, 0o640);
+  const before = await fingerprint(f.root), preview = await f.execute({ ...f.input, mode: 'preview' });
+  assert.equal(preview.status, 'preview'); assert.deepEqual(await fingerprint(f.root), before);
+  let committed = checkpoint !== 'data';
+  if (checkpoint === 'apply') assert.equal((await f.execute(f.input)).status, 'applied');
+  else { await crashAudio(f, checkpoint, checkpoint === 'data' ? 2 : '-');
+    assert.equal((await recoverWorldTransaction(f.root)).status, committed ? 'committed' : 'rolled-back'); }
+  const contents = await targetContents(f);
+  if (!committed) assert.deepEqual(contents, [null, null, f.sceneRecord]);
+  else {
+    assert.equal(contents[0], f.input.content); assert.equal(contents[2].startsWith('\uFEFF'), true);
+    assert.equal(/(?<!\r)\n/.test(contents[2]), false); assert.ok(contents[2].includes('900719925474099312345'));
+    assert.equal(JSON.parse(contents[2].replace(/^\uFEFF/, '')).relations.filter(item => item.kind === 'audio').length, 1);
   }
+  assert.equal((await fs.stat(file)).mode & 0o777, 0o640);
+  const after = await fingerprint(f.root); for (const [name, hash] of Object.entries(before)) if (name !== f.files[2] || !committed) assert.equal(after[name], hash, name);
+  assert.equal((await readWorldSnapshot(f.root)).projection.world.revision, committed ? preview.revision : f.input.baseRevision);
+  assert.equal((await recoverWorldTransaction(f.root)).status, 'idle');
 });
 
 test('standalone recovery initializes its Rust validator and completes with the WAV store absent', async t => {

@@ -1,3 +1,6 @@
+import { SCENE_ANIMATION_CREATION_API_PATH } from '../../engine/scene-animation-creation-contract.mjs';
+import { SCENE_ANIMATION_TARGETS_API_PATH } from '../../engine/scene-animation-targets.mjs';
+import { SCENE_AUDIO_USAGE_API_PATH } from '../../engine/scene-audio-usage.mjs';
 import { SCENE_AUDIO_DIRECTORY_API_PATH } from '../../engine/scene-audio-directory.mjs';
 import { SCENE_AUDIO_CREATION_API_PATH } from '../../engine/scene-audio-creation-contract.mjs';
 import { SCENE_BEHAVIOR_DIRECTORY_API_PATH } from '../../engine/scene-behavior-directory.mjs';
@@ -11,6 +14,18 @@ import { RESOURCE_PACKAGE_API } from '../../engine/resource-package.mjs';
 import { APP_ERROR_MESSAGES, APP_REQUEST_LABELS } from './app-state.js';
 import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
+
+export async function inspectSceneAnimationTargets(payload) {
+  return (await fetchJsonApiRequest(SCENE_ANIMATION_TARGETS_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('读取动画目标'))).payload;
+}
+
+export async function inspectSceneAudioUsage(payload) {
+  return (await fetchJsonApiRequest(SCENE_AUDIO_USAGE_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('读取音轨使用位置'))).payload;
+}
 
 export async function inspectSceneAudioDirectory(payload) {
   return (await fetchJsonApiRequest(SCENE_AUDIO_DIRECTORY_API_PATH, withAuthHeaders({
@@ -582,4 +597,10 @@ export async function inspectSceneAudioCreation(payload) {
   return (await fetchJsonApiRequest(SCENE_AUDIO_CREATION_API_PATH, withAuthHeaders({
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
   }), 45000, t('核对场景声音'))).payload;
+}
+
+export async function inspectSceneAnimationCreation(payload) {
+  return (await fetchJsonApiRequest(SCENE_ANIMATION_CREATION_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('核对场景动画'))).payload;
 }

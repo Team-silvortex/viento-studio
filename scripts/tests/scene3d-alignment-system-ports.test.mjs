@@ -23,7 +23,7 @@ function fixture(settings) {
 
 test('alignment is a separate source authoring module with only document dependency', () => {
   const registry = createStudioModuleRegistry(), plan = registry.plan(), declaration = registry.descriptors().find(m => m.id === 'org.viento.scene3d-alignment');
-  assert.equal(plan.modules.length, 21); assert.equal(plan.capabilities.length, 40);
+  assert.equal(plan.modules.length, 22); assert.equal(plan.capabilities.length, 43);
   assert.deepEqual(declaration.dependencies, [{ id: 'org.viento.document', apiVersion: 1 }]);
   assert.equal(plan.capabilities.find(c => c.capability === 'scene.authoring.alignment3d').moduleId, declaration.id);
 });

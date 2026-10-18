@@ -1,0 +1,349 @@
+{
+  "startedAt": "2026-10-18T03:37:18.466Z",
+  "steps": [
+    "Saved animation remains initially static after frozen SVG decoding. Scrubbing one second draws the existing image at its offset, 90-degree rotation, 2×/0.5× scale and 0.5 opacity. The second instance of the same projection keeps identical pixels. Stop restores exact static canvas pixels; layout is enabled again.",
+    "Zoom and a real middle-button drag remain usable on a sampled frame. Stop changes only the visual layer, retaining the panned view; Fit remains explicit.",
+    "Chinese, English and Japanese fit a 390px viewport and retain the same focused timeline and exact paused time. Changing language during playback retains playing state. The browser visibility handler pauses without advancing the frozen sample.",
+    "Leaving the preview tab, refreshing and closing with a real response pending cancel the visual layer and timeline. The late response cannot reopen or animate the hidden preview; reopening captures a fresh static scene.",
+    "A deliberately mismatched animation snapshot disables only playback and leaves the static scene available. Refresh repairs the attachment. All author paths and bytes remain unchanged, no write request or build job is issued."
+  ],
+  "screenshots": [
+    "scene-animation-sampled-desktop.png",
+    "scene-animation-zh-CN-390.png",
+    "scene-animation-en-390.png",
+    "scene-animation-ja-390.png",
+    "scene-animation-invalid-static.png"
+  ],
+  "errors": [],
+  "layout": {
+    "zh-CN": {
+      "overflow": false,
+      "rects": {
+        "scenePreviewAnimation": {
+          "left": 36,
+          "right": 339,
+          "top": 202.125,
+          "bottom": 641.59375
+        },
+        "scenePreviewAnimationPlay": {
+          "left": 49,
+          "right": 119.015625,
+          "top": 354.21875,
+          "bottom": 394.21875
+        },
+        "scenePreviewAnimationPause": {
+          "left": 127.015625,
+          "right": 197.03125,
+          "top": 354.21875,
+          "bottom": 394.21875
+        },
+        "scenePreviewAnimationStop": {
+          "left": 49,
+          "right": 179.015625,
+          "top": 402.21875,
+          "bottom": 442.21875
+        },
+        "scenePreviewAnimationPosition": {
+          "left": 51,
+          "right": 231.296875,
+          "top": 494.21875,
+          "bottom": 510.21875
+        }
+      },
+      "heading": "已保存场景动画"
+    },
+    "en": {
+      "overflow": false,
+      "rects": {
+        "scenePreviewAnimation": {
+          "left": 36,
+          "right": 339,
+          "top": 216.40625,
+          "bottom": 627.875
+        },
+        "scenePreviewAnimationPlay": {
+          "left": 49,
+          "right": 178.15625,
+          "top": 350.5,
+          "bottom": 390.5
+        },
+        "scenePreviewAnimationPause": {
+          "left": 186.15625,
+          "right": 326,
+          "top": 350.5,
+          "bottom": 390.5
+        },
+        "scenePreviewAnimationStop": {
+          "left": 49,
+          "right": 326,
+          "top": 398.5,
+          "bottom": 438.5
+        },
+        "scenePreviewAnimationPosition": {
+          "left": 51,
+          "right": 229.9375,
+          "top": 482.5,
+          "bottom": 498.5
+        }
+      },
+      "heading": "Saved scene animation"
+    },
+    "ja": {
+      "overflow": false,
+      "rects": {
+        "scenePreviewAnimation": {
+          "left": 36,
+          "right": 339,
+          "top": 154.875,
+          "bottom": 688.4375
+        },
+        "scenePreviewAnimationPlay": {
+          "left": 49,
+          "right": 326,
+          "top": 330.96875,
+          "bottom": 370.96875
+        },
+        "scenePreviewAnimationPause": {
+          "left": 49,
+          "right": 326,
+          "top": 378.96875,
+          "bottom": 418.96875
+        },
+        "scenePreviewAnimationStop": {
+          "left": 49,
+          "right": 326,
+          "top": 426.96875,
+          "bottom": 466.96875
+        },
+        "scenePreviewAnimationPosition": {
+          "left": 51,
+          "right": 231.296875,
+          "top": 518.96875,
+          "bottom": 534.96875
+        }
+      },
+      "heading": "保存済みシーンアニメーション"
+    }
+  },
+  "limitations": [
+    "Real Chrome local HTTP authoring preview in a disposable copied example; no packaged Tauri/Android or engine runtime claim.",
+    "Only saved Scene2D visual animation is played; behavior, physics, audio, frame animation and composition playback are excluded.",
+    "Background pause is exercised by dispatching the browser visibility event with an explicitly overridden hidden state, not OS tab scheduling."
+  ],
+  "sources": {
+    "engine/studio-core.wasm": "1767202f1f09cefd9835c5a3415d97eda81de3b830667648f9cea3f98793a077",
+    "engine/scene-animation-preview.mjs": "763403a998381492008522047ee904637075659eb4091f18b4d93d1908999f3a",
+    "engine/scene-animation-visual-frame.mjs": "7c7c04903bbd4a05d9a9d4d631194a021798267136e487699d2cbaac9f6888fa",
+    "scripts/lib/scene-preview-service.mjs": "ea66d0ad1307134e7f45ad09ce9eb5771ef3be1898ca50102f4d89394d957430",
+    "scripts/adapters/node-build-snapshot.mjs": "5e903260e2806e832d0b5dfa2c3e890b003d80a1cffcf7f3b95bd900fad87966",
+    "scripts/lib/doc-api-service.mjs": "5ed5cdae4d507792e42d98ef622156df4ef1253b3edc3731fffdf901cebcd40e",
+    "web/modules/app-scene-preview-animation.js": "0997cd9fb476c975c2e622257ceee424ad2d762b36bdc4742640cd5e0ca1cca7",
+    "web/modules/app-scene-preview.js": "309764dca5047148c532219f37cbb5574db00eeeaba31514e121e0aa89d4c7d7",
+    "web/modules/app-scene-preview-canvas.js": "3ae17e1387e8fbbefb7a0bb3c4e77051d3ba152348e5878f4c1fd33c969974ba",
+    "web/modules/scene-animation-player.js": "94a1abc66b05350d21e1923e17b0fba3d864d760721ebf5dbf800b92df75ff7e",
+    "web/modules/app-project-build.js": "ed84b7b5f8d72ad713920df2de74e87ecd58025e3b33bfe74c97cc0f6e1fc8c7",
+    "web/modules/app-studio-system.js": "89033b38678c6ff7837920a84c1e569170bebf835911f3c8f7d97dc52952c324",
+    "web/i18n/en.js": "ea4e2c9a0f06f896bc2b7bce6159873fc1321edbdd10484e569aba83bfe3829f",
+    "web/i18n/ja.js": "e06aae699021dda9d50c148516a07d2099b0d52c477864030d8a653e3f554fcd",
+    "web/scene-preview.css": "9c332e61419f94b9e636410ec6476fd0b4e1e570626f7d59d80027eb352bdc1c",
+    "scripts/tests/scene-animation-scene-preview-smoke.mjs": "f2471a5730c286920c261f0371b31f11146fcbb308d0a58ad47a56495a5b3e02"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "frames": {
+    "capturedAnimation": {
+      "format": "viento-scene-animation-preview",
+      "schemaVersion": 1,
+      "status": "ready",
+      "snapshotId": "sha256:2777402c627bc7c107ef6195ee9ba60b29da433039d049b49d5990e1ba881344",
+      "scene": {
+        "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "sourcePath": "documents/scenes/demo.json",
+        "sourceRevision": "sha256:e2125f30032f99e3b7396b967a05c1f0e47e3b9f2356ca70dcaa895d858fd317"
+      },
+      "manifest": {
+        "objectId": "88888888-8888-4888-8888-888888888887",
+        "sourcePath": "documents/animations/demo.json",
+        "sourceRevision": "sha256:b60f7f33ad8fd19844d6803a2fd976678dba688960b029b46abeeeb5ab0c9d76"
+      },
+      "document": {
+        "durationSeconds": 2,
+        "format": "viento-scene-animation",
+        "loop": true,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "schemaVersion": 1,
+        "tracks": [
+          {
+            "id": "66666666-6666-4666-8666-000000000001",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "interpolation": "linear",
+            "keyframes": [
+              {
+                "atSeconds": 0,
+                "value": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "atSeconds": 1,
+                "value": [
+                  120,
+                  -50
+                ]
+              },
+              {
+                "atSeconds": 2,
+                "value": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "property": "offset2d"
+          },
+          {
+            "id": "66666666-6666-4666-8666-000000000002",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "interpolation": "linear",
+            "keyframes": [
+              {
+                "atSeconds": 0,
+                "value": 0
+              },
+              {
+                "atSeconds": 1,
+                "value": 90
+              },
+              {
+                "atSeconds": 2,
+                "value": 0
+              }
+            ],
+            "property": "rotation2d"
+          },
+          {
+            "id": "66666666-6666-4666-8666-000000000003",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "interpolation": "linear",
+            "keyframes": [
+              {
+                "atSeconds": 0,
+                "value": [
+                  1,
+                  1
+                ]
+              },
+              {
+                "atSeconds": 1,
+                "value": [
+                  2,
+                  0.5
+                ]
+              },
+              {
+                "atSeconds": 2,
+                "value": [
+                  1,
+                  1
+                ]
+              }
+            ],
+            "property": "scale2d"
+          },
+          {
+            "id": "66666666-6666-4666-8666-000000000004",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "interpolation": "linear",
+            "keyframes": [
+              {
+                "atSeconds": 0,
+                "value": 1
+              },
+              {
+                "atSeconds": 1,
+                "value": 0.5
+              },
+              {
+                "atSeconds": 2,
+                "value": 1
+              }
+            ],
+            "property": "opacity"
+          }
+        ]
+      },
+      "diagnostics": []
+    },
+    "atOneSecond": {
+      "a": 9.200637543843972e-17,
+      "b": 1.5025781393051147,
+      "c": -0.3756445348262787,
+      "d": 2.300159385960993e-17,
+      "e": 264.41250228881836,
+      "f": 186.6597660779953,
+      "alpha": 0.5,
+      "args": [
+        -40,
+        -30,
+        80,
+        60
+      ]
+    },
+    "staticPixels": {
+      "width": 649,
+      "height": 479,
+      "hash": 2310072369
+    },
+    "animatedPixels": {
+      "width": 649,
+      "height": 479,
+      "hash": 3614346596
+    },
+    "unaffectedSecondInstance": {
+      "x": 370,
+      "y": 195,
+      "right": 428,
+      "bottom": 253,
+      "count": 3481
+    }
+  },
+  "authorFilesUnchanged": true,
+  "authorFileCount": 12,
+  "requests": [
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    },
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    },
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    },
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    },
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    },
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    },
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    }
+  ],
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-10-18T03:37:23.625Z"
+}

@@ -123,8 +123,8 @@ export async function buildProject({ root, scene, targetId, godot, tool = godot,
     // Caches are regenerable. Keep the small generated project, not editor or
     // shader caches in every build. Runtime gets its own temporary project.
     await adapter.cleanupProject(project, { generatedFiles: [...generated.files.keys()], resourceFiles: [...generated.resourceFiles.values()] });
-    const behaviorSources = scenePlans(plan).flatMap(scene => scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []);
-    if (behaviorSources.length) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, captured.snapshot.source.documents, behaviorSources);
+    const diagnosticSources = scenePlans(plan).flatMap(scene => [...(scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []), ...(scene.animation ? [scene.animation.manifest.objectId] : [])]);
+    if (diagnosticSources.length) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, captured.snapshot.source.documents, diagnosticSources);
     record.status = record.diagnostics.length ? (record.phases.some(item => item.status === 'cancelled') ? 'cancelled' : record.phases.some(item => item.status === 'timeout') ? 'timeout' : 'failed') : 'succeeded';
     await saveRecord(directory, 'build.json', record, retentionPin);
     if (record.status === 'succeeded') {
@@ -212,8 +212,8 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       throw buildError('runtime_case_scene_mismatch', 'The runtime case belongs to a different frozen scene.');
     }
     if (runtimeCase) runtimeCase = validateRuntimeCasePlan(plan, runtimeCase);
-    if (controlProgram && (plan.kind !== 'scene2d' || ![1, 2].includes(plan.schemaVersion) || plan.behaviors)) {
-      throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'Control replay requires a Scene2D plan version 1 or 2 without authored behaviors.');
+    if (controlProgram && (plan.kind !== 'scene2d' || ![1, 2].includes(plan.schemaVersion) || plan.behaviors || plan.animation)) {
+      throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'Control replay requires a Scene2D plan version 1 or 2 without authored behaviors or visual animation.');
     }
     if (controlProgram) controlProgram = validateSceneControlPlan(plan, controlProgram);
     frozenSourceDocuments = snapshot.source.documents;
@@ -330,8 +330,8 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, [], { complete: false });
     }
   }
-  const behaviorSources = scenePlans(plan).flatMap(scene => scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []);
-  if (behaviorSources.length) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, frozenSourceDocuments, behaviorSources);
+  const diagnosticSources = scenePlans(plan).flatMap(scene => [...(scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []), ...(scene.animation ? [scene.animation.manifest.objectId] : [])]);
+  if (diagnosticSources.length) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, frozenSourceDocuments, diagnosticSources);
   await saveRecord(sessionDirectory, 'session.json', record);
   // Final record persistence is the case commit point. Cancellation during
   // that awaited write must not leave a passed disk record behind.

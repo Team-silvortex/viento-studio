@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-18",
+  "version": "0.1.5 working tree",
+  "scope": "scene animation first creation and recovery",
+  "checks": {
+    "application": {
+      "tests": 5886,
+      "pass": 5716,
+      "fail": 0,
+      "skipped": 170,
+      "cancelled": 0,
+      "syntaxFiles": 980
+    },
+    "httpCompatibility": {
+      "tests": 8,
+      "pass": 8
+    },
+    "coreRegression": {
+      "tests": 68,
+      "pass": 68,
+      "newTests": 30
+    },
+    "hostTransaction": {
+      "tests": 72,
+      "pass": 72
+    },
+    "uiRegression": {
+      "tests": 117,
+      "pass": 117
+    },
+    "workflowGodot": {
+      "tests": 5,
+      "pass": 5,
+      "engine": "Godot 4.7.2 stable",
+      "properties": [
+        "offset2d",
+        "rotation2d",
+        "scale2d",
+        "opacity"
+      ],
+      "sceneSchemas": [
+        2,
+        3
+      ],
+      "samples": [
+        [
+          10,
+          -5
+        ],
+        [
+          20,
+          -10
+        ]
+      ]
+    },
+    "legacyRecoveryBeforeBom": {
+      "tests": 174,
+      "pass": 174,
+      "scope": "before single-prefix BOM read fix; v9/v10 rerun after fix in hostTransaction"
+    },
+    "browser": {
+      "steps": 5,
+      "screenshots": 10,
+      "errors": 0,
+      "observedSources": 22,
+      "sourceHashesUnchanged": true,
+      "report": "browser-1792292923679/browser.json"
+    }
+  },
+  "modules": 22,
+  "capabilities": 43,
+  "limitations": [
+    "Counts overlap; do not sum suites.",
+    "Browser begins from a saved scene copied to a temporary workspace, not an empty-project authoring claim.",
+    "Workflow Godot probe uses temporary generated project and checks real headless transforms against Rust; no new window, ZIP or multi-scene delivery validation.",
+    "No prepared copy, installed app, Android/device, Bevy visual, native ABI or backend protocol change.",
+    "No version bump, commit or push."
+  ],
+  "checkpoints": [
+    "application-initial.log retains the first full run: 5886 tests, 5715 pass, 170 skip, 1 obsolete no-animation-command expectation. Only the test changed; HTTP 8/8 passed and the full app was rerun.",
+    "Two initial browser checkpoints remain in this new evidence directory: a missing slot in test expectation and a test click before the asynchronously loaded directory settled. Both fixed in the smoke test only.",
+    "bom-old-expectations.log records legacy rejection expectations becoming obsolete after supported registry parsing; actual v10/v11 apply/rollback/recovery now pass."
+  ]
+}

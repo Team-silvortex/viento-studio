@@ -1,0 +1,184 @@
+✔ Godot descriptor and host contract are immutable, precise and independent of legacy build metadata (2.161264ms)
+✔ adapter preserves frozen v1/v2 file hashes, source owner maps and generator fingerprints (7.783183ms)
+✔ generation owns an admitted plan before asynchronous reads and never shares source objects with its caller (1.269215ms)
+✔ generation rejects unsupported plan headers and required capabilities without rewriting author inputs (1.304158ms)
+✔ availability remains a non-executing stat/access check and identification retains Godot version pinning (169.480069ms)
+✔ real spawned processes receive legacy Godot flags, literal arguments and isolated host paths (204.297802ms)
+✔ unsupported modes and invalid capture combinations are rejected before any process starts (2.193884ms)
+✔ phase execution delegates cancellation, deadlines and observer failures to the shared process owner (167.677035ms)
+✔ diagnostics and event readers retain v1/v2 source ownership and reject redirected runtime locations (1.914466ms)
+✔ cleanup removes only known generated caches and never follows their links into source data (2.978609ms)
+✖ execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators (6.997977ms)
+✖ animation sidecar composes with all scene, behavior and audio bases while preserving frozen base files (3.986138ms)
+✔ unsupported backends cannot lose animation by deleting its required capability and ordinary plans stay admitted (7.270893ms)
+✔ animation validates provenance, instance membership, budgets and capability before project generation (4.362562ms)
+✖ control replay refuses animation in pure admission and adapter execution before launching a process (3.238371ms)
+✖ real Godot visual animation preserves movement and behavior/audio execution (false, false) (1.340184ms)
+✖ real Godot visual animation preserves movement and behavior/audio execution (false, true) (1.407696ms)
+✖ real Godot visual animation preserves movement and behavior/audio execution (true, false) (1.301603ms)
+✖ real Godot visual animation preserves movement and behavior/audio execution (true, true) (1.291855ms)
+✖ real Godot samples agree with Rust for loop boundaries, intermediate values, held endpoints and independent duplicate definitions (1.432602ms)
+✖ project inventories and remaps animation composition including five-script behavior/audio scenes (90.542892ms)
+✖ real project animation survives scene A to B to A and starts a fresh clock for each visit (50.865934ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 12
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 678.687974
+
+✖ failing tests:
+
+test at scripts/tests/godot4-adapter.test.mjs:178:1
+✖ execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators (6.997977ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      contractVersion: 1,
+      id: 'org.viento.godot4',
+  +   sha256: 'faf972488486371e9fe92521bf5d1cf6b251704fe54e2e40f662a682a74001c5'
+  -   sha256: 'a5d17d84d1b0b798342dbadde4138048b28d50fe140741904a4705710f1802d0'
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/godot4-adapter.test.mjs:187:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { id: 'org.viento.godot4', contractVersion: 1, sha256: 'faf972488486371e9fe92521bf5d1cf6b251704fe54e2e40f662a682a74001c5' },
+    expected: { id: 'org.viento.godot4', contractVersion: 1, sha256: 'a5d17d84d1b0b798342dbadde4138048b28d50fe140741904a4705710f1802d0' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-animation-godot.test.mjs:89:1
+✖ animation sidecar composes with all scene, behavior and audio bases while preserving frozen base files (3.986138ms)
+  TypeError: Invalid frozen animation declaration.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:11:47)
+      at validateSceneAnimationPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:33:11)
+      at generateGodotAnimationProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-animation.mjs:11:52)
+      at Object.generate (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs:47:254)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:91:105)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    errorCode: 'build_animation_invalid'
+  }
+
+test at scripts/tests/scene-animation-godot.test.mjs:128:1
+✖ control replay refuses animation in pure admission and adapter execution before launching a process (3.238371ms)
+  TypeError: Invalid frozen animation declaration.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:11:47)
+      at validateSceneAnimationPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:33:11)
+      at generateGodotAnimationProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-animation.mjs:11:52)
+      at Object.generate (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs:47:254)
+      at materialize (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:73:35)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:130:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'build_animation_invalid'
+  }
+
+test at scripts/tests/scene-animation-godot.test.mjs:134:74
+✖ real Godot visual animation preserves movement and behavior/audio execution (false, false) (1.340184ms)
+  TypeError: Invalid frozen animation declaration.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:11:47)
+      at validateSceneAnimationPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:33:11)
+      at generateGodotAnimationProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-animation.mjs:11:52)
+      at Object.generate (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs:47:254)
+      at materialize (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:73:35)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:135:48)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'build_animation_invalid'
+  }
+
+test at scripts/tests/scene-animation-godot.test.mjs:134:74
+✖ real Godot visual animation preserves movement and behavior/audio execution (false, true) (1.407696ms)
+  TypeError: Invalid frozen animation declaration.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:11:47)
+      at validateSceneAnimationPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:33:11)
+      at generateGodotAnimationProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-animation.mjs:11:52)
+      at Object.generate (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs:47:254)
+      at materialize (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:73:35)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:135:48)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'build_animation_invalid'
+  }
+
+test at scripts/tests/scene-animation-godot.test.mjs:134:74
+✖ real Godot visual animation preserves movement and behavior/audio execution (true, false) (1.301603ms)
+  TypeError: Invalid frozen animation declaration.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:11:47)
+      at validateSceneAnimationPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:33:11)
+      at generateGodotAnimationProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-animation.mjs:11:52)
+      at Object.generate (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs:47:254)
+      at materialize (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:73:35)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:135:48)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'build_animation_invalid'
+  }
+
+test at scripts/tests/scene-animation-godot.test.mjs:134:74
+✖ real Godot visual animation preserves movement and behavior/audio execution (true, true) (1.291855ms)
+  TypeError: Invalid frozen animation declaration.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:11:47)
+      at validateSceneAnimationPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:33:11)
+      at generateGodotAnimationProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-animation.mjs:11:52)
+      at Object.generate (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs:47:254)
+      at materialize (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:73:35)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:135:48)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'build_animation_invalid'
+  }
+
+test at scripts/tests/scene-animation-godot.test.mjs:154:1
+✖ real Godot samples agree with Rust for loop boundaries, intermediate values, held endpoints and independent duplicate definitions (1.432602ms)
+  TypeError: Invalid frozen animation declaration.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:11:47)
+      at validateSceneAnimationPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:33:11)
+      at generateGodotAnimationProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-animation.mjs:11:52)
+      at Object.generate (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs:47:254)
+      at materialize (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:73:35)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:156:39)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'build_animation_invalid'
+  }
+
+test at scripts/tests/scene-animation-godot.test.mjs:181:1
+✖ project inventories and remaps animation composition including five-script behavior/audio scenes (90.542892ms)
+  TypeError: Invalid frozen animation declaration.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:11:47)
+      at validateSceneAnimationPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:33:11)
+      at validateProjectAssemblyPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/project-assembly-plan-contract.mjs:54:44)
+      at generateGodotAssemblyProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-project.mjs:40:16)
+      at Object.generate (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs:47:254)
+      at materialize (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:73:35)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:182:44)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'build_animation_invalid'
+  }
+
+test at scripts/tests/scene-animation-godot.test.mjs:195:1
+✖ real project animation survives scene A to B to A and starts a fresh clock for each visit (50.865934ms)
+  TypeError: Invalid frozen animation declaration.
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:11:47)
+      at validateSceneAnimationPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/scene-animation.mjs:33:11)
+      at validateProjectAssemblyPlan (file:///home/chiharukiryu/cdev/viento-studio/engine/project-assembly-plan-contract.mjs:54:44)
+      at generateGodotAssemblyProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-project.mjs:40:16)
+      at Object.generate (file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs:47:254)
+      at materialize (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:73:35)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-godot.test.mjs:196:44)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'build_animation_invalid'
+  }

@@ -1,0 +1,979 @@
+{
+  "startedAt": "2026-10-18T01:19:35.191Z",
+  "steps": [],
+  "screenshots": [
+    "failure.png"
+  ],
+  "errors": [],
+  "dialogs": [],
+  "layout": {},
+  "limitations": [
+    "Actual Chrome with local HTTP editor on a disposable copied author workspace. No installed Tauri or Android device acceptance.",
+    "Behavior UUID matches are ordinary strings in one saved scene-selected document; no script interpretation, global usage guarantee, playback or engine execution.",
+    "The usage service validates scene/audio/behavior registration. WAV bytes are absent; the World reader still reads document inventory and stats assets."
+  ],
+  "sources": {
+    "engine/scene-audio-usage.mjs": "68319a354a74e850620d77b12f98db297f6d4ed0feda148b4ec77d53794aad00",
+    "scripts/lib/scene-audio-usage-service.mjs": "38c443198bf6ed95bb1b2aef8bc956d36be3c810553aa7a135be47df39de8af9",
+    "scripts/lib/doc-api-service.mjs": "77f7d6c791d9956e50f4df71cb43fa6faabc461782a6e4713d06bf1e5fdb2e52",
+    "scripts/lib/doc-server-routes.mjs": "140a78c834d295ddb758bb7458c9cfb2b52a6f10e96d4f5212324dd9b54c8c34",
+    "web/modules/app-scene-audio.js": "fd7b7768a2d6b45a89db62b889ccf0c932706f553e39787f68f42627dcd6fbde",
+    "web/scene-audio.css": "1d230ea2ce60d983d9096465ed8440728a3a1b0db47ea7a46acb1c582f93c2a2",
+    "web/modules/app-scene-audio-source.js": "6510dd042290e942ff86a3b7fe4c7c0df9b7683f11e98e47b3c6c9b8bc7257af",
+    "web/modules/app-runtime.js": "705e53948d73f920acced6289fee821ec9102a7dd996b61f54ef3b330b34ae56",
+    "web/modules/app-doc-service.js": "895861b7e071381e8295a07464ce5b995ee844fdf6463b3f08e9f4cbcba2bf14",
+    "web/modules/app-source-location.js": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70",
+    "web/modules/app-source-reveal.js": "7c301fce690ef928446c0503f209d215ecd5f3d5c98ef98e31ef3996e7e2fa8b",
+    "engine/json-source.mjs": "2a7b27c150f53d255176c7c6185eebd1d0ac1ba6312e355769f02b3f83cb15f9",
+    "engine/scene-audio-edit.mjs": "b7eeb5f4e520b0c9407db5f156b97cc3c0a50dc2186ab04bc884542205945ed7",
+    "engine/scene-audio-core.mjs": "a552d813ae2ad86cf6a1d4c60bec0e620a419d9add53e3d535f66d300e05b508",
+    "engine/scene-behaviors.mjs": "d1316c6050cf1c82ec05adcbe10518e7c4602981b376f8b4a757c7310478a80e",
+    "web/i18n/en.js": "f77ebb436ec569279d30a8d3b5e42c3a067e6941b79c2fc0f0d4c446fa96c8fe",
+    "web/i18n/ja.js": "1baecc9194c1d9089b57b94c89cafa65110ff78531f4401a4c99ec1f1a06dafc",
+    "scripts/tests/scene-audio-usage-navigation-smoke.mjs": "e048039bc8314a3ae9c3c0756eded308f5e5f9163535fbe5827cd159484fb38e"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "system": {
+    "format": "viento-studio-system",
+    "schemaVersion": 1,
+    "lifecycle": "boot-only",
+    "hotReload": false,
+    "initializedModules": [
+      "org.viento.document",
+      "org.viento.settings",
+      "org.viento.scene-composition-create",
+      "org.viento.scripts",
+      "org.viento.scene-behaviors",
+      "org.viento.scene-audio",
+      "org.viento.world",
+      "org.viento.build",
+      "org.viento.project",
+      "org.viento.export",
+      "org.viento.media",
+      "org.viento.scene3d",
+      "org.viento.scene3d-transforms",
+      "org.viento.scene3d-objects",
+      "org.viento.scene3d-environment",
+      "org.viento.scene3d-properties",
+      "org.viento.scene3d-translation",
+      "org.viento.scene3d-alignment",
+      "org.viento.scene3d-distribution",
+      "org.viento.scene3d-copy",
+      "org.viento.scene3d-removal"
+    ],
+    "plan": {
+      "format": "viento-studio-module-plan",
+      "schemaVersion": 1,
+      "modules": [
+        {
+          "id": "org.viento.document",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scripts",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene-composition-create",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.settings",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.project",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.world",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.export",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.media",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.build",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-transforms",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-objects",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-environment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-properties",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-translation",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-alignment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-distribution",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-copy",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-removal",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene-behaviors",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene-audio",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        }
+      ],
+      "capabilities": [
+        {
+          "capability": "document.read",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "document.edit",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.markdown",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.text",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.json",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.yaml",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "authoring.script",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scripts",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.composition-create",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene-composition-create",
+          "active": true
+        },
+        {
+          "capability": "workbench.settings",
+          "apiVersion": 1,
+          "domain": "workbench",
+          "moduleId": "org.viento.settings",
+          "active": true
+        },
+        {
+          "capability": "project.types",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "project.templates",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "world.query",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "world.commands",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.object",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.projection",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.scene2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "project.export",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.package",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.reference",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.media",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene2d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "project.authoring.assembly",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.behavior-creation",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.audio-creation",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.composition2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.project",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.execution",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "behavior.gdscript",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.preview.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.transforms3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-transforms",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.objects3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-objects",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.environment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-environment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.properties3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-properties",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.translation3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-translation",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.alignment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-alignment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.distribution3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-distribution",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.copy3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-copy",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.removal3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-removal",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.behaviors",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene-behaviors",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.audio",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene-audio",
+          "active": true
+        }
+      ],
+      "requests": [],
+      "satisfied": true,
+      "diagnostics": []
+    },
+    "hostCapabilities": {
+      "semanticProjection": true,
+      "semanticCommands": [
+        "property.set",
+        "changeset.apply",
+        "object.create",
+        "scene.create",
+        "behavior.create",
+        "audio.create",
+        "projection.create",
+        "projection.update",
+        "scene.update",
+        "relation.add",
+        "resource.bind",
+        "world.recover"
+      ],
+      "projectBuild": true,
+      "scenePreview": true,
+      "sceneBehaviorDirectory": true
+    }
+  },
+  "ok": false,
+  "failure": "Error: {\"exceptionId\":1,\"text\":\"Uncaught (in promise) TypeError: Cannot read properties of null (reading 'click')\",\"lineNumber\":1,\"columnNumber\":67,\"scriptId\":\"219\",\"stackTrace\":{\"callFrames\":[{\"functionName\":\"\",\"scriptId\":\"219\",\"url\":\"\",\"lineNumber\":0,\"columnNumber\":66},{\"functionName\":\"\",\"scriptId\":\"219\",\"url\":\"\",\"lineNumber\":0,\"columnNumber\":76}]},\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"TypeError\",\"description\":\"TypeError: Cannot read properties of null (reading 'click')\\n    at <anonymous>:1:67\\n    at <anonymous>:1:77\",\"objectId\":\"-4836649568084166883.1.1\"}}\n    at evaluate (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-audio-usage-navigation-smoke.mjs:90:39)\n    at async file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-audio-usage-navigation-smoke.mjs:139:3",
+  "pageFailure": {
+    "text": "收起目录\nV\nViento Studio\n0.1.5\n设置\n项目类型与模板\n世界与对象\n构建与运行\n导出\n浏览\n编辑\n编辑场景声音\n3D预览\n编辑3D变换\n管理3D对象\n编辑3D环境\n编辑3D属性\n整体移动3D对象\n对齐3D位置\n等距分布3D位置\n批量复制3D对象\n批量移除3D对象\n×\n全部（5）\n角色 / ACTOR（1）\n场景 / SCENE（1）\n行为绑定 / BEHAVIOR（1）\n行为源码 / SCRIPT（1）\n场景声音 / SCENE AUDIO（1）\n当前显示 5 个文档（共 5 个） （静态生成 2026/10/18 09:19:35）\n分类 角色 / ACTOR（1）\n角色 / ACTOR（1）\ntraveler\n角色 / Actor · 角色 / Actor\n可编辑\n分类 场景 / SCENE（1）\n场景 / SCENE（1）\ndemo\n场景 / Scene · 场景 / Scene\n可编辑\n分类 场景声音 / SCENE AUDIO（1）\n场景声音 / SCENE AUDIO（1）\ndemo\n场景声音 / Scene audio · 场景声音 / Scene audio\n可编辑\n分类 行为绑定 / BEHAVIOR（1）\n行为绑定 / BEHAVIOR（1）\ndemo\n行为绑定 / Behavior · 行为绑定 / Behavior\n可编辑\n分类 行为源码 / SCRIPT（1）\n行为源码 / SCRIPT（1）\ncheckpoint\n行为源码 / Script · 行为源码 / Script\n可编辑\ndemo\n源码编辑\n分段编辑\n字段编辑\n返回阅读\n插入素材\n保存修改\n新建场景配方\n新建脚本\n源文件：documents/audio/demo.json\n查找与替换\n缩进单位\n制表符\n2 个空格\n4 个空格\n增加缩进\n减少缩进\n第 1 行，第 1 列 · 共 42 行\n跳转到行\n与文件一致\n783 字 · 42 行\nCtrl / ⌘ + S 保存\n编辑场景声音\n返回编辑器\n\n管理声音轨道和时间提示，可选择已绑定的 WAV 素材。编辑不会自动播放声音。\n\ndocuments/audio/demo.json\n\n声音所属场景：dddddddd-dddd-4ddd-8ddd-dddddddddddd\n\n声音轨道\n\n声音轨道 2 / 16\n\n读取已绑定素材\n\n先在作品世界中为声音文档绑定已导入的 WAV 素材，再在此读取并选择。这里不会修改资源绑定。\n\n尚未读取已绑定素材；原有编辑仍可继续。\n\n行为脚本可能通过轨道编号引用声音。移除前请检查脚本；此处不会自动修改脚本。\n\n轨道 77777777-7777-4777-8777-000000000001 · 资源 99999999-9999-4999-8999-999999999999\n\nWAV 素材\n当前素材：99999999-9999-4999-8999-999999999999\n声音用途\n音乐\n音效\n音量（0–1）\n循环播放\n是\n否\n试听音轨\n查看使用位置\n复制音轨\n移除音轨\n\n先移除引用此音轨的时间提示，或将提示换到其他音轨。\n\n轨道 77777777-7777-4777-8777-000000000002 · 资源 99999999-9999-4999-8999-999999999999\n\nWAV 素材\n当前素材：99999999-9999-4999-8999-999999999999\n声音用途\n音乐\n音效\n音量（0–1）\n循环播放\n是\n否\n试听音轨\n查看使用位置\n复制音轨\n移除音轨\n\n先移除引用此音轨的时间提示，或将提示换到其他音轨。\n\n音轨使用位置\n刷新已保存行为\n收起使用位置\n\n音轨编号：77777777-7777-4777-8777-000000000001\n\n时间提示来自当前表单，行为文字匹配来自上次读取的同场景已保存文档。只匹配完整音轨编号，不解析脚本、其他场景或未保存行为草稿；未发现匹配不代表可以安全移除。\n\n当前表单的时间提示\n\n当前表单有 2 条时间提示引用此音轨。\n\n第 1 条提示 · 66666666-6666-4666-8666-000000000001\n\n定位提示\n\n第 3 条提示 · 66666666-6666-4666-8666-000000000003\n\n定位提示\n已保存行为的文字匹配\n\n上次读取找到 3 处完整编号文字匹配。\n\n已保存行为文档：documents/behaviors/demo.json\n\n绑定 99999999-9999-4999-8999-999999999991 · 实例 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\n\n参数 custom_sound · /bindings/0/parameters/custom_sound\n\n查看参数原文\n\n绑定 99999999-9999-4999-8999-999999999991 · 实例 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\n\n参数 alt_sound · /bindings/0/parameters/alt_sound\n\n查看参数原文\n\n绑定 99999999-9999-4999-8999-999999999992 · 实例 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\n\n参数 shared_sound · /bindings/1/parameters/shared_sound\n\n查看参数原文\n声音时间提示\n添加时间提示\n\n时间提示 3 / 64\n\n可为每条提示选择当前音轨。按时间执行；同一时刻按列表顺序执行。上下移动不会改变触发时间。\n\n提示 66666666-6666-4666-8666-000000000001\n\n提示音轨\n音轨 1 · 77777777-7777-4777-8777-000000000001\n音轨 2 · 77777777-7777-4777-8777-000000000002\n触发时间（秒，0–60）\n声音操作\n播放\n停止\n上移\n下移\n移除时间提示\n\n提示 66666666-6666-4666-8666-000000000002\n\n提示音轨\n音轨 1 · 77777777-7777-4777-8777-000000000001\n音轨 2 · 77777777-7777-4777-8777-000000000002\n触发时间（秒，0–60）\n声音操作\n播放\n停止\n上移\n下移\n移除时间提示\n\n提示 66666666-6666-4666-8666-000000000003\n\n提示音轨\n音轨 1 · 77777777-7777-4777-8777-000000000001\n音轨 2 · 77777777-7777-4777-8777-000000000002\n触发时间（秒，0–60）\n声音操作\n播放\n停止\n上移\n下移\n移除时间提示\n声音修改审阅\n/tracks/0/volume\n修改前的完整原文\n﻿{\r\n  \"format\": \"viento-scene-audio\",\r\n  \"schemaVersion\": 1,\r\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\r\n  \"tracks\": [\r\n    {\r\n      \"id\": \"77777777-7777-4777-8777-000000000001\",\r\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\r\n      \"role\": \"music\",\r\n      \"volume\": 0.12,\r\n      \"loop\": true\r\n    },\r\n    {\r\n      \"id\": \"77777777-7777-4777-8777-000000000002\",\r\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\r\n      \"role\": \"effect\",\r\n      \"volume\": 0.3,\r\n      \"loop\": false\r\n    }\r\n  ],\r\n  \"cues\": [\r\n    {\r\n      \"id\": \"66666666-6666-4666-8666-000000000001\",\r\n      \"trackId\": \"77777777-7777-4777-8777-000000000001\",\r\n      \"atSeconds\": 0,\r\n      \"action\": \"play\"\r\n    },\r\n    {\r\n      \"id\": \"66666666-6666-4666-8666-000000000002\",\r\n      \"trackId\": \"77777777-7777-4777-8777-000000000002\",\r\n      \"atSeconds\": 0.25,\r\n      \"action\": \"play\"\r\n    },\r\n    {\r\n      \"id\": \"66666666-6666-4666-8666-000000000003\",\r\n      \"trackId\": \"77777777-7777-4777-8777-000000000001\",\r\n      \"atSeconds\": 0.5,\r\n      \"action\": \"stop\"\r\n    }\r\n  ]\r\n}\r\n\n应用后的完整原文\n﻿{\r\n  \"format\": \"viento-scene-audio\",\r\n  \"schemaVersion\": 1,\r\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\r\n  \"tracks\": [\r\n    {\r\n      \"id\": \"77777777-7777-4777-8777-000000000001\",\r\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\r\n      \"role\": \"music\",\r\n      \"volume\": 0.2,\r\n      \"loop\": true\r\n    },\r\n    {\r\n      \"id\": \"77777777-7777-4777-8777-000000000002\",\r\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\r\n      \"role\": \"effect\",\r\n      \"volume\": 0.3,\r\n      \"loop\": false\r\n    }\r\n  ],\r\n  \"cues\": [\r\n    {\r\n      \"id\": \"66666666-6666-4666-8666-000000000001\",\r\n      \"trackId\": \"77777777-7777-4777-8777-000000000001\",\r\n      \"atSeconds\": 0,\r\n      \"action\": \"play\"\r\n    },\r\n    {\r\n      \"id\": \"66666666-6666-4666-8666-000000000002\",\r\n      \"trackId\": \"77777777-7777-4777-8777-000000000002\",\r\n      \"atSeconds\": 0.25,\r\n      \"action\": \"play\"\r\n    },\r\n    {\r\n      \"id\": \"66666666-6666-4666-8666-000000000003\",\r\n      \"trackId\": \"77777777-7777-4777-8777-000000000001\",\r\n      \"atSeconds\": 0.5,\r\n      \"action\": \"stop\"\r\n    }\r\n  ]\r\n}\r\n\n\n声音修改已检查，请审阅完整原文后应用。\n\n按当前音量和循环设置试听一条 WAV；不会执行时间提示或保存修改。\n\n请先读取已绑定素材，再试听音轨。\n\n停止试听\n应用只更新原文草稿；仍需在编辑器保存。\n检查声音修改\n应用到原文草稿\n取消修改",
+    "source": "﻿{\n  \"format\": \"viento-scene-audio\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"tracks\": [\n    {\n      \"id\": \"77777777-7777-4777-8777-000000000001\",\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\n      \"role\": \"music\",\n      \"volume\": 0.12,\n      \"loop\": true\n    },\n    {\n      \"id\": \"77777777-7777-4777-8777-000000000002\",\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\n      \"role\": \"effect\",\n      \"volume\": 0.3,\n      \"loop\": false\n    }\n  ],\n  \"cues\": [\n    {\n      \"id\": \"66666666-6666-4666-8666-000000000001\",\n      \"trackId\": \"77777777-7777-4777-8777-000000000001\",\n      \"atSeconds\": 0,\n      \"action\": \"play\"\n    },\n    {\n      \"id\": \"66666666-6666-4666-8666-000000000002\",\n      \"trackId\": \"77777777-7777-4777-8777-000000000002\",\n      \"atSeconds\": 0.25,\n      \"action\": \"play\"\n    },\n    {\n      \"id\": \"66666666-6666-4666-8666-000000000003\",\n      \"trackId\": \"77777777-7777-4777-8777-000000000001\",\n      \"atSeconds\": 0.5,\n      \"action\": \"stop\"\n    }\n  ]\n}\n",
+    "system": {
+      "format": "viento-studio-system",
+      "schemaVersion": 1,
+      "lifecycle": "boot-only",
+      "hotReload": false,
+      "initializedModules": [
+        "org.viento.document",
+        "org.viento.settings",
+        "org.viento.scene-composition-create",
+        "org.viento.scripts",
+        "org.viento.scene-behaviors",
+        "org.viento.scene-audio",
+        "org.viento.world",
+        "org.viento.build",
+        "org.viento.project",
+        "org.viento.export",
+        "org.viento.media",
+        "org.viento.scene3d",
+        "org.viento.scene3d-transforms",
+        "org.viento.scene3d-objects",
+        "org.viento.scene3d-environment",
+        "org.viento.scene3d-properties",
+        "org.viento.scene3d-translation",
+        "org.viento.scene3d-alignment",
+        "org.viento.scene3d-distribution",
+        "org.viento.scene3d-copy",
+        "org.viento.scene3d-removal"
+      ],
+      "plan": {
+        "format": "viento-studio-module-plan",
+        "schemaVersion": 1,
+        "modules": [
+          {
+            "id": "org.viento.document",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scripts",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene-composition-create",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.settings",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.project",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.world",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.export",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.media",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.build",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-transforms",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-objects",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-environment",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-properties",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-translation",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-alignment",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-distribution",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-copy",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-removal",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene-behaviors",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene-audio",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          }
+        ],
+        "capabilities": [
+          {
+            "capability": "document.read",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "document.edit",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.markdown",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.text",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.json",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.yaml",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "authoring.script",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scripts",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.composition-create",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene-composition-create",
+            "active": true
+          },
+          {
+            "capability": "workbench.settings",
+            "apiVersion": 1,
+            "domain": "workbench",
+            "moduleId": "org.viento.settings",
+            "active": true
+          },
+          {
+            "capability": "project.types",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.project",
+            "active": true
+          },
+          {
+            "capability": "project.templates",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.project",
+            "active": true
+          },
+          {
+            "capability": "world.query",
+            "apiVersion": 1,
+            "domain": "world",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "world.commands",
+            "apiVersion": 1,
+            "domain": "world",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.object",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.projection",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.scene2d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "project.export",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.export",
+            "active": true
+          },
+          {
+            "capability": "resource.package",
+            "apiVersion": 1,
+            "domain": "resource",
+            "moduleId": "org.viento.export",
+            "active": true
+          },
+          {
+            "capability": "resource.reference",
+            "apiVersion": 1,
+            "domain": "resource",
+            "moduleId": "org.viento.media",
+            "active": true
+          },
+          {
+            "capability": "scene.representation.scene2d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "project.authoring.assembly",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.behavior-creation",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.audio-creation",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.composition2d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "backend.project",
+            "apiVersion": 1,
+            "domain": "backend",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "backend.execution",
+            "apiVersion": 1,
+            "domain": "backend",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "behavior.gdscript",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.representation.scene3d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.scene3d",
+            "active": true
+          },
+          {
+            "capability": "scene.preview.scene3d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.scene3d",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.transforms3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-transforms",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.objects3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-objects",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.environment3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-environment",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.properties3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-properties",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.translation3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-translation",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.alignment3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-alignment",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.distribution3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-distribution",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.copy3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-copy",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.removal3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-removal",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.behaviors",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene-behaviors",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.audio",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene-audio",
+            "active": true
+          }
+        ],
+        "requests": [],
+        "satisfied": true,
+        "diagnostics": []
+      },
+      "hostCapabilities": {
+        "semanticProjection": true,
+        "semanticCommands": [
+          "property.set",
+          "changeset.apply",
+          "object.create",
+          "scene.create",
+          "behavior.create",
+          "audio.create",
+          "projection.create",
+          "projection.update",
+          "scene.update",
+          "relation.add",
+          "resource.bind",
+          "world.recover"
+        ],
+        "projectBuild": true,
+        "scenePreview": true,
+        "sceneBehaviorDirectory": true
+      }
+    }
+  },
+  "finishedAt": "2026-10-18T01:19:37.090Z"
+}

@@ -14,6 +14,7 @@ mod scene3d_patch;
 mod scene3d_properties_patch;
 mod scene3d_removal_patch;
 mod scene3d_translation_patch;
+mod scene_animation;
 mod scene_audio;
 mod scene_composition;
 mod scene_composition_definition_rename;
@@ -165,6 +166,12 @@ pub extern "C" fn viento_core_scene_audio_version() -> u32 {
     1
 }
 
+/// Optional visual animation curves; core ABI and other domains remain independent.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_animation_version() -> u32 {
+    1
+}
+
 /// Optional bounded field preparation and explicit-time particle sampling.
 #[no_mangle]
 pub extern "C" fn viento_core_scene3d_particles_version() -> u32 {
@@ -297,6 +304,13 @@ pub enum CoreResponse {
         ok: bool,
         scene3d: scene3d::Scene3DResponse,
     },
+    SceneAnimationSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "sceneAnimation")]
+        scene_animation: scene_animation::SceneAnimationResponse,
+    },
     SceneAudioSuccess {
         #[serde(rename = "protocolVersion")]
         protocol_version: u32,
@@ -408,6 +422,16 @@ impl CoreResponse {
 }
 
 fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
+    if matches!(
+        value["operation"].as_str(),
+        Some("sceneAnimation.inspect" | "sceneAnimation.sample")
+    ) {
+        return Ok(CoreResponse::SceneAnimationSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene_animation: scene_animation::dispatch(value)?,
+        });
+    }
     if matches!(
         value["operation"].as_str(),
         Some("sceneAudio.inspect" | "sceneAudio.sample")
@@ -682,6 +706,12 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
         serde_json::from_slice::<Value>(input)
             .map_err(|_| CoreError::request())
             .and_then(|value| {
+                if matches!(
+                    value["operation"].as_str(),
+                    Some("sceneAnimation.inspect" | "sceneAnimation.sample")
+                ) {
+                    scene_animation::validate_request_bytes(input)?;
+                }
                 if matches!(
                     value["operation"].as_str(),
                     Some("sceneAudio.inspect" | "sceneAudio.sample")

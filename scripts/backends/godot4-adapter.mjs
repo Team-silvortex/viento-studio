@@ -11,14 +11,15 @@ import { runBuildProcess } from '../lib/build-process.mjs';
 import { identifyGodot, generateGodotProject, godotDiagnostics, createRuntimeEventReader } from './godot4-dispatch.mjs';
 import { generateGodotBehaviorProject, godotBehaviorDiagnostics, createBehaviorRuntimeEventReader } from './godot4-behaviors.mjs';
 import { generateGodotAudioProject, godotAudioDiagnostics } from './godot4-audio.mjs';
+import { generateGodotAnimationProject, godotAnimationDiagnostics } from './godot4-animation.mjs';
 import { generateGodotAssemblyProject, godotAssemblyScripts, godotAssemblyDiagnostics } from './godot4-project.mjs';
 import { createProjectRuntimeEventReader } from '../../engine/project-runtime-events.mjs';
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.11.0',
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.12.0',
   platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 4 }],
-  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control'],
+  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'animation.visual2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -43,7 +44,7 @@ async function generate(plan) {
   support({ operation: 'build', plan });
   // Detach before the generator's asynchronous file reads so callers cannot
   // change an admitted plan while its project bytes are being produced.
-  const generated = await (plan.kind === 'project' ? generateGodotAssemblyProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
+  const generated = await (plan.kind === 'project' ? generateGodotAssemblyProject : plan.animation ? generateGodotAnimationProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
   return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
     artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
 }
@@ -52,6 +53,10 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ['scripts/backends/godot4-animation.mjs', new URL('./godot4-animation.mjs', import.meta.url)],
+    ['scripts/backends/godot4/animation-runtime.gd', new URL('./godot4/animation-runtime.gd', import.meta.url)],
+    ['engine/scene-animation.mjs', new URL('../../engine/scene-animation.mjs', import.meta.url)],
+    ['engine/scene-animation-core.mjs', new URL('../../engine/scene-animation-core.mjs', import.meta.url)],
     ['engine/scene-behavior-events.mjs', new URL('../../engine/scene-behavior-events.mjs', import.meta.url)],
     ['engine/scene-runtime-events.mjs', new URL('../../engine/scene-runtime-events.mjs', import.meta.url)],
     ['scripts/backends/godot4-adapter.mjs', new URL('./godot4-adapter.mjs', import.meta.url)],
@@ -136,6 +141,13 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
     const hasAudio = await fs.access(path.join(directory, 'audio.json')).then(() => true, error => {
       if (error.code === 'ENOENT') return false; throw error;
     });
+    const hasAnimation = await fs.access(path.join(directory, 'animation.json')).then(() => true, error => {
+      if (error.code === 'ENOENT') return false; throw error;
+    });
+    if (hasAnimation) {
+      await readBuildFile(await resolveContainedPath(directory, path.join(directory, 'animation-runtime.gd')), 65536, signal);
+      scripts.push('animation-runtime.gd');
+    }
     if (hasAudio) {
       await readBuildFile(await resolveContainedPath(directory, path.join(directory, 'audio-runtime.gd')), 65536, signal);
       scripts.push('audio-runtime.gd');
@@ -159,6 +171,9 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
   catch (error) { throw buildError(error.errorCode || 'runtime_control_invalid', 'Invalid bounded runtime control program.'); }
   const stat = await fs.lstat(directory);
   if (!stat.isDirectory() || stat.isSymbolicLink()) throw buildError('build_output_invalid', 'Control replay requires an owned generated directory.');
+  if (await fs.access(path.join(directory, 'animation.json')).then(() => true, error => {
+    if (error.code === 'ENOENT') return false; throw error;
+  })) throw buildError('runtime_control_unsupported', 'Control replay is not yet composed with visual animation.');
   if (await fs.access(path.join(directory, 'audio.json')).then(() => true, error => {
     if (error.code === 'ENOENT') return false; throw error;
   })) throw buildError('runtime_control_unsupported', 'Control replay is not yet composed with scene audio.');
@@ -212,7 +227,7 @@ async function cleanupProject(directory, { generatedFiles = [], resourceFiles = 
 export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
   descriptor, contractVersion: 1, acceptsLegacyBuildRecords: true, buildPhases, runtimePhases,
   availability, identify: identifyGodot, generate, fingerprint, executePhase,
-  diagnostics: (result, plan) => (plan.kind === 'project' ? godotAssemblyDiagnostics : plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
+  diagnostics: (result, plan) => (plan.kind === 'project' ? godotAssemblyDiagnostics : plan.animation ? godotAnimationDiagnostics : plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
   createEventReader: (input, options) => {
     if (input.kind === 'project') return createProjectRuntimeEventReader(input, { protocolVersion: 4, ...options,
       ...(options?.smoke === true ? { expectedTotalSeconds: 0.5 } : {}) });

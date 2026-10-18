@@ -1,0 +1,44 @@
+{
+  "scope": "Saved Scene2D visual animation preview; source only",
+  "reviews": [
+    {
+      "area": "Frozen animation envelope and optional HTTP attachment",
+      "result": "No blocker",
+      "checks": [
+        "Same captured source/plan/snapshot; no second World read or full build",
+        "none/ready/invalid isolates invalid animation",
+        "Exact scene/manifest revision and stable instance membership; descriptor-safe copy",
+        "Old static, draft and composition response shapes retained"
+      ]
+    },
+    {
+      "area": "Visual sample and Canvas, independent review against Godot visual container",
+      "result": "One defensive capture gap fixed",
+      "finding": "Actor instanceId originally read directly, accepting getter and inherited values. Trusted HTTP JSON did not carry them, but pure capture boundary was inconsistent.",
+      "fix": "Dense own-data actor identity capture, no custom map or getter execution",
+      "checks": [
+        "Root+offset then degree rotation then scale agrees with existing visual container",
+        "Nonzero image RGBA tint alpha multiplied by animation alpha",
+        "Labels stay logical and alpha 1; duplicate-definition instances remain separate",
+        "Full frame replacement prevents prior-channel leakage; no layout commit",
+        "Hide, model replacement, edit entry, destroy clear overlay; stop preserves view/cache"
+      ]
+    },
+    {
+      "area": "UI and lifecycle independent source audit",
+      "result": "No blocker",
+      "checks": [
+        "Refresh clears animation before any async work; saved refresh clears old model, failed draft may retain static only",
+        "Capability revocation clears player and prevents late envelope installation; re-enable uses new epoch",
+        "Draft/composition gate uses selected-document context independently of model reset",
+        "Epoch/signal/scene/visible/available checks release superseded image leases",
+        "No per-frame translation or repeated status text mutations"
+      ]
+    }
+  ],
+  "nonClaims": [
+    "No new Godot or Bevy run",
+    "No installed app or Android/device verification",
+    "No author edits, physics, behavior or audio playback by preview"
+  ]
+}

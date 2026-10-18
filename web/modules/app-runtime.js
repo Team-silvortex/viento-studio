@@ -1,3 +1,5 @@
+import { createSceneAnimationSourceHost } from './app-scene-animation-source.js';
+import { supportsStudioCoreSceneAnimation } from '../../engine/studio-core.mjs';
 import { readSceneAudioBytes } from './app-scene-audio-media.js';
 import { setupSourceSearch } from './app-source-search.js';
 import { setupSourceHistory } from './app-source-history.js';
@@ -88,6 +90,8 @@ import {
   inspectSceneBehaviorAuthoring,
   inspectSceneAudioCreation,
   inspectSceneAudioDirectory,
+  inspectSceneAudioUsage,
+  inspectSceneAnimationTargets,
 } from './app-doc-service.js';
 
 let studioSystem = null;
@@ -101,6 +105,8 @@ let sourceEditorContentEpoch = 0;
 let sceneBehaviorAuthoringAvailable = false;
 let sceneAudioResourcesAvailable = false;
 let sceneAudioDirectoryAvailable = false;
+let sceneAudioUsageAvailable = false;
+let sceneAnimationTargetsAvailable = false;
 let fieldEditorController = null;
 let fieldDraftSourcePath = '';
 let fieldLoadToken = 0;
@@ -2021,6 +2027,8 @@ async function detectEditBackend() {
   sceneBehaviorAuthoringAvailable = normalizedDetection.available === true && detection.payload?.sceneBehaviorAuthoring === true;
   sceneAudioResourcesAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioCreation === true;
   sceneAudioDirectoryAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioDirectory === true;
+  sceneAudioUsageAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioUsage === true;
+  sceneAnimationTargetsAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationTargets === true;
   studioSystem?.updateCapabilities(detection.payload || null);
   studioSystem?.refreshMedia();
 }
@@ -5840,13 +5848,14 @@ async function initApp(options = {}) {
     readAudioBytes: readSceneAudioBytes,
     digestBytes: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', value))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
     inspect: payload => inspectSceneAudioCreation(payload),
+    inspectUsage: payload => inspectSceneAudioUsage(payload),
     getState: () => {
       const doc = getActiveDoc(), sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
       return { document: doc, sourcePath, token: `${editorLoadToken}:${scenePreviewDraftEpoch}`, content: getCurrentEditContent(),
         baseline: editSessionBaselineContent, version: editSessionVersion,
         editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
         creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath), available: true,
-        resourcesAvailable: sceneAudioResourcesAvailable };
+        resourcesAvailable: sceneAudioResourcesAvailable, usageAvailable: sceneAudioUsageAvailable };
     },
     digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
     writeDraft: content => {
@@ -5858,6 +5867,26 @@ async function initApp(options = {}) {
       setEditorStatus(t(state.editHasUnsavedChanges ? '声音修改已应用到原文草稿；尚未保存。' : '声音修改已应用；文本与已保存版本一致。'));
     }, focus: () => editEditorEl.focus(),
   });
+  const animationSourceHost = createSceneAnimationSourceHost({
+    getState: () => {
+      const doc = getActiveDoc(), sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
+      return { document: doc, sourcePath, token: `${editorLoadToken}:${scenePreviewDraftEpoch}`, content: getCurrentEditContent(),
+        baseline: editSessionBaselineContent, version: editSessionVersion,
+        editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
+        creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath), available: typeof supportsStudioCoreSceneAnimation === 'function' && supportsStudioCoreSceneAnimation(),
+        targetsAvailable: sceneAnimationTargetsAvailable };
+    },
+    digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
+    inspectTargets: payload => inspectSceneAnimationTargets(payload),
+    writeDraft: content => {
+      const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, scroll = editEditorEl.scrollTop;
+      setSourceEditorContent(content);
+      if (Number.isInteger(start) && Number.isInteger(end)) editEditorEl.setSelectionRange?.(Math.min(start, content.length), Math.min(end, content.length));
+      editEditorEl.scrollTop = scroll;
+      refreshEditSessionDirtyState(); refreshEditButtons();
+      setEditorStatus(t(state.editHasUnsavedChanges ? '动画修改已应用到原文草稿；尚未保存。' : '动画修改已应用；文本与已保存版本一致。'));
+    }, focus: () => editEditorEl.focus(),
+  });
   studioSystem = await setupStudioSystem({
     settings: options.settings,
     features: options.features,
@@ -5865,6 +5894,7 @@ async function initApp(options = {}) {
       scripts: { getContext: scriptCreateContext, createDraft: createScriptDraft },
       compositionCreate: { getContext: compositionCreateContext, createDraft: createCompositionDraft },
       sceneAudio: audioSourceHost,
+      sceneAnimation: animationSourceHost,
       sceneBehaviors: { ...behaviorSourceHost, inspect: payload => inspectSceneBehaviorAuthoring(payload) },
       scene3d: { getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot, locateSource: locateScene3DSource },
       scene3dTransforms: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DTransformDraft },

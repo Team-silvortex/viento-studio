@@ -60,3 +60,13 @@
 .scene-outline-group-actions > button { min-width: 0; font-size: 12px; }
 /* Keep deep outlines readable in a narrow inspector while retaining nesting. */
 #scenePreviewObjects ol ol ol ol, #sceneLayoutObjects ol ol ol ol { padding-inline-start: 3px; margin-inline-start: 1px; }
+
+.scene-preview-animation { margin-block:14px; padding:12px; border:1px solid #bdcec4; border-radius:8px; }
+.scene-preview-animation[hidden], .scene-preview-animation [hidden] { display:none!important; }
+.scene-preview-animation h3 { margin:0 0 8px; font-size:16px; }
+.scene-preview-animation p { overflow-wrap:anywhere; }
+.scene-preview-animation-time { display:grid; grid-template-columns:auto minmax(100px,1fr) auto; gap:10px; align-items:center; }
+.scene-preview-animation-time input { width:100%; min-width:0; }
+.scene-preview-animation-time output { font-variant-numeric:tabular-nums; white-space:nowrap; }
+#scenePreviewAnimationDiagnostic { white-space:pre-wrap; }
+@media(max-width:700px) { .scene-preview-animation-time { grid-template-columns:minmax(0,1fr) auto; } .scene-preview-animation-time span { grid-column:1/-1; } }

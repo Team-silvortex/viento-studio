@@ -1,0 +1,141 @@
+{
+  "format": "viento-scene-audio-usage-navigation-independent-audit",
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-18T01:27:10.890422+00:00",
+  "scope": "音轨使用位置：当前表单 cue 定位与上次读取的行为原文只读选区。独立审查 core 身份/范围及 UI 所有权，不覆盖跨文档导航或新运行时能力。",
+  "result": "passed",
+  "openFindings": [],
+  "resolvedObservations": [
+    {
+      "area": "TrackNUsage entry",
+      "observation": "原入口只按 UUID 调用 showUsage，关闭重开后旧 DOM 按钮可能作用于新会话。",
+      "resolution": "UI agent 已增加 session、当前轨道 usage 节点身份与 Tracks.contains 检查；reopen 回归通过。"
+    },
+    {
+      "area": "Saved author text locale and measurement mirror",
+      "observation": "浏览器诊断发现文档语言切换会改变混合语言 JSON 的字体回退与换行，使 textarea 内部滚动漂移；只读原文和测量镜像必须使用相同语言。",
+      "resolution": "只读 textarea 显式 lang=\"\"，镜像复制最近的 lang 属性，保留空串且不凭空赋值。新增 source-reveal 8项套件及独立4种语言断言通过；最终浏览器实测由主任务执行。"
+    }
+  ],
+  "verifiedBoundaries": [
+    "sceneAudioUsageSource 只接受品牌 catalog 自身 match 对象，拒绝克隆、跨目录、继承、getter、Proxy。",
+    "原文与语法索引私有保存；公开 catalog shape 保持不变，返回内容和范围深冻结。",
+    "重复音轨 UUID 按 JSON Pointer 精确定位对应 binding/参数，支持 BOM、CRLF、CR、转义值及转义参数名。",
+    "readonly 文本明确上次读取的已保存快照；不读取实时磁盘、不改主编辑器草稿、不跨文档导航。",
+    "cue 定位按当前行身份与 DOM 所属关系验证；重排、删除、改目标后的旧按钮拒绝。",
+    "刷新开始、切换轨道、移除轨道、关闭、能力撤回、源会话改变清除原文；旧 source 按钮不能复活。",
+    "普通 refresh/中英日切换不重建 textarea、不重写 value、选区或滚动；当前表单未完成输入仍保留。",
+    "使用位置与 readonly 导航不撤销已检查方案，不影响 loading/playing/paused 试听。",
+    "原文语言显式为未知，与 UI 文案语言独立；closest([lang]) 同时覆盖 textarea 自身与最近祖先，测量镜像保持相同语言，包括空字符串。",
+    "语言镜像修复不引入网络、文件或跨文档读写；仍只计算视口位置，保留 source/selection 并移除临时镜像。"
+  ],
+  "testRuns": [
+    {
+      "command": "node scripts/tests/scene-audio-usage-source.test.mjs",
+      "log": "audit-core.log",
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node scripts/tests/scene-audio-editor-ui.test.mjs",
+      "log": "audit-ui.log",
+      "tests": 120,
+      "passed": 120,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node scripts/tests/source-location-ui.test.mjs",
+      "log": "audit-source-location-direct.log",
+      "tests": 39,
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node /tmp/viento-audio-usage-navigation-check/audit-source.mjs",
+      "log": "audit-source.log",
+      "kind": "independent assertion script",
+      "result": {
+        "ok": true,
+        "sourceSelections": 18,
+        "newlineForms": 3,
+        "bomForms": 2,
+        "repeatedTrackBindings": 3,
+        "escapedKeysAndValues": true,
+        "forgedProxyAndCrossCatalogRejected": true,
+        "callerMutationDetached": true
+      }
+    },
+    {
+      "command": "node scripts/tests/source-reveal.test.mjs",
+      "log": "audit-source-reveal.log",
+      "tests": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node scripts/tests/source-position-ui.test.mjs",
+      "log": "audit-source-position.log",
+      "tests": 18,
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node /tmp/viento-audio-usage-navigation-check/audit-language.mjs",
+      "log": "audit-language.log",
+      "kind": "independent assertion script",
+      "result": {
+        "ok": true,
+        "nearestLanguageCases": 4,
+        "explicitEmptyPreserved": true,
+        "absentLanguageNotInvented": true,
+        "sourceAndSelectionUnchanged": true,
+        "mirrorAlwaysRemoved": true
+      }
+    }
+  ],
+  "unitTotals": {
+    "tests": 194,
+    "passed": 194,
+    "failed": 0,
+    "skipped": 0
+  },
+  "limits": [
+    "本审计只读取浏览器滚动诊断，未独立执行浏览器布局实测；最终窄屏、日语重新定位和内部滚动由主任务真实浏览器验收。",
+    "未执行安装包、Android设备或外部编辑器验证。"
+  ],
+  "sourceHashes": {
+    "engine/scene-audio-usage.mjs": "68319a354a74e850620d77b12f98db297f6d4ed0feda148b4ec77d53794aad00",
+    "engine/json-source.mjs": "2a7b27c150f53d255176c7c6185eebd1d0ac1ba6312e355769f02b3f83cb15f9",
+    "engine/scene-behaviors.mjs": "d1316c6050cf1c82ec05adcbe10518e7c4602981b376f8b4a757c7310478a80e",
+    "web/modules/app-scene-audio.js": "48bf3ce96f796212cda72a6374e5a9e437d15f9570a2e1d40e20a76c62af94ce",
+    "web/modules/app-source-location.js": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70",
+    "web/modules/app-source-reveal.js": "45ed39671a100268ee8b7f171c341fda6970aa8bdece9b86cd8749e2d4ab56b6",
+    "web/modules/app-scene-audio-source.js": "6510dd042290e942ff86a3b7fe4c7c0df9b7683f11e98e47b3c6c9b8bc7257af",
+    "web/scene-audio.css": "1d230ea2ce60d983d9096465ed8440728a3a1b0db47ea7a46acb1c582f93c2a2",
+    "web/i18n/en.js": "f77ebb436ec569279d30a8d3b5e42c3a067e6941b79c2fc0f0d4c446fa96c8fe",
+    "web/i18n/ja.js": "1baecc9194c1d9089b57b94c89cafa65110ff78531f4401a4c99ec1f1a06dafc",
+    "scripts/tests/scene-audio-usage-source.test.mjs": "6c8c2715979d4a982d09318ed1a20d387e9f55b78f50c98060bc2d8dbdd9ab47",
+    "scripts/tests/scene-audio-editor-ui.test.mjs": "fa9e87ab00ca6107956a65e97dff6ba76e7c7bc6bbedae97a73801d9a07f77e6",
+    "scripts/tests/source-location-ui.test.mjs": "67d716b7758baa9bafc3fcba95e1c2dadf9482a437669b7a7f9021af5d1b7cdc",
+    "scripts/tests/source-reveal.test.mjs": "b84da45e1c38fcad68a82f06804b15d7c21169d79cf5671c54ce35b50a598ef9",
+    "scripts/tests/source-position-ui.test.mjs": "ed4be2e36f9e67e5a5d5f84c39eb0ca20dd09eed851a6f3201220e9235046d92"
+  },
+  "auditArtifactHashes": {
+    "audit-core.log": "137b4fd3e16577022d1d07eb828d35166730d3dd4eeee912b89bdd0571ecf026",
+    "audit-ui.log": "b964c75f23ac8e8eb670a5c45b3b14569075430325e26e7bc92919191e0f75d1",
+    "audit-source-location-direct.log": "b33bd44c8671e333600c5d6e1f5cfd9b80fe7653c45b6a2609e4c56b4d1ca04a",
+    "audit-source.log": "f9e2ff158cdc70d7df9a33d3064f9e052c54b6606dfa7cee7ac3a73a166d3cca",
+    "audit-source.mjs": "3caf3fc25159d251b60a5310a6dfeb787b3d825ac8b8b71da1db455022467731",
+    "audit-source-reveal.log": "e5135870daf620319917c5ff46b03c8a0deeb48a7bd3f25af5baeb70dd05bce6",
+    "audit-source-position.log": "dce1ab86fcbd17dd563ef2630592877dfeef453ea0987bc24c16aa2c978c9c3d",
+    "audit-language.mjs": "024df9c53181cf66fd98fd9106e776c5619f5b75943bc5209f3193b91f6da325",
+    "audit-language.log": "c53e6cf8fa2d9ecbfe27798ef91ebaf367235110c64273cd717733d3401ea527"
+  },
+  "finalReview": "已复核最终 lang=\"\" 原文和测量镜像语言一致性修复；无新增未解决问题。"
+}

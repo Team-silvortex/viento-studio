@@ -16,6 +16,10 @@ export function revealSourceOffset(textarea, text, offset) {
       pointerEvents: 'none', margin: '0', border: '0', boxSizing: 'border-box', width: `${textarea.clientWidth}px`,
       height: 'auto', minHeight: '0', maxHeight: 'none', overflow: 'visible' });
     if (textarea.wrap === 'off') style.whiteSpace = 'pre';
+    // Language also affects fallback fonts and wrapping. Preserve an explicit
+    // unknown author language (lang="") instead of inheriting the UI locale.
+    const language = textarea.closest?.('[lang]')?.getAttribute?.('lang');
+    if (typeof language === 'string') mirror.setAttribute('lang', language);
     mirror.setAttribute('aria-hidden', 'true');
     // A trailing zero-width character gives an empty final logical line a box.
     mirror.textContent = text + '\u200b'; document.body.append(mirror);

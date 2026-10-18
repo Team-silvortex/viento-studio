@@ -4,6 +4,7 @@ import { createError } from '../../engine/service-error.mjs';
 import { validateSceneDraftRequest } from '../../engine/scene-draft-preview.mjs';
 import { captureScenePreviewSnapshot, captureSceneDraftPreview } from '../adapters/node-build-snapshot.mjs';
 import { SCENE_PREVIEW_API_PATH } from '../../engine/scene-preview-contract.mjs';
+import { resolveSceneAnimationPreview } from '../../engine/scene-animation-preview.mjs';
 
 const services = new Set();
 const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
@@ -40,10 +41,14 @@ export function createScenePreviewService(root, {
   async function create(payload, { signal } = {}) {
     ready();
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)
-      || !Object.hasOwn(payload, 'sceneId') || Object.keys(payload).some(key => !['sceneId', 'draft'].includes(key)) || !uuid(payload.sceneId)) {
+      || !Object.hasOwn(payload, 'sceneId') || Object.keys(payload).some(key => !['sceneId', 'draft', 'includeAnimation'].includes(key)) || !uuid(payload.sceneId)) {
       throw fail('scene_preview_request_invalid', 'Select a registered scene identity.');
     }
     const isDraft = Object.hasOwn(payload, 'draft');
+    const includeAnimation = Object.hasOwn(payload, 'includeAnimation');
+    if (includeAnimation && (payload.includeAnimation !== true || isDraft)) {
+      throw fail('scene_preview_request_invalid', 'Animation preview requires a saved scene.');
+    }
     if (isDraft) validateSceneDraftRequest(payload.sceneId, payload.draft);
     const previous = active;
     previous?.controller.abort();
@@ -101,6 +106,10 @@ export function createScenePreviewService(root, {
       if (!isDraft && !composition && captured.sceneEditing) {
         const { worldId, baseRevision, objectRevision, sourceRevision, content } = captured.sceneEditing;
         result.sceneEditing = { worldId, baseRevision, objectRevision, sourceRevision, content };
+      }
+      if (includeAnimation && !composition && captured.snapshot) {
+        result.animationPreview = resolveSceneAnimationPreview(
+          { source: captured.snapshot.source }, captured.plan, captured.snapshotId);
       }
       prune();
       while (previews.size >= 2 || retainedBytes + byteLength > MAX_BYTES) discard(previews.keys().next().value);

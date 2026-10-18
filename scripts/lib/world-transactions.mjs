@@ -14,6 +14,8 @@ import { appendSceneBehaviorRelation, behaviorCreateRegistration, behaviorCreati
 import { validateObjectProjection, projectionRegistration, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 import { updateObjectProjectionContent, appendProjectionImageBindings } from '../../engine/world-projection-update.mjs';
 import { validateDocumentModels } from '../../engine/document-model.mjs';
+import { loadAnimationCreateIntent } from './world-animation-create-transaction.mjs';
+import { ANIMATION_CREATE_RECOVERY_LIMITS } from '../../engine/world-animation-create.mjs';
 import { loadAudioCreateIntent } from './world-audio-create-transaction.mjs';
 import { AUDIO_CREATE_RECOVERY_LIMITS } from '../../engine/world-audio-create.mjs';
 import { inspectSceneBehaviors } from '../../engine/scene-behaviors.mjs';
@@ -29,7 +31,7 @@ const conflict = () => transactionError('world_recovery_conflict', 'Transaction 
 const invalid = () => transactionError('world_journal_invalid', 'Transaction journal is invalid; no recovery files were published');
 const noop = async () => {};
 const createsFiles = intent => [2, 5, 6].includes(intent.version);
-const entryCreatesFile = (intent, entry) => createsFiles(intent) || [9, 10].includes(intent.version) && entry.before === null;
+const entryCreatesFile = (intent, entry) => createsFiles(intent) || [9, 10, 11].includes(intent.version) && entry.before === null;
 const exactKeys = (value, keys) => value && typeof value === 'object' && !Array.isArray(value)
   && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
 const utf8Text = bytes => new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);
@@ -185,7 +187,7 @@ async function loadIntent(root) {
   const bytes = await readTransactionFile(root, 'active/intent.json', 65536);
   const intent = JSON.parse(bytes), workspace = readWorkspace(root);
   const documents = workspacePaths(workspace).documents;
-  if (intent.format !== 'viento-source-transaction' || ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(intent.version) || !uuid.test(intent.id)
+  if (intent.format !== 'viento-source-transaction' || ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(intent.version) || !uuid.test(intent.id)
     || intent.projectId !== workspace?.id || intent.manifestHash !== transactionHash(canonicalJson(workspace))
     || typeof intent.worldId !== 'string' || !/^proposal:[a-f0-9]{64}$/.test(intent.proposalId)
     || !hash.test(intent.baseRevision) || !hash.test(intent.revision)
@@ -193,6 +195,7 @@ async function loadIntent(root) {
     || !Array.isArray(intent.entries) || !intent.entries.length || intent.entries.length > 32) throw invalid();
   if (intent.version === 9) return loadBehaviorCreateIntent(root, intent, bytes, workspace);
   if (intent.version === 10) return loadAudioCreateIntent(root, intent, bytes, workspace);
+  if (intent.version === 11) return loadAnimationCreateIntent(root, intent, bytes, workspace);
   const creating = createsFiles(intent), sceneCreating = intent.version === 5, projectionCreating = intent.version === 6, projectionUpdating = intent.version === 7, sceneUpdating = intent.version === 8, updating = projectionUpdating || sceneUpdating,
     relating = [3, 4].includes(intent.version), binding = intent.version === 4;
   if (creating && (intent.entries.length !== 2 || ![2, 3].includes(workspace.version))) throw invalid();
@@ -362,7 +365,7 @@ async function recoverLocked(root, checkpoint = noop) {
     // Creation publishes source before registration; rollback removes the
     // registration first. A restart never needs a dangling record to open.
     const ordered = [...intent.entries.entries()];
-    if ((createsFiles(intent) || [9, 10].includes(intent.version)) && !committed) ordered.reverse();
+    if ((createsFiles(intent) || [9, 10, 11].includes(intent.version)) && !committed) ordered.reverse();
     for (const [index, entry] of ordered) {
       const target = committed ? entry.after : entry.before;
       await fs.rm(temporary[index], { force: true });
@@ -400,15 +403,17 @@ export async function commitWorldTransaction(root, plan, { checkpoint = noop, be
   const workspace = readWorkspace(root);
   const sceneCreating = plan.kind === 'scene.create', projectionCreating = plan.kind === 'projection.create', projectionUpdating = plan.kind === 'projection.update', sceneUpdating = plan.kind === 'scene.update', updating = projectionUpdating || sceneUpdating,
     creating = sceneCreating || projectionCreating || plan.kind === 'object.create', relating = ['relation.add', 'resource.bind'].includes(plan.kind);
-  const behaviorCreating = plan.kind === 'behavior.create', audioCreating = plan.kind === 'audio.create';
-  const recoveryBytes = behaviorCreating || audioCreating ? Buffer.from(JSON.stringify(audioCreating ? plan.audioRecovery : plan.behaviorRecovery)) : null;
+  const behaviorCreating = plan.kind === 'behavior.create', audioCreating = plan.kind === 'audio.create', animationCreating = plan.kind === 'animation.create';
+  const recoveryBytes = behaviorCreating || audioCreating || animationCreating ? Buffer.from(JSON.stringify(animationCreating ? plan.animationRecovery : audioCreating ? plan.audioRecovery : plan.behaviorRecovery)) : null;
+  if (animationCreating && (plans.length !== 3 || !recoveryBytes.length || recoveryBytes.length > ANIMATION_CREATE_RECOVERY_LIMITS.bytes)) throw invalid();
   if (audioCreating && (plans.length !== 3 || !recoveryBytes.length || recoveryBytes.length > AUDIO_CREATE_RECOVERY_LIMITS.bytes)) throw invalid();
   if (behaviorCreating && (plans.length !== 3 || !recoveryBytes.length || recoveryBytes.length > BEHAVIOR_CREATE_RECOVERY_LIMITS.bytes)) throw invalid();
-  const intent = { format: 'viento-source-transaction', version: audioCreating ? 10 : behaviorCreating ? 9 : sceneUpdating ? 8 : projectionUpdating ? 7 : projectionCreating ? 6 : sceneCreating ? 5 : creating ? 2 : plan.kind === 'resource.bind' ? 4 : relating ? 3 : 1, id, projectId: workspace.id,
+  const intent = { format: 'viento-source-transaction', version: animationCreating ? 11 : audioCreating ? 10 : behaviorCreating ? 9 : sceneUpdating ? 8 : projectionUpdating ? 7 : projectionCreating ? 6 : sceneCreating ? 5 : creating ? 2 : plan.kind === 'resource.bind' ? 4 : relating ? 3 : 1, id, projectId: workspace.id,
     manifestHash: transactionHash(canonicalJson(workspace)), worldId: result.worldId, proposalId: result.proposal.id,
     baseRevision: result.baseRevision, revision: result.revision, previousHead: state.token, entries: [],
     ...(relating ? { mutation: plan.mutation, registryHash: plan.registryHash } : {}),
     ...(sceneCreating || projectionCreating || updating ? { registryHash: plan.registryHash } : {}),
+    ...(animationCreating ? { registryHash: plan.registryHash, animationRecovery: { size: recoveryBytes.length, sha256: transactionHash(recoveryBytes) } } : {}),
     ...(audioCreating ? { registryHash: plan.registryHash, audioRecovery: { size: recoveryBytes.length, sha256: transactionHash(recoveryBytes) } } : {}),
     ...(behaviorCreating ? { registryHash: plan.registryHash, behaviorRecovery: { size: recoveryBytes.length, sha256: transactionHash(recoveryBytes) } } : {}) };
   let active = false, committed = false;
@@ -420,7 +425,7 @@ export async function commitWorldTransaction(root, plan, { checkpoint = noop, be
     await syncDirectory(root); await syncDirectory(path.dirname(directory)); await syncDirectory(directory);
     await fs.mkdir(stage, { mode: 0o700 });
     for (const [index, item] of plans.entries()) {
-      const entryCreating = creating || (behaviorCreating || audioCreating) && item.change.beforeSourceRevision === null;
+      const entryCreating = creating || (behaviorCreating || audioCreating || animationCreating) && item.change.beforeSourceRevision === null;
       const snapshot = await sourceSnapshot(root, item.sourcePath, entryCreating);
       if (snapshot.revision !== item.change.beforeSourceRevision) throw conflict();
       intent.entries.push({ objectId: item.change.objectId, sourcePath: item.sourcePath,
@@ -431,7 +436,7 @@ export async function commitWorldTransaction(root, plan, { checkpoint = noop, be
       await durableWrite(path.join(stage, `${index}.after`), item.afterContent);
     }
     const intentBytes = JSON.stringify(intent);
-    if ((behaviorCreating || audioCreating) && Buffer.byteLength(intentBytes) > 65536) throw invalid();
+    if ((behaviorCreating || audioCreating || animationCreating) && Buffer.byteLength(intentBytes) > 65536) throw invalid();
     await durableWrite(path.join(stage, 'intent.json'), intentBytes);
     if (behaviorCreating) {
       await durableWrite(path.join(stage, 'behavior-dependencies.json'), recoveryBytes);
@@ -440,6 +445,10 @@ export async function commitWorldTransaction(root, plan, { checkpoint = noop, be
     if (audioCreating) {
       await durableWrite(path.join(stage, 'audio-dependencies.json'), recoveryBytes);
       await loadAudioCreateIntent(root, intent, Buffer.from(intentBytes), workspace, `staging-${id}`);
+    }
+    if (animationCreating) {
+      await durableWrite(path.join(stage, 'animation-dependencies.json'), recoveryBytes);
+      await loadAnimationCreateIntent(root, intent, Buffer.from(intentBytes), workspace, `staging-${id}`);
     }
     await beforeIntent();
     await fs.rename(stage, await transactionPath(root, 'active')); active = true;

@@ -30,6 +30,7 @@ const SCENE3D_ALIGNMENT_OPERATIONS = new Set(['scene3d.alignObjects']);
 const SCENE3D_DISTRIBUTION_OPERATIONS = new Set(['scene3d.distributeObjects']);
 const SCENE3D_COPY_OPERATIONS = new Set(['scene3d.copyObjects']);
 const SCENE3D_REMOVAL_OPERATIONS = new Set(['scene3d.removeObjects']);
+const SCENE_ANIMATION_OPERATIONS = new Set(['sceneAnimation.inspect', 'sceneAnimation.sample']);
 const SCENE_AUDIO_OPERATIONS = new Set(['sceneAudio.inspect', 'sceneAudio.sample']);
 const SCENE3D_PARTICLE_OPERATIONS = new Set(['scene3d.prepareParticleField', 'scene3d.sampleParticleField']);
 const PARTICLE_FIELDS = [['center', 'vector'], ['extent', 'vector'], ['velocity', 'vector'], ['size', 'vector'], ['color', 'color'], ['count', 'number'], ['seed', 'number']];
@@ -2019,4 +2020,82 @@ export function dispatchStudioCoreSceneAudio(request) {
         || state.lastCueId !== (last?.id ?? null)) invalid();
     }
   }).sceneAudio;
+}
+
+/** Optional visual animation rules. Receipt checks never supply animation when
+ * Rust is absent; only the returned native samples reach rendering callers. */
+export function supportsStudioCoreSceneAnimation() {
+  return Boolean(runtime && typeof runtime.viento_core_scene_animation_version === 'function'
+    && runtime.viento_core_scene_animation_version() === 1);
+}
+export function dispatchStudioCoreSceneAnimation(request) {
+  assertJson(request);
+  const sample = request?.operation === 'sceneAnimation.sample';
+  if (!record(request, ['protocolVersion', 'operation', 'document', ...(sample ? ['timeSeconds'] : [])])
+    || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE_ANIMATION_OPERATIONS.has(request.operation)) {
+    throw fail('studio_core_request_invalid', 'Expected an explicit scene animation request.');
+  }
+  if (!supportsStudioCoreSceneAnimation()) throw unavailable();
+  return dispatch(request, SCENE_ANIMATION_OPERATIONS, (result, input) => {
+    const invalid = () => { throw new Error('Rust core returned an unbound scene animation receipt.'); };
+    const source = input.document, value = result.sceneAnimation;
+    const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/.test(value);
+    const bounded = (value, min, max) => Number.isFinite(value) && value >= min && value <= max;
+    const equal = (a, b) => {
+      if (a === b) return true;
+      if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+      const keys = Object.keys(a); return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && equal(a[key], b[key]));
+    };
+    const validValue = (value, property) => {
+      if (property === 'rotation2d') return bounded(value, -36000, 36000);
+      if (property === 'opacity') return bounded(value, 0, 1);
+      const range = property === 'offset2d' ? [-10000, 10000] : property === 'scale2d' ? [.01, 100] : null;
+      return Boolean(range && Array.isArray(value) && value.length === 2 && value.every(n => bounded(n, ...range)));
+    };
+    if (!record(result, ['protocolVersion', 'ok', 'sceneAnimation'])
+      || !record(source, ['format', 'schemaVersion', 'sceneObjectId', 'durationSeconds', 'loop', 'tracks'])
+      || source.format !== 'viento-scene-animation' || source.schemaVersion !== 1 || !uuid(source.sceneObjectId)
+      || !bounded(source.durationSeconds, 0, 60) || source.durationSeconds === 0 || typeof source.loop !== 'boolean'
+      || !Array.isArray(source.tracks) || !source.tracks.length || source.tracks.length > 32
+      || encoder.encode(JSON.stringify(source)).length > 65536) invalid();
+    const ids = new Set(), channels = new Set(); let total = 0;
+    for (const track of source.tracks) {
+      if (!record(track, ['id', 'instanceId', 'property', 'interpolation', 'keyframes'])
+        || !uuid(track.id) || ids.has(track.id) || !uuid(track.instanceId) || channels.has(`${track.instanceId}:${track.property}`)
+        || !['linear', 'step'].includes(track.interpolation) || !Array.isArray(track.keyframes)
+        || !track.keyframes.length || track.keyframes.length > 64 || (total += track.keyframes.length) > 512) invalid();
+      ids.add(track.id); channels.add(`${track.instanceId}:${track.property}`);
+      let previous = -1;
+      for (const [index, key] of track.keyframes.entries()) {
+        if (!record(key, ['atSeconds', 'value']) || !bounded(key.atSeconds, 0, source.durationSeconds)
+          || index === 0 && key.atSeconds !== 0 || key.atSeconds <= previous || !validValue(key.value, track.property)) invalid();
+        previous = key.atSeconds;
+      }
+    }
+    if (!sample) { if (!record(value, ['document']) || !equal(value.document, source)) invalid(); return; }
+    const time = input.timeSeconds, local = source.loop ? time % source.durationSeconds : Math.min(time, source.durationSeconds);
+    if (!bounded(time, 0, 86400) || !record(value, ['timeSeconds', 'localTimeSeconds', 'finished', 'values'])
+      || value.timeSeconds !== time || value.localTimeSeconds !== local || value.finished !== (!source.loop && time >= source.durationSeconds)
+      || !Array.isArray(value.values) || value.values.length !== source.tracks.length) invalid();
+    for (const [index, track] of source.tracks.entries()) {
+      const returned = value.values[index];
+      if (!record(returned, ['trackId', 'instanceId', 'property', 'value']) || returned.trackId !== track.id
+        || returned.instanceId !== track.instanceId || returned.property !== track.property || !validValue(returned.value, track.property)) invalid();
+      const leftIndex = track.keyframes.findLastIndex(key => key.atSeconds <= local), left = track.keyframes[leftIndex], right = track.keyframes[leftIndex + 1];
+      if (track.interpolation === 'step' || !right || left.atSeconds === local) {
+        if (!equal(returned.value, left.value)) invalid();
+      } else {
+        // Check the native interpolation receipt; this calculation is discarded,
+        // never returned or used as a fallback sample if native execution fails.
+        const weight = (local - left.atSeconds) / (right.atSeconds - left.atSeconds);
+        const verify = (actual, a, b) => {
+          const expected = Math.max(Math.min(a, b), Math.min(Math.max(a, b), a + (b - a) * weight));
+          return actual >= Math.min(a, b) && actual <= Math.max(a, b)
+            && Math.abs(actual - expected) <= Number.EPSILON * 8 * Math.max(1, Math.abs(expected));
+        };
+        if (Array.isArray(left.value) ? !returned.value.every((n, axis) => verify(n, left.value[axis], right.value[axis]))
+          : !verify(returned.value, left.value, right.value)) invalid();
+      }
+    }
+  }).sceneAnimation;
 }

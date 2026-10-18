@@ -1,0 +1,50 @@
+{
+  "format": "viento-independent-review",
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-18T00:58:26.334625+00:00",
+  "reviewer": "audio_usage_transport",
+  "scope": {
+    "implementation": [
+      "engine/scene-audio-usage.mjs",
+      "scripts/lib/scene-audio-usage-service.mjs",
+      "web/modules/app-scene-audio-source.js",
+      "web/modules/app-scene-audio.js"
+    ],
+    "checks": [
+      "Exact descriptor-only data capture and WeakMap catalog branding",
+      "Complete UUID scalar matching with no parameter-name or substring heuristics",
+      "Registered scene/audio/behavior saved-source selection and snapshot conflict handling",
+      "Source session ownership and capability revocation across each asynchronous host boundary",
+      "Independent UI requests, current cue filtering, stale replies, track changes, cancel/reopen and language changes",
+      "Ordinary checked Apply and audition isolation from advisory reads"
+    ],
+    "boundaries": [
+      "Review does not establish global reference completeness or script interpretation",
+      "Observed saved behavior is advisory; no persistent references or delete authority",
+      "No installed application, native backend or Android-device verification in this review"
+    ]
+  },
+  "findings": [],
+  "validation": {
+    "command": "node --test scripts/tests/scene-audio-usage.test.mjs scripts/tests/scene-audio-usage-service.test.mjs scripts/tests/scene-audio-usage-host.test.mjs scripts/tests/scene-audio-editor-ui.test.mjs",
+    "total": 142,
+    "passed": 142,
+    "failed": 0,
+    "skipped": 0,
+    "node": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node"
+  },
+  "coverageNotes": [
+    {
+      "status": "requested-additional-regression",
+      "target": "scripts/tests/scene-audio-editor-ui.test.mjs",
+      "scenario": "Usage capability withdrawal while audition is loading, playing or paused should leave audition ownership unchanged. Existing tests cover normal usage reads/refresh while playing and capability withdrawal with ordinary Apply. UI agent notified to add the combined boundary case.",
+      "bugObserved": false
+    }
+  ],
+  "sourceFingerprints": {
+    "engine/scene-audio-usage.mjs": "f4b931d22b4b16d512116b0b1cc0587889c772aca2801fb96e0c568e66c0e03e",
+    "scripts/lib/scene-audio-usage-service.mjs": "38c443198bf6ed95bb1b2aef8bc956d36be3c810553aa7a135be47df39de8af9",
+    "web/modules/app-scene-audio-source.js": "6510dd042290e942ff86a3b7fe4c7c0df9b7683f11e98e47b3c6c9b8bc7257af",
+    "web/modules/app-scene-audio.js": "65ff70c4f5caed772dc6b2d0cabf5bb7e8742da3b87156963eb65773c3399cf5"
+  }
+}

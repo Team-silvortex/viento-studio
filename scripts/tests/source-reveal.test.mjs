@@ -122,3 +122,21 @@ test('DOM append range and measurement failures remove temporary content without
     assert.deepEqual([h.textarea.selectionStart, h.textarea.selectionEnd, h.textarea.selectionDirection], [2, 7, 'backward']);
   }
 });
+
+
+test('viewport reveal measures using the source language including an explicit unknown author language', () => {
+  for (const language of ['', 'ja', 'en', null]) {
+    const h = fixture('中文と日本語 😀 wrapped source'); let mirror;
+    h.textarea.closest = selector => {
+      assert.equal(selector, '[lang]');
+      return language === null ? null : { getAttribute: name => { assert.equal(name, 'lang'); return language; } };
+    };
+    h.duringMeasure(() => { mirror = h.mirrors[0]; });
+    assert.equal(revealSourceOffset(h.textarea, h.text, 8), true);
+    assert.equal(mirror.attributes.lang, language === null ? undefined : language);
+    assert.equal(Object.hasOwn(mirror.attributes, 'lang'), language !== null);
+    assert.equal(h.textarea.scrollTop, 612); assert.equal(h.textarea.value, h.text);
+    assert.deepEqual([h.textarea.selectionStart, h.textarea.selectionEnd, h.textarea.selectionDirection], [2, 7, 'backward']);
+    assert.equal(h.removed(), 1);
+  }
+});

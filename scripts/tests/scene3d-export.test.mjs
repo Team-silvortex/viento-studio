@@ -22,7 +22,35 @@ const absent = async name => assert.rejects(fs.lstat(name), { code: 'ENOENT' });
  test('invalid UTF8, malformed schema and oversized source do not create output', async t => {const f=await fixture(t);for(const bytes of [Buffer.from([0xff]),Buffer.from('{}'),Buffer.alloc(131073,32)]){await fs.writeFile(f.input,bytes);await assert.rejects(exportScene3DProject(f));await absent(f.output);} });
  test('input or output symlink ancestors are rejected without changing the target', async t => {const f=await fixture(t),outside=path.join(f.directory,'outside');await fs.mkdir(outside);await fs.writeFile(path.join(outside,'source.json'),f.content);const alias=path.join(f.directory,'alias');await fs.symlink(outside,alias);await assert.rejects(readScene3DInput(path.join(alias,'source.json')),{errorCode:'scene3d_path_invalid'});await assert.rejects(exportScene3DProject({...f,output:path.join(alias,'generated')}),{errorCode:'scene3d_path_invalid'});await absent(path.join(outside,'generated'));const direct=path.join(f.directory,'source-link.json');await fs.symlink(f.input,direct);await assert.rejects(readScene3DInput(direct));});
  test('copied receipt JSON and an arbitrary existing project cannot execute a tool', async t => {const f=await fixture(t),receipt=await exportScene3DProject(f);await assert.rejects(executeScene3DProject(JSON.parse(JSON.stringify(receipt)),{godotBin:process.execPath}),{errorCode:'scene3d_owner_invalid'});await assert.rejects(executeScene3DProject({directory:f.output},{godotBin:process.execPath}),{errorCode:'scene3d_owner_invalid'});});
- test('modified, replaced or hardlinked generated source prevents execution', async t => {for(const mutation of ['bytes','replacement','hardlink']){const f=await fixture(t),receipt=await exportScene3DProject(f),file=path.join(f.output,'scene.tscn');if(mutation==='bytes')await fs.appendFile(file,'\n');else if(mutation==='replacement'){const bytes=await fs.readFile(file);await fs.unlink(file);await fs.writeFile(file,bytes);}else await fs.link(file,path.join(f.directory,'hardlink'));await assert.rejects(executeScene3DProject(receipt,{godotBin:process.execPath}));}});
+for (const [mutation, errorCode] of [
+  ['bytes', 'scene3d_output_changed'],
+  ['replacement', 'scene3d_file_invalid'],
+  ['hardlink', 'scene3d_file_invalid'],
+]) {
+  test(`generated source ${mutation} prevents execution before starting the tool`, async t => {
+    const f = await fixture(t), receipt = await exportScene3DProject(f);
+    const file = path.join(f.output, 'scene.tscn'), tool = await fakeGodot(f);
+    if (mutation === 'bytes') {
+      await fs.appendFile(file, '\n');
+    } else if (mutation === 'replacement') {
+      const bytes = await fs.readFile(file), before = await fs.stat(file);
+      const original = path.join(f.directory, 'original-scene.tscn');
+      // Keep the original inode alive: unlink/recreate may reuse it on CI.
+      // The retained file stays outside output so inventory checks cannot mask
+      // the identity check we are exercising.
+      await fs.rename(file, original);
+      await fs.writeFile(file, bytes, { flag: 'wx' });
+      const retained = await fs.stat(original), replacement = await fs.stat(file);
+      assert.deepEqual([retained.dev, retained.ino], [before.dev, before.ino]);
+      assert.notDeepEqual([replacement.dev, replacement.ino], [before.dev, before.ino]);
+      assert.deepEqual(await fs.readFile(file), bytes);
+    } else {
+      await fs.link(file, path.join(f.directory, 'hardlink'));
+    }
+    await assert.rejects(executeScene3DProject(receipt, { godotBin: tool }), { errorCode });
+    await absent(path.join(f.directory, 'executions'));
+  });
+}
  test('unregistered source or pre-existing cache symlink cannot authorize execution', async t => {for(const mutation of ['script','link','cache']){const f=await fixture(t),receipt=await exportScene3DProject(f);if(mutation==='script')await fs.writeFile(path.join(f.output,'extra.gd'),'extends Node');if(mutation==='link')await fs.symlink(f.directory,path.join(f.output,'.host'));if(mutation==='cache')await fs.mkdir(path.join(f.output,'.godot'));await assert.rejects(executeScene3DProject(receipt,{godotBin:process.execPath}),{errorCode:'scene3d_output_changed'});}});
  test('an owned write failure cleans only its own unchanged files and empty directory', async t => {const f=await fixture(t),original=fs.open;fs.open=async(...args)=>{const handle=await original(...args);if(args[0]===path.join(f.output,'plan.json'))handle.sync=async()=>{throw Object.assign(new Error('disk fault'),{code:'EIO'});};return handle;};try{await assert.rejects(exportScene3DProject(f),{code:'EIO'});}finally{fs.open=original;}await absent(f.output);assert.equal(await fs.readFile(f.input,'utf8'),f.content);});
  test('failure cleanup preserves an edited source and user-added files in its own output', async t => {const f=await fixture(t),original=fs.open;fs.open=async(...args)=>{const handle=await original(...args);if(args[0]===path.join(f.output,'plan.json'))handle.sync=async()=>{await fs.appendFile(path.join(f.output,'source.json'),' ');await fs.writeFile(path.join(f.output,'user-note'),'keep');throw Object.assign(new Error('fault after external edit'),{code:'EIO'});};return handle;};try{const error=await exportScene3DProject(f).catch(error=>error);assert.equal(error.code,'EIO');assert.ok(error.preservedPaths.includes('source.json'));}finally{fs.open=original;}assert.equal(await fs.readFile(path.join(f.output,'source.json'),'utf8'),f.content+' ');assert.equal(await fs.readFile(path.join(f.output,'user-note'),'utf8'),'keep');assert.deepEqual((await fs.readdir(f.output)).sort(),['source.json','user-note']);});

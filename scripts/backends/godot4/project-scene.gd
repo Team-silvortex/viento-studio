@@ -45,6 +45,7 @@ func project_close(silent: bool = false) -> void:
 	if silent:
 		project_open = false
 	__AUDIO_SHUTDOWN__
+	__ANIMATION_SHUTDOWN__
 	project_open = false
 
 # Generated private bridge: author ports receive only a boolean acceptance.

@@ -1,5 +1,6 @@
 // Frozen project envelope admission is independent of author parsing and host IO.
 import { canonicalJson } from './canonical-json.mjs';
+import { validateSceneAnimationPlan } from './scene-animation.mjs';
 
 // This validates the project envelope and cross-scene invariants. Existing
 // scene validators/generators retain responsibility for each scene's semantics.
@@ -50,6 +51,7 @@ export function validateProjectAssemblyPlan(input) {
       || !text(scene.scene.sourcePath) || paths.has(scene.scene.sourcePath) || !revision(scene.scene.sourceRevision)
       || !Array.isArray(scene.actors) || scene.actors.length < 1 || scene.actors.length > 128
       || !Array.isArray(scene.resources) || !Array.isArray(scene.requiredCapabilities) || scene.requiredCapabilities.length > 128) return fail();
+    if (Object.hasOwn(scene, 'animation')) validateSceneAnimationPlan(scene);
     ids.add(scene.scene.objectId); paths.add(scene.scene.sourcePath);
     for (const capability of scene.requiredCapabilities) {
       if (typeof capability !== 'string' || capability.length > 128 || !/^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$/.test(capability)) return fail();

@@ -1,0 +1,23 @@
+{
+  "format": "viento-scene-animation-visual-review",
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-18T03:39:42.748514+00:00",
+  "status": "passed",
+  "browserEvidence": "browser-1792294748026/browser.json",
+  "inspectedScreenshots": [
+    "browser-1792294748026/scene-animation-sampled-desktop.png",
+    "browser-1792294748026/scene-animation-en-390.png",
+    "browser-1792294748026/scene-animation-ja-390.png"
+  ],
+  "findings": [
+    "Desktop shows the saved-image animation at its sampled offset/rotation/scale/opacity, with a distinct unchanged second instance and stable logical labels.",
+    "Playback and stop-to-static controls are clearly separated from the disabled layout author action.",
+    "English and Japanese at 390px keep readable controls and a focused time input without horizontal overflow; longer Japanese guidance uses normal vertical scrolling.",
+    "During an active visual frame, both the canvas help and empty-selection prompt direct users to the object list. Stopping restores the original canvas-picking guidance."
+  ],
+  "limitations": [
+    "The captured viewport is a real headless Chrome local HTTP editor, not installed Tauri or Android.",
+    "The object outline abbreviates identities as before this change; animation targeting itself uses exact immutable instance IDs.",
+    "The preview is saved visual animation only, without behavior/physics/audio/replay/frame animation or composition playback."
+  ]
+}

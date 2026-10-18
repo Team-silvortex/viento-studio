@@ -1,0 +1,95 @@
+import '../adapters/node-studio-core.mjs';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
+import { serve } from './helpers.mjs';
+import { SCENE_ANIMATION_TARGETS_API_PATH, captureSceneAnimationTargetDirectory } from '../../engine/scene-animation-targets.mjs';
+
+const appRoot = fileURLToPath(new URL('../../', import.meta.url));
+const sceneObjectId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
+const manifestObjectId = '88888888-8888-4888-8888-888888888887';
+const token = 'animation-targets-test-token';
+async function fixture(t, mode = 'doc-site-server.mjs') {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'viento-animation-targets-http-'));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  await fs.cp(path.join(appRoot, 'examples/scene-animation'), root, { recursive: true });
+  const base = await serve(t, appRoot, { VIENTO_APP_ROOT: appRoot, VIENTO_WORKSPACE_ROOT: root,
+    DOC_API_TOKEN: token, DOC_API_REQUIRE_WRITE_AUTH: '1', DOC_API_MAX_BODY_BYTES: '1024' }, mode);
+  const post = (value = { sceneObjectId }, auth = token, suffix = '', contentType = 'application/json') => fetch(base + SCENE_ANIMATION_TARGETS_API_PATH + suffix, {
+    method: 'POST', headers: { 'Content-Type': contentType, ...(auth ? { Authorization: `Bearer ${auth}` } : {}) }, body: JSON.stringify(value),
+  });
+  return { root, base, post };
+}
+async function tree(root) {
+  const files = {};
+  for (const entry of await fs.readdir(root, { recursive: true, withFileTypes: true })) if (entry.isFile()) {
+    const file = path.join(entry.parentPath, entry.name);
+    files[path.relative(root, file)] = createHash('sha256').update(await fs.readFile(file)).digest('hex');
+  }
+  return files;
+}
+const payload = async response => { const body = await response.json(); return body.data || body; };
+
+test('animation targets HTTP advertises an independent read capability and protects no-store saved sources with the author token', async t => {
+  const f = await fixture(t), capabilitiesResponse = await fetch(f.base + '/api/capabilities');
+  assert.equal(capabilitiesResponse.status, 200);
+  const capabilities = await payload(capabilitiesResponse);
+  assert.equal(capabilities.sceneAnimationTargets, true);
+  assert.equal(capabilities.sceneAudioDirectory, true);
+  assert.deepEqual(capabilities.semanticCommands.filter(command => /animation/i.test(command)), ['animation.create'], 'the explicit creation command is separate from this read-only target directory');
+  const before = await tree(f.root);
+  assert.equal((await f.post(undefined, '')).status, 401);
+  assert.equal((await f.post(undefined, 'wrong-token')).status, 403);
+  const response = await f.post(); assert.equal(response.status, 200);
+  assert.match(response.headers.get('cache-control'), /(?:^|,\s*)no-store(?:,|$)/);
+  const value = captureSceneAnimationTargetDirectory(await payload(response), sceneObjectId);
+  assert.equal(value.scene.objectId, sceneObjectId);
+  assert.equal(value.manifest.objectId, manifestObjectId);
+  assert.equal(value.manifest.content, await fs.readFile(path.join(f.root, 'documents/animations/demo.json'), 'utf8'));
+  assert.equal(value.targets.length, 2);
+  assert.equal(value.targets[0].name, 'Traveler / 旅人 / 旅人');
+  assert.equal(JSON.stringify(value).includes(f.root), false);
+  for (const key of ['resources', 'proposal', 'writeToken', 'commands']) assert.equal(Object.hasOwn(value, key), false);
+  assert.deepEqual(await tree(f.root), before, 'read requests and authentication failures preserve all project bytes');
+});
+
+test('animation targets HTTP accepts only bounded authenticated JSON POST with one scene ID and no query', async t => {
+  const f = await fixture(t), before = await tree(f.root);
+  for (const input of [{ sceneObjectId, execute: true }, { sceneObjectId, sourcePath: 'documents/animations/demo.json' },
+    { sceneObjectId, trackId: '77777777-7777-4777-8777-000000000001' }, { sceneObjectId: '../outside' }, {}, [], null]) {
+    assert.equal((await f.post(input)).status, 400);
+  }
+  assert.equal((await f.post(undefined, token, '?path=elsewhere')).status, 400);
+  assert.equal((await f.post(undefined, token, '?sceneObjectId=' + sceneObjectId)).status, 400);
+  assert.equal((await f.post(undefined, token, '', 'text/plain')).status, 415);
+  assert.equal((await f.post({ sceneObjectId: 'x'.repeat(2048) })).status, 413);
+  for (const method of ['GET', 'PUT', 'DELETE']) {
+    const response = await fetch(f.base + SCENE_ANIMATION_TARGETS_API_PATH, { method });
+    assert.equal(response.status, 405); assert.match(response.headers.get('allow'), /POST/);
+  }
+  assert.deepEqual(await tree(f.root), before);
+});
+
+test('browse-only host does not publish animation target sources or advertise the editor capability', async t => {
+  const f = await fixture(t, 'browse-server.mjs'), before = await tree(f.root);
+  assert.equal((await f.post()).status, 405); assert.equal((await f.post(undefined, '')).status, 405);
+  const response = await fetch(f.base + '/api/capabilities');
+  if (response.ok) assert.notEqual((await payload(response)).sceneAnimationTargets, true);
+  assert.deepEqual(await tree(f.root), before);
+});
+
+test('animation targets reject foreign origins and cross-site fetches even with the author token', async t => {
+  const f = await fixture(t), before = await tree(f.root);
+  const request = headers => fetch(f.base + SCENE_ANIMATION_TARGETS_API_PATH, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, ...headers }, body: JSON.stringify({ sceneObjectId }),
+  });
+  assert.equal((await request({ Origin: 'https://foreign.invalid' })).status, 403);
+  assert.equal((await request({ Origin: 'null' })).status, 403);
+  assert.equal((await request({ Origin: f.base, 'Sec-Fetch-Site': 'cross-site' })).status, 403);
+  assert.equal((await request({ Origin: f.base, 'Sec-Fetch-Site': 'same-origin' })).status, 200);
+  assert.deepEqual(await tree(f.root), before);
+});

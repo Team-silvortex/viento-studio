@@ -1,0 +1,47 @@
+✔ exact source selection converts original UTF-16 offsets through BOM, Chinese, emoji and every newline form (1.61574ms)
+✔ source selection rejects stale, malformed, ambiguous and split-character ranges without guessing (1.02656ms)
+✔ the actual editor source entry opens and selects the observed field without writing or changing line endings (22.868994ms)
+✔ uncached source navigation performs one owned read instead of starting a competing automatic preload (4.291615ms)
+✔ deferred editor focus runs once and cannot steal focus after navigation, mode changes or dirty edits (31.299882ms)
+✔ stale and approximate source locations open current text without selecting the old or nearest range (6.199647ms)
+✔ same-document unsaved text and cursor survive source navigation, while declined cross-document navigation stays put (2.885688ms)
+✔ a late source read cannot update another document or release its active navigation busy state (6.992108ms)
+✔ the newest source request wins even when two locations target the same document (3.971201ms)
+✔ a late revision digest cannot overwrite a newly selected location (5.561532ms)
+✔ source read and revision digest errors release only their own loading state without changing source or draft (8.996904ms)
+✔ a mode change or a newer legacy link cancels pending precise selection (5.988902ms)
+✔ navigation checks catalog identity and newly dirty text after asynchronous reads (6.19129ms)
+✔ legacy links retain document navigation and malformed locations never select another file (4.335419ms)
+✔ source navigation messages and scene declaration links have English and Japanese translations (0.096535ms)
+✔ scene preview captures exact unsaved text and the original baseline without reading or saving (2.655776ms)
+✔ scene draft capture rejects changed content or a mismatched recovery baseline during asynchronous hashing (5.14322ms)
+✔ draft source navigation selects current unsaved Unicode/CRLF text and restores focus without disk reads (2.905456ms)
+✔ stale, approximate or missing draft ranges keep both text and caret; foreign draft navigation never selects a document (3.010808ms)
+✔ draft source hash and deferred focus cannot overwrite or steal focus from newer edits (6.008449ms)
+✔ unchanged editor UI refreshes do not invalidate a pending draft hash or its later focus (7.352469ms)
+✔ created behavior source navigation pins bytes and enters the source editor with a deferred focus receipt (3.213577ms)
+✔ author navigation refuses stale bytes, failed reads, dirty drafts and busy host state (12.818277ms)
+✔ late author navigation cannot activate after its owning dialog closes or a newer document wins (9.690956ms)
+✔ created author source focus receipt is not consumed while a nested dialog still makes the editor inert (3.32968ms)
+✔ created author source transfers focus ownership after its initiating dialog closes normally (3.112312ms)
+✔ saved and draft focus receipts cannot apply old selection after a synchronous focus listener changes ownership (38.42305ms)
+✔ new user interaction prevents deferred saved and draft navigation from replacing a newer caret (6.822922ms)
+✔ busy and modal gates defer focus without consuming the current source receipt (7.095415ms)
+✔ only explicit diagnostic navigation binds a normalized snapshot after owned source verification (4.802014ms)
+✔ stale approximate and unavailable diagnostics keep their explicit state without an exact range (14.043228ms)
+✔ failed reads and protected drafts cannot bind diagnostic context (10.497684ms)
+✔ late superseded reads cannot publish a diagnostic on the newly active document (3.114887ms)
+✔ diagnostic activation defers all focus until its guarded receipt is used (3.460671ms)
+✔ synchronous activation callbacks cannot bind or select an old diagnostic after source ownership changes (3.334449ms)
+✔ a diagnostic without source coordinates opens its text and binds only an unavailable location (3.09037ms)
+✔ problem result ownership is checked before navigation and again after source reads (5.134382ms)
+✔ a replaced problem result during revision hashing cannot activate its old source (2.846743ms)
+✔ completed problem navigation hands focus off after its dialog closes without retaining dialog ownership (3.810261ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 286.111717

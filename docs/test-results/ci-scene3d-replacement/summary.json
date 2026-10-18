@@ -1,0 +1,134 @@
+{
+  "ok": true,
+  "date": "2026-10-18",
+  "productVersion": "0.1.5",
+  "baseCommit": "d887a59cda96f655321cf0af904d700f64259ebc",
+  "remoteRun": {
+    "url": "https://github.com/Team-silvortex/viento-studio/actions/runs/38850008923",
+    "applicationJob": 116808916422,
+    "originalConclusion": "failure",
+    "compatibilityConclusion": "success",
+    "originalFailure": "scene3d-export.test.mjs replacement expected rejection; inode reused after unlink/recreate"
+  },
+  "localReproduction": {
+    "originalTestExitCode": 1,
+    "fileSystemExperiment": [
+      {
+        "parent": "/tmp",
+        "iterations": 100,
+        "sameInodeAfterUnlink": 0
+      },
+      {
+        "parent": "/home/chiharukiryu/cdev/viento-studio",
+        "iterations": 100,
+        "sameInodeAfterUnlink": 99
+      }
+    ],
+    "afterFixRepeats": [
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      },
+      {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0,
+        "cancelled": 0
+      }
+    ]
+  },
+  "application": {
+    "tests": 5718,
+    "pass": 5549,
+    "fail": 0,
+    "skipped": 169,
+    "cancelled": 0
+  },
+  "rustTests": 342,
+  "exportTests": {
+    "tests": 20,
+    "pass": 18,
+    "fail": 0,
+    "skipped": 2,
+    "cancelled": 0
+  },
+  "syntaxFiles": 951,
+  "countsOverlap": true,
+  "sourceFingerprint": {
+    "scripts/tests/scene3d-export.test.mjs": "3da18fa94c11d3422c0351a1176b0becf7cb4894ff7a570f9f19e4b64183602e"
+  },
+  "productionChanges": false,
+  "ciWorkflowChanges": false,
+  "historicalFilesUnchanged": 7891,
+  "independentReview": "Strict error codes, retained old inode, different replacement identity with identical bytes, and tool marker before --version reviewed; no weakened assertions.",
+  "remoteRerun": false,
+  "committed": false,
+  "pushed": false,
+  "installedUnchanged": true,
+  "limitations": [
+    "Validation ran locally with the application CI commands with its normal temporary root; the targeted regression was separately repeated on the filesystem that reproduced the failure.",
+    "No new GitHub Actions run was triggered; the old failed run retains its historical result.",
+    "Native desktop compatibility already succeeded on the referenced remote run and was not rerun locally for this test-only fix.",
+    "Full application includes existing unreleased animation and audio working-tree changes."
+  ]
+}

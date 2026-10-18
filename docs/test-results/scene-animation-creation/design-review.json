@@ -1,0 +1,40 @@
+{
+  "status": "reviewed",
+  "scope": "first scene animation creation",
+  "entry": "构建与运行 → 场景动画",
+  "ownership": {
+    "pureDraft": "one track and identity/end keys; Rust keeps declaration validation",
+    "pureCreation": "saved actor identity and exact creation/receipt/recovery contracts; no build, audio, behavior or renderer dependency",
+    "host": "saved-world directory, locks, strict v11 three-file journal and same-origin HTTP boundary",
+    "view": "input/review/cancel/reconcile and source navigation; existing animation editor keeps subsequent draft editing"
+  },
+  "transaction": {
+    "version": 11,
+    "ownedFiles": [
+      "new animation JSON",
+      "new animation registration",
+      "existing scene registration"
+    ],
+    "untouched": [
+      "scene source",
+      "actor definitions",
+      "assets",
+      "workspace template/types"
+    ],
+    "evidence": "bounded frozen scene and de-duplicated definitions, not asset bytes; verify all before publication/recovery",
+    "conflict": "external modifications preserved; no blind overwrite"
+  },
+  "reviewFindings": [
+    "Independent core/Node/UI review found no blocking issue.",
+    "BOM+CRLF workflow exposed readRegistry rejecting a leading BOM; fixed single-prefix parsing while preserving raw bytes.",
+    "v10 already supports BOM images: replace outdated rejection test with actual apply and interrupted recovery. v9 keeps its previous prepublication rejection.",
+    "Unknown committed response reconciles exact identity, source bytes/hash, scene source revision and relation closure before clearing pending save; close/reopen rereads ready and allocates nothing.",
+    "Existing removed animation targets retain navigation; new creation and recovery require all targets to belong to the frozen scene."
+  ],
+  "limits": [
+    "starter creates only one linear track and two keys; later fields editor handles expansion",
+    "same 128KiB author /64KiB compact-core animation limits",
+    "single existing animation per scene",
+    "Godot execution tested separately; no Bevy visual support or new installed delivery"
+  ]
+}

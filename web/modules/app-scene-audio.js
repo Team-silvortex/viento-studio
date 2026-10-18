@@ -1,11 +1,14 @@
 import { readSceneAudioDocument, createSceneAudioTrackProposal, createSceneAudioResourceProposal, isSceneAudioProposal } from '../../engine/scene-audio-edit.mjs';
 import { isSceneAudioResources, sceneAudioResourcesMatchSource, sceneAudioResourceIdentityIds } from '../../engine/scene-audio-resources.mjs';
+import { isSceneAudioUsage, sceneAudioUsageMatchSource, sceneAudioUsageSource } from '../../engine/scene-audio-usage.mjs';
 import { createSceneAudioAudition } from './scene-audio-audition.js';
+import { sourceLocationSelection } from './app-source-location.js';
+import { revealSourceOffset } from './app-source-reveal.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 
 // Source drafts and verified audition use separate ports. This panel cannot
 // save documents, fetch arbitrary assets, run cues or control a backend.
-export function setupSceneAudio({ getContext = () => ({}), getSource = async () => null, getResources = null, loadAudition = null, applyDraft = async () => null } = {}) {
+export function setupSceneAudio({ getContext = () => ({}), getSource = async () => null, getResources = null, loadAudition = null, getUsage = null, applyDraft = async () => null } = {}) {
   if (!document.getElementById('sceneAudioStyle')) {
     const style = document.createElement('link'); style.id = 'sceneAudioStyle'; style.rel = 'stylesheet';
     style.href = '/web/scene-audio.css'; (document.head || document.body).append(style);
@@ -14,6 +17,8 @@ export function setupSceneAudio({ getContext = () => ({}), getSource = async () 
   (document.getElementById('modeSwitch') || document.body).append(button);
   const dialog = document.createElement('dialog'); dialog.id = 'sceneAudioDialog'; dialog.className = 'scene-audio-dialog';
   dialog.setAttribute('aria-labelledby', 'sceneAudioTitle');
+  // The saved JSON has an unknown author language. Its textarea uses lang=""
+  // so switching the UI language cannot reshape code or move its viewport.
   dialog.innerHTML = `<header class="scene-audio-header"><h2 id="sceneAudioTitle" data-i18n="编辑场景声音"></h2><button id="sceneAudioClose" type="button" class="doc-btn doc-btn-ghost" data-i18n="返回编辑器"></button></header>
     <div class="scene-audio-body"><p class="scene-audio-note" data-i18n="管理声音轨道和时间提示，可选择已绑定的 WAV 素材。编辑不会自动播放声音。"></p>
       <p id="sceneAudioPath" class="scene-audio-note"></p><p id="sceneAudioScene" class="scene-audio-note"></p>
@@ -22,6 +27,23 @@ export function setupSceneAudio({ getContext = () => ({}), getSource = async () 
           <p class="scene-audio-note" data-i18n="先在作品世界中为声音文档绑定已导入的 WAV 素材，再在此读取并选择。这里不会修改资源绑定。"></p>
           <p id="sceneAudioResourceStatus" class="scene-audio-note" role="status" aria-live="polite"></p></div>
         <p class="scene-audio-note" data-i18n="行为脚本可能通过轨道编号引用声音。移除前请检查脚本；此处不会自动修改脚本。"></p><div id="sceneAudioTracks"></div>
+        <section id="sceneAudioUsage" class="scene-audio-usage" aria-labelledby="sceneAudioUsageTitle" hidden>
+          <div class="scene-audio-usage-toolbar"><h3 id="sceneAudioUsageTitle" data-i18n="音轨使用位置"></h3><div>
+            <button id="sceneAudioUsageRefresh" type="button" class="doc-btn doc-btn-ghost" data-i18n="刷新已保存行为"></button>
+            <button id="sceneAudioUsageDismiss" type="button" class="doc-btn doc-btn-ghost" data-i18n="收起使用位置"></button></div></div>
+          <p id="sceneAudioUsageTrack" class="scene-audio-note"></p>
+          <p class="scene-audio-note" data-i18n="时间提示来自当前表单，行为文字匹配来自上次读取的同场景已保存文档。只匹配完整音轨编号，不解析脚本、其他场景或未保存行为草稿；未发现匹配不代表可以安全移除。"></p>
+          <h4 data-i18n="当前表单的时间提示"></h4><p id="sceneAudioUsageCueStatus" class="scene-audio-note"></p><ul id="sceneAudioUsageCueList"></ul>
+          <h4 data-i18n="已保存行为的文字匹配"></h4><p id="sceneAudioUsageStatus" class="scene-audio-note" role="status" aria-live="polite"></p>
+          <p id="sceneAudioUsageBehaviorPath" class="scene-audio-note"></p><ul id="sceneAudioUsageBehaviorList"></ul>
+          <section id="sceneAudioUsageSource" class="scene-audio-usage-source" aria-labelledby="sceneAudioUsageSourceTitle" hidden>
+            <h4 id="sceneAudioUsageSourceTitle" data-i18n="上次读取的已保存原文"></h4>
+            <p id="sceneAudioUsageSourcePath" class="scene-audio-note"></p><p id="sceneAudioUsageSourceField" class="scene-audio-note"></p>
+            <textarea id="sceneAudioUsageSourceText" lang="" readonly spellcheck="false" aria-labelledby="sceneAudioUsageSourceTitle" aria-describedby="sceneAudioUsageSourcePath sceneAudioUsageSourceField"></textarea>
+            <div class="scene-audio-usage-source-actions"><button id="sceneAudioUsageSourceLocate" type="button" class="doc-btn doc-btn-ghost" data-i18n="重新定位参数"></button>
+              <button id="sceneAudioUsageSourceDismiss" type="button" class="doc-btn doc-btn-ghost" data-i18n="收起原文"></button></div>
+          </section>
+        </section>
         <div class="scene-audio-cue-toolbar"><h3 data-i18n="声音时间提示"></h3><button id="sceneAudioAddCue" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加时间提示"></button></div>
         <p id="sceneAudioCueCount" class="scene-audio-note"></p><p class="scene-audio-note" data-i18n="可为每条提示选择当前音轨。按时间执行；同一时刻按列表顺序执行。上下移动不会改变触发时间。"></p>
         <p id="sceneAudioEmptyCues" class="scene-audio-note" data-i18n="没有时间提示；声音仍可由项目行为控制。" hidden></p><div id="sceneAudioCues"></div></section>
@@ -44,11 +66,14 @@ export function setupSceneAudio({ getContext = () => ({}), getSource = async () 
   const revision = value => typeof value === 'string' && /^sha256:[a-f0-9]{64}$/.test(value);
   let epoch = 0, disposed = false, pending = false, session = null, draft = null, initial = '', proposal = null, approval = '', opener = null;
   let tracks = [], cues = [], message = '', diagnostic = '', resourceCatalog = null, resourceState = 'idle';
+  let formTranslations = [];
+  let usageTrackId = '', usageCatalog = null, usageState = 'idle', usageGeneration = 0, usageSource = null;
   let audition = null, previewOwner = null, previewFailure = null, previewTimer = null;
   let previewSeeking = false, previewPointer = false, previewKey = false, previewResumeFocus = null;
   const resourceIdentities = new Set();
   const canReadResources = () => typeof getResources === 'function' && getContext().resourcesAvailable === true;
   const hasResources = () => Boolean(session && resourceCatalog && canReadResources() && sceneAudioResourcesMatchSource(resourceCatalog, session.source));
+  const canReadUsage = () => typeof getUsage === 'function' && getContext().usageAvailable === true;
   const canPreview = () => typeof loadAudition === 'function' && getContext().auditionAvailable === true && audition?.available() === true;
   const eligible = context => Boolean(context.editable && !context.creating && context.sourceJSON === true && context.audioSource === true
     && typeof context.sourcePath === 'string' && context.sourcePath && typeof context.sourceToken === 'string');
@@ -64,14 +89,18 @@ export function setupSceneAudio({ getContext = () => ({}), getSource = async () 
   function invalidate() { proposal = null; approval = ''; message = '声音修改尚未应用；检查后再应用到草稿。'; diagnostic = ''; }
   function capture() { if (session) draft = raw(); }
   function changed() { stopPreview(); if (!pending && current()) { capture(); invalidate(); refresh(); } }
-  function field(key, value) { const label = node('label'); label.append(node('span', t(key)), value); return label; }
+  function translatedNode(tag, key, ...args) {
+    const element = node(tag), translate = () => { element.textContent = typeof key === 'function' ? key() : t(key, ...args); };
+    formTranslations.push(translate); translate(); return element;
+  }
+  function field(key, value) { const label = node('label'); label.append(translatedNode('span', key), value); return label; }
   function input(id, value) {
     const result = node('input'); result.type = 'text'; result.inputMode = 'decimal'; result.id = 'sceneAudio' + id;
     result.value = value; result.spellcheck = false; result.addEventListener('input', changed); return result;
   }
   function select(id, value, choices) {
     const result = node('select'); result.id = 'sceneAudio' + id;
-    for (const [key, label] of choices) { const option = node('option', t(label)); option.value = key; result.append(option); }
+    for (const [key, label] of choices) { const option = translatedNode('option', label); option.value = key; result.append(option); }
     result.value = value; result.addEventListener('change', changed); return result;
   }
   function needsResources(value) {
@@ -217,41 +246,163 @@ export function setupSceneAudio({ getContext = () => ({}), getSource = async () 
         .catch(failed);
     } catch { failed(); }
   }
+  function clearUsageSource() {
+    usageSource = null; el('UsageSource').hidden = true; el('UsageSourceText').value = '';
+    el('UsageSourcePath').textContent = ''; el('UsageSourceField').textContent = '';
+  }
+  function usageSourceCurrent() {
+    return Boolean(usageSource && current() && canReadUsage() && usageSource.owner === session
+      && usageSource.catalog === usageCatalog && usageSource.trackId === usageTrackId
+      && tracks.some(row => row.id === usageTrackId) && usageCatalog.matches.includes(usageSource.match));
+  }
+  function locateUsageSource() {
+    if (!usageSourceCurrent()) { clearUsageSource(); return false; }
+    const { source } = usageSource, selection = sourceLocationSelection(source.content, source, source.sourceRevision);
+    if (selection.status !== 'exact') return false;
+    const textarea = el('UsageSourceText');
+    if (textarea.value !== source.content.replace(/\r\n|\r/g, '\n')) return false;
+    textarea.focus({ preventScroll: true }); textarea.selectionStart = selection.start; textarea.selectionEnd = selection.end;
+    el('UsageSource').scrollIntoView?.({ block: 'nearest' });
+    revealSourceOffset(textarea, textarea.value, selection.start); return true;
+  }
+  function showUsageSource(owner, catalog, trackId, match, control) {
+    if (!current() || !canReadUsage() || owner !== session || catalog !== usageCatalog || trackId !== usageTrackId
+      || !tracks.some(row => row.id === trackId) || !catalog.matches.includes(match) || match.trackId !== trackId
+      || !el('UsageBehaviorList').contains(control)) return false;
+    let source;
+    try { source = sceneAudioUsageSource(catalog, match); } catch { return false; }
+    if (sourceLocationSelection(source.content, source, source.sourceRevision).status !== 'exact') return false;
+    usageSource = { owner, catalog, trackId, match, source };
+    el('UsageSourceText').value = source.content.replace(/\r\n|\r/g, '\n');
+    refreshUsageSource(); return locateUsageSource();
+  }
+  function refreshUsageSource() {
+    if (!usageSourceCurrent()) { if (usageSource) clearUsageSource(); return; }
+    el('UsageSource').hidden = false;
+    el('UsageSourcePath').textContent = t('已保存行为文档：{0}', usageSource.source.sourcePath);
+    el('UsageSourceField').textContent = t('参数 {0} · {1}', usageSource.match.parameterName, usageSource.source.propertyPath);
+    el('UsageSourceLocate').disabled = false; el('UsageSourceDismiss').disabled = false;
+  }
+  function clearUsage() {
+    clearUsageSource(); usageGeneration++; usageTrackId = ''; usageCatalog = null; usageState = 'idle';
+  }
+  function refreshUsage() {
+    if (!current() || !canReadUsage()) {
+      if (usageTrackId || usageCatalog || usageState !== 'idle') clearUsage();
+    }
+    if (usageTrackId && !tracks.some(row => row.id === usageTrackId)) { usageTrackId = ''; clearUsageSource(); }
+    for (const row of tracks) {
+      row.usage.hidden = !canReadUsage(); row.usage.disabled = !current() || !canReadUsage();
+      row.usage.setAttribute('aria-expanded', String(row.id === usageTrackId));
+    }
+    const visible = Boolean(usageTrackId && current() && canReadUsage());
+    el('Usage').hidden = !visible; el('Usage').dataset.trackId = usageTrackId;
+    el('UsageRefresh').disabled = !visible || usageState === 'loading';
+    el('UsageDismiss').disabled = !visible;
+    el('UsageTrack').textContent = visible ? t('音轨编号：{0}', usageTrackId) : '';
+    const currentCues = visible ? cues.flatMap((row, index) => row.track.value === usageTrackId ? [{ row, index }] : []) : [];
+    el('UsageCueStatus').textContent = currentCues.length ? t('当前表单有 {0} 条时间提示引用此音轨。', currentCues.length) : t('当前表单没有时间提示引用此音轨。');
+    el('UsageCueList').replaceChildren();
+    for (const { row, index } of currentCues) {
+      const item = node('li'), locate = node('button', t('定位提示')), owner = session, trackId = usageTrackId, cueId = row.id;
+      locate.type = 'button'; locate.id = `sceneAudioUsageCue${index}Locate`; locate.className = 'doc-btn doc-btn-ghost'; locate.dataset.cueId = cueId;
+      locate.addEventListener('click', () => {
+        // A list index is presentation only. Detached buttons cannot target a
+        // replacement row after reordering, deletion, retargeting or a reload.
+        if (!current() || !canReadUsage() || session !== owner || usageTrackId !== trackId || !cues.includes(row)
+          || row.id !== cueId || row.track.value !== trackId || row.track.disabled
+          || !el('UsageCueList').contains(locate) || !el('Cues').contains(row.track)) return;
+        row.track.focus({ preventScroll: true }); row.track.scrollIntoView?.({ block: 'nearest' });
+      });
+      item.append(node('p', t('第 {0} 条提示 · {1}', index + 1, cueId)), locate); el('UsageCueList').append(item);
+    }
+    const matches = visible && usageCatalog ? usageCatalog.matches.filter(row => row.trackId === usageTrackId) : [];
+    const status = el('UsageStatus'); status.dataset.status = usageState;
+    status.textContent = usageState === 'loading' ? t('正在读取已保存行为中的音轨文字匹配…')
+      : usageState === 'failed' ? t('无法读取使用位置；表单和审阅已保留，可刷新重试。')
+      : usageCatalog ? usageCatalog.behavior === null ? t('当前场景没有关联的已保存行为文档。')
+        : matches.length ? t('上次读取找到 {0} 处完整编号文字匹配。', matches.length)
+        : t('上次读取未在已保存行为参数中找到完整编号文字匹配。')
+      : t('尚未读取已保存行为。');
+    el('UsageBehaviorPath').textContent = visible && usageCatalog?.behavior ? t('已保存行为文档：{0}', usageCatalog.behavior.sourcePath) : '';
+    el('UsageBehaviorList').replaceChildren();
+    for (const [index, match] of matches.entries()) {
+      const item = node('li'), source = node('button', t('查看参数原文')), owner = session, catalog = usageCatalog, trackId = usageTrackId;
+      source.type = 'button'; source.id = `sceneAudioUsageMatch${index}Source`; source.className = 'doc-btn doc-btn-ghost'; source.dataset.propertyPath = match.propertyPath;
+      source.addEventListener('click', () => showUsageSource(owner, catalog, trackId, match, source));
+      item.append(node('p', t('绑定 {0} · 实例 {1}', match.bindingId, match.instanceId)), node('p', t('参数 {0} · {1}', match.parameterName, match.propertyPath)), source);
+      el('UsageBehaviorList').append(item);
+    }
+    refreshUsageSource();
+  }
+  async function loadUsage() {
+    if (!current() || !canReadUsage() || !usageTrackId || usageState === 'loading') { refreshUsage(); return false; }
+    const owner = session, request = epoch, generation = ++usageGeneration;
+    clearUsageSource(); usageCatalog = null; usageState = 'loading'; refreshUsage();
+    // Advisory reads belong to the source session, not the current form or
+    // selection. Editing and checked proposals continue independently.
+    const owns = () => !disposed && request === epoch && session === owner && generation === usageGeneration && current() && canReadUsage();
+    try {
+      const catalog = await getUsage(owner.source);
+      if (!owns()) return false;
+      if (!isSceneAudioUsage(catalog) || !sceneAudioUsageMatchSource(catalog, owner.source)) throw Error('Invalid audio usage snapshot');
+      usageCatalog = catalog; usageState = 'ready'; return true;
+    } catch {
+      if (owns()) usageState = 'failed';
+      return false;
+    } finally {
+      if (!disposed && request === epoch && session === owner && dialog.open) refreshUsage();
+    }
+  }
+  function showUsage(id) {
+    if (!current() || !canReadUsage() || !tracks.some(row => row.id === id)) { refreshUsage(); return; }
+    if (usageTrackId !== id) clearUsageSource();
+    usageTrackId = id; refreshUsage();
+    // Only an explicit track selection scrolls; reads and refreshes keep the
+    // current viewport and keyboard focus while their result arrives.
+    el('Usage').scrollIntoView?.({ block: 'nearest' });
+    if (!usageCatalog && usageState !== 'loading') void loadUsage();
+  }
   function render() {
-    tracks = []; cues = []; el('Tracks').replaceChildren(); el('Cues').replaceChildren();
+    formTranslations = []; tracks = []; cues = []; el('Tracks').replaceChildren(); el('Cues').replaceChildren();
     if (!session) return;
     for (const [index, row] of draft.tracks.entries()) {
       const wrapper = node('section'); wrapper.className = 'scene-audio-track';
       const identity = node('p', t('轨道 {0} · 资源 {1}', row.id, row.resourceId)); identity.className = 'scene-audio-note';
       const available = hasResources() ? resourceCatalog.resources : [];
-      const options = available.map(item => [item.resourceId, t('素材 {0} · {1}', item.name, item.sourcePath)]);
-      if (!available.some(item => item.resourceId === row.resourceId)) options.unshift([row.resourceId, t(resourceCatalog ? '当前素材（目录中不可用）：{0}' : '当前素材：{0}', row.resourceId)]);
+      const options = available.map(item => [item.resourceId, () => t('素材 {0} · {1}', item.name, item.sourcePath)]);
+      if (!available.some(item => item.resourceId === row.resourceId)) options.unshift([row.resourceId, () => t(resourceCatalog ? '当前素材（目录中不可用）：{0}' : '当前素材：{0}', row.resourceId)]);
       const resource = select(`Track${index}Resource`, row.resourceId, options), resourceField = field('WAV 素材', resource);
       resourceField.className = 'scene-audio-resource-field';
       const resourceHint = node('p'); resourceHint.className = 'scene-audio-note'; resourceHint.id = `sceneAudioTrack${index}ResourceHint`;
       const role = select(`Track${index}Role`, row.role, [['music', '音乐'], ['effect', '音效']]);
       const volume = input(`Track${index}Volume`, row.volume), loop = select(`Track${index}Loop`, row.loop, [['true', '是'], ['false', '否']]);
-      const clone = node('button', t('复制音轨')), remove = node('button', t('移除音轨'));
+      const clone = translatedNode('button', '复制音轨'), remove = translatedNode('button', '移除音轨');
       for (const [control, suffix, action] of [[clone, 'Clone', cloneTrack], [remove, 'Remove', removeTrack]]) {
         control.type = 'button'; control.id = `sceneAudioTrack${index}${suffix}`; control.className = 'doc-btn doc-btn-ghost';
         control.addEventListener('click', () => action(row.id));
       }
-      const preview = node('button', t('试听音轨')); preview.type = 'button'; preview.id = `sceneAudioTrack${index}Preview`; preview.className = 'doc-btn doc-btn-ghost';
+      const preview = translatedNode('button', '试听音轨'); preview.type = 'button'; preview.id = `sceneAudioTrack${index}Preview`; preview.className = 'doc-btn doc-btn-ghost';
       preview.addEventListener('click', () => previewTrack(row.id));
-      const actions = node('div'); actions.className = 'scene-audio-track-actions'; actions.append(preview, clone, remove);
+      const usage = translatedNode('button', '查看使用位置'); usage.type = 'button'; usage.id = `sceneAudioTrack${index}Usage`; usage.className = 'doc-btn doc-btn-ghost';
+      const owner = session;
+      usage.setAttribute('aria-controls', 'sceneAudioUsage'); usage.addEventListener('click', () => {
+        if (session === owner && tracks.some(item => item.usage === usage) && el('Tracks').contains(usage)) showUsage(row.id);
+      });
+      const actions = node('div'); actions.className = 'scene-audio-track-actions'; actions.append(preview, usage, clone, remove);
       const removalHint = node('p'); removalHint.className = 'scene-audio-note'; removalHint.id = `sceneAudioTrack${index}RemovalHint`;
       wrapper.append(identity, resourceField, resourceHint, field('声音用途', role), field('音量（0–1）', volume), field('循环播放', loop), actions, removalHint); el('Tracks').append(wrapper);
-      tracks.push({ id: row.id, resource, identity, resourceHint, role, volume, loop, clone, remove, removalHint, preview });
+      tracks.push({ id: row.id, resource, identity, resourceHint, role, volume, loop, clone, remove, removalHint, preview, usage });
     }
     for (const [index, row] of draft.cues.entries()) {
       const wrapper = node('section'); wrapper.className = 'scene-audio-cue';
       const existing = session.model.cues.some(cue => cue.id === row.id);
-      const identity = node('p', existing ? t('提示 {0}', row.id) : t('新增提示 {0}', row.id)); identity.className = 'scene-audio-note';
-      const track = select(`Cue${index}Track`, row.trackId, draft.tracks.map((item, trackIndex) => [item.id, t('音轨 {0} · {1}', trackIndex + 1, item.id)]));
+      const identity = translatedNode('p', existing ? '提示 {0}' : '新增提示 {0}', row.id); identity.className = 'scene-audio-note';
+      const track = select(`Cue${index}Track`, row.trackId, draft.tracks.map((item, trackIndex) => [item.id, () => t('音轨 {0} · {1}', trackIndex + 1, item.id)]));
       const atSeconds = input(`Cue${index}Time`, row.atSeconds), action = select(`Cue${index}Action`, row.action, [['play', '播放'], ['stop', '停止']]);
-      const remove = node('button', t('移除时间提示')); remove.type = 'button'; remove.id = `sceneAudioCue${index}Remove`; remove.className = 'doc-btn doc-btn-ghost';
+      const remove = translatedNode('button', '移除时间提示'); remove.type = 'button'; remove.id = `sceneAudioCue${index}Remove`; remove.className = 'doc-btn doc-btn-ghost';
       remove.addEventListener('click', () => removeCue(row.id));
-      const up = node('button', t('上移')), down = node('button', t('下移'));
+      const up = translatedNode('button', '上移'), down = translatedNode('button', '下移');
       for (const [control, suffix, direction] of [[up, 'Up', -1], [down, 'Down', 1]]) {
         control.type = 'button'; control.id = `sceneAudioCue${index}${suffix}`; control.className = 'doc-btn doc-btn-ghost';
         control.addEventListener('click', () => moveCue(row.id, direction));
@@ -295,11 +446,12 @@ export function setupSceneAudio({ getContext = () => ({}), getSource = async () 
     el('ChangedPaths').replaceChildren(); for (const path of proposal?.changedPaths || []) el('ChangedPaths').append(node('li', path));
     el('Path').textContent = session?.source.sourcePath || context.sourcePath || '';
     el('Scene').textContent = session ? t('声音所属场景：{0}', session.model.sceneObjectId) : '';
-    refreshPreview();
+    refreshUsage(); refreshPreview();
   }
   function close(force = false) {
     stopPreview();
     if (!force && dirty() && !window.confirm(t('丢弃本次声音表单修改？原文草稿不会改变。'))) return false;
+    clearUsage();
     const target = opener, request = ++epoch; opener = null; session = null; draft = null; tracks = []; cues = []; proposal = null; pending = false; message = ''; diagnostic = ''; resourceCatalog = null; resourceState = 'idle'; resourceIdentities.clear();
     if (dialog.open) dialog.close(); refresh();
     Promise.resolve().then(() => { if (!disposed && request === epoch && !dialog.open && target?.isConnected !== false) target?.focus?.(); }); return true;
@@ -444,6 +596,10 @@ export function setupSceneAudio({ getContext = () => ({}), getSource = async () 
   }
   button.addEventListener('click', () => void open()); el('Check').addEventListener('click', () => void check()); el('Apply').addEventListener('click', () => void apply());
   el('AddCue').addEventListener('click', addCue);
+  el('UsageRefresh').addEventListener('click', () => void loadUsage());
+  el('UsageDismiss').addEventListener('click', () => { const selected = usageTrackId; clearUsageSource(); usageTrackId = ''; refreshUsage(); tracks.find(row => row.id === selected)?.usage.focus(); });
+  el('UsageSourceLocate').addEventListener('click', locateUsageSource);
+  el('UsageSourceDismiss').addEventListener('click', () => { if (!usageSourceCurrent()) return; clearUsageSource(); el('UsageRefresh').focus(); });
   el('LoadResources').addEventListener('click', () => void loadResources());
   el('StopPreview').addEventListener('click', () => { stopPreview(); refreshPreview(); });
   el('PausePreview').addEventListener('click', pausePreview); el('ResumePreview').addEventListener('click', resumePreview);
@@ -460,7 +616,7 @@ export function setupSceneAudio({ getContext = () => ({}), getSource = async () 
   dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
   dialog.addEventListener('keydown', event => { if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); if (!event.repeat && !event.isComposing && event.keyCode !== 229) close(); } });
   dialog.addEventListener('close', () => { if (!dialog.open && (session || pending)) close(true); });
-  const unsubscribe = onLanguageChange(() => { if (disposed) return; capture(); if (proposal && !approved()) invalidate(); render(); refresh(); });
+  const unsubscribe = onLanguageChange(() => { if (disposed) return; if (proposal && !approved()) invalidate(); for (const translate of formTranslations) translate(); refresh(); });
   function hidden() { if (document.hidden || document.visibilityState === 'hidden') { stopPreview(); refresh(); } }
   function pagehide() { stopPreview(); refresh(); }
   document.addEventListener('visibilitychange', hidden); window.addEventListener('pagehide', pagehide);

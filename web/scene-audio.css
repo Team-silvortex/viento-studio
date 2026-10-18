@@ -59,3 +59,20 @@
  .scene-audio-preview-actions { grid-column:1; grid-row:2; }
  .scene-audio-preview-transport output { grid-column:2; grid-row:2; align-self:center; }
 }
+
+.scene-audio-usage { margin:16px 0; padding:12px; border:1px solid #33536a; border-radius:8px; background:#0a1422; min-width:0; }
+.scene-audio-usage-toolbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.scene-audio-usage-toolbar h3 { margin:0; }
+.scene-audio-usage-toolbar > div { display:flex; flex-wrap:wrap; gap:8px; }
+.scene-audio-usage h4 { margin:16px 0 6px; }
+.scene-audio-usage ul { margin:6px 0; padding-inline-start:22px; }
+.scene-audio-usage li p { margin:4px 0; overflow-wrap:anywhere; }
+.scene-audio-usage [data-status="failed"] { color:#ffcaab; }
+@media(max-width:600px) { .scene-audio-usage-toolbar > div { width:100%; } .scene-audio-usage-toolbar .doc-btn { flex:1 1 100px; } }
+
+.scene-audio-usage li { margin-block:8px; }
+.scene-audio-usage-source { min-width:0; margin-top:16px; padding-top:4px; border-top:1px solid #33536a; }
+.scene-audio-usage-source textarea { display:block; width:100%; height:240px; min-height:120px; max-height:50dvh; resize:vertical; box-sizing:border-box; padding:10px; border:1px solid #33536a; border-radius:6px; color:#d8e9f8; background:#07111e; font:13px/1.5 ui-monospace,monospace; tab-size:2; }
+.scene-audio-usage-source textarea:focus-visible { outline:2px solid #83d6bf; outline-offset:2px; }
+.scene-audio-usage-source-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+@media(max-width:600px) { .scene-audio-usage-source textarea { height:200px; } .scene-audio-usage-source-actions .doc-btn { flex:1 1 100px; } }

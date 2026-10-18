@@ -1,0 +1,215 @@
+{
+  "format": "viento-animation-design-review",
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-18T02:13:22.442009+00:00",
+  "status": "passed",
+  "scope": "Independent read-only audit of animation author drafts, core receipts, source ownership, playback callbacks, Godot visual isolation and previous-turn work preservation.",
+  "reviewer": "animation_architecture; core author reviewed other agents authoring/UI/backend changes and independently reran targeted checks",
+  "sourceFingerprints": {
+    "crates/viento-studio-core/src/lib.rs": "a7cd7557ef235e226ad4efd26032277469a5ebb5ccf32a96a08d8094510c33c7",
+    "crates/viento-studio-core/src/scene_animation.rs": "d070b6bfe08d2a91bc3eaf39599c8ade6d6f9c58febdcfeaeb6a319f68084a0c",
+    "engine/studio-core.mjs": "72c59974524eb57a8a8cbde1579ed7855c1661095ea4bbe178d29ffe801db36e",
+    "engine/studio-core.wasm": "1767202f1f09cefd9835c5a3415d97eda81de3b830667648f9cea3f98793a077",
+    "engine/scene-animation-core.mjs": "b7b016fb3bd1c62b351343063066eed5da845290080cb892088091b25e8aa73f",
+    "engine/scene-animation-edit.mjs": "0ac9d54080ecfa073fd83ab8000b31469102a851c9dcab263187f2aec74c2dce",
+    "engine/scene-animation.mjs": "8ab648346a5da2b80583dab9353cfd757dbf09e55da721910fc0d30b69dc16fa",
+    "engine/build-plan.mjs": "29c30ad39efef04ba540c0be8a50410def93287b1daee09f07420b57d23f2618",
+    "engine/backend-capabilities.mjs": "d572ed5046a664188bf0cf8747e9c2db38af93314a97165825add5aad41fd622",
+    "engine/studio-modules.mjs": "7d830b0045dec16892973b44f72e850213c47c14450c0205b7443d72545124f7",
+    "web/modules/app-scene-animation.js": "c49ec8e7ced1bc7f2c2e2f2bc44cc663153d2f9f1162dfc89ca6c82d02a2c6f3",
+    "web/modules/app-scene-animation-source.js": "b741a2bd5548ad1305298d631f1617233d57162f60069538dd6545b1685fc42a",
+    "web/modules/scene-animation-player.js": "94a1abc66b05350d21e1923e17b0fba3d864d760721ebf5dbf800b92df75ff7e",
+    "web/modules/scene-animation-preview.js": "f3c899293b426551d14ebb75d5b6831500c6e32ccad4840884e69e773fea910e",
+    "web/modules/app-runtime.js": "4e1df36d9adf96ea110294441d3f07b191fedbdd97e12385c6fd569aefa43c86",
+    "web/modules/app-studio-system.js": "4e8d8f7c8567dc3dbc16933fec116f933333f9d61bd669f3c3538e1160c6606b",
+    "web/scene-animation.css": "6806d17737cf8ec33e910f5869bbf5d127ec658bc288bcd06f26d8eae72a63f7",
+    "web/i18n/en.js": "8f5990c5729c4e3fa998518add1db834e8d849d4c6d5f12b013b0841fe2e914b",
+    "web/i18n/ja.js": "95f048e894615bbe9b75cd175e702782fdc82dc8aeaaf25b88a366d6ec4050c3",
+    "scripts/backends/godot4-animation.mjs": "35075d9ddc4fd41b2eb0486fe3ee9dbcce0138ba00cce7f43c19acdaec829e7e",
+    "scripts/backends/godot4/animation-runtime.gd": "e1c4181b8b0c274ca48f9542d3afc5a00e19dd0173994a9cef8656f73dfd2579",
+    "scripts/backends/godot4-project.mjs": "4b8c419f7c9dae02b6e194275fe712fc70f01e2acdd6eb9a7f7cf4ade507c3a3",
+    "scripts/backends/godot4/project-scene.gd": "ff3de5853a0e8414103cbfb0f9b9799d0e41c208c242a7d47ece1d81046a2e20",
+    "scripts/tests/scene-animation-core.test.mjs": "1107f0b6a6301d95491d7395d0662dbfbf42068c91a9577496ae1fb85d4a11c4",
+    "scripts/tests/scene-animation-edit.test.mjs": "5db247170871240cf54b6e6da49a09c6bf2b0a76c85cf5bddc83bf9d3394fb1f",
+    "scripts/tests/scene-animation-player.test.mjs": "02fdd8086746d42503577f5ca8acc4c5c1cbd96b19da93256697a02b7b7599bf",
+    "scripts/tests/scene-animation-editor-ui.test.mjs": "5fb095227e8de69b66543c9a3f4dcee04ab59f69a21eb6b1ab2c2da5a43dd390",
+    "scripts/tests/scene-animation.test.mjs": "75c5dc4c6c10c86cb3b0b1f7fcb43eb608a370c6b882409c08d04e0ee10384e3",
+    "scripts/tests/scene-animation-godot.test.mjs": "3fb9bc3b0c0fbd2573e8a9857b9e900259f4e3cc4778f13a4661c3fdbf1ee6ff"
+  },
+  "checks": [
+    {
+      "name": "Animation core/edit/player/UI/planner targeted suite",
+      "result": "passed",
+      "tests": 38,
+      "skipped": 0,
+      "log": "independent-tests-final.log",
+      "note": "Explicit --test-isolation=none ensures individual tests run and report; native CLI parity enabled."
+    },
+    {
+      "name": "Original source text and branded proposals",
+      "result": "passed",
+      "cases": 12,
+      "evidence": "independent-source-check.json",
+      "coverage": [
+        "LF/CRLF/CR",
+        "BOM present/absent",
+        "two-space/tab indentation",
+        "escaped field spelling",
+        "numeric exponent preservation outside changed leaf",
+        "only /durationSeconds patched",
+        "deep freeze",
+        "serialized clones rejected",
+        "all five source ownership fields invalidate approval"
+      ]
+    },
+    {
+      "name": "Source host draft ownership",
+      "result": "passed",
+      "evidence": "independent-source-check.json",
+      "coverage": [
+        "cancel during awaited digest produces zero writes",
+        "one approved write changes only current ordinary draft",
+        "saved baseline retained",
+        "repeat/stale apply rejected",
+        "late focus source guard"
+      ]
+    },
+    {
+      "name": "Playback generation and revocation",
+      "result": "passed",
+      "evidence": [
+        "independent-source-check.json",
+        "reentrant-frame-check.json"
+      ],
+      "coverage": [
+        "late cancelled frame",
+        "reopened player session",
+        "clear/load",
+        "source capability revocation",
+        "dispose",
+        "reentrant onState play retains only the new scheduling handle"
+      ]
+    },
+    {
+      "name": "Actual Godot behavior/visual isolation",
+      "result": "passed",
+      "tests": 1,
+      "skipped": 0,
+      "log": "independent-godot-isolation.log",
+      "tool": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+      "coverage": [
+        "Sprite2D behavior stays on logical actor",
+        "authored sibling Sprite2D stays on logical actor",
+        "only generated original visual reparented",
+        "visual container keeps first-child draw order",
+        "ordinary movement smoke and event reader remain successful"
+      ]
+    },
+    {
+      "name": "Saved animation planner and generated runtime review",
+      "result": "passed",
+      "coverage": [
+        "explicit animation relation and reciprocal dependency",
+        "stable scene instance membership",
+        "source revision and exact path provenance",
+        "BOM/CRLF source coordinates",
+        "capability deletion cannot bypass Bevy rejection",
+        "Godot IEEE-754 time/value byte transport",
+        "step right-continuity",
+        "linear endpoint clamp",
+        "nonloop hold and loop boundary",
+        "assembly shutdown and per-visit fresh animation state"
+      ]
+    },
+    {
+      "name": "Rust/WASM core regression (earlier this turn)",
+      "result": "passed",
+      "rustTests": 342,
+      "jsCoreAudioParticleTests": 34,
+      "logs": [
+        "/tmp/viento-animation-core-rust.log",
+        "/tmp/viento-animation-core-js.log"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "animation-review-001",
+      "severity": "P2",
+      "status": "fixed-and-independently-verified",
+      "file": "web/modules/scene-animation-player.js",
+      "problem": "A reentrant onState callback could start a new playback generation, then the old tick scheduled another stale frame and overwrote the new handle.",
+      "resolution": "Check the original generation after emit before scheduling. Independent reproduction now schedules exactly two frames and pause cancels handle 2.",
+      "regression": "reentrant state listeners cannot overwrite the new playback frame handle"
+    },
+    {
+      "id": "animation-review-002",
+      "severity": "P1",
+      "status": "fixed-and-independently-verified",
+      "file": "scripts/backends/godot4/animation-runtime.gd",
+      "problem": "Selecting every Sprite2D/Polygon2D child moved legitimate behavior nodes and authored sibling visuals; count 2 then failed animation startup.",
+      "resolution": "Reparent only the frozen generator original first visual, retaining all behavior children at their logical actor; move its visual container to original first-child drawing position.",
+      "regression": "real Sprite2D behavior and authored sibling visuals remain on the logical actor when animation starts"
+    },
+    {
+      "id": "animation-review-003",
+      "severity": "P2",
+      "status": "fixed-and-source-verified",
+      "file": "scripts/backends/godot4/animation-runtime.gd",
+      "problem": "Godot linear sampling initially lacked the Rust endpoint clamp, leaving a potential floating-point boundary discrepancy.",
+      "resolution": "Use animation_lerp with clampf(lerpf(...), min, max); backend agent also ran exact Rust/Godot sample parity and subnormal duration tests."
+    }
+  ],
+  "unresolvedBlockingFindings": [],
+  "priorWorkIntegrity": {
+    "baselineHead": "d887a59cda96f655321cf0af904d700f64259ebc",
+    "version": "0.1.5",
+    "historicalFilesChecked": 7831,
+    "missingHistoricalFiles": [],
+    "modifiedHistoricalFiles": [],
+    "priorUncommittedFilesByteIdentical": [
+      "docs/FUNCTION_ATLAS.md",
+      "docs/SCENE_AUDIO.md",
+      "docs/STATUS.md",
+      "docs/function-atlas.html",
+      "docs/function-atlas.json",
+      "scripts/lib/doc-api-service.mjs",
+      "scripts/lib/doc-server-routes.mjs",
+      "scripts/tests/scene-audio-editor-ui.test.mjs",
+      "scripts/tests/source-reveal.test.mjs",
+      "web/modules/app-doc-service.js",
+      "web/modules/app-scene-audio-source.js",
+      "web/modules/app-scene-audio.js",
+      "web/modules/app-source-reveal.js",
+      "web/scene-audio.css",
+      "engine/scene-audio-usage.mjs",
+      "scripts/lib/scene-audio-usage-service.mjs",
+      "scripts/tests/scene-audio-usage-host.test.mjs",
+      "scripts/tests/scene-audio-usage-http.test.mjs",
+      "scripts/tests/scene-audio-usage-navigation-smoke.mjs",
+      "scripts/tests/scene-audio-usage-service.test.mjs",
+      "scripts/tests/scene-audio-usage-smoke.mjs",
+      "scripts/tests/scene-audio-usage-source.test.mjs",
+      "scripts/tests/scene-audio-usage-transport.test.mjs",
+      "scripts/tests/scene-audio-usage.test.mjs"
+    ],
+    "sharedPriorPathsContinuedByThisTurn": [
+      "docs/ARCHITECTURE.md",
+      "docs/ROADMAP.md",
+      "docs/TESTING.md",
+      "scripts/tests/editor-harness.mjs",
+      "web/i18n/en.js",
+      "web/i18n/ja.js",
+      "web/modules/app-runtime.js"
+    ],
+    "audioUsageAndNavigationSourceBytesRetained": true,
+    "savedDraftIsolationVerified": true
+  },
+  "boundaries": [
+    "Preview is an explicitly labelled schematic, not a live complete scene or physics simulation.",
+    "UI semantic checking intentionally does not resolve scene-instance existence; saved build planning resolves that independently.",
+    "A structural track/key-array edit rewrites only its declared changed array; unchanged outer source text is preserved.",
+    "Existing Godot visual animation is supported; Bevy explicitly declines this capability.",
+    "No installed application, mobile device, release commit or push is claimed by this audit."
+  ]
+}

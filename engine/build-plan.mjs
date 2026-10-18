@@ -3,6 +3,7 @@
 import { resolveScene2DModel } from './scene-model.mjs';
 import { resolveSceneBehaviors } from './scene-behaviors.mjs';
 import { resolveSceneAudio, SCENE_AUDIO_CAPABILITIES } from './scene-audio.mjs';
+import { resolveSceneAnimation, SCENE_ANIMATION_CAPABILITIES } from './scene-animation.mjs';
 export const SCENE2D_CAPABILITIES = ['scene2d', 'input.arrows', 'state.movement', 'image'];
 export { PROJECT_BUILD_API_PATH } from './project-build-contract.mjs';
 
@@ -32,9 +33,13 @@ export function attachSceneBehaviorPlan(observed, plan) {
     behaviors: resolved.behaviors } : plan;
   const audio = resolveSceneAudio(observed, behavioral);
   if (!audio.ok) return { ok: false, plan: null, diagnostics: audio.diagnostics };
-  return { ok: true, plan: audio.audio ? { ...behavioral, audio: audio.audio,
+  const audible = audio.audio ? { ...behavioral, audio: audio.audio,
     requiredCapabilities: [...behavioral.requiredCapabilities, ...SCENE_AUDIO_CAPABILITIES],
-    resources: [...behavioral.resources, ...audio.resources].sort((a, b) => a.id.localeCompare(b.id)) } : behavioral, diagnostics: [] };
+    resources: [...behavioral.resources, ...audio.resources].sort((a, b) => a.id.localeCompare(b.id)) } : behavioral;
+  const animation = resolveSceneAnimation(observed, audible);
+  if (!animation.ok) return { ok: false, plan: null, diagnostics: animation.diagnostics };
+  return { ok: true, plan: animation.animation ? { ...audible, animation: animation.animation,
+    requiredCapabilities: [...audible.requiredCapabilities, ...SCENE_ANIMATION_CAPABILITIES] } : audible, diagnostics: [] };
 }
 
 // Recovery checks frozen declaration and guarded registrations only, retaining

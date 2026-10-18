@@ -1,6 +1,8 @@
 # Studio 系统模块与工程需求
 
-**0.1.3 之后的当前工作树**支持[项目组装](PROJECT_ASSEMBLY.md)、[场景切换](PROJECT_ASSEMBLY.md#运行中切换场景)、[共享状态](PROJECT_SHARED_STATE.md)、[项目事件](PROJECT_EVENTS.md)及[行为驱动声音](PROJECT_AUDIO_CONTROLS.md)。Godot 项目中的行为可请求播放／停止当前场景已声明的音轨；先处理事件，再执行声音请求，最后切场景或正常结束。编辑器独立显示实际声音命令及行为、音轨两份冻结来源，工程 ZIP 保留运行接口。当前为 **21 模块／40 项声明能力**，Godot 适配器 **0.11.0**、项目协议 **4**；应用仍为 0.1.3，未更新安装。Bevy 项目组装与声音、跨启动存档、事件留存重放及独立游戏发行仍待接入。
+**0.1.6 源码**现为 **22 模块／43 项声明能力**。独立 `org.viento.scene-animation` 提供 `scene.authoring.animation` 与 `scene.preview.animation`，负责已有动画的字段编辑和Rust采样示意，并与构建页的独立控件共同提供保存态场景画面预览；构建模块另以独立创建控制器贡献 `scene.authoring.animation-creation`。宿主提供 `animation.create` 时才显示首次创建入口，通过目录、审阅、三文件保存和原文导航连接，不能因注册能力存在而推断已安装Godot或Android已支持创建。见[动画指南](SCENE_ANIMATION.md#从场景首次创建动画)及[当前验收](test-results/scene-animation-creation/README.md)。Godot仍为0.12.0，本次只更新源码版本，安装保持，旧段落保留各阶段边界。
+
+**此前 0.1.3 之后的工作树**支持[项目组装](PROJECT_ASSEMBLY.md)、[场景切换](PROJECT_ASSEMBLY.md#运行中切换场景)、[共享状态](PROJECT_SHARED_STATE.md)、[项目事件](PROJECT_EVENTS.md)及[行为驱动声音](PROJECT_AUDIO_CONTROLS.md)。Godot 项目中的行为可请求播放／停止当前场景已声明的音轨；先处理事件，再执行声音请求，最后切场景或正常结束。编辑器独立显示实际声音命令及行为、音轨两份冻结来源，工程 ZIP 保留运行接口。该阶段为 **21 模块／40 项声明能力**，Godot 适配器 **0.11.0**、项目协议 **4**；应用仍为 0.1.3，未更新安装。Bevy 项目组装与声音、跨启动存档、事件留存重放及独立游戏发行仍待接入。
 
 
 0.1.0 源码保留 0.0.10 接入的独立装配入口，并交付九个独立 3D 作者域：变换、对象管理、环境、属性、整体移动、位置对齐、等距分布、批量复制和批量移除。加上原有功能区与[独立只读预览](SCENE3D.md)，0.1.0 发布时共 17 个固定模块、33 项声明能力。之后的[独立行为编辑](SCENE_BEHAVIORS.md#内置行为编辑010-之后的工作树)增至 18／34，[首次创建行为](SCENE_BEHAVIORS.md#从场景首次添加行为)增至 18／35；当前再加入[内置脚本创建](SCENE_BEHAVIORS.md#内置脚本创建)，该阶段为 **19** 个固定模块、**36** 项声明能力。0.1.2 另接独立[配方创建助手](SCENE_COMPOSITION.md#新建场景配方)，增至 **20** 个固定模块、**37** 项声明能力。工程类型、模块实现、宿主权限、场景表示和执行后端分别描述自己的边界；预览导航与选择不增加作者权限。动态插件运行器仍未实现。
@@ -53,7 +55,7 @@ flowchart TD
 | `org.viento.world` | 世界查询、命令、对象和投影创作 |
 | `org.viento.export` | 工程导出与资源包 |
 | `org.viento.media` | 图片、视频、音频的资源引用 |
-| `org.viento.build` | 当前聚合的 2D 场景、配方、后端工程和执行工作区；独立控制器分别提供首次行为／声音入口及 `scene.authoring.behavior-creation`、`scene.authoring.audio-creation` |
+| `org.viento.build` | 当前聚合的 2D 场景、配方、后端工程和执行工作区；独立控制器分别提供首次行为／声音／动画入口及 `scene.authoring.behavior-creation`、`scene.authoring.audio-creation`、`scene.authoring.animation-creation` |
 | `org.viento.scene3d` | 独立 3D 方块表示与只读 WebGL2 预览；只依赖文档模块 |
 | `org.viento.scene3d-transforms` | 独立单对象位置／旋转／尺寸原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.transforms3d` |
 | `org.viento.scene3d-objects` | 独立方块新增／复制／移除的完整原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.objects3d` |
@@ -66,6 +68,7 @@ flowchart TD
 | `org.viento.scene3d-removal` | 独立多选保真移除，至少保留一个对象；明确删除与幸存声明、完整审阅及草稿应用；仅依赖文档模块，提供 `scene.authoring.removal3d` |
 | `org.viento.scene-behaviors` | 已有绑定文档的稳定绑定／实例／关联 TXT 选择、带类型参数和信号编辑；完整审阅后只应用原文草稿，仅依赖文档模块，提供 `scene.authoring.behaviors` |
 | `org.viento.scene-audio` | 已有声音轨道／提示的保真字段修改、完整审阅和原文草稿应用；只依赖文档模块，提供 `scene.authoring.audio`；保存与播放由原接口负责 |
+| `org.viento.scene-animation` | 已有动画关键帧表、普通草稿应用与Rust采样示意；构建页可选控件独立消费相同采样和保存快照，需两模块与宿主能力均启用；只依赖文档模块，提供 `scene.authoring.animation`、`scene.preview.animation`。首次创建另属构建入口，保存与后端执行独立 |
 
 描述符是固定的 `viento-studio-module` schema 1 数据，包含 ID、API 版本、依赖和贡献能力。注册时拒绝重复提供者、未知依赖、版本冲突和依赖循环。工程声明不能注册模块，也不能加载代码；本轮没有第三方模块安装入口。
 
@@ -97,7 +100,7 @@ flowchart TD
 
 ## 视图接入与诊断接口
 
-`setupStudioSystem({ settings, features, ports })` 只在启动时装配。`ports` 按 `scripts`、`sceneBehaviors`、`world`、`build`、`project`、`export`、`media`、`scene3d`、`scene3dTransforms`、`scene3dObjects`、`scene3dEnvironment`、`scene3dProperties`、`scene3dTranslation`、`scene3dAlignment`、`scene3dDistribution`、`scene3dCopy`、`scene3dRemoval` 分开注入，设置在其他视图之前完成。返回控制接口只有 `refreshMedia()`、`updateCapabilities(payload)`、`updateProject(workspace)` 和 `snapshot()`；不返回控制器。
+`setupStudioSystem({ settings, features, ports })` 只在启动时装配。`ports` 按 `scripts`、`sceneBehaviors`、`sceneAudio`、`sceneAnimation`、`world`、`build`、`project`、`export`、`media`、`scene3d`、`scene3dTransforms`、`scene3dObjects`、`scene3dEnvironment`、`scene3dProperties`、`scene3dTranslation`、`scene3dAlignment`、`scene3dDistribution`、`scene3dCopy`、`scene3dRemoval` 分开注入，设置在其他视图之前完成。返回控制接口只有 `refreshMedia()`、`updateCapabilities(payload)`、`updateProject(workspace)` 和 `snapshot()`；不返回控制器。
 
 实际正文宿主调用该入口，并在能力检测和工程加载时更新它。`getStudioSystemSnapshot()` 只读导出当前实例的分离快照，包含装配计划、需求诊断和宿主能力，不包含正文、端口或控制器。它为后续诊断面板提供数据；本轮没有新增可视化模块配置或缺失能力提示面板。
 

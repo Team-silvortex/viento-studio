@@ -11,6 +11,7 @@ import { runBuildProcess } from '../lib/build-process.mjs';
 import { createScene2DPlan, checkBuildCapabilities } from '../../engine/build-plan.mjs';
 import { resolveSceneBehaviors } from '../../engine/scene-behaviors.mjs';
 import { resolveSceneAudio, SCENE_AUDIO_CAPABILITIES } from '../../engine/scene-audio.mjs';
+import { resolveSceneAnimation, SCENE_ANIMATION_CAPABILITIES } from '../../engine/scene-animation.mjs';
 import { inspectObjectProjection, renderProjectionRuntime, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
 import { validateSceneGroups } from '../../engine/scene-groups.mjs';
@@ -59,7 +60,7 @@ test('scene build: deterministic, movable, frozen bytes; portable planner has no
     { inspectObjectProjection, renderProjectionRuntime, validateProjectionDependencies, parseJsonSource, locateJsonSource, sceneActorIdentity, validateSceneGroups });
   const source = await fs.readFile(new URL('../../engine/build-plan.mjs', import.meta.url), 'utf8');
   const portable = vm.runInNewContext(`${source.replace(/^import .*\n/gm, '').replace(/^export \{.*\} from .*\n/gm, '').replaceAll('export ', '')}\ncreateScene2DPlan`,
-    { resolveScene2DModel, resolveSceneBehaviors, resolveSceneAudio, SCENE_AUDIO_CAPABILITIES });
+    { resolveScene2DModel, resolveSceneBehaviors, resolveSceneAudio, SCENE_AUDIO_CAPABILITIES, resolveSceneAnimation, SCENE_ANIMATION_CAPABILITIES });
   const observed = await readWorldSnapshot(root);
   assert.deepEqual(JSON.parse(JSON.stringify(portable(observed, scene))), createScene2DPlan(observed, scene));
   assert.deepEqual(checkBuildCapabilities(captured.plan, { capabilities: [] }).map(item => item.capability), captured.plan.requiredCapabilities);

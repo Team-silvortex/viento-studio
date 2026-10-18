@@ -180,6 +180,9 @@ function planIdentity(input) {
     return result;
   }
   const plan = selected(input, ['format', 'kind', 'schemaVersion', 'scene', 'actors']);
+  if (Object.hasOwn(input, 'animation')) throw Object.assign(new TypeError('Control replay is not yet composed with visual animation.'), {
+    errorCode: 'runtime_control_unsupported',
+  });
   const scene = selected(plan.scene, ['objectId', 'sourcePath']);
   if (plan.format !== 'viento-build-plan' || plan.kind !== 'scene2d' || ![1, 2].includes(plan.schemaVersion)
     || !uuid(scene.objectId) || !relativeSourcePath(scene.sourcePath)) throw invalid();

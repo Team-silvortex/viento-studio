@@ -1,3 +1,4 @@
+import { setupScenePreviewAnimation } from './app-scene-preview-animation.js';
 import { sceneStructureActors } from '../../engine/scene-structure.mjs';
 import { createSceneOutline } from './app-scene-outline.js';
 import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
@@ -42,7 +43,7 @@ const diagnosticLabels = {
 
 export function setupScenePreview({ container, getContext = () => ({}), getDraft = async () => null, openSource = () => false, editScene = () => {}, editLayout = () => false, editDraftLayout = async () => false, editCompositionOverride = async () => false, editCompositionLayout = async () => false, editCompositionBatchLayout = async () => false, editCompositionFragment = async () => false, editCompositionPlacement = async () => false, editCompositionStructure = async () => false, editCompositionPlacements = async () => false, editCompositionGroups = async () => false, editCompositionDefinitions = async () => false }) {
   container.classList.add('scene-preview');
-  container.innerHTML = `<p class="build-note" data-i18n="查看已保存场景或当前原文草稿的静态布局，无需构建或安装运行引擎。移动、输入和状态变化请使用运行测试。"></p>
+  container.innerHTML = `<p class="build-note" data-i18n="查看已保存场景或当前原文草稿的布局，无需构建或安装运行引擎。行为、输入和物理请使用运行测试。"></p>
     <p id="scenePreviewDraft" class="build-hint" hidden data-i18n="存在未保存草稿；预览仍使用上次保存的场景和投影。"></p>
     <div class="scene-preview-toolbar"><button id="scenePreviewRefresh" type="button" class="doc-btn"></button>
     <button id="scenePreviewDraftRefresh" type="button" class="doc-btn" data-i18n="预览当前草稿"></button>
@@ -56,6 +57,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     <p id="scenePreviewSummary" class="build-hint"></p>
     <p id="scenePreviewComposition" class="build-hint" hidden></p><div id="scenePreviewSceneSources" class="scene-preview-toolbar" hidden></div>
     <p class="build-hint" id="scenePreviewHelp" data-i18n="点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。"></p>
+    <section id="scenePreviewAnimation" hidden></section>
     <div class="scene-preview-layout"><canvas id="scenePreviewCanvas" tabindex="0" aria-describedby="scenePreviewHelp" data-i18n-aria-label="已保存的二维场景预览"></canvas>
     <aside><h3 data-i18n="场景对象"></h3><label class="scene-field"><span data-i18n="搜索场景对象与分组"></span><input id="scenePreviewSearch" type="search"></label><ol id="scenePreviewObjects"></ol><p id="scenePreviewSelection" role="status" aria-live="polite"></p>
     <section id="scenePreviewInspector" aria-labelledby="scenePreviewInspectorTitle"><h3 id="scenePreviewInspectorTitle" data-i18n="对象属性"></h3><div id="scenePreviewProperties"></div><button id="scenePreviewCompositionOverride" type="button" class="doc-btn" hidden data-i18n="编辑此实例覆盖"></button><button id="scenePreviewCompositionLayout" type="button" class="doc-btn" hidden data-i18n="调整此实例布局"></button><button id="scenePreviewCompositionFragment" type="button" class="doc-btn" hidden data-i18n="编辑共享片段"></button><button id="scenePreviewCompositionPlacement" type="button" class="doc-btn" hidden data-i18n="调整整组偏移"></button><p id="scenePreviewCompositionOverrideHint" class="build-hint" hidden></p></section></aside></div>
@@ -64,6 +66,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     <ul id="scenePreviewDiagnostics" class="scene-diagnostics"></ul>`;
   const el = id => container.querySelector(`#${id}`);
   const node = (tag, text, className = '') => { const value = document.createElement(tag); value.textContent = text; value.className = className; return value; };
+  let animationAvailable = false;
   let available = false, visible = false, sceneId = '', requestEpoch = 0, controller = null, model = null, selected = null, disposed = false;
   let state = 'empty', errorKey = '', diagnostics = [], imageErrors = [], images = new Map();
   let selectedGroup = null, compositionOverrideOpening = false, compositionLayoutOpening = false, compositionBatchOpening = false, compositionFragmentOpening = false, compositionPlacementOpening = false, compositionStructureOpening = false, compositionPlacementsOpening = false, compositionGroupsOpening = false, compositionDefinitionsOpening = false;
@@ -121,6 +124,9 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   const modelOrigin = () => model ? { sourcePath: model.scene.sourcePath, draft: model.draft || null } : null;
   const canvas = createScenePreviewCanvas({ canvas: el('scenePreviewCanvas'), onSelect(id) { selectedGroup = null; selected = id; renderSelection(); },
     onViewChange(view) { el('scenePreviewZoom').textContent = `${Math.round(view.scale * 100)}%`; } });
+  const animation = typeof setupScenePreviewAnimation === 'function' ? setupScenePreviewAnimation({ container: el('scenePreviewAnimation'),
+    setSample: sample => canvas.setVisualSample?.(sample), onActiveChange: () => render(),
+  }) : { setAvailable() {}, setVisible() {}, setPreview() {}, reset() {}, stop() {}, isActive: () => false, destroy() {} };
   const release = id => {
     if (!previewUUID.test(id || '')) return;
     void fetchJsonApiRequest(`${PREVIEW_API}?previewId=${encodeURIComponent(id)}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' } }, 5000, t('释放场景预览')).catch(() => {});
@@ -133,13 +139,14 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   }
   function cancelRequest() { requestEpoch++; controller?.abort(); controller = null; disposePending(); }
   function reset() {
-    cancelRequest();
+    animation.reset(); cancelRequest();
     releaseModel(); outline.reset(); model = null; selected = null; selectedGroup = null; diagnostics = []; imageErrors = [];
     canvas.setScene(null); canvas.setImages(new Map());
     disposeImages(images);
     images = new Map(); state = 'empty'; errorKey = ''; diagnosticsOrigin = null; inspectorSignature = '';
   }
   async function navigate(location, origin = modelOrigin()) {
+    animation.stop();
     const target = origin?.draft && location.sourcePath === origin.sourcePath
       ? { ...location, sourceRevision: origin.draft.sourceRevision, previewDraft: true } : location;
     try { await openSource(target.sourcePath, target); }
@@ -195,7 +202,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     outline.setSelection(selected ? [selected] : []);
     const properties = el('scenePreviewProperties');
     el('scenePreviewInspector').hidden = !actor && !group;
-    el('scenePreviewSelection').textContent = actor || group ? t('已选择：{0}', (actor || group).name) : t('从画布或对象列表选择角色。');
+    el('scenePreviewSelection').textContent = actor || group ? t('已选择：{0}', (actor || group).name) : t(animation.isActive() ? '动画预览中，请从对象列表选择角色。' : '从画布或对象列表选择角色。');
     el('scenePreviewInspectorTitle').textContent = actor || group ? `${t('对象属性')} · ${(actor || group).name}` : t('对象属性');
     const signature = JSON.stringify([actor || null, provenance, group, groupProvenance, modelOrigin(), t('查看字段来源'), t('位置（中心）')]);
     if (signature === inspectorSignature) return;
@@ -242,6 +249,8 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
       cancelRequest(); state = 'error'; errorKey = changed ? '草稿已变化，请重新预览。' : '当前场景草稿不可预览，请回到对应场景原文后重试。';
     }
     const busy = state === 'loading';
+    const help = animation.isActive() ? '动画预览中，请从对象列表查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。' : '点击角色查看属性；拖动画布平移，滚轮缩放。画布聚焦后可用方向键平移、加减键缩放、0 适应画布。';
+    el('scenePreviewHelp').setAttribute('data-i18n', help); el('scenePreviewHelp').textContent = t(help);
     container.dataset.scenePreviewState = state; container.setAttribute('aria-busy', String(busy));
     el('scenePreviewDraft').hidden = Boolean(model?.draft) || (!context.dirty && !context.creating);
     el('scenePreviewRefresh').textContent = t(isComposition() ? '预览已保存配方' : '预览已保存场景');
@@ -253,9 +262,9 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     el('scenePreviewSource').disabled = !model;
     el('scenePreviewSource').textContent = t(isComposition() ? '打开配方原文' : '打开场景原文');
     el('scenePreviewLayoutEdit').hidden = isComposition() || !model?.sceneEditing || Boolean(model?.draft);
-    el('scenePreviewLayoutEdit').disabled = state !== 'ready' || el('scenePreviewEdit').disabled;
+    el('scenePreviewLayoutEdit').disabled = animation.isActive() || state !== 'ready' || el('scenePreviewEdit').disabled;
     el('scenePreviewDraftLayoutEdit').hidden = isComposition() || !model?.draft;
-    el('scenePreviewDraftLayoutEdit').disabled = draftLayoutOpening || !canEditDraftLayout();
+    el('scenePreviewDraftLayoutEdit').disabled = animation.isActive() || draftLayoutOpening || !canEditDraftLayout();
     el('scenePreviewMessage').textContent = errorKey ? t(errorKey) : t(busy
       ? loadingKind === 'draft' ? '正在读取当前草稿与图片…' : '正在读取已保存场景与图片…'
       : state === 'ready' ? imageErrors.length ? '场景已载入，部分图片无法显示；占位图不会修改原始素材。'
@@ -317,6 +326,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   }
   async function refresh(kind = 'saved') {
     if (!available || !visible || !sceneId || disposed || (kind === 'draft' && !canPreviewDraft())) return;
+    animation.reset();
     wantedDraft = kind === 'draft';
     if (kind === 'saved') reset(); else cancelRequest();
     const epoch = requestEpoch, requestedScene = sceneId, draftToken = getContext().sceneDraftToken;
@@ -342,7 +352,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
         draft = { sourcePath: draft.sourcePath, baseSourceRevision: draft.baseSourceRevision, content: draft.content };
       }
       const { payload } = await fetchJsonApiRequest(PREVIEW_API, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sceneId: requestedScene, ...(draft ? { draft } : {}) }), signal }, 30000, t('读取场景预览'));
+        body: JSON.stringify({ sceneId: requestedScene, ...(draft ? { draft } : {}), ...(kind === 'saved' && animationAvailable && !isComposition() ? { includeAnimation: true } : {}) }), signal }, 30000, t('读取场景预览'));
       if (!ownsRequest()) { release(payload?.previewId); return; }
       try { assertDraftContext(); } catch (error) { release(payload?.previewId); throw error; }
       if (!payload?.ok || payload.format !== 'viento-scene-preview' || ![1, 2].includes(payload.schemaVersion) || !previewUUID.test(payload.previewId || '') || payload.scene?.objectId !== requestedScene || !Array.isArray(payload.actors) || !Array.isArray(payload.resources)
@@ -388,7 +398,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
       if (!model.sceneStructure?.groups?.some(group => group.groupId === selectedGroup)) selectedGroup = null;
       canvas.setScene(model); canvas.setImages(images); canvas.select(selected); canvas.setVisible(true);
       if (!previousReleased) release(previousModel?.previewId); disposeImages(previousImages);
-      state = 'ready'; render();
+      state = 'ready'; animation.setPreview(payload); render();
     } catch (error) {
       if (!ownsRequest()) return;
       if (pendingPreview === candidate) disposePending();
@@ -417,16 +427,16 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   el('scenePreviewGrid').addEventListener('change', () => canvas.setGrid(el('scenePreviewGrid').checked));
   el('scenePreviewSource').addEventListener('click', () => { if (model) void navigate(model.sourceLocations?.scene || { objectId: model.scene.objectId, sourcePath: model.scene.sourcePath }); });
   el('scenePreviewEdit').addEventListener('click', () => {
-    const context = getContext(); if (!isComposition() && model && !model.draft && state !== 'loading' && context.editable && !context.dirty && !context.creating && !context.busy && context.canEditScene !== false) editScene(sceneId);
+    const context = getContext(); if (!isComposition() && model && !model.draft && state !== 'loading' && context.editable && !context.dirty && !context.creating && !context.busy && context.canEditScene !== false) { animation.stop(); editScene(sceneId); }
   });
   el('scenePreviewLayoutEdit').addEventListener('click', () => {
     const context = getContext();
-    if (!isComposition() && model?.sceneEditing && !model.draft && state === 'ready' && context.editable && !context.dirty && !context.creating && !context.busy && context.canEditScene !== false) {
+    if (!animation.isActive() && !isComposition() && model?.sceneEditing && !model.draft && state === 'ready' && context.editable && !context.dirty && !context.creating && !context.busy && context.canEditScene !== false) {
       if (editLayout({ model, images }) === false) { errorKey = '布局编辑暂不可用，请刷新场景预览重试。'; render(); }
     }
   });
   el('scenePreviewDraftLayoutEdit').addEventListener('click', async () => {
-    if (draftLayoutOpening || !canEditDraftLayout()) return;
+    if (animation.isActive() || draftLayoutOpening || !canEditDraftLayout()) return;
     const openingModel = model, epoch = requestEpoch, token = getContext().sceneDraftToken;
     const isCurrent = () => canEditDraftLayout() && model === openingModel && requestEpoch === epoch && getContext().sceneDraftToken === token;
     draftLayoutOpening = true; render();
@@ -559,11 +569,15 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   });
   const unsubscribe = onLanguageChange(() => { if (!disposed) { render(); outline.refresh(); } }); render();
   return {
+    setAnimationAvailable(value) {
+      const next = value === true; if (animationAvailable === next) return; animationAvailable = next; animation.setAvailable(next);
+      if (next && visible && available && !wantedDraft && !isComposition()) void refresh();
+    },
     setAvailable(value) { if (available === value) { render(); return; } available = value; if (!value) { wantedDraft = false; reset(); } render(); if (value && visible) void refresh(); },
     setScene(value) { if (sceneId === value) { render(); return; } sceneId = value || ''; wantedDraft = false; reset(); render(); if (visible) void refresh(); },
     setVisible(value) {
       if (visible === value) { render(); return; }
-      visible = value; canvas.setVisible(value);
+      visible = value; animation.setVisible(value); canvas.setVisible(value);
       if (!value) {
         if (wantedDraft) {
           // The source editor sits behind this dialog. Keep one decoded snapshot
@@ -583,6 +597,6 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
       wantedDraft = true; return refresh('draft');
     },
     invalidate() { wantedDraft = false; reset(); render(); if (visible) void refresh(); },
-    destroy() { disposed = true; visible = false; wantedDraft = false; reset(); unsubscribe?.(); canvas.destroy(); },
+    destroy() { disposed = true; visible = false; wantedDraft = false; reset(); animation.destroy(); unsubscribe?.(); canvas.destroy(); },
   };
 }

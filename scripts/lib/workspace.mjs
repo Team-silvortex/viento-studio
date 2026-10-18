@@ -202,7 +202,9 @@ export async function readRegistry(root, { signal, allowPendingWorldTransaction 
         if (!file.endsWith('.json')) throw new Error(`登记目录只能包含 JSON：${kind}/${file}`);
         const raw = await fsp.readFile(path.join(folder, file), { encoding: 'utf8', signal });
         signal?.throwIfAborted();
-        const record = JSON.parse(raw);
+        // A UTF-8 BOM is an encoding marker, not registration content. Keep
+        // original bytes untouched for source revisions and exact transactions.
+        const record = JSON.parse(raw.replace(/^\uFEFF/, ''));
         if (!UUID.test(record.id) || file !== `${record.id}.json` || ids.has(record.id) || record.version !== 1) throw new Error(`无效或重复的登记身份：${kind}/${file}`);
         ids.add(record.id);
         if (kind === 'assets') {

@@ -1,0 +1,130 @@
+{
+  "ok": true,
+  "scope": "0.1.5 working-tree, bounded 2D visual keyframes only",
+  "preservedCells": 2172,
+  "preservedEvidence": 2295,
+  "oldCellObjectsUnchanged": true,
+  "oldEvidenceObjectsUnchanged": true,
+  "addedFunctions": [
+    "scene.animation2d"
+  ],
+  "addedImplementations": [
+    "i360",
+    "i361",
+    "i362",
+    "i363",
+    "i364",
+    "i365"
+  ],
+  "addedBindings": [
+    "b545",
+    "b546",
+    "b547",
+    "b548",
+    "b549",
+    "b550"
+  ],
+  "addedCells": 24,
+  "addedEvidence": [
+    "e2296",
+    "e2297",
+    "e2298",
+    "e2299",
+    "e2300",
+    "e2301",
+    "e2302",
+    "e2303",
+    "e2304",
+    "e2305",
+    "e2306",
+    "e2307",
+    "e2308",
+    "e2309",
+    "e2310",
+    "e2311",
+    "e2312",
+    "e2313",
+    "e2314",
+    "e2315",
+    "e2316",
+    "e2317"
+  ],
+  "scores": [
+    {
+      "binding": "b545",
+      "implementation": "i360",
+      "values": {
+        "implementation": 4,
+        "verification": 4,
+        "decoupling": 4,
+        "delivery": 2
+      }
+    },
+    {
+      "binding": "b546",
+      "implementation": "i361",
+      "values": {
+        "implementation": 4,
+        "verification": 4,
+        "decoupling": 4,
+        "delivery": 2
+      }
+    },
+    {
+      "binding": "b547",
+      "implementation": "i362",
+      "values": {
+        "implementation": 4,
+        "verification": 4,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    },
+    {
+      "binding": "b548",
+      "implementation": "i363",
+      "values": {
+        "implementation": 4,
+        "verification": 4,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    },
+    {
+      "binding": "b549",
+      "implementation": "i364",
+      "values": {
+        "implementation": 4,
+        "verification": 4,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    },
+    {
+      "binding": "b550",
+      "implementation": "i365",
+      "values": {
+        "implementation": 4,
+        "verification": 4,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    }
+  ],
+  "reason": "New independent animation feature adds six implementations and scoped evidence. Existing cells, evidence objects and scores are unchanged. Native/WASM rules share semantics; browser schematic and Godot headless transforms/ZIP are distinct checks. Godot/UI/host interfaces are decoupled but no second visual backend or native UI replacement has been accepted.",
+  "limitations": [
+    "Working tree is not source release or installed delivery; all new delivery scores remain 2.",
+    "Browser basic shapes are a Rust-sampled demonstration, not real scene/asset/physics rendering.",
+    "Godot evidence observes transforms in a real headless engine, not GPU/window image output.",
+    "Bevy visual animation, control replay/cases, sprite frames/atlases, skeletons, animation events and 3D are unsupported.",
+    "Final execution totals, conditional skips and preserved historical files are recorded in summary.json and preservation.json, not summed across overlapping groups."
+  ],
+  "totals": {
+    "functions": 129,
+    "implementations": 365,
+    "bindings": 549,
+    "cells": 2196,
+    "workflows": 91,
+    "dependencies": 356
+  }
+}

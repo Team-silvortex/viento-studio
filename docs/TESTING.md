@@ -1,5 +1,35 @@
 # 验证指南
 
+**0.1.6 源码发布**已收录音轨使用位置与定位、独立关键帧动画、首次创建、实例选择和保存态场景画面预览。下列专题保留开发时点；发布检查见[版本记录](RELEASE_0.1.6.md)，源码交付不代表安装或设备验证。
+
+[已保存场景动画预览专题](test-results/scene-animation-scene-preview/README.md)分别覆盖纯快照封套、Node 服务与 HTTP、视觉帧／Canvas、独立控件与系统能力，以及真实 Chrome 的图片和三语流程。定向运行 `node --test scripts/tests/scene-animation-preview*.test.mjs scripts/tests/scene-animation-visual-frame.test.mjs scripts/tests/scene-animation-scene-preview*.test.mjs scripts/tests/scene-preview-animation*.test.mjs`。所有写入夹具都在临时副本；图片继续受原快照租约、容量与释放规则管理。此轮不运行新原生后端、准备副本或安装验收，旧报告保持原时点。
+
+[动画首次创建专题](test-results/scene-animation-creation/README.md)覆盖独立起始计划、目录及回执、严格三文件事务 v11、真实进程中断／恢复、BOM 与未改字节保真，以及取消、未知保存核对和三语界面。定向运行 `node --test scripts/tests/world-animation-create*.test.mjs scripts/tests/scene-animation-creat*.test.mjs`；真实浏览器运行 `node scripts/tests/scene-animation-create-smoke.mjs`。`VIENTO_GODOT_BIN` 启用 creation-workflow 中的新建→目标目录→冻结计划→实际 Godot 播放子集。临时夹具从既有示例复制后移除动画，不改原示例；旧专题不重写。未新增窗口渲染、工程 ZIP、准备副本或安装验收。
+
+[动画实例选择专题](test-results/scene-animation-targets/README.md)覆盖纯目录、来源会话、保存基线摘要、应用前目录重读及手动fallback；UI验证缺失目标修复、目录迟到、取消／三语和输入焦点保留。定向运行 `node --test scripts/tests/scene-animation-targets*.test.mjs scripts/tests/scene-animation-editor-ui.test.mjs scripts/tests/scene-animation-edit.test.mjs`。真实浏览器运行 `node scripts/tests/scene-animation-targets-smoke.mjs`，只使用临时作者副本；每次输出新目录，旧专题不重写。此轮未运行新原生后端或安装验收。
+
+文件替换测试必须保证新旧物理文件同时存在：先把旧文件移到生成目录之外、仍在临时夹具之内，再以排他创建方式写入同字节新文件，核对新旧身份不同。删除后原路径重建可能复用 inode，不能用它证明发生身份替换。3D 导出测试分别检查内容修改、身份替换和硬链接的具体拒绝原因，并确认工具连版本检查也未启动。CI 故障复现与修复见[专题记录](test-results/ci-scene3d-replacement/README.md)。
+
+本轮[关键帧动画专题](test-results/scene-animation/README.md)分别记录 Rust／WASM／CLI、动画原文提案与宿主、播放器、三语真实浏览器，以及 Godot 四组合与多场景／工程 ZIP。可运行 `node --test scripts/tests/scene-animation*.test.mjs`；提供 `VIENTO_GODOT_BIN` 才执行真实 Godot 子集，提供 `VIENTO_ANIMATION_CORE_NATIVE` 才执行 CLI 对照。浏览器使用 `node scripts/tests/scene-animation-smoke.mjs`，始终修改临时副本。示意预览、后端渲染和安装版验收分别标注。
+
+本轮[使用位置来源定位专题](test-results/scene-audio-usage-navigation/README.md)验证同编号多字段的精确原文选区、当前表单稳定提示身份、刷新后的旧按钮隔离及只读查看不影响草稿／试听。核心组合包含 BOM、LF／CRLF／CR、中文与代理对、转义 UUID；真实 Chrome 单独验证 textarea 的 LF 偏移、窄屏三语切换后的选区与滚动保持、日语重新定位的实际可见范围、外部文件修改后显式刷新和普通保存。
+
+```sh
+node --test scripts/tests/scene-audio-usage-source.test.mjs scripts/tests/scene-audio-editor-ui.test.mjs scripts/tests/source-location-ui.test.mjs scripts/tests/source-reveal.test.mjs scripts/tests/source-position-ui.test.mjs
+node scripts/tests/scene-audio-usage-navigation-smoke.mjs
+```
+
+来源快照不声称实时磁盘内容，模块副本不声称安装或设备验收。上一轮查询服务报告保留原执行范围，本轮数字见[摘要](test-results/scene-audio-usage-navigation/summary.json)。
+
+本轮[音轨使用位置专题](test-results/scene-audio-usage/README.md)验证当前表单引用与保存态行为文字匹配的隔离。定向运行核心、服务、HTTP、宿主、transport 和声音 UI 测试；真实浏览器使用新建临时副本，覆盖三语窄屏、未完成输入、失败重试、迟到回复、取消／应用草稿／普通保存。完整执行数字和准备副本检查见[摘要](test-results/scene-audio-usage/summary.json)。
+
+```sh
+node --test scripts/tests/scene-audio-usage*.test.mjs scripts/tests/scene-audio-editor-ui.test.mjs
+node scripts/tests/scene-audio-usage-smoke.mjs
+```
+
+零文字匹配不作为全局无引用证明；测试同时保留无关联行为、损坏来源与读取失败的区别。现有音轨删除规则、审批和试听不受可选使用位置读取影响。浏览器及准备副本不代表安装、设备或引擎播放验收。
+
 本轮[行为音轨选择专题](test-results/scene-behavior-audio-picker/README.md)验证只读目录到普通文本参数的显式填入；执行数字、源码指纹和准备副本见[摘要](test-results/scene-behavior-audio-picker/summary.json)。
 
 ```sh

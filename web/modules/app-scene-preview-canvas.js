@@ -1,3 +1,4 @@
+import { captureSceneAnimationVisualFrame } from '../../engine/scene-animation-visual-frame.mjs';
 import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
 import './app-studio-core.js';
 // Engine-neutral Scene2D layout. Gestures never mutate the supplied scene.
@@ -42,7 +43,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
   let editing = false, snap = 0, space = false, multiSelect = false, selectedIds = [], movableIds = null;
   const movable = id => movableIds === null || movableIds.has(id);
   const tiles = new Map(), listeners = [];
-  let tileBytes = 0;
+  let tileBytes = 0, visualFrames = null;
   const clearTiles = () => { for (const tile of tiles.values()) { tile.width = 0; tile.height = 0; } tiles.clear(); tileBytes = 0; };
   const notify = () => onViewChange({ ...view });
   function cancelDrag() {
@@ -68,7 +69,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     onSelect(selected, { ids: selectedIds.slice() });
   }
   function commit(changes, ids) {
-    if (!editing || ids.some(id => !movable(id))) return;
+    if (!editing || visualFrames || ids.some(id => !movable(id))) return;
     const original = new Map(model.actors.map(actor => [sceneActorIdentity(actor), actor.position]));
     if (!changes.some(change => change.position.some((value, index) => value !== original.get(change.objectId)?.[index]))) return;
     if (ids.length > 1) onMoveMany(changes.map(change => ({ objectId: change.objectId, position: change.position.slice() })), { commit: true });
@@ -111,7 +112,13 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
       context.strokeStyle = '#8ca49966'; context.lineWidth = 1 / view.scale; context.stroke();
     }
     for (const actor of actors) {
-      const [x, y] = positionOf(actor), [w, h] = actor.size;
+      const [logicalX, logicalY] = positionOf(actor), [w, h] = actor.size;
+      const visual = visualFrames?.get(sceneActorIdentity(actor));
+      const [x, y] = visual ? [0, 0] : [logicalX, logicalY];
+      if (visual) {
+        context.save(); context.translate(logicalX + visual.offset2d[0], logicalY + visual.offset2d[1]);
+        context.rotate(visual.rotation2d * Math.PI / 180); context.scale(...visual.scale2d); context.globalAlpha = visual.opacity;
+      }
       if (actor.imageResourceId) {
         const image = images.get(actor.imageResourceId);
         if (image) context.drawImage(tinted(actor, image), x - w / 2, y - h / 2, w, h);
@@ -122,10 +129,13 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
           context.strokeStyle = '#ffd4ef'; context.lineWidth = 2 / view.scale; context.stroke();
         }
       } else { context.fillStyle = actor.color; context.fillRect(x - w / 2, y - h / 2, w, h); }
+      if (visual) context.restore();
+      // Match the backend's visual container: labels and authored positions
+      // remain on the logical actor root, outside visual animation.
       context.font = '16px sans-serif'; context.textBaseline = 'top'; context.fillStyle = '#ffffff';
-      context.fillText(actor.name, x - w / 2, y + h / 2 + 4);
+      context.fillText(actor.name, logicalX - w / 2, logicalY + h / 2 + 4);
     }
-    const highlighted = new Set(selectedIds);
+    const highlighted = new Set(visualFrames ? [] : selectedIds);
     for (const actor of actors.filter(item => highlighted.has(sceneActorIdentity(item)))) {
       const [x, y] = positionOf(actor);
       context.lineWidth = 3 / view.scale; context.strokeStyle = '#ffe575';
@@ -153,7 +163,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     if (!model || !visible || disposed || ![0, 1].includes(event.button) || drag) return;
     event.preventDefault?.(); canvas.focus({ preventScroll: true });
     const [x, y] = point(event), panOnly = event.button === 1 || space;
-    const actorId = !panOnly && editing ? hitTestScene(model.scene, model.actors, ...canvasToScene(view, x, y)) : null;
+    const actorId = !visualFrames && !panOnly && editing ? hitTestScene(model.scene, model.actors, ...canvasToScene(view, x, y)) : null;
     const toggle = multiSelect && Boolean(event.shiftKey || event.ctrlKey || event.metaKey), original = model;
     if (actorId) selectAt(actorId, toggle);
     if (model !== original || disposed || !visible) return;
@@ -186,7 +196,7 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     try { canvas.releasePointerCapture?.(event.pointerId); } catch { /* Capture may already have been lost. */ }
     if (completed.kind === 'move') {
       if (completed.moved) commit(completed.ids.map(objectId => ({ objectId, position: completed.positions.get(objectId) })), completed.ids);
-    } else if (completed.kind === 'pan' && !completed.moved && !completed.panOnly) {
+    } else if (!visualFrames && completed.kind === 'pan' && !completed.moved && !completed.panOnly) {
       selectAt(hitTestScene(model.scene, model.actors, ...canvasToScene(view, ...point(event))), completed.toggle);
     }
     draw();
@@ -228,13 +238,22 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
       cancelDrag();
       const key = value ? JSON.stringify([value.scene.objectId, value.scene.viewport]) : lastSceneKey;
       if (key !== lastSceneKey) fitted = true;
-      lastSceneKey = key; model = value;
+      lastSceneKey = key; model = value; visualFrames = null;
       selection(selectedIds);
       clearTiles(); resize(); draw();
     },
     setImages(value) { images = value; clearTiles(); draw(); },
-    setVisible(value) { if (visible !== value || !value) { space = false; cancelDrag(); } visible = value; if (visible) resize(); },
-    setEditing(value) { if (editing !== Boolean(value)) { space = false; cancelDrag(); } editing = Boolean(value); },
+    setVisualSample(sample) {
+      if (disposed) return false;
+      if (sample === null) { visualFrames = null; draw(); return true; }
+      if (!model || editing || !visible) return false;
+      // Validate the entire detached frame before replacing the visible one.
+      const frame = captureSceneAnimationVisualFrame(model.actors, sample);
+      if (!visualFrames) cancelDrag();
+      visualFrames = new Map(frame.map(value => [value.instanceId, value])); draw(); return true;
+    },
+    setVisible(value) { if (visible !== value || !value) { space = false; cancelDrag(); } if (!value) visualFrames = null; visible = value; if (visible) resize(); },
+    setEditing(value) { if (editing !== Boolean(value)) { space = false; cancelDrag(); } editing = Boolean(value); if (editing && visualFrames) { visualFrames = null; draw(); } },
     setMovableIds(ids) {
       const next = ids === null ? null : new Set(Array.isArray(ids) ? ids.filter(id => typeof id === 'string') : []);
       if (next === null ? movableIds !== null : movableIds === null || next.size !== movableIds.size || [...next].some(id => !movableIds.has(id))) cancelDrag();
@@ -245,6 +264,6 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     setGrid(value) { grid = value; draw(); }, select(id) { selection(id ? [id] : []); draw(); },
     selectMany(ids) { selection(Array.isArray(ids) ? ids : []); draw(); }, fit, zoom,
     getView() { return { ...view }; },
-    destroy() { disposed = true; cancelDrag(); observer?.disconnect(); listeners.forEach(args => canvas.removeEventListener(...args)); clearTiles(); images = new Map(); model = null; canvas.width = 0; canvas.height = 0; },
+    destroy() { disposed = true; cancelDrag(); observer?.disconnect(); listeners.forEach(args => canvas.removeEventListener(...args)); clearTiles(); visualFrames = null; images = new Map(); model = null; canvas.width = 0; canvas.height = 0; },
   };
 }

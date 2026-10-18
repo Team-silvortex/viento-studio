@@ -6,6 +6,8 @@ import { createHash } from 'node:crypto';
 import { dialogHarness, flushDialogs } from './dialog-harness.mjs';
 import { readSceneAudioDocument, createSceneAudioTrackProposal, createSceneAudioResourceProposal, isSceneAudioProposal } from '../../engine/scene-audio-edit.mjs';
 import { captureSceneAudioResources, isSceneAudioResources, sceneAudioResourcesMatchSource, sceneAudioResourceIdentityIds } from '../../engine/scene-audio-resources.mjs';
+import { captureSceneAudioUsage, isSceneAudioUsage, sceneAudioUsageMatchSource, sceneAudioUsageSource } from '../../engine/scene-audio-usage.mjs';
+import { sourceLocationSelection } from '../../web/modules/app-source-location.js';
 import { sampleSceneAudio } from '../../engine/scene-audio-core.mjs';
 import { createStudioModuleRegistry } from '../../engine/studio-modules.mjs';
 import en from '../../web/i18n/en.js';
@@ -80,7 +82,8 @@ async function fixture(t, settings = {}) {
   let content = original, language = 'zh', listener = () => {}, disposed = 0, allocated = 100;
   const context = { editable: true, creating: false, busy: false, sourceJSON: true, audioSource: true, available: true,
     sourcePath: 'documents/audio/demo.json', sourceToken: 'load:1', resourcesAvailable: settings.resourcesAvailable ?? Boolean(settings.resources),
-    auditionAvailable: settings.auditionAvailable ?? Boolean(settings.audition) };
+    auditionAvailable: settings.auditionAvailable ?? Boolean(settings.audition), usageAvailable: settings.usageAvailable ?? Boolean(settings.usage) };
+  const usageCalls = [], sourceReveals = [];
   const calls = [], proposals = [], confirms = [], focused = [], loads = [], resourceCalls = [], proposalModes = [];
   const audition = { calls: [], loads: [], stops: 0, disposals: 0 };
   const snapshot = () => ({ sourcePath: context.sourcePath, token: context.sourceToken, content, sourceRevision: hash(content), baseSourceRevision: hash(original) });
@@ -91,6 +94,8 @@ async function fixture(t, settings = {}) {
     createSceneAudioTrackProposal: async (source, edit) => { const value = await createSceneAudioTrackProposal(copy(source), copy(edit)); proposalModes.push('tracks'); proposals.push(value); return settings.proposal ? settings.proposal(value) : value; },
     createSceneAudioResourceProposal: async (source, edit, catalog) => { const value = await createSceneAudioResourceProposal(copy(source), copy(edit), catalog); proposalModes.push('resources'); proposals.push(value); return settings.proposal ? settings.proposal(value) : value; },
     isSceneAudioResources, sceneAudioResourcesMatchSource: (catalog, source) => sceneAudioResourcesMatchSource(catalog, copy(source)), sceneAudioResourceIdentityIds,
+    sceneAudioUsageSource, sourceLocationSelection, revealSourceOffset: (textarea, content, offset) => { sourceReveals.push({ textarea, content, offset }); return true; },
+    isSceneAudioUsage, sceneAudioUsageMatchSource: (catalog, source) => sceneAudioUsageMatchSource(catalog, copy(source)),
     createSceneAudioAudition: options => auditionMock(settings, audition, options),
     isSceneAudioProposal, t: translate, translatePage: root => { for (const node of root.querySelectorAll('[data-i18n]')) node.textContent = translate(node.dataset.i18n); },
     onLanguageChange: value => { listener = value; return () => { disposed++; listener = () => {}; }; },
@@ -102,6 +107,7 @@ async function fixture(t, settings = {}) {
   h.runtime.window.confirm = message => { confirms.push(message); return settings.confirm?.() ?? true; };
   let controller;
   controller = h.runtime.setupSceneAudio({ ...(settings.audition ? { loadAudition: async (...args) => { audition.loads.push(args); return typeof settings.audition === 'function' ? settings.audition(...args) : {}; } } : {}),
+    ...(settings.usage ? { getUsage: async source => { usageCalls.push(copy(source)); return typeof settings.usage === 'function' ? settings.usage(copy(source), usageCalls.length) : usageCatalog(copy(source)); } } : {}),
     ...(settings.resources ? { getResources: async source => { resourceCalls.push(copy(source)); return typeof settings.resources === 'function' ? settings.resources(copy(source), resourceCalls.length) : resourceCatalog(copy(source)); } } : {}), getContext: () => context, getSource: async () => settings.source ? settings.source(snapshot()) : snapshot(),
     applyDraft: async (proposal, ports) => {
       calls.push({ proposal, ports }); if (settings.apply) return settings.apply(proposal, ports, context);
@@ -112,7 +118,7 @@ async function fixture(t, settings = {}) {
   const set = (suffix, value, event = 'input') => { el(suffix).value = value; if (event) el(suffix).dispatch(event); };
   const click = async suffix => { el(suffix).click(); await settle(); };
   t.after(() => controller.dispose());
-  return { ...h, controller, context, el, settle, set, click, original, calls, proposals, resourceCalls, proposalModes, confirms, focused, loads, audition, documentListeners, content: () => content,
+  return { ...h, controller, context, el, settle, set, click, original, calls, proposals, usageCalls, sourceReveals, resourceCalls, proposalModes, confirms, focused, loads, audition, documentListeners, content: () => content,
     visibility(value) { h.document.hidden = value === 'hidden'; h.document.visibilityState = value; for (const callback of documentListeners.get('visibilitychange') || []) callback(); },
     open: () => controller.open(), check: () => click('Check'), apply: () => click('Apply'), language(value) { language = value; listener(); }, disposed: () => disposed };
 }
@@ -1014,4 +1020,337 @@ test('transport changes never steal focus from the position slider or another pe
   gate.resolve(); await h.settle(); assert.equal(h.document.activeElement, h.el('Cancel'));
   await h.click('PausePreview'); h.el('PreviewPosition').focus(); h.set('PreviewPosition', '3'); h.el('PreviewPosition').dispatch('change');
   assert.equal(h.document.activeElement, h.el('PreviewPosition')); assert.equal(h.audition.snapshot().status, 'paused');
+});
+
+
+function usageCatalog(source, options = {}) {
+  const behavior = { format: 'viento-scene-behaviors', schemaVersion: 1, sceneObjectId: id(1), bindings: [{
+    bindingId: id(201), instanceId: id(202), implementation: { backendId: 'org.example.independent', language: 'custom', sourceObjectId: id(203) },
+    parameters: options.parameters || { arbitrary_audio: id(2), future_audio: id(101), track_id: 'plain text', embedded: `play(${id(2)})` }, events: [],
+  }] };
+  const behaviorContent = options.content ? options.content(behavior) : JSON.stringify(behavior);
+  return captureSceneAudioUsage(source, {
+    format: 'viento-scene-audio-usage', schemaVersion: 1, worldId: 'world:' + 'a'.repeat(64), revision: hash('world'),
+    scene: { objectId: id(1), sourcePath: 'documents/scenes/main.json', sourceRevision: hash('scene') },
+    audio: { objectId: id(204), sourcePath: source.sourcePath, sourceRevision: source.baseSourceRevision, content: source.content },
+    behavior: options.noBehavior ? null : { objectId: id(205), sourcePath: 'documents/behaviors/main.json', sourceRevision: hash(behaviorContent), content: behaviorContent },
+  });
+}
+
+test('usage helper needs its separate explicit capability and leaves ordinary audio editing available', async t => {
+  for (const settings of [{}, { usage: true, usageAvailable: false }, { usage: true, usageAvailable: 1 }, { usageAvailable: true }]) {
+    const h = await fixture(t, settings); await h.open(); assert.equal(h.el('Track0Usage').hidden, true);
+    h.el('Track0Usage').dispatch('click'); await h.settle(); assert.equal(h.usageCalls.length, 0); assert.equal(h.el('Usage').hidden, true);
+    h.set('Track0Volume', '0.25'); await h.check(); assert.equal(h.el('Apply').disabled, false);
+  }
+});
+
+test('usage read distinguishes live cue references and exact saved behavior text without dirtying or applying', async t => {
+  const h = await fixture(t, { usage: true }); await h.open(); assert.equal(h.usageCalls.length, 0);
+  await h.click('Track0Usage'); assert.equal(h.usageCalls.length, 1); assert.equal(h.el('Usage').hidden, false);
+  assert.equal(h.el('Usage').dataset.trackId, id(2)); assert.match(h.el('UsageTrack').textContent, new RegExp(id(2)));
+  assert.equal(h.el('UsageCueList').children.length, 2); assert.match(h.el('UsageCueList').children[0].textContent, new RegExp(id(4)));
+  assert.equal(h.el('UsageStatus').dataset.status, 'ready'); assert.equal(h.el('UsageBehaviorList').children.length, 1);
+  assert.match(h.el('UsageBehaviorList').textContent, /arbitrary_audio/); assert.match(h.el('UsageBehaviorList').textContent, /\/bindings\/0\/parameters\/arbitrary_audio/);
+  assert.match(h.el('UsageBehaviorPath').textContent, /documents\/behaviors\/main.json/);
+  assert.equal(h.el('Dialog').dataset.dirty, 'false'); assert.equal(h.el('Apply').disabled, true); assert.equal(h.calls.length, 0);
+  assert.equal(h.audition.calls.length, 0); assert.equal(h.content(), h.original);
+});
+
+test('usage read and explicit refresh preserve reviewed changes and an active audition', async t => {
+  const h = await auditionFixture(t, { usage: true }); h.set('Track0Volume', '0.25'); await h.check(); await h.click('Track0Preview');
+  const stops = h.audition.stops, input = h.el('Track0Volume'), review = h.el('After').textContent;
+  input.focus(); await h.click('Track0Usage'); await h.click('UsageRefresh');
+  assert.equal(h.usageCalls.length, 2); assert.equal(h.el('Track0Volume'), input); assert.equal(h.document.activeElement, input);
+  assert.equal(h.el('After').textContent, review); assert.equal(h.el('Apply').disabled, false); assert.equal(h.proposals.length, 1);
+  assert.equal(h.audition.stops, stops); assert.equal(h.el('PreviewStatus').dataset.status, 'playing'); assert.equal(h.calls.length, 0);
+});
+
+test('usage query keeps numeric inputs editable and current cues update while its read is pending', async t => {
+  const gate = deferred(); let source;
+  const h = await fixture(t, { usage: value => { source = value; return gate.promise; } }); await h.open();
+  h.set('Track0Volume', '1e-'); h.el('Track0Usage').click();
+  assert.equal(h.el('UsageStatus').dataset.status, 'loading'); assert.equal(h.el('UsageRefresh').disabled, true);
+  for (const suffix of ['Track0Volume', 'Cue0Time', 'Cue0Remove', 'AddCue', 'Check']) assert.equal(h.el(suffix).disabled, false);
+  await h.click('Cue0Remove'); assert.equal(h.el('UsageCueList').children.length, 1);
+  assert.match(h.el('UsageCueList').children[0].textContent, new RegExp(id(5))); assert.match(h.el('UsageCueList').children[0].textContent, /第 1 条/);
+  gate.resolve(usageCatalog(source)); await h.settle(); assert.equal(h.el('UsageStatus').dataset.status, 'ready');
+  assert.equal(h.el('Track0Volume').value, '1e-'); assert.equal(h.el('UsageCueList').children.length, 1); assert.equal(h.el('Apply').disabled, true);
+});
+
+test('changing selected tracks during one usage read filters its result to the latest track', async t => {
+  const gate = deferred(); let source; const value = model(); value.tracks.push({ ...value.tracks[0], id: id(6) });
+  const h = await fixture(t, { content: JSON.stringify(value), usage: input => { source = input; return gate.promise; } }); await h.open();
+  h.el('Track0Usage').click(); h.el('Track1Usage').click();
+  assert.equal(h.usageCalls.length, 1); assert.equal(h.el('Usage').dataset.trackId, id(6)); assert.equal(h.el('UsageCueList').children.length, 0);
+  gate.resolve(usageCatalog(source)); await h.settle(); assert.equal(h.el('UsageBehaviorList').children.length, 0);
+  await h.click('Track0Usage'); assert.equal(h.usageCalls.length, 1); assert.equal(h.el('UsageBehaviorList').children.length, 1);
+});
+
+test('new unsaved track identities can be queried without parsing incomplete form numbers', async t => {
+  const h = await fixture(t, { usage: true }); await h.open(); await h.click('Track0Clone'); h.set('Track1Volume', '1e-');
+  await h.click('Track1Usage'); assert.equal(h.el('Usage').dataset.trackId, id(101)); assert.equal(h.el('UsageBehaviorList').children.length, 1);
+  assert.match(h.el('UsageBehaviorList').textContent, /future_audio/); assert.equal(h.el('Track1Volume').value, '1e-');
+  assert.equal(h.usageCalls.length, 1); assert.equal(h.usageCalls[0].content, h.original); assert.equal(h.calls.length, 0);
+});
+
+test('cue retargeting and order changes recalculate usage against the current form without another read', async t => {
+  const h = await fixture(t, { usage: true }); await h.open(); await h.click('Track0Clone'); await h.click('Track0Usage');
+  h.set('Cue0Track', id(101), 'change'); assert.equal(h.el('UsageCueList').children.length, 1);
+  assert.match(h.el('UsageCueList').children[0].textContent, /第 2 条/);
+  await h.click('Cue1Up'); assert.match(h.el('UsageCueList').children[0].textContent, /第 1 条/);
+  await h.click('Track1Usage'); assert.equal(h.el('UsageCueList').children.length, 1); assert.match(h.el('UsageCueList').children[0].textContent, new RegExp(id(4)));
+  assert.equal(h.usageCalls.length, 1);
+});
+
+test('usage remains advisory for deletion and removing the selected track clears the panel', async t => {
+  const h = await fixture(t, { usage: true }); await h.open(); await h.click('Track0Clone'); await h.click('Track1Usage');
+  assert.equal(h.el('UsageBehaviorList').children.length, 1); assert.equal(h.el('Track1Remove').disabled, false);
+  await h.click('Track1Remove'); assert.equal(h.el('Usage').hidden, true); assert.equal(h.el('Usage').dataset.trackId, '');
+  assert.equal(h.el('Dialog').dataset.dirty, 'false'); assert.equal(h.el('Track0Remove').disabled, true); assert.equal(h.calls.length, 0);
+});
+
+test('missing behavior zero matches and read failure remain distinct and a failed refresh can retry', async t => {
+  const none = await fixture(t, { usage: source => usageCatalog(source, { noBehavior: true }) }); await none.open(); await none.click('Track0Usage');
+  assert.match(none.el('UsageStatus').textContent, /没有关联/); assert.equal(none.el('UsageBehaviorPath').textContent, '');
+  const zero = await fixture(t, { usage: source => usageCatalog(source, { parameters: { track_id: 'ordinary' } }) }); await zero.open(); await zero.click('Track0Usage');
+  assert.match(zero.el('UsageStatus').textContent, /未在已保存行为参数中找到/); assert.match(zero.el('UsageBehaviorPath').textContent, /main.json/);
+  const h = await fixture(t, { usage: (source, count) => { if (count === 2) throw Error('private storage path'); return usageCatalog(source); } });
+  await h.open(); h.set('Track0Volume', '0.25'); await h.check(); await h.click('Track0Usage'); await h.click('UsageRefresh');
+  assert.equal(h.el('UsageStatus').dataset.status, 'failed'); assert.equal(h.el('UsageBehaviorList').children.length, 0);
+  assert.doesNotMatch(h.el('UsageStatus').textContent, /private storage/); assert.equal(h.el('Apply').disabled, false);
+  await h.click('UsageRefresh'); assert.equal(h.el('UsageStatus').dataset.status, 'ready'); assert.equal(h.usageCalls.length, 3);
+});
+
+test('unbranded or differently owned usage catalogs are rejected without touching the reviewed form', async t => {
+  for (const kind of ['plain', 'other-source']) {
+    const h = await fixture(t, { usage: source => kind === 'plain' ? copy(usageCatalog(source)) : usageCatalog({ ...source, token: 'different' }) });
+    await h.open(); h.set('Track0Volume', '0.25'); await h.check(); await h.click('Track0Usage');
+    assert.equal(h.el('UsageStatus').dataset.status, 'failed'); assert.equal(h.el('UsageBehaviorList').children.length, 0);
+    assert.equal(h.el('Apply').disabled, false); assert.equal(h.calls.length, 0);
+  }
+});
+
+test('late usage reads are discarded after source change close reopen capability withdrawal or disposal', async t => {
+  for (const reason of ['source', 'close', 'reopen', 'capability', 'dispose']) {
+    const gate = deferred(); let source; const h = await fixture(t, { usage: input => { source = input; return gate.promise; } });
+    await h.open(); h.el('Track0Usage').click();
+    if (reason === 'source') { h.context.sourceToken += ':changed'; h.controller.refresh(); }
+    if (reason === 'close' || reason === 'reopen') { await h.click('Cancel'); if (reason === 'reopen') await h.open(); }
+    if (reason === 'capability') { h.context.usageAvailable = false; h.controller.refresh(); h.context.usageAvailable = true; h.controller.refresh(); }
+    if (reason === 'dispose') h.controller.dispose();
+    gate.resolve(usageCatalog(source)); await h.settle();
+    if (reason !== 'dispose') { assert.equal(h.el('Usage').hidden, true, reason); assert.equal(h.el('UsageBehaviorList').children.length, 0, reason); }
+    assert.equal(h.calls.length, 0);
+  }
+});
+
+test('usage capability withdrawal preserves ordinary checked apply and permits a fresh later query', async t => {
+  const h = await fixture(t, { usage: true }); await h.open(); h.set('Track0Volume', '0.25'); await h.check(); await h.click('Track0Usage');
+  h.context.usageAvailable = false; h.controller.refresh(); assert.equal(h.el('Usage').hidden, true); assert.equal(h.el('Apply').disabled, false);
+  h.context.usageAvailable = true; h.controller.refresh(); await h.click('Track0Usage'); assert.equal(h.usageCalls.length, 2); assert.equal(h.el('Apply').disabled, false);
+  await h.apply(); assert.equal(h.calls.length, 1); assert.equal(h.el('Dialog').open, false);
+});
+
+test('ordinary check and apply stay available while a usage read is pending and late usage cannot reopen', async t => {
+  const gate = deferred(); let source; const h = await fixture(t, { usage: input => { source = input; return gate.promise; } });
+  await h.open(); h.set('Track0Volume', '0.25'); h.el('Track0Usage').click(); await h.check();
+  assert.equal(h.el('Apply').disabled, false); assert.equal(h.el('UsageStatus').dataset.status, 'loading');
+  await h.apply(); gate.resolve(usageCatalog(source)); await h.settle();
+  assert.equal(h.calls.length, 1); assert.equal(h.el('Dialog').open, false); assert.equal(h.el('Usage').hidden, true);
+});
+
+test('language changes localize usage without rebuilding inputs losing focus or refetching', async t => {
+  const h = await fixture(t, { usage: true }); await h.open(); await h.click('Track0Usage'); h.set('Track0Volume', '1e-');
+  const input = h.el('Track0Volume'); input.focus(); input.selectionStart = 1; input.selectionEnd = 3;
+  for (const [language, label] of [['en', 'View usage'], ['ja', '使用箇所を見る'], ['zh', '查看使用位置']]) {
+    h.language(language); assert.equal(h.el('Track0Usage').textContent, label); assert.equal(h.el('Track0Volume'), input);
+    assert.equal(h.document.activeElement, input); assert.equal(input.selectionStart, 1); assert.equal(input.selectionEnd, 3);
+    assert.equal(input.value, '1e-'); assert.equal(h.el('Usage').dataset.trackId, id(2)); assert.equal(h.el('UsageBehaviorList').children.length, 1);
+  }
+  assert.equal(h.usageCalls.length, 1); assert.equal(h.calls.length, 0);
+});
+
+test('dismissal keeps source unchanged and a pending usage result cannot reopen the panel', async t => {
+  const gate = deferred(); let source; const h = await fixture(t, { usage: input => { source = input; return gate.promise; } });
+  await h.open(); h.el('Track0Usage').click(); await h.click('UsageDismiss'); assert.equal(h.document.activeElement, h.el('Track0Usage'));
+  gate.resolve(usageCatalog(source)); await h.settle(); assert.equal(h.el('Usage').hidden, true);
+  await h.click('Track0Usage'); assert.equal(h.el('UsageStatus').dataset.status, 'ready'); assert.equal(h.usageCalls.length, 1);
+  assert.equal(h.el('Dialog').dataset.dirty, 'false'); assert.equal(h.content(), h.original);
+});
+
+
+test('only explicit usage selection scrolls to results without stealing focus', async t => {
+  const gate = deferred(); let source;
+  const value = model(); value.tracks.push({ ...value.tracks[0], id: id(6) });
+  const h = await fixture(t, { content: JSON.stringify(value), usage: (input, count) => { source = input; return count === 1 ? gate.promise : usageCatalog(input); } });
+  await h.open(); const scrolls = []; h.el('Usage').scrollIntoView = options => scrolls.push(copy(options));
+  const input = h.el('Track0Volume'); input.focus();
+  h.el('Track0Usage').click(); assert.deepEqual(scrolls, [{ block: 'nearest' }]); assert.equal(h.document.activeElement, input);
+  gate.resolve(usageCatalog(source)); await h.settle(); assert.equal(scrolls.length, 1); assert.equal(h.document.activeElement, input);
+  await h.click('UsageRefresh'); h.language('ja'); h.controller.refresh();
+  assert.equal(scrolls.length, 1); assert.equal(h.document.activeElement, input);
+  await h.click('Track1Usage'); assert.deepEqual(scrolls, [{ block: 'nearest' }, { block: 'nearest' }]);
+  assert.equal(h.document.activeElement, input); assert.equal(h.el('Usage').dataset.trackId, id(6));
+});
+
+test('withdrawing usage capability leaves loading playing and paused audition ownership intact', async t => {
+  for (const status of ['loading', 'playing', 'paused']) {
+    const gate = deferred(), h = await auditionFixture(t, { usage: true, audition: status === 'loading' ? () => gate.promise : true });
+    h.set('Track0Volume', '0.25'); await h.check(); await h.click('Track0Usage'); h.el('Track0Preview').click();
+    if (status !== 'loading') await h.settle(); if (status === 'paused') await h.click('PausePreview');
+    assert.equal(h.el('PreviewStatus').dataset.status, status);
+    const stops = h.audition.stops, ticket = h.audition.calls[0];
+    h.context.usageAvailable = false; h.controller.refresh();
+    assert.equal(h.el('Usage').hidden, true); assert.equal(h.el('Apply').disabled, false);
+    assert.equal(h.el('PreviewStatus').dataset.status, status); assert.equal(h.audition.stops, stops); assert.equal(ticket.isCurrent(), true);
+    h.context.usageAvailable = true; h.controller.refresh(); await h.click('Track0Usage');
+    assert.equal(h.el('PreviewStatus').dataset.status, status); assert.equal(h.audition.stops, stops); assert.equal(h.el('Apply').disabled, false);
+    gate.resolve(); await h.settle(); assert.equal(h.el('PreviewStatus').dataset.status, status === 'loading' ? 'playing' : status);
+    assert.equal(h.audition.calls.length, 1); assert.equal(h.calls.length, 0);
+  }
+});
+
+test('usage cue location follows stable current rows and never stale indices after reorder deletion or retarget', async t => {
+  const h = await fixture(t, { usage: true }); await h.open(); await h.click('Track0Clone'); await h.click('Track0Usage');
+  const first = h.el('UsageCue0Locate'), second = h.el('UsageCue1Locate'), firstTrack = h.el('Cue0Track'), scrolls = [];
+  firstTrack.scrollIntoView = options => scrolls.push(copy(options)); await h.click('UsageCue0Locate');
+  assert.equal(h.document.activeElement, firstTrack); assert.deepEqual(scrolls, [{ block: 'nearest' }]);
+  await h.click('Cue1Up'); const reordered = h.el('Cue0Track');
+  h.el('Track0Volume').focus(); first.dispatch('click'); second.dispatch('click');
+  assert.equal(h.document.activeElement, h.el('Track0Volume'));
+  await h.click('UsageCue0Locate'); assert.equal(h.document.activeElement, reordered);
+  assert.equal(h.el('UsageCue0Locate').dataset.cueId, id(5));
+  const moved = h.el('UsageCue0Locate'); h.set('Cue0Track', id(101), 'change'); h.el('Track0Volume').focus(); moved.dispatch('click');
+  assert.equal(h.document.activeElement, h.el('Track0Volume')); assert.equal(h.el('UsageCueList').children.length, 1);
+  const remaining = h.el('UsageCue1Locate'); await h.click('Cue1Remove'); h.el('Track0Volume').focus(); remaining.dispatch('click');
+  assert.equal(h.document.activeElement, h.el('Track0Volume')); assert.equal(h.el('UsageCueList').children.length, 0);
+  assert.equal(h.usageCalls.length, 1); assert.equal(h.calls.length, 0);
+});
+
+test('new unsaved cues have stable usage navigation and silent retargets refuse stale locations', async t => {
+  const h = await fixture(t, { usage: true }); await h.open(); await h.click('Track0Clone'); await h.click('Track0Usage'); await h.click('AddCue');
+  assert.equal(h.el('UsageCue2Locate').dataset.cueId, id(102)); await h.click('UsageCue2Locate');
+  assert.equal(h.document.activeElement, h.el('Cue2Track'));
+  const old = h.el('UsageCue2Locate'); h.set('Cue2Track', id(101), false); h.el('Track0Volume').focus(); old.dispatch('click');
+  assert.equal(h.document.activeElement, h.el('Track0Volume')); assert.equal(h.usageCalls.length, 1); assert.equal(h.content(), h.original);
+});
+
+test('usage source shows readonly saved text with exact BOM CRLF Unicode and duplicate UUID token selection', async t => {
+  let saved = '';
+  const h = await fixture(t, { usage: source => usageCatalog(source, {
+    parameters: { lead: '音🙂', first: id(2), second: id(2) },
+    content: behavior => { saved = '\ufeff' + JSON.stringify(behavior, null, 2).replaceAll('\n', '\r\n') + '\r\n';
+      const start = saved.lastIndexOf(JSON.stringify(id(2))); saved = saved.slice(0, start) + '"\\u0030' + id(2).slice(1) + '"' + saved.slice(start + id(2).length + 2); return saved; },
+  }) });
+  await h.open(); await h.click('Track0Usage'); await h.click('UsageMatch0Source');
+  const text = h.el('UsageSourceText'), normalized = saved.replaceAll('\r\n', '\n');
+  assert.equal(h.el('UsageSource').hidden, false); assert.equal(text.getAttribute('readonly'), ''); assert.equal(text.getAttribute('lang'), ''); assert.equal(text.value, normalized);
+  assert.equal(text.value.slice(text.selectionStart, text.selectionEnd), JSON.stringify(id(2))); assert.equal(h.document.activeElement, text);
+  const first = text.selectionStart; await h.click('UsageMatch1Source');
+  assert.equal(h.el('UsageSourceText'), text); assert.ok(text.selectionStart > first);
+  assert.equal(text.value.slice(text.selectionStart, text.selectionEnd), '"\\u0030' + id(2).slice(1) + '"');
+  assert.match(h.el('UsageSourceField').textContent, /\/bindings\/0\/parameters\/second/);
+  assert.match(h.el('UsageSourcePath').textContent, /documents\/behaviors\/main.json/);
+  assert.equal(h.sourceReveals.length, 2); assert.equal(h.sourceReveals[1].offset, text.selectionStart);
+  assert.equal(h.el('Dialog').dataset.dirty, 'false'); assert.equal(h.content(), h.original); assert.equal(h.calls.length, 0); assert.equal(h.confirms.length, 0); assert.equal(h.usageCalls.length, 1);
+});
+
+test('multiple bindings with the same track ID reveal their own exact saved parameters', async t => {
+  const h = await fixture(t, { usage: source => usageCatalog(source, { content: behavior => {
+    const other = copy(behavior.bindings[0]); other.bindingId = id(301); other.instanceId = id(302); other.parameters = { other: id(2) };
+    behavior.bindings.push(other); return JSON.stringify(behavior, null, 2);
+  } }) });
+  await h.open(); await h.click('Track0Usage'); await h.click('UsageMatch0Source'); const first = h.el('UsageSourceText').selectionStart;
+  await h.click('UsageMatch1Source'); const text = h.el('UsageSourceText');
+  assert.ok(text.selectionStart > first); assert.equal(text.value.slice(text.selectionStart, text.selectionEnd), JSON.stringify(id(2)));
+  assert.match(h.el('UsageSourceField').textContent, /\/bindings\/1\/parameters\/other/); assert.equal(h.usageCalls.length, 1);
+});
+
+test('source preview stays the same focused selected viewport across ordinary refresh and three languages', async t => {
+  const h = await fixture(t, { usage: true }); await h.open(); h.set('Track0Volume', '1e-'); await h.click('Track0Usage'); await h.click('UsageMatch0Source');
+  const text = h.el('UsageSourceText'), input = h.el('Track0Volume'), value = text.value;
+  text.selectionStart = 3; text.selectionEnd = 8; text.scrollTop = 79; text.scrollLeft = 12;
+  for (const [language, title] of [['en', 'Saved source from the last read'], ['ja', '前回読み込んだ保存済み原文'], ['zh', '上次读取的已保存原文']]) {
+    h.language(language); h.controller.refresh(); assert.equal(h.el('UsageSourceTitle').textContent, title);
+    assert.equal(h.el('UsageSourceText'), text); assert.equal(text.value, value); assert.equal(h.document.activeElement, text);
+    assert.equal(text.selectionStart, 3); assert.equal(text.selectionEnd, 8); assert.equal(text.scrollTop, 79); assert.equal(text.scrollLeft, 12);
+    assert.equal(h.el('Track0Volume'), input); assert.equal(input.value, '1e-'); assert.equal(h.el('Apply').disabled, true);
+  }
+  assert.equal(h.sourceReveals.length, 1); assert.equal(h.usageCalls.length, 1);
+  await h.click('UsageSourceLocate'); assert.equal(text.value.slice(text.selectionStart, text.selectionEnd), JSON.stringify(id(2))); assert.equal(h.sourceReveals.length, 2);
+  await h.click('UsageSourceDismiss'); assert.equal(h.el('UsageSource').hidden, true); assert.equal(text.value, ''); assert.equal(h.document.activeElement, h.el('UsageRefresh'));
+  assert.equal(h.calls.length, 0); assert.equal(h.confirms.length, 0);
+});
+
+test('source navigation preserves approval ordinary audio draft and loading playing paused auditions', async t => {
+  for (const status of ['loading', 'playing', 'paused']) {
+    const gate = deferred(), h = await auditionFixture(t, { usage: true, audition: status === 'loading' ? () => gate.promise : true });
+    h.set('Track0Volume', '0.25'); await h.check(); await h.click('Track0Usage'); h.el('Track0Preview').click(); await h.settle();
+    if (status === 'paused') await h.click('PausePreview');
+    const stops = h.audition.stops, source = h.el('After').textContent;
+    await h.click('UsageMatch0Source'); await h.click('UsageSourceLocate'); await h.click('UsageCue0Locate'); h.language('ja'); h.controller.refresh();
+    assert.equal(h.audition.snapshot().status, status); assert.equal(h.audition.stops, stops); assert.equal(h.el('Apply').disabled, false);
+    assert.equal(h.el('After').textContent, source); assert.equal(h.content(), h.original); assert.equal(h.usageCalls.length, 1); assert.equal(h.calls.length, 0);
+    await h.click('UsageSourceDismiss'); assert.equal(h.audition.snapshot().status, status); assert.equal(h.audition.stops, stops);
+    gate.resolve({}); await h.settle();
+  }
+});
+
+test('source previews clear at the beginning of refresh and failed refresh cannot revive old source controls', async t => {
+  const gate = deferred();
+  const h = await fixture(t, { usage: (source, count) => count === 2 ? gate.promise : usageCatalog(source) });
+  await h.open(); h.set('Track0Volume', '0.25'); await h.check(); await h.click('Track0Usage'); await h.click('UsageMatch0Source');
+  const old = h.el('UsageMatch0Source'), before = h.sourceReveals.length;
+  h.el('UsageRefresh').click(); assert.equal(h.el('UsageSource').hidden, true); assert.equal(h.el('UsageSourceText').value, '');
+  h.el('Track0Volume').focus(); old.dispatch('click'); h.el('UsageSourceLocate').dispatch('click');
+  assert.equal(h.document.activeElement, h.el('Track0Volume')); assert.equal(h.sourceReveals.length, before);
+  gate.resolve(null); await h.settle(); assert.equal(h.el('UsageStatus').dataset.status, 'failed'); old.dispatch('click');
+  assert.equal(h.el('UsageSource').hidden, true); assert.equal(h.el('Apply').disabled, false);
+  await h.click('UsageRefresh'); old.dispatch('click'); assert.equal(h.el('UsageSource').hidden, true);
+  await h.click('UsageMatch0Source'); assert.equal(h.el('UsageSource').hidden, false); assert.equal(h.usageCalls.length, 3);
+});
+
+test('stale source buttons cannot reopen after track selection dismissal deletion or parent cancellation', async t => {
+  for (const reason of ['track', 'dismiss', 'remove', 'cancel', 'reopen']) {
+    const h = await fixture(t, { usage: true }); await h.open(); await h.click('Track0Clone'); await h.click('Track1Usage'); await h.click('UsageMatch0Source');
+    const old = h.el('UsageMatch0Source');
+    if (reason === 'track') await h.click('Track0Usage');
+    if (reason === 'dismiss') await h.click('UsageDismiss');
+    if (reason === 'remove') await h.click('Track1Remove');
+    if (reason === 'cancel' || reason === 'reopen') await h.click('Cancel');
+    if (reason === 'reopen') { await h.open(); await h.click('Track0Clone'); await h.click('Track0Usage'); }
+    assert.equal(h.el('UsageSource').hidden, true, reason); assert.equal(h.el('UsageSourceText').value, '', reason);
+    old.dispatch('click'); assert.equal(h.el('UsageSource').hidden, true, reason); assert.equal(h.el('UsageSourceText').value, '', reason);
+    assert.equal(h.calls.length, 0, reason); assert.equal(h.content(), h.original, reason);
+  }
+});
+
+test('source and cue navigation reject detached nodes after ordinary refresh language and session changes', async t => {
+  for (const reason of ['refresh', 'language', 'source', 'capability', 'reopen']) {
+    const h = await fixture(t, { usage: true }); await h.open(); await h.click('Track0Usage');
+    const oldSource = h.el('UsageMatch0Source'), oldCue = h.el('UsageCue0Locate'), oldUsage = h.el('Track0Usage');
+    if (reason === 'refresh') h.controller.refresh();
+    if (reason === 'language') h.language('en');
+    if (reason === 'source') { h.context.sourceToken = 'load:2'; h.controller.refresh(); }
+    if (reason === 'capability') { h.context.usageAvailable = false; h.controller.refresh(); h.context.usageAvailable = true; h.controller.refresh(); }
+    if (reason === 'reopen') { await h.click('Cancel'); await h.open(); }
+    h.el('Track0Volume').focus(); oldSource.dispatch('click'); oldCue.dispatch('click');
+    if (reason === 'reopen') oldUsage.dispatch('click');
+    assert.equal(h.el('UsageSource').hidden, true, reason); assert.equal(h.document.activeElement, h.el('Track0Volume'), reason);
+    assert.equal(h.sourceReveals.length, 0, reason); assert.equal(h.usageCalls.length, 1, reason);
+  }
+});
+
+test('withdrawing only usage capability clears source without stopping audition or revoking review', async t => {
+  for (const status of ['loading', 'playing', 'paused']) {
+    const gate = deferred(), h = await auditionFixture(t, { usage: true, audition: status === 'loading' ? () => gate.promise : true });
+    h.set('Track0Volume', '0.25'); await h.check(); await h.click('Track0Usage'); await h.click('UsageMatch0Source'); h.el('Track0Preview').click(); await h.settle();
+    if (status === 'paused') await h.click('PausePreview');
+    const old = h.el('UsageMatch0Source'), stops = h.audition.stops;
+    h.context.usageAvailable = false; h.controller.refresh(); h.context.usageAvailable = true; h.controller.refresh(); old.dispatch('click');
+    assert.equal(h.el('UsageSource').hidden, true); assert.equal(h.el('UsageSourceText').value, ''); assert.equal(h.audition.snapshot().status, status);
+    assert.equal(h.audition.stops, stops); assert.equal(h.el('Apply').disabled, false); assert.equal(h.sourceReveals.length, 1);
+    gate.resolve({}); await h.settle();
+  }
 });

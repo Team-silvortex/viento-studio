@@ -1,0 +1,94 @@
+{
+  "format": "viento-animation-backend-verification",
+  "schemaVersion": 1,
+  "date": "2026-10-18",
+  "productVersion": "0.1.5",
+  "head": "d887a59cda96f655321cf0af904d700f64259ebc",
+  "adapterVersion": "0.12.0",
+  "runtimeProtocolsUnchanged": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "results": {
+    "relatedRegressionBeforeFinalIsolationFix": {
+      "log": "backend-final.log",
+      "tests": 88,
+      "pass": 88,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "completeAnimationBeforeDrawingOrderPreservation": {
+      "log": "backend-animation-final.log",
+      "tests": 27,
+      "pass": 27,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "finalDrawingOrderAndIsolationRegression": {
+      "log": "backend-visual-isolation-final.log",
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "initialDiagnosticsRegression": {
+      "log": "backend-diagnostics.log",
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    }
+  },
+  "realGodot": {
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+    "execution": "headlessLogic",
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "coverage": [
+    "Four combinations: animation alone, behavior, audio, behavior plus audio",
+    "Generated base files and v1/v2 generator/runtime hashes remain frozen",
+    "IEEE-754 duration, time and values survive JSON transfer through explicit double bytes",
+    "Rust and Godot interpolation agree at precise loop/step boundaries",
+    "Number.MIN_VALUE duration and key just after 0.25 seconds preserve timing",
+    "Logical actor movement and behavior parents are independent of visual animation",
+    "A to B to A creates fresh clocks and stops old animation",
+    "Sprite2D authored behavior and sibling visual stay on the logical root",
+    "Original generated visual keeps its first-child drawing order",
+    "Multiple animated scene diagnostics retain only the owning manifest",
+    "Missing animation data cannot report successful finish",
+    "Saved author project builds and runs; verified ZIP starts after original author and build directories are removed",
+    "Bevy and Bevy Rust refuse animation even if required capability is removed",
+    "Pure control/case admission, host and Godot adapter refuse unsupported animation replay"
+  ],
+  "limits": [
+    "No Godot window/render capture is claimed; transforms were observed in the real headless engine",
+    "No Bevy animation playback",
+    "No installed desktop or Android device test",
+    "No animation event stream or author script playback-control port",
+    "Browser editor/preview coverage is reported separately by its owner"
+  ],
+  "sourceFingerprints": {
+    "engine/backend-capabilities.mjs": "d572ed5046a664188bf0cf8747e9c2db38af93314a97165825add5aad41fd622",
+    "engine/project-assembly-plan-contract.mjs": "a1b5c30d6e7bbabeed2a42a33f1ff3b062df2b022d937c9ecaa167dfffbe763f",
+    "engine/scene-control-program.mjs": "74a3817ae49c7f0aaa0c7f3dfd04a5f0baaecb70d7398b2899d64f4929a67541",
+    "scripts/adapters/node-project-build.mjs": "9a18cf00f5c3bd93ec053d8796951cf44ea8b5fd9eb60ac76a3efc0659b8608f",
+    "scripts/backends/godot4-animation.mjs": "35075d9ddc4fd41b2eb0486fe3ee9dbcce0138ba00cce7f43c19acdaec829e7e",
+    "scripts/backends/godot4/animation-runtime.gd": "e1c4181b8b0c274ca48f9542d3afc5a00e19dd0173994a9cef8656f73dfd2579",
+    "scripts/backends/godot4-adapter.mjs": "3793fde35be9c045be353f22d65f1fc3477aba3211ba5081abe4b2751c3434a4",
+    "scripts/backends/godot4-project.mjs": "4b8c419f7c9dae02b6e194275fe712fc70f01e2acdd6eb9a7f7cf4ade507c3a3",
+    "scripts/backends/godot4/project-scene.gd": "ff3de5853a0e8414103cbfb0f9b9799d0e41c208c242a7d47ece1d81046a2e20",
+    "scripts/tests/godot4-adapter.test.mjs": "86eaaf64c0aa27c30811def9fa0f0b027f4ded3b3d50e2533af6f1cd4bcc8c98",
+    "scripts/tests/scene-animation-godot.test.mjs": "3fb9bc3b0c0fbd2573e8a9857b9e900259f4e3cc4778f13a4661c3fdbf1ee6ff",
+    "engine/scene-animation.mjs": "8ab648346a5da2b80583dab9353cfd757dbf09e55da721910fc0d30b69dc16fa",
+    "engine/scene-animation-core.mjs": "b7b016fb3bd1c62b351343063066eed5da845290080cb892088091b25e8aa73f",
+    "engine/studio-core.wasm": "1767202f1f09cefd9835c5a3415d97eda81de3b830667648f9cea3f98793a077"
+  },
+  "initialFailure": "backend-initial.log ran before the new Rust/WASM operation was prepared and before expected adapter fingerprint test was updated; retained as a diagnostic checkpoint, not a passing result."
+}

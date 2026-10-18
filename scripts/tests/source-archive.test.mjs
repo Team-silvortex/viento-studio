@@ -57,7 +57,7 @@ test('source archives retain both Rust crates and official examples while exclud
       await retain(`${crate}/${relative.replaceAll(path.sep, '/')}`);
     }
   }
-  const examples = ['scene2d', 'scene-composition', 'scene-behaviors', 'scene-audio', 'bevy-headless', 'scene3d'];
+  const examples = ['scene2d', 'scene-composition', 'scene-behaviors', 'scene-audio', 'scene-animation', 'bevy-headless', 'scene3d'];
   for (const name of ['Cargo.toml', 'Cargo.lock', ...(await fs.readdir(path.join(application, 'scripts/backends/bevy-rust/src'), { recursive: true }))
     .filter(file => file.endsWith('.rs')).map(file => `src/${file.replaceAll(path.sep, '/')}`)]) await retain(`scripts/backends/bevy-rust/${name}`);
   for (const example of examples) {

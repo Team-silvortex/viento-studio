@@ -148,13 +148,14 @@ function supportRequest(input) {
     text(target.sourcePath, 4096);
     if (plan.kind === 'project') {
       if (plan.schemaVersion !== 1 || Object.hasOwn(plan, 'scene') || Object.hasOwn(plan, 'actors')
-        || Object.hasOwn(plan, 'behaviors') || Object.hasOwn(plan, 'audio')
+        || Object.hasOwn(plan, 'behaviors') || Object.hasOwn(plan, 'audio') || Object.hasOwn(plan, 'animation')
         || !Array.isArray(plan.scenes) || !plan.scenes.length || plan.scenes.length > 32
         || new Set(plan.scenes.map(scene => scene?.scene?.objectId)).size !== plan.scenes.length
         || !plan.scenes.some(scene => scene?.scene?.objectId === plan.entrySceneId)
         || plan.scenes.some(scene => scene?.kind !== 'scene2d')) throw invalid();
       for (const scene of plan.scenes) supportRequest({ plan: scene });
     }
+    if (Object.hasOwn(plan, 'animation') && (!plain(plan.animation) || plan.animation.format !== 'viento-animation-plan' || plan.animation.schemaVersion !== 1)) throw invalid();
     if (Object.hasOwn(plan, 'audio') && (!plain(plan.audio) || plan.audio.format !== 'viento-audio-plan' || plan.audio.schemaVersion !== 1)) throw invalid();
     if (Object.hasOwn(plan, 'behaviors')) {
       if (!plain(plan.behaviors) || plan.behaviors.format !== 'viento-behavior-plan' || plan.behaviors.schemaVersion !== 1) throw invalid();
@@ -187,6 +188,12 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
       for (const capability of required) if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_assembly_invalid',
         'Project plans must explicitly require every member capability.', { capability }));
       for (const scene of plan.scenes) diagnostics.push(...checkExecutionBackendSupport(backend, { ...value, plan: scene }));
+    }
+    if (plan.animation) {
+      if (!plan.requiredCapabilities.includes('animation.visual2d')) diagnostics.push(diagnostic('build_animation_invalid',
+        'Animation plans must explicitly require their visual capability.', { capability: 'animation.visual2d' }));
+      if (!plan.requiredCapabilities.includes('animation.visual2d') && !backend.capabilities.includes('animation.visual2d')) diagnostics.push(diagnostic('build_capability_missing',
+        'Backend lacks capability: animation.visual2d', { capability: 'animation.visual2d' }));
     }
     if (plan.audio) {
       for (const capability of ['audio.nonspatial', 'audio.timeline']) {
