@@ -13,7 +13,7 @@ const sample = () => ({timeSeconds:1,localTimeSeconds:1,finished:false,values:[
   {trackId:id(12),instanceId:id(1),property:'scale2d',value:[2,.5]},
   {trackId:id(13),instanceId:id(1),property:'opacity',value:.25}]});
 function harness(image=false) {
-  const listeners=new Map(),calls=[],moves=[],selected=[],stack=[],tintedPixels=[];let matrix=[1,0,0,1,0,0],tiles=0;
+  const listeners=new Map(),calls=[],moves=[],selected=[],stack=[],tintedPixels=[],tintDraws=[],allocated=[];let matrix=[1,0,0,1,0,0],tiles=0;
   const multiply=([a,b,c,d,e,f])=>{const [g,h,i,j,k,l]=matrix;matrix=[g*a+i*b,h*a+j*b,g*c+i*d,h*c+j*d,g*e+i*f+k,h*e+j*f+l]};
   const ctx={globalAlpha:1,fillStyle:'',strokeStyle:'',setTransform(...v){matrix=v},translate(x,y){multiply([1,0,0,1,x,y])},scale(x,y){multiply([x,0,0,y,0,0])},rotate(a){multiply([Math.cos(a),Math.sin(a),-Math.sin(a),Math.cos(a),0,0])},
     save(){stack.push({matrix:[...matrix],alpha:this.globalAlpha,fill:this.fillStyle})},restore(){const s=stack.pop();matrix=s.matrix;this.globalAlpha=s.alpha;this.fillStyle=s.fill},
@@ -25,12 +25,12 @@ function harness(image=false) {
       tiles++;
       const data = new Uint8ClampedArray(20*10*4);
       for(let index=0;index<data.length;index+=4)data.set([200,100,50,128],index);
-      return {width:0,height:0,getContext:()=>({drawImage(){},getImageData:()=>({data}),putImageData(value){tintedPixels.push([...value.data.slice(0,4)])}})};
+      const tile={width:0,height:0,getContext:()=>({drawImage(...args){tintDraws.push(args)},getImageData:()=>({data}),putImageData(value){tintedPixels.push([...value.data.slice(0,4)])}})};allocated.push(tile);return tile;
     }}};
   const model=scene(image),controller=createScenePreviewCanvas({canvas,onMove:(...v)=>moves.push(v),onSelect:id=>selected.push(id)});
   controller.setScene(model);controller.setImages(image?new Map([[id(20),{width:20,height:10}]]):new Map());controller.setVisible(true);calls.length=0;
   const dispatch=(name,extra={})=>listeners.get(name)?.({button:0,pointerId:1,clientX:124,clientY:104,preventDefault(){},...extra});
-  return {model,controller,calls,moves,selected,dispatch,tiles:()=>tiles,listeners,tintedPixels};
+  return {model,controller,calls,moves,selected,dispatch,tiles:()=>tiles,listeners,tintedPixels,tintDraws,allocated};
 }
 const close = (actual,expected)=>{assert.equal(actual.length,expected.length);actual.forEach((v,i)=>assert.ok(Math.abs(v-expected[i])<1e-10,`${actual} != ${expected}`))};
 test('visual transform matches root+offset/rotation/scale and opacity while duplicate-definition actor and labels stay logical',()=>{
@@ -73,4 +73,33 @@ test('zero opacity affects only the visual, not labels, and a new frame does not
   const h=harness(),s=sample();h.controller.setVisualSample(s);s.values=[{...s.values[3],value:0}];h.calls.length=0;h.controller.setVisualSample(s);
   const first=h.calls.find(c=>c.name==='fillRect'&&c.args[0]===-10);close(first.matrix,[1,0,0,1,124,104]);assert.equal(first.alpha,0);
   assert.equal(h.calls.find(c=>c.name==='fillText'&&c.args[0]==='First').alpha,1);
+});
+
+
+test('grid frames crop row-major cells without resizing logical actors or affecting shared-image instances', () => {
+  const h = harness(true), tiles = h.tiles(), base = sample();
+  for (const [index, x, y] of [[0,0,0], [1,10,0], [2,0,5], [3,10,5]]) {
+    const s = structuredClone(base); s.values.push({trackId:id(40),instanceId:id(1),property:'spriteFrame2d',grid:{columns:2,rows:2},value:index});
+    h.calls.length=0; h.controller.setVisualSample(s);
+    const draws=h.calls.filter(call=>call.name==='drawImage');
+    assert.deepEqual(draws[0].args.slice(1),[0,0,10,5,-10,-5,20,10]);
+    assert.deepEqual(h.tintDraws.at(-1).slice(1),[x,y,10,5,0,0,10,5]);
+    close(draws[0].matrix,[0,2,-.5,0,144,94]); assert.equal(draws[0].alpha,.25);
+    assert.deepEqual(draws[1].args.slice(1),[230,75,20,10]);
+    assert.equal(h.tiles(),tiles+index+1);
+  }
+  h.calls.length=0; h.controller.setVisualSample(null);
+  assert.deepEqual(h.calls.filter(c=>c.name==='drawImage')[0].args.slice(1),[90,75,20,10]);
+  assert.equal(h.tiles(),tiles+4);
+});
+
+
+test('large shared atlases tint only cells and bound whole-sheet fallback before allocation', () => {
+  const h=harness(true);h.controller.setImages(new Map([[id(20),{width:4096,height:4096}]]));
+  assert.ok(h.allocated.every(tile=>tile.width*tile.height*4<=32*1024*1024));
+  const s={timeSeconds:0,localTimeSeconds:0,finished:false,values:[1,2].map((n,i)=>({trackId:id(50+i),instanceId:id(n),property:'spriteFrame2d',grid:{columns:64,rows:64},value:i}))};
+  h.controller.setVisualSample(s);const count=h.tiles();
+  assert.deepEqual(h.tintDraws.slice(-2).map(args=>args.slice(1)),[[0,0,64,64,0,0,64,64],[64,0,64,64,0,0,64,64]]);
+  for(let i=0;i<3;i++)h.controller.setVisualSample(s);
+  assert.equal(h.tiles(),count);assert.ok(h.allocated.reduce((sum,tile)=>sum+tile.width*tile.height*4,0)<=32*1024*1024);
 });

@@ -81,7 +81,7 @@ test('the author schema is exact and rejects invalid IDs bounds dimensions and i
     for(const key of Object.keys(target)){const doc=structuredClone(source);delete path.reduce((value,key)=>value[key],doc)[key];assert.throws(()=>inspectSceneAnimation(doc),{errorCode:'scene_animation_invalid'});}
     target.extra=true;assert.throws(()=>inspectSceneAnimation(source),{errorCode:'scene_animation_invalid'});
   }
-  const invalid=[d=>d.format='animation',d=>d.schemaVersion=2,d=>d.sceneObjectId='bad',d=>d.loop=1,d=>d.durationSeconds=0,d=>d.durationSeconds=-0,d=>d.durationSeconds=60.01,
+  const invalid=[d=>d.format='animation',d=>d.schemaVersion=3,d=>d.sceneObjectId='bad',d=>d.loop=1,d=>d.durationSeconds=0,d=>d.durationSeconds=-0,d=>d.durationSeconds=60.01,
     d=>d.tracks[0].id='ABCDEFAB-1111-4111-8111-111111111111',d=>d.tracks[0].instanceId='',d=>d.tracks[0].property='position',d=>d.tracks[0].interpolation='ease',
     d=>d.tracks[0].keyframes[0].value=0,d=>d.tracks[0].keyframes[0].value=[0],d=>d.tracks[0].keyframes[0].value=[0,0,0],d=>d.tracks[0].keyframes[0].value=[0,10000.01],
     d=>d.tracks[0].keyframes[0].value=[-10000.01,0],d=>d.tracks[0].keyframes[0].atSeconds=.01,d=>d.tracks[0].keyframes[1].atSeconds=0,d=>d.tracks[0].keyframes[1].atSeconds=2.01,

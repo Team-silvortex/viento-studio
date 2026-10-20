@@ -11,7 +11,7 @@ function preview(loop=false){const scene={objectId:id(1),sourcePath:'documents/s
 async function harness(options={}){
  let clock=0,serial=0,locale='zh-CN';const frames=new Map(),cancelled=[],samples=[],active=[],languages=[],events=new Map();
  const h=await dialogHarness('app-scene-preview-animation',{captureSceneAnimationPreview:v=>captureSceneAnimationPreview(copy(v)),createSceneAnimationPlayer:ports=>createSceneAnimationPlayer({...ports,now:()=>clock,schedule:cb=>{frames.set(++serial,cb);return serial;},cancel:handle=>cancelled.push(handle)}),
- t:key=>locale==='en'?en[key]||key:locale==='ja'?ja[key]||key:key,onLanguageChange:fn=>{languages.push(fn);return()=>languages.splice(languages.indexOf(fn),1);}});
+ t:(key,...args)=>(locale==='en'?en[key]||key:locale==='ja'?ja[key]||key:key).replace(/\{(\d+)\}/g,(_,n)=>String(args[n]??'')),onLanguageChange:fn=>{languages.push(fn);return()=>languages.splice(languages.indexOf(fn),1);}});
  h.document.addEventListener=(type,fn)=>events.set(type,fn);h.document.removeEventListener=(type,fn)=>{if(events.get(type)===fn)events.delete(type);};
  const container=h.document.createElement('section');h.document.body.append(container);const controller=h.runtime.setupScenePreviewAnimation({container,setSample:value=>{samples.push(value&&copy(value));options.setSample?.(value);},onActiveChange:value=>active.push(value)});
  controller.setAvailable(true);controller.setVisible(true);const el=s=>h.element('scenePreviewAnimation'+s);
@@ -55,4 +55,13 @@ test('animation control copy covers English and Japanese and has a narrow-screen
 test('a saved HTTP reply delivered after capability loss cannot install or play animation',async()=>{
  const h=await harness();h.load();h.click('Play');h.controller.setAvailable(false);const before=h.samples.length;h.load(preview());h.click('Play');assert.equal(h.container.hidden,true);assert.equal(h.controller.isActive(),false);assert.equal(h.samples.at(-1),null);assert.ok(h.samples.slice(before).every(value=>value===null));
  h.controller.setAvailable(true);assert.equal(h.container.hidden,true);assert.equal(h.el('Play').disabled,true);h.load(preview());assert.equal(h.el('Play').disabled,false);assert.equal(h.controller.isActive(),false);
+});
+
+test('saved clip selection uses local time, pauses at source start and preserves raw names through translation', async()=>{
+ const h=await harness(),p=preview();p.animationPreview.document.schemaVersion=3;p.animationPreview.document.clips=[{id:id(7),name:'Attack <b>',startSeconds:.5,endSeconds:1.5,loop:false}];h.load(p);
+ const select=h.el('Clip');select.value=id(7);select.dispatch('change');assert.equal(h.controller.isActive(),true);assert.equal(h.el('Pause').disabled,true);assert.equal(h.el('Position').max,'1');assert.equal(h.el('Position').value,'0');assert.deepEqual(h.samples.at(-1).values[0].value,[25,12.5]);
+ h.seek(.5);assert.deepEqual(h.samples.at(-1).values[0].value,[50,25]);select.focus();
+ for(const locale of ['en','ja','zh-CN']){h.language(locale);assert.equal(h.el('Clip'),select);assert.equal(h.document.activeElement,select);assert.equal(select.value,id(7));assert.match(h.el('ClipRange').textContent,/0.5–1.5/);assert.equal(select.querySelector('b'),null);}
+ h.click('Play');const stale=[...h.frames.values()].at(-1);select.value='';select.dispatch('change');const count=h.samples.length;stale();assert.equal(h.samples.length,count);assert.equal(h.el('Pause').disabled,true);assert.equal(h.el('Position').max,'2');assert.deepEqual(h.samples.at(-1).values[0].value,[0,0]);
+ h.click('Stop');assert.equal(h.samples.at(-1),null);h.controller.destroy();
 });

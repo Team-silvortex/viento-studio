@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: real event starter filters names, ignores every scalar payload and owns its select/play receipts
+ok 1 - real event starter filters names, ignores every scalar payload and owns its select/play receipts
+  ---
+  duration_ms: 12282.132121
+  type: 'test'
+  ...
+# Subtest: real repeated events restart the selected clip after clock advancement (transform)
+ok 2 - real repeated events restart the selected clip after clock advancement (transform)
+  ---
+  duration_ms: 12165.70514
+  type: 'test'
+  ...
+# Subtest: real repeated events restart the selected clip after clock advancement (sprite and transform)
+ok 3 - real repeated events restart the selected clip after clock advancement (sprite and transform)
+  ---
+  duration_ms: 12202.040522
+  type: 'test'
+  ...
+# Subtest: real starter only subscribes: absent events keep automatic whole animation and emit no commands
+ok 4 - real starter only subscribes: absent events keep automatic whole animation and emit no commands
+  ---
+  duration_ms: 12181.19258
+  type: 'test'
+  ...
+# Subtest: real deferred publication works when the publisher is declared before the receiver
+ok 5 - real deferred publication works when the publisher is declared before the receiver
+  ---
+  duration_ms: 12185.502965
+  type: 'test'
+  ...
+# Subtest: real default empty clip selects the whole timeline regardless of payload
+ok 6 - real default empty clip selects the whole timeline regardless of payload
+  ---
+  duration_ms: 12239.088772
+  type: 'test'
+  ...
+# Subtest: real empty event name disables the subscription without changing playback
+ok 7 - real empty event name disables the subscription without changing playback
+  ---
+  duration_ms: 12242.453369
+  type: 'test'
+  ...
+# Subtest: real invalid saved clip reports the receiver author source and never enqueues play
+ok 8 - real invalid saved clip reports the receiver author source and never enqueues play
+  ---
+  duration_ms: 12016.492126
+  type: 'test'
+  ...
+# Subtest: real A→B→A clears old subscriptions and reentry delivers once to the new receiver
+ok 9 - real A→B→A clears old subscriptions and reentry delivers once to the new receiver
+  ---
+  duration_ms: 12007.466315
+  type: 'test'
+  ...
+# Subtest: real receiver exit unsubscribes pending callbacks before a behavior is freed
+ok 10 - real receiver exit unsubscribes pending callbacks before a behavior is freed
+  ---
+  duration_ms: 12067.25908
+  type: 'test'
+  ...
+# Subtest: real standalone scene and old protocol 5 ports safely skip the unchanged starter
+ok 11 - real standalone scene and old protocol 5 ports safely skip the unchanged starter
+  ---
+  duration_ms: 20308.217755
+  type: 'test'
+  ...
+# Subtest: real 32 same-safe-point events inherit the 64 pending animation command budget
+ok 12 - real 32 same-safe-point events inherit the 64 pending animation command budget
+  ---
+  duration_ms: 12208.177081
+  type: 'test'
+  ...
+# Subtest: real 33 same-safe-point events inherit the 64 pending animation command budget
+ok 13 - real 33 same-safe-point events inherit the 64 pending animation command budget
+  ---
+  duration_ms: 12009.002341
+  type: 'test'
+  ...
+# Subtest: real starter guards all required ports and cleans up its subscription on ordinary exit
+ok 14 - real starter guards all required ports and cleans up its subscription on ordinary exit
+  ---
+  duration_ms: 274.576111
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 166534.913013

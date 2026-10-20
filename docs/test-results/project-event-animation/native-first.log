@@ -1,0 +1,143 @@
+✖ real event starter filters names, ignores every scalar payload and owns its select/play receipts (11300.389916ms)
+✖ real repeated events restart the selected clip after clock advancement (transform) (11264.218618ms)
+✖ real repeated events restart the selected clip after clock advancement (sprite and transform) (11210.457232ms)
+✖ real starter only subscribes: absent events keep automatic whole animation and emit no commands (40865.660916ms)
+✔ real default empty clip selects the whole timeline regardless of payload (11509.315439ms)
+✔ real empty event name disables the subscription without changing playback (11638.751893ms)
+✖ real invalid saved clip reports the receiver author source and never enqueues play (11490.743731ms)
+✔ real A→B→A clears old subscriptions and reentry delivers once to the new receiver (11374.136527ms)
+✔ real receiver exit unsubscribes pending callbacks before a behavior is freed (11332.029842ms)
+✔ real standalone scene and old protocol 5 ports safely skip the unchanged starter (19147.790425ms)
+✔ real 32 same-safe-point events inherit the 64 pending animation command budget (11451.835475ms)
+✔ real 33 same-safe-point events inherit the 64 pending animation command budget (11341.634821ms)
+✖ real starter guards all required ports and cleans up its subscription on ordinary exit (254.570595ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 7
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 174304.163854
+
+✖ failing tests:
+
+test at scripts/tests/project-event-animation-godot.test.mjs:39:1
+✖ real event starter filters names, ignores every scalar payload and owns its select/play receipts (11300.389916ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_process_failed","message":"Godot process failed.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","sourceRevision":"sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d","title":"Two-scene project","propertyPath":""},{"severity":"error","code":"runtime_behavior_event_value","message":"Project event payload is not a supported bounded scalar.","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:8dd886f030f9a39e108dc35d24c5230401dad7d24b7dee9bbcf0f30a2fba9a70","propertyPath":"/bindings/1","bindingId":"60606060-6060-4060-8060-000000000002","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","relatedObjectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","sourceRange":{"start":587,"end":930,"encoding":"utf-16","propertyPath":"/bindings/1","exact":true}}]
+  
+  false !== true
+  
+      at succeeded (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:28:37)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:44:32)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-event-animation-godot.test.mjs:57:38
+✖ real repeated events restart the selected clip after clock advancement (transform) (11264.218618ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_process_failed","message":"Godot process failed.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","sourceRevision":"sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d","title":"Two-scene project","propertyPath":""},{"severity":"error","code":"runtime_behavior_event_value","message":"Project event payload is not a supported bounded scalar.","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:b373628976304063e510a66cedc24eb3e719eaf582ebac2cdff983d3275531c9","propertyPath":"/bindings/1","bindingId":"60606060-6060-4060-8060-000000000002","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","relatedObjectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","sourceRange":{"start":555,"end":898,"encoding":"utf-16","propertyPath":"/bindings/1","exact":true}}]
+  
+  false !== true
+  
+      at succeeded (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:28:37)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:59:50)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-event-animation-godot.test.mjs:57:38
+✖ real repeated events restart the selected clip after clock advancement (sprite and transform) (11210.457232ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_process_failed","message":"Godot process failed.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","sourceRevision":"sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d","title":"Two-scene project","propertyPath":""},{"severity":"error","code":"runtime_behavior_event_value","message":"Project event payload is not a supported bounded scalar.","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:b373628976304063e510a66cedc24eb3e719eaf582ebac2cdff983d3275531c9","propertyPath":"/bindings/1","bindingId":"60606060-6060-4060-8060-000000000002","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","relatedObjectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","sourceRange":{"start":555,"end":898,"encoding":"utf-16","propertyPath":"/bindings/1","exact":true}}]
+  
+  false !== true
+  
+      at succeeded (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:28:37)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:59:50)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-event-animation-godot.test.mjs:66:1
+✖ real starter only subscribes: absent events keep automatic whole animation and emit no commands (40865.660916ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"godot_error","message":"SCRIPT ERROR: Invalid access to property or key 'project_animation_clip_id' on a base object of type 'Node2D (project-scene.gd)'.","objectId":"60606060-6060-4060-8060-000000000001","sourcePath":"documents/scripts/publisher.txt","propertyPath":"","sourceRevision":"sha256:67e5b6f0bffaecb2147eb68815889f960aa977ab9999305ceb98fd73fa4bca81","sourceLine":9,"sourceRange":{"start":263,"end":497,"encoding":"utf-16","propertyPath":"","exact":true}},{"severity":"error","code":"godot_error","message":"SCRIPT ERROR: Invalid access to property or key 'project_animation_clip_id' on a base object of type 'Node2D (project-scene.gd)'.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":"","sourceRevision":"sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d","title":"Two-scene project"},{"severity":"error","code":"build_process_timeout","message":"Godot process timeout.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","sourceRevision":"sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d","title":"Two-scene project","propertyPath":""}]
+  
+  false !== true
+  
+      at succeeded (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:28:37)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:78:50)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-event-animation-godot.test.mjs:101:1
+✖ real invalid saved clip reports the receiver author source and never enqueues play (11490.743731ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:108:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-event-animation-godot.test.mjs:167:1
+✖ real starter guards all required ports and cleans up its subscription on ordinary exit (254.570595ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /SCRIPT ERROR|ERROR:|WARNING:.*leaked/. Input:
+  
+  'Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n' +
+    '\n' +
+    'PORT_GUARD:["subscribe_event",[]]\n' +
+    'PORT_GUARD:["unsubscribe_event",[]]\n' +
+    'PORT_GUARD:["select_animation_clip",[]]\n' +
+    'PORT_GUARD:["play_animation",[]]\n' +
+    'PORT_EXIT:[true,["subscribe","select","play","unsubscribe"],0,null]\n' +
+    'PORT_EXIT:[false,["subscribe","select","unsubscribe"],0,null]\n' +
+    'PORT_DONE:true\n' +
+    "SCRIPT ERROR: Left operand of 'is' is a previously freed instance.\n" +
+    '          at: _ready (res://starter.gd:12)\n' +
+    '          GDScript backtrace (most recent call first):\n' +
+    '              [0] _ready (res://starter.gd:12)\n' +
+    '              [1] _probe (res://probe.gd:23)\n'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:220:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: `Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nPORT_GUARD:["subscribe_event",[]]\nPORT_GUARD:["unsubscribe_event",[]]\nPORT_GUARD:["select_animation_clip",[]]\nPORT_GUARD:["play_animation",[]]\nPORT_EXIT:[true,["subscribe","select","play","unsubscribe"],0,null]\nPORT_EXIT:[false,["subscribe","select","unsubscribe"],0,null]\nPORT_DONE:true\nSCRIPT ERROR: Left operand of 'is' is a previously freed instance.\n          at: _ready (res://starter.gd:12)\n          GDScript backtrace (most recent call first):\n              [0] _ready (res://starter.gd:12)\n              [1] _probe (res://probe.gd:23)\n`,
+    expected: /SCRIPT ERROR|ERROR:|WARNING:.*leaked/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

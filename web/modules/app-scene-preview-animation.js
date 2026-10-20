@@ -8,7 +8,7 @@ export function setupScenePreviewAnimation({ container, setSample = () => {}, on
   container.classList.add('scene-preview-animation'); container.hidden = true;
   container.innerHTML = `<h3 data-i18n="已保存场景动画"></h3><p id="scenePreviewAnimationSource" class="build-hint"></p>
     <p id="scenePreviewAnimationStatus" role="status" aria-live="polite"></p>
-    <div id="scenePreviewAnimationControls"><div class="scene-preview-toolbar">
+    <div id="scenePreviewAnimationControls"><label id="scenePreviewAnimationClipSelection"><span data-i18n="预览动画片段"></span><select id="scenePreviewAnimationClip"></select></label><p id="scenePreviewAnimationClipRange" class="build-hint"></p><div class="scene-preview-toolbar">
       <button id="scenePreviewAnimationPlay" type="button" class="doc-btn" data-i18n="播放动画"></button>
       <button id="scenePreviewAnimationPause" type="button" class="doc-btn doc-btn-ghost" data-i18n="暂停动画"></button>
       <button id="scenePreviewAnimationStop" type="button" class="doc-btn doc-btn-ghost" data-i18n="停止并恢复静态场景"></button></div>
@@ -16,7 +16,7 @@ export function setupScenePreviewAnimation({ container, setSample = () => {}, on
       <p class="build-hint" data-i18n="仅播放本次快照中的图形动画，不运行行为、物理或声音。标签、对象列表和属性仍对应已保存的逻辑位置。动画开启时不能编辑布局；停止后恢复。"></p></div>
     <p id="scenePreviewAnimationDiagnostic" class="build-hint"></p>`;
   const el = name => container.querySelector('#scenePreviewAnimation' + name);
-  let available = false, visible = false, disposed = false, catalog = null, source = null, active = false, state = 'stopped', latest = null, invalid = false;
+  let available = false, visible = false, disposed = false, catalog = null, source = null, active = false, state = 'stopped', latest = null, invalid = false, selectedClip = null;
   const current = () => !disposed && available && visible && catalog?.status === 'ready';
   function overlay(value) { if (active === value) return; active = value; onActiveChange(active); }
   function paint(sample) { latest = sample; if (active && current()) setSample(sample); }
@@ -34,7 +34,16 @@ export function setupScenePreviewAnimation({ container, setSample = () => {}, on
     el('Play').disabled = !ready || state === 'playing'; el('Pause').disabled = !ready || state !== 'playing';
     el('Stop').disabled = !ready || !active; el('Position').disabled = !ready;
     text('Source', catalog?.manifest?.sourcePath || '');
-    const position = latest?.localTimeSeconds || 0, duration = catalog?.document?.durationSeconds || 1;
+    const choices = catalog?.document?.clips || [], selector = el('Clip'), choiceKey = JSON.stringify([choices.map(clip => [clip.id, clip.name]), t('完整动画')]);
+    el('ClipSelection').hidden = !choices.length;
+    if (selector.dataset.choices !== choiceKey) {
+      selector.dataset.choices = choiceKey; selector.replaceChildren();
+      for (const [id, label] of [['', t('完整动画')], ...choices.map(clip => [clip.id, `${clip.name} · ${clip.id}`])]) { const option = container.ownerDocument.createElement('option'); option.value = id; option.textContent = label; selector.append(option); }
+    }
+    selector.value = selectedClip || ''; selector.disabled = !ready;
+    const clip = choices.find(clip => clip.id === selectedClip);
+    text('ClipRange', clip ? t('原时间轴 {0}–{1} 秒 · 片段时间从 0 开始', clip.startSeconds, clip.endSeconds) : '');
+    const position = latest?.localTimeSeconds || 0, duration = clip ? clip.endSeconds - clip.startSeconds : catalog?.document?.durationSeconds || 1;
     el('Position').max = String(duration); el('Position').value = String(position);
     text('Time', `${position.toFixed(2)} / ${duration.toFixed(2)} s`);
     text('Status', t(invalid || catalog?.status === 'invalid' ? '已保存动画无效；场景仍以静态显示。请修正动画原文后刷新。'
@@ -50,7 +59,7 @@ export function setupScenePreviewAnimation({ container, setSample = () => {}, on
     if (disposed) return;
     overlay(false); setSample(null); player.stop(); latest = null; state = 'stopped'; render();
   }
-  function reset() { clear(); catalog = null; source = null; invalid = false; render(); }
+  function reset() { selectedClip = null; clear(); catalog = null; source = null; invalid = false; render(); }
   el('Play').addEventListener('click', () => {
     if (!current() || state === 'playing') return;
     try { overlay(true); if (latest) setSample(latest); if (!player.play()) stop(); }
@@ -58,9 +67,17 @@ export function setupScenePreviewAnimation({ container, setSample = () => {}, on
   });
   el('Pause').addEventListener('click', () => { if (current()) player.pause(); });
   el('Stop').addEventListener('click', stop);
+  el('Clip').addEventListener('change', () => {
+    if (!current()) return;
+    const selection = el('Clip').value || null;
+    if (selection !== null && !catalog.document.clips?.some(clip => clip.id === selection)) { render(); return; }
+    selectedClip = selection;
+    try { overlay(true); if (!player.selectClip(selectedClip)) stop(); }
+    catch { setSample(null); overlay(false); state = 'error'; render(); }
+  });
   el('Position').addEventListener('input', () => {
     if (!current()) return;
-    const seconds = Number(el('Position').value); if (!Number.isFinite(seconds) || seconds < 0 || seconds > catalog.document.durationSeconds) return;
+    const seconds = Number(el('Position').value); if (!Number.isFinite(seconds) || seconds < 0 || seconds > Number(el('Position').max)) return;
     try { overlay(true); if (!player.seek(seconds)) stop(); }
     catch { setSample(null); overlay(false); state = 'error'; render(); }
   });

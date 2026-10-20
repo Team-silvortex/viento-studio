@@ -1,0 +1,128 @@
+{
+  "date": "2026-10-20",
+  "oldCellsPreserved": 2316,
+  "oldEvidencePreserved": 2528,
+  "reviewedExistingBindings": [
+    "b547",
+    "b548",
+    "b549",
+    "b570",
+    "b571",
+    "b572"
+  ],
+  "newImplementations": [
+    "i396",
+    "i397"
+  ],
+  "newBindings": [
+    "b581",
+    "b582"
+  ],
+  "newCells": [
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.animation2d",
+        "i396",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "当前完整动画缩放、严格拒绝和普通审阅保存已闭环；不引入自动保存、删帧或曲线混合。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.animation2d",
+        "i396",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "Rust/WASM/CLI与UI回归、真实Chrome及HTTP保存到Godot受控取样分别验证；未新增安装或设备验收。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.animation2d",
+        "i396",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "数字变换由同一Rust实现供WASM与原生CLI执行；JS只核对完整回执，不持有文件、DOM、引擎对象或播放时钟。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.animation2d",
+        "i396",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.1.6后未发布工作树，未更新安装；按本轮源代码与新WASM使用。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.animation2d",
+        "i397",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "当前完整动画缩放、严格拒绝和普通审阅保存已闭环；不引入自动保存、删帧或曲线混合。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.animation2d",
+        "i397",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "Rust/WASM/CLI与UI回归、真实Chrome及HTTP保存到Godot受控取样分别验证；未新增安装或设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.animation2d",
+        "i397",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "通过getContext/prepare窄端口交付同步提交闭包，输入/来源/能力/表单变化撤销旧结果；当前仍为DOM实现，未验收第二GUI。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.animation2d",
+        "i397",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.1.6后未发布工作树，未更新安装；按本轮源代码与新WASM使用。"
+    }
+  ],
+  "newEvidence": [
+    "e2529",
+    "e2530",
+    "e2531",
+    "e2532",
+    "e2533",
+    "e2534",
+    "e2535",
+    "e2536",
+    "e2537",
+    "e2538",
+    "e2539",
+    "e2540",
+    "e2541",
+    "e2542"
+  ],
+  "counts": {
+    "architectures": 11,
+    "functions": 133,
+    "implementations": 397,
+    "bindings": 581,
+    "cells": 2324,
+    "evidence": 2542,
+    "workflows": 96
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-20",
+  "version": "0.1.6",
+  "commit": "97bd6e13cdc51a99a1cd29a2e20c6b1165d2277e",
+  "delivery": "unreleased working tree; no version change, commit, push or install",
+  "runtime": {
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "browser": "Chrome/154.0.8037.97",
+    "godot": {
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "wasm": {
+      "path": "engine/studio-core.wasm",
+      "bytes": 693343,
+      "sha256": "ae41a33e63e760fb4c940019556b26b49864f876e568a20958fa5e16b1d5bef0",
+      "rebuilt": true
+    }
+  },
+  "checks": {
+    "app": {
+      "tests": 6295,
+      "pass": 6051,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 244,
+      "todo": 0
+    },
+    "syntaxFiles": 1059,
+    "versionConsistency": true,
+    "apiPreflight": true,
+    "rust": {
+      "tests": 359,
+      "passCount": 359,
+      "fail": 0,
+      "skipped": 0
+    },
+    "core": {
+      "tests": 65,
+      "pass": 65,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "authorAndSaveWorkflow": {
+      "tests": 27,
+      "pass": 27,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "ui": {
+      "tests": 53,
+      "pass": 53,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "component": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "browser": {
+      "groups": 4,
+      "screenshots": 5,
+      "errors": 0,
+      "report": "docs/test-results/scene-animation-retime/browser-1792489564762/browser.json"
+    }
+  },
+  "scopeNotes": [
+    "Focused groups and full suite overlap; their totals must not be added.",
+    "The full application suite ran without VIENTO_GODOT_BIN or native parity environment variables. Actual Godot was enabled separately for the author/save/workflow group, including one actual engine case; native CLI parity was enabled in the separate core group.",
+    "Rust tests include all current core unit/CLI/integration tests. New retime tests cover schema1/2/3, exact no-op, endpoints, numeric extremes, cross-track/clip collapse rejection, input/output budgets and strict request shape.",
+    "WASM and native CLI use the same Rust operation. JS validates the returned transform and rejects forged replies, but supplies no authoring fallback implementation. The optional marker leaves old core capabilities intact.",
+    "Actual Chrome uses a disposable copied workspace: current unsaved schema3 numeric/sprite tracks and named clips, rejected and same targets preserving preview/review, three languages at390px, cancel, apply-to-draft, ordinary Save and frozen saved preview.",
+    "The 27-case author/workflow group includes nine new edit tests, three new workflow tests and fifteen existing edit/clip/sprite tests. Two HTTP layout cases verify only the animation source is saved; the third workflow uses actual Godot to inspect shortened clip and keyframe times.",
+    "The real Godot probe selects attack, seeks0.125s into the retimed clip, and observes animation_time0.375s, position150 and sprite frame3. Exact samples use a controlled test probe, not GPU rendering or second-backend conformance.",
+    "Retiming changes only the local form. Check/full review/Apply draft/ordinary Save remain required. Existing duration editing retains its old boundary-only behavior; invalid current forms cannot be repaired silently.",
+    "8278 existing example/history/evidence files, 2316 old atlas cells, 2528 old evidence objects and all12 starter contents are preserved. Two Rust files and generated WASM change; backend sources and installed AppImage do not.",
+    "No new author schema, runtime protocol, module capability, Bevy animation, audio synchronization, playback speed, animation blending/state machine, ZIP migration or device/package acceptance is claimed.",
+    "The initial core-regression log had three conditional skips because legacy native parity environment names were absent. The final65-case core log supplies the required native paths and has zero skips. Component-final adds stale commit rejection beyond the earlier component log."
+  ],
+  "sources": {
+    "crates/viento-studio-core/src/lib.rs": "c6b3e245d5bb41c4b614a20e1b822a91de10ed47b4df46d04eb3ce01b05d6d1f",
+    "crates/viento-studio-core/src/scene_animation.rs": "6c55fd76880d77c6a69088f9bda10cba2b6339f5780962a075febc26c47147b4",
+    "engine/scene-animation-core.mjs": "586858f126d2f5ba7f617cdeab453c88fb4a7cd9f49e7048816fb375eee7fcea",
+    "engine/scene-animation-edit.mjs": "f0d557df20f638315fb1f8fdc2aeb9a29dbaaa0953f0e07ad81427e96659c52e",
+    "engine/scene-animation-preview.mjs": "16d480fc4274ec6a425dfff0e2e8062948f53a4081b9b05d2d8b6d0d8db5ae0e",
+    "engine/scene-animation-sprite-layout.mjs": "cff8edea1662c1a56d0c6efc02e3be28ea33e8e32358e1afcccae6dfbc980f80",
+    "engine/scene-animation-visual-frame.mjs": "9ff2f737a2987f009ae4029f318f9aced311482ac21c1ce301ba262b12fe13a0",
+    "engine/scene-animation.mjs": "d5e476f6e3a1366436f63ce3afb059d82d8cd33857b01e10a66713300cae2801",
+    "engine/studio-core.mjs": "0379a308c9e282c991ad738985a7955b78438731dba161f11c5baf24440491d8",
+    "engine/studio-core.wasm": "ae41a33e63e760fb4c940019556b26b49864f876e568a20958fa5e16b1d5bef0",
+    "engine/studio-modules.mjs": "938b17e7c84e7d368abc357a5cdeae95165d22db81ed71c63a9a4c9ba17b8ec7",
+    "scripts/lib/scene-preview-service.mjs": "ea66d0ad1307134e7f45ad09ce9eb5771ef3be1898ca50102f4d89394d957430",
+    "scripts/tests/scene-animation-editor-ui.test.mjs": "e451884b8883d13dbe1b3b70efe91e8df23ce00d5ffb2ae25d85f1b6be5ad55c",
+    "scripts/tests/scene-animation-retime-core.test.mjs": "c8d4a113d02996f60aefa068b4768374a990d910ab6930a8f0c95cfcb548f344",
+    "scripts/tests/scene-animation-retime-edit.test.mjs": "a319e388550107dfbf7b55026432fd7ef0943336f79250a3ab3e5c7f437ee0e2",
+    "scripts/tests/scene-animation-retime-smoke.mjs": "06883726a6822210ec75727305c39f004ef081697fcd73c6ecf87063e16069eb",
+    "scripts/tests/scene-animation-retime-ui.test.mjs": "38c670076e6647c2bfd921055072a649dd5b8d3234d5c57cfdd6a05fe1dbabe3",
+    "scripts/tests/scene-animation-retime-workflow.test.mjs": "a46afbfd6b840d08b5a1a733b1781b1ff9e478b61e9f10fff71992b72b6c9ca2",
+    "web/i18n/en.js": "1522ce7822ac776a227779551ad5b8f8868a3cb21a6c51865238f1ba554d785f",
+    "web/i18n/ja.js": "27f6f902f1bb8b885964202a383f352a82f76b1d79c75d96e9730bfc55d8c026",
+    "web/modules/app-runtime.js": "346ce85ea829fb59551b494207ae84dc47e11c170e7f453ef12c2593eff85387",
+    "web/modules/app-scene-animation-retime.js": "9d5c7d24faad9820bd8525066110055f535252ced254f04d7f1d72bcbd61bcbc",
+    "web/modules/app-scene-animation-source.js": "4db6bee2f660422240bb6833449ad0e00b54c99a1c79b42636f87c2e61233c06",
+    "web/modules/app-scene-animation.js": "fb997ae6211c9c620ed015926be7dc3db5e4d2fa4f91e9988ac20588ddf6f115",
+    "web/modules/app-scene-preview-animation.js": "430df952b992a1f9b36c2fc22bc764f68fca93f8d8fe77a3f1f189e2d684d888",
+    "web/modules/app-scene-preview-canvas.js": "1e8d461b4883211a953f4bc4d50cdde82202df3c4a35f47cbf9be854ff9b7c4e",
+    "web/modules/app-scene-preview.js": "536ffe1ebde2b624c6a661467eb22952d46c51e824481972afe026c907ee4ccd",
+    "web/modules/app-studio-system.js": "89033b38678c6ff7837920a84c1e569170bebf835911f3c8f7d97dc52952c324",
+    "web/modules/scene-animation-player.js": "54d8473fc50c076c195b2324e9605089803fc656bf057bd0f342591361a77255",
+    "web/modules/scene-animation-preview.js": "cc06fb90ea103f7615314a40b9b055feff1a43b8205a93253105ebdff5998378",
+    "web/scene-animation.css": "86d4373d63c4fbe0147dbdf3d2176d6b45d0cff3c65148d4eb836cfac8892077"
+  },
+  "atlas": {
+    "architectures": 11,
+    "functions": 133,
+    "implementations": 397,
+    "bindings": 581,
+    "cells": 2324,
+    "evidence": 2542,
+    "workflows": 96
+  },
+  "commands": {
+    "app": "node scripts/check-project.mjs --app-only",
+    "rust": "cargo test --manifest-path crates/viento-studio-core/Cargo.toml --target-dir /tmp/viento-animation-retime/core-target",
+    "author": "VIENTO_GODOT_BIN=<Godot4.7.2> node --test --test-concurrency=2 scripts/tests/scene-animation-retime-edit.test.mjs scripts/tests/scene-animation-retime-workflow.test.mjs scripts/tests/scene-animation-edit.test.mjs scripts/tests/scene-animation-clips-edit.test.mjs scripts/tests/scene-animation-sprites-edit.test.mjs",
+    "browser": "node scripts/tests/scene-animation-retime-smoke.mjs"
+  },
+  "logSha256": {
+    "app-check.log": "3500a049619769ca1bebff8594bb6d0f78deac7954e0d6bfc541fa776733a519",
+    "author-workflow-first.log": "9aa6160b20ad99415809bbfb578492241bb57b47eff6abfa9fd0b6766bde3831",
+    "browser-first.log": "71b393fa81aeb373da904323d724baade13625884c5af8c47c42299ade380430",
+    "component-final.log": "553c94a73b0226453c9adb135cce8a34dd2dd7c7cdd3dd8d37dd85a5be0d84ab",
+    "component.log": "175f13e2bf731277a70bf01180c93274e4474c20df1905a2c1d43abc9f2cd87a",
+    "core-regression-final.log": "34785d5796c53464e99d6d8b2e69088fe0676763724227c76c8045b3e1fab9ce",
+    "core-regression.log": "320e4cd177d212f07f7855895bd2f56ab43cce8568bdb1bd67a8723f1a915f5a",
+    "js-retime-first.log": "dcd58e5e2fa5f7221e308dccab9f447914a40f5294b2b8be75474492e0cdc12f",
+    "rust-all.log": "c86c41505a6e1f1a0048699ab8f3c1b808918541c1c1e026b7d2a38f67f718f7",
+    "rust-retime-first.log": "858aceda4d5ed6669c3c5d2c2c89c5091ae7b2e2f5c8532bcc964cc928abaf32",
+    "ui-first.log": "0425569333b569b0a9bef9675b10582b5f1bae7be24b51cfec83087592489f07",
+    "wasm-build.log": "41d476fe1b5009ae0becfab55461f507f05053c81e059831cc42eb2d5ab3d60d"
+  },
+  "ok": true
+}

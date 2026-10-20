@@ -42,3 +42,26 @@ test('reentrant state listeners cannot overwrite the new playback frame handle',
   assert.equal(frames.size, 2); player.pause(); assert.deepEqual(cancelled, [2]);
   player.dispose(); const count = frames.size; player.load(model(true)); player.play(); player.clear(); assert.equal(frames.size, count);
 });
+
+const clipModel = () => ({ ...model(false), schemaVersion: 3, clips: [
+  { id: id(7), name: 'Attack', startSeconds: .5, endSeconds: 1.5, loop: false },
+  { id: id(8), name: 'Idle', startSeconds: 1, endSeconds: 2, loop: true },
+] });
+test('clip selection samples its source range at local zero and invalidates old frames without autoplay', () => {
+  const h = fixture(); h.player.load(clipModel()); h.player.play(); const old = h.frames.get(1);
+  assert.equal(h.player.selectClip(id(7)), true); assert.equal(h.states.at(-1).state, 'paused');
+  assert.equal(h.samples.at(-1).localTimeSeconds, 0); assert.equal(h.samples.at(-1).values[0].value, .25);
+  const count = h.samples.length; old(); assert.equal(h.samples.length, count);
+  assert.equal(h.player.seek(.5), true); assert.equal(h.samples.at(-1).values[0].value, .5);
+  assert.equal(h.player.seek(1.01), false); h.player.play(); h.time(800); h.tick();
+  assert.equal(h.samples.at(-1).values[0].value, .75); assert.equal(h.states.at(-1).state, 'paused');
+  h.player.play(); h.time(1000); h.tick(); assert.equal(h.samples.at(-1).localTimeSeconds, .2);
+  assert.equal(h.player.selectClip(null), true); assert.equal(h.samples.at(-1).values[0].value, 0);
+  assert.equal(h.player.seek(2), true); h.player.dispose();
+});
+test('looping clips retain their own duration while invalid selection cannot replace the active clip', () => {
+  const h = fixture(); h.player.load(clipModel()); h.player.selectClip(id(8));
+  assert.equal(h.player.selectClip(id(99)), false); assert.equal(h.player.seek(1), true); assert.equal(h.samples.at(-1).localTimeSeconds, 0);
+  assert.equal(h.samples.at(-1).values[0].value, .5); h.player.play(); h.time(1250); h.tick();
+  assert.equal(h.samples.at(-1).localTimeSeconds, .25); assert.equal(h.samples.at(-1).values[0].value, .625); h.player.dispose();
+});

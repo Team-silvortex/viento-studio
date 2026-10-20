@@ -1,0 +1,27 @@
+✔ animation projects expose protocol 5 and bounded generated scripts; ordinary projects retain protocol 4 files (187.151518ms)
+✔ real ready commands execute FIFO after initialization and return scene-clock transport states (11692.455833ms)
+✔ real paused transport freezes sprite and transform while scene clock advances; seek end and play restart (12854.553463ms)
+✔ real loop seek to duration wraps to zero and stays paused (11710.536907ms)
+✔ real boolean seek fails without an execution receipt (11746.895107ms)
+✔ real negative seek fails without an execution receipt (11720.129144ms)
+✔ real out of range seek fails without an execution receipt (11527.335705ms)
+✔ real NaN seek fails without an execution receipt (11546.995283ms)
+✔ real infinity seek fails without an execution receipt (14040.826428ms)
+✔ real failing event callback drops an accepted animation command (11858.70897ms)
+✔ real 65th pending request rejects the entire unexecuted animation queue (11624.376686ms)
+✔ real old visit ports fail while A to B to A resets autoplay and fresh queue ownership (11682.309491ms)
+✔ real non-animation member rejects control instead of touching another scene animation (11192.237418ms)
+✔ animation project ZIP includes its controller and runs after author and build removal (16189.827814ms)
+✔ real natural completion is independent of shutdown and play restarts from zero (11636.077897ms)
+✔ real request accepted before animation becomes unavailable has no execution receipt (11593.39232ms)
+✔ real 257th session request preserves the first 256 completed command receipts (12530.464777ms)
+✔ real event commands execute after event delivery and audio but before scene exit (11747.373565ms)
+✔ real frame sampling recomputes from command anchors at a rounding-sensitive endpoint (11261.075727ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 218507.92792

@@ -1,6 +1,6 @@
 // Animation authoring owns source-safe leaf and array patches. Rust owns animation semantics;
 // the editor host retains Save, resource resolution and playback authority.
-import { inspectSceneAnimation } from './scene-animation-core.mjs';
+import { inspectSceneAnimation, retimeSceneAnimation, copySceneAnimationTrack } from './scene-animation-core.mjs';
 import { parseJsonSource, locateJsonSource } from './json-source.mjs';
 import { canonicalJson } from './canonical-json.mjs';
 const MAX_SOURCE_BYTES = 131072;
@@ -92,19 +92,46 @@ function replacement(content, parsed, path, value) {
     ? JSON.stringify(value, null, unit).replaceAll('\n', newline + base) : JSON.stringify(value);
   return { ...location, text };
 }
+function candidateDocument(before, edit) {
+  const hasClips = Object.hasOwn(edit, 'clips');
+  const fields = record(edit, ['durationSeconds', 'loop', 'tracks', ...(hasClips ? ['clips'] : [])]);
+  return { ...before, ...fields,
+    schemaVersion: before.schemaVersion === 3 || hasClips ? 3 : before.schemaVersion === 2 || Array.isArray(fields.tracks) && fields.tracks.some(track => track?.property === 'spriteFrame2d') ? 2 : 1 };
+}
+
+// Retime the current complete form, not an older saved model. This returns data
+// for the local form only; normal source review and draft application retain
+// their own proposal brand, revision checks and Save authority.
+export async function retimeSceneAnimationDraft(content, edit, durationSeconds) {
+  const copied = copyData(edit), before = await readSceneAnimationDocument(content);
+  return retimeSceneAnimation(candidateDocument(before, copied), durationSeconds).document;
+}
+
+// Copy a current-form track to an explicit target with a caller-generated ID.
+// Rust validates the copy; source review and ordinary Save remain separate.
+export async function copySceneAnimationTrackDraft(content, edit, sourceTrackId, targetInstanceId, newTrackId) {
+  if ([sourceTrackId, targetInstanceId, newTrackId].some(id => typeof id !== 'string')) fail();
+  const copied = copyData(edit), before = await readSceneAnimationDocument(content);
+  return copySceneAnimationTrack(candidateDocument(before, copied), sourceTrackId, targetInstanceId, newTrackId).document;
+}
+
 async function patch(content, edit) {
   const before = await readSceneAnimationDocument(content);
-  const fields = record(edit, ['durationSeconds', 'loop', 'tracks']);
-  const candidate = { ...before, ...fields };
+  const candidate = candidateDocument(before, edit);
   await inspectSceneAnimation(candidate);
   const parsed = parseJsonSource(content), patches = [];
   const leaf = (path, a, b) => { if (canonicalJson(a) !== canonicalJson(b)) patches.push(replacement(content, parsed, path, b)); };
+  leaf('/schemaVersion', before.schemaVersion, candidate.schemaVersion);
   leaf('/durationSeconds', before.durationSeconds, candidate.durationSeconds);
   leaf('/loop', before.loop, candidate.loop);
   const sameTracks = before.tracks.length === candidate.tracks.length && before.tracks.every((row, i) => row.id === candidate.tracks[i].id);
   if (!sameTracks) leaf('/tracks', before.tracks, candidate.tracks);
   else before.tracks.forEach((row, i) => {
     const next = candidate.tracks[i], path = `/tracks/${i}`;
+    if (Object.hasOwn(row, 'grid') !== Object.hasOwn(next, 'grid')) { leaf(path, row, next); return; }
+    if (Object.hasOwn(row, 'grid')) {
+      for (const axis of ['columns', 'rows']) leaf(`${path}/grid/${axis}`, row.grid[axis], next.grid[axis]);
+    }
     for (const key of ['instanceId', 'property', 'interpolation']) leaf(`${path}/${key}`, row[key], next[key]);
     if (row.keyframes.length !== next.keyframes.length) leaf(`${path}/keyframes`, row.keyframes, next.keyframes);
     else row.keyframes.forEach((frame, j) => {
@@ -112,6 +139,22 @@ async function patch(content, edit) {
       leaf(`${path}/keyframes/${j}/value`, frame.value, next.keyframes[j].value);
     });
   });
+  if (candidate.schemaVersion === 3) {
+    if (before.schemaVersion !== 3) {
+      // Insert one property after the last source value. Existing whitespace,
+      // escaped property names, BOM and trailing text remain byte-for-byte.
+      const last = range(parsed, `/${Object.keys(before).at(-1)}`), newline = content.match(/\r\n|\n|\r/)?.[0];
+      const indent = content.slice(0, range(parsed, '/format').start).split(/\r\n|\n|\r/).at(-1).match(/^[ \t]*/)[0] || '  ';
+      const value = newline ? JSON.stringify(candidate.clips, null, indent).replaceAll('\n', newline + indent) : JSON.stringify(candidate.clips);
+      patches.push({ start: last.end, end: last.end, propertyPath: '/clips', text: `,${newline ? newline + indent : ''}"clips":${newline ? ' ' : ''}${value}` });
+    } else {
+      const sameClips = before.clips.length === candidate.clips.length && before.clips.every((clip, i) => clip.id === candidate.clips[i].id);
+      if (!sameClips) leaf('/clips', before.clips, candidate.clips);
+      else before.clips.forEach((clip, i) => {
+        for (const key of ['name', 'startSeconds', 'endSeconds', 'loop']) leaf(`/clips/${i}/${key}`, clip[key], candidate.clips[i][key]);
+      });
+    }
+  }
   if (!patches.length) throw error('unchanged');
   let afterContent = content;
   for (const item of [...patches].sort((a, b) => b.start - a.start)) afterContent = afterContent.slice(0, item.start) + item.text + afterContent.slice(item.end);

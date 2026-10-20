@@ -1,0 +1,125 @@
+{
+  "date": "2026-10-20",
+  "oldCellsPreserved": 2324,
+  "oldEvidencePreserved": 2542,
+  "reviewedExistingBindings": [
+    "b547",
+    "b548",
+    "b549"
+  ],
+  "newImplementations": [
+    "i398",
+    "i399"
+  ],
+  "newBindings": [
+    "b583",
+    "b584"
+  ],
+  "newCells": [
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.animation2d",
+        "i398",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "明确源/目标/独立身份复制、完整合法性及预算拒绝与普通保存闭环；不覆盖/合并既有轨道。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.animation2d",
+        "i398",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "Rust/WASM/CLI、UI、Chrome及HTTP保存至Godot受控样本分别通过；不声称安装或设备验收。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.animation2d",
+        "i398",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "Rust无World、UUID生成或播放时钟；同一纯变换供WASM/原生CLI执行，JS只严格核对返回。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.animation2d",
+        "i398",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.1.6后源码工作树，未升版发布或更新安装。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.animation2d",
+        "i399",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "明确源/目标/独立身份复制、完整合法性及预算拒绝与普通保存闭环；不覆盖/合并既有轨道。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.animation2d",
+        "i399",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "Rust/WASM/CLI、UI、Chrome及HTTP保存至Godot受控样本分别通过；不声称安装或设备验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.animation2d",
+        "i399",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "通过窄getContext/prepare端口接入，复用目标目录而不增加服务能力；当前仅DOM渲染，未验收第二GUI。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.animation2d",
+        "i399",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.1.6后源码工作树，未升版发布或更新安装。"
+    }
+  ],
+  "newEvidence": [
+    "e2543",
+    "e2544",
+    "e2545",
+    "e2546",
+    "e2547",
+    "e2548",
+    "e2549",
+    "e2550",
+    "e2551",
+    "e2552",
+    "e2553",
+    "e2554",
+    "e2555",
+    "e2556"
+  ],
+  "counts": {
+    "architectures": 11,
+    "functions": 133,
+    "implementations": 399,
+    "bindings": 583,
+    "cells": 2332,
+    "evidence": 2556,
+    "workflows": 96
+  }
+}

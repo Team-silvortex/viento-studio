@@ -65,7 +65,7 @@ function fixture() {
 async function proposalFor(h) { const value = edit(); value.durationSeconds = 3; return createSceneAnimationProposal(await h.host.getSource(), value); }
 test('animation host only writes its reviewed ordinary draft and focus is source guarded', async () => {
   const h = fixture(), proposal = await proposalFor(h), result = await h.host.applyDraft(proposal);
-  assert.deepEqual(Object.keys(h.host).sort(), ['applyDraft', 'getContext', 'getSource', 'getTargets']); assert.deepEqual(h.writes, [proposal.afterContent]); assert.equal(h.state.baseline, original);
+  assert.deepEqual(Object.keys(h.host).sort(), ['applyDraft', 'getContext', 'getSource', 'getTargets', 'getUsage']); assert.deepEqual(h.writes, [proposal.afterContent]); assert.equal(h.state.baseline, original);
   result.focus(); assert.equal(h.focuses(), 1); h.state.content += ' '; result.focus(); assert.equal(h.focuses(), 1);
   await assert.rejects(h.host.applyDraft(proposal), conflict);
 });

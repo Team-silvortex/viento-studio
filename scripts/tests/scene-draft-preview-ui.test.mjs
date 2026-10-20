@@ -230,3 +230,53 @@ test('a retained hidden draft is cleared when the selected scene changes', async
   h.controller.setVisible(true); assert.deepEqual(JSON.parse(h.post().request.body), { sceneId: sceneTwo });
   await h.resolve(preview({ sceneId: sceneTwo, previewId: previewThree })); assert.equal(h.latestModel().scene.objectId, sceneTwo);
 });
+
+
+function spritePreview() {
+  const p = preview({ image: true });
+  p.snapshotId = base; p.scene.sourceRevision = base;
+  p.animationPreview = {format:'viento-scene-animation-preview',schemaVersion:1,status:'ready',snapshotId:base,
+    scene:{objectId:sceneOne,sourcePath,sourceRevision:base},manifest:{objectId:groupId,sourcePath:'documents/animations/demo.json',sourceRevision:revision},
+    document:{format:'viento-scene-animation',schemaVersion:2,sceneObjectId:sceneOne,durationSeconds:1,loop:true,
+      tracks:[{id:previewThree,instanceId:actorId,property:'spriteFrame2d',interpolation:'step',grid:{columns:2,rows:3},keyframes:[{atSeconds:0,value:0}]}]},diagnostics:[]};
+  return p;
+}
+test('saved sprite preview charges and decodes the full grid once, then releases it on refresh', async t => {
+  const h = await harness(t); h.controller.setAnimationAvailable(true);
+  await h.resolve(spritePreview());assert.equal(h.assets.length,1);
+  h.assets[0].resolve(new Blob(['12345678']));await flushDialogs();
+  assert.equal(h.decoded.at(-1).width,128);assert.equal(h.decoded.at(-1).height,192);
+  h.element('scenePreviewRefresh').click();await h.resolve(preview());
+  assert.equal(h.decoded.at(-1).width,0);assert.equal(h.decoded.at(-1).height,0);
+});
+test('oversized sprite grids become bounded missing-image placeholders without fetching or allocating canvases', async t => {
+  const h = await harness(t);h.controller.setAnimationAvailable(true);const p=spritePreview();
+  p.actors[0].size=[1024,1024];p.animationPreview.document.tracks[0].grid={columns:64,rows:64};
+  await h.resolve(p);assert.equal(h.assets.length,0);assert.equal(h.decoded.length,0);
+  assert.equal(h.container.dataset.scenePreviewState,'ready');assert.match(h.element('scenePreviewDiagnostics').textContent,/图片无法解码/);
+});
+
+
+test('an oversized grid cannot poison the budget for an unrelated ordinary image', async t => {
+  const h=await harness(t);h.controller.setAnimationAvailable(true);const p=spritePreview();
+  p.actors[0].size=[1024,1024];p.animationPreview.document.tracks[0].grid={columns:64,rows:64};
+  p.actors.push({...p.actors[0],instanceId:sceneTwo,imageResourceId:sceneTwo,size:[64,64]});
+  p.resources.push({id:sceneTwo,size:8,url:`/api/scene-preview?previewId=${previewOne}&resourceId=${sceneTwo}`});
+  await h.resolve(p);assert.equal(h.assets.length,1);assert.match(h.assets[0].url,new RegExp(sceneTwo));
+  h.assets[0].resolve(new Blob(['12345678']));await flushDialogs();
+  assert.equal(h.decoded.at(-1).width,64);assert.equal(h.container.dataset.scenePreviewState,'ready');
+});
+
+test('failed image decoding releases its reservation before the next resource is admitted', async t => {
+  const h=await harness(t),p=preview({image:true});
+  p.actors[0].size=[2730,2730];
+  for(const [id,size] of [[sceneTwo,[2730,2730]],[previewThree,[2000,2000]]]) {
+    p.actors.push({...p.actors[0],instanceId:id,imageResourceId:id,size});
+    p.resources.push({id,size:8,url:`/api/scene-preview?previewId=${previewOne}&resourceId=${id}`});
+  }
+  await h.resolve(p);assert.equal(h.assets.length,2);
+  h.assets[1].reject(new Error('decode failed'));await flushDialogs();
+  assert.equal(h.assets.length,3);assert.match(h.assets[2].url,new RegExp(previewThree));
+  h.assets[0].resolve(new Blob(['12345678']));h.assets[2].resolve(new Blob(['12345678']));await flushDialogs();
+  assert.equal(h.container.dataset.scenePreviewState,'ready');assert.equal(h.decoded.length,2);
+});

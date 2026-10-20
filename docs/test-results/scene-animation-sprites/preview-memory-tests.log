@@ -1,0 +1,35 @@
+✔ visual transform matches root+offset/rotation/scale and opacity while duplicate-definition actor and labels stay logical (3.320559ms)
+✔ animated images reuse existing tint cache across frames and preserve color alpha independently of animation (1.248355ms)
+✔ visual sample is detached and rejects a whole invalid frame without changing the last displayed frame (1.8584ms)
+✔ animation keeps pan and zoom, suppresses logical hit rectangles and cannot commit layout changes (0.905324ms)
+✔ stop, model replacement, hidden canvas and layout editing independently clear visual overlays (0.923419ms)
+✔ zero opacity affects only the visual, not labels, and a new frame does not inherit prior channels (0.314175ms)
+✔ grid frames crop row-major cells without resizing logical actors or affecting shared-image instances (1.174164ms)
+✔ large shared atlases tint only cells and bound whole-sheet fallback before allocation (0.720694ms)
+✔ draft preview posts only the current scene source and stays read-only until a saved preview replaces it (41.102966ms)
+✔ invalid draft keeps saved canvas and outline while diagnostics navigate the failed draft revision (17.78887ms)
+✔ last valid draft source links keep their own hash, and saved projection links never carry the draft flag (26.116312ms)
+✔ source reads abandoned by an editor token change or scene switch never issue a draft request (31.65367ms)
+✔ late draft responses after an unrendered token change are released and do not leave the UI loading (18.563347ms)
+✔ draft context loss cancels immediately and releases a late preview without crossing editor sessions (14.663822ms)
+✔ draft images decode beside the valid preview, then atomically replace and release its resources (18.046118ms)
+✔ token changes during image decoding discard candidate canvases and retain the valid scene (14.883979ms)
+✔ hiding while draft resources are pending releases both snapshots and forbids a late paint (15.426115ms)
+✔ unavailable or unreadable draft content preserves the last valid canvas and can be retried (19.258053ms)
+✔ an invalid saved scene can be repaired in a draft without saving it first (13.866402ms)
+✔ untrusted draft responses cannot grant editing or omit the draft provenance (25.707308ms)
+✔ request limits and changed saved baselines explain why the draft could not be previewed (18.560382ms)
+✔ creating, busy, unmatched and unavailable contexts guard draft actions even for synthetic clicks (18.903903ms)
+✔ closing the draft preview permits natural source edits and reopening keeps the last valid snapshot on errors (35.341063ms)
+✔ a retained hidden draft is cleared when the selected scene changes (23.842185ms)
+✔ saved sprite preview charges and decodes the full grid once, then releases it on refresh (19.148075ms)
+✔ oversized sprite grids become bounded missing-image placeholders without fetching or allocating canvases (13.203716ms)
+✔ an oversized grid cannot poison the budget for an unrelated ordinary image (13.606851ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 504.58249

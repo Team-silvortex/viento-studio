@@ -1,12 +1,14 @@
 # 文档中心
 
+**0.1.7 源码**已收录序列帧、命名片段、行为／事件动画控制、片段选入与使用位置、整段时长调整及轨道复制。入口见[场景动画](SCENE_ANIMATION.md)与[版本记录](RELEASE_0.1.7.md)；本次未更新安装，旧专题的开发版本和验证条件保留。
+
 [系统模块与工程需求](STUDIO_MODULES.md)说明整个 Studio 的装配、模板需求、表示和后端边界，以及后续 3D 与工作流布局的接入规则。
 
 [后端工程管理](BACKEND_PROJECTS.md)现另覆盖成功工程的本机持久索引、重启恢复、明确运行目标选择、离线冻结场景入口与保留规则；新版源码的交付和验证条件见[当前状态](STATUS.md)。
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.6 版本记录](RELEASE_0.1.6.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.7 版本记录](RELEASE_0.1.7.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -25,9 +27,9 @@
 | [行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md) | 当前场景音轨的行为播放／停止、独立回执与双来源、工程交付 |
 | 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
 | 查看当前任务的问题、筛选诊断并返回原文修复 | [任务问题列表](PROJECT_BUILD.md#当前任务问题列表) |
-| 多实例挂载 GDScript／Rust、编辑参数／信号、选入音轨编号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
+| 多实例挂载 GDScript／Rust、编辑参数／信号、选入音轨或动画片段编号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
 | 编辑音轨与时间提示、选择 WAV 并试听／暂停／定位、Godot 播放及资源交付 | [场景声音](SCENE_AUDIO.md) |
-| 场景首次创建动画、按名称选实例、关键帧编辑、采样示意与保存态场景预览、Godot 执行和工程交付 | [场景动画](SCENE_ANIMATION.md) |
+| 创建／编辑关键帧与序列帧、命名片段、时长调整与轨道复制、行为／事件控制、预览及 Godot 工程交付 | [场景动画](SCENE_ANIMATION.md) |
 | 查看运行对象、检索实例／定义并返回冻结声明 | [运行对象与采样](RUNTIME_OBJECTS.md) |
 | 在 Godot／Bevy 上回放全局或独立实例方向并逐步观察 | [有限控制回放](RUNTIME_CONTROL.md) |
 | 保存、迁移用例并在冻结实例场景上检查逐步位置／状态预期 | [运行验收用例](RUNTIME_CASES.md) |
@@ -100,4 +102,4 @@
 
 片段定义管理见[新增、复制、重命名与未引用删除](SCENE_COMPOSITION.md#管理片段定义)。先维护共享声明，再通过独立演员、组织组和放置入口完成场景；普通保存继续保留作者原文。
 
-新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.1.6 版本记录](RELEASE_0.1.6.md)。
+新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.1.7 版本记录](RELEASE_0.1.7.md)。

@@ -110,7 +110,7 @@ export function validateExecutionBackendDescriptor(input) {
   for (const plan of value.plans) {
     exact(plan, ['kind', 'schemaVersion', 'runtimeProtocolVersion']);
     if (!(plan.kind === 'scene2d' && [1, 2, 3].includes(plan.schemaVersion) && [1, 2, 3].includes(plan.runtimeProtocolVersion)
-      || plan.kind === 'project' && plan.schemaVersion === 1 && [1, 2, 3, 4].includes(plan.runtimeProtocolVersion))) throw invalid();
+      || plan.kind === 'project' && plan.schemaVersion === 1 && [1, 2, 3, 4, 5, 6].includes(plan.runtimeProtocolVersion))) throw invalid();
     const key = `${plan.kind}:${plan.schemaVersion}`;
     if (plans.has(key)) throw invalid();
     plans.add(key);
@@ -155,7 +155,7 @@ function supportRequest(input) {
         || plan.scenes.some(scene => scene?.kind !== 'scene2d')) throw invalid();
       for (const scene of plan.scenes) supportRequest({ plan: scene });
     }
-    if (Object.hasOwn(plan, 'animation') && (!plain(plan.animation) || plan.animation.format !== 'viento-animation-plan' || plan.animation.schemaVersion !== 1)) throw invalid();
+    if (Object.hasOwn(plan, 'animation') && (!plain(plan.animation) || plan.animation.format !== 'viento-animation-plan' || ![1, 2].includes(plan.animation.schemaVersion))) throw invalid();
     if (Object.hasOwn(plan, 'audio') && (!plain(plan.audio) || plan.audio.format !== 'viento-audio-plan' || plan.audio.schemaVersion !== 1)) throw invalid();
     if (Object.hasOwn(plan, 'behaviors')) {
       if (!plain(plan.behaviors) || plan.behaviors.format !== 'viento-behavior-plan' || plan.behaviors.schemaVersion !== 1) throw invalid();
@@ -184,16 +184,23 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
         { kind: plan.kind, schemaVersion: plan.schemaVersion }));
     }
     if (plan.kind === 'project') {
+      if (plan.scenes.some(scene => scene.animation) && !backend.capabilities.includes('project.animation-control')) diagnostics.push(diagnostic('build_capability_missing',
+        'Backend lacks capability: project.animation-control', { capability: 'project.animation-control' }));
       const required = new Set(['project.scenes', ...plan.scenes.flatMap(scene => scene.requiredCapabilities)]);
       for (const capability of required) if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_assembly_invalid',
         'Project plans must explicitly require every member capability.', { capability }));
       for (const scene of plan.scenes) diagnostics.push(...checkExecutionBackendSupport(backend, { ...value, plan: scene }));
     }
     if (plan.animation) {
-      if (!plan.requiredCapabilities.includes('animation.visual2d')) diagnostics.push(diagnostic('build_animation_invalid',
-        'Animation plans must explicitly require their visual capability.', { capability: 'animation.visual2d' }));
-      if (!plan.requiredCapabilities.includes('animation.visual2d') && !backend.capabilities.includes('animation.visual2d')) diagnostics.push(diagnostic('build_capability_missing',
-        'Backend lacks capability: animation.visual2d', { capability: 'animation.visual2d' }));
+      const animationCapabilities = ['animation.visual2d'];
+      if (plan.animation.document?.schemaVersion === 3) animationCapabilities.push('animation.clips2d');
+      if (Array.isArray(plan.animation.document?.tracks) && plan.animation.document.tracks.some(track => track?.property === 'spriteFrame2d')) animationCapabilities.push('animation.sprite2d');
+      for (const capability of animationCapabilities) {
+        if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_animation_invalid',
+          'Animation plans must explicitly require their visual capabilities.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
     }
     if (plan.audio) {
       for (const capability of ['audio.nonspatial', 'audio.timeline']) {

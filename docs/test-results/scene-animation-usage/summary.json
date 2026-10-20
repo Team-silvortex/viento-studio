@@ -1,0 +1,141 @@
+{
+  "date": "2026-10-20",
+  "version": "0.1.6",
+  "commit": "97bd6e13cdc51a99a1cd29a2e20c6b1165d2277e",
+  "delivery": "unreleased working tree; no version change, commit, push or install",
+  "runtime": {
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "browser": "Chrome/154.0.8037.97",
+    "wasm": {
+      "path": "engine/studio-core.wasm",
+      "bytes": 683261,
+      "sha256": "c419c1145b368e5b50d37326a64e1e68abda5645637ef856f4eb1aa9bf731d35",
+      "unchanged": true
+    }
+  },
+  "checks": {
+    "app": {
+      "tests": 6240,
+      "pass": 6013,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 227,
+      "todo": 0
+    },
+    "syntaxFiles": 1049,
+    "versionConsistency": true,
+    "apiPreflight": true,
+    "coreServiceAndAudioRegressions": {
+      "tests": 74,
+      "pass": 74,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "hostAndTransportRegressions": {
+      "tests": 43,
+      "pass": 43,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "animationUiRegressions": {
+      "tests": 39,
+      "pass": 39,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "existingEditContract": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "httpAndOrdinarySaveWorkflow": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "browser": {
+      "groups": 6,
+      "screenshots": 4,
+      "errors": 0,
+      "report": "docs/test-results/scene-animation-usage/browser-1792487125270/browser.json"
+    }
+  },
+  "scopeNotes": [
+    "Counts overlap; focused groups and full suite are not additive.",
+    "The full suite ran without VIENTO_GODOT_BIN or rebuilding native auxiliary executables. Conditional skips remain explicit in the log.",
+    "Actual Chrome exercises the local HTTP editor with disposable copied author data: source navigation, focus/selection, failed/late reads, ordinary Apply and Save. Only the animation changes; the 17 other author files retain original bytes.",
+    "Usage is same-scene saved-parameter exact UUID text matching, not global static analysis or proof that a clip is safe to delete. No automatic reference protection or migration.",
+    "This increment reuses the existing Rust/WASM rules. No new native Rust, actual Godot/Bevy execution, ZIP migration, installed Tauri or Android device acceptance is claimed.",
+    "The complete application check was repeated after an old exact API inventory assertion was updated to include getUsage. Production sources stayed frozen; the first failed run is retained as app-check-first.log."
+  ],
+  "sources": {
+    "engine/scene-animation-usage.mjs": "0eeca76ea7a3b3742ba35609c2bd960f52bb8ef300bc8dbe8bda017b130ec4b6",
+    "engine/scene-behaviors-edit.mjs": "b5d8cd3ebb04f77306a03a2931d6b00fbdee0428eb77ced98914e9b5d653d50c",
+    "engine/scene-behaviors.mjs": "d1316c6050cf1c82ec05adcbe10518e7c4602981b376f8b4a757c7310478a80e",
+    "scripts/lib/doc-api-service.mjs": "b7aa28690d0f347eda4f55bee97cc23146cfb3ee5dde6047033e070d433dea9a",
+    "scripts/lib/doc-server-routes.mjs": "c325e338a369dd697b536d36f8b4ca2c80675b43139e3a132dd526c154d87987",
+    "scripts/lib/scene-animation-usage-service.mjs": "afd93cfeae3b5e2585a128f0fefe28dd409bd67796df90d9c989ab01c4f91856",
+    "scripts/tests/helpers/scene-animation-usage-host-fixture.mjs": "3102c3b9144787948594b910fea80757d14fa3f26cf99801fe9ff90a24ae7cd1",
+    "scripts/tests/scene-animation-edit.test.mjs": "551a794e344a233bf7fba21a5fddf34d11d43a2c281dadd04e0fc93548c0044c",
+    "scripts/tests/scene-animation-editor-ui.test.mjs": "599397d9626320554fe4b705e12f122fa0573a61a1f6bb6e621ac975e5ce0cf5",
+    "scripts/tests/scene-animation-usage-host.test.mjs": "86c805a165f2c980b4681b96ba8beab2637f75167841b4f21bd065f4bc4e6b3d",
+    "scripts/tests/scene-animation-usage-http.test.mjs": "7278fa39f5caf86b4bc6c07f63765035ad9b94cd11952cdaf5131999b02a54a8",
+    "scripts/tests/scene-animation-usage-service.test.mjs": "58473bc193a56e842972a4d82307592b6a5c3d8c97fee5685b1724ea2ab2b11e",
+    "scripts/tests/scene-animation-usage-smoke.mjs": "6077df14e42a036201a491086666c96057c6b799f3d313231642ffbbf31824bd",
+    "scripts/tests/scene-animation-usage-source.test.mjs": "23a9fd98d4746d486fb260e44744f52c80629c2654bca456c1def63a2df8cb35",
+    "scripts/tests/scene-animation-usage-transport.test.mjs": "05ffbefe828ff3679a323315abaffade6cfe1392158cf50391c85ada33129605",
+    "scripts/tests/scene-animation-usage-workflow.test.mjs": "67fab7f6e91183265174be6cc376e647b42c57576d46ea762e7dce47294954a3",
+    "scripts/tests/scene-animation-usage.test.mjs": "84244f42e1b2c73f9757a027fb4fc5b5a52fb8e99706b3756da769b89996b8e8",
+    "web/i18n/en.js": "67c65db13503bd40bff6177c637bbf55181dafabbad5ea63775724773a936057",
+    "web/i18n/ja.js": "b1686d5448dab4accdfe012edc3d14ae7609833c946840fd877af5ef7cf14bbd",
+    "web/modules/app-doc-service.js": "b0631e7d5ef7799b86edc015425cf349cc5e715e13cecb4161c98c14779636c8",
+    "web/modules/app-runtime.js": "346ce85ea829fb59551b494207ae84dc47e11c170e7f453ef12c2593eff85387",
+    "web/modules/app-scene-animation-clips.js": "5ea47930ece48f75c5bfad5e1a2c83599fb72a2e748b8216746e66264e286bab",
+    "web/modules/app-scene-animation-source.js": "4db6bee2f660422240bb6833449ad0e00b54c99a1c79b42636f87c2e61233c06",
+    "web/modules/app-scene-animation-usage.js": "9a72e7a003c31d509628e65e59d18fd1a2480af487f874a6dba2208b234657ac",
+    "web/modules/app-scene-animation.js": "d53df4fb6abd2db050b27e44f3ecf44eac27ed9311c1f6a6a6e504a68bb484ef",
+    "web/modules/app-source-location.js": "c1a9259fa014621d8566d8df715505f245d0b93f581a6796955b31ed47c8cb70",
+    "web/modules/app-source-reveal.js": "45ed39671a100268ee8b7f171c341fda6970aa8bdece9b86cd8749e2d4ab56b6",
+    "web/scene-animation.css": "3608499b39c2e5f6c65791b795c818f60532d872cd55fee48cc61438ef3d3e83"
+  },
+  "atlas": {
+    "architectures": 11,
+    "functions": 133,
+    "implementations": 395,
+    "bindings": 579,
+    "cells": 2316,
+    "evidence": 2520,
+    "workflows": 96
+  },
+  "commands": {
+    "app": "node scripts/check-project.mjs --app-only",
+    "workflow": "node --test --test-concurrency=2 scripts/tests/scene-animation-usage-http.test.mjs scripts/tests/scene-animation-usage-workflow.test.mjs",
+    "browser": "node scripts/tests/scene-animation-usage-smoke.mjs"
+  },
+  "logSha256": {
+    "usage-core-service.log": "7c422eaf725a57b6325234c796c7c6ce52775c06d7aebc081acf576bdb5fb4c9",
+    "host-first.log": "a7a2e7d993debf1f1dbbb6d7a74a00e21b9d314e172493259dc161616708d358",
+    "ui-initial.log": "225fe4677d0edde78cc331b6f084b31018744bd7aa021ffb130243c53c77a78d",
+    "workflow-first.log": "138ede28a70bc3c0b998b5f2e336b4210e0aa67b450cbba07ee8c450466519e2",
+    "browser-initial.log": "438846513eca00ad053c72de9026af8c7e1029d59dda15a37f70ac4878dd7bb0",
+    "app-check-first.log": "140c72c67ef8075e7a005e02e6ba67375bc502cb84c6ca300e73eea179da4586",
+    "edit-contract-final.log": "caf84977f1c2ea797fa2666cd51e7dd384c9b75fa5aa4d42d07db8a651a96e5c",
+    "app-check.log": "c308e1d819ade0889b2e20d135d34598f9f1f3b729d464f648a1510b6d79a7b7"
+  },
+  "ok": true
+}

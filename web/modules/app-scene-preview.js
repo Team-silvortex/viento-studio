@@ -1,3 +1,4 @@
+import { captureSceneAnimationSpriteLayout, scenePreviewImageDimensions } from '../../engine/scene-animation-sprite-layout.mjs';
 import { setupScenePreviewAnimation } from './app-scene-preview-animation.js';
 import { sceneStructureActors } from '../../engine/scene-structure.mjs';
 import { createSceneOutline } from './app-scene-outline.js';
@@ -299,7 +300,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     }
     for (const id of imageErrors) issues.append(node('li', t('图片无法解码或超过预览内存限制：{0}', id)));
   }
-  async function decode(resource, signal, epoch, payload) {
+  async function decode(resource, signal, epoch, payload, dimensions) {
     const url = new URL(resource.url, globalThis.location.href);
     if (url.origin !== globalThis.location.origin || url.pathname !== PREVIEW_API || url.searchParams.get('previewId') !== payload.previewId || url.searchParams.get('resourceId') !== resource.id) throw new Error('Invalid preview resource URL');
     const blob = await fetchWithTimeout(url.href, { cache: 'no-store', signal }, 15000, t('读取预览图片'), async response => {
@@ -307,8 +308,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
       const value = await response.blob(); if (value.size !== resource.size) throw new Error('Image size changed'); return value;
     });
     if (signal.aborted || epoch !== requestEpoch) throw new DOMException('Aborted', 'AbortError');
-    const users = payload.actors.filter(actor => actor.imageResourceId === resource.id);
-    const width = Math.max(1, ...users.map(actor => Math.ceil(actor.size[0]))), height = Math.max(1, ...users.map(actor => Math.ceil(actor.size[1])));
+    const { width, height } = dimensions;
     const urlObject = URL.createObjectURL(blob), image = new Image();
     try {
       await new Promise((resolve, reject) => {
@@ -375,18 +375,24 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
       try { sceneStructureActors(payload.sceneStructure, payload.actors); }
       catch (error) { release(payload.previewId); throw error; }
       candidate = { payload, images: new Map(), imageErrors: [] }; pendingPreview = candidate;
+      let spriteLayout = null;
+      if (kind === 'saved' && animationAvailable && !isComposition()) {
+        try { spriteLayout = captureSceneAnimationSpriteLayout(payload); } catch { /* Invalid animation leaves ordinary static image decoding available. */ }
+      }
       let cursor = 0, pixelCount = 0;
       const worker = async () => {
         while (ownsRequest() && cursor < payload.resources.length) {
           const resource = payload.resources[cursor++];
+          let reservedPixels = 0;
           try {
-            const actors = payload.actors.filter(actor => actor.imageResourceId === resource.id);
-            pixelCount += Math.max(1, ...actors.map(actor => Math.ceil(actor.size[0]))) * Math.max(1, ...actors.map(actor => Math.ceil(actor.size[1])));
-            if (pixelCount > 16 * 1024 * 1024) throw new Error('Preview image memory limit');
-            const image = await decode(resource, signal, epoch, payload);
+            const dimensions = scenePreviewImageDimensions(payload.actors, resource.id, spriteLayout);
+            const pixels = dimensions.width * dimensions.height;
+            if (dimensions.width > 16384 || dimensions.height > 16384 || pixelCount + pixels > 16 * 1024 * 1024) throw new Error('Preview image memory limit');
+            reservedPixels = pixels; pixelCount += reservedPixels;
+            const image = await decode(resource, signal, epoch, payload, dimensions);
             if (!ownsRequest()) { image.width = 0; image.height = 0; return; }
             candidate.images.set(resource.id, image);
-          } catch { if (ownsRequest()) candidate.imageErrors.push(resource.id); }
+          } catch { pixelCount -= reservedPixels; if (ownsRequest()) candidate.imageErrors.push(resource.id); }
         }
       };
       await Promise.all([worker(), worker()]);

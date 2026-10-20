@@ -1,3 +1,4 @@
+import '../adapters/node-studio-core.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
@@ -8,8 +9,11 @@ import { sharedStateProject, stateReturnTrip } from './helpers/project-shared-st
 import { eventProject, eventReturnTrip } from './helpers/project-event-bus-fixture.mjs';
 import { audioProject, audioReturnTrip } from './helpers/project-audio-command-fixture.mjs';
 
-for (const protocolVersion of [1, 2, 3, 4]) test(`browser project protocol ${protocolVersion} recursively links real ES modules without bare packages, Node APIs or author build parsing`, () => {
-  const plan = protocolVersion === 1 ? runtimeProject({ behavior: true }) : protocolVersion === 2 ? sharedStateProject() : protocolVersion === 3 ? eventProject() : audioProject({ empty: true }), frames = protocolVersion === 1 ? returnTrip(plan) : protocolVersion === 2 ? stateReturnTrip(plan) : protocolVersion === 3 ? eventReturnTrip(plan) : audioReturnTrip(plan);
+import { clipProject, clipReturnTrip } from './helpers/project-animation-clip-command-fixture.mjs';
+import { animationProject, animationReturnTrip } from './helpers/project-animation-command-fixture.mjs';
+
+for (const protocolVersion of [1, 2, 3, 4, 5, 6]) test(`browser project protocol ${protocolVersion} recursively links real ES modules without bare packages, Node APIs or author build parsing`, () => {
+  const plan = protocolVersion === 1 ? runtimeProject({ behavior: true }) : protocolVersion === 2 ? sharedStateProject() : protocolVersion === 3 ? eventProject() : protocolVersion === 4 ? audioProject({ empty: true }) : protocolVersion === 5 ? animationProject() : clipProject(), frames = protocolVersion === 1 ? returnTrip(plan) : protocolVersion === 2 ? stateReturnTrip(plan) : protocolVersion === 3 ? eventReturnTrip(plan) : protocolVersion === 4 ? audioReturnTrip(plan) : protocolVersion === 5 ? animationReturnTrip(plan) : clipReturnTrip(plan);
   const runner = `
     import fs from 'node:fs/promises';
     import vm from 'node:vm';
@@ -35,7 +39,7 @@ for (const protocolVersion of [1, 2, 3, 4]) test(`browser project protocol ${pro
       return load(new URL(specifier, parent.identifier).href);
     });
     await entry.evaluate(); context.api = entry.namespace;
-    if (${protocolVersion} === 4) {
+    if (${protocolVersion} >= 4) {
       const core = (await modules.get(root + 'studio-core.mjs')).namespace;
       await core.initializeStudioCore(() => fs.readFile(new URL(root + 'studio-core.wasm')));
       assert.equal(core.getStudioCoreMetadata().ready, true);
@@ -65,6 +69,17 @@ for (const protocolVersion of [1, 2, 3, 4]) test(`browser project protocol ${pro
     assert.equal(output.view.project.audioCommands.entries[0].track.source.sourceRange.exact, true);
     assert.equal(output.view.project.audioCommands.entries[2].origin.visitIndex, 2);
     assert.ok(output.modules.includes('project-audio-commands.mjs'));
+  }
+  if (protocolVersion === 5) {
+    assert.equal(output.view.project.animationCommands.sequence, 8);
+    assert.equal(output.view.project.animationCommands.entries[5].origin.visitIndex, 2);
+    assert.ok(output.modules.includes('project-animation-commands.mjs'));
+  }
+  if (protocolVersion === 6) {
+    assert.equal(output.view.project.animationCommands.sequence, 14);
+    assert.equal(output.view.project.animationCommands.entries[0].clip.source.propertyPath, '/clips/0');
+    assert.equal(output.view.project.animationCommands.entries[13].state.clipId, null);
+    assert.ok(output.modules.includes('project-animation-transport.mjs'));
   }
   assert.ok(output.modules.includes('project-assembly-plan-contract.mjs')); assert.ok(output.modules.includes('scene-audio-events.mjs'));
   assert.equal(output.modules.some(path => ['project-assembly-plan.mjs', 'build-plan.mjs'].includes(path)), false);

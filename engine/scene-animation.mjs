@@ -6,6 +6,22 @@ import { normalizeSourcePath } from './source-path.mjs';
 
 export const SCENE_ANIMATION_CAPABILITIES = Object.freeze(['animation.visual2d']);
 export const SCENE_ANIMATION_MAX_BYTES = 131072;
+export const sceneAnimationCapabilities = document => [ ...SCENE_ANIMATION_CAPABILITIES,
+  ...(Array.isArray(document?.tracks) && document.tracks.some(track => track?.property === 'spriteFrame2d') ? ['animation.sprite2d'] : []),
+  ...(document?.schemaVersion === 3 ? ['animation.clips2d'] : []) ];
+// A frame track crops the image already selected by its scene instance. It does
+// not create another resource path, binding authority or capture IO channel.
+export function sceneAnimationSpriteResource(plan, track) {
+  const actor = plan.actors?.find(actor => actor.instanceId === track.instanceId);
+  if (!uuid(actor?.imageResourceId) || !Array.isArray(plan.resources)) return null;
+  const matching = plan.resources.filter(resource => resource?.id === actor.imageResourceId);
+  const resource = matching[0];
+  if (matching.length !== 1 || !resource || resource.kind !== undefined && resource.kind !== 'image'
+    || !['png', 'jpg', 'jpeg', 'webp', 'svg'].includes(resource.extension)
+    || typeof resource.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(resource.sha256)
+    || !Number.isSafeInteger(resource.size) || resource.size < 1 || resource.size > 32 * 1024 * 1024) return null;
+  return resource;
+}
 const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
 const revision = value => typeof value === 'string' && /^sha256:[a-f0-9]{64}$/.test(value);
 const fail = message => { throw Object.assign(new TypeError(message), { errorCode: 'build_animation_invalid' }); };
@@ -17,20 +33,21 @@ const location = value => uuid(value?.objectId) && typeof value.sourcePath === '
 
 export function stripSceneAnimationPlan(plan) {
   const { animation, ...base } = structuredClone(plan);
-  return { ...base, requiredCapabilities: base.requiredCapabilities.filter(capability => !SCENE_ANIMATION_CAPABILITIES.includes(capability)) };
+  return { ...base, requiredCapabilities: base.requiredCapabilities.filter(capability => ![...SCENE_ANIMATION_CAPABILITIES, 'animation.sprite2d', 'animation.clips2d'].includes(capability)) };
 }
 
 export function validateSceneAnimationPlan(plan) {
   const animation = plan?.animation;
   if (plan?.format !== 'viento-build-plan' || plan.kind !== 'scene2d' || ![2, 3].includes(plan.schemaVersion)
     || !exact(animation, ['format', 'schemaVersion', 'manifest', 'document', 'locations'])
-    || animation.format !== 'viento-animation-plan' || animation.schemaVersion !== 1
+    || animation.format !== 'viento-animation-plan' || animation.schemaVersion !== (animation.document?.schemaVersion === 3 ? 2 : 1)
     || !exact(animation.manifest, ['objectId', 'sourcePath', 'sourceRevision']) || !location(animation.manifest)
     || animation.manifest.objectId === plan.scene?.objectId || !Array.isArray(plan.actors)
     || !SCENE_ANIMATION_CAPABILITIES.every(capability => plan.requiredCapabilities?.includes(capability))) fail('Invalid scene animation plan.');
   let document;
   try { document = inspectSceneAnimation(animation.document).document; }
   catch { fail('Invalid frozen animation declaration.'); }
+  if (!sceneAnimationCapabilities(document).every(capability => plan.requiredCapabilities.includes(capability))) fail('Missing animation capability.');
   if (document.sceneObjectId !== plan.scene.objectId) fail('Animation must belong to the frozen scene.');
   const instances = new Set();
   for (const actor of plan.actors) {
@@ -38,13 +55,23 @@ export function validateSceneAnimationPlan(plan) {
     instances.add(actor.instanceId);
   }
   const mapped = animation.locations?.tracks;
-  if (!exact(animation.locations, ['tracks']) || !Array.isArray(mapped) || mapped.length !== document.tracks.length) fail('Invalid animation source map.');
+  if (!exact(animation.locations, ['tracks', ...(document.schemaVersion === 3 ? ['clips'] : [])]) || !Array.isArray(mapped) || mapped.length !== document.tracks.length) fail('Invalid animation source map.');
   for (const [index, track] of document.tracks.entries()) {
     if (!instances.has(track.instanceId)) fail('Animation targets an instance outside the frozen scene.');
+    if (track.property === 'spriteFrame2d' && !sceneAnimationSpriteResource(plan, track)) fail('Frame animation requires the instance image in the frozen resources.');
     const item = mapped[index], at = item?.declaration;
     if (!exact(item, ['id', 'declaration']) || item.id !== track.id || !location(at)
       || at.objectId !== animation.manifest.objectId || at.sourcePath !== animation.manifest.sourcePath
       || at.sourceRevision !== animation.manifest.sourceRevision || at.propertyPath !== `/tracks/${index}`) fail('Invalid animation source map.');
+  }
+  if (document.schemaVersion === 3) {
+    if (!Array.isArray(animation.locations.clips) || animation.locations.clips.length !== document.clips.length) fail('Invalid animation clip source map.');
+    for (const [index, clip] of document.clips.entries()) {
+      const item = animation.locations.clips[index], at = item?.declaration;
+      if (!exact(item, ['id', 'declaration']) || item.id !== clip.id || !location(at)
+        || at.objectId !== animation.manifest.objectId || at.sourcePath !== animation.manifest.sourcePath
+        || at.sourceRevision !== animation.manifest.sourceRevision || at.propertyPath !== `/clips/${index}`) fail('Invalid animation clip source map.');
+    }
   }
   return { ...animation, document };
 }
@@ -85,9 +112,13 @@ export function resolveSceneAnimation(observed, plan) {
   const instances = new Set(plan.actors.map(actor => actor.instanceId));
   for (const [index, track] of document.tracks.entries()) {
     if (!instances.has(track.instanceId)) issue('Select a stable instance from this scene.', `/tracks/${index}/instanceId`, { instanceId: track.instanceId });
+    else if (track.property === 'spriteFrame2d' && !sceneAnimationSpriteResource(plan, track)) {
+      issue('Select a registered image on this scene instance before animating its frames.', `/tracks/${index}/instanceId`, { instanceId: track.instanceId });
+    }
   }
   if (diagnostics.length) return result(null, diagnostics);
-  const animation = { format: 'viento-animation-plan', schemaVersion: 1, manifest, document,
-    locations: { tracks: document.tracks.map((track, index) => ({ id: track.id, declaration: at(`/tracks/${index}`) })) } };
+  const animation = { format: 'viento-animation-plan', schemaVersion: document.schemaVersion === 3 ? 2 : 1, manifest, document,
+    locations: { tracks: document.tracks.map((track, index) => ({ id: track.id, declaration: at(`/tracks/${index}`) })),
+      ...(document.schemaVersion === 3 ? { clips: document.clips.map((clip, index) => ({ id: clip.id, declaration: at(`/clips/${index}`) })) } : {}) } };
   return result(animation);
 }

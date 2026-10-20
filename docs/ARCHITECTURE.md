@@ -1,5 +1,9 @@
 # 系统架构：当前实现
 
+**0.1.7 源码收录**：下述序列帧、项目动画控制、命名片段、片段目录与使用位置、事件脚本组合、时长变换和轨道复制已纳入[本版](RELEASE_0.1.7.md)。Rust 规则、原文提案、独立视图、宿主目录和 Godot 运行各自维护；当前 Godot 适配器 0.15.0，22 模块／43 项声明能力保持。下文历史版本与专题证据保留开发时点，源码交付不代表已更新安装。
+
+**0.1.6 后工作树：等分图集序列帧**。Rust 在动画 schema 2 中校验 `spriteFrame2d`／`grid` 并进行离散采样，独立可选能力导出保留主 ABI 与原四属性接口。编辑提案显式升级格式，表单仍只应用普通草稿。宿主将实例现有图片绑定到冻结资源；独立 `scene-animation-sprite-layout.mjs` 负责预览解码需求，视觉帧边界给 Canvas 裁切指令，不把时间语义或资源 IO 放进渲染器。Godot 独立序列帧生成器／运行脚本增加 `animation.sprite2d`，原四属性生成文件保持；逻辑实例、行为和图片所有权不变。22 模块／43 项声明能力保持。见[格式与操作](SCENE_ANIMATION.md#等分网格序列帧)及[验证](test-results/scene-animation-sprites/README.md)。
+
 **0.1.6 源码发布**已收录音轨使用位置与定位、独立关键帧动画、首次创建、实例选择和保存态场景画面预览。下列专题保留开发时点；发布检查见[版本记录](RELEASE_0.1.6.md)，源码交付不代表安装或设备验证。
 
 已保存场景的动画预览复用现有静态快照与图片租约：宿主仅在 `includeAnimation: true` 时附加独立 `animationPreview`，通过纯解析器从同一冻结 source／plan 解析关联清单。传输捕获绑定快照、来源修订及稳定实例；动画无效只使附加状态变为 invalid，静态预览保持。独立播放器复用 Rust 采样，纯视觉帧捕获把通道交给 Canvas，标签、命中及布局坐标不跟随视觉层。控件、图片读取、作者写入与后端构建分离；无新模块、Rust ABI、作者格式或图像缓存池。`sceneAnimationPreview` 需宿主声明且构建与动画模块均启用；当前 22 模块／43 项声明能力保持。见[指南](SCENE_ANIMATION.md#在场景画面中播放已保存动画)和[验证边界](test-results/scene-animation-scene-preview/README.md)。
@@ -592,3 +596,69 @@ Godot 生成器负责资源路径、播放器和时间驱动；每条轨道独�
 `engine/project-audio-commands.mjs` 独立维护实际命令账本，项目协议 4 读取器从冻结行为绑定与音轨声明解析双来源，查询只返回已准入 DTO。命令序号、访问身份、局部时间、到期提示前缀与结束计数都受校验。最大观察数据包含声音、事件、状态与当前场景；仅协议 4 使用相应复制上限，旧协议预算不变。核心和界面不持有播放器、Godot 对象或任意资源路径。
 
 Godot 的 `project-audio.gd` 维护访问内请求队列，桥接原场景播放器；场景初始化、声音就绪及零时刻提示完成后，先排空事件，再执行声音请求，最后切换或正常关闭。`audio-command` 只在实际调用播放器后发出，取消或失败不补造回执。只读 `app-project-audio-observation.js` 显示已执行命令并分别导航行为与音轨来源，不推断当前播放状态。旧单场景生成字节和声音子协议 1 保持，当前生成 `assembly.json` 为 5，作者组装与计划仍为 1。操作、预算与验证边界见[行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md)。
+
+## 项目动画控制的独立边界
+
+0.1.6 后工作树以 `sceneAnimation.transport` 将播放头规则放入共享 Rust：输入完整动画声明、上一状态、显式场景时间与可选命令，输出 `sceneObjectId/phase/positionSeconds/timeSeconds`。主 ABI 与动画 schema 1／2 保持，增加可选 `viento_core_scene_animation_transport_version`；旧核心不会以 JS 回退模拟控制。相同时间命令按顺序处理，非循环末端包含浮点舍入边界，循环支持长场景时钟而不丢掉既有小播放头。
+
+`project-animation-commands.mjs` 保存有界回执和双来源。protocol 5 reader 从冻结成员动画与行为绑定解析身份，调用 Rust 核对实际转移，逐访问隔离状态并核对结束时间与命令总数。来源路径不由后端线帧提供。查询只返回已准入的状态快照，40 MiB 观察复制上限容纳动画、声音、事件与共享状态，旧协议预算保留。
+
+Godot 新 `project-control-runtime.gd` 继承既有项目协调器；`project-animation.gd` 排队，`project-animation-scene.gd` 桥接既有视觉运行。渲染从最后一次命令锚点和场景绝对时间计算，不逐帧累计播放头，避免后端与 Rust 在循环／结束边界漂移。队列使用当前访问与绑定，事件或声音失败、退出、过期端口都不能产生新的成功回执。新场景重建 transport；视觉停止不会冻结逻辑或声音。
+
+`app-project-animation-observation.js` 只有只读快照与受守护的来源导航端口，不取得 Godot 对象或命令执行权。脚本起始内容仍是通用目录中的普通文本，创建与保存、行为绑定分别使用既有流程。含动画项目声明 `project.animation-control` 并生成 protocol 5／清单 6；无动画项目允许精确回退到 protocol 4／清单 5，其他协议不放宽。单场景四属性／序列帧生成文件不改；新增后端代码纳入构建指纹。
+
+操作与实际验证范围见[项目动画控制](SCENE_ANIMATION.md#行为控制项目动画)及[本轮记录](test-results/project-animation-controls/README.md)。22 个 Studio 模块／43 项声明能力保持；该后端能力不等于 Bevy、Android 或当前安装支持。
+
+
+## 命名片段的独立边界
+
+`scene_animation.rs` 为作者 schema 3 增加有界 `clips`，独立可选 `viento_core_scene_animation_clips_version` 门控 `sceneAnimation.sampleClip` 与 `sceneAnimation.clipTransport`。原采样、原四字段 transport 和 ABI 保留。新 transport 状态增加 `clipId`，播放头始终为所选范围的本地秒数；`select` 归零并暂停，旧控制动作作用当前选择。采样只在局部范围循环一次，再用原曲线的绝对时刻插值，非循环片段终点不受整份动画 loop 干扰。
+
+原文编辑仍由 `scene-animation-edit.mjs` 产生私有品牌提案；三字段旧请求保留已有片段，显式 clips 请求升级 schema 3。新增根属性与同 ID 叶补丁保留 BOM／换行和无关原文；增删只替换 clips 数组。`app-scene-animation-clips.js` 只负责片段表单，父编辑器继续拥有来源检查、完整审阅和普通草稿应用。共享 player 仅持有时钟与选择，编辑示意及保存态场景控制器分别消费 Rust 样本，不修改曲线或渲染器以模拟片段。
+
+schema 3 使用 animation-plan 2 和 `locations.clips`，旧作者保持 plan 1。`project-animation-transport.mjs` 独立连接协议与 Rust：protocol 5 保留原 transport，protocol 6 调用 clipTransport；混合项目的旧动画只允许 null 选择。命令线帧不携带名称或来源，reader 从冻结计划派生片段声明和 `/clips/N`。中立账本显式按协议检查局部范围、选择连续性、稳定声明身份和预算；protocol 6 的快照／整观察累计字符串复制预算分别为 12／48 × 1024² 个 UTF-16 码元，另有节点与深度限制；这是复制检查预算，不是整个对象的内存字节上限，旧预算不扩大。只读观察组件额外提供片段来源，不获得执行权限。
+
+Godot 新片段生成包装器保留旧视觉采样脚本及素材布局；仅 protocol 6 项目接新协调器、队列和场景 transport 模板。请求先检查类型和全动画上界，排空时按前一命令已选中的范围检查定位；仍从最后命令锚点计算，事件→声音→动画→离场顺序和 256／64 命令预算不变。schema 3 项目使用 assembly 7；旧 protocol 4／5 文件与来源映射保留，宿主按构建冻结协议选择观察，不能根据后端输出猜版本。
+
+内置片段脚本起始内容继续普通 TXT 草稿、审阅、保存及行为绑定。旧控制 starter 同时补充 `has_method` 检查，避免没有动画控制端口的项目调用不存在的方法。22 个 Studio 模块／43 项声明能力保持；后端 `animation.clips2d` 与 Studio 模块能力分别计数。验收和限制见[本轮记录](test-results/scene-animation-clips/README.md)。
+
+
+## 行为参数的动画片段目录
+
+`scene-animation-directory.mjs` 复用 Rust 动画检查，独立约束保存态目录和行为来源品牌：动画正文限 128 KiB，行为来源限 32 KiB；原文五字段和场景三字段必须相符。catalog 只暴露名称、范围、循环与稳定 UUID；显式取值只返回普通字符串，不创建引用、提案或保存权限。旧 schema 1／2 与空 clips 保持原声明，不自动升级。
+
+Node 只读服务从一致 World 快照检查唯一 `animation` 关系和回链，返回受认证、禁止缓存的 `/api/scene-animation-directory`。这是一份声明目录，图片字节、轨道实例成员和运行脚本由各自构建验证；目录读取不依赖运行后端。服务能力 `sceneAnimationDirectory` 与音轨目录分开，沿用 `scene.authoring.behaviors`，不增加 Studio 模块、作者格式、Rust ABI 或执行协议。
+
+来源宿主独立维护动画读取代数，普通草稿身份不因可选目录撤回而变化。`app-scene-behavior-animation-clips.js` 只持有目录与暂选；父表单以当前绑定、私有参数行身份、类型和会话检查显式填入。读取/刷新不修改参数或审阅，关闭及行切换撤销在途回复。语言切换在原表单节点更新标签，保留输入焦点和选区。普通 Save 仍负责持久化，Godot 继续消费已有 protocol 6 字符串选择接口。范围见[操作说明](SCENE_BEHAVIORS.md#将动画片段编号填入行为参数)和[验收](test-results/scene-behavior-animation-picker/README.md)。
+
+
+## 动画片段使用位置与只读来源
+
+`engine/scene-animation-usage.mjs` 维护目录与私有来源品牌，复用既有 Rust 动画语义和行为声明检查；动画正文/来源限 128 KiB UTF-8，行为正文限 32 KiB。结果枚举已保存行为的完整 UUID 字符串参数，UI 再按当前片段过滤，不把名称、脚本变量或动态字符串推断成语义引用。精确原文 accessor 仅接受该品牌目录自己的匹配对象，返回当次保存态快照和 UTF-16 参数值范围；不读取磁盘或授权导航写入。
+
+`scene-animation-usage-service.mjs` 沿一致 World 快照读取唯一双向 animation/behavior 关联，动画必需、行为可缺省。`/api/scene-animation-usage` 是独立作者会话认证 JSON POST，只公布读取能力并返回 no-store；无素材读取、构建依赖检查或写入命令。旧 schema 1/2 与空片段沿用原样，登记/来源冲突和限额错误单独返回。
+
+动画来源宿主在每次异步边界核对 source5、保存字节摘要及独立 usage generation；usage 与实例目标选择分别撤销，不改变普通提案应用权限。片段字段只发出显式查看请求，独立使用位置组件持有查询、暂存快照和只读定位，父编辑器继续持有审阅、普通草稿和播放器。UI 以来源会话、能力和当前片段归属废弃迟到结果，语言切换更新现有节点。沿用现有模块与动画作者能力，不增加 Rust ABI、作者格式或后端协议。
+
+
+## 事件与动画的脚本组合
+
+`script-authoring.mjs` 新增 `godot-project-animation-event` 起始内容，复用既有 `subscribe_event`／`unsubscribe_event` 和 `select_animation_clip`／`play_animation` 端口。模板仍沿普通 TXT 草稿、保存、行为绑定和文本参数流程；`event_name` 默认 `checkpoint`，空值不订阅，空 `clip_id` 选择完整动画。片段名称选择只填入 UUID，不增加作者格式、Studio 模块能力或后端协议。
+
+就绪阶段只验证有效对象和所需方法并订阅，保留默认自动播放；同步回调依次提交选择和播放，重复触发从范围起点重播。事件 handled 仅确认回调已提交两条命令，执行事实仍由独立动画回执验证。缺少片段选择端口的旧项目安全返回，退出主动取消有效订阅并清空本地身份；旧访问继续由既有生命周期隔离。该组合不将事件系统变成动画状态机。作者用法见[事件动画片段](SCENE_ANIMATION.md#用项目事件触发动画片段)。
+
+## 动画整段时长变换的作者边界
+
+`sceneAnimation.retime` 是共享 Rust 的纯作者变换，接收已验证的完整动画 `document` 和 `durationSeconds`，返回 `{ document }`。独立可选导出 `viento_core_scene_animation_retime_version() = 1` 经 `supportsStudioCoreSceneAnimationRetime()` 门控；主协议、原检查／采样／transport 接口和作者 schema 1／2／3 保持。缺少能力时不在 JavaScript 中回退计算，普通动画编辑不受此可选区域影响。
+
+变换只替换总时长、全部关键帧时间和片段起止，保留值、稳定身份、列表顺序、格式版本、插值、循环和图集网格。0 与旧终点精确映射，目标相同直接保留原数据；正常比例使用乘法，极端比例以归一化计算避免中间溢出或下溢。独立校验集合核对所有不同时间（含跨轨道、片段边界与总时长）仍严格有序，精度塌缩或结果不合法整次拒绝，随后重验原动画预算；该集合不重排作者列表。
+
+`retimeSceneAnimationDraft(content, edit, durationSeconds)` 在异步边界前严格复制当前表单，与普通提案共用候选文档及 schema 升级规则，再调用 Rust，返回冻结文档供本地表单回填。返回值没有提案品牌或保存权限；原文仍经 `createSceneAnimationProposal` 的保真叶补丁、来源复核、普通草稿应用与 Save。独立 `app-scene-animation-retime.js` 维护目标输入，父编辑器维护当前表单与审阅；目标输入不使普通草稿变脏，失败／无变化保留审阅和预览，成功且有变化后重新检查。运行时钟、后端协议、资源读取及播放速率不参与变换。操作见[整段按比例调整时长](SCENE_ANIMATION.md#整段按比例调整时长)。
+
+## 动画轨道复制与实例目录边界
+
+`sceneAnimation.copyTrack` 接受精确信封 `{ protocolVersion, operation, document, sourceTrackId, targetInstanceId, newTrackId }`，通过独立可选 `viento_core_scene_animation_track_copy_version() = 1` 与 `supportsStudioCoreSceneAnimationTrackCopy()` 准入。Rust 校验完整动画，按稳定编号找到源轨道，复制后仅替换新 `id`／`instanceId` 并追加到末尾；新轨道编号按原 tracks 命名空间查重，同目标／属性拒绝，随后重验轨道、关键帧和正文预算。它不生成 UUID、读取 World 或推断目标图片；既有 schema、采样／transport 和后端协议保持。
+
+`copySceneAnimationTrackDraft(content, edit, sourceTrackId, targetInstanceId, newTrackId)` 先捕获当前完整表单，复用候选格式规则并调用纯核心，返回冻结文档供本地回填。父编辑器从现有且来源匹配的目标目录确认新实例并分配新身份；不要求复制准备阶段通过其他轨道的目标完整性检查。普通检查与应用仍核对全部轨道目标。目录刷新、来源、选择和表单变化均废弃在途结果；来源宿主和 HTTP 服务没有新增能力。
+
+独立 `app-scene-animation-track-copy.js` 负责源／目标暂选及准备状态，父编辑器持有表单、审阅和普通草稿应用；成功后才撤销旧预览／审阅。返回文档不是保存授权，结构提案沿原 `tracks` 数组替换规则保留外部未改原文、BOM 和换行，不能承诺旧轨道内部原字节保持。复制序列帧仍使用目标实例图片，逻辑坐标、资源绑定和命名片段均不复制。见[轨道复制操作](SCENE_ANIMATION.md#复制轨道到其他实例)。

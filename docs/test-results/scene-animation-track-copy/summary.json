@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-20",
+  "version": "0.1.6",
+  "commit": "97bd6e13cdc51a99a1cd29a2e20c6b1165d2277e",
+  "delivery": "unreleased working tree; no version change, commit, push or install",
+  "runtime": {
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "browser": "Chrome/154.0.8037.97",
+    "godot": {
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "wasm": {
+      "bytes": 695187,
+      "sha256": "0f7364f59ea4dfa9a0bc53815ce56f5ed7c0229dc3ebf9e60ac1ea05350eb964",
+      "rebuilt": true
+    }
+  },
+  "checks": {
+    "app": {
+      "tests": 6330,
+      "pass": 6084,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 246,
+      "todo": 0
+    },
+    "syntaxFiles": 1065,
+    "versionConsistency": true,
+    "apiPreflight": true,
+    "rust": {
+      "tests": 365,
+      "passed": 365,
+      "fail": 0,
+      "skipped": 0
+    },
+    "core": {
+      "tests": 76,
+      "pass": 76,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "authorAndSaveWorkflow": {
+      "tests": 35,
+      "pass": 35,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "ui": {
+      "tests": 66,
+      "pass": 66,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "component": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "browser": {
+      "groups": 4,
+      "screenshots": 5,
+      "errors": 0,
+      "report": "docs/test-results/scene-animation-track-copy/browser-1792491092278/browser.json"
+    }
+  },
+  "scopeNotes": [
+    "Focused groups and full suite overlap; their totals must not be added.",
+    "The full application suite runs without Godot/native parity environment variables. Separate core tests enable actual CLI/WASM parity; one of the three author workflow cases enables actual Godot.",
+    "Copying captures the current complete unsaved form. Rust copies one explicit source, changes only id/instanceId and appends it; current/result schema, channel uniqueness, identities and budgets are validated. All other semantic values remain.",
+    "The core has no World, file, UUID allocation, image binding or engine authority. JS strictly checks returned data without substituting a local copy implementation. A missing optional marker leaves older editing available.",
+    "The UI requires a valid saved target directory and explicit source/target choices. Selection, language and failed operations preserve existing review/preview; stale context prevents a late commit. Success changes fields only, then ordinary Check/review/Apply draft/Save is required.",
+    "Copying sprite frames carries grid/frame indices only. The target retains its own image. Structural tracks proposals preserve outside-array source and BOM/newline style; previous track number spellings and whitespace inside the replaced array are not promised.",
+    "The35-case author/workflow group includes eight new helper tests, three new workflow tests and24 existing edit/retime/clip/sprite cases. Two HTTP cases exercise documents/design-data layouts, and a separate actual Godot case validates the frozen saved result.",
+    "The actual Godot probe selects a named clip and seeks0.25s, then observes source timeline0.75s, both visual offsets150, both sprite frames3, and distinct texture paths for the two instances. This is controlled sampling, not GPU screenshot or second-backend conformance.",
+    "Actual Chrome uses a disposable workspace and tests local copy, failure/cancel, review and ordinary Save. Browser and actual engine cases are separate segments, not an all-GUI empty-project delivery claim.",
+    "8303 pre-existing example/history/evidence files,2324 prior score objects and2542 prior evidence objects remain intact. Both Rust animation sources and generated WASM change; backend implementation and installed AppImage remain.",
+    "No new author schema, runtime protocol, module capability, asset copying, Bevy animation, ZIP migration, installed package or device acceptance is claimed.",
+    "The first Chrome smoke used actor.id instead of the author fixture instanceId; the failed report is retained. Only that smoke fixture field was corrected and syntax checked before the final browser run; production and unit-test sources remained frozen."
+  ],
+  "sources": {
+    "crates/viento-studio-core/src/lib.rs": "e674c85747eb86cce9c5413b391ede39c1bbf2df60f3416ea9e85f872575d8e7",
+    "crates/viento-studio-core/src/scene_animation.rs": "5b2cf258cb6bf0cd8d3e345749418902f232fac875558708f296a6349a836473",
+    "engine/scene-animation-core.mjs": "b7032359ed92a5356c57a3b180797686fa8db0e778897b38c7cd24b768413be7",
+    "engine/scene-animation-edit.mjs": "3f0014b7556f6e8e7a9f6edbb7596e28946be2cde873aa6fe2fe4fcd4711858e",
+    "engine/scene-animation-preview.mjs": "16d480fc4274ec6a425dfff0e2e8062948f53a4081b9b05d2d8b6d0d8db5ae0e",
+    "engine/scene-animation-sprite-layout.mjs": "cff8edea1662c1a56d0c6efc02e3be28ea33e8e32358e1afcccae6dfbc980f80",
+    "engine/scene-animation-visual-frame.mjs": "9ff2f737a2987f009ae4029f318f9aced311482ac21c1ce301ba262b12fe13a0",
+    "engine/scene-animation.mjs": "d5e476f6e3a1366436f63ce3afb059d82d8cd33857b01e10a66713300cae2801",
+    "engine/studio-core.mjs": "78f1f58d538557ae29d730de85b59df5a4e85e5bb543826ff74c0fd2a031dfdf",
+    "engine/studio-core.wasm": "0f7364f59ea4dfa9a0bc53815ce56f5ed7c0229dc3ebf9e60ac1ea05350eb964",
+    "engine/studio-modules.mjs": "938b17e7c84e7d368abc357a5cdeae95165d22db81ed71c63a9a4c9ba17b8ec7",
+    "scripts/lib/scene-preview-service.mjs": "ea66d0ad1307134e7f45ad09ce9eb5771ef3be1898ca50102f4d89394d957430",
+    "scripts/tests/scene-animation-editor-ui.test.mjs": "8e3149c2596c15ffb484bfc77db38932960213c37a8e9959520e2cbd2c6217d6",
+    "scripts/tests/scene-animation-track-copy-core.test.mjs": "cad6d66a99a0ec0a232d7f029f917066473f0a11d6063671921c9d962697b801",
+    "scripts/tests/scene-animation-track-copy-edit.test.mjs": "f73258778d5e3abfd4b6bc54cc302a3fff2e3bf44910dda8926307fd688ba803",
+    "scripts/tests/scene-animation-track-copy-smoke.mjs": "128ee71ad1e0dbfea02ae539e4362580693a84321ee4a4ab8848a20c18abe058",
+    "scripts/tests/scene-animation-track-copy-ui.test.mjs": "d053fcd5793e3adf8d6c7e02063142c2095ebbaf12cbd0318770d509183507bc",
+    "scripts/tests/scene-animation-track-copy-workflow.test.mjs": "7e5a85ce2dafbc5cf6354cdfedc32b198a62c5306e66be2ceaa69bceebec2f81",
+    "web/i18n/en.js": "6ea3cb7e55a043517d85554de6f3004639bdff19c4ddd94c63d9d890ee04cd4c",
+    "web/i18n/ja.js": "1480f0b702b69151f4dc61e3e27d206084309290e7449081d603f695cdf3228d",
+    "web/modules/app-runtime.js": "346ce85ea829fb59551b494207ae84dc47e11c170e7f453ef12c2593eff85387",
+    "web/modules/app-scene-animation-clips.js": "5ea47930ece48f75c5bfad5e1a2c83599fb72a2e748b8216746e66264e286bab",
+    "web/modules/app-scene-animation-retime.js": "9d5c7d24faad9820bd8525066110055f535252ced254f04d7f1d72bcbd61bcbc",
+    "web/modules/app-scene-animation-source.js": "4db6bee2f660422240bb6833449ad0e00b54c99a1c79b42636f87c2e61233c06",
+    "web/modules/app-scene-animation-track-copy.js": "3765a364054d42ad9976554a2f3bb4bfd47587dcff957c8f6aeb225947879a7a",
+    "web/modules/app-scene-animation.js": "3a637c084554eb28e797ebdee3494e5b4e73b54f7de0becca838d1e64a395917",
+    "web/modules/app-scene-preview-animation.js": "430df952b992a1f9b36c2fc22bc764f68fca93f8d8fe77a3f1f189e2d684d888",
+    "web/modules/app-scene-preview-canvas.js": "1e8d461b4883211a953f4bc4d50cdde82202df3c4a35f47cbf9be854ff9b7c4e",
+    "web/modules/app-scene-preview.js": "536ffe1ebde2b624c6a661467eb22952d46c51e824481972afe026c907ee4ccd",
+    "web/modules/app-studio-system.js": "89033b38678c6ff7837920a84c1e569170bebf835911f3c8f7d97dc52952c324",
+    "web/modules/scene-animation-player.js": "54d8473fc50c076c195b2324e9605089803fc656bf057bd0f342591361a77255",
+    "web/modules/scene-animation-preview.js": "cc06fb90ea103f7615314a40b9b055feff1a43b8205a93253105ebdff5998378",
+    "web/scene-animation.css": "b1c25d01d4a4624b641fdcbba56a861806bd3e3dbdbca5986a3edc06e7ce1ada"
+  },
+  "atlas": {
+    "architectures": 11,
+    "functions": 133,
+    "implementations": 399,
+    "bindings": 583,
+    "cells": 2332,
+    "evidence": 2556,
+    "workflows": 96
+  },
+  "commands": {
+    "app": "node scripts/check-project.mjs --app-only",
+    "rust": "cargo test --manifest-path crates/viento-studio-core/Cargo.toml --target-dir /tmp/viento-animation-track-copy/core-target",
+    "workflow": "VIENTO_GODOT_BIN=<Godot4.7.2> node --test scripts/tests/scene-animation-track-copy-workflow.test.mjs",
+    "browser": "node scripts/tests/scene-animation-track-copy-smoke.mjs"
+  },
+  "logSha256": {
+    "app-check.log": "42f76b60143211bc852a41062fa44be1fbc2a3330ff5d7ffbae5f8afe1434324",
+    "author-workflow-first.log": "f86f39495142a397b3cb152795f285fec74e2c937be7f0b10b8cbc3880c11415",
+    "browser-final.log": "b92dc12d0ca7cc547d42b763e961c1cb1e2a54a75630a905bb49a7a96de6b2e4",
+    "browser-first.log": "c981040df79ae1f0c0f4e1173e95dcd942a50c2ef62008cc2251dd8e9f87b609",
+    "component-first.log": "8f8f06f79a2e7c94464f5ce3b5597f1724c33f136af0a4ed1e9bc3c4e504d95b",
+    "core-regression-final.log": "b783247f0fbf9e364d354b10ecf82138b857aa863f1544b5e1b73d0798a3a174",
+    "js-copy-first.log": "246ab6a8e94d0f488c201dd2a2c63937e70c86e0257c9940a646b03130d0b79a",
+    "rust-all.log": "c18dd91354baa3b77971a27f4dc1759385ffba01205abc1df4c206f88d4ec9e0",
+    "rust-copy-first.log": "f3295f382cada4efaeb37ee914a36144b26ea0d5c0f7075ad1dd3d8f1c105113",
+    "ui-first.log": "5a098d9ba2005c78167370c3669431b730a27873d19eb6aa1b762a0ae9354311",
+    "wasm-build.log": "3cc83a67aa71744b5bc5697b9985faf3aa51507787b10d0174edc455e339c86d"
+  },
+  "ok": true
+}

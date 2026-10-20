@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-20",
+  "version": "0.1.6",
+  "commit": "97bd6e13cdc51a99a1cd29a2e20c6b1165d2277e",
+  "delivery": "unreleased working tree; no version change, commit, push or install",
+  "runtime": {
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "browser": "Chrome/154.0.8037.97",
+    "godot": {
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64"
+    },
+    "wasm": {
+      "path": "engine/studio-core.wasm",
+      "bytes": 683261,
+      "sha256": "c419c1145b368e5b50d37326a64e1e68abda5645637ef856f4eb1aa9bf731d35",
+      "unchanged": true
+    }
+  },
+  "checks": {
+    "app": {
+      "tests": 6259,
+      "pass": 6017,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 242,
+      "todo": 0
+    },
+    "syntaxFiles": 1053,
+    "versionConsistency": true,
+    "apiPreflight": true,
+    "authoringAndUi": {
+      "tests": 45,
+      "pass": 45,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "ordinarySaveAndBuildWorkflow": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "actualGodot": {
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "browser": {
+      "groups": 5,
+      "screenshots": 13,
+      "errors": 0,
+      "report": "docs/test-results/project-event-animation/browser-authoring-1792488428503/browser.json"
+    }
+  },
+  "scopeNotes": [
+    "Focused groups and full suite overlap; their totals must not be added.",
+    "The full application suite ran without VIENTO_GODOT_BIN or rebuilding native auxiliary tools. Real Godot was enabled separately for the 14-case runtime group and the 3-case authoring workflow (one actual engine case).",
+    "Actual Chrome uses a disposable copied workspace: new TXT starter, first behavior registration, named clip parameter selection, review and ordinary Save in Chinese, English and Japanese. It does not execute Godot; native integration is a separate segment.",
+    "The starter composes existing event and animation interfaces. No author schema, module capability, runtime protocol, Rust rule or backend implementation changed.",
+    "Ready only subscribes; the default whole animation continues. Matching events ignore valid scalar payloads and enqueue select/play. Every trigger restarts the selected range; empty clip selects the whole animation.",
+    "A real Godot probe exposed that is Object throws on a previously freed instance. All three new-starter guards now check typeof == TYPE_OBJECT before is_instance_valid. Pre-subscription and post-subscription release probes passed.",
+    "The 14 actual Godot tests include controlled private-clock probes for exact animation samples and a separate real-Godot port stub lifecycle probe. These are not GPU rendering or independent backend conformance claims.",
+    "Old 11 starters, author data, prior reports, old atlas score/evidence objects, Rust/backend sources, WASM and installed AppImage are preserved.",
+    "No new Rust compilation, Bevy animation, ZIP migration, installed Tauri, Android device, standalone distribution, animation state machine, blending or automatic clip-reference protection is claimed.",
+    "Initial failed logs are retained: browser smoke used the existing-behavior directory before first creation; workflow expected origin on a raw receipt instead of bindingId; native fixtures initially used unsupported null payloads/incorrect field expectations and also exposed the real freed-object defect. Final production was frozen before final browser, authoring, native and complete checks."
+  ],
+  "sources": {
+    "engine/scene-animation-directory.mjs": "eb91c83d690fbf0076e47a7c9444d793f060e4ee15ecc7d8b340f6dd49ceb82c",
+    "engine/script-authoring.mjs": "a878088df5b145a2c10b4e58c268cc0f2a69118454eacf8a4df01d87fb192068",
+    "scripts/tests/helpers/project-event-animation-author-fixture.mjs": "0065c309e183f38e54c32f553c0e79b0173820b58c7daab5bdbb8b42f3a638c0",
+    "scripts/tests/project-event-animation-authoring-smoke.mjs": "752265029b2561d1b9f03ce6235f422ab0ed4e5cbcf97d4dab9a6c92cc2f5d23",
+    "scripts/tests/project-event-animation-authoring-workflow.test.mjs": "5cd067ad29a4f2caebea81173871e5cc9583ae7be25ab4ce12c4b6822d01a9a0",
+    "scripts/tests/project-event-animation-godot.test.mjs": "7c2d20e21ea4bbfe3664da7eec958b3d667d0af1bba3c252f95b2a6b57092b5f",
+    "scripts/tests/script-authoring.test.mjs": "3963c3207363cd699480c072ea399de8279c18414146a4948a009d696f892ac3",
+    "scripts/tests/script-create-ui.test.mjs": "c48b6cebe7e50db91c2b87c6f2fb68594b7e12862de8b267c4bfc7809331fb21",
+    "web/i18n/en.js": "6cf04929b51324cde4f6fe39de463168bbac2cccf14b7a060cf6dc09a3e035c7",
+    "web/i18n/ja.js": "373c99b2f822b25c1b25a739db6bb78b2954d914140411276f9baf829bbe1572",
+    "web/modules/app-behavior-source.js": "f778e50809d1c9862cbfa9ddfe6e5679a0a6d0664f23144dd54138f6d869e740",
+    "web/modules/app-doc-service.js": "b0631e7d5ef7799b86edc015425cf349cc5e715e13cecb4161c98c14779636c8",
+    "web/modules/app-runtime.js": "346ce85ea829fb59551b494207ae84dc47e11c170e7f453ef12c2593eff85387",
+    "web/modules/app-scene-behavior-animation-clips.js": "8ce8939de5a713bedbe611be1f474ad341944aa17bed2b48c006f8aece3847af",
+    "web/modules/app-scene-behavior-create.js": "0e4e602632062ded566f323036eafe3f5525ab80cd24d0a545de358fefe4137f",
+    "web/modules/app-scene-behaviors.js": "e7db1ee4e84fe6826954244a6df786c85e9046c83e4506f11879d49705c805e3",
+    "web/modules/app-script-create.js": "e5dc10137c5af309f09fb3b17524d9a7c999ec1760225d8736a8505a657e19ba",
+    "web/scene-behaviors.css": "cf83fd57b7f05cacdbbf34b02b084e2895feffa2a36fce189c10fc3912d07410",
+    "web/script-create.css": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f"
+  },
+  "starter": {
+    "id": "godot-project-animation-event",
+    "contentSha256": "91119164dbcc2e3cefb0185201019cb47a2f2d647514f54dffddaf145d208eb1",
+    "catalogCount": 12
+  },
+  "atlas": {
+    "architectures": 11,
+    "functions": 133,
+    "implementations": 395,
+    "bindings": 579,
+    "cells": 2316,
+    "evidence": 2528,
+    "workflows": 96
+  },
+  "commands": {
+    "app": "node scripts/check-project.mjs --app-only",
+    "workflow": "VIENTO_GODOT_BIN=<Godot4.7.2> node --test scripts/tests/project-event-animation-authoring-workflow.test.mjs",
+    "native": "VIENTO_GODOT_BIN=<Godot4.7.2> node --test --test-reporter=tap scripts/tests/project-event-animation-godot.test.mjs",
+    "browser": "node scripts/tests/project-event-animation-authoring-smoke.mjs"
+  },
+  "logSha256": {
+    "app-check.log": "c4f5270104b7716d6f108d9cf4003859743542f00c52946e91eaf27403e5f659",
+    "authoring-ui-final.log": "605d13d0e67ee1d1ab8aaa43758d3acd9ffcd5bc837825da6cbd025cba935cc6",
+    "authoring-ui.log": "dcc4c213829cf43475a7e297fd1765de8ea1715caced6b97de67db91f9a39054",
+    "browser-final-guard.log": "07afa48101ecedbb33b7f4136dff417f12d9f4b11d1061daece78a5f4d481251",
+    "browser-final.log": "fa242c73e0c9bfdf484ca511aff77aa98b85f046a9525ee6d6a2137f3cae41cf",
+    "browser-initial.log": "7072a4c2acad0fd28620cccb499ebbe4279fdf2dad784a5cc047f9a9131bb488",
+    "native-corrected-focused.log": "37b590750414cb6937b79593db6c2a0d924cbfb80157282ee50f7dec5c8bdd27",
+    "native-final.log": "284afae4119bcc9067d26e90a47de487f78561c391096a5eb8a68bc534f01744",
+    "native-first.log": "cde57d493ae220b2ae366ede3c7864626b542ac9a5bc4d0fa7ffe38b4006f35e",
+    "native-ports-fixed.log": "1c4f9b4b4a980fcc9b78efb2ef5b416b0fc1ab0c5b37157af2c54b52f49bc17f",
+    "native-ports-focused.log": "4080e8519e51566a9d986a256e9852c7facb1dad972a0e92dcbbd4c494f34641",
+    "workflow-final.log": "fb9e1a2691a6c36da1f3f1f7ab2b37b2412e5fae8b401fce45f39571dd5638a3",
+    "workflow-guard-final.log": "64a9d905a4e2ee2b49257484622cda21fc5750bb496eda32e5d96b54219139b5",
+    "workflow-initial.log": "125b732080605dc2c601a96b119ddc96eeaa4a394bab72aa9d1d599254bb23b8"
+  },
+  "ok": true
+}

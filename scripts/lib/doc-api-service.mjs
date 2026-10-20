@@ -1,6 +1,8 @@
+import { createSceneAnimationUsageService } from './scene-animation-usage-service.mjs';
 import { createSceneAnimationCreationService } from './scene-animation-creation-service.mjs';
 import { createSceneAnimationTargetsService } from './scene-animation-targets-service.mjs';
 import { createSceneAudioUsageService } from './scene-audio-usage-service.mjs';
+import { createSceneAnimationDirectoryService } from './scene-animation-directory-service.mjs';
 import { createSceneAudioDirectoryService } from './scene-audio-directory-service.mjs';
 import { createSceneCompositionCreateService } from './scene-composition-create-service.mjs';
 import { createSceneBehaviorDirectoryService } from './scene-behavior-directory-service.mjs';
@@ -59,8 +61,10 @@ function createDocumentService(options = {}) {
   const sceneCompositionCreate = createSceneCompositionCreateService(PROJECT_ROOT);
   const sceneBehaviorAuthoring = createSceneBehaviorAuthoringService(PROJECT_ROOT);
   const sceneAudioCreation = createSceneAudioCreationService(PROJECT_ROOT);
+  const sceneAnimationDirectory = createSceneAnimationDirectoryService(PROJECT_ROOT);
   const sceneAudioDirectory = createSceneAudioDirectoryService(PROJECT_ROOT);
   const sceneAudioUsage = createSceneAudioUsageService(PROJECT_ROOT);
+  const sceneAnimationUsage = createSceneAnimationUsageService(PROJECT_ROOT);
   const sceneAnimationTargets = createSceneAnimationTargetsService(PROJECT_ROOT);
   const sceneAnimationCreation = createSceneAnimationCreationService(PROJECT_ROOT);
   const sceneBehaviorCreation = createSceneBehaviorCreationService(PROJECT_ROOT);
@@ -93,7 +97,7 @@ function createDocumentService(options = {}) {
   });
 
   async function getCapabilities() {
-    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, sceneBehaviorAuthoring: true, sceneBehaviorDirectory: true, sceneAudioCreation: true, sceneAudioDirectory: true, sceneAudioUsage: true, sceneAnimationTargets: true, sceneAnimationCreation: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, sceneAnimationPreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'animation.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
+    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, sceneBehaviorAuthoring: true, sceneBehaviorDirectory: true, sceneAudioCreation: true, sceneAudioDirectory: true, sceneAnimationDirectory: true, sceneAudioUsage: true, sceneAnimationUsage: true, sceneAnimationTargets: true, sceneAnimationCreation: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, sceneAnimationPreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'animation.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
   }
 
   function getRuntimeConfig() {
@@ -274,7 +278,9 @@ function createDocumentService(options = {}) {
     sceneBehaviorCreation,
     sceneAudioCreation,
     sceneAudioDirectory,
+    sceneAnimationDirectory,
     sceneAudioUsage,
+    sceneAnimationUsage,
     sceneAnimationTargets,
     sceneAnimationCreation,
     sceneBehaviorDirectory,

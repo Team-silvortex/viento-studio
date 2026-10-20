@@ -1,3 +1,5 @@
+import { setupSceneBehaviorAnimationClips } from '../../web/modules/app-scene-behavior-animation-clips.js';
+import { captureSceneBehaviorAnimationClips } from '../../engine/scene-animation-directory.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -30,15 +32,25 @@ function audioDirectory(source, changes = {}) {
     manifest: { objectId: id(901), sourcePath: 'documents/audio/demo.json', sourceRevision: hash(content), content }, ...changes };
   return captureSceneBehaviorAudioTracks(copy(source), raw, scene);
 }
+function animationDirectory(source, changes = {}) {
+  const scene = { objectId: id(2), sourcePath: contextData().scene.sourcePath, sourceRevision: contextData().scene.sourceRevision };
+  const document = { format: 'viento-scene-animation', schemaVersion: 3, sceneObjectId: id(2), durationSeconds: 2, loop: false,
+    tracks: [{ id: id(700), instanceId: id(201), property: 'opacity', interpolation: 'linear', keyframes: [{ atSeconds: 0, value: 0 }, { atSeconds: 2, value: 1 }] }],
+    clips: [1,2].map(n => ({ id: id(710+n), name: 'Same <b>', startSeconds: n === 1 ? 0 : .5, endSeconds: n === 1 ? 1 : 2, loop: n === 2 })), ...changes.document };
+  const content = JSON.stringify(document), raw = { format: 'viento-scene-animation-directory', schemaVersion: 1, status: 'ready', worldId: 'world:' + 'a'.repeat(64), revision: hash('animation directory'), scene,
+    manifest: { objectId: id(910), sourcePath: 'documents/animations/demo.json', sourceRevision: hash(content), content }, ...changes.raw };
+  return captureSceneBehaviorAnimationClips(copy(source), raw, scene);
+}
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return { promise, resolve }; };
 async function fixture(t, settings = {}) {
   const original = settings.content ?? serialize(settings.model || model()); let content = original, language = 'zh', languageListener = () => {}, disposed = 0, ids = 0, loads = 0;
   const context = { editable: true, creating: false, busy: false, sourceJSON: true, behaviorSource: true, available: true,
-    sourcePath: 'documents/behaviors/demo.json', sourceToken: 'load:1:draft:0', audioTracksAvailable: settings.audioAvailable === true };
-  const calls = [], checks = [], proposals = [], confirms = [], focused = [], audioLoads = [];
+    sourcePath: 'documents/behaviors/demo.json', sourceToken: 'load:1:draft:0', audioTracksAvailable: settings.audioAvailable === true, animationClipsAvailable: settings.animationAvailable === true };
+  const calls = [], checks = [], proposals = [], confirms = [], focused = [], audioLoads = [], animationLoads = [], sourceClones = new WeakMap();
   const snapshot = () => ({ sourcePath: context.sourcePath, token: context.sourceToken, baseSourceRevision: hash(original), sourceRevision: hash(content), content });
   const translate = (key, ...args) => (({ en, ja }[language]?.[key] || key).replace(/\{(\d+)\}/g, (_, n) => String(args[n] ?? '')));
   const h = await dialogHarness('app-scene-behaviors', {
+    setupSceneBehaviorAnimationClips: options => setupSceneBehaviorAnimationClips({ ...options, getContext: () => { const context = options.getContext(); if (context.source && !sourceClones.has(context.source)) sourceClones.set(context.source, copy(context.source)); return { ...context, source: context.source ? sourceClones.get(context.source) : undefined }; } }),
     inspectSceneBehaviors, isSceneBehaviorProposal, isSceneBehaviorAudioTracks, sceneBehaviorAudioTrackValue,
     sceneBehaviorAudioTracksMatchSource: (catalog, source) => sceneBehaviorAudioTracksMatchSource(catalog, copy(source)),
     createSceneBehaviorProposal: (source, edit) => { const proposal = createSceneBehaviorProposal(copy(source), copy(edit)); proposals.push(proposal); return settings.proposal ? settings.proposal(proposal) : proposal; },
@@ -51,6 +63,7 @@ async function fixture(t, settings = {}) {
   controller = h.runtime.setupSceneBehaviors({ getContext: () => context,
     getSource: async () => { loads++; return settings.source ? settings.source(snapshot()) : snapshot(); },
     ...(settings.audioPort === false ? {} : { getAudioTracks: async source => { audioLoads.push(copy(source)); return settings.audioTracks ? settings.audioTracks(copy(source), audioLoads.length) : audioDirectory(source); } }),
+    ...(settings.animationPort === false ? {} : { getAnimationClips: async source => { animationLoads.push(copy(source)); return settings.animationClips ? settings.animationClips(copy(source), animationLoads.length) : animationDirectory(source); } }),
     inspect: async request => { checks.push(copy(request)); return settings.inspect ? settings.inspect(request, checks.length) : contextData(); },
     applyDraft: async (proposal, ports) => {
       calls.push({ proposal, ports }); if (settings.apply) return settings.apply(proposal, ports, { context, setContent: value => { content = value; }, refresh: () => controller.refresh() });
@@ -61,7 +74,7 @@ async function fixture(t, settings = {}) {
   const set = (suffix, value, event = 'input') => { el(suffix).value = value; if (event) el(suffix).dispatch(event); };
   const click = async suffix => { el(suffix).click(); await settle(); };
   t.after(() => controller.dispose());
-  return { ...h, controller, context, el, settle, set, click, original, calls, checks, proposals, confirms, focused, snapshot, audioLoads,
+  return { ...h, controller, context, el, settle, set, click, original, calls, checks, proposals, confirms, focused, snapshot, audioLoads, animationLoads,
     open: () => controller.open(), content: () => content, loads: () => loads, ids: () => ids, unsubscribed: () => disposed,
     language(value) { language = value; languageListener(); }, check: () => click('Check'), apply: () => click('Apply'),
     select: async value => { set('Binding', value, 'change'); await settle(); } };
@@ -327,11 +340,11 @@ test('loading across form edits or a binding change only offers choices in the c
   assert.equal(h.el('Param0AudioTrack').value, ''); await h.select(id(102)); assert.equal(h.el('Param0Value').value, id(702));
 });
 test('parameter identity prevents detached row controls from filling another row after removal, type change or binding change', async t => {
-  for (const mutation of ['remove', 'type', 'binding', 'language']) {
+  for (const mutation of ['remove', 'type', 'binding']) {
     const h = await fixture(t, { audioAvailable: true }); await h.open(); await h.click('AddParameter'); h.set('Param3Name', 'next'); h.set('Param3Value', 'survivor');
     await h.click('LoadAudioTracks'); h.set('Param0AudioTrack', id(701), 'change'); h.set('Param3AudioTrack', id(702), 'change'); const stale = h.el('Param0UseAudioTrack');
     if (mutation === 'remove') await h.click('Param0Remove'); if (mutation === 'type') h.set('Param0Type', 'number', 'change');
-    if (mutation === 'binding') await h.select(id(102)); if (mutation === 'language') h.language('en');
+    if (mutation === 'binding') await h.select(id(102));
     stale.dispatch('click'); await h.settle(); assert.notEqual(h.el('Param0Value').value, id(701), mutation);
     if (mutation === 'remove') { assert.equal(h.el('Param2AudioTrack').value, id(702)); await h.click('Param2UseAudioTrack'); assert.equal(h.el('Param2Value').value, id(702)); }
     if (mutation === 'type') assert.equal(h.el('Param0AudioTrack'), null);
@@ -364,4 +377,53 @@ test('audio ID picker strings and status remain translated while current text an
   for (const key of [...source.matchAll(/(?:t|removeButton|field)\('([^']+)'/g)].map(match => match[1]).filter(key => /音轨|声音来源/.test(key))) {
     assert.ok(en[key], 'English: ' + key); assert.ok(ja[key], 'Japanese: ' + key);
   }
+});
+
+test('animation clip discovery is opt-in and lists duplicate names with source range and full IDs only for string parameters',async t=>{
+  for(const settings of [{},{animationAvailable:true,animationPort:false}]){const h=await fixture(t,settings);await h.open();assert.equal(h.el('AnimationClipsTools').hidden,true);h.el('LoadAnimationClips').dispatch('click');await h.settle();assert.equal(h.animationLoads.length,0);}
+  const h=await fixture(t,{animationAvailable:true});await h.open();assert.equal(h.el('Param0AnimationClip'),null);await h.click('LoadAnimationClips');
+  assert.deepEqual(h.animationLoads,[h.snapshot()]);assert.equal(h.el('AnimationClipsStatus').dataset.status,'ready');assert.match(h.el('AnimationClipsPath').textContent,/documents\/animations\/demo.json/);
+  assert.deepEqual(h.el('Param0AnimationClip').children.map(item=>item.value),['',id(711),id(712)]);assert.match(h.el('Param0AnimationClip').children[2].textContent,new RegExp('Same <b>.*0.5.*2.*'+id(712)));
+  assert.equal(h.el('Param0AnimationClip').querySelector('b'),null);assert.equal(h.el('Param1AnimationClip'),null);assert.equal(h.el('Param2AnimationClip'),null);assert.equal(h.el('Dialog').dataset.dirty,'false');
+});
+test('only explicit clip insertion changes an arbitrary text parameter and ordinary review applies an unsaved draft',async t=>{
+  const h=await fixture(t,{animationAvailable:true});await h.open();h.set('Param0Name','arbitrary_description');h.set('Param0Value','original text');await h.check();const approved=h.el('After').textContent;
+  await h.click('LoadAnimationClips');h.set('Param0AnimationClip',id(712),'change');assert.equal(h.el('Param0Value').value,'original text');assert.equal(h.el('After').textContent,approved);assert.equal(h.el('Apply').disabled,false);
+  await h.click('Param0UseAnimationClip');assert.equal(h.el('Param0Value').value,id(712));assert.equal(h.el('Apply').disabled,true);assert.equal(h.el('Review').hidden,true);assert.equal(h.document.activeElement,h.el('Param0Value'));
+  await h.check();await h.apply();assert.equal(h.calls.length,1);assert.equal(JSON.parse(h.content().replace(/^\ufeff/,'')).bindings[0].parameters.arbitrary_description,id(712));assert.ok(h.content().startsWith('\ufeff'));assert.equal(h.content().replaceAll('\r\n','').includes('\n'),false);
+});
+test('clip reads selections errors and translations preserve focused incomplete input and an unrelated approved review',async t=>{
+  const h=await fixture(t,{animationAvailable:true,audioAvailable:true,animationClips:(source,count)=>{if(count===2)throw Error('offline');return animationDirectory(source);}});await h.open();editTitle(h);await h.check();const approved=h.el('After').textContent;
+  await h.click('LoadAnimationClips');await h.click('LoadAudioTracks');h.set('Param0AnimationClip',id(711),'change');h.set('Param0AudioTrack',id(701),'change');const value=h.el('Param0Value'),selector=h.el('Param0AnimationClip');value.focus();value.selectionStart=1;value.selectionEnd=3;
+  for(const language of ['en','ja','zh']){h.language(language);assert.equal(h.el('Param0Value'),value);assert.equal(h.document.activeElement,value);assert.equal(value.selectionStart,1);assert.equal(value.selectionEnd,3);assert.equal(h.el('Param0AnimationClip'),selector);assert.equal(selector.value,id(711));assert.equal(h.el('Param0AudioTrack').value,id(701));assert.equal(h.el('After').textContent,approved);assert.equal(h.el('Apply').disabled,false);}
+  await h.click('LoadAnimationClips');assert.equal(h.el('AnimationClipsStatus').dataset.status,'error');assert.equal(h.el('After').textContent,approved);assert.equal(h.document.activeElement,value);assert.equal(value.selectionEnd,3);
+  await h.click('LoadAnimationClips');h.set('Param1Value','1e-');const incomplete=h.el('Param1Value');incomplete.focus();incomplete.selectionStart=1;incomplete.selectionEnd=2;await h.click('LoadAnimationClips');h.language('ja');assert.equal(h.el('Param1Value'),incomplete);assert.equal(incomplete.value,'1e-');assert.equal(h.document.activeElement,incomplete);assert.equal(incomplete.selectionEnd,2);assert.equal(h.calls.length,0);
+});
+test('missing animation and empty legacy clip catalog have distinct messages without touching an approved review',async t=>{
+  for(const mode of ['empty','legacy1','legacy2','clips-empty','forged','wrong-source','error']){
+    const h=await fixture(t,{animationAvailable:true,animationClips:source=>{
+      if(mode==='error')throw Error('no');if(mode==='forged')return copy(animationDirectory(source));if(mode==='wrong-source')return animationDirectory({...source,token:'other'});
+      if(mode==='empty')return animationDirectory(source,{raw:{status:'empty',manifest:null}});
+      if(mode.startsWith('legacy')){const doc={schemaVersion:Number(mode.at(-1)),clips:undefined};return animationDirectory(source,{document:doc});}
+      return animationDirectory(source,{document:{clips:[]}});
+    }});await h.open();editTitle(h);await h.check();const approved=h.el('After').textContent;await h.click('LoadAnimationClips');assert.equal(h.el('Param0AnimationClip'),null,mode);assert.equal(h.el('After').textContent,approved);assert.equal(h.el('Apply').disabled,false);
+    if(mode==='empty')assert.match(h.el('AnimationClipsStatus').textContent,/未关联/);else if(mode.startsWith('legacy')||mode==='clips-empty')assert.match(h.el('AnimationClipsStatus').textContent,/没有命名片段/);else assert.equal(h.el('AnimationClipsStatus').dataset.status,'error');
+  }
+});
+test('old clip responses and detached insertion buttons cannot target another row binding source or reopened session',async t=>{
+  for(const mutation of ['remove','type','binding','source','capability','close']){
+    const gate=deferred(),h=await fixture(t,{animationAvailable:true,animationClips:(source,count)=>count===1?animationDirectory(source):gate.promise});await h.open();await h.click('AddParameter');h.set('Param3Name','remaining');h.set('Param3Value','untouched');await h.click('LoadAnimationClips');h.set('Param0AnimationClip',id(711),'change');const old=h.el('Param0UseAnimationClip');h.el('LoadAnimationClips').click();await h.settle();const source=h.animationLoads[1];
+    if(mutation==='remove')await h.click('Param0Remove');if(mutation==='type')h.set('Param0Type','number','change');if(mutation==='binding')await h.select(id(102));if(mutation==='source'){h.context.sourceToken+=':other';h.controller.refresh();}if(mutation==='capability'){h.context.animationClipsAvailable=false;h.controller.refresh();}if(mutation==='close'){await h.click('Cancel');await h.open();}
+    old.dispatch('click');gate.resolve(animationDirectory(source));await h.settle();assert.notEqual(h.el('Param0Value').value,id(711),mutation);assert.equal(h.calls.length,0);assert.equal(h.el('AnimationClipsTools').getAttribute('aria-busy'),'false');
+    if(['close','source','capability'].includes(mutation))assert.equal(h.el('Param0AnimationClip'),null);
+  }
+});
+test('a changed clip list revokes selection without writing and silent or forged choice never inserts',async t=>{
+  const h=await fixture(t,{animationAvailable:true,animationClips:(source,count)=>count===1?animationDirectory(source):animationDirectory(source,{document:{clips:[{id:id(713),name:'Replacement',startSeconds:0,endSeconds:1,loop:false}]}})});await h.open();await h.click('LoadAnimationClips');h.set('Param0AnimationClip',id(711),'change');h.set('Param0AnimationClip',id(712),false);h.el('Param0UseAnimationClip').dispatch('click');assert.equal(h.el('Param0Value').value,'east');
+  await h.click('LoadAnimationClips');assert.equal(h.el('Param0AnimationClip').value,'');assert.equal(h.el('Param0UseAnimationClip').disabled,true);h.set('Param0AnimationClip',id(999),'change');h.el('Param0UseAnimationClip').dispatch('click');assert.equal(h.el('Param0Value').value,'east');assert.equal(h.content(),h.original);
+});
+test('all fixed animation clip picker messages have unambiguous English and Japanese keys',async()=>{
+  const source=await fs.readFile(new URL('../../web/modules/app-scene-behavior-animation-clips.js',import.meta.url),'utf8');
+  const keys=new Set([...source.matchAll(/'([^'\n]*[\u3400-\u9fff][^'\n]*)'/g)].map(match=>match[1]));keys.add('读取场景动画片段');for(const key of keys){assert.ok(en[key],`English: ${key}`);assert.ok(ja[key],`Japanese: ${key}`);}
+  assert.doesNotMatch(source,/fetch\(|applyDraft|app-state|window\.|getCurrentEditContent|scene-preview/);
 });

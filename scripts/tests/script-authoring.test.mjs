@@ -12,7 +12,7 @@ const propose = (source = context(), selection = request()) => prepareScriptDraf
 
 test('known starters are immutable data and the minimal Node contains no lifecycle or execution instructions', () => {
   const all = listScriptStarters();
-  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal', 'bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion', 'godot-scene-switch', 'godot-project-state', 'godot-project-events', 'godot-project-audio']);
+  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal', 'bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion', 'godot-scene-switch', 'godot-project-state', 'godot-project-events', 'godot-project-audio', 'godot-project-animation', 'godot-project-animation-clip', 'godot-project-animation-event']);
   assert.equal(all[0].content, 'extends Node\n');
   for (const starter of all) {
     assert.deepEqual(Object.keys(starter), ['id', 'languageId', 'backendId', 'label', 'description', 'content']);
@@ -250,4 +250,43 @@ test('the audio starter guards missing project or track, defers publication and 
   assert.match(content, /func _on_sound\(value\) -> bool:\n\tif typeof\(value\) != TYPE_BOOL:\n\t\treturn false/);
   assert.match(content, /if value:\n\t\treturn _project\.play_audio\(track_id\)\n\treturn _project\.stop_audio\(track_id\)\n$/);
   assert.doesNotMatch(content, /AudioStreamPlayer|AudioServer|await |res:\/\/|\.wav/);
+});
+
+test('the animation starter is an ordinary project-scoped draft with four explicit commands and no resource authority', () => {
+  const starter = listScriptStarters().find(item => item.id === 'godot-project-animation');
+  const selected = { ...request(), starterId: starter.id }, proposal = propose(context(), selected);
+  assert.equal(starter.label, 'Godot / 项目动画控制');
+  assert.match(starter.description, /当前场景的整份动画/); assert.match(starter.description, /单场景运行时不控制动画/);
+  assert.equal(prepareScriptDraftApply(context(), proposal).content, starter.content);
+  assert.equal(proposal.languageId, 'gdscript'); assert.equal(proposal.backendId, 'org.viento.godot4');
+  for (const key of ['animation', 'tracks', 'relations', 'objectId', 'instanceId', 'bindingId', 'parameters', 'buildCommand']) assert.equal(Object.hasOwn(proposal, key), false);
+  assert.throws(() => prepareScriptDraftApply({ ...context(), sourceToken: 'changed' }, proposal), conflict);
+  assert.match(starter.content, /if not project\.has_method\("play_animation"\):\n\t\treturn/);
+  assert.match(starter.content, /@export var command: String = "play"/);
+  assert.match(starter.content, /@export var time_seconds: float = 0\.0/);
+  assert.match(starter.content, /if not has_meta\("viento_project"\):\n\t\treturn/);
+  for (const command of ['play', 'pause', 'stop']) assert.ok(starter.content.includes(`"${command}":\n\t\t\tproject.${command}_animation()`));
+  assert.match(starter.content, /"seek":\n\t\t\tproject\.seek_animation\(time_seconds\)/);
+  assert.doesNotMatch(starter.content, /get_tree|get_parent|AnimationPlayer|Sprite2D|FileAccess|res:\/\/|UUID|await /);
+});
+
+test('named animation clip starter selects by stable UUID and guards older project ports',()=>{
+ const starter=listScriptStarters().find(item=>item.id==='godot-project-animation-clip'),proposal=propose(context(),{...request(),starterId:starter.id});
+ assert.equal(prepareScriptDraftApply(context(),proposal).content,starter.content);
+ assert.match(starter.content,/if not project\.has_method\("select_animation_clip"\):\n\t\treturn/);
+ assert.match(starter.content,/var selection = null if clip_id\.is_empty\(\) else clip_id/);
+ assert.match(starter.content,/if project\.select_animation_clip\(selection\):\n\t\tproject\.play_animation\(\)/);
+ assert.doesNotMatch(starter.content,/AnimationPlayer|FileAccess|get_parent|seek_animation|call_deferred/);
+});
+
+
+test('event animation starter follows ordinary reviewed TXT creation without acquiring behavior or execution authority', () => {
+  const starter = listScriptStarters().find(item => item.id === 'godot-project-animation-event');
+  const current = { ...context(), documentRoot: 'design-data' }, selected = { ...request(), starterId: starter.id, sourcePath: 'design-data/scripts/事件 动画.txt' };
+  const before = structuredClone({ current, selected }), proposal = prepareScriptDraft(current, selected);
+  assert.equal(isScriptDraftProposal(proposal), true);
+  assert.deepEqual(prepareScriptDraftApply(current, proposal), { starterId: starter.id, backendId: 'org.viento.godot4', languageId: 'gdscript', documentType: selected.documentType, sourcePath: selected.sourcePath, content: starter.content });
+  assert.deepEqual({ current, selected }, before);
+  for (const key of ['parameters', 'events', 'relations', 'objectId', 'instanceId', 'bindingId']) assert.equal(Object.hasOwn(proposal, key), false);
+  assert.equal(starter.content.endsWith('\n'), true);
 });

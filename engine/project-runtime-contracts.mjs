@@ -54,6 +54,13 @@ export const copyProjectEventObservationData = input => copyBoundedRuntimeData(i
 // Protocol 4 additionally retains 256 commands with two bounded origins each.
 export const copyProjectAudioObservationData = input => copyBoundedRuntimeData(input, 32 * 1024 * 1024);
 
+// Protocol 5 adds 256 animation receipts with behavior and animation origins.
+export const copyProjectAnimationObservationData = input => copyBoundedRuntimeData(input, 40 * 1024 * 1024);
+
+// Protocol 6 adds one bounded clip declaration/source per animation receipt.
+export const copyProjectAnimationClipSnapshotData = input => copyBoundedRuntimeData(input, 12 * 1024 * 1024);
+export const copyProjectAnimationClipObservationData = input => copyBoundedRuntimeData(input, 48 * 1024 * 1024);
+
 export function freezeProjectRuntimeData(value) {
   if (value && typeof value === 'object') { Object.values(value).forEach(freezeProjectRuntimeData); Object.freeze(value); }
   return value;

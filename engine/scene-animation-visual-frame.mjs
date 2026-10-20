@@ -31,13 +31,19 @@ export function captureSceneAnimationVisualFrame(actors, input) {
   if (!finite(sample.timeSeconds, 0, 86400) || !finite(sample.localTimeSeconds, 0, 60) || typeof sample.finished !== 'boolean') invalid();
   const tracks = new Set(), channels = new Set(), frames = new Map();
   list(sample.values, 32, input => {
-    const row = record(input, ['trackId', 'instanceId', 'property', 'value']);
+    const sprite = Object.getOwnPropertyDescriptor(input, 'property')?.value === 'spriteFrame2d';
+    const row = record(input, ['trackId', 'instanceId', 'property', 'value', ...(sprite ? ['grid'] : [])]);
     if (!uuid(row.trackId) || tracks.has(row.trackId) || !members.has(row.instanceId)
-      || !['offset2d', 'rotation2d', 'scale2d', 'opacity'].includes(row.property)) invalid();
+      || !['offset2d', 'rotation2d', 'scale2d', 'opacity', 'spriteFrame2d'].includes(row.property)) invalid();
     const channel = row.instanceId + ':' + row.property;
     if (channels.has(channel)) invalid(); tracks.add(row.trackId); channels.add(channel);
     let value = row.value;
-    if (['offset2d', 'scale2d'].includes(row.property)) {
+    if (sprite) {
+      const grid = record(row.grid, ['columns', 'rows']);
+      if (![grid.columns, grid.rows].every(v => Number.isInteger(v) && v >= 1 && v <= 64)
+        || !Number.isInteger(value) || value < 0 || value >= grid.columns * grid.rows) invalid();
+      value = Object.freeze({ ...grid, index: value });
+    } else if (['offset2d', 'scale2d'].includes(row.property)) {
       const low = row.property === 'scale2d' ? 0.01 : -10000, high = row.property === 'scale2d' ? 100 : 10000;
       value = list(value, 2, entry => { if (!finite(entry, low, high)) invalid(); return entry; });
       if (value.length !== 2) invalid(); Object.freeze(value);

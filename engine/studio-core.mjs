@@ -30,7 +30,7 @@ const SCENE3D_ALIGNMENT_OPERATIONS = new Set(['scene3d.alignObjects']);
 const SCENE3D_DISTRIBUTION_OPERATIONS = new Set(['scene3d.distributeObjects']);
 const SCENE3D_COPY_OPERATIONS = new Set(['scene3d.copyObjects']);
 const SCENE3D_REMOVAL_OPERATIONS = new Set(['scene3d.removeObjects']);
-const SCENE_ANIMATION_OPERATIONS = new Set(['sceneAnimation.inspect', 'sceneAnimation.sample']);
+const SCENE_ANIMATION_OPERATIONS = new Set(['sceneAnimation.inspect', 'sceneAnimation.sample', 'sceneAnimation.transport', 'sceneAnimation.sampleClip', 'sceneAnimation.clipTransport', 'sceneAnimation.retime', 'sceneAnimation.copyTrack']);
 const SCENE_AUDIO_OPERATIONS = new Set(['sceneAudio.inspect', 'sceneAudio.sample']);
 const SCENE3D_PARTICLE_OPERATIONS = new Set(['scene3d.prepareParticleField', 'scene3d.sampleParticleField']);
 const PARTICLE_FIELDS = [['center', 'vector'], ['extent', 'vector'], ['velocity', 'vector'], ['size', 'vector'], ['color', 'color'], ['count', 'number'], ['seed', 'number']];
@@ -2028,14 +2028,41 @@ export function supportsStudioCoreSceneAnimation() {
   return Boolean(runtime && typeof runtime.viento_core_scene_animation_version === 'function'
     && runtime.viento_core_scene_animation_version() === 1);
 }
+export function supportsStudioCoreSceneAnimationSprites() {
+  return supportsStudioCoreSceneAnimation() && typeof runtime.viento_core_scene_animation_sprite_version === 'function'
+    && runtime.viento_core_scene_animation_sprite_version() === 1;
+}
+export function supportsStudioCoreSceneAnimationTransport() {
+  return supportsStudioCoreSceneAnimation() && typeof runtime.viento_core_scene_animation_transport_version === 'function'
+    && runtime.viento_core_scene_animation_transport_version() === 1;
+}
+export function supportsStudioCoreSceneAnimationClips() {
+  return supportsStudioCoreSceneAnimation() && typeof runtime.viento_core_scene_animation_clips_version === 'function'
+    && runtime.viento_core_scene_animation_clips_version() === 1;
+}
+export function supportsStudioCoreSceneAnimationRetime() {
+  return supportsStudioCoreSceneAnimation() && typeof runtime.viento_core_scene_animation_retime_version === 'function'
+    && runtime.viento_core_scene_animation_retime_version() === 1;
+}
+export function supportsStudioCoreSceneAnimationTrackCopy() {
+  return supportsStudioCoreSceneAnimation() && typeof runtime.viento_core_scene_animation_track_copy_version === 'function'
+    && runtime.viento_core_scene_animation_track_copy_version() === 1;
+}
 export function dispatchStudioCoreSceneAnimation(request) {
   assertJson(request);
-  const sample = request?.operation === 'sceneAnimation.sample';
-  if (!record(request, ['protocolVersion', 'operation', 'document', ...(sample ? ['timeSeconds'] : [])])
+  const copying = request?.operation === 'sceneAnimation.copyTrack';
+  const retiming = request?.operation === 'sceneAnimation.retime';
+  const clipSample = request?.operation === 'sceneAnimation.sampleClip', clipTransport = request?.operation === 'sceneAnimation.clipTransport';
+  const sample = request?.operation === 'sceneAnimation.sample' || clipSample, transporting = request?.operation === 'sceneAnimation.transport' || clipTransport;
+  if (!record(request, ['protocolVersion', 'operation', 'document', ...(copying ? ['sourceTrackId', 'targetInstanceId', 'newTrackId'] : retiming ? ['durationSeconds'] : transporting ? ['state', 'timeSeconds', 'command'] : clipSample ? ['clipId', 'timeSeconds'] : sample ? ['timeSeconds'] : [])])
     || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE_ANIMATION_OPERATIONS.has(request.operation)) {
     throw fail('studio_core_request_invalid', 'Expected an explicit scene animation request.');
   }
-  if (!supportsStudioCoreSceneAnimation()) throw unavailable();
+  if (!supportsStudioCoreSceneAnimation() || (request.document?.schemaVersion === 2 || request.document?.schemaVersion === 3 && Array.isArray(request.document?.tracks) && request.document.tracks.some(track => track?.property === 'spriteFrame2d')) && !supportsStudioCoreSceneAnimationSprites()
+    || (request.document?.schemaVersion === 3 || clipSample || clipTransport) && !supportsStudioCoreSceneAnimationClips()
+    || transporting && !supportsStudioCoreSceneAnimationTransport()
+    || retiming && !supportsStudioCoreSceneAnimationRetime()
+    || copying && !supportsStudioCoreSceneAnimationTrackCopy()) throw unavailable();
   return dispatch(request, SCENE_ANIMATION_OPERATIONS, (result, input) => {
     const invalid = () => { throw new Error('Rust core returned an unbound scene animation receipt.'); };
     const source = input.document, value = result.sceneAnimation;
@@ -2046,21 +2073,25 @@ export function dispatchStudioCoreSceneAnimation(request) {
       if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
       const keys = Object.keys(a); return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && equal(a[key], b[key]));
     };
-    const validValue = (value, property) => {
+    const validValue = (value, property, grid) => {
+      if (property === 'spriteFrame2d') return Number.isInteger(value) && bounded(value, 0, grid.columns * grid.rows - 1);
       if (property === 'rotation2d') return bounded(value, -36000, 36000);
       if (property === 'opacity') return bounded(value, 0, 1);
       const range = property === 'offset2d' ? [-10000, 10000] : property === 'scale2d' ? [.01, 100] : null;
       return Boolean(range && Array.isArray(value) && value.length === 2 && value.every(n => bounded(n, ...range)));
     };
     if (!record(result, ['protocolVersion', 'ok', 'sceneAnimation'])
-      || !record(source, ['format', 'schemaVersion', 'sceneObjectId', 'durationSeconds', 'loop', 'tracks'])
-      || source.format !== 'viento-scene-animation' || source.schemaVersion !== 1 || !uuid(source.sceneObjectId)
+      || !record(source, ['format', 'schemaVersion', 'sceneObjectId', 'durationSeconds', 'loop', 'tracks', ...(source?.schemaVersion === 3 ? ['clips'] : [])])
+      || source.format !== 'viento-scene-animation' || ![1, 2, 3].includes(source.schemaVersion) || !uuid(source.sceneObjectId)
       || !bounded(source.durationSeconds, 0, 60) || source.durationSeconds === 0 || typeof source.loop !== 'boolean'
       || !Array.isArray(source.tracks) || !source.tracks.length || source.tracks.length > 32
       || encoder.encode(JSON.stringify(source)).length > 65536) invalid();
     const ids = new Set(), channels = new Set(); let total = 0;
     for (const track of source.tracks) {
-      if (!record(track, ['id', 'instanceId', 'property', 'interpolation', 'keyframes'])
+      const sprite = track.property === 'spriteFrame2d';
+      if (!record(track, ['id', 'instanceId', 'property', 'interpolation', 'keyframes', ...(sprite ? ['grid'] : [])])
+        || sprite && (source.schemaVersion === 1 || track.interpolation !== 'step' || !record(track.grid, ['columns', 'rows'])
+          || !['columns', 'rows'].every(axis => Number.isInteger(track.grid[axis]) && bounded(track.grid[axis], 1, 64)))
         || !uuid(track.id) || ids.has(track.id) || !uuid(track.instanceId) || channels.has(`${track.instanceId}:${track.property}`)
         || !['linear', 'step'].includes(track.interpolation) || !Array.isArray(track.keyframes)
         || !track.keyframes.length || track.keyframes.length > 64 || (total += track.keyframes.length) > 512) invalid();
@@ -2068,26 +2099,125 @@ export function dispatchStudioCoreSceneAnimation(request) {
       let previous = -1;
       for (const [index, key] of track.keyframes.entries()) {
         if (!record(key, ['atSeconds', 'value']) || !bounded(key.atSeconds, 0, source.durationSeconds)
-          || index === 0 && key.atSeconds !== 0 || key.atSeconds <= previous || !validValue(key.value, track.property)) invalid();
+          || index === 0 && key.atSeconds !== 0 || key.atSeconds <= previous || !validValue(key.value, track.property, track.grid)) invalid();
         previous = key.atSeconds;
       }
     }
+    if (source.schemaVersion === 3) {
+      if (!Array.isArray(source.clips) || source.clips.length > 32) invalid();
+      const clipIds = new Set();
+      for (const clip of source.clips) {
+        if (!record(clip, ['id', 'name', 'startSeconds', 'endSeconds', 'loop']) || !uuid(clip.id) || clipIds.has(clip.id)
+          || typeof clip.name !== 'string' || !clip.name || clip.name !== clip.name.trim() || [...clip.name].length > 128 || /[\x00-\x1f\x7f]/.test(clip.name)
+          || !bounded(clip.startSeconds, 0, source.durationSeconds) || !bounded(clip.endSeconds, 0, source.durationSeconds)
+          || clip.startSeconds >= clip.endSeconds || typeof clip.loop !== 'boolean') invalid();
+        clipIds.add(clip.id);
+      }
+    }
+    if (copying) {
+      const { sourceTrackId, targetInstanceId, newTrackId } = input;
+      if (![sourceTrackId, targetInstanceId, newTrackId].every(uuid)) invalid();
+      const track = source.tracks.find(track => track.id === sourceTrackId);
+      if (!track || ids.has(newTrackId) || channels.has(`${targetInstanceId}:${track.property}`)
+        || source.tracks.length >= 32 || total + track.keyframes.length > 512 || !record(value, ['document'])) invalid();
+      // Receipt verification only. The Rust document is the sole result; this
+      // expected clone is discarded and never used as an authoring fallback.
+      const expected = { ...source, tracks: [...source.tracks, { ...track, id: newTrackId, instanceId: targetInstanceId }] };
+      if (!equal(value.document, expected) || encoder.encode(JSON.stringify(value.document)).length > 65536) invalid();
+      return;
+    }
+    if (retiming) {
+      const duration = input.durationSeconds, previousDuration = source.durationSeconds;
+      if (!bounded(duration, 0, 60) || duration === 0 || !record(value, ['document'])) invalid();
+      if (duration === previousDuration) { if (!equal(value.document, source)) invalid(); return; }
+      // Verify and discard the expected author document. Native output alone is
+      // returned; these calculations never provide a fallback transformation.
+      const ratio = duration / previousDuration, normalRatio = Number.isFinite(ratio) && ratio >= 2 ** -1022;
+      const scaled = time => time === 0 ? 0 : time === previousDuration ? duration
+        : normalRatio ? time * ratio : (time / previousDuration) * duration;
+      const times = new Set([0, previousDuration]);
+      for (const track of source.tracks) for (const key of track.keyframes) times.add(key.atSeconds);
+      for (const clip of source.clips || []) { times.add(clip.startSeconds); times.add(clip.endSeconds); }
+      let previous = -1;
+      for (const time of [...times].sort((a, b) => a - b)) {
+        const next = scaled(time);
+        if (!bounded(next, 0, duration) || next <= previous) invalid();
+        previous = next;
+      }
+      const expected = { ...source, durationSeconds: duration, tracks: source.tracks.map(track => ({ ...track,
+        keyframes: track.keyframes.map(key => ({ ...key, atSeconds: scaled(key.atSeconds) })) })) };
+      if (source.schemaVersion === 3) expected.clips = source.clips.map(clip => ({ ...clip,
+        startSeconds: scaled(clip.startSeconds), endSeconds: scaled(clip.endSeconds) }));
+      if (!equal(value.document, expected) || encoder.encode(JSON.stringify(value.document)).length > 65536) invalid();
+      return;
+    }
+    if ((clipSample || clipTransport) && source.schemaVersion !== 3) invalid();
+    const range = id => {
+      if (id === null) return { startSeconds: 0, endSeconds: source.durationSeconds, loop: source.loop };
+      if (!uuid(id)) invalid();
+      const clip = source.clips?.find(clip => clip.id === id);
+      if (!clip) invalid();
+      return clip;
+    };
+    if (transporting) {
+      // Verify the Rust receipt only. These discarded calculations are never a
+      // transport implementation or fallback when the native capability fails.
+      const previous = input.state, command = input.command, time = input.timeSeconds;
+      let clipId = clipTransport && previous !== null ? previous?.clipId : null;
+      const scope = clipTransport ? range(clipId) : range(null), duration = scope.endSeconds - scope.startSeconds, looping = scope.loop;
+      let phase = 'playing', position = 0, previousTime = 0;
+      const stateKeys = ['sceneObjectId', 'phase', 'positionSeconds', 'timeSeconds', ...(clipTransport ? ['clipId'] : [])];
+      if (!bounded(time, 0, Number.MAX_SAFE_INTEGER)) invalid();
+      if (previous !== null) {
+        if (!record(previous, stateKeys)
+          || previous.sceneObjectId !== source.sceneObjectId || !['playing', 'paused', 'stopped', 'finished'].includes(previous.phase)
+          || !bounded(previous.positionSeconds, 0, duration) || !bounded(previous.timeSeconds, 0, Number.MAX_SAFE_INTEGER)
+          || (looping || previous.phase === 'playing') && previous.positionSeconds === duration
+          || previous.phase === 'stopped' && previous.positionSeconds !== 0
+          || previous.phase === 'finished' && (looping || previous.positionSeconds !== duration)) invalid();
+        phase = previous.phase; position = previous.positionSeconds; previousTime = previous.timeSeconds;
+      }
+      const selecting = clipTransport && command?.action === 'select';
+      if (time < previousTime || command !== null && (!record(command, ['action', ...(command.action === 'seek' ? ['positionSeconds'] : selecting ? ['clipId'] : [])])
+        || !['play', 'pause', 'stop', 'seek', ...(clipTransport ? ['select'] : [])].includes(command.action)
+        || command.action === 'seek' && !bounded(command.positionSeconds, 0, duration))) invalid();
+      if (selecting) range(command.clipId);
+      if (phase === 'playing') {
+        const elapsed = time - previousTime;
+        if (looping) position = (position + elapsed % duration) % duration;
+        else if (elapsed >= duration - position) { position = duration; phase = 'finished'; }
+        else { position += elapsed; if (position >= duration) { position = duration; phase = 'finished'; } }
+      }
+      if (command?.action === 'play') { if (position === duration) position = 0; phase = 'playing'; }
+      else if (command?.action === 'pause') phase = 'paused';
+      else if (command?.action === 'stop') { position = 0; phase = 'stopped'; }
+      else if (command?.action === 'seek') { position = looping && command.positionSeconds === duration ? 0 : command.positionSeconds; phase = 'paused'; }
+      else if (selecting) { clipId = command.clipId; position = 0; phase = 'paused'; }
+      if (!record(value, stateKeys)
+        || value.sceneObjectId !== source.sceneObjectId || value.phase !== phase || value.positionSeconds !== position || value.timeSeconds !== time
+        || clipTransport && value.clipId !== clipId) invalid();
+      return;
+    }
     if (!sample) { if (!record(value, ['document']) || !equal(value.document, source)) invalid(); return; }
-    const time = input.timeSeconds, local = source.loop ? time % source.durationSeconds : Math.min(time, source.durationSeconds);
+    const scope = range(clipSample ? input.clipId : null), duration = scope.endSeconds - scope.startSeconds;
+    const time = input.timeSeconds, local = scope.loop ? time % duration : Math.min(time, duration);
+    const sampledTime = local === duration ? scope.endSeconds : scope.startSeconds + local;
     if (!bounded(time, 0, 86400) || !record(value, ['timeSeconds', 'localTimeSeconds', 'finished', 'values'])
-      || value.timeSeconds !== time || value.localTimeSeconds !== local || value.finished !== (!source.loop && time >= source.durationSeconds)
+      || value.timeSeconds !== time || value.localTimeSeconds !== local || value.finished !== (!scope.loop && time >= duration)
       || !Array.isArray(value.values) || value.values.length !== source.tracks.length) invalid();
     for (const [index, track] of source.tracks.entries()) {
       const returned = value.values[index];
-      if (!record(returned, ['trackId', 'instanceId', 'property', 'value']) || returned.trackId !== track.id
-        || returned.instanceId !== track.instanceId || returned.property !== track.property || !validValue(returned.value, track.property)) invalid();
-      const leftIndex = track.keyframes.findLastIndex(key => key.atSeconds <= local), left = track.keyframes[leftIndex], right = track.keyframes[leftIndex + 1];
-      if (track.interpolation === 'step' || !right || left.atSeconds === local) {
+      const sprite = track.property === 'spriteFrame2d';
+      if (!record(returned, ['trackId', 'instanceId', 'property', 'value', ...(sprite ? ['grid'] : [])]) || returned.trackId !== track.id
+        || returned.instanceId !== track.instanceId || returned.property !== track.property
+        || sprite && !equal(returned.grid, track.grid) || !validValue(returned.value, track.property, track.grid)) invalid();
+      const leftIndex = track.keyframes.findLastIndex(key => key.atSeconds <= sampledTime), left = track.keyframes[leftIndex], right = track.keyframes[leftIndex + 1];
+      if (track.interpolation === 'step' || !right || left.atSeconds === sampledTime) {
         if (!equal(returned.value, left.value)) invalid();
       } else {
         // Check the native interpolation receipt; this calculation is discarded,
         // never returned or used as a fallback sample if native execution fails.
-        const weight = (local - left.atSeconds) / (right.atSeconds - left.atSeconds);
+        const weight = (sampledTime - left.atSeconds) / (right.atSeconds - left.atSeconds);
         const verify = (actual, a, b) => {
           const expected = Math.max(Math.min(a, b), Math.min(Math.max(a, b), a + (b - a) * weight));
           return actual >= Math.min(a, b) && actual <= Math.max(a, b)

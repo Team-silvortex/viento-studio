@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import { projectAnimationControlAuthor } from '/home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers/project-animation-control-author-fixture.mjs';
+import { captureBuildSnapshot } from '/home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-build-snapshot.mjs';
+import { generateGodotAssemblyProject } from '/home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-project.mjs';
+const cleanups=[];
+try {
+ const base='file:///home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-project.mjs';
+ const source=(await fs.readFile('/tmp/viento-animation-clips/godot4-project-before.mjs','utf8')).replace(/from '([^']+)'/g,(whole,name)=>name.startsWith('.')?`from '${new URL(name,base)}'`:whole).replaceAll('import.meta.url',JSON.stringify(base));
+ const legacy=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+ for(const variant of ['ordinary','visual','sprite']) {
+   const f=await projectAnimationControlAuthor({after:fn=>cleanups.push(fn)},{sprites:variant==='sprite'});
+   if(variant==='ordinary') for(const id of f.sceneIds) await f.edit(`metadata/documents/${id}.json`, record=>{record.relations=record.relations.filter(row=>row.kind!=='animation')});
+   const captured=await captureBuildSnapshot(f.author,f.assemblyId);assert.equal(captured.ok,true,JSON.stringify(captured.diagnostics));
+   const before=await legacy.generateGodotAssemblyProject(captured.plan),after=await generateGodotAssemblyProject(captured.plan);
+   assert.deepEqual(after.files,before.files);assert.deepEqual(after.resourceFiles,before.resourceFiles);assert.deepEqual(after.sourceMap,before.sourceMap);
+   assert.equal(after.backend.version,before.backend.version);assert.equal(after.backend.protocolVersion,before.backend.protocolVersion);
+   console.log(JSON.stringify({variant,files:after.files.size,resources:after.resourceFiles.size,generatedBytesUnchanged:true,sourceMapUnchanged:true,protocol:after.backend.protocolVersion}));
+ }
+} finally {for(const fn of cleanups) await fn();}

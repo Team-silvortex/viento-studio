@@ -8,13 +8,13 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 
 ## 当前状态
 
-源码版本为 **0.1.6**，新增关键帧动画创作、按实例选择、首次创建与场景画面预览，接通 Godot 动画运行和工程交付，并完善音轨使用位置及原文定位；详见[版本记录](docs/RELEASE_0.1.6.md)。当前为 **22 模块／43 项声明能力**。
+源码版本为 **0.1.7**，补齐图集序列帧、命名动画片段、行为控制与事件触发、片段选入与使用位置，以及整段时长调整和轨道复制；详见[版本记录](docs/RELEASE_0.1.7.md)。当前为 **22 模块／43 项声明能力**。
 
-本版收录[2D 视觉关键帧动画](docs/SCENE_ANIMATION.md)：从场景首次创建并保存关联、内置字段编辑、保存态实例按名称选择、Rust 采样示意、已保存场景画面播放、Godot 运行及工程交付，现为 **22 模块／43 项声明能力**。这些功能已进入源码版本；源代码、浏览器、引擎和准备副本的验证范围见[动画专题](docs/test-results/scene-animation/README.md)、[首次创建记录](docs/test-results/scene-animation-creation/README.md)和[场景画面预览记录](docs/test-results/scene-animation-scene-preview/README.md)。
+0.1.6 已收录[2D 视觉关键帧动画](docs/SCENE_ANIMATION.md)：从场景首次创建并保存关联、内置字段编辑、保存态实例按名称选择、Rust 采样示意、已保存场景画面播放、Godot 运行及工程交付，现为 **22 模块／43 项声明能力**。这些功能已进入源码版本；源代码、浏览器、引擎和准备副本的验证范围见[动画专题](docs/test-results/scene-animation/README.md)、[首次创建记录](docs/test-results/scene-animation-creation/README.md)和[场景画面预览记录](docs/test-results/scene-animation-scene-preview/README.md)。
 
-[项目组装](docs/PROJECT_ASSEMBLY.md)把已保存的二维场景组织为一个 Godot 工程；行为可切换场景、读写[会话状态](docs/PROJECT_SHARED_STATE.md)、发布[项目事件](docs/PROJECT_EVENTS.md)和控制[场景声音](docs/PROJECT_AUDIO_CONTROLS.md)。独立观察面板保留运行记录与作者来源，工程 ZIP 可在新目录导入运行。[Bevy Rust 通道](docs/BEVY_BACKEND.md#rust-作者行为通道012-后工作树)继续提供无图二维就绪／固定步行为和 Cargo 源工程交付，项目组装与声音尚未接入。
+[项目组装](docs/PROJECT_ASSEMBLY.md)把已保存的二维场景组织为一个 Godot 工程；行为可切换场景、读写[会话状态](docs/PROJECT_SHARED_STATE.md)、发布[项目事件](docs/PROJECT_EVENTS.md)、控制[场景声音](docs/PROJECT_AUDIO_CONTROLS.md)及[场景动画](docs/SCENE_ANIMATION.md#行为控制项目动画)。独立观察面板保留运行记录与作者来源，工程 ZIP 可在新目录导入运行。[Bevy Rust 通道](docs/BEVY_BACKEND.md#rust-作者行为通道012-后工作树)继续提供无图二维就绪／固定步行为和 Cargo 源工程交付，项目组装与声音尚未接入。
 
-本次交付源码，新功能可从源码启动或自行构建安装包。本机最近的 [Linux 安装验收为 0.1.1 工作树](docs/test-results/native-installed-0.1.1/README.md)，早于本版新增功能；该安装记录不代表 0.1.6 安装验收。专题中标为“0.1.5 后未发布工作树”的动画与音轨使用位置增量已收录本版，旧证据保留原版本与执行条件。
+本次交付源码，新功能可从源码启动或自行构建安装包。本机最近的 [Linux 安装验收为 0.1.1 工作树](docs/test-results/native-installed-0.1.1/README.md)，早于本版新增功能；该安装记录不代表 0.1.7 安装验收。本次不制作新安装包或 GitHub Release。八项动画专题中标为“0.1.6 后未发布工作树”的增量已收录本版，旧证据保留原版本与执行条件。
 
 当前已有：
 
@@ -23,7 +23,7 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 - 同一 OC 的多份独立投影，可创建／编辑 RPG、视觉小说、文学和戏剧配置；RPG 投影可在 Scene2D 中继承或覆盖运行字段。
 - 对象查询、属性修改、批量提交、对象创建、关系和资源绑定；版本冲突检查与中断恢复。
 - [场景声音](docs/SCENE_AUDIO.md)：首次创建、逐轨定时／行为触发、提示增删／换轨／排序、轨道复制与移除、已绑定 WAV 选择和就地试听；试听支持暂停／继续／定位，修改经审阅应用草稿后普通保存。Godot 继续提供 PCM 混音、[行为播放／停止](docs/PROJECT_AUDIO_CONTROLS.md)及带资源的工程交付。
-- [2D 关键帧动画](docs/SCENE_ANIMATION.md)：从场景首次创建、原子保存双向关联；视觉偏移、旋转、缩放、不透明度；轨道与关键帧编辑、按名称选择和修复实例目标、循环、播放／暂停／定位及三语界面。独立动画数据接入 Godot 场景和组装工程；表单示意、保存态场景画面预览与实际引擎运行分别验证。
+- [2D 关键帧动画](docs/SCENE_ANIMATION.md)：首次创建与双向关联、四视觉属性与等分图集序列帧、轨道／关键帧／命名片段编辑、实例选择、等比时长调整和轨道复制。行为可控制播放头或用项目事件触发片段，参数可按名称选入编号并查看本场景使用位置；表单示意、保存态场景预览与实际 Godot 执行分别验证，工程 ZIP 保留动画与资源。
 - [项目组装与切换](docs/PROJECT_ASSEMBLY.md)：1–32 个二维场景和启动入口、[共享状态](docs/PROJECT_SHARED_STATE.md)、[事件发布订阅](docs/PROJECT_EVENTS.md)，独立运行观察与冻结来源。
 - [图片／视频／音频引用](docs/MEDIA_RESOURCES.md)，文档分享、选择式资源包、单素材导出及完整工程迁移。
 - 实验性 Scene2D 场景创建／编辑、独立实例、嵌套组织分组，单选／多选布局和局部撤销历史；保存状态及原文草稿预览，精确坐标回写与普通保存。

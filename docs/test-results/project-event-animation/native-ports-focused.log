@@ -1,0 +1,60 @@
+TAP version 13
+# Subtest: real starter guards all required ports and cleans up its subscription on ordinary exit
+not ok 1 - real starter guards all required ports and cleans up its subscription on ordinary exit
+  ---
+  duration_ms: 256.425291
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:182:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /SCRIPT ERROR|ERROR:|WARNING:.*leaked/. Input:
+    
+    'Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n' +
+      '\n' +
+      'PORT_GUARD:["subscribe_event",[]]\n' +
+      'PORT_GUARD:["unsubscribe_event",[]]\n' +
+      'PORT_GUARD:["select_animation_clip",[]]\n' +
+      'PORT_GUARD:["play_animation",[]]\n' +
+      'PORT_EXIT:[true,["subscribe","select","play","unsubscribe"],0,null]\n' +
+      'PORT_EXIT:[false,["subscribe","select","unsubscribe"],0,null]\n' +
+      'PORT_DONE:true\n' +
+      "SCRIPT ERROR: Left operand of 'is' is a previously freed instance.\n" +
+      '          at: _ready (res://starter.gd:12)\n' +
+      '          GDScript backtrace (most recent call first):\n' +
+      '              [0] _ready (res://starter.gd:12)\n' +
+      '              [1] _probe (res://probe.gd:23)\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+    
+    PORT_GUARD:["subscribe_event",[]]
+    PORT_GUARD:["unsubscribe_event",[]]
+    PORT_GUARD:["select_animation_clip",[]]
+    PORT_GUARD:["play_animation",[]]
+    PORT_EXIT:[true,["subscribe","select","play","unsubscribe"],0,null]
+    PORT_EXIT:[false,["subscribe","select","unsubscribe"],0,null]
+    PORT_DONE:true
+    SCRIPT ERROR: Left operand of 'is' is a previously freed instance.
+              at: _ready (res://starter.gd:12)
+              GDScript backtrace (most recent call first):
+                  [0] _ready (res://starter.gd:12)
+                  [1] _probe (res://probe.gd:23)
+    
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-animation-godot.test.mjs:235:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 364.332184

@@ -1,3 +1,5 @@
+import { SCENE_ANIMATION_USAGE_API_PATH } from '../../engine/scene-animation-usage.mjs';
+import { SCENE_ANIMATION_DIRECTORY_API_PATH } from '../../engine/scene-animation-directory.mjs';
 import { SCENE_ANIMATION_CREATION_API_PATH } from '../../engine/scene-animation-creation-contract.mjs';
 import { SCENE_ANIMATION_TARGETS_API_PATH } from '../../engine/scene-animation-targets.mjs';
 import { SCENE_AUDIO_USAGE_API_PATH } from '../../engine/scene-audio-usage.mjs';
@@ -322,7 +324,7 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
-  if ([SCENE_ANIMATION_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
+  if ([SCENE_ANIMATION_USAGE_API_PATH, SCENE_ANIMATION_DIRECTORY_API_PATH, SCENE_ANIMATION_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
   if (pathname === SCENE_PREVIEW_API_PATH && ['POST', 'DELETE'].includes(method)) return true;
   if (pathname === PROJECT_BUILD_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === RESOURCE_PACKAGE_API && method === API_METHODS.POST) return true;
@@ -622,6 +624,17 @@ async function handleApiRequest({
         } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
       },
     },
+    [SCENE_ANIMATION_USAGE_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.sceneAnimationUsage) throw Object.assign(new Error('Animation usage inspection requires an editor session.'), { statusCode: 403, errorCode: 'scene_animation_usage_unavailable' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid animation usage query.'), { statusCode: 400, errorCode: 'scene_animation_usage_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.sceneAnimationUsage.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
     [SCENE_AUDIO_USAGE_API_PATH]: {
       [API_METHODS.POST]: async () => {
         try {
@@ -629,6 +642,17 @@ async function handleApiRequest({
           if (requestUrl.search) throw Object.assign(new Error('Invalid audio usage query.'), { statusCode: 400, errorCode: 'scene_audio_usage_invalid' });
           response.setHeader('Cache-Control', 'no-store');
           sendApiResponse(response, await service.sceneAudioUsage.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
+    [SCENE_ANIMATION_DIRECTORY_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.sceneAnimationDirectory) throw Object.assign(new Error('Animation directory requires an editor session.'), { statusCode: 403, errorCode: 'scene_animation_directory_unavailable' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid animation directory query.'), { statusCode: 400, errorCode: 'scene_animation_directory_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.sceneAnimationDirectory.inspect(await readRequestJsonBody(request)), requestId);
           return 200;
         } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
       },

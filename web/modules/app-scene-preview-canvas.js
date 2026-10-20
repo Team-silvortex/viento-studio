@@ -75,20 +75,25 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
     if (ids.length > 1) onMoveMany(changes.map(change => ({ objectId: change.objectId, position: change.position.slice() })), { commit: true });
     else if (changes.length) onMove(changes[0].objectId, changes[0].position.slice(), { commit: true });
   }
-  function tinted(actor, image) {
+  function tinted(actor, image, region = null) {
     if (/^#ffffff(?:ff)?$/i.test(actor.color)) return image;
-    const key = `${actor.imageResourceId}:${actor.color}`;
+    const key = `${actor.imageResourceId}:${actor.color}:${region ? region.join(',') : 'whole'}`;
     if (tiles.has(key)) { const tile = tiles.get(key); tiles.delete(key); tiles.set(key, tile); return tile; }
-    const tile = canvas.ownerDocument.createElement('canvas');
-    tile.width = image.width; tile.height = image.height;
-    const ctx = tile.getContext('2d', { willReadFrequently: true });
-    ctx.drawImage(image, 0, 0); const data = ctx.getImageData(0, 0, tile.width, tile.height);
-    tintPixels(data.data, actor.color); ctx.putImageData(data, 0, 0);
-    const bytes = tile.width * tile.height * 4;
-    while (tileBytes + bytes > 32 * 1024 * 1024 && tiles.size) {
+    // Tint the sampled cell, not a full atlas on every new frame. The cache
+    // includes the crop identity, so instances sharing a sheet stay independent.
+    const [sx, sy, sw, sh] = region || [0, 0, image.width, image.height];
+    const limit = 32 * 1024 * 1024;
+    const factor = Math.min(1, Math.sqrt((limit / 2) / (Math.ceil(sw) * Math.ceil(sh) * 4)));
+    const tw = Math.max(1, Math.floor(sw * factor)), th = Math.max(1, Math.floor(sh * factor)), bytes = tw * th * 4;
+    while (tileBytes + bytes > limit && tiles.size) {
       const first = tiles.keys().next().value, old = tiles.get(first); tileBytes -= old.width * old.height * 4;
       old.width = 0; old.height = 0; tiles.delete(first);
     }
+    const tile = canvas.ownerDocument.createElement('canvas'); tile.width = tw; tile.height = th;
+    const ctx = tile.getContext('2d', { willReadFrequently: true });
+    ctx.drawImage(image, sx, sy, sw, sh, 0, 0, tw, th);
+    const data = ctx.getImageData(0, 0, tw, th);
+    tintPixels(data.data, actor.color); ctx.putImageData(data, 0, 0);
     tiles.set(key, tile); tileBytes += bytes; return tile;
   }
   function draw() {
@@ -121,7 +126,15 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
       }
       if (actor.imageResourceId) {
         const image = images.get(actor.imageResourceId);
-        if (image) context.drawImage(tinted(actor, image), x - w / 2, y - h / 2, w, h);
+        if (image) {
+          const sprite = visual?.spriteFrame2d;
+          if (sprite) {
+            const sw = image.width / sprite.columns, sh = image.height / sprite.rows;
+            const region = [sprite.index % sprite.columns * sw, Math.floor(sprite.index / sprite.columns) * sh, sw, sh];
+            const tile = tinted(actor, image, region), crop = tile === image ? region : [0, 0, tile.width, tile.height];
+            context.drawImage(tile, ...crop, x - w / 2, y - h / 2, w, h);
+          } else context.drawImage(tinted(actor, image), x - w / 2, y - h / 2, w, h);
+        }
         else {
           context.fillStyle = '#733d60'; context.fillRect(x - w / 2, y - h / 2, w, h);
           context.beginPath(); context.moveTo(x - w / 2, y - h / 2); context.lineTo(x + w / 2, y + h / 2);

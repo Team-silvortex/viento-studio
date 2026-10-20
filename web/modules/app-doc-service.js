@@ -1,3 +1,5 @@
+import { SCENE_ANIMATION_USAGE_API_PATH } from '../../engine/scene-animation-usage.mjs';
+import { SCENE_ANIMATION_DIRECTORY_API_PATH } from '../../engine/scene-animation-directory.mjs';
 import { SCENE_ANIMATION_CREATION_API_PATH } from '../../engine/scene-animation-creation-contract.mjs';
 import { SCENE_ANIMATION_TARGETS_API_PATH } from '../../engine/scene-animation-targets.mjs';
 import { SCENE_AUDIO_USAGE_API_PATH } from '../../engine/scene-audio-usage.mjs';
@@ -25,6 +27,18 @@ export async function inspectSceneAudioUsage(payload) {
   return (await fetchJsonApiRequest(SCENE_AUDIO_USAGE_API_PATH, withAuthHeaders({
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
   }), 45000, t('读取音轨使用位置'))).payload;
+}
+
+export async function inspectSceneAnimationUsage(payload) {
+  return (await fetchJsonApiRequest(SCENE_ANIMATION_USAGE_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('读取动画片段使用位置'))).payload;
+}
+
+export async function inspectSceneAnimationDirectory(payload) {
+  return (await fetchJsonApiRequest(SCENE_ANIMATION_DIRECTORY_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('读取场景动画片段'))).payload;
 }
 
 export async function inspectSceneAudioDirectory(payload) {

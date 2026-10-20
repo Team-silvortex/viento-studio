@@ -1,3 +1,4 @@
+import { setupSceneBehaviorAnimationClips } from './app-scene-behavior-animation-clips.js';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { inspectSceneBehaviors } from '../../engine/scene-behaviors.mjs';
 import { createSceneBehaviorProposal, isSceneBehaviorProposal } from '../../engine/scene-behaviors-edit.mjs';
@@ -7,7 +8,7 @@ import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 // This editor owns only its local form and review. The document host owns source
 // versions, dependency checks and applying the resulting unsaved draft.
 export function setupSceneBehaviors({ getContext = () => ({}), getSource = async () => null,
-  inspect = async () => null, applyDraft = async () => null, getAudioTracks } = {}) {
+  inspect = async () => null, applyDraft = async () => null, getAudioTracks, getAnimationClips } = {}) {
   if (!document.getElementById('sceneBehaviorsStyle')) {
     const style = document.createElement('link'); style.id = 'sceneBehaviorsStyle'; style.rel = 'stylesheet';
     style.href = '/web/scene-behaviors.css'; (document.head || document.body).append(style);
@@ -32,6 +33,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
         <p class="scene-behaviors-note" data-i18n="将已保存的音轨编号填入文本参数；不会识别参数用途、执行声音或保护后续引用。"></p>
         <p id="sceneBehaviorsAudioTracksStatus" class="scene-behaviors-note" role="status" aria-live="polite"></p>
         <p id="sceneBehaviorsAudioTracksPath" class="scene-behaviors-note"></p></section>
+      <section id="sceneBehaviorsAnimationClipsTools" hidden></section>
       <div id="sceneBehaviorsParameters"></div><button id="sceneBehaviorsAddParameter" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加参数"></button>
       <h3 data-i18n="信号映射"></h3><div id="sceneBehaviorsEvents"></div><button id="sceneBehaviorsAddEvent" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加信号映射"></button>
       <p class="scene-behaviors-note" data-i18n="最多32条绑定、8份脚本；每条最多32个参数和8个信号。至少保留一条绑定。"></p></section>
@@ -84,13 +86,13 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
   function options(select, values, value) {
     select.replaceChildren(); for (const [id, label] of values) { const option = node('option', label); option.value = id; select.append(option); } select.value = value;
   }
-  function field(label, input) { const wrapper = node('label'); wrapper.append(node('span', t(label)), input); return wrapper; }
+  function field(label, input) { const wrapper = node('label'), caption = node('span', t(label)); caption.dataset.i18n = label; wrapper.append(caption, input); return wrapper; }
   function input(id, value, multiline = false) {
     const element = node(multiline ? 'textarea' : 'input'); element.id = 'sceneBehaviors' + id;
     if (!multiline) element.type = 'text'; element.value = value; element.spellcheck = false;
     element.addEventListener('input', changed); return element;
   }
-  function removeButton(label, action) { const element = node('button', t(label)); element.type = 'button'; element.className = 'doc-btn doc-btn-ghost'; element.addEventListener('click', action); return element; }
+  function removeButton(label, action) { const element = node('button', t(label)); element.dataset.i18n = label; element.type = 'button'; element.className = 'doc-btn doc-btn-ghost'; element.addEventListener('click', action); return element; }
   function resetAudioTracks() { audioRequest++; audioPending = false; audioCatalog = null; audioMessage = ''; audioChoices.clear(); }
   function usableAudioTracks() { return Boolean(audioAvailable() && current() && isSceneBehaviorAudioTracks(audioCatalog)
     && sceneBehaviorAudioTracksMatchSource(audioCatalog, session.source)); }
@@ -149,6 +151,9 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     } catch { if (owns()) { audioCatalog = null; audioMessage = '无法读取场景音轨；输入和审阅已保留，可以重试。'; } return false; }
     finally { if (!disposed && epoch === opening && request === audioRequest && session === owner) { audioPending = false; refresh(); } }
   }
+  const animationClips = setupSceneBehaviorAnimationClips({ container: el('AnimationClipsTools'), getAnimationClips, translate: t,
+    getContext: () => ({ available: getContext().animationClipsAvailable === true, current: current(), pending, source: session?.source, scene: session?.catalog.scene, rows: parameterInputs }),
+    onUse: (row, value) => { if (pending || !current() || !parameterInputs.includes(row) || row.type.value !== 'string' || selected !== row.bindingId) return; row.value.value = value; changed(); row.value.focus(); } });
   function renderBinding() {
     const binding = active(); parameterInputs = []; eventInputs = []; el('Parameters').replaceChildren(); el('Events').replaceChildren();
     if (!session || !binding) return;
@@ -199,12 +204,12 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     el('ChangedPaths').replaceChildren(); for (const path of proposal?.changedPaths || []) el('ChangedPaths').append(node('li', path));
     el('Path').textContent = session?.source.sourcePath || context.sourcePath || '';
     el('Fixed').textContent = session ? t('场景：{0} · 后端：{1} · 语言：{2}', session.catalog.scene.sourcePath, session.backendId, session.language) : '';
-    refreshAudioTracks();
+    refreshAudioTracks(); animationClips.refresh();
   }
   function close(force = false) {
     if (!force && dirty() && !window.confirm(t('丢弃本次行为表单修改？原文草稿不会改变。'))) return false;
     const target = opener, request = ++epoch; opener = null; session = null; draft = []; selected = ''; pending = false;
-    resetAudioTracks(); proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
+    resetAudioTracks(); animationClips.reset(); proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
     if (dialog.open) dialog.close(); refresh();
     Promise.resolve().then(() => { if (!disposed && request === epoch && !dialog.open && target?.isConnected !== false) target?.focus?.(); }); return true;
   }
@@ -328,7 +333,17 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
   dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
   dialog.addEventListener('keydown', event => { if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); if (!event.repeat && !event.isComposing && event.keyCode !== 229) close(); } });
   dialog.addEventListener('close', () => { if (!dialog.open && (session || pending)) close(true); });
-  const unsubscribe = onLanguageChange(() => { if (disposed) return; capture(); if (proposal && !approved()) invalidate(); renderBinding(); refresh(); });
-  function dispose() { if (disposed) return; close(true); disposed = true; unsubscribe?.(); button.remove(); dialog.remove(); }
+  const unsubscribe = onLanguageChange(() => {
+    if (disposed) return; capture(); if (proposal && !approved()) invalidate();
+    for (const [index, option] of [...el('Binding').children].entries()) option.textContent = t('绑定 {0}', index + 1);
+    if (active()) el('BindingId').textContent = t('绑定身份：{0}', active().bindingId);
+    for (const row of parameterInputs) {
+      for (const option of row.type.children) option.textContent = t({ string: '文本', number: '数字', boolean: '布尔值' }[option.value]);
+      if (row.type.value === 'boolean') for (const option of row.value.children) option.textContent = t(option.value === 'true' ? '真' : option.value === 'false' ? '假' : '请选择布尔值');
+      if (row.audio) row.audio.catalog = null;
+    }
+    refresh();
+  });
+  function dispose() { if (disposed) return; close(true); disposed = true; animationClips.dispose(); unsubscribe?.(); button.remove(); dialog.remove(); }
   refresh(); return Object.freeze({ refresh, dispose, open });
 }

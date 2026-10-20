@@ -1,0 +1,33 @@
+✔ clip generation carries the directory, capability and source ownership without duplicating tracks or assets (176.003782ms)
+✔ real same-clock selection and seek execute FIFO on local ranges and return to the whole timeline (11719.612928ms)
+✔ real nonloop clip samples the document endpoint once despite the whole loop (false) (12603.710261ms)
+✔ real nonloop clip samples the document endpoint once despite the whole loop (true) (11506.641296ms)
+✔ real queued selection constrains a later seek at execution rather than admitting the old whole range (11581.012326ms)
+✔ real invalid clip selection true has no successful receipt (11611.658146ms)
+✔ real invalid clip selection "missing" has no successful receipt (11610.862555ms)
+✔ real invalid clip selection "59595959-5959-4595-8595-000000000999" has no successful receipt (11529.616178ms)
+✔ real selected clip clock is anchored across render steps, pause and natural completion (11606.136481ms)
+✔ real mixed project supports whole selection in a legacy member and reentry revokes stale clip ports (11749.824352ms)
+✔ real mixed legacy member rejects a clip declared only by another scene (11611.546174ms)
+✔ real single scene with a clip directory retains automatic whole playback (8112.511827ms)
+
+Interrupted while running:
+
+⚠ scripts/tests/project-animation-clips-godot.test.mjs (scripts/tests/project-animation-clips-godot.test.mjs:1:1)
+⚠ scripts/tests/project-animation-clips-workflow.test.mjs (scripts/tests/project-animation-clips-workflow.test.mjs:1:1)
+✖ scripts/tests/project-animation-clips-godot.test.mjs (126219.038843ms)
+✔ actual clip service freezes selection/source, survives restart, and runs with author documents offline (20482.867543ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 1
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 126224.461637
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-clips-godot.test.mjs:1:1
+✖ scripts/tests/project-animation-clips-godot.test.mjs (126219.038843ms)
+  'Promise resolution is still pending but the event loop has already resolved'

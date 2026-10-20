@@ -2,6 +2,8 @@ import { validateProjectAssemblyPlan } from './project-assembly-plan-contract.mj
 import { createSceneRuntimeEventReader } from './scene-runtime-events.mjs';
 import { createSceneBehaviorEventReader } from './scene-behavior-events.mjs';
 import { createSceneAudioEventReader } from './scene-audio-events.mjs';
+import { advanceProjectAnimationTransport, projectAnimationClipDeclaration } from './project-animation-transport.mjs';
+import { createProjectAnimationCommands } from './project-animation-commands.mjs';
 import { createProjectAudioCommands } from './project-audio-commands.mjs';
 import { createProjectEventBus } from './project-event-bus.mjs';
 import { createProjectSharedState } from './project-shared-state.mjs';
@@ -18,10 +20,11 @@ const defaultSceneReader = (plan, options) => {
 // a project boundary, never a forged child finished (which means two smoke
 // steps in the legacy audio contract). Re-entering creates a new child reader.
 export function createProjectRuntimeEventReader(input, { protocolVersion = PROJECT_RUNTIME_PROTOCOL, onEvent, createSceneReader = defaultSceneReader, expectedTotalSeconds } = {}) {
-  if (![1, 2, 3, 4].includes(protocolVersion)) throw Object.assign(new TypeError('Unsupported project runtime protocol.'), { errorCode: 'runtime_project_invalid' });
+  if (![1, 2, 3, 4, 5, 6].includes(protocolVersion)) throw Object.assign(new TypeError('Unsupported project runtime protocol.'), { errorCode: 'runtime_project_invalid' });
   const sharedState = protocolVersion >= 2 ? createProjectSharedState() : null;
   const eventBus = protocolVersion >= 3 ? createProjectEventBus() : null;
-  const audioCommands = protocolVersion === 4 ? createProjectAudioCommands() : null;
+  const audioCommands = protocolVersion >= 4 ? createProjectAudioCommands() : null;
+  const animationCommands = protocolVersion >= 5 ? createProjectAnimationCommands({ protocolVersion }) : null;
   // Hosts may require a bounded deterministic run. Window sessions omit this
   // expectation and may close at any observed time, including before a step.
   if (expectedTotalSeconds !== undefined && (!time(expectedTotalSeconds) || expectedTotalSeconds > 60)) {
@@ -49,8 +52,9 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
   const admit = frame => {
     if (!frame || frame.protocol !== protocolVersion || completed) { issue(); return; }
     if (frame.event === 'ready') {
-      if (started || !exact(frame, ['protocol', 'event', 'assemblyId', 'entrySceneId', ...(sharedState ? ['stateRevision'] : []), ...(eventBus ? ['eventSequence'] : []), ...(audioCommands ? ['audioCommandSequence'] : [])])
+      if (started || !exact(frame, ['protocol', 'event', 'assemblyId', 'entrySceneId', ...(sharedState ? ['stateRevision'] : []), ...(eventBus ? ['eventSequence'] : []), ...(audioCommands ? ['audioCommandSequence'] : []), ...(animationCommands ? ['animationCommandSequence'] : [])])
         || sharedState && frame.stateRevision !== 0 || eventBus && frame.eventSequence !== 0 || audioCommands && frame.audioCommandSequence !== 0
+        || animationCommands && frame.animationCommandSequence !== 0
         || frame.assemblyId !== plan.assembly.objectId || frame.entrySceneId !== plan.entrySceneId) { issue(); return; }
       started = true;
     } else if (frame.event === 'scene-enter') {
@@ -58,7 +62,7 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
         || !exact(frame, ['protocol', 'event', 'visitIndex', 'sceneId']) || frame.visitIndex !== visitCount + 1
         || frame.sceneId !== nextSceneId || !scenes.has(frame.sceneId)) { issue(); return; }
       const scene = scenes.get(frame.sceneId);
-      current = { index: ++visitCount, plan: scene, ready: false, audioReady: false, audioCueCount: 0, audioFailed: false, audioFinished: false, audioTime: null, lastAudioCommandTime: null,
+      current = { index: ++visitCount, plan: scene, ready: false, audioReady: false, audioCueCount: 0, audioFailed: false, audioFinished: false, audioTime: null, lastAudioCommandTime: null, animationState: null,
         reader: createSceneReader(scene) };
       nextSceneId = null;
     } else if (frame.event === 'scene-event') {
@@ -124,21 +128,47 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
             objectId: binding.objectId, source: binding.declaration }, track: { trackId: track.id, resourceId: track.resourceId, source } });
       } catch { issue(); return; }
       current.lastAudioCommandTime = frame.timeSeconds;
+    } else if (frame.event === 'animation-command') {
+      if (!animationCommands || !currentIdentity(frame) || !current.ready || current.audioFailed || current.audioFinished || !current.plan.animation
+        || !exact(frame, ['protocol', 'event', 'commandSequence', 'visitIndex', 'sceneId', 'bindingId', 'instanceId', 'objectId', 'command', 'state'])) { issue(); return; }
+      const binding = current.plan.behaviors?.bindings.find(candidate => candidate.bindingId === frame.bindingId
+        && candidate.instanceId === frame.instanceId && candidate.objectId === frame.objectId);
+      if (!binding) { issue(); return; }
+      try {
+        const animation = current.plan.animation;
+        const state = advanceProjectAnimationTransport(animation, protocolVersion, { state: current.animationState,
+          timeSeconds: frame.state?.timeSeconds, command: frame.command });
+        if (!exact(frame.state, ['sceneObjectId', 'phase', 'positionSeconds', 'timeSeconds', ...(protocolVersion === 6 ? ['clipId'] : [])])
+          || !Number.isFinite(frame.state.positionSeconds) || frame.state.positionSeconds < 0
+          || protocolVersion === 6 && state.clipId !== frame.state.clipId
+          || state.sceneObjectId !== frame.state.sceneObjectId || state.phase !== frame.state.phase
+          || state.timeSeconds !== frame.state.timeSeconds || !sameTime(state.positionSeconds, frame.state.positionSeconds)) throw new TypeError('Animation transport receipt mismatch.');
+        // Keep the Rust state, never accumulate backend rounding in subsequent transitions.
+        animationCommands.append({ sequence: frame.commandSequence, command: frame.command, state,
+          origin: { visitIndex: frame.visitIndex, sceneId: frame.sceneId, bindingId: binding.bindingId, instanceId: binding.instanceId,
+            objectId: binding.objectId, source: binding.declaration },
+          animation: { objectId: animation.manifest.objectId, source: { ...animation.manifest, propertyPath: '' },
+            durationSeconds: animation.document.durationSeconds, loop: animation.document.loop },
+          ...(protocolVersion === 6 ? { clip: projectAnimationClipDeclaration(animation, state.clipId) } : {}) });
+        current.animationState = state;
+      } catch { issue(); return; }
     } else if (frame.event === 'scene-exit') {
       const switching = frame.reason === 'switch';
       if (!currentIdentity(frame) || !current.ready || eventBus?.pendingCount || !exact(frame, ['protocol', 'event', 'visitIndex', 'sceneId', 'reason', 'elapsedSeconds', 'actors', ...(switching ? ['nextSceneId'] : [])])
         || !['switch', 'finished'].includes(frame.reason) || !time(frame.elapsedSeconds) || !time(totalSeconds + frame.elapsedSeconds)
         || switching && (!scenes.has(frame.nextSceneId) || frame.nextSceneId === frame.sceneId || visitCount >= PROJECT_RUNTIME_MAX_VISITS)
         || current.lastAudioCommandTime !== null && current.lastAudioCommandTime > frame.elapsedSeconds
+        || current.animationState && current.animationState.timeSeconds > frame.elapsedSeconds
         || !actorStates(current.plan, frame.actors)
         || current.plan.audio && (!current.audioFinished || !sameTime(current.audioTime, frame.elapsedSeconds))) { issue(); return; }
       const before = current.reader.diagnostics.length; current.reader.finish(); importDiagnostics(current.reader, before);
       totalSeconds += frame.elapsedSeconds; nextSceneId = switching ? frame.nextSceneId : null; finalExit = !switching; current = null;
     } else if (frame.event === 'finished') {
-      if (!started || current || !finalExit || !exact(frame, ['protocol', 'event', 'assemblyId', 'visitCount', 'totalSeconds', ...(sharedState ? ['stateRevision'] : []), ...(eventBus ? ['eventSequence'] : []), ...(audioCommands ? ['audioCommandSequence'] : [])])
+      if (!started || current || !finalExit || !exact(frame, ['protocol', 'event', 'assemblyId', 'visitCount', 'totalSeconds', ...(sharedState ? ['stateRevision'] : []), ...(eventBus ? ['eventSequence'] : []), ...(audioCommands ? ['audioCommandSequence'] : []), ...(animationCommands ? ['animationCommandSequence'] : [])])
         || sharedState && frame.stateRevision !== sharedState.revision
         || eventBus && (frame.eventSequence !== eventBus.sequence || eventBus.pendingCount)
         || audioCommands && frame.audioCommandSequence !== audioCommands.sequence
+        || animationCommands && frame.animationCommandSequence !== animationCommands.sequence
         || frame.assemblyId !== plan.assembly.objectId || frame.visitCount !== visitCount || !time(frame.totalSeconds)
         || !sameTime(frame.totalSeconds, totalSeconds)) { issue(); return; }
       if (expectedTotalSeconds !== undefined && !sameTime(frame.totalSeconds, expectedTotalSeconds)) {
@@ -188,5 +218,6 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
   if (sharedState) Object.defineProperty(api, 'sharedState', { enumerable: true, get: () => sharedState.snapshot() });
   if (eventBus) Object.defineProperty(api, 'projectEvents', { enumerable: true, get: () => eventBus.snapshot() });
   if (audioCommands) Object.defineProperty(api, 'audioCommands', { enumerable: true, get: () => audioCommands.snapshot() });
+  if (animationCommands) Object.defineProperty(api, 'animationCommands', { enumerable: true, get: () => animationCommands.snapshot() });
   return Object.freeze(api);
 }

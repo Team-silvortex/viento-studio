@@ -1,0 +1,2399 @@
+{
+  "startedAt": "2026-10-18T05:06:39.121Z",
+  "steps": [
+    "Real field editor adds two overlapping-capable stable-UUID clip records to a schema2 sprite document, preserving every track and reviewing schema3. Schematic selection starts at global0.5/local0/frame1; local1 reaches global1.5/frame3. Chinese/English/Japanese at390px preserve focused authored name, cursor, selected UUID and full review. Cancel changes no author bytes or source draft.",
+    "Apply only updates the ordinary editor draft. Normal Save persists exactly the reviewed source with BOM/CRLF, while tracks, scene, assets, registrations, templates and all other author bytes remain unchanged.",
+    "Saved preview freezes the reviewed schema3 document and imported image. Actual Canvas pixels confirm Attack local0/global0.5 is green frame1 and local1/global1.5 is yellow frame3, Idle loops within its0.5s range, and whole selection restores frame0. The second instance retains its full sprite sheet. Switching a running preview pauses at the new clip start and no old clock advances it."
+  ],
+  "screenshots": [
+    "clips-editor-desktop.png",
+    "clips-editor-zh-CN-390.png",
+    "clips-editor-en-390.png",
+    "clips-editor-ja-390.png",
+    "clips-scene-desktop.png",
+    "clips-scene-zh-CN-390.png",
+    "clips-scene-en-390.png",
+    "clips-scene-ja-390.png",
+    "failure.png"
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "このアニメーションの入力変更を破棄しますか？原文の下書きは変更されません。"
+    }
+  ],
+  "layout": {
+    "zh-CN": {
+      "noHorizontalOverflow": true,
+      "name": true,
+      "cancel": true,
+      "check": true,
+      "apply": true
+    },
+    "en": {
+      "noHorizontalOverflow": true,
+      "name": true,
+      "cancel": true,
+      "check": true,
+      "apply": true
+    },
+    "ja": {
+      "noHorizontalOverflow": true,
+      "name": true,
+      "cancel": true,
+      "check": true,
+      "apply": true
+    },
+    "preview-zh-CN": {
+      "noHorizontalOverflow": true,
+      "selectorFits": true
+    },
+    "preview-en": {
+      "noHorizontalOverflow": true,
+      "selectorFits": true
+    },
+    "preview-ja": {
+      "noHorizontalOverflow": true,
+      "selectorFits": true
+    }
+  },
+  "limitations": [
+    "Actual Chrome with local HTTP editor on a disposable copied animation workspace. No installed Tauri or Android device acceptance.",
+    "Real Chrome Canvas samples use the local Rust WASM core and frozen imported SVG bytes; no native Godot or packaged app claim.",
+    "Checks browser field editing, review, ordinary Save and frozen Canvas preview. Native Godot clip commands are covered by separate service/runtime tests."
+  ],
+  "sources": {
+    "engine/scene-animation-core.mjs": "faf1782e4122f9f60a25a81fc1b03eea97917132af098ae0a15072f99693f051",
+    "engine/scene-animation-edit.mjs": "adfc0504fcbde02afda2d2eeb2bc6f8d5bebae78a376a8205b6870deae4e8181",
+    "engine/scene-animation.mjs": "d5e476f6e3a1366436f63ce3afb059d82d8cd33857b01e10a66713300cae2801",
+    "engine/studio-core.mjs": "f083a30b6e710e86423ebf94aeecced69ab414bad850216cc1a1663c9bddffca",
+    "engine/studio-core.wasm": "c419c1145b368e5b50d37326a64e1e68abda5645637ef856f4eb1aa9bf731d35",
+    "engine/studio-modules.mjs": "938b17e7c84e7d368abc357a5cdeae95165d22db81ed71c63a9a4c9ba17b8ec7",
+    "web/modules/app-scene-animation.js": "4d939c4892b9fb91596404109f158b3b1123028fdf3fa720875b2a809a1275a4",
+    "web/modules/app-scene-animation-source.js": "66ee173b1c3b5545d653d3eb9d7455c933882d746b58c8ccb30b122fd38e742f",
+    "web/modules/scene-animation-player.js": "54d8473fc50c076c195b2324e9605089803fc656bf057bd0f342591361a77255",
+    "web/modules/scene-animation-preview.js": "cc06fb90ea103f7615314a40b9b055feff1a43b8205a93253105ebdff5998378",
+    "web/scene-animation.css": "70efd41b80446479602a557b2e6e11974d1c04a4e0652ecb366681c52dda4d71",
+    "web/modules/app-runtime.js": "a682e8f4c9560d3890008af81e3e5916489d7d16c317e5810a5a36a9a9d62ee3",
+    "web/modules/app-studio-system.js": "89033b38678c6ff7837920a84c1e569170bebf835911f3c8f7d97dc52952c324",
+    "web/i18n/en.js": "dbab6bbfae78d2e8419dc52f16da33415ab0ac22aa3f62167695d38d592b55fc",
+    "web/i18n/ja.js": "714fe41656fa1c4749e4c0e164d2ec6cf549685801b0bb50a43f7bd9f14ae49d",
+    "scripts/tests/scene-animation-clips-smoke.mjs": "1331daf1136d754100c767763db78c46bfa79fe1a0f250d27e888a8d68bcbb8d",
+    "web/modules/app-scene-animation-clips.js": "c0df89f6cf49ef0af01a2e1cfaf597dd57deadfa9c5e092483293d8e7647e922",
+    "engine/scene-animation-preview.mjs": "16d480fc4274ec6a425dfff0e2e8062948f53a4081b9b05d2d8b6d0d8db5ae0e",
+    "engine/scene-animation-visual-frame.mjs": "9ff2f737a2987f009ae4029f318f9aced311482ac21c1ce301ba262b12fe13a0",
+    "engine/scene-animation-sprite-layout.mjs": "cff8edea1662c1a56d0c6efc02e3be28ea33e8e32358e1afcccae6dfbc980f80",
+    "web/modules/app-scene-preview.js": "536ffe1ebde2b624c6a661467eb22952d46c51e824481972afe026c907ee4ccd",
+    "web/modules/app-scene-preview-canvas.js": "1e8d461b4883211a953f4bc4d50cdde82202df3c4a35f47cbf9be854ff9b7c4e",
+    "web/modules/app-scene-preview-animation.js": "430df952b992a1f9b36c2fc22bc764f68fca93f8d8fe77a3f1f189e2d684d888",
+    "scripts/lib/scene-preview-service.mjs": "ea66d0ad1307134e7f45ad09ce9eb5771ef3be1898ca50102f4d89394d957430"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "system": {
+    "format": "viento-studio-system",
+    "schemaVersion": 1,
+    "lifecycle": "boot-only",
+    "hotReload": false,
+    "initializedModules": [
+      "org.viento.document",
+      "org.viento.settings",
+      "org.viento.scene-composition-create",
+      "org.viento.scripts",
+      "org.viento.scene-behaviors",
+      "org.viento.scene-animation",
+      "org.viento.scene-audio",
+      "org.viento.world",
+      "org.viento.build",
+      "org.viento.project",
+      "org.viento.export",
+      "org.viento.media",
+      "org.viento.scene3d",
+      "org.viento.scene3d-transforms",
+      "org.viento.scene3d-objects",
+      "org.viento.scene3d-environment",
+      "org.viento.scene3d-properties",
+      "org.viento.scene3d-translation",
+      "org.viento.scene3d-alignment",
+      "org.viento.scene3d-distribution",
+      "org.viento.scene3d-copy",
+      "org.viento.scene3d-removal"
+    ],
+    "plan": {
+      "format": "viento-studio-module-plan",
+      "schemaVersion": 1,
+      "modules": [
+        {
+          "id": "org.viento.document",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scripts",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene-composition-create",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.settings",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.project",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.world",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.export",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.media",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.build",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-transforms",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-objects",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-environment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-properties",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-translation",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-alignment",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-distribution",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-copy",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene3d-removal",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene-behaviors",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene-audio",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        },
+        {
+          "id": "org.viento.scene-animation",
+          "apiVersion": 1,
+          "active": true,
+          "reason": null
+        }
+      ],
+      "capabilities": [
+        {
+          "capability": "document.read",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "document.edit",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.markdown",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.text",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.json",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "language.yaml",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.document",
+          "active": true
+        },
+        {
+          "capability": "authoring.script",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scripts",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.composition-create",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene-composition-create",
+          "active": true
+        },
+        {
+          "capability": "workbench.settings",
+          "apiVersion": 1,
+          "domain": "workbench",
+          "moduleId": "org.viento.settings",
+          "active": true
+        },
+        {
+          "capability": "project.types",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "project.templates",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.project",
+          "active": true
+        },
+        {
+          "capability": "world.query",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "world.commands",
+          "apiVersion": 1,
+          "domain": "world",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.object",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.projection",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "authoring.scene2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.world",
+          "active": true
+        },
+        {
+          "capability": "project.export",
+          "apiVersion": 1,
+          "domain": "project",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.package",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.export",
+          "active": true
+        },
+        {
+          "capability": "resource.reference",
+          "apiVersion": 1,
+          "domain": "resource",
+          "moduleId": "org.viento.media",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene2d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "project.authoring.assembly",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.behavior-creation",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.audio-creation",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.animation-creation",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.composition2d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.project",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "backend.execution",
+          "apiVersion": 1,
+          "domain": "backend",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "behavior.gdscript",
+          "apiVersion": 1,
+          "domain": "language",
+          "moduleId": "org.viento.build",
+          "active": true
+        },
+        {
+          "capability": "scene.representation.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.preview.scene3d",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene3d",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.transforms3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-transforms",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.objects3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-objects",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.environment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-environment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.properties3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-properties",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.translation3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-translation",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.alignment3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-alignment",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.distribution3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-distribution",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.copy3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-copy",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.removal3d",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene3d-removal",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.behaviors",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene-behaviors",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.audio",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene-audio",
+          "active": true
+        },
+        {
+          "capability": "scene.authoring.animation",
+          "apiVersion": 1,
+          "domain": "authoring",
+          "moduleId": "org.viento.scene-animation",
+          "active": true
+        },
+        {
+          "capability": "scene.preview.animation",
+          "apiVersion": 1,
+          "domain": "scene",
+          "moduleId": "org.viento.scene-animation",
+          "active": true
+        }
+      ],
+      "requests": [],
+      "satisfied": true,
+      "diagnostics": []
+    },
+    "hostCapabilities": {
+      "semanticProjection": true,
+      "semanticCommands": [
+        "property.set",
+        "changeset.apply",
+        "object.create",
+        "scene.create",
+        "behavior.create",
+        "audio.create",
+        "animation.create",
+        "projection.create",
+        "projection.update",
+        "scene.update",
+        "relation.add",
+        "resource.bind",
+        "world.recover"
+      ],
+      "projectBuild": true,
+      "scenePreview": true,
+      "sceneAnimationPreview": true,
+      "sceneBehaviorDirectory": true
+    }
+  },
+  "saved": {
+    "onlyChangedAuthorPath": "documents/animations/demo.json",
+    "beforeSha256": "209ddda45e3595d00d37c4cdf8f9a462b448af84aef6f74dab1c98fdfa479c21",
+    "afterSha256": "bdd2d68386bc3eafb1fb1bbf0857ea7774fec851e9bfe6c4034e291042bf613c",
+    "bomCrlfPreserved": true,
+    "clips": [
+      {
+        "id": "a661b6ca-141f-4908-8c10-8ff259a5bc55",
+        "name": "Attack <b>",
+        "startSeconds": 0.5,
+        "endSeconds": 1.5,
+        "loop": false
+      },
+      {
+        "id": "55c997a5-7d44-40b9-a11c-8dc6859a81ea",
+        "name": "Idle",
+        "startSeconds": 1.5,
+        "endSeconds": 2,
+        "loop": true
+      }
+    ]
+  },
+  "frames": [
+    {
+      "clip": "a661b6ca-141f-4908-8c10-8ff259a5bc55",
+      "local": 0,
+      "index": 1,
+      "actors": [
+        {
+          "matrix": [
+            0.7512890696525574,
+            0,
+            0,
+            0.7512890696525574,
+            174.25781393051147,
+            224.22421956062317
+          ],
+          "image": [
+            160,
+            160
+          ],
+          "args": [
+            80,
+            0,
+            80,
+            80,
+            -40,
+            -40,
+            80,
+            80
+          ],
+          "colors": [
+            [
+              48,
+              192,
+              96,
+              255
+            ],
+            [
+              48,
+              192,
+              96,
+              255
+            ],
+            [
+              48,
+              192,
+              96,
+              255
+            ],
+            [
+              48,
+              192,
+              96,
+              255
+            ]
+          ]
+        },
+        {
+          "matrix": [
+            0.7512890696525574,
+            0,
+            0,
+            0.7512890696525574,
+            24,
+            58.94062423706055
+          ],
+          "image": [
+            160,
+            160
+          ],
+          "args": [
+            460,
+            180,
+            80,
+            80
+          ],
+          "colors": [
+            [
+              224,
+              48,
+              48,
+              255
+            ],
+            [
+              48,
+              192,
+              96,
+              255
+            ],
+            [
+              48,
+              96,
+              224,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "clip": "a661b6ca-141f-4908-8c10-8ff259a5bc55",
+      "local": 1,
+      "index": 3,
+      "actors": [
+        {
+          "matrix": [
+            0.7512890696525574,
+            0,
+            0,
+            0.7512890696525574,
+            174.25781393051147,
+            224.22421956062317
+          ],
+          "image": [
+            160,
+            160
+          ],
+          "args": [
+            80,
+            80,
+            80,
+            80,
+            -40,
+            -40,
+            80,
+            80
+          ],
+          "colors": [
+            [
+              224,
+              192,
+              48,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ]
+          ]
+        },
+        {
+          "matrix": [
+            0.7512890696525574,
+            0,
+            0,
+            0.7512890696525574,
+            24,
+            58.94062423706055
+          ],
+          "image": [
+            160,
+            160
+          ],
+          "args": [
+            460,
+            180,
+            80,
+            80
+          ],
+          "colors": [
+            [
+              224,
+              48,
+              48,
+              255
+            ],
+            [
+              48,
+              192,
+              96,
+              255
+            ],
+            [
+              48,
+              96,
+              224,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "clip": "55c997a5-7d44-40b9-a11c-8dc6859a81ea",
+      "local": 0.5,
+      "index": 3,
+      "actors": [
+        {
+          "matrix": [
+            0.7512890696525574,
+            0,
+            0,
+            0.7512890696525574,
+            174.25781393051147,
+            224.22421956062317
+          ],
+          "image": [
+            160,
+            160
+          ],
+          "args": [
+            80,
+            80,
+            80,
+            80,
+            -40,
+            -40,
+            80,
+            80
+          ],
+          "colors": [
+            [
+              224,
+              192,
+              48,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ]
+          ]
+        },
+        {
+          "matrix": [
+            0.7512890696525574,
+            0,
+            0,
+            0.7512890696525574,
+            24,
+            58.94062423706055
+          ],
+          "image": [
+            160,
+            160
+          ],
+          "args": [
+            460,
+            180,
+            80,
+            80
+          ],
+          "colors": [
+            [
+              224,
+              48,
+              48,
+              255
+            ],
+            [
+              48,
+              192,
+              96,
+              255
+            ],
+            [
+              48,
+              96,
+              224,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "clip": null,
+      "local": 0,
+      "index": 0,
+      "actors": [
+        {
+          "matrix": [
+            0.7512890696525574,
+            0,
+            0,
+            0.7512890696525574,
+            174.25781393051147,
+            224.22421956062317
+          ],
+          "image": [
+            160,
+            160
+          ],
+          "args": [
+            0,
+            0,
+            80,
+            80,
+            -40,
+            -40,
+            80,
+            80
+          ],
+          "colors": [
+            [
+              224,
+              48,
+              48,
+              255
+            ],
+            [
+              224,
+              48,
+              48,
+              255
+            ],
+            [
+              224,
+              48,
+              48,
+              255
+            ],
+            [
+              224,
+              48,
+              48,
+              255
+            ]
+          ]
+        },
+        {
+          "matrix": [
+            0.7512890696525574,
+            0,
+            0,
+            0.7512890696525574,
+            24,
+            58.94062423706055
+          ],
+          "image": [
+            160,
+            160
+          ],
+          "args": [
+            460,
+            180,
+            80,
+            80
+          ],
+          "colors": [
+            [
+              224,
+              48,
+              48,
+              255
+            ],
+            [
+              48,
+              192,
+              96,
+              255
+            ],
+            [
+              48,
+              96,
+              224,
+              255
+            ],
+            [
+              224,
+              192,
+              48,
+              255
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "ok": false,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 1192328808\n- 3314904508\n\n    at file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-clips-smoke.mjs:170:103",
+  "pageFailure": {
+    "text": "サイドバーを閉じる\nV\nViento Studio\n0.1.6\n設定\nプロジェクトの種類とテンプレート\nワールドとオブジェクト\nビルドと実行\n書き出し\n閲覧\n編集\nシーンアニメーションを編集\n3Dプレビュー\n3D変換を編集\n3Dオブジェクトを管理\n3D環境を編集\n3D属性を編集\n3Dオブジェクトをまとめて移動\n3D位置を整列\n3D位置を等間隔に配置\n3Dオブジェクトを一括複製\n3Dオブジェクトを一括削除\n×\nすべて（3）\n角色 / ACTOR（1）\n场景 / SCENE（1）\n场景动画 / ANIMATION（1）\n3 件中 3 件のドキュメントを表示 （生成日時：2026/10/18 13:06:42）\nカテゴリ 角色 / ACTOR（1）\n角色 / ACTOR（1）\ntraveler\n角色 / Actor · 角色 / Actor\n編集可能\nカテゴリ 场景 / SCENE（1）\n场景 / SCENE（1）\ndemo\n场景 / Scene · 场景 / Scene\n編集可能\nカテゴリ 场景动画 / ANIMATION（1）\n场景动画 / ANIMATION（1）\ndemo\n场景动画 / Animation · 场景动画 / Animation\n編集可能\ndemo\nソース編集\nブロック編集\nフィールド編集\n閲覧に戻る\n素材を挿入\n変更を保存\nシーンレシピを新規作成\nスクリプトを新規作成\n編集元：documents/animations/demo.json\n検索と置換\nインデント幅\nタブ\nスペース 2 個\nスペース 4 個\nインデントを増やす\nインデントを減らす\n1 行、1 列 · 全 50 行\n行へ移動\n保存済み\n重建完成，文档已刷新（耗时 0.2s）\n655 文字 · 50 行\nCtrl / ⌘ + S 保存\nビルドと実行\nエディターに戻る\nプレビューする文書\n2D 关键帧 / Keyframes / キーフレーム · documents/scenes/demo.json\n状態を更新\nシーンプレビュー\nビルドタスク\n\n保存済みシーンや現在のソース下書きの配置を、ビルドや実行エンジンなしで確認できます。動作、入力、物理には実行テストを使用してください。\n\n保存済みシーンをプレビュー\n現在の下書きをプレビュー\nキャンバスに合わせる\n縮小\n75%\n拡大\nグリッドを表示\n\n保存時の配置を読み込みました。シーンや投影の変更後は、プレビューを更新してください。\n\n表示中：保存済みシーン。\n\n800 × 480 · キャラクター 2 体 · スナップショット：sha256:56a0d2eebf60f482777c751d8fb018e2a2e20e3c37fba1a84800c950d9763799\n\nキャラクターをクリックすると属性を確認できます。ドラッグで移動、ホイールで拡大・縮小できます。キャンバスにフォーカスがあるときは、矢印キーで移動、+/− で拡大・縮小、0 で全体を表示します。\n\n保存済みシーンアニメーション\n\ndocuments/animations/demo.json\n\n現在は静止シーンです。再生するか時間を動かすと、保存済みアニメーションを確認できます。\n\nアニメーションクリップをプレビュー\nアニメーション全体\nAttack <b> · a661b6ca-141f-4908-8c10-8ff259a5bc55\nIdle · 55c997a5-7d44-40b9-a11c-8dc6859a81ea\n\n元の時間軸 0.5–1.5 秒 · クリップの時間は 0 から開始\n\nアニメーションを再生\nアニメーションを一時停止\n停止して静止シーンに戻す\nアニメーション時刻\n0.00 / 1.00 s\n\nこのスナップショットの描画アニメーションのみを再生します。動作・物理・音声は実行しません。ラベル、オブジェクト一覧、プロパティは保存済みの論理位置を示します。レイアウトを編集するには再生を停止してください。\n\nシーン内のオブジェクト\nシーンのオブジェクトとグループを検索\nTraveler / 旅人 / 旅人 · bbbbbbbb\nTraveler / 旅人 / 旅人 · bbbbbbbb\n\nキャンバスまたは一覧からキャラクターを選択してください。\n\nシーン配置を編集\nシーンを編集\nシーンのソースを開く",
+    "source": "﻿{\n  \"format\": \"viento-scene-animation\",\n  \"schemaVersion\": 3,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"durationSeconds\": 2,\n  \"loop\": true,\n  \"tracks\": [\n    {\n      \"id\": \"66666666-6666-4666-8666-000000000001\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\n      \"property\": \"spriteFrame2d\",\n      \"interpolation\": \"step\",\n      \"keyframes\": [\n        {\n          \"atSeconds\": 0,\n          \"value\": 0\n        },\n        {\n          \"atSeconds\": 0.5,\n          \"value\": 1\n        },\n        {\n          \"atSeconds\": 1.5,\n          \"value\": 3\n        }\n      ],\n      \"grid\": {\n        \"columns\": 2,\n        \"rows\": 2\n      }\n    }\n  ],\n  \"clips\": [\n    {\n      \"id\": \"a661b6ca-141f-4908-8c10-8ff259a5bc55\",\n      \"name\": \"Attack <b>\",\n      \"startSeconds\": 0.5,\n      \"endSeconds\": 1.5,\n      \"loop\": false\n    },\n    {\n      \"id\": \"55c997a5-7d44-40b9-a11c-8dc6859a81ea\",\n      \"name\": \"Idle\",\n      \"startSeconds\": 1.5,\n      \"endSeconds\": 2,\n      \"loop\": true\n    }\n  ]\n}\n",
+    "captures": [
+      {
+        "ok": true,
+        "format": "viento-scene-preview",
+        "schemaVersion": 2,
+        "previewId": "7d58b466-613b-49e9-8d2e-f05718f0b7a2",
+        "snapshotId": "sha256:56a0d2eebf60f482777c751d8fb018e2a2e20e3c37fba1a84800c950d9763799",
+        "scene": {
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/demo.json",
+          "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+          "title": "2D 关键帧 / Keyframes / キーフレーム",
+          "viewport": [
+            800,
+            480
+          ],
+          "background": "#0d1829"
+        },
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              200,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 60,
+            "controls": "arrows",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "imageResourceId": "b48b06a0-9cb3-48d4-9054-5953901151c8",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/0"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              500,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "imageResourceId": "b48b06a0-9cb3-48d4-9054-5953901151c8",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/1"
+            }
+          }
+        ],
+        "resources": [
+          {
+            "id": "b48b06a0-9cb3-48d4-9054-5953901151c8",
+            "sha256": "f78922680ee4947d033f14f59e5beb37547a38409848ee3b4c6d96133c2a2ee0",
+            "size": 291,
+            "contentType": "image/svg+xml",
+            "url": "/api/scene-preview?previewId=7d58b466-613b-49e9-8d2e-f05718f0b7a2&resourceId=b48b06a0-9cb3-48d4-9054-5953901151c8"
+          }
+        ],
+        "diagnostics": [],
+        "sourceLocations": {
+          "scene": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/demo.json",
+            "propertyPath": "",
+            "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+            "sourceRange": {
+              "start": 0,
+              "end": 916,
+              "encoding": "utf-16",
+              "propertyPath": "",
+              "exact": true
+            }
+          },
+          "actors": [
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "definition": {
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "sourcePath": "documents/characters/traveler.md",
+                "propertyPath": "",
+                "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20"
+              },
+              "declaration": {
+                "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "sourcePath": "documents/scenes/demo.json",
+                "propertyPath": "/actors/0",
+                "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                "sourceRange": {
+                  "start": 179,
+                  "end": 543,
+                  "encoding": "utf-16",
+                  "propertyPath": "/actors/0",
+                  "exact": true
+                }
+              },
+              "fields": {
+                "position": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/0/position",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 257,
+                    "end": 291,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/0/position",
+                    "exact": true
+                  }
+                },
+                "size": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/0/size",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 307,
+                    "end": 339,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/0/size",
+                    "exact": true
+                  }
+                },
+                "size/0": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/0/size/0",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 317,
+                    "end": 319,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/0/size/0",
+                    "exact": true
+                  }
+                },
+                "size/1": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/0/size/1",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 329,
+                    "end": 331,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/0/size/1",
+                    "exact": true
+                  }
+                },
+                "color": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/0/color",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 356,
+                    "end": 365,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/0/color",
+                    "exact": true
+                  }
+                },
+                "speed": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/0/speed",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 382,
+                    "end": 384,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/0/speed",
+                    "exact": true
+                  }
+                },
+                "controls": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/0/controls",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 404,
+                    "end": 412,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/0/controls",
+                    "exact": true
+                  }
+                },
+                "imageResourceId": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/0/imageResourceId",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 499,
+                    "end": 537,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/0/imageResourceId",
+                    "exact": true
+                  }
+                }
+              }
+            },
+            {
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "definition": {
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "sourcePath": "documents/characters/traveler.md",
+                "propertyPath": "",
+                "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20"
+              },
+              "declaration": {
+                "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "sourcePath": "documents/scenes/demo.json",
+                "propertyPath": "/actors/1",
+                "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                "sourceRange": {
+                  "start": 549,
+                  "end": 910,
+                  "encoding": "utf-16",
+                  "propertyPath": "/actors/1",
+                  "exact": true
+                }
+              },
+              "fields": {
+                "position": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/1/position",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 627,
+                    "end": 661,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/1/position",
+                    "exact": true
+                  }
+                },
+                "size": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/1/size",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 677,
+                    "end": 709,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/1/size",
+                    "exact": true
+                  }
+                },
+                "size/0": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/1/size/0",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 687,
+                    "end": 689,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/1/size/0",
+                    "exact": true
+                  }
+                },
+                "size/1": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/1/size/1",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 699,
+                    "end": 701,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/1/size/1",
+                    "exact": true
+                  }
+                },
+                "color": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/1/color",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 726,
+                    "end": 735,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/1/color",
+                    "exact": true
+                  }
+                },
+                "speed": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/1/speed",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 752,
+                    "end": 753,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/1/speed",
+                    "exact": true
+                  }
+                },
+                "controls": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/1/controls",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 773,
+                    "end": 779,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/1/controls",
+                    "exact": true
+                  }
+                },
+                "imageResourceId": {
+                  "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "sourcePath": "documents/scenes/demo.json",
+                  "propertyPath": "/actors/1/imageResourceId",
+                  "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+                  "sourceRange": {
+                    "start": 866,
+                    "end": 904,
+                    "encoding": "utf-16",
+                    "propertyPath": "/actors/1/imageResourceId",
+                    "exact": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "sceneEditing": {
+          "worldId": "world:bf4fc545fc9636ff188f37a27aae8a38f696fdf399885ecc64b80bbf73c5e64e",
+          "baseRevision": "sha256:dc99de8b6ca1f4287975801a838e2f98ef0dc608d55699cc32fd8fa70dc9b36c",
+          "objectRevision": "sha256:d83b1cfe5f5dbd224846002b07226ccf2f31573faa533b46fc3524755cc1ba34",
+          "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d",
+          "content": "{\n  \"format\": \"viento-scene2d\",\n  \"schemaVersion\": 2,\n  \"title\": \"2D 关键帧 / Keyframes / キーフレーム\",\n  \"viewport\": [\n    800,\n    480\n  ],\n  \"background\": \"#0d1829\",\n  \"actors\": [\n    {\n      \"objectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\n      \"position\": [\n        200,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 60,\n      \"controls\": \"arrows\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\n      \"imageResourceId\": \"b48b06a0-9cb3-48d4-9054-5953901151c8\"\n    },\n    {\n      \"objectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\n      \"position\": [\n        500,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 0,\n      \"controls\": \"none\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\n      \"imageResourceId\": \"b48b06a0-9cb3-48d4-9054-5953901151c8\"\n    }\n  ]\n}\n"
+        },
+        "animationPreview": {
+          "format": "viento-scene-animation-preview",
+          "schemaVersion": 1,
+          "status": "ready",
+          "snapshotId": "sha256:56a0d2eebf60f482777c751d8fb018e2a2e20e3c37fba1a84800c950d9763799",
+          "scene": {
+            "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "sourcePath": "documents/scenes/demo.json",
+            "sourceRevision": "sha256:65f71ff3abf7e149239a575bf63150648eebbb523b07b8b06ad4428063cbfd9d"
+          },
+          "manifest": {
+            "objectId": "88888888-8888-4888-8888-888888888887",
+            "sourcePath": "documents/animations/demo.json",
+            "sourceRevision": "sha256:bdd2d68386bc3eafb1fb1bbf0857ea7774fec851e9bfe6c4034e291042bf613c"
+          },
+          "document": {
+            "clips": [
+              {
+                "endSeconds": 1.5,
+                "id": "a661b6ca-141f-4908-8c10-8ff259a5bc55",
+                "loop": false,
+                "name": "Attack <b>",
+                "startSeconds": 0.5
+              },
+              {
+                "endSeconds": 2,
+                "id": "55c997a5-7d44-40b9-a11c-8dc6859a81ea",
+                "loop": true,
+                "name": "Idle",
+                "startSeconds": 1.5
+              }
+            ],
+            "durationSeconds": 2,
+            "format": "viento-scene-animation",
+            "loop": true,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "schemaVersion": 3,
+            "tracks": [
+              {
+                "grid": {
+                  "columns": 2,
+                  "rows": 2
+                },
+                "id": "66666666-6666-4666-8666-000000000001",
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "interpolation": "step",
+                "keyframes": [
+                  {
+                    "atSeconds": 0,
+                    "value": 0
+                  },
+                  {
+                    "atSeconds": 0.5,
+                    "value": 1
+                  },
+                  {
+                    "atSeconds": 1.5,
+                    "value": 3
+                  }
+                ],
+                "property": "spriteFrame2d"
+              }
+            ]
+          },
+          "diagnostics": []
+        },
+        "requestId": "1792300002409-12"
+      }
+    ],
+    "frames": [
+      {
+        "matrix": [
+          0.7512890696525574,
+          0,
+          0,
+          0.7512890696525574,
+          174.25781393051147,
+          224.22421956062317
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          80,
+          80,
+          80,
+          80,
+          -40,
+          -40,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.7512890696525574,
+          0,
+          0,
+          0.7512890696525574,
+          24,
+          58.94062423706055
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          87.7499988079071,
+          143.62499868869781
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          80,
+          80,
+          80,
+          80,
+          -40,
+          -40,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          24,
+          73.5
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          87.7499988079071,
+          143.62499868869781
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          80,
+          0,
+          80,
+          80,
+          -40,
+          -40,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          24,
+          73.5
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          87.7499988079071,
+          143.62499868869781
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          80,
+          0,
+          80,
+          80,
+          -40,
+          -40,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          24,
+          73.5
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          87.7499988079071,
+          143.62499868869781
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          80,
+          0,
+          80,
+          80,
+          -40,
+          -40,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          24,
+          73.5
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          87.7499988079071,
+          143.62499868869781
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          80,
+          0,
+          80,
+          80,
+          -40,
+          -40,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          24,
+          73.5
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          87.7499988079071,
+          143.62499868869781
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          80,
+          0,
+          80,
+          80,
+          -40,
+          -40,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          24,
+          73.5
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          87.7499988079071,
+          143.62499868869781
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          80,
+          0,
+          80,
+          80,
+          -40,
+          -40,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.3187499940395355,
+          0,
+          0,
+          0.3187499940395355,
+          24,
+          73.5
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.7512890696525574,
+          0,
+          0,
+          0.7512890696525574,
+          174.25781393051147,
+          224.22421956062317
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          80,
+          0,
+          80,
+          80,
+          -40,
+          -40,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.7512890696525574,
+          0,
+          0,
+          0.7512890696525574,
+          24,
+          58.94062423706055
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.7512890696525574,
+          0,
+          0,
+          0.7512890696525574,
+          24,
+          58.94062423706055
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          160,
+          180,
+          80,
+          80
+        ]
+      },
+      {
+        "matrix": [
+          0.7512890696525574,
+          0,
+          0,
+          0.7512890696525574,
+          24,
+          58.94062423706055
+        ],
+        "image": [
+          160,
+          160
+        ],
+        "args": [
+          460,
+          180,
+          80,
+          80
+        ]
+      }
+    ],
+    "system": {
+      "format": "viento-studio-system",
+      "schemaVersion": 1,
+      "lifecycle": "boot-only",
+      "hotReload": false,
+      "initializedModules": [
+        "org.viento.document",
+        "org.viento.settings",
+        "org.viento.scene-composition-create",
+        "org.viento.scripts",
+        "org.viento.scene-behaviors",
+        "org.viento.scene-animation",
+        "org.viento.scene-audio",
+        "org.viento.world",
+        "org.viento.build",
+        "org.viento.project",
+        "org.viento.export",
+        "org.viento.media",
+        "org.viento.scene3d",
+        "org.viento.scene3d-transforms",
+        "org.viento.scene3d-objects",
+        "org.viento.scene3d-environment",
+        "org.viento.scene3d-properties",
+        "org.viento.scene3d-translation",
+        "org.viento.scene3d-alignment",
+        "org.viento.scene3d-distribution",
+        "org.viento.scene3d-copy",
+        "org.viento.scene3d-removal"
+      ],
+      "plan": {
+        "format": "viento-studio-module-plan",
+        "schemaVersion": 1,
+        "modules": [
+          {
+            "id": "org.viento.document",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scripts",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene-composition-create",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.settings",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.project",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.world",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.export",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.media",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.build",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-transforms",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-objects",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-environment",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-properties",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-translation",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-alignment",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-distribution",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-copy",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene3d-removal",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene-behaviors",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene-audio",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          },
+          {
+            "id": "org.viento.scene-animation",
+            "apiVersion": 1,
+            "active": true,
+            "reason": null
+          }
+        ],
+        "capabilities": [
+          {
+            "capability": "document.read",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "document.edit",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.markdown",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.text",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.json",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "language.yaml",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.document",
+            "active": true
+          },
+          {
+            "capability": "authoring.script",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scripts",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.composition-create",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene-composition-create",
+            "active": true
+          },
+          {
+            "capability": "workbench.settings",
+            "apiVersion": 1,
+            "domain": "workbench",
+            "moduleId": "org.viento.settings",
+            "active": true
+          },
+          {
+            "capability": "project.types",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.project",
+            "active": true
+          },
+          {
+            "capability": "project.templates",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.project",
+            "active": true
+          },
+          {
+            "capability": "world.query",
+            "apiVersion": 1,
+            "domain": "world",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "world.commands",
+            "apiVersion": 1,
+            "domain": "world",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.object",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.projection",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "authoring.scene2d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.world",
+            "active": true
+          },
+          {
+            "capability": "project.export",
+            "apiVersion": 1,
+            "domain": "project",
+            "moduleId": "org.viento.export",
+            "active": true
+          },
+          {
+            "capability": "resource.package",
+            "apiVersion": 1,
+            "domain": "resource",
+            "moduleId": "org.viento.export",
+            "active": true
+          },
+          {
+            "capability": "resource.reference",
+            "apiVersion": 1,
+            "domain": "resource",
+            "moduleId": "org.viento.media",
+            "active": true
+          },
+          {
+            "capability": "scene.representation.scene2d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "project.authoring.assembly",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.behavior-creation",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.audio-creation",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.animation-creation",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.composition2d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "backend.project",
+            "apiVersion": 1,
+            "domain": "backend",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "backend.execution",
+            "apiVersion": 1,
+            "domain": "backend",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "behavior.gdscript",
+            "apiVersion": 1,
+            "domain": "language",
+            "moduleId": "org.viento.build",
+            "active": true
+          },
+          {
+            "capability": "scene.representation.scene3d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.scene3d",
+            "active": true
+          },
+          {
+            "capability": "scene.preview.scene3d",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.scene3d",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.transforms3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-transforms",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.objects3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-objects",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.environment3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-environment",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.properties3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-properties",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.translation3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-translation",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.alignment3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-alignment",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.distribution3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-distribution",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.copy3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-copy",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.removal3d",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene3d-removal",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.behaviors",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene-behaviors",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.audio",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene-audio",
+            "active": true
+          },
+          {
+            "capability": "scene.authoring.animation",
+            "apiVersion": 1,
+            "domain": "authoring",
+            "moduleId": "org.viento.scene-animation",
+            "active": true
+          },
+          {
+            "capability": "scene.preview.animation",
+            "apiVersion": 1,
+            "domain": "scene",
+            "moduleId": "org.viento.scene-animation",
+            "active": true
+          }
+        ],
+        "requests": [],
+        "satisfied": true,
+        "diagnostics": []
+      },
+      "hostCapabilities": {
+        "semanticProjection": true,
+        "semanticCommands": [
+          "property.set",
+          "changeset.apply",
+          "object.create",
+          "scene.create",
+          "behavior.create",
+          "audio.create",
+          "animation.create",
+          "projection.create",
+          "projection.update",
+          "scene.update",
+          "relation.add",
+          "resource.bind",
+          "world.recover"
+        ],
+        "projectBuild": true,
+        "scenePreview": true,
+        "sceneAnimationPreview": true,
+        "sceneBehaviorDirectory": true
+      }
+    }
+  },
+  "finishedAt": "2026-10-18T05:06:43.982Z"
+}

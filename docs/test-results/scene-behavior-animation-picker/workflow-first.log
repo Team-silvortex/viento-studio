@@ -1,0 +1,72 @@
+✖ directory HTTP advertises its independent capability and requires author tokens for a no-store readonly catalog (234.608728ms)
+✖ directory HTTP rejects query and extra input fields and accepts only authenticated JSON POST (208.423576ms)
+✔ browse-only host does not expose the author directory or advertise its capability (127.385504ms)
+✔ saved clip directory → explicit parameter → reviewed draft → ordinary Save → frozen plan (documents) (434.800365ms)
+✖ saved clip directory → explicit parameter → reviewed draft → ordinary Save → frozen plan (design-data) (150.765498ms)
+✔ actual Godot receives the selected saved clip UUID through the ordinary behavior parameter workflow (11494.685924ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 3
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12223.834456
+
+✖ failing tests:
+
+test at scripts/tests/scene-animation-directory-http.test.mjs:42:1
+✖ directory HTTP advertises its independent capability and requires author tokens for a no-store readonly catalog (234.608728ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  200 !== 401
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-directory-http.test.mjs:49:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 401,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-animation-directory-http.test.mjs:60:1
+✖ directory HTTP rejects query and extra input fields and accepts only authenticated JSON POST (208.423576ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  200 !== 415
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-animation-directory-http.test.mjs:67:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 415,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-behavior-animation-workflow.test.mjs:66:55
+✖ saved clip directory → explicit parameter → reviewed draft → ordinary Save → frozen plan (design-data) (150.765498ms)
+  Error: Server exited: file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/workspace.mjs:43
+      throw new Error('不受支持的作品库目录声明');
+            ^
+  
+  Error: 不受支持的作品库目录声明
+      at readWorkspace (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/workspace.mjs:43:11)
+      at file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/paths.mjs:10:26
+      at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+      at async node:internal/modules/esm/loader:647:26
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+  
+  Node.js v24.21.0
+  
+      at ChildProcess.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers.mjs:79:62)
+      at ChildProcess.wrapper (node:events:639:12)
+      at ChildProcess.emit (node:events:514:28)
+      at ChildProcess._handle.onexit (node:internal/child_process:295:12)

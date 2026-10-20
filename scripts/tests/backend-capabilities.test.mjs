@@ -77,12 +77,12 @@ test('plan schemas and runtime protocol schemas are explicit separate declaratio
   reject({ ...descriptor(), plans: [value.plans[0], { ...value.plans[0], runtimeProtocolVersion: 1 }] });
 });
 
-test('project plans admit explicit runtime protocols one through four without changing author schema', () => {
-  for (const runtimeProtocolVersion of [1, 2, 3, 4]) {
+test('project plans admit explicit runtime protocols one through five without changing author schema', () => {
+  for (const runtimeProtocolVersion of [1, 2, 3, 4, 5]) {
     const value = { ...descriptor(), plans: [{ kind: 'project', schemaVersion: 1, runtimeProtocolVersion }] };
     assert.equal(validateExecutionBackendDescriptor(value).plans[0].runtimeProtocolVersion, runtimeProtocolVersion);
   }
-  for (const runtimeProtocolVersion of [0, 5, '2']) reject({ ...descriptor(), plans: [{ kind: 'project', schemaVersion: 1, runtimeProtocolVersion }] });
+  for (const runtimeProtocolVersion of [0, 7, '2']) reject({ ...descriptor(), plans: [{ kind: 'project', schemaVersion: 1, runtimeProtocolVersion }] });
 });
 
 test('execution operations require seven explicit booleans without support inference', () => {
@@ -217,7 +217,7 @@ test('UI support convenience is explicit, operation-specific and fail closed', (
 
 test('portable middleware executes in an isolated JavaScript realm without host globals', async () => {
   const source = await fs.readFile(new URL('../../engine/backend-capabilities.mjs', import.meta.url), 'utf8');
-  assert.doesNotMatch(source.replace(/^\s*\/\/.*$/gmu, ''), /(?:from\s+['"]node:|\b(?:process|Buffer|document|window)\b)/u);
+  assert.doesNotMatch(source.replace(/^\s*\/\/.*$/gmu, ''), /(?:from\s+['"]node:|\b(?:process|Buffer|window)\b|(?<!\.)\bdocument\b)/u);
   const context = vm.createContext({});
   vm.runInContext(`${source.replaceAll('export ', '')}\nglobalThis.backendApi = {validateExecutionBackendDescriptor, checkExecutionBackendSupport, canExecuteBackend};`, context);
   assert.equal(vm.runInContext('typeof process + ":" + typeof Buffer + ":" + typeof document + ":" + typeof window', context), 'undefined:undefined:undefined:undefined');

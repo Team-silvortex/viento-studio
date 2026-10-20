@@ -1,5 +1,13 @@
 # 执行后端中间层
 
+**0.1.7 源码边界**：下述序列帧、项目动画控制和命名片段已纳入[本版](RELEASE_0.1.7.md)。当前 Godot 适配器为 0.15.0；含 schema 3 动画的项目使用 protocol 6，仅旧动画使用 protocol 5，无动画使用 protocol 4，生成清单分别为 7／6／5。Bevy 两条通道仍不接视觉动画或项目组装；作者侧时长调整、轨道复制及只读目录不增加后端能力。旧段落的适配器版本与证据保留开发时点，本次未更新安装。
+
+**命名动画片段增量**：Godot 适配器 0.15.0 声明 `animation.clips2d` 和 project protocol 6。schema 3 作者动画变为 animation-plan 2；只含旧动画的项目仍生成 protocol 5，无动画项目仍生成 protocol 4，准入按冻结计划精确匹配。protocol 6 的命令状态增加 `clipId`，片段名称、范围和来源从冻结声明派生；旧协议的精确形状和预算保持。生成清单 7 列出片段协调器，旧清单 5／6 保留。见[片段架构](ARCHITECTURE.md#命名片段的独立边界)。
+
+**项目动画控制增量**：含动画的组装计划独立要求后端 `project.animation-control` 能力。Godot 0.14.0 广告 project protocol 5；无动画项目的生成物允许严格匹配旧 protocol 4，其他降级不接收。执行回执由共享 Rust transport 核对，来源由冻结计划解析；后端队列不进入 UI 或作者格式。生成清单 6 显式列出控制协调器和动画队列，工程检查／ZIP 沿已验证库存工作。单场景动画继续使用原生成器。详见[架构边界](ARCHITECTURE.md#项目动画控制的独立边界)。
+
+**0.1.6 后工作树**新增独立 `animation.sprite2d` 准入：含等分网格序列帧的计划保留 `animation.visual2d` 并额外要求该能力，删去标记不能绕过检查。Godot 0.13.0 使用独立序列帧生成器；四属性计划继续生成原 0.12.0 文件。图片闭包沿实例现有绑定和冻结资源，不增加资源解析通路；Bevy 两通道明确拒绝。参见[动画格式](SCENE_ANIMATION.md#等分网格序列帧)。
+
 当前未发布工作树支持[项目组装](PROJECT_ASSEMBLY.md)、[共享状态](PROJECT_SHARED_STATE.md)、[项目事件](PROJECT_EVENTS.md)与[行为声音控制](PROJECT_AUDIO_CONTROLS.md)。中立 `project:1` 计划保留全部 Scene2D 子计划，Godot 适配器 `0.11.0` 声明 `project.scenes`、`project.scene-switching`、`project.shared-state`、`project.events`、`project.audio-control`，Bevy 两条通道尚不接收项目计划。独立 `VIENTO_PROJECT:` 协议 4 校验访问、嵌套事件、状态修订、事件 FIFO 投递及实际声音命令；宿主从已验证冻结工程显式选择协议。纯读取器保留协议 1／2／3，不放宽旧构建的指纹重建要求。纯账本与查询、Godot 的事件及声音队列、三类独立只读观察面板各自维护。
 
 **0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；当前为 21 模块／38 项声明能力，本次未制作或更新安装包。

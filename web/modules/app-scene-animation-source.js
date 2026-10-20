@@ -1,3 +1,4 @@
+import { captureSceneAnimationUsage, sceneAnimationUsageMatchSource } from '../../engine/scene-animation-usage.mjs';
 import { captureSceneAnimationTargetSource, captureSceneAnimationTargets, sceneAnimationTargetsMatchSource, sceneAnimationTargetsEqual, validateSceneAnimationTargets } from '../../engine/scene-animation-targets.mjs';
 import { parseJsonSource } from '../../engine/json-source.mjs';
 import { isSceneAnimationProposal, prepareSceneAnimationApply } from '../../engine/scene-animation-edit.mjs';
@@ -5,8 +6,9 @@ import { isSceneAnimationProposal, prepareSceneAnimationApply } from '../../engi
 // Source ownership and an in-memory draft write only. This port has no file,
 // renderer, ordinary Save or backend access. The optional identity reader is
 // separate from source ownership and rechecked before a catalog-backed draft.
-export function createSceneAnimationSourceHost({ getState, digest, writeDraft, inspectTargets, focus = () => {} }) {
+export function createSceneAnimationSourceHost({ getState, digest, writeDraft, inspectTargets, inspectUsage, focus = () => {} }) {
   let previous, generation = 0, previousTargets, targetsGeneration = 0, recognitionContent, recognitionJSON, recognized = false;
+  let usageAvailability, usageGeneration = 0;
   const issuedTargets = new WeakMap();
   const targetsConflict = () => { throw Object.assign(new Error('Scene animation targets changed; refresh the target list.'), { errorCode: 'scene_animation_targets_conflict' }); };
   const conflict = () => { throw Object.assign(new Error('Animation editing no longer owns this source.'), { errorCode: 'scene_animation_authoring_conflict' }); };
@@ -15,12 +17,14 @@ export function createSceneAnimationSourceHost({ getState, digest, writeDraft, i
     if (!previous || keys.some(key => previous[key] !== s[key])) { previous = { ...s }; generation++; }
     const targetsAvailable = s.targetsAvailable === true && typeof inspectTargets === 'function';
     if (previousTargets !== targetsAvailable) { previousTargets = targetsAvailable; targetsGeneration++; }
+    const usageAvailable = s.usageAvailable === true && typeof inspectUsage === 'function';
+    if (usageAvailability !== usageAvailable) { usageAvailability = usageAvailable; usageGeneration++; }
     if (recognitionContent !== s.content || recognitionJSON !== s.sourceJSON) {
       recognitionContent = s.content; recognitionJSON = s.sourceJSON;
       const checked = s.sourceJSON && typeof s.content === 'string' && s.content.length <= 131072 ? parseJsonSource(s.content) : null;
       recognized = checked?.ok === true && checked.value?.format === 'viento-scene-animation';
     }
-    return { ...s, sourceToken: `${String(s.token)}:${generation}`, animationSource: recognized, targetsAvailable, targetsToken: String(targetsGeneration) };
+    return { ...s, sourceToken: `${String(s.token)}:${generation}`, animationSource: recognized, targetsAvailable, targetsToken: String(targetsGeneration), usageAvailable, usageToken: String(usageGeneration) };
   }
   const eligible = s => s.editable === true && s.available === true && !s.creating && !s.busy && s.sourceJSON === true && s.animationSource && Boolean(s.document);
   const current = (owner, guard = () => true) => {
@@ -31,7 +35,8 @@ export function createSceneAnimationSourceHost({ getState, digest, writeDraft, i
   function getContext() {
     const s = capture();
     return { editable: s.editable, creating: s.creating, busy: s.busy, available: s.available, sourceJSON: s.sourceJSON,
-      sourcePath: s.sourcePath, sourceToken: s.sourceToken, animationSource: s.animationSource, targetsAvailable: s.targetsAvailable, targetsToken: s.targetsToken };
+      sourcePath: s.sourcePath, sourceToken: s.sourceToken, animationSource: s.animationSource, targetsAvailable: s.targetsAvailable, targetsToken: s.targetsToken,
+      usageAvailable: s.usageAvailable, usageToken: s.usageToken };
   }
   async function snapshot(owner, guard) {
     if (!eligible(owner) || !current(owner, guard)) return null;
@@ -55,6 +60,35 @@ export function createSceneAnimationSourceHost({ getState, digest, writeDraft, i
     if (!valid() || savedRevision !== source.baseSourceRevision) targetsConflict();
     issuedTargets.set(catalog, owner.targetsToken); return catalog;
   }
+  async function getUsage(requestedSource) {
+    // Capture exact data descriptors before any await. Optional read capability
+    // changes revoke pending reads without changing ordinary editing ownership.
+    const keys = ['sourcePath', 'token', 'baseSourceRevision', 'sourceRevision', 'content'];
+    let requested;
+    try {
+      if (!requestedSource || ![Object.prototype, null].includes(Object.getPrototypeOf(requestedSource))) conflict();
+      const own = Reflect.ownKeys(requestedSource);
+      if (own.length !== keys.length || own.some(key => !keys.includes(key))) conflict();
+      requested = Object.fromEntries(keys.map(key => {
+        const property = Object.getOwnPropertyDescriptor(requestedSource, key);
+        if (!property?.enumerable || !Object.hasOwn(property, 'value') || typeof property.value !== 'string') conflict();
+        return [key, property.value];
+      }));
+    } catch { conflict(); }
+    const owner = capture();
+    const guard = () => { const now = capture(); return now.usageAvailable === true && now.usageToken === owner.usageToken; };
+    if (!guard()) conflict();
+    const source = await snapshot(owner, guard);
+    if (!source || !keys.every(key => requested[key] === source[key])) conflict();
+    const parsed = parseJsonSource(source.content);
+    if (!parsed.ok) conflict();
+    const raw = await inspectUsage({ sceneObjectId: parsed.value.sceneObjectId });
+    if (!current(owner, guard)) conflict();
+    const usage = captureSceneAnimationUsage(source, raw);
+    if (`sha256:${await digest(usage.savedContent)}` !== source.baseSourceRevision || !current(owner, guard)
+      || !sceneAnimationUsageMatchSource(usage, requested)) conflict();
+    return usage;
+  }
   async function applyDraft(proposal, { isCurrent = () => true, targets } = {}) {
     if (!isSceneAnimationProposal(proposal)) conflict();
     const owner = capture(), source = await snapshot(owner, isCurrent);
@@ -76,5 +110,5 @@ export function createSceneAnimationSourceHost({ getState, digest, writeDraft, i
     return { applied: true, sourcePath: after.sourcePath, sourceToken: after.sourceToken, content: prepared.afterContent,
       focus() { if (current(after) && after.content === prepared.afterContent) focus(); } };
   }
-  return Object.freeze({ getContext, getSource, getTargets, applyDraft });
+  return Object.freeze({ getContext, getSource, getTargets, getUsage, applyDraft });
 }

@@ -172,6 +172,36 @@ pub extern "C" fn viento_core_scene_animation_version() -> u32 {
     1
 }
 
+/// Optional regular sprite grids and discrete frame tracks; visual v1 stays compatible.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_animation_sprite_version() -> u32 {
+    1
+}
+
+/// Optional explicit-clock animation transport; existing samples keep their ABI.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_animation_transport_version() -> u32 {
+    1
+}
+
+/// Optional named animation windows with isolated local playback clocks.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_animation_clips_version() -> u32 {
+    1
+}
+
+/// Optional proportional author-timeline retiming; existing animation calls stay independent.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_animation_retime_version() -> u32 {
+    1
+}
+
+/// Optional explicit-identity visual track copying; existing editing calls stay independent.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_animation_track_copy_version() -> u32 {
+    1
+}
+
 /// Optional bounded field preparation and explicit-time particle sampling.
 #[no_mangle]
 pub extern "C" fn viento_core_scene3d_particles_version() -> u32 {
@@ -424,7 +454,15 @@ impl CoreResponse {
 fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
     if matches!(
         value["operation"].as_str(),
-        Some("sceneAnimation.inspect" | "sceneAnimation.sample")
+        Some(
+            "sceneAnimation.inspect"
+                | "sceneAnimation.sample"
+                | "sceneAnimation.transport"
+                | "sceneAnimation.sampleClip"
+                | "sceneAnimation.clipTransport"
+                | "sceneAnimation.retime"
+                | "sceneAnimation.copyTrack"
+        )
     ) {
         return Ok(CoreResponse::SceneAnimationSuccess {
             protocol_version: PROTOCOL_VERSION,
@@ -708,7 +746,15 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
             .and_then(|value| {
                 if matches!(
                     value["operation"].as_str(),
-                    Some("sceneAnimation.inspect" | "sceneAnimation.sample")
+                    Some(
+                        "sceneAnimation.inspect"
+                            | "sceneAnimation.sample"
+                            | "sceneAnimation.transport"
+                            | "sceneAnimation.sampleClip"
+                            | "sceneAnimation.clipTransport"
+                            | "sceneAnimation.retime"
+                            | "sceneAnimation.copyTrack"
+                    )
                 ) {
                     scene_animation::validate_request_bytes(input)?;
                 }

@@ -60,6 +60,25 @@ function actors(value, schemaVersion) {
   });
   if (!rows.length) fail(); return rows;
 }
+// Image membership is read only for frame tracks. Legacy snapshots keep their
+// narrow identity-only boundary and never evaluate unrelated actor fields.
+function spriteMembers(rawActors, members, document, rawResources, fullResources = false) {
+  const targets = new Set(document.tracks.filter(track => track.property === 'spriteFrame2d').map(track => track.instanceId));
+  if (!targets.size) return { members, resources: [] };
+  const source = list(rawActors, 128, value => value);
+  const resources = list(rawResources, 4096, value => {
+    const id = field(value, 'id'); if (!uuid(id)) fail();
+    return fullResources ? { id, extension: field(value, 'extension'), sha256: field(value, 'sha256'), size: field(value, 'size'),
+      ...(field(value, 'kind', true) === undefined ? {} : { kind: field(value, 'kind') }) } : { id };
+  });
+  if (new Set(resources.map(value => value.id)).size !== resources.length) fail();
+  return { resources, members: members.map((actor, index) => {
+    if (!targets.has(actor.instanceId)) return actor;
+    const imageResourceId = field(source[index], 'imageResourceId', true);
+    if (!uuid(imageResourceId) || !resources.some(value => value.id === imageResourceId)) fail();
+    return { ...actor, imageResourceId };
+  }) };
+}
 // The native validator receives detached ordinary data, never executable getters
 // or custom serializers. Its compact 64KiB / 512-keyframe budget still applies.
 function documentData(input) {
@@ -116,6 +135,8 @@ export function captureSceneAnimationPreview(preview) {
     const scene = location(field(preview, 'scene'), false), members = actors(field(preview, 'actors'), schemaVersion);
     if (members.some(actor => actor.objectId === scene.objectId)) fail();
     const catalog = envelope(field(preview, 'animationPreview'), scene, snapshotId, members, schemaVersion);
+    if (catalog.document?.tracks.some(track => track.property === 'spriteFrame2d'))
+      spriteMembers(field(preview, 'actors'), members, catalog.document, field(preview, 'resources'));
     catalogs.add(catalog); return catalog;
   } catch { fail(); }
 }
@@ -184,8 +205,11 @@ export function resolveSceneAnimationPreview(observed, plan, snapshotId) {
     }
     if (!manifest) return result('invalid', null, [issue()]);
     const declaration = sourceDocument(rawManifest, true);
+    const declared = JSON.parse(declaration.content.replace(/^\uFEFF/, ''));
+    const sprites = declared?.tracks?.some?.(track => track?.property === 'spriteFrame2d')
+      ? spriteMembers(field(plan, 'actors'), members, declared, field(plan, 'resources'), true) : { members, resources: [] };
     const resolved = resolveSceneAnimation({ source: { documents: [sceneDocument, declaration] } },
-      { schemaVersion, scene, actors: members });
+      { schemaVersion, scene, actors: sprites.members, resources: sprites.resources });
     if (!resolved.ok) {
       const diagnostics = resolved.diagnostics.slice(0, 32).map(diagnostic => {
         const at = location(diagnostic, false);

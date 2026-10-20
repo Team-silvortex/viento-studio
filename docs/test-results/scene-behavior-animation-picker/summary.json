@@ -1,0 +1,133 @@
+{
+  "date": "2026-10-20",
+  "version": "0.1.6",
+  "commit": "97bd6e13cdc51a99a1cd29a2e20c6b1165d2277e",
+  "delivery": "unreleased working tree; no version change, commit, push or install",
+  "runtime": {
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "browser": "Chrome/154.0.8037.97",
+    "godot": {
+      "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "wasm": {
+      "path": "engine/studio-core.wasm",
+      "bytes": 683261,
+      "sha256": "c419c1145b368e5b50d37326a64e1e68abda5645637ef856f4eb1aa9bf731d35",
+      "unchanged": true
+    }
+  },
+  "checks": {
+    "app": {
+      "tests": 6167,
+      "pass": 5940,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 227,
+      "todo": 0
+    },
+    "syntaxFiles": 1037,
+    "versionConsistency": true,
+    "apiPreflight": true,
+    "directoryAndAudioRegressions": {
+      "tests": 51,
+      "pass": 51,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "hostAndTransportRegressions": {
+      "tests": 37,
+      "pass": 37,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "behaviorUiRegressions": {
+      "tests": 42,
+      "pass": 42,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "httpAndSaveAndGodotWorkflow": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "browser": {
+      "groups": 8,
+      "screenshots": 4,
+      "errors": 0,
+      "sourceSnapshotUnchanged": true,
+      "report": "docs/test-results/scene-behavior-animation-picker/browser-1792485879925/browser.json"
+    }
+  },
+  "scopeNotes": [
+    "Counts overlap: focused groups and full suite are not additive.",
+    "The full suite has no VIENTO_GODOT_BIN and native auxiliary binaries were not rebuilt after disk cleanup; conditional skips remain explicit. The separate six-test workflow sets VIENTO_GODOT_BIN and includes one actual engine test.",
+    "Chrome verifies real UI → ordinary Save, with 17 other author files unchanged. A separate HTTP/host/Save test builds and runs Godot, asserting select/play use the selected UUID. These are separate workflow segments.",
+    "Only source HTTP/browser tested this turn; no new installed Tauri, Android device, Bevy visual animation, ZIP migration or Rust native test run claimed.",
+    "Named clip IDs are plain string parameters with no inferred variable meaning, static reference protection, deletion guard or migration.",
+    "The directory validates registered saved declarations and animation semantics, not full build readiness; missing visual target members or image bodies may be repaired separately."
+  ],
+  "sources": {
+    "engine/scene-animation-directory.mjs": "eb91c83d690fbf0076e47a7c9444d793f060e4ee15ecc7d8b340f6dd49ceb82c",
+    "engine/scene-behaviors-edit.mjs": "b5d8cd3ebb04f77306a03a2931d6b00fbdee0428eb77ced98914e9b5d653d50c",
+    "engine/scene-behaviors.mjs": "d1316c6050cf1c82ec05adcbe10518e7c4602981b376f8b4a757c7310478a80e",
+    "scripts/lib/doc-api-service.mjs": "1b68163b632028dbab94138734e146f044e899ab063944489e7cfe654b8cad5f",
+    "scripts/lib/doc-server-routes.mjs": "a8e0707c2bd58a20a1c9283a53bbaf221cb620b5de204a0a7f16597a8b68211d",
+    "scripts/lib/scene-animation-directory-service.mjs": "0abfcb583b8ad96e464a29e464452c9eef69b146a500e223f73a4b27d544d3fa",
+    "scripts/tests/dialog-harness.mjs": "bfc804f5d164f465cfabdec4187b5cc0612bf7a76c1491b3b8cfce55006edca8",
+    "scripts/tests/scene-animation-directory-http.test.mjs": "94424b859a4a6b9292c80027273e46c8b78a90696fb83e40f6f57c2515132307",
+    "scripts/tests/scene-animation-directory-service.test.mjs": "02bea5483161578c580304db15e17dbd8fa7ef8ea38a24dcfd9ae3afe233a26f",
+    "scripts/tests/scene-animation-directory.test.mjs": "c0ca6b118e767ec2f199c424e9197ebd69fd035a7969cf16e09ce8b12b0b792c",
+    "scripts/tests/scene-behavior-animation-host.test.mjs": "0104eb0d36260de708cf35790242930ab29521828f8492ec6f8d40283736d3c6",
+    "scripts/tests/scene-behavior-animation-picker-smoke.mjs": "25e6e3ae8b778ba45bd47efa428bda51221ddbf757e435ec607db7f3de1f6b44",
+    "scripts/tests/scene-behavior-animation-transport.test.mjs": "c814025d7e252d6e1cc3b2690a4e4d5cba039c451cc5a6f9017044a6648f2064",
+    "scripts/tests/scene-behavior-animation-workflow.test.mjs": "11ce94a57ba15e249e680f74e36c038901d3434d8f97bcba1251f348ab9bd2c3",
+    "scripts/tests/scene-behaviors-editor-ui.test.mjs": "1b8dfcd1e0b6174ca3aca7a552ee798d6a831542f932df1b328ce4124e1cc91d",
+    "web/i18n/en.js": "cf458b9af12976fa1f9b64436f2aaec208a69f06dd3663bc3834a53b54e60e01",
+    "web/i18n/ja.js": "df2c572f29d78f5b3a0d782112141ef28ca10c6c2cfb1e1e7b56410c68977639",
+    "web/modules/app-behavior-source.js": "f778e50809d1c9862cbfa9ddfe6e5679a0a6d0664f23144dd54138f6d869e740",
+    "web/modules/app-doc-service.js": "5b55df362e077e38f704de5c39fd27f9c99c3bf246211e39e321b1200193aff9",
+    "web/modules/app-runtime.js": "21f3497a9c1f12bbd6bad4eb051c0ec94c62824ac032692819ca4b220cf1fa0a",
+    "web/modules/app-scene-behavior-animation-clips.js": "8ce8939de5a713bedbe611be1f474ad341944aa17bed2b48c006f8aece3847af",
+    "web/modules/app-scene-behaviors.js": "e7db1ee4e84fe6826954244a6df786c85e9046c83e4506f11879d49705c805e3",
+    "web/scene-behaviors.css": "cf83fd57b7f05cacdbbf34b02b084e2895feffa2a36fce189c10fc3912d07410"
+  },
+  "atlas": {
+    "architecture": 11,
+    "functions": 133,
+    "implementations": 392,
+    "bindings": 576,
+    "cells": 2304,
+    "evidence": 2503,
+    "workflows": 96
+  },
+  "commands": {
+    "app": "node scripts/check-project.mjs --app-only",
+    "workflow": "VIENTO_GODOT_BIN=<recorded binary> node --test --test-concurrency=2 scripts/tests/scene-animation-directory-http.test.mjs scripts/tests/scene-behavior-animation-workflow.test.mjs",
+    "browser": "node scripts/tests/scene-behavior-animation-picker-smoke.mjs"
+  },
+  "logSha256": {
+    "directory-tests.log": "43dddd018c46cdb924e6d15931cbd542fc20744397626a867ce1a8a6ad4e2b52",
+    "host-transport-first.log": "814da99c201c1b5bc85b0e72e31807ae2bb6cb7f5404325bc9567c5b358f1a58",
+    "ui-initial.log": "776ee68079020200130d616bdbc31dd8b0003406845ab1f3935e7c54d4ec58fc",
+    "workflow-first.log": "e47ebbb1c53977997ecf0fd47ef1e017cbbaea240cc5c004b61c7ee1fabdf8a4",
+    "workflow-final.log": "ef875e2e327974dfb70bdaa4422248e69f88d25d6b6970d6d593c9e8642e5170",
+    "browser-initial.log": "6760eb787f08430f5b61f5b7cda16463430e87c904dd4c89bd29f43473f06542",
+    "app-check.log": "f640f50a90691ed2394d38b9fddac796a5177d4ef742ca717073e6c0473ed526"
+  },
+  "ok": true
+}

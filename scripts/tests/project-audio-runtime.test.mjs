@@ -43,7 +43,9 @@ test('protocol 4 is explicit and older project protocols do not silently accept 
   }
   const reader = createProjectRuntimeEventReader(plan, { protocolVersion: 4 }), missing = audioProjectReady(plan); delete missing.audioCommandSequence;
   reject(reader, missing); reject(reader, { ...audioProjectReady(plan), audioCommandSequence: 1 });
-  assert.throws(() => createProjectRuntimeEventReader(plan, { protocolVersion: 5 }));
+  const next = createProjectRuntimeEventReader(plan, { protocolVersion: 5 });
+  assert.deepEqual(next.audioCommands, { sequence: 0, entries: [] });
+  assert.throws(() => createProjectRuntimeEventReader(plan, { protocolVersion: 7 }));
 });
 test('commands require actor ready, audio ready and completion of due legacy cues', () => {
   const plan = audioProject(), a = plan.scenes[0], reader = createProjectRuntimeEventReader(plan, { protocolVersion: 4 }), command = audioCommand(a, 1, 1);
