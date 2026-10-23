@@ -1,3 +1,5 @@
+import { setupSceneBehaviorParameters } from './app-scene-behavior-parameters.js';
+import { captureScriptParameterContract } from '../../engine/script-parameter-interface.mjs';
 import { setupSceneBehaviorAnimationClips } from './app-scene-behavior-animation-clips.js';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { inspectSceneBehaviors } from '../../engine/scene-behaviors.mjs';
@@ -28,6 +30,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
       <label><span data-i18n="场景实例"></span><select id="sceneBehaviorsInstance"></select></label>
       <label><span data-i18n="已关联脚本"></span><select id="sceneBehaviorsSource"></select></label></div>
       <h3 data-i18n="行为参数"></h3><p class="scene-behaviors-note" data-i18n="参数使用文本、数字或布尔值；名称须为ASCII标识符，具体脚本类型在构建与运行时检查。"></p>
+      <section id="sceneBehaviorsParameterInterface" hidden></section>
       <section id="sceneBehaviorsAudioTracksTools" class="scene-behaviors-audio-tools" hidden>
         <button id="sceneBehaviorsLoadAudioTracks" type="button" class="doc-btn doc-btn-ghost" data-i18n="读取场景音轨"></button>
         <p class="scene-behaviors-note" data-i18n="将已保存的音轨编号填入文本参数；不会识别参数用途、执行声音或保护后续引用。"></p>
@@ -154,6 +157,24 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
   const animationClips = setupSceneBehaviorAnimationClips({ container: el('AnimationClipsTools'), getAnimationClips, translate: t,
     getContext: () => ({ available: getContext().animationClipsAvailable === true, current: current(), pending, source: session?.source, scene: session?.catalog.scene, rows: parameterInputs }),
     onUse: (row, value) => { if (pending || !current() || !parameterInputs.includes(row) || row.type.value !== 'string' || selected !== row.bindingId) return; row.value.value = value; changed(); row.value.focus(); } });
+  const parameterInterface = setupSceneBehaviorParameters({ container: el('ParameterInterface'), translate: t,
+    getContext: () => {
+      const source = session?.catalog.sources.find(item => item.objectId === el('Source').value);
+      return { session, source, contract: source?.parameterContract, current: current(), pending, bindingId: selected,
+        backendId: session?.backendId, language: session?.language, rows: parameterInputs,
+        parameters: (readVisible()?.parameters || []).map(row => ({ name: row.key, type: row.type, value: row.value })) };
+    },
+    onAddMissing: (declarations, { isCurrent }) => {
+      if (pending || !current() || !isCurrent() || parameterInputs.length + declarations.length > 32) return;
+      capture(); if (!isCurrent()) return;
+      for (const declaration of declarations) active().parameters.push({ key: declaration.name, type: declaration.type,
+        value: Object.is(declaration.defaultValue, -0) ? '-0' : String(declaration.defaultValue) });
+      invalidate(); renderBinding(); refresh(); parameterInputs.at(-1)?.value.focus();
+    },
+    onRename: (row, declaration, { isCurrent }) => {
+      if (pending || !current() || !isCurrent() || !parameterInputs.includes(row) || selected !== row.bindingId || row.type.value !== declaration.type) return;
+      row.key.value = declaration.name; changed(); row.key.focus();
+    } });
   function renderBinding() {
     const binding = active(); parameterInputs = []; eventInputs = []; el('Parameters').replaceChildren(); el('Events').replaceChildren();
     if (!session || !binding) return;
@@ -204,12 +225,12 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     el('ChangedPaths').replaceChildren(); for (const path of proposal?.changedPaths || []) el('ChangedPaths').append(node('li', path));
     el('Path').textContent = session?.source.sourcePath || context.sourcePath || '';
     el('Fixed').textContent = session ? t('场景：{0} · 后端：{1} · 语言：{2}', session.catalog.scene.sourcePath, session.backendId, session.language) : '';
-    refreshAudioTracks(); animationClips.refresh();
+    refreshAudioTracks(); animationClips.refresh(); parameterInterface.refresh();
   }
   function close(force = false) {
     if (!force && dirty() && !window.confirm(t('丢弃本次行为表单修改？原文草稿不会改变。'))) return false;
     const target = opener, request = ++epoch; opener = null; session = null; draft = []; selected = ''; pending = false;
-    resetAudioTracks(); animationClips.reset(); proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
+    resetAudioTracks(); animationClips.reset(); parameterInterface.reset(); proposal = null; parameterInputs = []; eventInputs = []; message = ''; diagnostic = '';
     if (dialog.open) dialog.close(); refresh();
     Promise.resolve().then(() => { if (!disposed && request === epoch && !dialog.open && target?.isConnected !== false) target?.focus?.(); }); return true;
   }
@@ -233,13 +254,15 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
       instances.add(item.instanceId);
     }
     for (const item of value.sources) {
-      if (!exact(item, ['objectId', 'sourcePath', 'sourceRevision', 'name']) || !uuid(item.objectId) || sources.has(item.objectId)
+      if (!exact(item, ['objectId', 'sourcePath', 'sourceRevision', 'name', ...(Object.hasOwn(item, 'parameterContract') ? ['parameterContract'] : [])]) || !uuid(item.objectId) || sources.has(item.objectId)
         || !text(item.sourcePath) || !/\.txt$/i.test(item.sourcePath) || !revision(item.sourceRevision) || !text(item.name)) invalid();
+      if (Object.hasOwn(item, 'parameterContract')) captureScriptParameterContract(item.parameterContract);
       sources.add(item.objectId);
     }
     if (model.bindings.some(binding => !instances.has(binding.instanceId) || !sources.has(binding.implementation.sourceObjectId))) invalid();
     return clone(value);
   }
+  const dependencySignature = value => canonicalJson({ ...value, sources: value.sources.map(({ parameterContract, ...source }) => source) });
   async function open() {
     const context = { ...getContext() }; if (disposed || dialog.open || !eligible(context) || context.busy || context.available !== true) return false;
     const request = ++epoch; opener = document.activeElement; pending = true; message = '正在读取行为绑定与依赖…'; diagnostic = ''; dialog.showModal(); refresh();
@@ -253,7 +276,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
       if (!parsed.recognized || !parsed.ok || !parsed.value) invalid();
       const inspected = await inspect({ sourcePath: captured.sourcePath, content: captured.content }); if (!owns()) return false;
       const checked = catalog(inspected, captured, parsed.value), first = parsed.value.bindings[0].implementation;
-      session = { source: captured, model: parsed.value, catalog: checked, catalogSignature: canonicalJson(checked), backendId: first.backendId, language: first.language };
+      session = { source: captured, model: parsed.value, catalog: checked, catalogSignature: dependencySignature(checked), backendId: first.backendId, language: first.language };
       draft = parsed.value.bindings.map(binding => ({ bindingId: binding.bindingId, instanceId: binding.instanceId, sourceObjectId: binding.implementation.sourceObjectId,
         parameters: Object.entries(binding.parameters).map(([key, value]) => ({ key, type: typeof value, value: Object.is(value, -0) ? '-0' : String(value) })), events: clone(binding.events) }));
       selected = draft[0].bindingId; renderBinding(); initialSignature = signature(); invalidate(); message = '选择绑定并编辑；检查完整候选后应用到草稿。'; return true;
@@ -291,7 +314,7 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
       const result = await inspect({ sourcePath: candidate.sourcePath, content: candidate.afterContent }); if (!owns()) return false;
       const parsed = inspectSceneBehaviors(candidate.afterContent); if (!parsed.ok || !parsed.value) invalid();
       const checked = catalog(result, owner.source, parsed.value);
-      if (canonicalJson(checked) !== owner.catalogSignature) invalid('原文或依赖已变化，请返回后重新打开行为编辑。');
+      if (dependencySignature(checked) !== owner.catalogSignature) invalid('原文或依赖已变化，请返回后重新打开行为编辑。');
       proposal = candidate; approvalSignature = form; message = '行为与依赖已检查，请审阅完整原文后应用。'; return true;
     } catch (error) { if (owns()) fail(error, '行为修改未通过检查，输入已保留。'); return false; }
     finally { if (!disposed && request === epoch && session === owner && dialog.open) { pending = false; refresh(); } }
@@ -344,6 +367,6 @@ export function setupSceneBehaviors({ getContext = () => ({}), getSource = async
     }
     refresh();
   });
-  function dispose() { if (disposed) return; close(true); disposed = true; animationClips.dispose(); unsubscribe?.(); button.remove(); dialog.remove(); }
+  function dispose() { if (disposed) return; close(true); disposed = true; animationClips.dispose(); parameterInterface.dispose(); unsubscribe?.(); button.remove(); dialog.remove(); }
   refresh(); return Object.freeze({ refresh, dispose, open });
 }

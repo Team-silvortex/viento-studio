@@ -1,0 +1,30 @@
+{
+  "version": "0.1.8",
+  "blockingFindings": [],
+  "scope": "Independent read-only review of the accumulated candidate and distribution entry points, before final release reports.",
+  "initialCandidate": {
+    "files": 490,
+    "approxMiB": 40.6,
+    "evidenceApproxMiB": 31.8,
+    "lfsManagedPngs": 141
+  },
+  "reviews": [
+    {
+      "scope": "Candidate files and large/binary/private state",
+      "result": "No build binaries, anomalously large files, symlinks or newly added local credentials/configuration files found. Common private-key/GitHub-token/AWS-key pattern scan had no matches; this is not an exhaustive security guarantee."
+    },
+    {
+      "scope": "Desktop/mobile preparation and source package inventory",
+      "result": "Recursive preparation includes new engine/web/scripts files as appropriate; actual source_files traversal includes new production files. No missing relative imports or new Node-only dependency in browser/mobile modules."
+    },
+    {
+      "scope": "Godot and Rust source fingerprints",
+      "result": "Three new Godot completion templates enter generator and adapter fingerprints. Core build record includes both new Rust modules and matches current source/WASM bytes."
+    }
+  ],
+  "notPerformed": [
+    "New installer build",
+    "Device testing",
+    "New native engine execution during release"
+  ]
+}

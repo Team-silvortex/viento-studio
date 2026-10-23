@@ -1,0 +1,105 @@
+{
+  "startedAt": "2026-10-23T01:46:53.970Z",
+  "steps": [
+    "New-script graph selection, field location and collapse/reopen preserve the exact reviewed source and dirty state. Real key edits regenerate source; an incomplete key removes all stale graph items. Cancelling writes no author files.",
+    "The re-edit graph retains all three states including an isolated state, five transitions, a reverse direction, a self-loop and three triggers sharing a route. Selecting that route selects exactly its three transitions; explicit Locate focuses the corresponding real field without revoking the approved source.",
+    "An invalid state clears every graph node and transition; a detached Locate button cannot focus a replacement row. Repair restores the graph. Collapse and Chinese/English/Japanese changes preserve the source review, exact graph/input nodes, input focus and text selection. At390px only the bounded graph canvas scrolls horizontally. Cancel leaves source and all author files unchanged.",
+    "A deliberate event change follows Check → reviewed source → Apply to the unsaved draft → ordinary Save. The graph reopens both the dirty draft and the saved TXT. Only that TXT changes; registration, identity, bindings and every other author file remain unchanged."
+  ],
+  "screenshots": [
+    "graph-create-desktop.png",
+    "graph-reedit-routes-desktop.png",
+    "graph-reedit-multi-trigger-desktop.png",
+    "graph-invalid-cleared.png",
+    "graph-zh-CN-390.png",
+    "graph-en-390.png",
+    "graph-ja-390.png",
+    "graph-saved-reopened-desktop.png"
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "丢弃本次脚本创建设置？编辑器内容不会改变。"
+    },
+    {
+      "type": "confirm",
+      "message": "丢弃本次状态表修改？原文草稿不会改变。"
+    }
+  ],
+  "layout": {
+    "zh-CN": {
+      "noDocumentOverflow": true,
+      "noDialogOverflow": true,
+      "canvasLeft": 43,
+      "canvasRight": 332,
+      "canvasWidth": 287,
+      "canvasScrollWidth": 1040,
+      "nodes": 3
+    },
+    "en": {
+      "noDocumentOverflow": true,
+      "noDialogOverflow": true,
+      "canvasLeft": 43,
+      "canvasRight": 332,
+      "canvasWidth": 287,
+      "canvasScrollWidth": 1040,
+      "nodes": 3
+    },
+    "ja": {
+      "noDocumentOverflow": true,
+      "noDialogOverflow": true,
+      "canvasLeft": 43,
+      "canvasRight": 332,
+      "canvasWidth": 287,
+      "canvasScrollWidth": 1040,
+      "nodes": 3
+    }
+  },
+  "limitations": [
+    "Actual Chrome over local HTTP in a disposable author workspace. No installed Tauri, Android, native picker, game execution or Godot claim.",
+    "A fixture prepares scenes, clips and an existing state-table TXT. Current UI previews creation and re-edit forms, focuses fields, reviews and saves one ordinary TXT. Initial OC creation and binding are fixture setup.",
+    "The graph is a static projection of the current valid form. It does not prove runtime state, reachability or execution."
+  ],
+  "sources": {
+    "engine/script-authoring.mjs": "cfd24a6c147d8c44e027cb709bb4bc31cfe4dc35a6756ec92dac72754e9f3365",
+    "engine/godot-animation-state-script.mjs": "a9fb4687b3b9e9573770a3f2dacc4d78e5540acfcc37cce05db2f6a8bc88f2d5",
+    "engine/animation-state-table-core.mjs": "c269476f5874b9e92f15a959c4b012fa3364087d82d6f9285b9b223a20feffdf",
+    "engine/animation-state-graph.mjs": "00c0561472366aaf361fe35149aa1c58df8213b8a5ce1a04b61ca4a61031907a",
+    "engine/studio-core.mjs": "324ae45ee7798d53f70af34817144a5685074e04057e966dad7bddf9848d55f5",
+    "engine/studio-core.wasm": "ca96bf4e0eb7bde9eceb14add68348a037902dc0f8b78857107a72c11fc21960",
+    "engine/animation-state-script-source.mjs": "2712b55978cdb61d12e6be92c27d6acf84c18dfd3cf997e436e29f57e1c5d301",
+    "engine/animation-state-script-edit.mjs": "3097cca0cb5551a906bd2c1bd5457723da584ed3fb5bf9794d895635e310e71f",
+    "web/modules/app-animation-state-graph.js": "4d84d1e3e8ab2640a1b6c17d2f5f7a37c7ab9577e5cebf1ff641f83029605264",
+    "web/animation-state-graph.css": "ff4f934053d1e00a1ceb7d49b73e3669ee1348791fbdd833c308162ccac88123",
+    "web/modules/app-animation-state-script.js": "2d6b48df5e2b9e9feae1701fc3c9be990376b08467d06843c0eee0d9dfdcfa24",
+    "web/animation-state-script.css": "18cbd78418fa43348f427cdd13fc21ea5fb882855d3c5e61cb397c91926d8727",
+    "web/modules/app-script-create.js": "abf16a8ddb325c529642107e4c22e733c31708dba2b093be65807ea3db1fae43",
+    "web/script-create.css": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f",
+    "web/modules/app-animation-state-script-source.js": "8f991023f59183edf24ad8565c8383fccc78973820b55d060b0da51b9073d62e",
+    "web/modules/app-animation-state-script-edit.js": "e8c010b11989879f31742b893719cf87b9bd444461018fcfd7e315339f56aec9",
+    "web/animation-state-script-edit.css": "6e2f277af82711f0d5c607d3e7bdde55ae38f3f1ecc68fefc3955fc9fb488b39",
+    "web/modules/app-studio-system.js": "d7179455413bf6e76262b68739b5f7944b27e4fe1806784cb9efccef11b73be4",
+    "web/modules/app-runtime.js": "000644a6a4a0ccd668dddd2f7706c37a2bcbc190067da4c58c8dbaa37bc021a5",
+    "web/i18n/en.js": "8b89a0a197efa4b218610fa374a1b30c11132582c25cf0ec352deb5974bf6363",
+    "web/i18n/ja.js": "950ff75c346fbba0dbbd65cd463cec15183fdc609da06b63cf20d60addf4b6a0",
+    "scripts/tests/animation-state-graph-smoke.mjs": "087331743a02b0eb1270bcf393c76308d7be22a05db61a49cd48fac745075934"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "script": {
+    "sourcePath": "documents/scripts/checkpoint.txt",
+    "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+    "changedAuthorPaths": [
+      "documents/scripts/checkpoint.txt"
+    ],
+    "sourceSha256": "1a2386fec06eb8d60016c96ba29fb705288bf22021d3a9763e1c0e1919593c09",
+    "untouchedAuthorFiles": 35
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-10-23T01:46:58.919Z"
+}

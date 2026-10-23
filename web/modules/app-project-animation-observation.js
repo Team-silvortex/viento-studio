@@ -78,7 +78,7 @@ export function setupProjectAnimationObservation({ container, getContext = () =>
     el('Panel').hidden = !canUse(current) || !snapshot;
     setText(el('Title'), t('动画控制记录'));
     setText(el('Note'), t('只读显示动画命令执行时的状态和播放头，不代表当前画面。切换场景时保留记录，重新运行后清空。'));
-    setText(el('SearchLabel'), t(protocolVersion === 6 ? '按场景、动画或片段筛选' : '按场景或动画标识筛选'));
+    setText(el('SearchLabel'), t(protocolVersion >= 6 ? '按场景、动画或片段筛选' : '按场景或动画标识筛选'));
     setText(el('Navigation'), opening ? t('正在打开动画控制来源…') : navigationMessage ? t(navigationMessage) : '');
     el('Navigation').hidden = !opening && !navigationMessage;
     search.disabled = !canUse(current) || !snapshot;
@@ -98,7 +98,7 @@ export function setupProjectAnimationObservation({ container, getContext = () =>
       setText(record.animation, t('场景 {0} · 动画 {1}', entry.origin.sceneId, entry.animation.objectId));
       const phase = t({ playing: '播放', paused: '暂停', stopped: '停止', finished: '结束' }[entry.state.phase]);
       setText(record.state, t('执行后状态：{0} · 播放头 {1} 秒', phase, entry.state.positionSeconds));
-      record.clip.hidden = protocolVersion !== 6;
+      record.clip.hidden = protocolVersion < 6;
       setText(record.clip, entry.clip ? t('片段：{0} · {1} · 原时间轴 {2}–{3} 秒', entry.clip.name, entry.clip.id, entry.clip.startSeconds, entry.clip.endSeconds) : t('完整动画'));
       if (record.clipSource) setText(record.clipSource, t('打开动画片段声明'));
       setText(record.origin, t('控制来源：{0} · {1}', entry.origin.source.sourcePath, entry.origin.source.propertyPath));
@@ -124,7 +124,7 @@ export function setupProjectAnimationObservation({ container, getContext = () =>
       let admitted;
       try {
         const nextProtocol = options.protocolVersion ?? 5;
-        if (![5, 6].includes(nextProtocol)) throw new TypeError('Unsupported animation observation.');
+        if (![5, 6, 7].includes(nextProtocol)) throw new TypeError('Unsupported animation observation.');
         admitted = value == null ? null : validateProjectAnimationCommandsSnapshot(value, { protocolVersion: nextProtocol });
         if (protocolVersion !== nextProtocol) { clear(); protocolVersion = nextProtocol; }
       }

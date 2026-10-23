@@ -1,0 +1,75 @@
+{
+  "format": "viento-source-audit",
+  "schemaVersion": 1,
+  "scope": "animation-state-table authoring integration",
+  "reviewedAt": "2026-10-20T12:07:55.991279+00:00",
+  "readOnly": true,
+  "productionModified": false,
+  "testsRun": false,
+  "result": "no-blocking-findings",
+  "findings": [],
+  "checks": [
+    {
+      "area": "optional-core",
+      "result": "passed",
+      "detail": "Import and static starter discovery do not require the new WASM marker. Only state-table generation invokes the optional Rust operation; capability loss clears the reviewed proposal and invalidates pending handoff."
+    },
+    {
+      "area": "draft-brand",
+      "result": "passed",
+      "detail": "Only the fixed generator issues custom source under the existing private WeakSet brand. Exact creation request fields and current context checks remain; ordinary TXT creation and Save retain persistence authority."
+    },
+    {
+      "area": "state-references",
+      "result": "passed",
+      "detail": "Row object identities retain initial/from/to references during rename. Removed referenced rows remain missing, and a new row with the same key does not silently inherit them. Detached old row handlers fail ownership checks."
+    },
+    {
+      "area": "preview-ownership",
+      "result": "passed",
+      "detail": "Every table edit regenerates or clears the proposal. Signature includes hidden table settings. Final handoff checks generation, source context, current form, proposal identity and core availability; silent edits require another visible preview."
+    },
+    {
+      "area": "refresh-lifecycle",
+      "result": "passed",
+      "detail": "Child refresh does not invoke onChange, so parent review/render and child refresh do not recurse. Reopen/reset/dispose revoke row ownership. Language refresh preserves input nodes and their selection."
+    },
+    {
+      "area": "generator-runtime",
+      "result": "passed",
+      "detail": "All required ports and subscriptions precede initial playback. Event names bind to one callback each, unknown transitions return true, explicit self edges restart. Completion compares the captured selection. Select/play admission is not an execution receipt and failures do not claim rollback; lifecycle cleanup releases both subscription kinds."
+    },
+    {
+      "area": "host-handoff",
+      "result": "passed",
+      "detail": "Existing createScriptDraft independently rechecks ordinary proposal brand, clean editable context, source token and isCurrent immediately before synchronous in-memory draft creation."
+    }
+  ],
+  "boundaries": [
+    "One controller per scene is an authoring convention; this slice adds no runtime arbitration or per-instance playhead.",
+    "Generated TXT is editable author source; this form does not reverse-parse arbitrary saved scripts.",
+    "Full application validation and old static starter byte comparisons are owned by the parent task."
+  ],
+  "sources": [
+    {
+      "path": "engine/script-authoring.mjs",
+      "sha256": "77ebfbd47e2544f68245f94b0651fd51824f514a8de2f0e581ed018a8378a150"
+    },
+    {
+      "path": "engine/godot-animation-state-script.mjs",
+      "sha256": "a9fb4687b3b9e9573770a3f2dacc4d78e5540acfcc37cce05db2f6a8bc88f2d5"
+    },
+    {
+      "path": "web/modules/app-animation-state-script.js",
+      "sha256": "f45f7454c28892abc1238b2edb0c871500598a783b173badadb64cb1593a435c"
+    },
+    {
+      "path": "web/modules/app-script-create.js",
+      "sha256": "abf16a8ddb325c529642107e4c22e733c31708dba2b093be65807ea3db1fae43"
+    },
+    {
+      "path": "web/modules/app-runtime.js",
+      "sha256": "346ce85ea829fb59551b494207ae84dc47e11c170e7f453ef12c2593eff85387"
+    }
+  ]
+}

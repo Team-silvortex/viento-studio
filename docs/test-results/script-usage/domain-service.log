@@ -1,0 +1,41 @@
+✖ saved script usage observes every registered nonownership reference without reading media or writing files (26.026777ms)
+✔ unused malformed unavailable and nonbehavior references remain explicit even when execution dependencies are broken (42.038715ms)
+✔ changed reference content registrations and script bytes revoke the observed world revision (49.396828ms)
+✔ missing unregistered non-TXT and accessor requests cannot silently report no usage (39.274857ms)
+✔ request is captured before asynchronous read and same-size external edits reject a mixed observation (23.172079ms)
+✔ script and individual reference UTF8 limits reject the whole result without truncation (45.895355ms)
+✔ reference count relationship kind count and encoded total response limits reject complete results (640.055843ms)
+✔ ownership-only and unrelated registries produce an explicitly scoped empty result (15.287809ms)
+✔ script usage captures detached exact directory data without interpreting script bytes (5.038989ms)
+✔ every reference outcome is explicit and a missing binding never hides a registered reference (1.405869ms)
+✔ dirty source is pinned to its saved script baseline and all five source fields retain ownership (1.153675ms)
+✔ saved binding snapshots retain BOM CRLF Unicode typed parameters and exact original indexes (1.238966ms)
+✔ ordinary and broken documents expose only their own complete snapshot while unavailable references refuse (0.387337ms)
+✔ private catalogs snapshots and intents reject cloned forged cross-catalog rows and source owners (1.045523ms)
+✔ strict DTOs reject getters sparse arrays aliases duplicates trailing hashes ownership links and mismatched missing content (1.154187ms)
+✔ complete collection per-file UTF8 and encoded response budgets refuse rather than truncate (79.951265ms)
+✔ self references retain their registered identity and malformed declarations cannot produce guessed matches (0.661722ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 16
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 979.65541
+
+✖ failing tests:
+
+test at scripts/tests/script-usage-service.test.mjs:36:1
+✖ saved script usage observes every registered nonownership reference without reading media or writing files (26.026777ms)
+  Error: The registered script usage source is unavailable.
+      at createError (file:///home/chiharukiryu/cdev/viento-studio/engine/service-error.mjs:2:17)
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/script-usage-service.mjs:14:30)
+      at Object.inspect (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/script-usage-service.mjs:35:7)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-usage-service.test.mjs:44:15)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    statusCode: 422,
+    payload: {},
+    errorCode: 'script_usage_unavailable'
+  }

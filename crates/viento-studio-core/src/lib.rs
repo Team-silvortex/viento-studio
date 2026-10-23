@@ -1,6 +1,8 @@
 //! Rendering-independent layout rules, position drafts and bounded history.
 //! Hosts retain scene source serialization, filesystem access and guarded saves.
 
+mod animation_state_conditions;
+mod animation_state_table;
 mod layout_draft;
 mod layout_save;
 mod scene3d;
@@ -157,6 +159,18 @@ pub extern "C" fn viento_core_scene3d_environment_version() -> u32 {
 /// Optional additive fog declaration and source-preserving environment edits.
 #[no_mangle]
 pub extern "C" fn viento_core_scene3d_fog_version() -> u32 {
+    1
+}
+
+/// Optional engine-independent animation state declaration indexing.
+#[no_mangle]
+pub extern "C" fn viento_core_animation_state_table_version() -> u32 {
+    1
+}
+
+/// Optional event-payload conditions; legacy state table admission is unchanged.
+#[no_mangle]
+pub extern "C" fn viento_core_animation_state_conditions_version() -> u32 {
     1
 }
 
@@ -334,6 +348,20 @@ pub enum CoreResponse {
         ok: bool,
         scene3d: scene3d::Scene3DResponse,
     },
+    AnimationStateTableSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "animationStateTable")]
+        animation_state_table: animation_state_table::AnimationStateTableResponse,
+    },
+    AnimationStateConditionSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "animationStateCondition")]
+        animation_state_condition: animation_state_conditions::AnimationStateConditionResponse,
+    },
     SceneAnimationSuccess {
         #[serde(rename = "protocolVersion")]
         protocol_version: u32,
@@ -452,6 +480,30 @@ impl CoreResponse {
 }
 
 fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
+    if value["operation"].as_str() == Some("animationStateTable.inspectConditional") {
+        return Ok(CoreResponse::AnimationStateTableSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            animation_state_table: animation_state_conditions::dispatch_table(value)?,
+        });
+    }
+    if matches!(
+        value["operation"].as_str(),
+        Some("animationStateCondition.inspect" | "animationStateCondition.evaluate")
+    ) {
+        return Ok(CoreResponse::AnimationStateConditionSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            animation_state_condition: animation_state_conditions::dispatch_condition(value)?,
+        });
+    }
+    if value["operation"].as_str() == Some("animationStateTable.inspect") {
+        return Ok(CoreResponse::AnimationStateTableSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            animation_state_table: animation_state_table::dispatch(value)?,
+        });
+    }
     if matches!(
         value["operation"].as_str(),
         Some(
@@ -744,6 +796,17 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
         serde_json::from_slice::<Value>(input)
             .map_err(|_| CoreError::request())
             .and_then(|value| {
+                if matches!(
+                    value["operation"].as_str(),
+                    Some(
+                        "animationStateTable.inspect"
+                            | "animationStateTable.inspectConditional"
+                            | "animationStateCondition.inspect"
+                            | "animationStateCondition.evaluate"
+                    )
+                ) {
+                    animation_state_table::validate_request_bytes(input)?;
+                }
                 if matches!(
                     value["operation"].as_str(),
                     Some(

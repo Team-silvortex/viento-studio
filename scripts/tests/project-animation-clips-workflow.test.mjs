@@ -41,7 +41,7 @@ func _ready() -> void:
   assert.equal(built.job.status, 'succeeded', JSON.stringify(built.job.diagnostics)); const buildId = built.latestBuild.id;
   await service.command({ action: 'run', buildId, mode: 'headless' }); const ran = await settled(service);
   assert.equal(ran.job.status, 'succeeded', JSON.stringify(ran.job.diagnostics));
-  const project = ran.job.runtime.project; assert.equal(project.protocolVersion, 6);
+  const project = ran.job.runtime.project; assert.equal(project.protocolVersion, 7);
   assert.deepEqual(project.animationCommands.entries.map(e => e.command.action), ['select', 'seek', 'play', 'select', 'seek', 'pause']);
   assert.deepEqual(project.animationCommands.entries.map(e => e.state.positionSeconds), [0, .25, .25, 0, .5, .5]);
   assert.equal(project.animationCommands.entries[0].animation.objectId, f.animationIds[0]);

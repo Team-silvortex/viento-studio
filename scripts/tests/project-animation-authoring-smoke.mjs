@@ -166,7 +166,7 @@ try {
   }
   await perform('#projectBuildPlan', 'plan'); await perform('#projectBuildGenerate', 'build');
   const ran = await perform('#projectBuildHeadless', 'run'), history = ran.runtime.project.animationCommands;
-  assert.equal(ran.runtime.project.protocolVersion, 5); assert.equal(history.sequence, 4);
+  assert.equal(ran.runtime.project.protocolVersion, 7); assert.equal(history.sequence, 4);
   assert.deepEqual(history.entries.map(row => [row.command.action,row.state.phase,row.state.positionSeconds,row.state.timeSeconds]), [
     ['pause','paused',0,0], ['seek','paused',.5,0], ['play','playing',.5,0], ['stop','stopped',0,0],
   ]);
@@ -189,7 +189,7 @@ try {
     await screenshot(`project-animation-commands-${language}-390.png`);
   }
   await call('Emulation.clearDeviceMetricsOverride'); await evaluate(`(await import('/web/i18n/index.js')).applyLanguage('zh-CN')`);
-  report.runtime = { jobId: ran.id, history, protocolVersion: 5, actualReceipts: true };
+  report.runtime = { jobId: ran.id, history, protocolVersion: ran.runtime.project.protocolVersion, actualReceipts: true };
   report.steps.push('The real Build panel plans, generates and runs an assembled project in Godot. Four executed pause/seek/play/stop receipts expose execution phase and separate scene/playhead times. The independent view retains state/event/audio histories and displays the real ledger in Chinese, English and Japanese at 390px without horizontal overflow.');
   report.navigation = [];
   for (const kind of ['behavior', 'animation']) {

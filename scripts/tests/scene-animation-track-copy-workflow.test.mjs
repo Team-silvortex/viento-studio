@@ -83,7 +83,7 @@ test('actual Godot executes saved copied numeric and sprite tracks with each ins
 },async t=>{
   const f=await copyAndSave(t,'documents',true),tool=process.env.VIENTO_GODOT_BIN,output=path.join(f.temporary,'track-copy-build');
   const built=await buildProject({root:f.author,targetId:f.assemblyId,tool,output});assert.equal(built.ok,true,JSON.stringify(built.diagnostics||built.record?.diagnostics));
-  const ran=await runProjectBuild({buildDirectory:output,tool,headless:true,smoke:false});assert.equal(ran.ok,true,JSON.stringify(ran.record?.diagnostics||ran));assert.equal(ran.record.events[0].protocol,6);
+  const ran=await runProjectBuild({buildDirectory:output,tool,headless:true,smoke:false});assert.equal(ran.ok,true,JSON.stringify(ran.record?.diagnostics||ran));assert.equal(ran.record.events[0].protocol,7);
   const observed=ran.record.phases.at(-1).stdout.split('\n').filter(line=>line.startsWith('COPY_VISUAL:')).map(line=>JSON.parse(line.slice('COPY_VISUAL:'.length)));
   assert.deepEqual(observed,[[.75,150,150,3,3,true]]);
   assert.deepEqual(await fingerprint(f.author,{authorOnly:true}),f.after);

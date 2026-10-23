@@ -117,7 +117,7 @@ test('assembly admission preserves frame capability across members and cannot dr
 
 test('real Godot scene A to B to A reentry resets frame and composes behavior and audio', real, async t => {
   const source = await assembly(t), f = await materialize(t, source.value, source.captured.resources), tool = await prepare(f, source.value);
-  assert.equal(f.generated.backend.version, '0.14.0');
+  assert.equal(f.generated.backend.version, '0.16.0');
   for (const child of source.value.scenes) {
     const file = path.join(f.directory, `scenes/${child.scene.objectId}/project-scene.gd`), content = await fs.readFile(file, 'utf8');
     await fs.writeFile(file, content.replace('set_process(false)', `set_process(false)\n\tprint("SPRITE_VISIT:" + JSON.stringify([animation_time, animation_sprites["${child.actors[0].instanceId}"].frame]))`));

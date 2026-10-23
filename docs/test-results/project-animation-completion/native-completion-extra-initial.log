@@ -1,0 +1,32 @@
+✔ real switching cancels old completion, revokes stale ports and reentry subscribes exactly once (11710.320741ms)
+✔ real freed recipient is skipped while another completion subscriber remains callable (11634.969054ms)
+✔ real completion starter guards absent, invalid and freed ports and preserves select failure (251.561588ms)
+✔ generated inventory accepts historical schemas 5/6/7 and explicitly requires completion scripts only for 8 (11.860676ms)
+✖ real completion follows the Rust subtraction boundary when endpoint addition rounds below duration (11620.349376ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 35372.048661
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-completion-godot.test.mjs:311:1
+✖ real completion follows the Rust subtraction boundary when endpoint addition rounds below duration (11620.349376ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-completion-godot.test.mjs:318:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

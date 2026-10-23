@@ -17,9 +17,9 @@ import { createProjectRuntimeEventReader } from '../../engine/project-runtime-ev
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.15.0',
-  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 6 }],
-  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d'],
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.16.0',
+  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 7 }],
+  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -53,6 +53,10 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ['scripts/backends/godot4/project-completion-runtime.gd', new URL('./godot4/project-completion-runtime.gd', import.meta.url)],
+    ['scripts/backends/godot4/project-animation-completions.gd', new URL('./godot4/project-animation-completions.gd', import.meta.url)],
+    ['scripts/backends/godot4/project-animation-completion-scene.gd', new URL('./godot4/project-animation-completion-scene.gd', import.meta.url)],
+    ['engine/project-animation-completions.mjs', new URL('../../engine/project-animation-completions.mjs', import.meta.url)],
     ['scripts/backends/godot4-clip-animation.mjs', new URL('./godot4-clip-animation.mjs', import.meta.url)],
     ['scripts/backends/godot4/project-clip-runtime.gd', new URL('./godot4/project-clip-runtime.gd', import.meta.url)],
     ['scripts/backends/godot4/project-animation-clips.gd', new URL('./godot4/project-animation-clips.gd', import.meta.url)],
@@ -240,7 +244,7 @@ export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
   availability, identify: identifyGodot, generate, fingerprint, executePhase,
   diagnostics: (result, plan) => (plan.kind === 'project' ? godotAssemblyDiagnostics : plan.animation ? godotAnimationDiagnostics : plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
   createEventReader: (input, options) => {
-    if (input.kind === 'project') return createProjectRuntimeEventReader(input, { protocolVersion: input.scenes.some(scene => scene.animation?.document.schemaVersion === 3) ? 6 : input.scenes.some(scene => scene.animation) ? 5 : 4, ...options,
+    if (input.kind === 'project') return createProjectRuntimeEventReader(input, { protocolVersion: input.scenes.some(scene => scene.animation) ? 7 : 4, ...options,
       ...(options?.smoke === true ? { expectedTotalSeconds: 0.5 } : {}) });
     const plan = input;
     const createBaseReader = plan.schemaVersion === 3 ? createBehaviorRuntimeEventReader : createRuntimeEventReader;

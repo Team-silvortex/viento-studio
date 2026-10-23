@@ -1,0 +1,76 @@
+✔ state-table editing entry requires a marked existing TXT source and preserves unavailable-core source editing (53.071153ms)
+✔ reopen reads the current unsaved generated draft, and ordinary draft apply keeps its saved baseline and file path (49.579597ms)
+✔ renaming or deleting a state requires source review and exposes added/removed clip parameter names (26.611703ms)
+✔ no-op checks do not write; invalid inputs retain the local table and revoke previous review (25.966022ms)
+✔ modified, malformed and unsupported declarations explain refusal without entering a table or writing (18.826468ms)
+✔ three-language refresh keeps incomplete edits, focus and selection while cancellation leaves source untouched (15.019365ms)
+✔ cancel/reopen and source changes discard late reads without touching a newer table (15.909671ms)
+✔ late proposals cannot approve a changed table or a closed session (26.547654ms)
+✔ source, capability and input changes revoke pending applications, including change-and-return (54.776706ms)
+✔ cancelling a pending application revokes its guard; disposal never steals focus (29.148382ms)
+✔ source snapshot extra fields and accessors are refused without invoking them (9.974999ms)
+✖ all reopened state-table messages have English and Japanese translations (1.404473ms)
+✔ a local state table emits only its portable fields and does not change on setup or refresh (14.192767ms)
+✔ renaming a state follows stable row identity in the initial state and both transition ends (9.649614ms)
+✔ deleting a referenced state leaves explicit missing references even when another row reuses its key (12.708044ms)
+✔ transition kind switching retains the event field without leaking it into completion DTOs (7.903274ms)
+✔ three-language refresh preserves form nodes, values, focus and incomplete selection (11.549629ms)
+✔ disabled, hidden, unsupported and removed sessions cannot mutate through old row actions (15.981063ms)
+✔ new transitions require explicit states, and row count limits do not affect existing fields (952.590472ms)
+✔ reset preserves unknown references as missing and cannot silently bind them to the first state (5.567369ms)
+✔ all state-table interface text has English and Japanese translations (0.891829ms)
+✔ creation and reopened tables have independent prefixes, references, notes and disposal (6.756733ms)
+✔ script starter has independent frozen source ports and works without build or behavior services (5.435193ms)
+✔ a declarative requirement cannot activate script creation when ports are absent or feature is disabled (3.933027ms)
+✔ state-table editing shares one script module but receives only its own immutable ports (1.592563ms)
+✔ disabled script module mounts neither creation nor the state-table editor (1.440761ms)
+✔ standalone entry needs an editable idle editor and protects existing or new drafts (57.951453ms)
+✔ any existing project type can register a TXT script, with the actual legacy document root (24.454099ms)
+✔ starter selection previews every exact source byte without calling the author port (79.649403ms)
+✔ explicit handoff sends the branded reviewed proposal once and closes before focusing the new draft (27.09379ms)
+✔ invalid or non-TXT paths keep choices and cannot be handed off (32.793134ms)
+✔ silent field changes require a visible new review before applying (16.944877ms)
+✔ context changes at click time cannot replace source or reset local choices (125.023295ms)
+✔ pending handoffs exclude duplicates, cancellation, typing and editor save shortcuts (14.674022ms)
+✔ ownership guard rejects a context that changes during a pending handoff, including change-and-return (16.574298ms)
+✔ refusal and exceptions preserve the full local draft and allow retry (45.388809ms)
+✔ dirty cancellation can be declined without losing fields, preview or language state (14.717162ms)
+✔ an externally closed old session cannot close or focus a newly opened panel (18.167012ms)
+✔ dispose invalidates pending handoff and removes the entry without a late focus (10.064155ms)
+✔ language refresh keeps authored labels, invalid paths and source preview unchanged, using text-only labels (24.936668ms)
+✔ all script dialog and starter messages have English and Japanese translations (0.952853ms)
+✔ Bevy Rust drafts retain the selected backend, exact TXT contents and local review across language changes (86.761165ms)
+✔ godot-project-animation keeps all reviewed bytes and choices across three languages before ordinary draft handoff (49.255318ms)
+✔ godot-project-animation-clip keeps all reviewed bytes and choices across three languages before ordinary draft handoff (42.573105ms)
+✔ godot-project-animation-event keeps all reviewed bytes and choices across three languages before ordinary draft handoff (39.27018ms)
+✔ godot-project-animation-completion keeps all reviewed bytes and choices across three languages before ordinary draft handoff (37.135277ms)
+✔ state-table starter previews the exact generated custom source and hands it off as an ordinary branded TXT draft (93.678215ms)
+✔ invalid state tables stay editable with no approved source, and missing references require explicit repair (108.955252ms)
+✔ a silent table edit needs a new exact preview before handoff, including a hidden starter round trip (32.430874ms)
+✔ state table settings participate in dirty cancellation even while another starter is selected (34.112864ms)
+✔ an unavailable state-table capability only disables this generator and revokes an in-flight handoff (87.63964ms)
+✔ state-table source changes and programmatic edits during handoff cannot apply a stale proposal (41.199099ms)
+ℹ tests 52
+ℹ suites 0
+ℹ pass 51
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1271.968546
+
+✖ failing tests:
+
+test at scripts/tests/animation-state-script-edit-ui.test.mjs:164:1
+✖ all reopened state-table messages have English and Japanese translations (1.404473ms)
+  AssertionError [ERR_ASSERTION]: English: 修改前原文
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-script-edit-ui.test.mjs:168:36)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

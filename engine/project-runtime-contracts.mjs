@@ -61,6 +61,11 @@ export const copyProjectAnimationObservationData = input => copyBoundedRuntimeDa
 export const copyProjectAnimationClipSnapshotData = input => copyBoundedRuntimeData(input, 12 * 1024 * 1024);
 export const copyProjectAnimationClipObservationData = input => copyBoundedRuntimeData(input, 48 * 1024 * 1024);
 
+// Protocol 7 adds at most 320 natural completions and 1024 independently
+// sourced recipients. These are observation budgets, never wire line budgets.
+export const copyProjectAnimationCompletionSnapshotData = input => copyBoundedRuntimeData(input, 24 * 1024 * 1024);
+export const copyProjectAnimationCompletionObservationData = input => copyBoundedRuntimeData(input, 80 * 1024 * 1024);
+
 export function freezeProjectRuntimeData(value) {
   if (value && typeof value === 'object') { Object.values(value).forEach(freezeProjectRuntimeData); Object.freeze(value); }
   return value;

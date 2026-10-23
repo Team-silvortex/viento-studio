@@ -1,0 +1,35 @@
+✖ actual project event guards match Rust typed comparisons, exact doubles and strings while false guards keep subscriptions alive (12320.775878ms)
+✔ same-safe-point unmatched guard retains a captured natural completion (11587.559766ms)
+✔ same-safe-point matching guard preempts a captured natural completion (11679.77698ms)
+✔ guard mismatch does not enqueue an unknown target clip (11701.796973ms)
+✔ guard match exposes an unknown target clip (11874.415148ms)
+✔ conditional callback rejects unsupported scalars without side effects and standalone missing ports remain safe (12243.917926ms)
+✔ v1→conditional v2 BOM/CRLF source survives independent ZIP delivery and executes guards after original files are removed (20940.061548ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 92504.640922
+
+✖ failing tests:
+
+test at scripts/tests/animation-state-conditions-godot.test.mjs:67:1
+✖ actual project event guards match Rust typed comparisons, exact doubles and strings while false guards keep subscriptions alive (12320.775878ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"godot_error","message":"ERROR: Condition \"ret.is_empty()\" is true. Returning: ret","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":"","sourceRevision":"sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d","title":"Two-scene project"}]
+  
+  false !== true
+  
+      at passed (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-conditions-godot.test.mjs:25:29)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-conditions-godot.test.mjs:82:57)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

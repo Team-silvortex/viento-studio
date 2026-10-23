@@ -30,13 +30,13 @@ function rejected(result, f, code) {
   assert.equal(result.record.diagnostics.some(row => row.code === 'runtime_project_protocol_invalid'), false, JSON.stringify(result.record.diagnostics));
 }
 
-test('animation projects expose protocol 5 and bounded generated scripts; ordinary projects retain protocol 4 files', async t => {
+test('animation projects expose protocol 7 and bounded generated scripts; ordinary projects retain protocol 4 files', async t => {
   const f = await projectAnimationControlAuthor(t), captured = await captureBuildSnapshot(f.author, f.assemblyId);
   assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics));
   const generated = await adapter.generate(captured.plan);
-  assert.equal(generated.backend.protocolVersion, 5); assert.equal(generated.backend.version, '0.14.0');
+  assert.equal(generated.backend.protocolVersion, 7); assert.equal(generated.backend.version, '0.16.0');
   assert.ok(generated.backend.capabilities.includes('project.animation-control'));
-  assert.equal(JSON.parse(generated.files.get('assembly.json')).schemaVersion, 6);
+  assert.equal(JSON.parse(generated.files.get('assembly.json')).schemaVersion, 8);
   assert.ok(generated.files.has('project-control-runtime.gd')); assert.ok(generated.files.has('project-animation.gd'));
   for (const id of f.sceneIds) await f.edit(`metadata/documents/${id}.json`, row => { row.relations = row.relations.filter(relation => relation.kind !== 'animation'); });
   const ordinary = await captureBuildSnapshot(f.author, f.assemblyId), legacy = await adapter.generate(ordinary.plan);
@@ -48,11 +48,11 @@ test('animation projects expose protocol 5 and bounded generated scripts; ordina
 test('real ready commands execute FIFO after initialization and return scene-clock transport states', real, async t => {
   const f = await build(t, f => f.script('checkpoint', commands(['pause_animation()', 'seek_animation(0.5)', 'play_animation()', 'stop_animation()'])));
   const result = await run(f); assert.equal(result.ok, true, JSON.stringify(result.record?.diagnostics || result));
-  assert.equal(result.record.events[0].protocol, 5); assert.equal(result.record.events.at(-1).animationCommandSequence, 4);
+  assert.equal(result.record.events[0].protocol, 7); assert.equal(result.record.events.at(-1).animationCommandSequence, 4);
   assert.deepEqual(rows(result).map(row => [row.command.action, row.state.phase, row.state.positionSeconds, row.state.timeSeconds]), [
     ['pause','paused',0,0], ['seek','paused',.5,0], ['play','playing',.5,0], ['stop','stopped',0,0],
   ]);
-  assert.equal((await godotAssemblyScripts(path.join(f.output, 'project'))).filter(name => name.startsWith('project-')).length, 5);
+  assert.equal((await godotAssemblyScripts(path.join(f.output, 'project'))).filter(name => name.startsWith('project-')).length, 8);
 });
 
 test('real paused transport freezes sprite and transform while scene clock advances; seek end and play restart', real, async t => {
@@ -86,7 +86,7 @@ func _observe() -> void:
 test('real loop seek to duration wraps to zero and stays paused', real, async t => {
   const f = await build(t, f => f.script('checkpoint', commands(['seek_animation(1.0)'])), { loop: true });
   const result = await run(f); assert.equal(result.ok, true, JSON.stringify(result.record?.diagnostics || result));
-  assert.deepEqual(rows(result).map(row => row.state), [{ sceneObjectId: f.sceneIds[0], phase: 'paused', positionSeconds: 0, timeSeconds: 0 }]);
+  assert.deepEqual(rows(result).map(row => row.state), [{ sceneObjectId: f.sceneIds[0], phase: 'paused', positionSeconds: 0, timeSeconds: 0, clipId: null }]);
 });
 
 for (const [label, argument] of [['boolean', 'true'], ['negative', '-1'], ['out of range', '1.01'], ['NaN', 'NAN'], ['infinity', 'INF']]) test(`real ${label} seek fails without an execution receipt`, real, async t => {

@@ -197,3 +197,12 @@ test('a changed clip declaration revokes in-flight navigation while invalid sele
   pending.resolve(true); await flushDialogs();
   next.entries[0].clip.id = id(61); h.controller.setSnapshot(next, { protocolVersion: 6 }); assert.equal(h.el('Panel').hidden, true);
 });
+
+
+test('protocol7 preserves named clip command receipts independently of natural completion records', async t => {
+  const h = await fixture(t); h.controller.setSnapshot(clipSnapshot(), { protocolVersion: 7 });
+  assert.equal(h.el('Panel').hidden, false); assert.match(h.rows()[0].textContent, /待機/);
+  assert.equal(h.rows()[0].querySelector('.project-animation-clip').hidden, false);
+  h.filter(id(60)); assert.equal(h.rows().length, 1); sourceButton(h, 'clip').click(); await flushDialogs();
+  assert.equal(h.calls[0].source.propertyPath, '/clips/0');
+});

@@ -1,0 +1,422 @@
+✔ state graph is opt-in and rendering, selection and folding never change a table (32.479126ms)
+✔ SVG and HTML retain isolated states, self edges, reverse directions and grouped event triggers (13.357733ms)
+✔ state and transition locations focus existing fields without input or change events (15.35991ms)
+✔ keyboard SVG selection and the HTML fallback expose identical read-only choices (14.604473ms)
+✔ invalid and incomplete forms clear old graph and prevent stale location controls (27.330679ms)
+✔ reset with identical values and remove-recreate of a row revoke old graph callbacks (29.299746ms)
+✔ a field changed without an event cannot be located through an outdated graph (12.873856ms)
+✔ hidden, disabled and unavailable contexts clear graphs and old callbacks stay revoked after restoration (22.201624ms)
+✔ three languages keep graph and form nodes, focus, selection and table values unchanged (21.592935ms)
+✔ full keys and maximum event names remain literal readable text without SVG markup interpolation (5.162145ms)
+✔ all sixteen states and sixty-four transitions have individual HTML choices and locations (29.631995ms)
+✔ a valid table without transitions still shows its initial and isolated states (4.315056ms)
+✔ core failure and disposal leave no stale SVG or field-location action (10.229461ms)
+✔ all graph messages have English and Japanese translations (1.882305ms)
+✔ state-table editing entry requires a marked existing TXT source and preserves unavailable-core source editing (70.447283ms)
+✔ reopen reads the current unsaved generated draft, and ordinary draft apply keeps its saved baseline and file path (41.273673ms)
+✔ renaming or deleting a state requires source review and exposes added/removed clip parameter names (32.748863ms)
+✔ no-op checks do not write; invalid inputs retain the local table and revoke previous review (31.044231ms)
+✔ modified, malformed and unsupported declarations explain refusal without entering a table or writing (21.818549ms)
+✔ three-language refresh keeps incomplete edits, focus and selection while cancellation leaves source untouched (20.397293ms)
+✔ cancel/reopen and source changes discard late reads without touching a newer table (27.813924ms)
+✔ late proposals cannot approve a changed table or a closed session (27.911881ms)
+✔ source, capability and input changes revoke pending applications, including change-and-return (63.126804ms)
+✔ cancelling a pending application revokes its guard; disposal never steals focus (35.832531ms)
+✔ source snapshot extra fields and accessors are refused without invoking them (11.463524ms)
+✔ all reopened state-table messages have English and Japanese translations (0.815904ms)
+✔ a local state table emits only its portable fields and does not change on setup or refresh (21.737649ms)
+✔ renaming a state follows stable row identity in the initial state and both transition ends (12.404391ms)
+✔ deleting a referenced state leaves explicit missing references even when another row reuses its key (16.618725ms)
+✔ transition kind switching retains the event field without leaking it into completion DTOs (10.394017ms)
+✔ three-language refresh preserves form nodes, values, focus and incomplete selection (11.296664ms)
+✔ disabled, hidden, unsupported and removed sessions cannot mutate through old row actions (18.120831ms)
+✔ new transitions require explicit states, and row count limits do not affect existing fields (887.011136ms)
+✔ reset preserves unknown references as missing and cannot silently bind them to the first state (8.184285ms)
+✔ all state-table interface text has English and Japanese translations (3.015085ms)
+✔ creation and reopened tables have independent prefixes, references, notes and disposal (9.549694ms)
+✖ standalone entry needs an editable idle editor and protects existing or new drafts (12.317858ms)
+✖ any existing project type can register a TXT script, with the actual legacy document root (6.147055ms)
+✖ starter selection previews every exact source byte without calling the author port (4.232311ms)
+✖ explicit handoff sends the branded reviewed proposal once and closes before focusing the new draft (4.782207ms)
+✖ invalid or non-TXT paths keep choices and cannot be handed off (3.933484ms)
+✖ silent field changes require a visible new review before applying (3.195373ms)
+✖ context changes at click time cannot replace source or reset local choices (6.954902ms)
+✖ pending handoffs exclude duplicates, cancellation, typing and editor save shortcuts (7.513004ms)
+✖ ownership guard rejects a context that changes during a pending handoff, including change-and-return (4.126198ms)
+✖ refusal and exceptions preserve the full local draft and allow retry (5.114545ms)
+✖ dirty cancellation can be declined without losing fields, preview or language state (4.313672ms)
+✖ an externally closed old session cannot close or focus a newly opened panel (4.335989ms)
+✖ dispose invalidates pending handoff and removes the entry without a late focus (5.263648ms)
+✖ language refresh keeps authored labels, invalid paths and source preview unchanged, using text-only labels (4.781906ms)
+✔ all script dialog and starter messages have English and Japanese translations (1.287665ms)
+✖ Bevy Rust drafts retain the selected backend, exact TXT contents and local review across language changes (2.817209ms)
+✖ godot-project-animation keeps all reviewed bytes and choices across three languages before ordinary draft handoff (5.088902ms)
+✖ godot-project-animation-clip keeps all reviewed bytes and choices across three languages before ordinary draft handoff (5.518775ms)
+✖ godot-project-animation-event keeps all reviewed bytes and choices across three languages before ordinary draft handoff (3.074659ms)
+✖ godot-project-animation-completion keeps all reviewed bytes and choices across three languages before ordinary draft handoff (2.976062ms)
+✖ state-table starter previews the exact generated custom source and hands it off as an ordinary branded TXT draft (6.418114ms)
+✖ invalid state tables stay editable with no approved source, and missing references require explicit repair (3.250209ms)
+✖ a silent table edit needs a new exact preview before handoff, including a hidden starter round trip (3.190783ms)
+✖ state table settings participate in dirty cancellation even while another starter is selected (4.022721ms)
+✖ an unavailable state-table capability only disables this generator and revokes an in-flight handoff (5.055472ms)
+✖ state-table source changes and programmatic edits during handoff cannot apply a stale proposal (4.893972ms)
+ℹ tests 62
+ℹ suites 0
+ℹ pass 37
+ℹ fail 25
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1105.126643
+
+✖ failing tests:
+
+test at scripts/tests/script-create-ui.test.mjs:47:1
+✖ standalone entry needs an editable idle editor and protects existing or new drafts (12.317858ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:49:15)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:60:1
+✖ any existing project type can register a TXT script, with the actual legacy document root (6.147055ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:61:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:68:1
+✖ starter selection previews every exact source byte without calling the author port (4.232311ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:69:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:79:1
+✖ explicit handoff sends the branded reviewed proposal once and closes before focusing the new draft (4.782207ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:80:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:89:1
+✖ invalid or non-TXT paths keep choices and cannot be handed off (3.933484ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:90:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:98:1
+✖ silent field changes require a visible new review before applying (3.195373ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:99:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:105:1
+✖ context changes at click time cannot replace source or reset local choices (6.954902ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:109:15)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:115:1
+✖ pending handoffs exclude duplicates, cancellation, typing and editor save shortcuts (7.513004ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:116:32)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:125:1
+✖ ownership guard rejects a context that changes during a pending handoff, including change-and-return (4.126198ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:127:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:134:1
+✖ refusal and exceptions preserve the full local draft and allow retry (5.114545ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:137:15)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:145:1
+✖ dirty cancellation can be declined without losing fields, preview or language state (4.313672ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:146:32)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:153:1
+✖ an externally closed old session cannot close or focus a newly opened panel (4.335989ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:155:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:161:1
+✖ dispose invalidates pending handoff and removes the entry without a late focus (5.263648ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:162:38)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:168:1
+✖ language refresh keeps authored labels, invalid paths and source preview unchanged, using text-only labels (4.781906ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:169:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:187:1
+✖ Bevy Rust drafts retain the selected backend, exact TXT contents and local review across language changes (2.817209ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:189:15)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:202:157
+✖ godot-project-animation keeps all reviewed bytes and choices across three languages before ordinary draft handoff (5.088902ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:203:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:202:157
+✖ godot-project-animation-clip keeps all reviewed bytes and choices across three languages before ordinary draft handoff (5.518775ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:203:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:202:157
+✖ godot-project-animation-event keeps all reviewed bytes and choices across three languages before ordinary draft handoff (3.074659ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:203:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:202:157
+✖ godot-project-animation-completion keeps all reviewed bytes and choices across three languages before ordinary draft handoff (2.976062ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:203:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:225:1
+✖ state-table starter previews the exact generated custom source and hands it off as an ordinary branded TXT draft (6.418114ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:226:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:249:1
+✖ invalid state tables stay editable with no approved source, and missing references require explicit repair (3.250209ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:250:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:266:1
+✖ a silent table edit needs a new exact preview before handoff, including a hidden starter round trip (3.190783ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:267:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:275:1
+✖ state table settings participate in dirty cancellation even while another starter is selected (4.022721ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:276:32)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:284:1
+✖ an unavailable state-table capability only disables this generator and revokes an in-flight handoff (5.055472ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:286:13)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+
+test at scripts/tests/script-create-ui.test.mjs:303:1
+✖ state-table source changes and programmatic edits during handoff cannot apply a stale proposal (4.893972ms)
+  ReferenceError: Cannot access 'owns' before initialization
+      at getContext (evalmachine.<anonymous>:45:85)
+      at getContext (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:142:29)
+      at context (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:20:25)
+      at refresh (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:111:19)
+      at setupAnimationStateGraph (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-graph.js:126:3)
+      at setupAnimationStateScript (file:///home/chiharukiryu/cdev/viento-studio/web/modules/app-animation-state-script.js:141:21)
+      at Object.setupScriptCreate (evalmachine.<anonymous>:44:23)
+      at fixture (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:30:26)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:305:40)
+      at async Test.run (node:internal/test_runner/test:1409:7)

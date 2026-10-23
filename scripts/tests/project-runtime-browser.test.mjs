@@ -11,9 +11,10 @@ import { audioProject, audioReturnTrip } from './helpers/project-audio-command-f
 
 import { clipProject, clipReturnTrip } from './helpers/project-animation-clip-command-fixture.mjs';
 import { animationProject, animationReturnTrip } from './helpers/project-animation-command-fixture.mjs';
+import { completionProject, completionRun } from './helpers/project-animation-completion-fixture.mjs';
 
-for (const protocolVersion of [1, 2, 3, 4, 5, 6]) test(`browser project protocol ${protocolVersion} recursively links real ES modules without bare packages, Node APIs or author build parsing`, () => {
-  const plan = protocolVersion === 1 ? runtimeProject({ behavior: true }) : protocolVersion === 2 ? sharedStateProject() : protocolVersion === 3 ? eventProject() : protocolVersion === 4 ? audioProject({ empty: true }) : protocolVersion === 5 ? animationProject() : clipProject(), frames = protocolVersion === 1 ? returnTrip(plan) : protocolVersion === 2 ? stateReturnTrip(plan) : protocolVersion === 3 ? eventReturnTrip(plan) : protocolVersion === 4 ? audioReturnTrip(plan) : protocolVersion === 5 ? animationReturnTrip(plan) : clipReturnTrip(plan);
+for (const protocolVersion of [1, 2, 3, 4, 5, 6, 7]) test(`browser project protocol ${protocolVersion} recursively links real ES modules without bare packages, Node APIs or author build parsing`, () => {
+  const plan = protocolVersion === 1 ? runtimeProject({ behavior: true }) : protocolVersion === 2 ? sharedStateProject() : protocolVersion === 3 ? eventProject() : protocolVersion === 4 ? audioProject({ empty: true }) : protocolVersion === 5 ? animationProject() : protocolVersion === 6 ? clipProject() : completionProject(), frames = protocolVersion === 1 ? returnTrip(plan) : protocolVersion === 2 ? stateReturnTrip(plan) : protocolVersion === 3 ? eventReturnTrip(plan) : protocolVersion === 4 ? audioReturnTrip(plan) : protocolVersion === 5 ? animationReturnTrip(plan) : protocolVersion === 6 ? clipReturnTrip(plan) : completionRun(plan);
   const runner = `
     import fs from 'node:fs/promises';
     import vm from 'node:vm';
@@ -54,7 +55,7 @@ for (const protocolVersion of [1, 2, 3, 4, 5, 6]) test(`browser project protocol
   `;
   const result = spawnSync(process.execPath, ['--experimental-vm-modules', '--input-type=module', '-e', runner], { encoding: 'utf8', timeout: 10000 });
   assert.equal(result.status, 0, result.stderr);
-  const output = JSON.parse(result.stdout); assert.equal(output.view.project.visits.length, 3); assert.equal(output.view.phase, 'finished');
+  const output = JSON.parse(result.stdout); assert.equal(output.view.project.visits.length, protocolVersion === 7 ? 1 : 3); assert.equal(output.view.phase, 'finished');
   assert.equal(output.view.project.activeSceneId, plan.entrySceneId);
   if (protocolVersion === 2) {
     assert.equal(output.view.project.sharedState.revision, 4); assert.equal(output.view.project.sharedState.entries[1].value, '风と風 🌬️');
@@ -80,6 +81,18 @@ for (const protocolVersion of [1, 2, 3, 4, 5, 6]) test(`browser project protocol
     assert.equal(output.view.project.animationCommands.entries[0].clip.source.propertyPath, '/clips/0');
     assert.equal(output.view.project.animationCommands.entries[13].state.clipId, null);
     assert.ok(output.modules.includes('project-animation-transport.mjs'));
+  }
+  if (protocolVersion === 7) {
+    assert.equal(output.view.project.animationCommands.sequence, 4);
+    assert.equal(output.view.project.animationCompletions.sequence, 1);
+    const completion = output.view.project.animationCompletions.entries[0];
+    assert.equal(completion.state.phase, 'finished');
+    assert.equal(completion.clip.source.propertyPath, '/clips/0');
+    assert.equal(completion.animation.source.propertyPath, '');
+    assert.equal(completion.deliveries[0].status, 'handled');
+    assert.equal(completion.deliveries[0].origin.source.propertyPath, '/bindings/0');
+    assert.ok(output.modules.includes('project-animation-completions.mjs'));
+    assert.ok(output.modules.includes('studio-core.mjs'));
   }
   assert.ok(output.modules.includes('project-assembly-plan-contract.mjs')); assert.ok(output.modules.includes('scene-audio-events.mjs'));
   assert.equal(output.modules.some(path => ['project-assembly-plan.mjs', 'build-plan.mjs'].includes(path)), false);

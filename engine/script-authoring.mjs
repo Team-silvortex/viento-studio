@@ -1,6 +1,13 @@
 // Known starters prepare ordinary text drafts. Saving, registration, scene
 // relationships, language services and execution belong to their own hosts.
 import { getCreatePathError } from './document-contract.mjs';
+import { DEFAULT_ANIMATION_STATE_TABLE } from './godot-animation-state-script.mjs';
+import { generateEditableGodotAnimationStateScript as generateGodotAnimationStateScript, DEFAULT_EDITABLE_GODOT_ANIMATION_STATE_SCRIPT as DEFAULT_GODOT_ANIMATION_STATE_SCRIPT } from './animation-state-script-source.mjs';
+import { supportsStudioCoreAnimationStateTable } from './studio-core.mjs';
+
+export { DEFAULT_ANIMATION_STATE_TABLE };
+export const supportsAnimationStateScript = () => supportsStudioCoreAnimationStateTable();
+const animationStateStarter = 'godot-project-animation-state-table';
 
 const proposals = new WeakSet();
 const contextKeys = ['sourceToken', 'documentRoot', 'documentTypes'];
@@ -48,6 +55,11 @@ const starters = freeze([
     description: "填写当前场景的动画片段 UUID，选择后从片段起点播放。clip_id 留空时选择完整动画。仅支持动画片段的场景组装项目生效；更名不影响编号引用。",
     content: "extends Node\n\n@export var clip_id: String = \"\"\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\tvar project = get_meta(\"viento_project\")\n\tif not project.has_method(\"select_animation_clip\"):\n\t\treturn\n\tvar selection = null if clip_id.is_empty() else clip_id\n\tif project.select_animation_clip(selection):\n\t\tproject.play_animation()\n" },
   {"id": "godot-project-animation-event", "languageId": "gdscript", "backendId": "org.viento.godot4", "label": "Godot / 事件动画片段", "description": "订阅 event_name（默认 checkpoint）；收到事件后从头播放 clip_id 指定的片段，留空则播放完整动画。仅支持片段的项目运行生效；就绪时不发布事件，退出时取消订阅。", "content": "extends Node\n\n@export var event_name: String = \"checkpoint\"\n@export var clip_id: String = \"\"\nvar _project\nvar _subscription: int = 0\n\nfunc _ready() -> void:\n\tif event_name.is_empty() or not has_meta(\"viento_project\"):\n\t\treturn\n\tvar project = get_meta(\"viento_project\")\n\tif typeof(project) != TYPE_OBJECT or not is_instance_valid(project):\n\t\treturn\n\tfor method in [\"subscribe_event\", \"unsubscribe_event\", \"select_animation_clip\", \"play_animation\"]:\n\t\tif not project.has_method(method):\n\t\t\treturn\n\t_project = project\n\t_subscription = _project.subscribe_event(event_name, _on_event)\n\nfunc _on_event(_value) -> bool:\n\tif _subscription == 0 or typeof(_project) != TYPE_OBJECT or not is_instance_valid(_project):\n\t\treturn false\n\tvar selection = null if clip_id.is_empty() else clip_id\n\tif not _project.select_animation_clip(selection):\n\t\treturn false\n\treturn _project.play_animation()\n\nfunc _exit_tree() -> void:\n\tvar project = _project\n\tvar subscription = _subscription\n\t_project = null\n\t_subscription = 0\n\tif subscription != 0 and typeof(project) == TYPE_OBJECT and is_instance_valid(project) and project.has_method(\"unsubscribe_event\"):\n\t\tproject.unsubscribe_event(subscription)\n"},
+  {"id": "godot-project-animation-completion", "languageId": "gdscript", "backendId": "org.viento.godot4", "label": "Godot / 动画完成后衔接片段", "description": "订阅当前场景动画自然完成；finished_clip_id 匹配后选择 next_clip_id 并从头播放，空编号表示完整动画。就绪时不改变播放；退出时取消订阅，仅支持完成通知的项目运行生效。", "content": "extends Node\n\n@export var finished_clip_id: String = \"\"\n@export var next_clip_id: String = \"\"\nvar _project\nvar _subscription: int = 0\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\tvar project = get_meta(\"viento_project\")\n\tif typeof(project) != TYPE_OBJECT or not is_instance_valid(project):\n\t\treturn\n\tfor method in [\"subscribe_animation_completed\", \"unsubscribe_animation_completed\", \"select_animation_clip\", \"play_animation\"]:\n\t\tif not project.has_method(method):\n\t\t\treturn\n\t_project = project\n\t_subscription = _project.subscribe_animation_completed(_on_animation_completed)\n\nfunc _on_animation_completed(clip_id) -> bool:\n\tif _subscription == 0 or typeof(_project) != TYPE_OBJECT or not is_instance_valid(_project):\n\t\treturn false\n\tvar finished = null if finished_clip_id.is_empty() else finished_clip_id\n\tif clip_id != finished:\n\t\treturn true\n\tvar selection = null if next_clip_id.is_empty() else next_clip_id\n\tif not _project.select_animation_clip(selection):\n\t\treturn false\n\treturn _project.play_animation()\n\nfunc _exit_tree() -> void:\n\tvar project = _project\n\tvar subscription = _subscription\n\t_project = null\n\t_subscription = 0\n\tif subscription != 0 and typeof(project) == TYPE_OBJECT and is_instance_valid(project) and project.has_method(\"unsubscribe_animation_completed\"):\n\t\tproject.unsubscribe_animation_completed(subscription)\n"},
+
+  { id: animationStateStarter, languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 动画状态表',
+    description: '配置初始状态以及事件或自然完成转换，生成普通脚本。各状态的 clip_ 参数在行为编辑器中选入片段；运行时启动初始状态，共用当前场景播放头。生成后继续编辑普通源码。',
+    content: DEFAULT_GODOT_ANIMATION_STATE_SCRIPT },
 ]);
 
 // Inspect own data descriptors before reading values. Unknown keys, accessors,
@@ -119,8 +131,22 @@ export function listScriptStarters() { return starters; }
 export function prepareScriptDraft(context, request) {
   const budget = { bytes: 0 }, captured = captureContext(context, budget), selected = captureRequest(request, captured, budget);
   const starter = starters.find(item => item.id === selected.starterId);
+  const content = starter.id === animationStateStarter
+    ? generateGodotAnimationStateScript(DEFAULT_ANIMATION_STATE_TABLE).content : starter.content;
+  return brandDraft(captured, selected, starter, content);
+}
+
+// Only the fixed generator can produce custom source under the existing draft
+// brand. Callers cannot inject arbitrary content or acquire Save authority.
+export function prepareAnimationStateScriptDraft(context, request, table) {
+  const budget = { bytes: 0 }, captured = captureContext(context, budget), selected = captureRequest(request, captured, budget);
+  if (selected.starterId !== animationStateStarter) fail();
+  const starter = starters.find(item => item.id === animationStateStarter);
+  return brandDraft(captured, selected, starter, generateGodotAnimationStateScript(table).content);
+}
+function brandDraft(captured, selected, starter, content) {
   const proposal = freeze({ format: 'viento-script-draft', schemaVersion: 1, ...captured, ...selected,
-    languageId: starter.languageId, backendId: starter.backendId, content: starter.content });
+    languageId: starter.languageId, backendId: starter.backendId, content });
   proposals.add(proposal);
   return proposal;
 }

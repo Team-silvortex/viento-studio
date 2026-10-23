@@ -1,0 +1,90 @@
+{
+  "oldStarters": [
+    {
+      "id": "godot-node",
+      "equal": true
+    },
+    {
+      "id": "godot-signal",
+      "equal": true
+    },
+    {
+      "id": "bevy-rust",
+      "equal": true
+    },
+    {
+      "id": "bevy-rust-signal",
+      "equal": true
+    },
+    {
+      "id": "bevy-rust-motion",
+      "equal": true
+    },
+    {
+      "id": "godot-scene-switch",
+      "equal": true
+    },
+    {
+      "id": "godot-project-state",
+      "equal": true
+    },
+    {
+      "id": "godot-project-events",
+      "equal": true
+    },
+    {
+      "id": "godot-project-audio",
+      "equal": true
+    },
+    {
+      "id": "godot-project-animation",
+      "equal": true
+    },
+    {
+      "id": "godot-project-animation-clip",
+      "equal": true
+    },
+    {
+      "id": "godot-project-animation-event",
+      "equal": true
+    },
+    {
+      "id": "godot-project-animation-completion",
+      "equal": true
+    }
+  ],
+  "oldCount": 14,
+  "newCount": 14,
+  "newStateStarter": {
+    "id": "godot-project-animation-state-table",
+    "bodyUnchanged": true,
+    "table": {
+      "initialState": "idle",
+      "states": [
+        {
+          "key": "idle"
+        },
+        {
+          "key": "action"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "idle",
+          "to": "action",
+          "trigger": {
+            "kind": "event",
+            "name": "action"
+          }
+        },
+        {
+          "from": "action",
+          "to": "idle",
+          "trigger": {
+            "kind": "completed"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+✔ real completion safely chains a nonloop clip into a loop with visual sampling (false) (11535.406469ms)
+✔ real completion safely chains a nonloop clip into a loop with visual sampling (true) (11506.598483ms)
+✔ real old author format naturally completes the whole timeline with null payload (false) (11527.529126ms)
+✔ real old author format naturally completes the whole timeline with null payload (true) (12862.929371ms)
+✔ real looping, seek-to-end, pause, stop and selection do not manufacture natural completions (11835.648652ms)
+✔ real replay rearms completion once and an unchanged endpoint never emits twice (11777.138172ms)
+✔ real subsequent pause_animation() cancels pending delivery without retiring the subscription (11918.20243ms)
+✔ real subsequent stop_animation() cancels pending delivery without retiring the subscription (11627.646524ms)
+✔ real subsequent seek_animation(0.1) cancels pending delivery without retiring the subscription (11636.204276ms)
+✔ real subsequent select_animation_clip(null) cancels pending delivery without retiring the subscription (12212.547898ms)
+✔ real subsequent play_animation() cancels pending delivery without retiring the subscription (12182.245297ms)
+✔ real command advancement records the preceding natural endpoint before cancelling its callback (11898.905379ms)
+✔ real finish request cancels pending completion before closing the scene (11679.417815ms)
+✔ real unregistering a captured callback skips it and a fresh subscription handles the next play (11616.929649ms)
+✔ real callback failure retains the recipient source and stops the delivery queue (11631.512636ms)
+✔ completion project ZIP is runnable with source ownership after author/build deletion (16701.566883ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 194293.769161

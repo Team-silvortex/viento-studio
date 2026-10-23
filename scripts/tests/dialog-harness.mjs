@@ -1,3 +1,7 @@
+import { setupAnimationStateCondition } from '../../web/modules/app-animation-state-condition.js';
+import { supportsStudioCoreAnimationStateConditions } from '../../engine/studio-core.mjs';
+import { setupAnimationStateGraph } from '../../web/modules/app-animation-state-graph.js';
+import { createAnimationStateGraph, layoutAnimationStateGraph } from '../../engine/animation-state-graph.mjs';
 import { captureSceneAnimationSpriteLayout, scenePreviewImageDimensions } from '../../engine/scene-animation-sprite-layout.mjs';
 import { backendProjectSourceIdentity } from '../../engine/backend-project.mjs';
 import { createProjectProblemsSnapshot, filterProjectProblems } from '../../engine/project-problems.mjs';
@@ -124,6 +128,7 @@ export async function dialogHarness(module, overrides = {}) {
   document.documentElement = new DialogElement('html', document);
   document.body = new DialogElement('body', document);
   document.createElement = (tag) => new DialogElement(tag, document);
+  document.createElementNS = (namespace, tag) => { const element = new DialogElement(tag, document); element.namespaceURI = namespace; return element; };
   document.createDocumentFragment = () => document.createElement('fragment');
   document.getElementById = (id) => document.body.querySelector(`#${id}`);
   document.querySelector = (selector) => document.body.querySelector(selector);
@@ -169,6 +174,9 @@ export async function dialogHarness(module, overrides = {}) {
     setupBackendProject: () => ({ open() {}, render() {}, closed() {}, dispose() {} }),
     setupScenePreview: () => ({ setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {}, destroy() {} }),
     setupSceneMaterialize: () => ({ setAvailable() {}, open() {}, refresh() {}, dispose() {} }),
+    setupAnimationStateCondition, supportsStudioCoreAnimationStateConditions,
+    createAnimationStateGraph: value => createAnimationStateGraph(JSON.parse(JSON.stringify(value))), layoutAnimationStateGraph,
+    setupAnimationStateGraph: options => setupAnimationStateGraph({ ...options, getTable: () => JSON.parse(JSON.stringify(options.getTable())) }),
     ...overrides,
   });
   if (['app-scene-preview', 'app-scene-layout', 'app-scene-outline'].includes(module)) {

@@ -1,0 +1,62 @@
+✔ a local state table emits only its portable fields and does not change on setup or refresh (13.966277ms)
+✔ renaming a state follows stable row identity in the initial state and both transition ends (8.893701ms)
+✔ deleting a referenced state leaves explicit missing references even when another row reuses its key (9.658362ms)
+✔ transition kind switching retains the event field without leaking it into completion DTOs (6.846808ms)
+✔ three-language refresh preserves form nodes, values, focus and incomplete selection (8.1453ms)
+✔ disabled, hidden, unsupported and removed sessions cannot mutate through old row actions (16.980899ms)
+✔ new transitions require explicit states, and row count limits do not affect existing fields (899.441909ms)
+✔ reset preserves unknown references as missing and cannot silently bind them to the first state (5.687843ms)
+✔ all state-table interface text has English and Japanese translations (0.931881ms)
+✔ standalone entry needs an editable idle editor and protects existing or new drafts (50.31033ms)
+✔ any existing project type can register a TXT script, with the actual legacy document root (35.675424ms)
+✔ starter selection previews every exact source byte without calling the author port (76.864419ms)
+✔ explicit handoff sends the branded reviewed proposal once and closes before focusing the new draft (24.599402ms)
+✔ invalid or non-TXT paths keep choices and cannot be handed off (33.777387ms)
+✔ silent field changes require a visible new review before applying (17.084357ms)
+✔ context changes at click time cannot replace source or reset local choices (109.448124ms)
+✔ pending handoffs exclude duplicates, cancellation, typing and editor save shortcuts (16.190248ms)
+✔ ownership guard rejects a context that changes during a pending handoff, including change-and-return (18.130006ms)
+✔ refusal and exceptions preserve the full local draft and allow retry (46.217075ms)
+✔ dirty cancellation can be declined without losing fields, preview or language state (15.059135ms)
+✔ an externally closed old session cannot close or focus a newly opened panel (18.763107ms)
+✔ dispose invalidates pending handoff and removes the entry without a late focus (10.459825ms)
+✔ language refresh keeps authored labels, invalid paths and source preview unchanged, using text-only labels (24.365285ms)
+✔ all script dialog and starter messages have English and Japanese translations (1.036391ms)
+✔ Bevy Rust drafts retain the selected backend, exact TXT contents and local review across language changes (93.123429ms)
+✔ godot-project-animation keeps all reviewed bytes and choices across three languages before ordinary draft handoff (49.58873ms)
+✔ godot-project-animation-clip keeps all reviewed bytes and choices across three languages before ordinary draft handoff (46.528941ms)
+✔ godot-project-animation-event keeps all reviewed bytes and choices across three languages before ordinary draft handoff (39.500487ms)
+✔ godot-project-animation-completion keeps all reviewed bytes and choices across three languages before ordinary draft handoff (40.068602ms)
+✔ state-table starter previews the exact generated custom source and hands it off as an ordinary branded TXT draft (95.788372ms)
+✖ invalid state tables stay editable with no approved source, and missing references require explicit repair (40.746879ms)
+✔ a silent table edit needs a new exact preview before handoff, including a hidden starter round trip (34.602754ms)
+✔ state table settings participate in dirty cancellation even while another starter is selected (34.902968ms)
+✔ an unavailable state-table capability only disables this generator and revokes an in-flight handoff (87.750217ms)
+✔ state-table source changes and programmatic edits during handoff cannot apply a stale proposal (41.430465ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 34
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1206.278116
+
+✖ failing tests:
+
+test at scripts/tests/script-create-ui.test.mjs:249:1
+✖ invalid state tables stay editable with no approved source, and missing references require explicit repair (40.746879ms)
+  AssertionError [ERR_ASSERTION]: constructor
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/script-create-ui.test.mjs:252:47)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

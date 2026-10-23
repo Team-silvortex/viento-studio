@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-23",
+  "version": "0.1.7",
+  "baseCommit": "bc463a2f0365493decdf4fddf5ca857ae951b27f",
+  "status": "Working tree only; not committed, released or installed.",
+  "feature": "Typed event-payload animation transition conditions, separate Rust capability, exact Godot v2 generation and source reediting.",
+  "tests": {
+    "fullApp": {
+      "tests": 6675,
+      "pass": 6375,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 300,
+      "javascriptFiles": 1131,
+      "versionAndApiPreflight": true
+    },
+    "coreBridgeAndParity": {
+      "tests": 26,
+      "pass": 26,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "sourceCompatibility": {
+      "tests": 39,
+      "pass": 39,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "uiAndExistingForms": {
+      "tests": 87,
+      "pass": 87,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "translation": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "workflowAndGraph": {
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "nativeGodot": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "chrome": {
+      "report": "browser-1792722307777/browser.json",
+      "steps": 4,
+      "screenshots": 6,
+      "errors": 0
+    },
+    "rust": {
+      "passed": 376,
+      "failed": 0,
+      "ignored": 0
+    }
+  },
+  "protocolVersion": 7,
+  "godotAdapterVersion": "0.16.0",
+  "inventoryVersion": 8,
+  "newRuntimeProtocol": false,
+  "newOptionalRustAbi": true,
+  "studioModules": 22,
+  "studioCapabilities": 43,
+  "atlas": {
+    "functions": 139,
+    "implementations": 421,
+    "bindings": 619,
+    "cells": 2476,
+    "evidence": 2636,
+    "workflows": 102
+  },
+  "preservation": {
+    "protectedFiles": 8618,
+    "changedProtectedFiles": [],
+    "oldAtlasCells": 2452,
+    "oldAtlasEvidence": 2628,
+    "oldAtlasCellsUnchanged": true,
+    "oldAtlasEvidenceUnchanged": true,
+    "legacyEmitterWrapperAndBackendFilesComparedToStartOfTurn": 44,
+    "legacyEmitterWrapperAndBackendUnchanged": true,
+    "installedSha256": "22fb45a03fe2a698ad1eec0b7c655161bd47d1769b5cf6ca7f65b12bce5ccc48",
+    "installedUnchanged": true,
+    "wasmBytes": 717057,
+    "wasmSha256": "d7914aca980facfc25cc89694397d238e2eeb5b7d1a4d466b326e2bb6bddefe6",
+    "wasmChangedForOptionalConditions": true
+  },
+  "limitations": [
+    "Event payload comparisons only: no multi-branch priority, expressions, shared-state queries, per-instance playhead or blending.",
+    "Exact f64 and strict scalar types; cross-type ne does not match. String budgets are UTF8 bytes.",
+    "Godot cannot faithfully represent embedded NUL. Core/declaration preserve it and runtime guards reject truncated-prefix matches; no complete NUL payload roundtrip claim.",
+    "Browser and HTTP use disposable prepared fixtures. Native headless Godot and ZIP are separate runs, not empty-project all-GUI acceptance.",
+    "No installed Tauri, Android, other OS or Bevy animation validation in this round."
+  ]
+}

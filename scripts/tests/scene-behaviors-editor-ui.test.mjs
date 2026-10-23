@@ -1,3 +1,5 @@
+import { setupSceneBehaviorParameters } from '../../web/modules/app-scene-behavior-parameters.js';
+import { captureScriptParameterContract } from '../../engine/script-parameter-interface.mjs';
 import { setupSceneBehaviorAnimationClips } from '../../web/modules/app-scene-behavior-animation-clips.js';
 import { captureSceneBehaviorAnimationClips } from '../../engine/scene-animation-directory.mjs';
 import test from 'node:test';
@@ -46,10 +48,12 @@ async function fixture(t, settings = {}) {
   const original = settings.content ?? serialize(settings.model || model()); let content = original, language = 'zh', languageListener = () => {}, disposed = 0, ids = 0, loads = 0;
   const context = { editable: true, creating: false, busy: false, sourceJSON: true, behaviorSource: true, available: true,
     sourcePath: 'documents/behaviors/demo.json', sourceToken: 'load:1:draft:0', audioTracksAvailable: settings.audioAvailable === true, animationClipsAvailable: settings.animationAvailable === true };
-  const calls = [], checks = [], proposals = [], confirms = [], focused = [], audioLoads = [], animationLoads = [], sourceClones = new WeakMap();
+  const calls = [], checks = [], proposals = [], confirms = [], focused = [], audioLoads = [], animationLoads = [], sourceClones = new WeakMap(), contractClones = new WeakMap();
   const snapshot = () => ({ sourcePath: context.sourcePath, token: context.sourceToken, baseSourceRevision: hash(original), sourceRevision: hash(content), content });
   const translate = (key, ...args) => (({ en, ja }[language]?.[key] || key).replace(/\{(\d+)\}/g, (_, n) => String(args[n] ?? '')));
   const h = await dialogHarness('app-scene-behaviors', {
+    captureScriptParameterContract: value => captureScriptParameterContract(copy(value)),
+    setupSceneBehaviorParameters: options => setupSceneBehaviorParameters({ ...options, getContext: () => { const context = options.getContext(); if (context.contract && !contractClones.has(context.contract)) contractClones.set(context.contract, copy(context.contract)); return { ...context, contract: context.contract ? contractClones.get(context.contract) : undefined, parameters: copy(context.parameters) }; } }),
     setupSceneBehaviorAnimationClips: options => setupSceneBehaviorAnimationClips({ ...options, getContext: () => { const context = options.getContext(); if (context.source && !sourceClones.has(context.source)) sourceClones.set(context.source, copy(context.source)); return { ...context, source: context.source ? sourceClones.get(context.source) : undefined }; } }),
     inspectSceneBehaviors, isSceneBehaviorProposal, isSceneBehaviorAudioTracks, sceneBehaviorAudioTrackValue,
     sceneBehaviorAudioTracksMatchSource: (catalog, source) => sceneBehaviorAudioTracksMatchSource(catalog, copy(source)),
@@ -426,4 +430,75 @@ test('all fixed animation clip picker messages have unambiguous English and Japa
   const source=await fs.readFile(new URL('../../web/modules/app-scene-behavior-animation-clips.js',import.meta.url),'utf8');
   const keys=new Set([...source.matchAll(/'([^'\n]*[\u3400-\u9fff][^'\n]*)'/g)].map(match=>match[1]));keys.add('读取场景动画片段');for(const key of keys){assert.ok(en[key],`English: ${key}`);assert.ok(ja[key],`Japanese: ${key}`);}
   assert.doesNotMatch(source,/fetch\(|applyDraft|app-state|window\.|getCurrentEditContent|scene-preview/);
+});
+
+
+test('completion starter parameters use the same generic clip picker for both string rows and retain ordinary review and cancellation', async t => {
+  const value = model(); value.bindings[0].parameters = { finished_clip_id: '', next_clip_id: '' };
+  const h = await fixture(t, { model: value, animationAvailable: true }); await h.open(); await h.click('LoadAnimationClips');
+  h.set('Param0AnimationClip', id(711), 'change'); h.set('Param1AnimationClip', id(712), 'change');
+  for (const locale of ['en', 'ja', 'zh']) {
+    h.language(locale); assert.equal(h.el('Param0Value').value, ''); assert.equal(h.el('Param1Value').value, '');
+    assert.equal(h.el('Param0AnimationClip').value, id(711)); assert.equal(h.el('Param1AnimationClip').value, id(712));
+  }
+  await h.click('Param0UseAnimationClip'); await h.click('Param1UseAnimationClip'); await h.check();
+  assert.deepEqual(h.proposals.at(-1).bindings[0].parameters, { finished_clip_id: id(711), next_clip_id: id(712) });
+  assert.equal(h.content(), h.original); await h.click('Cancel'); assert.equal(h.content(), h.original); assert.equal(h.calls.length, 0);
+  await h.open(); await h.click('LoadAnimationClips'); h.set('Param1AnimationClip', id(712), 'change'); await h.click('Param1UseAnimationClip');
+  await h.check(); await h.apply();
+  assert.deepEqual(JSON.parse(h.content().replace(/^\ufeff/, '')).bindings[0].parameters, { finished_clip_id: '', next_clip_id: id(712) });
+});
+
+function parameterContract(status = 'ready') {
+  return { format: 'viento-script-parameters', schemaVersion: 1, backendId: 'org.viento.godot4', language: 'gdscript', status,
+    parameters: status === 'ready' ? ['clip_idle', 'clip_strike', 'clip_walk'].map(name => ({ name, type: 'string', defaultValue: '', referenceKind: 'animation-clip' })) : [] };
+}
+function parameterCatalog(status = 'ready') { const value = contextData(); value.sources[0].parameterContract = parameterContract(status); return value; }
+function parameterModel() { const value = model(); value.bindings[0].parameters = { clip_idle: id(711), clip_attack: id(712) }; return value; }
+
+test('declared script parameters can be explicitly renamed and filled without changing another binding or writing before review', async t => {
+  const value = parameterModel(), h = await fixture(t, { model: value, inspect: async () => parameterCatalog() });
+  await h.open(); assert.equal(h.el('ParameterInterface').hidden, false); assert.match(h.el('ParameterInterfaceStatus').textContent, /缺失 2.*未声明 1/);
+  h.set('Param1ContractTarget', 'clip_strike', 'change'); assert.equal(h.el('Param1Name').value, 'clip_attack'); assert.equal(h.el('Dialog').dataset.dirty, 'false');
+  await h.click('Param1RenameParameter'); assert.equal(h.el('Param1Name').value, 'clip_strike'); assert.equal(h.el('Param1Value').value, id(712));
+  await h.check(); assert.equal(h.el('Apply').disabled, false);
+  await h.click('AddMissingParameters'); assert.equal(h.el('Param2Name').value, 'clip_walk'); assert.equal(h.el('Param2Type').value, 'string'); assert.equal(h.el('Param2Value').value, ''); assert.equal(h.el('Apply').disabled, true);
+  await h.select(id(102)); assert.equal(h.el('Param0Name').value, 'title'); await h.select(id(101)); assert.equal(h.el('Param1Name').value, 'clip_strike');
+  await h.check(); const proposal = h.proposals.at(-1); assert.deepEqual(proposal.bindings[0].parameters, { clip_idle: id(711), clip_strike: id(712), clip_walk: '' });
+  assert.deepEqual(proposal.bindings[1], value.bindings[1]); assert.equal(h.content(), h.original);
+  await h.apply(); assert.equal(h.calls.length, 1); assert.equal(h.content(), proposal.afterContent);
+});
+
+test('contract hints and target selection preserve an existing approval and language focus until rename is explicit', async t => {
+  const h = await fixture(t, { model: parameterModel(), inspect: async () => parameterCatalog() }); await h.open(); h.set('Param0Value', ''); await h.check();
+  const before = h.el('After').textContent; h.set('Param1ContractTarget', 'clip_strike', 'change'); const field = h.el('Param1Value'); field.focus(); field.selectionStart = 1; field.selectionEnd = 8;
+  for (const language of ['en', 'ja', 'zh']) { h.language(language); assert.equal(h.el('Apply').disabled, false); assert.equal(h.el('After').textContent, before); assert.equal(h.el('Param1ContractTarget').value, 'clip_strike'); assert.equal(h.document.activeElement, field); assert.equal(field.selectionStart, 1); assert.equal(field.selectionEnd, 8); }
+  await h.click('Param1RenameParameter'); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Param1Value').value, id(712)); assert.equal(h.calls.length, 0);
+});
+
+test('advisory contract statuses and field withdrawal/restoration do not block ordinary dependency approval', async t => {
+  for (const status of ['modified', 'unsupported', 'unavailable']) {
+    const h = await fixture(t, { inspect: async () => parameterCatalog(status) }); await h.open(); assert.equal(h.el('ParameterInterface').dataset.status, status);
+    editTitle(h); await h.check(); assert.equal(h.el('Apply').disabled, false); assert.equal(h.el('AddMissingParameters').disabled, true);
+  }
+  for (const withdraw of [true, false]) {
+    const h = await fixture(t, { inspect: async (_request, count) => (count === 1) === withdraw ? parameterCatalog() : contextData() });
+    await h.open(); editTitle(h); await h.check(); assert.equal(h.el('Apply').disabled, false); assert.equal(h.calls.length, 0);
+  }
+});
+
+test('source switch, binding switch and close invalidate old helper actions without losing values', async t => {
+  for (const change of [async h => h.set('Source', id(302), 'change'), async h => h.select(id(102)), async h => { await h.click('Cancel'); await h.open(); }]) {
+    const h = await fixture(t, { model: parameterModel(), inspect: async () => parameterCatalog() }); await h.open(); h.set('Param1ContractTarget', 'clip_strike', 'change');
+    const rename = h.el('Param1RenameParameter'), add = h.el('AddMissingParameters'); await change(h); rename.disabled = false; add.disabled = false; rename.click(); add.click();
+    assert.equal(h.el('Param1Name').value, h.el('Binding').value === id(102) ? 'amount' : 'clip_attack'); assert.equal(h.calls.length, 0);
+  }
+});
+
+test('typed scalar and incomplete text survive missing-slot additions while interface warnings remain advisory', async t => {
+  const value = parameterModel(); value.bindings[0].parameters = { clip_idle: 1, legacy_text: 'not a uuid', amount: 2 };
+  const h = await fixture(t, { model: value, inspect: async () => parameterCatalog() }); await h.open(); h.set('Param2Value', '1e-');
+  assert.match(h.el('ParameterInterfaceStatus').textContent, /类型不匹配 1/); assert.equal(h.el('Param2ContractTarget').children.length, 1);
+  await h.click('AddMissingParameters'); assert.equal(h.el('Param0Type').value, 'number'); assert.equal(h.el('Param0Value').value, '1'); assert.equal(h.el('Param1Value').value, 'not a uuid'); assert.equal(h.el('Param2Value').value, '1e-');
+  assert.equal(h.el('Param3Name').value, 'clip_strike'); assert.equal(h.el('Param4Name').value, 'clip_walk'); assert.equal(h.content(), h.original);
 });

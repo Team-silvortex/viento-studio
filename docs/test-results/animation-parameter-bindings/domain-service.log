@@ -1,0 +1,63 @@
+✔ behavior authoring reads an immutable instance/source catalog without executing source or modifying any file (49.554394ms)
+✔ draft parameters bindings implementation language and saved manifest body do not change the dependency revision (49.638722ms)
+✔ manifest metadata scene metadata and source bytes scripts and all definitions are pinned independently (164.82456ms)
+✔ catalog offers unused linked readable TXT sources and omits ownership missing unrelated and non-TXT documents (57.176691ms)
+✔ missing duplicate or redirected scene behavior opt-in never creates a relation or mutates author files (70.48435ms)
+✔ manifest-to-scene or source ownership-only references and unregistered used sources are rejected (31.455332ms)
+✔ every scene instance definition remains readable and linked even when the draft only binds another actor (57.731769ms)
+✔ Scene2D schema v3 remains supported while v1 ambiguous IDs missing bindings and unavailable source bytes reject (63.058071ms)
+✔ payload validation refuses unknown fields getters inherited values symbols aliases and malformed declarations before reading the world (18.539585ms)
+✔ 32 KiB draft and 64 KiB candidate budgets count UTF-8 bytes including unused associated candidates (19.25852ms)
+✔ candidate catalogs allow 256 linked sources independently of the eight-source binding limit and reject larger catalogs (459.577283ms)
+✔ unregistered missing or unreadable manifest and unfinished author transactions have explicit availability/conflict errors (24.254474ms)
+✔ external dependency edits during a captured read reject rather than produce a mixed authoring revision (22.692022ms)
+✔ caller mutations after inspection starts cannot redirect the manifest or change the captured draft (14.193437ms)
+✔ long Unicode actor and script labels stay bounded without splitting surrogate pairs (18.54724ms)
+✔ ordinary source catalogs preserve exact legacy shape while generated source gets a read-only contract (73.352165ms)
+✔ saved declaration edits alter the existing dependency revision and stale parameters remain editable data (66.455646ms)
+✖ behavior source size limit remains 64 KiB even when an editable declaration allows larger text (20.889831ms)
+✔ HTTP returns the same bounded optional contract through existing authentication without granting source or save authority (253.307013ms)
+✔ discovery only recognizes complete fixed-body same-source declarations (10.017126ms)
+✔ modified malformed and unsupported sources give non-actionable statuses without exposing code (1.766204ms)
+✔ optional core absence never falls back to textual export inference (36.885068ms)
+✔ interface capture detaches and deeply freezes supported scalar declarations (1.946831ms)
+✔ interfaces reject unknown accessors inherited fields sparse arrays unsafe names and unbounded scalar declarations (2.583962ms)
+✔ non-ready interfaces expose no actionable parameters and incompatible backends produce no inferred edits (0.645017ms)
+✔ review identifies missing unknown type and UUID issues without mutating unfinished form values (1.057588ms)
+✔ duplicate and full forms cannot silently insert parameters or lose row identity (4.941933ms)
+✔ review snapshots only exact bounded row data and never invokes accessors (0.490027ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 27
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1229.617178
+
+✖ failing tests:
+
+test at scripts/tests/scene-behavior-parameter-contract-service.test.mjs:50:1
+✖ behavior source size limit remains 64 KiB even when an editable declaration allows larger text (20.889831ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: Invalid behavior authoring input.
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-parameter-contract-service.test.mjs:52:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Invalid behavior authoring input.
+        at createError (file:///home/chiharukiryu/cdev/viento-studio/engine/service-error.mjs:2:17)
+        at fail (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/scene-behavior-authoring-service.mjs:18:9)
+        at Object.inspect (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/scene-behavior-authoring-service.mjs:75:24)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-behavior-parameter-contract-service.test.mjs:52:3)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }

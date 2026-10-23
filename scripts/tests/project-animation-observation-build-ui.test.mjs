@@ -1,3 +1,4 @@
+import { validateProjectAnimationCompletionsSnapshot } from '../../engine/project-animation-completions.mjs';
 import { validateProjectAnimationCommandsSnapshot } from '../../engine/project-animation-commands.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -19,12 +20,23 @@ const animationSource = { objectId: id(30), sourcePath: 'documents/animation.jso
 const animation = () => ({ sequence: 1, entries: [{ sequence: 1, command: { action: 'pause' },
   state: { sceneObjectId: first, phase: 'paused', positionSeconds: .25, timeSeconds: .25 }, origin: origin(),
   animation: { objectId: id(30), source: animationSource, durationSeconds: 1, loop: false } }] });
+const completion = () => ({ sequence: 1, entries: [{ sequence: 1, commandSequence: 1, visitIndex: 1, sceneId: first,
+  state: { sceneObjectId: first, phase: 'finished', positionSeconds: 1, timeSeconds: 1, clipId: null },
+  animation: animation().entries[0].animation, clip: null,
+  deliveries: [{ subscriptionId: 1, origin: origin(), status: 'handled' }] }] });
+const protocolAnimation = version => {
+  const value = animation();
+  if (version >= 6) { value.entries[0].state.clipId = null; value.entries[0].clip = null; }
+  if (version === 7) { value.entries[0].command.action = 'play'; value.entries[0].state.phase = 'playing'; value.entries[0].state.positionSeconds = 0; value.entries[0].state.timeSeconds = 0; }
+  return value;
+};
 const trace = () => ({ sequence: 1, entries: [{ sequence: 1, name: 'checkpoint', value: '雨の鍵', origin: origin(),
   deliveries: [{ subscriptionId: 1, origin: { ...origin(), bindingId: id(10), source: { ...source, objectId: id(11), sourcePath: 'documents/behaviors/receiver.json' } }, status: 'handled' }] }] });
 const shared = () => ({ revision: 1, entries: [{ key: 'note', value: '雨の鍵', revision: 1, origin: origin() }],
   lastChange: { operation: 'set', key: 'note', revision: 1, origin: origin() } });
 function state({ protocolVersion = 5, task = 'run-1', active = second } = {}) {
   const visits = [{ index: 1, sceneId: first, phase: 'left', elapsedSeconds: 0.5 }, { index: 2, sceneId: second, phase: active === second ? 'ready' : 'left', elapsedSeconds: active === second ? 0 : 0.5 }];
+  if (protocolVersion === 7) visits[0].elapsedSeconds = 2;
   if (active === first) visits.push({ index: 3, sceneId: first, phase: 'ready', elapsedSeconds: 0 });
   return { supported: true, available: true, platform: 'linux',
     backend: { format: 'viento-execution-backend', schemaVersion: 1, id: backendId, version: '0.9.0', label: 'Godot', platforms: ['linux'],
@@ -36,16 +48,16 @@ function state({ protocolVersion = 5, task = 'run-1', active = second } = {}) {
     job: { id: task, kind: 'run', status: 'running', phase: 'running', backendId, sceneId: assemblyId, targetKind: 'project', targetId: assemblyId,
       buildId: 'build-1', snapshotId, diagnostics: [], events: [], logs: '', runtime: {
         format: 'viento-runtime-observation', schemaVersion: 1, sceneObjectId: active, protocolVersion: 1, phase: 'ready', sequence: 1, actors: [],
-        project: { assemblyId, entrySceneId: first, activeSceneId: active, visits, ...(protocolVersion === 1 ? {} : { protocolVersion, sharedState: shared(), ...(protocolVersion >= 3 ? { events: trace() } : {}), ...(protocolVersion >= 4 ? { audioCommands: audio() } : {}), ...(protocolVersion === 5 ? { animationCommands: animation() } : {}) }) },
+        project: { assemblyId, entrySceneId: first, activeSceneId: active, visits, ...(protocolVersion === 1 ? {} : { protocolVersion, sharedState: shared(), ...(protocolVersion >= 3 ? { events: trace() } : {}), ...(protocolVersion >= 4 ? { audioCommands: audio() } : {}), ...(protocolVersion >= 5 ? { animationCommands: protocolAnimation(protocolVersion) } : {}), ...(protocolVersion === 7 ? { animationCompletions: completion() } : {}) }) },
       } },
   };
 }
 async function fixture(initial = state(), options = {}) {
   let payload = initial;
   const calls = [], opened = [], context = { editable: true, dirty: false, creating: false, busy: false, path: 'documents/game.json' };
-  const h = await dialogHarness('app-project-build', { PROJECT_BUILD_API_PATH: '/api/project-build', validateProjectAnimationCommandsSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationCommandsSnapshot(JSON.parse(JSON.stringify(value))))), queryProjectRuntimeObservation, querySceneRuntimeObservation,
+  const h = await dialogHarness('app-project-build', { PROJECT_BUILD_API_PATH: '/api/project-build', validateProjectAnimationCompletionsSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationCompletionsSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationCommandsSnapshot: (value, options) => JSON.parse(JSON.stringify(validateProjectAnimationCommandsSnapshot(JSON.parse(JSON.stringify(value)), options))), queryProjectRuntimeObservation, querySceneRuntimeObservation,
     fetchJsonApiRequest: async (url, request) => { calls.push(request.body ? JSON.parse(request.body) : null); return { payload }; } });
-  for (const name of ['app-project-state-observation', 'app-project-event-observation', 'app-project-audio-observation', 'app-project-animation-observation']) {
+  for (const name of ['app-project-state-observation', 'app-project-event-observation', 'app-project-audio-observation', 'app-project-animation-observation', 'app-project-animation-completion-observation']) {
     const module = (await fs.readFile(new URL(`../../web/modules/${name}.js`, import.meta.url), 'utf8'))
       .replace(/^import[^\n]+\n/gm, '').replaceAll('export ', '');
     vm.runInContext(module, h.runtime);
@@ -54,7 +66,7 @@ async function fixture(initial = state(), options = {}) {
     openSource: (...args) => { opened.push(args); return options.openSource ? options.openSource(...args) : true; } });
   controller.setAvailable(true); h.element('projectBuildBtn').click(); await flushDialogs();
   return { ...h, context, controller, calls, opened, async refresh(next) { payload = next; h.element('projectBuildRefresh').click(); await flushDialogs(); },
-    el: suffix => h.element('projectAnimationCommands' + suffix), audioEl: suffix => h.element('projectAudioCommands' + suffix), eventEl: suffix => h.element('projectEventTrace' + suffix), stateEl: suffix => h.element('projectSharedState' + suffix) };
+    el: suffix => h.element('projectAnimationCommands' + suffix), completionEl: suffix => h.element('projectAnimationCompletions' + suffix), audioEl: suffix => h.element('projectAudioCommands' + suffix), eventEl: suffix => h.element('projectEventTrace' + suffix), stateEl: suffix => h.element('projectSharedState' + suffix) };
 }
 
 test('protocol5 adds animation records while retaining audio, event and state panels; older protocols keep their presentations', async () => {
@@ -110,5 +122,52 @@ test('initial busy and late draft, creation, task and visit changes guard the ac
     else await h.refresh(state(change === 'visit' ? { active: first } : { task: 'run-2' }));
     assert.equal(h.opened[0][2].isCurrent(), false, change);
     read.resolve(); await flushDialogs(); assert.deepEqual(writes, [], change); assert.equal(h.element('projectBuildDialog').open, true);
+  }
+});
+
+
+test('protocol7 completion panel coexists with commands audio events and state while protocols1–6 hide completions', async () => {
+  const h = await fixture(state({ protocolVersion: 7 }));
+  for (const el of [h.completionEl, h.el, h.audioEl, h.eventEl, h.stateEl]) assert.equal(el('Panel').hidden, false);
+  assert.match(h.completionEl('Entries').textContent, /自然完成/); assert.equal(h.completionEl('Sequence').dataset.sequence, '1');
+  assert.match(h.el('Entries').textContent, /完整动画/); assert.match(h.el('Entries').textContent, /已执行播放命令/);
+  for (const protocolVersion of [6, 5, 4, 3, 2, 1]) {
+    await h.refresh(state({ protocolVersion })); assert.equal(h.completionEl('Panel').hidden, true);
+    assert.equal(h.el('Panel').hidden, protocolVersion < 5); assert.equal(h.audioEl('Panel').hidden, protocolVersion < 4);
+    assert.equal(h.eventEl('Panel').hidden, protocolVersion < 3); assert.equal(h.stateEl('Panel').hidden, protocolVersion < 2);
+  }
+  assert.ok(h.calls.every(call => call === null));
+});
+
+test('actual completion source host preserves frozen identities through its own loading state', async () => {
+  for (const kind of ['animation', 'subscriber']) {
+    const read = deferred(), writes = []; let h;
+    h = await fixture(state({ protocolVersion: 7 }), { openSource: async (path, location, context) => {
+      h.context.busy = true; h.controller.setAvailable(true);
+      try { await read.promise; if (!context.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    h.completionEl('Entries').querySelector('.project-animation-completion-' + kind + '-source').click(); await flushDialogs();
+    const expected = kind === 'animation' ? animationSource : source;
+    assert.equal(h.opened.length, 1); assert.equal(h.opened[0][0], expected.sourcePath);
+    assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0][1])), expected); assert.equal(h.opened[0][2].isCurrent(), true);
+    await h.refresh(state({ protocolVersion: 7 })); assert.equal(h.opened[0][2].isCurrent(), true);
+    read.resolve(); await flushDialogs(); await flushDialogs(); assert.deepEqual(writes, [expected.sourcePath]); assert.equal(h.element('projectBuildDialog').open, false);
+  }
+});
+
+test('completion source host revokes delayed reads after draft creation visit task or close changes', async () => {
+  for (const change of ['dirty', 'creating', 'visit', 'task', 'close']) {
+    const read = deferred(), writes = []; let h;
+    h = await fixture(state({ protocolVersion: 7 }), { openSource: async (path, location, context) => {
+      h.context.busy = true;
+      try { await read.promise; if (!context.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    h.completionEl('Entries').querySelector('.project-animation-completion-animation-source').click(); await flushDialogs();
+    if (change === 'dirty' || change === 'creating') h.context[change] = true;
+    else if (change === 'close') h.element('projectBuildDialog').close();
+    else await h.refresh(state({ protocolVersion: 7, ...(change === 'visit' ? { active: first } : { task: 'run-2' }) }));
+    assert.equal(h.opened[0][2].isCurrent(), false, change); read.resolve(); await flushDialogs(); assert.deepEqual(writes, [], change);
   }
 });

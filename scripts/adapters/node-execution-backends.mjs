@@ -106,11 +106,12 @@ export function validateGeneratedExecutionProject(adapter, plan, generated) {
   const projectClips = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation?.document?.schemaVersion === 3);
   const legacyProjectProtocol = selectedPlan?.kind === 'project' && selectedPlan.schemaVersion === 1
     && Array.isArray(plan.scenes) && (
-      [5, 6].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 4 && !projectAnimation
+      [5, 6, 7].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 4 && !projectAnimation
       || selectedPlan.runtimeProtocolVersion === 6 && generated?.backend?.protocolVersion === 5 && projectAnimation && !projectClips);
   if (!selectedPlan || !generated || !(generated.files instanceof Map) || !(generated.resourceFiles instanceof Map)
     || generated.files.size < 1 || generated.files.size > 512 || generated.resourceFiles.size !== plan.resources.length
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 6 && !projectClips
+    || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 7 && !projectAnimation
     || generated.backend?.id !== adapter.descriptor.id || (generated.backend.protocolVersion !== selectedPlan.runtimeProtocolVersion && !legacyProjectProtocol)
     || typeof generated.backend.version !== 'string' || !/^\d+\.\d+\.\d+$/.test(generated.backend.version)
     || !hash(generated.backend.sha256)) invalid('Invalid generated backend project.');

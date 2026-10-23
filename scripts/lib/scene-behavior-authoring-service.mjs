@@ -1,6 +1,7 @@
 // Read-only authoring catalog. Source text remains data; this service never
 // starts a tool, edits registrations or grants runtime authority.
 import { createHash } from 'node:crypto';
+import { hasScriptParameterDeclaration, discoverScriptParameterContract } from '../../engine/script-parameter-discovery.mjs';
 import { readWorldSnapshot } from '../adapters/node-world-projection.mjs';
 import { inspectSceneBehaviors, validateSceneBehaviorDependencies, SCENE_BEHAVIOR_LIMITS } from '../../engine/scene-behaviors.mjs';
 import { parseJsonSource } from '../../engine/json-source.mjs';
@@ -103,6 +104,18 @@ export function createSceneBehaviorAuthoringService(root) {
     for (const document of sourceDocuments) if (document.content.length > SCENE_BEHAVIOR_LIMITS.sourceBytes
       || utf8Bytes(document.content) > SCENE_BEHAVIOR_LIMITS.sourceBytes) fail('invalid', [diagnostic('build_behavior_source_invalid',
         'A behavior source requires valid UTF-8 and at most 64 KiB.', '', { relatedObjectId: document.record.id })], 413);
+    // The optional provider consumes only this captured source. A missing or
+    // older core must not remove the ordinary behavior editor. No source text
+    // crosses the catalog boundary and the existing dependency hash pins it.
+    if (sourceDocuments.some(document => hasScriptParameterDeclaration(document.content))) {
+      // The loader records expected core absence in metadata. Module failures
+      // remain errors rather than silently disguising an implementation bug.
+      await import('../adapters/node-studio-core.mjs');
+    }
+    const sourceDescription = document => {
+      const parameterContract = discoverScriptParameterContract(document.content);
+      return { ...describe(document), name: boundedName(sourceFileName(document.sourcePath)), ...(parameterContract ? { parameterContract } : {}) };
+    };
     const dependencies = document => ({ objectId: document.record.id, record: document.record, sourceRevision: document.sourceRevision });
     const dependencyState = { format: 'viento-behavior-authoring-dependencies', schemaVersion: 1, workspaceId: observed.source.workspace.id,
       manifest: { objectId: manifest.record.id, record: manifest.record }, scene: dependencies(scene),
@@ -111,6 +124,6 @@ export function createSceneBehaviorAuthoringService(root) {
     return freeze({ format: 'viento-behavior-authoring-context', schemaVersion: 1, sourcePath, objectId: manifest.record.id,
       scene: { objectId: scene.record.id, sourcePath: scene.sourcePath, sourceRevision: scene.sourceRevision,
         instances: actors.map(actor => ({ instanceId: actor.instanceId, objectId: actor.objectId, name: name(definitions.get(actor.objectId)) })) },
-      sources: sourceDocuments.map(document => ({ ...describe(document), name: boundedName(sourceFileName(document.sourcePath)) })).sort(compare), dependencyRevision });
+      sources: sourceDocuments.map(sourceDescription).sort(compare), dependencyRevision });
   } });
 }

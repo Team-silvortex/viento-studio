@@ -1,3 +1,4 @@
+import { SCRIPT_USAGE_API_PATH } from '../../engine/script-usage.mjs';
 import { SCENE_ANIMATION_USAGE_API_PATH } from '../../engine/scene-animation-usage.mjs';
 import { SCENE_ANIMATION_DIRECTORY_API_PATH } from '../../engine/scene-animation-directory.mjs';
 import { SCENE_ANIMATION_CREATION_API_PATH } from '../../engine/scene-animation-creation-contract.mjs';
@@ -324,7 +325,7 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
-  if ([SCENE_ANIMATION_USAGE_API_PATH, SCENE_ANIMATION_DIRECTORY_API_PATH, SCENE_ANIMATION_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
+  if ([SCRIPT_USAGE_API_PATH, SCENE_ANIMATION_USAGE_API_PATH, SCENE_ANIMATION_DIRECTORY_API_PATH, SCENE_ANIMATION_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
   if (pathname === SCENE_PREVIEW_API_PATH && ['POST', 'DELETE'].includes(method)) return true;
   if (pathname === PROJECT_BUILD_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === RESOURCE_PACKAGE_API && method === API_METHODS.POST) return true;
@@ -620,6 +621,17 @@ async function handleApiRequest({
           if (requestUrl.search) throw Object.assign(new Error('Invalid animation target query.'), { statusCode: 400, errorCode: 'scene_animation_targets_invalid' });
           response.setHeader('Cache-Control', 'no-store');
           sendApiResponse(response, await service.sceneAnimationTargets.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
+    [SCRIPT_USAGE_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.scriptUsage) throw Object.assign(new Error('Script usage inspection requires an editor session.'), { statusCode: 403, errorCode: 'script_usage_unavailable' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid script usage query.'), { statusCode: 400, errorCode: 'script_usage_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.scriptUsage.inspect(await readRequestJsonBody(request)), requestId);
           return 200;
         } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
       },

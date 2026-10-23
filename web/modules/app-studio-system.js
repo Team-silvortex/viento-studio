@@ -1,3 +1,5 @@
+import { setupScriptUsage } from './app-script-usage.js';
+import { setupAnimationStateScriptEdit } from './app-animation-state-script-edit.js';
 import { setupSceneAnimation } from './app-scene-animation.js';
 import { setupSceneCompositionCreate } from './app-scene-composition-create.js';
 import { setupScriptCreate } from './app-script-create.js';
@@ -60,7 +62,18 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
   // Language preferences must finish before any localized domain view mounts.
   if (active(IDS.settings)) { await setupSettings(settings ?? ports.settings ?? {}); initialized.push(IDS.settings); }
   if (typeof setupSceneCompositionCreate === 'function') mount(IDS.compositionCreate, setupSceneCompositionCreate, options('compositionCreate'));
-  if (typeof setupScriptCreate === 'function') mount(IDS.scripts, setupScriptCreate, options('scripts'));
+  if (typeof setupScriptCreate === 'function') mount(IDS.scripts, ports => {
+    // Script tools share registration, but receive separate source ports.
+    // Keep one registry/controller entry so refresh cannot replace creation.
+    const { editStateTable, usage, ...creationPorts } = ports;
+    const creation = setupScriptCreate(Object.freeze(creationPorts));
+    const editing = editStateTable && typeof setupAnimationStateScriptEdit === 'function'
+      ? setupAnimationStateScriptEdit(Object.freeze({ ...editStateTable })) : null;
+    const usageReader = usage && typeof setupScriptUsage === 'function'
+      ? setupScriptUsage(Object.freeze({ ...usage })) : null;
+    return Object.freeze({ refresh() { creation?.refresh?.(); editing?.refresh?.(); usageReader?.refresh?.(); },
+      dispose() { creation?.dispose?.(); editing?.dispose?.(); usageReader?.dispose?.(); } });
+  }, options('scripts'));
   if (typeof setupSceneBehaviors === 'function') mount(IDS.sceneBehaviors, setupSceneBehaviors, options('sceneBehaviors'));
   if (typeof setupSceneAnimation === 'function') mount(IDS.sceneAnimation, setupSceneAnimation, options('sceneAnimation'));
   if (typeof setupSceneAudio === 'function') mount(IDS.sceneAudio, setupSceneAudio, options('sceneAudio'));

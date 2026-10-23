@@ -1,0 +1,25 @@
+.animation-state-script-edit-dialog { width:min(900px,calc(100vw - 24px)); max-width:900px; max-height:calc(100dvh - 24px); margin:auto; padding:0; box-sizing:border-box; overflow:hidden; border:1px solid #33536a; border-radius:16px; color:#d8e9f8; background:#101c2b; }
+.animation-state-script-edit-dialog[open] { display:flex; flex-direction:column; }
+.animation-state-script-edit-dialog [hidden] { display:none!important; }
+.animation-state-script-edit-dialog::backdrop { background:rgba(2,8,18,.76); }
+.animation-state-script-edit-dialog>header { display:flex; flex:none; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid #33536a; }
+.animation-state-script-edit-dialog h2 { margin:0; font-size:1.25rem; }
+.animation-state-script-edit-body { min-height:0; overflow:auto; overscroll-behavior:contain; padding:0 20px 14px; }
+.animation-state-script-edit-dialog p { overflow-wrap:anywhere; }
+.animation-state-script-edit-dialog .script-create-note { color:#a1bbcf; font-size:.88rem; }
+#animationStateScriptEditStatus { flex:none; padding:0 20px; margin:8px 0; max-height:18dvh; overflow:auto; overflow-wrap:anywhere; }
+.animation-state-script-edit-dialog>footer { flex:none; padding:10px 20px; border-top:1px solid #33536a; }
+.animation-state-script-edit-dialog>footer>div { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+.animation-state-script-edit-dialog fieldset { margin:14px 0; padding:12px; min-width:0; border:1px solid #33536a; }
+.animation-state-script-edit-dialog label { display:grid; gap:5px; min-width:0; }
+.animation-state-script-edit-dialog input,.animation-state-script-edit-dialog select { width:100%; min-width:0; box-sizing:border-box; padding:8px; border:1px solid #33536a; border-radius:6px; color:inherit; background:#0a1422; font:inherit; }
+.animation-state-script-edit-dialog select { text-overflow:ellipsis; }
+.animation-state-script-edit-dialog .doc-btn { white-space:normal; overflow-wrap:anywhere; }
+.animation-state-script-edit-dialog pre { margin:8px 0; padding:12px; border:1px solid #33536a; border-radius:6px; color:#bdd1e4; background:#0a1422; white-space:pre-wrap; overflow-wrap:anywhere; tab-size:4; font-size:.85rem; }
+#animationStateScriptEditParameters { border:1px solid #d6a363; padding:0 10px; border-radius:6px; }
+@media(max-width:600px) {
+ .animation-state-script-edit-dialog>header { padding:12px; } .animation-state-script-edit-dialog h2 { font-size:1.05rem; }
+ .animation-state-script-edit-body { padding:0 12px 12px; } #animationStateScriptEditStatus { padding:0 12px; }
+ .animation-state-script-edit-dialog>footer { padding:10px 12px; } .animation-state-script-edit-dialog>footer>div { justify-content:flex-start; }
+ .animation-state-script-edit-dialog>footer .doc-btn { flex:1 1 130px; }
+}

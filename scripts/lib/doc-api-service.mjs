@@ -1,3 +1,4 @@
+import { createScriptUsageService } from './script-usage-service.mjs';
 import { createSceneAnimationUsageService } from './scene-animation-usage-service.mjs';
 import { createSceneAnimationCreationService } from './scene-animation-creation-service.mjs';
 import { createSceneAnimationTargetsService } from './scene-animation-targets-service.mjs';
@@ -58,6 +59,7 @@ function getDefaultIndexCacheTtl(rawTtl) {
 }
 
 function createDocumentService(options = {}) {
+  const scriptUsage = createScriptUsageService(PROJECT_ROOT);
   const sceneCompositionCreate = createSceneCompositionCreateService(PROJECT_ROOT);
   const sceneBehaviorAuthoring = createSceneBehaviorAuthoringService(PROJECT_ROOT);
   const sceneAudioCreation = createSceneAudioCreationService(PROJECT_ROOT);
@@ -97,7 +99,7 @@ function createDocumentService(options = {}) {
   });
 
   async function getCapabilities() {
-    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, sceneBehaviorAuthoring: true, sceneBehaviorDirectory: true, sceneAudioCreation: true, sceneAudioDirectory: true, sceneAnimationDirectory: true, sceneAudioUsage: true, sceneAnimationUsage: true, sceneAnimationTargets: true, sceneAnimationCreation: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, sceneAnimationPreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'animation.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
+    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, scriptUsage: true, sceneBehaviorAuthoring: true, sceneBehaviorDirectory: true, sceneAudioCreation: true, sceneAudioDirectory: true, sceneAnimationDirectory: true, sceneAudioUsage: true, sceneAnimationUsage: true, sceneAnimationTargets: true, sceneAnimationCreation: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, sceneAnimationPreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'animation.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
   }
 
   function getRuntimeConfig() {
@@ -281,6 +283,7 @@ function createDocumentService(options = {}) {
     sceneAnimationDirectory,
     sceneAudioUsage,
     sceneAnimationUsage,
+    scriptUsage,
     sceneAnimationTargets,
     sceneAnimationCreation,
     sceneBehaviorDirectory,

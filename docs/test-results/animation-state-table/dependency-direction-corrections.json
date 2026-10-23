@@ -1,0 +1,58 @@
+[
+  {
+    "before": {
+      "from": "runtime.project_animation_completion",
+      "to": "scene.animation2d",
+      "relation": "requires",
+      "reason": "复用片段选择、播放队列、普通脚本与项目访问生命周期；完成通知独立。"
+    },
+    "after": {
+      "from": "scene.animation2d",
+      "to": "runtime.project_animation_completion",
+      "relation": "requires",
+      "reason": "复用片段选择、播放队列、普通脚本与项目访问生命周期；完成通知独立。"
+    }
+  },
+  {
+    "before": {
+      "from": "runtime.project_animation_completion",
+      "to": "runtime.project_animation_controls",
+      "relation": "requires",
+      "reason": "复用片段选择、播放队列、普通脚本与项目访问生命周期；完成通知独立。"
+    },
+    "after": {
+      "from": "runtime.project_animation_controls",
+      "to": "runtime.project_animation_completion",
+      "relation": "requires",
+      "reason": "复用片段选择、播放队列、普通脚本与项目访问生命周期；完成通知独立。"
+    }
+  },
+  {
+    "before": {
+      "from": "runtime.project_animation_completion",
+      "to": "script.authoring",
+      "relation": "requires",
+      "reason": "复用片段选择、播放队列、普通脚本与项目访问生命周期；完成通知独立。"
+    },
+    "after": {
+      "from": "script.authoring",
+      "to": "runtime.project_animation_completion",
+      "relation": "requires",
+      "reason": "复用片段选择、播放队列、普通脚本与项目访问生命周期；完成通知独立。"
+    }
+  },
+  {
+    "before": {
+      "from": "runtime.project_animation_completion",
+      "to": "build.project_assembly",
+      "relation": "requires",
+      "reason": "复用片段选择、播放队列、普通脚本与项目访问生命周期；完成通知独立。"
+    },
+    "after": {
+      "from": "build.project_assembly",
+      "to": "runtime.project_animation_completion",
+      "relation": "requires",
+      "reason": "复用片段选择、播放队列、普通脚本与项目访问生命周期；完成通知独立。"
+    }
+  }
+]

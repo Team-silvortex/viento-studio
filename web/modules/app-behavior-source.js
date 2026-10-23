@@ -26,9 +26,12 @@ export function createSceneBehaviorSourceHost({ getState, digest, inspect, inspe
   }
   const eligible = s => s.editable === true && s.available === true && !s.creating && !s.busy && s.sourceJSON === true && s.behaviorSource && Boolean(s.document);
   const current = (owner, guard = () => true) => {
+    // Caller guards may synchronously change the editor. Read ownership after
+    // the guard returns, including the final check before writing a draft.
+    if (guard() !== true) return false;
     const s = capture();
     return eligible(s) && s.document === owner.document && s.sourceToken === owner.sourceToken
-      && s.content === owner.content && s.baseline === owner.baseline && s.version === owner.version && guard() === true;
+      && s.content === owner.content && s.baseline === owner.baseline && s.version === owner.version;
   };
   function getContext() {
     const s = capture();

@@ -1,3 +1,4 @@
+import { SCRIPT_USAGE_API_PATH } from '../../engine/script-usage.mjs';
 import { SCENE_ANIMATION_USAGE_API_PATH } from '../../engine/scene-animation-usage.mjs';
 import { SCENE_ANIMATION_DIRECTORY_API_PATH } from '../../engine/scene-animation-directory.mjs';
 import { SCENE_ANIMATION_CREATION_API_PATH } from '../../engine/scene-animation-creation-contract.mjs';
@@ -617,4 +618,10 @@ export async function inspectSceneAnimationCreation(payload) {
   return (await fetchJsonApiRequest(SCENE_ANIMATION_CREATION_API_PATH, withAuthHeaders({
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
   }), 45000, t('核对场景动画'))).payload;
+}
+
+export async function inspectScriptUsage(payload) {
+  return (await fetchJsonApiRequest(SCRIPT_USAGE_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('读取脚本使用位置'))).payload;
 }

@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-20",
+  "version": "0.1.7",
+  "baseCommit": "bc463a2f0365493decdf4fddf5ca857ae951b27f",
+  "status": "Working tree only, not committed/released/installed.",
+  "feature": "Reopen a versioned state-table TXT, review source changes, update the ordinary draft and Save the same file.",
+  "protocolVersion": 7,
+  "godotAdapterVersion": "0.16.0",
+  "inventoryVersion": 8,
+  "sourceEnvelope": {
+    "schemaVersion": 1,
+    "generator": "godot-gdscript-v1",
+    "layout": "Short comment title, declaration comment line, unchanged v1 body.",
+    "portableTableUsesExistingRustInspector": true
+  },
+  "tests": {
+    "fullApp": {
+      "tests": 6502,
+      "pass": 6211,
+      "fail": 0,
+      "skipped": 291,
+      "cancelled": 0,
+      "javascriptFiles": 1094,
+      "versionAndApiPreflight": true
+    },
+    "sourceCodec": {
+      "pass": 11,
+      "fail": 0,
+      "skipped": 0
+    },
+    "proposalAndSourceHostBeforeTitle": {
+      "pass": 18,
+      "fail": 0
+    },
+    "uiSystemAndTranslationBeforeTitle": {
+      "pass": 63,
+      "fail": 0
+    },
+    "finalIntegratedSourceHostUiAndOldTransport": {
+      "pass": 80,
+      "fail": 0,
+      "skipped": 0
+    },
+    "finalAuthoringAndSaveWorkflows": {
+      "pass": 41,
+      "fail": 0,
+      "skipped": 0,
+      "actualNativeTests": 2
+    },
+    "finalGodotAndMovedZip": {
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0
+    },
+    "chrome": {
+      "groups": 4,
+      "screenshots": 17,
+      "report": "browser-authoring-1792500098788/browser.json",
+      "ok": true,
+      "errors": []
+    },
+    "scopesOverlap": true
+  },
+  "tools": {
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "godot": {
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "browser": "Chrome/154.0.8037.97"
+  },
+  "atlas": {
+    "architectures": 11,
+    "functions": 135,
+    "implementations": 409,
+    "bindings": 599,
+    "cells": 2396,
+    "evidence": 2591,
+    "workflows": 98
+  },
+  "preservation": "preservation.json",
+  "sourceHashes": "source-hashes.json",
+  "runtime": {
+    "protocolVersion": 7,
+    "commands": 6,
+    "completions": 1,
+    "usesGuiResavedController": true
+  },
+  "limitations": [
+    "Actual Chrome with local HTTP editor and a trusted Godot binary. No installed Tauri window, native picker, Android or other desktop OS claim.",
+    "A disposable fixture prepares scenes, clips and a bound state-table controller. Actual GUI changes its event transitions, applies a draft, saves the same TXT and runs that newly saved source. OC creation and initial binding are fixture setup, not GUI coverage.",
+    "Native Godot headless logic and browser receipt display are tested. No installed Tauri, Android, native window rendering or delivered game execution claim.",
+    "No automatic migration of behavior parameter keys after state rename/removal.",
+    "No arbitrary GDScript reverse parsing or legacy unmarked source adoption.",
+    "One scene-wide playhead; no new per-instance animation, conditions, mixing or Bevy animation."
+  ]
+}

@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-20**。源码版本 **0.1.7**；审查基线为提交 `97bd6e13cdc51a99a1cd29a2e20c6b1165d2277e`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-23**。源码版本 **0.1.8**；审查基线为提交 `bc463a2f0365493decdf4fddf5ca857ae951b27f`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -20,14 +20,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 133 |
-| 实现单元（含规划占位） | 399 |
-| 已审查实现关系 | 583 |
-| 显式评分单元 | 2332 |
-| 语义依赖边 | 376 |
-| 工作流切片 | 96 |
+| 功能 | 139 |
+| 实现单元（含规划占位） | 421 |
+| 已审查实现关系 | 619 |
+| 显式评分单元 | 2476 |
+| 语义依赖边 | 391 |
+| 工作流切片 | 102 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 2156 |
+| 引用并校验指纹的文件 | 2236 |
 
 ## 评分锚点
 
@@ -197,6 +197,12 @@
 | [实例图片→网格帧编辑→普通保存→场景预览→Godot工程交付](function-atlas.html#workflow=scene-sprite-animation) | [保存场景首次创建动画与双向登记](#scene.animation_creation) → [2D视觉关键帧编辑、保存态场景预览与Godot工程执行](#scene.animation2d) → [等分图集序列帧创作与场景交付](#scene.sprite_animation) → [无需引擎的已保存场景预览](#scene.saved_preview) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | 已有实例图片与动画起点；实际Chrome完成字段编辑到保存态像素，独立Godot专题完成冻结工程／重入／异地ZIP。不拼接为全部上游创作或安装设备验收。 复制轨道轮次：Chrome验证当前源数据复制与普通Save，HTTP两布局与实际Godot分别验证双实例曲线/序列帧和目标独立图片；不延伸旧ZIP或安装验收。 |
 | [通用脚本审阅→普通保存→行为绑定→项目动画运行→命令观察→工程ZIP](function-atlas.html#workflow=project-animation-control-to-delivery) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [从已保存场景首次创建行为声明与关联](#behavior.creation) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [运行对象、位置采样与冻结来源只读观察](#runtime.objects_inspection) → [已核对生成工程的可移植交付包](#backend.project_delivery) | [独立游戏发行产物](#build.standalone_distribution) | 以已有登记场景和动画为起点。Chrome验证脚本审阅／普通TXT保存、真实组装四命令、三语和双方来源；独立HTTP验证两种正文目录保存到首次绑定，Godot专题另验生命周期、失败预算与ZIP异地运行。上述为分段可复核链，不声称同一空工程全GUI交付；没有安装设备、Bevy、实时混合或独立发行验收。 事件动画轮次：Chrome验证新建事件starter／普通TXT保存／首次绑定／按名选片段；独立HTTP保存至实际Godot验证event→select/play，另验证生命周期及预算。不重跑旧ZIP、安装或设备结论。 |
 | [动画片段字段→普通保存→双预览→行为选择→来源观察→Godot工程交付](function-atlas.html#workflow=animation-clips-to-delivery) | [2D视觉关键帧编辑、保存态场景预览与Godot工程执行](#scene.animation2d) → [命名动画片段编辑、采样与行为选择](#scene.animation_clips) → [无需引擎的已保存场景预览](#scene.saved_preview) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | [独立游戏发行产物](#build.standalone_distribution) | 已有登记场景和动画为起点，Chrome验证编辑/取消/普通保存/双预览，独立Godot及服务验证冻结选择、混合旧动画、重入、离线恢复和工程ZIP。不是单次从空工程的全部GUI验收，没有安装、Bevy或独立游戏发行结论。 本轮可选片段字段助手用Chrome验证名称选择→普通保存，另用实际Godot验证已保存参数→select/play；本轮未重跑旧ZIP证据。 本轮新增当前片段的保存态行为文字匹配→只读原文定位，Chrome和两种正文布局的普通改名/移除保存分别验证，不重跑或扩展旧后端及ZIP结论。 事件动画轮次：Chrome验证新建事件starter／普通TXT保存／首次绑定／按名选片段；独立HTTP保存至实际Godot验证event→select/play，另验证生命周期及预算。不重跑旧ZIP、安装或设备结论。 比例时长轮次：真实Chrome验证未保存表单缩放→新审阅→普通Save→保存态预览；独立两种布局HTTP与实际Godot验证新时间范围/数值/sprite取样，不扩展旧ZIP或安装结论。 |
+| [事件攻击→自然完成→片段衔接→独立观察→Godot工程交付](function-atlas.html#workflow=animation-completion-to-next-clip) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [命名动画片段编辑、采样与行为选择](#scene.animation_clips) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [动画自然完成订阅、片段衔接与独立观察](#runtime.project_animation_completion) → [已核对生成工程的可移植交付包](#backend.project_delivery) | [独立游戏发行产物](#build.standalone_distribution) | HTTP双布局新保存脚本/绑定/参数到实际Godot、Chrome脚本创建和预置fixture完成记录/三来源分段验收。旧协议兼容与ZIP另验；没有单次空工程全GUI、安装、Bevy或状态机结论。 |
+| [状态表→普通脚本→重开/审阅/保存→片段参数与事件/完成转换→交付](function-atlas.html#workflow=animation-state-script-to-delivery) | [动画状态表与普通控制脚本生成](#authoring.animation_state_script) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [动画自然完成订阅、片段衔接与独立观察](#runtime.project_animation_completion) → [已核对生成工程的可移植交付包](#backend.project_delivery) | [独立游戏发行产物](#build.standalone_distribution) | 创建与重开分别使用独立端口，当前标记TXT精确重建后才能改表；Chrome从预置绑定脚本的再次编辑/普通保存到同来源实际Godot执行，HTTP双布局和ZIP独立验收。手改源码及未知版本保持普通编辑，不迁移行为参数，无安装/多实例播放结论。 |
+| [保存脚本接口→显式修复绑定参数→普通保存→实际运行与工程交付](function-atlas.html#workflow=script-parameter-interface-to-delivery) | [动画状态表与普通控制脚本生成](#authoring.animation_state_script) → [保存态脚本参数接口与当前绑定显式修复](#authoring.script_parameter_interface) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [动画自然完成订阅、片段衔接与独立观察](#runtime.project_animation_completion) → [已核对生成工程的可移植交付包](#backend.project_delivery) | [独立游戏发行产物](#build.standalone_distribution) | 当前绑定明确补齐或更名保值，不自动跨文档迁移；浏览器从已保存改名脚本的旧参数出发修复，HTTP双目录/真实Godot/移离作者工程后的ZIP分别验收。无任意脚本解析、静态引用保护或新安装验收。 |
+| [已保存脚本→跨绑定使用位置→精确原文定位→显式参数修复→普通保存与刷新](function-atlas.html#workflow=script-usage-to-parameter-repair) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [保存态脚本跨绑定使用位置与精确原文导航](#script.usage) → [保存态脚本参数接口与当前绑定显式修复](#authoring.script_parameter_interface) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) | 本次未登记额外缺口（不表示完成） | 当前工程的已登记非part-of引用可从普通TXT查询；参数接口辅助仍只认严格声明provider。双目录和Chrome验证逐个绑定的显式修复、保存及刷新，不自动迁移其他文档，不把空结果当可安全删除，也不新增后端或安装验收。 |
+| [当前状态表→静态转换图→字段定位→源码审阅与普通保存](function-atlas.html#workflow=animation-state-graph-to-script-save) | [动画状态表与普通控制脚本生成](#authoring.animation_state_script) → [当前动画状态表的静态转换图与字段定位](#authoring.animation_state_graph) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) | 本次未登记额外缺口（不表示完成） | 图操作只改变视图；实际字段改动沿原审阅/草稿/保存。静态声明不证明运行状态或片段存在，不改变作者格式或生成源码；本轮Chrome与HTTP验收，未新增引擎/安装运行。 |
+| [事件载荷条件→Rust准入→v2源码→普通保存→原生执行与工程交付](function-atlas.html#workflow=animation-state-conditions-to-delivery) | [动画状态表与普通控制脚本生成](#authoring.animation_state_script) → [动画事件转换的有类型载荷条件](#authoring.animation_state_conditions) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) | 本次未登记额外缺口（不表示完成） | 条件独立可选；先审阅后改草稿，普通Save持久化；源声明自包含，旧v1保持，运行协议不变。原生Godot与浏览器分别验证，不外推其他后端或安装。 |
 
 ## 功能与实现切片
 
@@ -2621,9 +2627,9 @@
 | 可移植 JS 语义 | **通用项目动画脚本起始内容与普通创建交接**；起始内容只准备普通TXT草稿，复用既有类型与正文路径；保存登记、首次绑定和实际执行分别拥有权限。 本轮通过可编辑事件动画starter组合既有订阅及select/play端口；复核原职责，保持旧评分，不新增协议或后端实现。 | 4 / 4 / 3 / 2 | [docs/test-results/project-animation-controls/README\.md](../docs/test-results/project-animation-controls/README.md)、[docs/test-results/project-animation-controls/summary\.json](../docs/test-results/project-animation-controls/summary.json)、[docs/test-results/project-animation-controls/app-check-final\.log](../docs/test-results/project-animation-controls/app-check-final.log) |
 | 交互与渲染 | **独立项目动画执行记录与双来源导航视图**；独立只读回执列表、场景／播放头时间、三语筛选与来源票据；不取得播放器、网络命令或作者写权限。 | 4 / 4 / 3 / 2 | [docs/test-results/project-animation-controls/README\.md](../docs/test-results/project-animation-controls/README.md)、[docs/test-results/project-animation-controls/summary\.json](../docs/test-results/project-animation-controls/summary.json)、[docs/test-results/project-animation-controls/app-check-final\.log](../docs/test-results/project-animation-controls/app-check-final.log) |
 
-平台：Linux本机HTTP与Chrome中英日390px；Rust CLI／实际WASM及Godot4.7.2无头分别验证、未发布或更新安装；Android、Windows/macOS、Bevy及独立游戏发行未验收。边界：当前访问的整份场景动画由play_animation／pause_animation／stop_animation／seek_animation控制；不选择单轨、命名片段或其他场景。行为端口不暴露视觉节点、资源路径或时钟权限，返回true仅表示排队受理。；Rust新增可选sceneAnimation.transport及独立marker，作者schema1／2、四通道／等分图集与旧采样ABI保持。纯状态绑定sceneObjectId，显式单调场景时间允许0至MAX_SAFE_INTEGER；null状态从场景t0自动播放，先推进再按同刻顺序执行命令。；play从当前位置继续，位于非循环末尾时从零重播；pause保持播放头，stop回零并停止，seek限定在声明时长内且暂停，循环末端归零。非循环自然完成独立于场景关闭；仅改变动画，不冻结逻辑演员、声音、行为或项目时间。；Godot0.14.0仅在含动画的项目组装启用project.animation-control、协议5与生成清单6；无动画组装仍生成协议4，旧单场景文件／协议保持。宿主按冻结build后端协议选择reader，旧独立ZIP保留自身代码，当前指纹变化后的缓存须按既有核验规则处理。；行为_ready期间请求先入队，等动画和项目完成初始化后在安全点执行；事件、声音、动画依次排空，随后才离场或结束。每运行256次受理、64条待执行，非法请求、失败、旧访问或无动画场景明确拒绝，不转移到后来访问。；后端每帧从上一命令保存的时钟与播放头重新计算，避免逐帧浮点累计与Rust回执验证漂移；末端舍入、长场景时钟和同刻命令已覆盖。执行失败不发成功回执；离场结束视觉生命周期，重入重新自动播放。；中立协议5动画命令由Rust对冻结声明重算，核对序号、访问／场景／行为身份及完整状态，失败不污染账本。保存Rust状态而不是累计后端舍入；行为与动画来源分别来自冻结计划，wire不能注入路径或范围。；独立project.animationCommands保存最多256条已执行命令，场景时间与播放头分开；只读面板支持筛选、三语、任务清空和双方来源导航，不声称实时画面、GPU或播放器状态。协议5观察DTO单列40MiB预算，旧1–4形状与预算保持。；通用godot-project-animation起始内容只创建普通TXT草稿，可使用现有任意文档类型和自定义正文目录；取消／审阅不写入，普通保存登记后才进入已有首次行为流程，不新增脚本专用类型或自动绑定事务。；Chrome四组15图验证起始内容审阅、普通保存、真实组装运行四回执、双方来源及三语390px；独立HTTP两种正文目录验证保存到首次绑定，真实Godot分别验证控制、重入、失败／预算、声音事件顺序与ZIP异地运行。各证据是分段工作流，不拼接为单一空工程全GUI交付或安装验收。；不包含动画混合、状态机、骨骼、播放速率、逐轨控制、关键帧事件、3D、Bevy视觉或控制重放；版本0.1.6和22模块43项声明能力保持，当前只属于工作树。；0.1.6后新增事件动画starter复用普通TXT与行为参数：收到匹配事件先select再play、每次归零，空clip选整份；就绪不改默认自动播放。未知片段拒绝且不继续play；无项目或旧端口缺select则不订阅，退出清理。每次触发占两条已有动画请求，不增加预算／去抖／无限缓冲；仍为共享场景播放头，非状态机或混合。；上述0.1.6后增量已纳入0.1.7源码提交。旧开发证据及评分理由保留当时范围，未增加安装或设备验收。。
+平台：Linux本机HTTP与Chrome中英日390px；Rust CLI／实际WASM及Godot4.7.2无头分别验证、未发布或更新安装；Android、Windows/macOS、Bevy及独立游戏发行未验收。边界：当前访问的整份场景动画由play_animation／pause_animation／stop_animation／seek_animation控制；不选择单轨、命名片段或其他场景。行为端口不暴露视觉节点、资源路径或时钟权限，返回true仅表示排队受理。；Rust新增可选sceneAnimation.transport及独立marker，作者schema1／2、四通道／等分图集与旧采样ABI保持。纯状态绑定sceneObjectId，显式单调场景时间允许0至MAX_SAFE_INTEGER；null状态从场景t0自动播放，先推进再按同刻顺序执行命令。；play从当前位置继续，位于非循环末尾时从零重播；pause保持播放头，stop回零并停止，seek限定在声明时长内且暂停，循环末端归零。非循环自然完成独立于场景关闭；仅改变动画，不冻结逻辑演员、声音、行为或项目时间。；Godot0.14.0仅在含动画的项目组装启用project.animation-control、协议5与生成清单6；无动画组装仍生成协议4，旧单场景文件／协议保持。宿主按冻结build后端协议选择reader，旧独立ZIP保留自身代码，当前指纹变化后的缓存须按既有核验规则处理。；行为_ready期间请求先入队，等动画和项目完成初始化后在安全点执行；事件、声音、动画依次排空，随后才离场或结束。每运行256次受理、64条待执行，非法请求、失败、旧访问或无动画场景明确拒绝，不转移到后来访问。；后端每帧从上一命令保存的时钟与播放头重新计算，避免逐帧浮点累计与Rust回执验证漂移；末端舍入、长场景时钟和同刻命令已覆盖。执行失败不发成功回执；离场结束视觉生命周期，重入重新自动播放。；中立协议5动画命令由Rust对冻结声明重算，核对序号、访问／场景／行为身份及完整状态，失败不污染账本。保存Rust状态而不是累计后端舍入；行为与动画来源分别来自冻结计划，wire不能注入路径或范围。；独立project.animationCommands保存最多256条已执行命令，场景时间与播放头分开；只读面板支持筛选、三语、任务清空和双方来源导航，不声称实时画面、GPU或播放器状态。协议5观察DTO单列40MiB预算，旧1–4形状与预算保持。；通用godot-project-animation起始内容只创建普通TXT草稿，可使用现有任意文档类型和自定义正文目录；取消／审阅不写入，普通保存登记后才进入已有首次行为流程，不新增脚本专用类型或自动绑定事务。；Chrome四组15图验证起始内容审阅、普通保存、真实组装运行四回执、双方来源及三语390px；独立HTTP两种正文目录验证保存到首次绑定，真实Godot分别验证控制、重入、失败／预算、声音事件顺序与ZIP异地运行。各证据是分段工作流，不拼接为单一空工程全GUI交付或安装验收。；不包含动画混合、状态机、骨骼、播放速率、逐轨控制、关键帧事件、3D、Bevy视觉或控制重放；版本0.1.6和22模块43项声明能力保持，当前只属于工作树。；0.1.6后新增事件动画starter复用普通TXT与行为参数：收到匹配事件先select再play、每次归零，空clip选整份；就绪不改默认自动播放。未知片段拒绝且不继续play；无项目或旧端口缺select则不订阅，退出清理。每次触发占两条已有动画请求，不增加预算／去抖／无限缓冲；仍为共享场景播放头，非状态机或混合。；上述0.1.6后增量已纳入0.1.7源码提交。旧开发证据及评分理由保留当时范围，未增加安装或设备验收。；0.1.7后自然完成通知另登记runtime.project_animation_completion：新生成含动画项目p7／清单8／Godot0.16.0，旧协议和专题证据保留；不改本功能旧评分为新设备验收。。
 
-下一步：可编辑脚本已接通事件触发片段；继续分别设计声明式行为触发、受保护引用、跨工程影响、动画状态转换与混合，骨骼、3D和其他后端分别验收。
+下一步：自然完成到下一片段已以独立功能接入；继续推进声明式状态转换、混合、受保护引用及其他引擎动画。
 
 <a id="scene.animation_clips"></a>
 ### 命名动画片段编辑、采样与行为选择
@@ -2643,9 +2649,129 @@
 | 本机服务与适配 | **动画片段使用位置的World观察与认证端口**；一致World快照解析唯一双向animation/behavior关系，分离128KiB动画和32KiB行为预算；作者认证no-store读取不执行脚本、读素材或要求完整构建。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-animation-usage/README\.md](../docs/test-results/scene-animation-usage/README.md)、[docs/test-results/scene-animation-usage/summary\.json](../docs/test-results/scene-animation-usage/summary.json)、[docs/test-results/scene-animation-usage/preservation\.json](../docs/test-results/scene-animation-usage/preservation.json) |
 | 交互与渲染 | **独立动画片段使用面板与原文定位**；片段字段发出查看请求，独立面板拥有查询、匹配和已保存只读原文；父编辑器保留字段/审阅/播放/普通保存职责，来源/能力/片段变化撤销旧结果。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-animation-usage/README\.md](../docs/test-results/scene-animation-usage/README.md)、[docs/test-results/scene-animation-usage/summary\.json](../docs/test-results/scene-animation-usage/summary.json)、[docs/test-results/scene-animation-usage/preservation\.json](../docs/test-results/scene-animation-usage/preservation.json) |
 
-平台：Linux本机HTTP／Chrome中英日390px；共享Rust CLI／WASM及Godot4.7.2无头分段验证、未发布安装；Android、Windows/macOS、Bevy动画与独立游戏发行未验收。边界：作者schema3内嵌0–32个有稳定UUID的命名时间窗口，名称、起止及loop独立；原轨道与素材共享，可重叠，删除最后片段不降级。旧作者schema1／2保持。；Rust独立clips marker、sampleClip与clipTransport管理选择和局部时钟；只对选定窗口循环一次，原曲线绝对位置采样，避免整份loop把非循环片段终点绕回零。旧sample／四字段transport精确形状保留。；原文提案保留BOM／换行和未修改字段；新增根clips与同ID叶编辑，不把旧轨道全量重排。子组件只持有字段，父表单审阅后仅应用普通草稿，普通保存仍拥有持久写权限。；编辑示意和已保存场景各自提供完整动画／片段选择，切换暂停至局部0秒，滑条使用片段时长；共享player调Rust而不裁剪关键帧或代替Canvas。；select_animation_clip(id|null)归零并暂停，既有play/pause/stop/seek作用当前范围；访问重入默认整份自动播放。同帧选择后seek在排空时检查新范围，命令数量和生命周期沿项目控制边界。；作者schema3使用animation-plan2和animation.clips2d；含schema3项目为Godot适配器0.15／protocol6／清单7，混合旧动画只接受null选择；旧动画项目protocol5、无动画protocol4及生成文件保留。；线帧只含命令和五字段状态，片段名称／范围／源位置由冻结计划派生。中立账本显式按版本检查选择连续性、固定来源和局部范围；只读观察增加片段回源，不能控制播放或写文档。；内置片段starter使用普通TXT保存与行为绑定；UUID是普通字符串，没有静态引用保护或自动删除迁移。旧控制starter补has_method保护，缺端口不会调用未知方法。；Chrome作者与双预览、Godot原生队列／窗口范围取样、服务重启和ZIP迁移分别留证，不拼成空工程全GUI或安装验收；不包含混合、状态机、播放速率、骨骼、3D或Bevy动画。；本轮行为表单可主动读取已保存动画片段并显式填入任意string参数，选项暂选不修改原文；普通审阅和Save之后由已有脚本读取编号。Chrome保存与实际Godot播放分段验收，旧schema和空clips给出空目录且不升级。；本轮可按当前表单片段编号查同场景已关联保存行为中的完整UUID字符串，精确定位该次保存快照；查询/刷新/语言切换不改字段、审阅或播放器。来源、能力、片段移除及会话变化撤销旧结果。脚本正文、其他场景和未保存行为不在查询范围；无匹配不证明可删除，移除不自动更新参数或迁移引用。；0.1.6后新增事件动画starter复用普通TXT与行为参数：收到匹配事件先select再play、每次归零，空clip选整份；就绪不改默认自动播放。未知片段拒绝且不继续play；无项目或旧端口缺select则不订阅，退出清理。每次触发占两条已有动画请求，不增加预算／去抖／无限缓冲；仍为共享场景播放头，非状态机或混合。；0.1.6后提供独立目标时长操作：基于当前合法完整表单，经Rust同比缩放总时长、所有关键帧和片段边界；保持数值/身份/顺序/loop，相同目标完全不动。不同时间因精度重合、越界或预算非法则整次拒绝。只改本地字段，重新检查审阅后沿普通草稿/Save；旧core缺marker仅禁用此操作。；上述0.1.6后增量已纳入0.1.7源码提交。旧开发证据及评分理由保留当时范围，未增加安装或设备验收。。
+平台：Linux本机HTTP／Chrome中英日390px；共享Rust CLI／WASM及Godot4.7.2无头分段验证、未发布安装；Android、Windows/macOS、Bevy动画与独立游戏发行未验收。边界：作者schema3内嵌0–32个有稳定UUID的命名时间窗口，名称、起止及loop独立；原轨道与素材共享，可重叠，删除最后片段不降级。旧作者schema1／2保持。；Rust独立clips marker、sampleClip与clipTransport管理选择和局部时钟；只对选定窗口循环一次，原曲线绝对位置采样，避免整份loop把非循环片段终点绕回零。旧sample／四字段transport精确形状保留。；原文提案保留BOM／换行和未修改字段；新增根clips与同ID叶编辑，不把旧轨道全量重排。子组件只持有字段，父表单审阅后仅应用普通草稿，普通保存仍拥有持久写权限。；编辑示意和已保存场景各自提供完整动画／片段选择，切换暂停至局部0秒，滑条使用片段时长；共享player调Rust而不裁剪关键帧或代替Canvas。；select_animation_clip(id|null)归零并暂停，既有play/pause/stop/seek作用当前范围；访问重入默认整份自动播放。同帧选择后seek在排空时检查新范围，命令数量和生命周期沿项目控制边界。；作者schema3使用animation-plan2和animation.clips2d；含schema3项目为Godot适配器0.15／protocol6／清单7，混合旧动画只接受null选择；旧动画项目protocol5、无动画protocol4及生成文件保留。；线帧只含命令和五字段状态，片段名称／范围／源位置由冻结计划派生。中立账本显式按版本检查选择连续性、固定来源和局部范围；只读观察增加片段回源，不能控制播放或写文档。；内置片段starter使用普通TXT保存与行为绑定；UUID是普通字符串，没有静态引用保护或自动删除迁移。旧控制starter补has_method保护，缺端口不会调用未知方法。；Chrome作者与双预览、Godot原生队列／窗口范围取样、服务重启和ZIP迁移分别留证，不拼成空工程全GUI或安装验收；不包含混合、状态机、播放速率、骨骼、3D或Bevy动画。；本轮行为表单可主动读取已保存动画片段并显式填入任意string参数，选项暂选不修改原文；普通审阅和Save之后由已有脚本读取编号。Chrome保存与实际Godot播放分段验收，旧schema和空clips给出空目录且不升级。；本轮可按当前表单片段编号查同场景已关联保存行为中的完整UUID字符串，精确定位该次保存快照；查询/刷新/语言切换不改字段、审阅或播放器。来源、能力、片段移除及会话变化撤销旧结果。脚本正文、其他场景和未保存行为不在查询范围；无匹配不证明可删除，移除不自动更新参数或迁移引用。；0.1.6后新增事件动画starter复用普通TXT与行为参数：收到匹配事件先select再play、每次归零，空clip选整份；就绪不改默认自动播放。未知片段拒绝且不继续play；无项目或旧端口缺select则不订阅，退出清理。每次触发占两条已有动画请求，不增加预算／去抖／无限缓冲；仍为共享场景播放头，非状态机或混合。；0.1.6后提供独立目标时长操作：基于当前合法完整表单，经Rust同比缩放总时长、所有关键帧和片段边界；保持数值/身份/顺序/loop，相同目标完全不动。不同时间因精度重合、越界或预算非法则整次拒绝。只改本地字段，重新检查审阅后沿普通草稿/Save；旧core缺marker仅禁用此操作。；上述0.1.6后增量已纳入0.1.7源码提交。旧开发证据及评分理由保留当时范围，未增加安装或设备验收。；0.1.7后自然完成通知另登记runtime.project_animation_completion：新生成含动画项目p7／清单8／Godot0.16.0，旧协议和专题证据保留；不改本功能旧评分为新设备验收。。
 
-下一步：可编辑脚本已接通事件触发片段；继续分别设计声明式行为触发、受保护引用、跨工程影响、动画状态转换与混合，骨骼、3D和其他后端分别验收。
+下一步：自然完成到下一片段已以独立功能接入；继续推进声明式状态转换、混合、受保护引用及其他引擎动画。
+
+<a id="runtime.project_animation_completion"></a>
+### 动画自然完成订阅、片段衔接与独立观察
+
+`runtime.project_animation_completion` · 运行后端与演进 · 源码交付
+
+入口：普通衔接脚本保存→两个片段UUID参数→项目运行→自然完成／安全点投递→下一片段→完成来源定位→工程ZIP
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **独立动画完成账本、自然结束准入与查询**；独立完成／投递DTO与Rust复核，不从命令UI猜自然结束。 | 4 / 4 / 3 / 2 | [docs/test-results/project-animation-completion/README\.md](../docs/test-results/project-animation-completion/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 执行后端 | **Godot自然完成订阅、锁存与安全点调度**；冻结来源和访问内有界回调，捕捉与投递分开，后续意图取消旧通知。 | 4 / 4 / 3 / 2 | [docs/test-results/project-animation-completion/README\.md](../docs/test-results/project-animation-completion/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **独立完成记录及冻结三来源观察**；只读完成列表、三语筛选及三来源，保留独立命令观察。 | 4 / 4 / 3 / 2 | [docs/test-results/project-animation-completion/README\.md](../docs/test-results/project-animation-completion/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **通用项目动画脚本起始内容与普通创建交接**；新增普通衔接starter，旧12份内容保持；沿普通草稿／Save及现片段参数目录。 | 4 / 4 / 3 / 2 | [docs/test-results/project-animation-completion/README\.md](../docs/test-results/project-animation-completion/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 本机服务与适配 | **node-execution-backends\.mjs / node-project-build\.mjs：可信注册、输出与冻结编排**；新动画p7严格准入，无动画p4与旧冻结库存分别验证，生成文件显式交付。 | 4 / 4 / 3 / 2 | [docs/test-results/project-animation-completion/README\.md](../docs/test-results/project-animation-completion/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 共享 Rust 核心 | **共享Rust片段声明、局部采样与显式选择transport**；复用未改变的Rust显式时钟transport核验自然完成；本轮没有重跑原生Rust全量或改变ABI。 | 4 / 3 / 3 / 2 | [docs/test-results/project-animation-completion/README\.md](../docs/test-results/project-animation-completion/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+
+平台：Linux本机HTTP与真实Chrome三语390px；Godot4.7.2无头、0.1.7之后工作树，未更新安装；不推断Android、Windows/macOS或图形设备验收。边界：作者schema1/2/3、Rust ABI和现有命令契约保持；新增protocol7自然完成和独立delivery，来源来自冻结动画／片段，接收者才有行为origin，不伪造event-publish发布者。；Rust现有command:null推进验证playing→finished；非loop到末尾一次，seek末尾、pause、stop、select与loop不发完成，replay可再完成。完成记录使用实际观察时刻。；完成序号320、64pending、1024deliveries、64活动订阅／1024累计token；有界、顺序、访问身份、稳定来源与失败原子检查。新动画命令或待离场/结束使旧回调skipped，订阅仍可用于后续轮次。；新含动画Godot项目为适配器0.16.0、protocol7、清单8；无动画p4生成和旧p1-6观察／旧库存准入保持。独立Scene2D生成范围保持，Bevy拒绝动画。；普通starter finished_clip_id/next_clip_id为String，空表示完整动画。复用通用片段picker、普通审阅与Save；只订阅不自动启动，匹配完成后select/play，仍共享场景播放头和原命令预算。；独立完成UI只读展示pending/handled/skipped与三类来源，原命令面板不变成实时状态；语言/筛选/来源会话与宿主权限分别守护。；本轮分段验证：HTTP保存到实际Godot；Chrome普通脚本创建与预置运行样例观察；后端自然结束/取消/重入/失败/预算及ZIP。各段不拼成单次空工程全GUI，也不等于安装验收。；上述0.1.7后增量已收录0.1.8源码。旧开发证据、评分与当时理由保留，不增加安装或设备验收。。
+
+下一步：状态表脚本生成及再次编辑见authoring.animation_state_script，事件载荷条件见authoring.animation_state_conditions；混合、逐实例播放头、骨骼及其他后端分别推进。
+
+<a id="authoring.animation_state_script"></a>
+### 动画状态表与普通控制脚本生成
+
+`authoring.animation_state_script` · 内容与作者工具 · 源码交付
+
+入口：新建状态表脚本→普通TXT保存→重新打开声明→转换/参数差异/完整源码审阅→应用草稿与保存→项目运行与交付
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **中立动画状态表Rust检查和可选桥**；状态及转换规则、缺失/重复引用、预算与稳定索引。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-table/README\.md](../docs/test-results/animation-state-table/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **中立动画状态表Rust检查和可选桥**；严格请求和可选marker，核对原生回包并冻结，不用JS规则降级替代。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-table/README\.md](../docs/test-results/animation-state-table/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **状态表到普通Godot源码发射器**；GDScript发射器只消费中立索引结果，不耦合UI/文件/运行任务。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-table/README\.md](../docs/test-results/animation-state-table/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **独立状态转换表格与精确脚本草稿交接**；表格拥有局部输入，父窗口拥有审阅与受守护的普通草稿交接。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-table/README\.md](../docs/test-results/animation-state-table/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **通用项目动画脚本起始内容与普通创建交接**；脚本作者品牌新增固定生成器路径，旧13个static starter字节保持。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-table/README\.md](../docs/test-results/animation-state-table/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 工程定义与格式 | **状态表版本声明与完整生成源码比对**；声明与源码同TXT迁移，不建立旁置权威。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-reedit/README\.md](../docs/test-results/animation-state-reedit/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **状态表版本声明与完整生成源码比对**；只检查版本化声明与固定生成结果，不解析执行任意GDS。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-reedit/README\.md](../docs/test-results/animation-state-reedit/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **既有脚本来源约束与再生成提案**；创建绑定来源的只读提案；应用时再核对摘要/表/源码。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-reedit/README\.md](../docs/test-results/animation-state-reedit/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **独立状态表原文宿主与普通草稿交接**；来源宿主隔离新建权限，仅改当前草稿。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-reedit/README\.md](../docs/test-results/animation-state-reedit/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **状态表重开与前后源码审阅视图**；独立局部表格与审阅；普通Save和行为绑定各自负责。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-reedit/README\.md](../docs/test-results/animation-state-reedit/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+
+平台：Linux HTTP编辑器与Chrome中英日390px、Godot4.7.2无头与工程ZIP；未更新安装。边界：Rust只规范化最多16状态/64边/32事件，不持有场景、素材或运行权限；可选marker不改变旧ABI。；状态key生成固定clip_前缀的普通字符串参数，现有片段picker负责显式选入；生成窗口不验证场景片段归属。；UI局部稳定行身份保持改名引用；删已引用状态留下缺失，重建同名不自动接回。完整预览和普通草稿品牌核对当前表单及编辑会话。；独立Godot发射器复用p7事件/自然完成和select/play，两请求都受理后更新逻辑状态；不冒充已执行快照，无匹配忽略，显式self边重播。；初始状态会播放；每场景共享一根播放头，未做多控制器仲裁、每实例动画、条件/层次/混合。；新生成TXT在短标题后的第二行携带版本声明；固定Godot v1发射器整文重建检查，手改/未知版本/无声明旧脚本不自动表格重写。BOM与统一LF/CRLF保持。；独立品牌提案绑定当前原文/基线/会话；源宿主仅改内存草稿，普通Save保存同文件。参数增删明确审阅，不自动迁移已有行为。；源码工作树，Chrome从已绑定夹具的脚本重编辑/保存到同来源实际运行，HTTP双布局和独立Godot/ZIP另验；不外推空工程全GUI或安装。；上述0.1.7后增量已收录0.1.8源码。旧开发证据、评分与当时理由保留，不增加安装或设备验收。。
+
+下一步：当前静态状态图和字段定位见authoring.animation_state_graph，参数修复与登记使用位置继续独立；事件载荷条件已接通，运行中转换观察、实例播放头/混合/其他后端分别推进。
+
+<a id="authoring.script_parameter_interface"></a>
+### 保存态脚本参数接口与当前绑定显式修复
+
+`authoring.script_parameter_interface` · 内容与作者工具 · 源码交付
+
+入口：保存状态表变化→打开行为绑定→接口提示/补齐/旧参数更名保值→检查与普通草稿/保存→运行和工程交付
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 工程定义与格式 | **通用脚本标量接口捕获与表单差异**；脚本参数接口是保存态源码的派生注解，没有第二份持久权威。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-parameter-bindings/README\.md](../docs/test-results/animation-parameter-bindings/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **通用脚本标量接口捕获与表单差异**；严格标量契约与表单差异，不依赖UI或具体源语言。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-parameter-bindings/README\.md](../docs/test-results/animation-parameter-bindings/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **版本化源码provider参数发现**；固定源码provider只委托已验证codec，不执行任意GDS。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-parameter-bindings/README\.md](../docs/test-results/animation-parameter-bindings/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 本机服务与适配 | **只读行为选项、登记依赖与摘要核对**；同一作者快照输出可选注解，原依赖摘要负责失效。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-parameter-bindings/README\.md](../docs/test-results/animation-parameter-bindings/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **独立参数提示、缺失补齐与显式更名视图**；暂选与显式行修改，普通审阅保存分别负责。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-parameter-bindings/README\.md](../docs/test-results/animation-parameter-bindings/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **独立文档来源与内存草稿应用宿主**；草稿应用在外部guard后重新验证来源。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-parameter-bindings/README\.md](../docs/test-results/animation-parameter-bindings/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+
+平台：Linux HTTP与Chrome中英日390px、Godot4.7.2无头/异地ZIP；安装及Android未验收。边界：通用有界标量契约与表单差异检查、源码provider和UI分别维护；仅完整匹配声明的Godot状态表TXT提供接口。；只读同World快照来源，现有脚本摘要纳入普通依赖复核；可选注解缺省或不可用不影响普通参数编辑。；补齐只添缺失默认值；作者显式选择同类型缺失名称再更名保值，拒绝覆盖和重复。不自动删旧值或跨绑定迁移。；空clip参数播放完整动画；UUID格式提示不验证目标存在，不提供静态删除保护或任意脚本推断。；沿已有提案、来源宿主、普通草稿与Save；取消检查后新捕获来源，防同步切文档误写；22模块/43能力、运行协议和安装保持。；实际Chrome从已准备改名脚本的旧绑定出发修复与普通保存；源码双目录保存、Godot/ZIP分别验证，不外推空工程全GUI。；上述0.1.7后增量已收录0.1.8源码。旧开发证据、评分与当时理由保留，不增加安装或设备验收。。
+
+下一步：已登记跨绑定使用位置见script.usage；明确批量修复计划、更多声明provider、运行中状态观察分别推进，保持作者显式应用。
+
+<a id="script.usage"></a>
+### 保存态脚本跨绑定使用位置与精确原文导航
+
+`script.usage` · 内容与作者工具 · 源码交付
+
+入口：已保存TXT→查看脚本使用位置→跨场景登记引用与绑定→只读原文快照→主编辑器定位→显式修复与普通保存→刷新查询
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 工程定义与格式 | **脚本使用目录、绑定枚举与精确来源品牌**；使用位置来自保存态已登记关系与正文，没有额外持久权威或全局未使用承诺。 | 4 / 4 / 3 / 2 | [docs/test-results/script-usage/README\.md](../docs/test-results/script-usage/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **脚本使用目录、绑定枚举与精确来源品牌**；纯严格目录、绑定枚举与精确来源品牌，不依赖脚本语言、运行核心或UI。 | 4 / 4 / 3 / 2 | [docs/test-results/script-usage/README\.md](../docs/test-results/script-usage/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 本机服务与适配 | **同World快照的脚本已登记引用查询**；只读同World快照并按整个响应预算交付，不扫描未登记文件或执行脚本。 | 4 / 4 / 3 / 2 | [docs/test-results/script-usage/README\.md](../docs/test-results/script-usage/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **脚本使用位置来源守护与普通导航交接**；可选读取能力绑定当前来源，目标复核后沿普通导航和未保存保护交接。 | 4 / 4 / 3 / 2 | [docs/test-results/script-usage/README\.md](../docs/test-results/script-usage/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **独立脚本使用位置窗口与脚本模块组合**；窗口独立查询、选择、展示和关闭；明确修复继续由既有行为表单及普通保存负责。 | 4 / 4 / 3 / 2 | [docs/test-results/script-usage/README\.md](../docs/test-results/script-usage/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+
+平台：Linux HTTP与Chrome中英日390px、源码双目录工作流；本轮无新Godot、安装或Android验收。边界：范围是当前工程已登记、以非part-of关系指向脚本UUID的文档；普通GDScript、Rust和状态表脚本均可查询，不解释动态源码或补找未登记依赖。；同一次World快照提供有界正文目录；有效行为按implementation.sourceObjectId精确枚举每个绑定，保留类型化参数和/bindings/N来源范围。；实际绑定、仅引用未绑定、普通文档、无效行为、损坏JSON和缺失来源分别显示；无结果不构成未使用或可安全删除证明。；私有目录、精确原文快照和导航品牌分离；五字段来源、保存基线、能力代数及目标身份/版本/内容复核防止过期导航。；未保存TXT可按保存基线查询；原文导航沿普通未保存确认，取消保留草稿。窗口交接与目标文档加载分开守护，普通Save仍独占保存。；独立纯域、只读服务、来源宿主和三语窗口；可选服务缺失不影响旧脚本功能。128文档/每份128KiB/响应2MiB超限整次拒绝，不截断当完整。；Chrome跨场景定位、刷新和取消及双目录显式参数修复/保存已验收；本轮不改作者格式、Rust ABI、生成代码、运行协议或安装，22模块/43能力保持。；上述0.1.7后增量已收录0.1.8源码。旧开发证据、评分与当时理由保留，不增加安装或设备验收。。
+
+下一步：明确的批量修复计划、更多声明provider和运行中状态观察分别推进；保持作者逐项审阅，不自动跨文档迁移。
+
+<a id="authoring.animation_state_graph"></a>
+### 当前动画状态表的静态转换图与字段定位
+
+`authoring.animation_state_graph` · 内容与作者工具 · 源码交付
+
+入口：新建或重编辑状态表→展开当前声明图→选择状态/转换→定位字段→原有源码审阅/草稿/普通保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **Rust已验证状态表的只读图投影与有限布局**；消费既有Rust索引得到图及有限布局，没有另一份语义权威。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-graph/README\.md](../docs/test-results/animation-state-graph/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **独立状态图选择与表单字段定位视图**；选择、展开与文字定位只属于视图，不获得编辑或保存权限。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-graph/README\.md](../docs/test-results/animation-state-graph/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **独立状态转换表格与精确脚本草稿交接**；共享表单的稳定行定位和生命周期，不改变创建/重编辑审阅边界。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-graph/README\.md](../docs/test-results/animation-state-graph/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+
+平台：Linux HTTP与Chrome中英日390px、本轮未新增原生引擎、安装或Android验收。边界：复用已有Rust准入与稳定索引；图投影和有限布局只读，不复制语义规则、不保存布局、不发射脚本。；保留初始非首项、孤立节点、自循环、反向边和全部转换下标；同端点连线合并不合并触发语义。；共享表单内独立视图覆盖创建与重编辑，选择/折叠/字段定位不调用作者onChange，不撤已有源码审阅。；无效表格清除旧合法图，核心不可用不作前端规则回退；渲染、表格及行身份守护旧定位按钮。；SVG和可键盘操作文字列表并行，三语窄屏保留状态/转换精确文字；静态声明不等于运行中状态、片段可用性或可达性证明。；来源宿主、作者格式、生成器版本、Rust/WASM、后端协议和安装保持；22模块/43项声明能力不变。；上述0.1.7后增量已收录0.1.8源码。旧开发证据、评分与当时理由保留，不增加安装或设备验收。。
+
+下一步：事件载荷条件已接通，运行中的转换观察、图上编辑与布局保存分别设计；每实例播放头及混合保持独立。
+
+<a id="authoring.animation_state_conditions"></a>
+### 动画事件转换的有类型载荷条件
+
+`authoring.animation_state_conditions` · 内容与作者工具 · 源码交付
+
+入口：事件转换→条件类型/运算符/值→Rust检查→v2源码审阅→普通保存→Godot运行与工程ZIP
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **事件载荷条件Rust检查与求值、严格可选桥**；中立条件及有条件表规则、精确标量求值。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-conditions/README\.md](../docs/test-results/animation-state-conditions/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **事件载荷条件Rust检查与求值、严格可选桥**；请求及回执对应检查、可选能力和新旧准入选择。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-conditions/README\.md](../docs/test-results/animation-state-conditions/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 可移植 JS 语义 | **保留v1的条件状态表Godot v2发射器**；已验证IR到固定Godot文本，无作者代码执行或改写。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-conditions/README\.md](../docs/test-results/animation-state-conditions/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 工程定义与格式 | **状态表版本声明与完整生成源码比对**；v1/v2声明与完整字节绑定，移除最后条件显式恢复v1。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-conditions/README\.md](../docs/test-results/animation-state-conditions/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **每条事件转换的独立条件输入控件**；原始输入、三语说明与类型明确的局部控件。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-conditions/README\.md](../docs/test-results/animation-state-conditions/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+| 交互与渲染 | **独立状态转换表格与精确脚本草稿交接**；共用表格、条件能力撤销和源码审阅生命周期。 | 4 / 4 / 3 / 2 | [docs/test-results/animation-state-conditions/README\.md](../docs/test-results/animation-state-conditions/README.md)、[docs/RELEASE\_0\.1\.8\.md](../docs/RELEASE_0.1.8.md)、[docs/test-results/release-0\.1\.8/preflight\.json](../docs/test-results/release-0.1.8/preflight.json) |
+
+平台：Linux Rust/WASM/HTTP与Chrome中英日390px、Linux Godot4.7.2无头与独立ZIP、本轮未新增安装、Android或Bevy动画验收。边界：condition属于event trigger；有限boolean/number/string，严格类型，精确f64，不匹配忽略事件。；旧v1表操作与发射器保持，新独立可选Rustmarker和统一准入facade；无JS语义求值降级。；带条件固定源码使用v2，完整源码64KiB；BOM/CRLF保留，手改或未知版本仍不能按表重写。；独立条件输入控件保留原始未完成值；无效表清图、条件编辑撤销审阅，草稿和普通Save保持分离。；条件不产生行为绑定参数，不增加运行端口；单场景播放头、唯一from/event规则保持，无分支优先级或任意表达式。；Godot数值阈值用8LE字节，字符串按UTF8/base64比较；原生NUL表示限制另记，不声称全字符端到端往返。；上述0.1.7后增量已收录0.1.8源码。旧开发证据、评分与当时理由保留，不增加安装或设备验收。。
+
+下一步：运行中的转换观察、明确多分支契约、共享状态条件、每实例播放头及混合分别设计。
 
 ## 旧功能链路映射
 

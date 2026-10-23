@@ -12,7 +12,7 @@ const propose = (source = context(), selection = request()) => prepareScriptDraf
 
 test('known starters are immutable data and the minimal Node contains no lifecycle or execution instructions', () => {
   const all = listScriptStarters();
-  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal', 'bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion', 'godot-scene-switch', 'godot-project-state', 'godot-project-events', 'godot-project-audio', 'godot-project-animation', 'godot-project-animation-clip', 'godot-project-animation-event']);
+  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal', 'bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion', 'godot-scene-switch', 'godot-project-state', 'godot-project-events', 'godot-project-audio', 'godot-project-animation', 'godot-project-animation-clip', 'godot-project-animation-event', 'godot-project-animation-completion', 'godot-project-animation-state-table']);
   assert.equal(all[0].content, 'extends Node\n');
   for (const starter of all) {
     assert.deepEqual(Object.keys(starter), ['id', 'languageId', 'backendId', 'label', 'description', 'content']);
@@ -289,4 +289,20 @@ test('event animation starter follows ordinary reviewed TXT creation without acq
   assert.deepEqual({ current, selected }, before);
   for (const key of ['parameters', 'events', 'relations', 'objectId', 'instanceId', 'bindingId']) assert.equal(Object.hasOwn(proposal, key), false);
   assert.equal(starter.content.endsWith('\n'), true);
+});
+
+
+test('completion animation starter uses ordinary reviewed TXT drafts and preserves stale-session protection', () => {
+  const starter = listScriptStarters().find(item => item.id === 'godot-project-animation-completion');
+  for (const documentRoot of ['documents', '设计/正文']) {
+    const current = { ...context(), documentRoot };
+    const selection = { ...request(), starterId: starter.id, sourcePath: `${documentRoot}/scripts/动画衔接.txt` };
+    const before = structuredClone({ current, selection }), proposal = prepareScriptDraft(current, selection);
+    assert.equal(isScriptDraftProposal(proposal), true);
+    assert.deepEqual(prepareScriptDraftApply(current, proposal), { ...selection, backendId: 'org.viento.godot4', languageId: 'gdscript', content: starter.content });
+    assert.deepEqual({ current, selection }, before);
+    for (const key of ['parameters', 'events', 'relations', 'objectId', 'instanceId', 'bindingId']) assert.equal(Object.hasOwn(proposal, key), false);
+    assert.throws(() => prepareScriptDraftApply({ ...current, sourceToken: 'new-session' }, proposal), conflict);
+    assert.equal(starter.content.endsWith('\n'), true);
+  }
 });

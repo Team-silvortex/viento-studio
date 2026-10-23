@@ -1,0 +1,68 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
+import { serve, request } from './helpers.mjs';
+import { projectAnimationClipsAuthor } from './helpers/project-animation-clips-author-fixture.mjs';
+import { fingerprint } from './helpers/scene-animation-scene-preview-fixture.mjs';
+import { generateEditableGodotAnimationStateScript } from '../../engine/animation-state-script-source.mjs';
+import { captureScriptUsage, scriptUsageSource } from '../../engine/script-usage.mjs';
+import { sourceLocationSelection } from '../../web/modules/app-source-location.js';
+import { createSceneBehaviorSourceHost } from '../../web/modules/app-behavior-source.js';
+import { createSceneBehaviorProposal } from '../../engine/scene-behaviors-edit.mjs';
+const appRoot=fileURLToPath(new URL('../../',import.meta.url));
+const hash=value=>createHash('sha256').update(value).digest('hex');
+const parse=value=>JSON.parse(value.replace(/^\ufeff/,''));
+const table={initialState:'idle',states:[{key:'idle'},{key:'strike'}],transitions:[{from:'idle',to:'strike',trigger:{kind:'event',name:'action'}},{from:'strike',to:'idle',trigger:{kind:'completed'}}]};
+
+for(const documents of ['documents','design-data']) test(`saved script references across scenes → exact binding source → explicit parameter repair → ordinary Save → refreshed query (${documents})`,async t=>{
+  const f=await projectAnimationClipsAuthor(t);
+  await f.script('checkpoint',generateEditableGodotAnimationStateScript(table).content);
+  for(const [index,name] of ['demo','second'].entries())await f.edit(`documents/behaviors/${name}.json`,model=>{
+    model.bindings[0].implementation.sourceObjectId=f.scriptId;
+    model.bindings[0].parameters={clip_idle:f.clipIds[index][0],clip_action:f.clipIds[index][1]};
+  });
+  await f.edit(`metadata/documents/${f.secondManifestId}.json`,record=>record.relations.push({kind:'reference',targetId:f.scriptId,slot:'usage-test'}));
+  if(documents!=='documents'){
+    await f.edit('workspace.json',w=>{w.version=2;w.paths.documents=documents;w.paths.templates='data-template';});
+    await fs.rename(path.join(f.author,'documents'),path.join(f.author,documents));await fs.rename(path.join(f.author,'templates'),path.join(f.author,'data-template'));
+    for(const name of await fs.readdir(path.join(f.author,'metadata/documents')))await f.edit(`metadata/documents/${name}`,r=>{r.sourcePath=r.sourcePath.replace(/^documents\//,documents+'/');});
+  }
+  const scriptPath=`${documents}/scripts/checkpoint.txt`,behaviorPath=`${documents}/behaviors/second.json`;
+  const behaviorFile=path.join(f.author,behaviorPath),original='\ufeff'+(await fs.readFile(behaviorFile,'utf8')).replaceAll('\n','\r\n');await fs.writeFile(behaviorFile,original);
+  const before=await fingerprint(f.author,{authorOnly:true});
+  const base=await serve(t,appRoot,{VIENTO_APP_ROOT:appRoot,VIENTO_WORKSPACE_ROOT:f.author});
+  const call=async(route,payload)=>{const r=await request(base,route,payload);assert.equal(r.status,200,JSON.stringify(r));return r.data;};
+  const read=await call('/api/doc?path='+encodeURIComponent(scriptPath));
+  const source={sourcePath:scriptPath,token:'script-usage-workflow',baseSourceRevision:'sha256:'+hash(read.content),sourceRevision:'sha256:'+hash(read.content+'\n# unsaved'),content:read.content+'\n# unsaved'};
+  const inspect=()=>call('/api/script-usage',{sourcePath:scriptPath});
+  const usage=captureScriptUsage(source,await inspect());assert.equal(usage.matches.length,2);
+  assert.deepEqual(new Set(usage.matches.map(m=>m.sceneObjectId)),new Set(f.sceneIds));
+  const reference=usage.references.find(r=>r.sourcePath===behaviorPath);assert.equal(reference.status,'bound');
+  const match=reference.bindings[0],location=scriptUsageSource(usage,reference,match);
+  assert.equal(location.content,original);assert.equal(match.bindingId,f.secondBindingId);
+  const selection=sourceLocationSelection(location.content,location,location.sourceRevision);assert.equal(selection.status,'exact');
+  assert.equal(parse(original.replaceAll('\r\n','\n').slice(selection.start,selection.end)).bindingId,f.secondBindingId);
+  assert.deepEqual(await fingerprint(f.author,{authorOnly:true}),before,'query and exact source inspection are read-only');
+  const doc=await call('/api/doc?path='+encodeURIComponent(behaviorPath));
+  const state={document:{},token:'behavior-usage-repair',sourcePath:behaviorPath,content:doc.content,baseline:doc.content,version:doc.version,editable:true,creating:false,busy:false,available:true,sourceJSON:true};
+  let writes=0;
+  const host=createSceneBehaviorSourceHost({getState:()=>({...state}),digest:async v=>hash(v),inspect:p=>call('/api/scene-behavior-authoring',p),writeDraft:v=>{state.content=v;writes++;}});
+  const model=parse(original),binding=model.bindings.find(b=>b.bindingId===match.bindingId);
+  binding.parameters.clip_strike=binding.parameters.clip_action;delete binding.parameters.clip_action;
+  const proposal=createSceneBehaviorProposal(await host.getSource(),{bindings:model.bindings});
+  const review=await call('/api/scene-behavior-authoring',{sourcePath:behaviorPath,content:proposal.afterContent});
+  assert.equal(review.sources.find(s=>s.objectId===f.scriptId).parameterContract.status,'ready');
+  await host.applyDraft(proposal,{dependencyRevision:review.dependencyRevision});assert.equal(writes,1);
+  assert.deepEqual(await fingerprint(f.author,{authorOnly:true}),before,'draft application is not a save');
+  await call('/api/doc',{path:behaviorPath,content:state.content,expectedVersion:state.version});
+  const after=await fingerprint(f.author,{authorOnly:true});assert.deepEqual(Object.keys(after).filter(k=>after[k]!==before[k]),[behaviorPath]);
+  assert.ok(state.content.startsWith('\ufeff'));assert.equal(state.content.replaceAll('\r\n','').includes('\n'),false);
+  const refreshed=captureScriptUsage(source,await inspect()),next=refreshed.matches.find(m=>m.bindingId===match.bindingId);
+  assert.deepEqual(next.parameters,{clip_idle:f.clipIds[1][0],clip_strike:f.clipIds[1][1]});
+  assert.equal(usage.matches.find(m=>m.bindingId===match.bindingId).parameters.clip_action,f.clipIds[1][1],'old catalog remains a saved snapshot');
+  assert.equal(refreshed.matches.find(m=>m.bindingId!==match.bindingId).parameters.clip_action,f.clipIds[0][1],'other binding is not migrated');
+  assert.equal(await fs.readFile(path.join(f.author,scriptPath),'utf8'),read.content,'dirty script query never saved or rewrote the script');
+});

@@ -30,6 +30,8 @@ const SCENE3D_ALIGNMENT_OPERATIONS = new Set(['scene3d.alignObjects']);
 const SCENE3D_DISTRIBUTION_OPERATIONS = new Set(['scene3d.distributeObjects']);
 const SCENE3D_COPY_OPERATIONS = new Set(['scene3d.copyObjects']);
 const SCENE3D_REMOVAL_OPERATIONS = new Set(['scene3d.removeObjects']);
+const ANIMATION_STATE_TABLE_OPERATIONS = new Set(['animationStateTable.inspect']);
+const ANIMATION_STATE_CONDITION_OPERATIONS = new Set(['animationStateTable.inspectConditional', 'animationStateCondition.inspect', 'animationStateCondition.evaluate']);
 const SCENE_ANIMATION_OPERATIONS = new Set(['sceneAnimation.inspect', 'sceneAnimation.sample', 'sceneAnimation.transport', 'sceneAnimation.sampleClip', 'sceneAnimation.clipTransport', 'sceneAnimation.retime', 'sceneAnimation.copyTrack']);
 const SCENE_AUDIO_OPERATIONS = new Set(['sceneAudio.inspect', 'sceneAudio.sample']);
 const SCENE3D_PARTICLE_OPERATIONS = new Set(['scene3d.prepareParticleField', 'scene3d.sampleParticleField']);
@@ -2020,6 +2022,171 @@ export function dispatchStudioCoreSceneAudio(request) {
         || state.lastCueId !== (last?.id ?? null)) invalid();
     }
   }).sceneAudio;
+}
+
+/** Optional declaration-only animation state indexing. A native receipt is
+ * checked against its request; this never supplies a JavaScript fallback. */
+export function supportsStudioCoreAnimationStateTable() {
+  return Boolean(runtime && typeof runtime.viento_core_animation_state_table_version === 'function'
+    && runtime.viento_core_animation_state_table_version() === 1);
+}
+function validateAnimationStateTableReceipt(result, input) {
+    const invalid = () => { throw new Error('Rust core returned an unbound animation state table receipt.'); };
+    const source = input.table, value = result.animationStateTable;
+    const key = value => typeof value === 'string' && /^[a-z][a-z0-9_]{0,31}$/.exec(value)?.[0] === value;
+    const event = value => typeof value === 'string' && /^[A-Za-z][A-Za-z0-9._-]{0,63}$/.exec(value)?.[0] === value
+      && !['constructor', 'prototype', '__proto__'].includes(value);
+    const equal = (a, b) => {
+      if (a === b) return true;
+      if (!a || !b || typeof a !== 'object' || typeof b !== 'object' || Array.isArray(a) !== Array.isArray(b)) return false;
+      const keys = Object.keys(a); return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && equal(a[key], b[key]));
+    };
+    if (!record(result, ['protocolVersion', 'ok', 'animationStateTable'])
+      || !record(source, ['initialState', 'states', 'transitions']) || !key(source.initialState)
+      || encoder.encode(JSON.stringify(source)).length > 32768
+      || !Array.isArray(source.states) || !source.states.length || source.states.length > 16
+      || !Array.isArray(source.transitions) || source.transitions.length > 64
+      || !record(value, ['table', 'states', 'initialIndex', 'transitions', 'eventNames'])
+      || !equal(value.table, source) || !Array.isArray(value.states) || value.states.length !== source.states.length
+      || !Array.isArray(value.transitions) || value.transitions.length !== source.transitions.length
+      || !Array.isArray(value.eventNames)) invalid();
+    const indices = new Map(), names = [], seenNames = new Set(), seenTriggers = new Set();
+    for (const [index, state] of source.states.entries()) {
+      if (!record(state, ['key']) || !key(state.key) || indices.has(state.key)
+        || !record(value.states[index], ['key', 'index']) || value.states[index].key !== state.key || value.states[index].index !== index) invalid();
+      indices.set(state.key, index);
+    }
+    if (!indices.has(source.initialState) || value.initialIndex !== indices.get(source.initialState)) invalid();
+    for (const [index, transition] of source.transitions.entries()) {
+      const trigger = transition?.trigger;
+      if (!record(transition, ['from', 'to', 'trigger']) || !indices.has(transition.from) || !indices.has(transition.to)
+        || !(trigger?.kind === 'completed' ? record(trigger, ['kind']) : trigger?.kind === 'event' && record(trigger, ['kind', 'name']) && event(trigger.name))) invalid();
+      const signature = JSON.stringify([transition.from, trigger.kind, trigger.name ?? null]);
+      if (seenTriggers.has(signature)) invalid();
+      seenTriggers.add(signature);
+      if (trigger.kind === 'event' && !seenNames.has(trigger.name)) { seenNames.add(trigger.name); names.push(trigger.name); }
+      const returned = value.transitions[index];
+      if (!record(returned, ['fromIndex', 'toIndex', 'trigger']) || returned.fromIndex !== indices.get(transition.from)
+        || returned.toIndex !== indices.get(transition.to) || !equal(returned.trigger, trigger)) invalid();
+    }
+    if (names.length > 32 || !equal(value.eventNames, names)) invalid();
+}
+
+export function dispatchStudioCoreAnimationStateTable(request) {
+  assertJson(request);
+  const plain = value => {
+    if (!value || typeof value !== 'object') return;
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== null && prototype !== (Array.isArray(value) ? Array.prototype : Object.prototype)) {
+      throw fail('studio_core_request_invalid', 'Animation state declarations require plain own data.');
+    }
+    for (const descriptor of Object.values(Object.getOwnPropertyDescriptors(value))) if (Object.hasOwn(descriptor, 'value')) plain(descriptor.value);
+  };
+  plain(request);
+  if (!record(request, ['protocolVersion', 'operation', 'table']) || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION
+    || request.operation !== 'animationStateTable.inspect') throw fail('studio_core_request_invalid', 'Expected an explicit animation state table inspection.');
+  if (!supportsStudioCoreAnimationStateTable()) throw unavailable();
+  return dispatch(request, ANIMATION_STATE_TABLE_OPERATIONS, validateAnimationStateTableReceipt).animationStateTable;
+}
+
+// Conditions are a separate optional capability. The original table operation
+// and marker continue to reject all condition fields, including null.
+export function supportsStudioCoreAnimationStateConditions() {
+  return Boolean(runtime && typeof runtime.viento_core_animation_state_conditions_version === 'function'
+    && runtime.viento_core_animation_state_conditions_version() === 1);
+}
+function assertAnimationStateConditionData(request) {
+  assertJson(request);
+  const plain = value => {
+    if (!value || typeof value !== 'object') return;
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== null && prototype !== (Array.isArray(value) ? Array.prototype : Object.prototype)) {
+      throw fail('studio_core_request_invalid', 'Animation state conditions require plain own data.');
+    }
+    for (const descriptor of Object.values(Object.getOwnPropertyDescriptors(value))) if (Object.hasOwn(descriptor, 'value')) plain(descriptor.value);
+  };
+  plain(request);
+}
+function conditionScalar(value) {
+  if (typeof value === 'boolean') return true;
+  if (typeof value === 'number') return Number.isFinite(value) && Math.abs(value) <= 1e9;
+  if (typeof value !== 'string' || encoder.encode(value).length > 4096) return false;
+  for (const character of value) { const code = character.codePointAt(0); if (code >= 0xd800 && code <= 0xdfff) return false; }
+  return true;
+}
+function validAnimationStateCondition(condition, normalized = false) {
+  return record(condition, ['type', 'operator', 'value']) && ['boolean', 'number', 'string'].includes(condition.type)
+    && typeof condition.value === condition.type && conditionScalar(condition.value)
+    && (!normalized || !Object.is(condition.value, -0))
+    && (['eq', 'ne'].includes(condition.operator) || condition.type === 'number' && ['lt', 'lte', 'gt', 'gte'].includes(condition.operator));
+}
+function sameAnimationStateCondition(first, second) {
+  return validAnimationStateCondition(first) && validAnimationStateCondition(second, true)
+    && first.type === second.type && first.operator === second.operator && first.value === second.value;
+}
+// Only the optional conditional declaration reserves a fixed conservative
+// 32 bytes per numeric constant, avoiding decimal/exponent differences across hosts.
+function conditionalAnimationStateDeclarationBytes(table) {
+  let bytes = encoder.encode(JSON.stringify(table)).length;
+  if (Array.isArray(table?.transitions)) for (const transition of table.transitions) {
+    const value = transition?.trigger?.condition?.value;
+    if (typeof value === 'number') bytes += 32 - JSON.stringify(value).length;
+  }
+  return bytes;
+}
+function validateConditionalAnimationStateTableReceipt(result, input) {
+  const invalid = () => { throw new Error('Rust core returned an unbound conditional animation state table.'); };
+  if (!record(result, ['protocolVersion', 'ok', 'animationStateTable'])
+    || !record(result.animationStateTable, ['table', 'states', 'initialIndex', 'transitions', 'eventNames'])) invalid();
+  const strip = (table, normalized) => {
+    const plain = JSON.parse(JSON.stringify(table)), conditions = new Map();
+    if (Array.isArray(table?.transitions)) for (const [index, transition] of table.transitions.entries()) {
+      if (transition?.trigger && Object.hasOwn(transition.trigger, 'condition')) {
+        if (transition.trigger.kind !== 'event' || !validAnimationStateCondition(transition.trigger.condition, normalized)) invalid();
+        conditions.set(index, transition.trigger.condition); delete plain.transitions[index].trigger.condition;
+      }
+    }
+    return { plain, conditions };
+  };
+  const source = strip(input.table, false), returned = strip(result.animationStateTable.table, true);
+  if (conditionalAnimationStateDeclarationBytes(input.table) > 32768 || source.conditions.size !== returned.conditions.size) invalid();
+  for (const [index, condition] of source.conditions) if (!sameAnimationStateCondition(condition, returned.conditions.get(index))) invalid();
+  if (!Array.isArray(result.animationStateTable.transitions)) invalid();
+  const transitions = result.animationStateTable.transitions.map((transition, index) => {
+    if (!record(transition, ['fromIndex', 'toIndex', 'trigger'])) invalid();
+    const present = transition.trigger && Object.hasOwn(transition.trigger, 'condition');
+    const output = JSON.parse(JSON.stringify(transition));
+    if (Boolean(present) !== source.conditions.has(index)) invalid();
+    if (present) {
+      if (!sameAnimationStateCondition(source.conditions.get(index), transition.trigger.condition)) invalid();
+      delete output.trigger.condition;
+    }
+    return output;
+  });
+  validateAnimationStateTableReceipt({ ...result, animationStateTable: { ...result.animationStateTable, table: returned.plain, transitions } },
+    { ...input, table: source.plain });
+}
+export function dispatchStudioCoreAnimationStateConditions(request) {
+  assertAnimationStateConditionData(request);
+  const operation = request?.operation, table = operation === 'animationStateTable.inspectConditional', evaluate = operation === 'animationStateCondition.evaluate';
+  const keys = table ? ['protocolVersion', 'operation', 'table'] : ['protocolVersion', 'operation', 'condition', ...(evaluate ? ['value'] : [])];
+  if (!record(request, keys) || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !ANIMATION_STATE_CONDITION_OPERATIONS.has(operation)) {
+    throw fail('studio_core_request_invalid', 'Expected an explicit animation state condition operation.');
+  }
+  if (!supportsStudioCoreAnimationStateConditions()) throw unavailable();
+  const result = dispatch(request, ANIMATION_STATE_CONDITION_OPERATIONS, (result, input) => {
+    if (table) { validateConditionalAnimationStateTableReceipt(result, input); return; }
+    const invalid = () => { throw new Error('Rust core returned an unbound animation state condition receipt.'); };
+    const value = result.animationStateCondition;
+    if (!record(result, ['protocolVersion', 'ok', 'animationStateCondition'])
+      || !record(value, ['condition', ...(evaluate ? ['value', 'matches'] : [])])
+      || !sameAnimationStateCondition(input.condition, value.condition)) invalid();
+    // Comparison remains Rust-owned. The bridge binds its complete normalized
+    // operands and result type; it never recomputes a second JS predicate.
+    if (evaluate && (!conditionScalar(input.value) || !conditionScalar(value.value) || Object.is(value.value, -0)
+      || typeof input.value !== typeof value.value || input.value !== value.value || typeof value.matches !== 'boolean')) invalid();
+  });
+  return table ? result.animationStateTable : result.animationStateCondition;
 }
 
 /** Optional visual animation rules. Receipt checks never supply animation when

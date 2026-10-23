@@ -1,0 +1,100 @@
+{
+  "date": "2026-10-20",
+  "applicationVersion": "0.1.7",
+  "baseCommit": "bc463a2f0365493decdf4fddf5ca857ae951b27f",
+  "status": "Working tree, not released or installed.",
+  "feature": "Animation state table to editable GDScript authoring",
+  "protocolVersion": 7,
+  "godotAdapterVersion": "0.16.0",
+  "inventoryVersion": 8,
+  "rustAbiVersion": 1,
+  "optionalCoreMarker": "viento_core_animation_state_table_version=1",
+  "tests": {
+    "fullApp": {
+      "tests": 6454,
+      "pass": 6165,
+      "fail": 0,
+      "skipped": 289,
+      "cancelled": 0,
+      "javascriptFiles": 1083,
+      "versionAndApiPreflight": true
+    },
+    "rust": {
+      "pass": 370,
+      "fail": 0
+    },
+    "coreBridge": {
+      "pass": 50,
+      "fail": 0
+    },
+    "authoringAndWorkflow": {
+      "pass": 38,
+      "fail": 0,
+      "includesActualGodot": true
+    },
+    "authoringUi": {
+      "pass": 64,
+      "fail": 0
+    },
+    "translation": {
+      "pass": 11,
+      "fail": 0
+    },
+    "godotSpecialist": {
+      "pass": 16,
+      "actualNativeTests": 14,
+      "pureGenerationTests": 2,
+      "fail": 0,
+      "skipped": 0
+    },
+    "chrome": {
+      "groups": 5,
+      "screenshots": 20,
+      "ok": true,
+      "errors": [],
+      "sourceSnapshotUnchanged": true,
+      "report": "browser-authoring-1792498174414/browser.json"
+    },
+    "overlappingScopes": true
+  },
+  "tools": {
+    "node": {
+      "version": "v24.21.0",
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    "godot": {
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+    },
+    "browser": "Chrome/154.0.8037.97"
+  },
+  "atlas": {
+    "architectures": 11,
+    "functions": 135,
+    "implementations": 405,
+    "bindings": 594,
+    "cells": 2376,
+    "evidence": 2579,
+    "workflows": 98,
+    "dependencies": 383
+  },
+  "preservation": "preservation.json",
+  "sourceHashes": "source-hashes.json",
+  "browserLimitations": [
+    "Actual Chrome with local HTTP editor and a trusted Godot binary. No installed Tauri window, native picker, Android or other desktop OS claim.",
+    "The disposable fixture prepares two scenes, attack/idle clips and exactly the custom controller source generated in the UI below before the baseline. GUI ordinary-save and this prepared runtime are separate; HTTP tests connect newly saved generated scripts to actual native execution.",
+    "Native Godot headless logic and browser receipt display are tested. No installed Tauri, Android, native window rendering or delivered game execution claim."
+  ],
+  "limitations": [
+    "The table is creation input; the generated ordinary TXT becomes editable source. No source-to-table roundtrip or persistent state graph.",
+    "One shared scene playhead; single controller is an authoring convention, not runtime arbitration.",
+    "Logical transitions mean accepted select/play requests, not an execution receipt or rollback transaction.",
+    "No new Bevy animation, per-instance playheads, blending, skeletal/3D animation, Android, installed Tauri or native visual game validation."
+  ],
+  "runtimeProof": {
+    "protocolVersion": 7,
+    "animationCommands": 6,
+    "naturalCompletions": 1,
+    "actualReceipts": true
+  }
+}

@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { dialogHarness, flushDialogs } from './dialog-harness.mjs';
 import { deferred } from './editor-harness.mjs';
-import { listScriptStarters, prepareScriptDraft, isScriptDraftProposal, prepareScriptDraftApply } from '../../engine/script-authoring.mjs';
+import { listScriptStarters, prepareScriptDraft, isScriptDraftProposal, prepareScriptDraftApply, prepareAnimationStateScriptDraft, DEFAULT_ANIMATION_STATE_TABLE, supportsAnimationStateScript } from '../../engine/script-authoring.mjs';
+import { setupAnimationStateScript } from '../../web/modules/app-animation-state-script.js';
 import en from '../../web/i18n/en.js';
 import ja from '../../web/i18n/ja.js';
 
@@ -16,7 +17,10 @@ async function fixture(t, settings = {}) {
   const calls = [], proposals = [], focused = [], confirms = [];
   const translate = (key, ...args) => (({ en, ja }[language]?.[key] || key).replace(/\{(\d+)\}/g, (_, n) => String(args[n] ?? '')));
   const h = await dialogHarness('app-script-create', {
-    listScriptStarters,
+    listScriptStarters, DEFAULT_ANIMATION_STATE_TABLE, setupAnimationStateScript,
+    supportsAnimationStateScript: () => settings.supports?.() ?? supportsAnimationStateScript(),
+    ...(settings.conditionSupport ? { supportsStudioCoreAnimationStateConditions: settings.conditionSupport } : {}),
+    prepareAnimationStateScriptDraft: (owner, request, table) => { const proposal = settings.prepareState ? settings.prepareState(copy(owner), copy(request), copy(table)) : prepareAnimationStateScriptDraft(copy(owner), copy(request), copy(table)); proposals.push(proposal); return proposal; },
     prepareScriptDraft: (owner, request) => { const proposal = prepareScriptDraft(copy(owner), copy(request)); proposals.push(proposal); return proposal; },
     t: translate,
     translatePage: root => { for (const node of root.querySelectorAll('[data-i18n]')) node.textContent = translate(node.dataset.i18n); },
@@ -196,7 +200,7 @@ test('Bevy Rust drafts retain the selected backend, exact TXT contents and local
   }
 });
 
-for (const starterId of ['godot-project-animation', 'godot-project-animation-clip', 'godot-project-animation-event']) test(`${starterId} keeps all reviewed bytes and choices across three languages before ordinary draft handoff`, async t => {
+for (const starterId of ['godot-project-animation', 'godot-project-animation-clip', 'godot-project-animation-event', 'godot-project-animation-completion']) test(`${starterId} keeps all reviewed bytes and choices across three languages before ordinary draft handoff`, async t => {
   const h = await fixture(t), starter = listScriptStarters().find(item => item.id === starterId);
   h.open(); h.set('Starter', starter.id, 'change'); h.set('Type', 'note', 'change'); h.set('Path', 'documents/scripts/动画 控制.txt');
   for (const locale of ['en', 'ja', 'zh']) {
@@ -209,4 +213,125 @@ for (const starterId of ['godot-project-animation', 'godot-project-animation-cli
   await h.click('Apply'); assert.equal(h.calls.length, 1);
   assert.equal(h.calls[0].proposal.content, starter.content); assert.equal(h.calls[0].proposal.starterId, starter.id);
   assert.equal(h.calls[0].proposal.documentType, 'note'); assert.equal(h.el('Dialog').open, false); assert.deepEqual(h.focused, [true]);
+});
+
+const stateStarter = 'godot-project-animation-state-table';
+const stateElement = (h, suffix) => h.element('animationStateScript' + suffix);
+const setState = (h, suffix, value, event = 'input') => { const element = stateElement(h, suffix); element.value = value; if (event) element.dispatch(event); };
+const selectState = (h, suffix, key) => {
+  const element = stateElement(h, suffix), option = element.children.find(item => item.dataset.stateKey === key);
+  assert.ok(option, `state ${key} in ${suffix}`); element.value = option.value; element.dispatch('change');
+};
+
+test('state-table starter previews the exact generated custom source and hands it off as an ordinary branded TXT draft', async t => {
+  const h = await fixture(t); h.open(); assert.equal(h.el('StateTable').hidden, true);
+  h.set('Starter', stateStarter, 'change'); assert.equal(h.el('StateTable').hidden, false);
+  setState(h, 'State2Key', 'attack'); stateElement(h, 'AddState').click(); setState(h, 'State3Key', 'walk');
+  stateElement(h, 'AddTransition').click(); selectState(h, 'Transition3From', 'idle'); selectState(h, 'Transition3To', 'walk'); setState(h, 'Transition3Event', 'move');
+  const table = { initialState: 'idle', states: [{ key: 'idle' }, { key: 'attack' }, { key: 'walk' }], transitions: [
+    { from: 'idle', to: 'attack', trigger: { kind: 'event', name: 'action' } },
+    { from: 'attack', to: 'idle', trigger: { kind: 'completed' } },
+    { from: 'idle', to: 'walk', trigger: { kind: 'event', name: 'move' } },
+  ] };
+  h.set('Type', 'note', 'change'); h.set('Path', 'documents/scripts/state-table.txt');
+  const expected = prepareAnimationStateScriptDraft({ sourceToken: 'source:1', documentRoot: 'documents', documentTypes: h.context.documentTypes },
+    { starterId: stateStarter, documentType: 'note', sourcePath: 'documents/scripts/state-table.txt' }, table);
+  assert.equal(h.el('Source').textContent, expected.content); assert.notEqual(expected.content, listScriptStarters().find(item => item.id === stateStarter).content);
+  assert.equal(h.el('Apply').disabled, false); assert.equal(h.calls.length, 0);
+  const input = stateElement(h, 'State2Key'); input.focus(); input.selectionStart = 1; input.selectionEnd = 4;
+  for (const locale of ['en', 'ja', 'zh']) {
+    h.language(locale); assert.equal(h.el('Source').textContent, expected.content); assert.equal(h.el('Apply').disabled, false);
+    assert.equal(stateElement(h, 'State2Key'), input); assert.equal(h.document.activeElement, input); assert.equal(input.selectionStart, 1); assert.equal(input.selectionEnd, 4);
+  }
+  await h.click('Apply'); assert.equal(h.calls.length, 1); assert.equal(h.calls[0].proposal.content, expected.content);
+  assert.equal(isScriptDraftProposal(h.calls[0].proposal), true); assert.equal(h.calls[0].proposal.documentType, 'note'); assert.equal(h.el('Dialog').open, false);
+});
+
+test('invalid state tables stay editable with no approved source, and missing references require explicit repair', async t => {
+  const h = await fixture(t); h.open(); h.set('Starter', stateStarter, 'change');
+  for (const invalid of ['idle', 'Attack', 'bad-key', '', 'a'.repeat(33)]) {
+    setState(h, 'State2Key', invalid); assert.equal(h.el('Apply').disabled, true, invalid); assert.equal(h.el('Source').textContent, '');
+    assert.match(h.el('Status').textContent, /状态标识/); await h.click('Apply'); assert.equal(h.calls.length, 0);
+  }
+  setState(h, 'State2Key', 'attack'); assert.equal(h.el('Apply').disabled, false);
+  stateElement(h, 'State2Remove').click(); assert.equal(h.el('Apply').disabled, true);
+  stateElement(h, 'AddState').click(); setState(h, 'State3Key', 'attack'); assert.equal(h.el('Apply').disabled, true);
+  selectState(h, 'Transition1To', 'attack'); selectState(h, 'Transition2From', 'attack'); assert.equal(h.el('Apply').disabled, false);
+  for (const name of ['constructor', 'prototype', '__proto__', 'bad name']) {
+    setState(h, 'Transition1Event', name); assert.equal(h.el('Apply').disabled, true);
+  }
+  h.set('Starter', 'godot-node', 'change'); assert.equal(h.el('StateTable').hidden, true); assert.equal(h.el('Apply').disabled, false);
+  h.set('Starter', stateStarter, 'change'); assert.equal(stateElement(h, 'Transition1Event').value, 'bad name'); assert.equal(h.el('Apply').disabled, true);
+});
+
+test('a silent table edit needs a new exact preview before handoff, including a hidden starter round trip', async t => {
+  const h = await fixture(t); h.open(); h.set('Starter', stateStarter, 'change');
+  const previous = h.el('Source').textContent; setState(h, 'State2Key', 'attack', null);
+  await h.click('Apply'); assert.equal(h.calls.length, 0); assert.notEqual(h.el('Source').textContent, previous);
+  const expected = h.el('Source').textContent; h.set('Starter', 'godot-node', 'change'); h.set('Starter', stateStarter, 'change');
+  assert.equal(stateElement(h, 'State2Key').value, 'attack'); assert.equal(h.el('Source').textContent, expected);
+  await h.click('Apply'); assert.equal(h.calls.length, 1); assert.equal(h.calls[0].proposal.content, expected);
+});
+
+test('state table settings participate in dirty cancellation even while another starter is selected', async t => {
+  let allow = false; const h = await fixture(t, { confirm: () => allow }); h.open(); h.set('Starter', stateStarter, 'change');
+  setState(h, 'State2Key', 'attack'); h.set('Starter', 'godot-node', 'change'); assert.equal(h.el('Dialog').dataset.dirty, 'true');
+  await h.click('Cancel'); assert.equal(h.el('Dialog').open, true); assert.equal(h.confirms.length, 1);
+  h.set('Starter', stateStarter, 'change'); assert.equal(stateElement(h, 'State2Key').value, 'attack');
+  allow = true; await h.click('Cancel'); assert.equal(h.el('Dialog').open, false); assert.equal(h.calls.length, 0);
+  h.open(); h.set('Starter', stateStarter, 'change'); assert.equal(stateElement(h, 'State2Key').value, 'action');
+});
+
+test('an unavailable state-table capability only disables this generator and revokes an in-flight handoff', async t => {
+  let available = false;
+  const h = await fixture(t, { supports: () => available }); h.open(); h.set('Starter', stateStarter, 'change');
+  assert.equal(h.el('Apply').disabled, true); assert.equal(stateElement(h, 'State1Key').disabled, true); assert.equal(h.el('Source').textContent, '');
+  assert.match(h.el('Status').textContent, /其他起始脚本/);
+  for (const starter of listScriptStarters().filter(item => item.id !== stateStarter)) {
+    h.set('Starter', starter.id, 'change'); assert.equal(h.el('Apply').disabled, false); assert.equal(h.el('Source').textContent, starter.content);
+  }
+  available = true;
+  const wait = deferred(); const pending = await fixture(t, { supports: () => available, createDraft: async (_proposal, ports) => {
+    await wait.promise; return ports.isCurrent() ? { applied: true } : false;
+  } });
+  pending.open(); pending.set('Starter', stateStarter, 'change'); pending.el('Apply').click(); assert.equal(pending.calls.length, 1);
+  assert.equal(stateElement(pending, 'State1Key').disabled, true); assert.equal(pending.calls[0].ports.isCurrent(), true);
+  available = false; pending.controller.refresh(); available = true; pending.controller.refresh();
+  assert.equal(pending.calls[0].ports.isCurrent(), false); wait.resolve(); await settle();
+  assert.equal(pending.el('Dialog').open, true); assert.equal(pending.el('Apply').disabled, true); assert.equal(stateElement(pending, 'State2Key').value, 'action');
+});
+
+test('state-table source changes and programmatic edits during handoff cannot apply a stale proposal', async t => {
+  for (const mutate of [h => { h.context.sourceToken = 'new-owner'; h.controller.refresh(); }, h => setState(h, 'State2Key', 'late', null)]) {
+    const wait = deferred(); const h = await fixture(t, { createDraft: async (_proposal, ports) => { await wait.promise; return ports.isCurrent() ? { applied: true } : false; } });
+    h.open(); h.set('Starter', stateStarter, 'change'); h.el('Apply').click(); mutate(h);
+    assert.equal(h.calls[0].ports.isCurrent(), false); wait.resolve(); await settle(); assert.equal(h.el('Dialog').open, true); assert.equal(h.focused.length, 0);
+  }
+});
+
+
+test('state graph inspection and field location preserve the exact approved creation source',async t=>{
+ const h=await fixture(t);h.open();h.set('Starter','godot-project-animation-state-table','change');const source=h.el('Source').textContent;
+ const graph=suffix=>h.element('animationStateScriptGraph'+suffix);graph('Toggle').click();graph('Transition1Select').click();graph('State2Locate').click();
+ for(const language of['en','ja','zh'])h.language(language);assert.equal(h.el('Source').textContent,source);assert.equal(h.el('Apply').disabled,false);
+ graph('Toggle').click();assert.equal(h.el('Apply').disabled,false);assert.equal(h.calls.length,0);await h.click('Apply');assert.equal(h.calls[0].proposal.content,source);
+});
+
+
+test('conditional creation rejects incomplete numbers, preserves typed zero and keeps graph inspection outside source approval',async t=>{
+ const h=await fixture(t);h.open();h.set('Starter','godot-project-animation-state-table','change');const set=(suffix,value,event='change')=>{const node=h.element('animationStateScriptTransition1Condition'+suffix);node.value=value;node.dispatch(event);};
+ const old=h.el('Source').textContent;set('Mode','compare');set('Type','number');set('Number','1e-','input');assert.equal(h.el('Source').textContent,'');assert.equal(h.el('Apply').disabled,true);assert.match(h.el('Status').textContent,/载荷条件/);
+ set('Number','0','input');const source=h.el('Source').textContent;assert.notEqual(source,old);assert.match(source,/godot-gdscript-v2/);assert.equal(h.el('Apply').disabled,false);
+ h.element('animationStateScriptGraphToggle').click();assert.match(h.element('animationStateScriptGraphTransitions').textContent,/number.*==.*0/);for(const locale of['en','ja','zh'])h.language(locale);assert.equal(h.el('Source').textContent,source);assert.equal(h.el('Apply').disabled,false);
+ await h.click('Apply');assert.equal(h.calls[0].proposal.content,source);
+});
+
+test('the optional condition marker withdraws conditional approvals and rejects an in-flight create after restoration',async t=>{
+ const wait=deferred();let available=true;const h=await fixture(t,{conditionSupport:()=>available,createDraft:async(_p,ports)=>{await wait.promise;return ports.isCurrent()?{applied:true}:false;}});
+ h.open();h.set('Starter','godot-project-animation-state-table','change');const mode=h.element('animationStateScriptTransition1ConditionMode');mode.value='compare';mode.dispatch('change');assert.equal(h.el('Apply').disabled,false);
+ h.el('Apply').click();assert.equal(h.calls[0].ports.isCurrent(),true);available=false;h.controller.refresh();available=true;h.controller.refresh();assert.equal(h.calls[0].ports.isCurrent(),false);wait.resolve();await settle();assert.equal(h.el('Dialog').open,true);assert.equal(h.focused.length,0);
+});
+
+test('conditional script size errors preserve local inputs and explain the source budget',async t=>{
+ const h=await fixture(t,{prepareState(){throw Object.assign(Error('budget'),{errorCode:'animation_state_script_source_limit'});}});h.open();h.set('Starter','godot-project-animation-state-table','change');assert.match(h.el('Status').textContent,/64 KiB/);assert.equal(h.el('Apply').disabled,true);assert.equal(h.element('animationStateScriptState2Key').value,'action');assert.equal(h.calls.length,0);
 });

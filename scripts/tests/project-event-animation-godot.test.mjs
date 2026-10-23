@@ -42,7 +42,7 @@ test('real event starter filters names, ignores every scalar payload and owns it
     await f.script('publisher', publisher(`\tp.publish_event("checkpoint", true)\n\tfor value in [0, true, false, 42, 0.25, "${f.clipIds[0][0]}", "雨 / 风 🌧"]:\n\t\tp.publish_event("attack", value)\n`));
   });
   const result = await run(f); succeeded(result);
-  assert.equal(result.record.events[0].protocol, 6);
+  assert.equal(result.record.events[0].protocol, 7);
   assert.deepEqual(rows(result, 'event-publish').map(row => row.recipients.length), [0, 1, 1, 1, 1, 1, 1, 1]);
   assert.deepEqual(rows(result, 'event-delivery').map(row => row.status), Array(7).fill('handled'));
   assert.deepEqual(states(result), Array.from({ length: 7 }, () => pair(f.clipIds[0][1])).flat());
@@ -145,7 +145,7 @@ test('real receiver exit unsubscribes pending callbacks before a behavior is fre
   assert.equal(commands(result).length, 0);
 });
 
-test('real standalone scene and old protocol 5 ports safely skip the unchanged starter', real, async t => {
+test('real standalone scene safely skips the starter and old author formats now expose explicit clip rejection', real, async t => {
   const f = await projectEventAnimationAuthor(t);
   const singleOutput = path.join(f.temporary, 'single');
   const built = await buildProject({ root: f.author, scene: f.sceneIds[0], tool, output: singleOutput });
@@ -158,9 +158,9 @@ test('real standalone scene and old protocol 5 ports safely skip the unchanged s
   const output = path.join(f.temporary, 'legacy');
   const legacyBuilt = await buildProject({ root: f.author, targetId: f.assemblyId, tool, output });
   assert.equal(legacyBuilt.ok, true, JSON.stringify(legacyBuilt.diagnostics || legacyBuilt.record?.diagnostics));
-  const legacy = await run({ output }); succeeded(legacy);
-  assert.equal(legacy.record.events[0].protocol, 5);
-  assert.deepEqual(rows(legacy, 'event-publish').map(row => row.recipients.length), [0]);
+  const legacy = await run({ output }); rejected(legacy, f, 'runtime_behavior_animation_clip');
+  assert.equal(legacy.record.events[0].protocol, 7);
+  assert.deepEqual(rows(legacy, 'event-publish').map(row => row.recipients.length), [1]);
   assert.equal(commands(legacy).length, 0);
 });
 

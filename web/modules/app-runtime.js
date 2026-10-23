@@ -1,5 +1,7 @@
+import { createScriptUsageSourceHost } from './app-script-usage-source.js';
+import { createAnimationStateScriptSourceHost } from './app-animation-state-script-source.js';
 import { createSceneAnimationSourceHost } from './app-scene-animation-source.js';
-import { supportsStudioCoreSceneAnimation } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreSceneAnimation, supportsStudioCoreAnimationStateTable } from '../../engine/studio-core.mjs';
 import { readSceneAudioBytes } from './app-scene-audio-media.js';
 import { setupSourceSearch } from './app-source-search.js';
 import { setupSourceHistory } from './app-source-history.js';
@@ -94,6 +96,7 @@ import {
   inspectSceneAnimationTargets,
   inspectSceneAnimationDirectory,
   inspectSceneAnimationUsage,
+  inspectScriptUsage,
 } from './app-doc-service.js';
 
 let studioSystem = null;
@@ -111,6 +114,7 @@ let sceneAudioUsageAvailable = false;
 let sceneAnimationTargetsAvailable = false;
 let sceneAnimationDirectoryAvailable = false;
 let sceneAnimationUsageAvailable = false;
+let scriptUsageAvailable = false;
 let fieldEditorController = null;
 let fieldDraftSourcePath = '';
 let fieldLoadToken = 0;
@@ -2035,6 +2039,7 @@ async function detectEditBackend() {
   sceneAnimationTargetsAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationTargets === true;
   sceneAnimationDirectoryAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationDirectory === true;
   sceneAnimationUsageAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationUsage === true;
+  scriptUsageAvailable = normalizedDetection.available === true && detection.payload?.scriptUsage === true;
   studioSystem?.updateCapabilities(detection.payload || null);
   studioSystem?.refreshMedia();
 }
@@ -4275,6 +4280,15 @@ async function openAuthorSource(sourcePath, { sourceRevision, isCurrent = () => 
   return openSavedSource(sourcePath, null, { sourceRevision, isCurrent });
 }
 
+async function openScriptUsageSource(source, { isCurrent = () => true } = {}) {
+  if (typeof isCurrent !== 'function' || !isCurrent() || !scriptUsageAvailable || state.isCreating || isEditorBusy()) return false;
+  // A reference without a binding opens its saved document at the start; bound
+  // rows retain their exact revision/range. selectDoc owns dirty-draft consent.
+  const current = () => isCurrent() === true && scriptUsageAvailable;
+  if (source.sourceRange) return openSavedSource(source.sourcePath, source, null, null, current);
+  return openSavedSource(source.sourcePath, null, { sourceRevision: source.sourceRevision, isCurrent: current }, null, current);
+}
+
 async function openBuildSource(sourcePath, location = null, context = null) {
   return openSavedSource(sourcePath, location, null, context?.diagnostic, context?.isCurrent);
 }
@@ -5895,11 +5909,42 @@ async function initApp(options = {}) {
       setEditorStatus(t(state.editHasUnsavedChanges ? '动画修改已应用到原文草稿；尚未保存。' : '动画修改已应用；文本与已保存版本一致。'));
     }, focus: () => editEditorEl.focus(),
   });
+  const animationStateScriptSourceHost = createAnimationStateScriptSourceHost({
+    getState: () => {
+      const doc = getActiveDoc(), sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
+      return { document: doc, sourcePath, token: `${editorLoadToken}:${scenePreviewDraftEpoch}`, content: getCurrentEditContent(),
+        baseline: editSessionBaselineContent, version: editSessionVersion,
+        editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
+        creating: state.isCreating, busy: isEditorBusy(), sourceTXT: /\.txt$/i.test(sourcePath),
+        available: typeof supportsStudioCoreAnimationStateTable === 'function' && supportsStudioCoreAnimationStateTable() };
+    },
+    digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
+    writeDraft: content => {
+      const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, top = editEditorEl.scrollTop, left = editEditorEl.scrollLeft;
+      setSourceEditorContent(content);
+      if (Number.isInteger(start) && Number.isInteger(end)) editEditorEl.setSelectionRange?.(Math.min(start, content.length), Math.min(end, content.length));
+      editEditorEl.scrollTop = top; editEditorEl.scrollLeft = left;
+      refreshEditSessionDirtyState(); refreshEditButtons();
+      setEditorStatus(t(state.editHasUnsavedChanges ? '动画修改已应用到原文草稿；尚未保存。' : '动画修改已应用；文本与已保存版本一致。'));
+    }, focus: () => editEditorEl.focus({ preventScroll: true }),
+  });
+  const scriptUsageSourceHost = createScriptUsageSourceHost({
+    getState: () => {
+      const doc = getActiveDoc(), sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
+      return { document: doc, sourcePath, token: `${editorLoadToken}:${scenePreviewDraftEpoch}`, content: getCurrentEditContent(),
+        baseline: editSessionBaselineContent, version: editSessionVersion,
+        editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
+        creating: state.isCreating, busy: isEditorBusy(), sourceTXT: /\.txt$/i.test(sourcePath), available: scriptUsageAvailable };
+    },
+    digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
+    inspectUsage: payload => inspectScriptUsage(payload),
+    navigateSource: (source, { isCurrent }) => openScriptUsageSource(source, { isCurrent }),
+  });
   studioSystem = await setupStudioSystem({
     settings: options.settings,
     features: options.features,
     ports: {
-      scripts: { getContext: scriptCreateContext, createDraft: createScriptDraft },
+      scripts: { getContext: scriptCreateContext, createDraft: createScriptDraft, editStateTable: animationStateScriptSourceHost, usage: scriptUsageSourceHost },
       compositionCreate: { getContext: compositionCreateContext, createDraft: createCompositionDraft },
       sceneAudio: audioSourceHost,
       sceneAnimation: animationSourceHost,

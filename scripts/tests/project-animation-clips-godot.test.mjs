@@ -49,7 +49,7 @@ test('real same-clock selection and seek execute FIFO on local ranges and return
     `select_animation_clip("${f.clipIds[0][1]}")`, 'seek_animation(0.5)', 'play_animation()', 'select_animation_clip()', 'seek_animation(0.8)',
   ])));
   const result = await run(f); assert.equal(result.ok, true, JSON.stringify(result.record?.diagnostics || result));
-  assert.equal(result.record.events[0].protocol, 6); assert.equal(result.record.events.at(-1).animationCommandSequence, 9);
+  assert.equal(result.record.events[0].protocol, 7); assert.equal(result.record.events.at(-1).animationCommandSequence, 9);
   assert.deepEqual(rows(result).map(row => [row.command.action,row.state.clipId,row.state.positionSeconds,row.state.phase]), [
     ['select',f.clipIds[0][0],0,'paused'], ['seek',f.clipIds[0][0],0,'paused'], ['play',f.clipIds[0][0],0,'playing'], ['stop',f.clipIds[0][0],0,'stopped'],
     ['select',f.clipIds[0][1],0,'paused'], ['seek',f.clipIds[0][1],.5,'paused'], ['play',f.clipIds[0][1],0,'playing'], ['select',null,0,'paused'], ['seek',null,.8,'paused'],

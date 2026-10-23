@@ -1,0 +1,20 @@
+.script-usage-dialog { width:min(900px,calc(100vw - 24px)); max-width:900px; max-height:calc(100dvh - 24px); margin:auto; padding:0; box-sizing:border-box; overflow:hidden; border:1px solid #33536a; border-radius:16px; color:#d8e9f8; background:#101c2b; }
+.script-usage-dialog[open] { display:flex; flex-direction:column; }
+.script-usage-dialog [hidden] { display:none!important; }
+.script-usage-dialog::backdrop { background:rgba(2,8,18,.76); }
+.script-usage-dialog>header { display:flex; flex:none; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid #33536a; }
+.script-usage-dialog h2 { margin:0; font-size:1.2rem; }
+.script-usage-body { min-height:0; overflow:auto; overscroll-behavior:contain; padding:0 20px 14px; }
+.script-usage-dialog p,.script-usage-dialog h3,.script-usage-dialog h4 { overflow-wrap:anywhere; }
+.script-usage-note { color:#a1bbcf; font-size:.88rem; }
+.script-usage-reference { margin:12px 0; padding:12px; border:1px solid #33536a; border-radius:8px; min-width:0; }
+.script-usage-reference h3 { margin:0 0 10px; font-size:1rem; }
+.script-usage-binding { margin:12px 0 0; padding:10px; border-left:3px solid #638aab; background:#0a1422; min-width:0; }
+.script-usage-binding h4 { margin:0; font-size:.9rem; }
+.script-usage-dialog pre { white-space:pre-wrap; overflow-wrap:anywhere; font-size:.85rem; }
+#scriptUsageSnapshot { margin:16px 0; min-width:0; }
+#scriptUsageSource { display:block; width:100%; height:250px; min-height:130px; box-sizing:border-box; margin:10px 0; padding:10px; border:1px solid #33536a; border-radius:6px; background:#0a1422; color:#bdd1e4; font:13px/1.5 monospace; tab-size:4; resize:vertical; }
+#scriptUsageStatus { flex:none; margin:8px 0; padding:0 20px; max-height:18dvh; overflow:auto; overflow-wrap:anywhere; }
+.script-usage-dialog>footer { display:flex; flex:none; flex-wrap:wrap; justify-content:flex-end; gap:8px; padding:12px 20px; border-top:1px solid #33536a; }
+.script-usage-dialog .doc-btn { white-space:normal; overflow-wrap:anywhere; }
+@media(max-width:600px) { .script-usage-dialog>header { padding:12px; } .script-usage-dialog h2 { font-size:1.05rem; } .script-usage-body { padding:0 12px 12px; } #scriptUsageStatus { padding:0 12px; } .script-usage-dialog>footer { padding:10px 12px; } .script-usage-dialog>footer .doc-btn { flex:1 1 130px; } .script-usage-reference { padding:10px; } }

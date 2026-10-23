@@ -1,12 +1,13 @@
 import { validateProjectAssemblyPlan } from './project-assembly-plan-contract.mjs';
 import { createSceneRuntimeObservation, querySceneRuntimeObservation } from './scene-runtime-query.mjs';
+import { validateProjectAnimationCompletionsSnapshot, validateProjectAnimationCompletionTimeline } from './project-animation-completions.mjs';
 import { validateProjectAnimationCommandsSnapshot } from './project-animation-commands.mjs';
 import { validateProjectAudioCommandsSnapshot } from './project-audio-commands.mjs';
 import { validateProjectEventSnapshot } from './project-event-bus.mjs';
 import { validateProjectSharedStateSnapshot } from './project-shared-state.mjs';
 import { createProjectRuntimeEventReader } from './project-runtime-events.mjs';
 import { PROJECT_RUNTIME_PREFIX, PROJECT_RUNTIME_MAX_VISITS, projectRuntimeUuid as uuid, projectRuntimeExact as exact,
-  projectRuntimeTime as time, copyProjectRuntimeData as copy, copyProjectEventObservationData as copyEventObservation, copyProjectAudioObservationData as copyAudioObservation, copyProjectAnimationObservationData as copyAnimationObservation, copyProjectAnimationClipObservationData as copyClipObservation, invalidProjectRuntime as invalid } from './project-runtime-contracts.mjs';
+  projectRuntimeTime as time, copyProjectRuntimeData as copy, copyProjectEventObservationData as copyEventObservation, copyProjectAudioObservationData as copyAudioObservation, copyProjectAnimationObservationData as copyAnimationObservation, copyProjectAnimationClipObservationData as copyClipObservation, copyProjectAnimationCompletionObservationData as copyCompletionObservation, invalidProjectRuntime as invalid } from './project-runtime-contracts.mjs';
 
 export function createProjectRuntimeObservation(input, { protocolVersion = 1 } = {}) {
   const plan = validateProjectAssemblyPlan(input), scenes = new Map(plan.scenes.map(scene => [scene.scene.objectId, scene]));
@@ -38,7 +39,7 @@ export function createProjectRuntimeObservation(input, { protocolVersion = 1 } =
       let event; try { event = copy(inputEvent); } catch { return false; }
       return reader.push(PROJECT_RUNTIME_PREFIX + JSON.stringify(event) + '\n').length === 1;
     },
-    snapshot() { return { ...child.snapshot(), project: { ...copy(project), ...(protocolVersion >= 2 ? { protocolVersion, sharedState: reader.sharedState, ...(protocolVersion >= 3 ? { events: reader.projectEvents } : {}), ...(protocolVersion >= 4 ? { audioCommands: reader.audioCommands } : {}), ...(protocolVersion >= 5 ? { animationCommands: reader.animationCommands } : {}) } : {}) } }; },
+    snapshot() { return { ...child.snapshot(), project: { ...copy(project), ...(protocolVersion >= 2 ? { protocolVersion, sharedState: reader.sharedState, ...(protocolVersion >= 3 ? { events: reader.projectEvents } : {}), ...(protocolVersion >= 4 ? { audioCommands: reader.audioCommands } : {}), ...(protocolVersion >= 5 ? { animationCommands: reader.animationCommands } : {}), ...(protocolVersion === 7 ? { animationCompletions: reader.animationCompletions } : {}) } : {}) } }; },
   });
 }
 
@@ -47,9 +48,9 @@ export function queryProjectRuntimeObservation(input, request = {}) {
   // chosen copier still validates every descriptor, including this header.
   const header = input && typeof input === 'object' ? Object.getOwnPropertyDescriptor(input, 'project')?.value : undefined;
   const version = header && typeof header === 'object' ? Object.getOwnPropertyDescriptor(header, 'protocolVersion')?.value : undefined;
-  const view = version === 6 ? copyClipObservation(input) : version === 5 ? copyAnimationObservation(input) : version === 4 ? copyAudioObservation(input) : version === 3 ? copyEventObservation(input) : copy(input), project = view.project;
-  const shared = [2, 3, 4, 5, 6].includes(project?.protocolVersion), messaging = [3, 4, 5, 6].includes(project?.protocolVersion), audio = [4, 5, 6].includes(project?.protocolVersion), animation = [5, 6].includes(project?.protocolVersion);
-  if (!exact(project, ['assemblyId', 'entrySceneId', 'activeSceneId', 'visits', ...(shared ? ['protocolVersion', 'sharedState'] : []), ...(messaging ? ['events'] : []), ...(audio ? ['audioCommands'] : []), ...(animation ? ['animationCommands'] : [])]) || !uuid(project.assemblyId)
+  const view = version === 7 ? copyCompletionObservation(input) : version === 6 ? copyClipObservation(input) : version === 5 ? copyAnimationObservation(input) : version === 4 ? copyAudioObservation(input) : version === 3 ? copyEventObservation(input) : copy(input), project = view.project;
+  const shared = [2, 3, 4, 5, 6, 7].includes(project?.protocolVersion), messaging = [3, 4, 5, 6, 7].includes(project?.protocolVersion), audio = [4, 5, 6, 7].includes(project?.protocolVersion), animation = [5, 6, 7].includes(project?.protocolVersion), completion = project?.protocolVersion === 7;
+  if (!exact(project, ['assemblyId', 'entrySceneId', 'activeSceneId', 'visits', ...(shared ? ['protocolVersion', 'sharedState'] : []), ...(messaging ? ['events'] : []), ...(audio ? ['audioCommands'] : []), ...(animation ? ['animationCommands'] : []), ...(completion ? ['animationCompletions'] : [])]) || !uuid(project.assemblyId)
     || !uuid(project.entrySceneId) || !uuid(project.activeSceneId) || project.activeSceneId === project.assemblyId
     || project.entrySceneId === project.assemblyId || !Array.isArray(project.visits) || project.visits.length > PROJECT_RUNTIME_MAX_VISITS) throw invalid();
   delete view.project;
@@ -100,6 +101,16 @@ export function queryProjectRuntimeObservation(input, request = {}) {
       const visit = project.visits[command.origin.visitIndex - 1];
       if (!visit || visit.sceneId !== command.origin.sceneId || visit.phase === 'waiting'
         || ['left', 'finished'].includes(visit.phase) && command.state.timeSeconds > visit.elapsedSeconds) throw invalid();
+    }
+  }
+  if (completion) {
+    project.animationCompletions = validateProjectAnimationCompletionsSnapshot(project.animationCompletions);
+    validateProjectAnimationCompletionTimeline(project.animationCompletions, project.animationCommands);
+    for (const entry of project.animationCompletions.entries) {
+      const visit = project.visits[entry.visitIndex - 1];
+      if (!visit || visit.sceneId !== entry.sceneId || visit.phase === 'waiting'
+        || ['left', 'finished'].includes(visit.phase) && entry.state.timeSeconds > visit.elapsedSeconds
+        || entry.deliveries.some(delivery => delivery.status === 'pending') && (entry.visitIndex !== last?.index || last.phase !== 'ready')) throw invalid();
     }
   }
   return { ...result, project };

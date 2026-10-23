@@ -1,3 +1,4 @@
+import { setupProjectAnimationCompletionObservation } from './app-project-animation-completion-observation.js';
 import { setupProjectAnimationObservation } from './app-project-animation-observation.js';
 import { setupProjectAudioObservation } from './app-project-audio-observation.js';
 import { setupProjectEventObservation } from './app-project-event-observation.js';
@@ -196,7 +197,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <div id="projectSharedState"></div>
     <div id="projectEventTrace"></div>
     <div id="projectAudioCommands"></div>
-    <div id="projectAnimationCommands"></div>
+    <div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div>
     <section id="projectBuildBehaviorEvents" hidden aria-labelledby="projectBuildBehaviorEventsTitle"><h3 id="projectBuildBehaviorEventsTitle" data-i18n="行为事件"></h3><ul id="projectBuildBehaviorEventList"></ul></section>
     <details class="build-raw"><summary data-i18n="原始细节与日志"></summary><pre id="projectBuildLogs" tabindex="0"></pre></details></section>`;
   document.body.append(dialog);
@@ -698,12 +699,26 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       return navigateOwnedSource([source.sourcePath, source], owns);
     },
   }) : { setSnapshot() {}, refresh() {} };
+  const animationCompletionObservation = typeof setupProjectAnimationCompletionObservation === 'function' ? setupProjectAnimationCompletionObservation({
+    container: el('projectAnimationCompletions'),
+    getContext: () => {
+      const observed = runtimeObservation();
+      return { available: available && Boolean(observed?.members), visible: dialog.open && activeTab === 'build',
+        sessionOwner: observed?.sessionOwner || '', navigationOwner: observed?.owner || '', canOpenSource: mayOpenRuntimeSource() };
+    },
+    onOpen: async (source, { isCurrent }) => {
+      if (!mayOpenRuntimeSource() || !isCurrent()) return false;
+      const owns = () => ownsRuntimeSourceContext() && isCurrent();
+      return navigateOwnedSource([source.sourcePath, source], owns);
+    },
+  }) : { setSnapshot() {}, refresh() {} };
   function renderRuntimeObjects() {
     const observation = runtimeObservation(), owner = observation?.owner || '';
-    stateObservation.setSnapshot([2, 3, 4, 5, 6].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
-    eventObservation.setSnapshot([3, 4, 5, 6].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
-    audioObservation.setSnapshot([4, 5, 6].includes(observation?.view.project?.protocolVersion) ? observation.view.project.audioCommands : null);
-    animationObservation.setSnapshot([5, 6].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCommands : null, { protocolVersion: observation?.view.project?.protocolVersion === 6 ? 6 : 5 });
+    stateObservation.setSnapshot([2, 3, 4, 5, 6, 7].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
+    eventObservation.setSnapshot([3, 4, 5, 6, 7].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
+    audioObservation.setSnapshot([4, 5, 6, 7].includes(observation?.view.project?.protocolVersion) ? observation.view.project.audioCommands : null);
+    animationObservation.setSnapshot([5, 6, 7].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCommands : null, { protocolVersion: observation?.view.project?.protocolVersion >= 6 ? observation.view.project.protocolVersion : 5 });
+    animationCompletionObservation.setSnapshot(observation?.view.project?.protocolVersion === 7 ? observation.view.project.animationCompletions : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
     const panel = el('projectBuildRuntimeObjects'), input = el('projectBuildRuntimeSearch'), list = el('projectBuildRuntimeObjectList');
     const ownerChanged = runtimeOwner !== owner;
     if (ownerChanged) { runtimeOwner = owner; runtimeSearch = ''; input.value = ''; runtimeCardSignature = ''; }
@@ -1154,6 +1169,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     eventObservation.refresh();
     audioObservation.refresh();
     animationObservation.refresh();
+    animationCompletionObservation.refresh();
     const pending = pendingSourceFocus; pendingSourceFocus = null;
     const current = pending?.session === dialogSession && pending.epoch === sourceNavigationEpoch;
     sourceNavigationEpoch++;

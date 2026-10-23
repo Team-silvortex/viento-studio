@@ -89,7 +89,7 @@ test('actual Godot uses saved retimed keyframes and clip bounds without changing
   const built = await buildProject({ root: f.author, targetId: f.assemblyId, tool, output });
   assert.equal(built.ok, true, JSON.stringify(built.diagnostics || built.record?.diagnostics));
   const ran = await runProjectBuild({ buildDirectory: output, tool, headless: true, smoke: false });
-  assert.equal(ran.ok, true, JSON.stringify(ran.record?.diagnostics || ran)); assert.equal(ran.record.events[0].protocol, 6);
+  assert.equal(ran.ok, true, JSON.stringify(ran.record?.diagnostics || ran)); assert.equal(ran.record.events[0].protocol, 7);
   const commands = ran.record.events.filter(row => row.event === 'animation-command');
   assert.deepEqual(commands.map(row => [row.command.action,row.state.clipId,row.state.positionSeconds]), [['select',f.clipIds[0][1],0],['seek',f.clipIds[0][1],.125]]);
   const observed = ran.record.phases.at(-1).stdout.split('\n').filter(line => line.startsWith('RETIME_VISUAL:')).map(line => JSON.parse(line.slice('RETIME_VISUAL:'.length)));

@@ -1,4 +1,6 @@
-import { listScriptStarters, prepareScriptDraft } from '../../engine/script-authoring.mjs';
+import { supportsStudioCoreAnimationStateConditions } from '../../engine/studio-core.mjs';
+import { listScriptStarters, prepareScriptDraft, prepareAnimationStateScriptDraft, DEFAULT_ANIMATION_STATE_TABLE, supportsAnimationStateScript } from '../../engine/script-authoring.mjs';
+import { setupAnimationStateScript } from './app-animation-state-script.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 
 // This form owns a local choice and preview. The editor port alone owns the
@@ -9,6 +11,11 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
   if (!document.getElementById('scriptCreateStyle')) {
     const style = document.createElement('link');
     style.id = 'scriptCreateStyle'; style.rel = 'stylesheet'; style.href = '/web/script-create.css';
+    (document.head || document.body).append(style);
+  }
+  if (!document.getElementById('animationStateScriptStyle')) {
+    const style = document.createElement('link');
+    style.id = 'animationStateScriptStyle'; style.rel = 'stylesheet'; style.href = '/web/animation-state-script.css';
     (document.head || document.body).append(style);
   }
   const button = document.createElement('button');
@@ -25,6 +32,7 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
         <label><span data-i18n="文档类型"></span><select id="scriptCreateType"></select></label>
         <label class="script-create-path"><span data-i18n="TXT 原文路径"></span><input id="scriptCreatePath" type="text" maxlength="1024" spellcheck="false" aria-describedby="scriptCreatePathHint" /></label>
       </div><p id="scriptCreatePathHint" class="script-create-note" data-i18n="使用工程正文目录内的 .txt 路径。已有文件会在保存时检查。"></p></fieldset>
+      <div id="scriptCreateStateTable" hidden></div>
       <section aria-labelledby="scriptCreatePreviewTitle"><h3 id="scriptCreatePreviewTitle" data-i18n="完整脚本预览"></h3><p id="scriptCreateDescription" class="script-create-note"></p>
         <pre id="scriptCreateSource" tabindex="0" aria-labelledby="scriptCreatePreviewTitle"></pre></section>
     </div><p id="scriptCreateStatus" class="script-create-status" role="status" aria-live="polite"></p>
@@ -36,7 +44,19 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
   let disposed = false, epoch = 0, owner = null, baseline = '', proposal = null, reviewed = '';
   let phase = false, invalidated = false, message = '', opener = null, pendingFocus = null;
   const raw = () => ({ starterId: el('Starter').value, documentType: el('Type').value, sourcePath: el('Path').value });
-  const signature = () => JSON.stringify(raw());
+  const isStateTable = () => el('Starter').value === 'godot-project-animation-state-table';
+  const tableEditor = setupAnimationStateScript({ container: el('StateTable'), translate: t,
+    getContext: () => ({ active: dialog.open && isStateTable(), disabled: phase || !owns(), available: supportsAnimationStateScript() }),
+    onChange: () => { if (!phase && dialog.open && isStateTable()) review(); },
+  });
+  let conditionRevision = 0, observedConditionSupport;
+  const conditionsReady = () => {
+    if (!tableEditor.getValue().transitions.some(edge => Object.hasOwn(edge.trigger, 'condition'))) return true;
+    const supported = supportsStudioCoreAnimationStateConditions();
+    if (observedConditionSupport !== undefined && observedConditionSupport !== supported) conditionRevision++;
+    observedConditionSupport = supported; return supported;
+  };
+  const signature = () => JSON.stringify({ ...raw(), table: tableEditor.getValue() });
   const coreContext = context => ({ sourceToken: context.sourceToken, documentRoot: context.documentRoot,
     documentTypes: context.documentTypes?.map(item => ({ id: item.id, label: item.label })) });
   const eligible = context => !disposed && context.editable === true && !context.busy && !context.dirty && !context.creating
@@ -71,11 +91,13 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
     const canChange = !phase && owns();
     el('Fields').disabled = !canChange;
     for (const field of fields) el(field).disabled = !canChange;
-    el('Apply').disabled = !canChange || !proposal || reviewed !== signature();
+    const stateAvailable = !isStateTable() || supportsAnimationStateScript() && conditionsReady();
+    el('StateTable').hidden = !isStateTable(); tableEditor.refresh();
+    el('Apply').disabled = !canChange || !stateAvailable || !proposal || reviewed !== signature();
     el('Close').disabled = phase; el('Cancel').disabled = phase;
     const starter = starters.find(item => item.id === el('Starter').value);
     el('Description').textContent = starter ? t(starter.description) : '';
-    el('Source').textContent = starter?.content || '';
+    el('Source').textContent = proposal?.content || (isStateTable() ? '' : starter?.content || '');
     el('Status').textContent = t(message);
   }
   function review() {
@@ -85,10 +107,21 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
       message = '工程或编辑器已变化，设置已保留。请返回编辑器后重新打开。';
     } else {
       try {
-        proposal = prepareScriptDraft(owner.context, raw()); reviewed = signature();
+        if (isStateTable() && (!supportsAnimationStateScript() || !conditionsReady())) throw Object.assign(new Error('Animation state table unavailable'), { errorCode: 'studio_core_unavailable' });
+        proposal = isStateTable() ? prepareAnimationStateScriptDraft(owner.context, raw(), tableEditor.getValue()) : prepareScriptDraft(owner.context, raw()); reviewed = signature();
         message = '请审阅完整脚本；创建草稿后可在原文编辑器继续修改。';
-      } catch {
-        message = '请选择当前工程的文档类型，并填写正文目录内有效的 .txt 路径。';
+      } catch (error) {
+        message = (error?.code || error?.errorCode) === 'animation_state_script_source_limit'
+          ? '生成脚本超过 64 KiB，请缩短条件文本或减少转换。'
+          : (error?.code || error?.errorCode) === 'animation_state_condition_invalid'
+            ? '请检查事件载荷条件的类型、比较方式和比较值。'
+            : error?.code === 'studio_core_unavailable' || error?.errorCode === 'studio_core_unavailable'
+          ? '当前核心不支持动画状态表；其他起始脚本仍可使用。'
+          : error?.code === 'animation_state_table_invalid' || error?.errorCode === 'animation_state_table_invalid'
+            ? tableEditor.getValue().transitions.some(edge => Object.hasOwn(edge.trigger, 'condition'))
+              ? '请检查状态标识、初始状态、转换及事件载荷条件。'
+              : '请检查状态标识、初始状态和转换：标识不能重复或缺失，同一触发不能重复。'
+            : '请选择当前工程的文档类型，并填写正文目录内有效的 .txt 路径。';
       }
     }
     render();
@@ -105,11 +138,11 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
     closeDialog(); return true;
   }
   async function apply() {
-    if (phase || !owns()) { if (!phase) review(); return; }
+    if (phase || !owns() || (isStateTable() && !supportsAnimationStateScript())) { if (!phase) review(); return; }
     // Programmatic edits must also receive a visible preview before handoff.
     if (!proposal || reviewed !== signature()) { review(); return; }
-    const generation = epoch, form = signature(), candidate = proposal;
-    const isCurrent = () => owns(generation) && form === signature() && proposal === candidate;
+    const generation = epoch, form = signature(), candidate = proposal, conditionVersion = conditionRevision;
+    const isCurrent = () => owns(generation) && form === signature() && proposal === candidate && (!isStateTable() || supportsAnimationStateScript() && conditionsReady() && conditionRevision === conditionVersion);
     phase = true; message = '正在打开脚本草稿…'; render();
     try {
       const result = await createDraft(candidate, { isCurrent });
@@ -131,6 +164,9 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
   }
   function refresh() {
     if (disposed) return;
+    if (dialog.open && isStateTable() && (!supportsAnimationStateScript() || !conditionsReady())) {
+      proposal = null; reviewed = ''; message = '当前核心不支持动画状态表；其他起始脚本仍可使用。';
+    }
     if (dialog.open && !owns()) {
       invalidated = true;
       if (!phase) proposal = null;
@@ -148,7 +184,7 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
     phase = false; invalidated = false; pendingFocus = null;
     options(el('Starter'), starters.map(item => [item.id, t(item.label)]), input.starterId);
     options(el('Type'), context.documentTypes.map(item => [item.id, item.label]), input.documentType);
-    el('Path').value = input.sourcePath; baseline = signature();
+    el('Path').value = input.sourcePath; tableEditor.reset(DEFAULT_ANIMATION_STATE_TABLE); baseline = signature();
     dialog.showModal(); review(); el('Starter').focus(); return true;
   }
   button.addEventListener('click', open);
@@ -173,6 +209,6 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
     if (disposed) return;
     disposed = true; epoch++; owner = null; proposal = null; phase = false; pendingFocus = null;
     if (typeof unsubscribe === 'function') unsubscribe();
-    dialog.close(); dialog.remove(); button.remove();
+    tableEditor.dispose(); dialog.close(); dialog.remove(); button.remove();
   } });
 }

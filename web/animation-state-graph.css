@@ -1,0 +1,22 @@
+.animation-state-graph { margin:14px 0; padding:10px; min-width:0; border:1px solid #385a70; border-radius:8px; background:#0b1724; }
+.animation-state-graph [hidden] { display:none!important; }
+.animation-state-graph-canvas { max-width:100%; max-height:350px; overflow:auto; border:1px solid #33536a; border-radius:6px; background:#08111c; overscroll-behavior:contain; }
+.animation-state-graph-canvas>svg { display:block; max-width:none; }
+.animation-state-graph-node,.animation-state-graph-route { cursor:pointer; outline:none; }
+.animation-state-graph-node rect { fill:#152c3e; stroke:#87a9be; stroke-width:2; }
+.animation-state-graph-node .animation-state-graph-initial { fill:none; stroke:#b4d8e8; stroke-width:1; }
+.animation-state-graph-key { fill:#e1eef7; font:14px ui-monospace,monospace; }
+.animation-state-graph-initial-label { fill:#bddbe6; font:11px system-ui,sans-serif; }
+.animation-state-graph-route>path { stroke:#a7c6dd; stroke-width:2; }
+.animation-state-graph-route>.animation-state-graph-hit { stroke:transparent; stroke-width:16; pointer-events:stroke; }
+.animation-state-graph-node[data-selected="true"]>rect:first-child,.animation-state-graph-node:focus>rect:first-child { fill:#254c5a; stroke:#f5d18b; stroke-width:4; }
+.animation-state-graph-route[data-selected="true"]>path:not(.animation-state-graph-hit),.animation-state-graph-route:focus>path:not(.animation-state-graph-hit) { stroke:#f5d18b; stroke-width:4; }
+.animation-state-graph-lists { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin-top:12px; min-width:0; }
+.animation-state-graph-lists section { min-width:0; }
+.animation-state-graph-lists h4 { margin:0 0 8px; }
+.animation-state-graph-lists ol { margin:0; padding:0; list-style:none; display:grid; gap:8px; }
+.animation-state-graph-lists li { min-width:0; padding:8px; border:1px solid #294358; border-radius:6px; }
+.animation-state-graph-lists li[data-selected="true"] { border:2px solid #f5d18b; padding:7px; }
+.animation-state-graph-lists p { margin:7px 0; overflow-wrap:anywhere; font-size:.88rem; }
+.animation-state-graph-lists .doc-btn { display:block; max-width:100%; width:auto; text-align:left; white-space:normal; overflow-wrap:anywhere; margin:4px 0; }
+@media(max-width:600px) { .animation-state-graph { padding:8px; } .animation-state-graph-lists { grid-template-columns:minmax(0,1fr); } .animation-state-graph-canvas { max-height:280px; } }
