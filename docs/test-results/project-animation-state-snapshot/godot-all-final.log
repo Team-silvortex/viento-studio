@@ -1,0 +1,94 @@
+COMMAND: env PATH="/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH" VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node --test --test-concurrency=2 scripts/tests/animation-state-script-godot.test.mjs scripts/tests/animation-state-script-source-godot.test.mjs scripts/tests/animation-state-conditions-godot.test.mjs scripts/tests/animation-branches-godot.test.mjs scripts/tests/godot4-project.test.mjs
+✔ actual ordered branches select one declared first match and otherwise use the last fallback (14187.589348ms)
+✔ actual ordered branches select one reordered first match and otherwise use the last fallback (13800.872ms)
+✔ unmatched conditions including cross-type ne preserve the state and live subscription until a later matching event (14051.70562ms)
+✔ a matching self-edge restarts once, entering a new state does not cascade, and natural completion returns once (14974.517641ms)
+✔ ordered event group unmatched at a natural completion safe point retains existing scheduling semantics (14144.092317ms)
+✔ ordered event group matching at a natural completion safe point retains existing scheduling semantics (14089.539145ms)
+✔ failure entering the first matching branch stops execution without attempting the fallback (14947.912739ms)
+✔ explicit firstMatch with no transitions compiles and activates without event subscriptions (12305.950061ms)
+✔ v3 exact floating thresholds and encoded Unicode strings choose the corresponding branch (12306.675248ms)
+✔ v3 BOM/CRLF source survives independent ZIP delivery after author and build removal (22025.554726ms)
+✔ actual project event guards match Rust typed comparisons, exact doubles and strings while false guards keep subscriptions alive (15666.581774ms)
+✔ same-safe-point unmatched guard retains a captured natural completion (14806.844317ms)
+✔ same-safe-point matching guard preempts a captured natural completion (12932.162707ms)
+✔ guard mismatch does not enqueue an unknown target clip (13852.889463ms)
+✔ guard match exposes an unknown target clip (14104.655813ms)
+✔ conditional callback rejects unsupported scalars without side effects and standalone missing ports remain safe (14341.88973ms)
+✔ v1→conditional v2 BOM/CRLF source survives independent ZIP delivery and executes guards after original files are removed (23199.606205ms)
+✔ trusted defaults import without core initialization and exactly match public validated generation (34.799909ms)
+✔ unsafe event text is rejected by the core before source generation (1.568348ms)
+✔ real state controller selects idle, ignores unknown events, runs action and completes back to idle (false) (12366.648563ms)
+✔ real state controller selects idle, ignores unknown events, runs action and completes back to idle (true) (12351.231725ms)
+✔ real FIFO event transitions, unmatched duplicate inputs and explicit self edges have distinct behavior (12772.951085ms)
+✔ real same-safe-point movement supersedes an already captured attack completion (13987.22368ms)
+✔ real captured clip parameters survive later script mutation and preserve completion matching (12388.710327ms)
+✔ real bound event callback keeps dotted and hyphenated names exact with a publisher declared first (12197.11973ms)
+✔ real exit revokes both subscriptions including captured pending deliveries (12131.167542ms)
+✔ real scene reentry starts a fresh controller and cannot retain old subscriptions (12168.463452ms)
+✔ real syntactically valid unknown clip is rejected by the runtime with controller source ownership (12294.509853ms)
+✔ real standalone scene safely leaves its ordinary automatic animation untouched (8240.069978ms)
+✔ real 32 explicit self edges inherit the bounded command queue after initial entry (12924.773325ms)
+✔ real 33 explicit self edges inherit the bounded command queue after initial entry (12845.581985ms)
+✔ state-controller ZIP runs elsewhere with exact source receipts after the author and build are removed (17733.145457ms)
+✔ real generated source validates all parameters and ports before startup and fail-stops partial admission (257.831697ms)
+✔ real saved BOM/CRLF source reopens, edits its event, and retains its exact declaration in an independently runnable ZIP (23937.3931ms)
+✔ one project inventories every scene and shares resource copies without rewriting GDScript or JSON author strings (108.994559ms)
+✔ assembly generation rejects inconsistent shared resource inventories and script inventory escape paths (56.052552ms)
+✔ real Godot imports all members and runs only the behavior entry in one project (6317.521701ms)
+✔ real Godot imports all members and runs only the audio entry in one project (6291.056317ms)
+✔ real Godot rejects a non-entry authored script parse error and maps it to that source (5888.30654ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 273945.509325
+
+
+COMMAND: env PATH="/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH" VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node --test --test-concurrency=2 scripts/tests/project-animation-state-godot.test.mjs scripts/tests/project-animation-completion-godot.test.mjs
+✔ real completion safely chains a nonloop clip into a loop with visual sampling (false) (14678.748751ms)
+✔ real completion safely chains a nonloop clip into a loop with visual sampling (true) (13636.936011ms)
+✔ real old author format naturally completes the whole timeline with null payload (false) (13665.124685ms)
+✔ real old author format naturally completes the whole timeline with null payload (true) (14644.675802ms)
+✔ real looping, seek-to-end, pause, stop and selection do not manufacture natural completions (14849.534414ms)
+✔ real replay rearms completion once and an unchanged endpoint never emits twice (13617.843157ms)
+✔ real subsequent pause_animation() cancels pending delivery without retiring the subscription (13671.947885ms)
+✔ real subsequent stop_animation() cancels pending delivery without retiring the subscription (12217.274627ms)
+✔ real subsequent seek_animation(0.1) cancels pending delivery without retiring the subscription (12093.277066ms)
+✔ real subsequent select_animation_clip(null) cancels pending delivery without retiring the subscription (12051.902333ms)
+✔ real subsequent play_animation() cancels pending delivery without retiring the subscription (13466.638456ms)
+✔ real command advancement records the preceding natural endpoint before cancelling its callback (15152.544596ms)
+✔ real finish request cancels pending completion before closing the scene (11950.658881ms)
+✔ real unregistering a captured callback skips it and a fresh subscription handles the next play (11914.017925ms)
+✔ real callback failure retains the recipient source and stops the delivery queue (11801.574436ms)
+✔ completion project ZIP is runnable with source ownership after author/build deletion (17067.704081ms)
+✔ real switching cancels old completion, revokes stale ports and reentry subscribes exactly once (11946.186348ms)
+✔ real freed recipient is skipped while another completion subscriber remains callable (13379.408535ms)
+✔ real completion starter guards absent, invalid and freed ports and preserves select failure (281.631422ms)
+✔ generated inventory accepts historical schemas 5/6/7 and explicitly requires completion scripts only for 8 (12.880925ms)
+✔ real completion follows the Rust subtraction boundary when endpoint addition rounds below duration (12483.665357ms)
+✔ only exact frozen state scripts select protocol8; manually edited scripts retain protocol7 (290.923297ms)
+✔ schema9 inventory rejects forged controller fields, duplicate bindings, clip mappings and missing runtime files (88.785571ms)
+✔ real snapshots distinguish two states selecting the same clip and retain frozen source navigation (15139.945774ms)
+✔ real two bindings of one script retain separate state snapshots in frozen binding order (14873.242964ms)
+✔ real event conditions and ordered branches are sampled from actual state rather than guessed from commands (12931.639019ms)
+✔ real deactivated controller is explicit rather than fabricated as an active state (13932.647239ms)
+✔ real freed controller is explicit rather than fabricated as an active state (14207.45921ms)
+✔ real diagnostic abort samples the controller before cleanup and does not fabricate a finished frame (15112.59926ms)
+✔ real scene reentry uses a new visit and does not reuse previous weak controller state (13090.866058ms)
+✔ real BOM/CRLF state controller and snapshot layer survive ZIP delivery after deleting author and build trees (21732.683461ms)
+✔ real v2 conditional script returns to idle on completion before its terminal snapshot (12329.651609ms)
+✔ real abort before controller creation reports unavailable while preserving the primary diagnostic (12778.16627ms)
+✔ real malformed private state fails explicitly and cannot masquerade as unavailable or a normal finish (14481.703355ms)
+✔ maximum schema9 controller inventory fits its bounded budget while old inventories keep their original limit (199.079986ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 254807.05338

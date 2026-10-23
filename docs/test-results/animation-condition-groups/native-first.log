@@ -1,0 +1,120 @@
+✖ real all/any groups preserve mixed strict scalar truth values and accept exactly one transition per matching group (130.380038ms)
+✖ real GDS short-circuit traces preserve leaf order repeated reads and skipped shared-state leaves (9.063613ms)
+✖ real mixed firstMatch groups and scalar branches read state at delivery time and execute only the first match (63.210815ms)
+✖ real a matching all group with rejected entry does not attempt a matching any branch or fallback (61.814959ms)
+✖ real payload-only v5 accepts the legacy port while a shared-state leaf requires read_state before side effects (5.414264ms)
+✖ real v5 BOM/CRLF group controller retains p9 entries completion and immutable author bytes in an independent ZIP (60.490439ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 468.637125
+
+✖ failing tests:
+
+test at scripts/tests/animation-combinations-godot.test.mjs:80:1
+✖ real all/any groups preserve mixed strict scalar truth values and accept exactly one transition per matching group (130.380038ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_tool_unavailable","message":"Cannot read the selected Godot executable.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":""}]
+  
+  false !== true
+  
+      at build (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:62:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:91:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/animation-combinations-godot.test.mjs:131:1
+✖ real GDS short-circuit traces preserve leaf order repeated reads and skipped shared-state leaves (9.063613ms)
+  Error: spawn /home/chiharukyu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 ENOENT
+      at ChildProcess._handle.onexit (node:internal/child_process:287:19)
+      at onErrorNT (node:internal/child_process:525:16)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'spawn /home/chiharukyu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64',
+    path: '/home/chiharukyu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64',
+    spawnargs: [ '--headless', '--path', '/tmp/viento-combinations-standalone-JsGJ61', '--script', 'res://probe.gd' ],
+    cmd: '/home/chiharukyu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 --headless --path /tmp/viento-combinations-standalone-JsGJ61 --script res://probe.gd',
+    stdout: '',
+    stderr: ''
+  }
+
+test at scripts/tests/animation-combinations-godot.test.mjs:178:1
+✖ real mixed firstMatch groups and scalar branches read state at delivery time and execute only the first match (63.210815ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_tool_unavailable","message":"Cannot read the selected Godot executable.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":""}]
+  
+  false !== true
+  
+      at build (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:62:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:185:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/animation-combinations-godot.test.mjs:191:1
+✖ real a matching all group with rejected entry does not attempt a matching any branch or fallback (61.814959ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_tool_unavailable","message":"Cannot read the selected Godot executable.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":""}]
+  
+  false !== true
+  
+      at build (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:62:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:192:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/animation-combinations-godot.test.mjs:198:1
+✖ real payload-only v5 accepts the legacy port while a shared-state leaf requires read_state before side effects (5.414264ms)
+  Error: spawn /home/chiharukyu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 ENOENT
+      at ChildProcess._handle.onexit (node:internal/child_process:287:19)
+      at onErrorNT (node:internal/child_process:525:16)
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'spawn /home/chiharukyu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64',
+    path: '/home/chiharukyu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64',
+    spawnargs: [ '--headless', '--path', '/tmp/viento-combinations-standalone-JGENmO', '--script', 'res://probe.gd' ],
+    cmd: '/home/chiharukyu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 --headless --path /tmp/viento-combinations-standalone-JGENmO --script res://probe.gd',
+    stdout: '',
+    stderr: ''
+  }
+
+test at scripts/tests/animation-combinations-godot.test.mjs:223:1
+✖ real v5 BOM/CRLF group controller retains p9 entries completion and immutable author bytes in an independent ZIP (60.490439ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_tool_unavailable","message":"Cannot read the selected Godot executable.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":""}]
+  
+  false !== true
+  
+      at build (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:62:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:225:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

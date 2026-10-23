@@ -1,4 +1,4 @@
-import { supportsStudioCoreAnimationStateConditions } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreAnimationStateConditions, supportsStudioCoreAnimationStateBranches, supportsStudioCoreAnimationStateSelectors, supportsStudioCoreAnimationStateCombinations } from '../../engine/studio-core.mjs';
 import { listScriptStarters, prepareScriptDraft, prepareAnimationStateScriptDraft, DEFAULT_ANIMATION_STATE_TABLE, supportsAnimationStateScript } from '../../engine/script-authoring.mjs';
 import { setupAnimationStateScript } from './app-animation-state-script.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
@@ -49,13 +49,41 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
     getContext: () => ({ active: dialog.open && isStateTable(), disabled: phase || !owns(), available: supportsAnimationStateScript() }),
     onChange: () => { if (!phase && dialog.open && isStateTable()) review(); },
   });
-  let conditionRevision = 0, observedConditionSupport;
+  let conditionRevision = 0, observedConditionSupport, observedBranchSupport, observedSelectorSupport, observedCombinationSupport;
+  const hasCombinations = () => tableEditor.getValue().transitions.some(edge => edge.trigger.condition && (Object.hasOwn(edge.trigger.condition, 'combine') || Object.hasOwn(edge.trigger.condition, 'conditions')));
+  const hasSelectors = () => tableEditor.getValue().transitions.some(edge => edge.trigger.condition && Object.hasOwn(edge.trigger.condition, 'selector'));
   const conditionsReady = () => {
-    if (!tableEditor.getValue().transitions.some(edge => Object.hasOwn(edge.trigger, 'condition'))) return true;
-    const supported = supportsStudioCoreAnimationStateConditions();
-    if (observedConditionSupport !== undefined && observedConditionSupport !== supported) conditionRevision++;
-    observedConditionSupport = supported; return supported;
+    const table = tableEditor.getValue();
+    if (hasCombinations()) {
+      const supported = supportsStudioCoreAnimationStateCombinations();
+      if (observedCombinationSupport !== undefined && observedCombinationSupport !== supported) conditionRevision++;
+      observedCombinationSupport = supported; return supported;
+    }
+    if (hasSelectors()) {
+      const supported = supportsStudioCoreAnimationStateSelectors();
+      if (observedSelectorSupport !== undefined && observedSelectorSupport !== supported) conditionRevision++;
+      observedSelectorSupport = supported; return supported;
+    }
+    let ready = true;
+    if (table.eventSelection !== 'firstMatch' && table.transitions.some(edge => Object.hasOwn(edge.trigger, 'condition'))) {
+      const supported = supportsStudioCoreAnimationStateConditions();
+      if (observedConditionSupport !== undefined && observedConditionSupport !== supported) conditionRevision++;
+      observedConditionSupport = supported; ready = supported;
+    }
+    if (table.eventSelection === 'firstMatch') {
+      const supported = supportsStudioCoreAnimationStateBranches();
+      if (observedBranchSupport !== undefined && observedBranchSupport !== supported) conditionRevision++;
+      observedBranchSupport = supported; ready = ready && supported;
+    }
+    return ready;
   };
+  const capabilityMessage = () => hasCombinations() && !supportsStudioCoreAnimationStateCombinations()
+    ? '当前核心不支持组合条件；已有输入会保留，可明确切回单条件。'
+    : hasSelectors() && !supportsStudioCoreAnimationStateSelectors()
+    ? '当前核心不支持项目共享状态条件；已有输入会保留，可选择事件载荷或无条件。'
+    : tableEditor.getValue().eventSelection === 'firstMatch' && !supportsStudioCoreAnimationStateBranches()
+    ? '当前核心不支持有序事件分支；已有输入会保留，可切回单一转换模式。'
+    : '当前核心不支持事件载荷条件；无条件转换仍可编辑，已有条件会保留。';
   const signature = () => JSON.stringify({ ...raw(), table: tableEditor.getValue() });
   const coreContext = context => ({ sourceToken: context.sourceToken, documentRoot: context.documentRoot,
     documentTypes: context.documentTypes?.map(item => ({ id: item.id, label: item.label })) });
@@ -116,9 +144,13 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
           : (error?.code || error?.errorCode) === 'animation_state_condition_invalid'
             ? '请检查事件载荷条件的类型、比较方式和比较值。'
             : error?.code === 'studio_core_unavailable' || error?.errorCode === 'studio_core_unavailable'
-          ? '当前核心不支持动画状态表；其他起始脚本仍可使用。'
+          ? supportsAnimationStateScript() ? capabilityMessage() : '当前核心不支持动画状态表；其他起始脚本仍可使用。'
           : error?.code === 'animation_state_table_invalid' || error?.errorCode === 'animation_state_table_invalid'
-            ? tableEditor.getValue().transitions.some(edge => Object.hasOwn(edge.trigger, 'condition'))
+            ? hasCombinations() ? '请检查状态、转换及组合条件：每组需要 1–8 项有效条件，不支持空组、嵌套或无条件项。'
+              : hasSelectors() ? '请检查状态标识、转换、共享状态键以及条件的类型、比较方式和比较值。'
+              : tableEditor.getValue().eventSelection === 'firstMatch'
+              ? '请检查状态与事件分支：条件分支按顺序排列，无条件分支只能位于同一状态、同名事件的最后。'
+              : tableEditor.getValue().transitions.some(edge => Object.hasOwn(edge.trigger, 'condition'))
               ? '请检查状态标识、初始状态、转换及事件载荷条件。'
               : '请检查状态标识、初始状态和转换：标识不能重复或缺失，同一触发不能重复。'
             : '请选择当前工程的文档类型，并填写正文目录内有效的 .txt 路径。';
@@ -138,7 +170,7 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
     closeDialog(); return true;
   }
   async function apply() {
-    if (phase || !owns() || (isStateTable() && !supportsAnimationStateScript())) { if (!phase) review(); return; }
+    if (phase || !owns() || (isStateTable() && (!supportsAnimationStateScript() || !conditionsReady()))) { if (!phase) review(); return; }
     // Programmatic edits must also receive a visible preview before handoff.
     if (!proposal || reviewed !== signature()) { review(); return; }
     const generation = epoch, form = signature(), candidate = proposal, conditionVersion = conditionRevision;
@@ -165,7 +197,7 @@ export function setupScriptCreate({ getContext = () => ({}), createDraft = async
   function refresh() {
     if (disposed) return;
     if (dialog.open && isStateTable() && (!supportsAnimationStateScript() || !conditionsReady())) {
-      proposal = null; reviewed = ''; message = '当前核心不支持动画状态表；其他起始脚本仍可使用。';
+      proposal = null; reviewed = ''; message = supportsAnimationStateScript() ? capabilityMessage() : '当前核心不支持动画状态表；其他起始脚本仍可使用。';
     }
     if (dialog.open && !owns()) {
       invalidated = true;

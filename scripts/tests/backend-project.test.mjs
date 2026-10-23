@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import { validateBackendProjectManifest, summarizeBackendProject } from '../../engine/backend-project.mjs';
+import { projectAssemblyBuildFixture } from './helpers/project-assembly-backend-fixture.mjs';
+import { createBackendProjectDeliveryReview } from '../../engine/backend-project-delivery.mjs';
 import { backendProjectFixture } from './helpers/backend-project-fixture.mjs';
 const invalid = { errorCode: 'backend_project_invalid' };
 
@@ -91,4 +93,44 @@ test('the readable published manifest must fit its byte budget even when compact
     sourceRevision:null,role:'author-document'}))].sort((a,b)=>a.sourcePath<b.sourcePath?-1:1);
   assert.ok(Buffer.byteLength(JSON.stringify(p))<4*1024*1024);assert.ok(Buffer.byteLength(JSON.stringify(p,null,2)+'\n')>4*1024*1024);
   assert.throws(()=>validateBackendProjectManifest(p),invalid);
+});
+
+
+test('protocol 9 assembly manifests and delivery reviews admit 1024 generated files plus 128 resources', async t => {
+  const f = await projectAssemblyBuildFixture(t), p = structuredClone(f.project);
+  p.backend.protocolVersion = 9; p.backend.version = '0.18.0';
+  const digest = 'a'.repeat(64);
+  p.files = [{ path: p.project.entry, size: 1, sha256: digest, role: 'generated', resourceId: null, sourceObjectId: null },
+    ...Array.from({ length: 1023 }, (_, index) => ({ path: `project/wrappers/${index}.gd`, size: 1, sha256: digest,
+      role: 'generated', resourceId: null, sourceObjectId: null }))];
+  p.resources = Array.from({ length: 128 }, (_, index) => ({ resourceId: `a0000000-0000-4000-8000-${String(index).padStart(12, '0')}`,
+    sourcePath: `assets/${index}.png`, generatedPath: `project/assets/${String(index).padStart(3, '0')}.png`, size: 1, sha256: digest }));
+  p.files.push(...p.resources.map(resource => ({ path: resource.generatedPath, size: resource.size, sha256: resource.sha256,
+    role: 'resource-copy', resourceId: resource.resourceId, sourceObjectId: null })));
+  p.files.sort((a, b) => a.path < b.path ? -1 : 1);
+  assert.equal(validateBackendProjectManifest(p).files.length, 1152);
+  assert.equal(createBackendProjectDeliveryReview(p, digest).project.files.length, 1152);
+  for (const mutate of [
+    next => { next.files.push({ ...next.files[0], path: 'project/zz-overflow.gd', role: 'generated', resourceId: null }); },
+    next => { const file = next.files.find(file => file.role === 'resource-copy');
+      next.resources = next.resources.filter(resource => resource.resourceId !== file.resourceId); file.role = 'generated'; file.resourceId = null; },
+    next => { next.backend.protocolVersion = 8; },
+    next => { next.backend.id = next.executionAdapter.id = 'org.viento.bevy'; },
+    next => { next.project.kind = 'other-project'; },
+  ]) {
+    const next = structuredClone(p); mutate(next);
+    assert.throws(() => validateBackendProjectManifest(next), invalid);
+    assert.throws(() => createBackendProjectDeliveryReview(next, digest), { errorCode: 'backend_project_delivery_invalid' });
+  }
+  const standalone = structuredClone((await backendProjectFixture(t)).project);
+  standalone.backend.protocolVersion = 9;
+  standalone.files = p.files.filter(file => file.role === 'generated').slice(0, 641);
+  standalone.resources = [];
+  assert.ok(standalone.files.some(file => file.path === standalone.project.entry));
+  assert.throws(() => validateBackendProjectManifest(standalone), invalid);
+  const legacy = structuredClone(p); legacy.backend.protocolVersion = 8; legacy.resources = [];
+  legacy.files = p.files.filter(file => file.role === 'generated').slice(0, 640);
+  assert.equal(validateBackendProjectManifest(legacy).files.length, 640);
+  legacy.files.push({ ...legacy.files[0], path: 'project/zz-overflow.gd' });
+  assert.throws(() => validateBackendProjectManifest(legacy), invalid);
 });

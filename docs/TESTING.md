@@ -1034,3 +1034,33 @@ node scripts/check-project.mjs --app-only
 ```
 
 分别验证独立项目协议、每次访问的对象归属、迟到来源导航、真实 A→B→A、声音退出与工程 ZIP 异地运行。旧组装记录保持原结果，本轮另存[场景切换证据](test-results/project-scene-switching/README.md)。窗口预览与 Android／Tauri 安装验收分别标注。
+
+
+有序动画分支的[独立验收](test-results/animation-state-branches/README.md)覆盖新可选Rust能力、旧v1/v2兼容、分支顺序和兜底、双目录普通保存、真实Chrome三语与Godot执行。可运行 `node --test scripts/tests/animation-state-branches-*.test.mjs scripts/tests/animation-branches-*.test.mjs`；实际引擎项需设置 `VIENTO_GODOT_BIN`，Chrome使用 `node scripts/tests/animation-state-branches-smoke.mjs /usr/bin/google-chrome`。每次浏览器实测输出到该专题下新的空目录，保留历史结果；默认应用检查中的条件跳过不计作原生通过。
+
+
+动画状态快照的[独立验收](test-results/project-animation-state-snapshot/README.md)分别记录冻结目录/协议、错误来源、界面和实际Godot。运行 `node --test scripts/tests/project-animation-states.test.mjs scripts/tests/project-animation-state-observation-ui.test.mjs`；完整应用仍用 `node scripts/check-project.mjs --app-only`。实际Chrome使用 `VIENTO_GODOT_BIN=/绝对路径/Godot node scripts/tests/project-animation-state-snapshot-smoke.mjs /usr/bin/google-chrome`，自动写入本专题下新的空证据目录并清理临时作品。它通过界面构建运行并核对真实快照、三语390px、来源导航和作者文件不变，不替代安装版或设备验收。
+
+
+动画成功进入记录的[独立验收](test-results/project-animation-state-entries/README.md)覆盖协议9、旧协议8精确字段、同状态重启及同帧多跳。域与界面可运行 `node --test scripts/tests/project-animation-state-entries.test.mjs scripts/tests/project-animation-state-entry-observation-ui.test.mjs`。真实Chrome运行 `VIENTO_GODOT_BIN=/绝对路径/Godot node scripts/tests/project-animation-state-entries-smoke.mjs /usr/bin/google-chrome`，使用隔离临时作品并输出新的空证据目录；真实引擎测试分批执行并保留完整汇总，条件跳过不计原生通过。
+
+
+## 动画控制器运行记录回看
+
+新增[回看专题](test-results/project-animation-state-review/README.md)覆盖纯模型分组与来源验真、历史选择和异步导航撤销、宿主传输、中英日与实际Godot/Chrome。运行 `node --test scripts/tests/project-animation-state-review.test.mjs scripts/tests/project-animation-state-review-ui.test.mjs scripts/tests/project-animation-state-entry-observation-ui.test.mjs scripts/tests/project-animation-observation-build-ui.test.mjs`。实际浏览器使用 `VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/project-animation-state-review-smoke.mjs /usr/bin/google-chrome`，只修改临时作品并输出新证据目录。
+
+同截止序号的进入可以看到相同后续命令，测试不得把它们当作一一配对。运行协议及后端源码未改，历史原生结果不改标为本轮重跑；本轮实际Godot范围以浏览器报告为准，安装版、其他平台与原生视觉效果分别验收。
+
+
+## 动画共享状态条件
+
+[本轮验收](test-results/animation-shared-state-conditions/README.md)分别记录独立Rust能力、桥接回执、源码版本兼容、三语输入与审阅、真实Godot及Chrome。共享键缺失或类型不符时，连 `ne` 也必须不匹配；混用载荷与共享条件时严格保持作者顺序，已匹配请求失败不得落入后续兜底。实际运行还须验证事件发布后、投递前修改状态的读取时机，不能只断言生成文本包含 `read_state`。
+
+浏览器运行 `VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/animation-shared-state-conditions-smoke.mjs /usr/bin/google-chrome`，只修改临时作品并写入新的证据目录。创建预览、重编辑审阅、普通TXT保存、再打开、项目构建与运行分开断言；安装、Android、Bevy及原生画面不由这项测试代替。旧v1–v3发射器与历史报告逐文件比对，WASM仅新增可选能力，最终完整应用检查覆盖现有回归。
+
+
+## 动画组合条件
+
+[本轮验收](test-results/animation-condition-groups/README.md)覆盖1–8项、拒绝空组和嵌套、每项严格类型/来源、数字叶子预算、独立核心能力及完整回执；v5必须实际含组，旧v1–v4封套不得夹带组。旧生成器逐文件比对。运行测试须实际记录读取顺序，验证all/any短路、重复键逐次读取、事件交付时取值、缺键/跨类型不匹配，以及已匹配请求失败不兜底；不能只检查生成文本。
+
+运行浏览器链路：`VIENTO_GODOT_BIN=/absolute/path/to/godot node scripts/tests/animation-condition-groups-smoke.mjs /usr/bin/google-chrome`。临时作品中先审阅、保存all并运行，再改any、保存重建运行，分别断言进入记录和末态。创建取消、重编辑排序、单条件/组缓冲、三语390px焦点、无越界和保存文件范围分别核验；结果不代表安装版、Android、Bevy或原生画面验收。

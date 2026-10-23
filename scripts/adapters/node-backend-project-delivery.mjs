@@ -135,7 +135,7 @@ export async function verifyBackendProjectDelivery(file, { signal } = {}) {
     for await (const entry of zip.eachEntry()) {
       signal?.throwIfAborted();
       const mode = (entry.externalFileAttributes >>> 16) & 0o170000;
-      if (entries.size >= 642 || !portablePath(entry.fileName) || entries.has(entry.fileName)
+      if (entries.size >= 1154 || !portablePath(entry.fileName) || entries.has(entry.fileName)
         || mode && mode !== 0o100000 || entry.externalFileAttributes & 0x10 || entry.isEncrypted() || ![0, 8].includes(entry.compressionMethod)
         || entry.uncompressedSize > (entry.fileName === 'manifest.json' ? MANIFEST_BYTES : entry.fileName === 'README.md' ? README_BYTES : FILE_BYTES)) fail();
       total += entry.uncompressedSize;
@@ -168,6 +168,11 @@ export async function verifyBackendProjectDelivery(file, { signal } = {}) {
     let manifest; try { manifest = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes)); } catch { fail(); }
     if (!exact(manifest, ['format', 'schemaVersion', 'provenance', 'files']) || manifest.format !== 'viento-build-delivery' || manifest.schemaVersion !== 1) fail();
     const review = validateBackendProjectDeliveryReview(manifest.provenance);
+    // The pre-manifest ceiling admits new generated controller wrappers. Only
+    // validated protocol 9 Godot assemblies gain the larger delivery inventory.
+    const expandedInventory = review.project.schemaVersion === 2 && review.project.backend.id === 'org.viento.godot4'
+      && review.project.backend.protocolVersion === 9 && review.project.project.kind === 'godot-project';
+    if (entries.size > (expandedInventory ? 1154 : 642)) fail();
     const expected = new Map(review.project.files.map(row => [row.path, { size: row.size, sha256: row.sha256 }]));
     const readmeBytes = readme(review); expected.set('README.md', { size: readmeBytes.length, sha256: hash(readmeBytes) });
     if (!Array.isArray(manifest.files) || manifest.files.length !== expected.size || entries.size !== expected.size + 1) fail();

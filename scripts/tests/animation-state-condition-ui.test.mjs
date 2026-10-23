@@ -6,9 +6,9 @@ import en from '../../web/i18n/en.js';
 import ja from '../../web/i18n/ja.js';
 const copy=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
 const base=()=>({initialState:'idle',states:[{key:'idle'},{key:'attack'}],transitions:[{from:'idle',to:'attack',trigger:{kind:'event',name:'hit'}},{from:'attack',to:'idle',trigger:{kind:'completed'}}]});
-async function fixture(t,{parent=false,value,available=true}={}){
- let changes=0,language='zh',capability=available;const context={active:true,available,disabled:false};
- const h=await dialogHarness(parent?'app-animation-state-script':'app-animation-state-condition',{supportsStudioCoreAnimationStateConditions:()=>capability});
+async function fixture(t,{parent=false,value,available=true,selectorsAvailable=true,branchesAvailable=true}={}){
+ let changes=0,language='zh',capability=available,selectors=selectorsAvailable;const context={active:true,available,selectorsAvailable,disabled:false};
+ const h=await dialogHarness(parent?'app-animation-state-script':'app-animation-state-condition',{supportsStudioCoreAnimationStateConditions:()=>capability,supportsStudioCoreAnimationStateSelectors:()=>selectors,supportsStudioCoreAnimationStateBranches:()=>branchesAvailable});
  const container=h.document.createElement('div');h.document.body.append(container);
  const translate=(key,...args)=>({en,ja}[language]?.[key]||key).replace(/\{(\d+)\}/g,(_,i)=>String(args[i]??''));
  const controller=parent?h.runtime.setupAnimationStateScript({container,getContext:()=>context,onChange:()=>changes++,translate})
@@ -18,6 +18,7 @@ async function fixture(t,{parent=false,value,available=true}={}){
  return{...h,container,context,controller,el,parent,changes:()=>changes,value:()=>copy(controller.getValue()),
  set(suffix,value,event='change'){const element=el(suffix);element.value=value;if(event)element.dispatch(event);},
  language(value){language=value;controller.refresh();},capability(value){capability=value;if(!parent)context.available=value;controller.refresh();},
+ selectorCapability(value){selectors=value;context.selectorsAvailable=value;controller.refresh();},
  form(suffix,value,event='change'){const element=h.element('animationStateScript'+suffix);element.value=value;if(event)element.dispatch(event);}};
 }
 
@@ -59,7 +60,7 @@ test('three-language refresh preserves raw inputs, active nodes and selections w
 });
 
 test('condition capability absence disables only assistance and preserves an existing condition',async t=>{
- const condition={type:'boolean',operator:'eq',value:false},h=await fixture(t,{available:false,value:condition});assert.deepEqual(h.value(),condition);assert.equal(h.el('Mode').disabled,true);assert.match(h.el('Status').textContent,/已有条件会保留/);
+ const condition={type:'boolean',operator:'eq',value:false},h=await fixture(t,{available:false,selectorsAvailable:false,value:condition});assert.deepEqual(h.value(),condition);assert.equal(h.el('Mode').disabled,false);assert.equal(h.el('Type').disabled,true);assert.match(h.el('Status').textContent,/已有条件会保留/);
  h.el('Mode').dispatch('change');assert.equal(h.changes(),0);h.capability(true);assert.equal(h.el('Mode').disabled,false);assert.deepEqual(h.value(),condition);
 });
 
@@ -69,7 +70,7 @@ test('disabled, hidden and disposed controls cannot report changes through retai
 });
 
 test('shared legacy tables keep the exact old DTO and a missing new marker does not disable old fields',async t=>{
- const h=await fixture(t,{parent:true,available:false});h.context.available=true;h.controller.refresh();assert.deepEqual(h.value(),base());assert.equal(h.el('Mode').disabled,true);
+ const h=await fixture(t,{parent:true,available:false,selectorsAvailable:false});h.context.available=true;h.controller.refresh();assert.deepEqual(h.value(),base());assert.equal(h.el('Mode').disabled,false);assert.equal(h.el('Mode').children.find(item=>item.value==='compare').disabled,true);
  h.form('State2Key','changed','input');assert.equal(h.value().states[1].key,'changed');assert.equal(h.value().transitions[0].to,'changed');assert.equal(h.value().transitions[0].trigger.condition,undefined);
 });
 
@@ -98,4 +99,53 @@ test('all condition labels, hints and validation messages have English and Japan
 test('conditional graphs clear when the optional condition marker is withdrawn, while ordinary graphs remain available',async t=>{
  const h=await fixture(t,{parent:true});h.set('Mode','compare');h.element('animationStateScriptGraphToggle').click();assert.equal(h.element('animationStateScriptGraphCanvas').children.length,1);h.capability(false);assert.equal(h.element('animationStateScriptGraphCanvas').children.length,0);assert.deepEqual(h.value().transitions[0].trigger.condition,{type:'string',operator:'eq',value:''});
  const old=await fixture(t,{parent:true});old.element('animationStateScriptGraphToggle').click();old.capability(false);assert.equal(old.element('animationStateScriptGraphCanvas').children.length,1);assert.deepEqual(old.value(),base());
+});
+
+
+test('shared and payload conditions keep independent typed buffers including unfinished numbers and CRLF',async t=>{
+ const payload={type:'string',operator:'ne',value:'a\r\n🙂'},h=await fixture(t,{value:payload});
+ h.set('Type','number');h.set('Number','1e-','input');h.set('Operator','lt');h.set('Mode','shared');h.set('Key','combat.enabled','input');h.set('Type','boolean');h.set('Boolean','true');
+ const shared={type:'boolean',operator:'eq',value:true,selector:{kind:'projectState',key:'combat.enabled'}};assert.deepEqual(h.value(),shared);
+ h.set('Mode','compare');assert.deepEqual(h.value(),{type:'number',operator:'lt',value:'1e-'});h.set('Type','string');assert.equal(h.value().value,payload.value);
+ h.set('Mode','none');assert.equal(h.value(),undefined);h.set('Mode','shared');assert.deepEqual(h.value(),shared);assert.equal(h.el('Key').value,'combat.enabled');
+ h.set('Type','number');h.set('Number','0','input');assert.equal(h.value().value,0);h.set('Type','string');h.set('String','','input');assert.equal(h.value().value,'');h.set('Type','boolean');assert.equal(h.value().value,true);
+});
+
+test('shared keys retain invalid spelling and whitespace while valid keys are literal and case sensitive',async t=>{
+ const h=await fixture(t);h.set('Mode','shared');
+ for(const key of['',' combat.enabled','combat.enabled ','1flag','constructor','prototype','__proto__','状态','a'.repeat(65)]){h.set('Key',key,'input');assert.equal(h.value().selector.key,key);assert.equal(h.el('Key').getAttribute('aria-invalid'),'true');assert.match(h.el('Status').textContent,/状态键/);}
+ for(const key of['Combat.Enabled','a-b_c.1','a'.repeat(64)]){h.set('Key',key,'input');assert.equal(h.value().selector.key,key);assert.equal(h.el('Key').getAttribute('aria-invalid'),'false');}
+ assert.match(h.el('Note').textContent,/状态改变本身不触发/);
+});
+
+test('withdrawing shared assistance retains its values and permits explicit fallback to payload or none',async t=>{
+ const h=await fixture(t);h.set('Mode','compare');h.set('Type','boolean');h.set('Boolean','true');h.set('Mode','shared');h.set('Key','combat.enabled','input');const shared=h.value();
+ h.selectorCapability(false);assert.deepEqual(h.value(),shared);assert.equal(h.el('Mode').disabled,false);assert.equal(h.el('Key').disabled,true);assert.match(h.el('Status').textContent,/项目共享状态条件/);
+ h.set('Mode','compare');assert.deepEqual(h.value(),{type:'boolean',operator:'eq',value:true});h.set('Mode','shared');assert.equal(h.el('Mode').value,'compare');
+ h.selectorCapability(true);h.set('Mode','shared');assert.deepEqual(h.value(),shared);h.selectorCapability(false);h.set('Mode','none');assert.equal(h.value(),undefined);
+});
+
+test('shared input survives event-kind round trips and language refresh without replacing focused nodes',async t=>{
+ const h=await fixture(t,{parent:true});h.set('Mode','shared');h.set('Key','combat.enabled','input');h.set('Type','number');h.set('Number','1e-','input');const condition=h.value().transitions[0].trigger.condition;
+ h.form('Transition1Kind','completed');assert.deepEqual(h.value().transitions[0].trigger,{kind:'completed'});h.form('Transition1Kind','event');assert.deepEqual(h.value().transitions[0].trigger.condition,condition);
+ const key=h.el('Key'),count=h.changes();key.focus();key.selectionStart=2;key.selectionEnd=8;
+ for(const locale of['en','ja','zh']){h.language(locale);assert.equal(h.el('Key'),key);assert.equal(h.document.activeElement,key);assert.deepEqual([key.selectionStart,key.selectionEnd],[2,8]);assert.equal(h.el('Number').value,'1e-');assert.equal(h.changes(),count);}
+});
+
+test('selector-only capability supports mixed ordered conditions and preserves row buffers through reordering',async t=>{
+ const table=base();table.eventSelection='firstMatch';table.transitions[0].trigger.condition={type:'boolean',operator:'eq',value:true,selector:{kind:'projectState',key:'combat.enabled'}};
+ table.transitions.push({from:'idle',to:'idle',trigger:{kind:'event',name:'hit',condition:{type:'number',operator:'gte',value:10}}});
+ const h=await fixture(t,{parent:true,value:table,available:false,branchesAvailable:false});h.context.available=true;h.controller.refresh();
+ assert.equal(h.el('Key').disabled,false);assert.equal(h.element('animationStateScriptTransition3ConditionNumber').disabled,false);h.element('animationStateScriptGraphToggle').click();assert.equal(h.element('animationStateScriptGraphCanvas').children.length,1);
+ const key=h.el('Key');key.focus();key.selectionStart=1;key.selectionEnd=5;h.element('animationStateScriptTransition1MoveDown').click();assert.equal(h.value().transitions[1].trigger.condition.selector.key,'combat.enabled');assert.equal(h.el('Key'),key);assert.equal(h.document.activeElement,key);assert.deepEqual([key.selectionStart,key.selectionEnd],[1,5]);
+ h.selectorCapability(false);assert.equal(h.element('animationStateScriptGraphCanvas').children.length,0);assert.equal(h.el('Key').value,'combat.enabled');h.selectorCapability(true);assert.equal(h.element('animationStateScriptGraphCanvas').children.length,1);
+});
+
+
+test('a shared parent row can visibly choose payload when selectors are unavailable but legacy conditions remain supported',async t=>{
+ const table=base();table.transitions[0].trigger.condition={type:'boolean',operator:'eq',value:true,selector:{kind:'projectState',key:'combat.enabled'}};
+ const h=await fixture(t,{parent:true,value:table});h.selectorCapability(false);
+ const compare=h.el('Mode').children.find(option=>option.value==='compare');assert.equal(compare.disabled,false);assert.equal(h.el('Key').disabled,true);
+ h.set('Mode','compare');assert.equal(h.el('Mode').value,'compare');assert.equal(h.el('Type').disabled,false);assert.equal(Object.hasOwn(h.value().transitions[0].trigger.condition,'selector'),false);
+ h.element('animationStateScriptGraphToggle').click();assert.equal(h.element('animationStateScriptGraphCanvas').children.length,1);
 });

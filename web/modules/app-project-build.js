@@ -1,3 +1,5 @@
+import { setupProjectAnimationStateEntryObservation } from './app-project-animation-state-entry-observation.js';
+import { setupProjectAnimationStateObservation } from './app-project-animation-state-observation.js';
 import { setupProjectAnimationCompletionObservation } from './app-project-animation-completion-observation.js';
 import { setupProjectAnimationObservation } from './app-project-animation-observation.js';
 import { setupProjectAudioObservation } from './app-project-audio-observation.js';
@@ -33,6 +35,9 @@ import { setupRuntimeCaseReport } from './app-runtime-case-report.js';
 import { setupBackendProjectDelivery } from './app-backend-project-delivery.js';
 import { setupBackendProject } from './app-backend-project.js';
 const errorLabels = {
+  runtime_behavior_animation_state_entry_invalid: '动画状态进入记录与构建时的控制器身份或状态不一致，运行已停止。',
+  runtime_behavior_animation_state_entry_limit: '动画状态进入记录超出本次运行的 128 条限制，运行已停止；请减少重复进入或拆分测试。',
+  build_animation_state_parameters_invalid: '动画状态脚本的片段参数必须是空字符串或小写 UUID，请检查行为绑定。',
   build_projection_invalid: '场景引用的投影无效，请检查投影原文。',
   build_projection_source: '投影的来源对象不可读取或不是普通对象，请检查来源。',
   build_projection_unlinked: '投影缺少来源关系，请检查对象登记。',
@@ -197,7 +202,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <div id="projectSharedState"></div>
     <div id="projectEventTrace"></div>
     <div id="projectAudioCommands"></div>
-    <div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div>
+    <div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div><div id="projectAnimationStates"></div><div id="projectAnimationStateEntries"></div>
     <section id="projectBuildBehaviorEvents" hidden aria-labelledby="projectBuildBehaviorEventsTitle"><h3 id="projectBuildBehaviorEventsTitle" data-i18n="行为事件"></h3><ul id="projectBuildBehaviorEventList"></ul></section>
     <details class="build-raw"><summary data-i18n="原始细节与日志"></summary><pre id="projectBuildLogs" tabindex="0"></pre></details></section>`;
   document.body.append(dialog);
@@ -712,13 +717,41 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       return navigateOwnedSource([source.sourcePath, source], owns);
     },
   }) : { setSnapshot() {}, refresh() {} };
+  const animationStateObservation = typeof setupProjectAnimationStateObservation === 'function' ? setupProjectAnimationStateObservation({
+    container: el('projectAnimationStates'),
+    getContext: () => {
+      const observed = runtimeObservation();
+      return { available: available && Boolean(observed?.members), visible: dialog.open && activeTab === 'build',
+        sessionOwner: observed?.sessionOwner || '', navigationOwner: observed?.owner || '', canOpenSource: mayOpenRuntimeSource() };
+    },
+    onOpen: async (source, { isCurrent }) => {
+      if (!mayOpenRuntimeSource() || !isCurrent()) return false;
+      const owns = () => ownsRuntimeSourceContext() && isCurrent();
+      return navigateOwnedSource([source.sourcePath, source], owns);
+    },
+  }) : { setSnapshot() {}, refresh() {} };
+  const animationStateEntryObservation = typeof setupProjectAnimationStateEntryObservation === 'function' ? setupProjectAnimationStateEntryObservation({
+    container: el('projectAnimationStateEntries'),
+    getContext: () => {
+      const observed = runtimeObservation();
+      return { available: available && Boolean(observed?.members), visible: dialog.open && activeTab === 'build',
+        sessionOwner: observed?.sessionOwner || '', navigationOwner: observed?.owner || '', canOpenSource: mayOpenRuntimeSource(), canContinueSource: ownsRuntimeSourceContext() };
+    },
+    onOpen: async (source, { isCurrent }) => {
+      if (!mayOpenRuntimeSource() || !isCurrent()) return false;
+      const owns = () => ownsRuntimeSourceContext() && isCurrent();
+      return navigateOwnedSource([source.sourcePath, source], owns);
+    },
+  }) : { setObservation() {}, refresh() {} };
   function renderRuntimeObjects() {
     const observation = runtimeObservation(), owner = observation?.owner || '';
-    stateObservation.setSnapshot([2, 3, 4, 5, 6, 7].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
-    eventObservation.setSnapshot([3, 4, 5, 6, 7].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
-    audioObservation.setSnapshot([4, 5, 6, 7].includes(observation?.view.project?.protocolVersion) ? observation.view.project.audioCommands : null);
-    animationObservation.setSnapshot([5, 6, 7].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCommands : null, { protocolVersion: observation?.view.project?.protocolVersion >= 6 ? observation.view.project.protocolVersion : 5 });
-    animationCompletionObservation.setSnapshot(observation?.view.project?.protocolVersion === 7 ? observation.view.project.animationCompletions : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
+    stateObservation.setSnapshot([2, 3, 4, 5, 6, 7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
+    eventObservation.setSnapshot([3, 4, 5, 6, 7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
+    audioObservation.setSnapshot([4, 5, 6, 7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.audioCommands : null);
+    animationObservation.setSnapshot([5, 6, 7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCommands : null, { protocolVersion: observation?.view.project?.protocolVersion >= 6 ? observation.view.project.protocolVersion : 5 });
+    animationCompletionObservation.setSnapshot([7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCompletions : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
+    animationStateObservation.setSnapshot([8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationStates : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
+    animationStateEntryObservation.setObservation(observation?.view.project?.protocolVersion === 9 ? observation.view : null);
     const panel = el('projectBuildRuntimeObjects'), input = el('projectBuildRuntimeSearch'), list = el('projectBuildRuntimeObjectList');
     const ownerChanged = runtimeOwner !== owner;
     if (ownerChanged) { runtimeOwner = owner; runtimeSearch = ''; input.value = ''; runtimeCardSignature = ''; }
@@ -1170,6 +1203,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     audioObservation.refresh();
     animationObservation.refresh();
     animationCompletionObservation.refresh();
+    animationStateObservation.refresh();
+    animationStateEntryObservation.refresh();
     const pending = pendingSourceFocus; pendingSourceFocus = null;
     const current = pending?.session === dialogSession && pending.epoch === sourceNavigationEpoch;
     sourceNavigationEpoch++;

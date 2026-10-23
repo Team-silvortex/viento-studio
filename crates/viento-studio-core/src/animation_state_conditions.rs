@@ -51,7 +51,7 @@ fn category(value: &Value) -> Option<&'static str> {
         _ => None,
     }
 }
-fn inspect(condition: &Value) -> Result<Value, CoreError> {
+pub(crate) fn inspect(condition: &Value) -> Result<Value, CoreError> {
     if !exact(condition, &["type", "operator", "value"]) {
         return Err(invalid());
     }
@@ -134,9 +134,9 @@ pub(crate) fn dispatch_condition(
     })
 }
 // Reserve a fixed conservative 32 bytes for each numeric condition constant.
-// This budget is specific to inspectConditional: Rust and JS serializers may
+// Conditional and ordered-branch tables share this budget: Rust and JS may
 // spell the same small number as decimal or exponent text of different lengths.
-fn declaration_bytes(table: &Value) -> Result<usize, CoreError> {
+pub(crate) fn declaration_bytes(table: &Value) -> Result<usize, CoreError> {
     let mut bytes = serde_json::to_vec(table)
         .map_err(|_| table_invalid())?
         .len();

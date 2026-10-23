@@ -1,0 +1,38 @@
+✔ actual ordered branches select one declared first match and otherwise use the last fallback (11622.993225ms)
+✔ actual ordered branches select one reordered first match and otherwise use the last fallback (11755.346916ms)
+✔ unmatched conditions including cross-type ne preserve the state and live subscription until a later matching event (11807.371042ms)
+✔ a matching self-edge restarts once, entering a new state does not cascade, and natural completion returns once (11885.984371ms)
+✖ ordered event group unmatched at a natural completion safe point retains existing scheduling semantics (8396.662951ms)
+✔ ordered event group matching at a natural completion safe point retains existing scheduling semantics (11944.797361ms)
+✔ failure entering the first matching branch stops execution without attempting the fallback (11652.412074ms)
+✔ explicit firstMatch with no transitions compiles and activates without event subscriptions (11648.77724ms)
+✔ v3 exact floating thresholds and encoded Unicode strings choose the corresponding branch (11697.814064ms)
+✔ v3 BOM/CRLF source survives independent ZIP delivery after author and build removal (21572.995802ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 124165.642043
+
+✖ failing tests:
+
+test at scripts/tests/animation-branches-godot.test.mjs:97:33
+✖ ordered event group unmatched at a natural completion safe point retains existing scheduling semantics (8396.662951ms)
+  AssertionError [ERR_ASSERTION]: {"ok":false,"status":"failed","diagnostics":[{"severity":"error","code":"runtime_adapter_changed","message":"Execution adapter changed; rebuild this project before running.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":""}]}
+  
+  false !== true
+  
+      at passed (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-branches-godot.test.mjs:22:29)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-branches-godot.test.mjs:100:255)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

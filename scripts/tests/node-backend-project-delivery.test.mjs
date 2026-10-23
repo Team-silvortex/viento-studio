@@ -166,3 +166,65 @@ test('ZIP verifier checks extractor CRC and local header names compression flags
     await assert.rejects(verifyBackendProjectDelivery(file), invalid);
   }
 });
+
+
+async function boundedInventoryDelivery(t, { count, protocolVersion }) {
+  const f = await backendProjectFixture(t), project = structuredClone(f.project);
+  const originalSource = project.source, assemblyId = '10000000-1111-4111-8111-111111111111';
+  project.schemaVersion = 2;
+  project.source = { workspaceId: originalSource.workspaceId, assemblyId, sourcePath: 'documents/assembly.json',
+    sourceRevision: originalSource.sourceRevision, planKind: 'project', planSchemaVersion: 1, entrySceneId: originalSource.sceneId,
+    scenes: [{ sceneId: originalSource.sceneId, sourcePath: originalSource.sourcePath, sourceRevision: originalSource.sourceRevision }] };
+  project.dependencies.push({ objectId: assemblyId, sourcePath: project.source.sourcePath, sourceRevision: project.source.sourceRevision, role: 'assembly' });
+  project.dependencies.sort((a, b) => a.sourcePath < b.sourcePath ? -1 : a.sourcePath > b.sourcePath ? 1 : 0);
+  project.backend.protocolVersion = protocolVersion;
+  project.files = []; project.resources = [];
+  const bytes = Buffer.from('bounded inventory fixture\n'), sha256 = digest(bytes), size = bytes.length;
+  for (let index = 0; index < count; index++) {
+    const resource = index >= count - 128;
+    const file = index === 0 ? project.project.entry : `project/${resource ? 'resources' : 'generated'}/${String(index).padStart(4, '0')}.bin`;
+    const resourceId = resource ? `${String(index + 1).padStart(8, '0')}-2222-4222-8222-222222222222` : null;
+    project.files.push({ path: file, size, sha256, role: resource ? 'resource-copy' : 'generated', resourceId, sourceObjectId: null });
+    if (resource) project.resources.push({ resourceId, sourcePath: `assets/${index}.bin`, generatedPath: file, size, sha256 });
+    const target = path.join(f.directory, file); await fs.mkdir(path.dirname(target), { recursive: true }); await fs.writeFile(target, bytes);
+  }
+  project.files.sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
+  project.resources.sort((a, b) => a.generatedPath < b.generatedPath ? -1 : a.generatedPath > b.generatedPath ? 1 : 0);
+  const manifest = Buffer.from(JSON.stringify(project, null, 2) + '\n'); await fs.writeFile(path.join(f.directory, 'backend-project.json'), manifest);
+  const inspection = { project, inspection: { recorded: true, manifestSha256: digest(manifest) }, buildDirectory: f.directory };
+  const plan = await planBackendProjectDelivery({ inspection, assertCurrent: async () => {} });
+  const output = path.join(f.temporary, `inventory-${protocolVersion}-${count}.zip`); await writeExportZip(plan, output);
+  return { ...f, project, plan, output };
+}
+
+test('protocol9 Godot assembly delivery streams and verifies 1024 derived files plus128 resource copies without relaxing older inventories', async t => {
+  const expanded = await boundedInventoryDelivery(t, { count: 1152, protocolVersion: 9 });
+  const verified = await verifyBackendProjectDelivery(expanded.output);
+  assert.equal(verified.fileCount, 1153); assert.equal(verified.assetCount, 128);
+  assert.equal(verified.delivery.project.files.length, 1152);
+  assert.equal(expanded.plan.entries.filter(row => row.buffer).length, 1, 'only README is buffered; project files remain streamed');
+  const rows = await zipEntries(expanded.output); assert.equal(rows.length, 1154);
+  const downgraded = rows.map(row => ({ ...row, buffer: Buffer.from(row.buffer) }));
+  const metadata = downgraded.find(row => row.path === 'manifest.json'), manifest = JSON.parse(metadata.buffer);
+  manifest.provenance.project.backend.protocolVersion = 8; metadata.buffer = Buffer.from(JSON.stringify(manifest));
+  const downgradedPath = path.join(expanded.temporary, 'legacy-oversize.zip'); await rewrite(downgradedPath, downgraded);
+  const original = yauzl.ZipFile.prototype.openReadStreamPromise, consumed = [];
+  yauzl.ZipFile.prototype.openReadStreamPromise = async function (entry, ...args) { consumed.push(entry.fileName); return original.call(this, entry, ...args); };
+  try { await assert.rejects(verifyBackendProjectDelivery(downgradedPath), invalid); }
+  finally { yauzl.ZipFile.prototype.openReadStreamPromise = original; }
+  assert.deepEqual(consumed, ['manifest.json'], 'a legacy over-limit package is rejected before payload verification');
+  const legacy = await boundedInventoryDelivery(t, { count: 640, protocolVersion: 8 });
+  assert.equal((await verifyBackendProjectDelivery(legacy.output)).fileCount, 641);
+  assert.equal((await zipEntries(legacy.output)).length, 642);
+});
+
+test('delivery ZIP rejects the1155th entry before opening even a valid protocol9 manifest', async t => {
+  const f = await boundedInventoryDelivery(t, { count: 1152, protocolVersion: 9 }), rows = await zipEntries(f.output);
+  rows.push({ path: 'project/extra.bin', buffer: Buffer.from('extra') });
+  const output = path.join(f.temporary, 'over-global-limit.zip'); await rewrite(output, rows);
+  const original = yauzl.ZipFile.prototype.openReadStreamPromise; let reads = 0;
+  yauzl.ZipFile.prototype.openReadStreamPromise = async function (...args) { reads++; return original.apply(this, args); };
+  try { await assert.rejects(verifyBackendProjectDelivery(output), invalid); }
+  finally { yauzl.ZipFile.prototype.openReadStreamPromise = original; }
+  assert.equal(reads, 0, 'the global entry limit is checked before any decompression');
+});

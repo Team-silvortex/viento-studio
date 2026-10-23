@@ -1,6 +1,6 @@
 // A read-only projection of the Rust-admitted current table. Neither the graph
 // nor its geometry grants source editing, script generation or runtime authority.
-import { inspectAnimationStateDeclaration as inspectAnimationStateTable } from './animation-state-conditions-core.mjs';
+import { inspectAnimationStateDeclarationWithCombinations as inspectAnimationStateTable } from './animation-state-conditions-core.mjs';
 
 const graphs = new WeakSet();
 const freeze = value => {

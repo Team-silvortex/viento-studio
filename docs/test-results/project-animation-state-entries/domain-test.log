@@ -1,0 +1,39 @@
+✔ initial entry, same-state restart and same-clip transition remain independent before command execution (27.25016ms)
+✔ wire entries reject forged identities, indices, clips, counters and source paths atomically (67.733956ms)
+✔ unrecognized scripts never admit private state entries (3.640278ms)
+✔ ready and finished counters are exact and protocol8 keeps its old event shape (8.662444ms)
+✔ active terminal state must match latest entered state while inactive or unavailable keeps earlier history (17.083764ms)
+✔ diagnostic abort rejects later entries and cancellation retains only records actually collected (8.752303ms)
+✔ entry clock and command cutoff never rewind; later executed receipts cannot precede an entry (7.031529ms)
+✔ scene reentry records a fresh initial state and preserves global entry sequence and source identity (7.25903ms)
+✔ two bindings of one script retain distinct accepted-state histories (4.898497ms)
+✔ DTO validation rejects unsafe accessors, stale identities, unknown fields and reversed entry histories (9.577999ms)
+✔ p9 query cross-checks accepted history with visits and terminal snapshots and p8 rejects added entries (10.429771ms)
+✔ accepted entries before completion delivery keep their earlier execution cutoff (13.965706ms)
+✔ ledger admits exactly128 entries and rejects overflow without altering prior accepted history (98.037339ms)
+✔ protocol9 descriptors require completion, snapshots and accepted-state entry capabilities (6.170691ms)
+✔ catalog recognizes exact v1/v2/v3 bytes, default clips and BOM/CRLF while retaining frozen navigation (17.93791ms)
+✔ ordinary, modified, malformed and unknown-generator scripts remain unobserved without editing author text (5.891338ms)
+✔ recognized catalog never swallows optional core absence (50.672151ms)
+✔ recognized invalid clip parameters fail with frozen field diagnostics; valid unknown UUID remains runtime-owned (7.280958ms)
+✔ catalog keeps each same-script binding and excludes scenes without animation (1.773818ms)
+✔ actual state indexes distinguish states mapped to the same clip and keep all receipts independent (11.211108ms)
+✔ inactive and unavailable are distinct states with no invented current state or clip (6.718527ms)
+✔ p8 frozen wire snapshots reject forged identities, indices, clips, missing and duplicate controllers atomically (58.699705ms)
+✔ snapshot closes its visit to further commands, publications and duplicate snapshots (3.84512ms)
+✔ successful exit requires matching snapshot reason and exact time; finished count must match (16.307866ms)
+✔ scene reentry owns a fresh snapshot while unobserved scenes need no empty snapshot (5.314581ms)
+✔ aborted observations require a diagnostic and preserve the real inactive snapshot; unfinished runs do not synthesize one (5.170147ms)
+✔ snapshot DTOs reject unsafe descriptors, unknown keys, invalid origins, stale sources and typed-state contradictions (4.949758ms)
+✔ p8 query links snapshots to visit boundary and command cutoff, and p7 keeps its exact old shape (12.231077ms)
+✔ project protocol 8 descriptor preserves mandatory animation completion capability (3.892233ms)
+✔ p8 completion and command histories retain ordered receipts while state samples carry the exact cutoff (9.170951ms)
+✔ snapshot budget admits exactly 64 batches and 2048 scoped controllers without merging identities (210.319325ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 508.462832

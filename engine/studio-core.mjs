@@ -31,6 +31,9 @@ const SCENE3D_DISTRIBUTION_OPERATIONS = new Set(['scene3d.distributeObjects']);
 const SCENE3D_COPY_OPERATIONS = new Set(['scene3d.copyObjects']);
 const SCENE3D_REMOVAL_OPERATIONS = new Set(['scene3d.removeObjects']);
 const ANIMATION_STATE_TABLE_OPERATIONS = new Set(['animationStateTable.inspect']);
+const ANIMATION_STATE_BRANCH_OPERATIONS = new Set(['animationStateTable.inspectBranches']);
+const ANIMATION_STATE_SELECTOR_OPERATIONS = new Set(['animationStateTable.inspectSelected']);
+const ANIMATION_STATE_COMBINATION_OPERATIONS = new Set(['animationStateTable.inspectCombined']);
 const ANIMATION_STATE_CONDITION_OPERATIONS = new Set(['animationStateTable.inspectConditional', 'animationStateCondition.inspect', 'animationStateCondition.evaluate']);
 const SCENE_ANIMATION_OPERATIONS = new Set(['sceneAnimation.inspect', 'sceneAnimation.sample', 'sceneAnimation.transport', 'sceneAnimation.sampleClip', 'sceneAnimation.clipTransport', 'sceneAnimation.retime', 'sceneAnimation.copyTrack']);
 const SCENE_AUDIO_OPERATIONS = new Set(['sceneAudio.inspect', 'sceneAudio.sample']);
@@ -2030,7 +2033,7 @@ export function supportsStudioCoreAnimationStateTable() {
   return Boolean(runtime && typeof runtime.viento_core_animation_state_table_version === 'function'
     && runtime.viento_core_animation_state_table_version() === 1);
 }
-function validateAnimationStateTableReceipt(result, input) {
+function validateAnimationStateTableReceipt(result, input, branches = false) {
     const invalid = () => { throw new Error('Rust core returned an unbound animation state table receipt.'); };
     const source = input.table, value = result.animationStateTable;
     const key = value => typeof value === 'string' && /^[a-z][a-z0-9_]{0,31}$/.exec(value)?.[0] === value;
@@ -2042,7 +2045,8 @@ function validateAnimationStateTableReceipt(result, input) {
       const keys = Object.keys(a); return keys.length === Object.keys(b).length && keys.every(key => Object.hasOwn(b, key) && equal(a[key], b[key]));
     };
     if (!record(result, ['protocolVersion', 'ok', 'animationStateTable'])
-      || !record(source, ['initialState', 'states', 'transitions']) || !key(source.initialState)
+      || !record(source, ['initialState', 'states', 'transitions', ...(branches ? ['eventSelection'] : [])]) || !key(source.initialState)
+      || branches && source.eventSelection !== 'firstMatch'
       || encoder.encode(JSON.stringify(source)).length > 32768
       || !Array.isArray(source.states) || !source.states.length || source.states.length > 16
       || !Array.isArray(source.transitions) || source.transitions.length > 64
@@ -2062,7 +2066,7 @@ function validateAnimationStateTableReceipt(result, input) {
       if (!record(transition, ['from', 'to', 'trigger']) || !indices.has(transition.from) || !indices.has(transition.to)
         || !(trigger?.kind === 'completed' ? record(trigger, ['kind']) : trigger?.kind === 'event' && record(trigger, ['kind', 'name']) && event(trigger.name))) invalid();
       const signature = JSON.stringify([transition.from, trigger.kind, trigger.name ?? null]);
-      if (seenTriggers.has(signature)) invalid();
+      if (seenTriggers.has(signature) && (!branches || trigger.kind === 'completed')) invalid();
       seenTriggers.add(signature);
       if (trigger.kind === 'event' && !seenNames.has(trigger.name)) { seenNames.add(trigger.name); names.push(trigger.name); }
       const returned = value.transitions[index];
@@ -2124,7 +2128,7 @@ function sameAnimationStateCondition(first, second) {
   return validAnimationStateCondition(first) && validAnimationStateCondition(second, true)
     && first.type === second.type && first.operator === second.operator && first.value === second.value;
 }
-// Only the optional conditional declaration reserves a fixed conservative
+// Optional conditional and branch declarations reserve a fixed conservative
 // 32 bytes per numeric constant, avoiding decimal/exponent differences across hosts.
 function conditionalAnimationStateDeclarationBytes(table) {
   let bytes = encoder.encode(JSON.stringify(table)).length;
@@ -2134,7 +2138,7 @@ function conditionalAnimationStateDeclarationBytes(table) {
   }
   return bytes;
 }
-function validateConditionalAnimationStateTableReceipt(result, input) {
+function validateConditionalAnimationStateTableReceipt(result, input, branches = false) {
   const invalid = () => { throw new Error('Rust core returned an unbound conditional animation state table.'); };
   if (!record(result, ['protocolVersion', 'ok', 'animationStateTable'])
     || !record(result.animationStateTable, ['table', 'states', 'initialIndex', 'transitions', 'eventNames'])) invalid();
@@ -2149,6 +2153,14 @@ function validateConditionalAnimationStateTableReceipt(result, input) {
     return { plain, conditions };
   };
   const source = strip(input.table, false), returned = strip(result.animationStateTable.table, true);
+  if (branches && Array.isArray(input.table?.transitions)) {
+    const closed = new Set();
+    for (const edge of input.table.transitions) if (edge?.trigger?.kind === 'event') {
+      const signature = JSON.stringify([edge.from, edge.trigger.name]);
+      if (closed.has(signature)) invalid();
+      if (!Object.hasOwn(edge.trigger, 'condition')) closed.add(signature);
+    }
+  }
   if (conditionalAnimationStateDeclarationBytes(input.table) > 32768 || source.conditions.size !== returned.conditions.size) invalid();
   for (const [index, condition] of source.conditions) if (!sameAnimationStateCondition(condition, returned.conditions.get(index))) invalid();
   if (!Array.isArray(result.animationStateTable.transitions)) invalid();
@@ -2164,7 +2176,7 @@ function validateConditionalAnimationStateTableReceipt(result, input) {
     return output;
   });
   validateAnimationStateTableReceipt({ ...result, animationStateTable: { ...result.animationStateTable, table: returned.plain, transitions } },
-    { ...input, table: source.plain });
+    { ...input, table: source.plain }, branches);
 }
 export function dispatchStudioCoreAnimationStateConditions(request) {
   assertAnimationStateConditionData(request);
@@ -2187,6 +2199,149 @@ export function dispatchStudioCoreAnimationStateConditions(request) {
       || typeof input.value !== typeof value.value || input.value !== value.value || typeof value.matches !== 'boolean')) invalid();
   });
   return table ? result.animationStateTable : result.animationStateCondition;
+}
+
+// Ordered branches require explicit author opt-in and an independent Rust marker.
+// No missing capability or rejected source is silently downgraded to legacy order.
+export function supportsStudioCoreAnimationStateBranches() {
+  return Boolean(runtime && typeof runtime.viento_core_animation_state_branches_version === 'function'
+    && runtime.viento_core_animation_state_branches_version() === 1);
+}
+export function dispatchStudioCoreAnimationStateBranches(request) {
+  assertAnimationStateConditionData(request);
+  if (!record(request, ['protocolVersion', 'operation', 'table']) || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION
+    || request.operation !== 'animationStateTable.inspectBranches') {
+    throw fail('studio_core_request_invalid', 'Expected an explicit animation state branch inspection.');
+  }
+  if (!supportsStudioCoreAnimationStateBranches()) throw unavailable();
+  return dispatch(request, ANIMATION_STATE_BRANCH_OPERATIONS,
+    (result, input) => validateConditionalAnimationStateTableReceipt(result, input, true)).animationStateTable;
+}
+
+// Project-state selection is independent of all older optional declaration
+// markers. Selection resolves in the runtime adapter; Rust owns admission.
+export function supportsStudioCoreAnimationStateSelectors() {
+  return Boolean(runtime && typeof runtime.viento_core_animation_state_selectors_version === 'function'
+    && runtime.viento_core_animation_state_selectors_version() === 1);
+}
+function validateSelectedAnimationStateTableReceipt(result, input) {
+  const invalid = () => { throw new Error('Rust core returned an unbound selected animation state table.'); };
+  if (!record(result, ['protocolVersion', 'ok', 'animationStateTable'])
+    || !record(result.animationStateTable, ['table', 'states', 'initialIndex', 'transitions', 'eventNames'])) invalid();
+  const selectorValid = selector => record(selector, ['kind', 'key']) && selector.kind === 'projectState'
+    && typeof selector.key === 'string' && /^[A-Za-z][A-Za-z0-9_.-]{0,63}$/.exec(selector.key)?.[0] === selector.key
+    && !['constructor', 'prototype', '__proto__'].includes(selector.key);
+  const stripTransitions = transitions => {
+    if (!Array.isArray(transitions)) invalid();
+    const selectors = new Map();
+    const plain = transitions.map((edge, index) => {
+      const condition = edge?.trigger?.condition;
+      if (!condition || typeof condition !== 'object' || !Object.hasOwn(condition, 'selector')) return edge;
+      if (!selectorValid(condition.selector)) invalid();
+      selectors.set(index, condition.selector);
+      // Preserve numeric signs until the existing normalized-condition receipt
+      // check has run; JSON cloning here would conceal forged negative zero.
+      const payload = { ...condition }; delete payload.selector;
+      return { ...edge, trigger: { ...edge.trigger, condition: payload } };
+    });
+    return { plain, selectors };
+  };
+  const source = stripTransitions(input.table?.transitions);
+  const returned = stripTransitions(result.animationStateTable.table?.transitions);
+  const indexed = stripTransitions(result.animationStateTable.transitions);
+  if (conditionalAnimationStateDeclarationBytes(input.table) > 32768) invalid();
+  for (const target of [returned, indexed]) {
+    if (source.selectors.size !== target.selectors.size) invalid();
+    for (const [index, selector] of source.selectors) {
+      const other = target.selectors.get(index);
+      if (!other || selector.kind !== other.kind || selector.key !== other.key) invalid();
+    }
+  }
+  validateConditionalAnimationStateTableReceipt({ ...result, animationStateTable: { ...result.animationStateTable,
+    table: { ...result.animationStateTable.table, transitions: returned.plain }, transitions: indexed.plain } },
+  { ...input, table: { ...input.table, transitions: source.plain } }, Object.hasOwn(input.table, 'eventSelection'));
+}
+export function dispatchStudioCoreAnimationStateSelectors(request) {
+  assertAnimationStateConditionData(request);
+  if (!record(request, ['protocolVersion', 'operation', 'table']) || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION
+    || request.operation !== 'animationStateTable.inspectSelected') {
+    throw fail('studio_core_request_invalid', 'Expected an explicit animation state selector inspection.');
+  }
+  if (!supportsStudioCoreAnimationStateSelectors()) throw unavailable();
+  return dispatch(request, ANIMATION_STATE_SELECTOR_OPERATIONS, validateSelectedAnimationStateTableReceipt).animationStateTable;
+}
+
+// One-level all/any guards are a separately negotiated declaration capability.
+// Older scalar/selector interfaces remain strict and never flatten a group.
+export function supportsStudioCoreAnimationStateCombinations() {
+  return Boolean(runtime && typeof runtime.viento_core_animation_state_combinations_version === 'function'
+    && runtime.viento_core_animation_state_combinations_version() === 1);
+}
+function combinedAnimationStateDeclarationBytes(table) {
+  let bytes = conditionalAnimationStateDeclarationBytes(table);
+  if (Array.isArray(table?.transitions)) for (const edge of table.transitions) {
+    const leaves = edge?.trigger?.condition?.conditions;
+    if (Array.isArray(leaves)) for (const leaf of leaves) {
+      if (typeof leaf?.value === 'number') bytes += 32 - JSON.stringify(leaf.value).length;
+    }
+  }
+  return bytes;
+}
+function validateCombinedAnimationStateTableReceipt(result, input) {
+  const invalid = () => { throw new Error('Rust core returned an unbound combined animation state table.'); };
+  if (!record(result, ['protocolVersion', 'ok', 'animationStateTable'])
+    || !record(result.animationStateTable, ['table', 'states', 'initialIndex', 'transitions', 'eventNames'])) invalid();
+  const leafValid = (leaf, normalized) => {
+    if (!leaf || typeof leaf !== 'object' || !Object.hasOwn(leaf, 'selector')) return validAnimationStateCondition(leaf, normalized);
+    if (!record(leaf, ['type', 'operator', 'value', 'selector'])) return false;
+    const selector = leaf.selector;
+    return record(selector, ['kind', 'key']) && selector.kind === 'projectState'
+      && typeof selector.key === 'string' && /^[A-Za-z][A-Za-z0-9_.-]{0,63}$/.exec(selector.key)?.[0] === selector.key
+      && !['constructor', 'prototype', '__proto__'].includes(selector.key)
+      && validAnimationStateCondition({ type: leaf.type, operator: leaf.operator, value: leaf.value }, normalized);
+  };
+  const peel = (transitions, normalized) => {
+    if (!Array.isArray(transitions)) invalid();
+    const groups = new Map();
+    const plain = transitions.map((edge, index) => {
+      const condition = edge?.trigger?.condition;
+      if (!condition || typeof condition !== 'object' || !Object.hasOwn(condition, 'combine') && !Object.hasOwn(condition, 'conditions')) return edge;
+      if (!record(condition, ['combine', 'conditions']) || !['all', 'any'].includes(condition.combine)
+        || !Array.isArray(condition.conditions) || !condition.conditions.length || condition.conditions.length > 8
+        || !condition.conditions.every(leaf => leafValid(leaf, normalized))) invalid();
+      groups.set(index, condition);
+      // Keep a validated leaf at the same edge: deleting the group would turn
+      // it into a fallback, and cloning before leaf validation would erase -0.
+      return { ...edge, trigger: { ...edge.trigger, condition: condition.conditions[0] } };
+    });
+    return { plain, groups };
+  };
+  const source = peel(input.table?.transitions, false), returned = peel(result.animationStateTable.table?.transitions, true);
+  const indexed = peel(result.animationStateTable.transitions, true);
+  if (combinedAnimationStateDeclarationBytes(input.table) > 32768) invalid();
+  const sameLeaf = (a, b) => a.type === b.type && a.operator === b.operator && a.value === b.value
+    && Object.hasOwn(a, 'selector') === Object.hasOwn(b, 'selector')
+    && (!Object.hasOwn(a, 'selector') || a.selector.kind === b.selector.kind && a.selector.key === b.selector.key);
+  for (const target of [returned, indexed]) {
+    if (source.groups.size !== target.groups.size) invalid();
+    for (const [index, group] of source.groups) {
+      const other = target.groups.get(index);
+      if (!other || group.combine !== other.combine || group.conditions.length !== other.conditions.length
+        || !group.conditions.every((leaf, index) => sameLeaf(leaf, other.conditions[index]))) invalid();
+    }
+  }
+  validateSelectedAnimationStateTableReceipt({ ...result, animationStateTable: { ...result.animationStateTable,
+    table: { ...result.animationStateTable.table, transitions: returned.plain }, transitions: indexed.plain } },
+  { ...input, table: { ...input.table, transitions: source.plain } });
+}
+export function dispatchStudioCoreAnimationStateCombinations(request) {
+  assertAnimationStateConditionData(request);
+  if (!record(request, ['protocolVersion', 'operation', 'table']) || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION
+    || request.operation !== 'animationStateTable.inspectCombined') {
+    throw fail('studio_core_request_invalid', 'Expected an explicit animation state combination inspection.');
+  }
+  if (!supportsStudioCoreAnimationStateCombinations()) throw unavailable();
+  return dispatch(request, ANIMATION_STATE_COMBINATION_OPERATIONS, validateCombinedAnimationStateTableReceipt).animationStateTable;
 }
 
 /** Optional visual animation rules. Receipt checks never supply animation when

@@ -1,7 +1,10 @@
 //! Rendering-independent layout rules, position drafts and bounded history.
 //! Hosts retain scene source serialization, filesystem access and guarded saves.
 
+mod animation_state_branches;
+mod animation_state_combinations;
 mod animation_state_conditions;
+mod animation_state_selectors;
 mod animation_state_table;
 mod layout_draft;
 mod layout_save;
@@ -171,6 +174,24 @@ pub extern "C" fn viento_core_animation_state_table_version() -> u32 {
 /// Optional event-payload conditions; legacy state table admission is unchanged.
 #[no_mangle]
 pub extern "C" fn viento_core_animation_state_conditions_version() -> u32 {
+    1
+}
+
+/// Optional explicitly ordered event branches; old declaration admission stays strict.
+#[no_mangle]
+pub extern "C" fn viento_core_animation_state_branches_version() -> u32 {
+    1
+}
+
+/// Optional project-state selectors; older payload-only capabilities remain strict.
+#[no_mangle]
+pub extern "C" fn viento_core_animation_state_selectors_version() -> u32 {
+    1
+}
+
+/// Optional bounded single-level all/any event guards.
+#[no_mangle]
+pub extern "C" fn viento_core_animation_state_combinations_version() -> u32 {
     1
 }
 
@@ -480,6 +501,27 @@ impl CoreResponse {
 }
 
 fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
+    if value["operation"].as_str() == Some("animationStateTable.inspectCombined") {
+        return Ok(CoreResponse::AnimationStateTableSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            animation_state_table: animation_state_combinations::dispatch_table(value)?,
+        });
+    }
+    if value["operation"].as_str() == Some("animationStateTable.inspectSelected") {
+        return Ok(CoreResponse::AnimationStateTableSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            animation_state_table: animation_state_selectors::dispatch_table(value)?,
+        });
+    }
+    if value["operation"].as_str() == Some("animationStateTable.inspectBranches") {
+        return Ok(CoreResponse::AnimationStateTableSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            animation_state_table: animation_state_branches::dispatch_table(value)?,
+        });
+    }
     if value["operation"].as_str() == Some("animationStateTable.inspectConditional") {
         return Ok(CoreResponse::AnimationStateTableSuccess {
             protocol_version: PROTOCOL_VERSION,
@@ -801,6 +843,9 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
                     Some(
                         "animationStateTable.inspect"
                             | "animationStateTable.inspectConditional"
+                            | "animationStateTable.inspectBranches"
+                            | "animationStateTable.inspectSelected"
+                            | "animationStateTable.inspectCombined"
                             | "animationStateCondition.inspect"
                             | "animationStateCondition.evaluate"
                     )

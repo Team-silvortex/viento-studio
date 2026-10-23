@@ -206,3 +206,15 @@ test('protocol7 preserves named clip command receipts independently of natural c
   h.filter(id(60)); assert.equal(h.rows().length, 1); sourceButton(h, 'clip').click(); await flushDialogs();
   assert.equal(h.calls[0].source.propertyPath, '/clips/0');
 });
+
+test('protocol8 retains named clip command receipts beside state snapshots', async t => {
+  const h = await fixture(t); h.controller.setSnapshot(clipSnapshot(), { protocolVersion: 8 });
+  assert.equal(h.el('Panel').hidden, false); assert.match(h.rows()[0].textContent, /待機/);
+  sourceButton(h, 'clip').click(); await flushDialogs(); assert.equal(h.calls[0].source.propertyPath, '/clips/0');
+});
+
+test('protocol9 retains named clip command receipts beside state snapshots', async t => {
+  const h = await fixture(t); h.controller.setSnapshot(clipSnapshot(), { protocolVersion: 9 });
+  assert.equal(h.el('Panel').hidden, false); assert.match(h.rows()[0].textContent, /待機/);
+  sourceButton(h, 'clip').click(); await flushDialogs(); assert.equal(h.calls[0].source.propertyPath, '/clips/0');
+});

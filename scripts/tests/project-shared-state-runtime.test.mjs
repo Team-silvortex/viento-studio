@@ -36,7 +36,7 @@ test('protocol selection is explicit: default v1 remains byte-shaped and rejects
   push(legacy, [projectReady(plan), enterScene(a, 1), readyScene(a, 1)]);
   assert.deepEqual(push(legacy, [{ ...stateFrame(a, 1, 1, 'key', true), protocol: 1 }]), []);
   reject(modern, projectReady(plan)); push(modern, [sharedReady(plan)]); reject(modern, enterScene(plan.scenes[0], 1));
-  for (const protocolVersion of [0, 8, '2', null, true, NaN, Infinity, {}, []]) {
+  for (const protocolVersion of [0, 10, '2', null, true, NaN, Infinity, {}, []]) {
     assert.throws(() => createProjectRuntimeEventReader(plan, { protocolVersion }), { errorCode: 'runtime_project_invalid' });
     assert.throws(() => createProjectRuntimeObservation(plan, { protocolVersion }), { errorCode: 'runtime_project_invalid' });
   }

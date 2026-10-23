@@ -57,7 +57,7 @@ func _probe() -> void:
   const result=await runProjectBuild({buildDirectory:output,tool,headless:true,smoke:false});
   assert.equal(result.ok,true,JSON.stringify(result.record?.diagnostics));
   const verifyEvents=events=>{
-    assert.equal(events[0].protocol,7);
+    assert.equal(events[0].protocol,9);
     assert.deepEqual(events.filter(row=>row.event==='event-publish').map(row=>[row.name,row.recipients.length]),[['action',0],['combat.attack',1]]);
     const commands=events.filter(row=>row.event==='animation-command');
     assert.deepEqual(commands.filter(row=>row.command.action==='select').map(row=>row.command.clipId),[f.clipIds[0][0],f.clipIds[0][1],f.clipIds[0][0]]);

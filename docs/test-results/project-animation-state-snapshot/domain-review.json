@@ -1,0 +1,85 @@
+{
+  "createdAt": "2026-10-23T03:41:48.857589+00:00",
+  "scope": "Animation state snapshot neutral domain, runtime reader/query, frozen build diagnostics and read-only integration audit",
+  "checks": [
+    {
+      "command": "node --test scripts/tests/project-animation-states.test.mjs scripts/tests/project-runtime-events.test.mjs scripts/tests/project-runtime-query.test.mjs scripts/tests/project-animation-completions.test.mjs scripts/tests/backend-capabilities.test.mjs",
+      "passed": 68,
+      "failed": 0,
+      "skipped": 0,
+      "log": "domain-tests-final.log"
+    },
+    {
+      "command": "VIENTO_GODOT_BIN=<identified local Godot 4.7.2> node --test scripts/tests/project-animation-state-build.test.mjs",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "log": "build-diagnostic-tests.log"
+    }
+  ],
+  "initialFailures": [
+    {
+      "log": "domain-tests-first.log",
+      "reason": "Existing backend protocol upper-bound test still rejected 8; updated explicitly supported range to 1-8 and invalid upper bound to 9."
+    },
+    {
+      "log": "domain-tests-optional-core-first.log",
+      "reason": "Optional core test removed the entire core, causing pre-existing animation plan admission to fail earlier. Corrected test to withdraw only the optional state-table marker."
+    }
+  ],
+  "audit": [
+    "Frozen exact v1/v2/v3 source recognition and untouched author bytes.",
+    "Native private field observations distinguish same-clip states and independent bindings.",
+    "Protocol 7 exact shapes retained; protocol 8 enforces lifecycle, exact controller order, command cutoff and terminal counters.",
+    "Controller and snapshot bounds cover 64 batches / 2048 controllers.",
+    "Source navigation scoped to frozen binding/script sources; asynchronous UI ownership revoked on context changes.",
+    "Found and fixed build parameter diagnostics falling back to assembly source; tests include forged error paths and mutable author files after capture.",
+    "Found schema9 inventory worst-case limit exceeding 1MiB. Backend agent confirmed schema9 limit 4MiB, old schemas 128KiB, and maximum 32x32x16 inventory test passes."
+  ],
+  "files": [
+    {
+      "path": "engine/project-animation-states.mjs",
+      "sha256": "917cbf1670c857cf8cdc5c9825ed260d0db2956a8a5f4a0eafaff2de1819feaa"
+    },
+    {
+      "path": "engine/project-runtime-events.mjs",
+      "sha256": "5729635474cb0fd3e41629b05961afd18c6f4a274071f6f17fc3350d930db3cf"
+    },
+    {
+      "path": "engine/project-runtime-query.mjs",
+      "sha256": "e4e036f52dfe82b44f60d0c3c098ed69bd9dc86801d9d91e8be153e8698e14b4"
+    },
+    {
+      "path": "engine/project-runtime-contracts.mjs",
+      "sha256": "5a380fb3329f5f8597e16df837369842101b9804e881535c2f58fdcdf6f58702"
+    },
+    {
+      "path": "engine/project-animation-commands.mjs",
+      "sha256": "69203f557bbd054f44e40a08b47c992f28efda58828e9ce037a1930191b2de48"
+    },
+    {
+      "path": "engine/project-animation-transport.mjs",
+      "sha256": "11a6beca51d048a089cb1c3d52fff913e13e5efc09bdc235b3333259d64839a5"
+    },
+    {
+      "path": "engine/backend-capabilities.mjs",
+      "sha256": "5ce65346805b1175f217c49007aec6160e3edb38448786db41b81e68257ae4ef"
+    },
+    {
+      "path": "scripts/adapters/node-project-build.mjs",
+      "sha256": "a53e885e91321bbda14e644ef02a4d7b661079032cbf8edbf768a1c4941ab48d"
+    },
+    {
+      "path": "scripts/tests/project-animation-states.test.mjs",
+      "sha256": "8643963af3be5dbf8717b033c5b1ac709b699d37dc8a30d459a0eb4b84f5ae93"
+    },
+    {
+      "path": "scripts/tests/backend-capabilities.test.mjs",
+      "sha256": "248b9c426f59df513b6759c187c690e3609c05c296c67ccb57eced634470333d"
+    },
+    {
+      "path": "scripts/tests/project-animation-state-build.test.mjs",
+      "sha256": "ac77e2d1bc93b2467dbf5e7dfdb2a81c3ea21dd78cff1e2a6fafa419310a84e2"
+    }
+  ]
+}

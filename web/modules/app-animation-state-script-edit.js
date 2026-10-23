@@ -1,4 +1,4 @@
-import { supportsStudioCoreAnimationStateConditions } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreAnimationStateConditions, supportsStudioCoreAnimationStateBranches, supportsStudioCoreAnimationStateSelectors, supportsStudioCoreAnimationStateCombinations } from '../../engine/studio-core.mjs';
 import { readAnimationStateScriptSource } from '../../engine/animation-state-script-source.mjs';
 import { createAnimationStateScriptProposal, isAnimationStateScriptProposal } from '../../engine/animation-state-script-edit.mjs';
 import { setupAnimationStateScript } from './app-animation-state-script.js';
@@ -43,13 +43,41 @@ export function setupAnimationStateScriptEdit({ getContext = () => ({}), getSour
     getContext: () => ({ active: Boolean(session) && dialog.open, disabled: pending || !current(), available: getContext().available === true }),
     onChange: () => { if (!pending && current()) { invalidate(); refresh(); } },
   });
-  let conditionRevision = 0, observedConditionSupport;
+  let conditionRevision = 0, observedConditionSupport, observedBranchSupport, observedSelectorSupport, observedCombinationSupport;
+  const hasCombinations = () => tableEditor.getValue().transitions.some(edge => edge.trigger.condition && (Object.hasOwn(edge.trigger.condition, 'combine') || Object.hasOwn(edge.trigger.condition, 'conditions')));
+  const hasSelectors = () => tableEditor.getValue().transitions.some(edge => edge.trigger.condition && Object.hasOwn(edge.trigger.condition, 'selector'));
   const conditionsReady = () => {
-    if (!tableEditor.getValue().transitions.some(edge => Object.hasOwn(edge.trigger, 'condition'))) return true;
-    const supported = supportsStudioCoreAnimationStateConditions();
-    if (observedConditionSupport !== undefined && observedConditionSupport !== supported) conditionRevision++;
-    observedConditionSupport = supported; return supported;
+    const table = tableEditor.getValue();
+    if (hasCombinations()) {
+      const supported = supportsStudioCoreAnimationStateCombinations();
+      if (observedCombinationSupport !== undefined && observedCombinationSupport !== supported) conditionRevision++;
+      observedCombinationSupport = supported; return supported;
+    }
+    if (hasSelectors()) {
+      const supported = supportsStudioCoreAnimationStateSelectors();
+      if (observedSelectorSupport !== undefined && observedSelectorSupport !== supported) conditionRevision++;
+      observedSelectorSupport = supported; return supported;
+    }
+    let ready = true;
+    if (table.eventSelection !== 'firstMatch' && table.transitions.some(edge => Object.hasOwn(edge.trigger, 'condition'))) {
+      const supported = supportsStudioCoreAnimationStateConditions();
+      if (observedConditionSupport !== undefined && observedConditionSupport !== supported) conditionRevision++;
+      observedConditionSupport = supported; ready = supported;
+    }
+    if (table.eventSelection === 'firstMatch') {
+      const supported = supportsStudioCoreAnimationStateBranches();
+      if (observedBranchSupport !== undefined && observedBranchSupport !== supported) conditionRevision++;
+      observedBranchSupport = supported; ready = ready && supported;
+    }
+    return ready;
   };
+  const capabilityMessage = () => hasCombinations() && !supportsStudioCoreAnimationStateCombinations()
+    ? '当前核心不支持组合条件；已有输入会保留，可明确切回单条件。'
+    : hasSelectors() && !supportsStudioCoreAnimationStateSelectors()
+    ? '当前核心不支持项目共享状态条件；已有输入会保留，可选择事件载荷或无条件。'
+    : tableEditor.getValue().eventSelection === 'firstMatch' && !supportsStudioCoreAnimationStateBranches()
+    ? '当前核心不支持有序事件分支；已有输入会保留，可切回单一转换模式。'
+    : '当前核心不支持事件载荷条件；无条件转换仍可编辑，已有条件会保留。';
   const signature = () => JSON.stringify(tableEditor.getValue());
   const dirty = () => Boolean(session && signature() !== initial);
   const approved = () => current() && conditionsReady() && proposal && approval === signature();
@@ -59,7 +87,7 @@ export function setupAnimationStateScriptEdit({ getContext = () => ({}), getSour
     const context = getContext(); button.textContent = t('编辑动画状态表'); button.hidden = !eligible(context); button.disabled = context.available !== true || Boolean(context.busy) || dialog.open;
     if (!dialog.open) return;
     if (session && !current()) { invalidated = true; if (!pending) { proposal = null; approval = ''; } message = '脚本原文或编辑器已变化，请返回后重新打开状态表。'; }
-    if (current() && !conditionsReady()) { proposal = null; approval = ''; message = '当前核心不支持事件载荷条件；无条件转换仍可编辑，已有条件会保留。'; }
+    if (current() && !conditionsReady()) { proposal = null; approval = ''; message = capabilityMessage(); }
     if (!pending && current() && proposal && !approved()) invalidate();
     translatePage(dialog); tableEditor.refresh(); dialog.dataset.dirty = String(dirty()); dialog.setAttribute('aria-busy', String(pending));
     el('Fields').hidden = !session;
@@ -118,6 +146,8 @@ export function setupAnimationStateScriptEdit({ getContext = () => ({}), getSour
     } catch (error) {
       if (owns()) message = (error?.errorCode || error?.code) === 'animation_state_script_source_limit' ? '生成脚本超过 64 KiB，请缩短条件文本或减少转换。'
         : (error?.errorCode || error?.code) === 'animation_state_condition_invalid' ? '请检查事件载荷条件的类型、比较方式和比较值。'
+          : (error?.errorCode || error?.code) === 'animation_state_table_invalid' && hasCombinations() ? '请检查状态、转换及组合条件：每组需要 1–8 项有效条件，不支持空组、嵌套或无条件项。'
+          : (error?.errorCode || error?.code) === 'animation_state_table_invalid' && hasSelectors() ? '请检查状态标识、转换、共享状态键以及条件的类型、比较方式和比较值。'
           : error?.errorCode === 'animation_state_script_authoring_unchanged' ? '状态表没有变化，原文草稿未修改。' : '状态表脚本未通过检查，输入已保留。';
       return false;
     } finally {

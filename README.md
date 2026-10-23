@@ -6,19 +6,19 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 
 [快速开始](docs/GETTING_STARTED.md) · [当前能力与平台](docs/STATUS.md) · [功能成熟度图谱](docs/FUNCTION_ATLAS.md) · [文档中心](docs/README.md) · [系统架构](docs/ARCHITECTURE.md)
 
-动画主线现可通过[状态表生成普通脚本](docs/SCENE_ANIMATION.md#从状态表生成动画脚本)，配置事件载荷条件与自然完成转换，重新编辑脚本并查看静态状态图；已收录 0.1.8。
+动画主线可通过[状态表生成普通脚本](docs/SCENE_ANIMATION.md#从状态表生成动画脚本)，配置[有序分支](docs/SCENE_ANIMATION.md#按顺序匹配事件分支)、[共享状态条件](docs/SCENE_ANIMATION.md#按项目共享状态选择转换)和[全部／任一满足组合](docs/SCENE_ANIMATION.md#组合多个转换条件)，沿用完整源码审阅、普通保存与项目构建。运行后可[按控制器回看状态进入、后续命令与末态](docs/SCENE_ANIMATION.md#按控制器回看运行记录)。
 
 ## 当前状态
 
-源码版本为 **0.1.8**，新增动画完成衔接、状态表脚本生成与重编辑、参数绑定修复、跨绑定使用位置、静态状态图和事件载荷条件；详见[版本记录](docs/RELEASE_0.1.8.md)。当前为 **22 模块／43 项声明能力**。
+源码版本为 **0.1.9**，收录有序动画分支、退出快照、逐次进入记录、控制器回看、共享状态条件和组合条件，并修复大量转换条目时的表单性能回退；详见[版本记录](docs/RELEASE_0.1.9.md)。当前为 **22 模块／43 项声明能力**。
 
-本版收录[动画自然完成与片段衔接](docs/SCENE_ANIMATION.md#动画自然完成与片段衔接)，可将攻击结束接到循环待机，并查看独立完成记录；运行与作者编辑保持分离。
+动画同时支持[自然完成与片段衔接](docs/SCENE_ANIMATION.md#动画自然完成与片段衔接)，可将攻击结束接到循环待机；状态进入、命令执行、自然完成和退出快照分别记录。
 
 0.1.6 已收录[2D 视觉关键帧动画](docs/SCENE_ANIMATION.md)：从场景首次创建并保存关联、内置字段编辑、保存态实例按名称选择、Rust 采样示意、已保存场景画面播放、Godot 运行及工程交付，现为 **22 模块／43 项声明能力**。这些功能已进入源码版本；源代码、浏览器、引擎和准备副本的验证范围见[动画专题](docs/test-results/scene-animation/README.md)、[首次创建记录](docs/test-results/scene-animation-creation/README.md)和[场景画面预览记录](docs/test-results/scene-animation-scene-preview/README.md)。
 
 [项目组装](docs/PROJECT_ASSEMBLY.md)把已保存的二维场景组织为一个 Godot 工程；行为可切换场景、读写[会话状态](docs/PROJECT_SHARED_STATE.md)、发布[项目事件](docs/PROJECT_EVENTS.md)、控制[场景声音](docs/PROJECT_AUDIO_CONTROLS.md)及[场景动画](docs/SCENE_ANIMATION.md#行为控制项目动画)。独立观察面板保留运行记录与作者来源，工程 ZIP 可在新目录导入运行。[Bevy Rust 通道](docs/BEVY_BACKEND.md#rust-作者行为通道012-后工作树)继续提供无图二维就绪／固定步行为和 Cargo 源工程交付，项目组装与声音尚未接入。
 
-本次交付源码，新功能可从源码启动或自行构建安装包。本机最近的 [Linux 安装验收为 0.1.1 工作树](docs/test-results/native-installed-0.1.1/README.md)，早于本版新增功能；该安装记录不代表 0.1.8 安装验收。本次不制作新安装包或 GitHub Release。七项动画与脚本专题中标为“0.1.7 后未发布工作树”的增量已收录本版，旧证据保留原版本与执行条件。
+本次交付源码，新功能可从源码启动或自行构建安装包。本机最近的 [Linux 安装验收为 0.1.1 工作树](docs/test-results/native-installed-0.1.1/README.md)，早于本版新增功能；该安装记录不代表 0.1.9 安装验收。本次不制作新安装包或 GitHub Release。六项专题中标为“0.1.8 后工作树”的增量已收录本版，旧证据保留原版本与执行条件。
 
 当前已有：
 

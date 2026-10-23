@@ -21,6 +21,20 @@ const json = value => JSON.stringify(value, null, 2) + '\n';
 const within = (root, target) => { const relative = path.relative(root, target); return relative === '' || relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative); };
 const diagnostic = (error, plan) => ({ severity: 'error', code: error.errorCode || 'build_failed', message: error.errorCode ? error.message : 'Build operation failed.',
   objectId: buildTargetIdentity(plan)?.objectId || null, sourcePath: buildTargetIdentity(plan)?.sourcePath || '', propertyPath: '' });
+// Only this known author-parameter failure may select a binding. Reconstruct
+// paths and ranges from the captured plan/documents, never from error paths.
+function buildDiagnostic(error, plan, documents) {
+  const fallback = diagnostic(error, plan);
+  if (error?.errorCode !== 'build_animation_state_parameters_invalid' || !plan
+    || typeof error.parameter !== 'string' || !/^clip_[a-z][a-z0-9_]{0,31}$/.test(error.parameter)) return fallback;
+  const bindings = scenePlans(plan).flatMap(scene => scene.behaviors?.bindings || []);
+  const binding = bindings.find(binding => binding.bindingId === error.bindingId && binding.instanceId === error.instanceId
+    && binding.declaration.objectId === error.objectId && Object.hasOwn(binding.parameters, error.parameter));
+  if (!binding) return fallback;
+  const source = { ...fallback, ...binding.declaration, propertyPath: `${binding.declaration.propertyPath}/parameters/${error.parameter}`,
+    bindingId: binding.bindingId, instanceId: binding.instanceId, parameter: error.parameter };
+  return attachFrozenDiagnosticSources([source], documents, [binding.declaration.objectId])[0];
+}
 const aborted = signal => { if (signal?.aborted) throw buildError('build_cancelled', 'Build operation cancelled.'); };
 
 export function projectBuildCacheRoot(env = process.env) {
@@ -66,7 +80,7 @@ async function saveRecord(directory, name, record, retentionPin) {
 
 export async function buildProject({ root, scene, targetId, godot, tool = godot, backendId = DEFAULT_EXECUTION_BACKEND,
   backendRegistry = createExecutionBackendRegistry(), output, signal, timeoutMs = 30000, expectedSnapshotId, onProgress = () => {} }) {
-  let directory, plan, record, retentionPin, adapter, generated;
+  let directory, plan, record, retentionPin, adapter, generated, sourceDocuments = [];
   try {
     if (targetId !== undefined && scene !== undefined) throw buildError('build_request_invalid', 'Choose one build target identity.');
     root = await fs.realpath(root);
@@ -74,6 +88,7 @@ export async function buildProject({ root, scene, targetId, godot, tool = godot,
     const captured = await captureBuildSnapshot(root, targetId ?? scene, { signal });
     plan = captured.plan;
     if (!captured.ok) return { ok: false, status: 'rejected', diagnostics: captured.diagnostics };
+    sourceDocuments = captured.snapshot.source.documents;
     if (expectedSnapshotId && expectedSnapshotId !== captured.snapshotId) throw buildError('build_snapshot_changed', 'Saved project inputs changed; check the build plan again.');
     adapter = backendRegistry.resolve(backendId);
     const missing = checkExecutionBackendSupport(adapter.descriptor, { operation: 'build', platform: process.platform, plan });
@@ -135,7 +150,7 @@ export async function buildProject({ root, scene, targetId, godot, tool = godot,
       [PROJECT_RETENTION_PIN]: retentionPin };
   } catch (error) {
     const status = signal?.aborted ? 'cancelled' : 'failed';
-    const item = diagnostic(signal?.aborted ? buildError('build_cancelled', 'Build operation cancelled.') : error, plan);
+    const item = buildDiagnostic(signal?.aborted ? buildError('build_cancelled', 'Build operation cancelled.') : error, plan, sourceDocuments);
     if (record && directory) {
       record.status = status; record.diagnostics.push(item);
       // Keep the partial generated input for diagnosis. Later host retention

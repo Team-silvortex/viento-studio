@@ -1,0 +1,90 @@
+{
+  "recordedAt": "2026-10-23T05:32:41.463218+00:00",
+  "scope": "v5 one-level all/any animation event conditions source/generator/native verification",
+  "protocolVersion": 9,
+  "godotAdapterVersion": "0.18.0",
+  "inventorySchemaVersion": 10,
+  "totals": {
+    "tests": 51,
+    "passed": 51,
+    "failed": 0,
+    "skipped": 0,
+    "realGodotTests": 8
+  },
+  "finalLogs": [
+    {
+      "file": "source-first.log",
+      "tests": 43,
+      "passed": 43,
+      "failed": 0,
+      "skipped": 0,
+      "realGodot": false,
+      "command": "node --test --test-concurrency=2 scripts/tests/animation-combinations-source.test.mjs scripts/tests/animation-selectors-source.test.mjs scripts/tests/animation-state-conditions-source.test.mjs scripts/tests/animation-branches-source.test.mjs scripts/tests/godot4-adapter.test.mjs",
+      "sha256": "be721136cd9e68073806849d1b3e1d920dae1a7b4dd06c77a5211964d14651b5"
+    },
+    {
+      "file": "native-corrected.log",
+      "tests": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "realGodot": true,
+      "command": "VIENTO_GODOT_BIN=<Godot 4.7.2> node --test --test-concurrency=1 scripts/tests/animation-combinations-godot.test.mjs",
+      "sha256": "6b6a2f4fb917f93e19de92922bf932d9f46b1f9960b5598e12f843ed5268bd0c"
+    },
+    {
+      "file": "legacy-v4-native.log",
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "realGodot": true,
+      "command": "VIENTO_GODOT_BIN=<Godot 4.7.2> node --test --test-concurrency=1 --test-name-pattern='scene reentry|BOM/CRLF' scripts/tests/animation-selectors-godot.test.mjs",
+      "sha256": "c70f42fc2d92d66be993df8614607be5ea33e9301ab81d08942ffba99da9210c"
+    }
+  ],
+  "intermediateLogsNotAddedToTotals": [
+    {
+      "file": "native-first.log",
+      "sha256": "aff571e51ddc170c9475ee1a06d113ff651413e2b085facc4931ac93ee4be5db",
+      "reason": "Setup failure: initial test command misspelled Godot binary home directory as chiharukyu. All six tests failed before Godot could launch; rerun with verified chiharukiryu path passed. No production edits between runs."
+    }
+  ],
+  "sourceHashes": {
+    "engine/godot-animation-combinations-script.mjs": "4b88289f6b6224e4eb4af5cf9d37065053acfdcbde06ed610d22c481420f3005",
+    "engine/animation-state-script-source.mjs": "ae4ef883392db7784d4a6ce8c278909fadf876dc99b5624f8e2c9b9293bd81fb",
+    "engine/animation-state-script-edit.mjs": "7408b18e8f8debfbdf8eecc96dd6ad0dc8aa8250eb3aec9d5160c4a310746203",
+    "engine/animation-state-combinations-core.mjs": "978f0794a802c6da196b650dd3e03cba1a7a63d8aebc7209810e4c4bfd041f95",
+    "engine/animation-state-conditions-core.mjs": "54d1de93f5d1b9cd0e2c37cfe0af1f80f474aec6529d6d83d18e2d8d59ad5fe1",
+    "engine/studio-core.mjs": "bce47a057d4d92af7cd2106b6e090c2844ac3d2965866a558ac8f7ca8d08fd01",
+    "engine/studio-core.wasm": "b21d3a19ccf0060d11ba62d36a5dbcf5d06f9329142a87bc63f7277f978d19f6",
+    "scripts/backends/godot4-adapter.mjs": "1524f3b20b951f0d0984f11aabd171ff6f571cf22e91120e5a11060ff7a7beca",
+    "scripts/tests/godot4-adapter.test.mjs": "dea603ccffa1a03ea27cf6a61e8fc6cff5595cdfadf745e6b65d7a0962a53cb1",
+    "scripts/tests/animation-combinations-source.test.mjs": "a6c8dac3d4877989ee3a3c33d4379c1cc1f54abf6904619b03fb26801829145d",
+    "scripts/tests/animation-combinations-godot.test.mjs": "3715ef336d62402fabc90d82bea5cc101bf3478640b6730f57ca4ad8a599bd94",
+    "scripts/tests/animation-selectors-source.test.mjs": "f98bd294e52bcdcfce770153ba9982578218c2f91c09fa2f5cd6a437de824430",
+    "scripts/tests/animation-selectors-godot.test.mjs": "20b000266fe132ff72d3f0f1c15e18821f9fa62772e6f05f90df8748ca2ef666",
+    "scripts/tests/animation-state-conditions-source.test.mjs": "740f766e1f8749de385705f4a2f7056624e3b7cd8eda7e0fa4a86a41f7cf54b0",
+    "scripts/tests/animation-branches-source.test.mjs": "a96cf362bb2a415e85d87c32e342c4655a2bf26e6172f6bc492ac966a62df451"
+  },
+  "legacyEmitterHashes": {
+    "engine/godot-animation-state-script.mjs": "a9fb4687b3b9e9573770a3f2dacc4d78e5540acfcc37cce05db2f6a8bc88f2d5",
+    "engine/godot-animation-state-conditions-script.mjs": "46edb613955d96188f5546a78fa97da7b14a06f3516a7e477ccf5fa34bd539a2",
+    "engine/godot-animation-branches-script.mjs": "7db5a850a461d0c29e87db383b4cfa59cfc2f5a5ad54f50e2056a763ba3bde1f",
+    "engine/godot-animation-selectors-script.mjs": "96f471ddf39d8cacaf2f9c1ddefceca6f879a203cdd6d9833507eb5ef691d321"
+  },
+  "verified": [
+    "Strict all/any groups of 1 through 8 leaves, unique and firstMatch; one-leaf groups retain v5 identity",
+    "Old v1-v4 emitter file hashes and exact generated source bytes unchanged; legacy direct emitters reject grouped conditions",
+    "Only new combinations marker needed for v5 generate/read/graph/re-edit; previous markers independently absent",
+    "Malformed and nested groups rejected, source feature/version identity exact, complete source <=64 KiB including BOM/newline conversion",
+    "IEEE numeric constants and encoded UTF-8 string bytes exact per leaf; order and repeated leaves retained",
+    "81 real project group/payload/shared-state cases, 13 real GDS ordered short-circuit read traces",
+    "Mixed groups/scalar/fallback firstMatch; shared-state values read at event delivery; missing or wrong type false including ne",
+    "Matched branch command failure stops without fallback; payload-only groups accept legacy port while shared leaves require read_state before side effects",
+    "p9 state entries, completion and terminal snapshots through independent v5 ZIP after author/build root removal; BOM/CRLF author bytes preserved",
+    "Legacy v4 persistent shared state across scene reentry/stale-port revocation and independent ZIP delivery remain valid"
+  ],
+  "productionFrozen": true,
+  "remainingIssues": []
+}

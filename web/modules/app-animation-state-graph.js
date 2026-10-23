@@ -36,8 +36,21 @@ export function setupAnimationStateGraph({ container, getContext = () => ({}), g
     if (edge.trigger.kind !== 'event') return text('动画自然完成');
     const label = text('事件：{0}', edge.trigger.name), condition = edge.trigger.condition;
     if (!condition) return label;
+    if (Object.hasOwn(condition, 'combine')) {
+      const items = condition.conditions.map((leaf, index) => {
+        const type = text(leaf.type === 'number' ? '数字（number）' : leaf.type === 'boolean' ? '布尔值（boolean）' : '字符串（string）');
+        const operator = ({ eq: '==', ne: '!=', lt: '<', lte: '<=', gt: '>', gte: '>=' })[leaf.operator];
+        const description = leaf.selector ? text('项目共享状态 {0}：{1} {2} {3}', JSON.stringify(leaf.selector.key), type, operator, JSON.stringify(leaf.value))
+          : text('事件载荷：{0} {1} {2}', type, operator, JSON.stringify(leaf.value));
+        return text('条件 {0}：{1}', index + 1, description);
+      }).join(' · ');
+      return text(condition.combine === 'all' ? '{0} · 全部满足：{1}' : '{0} · 任一满足：{1}', label, items);
+    }
     const type = text(condition.type === 'number' ? '数字（number）' : condition.type === 'boolean' ? '布尔值（boolean）' : '字符串（string）');
-    return text('{0} · 条件：{1} {2} {3}', label, type, ({ eq: '==', ne: '!=', lt: '<', lte: '<=', gt: '>', gte: '>=' })[condition.operator], JSON.stringify(condition.value));
+    const operator = ({ eq: '==', ne: '!=', lt: '<', lte: '<=', gt: '>', gte: '>=' })[condition.operator];
+    return condition.selector
+      ? text('{0} · 项目共享状态 {1}：{2} {3} {4}', label, JSON.stringify(condition.selector.key), type, operator, JSON.stringify(condition.value))
+      : text('{0} · 条件：{1} {2} {3}', label, type, operator, JSON.stringify(condition.value));
   };
   function select(value, ticket) { if (!current(ticket)) return false; selected = value; updateText(); return true; }
   function locate(kind, index, ticket) {

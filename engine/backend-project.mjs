@@ -97,7 +97,12 @@ export function validateBackendProjectManifest(input) {
   if (!text(value.tool.version, 256) || /[/\\]/.test(value.tool.version) || !hash(value.tool.sha256) || !token(value.tool.platform) || !token(value.tool.arch)) throw invalid();
   exact(value.project, ['kind', 'root', 'entry', 'requiresTool']);
   if (!token(value.project.kind) || value.project.root !== 'project' || !projectPath(value.project.entry) || typeof value.project.requiresTool !== 'boolean') throw invalid();
-  if (!Array.isArray(value.files) || !value.files.length || value.files.length > 640) throw invalid();
+  // Protocol 9 adds one generated observer wrapper per recognized author source.
+  // Keep older backends and standalone scenes within their published inventory budget.
+  const stateEntries = assembly && backend.id === 'org.viento.godot4'
+    && backend.protocolVersion === 9 && value.project.kind === 'godot-project';
+  if (!Array.isArray(value.files) || !value.files.length || value.files.length > (stateEntries ? 1152 : 640)
+    || stateEntries && value.files.filter(file => file?.role !== 'resource-copy').length > 1024) throw invalid();
   let total = 0;
   for (const file of value.files) {
     exact(file, ['path', 'size', 'sha256', 'role', 'resourceId', 'sourceObjectId']);

@@ -3,6 +3,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
+import { createProjectAnimationStateCatalog } from '../../engine/project-animation-states.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { buildHash, buildError, readBuildFile } from '../adapters/node-build-snapshot.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
@@ -37,9 +38,13 @@ function relocate(name, bytes, prefix) {
   return Buffer.from(content);
 }
 export async function generateGodotAssemblyProject(input) {
-  const plan = validateProjectAssemblyPlan(input), files = new Map(), resourceFiles = new Map(), maps = [], backendHashes = [], rows = [], behaviorSources = new Map();
+  const plan = validateProjectAssemblyPlan(input), files = new Map(), resourceFiles = new Map(), maps = [], backendHashes = [], rows = [], behaviorSources = new Map(), stateWrappers = new Map();
   const animationControl = plan.scenes.some(scene => scene.animation);
   const clipControl = animationControl;
+  const stateCatalog = createProjectAnimationStateCatalog(plan), stateControl = stateCatalog.scenes.length > 0;
+  const stateEntryController = stateControl ? await fs.readFile(new URL('./godot4/project-animation-state-entry-runtime.gd', import.meta.url)) : null;
+  const stateEntryWrapper = stateControl ? await fs.readFile(new URL('./godot4/project-animation-state-entry-wrapper.gd', import.meta.url)) : null;
+  const stateController = stateControl ? await fs.readFile(new URL('./godot4/project-animation-state-runtime.gd', import.meta.url)) : null;
   const completionController = animationControl ? await fs.readFile(new URL('./godot4/project-completion-runtime.gd', import.meta.url)) : null;
   const completionQueue = animationControl ? await fs.readFile(new URL('./godot4/project-animation-completions.gd', import.meta.url)) : null;
   const clipController = clipControl ? await fs.readFile(new URL('./godot4/project-clip-runtime.gd', import.meta.url)) : null;
@@ -63,6 +68,7 @@ export async function generateGodotAssemblyProject(input) {
         }
       } else if (sceneFiles.has(name)) {
         let content = relocate(name, bytes, prefix);
+        if (stateControl && name === 'behavior-runtime.gd') content = Buffer.from(replaceOne(content.toString(), '\t\tvar instance = script.new()', '\t\tvar instance = call("project_behavior_instance", binding, script)'));
         if (name === 'main.tscn') content = Buffer.from(replaceOne(content.toString(),
           `"res://${prefix}/${child.animation ? 'animation-runtime' : child.audio ? 'audio-runtime' : child.schemaVersion === 3 ? 'behavior-runtime' : 'runtime'}.gd"`, `"res://${prefix}/project-scene.gd"`));
         put(`${prefix}/${name}`, content);
@@ -76,7 +82,13 @@ export async function generateGodotAssemblyProject(input) {
     for (const [id, file] of generated.resourceFiles || generated.imageFiles) {
       if (resourceFiles.has(id) && resourceFiles.get(id) !== file) invalid(); resourceFiles.set(id, file);
     }
+    if (stateControl) for (const controller of stateCatalog.scenes.find(scene => scene.sceneId === child.scene.objectId)?.controllers || []) {
+      const scriptObjectId = controller.scriptObjectId, name = `animation-state-wrappers/${scriptObjectId}.gd`;
+      put(name, Buffer.from(replaceOne(stateEntryWrapper.toString(), '__SCRIPT_OBJECT_ID__', scriptObjectId)));
+      stateWrappers.set(scriptObjectId, { scriptObjectId, path: name });
+    }
     let wrapper = bridge.toString();
+    if (stateControl) wrapper += '\nfunc project_behavior_instance(binding: Dictionary, script: Script):\n\treturn project_host.make_behavior_instance(project_visit, binding, script)\n';
     const flags = [child.schemaVersion === 3 ? 'behavior_failed = true' : '', child.audio ? 'audio_failed = true' : '', child.animation ? 'animation_failed = true' : ''].filter(Boolean);
     for (const [token, value] of [
       ['__BASE_RUNTIME__', `res://${prefix}/${child.animation ? 'animation-runtime' : child.audio ? 'audio-runtime' : child.schemaVersion === 3 ? 'behavior-runtime' : 'runtime'}.gd`],
@@ -102,7 +114,9 @@ export async function generateGodotAssemblyProject(input) {
     }
     put(`${prefix}/project-scene.gd`, Buffer.from(wrapper)); runtimeScripts.push(`${prefix}/project-scene.gd`);
     generated.sourceMap.objects = generated.sourceMap.objects.map(object => ({ ...object, nodePath: object.nodePath.replace('/root/VientoScene/', '/root/VientoProject/VientoScene/') }));
-    rows.push({ sceneId: child.scene.objectId, entry: `${prefix}/main.tscn`, runtimeScripts });
+    rows.push({ sceneId: child.scene.objectId, entry: `${prefix}/main.tscn`, runtimeScripts,
+      ...(stateControl ? { animationStateControllers: (stateCatalog.scenes.find(scene => scene.sceneId === child.scene.objectId)?.controllers || [])
+        .map(({ bindingId, instanceId, objectId, scriptObjectId, states, clips }) => ({ bindingId, instanceId, objectId, scriptObjectId, states, clips })) } : {}) });
     maps.push({ sceneId: child.scene.objectId, entry: `${prefix}/main.tscn`, sourceMap: generated.sourceMap });
     backendHashes.push({ sceneId: child.scene.objectId, sha256: generated.backend.sha256 });
   }
@@ -113,43 +127,71 @@ export async function generateGodotAssemblyProject(input) {
   if (animationControl) { put('project-control-runtime.gd', controller); put('project-animation.gd', animationQueue); }
   if (clipControl) put('project-clip-runtime.gd', clipController);
   if (animationControl) { put('project-completion-runtime.gd', completionController); put('project-animation-completions.gd', completionQueue); }
-  put('project.tscn', Buffer.from(`[gd_scene load_steps=2 format=3]\n\n[ext_resource type="Script" path="res://${animationControl ? 'project-completion-runtime.gd' : 'project-runtime.gd'}" id="1"]\n\n[node name="VientoProject" type="Node2D"]\nscript = ExtResource("1")\n`));
-  put('assembly.json', json({ format: 'viento-godot-project', schemaVersion: animationControl ? 8 : 5, assembly: plan.assembly, entrySceneId: plan.entrySceneId,
-    scenes: rows, behaviorSources: [...behaviorSources.values()].sort((a, b) => a.objectId.localeCompare(b.objectId)) }));
+  if (stateControl) { put('project-animation-state-runtime.gd', stateController); put('project-animation-state-entry-runtime.gd', stateEntryController); }
+  put('project.tscn', Buffer.from(`[gd_scene load_steps=2 format=3]\n\n[ext_resource type="Script" path="res://${stateControl ? 'project-animation-state-entry-runtime.gd' : animationControl ? 'project-completion-runtime.gd' : 'project-runtime.gd'}" id="1"]\n\n[node name="VientoProject" type="Node2D"]\nscript = ExtResource("1")\n`));
+  put('assembly.json', json({ format: 'viento-godot-project', schemaVersion: stateControl ? 10 : animationControl ? 8 : 5, assembly: plan.assembly, entrySceneId: plan.entrySceneId,
+    scenes: rows, ...(stateControl ? { animationStateWrappers: [...stateWrappers.values()].sort((a, b) => a.scriptObjectId.localeCompare(b.scriptObjectId)) } : {}), behaviorSources: [...behaviorSources.values()].sort((a, b) => a.objectId.localeCompare(b.objectId)) }));
   const generator = await fs.readFile(new URL('./godot4-project.mjs', import.meta.url));
   return { files, resourceFiles, sourceMap: { format: 'viento-project-runtime-map', schemaVersion: 1, assembly: plan.assembly,
     entrySceneId: plan.entrySceneId, scenes: maps,
+    ...(stateControl ? { animationStateWrappers: [...stateWrappers.values()] } : {}),
     behaviors: maps.flatMap(item => (item.sourceMap.behaviors || []).map(binding => ({ ...binding, sceneId: item.sceneId }))),
     resources: [...resourceFiles].map(([resourceId, generatedPath]) => ({ resourceId, generatedPath })) },
-    backend: { id: 'org.viento.godot4', version: animationControl ? '0.16.0' : '0.11.0', protocolVersion: animationControl ? 7 : 4, capabilities: [...plan.requiredCapabilities, 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', ...(animationControl ? ['project.animation-control', 'project.animation-completion'] : [])],
+    backend: { id: 'org.viento.godot4', version: stateControl ? '0.18.0' : animationControl ? '0.16.0' : '0.11.0', protocolVersion: stateControl ? 9 : animationControl ? 7 : 4, capabilities: [...plan.requiredCapabilities, 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', ...(animationControl ? ['project.animation-control', 'project.animation-completion'] : []), ...(stateControl ? ['project.animation-state-snapshots', 'project.animation-state-entries'] : [])],
       artifactKind: 'godot-project', platforms: ['linux'], execution: { headlessLogic: true, windowPreview: true, embeddedViewport: false, gpuCompute: false },
-      sha256: buildHash(Buffer.concat([generator, coordinator, bridge, eventBus, audioControl, ...(animationControl ? [controller, animationQueue, animationBridge, completionController, completionQueue] : []), ...(clipControl ? [clipController] : []), Buffer.from(canonicalJson(backendHashes))])) } };
+      sha256: buildHash(Buffer.concat([generator, coordinator, bridge, eventBus, audioControl, ...(stateControl ? [stateController, stateEntryController, stateEntryWrapper] : []), ...(animationControl ? [controller, animationQueue, animationBridge, completionController, completionQueue] : []), ...(clipControl ? [clipController] : []), Buffer.from(canonicalJson(backendHashes))])) } };
 }
 
 /** Read only a bounded, generated inventory; author text never selects scripts. */
 export async function godotAssemblyScripts(directory, signal) {
-  let value;
-  try { value = JSON.parse(await readBuildFile(path.join(directory, 'assembly.json'), 128 * 1024, signal)); }
+  let value, bytes;
+  try { bytes = await readBuildFile(path.join(directory, 'assembly.json'), 4 * 1024 * 1024, signal); value = JSON.parse(bytes); }
   catch (error) { if (error.code === 'ENOENT') return null; invalid(); }
-  if (!exact(value, ['format', 'schemaVersion', 'assembly', 'entrySceneId', 'scenes', 'behaviorSources'])
-    || value.format !== 'viento-godot-project' || ![5, 6, 7, 8].includes(value.schemaVersion) || !uuid(value.assembly?.objectId)
+  if (!exact(value, ['format', 'schemaVersion', 'assembly', 'entrySceneId', 'scenes', 'behaviorSources', ...(value?.schemaVersion === 10 ? ['animationStateWrappers'] : [])])
+    || value.schemaVersion < 9 && bytes.length > 128 * 1024
+    || value.format !== 'viento-godot-project' || ![5, 6, 7, 8, 9, 10].includes(value.schemaVersion) || !uuid(value.assembly?.objectId)
     || !uuid(value.entrySceneId) || !Array.isArray(value.scenes) || value.scenes.length < 1 || value.scenes.length > 32
     || !Array.isArray(value.behaviorSources) || value.behaviorSources.length > 256) invalid();
-  const ids = new Set(), scripts = ['project-runtime.gd', 'project-events.gd', 'project-audio.gd', ...(value.schemaVersion >= 6 ? ['project-control-runtime.gd', 'project-animation.gd'] : []), ...(value.schemaVersion >= 7 ? ['project-clip-runtime.gd'] : []), ...(value.schemaVersion === 8 ? ['project-completion-runtime.gd', 'project-animation-completions.gd'] : [])];
+  const ids = new Set(), scripts = ['project-runtime.gd', 'project-events.gd', 'project-audio.gd', ...(value.schemaVersion >= 6 ? ['project-control-runtime.gd', 'project-animation.gd'] : []), ...(value.schemaVersion >= 7 ? ['project-clip-runtime.gd'] : []), ...(value.schemaVersion >= 8 ? ['project-completion-runtime.gd', 'project-animation-completions.gd'] : []), ...(value.schemaVersion >= 9 ? ['project-animation-state-runtime.gd'] : []), ...(value.schemaVersion === 10 ? ['project-animation-state-entry-runtime.gd'] : [])];
   for (const row of value.scenes) {
-    if (!exact(row, ['sceneId', 'entry', 'runtimeScripts']) || !uuid(row.sceneId) || ids.has(row.sceneId)
+    if (!exact(row, ['sceneId', 'entry', 'runtimeScripts', ...(value.schemaVersion >= 9 ? ['animationStateControllers'] : [])]) || !uuid(row.sceneId) || ids.has(row.sceneId)
       || row.entry !== `scenes/${row.sceneId}/main.tscn` || !Array.isArray(row.runtimeScripts)
       || row.runtimeScripts.length < 2 || row.runtimeScripts.length > 5 || new Set(row.runtimeScripts).size !== row.runtimeScripts.length
       || !row.runtimeScripts.includes(`scenes/${row.sceneId}/runtime.gd`)
       || !row.runtimeScripts.includes(`scenes/${row.sceneId}/project-scene.gd`)
       || row.runtimeScripts.some(file => !['runtime.gd', 'behavior-runtime.gd', 'audio-runtime.gd', 'animation-runtime.gd', 'project-scene.gd'].some(name => file === `scenes/${row.sceneId}/${name}`))) invalid();
+    if (value.schemaVersion >= 9) {
+      if (!Array.isArray(row.animationStateControllers) || row.animationStateControllers.length > 32
+        || row.animationStateControllers.length && !row.runtimeScripts.includes(`scenes/${row.sceneId}/animation-runtime.gd`)) invalid();
+      const bindings = new Set();
+      for (const controller of row.animationStateControllers) {
+        if (!exact(controller, ['bindingId', 'instanceId', 'objectId', 'states', 'clips', ...(value.schemaVersion === 10 ? ['scriptObjectId'] : [])])
+          || value.schemaVersion === 10 && !uuid(controller.scriptObjectId)
+          || !uuid(controller.bindingId) || !uuid(controller.instanceId) || !uuid(controller.objectId) || bindings.has(controller.bindingId)
+          || !Array.isArray(controller.states) || controller.states.length < 1 || controller.states.length > 16
+          || controller.states.some(key => typeof key !== 'string' || !/^[a-z][a-z0-9_]{0,31}$/.test(key))
+          || new Set(controller.states).size !== controller.states.length || !Array.isArray(controller.clips)
+          || controller.clips.length !== controller.states.length || controller.clips.some(id => id !== null && !uuid(id))) invalid();
+        bindings.add(controller.bindingId);
+      }
+    }
     ids.add(row.sceneId); scripts.push(...row.runtimeScripts);
   }
-  if (!ids.has(value.entrySceneId)) invalid();
+  if (!ids.has(value.entrySceneId) || value.schemaVersion >= 9 && !value.scenes.some(scene => scene.animationStateControllers.length)) invalid();
   const sources = new Set();
   for (const row of value.behaviorSources) {
     if (!exact(row, ['objectId', 'path']) || !uuid(row.objectId) || sources.has(row.objectId) || row.path !== `behaviors/${row.objectId}.gd`) invalid();
     sources.add(row.objectId); scripts.push(row.path);
+  }
+  if (value.schemaVersion === 10) {
+    const expected = new Set(value.scenes.flatMap(scene => scene.animationStateControllers.map(controller => controller.scriptObjectId))), wrappers = new Set();
+    if (!Array.isArray(value.animationStateWrappers) || value.animationStateWrappers.length < 1 || value.animationStateWrappers.length > 256) invalid();
+    for (const row of value.animationStateWrappers) {
+      if (!exact(row, ['scriptObjectId', 'path']) || !uuid(row.scriptObjectId) || wrappers.has(row.scriptObjectId)
+        || !sources.has(row.scriptObjectId) || !expected.has(row.scriptObjectId) || row.path !== `animation-state-wrappers/${row.scriptObjectId}.gd`) invalid();
+      wrappers.add(row.scriptObjectId); scripts.push(row.path);
+    }
+    if (wrappers.size !== expected.size) invalid();
   }
   for (const script of scripts) await readBuildFile(await resolveContainedPath(directory, path.join(directory, script)), 65536, signal);
   return scripts;
@@ -163,6 +205,8 @@ export function godotAssemblyDiagnostics(result, plan) {
       const specific = item.objectId !== child.scene.objectId || item.resourceId;
       const index = lines.findIndex(line => line.trim().slice(0, 4096) === item.message);
       const vicinity = lines.slice(index, index + 4).join('\n');
+      const wrapperFailure = /res:\/\/animation-state-wrappers\/[a-f0-9-]+\.gd(?::|\")/.test(vicinity);
+      if (wrapperFailure) { Object.assign(item, plan.assembly, { propertyPath: '' }); delete item.sourceLine; delete item.sourceRange; }
       const named = plan.scenes.find(scene => vicinity.includes(`res://scenes/${scene.scene.objectId}/`));
       if (!specific && named && named.scene.objectId !== child.scene.objectId) continue;
       if (!specific && !named) Object.assign(item, plan.assembly, { propertyPath: '' });

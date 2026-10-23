@@ -1,6 +1,6 @@
 // Review a complete, self-described generated TXT source before changing the
 // ordinary editor draft. No registry, relationship, playback or Save authority.
-import { inspectAnimationStateDeclaration } from './animation-state-conditions-core.mjs';
+import { inspectAnimationStateDeclarationWithCombinations } from './animation-state-conditions-core.mjs';
 import { readAnimationStateScriptSource, generateEditableGodotAnimationStateScript } from './animation-state-script-source.mjs';
 import { canonicalJson } from './canonical-json.mjs';
 
@@ -40,7 +40,7 @@ function captureSource(input) {
 function replacement(content, table) {
   const before = readAnimationStateScriptSource(content);
   // The native result detaches all caller data synchronously, before any await.
-  const checked = inspectAnimationStateDeclaration(table).table;
+  const checked = inspectAnimationStateDeclarationWithCombinations(table).table;
   const generated = generateEditableGodotAnimationStateScript(checked);
   const afterContent = before.bom + generated.content.replaceAll('\n', before.newline);
   if (afterContent.length > MAX_SOURCE_BYTES || new TextEncoder().encode(afterContent).length > MAX_SOURCE_BYTES) fail();

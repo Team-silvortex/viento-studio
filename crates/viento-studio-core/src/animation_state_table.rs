@@ -117,7 +117,7 @@ pub struct AnimationStateTableResponse {
     states: Vec<IndexedState>,
     initial_index: usize,
     pub(crate) transitions: Vec<IndexedTransition>,
-    event_names: Vec<String>,
+    pub(crate) event_names: Vec<String>,
 }
 pub(crate) fn inspect(table: &Value) -> Result<AnimationStateTableResponse, CoreError> {
     if !exact(table, &["initialState", "states", "transitions"])

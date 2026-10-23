@@ -1,0 +1,145 @@
+{
+  "format": "viento-animation-state-backend-review",
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-23T03:51:10.830Z",
+  "tool": {
+    "path": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "node": "v24.21.0",
+  "totals": {
+    "tests": 74,
+    "pass": 74,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "groups": [
+    {
+      "log": "native-old-final.log",
+      "command": "env PATH=\"/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH\" VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node --test --test-concurrency=2 scripts/tests/animation-state-script-godot.test.mjs scripts/tests/animation-state-script-source-godot.test.mjs scripts/tests/animation-state-conditions-godot.test.mjs scripts/tests/animation-branches-godot.test.mjs scripts/tests/godot4-project.test.mjs",
+      "exitCode": 0,
+      "tests": 39,
+      "pass": 39,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "sha256": "91ddc0b59ae65af4bddeeff5c8e5b36d0cdaa16f96237a844a1d98e11b5f9ed0"
+    },
+    {
+      "log": "native-state-completion-final.log",
+      "command": "env PATH=\"/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH\" VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node --test --test-concurrency=2 scripts/tests/project-animation-state-godot.test.mjs scripts/tests/project-animation-completion-godot.test.mjs",
+      "exitCode": 0,
+      "tests": 35,
+      "pass": 35,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "sha256": "4ea0a971e5905e1f7d264c8007a6d9e881ff8f0baa4246c32fbe7e7f884c9c6d"
+    }
+  ],
+  "backendContract": {
+    "log": "backend-contract.log",
+    "tests": 20,
+    "pass": 18,
+    "fail": 0,
+    "skipped": 2,
+    "reason": "The command omitted VIENTO_GODOT_BIN; its two optional native instance-control cases were skipped."
+  },
+  "intermediateRuns": [
+    {
+      "log": "native-attempt-before-diagnostic-fix.log",
+      "tests": 13,
+      "pass": 12,
+      "fail": 1,
+      "skipped": 0,
+      "reason": "The invalid-controller diagnostic used runtime_animation_state_invalid, while behavior diagnostics require runtime_behavior_*. Changed to runtime_behavior_animation_state_invalid; final native verifies diagnostic and exitCode 1."
+    },
+    {
+      "log": "native-diagnostic-debug.log",
+      "tests": 2,
+      "pass": 1,
+      "fail": 1,
+      "skipped": 0,
+      "reason": "Confirmed the same diagnostic-prefix issue and that the Godot subprocess exited 1. The maximum legal schema9 inventory test passed."
+    },
+    {
+      "log": "native-interrupted.log",
+      "completedPassingCases": 53,
+      "assertionFailures": 0,
+      "commandExitCode": 143,
+      "reason": "The combined long command was terminated before its final summary; both replacement commands above completed with full summaries."
+    }
+  ],
+  "contracts": {
+    "adapterVersion": "0.17.0",
+    "observedProjectProtocol": 8,
+    "observedInventorySchema": 9,
+    "unobservedAnimationProtocol": 7,
+    "noAnimationProtocol": 4,
+    "inventorySchema9Bytes": 4194304,
+    "legacyInventoryBytes": 131072,
+    "authorScriptsRewritten": false,
+    "privateStateInvalidExitCode": 1
+  },
+  "sourceFingerprints": [
+    {
+      "path": "scripts/backends/godot4-project.mjs",
+      "sha256": "edeaf26661e34239edf3550fa5e68aa3d50695c32c4eaa5b2afe9462c3a06d40",
+      "unchangedDuringFinalRun": true
+    },
+    {
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "sha256": "1bf61fd415a676c40e08324b2d866f6934c71401c02707d04a07a83a568b0125",
+      "unchangedDuringFinalRun": true
+    },
+    {
+      "path": "scripts/backends/godot4/project-animation-state-runtime.gd",
+      "sha256": "86f93a70dabfdce7ae44d1fb46e49af9a6f940d521fd7a99b36fb3c93c97ea77",
+      "unchangedDuringFinalRun": true
+    },
+    {
+      "path": "scripts/adapters/node-execution-backends.mjs",
+      "sha256": "6f5e8b19d9f00f82494759b36a0768dd528c7ff1f165293f399bae5c7a997622",
+      "unchangedDuringFinalRun": true
+    },
+    {
+      "path": "engine/godot-animation-state-script.mjs",
+      "sha256": "a9fb4687b3b9e9573770a3f2dacc4d78e5540acfcc37cce05db2f6a8bc88f2d5",
+      "unchangedDuringFinalRun": true
+    },
+    {
+      "path": "engine/godot-animation-state-conditions-script.mjs",
+      "sha256": "46edb613955d96188f5546a78fa97da7b14a06f3516a7e477ccf5fa34bd539a2",
+      "unchangedDuringFinalRun": true
+    },
+    {
+      "path": "engine/godot-animation-branches-script.mjs",
+      "sha256": "7db5a850a461d0c29e87db383b4cfa59cfc2f5a5ad54f50e2056a763ba3bde1f",
+      "unchangedDuringFinalRun": true
+    }
+  ],
+  "cleanup": {
+    "removedOwnedInterruptedTestTrees": [
+      {
+        "path": "/tmp/viento-assembly-backend-o8RIb7",
+        "bytes": 3592128
+      },
+      {
+        "path": "/tmp/viento-assembly-backend-sXLoQH",
+        "bytes": 3601097
+      },
+      {
+        "path": "/tmp/viento-state-snapshot-xdg-IeRUeD",
+        "bytes": 0
+      }
+    ]
+  },
+  "scope": [
+    "Generated strict editable v1/v2/v3 bindings only; modified or markerless scripts retain the existing project protocol.",
+    "Snapshots occur before controlled switch/finish/diagnostic abort cleanup; there is no post-exit fallback.",
+    "Destroyed or uncreated controllers are unavailable; inactive controllers and malformed fields remain distinct.",
+    "Independent ZIP executes after removal of the original author and build directories, preserving BOM/CRLF source bytes."
+  ]
+}

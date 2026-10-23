@@ -2,7 +2,10 @@
 // reopening requires exact regeneration by this version's fixed body emitter.
 import { parseJsonSource } from './json-source.mjs';
 import { inspectAnimationStateTable } from './animation-state-table-core.mjs';
-import { inspectAnimationStateDeclaration } from './animation-state-conditions-core.mjs';
+import { inspectAnimationStateDeclarationWithCombinations } from './animation-state-conditions-core.mjs';
+import { generateGodotAnimationCombinationsScript } from './godot-animation-combinations-script.mjs';
+import { generateGodotAnimationSelectorsScript } from './godot-animation-selectors-script.mjs';
+import { generateGodotAnimationBranchesScript } from './godot-animation-branches-script.mjs';
 import { generateGodotAnimationStateConditionsScript } from './godot-animation-state-conditions-script.mjs';
 import { generateGodotAnimationStateScript, DEFAULT_ANIMATION_STATE_TABLE, DEFAULT_GODOT_ANIMATION_STATE_SCRIPT } from './godot-animation-state-script.mjs';
 const TITLE = '# Viento animation state script';
@@ -11,6 +14,14 @@ const PREFIX = TITLE + '\n' + MARKER + ' ';
 const FORMAT = 'viento-animation-state-script';
 const GENERATOR = 'godot-gdscript-v1';
 const CONDITIONAL_GENERATOR = 'godot-gdscript-v2';
+const BRANCH_GENERATOR = 'godot-gdscript-v3';
+const SELECTOR_GENERATOR = 'godot-gdscript-v4';
+const COMBINATION_GENERATOR = 'godot-gdscript-v5';
+const combined = table => Array.isArray(table?.transitions) && table.transitions.some(edge =>
+  edge?.trigger?.condition && ['combine', 'conditions'].some(key => Object.hasOwn(edge.trigger.condition, key)));
+const selected = table => Array.isArray(table?.transitions) && table.transitions.some(edge =>
+  edge?.trigger?.condition && Object.hasOwn(edge.trigger.condition, 'selector'));
+const branching = table => Object.hasOwn(table, 'eventSelection');
 const CONDITIONAL_LIMIT = 64 * 1024;
 const conditional = table => table.transitions.some(edge => Object.hasOwn(edge.trigger, 'condition'));
 const LIMIT = 128 * 1024;
@@ -20,7 +31,7 @@ const freeze = value => {
 };
 function failure(kind) {
   const errorCode = 'animation_state_script_source_' + kind;
-  const message = kind === 'limit' ? 'The conditional animation script exceeds the 64 KiB behavior source limit. Reduce condition text or transitions.'
+  const message = kind === 'limit' ? 'The conditional or branching animation script exceeds the 64 KiB behavior source limit. Reduce condition text or transitions.'
     : kind === 'modified' ? 'The script differs from its declared generated source. Keep editing it as ordinary source.'
     : kind === 'unsupported' ? 'This animation state script uses an unsupported declaration or generator version.'
       : 'Expected a bounded, complete animation state script declaration.';
@@ -48,16 +59,17 @@ function header(table, generator = GENERATOR) {
   return PREFIX + JSON.stringify({ format: FORMAT, schemaVersion: 1, generator, table }) + '\n';
 }
 function emit(table) {
-  const isConditional = conditional(table);
-  const generated = isConditional ? generateGodotAnimationStateConditionsScript(table) : generateGodotAnimationStateScript(table);
-  const content = header(table, isConditional ? CONDITIONAL_GENERATOR : GENERATOR) + generated.content;
+  const isCombined = combined(table), isSelected = selected(table), isBranching = branching(table), isConditional = conditional(table);
+  const generated = isCombined ? generateGodotAnimationCombinationsScript(table) : isSelected ? generateGodotAnimationSelectorsScript(table) : isBranching ? generateGodotAnimationBranchesScript(table)
+    : isConditional ? generateGodotAnimationStateConditionsScript(table) : generateGodotAnimationStateScript(table);
+  const content = header(table, isCombined ? COMBINATION_GENERATOR : isSelected ? SELECTOR_GENERATOR : isBranching ? BRANCH_GENERATOR : isConditional ? CONDITIONAL_GENERATOR : GENERATOR) + generated.content;
   checkText(content);
-  if (isConditional && new TextEncoder().encode(content).length > CONDITIONAL_LIMIT) throw failure('limit');
+  if ((isBranching || isConditional) && new TextEncoder().encode(content).length > CONDITIONAL_LIMIT) throw failure('limit');
   return freeze({ content, parameters: generated.parameters });
 }
 export const DEFAULT_EDITABLE_GODOT_ANIMATION_STATE_SCRIPT = header(DEFAULT_ANIMATION_STATE_TABLE) + DEFAULT_GODOT_ANIMATION_STATE_SCRIPT;
 export function generateEditableGodotAnimationStateScript(table) {
-  return emit(inspectAnimationStateDeclaration(table).table);
+  return emit(inspectAnimationStateDeclarationWithCombinations(table).table);
 }
 // Deliberately cheap candidate detection, including malformed marker suffixes.
 // Never use this alone to approve a table edit or to replace source bytes.
@@ -84,15 +96,21 @@ export function readAnimationStateScriptSource(content) {
   if (!envelope || typeof envelope !== 'object' || Array.isArray(envelope)
     || Object.keys(envelope).length !== 4 || !['format', 'schemaVersion', 'generator', 'table'].every(key => Object.hasOwn(envelope, key))
     || envelope.format !== FORMAT) throw failure('invalid');
-  if (envelope.schemaVersion !== 1 || ![GENERATOR, CONDITIONAL_GENERATOR].includes(envelope.generator)) throw failure('unsupported');
-  if (envelope.generator === CONDITIONAL_GENERATOR && new TextEncoder().encode(content).length > CONDITIONAL_LIMIT) throw failure('limit');
+  if (envelope.schemaVersion !== 1 || ![GENERATOR, CONDITIONAL_GENERATOR, BRANCH_GENERATOR, SELECTOR_GENERATOR, COMBINATION_GENERATOR].includes(envelope.generator)) throw failure('unsupported');
+  if (envelope.generator !== GENERATOR && new TextEncoder().encode(content).length > CONDITIONAL_LIMIT) throw failure('limit');
+  // Older envelopes retain their exact contracts even though the current draft
+  // facade also understands ordered branches. Version claims are never inferred.
+  if (!envelope.table || typeof envelope.table !== 'object' || Array.isArray(envelope.table)
+    || (envelope.generator === COMBINATION_GENERATOR) !== !!combined(envelope.table)
+    || envelope.generator !== COMBINATION_GENERATOR && ((envelope.generator === SELECTOR_GENERATOR) !== !!selected(envelope.table)
+      || envelope.generator !== SELECTOR_GENERATOR && (envelope.generator === BRANCH_GENERATOR) !== branching(envelope.table))) throw failure('invalid');
   let inspected;
-  try { inspected = envelope.generator === GENERATOR ? inspectAnimationStateTable(envelope.table) : inspectAnimationStateDeclaration(envelope.table); }
+  try { inspected = envelope.generator === GENERATOR ? inspectAnimationStateTable(envelope.table) : inspectAnimationStateDeclarationWithCombinations(envelope.table); }
   catch (error) {
     if (error?.errorCode === 'animation_state_table_invalid' || error?.code === 'animation_state_table_invalid') throw failure('invalid');
     throw error; // Optional core absence and protocol failures stay observable.
   }
-  if ((envelope.generator === CONDITIONAL_GENERATOR) !== conditional(inspected.table)) throw failure('invalid');
+  if (![BRANCH_GENERATOR, SELECTOR_GENERATOR, COMBINATION_GENERATOR].includes(envelope.generator) && (envelope.generator === CONDITIONAL_GENERATOR) !== conditional(inspected.table)) throw failure('invalid');
   const generated = emit(inspected.table);
   // Comparing the entire representation rejects changed code, alternate JSON,
   // extra markers and appended code. BOM/newlines are the only reversible forms.

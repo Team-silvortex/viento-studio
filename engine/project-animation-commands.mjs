@@ -58,7 +58,7 @@ function commandData(input, previous, identities, protocolVersion) {
   }
   return { sequence: input.sequence, command, state, origin, animation: { ...animation, source }, ...(clips ? { clip } : {}) };
 }
-function protocol(version) { if (![5, 6, 7].includes(version)) throw invalid(); return version >= 6 ? copyClips : copy; }
+function protocol(version) { if (![5, 6, 7, 8, 9].includes(version)) throw invalid(); return version >= 6 ? copyClips : copy; }
 export function validateProjectAnimationCommandsSnapshot(input, { protocolVersion = 5 } = {}) {
   const snapshot = protocol(protocolVersion)(input);
   if (!exact(snapshot, ['sequence', 'entries']) || !Number.isInteger(snapshot.sequence) || snapshot.sequence < 0

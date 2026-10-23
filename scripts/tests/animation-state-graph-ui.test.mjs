@@ -116,3 +116,12 @@ test('conditional graph explanations preserve explicit type, operator and JSON l
  const h=await fixture(t),table=base();table.transitions[0].trigger.condition={type:'boolean',operator:'ne',value:false};table.transitions[1].trigger.condition={type:'string',operator:'eq',value:'<script>"🙂\n'};h.set(table);h.toggle();assert.equal(h.el('Canvas').children.length,1);assert.match(h.el('Transitions').textContent,/boolean.*!=.*false/);assert.ok(h.el('Transitions').textContent.includes(JSON.stringify(table.transitions[1].trigger.condition.value)));assert.equal(h.el('Canvas').querySelectorAll('script').length,0);
  const before=h.value();for(const locale of['en','ja','zh'])h.language(locale);assert.deepEqual(h.value(),before);assert.equal(h.locations.length,0);
 });
+
+test('shared-state graph labels show the literal key and comparison without claiming a live match', async t => {
+  const h = await fixture(t), table = base(); table.transitions[0].trigger.condition = { type: 'boolean', operator: 'ne', value: false, selector: { kind: 'projectState', key: 'Combat.Enabled' } };
+  table.transitions[1].trigger.condition = { type: 'string', operator: 'eq', value: '<script>"🙂\n' }; h.set(table); h.toggle(); assert.equal(h.el('Canvas').children.length, 1);
+  assert.match(h.el('Transitions').textContent, /项目共享状态 "Combat.Enabled".*boolean.*!=.*false/); assert.ok(h.el('Transitions').textContent.includes(JSON.stringify(table.transitions[1].trigger.condition.value)));
+  const before = h.value(), button = h.el('Transition1Locate'); button.focus();
+  for (const locale of ['en', 'ja', 'zh']) { h.language(locale); assert.equal(h.document.activeElement, button); assert.equal(h.el('Transition1Locate'), button); assert.ok(h.el('Transitions').textContent.includes('"Combat.Enabled"')); }
+  assert.deepEqual(h.value(), before); assert.equal(h.locations.length, 0); assert.equal(h.el('Canvas').querySelectorAll('script').length, 0);
+});

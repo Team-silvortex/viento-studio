@@ -1,5 +1,6 @@
+import { setupAnimationStateConditionGroup } from '../../web/modules/app-animation-state-condition-group.js';
 import { setupAnimationStateCondition } from '../../web/modules/app-animation-state-condition.js';
-import { supportsStudioCoreAnimationStateConditions } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreAnimationStateConditions, supportsStudioCoreAnimationStateBranches, supportsStudioCoreAnimationStateSelectors, supportsStudioCoreAnimationStateCombinations } from '../../engine/studio-core.mjs';
 import { setupAnimationStateGraph } from '../../web/modules/app-animation-state-graph.js';
 import { createAnimationStateGraph, layoutAnimationStateGraph } from '../../engine/animation-state-graph.mjs';
 import { captureSceneAnimationSpriteLayout, scenePreviewImageDimensions } from '../../engine/scene-animation-sprite-layout.mjs';
@@ -174,7 +175,7 @@ export async function dialogHarness(module, overrides = {}) {
     setupBackendProject: () => ({ open() {}, render() {}, closed() {}, dispose() {} }),
     setupScenePreview: () => ({ setAvailable() {}, setScene() {}, setVisible() {}, invalidate() {}, destroy() {} }),
     setupSceneMaterialize: () => ({ setAvailable() {}, open() {}, refresh() {}, dispose() {} }),
-    setupAnimationStateCondition, supportsStudioCoreAnimationStateConditions,
+    setupAnimationStateCondition, setupAnimationStateConditionGroup, supportsStudioCoreAnimationStateConditions, supportsStudioCoreAnimationStateBranches, supportsStudioCoreAnimationStateSelectors, supportsStudioCoreAnimationStateCombinations,
     createAnimationStateGraph: value => createAnimationStateGraph(JSON.parse(JSON.stringify(value))), layoutAnimationStateGraph,
     setupAnimationStateGraph: options => setupAnimationStateGraph({ ...options, getTable: () => JSON.parse(JSON.stringify(options.getTable())) }),
     ...overrides,

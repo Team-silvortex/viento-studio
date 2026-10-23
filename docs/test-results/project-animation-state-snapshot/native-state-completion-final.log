@@ -1,0 +1,43 @@
+✔ real completion safely chains a nonloop clip into a loop with visual sampling (false) (14678.748751ms)
+✔ real completion safely chains a nonloop clip into a loop with visual sampling (true) (13636.936011ms)
+✔ real old author format naturally completes the whole timeline with null payload (false) (13665.124685ms)
+✔ real old author format naturally completes the whole timeline with null payload (true) (14644.675802ms)
+✔ real looping, seek-to-end, pause, stop and selection do not manufacture natural completions (14849.534414ms)
+✔ real replay rearms completion once and an unchanged endpoint never emits twice (13617.843157ms)
+✔ real subsequent pause_animation() cancels pending delivery without retiring the subscription (13671.947885ms)
+✔ real subsequent stop_animation() cancels pending delivery without retiring the subscription (12217.274627ms)
+✔ real subsequent seek_animation(0.1) cancels pending delivery without retiring the subscription (12093.277066ms)
+✔ real subsequent select_animation_clip(null) cancels pending delivery without retiring the subscription (12051.902333ms)
+✔ real subsequent play_animation() cancels pending delivery without retiring the subscription (13466.638456ms)
+✔ real command advancement records the preceding natural endpoint before cancelling its callback (15152.544596ms)
+✔ real finish request cancels pending completion before closing the scene (11950.658881ms)
+✔ real unregistering a captured callback skips it and a fresh subscription handles the next play (11914.017925ms)
+✔ real callback failure retains the recipient source and stops the delivery queue (11801.574436ms)
+✔ completion project ZIP is runnable with source ownership after author/build deletion (17067.704081ms)
+✔ real switching cancels old completion, revokes stale ports and reentry subscribes exactly once (11946.186348ms)
+✔ real freed recipient is skipped while another completion subscriber remains callable (13379.408535ms)
+✔ real completion starter guards absent, invalid and freed ports and preserves select failure (281.631422ms)
+✔ generated inventory accepts historical schemas 5/6/7 and explicitly requires completion scripts only for 8 (12.880925ms)
+✔ real completion follows the Rust subtraction boundary when endpoint addition rounds below duration (12483.665357ms)
+✔ only exact frozen state scripts select protocol8; manually edited scripts retain protocol7 (290.923297ms)
+✔ schema9 inventory rejects forged controller fields, duplicate bindings, clip mappings and missing runtime files (88.785571ms)
+✔ real snapshots distinguish two states selecting the same clip and retain frozen source navigation (15139.945774ms)
+✔ real two bindings of one script retain separate state snapshots in frozen binding order (14873.242964ms)
+✔ real event conditions and ordered branches are sampled from actual state rather than guessed from commands (12931.639019ms)
+✔ real deactivated controller is explicit rather than fabricated as an active state (13932.647239ms)
+✔ real freed controller is explicit rather than fabricated as an active state (14207.45921ms)
+✔ real diagnostic abort samples the controller before cleanup and does not fabricate a finished frame (15112.59926ms)
+✔ real scene reentry uses a new visit and does not reuse previous weak controller state (13090.866058ms)
+✔ real BOM/CRLF state controller and snapshot layer survive ZIP delivery after deleting author and build trees (21732.683461ms)
+✔ real v2 conditional script returns to idle on completion before its terminal snapshot (12329.651609ms)
+✔ real abort before controller creation reports unavailable while preserving the primary diagnostic (12778.16627ms)
+✔ real malformed private state fails explicitly and cannot masquerade as unavailable or a normal finish (14481.703355ms)
+✔ maximum schema9 controller inventory fits its bounded budget while old inventories keep their original limit (199.079986ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 254807.05338

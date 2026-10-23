@@ -4,6 +4,7 @@ import { validateExecutionBackendDescriptor, checkExecutionBackendSupport } from
 import { GODOT4_EXECUTION_ADAPTER } from '../backends/godot4-adapter.mjs';
 import { BEVY_EXECUTION_ADAPTER } from '../backends/bevy-adapter.mjs';
 import { BEVY_RUST_EXECUTION_ADAPTER } from '../backends/bevy-rust-adapter.mjs';
+import { createProjectAnimationStateCatalog } from '../../engine/project-animation-states.mjs';
 import { buildTargetIdentity } from '../../engine/build-target.mjs';
 import { buildError } from './node-build-snapshot.mjs';
 import { parseJsonSource, locateJsonSource } from '../../engine/json-source.mjs';
@@ -103,15 +104,19 @@ export function validateGeneratedExecutionProject(adapter, plan, generated) {
   // New project protocols retain byte-compatible legacy artifacts only when
   // the frozen plan does not need their newer animation contract.
   const projectAnimation = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation);
+  const projectStates = projectAnimation && createProjectAnimationStateCatalog(plan).scenes.length > 0;
   const projectClips = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation?.document?.schemaVersion === 3);
   const legacyProjectProtocol = selectedPlan?.kind === 'project' && selectedPlan.schemaVersion === 1
     && Array.isArray(plan.scenes) && (
-      [5, 6, 7].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 4 && !projectAnimation
-      || selectedPlan.runtimeProtocolVersion === 6 && generated?.backend?.protocolVersion === 5 && projectAnimation && !projectClips);
+      [5, 6, 7, 8, 9].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 4 && !projectAnimation
+      || selectedPlan.runtimeProtocolVersion === 6 && generated?.backend?.protocolVersion === 5 && projectAnimation && !projectClips
+      || [8, 9].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 7 && projectAnimation && !projectStates);
   if (!selectedPlan || !generated || !(generated.files instanceof Map) || !(generated.resourceFiles instanceof Map)
-    || generated.files.size < 1 || generated.files.size > 512 || generated.resourceFiles.size !== plan.resources.length
+    || generated.files.size < 1 || generated.files.size > (selectedPlan?.kind === 'project' && selectedPlan.runtimeProtocolVersion === 9 && generated.backend?.protocolVersion === 9 ? 1024 : 512) || generated.resourceFiles.size !== plan.resources.length
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 6 && !projectClips
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 7 && !projectAnimation
+    || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 8 && (!projectStates || !adapter.descriptor.capabilities.includes('project.animation-state-snapshots'))
+    || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 9 && (!projectStates || !['project.animation-state-snapshots', 'project.animation-state-entries'].every(capability => adapter.descriptor.capabilities.includes(capability)))
     || generated.backend?.id !== adapter.descriptor.id || (generated.backend.protocolVersion !== selectedPlan.runtimeProtocolVersion && !legacyProjectProtocol)
     || typeof generated.backend.version !== 'string' || !/^\d+\.\d+\.\d+$/.test(generated.backend.version)
     || !hash(generated.backend.sha256)) invalid('Invalid generated backend project.');

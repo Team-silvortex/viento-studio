@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { dialogHarness } from './dialog-harness.mjs';
+import { setupAnimationStateConditionGroup } from '../../web/modules/app-animation-state-condition-group.js';
 import en from '../../web/i18n/en.js';
 import ja from '../../web/i18n/ja.js';
 
@@ -119,4 +120,29 @@ test('creation and reopened tables have independent prefixes, references, notes 
   assert.equal(editing.getValue().transitions[0].to, 'attack'); assert.equal(h.value().states[1].key, 'action');
   assert.match(h.el('Note').textContent, /可重新打开表格/); assert.match(h.element('animationStateScriptEditTableNote').textContent, /当前原文/);
   editing.dispose(); h.set('State2Key', 'walk'); assert.equal(h.value().transitions[0].to, 'walk');
+});
+
+
+test('a maximum-size refresh reads each transition condition once and never retains values or capabilities across renders', async t => {
+  let reads = 0, capability = true, failTranslation = false;
+  const h = await dialogHarness('app-animation-state-script', {
+    supportsStudioCoreAnimationStateCombinations: () => capability,
+    setupAnimationStateConditionGroup: options => {
+      const child = setupAnimationStateConditionGroup(options);
+      return Object.freeze({ ...child, getValue() { reads++; return child.getValue(); } });
+    },
+  });
+  const container = h.document.createElement('div'); h.document.body.append(container);
+  const controller = h.runtime.setupAnimationStateScript({ container, getContext: () => ({ active: true, available: true }),
+    translate(key) { if (failTranslation) throw Error('render interrupted'); return key; } }); t.after(() => controller.dispose());
+  const value = { initialState: 'idle', states: [{ key: 'idle' }, { key: 'action' }], transitions: Array.from({ length: 64 }, (_, index) => ({
+    from: 'idle', to: 'action', trigger: { kind: 'event', name: 'event' + index, condition: { combine: 'all', conditions: Array.from({ length: 8 }, () => ({ type: 'number', operator: 'gte', value: 0 })) } },
+  })) };
+  controller.setValue(value); reads = 0; controller.refresh(); assert.equal(reads, 64, 'one capability snapshot per render');
+  reads = 0; assert.deepEqual(copy(controller.getValue()), value); assert.equal(reads, 64, 'one condition read per exported row');
+  const number = h.element('animationStateScriptTransition1ConditionItem1Number'); number.value = '1e-'; reads = 0;
+  assert.equal(controller.getValue().transitions[0].trigger.condition.conditions[0].value, '1e-'); assert.equal(reads, 64, 'silent edits are read immediately');
+  failTranslation = true; assert.throws(() => controller.refresh(), /render interrupted/); failTranslation = false; capability = false;
+  const mode = h.element('animationStateScriptTransition1ConditionCombination'); mode.value = 'any'; mode.dispatch('change'); assert.equal(mode.value, 'all', 'failed renders cannot retain old capability admission');
+  capability = true; mode.value = 'any'; mode.dispatch('change'); assert.equal(mode.value, 'any'); assert.equal(controller.getValue().transitions[0].trigger.condition.conditions[0].value, '1e-');
 });

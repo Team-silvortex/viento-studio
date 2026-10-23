@@ -23,6 +23,9 @@ async function fixture(t, settings = {}) {
   const translate = (key, ...args) => ({ en, ja }[language]?.[key] || key).replace(/\{(\d+)\}/g, (_, n) => String(args[n] ?? ''));
   const h = await dialogHarness('app-animation-state-script-edit', {
     setupAnimationStateScript, readAnimationStateScriptSource, isAnimationStateScriptProposal,
+    ...(settings.combinationSupport ? { supportsStudioCoreAnimationStateCombinations: settings.combinationSupport } : {}),
+    ...(settings.selectorSupport ? { supportsStudioCoreAnimationStateSelectors: settings.selectorSupport } : {}),
+    ...(settings.branchSupport ? { supportsStudioCoreAnimationStateBranches: settings.branchSupport } : {}),
     ...(settings.conditionSupport ? { supportsStudioCoreAnimationStateConditions: settings.conditionSupport } : {}),
     createAnimationStateScriptProposal: async (source, table) => settings.propose
       ? settings.propose(copy(source), copy(table)) : createAnimationStateScriptProposal(copy(source), copy(table)),
@@ -192,4 +195,131 @@ test('condition capability withdrawal and restoration revoke a pending reopened-
 
 test('conditional source budget errors leave reopened fields and saved source untouched',async t=>{
  const h=await fixture(t,{propose(){throw Object.assign(Error('limit'),{code:'animation_state_script_source_limit'});}});await h.open();h.set('State2Key','attack');await h.click('Check');assert.match(h.el('Status').textContent,/64 KiB/);assert.equal(h.el('TableState2Key').value,'attack');assert.equal(h.el('Apply').disabled,true);assert.equal(h.writes.length,0);
+});
+
+test('switching existing source to ordered branches requires review and moving rows revokes the reviewed draft', async t => {
+  const h = await fixture(t); await h.open(); h.set('EventSelection', 'firstMatch', 'change'); await h.click('Check');
+  assert.match(h.el('After').textContent, /godot-gdscript-v3/); assert.equal(h.el('Apply').disabled, false); const before = h.el('After').textContent;
+  h.el('TableTransition2MoveUp').click(); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true); assert.equal(h.writes.length, 0);
+  await h.click('Check'); const after = h.el('After').textContent; assert.notEqual(after, before); assert.equal(h.el('Apply').disabled, false);
+  h.el('TableGraphToggle').click(); h.el('TableGraphTransition1Locate').click(); assert.equal(h.document.activeElement, h.el('TableTransition2From')); assert.equal(h.el('After').textContent, after); assert.equal(h.el('Apply').disabled, false);
+  await h.click('Apply'); assert.deepEqual(h.writes, [after]); assert.equal(readAnimationStateScriptSource(after).table.eventSelection, 'firstMatch');
+});
+
+test('v3 source reopens with branch mode and cancelling local order changes preserves exact original source', async t => {
+  const table = { ...copy(DEFAULT_ANIMATION_STATE_TABLE), eventSelection: 'firstMatch' }, content = generateEditableGodotAnimationStateScript(table).content;
+  const h = await fixture(t, { state: { content, baseline: content, version: 'sha256:' + digest(content) } }); assert.equal(await h.open(), true); assert.equal(h.el('TableEventSelection').value, 'firstMatch');
+  h.el('TableTransition2MoveUp').click(); await h.click('Cancel'); assert.deepEqual(h.writes, []); assert.equal(h.state.content, content);
+  await h.open(); assert.equal(h.el('TableEventSelection').value, 'firstMatch'); assert.equal(h.el('TableTransition1Event').value, 'action');
+  h.set('EventSelection', 'unique', 'change'); await h.click('Check'); assert.match(h.el('After').textContent, /godot-gdscript-v1/); await h.click('Apply'); assert.equal(Object.hasOwn(readAnimationStateScriptSource(h.state.content).table, 'eventSelection'), false);
+});
+
+test('branch-only capability supports v3 reediting without the older condition marker', async t => {
+  const h = await fixture(t, { conditionSupport: () => false, branchSupport: () => true }); await h.open(); h.set('EventSelection', 'firstMatch', 'change'); h.set('Transition1ConditionMode', 'compare', 'change');
+  await h.click('Check'); assert.equal(h.el('Apply').disabled, false); assert.match(h.el('After').textContent, /godot-gdscript-v3/);
+  h.set('EventSelection', 'unique', 'change'); assert.equal(h.el('Check').disabled, true); assert.equal(h.el('Apply').disabled, true);
+});
+
+test('branch capability loss and restoration invalidate an in-flight proposal and preserve local order', async t => {
+  let available = true; const wait = deferred(); const h = await fixture(t, { branchSupport: () => available, propose: async (source, table) => { await wait.promise; return createAnimationStateScriptProposal(source, table); } });
+  await h.open(); h.set('EventSelection', 'firstMatch', 'change'); h.el('Check').click(); available = false; h.controller.refresh(); assert.match(h.el('Status').textContent, /有序事件分支/);
+  available = true; h.controller.refresh(); wait.resolve(); await settle(); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true); assert.equal(h.el('TableEventSelection').value, 'firstMatch'); assert.equal(h.writes.length, 0);
+  h.set('EventSelection', 'unique', 'change'); available = false; h.controller.refresh(); assert.equal(h.el('Check').disabled, false);
+});
+
+test('silent mode changes revoke reviewed edits and invalid selections cannot approve a legacy downgrade', async t => {
+  const h = await fixture(t); await h.open(); h.set('Transition1Event', 'hit'); await h.click('Check'); assert.equal(h.el('Apply').disabled, false);
+  h.set('EventSelection', 'firstMatch', null); await h.click('Apply'); assert.equal(h.writes.length, 0); await h.click('Check'); assert.match(h.el('After').textContent, /godot-gdscript-v3/);
+  h.set('EventSelection', '', null); await h.click('Apply'); assert.equal(h.writes.length, 0); await h.click('Check'); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('After').textContent, '');
+});
+
+test('silent mode changes and branch capability loss invalidate pending reopened-script applications', async t => {
+  for (const change of ['mode', 'capability']) {
+    let available = true; const wait = deferred(); const h = await fixture(t, { branchSupport: () => available, apply: async (proposal, ports, host) => { await wait.promise; return host.applyDraft(proposal, ports); } });
+    await h.open(); h.set('EventSelection', 'firstMatch', 'change'); await h.click('Check'); h.el('Apply').click(); await settle(); assert.equal(h.calls[0].ports.isCurrent(), true);
+    if (change === 'mode') h.set('EventSelection', 'unique', null); else { available = false; h.controller.refresh(); available = true; h.controller.refresh(); }
+    assert.equal(h.calls[0].ports.isCurrent(), false); wait.resolve(); await settle(); assert.equal(h.writes.length, 0); assert.equal(h.el('Dialog').open, true);
+  }
+});
+
+test('shared-state reediting reviews full source before applying a draft and reopens the exact selector', async t => {
+  const h = await fixture(t); await h.open(); const saved = h.state.baseline;
+  h.set('Transition1ConditionMode', 'shared', 'change'); h.set('Transition1ConditionKey', 'combat.enabled'); h.set('Transition1ConditionType', 'boolean', 'change'); h.set('Transition1ConditionBoolean', 'true', 'change');
+  assert.equal(h.el('Apply').disabled, true); assert.equal(h.writes.length, 0); await h.click('Check'); const after = h.el('After').textContent;
+  assert.match(after, /godot-gdscript-v4/); assert.equal(h.el('Before').textContent, saved); assert.equal(h.el('Parameters').hidden, true); h.el('TableGraphToggle').click(); assert.match(h.el('TableGraphTransitions').textContent, /combat.enabled/);
+  for (const locale of ['en', 'ja', 'zh']) { h.language(locale); assert.equal(h.el('After').textContent, after); assert.equal(h.el('Apply').disabled, false); }
+  await h.click('Apply'); assert.deepEqual(h.writes, [after]); assert.equal(h.state.baseline, saved);
+  await h.open(); assert.equal(h.el('TableTransition1ConditionMode').value, 'shared'); assert.equal(h.el('TableTransition1ConditionKey').value, 'combat.enabled'); assert.equal(h.el('TableTransition1ConditionBoolean').value, 'true');
+  h.set('Transition1ConditionMode', 'none', 'change'); await h.click('Check'); assert.match(h.el('After').textContent, /godot-gdscript-v1/); await h.click('Cancel'); assert.equal(h.state.content, after);
+});
+
+test('shared-state invalid fields preserve input and revoke an existing source review', async t => {
+  const h = await fixture(t); await h.open(); h.set('Transition1ConditionMode', 'shared', 'change'); h.set('Transition1ConditionKey', 'combat.enabled'); await h.click('Check'); assert.equal(h.el('Apply').disabled, false);
+  h.set('Transition1ConditionKey', ' combat.enabled '); assert.equal(h.el('Apply').disabled, true); await h.click('Check'); assert.match(h.el('Status').textContent, /共享状态键/); assert.equal(h.el('After').textContent, ''); assert.equal(h.el('TableTransition1ConditionKey').value, ' combat.enabled '); assert.equal(h.writes.length, 0);
+  h.set('Transition1ConditionKey', 'combat.enabled'); await h.click('Check'); h.set('Transition1ConditionKey', 'combat.ready', null); await h.click('Apply'); assert.equal(h.writes.length, 0); h.controller.refresh(); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true);
+});
+
+test('selector-only capability reviews mixed ordered source without old condition or branch markers', async t => {
+  const h = await fixture(t, { conditionSupport: () => false, branchSupport: () => false, selectorSupport: () => true }); await h.open();
+  h.set('Transition1ConditionMode', 'shared', 'change'); h.set('Transition1ConditionKey', 'combat.enabled'); h.set('EventSelection', 'firstMatch', 'change'); await h.click('Check'); assert.equal(h.el('Apply').disabled, false); assert.match(h.el('After').textContent, /godot-gdscript-v4/);
+  h.set('Transition1ConditionMode', 'compare', 'change'); assert.equal(h.el('Check').disabled, true); assert.equal(h.el('Apply').disabled, true);
+});
+
+test('selector capability withdrawal revokes pending checks and draft applications after restoration', async t => {
+  for (const phase of ['check', 'apply']) {
+    let available = true; const wait = deferred(); const h = await fixture(t, { selectorSupport: () => available,
+      ...(phase === 'check' ? { propose: async (source, table) => { await wait.promise; return createAnimationStateScriptProposal(source, table); } }
+        : { apply: async (proposal, ports, host) => { await wait.promise; return host.applyDraft(proposal, ports); } }) });
+    await h.open(); h.set('Transition1ConditionMode', 'shared', 'change'); h.set('Transition1ConditionKey', 'combat.enabled');
+    if (phase === 'apply') { await h.click('Check'); h.el('Apply').click(); await settle(); assert.equal(h.calls[0].ports.isCurrent(), true); } else h.el('Check').click();
+    available = false; h.controller.refresh(); assert.match(h.el('Status').textContent, /项目共享状态条件/); available = true; h.controller.refresh();
+    if (phase === 'apply') assert.equal(h.calls[0].ports.isCurrent(), false); wait.resolve(); await settle(); assert.equal(h.writes.length, 0); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true); assert.equal(h.el('TableTransition1ConditionKey').value, 'combat.enabled');
+    h.set('Transition1ConditionMode', 'compare', 'change'); available = false; h.controller.refresh(); assert.equal(h.el('Check').disabled, false);
+  }
+});
+
+test('reediting upgrades shared scalar source to an explicitly reviewed group and reopens it without losing leaves', async t => {
+  const table = copy(DEFAULT_ANIMATION_STATE_TABLE); table.transitions[0].trigger.condition = { type: 'boolean', operator: 'eq', value: true, selector: { kind: 'projectState', key: 'combat.enabled' } };
+  const content = generateEditableGodotAnimationStateScript(table).content, h = await fixture(t, { state: { content, baseline: content, version: 'sha256:' + digest(content) } }); await h.open();
+  h.set('Transition1ConditionCombination', 'all', 'change'); h.el('TableTransition1ConditionAddItem').click(); h.set('Transition1ConditionItem2Type', 'number', 'change'); h.set('Transition1ConditionItem2Number', '5'); await h.click('Check');
+  assert.equal(h.el('Before').textContent, content); assert.match(h.el('After').textContent, /godot-gdscript-v5/); assert.equal(h.el('Parameters').hidden, true); assert.equal(h.writes.length, 0);
+  const beforeMove = h.el('After').textContent; h.el('TableTransition1ConditionItem2MoveUp').click(); assert.equal(h.el('Review').hidden, true); assert.equal(h.el('Apply').disabled, true); await h.click('Check'); const after = h.el('After').textContent; assert.notEqual(after, beforeMove);
+  for (const locale of ['en', 'ja', 'zh']) { h.language(locale); assert.equal(h.el('After').textContent, after); assert.equal(h.el('Apply').disabled, false); }
+  await h.click('Apply'); assert.deepEqual(h.writes, [after]); assert.equal(h.state.baseline, content);
+  await h.open(); assert.equal(h.el('TableTransition1ConditionCombination').value, 'all'); assert.equal(h.el('TableTransition1ConditionItem1Number').value, '5'); assert.equal(h.el('TableTransition1ConditionItem2Key').value, 'combat.enabled');
+  h.set('Transition1ConditionCombination', 'single', 'change'); assert.equal(h.el('TableTransition1ConditionMode').value, 'none'); assert.equal(h.el('TableTransition1ConditionSingleNote').hidden, false); await h.click('Check'); assert.match(h.el('After').textContent, /godot-gdscript-v1/);
+  await h.click('Cancel'); assert.equal(h.state.content, after);
+});
+
+test('empty group edits cannot approve and deleting a reviewed last item retains the empty invalid draft', async t => {
+  const h = await fixture(t); await h.open(); h.set('Transition1ConditionCombination', 'any', 'change'); await h.click('Check'); assert.equal(h.el('Apply').disabled, true); assert.match(h.el('Status').textContent, /1–8/); assert.equal(h.writes.length, 0);
+  h.el('TableTransition1ConditionAddItem').click(); await h.click('Check'); assert.match(h.el('After').textContent, /godot-gdscript-v5/); h.el('TableTransition1ConditionItem1Remove').click(); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true); await h.click('Check');
+  assert.equal(h.el('TableTransition1ConditionCombination').value, 'any'); assert.equal(h.el('TableTransition1ConditionItems').children.length, 0); assert.equal(h.writes.length, 0);
+});
+
+test('combination-only capability supports source review without legacy payload, selector or branch markers', async t => {
+  const h = await fixture(t, { conditionSupport: () => false, selectorSupport: () => false, branchSupport: () => false, combinationSupport: () => true }); await h.open();
+  h.set('Transition1ConditionCombination', 'all', 'change'); h.el('TableTransition1ConditionAddItem').click(); h.set('Transition1ConditionItem1Mode', 'shared', 'change'); h.set('Transition1ConditionItem1Key', 'combat.enabled'); h.set('EventSelection', 'firstMatch', 'change');
+  await h.click('Check'); assert.equal(h.el('Apply').disabled, false); assert.match(h.el('After').textContent, /godot-gdscript-v5/); h.set('Transition1ConditionCombination', 'single', 'change'); assert.equal(h.el('Check').disabled, true); assert.equal(h.el('Apply').disabled, true);
+});
+
+test('combination marker withdrawal revokes pending checks and applications even after restoration', async t => {
+  for (const phase of ['check', 'apply']) {
+    let available = true; const wait = deferred(); const h = await fixture(t, { combinationSupport: () => available,
+      ...(phase === 'check' ? { propose: async (source, table) => { await wait.promise; return createAnimationStateScriptProposal(source, table); } }
+        : { apply: async (proposal, ports, host) => { await wait.promise; return host.applyDraft(proposal, ports); } }) });
+    await h.open(); h.set('Transition1ConditionMode', 'compare', 'change'); h.set('Transition1ConditionCombination', 'all', 'change');
+    if (phase === 'apply') { await h.click('Check'); h.el('Apply').click(); await settle(); assert.equal(h.calls[0].ports.isCurrent(), true); } else h.el('Check').click();
+    available = false; h.controller.refresh(); assert.match(h.el('Status').textContent, /不支持组合条件/); available = true; h.controller.refresh(); if (phase === 'apply') assert.equal(h.calls[0].ports.isCurrent(), false);
+    wait.resolve(); await settle(); assert.equal(h.writes.length, 0); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true); assert.equal(h.el('TableTransition1ConditionCombination').value, 'all');
+    h.set('Transition1ConditionCombination', 'single', 'change'); available = false; h.controller.refresh(); assert.equal(h.el('Check').disabled, false);
+  }
+});
+
+test('unknown group modes invalidate reviewed source and returning explicitly requires a fresh check', async t => {
+  const h = await fixture(t); await h.open(); h.set('Transition1ConditionMode', 'compare', 'change'); h.set('Transition1ConditionCombination', 'all', 'change'); await h.click('Check'); assert.equal(h.el('Apply').disabled, false);
+  for (const event of ['change', null]) {
+    h.set('Transition1ConditionCombination', '', event); await h.click('Apply'); assert.equal(h.writes.length, 0); await h.click('Check'); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('After').textContent, '');
+    h.set('Transition1ConditionCombination', 'all', 'change'); assert.equal(h.el('Apply').disabled, true); await h.click('Check'); assert.match(h.el('After').textContent, /godot-gdscript-v5/); assert.equal(h.el('Apply').disabled, false);
+  }
 });

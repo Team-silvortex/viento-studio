@@ -1,8 +1,10 @@
+import { createProjectAnimationStateEntries } from './project-animation-state-entries.mjs';
 import { validateProjectAssemblyPlan } from './project-assembly-plan-contract.mjs';
 import { createSceneRuntimeEventReader } from './scene-runtime-events.mjs';
 import { createSceneBehaviorEventReader } from './scene-behavior-events.mjs';
 import { createSceneAudioEventReader } from './scene-audio-events.mjs';
 import { advanceProjectAnimationTransport, projectAnimationClipDeclaration } from './project-animation-transport.mjs';
+import { createProjectAnimationStates } from './project-animation-states.mjs';
 import { createProjectAnimationCompletions } from './project-animation-completions.mjs';
 import { createProjectAnimationCommands } from './project-animation-commands.mjs';
 import { createProjectAudioCommands } from './project-audio-commands.mjs';
@@ -21,18 +23,20 @@ const defaultSceneReader = (plan, options) => {
 // a project boundary, never a forged child finished (which means two smoke
 // steps in the legacy audio contract). Re-entering creates a new child reader.
 export function createProjectRuntimeEventReader(input, { protocolVersion = PROJECT_RUNTIME_PROTOCOL, onEvent, createSceneReader = defaultSceneReader, expectedTotalSeconds } = {}) {
-  if (![1, 2, 3, 4, 5, 6, 7].includes(protocolVersion)) throw Object.assign(new TypeError('Unsupported project runtime protocol.'), { errorCode: 'runtime_project_invalid' });
+  if (![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(protocolVersion)) throw Object.assign(new TypeError('Unsupported project runtime protocol.'), { errorCode: 'runtime_project_invalid' });
   const sharedState = protocolVersion >= 2 ? createProjectSharedState() : null;
   const eventBus = protocolVersion >= 3 ? createProjectEventBus() : null;
   const audioCommands = protocolVersion >= 4 ? createProjectAudioCommands() : null;
   const animationCommands = protocolVersion >= 5 ? createProjectAnimationCommands({ protocolVersion }) : null;
-  const animationCompletions = protocolVersion === 7 ? createProjectAnimationCompletions() : null;
+  const animationCompletions = protocolVersion >= 7 ? createProjectAnimationCompletions() : null;
   // Hosts may require a bounded deterministic run. Window sessions omit this
   // expectation and may close at any observed time, including before a step.
   if (expectedTotalSeconds !== undefined && (!time(expectedTotalSeconds) || expectedTotalSeconds > 60)) {
     throw Object.assign(new TypeError('Expected project runtime duration must be between 0 and 60 seconds.'), { errorCode: 'runtime_project_invalid' });
   }
   const plan = validateProjectAssemblyPlan(input), scenes = new Map(plan.scenes.map(scene => [scene.scene.objectId, scene]));
+  const animationStates = protocolVersion >= 8 ? createProjectAnimationStates(plan) : null;
+  const animationStateEntries = protocolVersion === 9 ? createProjectAnimationStateEntries(plan) : null;
   if (typeof createSceneReader !== 'function') throw new TypeError('A scene runtime reader is required.');
   const events = [], diagnostics = [];
   let started = false, completed = false, current = null, visitCount = 0, nextSceneId = plan.entrySceneId, finalExit = false, totalSeconds = 0;
@@ -53,10 +57,19 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
   };
   const admit = frame => {
     if (!frame || frame.protocol !== protocolVersion || completed) { issue(); return; }
+    if (current?.stateSnapshot && frame.event !== 'scene-exit'
+      && !(frame.event === 'scene-event' && (frame.frame?.event === 'diagnostic'
+        || frame.stream === 'audio' && frame.frame?.event === 'finished'))) { issue('A terminal animation state snapshot already closed this visit.'); return; }
+    if (current?.lastStateEntryTime !== null && current?.lastStateEntryTime !== undefined
+      && ['animation-command', 'animation-completed'].includes(frame.event) && frame.state?.timeSeconds < current.lastStateEntryTime) {
+      issue('An animation receipt cannot precede an already accepted state entry.'); return;
+    }
     if (frame.event === 'ready') {
-      if (started || !exact(frame, ['protocol', 'event', 'assemblyId', 'entrySceneId', ...(sharedState ? ['stateRevision'] : []), ...(eventBus ? ['eventSequence'] : []), ...(audioCommands ? ['audioCommandSequence'] : []), ...(animationCommands ? ['animationCommandSequence'] : []), ...(animationCompletions ? ['animationCompletionSequence'] : [])])
+      if (started || !exact(frame, ['protocol', 'event', 'assemblyId', 'entrySceneId', ...(sharedState ? ['stateRevision'] : []), ...(eventBus ? ['eventSequence'] : []), ...(audioCommands ? ['audioCommandSequence'] : []), ...(animationCommands ? ['animationCommandSequence'] : []), ...(animationCompletions ? ['animationCompletionSequence'] : []), ...(animationStates ? ['animationStateSequence'] : []), ...(animationStateEntries ? ['animationStateEntrySequence'] : [])])
         || sharedState && frame.stateRevision !== 0 || eventBus && frame.eventSequence !== 0 || audioCommands && frame.audioCommandSequence !== 0
         || animationCommands && frame.animationCommandSequence !== 0 || animationCompletions && frame.animationCompletionSequence !== 0
+        || animationStates && frame.animationStateSequence !== 0
+        || animationStateEntries && frame.animationStateEntrySequence !== 0
         || frame.assemblyId !== plan.assembly.objectId || frame.entrySceneId !== plan.entrySceneId) { issue(); return; }
       started = true;
     } else if (frame.event === 'scene-enter') {
@@ -64,7 +77,7 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
         || !exact(frame, ['protocol', 'event', 'visitIndex', 'sceneId']) || frame.visitIndex !== visitCount + 1
         || frame.sceneId !== nextSceneId || !scenes.has(frame.sceneId)) { issue(); return; }
       const scene = scenes.get(frame.sceneId);
-      current = { index: ++visitCount, plan: scene, ready: false, audioReady: false, audioCueCount: 0, audioFailed: false, audioFinished: false, audioTime: null, lastAudioCommandTime: null, animationState: null,
+      current = { index: ++visitCount, plan: scene, ready: false, audioReady: false, audioCueCount: 0, audioFailed: false, audioFinished: false, audioTime: null, lastAudioCommandTime: null, animationState: null, stateSnapshot: null, lastStateEntryTime: null,
         reader: createSceneReader(scene) };
       nextSceneId = null;
     } else if (frame.event === 'scene-event') {
@@ -194,9 +207,34 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
         animationCompletions.deliver({ sequence: frame.completionSequence, subscriptionId: frame.subscriptionId,
           visitIndex: frame.visitIndex, sceneId: frame.sceneId, status: frame.status }, animationCommands.sequence);
       } catch { issue(); return; }
+    } else if (frame.event === 'animation-state-entered') {
+      if (!animationStateEntries || !currentIdentity(frame) || !current.ready || current.audioFailed || current.audioFinished
+        || !exact(frame, ['protocol', 'event', 'sequence', 'visitIndex', 'sceneId', 'timeSeconds', 'commandSequence', 'bindingId', 'instanceId', 'objectId', 'stateIndex', 'clipId'])
+        || frame.commandSequence !== animationCommands.sequence || !time(frame.timeSeconds)
+        || current.lastAudioCommandTime !== null && current.lastAudioCommandTime > frame.timeSeconds
+        || current.animationState && current.animationState.timeSeconds > frame.timeSeconds) { issue(); return; }
+      try {
+        const { protocol, event, ...entry } = frame;
+        animationStateEntries.append(entry);
+        current.lastStateEntryTime = frame.timeSeconds;
+      } catch { issue(); return; }
+    } else if (frame.event === 'animation-state-snapshot') {
+      if (!animationStates || !currentIdentity(frame) || !current.ready || current.stateSnapshot
+        || !exact(frame, ['protocol', 'event', 'sequence', 'visitIndex', 'sceneId', 'timeSeconds', 'commandSequence', 'reason', 'controllers'])
+        || frame.commandSequence !== animationCommands.sequence || !time(frame.timeSeconds)
+        || current.lastAudioCommandTime !== null && current.lastAudioCommandTime > frame.timeSeconds
+        || current.animationState && current.animationState.timeSeconds > frame.timeSeconds
+        || (frame.reason === 'aborted' ? !current.audioFailed : current.audioFailed || eventBus.pendingCount || animationCompletions.pendingCount)) { issue(); return; }
+      try {
+        const { protocol, event, ...snapshot } = frame;
+        animationStateEntries?.validateTerminalSnapshot(snapshot);
+        animationStates.append(snapshot);
+        current.stateSnapshot = { reason: frame.reason, timeSeconds: frame.timeSeconds };
+      } catch { issue(); return; }
     } else if (frame.event === 'scene-exit') {
       const switching = frame.reason === 'switch';
       if (!currentIdentity(frame) || !current.ready || eventBus?.pendingCount || animationCompletions?.pendingCount || !exact(frame, ['protocol', 'event', 'visitIndex', 'sceneId', 'reason', 'elapsedSeconds', 'actors', ...(switching ? ['nextSceneId'] : [])])
+        || animationStates?.hasScene(frame.sceneId) && (!current.stateSnapshot || current.stateSnapshot.reason !== frame.reason || current.stateSnapshot.timeSeconds !== frame.elapsedSeconds)
         || !['switch', 'finished'].includes(frame.reason) || !time(frame.elapsedSeconds) || !time(totalSeconds + frame.elapsedSeconds)
         || switching && (!scenes.has(frame.nextSceneId) || frame.nextSceneId === frame.sceneId || visitCount >= PROJECT_RUNTIME_MAX_VISITS)
         || current.lastAudioCommandTime !== null && current.lastAudioCommandTime > frame.elapsedSeconds
@@ -213,12 +251,14 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
       const before = current.reader.diagnostics.length; current.reader.finish(); importDiagnostics(current.reader, before);
       totalSeconds += frame.elapsedSeconds; nextSceneId = switching ? frame.nextSceneId : null; finalExit = !switching; current = null;
     } else if (frame.event === 'finished') {
-      if (!started || current || !finalExit || !exact(frame, ['protocol', 'event', 'assemblyId', 'visitCount', 'totalSeconds', ...(sharedState ? ['stateRevision'] : []), ...(eventBus ? ['eventSequence'] : []), ...(audioCommands ? ['audioCommandSequence'] : []), ...(animationCommands ? ['animationCommandSequence'] : []), ...(animationCompletions ? ['animationCompletionSequence'] : [])])
+      if (!started || current || !finalExit || !exact(frame, ['protocol', 'event', 'assemblyId', 'visitCount', 'totalSeconds', ...(sharedState ? ['stateRevision'] : []), ...(eventBus ? ['eventSequence'] : []), ...(audioCommands ? ['audioCommandSequence'] : []), ...(animationCommands ? ['animationCommandSequence'] : []), ...(animationCompletions ? ['animationCompletionSequence'] : []), ...(animationStates ? ['animationStateSequence'] : []), ...(animationStateEntries ? ['animationStateEntrySequence'] : [])])
         || sharedState && frame.stateRevision !== sharedState.revision
         || eventBus && (frame.eventSequence !== eventBus.sequence || eventBus.pendingCount)
         || audioCommands && frame.audioCommandSequence !== audioCommands.sequence
         || animationCommands && frame.animationCommandSequence !== animationCommands.sequence
         || animationCompletions && (frame.animationCompletionSequence !== animationCompletions.sequence || animationCompletions.pendingCount)
+        || animationStates && frame.animationStateSequence !== animationStates.sequence
+        || animationStateEntries && frame.animationStateEntrySequence !== animationStateEntries.sequence
         || frame.assemblyId !== plan.assembly.objectId || frame.visitCount !== visitCount || !time(frame.totalSeconds)
         || !sameTime(frame.totalSeconds, totalSeconds)) { issue(); return; }
       if (expectedTotalSeconds !== undefined && !sameTime(frame.totalSeconds, expectedTotalSeconds)) {
@@ -270,5 +310,7 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
   if (audioCommands) Object.defineProperty(api, 'audioCommands', { enumerable: true, get: () => audioCommands.snapshot() });
   if (animationCommands) Object.defineProperty(api, 'animationCommands', { enumerable: true, get: () => animationCommands.snapshot() });
   if (animationCompletions) Object.defineProperty(api, 'animationCompletions', { enumerable: true, get: () => animationCompletions.snapshot() });
+  if (animationStates) Object.defineProperty(api, 'animationStates', { enumerable: true, get: () => animationStates.snapshot() });
+  if (animationStateEntries) Object.defineProperty(api, 'animationStateEntries', { enumerable: true, get: () => animationStateEntries.snapshot() });
   return Object.freeze(api);
 }

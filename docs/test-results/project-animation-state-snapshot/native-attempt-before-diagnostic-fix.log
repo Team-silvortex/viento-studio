@@ -1,0 +1,40 @@
+✔ only exact frozen state scripts select protocol8; manually edited scripts retain protocol7 (223.100637ms)
+✔ schema9 inventory rejects forged controller fields, duplicate bindings, clip mappings and missing runtime files (71.690287ms)
+✔ real snapshots distinguish two states selecting the same clip and retain frozen source navigation (12069.629996ms)
+✔ real two bindings of one script retain separate state snapshots in frozen binding order (12712.689706ms)
+✔ real event conditions and ordered branches are sampled from actual state rather than guessed from commands (14247.579521ms)
+✔ real deactivated controller is explicit rather than fabricated as an active state (15126.951451ms)
+✔ real freed controller is explicit rather than fabricated as an active state (13715.333963ms)
+✔ real diagnostic abort samples the controller before cleanup and does not fabricate a finished frame (12479.923228ms)
+✔ real scene reentry uses a new visit and does not reuse previous weak controller state (12595.788234ms)
+✔ real BOM/CRLF state controller and snapshot layer survive ZIP delivery after deleting author and build trees (21940.684951ms)
+✔ real v2 conditional script returns to idle on completion before its terminal snapshot (12531.684935ms)
+✔ real abort before controller creation reports unavailable while preserving the primary diagnostic (12576.428526ms)
+✖ real malformed private state fails explicitly and cannot masquerade as unavailable or a normal finish (12530.231305ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 152985.98044
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-state-godot.test.mjs:150:1
+✖ real malformed private state fails explicitly and cannot masquerade as unavailable or a normal finish (12530.231305ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(result.record.diagnostics.some(row=>row.code==='runtime_animation_state_invalid'))
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-godot.test.mjs:152:40)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -207,3 +207,48 @@ test('all ordered endpoint pairs route through gutters without crossing state re
     }
   }
 });
+
+
+test('static graph preserves shared selector identity and mixed branch order without reading project state', () => {
+  const input = { ...table(), eventSelection: 'firstMatch', transitions: [
+    { from: 'idle', to: 'action', trigger: { kind: 'event', name: 'attack', condition: {
+      type: 'boolean', operator: 'eq', value: true, selector: { kind: 'projectState', key: 'combat.enabled' },
+    } } },
+    { from: 'idle', to: 'idle', trigger: { kind: 'event', name: 'attack', condition: { type: 'number', operator: 'gt', value: 0 } } },
+    { from: 'idle', to: 'action', trigger: { kind: 'event', name: 'attack' } },
+  ] };
+  const before = clone(input), graph = createAnimationStateGraph(input);
+  assert.deepEqual(graph.edges.map(edge => edge.trigger), before.transitions.map(row => row.trigger));
+  deeplyFrozen(graph); assertGeometry(graph, layoutAnimationStateGraph(graph));
+  input.transitions[0].trigger.condition.selector.key = 'other.key';
+  assert.equal(graph.edges[0].trigger.condition.selector.key, 'combat.enabled');
+  assert.equal(Object.hasOwn(graph.edges[0].trigger.condition, 'matches'), false);
+  assert.equal(Object.hasOwn(graph.edges[1].trigger.condition, 'selector'), false);
+  input.transitions[0].trigger.condition.selector.key = ' bad.key';
+  assert.throws(() => createAnimationStateGraph(input));
+});
+
+
+test('static graph preserves flat all/any leaf identity, author order and fallback without evaluating a guard', () => {
+  for (const combine of ['all', 'any']) {
+    const condition = { combine, conditions: [
+      { type: 'boolean', operator: 'eq', value: true, selector: { kind: 'projectState', key: 'combat.enabled' } },
+      { type: 'number', operator: 'gte', value: 3 },
+    ] };
+    const input = { ...table(), eventSelection: 'firstMatch', transitions: [
+      { from: 'idle', to: 'action', trigger: { kind: 'event', name: 'attack', condition } },
+      { from: 'idle', to: 'idle', trigger: { kind: 'event', name: 'attack' } },
+    ] };
+    const before = clone(input), graph = createAnimationStateGraph(input);
+    assert.deepEqual(graph.edges.map(edge => edge.trigger), before.transitions.map(row => row.trigger));
+    assert.deepEqual(input, before); deeplyFrozen(graph); assertGeometry(graph, layoutAnimationStateGraph(graph));
+    assert.equal(Object.hasOwn(graph.edges[0].trigger.condition, 'matches'), false);
+    condition.conditions.reverse(); condition.conditions[1].selector.key = 'other.key';
+    assert.equal(graph.edges[0].trigger.condition.conditions[0].selector.key, 'combat.enabled');
+    assert.equal(graph.edges[0].trigger.condition.conditions[1].value, 3);
+    for (const invalid of [[], [before.transitions[0].trigger.condition], Array(9).fill({ type: 'boolean', operator: 'eq', value: true })]) {
+      input.transitions[0].trigger.condition = { combine, conditions: invalid };
+      assert.throws(() => createAnimationStateGraph(input), { errorCode: 'animation_state_table_invalid' });
+    }
+  }
+});

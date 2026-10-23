@@ -1,3 +1,6 @@
+import { createProjectAnimationStateReview, queryProjectAnimationStateReview } from '../../engine/project-animation-state-review.mjs';
+import { validateProjectAnimationStateEntriesSnapshot } from '../../engine/project-animation-state-entries.mjs';
+import { validateProjectAnimationStatesSnapshot } from '../../engine/project-animation-states.mjs';
 import { validateProjectAnimationCompletionsSnapshot } from '../../engine/project-animation-completions.mjs';
 import { validateProjectAnimationCommandsSnapshot } from '../../engine/project-animation-commands.mjs';
 import test from 'node:test';
@@ -24,10 +27,14 @@ const completion = () => ({ sequence: 1, entries: [{ sequence: 1, commandSequenc
   state: { sceneObjectId: first, phase: 'finished', positionSeconds: 1, timeSeconds: 1, clipId: null },
   animation: animation().entries[0].animation, clip: null,
   deliveries: [{ subscriptionId: 1, origin: origin(), status: 'handled' }] }] });
+const scriptSource = { objectId: id(40), sourcePath: 'documents/scripts/state.txt', sourceRevision: revision, propertyPath: '' };
+const states = () => ({ sequence: 1, entries: [{ sequence: 1, visitIndex: 1, sceneId: first, timeSeconds: 2, commandSequence: 1, reason: 'switch',
+  controllers: [{ origin: origin(), scriptSource, status: 'active', stateKey: 'idle', clipId: null }] }] });
+const stateEntries = () => ({ sequence: 1, entries: [{ sequence: 1, origin: origin(), scriptSource, timeSeconds: .25, commandSequence: 1, stateKey: 'idle', clipId: null }] });
 const protocolAnimation = version => {
   const value = animation();
   if (version >= 6) { value.entries[0].state.clipId = null; value.entries[0].clip = null; }
-  if (version === 7) { value.entries[0].command.action = 'play'; value.entries[0].state.phase = 'playing'; value.entries[0].state.positionSeconds = 0; value.entries[0].state.timeSeconds = 0; }
+  if (version >= 7) { value.entries[0].command.action = 'play'; value.entries[0].state.phase = 'playing'; value.entries[0].state.positionSeconds = 0; value.entries[0].state.timeSeconds = 0; }
   return value;
 };
 const trace = () => ({ sequence: 1, entries: [{ sequence: 1, name: 'checkpoint', value: '雨の鍵', origin: origin(),
@@ -36,7 +43,7 @@ const shared = () => ({ revision: 1, entries: [{ key: 'note', value: '雨の鍵'
   lastChange: { operation: 'set', key: 'note', revision: 1, origin: origin() } });
 function state({ protocolVersion = 5, task = 'run-1', active = second } = {}) {
   const visits = [{ index: 1, sceneId: first, phase: 'left', elapsedSeconds: 0.5 }, { index: 2, sceneId: second, phase: active === second ? 'ready' : 'left', elapsedSeconds: active === second ? 0 : 0.5 }];
-  if (protocolVersion === 7) visits[0].elapsedSeconds = 2;
+  if (protocolVersion >= 7) visits[0].elapsedSeconds = 2;
   if (active === first) visits.push({ index: 3, sceneId: first, phase: 'ready', elapsedSeconds: 0 });
   return { supported: true, available: true, platform: 'linux',
     backend: { format: 'viento-execution-backend', schemaVersion: 1, id: backendId, version: '0.9.0', label: 'Godot', platforms: ['linux'],
@@ -48,16 +55,16 @@ function state({ protocolVersion = 5, task = 'run-1', active = second } = {}) {
     job: { id: task, kind: 'run', status: 'running', phase: 'running', backendId, sceneId: assemblyId, targetKind: 'project', targetId: assemblyId,
       buildId: 'build-1', snapshotId, diagnostics: [], events: [], logs: '', runtime: {
         format: 'viento-runtime-observation', schemaVersion: 1, sceneObjectId: active, protocolVersion: 1, phase: 'ready', sequence: 1, actors: [],
-        project: { assemblyId, entrySceneId: first, activeSceneId: active, visits, ...(protocolVersion === 1 ? {} : { protocolVersion, sharedState: shared(), ...(protocolVersion >= 3 ? { events: trace() } : {}), ...(protocolVersion >= 4 ? { audioCommands: audio() } : {}), ...(protocolVersion >= 5 ? { animationCommands: protocolAnimation(protocolVersion) } : {}), ...(protocolVersion === 7 ? { animationCompletions: completion() } : {}) }) },
+        project: { assemblyId, entrySceneId: first, activeSceneId: active, visits, ...(protocolVersion === 1 ? {} : { protocolVersion, sharedState: shared(), ...(protocolVersion >= 3 ? { events: trace() } : {}), ...(protocolVersion >= 4 ? { audioCommands: audio() } : {}), ...(protocolVersion >= 5 ? { animationCommands: protocolAnimation(protocolVersion) } : {}), ...(protocolVersion >= 7 ? { animationCompletions: completion() } : {}), ...(protocolVersion >= 8 ? { animationStates: states() } : {}), ...(protocolVersion === 9 ? { animationStateEntries: stateEntries() } : {}) }) },
       } },
   };
 }
 async function fixture(initial = state(), options = {}) {
   let payload = initial;
   const calls = [], opened = [], context = { editable: true, dirty: false, creating: false, busy: false, path: 'documents/game.json' };
-  const h = await dialogHarness('app-project-build', { PROJECT_BUILD_API_PATH: '/api/project-build', validateProjectAnimationCompletionsSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationCompletionsSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationCommandsSnapshot: (value, options) => JSON.parse(JSON.stringify(validateProjectAnimationCommandsSnapshot(JSON.parse(JSON.stringify(value)), options))), queryProjectRuntimeObservation, querySceneRuntimeObservation,
+  const h = await dialogHarness('app-project-build', { PROJECT_BUILD_API_PATH: '/api/project-build', createProjectAnimationStateReview: value => createProjectAnimationStateReview(JSON.parse(JSON.stringify(value))), queryProjectAnimationStateReview, validateProjectAnimationStateEntriesSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationStateEntriesSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationStatesSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationStatesSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationCompletionsSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationCompletionsSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationCommandsSnapshot: (value, options) => JSON.parse(JSON.stringify(validateProjectAnimationCommandsSnapshot(JSON.parse(JSON.stringify(value)), options))), queryProjectRuntimeObservation, querySceneRuntimeObservation,
     fetchJsonApiRequest: async (url, request) => { calls.push(request.body ? JSON.parse(request.body) : null); return { payload }; } });
-  for (const name of ['app-project-state-observation', 'app-project-event-observation', 'app-project-audio-observation', 'app-project-animation-observation', 'app-project-animation-completion-observation']) {
+  for (const name of ['app-project-state-observation', 'app-project-event-observation', 'app-project-audio-observation', 'app-project-animation-observation', 'app-project-animation-completion-observation', 'app-project-animation-state-observation', 'app-project-animation-state-review', 'app-project-animation-state-entry-observation']) {
     const module = (await fs.readFile(new URL(`../../web/modules/${name}.js`, import.meta.url), 'utf8'))
       .replace(/^import[^\n]+\n/gm, '').replaceAll('export ', '');
     vm.runInContext(module, h.runtime);
@@ -66,7 +73,7 @@ async function fixture(initial = state(), options = {}) {
     openSource: (...args) => { opened.push(args); return options.openSource ? options.openSource(...args) : true; } });
   controller.setAvailable(true); h.element('projectBuildBtn').click(); await flushDialogs();
   return { ...h, context, controller, calls, opened, async refresh(next) { payload = next; h.element('projectBuildRefresh').click(); await flushDialogs(); },
-    el: suffix => h.element('projectAnimationCommands' + suffix), completionEl: suffix => h.element('projectAnimationCompletions' + suffix), audioEl: suffix => h.element('projectAudioCommands' + suffix), eventEl: suffix => h.element('projectEventTrace' + suffix), stateEl: suffix => h.element('projectSharedState' + suffix) };
+    el: suffix => h.element('projectAnimationCommands' + suffix), reviewEl: suffix => h.element('projectAnimationStateReview' + suffix), animationEntryEl: suffix => h.element('projectAnimationStateEntries' + suffix), animationStateEl: suffix => h.element('projectAnimationStates' + suffix), completionEl: suffix => h.element('projectAnimationCompletions' + suffix), audioEl: suffix => h.element('projectAudioCommands' + suffix), eventEl: suffix => h.element('projectEventTrace' + suffix), stateEl: suffix => h.element('projectSharedState' + suffix) };
 }
 
 test('protocol5 adds animation records while retaining audio, event and state panels; older protocols keep their presentations', async () => {
@@ -168,6 +175,215 @@ test('completion source host revokes delayed reads after draft creation visit ta
     if (change === 'dirty' || change === 'creating') h.context[change] = true;
     else if (change === 'close') h.element('projectBuildDialog').close();
     else await h.refresh(state({ protocolVersion: 7, ...(change === 'visit' ? { active: first } : { task: 'run-2' }) }));
+    assert.equal(h.opened[0][2].isCurrent(), false, change); read.resolve(); await flushDialogs(); assert.deepEqual(writes, [], change);
+  }
+});
+
+
+test('protocol8 adds accepted-state snapshots beside all prior panels and protocols1–7 never fabricate a snapshot panel', async () => {
+  const h = await fixture(state({ protocolVersion: 8 }));
+  for (const el of [h.animationStateEl, h.completionEl, h.el, h.audioEl, h.eventEl, h.stateEl]) assert.equal(el('Panel').hidden, false);
+  assert.match(h.animationStateEl('Entries').textContent, /脚本已接受状态：idle/);
+  assert.match(h.animationStateEl('Entries').textContent, /截至已执行动画命令序号：1/);
+  assert.equal(h.animationStateEl('Sequence').dataset.sequence, '1');
+  const empty = state({ protocolVersion: 8 }); empty.job.runtime.project.animationStates = { sequence: 0, entries: [] };
+  await h.refresh(empty); assert.equal(h.animationStateEl('Panel').hidden, false); assert.match(h.animationStateEl('Empty').textContent, /尚未采集/);
+  for (const protocolVersion of [7, 6, 5, 4, 3, 2, 1]) {
+    await h.refresh(state({ protocolVersion })); assert.equal(h.animationStateEl('Panel').hidden, true);
+    assert.equal(h.completionEl('Panel').hidden, protocolVersion < 7); assert.equal(h.el('Panel').hidden, protocolVersion < 5);
+    assert.equal(h.audioEl('Panel').hidden, protocolVersion < 4); assert.equal(h.eventEl('Panel').hidden, protocolVersion < 3);
+    assert.equal(h.stateEl('Panel').hidden, protocolVersion < 2);
+  }
+  assert.ok(h.calls.every(call => call === null));
+});
+
+test('snapshot binding and script sources use the actual build host port with exact identities through own-loading', async () => {
+  for (const kind of ['binding', 'script']) {
+    const read = deferred(), writes = []; let h;
+    h = await fixture(state({ protocolVersion: 8 }), { openSource: async (path, location, context) => {
+      h.context.busy = true; h.controller.setAvailable(true);
+      try { await read.promise; if (!context.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    h.animationStateEl('Entries').querySelector('.project-animation-state-' + kind + '-source').click(); await flushDialogs();
+    const expected = kind === 'binding' ? source : scriptSource;
+    assert.equal(h.opened.length, 1); assert.equal(h.opened[0][0], expected.sourcePath);
+    assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0][1])), expected); assert.equal(h.opened[0][2].isCurrent(), true);
+    await h.refresh(state({ protocolVersion: 8 })); assert.equal(h.opened[0][2].isCurrent(), true);
+    read.resolve(); await flushDialogs(); await flushDialogs(); assert.deepEqual(writes, [expected.sourcePath]); assert.equal(h.element('projectBuildDialog').open, false);
+  }
+});
+
+test('snapshot host navigation revokes delayed reads after dirty creation visit task close or snapshot replacement', async () => {
+  for (const change of ['dirty', 'creating', 'visit', 'task', 'close', 'snapshot']) {
+    const read = deferred(), writes = []; let h;
+    h = await fixture(state({ protocolVersion: 8 }), { openSource: async (path, location, context) => {
+      h.context.busy = true;
+      try { await read.promise; if (!context.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    h.animationStateEl('Entries').querySelector('.project-animation-state-script-source').click(); await flushDialogs();
+    if (change === 'dirty' || change === 'creating') h.context[change] = true;
+    else if (change === 'close') h.element('projectBuildDialog').close();
+    else if (change === 'snapshot') {
+      const next = state({ protocolVersion: 8 }); next.job.runtime.project.animationStates.entries[0].controllers[0].scriptSource = { ...scriptSource, sourceRevision: snapshotId }; await h.refresh(next);
+    } else await h.refresh(state({ protocolVersion: 8, ...(change === 'visit' ? { active: first } : { task: 'run-2' }) }));
+    assert.equal(h.opened[0][2].isCurrent(), false, change); read.resolve(); await flushDialogs(); assert.deepEqual(writes, [], change);
+  }
+});
+
+test('invalid state-snapshot timeline clears the admitted runtime display rather than showing stale states', async () => {
+  const h = await fixture(state({ protocolVersion: 8 })), invalid = state({ protocolVersion: 8 });
+  invalid.job.runtime.project.animationStates.entries[0].commandSequence = 2;
+  await h.refresh(invalid);
+  for (const el of [h.animationStateEl, h.completionEl, h.el, h.audioEl, h.eventEl, h.stateEl]) assert.equal(el('Panel').hidden, true);
+  assert.equal(h.animationStateEl('Entries').children.length, 0);
+});
+
+
+test('invalid generated-state clip parameters expose a specific build diagnostic and exact binding parameter source', async () => {
+  const initial = state({ protocolVersion: 8 });
+  const diagnostic = { code: 'build_animation_state_parameters_invalid', sourcePath: source.sourcePath, sourceRevision: revision,
+    propertyPath: '/bindings/0/parameters/clip_idle', objectId: source.objectId, message: 'Invalid clip_idle <img src=x>' };
+  initial.job = { ...initial.job, kind: 'build', status: 'failed', diagnostics: [diagnostic] }; delete initial.job.runtime;
+  const h = await fixture(initial);
+  assert.match(h.element('projectBuildProblems').textContent, /动画状态脚本的片段参数必须是空字符串或小写 UUID/);
+  const button = h.element('projectBuildDiagnostics').querySelector('button'); assert.ok(button); button.click(); await flushDialogs();
+  assert.equal(h.opened.length, 1); assert.equal(h.opened[0][0], source.sourcePath);
+  assert.equal(h.opened[0][1].propertyPath, diagnostic.propertyPath);
+  assert.equal(h.opened[0][2].diagnostic.code, diagnostic.code);
+  assert.equal(h.element('projectBuildProblems').querySelector('img'), null);
+});
+
+
+test('protocol9 adds script entry history beside all previous panels and protocols1–8 hide only unavailable records', async () => {
+  const h = await fixture(state({ protocolVersion: 9 }));
+  for (const el of [h.animationEntryEl, h.animationStateEl, h.completionEl, h.el, h.audioEl, h.eventEl, h.stateEl]) assert.equal(el('Panel').hidden, false);
+  assert.match(h.animationEntryEl('Entries').textContent, /脚本接受进入状态：idle/);
+  assert.match(h.animationEntryEl('Entries').textContent, /进入时已执行动画命令序号：1/);
+  assert.equal(h.animationEntryEl('Sequence').dataset.sequence, '1');
+  const empty = state({ protocolVersion: 9 }); empty.job.runtime.project.animationStateEntries = { sequence: 0, entries: [] };
+  empty.job.runtime.project.animationStates = { sequence: 0, entries: [] };
+  await h.refresh(empty); assert.equal(h.animationEntryEl('Panel').hidden, false); assert.match(h.animationEntryEl('Empty').textContent, /尚未采集/);
+  for (const protocolVersion of [8, 7, 6, 5, 4, 3, 2, 1]) {
+    await h.refresh(state({ protocolVersion })); assert.equal(h.animationEntryEl('Panel').hidden, true);
+    assert.equal(h.animationStateEl('Panel').hidden, protocolVersion < 8); assert.equal(h.completionEl('Panel').hidden, protocolVersion < 7);
+    assert.equal(h.el('Panel').hidden, protocolVersion < 5); assert.equal(h.audioEl('Panel').hidden, protocolVersion < 4);
+    assert.equal(h.eventEl('Panel').hidden, protocolVersion < 3); assert.equal(h.stateEl('Panel').hidden, protocolVersion < 2);
+  }
+  assert.ok(h.calls.every(call => call === null));
+});
+
+test('entry source host preserves exact binding and script identities through own-loading and record appends', async () => {
+  for (const kind of ['binding', 'script']) {
+    const read = deferred(), writes = []; let h;
+    h = await fixture(state({ protocolVersion: 9 }), { openSource: async (path, location, context) => {
+      h.context.busy = true; h.controller.setAvailable(true);
+      try { await read.promise; if (!context.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    const button = h.animationEntryEl('Entries').querySelector('.project-animation-state-entry-' + kind + '-source'); button.focus(); button.click(); await flushDialogs();
+    const expected = kind === 'binding' ? source : scriptSource;
+    assert.equal(h.opened.length, 1); assert.equal(h.opened[0][0], expected.sourcePath);
+    assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0][1])), expected); assert.equal(h.opened[0][2].isCurrent(), true);
+    const next = state({ protocolVersion: 9 }); next.job.runtime.project.animationStateEntries.sequence = 2;
+    next.job.runtime.project.animationStateEntries.entries.push({ ...stateEntries().entries[0], sequence: 2 });
+    await h.refresh(next); assert.equal(h.opened[0][2].isCurrent(), true);
+    assert.equal(h.animationEntryEl('Entries').querySelector('.project-animation-state-entry-' + kind + '-source'), button);
+    assert.equal(h.document.activeElement, button);
+    read.resolve(); await flushDialogs(); await flushDialogs(); assert.deepEqual(writes, [expected.sourcePath]); assert.equal(h.element('projectBuildDialog').open, false);
+  }
+});
+
+test('entry source host revokes delayed reads after dirty creation visit task close or record changes', async () => {
+  for (const change of ['dirty', 'creating', 'visit', 'task', 'close', 'entry']) {
+    const read = deferred(), writes = []; let h;
+    h = await fixture(state({ protocolVersion: 9 }), { openSource: async (path, location, context) => {
+      h.context.busy = true;
+      try { await read.promise; if (!context.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    h.animationEntryEl('Entries').querySelector('.project-animation-state-entry-script-source').click(); await flushDialogs();
+    if (change === 'dirty' || change === 'creating') h.context[change] = true;
+    else if (change === 'close') h.element('projectBuildDialog').close();
+    else if (change === 'entry') {
+      const next = state({ protocolVersion: 9 }); next.job.runtime.project.animationStateEntries.entries[0].timeSeconds = .5; await h.refresh(next);
+    } else await h.refresh(state({ protocolVersion: 9, ...(change === 'visit' ? { active: first } : { task: 'run-2' }) }));
+    assert.equal(h.opened[0][2].isCurrent(), false, change); read.resolve(); await flushDialogs(); assert.deepEqual(writes, [], change);
+  }
+});
+
+test('invalid entry timeline clears runtime panels rather than showing stale accepted states', async () => {
+  const h = await fixture(state({ protocolVersion: 9 })), invalid = state({ protocolVersion: 9 });
+  invalid.job.runtime.project.animationStateEntries.entries[0].commandSequence = 2;
+  await h.refresh(invalid);
+  for (const el of [h.animationEntryEl, h.animationStateEl, h.completionEl, h.el, h.audioEl, h.eventEl, h.stateEl]) assert.equal(el('Panel').hidden, true);
+  assert.equal(h.animationEntryEl('Entries').children.length, 0);
+});
+
+
+test('state entry identity and budget failures show specific diagnostics while preserving exact binding navigation', async () => {
+  for (const [code, label] of [['runtime_behavior_animation_state_entry_invalid', /控制器身份或状态不一致/], ['runtime_behavior_animation_state_entry_limit', /128 条限制/]]) {
+    const initial = state({ protocolVersion: 9 });
+    const diagnostic = { code, sourcePath: source.sourcePath, sourceRevision: revision, propertyPath: '/bindings/0', objectId: source.objectId,
+      message: 'Raw diagnostic <img src=x>' };
+    initial.job = { ...initial.job, status: 'failed', diagnostics: [diagnostic] };
+    const h = await fixture(initial); assert.match(h.element('projectBuildProblems').textContent, label);
+    const button = h.element('projectBuildDiagnostics').querySelector('button'); assert.ok(button); button.click(); await flushDialogs();
+    assert.equal(h.opened.length, 1); assert.equal(h.opened[0][0], source.sourcePath);
+    assert.equal(h.opened[0][1].propertyPath, diagnostic.propertyPath); assert.equal(h.opened[0][2].diagnostic.code, code);
+    assert.equal(h.element('projectBuildProblems').querySelector('img'), null);
+  }
+});
+
+
+test('controller review receives the full runtime view and stays independent of the flat search', async () => {
+  const initial = state({ protocolVersion: 9 });
+  const h = await fixture(initial); assert.equal(h.reviewEl('Panel').hidden, true);
+  const opener = h.animationEntryEl('Entries').querySelector('.project-animation-state-entry-review'); opener.click();
+  assert.equal(h.reviewEl('Panel').hidden, false); assert.equal(h.reviewEl('Panel').dataset.sequence, '1');
+  assert.equal(h.reviewEl('Terminal').hidden, false); assert.match(h.reviewEl('Terminal').textContent, /脚本已接受状态：idle/);
+  const search = h.animationEntryEl('Search'); search.value = 'no-match'; search.dispatch('input');
+  assert.equal(h.animationEntryEl('Entries').children[0].hidden, true); assert.equal(h.reviewEl('Panel').hidden, false);
+  assert.equal(h.reviewEl('Panel').dataset.sequence, '1'); assert.match(h.reviewEl('Note').textContent, /不受记录列表筛选影响/);
+  h.reviewEl('Close').focus(); h.reviewEl('Close').click(); assert.equal(h.reviewEl('Panel').hidden, true); assert.equal(h.document.activeElement, search);
+  search.value = ''; search.dispatch('input'); opener.click(); h.reviewEl('Close').focus(); h.reviewEl('Close').click(); assert.equal(h.document.activeElement, opener);
+});
+
+test('controller review source host preserves both identities while its own loading and later records keep the selected entry current', async () => {
+  for (const kind of ['binding', 'script']) {
+    const read = deferred(), writes = []; let h;
+    h = await fixture(state({ protocolVersion: 9 }), { openSource: async (path, location, context) => {
+      h.context.busy = true; h.controller.setAvailable(true);
+      try { await read.promise; if (!context.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    h.animationEntryEl('Entries').querySelector('.project-animation-state-entry-review').click();
+    h.reviewEl(kind === 'binding' ? 'BindingSource' : 'ScriptSource').click(); await flushDialogs();
+    const expected = kind === 'binding' ? source : scriptSource;
+    assert.equal(h.opened.length, 1); assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0][1])), expected); assert.equal(h.opened[0][2].isCurrent(), true);
+    const next = state({ protocolVersion: 9 }); next.job.runtime.project.animationStateEntries.sequence = 2;
+    next.job.runtime.project.animationStateEntries.entries.push({ ...stateEntries().entries[0], sequence: 2 });
+    await h.refresh(next); assert.equal(h.opened[0][2].isCurrent(), true); assert.equal(h.reviewEl('Panel').dataset.sequence, '1');
+    read.resolve(); await flushDialogs(); await flushDialogs(); assert.deepEqual(writes, [expected.sourcePath]);
+  }
+});
+
+test('controller review host revokes delayed navigation on dirty creation visit task close or selecting a repeated entry', async () => {
+  for (const change of ['dirty', 'creating', 'visit', 'task', 'close', 'selection']) {
+    const read = deferred(), writes = []; let h;
+    const initial = state({ protocolVersion: 9 }); initial.job.runtime.project.animationStateEntries.sequence = 2;
+    initial.job.runtime.project.animationStateEntries.entries.push({ ...stateEntries().entries[0], sequence: 2 });
+    h = await fixture(initial, { openSource: async (path, location, context) => {
+      h.context.busy = true;
+      try { await read.promise; if (!context.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    h.animationEntryEl('Entries').querySelector('.project-animation-state-entry-review').click(); h.reviewEl('ScriptSource').click(); await flushDialogs();
+    if (change === 'dirty' || change === 'creating') h.context[change] = true;
+    else if (change === 'close') h.element('projectBuildDialog').close();
+    else if (change === 'selection') h.reviewEl('Next').click();
+    else await h.refresh(state({ protocolVersion: 9, ...(change === 'visit' ? { active: first } : { task: 'run-2' }) }));
     assert.equal(h.opened[0][2].isCurrent(), false, change); read.resolve(); await flushDialogs(); assert.deepEqual(writes, [], change);
   }
 });

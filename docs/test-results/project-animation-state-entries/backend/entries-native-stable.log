@@ -1,0 +1,27 @@
+✔ state entry wrappers are shared per source and keep author source maps unchanged (139.067049ms)
+✔ only protocol9 generated outputs get the bounded 1024 file allowance (80.929689ms)
+✔ real entries preserve initial entry and repeated same-frame self and cross-state requests (12482.159125ms)
+✔ real independently bound wrappers retain distinct instance origins for one shared source (12493.098791ms)
+✔ real accepted select followed by rejected play has no successful state-entry record (12528.450932ms)
+✔ real accepted state survives in trace when a queued command fails before its playback executes (12498.833832ms)
+✔ real v2 entries capture conditional event selection and natural completion (12564.535796ms)
+✔ real v3 entries capture conditional event selection and natural completion (12524.563175ms)
+✖ real repeated observation-port calls cannot fabricate another successful entry (9666.941114ms)
+✔ wrapper diagnostics belong to generated assembly and never borrow author source lines (68.798813ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 85201.980374
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-state-entry-godot.test.mjs:125:1
+✖ real repeated observation-port calls cannot fabricate another successful entry (9666.941114ms)
+  TypeError: Cannot read properties of undefined (reading 'diagnostics')
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-godot.test.mjs:127:57)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

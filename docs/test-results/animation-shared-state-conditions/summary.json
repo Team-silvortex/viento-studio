@@ -1,0 +1,103 @@
+{
+  "date": "2026-10-23",
+  "version": "0.1.8",
+  "checks": {
+    "app-check-final.log": {
+      "tests": 6916,
+      "pass": 6596,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 320
+    },
+    "core-targeted-final.log": {
+      "tests": 42,
+      "pass": 42,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "source-final.log": {
+      "tests": 24,
+      "pass": 24,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "native-final.log": {
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "legacy-native-final.log": {
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "ui-final.log": {
+      "tests": 124,
+      "pass": 124,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "graph-test.log": {
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "adapter-final.log": {
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    }
+  },
+  "rust": {
+    "passed": 389,
+    "failed": 0
+  },
+  "javascriptFiles": 1164,
+  "browser": {
+    "report": "browser-1792731686779/browser.json",
+    "groups": 3,
+    "screenshots": 6,
+    "errors": 0,
+    "sourceSnapshotUnchanged": true,
+    "actualGodotHeadlessRun": true
+  },
+  "atlas": {
+    "functions": 144,
+    "implementations": 434,
+    "bindings": 637,
+    "cells": 2548,
+    "workflows": 107,
+    "evidence": 2683,
+    "dependencies": 404
+  },
+  "compatibility": {
+    "runtimeProtocol": 9,
+    "godotAdapter": "0.18.0",
+    "inventory": 10,
+    "runtimeImplementationChanged": false,
+    "oldGeneratorsChanged": false,
+    "newGenerator": "godot-gdscript-v4",
+    "studioModules": 22,
+    "studioCapabilities": 43
+  },
+  "preservation": "preservation.json",
+  "limitations": [
+    "Shared state is read when the callback runs; publishing only freezes the payload.",
+    "Missing keys and type mismatches never match, including ne; state writes alone never trigger transitions.",
+    "Runtime observations contain state entries and terminal samples, not evaluated conditions or failed branches.",
+    "No installed Tauri, Android, Bevy animation or native visual rendering acceptance.",
+    "Overlapping suites are reported separately; full application conditional skips are not passes."
+  ],
+  "released": false
+}

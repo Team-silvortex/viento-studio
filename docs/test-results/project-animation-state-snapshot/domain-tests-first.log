@@ -1,0 +1,94 @@
+✔ backend descriptors detach and recursively freeze every admitted field (2.491975ms)
+✔ descriptor schema rejects unknown, missing and host implementation fields (1.193282ms)
+✔ identities, versions and lists remain bounded unique descriptor data (1.878496ms)
+✔ plan schemas and runtime protocol schemas are explicit separate declarations (1.027626ms)
+✖ project plans admit explicit runtime protocols one through seven without changing author schema (1.003882ms)
+✔ execution operations require seven explicit booleans without support inference (2.621901ms)
+✔ namespaced native extension metadata never implies runtime or GPU support (1.100205ms)
+✔ descriptor admission refuses accessors and inherited authority before getters run (0.383841ms)
+✔ nonserializable, cyclic, sparse, overdeep and oversized DTOs fail closed (0.849528ms)
+✔ support checks admit known plans and platforms with or without optional plan data (0.596656ms)
+✔ unsupported plan format, kind and schema diagnose source without choosing a fallback (0.371247ms)
+✔ missing feature diagnostics retain the scene source and original capability order (0.232172ms)
+✔ all execution, platform, plan and capability rejections remain independently visible (0.217104ms)
+✔ malformed support requests and plan DTOs cannot bypass validation (1.534682ms)
+✔ UI support convenience is explicit, operation-specific and fail closed (1.058274ms)
+✔ portable middleware executes in an isolated JavaScript realm without host globals (10.94675ms)
+✔ p7 admits natural clip completion, ordered callback delivery and subsequent looping clip with frozen sources (20.302481ms)
+✔ p7 admits automatic whole completion without a publisher or recipients on old schemas (5.563301ms)
+✔ p7 rejects forged completion fields and recipient identities atomically, then accepts the original (60.615997ms)
+✔ natural completion is one edge: loops, pause, stop and seek-end do not complete (7.249772ms)
+✔ command at natural boundary requires the completion first and cannot suppress it by pausing (2.749655ms)
+✔ completion after pause and resume uses the actual host clock and terminal play starts a fresh round (2.703347ms)
+✔ deliveries are FIFO, visit bound, single use and stale outcomes must skip without retiring tokens (2.905682ms)
+✔ scene exit waits for captured deliveries and old tokens cannot move to a new visit (3.626303ms)
+✔ terminal sequence, state time and pending deliveries cannot be forged around project finish (6.630783ms)
+✔ p7 query detaches and rejects forged source, range, history, delivery and versioned shapes (15.17544ms)
+✔ completion ledger snapshots reject getters, foreign token ownership and mismatched identities atomically (5.270944ms)
+✔ completion budgets count pending records, reserved deliveries and all 320 possible natural rounds (54.623199ms)
+✔ old p5/p6 histories preserve their DTO shape and continue without completion frames (9.682813ms)
+✔ same-clock replay is accepted but cannot invent a second natural completion without advancing time (2.833534ms)
+✔ p7 scene exit cannot conceal an unreported automatic natural completion (2.010037ms)
+✔ completion source ranges retain old source vocabulary and must match the shared frozen declarations (9.872705ms)
+✔ catalog recognizes exact v1/v2/v3 bytes, default clips and BOM/CRLF while retaining frozen navigation (19.173762ms)
+✔ ordinary, modified, malformed and unknown-generator scripts remain unobserved without editing author text (7.536327ms)
+✔ recognized catalog never swallows optional core absence (50.641549ms)
+✔ recognized invalid clip parameters fail with frozen field diagnostics; valid unknown UUID remains runtime-owned (9.138698ms)
+✔ catalog keeps each same-script binding and excludes scenes without animation (2.821341ms)
+✔ actual state indexes distinguish states mapped to the same clip and keep all receipts independent (16.00532ms)
+✔ inactive and unavailable are distinct states with no invented current state or clip (10.058318ms)
+✔ p8 frozen wire snapshots reject forged identities, indices, clips, missing and duplicate controllers atomically (66.294157ms)
+✔ snapshot closes its visit to further commands, publications and duplicate snapshots (4.192131ms)
+✔ successful exit requires matching snapshot reason and exact time; finished count must match (17.477112ms)
+✔ scene reentry owns a fresh snapshot while unobserved scenes need no empty snapshot (6.222516ms)
+✔ aborted observations require a diagnostic and preserve the real inactive snapshot; unfinished runs do not synthesize one (5.816253ms)
+✔ snapshot DTOs reject unsafe descriptors, unknown keys, invalid origins, stale sources and typed-state contradictions (5.00114ms)
+✔ p8 query links snapshots to visit boundary and command cutoff, and p7 keeps its exact old shape (14.177129ms)
+✔ project protocol 8 descriptor preserves mandatory animation completion capability (4.614815ms)
+✔ project visits admit A→B→A with fresh child lifecycles and unchanged protocol 1/2/3 wire frames (12.490409ms)
+✔ project membership, exact keys, lifecycle ordering and terminal integrity reject malformed frames atomically (6.298441ms)
+✔ late visits, cross-scene actor events, unknown streams and child finished cannot escape project scope (3.784033ms)
+✔ behavior events remain scoped to frozen binding author sources, including errors during a later visit (2.910531ms)
+✔ visit, event, line and diagnostic limits are independent and recovery cannot admit a 65th visit (69.693769ms)
+✔ readers detach plans, expose immutable events and do not invent completion on cancellation (1.095125ms)
+✔ audio exits validate their own local clock and commands without inheriting the old two-step scene finish constraint (145.196106ms)
+✔ portable project modules import only engine modules and contain no backend process or file APIs (1.289244ms)
+✔ a host-required half-second project smoke rejects an otherwise coherent early zero-time finish (0.730861ms)
+✔ a host-required duration accepts a complete half-second run across multiple visits (0.723989ms)
+✔ window sessions without a host duration expectation can close successfully before the first step (0.769505ms)
+✔ project duration expectations reject invalid types, nonfinite values and values outside the finite run budget (1.272582ms)
+✔ initial project observation uses frozen entry rows without claiming a visit or live coordinates (5.743674ms)
+✔ exit immediately revokes old actor samples, then each visit resets shared instance identities and sources (5.652902ms)
+✔ project exit supplies final observed actor samples without admitting a legacy child finished wire frame (7.640426ms)
+✔ queries filter current actors while preserving detached bounded visit records (2.096ms)
+✔ observation rejects stale, forged and malformed visit events atomically (2.815229ms)
+✔ queries reject inconsistent history, invented project keys, unsafe data and stale current-scene identity (3.84541ms)
+✔ plan, event and output mutation cannot alter frozen member navigation or future visits (1.926598ms)
+ℹ tests 66
+ℹ suites 0
+ℹ pass 65
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 331.957542
+
+✖ failing tests:
+
+test at scripts/tests/backend-capabilities.test.mjs:80:1
+✖ project plans admit explicit runtime protocols one through seven without changing author schema (1.003882ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception (isInvalid).
+      at reject (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-capabilities.test.mjs:22:32)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/backend-capabilities.test.mjs:85:53)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }

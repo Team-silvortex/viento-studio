@@ -1,0 +1,36 @@
+✔ project protocol 4 retains legacy child audio while recording A→B→A command receipts and both sources (23.05629ms)
+✔ an empty-cue declaration supports command-only tracks using the actual Rust audio core (5.13268ms)
+✔ protocol 4 is explicit and older project protocols do not silently accept audio command fields (6.807746ms)
+✔ commands require actor ready, audio ready and completion of due legacy cues (1.682379ms)
+✔ command readiness cannot be borrowed from a previous visit (3.0572ms)
+✔ frozen behavior, track and resource ownership cannot be forged or redirected through wire paths (2.115486ms)
+✔ command time is monotonic within a visit and cannot extend past the admitted audio finish or exit (1.785714ms)
+✔ future cue admission cannot be followed by a dynamic command claiming an earlier local clock (2.308239ms)
+✔ normal finish requires the final command count while cancellation invents no pending receipts (3.442055ms)
+✔ protocol 4 keeps shared state and event FIFO features alongside audio receipts (3.272085ms)
+✔ observation filters only current actors and preserves historical command ownership and exact track range (8.00936ms)
+✔ query rejects unknown visits, wrong scenes, future finished command time and unsafe protocol selectors (12.523736ms)
+✔ protocol 4 admits maximum event, state, child and 256 dual-source command DTOs together under its own bound (276.354722ms)
+✔ protocol 4 projects without audio keep event/state features and reject commands without an audio stream (5.951543ms)
+✔ an admitted audio or behavior failure forbids later dynamic audio receipts (2.724343ms)
+✔ project protocol 2 preserves session state through A→B→A with frozen binding provenance and global revisions (10.37104ms)
+✔ protocol selection is explicit: default v1 remains byte-shaped and rejects v2, while v2 rejects downgrades (13.308334ms)
+✔ state requires project readiness, entered child readiness and a live current visit (2.672825ms)
+✔ frozen binding tuple ownership and exact wire keys reject source path injection (1.694552ms)
+✔ no-op, missing delete, malformed scalar and revision failures leave the admitted state intact (1.986072ms)
+✔ reader state budgets remain independent of the outer event budget (74.394926ms)
+✔ root ready cannot preload state and root finished must close the exact admitted state revision and smoke duration (3.068662ms)
+✔ observation retains historical writers while revoking actor coordinates at exit and preserving state under filters (7.092412ms)
+✔ observation deletion keeps a visible last-change source when no entries remain (3.47133ms)
+✔ query rejects invented protocol/state fields and origins outside the admitted visit history without invoking getters (10.140636ms)
+✔ frozen plan, input events, callback values and returned state cannot mutate session provenance (5.08511ms)
+✔ protocol 2 can observe a legacy child without inventing a behavior binding or a state write (2.651045ms)
+✔ protocol 2 retains independent audio visit clocks before a later behavior writes shared state (136.878199ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 435.957275

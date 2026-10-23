@@ -210,7 +210,7 @@ try {
   await perform('#projectBuildPlan', 'plan'); await perform('#projectBuildGenerate', 'build');
   const ran = await perform('#projectBuildHeadless', 'run');
   const history = ran.runtime.project.animationCommands, completed = ran.runtime.project.animationCompletions;
-  assert.equal(ran.runtime.project.protocolVersion, 7); assert.equal(history.sequence, 6); assert.equal(completed.sequence, 1);
+  assert.equal(ran.runtime.project.protocolVersion, 9); assert.equal(history.sequence, 6); assert.equal(completed.sequence, 1);
   assert.deepEqual(history.entries.map(row => row.command.action), ['select', 'play', 'select', 'play', 'select', 'play']);
   assert.deepEqual(history.entries.map(row => row.state.clipId), [idleId, idleId, attackId, attackId, idleId, idleId]);
   assert.equal(completed.entries[0].state.clipId, attackId); assert.equal(completed.entries[0].state.phase, 'finished');
@@ -231,7 +231,7 @@ try {
     report.layout.observation[language]=layout;await screenshot(`completion-${language}-390.png`);
   }
   await call('Emulation.clearDeviceMetricsOverride');await evaluate(`(await import('/web/i18n/index.js')).applyLanguage('zh-CN')`);
-  report.runtime={jobId:ran.id,history,completed,protocolVersion:7,actualReceipts:true};
+  report.runtime={jobId:ran.id,history,completed,protocolVersion:9,actualReceipts:true};
   report.steps.push('Real GUI planning, build and Godot run execute initial idle → event attack → one natural completion → looped idle through the same generated state-table source. Separate completion and command panels display actual frozen histories; three languages at390px retain search and have no horizontal overflow.');
   report.navigation=[];
   // Source buttons are obtained by their declared source kind, never text labels.

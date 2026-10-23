@@ -1,0 +1,36 @@
+✔ state entry wrappers are shared per source and keep author source maps unchanged (147.222972ms)
+✔ only protocol9 generated outputs get the bounded 1024 file allowance (79.139018ms)
+✔ real entries preserve initial entry and repeated same-frame self and cross-state requests (12652.646693ms)
+✖ real independently bound wrappers retain distinct instance origins for one shared source (9127.899008ms)
+✔ real accepted select followed by rejected play has no successful state-entry record (12659.031545ms)
+✔ real accepted state survives in trace when a queued command fails before its playback executes (12537.716632ms)
+✔ real v2 entries capture conditional event selection and natural completion (13109.711278ms)
+✔ real v3 entries capture conditional event selection and natural completion (13217.722784ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 73702.4149
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-state-entry-godot.test.mjs:97:1
+✖ real independently bound wrappers retain distinct instance origins for one shared source (9127.899008ms)
+  AssertionError [ERR_ASSERTION]: {"ok":false,"status":"failed","diagnostics":[{"severity":"error","code":"runtime_adapter_changed","message":"Execution adapter changed; rebuild this project before running.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","propertyPath":""}]}
+  
+  false !== true
+  
+      at passed (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-godot.test.mjs:53:29)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-godot.test.mjs:99:324)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

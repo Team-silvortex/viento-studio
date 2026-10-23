@@ -66,6 +66,15 @@ export const copyProjectAnimationClipObservationData = input => copyBoundedRunti
 export const copyProjectAnimationCompletionSnapshotData = input => copyBoundedRuntimeData(input, 24 * 1024 * 1024);
 export const copyProjectAnimationCompletionObservationData = input => copyBoundedRuntimeData(input, 80 * 1024 * 1024);
 
+// Protocol 8 retains at most 64 terminal batches / 2048 controller snapshots.
+export const copyProjectAnimationStatesSnapshotData = input => copyBoundedRuntimeData(input, 32 * 1024 * 1024);
+export const copyProjectAnimationStatesObservationData = input => copyBoundedRuntimeData(input, 112 * 1024 * 1024);
+
+// Protocol 9 adds at most 128 accepted state entries with two frozen sources.
+// This is bounded independently of the retained terminal controller snapshots.
+export const copyProjectAnimationStateEntriesSnapshotData = input => copyBoundedRuntimeData(input, 4 * 1024 * 1024);
+export const copyProjectAnimationStateEntriesObservationData = input => copyBoundedRuntimeData(input, 116 * 1024 * 1024);
+
 export function freezeProjectRuntimeData(value) {
   if (value && typeof value === 'object') { Object.values(value).forEach(freezeProjectRuntimeData); Object.freeze(value); }
   return value;

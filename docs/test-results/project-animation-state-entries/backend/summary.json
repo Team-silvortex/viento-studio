@@ -1,0 +1,82 @@
+{
+  "scope": "Godot animation state entry observation backend",
+  "runtimeProtocol": 9,
+  "adapterVersion": "0.18.0",
+  "inventoryVersion": 10,
+  "groups": [
+    {
+      "log": "entries-native-verified.log",
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "log": "snapshot-native-final.log",
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "log": "branches-native.log",
+      "tests": 10,
+      "pass": 10,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "log": "legacy-author-native.log",
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "log": "control-replay-native.log",
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "log": "inventory-regression.log",
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "log": "adapter-regression-final.log",
+      "tests": 23,
+      "pass": 18,
+      "fail": 0,
+      "skipped": 5
+    }
+  ],
+  "totals": {
+    "tests": 67,
+    "pass": 62,
+    "fail": 0,
+    "skipped": 5
+  },
+  "actualGodotTests": 37,
+  "sources": {
+    "scripts/backends/godot4-project.mjs": "8ebdbcc6af70e1bcc8020411efaef0d1f170112fc5b50a37c76261e755a4aef1",
+    "scripts/backends/godot4-adapter.mjs": "2e858437c5f7032d9080f64fef4275baf376cf97a91cc52a060766faccdcfcba",
+    "scripts/backends/godot4/project-animation-state-entry-runtime.gd": "635faa55f3dddd94c2553907c0a90e0933c8ab282c244d6c16fb42b83070992c",
+    "scripts/backends/godot4/project-animation-state-entry-wrapper.gd": "a43d9a99e7f7349a37fdd3af370bddb46fcbe24a13156cd701f0e529fd92f9eb",
+    "scripts/adapters/node-execution-backends.mjs": "1e6350c054270ab9dc6592b0858b9c46c4bc8e03415a2bb46f25898eb832d0bc",
+    "engine/godot-animation-state-script.mjs": "a9fb4687b3b9e9573770a3f2dacc4d78e5540acfcc37cce05db2f6a8bc88f2d5",
+    "engine/godot-animation-state-conditions-script.mjs": "46edb613955d96188f5546a78fa97da7b14a06f3516a7e477ccf5fa34bd539a2",
+    "engine/godot-animation-branches-script.mjs": "7db5a850a461d0c29e87db383b4cfa59cfc2f5a5ad54f50e2056a763ba3bde1f"
+  },
+  "notes": [
+    "Fixed inherited _enter_state dispatch validated on Godot 4.7.2; generated wrapper observes successful super return and reads actual controller fields.",
+    "Author v1/v2/v3 emitters retain their prior SHA256 values.",
+    "The first native probe exposed a nullable return inference error; explicit Variant fixed it.",
+    "Intermediate runs overlap production fingerprint updates; keep these logs as investigation evidence, use entries-native-verified.log as final complete verification.",
+    "Adapter review caught fingerprint URL rows accidentally included in the control replay staging array; removed and covered by fake process regression plus actual Godot image replay.",
+    "A 32-scene inventory with 256 original scripts and 256 wrappers has 682 GDScript checks and stays below 4 MiB."
+  ]
+}
