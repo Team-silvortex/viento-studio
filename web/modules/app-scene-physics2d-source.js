@@ -1,27 +1,32 @@
 import { captureScenePhysics2DTargetSource, captureScenePhysics2DTargets, scenePhysics2DTargetsMatchSource, scenePhysics2DTargetsEqual, validateScenePhysics2DTargets } from '../../engine/scene-physics2d-targets.mjs';
+import { captureScenePhysics2DSpace } from '../../engine/scene-physics2d-space.mjs';
 import { parseJsonSource } from '../../engine/json-source.mjs';
 import { isScenePhysics2DProposal, prepareScenePhysics2DApply } from '../../engine/scene-physics2d-edit.mjs';
 
 // This port owns only the current author buffer. An optional saved-scene
-// directory reader has a separate capability epoch and is rechecked before
-// catalog-backed edits. There is no file, renderer, Save or backend authority.
-export function createScenePhysics2DSourceHost({ getState, digest, writeDraft, inspectTargets, focus = () => {} }) {
-  let previous, generation = 0, previousTargets, targetsGeneration = 0, recognitionContent, recognitionJSON, recognized = false;
+// directory and spatial readers have separate capability epochs. Only the
+// directory is rechecked before catalog-backed edits; spatial data grants no
+// write authority. There is no file, renderer, Save or backend authority.
+export function createScenePhysics2DSourceHost({ getState, digest, writeDraft, inspectTargets, inspectSpace, focus = () => {} }) {
+  let previous, generation = 0, previousTargets, targetsGeneration = 0, previousSpace, spaceGeneration = 0, recognitionContent, recognitionJSON, recognized = false;
   const issuedTargets = new WeakMap();
   const targetsConflict = () => { throw Object.assign(new Error('Scene physics targets changed; refresh the target list.'), { errorCode: 'scene_physics2d_targets_conflict' }); };
+  const spaceConflict = () => { throw Object.assign(new Error('Scene physics spatial context changed; refresh the view.'), { errorCode: 'scene_physics2d_space_conflict' }); };
   const conflict = () => { throw Object.assign(new Error('Physics editing no longer owns this source.'), { errorCode: 'scene_physics2d_authoring_conflict' }); };
   function capture() {
     const s = getState(), keys = ['document', 'token', 'sourcePath', 'content', 'baseline', 'version', 'editable', 'creating', 'busy', 'available', 'sourceJSON'];
     if (!previous || keys.some(key => previous[key] !== s[key])) { previous = { ...s }; generation++; }
     const targetsAvailable = s.targetsAvailable === true && typeof inspectTargets === 'function';
     if (previousTargets !== targetsAvailable) { previousTargets = targetsAvailable; targetsGeneration++; }
+    const spaceAvailable = s.spaceAvailable === true && typeof inspectSpace === 'function';
+    if (previousSpace !== spaceAvailable) { previousSpace = spaceAvailable; spaceGeneration++; }
     if (recognitionContent !== s.content || recognitionJSON !== s.sourceJSON) {
       recognitionContent = s.content; recognitionJSON = s.sourceJSON;
       const checked = s.sourceJSON === true && typeof s.content === 'string' && s.content.length <= 65536
         && new TextEncoder().encode(s.content).length <= 65536 ? parseJsonSource(s.content) : null;
       recognized = checked?.ok === true && checked.value?.format === 'viento-scene-physics2d';
     }
-    return { ...s, sourceToken: `${String(s.token)}:${generation}`, physicsSource: recognized, targetsAvailable, targetsToken: String(targetsGeneration) };
+    return { ...s, sourceToken: `${String(s.token)}:${generation}`, physicsSource: recognized, targetsAvailable, targetsToken: String(targetsGeneration), spaceAvailable, spaceToken: String(spaceGeneration) };
   }
   const eligible = s => s.editable === true && s.available === true && !s.creating && !s.busy
     && s.sourceJSON === true && s.physicsSource && Boolean(s.document);
@@ -34,7 +39,7 @@ export function createScenePhysics2DSourceHost({ getState, digest, writeDraft, i
   function getContext() {
     const s = capture();
     return { editable: s.editable, creating: s.creating, busy: s.busy, available: s.available, sourceJSON: s.sourceJSON,
-      sourcePath: s.sourcePath, sourceToken: s.sourceToken, physicsSource: s.physicsSource, targetsAvailable: s.targetsAvailable, targetsToken: s.targetsToken };
+      sourcePath: s.sourcePath, sourceToken: s.sourceToken, physicsSource: s.physicsSource, targetsAvailable: s.targetsAvailable, targetsToken: s.targetsToken, spaceAvailable: s.spaceAvailable, spaceToken: s.spaceToken };
   }
   async function snapshot(owner, guard) {
     if (!eligible(owner) || !current(owner, guard)) return null;
@@ -63,6 +68,20 @@ export function createScenePhysics2DSourceHost({ getState, digest, writeDraft, i
       || !/^[a-f0-9]{64}$/.test(savedHash) || `sha256:${savedHash}` !== source.baseSourceRevision) targetsConflict();
     issuedTargets.set(catalog, owner.targetsToken); return catalog;
   }
+  async function getSpace(requestedSource) {
+    // Capture the full physical source before any awaits. Spatial context is
+    // readonly and can be absent independently of the saved target directory.
+    const requested = captureScenePhysics2DTargetSource(requestedSource), owner = capture();
+    if (!owner.spaceAvailable) throw Object.assign(new Error('Scene physics spatial context is unavailable.'), { errorCode: 'scene_physics2d_space_unavailable' });
+    const guard = () => { const now = capture(); return now.spaceAvailable && now.spaceToken === owner.spaceToken; };
+    const source = await snapshot(owner, guard);
+    if (!source || !Object.keys(source).every(key => source[key] === requested[key])) spaceConflict();
+    const raw = await inspectSpace({ sceneObjectId: parseJsonSource(source.content).value.sceneObjectId });
+    if (!current(owner, guard)) spaceConflict();
+    const space = captureScenePhysics2DSpace(source, raw);
+    if (!current(owner, guard)) spaceConflict();
+    return space;
+  }
   async function applyDraft(proposal, { isCurrent = () => true, targets } = {}) {
     if (!isScenePhysics2DProposal(proposal)) conflict();
     const owner = capture(), source = await snapshot(owner, isCurrent);
@@ -86,5 +105,5 @@ export function createScenePhysics2DSourceHost({ getState, digest, writeDraft, i
     return { applied: true, sourcePath: after.sourcePath, sourceToken: after.sourceToken, content: prepared.afterContent,
       focus() { if (current(after) && after.content === prepared.afterContent) focus(); } };
   }
-  return Object.freeze({ getContext, getSource, getTargets, applyDraft });
+  return Object.freeze({ getContext, getSource, getTargets, getSpace, applyDraft });
 }

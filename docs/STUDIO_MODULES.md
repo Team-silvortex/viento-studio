@@ -1,6 +1,10 @@
 # Studio 系统模块与工程需求
 
-**0.2.1 源码为 23 模块／44 项声明能力**。新增 `org.viento.scene-physics2d`，仅依赖文档模块并提供 `scene.authoring.physics2d`。已有物理 JSON 经独立表单、局部形状示意、检查和原文审阅进入普通草稿。该发布基线没有实例目录；当前未发布工作树在同一模块中增加可选 `getTargets` 只读端口和宿主 `scenePhysics2DTargets` 能力标志，支持按保存态名称／UUID 选择、刷新与应用前重读。未增加系统模块或声明能力；不创建关系或取得执行权限。见[物理编辑](SCENE_PHYSICS2D.md#编辑已有物理声明)、[目录边界](SCENE_PHYSICS2D.md#按名称选择已有场景实例)及[本轮验证](test-results/scene-physics2d-targets/README.md)。下列版本与旧专题保留各自时点的模块数和验收范围。
+**0.2.2 物理空间图沿用已有物理模块**：当前为 **23 模块／45 项声明能力**。`org.viento.scene-physics2d` 增加可选 `getSpace(source5)` 只读端口；宿主严格识别 `scenePhysics2DSpace` 并独立维护请求代际。渲染模块只返回已有碰撞体 ID，控制器管理选择、字段与审阅；不增加场景写入或引擎执行权限。缺少端口或读取失败时保留原字段编辑和局部示意。见[空间图说明](SCENE_PHYSICS2D.md#在场景空间中查看与选择碰撞体)。
+
+**0.2.2 为 23 模块／45 项声明能力**。构建工作区新增 `scene.authoring.physics2d-creation`，独立控制器通过上下文读取、World 命令、保存后刷新和来源导航端口工作；只有宿主声明 `physics2d.create` 时才启用入口，注册能力本身不证明工具可执行。首次创建与 `org.viento.scene-physics2d` 的已有原文编辑职责分开；新只读 HTTP 能力为 `scenePhysics2DCreation`，事务格式为 v12。后端或本机安装版本保持。见[创建流程](SCENE_PHYSICS2D.md#从现有场景开始)。
+
+**0.2.1 源码为 23 模块／44 项声明能力**。新增 `org.viento.scene-physics2d`，仅依赖文档模块并提供 `scene.authoring.physics2d`。已有物理 JSON 经独立表单、局部形状示意、检查和原文审阅进入普通草稿。该发布基线没有实例目录；0.2.2 在同一模块中增加可选 `getTargets` 只读端口和宿主 `scenePhysics2DTargets` 能力标志，支持按保存态名称／UUID 选择、刷新与应用前重读。未增加系统模块或声明能力；不创建关系或取得执行权限。见[物理编辑](SCENE_PHYSICS2D.md#编辑已有物理声明)、[目录边界](SCENE_PHYSICS2D.md#按名称选择已有场景实例)及[本轮验证](test-results/scene-physics2d-targets/README.md)。下列版本与旧专题保留各自时点的模块数和验收范围。
 
 **0.1.6 源码**当时为 **22 模块／43 项声明能力**。独立 `org.viento.scene-animation` 提供 `scene.authoring.animation` 与 `scene.preview.animation`，负责已有动画的字段编辑和Rust采样示意，并与构建页的独立控件共同提供保存态场景画面预览；构建模块另以独立创建控制器贡献 `scene.authoring.animation-creation`。宿主提供 `animation.create` 时才显示首次创建入口，通过目录、审阅、三文件保存和原文导航连接，不能因注册能力存在而推断已安装Godot或Android已支持创建。见[动画指南](SCENE_ANIMATION.md#从场景首次创建动画)及[当前验收](test-results/scene-animation-creation/README.md)。Godot仍为0.12.0，本次只更新源码版本，安装保持，旧段落保留各阶段边界。
 
@@ -57,7 +61,7 @@ flowchart TD
 | `org.viento.world` | 世界查询、命令、对象和投影创作 |
 | `org.viento.export` | 工程导出与资源包 |
 | `org.viento.media` | 图片、视频、音频的资源引用 |
-| `org.viento.build` | 当前聚合的 2D 场景、配方、后端工程和执行工作区；独立控制器分别提供首次行为／声音／动画入口及 `scene.authoring.behavior-creation`、`scene.authoring.audio-creation`、`scene.authoring.animation-creation` |
+| `org.viento.build` | 当前聚合的 2D 场景、配方、后端工程和执行工作区；独立控制器分别提供首次行为／声音／动画／物理入口及 `scene.authoring.behavior-creation`、`scene.authoring.audio-creation`、`scene.authoring.animation-creation`、`scene.authoring.physics2d-creation` |
 | `org.viento.scene3d` | 独立 3D 方块表示与只读 WebGL2 预览；只依赖文档模块 |
 | `org.viento.scene3d-transforms` | 独立单对象位置／旋转／尺寸原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.transforms3d` |
 | `org.viento.scene3d-objects` | 独立方块新增／复制／移除的完整原文审阅与草稿应用；只依赖文档模块，提供 `scene.authoring.objects3d` |
@@ -123,7 +127,7 @@ flowchart TD
 
 `scripts` 独立注入 `getContext`／`createDraft`，缺端口或 `features.scripts: false` 只关闭脚本创建。`app-script-create.js` 在正文操作栏装配 **新建脚本**，取得当前会话、正文目录与类型目录；纯 `script-authoring.mjs` 提供固定起始内容和深冻结私有提案，正文宿主核对上下文后建立普通 TXT 草稿。界面不取得保存、登记、World、行为关系或执行接口，构建与行为编辑模块关闭时仍可独立创建。工程无需 `script` 类型，模板选择不修改项目模板；语言／后端标识只描述当前起始内容，不代表已提供 LSP、其他语言执行或作者 Rust 编译。
 
-`scenePhysics2D` 独立注入 `getContext`／`getSource`／`applyDraft`；当前未发布工作树另接可选 `getTargets`。缺少整个端口或 `features.scenePhysics2D: false` 时不装配，现有文档、声音、动画与构建入口不受影响；物理入口由自身 Rust 可选能力检测，名称选择还需宿主单独声明 `scenePhysics2DTargets`。宿主绑定当前原文、保存基线、修订和会话，对目录已检查的应用重读目录并重验来源后同步写草稿。格式识别不是登记证明，手填降级明确目标未验证；组件只取得有界目录，不取得普通保存、完整World、素材或后端端口。新增只读HTTP由服务层提供，运动与完整工程条件继续由构建检查。
+`scenePhysics2D` 独立注入 `getContext`／`getSource`／`applyDraft`；0.2.2 另接相互独立的可选 `getTargets` 与 `getSpace`。缺少整个端口或 `features.scenePhysics2D: false` 时不装配，现有文档、声音、动画与构建入口不受影响；物理入口由自身 Rust 可选能力检测，名称选择还需宿主单独声明 `scenePhysics2DTargets`。宿主绑定当前原文、保存基线、修订和会话，对目录已检查的应用重读目录并重验来源后同步写草稿。格式识别不是登记证明，手填降级明确目标未验证；组件只取得有界目录，不取得普通保存、完整World、素材或后端端口。新增只读HTTP由服务层提供，运动与完整工程条件继续由构建检查。
 
 `sceneBehaviors` 单独注入 `getContext`／`getSource`／`inspect`／`applyDraft`，缺端口或 `features.sceneBehaviors: false` 只关闭行为编辑。独立可移植提案保存当前原文及修订，来源宿主另做依赖摘要重验；界面没有普通保存、元数据关系写入、World 命令或执行后端接口。关闭 World、构建或 3D 区不会把行为控制器的权限交给其他模块。当前本机只读检查接口为 `/api/scene-behavior-authoring`，不接收工具路径、不执行脚本；宿主缺少服务能力时保留普通源码编辑。当前证据见[行为编辑专题](test-results/scene-behavior-authoring/summary.json)。
 

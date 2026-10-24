@@ -21,7 +21,7 @@ function fixture(settings, missing = false) {
 
 test('physics authoring is a separate module with only document dependency and no implicit simulation capability', () => {
   const registry = createStudioModuleRegistry(), plan = registry.plan(), declaration = registry.descriptors().find(row => row.id === moduleId);
-  assert.equal(plan.modules.length, 23); assert.equal(plan.capabilities.length, 44);
+  assert.equal(plan.modules.length, 23); assert.equal(plan.capabilities.length, 45);
   assert.deepEqual(declaration.dependencies, [{ id: 'org.viento.document', apiVersion: 1 }]);
   assert.deepEqual(declaration.contributions, [{ capability: 'scene.authoring.physics2d', apiVersion: 1, domain: 'authoring' }]);
   assert.equal(plan.capabilities.some(row => row.capability === 'physics.character2d'), false);

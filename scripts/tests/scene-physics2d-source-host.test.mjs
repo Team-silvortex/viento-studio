@@ -30,7 +30,7 @@ async function review(h) { const edit = { bodies: model().bodies }; edit.bodies[
 test('physics source host grants only source5 and ordinary draft application with separately hashed dirty source', async () => {
   const h = fixture(); h.state.content = original.replace('20,', '21,');
   const source = await h.host.getSource();
-  assert.deepEqual(Object.keys(h.host).sort(), ['applyDraft', 'getContext', 'getSource', 'getTargets']); assert.ok(Object.isFrozen(h.host));
+  assert.deepEqual(Object.keys(h.host).sort(), ['applyDraft', 'getContext', 'getSource', 'getSpace', 'getTargets']); assert.ok(Object.isFrozen(h.host));
   assert.deepEqual(Object.keys(source).sort(), ['baseSourceRevision', 'content', 'sourcePath', 'sourceRevision', 'token']);
   assert.ok(Object.isFrozen(source)); assert.equal(source.baseSourceRevision, revision(original)); assert.equal(source.sourceRevision, revision(h.state.content));
   assert.notEqual(source.sourceRevision, source.baseSourceRevision); assert.equal(h.host.getContext().physicsSource, true);
@@ -107,6 +107,7 @@ function runtimeFixture() {
   const editor = { selectionStart: 10, selectionEnd: 30, scrollTop: 80, scrollLeft: 12, focused: 0,
     setSelectionRange(start, end) { this.selectionStart = start; this.selectionEnd = end; }, focus() { this.focused++; } };
   const statuses = [], context = vm.createContext({ state, editorLoadToken: 2, scenePreviewDraftEpoch: 3,
+    scenePhysics2DSpaceAvailable: false, inspectScenePhysics2DSpace: async () => assert.fail('manual editing must not call the optional spatial reader'),
     scenePhysics2DTargetsAvailable: false, inspectScenePhysics2DTargets: async () => assert.fail('manual editing must not call the optional directory'),
     editSessionBaselineContent: original, editSessionVersion: revision(original), editEditorEl: editor, createScenePhysics2DSourceHost,
     getActiveDoc: () => doc, canonicalizeSourcePath: value => value, getCurrentEditContent: () => content,

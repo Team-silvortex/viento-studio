@@ -1,8 +1,12 @@
 # 文档中心
 
+0.2.2 物理编辑器可在[场景空间中查看与选择碰撞体](SCENE_PHYSICS2D.md#在场景空间中查看与选择碰撞体)：读取保存态位置与逻辑尺寸，点击图形或列表定位已有参数，检查后显示新形状，再审阅、应用草稿并普通保存。读取失败仍可编辑，缺失目标保留供修复。验证见[空间图专题](test-results/scene-physics2d-space/README.md)。
+
+0.2.2 支持[从场景首次创建二维物理](SCENE_PHYSICS2D.md#从现有场景开始)：选择实例与形状、审阅原文和关系，一次保存三处文件，再继续字段编辑。当前为 23 模块／45 项声明能力，本机安装仍为 0.2.0；验证见[创建专题](test-results/scene-physics2d-creation/README.md)。
+
 0.2.1 的作者与运行链路：[按状态配置片段](SCENE_ANIMATION.md#按状态配置动画片段) → [逐实例运行范围](SCENE_ANIMATION.md#为正式运行选择播放范围) → [从当前场景组装](PROJECT_ASSEMBLY.md#从当前场景开始) → [绑定预检](SCENE_ANIMATION.md#构建前检查状态片段绑定) → [按目标回看](SCENE_ANIMATION.md#按动画目标回看运行记录)。[临时实例预览](SCENE_ANIMATION.md#按实例预览已保存动画)与作者保存的运行范围分别管理。
 
-[二维物理声明与运行](SCENE_PHYSICS2D.md)：已有物理 JSON 的独立面板、碰撞体增删、矩形／圆形局部示意、完整原文审阅与普通保存；静态障碍、角色碰撞、触发区及项目事件／动画闭环。0.2.1 发布基线手动填写实例 UUID；当前工作树新增[按已保存实例名称选择与修复](SCENE_PHYSICS2D.md#按名称选择已有场景实例)，目录刷新和应用前重读保护普通草稿，运动属性仍由构建检查。该增量未升版或更新安装，见[独立验收](test-results/scene-physics2d-targets/README.md)。
+[二维物理声明与运行](SCENE_PHYSICS2D.md)：已有物理 JSON 的独立面板、碰撞体增删、矩形／圆形局部示意、完整原文审阅与普通保存；静态障碍、角色碰撞、触发区及项目事件／动画闭环。0.2.1 发布基线手动填写实例 UUID；0.2.2 新增[按已保存实例名称选择与修复](SCENE_PHYSICS2D.md#按名称选择已有场景实例)，目录刷新和应用前重读保护普通草稿，运动属性仍由构建检查。开发时点与覆盖见[独立验收](test-results/scene-physics2d-targets/README.md)。
 
 0.2.0 收录[内置用例 JSON 编辑](SCENE_ANIMATION.md#在-studio-内编辑试算用例)：从当前路径创建或编辑载入用例，经检查、显式应用／取消，再重跑并导出；作者源码和当前手动路径保持独立。见[本轮验收](test-results/animation-state-trial-case-editor/README.md)。
 
@@ -16,7 +20,7 @@
 
 0.2.0 收录[状态进入的触发来源](SCENE_ANIMATION.md#查看状态进入的触发来源)，贯通独立运行采集、严格关联和三语回看；[本轮验收](test-results/animation-entry-triggers/README.md)单列源码与实际引擎范围。
 
-**当前源码版本为 0.2.1**，收录状态片段配置、逐实例动画预览与正式运行、目标回看、从场景组装、动画绑定预检及二维物理运行／编辑。见[版本记录](RELEASE_0.2.1.md)、[当前能力与平台](STATUS.md)和[发布预检](test-results/release-0.2.1/README.md)。本机 Linux AppImage 仍为 0.2.0，已有[安装验收](test-results/native-installed-0.2.0/README.md)及各开发专题保留当时版本与条件。
+**当前源码版本为 0.2.2**，收录物理实例名称选择与修复、首次创建及关系事务、场景空间图和导出指标 CI 竞态修复。见[版本记录](RELEASE_0.2.2.md)、[当前能力与平台](STATUS.md)和[发布预检](test-results/release-0.2.2/README.md)。本机 Linux AppImage 仍为 0.2.0，已有[安装验收](test-results/native-installed-0.2.0/README.md)及各开发专题保留当时版本与条件。
 
 动画作者与运行链路可从以下入口进入：
 
@@ -31,7 +35,7 @@
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.2.1 版本记录](RELEASE_0.2.1.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.2.2 版本记录](RELEASE_0.2.2.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -126,4 +130,4 @@
 
 片段定义管理见[新增、复制、重命名与未引用删除](SCENE_COMPOSITION.md#管理片段定义)。先维护共享声明，再通过独立演员、组织组和放置入口完成场景；普通保存继续保留作者原文。
 
-新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.2.1 版本记录](RELEASE_0.2.1.md)。
+新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.2.2 版本记录](RELEASE_0.2.2.md)。

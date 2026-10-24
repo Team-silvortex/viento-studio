@@ -129,7 +129,7 @@ export const STUDIO_MODULES = freeze([
   moduleDescriptor('org.viento.export', [['project.export', 'project'], ['resource.package', 'resource']]),
   moduleDescriptor('org.viento.media', [['resource.reference', 'resource']]),
   moduleDescriptor('org.viento.build', [
-    ['scene.representation.scene2d', 'scene'], ['project.authoring.assembly', 'authoring'], ['scene.authoring.behavior-creation', 'authoring'], ['scene.authoring.audio-creation', 'authoring'], ['scene.authoring.animation-creation', 'authoring'], ['scene.authoring.composition2d', 'authoring'],
+    ['scene.representation.scene2d', 'scene'], ['project.authoring.assembly', 'authoring'], ['scene.authoring.behavior-creation', 'authoring'], ['scene.authoring.audio-creation', 'authoring'], ['scene.authoring.animation-creation', 'authoring'], ['scene.authoring.physics2d-creation', 'authoring'], ['scene.authoring.composition2d', 'authoring'],
     ['backend.project', 'backend'], ['backend.execution', 'backend'], ['behavior.gdscript', 'language'],
   ], ['org.viento.document', 'org.viento.world']),
   moduleDescriptor('org.viento.scene3d', [

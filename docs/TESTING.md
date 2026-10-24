@@ -1,8 +1,14 @@
 # 验证指南
 
+**0.2.2 发布检查**见[独立记录](test-results/release-0.2.2/README.md)。最近一次完整功能检查属于升版前 0.2.1 场景空间图工作树：**7830 项，7463 通过、367 条件跳过、零失败／取消**。本版收录下列三轮物理功能与导出 CI 修复；专题保留各自源码摘要、失败过程和执行条件，升版专项另记，不把旧浏览器、引擎或完整检查重新标为 0.2.2 验收。
+
+[二维物理场景空间图](test-results/scene-physics2d-space/README.md)验证保存态 DTO／几何、独立只读服务、认证 HTTP、来源宿主与 SVG 选择，以及刷新、失败、关闭重开和三语焦点边界。定向运行 `node --test scripts/tests/scene-physics2d-space*.test.mjs`。设置可信绝对 `VIENTO_GODOT_BIN` 后运行 `node scripts/tests/scene-physics2d-space-smoke.mjs /usr/bin/google-chrome`，在临时工程验证选中、检查形状、普通保存及既有 Godot 链路。每次保留新的证据目录；静态空间图不计为物理步或拖拽验收。
+
+[二维物理首次创建](test-results/scene-physics2d-creation/README.md)覆盖纯草稿及请求回执、只读上下文、真实 HTTP 认证／来源校验、三文件事务、中断恢复和独立 UI。定向命令：`node --test scripts/tests/world-physics2d-create*.test.mjs scripts/tests/scene-physics2d-create*.test.mjs scripts/tests/scene-physics2d-creation*.test.mjs`。设置可信绝对 `VIENTO_GODOT_BIN` 后运行 `node scripts/tests/scene-physics2d-create-smoke.mjs /usr/bin/google-chrome`，在临时工程中验证首次创建、三语窄屏、取消、未知提交核对、字段保存及真实 Godot 链路；每次写入新的证据目录，不复用历史报告。
+
 [导出指标CI竞态](test-results/ci-export-metrics/README.md)：客户端读完响应不等于服务端完成文件关闭与指标登记。Range断言等待完成计数后核对真实206／416／200状态；确定性回归主动阻塞下载收尾，并验证重试与字节保持。运行 `node --test scripts/tests/export.test.mjs scripts/tests/export-metrics-lifecycle.test.mjs`；该新增回归已加入兼容性工作流列表。原生归档及移动存储子项仍需对应示例二进制，条件跳过不算原生通过。
 
-[二维物理实例目录](test-results/scene-physics2d-targets/README.md)分别验证保存态目录、独立服务／HTTP、源身份守护和表单选择；候选检查覆盖全部碰撞体，应用前重读目录。无目录时手填明确标未验证。定向运行 `node --test scripts/tests/scene-physics2d*.test.mjs scripts/tests/scene-animation-targets*.test.mjs scripts/tests/i18n.test.mjs`；设置可信绝对 `VIENTO_GODOT_BIN` 后运行 `node scripts/tests/scene-physics2d-targets-smoke.mjs /usr/bin/google-chrome`。真实 Chrome 在临时作者工程验证同名实例、失踪修复、挂起／失败请求、保存态变更、快速取消重开、中英日390px、普通保存及 Godot 运行；每次创建独立证据子目录。当前为 0.2.1 后未发布增量，目录不读取素材或替代运动／构建检查，不代表安装或 Android 验收。 本轮完整检查 **7659 项：7292 通过、367 条件跳过、零失败／取消**；定向234项中228通过、6条件跳过，真实浏览器／Godot另行通过。各组不累加，历史报告保持原时点。
+[二维物理实例目录](test-results/scene-physics2d-targets/README.md)分别验证保存态目录、独立服务／HTTP、源身份守护和表单选择；候选检查覆盖全部碰撞体，应用前重读目录。无目录时手填明确标未验证。定向运行 `node --test scripts/tests/scene-physics2d*.test.mjs scripts/tests/scene-animation-targets*.test.mjs scripts/tests/i18n.test.mjs`；设置可信绝对 `VIENTO_GODOT_BIN` 后运行 `node scripts/tests/scene-physics2d-targets-smoke.mjs /usr/bin/google-chrome`。真实 Chrome 在临时作者工程验证同名实例、失踪修复、挂起／失败请求、保存态变更、快速取消重开、中英日390px、普通保存及 Godot 运行；每次创建独立证据子目录。该目录功能已收录 0.2.2，开发验证执行于 0.2.1 工作树；目录不读取素材或替代运动／构建检查，不代表安装或 Android 验收。 本轮完整检查 **7659 项：7292 通过、367 条件跳过、零失败／取消**；定向234项中228通过、6条件跳过，真实浏览器／Godot另行通过。各组不累加，历史报告保持原时点。
 
 **0.2.1 发布检查**见[独立记录](test-results/release-0.2.1/README.md)：升版后执行版本一致性、源码分发专项与发布预检；没有重跑完整功能、浏览器或原生引擎。下列八项专题现已收录 0.2.1，但保留各自 0.2.0 工作树身份、日志和摘要。0.2.1 发布前的完整检查为物理编辑器阶段的 **7582 项：7215 通过、367 条件跳过、零失败／取消**，不改标为升版后全量。
 

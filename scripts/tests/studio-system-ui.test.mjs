@@ -278,6 +278,6 @@ test('saved scene animation preview requires both its module and explicit host g
     assert.equal(h.buildAvailability.at(-1)[2].sceneAnimationPreview,expected);assert.equal(h.buildAvailability.at(-1)[0],false);assert.deepEqual(h.buildAvailability.at(-1)[1],[]);
     system.updateCapabilities({scenePreview:false,sceneAnimationPreview:true});assert.equal(h.buildAvailability.at(-1)[2].sceneAnimationPreview,false);
     system.updateCapabilities({scenePreview:true,sceneAnimationPreview:'true'});assert.equal(h.buildAvailability.at(-1)[2].sceneAnimationPreview,false);
-    assert.equal(h.snapshot(system).plan.modules.length,23);assert.equal(h.snapshot(system).plan.capabilities.length,44);
+    assert.equal(h.snapshot(system).plan.modules.length,23);assert.equal(h.snapshot(system).plan.capabilities.length,45);
   }
 });

@@ -95,6 +95,7 @@ import {
   inspectSceneAudioDirectory,
   inspectSceneAudioUsage,
   inspectScenePhysics2DTargets,
+  inspectScenePhysics2DSpace,
   inspectSceneAnimationTargets,
   inspectSceneAnimationDirectory,
   inspectSceneAnimationUsage,
@@ -114,6 +115,7 @@ let sceneAudioResourcesAvailable = false;
 let sceneAudioDirectoryAvailable = false;
 let sceneAudioUsageAvailable = false;
 let scenePhysics2DTargetsAvailable = false;
+let scenePhysics2DSpaceAvailable = false;
 let sceneAnimationTargetsAvailable = false;
 let sceneAnimationDirectoryAvailable = false;
 let sceneAnimationUsageAvailable = false;
@@ -2040,6 +2042,7 @@ async function detectEditBackend() {
   sceneAudioDirectoryAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioDirectory === true;
   sceneAudioUsageAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioUsage === true;
   scenePhysics2DTargetsAvailable = normalizedDetection.available === true && detection.payload?.scenePhysics2DTargets === true;
+  scenePhysics2DSpaceAvailable = normalizedDetection.available === true && detection.payload?.scenePhysics2DSpace === true;
   sceneAnimationTargetsAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationTargets === true;
   sceneAnimationDirectoryAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationDirectory === true;
   sceneAnimationUsageAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationUsage === true;
@@ -5920,10 +5923,11 @@ async function initApp(options = {}) {
         baseline: editSessionBaselineContent, version: editSessionVersion,
         editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
         creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath),
-        available: typeof supportsStudioCoreScenePhysics2D === 'function' && supportsStudioCoreScenePhysics2D(), targetsAvailable: scenePhysics2DTargetsAvailable };
+        available: typeof supportsStudioCoreScenePhysics2D === 'function' && supportsStudioCoreScenePhysics2D(), targetsAvailable: scenePhysics2DTargetsAvailable, spaceAvailable: scenePhysics2DSpaceAvailable };
     },
     digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
     inspectTargets: payload => inspectScenePhysics2DTargets(payload),
+    inspectSpace: payload => inspectScenePhysics2DSpace(payload),
     writeDraft: content => {
       const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, top = editEditorEl.scrollTop, left = editEditorEl.scrollLeft;
       setSourceEditorContent(content);

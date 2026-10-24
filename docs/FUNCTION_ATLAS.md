@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-24**。源码版本 **0.2.1**；审查基线为提交 `4cf75a65fdd46e4245ed0e8c533ddc7f22abe5a1`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-24**。源码版本 **0.2.2**；审查基线为提交 `a3f05aa3bf9a9aaeca32fa8e13751f0d17c0edcd`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -20,14 +20,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 159 |
-| 实现单元（含规划占位） | 474 |
-| 已审查实现关系 | 684 |
-| 显式评分单元 | 2736 |
-| 语义依赖边 | 457 |
-| 工作流切片 | 123 |
+| 功能 | 161 |
+| 实现单元（含规划占位） | 482 |
+| 已审查实现关系 | 692 |
+| 显式评分单元 | 2768 |
+| 语义依赖边 | 462 |
+| 工作流切片 | 125 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 2439 |
+| 引用并校验指纹的文件 | 2473 |
 
 ## 评分锚点
 
@@ -224,6 +224,8 @@
 | [普通物理文档与双向引用→项目组装→碰撞/触发区→行为事件→动画→工程交付](function-atlas.html#workflow=scene-physics2d-event-animation) | [新对象正文与登记共同创建](#world.object-create) → [引用／共享归属关系追加](#world.relation-add) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | 物理声明与场景正文分离，首次登记按两个普通关系操作保存；仅Godot项目组装运行。Rust/计划、HTTP修复、真实Godot碰撞事件动画、Chrome及迁移证据按本轮报告分别记录，不组合宣称从空工程全GUI验收。无动态刚体/3D/Bevy物理、物理画布或安装升级；旧执行适配器凭据变更需要重建。 |
 | [已有物理JSON→独立表单与局部示意→检查原文→应用草稿→普通保存→构建检查](function-atlas.html#workflow=scene-physics2d-authoring) | [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 只编辑既有JSON，声明检查不验证登记/关联/实例成员/继承运动值；实例UUID手填。表单取消与普通保存分开，局部图形不求解物理。本轮真实Chrome检查/草稿/普通Save后Godot碰撞及触发到动画通过；完整检查单列，不继承旧安装成绩。 |
 | [保存态实例目录→名称/UUID修复→检查审阅→Apply重读→普通保存→既有物理构建运行](function-atlas.html#workflow=scene-physics2d-targets) | [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [引用／共享归属关系追加](#world.relation-add) → [按已保存场景实例选择与修复物理目标](#authoring.physics2d_targets) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 目录仅证明读取快照中的身份/关联；缺失旧目标可读取后修复，手填降级明确未验证。应用重读不构成跨文件锁，运动条件仍交保存态构建。真实Chrome保存后的Godot物理链路按本轮报告验收，不新增运行协议、声明创建、Bevy物理或安装交付。 |
+| [已保存场景→首次物理审阅与三文件保存→已有物理字段编辑→普通Save→物理构建预检](function-atlas.html#workflow=scene-first-physics2d-to-authoring) | [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [保存场景首次创建二维物理与双向登记](#authoring.physics2d_creation) → [按已保存场景实例选择与修复物理目标](#authoring.physics2d_targets) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 从已登记保存场景开始，首次创建一个显式物理体和双向关联；后续目标选择、字段编辑和普通Save归既有独立作者模块。成员准入不验证运动配置，构建另核对有效controls/speed和执行后端。新专题分别记录纯/HTTP/恢复/浏览器及构建验收，不把路径索引解释为空工程全GUI、安装设备或所有后端均已完成。 |
+| [保存态场景空间→已检查碰撞形状→选择现有字段→审阅草稿→普通保存→构建检查](function-atlas.html#workflow=scene-physics2d-saved-space) | [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [已保存场景空间中的物理形状回看与字段选择](#authoring.physics2d_space) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 保存态几何与当前已检查物理内容组合为静态空间图。只读观察与实例目录独立，刷新和点击不改字段值、审阅或Save；未完成输入隐藏图形，缺失目标单列。后续普通保存和构建运动检查仍沿原链路负责，Chrome普通保存后的既有Godot阻挡/触发区/动画另行验证；空间图本身没有物理求解、拖拽、跨文件锁或安装验收。 |
 
 ## 功能与实现切片
 
@@ -3124,20 +3126,56 @@
 <a id="authoring.physics2d_targets"></a>
 ### 按已保存场景实例选择与修复物理目标
 
-`authoring.physics2d_targets` · 内容与作者工具 · 未发布工作树
+`authoring.physics2d_targets` · 内容与作者工具 · 源码交付
 
 入口：已有物理草稿→保存态实例目录→名称与UUID选择/修复→检查审阅→目录重读→普通草稿/保存
 
 | 架构 | 实现／职责 | 四项评分 | 证据入口 |
 | --- | --- | --- | --- |
-| 可移植 JS 语义 | **物理保存态实例目录品牌与成员准入**；只捕获和比较目录身份/来源，复用Rust参数规则核对当前body成员；不拥有IO或保存。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[scripts/tests/scene-physics2d-targets\.test\.mjs](../scripts/tests/scene-physics2d-targets.test.mjs)、[scripts/tests/scene-physics2d-targets-source\.test\.mjs](../scripts/tests/scene-physics2d-targets-source.test.mjs) |
-| 本机服务与适配 | **只读物理实例目录服务与HTTP能力**；从单次已保存快照读取稳定实例与物理关联，经受限只读HTTP暴露，不创建作者数据或调用执行后端。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[scripts/tests/scene-physics2d-targets-service\.test\.mjs](../scripts/tests/scene-physics2d-targets-service.test.mjs)、[scripts/tests/scene-physics2d-targets-http\.test\.mjs](../scripts/tests/scene-physics2d-targets-http.test.mjs) |
-| 可移植 JS 语义 | **物理原文来源守护与普通草稿交接**；在既有source5宿主扩展独立目录能力代际，Apply重新读取并比较后才交还同步草稿写入权。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[scripts/tests/scene-physics2d-targets-source\.test\.mjs](../scripts/tests/scene-physics2d-targets-source.test.mjs)、[scripts/tests/scene-physics2d-ui\.test\.mjs](../scripts/tests/scene-physics2d-ui.test.mjs) |
-| 交互与渲染 | **独立物理表单、局部形状示意与系统装配**；在既有独立物理面板增加名称/UUID选择和明确手填降级；表单、目录、审阅与局部形状示意分别持有状态。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[scripts/tests/scene-physics2d-ui\.test\.mjs](../scripts/tests/scene-physics2d-ui.test.mjs)、[scripts/tests/scene-physics2d-targets-smoke\.mjs](../scripts/tests/scene-physics2d-targets-smoke.mjs) |
+| 可移植 JS 语义 | **物理保存态实例目录品牌与成员准入**；只捕获和比较目录身份/来源，复用Rust参数规则核对当前body成员；不拥有IO或保存。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[docs/test-results/release-0\.2\.2/README\.md](../docs/test-results/release-0.2.2/README.md)、[scripts/tests/scene-physics2d-targets\.test\.mjs](../scripts/tests/scene-physics2d-targets.test.mjs) |
+| 本机服务与适配 | **只读物理实例目录服务与HTTP能力**；从单次已保存快照读取稳定实例与物理关联，经受限只读HTTP暴露，不创建作者数据或调用执行后端。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[docs/test-results/release-0\.2\.2/README\.md](../docs/test-results/release-0.2.2/README.md)、[scripts/tests/scene-physics2d-targets-service\.test\.mjs](../scripts/tests/scene-physics2d-targets-service.test.mjs) |
+| 可移植 JS 语义 | **物理原文来源守护与普通草稿交接**；在既有source5宿主扩展独立目录能力代际，Apply重新读取并比较后才交还同步草稿写入权。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[docs/test-results/release-0\.2\.2/README\.md](../docs/test-results/release-0.2.2/README.md)、[scripts/tests/scene-physics2d-targets-source\.test\.mjs](../scripts/tests/scene-physics2d-targets-source.test.mjs) |
+| 交互与渲染 | **独立物理表单、局部形状示意与系统装配**；在既有独立物理面板增加名称/UUID选择和明确手填降级；表单、目录、审阅与局部形状示意分别持有状态。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[docs/test-results/release-0\.2\.2/README\.md](../docs/test-results/release-0.2.2/README.md)、[scripts/tests/scene-physics2d-ui\.test\.mjs](../scripts/tests/scene-physics2d-ui.test.mjs) |
 
-平台：Linux Node/HTTP与真实Chrome中英日390px、真实Godot4.7.2运行GUI保存后的原物理链路；未更新安装或验收Android/Bevy物理。边界：0.2.1之后未发布工作树增量；在既有物理作者模块增加可选只读目录，不增加23模块/44项声明能力，不改变Rust/WASM、作者格式、后端版本或运行协议。；独立目录域捕获严格有界的source5、场景/物理清单修订和稳定实例身份，以品牌冻结对象维护来源；不复用动画目录或复制Rust物理规则。；Node目录从单次已保存World快照核对Scene2D v2/v3、实例与定义登记、场景physics2d选择及物理回链。已删除的旧body目标仍允许读取目录修复，名称相同的实例用完整UUID区分。；服务不求解运动默认值、不读取素材字节、不运行脚本或后端；独立POST接口要求编辑会话与来源检查，禁止缓存，不接受额外查询。；选择只更新当前表单的instanceId，手填框、碰撞体身份和其余未完成输入保持；名称不写入作者文档。已读目录时检查全部body成员，缺失目标和重复目标均阻止通过。；目录加载不锁原始字段；检查等待读取结束。缺少能力或读取失败仍可手填并检查参数，明确标注目标尚未验证，不把降级结果当成员检查。；刷新及目录能力代际变化撤销审阅；目录已检查的Apply先重新读取并比较完整目录，然后重验源所有权再同步写普通草稿。普通Save单独持有文件权限。；目录不是跨文件事务或锁，运动属性与完整构建条件始终由保存态预检核对；Apply重读不保证后续场景永远不变。；会话与请求代际拒绝迟到响应；旧native close事件不关闭重新打开的面板。中英日切换保留字段节点、焦点、选择与审阅；取消不改原草稿或作者文件。；真实Chrome从缺失实例修复、失败手填降级及过期Apply拒绝到普通Save，再用既有Godot碰撞/触发/动画链路验证；环境、失败首跑与精确次数见本轮报告，未借旧安装成绩。；没有首次物理声明/关系创建、场景碰撞体拖拽、动态刚体、物理步回放、3D或Bevy物理；形状示意仍为局部声明图。。
+平台：Linux Node/HTTP与真实Chrome中英日390px、真实Godot4.7.2运行GUI保存后的原物理链路；未更新安装或验收Android/Bevy物理。边界：0.2.1之后未发布工作树增量；在既有物理作者模块增加可选只读目录，不增加23模块/44项声明能力，不改变Rust/WASM、作者格式、后端版本或运行协议。；独立目录域捕获严格有界的source5、场景/物理清单修订和稳定实例身份，以品牌冻结对象维护来源；不复用动画目录或复制Rust物理规则。；Node目录从单次已保存World快照核对Scene2D v2/v3、实例与定义登记、场景physics2d选择及物理回链。已删除的旧body目标仍允许读取目录修复，名称相同的实例用完整UUID区分。；服务不求解运动默认值、不读取素材字节、不运行脚本或后端；独立POST接口要求编辑会话与来源检查，禁止缓存，不接受额外查询。；选择只更新当前表单的instanceId，手填框、碰撞体身份和其余未完成输入保持；名称不写入作者文档。已读目录时检查全部body成员，缺失目标和重复目标均阻止通过。；目录加载不锁原始字段；检查等待读取结束。缺少能力或读取失败仍可手填并检查参数，明确标注目标尚未验证，不把降级结果当成员检查。；刷新及目录能力代际变化撤销审阅；目录已检查的Apply先重新读取并比较完整目录，然后重验源所有权再同步写普通草稿。普通Save单独持有文件权限。；目录不是跨文件事务或锁，运动属性与完整构建条件始终由保存态预检核对；Apply重读不保证后续场景永远不变。；会话与请求代际拒绝迟到响应；旧native close事件不关闭重新打开的面板。中英日切换保留字段节点、焦点、选择与审阅；取消不改原草稿或作者文件。；真实Chrome从缺失实例修复、失败手填降级及过期Apply拒绝到普通Save，再用既有Godot碰撞/触发/动画链路验证；环境、失败首跑与精确次数见本轮报告，未借旧安装成绩。；没有首次物理声明/关系创建、场景碰撞体拖拽、动态刚体、物理步回放、3D或Bevy物理；形状示意仍为局部声明图。；上述开发增量纳入0.2.2源码交付；保留开发阶段原评分与证据。当前本机安装仍为0.2.0，本次不重标安装成熟度。。
 
 下一步：在独立身份目录之上继续设计物理声明与关联创建、场景空间编辑、物理步/运动验收及其他后端能力，保留普通原文修复与保存边界。
+
+<a id="authoring.physics2d_creation"></a>
+### 保存场景首次创建二维物理与双向登记
+
+`authoring.physics2d_creation` · 内容与作者工具 · 源码交付
+
+入口：构建与运行→场景二维物理→选择实例及首个物理体→审阅→保存正文与关系→打开原文继续字段编辑
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **二维物理首次创建纯计划、上下文与回执契约**；复用Rust参数规则，独立核验源修订、目标成员和双向登记，产生三文件计划；不拥有IO、渲染或运动求解。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-physics2d-creation/README\.md](../docs/test-results/scene-physics2d-creation/README.md)、[docs/test-results/release-0\.2\.2/README\.md](../docs/test-results/release-0.2.2/README.md)、[scripts/tests/scene-physics2d-create-plan\.test\.mjs](../scripts/tests/scene-physics2d-create-plan.test.mjs) |
+| 本机服务与适配 | **二维物理创建只读上下文、命令服务与传输**；保存态目录读取与写命令分离，经会话/来源及真实路径约束接入；已有声明只导航，创建不要求执行后端。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-physics2d-creation/README\.md](../docs/test-results/scene-physics2d-creation/README.md)、[docs/test-results/release-0\.2\.2/README\.md](../docs/test-results/release-0.2.2/README.md)、[scripts/tests/world-physics2d-create-service\.test\.mjs](../scripts/tests/world-physics2d-create-service.test.mjs) |
+| 存储与事务 | **二维物理v12三文件提交与冻结依赖恢复**；精确三文件日志、候选校验和逆序回滚；冻结成员证据不恢复作者依赖源，保留冲突和旧日志读取。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-creation/README\.md](../docs/test-results/scene-physics2d-creation/README.md)、[docs/test-results/release-0\.2\.2/README\.md](../docs/test-results/release-0.2.2/README.md)、[scripts/tests/world-physics2d-create-service\.test\.mjs](../scripts/tests/world-physics2d-create-service.test.mjs) |
+| 交互与渲染 | **独立二维物理创建、审阅与未知保存核对**；独立实例/形状表单、审阅和可取消会话通过窄作者端口接线；未知保存先核对，原文导航交给已有字段编辑器。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-physics2d-creation/README\.md](../docs/test-results/scene-physics2d-creation/README.md)、[docs/test-results/release-0\.2\.2/README\.md](../docs/test-results/release-0.2.2/README.md)、[scripts/tests/scene-physics2d-creation-contract\.test\.mjs](../scripts/tests/scene-physics2d-creation-contract.test.mjs) |
+
+平台：Linux Node/HTTP与浏览器作者工作流，实际执行范围见scene-physics2d-creation专题、0.2.1之后工作树；未更新安装或验收Android/Bevy物理。边界：从已保存Scene2D v2/v3与可读取的登记定义开始；复用工程现有类型，不自动修改类型、模板、场景正文或素材。23模块增加至45项声明能力，创建入口是可选作者端口。；独立纯起始计划创建一个显式character/static/sensor物理体，支持box/circle、offset和layer/mask；UUID由宿主一次分配，Rust既有scenePhysics2D.inspect拥有参数规则，声明仍为schema1。；只读上下文从一个保存态World快照给出scene/manifest修订、类型和按名称/完整instanceId区分的目标；empty可创建，ready只导航。旧body目标已删除仍可打开修复。；physics2d.create绑定World与场景修订，原子提交新物理正文、新登记、场景登记三个文件。场景只增加references/physics2d选择；新物理登记只references回链该场景，assetBindings为空。；新建正文上限64KiB UTF-8；成员身份和完整参数检查独立于渲染、其他声明、资源字节和执行后端。static/sensor的有效controls=none及speed=0由后续构建预检核对，此处不改运动配置。；事务日志v12严格三个条目及文件白名单；有界冻结场景/去重定义证据与其余登记摘要全部验证后再恢复，外改或篡改保留冲突，不回写今日依赖正文。日志版本不是游戏运行协议。；纯计划/契约、只读IO、原子写入和DOM控制器分别持有权限；创建不安装或探测引擎。作者入口仅在独立目录能力与physics2d.create命令均可用时开启。；检查只产生审阅；保存前重验来源/会话/草稿与字段签名。未知保存先只读核对精确身份、正文摘要和关系闭包，未确认不重发；取消、迟到响应、三语和关闭重开分别回归。；已有声明通过受守护的原文导航交给独立二维物理编辑器及普通Save，后续物理体增删/修改不由首次创建控制器接管。；本轮纯规则、HTTP、真实进程中断/恢复、浏览器与后续构建执行分别留证；精确执行次数、失败及平台限制以新专题报告为准，不沿用旧报告成绩。；运行协议、Rust ABI、物理声明格式和执行适配器保持；没有场景碰撞体拖拽、动态刚体、3D/Bevy物理、新安装或独立游戏发行验收。；上述开发增量纳入0.2.2源码交付；保留开发阶段原评分与证据。当前本机安装仍为0.2.0，本次不重标安装成熟度。。
+
+下一步：继续补齐场景空间中的碰撞体编辑、物理运动检查反馈及其他后端映射，保持声明创建、字段编辑、构建与运行分层。
+
+<a id="authoring.physics2d_space"></a>
+### 已保存场景空间中的物理形状回看与字段选择
+
+`authoring.physics2d_space` · 内容与作者工具 · 源码交付
+
+入口：已有二维物理编辑器→读取保存态空间→回看当前已检查形状→按碰撞体选择字段→检查/普通草稿/Save
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **二维物理空间观察契约与形状几何**；独立纯几何域严格捕获保存态观察与完整源码身份，复用既有Rust物理检查后投影，不拥有IO或渲染。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space/browser-1792835175573/browser\.json](../docs/test-results/scene-physics2d-space/browser-1792835175573/browser.json)、[docs/test-results/scene-physics2d-space/README\.md](../docs/test-results/scene-physics2d-space/README.md)、[docs/test-results/scene-physics2d-space/full-check\.log](../docs/test-results/scene-physics2d-space/full-check.log) |
+| 本机服务与适配 | **二维物理保存态空间只读服务与HTTP**；复用保存态场景模型和投影继承，通过独立只读HTTP提供几何；不依赖生成工程、素材字节或执行后端。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space/browser-1792835175573/browser\.json](../docs/test-results/scene-physics2d-space/browser-1792835175573/browser.json)、[docs/test-results/scene-physics2d-space/README\.md](../docs/test-results/scene-physics2d-space/README.md)、[docs/test-results/scene-physics2d-space/full-check\.log](../docs/test-results/scene-physics2d-space/full-check.log) |
+| 交互与渲染 | **二维物理空间读取的来源宿主**；空间读端口单独维护能力代际，当前源摘要与来源复核独立于目录成员检查和普通草稿写入。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space/browser-1792835175573/browser\.json](../docs/test-results/scene-physics2d-space/browser-1792835175573/browser.json)、[docs/test-results/scene-physics2d-space/README\.md](../docs/test-results/scene-physics2d-space/README.md)、[docs/test-results/scene-physics2d-space/full-check\.log](../docs/test-results/scene-physics2d-space/full-check.log) |
+| 交互与渲染 | **独立物理空间图与已有字段选择**；渲染器只消费品牌几何并返回bodyId，编辑控制器拥有请求和字段会话；选择、刷新及错误不改普通Save边界。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space/browser-1792835175573/browser\.json](../docs/test-results/scene-physics2d-space/browser-1792835175573/browser.json)、[docs/test-results/scene-physics2d-space/README\.md](../docs/test-results/scene-physics2d-space/README.md)、[docs/test-results/scene-physics2d-space/full-check\.log](../docs/test-results/scene-physics2d-space/full-check.log) |
+
+平台：Linux Node/HTTP与浏览器作者端口；各层验证独立记录、0.2.1之后工作树；未更新安装或验收Android/Bevy物理。边界：独立只读观察从保存态Scene2D v2/v3给出视口、背景、实例中心、有效尺寸和颜色；复用场景解析及投影继承，不读取素材字节、不启动引擎、不依赖物理/动画/声音声明可用。；便携域严格捕获有界记录和完整source5，以冻结品牌对象绑定物理草稿；根据实例中心加声明offset生成box/circle视图，缺失目标单列，绝不借同定义另一实例或虚构原点。；宿主空间能力与目标目录能力分别维护代际；源码哈希、文档、路径、基线、版本及能力变化拒绝迟到响应。空间读取无写权限，也不授予目录成员检查或Apply权限。；SVG渲染器只消费已检查几何并回传现有bodyId；提供按种类图例、完整实例/碰撞体UUID及键盘按钮，按全场景与形状边界等比显示，不下载图片、不运行模拟。；空间图只显示当前通过检查的物理内容；未完成字段输入隐藏形状，成功检查再恢复。图上选择只切换已有字段，不改作者草稿、审阅和普通Save状态。；显式刷新可观察新的保存态位置，并保留字段节点、焦点、选择与已检查审阅；能力缺失、读取失败和迟到响应不会禁用原有字段编辑、局部示意或普通草稿应用。；保存态空间与当前物理草稿组合只是只读视图，不是跨文件锁、实时场景预览或运动验收。碰撞层/遮罩与有效controls/speed仍由既有声明及构建流程负责。；新增HTTP只读能力经会话、来源、请求体和无缓存约束接入；23模块45项声明能力、作者格式、Rust ABI、运行协议和执行后端保持。；本条只登记现有领域、服务、宿主、HTTP及UI回归文件；真实浏览器报告另行追加，不复用旧报告作为本轮空间视图成绩。；没有碰撞体拖拽、缩放手柄、动态刚体、接触点或物理步回放，也没有3D/Bevy物理或新安装交付。；上述开发增量纳入0.2.2源码交付；保留开发阶段原评分与证据。当前本机安装仍为0.2.0，本次不重标安装成熟度。。
+
+下一步：沿独立几何视图补充明确审阅的空间编辑、运动检查反馈和实际物理观察，保留普通源文件修复与保存权威。
 
 ## 旧功能链路映射
 

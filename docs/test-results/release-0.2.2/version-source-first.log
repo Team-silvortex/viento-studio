@@ -1,0 +1,26 @@
+✔ source archives retain both Rust crates and official examples while excluding local state and build caches (337.381955ms)
+✔ beta release digits map below the first stable installer version (1.238058ms)
+✔ release numbers reject extra patches, non-digit beta parts and invalid stable numbers (0.558918ms)
+✔ all beta versions advance one digit and b.9.9 becomes 1.0.0 (0.50815ms)
+✔ numeric releases advance the patch without imposing the historical beta digit rollover (0.147213ms)
+✔ new installer counters advance beyond the predecessor without changing the product version (0.299107ms)
+✔ source packaging accepts the same numeric and historical version grammar (35.223384ms)
+✖ release preflight rejects stale names, install counters and a changed data identity (2.628409ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 388.505726
+
+✖ failing tests:
+
+test at scripts/tests/version.test.mjs:89:1
+✖ release preflight rejects stale names, install counters and a changed data identity (2.628409ms)
+  Error: web/index.html: displayed version must match VERSION (0.2.2)
+      at verifyReleaseVersions (file:///home/chiharukiryu/cdev/viento-studio/desktop/version.mjs:82:13)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/version.test.mjs:90:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

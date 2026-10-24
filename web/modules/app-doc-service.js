@@ -1,3 +1,5 @@
+import { SCENE_PHYSICS2D_SPACE_API_PATH } from '../../engine/scene-physics2d-space.mjs';
+import { SCENE_PHYSICS2D_CREATION_API_PATH } from '../../engine/scene-physics2d-creation-contract.mjs';
 import { SCENE_PHYSICS2D_TARGETS_API_PATH } from '../../engine/scene-physics2d-targets.mjs';
 import { SCRIPT_USAGE_API_PATH } from '../../engine/script-usage.mjs';
 import { SCENE_ANIMATION_USAGE_API_PATH } from '../../engine/scene-animation-usage.mjs';
@@ -18,6 +20,12 @@ import { RESOURCE_PACKAGE_API } from '../../engine/resource-package.mjs';
 import { APP_ERROR_MESSAGES, APP_REQUEST_LABELS } from './app-state.js';
 import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
+
+export async function inspectScenePhysics2DSpace(payload) {
+  return (await fetchJsonApiRequest(SCENE_PHYSICS2D_SPACE_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('读取场景空间'))).payload;
+}
 
 export async function inspectScenePhysics2DTargets(payload) {
   return (await fetchJsonApiRequest(SCENE_PHYSICS2D_TARGETS_API_PATH, withAuthHeaders({
@@ -625,6 +633,12 @@ export async function inspectSceneAnimationCreation(payload) {
   return (await fetchJsonApiRequest(SCENE_ANIMATION_CREATION_API_PATH, withAuthHeaders({
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
   }), 45000, t('核对场景动画'))).payload;
+}
+
+export async function inspectScenePhysics2DCreation(payload) {
+  return (await fetchJsonApiRequest(SCENE_PHYSICS2D_CREATION_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('核对场景物理'))).payload;
 }
 
 export async function inspectScriptUsage(payload) {

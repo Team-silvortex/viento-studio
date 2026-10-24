@@ -1,0 +1,28 @@
+.scene-physics2d-create-dialog { width:min(960px,calc(100vw - 24px)); max-width:960px; max-height:calc(100dvh - 24px); margin:auto; padding:0; box-sizing:border-box; overflow:hidden; border:1px solid #33536a; border-radius:16px; color:#d8e9f8; background:#101c2b; }
+.scene-physics2d-create-dialog[open] { display:flex; flex-direction:column; }
+.scene-physics2d-create-dialog [hidden] { display:none!important; }
+.scene-physics2d-create-dialog::backdrop { background:rgba(2,8,18,.76); }
+.scene-physics2d-create-header { display:flex; flex:none; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-bottom:1px solid #33536a; }
+.scene-physics2d-create-header h2 { margin:0; font-size:1.25rem; }
+.scene-physics2d-create-body { min-height:0; overflow:auto; overscroll-behavior:contain; padding:0 20px 14px; }
+.scene-physics2d-create-body p,.scene-physics2d-create-body li { overflow-wrap:anywhere; }
+.scene-physics2d-create-note { color:#a1bbcf; font-size:.88rem; overflow-wrap:anywhere; }
+.scene-physics2d-create-feedback { flex:none; padding:0 20px; max-height:20dvh; overflow:auto; }
+.scene-physics2d-create-feedback p { margin:6px 0; overflow-wrap:anywhere; }
+.scene-physics2d-create-footer { flex:none; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; padding:12px 20px; border-top:1px solid #33536a; }
+.scene-physics2d-create-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.scene-physics2d-create-wide { grid-column:1/-1; }
+.scene-physics2d-create-dialog fieldset { margin:14px 0; padding:12px; min-width:0; border:1px solid #33536a; }
+.scene-physics2d-create-dialog label { display:grid; gap:5px; min-width:0; }
+.scene-physics2d-create-dialog input,.scene-physics2d-create-dialog select { width:100%; min-width:0; box-sizing:border-box; padding:8px; border:1px solid #33536a; border-radius:6px; color:inherit; background:#0a1422; font:inherit; }
+.scene-physics2d-create-dialog select { text-overflow:ellipsis; }
+.scene-physics2d-create-dialog .doc-btn { white-space:normal; overflow-wrap:anywhere; }
+.scene-physics2d-create-dialog pre { margin:8px 0; padding:10px; border:1px solid #33536a; border-radius:6px; color:#bdd1e4; background:#0a1422; white-space:pre-wrap; overflow-wrap:anywhere; font-size:.8rem; }
+@media(max-width:700px) {
+ .scene-physics2d-create-header { padding:12px; } .scene-physics2d-create-header h2 { font-size:1.05rem; }
+ .scene-physics2d-create-body { padding:0 12px 12px; } .scene-physics2d-create-feedback { padding:0 12px; }
+ .scene-physics2d-create-footer { padding:10px 12px; justify-content:flex-start; } .scene-physics2d-create-footer .doc-btn { flex:1 1 96px; }
+ .scene-physics2d-create-grid { grid-template-columns:minmax(0,1fr); }
+}
+
+.scene-physics2d-create-dialog input:disabled { opacity:.6; cursor:not-allowed; }

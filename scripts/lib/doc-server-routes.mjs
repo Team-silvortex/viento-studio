@@ -1,3 +1,5 @@
+import { SCENE_PHYSICS2D_SPACE_API_PATH } from '../../engine/scene-physics2d-space.mjs';
+import { SCENE_PHYSICS2D_CREATION_API_PATH } from '../../engine/scene-physics2d-creation-contract.mjs';
 import { SCRIPT_USAGE_API_PATH } from '../../engine/script-usage.mjs';
 import { SCENE_ANIMATION_USAGE_API_PATH } from '../../engine/scene-animation-usage.mjs';
 import { SCENE_ANIMATION_DIRECTORY_API_PATH } from '../../engine/scene-animation-directory.mjs';
@@ -326,7 +328,7 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
-  if ([SCRIPT_USAGE_API_PATH, SCENE_ANIMATION_USAGE_API_PATH, SCENE_ANIMATION_DIRECTORY_API_PATH, SCENE_ANIMATION_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_PHYSICS2D_TARGETS_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
+  if ([SCRIPT_USAGE_API_PATH, SCENE_ANIMATION_USAGE_API_PATH, SCENE_ANIMATION_DIRECTORY_API_PATH, SCENE_ANIMATION_CREATION_API_PATH, SCENE_PHYSICS2D_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_PHYSICS2D_TARGETS_API_PATH, SCENE_PHYSICS2D_SPACE_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
   if (pathname === SCENE_PREVIEW_API_PATH && ['POST', 'DELETE'].includes(method)) return true;
   if (pathname === PROJECT_BUILD_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === RESOURCE_PACKAGE_API && method === API_METHODS.POST) return true;
@@ -600,6 +602,19 @@ async function handleApiRequest({
         } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
       },
     },
+    [SCENE_PHYSICS2D_CREATION_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.scenePhysics2DCreation) throw Object.assign(new Error('Physics2D creation require an editor session.'), { statusCode: 403, errorCode: 'scene_physics2d_creation_unavailable' });
+          if (request.headers.origin && request.headers.origin !== `http://${request.headers.host}` || request.headers['sec-fetch-site'] === 'cross-site')
+            throw Object.assign(new Error('Invalid physics2d creation request origin.'), { statusCode: 403, errorCode: 'scene_physics2d_creation_forbidden' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid physics2d creation query.'), { statusCode: 400, errorCode: 'scene_physics2d_creation_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.scenePhysics2DCreation.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
     [SCENE_ANIMATION_CREATION_API_PATH]: {
       [API_METHODS.POST]: async () => {
         try {
@@ -622,6 +637,19 @@ async function handleApiRequest({
           if (requestUrl.search) throw Object.assign(new Error('Invalid animation target query.'), { statusCode: 400, errorCode: 'scene_animation_targets_invalid' });
           response.setHeader('Cache-Control', 'no-store');
           sendApiResponse(response, await service.sceneAnimationTargets.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
+    [SCENE_PHYSICS2D_SPACE_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.scenePhysics2DSpace) throw Object.assign(new Error('Physics space require an editor session.'), { statusCode: 403, errorCode: 'scene_physics2d_space_unavailable' });
+          if (request.headers.origin && request.headers.origin !== `http://${request.headers.host}` || request.headers['sec-fetch-site'] === 'cross-site')
+            throw Object.assign(new Error('Invalid physics space request origin.'), { statusCode: 403, errorCode: 'scene_physics2d_space_forbidden' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid physics space query.'), { statusCode: 400, errorCode: 'scene_physics2d_space_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.scenePhysics2DSpace.inspect(await readRequestJsonBody(request)), requestId);
           return 200;
         } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
       },
@@ -803,6 +831,8 @@ async function handleApiRequest({
           const payload = await readRequestJsonBody(request);
           if (payload?.command === 'animation.create' && ((request.headers.origin && request.headers.origin !== `http://${request.headers.host}`) || request.headers['sec-fetch-site'] === 'cross-site'))
             throw Object.assign(new Error('Invalid animation creation request origin.'), { statusCode: 403, errorCode: 'scene_animation_creation_forbidden' });
+          if (payload?.command === 'physics2d.create' && ((request.headers.origin && request.headers.origin !== `http://${request.headers.host}`) || request.headers['sec-fetch-site'] === 'cross-site'))
+            throw Object.assign(new Error('Invalid physics creation request origin.'), { statusCode: 403, errorCode: 'scene_physics2d_creation_forbidden' });
           sendApiResponse(response, await service.executeWorldCommand(payload), requestId);
           return 200;
         } catch (error) {

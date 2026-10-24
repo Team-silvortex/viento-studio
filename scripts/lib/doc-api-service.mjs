@@ -1,5 +1,7 @@
+import { createScenePhysics2DSpaceService } from './scene-physics2d-space-service.mjs';
 import { createScriptUsageService } from './script-usage-service.mjs';
 import { createSceneAnimationUsageService } from './scene-animation-usage-service.mjs';
+import { createScenePhysics2DCreationService } from './scene-physics2d-creation-service.mjs';
 import { createSceneAnimationCreationService } from './scene-animation-creation-service.mjs';
 import { createSceneAnimationTargetsService } from './scene-animation-targets-service.mjs';
 import { createScenePhysics2DTargetsService } from './scene-physics2d-targets-service.mjs';
@@ -69,7 +71,9 @@ function createDocumentService(options = {}) {
   const sceneAudioUsage = createSceneAudioUsageService(PROJECT_ROOT);
   const sceneAnimationUsage = createSceneAnimationUsageService(PROJECT_ROOT);
   const sceneAnimationTargets = createSceneAnimationTargetsService(PROJECT_ROOT);
+  const scenePhysics2DSpace = createScenePhysics2DSpaceService(PROJECT_ROOT);
   const scenePhysics2DTargets = createScenePhysics2DTargetsService(PROJECT_ROOT);
+  const scenePhysics2DCreation = createScenePhysics2DCreationService(PROJECT_ROOT);
   const sceneAnimationCreation = createSceneAnimationCreationService(PROJECT_ROOT);
   const sceneBehaviorCreation = createSceneBehaviorCreationService(PROJECT_ROOT);
   const sceneBehaviorDirectory = createSceneBehaviorDirectoryService(PROJECT_ROOT);
@@ -101,7 +105,7 @@ function createDocumentService(options = {}) {
   });
 
   async function getCapabilities() {
-    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, scriptUsage: true, sceneBehaviorAuthoring: true, sceneBehaviorDirectory: true, sceneAudioCreation: true, sceneAudioDirectory: true, sceneAnimationDirectory: true, sceneAudioUsage: true, sceneAnimationUsage: true, sceneAnimationTargets: true, scenePhysics2DTargets: true, sceneAnimationCreation: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, sceneAnimationPreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'animation.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
+    return { ...makeCapabilitiesPayload(state.editablePrefixes, state.backstoryMergeMode), resourcePackages: true, scriptUsage: true, sceneBehaviorAuthoring: true, sceneBehaviorDirectory: true, sceneAudioCreation: true, sceneAudioDirectory: true, sceneAnimationDirectory: true, sceneAudioUsage: true, sceneAnimationUsage: true, sceneAnimationTargets: true, scenePhysics2DTargets: true, scenePhysics2DSpace: true, sceneAnimationCreation: true, scenePhysics2DCreation: true, projectBuild: projectBuildEnabled, scenePreview: projectBuildEnabled, sceneAnimationPreview: projectBuildEnabled, semanticProjection: true, semanticCommands: ['property.set', 'changeset.apply', 'object.create', 'scene.create', 'behavior.create', 'audio.create', 'animation.create', 'physics2d.create', 'projection.create', 'projection.update', 'scene.update', 'relation.add', 'resource.bind', 'world.recover'] };
   }
 
   function getRuntimeConfig() {
@@ -288,7 +292,9 @@ function createDocumentService(options = {}) {
     scriptUsage,
     sceneAnimationTargets,
     scenePhysics2DTargets,
+    scenePhysics2DSpace,
     sceneAnimationCreation,
+    scenePhysics2DCreation,
     sceneBehaviorDirectory,
     sceneCompositionCreate,
     queryWorld,

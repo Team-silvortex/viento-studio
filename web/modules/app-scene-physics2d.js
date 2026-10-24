@@ -1,10 +1,12 @@
 import { readScenePhysics2DDocument, createScenePhysics2DProposal, isScenePhysics2DProposal } from '../../engine/scene-physics2d-edit.mjs';
 import { isScenePhysics2DTargets, scenePhysics2DTargetsMatchSource, scenePhysics2DTargetValue, validateScenePhysics2DTargets } from '../../engine/scene-physics2d-targets.mjs';
+import { isScenePhysics2DSpace, scenePhysics2DSpaceMatchSource, createScenePhysics2DSpaceView } from '../../engine/scene-physics2d-space.mjs';
+import { setupScenePhysics2DSpace } from './app-scene-physics2d-space.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 
 // Declaration authoring owns a form, a readonly saved-instance directory and a
 // reviewed draft. It has no file, Save, physics solver or execution authority.
-export function setupScenePhysics2D({ getContext = () => ({}), getSource = async () => null, getTargets = null, applyDraft = async () => null } = {}) {
+export function setupScenePhysics2D({ getContext = () => ({}), getSource = async () => null, getTargets = null, getSpace = null, applyDraft = async () => null } = {}) {
   if (!document.getElementById('scenePhysics2DStyle')) {
     const style = document.createElement('link'); style.id = 'scenePhysics2DStyle'; style.rel = 'stylesheet';
     style.href = '/web/scene-physics2d.css'; (document.head || document.body).append(style);
@@ -22,6 +24,11 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
         <div class="scene-physics2d-targets-toolbar"><h3 id="scenePhysics2DTargetsTitle" data-i18n="场景实例目录"></h3><button id="scenePhysics2DTargetsRefresh" type="button" class="doc-btn doc-btn-ghost" data-i18n="刷新场景实例"></button></div>
         <p id="scenePhysics2DTargetsStatus" class="scene-physics2d-note" role="status" aria-live="polite"></p><p id="scenePhysics2DTargetsPath" class="scene-physics2d-note"></p>
         <p class="scene-physics2d-note" data-i18n="目录来自上次读取的已保存场景，不包含场景草稿。名称相同的实例用完整编号区分；缺失目标不会自动替换。"></p></section>
+      <section id="scenePhysics2DSpace" class="scene-physics2d-space" aria-labelledby="scenePhysics2DSpaceTitle" hidden>
+        <div class="scene-physics2d-targets-toolbar"><h3 id="scenePhysics2DSpaceTitle" data-i18n="场景中的碰撞形状"></h3><button id="scenePhysics2DSpaceRefresh" type="button" class="doc-btn doc-btn-ghost" data-i18n="刷新场景位置"></button></div>
+        <p class="scene-physics2d-note" data-i18n="以已保存场景的位置显示检查过的物理参数；浅色框为实例逻辑尺寸。点击形状或列表选择碰撞体，不运行碰撞模拟。"></p>
+        <p id="scenePhysics2DSpaceStatus" class="scene-physics2d-note" role="status" aria-live="polite"></p><p id="scenePhysics2DSpacePath" class="scene-physics2d-note"></p>
+        <div id="scenePhysics2DSpaceView" hidden></div></section>
       <section id="scenePhysics2DFields" class="scene-physics2d-fields" hidden><aside>
         <label for="scenePhysics2DBody" data-i18n="碰撞体"></label><select id="scenePhysics2DBody" size="8"></select>
         <p id="scenePhysics2DCount" class="scene-physics2d-note"></p><div class="scene-physics2d-actions">
@@ -64,6 +71,12 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
   const names = { Instance: 'instanceId', Kind: 'kind', Shape: 'shape', Width: 'width', Height: 'height', Radius: 'radius', X: 'x', Y: 'y', Layer: 'layer', Mask: 'mask' };
   let disposed = false, epoch = 0, session = null, pending = false, draft = [], selected = '', initial = '', proposal = null, approval = '', previewModel = null, previewForm = '', opener = null, message = '', diagnostic = '';
   let targetCatalog = null, targetState = 'idle', targetGeneration = 0, targetCapability = null, targetCatalogToken, approvedTargets = null, targetRenderKey = null;
+  let spaceCatalog = null, spaceState = 'idle', spaceGeneration = 0, spaceCapability = null, spaceCatalogToken, spaceView = null, spaceViewCatalog = null, spaceViewModel = null, spaceViewFailed = false;
+  const spaceRenderer = typeof setupScenePhysics2DSpace === 'function' ? setupScenePhysics2DSpace({ root: el('SpaceView'), onSelect: id => {
+    if (pending || !current() || !hasSpace() || !previewModel || previewForm !== signature() || !spaceView
+      || ![...spaceView.bodies, ...spaceView.missingBodies].some(body => body.id === id)) return;
+    selectBody(id);
+  } }) : { render() {}, clear() {} };
   const reserved = new Set();
   const eligible = context => Boolean(context.editable && !context.creating && context.sourceJSON === true && context.physicsSource === true
     && typeof context.sourcePath === 'string' && context.sourcePath && typeof context.sourceToken === 'string');
@@ -78,7 +91,7 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
   const approved = () => isScenePhysics2DProposal(proposal) && signature() === approval
     && (!approvedTargets || hasTargets() && targetCatalog === approvedTargets);
   const capture = () => { if (session) draft = raw(); };
-  function clearPreview() { previewModel = null; previewForm = ''; el('Stage').replaceChildren(); el('Stage').hidden = true; el('PreviewHint').hidden = false; }
+  function clearPreview() { previewModel = null; previewForm = ''; el('Stage').replaceChildren(); el('Stage').hidden = true; el('PreviewHint').hidden = false; clearSpaceView(); }
   function invalidate() { proposal = null; approval = ''; approvedTargets = null; clearPreview(); message = '物理表单已变化；检查后可预览并应用。'; diagnostic = ''; }
   function shapeVisibility() { el('Box').hidden = el('Shape').value !== 'box'; el('Circle').hidden = el('Shape').value !== 'circle'; }
   function changed() { if (pending || !current()) return; capture(); invalidate(); shapeVisibility(); refresh(); }
@@ -133,6 +146,46 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
       return false;
     } finally { if (!disposed && owner === session && dialog.open) refresh(); }
   }
+  // A scene-space observation never participates in a draft's Apply ticket.
+  // Refresh, loss or failure cannot change the form or revoke its review.
+  const canReadSpace = () => typeof getSpace === 'function' && getContext().spaceAvailable === true;
+  const hasSpace = () => Boolean(session && current() && canReadSpace() && spaceCatalog && spaceState === 'ready'
+    && spaceCatalogToken === getContext().spaceToken && scenePhysics2DSpaceMatchSource(spaceCatalog, session.source));
+  function clearSpaceView() { spaceView = null; spaceViewCatalog = null; spaceViewModel = null; spaceViewFailed = false; spaceRenderer.clear(); }
+  function resetSpace() { spaceGeneration++; spaceCatalog = null; spaceCatalogToken = undefined; spaceState = 'idle'; clearSpaceView(); }
+  function observeSpaceCapability() {
+    const capability = { available: canReadSpace(), token: getContext().spaceToken };
+    if (spaceCapability && (capability.available !== spaceCapability.available || capability.token !== spaceCapability.token)) resetSpace();
+    spaceCapability = capability;
+  }
+  function refreshSpace() {
+    const ready = hasSpace(), available = canReadSpace(), model = current() && previewForm === signature() ? previewModel : null;
+    el('Space').hidden = !session; el('SpaceRefresh').hidden = !available; el('SpaceRefresh').disabled = pending || !current() || spaceState === 'loading';
+    if (!ready || !model) clearSpaceView();
+    else if (spaceViewCatalog !== spaceCatalog || spaceViewModel !== model) {
+      clearSpaceView(); spaceViewCatalog = spaceCatalog; spaceViewModel = model;
+      try { spaceView = createScenePhysics2DSpaceView(spaceCatalog, model); } catch { spaceViewFailed = true; }
+    }
+    el('SpaceStatus').textContent = spaceState === 'loading' ? t('正在读取已保存场景的位置…')
+      : spaceState === 'failed' || spaceViewFailed ? t('无法显示场景位置；字段编辑仍可使用，可刷新重试。')
+      : !ready ? t('尚未读取场景位置；字段编辑和局部形状示意仍可使用。')
+      : !model ? t('表单有未检查的修改；检查后显示场景中的碰撞形状。')
+      : t('已显示 {0} 个碰撞体；场景草稿不包含在此视图中。', spaceView.bodies.length);
+    el('SpacePath').textContent = ready ? spaceCatalog.scene.sourcePath : '';
+    spaceRenderer.render(spaceView, { selected, enabled: !pending && current() && ready && Boolean(model) });
+  }
+  async function loadSpace() {
+    if (pending || !current() || !canReadSpace()) return false;
+    const owner = session, request = ++spaceGeneration, capability = getContext().spaceToken;
+    spaceCatalog = null; spaceCatalogToken = undefined; spaceState = 'loading'; clearSpaceView(); refresh();
+    const owns = () => !disposed && request === spaceGeneration && owner === session && current() && canReadSpace() && getContext().spaceToken === capability;
+    try {
+      const catalog = await getSpace(owner.source); if (!owns()) return false;
+      if (!isScenePhysics2DSpace(catalog) || !scenePhysics2DSpaceMatchSource(catalog, owner.source)) throw Error('space');
+      spaceCatalog = catalog; spaceCatalogToken = capability; spaceState = 'ready'; return true;
+    } catch { if (owns()) { spaceCatalog = null; spaceState = 'failed'; } return false; }
+    finally { if (!disposed && owner === session && dialog.open) refresh(); }
+  }
   function renderList() {
     const picker = el('Body');
     if (picker.children.length !== draft.length || draft.some((row, index) => picker.children[index]?.value !== row.id)) {
@@ -167,8 +220,8 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
   function refresh() {
     if (disposed) return;
     const context = getContext(); button.hidden = !eligible(context); button.disabled = context.available !== true || Boolean(context.busy); button.textContent = t('编辑二维物理');
-    observeTargetCapability();
-    if (session && !current()) { if (!pending) { proposal = null; approval = ''; } resetTargets({ review: !pending }); clearPreview(); message = '原文已变化，请返回后重新打开物理编辑。'; }
+    observeTargetCapability(); observeSpaceCapability();
+    if (session && !current()) { if (!pending) { proposal = null; approval = ''; } resetTargets({ review: !pending }); resetSpace(); clearPreview(); message = '原文已变化，请返回后重新打开物理编辑。'; }
     if (!pending && proposal && !approved() || previewModel && previewForm !== signature()) invalidate();
     translatePage(dialog); shapeVisibility(); renderList(); dialog.setAttribute('aria-busy', String(pending)); dialog.dataset.dirty = String(dirty());
     el('Fields').hidden = !session; const locked = pending || !current();
@@ -180,11 +233,11 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     el('Status').textContent = t(message); el('Diagnostic').textContent = diagnostic;
     el('Review').hidden = !proposal; el('Before').textContent = proposal?.beforeContent || ''; el('After').textContent = proposal?.afterContent || '';
     el('ChangedPaths').replaceChildren(); for (const path of proposal?.changedPaths || []) el('ChangedPaths').append(node('li', path));
-    refreshTargets(); paintPreview();
+    refreshTargets(); paintPreview(); refreshSpace();
   }
   function close(force = false) {
     if (!force && dirty() && !window.confirm(t('丢弃本次物理表单修改？原文草稿不会改变。'))) return false;
-    const target = opener, request = ++epoch; resetTargets(); opener = null; session = null; pending = false; draft = []; selected = ''; proposal = null; approval = ''; reserved.clear(); clearPreview(); message = ''; diagnostic = '';
+    const target = opener, request = ++epoch; resetTargets(); resetSpace(); opener = null; session = null; pending = false; draft = []; selected = ''; proposal = null; approval = ''; reserved.clear(); clearPreview(); message = ''; diagnostic = '';
     if (dialog.open) dialog.close(); refresh();
     Promise.resolve().then(() => { if (!disposed && request === epoch && !dialog.open && target?.isConnected !== false) target?.focus?.(); }); return true;
   }
@@ -206,7 +259,7 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
       for (const value of [model.sceneObjectId, ...model.bodies.flatMap(body => [body.id, body.instanceId])]) reserved.add(value);
       renderSelected(); initial = signature(); previewModel = model; previewForm = initial; message = '编辑已有物理声明，检查后应用到原文草稿。'; return true;
     } catch (error) { if (owns()) fail(error, '无法读取有效物理文档，请检查原文。'); return false; }
-    finally { if (!disposed && request === epoch && dialog.open) { pending = false; refresh(); if (session && canReadTargets()) void loadTargets(); } }
+    finally { if (!disposed && request === epoch && dialog.open) { pending = false; refresh(); if (session && canReadTargets()) void loadTargets(); if (session && canReadSpace()) void loadSpace(); } }
   }
   function numeric(value) {
     if (!/^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/.test(value) || !Number.isFinite(Number(value))) throw Object.assign(new TypeError('Incomplete number.'), { errorCode: 'scene_physics2d_authoring_invalid' });
@@ -275,12 +328,13 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     capture(); const index = draft.findIndex(row => row.id === selected); draft.splice(index, 1); selected = draft[Math.min(index, draft.length - 1)].id;
     invalidate(); renderSelected(); refresh(); el('Body').focus();
   }
-  el('Body').addEventListener('change', () => {
-    if (pending || !current()) { el('Body').value = selected; return; }
-    const next = el('Body').value; if (!draft.some(row => row.id === next)) { el('Body').value = selected; return; }
+  function selectBody(next) {
+    if (pending || !current() || !draft.some(row => row.id === next)) { el('Body').value = selected; return; }
     capture(); selected = next; renderSelected(); refresh();
-  });
+  }
+  el('Body').addEventListener('change', () => selectBody(el('Body').value));
   el('TargetsRefresh').addEventListener('click', () => { void loadTargets(); });
+  el('SpaceRefresh').addEventListener('click', () => { void loadSpace(); });
   el('Target').addEventListener('change', () => {
     if (pending || !current() || !hasTargets()) { refreshTargets(); return; }
     try { const value = scenePhysics2DTargetValue(targetCatalog, el('Target').value); if (value !== el('Instance').value) { el('Instance').value = value; changed(); } }

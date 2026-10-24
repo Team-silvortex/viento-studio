@@ -28,7 +28,7 @@ test('physics targets HTTP advertises an independent read capability and protect
   const capabilities = await payload(capabilitiesResponse);
   assert.equal(capabilities.scenePhysics2DTargets, true);
   assert.equal(capabilities.sceneAudioDirectory, true);
-  assert.deepEqual(capabilities.semanticCommands.filter(command => /physics/i.test(command)), [], 'this identity reader does not grant physics creation or write authority');
+  assert.deepEqual(capabilities.semanticCommands.filter(command => /physics/i.test(command)), ['physics2d.create'], 'creation is a separate explicit command; the target directory remains read-only');
   const before = await tree(f.root);
   assert.equal((await f.post(undefined, '')).status, 401);
   assert.equal((await f.post(undefined, 'wrong-token')).status, 403);

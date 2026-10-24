@@ -32,13 +32,15 @@ test('builtin composition declares twenty-three stable modules and keeps contrib
   assert.equal(cap(plan, 'scene.authoring.transforms3d').domain, 'authoring');
   assert.equal(cap(plan, 'scene.authoring.translation3d').domain, 'authoring');
   assert.equal(cap(plan, 'scene.authoring.alignment3d').domain, 'authoring');
-  assert.equal(plan.capabilities.length, 44);
+  assert.equal(plan.capabilities.length, 45);
   assert.equal(cap(plan, 'project.authoring.assembly').moduleId, 'org.viento.build');
   assert.equal(cap(plan, 'project.authoring.assembly').domain, 'authoring');
   assert.equal(cap(plan, 'scene.authoring.audio-creation').moduleId, 'org.viento.build');
   assert.equal(cap(plan, 'scene.authoring.audio-creation').domain, 'authoring');
   assert.equal(cap(plan, 'scene.authoring.animation-creation').moduleId, 'org.viento.build');
   assert.equal(cap(plan, 'scene.authoring.animation-creation').domain, 'authoring');
+  assert.equal(cap(plan, 'scene.authoring.physics2d-creation').moduleId, 'org.viento.build');
+  assert.equal(cap(plan, 'scene.authoring.physics2d-creation').domain, 'authoring');
   assert.equal(cap(plan, 'scene.authoring.audio').moduleId, 'org.viento.scene-audio');
   assert.equal(cap(plan, 'scene.authoring.audio').domain, 'authoring');
   assert.deepEqual(STUDIO_MODULES.find(item => item.id === 'org.viento.scene-audio').dependencies, [{ id: 'org.viento.document', apiVersion: 1 }]);

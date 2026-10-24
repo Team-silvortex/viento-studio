@@ -1,3 +1,4 @@
+import { setupScenePhysics2DCreate } from './app-scene-physics2d-create.js';
 import { setupProjectAnimationTargetReview } from './app-project-animation-target-review.js';
 import { setupProjectAnimationStateEntryObservation } from './app-project-animation-state-entry-observation.js';
 import { setupProjectAnimationStateObservation } from './app-project-animation-state-observation.js';
@@ -14,7 +15,7 @@ import { createProjectProblemsSnapshot } from '../../engine/project-problems.mjs
 import { setupProjectProblems } from './app-project-problems.js';
 import { setupSceneBehaviorLinks } from './app-scene-behavior-links.js';
 import { setupSceneBehaviorCreate } from './app-scene-behavior-create.js';
-import { inspectSceneAnimationCreation, inspectSceneAudioCreation, inspectSceneBehaviorCreation, inspectSceneBehaviorDirectory, requestWorldCommand } from './app-doc-service.js';
+import { inspectScenePhysics2DCreation, inspectSceneAnimationCreation, inspectSceneAudioCreation, inspectSceneBehaviorCreation, inspectSceneBehaviorDirectory, requestWorldCommand } from './app-doc-service.js';
 import { t, translatePage, onLanguageChange } from '../i18n/index.js';
 import { fetchJsonApiRequest } from './app-services.js';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
@@ -163,6 +164,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <button id="projectBuildCreateBehavior" type="button" class="doc-btn doc-btn-ghost" data-i18n="添加场景行为" hidden></button>
     <button id="projectBuildSceneAudio" type="button" class="doc-btn doc-btn-ghost" data-i18n="场景声音设置" hidden></button>
     <button id="projectBuildSceneAnimation" type="button" class="doc-btn doc-btn-ghost" data-i18n="场景动画" hidden></button>
+    <button id="projectBuildScenePhysics2D" type="button" class="doc-btn doc-btn-ghost" data-i18n="场景物理" hidden></button>
     <p id="projectBuildEmpty" hidden data-i18n="暂无可构建场景。请添加已登记的 viento-scene2d JSON 场景文档。"></p>
     <div id="projectBuildTabs" class="build-tabs" role="tablist" data-i18n-aria-label="场景与构建选项卡" hidden>
       <button id="projectBuildTabPreview" type="button" role="tab" aria-controls="projectBuildPreviewPanel" aria-selected="false" tabindex="-1" data-i18n="场景预览"></button>
@@ -367,6 +369,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     } catch { el('projectBuildCaseSummary').textContent = t('验收结果不可读取，请刷新状态。'); }
   }
   let animationCreationSupported = false, animationCreationBusy = false;
+  let physics2DCreationSupported = false, physics2DCreationBusy = false;
   let audioCreationSupported = false, audioCreationBusy = false, assemblyBusy = false;
   let available = false, creationSupported = false, updateSupported = false, behaviorCreationSupported = false, behaviorCreationBusy = false, behaviorDirectorySupported = false, behaviorLinksBusy = false, data = null, selected = '', requestBusy = false, timer = null, requestEpoch = 0;
   let toolCheckBusy = false, materializationBusy = false;
@@ -466,6 +469,24 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       scenePreview.invalidate(); await refresh(true);
       if (failure) throw failure;
       if (errorMessage || !data?.scenes.some(scene => scene.id === sceneId)) throw new Error(t('动画已保存，但目录刷新失败。请重新读取工程，勿重复创建。'));
+    },
+    openSource: (sourcePath, options = {}) => navigateOwnedSource([sourcePath, options], typeof options.isCurrent === 'function' ? options.isCurrent : () => true, openAuthorSource, true),
+  }) : { open() {}, setAvailable() {} };
+
+  const physics2DCreator = typeof setupScenePhysics2DCreate === 'function' ? setupScenePhysics2DCreate({
+    getContext: () => { const context = getContext(); return { ...context,
+      busy: (physics2DCreationBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || running() || checkingTool(),
+      session: String(dialogSession), sceneId: selected, visible: dialog.open && activeTab === 'build' && !projectTarget() && liveScene(), sourceToken: context.sceneDraftToken }; },
+    setBusy: value => { physics2DCreationBusy = value === true; setBusy(value); render(); },
+    inspect: payload => inspectScenePhysics2DCreation(payload), command: payload => requestWorldCommand(payload),
+    applied: async result => {
+      const sceneId = selected;
+      let failure; try { await applied(result || { status: 'observed', changes: [] }); } catch (error) { failure = error; }
+      invalidatedPlanJob = planJob || (data?.job?.kind === 'plan' ? data.job.id : '');
+      invalidatedSnapshot = plan?.snapshotId || data?.job?.plan?.snapshotId || ''; plan = null; planScene = '';
+      scenePreview.invalidate(); await refresh(true);
+      if (failure) throw failure;
+      if (errorMessage || !data?.scenes.some(scene => scene.id === sceneId)) throw new Error(t('物理声明已保存，但目录刷新失败。请重新读取工程，勿重复创建。'));
     },
     openSource: (sourcePath, options = {}) => navigateOwnedSource([sourcePath, options], typeof options.isCurrent === 'function' ? options.isCurrent : () => true, openAuthorSource, true),
   }) : { open() {}, setAvailable() {} };
@@ -1009,8 +1030,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildMaterialize').disabled = !mayMaterialize();
     el('projectBuildSceneAudio').hidden = projectTarget() || activeTab === 'preview' || !audioCreationSupported;
     el('projectBuildSceneAnimation').hidden = projectTarget() || activeTab === 'preview' || !animationCreationSupported;
+    el('projectBuildScenePhysics2D').hidden = projectTarget() || activeTab === 'preview' || !physics2DCreationSupported;
     el('projectBuildSceneAudio').disabled = requestBusy || running() || checkingTool() || !ready() || !liveScene();
     el('projectBuildSceneAnimation').disabled = requestBusy || running() || checkingTool() || !ready() || !liveScene();
+    el('projectBuildScenePhysics2D').disabled = requestBusy || running() || checkingTool() || !ready() || !liveScene();
     el('projectBuildManageBehavior').hidden = projectTarget() || activeTab === 'preview' || !behaviorDirectorySupported;
     el('projectBuildManageBehavior').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildCreateBehavior').hidden = projectTarget() || activeTab === 'preview' || !behaviorCreationSupported;
@@ -1252,6 +1275,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   el('projectBuildEditScene').addEventListener('click', () => { if (!projectTarget()) editScene(); });
   el('projectBuildSceneAudio').addEventListener('click', () => { if (!projectTarget() && audioCreationSupported && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void audioCreator.open(selected); });
   el('projectBuildSceneAnimation').addEventListener('click', () => { if (!projectTarget() && animationCreationSupported && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void animationCreator.open(selected); });
+  el('projectBuildScenePhysics2D').addEventListener('click', () => { if (!projectTarget() && physics2DCreationSupported && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void physics2DCreator.open(selected); });
   el('projectBuildManageBehavior').addEventListener('click', () => { if (!projectTarget() && behaviorDirectorySupported && activeTab === 'build' && !requestBusy && !running() && ready() && liveScene()) void behaviorLinks.open(selected); });
   el('projectBuildCreateBehavior').addEventListener('click', () => { if (!projectTarget() && behaviorCreationSupported && !requestBusy && !running() && ready() && liveScene()) void behaviorCreator.open(selected); });
   el('projectBuildCreateScene').addEventListener('click', () => { if (!projectTarget() && creationSupported && !requestBusy && !running() && ready() && !catalogUnavailable()) sceneCreator.open(); });
@@ -1343,6 +1367,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     creationSupported = commands.includes('scene.create'); updateSupported = commands.includes('scene.update'); sceneCreator.setAvailable(value === true && (creationSupported || updateSupported), commands);
     audioCreationSupported = value === true && commands.includes('audio.create'); audioCreator.setAvailable(audioCreationSupported, commands);
     animationCreationSupported = value === true && commands.includes('animation.create'); animationCreator.setAvailable(animationCreationSupported, commands);
+    physics2DCreationSupported = value === true && commands.includes('physics2d.create'); physics2DCreator.setAvailable(physics2DCreationSupported, commands);
     behaviorCreationSupported = commands.includes('behavior.create'); behaviorCreator.setAvailable(value === true && behaviorCreationSupported, commands);
     behaviorDirectorySupported = value === true && capabilities.sceneBehaviorDirectory === true;
     behaviorLinks.setAvailable(behaviorDirectorySupported, commands);

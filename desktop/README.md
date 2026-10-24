@@ -1,6 +1,6 @@
 # Viento Studio 桌面版
 
-当前源码版本 **0.2.1**，功能范围见[版本记录](../docs/RELEASE_0.2.1.md)。本次只交付源码，本机 Linux x86_64 AppImage 仍为 **0.2.0**，安装与复测见[本机安装验收](../docs/test-results/native-installed-0.2.0/README.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
+当前源码版本 **0.2.2**，功能范围见[版本记录](../docs/RELEASE_0.2.2.md)。本次只交付源码，本机 Linux x86_64 AppImage 仍为 **0.2.0**，安装与复测见[本机安装验收](../docs/test-results/native-installed-0.2.0/README.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
 
 2026-10-24 本机安装更新到 **0.2.0**。原生验收发现交互问题后，修复已重新打包并安装；首轮、诊断及最终复测分别保留包摘要和来源。实测包括作品库与导出、三语和编辑媒体、配方生成与有限 Godot 无头链，以及新建状态表中的手动试算和用例 JSON 编辑；各项是否在同一包上复测以[本轮记录](../docs/test-results/native-installed-0.2.0/README.md)为准。此前 [0.1.1 安装验收](../docs/test-results/native-installed-0.1.1/README.md)和[0.0.4 验收](../docs/test-results/release-0.0.4/results.json)保留原时点；其他平台不由本机结果外推。
 
@@ -44,7 +44,7 @@ npm run desktop:build
 
 在内存较小的 Linux 开发机上，可用 `CARGO_BUILD_JOBS=1 npm run desktop:build` 限制编译并发，避免同时运行模拟器和大批构建。
 
-默认输出位于 `src-tauri/target/release/bundle`；设置 `CARGO_TARGET_DIR` 时位于该目录的 `release/bundle`。构建脚本将完成的安装包改为 `VERSION` 中的发布编号，例如 `Viento-Studio_0.2.1_amd64.AppImage`。Linux 可指定 `--bundles deb,appimage`，Windows 使用 `--bundles nsis`，macOS 使用 `--bundles dmg`。跨平台发行应分别在目标系统构建；仓库中的 **Build desktop installers** 工作流可手动生成三端产物，仅上传工作流构件，不自动发布版本。
+默认输出位于 `src-tauri/target/release/bundle`；设置 `CARGO_TARGET_DIR` 时位于该目录的 `release/bundle`。构建脚本将完成的安装包改为 `VERSION` 中的发布编号，例如 `Viento-Studio_0.2.2_amd64.AppImage`。Linux 可指定 `--bundles deb,appimage`，Windows 使用 `--bundles nsis`，macOS 使用 `--bundles dmg`。跨平台发行应分别在目标系统构建；仓库中的 **Build desktop installers** 工作流可手动生成三端产物，仅上传工作流构件，不自动发布版本。
 
 每次 Linux 打包前会重建生成用的 `.AppDir` 目录，避免 GTK 打包插件因旧链接残留而使第二次构建失败。Rust 编译缓存、已生成的安装包及作品库不在此清理范围内。
 
