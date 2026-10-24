@@ -53,9 +53,36 @@ test('reset inactive session and disposal clear raw drafts and checked permissio
  for(const action of['reset','inactive','dispose']){const h=await fixture(t);h.open();h.check();if(action==='inactive'){h.context.active=false;h.controller.refresh();h.context.active=true;h.controller.refresh();}else h.controller[action]();assert.equal(h.controller.isOpen(),false);if(action==='dispose')assert.equal(h.container.children.length,0);else{assert.equal(h.el('Panel').hidden,true);assert.equal(h.el('Text').value,'');}assert.equal(h.applied.length,0);}
 });
 
-test('Escape cancels only the inner editor while IME and repeat Escape do not discard text',async t=>{
- const h=await fixture(t);h.open();const raw=h.el('Text').value;for(const properties of[{isComposing:true},{keyCode:229},{repeat:true}]){h.el('Text').dispatch('keydown',{key:'Escape',bubbles:true,...properties});assert.equal(h.controller.isOpen(),true);assert.equal(h.el('Text').value,raw);}
+test('Escape cancels only the inner editor while IME and repeat Escape block outer cancellation without discarding text',async t=>{
+ const h=await fixture(t);h.open();h.check();const raw=h.el('Text').value,changes=h.changes.length;
+ for(const properties of[{isComposing:true},{keyCode:229},{repeat:true},{isComposing:true,repeat:true}]){
+  const event=h.el('Text').dispatch('keydown',{key:'Escape',bubbles:true,...properties});
+  assert.equal(event.defaultPrevented,true);assert.equal(event.stopped,true);
+  assert.equal(h.controller.isOpen(),true);assert.equal(h.el('Text').value,raw);assert.equal(h.el('Apply').disabled,false);assert.equal(h.changes.length,changes);
+ }
  const event=h.el('Text').dispatch('keydown',{key:'Escape',bubbles:true});assert.equal(event.defaultPrevented,true);assert.equal(event.stopped,true);assert.equal(h.controller.isOpen(),false);assert.equal(h.applied.length,0);
+});
+
+test('non-Escape composing keys retain their default action and propagation without changing the draft or applying',async t=>{
+ const h=await fixture(t);h.open();h.check();const raw=h.el('Text').value,changes=h.changes.length;
+ for(const properties of[{key:'Enter',ctrlKey:true,isComposing:true},{key:'s',metaKey:true,keyCode:229},{key:'Process',isComposing:true},{key:'a',keyCode:229}]){
+  const event=h.el('Text').dispatch('keydown',{bubbles:true,...properties});
+  assert.equal(Boolean(event.defaultPrevented),false);assert.equal(Boolean(event.stopped),false);
+  assert.equal(h.controller.isOpen(),true);assert.equal(h.el('Text').value,raw);assert.equal(h.el('Apply').disabled,false);
+ }
+ assert.equal(h.applied.length,0);assert.equal(h.changes.length,changes);
+});
+
+test('closed inactive or folded case editors do not consume normal or composing Escape',async t=>{
+ for(const state of['closed','inactive','folded']){
+  const h=await fixture(t);h.open();if(state==='closed')h.el('Cancel').click();else if(state==='inactive')h.context.active=false;else h.context.visible=false;
+  const raw=h.el('Text').value,changes=h.changes.length;
+  for(const properties of[{}, {isComposing:true},{keyCode:229}]){
+   const event=h.el('Text').dispatch('keydown',{key:'Escape',bubbles:true,...properties});
+   assert.equal(Boolean(event.defaultPrevented),false,state);assert.equal(Boolean(event.stopped),false,state);assert.equal(h.el('Text').value,raw,state);
+  }
+  assert.equal(h.applied.length,0);assert.equal(h.changes.length,changes);
+ }
 });
 
 test('author save shortcuts inside JSON are intercepted without applying the case',async t=>{

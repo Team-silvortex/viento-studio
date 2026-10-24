@@ -68,9 +68,11 @@ export function setupAnimationStateTrialCaseEditor({ container, idPrefix = 'anim
   });
   el('Cancel').addEventListener('click', cancel);
   container.addEventListener('keydown', event => {
-    if (!opened || isComposingInput(event)) return;
-    if (event.key === 'Escape' && visible(context())) { event.preventDefault(); event.stopPropagation(); if (!event.repeat) cancel(); }
-    else if ((event.ctrlKey || event.metaKey) && ['s', 'enter'].includes(String(event.key).toLowerCase())) { event.preventDefault(); event.stopPropagation(); }
+    if (!opened) return;
+    const composing = isComposingInput(event);
+    // WebKit can derive a dialog cancel without the keyboard composition flag.
+    if (event.key === 'Escape' && visible(context())) { event.preventDefault(); event.stopPropagation(); if (!composing && !event.repeat) cancel(); }
+    else if (!composing && (event.ctrlKey || event.metaKey) && ['s', 'enter'].includes(String(event.key).toLowerCase())) { event.preventDefault(); event.stopPropagation(); }
   });
   return Object.freeze({ open({ text: raw, owner: nextOwner } = {}) {
     if (disposed || opened || !visible(context()) || context().disabled === true || typeof raw !== 'string' || nextOwner === null || nextOwner === undefined) return false;
