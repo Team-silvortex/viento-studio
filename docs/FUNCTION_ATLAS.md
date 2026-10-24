@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-23**。源码版本 **0.1.9**；审查基线为提交 `cf7601572d9779a06cac271ea03ed0c3aba2ee05`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-24**。源码版本 **0.2.0**；审查基线为提交 `7e5d71f1ce4ee6dfafaaf9dc24ae9d50b637eb01`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -20,14 +20,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 145 |
-| 实现单元（含规划占位） | 437 |
-| 已审查实现关系 | 642 |
-| 显式评分单元 | 2568 |
-| 语义依赖边 | 408 |
-| 工作流切片 | 108 |
+| 功能 | 151 |
+| 实现单元（含规划占位） | 449 |
+| 已审查实现关系 | 654 |
+| 显式评分单元 | 2616 |
+| 语义依赖边 | 424 |
+| 工作流切片 | 114 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 2291 |
+| 引用并校验指纹的文件 | 2354 |
 
 ## 评分锚点
 
@@ -209,6 +209,12 @@
 | [运行记录→控制器访问→逐条回看→命令/末态对照→来源](function-atlas.html#workflow=animation-controller-history-review) | [动画状态逐次进入记录与冻结来源](#runtime.project_animation_state_entries) → [按控制器与场景访问回看状态记录](#runtime.project_animation_state_review) → [动画状态控制器退出快照与冻结来源](#runtime.project_animation_state_snapshots) | 本次未登记额外缺口（不表示完成） | 历史记录只读回看；同截止序号可共享后续命令，不推断触发原因、画面或所选时刻的即时状态。 |
 | [事件条件来源→共享键→审阅保存→Godot读取→观察/交付](function-atlas.html#workflow=animation-shared-state-conditions) | [动画事件转换的有类型载荷条件](#authoring.animation_state_conditions) → [动画事件转换读取项目共享状态](#authoring.animation_shared_state_conditions) → [动画状态逐次进入记录与冻结来源](#runtime.project_animation_state_entries) | 本次未登记额外缺口（不表示完成） | 状态改变本身不触发转换，当前观察不记录每次条件求值；只覆盖既有Godot动画后端。 |
 | [组合列表→审阅保存→Godot短路执行→进入记录/交付](function-atlas.html#workflow=animation-condition-groups) | [动画事件转换的有类型载荷条件](#authoring.animation_state_conditions) → [动画事件转换读取项目共享状态](#authoring.animation_shared_state_conditions) → [动画事件转换组合条件](#authoring.animation_condition_groups) → [动画状态逐次进入记录与冻结来源](#runtime.project_animation_state_entries) | 本次未登记额外缺口（不表示完成） | 只有平面1–8项，当前观察不记录逐项求值；仅既有Godot动画后端，未覆盖安装和其他平台。 |
+| [初始化/派发/直接入口→接受进入→消息或完成关联→控制器回看→工程交付](function-atlas.html#workflow=animation-entry-trigger-review) | [动画状态表与普通控制脚本生成](#authoring.animation_state_script) → [动画状态逐次进入记录与冻结来源](#runtime.project_animation_state_entries) → [动画成功进入的真实回调来源](#runtime.project_animation_state_entry_triggers) → [按控制器与场景访问回看状态记录](#runtime.project_animation_state_review) | 本次未登记额外缺口（不表示完成） | 只记录真实入口；条件逐项求值、具体命中分支和未进入原因仍需独立观测。已接受进入不等同已执行命令。 |
+| [事件选择→逐订阅投递→确证进入→控制器回看→冻结来源](function-atlas.html#workflow=project-event-entry-review) | [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [动画成功进入的真实回调来源](#runtime.project_animation_state_entry_triggers) → [事件投递与动画进入回看](#runtime.project_event_review) → [按控制器与场景访问回看状态记录](#runtime.project_animation_state_review) | 本次未登记额外缺口（不表示完成） | 只读观察沿用p10，旧p3–p9明确无法关联；没有进入不解释原因，回调成功不代表动画执行或播放完成。 |
+| [当前状态表→手动事件及共享样本→有序分支/条件短路→定位字段](function-atlas.html#workflow=animation-state-event-preview) | [动画状态表与普通控制脚本生成](#authoring.animation_state_script) → [动画事件转换的有类型载荷条件](#authoring.animation_state_conditions) → [动画事件转换组合条件](#authoring.animation_condition_groups) → [动画状态表手动事件试算](#authoring.animation_state_event_preview) | 本次未登记额外缺口（不表示完成） | 手动固定样本选择不等于真实执行/成功进入；无运行状态读取、协议变更或作者保存。NUL运行端限制单列。 |
+| [手动样本→预览→显式采用→下一事件或假定完成→步骤详情/撤回](function-atlas.html#workflow=animation-state-trial-sequence) | [动画状态表与普通控制脚本生成](#authoring.animation_state_script) → [动画状态表手动事件试算](#authoring.animation_state_event_preview) → [动画事件与完成转换连续手动试算](#authoring.animation_state_trial_sequence) | 本次未登记额外缺口（不表示完成） | 作者显式采用预测状态，非真实运行轨迹；完成假设匹配选中片段，不读取播放头或运行回执。 |
+| [记录路径→导出用例→导入→改表→显式重跑→首次预期不符](function-atlas.html#workflow=animation-state-trial-case) | [动画状态表与普通控制脚本生成](#authoring.animation_state_script) → [动画事件与完成转换连续手动试算](#authoring.animation_state_trial_sequence) → [可复用动画手动试算用例](#authoring.animation_state_trial_case) | 本次未登记额外缺口（不表示完成） | 独立手动预期文件，不登记为工程运行用例、不修改作者源；目标及转换有无的预测一致不代表实际播放成功。 |
+| [路径或用例→内置JSON草稿→检查→应用/取消→明确重跑→导出载入版本](function-atlas.html#workflow=animation-state-trial-case-editor) | [动画事件与完成转换连续手动试算](#authoring.animation_state_trial_sequence) → [可复用动画手动试算用例](#authoring.animation_state_trial_case) → [内置手动试算用例JSON编辑](#authoring.animation_state_trial_case_editor) | 本次未登记额外缺口（不表示完成） | 应用只替换本次载入用例，文件需显式导出；不写作者源、手动路径或真实运行记录。 |
 
 ## 功能与实现切片
 
@@ -2830,7 +2836,7 @@
 
 平台：Linux HTTP/Chrome中英日390px、Linux Godot4.7.2无头及独立ZIP、未更新安装或验证Android/Bevy动画。边界：仅完整识别v1/v2/v3控制器的新项目采用protocol9/适配器0.18.0/清单10，旧协议1–8继续读取。；作者源码字节不变，独立子类读取实际字段；初始/切换/同状态重启逐次保留，不从片段反推状态。；已接受请求与已执行命令分开，128次进入受原256请求预算限制，错误或强制结束不补造。；严格核验当前访问、绑定、实例、状态、片段与来源；包装层内部诊断不伪造作者行号。；p9生成文件1024、资源128、清单1152和ZIP1154条目预算一致；其他项目保留旧限制。；不推断触发原因、失败分支、条件求值或实时状态图；22模块/43能力、Rust/WASM保持。；上述0.1.8后增量已收录0.1.9源码。旧开发证据、评分与当时理由保留，不增加安装或设备验收。。
 
-下一步：触发原因与条件求值观察、实时图、每实例播放头和混合分别定义。
+下一步：真实触发入口由runtime.project_animation_state_entry_triggers独立接入；条件逐项求值、未进入分支、实时图和每实例播放头仍分别推进。
 
 <a id="runtime.project_animation_state_review"></a>
 ### 按控制器与场景访问回看状态记录
@@ -2846,7 +2852,7 @@
 
 平台：Linux HTTP/Chrome中英日390px、Linux Godot4.7.2无头产生真实观察、未更新安装或验证Android/Bevy动画。边界：只读复用完整p9 DTO，按visitIndex/sceneId/bindingId分组，不混用多绑定或访问重入。；保留同帧与同状态重复；后续命令按同组及截止序号筛出，不归因为该次进入执行成功。；离场快照属于本次访问最后采样，不冒充历史所选时刻或实时状态。；追加与三语保留选择和焦点；替换所选记录或新会话撤销，来源仍有独立票据。；平铺搜索不裁剪控制器完整顺序；没有读取当前作者表格去推断运行图。；protocol9/适配器0.18.0/库存10及作者/Rust/WASM/后端源码保持；无因果、断点、视觉重播或混合。；上述0.1.8后增量已收录0.1.9源码。旧开发证据、评分与当时理由保留，不增加安装或设备验收。。
 
-下一步：触发原因及条件求值、冻结声明图联动、每实例播放头分别设计。
+下一步：真实触发入口由runtime.project_animation_state_entry_triggers独立接入；条件逐项求值、未进入分支、实时图和每实例播放头仍分别推进。
 
 <a id="authoring.animation_shared_state_conditions"></a>
 ### 动画事件转换读取项目共享状态
@@ -2885,6 +2891,102 @@
 平台：Linux Rust/WASM与HTTP/Chrome中英日390px、Linux Godot4.7.2无头及独立工程ZIP、未更新安装或验证Android/Bevy动画。边界：condition={combine:all|any,conditions:[scalar,...]}；1–8项，不支持嵌套，单项组保留v5。；叶子复用严格载荷或共享状态比较；缺键和跨类型连ne也不匹配。；按作者顺序短路，仅在实际执行到叶子时读取共享状态；写状态本身不触发转换。；可混用标量、有序分支和末尾无条件兜底；匹配转换失败不再尝试。；独立Rust marker与完整回执，32KiB预算逐叶计数字；旧入口/封套拒绝组。；单条件与组缓冲独立、叶子节点稳定，编辑撤销审阅，普通保存才写作者文件。；完整源码64KiB及BOM/CRLF保持，v1-v4生成器和protocol9/Godot0.18.0/库存10保持。；上述0.1.8后增量已收录0.1.9源码。旧开发证据、评分与当时理由保留，不增加安装或设备验收。。
 
 下一步：逐项求值证据、每实例独立播放头和Bevy动画分别接入。
+
+<a id="runtime.project_animation_state_entry_triggers"></a>
+### 动画成功进入的真实回调来源
+
+`runtime.project_animation_state_entry_triggers` · 执行与验证 · 源码交付
+
+入口：实际派发作用域→成功进入→严格消息关联→列表/控制器回看→来源与工程交付
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **动画进入来源严格关联与只读证据**；独立域复用p9校验，集中身份、顺序与回调结果约束，界面不推导因果。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-entry-triggers/README\.md](../docs/test-results/animation-entry-triggers/README.md)、[docs/test-results/animation-entry-triggers/summary\.json](../docs/test-results/animation-entry-triggers/summary.json)、[docs/test-results/animation-entry-triggers/review\.json](../docs/test-results/animation-entry-triggers/review.json) |
+| 执行后端 | **Godot实际回调作用域与版本化工程**；实际派发负责来源，包装负责采集，适配器负责指纹、清单与完整交付；保留作者字节。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-entry-triggers/README\.md](../docs/test-results/animation-entry-triggers/README.md)、[docs/test-results/animation-entry-triggers/summary\.json](../docs/test-results/animation-entry-triggers/summary.json)、[docs/test-results/animation-entry-triggers/review\.json](../docs/test-results/animation-entry-triggers/review.json) |
+| 交互与渲染 | **状态来源三语投影与历史回看**；仅消费已验证记录，按访问／绑定选择和导航，不触发运行或修改作者文件。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-entry-triggers/README\.md](../docs/test-results/animation-entry-triggers/README.md)、[docs/test-results/animation-entry-triggers/summary\.json](../docs/test-results/animation-entry-triggers/summary.json)、[docs/test-results/animation-entry-triggers/review\.json](../docs/test-results/animation-entry-triggers/review.json) |
+
+平台：Linux Node/HTTP与Chrome中英日390px、Linux Godot4.7.2无头与独立ZIP、未发布安装或验证Android/Bevy动画。边界：四种真实入口：首次初始化回调、事件、自然完成与直接进入；消息／完成序号和订阅身份来自实际派发。；固定wrapper继承严格识别的v1–v5作者源码，原五发射器与旧p9采集文件原字节保持。；事件／完成仅关联已验证对应recipient；pending必须队头、事件撤销永久生效，完成skipped不误解释为撤销。；成功进入仍是请求已接受，队列执行、完成回执、末态与所选记录分别保存；失败或取消不补造处理结果。；独立p10／Godot0.19.0／清单11；普通动画p7、无动画p4、旧协议1–9和旧清单读取保持。；旧p9显示来源未记录，完整query不以当前作者源码推断历史；来源与三语界面独立。；不记录具体转换边、条件逐项结果、未匹配分支或实时图；22模块／43系统能力与Rust/WASM保持。；上述0.1.9后增量已纳入0.2.0源码版本。旧开发证据、评分与理由保留；本轮未提交推送或更新安装。。
+
+下一步：条件求值与未进入分支、每实例播放头和混合、Bevy动画各自定义契约。
+
+<a id="runtime.project_event_review"></a>
+### 事件投递与动画进入回看
+
+`runtime.project_event_review` · 执行与验证 · 源码交付
+
+入口：项目事件→逐订阅结果→确证动画进入→控制器历史→冻结来源
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **事件投递与动画进入只读关联**；纯关联模型复用严格完整运行准入，序号身份关联与UI渲染独立。 | 4 / 4 / 4 / 2 | [docs/test-results/project-event-review/README\.md](../docs/test-results/project-event-review/README.md)、[docs/test-results/project-event-review/summary\.json](../docs/test-results/project-event-review/summary.json)、[docs/test-results/project-event-review/preservation\.json](../docs/test-results/project-event-review/preservation.json) |
+| 交互与渲染 | **事件回看与控制器宿主端口**；独立组件负责选择和交互；宿主协调来源与控制器历史，不持有运行权或写入作者数据。 | 4 / 4 / 4 / 2 | [docs/test-results/project-event-review/README\.md](../docs/test-results/project-event-review/README.md)、[docs/test-results/project-event-review/summary\.json](../docs/test-results/project-event-review/summary.json)、[docs/test-results/project-event-review/preservation\.json](../docs/test-results/project-event-review/preservation.json) |
+
+平台：Linux Node/HTTP与Chrome中英日390px、Linux Godot4.7.2实际运行记录、未发布安装或验证Android/Bevy动画。边界：完整项目运行准入后构造独立冻结品牌模型，p3–p10事件可回看。；p10仅按eventSequence和subscriptionId关联实际event来源进入；旧协议明确不可关联。；投递状态和动画进入分别显示；pending可已有进入，handled无进入不推断条件失败。；初始化、直接进入、自然完成不与事件混配；同名、共享脚本、跨访问仍按完整身份。；事件/控制器组件通过构建宿主端口连接，筛选、语言、追加记录保留各自选择与焦点。；来源导航守护运行、访问、选择、身份和编辑器草稿变化；不改变运行或文件。；协议、Godot适配器、作者格式、Rust/WASM及22模块／43系统能力保持。；上述0.1.9后增量已纳入0.2.0源码版本。旧开发证据、评分与理由保留；本轮未提交推送或更新安装。。
+
+下一步：逐项条件求值、未进入原因、每实例播放头和混合仍需各自运行契约。
+
+<a id="authoring.animation_state_event_preview"></a>
+### 动画状态表手动事件试算
+
+`authoring.animation_state_event_preview` · 内容与作者工具 · 源码交付
+
+入口：当前有效表→手动状态/事件/共享样本→Rust逐叶比较→有序短路→定位转换字段
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **手动事件候选与短路试算**；纯编排复用Rust整表准入和叶比较，只有固定手动样本，无宿主或后端权限。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-state-event-preview/README\.md](../docs/test-results/animation-state-event-preview/README.md)、[docs/test-results/animation-state-event-preview/summary\.json](../docs/test-results/animation-state-event-preview/summary.json)、[docs/test-results/animation-state-event-preview/preservation\.json](../docs/test-results/animation-state-event-preview/preservation.json) |
+| 交互与渲染 | **事件试算面板与作者宿主**；独立视图持有样本和结果，宿主只提供当前表及定位端口；不更改审阅或保存。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-state-event-preview/README\.md](../docs/test-results/animation-state-event-preview/README.md)、[docs/test-results/animation-state-event-preview/summary\.json](../docs/test-results/animation-state-event-preview/summary.json)、[docs/test-results/animation-state-event-preview/preservation\.json](../docs/test-results/animation-state-event-preview/preservation.json) |
+
+平台：Linux Node/HTTP与Chrome中英日390px、Linux Godot4.7.2原始v1–v5脚本实际输入对照、未发布安装或验证Android/Bevy动画。边界：完整当前表准入后生成冻结品牌模型；手动输入全部校验，含未读取共享键。；标量比较复用既有Rust能力；JS只编排有序候选、all/any短路及结果。；缺键与类型不匹配连ne也不匹配；未求值叶不产生实际值或匹配结果。；共享样本同键固定值；试算假定所选控制器状态，不模拟失活、进入失败或脚本副作用。；独立视图与表格宿主端口对接新建/重编辑；样本不入作者表、审阅签名、onChange或保存。；表/样本/会话/能力变更撤销结果与定位，折叠不读表，语言保留输入焦点。；Godot NUL构造会替换或截断，原始手动值与实际引擎值分别验证；不声称所有字符串完整往返。；作者生成器、Rust/WASM、后端/协议10及22模块43能力保持；不读取或伪造运行求值轨迹。；上述0.1.9后增量已纳入0.2.0源码版本。旧开发证据、评分与理由保留；本轮未提交推送或更新安装。。
+
+下一步：真实运行逐项条件值、未进入原因、每实例播放头、混合与Bevy动画分别接入。
+
+<a id="authoring.animation_state_trial_sequence"></a>
+### 动画事件与完成转换连续手动试算
+
+`authoring.animation_state_trial_sequence` · 内容与作者工具 · 源码交付
+
+入口：当前有效表→预览样本→显式采用→事件/假定完成→步骤详情/撤回
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **不可变手动试算序列**；复用原单事件规则，序列/待采用身份与纯完成投影独立于UI和运行。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-state-trial-sequence/README\.md](../docs/test-results/animation-state-trial-sequence/README.md)、[docs/test-results/animation-state-trial-sequence/summary\.json](../docs/test-results/animation-state-trial-sequence/summary.json)、[docs/test-results/animation-state-trial-sequence/preservation\.json](../docs/test-results/animation-state-trial-sequence/preservation.json) |
+| 交互与渲染 | **连续试算交互与步骤回看**；局部输入、显式采用、原始缓冲撤回和按需详情，无作者写入权限。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-state-trial-sequence/README\.md](../docs/test-results/animation-state-trial-sequence/README.md)、[docs/test-results/animation-state-trial-sequence/summary\.json](../docs/test-results/animation-state-trial-sequence/summary.json)、[docs/test-results/animation-state-trial-sequence/preservation\.json](../docs/test-results/animation-state-trial-sequence/preservation.json) |
+
+平台：Linux Node/HTTP与Chrome中英日390px、Linux Godot4.7.2原始v1–v5脚本和实际工程运行、未发布安装或验证Android/Bevy动画。边界：独立冻结品牌序列复用原事件试算和Rust比较；一次仅求值新步骤。；完成样本只投影当前状态完成边，明确假设控制器有效且所选片段通知已送达，不模拟播放器。；试算不推进，显式记录才采用预测目标；无匹配保持状态，自环保留独立一步。；待采用结果绑定精确前序身份，撤回/截取前缀生成新身份，旧结果不能附到新分支。；32步与64KiB规范化样本预算仅限制记录，满后仍能单次试算，拒绝不会损失旧路径。；UI保留原始输入缓冲、只读历史和详情；手动跳状态/真实表变化清路径，样本修改不改历史。；采用/撤回/清空不入作者表、onChange或源码审阅签名，历史无采用旧结果权限。；作者生成器、Rust/WASM、后端/协议10及22模块43能力保持；不提供真实条件轨迹或进入成功证明。；上述0.1.9后增量已纳入0.2.0源码版本。旧开发证据、评分与理由保留；本轮未提交推送或更新安装。。
+
+下一步：真实运行逐项求值、失败转换原因、每实例播放头、混合及Bevy动画仍分别定义。
+
+<a id="authoring.animation_state_trial_case"></a>
+### 可复用动画手动试算用例
+
+`authoring.animation_state_trial_case` · 内容与作者工具 · 源码交付
+
+入口：已记录路径→JSON下载→独立导入→当前表重跑→手动预期对照
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **有界手动试算用例契约与重跑**；完整文件准入、冻结品牌、手动预期和旧序列求值复用。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-state-trial-case/README\.md](../docs/test-results/animation-state-trial-case/README.md)、[docs/test-results/animation-state-trial-case/summary\.json](../docs/test-results/animation-state-trial-case/summary.json)、[docs/test-results/animation-state-trial-case/preservation\.json](../docs/test-results/animation-state-trial-case/preservation.json) |
+| 交互与渲染 | **独立用例文件与回放面板**；文件与报告持有独立会话，父表格/源码/手动路径只读。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-state-trial-case/README\.md](../docs/test-results/animation-state-trial-case/README.md)、[docs/test-results/animation-state-trial-case/summary\.json](../docs/test-results/animation-state-trial-case/summary.json)、[docs/test-results/animation-state-trial-case/preservation\.json](../docs/test-results/animation-state-trial-case/preservation.json) |
+
+平台：Linux Node/HTTP与Chrome中英日390px、Linux Godot4.7.2原保存态工程运行、未发布安装或验证Android/Bevy动画。边界：独立格式只保存初始状态、规范化输入和手动预期，1–32步/64KiB输入/128KiB文本。；create/parse产生冻结品牌；完整文件先准入，拒绝重复键、额外字段、伪造对象和矛盾无转换期望。；期望只比较目标状态与选中转换有无，自环与未命中分开，同目标分支不承诺相同。；当前表重跑复用原序列与Rust比较，首个不符停止，剩余步骤actual/result为空。；缺少初始状态独立报错，已删除预期目标保留并报告不符；每步共享样本独立。；文件导入只载入，显式Run才重跑，不改手动路径、pending、源码审阅或作者onChange。；表变化清旧报告但保留用例，关闭/reset清会话；文件错误原子保留旧值，迟到读取不能跨折叠/会话生效。；无工程自动登记、运行断言、后端/Rust/WASM/协议变更，预测用例不证明引擎运行成功。；上述0.1.9后增量已纳入0.2.0源码版本。旧开发证据、评分与理由保留；本轮未提交推送或更新安装。。
+
+下一步：工程用例资产登记、真实逐项条件轨迹、运行断言、每实例播放头及其他后端分别定义。
+
+<a id="authoring.animation_state_trial_case_editor"></a>
+### 内置手动试算用例JSON编辑
+
+`authoring.animation_state_trial_case_editor` · 内容与作者工具 · 源码交付
+
+入口：当前路径或载入用例→JSON草稿→检查→应用/取消→重跑→载入用例导出
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 交互与渲染 | **独立用例JSON编辑与父宿主接收**；编辑缓冲/检查票据与载入对象分开，父层同步应用，复用既有核心准入。 | 4 / 4 / 4 / 2 | [docs/test-results/animation-state-trial-case-editor/README\.md](../docs/test-results/animation-state-trial-case-editor/README.md)、[docs/test-results/animation-state-trial-case-editor/summary\.json](../docs/test-results/animation-state-trial-case-editor/summary.json)、[docs/test-results/animation-state-trial-case-editor/preservation\.json](../docs/test-results/animation-state-trial-case-editor/preservation.json) |
+
+平台：Linux Node/HTTP与Chrome中英日390px、Linux Godot4.7.2原保存态工程运行、未发布安装或验证Android/Bevy动画。边界：独立编辑组件只持有JSON缓冲和检查品牌，复用原用例parse/serialize，不增加核心格式或运行协议。；从当前路径创建先进入草稿，应用前不替换载入用例；取消保留原用例和仍有效报告。；检查与应用分开；输入revision/文本/会话失效撤销旧候选，非法或超限输入原样保留。；应用同步原子替换loaded并清报告，仍需显式重跑；不自动修改预期来适配结果。；编辑期间暂停冲突文件和运行操作，先前文件读取撤销；loaded与manual path两种导出各自读取品牌。；不依赖作者formGeneration，普通表编辑保留JSON草稿；fold保留文本但撤销检查，reset/close清会话。；三语保留textarea身份/选区，Escape只取消子编辑且尊重IME；无字符maxlength截断。；不更改作者source/onChange/当前手动路径，未接入工程资产登记或真实运行断言。；上述0.1.9后增量已纳入0.2.0源码版本。旧开发证据、评分与理由保留；本轮未提交推送或更新安装。。
+
+下一步：结构化用例字段、工程登记、实际求值跟踪与运行断言分别推进。
 
 ## 旧功能链路映射
 

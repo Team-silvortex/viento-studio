@@ -44,7 +44,7 @@ async function fake(t, adapter) {
   await fs.writeFile(path.join(directory, adapter === bevy ? 'scene-data.json' : 'scene.json'), JSON.stringify(scene));
   await fs.writeFile(executable, `#!${process.execPath}\nconst fs=require('node:fs');
 fs.appendFileSync(${JSON.stringify(calls)},'run\\n');
-console.log(JSON.stringify({args:process.argv.slice(2),control:JSON.parse(fs.readFileSync('control-program.json','utf8')),
+console.log(JSON.stringify({inventory:fs.readdirSync('.').sort(),args:process.argv.slice(2),control:JSON.parse(fs.readFileSync('control-program.json','utf8')),
 wrapper:fs.existsSync('control-runtime.gd')?fs.readFileSync('control-runtime.gd','utf8'):null,
 scene:fs.existsSync('control.tscn')?fs.readFileSync('control.tscn','utf8'):null}));\n`, { mode: 0o700 });
   return { root, directory, executable, calls, tool: { executable } };
@@ -66,6 +66,7 @@ test('adapters stage only validated control data and trusted session wrappers, t
     value.steps[0].right = false;
     const result = await pending; assert.equal(result.status, 'succeeded', result.stderr);
     const actual = JSON.parse(result.stdout); assert.deepEqual(actual.control, original);
+    assert.deepEqual(actual.inventory, [...before, 'control-program.json', ...(adapter === godot ? ['control-runtime.gd', 'control.tscn'] : [])].sort());
     if (adapter === bevy) {
       assert.deepEqual(actual.args, ['--scene', path.join(f.directory, 'scene-data.json'), '--smoke', '--control-program', path.join(f.directory, 'control-program.json')]);
       assert.equal(actual.wrapper, null); assert.equal(actual.scene, null);

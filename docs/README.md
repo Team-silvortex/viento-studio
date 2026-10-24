@@ -1,6 +1,18 @@
 # 文档中心
 
-**当前源码版本为 0.1.9**，收录动画有序分支、状态快照、逐次进入记录、控制器回看、共享状态条件和组合条件。见[版本记录](RELEASE_0.1.9.md)、[当前能力与平台](STATUS.md)和[发布预检](test-results/release-0.1.9/README.md)。本次交付源码，已安装程序保持；历史专题保留开发时的版本与验收条件。
+0.2.0 收录[内置用例 JSON 编辑](SCENE_ANIMATION.md#在-studio-内编辑试算用例)：从当前路径创建或编辑载入用例，经检查、显式应用／取消，再重跑并导出；作者源码和当前手动路径保持独立。见[本轮验收](test-results/animation-state-trial-case-editor/README.md)。
+
+0.2.0 收录[手动试算用例](SCENE_ANIMATION.md#保存与重跑手动试算用例)：已记录路径导出 JSON，导入后在当前表上显式重跑，首次预期不符即停止；文件、手动路径和作者保存分别管理。见[本轮验收](test-results/animation-state-trial-case/README.md)。
+
+0.2.0 收录[连续手动试算](SCENE_ANIMATION.md#连续试算事件与完成转换)：显式记录并采用预测状态，衔接事件和假定片段完成，查看步骤详情并撤回；[本轮验收](test-results/animation-state-trial-sequence/README.md)单列实际引擎与手动假设边界。
+
+0.2.0 收录[手动试算事件分支](SCENE_ANIMATION.md#手动试算事件分支)：在状态表内输入样本，查看分支、逐项比较与短路，再定位转换字段；[独立验收](test-results/animation-state-event-preview/README.md)将手动语义和实际引擎行为分开记录。
+
+0.2.0 收录[按事件回看投递与动画进入](PROJECT_EVENTS.md#按事件回看投递与动画进入)：从一条消息逐个检查订阅回执，再转到有确证关联的控制器历史；[本轮验收](test-results/project-event-review/README.md)与上一轮来源采集分别记录。
+
+0.2.0 收录[状态进入的触发来源](SCENE_ANIMATION.md#查看状态进入的触发来源)，贯通独立运行采集、严格关联和三语回看；[本轮验收](test-results/animation-entry-triggers/README.md)单列源码与实际引擎范围。
+
+**当前源码版本为 0.2.0**，收录状态进入的触发来源、事件投递回看、单事件与连续路径试算、可复用用例和内置 JSON 编辑。见[版本记录](RELEASE_0.2.0.md)、[当前能力与平台](STATUS.md)和[升版预检](test-results/release-0.2.0/README.md)。本次完成源码升版，已安装程序保持；专题报告保留开发时的版本与验收条件。
 
 动画作者与运行链路可从以下入口进入：
 
@@ -15,7 +27,7 @@
 
 从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
 
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.1.8 版本记录](RELEASE_0.1.8.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.2.0 版本记录](RELEASE_0.2.0.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
 
 ## 第一次使用
 
@@ -109,4 +121,4 @@
 
 片段定义管理见[新增、复制、重命名与未引用删除](SCENE_COMPOSITION.md#管理片段定义)。先维护共享声明，再通过独立演员、组织组和放置入口完成场景；普通保存继续保留作者原文。
 
-新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.1.9 版本记录](RELEASE_0.1.9.md)。
+新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.2.0 版本记录](RELEASE_0.2.0.md)。

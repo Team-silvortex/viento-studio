@@ -1,6 +1,6 @@
 # Viento Studio 桌面版
 
-当前源码版本 **0.1.9**，本次仅提交推送源码，未更新本机安装或制作安装包；详见[版本记录](../docs/RELEASE_0.1.9.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
+当前源码版本 **0.2.0**，本次完成源码升版，未提交推送、更新本机安装或制作安装包；详见[版本记录](../docs/RELEASE_0.2.0.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
 
 2026-10-13 此前已构建并实际更新本机 Linux AppImage，安装版本为 **0.1.1**，包含当时的查找替换、配方生成场景及桌面修复，早于新配方创建、多演员与起始排布助手。安装包摘要与原生验收范围见[安装验收](../docs/test-results/native-installed-0.1.1/README.md)。此前 [**0.1.3**](../docs/RELEASE_0.1.3.md) 只交付源码，未制作或更新安装包；其他平台仍按各自证据时点判断。此前 [0.0.4 验收](../docs/test-results/release-0.0.4/results.json)保留。
 

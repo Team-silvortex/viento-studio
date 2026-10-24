@@ -20,7 +20,7 @@ async function fixture(t, options = {}) {
     onLanguageChange(callback) { languageChanged = callback; subscriptions++; return () => { languageChanged = () => {}; subscriptions--; }; },
   });
   const container = h.document.createElement('div'); container.id = 'projectEventTrace'; container.isConnected = true; h.document.body.append(container);
-  const controller = h.runtime.setupProjectEventObservation({ container, getContext: () => context,
+  const controller = h.runtime.setupProjectEventObservation({ container, getContext: () => context, onReviewEvent: options.onReviewEvent,
     onOpen: async (value, opts) => { calls.push({ origin: value, ...opts }); return options.onOpen ? options.onOpen(value, opts) : true; } });
   t.after(() => controller.dispose());
   const el = suffix => h.element('projectEventTrace' + suffix);
@@ -151,4 +151,15 @@ test('the trace panel has no network or publishing port and owns its responsive 
   assert.match(css, /@media \(max-width: 600px\)/); assert.match(css, /white-space: pre-wrap/); assert.match(css, /overflow-wrap: anywhere/);
   const html = await fs.readFile(new URL('../../web/index.html', import.meta.url), 'utf8');
   assert.equal(html.match(/href="\/web\/project-event-observation.css"/g)?.length, 1);
+});
+
+
+test('optional event-review navigation exposes a guarded selection and restores focus independently of sources', async t => {
+  const calls = [], h = await fixture(t, { onReviewEvent: (sequence, ticket) => calls.push({ sequence, ...ticket }) }); h.set(snapshot());
+  const button = h.rows()[0].querySelector('.project-event-review-open'); assert.equal(button.hidden, false); button.click();
+  assert.equal(calls[0].sequence, 1); assert.equal(calls[0].isCurrent(), true); assert.equal(h.calls.length, 0);
+  assert.equal(h.controller.focusEvent(1), true); assert.equal(h.document.activeElement, button);
+  h.filter('no-match'); assert.equal(calls[0].isCurrent(), false); assert.equal(h.controller.focusEvent(1), true); assert.equal(h.document.activeElement, h.el('Search'));
+  button.dispatch('click'); assert.equal(calls.length, 1); h.filter(''); h.context.sessionOwner = 'next-run'; h.controller.refresh(); assert.equal(h.controller.focusEvent(1), false);
+  const legacy = await fixture(t); legacy.set(snapshot()); assert.equal(legacy.rows()[0].querySelector('.project-event-review-open').hidden, true);
 });

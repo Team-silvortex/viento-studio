@@ -1,0 +1,43 @@
+✔ trial stays opt-in; collapsed refresh does not inspect tables or evaluate samples (59.331836ms)
+✔ ordered branches and all/any short circuit show evaluated operands without claiming runtime execution (59.59179ms)
+✔ missing keys and mismatched types remain distinct, including not-equal conditions (42.416906ms)
+✔ shared selectors are candidate-scoped and deduplicated; switching samples restores local per-key buffers (62.827264ms)
+✔ a selector removed from the table cannot recover an old sample when re-added (24.388699ms)
+✔ samples retain distinct empty string, false and zero and reject incomplete numeric input (111.081729ms)
+✔ manual string samples enforce UTF-8 and Unicode while keeping literal markup and NUL (29.872792ms)
+✔ table and manual input changes clear results and revoke retained field-location callbacks (37.901061ms)
+✔ unobserved table or sample edits cannot use previous result locations (37.881121ms)
+✔ table invalidation and removed current states clear results without silently choosing another state (34.546556ms)
+✔ close, availability loss, disabled context and reset never restore an old result (127.394135ms)
+✔ capability withdrawal affects trial results while existing samples remain editable (52.609428ms)
+✔ language refresh preserves sample nodes, focus, selection and current result without rerunning comparisons (49.555389ms)
+✔ construction avoids parent TDZ, generation changes revoke results, and disposal clears retained callbacks (35.203353ms)
+✔ admission and evaluation failures leave no result and all labels have English and Japanese translations (22.332981ms)
+✔ temporarily invalid table fields preserve shared samples but discard the old result (34.021733ms)
+✔ all sixty-four candidates remain available with unique DOM IDs and bounded reads on language refresh (70.582101ms)
+✔ run is provisional; event then completion advance only on explicit adoption and undo restores raw inputs (74.26415ms)
+✔ no match and self loops are recorded as distinct steps without pretending a state change (43.745479ms)
+✔ completion ignores hidden invalid event inputs and the legacy comparator capability (34.606377ms)
+✔ switching trigger modes keeps shared raw type buffers and incomplete values independently (61.579312ms)
+✔ editing the next sample keeps adopted history while a manual state jump starts a new sequence (51.923566ms)
+✔ folding preserves steps and raw samples but revokes pending results and hidden operations (47.827797ms)
+✔ a changed author table while folded clears the sequence before reopening can adopt (35.458097ms)
+✔ history details are read-only and constructed once; appending preserves prior nodes and focus (44.657322ms)
+✔ double adoption cannot append twice and revoked location callbacks never revive after undo and reappend (45.438236ms)
+✔ clear history retains the current state and sample but revokes the pending trial (51.711975ms)
+✔ the 32-step limit disables adoption but keeps independent trial and undo available (715.031888ms)
+✔ normalized 64KiB sample history budget prevents append and is released by undo (236.198785ms)
+✔ completion trials stay usable when hidden raw undo buffers exceed the separate bound (33.843952ms)
+✔ language changes preserve current inputs and expanded history DOM, focus and read-only details (39.988624ms)
+✔ author invalidation, session reset and inactive contexts clear steps without resurrecting old details (143.510137ms)
+✔ raw undo budget counts UTF-8 across steps and releases it on undo or clear (124.398271ms)
+✔ an observed loss of ownership permanently revokes pending adoption even if silent values are restored (247.966737ms)
+✔ completion ownership ignores hidden event buffers and the legacy comparison marker (19.811038ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2153.873377

@@ -2,8 +2,8 @@ import { t, onLanguageChange } from '../i18n/index.js';
 
 // The host supplies admitted bounded event history. This view has no publishing,
 // subscription or state ports, and never derives delivery success from logs.
-export function setupProjectEventObservation({ container, getContext = () => ({}), onOpen = async () => false } = {}) {
-  if (!container) return Object.freeze({ setSnapshot() {}, refresh() {}, dispose() {} });
+export function setupProjectEventObservation({ container, getContext = () => ({}), onOpen = async () => false, onReviewEvent = null } = {}) {
+  if (!container) return Object.freeze({ setSnapshot() {}, focusEvent() { return false; }, refresh() {}, dispose() {} });
   const document = container.ownerDocument;
   container.innerHTML = `<section id="projectEventTracePanel" class="project-event-observation" hidden aria-labelledby="projectEventTraceTitle">
     <h3 id="projectEventTraceTitle"></h3><p id="projectEventTraceNote" class="build-hint"></p>
@@ -66,7 +66,16 @@ export function setupProjectEventObservation({ container, getContext = () => ({}
     const origin = node('p', '', 'project-event-origin'), empty = node('p', '', 'build-hint'), deliveries = node('ul', '', 'project-event-deliveries');
     const record = { entry, signature: publisherSignature(entry), item, sequence, origin, empty, deliveries, recipients: new Map() };
     record.source = sourceButton(entry.origin, 'publisher', () => records.get(entry.sequence) === record && !item.hidden);
-    item.append(heading, sequence, value, origin, record.source, empty, deliveries); return record;
+    record.review = node('button', '', 'doc-btn project-event-review-open'); record.review.type = 'button'; record.review.dataset.sequence = String(entry.sequence);
+    record.review.addEventListener('click', () => {
+      const current = updateContext();
+      if (!canUse(current) || !snapshot || typeof onReviewEvent !== 'function' || records.get(entry.sequence) !== record || item.hidden) return;
+      const ticket = { generation, sessionOwner, navigationOwner };
+      const isCurrent = () => { const latest = context(); return canUse(latest) && latest.sessionOwner === ticket.sessionOwner
+        && latest.navigationOwner === ticket.navigationOwner && generation === ticket.generation && Boolean(snapshot) && records.get(entry.sequence) === record && !item.hidden; };
+      onReviewEvent(entry.sequence, { isCurrent });
+    });
+    item.append(heading, sequence, value, origin, record.source, record.review, empty, deliveries); return record;
   }
   function createDelivery(record, delivery) {
     const item = node('li', '', 'project-event-delivery'); item.dataset.subscriptionId = String(delivery.subscriptionId); item.dataset.status = delivery.status;
@@ -104,6 +113,7 @@ export function setupProjectEventObservation({ container, getContext = () => ({}
       setText(record.sequence, t('已发布 · 序号 {0}', entry.sequence));
       setText(record.origin, t('发布来源：第 {0} 次访问 · {1} · {2}', entry.origin.visitIndex, entry.origin.source.sourcePath, entry.origin.source.propertyPath));
       sourceState(record.source, current, true);
+      setText(record.review, t('回看此事件')); record.review.hidden = typeof onReviewEvent !== 'function'; record.review.disabled = !canUse(current);
       setText(record.empty, t('发布时没有订阅者。')); record.empty.hidden = entry.deliveries.length > 0;
       const recipients = [];
       for (const delivery of entry.deliveries) {
@@ -137,6 +147,12 @@ export function setupProjectEventObservation({ container, getContext = () => ({}
         if (!snapshot) { invalidate(); records.clear(); list.replaceChildren(); }
       }
       render();
+    },
+    focusEvent(sequence) {
+      const current = updateContext(); if (!canUse(current) || !snapshot) return false;
+      const record = records.get(sequence);
+      if (record && !record.item.hidden && !record.review.hidden && !record.review.disabled && list.contains(record.review)) record.review.focus(); else search.focus();
+      return true;
     },
     refresh: render,
     dispose() {

@@ -1,3 +1,4 @@
+import { projectAnimationStateEntryTriggerEvidence } from './project-animation-state-entry-triggers.mjs';
 // Read-only navigation over validated observations. A following command is
 // later evidence from the same binding/visit, never proof of entry causality.
 import { queryProjectRuntimeObservation } from './project-runtime-query.mjs';
@@ -10,7 +11,7 @@ const key = origin => `${origin.visitIndex}/${origin.sceneId}/${origin.bindingId
 export function createProjectAnimationStateReview(input) {
   let view;
   try { view = queryProjectRuntimeObservation(input); } catch { throw invalid(); }
-  if (view.project.protocolVersion !== 9) throw invalid();
+  if (![9, 10].includes(view.project.protocolVersion)) throw invalid();
   const project = view.project, entries = freeze(project.animationStateEntries.entries), groups = new Map(), commands = new Map(), terminals = new Map();
   for (const entry of entries) {
     const scope = key(entry.origin);
@@ -29,7 +30,7 @@ export function createProjectAnimationStateReview(input) {
   for (const group of groups.values()) freeze(group);
   for (const group of commands.values()) freeze(group);
   const model = Object.freeze({ entries });
-  models.add(model); indexes.set(model, { groups, commands, terminals });
+  models.add(model); indexes.set(model, { groups, commands, terminals, events: project.events, completions: project.animationCompletions });
   return model;
 }
 
@@ -38,7 +39,7 @@ export function queryProjectAnimationStateReview(model, sequence) {
   const entry = model.entries.find(entry => entry.sequence === sequence);
   if (!entry) return null;
   const index = indexes.get(model), scope = key(entry.origin), entries = index.groups.get(scope), position = entries.indexOf(entry);
-  return freeze({ entry, entries, position: position + 1,
+  return freeze({ entry, entries, ...(entry.trigger ? { triggerEvidence: projectAnimationStateEntryTriggerEvidence(entry, index.events, index.completions) } : {}), position: position + 1,
     previousSequence: entries[position - 1]?.sequence ?? null, nextSequence: entries[position + 1]?.sequence ?? null,
     followingCommands: (index.commands.get(scope) || []).filter(command => command.sequence > entry.commandSequence),
     terminal: index.terminals.get(scope) || null });

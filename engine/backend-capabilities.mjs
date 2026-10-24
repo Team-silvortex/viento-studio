@@ -110,7 +110,7 @@ export function validateExecutionBackendDescriptor(input) {
   for (const plan of value.plans) {
     exact(plan, ['kind', 'schemaVersion', 'runtimeProtocolVersion']);
     if (!(plan.kind === 'scene2d' && [1, 2, 3].includes(plan.schemaVersion) && [1, 2, 3].includes(plan.runtimeProtocolVersion)
-      || plan.kind === 'project' && plan.schemaVersion === 1 && [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(plan.runtimeProtocolVersion))) throw invalid();
+      || plan.kind === 'project' && plan.schemaVersion === 1 && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(plan.runtimeProtocolVersion))) throw invalid();
     const key = `${plan.kind}:${plan.schemaVersion}`;
     if (plans.has(key)) throw invalid();
     plans.add(key);
@@ -186,10 +186,10 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
     if (plan.kind === 'project') {
       if (plan.scenes.some(scene => scene.animation) && !backend.capabilities.includes('project.animation-control')) diagnostics.push(diagnostic('build_capability_missing',
         'Backend lacks capability: project.animation-control', { capability: 'project.animation-control' }));
-      if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && [7, 8, 9].includes(item.runtimeProtocolVersion))
+      if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && [7, 8, 9, 10].includes(item.runtimeProtocolVersion))
         && !backend.capabilities.includes('project.animation-completion')) diagnostics.push(diagnostic('build_capability_missing',
         'Backend lacks capability: project.animation-completion', { capability: 'project.animation-completion' }));
-      for (const [protocols, capability] of [[[8, 9], 'project.animation-state-snapshots'], [[9], 'project.animation-state-entries']]) {
+      for (const [protocols, capability] of [[[8, 9, 10], 'project.animation-state-snapshots'], [[9, 10], 'project.animation-state-entries'], [[10], 'project.animation-state-entry-triggers']]) {
         if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && protocols.includes(item.runtimeProtocolVersion))
           && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing', `Backend lacks capability: ${capability}`, { capability }));
       }

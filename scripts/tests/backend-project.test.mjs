@@ -96,9 +96,9 @@ test('the readable published manifest must fit its byte budget even when compact
 });
 
 
-test('protocol 9 assembly manifests and delivery reviews admit 1024 generated files plus 128 resources', async t => {
+for (const protocolVersion of [9, 10]) test(`protocol ${protocolVersion} assembly manifests and delivery reviews admit 1024 generated files plus 128 resources`, async t => {
   const f = await projectAssemblyBuildFixture(t), p = structuredClone(f.project);
-  p.backend.protocolVersion = 9; p.backend.version = '0.18.0';
+  p.backend.protocolVersion = protocolVersion; p.backend.version = protocolVersion === 9 ? '0.18.0' : '0.19.0';
   const digest = 'a'.repeat(64);
   p.files = [{ path: p.project.entry, size: 1, sha256: digest, role: 'generated', resourceId: null, sourceObjectId: null },
     ...Array.from({ length: 1023 }, (_, index) => ({ path: `project/wrappers/${index}.gd`, size: 1, sha256: digest,
@@ -123,7 +123,7 @@ test('protocol 9 assembly manifests and delivery reviews admit 1024 generated fi
     assert.throws(() => createBackendProjectDeliveryReview(next, digest), { errorCode: 'backend_project_delivery_invalid' });
   }
   const standalone = structuredClone((await backendProjectFixture(t)).project);
-  standalone.backend.protocolVersion = 9;
+  standalone.backend.protocolVersion = protocolVersion;
   standalone.files = p.files.filter(file => file.role === 'generated').slice(0, 641);
   standalone.resources = [];
   assert.ok(standalone.files.some(file => file.path === standalone.project.entry));

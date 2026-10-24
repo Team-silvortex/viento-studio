@@ -1,3 +1,6 @@
+import { createProjectEventReview, queryProjectEventReview } from '../../engine/project-event-review.mjs';
+import { describeProjectAnimationStateEntryTrigger } from '../../web/modules/app-project-animation-state-trigger.js';
+import { validateProjectAnimationStateTriggeredEntriesSnapshot } from '../../engine/project-animation-state-entry-triggers.mjs';
 import { createProjectAnimationStateReview, queryProjectAnimationStateReview } from '../../engine/project-animation-state-review.mjs';
 import { validateProjectAnimationStateEntriesSnapshot } from '../../engine/project-animation-state-entries.mjs';
 import { validateProjectAnimationStatesSnapshot } from '../../engine/project-animation-states.mjs';
@@ -55,16 +58,16 @@ function state({ protocolVersion = 5, task = 'run-1', active = second } = {}) {
     job: { id: task, kind: 'run', status: 'running', phase: 'running', backendId, sceneId: assemblyId, targetKind: 'project', targetId: assemblyId,
       buildId: 'build-1', snapshotId, diagnostics: [], events: [], logs: '', runtime: {
         format: 'viento-runtime-observation', schemaVersion: 1, sceneObjectId: active, protocolVersion: 1, phase: 'ready', sequence: 1, actors: [],
-        project: { assemblyId, entrySceneId: first, activeSceneId: active, visits, ...(protocolVersion === 1 ? {} : { protocolVersion, sharedState: shared(), ...(protocolVersion >= 3 ? { events: trace() } : {}), ...(protocolVersion >= 4 ? { audioCommands: audio() } : {}), ...(protocolVersion >= 5 ? { animationCommands: protocolAnimation(protocolVersion) } : {}), ...(protocolVersion >= 7 ? { animationCompletions: completion() } : {}), ...(protocolVersion >= 8 ? { animationStates: states() } : {}), ...(protocolVersion === 9 ? { animationStateEntries: stateEntries() } : {}) }) },
+        project: { assemblyId, entrySceneId: first, activeSceneId: active, visits, ...(protocolVersion === 1 ? {} : { protocolVersion, sharedState: shared(), ...(protocolVersion >= 3 ? { events: trace() } : {}), ...(protocolVersion >= 4 ? { audioCommands: audio() } : {}), ...(protocolVersion >= 5 ? { animationCommands: protocolAnimation(protocolVersion) } : {}), ...(protocolVersion >= 7 ? { animationCompletions: completion() } : {}), ...(protocolVersion >= 8 ? { animationStates: states() } : {}), ...([9, 10].includes(protocolVersion) ? { animationStateEntries: protocolVersion === 10 ? { sequence: 1, entries: stateEntries().entries.map(entry => ({ ...entry, trigger: { kind: 'direct' } })) } : stateEntries() } : {}) }) },
       } },
   };
 }
 async function fixture(initial = state(), options = {}) {
   let payload = initial;
   const calls = [], opened = [], context = { editable: true, dirty: false, creating: false, busy: false, path: 'documents/game.json' };
-  const h = await dialogHarness('app-project-build', { PROJECT_BUILD_API_PATH: '/api/project-build', createProjectAnimationStateReview: value => createProjectAnimationStateReview(JSON.parse(JSON.stringify(value))), queryProjectAnimationStateReview, validateProjectAnimationStateEntriesSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationStateEntriesSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationStatesSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationStatesSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationCompletionsSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationCompletionsSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationCommandsSnapshot: (value, options) => JSON.parse(JSON.stringify(validateProjectAnimationCommandsSnapshot(JSON.parse(JSON.stringify(value)), options))), queryProjectRuntimeObservation, querySceneRuntimeObservation,
+  const h = await dialogHarness('app-project-build', { PROJECT_BUILD_API_PATH: '/api/project-build', createProjectEventReview: value => createProjectEventReview(JSON.parse(JSON.stringify(value))), queryProjectEventReview, describeProjectAnimationStateEntryTrigger, validateProjectAnimationStateTriggeredEntriesSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationStateTriggeredEntriesSnapshot(JSON.parse(JSON.stringify(value))))), createProjectAnimationStateReview: value => createProjectAnimationStateReview(JSON.parse(JSON.stringify(value))), queryProjectAnimationStateReview, validateProjectAnimationStateEntriesSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationStateEntriesSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationStatesSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationStatesSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationCompletionsSnapshot: value => JSON.parse(JSON.stringify(validateProjectAnimationCompletionsSnapshot(JSON.parse(JSON.stringify(value))))), validateProjectAnimationCommandsSnapshot: (value, options) => JSON.parse(JSON.stringify(validateProjectAnimationCommandsSnapshot(JSON.parse(JSON.stringify(value)), options))), queryProjectRuntimeObservation, querySceneRuntimeObservation,
     fetchJsonApiRequest: async (url, request) => { calls.push(request.body ? JSON.parse(request.body) : null); return { payload }; } });
-  for (const name of ['app-project-state-observation', 'app-project-event-observation', 'app-project-audio-observation', 'app-project-animation-observation', 'app-project-animation-completion-observation', 'app-project-animation-state-observation', 'app-project-animation-state-review', 'app-project-animation-state-entry-observation']) {
+  for (const name of ['app-project-state-observation', 'app-project-event-observation', 'app-project-event-review', 'app-project-audio-observation', 'app-project-animation-observation', 'app-project-animation-completion-observation', 'app-project-animation-state-observation', 'app-project-animation-state-review', 'app-project-animation-state-entry-observation']) {
     const module = (await fs.readFile(new URL(`../../web/modules/${name}.js`, import.meta.url), 'utf8'))
       .replace(/^import[^\n]+\n/gm, '').replaceAll('export ', '');
     vm.runInContext(module, h.runtime);
@@ -73,7 +76,7 @@ async function fixture(initial = state(), options = {}) {
     openSource: (...args) => { opened.push(args); return options.openSource ? options.openSource(...args) : true; } });
   controller.setAvailable(true); h.element('projectBuildBtn').click(); await flushDialogs();
   return { ...h, context, controller, calls, opened, async refresh(next) { payload = next; h.element('projectBuildRefresh').click(); await flushDialogs(); },
-    el: suffix => h.element('projectAnimationCommands' + suffix), reviewEl: suffix => h.element('projectAnimationStateReview' + suffix), animationEntryEl: suffix => h.element('projectAnimationStateEntries' + suffix), animationStateEl: suffix => h.element('projectAnimationStates' + suffix), completionEl: suffix => h.element('projectAnimationCompletions' + suffix), audioEl: suffix => h.element('projectAudioCommands' + suffix), eventEl: suffix => h.element('projectEventTrace' + suffix), stateEl: suffix => h.element('projectSharedState' + suffix) };
+    el: suffix => h.element('projectAnimationCommands' + suffix), eventReviewEl: suffix => h.element('projectEventReview' + suffix), reviewEl: suffix => h.element('projectAnimationStateReview' + suffix), animationEntryEl: suffix => h.element('projectAnimationStateEntries' + suffix), animationStateEl: suffix => h.element('projectAnimationStates' + suffix), completionEl: suffix => h.element('projectAnimationCompletions' + suffix), audioEl: suffix => h.element('projectAudioCommands' + suffix), eventEl: suffix => h.element('projectEventTrace' + suffix), stateEl: suffix => h.element('projectSharedState' + suffix) };
 }
 
 test('protocol5 adds animation records while retaining audio, event and state panels; older protocols keep their presentations', async () => {
@@ -384,6 +387,103 @@ test('controller review host revokes delayed navigation on dirty creation visit 
     else if (change === 'close') h.element('projectBuildDialog').close();
     else if (change === 'selection') h.reviewEl('Next').click();
     else await h.refresh(state({ protocolVersion: 9, ...(change === 'visit' ? { active: first } : { task: 'run-2' }) }));
+    assert.equal(h.opened[0][2].isCurrent(), false, change); read.resolve(); await flushDialogs(); assert.deepEqual(writes, [], change);
+  }
+});
+
+
+test('protocol10 keeps all project observation panels and routes recorded entry sources into controller review', async () => {
+  const h = await fixture(state({ protocolVersion: 10 }));
+  for (const el of [h.animationEntryEl, h.animationStateEl, h.completionEl, h.el, h.audioEl, h.eventEl, h.stateEl]) assert.equal(el('Panel').hidden, false);
+  assert.match(h.animationEntryEl('Entries').textContent, /进入来源：直接进入/);
+  h.animationEntryEl('Entries').querySelector('.project-animation-state-entry-review').click();
+  assert.equal(h.reviewEl('Panel').hidden, false); assert.equal(h.reviewEl('Trigger').dataset.kind, 'direct');
+  assert.equal(h.reviewEl('TriggerDetail').hidden, true); assert.equal(h.reviewEl('TriggerPayload').hidden, true);
+  await h.refresh(state({ protocolVersion: 9 }));
+  assert.match(h.animationEntryEl('Entries').textContent, /进入来源：未记录（协议 9）/);
+  h.animationEntryEl('Entries').querySelector('.project-animation-state-entry-review').click();
+  assert.equal(h.reviewEl('Trigger').dataset.kind, 'unrecorded');
+  assert.ok(h.calls.every(call => call === null));
+});
+
+// The event and controller views communicate through explicit host ports.
+function eventReviewState(options = {}) {
+  const result = state({ protocolVersion: 10, ...options }), project = result.job.runtime.project;
+  project.events.entries[0].deliveries[0].origin = origin();
+  project.animationStateEntries.entries[0].trigger = { kind: 'event', eventSequence: 1, subscriptionId: 1 };
+  project.events.entries.push({ ...structuredClone(project.events.entries[0]), sequence: 2, value: false });
+  project.events.sequence = 2;
+  return result;
+}
+
+test('event review crosses into the exact controller history through the build host and stays independent of either filter', async () => {
+  const h = await fixture(eventReviewState());
+  const opener = h.eventEl('Entries').querySelector('.project-event-review-open'); opener.click();
+  assert.equal(h.eventReviewEl('Panel').hidden, false); assert.equal(h.eventReviewEl('Panel').dataset.sequence, '1');
+  const entry = h.eventReviewEl('Recipients').querySelector('.project-event-review-animation-entry');
+  assert.equal(entry.dataset.entrySequence, '1'); entry.click(); await flushDialogs();
+  assert.equal(h.reviewEl('Panel').hidden, false); assert.equal(h.reviewEl('Panel').dataset.sequence, '1');
+  assert.equal(h.reviewEl('Trigger').dataset.kind, 'event'); assert.equal(h.document.activeElement, h.reviewEl('Selection'));
+  for (const search of [h.eventEl('Search'), h.animationEntryEl('Search')]) { search.value = 'no-match'; search.dispatch('input'); }
+  assert.equal(h.eventReviewEl('Panel').hidden, false); assert.equal(h.reviewEl('Panel').hidden, false);
+  h.eventReviewEl('Close').click(); assert.equal(h.document.activeElement, h.eventEl('Search'));
+  h.eventEl('Search').value = ''; h.eventEl('Search').dispatch('input'); opener.click();
+  await h.refresh(eventReviewState({ task: 'run-2' }));
+  assert.equal(h.eventReviewEl('Panel').hidden, true); assert.equal(h.reviewEl('Panel').hidden, true);
+  assert.ok(h.calls.every(call => call === null), 'review issues no build or run mutations');
+});
+
+test('event review distinguishes an absent association and old protocol evidence without guessing from nearby entries', async () => {
+  const h = await fixture(eventReviewState());
+  h.eventEl('Entries').querySelector('.project-event-review-open').click();
+  const selection = h.eventReviewEl('Selection'); selection.value = '2'; selection.dispatch('change');
+  assert.equal(h.eventReviewEl('Panel').dataset.sequence, '2');
+  assert.equal(h.eventReviewEl('Recipients').querySelector('.project-event-review-animation-entry').hidden, true);
+  assert.match(h.eventReviewEl('Recipients').textContent, /未采集/);
+  const old = state({ protocolVersion: 9 }); old.job.runtime.project.events.entries[0].deliveries[0].origin = origin();
+  await h.refresh(old); h.eventEl('Entries').querySelector('.project-event-review-open').click();
+  assert.equal(h.eventReviewEl('Panel').hidden, false);
+  assert.equal(h.eventReviewEl('Recipients').querySelector('.project-event-review-animation-entry').hidden, true);
+  assert.match(h.eventReviewEl('Panel').textContent, /未记录.*来源/);
+  const invalid = eventReviewState(); invalid.job.runtime.project.animationStateEntries.entries[0].trigger.subscriptionId = 2;
+  await h.refresh(invalid); assert.equal(h.eventReviewEl('Panel').hidden, true); assert.equal(h.eventEl('Panel').hidden, true);
+});
+
+test('event review publisher and subscriber navigation survives own loading and a later event', async () => {
+  for (const role of ['publisher', 'subscriber']) {
+    const read = deferred(), writes = []; let h;
+    h = await fixture(eventReviewState(), { openSource: async (path, location, ticket) => {
+      h.context.busy = true; h.controller.setAvailable(true);
+      try { await read.promise; if (!ticket.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    h.eventEl('Entries').querySelector('.project-event-review-open').click();
+    const button = role === 'publisher' ? h.eventReviewEl('PublisherSource') : h.eventReviewEl('Recipients').querySelector('.project-event-review-recipient-source');
+    button.click(); await flushDialogs();
+    assert.equal(h.opened.length, 1); assert.deepEqual(JSON.parse(JSON.stringify(h.opened[0][1])), source);
+    const next = eventReviewState(); const events = next.job.runtime.project.events;
+    events.entries.push({ ...structuredClone(events.entries[1]), sequence: 3, value: 'later' }); events.sequence = 3;
+    await h.refresh(next); assert.equal(h.opened[0][2].isCurrent(), true);
+    read.resolve(); await flushDialogs(); await flushDialogs(); assert.deepEqual(writes, [source.sourcePath]);
+    assert.equal(h.element('projectBuildDialog').open, false);
+  }
+});
+
+test('event review source navigation is revoked by editor, session, selection and source identity changes', async () => {
+  for (const change of ['dirty', 'creating', 'visit', 'task', 'close', 'selection', 'source']) {
+    const read = deferred(), writes = []; let h;
+    h = await fixture(eventReviewState(), { openSource: async (path, location, ticket) => {
+      h.context.busy = true;
+      try { await read.promise; if (!ticket.isCurrent()) return false; writes.push(path); return true; }
+      finally { h.context.busy = false; }
+    } });
+    h.eventEl('Entries').querySelector('.project-event-review-open').click(); h.eventReviewEl('PublisherSource').click(); await flushDialogs();
+    if (change === 'dirty' || change === 'creating') h.context[change] = true;
+    else if (change === 'close') h.element('projectBuildDialog').close();
+    else if (change === 'selection') { const selected = h.eventReviewEl('Selection'); selected.value = '2'; selected.dispatch('change'); }
+    else if (change === 'source') {
+      const next = eventReviewState(); next.job.runtime.project.events.entries[0].origin.source = { ...source, sourceRevision: snapshotId }; await h.refresh(next);
+    } else await h.refresh(eventReviewState(change === 'visit' ? { active: first } : { task: 'run-2' }));
     assert.equal(h.opened[0][2].isCurrent(), false, change); read.resolve(); await flushDialogs(); assert.deepEqual(writes, [], change);
   }
 });

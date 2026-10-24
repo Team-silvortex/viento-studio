@@ -61,7 +61,7 @@ test('state entry wrappers are shared per source and keep author source maps unc
   const duplicate='71717171-7171-4171-8171-000000000001';
   const f=await fixture(t,{edit:async f=>f.edit('documents/behaviors/demo.json',document=>document.bindings.splice(1,0,{...structuredClone(document.bindings[0]),bindingId:duplicate}))});
   const manifest=JSON.parse(f.generated.files.get('assembly.json'));
-  assert.equal(manifest.schemaVersion,10);assert.equal(f.generated.backend.protocolVersion,9);
+  assert.equal(manifest.schemaVersion,11);assert.equal(f.generated.backend.protocolVersion,10);
   assert.deepEqual(manifest.animationStateWrappers,[{scriptObjectId:f.scriptId,path:`animation-state-wrappers/${f.scriptId}.gd`}]);
   assert.equal(manifest.scenes[0].animationStateControllers.length,2);
   assert.equal(f.generated.files.get(`behaviors/${f.scriptId}.gd`).toString(),f.content);
@@ -78,7 +78,7 @@ test('state entry wrappers are shared per source and keep author source maps unc
   await fs.writeFile(path.join(directory,'assembly.json'),JSON.stringify(old));const legacy=await godotAssemblyScripts(directory);assert.ok(!legacy.includes('project-animation-state-entry-runtime.gd'));assert.ok(!legacy.some(file=>file.startsWith('animation-state-wrappers/')));
 });
 
-test('only protocol9 generated outputs get the bounded 1024 file allowance',async t=>{
+test('only protocol9/10 generated outputs get the bounded 1024 file allowance',async t=>{
   const f=await fixture(t),files=new Map(f.generated.files);while(files.size<1024)files.set(`extra/${files.size}.txt`,Buffer.from('fixture'));
   assert.equal(validateGeneratedExecutionProject(adapter,f.captured.plan,{...f.generated,files}).files.size,1024);
   files.set('extra/overflow.txt',Buffer.from('fixture'));assert.throws(()=>validateGeneratedExecutionProject(adapter,f.captured.plan,{...f.generated,files}));

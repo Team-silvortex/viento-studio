@@ -1,3 +1,4 @@
+import { describeProjectAnimationStateEntryTrigger } from '../../web/modules/app-project-animation-state-trigger.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -29,7 +30,7 @@ function observed({ terminal = true, commands = true } = {}) {
 async function fixture(t, overrides = {}) {
   let dictionary = {}, languageChanged = () => {}, subscriptions = 0;
   const calls = [], closed = [], context = { available: true, visible: true, sessionOwner: 'run-1', navigationOwner: 'visit-1', canOpenSource: true, canContinueSource: true };
-  const h = await dialogHarness('app-project-animation-state-review', { createProjectAnimationStateReview, queryProjectAnimationStateReview,
+  const h = await dialogHarness('app-project-animation-state-review', { describeProjectAnimationStateEntryTrigger, createProjectAnimationStateReview, queryProjectAnimationStateReview,
     t: (key, ...values) => (dictionary[key] || key).replace(/\{(\d+)\}/g, (_, index) => values[index] ?? ''),
     onLanguageChange(callback) { languageChanged = callback; subscriptions++; return () => { languageChanged = () => {}; subscriptions--; }; },
   });
@@ -173,4 +174,67 @@ test('review rejects accessor snapshots and owns responsive translated read-only
   const css = await fs.readFile(new URL('../../web/project-animation-state-review.css', import.meta.url), 'utf8');
   assert.match(css, /@media \(max-width: 600px\)/); assert.match(css, /overflow-wrap: anywhere/); assert.match(css, /flex-direction: column/);
   const html = await fs.readFile(new URL('../../web/index.html', import.meta.url), 'utf8'); assert.equal(html.match(/href="\/web\/project-animation-state-review.css"/g)?.length, 1);
+});
+
+
+function triggeredObservation({ status = 'pending', value = '<img src=x>', kind = 'event' } = {}) {
+  const input = observed({ terminal: false, commands: false }); input.project.protocolVersion = 10;
+  for (const row of input.project.animationStateEntries.entries) row.trigger = { kind: 'direct' };
+  input.project.animationStateEntries.entries[0].trigger = { kind: 'initial' };
+  input.project.animationStateEntries.entries[1].trigger = { kind: 'initial' };
+  const selected = input.project.animationStateEntries.entries[2];
+  const delivery = { subscriptionId: 17, origin: origin(), status };
+  if (kind === 'event') {
+    input.project.events = { sequence: 1, entries: [{ sequence: 1, name: 'action', value, origin: origin(2), deliveries: [delivery] }] };
+    selected.trigger = { kind: 'event', eventSequence: 1, subscriptionId: 17 };
+  } else {
+    const animation = command().animation;
+    const completion = { sequence: 1, commandSequence: 0, visitIndex: 1, sceneId: id(1),
+      state: { sceneObjectId: id(1), phase: 'finished', positionSeconds: 1, timeSeconds: 1, clipId: null }, animation, clip: null, deliveries: [delivery] };
+    input.project.animationCompletions = { sequence: 1, entries: [completion] };
+    selected.trigger = { kind: 'completed', completionSequence: 1, subscriptionId: 17 };
+    for (const row of input.project.animationStateEntries.entries.slice(2)) row.timeSeconds = 1;
+  }
+  return input;
+}
+
+test('protocol10 review shows verified event values and distinguishes captured entry from pending callback return', async t => {
+  const h = await fixture(t); assert.equal(h.set(triggeredObservation()), true); assert.equal(h.select(3), true);
+  assert.match(h.el('Trigger').textContent, /事件 #1 · 订阅 17/); assert.equal(h.el('Trigger').dataset.kind, 'event');
+  assert.equal(h.el('TriggerDetail').textContent, '关联事件：action'); assert.equal(h.el('TriggerPayload').textContent, '事件值："<img src=x>"');
+  assert.equal(h.container.querySelector('img'), null); assert.equal(h.el('TriggerDelivery').dataset.status, 'pending');
+  assert.match(h.el('TriggerDelivery').textContent, /进入已记录.*尚未确认/); assert.doesNotMatch(h.el('TriggerDelivery').textContent, /失败|成功/);
+  assert.match(h.el('TriggerNote').textContent, /不包含分支命中或条件求值过程/);
+  const selected = h.el('Selection'); selected.focus(); const option = selected.children[1];
+  assert.equal(h.set(triggeredObservation({ status: 'handled' })), true);
+  assert.equal(h.el('Panel').dataset.sequence, '3'); assert.equal(h.document.activeElement, selected); assert.equal(selected.children[1], option);
+  assert.equal(h.el('TriggerDelivery').dataset.status, 'handled'); assert.match(h.el('TriggerDelivery').textContent, /同步回调已成功返回.*仍需查看执行记录/);
+  for (const value of [false, 0, '']) {
+    assert.equal(h.set(triggeredObservation({ value })), true); assert.equal(h.el('TriggerPayload').textContent, '事件值：' + JSON.stringify(value));
+  }
+});
+
+test('protocol10 review keeps initial direct legacy and completion sources separate and clears irrelevant details', async t => {
+  const h = await fixture(t); h.set(triggeredObservation({ kind: 'completed' })); h.select(3);
+  assert.equal(h.el('Trigger').dataset.kind, 'completed'); assert.match(h.el('Trigger').textContent, /自然完成 #1/);
+  assert.equal(h.el('TriggerDetail').textContent, '完成对象：完整动画'); assert.equal(h.el('TriggerPayload').hidden, true);
+  h.select(1); assert.match(h.el('Trigger').textContent, /初始化回调/);
+  for (const suffix of ['TriggerDetail', 'TriggerPayload', 'TriggerDelivery']) assert.equal(h.el(suffix).hidden, true);
+  h.select(4); assert.equal(h.el('Trigger').dataset.kind, 'direct'); assert.match(h.el('Trigger').textContent, /无事件或完成回调上下文/);
+  h.set(observed()); h.select(3); assert.match(h.el('Trigger').textContent, /未记录（协议 9）/);
+  for (const suffix of ['TriggerDetail', 'TriggerPayload', 'TriggerDelivery', 'TriggerNote']) assert.equal(h.el(suffix).hidden, true);
+});
+
+test('protocol10 review translates source evidence without replacing selection and rejects orphaned or skipped callbacks', async t => {
+  const h = await fixture(t); h.set(triggeredObservation()); h.select(3); h.el('Selection').focus();
+  for (const dictionary of [en, ja, {}]) {
+    h.language(dictionary); assert.equal(h.el('Panel').dataset.sequence, '3'); assert.equal(h.document.activeElement, h.el('Selection'));
+    assert.equal(h.el('TriggerDetail').textContent, (dictionary['关联事件：{0}'] || '关联事件：{0}').replace('{0}', 'action'));
+    assert.equal(h.el('TriggerDelivery').textContent, dictionary['进入已记录；此订阅的回调结果尚未确认。'] || '进入已记录；此订阅的回调结果尚未确认。');
+  }
+  for (const mutate of [input => input.project.protocolVersion = 9, input => input.project.protocolVersion = 11,
+    input => input.project.events.entries[0].deliveries[0].status = 'skipped', input => input.project.events.entries[0].deliveries[0].origin = origin(2),
+    input => input.project.animationStateEntries.entries[2].trigger.eventSequence = 2]) {
+    const input = triggeredObservation(); mutate(input); assert.equal(h.set(input), false); assert.equal(h.el('Panel').hidden, true);
+  }
 });

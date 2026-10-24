@@ -108,15 +108,16 @@ export function validateGeneratedExecutionProject(adapter, plan, generated) {
   const projectClips = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation?.document?.schemaVersion === 3);
   const legacyProjectProtocol = selectedPlan?.kind === 'project' && selectedPlan.schemaVersion === 1
     && Array.isArray(plan.scenes) && (
-      [5, 6, 7, 8, 9].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 4 && !projectAnimation
+      [5, 6, 7, 8, 9, 10].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 4 && !projectAnimation
       || selectedPlan.runtimeProtocolVersion === 6 && generated?.backend?.protocolVersion === 5 && projectAnimation && !projectClips
-      || [8, 9].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 7 && projectAnimation && !projectStates);
+      || [8, 9, 10].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 7 && projectAnimation && !projectStates);
   if (!selectedPlan || !generated || !(generated.files instanceof Map) || !(generated.resourceFiles instanceof Map)
-    || generated.files.size < 1 || generated.files.size > (selectedPlan?.kind === 'project' && selectedPlan.runtimeProtocolVersion === 9 && generated.backend?.protocolVersion === 9 ? 1024 : 512) || generated.resourceFiles.size !== plan.resources.length
+    || generated.files.size < 1 || generated.files.size > (selectedPlan?.kind === 'project' && [9, 10].includes(selectedPlan.runtimeProtocolVersion) && generated.backend?.protocolVersion === selectedPlan.runtimeProtocolVersion ? 1024 : 512) || generated.resourceFiles.size !== plan.resources.length
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 6 && !projectClips
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 7 && !projectAnimation
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 8 && (!projectStates || !adapter.descriptor.capabilities.includes('project.animation-state-snapshots'))
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 9 && (!projectStates || !['project.animation-state-snapshots', 'project.animation-state-entries'].every(capability => adapter.descriptor.capabilities.includes(capability)))
+    || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 10 && (!projectStates || !['project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers'].every(capability => adapter.descriptor.capabilities.includes(capability)))
     || generated.backend?.id !== adapter.descriptor.id || (generated.backend.protocolVersion !== selectedPlan.runtimeProtocolVersion && !legacyProjectProtocol)
     || typeof generated.backend.version !== 'string' || !/^\d+\.\d+\.\d+$/.test(generated.backend.version)
     || !hash(generated.backend.sha256)) invalid('Invalid generated backend project.');

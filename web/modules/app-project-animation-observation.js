@@ -124,7 +124,7 @@ export function setupProjectAnimationObservation({ container, getContext = () =>
       let admitted;
       try {
         const nextProtocol = options.protocolVersion ?? 5;
-        if (![5, 6, 7, 8, 9].includes(nextProtocol)) throw new TypeError('Unsupported animation observation.');
+        if (![5, 6, 7, 8, 9, 10].includes(nextProtocol)) throw new TypeError('Unsupported animation observation.');
         admitted = value == null ? null : validateProjectAnimationCommandsSnapshot(value, { protocolVersion: nextProtocol });
         if (protocolVersion !== nextProtocol) { clear(); protocolVersion = nextProtocol; }
       }

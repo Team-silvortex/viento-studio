@@ -61,7 +61,7 @@ async function build(t,table,body,{parameters,bom=false,edit}={}){
   const output=path.join(f.temporary,'selectors-build'),built=await buildProject({root:f.author,targetId:f.assemblyId,tool,output});
   assert.equal(built.ok,true,JSON.stringify(built.diagnostics||built.record?.diagnostics));
   assert.equal(await fs.readFile(path.join(f.author,'documents/scripts/checkpoint.txt'),'utf8'),content);
-  assert.equal(adapter.descriptor.version,'0.18.0');
+  assert.equal(adapter.descriptor.version,'0.19.0');
   return {...f,output,content};
 }
 const run=f=>runProjectBuild({buildDirectory:f.output,tool,headless:true,smoke:false});
@@ -83,7 +83,7 @@ test('real shared-state guards preserve exact typed comparisons and treat missin
   const table={initialState:'idle',states:[{key:'idle'}],transitions:conditions.map((condition,index)=>({from:'idle',to:'idle',trigger:{kind:'event',name:'case'+index,condition:{...condition,selector}}}))};
   const body=cases.map((row,index)=>`\t${row.value===undefined?'p.erase_state("combat.value")':`p.write_state("combat.value",${literal(row.value)})`}\n\tvar before_${index}: int=host.animation_control.sequence\n\tvar revision_${index}: int=host.state_revision\n\tp.publish_event("case${row.index}",true)\n\thost.flush_requests()\n\tprint("CASE:"+JSON.stringify([${index},host.animation_control.sequence-before_${index},receiver._state,receiver._active,host.state_revision-revision_${index}]))`).join('\n');
   const f=await build(t,table,body),result=await run(f);passed(result);
-  assert.equal(result.record.events[0].protocol,9);assert.deepEqual(printed(result,'CASE:'),cases.map((row,index)=>[index,row.matched?2:0,0,true,0]));
+  assert.equal(result.record.events[0].protocol,10);assert.deepEqual(printed(result,'CASE:'),cases.map((row,index)=>[index,row.matched?2:0,0,true,0]));
   assert.equal(entries(result).length,1+cases.filter(row=>row.matched).length);assert.ok(entries(result).every(row=>row.stateIndex===0));
   assert.equal(result.record.events.at(-1).animationStateEntrySequence,entries(result).length);
   assert.equal(snapshots(result)[0].controllers[0].stateIndex,0);assert.equal(snapshots(result)[0].controllers[0].status,'active');
@@ -175,11 +175,11 @@ func _check(node,port) -> void:
   assert.equal(/SCRIPT ERROR|Parse Error/.test(native.stderr),false,native.stderr);assert.match(native.stdout,/PORT:\[false,0,0,0\]/);
 });
 
-test('real v4 BOM/CRLF controller retains p9 entries and completion through independent ZIP delivery',real,async t=>{
+test('real v4 BOM/CRLF controller retains p10 entries and completion through independent ZIP delivery',real,async t=>{
   const table=selectedTable({type:'string',operator:'eq',value:'攻撃🎮'});
   const f=await build(t,table,`\tp.publish_event("action",${literal('攻撃🎮')})\n\thost.flush_requests()\n\tp.write_state("combat.value",${literal('攻撃🎮')})\n\tp.publish_event("action",false)\n\thost.flush_requests()\n\t_step(0.5)`,{bom:true});
   const verify=events=>{
-    assert.equal(events[0].protocol,9);assert.equal(events.at(-1).animationStateEntrySequence,3);
+    assert.equal(events[0].protocol,10);assert.equal(events.at(-1).animationStateEntrySequence,3);
     assert.deepEqual(events.filter(row=>row.event==='animation-state-entered').map(row=>row.stateIndex),[0,1,0]);
     assert.deepEqual(events.filter(row=>row.event==='animation-command'&&row.command.action==='select').map(row=>row.command.clipId),[f.clipIds[0][0],f.clipIds[0][1],f.clipIds[0][0]]);
     assert.deepEqual(events.filter(row=>row.event==='event-delivery').map(row=>row.status),['handled','handled']);
@@ -195,7 +195,7 @@ test('real v4 BOM/CRLF controller retains p9 entries and completion through inde
   const snapshot=JSON.parse(await fs.readFile(path.join(f.output,'snapshot.json')));await fs.rm(f.author,{recursive:true});await fs.rm(f.output,{recursive:true});
   const directory=path.join(moved,'project'),retained=await fs.readFile(path.join(directory,'behaviors',f.scriptId+'.gd'),'utf8');
   assert.equal(retained,f.content);assert.deepEqual(readAnimationStateScriptSource(retained).table,table);
-  const manifest=JSON.parse(await fs.readFile(path.join(directory,'assembly.json')));assert.equal(manifest.schemaVersion,10);
+  const manifest=JSON.parse(await fs.readFile(path.join(directory,'assembly.json')));assert.equal(manifest.schemaVersion,11);
   assert.deepEqual(manifest.animationStateWrappers,[{scriptObjectId:f.scriptId,path:`animation-state-wrappers/${f.scriptId}.gd`}]);
   assert.ok(retained.startsWith('\uFEFF'));assert.equal(retained.replaceAll('\r\n','').includes('\n'),false);
   const identified=await adapter.identify(tool);

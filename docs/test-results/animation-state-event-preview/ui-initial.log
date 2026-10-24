@@ -1,0 +1,59 @@
+✖ trial stays opt-in; collapsed refresh does not inspect tables or evaluate samples (31.880649ms)
+✖ ordered branches and all/any short circuit show evaluated operands without claiming runtime execution (17.948952ms)
+✔ missing keys and mismatched types remain distinct, including not-equal conditions (22.792615ms)
+✔ shared selectors are candidate-scoped and deduplicated; switching samples restores local per-key buffers (22.978063ms)
+✔ a selector removed from the table cannot recover an old sample when re-added (22.403707ms)
+✔ samples retain distinct empty string, false and zero and reject incomplete numeric input (52.924978ms)
+✔ manual string samples enforce UTF-8 and Unicode while keeping literal markup and NUL (15.977969ms)
+✔ table and manual input changes clear results and revoke retained field-location callbacks (18.32544ms)
+✔ unobserved table or sample edits cannot use previous result locations (18.313572ms)
+✔ table invalidation and removed current states clear results without silently choosing another state (16.16516ms)
+✔ close, availability loss, disabled context and reset never restore an old result (68.306649ms)
+✔ capability withdrawal affects trial results while existing samples remain editable (23.838665ms)
+✔ language refresh preserves sample nodes, focus, selection and current result without rerunning comparisons (22.597506ms)
+✔ construction avoids parent TDZ, generation changes revoke results, and disposal clears retained callbacks (19.397872ms)
+✔ admission and evaluation failures leave no result and all labels have English and Japanese translations (12.754359ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 13
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 478.579686
+
+✖ failing tests:
+
+test at scripts/tests/animation-state-event-preview-ui.test.mjs:39:1
+✖ trial stays opt-in; collapsed refresh does not inspect tables or evaluate samples (31.880649ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-event-preview-ui.test.mjs:43:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/animation-state-event-preview-ui.test.mjs:46:1
+✖ ordered branches and all/any short circuit show evaluated operands without claiming runtime execution (17.948952ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /转换 1.*idle → attack/. Input:
+  
+  ''
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-event-preview-ui.test.mjs:48:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '',
+    expected: /转换 1.*idle → attack/,
+    operator: 'match',
+    diff: 'simple'
+  }

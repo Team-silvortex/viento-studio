@@ -55,19 +55,19 @@ const rows=result=>result.record.events.filter(row=>row.event==='animation-state
 const states=result=>result.record.runtime.project.animationStates.entries;
 async function stage(f){const directory=path.join(f.temporary,'generated');for(const[name,bytes]of f.generated.files){const file=path.join(directory,name);await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,bytes);}return directory;}
 
-test('only exact frozen state scripts select protocol9; manually edited scripts retain protocol7',async t=>{
+test('only exact frozen state scripts select protocol10; manually edited scripts retain protocol7',async t=>{
   for(const modified of [false,true]){
     const f=await fixture(t,{modified}),inventory=JSON.parse(f.generated.files.get('assembly.json'));
-    assert.equal(f.generated.backend.protocolVersion,modified?7:9);assert.equal(f.generated.backend.version,modified?'0.16.0':'0.18.0');assert.equal(inventory.schemaVersion,modified?8:10);
+    assert.equal(f.generated.backend.protocolVersion,modified?7:10);assert.equal(f.generated.backend.version,modified?'0.16.0':'0.19.0');assert.equal(inventory.schemaVersion,modified?8:11);
     assert.equal(f.generated.files.has('project-animation-state-runtime.gd'),!modified);
     assert.equal(f.generated.files.get(`behaviors/${f.scriptId}.gd`).toString(),f.content);
     if(!modified){const limited={...adapter,descriptor:{...adapter.descriptor,capabilities:adapter.descriptor.capabilities.filter(capability=>capability!=='project.animation-state-snapshots')}};assert.throws(()=>validateGeneratedExecutionProject(limited,f.captured.plan,f.generated));const expected=createProjectAnimationStateCatalog(f.captured.plan);assert.deepEqual(inventory.scenes[0].animationStateControllers,expected.scenes[0].controllers.map(({bindingId,instanceId,objectId,scriptObjectId,states,clips})=>({bindingId,instanceId,objectId,scriptObjectId,states,clips})));assert.deepEqual(inventory.scenes[1].animationStateControllers,[]);}
     const directory=await stage(f);assert.deepEqual((await godotAssemblyScripts(directory)).sort(),[...f.generated.files.keys()].filter(file=>file.endsWith('.gd')).sort());
-    for(const protocolVersion of modified?[4,5,6,8,9]:[4,5,6,7,8])assert.throws(()=>validateGeneratedExecutionProject(adapter,f.captured.plan,{...f.generated,backend:{...f.generated.backend,protocolVersion}}));
+    for(const protocolVersion of modified?[4,5,6,8,9,10]:[4,5,6,7,8,9])assert.throws(()=>validateGeneratedExecutionProject(adapter,f.captured.plan,{...f.generated,backend:{...f.generated.backend,protocolVersion}}));
   }
 });
 
-test('schema10 inventory rejects forged controller fields, duplicate bindings, clip mappings and missing runtime files',async t=>{
+test('schema11 inventory rejects forged controller fields, duplicate bindings, clip mappings and missing runtime files',async t=>{
   const f=await fixture(t),directory=await stage(f),file=path.join(directory,'assembly.json'),original=JSON.parse(await fs.readFile(file));
   const changes=[value=>value.scenes[0].animationStateControllers[0].path='../x.gd',value=>value.scenes[0].animationStateControllers.push(value.scenes[0].animationStateControllers[0]),value=>value.scenes[0].animationStateControllers[0].clips.pop(),value=>value.scenes[0].animationStateControllers[0].states[0]='../x',value=>value.scenes.forEach(scene=>scene.animationStateControllers=[]),value=>value.scenes[0].animationStateControllers[0].clipId=null];
   for(const change of changes){const changed=structuredClone(original);change(changed);await fs.writeFile(file,JSON.stringify(changed));await assert.rejects(godotAssemblyScripts(directory),{errorCode:'build_assembly_invalid'});}
@@ -153,7 +153,7 @@ test('real malformed private state fails explicitly and cannot masquerade as una
 });
 
 
-test('maximum schema10 controller inventory fits its bounded budget while old inventories keep their original limit',async t=>{
+test('maximum schema11 controller inventory fits its bounded budget while old inventories keep their original limit',async t=>{
   const f=await fixture(t),directory=await stage(f),original=JSON.parse(f.generated.files.get('assembly.json'));
   const id=number=>'73737373-7373-4737-8737-'+String(number).padStart(12,'0');
   const states=Array.from({length:16},(_,index)=>'state_'+String(index).padStart(26,'0'));

@@ -1,0 +1,26 @@
+{
+  "scope": "Core and UI sequence ownership, conditional event reuse, matching completion assumption, raw buffers, author-host isolation and actual browser verification.",
+  "fixedDuringReview": [
+    "A previously invalid current-result ticket could regain authority if a silently changed context/sample returned to its old value; current now permanently marks an observed invalid ticket revoked.",
+    "Undo raw input history has a separate 256KiB UTF8 budget; oversized hidden inputs cannot bypass history bounds through a completion step."
+  ],
+  "testHarnessCorrections": [
+    "New direct UI fixture required the existing animationStateEventPreviewKeys helper; shared rows were empty only in the test harness. The helper is now supplied generically."
+  ],
+  "independentReviews": [
+    "Core checked every provided event sample through existing admission and Rust scalar comparison; completion examines only admitted table geometry.",
+    "History and current pending result are separate. Undo restores raw buffers through the UI path, while immutable truncation creates new core identity.",
+    "Completion mode ignores hidden event samples and the optional scalar comparison marker, but full author-table admission remains required."
+  ],
+  "unchanged": [
+    "Original event evaluator and its pure/native tests",
+    "All five author generators",
+    "Rust/WASM and runtime backend/protocol",
+    "Installed application and previous evidence"
+  ],
+  "limitations": [
+    "Manual adoption assumes the predicted entry succeeds; real rejected select/play/inactive behavior is separately asserted.",
+    "Completion assumes the selected clip notification has arrived; no playback clock, looping or live clip matching simulation.",
+    "No new installed Tauri, Android, Bevy animation or ZIP-delivery verification."
+  ]
+}

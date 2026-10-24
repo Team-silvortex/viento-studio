@@ -1,0 +1,131 @@
+{
+  "baseVersion": "0.1.9",
+  "baseCommit": "7e5d71f1ce4ee6dfafaaf9dc24ae9d50b637eb01",
+  "scope": "working-tree only; no release, installation or author migration",
+  "app": {
+    "tests": 7031,
+    "pass": 6692,
+    "fail": 0,
+    "skipped": 339,
+    "cancelled": 0,
+    "durationMs": 295095.494133
+  },
+  "javascriptSyntaxFiles": 1177,
+  "coreAndLegacy": {
+    "tests": 80,
+    "pass": 80,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 573.059039
+  },
+  "uiIncludingBuildHost": {
+    "tests": 137,
+    "pass": 137,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 9081.848768
+  },
+  "adjacentProtocolTests": {
+    "tests": 28,
+    "pass": 28,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 426.034328
+  },
+  "native": {
+    "files": [
+      "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs",
+      "scripts/tests/project-animation-state-godot.test.mjs",
+      "scripts/tests/project-animation-state-entry-godot.test.mjs",
+      "scripts/tests/animation-selectors-godot.test.mjs",
+      "scripts/tests/animation-combinations-godot.test.mjs"
+    ],
+    "exitCode": 0,
+    "counts": {
+      "tests": 49,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "log": "native-post-control-fix.log",
+    "logSha256": "3d52d2d9d4d904a694c67099c4be2e36f43084224bdbeaca0c1f3f89834dc27c",
+    "sourceHashesBefore": "source-hashes-post-control-before.json",
+    "sourceHashesAfter": "source-hashes-post-control-after.json",
+    "sourceFileCount": 1312,
+    "sourceHashChanges": []
+  },
+  "controlReplay": {
+    "counts": {
+      "tests": 23,
+      "pass": 23,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "log": "control-regression-final.log",
+    "logSha256": "404168d416f94ced80d5fecd6e75e37066227c15db3ace1284bbbec79cefa420",
+    "godotVersion": "4.7.2.stable.official.ed1daf0bf",
+    "bevyRuntimeVersion": "0.3.0",
+    "sourceHashes": {
+      "scripts/backends/godot4-adapter.mjs": "2e4f262b195d874fa5d4fde7bca1a0030c476fa783782810cdde477e1f869b60",
+      "scripts/tests/runtime-control-backends.test.mjs": "96e2ac9faea8cb853917059f4a489fd76117e801def51cb7511de5a7044b3127",
+      "scripts/tests/runtime-instance-backends.test.mjs": "1233a8a2e4f7094b676e6428d59bf3e04271a7938a714be5f4bd987d6a7989f5"
+    },
+    "fix": "Removed two fingerprint-only [path, URL] rows accidentally inserted into control replay [path, bytes] staging; retained fingerprint coverage and added exact live staging inventory assertion. Real Godot and Bevy v1/v2 and per-instance replays, legacy image initialization, cancellation and observer failure cleanup all passed."
+  },
+  "browser": {
+    "report": "docs/test-results/animation-entry-triggers/browser-1792738072990/browser.json",
+    "ok": true,
+    "jobs": [
+      [
+        "plan",
+        "succeeded"
+      ],
+      [
+        "build",
+        "succeeded"
+      ],
+      [
+        "run",
+        "succeeded"
+      ]
+    ],
+    "screenshots": 8,
+    "sourceSnapshotUnchanged": true,
+    "adapterSha256": "2e4f262b195d874fa5d4fde7bca1a0030c476fa783782810cdde477e1f869b60",
+    "runtime": {
+      "protocolVersion": 10,
+      "entryKinds": [
+        "initial",
+        "event",
+        "completed",
+        "direct"
+      ],
+      "commands": 8,
+      "eventSequence": 2,
+      "completionSequence": 1
+    },
+    "layoutLanguages": [
+      "zh-CN",
+      "en",
+      "ja"
+    ],
+    "consoleErrors": 0,
+    "sourceNavigations": 2,
+    "unitTests": {
+      "passed": 137,
+      "failed": 0,
+      "skipped": 0,
+      "log": "unit-build-integration.log",
+      "includes": "entire legacy build observation integration suite 21 tests + UI 116"
+    },
+    "note": "Final pass after queue-head/retired-event-token admission fixes and adapter control replay repair. Previous browser reports retained unchanged."
+  },
+  "review": "review.json",
+  "adapterReview": "review-adapter.json",
+  "overlap": "These groups overlap; do not add their totals."
+}

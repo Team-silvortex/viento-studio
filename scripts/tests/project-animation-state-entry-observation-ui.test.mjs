@@ -1,3 +1,6 @@
+import { createProjectAnimationStateReview } from '../../engine/project-animation-state-review.mjs';
+import { validateProjectAnimationStateTriggeredEntriesSnapshot } from '../../engine/project-animation-state-entry-triggers.mjs';
+import { describeProjectAnimationStateEntryTrigger } from '../../web/modules/app-project-animation-state-trigger.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -18,9 +21,10 @@ const snapshot = () => ({ sequence: 1, entries: [entry()] });
 async function fixture(t, options = {}) {
   let dictionary = {}, languageChanged = () => {}, subscriptions = 0;
   const calls = [], context = { available: true, visible: true, sessionOwner: 'backend:task:build:snapshot:assembly', navigationOwner: 'visit-2', canOpenSource: true };
-  const h = await dialogHarness('app-project-animation-state-entry-observation', { validateProjectAnimationStateEntriesSnapshot,
+  const h = await dialogHarness('app-project-animation-state-entry-observation', { describeProjectAnimationStateEntryTrigger, validateProjectAnimationStateEntriesSnapshot, validateProjectAnimationStateTriggeredEntriesSnapshot,
     t: (key, ...values) => (dictionary[key] || key).replace(/\{(\d+)\}/g, (_, index) => values[index] ?? ''),
     onLanguageChange(callback) { languageChanged = callback; subscriptions++; return () => { languageChanged = () => {}; subscriptions--; }; },
+    createProjectAnimationStateReview, ...options.globals,
   });
   const container = h.document.createElement('div'); container.id = 'projectAnimationStateEntries'; container.isConnected = true; h.document.body.append(container);
   const observer = h.runtime.setupProjectAnimationStateEntryObservation({ container, getContext: () => context,
@@ -34,11 +38,11 @@ async function fixture(t, options = {}) {
 }
 const sourceButton = (h, kind = 'binding', index = 0) => h.rows()[index].querySelector('.project-animation-state-entry-' + kind + '-source');
 
-test('only protocol9 exposes entry records; empty or forcibly cancelled histories never infer a state', async t => {
+test('entry records use exact protocol-specific shapes; empty or forcibly cancelled histories never infer a state', async t => {
   const h = await fixture(t); h.set(null); assert.equal(h.el('Panel').hidden, true);
   h.set({ sequence: 0, entries: [] }); assert.equal(h.el('Panel').hidden, false); assert.equal(h.el('Sequence').dataset.sequence, '0');
   assert.equal(h.el('Empty').textContent, '尚未采集动画状态进入记录。'); assert.match(h.el('Note').textContent, /强制取消可能留下不完整记录/);
-  for (const protocolVersion of [1, 2, 3, 4, 5, 6, 7, 8, 10]) {
+  for (const protocolVersion of [1, 2, 3, 4, 5, 6, 7, 8, 10, 11]) {
     h.set(snapshot()); h.set(snapshot(), { protocolVersion });
     assert.equal(h.el('Panel').hidden, true); assert.equal(h.rows().length, 0); assert.equal(h.el('Sequence').dataset.sequence, undefined);
   }
@@ -162,4 +166,64 @@ test('entry view is responsive and translated without execution authoring pollin
   const css = await fs.readFile(new URL('../../web/project-animation-state-entry-observation.css', import.meta.url), 'utf8');
   assert.match(css, /@media \(max-width: 600px\)/); assert.match(css, /flex-direction: column/); assert.match(css, /overflow-wrap: anywhere/);
   const html = await fs.readFile(new URL('../../web/index.html', import.meta.url), 'utf8'); assert.equal(html.match(/href="\/web\/project-animation-state-entry-observation.css"/g)?.length, 1);
+});
+
+
+test('protocol10 displays recorded sources while default protocol9 rejects new trigger fields', async t => {
+  const h = await fixture(t), triggers = [{ kind: 'initial' }, { kind: 'event', eventSequence: 2, subscriptionId: 7 },
+    { kind: 'completed', completionSequence: 1, subscriptionId: 8 }, { kind: 'direct' }];
+  const value = { sequence: 4, entries: triggers.map((trigger, i) => ({ ...entry(i + 1), trigger })) };
+  h.set(value); assert.equal(h.el('Panel').hidden, true);
+  h.set(value, { protocolVersion: 10 }); assert.equal(h.el('Panel').hidden, false);
+  assert.deepEqual(h.rows().map(row => row.querySelector('.project-animation-state-entry-trigger').dataset.kind), ['initial', 'event', 'completed', 'direct']);
+  assert.match(h.rows()[0].textContent, /初始化回调/); assert.match(h.rows()[1].textContent, /事件 #2 · 订阅 7/);
+  assert.match(h.rows()[2].textContent, /自然完成 #1 · 订阅 8/); assert.match(h.rows()[3].textContent, /直接进入/);
+  assert.match(h.el('Note').textContent, /不包含分支命中或条件求值过程/);
+  h.set(snapshot()); assert.match(h.rows()[0].textContent, /进入来源：未记录（协议 9）/);
+  h.set(snapshot(), { protocolVersion: 10 }); assert.equal(h.el('Panel').hidden, true);
+  h.set({ sequence: 0, entries: [] }, { protocolVersion: 10 }); assert.equal(h.el('Panel').hidden, false);
+});
+
+test('protocol10 source labels keep row and keyboard focus across languages and reject forged trigger snapshots', async t => {
+  const h = await fixture(t), value = { sequence: 1, entries: [{ ...entry(), trigger: { kind: 'event', eventSequence: 1, subscriptionId: 4 } }] };
+  h.set(value, { protocolVersion: 10 }); const row = h.rows()[0], source = sourceButton(h); source.focus();
+  for (const dictionary of [en, ja, {}]) {
+    h.language(dictionary); assert.equal(h.rows()[0], row); assert.equal(h.document.activeElement, source);
+    assert.equal(row.querySelector('.project-animation-state-entry-trigger').textContent,
+      (dictionary['进入来源：事件 #{0} · 订阅 {1}'] || '进入来源：事件 #{0} · 订阅 {1}').replace('{0}', '1').replace('{1}', '4'));
+  }
+  let invoked = 0;
+  for (const mutate of [v => delete v.entries[0].trigger, v => v.entries[0].trigger.eventSequence = 0,
+    v => v.entries[0].trigger.kind = 'guessed', v => v.entries[0].trigger.branch = 1,
+    v => Object.defineProperty(v.entries[0].trigger, 'eventSequence', { enumerable: true, get() { invoked++; return 1; } })]) {
+    const bad = structuredClone(value); mutate(bad); h.set(bad, { protocolVersion: 10 }); assert.equal(h.el('Panel').hidden, true);
+  }
+  assert.equal(invoked, 0);
+  const helper = await fs.readFile(new URL('../../web/modules/app-project-animation-state-trigger.js', import.meta.url), 'utf8');
+  for (const match of helper.matchAll(/'([^'\n]*[\u3400-\u9fff][^'\n]*)'/g)) { assert.ok(en[match[1]], match[1]); assert.ok(ja[match[1]], match[1]); }
+});
+
+
+test('whole observations preserve exact protocol10 entry admission and forward validated review snapshots', async t => {
+  const received = [], selected = [];
+  // setObservation creates this envelope in the VM after real core admission.
+  // Rebuild only that envelope for the host validator, as browser modules share one realm.
+  const h = await fixture(t, { globals: {
+    validateProjectAnimationStateTriggeredEntriesSnapshot: value => validateProjectAnimationStateTriggeredEntriesSnapshot({ sequence: value.sequence, entries: value.entries }),
+    validateProjectAnimationStateEntriesSnapshot: value => validateProjectAnimationStateEntriesSnapshot({ sequence: value.sequence, entries: value.entries }),
+    setupProjectAnimationStateReview: () => ({
+    setSnapshot(value) { received.push(value); return Boolean(value); }, selectEntry(sequence) { selected.push(sequence); return true; }, refresh() {}, dispose() {},
+  }) } });
+  const value = { format: 'viento-runtime-observation', schemaVersion: 1, sceneObjectId: id(1), protocolVersion: 1, phase: 'ready', sequence: 1, actors: [],
+    project: { protocolVersion: 10, assemblyId: id(90), entrySceneId: id(1), activeSceneId: id(1), visits: [{ index: 1, sceneId: id(1), phase: 'ready', elapsedSeconds: 0 }],
+      sharedState: { revision: 0, entries: [], lastChange: null }, events: { sequence: 0, entries: [] }, audioCommands: { sequence: 0, entries: [] },
+      animationCommands: { sequence: 0, entries: [] }, animationCompletions: { sequence: 0, entries: [] }, animationStates: { sequence: 0, entries: [] },
+      animationStateEntries: { sequence: 1, entries: [{ ...entry(), clipId: null, trigger: { kind: 'initial' } }] } } };
+  h.observer.setObservation(value); assert.equal(h.el('Panel').hidden, false); assert.match(h.rows()[0].textContent, /初始化回调/);
+  assert.equal(received.at(-1), value); h.filter('no-match'); assert.equal(h.observer.selectEntry(1), true); assert.deepEqual(selected, [1]);
+  h.filter(''); h.rows()[0].querySelector('.project-animation-state-entry-review').click(); assert.deepEqual(selected, [1, 1]);
+  const legacy = structuredClone(value); legacy.project.protocolVersion = 9; delete legacy.project.animationStateEntries.entries[0].trigger;
+  h.observer.setObservation(legacy); assert.match(h.rows()[0].textContent, /来源：未记录/); assert.equal(received.at(-1), legacy);
+  const forged = structuredClone(value); forged.project.protocolVersion = 9; h.observer.setObservation(forged);
+  assert.equal(h.el('Panel').hidden, true); assert.equal(received.at(-1), null); assert.equal(h.observer.selectEntry(1), false);
 });

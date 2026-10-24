@@ -1,0 +1,28 @@
+{
+  "reviewer": "animation_next_observation",
+  "scope": "Final read-only adapter, generated inventory and delivery budget diff review",
+  "status": "no remaining findings in reviewed scope",
+  "findings": [],
+  "checks": [
+    "executePhase control replay stages exactly control-runtime.gd/control.tscn/control-program.json as file bytes; new trigger URL pairs appear only in fingerprint inputs. Exclusive writes and finally cleanup retain prior behavior.",
+    "New strict staging inventory assertion includes both Godot and Bevy and observes the directory during execution, so unexpected files cannot be hidden by subsequent cleanup.",
+    "Generated state-controller projects select protocol 10 / adapter 0.19.0 / inventory 11 and include trigger runtime plus the entire parent runtime chain. Plans without recognized state controllers retain protocol 7 or 4 and exclude trigger runtime/wrappers.",
+    "Inventory 5-8 retain the 128 KiB byte limit; inventory 9-11 retain the 4 MiB limit. Inventory 10 still reads entry runtime and wrappers without requiring trigger runtime; only inventory 11 adds trigger runtime.",
+    "Inventory controller scriptObjectId and wrapper list are exact only for schemas 10/11; wrappers still match declared source UUIDs and exact contained paths, are unique, and cover the complete expected set.",
+    "Generated file limit remains 1024 only for matching project protocols 9/10, otherwise 512. Protocol 10 additionally requires the trigger capability and recognized controllers.",
+    "Manifest larger budget remains restricted to Godot assemblies with protocol 9/10 and godot-project artifact: 1024 nonresource files plus 128 resources, at most 1152 total. Other manifests retain 640.",
+    "ZIP pre-read ceiling remains 1154; validated manifest selects 1154 only for the matching Godot assemblies, otherwise 642. File hashes, sizes, portable path tree and exact manifest inventory are still validated.",
+    "Maximum inventory script count changes from 682 to 683 solely because of the single new trigger runtime. Existing author script bytes and generated wrapper paths remain separate."
+  ],
+  "verification": "Read final git diffs and surrounding implementation; no runtime tests rerun, no production files edited. Runtime agent owns real controlled Godot/Bevy checks.",
+  "sources": {
+    "scripts/backends/godot4-adapter.mjs": "2e4f262b195d874fa5d4fde7bca1a0030c476fa783782810cdde477e1f869b60",
+    "scripts/backends/godot4-project.mjs": "13061c10fe30d6ab3ee1ef6818fda924a113512450fc1e5d98da314084ea55e3",
+    "scripts/adapters/node-execution-backends.mjs": "810fed858bf8fc3a8e9f75bc08156e7078a41a8dc50101f30b4677514e92d622",
+    "engine/backend-project.mjs": "675f5c481dfc0eafaa4aaf42acb26cf4f9bc818f17fc39bf2a26308d81d583bd",
+    "scripts/adapters/node-backend-project-delivery.mjs": "1312a1f7a74eb781d1f2d43f1a9dad2d5c2f1c99a926f4900d12b4e1eb54bd7e",
+    "scripts/tests/runtime-control-backends.test.mjs": "96e2ac9faea8cb853917059f4a489fd76117e801def51cb7511de5a7044b3127",
+    "scripts/tests/project-animation-state-entry-inventory.test.mjs": "d858905a654a93f6e32e4f4316c11c32d2e53fc6fbc7a40ff1d1b6b52e688fd9",
+    "scripts/tests/backend-project.test.mjs": "8e6eb721276f25416667c057de7f01de3f96423d8f79da834bab2ec63d00d4c6"
+  }
+}

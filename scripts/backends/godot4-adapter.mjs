@@ -18,9 +18,9 @@ import { createProjectRuntimeEventReader } from '../../engine/project-runtime-ev
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.18.0',
-  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 9 }],
-  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d'],
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.19.0',
+  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 10 }],
+  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -54,9 +54,12 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ['scripts/backends/godot4/project-animation-state-trigger-runtime.gd', new URL('./godot4/project-animation-state-trigger-runtime.gd', import.meta.url)],
+    ['scripts/backends/godot4/project-animation-state-trigger-wrapper.gd', new URL('./godot4/project-animation-state-trigger-wrapper.gd', import.meta.url)],
     ['scripts/backends/godot4/project-animation-state-entry-runtime.gd', new URL('./godot4/project-animation-state-entry-runtime.gd', import.meta.url)],
     ['scripts/backends/godot4/project-animation-state-entry-wrapper.gd', new URL('./godot4/project-animation-state-entry-wrapper.gd', import.meta.url)],
     ['engine/project-animation-state-entries.mjs', new URL('../../engine/project-animation-state-entries.mjs', import.meta.url)],
+    ['engine/project-animation-state-entry-triggers.mjs', new URL('../../engine/project-animation-state-entry-triggers.mjs', import.meta.url)],
     ['scripts/backends/godot4/project-animation-state-runtime.gd', new URL('./godot4/project-animation-state-runtime.gd', import.meta.url)],
     ['engine/project-animation-states.mjs', new URL('../../engine/project-animation-states.mjs', import.meta.url)],
     ['engine/animation-state-script-source.mjs', new URL('../../engine/animation-state-script-source.mjs', import.meta.url)],
@@ -261,7 +264,7 @@ export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
   availability, identify: identifyGodot, generate, fingerprint, executePhase,
   diagnostics: (result, plan) => (plan.kind === 'project' ? godotAssemblyDiagnostics : plan.animation ? godotAnimationDiagnostics : plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
   createEventReader: (input, options) => {
-    if (input.kind === 'project') return createProjectRuntimeEventReader(input, { protocolVersion: createProjectAnimationStateCatalog(input).scenes.length ? 9 : input.scenes.some(scene => scene.animation) ? 7 : 4, ...options,
+    if (input.kind === 'project') return createProjectRuntimeEventReader(input, { protocolVersion: createProjectAnimationStateCatalog(input).scenes.length ? 10 : input.scenes.some(scene => scene.animation) ? 7 : 4, ...options,
       ...(options?.smoke === true ? { expectedTotalSeconds: 0.5 } : {}) });
     const plan = input;
     const createBaseReader = plan.schemaVersion === 3 ? createBehaviorRuntimeEventReader : createRuntimeEventReader;

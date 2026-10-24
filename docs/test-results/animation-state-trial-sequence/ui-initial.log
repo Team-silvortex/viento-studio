@@ -1,0 +1,131 @@
+✔ trial stays opt-in; collapsed refresh does not inspect tables or evaluate samples (67.373713ms)
+✔ ordered branches and all/any short circuit show evaluated operands without claiming runtime execution (66.916328ms)
+✔ missing keys and mismatched types remain distinct, including not-equal conditions (45.631793ms)
+✔ shared selectors are candidate-scoped and deduplicated; switching samples restores local per-key buffers (65.066654ms)
+✔ a selector removed from the table cannot recover an old sample when re-added (27.177062ms)
+✔ samples retain distinct empty string, false and zero and reject incomplete numeric input (116.188637ms)
+✔ manual string samples enforce UTF-8 and Unicode while keeping literal markup and NUL (34.416547ms)
+✔ table and manual input changes clear results and revoke retained field-location callbacks (42.602854ms)
+✔ unobserved table or sample edits cannot use previous result locations (41.902695ms)
+✔ table invalidation and removed current states clear results without silently choosing another state (40.599027ms)
+✔ close, availability loss, disabled context and reset never restore an old result (147.066102ms)
+✔ capability withdrawal affects trial results while existing samples remain editable (50.052436ms)
+✔ language refresh preserves sample nodes, focus, selection and current result without rerunning comparisons (50.253184ms)
+✔ construction avoids parent TDZ, generation changes revoke results, and disposal clears retained callbacks (36.552097ms)
+✔ admission and evaluation failures leave no result and all labels have English and Japanese translations (22.515393ms)
+✔ temporarily invalid table fields preserve shared samples but discard the old result (34.189736ms)
+✔ all sixty-four candidates remain available with unique DOM IDs and bounded reads on language refresh (78.363418ms)
+✖ run is provisional; event then completion advance only on explicit adoption and undo restores raw inputs (34.192126ms)
+✔ no match and self loops are recorded as distinct steps without pretending a state change (53.919397ms)
+✔ completion ignores hidden invalid event inputs and the legacy comparator capability (39.291172ms)
+✖ switching trigger modes keeps shared raw type buffers and incomplete values independently (7.139277ms)
+✖ editing the next sample keeps adopted history while a manual state jump starts a new sequence (22.432473ms)
+✖ folding preserves steps and raw samples but revokes pending results and hidden operations (16.242369ms)
+✖ a changed author table while folded clears the sequence before reopening can adopt (12.399482ms)
+✖ history details are read-only and constructed once; appending preserves prior nodes and focus (11.445034ms)
+✖ double adoption cannot append twice and revoked location callbacks never revive after undo and reappend (11.179046ms)
+✖ clear history retains the current state and sample but revokes the pending trial (11.502875ms)
+✔ the 32-step limit disables adoption but keeps independent trial and undo available (683.758617ms)
+✔ normalized 64KiB sample history budget prevents append and is released by undo (255.170298ms)
+✔ completion trials stay usable when hidden raw undo buffers exceed the separate bound (38.467664ms)
+✖ language changes preserve current inputs and expanded history DOM, focus and read-only details (11.625643ms)
+✖ author invalidation, session reset and inactive contexts clear steps without resurrecting old details (12.793722ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 22
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1323.817151
+
+✖ failing tests:
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:27:1
+✖ run is provisional; event then completion advance only on explicit adoption and undo restores raw inputs (34.192126ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at Object.valid (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:22:77)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:28:47)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:44:1
+✖ switching trigger modes keeps shared raw type buffers and incomplete values independently (7.139277ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at Object.field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:45:29)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:48:1
+✖ editing the next sample keeps adopted history while a manual state jump starts a new sequence (22.432473ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at Object.valid (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:22:77)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:49:29)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:53:1
+✖ folding preserves steps and raw samples but revokes pending results and hidden operations (16.242369ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at Object.valid (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:22:77)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:54:29)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:58:1
+✖ a changed author table while folded clears the sequence before reopening can adopt (12.399482ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at Object.valid (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:22:77)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:59:29)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:62:1
+✖ history details are read-only and constructed once; appending preserves prior nodes and focus (11.445034ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at Object.valid (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:22:77)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:63:29)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:67:1
+✖ double adoption cannot append twice and revoked location callbacks never revive after undo and reappend (11.179046ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at Object.valid (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:22:77)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:68:29)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:71:1
+✖ clear history retains the current state and sample but revokes the pending trial (11.502875ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at Object.valid (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:22:77)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:72:29)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:87:1
+✖ language changes preserve current inputs and expanded history DOM, focus and read-only details (11.625643ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at Object.valid (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:22:77)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:88:29)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/tests/animation-state-trial-sequence-ui.test.mjs:91:1
+✖ author invalidation, session reset and inactive contexts clear steps without resurrecting old details (12.793722ms)
+  TypeError: Cannot set properties of null (setting 'value')
+      at field (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:18:117)
+      at Object.valid (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:22:77)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-trial-sequence-ui.test.mjs:92:103)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

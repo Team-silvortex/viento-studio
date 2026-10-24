@@ -1,0 +1,31 @@
+✔ capture stores only normalized manual inputs and target/transition expectations (6.666555ms)
+✔ compact serialization round trips the exact detached case and produces a fresh brand (1.600355ms)
+✔ event then assumed completion replay along actual predicted states without mutating author data (0.581062ms)
+✔ first mismatch stops all later execution and never steers state using the expectation (0.557175ms)
+✔ mismatch after a matched prefix preserves all diagnostics and stops at that actual state (0.487559ms)
+✔ a self-loop differs from no matching transition even when both keep the same state (1.519739ms)
+✔ expectations deliberately do not claim the same branch when another branch selects the same target (2.23589ms)
+✔ group short circuit firstMatch fallback and per-step missing shared values reuse the existing evaluator (2.069673ms)
+✔ a nondefault initial state is used and a deleted initial state has its own error (1.540587ms)
+✔ an absent expected destination is a valid unmet expectation, never a missing-initial error (0.421785ms)
+✔ no-transition expectations must retain the preceding expected state (0.297435ms)
+✔ state identifiers follow author-state grammar rather than event/project-state keys (1.387376ms)
+✔ empty cases cannot report a vacuous pass and step budget admits exactly 32 (1.628694ms)
+✔ sample-byte budget is exactly the accumulated normalized JSON inputs (5.292626ms)
+✔ normalized zero Unicode and escaped NUL count identically to recorded inputs (1.888976ms)
+✔ raw UTF8 text budget counts whitespace and BOM, including the exact boundary (4.42207ms)
+✔ the complete case is admitted before a mismatching first step can hide invalid later data (0.404065ms)
+✔ strict envelopes reject persisted results unknown fields duplicate decoded keys and ambiguous JSON (0.679669ms)
+✔ all scalar and shared sample limits apply without needing the current table (1.637609ms)
+✔ untrusted objects getters serializers and forged brands execute no callbacks (0.887322ms)
+✔ all author transitions are admitted before replay even if an earlier sample would stop (1.245478ms)
+✔ parsing and serializing remain pure without loading any Rust/WASM capability (33.129882ms)
+✔ completed-only replay needs no scalar comparison marker and a failed step never evaluates later events (45.209179ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 177.092884

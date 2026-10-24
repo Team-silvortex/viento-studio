@@ -1,3 +1,4 @@
+import { createProjectAnimationStateTriggeredEntries } from './project-animation-state-entry-triggers.mjs';
 import { createProjectAnimationStateEntries } from './project-animation-state-entries.mjs';
 import { validateProjectAssemblyPlan } from './project-assembly-plan-contract.mjs';
 import { createSceneRuntimeEventReader } from './scene-runtime-events.mjs';
@@ -23,7 +24,7 @@ const defaultSceneReader = (plan, options) => {
 // a project boundary, never a forged child finished (which means two smoke
 // steps in the legacy audio contract). Re-entering creates a new child reader.
 export function createProjectRuntimeEventReader(input, { protocolVersion = PROJECT_RUNTIME_PROTOCOL, onEvent, createSceneReader = defaultSceneReader, expectedTotalSeconds } = {}) {
-  if (![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(protocolVersion)) throw Object.assign(new TypeError('Unsupported project runtime protocol.'), { errorCode: 'runtime_project_invalid' });
+  if (![1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(protocolVersion)) throw Object.assign(new TypeError('Unsupported project runtime protocol.'), { errorCode: 'runtime_project_invalid' });
   const sharedState = protocolVersion >= 2 ? createProjectSharedState() : null;
   const eventBus = protocolVersion >= 3 ? createProjectEventBus() : null;
   const audioCommands = protocolVersion >= 4 ? createProjectAudioCommands() : null;
@@ -36,7 +37,7 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
   }
   const plan = validateProjectAssemblyPlan(input), scenes = new Map(plan.scenes.map(scene => [scene.scene.objectId, scene]));
   const animationStates = protocolVersion >= 8 ? createProjectAnimationStates(plan) : null;
-  const animationStateEntries = protocolVersion === 9 ? createProjectAnimationStateEntries(plan) : null;
+  const animationStateEntries = protocolVersion === 10 ? createProjectAnimationStateTriggeredEntries(plan) : protocolVersion === 9 ? createProjectAnimationStateEntries(plan) : null;
   if (typeof createSceneReader !== 'function') throw new TypeError('A scene runtime reader is required.');
   const events = [], diagnostics = [];
   let started = false, completed = false, current = null, visitCount = 0, nextSceneId = plan.entrySceneId, finalExit = false, totalSeconds = 0;
@@ -126,7 +127,9 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
     } else if (frame.event === 'event-delivery') {
       if (!eventBus || !currentIdentity(frame) || !current.ready
         || !exact(frame, ['protocol', 'event', 'visitIndex', 'sceneId', 'sequence', 'subscriptionId', 'status'])) { issue(); return; }
-      try { eventBus.deliver({ sequence: frame.sequence, subscriptionId: frame.subscriptionId, status: frame.status, visitIndex: frame.visitIndex, sceneId: frame.sceneId }); }
+      try {
+        animationStateEntries?.validateDelivery?.('event', frame.sequence, frame.subscriptionId, frame.status);
+        eventBus.deliver({ sequence: frame.sequence, subscriptionId: frame.subscriptionId, status: frame.status, visitIndex: frame.visitIndex, sceneId: frame.sceneId }); }
       catch { issue(); return; }
     } else if (frame.event === 'audio-command') {
       if (!audioCommands || !currentIdentity(frame) || !current.ready || !current.audioReady || current.audioFailed || current.audioFinished
@@ -204,18 +207,20 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
       if (!animationCompletions || !currentIdentity(frame) || !current.ready || current.audioFailed || current.audioFinished
         || !exact(frame, ['protocol', 'event', 'completionSequence', 'subscriptionId', 'visitIndex', 'sceneId', 'status'])) { issue(); return; }
       try {
+        animationStateEntries?.validateDelivery?.('completed', frame.completionSequence, frame.subscriptionId, frame.status);
         animationCompletions.deliver({ sequence: frame.completionSequence, subscriptionId: frame.subscriptionId,
           visitIndex: frame.visitIndex, sceneId: frame.sceneId, status: frame.status }, animationCommands.sequence);
       } catch { issue(); return; }
     } else if (frame.event === 'animation-state-entered') {
       if (!animationStateEntries || !currentIdentity(frame) || !current.ready || current.audioFailed || current.audioFinished
-        || !exact(frame, ['protocol', 'event', 'sequence', 'visitIndex', 'sceneId', 'timeSeconds', 'commandSequence', 'bindingId', 'instanceId', 'objectId', 'stateIndex', 'clipId'])
+        || !exact(frame, ['protocol', 'event', 'sequence', 'visitIndex', 'sceneId', 'timeSeconds', 'commandSequence', 'bindingId', 'instanceId', 'objectId', 'stateIndex', 'clipId', ...(protocolVersion === 10 ? ['trigger'] : [])])
         || frame.commandSequence !== animationCommands.sequence || !time(frame.timeSeconds)
         || current.lastAudioCommandTime !== null && current.lastAudioCommandTime > frame.timeSeconds
         || current.animationState && current.animationState.timeSeconds > frame.timeSeconds) { issue(); return; }
       try {
         const { protocol, event, ...entry } = frame;
-        animationStateEntries.append(entry);
+        if (protocolVersion === 10) animationStateEntries.append(entry, eventBus.snapshot(), animationCompletions.snapshot());
+        else animationStateEntries.append(entry);
         current.lastStateEntryTime = frame.timeSeconds;
       } catch { issue(); return; }
     } else if (frame.event === 'animation-state-snapshot') {

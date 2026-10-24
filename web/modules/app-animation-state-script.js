@@ -1,3 +1,4 @@
+import { setupAnimationStateEventPreview } from './app-animation-state-event-preview.js';
 import { setupAnimationStateConditionGroup } from './app-animation-state-condition-group.js';
 import { supportsStudioCoreAnimationStateConditions, supportsStudioCoreAnimationStateBranches, supportsStudioCoreAnimationStateSelectors, supportsStudioCoreAnimationStateCombinations } from '../../engine/studio-core.mjs';
 import { setupAnimationStateGraph } from './app-animation-state-graph.js';
@@ -14,6 +15,7 @@ export function setupAnimationStateScript({ container, getContext = () => ({}), 
     <label><span data-state-i18n="事件转换选择"></span><select id="${idPrefix}EventSelection" aria-describedby="${idPrefix}EventSelectionNote"><option value="unique" data-state-i18n="每个事件单一转换"></option><option value="firstMatch" data-state-i18n="按顺序匹配事件分支"></option></select></label>
     <p id="${idPrefix}EventSelectionNote" class="script-create-note"></p>
     <div id="${idPrefix}Graph"></div>
+    <div id="${idPrefix}EventPreview"></div>
     <fieldset><legend data-state-i18n="动画状态"></legend><p class="script-create-note" data-state-i18n="状态标识须以小写字母开头，只含小写字母、数字或下划线，最多 32 个字符。"></p>
       <div id="${idPrefix}States" class="animation-state-script-rows"></div>
       <button id="${idPrefix}AddState" type="button" class="doc-btn doc-btn-ghost" data-state-i18n="添加动画状态"></button></fieldset>
@@ -113,6 +115,7 @@ export function setupAnimationStateScript({ container, getContext = () => ({}), 
         : text('{0}/16 个状态 · {1}/64 条转换', states.length, transitions.length);
     for (const row of transitions) row.condition.refresh();
     graphView.refresh();
+    eventPreview.refresh();
     } finally { renderingCapabilities = previousCapabilities; }
   }
   function changed() { refresh(); onChange(); }
@@ -194,6 +197,7 @@ export function setupAnimationStateScript({ container, getContext = () => ({}), 
     if (!states.some(row => row.id === initial)) { const item = node('option'); item.value = initial; el('Initial').append(item); }
     el('Initial').value = initial;
     for (const item of value.transitions) addTransition(item, resolve);
+    eventPreview.reset();
     refresh();
   }
   el('EventSelection').addEventListener('change', () => {
@@ -227,9 +231,19 @@ export function setupAnimationStateScript({ container, getContext = () => ({}), 
       control.focus({ preventScroll: true }); control.scrollIntoView?.({ block: 'nearest', inline: 'nearest' }); return true;
     },
   });
+  const eventPreview = setupAnimationStateEventPreview({ container: el('EventPreview'), idPrefix: idPrefix + 'EventPreview',
+    getTable: getValue, translate,
+    getContext: () => ({ ...getContext(), available: getContext().available !== false && readCapabilities().graphSupport,
+      disabled: forcedDisabled || getContext().disabled === true, generation: formGeneration }),
+    onLocate({ kind, index }, { isCurrent }) {
+      const row = kind === 'transition' ? transitions[index] : null;
+      if (!row || !isCurrent() || !owns(row)) return false;
+      row.from.focus({ preventScroll: true }); row.from.scrollIntoView?.({ block: 'nearest', inline: 'nearest' }); return true;
+    },
+  });
   return Object.freeze({
     getValue, setValue, reset: setValue, refresh,
     setDisabled(value) { forcedDisabled = value === true; refresh(); },
-    dispose() { if (disposed) return; disposed = true; graphView.dispose(); for (const row of transitions) row.condition.dispose(); states = []; transitions = []; container.replaceChildren(); },
+    dispose() { if (disposed) return; disposed = true; graphView.dispose(); eventPreview.dispose(); for (const row of transitions) row.condition.dispose(); states = []; transitions = []; container.replaceChildren(); },
   });
 }

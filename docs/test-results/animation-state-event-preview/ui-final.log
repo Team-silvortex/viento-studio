@@ -1,0 +1,25 @@
+✔ trial stays opt-in; collapsed refresh does not inspect tables or evaluate samples (39.966419ms)
+✔ ordered branches and all/any short circuit show evaluated operands without claiming runtime execution (31.007432ms)
+✔ missing keys and mismatched types remain distinct, including not-equal conditions (21.358528ms)
+✔ shared selectors are candidate-scoped and deduplicated; switching samples restores local per-key buffers (35.715382ms)
+✔ a selector removed from the table cannot recover an old sample when re-added (17.341427ms)
+✔ samples retain distinct empty string, false and zero and reject incomplete numeric input (51.891178ms)
+✔ manual string samples enforce UTF-8 and Unicode while keeping literal markup and NUL (15.291916ms)
+✔ table and manual input changes clear results and revoke retained field-location callbacks (19.315297ms)
+✔ unobserved table or sample edits cannot use previous result locations (18.618037ms)
+✔ table invalidation and removed current states clear results without silently choosing another state (18.392505ms)
+✔ close, availability loss, disabled context and reset never restore an old result (70.297775ms)
+✔ capability withdrawal affects trial results while existing samples remain editable (24.267389ms)
+✔ language refresh preserves sample nodes, focus, selection and current result without rerunning comparisons (22.883328ms)
+✔ construction avoids parent TDZ, generation changes revoke results, and disposal clears retained callbacks (18.419379ms)
+✔ admission and evaluation failures leave no result and all labels have English and Japanese translations (13.628762ms)
+✔ temporarily invalid table fields preserve shared samples but discard the old result (17.44549ms)
+✔ all sixty-four candidates remain available with unique DOM IDs and bounded reads on language refresh (47.500961ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 577.433537

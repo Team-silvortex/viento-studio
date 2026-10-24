@@ -1,0 +1,92 @@
+✖ real all/any groups preserve mixed strict scalar truth values and accept exactly one transition per matching group (14197.967625ms)
+✔ real GDS short-circuit traces preserve leaf order repeated reads and skipped shared-state leaves (260.853571ms)
+✔ real mixed firstMatch groups and scalar branches read state at delivery time and execute only the first match (14440.823523ms)
+✔ real a matching all group with rejected entry does not attempt a matching any branch or fallback (13357.730801ms)
+✔ real payload-only v5 accepts the legacy port while a shared-state leaf requires read_state before side effects (283.839754ms)
+✖ real v5 BOM/CRLF group controller retains p10 entries completion and immutable author bytes in an independent ZIP (13239.451315ms)
+✖ real shared-state guards preserve exact typed comparisons and treat missing or mismatched values as false even for ne (14871.933997ms)
+✔ real mixed firstMatch groups read shared state at callback time and keep payload and fallback branches independent (14405.329494ms)
+✔ real first matching project-state branch failure never attempts its valid fallback (13260.798266ms)
+✔ real selected controllers see persistent shared state after scene reentry while old visit ports are revoked (13322.444555ms)
+✔ real v4 declines an otherwise complete legacy port without read_state before any subscriptions or animation calls (13409.377807ms)
+✖ real v4 BOM/CRLF controller retains p10 entries and completion through independent ZIP delivery (13290.401293ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 8
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 82755.151169
+
+✖ failing tests:
+
+test at scripts/tests/animation-combinations-godot.test.mjs:80:1
+✖ real all/any groups preserve mixed strict scalar truth values and accept exactly one transition per matching group (14197.967625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 9
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:92:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/animation-combinations-godot.test.mjs:223:1
+✖ real v5 BOM/CRLF group controller retains p10 entries completion and immutable author bytes in an independent ZIP (13239.451315ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 9
+  
+      at verify (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:227:12)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-combinations-godot.test.mjs:233:44)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/animation-selectors-godot.test.mjs:73:1
+✖ real shared-state guards preserve exact typed comparisons and treat missing or mismatched values as false even for ne (14871.933997ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 9
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-selectors-godot.test.mjs:86:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/animation-selectors-godot.test.mjs:178:1
+✖ real v4 BOM/CRLF controller retains p10 entries and completion through independent ZIP delivery (13290.401293ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 9
+  
+      at verify (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-selectors-godot.test.mjs:182:12)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-selectors-godot.test.mjs:189:44)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

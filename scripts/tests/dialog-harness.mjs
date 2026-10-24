@@ -1,3 +1,9 @@
+import { setupAnimationStateTrialCaseEditor } from '../../web/modules/app-animation-state-trial-case-editor.js';
+import { setupAnimationStateTrialCase } from '../../web/modules/app-animation-state-trial-case.js';
+import { ANIMATION_STATE_TRIAL_CASE_LIMITS, createAnimationStateTrialCase, parseAnimationStateTrialCase, serializeAnimationStateTrialCase, replayAnimationStateTrialCase } from '../../engine/animation-state-trial-case.mjs';
+import { animationStateEventPreviewKeys } from '../../engine/animation-state-event-preview.mjs';
+import { ANIMATION_STATE_TRIAL_LIMITS, createAnimationStateTrialSequence, previewAnimationStateTrialStep, appendAnimationStateTrialStep, truncateAnimationStateTrialSequence } from '../../engine/animation-state-trial-sequence.mjs';
+import { setupAnimationStateEventPreview } from '../../web/modules/app-animation-state-event-preview.js';
 import { setupAnimationStateConditionGroup } from '../../web/modules/app-animation-state-condition-group.js';
 import { setupAnimationStateCondition } from '../../web/modules/app-animation-state-condition.js';
 import { supportsStudioCoreAnimationStateConditions, supportsStudioCoreAnimationStateBranches, supportsStudioCoreAnimationStateSelectors, supportsStudioCoreAnimationStateCombinations } from '../../engine/studio-core.mjs';
@@ -178,6 +184,15 @@ export async function dialogHarness(module, overrides = {}) {
     setupAnimationStateCondition, setupAnimationStateConditionGroup, supportsStudioCoreAnimationStateConditions, supportsStudioCoreAnimationStateBranches, supportsStudioCoreAnimationStateSelectors, supportsStudioCoreAnimationStateCombinations,
     createAnimationStateGraph: value => createAnimationStateGraph(JSON.parse(JSON.stringify(value))), layoutAnimationStateGraph,
     setupAnimationStateGraph: options => setupAnimationStateGraph({ ...options, getTable: () => JSON.parse(JSON.stringify(options.getTable())) }),
+    setupAnimationStateTrialCaseEditor,
+    ANIMATION_STATE_TRIAL_CASE_LIMITS, createAnimationStateTrialCase, parseAnimationStateTrialCase, serializeAnimationStateTrialCase,
+    replayAnimationStateTrialCase: (table, trialCase) => replayAnimationStateTrialCase(JSON.parse(JSON.stringify(table)), trialCase),
+    setupAnimationStateTrialCase: options => setupAnimationStateTrialCase({ ...options, getTable: () => JSON.parse(JSON.stringify(options.getTable())) }),
+    animationStateEventPreviewKeys, ANIMATION_STATE_TRIAL_LIMITS,
+    createAnimationStateTrialSequence: (table, state) => createAnimationStateTrialSequence(JSON.parse(JSON.stringify(table)), state),
+    previewAnimationStateTrialStep: (sequence, input) => previewAnimationStateTrialStep(sequence, JSON.parse(JSON.stringify(input))),
+    appendAnimationStateTrialStep, truncateAnimationStateTrialSequence,
+    setupAnimationStateEventPreview: options => setupAnimationStateEventPreview({ ...options, getTable: () => JSON.parse(JSON.stringify(options.getTable())) }),
     ...overrides,
   });
   if (['app-scene-preview', 'app-scene-layout', 'app-scene-outline'].includes(module)) {

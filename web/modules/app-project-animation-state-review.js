@@ -1,3 +1,4 @@
+import { describeProjectAnimationStateEntryTrigger } from './app-project-animation-state-trigger.js';
 import { createProjectAnimationStateReview, queryProjectAnimationStateReview } from '../../engine/project-animation-state-review.mjs';
 import { t, onLanguageChange } from '../i18n/index.js';
 
@@ -11,7 +12,7 @@ export function setupProjectAnimationStateReview({ container, getContext = () =>
     <label id="projectAnimationStateReviewSelectionLabel" for="projectAnimationStateReviewSelection"></label>
     <div class="project-animation-state-review-controls"><button id="projectAnimationStateReviewPrevious" type="button" class="doc-btn"></button><select id="projectAnimationStateReviewSelection"></select><button id="projectAnimationStateReviewNext" type="button" class="doc-btn"></button></div>
     <p id="projectAnimationStateReviewPosition" role="status" aria-live="polite"></p>
-    <div id="projectAnimationStateReviewEntry"><h4 id="projectAnimationStateReviewState"></h4><p id="projectAnimationStateReviewTime"></p><p id="projectAnimationStateReviewCutoff"></p><p id="projectAnimationStateReviewClip"></p><p id="projectAnimationStateReviewBinding"></p><p id="projectAnimationStateReviewScript"></p></div>
+    <div id="projectAnimationStateReviewEntry"><h4 id="projectAnimationStateReviewState"></h4><p id="projectAnimationStateReviewTrigger"></p><p id="projectAnimationStateReviewTriggerDetail"></p><p id="projectAnimationStateReviewTriggerPayload"></p><p id="projectAnimationStateReviewTriggerDelivery"></p><p id="projectAnimationStateReviewTriggerNote" class="build-hint"></p><p id="projectAnimationStateReviewTime"></p><p id="projectAnimationStateReviewCutoff"></p><p id="projectAnimationStateReviewClip"></p><p id="projectAnimationStateReviewBinding"></p><p id="projectAnimationStateReviewScript"></p></div>
     <div class="project-animation-state-review-sources"><button id="projectAnimationStateReviewBindingSource" type="button" class="doc-btn doc-btn-ghost project-animation-state-review-binding-source"></button><button id="projectAnimationStateReviewScriptSource" type="button" class="doc-btn doc-btn-ghost project-animation-state-review-script-source"></button></div>
     <h4 id="projectAnimationStateReviewCommandsTitle"></h4><p id="projectAnimationStateReviewCommandsNote" class="build-hint"></p><p id="projectAnimationStateReviewCommandsEmpty" class="build-hint"></p><ol id="projectAnimationStateReviewCommands"></ol>
     <h4 id="projectAnimationStateReviewTerminalTitle"></h4><p id="projectAnimationStateReviewTerminalEmpty" class="build-hint"></p><div id="projectAnimationStateReviewTerminal" class="project-animation-state-review-terminal"><p id="projectAnimationStateReviewTerminalBoundary"></p><p id="projectAnimationStateReviewTerminalState"></p><p id="projectAnimationStateReviewTerminalClip"></p></div>
@@ -70,6 +71,18 @@ export function setupProjectAnimationStateReview({ container, getContext = () =>
     selection.disabled = !canUse(current); el('Previous').disabled = !canUse(current) || view.previousSequence === null; el('Next').disabled = !canUse(current) || view.nextSequence === null;
     text(el('Position'), t('本次访问的第 {0} / {1} 条进入记录 · 全局序号 {2}', view.position, view.entries.length, entry.sequence));
     text(el('State'), t('脚本接受进入状态：{0}', entry.stateKey));
+    text(el('Trigger'), describeProjectAnimationStateEntryTrigger(entry, t));
+    el('Trigger').dataset.kind = entry.trigger?.kind || 'unrecorded';
+    const evidence = view.triggerEvidence;
+    text(el('TriggerDetail'), evidence?.kind === 'event' ? t('关联事件：{0}', evidence.event.name)
+      : evidence?.kind === 'completed' ? evidence.completion.clip
+        ? t('完成片段：{0} · {1}', evidence.completion.clip.name, evidence.completion.clip.id) : t('完成对象：完整动画') : '');
+    text(el('TriggerPayload'), evidence?.kind === 'event' ? t('事件值：{0}', JSON.stringify(evidence.event.value)) : '');
+    text(el('TriggerDelivery'), evidence ? t(evidence.delivery.status === 'pending'
+      ? '进入已记录；此订阅的回调结果尚未确认。' : '此订阅的同步回调已成功返回；后续动画命令仍需查看执行记录。') : '');
+    text(el('TriggerNote'), entry.trigger ? t('来源记录说明进入发生在哪个回调中；不包含分支命中或条件求值过程。') : '');
+    for (const suffix of ['TriggerDetail', 'TriggerPayload', 'TriggerDelivery', 'TriggerNote']) el(suffix).hidden = !el(suffix).textContent;
+    if (evidence) el('TriggerDelivery').dataset.status = evidence.delivery.status; else delete el('TriggerDelivery').dataset.status;
     text(el('Time'), t('场景时间：{0} 秒', entry.timeSeconds)); text(el('Cutoff'), t('进入时已执行动画命令序号：{0}', entry.commandSequence));
     text(el('Clip'), entry.clipId ? t('状态选择的片段：{0}', entry.clipId) : t('状态选择：完整动画'));
     text(el('Binding'), t('绑定来源：{0} · {1}', entry.origin.source.sourcePath, entry.origin.source.propertyPath));

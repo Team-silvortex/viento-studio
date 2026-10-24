@@ -1,0 +1,46 @@
+{
+  "reviewer": "animation_next_observation",
+  "scope": "read-only independent p10 animation entry trigger review",
+  "status": "no remaining findings in reviewed scope",
+  "fixedFindings": [
+    {
+      "id": "pending-source-order",
+      "summary": "Query previously accepted a still-pending later event or recipient as entry source; now pending provenance must be first pending recipient."
+    },
+    {
+      "id": "retired-event-token",
+      "summary": "Reader and query previously accepted entry provenance from an already retired event token still queued in a later message; now earlier skipped event delivery disqualifies the token."
+    }
+  ],
+  "independentProbeChecks": [
+    "valid first pending provenance remains accepted",
+    "query rejects later pending event as source",
+    "query rejects later pending recipient as source",
+    "reader atomically rejects retired event token despite a queued pending delivery",
+    "query rejects forged queued entry from retired event token",
+    "full query rejects trigger accessors without invoking them",
+    "p9 remains exact and admits only legacy entry shape",
+    "review preserves pending evidence and freezes its origin"
+  ],
+  "staticChecks": [
+    "Runtime scopes bind actual callback object, visit, binding/instance/object identities and full bound Callable rather than queue proximity.",
+    "Generated wrapper keeps author return values; failed sampling only affects runtime diagnostics.",
+    "Completion provenance binds its recorded clock and executed command cutoff.",
+    "Per-callback duplicate source keys and later skipped receipts are rejected before ledger mutation.",
+    "p9 wire and review shapes remain strict; p10 adds explicit trigger data."
+  ],
+  "limitations": [
+    "Did not rerun full or native suites; those are owned by parent/runtime agents.",
+    "Static review does not claim hostile author GDScript is sandboxed from private Godot internals."
+  ],
+  "sources": {
+    "engine/project-animation-state-entry-triggers.mjs": "4e4f50cc09c37021a887697ba44fe6b6613a38ba984523a0fa02eea7ab73d745",
+    "engine/project-runtime-events.mjs": "f92ec742373c2a16126470c2d9c204ca621ed19a9c0d9d08ce06f467f8f25981",
+    "engine/project-runtime-query.mjs": "ecf0d8fd98faf4310bc0009693b0768f5264f9b3e732a46f5df0deb8a9fe0a16",
+    "engine/project-animation-state-review.mjs": "289cf726750a9a8f257153320c94223a5c447416b28b77f0e71cb541a6d9384c",
+    "scripts/backends/godot4/project-animation-state-trigger-runtime.gd": "6dadc2cd9fa43c9b1bf9911779cc241f1bcdc3311c63713ea207c35951d3ee21",
+    "scripts/backends/godot4/project-animation-state-trigger-wrapper.gd": "44a8cd664d7f8a19dbe0286de428a028475a331b7f7a49b9bb25b35c0434a862",
+    "scripts/backends/godot4/project-events.gd": "7d4a7454e63cd278ee8aa0539f4341b52e86a59ff1e9f7a751e18a31a8cd50d0",
+    "scripts/backends/godot4/project-animation-completions.gd": "593b5b6b8eed11378342588ed8284a0f7393aa58bb65b0283d6eaab784eaf3d4"
+  }
+}

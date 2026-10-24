@@ -128,7 +128,13 @@ func drain() -> void:
 				if not callback.is_valid() or behavior == null or callback.get_object() != behavior:
 					fail(subscription["binding"], "runtime_behavior_event_callback", "Project event callback is no longer valid.")
 					break
-				if not invoke_callback(callback, message["value"]):
+				var observes: bool = owner.has_method("begin_animation_dispatch")
+				if observes:
+					owner.begin_animation_dispatch(message["visit"], subscription["binding"], callback, {"kind": "event", "eventSequence": message["sequence"], "subscriptionId": id})
+				var accepted := invoke_callback(callback, message["value"])
+				if observes:
+					owner.end_animation_dispatch()
+				if not accepted:
 					fail(subscription["binding"], "runtime_behavior_event_callback", "Project event callback must synchronously return true.")
 					break
 				if owner.failed or owner.finished:

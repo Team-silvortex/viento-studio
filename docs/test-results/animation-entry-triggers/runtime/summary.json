@@ -1,0 +1,779 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": 10,
+  "adapterVersion": "0.19.0",
+  "inventoryVersion": 11,
+  "nodeVersion": "24.21.0",
+  "godotVersion": "4.7.2.stable.official.ed1daf0bf",
+  "groups": {
+    "entryTriggers": {
+      "tests": 13,
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "protocol10 declares trigger capability and inventory11 without changing recognized author bytes",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real v1 preserves initial, event, completion and direct entry identity",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real v2 preserves initial, event, completion and direct entry identity",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real v3 preserves initial, event, completion and direct entry identity",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real v4 preserves initial, event, completion and direct entry identity",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real v5 preserves initial, event, completion and direct entry identity",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real direct callback calls from another dispatched binding cannot borrow its event or completion identity",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real a manual second ready invocation is direct rather than another initialization",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real same-frame self transitions bind each accepted entry to its own message and subscription",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real nonmatching all group has no entry and its later matching event keeps its own identity",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real accepted event entry remains attributable when a preceding queued command fails before its execution",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real rejected play has no successful event entry and retains the original accepted initialization",
+          "status": "passed",
+          "evidence": "native-final.log"
+        },
+        {
+          "name": "real p9 runtime and wrapper remain runnable with their strict previous wire fields",
+          "status": "passed",
+          "evidence": "native-p9-replay.log"
+        }
+      ]
+    },
+    "stateAndEntryCompatibility": {
+      "tests": 24,
+      "passed": 24,
+      "failed": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "state entry wrappers are shared per source and keep author source maps unchanged",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "only protocol9/10 generated outputs get the bounded 1024 file allowance",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real entries preserve initial entry and repeated same-frame self and cross-state requests",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real independently bound wrappers retain distinct instance origins for one shared source",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real accepted select followed by rejected play has no successful state-entry record",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real accepted state survives in trace when a queued command fails before its playback executes",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real v2 entries capture conditional event selection and natural completion",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real v3 entries capture conditional event selection and natural completion",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real repeated observation-port calls cannot fabricate another successful entry",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "wrapper diagnostics belong to generated assembly and never borrow author source lines",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "only exact frozen state scripts select protocol10; manually edited scripts retain protocol7",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "schema11 inventory rejects forged controller fields, duplicate bindings, clip mappings and missing runtime files",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real snapshots distinguish two states selecting the same clip and retain frozen source navigation",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real two bindings of one script retain separate state snapshots in frozen binding order",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real event conditions and ordered branches are sampled from actual state rather than guessed from commands",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real deactivated controller is explicit rather than fabricated as an active state",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real freed controller is explicit rather than fabricated as an active state",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real diagnostic abort samples the controller before cleanup and does not fabricate a finished frame",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real scene reentry uses a new visit and does not reuse previous weak controller state",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real BOM/CRLF state controller and snapshot layer survive ZIP delivery after deleting author and build trees",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real v2 conditional script returns to idle on completion before its terminal snapshot",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real abort before controller creation reports unavailable while preserving the primary diagnostic",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "real malformed private state fails explicitly and cannot masquerade as unavailable or a normal finish",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        },
+        {
+          "name": "maximum schema11 controller inventory fits its bounded budget while old inventories keep their original limit",
+          "status": "passed",
+          "evidence": "native-legacy.log"
+        }
+      ]
+    },
+    "selectorsGroupsAndZip": {
+      "tests": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "real all/any groups preserve mixed strict scalar truth values and accept exactly one transition per matching group",
+          "status": "passed",
+          "evidence": "native-guards-zip-final.log"
+        },
+        {
+          "name": "real GDS short-circuit traces preserve leaf order repeated reads and skipped shared-state leaves",
+          "status": "passed",
+          "evidence": "native-guards-zip.log"
+        },
+        {
+          "name": "real mixed firstMatch groups and scalar branches read state at delivery time and execute only the first match",
+          "status": "passed",
+          "evidence": "native-guards-zip.log"
+        },
+        {
+          "name": "real a matching all group with rejected entry does not attempt a matching any branch or fallback",
+          "status": "passed",
+          "evidence": "native-guards-zip.log"
+        },
+        {
+          "name": "real payload-only v5 accepts the legacy port while a shared-state leaf requires read_state before side effects",
+          "status": "passed",
+          "evidence": "native-guards-zip.log"
+        },
+        {
+          "name": "real v5 BOM/CRLF group controller retains p10 entries completion and immutable author bytes in an independent ZIP",
+          "status": "passed",
+          "evidence": "native-guards-zip-final.log"
+        },
+        {
+          "name": "real shared-state guards preserve exact typed comparisons and treat missing or mismatched values as false even for ne",
+          "status": "passed",
+          "evidence": "native-guards-zip-final.log"
+        },
+        {
+          "name": "real mixed firstMatch groups read shared state at callback time and keep payload and fallback branches independent",
+          "status": "passed",
+          "evidence": "native-guards-zip.log"
+        },
+        {
+          "name": "real first matching project-state branch failure never attempts its valid fallback",
+          "status": "passed",
+          "evidence": "native-guards-zip.log"
+        },
+        {
+          "name": "real selected controllers see persistent shared state after scene reentry while old visit ports are revoked",
+          "status": "passed",
+          "evidence": "native-guards-zip.log"
+        },
+        {
+          "name": "real v4 declines an otherwise complete legacy port without read_state before any subscriptions or animation calls",
+          "status": "passed",
+          "evidence": "native-guards-zip.log"
+        },
+        {
+          "name": "real v4 BOM/CRLF controller retains p10 entries and completion through independent ZIP delivery",
+          "status": "passed",
+          "evidence": "native-guards-zip-final.log"
+        }
+      ]
+    },
+    "unit": {
+      "tests": 77,
+      "passed": 47,
+      "failed": 0,
+      "skipped": 30,
+      "cases": [
+        {
+          "name": "backend descriptors detach and recursively freeze every admitted field",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "descriptor schema rejects unknown, missing and host implementation fields",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "identities, versions and lists remain bounded unique descriptor data",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "plan schemas and runtime protocol schemas are explicit separate declarations",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "project plans admit explicit runtime protocols one through ten without changing author schema",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "execution operations require seven explicit booleans without support inference",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "namespaced native extension metadata never implies runtime or GPU support",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "descriptor admission refuses accessors and inherited authority before getters run",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "nonserializable, cyclic, sparse, overdeep and oversized DTOs fail closed",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "support checks admit known plans and platforms with or without optional plan data",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "unsupported plan format, kind and schema diagnose source without choosing a fallback",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "missing feature diagnostics retain the scene source and original capability order",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "all execution, platform, plan and capability rejections remain independently visible",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "malformed support requests and plan DTOs cannot bypass validation",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "UI support convenience is explicit, operation-specific and fail closed",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "portable middleware executes in an isolated JavaScript realm without host globals",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "portable manifest describes the shared provenance contract for both backends and Godot author scripts",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "summary reports only manifest identity inventory counts and output bytes without tool paths or author bodies",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "manifest validation snapshots without reading accessors executing serializers or accepting sparse/prototyped data",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "output authority rejects unsafe paths missing entries duplicates prefix collisions and extra schema fields",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "resource-copy and author-source-copy inventories require exact ownership and hash/size agreement",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "source inventory keeps existing Linux source names distinct from generated-file path rules",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "frozen source identities evidence paths and lifecycle claims cannot be forged within the pure DTO",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "legacy adapter-null provenance is data while oversized arrays and invalid Unicode cannot evade budgets",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "portable validation executes without Node filesystem process or backend implementations",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "the readable published manifest must fit its byte budget even when compact JSON would fit",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "protocol 9 assembly manifests and delivery reviews admit 1024 generated files plus 128 resources",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "protocol 10 assembly manifests and delivery reviews admit 1024 generated files plus 128 resources",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "Godot descriptor and host contract are immutable, precise and independent of legacy build metadata",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "adapter preserves frozen v1/v2 file hashes, source owner maps and generator fingerprints",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "generation owns an admitted plan before asynchronous reads and never shares source objects with its caller",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "generation rejects unsupported plan headers and required capabilities without rewriting author inputs",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "availability remains a non-executing stat/access check and identification retains Godot version pinning",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real spawned processes receive legacy Godot flags, literal arguments and isolated host paths",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "unsupported modes and invalid capture combinations are rejected before any process starts",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "phase execution delegates cancellation, deadlines and observer failures to the shared process owner",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "diagnostics and event readers retain v1/v2 source ownership and reject redirected runtime locations",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "cleanup removes only known generated caches and never follows their links into source data",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "state entry wrappers are shared per source and keep author source maps unchanged",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "only protocol9/10 generated outputs get the bounded 1024 file allowance",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real entries preserve initial entry and repeated same-frame self and cross-state requests",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real independently bound wrappers retain distinct instance origins for one shared source",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real accepted select followed by rejected play has no successful state-entry record",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real accepted state survives in trace when a queued command fails before its playback executes",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real v2 entries capture conditional event selection and natural completion",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real v3 entries capture conditional event selection and natural completion",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real repeated observation-port calls cannot fabricate another successful entry",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "wrapper diagnostics belong to generated assembly and never borrow author source lines",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "inventory11 admits 32 scenes and 256 distinct original/wrapper scripts within the fixed 4 MiB budget",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "protocol10 declares trigger capability and inventory11 without changing recognized author bytes",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real v1 preserves initial, event, completion and direct entry identity",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real v2 preserves initial, event, completion and direct entry identity",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real v3 preserves initial, event, completion and direct entry identity",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real v4 preserves initial, event, completion and direct entry identity",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real v5 preserves initial, event, completion and direct entry identity",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real direct callback calls from another dispatched binding cannot borrow its event or completion identity",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real a manual second ready invocation is direct rather than another initialization",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real same-frame self transitions bind each accepted entry to its own message and subscription",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real nonmatching all group has no entry and its later matching event keeps its own identity",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real accepted event entry remains attributable when a preceding queued command fails before its execution",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real rejected play has no successful event entry and retains the original accepted initialization",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real p9 runtime and wrapper remain runnable with their strict previous wire fields",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "only exact frozen state scripts select protocol10; manually edited scripts retain protocol7",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "schema11 inventory rejects forged controller fields, duplicate bindings, clip mappings and missing runtime files",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real snapshots distinguish two states selecting the same clip and retain frozen source navigation",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real two bindings of one script retain separate state snapshots in frozen binding order",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real event conditions and ordered branches are sampled from actual state rather than guessed from commands",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real deactivated controller is explicit rather than fabricated as an active state",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real freed controller is explicit rather than fabricated as an active state",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real diagnostic abort samples the controller before cleanup and does not fabricate a finished frame",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real scene reentry uses a new visit and does not reuse previous weak controller state",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real BOM/CRLF state controller and snapshot layer survive ZIP delivery after deleting author and build trees",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real v2 conditional script returns to idle on completion before its terminal snapshot",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real abort before controller creation reports unavailable while preserving the primary diagnostic",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "real malformed private state fails explicitly and cannot masquerade as unavailable or a normal finish",
+          "status": "skipped",
+          "evidence": "unit-final.log"
+        },
+        {
+          "name": "maximum schema11 controller inventory fits its bounded budget while old inventories keep their original limit",
+          "status": "passed",
+          "evidence": "unit-final.log"
+        }
+      ]
+    }
+  },
+  "fixes": [
+    "Godot is_node_ready() is already true inside _ready; fixed wrapper now records its first in-tree _ready invocation explicitly and treats later calls as direct.",
+    "Legacy p9 replay fixture now copies captured image resources as well as generated files.",
+    "Updated current-generation protocol assertions to 10; retained strict p9 replay and standalone p9 admission tests."
+  ],
+  "sourceHashes": {
+    "engine/backend-capabilities.mjs": "11f7d9617aafd52fabf74eab5f0031bf362f47a208a563324b82835edcdbd827",
+    "engine/backend-project.mjs": "675f5c481dfc0eafaa4aaf42acb26cf4f9bc818f17fc39bf2a26308d81d583bd",
+    "engine/project-animation-commands.mjs": "396f122178cf78621274cdc440711e63b631bde3fb3ee12b3ed2556b5017ae1b",
+    "engine/project-animation-state-entries.mjs": "93473da20d63c42a0e4b8cc0e2a9b6ed7eb20cece240451074789f0f2075d9b3",
+    "engine/project-animation-state-entry-triggers.mjs": "4e4f50cc09c37021a887697ba44fe6b6613a38ba984523a0fa02eea7ab73d745",
+    "engine/project-animation-transport.mjs": "4e5878cddcfdc869ec8dc87657f3a1bac7e455e6fff4cae77e51f9a4888f92aa",
+    "engine/project-runtime-contracts.mjs": "e4f365f530d6dec4f2a09426b33f9048af957830a7e50de4ad7bed324ee4f74d",
+    "engine/project-runtime-events.mjs": "f92ec742373c2a16126470c2d9c204ca621ed19a9c0d9d08ce06f467f8f25981",
+    "engine/project-runtime-query.mjs": "ecf0d8fd98faf4310bc0009693b0768f5264f9b3e732a46f5df0deb8a9fe0a16",
+    "scripts/adapters/node-backend-project-delivery.mjs": "1312a1f7a74eb781d1f2d43f1a9dad2d5c2f1c99a926f4900d12b4e1eb54bd7e",
+    "scripts/adapters/node-execution-backends.mjs": "810fed858bf8fc3a8e9f75bc08156e7078a41a8dc50101f30b4677514e92d622",
+    "scripts/backends/godot4-adapter.mjs": "a2c6cb2cf53cfb4ff05d3412a2d61f7c3f2b663424ab6f73581daf977965284e",
+    "scripts/backends/godot4-project.mjs": "13061c10fe30d6ab3ee1ef6818fda924a113512450fc1e5d98da314084ea55e3",
+    "scripts/backends/godot4/project-animation-completions.gd": "593b5b6b8eed11378342588ed8284a0f7393aa58bb65b0283d6eaab784eaf3d4",
+    "scripts/backends/godot4/project-animation-state-trigger-runtime.gd": "6dadc2cd9fa43c9b1bf9911779cc241f1bcdc3311c63713ea207c35951d3ee21",
+    "scripts/backends/godot4/project-animation-state-trigger-wrapper.gd": "44a8cd664d7f8a19dbe0286de428a028475a331b7f7a49b9bb25b35c0434a862",
+    "scripts/backends/godot4/project-events.gd": "7d4a7454e63cd278ee8aa0539f4341b52e86a59ff1e9f7a751e18a31a8cd50d0",
+    "scripts/tests/animation-combinations-godot.test.mjs": "e5b4eb7202f13e3cebbdca82c4590ed144d8945b43f8eb40f68d90bb0bb4a027",
+    "scripts/tests/animation-selectors-godot.test.mjs": "9244c78078d977ccb5b15750a039cd600dd2932e0efea23cda12bbab0167a0f1",
+    "scripts/tests/backend-capabilities.test.mjs": "939c2ca4e8252c5bb15382e950e5f8a54a8d2119929590acbf86c7b4bc11c13c",
+    "scripts/tests/backend-project.test.mjs": "8e6eb721276f25416667c057de7f01de3f96423d8f79da834bab2ec63d00d4c6",
+    "scripts/tests/godot4-adapter.test.mjs": "0cd5921c8c298646b411a4d52eb5fde83264ff9203ba0b79327774d2741e48a6",
+    "scripts/tests/project-animation-state-entry-godot.test.mjs": "23879abc6b3f12a6ffb8330d6341753cccb854f541df804624cc3f0fb4240649",
+    "scripts/tests/project-animation-state-entry-inventory.test.mjs": "d858905a654a93f6e32e4f4316c11c32d2e53fc6fbc7a40ff1d1b6b52e688fd9",
+    "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs": "7fc3d5e7fbfb426f2fbc10ace75792fd2e6d741e4d3ba1e0ebd97bbc4aaf197b",
+    "scripts/tests/project-animation-state-godot.test.mjs": "2a28cfb4081889574bfebfcbe1574f9fdb53a48946029a6bfb247d312fec035e"
+  },
+  "logHashes": {
+    "native-final.log": "31b1de77268446129fd5fa56fb2706511adcbfb7d9553790418772eb695ffb99",
+    "native-guards-zip-final.log": "48cd3698c4c082df7d165f5fb541d3d238f2382b8ecfd459930254ffb588abc2",
+    "native-guards-zip.log": "204fca880f10f2b3c6c3afdc0b39dc2207728760cf070dcff06dae6c58823124",
+    "native-initial.log": "488ff297c89597c00fb7aa7951514c24bcb06482fa3a438f65c548266ff14f3c",
+    "native-legacy.log": "f6d6afea0e775aafc23fa03344d7f03e25b8983584fbabeea8e4ea8d18dd20be",
+    "native-p9-replay.log": "9409ba6585b9ed36364bbfb07b8f8eedd3a477dbfb7dd7a692edcf477414b872",
+    "unit-final.log": "a2bdebc9451f92c485c2a6e30d7418398b443347178862822cf13eb5d12571f6"
+  },
+  "finalCombined": {
+    "files": [
+      "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs",
+      "scripts/tests/project-animation-state-godot.test.mjs",
+      "scripts/tests/project-animation-state-entry-godot.test.mjs",
+      "scripts/tests/animation-selectors-godot.test.mjs",
+      "scripts/tests/animation-combinations-godot.test.mjs"
+    ],
+    "exitCode": 0,
+    "counts": {
+      "tests": 49,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "log": "native-post-control-fix.log",
+    "logSha256": "3d52d2d9d4d904a694c67099c4be2e36f43084224bdbeaca0c1f3f89834dc27c",
+    "sourceHashesBefore": "source-hashes-post-control-before.json",
+    "sourceHashesAfter": "source-hashes-post-control-after.json",
+    "sourceFileCount": 1312,
+    "sourceHashChanges": []
+  },
+  "controlRegression": {
+    "counts": {
+      "tests": 23,
+      "pass": 23,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "log": "control-regression-final.log",
+    "logSha256": "404168d416f94ced80d5fecd6e75e37066227c15db3ace1284bbbec79cefa420",
+    "godotVersion": "4.7.2.stable.official.ed1daf0bf",
+    "bevyRuntimeVersion": "0.3.0",
+    "sourceHashes": {
+      "scripts/backends/godot4-adapter.mjs": "2e4f262b195d874fa5d4fde7bca1a0030c476fa783782810cdde477e1f869b60",
+      "scripts/tests/runtime-control-backends.test.mjs": "96e2ac9faea8cb853917059f4a489fd76117e801def51cb7511de5a7044b3127",
+      "scripts/tests/runtime-instance-backends.test.mjs": "1233a8a2e4f7094b676e6428d59bf3e04271a7938a714be5f4bd987d6a7989f5"
+    },
+    "fix": "Removed two fingerprint-only [path, URL] rows accidentally inserted into control replay [path, bytes] staging; retained fingerprint coverage and added exact live staging inventory assertion. Real Godot and Bevy v1/v2 and per-instance replays, legacy image initialization, cancellation and observer failure cleanup all passed."
+  },
+  "previousCombined": {
+    "files": [
+      "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs",
+      "scripts/tests/project-animation-state-godot.test.mjs",
+      "scripts/tests/project-animation-state-entry-godot.test.mjs",
+      "scripts/tests/animation-selectors-godot.test.mjs",
+      "scripts/tests/animation-combinations-godot.test.mjs"
+    ],
+    "exitCode": 0,
+    "counts": {
+      "tests": 49,
+      "pass": 49,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "log": "native-final-combined.log",
+    "logSha256": "f3cd830c0bced531aabd7abe7f47aa5d72163573b9092dd1b3327680465086d8",
+    "sourceHashesBefore": "source-hashes-final-before.json",
+    "sourceHashesAfter": "source-hashes-final-after.json",
+    "sourceFileCount": 1312,
+    "sourceHashChanges": []
+  }
+}

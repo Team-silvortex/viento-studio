@@ -1,3 +1,4 @@
+import { validateProjectAnimationStateTriggeredEntriesSnapshot, validateProjectAnimationStateEntryTriggersTimeline } from './project-animation-state-entry-triggers.mjs';
 import { validateProjectAnimationStateEntriesSnapshot, validateProjectAnimationStateEntriesTimeline } from './project-animation-state-entries.mjs';
 import { validateProjectAnimationStatesSnapshot, validateProjectAnimationStatesTimeline } from './project-animation-states.mjs';
 import { validateProjectAssemblyPlan } from './project-assembly-plan-contract.mjs';
@@ -41,7 +42,7 @@ export function createProjectRuntimeObservation(input, { protocolVersion = 1 } =
       let event; try { event = copy(inputEvent); } catch { return false; }
       return reader.push(PROJECT_RUNTIME_PREFIX + JSON.stringify(event) + '\n').length === 1;
     },
-    snapshot() { return { ...child.snapshot(), project: { ...copy(project), ...(protocolVersion >= 2 ? { protocolVersion, sharedState: reader.sharedState, ...(protocolVersion >= 3 ? { events: reader.projectEvents } : {}), ...(protocolVersion >= 4 ? { audioCommands: reader.audioCommands } : {}), ...(protocolVersion >= 5 ? { animationCommands: reader.animationCommands } : {}), ...(protocolVersion >= 7 ? { animationCompletions: reader.animationCompletions } : {}), ...(protocolVersion >= 8 ? { animationStates: reader.animationStates } : {}), ...(protocolVersion === 9 ? { animationStateEntries: reader.animationStateEntries } : {}) } : {}) } }; },
+    snapshot() { return { ...child.snapshot(), project: { ...copy(project), ...(protocolVersion >= 2 ? { protocolVersion, sharedState: reader.sharedState, ...(protocolVersion >= 3 ? { events: reader.projectEvents } : {}), ...(protocolVersion >= 4 ? { audioCommands: reader.audioCommands } : {}), ...(protocolVersion >= 5 ? { animationCommands: reader.animationCommands } : {}), ...(protocolVersion >= 7 ? { animationCompletions: reader.animationCompletions } : {}), ...(protocolVersion >= 8 ? { animationStates: reader.animationStates } : {}), ...(protocolVersion >= 9 ? { animationStateEntries: reader.animationStateEntries } : {}) } : {}) } }; },
   });
 }
 
@@ -50,8 +51,8 @@ export function queryProjectRuntimeObservation(input, request = {}) {
   // chosen copier still validates every descriptor, including this header.
   const header = input && typeof input === 'object' ? Object.getOwnPropertyDescriptor(input, 'project')?.value : undefined;
   const version = header && typeof header === 'object' ? Object.getOwnPropertyDescriptor(header, 'protocolVersion')?.value : undefined;
-  const view = version === 9 ? copyEntriesObservation(input) : version === 8 ? copyStatesObservation(input) : version === 7 ? copyCompletionObservation(input) : version === 6 ? copyClipObservation(input) : version === 5 ? copyAnimationObservation(input) : version === 4 ? copyAudioObservation(input) : version === 3 ? copyEventObservation(input) : copy(input), project = view.project;
-  const shared = [2, 3, 4, 5, 6, 7, 8, 9].includes(project?.protocolVersion), messaging = [3, 4, 5, 6, 7, 8, 9].includes(project?.protocolVersion), audio = [4, 5, 6, 7, 8, 9].includes(project?.protocolVersion), animation = [5, 6, 7, 8, 9].includes(project?.protocolVersion), completion = [7, 8, 9].includes(project?.protocolVersion), states = [8, 9].includes(project?.protocolVersion), entries = project?.protocolVersion === 9;
+  const view = [9, 10].includes(version) ? copyEntriesObservation(input) : version === 8 ? copyStatesObservation(input) : version === 7 ? copyCompletionObservation(input) : version === 6 ? copyClipObservation(input) : version === 5 ? copyAnimationObservation(input) : version === 4 ? copyAudioObservation(input) : version === 3 ? copyEventObservation(input) : copy(input), project = view.project;
+  const shared = [2, 3, 4, 5, 6, 7, 8, 9, 10].includes(project?.protocolVersion), messaging = [3, 4, 5, 6, 7, 8, 9, 10].includes(project?.protocolVersion), audio = [4, 5, 6, 7, 8, 9, 10].includes(project?.protocolVersion), animation = [5, 6, 7, 8, 9, 10].includes(project?.protocolVersion), completion = [7, 8, 9, 10].includes(project?.protocolVersion), states = [8, 9, 10].includes(project?.protocolVersion), entries = [9, 10].includes(project?.protocolVersion);
   if (!exact(project, ['assemblyId', 'entrySceneId', 'activeSceneId', 'visits', ...(shared ? ['protocolVersion', 'sharedState'] : []), ...(messaging ? ['events'] : []), ...(audio ? ['audioCommands'] : []), ...(animation ? ['animationCommands'] : []), ...(completion ? ['animationCompletions'] : []), ...(states ? ['animationStates'] : []), ...(entries ? ['animationStateEntries'] : [])]) || !uuid(project.assemblyId)
     || !uuid(project.entrySceneId) || !uuid(project.activeSceneId) || project.activeSceneId === project.assemblyId
     || project.entrySceneId === project.assemblyId || !Array.isArray(project.visits) || project.visits.length > PROJECT_RUNTIME_MAX_VISITS) throw invalid();
@@ -120,7 +121,8 @@ export function queryProjectRuntimeObservation(input, request = {}) {
     validateProjectAnimationStatesTimeline(project.animationStates, project.animationCommands, project.visits);
   }
   if (entries) {
-    project.animationStateEntries = validateProjectAnimationStateEntriesSnapshot(project.animationStateEntries);
+    project.animationStateEntries = (version === 10 ? validateProjectAnimationStateTriggeredEntriesSnapshot : validateProjectAnimationStateEntriesSnapshot)(project.animationStateEntries);
+    if (version === 10) validateProjectAnimationStateEntryTriggersTimeline(project.animationStateEntries, project.events, project.animationCompletions);
     validateProjectAnimationStateEntriesTimeline(project.animationStateEntries, project.animationCommands, project.visits, project.animationStates);
   }
   return { ...result, project };

@@ -99,12 +99,19 @@ func drain() -> void:
 				elif not callback.is_valid() or callback.get_object() != behavior:
 					owner.state_fail(subscription["binding"], "runtime_behavior_animation_completion_callback", "Animation completion callback is no longer valid.")
 					break
-				elif not invoke_callback(callback, message["state"]["clipId"]):
-					if not owner.failed:
-						owner.state_fail(subscription["binding"], "runtime_behavior_animation_completion_callback", "Animation completion callback must synchronously return true.")
-					break
-				elif not owner.failed and not owner.finished:
-					status = "handled"
+				else:
+					var observes: bool = owner.has_method("begin_animation_dispatch")
+					if observes:
+						owner.begin_animation_dispatch(message["visitIndex"], subscription["binding"], callback, {"kind": "completed", "completionSequence": message["completionSequence"], "subscriptionId": id})
+					var accepted := invoke_callback(callback, message["state"]["clipId"])
+					if observes:
+						owner.end_animation_dispatch()
+					if not accepted:
+						if not owner.failed:
+							owner.state_fail(subscription["binding"], "runtime_behavior_animation_completion_callback", "Animation completion callback must synchronously return true.")
+						break
+					elif not owner.failed and not owner.finished:
+						status = "handled"
 			if owner.failed or owner.finished:
 				break
 			owner.project_emit("animation-completion-delivery", {"visitIndex": message["visitIndex"], "sceneId": message["sceneId"], "completionSequence": message["completionSequence"], "subscriptionId": id, "status": status})

@@ -1,0 +1,21 @@
+{
+  "fixedDuringReview": [
+    "Empty manual history no longer reads the current author table merely to enable case export; preserved 64-candidate bounded-refresh regression.",
+    "A detail interaction observing an invalid replay clears it immediately, so later restoration cannot revive stale report details.",
+    "Late invalidated file reads release their own busy state without accepting bytes or disturbing a newer request."
+  ],
+  "preservedInitialEvidence": [
+    "ui-host-initial.log retains the failing bounded-read assertion.",
+    "Earlier successful browser run is retained with its own source hashes; final browser report verifies the repaired production.",
+    "Initial full-app log retained separately when it contains the earlier performance regression."
+  ],
+  "reviews": [
+    "Core and UI independently reviewed by other implementer.",
+    "Parent fixture checks author source/change count/current path/pending result isolation and reset/fold import cancellation."
+  ],
+  "limits": [
+    "Manual expectations only compare destination state and whether a transition was selected. Same-target branches are not asserted identical.",
+    "Completion assumes matching selected clip notification; no playback timing, live shared-state or script effects.",
+    "Files are not project-registered runtime cases. No installed Tauri, Android, Bevy-animation or standalone new native case test claim."
+  ]
+}

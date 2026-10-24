@@ -1,0 +1,2111 @@
+{
+  "startedAt": "2026-10-24T01:35:49.036Z",
+  "steps": [
+    "New-script and re-edit samples leave generated source, draft and author bytes unchanged. Missing shared keys, all/any short circuit, first-match selection, fallback, unknown events and invalid numeric input are explicit; field location selects the corresponding author row.",
+    "Explicit adoption advances idle to attack; assumed matching completion advances attack to idle. Undo restores the previous complete sample; unknown event records a no-change step. Hidden invalid event numeric input does not block completion. History and adopted state do not modify source approval.",
+    "Chinese English Japanese retain numeric input identity focus selection and preview at 390px. Changing a real condition invalidates both trial and source review; removed locate controls cannot retarget a row. Cancel/reopen clears trial session and leaves the author source unchanged.",
+    "The unchanged saved v5 table is separately planned built and run in real Godot. Its publisher supplies shared enabled=true and event value3; actual entries are idle then attack then idle, consistent with the manually adopted event and assumed completion path. Runtime provenance remains independent evidence."
+  ],
+  "screenshots": [
+    "preview-create-desktop.png",
+    "preview-first-match.png",
+    "sequence-history-desktop.png",
+    "preview-zh-CN-390.png",
+    "sequence-history-zh-CN-390.png",
+    "preview-en-390.png",
+    "sequence-history-en-390.png",
+    "preview-ja-390.png",
+    "sequence-history-ja-390.png",
+    "preview-matched-runtime.png"
+  ],
+  "errors": [],
+  "dialogs": [
+    {
+      "type": "confirm",
+      "message": "丢弃本次脚本创建设置？编辑器内容不会改变。"
+    },
+    {
+      "type": "confirm",
+      "message": "丢弃本次状态表修改？原文草稿不会改变。"
+    }
+  ],
+  "layout": {
+    "zh-CN": {
+      "noHorizontalOverflow": true,
+      "focused": true,
+      "same": true,
+      "range": [
+        0,
+        1
+      ],
+      "text": "使用手动样本检查状态转换；试算不会推进状态，记录并继续才采用预测目标。这里不执行脚本、不发布事件，也不代表历史运行或动画播放成功。\n\n样本触发方式\n项目事件样本\n当前动画完成（手动假设）\n样本当前状态\nidle\nattack\nunused\n样本事件名称\n样本事件载荷类型\n字符串（string）\n数字（number）\n布尔值（boolean）\n手动样本值\n手动共享状态样本\n\n仅列出当前状态与事件涉及的共享键。同一键在本次试算中使用固定值；实际运行可能在每次读取时变化。\n\n共享状态样本：combat.enabled\n缺失（不提供此键）\n字符串（string）\n数字（number）\n布尔值（boolean）\n手动样本值\nfalse\ntrue\n共享状态样本：combat.fallback\n缺失（不提供此键）\n字符串（string）\n数字（number）\n布尔值（boolean）\n试算此事件\n\n填写手动样本后试算；不会修改状态表或源码草稿。\n\n手动试算结果\n\n样本选择转换 1：idle → attack\n\n转换 1：idle → attack\n\n此样本选中此分支。\n\n全部满足\n\n条件 1：项目共享状态 combat.enabled == 布尔值（boolean）：true\n\n实际样本：布尔值（boolean）：true\n\n比较匹配。\n\n条件 2：事件载荷 >= 数字（number）：3\n\n实际样本：数字（number）：3\n\n比较匹配。\n\n定位转换字段\n转换 2：idle → idle\n\n前面的分支已选中，此分支未求值。\n\n任一满足\n\n条件 1：事件载荷 > 数字（number）：0\n\n未读取样本值。\n\n前面的分支已选中，此条件未求值。\n\n条件 2：项目共享状态 combat.fallback == 布尔值（boolean）：true\n\n未读取样本值。\n\n前面的分支已选中，此条件未求值。\n\n定位转换字段\n转换 3：idle → idle\n\n前面的分支已选中，此分支未求值。\n\n无条件分支\n\n定位转换字段\n记录并继续\n手动步骤历史\n\n2/32 步 · 样本 127/65536 字节；仅保留本次表单会话。\n\n撤回最后一步\n清空步骤\n手动步骤 1：idle → attack\n\n事件样本：action · 数字（number）：3\n\n已提供的共享样本：combat.enabled：布尔值（boolean）：true\n\n查看此步条件详情\n转换 1：idle → attack\n\n此样本选中此分支。\n\n全部满足\n\n条件 1：项目共享状态 combat.enabled == 布尔值（boolean）：true\n\n实际样本：布尔值（boolean）：true\n\n比较匹配。\n\n条件 2：事件载荷 >= 数字（number）：3\n\n实际样本：数字（number）：3\n\n比较匹配。\n\n转换 2：idle → idle\n\n前面的分支已选中，此分支未求值。\n\n任一满足\n\n条件 1：事件载荷 > 数字（number）：0\n\n未读取样本值。\n\n前面的分支已选中，此条件未求值。\n\n条件 2：项目共享状态 combat.fallback == 布尔值（boolean）：true\n\n未读取样本值。\n\n前面的分支已选中，此条件未求值。\n\n转换 3：idle → idle\n\n前面的分支已选中，此分支未求值。\n\n无条件分支\n\n手动步骤 2：attack → idle\n\n假设当前动画完成通知已送达。\n\n此步未读取事件载荷或共享样本。\n\n查看此步条件详情"
+    },
+    "en": {
+      "noHorizontalOverflow": true,
+      "focused": true,
+      "same": true,
+      "range": [
+        0,
+        1
+      ],
+      "text": "Check state transitions with manual samples. A trial does not advance the state; Record and continue adopts the predicted target. This does not run scripts or publish events, and does not represent past execution or successful animation playback.\n\nSample trigger\nProject event sample\nCurrent animation completed (manual assumption)\nSample current state\nidle\nattack\nunused\nSample event name\nSample event payload type\nString (string)\nNumber (number)\nBoolean (boolean)\nManual sample value\nManual shared-state samples\n\nOnly shared keys used by this state and event are listed. Each key has a fixed value for this trial; actual execution may read a different value each time.\n\nShared-state sample: combat.enabled\nMissing (omit this key)\nString (string)\nNumber (number)\nBoolean (boolean)\nManual sample value\nfalse\ntrue\nShared-state sample: combat.fallback\nMissing (omit this key)\nString (string)\nNumber (number)\nBoolean (boolean)\nTry this event\n\nEnter manual samples and run the trial. The state table and source draft remain unchanged.\n\nManual trial result\n\nThe sample selects transition 1: idle → attack\n\nTransition 1: idle → attack\n\nThis sample selects this branch.\n\nAll conditions\n\nCondition 1: Project shared state combat.enabled == Boolean (boolean): true\n\nActual sample: Boolean (boolean): true\n\nThe comparison matches.\n\nCondition 2: Event payload >= Number (number): 3\n\nActual sample: Number (number): 3\n\nThe comparison matches.\n\nLocate transition field\nTransition 2: idle → idle\n\nAn earlier branch was selected; this branch was not evaluated.\n\nAny condition\n\nCondition 1: Event payload > Number (number): 0\n\nThe sample value was not read.\n\nAn earlier branch was selected; this condition was not evaluated.\n\nCondition 2: Project shared state combat.fallback == Boolean (boolean): true\n\nThe sample value was not read.\n\nAn earlier branch was selected; this condition was not evaluated.\n\nLocate transition field\nTransition 3: idle → idle\n\nAn earlier branch was selected; this branch was not evaluated.\n\nUnconditional branch\n\nLocate transition field\nRecord and continue\nManual step history\n\n2/32 steps · 127/65536 sample bytes; retained only for this form session.\n\nUndo last step\nClear steps\nManual step 1: idle → attack\n\nEvent sample: action · Number (number): 3\n\nProvided shared samples: combat.enabled: Boolean (boolean): true\n\nView conditions for this step\nTransition 1: idle → attack\n\nThis sample selects this branch.\n\nAll conditions\n\nCondition 1: Project shared state combat.enabled == Boolean (boolean): true\n\nActual sample: Boolean (boolean): true\n\nThe comparison matches.\n\nCondition 2: Event payload >= Number (number): 3\n\nActual sample: Number (number): 3\n\nThe comparison matches.\n\nTransition 2: idle → idle\n\nAn earlier branch was selected; this branch was not evaluated.\n\nAny condition\n\nCondition 1: Event payload > Number (number): 0\n\nThe sample value was not read.\n\nAn earlier branch was selected; this condition was not evaluated.\n\nCondition 2: Project shared state combat.fallback == Boolean (boolean): true\n\nThe sample value was not read.\n\nAn earlier branch was selected; this condition was not evaluated.\n\nTransition 3: idle → idle\n\nAn earlier branch was selected; this branch was not evaluated.\n\nUnconditional branch\n\nManual step 2: attack → idle\n\nAssume the current animation completion notification arrived.\n\nThis step did not read an event payload or shared samples.\n\nView conditions for this step"
+    },
+    "ja": {
+      "noHorizontalOverflow": true,
+      "focused": true,
+      "same": true,
+      "range": [
+        0,
+        1
+      ],
+      "text": "手動サンプルで状態遷移を確認します。試算だけでは状態は進まず、「記録して続行」で予測先を採用します。スクリプトやイベントの実行は行わず、過去の実行やアニメーション再生の成功を表すものではありません。\n\nサンプルのトリガー\nプロジェクトイベントのサンプル\n現在のアニメーション完了（手動の仮定）\nサンプルの現在状態\nidle\nattack\nunused\nサンプルのイベント名\nサンプルのイベントペイロード型\n文字列（string）\n数値（number）\n真偽値（boolean）\n手動サンプル値\n手動の共有状態サンプル\n\nこの状態とイベントが参照する共有キーのみ表示します。試算中は各キーの値を固定します。実行時には読み取りごとに値が変わる場合があります。\n\n共有状態サンプル：combat.enabled\n欠落（このキーを指定しない）\n文字列（string）\n数値（number）\n真偽値（boolean）\n手動サンプル値\nfalse\ntrue\n共有状態サンプル：combat.fallback\n欠落（このキーを指定しない）\n文字列（string）\n数値（number）\n真偽値（boolean）\nこのイベントを試算\n\n手動サンプルを入力して試算してください。状態表やソースの下書きは変更されません。\n\n手動試算の結果\n\nサンプルは遷移 1 を選択：idle → attack\n\n遷移 1：idle → attack\n\nこのサンプルではこの分岐が選択されます。\n\nすべて満たす\n\n条件 1：プロジェクト共有状態 combat.enabled == 真偽値（boolean）：true\n\n実際のサンプル：真偽値（boolean）：true\n\n比較結果は一致です。\n\n条件 2：イベントペイロード >= 数値（number）：3\n\n実際のサンプル：数値（number）：3\n\n比較結果は一致です。\n\n遷移フィールドへ移動\n遷移 2：idle → idle\n\n先行する分岐が選択されたため、この分岐は評価されていません。\n\nいずれかを満たす\n\n条件 1：イベントペイロード > 数値（number）：0\n\nサンプル値は読み取られていません。\n\n先行する分岐が選択されたため、この条件は評価されていません。\n\n条件 2：プロジェクト共有状態 combat.fallback == 真偽値（boolean）：true\n\nサンプル値は読み取られていません。\n\n先行する分岐が選択されたため、この条件は評価されていません。\n\n遷移フィールドへ移動\n遷移 3：idle → idle\n\n先行する分岐が選択されたため、この分岐は評価されていません。\n\n無条件の分岐\n\n遷移フィールドへ移動\n記録して続行\n手動ステップ履歴\n\n2/32 ステップ · サンプル 127/65536 バイト。このフォームのセッション内でのみ保持します。\n\n最後のステップを戻す\nステップを消去\n手動ステップ 1：idle → attack\n\nイベントサンプル：action · 数値（number）：3\n\n指定した共有サンプル：combat.enabled：真偽値（boolean）：true\n\nこのステップの条件詳細を表示\n遷移 1：idle → attack\n\nこのサンプルではこの分岐が選択されます。\n\nすべて満たす\n\n条件 1：プロジェクト共有状態 combat.enabled == 真偽値（boolean）：true\n\n実際のサンプル：真偽値（boolean）：true\n\n比較結果は一致です。\n\n条件 2：イベントペイロード >= 数値（number）：3\n\n実際のサンプル：数値（number）：3\n\n比較結果は一致です。\n\n遷移 2：idle → idle\n\n先行する分岐が選択されたため、この分岐は評価されていません。\n\nいずれかを満たす\n\n条件 1：イベントペイロード > 数値（number）：0\n\nサンプル値は読み取られていません。\n\n先行する分岐が選択されたため、この条件は評価されていません。\n\n条件 2：プロジェクト共有状態 combat.fallback == 真偽値（boolean）：true\n\nサンプル値は読み取られていません。\n\n先行する分岐が選択されたため、この条件は評価されていません。\n\n遷移 3：idle → idle\n\n先行する分岐が選択されたため、この分岐は評価されていません。\n\n無条件の分岐\n\n手動ステップ 2：attack → idle\n\n現在のアニメーションの完了通知が届いたと仮定します。\n\nこのステップではイベントペイロードや共有サンプルを読み取っていません。\n\nこのステップの条件詳細を表示"
+    }
+  },
+  "limitations": [
+    "Actual Chrome HTTP editor and Godot headless execution in a disposable workspace; no installed Tauri, Android, Bevy or native visual rendering claim.",
+    "Manual preview assumes a current active controller and fixed shared-state sample. It predicts table selection, not playback success, event delivery history or script side effects.",
+    "Fixture creates and binds the saved v5 table. Chrome checks new-script and re-edit preview, exact source preservation, samples, field location, languages, and actual GUI project plan/build/run."
+  ],
+  "sources": {
+    "engine/animation-state-trial-sequence.mjs": "b7aa9afd38543899a84dfcf16843083e73e7eb6294da17696305c3e27ff0e978",
+    "engine/animation-state-event-preview.mjs": "2087b534cefd1645d8bcabf1d17305fda9be27d4c119b9d7078b2a1eb2e715c6",
+    "engine/animation-state-conditions-core.mjs": "54d1de93f5d1b9cd0e2c37cfe0af1f80f474aec6529d6d83d18e2d8d59ad5fe1",
+    "engine/studio-core.mjs": "bce47a057d4d92af7cd2106b6e090c2844ac3d2965866a558ac8f7ca8d08fd01",
+    "engine/studio-core.wasm": "b21d3a19ccf0060d11ba62d36a5dbcf5d06f9329142a87bc63f7277f978d19f6",
+    "engine/godot-animation-state-script.mjs": "a9fb4687b3b9e9573770a3f2dacc4d78e5540acfcc37cce05db2f6a8bc88f2d5",
+    "engine/godot-animation-state-conditions-script.mjs": "46edb613955d96188f5546a78fa97da7b14a06f3516a7e477ccf5fa34bd539a2",
+    "engine/godot-animation-branches-script.mjs": "7db5a850a461d0c29e87db383b4cfa59cfc2f5a5ad54f50e2056a763ba3bde1f",
+    "engine/godot-animation-selectors-script.mjs": "96f471ddf39d8cacaf2f9c1ddefceca6f879a203cdd6d9833507eb5ef691d321",
+    "engine/godot-animation-combinations-script.mjs": "4b88289f6b6224e4eb4af5cf9d37065053acfdcbde06ed610d22c481420f3005",
+    "web/modules/app-animation-state-event-preview.js": "112fcf9c2d530468f24bfda30b2a04529d31bc27803aaa0cc01db46c2041bf8c",
+    "web/animation-state-event-preview.css": "c8655a2b2a23209d1fcaffeef2e452b71c4cd6325c0f063f8ee17a642e98b175",
+    "web/modules/app-animation-state-script.js": "9b67c898a244e126ef70cfc743f195b4086feccc84516bd19c168c04ff202b70",
+    "web/modules/app-script-create.js": "94d82ac21b31c0e400f2cd9cb31a280e8247a0321380ea9d74159e15c9f02d76",
+    "web/modules/app-animation-state-script-edit.js": "0581cc2f32419934dea5d28d7cc150037929e8dce828a15c772f040be0a514ad",
+    "web/i18n/en.js": "6365920c4a1573729fa0a215f0704c7ac8d65f9c0d9cc41dc6f28e7a9f992890",
+    "web/i18n/ja.js": "e06631e48f0ebc9e6cd592493fd1e3d554d436e68ab9848d5873ba4d49779452",
+    "scripts/backends/godot4-project.mjs": "13061c10fe30d6ab3ee1ef6818fda924a113512450fc1e5d98da314084ea55e3",
+    "scripts/backends/godot4-adapter.mjs": "2e4f262b195d874fa5d4fde7bca1a0030c476fa783782810cdde477e1f869b60",
+    "scripts/tests/animation-state-trial-sequence-smoke.mjs": "54c3b992db917f76015630f4cc05f01e7038198db38e8a8f9d7a291a4d3a57f6"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "tool": {
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+  },
+  "jobs": [
+    {
+      "id": "6b3912ed-06da-4b83-8cf3-955c7607862d",
+      "kind": "plan",
+      "sceneId": "12345678-1234-4234-8234-123456789abc",
+      "backendId": "org.viento.godot4",
+      "targetKind": "project",
+      "targetId": "12345678-1234-4234-8234-123456789abc",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-24T01:35:56.089Z",
+      "diagnostics": [],
+      "events": [],
+      "logs": "",
+      "plan": {
+        "snapshotId": "sha256:e6d2a4adc6549ebb6c020aac904181840a43839bf92a0bcc6b50aabd26f217ee",
+        "title": "Two-scene project",
+        "actorCount": 4,
+        "resourceCount": 2,
+        "kind": "project",
+        "sceneCount": 2,
+        "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "behaviorBindingCount": 3,
+        "behaviorSourceCount": 3
+      },
+      "runtime": null,
+      "finishedAt": "2026-10-24T01:35:56.177Z"
+    },
+    {
+      "id": "e3f898fb-7598-4428-9007-96cbde685319",
+      "kind": "build",
+      "sceneId": "12345678-1234-4234-8234-123456789abc",
+      "backendId": "org.viento.godot4",
+      "targetKind": "project",
+      "targetId": "12345678-1234-4234-8234-123456789abc",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-24T01:35:57.204Z",
+      "diagnostics": [],
+      "events": [],
+      "logs": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | Started Registering global classes... (24 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[   4% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[   8% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  12% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  20% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  24% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  28% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  32% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  36% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  40% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  44% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  48% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  52% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  56% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  60% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  64% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  68% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  72% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  76% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  80% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  84% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  88% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  92% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mupdate_scripts_classes\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | Started Scanning actions... (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | 99999999-9999-4999-8999-999999999999.wav\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1m_update_scan_actions\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing pre-reimport operations...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | 99999999-9999-4999-8999-999999999999.wav\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mreimport\u001b[22m | Finalizing Asset Import...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing post-reimport operations...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n",
+      "plan": null,
+      "runtime": null,
+      "buildId": "fb56cd4a-fafe-4768-a3e1-83e35dc2e9f2",
+      "finishedAt": "2026-10-24T01:36:07.481Z"
+    },
+    {
+      "id": "d188146f-d9ae-4a73-bc3d-50ebb3e450c8",
+      "kind": "run",
+      "sceneId": "12345678-1234-4234-8234-123456789abc",
+      "backendId": "org.viento.godot4",
+      "targetKind": "project",
+      "targetId": "12345678-1234-4234-8234-123456789abc",
+      "buildId": "fb56cd4a-fafe-4768-a3e1-83e35dc2e9f2",
+      "snapshotId": "sha256:e6d2a4adc6549ebb6c020aac904181840a43839bf92a0bcc6b50aabd26f217ee",
+      "status": "succeeded",
+      "phase": "completed",
+      "createdAt": "2026-10-24T01:36:08.457Z",
+      "diagnostics": [],
+      "events": [
+        {
+          "animationCommandSequence": 0,
+          "animationCompletionSequence": 0,
+          "animationStateEntrySequence": 0,
+          "animationStateSequence": 0,
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 10,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  200,
+                  220
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  500,
+                  220
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "clipId": "59595959-5959-4595-8595-000000000001",
+          "commandSequence": 0,
+          "event": "animation-state-entered",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "stateIndex": 0,
+          "timeSeconds": 0,
+          "trigger": {
+            "kind": "initial"
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "60606060-6060-4060-8060-000000000002",
+          "event": "state",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "key": "combat.enabled",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "operation": "set",
+          "protocol": 10,
+          "revision": 1,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "value": true,
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "60606060-6060-4060-8060-000000000002",
+          "event": "event-publish",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "name": "action",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "recipients": [
+            {
+              "bindingId": "99999999-9999-4999-8999-999999999991",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "subscriptionId": 1
+            }
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": 3,
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "clipId": "59595959-5959-4595-8595-000000000002",
+          "commandSequence": 0,
+          "event": "animation-state-entered",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "stateIndex": 1,
+          "timeSeconds": 0,
+          "trigger": {
+            "eventSequence": 1,
+            "kind": "event",
+            "subscriptionId": 1
+          },
+          "visitIndex": 1
+        },
+        {
+          "event": "event-delivery",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "status": "handled",
+          "subscriptionId": 1,
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "select",
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "commandSequence": 1,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000001",
+            "phase": "paused",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "play"
+          },
+          "commandSequence": 2,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000001",
+            "phase": "playing",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "select",
+            "clipId": "59595959-5959-4595-8595-000000000002"
+          },
+          "commandSequence": 3,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000002",
+            "phase": "paused",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "play"
+          },
+          "commandSequence": 4,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000002",
+            "phase": "playing",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0
+          },
+          "visitIndex": 1
+        },
+        {
+          "commandSequence": 4,
+          "completionSequence": 1,
+          "event": "animation-completed",
+          "protocol": 10,
+          "recipients": [
+            {
+              "bindingId": "99999999-9999-4999-8999-999999999991",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "subscriptionId": 1
+            }
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000002",
+            "phase": "finished",
+            "positionSeconds": 0.25,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.25
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "clipId": "59595959-5959-4595-8595-000000000001",
+          "commandSequence": 4,
+          "event": "animation-state-entered",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 3,
+          "stateIndex": 0,
+          "timeSeconds": 0.25,
+          "trigger": {
+            "completionSequence": 1,
+            "kind": "completed",
+            "subscriptionId": 1
+          },
+          "visitIndex": 1
+        },
+        {
+          "completionSequence": 1,
+          "event": "animation-completion-delivery",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "status": "handled",
+          "subscriptionId": 1,
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "select",
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "commandSequence": 5,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000001",
+            "phase": "paused",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.25
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "play"
+          },
+          "commandSequence": 6,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000001",
+            "phase": "playing",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.25
+          },
+          "visitIndex": 1
+        },
+        {
+          "commandSequence": 6,
+          "controllers": [
+            {
+              "bindingId": "99999999-9999-4999-8999-999999999991",
+              "clipId": "59595959-5959-4595-8595-000000000001",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "stateIndex": 0,
+              "status": "active"
+            }
+          ],
+          "event": "animation-state-snapshot",
+          "protocol": 10,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "timeSeconds": 0.5,
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                200,
+                220
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                500,
+                220
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.5,
+          "event": "scene-exit",
+          "protocol": 10,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "animationCommandSequence": 6,
+          "animationCompletionSequence": 1,
+          "animationStateEntrySequence": 3,
+          "animationStateSequence": 1,
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 1,
+          "protocol": 10,
+          "stateRevision": 1,
+          "totalSeconds": 0.5,
+          "visitCount": 1
+        }
+      ],
+      "logs": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | Started Registering global classes... (24 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[   4% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[   8% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  12% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  20% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  24% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  28% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  32% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  36% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  40% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  44% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  48% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  52% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  56% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  60% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  64% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  68% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  72% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  76% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  80% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  84% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  88% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  92% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mupdate_scripts_classes\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | Started Scanning actions... (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | 99999999-9999-4999-8999-999999999999.wav\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1m_update_scan_actions\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing pre-reimport operations...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | 99999999-9999-4999-8999-999999999999.wav\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mreimport\u001b[22m | Finalizing Asset Import...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing post-reimport operations...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\nGodot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nVIENTO_PROJECT:{\"animationCommandSequence\":0,\"animationCompletionSequence\":0,\"animationStateEntrySequence\":0,\"animationStateSequence\":0,\"assemblyId\":\"12345678-1234-4234-8234-123456789abc\",\"audioCommandSequence\":0,\"entrySceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"event\":\"ready\",\"eventSequence\":0,\"protocol\":10,\"stateRevision\":0}\nVIENTO_PROJECT:{\"event\":\"scene-enter\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1}\nVIENTO_PROJECT:{\"event\":\"scene-event\",\"frame\":{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":3,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"},\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"stream\":\"runtime\",\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"clipId\":\"59595959-5959-4595-8595-000000000001\",\"commandSequence\":0,\"event\":\"animation-state-entered\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"sequence\":1,\"stateIndex\":0,\"timeSeconds\":0.0,\"trigger\":{\"kind\":\"initial\"},\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"60606060-6060-4060-8060-000000000002\",\"event\":\"state\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"key\":\"combat.enabled\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"operation\":\"set\",\"protocol\":10,\"revision\":1,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"value\":true,\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"60606060-6060-4060-8060-000000000002\",\"event\":\"event-publish\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"name\":\"action\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"recipients\":[{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"subscriptionId\":1}],\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"sequence\":1,\"value\":3,\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"clipId\":\"59595959-5959-4595-8595-000000000002\",\"commandSequence\":0,\"event\":\"animation-state-entered\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"sequence\":2,\"stateIndex\":1,\"timeSeconds\":0.0,\"trigger\":{\"eventSequence\":1,\"kind\":\"event\",\"subscriptionId\":1},\"visitIndex\":1}\nVIENTO_PROJECT:{\"event\":\"event-delivery\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"sequence\":1,\"status\":\"handled\",\"subscriptionId\":1,\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"command\":{\"action\":\"select\",\"clipId\":\"59595959-5959-4595-8595-000000000001\"},\"commandSequence\":1,\"event\":\"animation-command\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"state\":{\"clipId\":\"59595959-5959-4595-8595-000000000001\",\"phase\":\"paused\",\"positionSeconds\":0.0,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"timeSeconds\":0.0},\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"command\":{\"action\":\"play\"},\"commandSequence\":2,\"event\":\"animation-command\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"state\":{\"clipId\":\"59595959-5959-4595-8595-000000000001\",\"phase\":\"playing\",\"positionSeconds\":0.0,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"timeSeconds\":0.0},\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"command\":{\"action\":\"select\",\"clipId\":\"59595959-5959-4595-8595-000000000002\"},\"commandSequence\":3,\"event\":\"animation-command\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"state\":{\"clipId\":\"59595959-5959-4595-8595-000000000002\",\"phase\":\"paused\",\"positionSeconds\":0.0,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"timeSeconds\":0.0},\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"command\":{\"action\":\"play\"},\"commandSequence\":4,\"event\":\"animation-command\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"state\":{\"clipId\":\"59595959-5959-4595-8595-000000000002\",\"phase\":\"playing\",\"positionSeconds\":0.0,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"timeSeconds\":0.0},\"visitIndex\":1}\nVIENTO_PROJECT:{\"commandSequence\":4,\"completionSequence\":1,\"event\":\"animation-completed\",\"protocol\":10,\"recipients\":[{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"subscriptionId\":1}],\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"state\":{\"clipId\":\"59595959-5959-4595-8595-000000000002\",\"phase\":\"finished\",\"positionSeconds\":0.25,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"timeSeconds\":0.25},\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"clipId\":\"59595959-5959-4595-8595-000000000001\",\"commandSequence\":4,\"event\":\"animation-state-entered\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"sequence\":3,\"stateIndex\":0,\"timeSeconds\":0.25,\"trigger\":{\"completionSequence\":1,\"kind\":\"completed\",\"subscriptionId\":1},\"visitIndex\":1}\nVIENTO_PROJECT:{\"completionSequence\":1,\"event\":\"animation-completion-delivery\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"status\":\"handled\",\"subscriptionId\":1,\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"command\":{\"action\":\"select\",\"clipId\":\"59595959-5959-4595-8595-000000000001\"},\"commandSequence\":5,\"event\":\"animation-command\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"state\":{\"clipId\":\"59595959-5959-4595-8595-000000000001\",\"phase\":\"paused\",\"positionSeconds\":0.0,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"timeSeconds\":0.25},\"visitIndex\":1}\nVIENTO_PROJECT:{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"command\":{\"action\":\"play\"},\"commandSequence\":6,\"event\":\"animation-command\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":10,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"state\":{\"clipId\":\"59595959-5959-4595-8595-000000000001\",\"phase\":\"playing\",\"positionSeconds\":0.0,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"timeSeconds\":0.25},\"visitIndex\":1}\nVIENTO_PROJECT:{\"commandSequence\":6,\"controllers\":[{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"clipId\":\"59595959-5959-4595-8595-000000000001\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"stateIndex\":0,\"status\":\"active\"}],\"event\":\"animation-state-snapshot\",\"protocol\":10,\"reason\":\"finished\",\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"sequence\":1,\"timeSeconds\":0.5,\"visitIndex\":1}\nVIENTO_PROJECT:{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"elapsedSeconds\":0.5,\"event\":\"scene-exit\",\"protocol\":10,\"reason\":\"finished\",\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1}\nVIENTO_PROJECT:{\"animationCommandSequence\":6,\"animationCompletionSequence\":1,\"animationStateEntrySequence\":3,\"animationStateSequence\":1,\"assemblyId\":\"12345678-1234-4234-8234-123456789abc\",\"audioCommandSequence\":0,\"event\":\"finished\",\"eventSequence\":1,\"protocol\":10,\"stateRevision\":1,\"totalSeconds\":0.5,\"visitCount\":1}\n",
+      "plan": null,
+      "runtime": {
+        "format": "viento-runtime-observation",
+        "schemaVersion": 1,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "protocolVersion": 3,
+        "phase": "finished",
+        "sequence": 2,
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              200,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/0",
+              "sourceRevision": "sha256:f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "position": [
+              500,
+              220
+            ],
+            "state": "idle",
+            "positionSample": "finished",
+            "positionCurrent": true,
+            "source": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/1",
+              "sourceRevision": "sha256:f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd"
+            }
+          }
+        ],
+        "project": {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "activeSceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visits": [
+            {
+              "index": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "phase": "finished",
+              "elapsedSeconds": 0.5
+            }
+          ],
+          "protocolVersion": 10,
+          "sharedState": {
+            "revision": 1,
+            "entries": [
+              {
+                "key": "combat.enabled",
+                "value": true,
+                "revision": 1,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "60606060-6060-4060-8060-000000000002",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/1"
+                  }
+                }
+              }
+            ],
+            "lastChange": {
+              "operation": "set",
+              "key": "combat.enabled",
+              "revision": 1,
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "60606060-6060-4060-8060-000000000002",
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "documents/behaviors/demo.json",
+                  "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                  "propertyPath": "/bindings/1"
+                }
+              }
+            }
+          },
+          "events": {
+            "sequence": 1,
+            "entries": [
+              {
+                "sequence": 1,
+                "name": "action",
+                "value": 3,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "60606060-6060-4060-8060-000000000002",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/1"
+                  }
+                },
+                "deliveries": [
+                  {
+                    "subscriptionId": 1,
+                    "origin": {
+                      "visitIndex": 1,
+                      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                      "bindingId": "99999999-9999-4999-8999-999999999991",
+                      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                      "source": {
+                        "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                        "sourcePath": "documents/behaviors/demo.json",
+                        "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                        "propertyPath": "/bindings/0"
+                      }
+                    },
+                    "status": "handled"
+                  }
+                ]
+              }
+            ]
+          },
+          "audioCommands": {
+            "sequence": 0,
+            "entries": []
+          },
+          "animationCommands": {
+            "sequence": 6,
+            "entries": [
+              {
+                "sequence": 1,
+                "command": {
+                  "action": "select",
+                  "clipId": "59595959-5959-4595-8595-000000000001"
+                },
+                "state": {
+                  "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "phase": "paused",
+                  "positionSeconds": 0,
+                  "timeSeconds": 0,
+                  "clipId": "59595959-5959-4595-8595-000000000001"
+                },
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "99999999-9999-4999-8999-999999999991",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/0"
+                  }
+                },
+                "animation": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": ""
+                  },
+                  "durationSeconds": 1,
+                  "loop": true
+                },
+                "clip": {
+                  "endSeconds": 0.75,
+                  "id": "59595959-5959-4595-8595-000000000001",
+                  "loop": true,
+                  "name": "歩く / Idle",
+                  "startSeconds": 0.25,
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": "/clips/0",
+                    "sourceRange": {
+                      "start": 1125,
+                      "end": 1284,
+                      "encoding": "utf-16",
+                      "propertyPath": "/clips/0",
+                      "exact": true
+                    }
+                  }
+                }
+              },
+              {
+                "sequence": 2,
+                "command": {
+                  "action": "play"
+                },
+                "state": {
+                  "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "phase": "playing",
+                  "positionSeconds": 0,
+                  "timeSeconds": 0,
+                  "clipId": "59595959-5959-4595-8595-000000000001"
+                },
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "99999999-9999-4999-8999-999999999991",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/0"
+                  }
+                },
+                "animation": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": ""
+                  },
+                  "durationSeconds": 1,
+                  "loop": true
+                },
+                "clip": {
+                  "endSeconds": 0.75,
+                  "id": "59595959-5959-4595-8595-000000000001",
+                  "loop": true,
+                  "name": "歩く / Idle",
+                  "startSeconds": 0.25,
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": "/clips/0",
+                    "sourceRange": {
+                      "start": 1125,
+                      "end": 1284,
+                      "encoding": "utf-16",
+                      "propertyPath": "/clips/0",
+                      "exact": true
+                    }
+                  }
+                }
+              },
+              {
+                "sequence": 3,
+                "command": {
+                  "action": "select",
+                  "clipId": "59595959-5959-4595-8595-000000000002"
+                },
+                "state": {
+                  "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "phase": "paused",
+                  "positionSeconds": 0,
+                  "timeSeconds": 0,
+                  "clipId": "59595959-5959-4595-8595-000000000002"
+                },
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "99999999-9999-4999-8999-999999999991",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/0"
+                  }
+                },
+                "animation": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": ""
+                  },
+                  "durationSeconds": 1,
+                  "loop": true
+                },
+                "clip": {
+                  "endSeconds": 0.75,
+                  "id": "59595959-5959-4595-8595-000000000002",
+                  "loop": false,
+                  "name": "攻撃 / Strike",
+                  "startSeconds": 0.5,
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": "/clips/1",
+                    "sourceRange": {
+                      "start": 1290,
+                      "end": 1451,
+                      "encoding": "utf-16",
+                      "propertyPath": "/clips/1",
+                      "exact": true
+                    }
+                  }
+                }
+              },
+              {
+                "sequence": 4,
+                "command": {
+                  "action": "play"
+                },
+                "state": {
+                  "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "phase": "playing",
+                  "positionSeconds": 0,
+                  "timeSeconds": 0,
+                  "clipId": "59595959-5959-4595-8595-000000000002"
+                },
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "99999999-9999-4999-8999-999999999991",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/0"
+                  }
+                },
+                "animation": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": ""
+                  },
+                  "durationSeconds": 1,
+                  "loop": true
+                },
+                "clip": {
+                  "endSeconds": 0.75,
+                  "id": "59595959-5959-4595-8595-000000000002",
+                  "loop": false,
+                  "name": "攻撃 / Strike",
+                  "startSeconds": 0.5,
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": "/clips/1",
+                    "sourceRange": {
+                      "start": 1290,
+                      "end": 1451,
+                      "encoding": "utf-16",
+                      "propertyPath": "/clips/1",
+                      "exact": true
+                    }
+                  }
+                }
+              },
+              {
+                "sequence": 5,
+                "command": {
+                  "action": "select",
+                  "clipId": "59595959-5959-4595-8595-000000000001"
+                },
+                "state": {
+                  "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "phase": "paused",
+                  "positionSeconds": 0,
+                  "timeSeconds": 0.25,
+                  "clipId": "59595959-5959-4595-8595-000000000001"
+                },
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "99999999-9999-4999-8999-999999999991",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/0"
+                  }
+                },
+                "animation": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": ""
+                  },
+                  "durationSeconds": 1,
+                  "loop": true
+                },
+                "clip": {
+                  "endSeconds": 0.75,
+                  "id": "59595959-5959-4595-8595-000000000001",
+                  "loop": true,
+                  "name": "歩く / Idle",
+                  "startSeconds": 0.25,
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": "/clips/0",
+                    "sourceRange": {
+                      "start": 1125,
+                      "end": 1284,
+                      "encoding": "utf-16",
+                      "propertyPath": "/clips/0",
+                      "exact": true
+                    }
+                  }
+                }
+              },
+              {
+                "sequence": 6,
+                "command": {
+                  "action": "play"
+                },
+                "state": {
+                  "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "phase": "playing",
+                  "positionSeconds": 0,
+                  "timeSeconds": 0.25,
+                  "clipId": "59595959-5959-4595-8595-000000000001"
+                },
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "99999999-9999-4999-8999-999999999991",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/0"
+                  }
+                },
+                "animation": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": ""
+                  },
+                  "durationSeconds": 1,
+                  "loop": true
+                },
+                "clip": {
+                  "endSeconds": 0.75,
+                  "id": "59595959-5959-4595-8595-000000000001",
+                  "loop": true,
+                  "name": "歩く / Idle",
+                  "startSeconds": 0.25,
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": "/clips/0",
+                    "sourceRange": {
+                      "start": 1125,
+                      "end": 1284,
+                      "encoding": "utf-16",
+                      "propertyPath": "/clips/0",
+                      "exact": true
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "animationCompletions": {
+            "sequence": 1,
+            "entries": [
+              {
+                "sequence": 1,
+                "commandSequence": 4,
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "state": {
+                  "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "phase": "finished",
+                  "positionSeconds": 0.25,
+                  "timeSeconds": 0.25,
+                  "clipId": "59595959-5959-4595-8595-000000000002"
+                },
+                "animation": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": ""
+                  },
+                  "durationSeconds": 1,
+                  "loop": true
+                },
+                "clip": {
+                  "endSeconds": 0.75,
+                  "id": "59595959-5959-4595-8595-000000000002",
+                  "loop": false,
+                  "name": "攻撃 / Strike",
+                  "startSeconds": 0.5,
+                  "source": {
+                    "objectId": "58585858-5858-4585-8585-000000000100",
+                    "sourcePath": "documents/animations/scene-0.json",
+                    "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+                    "propertyPath": "/clips/1",
+                    "sourceRange": {
+                      "start": 1290,
+                      "end": 1451,
+                      "encoding": "utf-16",
+                      "propertyPath": "/clips/1",
+                      "exact": true
+                    }
+                  }
+                },
+                "deliveries": [
+                  {
+                    "subscriptionId": 1,
+                    "origin": {
+                      "visitIndex": 1,
+                      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                      "bindingId": "99999999-9999-4999-8999-999999999991",
+                      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                      "source": {
+                        "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                        "sourcePath": "documents/behaviors/demo.json",
+                        "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                        "propertyPath": "/bindings/0"
+                      }
+                    },
+                    "status": "handled"
+                  }
+                ]
+              }
+            ]
+          },
+          "animationStates": {
+            "sequence": 1,
+            "entries": [
+              {
+                "commandSequence": 6,
+                "controllers": [
+                  {
+                    "origin": {
+                      "visitIndex": 1,
+                      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                      "bindingId": "99999999-9999-4999-8999-999999999991",
+                      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                      "source": {
+                        "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                        "sourcePath": "documents/behaviors/demo.json",
+                        "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                        "propertyPath": "/bindings/0"
+                      }
+                    },
+                    "scriptSource": {
+                      "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+                      "sourcePath": "documents/scripts/checkpoint.txt",
+                      "sourceRevision": "sha256:0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+                      "propertyPath": ""
+                    },
+                    "status": "active",
+                    "stateKey": "idle",
+                    "clipId": "59595959-5959-4595-8595-000000000001"
+                  }
+                ],
+                "reason": "finished",
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "sequence": 1,
+                "timeSeconds": 0.5,
+                "visitIndex": 1
+              }
+            ]
+          },
+          "animationStateEntries": {
+            "sequence": 3,
+            "entries": [
+              {
+                "sequence": 1,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "99999999-9999-4999-8999-999999999991",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/0"
+                  }
+                },
+                "scriptSource": {
+                  "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+                  "sourcePath": "documents/scripts/checkpoint.txt",
+                  "sourceRevision": "sha256:0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+                  "propertyPath": ""
+                },
+                "timeSeconds": 0,
+                "commandSequence": 0,
+                "stateKey": "idle",
+                "clipId": "59595959-5959-4595-8595-000000000001",
+                "trigger": {
+                  "kind": "initial"
+                }
+              },
+              {
+                "sequence": 2,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "99999999-9999-4999-8999-999999999991",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/0"
+                  }
+                },
+                "scriptSource": {
+                  "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+                  "sourcePath": "documents/scripts/checkpoint.txt",
+                  "sourceRevision": "sha256:0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+                  "propertyPath": ""
+                },
+                "timeSeconds": 0,
+                "commandSequence": 0,
+                "stateKey": "attack",
+                "clipId": "59595959-5959-4595-8595-000000000002",
+                "trigger": {
+                  "eventSequence": 1,
+                  "kind": "event",
+                  "subscriptionId": 1
+                }
+              },
+              {
+                "sequence": 3,
+                "origin": {
+                  "visitIndex": 1,
+                  "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                  "bindingId": "99999999-9999-4999-8999-999999999991",
+                  "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                  "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                  "source": {
+                    "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                    "sourcePath": "documents/behaviors/demo.json",
+                    "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                    "propertyPath": "/bindings/0"
+                  }
+                },
+                "scriptSource": {
+                  "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+                  "sourcePath": "documents/scripts/checkpoint.txt",
+                  "sourceRevision": "sha256:0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+                  "propertyPath": ""
+                },
+                "timeSeconds": 0.25,
+                "commandSequence": 4,
+                "stateKey": "idle",
+                "clipId": "59595959-5959-4595-8595-000000000001",
+                "trigger": {
+                  "completionSequence": 1,
+                  "kind": "completed",
+                  "subscriptionId": 1
+                }
+              }
+            ]
+          }
+        }
+      },
+      "finishedAt": "2026-10-24T01:36:13.266Z"
+    }
+  ],
+  "browser": "Chrome/154.0.8037.97",
+  "reviewFixture": "One unused state is added only to the local draft to obtain a non-no-op source review; event transitions stay identical. The complete draft is cancelled before the saved project runs.",
+  "missing": {
+    "hidden": false,
+    "summary": "样本选择转换 2：idle → idle",
+    "candidates": [
+      {
+        "status": "rejected",
+        "leaves": [
+          {
+            "status": "evaluated",
+            "text": "条件 1：项目共享状态 combat.enabled == 布尔值（boolean）：true\n\n样本中未提供此共享键。\n\n共享键缺失，条件不匹配（包括不等于比较）。"
+          },
+          {
+            "status": "not-evaluated",
+            "text": "条件 2：事件载荷 >= 数字（number）：3\n\n未读取样本值。\n\n组合已短路，此条件未求值。"
+          }
+        ]
+      },
+      {
+        "status": "selected",
+        "leaves": [
+          {
+            "status": "evaluated",
+            "text": "条件 1：事件载荷 > 数字（number）：0\n\n实际样本：数字（number）：3\n\n比较匹配。"
+          },
+          {
+            "status": "not-evaluated",
+            "text": "条件 2：项目共享状态 combat.fallback == 布尔值（boolean）：true\n\n未读取样本值。\n\n组合已短路，此条件未求值。"
+          }
+        ]
+      },
+      {
+        "status": "not-evaluated",
+        "leaves": []
+      }
+    ]
+  },
+  "selected": {
+    "hidden": false,
+    "summary": "样本选择转换 1：idle → attack",
+    "candidates": [
+      {
+        "status": "selected",
+        "leaves": [
+          {
+            "status": "evaluated",
+            "text": "条件 1：项目共享状态 combat.enabled == 布尔值（boolean）：true\n\n实际样本：布尔值（boolean）：true\n\n比较匹配。"
+          },
+          {
+            "status": "evaluated",
+            "text": "条件 2：事件载荷 >= 数字（number）：3\n\n实际样本：数字（number）：3\n\n比较匹配。"
+          }
+        ]
+      },
+      {
+        "status": "not-evaluated",
+        "leaves": [
+          {
+            "status": "not-evaluated",
+            "text": "条件 1：事件载荷 > 数字（number）：0\n\n未读取样本值。\n\n前面的分支已选中，此条件未求值。"
+          },
+          {
+            "status": "not-evaluated",
+            "text": "条件 2：项目共享状态 combat.fallback == 布尔值（boolean）：true\n\n未读取样本值。\n\n前面的分支已选中，此条件未求值。"
+          }
+        ]
+      },
+      {
+        "status": "not-evaluated",
+        "leaves": []
+      }
+    ]
+  },
+  "fallback": {
+    "hidden": false,
+    "summary": "样本选择转换 3：idle → idle",
+    "candidates": [
+      {
+        "status": "rejected",
+        "leaves": [
+          {
+            "status": "evaluated",
+            "text": "条件 1：项目共享状态 combat.enabled == 布尔值（boolean）：true\n\n实际样本：布尔值（boolean）：true\n\n比较匹配。"
+          },
+          {
+            "status": "evaluated",
+            "text": "条件 2：事件载荷 >= 数字（number）：3\n\n实际样本：数字（number）：0\n\n比较不匹配。"
+          }
+        ]
+      },
+      {
+        "status": "rejected",
+        "leaves": [
+          {
+            "status": "evaluated",
+            "text": "条件 1：事件载荷 > 数字（number）：0\n\n实际样本：数字（number）：0\n\n比较不匹配。"
+          },
+          {
+            "status": "evaluated",
+            "text": "条件 2：项目共享状态 combat.fallback == 布尔值（boolean）：true\n\n样本中未提供此共享键。\n\n共享键缺失，条件不匹配（包括不等于比较）。"
+          }
+        ]
+      },
+      {
+        "status": "selected",
+        "leaves": []
+      }
+    ]
+  },
+  "shortCircuit": {
+    "hidden": false,
+    "summary": "样本选择转换 2：idle → idle",
+    "candidates": [
+      {
+        "status": "rejected",
+        "leaves": [
+          {
+            "status": "evaluated",
+            "text": "条件 1：项目共享状态 combat.enabled == 布尔值（boolean）：true\n\n实际样本：布尔值（boolean）：true\n\n比较匹配。"
+          },
+          {
+            "status": "evaluated",
+            "text": "条件 2：事件载荷 >= 数字（number）：3\n\n实际样本：数字（number）：2\n\n比较不匹配。"
+          }
+        ]
+      },
+      {
+        "status": "selected",
+        "leaves": [
+          {
+            "status": "evaluated",
+            "text": "条件 1：事件载荷 > 数字（number）：0\n\n实际样本：数字（number）：2\n\n比较匹配。"
+          },
+          {
+            "status": "not-evaluated",
+            "text": "条件 2：项目共享状态 combat.fallback == 布尔值（boolean）：true\n\n未读取样本值。\n\n组合已短路，此条件未求值。"
+          }
+        ]
+      },
+      {
+        "status": "not-evaluated",
+        "leaves": []
+      }
+    ]
+  },
+  "runtime": {
+    "assemblyId": "12345678-1234-4234-8234-123456789abc",
+    "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "activeSceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "visits": [
+      {
+        "index": 1,
+        "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "phase": "finished",
+        "elapsedSeconds": 0.5
+      }
+    ],
+    "protocolVersion": 10,
+    "sharedState": {
+      "revision": 1,
+      "entries": [
+        {
+          "key": "combat.enabled",
+          "value": true,
+          "revision": 1,
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "60606060-6060-4060-8060-000000000002",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/1"
+            }
+          }
+        }
+      ],
+      "lastChange": {
+        "operation": "set",
+        "key": "combat.enabled",
+        "revision": 1,
+        "origin": {
+          "visitIndex": 1,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "bindingId": "60606060-6060-4060-8060-000000000002",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "source": {
+            "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+            "sourcePath": "documents/behaviors/demo.json",
+            "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+            "propertyPath": "/bindings/1"
+          }
+        }
+      }
+    },
+    "events": {
+      "sequence": 1,
+      "entries": [
+        {
+          "sequence": 1,
+          "name": "action",
+          "value": 3,
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "60606060-6060-4060-8060-000000000002",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/1"
+            }
+          },
+          "deliveries": [
+            {
+              "subscriptionId": 1,
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "99999999-9999-4999-8999-999999999991",
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "documents/behaviors/demo.json",
+                  "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                  "propertyPath": "/bindings/0"
+                }
+              },
+              "status": "handled"
+            }
+          ]
+        }
+      ]
+    },
+    "audioCommands": {
+      "sequence": 0,
+      "entries": []
+    },
+    "animationCommands": {
+      "sequence": 6,
+      "entries": [
+        {
+          "sequence": 1,
+          "command": {
+            "action": "select",
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "state": {
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "phase": "paused",
+            "positionSeconds": 0,
+            "timeSeconds": 0,
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "99999999-9999-4999-8999-999999999991",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/0"
+            }
+          },
+          "animation": {
+            "objectId": "58585858-5858-4585-8585-000000000100",
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": ""
+            },
+            "durationSeconds": 1,
+            "loop": true
+          },
+          "clip": {
+            "endSeconds": 0.75,
+            "id": "59595959-5959-4595-8595-000000000001",
+            "loop": true,
+            "name": "歩く / Idle",
+            "startSeconds": 0.25,
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": "/clips/0",
+              "sourceRange": {
+                "start": 1125,
+                "end": 1284,
+                "encoding": "utf-16",
+                "propertyPath": "/clips/0",
+                "exact": true
+              }
+            }
+          }
+        },
+        {
+          "sequence": 2,
+          "command": {
+            "action": "play"
+          },
+          "state": {
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "phase": "playing",
+            "positionSeconds": 0,
+            "timeSeconds": 0,
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "99999999-9999-4999-8999-999999999991",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/0"
+            }
+          },
+          "animation": {
+            "objectId": "58585858-5858-4585-8585-000000000100",
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": ""
+            },
+            "durationSeconds": 1,
+            "loop": true
+          },
+          "clip": {
+            "endSeconds": 0.75,
+            "id": "59595959-5959-4595-8595-000000000001",
+            "loop": true,
+            "name": "歩く / Idle",
+            "startSeconds": 0.25,
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": "/clips/0",
+              "sourceRange": {
+                "start": 1125,
+                "end": 1284,
+                "encoding": "utf-16",
+                "propertyPath": "/clips/0",
+                "exact": true
+              }
+            }
+          }
+        },
+        {
+          "sequence": 3,
+          "command": {
+            "action": "select",
+            "clipId": "59595959-5959-4595-8595-000000000002"
+          },
+          "state": {
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "phase": "paused",
+            "positionSeconds": 0,
+            "timeSeconds": 0,
+            "clipId": "59595959-5959-4595-8595-000000000002"
+          },
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "99999999-9999-4999-8999-999999999991",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/0"
+            }
+          },
+          "animation": {
+            "objectId": "58585858-5858-4585-8585-000000000100",
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": ""
+            },
+            "durationSeconds": 1,
+            "loop": true
+          },
+          "clip": {
+            "endSeconds": 0.75,
+            "id": "59595959-5959-4595-8595-000000000002",
+            "loop": false,
+            "name": "攻撃 / Strike",
+            "startSeconds": 0.5,
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": "/clips/1",
+              "sourceRange": {
+                "start": 1290,
+                "end": 1451,
+                "encoding": "utf-16",
+                "propertyPath": "/clips/1",
+                "exact": true
+              }
+            }
+          }
+        },
+        {
+          "sequence": 4,
+          "command": {
+            "action": "play"
+          },
+          "state": {
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "phase": "playing",
+            "positionSeconds": 0,
+            "timeSeconds": 0,
+            "clipId": "59595959-5959-4595-8595-000000000002"
+          },
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "99999999-9999-4999-8999-999999999991",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/0"
+            }
+          },
+          "animation": {
+            "objectId": "58585858-5858-4585-8585-000000000100",
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": ""
+            },
+            "durationSeconds": 1,
+            "loop": true
+          },
+          "clip": {
+            "endSeconds": 0.75,
+            "id": "59595959-5959-4595-8595-000000000002",
+            "loop": false,
+            "name": "攻撃 / Strike",
+            "startSeconds": 0.5,
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": "/clips/1",
+              "sourceRange": {
+                "start": 1290,
+                "end": 1451,
+                "encoding": "utf-16",
+                "propertyPath": "/clips/1",
+                "exact": true
+              }
+            }
+          }
+        },
+        {
+          "sequence": 5,
+          "command": {
+            "action": "select",
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "state": {
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "phase": "paused",
+            "positionSeconds": 0,
+            "timeSeconds": 0.25,
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "99999999-9999-4999-8999-999999999991",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/0"
+            }
+          },
+          "animation": {
+            "objectId": "58585858-5858-4585-8585-000000000100",
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": ""
+            },
+            "durationSeconds": 1,
+            "loop": true
+          },
+          "clip": {
+            "endSeconds": 0.75,
+            "id": "59595959-5959-4595-8595-000000000001",
+            "loop": true,
+            "name": "歩く / Idle",
+            "startSeconds": 0.25,
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": "/clips/0",
+              "sourceRange": {
+                "start": 1125,
+                "end": 1284,
+                "encoding": "utf-16",
+                "propertyPath": "/clips/0",
+                "exact": true
+              }
+            }
+          }
+        },
+        {
+          "sequence": 6,
+          "command": {
+            "action": "play"
+          },
+          "state": {
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "phase": "playing",
+            "positionSeconds": 0,
+            "timeSeconds": 0.25,
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "99999999-9999-4999-8999-999999999991",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/0"
+            }
+          },
+          "animation": {
+            "objectId": "58585858-5858-4585-8585-000000000100",
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": ""
+            },
+            "durationSeconds": 1,
+            "loop": true
+          },
+          "clip": {
+            "endSeconds": 0.75,
+            "id": "59595959-5959-4595-8595-000000000001",
+            "loop": true,
+            "name": "歩く / Idle",
+            "startSeconds": 0.25,
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": "/clips/0",
+              "sourceRange": {
+                "start": 1125,
+                "end": 1284,
+                "encoding": "utf-16",
+                "propertyPath": "/clips/0",
+                "exact": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "animationCompletions": {
+      "sequence": 1,
+      "entries": [
+        {
+          "sequence": 1,
+          "commandSequence": 4,
+          "visitIndex": 1,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "phase": "finished",
+            "positionSeconds": 0.25,
+            "timeSeconds": 0.25,
+            "clipId": "59595959-5959-4595-8595-000000000002"
+          },
+          "animation": {
+            "objectId": "58585858-5858-4585-8585-000000000100",
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": ""
+            },
+            "durationSeconds": 1,
+            "loop": true
+          },
+          "clip": {
+            "endSeconds": 0.75,
+            "id": "59595959-5959-4595-8595-000000000002",
+            "loop": false,
+            "name": "攻撃 / Strike",
+            "startSeconds": 0.5,
+            "source": {
+              "objectId": "58585858-5858-4585-8585-000000000100",
+              "sourcePath": "documents/animations/scene-0.json",
+              "sourceRevision": "sha256:30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+              "propertyPath": "/clips/1",
+              "sourceRange": {
+                "start": 1290,
+                "end": 1451,
+                "encoding": "utf-16",
+                "propertyPath": "/clips/1",
+                "exact": true
+              }
+            }
+          },
+          "deliveries": [
+            {
+              "subscriptionId": 1,
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "99999999-9999-4999-8999-999999999991",
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "documents/behaviors/demo.json",
+                  "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                  "propertyPath": "/bindings/0"
+                }
+              },
+              "status": "handled"
+            }
+          ]
+        }
+      ]
+    },
+    "animationStates": {
+      "sequence": 1,
+      "entries": [
+        {
+          "commandSequence": 6,
+          "controllers": [
+            {
+              "origin": {
+                "visitIndex": 1,
+                "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+                "bindingId": "99999999-9999-4999-8999-999999999991",
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "source": {
+                  "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                  "sourcePath": "documents/behaviors/demo.json",
+                  "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+                  "propertyPath": "/bindings/0"
+                }
+              },
+              "scriptSource": {
+                "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+                "sourcePath": "documents/scripts/checkpoint.txt",
+                "sourceRevision": "sha256:0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+                "propertyPath": ""
+              },
+              "status": "active",
+              "stateKey": "idle",
+              "clipId": "59595959-5959-4595-8595-000000000001"
+            }
+          ],
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "timeSeconds": 0.5,
+          "visitIndex": 1
+        }
+      ]
+    },
+    "animationStateEntries": {
+      "sequence": 3,
+      "entries": [
+        {
+          "sequence": 1,
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "99999999-9999-4999-8999-999999999991",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/0"
+            }
+          },
+          "scriptSource": {
+            "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+            "sourcePath": "documents/scripts/checkpoint.txt",
+            "sourceRevision": "sha256:0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+            "propertyPath": ""
+          },
+          "timeSeconds": 0,
+          "commandSequence": 0,
+          "stateKey": "idle",
+          "clipId": "59595959-5959-4595-8595-000000000001",
+          "trigger": {
+            "kind": "initial"
+          }
+        },
+        {
+          "sequence": 2,
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "99999999-9999-4999-8999-999999999991",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/0"
+            }
+          },
+          "scriptSource": {
+            "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+            "sourcePath": "documents/scripts/checkpoint.txt",
+            "sourceRevision": "sha256:0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+            "propertyPath": ""
+          },
+          "timeSeconds": 0,
+          "commandSequence": 0,
+          "stateKey": "attack",
+          "clipId": "59595959-5959-4595-8595-000000000002",
+          "trigger": {
+            "eventSequence": 1,
+            "kind": "event",
+            "subscriptionId": 1
+          }
+        },
+        {
+          "sequence": 3,
+          "origin": {
+            "visitIndex": 1,
+            "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "bindingId": "99999999-9999-4999-8999-999999999991",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "source": {
+              "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "sourcePath": "documents/behaviors/demo.json",
+              "sourceRevision": "sha256:b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+              "propertyPath": "/bindings/0"
+            }
+          },
+          "scriptSource": {
+            "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+            "sourcePath": "documents/scripts/checkpoint.txt",
+            "sourceRevision": "sha256:0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+            "propertyPath": ""
+          },
+          "timeSeconds": 0.25,
+          "commandSequence": 4,
+          "stateKey": "idle",
+          "clipId": "59595959-5959-4595-8595-000000000001",
+          "trigger": {
+            "completionSequence": 1,
+            "kind": "completed",
+            "subscriptionId": 1
+          }
+        }
+      ]
+    }
+  },
+  "authorSnapshot": {
+    "before": {
+      "workspace.json": "9823df4becb9ad41a15ac104a4940b05172ff95874cfa5836f7af5355bce71d4",
+      "templates/animation.json": "09928007db39e19644d5377167d089e74df76735f16e6eca432c4e71584f6ae2",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "8113f05bcfa68b575ee5e7cfbbf970db1d47f04459cdebad43f182a5a9c34fe9",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/58585858-5858-4585-8585-000000000100.json": "6dde069c622e5e331c9257ca4dc1ec1ffe655e648be9decddd5a5774ef7b7f4d",
+      "metadata/documents/58585858-5858-4585-8585-000000000101.json": "cd351cfa4224864f71b688b4a5898579b70138aabae12e1bd439c8efb8274666",
+      "metadata/documents/60606060-6060-4060-8060-000000000001.json": "1526e561d89c40bde67da980c319647726434895a932a8dea5e8467b42bbed79",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "3502ceedac3fefb079c0743efb86af809da1f7c4fe5bd4891abbf4fb315c1976",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "6795ba8566ac9d0808b10ff64af30cb408d87f8d3da6ef7602f559de4648b1ea",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+      "documents/scripts/publisher.txt": "f9b8e8d109a0de4eeae1e0495f5c21f52a76c02ccaa27a5209c4e9bf1407343f",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+      "documents/scenes/demo.json": "f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd",
+      "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/behaviors/demo.json": "b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "documents/animations/scene-0.json": "30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+      "documents/animations/scene-1.json": "d00c970c66822fe6f53c9b4d42310c594c726a8dac01d543033e18f255e3625a",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    },
+    "after": {
+      "workspace.json": "9823df4becb9ad41a15ac104a4940b05172ff95874cfa5836f7af5355bce71d4",
+      "templates/animation.json": "09928007db39e19644d5377167d089e74df76735f16e6eca432c4e71584f6ae2",
+      "templates/assembly.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "templates/audio.json": "cdecfcf6cd599745fbfea28c3370bd4615964f7c1be890e1b2c79402248e759f",
+      "templates/behavior.json": "291c29d3099cdad0bddc6d9376f3e6b01e3fdc13f72a78ffc5ccfc20c5d36df2",
+      "templates/character.md": "688754732d2cef7773f693aa9349496a2da3f53d02b0facbd4f2aa700b4c3074",
+      "templates/scene.json": "1643082827e6e44cfa9cd3350633c6c2274cf493ddb0fb91c49d422718009402",
+      "templates/script.txt": "fb87d8684a6c23058575d1d0b5032dbfb3f610d6e489024d52fddb1e0dbd2f42",
+      "metadata/documents/12345678-1234-4234-8234-123456789abc.json": "c7b54f99267ea5ef6d420ed0a945f205c74cdc64fbf48dc1d4ff0683aaa6b032",
+      "metadata/documents/12345678-1234-4234-8234-123456789abd.json": "8113f05bcfa68b575ee5e7cfbbf970db1d47f04459cdebad43f182a5a9c34fe9",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac1.json": "17a985a8fd31fc01cb146d3d2f906ef7ee6c85b0c8c5b633ecc74180088fcad2",
+      "metadata/documents/12345678-1234-4234-8234-123456789ac2.json": "6b624a599cc07118a36788184771db69d185a1d924aae235c3085b3640fda2e5",
+      "metadata/documents/58585858-5858-4585-8585-000000000100.json": "6dde069c622e5e331c9257ca4dc1ec1ffe655e648be9decddd5a5774ef7b7f4d",
+      "metadata/documents/58585858-5858-4585-8585-000000000101.json": "cd351cfa4224864f71b688b4a5898579b70138aabae12e1bd439c8efb8274666",
+      "metadata/documents/60606060-6060-4060-8060-000000000001.json": "1526e561d89c40bde67da980c319647726434895a932a8dea5e8467b42bbed79",
+      "metadata/documents/88888888-8888-4888-8888-888888888888.json": "0e208c28a3e5d0c03940a87e77ff988d1cec3334897308d4ac21bf7be4dfdede",
+      "metadata/documents/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa.json": "d204105c7c3a72eae50b476c59dea955441847d00dfd75c2bce4d6a4b6c3ca27",
+      "metadata/documents/dddddddd-dddd-4ddd-8ddd-dddddddddddd.json": "3502ceedac3fefb079c0743efb86af809da1f7c4fe5bd4891abbf4fb315c1976",
+      "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json": "6795ba8566ac9d0808b10ff64af30cb408d87f8d3da6ef7602f559de4648b1ea",
+      "metadata/documents/ffffffff-ffff-4fff-8fff-ffffffffffff.json": "922e09faa6b78a195408358b1d4e8fbab75bfbed128ddb471d27d4b9e23c15f8",
+      "metadata/assets/99999999-9999-4999-8999-999999999999.json": "16d25196d7a7c0947624c21ab9358fef4ce2483508e630971e9c624510bca2e9",
+      "metadata/assets/cccccccc-cccc-4ccc-8ccc-cccccccccccc.json": "d9d94ea50584e615dad54dde5392f0f00d0ac5d3273737f653a5abed3335f62f",
+      "documents/scripts/checkpoint.txt": "0260fe57a46be7d483bff7fc5486529537d939c586dfe341cfb597e058cb024d",
+      "documents/scripts/publisher.txt": "f9b8e8d109a0de4eeae1e0495f5c21f52a76c02ccaa27a5209c4e9bf1407343f",
+      "documents/scripts/second.txt": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "documents/scenes/audio.json": "038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+      "documents/scenes/demo.json": "f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd",
+      "documents/projects/demo.json": "3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "documents/characters/traveler.md": "ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+      "documents/behaviors/demo.json": "b3339988eae3d140ef5ca1366b02c7969ce5104ab94e21759fd8c3cf07ca3f6f",
+      "documents/behaviors/second.json": "a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+      "documents/audio/demo.json": "0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+      "documents/animations/scene-0.json": "30c99aade371b941e442dbb13a6889f416f354c0ec37fa2b8482b78ef9d6d234",
+      "documents/animations/scene-1.json": "d00c970c66822fe6f53c9b4d42310c594c726a8dac01d543033e18f255e3625a",
+      "assets/tone.wav": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af",
+      "assets/traveler.svg": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+    },
+    "unchanged": true
+  },
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-10-24T01:36:14.108Z"
+}

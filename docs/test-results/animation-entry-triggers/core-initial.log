@@ -1,0 +1,100 @@
+✔ initial entry, same-state restart and same-clip transition remain independent before command execution (25.220494ms)
+✔ wire entries reject forged identities, indices, clips, counters and source paths atomically (77.603749ms)
+✔ unrecognized scripts never admit private state entries (3.969662ms)
+✔ ready and finished counters are exact and protocol8 keeps its old event shape (10.077338ms)
+✔ active terminal state must match latest entered state while inactive or unavailable keeps earlier history (19.108109ms)
+✔ diagnostic abort rejects later entries and cancellation retains only records actually collected (11.040381ms)
+✔ entry clock and command cutoff never rewind; later executed receipts cannot precede an entry (8.130241ms)
+✔ scene reentry records a fresh initial state and preserves global entry sequence and source identity (8.308261ms)
+✔ two bindings of one script retain distinct accepted-state histories (5.831502ms)
+✔ DTO validation rejects unsafe accessors, stale identities, unknown fields and reversed entry histories (10.377067ms)
+✔ p9 query cross-checks accepted history with visits and terminal snapshots and p8 rejects added entries (10.600867ms)
+✔ accepted entries before completion delivery keep their earlier execution cutoff (15.739468ms)
+✔ ledger admits exactly128 entries and rejects overflow without altering prior accepted history (105.377433ms)
+✖ protocol9 descriptors require completion, snapshots and accepted-state entry capabilities (6.742723ms)
+✔ query compares binding identity across accepted entries, executed receipts and earlier inactive snapshots (7.645807ms)
+✔ query rejects an earlier command with changed binding source even when later commands restore it (5.87129ms)
+✔ protocol10 retains explicit initialization and direct entries without inventing delivery evidence (23.812246ms)
+✔ reject malformed trigger atomically null (8.155761ms)
+✔ reject malformed trigger atomically {} (7.695957ms)
+✔ reject malformed trigger atomically {"kind":"unknown"} (7.186446ms)
+✔ reject malformed trigger atomically {"kind":"initial","sequence":1} (8.462244ms)
+✔ reject malformed trigger atomically {"kind":"direct","subscriptionId":1} (7.719764ms)
+✔ reject malformed trigger atomically {"kind":"event","eventSequence":1} (7.35638ms)
+✔ reject malformed trigger atomically {"kind":"event","eventSequence":0,"subscriptionId":1} (6.106734ms)
+✔ reject malformed trigger atomically {"kind":"event","eventSequence":129,"subscriptionId":1} (6.101654ms)
+✔ reject malformed trigger atomically {"kind":"event","eventSequence":1,"subscriptionId":1025} (6.493373ms)
+✔ reject malformed trigger atomically {"kind":"event","eventSequence":1,"subscriptionId":1,"completionSequence":1} (5.824839ms)
+✔ reject malformed trigger atomically {"kind":"completed","completionSequence":321,"subscriptionId":1} (5.963211ms)
+✔ protocol10 requires source while protocol9 keeps exact legacy entry fields (17.824927ms)
+✔ event source requires the actual first pending recipient and is single-use (11.061292ms)
+✔ handled or skipped recipients cannot retrospectively explain an entry (11.835935ms)
+✔ callback source cannot be borrowed from another binding sharing the same author script (5.785873ms)
+✔ completion source checks queue identity and the exact completed clock and command boundary (9.322004ms)
+✔ p10 query and review retain pending evidence then handled evidence without changing older models (15.978698ms)
+✔ p10 full observation rejects contradictory trigger provenance (7.113683ms)
+✔ p10 full observation rejects contradictory trigger provenance (7.118833ms)
+✔ p10 full observation rejects contradictory trigger provenance (7.444212ms)
+✔ p10 full observation rejects contradictory trigger provenance (7.097201ms)
+✔ p10 full observation rejects contradictory trigger provenance (7.513028ms)
+✔ p10 full observation rejects contradictory trigger provenance (8.708177ms)
+✔ trigger DTO validation rejects executable descriptors without invoking them (8.229546ms)
+✔ review uses a branded immutable model and validates complete protocol9 observations (27.938646ms)
+✔ same-frame repeated entries stay distinct and navigation skips other bindings sharing the same script (9.425356ms)
+✔ commands arriving after acceptance do not mutate an older review and shared cutoffs never infer pairings (10.883182ms)
+✔ later entry cutoff excludes already executed commands without cutting earlier reviews at the next entry (10.290417ms)
+✔ scene reentry owns a separate navigation group command history and terminal snapshot (13.677575ms)
+✔ review preserves explicit active terminal controller without replacing selected entry (6.830567ms)
+✔ review preserves explicit inactive terminal controller without replacing selected entry (5.945537ms)
+✔ review preserves explicit unavailable terminal controller without replacing selected entry (6.120231ms)
+✔ aborted and incomplete runs retain only collected entries commands and terminal evidence (6.385933ms)
+✔ empty histories and absent positive sequences return null but malformed selection or fake models fail (11.235765ms)
+✔ caller mutation cannot redirect selected entry command or terminal provenance (6.803493ms)
+✔ review admission rejects executable accessors and serialization hooks without calling them (6.472924ms)
+✔ full runtime admission rejects earlier command source substitution and contradictory terminal state (11.029559ms)
+✔ a maximum 128-entry group retains every repeated entry and first/last navigation bounds (19.139811ms)
+✔ catalog recognizes exact v1/v2/v3 bytes, default clips and BOM/CRLF while retaining frozen navigation (19.609555ms)
+✔ ordinary, modified, malformed and unknown-generator scripts remain unobserved without editing author text (6.489766ms)
+✔ recognized catalog never swallows optional core absence (58.278654ms)
+✔ recognized invalid clip parameters fail with frozen field diagnostics; valid unknown UUID remains runtime-owned (8.366636ms)
+✔ catalog keeps each same-script binding and excludes scenes without animation (1.895566ms)
+✔ actual state indexes distinguish states mapped to the same clip and keep all receipts independent (12.626889ms)
+✔ inactive and unavailable are distinct states with no invented current state or clip (7.452589ms)
+✔ p8 frozen wire snapshots reject forged identities, indices, clips, missing and duplicate controllers atomically (71.291873ms)
+✔ snapshot closes its visit to further commands, publications and duplicate snapshots (4.486208ms)
+✔ successful exit requires matching snapshot reason and exact time; finished count must match (19.022721ms)
+✔ scene reentry owns a fresh snapshot while unobserved scenes need no empty snapshot (6.144417ms)
+✔ aborted observations require a diagnostic and preserve the real inactive snapshot; unfinished runs do not synthesize one (6.829504ms)
+✔ snapshot DTOs reject unsafe descriptors, unknown keys, invalid origins, stale sources and typed-state contradictions (6.183154ms)
+✔ p8 query links snapshots to visit boundary and command cutoff, and p7 keeps its exact old shape (14.466446ms)
+✔ project protocol 8 descriptor preserves mandatory animation completion capability (4.287076ms)
+✔ p8 completion and command histories retain ordered receipts while state samples carry the exact cutoff (9.91628ms)
+✔ snapshot budget admits exactly 64 batches and 2048 scoped controllers without merging identities (214.594159ms)
+ℹ tests 72
+ℹ suites 0
+ℹ pass 71
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 555.673487
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-state-entries.test.mjs:176:1
+✖ protocol9 descriptors require completion, snapshots and accepted-state entry capabilities (6.742723ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entries.test.mjs:186:59)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }

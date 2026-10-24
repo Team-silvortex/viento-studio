@@ -45,11 +45,11 @@ async function fixture(t, options = {}) {
 }
 const sourceButton = (h, kind = 'animation') => h.rows()[0].querySelector('.project-animation-completion-' + kind + '-source');
 
-test('completion panels admit protocols7–9 and distinguish an empty supported history from no support', async t => {
+test('completion panels admit protocols7–10 and distinguish an empty supported history from no support', async t => {
   const h = await fixture(t); h.set(null); assert.equal(h.el('Panel').hidden, true);
   h.set({ sequence: 0, entries: [] }); assert.equal(h.el('Panel').hidden, false); assert.equal(h.el('Sequence').dataset.sequence, '0');
   assert.match(h.el('Empty').textContent, /当前没有动画自然完成/);
-  for (const protocolVersion of [1, 2, 3, 4, 5, 6, 10]) {
+  for (const protocolVersion of [1, 2, 3, 4, 5, 6, 11]) {
     h.set(snapshot(), { protocolVersion: 7 }); h.set(snapshot(), { protocolVersion });
     assert.equal(h.el('Panel').hidden, true); assert.equal(h.rows().length, 0); assert.equal(h.el('Sequence').dataset.sequence, undefined);
   }
@@ -189,6 +189,12 @@ test('protocol8 retains completion provenance beside state snapshots', async t =
 
 test('protocol9 retains completion provenance beside state snapshots', async t => {
   const h = await fixture(t); h.set(clipSnapshot(), { protocolVersion: 9 });
+  assert.equal(h.el('Panel').hidden, false); assert.equal(h.rows().length, 1);
+  sourceButton(h, 'subscriber').click(); await flushDialogs(); assert.deepEqual(JSON.parse(JSON.stringify(h.calls[0].source)), origin().source);
+});
+
+test('protocol10 retains completion provenance beside state snapshots', async t => {
+  const h = await fixture(t); h.set(clipSnapshot(), { protocolVersion: 10 });
   assert.equal(h.el('Panel').hidden, false); assert.equal(h.rows().length, 1);
   sourceButton(h, 'subscriber').click(); await flushDialogs(); assert.deepEqual(JSON.parse(JSON.stringify(h.calls[0].source)), origin().source);
 });

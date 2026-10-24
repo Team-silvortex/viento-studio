@@ -1,0 +1,15 @@
+{
+  "reviews": [
+    "Independent production and host implementers reviewed editor, parent callback and real author host ownership.",
+    "Root standard test runner confirmed all 37 new assertions, plus 183 related UI/host regressions.",
+    "Desktop and Chinese/English/Japanese 390px screenshots visually checked; action hit testing verifies controls can be reached by scrolling."
+  ],
+  "testHarnessCorrection": "Initial Chrome smoke assumed a second same-name CDP download received a numeric suffix and timed out. Final smoke uses separate download directories, compares both exact JSON files, and keeps the initial failure report. No production change was needed.",
+  "preservedRuns": "Initial failed browser and earlier successful run retain their own source hashes. Final run adds narrow-screen action hit checks.",
+  "limits": [
+    "Manual JSON definition editor; no structured per-step fields, syntax highlighting or project-registered cases yet.",
+    "Only loaded case is replaced after explicit check/apply; no automatic save. Closing author session discards the local case and draft; export a file to persist.",
+    "Manual expectations compare destination state and transition presence, not actual playback success or same-target branch identity.",
+    "No installed Tauri, Android, Bevy-animation or new per-case native assertion coverage."
+  ]
+}

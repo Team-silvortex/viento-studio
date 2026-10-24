@@ -1,0 +1,27 @@
+✔ exports only explicitly recorded inputs and manual expectations as a fixed-name JSON blob (19.060174ms)
+✔ empty paths cannot export and download errors leave the existing case and report intact (17.391157ms)
+✔ import does not replay or replace the live manual path and explicit replay is read-only (9.173104ms)
+✔ a changed table clears only replay and stops the next replay at its first mismatch (9.802121ms)
+✔ the report distinguishes same-state transitions from no transition (7.525126ms)
+✔ a missing initial state reports a specific error without remapping or discarding the case (11.954086ms)
+✔ invalid, unsupported and oversized imports preserve the prior case and result atomically (24.67328ms)
+✔ latest file selection wins and a late error cannot replace its loaded case (6.789249ms)
+✔ folding permanently cancels in-flight file reads even after reopening (9.565487ms)
+✔ a chooser opened before folding cannot submit a file after reopening (4.546249ms)
+✔ cancel and empty selections keep the prior case and a read failure keeps its report (13.067583ms)
+✔ reset, inactive sessions and disposal cancel pending imports and clear independent case state (25.591189ms)
+✔ generation or availability changes invalidate replay but retain an imported case for retry (10.879408ms)
+✔ clear case preserves the manual sequence and returns focus to import (7.725068ms)
+✔ lazy condition details and translated controls retain their DOM, focus and open state (10.386593ms)
+✔ Unicode, NUL, booleans, numeric and missing samples survive export and import without coercion (10.497785ms)
+✔ detached old details cannot create traces after table change or case replacement (15.440318ms)
+✔ a silently invalidated read releases its own busy state without accepting stale bytes (10.265503ms)
+✔ successive change events each own a distinct read even without reopening the chooser (7.094697ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 323.35751

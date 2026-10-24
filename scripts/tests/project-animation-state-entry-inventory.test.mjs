@@ -57,7 +57,7 @@ async function stage(f){const directory=path.join(f.temporary,'generated');for(c
 
 
 
-test('inventory10 admits 32 scenes and 256 distinct original/wrapper scripts within the fixed 4 MiB budget',async t=>{
+test('inventory11 admits 32 scenes and 256 distinct original/wrapper scripts within the fixed 4 MiB budget',async t=>{
   const f=await fixture(t),directory=await stage(f),original=JSON.parse(f.generated.files.get('assembly.json'));
   const id=n=>'73737373-7373-4737-8737-'+String(n).padStart(12,'0');
   const sourceIds=Array.from({length:256},(_,i)=>id(10000+i)),sceneIds=Array.from({length:32},(_,i)=>id(i+1));
@@ -67,6 +67,6 @@ test('inventory10 admits 32 scenes and 256 distinct original/wrapper scripts wit
   const paths=[...inventory.behaviorSources.map(row=>row.path),...inventory.animationStateWrappers.map(row=>row.path),...inventory.scenes.flatMap(row=>row.runtimeScripts)];
   for(const file of paths){const destination=path.join(directory,file);await fs.mkdir(path.dirname(destination),{recursive:true});await fs.writeFile(destination,'extends Node\n');}
   await fs.writeFile(path.join(directory,'assembly.json'),bytes);
-  const scripts=await godotAssemblyScripts(directory);assert.equal(new Set(scripts).size,scripts.length);assert.equal(scripts.length,682);
+  const scripts=await godotAssemblyScripts(directory);assert.equal(new Set(scripts).size,scripts.length);assert.equal(scripts.length,683);
   for(const file of paths)assert.ok(scripts.includes(file),file);
 });

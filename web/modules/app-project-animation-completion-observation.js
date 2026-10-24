@@ -144,7 +144,7 @@ export function setupProjectAnimationCompletionObservation({ container, getConte
       updateContext();
       let admitted;
       try {
-        if (![7, 8, 9].includes(protocolVersion)) throw new TypeError('Unsupported animation completion observation.');
+        if (![7, 8, 9, 10].includes(protocolVersion)) throw new TypeError('Unsupported animation completion observation.');
         admitted = value == null ? null : validateProjectAnimationCompletionsSnapshot(value);
       } catch { clear(); render(); return; }
       const next = admitted == null ? '' : JSON.stringify(admitted);

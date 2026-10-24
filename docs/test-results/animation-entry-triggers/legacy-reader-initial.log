@@ -1,0 +1,87 @@
+✔ initial entry, same-state restart and same-clip transition remain independent before command execution (23.520192ms)
+✔ wire entries reject forged identities, indices, clips, counters and source paths atomically (70.855076ms)
+✔ unrecognized scripts never admit private state entries (3.89727ms)
+✔ ready and finished counters are exact and protocol8 keeps its old event shape (8.651607ms)
+✔ active terminal state must match latest entered state while inactive or unavailable keeps earlier history (16.953475ms)
+✔ diagnostic abort rejects later entries and cancellation retains only records actually collected (9.501662ms)
+✔ entry clock and command cutoff never rewind; later executed receipts cannot precede an entry (9.247406ms)
+✔ scene reentry records a fresh initial state and preserves global entry sequence and source identity (9.162383ms)
+✔ two bindings of one script retain distinct accepted-state histories (6.450306ms)
+✔ DTO validation rejects unsafe accessors, stale identities, unknown fields and reversed entry histories (10.260659ms)
+✔ p9 query cross-checks accepted history with visits and terminal snapshots and p8 rejects added entries (10.486424ms)
+✔ accepted entries before completion delivery keep their earlier execution cutoff (15.098877ms)
+✔ ledger admits exactly128 entries and rejects overflow without altering prior accepted history (100.73602ms)
+✔ protocol9 descriptors require completion, snapshots and accepted-state entry capabilities (6.180778ms)
+✔ query compares binding identity across accepted entries, executed receipts and earlier inactive snapshots (7.969495ms)
+✔ query rejects an earlier command with changed binding source even when later commands restore it (6.535669ms)
+✔ review uses a branded immutable model and validates complete protocol9 observations (28.725146ms)
+✖ same-frame repeated entries stay distinct and navigation skips other bindings sharing the same script (8.834962ms)
+✔ commands arriving after acceptance do not mutate an older review and shared cutoffs never infer pairings (11.086671ms)
+✔ later entry cutoff excludes already executed commands without cutting earlier reviews at the next entry (10.540019ms)
+✔ scene reentry owns a separate navigation group command history and terminal snapshot (12.159943ms)
+✔ review preserves explicit active terminal controller without replacing selected entry (7.325122ms)
+✔ review preserves explicit inactive terminal controller without replacing selected entry (6.080392ms)
+✔ review preserves explicit unavailable terminal controller without replacing selected entry (6.332183ms)
+✔ aborted and incomplete runs retain only collected entries commands and terminal evidence (5.994328ms)
+✔ empty histories and absent positive sequences return null but malformed selection or fake models fail (10.359612ms)
+✔ caller mutation cannot redirect selected entry command or terminal provenance (6.905292ms)
+✔ review admission rejects executable accessors and serialization hooks without calling them (6.044346ms)
+✔ full runtime admission rejects earlier command source substitution and contradictory terminal state (9.091471ms)
+✔ a maximum 128-entry group retains every repeated entry and first/last navigation bounds (16.251671ms)
+✔ catalog recognizes exact v1/v2/v3 bytes, default clips and BOM/CRLF while retaining frozen navigation (18.514473ms)
+✔ ordinary, modified, malformed and unknown-generator scripts remain unobserved without editing author text (5.994489ms)
+✔ recognized catalog never swallows optional core absence (53.799661ms)
+✔ recognized invalid clip parameters fail with frozen field diagnostics; valid unknown UUID remains runtime-owned (7.417791ms)
+✔ catalog keeps each same-script binding and excludes scenes without animation (2.364262ms)
+✔ actual state indexes distinguish states mapped to the same clip and keep all receipts independent (11.634005ms)
+✔ inactive and unavailable are distinct states with no invented current state or clip (7.413072ms)
+✔ p8 frozen wire snapshots reject forged identities, indices, clips, missing and duplicate controllers atomically (65.192058ms)
+✔ snapshot closes its visit to further commands, publications and duplicate snapshots (4.355082ms)
+✔ successful exit requires matching snapshot reason and exact time; finished count must match (17.921341ms)
+✔ scene reentry owns a fresh snapshot while unobserved scenes need no empty snapshot (5.599702ms)
+✔ aborted observations require a diagnostic and preserve the real inactive snapshot; unfinished runs do not synthesize one (4.893086ms)
+✔ snapshot DTOs reject unsafe descriptors, unknown keys, invalid origins, stale sources and typed-state contradictions (5.062149ms)
+✔ p8 query links snapshots to visit boundary and command cutoff, and p7 keeps its exact old shape (12.757805ms)
+✔ project protocol 8 descriptor preserves mandatory animation completion capability (4.518241ms)
+✔ p8 completion and command histories retain ordered receipts while state samples carry the exact cutoff (9.606636ms)
+✔ snapshot budget admits exactly 64 batches and 2048 scoped controllers without merging identities (217.350129ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 46
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 539.729033
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-state-review.test.mjs:55:1
+✖ same-frame repeated entries stay distinct and navigation skips other bindings sharing the same script (8.834962ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'entry',
+      'entries',
+  +   'triggerEvidence',
+      'position',
+      'previousSequence',
+      'nextSequence',
+      'followingCommands',
+      'terminal'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-review.test.mjs:63:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'entry', 'entries', 'triggerEvidence', 'position', 'previousSequence', 'nextSequence', 'followingCommands', 'terminal' ],
+    expected: [ 'entry', 'entries', 'position', 'previousSequence', 'nextSequence', 'followingCommands', 'terminal' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

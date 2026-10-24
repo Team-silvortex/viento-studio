@@ -10,7 +10,7 @@ export function advanceProjectAnimationTransport(animation, protocolVersion, req
     if (animation.document.schemaVersion === 3) throw invalid();
     return advanceSceneAnimationTransport({ document: animation.document, ...input });
   }
-  if (![6, 7, 8, 9].includes(protocolVersion)) throw invalid();
+  if (![6, 7, 8, 9, 10].includes(protocolVersion)) throw invalid();
   if (animation.document.schemaVersion === 3) return advanceSceneAnimationClipTransport({ document: animation.document, ...input });
   // A mixed project may visit an older animation. Its only selection is the
   // whole document; retain its original Rust rules and add the explicit null.

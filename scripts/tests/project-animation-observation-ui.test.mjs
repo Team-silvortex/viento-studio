@@ -218,3 +218,9 @@ test('protocol9 retains named clip command receipts beside state snapshots', asy
   assert.equal(h.el('Panel').hidden, false); assert.match(h.rows()[0].textContent, /待機/);
   sourceButton(h, 'clip').click(); await flushDialogs(); assert.equal(h.calls[0].source.propertyPath, '/clips/0');
 });
+
+test('protocol10 retains named clip command receipts beside state snapshots', async t => {
+  const h = await fixture(t); h.controller.setSnapshot(clipSnapshot(), { protocolVersion: 10 });
+  assert.equal(h.el('Panel').hidden, false); assert.match(h.rows()[0].textContent, /待機/);
+  sourceButton(h, 'clip').click(); await flushDialogs(); assert.equal(h.calls[0].source.propertyPath, '/clips/0');
+});

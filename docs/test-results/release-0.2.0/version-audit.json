@@ -1,0 +1,47 @@
+{
+  "scope": "Read-only repository audit; only a nine-file temporary preview was modified.",
+  "release": {
+    "version": "0.2.0",
+    "buildVersion": "0.2.0"
+  },
+  "installer": {
+    "androidVersionCode": 1002000,
+    "macOSBundleVersion": "1.2.0"
+  },
+  "files": [
+    "VERSION",
+    "package.json",
+    "package-lock.json",
+    "src-tauri/tauri.conf.json",
+    "src-tauri/tauri.android.conf.json",
+    "src-tauri/Cargo.toml",
+    "src-tauri/Cargo.lock",
+    "web/index.html",
+    "desktop/ui/index.html"
+  ],
+  "preview": "/tmp/viento-release-0.2.0/version-audit-preview-FgbNS0",
+  "verified": {
+    "version": "0.2.0",
+    "buildVersion": "0.2.0"
+  },
+  "numericNextFromCurrent": "0.1.10",
+  "numericNextFromTarget": "0.2.1",
+  "unchanged": {
+    "applicationIdentifier": "io.viento.studio",
+    "androidAutoIncrementVersionCode": false,
+    "windowsAllowDowngrades": true,
+    "workspaceFormats": "unchanged",
+    "runtimeAndAdapterVersions": "independent",
+    "studioCoreCrateVersion": "0.1.0",
+    "bevyRuntimeCrateVersion": "0.3.0",
+    "bevyToolCrateVersion": "0.2.0"
+  },
+  "notes": [
+    "Cargo.lock dependency versions matching 0.1.9 are not product versions.",
+    "Android Gradle reads generated ignored app/tauri.properties; versionName comes from Tauri app version.",
+    "mobile/index.html uses __VIENTO_VERSION__; mobile/prepare.mjs replaces it.",
+    "desktop/resources package metadata and VERSION are generated during prepare.",
+    "ADR 0001 remains historical; mapping formula already supports 0.2.0.",
+    "Existing version tests cover generic rules but lack explicit 0.1.9 -> 0.2.0 installer counter assertions."
+  ]
+}

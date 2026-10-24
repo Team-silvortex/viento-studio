@@ -1,0 +1,65 @@
+✔ protocol10 declares trigger capability and inventory11 without changing recognized author bytes (143.447974ms)
+✔ real v1 preserves initial, event, completion and direct entry identity (12777.298339ms)
+✔ real v2 preserves initial, event, completion and direct entry identity (12811.473082ms)
+✔ real v3 preserves initial, event, completion and direct entry identity (12779.103679ms)
+✔ real v4 preserves initial, event, completion and direct entry identity (12891.973644ms)
+✔ real v5 preserves initial, event, completion and direct entry identity (13277.877033ms)
+✔ real direct callback calls from another dispatched binding cannot borrow its event or completion identity (13677.424741ms)
+✔ real a manual second ready invocation is direct rather than another initialization (13386.987315ms)
+✔ real same-frame self transitions bind each accepted entry to its own message and subscription (13332.442486ms)
+✔ real nonmatching all group has no entry and its later matching event keeps its own identity (13336.204691ms)
+✔ real accepted event entry remains attributable when a preceding queued command fails before its execution (13179.041592ms)
+✔ real rejected play has no successful event entry and retains the original accepted initialization (13282.205356ms)
+✖ real p9 runtime and wrapper remain runnable with their strict previous wire fields (9594.587645ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 154630.403765
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:171:1
+✖ real p9 runtime and wrapper remain runnable with their strict previous wire fields (9594.587645ms)
+  AssertionError [ERR_ASSERTION]: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+  
+  VIENTO_PROJECT:{"animationCommandSequence":0,"animationCompletionSequence":0,"animationStateEntrySequence":0,"animationStateSequence":0,"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"entrySceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","event":"ready","eventSequence":0,"protocol":9,"stateRevision":0}
+  VIENTO_PROJECT:{"event":"scene-enter","protocol":9,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"code":"runtime_image_failed","event":"diagnostic","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","message":"Cannot load generated image.","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":3,"resourceId":"cccccccc-cccc-4ccc-8ccc-cccccccccccc","severity":"error"},"protocol":9,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"commandSequence":0,"controllers":[{"bindingId":"99999999-9999-4999-8999-999999999991","clipId":null,"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","stateIndex":null,"status":"unavailable"}],"event":"animation-state-snapshot","protocol":9,"reason":"aborted","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":1,"timeSeconds":0.0,"visitIndex":1}
+  ERROR: Resource file not found: res://images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg (expected type: unknown)
+     at: _load (core/io/resource_loader.cpp:325)
+     GDScript backtrace (most recent call first):
+         [0] _ready (res://scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/runtime.gd:33)
+         [1] _ready (res://scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/behavior-runtime.gd:24)
+         [2] _ready (res://scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/animation-runtime.gd:29)
+         [3] _ready (res://scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/project-scene.gd:10)
+         [4] enter_scene (res://project-runtime.gd:222)
+         [5] enter_scene (res://project-animation-state-runtime.gd:72)
+         [6] _ready (res://project-runtime.gd:77)
+         [7] _ready (res://project-control-runtime.gd:23)
+         [8] _ready (res://project-completion-runtime.gd:15)
+  WARNING: 1 RID of type "CanvasItem" was leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2733)
+  WARNING: 1 ObjectDB instance was leaked at exit (run with `--verbose` for details).
+     at: cleanup (core/object/object.cpp:2536)
+  
+  + actual - expected
+  
+  + 'failed'
+  - 'succeeded'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:183:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'succeeded',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

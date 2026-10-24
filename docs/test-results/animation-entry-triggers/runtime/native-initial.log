@@ -1,0 +1,320 @@
+✔ protocol10 declares trigger capability and inventory11 without changing recognized author bytes (147.40731ms)
+✖ real v1 preserves initial, event, completion and direct entry identity (12648.239558ms)
+✖ real v2 preserves initial, event, completion and direct entry identity (12738.021824ms)
+✖ real v3 preserves initial, event, completion and direct entry identity (12684.644129ms)
+✖ real v4 preserves initial, event, completion and direct entry identity (14967.326468ms)
+✖ real v5 preserves initial, event, completion and direct entry identity (14832.009442ms)
+✖ real direct callback calls from another dispatched binding cannot borrow its event or completion identity (12820.121801ms)
+✖ real same-frame self transitions bind each accepted entry to its own message and subscription (12811.096272ms)
+✖ real nonmatching all group has no entry and its later matching event keeps its own identity (12839.065315ms)
+✖ real accepted event entry remains attributable when a preceding queued command fails before its execution (12813.261655ms)
+✖ real rejected play has no successful event entry and retains the original accepted initialization (12835.544064ms)
+✖ real p9 runtime and wrapper remain runnable with their strict previous wire fields (9198.1698ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 1
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 141494.752974
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:89:40
+✖ real v1 preserves initial, event, completion and direct entry identity (12648.239558ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      },
+      {
+        eventSequence: 1,
+        kind: 'event',
+        subscriptionId: 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:93:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' }, { eventSequence: 1, kind: 'event', subscriptionId: 1 }, { completionSequence: 1, kind: 'completed', subscriptionId: 1 }, { kind: 'direct' } ],
+    expected: [ { kind: 'initial' }, { kind: 'event', eventSequence: 1, subscriptionId: 1 }, { kind: 'completed', completionSequence: 1, subscriptionId: 1 }, { kind: 'direct' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:89:40
+✖ real v2 preserves initial, event, completion and direct entry identity (12738.021824ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      },
+      {
+        eventSequence: 1,
+        kind: 'event',
+        subscriptionId: 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:93:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' }, { eventSequence: 1, kind: 'event', subscriptionId: 1 }, { completionSequence: 1, kind: 'completed', subscriptionId: 1 }, { kind: 'direct' } ],
+    expected: [ { kind: 'initial' }, { kind: 'event', eventSequence: 1, subscriptionId: 1 }, { kind: 'completed', completionSequence: 1, subscriptionId: 1 }, { kind: 'direct' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:89:40
+✖ real v3 preserves initial, event, completion and direct entry identity (12684.644129ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      },
+      {
+        eventSequence: 1,
+        kind: 'event',
+        subscriptionId: 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:93:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' }, { eventSequence: 1, kind: 'event', subscriptionId: 1 }, { completionSequence: 1, kind: 'completed', subscriptionId: 1 }, { kind: 'direct' } ],
+    expected: [ { kind: 'initial' }, { kind: 'event', eventSequence: 1, subscriptionId: 1 }, { kind: 'completed', completionSequence: 1, subscriptionId: 1 }, { kind: 'direct' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:89:40
+✖ real v4 preserves initial, event, completion and direct entry identity (14967.326468ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      },
+      {
+        eventSequence: 1,
+        kind: 'event',
+        subscriptionId: 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:93:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' }, { eventSequence: 1, kind: 'event', subscriptionId: 1 }, { completionSequence: 1, kind: 'completed', subscriptionId: 1 }, { kind: 'direct' } ],
+    expected: [ { kind: 'initial' }, { kind: 'event', eventSequence: 1, subscriptionId: 1 }, { kind: 'completed', completionSequence: 1, subscriptionId: 1 }, { kind: 'direct' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:89:40
+✖ real v5 preserves initial, event, completion and direct entry identity (14832.009442ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      },
+      {
+        eventSequence: 1,
+        kind: 'event',
+        subscriptionId: 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:93:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' }, { eventSequence: 1, kind: 'event', subscriptionId: 1 }, { completionSequence: 1, kind: 'completed', subscriptionId: 1 }, { kind: 'direct' } ],
+    expected: [ { kind: 'initial' }, { kind: 'event', eventSequence: 1, subscriptionId: 1 }, { kind: 'completed', completionSequence: 1, subscriptionId: 1 }, { kind: 'direct' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:105:1
+✖ real direct callback calls from another dispatched binding cannot borrow its event or completion identity (12820.121801ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      },
+      {
+        kind: 'direct'
+      },
+      {
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:132:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' }, { kind: 'direct' }, { kind: 'direct' }, { eventSequence: 2, kind: 'event', subscriptionId: 1 }, { completionSequence: 1, kind: 'completed', subscriptionId: 1 } ],
+    expected: [ { kind: 'initial' }, { kind: 'direct' }, { kind: 'direct' }, { kind: 'event', eventSequence: 2, subscriptionId: 1 }, { kind: 'completed', completionSequence: 1, subscriptionId: 1 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:136:1
+✖ real same-frame self transitions bind each accepted entry to its own message and subscription (12811.096272ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      },
+      {
+        eventSequence: 1,
+        kind: 'event',
+        subscriptionId: 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:142:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' }, { eventSequence: 1, kind: 'event', subscriptionId: 1 }, { eventSequence: 2, kind: 'event', subscriptionId: 2 }, { eventSequence: 3, kind: 'event', subscriptionId: 1 } ],
+    expected: [ { kind: 'initial' }, { kind: 'event', eventSequence: 1, subscriptionId: 1 }, { kind: 'event', eventSequence: 2, subscriptionId: 2 }, { kind: 'event', eventSequence: 3, subscriptionId: 1 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:147:1
+✖ real nonmatching all group has no entry and its later matching event keeps its own identity (12839.065315ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      },
+      {
+        eventSequence: 2,
+        kind: 'event',
+        subscriptionId: 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:150:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' }, { eventSequence: 2, kind: 'event', subscriptionId: 1 } ],
+    expected: [ { kind: 'initial' }, { kind: 'event', eventSequence: 2, subscriptionId: 1 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:153:1
+✖ real accepted event entry remains attributable when a preceding queued command fails before its execution (12813.261655ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      },
+      {
+        eventSequence: 1,
+        kind: 'event',
+        subscriptionId: 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:156:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' }, { eventSequence: 1, kind: 'event', subscriptionId: 1 } ],
+    expected: [ { kind: 'initial' }, { kind: 'event', eventSequence: 1, subscriptionId: 1 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:160:1
+✖ real rejected play has no successful event entry and retains the original accepted initialization (12835.544064ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     kind: 'direct'
+  -     kind: 'initial'
+      }
+    ]
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:163:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { kind: 'direct' } ],
+    expected: [ { kind: 'initial' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:166:1
+✖ real p9 runtime and wrapper remain runnable with their strict previous wire fields (9198.1698ms)
+  AssertionError [ERR_ASSERTION]: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+  
+  VIENTO_PROJECT:{"animationCommandSequence":0,"animationCompletionSequence":0,"animationStateEntrySequence":0,"animationStateSequence":0,"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"entrySceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","event":"ready","eventSequence":0,"protocol":9,"stateRevision":0}
+  VIENTO_PROJECT:{"event":"scene-enter","protocol":9,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"code":"runtime_image_failed","event":"diagnostic","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","message":"Cannot load generated image.","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":3,"resourceId":"cccccccc-cccc-4ccc-8ccc-cccccccccccc","severity":"error"},"protocol":9,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"commandSequence":0,"controllers":[{"bindingId":"99999999-9999-4999-8999-999999999991","clipId":null,"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","stateIndex":null,"status":"unavailable"}],"event":"animation-state-snapshot","protocol":9,"reason":"aborted","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":1,"timeSeconds":0.0,"visitIndex":1}
+  ERROR: Resource file not found: res://images/cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg (expected type: unknown)
+     at: _load (core/io/resource_loader.cpp:325)
+     GDScript backtrace (most recent call first):
+         [0] _ready (res://scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/runtime.gd:33)
+         [1] _ready (res://scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/behavior-runtime.gd:24)
+         [2] _ready (res://scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/animation-runtime.gd:29)
+         [3] _ready (res://scenes/dddddddd-dddd-4ddd-8ddd-dddddddddddd/project-scene.gd:10)
+         [4] enter_scene (res://project-runtime.gd:222)
+         [5] enter_scene (res://project-animation-state-runtime.gd:72)
+         [6] _ready (res://project-runtime.gd:77)
+         [7] _ready (res://project-control-runtime.gd:23)
+         [8] _ready (res://project-completion-runtime.gd:15)
+  WARNING: 1 RID of type "CanvasItem" was leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2733)
+  WARNING: 1 ObjectDB instance was leaked at exit (run with `--verbose` for details).
+     at: cleanup (core/object/object.cpp:2536)
+  
+  + actual - expected
+  
+  + 'failed'
+  - 'succeeded'
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-animation-state-entry-trigger-godot.test.mjs:178:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'succeeded',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

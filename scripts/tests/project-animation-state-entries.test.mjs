@@ -183,7 +183,7 @@ test('protocol9 descriptors require completion, snapshots and accepted-state ent
     assert.ok(checkExecutionBackendSupport(descriptor, { operation: 'build', plan }).some(row => row.capability === capability)); descriptor.capabilities.push(capability);
   }
   assert.deepEqual(checkExecutionBackendSupport(descriptor, { operation: 'build', plan }), []);
-  descriptor.plans[1].runtimeProtocolVersion = 10; assert.throws(() => validateExecutionBackendDescriptor(descriptor));
+  descriptor.plans[1].runtimeProtocolVersion = 11; assert.throws(() => validateExecutionBackendDescriptor(descriptor));
 });
 
 test('query compares binding identity across accepted entries, executed receipts and earlier inactive snapshots', () => {

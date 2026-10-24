@@ -4,6 +4,7 @@ import { setupProjectAnimationCompletionObservation } from './app-project-animat
 import { setupProjectAnimationObservation } from './app-project-animation-observation.js';
 import { setupProjectAudioObservation } from './app-project-audio-observation.js';
 import { setupProjectEventObservation } from './app-project-event-observation.js';
+import { setupProjectEventReview } from './app-project-event-review.js';
 import { setupProjectStateObservation } from './app-project-state-observation.js';
 import { setupProjectAssembly } from './app-project-assembly.js';
 import { setupSceneAnimationCreate } from './app-scene-animation-create.js';
@@ -201,6 +202,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <p id="projectBuildRuntimeCount"></p><p id="projectBuildRuntimeEmpty" hidden></p><ul id="projectBuildRuntimeObjectList"></ul></section>
     <div id="projectSharedState"></div>
     <div id="projectEventTrace"></div>
+    <div id="projectEventReview"></div>
     <div id="projectAudioCommands"></div>
     <div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div><div id="projectAnimationStates"></div><div id="projectAnimationStateEntries"></div>
     <section id="projectBuildBehaviorEvents" hidden aria-labelledby="projectBuildBehaviorEventsTitle"><h3 id="projectBuildBehaviorEventsTitle" data-i18n="行为事件"></h3><ul id="projectBuildBehaviorEventList"></ul></section>
@@ -667,6 +669,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   }) : { setSnapshot() {}, refresh() {} };
   const eventObservation = typeof setupProjectEventObservation === 'function' ? setupProjectEventObservation({
     container: el('projectEventTrace'),
+    onReviewEvent: (sequence, { isCurrent }) => isCurrent() && eventReview.selectEvent(sequence),
     getContext: () => {
       const observed = runtimeObservation();
       return { available: available && Boolean(observed?.members), visible: dialog.open && activeTab === 'build',
@@ -743,15 +746,37 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       return navigateOwnedSource([source.sourcePath, source], owns);
     },
   }) : { setObservation() {}, refresh() {} };
+  // The host joins independent observation views; neither component reaches
+  // into the other component's DOM or owns runtime execution.
+  const eventReview = typeof setupProjectEventReview === 'function' ? setupProjectEventReview({
+    container: el('projectEventReview'),
+    getContext: () => {
+      const observed = runtimeObservation();
+      return { available: available && Boolean(observed?.members), visible: dialog.open && activeTab === 'build',
+        sessionOwner: observed?.sessionOwner || '', navigationOwner: observed?.owner || '',
+        canOpenSource: mayOpenRuntimeSource(), canContinueSource: ownsRuntimeSourceContext() };
+    },
+    onOpen: async (origin, { isCurrent }) => {
+      if (!mayOpenRuntimeSource() || !isCurrent()) return false;
+      const owns = () => ownsRuntimeSourceContext() && isCurrent();
+      return navigateOwnedSource([origin.source.sourcePath, origin.source], owns);
+    },
+    onReviewEntry: (sequence, { isCurrent }) => {
+      if (!dialog.open || activeTab !== 'build' || !isCurrent()) return false;
+      return animationStateEntryObservation.selectEntry?.(sequence) === true;
+    },
+    onClose: sequence => eventObservation.focusEvent?.(sequence),
+  }) : { setObservation() {}, selectEvent() { return false; }, refresh() {} };
   function renderRuntimeObjects() {
     const observation = runtimeObservation(), owner = observation?.owner || '';
-    stateObservation.setSnapshot([2, 3, 4, 5, 6, 7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
-    eventObservation.setSnapshot([3, 4, 5, 6, 7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
-    audioObservation.setSnapshot([4, 5, 6, 7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.audioCommands : null);
-    animationObservation.setSnapshot([5, 6, 7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCommands : null, { protocolVersion: observation?.view.project?.protocolVersion >= 6 ? observation.view.project.protocolVersion : 5 });
-    animationCompletionObservation.setSnapshot([7, 8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCompletions : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
-    animationStateObservation.setSnapshot([8, 9].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationStates : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
-    animationStateEntryObservation.setObservation(observation?.view.project?.protocolVersion === 9 ? observation.view : null);
+    stateObservation.setSnapshot([2, 3, 4, 5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
+    eventObservation.setSnapshot([3, 4, 5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
+    audioObservation.setSnapshot([4, 5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.audioCommands : null);
+    animationObservation.setSnapshot([5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCommands : null, { protocolVersion: observation?.view.project?.protocolVersion >= 6 ? observation.view.project.protocolVersion : 5 });
+    animationCompletionObservation.setSnapshot([7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCompletions : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
+    animationStateObservation.setSnapshot([8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationStates : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
+    animationStateEntryObservation.setObservation([9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view : null);
+    eventReview.setObservation([3, 4, 5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view : null);
     const panel = el('projectBuildRuntimeObjects'), input = el('projectBuildRuntimeSearch'), list = el('projectBuildRuntimeObjectList');
     const ownerChanged = runtimeOwner !== owner;
     if (ownerChanged) { runtimeOwner = owner; runtimeSearch = ''; input.value = ''; runtimeCardSignature = ''; }
@@ -1200,6 +1225,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     problems.refresh();
     stateObservation.refresh();
     eventObservation.refresh();
+    eventReview.refresh();
     audioObservation.refresh();
     animationObservation.refresh();
     animationCompletionObservation.refresh();

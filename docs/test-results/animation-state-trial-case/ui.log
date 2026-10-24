@@ -1,0 +1,29 @@
+✔ exports only explicitly recorded inputs and manual expectations as a fixed-name JSON blob (25.329ms)
+✔ empty paths cannot export and download errors leave the existing case and report intact (21.925881ms)
+✔ import does not replay or replace the live manual path and explicit replay is read-only (13.84825ms)
+✔ a changed table clears only replay and stops the next replay at its first mismatch (13.912323ms)
+✔ the report distinguishes same-state transitions from no transition (9.637419ms)
+✔ a missing initial state reports a specific error without remapping or discarding the case (19.327178ms)
+✔ invalid, unsupported and oversized imports preserve the prior case and result atomically (36.275425ms)
+✔ latest file selection wins and a late error cannot replace its loaded case (9.348012ms)
+✔ folding permanently cancels in-flight file reads even after reopening (13.823112ms)
+✔ a chooser opened before folding cannot submit a file after reopening (5.593989ms)
+✔ cancel and empty selections keep the prior case and a read failure keeps its report (16.975489ms)
+✔ reset, inactive sessions and disposal cancel pending imports and clear independent case state (33.719724ms)
+✔ generation or availability changes invalidate replay but retain an imported case for retry (14.367547ms)
+✔ clear case preserves the manual sequence and returns focus to import (9.074928ms)
+✔ lazy condition details and translated controls retain their DOM, focus and open state (13.879149ms)
+✔ Unicode, NUL, booleans, numeric and missing samples survive export and import without coercion (11.473557ms)
+✔ detached old details cannot create traces after table change or case replacement (17.708498ms)
+✔ a silently invalidated read releases its own busy state without accepting stale bytes (18.318951ms)
+✔ successive change events each own a distinct read even without reopening the chooser (12.439162ms)
+✔ details observing a silent table mismatch revoke the old report permanently without affecting a newer replay (11.549223ms)
+✔ folded detail toggles alone retain a report until ownership is checked on reopening (9.811162ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 453.901362

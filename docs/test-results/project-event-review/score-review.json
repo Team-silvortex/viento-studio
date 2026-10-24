@@ -1,0 +1,140 @@
+{
+  "function": "runtime.project_event_review",
+  "delivery": "working-tree",
+  "preservedCells": 2580,
+  "preservedEvidenceObjects": 2705,
+  "newCells": [
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.project_event_review",
+        "i441",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "消息选择、逐订阅投递、确证进入、控制器历史与来源定位已接通。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.project_event_review",
+        "i441",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "领域/UI和宿主边界回归、真实Linux Chrome/Godot与完整应用验收分别记录，未覆盖安装或其他平台。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.project_event_review",
+        "i441",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "复用完整准入，纯关联、独立事件组件与宿主端口分开；协议和后端无改动。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.project_event_review",
+        "i441",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.1.9后源码工作树，尚未发布或更新安装。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.project_event_review",
+        "i442",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "消息选择、逐订阅投递、确证进入、控制器历史与来源定位已接通。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.project_event_review",
+        "i442",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "领域/UI和宿主边界回归、真实Linux Chrome/Godot与完整应用验收分别记录，未覆盖安装或其他平台。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.project_event_review",
+        "i442",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "复用完整准入，纯关联、独立事件组件与宿主端口分开；协议和后端无改动。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.project_event_review",
+        "i442",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.1.9后源码工作树，尚未发布或更新安装。"
+    }
+  ],
+  "newBindings": [
+    {
+      "id": "b647",
+      "architecture": "semantic-js",
+      "function": "runtime.project_event_review",
+      "implementation": "i441",
+      "role": "纯关联模型复用严格完整运行准入，序号身份关联与UI渲染独立。",
+      "evidence": [
+        "e2706",
+        "e2707",
+        "e2708",
+        "e2709",
+        "e2710",
+        "e2711",
+        "e2712",
+        "e2713",
+        "e2714"
+      ]
+    },
+    {
+      "id": "b648",
+      "architecture": "ui",
+      "function": "runtime.project_event_review",
+      "implementation": "i442",
+      "role": "独立组件负责选择和交互；宿主协调来源与控制器历史，不持有运行权或写入作者数据。",
+      "evidence": [
+        "e2706",
+        "e2707",
+        "e2708",
+        "e2709",
+        "e2710",
+        "e2711",
+        "e2712",
+        "e2713",
+        "e2714"
+      ]
+    }
+  ],
+  "existingBindingsReviewed": [
+    "runtime.project_events",
+    "runtime.project_animation_state_entry_triggers",
+    "runtime.project_animation_state_review"
+  ],
+  "reason": "Existing evidence and scores preserve their original scope. New pure core and UI/host coordinates cover the event-to-entry workflow; backend and protocol code did not change. Verification is Linux source HTTP/Chrome plus actual Godot, not installed or other platforms.",
+  "totals": {
+    "functions": 147,
+    "implementations": 442,
+    "bindings": 647,
+    "cells": 2588,
+    "workflows": 110,
+    "evidence": 2714
+  }
+}

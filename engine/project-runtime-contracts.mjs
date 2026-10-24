@@ -71,6 +71,8 @@ export const copyProjectAnimationStatesSnapshotData = input => copyBoundedRuntim
 export const copyProjectAnimationStatesObservationData = input => copyBoundedRuntimeData(input, 112 * 1024 * 1024);
 
 // Protocol 9 adds at most 128 accepted state entries with two frozen sources.
+// Protocol 10 adds only a bounded trigger tag and two integer references per
+// entry, fitting the same budget. Old protocol 9 fields remain strict.
 // This is bounded independently of the retained terminal controller snapshots.
 export const copyProjectAnimationStateEntriesSnapshotData = input => copyBoundedRuntimeData(input, 4 * 1024 * 1024);
 export const copyProjectAnimationStateEntriesObservationData = input => copyBoundedRuntimeData(input, 116 * 1024 * 1024);

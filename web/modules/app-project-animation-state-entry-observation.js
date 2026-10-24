@@ -1,3 +1,5 @@
+import { describeProjectAnimationStateEntryTrigger } from './app-project-animation-state-trigger.js';
+import { validateProjectAnimationStateTriggeredEntriesSnapshot } from '../../engine/project-animation-state-entry-triggers.mjs';
 import { setupProjectAnimationStateReview } from './app-project-animation-state-review.js';
 import { createProjectAnimationStateReview } from '../../engine/project-animation-state-review.mjs';
 import { validateProjectAnimationStateEntriesSnapshot } from '../../engine/project-animation-state-entries.mjs';
@@ -6,7 +8,7 @@ import { t, onLanguageChange } from '../i18n/index.js';
 // Accepted state entries are observations of generated scripts, not playback
 // receipts or inferred transition causes. Navigation is the only outward port.
 export function setupProjectAnimationStateEntryObservation({ container, getContext = () => ({}), onOpen = async () => false } = {}) {
-  if (!container) return Object.freeze({ setSnapshot() {}, setObservation() {}, refresh() {}, dispose() {} });
+  if (!container) return Object.freeze({ setSnapshot() {}, setObservation() {}, selectEntry() { return false; }, refresh() {}, dispose() {} });
   const document = container.ownerDocument;
   container.innerHTML = `<section id="projectAnimationStateEntriesPanel" class="project-animation-state-entry-observation" hidden aria-labelledby="projectAnimationStateEntriesTitle">
     <h3 id="projectAnimationStateEntriesTitle"></h3><p id="projectAnimationStateEntriesNote" class="build-hint"></p>
@@ -28,13 +30,13 @@ export function setupProjectAnimationStateEntryObservation({ container, getConte
   }) : { setSnapshot() { return false; }, selectEntry() { return false; }, refresh() {}, dispose() {} };
   let reviewAvailable = false;
   let disposed = false, snapshot = null, signature = '', sessionOwner = '', navigationOwner = '', wasVisible = false;
-  let opening = null, generation = 0, navigationMessage = '';
+  let opening = null, generation = 0, navigationMessage = '', snapshotProtocol = 9;
   const context = () => { try { return getContext() || {}; } catch { return {}; } };
   const canUse = current => !disposed && current.available === true && current.visible === true
     && typeof current.sessionOwner === 'string' && Boolean(current.sessionOwner)
     && typeof current.navigationOwner === 'string' && Boolean(current.navigationOwner) && container.isConnected !== false;
   const invalidate = () => { generation++; opening = null; navigationMessage = ''; };
-  const clear = () => { reviewAvailable = false; review.setSnapshot(null); invalidate(); snapshot = null; signature = ''; search.value = ''; records.clear(); list.replaceChildren(); };
+  const clear = () => { reviewAvailable = false; review.setSnapshot(null); invalidate(); snapshot = null; signature = ''; snapshotProtocol = 9; search.value = ''; records.clear(); list.replaceChildren(); };
   function updateContext() {
     const current = context();
     if (current.sessionOwner !== sessionOwner) { clear(); sessionOwner = current.sessionOwner || ''; }
@@ -76,16 +78,17 @@ export function setupProjectAnimationStateEntryObservation({ container, getConte
     item.dataset.bindingId = entry.origin.bindingId; item.dataset.stateKey = entry.stateKey;
     const heading = node('h4', '', 'project-animation-state-entry-accepted');
     const sequence = node('p', '', 'project-animation-state-entry-sequence'), command = node('p', '', 'project-animation-state-entry-command');
+    const trigger = node('p', '', 'project-animation-state-entry-trigger');
     const clip = node('p', '', 'project-animation-state-entry-clip'), identity = node('p', '', 'project-animation-state-entry-identity');
     const binding = node('p', '', 'project-animation-state-entry-origin'), script = node('p', '', 'project-animation-state-entry-origin');
-    const record = { signature: entrySignature, item, heading, sequence, command, clip, identity, binding, script };
+    const record = { signature: entrySignature, item, heading, sequence, command, trigger, clip, identity, binding, script };
     const owns = () => records.get(entry.sequence) === record && !item.hidden;
     record.bindingSource = sourceButton(entry.origin.source, 'binding', owns);
     record.scriptSource = sourceButton(entry.scriptSource, 'script', owns);
     record.review = node('button', '', 'doc-btn project-animation-state-entry-review'); record.review.type = 'button'; record.review.dataset.sequence = String(entry.sequence);
     record.review.addEventListener('click', () => { const current = updateContext(); if (canUse(current) && reviewAvailable && owns()) review.selectEntry(entry.sequence); });
     const actions = node('div', '', 'project-animation-state-entry-sources'); actions.append(record.review, record.bindingSource, record.scriptSource);
-    item.append(heading, sequence, command, clip, identity, binding, script, actions); return record;
+    item.append(heading, sequence, trigger, command, clip, identity, binding, script, actions); return record;
   }
   function render() {
     if (disposed) return;
@@ -93,7 +96,9 @@ export function setupProjectAnimationStateEntryObservation({ container, getConte
     review.refresh();
     el('Panel').hidden = !canUse(current) || !snapshot;
     setText(el('Title'), t('动画状态进入记录'));
-    setText(el('Note'), t('记录脚本每次接受进入状态，包括初始进入和同状态重启；重复记录独立保留。不推测触发原因，也不表示动画命令已经执行。强制取消可能留下不完整记录。'));
+    setText(el('Note'), t(snapshotProtocol === 10
+      ? '记录脚本每次接受进入状态及当时的回调来源。重复记录独立保留；不包含分支命中或条件求值过程，也不表示动画命令已经执行。强制取消可能留下不完整记录。'
+      : '记录脚本每次接受进入状态，包括初始进入和同状态重启；重复记录独立保留。不推测触发原因，也不表示动画命令已经执行。强制取消可能留下不完整记录。'));
     setText(el('SearchLabel'), t('按场景、行为绑定、脚本或状态筛选'));
     setText(el('Navigation'), opening ? t('正在打开动画状态进入来源…') : navigationMessage ? t(navigationMessage) : '');
     el('Navigation').hidden = !opening && !navigationMessage;
@@ -110,6 +115,8 @@ export function setupProjectAnimationStateEntryObservation({ container, getConte
       if (!record.item.hidden) shown++;
       setText(record.heading, t('脚本接受进入状态：{0}', entry.stateKey));
       setText(record.sequence, t('进入记录 {0} · 第 {1} 次访问 · 场景 {2} · 场景时间 {3} 秒', entry.sequence, entry.origin.visitIndex, entry.origin.sceneId, entry.timeSeconds));
+      setText(record.trigger, describeProjectAnimationStateEntryTrigger(entry, t));
+      record.trigger.dataset.kind = entry.trigger?.kind || 'unrecorded';
       setText(record.command, t('进入时已执行动画命令序号：{0}', entry.commandSequence));
       setText(record.clip, entry.clipId ? t('状态选择的片段：{0}', entry.clipId) : t('状态选择：完整动画'));
       setText(record.identity, t('行为绑定 {0} · 实例 {1} · 对象 {2}', entry.origin.bindingId, entry.origin.instanceId, entry.origin.objectId));
@@ -137,8 +144,10 @@ export function setupProjectAnimationStateEntryObservation({ container, getConte
       updateContext();
       let admitted;
       try {
-        if (protocolVersion !== 9) throw new TypeError('Unsupported animation state entry observation.');
-        admitted = value == null ? null : validateProjectAnimationStateEntriesSnapshot(value);
+        if (![9, 10].includes(protocolVersion)) throw new TypeError('Unsupported animation state entry observation.');
+        admitted = value == null ? null : protocolVersion === 10
+          ? validateProjectAnimationStateTriggeredEntriesSnapshot(value) : validateProjectAnimationStateEntriesSnapshot(value);
+        if (snapshotProtocol !== protocolVersion) { clear(); snapshotProtocol = protocolVersion; }
       } catch { clear(); render(); return; }
       const next = admitted == null ? '' : JSON.stringify(admitted);
       if (next !== signature) {
@@ -154,7 +163,11 @@ export function setupProjectAnimationStateEntryObservation({ container, getConte
       let entries;
       try { entries = value == null ? null : createProjectAnimationStateReview(value).entries; }
       catch { clear(); render(); return; }
-      applySnapshot(entries && { sequence: entries.length, entries }, { protocolVersion: 9 }, value);
+      applySnapshot(entries && { sequence: entries.length, entries }, { protocolVersion: value?.project?.protocolVersion ?? 9 }, value);
+    },
+    selectEntry(sequence) {
+      const current = updateContext();
+      return canUse(current) && reviewAvailable && Boolean(snapshot) ? review.selectEntry(sequence) === true : false;
     },
     refresh: render,
     dispose() {
