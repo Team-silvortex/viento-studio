@@ -12,10 +12,11 @@
 
 ## 发布记录
 
-现行产品版本为 `0.1.9`，使用三段数字编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
+现行产品版本为 `0.2.0`，使用三段数字编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
 
 | 原报告 | 主题 |
 | --- | --- |
+| [RELEASE_0.2.0.md](../RELEASE_0.2.0.md) | 0.2.0 动画进入来源、事件回看、手动试算与用例 JSON 编辑；保留源码升版时点 |
 | [RELEASE_0.1.9.md](../RELEASE_0.1.9.md) | 0.1.9 有序动画分支、共享／组合条件、状态快照与控制器回看 |
 | [RELEASE_0.0.2.md](../RELEASE_0.0.2.md) | 0.0.2 版本记录 |
 | [RELEASE_0.0.3.md](../RELEASE_0.0.3.md) | 0.0.3 版本记录 |
@@ -107,6 +108,8 @@
 
 | 原报告 | 主题 |
 | --- | --- |
+| [0.2.0 本机安装验收](../test-results/native-installed-0.2.0/README.md) | 2026-10-24 Linux AppImage更新、交互修复后重打包与原生复测 |
+| [0.1.1 本机安装验收](../test-results/native-installed-0.1.1/README.md) | 2026-10-13 Linux AppImage与当时的作品库、二维流程验收 |
 | [STRUCTURE_MIGRATION.md](../STRUCTURE_MIGRATION.md) | 2026-09-09 首次目录整理、迁移核验与旧产物清理 |
 | [ANDROID_FOUNDATION_b.4.4.md](../ANDROID_FOUNDATION_b.4.4.md) | Android 基础拆分记录 |
 | [ANDROID_HOST_b.4.4.md](../ANDROID_HOST_b.4.4.md) | Android 宿主与本机存储（b.4.4 开发记录） |

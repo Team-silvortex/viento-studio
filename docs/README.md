@@ -12,7 +12,7 @@
 
 0.2.0 收录[状态进入的触发来源](SCENE_ANIMATION.md#查看状态进入的触发来源)，贯通独立运行采集、严格关联和三语回看；[本轮验收](test-results/animation-entry-triggers/README.md)单列源码与实际引擎范围。
 
-**当前源码版本为 0.2.0**，收录状态进入的触发来源、事件投递回看、单事件与连续路径试算、可复用用例和内置 JSON 编辑。见[版本记录](RELEASE_0.2.0.md)、[当前能力与平台](STATUS.md)和[升版预检](test-results/release-0.2.0/README.md)。本次完成源码升版，已安装程序保持；专题报告保留开发时的版本与验收条件。
+**当前源码版本为 0.2.0**，收录状态进入的触发来源、事件投递回看、单事件与连续路径试算、可复用用例和内置 JSON 编辑。见[版本记录](RELEASE_0.2.0.md)、[当前能力与平台](STATUS.md)和[升版预检](test-results/release-0.2.0/README.md)。主线提交已推送，本机 Linux AppImage 已更新；修复后重打包及原生复测另见[本机安装验收](test-results/native-installed-0.2.0/README.md)。专题报告保留开发时的版本与验收条件。
 
 动画作者与运行链路可从以下入口进入：
 

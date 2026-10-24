@@ -1,0 +1,23 @@
+PASS: English and Japanese settings survive full native application restarts
+PASS: a new editor origin loads the language saved by the library
+PASS: installed WebKit recipe → independent Scene2D → native find/replace + undo/redo → failed task → filtered exact source repair → Godot generation/headless → author bytes preserved
+Traceback (most recent call last):
+  File "/home/chiharukiryu/cdev/viento-studio/desktop/tests/native-smoke.py", line 654, in <module>
+    exercise_animation_trial_case(script=script, click=click, command=command, wait_for=wait_for,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                  workspace=workspace, screenshots=screenshots,
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                  display_environment=test_display_environment)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chiharukiryu/cdev/viento-studio/desktop/tests/native_animation_trial_case.py", line 270, in exercise_animation_trial_case
+    assert not hidden(e + 'Panel'), 'Composition Escape must preserve child editing'
+               ~~~~~~^^^^^^^^^^^^^
+  File "/home/chiharukiryu/cdev/viento-studio/desktop/tests/native_animation_trial_case.py", line 62, in hidden
+    return script('return document.querySelector(arguments[0]).hidden', selector)
+  File "/home/chiharukiryu/cdev/viento-studio/desktop/tests/native-smoke.py", line 188, in script
+    return command('POST', '/execute/sync', dict(script=source, args=list(args)))
+  File "/home/chiharukiryu/cdev/viento-studio/desktop/tests/native-smoke.py", line 185, in command
+    return request(method, f'/session/{session}{url}', payload)
+  File "/home/chiharukiryu/cdev/viento-studio/desktop/tests/native-smoke.py", line 178, in request
+    raise AssertionError(content.decode())
+AssertionError: {"value":{"error":"unexpected alert open","message":"","stacktrace":"","data":{"text":"丢弃本次脚本创建设置？编辑器内容不会改变。"}}}

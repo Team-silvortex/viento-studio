@@ -1,0 +1,78 @@
+{
+  "build": {
+    "command": [
+      "node",
+      "desktop/build.mjs",
+      "--bundles",
+      "appimage"
+    ],
+    "environment": {
+      "CARGO_BUILD_JOBS": "1",
+      "CARGO_INCREMENTAL": "0",
+      "CARGO_PROFILE_RELEASE_DEBUG": "0",
+      "CARGO_TARGET_DIR": "/home/chiharukiryu/.cache/io.viento.studio/build-tools/desktop-0.2.0-20261024",
+      "TMPDIR": "/home/chiharukiryu/.cache/io.viento.studio/build-tools/desktop-0.2.0-20261024/tmp",
+      "APPIMAGE_EXTRACT_AND_RUN": "1"
+    },
+    "runs": [
+      {
+        "log": "build-run-1.log",
+        "exitCode": 0
+      },
+      {
+        "log": "build-run-2.log",
+        "exitCode": 0
+      }
+    ]
+  },
+  "nativeSmoke": {
+    "command": [
+      "python3",
+      "desktop/tests/native-smoke.py",
+      "<private tauri-driver>",
+      "<private WebKitWebDriver>",
+      "/home/chiharukiryu/.local/opt/viento-studio/Viento-Studio.AppImage"
+    ],
+    "environment": {
+      "VIENTO_EXPECT_APP_VERSION": "0.2.0",
+      "VIENTO_EXPECT_BUILD_VERSION": "0.2.0",
+      "VIENTO_TEST_LANGUAGE": "1",
+      "VIENTO_TEST_2D_WORKFLOW": "1",
+      "VIENTO_TEST_ANIMATION_TRIAL_CASE": "1",
+      "VIENTO_GODOT_BIN": "<native-tools.json Godot path>",
+      "VIENTO_TEST_XDOTOOL": "<native-tools.json xdotool path>",
+      "TMPDIR": "<task-owned main-disk temporary directory>",
+      "LD_LIBRARY_PATH": "<private packages>/usr/lib/x86_64-linux-gnu",
+      "VIENTO_TEST_SCREENSHOT_DIR": "<new run directory>"
+    }
+  },
+  "nativeLibrary": {
+    "command": [
+      "python3",
+      "desktop/tests/native-library.py",
+      "<private tauri-driver>",
+      "<private WebKitWebDriver>",
+      "<verified final AppImage extraction>/squashfs-root/AppRun"
+    ],
+    "environment": {
+      "VIENTO_TEST_EDITOR_EXPORT": "1",
+      "VIENTO_TEST_XDOTOOL": "<native-tools.json xdotool path>",
+      "TMPDIR": "<task-owned main-disk temporary directory>",
+      "LD_LIBRARY_PATH": "<private packages>/usr/lib/x86_64-linux-gnu",
+      "VIENTO_TEST_SCREENSHOT_DIR": "<new run directory>"
+    }
+  },
+  "unitChecks": [
+    [
+      "node",
+      "--test",
+      "scripts/tests/animation-state-trial-case-editor*.test.mjs"
+    ],
+    [
+      "node",
+      "--test",
+      "scripts/tests/version.test.mjs",
+      "scripts/tests/source-archive.test.mjs"
+    ]
+  ]
+}

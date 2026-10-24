@@ -26,7 +26,7 @@ Viento 是正在向设计优先工作流演进的 IDE。现有工作台用于原
 
 [项目组装](docs/PROJECT_ASSEMBLY.md)把已保存的二维场景组织为一个 Godot 工程；行为可切换场景、读写[会话状态](docs/PROJECT_SHARED_STATE.md)、发布[项目事件](docs/PROJECT_EVENTS.md)、控制[场景声音](docs/PROJECT_AUDIO_CONTROLS.md)及[场景动画](docs/SCENE_ANIMATION.md#行为控制项目动画)。独立观察面板保留运行记录与作者来源，工程 ZIP 可在新目录导入运行。[Bevy Rust 通道](docs/BEVY_BACKEND.md#rust-作者行为通道012-后工作树)继续提供无图二维就绪／固定步行为和 Cargo 源工程交付，项目组装与声音尚未接入。
 
-本次完成源码升版，新功能可从源码启动或自行构建安装包。本机最近的 [Linux 安装验收为 0.1.1 工作树](docs/test-results/native-installed-0.1.1/README.md)，早于本版新增功能；该安装记录不代表 0.2.0 安装验收。此次未更新安装、提交推送或创建 GitHub Release。六项专题中标为“0.1.9 后工作树”的增量已收录本版，旧证据保留原版本与执行条件。
+0.2.0 主线源码已提交推送，本机 Linux x86_64 AppImage 已更新。原生验收中发现的交互问题经修复后重新打包，并针对最终安装包复测；包摘要、各次结果和精确覆盖见[本机安装验收](docs/test-results/native-installed-0.2.0/README.md)。本次没有创建 GitHub Release 或版本标签，其他平台仍按各自证据判断。六项专题中标为“0.1.9 后工作树”的增量已收录本版，旧证据保留原版本与执行条件。
 
 当前已有：
 

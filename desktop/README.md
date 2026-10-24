@@ -1,8 +1,8 @@
 # Viento Studio 桌面版
 
-当前源码版本 **0.2.0**，本次完成源码升版，未提交推送、更新本机安装或制作安装包；详见[版本记录](../docs/RELEASE_0.2.0.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
+当前源码版本 **0.2.0**，主线提交已推送，本机 Linux x86_64 AppImage 已更新；功能范围见[版本记录](../docs/RELEASE_0.2.0.md)，安装与复测见[本机安装验收](../docs/test-results/native-installed-0.2.0/README.md)。本页维护桌面启动、打包与原生交互流程；首次使用见 [快速开始](../docs/GETTING_STARTED.md)，源码功能和安装包验收范围见 [当前状态](../docs/STATUS.md)。应用标识与数据路径沿用 `io.viento.studio`；从旧 0.4.6 切换时请按 [安装兼容约定](../docs/adr/0001-product-version-and-data-compatibility.md) 操作。
 
-2026-10-13 此前已构建并实际更新本机 Linux AppImage，安装版本为 **0.1.1**，包含当时的查找替换、配方生成场景及桌面修复，早于新配方创建、多演员与起始排布助手。安装包摘要与原生验收范围见[安装验收](../docs/test-results/native-installed-0.1.1/README.md)。此前 [**0.1.3**](../docs/RELEASE_0.1.3.md) 只交付源码，未制作或更新安装包；其他平台仍按各自证据时点判断。此前 [0.0.4 验收](../docs/test-results/release-0.0.4/results.json)保留。
+2026-10-24 本机安装更新到 **0.2.0**。原生验收发现交互问题后，修复已重新打包并安装；首轮、诊断及最终复测分别保留包摘要和来源。实测包括作品库与导出、三语和编辑媒体、配方生成与有限 Godot 无头链，以及新建状态表中的手动试算和用例 JSON 编辑；各项是否在同一包上复测以[本轮记录](../docs/test-results/native-installed-0.2.0/README.md)为准。此前 [0.1.1 安装验收](../docs/test-results/native-installed-0.1.1/README.md)和[0.0.4 验收](../docs/test-results/release-0.0.4/results.json)保留原时点；其他平台不由本机结果外推。
 
 Linux GTK/WebKit 使用仓库内的 glib 安全修复副本，构建及源码迁移需要完整保留 `src-tauri/vendor`。补丁来源、兼容原因和优化回归见 [安全修复记录](../docs/SECURITY_GLIB_b.2.9.md)。
 
@@ -44,7 +44,7 @@ npm run desktop:build
 
 在内存较小的 Linux 开发机上，可用 `CARGO_BUILD_JOBS=1 npm run desktop:build` 限制编译并发，避免同时运行模拟器和大批构建。
 
-默认输出位于 `src-tauri/target/release/bundle`；设置 `CARGO_TARGET_DIR` 时位于该目录的 `release/bundle`。构建脚本将完成的安装包改为 `VERSION` 中的发布编号，例如 `Viento-Studio_0.1.3_amd64.AppImage`。Linux 可指定 `--bundles deb,appimage`，Windows 使用 `--bundles nsis`，macOS 使用 `--bundles dmg`。跨平台发行应分别在目标系统构建；仓库中的 **Build desktop installers** 工作流可手动生成三端产物，仅上传工作流构件，不自动发布版本。
+默认输出位于 `src-tauri/target/release/bundle`；设置 `CARGO_TARGET_DIR` 时位于该目录的 `release/bundle`。构建脚本将完成的安装包改为 `VERSION` 中的发布编号，例如 `Viento-Studio_0.2.0_amd64.AppImage`。Linux 可指定 `--bundles deb,appimage`，Windows 使用 `--bundles nsis`，macOS 使用 `--bundles dmg`。跨平台发行应分别在目标系统构建；仓库中的 **Build desktop installers** 工作流可手动生成三端产物，仅上传工作流构件，不自动发布版本。
 
 每次 Linux 打包前会重建生成用的 `.AppDir` 目录，避免 GTK 打包插件因旧链接残留而使第二次构建失败。Rust 编译缓存、已生成的安装包及作品库不在此清理范围内。
 
@@ -124,9 +124,11 @@ python3 desktop/tests/native-smoke.py /path/to/tauri-driver /path/to/WebKitWebDr
 
 媒体流程覆盖实际图片与视频导入、素材复用、粘贴和拖入、草稿预览、播放与跳转、窄窗口以及保存后重新打开。AppImage 启动时自动补充系统 GStreamer 插件目录；验证便携包时无需手工设置 `GST_PLUGIN_PATH_1_0`。
 
+设置 `VIENTO_TEST_ANIMATION_TRIAL_CASE=1` 可在默认隔离样例中增加安装包自带的手动试算、连续路径和用例 JSON 编辑流程；可与二维专项串行，不能与通用工程创建同时启用。原生最小视口为 760px；用例 Blob／File 传输、合成 IME 保护和实际键盘分别记录，详见[测试开关与边界](../docs/TESTING.md#linux-原生界面)。已有 release AppImage 可直接作为第三参数，无需额外构建 debug 程序。
+
 新项目流程复用同一测试；先构建 `workspace-archive` 示例，再设置 `VIENTO_TEST_GENERIC_CREATE=/完整路径/workspace-archive` 运行。它使用与桌面文件选择器相同的新建实现，并在原生编辑窗口验证空白项目、六个默认类型、自定义 YAML 模板、角色背景及图片视频、指定目录后类型保留，最后调用桌面归档实现逐字节验证完整备份恢复。
 
-首页文件选择流程使用独立测试，另需 `xclip` 向测试显示器粘贴中文路径；不会访问日常桌面的剪贴板：
+首页文件选择流程使用独立测试，另需 `xclip` 向测试显示器粘贴中文路径；不会访问日常桌面的剪贴板。该脚本不自动解包 AppImage；验证便携包时先在专有临时目录解包，再把 `squashfs-root/AppRun` 作为第三参数：
 
 ```sh
 python3 desktop/tests/native-library.py /path/to/tauri-driver /path/to/WebKitWebDriver /path/to/viento-studio

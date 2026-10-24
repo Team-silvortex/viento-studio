@@ -1,0 +1,53 @@
+{
+  "version": "0.2.0",
+  "at": "2026-10-24T03:22:09.994839+00:00",
+  "sourceReleaseCommit": "e11959504d27edc1a27cc550a99d9d617e750baf",
+  "installedSourceCommit": "b6189eb292e124eedd3efe0a20c7689e2786deb8",
+  "workingTreeBuild": false,
+  "sourceAndFixPushed": true,
+  "githubReleaseOrTagCreated": false,
+  "package": {
+    "sha256": "0975da05f0b859ad65dde3078d0534ba67554763ea1aa8bdfcd0b1ce1c833a86",
+    "bytes": 129780216,
+    "package": "/home/chiharukiryu/.local/opt/viento-studio/Viento-Studio.AppImage",
+    "rollbackDirectory": "/home/chiharukiryu/.local/share/io.viento.studio/backups/install-20261024-0.2.0/application-before"
+  },
+  "finalNativeRuns": [
+    "native-smoke-run-4",
+    "native-library-run-2"
+  ],
+  "earlierRuns": {
+    "native-smoke-run-1": "failed: composing Escape opened outer discard confirmation",
+    "native-smoke-run-2": "failed diagnostic: isComposing=true produced a trusted cancel event without composition metadata",
+    "native-smoke-run-3": "failed harness: fixed Escape passed; reopening behind the narrow sidebar backdrop was intercepted",
+    "native-library-run-1": "passed on the initial package; repeated on the final package"
+  },
+  "unitChecks": {
+    "caseEditor": {
+      "tests": 39,
+      "passed": 39,
+      "failed": 0,
+      "skipped": 0
+    },
+    "versionAndSource": {
+      "tests": 8,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "fullApplicationCheck": "Not rerun for the scoped keyboard fix; release-0.2.0 retains the earlier full check. This run adds the focused tests and real installed-package workflows.",
+  "existingUserEntriesUnchanged": 5105,
+  "normalLauncherStarted": true,
+  "cleanupAllocatedBytes": 3226320896,
+  "sharedNativeHarnessDependencies": {
+    "desktop/tests/native_export_workflow.py": "c31e811182f66e632c78d9ffcbc26c17adce5d4c4a78be3ef4e96c96fb566add",
+    "desktop/tests/project_settings_navigation.py": "8a339101a64b4ff96d5a535470422c8069d6fbc32a6939d2ae90be7eeb52bfc3"
+  },
+  "limits": [
+    "Linux x86_64 only; no Android/Windows/macOS or new Bevy/3D installed validation.",
+    "Manual case extension cancels script creation; assumed completion is not an observed animation runtime event.",
+    "Case Blob/File transfer is instrumented; native save/open dialogs and disk downloads for that particular case format are not claimed. Separate library workflow does exercise real GTK archive/share save dialogs.",
+    "IME guard uses a synthetic composing key event; physical IME candidate interactions remain unverified."
+  ]
+}

@@ -10,6 +10,8 @@ exercise new generic projects, project templates and a complete backup restore.
 Set VIENTO_TEST_FIELDS to exercise native field editing in the generic project.
 Set VIENTO_TEST_2D_WORKFLOW=1 for the installed 2D/materialize/search/problems chain.
 This optional chain requires a trusted Godot path in VIENTO_GODOT_BIN.
+Set VIENTO_TEST_ANIMATION_TRIAL_CASE=1 for installed manual-animation/case JSON editing.
+This separate optional chain cancels local creation; it can run alongside the 2D chain.
 """
 import base64
 import http.client
@@ -30,6 +32,7 @@ import zipfile
 import hashlib
 from project_settings_navigation import exercise_project_settings_navigation
 from native_workflow_2d import prepare_2d_workflow, exercise_2d_workflow
+from native_animation_trial_case import exercise_animation_trial_case
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -111,6 +114,8 @@ with tempfile.TemporaryDirectory(prefix='viento-native-e2e-') as directory:
         record = dict(format='viento-document', version=1, id=doc_id, sourcePath=str(file.relative_to(workspace)), documentType=doc_type, parserProfile=profile, relations=relations, assetBindings=[])
         (descriptors / f'{doc_id}.json').write_text(json.dumps(record))
     generic_tool = os.environ.get('VIENTO_TEST_GENERIC_CREATE')
+    animation_trial_case = os.environ.get('VIENTO_TEST_ANIMATION_TRIAL_CASE') == '1'
+    assert not (generic_tool and animation_trial_case), 'Run animation trial/case checks separately from generic creation assertions'
     if generic_tool:
         # The CLI calls the same Rust creation function as the native picker.
         # Replace only the temporary fixture created by this test above.
@@ -645,6 +650,10 @@ with tempfile.TemporaryDirectory(prefix='viento-native-e2e-') as directory:
             exercise_2d_workflow(script=script, click=click, command=command, wait_for=wait_for,
                                  workspace=workspace, screenshots=screenshots, fixture=workflow_2d,
                                  display_environment=test_display_environment)
+        if animation_trial_case:
+            exercise_animation_trial_case(script=script, click=click, command=command, wait_for=wait_for,
+                                          workspace=workspace, screenshots=screenshots,
+                                          display_environment=test_display_environment)
         select_document('原生桌面测试')
         wait_for(lambda: script('return document.querySelector("#docTitle")?.textContent.includes("原生桌面测试")'))
         if os.environ.get('VIENTO_EXPECT_APP_VERSION'):

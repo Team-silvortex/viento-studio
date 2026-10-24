@@ -915,7 +915,7 @@ node scripts/tests/scene-preview-smoke.mjs /绝对路径/chromium
 
 ## Linux 原生界面
 
-先运行 `npm run desktop:build -- --debug --no-bundle`，准备 tauri-driver、匹配系统的 WebKitWebDriver、Xvfb、D-Bus、xdotool、xclip、xprop 和具备所需编码器的 ffmpeg。脚本创建独立设置、显示器与临时工程：
+准备 tauri-driver、匹配系统的 WebKitWebDriver、Xvfb、D-Bus、xdotool、xclip、xprop 和具备所需编码器的 ffmpeg。需要调试程序时先运行 `npm run desktop:build -- --debug --no-bundle`；已有 release AppImage 时直接验证该包，无需另做 debug 构建。脚本创建独立设置、显示器与临时工程：
 
 ```sh
 python3 desktop/tests/native-smoke.py /path/to/tauri-driver /path/to/WebKitWebDriver /path/to/viento-studio
@@ -928,12 +928,30 @@ python3 desktop/tests/native-library.py /path/to/tauri-driver /path/to/WebKitWeb
 | `VIENTO_TEST_FIELDS=1` | 配合通用工程执行字段修改、模式往返和字节核对 |
 | `VIENTO_TEST_LANGUAGE=1` | 英日语言保存、重启和草稿保护 |
 | `VIENTO_TEST_2D_WORKFLOW=1` | 默认隔离样例中的配方生成 Scene2D、源码替换及原生撤销／重做、问题回源修复、Godot 构建与无头运行；不可与 GENERIC_CREATE 同时启用 |
+| `VIENTO_TEST_ANIMATION_TRIAL_CASE=1` | 新建状态表中的手动试算、连续路径、用例 JSON 检查／应用／取消与重跑；可与二维专项串行，不可与 GENERIC_CREATE 同时启用 |
+| `VIENTO_EXPECT_APP_VERSION=0.2.0` | 验证宿主IPC、作品库标题／界面及编辑器版本 |
+| `VIENTO_EXPECT_BUILD_VERSION=0.2.0` | 与上一项共同使用，验证宿主数值buildVersion |
+| `VIENTO_TEST_XDOTOOL=/path/to/xdotool` | 指定私有键盘／窗口工具，只操作测试的独立显示器 |
+| `TMPDIR=/path/to/disk-scratch` | 将AppImage解包和临时样例放到主盘，避免小容量tmpfs耗尽；不改变日常作品位置 |
 | `VIENTO_TEST_EDITOR_EXPORT=1` | 在 library 流程中执行原生导出保存、过期、取消与重试 |
 | `VIENTO_TEST_SCREENSHOT_DIR=/path/to/new-evidence` | 保留本轮截图及日志；默认随测试目录清理 |
 
-二维专项另需 `VIENTO_GODOT_BIN=/可信本机Godot绝对路径` 和 xdotool（可用 `VIENTO_TEST_XDOTOOL` 指定）。OC、已登记图片及保存后的配方在启动前作为隔离样例准备；本专项从预览配方开始，不替代上游界面创作。按钮与快捷键走真实 Tauri/WebKit，撤销／重做还通过独立 Xvfb 的键盘事件复核；表单赋值会发送输入事件。Godot 有限无头运行通过，不代表渲染游戏或独立发行包已验。复现安装验证可同时设置 `VIENTO_EXPECT_APP_VERSION=0.1.1`、`VIENTO_EXPECT_BUILD_VERSION=0.1.1` 和 `VIENTO_TEST_LANGUAGE=1`；[2026-10-13 安装记录](test-results/native-installed-0.1.1/README.md) 保留失败复现和修复后结果。
+二维专项另需 `VIENTO_GODOT_BIN=/可信本机Godot绝对路径` 和 xdotool（可用 `VIENTO_TEST_XDOTOOL` 指定）。OC、已登记图片及保存后的配方在启动前作为隔离样例准备；本专项从预览配方开始，不替代上游界面创作。按钮与快捷键走真实 Tauri/WebKit，撤销／重做还通过独立 Xvfb 的键盘事件复核；表单赋值会发送输入事件。Godot 有限无头运行通过，不代表渲染游戏或独立发行包已验。本次[0.2.0安装记录](test-results/native-installed-0.2.0/README.md)分别保留首次验收、问题诊断、修复后重打包与最终复测；此前[0.1.1安装记录](test-results/native-installed-0.1.1/README.md)保持原范围。
 
-系统选择器、覆盖确认、媒体解码和关闭确认需在原生窗口验收。构建安装包后，可将主程序或 AppImage 作为第三个参数再次运行；调试程序通过不代表安装包已经通过。以前的窗口和安装记录从 [历史平台验收](history/README.md#迁移平台验收与维护) 查阅。
+安装包版本、三语与动画用例流程可一起运行：
+
+```sh
+VIENTO_EXPECT_APP_VERSION=0.2.0 VIENTO_EXPECT_BUILD_VERSION=0.2.0 \
+VIENTO_TEST_LANGUAGE=1 VIENTO_TEST_ANIMATION_TRIAL_CASE=1 \
+VIENTO_TEST_SCREENSHOT_DIR=/path/to/new-evidence \
+python3 desktop/tests/native-smoke.py /path/to/tauri-driver /path/to/WebKitWebDriver /path/to/Viento-Studio.AppImage
+```
+
+动画专项通过安装包自身的WebKit/WASM验证共享键缺失与组合短路、事件及假定完成、显式采用／撤回，以及用例编辑／检查／应用／取消、首次不符停止和两种导出。作者状态表不保存，已保存脚本的再次编辑和真实动画运行不在本专项内。三语使用实际760px原生最小视口；表单发送DOM输入事件，按钮由WebDriver点击，合成IME保护与真实Escape分别记录。用例Blob导出捕获和File输入设置只验证前端传输，不代表原生文件选择器或磁盘下载。
+
+`VIENTO_EXPECT_OLD_VERSION_REJECTION=1` 是独立的旧程序兼容拒绝检查：打开隔离旧版guard样例时确认拒绝并提前退出，不运行正常编辑或动画专项；它不代表新版本功能通过。
+
+系统选择器、覆盖确认、媒体解码和关闭确认需在原生窗口验收。`native-smoke.py` 的第三参数可为主程序或AppImage；AppImage会在测试自己的临时目录解包、结束后清理。`native-library.py` 当前不自动解包，应传可运行的主程序或私有解包目录中的 `squashfs-root/AppRun`。调试程序通过不代表安装包已经通过。以前的窗口和安装记录从 [历史平台验收](history/README.md#迁移平台验收与维护) 查阅。
 
 ## Android 设备工作流
 
@@ -947,7 +965,7 @@ python3 desktop/tests/native-library.py /path/to/tauri-driver /path/to/WebKitWeb
 
 | 范围 | 后续验收重点 |
 | --- | --- |
-| 桌面安装扩展范围 | 本轮已验 Linux 0.1.1 工作树的编辑、配方生成、Godot 无头链、作品库和导出；其他后端、3D、上游全部创作及长任务中退出需分别补验 |
+| 桌面安装扩展范围 | 0.2.0 Linux安装记录覆盖编辑媒体、配方生成／Godot无头链、作品库／导出和新建状态表中的手动试算／用例编辑；各轮包与结果分别记录。已保存状态表重编辑、其他后端、3D、上游全部创作及长任务中退出需分别补验 |
 | Windows / macOS | 系统文件选择、覆盖确认、媒体解码、生命周期及发行签名；Linux 结果不外推 |
 | Android 实体设备 | 中日输入法候选字、低内存回收、不同 Android／WebView、屏幕与厂商系统 |
 | Android 文件提供方 | 第三方云盘、外置设备、传输途中进程结束；商店签名更新需单独验收 |
