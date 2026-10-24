@@ -94,6 +94,7 @@ import {
   inspectSceneAudioCreation,
   inspectSceneAudioDirectory,
   inspectSceneAudioUsage,
+  inspectScenePhysics2DTargets,
   inspectSceneAnimationTargets,
   inspectSceneAnimationDirectory,
   inspectSceneAnimationUsage,
@@ -112,6 +113,7 @@ let sceneBehaviorAuthoringAvailable = false;
 let sceneAudioResourcesAvailable = false;
 let sceneAudioDirectoryAvailable = false;
 let sceneAudioUsageAvailable = false;
+let scenePhysics2DTargetsAvailable = false;
 let sceneAnimationTargetsAvailable = false;
 let sceneAnimationDirectoryAvailable = false;
 let sceneAnimationUsageAvailable = false;
@@ -2037,6 +2039,7 @@ async function detectEditBackend() {
   sceneAudioResourcesAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioCreation === true;
   sceneAudioDirectoryAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioDirectory === true;
   sceneAudioUsageAvailable = normalizedDetection.available === true && detection.payload?.sceneAudioUsage === true;
+  scenePhysics2DTargetsAvailable = normalizedDetection.available === true && detection.payload?.scenePhysics2DTargets === true;
   sceneAnimationTargetsAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationTargets === true;
   sceneAnimationDirectoryAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationDirectory === true;
   sceneAnimationUsageAvailable = normalizedDetection.available === true && detection.payload?.sceneAnimationUsage === true;
@@ -5917,9 +5920,10 @@ async function initApp(options = {}) {
         baseline: editSessionBaselineContent, version: editSessionVersion,
         editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
         creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath),
-        available: typeof supportsStudioCoreScenePhysics2D === 'function' && supportsStudioCoreScenePhysics2D() };
+        available: typeof supportsStudioCoreScenePhysics2D === 'function' && supportsStudioCoreScenePhysics2D(), targetsAvailable: scenePhysics2DTargetsAvailable };
     },
     digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
+    inspectTargets: payload => inspectScenePhysics2DTargets(payload),
     writeDraft: content => {
       const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, top = editEditorEl.scrollTop, left = editEditorEl.scrollLeft;
       setSourceEditorContent(content);

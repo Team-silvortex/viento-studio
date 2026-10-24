@@ -90,6 +90,7 @@ export async function editorHarness(overrides = {}) {
     prepareCompositionDraftApply: (context, catalog, proposal) => prepareCompositionDraftApply(structuredClone(context), structuredClone(catalog), proposal),
     prepareScriptDraftApply: (context, proposal) => prepareScriptDraftApply(structuredClone(context), proposal),
     inspectSceneAudioDirectory: async () => { throw new Error('Scene audio directory is not configured in this editor harness'); },
+    inspectScenePhysics2DTargets: async () => { throw new Error('Scene physics targets are not configured in this editor harness'); },
     inspectSceneAnimationTargets: async () => { throw new Error('Scene animation targets are not configured in this editor harness'); },
     inspectSceneAudioUsage: async () => { throw new Error('Scene audio usage inspection is not configured in this editor harness'); },
     readSceneAudioBytes: async () => { throw new Error('Audio resource reading is not configured in this editor harness'); },

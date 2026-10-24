@@ -2,7 +2,7 @@
 
 0.2.1 的作者与运行链路：[按状态配置片段](SCENE_ANIMATION.md#按状态配置动画片段) → [逐实例运行范围](SCENE_ANIMATION.md#为正式运行选择播放范围) → [从当前场景组装](PROJECT_ASSEMBLY.md#从当前场景开始) → [绑定预检](SCENE_ANIMATION.md#构建前检查状态片段绑定) → [按目标回看](SCENE_ANIMATION.md#按动画目标回看运行记录)。[临时实例预览](SCENE_ANIMATION.md#按实例预览已保存动画)与作者保存的运行范围分别管理。
 
-[二维物理声明与运行](SCENE_PHYSICS2D.md)：已有物理 JSON 的独立面板、碰撞体增删、矩形／圆形局部示意、完整原文审阅与普通保存；静态障碍、角色碰撞、触发区及项目事件／动画闭环。当前实例 UUID 手动填写，场景关联与成员由构建检查。
+[二维物理声明与运行](SCENE_PHYSICS2D.md)：已有物理 JSON 的独立面板、碰撞体增删、矩形／圆形局部示意、完整原文审阅与普通保存；静态障碍、角色碰撞、触发区及项目事件／动画闭环。0.2.1 发布基线手动填写实例 UUID；当前工作树新增[按已保存实例名称选择与修复](SCENE_PHYSICS2D.md#按名称选择已有场景实例)，目录刷新和应用前重读保护普通草稿，运动属性仍由构建检查。该增量未升版或更新安装，见[独立验收](test-results/scene-physics2d-targets/README.md)。
 
 0.2.0 收录[内置用例 JSON 编辑](SCENE_ANIMATION.md#在-studio-内编辑试算用例)：从当前路径创建或编辑载入用例，经检查、显式应用／取消，再重跑并导出；作者源码和当前手动路径保持独立。见[本轮验收](test-results/animation-state-trial-case-editor/README.md)。
 

@@ -1,0 +1,124 @@
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	﻿2026-10-24T08:21:00.1260751Z ##[group]Run node --test --test-concurrency=2 scripts/tests/predecessor-compatibility.test.mjs scripts/tests/export.test.mjs scripts/tests/archive-registry.test.mjs scripts/tests/mobile-archive.test.mjs scripts/tests/mobile-platform.test.mjs
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1262946Z [36;1mnode --test --test-concurrency=2 scripts/tests/predecessor-compatibility.test.mjs scripts/tests/export.test.mjs scripts/tests/archive-registry.test.mjs scripts/tests/mobile-archive.test.mjs scripts/tests/mobile-platform.test.mjs[0m
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1325690Z shell: /usr/bin/bash -e {0}
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1325961Z env:
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1326177Z   CARGO_BUILD_JOBS: 2
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1326494Z   TAURI_CONFIG: {"bundle":{"externalBin":[],"resources":null}}
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1326863Z   CARGO_HOME: /home/runner/.cargo
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1327127Z   CARGO_INCREMENTAL: 0
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1327363Z   CARGO_TERM_COLOR: always
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1327607Z   CACHE_ON_FAILURE: false
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1328177Z   VIENTO_TEST_ARCHIVE_BINARY: /home/runner/work/viento-studio/viento-studio/src-tauri/target/debug/examples/workspace-archive
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1329125Z   VIENTO_MOBILE_STORE_BIN: /home/runner/work/viento-studio/viento-studio/src-tauri/target/debug/examples/mobile-storage
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.1329698Z ##[endgroup]
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.8986608Z ▶ native archive metadata stays compatible with the editor reader before backup and restore commit
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.8989745Z   ✔ v2: reject empty document type and preserve prior backup and restore directory (75.216083ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:00.9553757Z   ✔ v2: reject BOM-only document type and preserve prior backup and restore directory (57.523092ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.0183546Z   ✔ v2: reject overlong UTF-16 document type and preserve prior backup and restore directory (62.527851ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.0765429Z   ✔ v2: reject unknown parser profile and preserve prior backup and restore directory (57.849133ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.1349738Z   ✔ v2: reject non-array relations and preserve prior backup and restore directory (58.251734ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.1949400Z   ✔ v2: reject null relationship and preserve prior backup and restore directory (59.593407ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.2622852Z   ✔ v2: reject blank relationship kind and preserve prior backup and restore directory (67.095117ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.3243683Z   ✔ v2: reject BOM-only relationship kind and preserve prior backup and restore directory (61.674148ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.3999028Z   ✔ v2: reject missing relationship target and preserve prior backup and restore directory (74.869654ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.4580244Z   ✔ v2: reject non-string relationship slot and preserve prior backup and restore directory (58.136941ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.5164702Z   ✔ v2: reject duplicate relationship and preserve prior backup and restore directory (58.161652ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.5752965Z   ✔ v2: reject self ownership and preserve prior backup and restore directory (58.529672ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.6362747Z   ✔ v2: reject mutual ownership and preserve prior backup and restore directory (60.904422ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.7064890Z   ✔ v2: reject non-string asset name and preserve prior backup and restore directory (69.89212ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.7616099Z   ✔ v2: reject unknown asset kind and preserve prior backup and restore directory (54.809244ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.8227646Z   ✔ v2: reject non-array asset tags and preserve prior backup and restore directory (60.822937ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.8783639Z   ✔ v2: reject non-string asset tag and preserve prior backup and restore directory (55.744197ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.9331152Z   ✔ v2: reject missing legacy paths and preserve prior backup and restore directory (54.554804ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:01.9942792Z   ✔ v2: reject escaping legacy path and preserve prior backup and restore directory (60.834238ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:02.0499521Z   ✔ v2: reject legacy path outside assets and preserve prior backup and restore directory (55.257878ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:02.1066592Z   ✔ v2: reject legacy path collides with another asset and preserve prior backup and restore directory (54.840029ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:02.1678193Z   ✔ v2: reject Unicode-equivalent legacy path collision and preserve prior backup and restore directory (59.63098ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:02.4333354Z   ✔ v2: retry with valid shared ownership restores exact sources, rules, metadata and attachment references (268.159377ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:02.4862198Z   ✔ v2: optional legacy fields, empty roles, repeated own aliases and unknown fingerprints remain portable (52.961596ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:02.9002215Z   ✔ v3: reject empty document type and preserve prior backup and restore directory (44.697064ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:02.9418366Z   ✔ v3: reject BOM-only document type and preserve prior backup and restore directory (41.483614ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:02.9886088Z   ✔ v3: reject overlong UTF-16 document type and preserve prior backup and restore directory (46.646088ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.0298265Z   ✔ v3: reject unknown parser profile and preserve prior backup and restore directory (40.753247ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.0721119Z   ✔ v3: reject non-array relations and preserve prior backup and restore directory (42.481024ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.1132843Z   ✔ v3: reject null relationship and preserve prior backup and restore directory (40.548133ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.1559944Z   ✔ v3: reject blank relationship kind and preserve prior backup and restore directory (42.433758ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.1951183Z   ✔ v3: reject BOM-only relationship kind and preserve prior backup and restore directory (39.385334ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.2351676Z   ✔ v3: reject missing relationship target and preserve prior backup and restore directory (39.945044ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.2736501Z   ✔ v3: reject non-string relationship slot and preserve prior backup and restore directory (38.306809ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.3126107Z   ✔ v3: reject duplicate relationship and preserve prior backup and restore directory (38.767775ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.3627929Z   ✔ v3: reject self ownership and preserve prior backup and restore directory (49.762855ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.4147278Z   ✔ v3: reject mutual ownership and preserve prior backup and restore directory (51.609298ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.4646785Z   ✔ v3: reject non-string asset name and preserve prior backup and restore directory (49.175637ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.5138410Z   ✔ v3: reject unknown asset kind and preserve prior backup and restore directory (49.820868ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.5585717Z   ✔ v3: reject non-array asset tags and preserve prior backup and restore directory (44.381839ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.6058912Z   ✔ v3: reject non-string asset tag and preserve prior backup and restore directory (47.094015ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.6612018Z   ✔ v3: reject missing legacy paths and preserve prior backup and restore directory (55.312682ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.7206262Z   ✔ v3: reject escaping legacy path and preserve prior backup and restore directory (59.253927ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.7706568Z   ✔ v3: reject legacy path outside assets and preserve prior backup and restore directory (49.136611ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.8135491Z   ✔ v3: reject legacy path collides with another asset and preserve prior backup and restore directory (43.306418ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:03.8634522Z   ✔ v3: reject Unicode-equivalent legacy path collision and preserve prior backup and restore directory (45.361958ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.1701600Z   ✔ v3: retry with valid shared ownership restores exact sources, rules, metadata and attachment references (310.712775ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.2293888Z   ✔ v3: optional legacy fields, empty roles, repeated own aliases and unknown fingerprints remain portable (58.738112ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.3090597Z ✔ native archive metadata stays compatible with the editor reader before backup and restore commit (3995.996421ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.8334137Z ✔ document exports include owned stories, exact sources and referenced external media in both formats (551.053078ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.8345812Z ✔ JSON and YAML typed fields export using the generic layout and media bindings (372.943896ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.8348099Z ✔ concurrent Chinese, English and Japanese exports localize instructions while preserving authored bytes (539.553972ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.8352110Z ✔ explicit audio bindings export a player even when the source does not embed the audio (324.420649ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.8353480Z ✔ sharing carries declared asset IDs recognized by the md reference index (615.620143ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.8355029Z ✔ sharing carries declared asset IDs recognized by the txt reference index (629.965307ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.8356596Z ✔ sharing carries declared asset IDs recognized by the json reference index (699.377523ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:04.8358122Z ✔ sharing carries declared asset IDs recognized by the yaml reference index (758.96773ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:05.2445658Z ✔ multiple attachment roles share one player per document while keeping each owned story complete (412.249805ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:05.6583635Z ✔ declared missing assets reject sharing, then retry succeeds after the reference is repaired (414.010948ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:06.3595031Z ✔ sharing retains indexed legacy image paths, relative links and unregistered local images (701.619355ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:06.8827876Z ✔ v2 relative image references resolve against the original document directory (523.922897ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:07.3935624Z ✔ v3 relative image references resolve against the original document directory (510.305494ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:07.7590546Z ✔ sharing preserves distinct percent and space filenames, registered identities and renamed aliases (365.544708ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:08.0473800Z ✔ owned stories retain nested heading levels in HTML and Markdown shares (288.265054ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:08.3837915Z ✔ v2 complete project packages preserve migration contract, metadata and all external media (336.712375ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:08.6682901Z ✔ v3 complete project packages preserve migration contract, metadata and all external media (284.263263ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:08.9894734Z ✔ missing assets, traversal, symlinks and changed source snapshots cannot produce a successful export (321.008055ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:09.8004787Z ✔ complete exports reject directory aliases and file-directory conflicts without changing project bytes (810.899231ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:10.6023860Z ✔ editor and native v2/v3 archives round-trip with exact sources, metadata and external media (801.828795ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:11.8064025Z ✔ HTTP export supports edit and browse modes, authenticated creation, binary download and cleanup (1204.109836ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:12.4510071Z ✔ consecutive browser exports recycle completed downloads instead of exhausting the three-job limit (644.433743ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:12.8265800Z ✔ releasing or expiring an export cannot remove a file being downloaded (375.516502ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:13.4124899Z ✖ export range requests keep their real status in diagnostics and remain retryable (582.791844ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:13.7829211Z ✔ pending and interrupted exports remain protected from automatic quota eviction (373.127989ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:13.7850283Z ✔ export entry blocks unsaved and new drafts without changing editor state (2.378354ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.1919124Z ✔ expired and interrupted jobs release temporary disk space while retaining source files (406.798623ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2108376Z ▶ desktop ZIP → mobile index/edit → desktop restore preserves v2/v3 identities, stories and media
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2109308Z   ✔ v2 round trip (263.578995ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2109923Z   ✔ v3 round trip (199.709065ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2111189Z ✔ desktop ZIP → mobile index/edit → desktop restore preserves v2/v3 identities, stories and media (465.117149ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2117555Z ✔ mobile platform uses native private storage for create / parse / field edit / save / reopen (129.369189ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2119241Z ✔ native requests can be cancelled or timed out without hanging the shared client (32.682727ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2120675Z ▶ predecessor v1: frozen source, identity and archive compatibility
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2121565Z   ✔ native restore, re-export and second restore preserve every portable byte (64.695164ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2123142Z ✔ predecessor v1: frozen source, identity and archive compatibility (350.369886ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2123818Z ▶ predecessor v2: frozen source, identity and archive compatibility
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2124502Z   ✔ native restore, re-export and second restore preserve every portable byte (92.29262ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2125520Z ✔ predecessor v2: frozen source, identity and archive compatibility (353.20429ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2126449Z ▶ predecessor v3: frozen source, identity and archive compatibility
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2127124Z   ✔ native restore, re-export and second restore preserve every portable byte (84.604372ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2127858Z ✔ predecessor v3: frozen source, identity and archive compatibility (372.312574ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2128284Z ℹ tests 87
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2128494Z ℹ suites 0
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2128693Z ℹ pass 86
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2128887Z ℹ fail 1
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2129096Z ℹ cancelled 0
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2129336Z ℹ skipped 0
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2129540Z ℹ todo 0
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2129787Z ℹ duration_ms 14039.624336
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2129950Z 
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2130067Z ✖ failing tests:
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2130191Z 
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2130388Z test at scripts/tests/export.test.mjs:498:1
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2131056Z ✖ export range requests keep their real status in diagnostics and remain retryable (582.791844ms)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2131704Z   TypeError: Cannot read properties of undefined (reading 'lastStatusCode')
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2132864Z       at TestContext.<anonymous> (file:///home/runner/work/viento-studio/viento-studio/scripts/tests/export.test.mjs:508:52)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2133648Z       at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2134188Z       at async Test.run (node:internal/test_runner/test:1409:7)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2134704Z       at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+compatibility	Verify predecessor formats and desktop / mobile archive exchange	2026-10-24T08:21:14.2192609Z ##[error]Process completed with exit code 1.

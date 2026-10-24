@@ -3,6 +3,7 @@ import { SCENE_ANIMATION_USAGE_API_PATH } from '../../engine/scene-animation-usa
 import { SCENE_ANIMATION_DIRECTORY_API_PATH } from '../../engine/scene-animation-directory.mjs';
 import { SCENE_ANIMATION_CREATION_API_PATH } from '../../engine/scene-animation-creation-contract.mjs';
 import { SCENE_ANIMATION_TARGETS_API_PATH } from '../../engine/scene-animation-targets.mjs';
+import { SCENE_PHYSICS2D_TARGETS_API_PATH } from '../../engine/scene-physics2d-targets.mjs';
 import { SCENE_AUDIO_USAGE_API_PATH } from '../../engine/scene-audio-usage.mjs';
 import { SCENE_AUDIO_DIRECTORY_API_PATH } from '../../engine/scene-audio-directory.mjs';
 import { SCENE_COMPOSITION_CREATE_API_PATH } from '../../engine/scene-composition-create.mjs';
@@ -325,7 +326,7 @@ function isTokenAllowed(rawToken) {
 }
 
 function isMutatingWriteRequest(pathname, method = '') {
-  if ([SCRIPT_USAGE_API_PATH, SCENE_ANIMATION_USAGE_API_PATH, SCENE_ANIMATION_DIRECTORY_API_PATH, SCENE_ANIMATION_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
+  if ([SCRIPT_USAGE_API_PATH, SCENE_ANIMATION_USAGE_API_PATH, SCENE_ANIMATION_DIRECTORY_API_PATH, SCENE_ANIMATION_CREATION_API_PATH, SCENE_ANIMATION_TARGETS_API_PATH, SCENE_PHYSICS2D_TARGETS_API_PATH, SCENE_AUDIO_USAGE_API_PATH, SCENE_AUDIO_DIRECTORY_API_PATH, SCENE_BEHAVIOR_DIRECTORY_API_PATH, SCENE_BEHAVIOR_CREATION_API_PATH, SCENE_AUDIO_CREATION_API_PATH, SCENE_BEHAVIOR_AUTHORING_API_PATH].includes(pathname) && method === API_METHODS.POST) return true;
   if (pathname === SCENE_PREVIEW_API_PATH && ['POST', 'DELETE'].includes(method)) return true;
   if (pathname === PROJECT_BUILD_API_PATH && method === API_METHODS.POST) return true;
   if (pathname === RESOURCE_PACKAGE_API && method === API_METHODS.POST) return true;
@@ -621,6 +622,19 @@ async function handleApiRequest({
           if (requestUrl.search) throw Object.assign(new Error('Invalid animation target query.'), { statusCode: 400, errorCode: 'scene_animation_targets_invalid' });
           response.setHeader('Cache-Control', 'no-store');
           sendApiResponse(response, await service.sceneAnimationTargets.inspect(await readRequestJsonBody(request)), requestId);
+          return 200;
+        } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
+      },
+    },
+    [SCENE_PHYSICS2D_TARGETS_API_PATH]: {
+      [API_METHODS.POST]: async () => {
+        try {
+          if (!service.scenePhysics2DTargets) throw Object.assign(new Error('Physics targets require an editor session.'), { statusCode: 403, errorCode: 'scene_physics2d_targets_unavailable' });
+          if (request.headers.origin && request.headers.origin !== `http://${request.headers.host}` || request.headers['sec-fetch-site'] === 'cross-site')
+            throw Object.assign(new Error('Invalid physics target request origin.'), { statusCode: 403, errorCode: 'scene_physics2d_targets_forbidden' });
+          if (requestUrl.search) throw Object.assign(new Error('Invalid physics target query.'), { statusCode: 400, errorCode: 'scene_physics2d_targets_invalid' });
+          response.setHeader('Cache-Control', 'no-store');
+          sendApiResponse(response, await service.scenePhysics2DTargets.inspect(await readRequestJsonBody(request)), requestId);
           return 200;
         } catch (error) { return mapServiceErrorToHttp(error, response, requestId); }
       },

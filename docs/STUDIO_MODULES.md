@@ -1,6 +1,6 @@
 # Studio 系统模块与工程需求
 
-**0.2.1 源码为 23 模块／44 项声明能力**。新增 `org.viento.scene-physics2d`，仅依赖文档模块并提供 `scene.authoring.physics2d`。已有物理 JSON 经独立表单、局部形状示意、检查和原文审阅进入普通草稿；它不读取场景目录、创建关系或取得执行权限。见[物理编辑](SCENE_PHYSICS2D.md#编辑已有物理声明)及[本轮验证](test-results/scene-physics2d-editor/README.md)。下列版本与旧专题保留各自时点的模块数和验收范围。
+**0.2.1 源码为 23 模块／44 项声明能力**。新增 `org.viento.scene-physics2d`，仅依赖文档模块并提供 `scene.authoring.physics2d`。已有物理 JSON 经独立表单、局部形状示意、检查和原文审阅进入普通草稿。该发布基线没有实例目录；当前未发布工作树在同一模块中增加可选 `getTargets` 只读端口和宿主 `scenePhysics2DTargets` 能力标志，支持按保存态名称／UUID 选择、刷新与应用前重读。未增加系统模块或声明能力；不创建关系或取得执行权限。见[物理编辑](SCENE_PHYSICS2D.md#编辑已有物理声明)、[目录边界](SCENE_PHYSICS2D.md#按名称选择已有场景实例)及[本轮验证](test-results/scene-physics2d-targets/README.md)。下列版本与旧专题保留各自时点的模块数和验收范围。
 
 **0.1.6 源码**当时为 **22 模块／43 项声明能力**。独立 `org.viento.scene-animation` 提供 `scene.authoring.animation` 与 `scene.preview.animation`，负责已有动画的字段编辑和Rust采样示意，并与构建页的独立控件共同提供保存态场景画面预览；构建模块另以独立创建控制器贡献 `scene.authoring.animation-creation`。宿主提供 `animation.create` 时才显示首次创建入口，通过目录、审阅、三文件保存和原文导航连接，不能因注册能力存在而推断已安装Godot或Android已支持创建。见[动画指南](SCENE_ANIMATION.md#从场景首次创建动画)及[当前验收](test-results/scene-animation-creation/README.md)。Godot仍为0.12.0，本次只更新源码版本，安装保持，旧段落保留各阶段边界。
 
@@ -71,7 +71,7 @@ flowchart TD
 | `org.viento.scene-behaviors` | 已有绑定文档的稳定绑定／实例／关联 TXT 选择、带类型参数和信号编辑；完整审阅后只应用原文草稿，仅依赖文档模块，提供 `scene.authoring.behaviors` |
 | `org.viento.scene-audio` | 已有声音轨道／提示的保真字段修改、完整审阅和原文草稿应用；只依赖文档模块，提供 `scene.authoring.audio`；保存与播放由原接口负责 |
 | `org.viento.scene-animation` | 已有动画关键帧表、普通草稿应用与Rust采样示意；构建页可选控件独立消费相同采样和保存快照，需两模块与宿主能力均启用；只依赖文档模块，提供 `scene.authoring.animation`、`scene.preview.animation`。首次创建另属构建入口，保存与后端执行独立 |
-| `org.viento.scene-physics2d` | 已有物理声明的碰撞体列表、实例 UUID、种类／形状／偏移／掩码、局部示意与原文草稿；只依赖文档模块，提供 `scene.authoring.physics2d`；登记、成员与运动条件由构建检查 |
+| `org.viento.scene-physics2d` | 已有物理声明的碰撞体列表、实例 UUID、种类／形状／偏移／掩码、局部示意与原文草稿；只依赖文档模块，提供 `scene.authoring.physics2d`。当前工作树可选保存态实例目录核对目标，保留手填降级；运动条件与完整工程由构建检查 |
 
 描述符是固定的 `viento-studio-module` schema 1 数据，包含 ID、API 版本、依赖和贡献能力。注册时拒绝重复提供者、未知依赖、版本冲突和依赖循环。工程声明不能注册模块，也不能加载代码；本轮没有第三方模块安装入口。
 
@@ -123,7 +123,7 @@ flowchart TD
 
 `scripts` 独立注入 `getContext`／`createDraft`，缺端口或 `features.scripts: false` 只关闭脚本创建。`app-script-create.js` 在正文操作栏装配 **新建脚本**，取得当前会话、正文目录与类型目录；纯 `script-authoring.mjs` 提供固定起始内容和深冻结私有提案，正文宿主核对上下文后建立普通 TXT 草稿。界面不取得保存、登记、World、行为关系或执行接口，构建与行为编辑模块关闭时仍可独立创建。工程无需 `script` 类型，模板选择不修改项目模板；语言／后端标识只描述当前起始内容，不代表已提供 LSP、其他语言执行或作者 Rust 编译。
 
-`scenePhysics2D` 独立注入 `getContext`／`getSource`／`applyDraft`。缺少端口或 `features.scenePhysics2D: false` 时不装配，现有文档、声音、动画与构建入口不受影响；实际可用性由自身 Rust 可选能力检测。宿主绑定当前原文、保存基线、修订和会话，在异步检查后再次核对再同步写草稿。格式识别不是登记证明，手填实例没有目录授权；组件无普通保存、World、素材或后端端口，不注册新的 HTTP 服务。
+`scenePhysics2D` 独立注入 `getContext`／`getSource`／`applyDraft`；当前未发布工作树另接可选 `getTargets`。缺少整个端口或 `features.scenePhysics2D: false` 时不装配，现有文档、声音、动画与构建入口不受影响；物理入口由自身 Rust 可选能力检测，名称选择还需宿主单独声明 `scenePhysics2DTargets`。宿主绑定当前原文、保存基线、修订和会话，对目录已检查的应用重读目录并重验来源后同步写草稿。格式识别不是登记证明，手填降级明确目标未验证；组件只取得有界目录，不取得普通保存、完整World、素材或后端端口。新增只读HTTP由服务层提供，运动与完整工程条件继续由构建检查。
 
 `sceneBehaviors` 单独注入 `getContext`／`getSource`／`inspect`／`applyDraft`，缺端口或 `features.sceneBehaviors: false` 只关闭行为编辑。独立可移植提案保存当前原文及修订，来源宿主另做依赖摘要重验；界面没有普通保存、元数据关系写入、World 命令或执行后端接口。关闭 World、构建或 3D 区不会把行为控制器的权限交给其他模块。当前本机只读检查接口为 `/api/scene-behavior-authoring`，不接收工具路径、不执行脚本；宿主缺少服务能力时保留普通源码编辑。当前证据见[行为编辑专题](test-results/scene-behavior-authoring/summary.json)。
 

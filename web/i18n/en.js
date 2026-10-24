@@ -1,6 +1,12 @@
 // Source messages are stable Chinese keys. Parameters use {0}, {1}, …;
 // replacements are text, never markup or translation keys.
 export default {
+  "读取物理目标": "Read physics targets",
+  "无法读取场景实例；保留手动编辑，目标尚未验证。可刷新重试。": "Could not read scene instances. Manual editing is available, but targets have not been verified. Refresh to retry.",
+  "尚未验证目标实例。可手动编辑；保存后的场景构建仍会检查目标。": "Target instances have not been verified. You can edit them manually; the saved scene build will still check the targets.",
+  "物理参数及目录目标已检查，请审阅完整原文后应用。": "Physics parameters and directory targets checked. Review the complete source before applying.",
+  "物理参数已检查；目标尚未验证。请审阅完整原文后应用。": "Physics parameters checked; targets have not been verified. Review the complete source before applying.",
+  "目录核对已保存的实例身份；运动属性和构建条件仍由工程预检检查。": "The directory checks saved instance identities. Movement properties and build requirements are checked by project preflight.",
   "动画目标：整场景": "Animation target: whole scene",
   "动画目标：实例 {0}": "Animation target: instance {0}",
   "目标最后命令序号 {0} · 全部命令截止 {1}": "Target’s last command: {0} · Global command cutoff: {1}",

@@ -2,9 +2,15 @@
 
 **0.2.1 源码收录**：状态片段配置、独立实例预览、逐实例正式运行、目标回看、场景到组装、动画绑定预检及二维物理运行／编辑已进入本版。各自领域、来源、视图和后端边界保持，旧专题证据与评分不重标；本机安装仍为0.2.0。见[版本记录](RELEASE_0.2.1.md)。
 
-**已有物理声明编辑的独立边界**：`engine/scene-physics2d-edit.mjs` 负责当前原文的有界捕获、局部补丁和品牌化审阅，完整声明仍由既有 Rust `scenePhysics2D.inspect` 校验。`app-scene-physics2d-source.js` 只通过 source5、generation 和摘要守护当前原文，在最终所有权检查后同步写入草稿；普通保存单独拥有持久化权限。独立视图持有表单、选择、局部形状示意和取消票据，不读取场景目录或执行后端。
+**已有物理声明编辑的独立边界**：`engine/scene-physics2d-edit.mjs` 负责当前原文的有界捕获、局部补丁和品牌化审阅，完整声明仍由既有 Rust `scenePhysics2D.inspect` 校验。`app-scene-physics2d-source.js` 只通过 source5、generation 和摘要守护当前原文，在最终所有权检查后同步写入草稿；普通保存单独拥有持久化权限。独立视图持有表单、选择、局部形状示意和取消票据。0.2.1 后工作树通过可选目标目录端口增加名称选择；形状示意仍只消费已检查声明，执行后端不进入编辑器。
 
-新增 `org.viento.scene-physics2d` 只依赖文档模块，贡献 `scene.authoring.physics2d`；0.2.1 源码为 **23 模块／44 项声明能力**。缺少端口或显式关闭时保持旧编辑器装配，Rust 可选能力只控制物理入口。格式识别不证明元数据登记，手填实例成员、关联与继承后的运动属性仍由构建前检查。没有新 HTTP 接口、Rust/WASM 规则、作者版本或运行协议；见[使用指南](SCENE_PHYSICS2D.md#编辑已有物理声明)和[本轮验证](test-results/scene-physics2d-editor/README.md)。下列历史专题的模块数和验收条件保留当时范围。
+新增 `org.viento.scene-physics2d` 只依赖文档模块，贡献 `scene.authoring.physics2d`；0.2.1 源码为 **23 模块／44 项声明能力**。缺少端口或显式关闭时保持旧编辑器装配，Rust 可选能力只控制物理入口。格式识别不证明元数据登记；缺少目录能力时仍可手填。该发布基线的无目录编辑范围见[首轮面板验证](test-results/scene-physics2d-editor/README.md)；当前目录增量见下节。下列历史专题的模块数和验收条件保留当时范围。
+
+**0.2.1 后工作树：物理实例目录**。`engine/scene-physics2d-targets.mjs` 捕获只读目录与精确 source5，冻结场景、物理清单及实例身份；复用已有 Rust 声明检查，并独立核对所有碰撞体的目标成员。`scene-physics2d-targets-service.mjs` 从一次已保存 World 快照读取 Scene2D v2／v3 的稳定实例、对象名称和物理双向关系，允许旧声明引用已删除实例，以便修复。它不解析有效运动默认值、不读取素材字节或构建后端。
+
+只读 `POST /api/scene-physics2d-targets` 通过会话和来源校验，返回禁止缓存的目录；宿主能力 `scenePhysics2DTargets` 与物理核心能力分开。来源宿主维护目录能力代际，对目录已检查的提案在应用前重读并比较完整目录，再核对源归属后同步写草稿。视图独立维护目录请求、表单与审阅票据，失败时保留明确标为未验证的手填路径；目录名称不成为作者数据。快速取消重开时，旧对话框 close 事件和旧目录响应均不能关闭或改写新会话。
+
+目录读取不是跨文件事务或完整场景预检；选入、审阅和普通保存仍分开，保存态变化还需构建前复核。23 模块／44 项声明能力、作者格式、Rust/WASM、运行协议及后端版本保持，未新增物理求解或安装交付。见[操作](SCENE_PHYSICS2D.md#按名称选择已有场景实例)与[本轮验证](test-results/scene-physics2d-targets/README.md)。
 
 **二维物理为独立可选层**：`scenePhysics2D.inspect` 在 Rust 校验形状、身份和预算；`engine/scene-physics2d.mjs` 将显式 `references`／`physics2d` 关系解析为带来源的物理子计划，按种类声明执行能力。Godot 包装器只为含物理项目替换运动根与时钟，视觉动画仍留在独立子层；触发区通过普通作者行为发布现有项目事件，不伪造绑定身份。旧生成器与主核心 ABI 保持，执行适配器指纹更新仍要求旧构建重建。见[二维物理](SCENE_PHYSICS2D.md)。
 

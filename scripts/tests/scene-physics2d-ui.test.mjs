@@ -5,6 +5,7 @@ import fs from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { dialogHarness, flushDialogs } from './dialog-harness.mjs';
 import { readScenePhysics2DDocument, createScenePhysics2DProposal, isScenePhysics2DProposal } from '../../engine/scene-physics2d-edit.mjs';
+import { captureScenePhysics2DTargets, isScenePhysics2DTargets, scenePhysics2DTargetsMatchSource, scenePhysics2DTargetValue, validateScenePhysics2DTargets } from '../../engine/scene-physics2d-targets.mjs';
 import en from '../../web/i18n/en.js';
 import ja from '../../web/i18n/ja.js';
 const id = n => `11111111-1111-4111-8111-${String(n).padStart(12, '0')}`;
@@ -17,16 +18,23 @@ const deferred = () => { let resolve; const promise = new Promise(r => { resolve
 async function fixture(t, settings = {}) {
   const original = settings.original ?? '\ufeff' + JSON.stringify(settings.model ?? model(), null, 2).replace('"layer": 1', '"layer": 1e0').replaceAll('\n', '\r\n') + '\r\n';
   let content = original, language = 'zh', listener = () => {}, allocated = 1000, controller;
-  const context = { editable: true, creating: false, busy: false, sourceJSON: true, physicsSource: true, available: true, sourcePath: 'documents/physics/demo.json', sourceToken: 'host:1' };
+  const context = { editable: true, creating: false, busy: false, sourceJSON: true, physicsSource: true, available: true, sourcePath: 'documents/physics/demo.json', sourceToken: 'host:1', targetsAvailable: settings.targetsAvailable ?? Boolean(settings.targets), targetsToken: 'targets:1' };
   const snapshot = () => ({ sourcePath: context.sourcePath, token: context.sourceToken, content, sourceRevision: hash(content), baseSourceRevision: hash(original) });
-  const calls = [], checked = [], writes = [], confirmations = [], focuses = [];
+  const calls = [], checked = [], writes = [], confirmations = [], focuses = [], targetCalls = [], guardsReceived = [];
+  const directory = source => ({ format: 'viento-scene-physics2d-targets', schemaVersion: 1, worldId: 'world:' + 'a'.repeat(64), revision: hash('world'),
+    scene: { objectId: id(1), sourcePath: 'documents/scenes/demo.json', sourceRevision: hash('scene') },
+    manifest: { objectId: id(8000), sourcePath: source.sourcePath, sourceRevision: source.baseSourceRevision, content: original },
+    targets: [200, 201, 202].map(instance => ({ instanceId: id(instance), objectId: id(9000), name: 'Same actor', sourcePath: 'documents/actors/actor.json' })),
+  });
   const translate = (key, ...args) => (({ en, ja }[language]?.[key] || key).replace(/\{(\d+)\}/g, (_, n) => String(args[n] ?? '')));
   const h = await dialogHarness('app-scene-physics2d', {
     crypto: { randomUUID: settings.uuid || (() => id(++allocated)) },
     readScenePhysics2DDocument: settings.read || readScenePhysics2DDocument,
     createScenePhysics2DProposal: async (source, edit) => {
       checked.push(copy(edit)); await settings.beforeProposal?.(); const result = await createScenePhysics2DProposal(copy(source), copy(edit)); return settings.proposal ? settings.proposal(result) : result;
-    }, isScenePhysics2DProposal, t: translate,
+    }, isScenePhysics2DProposal, isScenePhysics2DTargets,
+    scenePhysics2DTargetsMatchSource: (catalog, source) => scenePhysics2DTargetsMatchSource(catalog, copy(source)),
+    scenePhysics2DTargetValue, validateScenePhysics2DTargets: (catalog, document) => validateScenePhysics2DTargets(catalog, copy(document)), t: translate,
     translatePage: root => { for (const node of root.querySelectorAll('[data-i18n]')) node.textContent = translate(node.dataset.i18n); },
     onLanguageChange: callback => { listener = callback; return () => { listener = () => {}; }; },
   });
@@ -38,17 +46,20 @@ async function fixture(t, settings = {}) {
   };
   controller = h.runtime.setupScenePhysics2D({ getContext: () => context,
     getSource: () => settings.source ? settings.source(snapshot()) : Promise.resolve(snapshot()),
-    applyDraft: async (proposal, guards) => { calls.push(proposal); return settings.apply ? settings.apply(proposal, guards, commit) : commit(proposal, guards); },
+    ...(settings.targets ? { getTargets: async source => { targetCalls.push(copy(source)); const raw = directory(source);
+      const value = typeof settings.targets === 'function' ? await settings.targets(copy(source), raw) : undefined;
+      return value === undefined ? captureScenePhysics2DTargets(copy(source), raw) : value; } } : {}),
+    applyDraft: async (proposal, guards) => { calls.push(proposal); guardsReceived.push(guards); return settings.apply ? settings.apply(proposal, guards, commit) : commit(proposal, guards); },
   });
   const el = name => h.element('scenePhysics2D' + name), settle = async () => { await flushDialogs(); await flushDialogs(); };
   const click = async name => { el(name).click(); await settle(); };
   t.after(() => controller.dispose());
   return { ...h, controller, el, context, calls, checked, writes, confirmations, focuses, original, content: () => content, settle, click,
-    open: () => controller.open(), set(name, value, event = ['Body', 'Kind', 'Shape'].includes(name) ? 'change' : 'input') { el(name).value = value; el(name).dispatch(event); },
+    targetCalls, guardsReceived, open: () => controller.open(), set(name, value, event = ['Body', 'Kind', 'Shape', 'Target'].includes(name) ? 'change' : 'input') { el(name).value = value; el(name).dispatch(event); },
     language(value) { language = value; listener(); } };
 }
 
-test('physical declaration editor has only independent source/draft ports and strict eligibility', async t => {
+test('physical declaration editor has independent source/draft ports and optional readonly targets', async t => {
   const h = await fixture(t); assert.deepEqual(Object.keys(h.controller).sort(), ['dispose', 'open', 'refresh']);
   for (const [key, value] of [['editable', false], ['creating', true], ['sourceJSON', false], ['physicsSource', false], ['sourcePath', '']]) {
     const old = h.context[key]; h.context[key] = value; h.controller.refresh(); assert.equal(h.el('Btn').hidden, true); assert.equal(await h.open(), false); h.context[key] = old;
@@ -75,7 +86,7 @@ test('manual missing instance repair stays editable without claiming a scene ide
   await h.click('Check'); assert.equal(h.el('Apply').disabled, false); await h.click('Apply');
   const body = (await readScenePhysics2DDocument(h.content())).bodies[0]; assert.equal(body.instanceId, id(900)); assert.equal(body.kind, 'sensor'); assert.equal(body.layer, 0); assert.equal(body.mask, 0);
   const source = await fs.readFile(new URL('../../web/modules/app-scene-physics2d.js', import.meta.url), 'utf8');
-  assert.ok(source.includes('这里只检查声明参数；场景成员、控制方式和登记关系由工程预检检查。')); assert.ok(!source.includes('fetch('));
+  assert.ok(source.includes('目录核对已保存的实例身份；运动属性和构建条件仍由工程预检检查。')); assert.ok(!source.includes('fetch('));
 });
 
 test('unfinished and invalid numeric inputs remain visible and never authorize preview or source writes', async t => {
@@ -198,4 +209,135 @@ test('all displayed physics editor keys exist in English and Japanese and layout
   assert.match(css, /\.scene-physics2d-header,\.scene-physics2d-feedback,\.scene-physics2d-footer\{flex:0 0 auto\}/);
   assert.match(css, /\.scene-physics2d-body\{min-height:0;flex:1 1 auto;[^}]*overflow:auto/);
   assert.doesNotMatch(css, /100dvh - (260|290)px/);
+});
+
+test('saved scene picker distinguishes repeated names by complete instance ID and applies only the selected identity', async t => {
+  const h = await fixture(t, { targets: true }); await h.open(); await h.settle();
+  assert.equal(h.targetCalls.length, 1); assert.equal(h.el('Target').children.length, 4); assert.equal(h.el('Target').value, id(200));
+  assert.equal(h.el('TargetsPath').textContent, 'documents/scenes/demo.json');
+  assert.equal(h.el('Target').children[1].textContent, `Same actor · 实例 ${id(200)}`);
+  assert.equal(h.el('Target').children[2].textContent, `Same actor · 实例 ${id(201)}`);
+  h.set('Target', id(202)); assert.equal(h.el('Instance').value, id(202)); assert.equal(h.el('Body').value, id(10));
+  assert.equal(h.el('Stage').hidden, true); assert.equal(h.writes.length, 0); await h.click('Check');
+  assert.equal(h.el('Status').textContent, '物理参数及目录目标已检查，请审阅完整原文后应用。'); assert.equal(h.el('Apply').disabled, false);
+  const reviewed = await readScenePhysics2DDocument(h.el('After').textContent); assert.equal(reviewed.bodies[0].instanceId, id(202)); assert.equal(reviewed.bodies[0].id, id(10));
+  await h.click('Apply'); assert.equal(h.writes.length, 1); assert.ok(isScenePhysics2DTargets(h.guardsReceived[0].targets));
+  assert.equal(h.el('Dialog').open, false); assert.equal(h.focuses.length, 1);
+});
+
+test('picker placeholder forged identity and same-value selection never clear manual input or create changes', async t => {
+  const h = await fixture(t, { targets: true }); await h.open(); await h.settle();
+  for (const value of ['', id(999), id(200)]) { h.set('Target', value); assert.equal(h.el('Instance').value, id(200)); assert.equal(h.el('Dialog').dataset.dirty, 'false'); }
+  h.set('Width', '80'); await h.click('Check'); h.set('Target', id(200)); assert.equal(h.el('Apply').disabled, false);
+  h.set('Instance', id(202)); assert.equal(h.el('Target').value, id(202)); assert.equal(h.el('Apply').disabled, true);
+  h.set('Instance', 'unfinished'); assert.equal(h.el('Target').value, ''); assert.equal(h.el('TargetHint').hidden, false); assert.equal(h.el('Instance').value, 'unfinished');
+  assert.equal(h.writes.length, 0);
+});
+
+test('directory checks all bodies including an unselected missing instance and never silently repairs it', async t => {
+  const h = await fixture(t, { targets: (_source, raw) => { raw.targets = raw.targets.filter(row => row.instanceId !== id(201)); } });
+  await h.open(); await h.settle(); h.set('Width', '80'); await h.click('Check');
+  assert.equal(h.el('Diagnostic').textContent, 'scene_physics2d_target_missing'); assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Instance').value, id(200));
+  h.set('Body', id(11)); assert.equal(h.el('Instance').value, id(201)); assert.equal(h.el('TargetHint').hidden, false);
+  h.set('Target', id(202)); await h.click('Check'); assert.equal(h.el('Apply').disabled, false); assert.equal(h.writes.length, 0);
+});
+
+test('missing targets are checked for unchanged and equivalent numeric source too', async t => {
+  for (const width of ['32', '3.2e1']) {
+    const h = await fixture(t, { targets: (_source, raw) => { raw.targets = raw.targets.filter(row => row.instanceId !== id(200)); } });
+    await h.open(); await h.settle(); h.set('Width', width); await h.click('Check');
+    assert.equal(h.el('Diagnostic').textContent, 'scene_physics2d_target_missing'); assert.equal(h.el('Stage').hidden, true); assert.equal(h.el('Apply').disabled, true);
+    assert.equal(h.el('Width').value, width); assert.equal(h.el('Instance').value, id(200)); assert.equal(h.writes.length, 0);
+  }
+});
+
+test('refresh revokes reviewed authority and keeps exact fields while exposing removed and renamed saved instances', async t => {
+  let revision = 0; const h = await fixture(t, { targets: (_source, raw) => {
+    raw.revision = hash(String(revision)); if (revision) { raw.targets = raw.targets.filter(row => row.instanceId !== id(200)); raw.targets.forEach(row => { row.name = 'Renamed actor'; }); }
+  } });
+  await h.open(); await h.settle(); h.set('Width', '80'); await h.click('Check'); assert.equal(h.el('Apply').disabled, false);
+  const field = h.el('Width'); revision++; await h.click('TargetsRefresh');
+  assert.equal(h.el('Width'), field); assert.equal(field.value, '80'); assert.equal(h.el('Instance').value, id(200)); assert.equal(h.el('Target').value, '');
+  assert.equal(h.el('Apply').disabled, true); assert.equal(h.el('Review').hidden, true); assert.equal(h.el('TargetHint').hidden, false);
+  assert.match(h.el('Target').children[1].textContent, /^Renamed actor/); await h.click('Check'); assert.equal(h.el('Diagnostic').textContent, 'scene_physics2d_target_missing');
+  h.set('Target', id(202)); await h.click('Check'); assert.equal(h.el('Apply').disabled, false); assert.equal(h.writes.length, 0);
+});
+
+test('directory failures and absent ports retain manual editing with explicit unverified status and no catalog authority', async t => {
+  for (const settings of [{}, { targets: () => { throw Error('offline'); } }, { targets: true, targetsAvailable: false }]) {
+    const h = await fixture(t, settings); await h.open(); await h.settle(); h.set('Instance', id(900)); h.set('Width', '80'); await h.click('Check');
+    assert.equal(h.el('Apply').disabled, false); assert.match(h.el('TargetsStatus').textContent, /未验证/);
+    assert.equal(h.el('Status').textContent, '物理参数已检查；目标尚未验证。请审阅完整原文后应用。');
+    await h.click('Apply'); assert.equal(h.writes.length, 1); assert.equal(Object.hasOwn(h.guardsReceived[0], 'targets'), false);
+  }
+});
+
+test('retry after failure retains raw input and revokes a manual review before catalog verification', async t => {
+  let fail = true; const h = await fixture(t, { targets: () => { if (fail) throw Error('offline'); } });
+  await h.open(); await h.settle(); h.set('Width', '80'); await h.click('Check'); assert.equal(h.el('Apply').disabled, false);
+  fail = false; await h.click('TargetsRefresh'); assert.equal(h.el('Width').value, '80'); assert.equal(h.el('Apply').disabled, true);
+  await h.click('Check'); assert.equal(h.el('Apply').disabled, false); assert.match(h.el('Status').textContent, /目录目标已检查/);
+});
+
+test('loading saved instances leaves raw fields editable but does not approve unchecked membership mid-request', async t => {
+  const gate = deferred(), h = await fixture(t, { targets: () => gate.promise }); await h.open(); await h.settle();
+  assert.equal(h.el('Instance').disabled, false); assert.equal(h.el('Check').disabled, true); assert.equal(h.el('TargetsRefresh').disabled, true);
+  h.set('Width', '1e'); h.set('Instance', id(202)); h.el('Check').dispatch('click'); await h.settle(); assert.equal(h.checked.length, 0);
+  gate.resolve(); await h.settle(); assert.equal(h.el('Width').value, '1e'); assert.equal(h.el('Instance').value, id(202)); assert.equal(h.el('Target').value, id(202));
+  assert.equal(h.el('Check').disabled, false); assert.equal(h.el('Apply').disabled, true);
+});
+
+test('late directory result cannot populate a cancelled replaced disposed or revoked session', async t => {
+  for (const change of [h => h.click('Cancel'), h => { h.context.sourceToken += ':other'; h.controller.refresh(); }, h => h.controller.dispose(),
+    h => { h.context.targetsAvailable = false; h.controller.refresh(); }, h => { h.context.targetsToken += ':new'; h.controller.refresh(); }]) {
+    const gate = deferred(), h = await fixture(t, { targets: () => gate.promise }); await h.open(); await h.settle(); const picker = h.el('Target'), apply = h.el('Apply');
+    await change(h); gate.resolve(); await h.settle(); assert.equal(picker.children.length, 1); assert.equal(apply.disabled, true); assert.equal(h.writes.length, 0);
+  }
+});
+
+test('forged or differently bound catalogs fail closed while keeping ordinary manual editing available', async t => {
+  for (const targets of [() => ({}), (source, raw) => ({ ...captureScenePhysics2DTargets(source, raw) }),
+    (source, raw) => captureScenePhysics2DTargets({ ...source, token: 'different' }, raw)]) {
+    const h = await fixture(t, { targets }); await h.open(); await h.settle();
+    assert.match(h.el('TargetsStatus').textContent, /无法读取/); assert.equal(h.el('Target').disabled, true); assert.equal(h.el('Width').disabled, false);
+    h.set('Width', '80'); await h.click('Check'); assert.equal(h.el('Apply').disabled, false); assert.match(h.el('Status').textContent, /尚未验证/);
+  }
+});
+
+test('capability generations reject a late check or a pending apply even when the raw fields remain identical', async t => {
+  for (const operation of ['Check', 'Apply']) for (const key of ['targetsToken', 'targetsAvailable']) {
+    const gate = deferred(), h = await fixture(t, { targets: true,
+      ...(operation === 'Check' ? { beforeProposal: () => gate.promise } : { apply: async (proposal, guards, commit) => { await gate.promise; return commit(proposal, guards); } }),
+    });
+    await h.open(); await h.settle(); h.set('Width', '80'); if (operation === 'Apply') await h.click('Check');
+    h.el(operation).click(); await h.settle(); h.context[key] = key === 'targetsToken' ? 'targets:new' : false; h.controller.refresh();
+    gate.resolve(); await h.settle(); assert.equal(h.el('Width').value, '80'); assert.equal(h.el('Apply').disabled, true); assert.equal(h.writes.length, 0);
+  }
+});
+
+test('language changes preserve picker and manual field nodes focus approval and full identity labels', async t => {
+  const h = await fixture(t, { targets: true }); await h.open(); await h.settle(); h.set('Target', id(202)); await h.click('Check');
+  const picker = h.el('Target'), instance = h.el('Instance'); picker.focus(); const after = h.el('After').textContent;
+  for (const language of ['en', 'ja', 'zh']) {
+    h.language(language); assert.equal(h.el('Target'), picker); assert.equal(h.el('Instance'), instance); assert.equal(h.document.activeElement, picker);
+    assert.equal(picker.value, id(202)); assert.equal(instance.value, id(202)); assert.equal(h.el('After').textContent, after); assert.equal(h.el('Apply').disabled, false);
+    for (const option of picker.children.slice(1)) assert.ok(option.textContent.includes(option.value));
+  }
+});
+
+test('pending checks reject programmatic target selection and refresh callbacks', async t => {
+  const gate = deferred(), h = await fixture(t, { targets: true, beforeProposal: () => gate.promise }); await h.open(); await h.settle(); h.set('Width', '80');
+  h.el('Check').click(); await h.settle(); h.set('Target', id(202)); h.el('TargetsRefresh').dispatch('click');
+  assert.equal(h.el('Instance').value, id(200)); assert.equal(h.targetCalls.length, 1); gate.resolve(); await h.settle(); assert.equal(h.el('Apply').disabled, false);
+});
+
+
+test('a queued native close event from the previous dialog cannot dismiss a reopened directory session', async t => {
+  const gate = deferred(); let requests = 0;
+  const h = await fixture(t, { targets: () => { if (++requests === 1) return gate.promise; } });
+  await h.open(); h.el('Cancel').click(); assert.equal(h.el('Dialog').open, false);
+  assert.equal(await h.open(), true); await h.settle(); assert.equal(h.el('Dialog').open, true); assert.equal(h.el('Target').disabled, false);
+  h.set('Target', id(202)); h.set('Width', '80'); gate.resolve(); await h.settle();
+  assert.equal(h.el('Dialog').open, true); assert.equal(h.el('Instance').value, id(202)); assert.equal(h.el('Width').value, '80');
+  await h.click('Check'); assert.equal(h.el('Apply').disabled, false); assert.equal(h.writes.length, 0);
 });

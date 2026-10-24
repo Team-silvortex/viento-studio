@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-24**。源码版本 **0.2.1**；审查基线为提交 `5e6b92e82b34d035996b0df2b9e3c3a3efacf4c4`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-24**。源码版本 **0.2.1**；审查基线为提交 `4cf75a65fdd46e4245ed0e8c533ddc7f22abe5a1`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -20,14 +20,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 158 |
-| 实现单元（含规划占位） | 472 |
-| 已审查实现关系 | 680 |
-| 显式评分单元 | 2720 |
-| 语义依赖边 | 454 |
-| 工作流切片 | 122 |
+| 功能 | 159 |
+| 实现单元（含规划占位） | 474 |
+| 已审查实现关系 | 684 |
+| 显式评分单元 | 2736 |
+| 语义依赖边 | 457 |
+| 工作流切片 | 123 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 2431 |
+| 引用并校验指纹的文件 | 2439 |
 
 ## 评分锚点
 
@@ -223,6 +223,7 @@
 | [保存状态绑定→项目检查→缺失片段诊断→精确原文→普通保存→构建运行](function-atlas.html#workflow=animation-state-binding-preflight) | [当前行为绑定的状态与动画片段配置](#authoring.animation_state_bindings) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [动画状态绑定构建前检查与原文修复](#build.animation_state_preflight) → [当前构建任务的问题筛选与来源导航](#build.task-problems) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) | 本次未登记额外缺口（不表示完成） | 实际Chrome从非初始状态跨场景UUID错误修复到协议10运行；无自动修改、任意脚本推断或安装结论。旧冻结运行与新构建预检分别保留。 |
 | [普通物理文档与双向引用→项目组装→碰撞/触发区→行为事件→动画→工程交付](function-atlas.html#workflow=scene-physics2d-event-animation) | [新对象正文与登记共同创建](#world.object-create) → [引用／共享归属关系追加](#world.relation-add) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | 物理声明与场景正文分离，首次登记按两个普通关系操作保存；仅Godot项目组装运行。Rust/计划、HTTP修复、真实Godot碰撞事件动画、Chrome及迁移证据按本轮报告分别记录，不组合宣称从空工程全GUI验收。无动态刚体/3D/Bevy物理、物理画布或安装升级；旧执行适配器凭据变更需要重建。 |
 | [已有物理JSON→独立表单与局部示意→检查原文→应用草稿→普通保存→构建检查](function-atlas.html#workflow=scene-physics2d-authoring) | [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 只编辑既有JSON，声明检查不验证登记/关联/实例成员/继承运动值；实例UUID手填。表单取消与普通保存分开，局部图形不求解物理。本轮真实Chrome检查/草稿/普通Save后Godot碰撞及触发到动画通过；完整检查单列，不继承旧安装成绩。 |
+| [保存态实例目录→名称/UUID修复→检查审阅→Apply重读→普通保存→既有物理构建运行](function-atlas.html#workflow=scene-physics2d-targets) | [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [引用／共享归属关系追加](#world.relation-add) → [按已保存场景实例选择与修复物理目标](#authoring.physics2d_targets) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 目录仅证明读取快照中的身份/关联；缺失旧目标可读取后修复，手填降级明确未验证。应用重读不构成跨文件锁，运动条件仍交保存态构建。真实Chrome保存后的Godot物理链路按本轮报告验收，不新增运行协议、声明创建、Bevy物理或安装交付。 |
 
 ## 功能与实现切片
 
@@ -3119,6 +3120,24 @@
 平台：Linux共享Rust/WASM、浏览器来源宿主与独立DOM界面；真实Chrome范围见本轮报告、未更新安装、Android或其他目标设备；后端沿既有物理运行路径。边界：0.2.0之后工作树新增org.viento.scene-physics2d模块和scene.authoring.physics2d能力，系统23模块44能力；只依赖文档模块，缺端口或关闭时旧装配保持。；只编辑已存在JSON的当前原文草稿，不创建文件/登记/关系，不新增HTTP服务。物理格式识别不是保存态对象登记证明，也不要求已有动画或声音。；当前草稿与保存基线分别绑定source5、摘要和会话；读取或应用中导航、文本/基线/版本改变、取消或核心不可用均撤销旧审阅，最后核对后同步写草稿，普通Save独立持有落盘权限。；Rust沿既有scenePhysics2D.inspect验证完整声明、64KiB预算、稳定唯一身份、1–128碰撞体和参数范围。JS只捕获数据与定位原文补丁，不提供物理规则或核心缺失时的语义替代。；既有场景和body身份保持，允许手填instanceUUID、调整种类/形状/偏移/16位层掩码、移除与追加碰撞体；已有碰撞体保留相对顺序，新碰撞体由crypto.randomUUID分配且不复用已保留身份，不能删除最后一体。；标量原位替换，形状切换限制于shape对象，结构修改限制于bodies数组；保留BOM、行尾、外层与未变字段字节，规范等价数字不制造修改。；表单临时字符串、所选碰撞体、检查结果和原文审阅彼此分离；任何实质表单变化使审批失效。三语切换保留字段与焦点，关闭/返回/Escape按表单脏状态确认，不覆盖之前已有草稿。；局部矩形/圆形示意只显示已准入声明的形状、偏移和原点，并统一缩放；不读取场景世界坐标、不执行碰撞求解、不影响渲染根或作者数值。；手填实例是否属于场景、场景是否选择该声明、双向关联及投影继承后的controls/speed继续由保存态build preflight判断；局部检查和示意不证明这些关系成立。；本切片不改变作者schema、Rust/WASM、Godot/Bevy适配器、运行协议或生成清单；没有实例名称目录、关系创建、场景碰撞拖拽、物理步回放、跨文件修改或安装交付。真实浏览器/回归与历史原生运行证据分别记录。；上述开发增量已纳入0.2.1源码交付。原开发证据、评分与理由保留；本机安装仍为0.2.0，本次不制作安装包、标签或GitHub Release。。
 
 下一步：以独立只读目录补充场景实例名称选择及来源重验，再分别设计关系创建、场景空间编辑与物理步验收；保留普通源码修复和保存权威。
+
+<a id="authoring.physics2d_targets"></a>
+### 按已保存场景实例选择与修复物理目标
+
+`authoring.physics2d_targets` · 内容与作者工具 · 未发布工作树
+
+入口：已有物理草稿→保存态实例目录→名称与UUID选择/修复→检查审阅→目录重读→普通草稿/保存
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **物理保存态实例目录品牌与成员准入**；只捕获和比较目录身份/来源，复用Rust参数规则核对当前body成员；不拥有IO或保存。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[scripts/tests/scene-physics2d-targets\.test\.mjs](../scripts/tests/scene-physics2d-targets.test.mjs)、[scripts/tests/scene-physics2d-targets-source\.test\.mjs](../scripts/tests/scene-physics2d-targets-source.test.mjs) |
+| 本机服务与适配 | **只读物理实例目录服务与HTTP能力**；从单次已保存快照读取稳定实例与物理关联，经受限只读HTTP暴露，不创建作者数据或调用执行后端。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[scripts/tests/scene-physics2d-targets-service\.test\.mjs](../scripts/tests/scene-physics2d-targets-service.test.mjs)、[scripts/tests/scene-physics2d-targets-http\.test\.mjs](../scripts/tests/scene-physics2d-targets-http.test.mjs) |
+| 可移植 JS 语义 | **物理原文来源守护与普通草稿交接**；在既有source5宿主扩展独立目录能力代际，Apply重新读取并比较后才交还同步草稿写入权。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[scripts/tests/scene-physics2d-targets-source\.test\.mjs](../scripts/tests/scene-physics2d-targets-source.test.mjs)、[scripts/tests/scene-physics2d-ui\.test\.mjs](../scripts/tests/scene-physics2d-ui.test.mjs) |
+| 交互与渲染 | **独立物理表单、局部形状示意与系统装配**；在既有独立物理面板增加名称/UUID选择和明确手填降级；表单、目录、审阅与局部形状示意分别持有状态。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-targets/README\.md](../docs/test-results/scene-physics2d-targets/README.md)、[scripts/tests/scene-physics2d-ui\.test\.mjs](../scripts/tests/scene-physics2d-ui.test.mjs)、[scripts/tests/scene-physics2d-targets-smoke\.mjs](../scripts/tests/scene-physics2d-targets-smoke.mjs) |
+
+平台：Linux Node/HTTP与真实Chrome中英日390px、真实Godot4.7.2运行GUI保存后的原物理链路；未更新安装或验收Android/Bevy物理。边界：0.2.1之后未发布工作树增量；在既有物理作者模块增加可选只读目录，不增加23模块/44项声明能力，不改变Rust/WASM、作者格式、后端版本或运行协议。；独立目录域捕获严格有界的source5、场景/物理清单修订和稳定实例身份，以品牌冻结对象维护来源；不复用动画目录或复制Rust物理规则。；Node目录从单次已保存World快照核对Scene2D v2/v3、实例与定义登记、场景physics2d选择及物理回链。已删除的旧body目标仍允许读取目录修复，名称相同的实例用完整UUID区分。；服务不求解运动默认值、不读取素材字节、不运行脚本或后端；独立POST接口要求编辑会话与来源检查，禁止缓存，不接受额外查询。；选择只更新当前表单的instanceId，手填框、碰撞体身份和其余未完成输入保持；名称不写入作者文档。已读目录时检查全部body成员，缺失目标和重复目标均阻止通过。；目录加载不锁原始字段；检查等待读取结束。缺少能力或读取失败仍可手填并检查参数，明确标注目标尚未验证，不把降级结果当成员检查。；刷新及目录能力代际变化撤销审阅；目录已检查的Apply先重新读取并比较完整目录，然后重验源所有权再同步写普通草稿。普通Save单独持有文件权限。；目录不是跨文件事务或锁，运动属性与完整构建条件始终由保存态预检核对；Apply重读不保证后续场景永远不变。；会话与请求代际拒绝迟到响应；旧native close事件不关闭重新打开的面板。中英日切换保留字段节点、焦点、选择与审阅；取消不改原草稿或作者文件。；真实Chrome从缺失实例修复、失败手填降级及过期Apply拒绝到普通Save，再用既有Godot碰撞/触发/动画链路验证；环境、失败首跑与精确次数见本轮报告，未借旧安装成绩。；没有首次物理声明/关系创建、场景碰撞体拖拽、动态刚体、物理步回放、3D或Bevy物理；形状示意仍为局部声明图。。
+
+下一步：在独立身份目录之上继续设计物理声明与关联创建、场景空间编辑、物理步/运动验收及其他后端能力，保留普通原文修复与保存边界。
 
 ## 旧功能链路映射
 

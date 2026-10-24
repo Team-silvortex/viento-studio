@@ -1,3 +1,4 @@
+import { SCENE_PHYSICS2D_TARGETS_API_PATH } from '../../engine/scene-physics2d-targets.mjs';
 import { SCRIPT_USAGE_API_PATH } from '../../engine/script-usage.mjs';
 import { SCENE_ANIMATION_USAGE_API_PATH } from '../../engine/scene-animation-usage.mjs';
 import { SCENE_ANIMATION_DIRECTORY_API_PATH } from '../../engine/scene-animation-directory.mjs';
@@ -17,6 +18,12 @@ import { RESOURCE_PACKAGE_API } from '../../engine/resource-package.mjs';
 import { APP_ERROR_MESSAGES, APP_REQUEST_LABELS } from './app-state.js';
 import { WORLD_COMMAND_API_PATH } from '../../engine/world-command-contract.mjs';
 import { PROJECT_BUILD_API_PATH } from '../../engine/project-build-contract.mjs';
+
+export async function inspectScenePhysics2DTargets(payload) {
+  return (await fetchJsonApiRequest(SCENE_PHYSICS2D_TARGETS_API_PATH, withAuthHeaders({
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+  }), 45000, t('读取物理目标'))).payload;
+}
 
 export async function inspectSceneAnimationTargets(payload) {
   return (await fetchJsonApiRequest(SCENE_ANIMATION_TARGETS_API_PATH, withAuthHeaders({

@@ -1,0 +1,50 @@
+﹣ native archive metadata stays compatible with the editor reader before backup and restore commit (0.511947ms) # SKIP
+✔ export 206 metrics wait for handler cleanup after client EOF and retain full-download retry (64.92241ms)
+✔ export 416 metrics wait for handler cleanup after client EOF and retain full-download retry (27.701942ms)
+✔ document exports include owned stories, exact sources and referenced external media in both formats (175.321324ms)
+✔ JSON and YAML typed fields export using the generic layout and media bindings (117.721287ms)
+✔ concurrent Chinese, English and Japanese exports localize instructions while preserving authored bytes (186.08179ms)
+✔ explicit audio bindings export a player even when the source does not embed the audio (117.367317ms)
+✔ sharing carries declared asset IDs recognized by the md reference index (273.872062ms)
+✔ sharing carries declared asset IDs recognized by the txt reference index (280.441053ms)
+✔ sharing carries declared asset IDs recognized by the json reference index (263.071683ms)
+✔ sharing carries declared asset IDs recognized by the yaml reference index (266.552575ms)
+✔ multiple attachment roles share one player per document while keeping each owned story complete (105.416446ms)
+✔ declared missing assets reject sharing, then retry succeeds after the reference is repaired (108.707062ms)
+✔ sharing retains indexed legacy image paths, relative links and unregistered local images (262.754861ms)
+✔ v2 relative image references resolve against the original document directory (238.872763ms)
+✔ v3 relative image references resolve against the original document directory (240.755161ms)
+✔ sharing preserves distinct percent and space filenames, registered identities and renamed aliases (128.796043ms)
+✔ owned stories retain nested heading levels in HTML and Markdown shares (105.550408ms)
+✔ v2 complete project packages preserve migration contract, metadata and all external media (114.874826ms)
+✔ v3 complete project packages preserve migration contract, metadata and all external media (113.482144ms)
+✔ missing assets, traversal, symlinks and changed source snapshots cannot produce a successful export (128.530052ms)
+✔ complete exports reject directory aliases and file-directory conflicts without changing project bytes (302.495662ms)
+﹣ editor and native v2/v3 archives round-trip with exact sources, metadata and external media (0.129304ms) # SKIP
+✔ HTTP export supports edit and browse modes, authenticated creation, binary download and cleanup (708.588388ms)
+✔ consecutive browser exports recycle completed downloads instead of exhausting the three-job limit (333.522963ms)
+✔ releasing or expiring an export cannot remove a file being downloaded (208.457722ms)
+✔ export range requests keep their real status in diagnostics and remain retryable (309.915814ms)
+✔ pending and interrupted exports remain protected from automatic quota eviction (156.596753ms)
+✔ export entry blocks unsaved and new drafts without changing editor state (1.738026ms)
+✔ expired and interrupted jobs release temporary disk space while retaining source files (216.447203ms)
+﹣ desktop ZIP → mobile index/edit → desktop restore preserves v2/v3 identities, stories and media (0.512568ms) # Set both native test binaries
+﹣ mobile platform uses native private storage for create / parse / field edit / save / reopen (0.569331ms) # Set VIENTO_MOBILE_STORE_BIN to the mobile-storage example
+✔ native requests can be cancelled or timed out without hanging the shared client (32.307227ms)
+▶ predecessor v1: frozen source, identity and archive compatibility
+  ﹣ native restore, re-export and second restore preserve every portable byte (0.532143ms) # Set VIENTO_TEST_ARCHIVE_BINARY for the native compatibility gate
+✔ predecessor v1: frozen source, identity and archive compatibility (138.087721ms)
+▶ predecessor v2: frozen source, identity and archive compatibility
+  ﹣ native restore, re-export and second restore preserve every portable byte (0.225519ms) # Set VIENTO_TEST_ARCHIVE_BINARY for the native compatibility gate
+✔ predecessor v2: frozen source, identity and archive compatibility (152.036589ms)
+▶ predecessor v3: frozen source, identity and archive compatibility
+  ﹣ native restore, re-export and second restore preserve every portable byte (0.194272ms) # Set VIENTO_TEST_ARCHIVE_BINARY for the native compatibility gate
+✔ predecessor v3: frozen source, identity and archive compatibility (140.532356ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 7
+ℹ todo 0
+ℹ duration_ms 5698.989159

@@ -500,16 +500,38 @@ test('export range requests keep their real status in diagnostics and remain ret
   const base = await serve(t, root);
   const created = await request(base, '/api/export', { kind: 'document', format: 'html', path: `${documents}/角色.md` });
   const url = `${base}/api/export?id=${created.data.id}`;
-  for (const [range, expected] of [['bytes=0-7', 206], ['bytes=999999999-', 416]]) {
+  async function completedDownload(count) {
+    // Reading the body can finish before the server closes its file handle and
+    // records the request. Wait for completion count, never for the desired status.
+    const deadline = performance.now() + 5000;
+    let metrics;
+    do {
+      const result = await request(base, '/api/metrics');
+      assert.equal(result.status, 200);
+      metrics = result.data;
+      const route = metrics.routes['GET /api/export'];
+      if (route?.count >= count) {
+        assert.equal(route.count, count, 'each completed download is recorded exactly once');
+        return { metrics, route };
+      }
+      await delay(20);
+    } while (performance.now() < deadline);
+    assert.fail(`Timed out waiting for completed export ${count}: ${JSON.stringify(metrics)}`);
+  }
+  for (const [index, [range, expected]] of [['bytes=0-7', 206], ['bytes=999999999-', 416]].entries()) {
     const response = await fetch(url, { headers: { Range: range } });
     assert.equal(response.status, expected);
     await response.arrayBuffer();
-    const metrics = (await request(base, '/api/metrics')).data;
-    assert.equal(metrics.routes['GET /api/export'].lastStatusCode, expected);
+    const { metrics, route } = await completedDownload(index + 1);
+    assert.equal(route.lastStatusCode, expected);
+    assert.equal(metrics.statusCodes[String(expected)], 1);
   }
   const response = await fetch(url);
   assert.equal(response.status, 200);
   assert.equal(unzip(Buffer.from(await response.arrayBuffer())).manifest.documents.length, 2);
+  const { route } = await completedDownload(3);
+  assert.equal(route.lastStatusCode, 200);
+  assert.equal(route.errorCount, 1);
 });
 
 test('pending and interrupted exports remain protected from automatic quota eviction', async (t) => {
