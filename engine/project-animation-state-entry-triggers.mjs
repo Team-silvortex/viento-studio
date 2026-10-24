@@ -1,3 +1,4 @@
+import { projectAnimationTargetKey } from './project-animation-targets.mjs';
 // Protocol 10 records the actual callback scope of an accepted entry. It does
 // not identify a chosen transition or claim that queued playback has executed.
 import { createProjectAnimationStateCatalog } from './project-animation-states.mjs';
@@ -58,8 +59,9 @@ function evidence(entry, events, completions, pendingOnly = false) {
     const first = head?.deliveries.find(item => item.status === 'pending');
     if (head !== record || first !== delivery) throw invalid();
   }
-  if (trigger.kind === 'completed' && (entry.timeSeconds !== record.state.timeSeconds
-    || entry.commandSequence !== record.commandSequence)) throw invalid();
+  if (trigger.kind === 'completed' && ((record.target ? entry.timeSeconds < record.state.timeSeconds : entry.timeSeconds !== record.state.timeSeconds)
+    || (record.target ? entry.commandSequence < record.commandSequence : entry.commandSequence !== record.commandSequence)
+    || record.target?.kind === 'instance' && entry.origin.instanceId !== record.target.instanceId)) throw invalid();
   return trigger.kind === 'event' ? { kind: 'event', event: record, delivery } : { kind: 'completed', completion: record, delivery };
 }
 
@@ -94,10 +96,15 @@ export function createProjectAnimationStateTriggeredEntries(plan) {
   });
 }
 
-export function validateProjectAnimationStateEntryTriggersTimeline(snapshot, events, completions) {
+export function validateProjectAnimationStateEntryTriggersTimeline(snapshot, events, completions, commands = null) {
   const order = new Map();
   for (const entry of snapshot.entries) {
-    evidence(entry, events, completions);
+    const proof = evidence(entry, events, completions);
+    if (proof?.kind === 'completed' && proof.completion.target) {
+      if (!commands || commands.entries.some(command => command.sequence > proof.completion.commandSequence
+        && command.sequence <= entry.commandSequence && command.origin.visitIndex === entry.origin.visitIndex
+        && projectAnimationTargetKey(command.target) === projectAnimationTargetKey(proof.completion.target))) throw invalid();
+    }
     const trigger = entry.trigger;
     if (!triggerKey(trigger)) continue;
     const position = [trigger.eventSequence ?? trigger.completionSequence, trigger.subscriptionId], previous = order.get(trigger.kind);

@@ -13,6 +13,8 @@ import { validatePcmWave } from '../lib/audio-wav.mjs';
 import { resolveScene2DModel } from '../../engine/scene-model.mjs';
 import { inspectProjectAssembly } from '../../engine/project-assembly.mjs';
 import { createProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
+import { preflightProjectAnimationStates } from '../../engine/project-animation-preflight.mjs';
+import { parseJsonSource, locateJsonSource } from '../../engine/json-source.mjs';
 import { resolveSceneCompositionPreview } from '../../engine/scene-composition-preview.mjs';
 import { canonicalJson } from '../../engine/world-projection.mjs';
 import { resolveAssetRoot } from '../lib/workspace.mjs';
@@ -165,6 +167,20 @@ async function captureScene(root, sceneRef, { signal, draft, compositionPreview 
 async function captureAssembly(root, targetRef, observed, fence, signal) {
   const planned = createProjectAssemblyPlan(observed, targetRef);
   if (!planned.ok) return planned;
+  // Fresh saved-author checks precede resources, backend selection and tools.
+  // Frozen restore deliberately keeps its historical plan/runtime contract.
+  const diagnostics = preflightProjectAnimationStates(planned.plan);
+  if (diagnostics.length) {
+    const parsed = new Map();
+    return { ok: false, plan: planned.plan, diagnostics: diagnostics.map(item => {
+      const document = observed.source.documents.find(document => document.record?.id === item.objectId
+        && document.sourcePath === item.sourcePath && document.sourceRevision === item.sourceRevision);
+      if (!document || typeof document.content !== 'string') return item;
+      if (!parsed.has(document)) parsed.set(document, parseJsonSource(document.content));
+      const sourceRange = locateJsonSource(parsed.get(document), item.propertyPath, { nearest: true });
+      return sourceRange ? { ...item, sourceRange } : item;
+    }) };
+  }
   const resources = new Map(), assetRoot = resolveAssetRoot(root);
   const boundary = assetRoot === path.join(root, 'assets') ? root : assetRoot;
   let totalBytes = 0;

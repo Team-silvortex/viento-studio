@@ -141,8 +141,20 @@ fn label_space(ch: char) -> bool {
     matches!(ch, '\u{0009}'..='\u{000d}' | '\u{0020}' | '\u{00a0}' | '\u{1680}' | '\u{2000}'..='\u{200a}' | '\u{2028}' | '\u{2029}' | '\u{202f}' | '\u{205f}' | '\u{3000}' | '\u{feff}')
 }
 fn validate_document(value: &Value) -> Result<(), CoreError> {
-    let clips = value["schemaVersion"].as_f64() == Some(3.0);
-    let fields: &[&str] = if clips {
+    let scoped = value["schemaVersion"].as_f64() == Some(4.0);
+    let clips = matches!(value["schemaVersion"].as_f64(), Some(3.0 | 4.0));
+    let fields: &[&str] = if scoped {
+        &[
+            "format",
+            "schemaVersion",
+            "sceneObjectId",
+            "durationSeconds",
+            "loop",
+            "tracks",
+            "clips",
+            "playbackScope",
+        ]
+    } else if clips {
         &[
             "format",
             "schemaVersion",
@@ -164,8 +176,9 @@ fn validate_document(value: &Value) -> Result<(), CoreError> {
     };
     if !exact(value, fields)
         || value["format"] != "viento-scene-animation"
-        || !matches!(value["schemaVersion"].as_f64(), Some(1.0 | 2.0 | 3.0))
+        || !matches!(value["schemaVersion"].as_f64(), Some(1.0 | 2.0 | 3.0 | 4.0))
         || !value["loop"].is_boolean()
+        || scoped && !matches!(value["playbackScope"].as_str(), Some("scene" | "instance"))
     {
         return Err(invalid());
     }
@@ -706,7 +719,9 @@ pub(crate) fn dispatch(request: &Value) -> Result<SceneAnimationResponse, CoreEr
             document: retime(document, &request["durationSeconds"])?,
         });
     }
-    if (clip_sample || clip_transporting) && document["schemaVersion"].as_f64() != Some(3.0) {
+    if (clip_sample || clip_transporting)
+        && !matches!(document["schemaVersion"].as_f64(), Some(3.0 | 4.0))
+    {
         return Err(invalid());
     }
     if clip_transporting {
@@ -1834,5 +1849,131 @@ mod track_copy_tests {
             serde_json::to_value(crate::dispatch(duplicate.as_bytes())).unwrap()["errorCode"],
             "studio_core_request_invalid"
         );
+    }
+}
+
+#[cfg(test)]
+mod scope_tests {
+    use super::*;
+    fn id(n: u32) -> String {
+        format!("{n:08x}-1111-4111-8111-111111111111")
+    }
+    fn doc(scope: &str) -> Value {
+        json!({"format":"viento-scene-animation","schemaVersion":4,"playbackScope":scope,
+            "sceneObjectId":id(1),"durationSeconds":2,"loop":false,
+            "tracks":[{"id":id(2),"instanceId":id(3),"property":"opacity","interpolation":"linear",
+                "keyframes":[{"atSeconds":0,"value":0},{"atSeconds":2,"value":1}]}],
+            "clips":[{"id":id(4),"name":"Attack","startSeconds":0.5,"endSeconds":2,"loop":false}]})
+    }
+    fn run(request: Value) -> Value {
+        serde_json::to_value(dispatch(&request).unwrap()).unwrap()
+    }
+    #[test]
+    fn explicit_scope_accepts_v4_and_never_changes_legacy_documents() {
+        assert_eq!(crate::viento_core_scene_animation_instances_version(), 1);
+        assert_eq!(crate::viento_core_scene_animation_version(), 1);
+        assert_eq!(crate::viento_core_scene_animation_clips_version(), 1);
+        for scope in ["scene", "instance"] {
+            let d = doc(scope);
+            assert_eq!(
+                run(json!({"protocolVersion":1,"operation":"sceneAnimation.inspect","document":d}))
+                    ["document"],
+                d
+            );
+            let mut empty = d.clone();
+            empty["clips"] = json!([]);
+            assert!(validate_document(&empty).is_ok());
+            for version in 1..=3 {
+                let mut legacy = d.clone();
+                legacy["schemaVersion"] = json!(version);
+                if version < 3 {
+                    legacy.as_object_mut().unwrap().remove("clips");
+                }
+                assert!(validate_document(&legacy).is_err());
+                legacy.as_object_mut().unwrap().remove("playbackScope");
+                assert_eq!(
+                    run(
+                        json!({"protocolVersion":1,"operation":"sceneAnimation.inspect","document":legacy})
+                    )["document"],
+                    legacy
+                );
+            }
+        }
+    }
+    #[test]
+    fn scope_is_required_exact_and_bounded_by_the_existing_clip_rules() {
+        for scope in [
+            Value::Null,
+            json!(true),
+            json!(""),
+            json!("Instance"),
+            json!(" instance"),
+            json!({}),
+        ] {
+            let mut d = doc("scene");
+            d["playbackScope"] = scope;
+            assert!(validate_document(&d).is_err());
+        }
+        for key in ["playbackScope", "clips"] {
+            let mut d = doc("scene");
+            d.as_object_mut().unwrap().remove(key);
+            assert!(validate_document(&d).is_err());
+        }
+        let mut d = doc("instance");
+        d["extra"] = json!(true);
+        assert!(validate_document(&d).is_err());
+        let mut d = doc("instance");
+        d["clips"][0]["endSeconds"] = json!(3);
+        assert!(validate_document(&d).is_err());
+        let raw=serde_json::to_string(&json!({"protocolVersion":1,"operation":"sceneAnimation.inspect","document":doc("instance")})).unwrap();
+        assert!(validate_request_bytes(
+            raw.replace(
+                "\"playbackScope\":\"instance\"",
+                "\"playbackScope\":\"scene\",\"playbackScope\":\"instance\""
+            )
+            .as_bytes()
+        )
+        .is_err());
+    }
+    #[test]
+    fn scope_does_not_change_sampling_or_explicit_clock_transport() {
+        for scope in ["scene", "instance"] {
+            let d = doc(scope);
+            let mut old = d.clone();
+            old["schemaVersion"] = json!(3);
+            old.as_object_mut().unwrap().remove("playbackScope");
+            for operation in [
+                "sceneAnimation.sample",
+                "sceneAnimation.sampleClip",
+                "sceneAnimation.transport",
+                "sceneAnimation.clipTransport",
+            ] {
+                let mut req = json!({"protocolVersion":1,"operation":operation,"document":d,"timeSeconds":0.75});
+                if operation.ends_with("Transport") || operation.ends_with("transport") {
+                    req["state"] = Value::Null;
+                    req["command"] = Value::Null;
+                } else if operation.ends_with("sampleClip") {
+                    req["clipId"] = json!(id(4));
+                }
+                let actual = run(req.clone());
+                req["document"] = old.clone();
+                assert_eq!(actual, run(req));
+            }
+        }
+    }
+    #[test]
+    fn scope_survives_retime_and_track_copy_without_mutating_source() {
+        for scope in ["scene", "instance"] {
+            let d = doc(scope);
+            let retimed=run(json!({"protocolVersion":1,"operation":"sceneAnimation.retime","document":d,"durationSeconds":4}))["document"].clone();
+            assert_eq!(retimed["playbackScope"], scope);
+            assert_eq!(retimed["schemaVersion"], 4);
+            assert_eq!(retimed["clips"][0]["startSeconds"], 1.0);
+            let copied=run(json!({"protocolVersion":1,"operation":"sceneAnimation.copyTrack","document":d,"sourceTrackId":id(2),"targetInstanceId":id(7),"newTrackId":id(8)}))["document"].clone();
+            assert_eq!(copied["playbackScope"], scope);
+            assert_eq!(copied["schemaVersion"], 4);
+            assert_eq!(copied["clips"], d["clips"]);
+            assert_eq!(d, doc(scope));
+        }
     }
 }

@@ -3,7 +3,7 @@ import { t, onLanguageChange } from '../i18n/index.js';
 
 // Completion history owns no playback, subscription or execution ports. Each
 // source ticket belongs to its receipt (or delivery), current visit and run.
-export function setupProjectAnimationCompletionObservation({ container, getContext = () => ({}), onOpen = async () => false } = {}) {
+export function setupProjectAnimationCompletionObservation({ container, getContext = () => ({}), onOpen = async () => false, onReviewTarget } = {}) {
   if (!container) return Object.freeze({ setSnapshot() {}, refresh() {}, dispose() {} });
   const document = container.ownerDocument;
   container.innerHTML = `<section id="projectAnimationCompletionsPanel" class="project-animation-completion-observation" hidden aria-labelledby="projectAnimationCompletionsTitle">
@@ -59,20 +59,32 @@ export function setupProjectAnimationCompletionObservation({ container, getConte
     });
     return button;
   }
-  const completionSignature = entry => JSON.stringify([entry.sequence, entry.commandSequence, entry.visitIndex, entry.sceneId, entry.state, entry.animation, entry.clip]);
+  const completionSignature = entry => JSON.stringify([entry.sequence, entry.commandSequence, entry.visitIndex, entry.sceneId, entry.state, entry.animation, entry.clip, entry.target, entry.targetCommandSequence]);
   function createRecord(entry) {
     const item = node('li', '', 'project-animation-completion');
     item.dataset.sequence = String(entry.sequence); item.dataset.animationId = entry.animation.objectId;
     const heading = node('h4'), sequence = node('p', '', 'project-animation-completion-sequence');
     const identity = node('p', '', 'project-animation-completion-identity'), state = node('p', '', 'project-animation-completion-state');
+    const target = node('p', '', 'project-animation-completion-target'), anchor = node('p', '', 'project-animation-completion-anchor');
     const clip = node('p', '', 'project-animation-completion-clip'), declaration = node('p', '', 'project-animation-completion-origin');
     const empty = node('p', '', 'build-hint'), deliveries = node('ul', '', 'project-animation-completion-deliveries');
-    const record = { entry, signature: completionSignature(entry), item, heading, sequence, identity, state, clip, declaration, empty, deliveries, recipients: new Map() };
+    const record = { entry, signature: completionSignature(entry), item, heading, sequence, identity, state, clip, declaration, empty, deliveries, target, anchor, recipients: new Map() };
     const owns = () => records.get(entry.sequence) === record && !item.hidden;
     record.animationSource = sourceButton(entry.animation.source, 'animation', owns);
     const actions = node('div', '', 'project-animation-completion-sources'); actions.append(record.animationSource);
     if (entry.clip) { record.clipSource = sourceButton(entry.clip.source, 'clip', owns); actions.append(record.clipSource); }
-    item.append(heading, sequence, identity, state, clip, declaration, actions, empty, deliveries); return record;
+    if (entry.target && typeof onReviewTarget === 'function') {
+      record.review = node('button', '', 'doc-btn doc-btn-ghost project-animation-completion-target-review-open'); record.review.type = 'button';
+      record.review.addEventListener('click', () => {
+        const current = updateContext(), owner = sessionOwner, navigation = navigationOwner, epoch = generation;
+        const isCurrent = () => canUse(context()) && context().sessionOwner === owner && context().navigationOwner === navigation
+          && generation === epoch && owns() && Boolean(snapshot);
+        if (!canUse(current) || !isCurrent()) return;
+        onReviewTarget({ kind: 'completion', sequence: entry.sequence }, { isCurrent });
+      });
+      actions.append(record.review);
+    }
+    item.append(heading, sequence, identity, target, anchor, state, clip, declaration, actions, empty, deliveries); return record;
   }
   function createDelivery(record, delivery) {
     const item = node('li', '', 'project-animation-completion-delivery');
@@ -93,12 +105,12 @@ export function setupProjectAnimationCompletionObservation({ container, getConte
     setText(el('Title'), t('动画自然完成记录'));
     setText(el('Note'), t('只读显示非循环动画自然到达末尾的记录。停止、跳转到末尾和循环边界不会产生完成通知；切换场景保留记录，重新运行后清空。'));
     setText(el('DeliveryNote'), t('回调已处理仅表示同步回调成功，不保证后续动画命令已经执行。已跳过可能由取消订阅、离开场景或新动画命令引起，不代表永久退订。'));
-    setText(el('SearchLabel'), t('按场景、动画或片段筛选'));
+    setText(el('SearchLabel'), t(snapshot?.entries.some(entry => entry.target) ? '按场景、实例、动画或片段筛选' : '按场景、动画或片段筛选'));
     setText(el('Navigation'), opening ? t('正在打开动画完成来源…') : navigationMessage ? t(navigationMessage) : '');
     el('Navigation').hidden = !opening && !navigationMessage;
     search.disabled = !canUse(current) || !snapshot;
     if (!snapshot) { setText(el('Sequence'), ''); delete el('Sequence').dataset.sequence; setText(el('Empty'), ''); return; }
-    const query = search.value.trim().toLowerCase(), active = snapshot.entries.filter(entry => [entry.sceneId, entry.animation.objectId, entry.clip?.id || '', entry.clip?.name || ''].some(value => value.toLowerCase().includes(query)));
+    const query = search.value.trim().toLowerCase(), active = snapshot.entries.filter(entry => [entry.sceneId, entry.animation.objectId, entry.clip?.id || '', entry.clip?.name || '', entry.target?.instanceId || ''].some(value => value.toLowerCase().includes(query)));
     setText(el('Sequence'), t('完成序号 {0} · 显示 {1} / {2} 条完成记录', snapshot.sequence, active.length, snapshot.entries.length));
     el('Sequence').dataset.sequence = String(snapshot.sequence);
     el('Empty').hidden = active.length > 0;
@@ -111,10 +123,15 @@ export function setupProjectAnimationCompletionObservation({ container, getConte
       setText(record.heading, t('动画已自然完成'));
       setText(record.sequence, t('序号 {0} · 第 {1} 次访问 · 场景时间 {2} 秒', entry.sequence, entry.visitIndex, entry.state.timeSeconds));
       setText(record.identity, t('场景 {0} · 动画 {1}', entry.sceneId, entry.animation.objectId));
+      record.target.hidden = !entry.target; record.anchor.hidden = !entry.target;
+      setText(record.target, entry.target ? entry.target.kind === 'instance' ? t('动画目标：实例 {0}', entry.target.instanceId) : t('动画目标：整场景') : '');
+      setText(record.anchor, entry.target ? t('目标最后命令序号 {0} · 全部命令截止 {1}', entry.targetCommandSequence, entry.commandSequence) : '');
+      record.item.dataset.targetInstanceId = entry.target?.instanceId || '';
       setText(record.state, t('完成时播放头 {0} 秒 · 动画命令序号 {1}', entry.state.positionSeconds, entry.commandSequence));
       setText(record.clip, entry.clip ? t('片段：{0} · {1} · 原时间轴 {2}–{3} 秒', entry.clip.name, entry.clip.id, entry.clip.startSeconds, entry.clip.endSeconds) : t('完整动画'));
       setText(record.declaration, t('动画声明：{0} · {1}', entry.animation.source.sourcePath, entry.animation.source.propertyPath));
       sourceState(record.animationSource, '打开动画声明', current);
+      if (record.review) { setText(record.review, t('回看动画目标')); record.review.disabled = !canUse(current); }
       if (record.clipSource) sourceState(record.clipSource, '打开动画片段声明', current);
       setText(record.empty, t('完成时没有订阅者。')); record.empty.hidden = entry.deliveries.length > 0;
       const recipients = [];
@@ -144,8 +161,8 @@ export function setupProjectAnimationCompletionObservation({ container, getConte
       updateContext();
       let admitted;
       try {
-        if (![7, 8, 9, 10].includes(protocolVersion)) throw new TypeError('Unsupported animation completion observation.');
-        admitted = value == null ? null : validateProjectAnimationCompletionsSnapshot(value);
+        if (![7, 8, 9, 10, 11].includes(protocolVersion)) throw new TypeError('Unsupported animation completion observation.');
+        admitted = value == null ? null : validateProjectAnimationCompletionsSnapshot(value, { protocolVersion });
       } catch { clear(); render(); return; }
       const next = admitted == null ? '' : JSON.stringify(admitted);
       if (next !== signature) {
@@ -153,6 +170,13 @@ export function setupProjectAnimationCompletionObservation({ container, getConte
         if (!snapshot) { invalidate(); records.clear(); list.replaceChildren(); }
       }
       render();
+    },
+    focusRecord(sequence) {
+      const current = updateContext();
+      if (!canUse(current) || !snapshot) return false;
+      const record = records.get(sequence);
+      (record && !record.item.hidden && record.review ? record.review : search).focus();
+      return true;
     },
     refresh: render,
     dispose() {

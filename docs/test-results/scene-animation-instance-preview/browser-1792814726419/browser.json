@@ -1,0 +1,480 @@
+{
+  "startedAt": "2026-10-24T04:05:26.420Z",
+  "steps": [
+    "Two instances of one object independently select non-loop and loop clips. Different paused positions are visible together in actual canvas pixels; selecting either instance preserves both frames, clips and local times.",
+    "Stopping the selected instance restores only its saved static position while the other paused frame remains visible and layout stays locked. Stop All restores exact static canvas pixels and enables layout editing.",
+    "Real requestAnimationFrame playback completes the first non-loop clip while the second instance wraps and keeps playing its own loop. Pausing the selected loop leaves the finished frame intact.",
+    "Chinese, English and Japanese controls and instance summaries fit 390px. Changing language preserves the selected instance, both paused frames and exact local times, and the same focused timeline node.",
+    "The background visibility handler pauses active instance clocks at the last painted frame without changing their selected clips or positions.",
+    "Hiding the preview and replacing its captured snapshot reset instance state. Explicitly replaying cancelled old animation callbacks cannot reactivate a hidden view or modify the fresh static instance session.",
+    "A late HTTP snapshot cannot reopen a closed dialog. All author bytes remain unchanged; no author write, build request or build job occurs."
+  ],
+  "screenshots": [
+    "instances-independent-desktop.png",
+    "instances-finished-and-looping-desktop.png",
+    "instances-zh-CN-390.png",
+    "instances-en-390.png",
+    "instances-ja-390.png"
+  ],
+  "errors": [],
+  "layout": {
+    "zh-CN": {
+      "overflow": false,
+      "rects": {
+        "scenePreviewAnimationMode": {
+          "left": 49,
+          "right": 326,
+          "top": -13.6875,
+          "bottom": 30.3125,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewAnimationInstances": {
+          "left": 49,
+          "right": 326,
+          "top": 42.3125,
+          "bottom": 800.6875,
+          "scrollWidth": 277,
+          "clientWidth": 277
+        },
+        "scenePreviewInstanceAnimationInstance": {
+          "left": 49,
+          "right": 326,
+          "top": 188.59375,
+          "bottom": 232.59375,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationClip": {
+          "left": 49,
+          "right": 326,
+          "top": 272.59375,
+          "bottom": 316.59375,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationPlay": {
+          "left": 49,
+          "right": 143.015625,
+          "top": 365.6875,
+          "bottom": 405.6875,
+          "scrollWidth": 92,
+          "clientWidth": 92
+        },
+        "scenePreviewInstanceAnimationPause": {
+          "left": 151.015625,
+          "right": 245.03125,
+          "top": 365.6875,
+          "bottom": 405.6875,
+          "scrollWidth": 92,
+          "clientWidth": 92
+        },
+        "scenePreviewInstanceAnimationStop": {
+          "left": 49,
+          "right": 143.015625,
+          "top": 413.6875,
+          "bottom": 453.6875,
+          "scrollWidth": 92,
+          "clientWidth": 92
+        },
+        "scenePreviewInstanceAnimationStopAll": {
+          "left": 151.015625,
+          "right": 245.03125,
+          "top": 413.6875,
+          "bottom": 453.6875,
+          "scrollWidth": 92,
+          "clientWidth": 92
+        },
+        "scenePreviewInstanceAnimationPosition": {
+          "left": 51,
+          "right": 231.296875,
+          "top": 505.6875,
+          "bottom": 521.6875,
+          "scrollWidth": 180,
+          "clientWidth": 180
+        },
+        "scenePreviewInstanceAnimationSummary": {
+          "left": 49,
+          "right": 326,
+          "top": 629.6875,
+          "bottom": 677.6875,
+          "scrollWidth": 277,
+          "clientWidth": 277
+        },
+        "scenePreviewInstanceAnimationOverview": {
+          "left": 49,
+          "right": 326,
+          "top": 693.6875,
+          "bottom": 800.6875,
+          "scrollWidth": 277,
+          "clientWidth": 277
+        }
+      },
+      "title": "按实例预览已保存动画",
+      "status": "选中实例：Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2 · 已暂停",
+      "summary": "共 2 个动画实例 · 0 个播放中 · 2 个保留预览画面"
+    },
+    "en": {
+      "overflow": false,
+      "rects": {
+        "scenePreviewAnimationMode": {
+          "left": 49,
+          "right": 326,
+          "top": -66.40625,
+          "bottom": -29.40625,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewAnimationInstances": {
+          "left": 49,
+          "right": 326,
+          "top": -17.40625,
+          "bottom": 861.25,
+          "scrollWidth": 277,
+          "clientWidth": 277
+        },
+        "scenePreviewInstanceAnimationInstance": {
+          "left": 49,
+          "right": 326,
+          "top": 179.0625,
+          "bottom": 216.0625,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationClip": {
+          "left": 49,
+          "right": 326,
+          "top": 250.0625,
+          "bottom": 287.0625,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationPlay": {
+          "left": 49,
+          "right": 326,
+          "top": 358.25,
+          "bottom": 398.25,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationPause": {
+          "left": 49,
+          "right": 326,
+          "top": 406.25,
+          "bottom": 446.25,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationStop": {
+          "left": 49,
+          "right": 326,
+          "top": 454.25,
+          "bottom": 494.25,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationStopAll": {
+          "left": 49,
+          "right": 326,
+          "top": 502.25,
+          "bottom": 542.25,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationPosition": {
+          "left": 51,
+          "right": 229.9375,
+          "top": 586.25,
+          "bottom": 602.25,
+          "scrollWidth": 179,
+          "clientWidth": 179
+        },
+        "scenePreviewInstanceAnimationSummary": {
+          "left": 49,
+          "right": 326,
+          "top": 702.25,
+          "bottom": 738.25,
+          "scrollWidth": 277,
+          "clientWidth": 277
+        },
+        "scenePreviewInstanceAnimationOverview": {
+          "left": 49,
+          "right": 326,
+          "top": 754.25,
+          "bottom": 861.25,
+          "scrollWidth": 277,
+          "clientWidth": 277
+        }
+      },
+      "title": "Preview saved animation by instance",
+      "status": "Selected instance: Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2 · Paused",
+      "summary": "2 animated instances · 0 playing · 2 with preview poses"
+    },
+    "ja": {
+      "overflow": false,
+      "rects": {
+        "scenePreviewAnimationMode": {
+          "left": 49,
+          "right": 326,
+          "top": -116.03125,
+          "bottom": -72.03125,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewAnimationInstances": {
+          "left": 49,
+          "right": 326,
+          "top": -60.03125,
+          "bottom": 903.53125,
+          "scrollWidth": 277,
+          "clientWidth": 277
+        },
+        "scenePreviewInstanceAnimationInstance": {
+          "left": 49,
+          "right": 326,
+          "top": 132.34375,
+          "bottom": 176.34375,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationClip": {
+          "left": 49,
+          "right": 326,
+          "top": 240.34375,
+          "bottom": 284.34375,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationPlay": {
+          "left": 49,
+          "right": 326,
+          "top": 355.53125,
+          "bottom": 395.53125,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationPause": {
+          "left": 49,
+          "right": 326,
+          "top": 403.53125,
+          "bottom": 443.53125,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationStop": {
+          "left": 49,
+          "right": 326,
+          "top": 451.53125,
+          "bottom": 491.53125,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationStopAll": {
+          "left": 49,
+          "right": 326,
+          "top": 499.53125,
+          "bottom": 539.53125,
+          "scrollWidth": 275,
+          "clientWidth": 275
+        },
+        "scenePreviewInstanceAnimationPosition": {
+          "left": 51,
+          "right": 231.296875,
+          "top": 591.53125,
+          "bottom": 607.53125,
+          "scrollWidth": 180,
+          "clientWidth": 180
+        },
+        "scenePreviewInstanceAnimationSummary": {
+          "left": 49,
+          "right": 326,
+          "top": 715.53125,
+          "bottom": 763.53125,
+          "scrollWidth": 277,
+          "clientWidth": 277
+        },
+        "scenePreviewInstanceAnimationOverview": {
+          "left": 49,
+          "right": 326,
+          "top": 779.53125,
+          "bottom": 903.53125,
+          "scrollWidth": 277,
+          "clientWidth": 277
+        }
+      },
+      "title": "保存済みアニメーションをインスタンス別にプレビュー",
+      "status": "選択中のインスタンス：Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2 · 一時停止中",
+      "summary": "アニメーション対象 2 個 · 再生中 0 個 · プレビュー表示中 2 個"
+    }
+  },
+  "limitations": [
+    "Real Chrome with local HTTP authoring preview in a disposable copied example; no packaged Tauri, Android or engine-runtime claim.",
+    "Only saved Scene2D graphical tracks are previewed. State scripts, events, behavior, physics and audio are not executed.",
+    "Background visibility and cancelled animation callbacks are explicitly injected to exercise stale browser callback guards; normal playback uses real requestAnimationFrame.",
+    "Refresh replaces the captured preview owner while the saved source remains identical; no author edit is needed to invalidate old callbacks."
+  ],
+  "sources": {
+    "engine/studio-core.wasm": "b21d3a19ccf0060d11ba62d36a5dbcf5d06f9329142a87bc63f7277f978d19f6",
+    "engine/scene-animation-core.mjs": "b7032359ed92a5356c57a3b180797686fa8db0e778897b38c7cd24b768413be7",
+    "engine/scene-animation-preview.mjs": "16d480fc4274ec6a425dfff0e2e8062948f53a4081b9b05d2d8b6d0d8db5ae0e",
+    "engine/scene-animation-instance-playback.mjs": "654d15b3cb0e4bf29403e6ac81abd70afdd25982c1da4c1da7a830e9ecf9d5f3",
+    "engine/scene-animation-instance-visual-frame.mjs": "f84a1ff2f654abdb4564581a6ac565c53aac73d1194c15f24ffcd8ee38ae6fec",
+    "engine/scene-animation-visual-frame.mjs": "9ff2f737a2987f009ae4029f318f9aced311482ac21c1ce301ba262b12fe13a0",
+    "scripts/lib/scene-preview-service.mjs": "ea66d0ad1307134e7f45ad09ce9eb5771ef3be1898ca50102f4d89394d957430",
+    "scripts/adapters/node-build-snapshot.mjs": "5e903260e2806e832d0b5dfa2c3e890b003d80a1cffcf7f3b95bd900fad87966",
+    "scripts/lib/doc-api-service.mjs": "3fa76969d2f1609aeaa8e9460ea9fd88aec01bcd13ae40f1c4d718db5ba4aecf",
+    "web/modules/app-scene-preview-animation.js": "98dbc9d7233fcba4241cd4f5d78bf36619194e8d8b4063acb85fa5a5530c288f",
+    "web/modules/app-scene-preview-instance-animation.js": "eac455c8905932a356009bcda11a300c1786b924839f69ae0c72662d7499e14b",
+    "web/modules/app-scene-preview.js": "1e89e28c6a2794868b4fc9618230f1b0c80aefc2627148ae399099a377ef0585",
+    "web/modules/app-scene-preview-canvas.js": "f7cc3cbc8b5c83522c444836e7d577fe12f145202bbcbb45dc1f776fadb0addd",
+    "web/modules/scene-animation-player.js": "54d8473fc50c076c195b2324e9605089803fc656bf057bd0f342591361a77255",
+    "web/modules/app-project-build.js": "f305991df5c034836628d836b061100bcf7b9239a60600d0379a188b27268d29",
+    "web/modules/app-studio-system.js": "d7179455413bf6e76262b68739b5f7944b27e4fe1806784cb9efccef11b73be4",
+    "web/i18n/en.js": "1aeada2071a5a9ce03e1200765b4b1adb3bc91374f18108d41e2ba13152fac1f",
+    "web/i18n/ja.js": "3d55b233ca95b3cefb03a22be204affe9a0500b8661739174d884baf19eeb499",
+    "web/scene-preview.css": "e6e322dca16ec01d0436679296a5f45acf2e000116377d5349521acd35677c11",
+    "scripts/tests/scene-animation-instance-preview-smoke.mjs": "106a9c65eecfc67e12a8913b3bafe18e2f8dbee3195960ca3f019f6294e82c88"
+  },
+  "node": {
+    "version": "v24.21.0",
+    "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "frames": {
+    "static": {
+      "width": 649,
+      "height": 479,
+      "hash": 1142651610,
+      "bounds": [
+        {
+          "x": 145,
+          "y": 195,
+          "right": 203,
+          "bottom": 253,
+          "count": 3481
+        },
+        {
+          "x": 370,
+          "y": 195,
+          "right": 428,
+          "bottom": 253,
+          "count": 3481
+        }
+      ]
+    },
+    "firstOnly": {
+      "width": 649,
+      "height": 479,
+      "hash": 3640196587,
+      "bounds": [
+        {
+          "x": 182,
+          "y": 172,
+          "right": 240,
+          "bottom": 230,
+          "count": 3481
+        },
+        {
+          "x": 370,
+          "y": 195,
+          "right": 428,
+          "bottom": 253,
+          "count": 3481
+        }
+      ]
+    },
+    "simultaneous": {
+      "width": 649,
+      "height": 479,
+      "hash": 2610416305,
+      "bounds": [
+        {
+          "x": 182,
+          "y": 172,
+          "right": 240,
+          "bottom": 230,
+          "count": 3481
+        },
+        {
+          "x": 355,
+          "y": 202,
+          "right": 413,
+          "bottom": 260,
+          "count": 3465
+        }
+      ]
+    },
+    "overview": [
+      {
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "phase": "paused",
+        "active": "true",
+        "text": "实例 Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1 · Short / 短动作 / 短い動き · 已暂停 · 0.50 秒"
+      },
+      {
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+        "phase": "paused",
+        "active": "true",
+        "text": "实例 Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2 · Loop / 循环 / ループ · 已暂停 · 0.75 秒"
+      }
+    ]
+  },
+  "playback": {
+    "overview": [
+      {
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "phase": "finished",
+        "active": "true",
+        "text": "实例 Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1 · Short / 短动作 / 短い動き · 已到末尾 · 1.00 秒"
+      },
+      {
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+        "phase": "playing",
+        "active": "true",
+        "text": "实例 Traveler / 旅人 / 旅人 · bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2 · Loop / 循环 / ループ · 播放中 · 0.46 秒"
+      }
+    ],
+    "loopTime": 0.46
+  },
+  "previewReleases": [
+    {
+      "url": "/api/scene-preview?previewId=319b834b-4d2d-4b2b-9fcb-8cbadf098dc2",
+      "method": "DELETE"
+    },
+    {
+      "url": "/api/scene-preview?previewId=0179043c-bd0f-4efc-8877-816c6f95876e",
+      "method": "DELETE"
+    },
+    {
+      "url": "/api/scene-preview?previewId=10ca11e7-a783-4fbb-b3aa-f66fa423ba9c",
+      "method": "DELETE"
+    },
+    {
+      "url": "/api/scene-preview?previewId=f4a6f178-0db4-438f-9e48-ceedea64918a",
+      "method": "DELETE"
+    }
+  ],
+  "requests": [
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    },
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    },
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    },
+    {
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "includeAnimation": true
+    }
+  ],
+  "authorFilesUnchanged": true,
+  "authorFileCount": 10,
+  "sourceSnapshotUnchanged": true,
+  "ok": true,
+  "finishedAt": "2026-10-24T04:05:31.576Z"
+}

@@ -100,7 +100,7 @@ export function validateBackendProjectManifest(input) {
   // Protocol 9 adds one generated observer wrapper per recognized author source.
   // Keep older backends and standalone scenes within their published inventory budget.
   const stateEntries = assembly && backend.id === 'org.viento.godot4'
-    && [9, 10].includes(backend.protocolVersion) && value.project.kind === 'godot-project';
+    && [9, 10, 11].includes(backend.protocolVersion) && value.project.kind === 'godot-project';
   if (!Array.isArray(value.files) || !value.files.length || value.files.length > (stateEntries ? 1152 : 640)
     || stateEntries && value.files.filter(file => file?.role !== 'resource-copy').length > 1024) throw invalid();
   let total = 0;

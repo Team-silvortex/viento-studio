@@ -1,0 +1,138 @@
+{
+  "counts": {
+    "functions": 155,
+    "implementations": 461,
+    "bindings": 669,
+    "cells": 2676,
+    "evidence": 2829,
+    "dependencies": 444,
+    "workflows": 118
+  },
+  "prefixesPreserved": {
+    "bindings": true,
+    "cells": true,
+    "evidence": true,
+    "dependencies": true,
+    "workflows": true,
+    "legacyCoverage": true,
+    "priorities": true,
+    "axes.architecture": true,
+    "axes.function": true,
+    "axes.implementation": true,
+    "axes.maturity": true
+  },
+  "newCells": [
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.project_animation_target_review",
+        "i460",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "完整准入到目标分组、独立序号查询及完成锚点形成只读闭环，空历史、scene零锚点和不可信输入均有明确处理。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.project_animation_target_review",
+        "i460",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "真实观察构造及完整query参与11项定向测试，覆盖跨绑定、重入、双序号与来源安全；实际浏览器业务流程以本轮报告最终结果为准。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.project_animation_target_review",
+        "i460",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "create/query/find纯接口与既有完整准入分离，模型只派生冻结证据；不同执行目标复用的最终验收仍以本轮报告为准。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.project_animation_target_review",
+        "i460",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.0之后工作树增量，尚未纳入新源码版本或更新安装；不继承旧安装产物的验收成绩。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.project_animation_target_review",
+        "i461",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "命令/完成双入口、目标选择、分列记录、锚点定位、来源与关闭返回接通，旧协议保持既有观察。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.project_animation_target_review",
+        "i461",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "独立UI及实际构建宿主定向验证覆盖来源所有权和选择生命周期；Chrome/Godot与中英日窄屏验收结果待本轮报告最终确认。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.project_animation_target_review",
+        "i461",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "独立视图消费纯领域模型，以setObservation/selectRecord/context和来源端口协作；运行执行与作者持久化由既有宿主持有。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.project_animation_target_review",
+        "i461",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.0之后工作树增量，尚未纳入新源码版本或更新安装；不继承旧安装产物的验收成绩。"
+    }
+  ],
+  "sha256": {
+    "docs/function-atlas.json": "56ba4f64aac5007288854dbea7ba3e976894c4a0d76d01aa72603611a2a90f5b",
+    "docs/FUNCTION_ATLAS.md": "3e0d335f3a3110591561bfbb65528b27c16bd212a1eb4fa6841b61f5caddd669",
+    "docs/function-atlas.html": "1c55f14da6267fcda5ffc275fd5f7785f2be21f83d631dea437cf55d40970ce9",
+    "docs/function-atlas.mmd": "6791341a501aee9b56515af9ee4fd03837ad3672e30661a65377d403db772351"
+  },
+  "addedReferencedFiles": [
+    "docs/test-results/project-animation-target-review/README.md",
+    "engine/project-animation-target-review.mjs",
+    "scripts/tests/project-animation-target-review-smoke.mjs",
+    "scripts/tests/project-animation-target-review-ui.test.mjs",
+    "scripts/tests/project-animation-target-review.test.mjs",
+    "web/modules/app-project-animation-target-review.js",
+    "web/project-animation-target-review.css"
+  ],
+  "changedReferencedFiles": [
+    "scripts/tests/project-animation-completion-observation-ui.test.mjs",
+    "scripts/tests/project-animation-observation-build-ui.test.mjs",
+    "scripts/tests/project-animation-observation-ui.test.mjs",
+    "web/i18n/en.js",
+    "web/i18n/ja.js",
+    "web/index.html",
+    "web/modules/app-project-animation-completion-observation.js",
+    "web/modules/app-project-animation-observation.js",
+    "web/modules/app-project-build.js"
+  ],
+  "verification": {
+    "atlasCheck": true,
+    "atlasCliTests": 15,
+    "atlasViewTests": 13,
+    "note": "CLI initial sandbox spawn EPERM resolved by escalated focused rerun. Chrome and final report changes remain for root final refresh."
+  }
+}

@@ -21,6 +21,7 @@ mod scene3d_removal_patch;
 mod scene3d_translation_patch;
 mod scene_animation;
 mod scene_audio;
+mod scene_physics2d;
 mod scene_composition;
 mod scene_composition_definition_rename;
 mod scene_composition_definitions_patch;
@@ -201,6 +202,12 @@ pub extern "C" fn viento_core_scene_audio_version() -> u32 {
     1
 }
 
+/// Optional engine-independent 2D body declaration inspection.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_physics2d_version() -> u32 {
+    1
+}
+
 /// Optional visual animation curves; core ABI and other domains remain independent.
 #[no_mangle]
 pub extern "C" fn viento_core_scene_animation_version() -> u32 {
@@ -222,6 +229,12 @@ pub extern "C" fn viento_core_scene_animation_transport_version() -> u32 {
 /// Optional named animation windows with isolated local playback clocks.
 #[no_mangle]
 pub extern "C" fn viento_core_scene_animation_clips_version() -> u32 {
+    1
+}
+
+/// Optional explicit scene/instance animation scope; existing ABI and markers stay unchanged.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_animation_instances_version() -> u32 {
     1
 }
 
@@ -389,6 +402,13 @@ pub enum CoreResponse {
         ok: bool,
         #[serde(rename = "sceneAnimation")]
         scene_animation: scene_animation::SceneAnimationResponse,
+    },
+    ScenePhysics2DSuccess {
+        #[serde(rename = "protocolVersion")]
+        protocol_version: u32,
+        ok: bool,
+        #[serde(rename = "scenePhysics2D")]
+        scene_physics2d: scene_physics2d::ScenePhysics2DResponse,
     },
     SceneAudioSuccess {
         #[serde(rename = "protocolVersion")]
@@ -562,6 +582,13 @@ fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
             protocol_version: PROTOCOL_VERSION,
             ok: true,
             scene_animation: scene_animation::dispatch(value)?,
+        });
+    }
+    if value["operation"].as_str() == Some("scenePhysics2D.inspect") {
+        return Ok(CoreResponse::ScenePhysics2DSuccess {
+            protocol_version: PROTOCOL_VERSION,
+            ok: true,
+            scene_physics2d: scene_physics2d::dispatch(value)?,
         });
     }
     if matches!(
@@ -871,6 +898,9 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
                     Some("sceneAudio.inspect" | "sceneAudio.sample")
                 ) {
                     scene_audio::validate_request_bytes(input)?;
+                }
+                if value["operation"].as_str() == Some("scenePhysics2D.inspect") {
+                    scene_physics2d::validate_request_bytes(input)?;
                 }
                 // Keep legacy request admission unchanged. The new exact DTO
                 // also rejects duplicate raw keys before Value can hide them.

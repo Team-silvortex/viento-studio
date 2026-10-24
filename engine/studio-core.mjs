@@ -36,6 +36,7 @@ const ANIMATION_STATE_SELECTOR_OPERATIONS = new Set(['animationStateTable.inspec
 const ANIMATION_STATE_COMBINATION_OPERATIONS = new Set(['animationStateTable.inspectCombined']);
 const ANIMATION_STATE_CONDITION_OPERATIONS = new Set(['animationStateTable.inspectConditional', 'animationStateCondition.inspect', 'animationStateCondition.evaluate']);
 const SCENE_ANIMATION_OPERATIONS = new Set(['sceneAnimation.inspect', 'sceneAnimation.sample', 'sceneAnimation.transport', 'sceneAnimation.sampleClip', 'sceneAnimation.clipTransport', 'sceneAnimation.retime', 'sceneAnimation.copyTrack']);
+const SCENE_PHYSICS2D_OPERATIONS = new Set(['scenePhysics2D.inspect']);
 const SCENE_AUDIO_OPERATIONS = new Set(['sceneAudio.inspect', 'sceneAudio.sample']);
 const SCENE3D_PARTICLE_OPERATIONS = new Set(['scene3d.prepareParticleField', 'scene3d.sampleParticleField']);
 const PARTICLE_FIELDS = [['center', 'vector'], ['extent', 'vector'], ['velocity', 'vector'], ['size', 'vector'], ['color', 'color'], ['count', 'number'], ['seed', 'number']];
@@ -1953,6 +1954,49 @@ export function dispatchStudioCoreScene3DRemovalPatch(request) {
 }
 
 
+/** Optional physics declarations have no engine, clock, collision solver or IO.
+ * The host binds each native receipt to the exact submitted declaration. */
+export function supportsStudioCoreScenePhysics2D() {
+  return Boolean(runtime && typeof runtime.viento_core_scene_physics2d_version === 'function'
+    && runtime.viento_core_scene_physics2d_version() === 1);
+}
+export function dispatchStudioCoreScenePhysics2D(request) {
+  assertJson(request);
+  if (!record(request, ['protocolVersion', 'operation', 'document']) || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION
+    || !SCENE_PHYSICS2D_OPERATIONS.has(request.operation)) throw fail('studio_core_request_invalid', 'Expected an explicit physics declaration inspection.');
+  if (!supportsStudioCoreScenePhysics2D()) throw unavailable();
+  const result = dispatch(request, SCENE_PHYSICS2D_OPERATIONS, (result, input) => {
+    const invalid = () => { throw new Error('Rust core returned an unbound physics declaration receipt.'); };
+    const uuid = value => typeof value === 'string' && value.length === 36 && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
+    const bounded = (value, min, max) => Number.isFinite(value) && value >= min && value <= max;
+    const pair = (value, min, max) => Array.isArray(value) && value.length === 2 && value.every(number => bounded(number, min, max));
+    const bits = value => Number.isInteger(value) && value >= 0 && value <= 65535;
+    const source = input.document;
+    if (!record(result, ['protocolVersion', 'ok', 'scenePhysics2D']) || !record(result.scenePhysics2D, ['document'])
+      || !record(source, ['format', 'schemaVersion', 'sceneObjectId', 'bodies']) || source.format !== 'viento-scene-physics2d'
+      || source.schemaVersion !== 1 || !uuid(source.sceneObjectId) || !Array.isArray(source.bodies)
+      || source.bodies.length < 1 || source.bodies.length > 128 || encoder.encode(JSON.stringify(source)).length > 65536) invalid();
+    const ids = new Set(), instances = new Set();
+    for (const body of source.bodies) {
+      if (!record(body, ['id', 'instanceId', 'kind', 'shape', 'offset', 'layer', 'mask']) || !uuid(body.id) || !uuid(body.instanceId)
+        || ids.has(body.id) || instances.has(body.instanceId) || !['static', 'character', 'sensor'].includes(body.kind)
+        || !pair(body.offset, -8192, 8192) || !bits(body.layer) || !bits(body.mask)) invalid();
+      ids.add(body.id); instances.add(body.instanceId);
+      const shape = body.shape;
+      if (!(shape?.kind === 'box' && record(shape, ['kind', 'size']) && pair(shape.size, 1, 8192)
+        || shape?.kind === 'circle' && record(shape, ['kind', 'radius']) && bounded(shape.radius, .5, 4096))) invalid();
+    }
+    const same = (actual, expected) => {
+      if (actual === null || expected === null || typeof actual !== 'object' || typeof expected !== 'object') return actual === expected;
+      if (Array.isArray(actual) !== Array.isArray(expected)) return false;
+      const keys = Object.keys(expected);
+      return Object.keys(actual).length === keys.length && keys.every(key => Object.hasOwn(actual, key) && same(actual[key], expected[key]));
+    };
+    if (!same(result.scenePhysics2D.document, source)) invalid();
+  });
+  return result.scenePhysics2D;
+}
+
 /** Optional audio rules are independent of scene dimension and rendering.
  * Every result comes from Rust; JavaScript only checks its receipt against the
  * submitted manifest and cannot produce a substitute when the core is absent. */
@@ -2362,6 +2406,10 @@ export function supportsStudioCoreSceneAnimationClips() {
   return supportsStudioCoreSceneAnimation() && typeof runtime.viento_core_scene_animation_clips_version === 'function'
     && runtime.viento_core_scene_animation_clips_version() === 1;
 }
+export function supportsStudioCoreSceneAnimationInstances() {
+  return supportsStudioCoreSceneAnimation() && typeof runtime.viento_core_scene_animation_instances_version === 'function'
+    && runtime.viento_core_scene_animation_instances_version() === 1;
+}
 export function supportsStudioCoreSceneAnimationRetime() {
   return supportsStudioCoreSceneAnimation() && typeof runtime.viento_core_scene_animation_retime_version === 'function'
     && runtime.viento_core_scene_animation_retime_version() === 1;
@@ -2380,8 +2428,9 @@ export function dispatchStudioCoreSceneAnimation(request) {
     || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION || !SCENE_ANIMATION_OPERATIONS.has(request.operation)) {
     throw fail('studio_core_request_invalid', 'Expected an explicit scene animation request.');
   }
-  if (!supportsStudioCoreSceneAnimation() || (request.document?.schemaVersion === 2 || request.document?.schemaVersion === 3 && Array.isArray(request.document?.tracks) && request.document.tracks.some(track => track?.property === 'spriteFrame2d')) && !supportsStudioCoreSceneAnimationSprites()
-    || (request.document?.schemaVersion === 3 || clipSample || clipTransport) && !supportsStudioCoreSceneAnimationClips()
+  if (!supportsStudioCoreSceneAnimation() || (request.document?.schemaVersion === 2 || [3, 4].includes(request.document?.schemaVersion) && Array.isArray(request.document?.tracks) && request.document.tracks.some(track => track?.property === 'spriteFrame2d')) && !supportsStudioCoreSceneAnimationSprites()
+    || ([3, 4].includes(request.document?.schemaVersion) || clipSample || clipTransport) && !supportsStudioCoreSceneAnimationClips()
+    || request.document?.schemaVersion === 4 && !supportsStudioCoreSceneAnimationInstances()
     || transporting && !supportsStudioCoreSceneAnimationTransport()
     || retiming && !supportsStudioCoreSceneAnimationRetime()
     || copying && !supportsStudioCoreSceneAnimationTrackCopy()) throw unavailable();
@@ -2403,8 +2452,9 @@ export function dispatchStudioCoreSceneAnimation(request) {
       return Boolean(range && Array.isArray(value) && value.length === 2 && value.every(n => bounded(n, ...range)));
     };
     if (!record(result, ['protocolVersion', 'ok', 'sceneAnimation'])
-      || !record(source, ['format', 'schemaVersion', 'sceneObjectId', 'durationSeconds', 'loop', 'tracks', ...(source?.schemaVersion === 3 ? ['clips'] : [])])
-      || source.format !== 'viento-scene-animation' || ![1, 2, 3].includes(source.schemaVersion) || !uuid(source.sceneObjectId)
+      || !record(source, ['format', 'schemaVersion', 'sceneObjectId', 'durationSeconds', 'loop', 'tracks', ...([3, 4].includes(source?.schemaVersion) ? ['clips'] : []), ...(source?.schemaVersion === 4 ? ['playbackScope'] : [])])
+      || source.format !== 'viento-scene-animation' || ![1, 2, 3, 4].includes(source.schemaVersion) || !uuid(source.sceneObjectId)
+      || source.schemaVersion === 4 && !['scene', 'instance'].includes(source.playbackScope)
       || !bounded(source.durationSeconds, 0, 60) || source.durationSeconds === 0 || typeof source.loop !== 'boolean'
       || !Array.isArray(source.tracks) || !source.tracks.length || source.tracks.length > 32
       || encoder.encode(JSON.stringify(source)).length > 65536) invalid();
@@ -2425,7 +2475,7 @@ export function dispatchStudioCoreSceneAnimation(request) {
         previous = key.atSeconds;
       }
     }
-    if (source.schemaVersion === 3) {
+    if ([3, 4].includes(source.schemaVersion)) {
       if (!Array.isArray(source.clips) || source.clips.length > 32) invalid();
       const clipIds = new Set();
       for (const clip of source.clips) {
@@ -2468,12 +2518,12 @@ export function dispatchStudioCoreSceneAnimation(request) {
       }
       const expected = { ...source, durationSeconds: duration, tracks: source.tracks.map(track => ({ ...track,
         keyframes: track.keyframes.map(key => ({ ...key, atSeconds: scaled(key.atSeconds) })) })) };
-      if (source.schemaVersion === 3) expected.clips = source.clips.map(clip => ({ ...clip,
+      if ([3, 4].includes(source.schemaVersion)) expected.clips = source.clips.map(clip => ({ ...clip,
         startSeconds: scaled(clip.startSeconds), endSeconds: scaled(clip.endSeconds) }));
       if (!equal(value.document, expected) || encoder.encode(JSON.stringify(value.document)).length > 65536) invalid();
       return;
     }
-    if ((clipSample || clipTransport) && source.schemaVersion !== 3) invalid();
+    if ((clipSample || clipTransport) && ![3, 4].includes(source.schemaVersion)) invalid();
     const range = id => {
       if (id === null) return { startSeconds: 0, endSeconds: source.durationSeconds, loop: source.loop };
       if (!uuid(id)) invalid();

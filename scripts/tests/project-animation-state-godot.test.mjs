@@ -98,7 +98,8 @@ for(const unavailable of [false,true])test(`real ${unavailable?'freed':'deactiva
 });
 
 test('real diagnostic abort samples the controller before cleanup and does not fabricate a finished frame',real,async t=>{
-  const f=await build(t,{body:'\tp.publish_event("action",true)\n\thost.flush_requests()',parameters:f=>({clip_idle:f.clipIds[0][0],clip_action:'71717171-7171-4171-8171-000000000099'})}),result=await run(f);
+  // Author bindings are valid; corrupt the resolved runtime clip to retain late fail-stop coverage.
+  const f=await build(t,{body:'\treceiver._clips[1] = "71717171-7171-4171-8171-000000000099"\n\tp.publish_event("action",true)\n\thost.flush_requests()'}),result=await run(f);
   assert.equal(result.ok,false);assert.ok(result.record.diagnostics.some(row=>row.code==='runtime_behavior_animation_clip'));assert.equal(rows(result).length,1);assert.equal(rows(result)[0].reason,'aborted');assert.equal(rows(result)[0].controllers[0].status,'inactive');assert.equal(result.record.events.some(row=>row.event==='finished'),false);
 });
 

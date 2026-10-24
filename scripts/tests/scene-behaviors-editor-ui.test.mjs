@@ -1,3 +1,5 @@
+import { setupSceneBehaviorStateBindings } from '../../web/modules/app-scene-behavior-state-bindings.js';
+import { captureAnimationStateBindings } from '../../engine/animation-state-bindings.mjs';
 import { setupSceneBehaviorParameters } from '../../web/modules/app-scene-behavior-parameters.js';
 import { captureScriptParameterContract } from '../../engine/script-parameter-interface.mjs';
 import { setupSceneBehaviorAnimationClips } from '../../web/modules/app-scene-behavior-animation-clips.js';
@@ -51,7 +53,16 @@ async function fixture(t, settings = {}) {
   const calls = [], checks = [], proposals = [], confirms = [], focused = [], audioLoads = [], animationLoads = [], sourceClones = new WeakMap(), contractClones = new WeakMap();
   const snapshot = () => ({ sourcePath: context.sourcePath, token: context.sourceToken, baseSourceRevision: hash(original), sourceRevision: hash(content), content });
   const translate = (key, ...args) => (({ en, ja }[language]?.[key] || key).replace(/\{(\d+)\}/g, (_, n) => String(args[n] ?? '')));
+  const bindingClones = new WeakMap();
   const h = await dialogHarness('app-scene-behaviors', {
+    captureAnimationStateBindings: value => captureAnimationStateBindings(copy(value)),
+    setupSceneBehaviorStateBindings: options => setupSceneBehaviorStateBindings({ ...options, getContext: () => {
+      const value = options.getContext();
+      if (value.declaration && !bindingClones.has(value.declaration)) bindingClones.set(value.declaration, copy(value.declaration));
+      if (value.source && !sourceClones.has(value.source)) sourceClones.set(value.source, copy(value.source));
+      return { ...value, declaration: value.declaration ? bindingClones.get(value.declaration) : undefined,
+        source: value.source ? sourceClones.get(value.source) : undefined, parameters: copy(value.parameters) };
+    } }),
     captureScriptParameterContract: value => captureScriptParameterContract(copy(value)),
     setupSceneBehaviorParameters: options => setupSceneBehaviorParameters({ ...options, getContext: () => { const context = options.getContext(); if (context.contract && !contractClones.has(context.contract)) contractClones.set(context.contract, copy(context.contract)); return { ...context, contract: context.contract ? contractClones.get(context.contract) : undefined, parameters: copy(context.parameters) }; } }),
     setupSceneBehaviorAnimationClips: options => setupSceneBehaviorAnimationClips({ ...options, getContext: () => { const context = options.getContext(); if (context.source && !sourceClones.has(context.source)) sourceClones.set(context.source, copy(context.source)); return { ...context, source: context.source ? sourceClones.get(context.source) : undefined }; } }),
@@ -501,4 +512,33 @@ test('typed scalar and incomplete text survive missing-slot additions while inte
   assert.match(h.el('ParameterInterfaceStatus').textContent, /类型不匹配 1/); assert.equal(h.el('Param2ContractTarget').children.length, 1);
   await h.click('AddMissingParameters'); assert.equal(h.el('Param0Type').value, 'number'); assert.equal(h.el('Param0Value').value, '1'); assert.equal(h.el('Param1Value').value, 'not a uuid'); assert.equal(h.el('Param2Value').value, '1e-');
   assert.equal(h.el('Param3Name').value, 'clip_strike'); assert.equal(h.el('Param4Name').value, 'clip_walk'); assert.equal(h.content(), h.original);
+});
+
+function stateBindingCatalog() {
+  const catalog = contextData();
+  catalog.sources[0].animationStateBindings = { format: 'viento-animation-state-bindings', schemaVersion: 1, initialState: 'idle',
+    states: [{ stateKey: 'idle', parameterName: 'clip_idle', hasCompletion: false }, { stateKey: 'attack', parameterName: 'clip_attack', hasCompletion: true }] };
+  return catalog;
+}
+test('state clip configuration stays local until explicit application, ordinary review and source draft apply', async t => {
+  const h = await fixture(t, { animationAvailable: true, inspect: async () => stateBindingCatalog() });
+  await h.open(); await h.click('StateBindingsLoad'); assert.equal(h.el('StateBindingsStatus').dataset.status, 'ready');
+  h.set('StateBinding_idle', id(712), 'change'); h.set('StateBinding_attack', id(711), 'change');
+  assert.equal(h.el('Check').disabled, true); assert.equal(h.content(), h.original);
+  await h.click('StateBindingsApply'); assert.equal(h.el('Param3Name').value, 'clip_idle'); assert.equal(h.el('Param3Value').value, id(712));
+  assert.equal(h.el('Param4Name').value, 'clip_attack'); assert.equal(h.el('Param4Value').value, id(711));
+  assert.equal(h.content(), h.original); assert.equal(h.el('Apply').disabled, true);
+  await h.check(); assert.equal(h.el('Apply').disabled, false); await h.apply();
+  const after = JSON.parse(h.content().replace(/^\ufeff/, '')), before = JSON.parse(h.original.replace(/^\ufeff/, ''));
+  assert.deepEqual(after.bindings[0].parameters, { ...before.bindings[0].parameters, clip_idle: id(712), clip_attack: id(711) });
+  assert.deepEqual(after.bindings[1], before.bindings[1]); assert.deepEqual(after.bindings[0].events, before.bindings[0].events);
+  assert.equal(h.animationLoads.length, 2); assert.equal(h.calls.length, 1);
+});
+test('state clip configuration cancels with ordinary form, and a script dependency change rejects review', async t => {
+  let dependency = hash('dependencies');
+  const h = await fixture(t, { animationAvailable: true, inspect: async () => ({ ...stateBindingCatalog(), dependencyRevision: dependency }) });
+  await h.open(); await h.click('StateBindingsLoad'); h.set('StateBinding_idle', id(712), 'change'); await h.click('StateBindingsApply');
+  await h.click('Cancel'); assert.equal(h.content(), h.original); assert.equal(h.confirms.length, 1);
+  await h.open(); await h.click('StateBindingsLoad'); h.set('StateBinding_attack', id(711), 'change'); await h.click('StateBindingsApply');
+  dependency = hash('new script'); await h.check(); assert.equal(h.el('Apply').disabled, true); assert.equal(h.content(), h.original);
 });

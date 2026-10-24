@@ -96,7 +96,7 @@ export function setupProjectAnimationStateEntryObservation({ container, getConte
     review.refresh();
     el('Panel').hidden = !canUse(current) || !snapshot;
     setText(el('Title'), t('动画状态进入记录'));
-    setText(el('Note'), t(snapshotProtocol === 10
+    setText(el('Note'), t(snapshotProtocol >= 10
       ? '记录脚本每次接受进入状态及当时的回调来源。重复记录独立保留；不包含分支命中或条件求值过程，也不表示动画命令已经执行。强制取消可能留下不完整记录。'
       : '记录脚本每次接受进入状态，包括初始进入和同状态重启；重复记录独立保留。不推测触发原因，也不表示动画命令已经执行。强制取消可能留下不完整记录。'));
     setText(el('SearchLabel'), t('按场景、行为绑定、脚本或状态筛选'));
@@ -144,8 +144,8 @@ export function setupProjectAnimationStateEntryObservation({ container, getConte
       updateContext();
       let admitted;
       try {
-        if (![9, 10].includes(protocolVersion)) throw new TypeError('Unsupported animation state entry observation.');
-        admitted = value == null ? null : protocolVersion === 10
+        if (![9, 10, 11].includes(protocolVersion)) throw new TypeError('Unsupported animation state entry observation.');
+        admitted = value == null ? null : protocolVersion >= 10
           ? validateProjectAnimationStateTriggeredEntriesSnapshot(value) : validateProjectAnimationStateEntriesSnapshot(value);
         if (snapshotProtocol !== protocolVersion) { clear(); snapshotProtocol = protocolVersion; }
       } catch { clear(); render(); return; }

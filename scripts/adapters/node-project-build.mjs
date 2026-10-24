@@ -138,7 +138,7 @@ export async function buildProject({ root, scene, targetId, godot, tool = godot,
     // Caches are regenerable. Keep the small generated project, not editor or
     // shader caches in every build. Runtime gets its own temporary project.
     await adapter.cleanupProject(project, { generatedFiles: [...generated.files.keys()], resourceFiles: [...generated.resourceFiles.values()] });
-    const diagnosticSources = scenePlans(plan).flatMap(scene => [...(scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []), ...(scene.animation ? [scene.animation.manifest.objectId] : [])]);
+    const diagnosticSources = scenePlans(plan).flatMap(scene => [...(scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []), ...(scene.animation ? [scene.animation.manifest.objectId] : []), ...(scene.physics ? [scene.physics.manifest.objectId] : [])]);
     if (diagnosticSources.length) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, captured.snapshot.source.documents, diagnosticSources);
     record.status = record.diagnostics.length ? (record.phases.some(item => item.status === 'cancelled') ? 'cancelled' : record.phases.some(item => item.status === 'timeout') ? 'timeout' : 'failed') : 'succeeded';
     await saveRecord(directory, 'build.json', record, retentionPin);
@@ -345,7 +345,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, [], { complete: false });
     }
   }
-  const diagnosticSources = scenePlans(plan).flatMap(scene => [...(scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []), ...(scene.animation ? [scene.animation.manifest.objectId] : [])]);
+  const diagnosticSources = scenePlans(plan).flatMap(scene => [...(scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []), ...(scene.animation ? [scene.animation.manifest.objectId] : []), ...(scene.physics ? [scene.physics.manifest.objectId] : [])]);
   if (diagnosticSources.length) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, frozenSourceDocuments, diagnosticSources);
   await saveRecord(sessionDirectory, 'session.json', record);
   // Final record persistence is the case commit point. Cancellation during

@@ -1,5 +1,34 @@
 # 验证指南
 
+**0.2.1 发布检查**见[独立记录](test-results/release-0.2.1/README.md)：升版后执行版本一致性、源码分发专项与发布预检；没有重跑完整功能、浏览器或原生引擎。下列八项专题现已收录 0.2.1，但保留各自 0.2.0 工作树身份、日志和摘要。最近完整检查仍是物理编辑器阶段的 **7582 项：7215 通过、367 条件跳过、零失败／取消**，不改标为升版后全量。
+
+[二维物理声明编辑器](test-results/scene-physics2d-editor/README.md)分别验证保真源补丁、来源宿主、独立面板与系统装配，以及真实浏览器的检查／取消／应用／普通保存。定向运行 `node --test scripts/tests/scene-physics2d-edit.test.mjs scripts/tests/scene-physics2d-source-host.test.mjs scripts/tests/scene-physics2d-ui.test.mjs scripts/tests/scene-physics2d-system-ports.test.mjs`；设置可信绝对 `VIENTO_GODOT_BIN` 后运行 `node scripts/tests/scene-physics2d-editor-smoke.mjs /usr/bin/google-chrome`，在临时作者工程通过GUI保存圆形碰撞体并构建、运行。每次创建新的证据目录。实例UUID手填，声明检查和工程成员／登记／控制检查分层；局部形状示意不计物理仿真。本轮完整检查7582项（7215通过／367条件跳过／零失败取消）、1261份JavaScript及版本／API／文档／模板／索引检查通过；真实Chrome四组工作流另含实际Godot运行，精确结果见专题记录，不代表安装版或设备验收。
+
+[二维物理闭环](test-results/scene-physics2d/README.md)覆盖 Rust 严格声明、场景关联、跨后端能力准入、普通对象／关系登记与字段保存、真实 Godot 碰撞／区域事件／动画及独立工程交付。定向执行 `node --test scripts/tests/scene-physics2d-*.test.mjs`；设置可信绝对 `VIENTO_GODOT_BIN` 后才运行真实引擎测试。真实 Chrome 执行 `node scripts/tests/scene-physics2d-smoke.mjs`，仅写临时作者工程和新的证据目录；不代表已安装程序或 Bevy 验收。
+
+[动画状态绑定预检](test-results/project-animation-preflight/README.md)覆盖严格生成源码、全部状态、跨场景片段隔离、无动画／实例轨道、聚合上限及精确原文定位。领域与服务运行 `node --test scripts/tests/project-animation-preflight.test.mjs scripts/tests/project-animation-preflight-workflow.test.mjs scripts/tests/project-animation-state-build.test.mjs`；无 Godot 时仅真实构建恢复用例条件跳过。真实浏览器运行 `VIENTO_GODOT_BIN=/绝对路径/Godot node scripts/tests/project-animation-preflight-smoke.mjs /usr/bin/google-chrome`，验证诊断→普通保存→重新检查→实际运行、中英日390px及作者字节。运行时动态无效请求另由六组 Godot 状态控制器测试覆盖，预检和运行保护分别验收。
+
+[从当前场景创建组装](test-results/scene-assembly-entry/README.md)验证独立作者入口、保存态目录身份、预填草稿、修订保护与保存后的项目选择。定向运行 `node --test scripts/tests/project-assembly-ui.test.mjs scripts/tests/project-assembly-build-ui.test.mjs`；真实浏览器运行 `VIENTO_GODOT_BIN=/绝对路径/Godot node scripts/tests/scene-assembly-entry-smoke.mjs /usr/bin/google-chrome`。脚本仅在临时作品中显式创建新组装，检查原作者文件字节保持，再通过实际界面完成计划、构建及协议11双实例运行；每次证据另存新目录。
+
+[按动画目标回看专题](test-results/project-animation-target-review/README.md)分层验证完整协议11准入、跨绑定目标归组、重入隔离、独立序号与完成锚点，以及选组、来源异步撤销和关闭焦点恢复。运行 `node --test scripts/tests/project-animation-target-review.test.mjs scripts/tests/project-animation-target-review-ui.test.mjs scripts/tests/project-animation-observation-build-ui.test.mjs scripts/tests/project-animation-observation-ui.test.mjs scripts/tests/project-animation-completion-observation-ui.test.mjs`。真实Chrome使用 `VIENTO_GODOT_BIN=/绝对路径/Godot node scripts/tests/project-animation-target-review-smoke.mjs /usr/bin/google-chrome`，在临时项目用三个绑定控制两个目标，通过实际构建运行后检查回看和中英日390px；每次生成新的证据目录。全量使用 `npm run check`；此轮不修改作者协议、后端或安装，精确结果独立留证。
+
+[逐实例正式动画运行](test-results/animation-instance-runtime/README.md)分别验证作者schema4显式scope、Rust可选标记及严格回执、动画子计划3、p11目标／完成锚点、Godot端口身份与清单12、旧p7／p10兼容和独立ZIP。旧文档读取不升级，范围只能经检查、审阅、普通保存启用；单场景instance构建必须明确拒绝。正式stop的局部0采样与临时预览恢复静态分别断言，端口身份测试不等于任意GDScript沙箱。
+
+```sh
+npm run core:build
+npm run core:test
+node --test scripts/tests/scene-animation-scope-*.test.mjs scripts/tests/project-animation-target-*.test.mjs
+node scripts/tests/scene-animation-runtime-scope-smoke.mjs /usr/bin/google-chrome
+```
+
+真实Godot项需将 `VIENTO_GODOT_BIN` 设置为可信可执行文件的绝对路径；未配置产生的条件跳过不计原生通过。范围Chrome脚本只操作临时作品，在专题目录下创建新的空证据目录，验证六条作者／保存／预览／计划链路及中英日390px，另由Godot测试验证两个实例的播放、完成、取消与控制器；交付测试在原作者和构建路径不可用后运行独立ZIP。旧报告不覆盖，批准前临时副本与正式源码运行分别记录。
+
+逐实例正式运行开发时的源码Rust **399/399**、真实Chrome **6链／5图**、真实Godot **18/18**、旧p7／p10兼容 **3/3**、独立ZIP **1/1**分别通过。完整 `npm run check` **7415项：7054通过、361条件跳过、0失败／取消**，版本／API、1230份JavaScript、文档／模板／索引检查通过，详见[专题README](test-results/animation-instance-runtime/README.md)；各组重叠不相加。该开发专题当时应用保持0.2.0，没有提交发布、安装或Android验收；功能现收录0.2.1源码。后续旧专题保留各自的版本和执行条件。
+
+[按实例动画预览](test-results/scene-animation-instance-preview/README.md)验证保存态品牌、多个实例的独立片段／时钟、原子采样失败、单独及全部停止、后台暂停和失效回调。定向运行 `node --test scripts/tests/scene-animation-instance-*.test.mjs scripts/tests/scene-animation-preview-canvas.test.mjs scripts/tests/scene-preview-animation-ui.test.mjs scripts/tests/scene-preview-instance-animation-ui.test.mjs`。真实浏览器运行 `node scripts/tests/scene-animation-instance-preview-smoke.mjs`，在临时双实例工程验证实际 Canvas 和中英日 390px，并检查作者字节、请求及来源指纹。该验收不增加 Godot／Bevy 独立播放或安装端结论。
+
+[状态与动画片段配置](test-results/animation-state-bindings/README.md)覆盖严格生成源码发现、单绑定合并、缺片段／类型／预算检查、循环提示、异步目录复核和普通保存。定向运行 `node --test scripts/tests/animation-state-bindings.test.mjs scripts/tests/scene-behavior-state-bindings-*.test.mjs scripts/tests/scene-behaviors-editor-ui.test.mjs`。设置可信绝对路径 `VIENTO_GODOT_BIN` 后运行 `node scripts/tests/scene-behavior-state-bindings-smoke.mjs`，使用临时工程验证三语 390px 选择、重置／取消、单行为文档保存及真实 `idle → attack → 自然完成 → idle`。每次烟测生成新目录并核对生产来源指纹；已安装程序、用户作品和历史报告不作为写入目标。
+
 **0.1.6 源码发布**已收录音轨使用位置与定位、独立关键帧动画、首次创建、实例选择和保存态场景画面预览。下列专题保留开发时点；发布检查见[版本记录](RELEASE_0.1.6.md)，源码交付不代表安装或设备验证。
 
 [已保存场景动画预览专题](test-results/scene-animation-scene-preview/README.md)分别覆盖纯快照封套、Node 服务与 HTTP、视觉帧／Canvas、独立控件与系统能力，以及真实 Chrome 的图片和三语流程。定向运行 `node --test scripts/tests/scene-animation-preview*.test.mjs scripts/tests/scene-animation-visual-frame.test.mjs scripts/tests/scene-animation-scene-preview*.test.mjs scripts/tests/scene-preview-animation*.test.mjs`。所有写入夹具都在临时副本；图片继续受原快照租约、容量与释放规则管理。此轮不运行新原生后端、准备副本或安装验收，旧报告保持原时点。

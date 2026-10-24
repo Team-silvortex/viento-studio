@@ -10,7 +10,7 @@ export function createSceneAnimationPlayer({ onSample, onState = () => {}, now =
   const clear = () => { generation++; if (handle !== null) cancel(handle); handle = null; };
   function render(seconds) {
     if (!model || disposed || !isCurrent()) return false;
-    const value = model.schemaVersion === 3 ? sampleClip(model, clipId, seconds) : sample(model, seconds);
+    const value = model.schemaVersion >= 3 ? sampleClip(model, clipId, seconds) : sample(model, seconds);
     position = value.localTimeSeconds; onSample(value); return value;
   }
   function tick(ticket) {
@@ -30,7 +30,7 @@ export function createSceneAnimationPlayer({ onSample, onState = () => {}, now =
   return Object.freeze({
     load(document) { if (disposed) return; clear(); model = document; clipId = null; position = 0; state = 'stopped'; render(0); emit(); },
     selectClip(value) {
-      if (disposed || !model || !isCurrent() || value !== null && (model.schemaVersion !== 3 || !model.clips.some(clip => clip.id === value))) return false;
+      if (disposed || !model || !isCurrent() || value !== null && (model.schemaVersion < 3 || !model.clips.some(clip => clip.id === value))) return false;
       clear(); clipId = value; position = 0; state = 'paused';
       try { const result = render(0); emit(); return Boolean(result); }
       catch { state = 'error'; clear(); emit(); return false; }

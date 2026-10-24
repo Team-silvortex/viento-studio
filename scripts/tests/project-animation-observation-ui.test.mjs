@@ -28,7 +28,7 @@ async function fixture(t, options = {}) {
   });
   const container = h.document.createElement('div'); container.id = 'projectAnimationCommands'; container.isConnected = true; h.document.body.append(container);
   const controller = h.runtime.setupProjectAnimationObservation({ container, getContext: () => context,
-    onOpen: async (source, opts) => { calls.push({ source, ...opts }); return options.onOpen ? options.onOpen(source, opts) : true; } });
+    onReviewTarget: options.onReviewTarget, onOpen: async (source, opts) => { calls.push({ source, ...opts }); return options.onOpen ? options.onOpen(source, opts) : true; } });
   t.after(() => controller.dispose());
   const el = suffix => h.element('projectAnimationCommands' + suffix);
   return { ...h, container, controller, context, calls, el, set: value => controller.setSnapshot(value),
@@ -223,4 +223,52 @@ test('protocol10 retains named clip command receipts beside state snapshots', as
   const h = await fixture(t); h.controller.setSnapshot(clipSnapshot(), { protocolVersion: 10 });
   assert.equal(h.el('Panel').hidden, false); assert.match(h.rows()[0].textContent, /待機/);
   sourceButton(h, 'clip').click(); await flushDialogs(); assert.equal(h.calls[0].source.propertyPath, '/clips/0');
+});
+
+function targetCommands() {
+  const first = entry(), second = entry();
+  for (const [index, value] of [first, second].entries()) {
+    value.sequence = index + 1; value.clip = null; value.state.clipId = null; value.state.positionSeconds = 0;
+    value.origin.instanceId = id(20 + index); value.origin.bindingId = id(10 + index);
+    value.origin.source.propertyPath = '/bindings/' + index;
+    value.target = { kind: 'instance', instanceId: value.origin.instanceId };
+  }
+  return { sequence: 2, entries: [first, second] };
+}
+test('protocol11 command observations keep targets explicit and instance filtering stable in three languages', async t => {
+  const h = await fixture(t), value = targetCommands(); h.controller.setSnapshot(value, { protocolVersion: 11 });
+  assert.equal(h.rows().length, 2); assert.deepEqual(h.rows().map(row => row.dataset.targetInstanceId), [id(20), id(21)]);
+  h.filter(id(21)); const search = h.el('Search'); search.focus(); search.selectionStart = 2; search.selectionEnd = 5;
+  for (const dictionary of [{}, en, ja]) {
+    h.language(dictionary); assert.equal(h.rows().length, 1); assert.equal(h.rows()[0].dataset.sequence, '2');
+    assert.equal(h.rows()[0].querySelector('.project-animation-target').textContent, (dictionary['动画目标：实例 {0}'] || '动画目标：实例 {0}').replace('{0}', id(21)));
+    assert.equal(h.document.activeElement, search); assert.deepEqual([search.selectionStart, search.selectionEnd], [2, 5]);
+  }
+  sourceButton(h).click(); await flushDialogs(); assert.equal(h.calls[0].source.propertyPath, '/bindings/1');
+  h.controller.setSnapshot(value, { protocolVersion: 10 }); assert.equal(h.el('Panel').hidden, true);
+  delete value.entries[0].target; h.controller.setSnapshot(value, { protocolVersion: 11 }); assert.equal(h.el('Panel').hidden, true);
+});
+
+test('protocol11 scene targets are labeled separately and malformed foreign instance targets revoke navigation', async t => {
+  const gate = deferred(), h = await fixture(t, { onOpen: () => gate.promise }), value = targetCommands();
+  for (const row of value.entries) row.target = { kind: 'scene' };
+  h.controller.setSnapshot(value, { protocolVersion: 11 }); assert.equal(h.rows().length, 2);
+  assert.equal(h.rows()[0].querySelector('.project-animation-target').textContent, '动画目标：整场景');
+  sourceButton(h).click();
+  const invalid = targetCommands(); invalid.entries[0].target.instanceId = id(99);
+  h.controller.setSnapshot(invalid, { protocolVersion: 11 }); assert.equal(h.el('Panel').hidden, true); assert.equal(h.calls[0].isCurrent(), false);
+  gate.resolve(true); await flushDialogs();
+});
+
+
+test('target review opener preserves record identity and cannot activate detached or filtered receipts', async t => {
+  const reviewed = [], h = await fixture(t, { onReviewTarget: (record, context) => reviewed.push({ record, ...context }) });
+  h.controller.setSnapshot({ sequence: 2, entries: [1, 2].map(n => { const value = entry(n); value.clip = null; value.state.clipId = null; value.target = { kind: 'instance', instanceId: value.origin.instanceId }; return value; }) }, { protocolVersion: 11 });
+  const button = h.rows()[0].querySelector('.project-animation-target-review-open'); button.click();
+  assert.deepEqual(JSON.parse(JSON.stringify(reviewed[0].record)), { kind: 'command', sequence: 1 }); assert.equal(reviewed[0].isCurrent(), true);
+  h.filter('no-match'); button.dispatch('click'); assert.equal(reviewed.length, 1); assert.equal(reviewed[0].isCurrent(), false);
+  h.controller.focusRecord(1); assert.equal(h.document.activeElement, h.el('Search'));
+  h.filter(''); h.controller.focusRecord(1); assert.equal(h.document.activeElement, button);
+  h.context.sessionOwner = 'new-run'; h.controller.refresh(); button.dispatch('click'); assert.equal(reviewed.length, 1);
+  assert.equal(h.controller.focusRecord(1), false);
 });

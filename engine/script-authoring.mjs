@@ -1,3 +1,4 @@
+import { GODOT_PHYSICS_SENSOR_SCRIPT } from './godot-physics-sensor-script.mjs';
 // Known starters prepare ordinary text drafts. Saving, registration, scene
 // relationships, language services and execution belong to their own hosts.
 import { getCreatePathError } from './document-contract.mjs';
@@ -45,6 +46,8 @@ const starters = freeze([
   { id: 'godot-project-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 项目事件',
     description: '订阅 checkpoint 并延迟发布一个值；接收后写入 last_event。仅项目运行生效，离开场景后撤销订阅。',
     content: "extends Node\n\nvar _project\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\t_project.subscribe_event(\"checkpoint\", _on_checkpoint)\n\tcall_deferred(\"_publish_checkpoint\")\n\nfunc _publish_checkpoint() -> void:\n\t_project.publish_event(\"checkpoint\", \"hello\")\n\nfunc _on_checkpoint(value) -> bool:\n\treturn _project.write_state(\"last_event\", value)\n" },
+  { id: 'godot-physics-sensor', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 物理触发区',
+    description: '绑定到物理触发区实例。进入和离开时发布项目事件，载荷为对方实例编号；事件名称可在行为参数中设置。', content: GODOT_PHYSICS_SENSOR_SCRIPT },
   { id: 'godot-project-audio', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 事件声音',
     description: "填写已声明的音轨 UUID；订阅 sound 后，true 请求播放、false 请求停止。仅当前项目场景访问生效，也可在行为中直接调用声音接口。",
     content: "extends Node\n\n@export var track_id: String = \"\"\nvar _project\n\nfunc _ready() -> void:\n\tif track_id.is_empty() or not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\tif _project.subscribe_event(\"sound\", _on_sound) == 0:\n\t\treturn\n\tcall_deferred(\"_publish_sound\")\n\nfunc _publish_sound() -> void:\n\t_project.publish_event(\"sound\", true)\n\nfunc _on_sound(value) -> bool:\n\tif typeof(value) != TYPE_BOOL:\n\t\treturn false\n\tif value:\n\t\treturn _project.play_audio(track_id)\n\treturn _project.stop_audio(track_id)\n" },

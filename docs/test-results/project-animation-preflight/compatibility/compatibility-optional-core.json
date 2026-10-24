@@ -1,0 +1,87 @@
+{
+  "name": "compatibility-optional-core",
+  "scope": "Fresh isolated process retains actual base Rust core but removes all five optional animation-state feature exports. Ordinary and unmarked legacy scripts must not require those features.",
+  "startedAt": "2026-10-24T06:43:04.092Z",
+  "repository": "/home/chiharukiryu/cdev/viento-studio",
+  "node": {
+    "executable": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+    "version": "v24.21.0"
+  },
+  "sourceSha256": {
+    "engine/project-animation-preflight.mjs": "df7134a90ba516b09aafd41bdc41706d769e3b1b4f6b5c985c138062f88c3b59",
+    "engine/project-assembly-plan-contract.mjs": "a1b5c30d6e7bbabeed2a42a33f1ff3b062df2b022d937c9ecaa167dfffbe763f",
+    "engine/animation-state-script-source.mjs": "ae4ef883392db7784d4a6ce8c278909fadf876dc99b5624f8e2c9b9293bd81fb",
+    "engine/project-animation-states.mjs": "be480196cc26f2ed90a4bc32cbabc57cef8cb631749d04073ecfd0ffb6ad0050",
+    "engine/build-target.mjs": "f4ed82e175032d78a9014b49d16f3dbe6e0ca480a9278bbc0b6b2cc763e1cf24",
+    "engine/studio-core.mjs": "ed3357546a3113cec53ca9eec19613ff9c5b9bfab62604a1f896f6050d4b07c5",
+    "engine/studio-core.wasm": "24f048fc124a06338a7f9e68b8c0eb196f7df34362947530bc664d573a07ad3c",
+    "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+    "scripts/adapters/node-project-build.mjs": "a53e885e91321bbda14e644ef02a4d7b661079032cbf8edbf768a1c4941ab48d",
+    "scripts/backends/godot4-project.mjs": "5fcd0644543fed8e63c4d33bbc860126b3a0e47fc5767e645ba4ebd80e9f9fda",
+    "scripts/tests/helpers/project-animation-completion-fixture.mjs": "20b0765d9b9ac4e7e4a81efc27ffbe53ff9a4f0d1b20924f64146a676f6fa3fa",
+    "scripts/tests/helpers/project-animation-preflight-fixture.mjs": "bfdfbc3271eea723149b5ab1baa128f51c81d6a0a25ddd862f066a6aa16b7635"
+  },
+  "cases": [
+    {
+      "status": "passed",
+      "name": "ordinary-no-animation",
+      "marker": false,
+      "animation": false,
+      "sourceSha256": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "diagnostics": 0,
+      "planUnchanged": true,
+      "optionalStateFeaturesAvailable": false
+    },
+    {
+      "status": "passed",
+      "name": "ordinary-animated",
+      "marker": false,
+      "animation": true,
+      "sourceSha256": "006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+      "diagnostics": 0,
+      "planUnchanged": true,
+      "optionalStateFeaturesAvailable": false
+    },
+    {
+      "status": "passed",
+      "name": "unmarked-legacy-no-animation",
+      "marker": false,
+      "animation": false,
+      "sourceSha256": "c302fdd131929049af2799e07dc83ecddc529e38edbad43076c954e81dfed596",
+      "diagnostics": 0,
+      "planUnchanged": true,
+      "optionalStateFeaturesAvailable": false
+    },
+    {
+      "status": "passed",
+      "name": "unmarked-legacy-animated",
+      "marker": false,
+      "animation": true,
+      "sourceSha256": "c302fdd131929049af2799e07dc83ecddc529e38edbad43076c954e81dfed596",
+      "diagnostics": 0,
+      "planUnchanged": true,
+      "optionalStateFeaturesAvailable": false
+    }
+  ],
+  "removedExports": [
+    "viento_core_animation_state_branches_version",
+    "viento_core_animation_state_combinations_version",
+    "viento_core_animation_state_conditions_version",
+    "viento_core_animation_state_selectors_version",
+    "viento_core_animation_state_table_version"
+  ],
+  "optionalFeatureSupport": {
+    "Table": false,
+    "Conditions": false,
+    "Branches": false,
+    "Selectors": false,
+    "Combinations": false
+  },
+  "strictGeneratedControl": {
+    "status": "passed",
+    "expectedErrorCode": "studio_core_unavailable"
+  },
+  "completedAt": "2026-10-24T06:43:04.131Z",
+  "status": "passed",
+  "sourceUnchangedDuringProbe": true
+}

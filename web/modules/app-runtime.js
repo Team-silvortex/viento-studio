@@ -1,7 +1,8 @@
 import { createScriptUsageSourceHost } from './app-script-usage-source.js';
 import { createAnimationStateScriptSourceHost } from './app-animation-state-script-source.js';
+import { createScenePhysics2DSourceHost } from './app-scene-physics2d-source.js';
 import { createSceneAnimationSourceHost } from './app-scene-animation-source.js';
-import { supportsStudioCoreSceneAnimation, supportsStudioCoreAnimationStateTable } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreSceneAnimation, supportsStudioCoreAnimationStateTable, supportsStudioCoreScenePhysics2D } from '../../engine/studio-core.mjs';
 import { readSceneAudioBytes } from './app-scene-audio-media.js';
 import { setupSourceSearch } from './app-source-search.js';
 import { setupSourceHistory } from './app-source-history.js';
@@ -5909,6 +5910,25 @@ async function initApp(options = {}) {
       setEditorStatus(t(state.editHasUnsavedChanges ? '动画修改已应用到原文草稿；尚未保存。' : '动画修改已应用；文本与已保存版本一致。'));
     }, focus: () => editEditorEl.focus(),
   });
+  const physicsSourceHost = createScenePhysics2DSourceHost({
+    getState: () => {
+      const doc = getActiveDoc(), sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
+      return { document: doc, sourcePath, token: `${editorLoadToken}:${scenePreviewDraftEpoch}`, content: getCurrentEditContent(),
+        baseline: editSessionBaselineContent, version: editSessionVersion,
+        editable: isEditModeActive() && state.isEditing && state.editInputMode === 'source' && state.activeEditPath === doc?.path,
+        creating: state.isCreating, busy: isEditorBusy(), sourceJSON: /\.json$/i.test(sourcePath),
+        available: typeof supportsStudioCoreScenePhysics2D === 'function' && supportsStudioCoreScenePhysics2D() };
+    },
+    digest: async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))].map(byte => byte.toString(16).padStart(2, '0')).join(''),
+    writeDraft: content => {
+      const start = editEditorEl.selectionStart, end = editEditorEl.selectionEnd, top = editEditorEl.scrollTop, left = editEditorEl.scrollLeft;
+      setSourceEditorContent(content);
+      if (Number.isInteger(start) && Number.isInteger(end)) editEditorEl.setSelectionRange?.(Math.min(start, content.length), Math.min(end, content.length));
+      editEditorEl.scrollTop = top; editEditorEl.scrollLeft = left;
+      refreshEditSessionDirtyState(); refreshEditButtons();
+      setEditorStatus(t(state.editHasUnsavedChanges ? '物理修改已应用到原文草稿；尚未保存。' : '物理修改已应用；文本与已保存版本一致。'));
+    }, focus: () => editEditorEl.focus({ preventScroll: true }),
+  });
   const animationStateScriptSourceHost = createAnimationStateScriptSourceHost({
     getState: () => {
       const doc = getActiveDoc(), sourcePath = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
@@ -5948,6 +5968,7 @@ async function initApp(options = {}) {
       compositionCreate: { getContext: compositionCreateContext, createDraft: createCompositionDraft },
       sceneAudio: audioSourceHost,
       sceneAnimation: animationSourceHost,
+      scenePhysics2D: physicsSourceHost,
       sceneBehaviors: { ...behaviorSourceHost, inspect: payload => inspectSceneBehaviorAuthoring(payload) },
       scene3d: { getContext: scene3DSourceContext, getSource: getScene3DSourceSnapshot, locateSource: locateScene3DSource },
       scene3dTransforms: { getContext: scene3DTransformSourceContext, getSource: getScene3DTransformSourceSnapshot, applyDraft: applyScene3DTransformDraft },

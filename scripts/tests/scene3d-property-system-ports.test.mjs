@@ -42,7 +42,7 @@ test('missing or disabled properties keep readonly preview and all three existin
   }
   const h = fixture(), system = await h.setup({ ports: { scene3d: {}, scene3dTransforms: {}, scene3dObjects: {}, scene3dEnvironment: {}, scene3dProperties: {} } });
   const snapshot = copy(system.snapshot()); assert.equal(snapshot.initializedModules.length, 12);
-  assert.equal(snapshot.plan.modules.length, 22); assert.equal(snapshot.plan.capabilities.length, 43);
+  assert.equal(snapshot.plan.modules.length, 23); assert.equal(snapshot.plan.capabilities.length, 44);
 });
 
 test('all five source ports detach before the settings await and controller references remain private', async () => {

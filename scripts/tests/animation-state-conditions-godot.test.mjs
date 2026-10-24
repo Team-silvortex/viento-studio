@@ -80,7 +80,7 @@ test('actual project event guards match Rust typed comparisons, exact doubles an
   const body=cases.map((row,index)=>`\tvar before_${index}: int=host.animation_control.sequence\n\tp.publish_event("case${row.index}",${literal(row.value)})\n\thost.flush_requests()\n\tprint("CASE:"+JSON.stringify([${index},host.animation_control.sequence-before_${index},receiver._state]))`).join('\n')
     +'\n\tvar int_before: int=host.animation_control.sequence\n\tp.publish_event("case11",0)\n\thost.flush_requests()\n\tprint("INT:"+JSON.stringify(host.animation_control.sequence-int_before))';
   const f=await build(t,table,body),result=await run(f);passed(result);
-  assert.equal(result.record.events[0].protocol,9);
+  assert.equal(result.record.events[0].protocol,10);
   assert.deepEqual(printed(result,'CASE:'),cases.map((row,index)=>[index,row.matched?2:0,0]));
   assert.deepEqual(printed(result,'INT:'),[2]);
   assert.equal(rows(result,'event-publish').length,cases.length+1);
@@ -105,7 +105,8 @@ for(const match of [false,true])test(`same-safe-point ${match?'matching guard pr
 });
 
 for(const match of [false,true])test(`guard ${match?'match exposes':'mismatch does not enqueue'} an unknown target clip`,real,async t=>{
-  const f=await build(t,conditionalTable({type:'boolean',operator:'eq',value:true}),`\tp.publish_event("action",${match})\n\thost.flush_requests()`,{parameters:f=>({clip_idle:f.clipIds[0][0],clip_action:'61616161-6161-4161-8161-000000000099'})});
+  // Author bindings are valid; inject the late invalid clip before testing guard admission.
+  const f=await build(t,conditionalTable({type:'boolean',operator:'eq',value:true}),`\treceiver._clips[1] = "61616161-6161-4161-8161-000000000099"\n\tp.publish_event("action",${match})\n\thost.flush_requests()`);
   const result=await run(f);
   if(match){assert.equal(result.ok,false);assert.ok(result.record.diagnostics.some(row=>row.code==='runtime_behavior_animation_clip'&&row.bindingId===f.bindingId));}
   else{passed(result);assert.deepEqual(rows(result,'event-delivery').map(row=>row.status),['handled']);}
@@ -133,7 +134,7 @@ test('v1→conditional v2 BOM/CRLF source survives independent ZIP delivery and 
 \thost.flush_requests()
 \t_step(0.5)`,{bom:true});
   const verify=events=>{
-    assert.equal(events[0].protocol,9);
+    assert.equal(events[0].protocol,10);
     assert.deepEqual(events.filter(row=>row.event==='animation-command'&&row.command.action==='select').map(row=>row.command.clipId),[f.clipIds[0][0],f.clipIds[0][1],f.clipIds[0][0]]);
     assert.deepEqual(events.filter(row=>row.event==='event-delivery').map(row=>row.status),['handled','handled']);
     assert.equal(events.filter(row=>row.event==='animation-completed').length,1);

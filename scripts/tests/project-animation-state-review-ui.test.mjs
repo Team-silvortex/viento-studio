@@ -232,7 +232,7 @@ test('protocol10 review translates source evidence without replacing selection a
     assert.equal(h.el('TriggerDetail').textContent, (dictionary['关联事件：{0}'] || '关联事件：{0}').replace('{0}', 'action'));
     assert.equal(h.el('TriggerDelivery').textContent, dictionary['进入已记录；此订阅的回调结果尚未确认。'] || '进入已记录；此订阅的回调结果尚未确认。');
   }
-  for (const mutate of [input => input.project.protocolVersion = 9, input => input.project.protocolVersion = 11,
+  for (const mutate of [input => input.project.protocolVersion = 9, input => input.project.protocolVersion = 12,
     input => input.project.events.entries[0].deliveries[0].status = 'skipped', input => input.project.events.entries[0].deliveries[0].origin = origin(2),
     input => input.project.animationStateEntries.entries[2].trigger.eventSequence = 2]) {
     const input = triggeredObservation(); mutate(input); assert.equal(h.set(input), false); assert.equal(h.el('Panel').hidden, true);

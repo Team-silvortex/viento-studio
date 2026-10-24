@@ -103,3 +103,16 @@ test('large shared atlases tint only cells and bound whole-sheet fallback before
   for(let i=0;i<3;i++)h.controller.setVisualSample(s);
   assert.equal(h.tiles(),count);assert.ok(h.allocated.reduce((sum,tile)=>sum+tile.width*tile.height*4,0)<=32*1024*1024);
 });
+
+const independentSamples=()=>[{instanceId:id(1),sample:sample()}, {instanceId:id(2),sample:{timeSeconds:.5,localTimeSeconds:.5,finished:true,values:[{trackId:id(60),instanceId:id(2),property:'offset2d',value:[-30,50]},{trackId:id(61),instanceId:id(2),property:'opacity',value:.75}]}}];
+test('instance layer paints distinct local clocks and stopping one restores only its static actor',()=>{
+ const h=harness(),before=JSON.stringify(h.model),input=independentSamples();assert.equal(h.controller.setInstanceVisualSamples(input),true);
+ const actors=h.calls.filter(c=>c.name==='fillRect'&&c.args[0]===-10);assert.equal(actors.length,2);close(actors[0].matrix,[0,2,-.5,0,144,94]);close(actors[1].matrix,[1,0,0,1,234,154]);assert.equal(actors[1].alpha,.75);
+ h.calls.length=0;h.controller.setInstanceVisualSamples([input[0]]);close(h.calls.find(c=>c.name==='fillRect'&&c.args[0]===-10).matrix,[0,2,-.5,0,144,94]);assert.ok(h.calls.some(c=>c.name==='fillRect'&&c.args[0]===230));
+ h.calls.length=0;h.controller.setInstanceVisualSamples(null);assert.ok(h.calls.some(c=>c.name==='fillRect'&&c.args[0]===90));assert.equal(JSON.stringify(h.model),before);
+});
+test('instance visual layer rejects atomically and cannot draw over layout edits or a hidden canvas',()=>{
+ const h=harness(),input=independentSamples();h.controller.setInstanceVisualSamples(input);h.calls.length=0;const bad=structuredClone(input);bad[1].sample.values[0].instanceId=id(99);assert.throws(()=>h.controller.setInstanceVisualSamples(bad));assert.equal(h.calls.length,0);
+ input[1].sample.values[0].value[0]=999;h.controller.fit();close(h.calls.filter(c=>c.name==='fillRect'&&c.args[0]===-10)[1].matrix,[1,0,0,1,234,154]);
+ h.controller.setEditing(true);assert.equal(h.controller.setInstanceVisualSamples(independentSamples()),false);h.controller.setEditing(false);h.controller.setVisible(false);assert.equal(h.controller.setInstanceVisualSamples(independentSamples()),false);h.controller.destroy();assert.equal(h.controller.setInstanceVisualSamples(independentSamples()),false);
+});

@@ -51,7 +51,7 @@ test('event review requires explicit selection and validates complete supported 
   assert.equal(h.select(1), true); assert.equal(h.el('Panel').hidden, false); assert.equal(h.el('Panel').dataset.sequence, '1');
   assert.equal(h.select(99), false); assert.equal(h.select('1'), false); assert.equal(h.el('Panel').dataset.sequence, '1');
   h.set(null); assert.equal(h.el('Panel').hidden, true); assert.equal(h.select(1), false);
-  for (const version of [1, 2, 11]) { const value = observation(); value.project.protocolVersion = version; assert.equal(h.set(value), false); }
+  for (const version of [1, 2, 12]) { const value = observation(); value.project.protocolVersion = version; assert.equal(h.set(value), false); }
   assert.equal(h.set({ project: observation().project }), false);
 });
 

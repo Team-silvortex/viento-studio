@@ -1,0 +1,26 @@
+{"event":"start","name":"compatibility-optional-core","startedAt":"2026-10-24T06:42:34.233Z","scope":"Fresh isolated process retains actual base Rust core but removes all five optional animation-state feature exports. Ordinary and unmarked legacy scripts must not require those features."}
+{"event":"case","status":"passed","name":"ordinary-no-animation","marker":false,"animation":false,"sourceSha256":"006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a","diagnostics":0,"planUnchanged":true,"optionalStateFeaturesAvailable":false}
+{"event":"case","status":"passed","name":"ordinary-animated","marker":false,"animation":true,"sourceSha256":"006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a","diagnostics":0,"planUnchanged":true,"optionalStateFeaturesAvailable":false}
+{"event":"case","status":"passed","name":"unmarked-legacy-no-animation","marker":false,"animation":false,"sourceSha256":"c302fdd131929049af2799e07dc83ecddc529e38edbad43076c954e81dfed596","diagnostics":0,"planUnchanged":true,"optionalStateFeaturesAvailable":false}
+{"event":"case","status":"passed","name":"unmarked-legacy-animated","marker":false,"animation":true,"sourceSha256":"c302fdd131929049af2799e07dc83ecddc529e38edbad43076c954e81dfed596","diagnostics":0,"planUnchanged":true,"optionalStateFeaturesAvailable":false}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'studio_core_unavailable'
+- 'studio_core_animation_state_table_unavailable'
+               ^
+
+    at file:///tmp/viento-project-animation-preflight/compatibility-optional-core.mjs:47:8 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'studio_core_unavailable',
+  expected: 'studio_core_animation_state_table_unavailable',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

@@ -1,5 +1,7 @@
 // Portable admission checks only. Executables, artifact generators and process
 // lifecycle belong to host adapters; a descriptor never supplies runnable code.
+const SCENE_PHYSICS2D_CAPABILITIES = ['physics.bodies2d', 'physics.character2d', 'physics.sensors2d'];
+
 export const EXECUTION_BACKEND_DESCRIPTOR_SCHEMA_VERSION = 1;
 
 const DESCRIPTOR_KEYS = ['format', 'schemaVersion', 'id', 'label', 'version', 'platforms', 'plans', 'capabilities', 'execution', 'extensions'];
@@ -110,7 +112,7 @@ export function validateExecutionBackendDescriptor(input) {
   for (const plan of value.plans) {
     exact(plan, ['kind', 'schemaVersion', 'runtimeProtocolVersion']);
     if (!(plan.kind === 'scene2d' && [1, 2, 3].includes(plan.schemaVersion) && [1, 2, 3].includes(plan.runtimeProtocolVersion)
-      || plan.kind === 'project' && plan.schemaVersion === 1 && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(plan.runtimeProtocolVersion))) throw invalid();
+      || plan.kind === 'project' && plan.schemaVersion === 1 && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(plan.runtimeProtocolVersion))) throw invalid();
     const key = `${plan.kind}:${plan.schemaVersion}`;
     if (plans.has(key)) throw invalid();
     plans.add(key);
@@ -148,15 +150,17 @@ function supportRequest(input) {
     text(target.sourcePath, 4096);
     if (plan.kind === 'project') {
       if (plan.schemaVersion !== 1 || Object.hasOwn(plan, 'scene') || Object.hasOwn(plan, 'actors')
-        || Object.hasOwn(plan, 'behaviors') || Object.hasOwn(plan, 'audio') || Object.hasOwn(plan, 'animation')
+        || Object.hasOwn(plan, 'behaviors') || Object.hasOwn(plan, 'audio') || Object.hasOwn(plan, 'animation') || Object.hasOwn(plan, 'physics')
         || !Array.isArray(plan.scenes) || !plan.scenes.length || plan.scenes.length > 32
         || new Set(plan.scenes.map(scene => scene?.scene?.objectId)).size !== plan.scenes.length
         || !plan.scenes.some(scene => scene?.scene?.objectId === plan.entrySceneId)
         || plan.scenes.some(scene => scene?.kind !== 'scene2d')) throw invalid();
       for (const scene of plan.scenes) supportRequest({ plan: scene });
     }
-    if (Object.hasOwn(plan, 'animation') && (!plain(plan.animation) || plan.animation.format !== 'viento-animation-plan' || ![1, 2].includes(plan.animation.schemaVersion))) throw invalid();
+    if (Object.hasOwn(plan, 'animation') && (!plain(plan.animation) || plan.animation.format !== 'viento-animation-plan' || ![1, 2, 3].includes(plan.animation.schemaVersion))) throw invalid();
     if (Object.hasOwn(plan, 'audio') && (!plain(plan.audio) || plan.audio.format !== 'viento-audio-plan' || plan.audio.schemaVersion !== 1)) throw invalid();
+    if (Object.hasOwn(plan, 'physics') && (plan.kind !== 'scene2d' || ![2, 3].includes(plan.schemaVersion)
+      || !plain(plan.physics) || plan.physics.format !== 'viento-physics2d-plan' || plan.physics.schemaVersion !== 1)) throw invalid();
     if (Object.hasOwn(plan, 'behaviors')) {
       if (!plain(plan.behaviors) || plan.behaviors.format !== 'viento-behavior-plan' || plan.behaviors.schemaVersion !== 1) throw invalid();
       token(plan.behaviors.backendId, NAMESPACE, 192);
@@ -186,13 +190,15 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
     if (plan.kind === 'project') {
       if (plan.scenes.some(scene => scene.animation) && !backend.capabilities.includes('project.animation-control')) diagnostics.push(diagnostic('build_capability_missing',
         'Backend lacks capability: project.animation-control', { capability: 'project.animation-control' }));
-      if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && [7, 8, 9, 10].includes(item.runtimeProtocolVersion))
+      if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && [7, 8, 9, 10, 11].includes(item.runtimeProtocolVersion))
         && !backend.capabilities.includes('project.animation-completion')) diagnostics.push(diagnostic('build_capability_missing',
         'Backend lacks capability: project.animation-completion', { capability: 'project.animation-completion' }));
-      for (const [protocols, capability] of [[[8, 9, 10], 'project.animation-state-snapshots'], [[9, 10], 'project.animation-state-entries'], [[10], 'project.animation-state-entry-triggers']]) {
+      for (const [protocols, capability] of [[[8, 9, 10, 11], 'project.animation-state-snapshots'], [[9, 10, 11], 'project.animation-state-entries'], [[10, 11], 'project.animation-state-entry-triggers']]) {
         if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && protocols.includes(item.runtimeProtocolVersion))
           && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing', `Backend lacks capability: ${capability}`, { capability }));
       }
+      if (plan.scenes.some(scene => scene.animation?.document.playbackScope === 'instance')
+        && !backend.plans.some(item => item.kind === 'project' && item.runtimeProtocolVersion === 11)) diagnostics.push(diagnostic('build_capability_missing', 'Per-instance animation requires project runtime protocol 11.', { capability: 'animation.instances2d' }));
       const required = new Set(['project.scenes', ...plan.scenes.flatMap(scene => scene.requiredCapabilities)]);
       for (const capability of required) if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_assembly_invalid',
         'Project plans must explicitly require every member capability.', { capability }));
@@ -200,7 +206,8 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
     }
     if (plan.animation) {
       const animationCapabilities = ['animation.visual2d'];
-      if (plan.animation.document?.schemaVersion === 3) animationCapabilities.push('animation.clips2d');
+      if (plan.animation.document?.schemaVersion >= 3) animationCapabilities.push('animation.clips2d');
+      if (plan.animation.document?.playbackScope === 'instance') animationCapabilities.push('animation.instances2d');
       if (Array.isArray(plan.animation.document?.tracks) && plan.animation.document.tracks.some(track => track?.property === 'spriteFrame2d')) animationCapabilities.push('animation.sprite2d');
       for (const capability of animationCapabilities) {
         if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_animation_invalid',
@@ -213,6 +220,18 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
       for (const capability of ['audio.nonspatial', 'audio.timeline']) {
         if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_audio_invalid',
           'Audio plans must explicitly require their playback capabilities.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
+    }
+    if (plan.physics) {
+      const kinds = new Set(Array.isArray(plan.physics.document?.bodies) ? plan.physics.document.bodies.map(body => body?.kind) : []);
+      const required = ['physics.bodies2d', ...(kinds.has('character') ? ['physics.character2d'] : []), ...(kinds.has('sensor') ? ['physics.sensors2d'] : [])];
+      for (const capability of SCENE_PHYSICS2D_CAPABILITIES) {
+        if (required.includes(capability) && !plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',
+          'Physics plans must explicitly require their declared body capabilities.', { capability }));
+        // The initial physics implementation is admitted as a complete body,
+        // character and sensor provider even when this scene uses a subset.
         if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
           `Backend lacks capability: ${capability}`, { capability }));
       }

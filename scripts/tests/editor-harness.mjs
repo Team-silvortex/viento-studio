@@ -96,6 +96,7 @@ export async function editorHarness(overrides = {}) {
     inspectScriptUsage: async () => { throw new Error('Script usage inspection is not configured in this editor harness'); },
     createScriptUsageSourceHost: () => ({ getContext() {}, getSource() {}, getUsage() {}, openSource() {} }),
     createAnimationStateScriptSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),
+    createScenePhysics2DSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),
     createSceneAnimationSourceHost: () => ({ getContext() {}, getSource() {}, getTargets() {}, applyDraft() {} }),
     createSceneAudioSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),
     createSceneBehaviorSourceHost: () => ({ getContext() {}, getSource() {}, applyDraft() {} }),

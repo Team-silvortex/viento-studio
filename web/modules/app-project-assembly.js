@@ -23,8 +23,8 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
   const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
   const version = value => typeof value === 'string' && /^sha256:[a-f0-9]{64}$/.test(value);
   const identity = value => JSON.stringify([value.session, value.sourceToken]);
-  let available = false, disposed = false, owner = '', epoch = 0, busy = false, catalog = null, loaded = null, draft = null, baseline = '', preview = null, pending = null, needsRefresh = false, selectedMember = '', error = '', message = '', opener;
-  const owns = token => !disposed && dialog.open && available && (token === undefined || token === epoch) && getContext().visible === true && identity(getContext()) === owner;
+  let available = false, disposed = false, owner = '', epoch = 0, busy = false, seedSceneId = '', sceneOwner = '', catalog = null, loaded = null, draft = null, baseline = '', preview = null, pending = null, needsRefresh = false, selectedMember = '', error = '', message = '', opener;
+  const owns = token => !disposed && dialog.open && available && (token === undefined || token === epoch) && getContext().visible === true && identity(getContext()) === owner && (!sceneOwner || getContext().sceneId === sceneOwner);
   const writable = () => owns() && !busy && !pending && !needsRefresh && catalog && draft && getContext().editable === true && !getContext().dirty && !getContext().creating && !getContext().busy;
   const signature = () => JSON.stringify(draft), dirty = () => Boolean(pending || draft && signature() !== baseline);
   const notifyBusy = value => { busy = value; setBusy(value); };
@@ -36,9 +36,12 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
     select.replaceChildren(...out); select.value = selected;
   }
   const sceneLabel = id => { const item = catalog?.scenes.find(item => item.id === id); return item ? `${item.title} · ${item.path}` : id; };
+  function renderDocuments(selected = el('Documents').value || loaded?.id || '') {
+    options(el('Documents'), (catalog?.documents || []).map(item => [item.id, `${item.title}${item.valid ? '' : ' · ' + t('需要修复')}`]), selected, '选择组装文档');
+  }
   function render() {
     if (disposed) return; translatePage(dialog);
-    options(el('Documents'), (catalog?.documents || []).map(item => [item.id, `${item.title}${item.valid ? '' : ' · ' + t('需要修复')}`]), el('Documents').value || loaded?.id || '', '选择组装文档');
+    renderDocuments();
     options(el('Type'), (catalog?.defaults.documentTypes || []).map(item => [item.id, t(item.label)]), draft?.type || '');
     options(el('Candidate'), (catalog?.scenes || []).filter(item => !draft?.sceneIds.includes(item.id)).map(item => [item.id, `${item.title} · ${item.path}`]), el('Candidate').value || (catalog?.scenes || []).find(item => !draft?.sceneIds.includes(item.id))?.id || '');
     const memberRows = (draft?.sceneIds || []).map((id, index) => [id, `${index + 1}. ${sceneLabel(id)}`]);
@@ -75,12 +78,26 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
   }
   function takeDocument(value) {
     const checked = checkedDocument(value); loaded = checked.value;
+    // A confirmed save/load must be selectable immediately; waiting for a
+    // later catalog refresh leaves newly created documents without an option.
+    if (catalog) {
+      const row = { id: loaded.id, path: loaded.path, version: loaded.version,
+        title: checked.definition.title, valid: loaded.valid === true };
+      const index = catalog.documents.findIndex(item => item.id === row.id);
+      if (index < 0) catalog.documents.push(row); else catalog.documents[index] = row;
+      renderDocuments(row.id);
+    }
     draft = { title: checked.definition.title, sceneIds: checked.definition.sceneIds, entrySceneId: checked.definition.entrySceneId, path: value.path, type: value.documentType };
-    selectedMember = draft.sceneIds[0] || ''; baseline = signature(); preview = null; pending = null; needsRefresh = false; error = ''; message = '组装已载入，可调整成员与启动场景。';
+    seedSceneId = ''; sceneOwner = ''; selectedMember = draft.sceneIds[0] || ''; baseline = signature(); preview = null; pending = null; needsRefresh = false; error = ''; message = '组装已载入，可调整成员与启动场景。';
   }
-  function newDraft() {
-    loaded = null; draft = { title: t('新项目组装'), sceneIds: [], entrySceneId: '', path: `${catalog.defaults.documentsPath}/projects/assembly.json`, type: catalog.defaults.documentType };
-    selectedMember = ''; baseline = signature(); preview = null; needsRefresh = false; error = ''; message = '选择场景后审阅完整组装原文，再保存。';
+  function newDraft(scene = null) {
+    const base = `${catalog.defaults.documentsPath}/projects/assembly${scene ? '-' + scene.id : ''}`;
+    let path = base + '.json';
+    if (scene) for (let suffix = 2; catalog.documents.some(item => item.path === path); suffix++) path = `${base}-${suffix}.json`;
+    loaded = null; draft = { title: scene ? t('{0} 的项目组装', scene.title).slice(0, 160).replace(/[\uD800-\uDBFF]$/, '') : t('新项目组装'),
+      sceneIds: scene ? [scene.id] : [], entrySceneId: scene?.id || '', path, type: catalog.defaults.documentType };
+    seedSceneId = ''; sceneOwner = scene?.id || ''; selectedMember = scene?.id || ''; baseline = scene ? '' : signature(); preview = null; needsRefresh = false; error = '';
+    message = scene ? '已将当前场景设为首个成员和启动场景，请审阅后保存组装。' : '选择场景后审阅完整组装原文，再保存。';
   }
   async function hash(content) { const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(content)); return 'sha256:' + Array.from(new Uint8Array(bytes), value => value.toString(16).padStart(2, '0')).join(''); }
   async function refresh() {
@@ -88,7 +105,12 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
     const token = epoch; notifyBusy(true); error = ''; render();
     try {
       const next = checkedCatalog(await request({ action: 'assembly-list' })); if (!owns(token)) return false;
-      if (catalog && next.worldId !== catalog.worldId) throw Error('Foreign author world.'); catalog = next;
+      if (catalog && next.worldId !== catalog.worldId) throw Error('Foreign author world.');
+      if (seedSceneId) {
+        const context = getContext();
+        if (!context.editable || context.dirty || context.creating || context.busy) { error = '当前作者状态已变化，请返回后重新打开组装。'; return false; }
+      }
+      catalog = next;
       if (pending) {
         const match = catalog.documents.find(item => item.path === pending.path && (!pending.id || item.id === pending.id));
         if (match) {
@@ -98,7 +120,14 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
             await applied(checked.value); if (token !== epoch || !dialog.open || getContext().session !== JSON.parse(owner)[0] || !getContext().visible || getContext().dirty || getContext().creating) return false; owner = identity(getContext()); message = '组装已保存，可在构建目标中选择。';
           }
         }
-      } else { needsRefresh = false; if (!draft) newDraft(); preview = null; message = '工程目录已刷新；当前组装草稿已保留，请重新审阅。'; }
+      } else {
+        needsRefresh = false;
+        if (seedSceneId) {
+          const scene = catalog.scenes.find(item => item.id === seedSceneId);
+          if (!scene) { error = '当前场景不在已保存的二维场景目录中，请先保存场景后重新打开组装。'; return false; }
+          newDraft(scene);
+        } else { if (!draft) newDraft(); preview = null; message = '工程目录已刷新；当前组装草稿已保留，请重新审阅。'; }
+      }
       return true;
     } catch (failure) { if (owns(token)) error = '无法读取项目组装；当前草稿已保留。'; return false; }
     finally { if (token === epoch && !disposed) { notifyBusy(false); render(); } }
@@ -147,13 +176,17 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
   }
   function close() {
     if (busy || dirty() && !window.confirm(t('丢弃当前未保存的组装设置？'))) return false;
-    epoch++; owner = ''; catalog = loaded = draft = preview = pending = null; dialog.dataset.dirty = 'false'; dialog.close(); opener?.focus?.(); return true;
+    epoch++; owner = ''; seedSceneId = ''; sceneOwner = ''; catalog = loaded = draft = preview = pending = null; dialog.dataset.dirty = 'false'; dialog.close(); opener?.focus?.(); return true;
   }
-  async function open(documentId = '') {
-    const context = getContext(); if (!available || disposed || dialog.open || !context.visible || !context.editable || context.dirty || context.creating || context.busy) return false;
-    owner = identity(context); epoch++; opener = document.activeElement; message = ''; error = ''; dialog.showModal(); render();
-    if (await refresh() && documentId) await load(documentId); return true;
+  async function openDraft(documentId = '', sceneId = '') {
+    const context = getContext(); if (!available || disposed || dialog.open || !context.visible || !context.editable || context.dirty || context.creating || context.busy || sceneId && context.sceneId !== sceneId) return false;
+    owner = identity(context); epoch++; seedSceneId = sceneId; sceneOwner = sceneId; opener = document.activeElement; message = ''; error = ''; dialog.showModal(); render();
+    const refreshed = await refresh();
+    if (refreshed && documentId) await load(documentId);
+    return sceneId ? refreshed && owns() && Boolean(draft) : true;
   }
+  const open = (documentId = '') => openDraft(documentId);
+  const openForScene = sceneId => uuid(sceneId) ? openDraft('', sceneId) : Promise.resolve(false);
   function changed() { fields(); preview = null; error = ''; render(); }
   for (const name of ['Name', 'Path']) el(name).addEventListener('input', changed);
   for (const name of ['Type', 'Entry']) el(name).addEventListener('change', changed);
@@ -162,10 +195,10 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
   el('Add').addEventListener('click', () => { if (!writable() || draft.sceneIds.length >= 32 || !catalog.scenes.some(item => item.id === el('Candidate').value) || draft.sceneIds.includes(el('Candidate').value)) return; draft.sceneIds.push(el('Candidate').value); selectedMember = el('Candidate').value; if (!draft.entrySceneId) draft.entrySceneId = selectedMember; preview = null; render(); });
   el('Remove').addEventListener('click', () => { if (!writable()) return; draft.sceneIds = draft.sceneIds.filter(id => id !== selectedMember); if (!draft.sceneIds.includes(draft.entrySceneId)) draft.entrySceneId = ''; selectedMember = draft.sceneIds[0] || ''; preview = null; render(); });
   for (const [name, offset] of [['Up', -1], ['Down', 1]]) el(name).addEventListener('click', () => { if (!writable()) return; const index = draft.sceneIds.indexOf(selectedMember), next = index + offset; if (index < 0 || next < 0 || next >= draft.sceneIds.length) return; [draft.sceneIds[index], draft.sceneIds[next]] = [draft.sceneIds[next], draft.sceneIds[index]]; preview = null; render(); });
-  el('New').addEventListener('click', () => { if (!busy && !pending && catalog && (!dirty() || window.confirm(t('丢弃当前未保存的组装设置？')))) { newDraft(); render(); } });
+  el('New').addEventListener('click', () => { if (owns() && !busy && !pending && catalog && (!dirty() || window.confirm(t('丢弃当前未保存的组装设置？')))) { newDraft(); render(); } });
   el('Load').addEventListener('click', () => void load()); el('Refresh').addEventListener('click', () => void refresh()); el('Check').addEventListener('click', review); el('Save').addEventListener('click', () => void save());
   el('Close').addEventListener('click', close); el('Cancel').addEventListener('click', close); dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
   dialog.addEventListener('keydown', event => { event.stopPropagation(); if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') event.preventDefault(); });
   const unsubscribe = onLanguageChange(render);
-  return Object.freeze({ open, refresh: render, isBusy: () => busy, setAvailable(value) { available = value === true; render(); }, dispose() { epoch++; disposed = true; if (busy) notifyBusy(false); if (typeof unsubscribe === 'function') unsubscribe(); dialog.remove(); } });
+  return Object.freeze({ open, openForScene, refresh: render, isBusy: () => busy, setAvailable(value) { available = value === true; render(); }, dispose() { epoch++; disposed = true; if (busy) notifyBusy(false); if (typeof unsubscribe === 'function') unsubscribe(); dialog.remove(); } });
 }

@@ -145,7 +145,7 @@ for (const protocolVersion of [3, 4, 5, 6, 7, 8, 9]) test(`protocol ${protocolVe
 
 test('unsupported protocols and partial snapshots cannot masquerade as unavailable event association evidence', () => {
   for (const protocolVersion of [1, 2]) assert.throws(() => createProjectEventReview(fixture(protocolVersion).view()), invalid);
-  const view = recorded().view(); view.project.protocolVersion = 11;
+  const view = recorded().view(); view.project.protocolVersion = 12;
   assert.throws(() => createProjectEventReview(view), invalid);
   for (const input of [undefined, null, [], {}, recorded().view().project.events]) assert.throws(() => createProjectEventReview(input), invalid);
 });

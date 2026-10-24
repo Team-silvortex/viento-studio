@@ -11,9 +11,9 @@ export function createProjectEventReview(input) {
   let view;
   try { view = queryProjectRuntimeObservation(input); } catch { throw invalid(); }
   const project = view.project, protocolVersion = project.protocolVersion;
-  if (![3, 4, 5, 6, 7, 8, 9, 10].includes(protocolVersion)) throw invalid();
+  if (![3, 4, 5, 6, 7, 8, 9, 10, 11].includes(protocolVersion)) throw invalid();
   const entries = freeze(project.events.entries), associations = new Map();
-  if (protocolVersion === 10) {
+  if (protocolVersion >= 10) {
     // Full observation admission has already checked callback uniqueness,
     // visit and source identities, pending order and retired subscriptions.
     for (const entry of project.animationStateEntries.entries) {
@@ -33,7 +33,7 @@ export function queryProjectEventReview(model, sequence) {
   const associations = indexes.get(model);
   const deliveries = event.deliveries.map(delivery => {
     const entry = associations.get(key(sequence, delivery.subscriptionId));
-    const animation = model.protocolVersion !== 10 ? { status: 'unavailable-protocol' }
+    const animation = model.protocolVersion < 10 ? { status: 'unavailable-protocol' }
       : entry ? { status: 'recorded', entry } : { status: 'not-recorded' };
     return { delivery, animation };
   });

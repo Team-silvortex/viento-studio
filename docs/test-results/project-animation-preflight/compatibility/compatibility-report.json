@@ -1,0 +1,81 @@
+{
+  "format": "viento-animation-preflight-compatibility-probes",
+  "schemaVersion": 1,
+  "status": "passed",
+  "reportCreatedAt": "2026-10-24T06:43:47.231Z",
+  "repository": "/home/chiharukiryu/cdev/viento-studio",
+  "compatibilityCases": 9,
+  "additionalNegativeControls": 1,
+  "probes": [
+    {
+      "name": "compatibility-protocols",
+      "cases": 4,
+      "scope": "Pure project generation before and after fresh preflight; no Godot import, compilation, or runtime execution.",
+      "log": "/tmp/viento-project-animation-preflight/compatibility-protocols.log",
+      "report": "/tmp/viento-project-animation-preflight/compatibility-protocols.json"
+    },
+    {
+      "name": "compatibility-optional-core",
+      "cases": 4,
+      "scope": "Fresh isolated process retains actual base Rust core but removes all five optional animation-state feature exports. Ordinary and unmarked legacy scripts must not require those features.",
+      "log": "/tmp/viento-project-animation-preflight/compatibility-optional-core.log",
+      "report": "/tmp/viento-project-animation-preflight/compatibility-optional-core.json"
+    },
+    {
+      "name": "compatibility-frozen-restore",
+      "cases": 1,
+      "scope": "Actual readFrozenProjectBuild with an intact synthetic succeeded-record header and full frozen author source. No historical tool compilation, Godot import, run, or playback is claimed.",
+      "log": "/tmp/viento-project-animation-preflight/compatibility-frozen-restore.log",
+      "report": "/tmp/viento-project-animation-preflight/compatibility-frozen-restore.json"
+    }
+  ],
+  "sourceSha256": {
+    "engine/project-animation-preflight.mjs": "df7134a90ba516b09aafd41bdc41706d769e3b1b4f6b5c985c138062f88c3b59",
+    "engine/project-assembly-plan-contract.mjs": "a1b5c30d6e7bbabeed2a42a33f1ff3b062df2b022d937c9ecaa167dfffbe763f",
+    "engine/animation-state-script-source.mjs": "ae4ef883392db7784d4a6ce8c278909fadf876dc99b5624f8e2c9b9293bd81fb",
+    "engine/project-animation-states.mjs": "be480196cc26f2ed90a4bc32cbabc57cef8cb631749d04073ecfd0ffb6ad0050",
+    "engine/build-target.mjs": "f4ed82e175032d78a9014b49d16f3dbe6e0ca480a9278bbc0b6b2cc763e1cf24",
+    "engine/studio-core.mjs": "ed3357546a3113cec53ca9eec19613ff9c5b9bfab62604a1f896f6050d4b07c5",
+    "engine/studio-core.wasm": "24f048fc124a06338a7f9e68b8c0eb196f7df34362947530bc664d573a07ad3c",
+    "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+    "scripts/adapters/node-project-build.mjs": "a53e885e91321bbda14e644ef02a4d7b661079032cbf8edbf768a1c4941ab48d",
+    "scripts/backends/godot4-project.mjs": "5fcd0644543fed8e63c4d33bbc860126b3a0e47fc5767e645ba4ebd80e9f9fda",
+    "scripts/tests/helpers/project-animation-completion-fixture.mjs": "20b0765d9b9ac4e7e4a81efc27ffbe53ff9a4f0d1b20924f64146a676f6fa3fa",
+    "scripts/tests/helpers/project-animation-preflight-fixture.mjs": "bfdfbc3271eea723149b5ab1baa128f51c81d6a0a25ddd862f066a6aa16b7635"
+  },
+  "artifactSha256": {
+    "compatibility-common.mjs": "e910f04226fef41e5f6c23f433e18b8925794dc753ade98a8cf5d2ba01f176a8",
+    "compatibility-protocols.mjs": "c1b0b975af03f985cc15fe12b7a32f21f8c7966c636009092a7833c13b4aa4ef",
+    "compatibility-protocols.log": "464df3ae447bcbbf3b983ff69ab078a2b4619a3362f84b6da85b43032718915c",
+    "compatibility-protocols.json": "a936f6e7500d71b26ad82333eefe9ca7b42540805e742f2f7b4a999f50af989e",
+    "compatibility-optional-core.mjs": "adc2f3a047e19a97b0cfb7c43328d8fdc23d666f26cbf4818c12a42b9b34fe51",
+    "compatibility-optional-core.log": "65f7dacbd278d386e1211a201006c56efd52ee26ea9af09b1226fc3b22c5ea5d",
+    "compatibility-optional-core.json": "077fe9ab54b8c408ec8df490d08a618d64d6d814b8f851448522871face18ff9",
+    "compatibility-frozen-restore.mjs": "bf832b3f61fa9e8a80a18397f9603af5bc9892b9bba0f558739076b4228a38a7",
+    "compatibility-frozen-restore.log": "6b93f841f4c3cd18242a8e14bc4937d7f28a1fe6f1cf71926064e936e8edf0b0",
+    "compatibility-frozen-restore.json": "8ab0c99b0007ef4f7314732a6d45c9a1d02b53382df395d697b55fefe8621f34",
+    "compatibility-optional-core.initial-harness-error.mjs": "7cb159ab481224dbb0d08c41e82a66878517763f795f4b698f4eef87ad3e5e1e",
+    "compatibility-optional-core.initial-harness-error.log": "caaa25653a0a2899e41b469b39aa43b1cef3a5bba714a29db705c22b5c27f0a5"
+  },
+  "reproduction": [
+    "node /tmp/viento-project-animation-preflight/compatibility-protocols.mjs > /tmp/viento-project-animation-preflight/compatibility-protocols.log 2>&1",
+    "node /tmp/viento-project-animation-preflight/compatibility-optional-core.mjs > /tmp/viento-project-animation-preflight/compatibility-optional-core.log 2>&1",
+    "node /tmp/viento-project-animation-preflight/compatibility-frozen-restore.mjs > /tmp/viento-project-animation-preflight/compatibility-frozen-restore.log 2>&1"
+  ],
+  "reproductionNotes": "Run each probe in its own Node process. Set VIENTO_COMPAT_REPO to use another checkout. Re-run compatibility-summarize.mjs after rerunning the probes.",
+  "boundaries": [
+    "Protocols 4, 7, 10, and 11 are read from actual generated backend output; preflight neither mutates input nor changes generated file bytes, source maps, resource paths, or backend metadata.",
+    "Optional feature absence uses the actual base wasm instance with only the five optional animation-state version exports removed; scene-animation support remains available. Ordinary and unmarked legacy scripts are tested with and without scene animation.",
+    "Frozen restore uses the real readFrozenProjectBuild and full author source plus a synthetic succeeded-record header. It proves restore-reader admission with a missing local named UUID, not historical compiled artifact or runtime playback compatibility.",
+    "Frozen restore runs after live author deletion and calls no adapter operation. Fresh capture of the same author data rejects the missing local clip, including its exact frozen source identity and source range.",
+    "No repository production files were changed and no unit or workflow suite was rerun for these probes.",
+    "The earlier no-Godot workflow-test failure belongs to a separate owner correction; these compatibility probe logs are not replacement workflow-suite evidence."
+  ],
+  "probeHarnessCorrection": {
+    "affected": "compatibility-optional-core negative control only",
+    "initialExpectedErrorCode": "studio_core_animation_state_table_unavailable",
+    "actualAndCorrectedExpectedErrorCode": "studio_core_unavailable",
+    "productFailure": false,
+    "note": "All four ordinary/unmarked acceptance cases passed on both runs. The initial harness asserted a nonexistent error-code spelling; its script and raw failure log are preserved."
+  }
+}

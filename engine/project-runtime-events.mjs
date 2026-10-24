@@ -1,3 +1,4 @@
+import { validateProjectAnimationTarget, projectAnimationTargetKey, initialProjectAnimationTargetState } from './project-animation-targets.mjs';
 import { createProjectAnimationStateTriggeredEntries } from './project-animation-state-entry-triggers.mjs';
 import { createProjectAnimationStateEntries } from './project-animation-state-entries.mjs';
 import { validateProjectAssemblyPlan } from './project-assembly-plan-contract.mjs';
@@ -24,20 +25,24 @@ const defaultSceneReader = (plan, options) => {
 // a project boundary, never a forged child finished (which means two smoke
 // steps in the legacy audio contract). Re-entering creates a new child reader.
 export function createProjectRuntimeEventReader(input, { protocolVersion = PROJECT_RUNTIME_PROTOCOL, onEvent, createSceneReader = defaultSceneReader, expectedTotalSeconds } = {}) {
-  if (![1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(protocolVersion)) throw Object.assign(new TypeError('Unsupported project runtime protocol.'), { errorCode: 'runtime_project_invalid' });
+  if (![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(protocolVersion)) throw Object.assign(new TypeError('Unsupported project runtime protocol.'), { errorCode: 'runtime_project_invalid' });
   const sharedState = protocolVersion >= 2 ? createProjectSharedState() : null;
   const eventBus = protocolVersion >= 3 ? createProjectEventBus() : null;
   const audioCommands = protocolVersion >= 4 ? createProjectAudioCommands() : null;
   const animationCommands = protocolVersion >= 5 ? createProjectAnimationCommands({ protocolVersion }) : null;
-  const animationCompletions = protocolVersion >= 7 ? createProjectAnimationCompletions() : null;
+  const animationCompletions = protocolVersion >= 7 ? createProjectAnimationCompletions({ protocolVersion }) : null;
   // Hosts may require a bounded deterministic run. Window sessions omit this
   // expectation and may close at any observed time, including before a step.
   if (expectedTotalSeconds !== undefined && (!time(expectedTotalSeconds) || expectedTotalSeconds > 60)) {
     throw Object.assign(new TypeError('Expected project runtime duration must be between 0 and 60 seconds.'), { errorCode: 'runtime_project_invalid' });
   }
   const plan = validateProjectAssemblyPlan(input), scenes = new Map(plan.scenes.map(scene => [scene.scene.objectId, scene]));
+  const targeted = protocolVersion === 11;
+  if (plan.scenes.some(scene => scene.animation?.document.schemaVersion === 4 && scene.animation.document.playbackScope === 'instance') !== targeted) {
+    throw Object.assign(new TypeError('Instance playback requires project runtime protocol 11.'), { errorCode: 'runtime_project_invalid' });
+  }
   const animationStates = protocolVersion >= 8 ? createProjectAnimationStates(plan) : null;
-  const animationStateEntries = protocolVersion === 10 ? createProjectAnimationStateTriggeredEntries(plan) : protocolVersion === 9 ? createProjectAnimationStateEntries(plan) : null;
+  const animationStateEntries = protocolVersion >= 10 ? createProjectAnimationStateTriggeredEntries(plan) : protocolVersion === 9 ? createProjectAnimationStateEntries(plan) : null;
   if (typeof createSceneReader !== 'function') throw new TypeError('A scene runtime reader is required.');
   const events = [], diagnostics = [];
   let started = false, completed = false, current = null, visitCount = 0, nextSceneId = plan.entrySceneId, finalExit = false, totalSeconds = 0;
@@ -56,6 +61,9 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
     return reader.push('VIENTO_RUNTIME:' + JSON.stringify({ protocol: scene.schemaVersion === 3 ? 2 : scene.schemaVersion,
       event: 'ready', sceneObjectId: scene.scene.objectId, actors }) + '\n').length === 1 && reader.diagnostics.length === 0;
   };
+  const laneFor = target => current.animationLanes.get(projectAnimationTargetKey(target))
+    || { state: initialProjectAnimationTargetState(current.plan.animation, target), commandSequence: 0 };
+  const animationTime = () => targeted ? current.animationTime : current.animationState?.timeSeconds ?? null;
   const admit = frame => {
     if (!frame || frame.protocol !== protocolVersion || completed) { issue(); return; }
     if (current?.stateSnapshot && frame.event !== 'scene-exit'
@@ -78,7 +86,7 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
         || !exact(frame, ['protocol', 'event', 'visitIndex', 'sceneId']) || frame.visitIndex !== visitCount + 1
         || frame.sceneId !== nextSceneId || !scenes.has(frame.sceneId)) { issue(); return; }
       const scene = scenes.get(frame.sceneId);
-      current = { index: ++visitCount, plan: scene, ready: false, audioReady: false, audioCueCount: 0, audioFailed: false, audioFinished: false, audioTime: null, lastAudioCommandTime: null, animationState: null, stateSnapshot: null, lastStateEntryTime: null,
+      current = { index: ++visitCount, plan: scene, ready: false, audioReady: false, audioCueCount: 0, audioFailed: false, audioFinished: false, audioTime: null, lastAudioCommandTime: null, animationState: null, animationLanes: new Map(), animationTime: null, stateSnapshot: null, lastStateEntryTime: null,
         reader: createSceneReader(scene) };
       nextSceneId = null;
     } else if (frame.event === 'scene-event') {
@@ -148,18 +156,21 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
       current.lastAudioCommandTime = frame.timeSeconds;
     } else if (frame.event === 'animation-command') {
       if (!animationCommands || !currentIdentity(frame) || !current.ready || current.audioFailed || current.audioFinished || !current.plan.animation
-        || !exact(frame, ['protocol', 'event', 'commandSequence', 'visitIndex', 'sceneId', 'bindingId', 'instanceId', 'objectId', 'command', 'state'])) { issue(); return; }
+        || !exact(frame, ['protocol', 'event', 'commandSequence', 'visitIndex', 'sceneId', 'bindingId', 'instanceId', 'objectId', 'command', 'state', ...(targeted ? ['target'] : [])])) { issue(); return; }
       const binding = current.plan.behaviors?.bindings.find(candidate => candidate.bindingId === frame.bindingId
         && candidate.instanceId === frame.instanceId && candidate.objectId === frame.objectId);
       if (!binding) { issue(); return; }
       try {
         const animation = current.plan.animation;
-        if (animationCompletions && (!current.animationState || current.animationState.phase === 'playing')) {
-          const natural = advanceProjectAnimationTransport(animation, protocolVersion, { state: current.animationState,
+        const target = targeted ? validateProjectAnimationTarget(animation, frame.target, binding) : null;
+        const lane = targeted ? laneFor(target) : { state: current.animationState };
+        if (targeted && animationTime() !== null && frame.state?.timeSeconds < animationTime()) throw new TypeError('Animation time moved backwards.');
+        if (animationCompletions && (!lane.state || lane.state.phase === 'playing')) {
+          const natural = advanceProjectAnimationTransport(animation, protocolVersion, { state: lane.state,
             timeSeconds: frame.state?.timeSeconds, command: null });
           if (natural.phase === 'finished') throw new TypeError('Natural completion must precede a later command.');
         }
-        const state = advanceProjectAnimationTransport(animation, protocolVersion, { state: current.animationState,
+        const state = advanceProjectAnimationTransport(animation, protocolVersion, { state: lane.state,
           timeSeconds: frame.state?.timeSeconds, command: frame.command });
         if (!exact(frame.state, ['sceneObjectId', 'phase', 'positionSeconds', 'timeSeconds', ...(protocolVersion >= 6 ? ['clipId'] : [])])
           || !Number.isFinite(frame.state.positionSeconds) || frame.state.positionSeconds < 0
@@ -172,24 +183,29 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
             objectId: binding.objectId, source: binding.declaration },
           animation: { objectId: animation.manifest.objectId, source: { ...animation.manifest, propertyPath: '' },
             durationSeconds: animation.document.durationSeconds, loop: animation.document.loop },
-          ...(protocolVersion >= 6 ? { clip: projectAnimationClipDeclaration(animation, state.clipId) } : {}) });
-        current.animationState = state;
+          ...(protocolVersion >= 6 ? { clip: projectAnimationClipDeclaration(animation, state.clipId) } : {}), ...(targeted ? { target } : {}) });
+        if (targeted) { current.animationLanes.set(projectAnimationTargetKey(target), { state, commandSequence: frame.commandSequence }); current.animationTime = state.timeSeconds; }
+        else current.animationState = state;
       } catch { issue(); return; }
     } else if (frame.event === 'animation-completed') {
       if (!animationCompletions || !currentIdentity(frame) || !current.ready || current.audioFailed || current.audioFinished || !current.plan.animation
-        || !exact(frame, ['protocol', 'event', 'completionSequence', 'commandSequence', 'visitIndex', 'sceneId', 'state', 'recipients'])
+        || !exact(frame, ['protocol', 'event', 'completionSequence', 'commandSequence', 'visitIndex', 'sceneId', 'state', 'recipients', ...(targeted ? ['target', 'targetCommandSequence'] : [])])
         || frame.commandSequence !== animationCommands.sequence || !Array.isArray(frame.recipients)
-        || current.animationState && current.animationState.phase !== 'playing') { issue(); return; }
+        || !targeted && current.animationState && current.animationState.phase !== 'playing') { issue(); return; }
       try {
         const animation = current.plan.animation;
-        const state = advanceProjectAnimationTransport(animation, protocolVersion, { state: current.animationState,
+        const target = targeted ? validateProjectAnimationTarget(animation, frame.target) : null;
+        const lane = targeted ? laneFor(target) : { state: current.animationState };
+        if (targeted && (frame.targetCommandSequence !== lane.commandSequence
+          || lane.state && lane.state.phase !== 'playing' || animationTime() !== null && frame.state?.timeSeconds < animationTime())) throw new TypeError('Animation target completion mismatch.');
+        const state = advanceProjectAnimationTransport(animation, protocolVersion, { state: lane.state,
           timeSeconds: frame.state?.timeSeconds, command: null });
         if (state.phase !== 'finished' || !exact(frame.state, ['sceneObjectId', 'phase', 'positionSeconds', 'timeSeconds', 'clipId'])
           || frame.state.phase !== state.phase || frame.state.sceneObjectId !== state.sceneObjectId || frame.state.clipId !== state.clipId
           || frame.state.timeSeconds !== state.timeSeconds || frame.state.positionSeconds !== state.positionSeconds
           || current.lastAudioCommandTime !== null && state.timeSeconds < current.lastAudioCommandTime) throw new TypeError('Animation completion receipt mismatch.');
         animationCompletions.append({ sequence: frame.completionSequence, commandSequence: frame.commandSequence,
-          visitIndex: frame.visitIndex, sceneId: frame.sceneId, state,
+          visitIndex: frame.visitIndex, sceneId: frame.sceneId, state, ...(targeted ? { target, targetCommandSequence: lane.commandSequence } : {}),
           animation: { objectId: animation.manifest.objectId, source: { ...animation.manifest, propertyPath: '' },
             durationSeconds: animation.document.durationSeconds, loop: animation.document.loop },
           clip: projectAnimationClipDeclaration(animation, state.clipId),
@@ -198,10 +214,12 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
             const binding = current.plan.behaviors?.bindings.find(candidate => candidate.bindingId === recipient.bindingId
               && candidate.instanceId === recipient.instanceId && candidate.objectId === recipient.objectId);
             if (!binding) throw new TypeError('Unknown frozen animation completion binding.');
+            if (targeted) validateProjectAnimationTarget(animation, target, binding);
             return { subscriptionId: recipient.subscriptionId, origin: { visitIndex: frame.visitIndex, sceneId: frame.sceneId,
               bindingId: binding.bindingId, instanceId: binding.instanceId, objectId: binding.objectId, source: binding.declaration } };
           }) });
-        current.animationState = state;
+        if (targeted) { current.animationLanes.set(projectAnimationTargetKey(target), { state, commandSequence: lane.commandSequence }); current.animationTime = state.timeSeconds; }
+        else current.animationState = state;
       } catch { issue(); return; }
     } else if (frame.event === 'animation-completion-delivery') {
       if (!animationCompletions || !currentIdentity(frame) || !current.ready || current.audioFailed || current.audioFinished
@@ -209,17 +227,22 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
       try {
         animationStateEntries?.validateDelivery?.('completed', frame.completionSequence, frame.subscriptionId, frame.status);
         animationCompletions.deliver({ sequence: frame.completionSequence, subscriptionId: frame.subscriptionId,
-          visitIndex: frame.visitIndex, sceneId: frame.sceneId, status: frame.status }, animationCommands.sequence);
+          visitIndex: frame.visitIndex, sceneId: frame.sceneId, status: frame.status }, animationCommands.sequence, targeted
+            ? laneFor(animationCompletions.snapshot().entries[frame.completionSequence - 1]?.target).commandSequence : undefined);
       } catch { issue(); return; }
     } else if (frame.event === 'animation-state-entered') {
       if (!animationStateEntries || !currentIdentity(frame) || !current.ready || current.audioFailed || current.audioFinished
-        || !exact(frame, ['protocol', 'event', 'sequence', 'visitIndex', 'sceneId', 'timeSeconds', 'commandSequence', 'bindingId', 'instanceId', 'objectId', 'stateIndex', 'clipId', ...(protocolVersion === 10 ? ['trigger'] : [])])
+        || !exact(frame, ['protocol', 'event', 'sequence', 'visitIndex', 'sceneId', 'timeSeconds', 'commandSequence', 'bindingId', 'instanceId', 'objectId', 'stateIndex', 'clipId', ...(protocolVersion >= 10 ? ['trigger'] : [])])
         || frame.commandSequence !== animationCommands.sequence || !time(frame.timeSeconds)
         || current.lastAudioCommandTime !== null && current.lastAudioCommandTime > frame.timeSeconds
-        || current.animationState && current.animationState.timeSeconds > frame.timeSeconds) { issue(); return; }
+        || animationTime() !== null && animationTime() > frame.timeSeconds) { issue(); return; }
       try {
         const { protocol, event, ...entry } = frame;
-        if (protocolVersion === 10) animationStateEntries.append(entry, eventBus.snapshot(), animationCompletions.snapshot());
+        if (targeted && entry.trigger?.kind === 'completed') {
+          const completion = animationCompletions.snapshot().entries[entry.trigger.completionSequence - 1];
+          if (!completion || laneFor(completion.target).commandSequence !== completion.targetCommandSequence) throw new TypeError('The completion target has changed.');
+        }
+        if (protocolVersion >= 10) animationStateEntries.append(entry, eventBus.snapshot(), animationCompletions.snapshot());
         else animationStateEntries.append(entry);
         current.lastStateEntryTime = frame.timeSeconds;
       } catch { issue(); return; }
@@ -228,7 +251,7 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
         || !exact(frame, ['protocol', 'event', 'sequence', 'visitIndex', 'sceneId', 'timeSeconds', 'commandSequence', 'reason', 'controllers'])
         || frame.commandSequence !== animationCommands.sequence || !time(frame.timeSeconds)
         || current.lastAudioCommandTime !== null && current.lastAudioCommandTime > frame.timeSeconds
-        || current.animationState && current.animationState.timeSeconds > frame.timeSeconds
+        || animationTime() !== null && animationTime() > frame.timeSeconds
         || (frame.reason === 'aborted' ? !current.audioFailed : current.audioFailed || eventBus.pendingCount || animationCompletions.pendingCount)) { issue(); return; }
       try {
         const { protocol, event, ...snapshot } = frame;
@@ -243,10 +266,21 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
         || !['switch', 'finished'].includes(frame.reason) || !time(frame.elapsedSeconds) || !time(totalSeconds + frame.elapsedSeconds)
         || switching && (!scenes.has(frame.nextSceneId) || frame.nextSceneId === frame.sceneId || visitCount >= PROJECT_RUNTIME_MAX_VISITS)
         || current.lastAudioCommandTime !== null && current.lastAudioCommandTime > frame.elapsedSeconds
-        || current.animationState && current.animationState.timeSeconds > frame.elapsedSeconds
+        || animationTime() !== null && animationTime() > frame.elapsedSeconds
         || !actorStates(current.plan, frame.actors)
         || current.plan.audio && (!current.audioFinished || !sameTime(current.audioTime, frame.elapsedSeconds))) { issue(); return; }
-      if (animationCompletions && current.plan.animation && (!current.animationState || current.animationState.phase === 'playing')) {
+      if (targeted && current.plan.animation) {
+        try {
+          const lanes = [...current.animationLanes.values()];
+          if (current.plan.animation.document.playbackScope !== 'instance' && !lanes.length) lanes.push({ state: null });
+          for (const lane of lanes) if (!lane.state || lane.state.phase === 'playing') {
+            const natural = advanceProjectAnimationTransport(current.plan.animation, protocolVersion,
+              { state: lane.state, timeSeconds: frame.elapsedSeconds, command: null });
+            if (natural.phase === 'finished') throw new TypeError('Natural animation completion is missing before scene exit.');
+          }
+        } catch { issue('Natural animation completion is missing before scene exit.'); return; }
+      }
+      if (!targeted && animationCompletions && current.plan.animation && (!current.animationState || current.animationState.phase === 'playing')) {
         try {
           const natural = advanceProjectAnimationTransport(current.plan.animation, protocolVersion,
             { state: current.animationState, timeSeconds: frame.elapsedSeconds, command: null });

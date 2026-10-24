@@ -12,7 +12,7 @@ const propose = (source = context(), selection = request()) => prepareScriptDraf
 
 test('known starters are immutable data and the minimal Node contains no lifecycle or execution instructions', () => {
   const all = listScriptStarters();
-  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal', 'bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion', 'godot-scene-switch', 'godot-project-state', 'godot-project-events', 'godot-project-audio', 'godot-project-animation', 'godot-project-animation-clip', 'godot-project-animation-event', 'godot-project-animation-completion', 'godot-project-animation-state-table']);
+  assert.deepEqual(all.map(item => item.id), ['godot-node', 'godot-signal', 'bevy-rust', 'bevy-rust-signal', 'bevy-rust-motion', 'godot-scene-switch', 'godot-project-state', 'godot-project-events', 'godot-physics-sensor', 'godot-project-audio', 'godot-project-animation', 'godot-project-animation-clip', 'godot-project-animation-event', 'godot-project-animation-completion', 'godot-project-animation-state-table']);
   assert.equal(all[0].content, 'extends Node\n');
   for (const starter of all) {
     assert.deepEqual(Object.keys(starter), ['id', 'languageId', 'backendId', 'label', 'description', 'content']);

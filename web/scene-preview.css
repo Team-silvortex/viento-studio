@@ -72,3 +72,14 @@
 @media(max-width:700px) { .scene-preview-animation-time { grid-template-columns:minmax(0,1fr) auto; } .scene-preview-animation-time span { grid-column:1/-1; } }
 
 #scenePreviewAnimationClipSelection{display:grid;gap:6px;min-width:0;margin-block:12px}#scenePreviewAnimationClip{width:100%;max-width:100%;min-width:0;box-sizing:border-box;padding:8px;font:inherit}
+
+/* Independent saved-instance transport stays inside the preview inspector. */
+.scene-preview-instance-animation { min-width:0; margin-block:12px; }
+.scene-preview-instance-animation[hidden], .scene-preview-instance-animation [hidden] { display:none!important; }
+.scene-preview-instance-animation-selectors { display:grid; grid-template-columns:minmax(0,1fr); gap:10px; }
+.scene-preview-instance-animation-selectors label, #scenePreviewAnimationModeSelection { display:grid; gap:6px; min-width:0; }
+.scene-preview-instance-animation select, #scenePreviewAnimationMode { width:100%; max-width:100%; min-width:0; box-sizing:border-box; padding:8px; font:inherit; }
+.scene-preview-instance-animation .scene-preview-toolbar button { white-space:normal; overflow-wrap:anywhere; }
+#scenePreviewInstanceAnimationOverview { padding-inline-start:20px; font-size:12px; overflow-wrap:anywhere; }
+#scenePreviewInstanceAnimationOverview li { margin-block:5px; }
+#scenePreviewInstanceAnimationSummary, #scenePreviewInstanceAnimationStatus { overflow-wrap:anywhere; }

@@ -213,7 +213,8 @@ func _ready() -> void:
 });
 
 test('real syntactically valid unknown clip is rejected by the runtime with controller source ownership', real, async t => {
-  const f=await build(t,{parameters:f=>({clip_idle:f.clipIds[0][0],clip_action:'61616161-6161-4161-8161-000000000099'}),body:'\tp.publish_event("action",true)\n\thost.flush_requests()'});
+  // Author bindings are valid; ordinary script mutation exercises the late runtime rejection path.
+  const f=await build(t,{body:'\treceiver._clips[1] = "61616161-6161-4161-8161-000000000099"\n\tp.publish_event("action",true)\n\thost.flush_requests()'});
   const result=await run(f);assert.equal(result.ok,false);
   assert.ok(result.record.diagnostics.some(row=>row.code==='runtime_behavior_animation_clip'&&row.bindingId===f.bindingId&&row.sourcePath==='documents/behaviors/demo.json'),JSON.stringify(result.record.diagnostics));
   assert.deepEqual(selections(result),[f.clipIds[0][0]]);

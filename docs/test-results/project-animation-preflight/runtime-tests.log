@@ -1,0 +1,122 @@
+✔ actual ordered branches select one declared first match and otherwise use the last fallback (13231.149498ms)
+✔ actual ordered branches select one reordered first match and otherwise use the last fallback (12778.654717ms)
+✔ unmatched conditions including cross-type ne preserve the state and live subscription until a later matching event (12804.938312ms)
+✔ a matching self-edge restarts once, entering a new state does not cascade, and natural completion returns once (12819.793183ms)
+✔ ordered event group unmatched at a natural completion safe point retains existing scheduling semantics (12862.807098ms)
+✔ ordered event group matching at a natural completion safe point retains existing scheduling semantics (12909.653077ms)
+✔ failure entering the first matching branch stops execution without attempting the fallback (13108.93686ms)
+✔ explicit firstMatch with no transitions compiles and activates without event subscriptions (12799.217993ms)
+✔ v3 exact floating thresholds and encoded Unicode strings choose the corresponding branch (13002.408007ms)
+✖ v3 BOM/CRLF source survives independent ZIP delivery after author and build removal (12851.052494ms)
+✔ real all/any groups preserve mixed strict scalar truth values and accept exactly one transition per matching group (13979.714921ms)
+✔ real GDS short-circuit traces preserve leaf order repeated reads and skipped shared-state leaves (253.228915ms)
+✔ real mixed firstMatch groups and scalar branches read state at delivery time and execute only the first match (12723.696725ms)
+✔ real a matching all group with rejected entry does not attempt a matching any branch or fallback (12822.658831ms)
+✔ real payload-only v5 accepts the legacy port while a shared-state leaf requires read_state before side effects (262.307405ms)
+✔ real v5 BOM/CRLF group controller retains p10 entries completion and immutable author bytes in an independent ZIP (22658.647015ms)
+✔ real shared-state guards preserve exact typed comparisons and treat missing or mismatched values as false even for ne (13531.28461ms)
+✔ real mixed firstMatch groups read shared state at callback time and keep payload and fallback branches independent (13161.235854ms)
+✔ real first matching project-state branch failure never attempts its valid fallback (12808.692705ms)
+✔ real selected controllers see persistent shared state after scene reentry while old visit ports are revoked (13075.278743ms)
+✔ real v4 declines an otherwise complete legacy port without read_state before any subscriptions or animation calls (13065.504536ms)
+✔ real v4 BOM/CRLF controller retains p10 entries and completion through independent ZIP delivery (23242.672361ms)
+✖ actual project event guards match Rust typed comparisons, exact doubles and strings while false guards keep subscriptions alive (13736.440646ms)
+✔ same-safe-point unmatched guard retains a captured natural completion (13268.705011ms)
+✔ same-safe-point matching guard preempts a captured natural completion (13385.855447ms)
+✔ guard mismatch does not enqueue an unknown target clip (13749.499079ms)
+✔ guard match exposes an unknown target clip (13590.119055ms)
+✔ conditional callback rejects unsupported scalars without side effects and standalone missing ports remain safe (14034.505813ms)
+✖ v1→conditional v2 BOM/CRLF source survives independent ZIP delivery and executes guards after original files are removed (14928.765864ms)
+✔ trusted defaults import without core initialization and exactly match public validated generation (37.233559ms)
+✔ unsafe event text is rejected by the core before source generation (1.599457ms)
+✔ real state controller selects idle, ignores unknown events, runs action and completes back to idle (false) (12375.84248ms)
+✔ real state controller selects idle, ignores unknown events, runs action and completes back to idle (true) (13908.947984ms)
+✔ real FIFO event transitions, unmatched duplicate inputs and explicit self edges have distinct behavior (12743.674287ms)
+✔ real same-safe-point movement supersedes an already captured attack completion (12900.616817ms)
+✔ real captured clip parameters survive later script mutation and preserve completion matching (12753.40729ms)
+✔ real bound event callback keeps dotted and hyphenated names exact with a publisher declared first (14043.410674ms)
+✔ real exit revokes both subscriptions including captured pending deliveries (12778.973096ms)
+✔ real scene reentry starts a fresh controller and cannot retain old subscriptions (12921.922145ms)
+✔ real syntactically valid unknown clip is rejected by the runtime with controller source ownership (13170.699386ms)
+✔ real standalone scene safely leaves its ordinary automatic animation untouched (8663.925648ms)
+✔ real 32 explicit self edges inherit the bounded command queue after initial entry (13964.886188ms)
+✔ real 33 explicit self edges inherit the bounded command queue after initial entry (12968.034351ms)
+✔ state-controller ZIP runs elsewhere with exact source receipts after the author and build are removed (18730.397714ms)
+✔ real generated source validates all parameters and ports before startup and fail-stops partial admission (271.060612ms)
+✔ only exact frozen state scripts select protocol10; manually edited scripts retain protocol7 (276.297509ms)
+✔ schema11 inventory rejects forged controller fields, duplicate bindings, clip mappings and missing runtime files (90.941276ms)
+✔ real snapshots distinguish two states selecting the same clip and retain frozen source navigation (13878.267943ms)
+✔ real two bindings of one script retain separate state snapshots in frozen binding order (13677.139528ms)
+✔ real event conditions and ordered branches are sampled from actual state rather than guessed from commands (15435.060973ms)
+✔ real deactivated controller is explicit rather than fabricated as an active state (15004.173424ms)
+✔ real freed controller is explicit rather than fabricated as an active state (14938.740605ms)
+✔ real diagnostic abort samples the controller before cleanup and does not fabricate a finished frame (14126.62646ms)
+✔ real scene reentry uses a new visit and does not reuse previous weak controller state (14277.490202ms)
+✔ real BOM/CRLF state controller and snapshot layer survive ZIP delivery after deleting author and build trees (24050.235588ms)
+✔ real v2 conditional script returns to idle on completion before its terminal snapshot (13907.797901ms)
+✔ real abort before controller creation reports unavailable while preserving the primary diagnostic (13820.627908ms)
+✔ real malformed private state fails explicitly and cannot masquerade as unavailable or a normal finish (13922.887039ms)
+✔ maximum schema11 controller inventory fits its bounded budget while old inventories keep their original limit (164.867323ms)
+ℹ tests 59
+ℹ suites 0
+ℹ pass 56
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 393929.722571
+
+✖ failing tests:
+
+test at scripts/tests/animation-branches-godot.test.mjs:120:1
+✖ v3 BOM/CRLF source survives independent ZIP delivery after author and build removal (12851.052494ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 9
+  
+      at verify (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-branches-godot.test.mjs:122:32)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-branches-godot.test.mjs:123:44)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/animation-state-conditions-godot.test.mjs:67:1
+✖ actual project event guards match Rust typed comparisons, exact doubles and strings while false guards keep subscriptions alive (13736.440646ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 9
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-conditions-godot.test.mjs:83:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/animation-state-conditions-godot.test.mjs:129:1
+✖ v1→conditional v2 BOM/CRLF source survives independent ZIP delivery and executes guards after original files are removed (14928.765864ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 9
+  
+      at verify (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-conditions-godot.test.mjs:137:12)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/animation-state-conditions-godot.test.mjs:142:44)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

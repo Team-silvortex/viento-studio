@@ -102,7 +102,8 @@ for(const match of [false,true])test(`ordered event group ${match?'matching':'un
 });
 
 test('failure entering the first matching branch stops execution without attempting the fallback',real,async t=>{
-  const f=await build(t,branchTable(),`\tp.publish_event("choose",1)\n\thost.flush_requests()`,{parameters:f=>({clip_idle:f.clipIds[0][0],clip_first:'61616161-6161-4161-8161-000000000099',clip_second:f.clipIds[0][0],clip_fallback:f.clipIds[0][0]})});
+  // Author bindings are valid; corrupt the selected runtime clip to test fail-stop without fallback.
+  const f=await build(t,branchTable(),`\treceiver._clips[1] = "61616161-6161-4161-8161-000000000099"\n\tp.publish_event("choose",1)\n\thost.flush_requests()`);
   const result=await run(f);assert.equal(result.ok,false);assert.ok(result.record.diagnostics.some(row=>row.code==='runtime_behavior_animation_clip'&&row.bindingId===f.bindingId));assert.equal(rows(result,'animation-command').length,2);
 });
 
@@ -118,7 +119,7 @@ test('v3 exact floating thresholds and encoded Unicode strings choose the corres
 
 test('v3 BOM/CRLF source survives independent ZIP delivery after author and build removal',real,async t=>{
   const table=branchTable(),f=await build(t,table,`${choose(-.5,0)}\n${choose(1,1)}\n\t_step(0.5)`,{bom:true});
-  const verify=events=>{assert.equal(events[0].protocol,9);assert.deepEqual(events.filter(row=>row.event==='event-delivery').map(row=>row.status),['handled','handled']);assert.equal(events.filter(row=>row.event==='animation-completed').length,1);};
+  const verify=events=>{assert.equal(events[0].protocol,10);assert.deepEqual(events.filter(row=>row.event==='event-delivery').map(row=>row.status),['handled','handled']);assert.equal(events.filter(row=>row.event==='animation-completed').length,1);};
   const result=await run(f);passed(result);verify(result.record.events);assert.deepEqual(printed(result,'CHOICE:'),[[2,2,true],[1,2,true]]);
   const inspect=()=>inspectBackendProject({buildDirectory:f.output}),delivery=await planBackendProjectDelivery({inspection:await inspect(),assertCurrent:inspect});
   const zip=path.join(f.temporary,'branches-controller.zip');await writeExportZip(delivery,zip);assert.ok((await verifyBackendProjectDelivery(zip)).fileCount>0);

@@ -1,0 +1,63 @@
+{
+  "status": "passed",
+  "completedAt": "2026-10-24T07:11:07.712599+00:00",
+  "repository": "/home/chiharukiryu/cdev/viento-studio",
+  "implementationFrozen": true,
+  "diagnosticCode": "build_physics_invalid",
+  "coreErrorCode": "scene_physics2d_invalid",
+  "coreProtocolVersion": 1,
+  "bodyCount": [
+    1,
+    128
+  ],
+  "capabilities": [
+    "physics.bodies2d",
+    "physics.character2d",
+    "physics.sensors2d"
+  ],
+  "capabilitiesConditional": true,
+  "tests": [
+    {
+      "name": "Rust scene_physics2d",
+      "passed": 5,
+      "failed": 0,
+      "log": "/tmp/viento-physics2d-core/rust-focused.log"
+    },
+    {
+      "name": "JavaScript native core bridge",
+      "passed": 9,
+      "failed": 0,
+      "log": "/tmp/viento-physics2d-core/js-core.log"
+    },
+    {
+      "name": "JavaScript scene domain",
+      "passed": 13,
+      "failed": 0,
+      "log": "/tmp/viento-physics2d-core/js-domain.log"
+    }
+  ],
+  "buildLog": "/tmp/viento-physics2d-core/core-build.log",
+  "fileSha256": {
+    "crates/viento-studio-core/src/scene_physics2d.rs": "608453e0e43306bb534c966360e65ebff4bd753b3b595bdc87bb44dba6fd105d",
+    "crates/viento-studio-core/src/lib.rs": "69979d62c7e5afac8a19eb4d500137c673f528bb22e3ce299fca0498ca63305b",
+    "engine/studio-core.mjs": "1e0c544673e79ecf39bbd0db3f19c5b7bd58256ed4dab803521cc852f08123e8",
+    "engine/scene-physics2d-core.mjs": "9ccbc6fbd3a0f9f197eb66705535c64bb497447021e8bfb03b29201cd646a316",
+    "engine/scene-physics2d.mjs": "b82f579dcca58c891113d558df8945c70bdcfc5851238421dbc7df4c9775b771",
+    "scripts/tests/scene-physics2d-core.test.mjs": "919fe11a37d30f0dd119c2631bf024726d4172003de5af4fee79c461d37295a4",
+    "scripts/tests/scene-physics2d-plan.test.mjs": "18694aa9e074f45c6be316aa7e4c597b6517e4244394379a2010cfa98071d33e",
+    "engine/studio-core.wasm": "e6f0fdf277400ceb7f6b3978370db054fd7453356618a855d08d5cb39c156f35",
+    "engine/studio-core.build.json": "34f168de26c869f0b30cbdd7a95703848e39501c59fa4ea01695cb38d06b2798"
+  },
+  "logSha256": {
+    "rust-focused.log": "60715a792508be18ad667ee4c105e3fff7a2529db6b215b7f08caba864706682",
+    "js-core.log": "232e9ffb5bd817284db186571e5eb149ba488e7458b8eaec2c4728dd55c2802f",
+    "js-domain.log": "66059f9514ed1ab4c06b03b243de2a3eff2e0e01eb262c8d3b4630201e30e87a",
+    "core-build.log": "d748590e391c5efe6d9be2b215e2e6ca2ce44fe019a059fe67dfb575e5642e0f"
+  },
+  "notes": [
+    "No physics simulation or engine APIs are implemented by this module.",
+    "No opted-in relation returns before new domain admission; old plans retain their original constraints.",
+    "Scalar toJSON behavior parameter values are accepted; functions and accessors are rejected.",
+    "Existing uncommitted file contents were used as baselines and preserved."
+  ]
+}

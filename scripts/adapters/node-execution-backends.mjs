@@ -5,6 +5,7 @@ import { GODOT4_EXECUTION_ADAPTER } from '../backends/godot4-adapter.mjs';
 import { BEVY_EXECUTION_ADAPTER } from '../backends/bevy-adapter.mjs';
 import { BEVY_RUST_EXECUTION_ADAPTER } from '../backends/bevy-rust-adapter.mjs';
 import { createProjectAnimationStateCatalog } from '../../engine/project-animation-states.mjs';
+import { SCENE_PHYSICS2D_CAPABILITIES, scenePhysics2DCapabilities } from '../../engine/scene-physics2d.mjs';
 import { buildTargetIdentity } from '../../engine/build-target.mjs';
 import { buildError } from './node-build-snapshot.mjs';
 import { parseJsonSource, locateJsonSource } from '../../engine/json-source.mjs';
@@ -101,23 +102,33 @@ function relativePath(value) {
 // stored artifact inventory. Resource bindings are neutral UUID → file paths.
 export function validateGeneratedExecutionProject(adapter, plan, generated) {
   const selectedPlan = adapter.descriptor.plans.find(item => item.kind === plan.kind && item.schemaVersion === plan.schemaVersion);
+  const physicsScenes = (plan.kind === 'project' ? plan.scenes : [plan]).filter(scene => Object.hasOwn(scene, 'physics'));
+  if (physicsScenes.length && (!Array.isArray(generated?.backend?.capabilities)
+    || SCENE_PHYSICS2D_CAPABILITIES.some(capability => !adapter.descriptor.capabilities.includes(capability)
+      || !generated.backend.capabilities.includes(capability))
+    || physicsScenes.some(scene => scenePhysics2DCapabilities(scene.physics.document).some(capability =>
+      !scene.requiredCapabilities.includes(capability) || !plan.requiredCapabilities.includes(capability))))) invalid('Generated backend lacks the declared physics capabilities.');
   // New project protocols retain byte-compatible legacy artifacts only when
   // the frozen plan does not need their newer animation contract.
   const projectAnimation = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation);
   const projectStates = projectAnimation && createProjectAnimationStateCatalog(plan).scenes.length > 0;
-  const projectClips = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation?.document?.schemaVersion === 3);
+  const projectClips = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation?.document?.schemaVersion >= 3);
+  const projectInstances = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation?.document?.playbackScope === 'instance');
   const legacyProjectProtocol = selectedPlan?.kind === 'project' && selectedPlan.schemaVersion === 1
     && Array.isArray(plan.scenes) && (
-      [5, 6, 7, 8, 9, 10].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 4 && !projectAnimation
+      [5, 6, 7, 8, 9, 10, 11].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 4 && !projectAnimation
       || selectedPlan.runtimeProtocolVersion === 6 && generated?.backend?.protocolVersion === 5 && projectAnimation && !projectClips
-      || [8, 9, 10].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 7 && projectAnimation && !projectStates);
+      || [8, 9, 10, 11].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 7 && projectAnimation && !projectStates && !projectInstances
+      || selectedPlan.runtimeProtocolVersion === 11 && generated?.backend?.protocolVersion === 10 && projectStates && !projectInstances);
   if (!selectedPlan || !generated || !(generated.files instanceof Map) || !(generated.resourceFiles instanceof Map)
-    || generated.files.size < 1 || generated.files.size > (selectedPlan?.kind === 'project' && [9, 10].includes(selectedPlan.runtimeProtocolVersion) && generated.backend?.protocolVersion === selectedPlan.runtimeProtocolVersion ? 1024 : 512) || generated.resourceFiles.size !== plan.resources.length
+    || generated.files.size < 1 || generated.files.size > (selectedPlan?.kind === 'project' && [9, 10, 11].includes(selectedPlan.runtimeProtocolVersion) && [9, 10, 11].includes(generated.backend?.protocolVersion) ? 1024 : 512) || generated.resourceFiles.size !== plan.resources.length
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 6 && !projectClips
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 7 && !projectAnimation
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 8 && (!projectStates || !adapter.descriptor.capabilities.includes('project.animation-state-snapshots'))
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 9 && (!projectStates || !['project.animation-state-snapshots', 'project.animation-state-entries'].every(capability => adapter.descriptor.capabilities.includes(capability)))
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 10 && (!projectStates || !['project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers'].every(capability => adapter.descriptor.capabilities.includes(capability)))
+    || selectedPlan?.kind === 'project' && (projectInstances && generated.backend?.protocolVersion !== 11
+      || generated.backend?.protocolVersion === 11 && (!projectInstances || !['animation.instances2d', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers'].every(capability => adapter.descriptor.capabilities.includes(capability))))
     || generated.backend?.id !== adapter.descriptor.id || (generated.backend.protocolVersion !== selectedPlan.runtimeProtocolVersion && !legacyProjectProtocol)
     || typeof generated.backend.version !== 'string' || !/^\d+\.\d+\.\d+$/.test(generated.backend.version)
     || !hash(generated.backend.sha256)) invalid('Invalid generated backend project.');

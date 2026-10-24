@@ -2,7 +2,7 @@ import { setupSceneAnimationTrackCopy } from './app-scene-animation-track-copy.j
 import { setupSceneAnimationRetime } from './app-scene-animation-retime.js';
 import { setupSceneAnimationUsage } from './app-scene-animation-usage.js';
 import { setupSceneAnimationClips } from './app-scene-animation-clips.js';
-import { supportsStudioCoreSceneAnimationSprites, supportsStudioCoreSceneAnimationClips, supportsStudioCoreSceneAnimationRetime, supportsStudioCoreSceneAnimationTrackCopy } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreSceneAnimationSprites, supportsStudioCoreSceneAnimationClips, supportsStudioCoreSceneAnimationRetime, supportsStudioCoreSceneAnimationTrackCopy, supportsStudioCoreSceneAnimationInstances } from '../../engine/studio-core.mjs';
 import { isSceneAnimationTargets, sceneAnimationTargetsMatchSource, sceneAnimationTargetValue, validateSceneAnimationTargets } from '../../engine/scene-animation-targets.mjs';
 import { readSceneAnimationDocument, createSceneAnimationProposal, isSceneAnimationProposal, retimeSceneAnimationDraft, copySceneAnimationTrackDraft } from '../../engine/scene-animation-edit.mjs';
 import { createSceneAnimationPlayer } from './scene-animation-player.js';
@@ -29,7 +29,11 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
         <p id="sceneAnimationTargetsPath" class="muted"></p><p class="muted" data-i18n="目录来自上次读取的已保存场景，不包含场景草稿。名称相同的实例用完整编号区分；缺失目标不会自动替换。"></p></section>
       <section id="sceneAnimationFields" hidden><div class="scene-animation-settings">
         <label><span data-i18n="动画时长（秒）"></span><input id="sceneAnimationDuration" type="text" inputmode="decimal"></label>
-        <label><span data-i18n="循环播放"></span><select id="sceneAnimationLoop"><option value="true" data-i18n="是"></option><option value="false" data-i18n="否"></option></select></label></div>
+        <label><span data-i18n="循环播放"></span><select id="sceneAnimationLoop"><option value="true" data-i18n="是"></option><option value="false" data-i18n="否"></option></select></label>
+        <label><span data-i18n="运行播放范围"></span><select id="sceneAnimationPlaybackScope"><option value="scene" data-i18n="整场景共用播放"></option><option value="instance" data-i18n="每个实例独立播放"></option></select></label></div>
+        <p class="muted" data-i18n="按实例运行时，动画控制只影响调用行为所属实例的轨道。选择后需检查、审阅并保存；临时预览范围不会修改此设置。"></p>
+        <p id="sceneAnimationPlaybackScopeProjectHint" class="muted" hidden data-i18n="按实例运行目前需要从项目组装构建，单独场景构建暂不支持此范围；已保存场景预览仍可单独使用。"></p>
+        <p id="sceneAnimationPlaybackScopeStatus" class="muted" role="status"></p>
         <section id="sceneAnimationRetime"></section>
         <section id="sceneAnimationClips"></section>
         <div class="scene-animation-toolbar"><h3 data-i18n="动画轨道"></h3><button id="sceneAnimationAddTrack" class="doc-btn doc-btn-ghost" type="button" data-i18n="添加动画轨道"></button></div>
@@ -54,6 +58,7 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
   const node = (tag, text = '') => { const result = document.createElement(tag); result.textContent = text; return result; };
   let disposed = false, epoch = 0, session = null, pending = false, proposal = null, approval = '', draft = null, rows = [], initial = '', opener = null;
   let targetCatalog = null, targetState = 'idle', targetGeneration = 0, targetCapability = null, targetCatalogToken, approvedTargets = null;
+  let scopeGeneration = 0, scopeCapability = supportsStudioCoreSceneAnimationInstances();
   let message = '', diagnostic = '', translations = [], previewForm = '', previewState = 'stopped', latestSample = null, previewModel = null, selectedClip = null;
   const eligible = context => context.editable === true && !context.creating && context.sourceJSON === true && context.animationSource === true
     && typeof context.sourcePath === 'string' && context.sourcePath && typeof context.sourceToken === 'string';
@@ -61,18 +66,23 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
     const context = getContext(); return Boolean(!disposed && dialog.open && session && eligible(context) && context.available === true && !context.busy
       && context.sourcePath === session.source.sourcePath && context.sourceToken === session.source.token);
   };
-  const raw = () => session ? { durationSeconds: el('Duration').value, loop: el('Loop').value, tracks: rows.map(row => ({ id: row.id,
+  const raw = () => session ? { durationSeconds: el('Duration').value, loop: el('Loop').value, ...(session.model.schemaVersion === 4 || el('PlaybackScope').value !== 'scene' ? { playbackScope: el('PlaybackScope').value } : {}), tracks: rows.map(row => ({ id: row.id,
     instanceId: row.instance.value, property: row.property.value, interpolation: row.interpolation.value,
     ...(row.property.value === 'spriteFrame2d' ? { grid: { columns: row.columns.value, rows: row.gridRows.value } } : {}),
-    keyframes: row.keys.map(key => ({ atSeconds: key.time.value, value: key.vector ? [key.x.value, key.y.value] : key.x.value })) })), ...(session.model.schemaVersion === 3 || clips.getValue().length ? { clips: clips.getValue() } : {}) } : null;
+    keyframes: row.keys.map(key => ({ atSeconds: key.time.value, value: key.vector ? [key.x.value, key.y.value] : key.x.value })) })), ...([3, 4].includes(session.model.schemaVersion) || clips.getValue().length ? { clips: clips.getValue() } : {}) } : null;
   const signature = () => JSON.stringify(raw());
   const dirty = () => Boolean(session && signature() !== initial);
   const canReadTargets = () => typeof getTargets === 'function' && getContext().targetsAvailable === true;
   const hasTargets = () => Boolean(session && current() && canReadTargets() && targetCatalog && targetState === 'ready'
     && targetCatalogToken === getContext().targetsToken && sceneAnimationTargetsMatchSource(targetCatalog, session.source));
-  const approved = () => isSceneAnimationProposal(proposal) && signature() === approval
+  const scopeReady = () => {
+    const supported = supportsStudioCoreSceneAnimationInstances();
+    if (supported !== scopeCapability) { scopeCapability = supported; scopeGeneration++; if (!supported) { proposal = null; approval = ''; approvedTargets = null; } }
+    return session?.model.schemaVersion !== 4 && el('PlaybackScope').value === 'scene' || supported;
+  };
+  const approved = () => scopeReady() && isSceneAnimationProposal(proposal) && signature() === approval
     && (!approvedTargets || hasTargets() && targetCatalog === approvedTargets);
-  const previewCurrent = () => current() && previewForm === signature();
+  const previewCurrent = () => current() && scopeReady() && previewForm === signature();
   function paintValues() {
     el('Stage').setAttribute('aria-label', t('动画采样示意'));
     if (latestSample) renderSceneAnimationSample(el('Stage'), latestSample, { label: id => t('场景实例：{0}', id), frameLabel: index => t('帧索引 {0}', index) });
@@ -206,7 +216,7 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
   const totalKeys = () => rows.reduce((sum, row) => sum + row.keys.length, 0);
   function render() {
     translations = []; rows = []; el('Tracks').replaceChildren(); clips.setValue(draft.clips || []);
-    el('Duration').value = draft.durationSeconds; el('Loop').value = draft.loop;
+    el('Duration').value = draft.durationSeconds; el('Loop').value = draft.loop; el('PlaybackScope').value = draft.playbackScope || 'scene';
     const owner = session, request = epoch;
     for (const [index, value] of draft.tracks.entries()) {
       const box = node('section'); box.className = 'scene-animation-track'; box.dataset.trackId = value.id;
@@ -292,6 +302,7 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
   function refresh() {
     if (disposed) return;
     observeTargetCapability();
+    if (session && !scopeReady()) clearPreview();
     const context = getContext(); button.hidden = !eligible(context); button.disabled = context.available !== true || Boolean(context.busy); button.textContent = t('编辑场景动画');
     if (session && !current()) { if (!pending) proposal = null; resetTargets({ review: !pending }); clearPreview(); message = '原文已变化，请返回后重新打开动画编辑。'; }
     if (!pending && proposal && !approved()) invalidate();
@@ -300,9 +311,12 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
     const locked = pending || !current();
     for (const control of el('Fields').querySelectorAll('input,select,button')) control.disabled = locked;
     clips.setDisabled(locked);
+    el('PlaybackScope').disabled = locked || !supportsStudioCoreSceneAnimationInstances();
+    el('PlaybackScopeProjectHint').hidden = el('PlaybackScope').value !== 'instance';
+    el('PlaybackScopeStatus').textContent = supportsStudioCoreSceneAnimationInstances() ? '' : t('当前核心不支持实例运行范围；整场景旧格式仍可编辑。');
     el('AddTrack').disabled = locked || rows.length >= 32 || totalKeys() >= 512;
     for (const row of rows) { row.interpolation.disabled = locked || row.property.value === 'spriteFrame2d'; row.remove.disabled = locked || rows.length <= 1; row.add.disabled = locked || row.keys.length >= 64 || totalKeys() >= 512; for (const key of row.keys) key.remove.disabled = locked || row.keys.length <= 1; }
-    el('Check').disabled = locked; el('Apply').disabled = locked || !approved();
+    el('Check').disabled = locked || !scopeReady(); el('Apply').disabled = locked || !approved();
     el('Path').textContent = session?.source.sourcePath || context.sourcePath || '';
     el('Scene').textContent = session ? t('动画所属场景：{0}', session.model.sceneObjectId) : '';
     el('Counts').textContent = t('轨道 {0} / 32 · 关键帧 {1} / 512', rows.length, totalKeys());
@@ -318,7 +332,7 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
     Promise.resolve().then(() => { if (!disposed && request === epoch && !dialog.open && target?.isConnected !== false) target?.focus?.(); }); return true;
   }
   const fail = (error, key) => { proposal = null; approval = ''; approvedTargets = null; message = key; diagnostic = typeof error?.errorCode === 'string' ? error.errorCode : ''; };
-  function form(model) { return { durationSeconds: String(model.durationSeconds), loop: String(model.loop), ...(model.schemaVersion === 3 ? { clips: model.clips } : {}), tracks: model.tracks.map(row => ({ ...row,
+  function form(model) { return { durationSeconds: String(model.durationSeconds), loop: String(model.loop), ...(model.schemaVersion === 4 ? { playbackScope: model.playbackScope } : {}), ...([3, 4].includes(model.schemaVersion) ? { clips: model.clips } : {}), tracks: model.tracks.map(row => ({ ...row,
     ...(row.grid ? { grid: { columns: String(row.grid.columns), rows: String(row.grid.rows) } } : {}),
     keyframes: row.keyframes.map(key => ({ atSeconds: String(key.atSeconds), value: Array.isArray(key.value) ? key.value.map(String) : String(key.value) })) })) }; }
   function preview(model) { previewForm = signature(); previewModel = model; if (!model.clips?.some(clip => clip.id === selectedClip)) selectedClip = null; refreshClipSelection(); player.load(model); if (selectedClip) player.selectClip(selectedClip); }
@@ -338,15 +352,18 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
   }
   function numeric(value) { if (!/^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/.test(value) || !Number.isFinite(Number(value))) throw Error('number'); return Number(value); }
   function edit() {
-    const value = raw(); if (!['true', 'false'].includes(value.loop)) throw Error('loop');
-    return { durationSeconds: numeric(value.durationSeconds), loop: value.loop === 'true', ...(value.clips ? { clips: value.clips.map(clip => { if (!['true', 'false'].includes(clip.loop)) throw Error('clip loop'); return { ...clip, startSeconds: numeric(clip.startSeconds), endSeconds: numeric(clip.endSeconds), loop: clip.loop === 'true' }; }) } : {}), tracks: value.tracks.map(row => ({ ...row,
+    const value = raw(); if (!scopeReady()) throw Object.assign(new Error('Animation scope is unavailable.'), { errorCode: 'studio_core_unavailable' });
+    if (value.playbackScope !== undefined && !['scene', 'instance'].includes(value.playbackScope)) throw Error('scope');
+    if (!['true', 'false'].includes(value.loop)) throw Error('loop');
+    return { durationSeconds: numeric(value.durationSeconds), loop: value.loop === 'true', ...(value.playbackScope !== undefined ? { playbackScope: value.playbackScope } : {}), ...(value.clips ? { clips: value.clips.map(clip => { if (!['true', 'false'].includes(clip.loop)) throw Error('clip loop'); return { ...clip, startSeconds: numeric(clip.startSeconds), endSeconds: numeric(clip.endSeconds), loop: clip.loop === 'true' }; }) } : {}), tracks: value.tracks.map(row => ({ ...row,
       ...(row.grid ? { grid: { columns: numeric(row.grid.columns), rows: numeric(row.grid.rows) } } : {}),
       keyframes: row.keyframes.map(key => ({ atSeconds: numeric(key.atSeconds), value: Array.isArray(key.value) ? key.value.map(numeric) : numeric(key.value) })) })) };
   }
   async function check() {
-    if (pending || !current()) return false;
+    if (pending || !current() || !scopeReady()) return false;
+    const scopeRequest = scopeGeneration;
     const owner = session, request = epoch, form = signature(), targets = hasTargets() ? targetCatalog : null, targetRequest = targetGeneration; pending = true; invalidate(); message = '正在检查动画修改…'; refresh();
-    const owns = () => request === epoch && session === owner && current() && signature() === form && targetRequest === targetGeneration
+    const owns = () => scopeReady() && scopeRequest === scopeGeneration && request === epoch && session === owner && current() && signature() === form && targetRequest === targetGeneration
       && (targets ? hasTargets() && targetCatalog === targets : !hasTargets());
     try {
       const value = edit();
@@ -361,9 +378,9 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
   }
   async function apply() {
     if (pending || !current() || !approved()) return false;
-    const owner = session, request = epoch, candidate = proposal, form = approval, targets = approvedTargets; player.pause();
+    const owner = session, request = epoch, candidate = proposal, form = approval, targets = approvedTargets, scopeRequest = scopeGeneration; player.pause();
     const owns = () => !disposed && dialog.open && request === epoch && session === owner;
-    const unchanged = () => owns() && current() && proposal === candidate && signature() === form && approvedTargets === targets
+    const unchanged = () => scopeReady() && scopeRequest === scopeGeneration && owns() && current() && proposal === candidate && signature() === form && approvedTargets === targets
       && (!targets || hasTargets() && targetCatalog === targets);
     pending = true; message = '正在应用动画修改到原文草稿…'; refresh();
     try {
@@ -386,6 +403,10 @@ export function setupSceneAnimation({ getContext = () => ({}), getSource = async
   }
   button.addEventListener('click', () => void open()); el('Check').addEventListener('click', () => void check()); el('Apply').addEventListener('click', () => void apply());
   el('TargetsRefresh').addEventListener('click', () => void loadTargets());
+  el('PlaybackScope').addEventListener('change', () => {
+    if (pending || !current() || !supportsStudioCoreSceneAnimationInstances()) { el('PlaybackScope').value = draft?.playbackScope || 'scene'; return; }
+    changed();
+  });
   el('Duration').addEventListener('input', changed); el('Loop').addEventListener('change', changed); el('AddTrack').addEventListener('click', addTrack);
   el('Play').addEventListener('click', () => { if (previewCurrent() && !pending) player.play(); }); el('Pause').addEventListener('click', () => player.pause()); el('Stop').addEventListener('click', () => player.stop());
   el('PreviewClip').addEventListener('change', () => { if (!previewCurrent() || pending) return; const selected = el('PreviewClip').value || null; if (selected !== null && !previewModel.clips?.some(clip => clip.id === selected)) { refreshClipSelection(); return; } selectedClip = selected; refreshClipSelection(); player.selectClip(selectedClip); });

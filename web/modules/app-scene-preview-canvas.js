@@ -1,3 +1,4 @@
+import { captureSceneAnimationInstanceVisualFrame } from '../../engine/scene-animation-instance-visual-frame.mjs';
 import { captureSceneAnimationVisualFrame } from '../../engine/scene-animation-visual-frame.mjs';
 import { sceneActorIdentity } from '../../engine/scene-identity.mjs';
 import './app-studio-core.js';
@@ -262,6 +263,14 @@ export function createScenePreviewCanvas({ canvas, onSelect = () => {}, onViewCh
       if (!model || editing || !visible) return false;
       // Validate the entire detached frame before replacing the visible one.
       const frame = captureSceneAnimationVisualFrame(model.actors, sample);
+      if (!visualFrames) cancelDrag();
+      visualFrames = new Map(frame.map(value => [value.instanceId, value])); draw(); return true;
+    },
+    setInstanceVisualSamples(samples) {
+      if (disposed) return false;
+      if (samples === null) { visualFrames = null; draw(); return true; }
+      if (!model || editing || !visible) return false;
+      const frame = captureSceneAnimationInstanceVisualFrame(model.actors, samples);
       if (!visualFrames) cancelDrag();
       visualFrames = new Map(frame.map(value => [value.instanceId, value])); draw(); return true;
     },

@@ -4,6 +4,7 @@ import { resolveScene2DModel } from './scene-model.mjs';
 import { resolveSceneBehaviors } from './scene-behaviors.mjs';
 import { resolveSceneAudio, SCENE_AUDIO_CAPABILITIES } from './scene-audio.mjs';
 import { resolveSceneAnimation, sceneAnimationCapabilities } from './scene-animation.mjs';
+import { resolveScenePhysics2D, scenePhysics2DCapabilities } from './scene-physics2d.mjs';
 export const SCENE2D_CAPABILITIES = ['scene2d', 'input.arrows', 'state.movement', 'image'];
 export { PROJECT_BUILD_API_PATH } from './project-build-contract.mjs';
 
@@ -38,8 +39,12 @@ export function attachSceneBehaviorPlan(observed, plan) {
     resources: [...behavioral.resources, ...audio.resources].sort((a, b) => a.id.localeCompare(b.id)) } : behavioral;
   const animation = resolveSceneAnimation(observed, audible);
   if (!animation.ok) return { ok: false, plan: null, diagnostics: animation.diagnostics };
-  return { ok: true, plan: animation.animation ? { ...audible, animation: animation.animation,
-    requiredCapabilities: [...audible.requiredCapabilities, ...sceneAnimationCapabilities(animation.animation.document)] } : audible, diagnostics: [] };
+  const animated = animation.animation ? { ...audible, animation: animation.animation,
+    requiredCapabilities: [...audible.requiredCapabilities, ...sceneAnimationCapabilities(animation.animation.document)] } : audible;
+  const physics = resolveScenePhysics2D(observed, animated);
+  if (!physics.ok) return { ok: false, plan: null, diagnostics: physics.diagnostics };
+  return { ok: true, plan: physics.physics ? { ...animated, physics: physics.physics,
+    requiredCapabilities: [...animated.requiredCapabilities, ...scenePhysics2DCapabilities(physics.physics.document)] } : animated, diagnostics: [] };
 }
 
 // Recovery checks frozen declaration and guarded registrations only, retaining

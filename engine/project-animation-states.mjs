@@ -1,3 +1,4 @@
+import { projectAnimationTargetForBinding } from './project-animation-targets.mjs';
 // Read-only snapshots of fixed generated controllers. State means that the
 // script accepted its select/play requests; it is not an executed-playback receipt.
 import { canonicalJson } from './canonical-json.mjs';
@@ -28,6 +29,11 @@ export function createProjectAnimationStateCatalog(input) {
       const matched = recognized.get(binding.implementation.sourceObjectId);
       if (!matched) continue;
       const { source, declaration } = matched;
+      try { projectAnimationTargetForBinding(scene.animation, binding); } catch {
+        const errorCode = 'build_animation_state_target_missing', details = { ...binding.declaration, bindingId: binding.bindingId, instanceId: binding.instanceId };
+        const message = 'An instance animation controller requires at least one animation track for its bound instance.';
+        throw Object.assign(new TypeError(message), { errorCode, ...details, diagnostics: [{ severity: 'error', code: errorCode, message, ...details }] });
+      }
       const clips = declaration.parameters.map(parameter => {
         const value = Object.hasOwn(binding.parameters, parameter.name) ? binding.parameters[parameter.name] : parameter.defaultValue;
         if (typeof value !== 'string' || value !== '' && !uuid(value)) {

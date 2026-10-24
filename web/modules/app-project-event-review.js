@@ -74,7 +74,7 @@ export function setupProjectEventReview({ container, getContext = () => ({}), on
     text(el('Name'), event.name); text(el('Value'), JSON.stringify(event.value));
     text(el('Publisher'), t('发布来源：{0} · {1}', event.origin.source.sourcePath, event.origin.source.propertyPath));
     el('PublisherSource').disabled = !canUse(current) || current.canOpenSource !== true || Boolean(opening);
-    text(el('AssociationNote'), t(model.protocolVersion === 10
+    text(el('AssociationNote'), t(model.protocolVersion >= 10
       ? '仅关联本事件和本订阅确证的动画进入。未采集进入记录不能说明条件失败或行为没有执行；回调成功也不保证后续动画命令已执行。'
       : '此运行协议未记录动画进入来源，无法关联；事件及投递记录仍可查看。'));
     const next = [];

@@ -1,0 +1,85 @@
+{
+  "name": "compatibility-frozen-restore",
+  "scope": "Actual readFrozenProjectBuild with an intact synthetic succeeded-record header and full frozen author source. No historical tool compilation, Godot import, run, or playback is claimed.",
+  "startedAt": "2026-10-24T06:42:34.232Z",
+  "repository": "/home/chiharukiryu/cdev/viento-studio",
+  "node": {
+    "executable": "/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node",
+    "version": "v24.21.0"
+  },
+  "sourceSha256": {
+    "engine/project-animation-preflight.mjs": "df7134a90ba516b09aafd41bdc41706d769e3b1b4f6b5c985c138062f88c3b59",
+    "engine/project-assembly-plan-contract.mjs": "a1b5c30d6e7bbabeed2a42a33f1ff3b062df2b022d937c9ecaa167dfffbe763f",
+    "engine/animation-state-script-source.mjs": "ae4ef883392db7784d4a6ce8c278909fadf876dc99b5624f8e2c9b9293bd81fb",
+    "engine/project-animation-states.mjs": "be480196cc26f2ed90a4bc32cbabc57cef8cb631749d04073ecfd0ffb6ad0050",
+    "engine/build-target.mjs": "f4ed82e175032d78a9014b49d16f3dbe6e0ca480a9278bbc0b6b2cc763e1cf24",
+    "engine/studio-core.mjs": "ed3357546a3113cec53ca9eec19613ff9c5b9bfab62604a1f896f6050d4b07c5",
+    "engine/studio-core.wasm": "24f048fc124a06338a7f9e68b8c0eb196f7df34362947530bc664d573a07ad3c",
+    "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
+    "scripts/adapters/node-project-build.mjs": "a53e885e91321bbda14e644ef02a4d7b661079032cbf8edbf768a1c4941ab48d",
+    "scripts/backends/godot4-project.mjs": "5fcd0644543fed8e63c4d33bbc860126b3a0e47fc5767e645ba4ebd80e9f9fda",
+    "scripts/tests/helpers/project-animation-completion-fixture.mjs": "20b0765d9b9ac4e7e4a81efc27ffbe53ff9a4f0d1b20924f64146a676f6fa3fa",
+    "scripts/tests/helpers/project-animation-preflight-fixture.mjs": "bfdfbc3271eea723149b5ab1baa128f51c81d6a0a25ddd862f066a6aa16b7635"
+  },
+  "cases": [
+    {
+      "status": "passed",
+      "name": "missing-named-clip-frozen-restore",
+      "fixtureDirectory": "/tmp/viento-project-animation-preflight/compatibility-frozen-fixture-WihSas",
+      "fixtureNature": "synthetic successful-record header; full real author capture; no compiled tool output",
+      "snapshotId": "sha256:c820b173e5ad3e1d0c25d2bff3d9bfc65bd73601d7382668201a2ab0a352a84e",
+      "fileSha256": {
+        "build.json": "fbea4c41c4c6b7bfb5585441d082df853c6982f135fed368013121a2eaf00fee",
+        "snapshot.json": "5b22e53d2f95bcbccd6ed3ae81969009660b939e16752a5ea6844c52eff755e5"
+      },
+      "missingClip": "59595959-5959-4595-8595-000000000012",
+      "absentFromBoundScene": true,
+      "presentInAnotherScene": true,
+      "freshCapture": {
+        "accepted": false,
+        "snapshotIdAbsent": true,
+        "diagnostic": {
+          "severity": "error",
+          "code": "build_animation_state_clip_missing",
+          "message": "The selected animation state clip does not exist in this scene animation.",
+          "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+          "sourcePath": "documents/behaviors/demo.json",
+          "sourceRevision": "sha256:144bc7e2119f079e83154b44746350f683b22e2ddcc695ea5dca84c99b1ea413",
+          "propertyPath": "/bindings/1/parameters/clip_attack",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "scriptObjectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+          "parameter": "clip_attack",
+          "stateKey": "attack",
+          "clipId": "59595959-5959-4595-8595-000000000012",
+          "sourceRange": {
+            "start": 961,
+            "end": 999,
+            "encoding": "utf-16",
+            "propertyPath": "/bindings/1/parameters/clip_attack",
+            "exact": true
+          }
+        }
+      },
+      "frozenRead": {
+        "accepted": true,
+        "exactPlanRestored": true,
+        "namedClipPreserved": true,
+        "liveAuthorRemovedBeforeRead": true,
+        "fixtureBytesUnchanged": true,
+        "adapterResolutions": [
+          "org.viento.godot4"
+        ],
+        "adapterOperations": []
+      },
+      "effectiveGeneratedProtocol": 10,
+      "generatedFileCount": 36,
+      "nativeCompilation": false,
+      "runtimeExecution": false
+    }
+  ],
+  "completedAt": "2026-10-24T06:42:34.468Z",
+  "status": "passed",
+  "sourceUnchangedDuringProbe": true
+}

@@ -1,0 +1,76 @@
+✔ scene build: deterministic, movable, frozen bytes; portable planner has no host globals (118.343854ms)
+✔ scene build: rejects unknown features, missing references, invalid values and unbound resources at source fields (51.705899ms)
+✔ scene snapshot rejects links, missing images and unfinished source transactions without writes (39.000895ms)
+✔ scene snapshot detects an author edit during image capture (20.228013ms)
+✔ process lifecycle: missing tool, nonzero exit, bounded logs, timeout, cancellation and descendant cleanup (560.018151ms)
+✔ build request validation and a missing engine never create an output or modify source (23.706437ms)
+✖ real Godot: build/import, cold run from frozen input, movement states, safeguards and failure cleanup (20201.514438ms)
+✔ scene model preserves frozen legacy plan, build snapshot and generated Godot files exactly (31.491572ms)
+✔ source locations retain exact BOM, CRLF, Unicode and escaped JSON token offsets (3.701138ms)
+✔ inherited dimensions have independent precise sources and an honest composite size anchor (2.98573ms)
+✔ explicit null, missing image and disabled projection defaults retain distinct semantics and sources (5.000108ms)
+✔ unknown fields use decoded JSON Pointer keys and exact value ranges (2.636703ms)
+✔ missing scene and actor fields locate the nearest existing container without claiming exactness (2.313483ms)
+✔ invalid inherited values locate projection configuration while scene overrides locate declarations (2.562514ms)
+✔ actor reordering retains identity and definition but updates declaration pointers and revision (4.480603ms)
+✔ non-JSON actor definitions retain identity and revision without leaking body text or fabricated ranges (1.832791ms)
+✔ runtime rejects duplicate decoded root and actor keys while registration preserves legacy last-key semantics (1.376975ms)
+✔ registration recovers legacy duplicate fields whose discarded value exceeds source-index budgets (27.430997ms)
+✔ registration recovery does not depend on current projection JSON, revision or resolved defaults (2.224688ms)
+✔ registration recovery does not derive locations from even valid current projection bodies (0.847682ms)
+✔ registration recovery still rejects missing explicit position and broken scene-to-actor registrations (0.431691ms)
+✔ re-resolving changed source recalculates UTF-16 ranges and leaves old model and build DTO independent (6.290863ms)
+✔ unreferenced physics data leaves legacy scene plans and registration byte compatible (23.624785ms)
+✔ saved physics appends after animation and keeps source2/source3 actor identities and visual layout (18.971742ms)
+✔ invalid saved physics blocks executable planning with author locations but static registration stays available (6.560973ms)
+✔ assembly captures detached frozen physics and enforces body membership and declared capability union (7.272554ms)
+✔ physical project capability admission recurses into members without forbidding valid assembly children (6.614533ms)
+✔ static-only declarations require only their used capability while selecting a complete physics provider (5.852279ms)
+✔ physics cannot hide a requirement by omitting it from frozen scene and project capability lists (5.483856ms)
+✔ physics support admission refuses malformed envelopes and accessors without invoking them (4.642334ms)
+✔ generated physics receipts require capabilities from both registered descriptor and actual producer (4.261347ms)
+✔ nonphysical generated receipts retain legacy capability-free backend metadata (2.650458ms)
+✔ existing portable project manifest retains independent physics author provenance and generated inventory (5.334297ms)
+✔ physics opt-in binds registered JSON and exact instance sources in both document roots (11.209148ms)
+✔ only references with the physics2d slot opt in; absent relation keeps old plans unchanged (0.903918ms)
+✔ capabilities follow body kinds and stripping physics preserves unrelated scene extensions (2.85122ms)
+✔ ordinary scalar toJSON behavior parameters survive both legacy and opted-in physics plans (2.490871ms)
+✔ ambiguous selections unavailable or oversized source and wrong registration fail at the scene (0.738931ms)
+✔ the 64 KiB author source limit counts UTF-8 bytes including BOM and retained whitespace (1.712578ms)
+✔ scene ownership requires exact scene id and ordinary inverse references (1.903261ms)
+✔ instance membership is scene-local even when object definitions are shared (1.29298ms)
+✔ static and sensor mappings reject built-in motion while characters retain existing controls (7.490207ms)
+✔ frozen validation rejects foreign source maps capabilities geometry and unstable actor identities (9.465844ms)
+✔ exact source ranges are optional on frozen maps but supplied ranges cannot borrow identity (0.674191ms)
+✔ duplicate JSON keys fail rather than collapsing a physics declaration (0.318521ms)
+✔ frozen admission rejects accessors fake prototypes sparse arrays and serialization hooks without executing them (2.400915ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 45
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21140.590368
+
+✖ failing tests:
+
+test at scripts/tests/project-build.test.mjs:162:1
+✖ real Godot: build/import, cold run from frozen input, movement states, safeguards and failure cleanup (20201.514438ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'runtime_adapter_changed'
+  - 'runtime_artifact_changed'
+              ^
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-build.test.mjs:207:43)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'runtime_adapter_changed',
+    expected: 'runtime_artifact_changed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

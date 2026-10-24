@@ -36,12 +36,12 @@ async function fixture(t, options = {}) {
 }
 const sourceButton = (h, kind = 'binding', index = 0) => h.controllers()[index].querySelector('.project-animation-state-' + kind + '-source');
 
-test('protocols8–10 expose snapshots and no samples mean uncollected rather than a guessed state', async t => {
+test('protocols8–11 expose snapshots and no samples mean uncollected rather than a guessed state', async t => {
   const h = await fixture(t); h.set(null); assert.equal(h.el('Panel').hidden, true);
   h.set({ sequence: 0, entries: [] }); assert.equal(h.el('Panel').hidden, false); assert.equal(h.el('Sequence').dataset.sequence, '0');
   assert.equal(h.el('Empty').textContent, '尚未采集动画状态快照。');
   assert.match(h.el('Note').textContent, /强制取消可能没有记录/);
-  for (const protocolVersion of [1, 2, 3, 4, 5, 6, 7, 11]) {
+  for (const protocolVersion of [1, 2, 3, 4, 5, 6, 7, 12]) {
     h.set(snapshot()); h.set(snapshot(), { protocolVersion });
     assert.equal(h.el('Panel').hidden, true); assert.equal(h.rows().length, 0); assert.equal(h.el('Sequence').dataset.sequence, undefined);
   }
@@ -190,6 +190,12 @@ test('protocol9 retains terminal snapshots beside state entry history', async t 
 
 test('protocol10 retains terminal snapshots beside state entry history', async t => {
   const h = await fixture(t); h.set(snapshot(), { protocolVersion: 10 });
+  assert.equal(h.el('Panel').hidden, false); assert.equal(h.rows().length, 1);
+  sourceButton(h, 'script').click(); await flushDialogs(); assert.deepEqual(JSON.parse(JSON.stringify(h.calls[0].source)), scriptSource());
+});
+
+test('protocol11 retains terminal state provenance beside per-instance transport', async t => {
+  const h = await fixture(t); h.set(snapshot(), { protocolVersion: 11 });
   assert.equal(h.el('Panel').hidden, false); assert.equal(h.rows().length, 1);
   sourceButton(h, 'script').click(); await flushDialogs(); assert.deepEqual(JSON.parse(JSON.stringify(h.calls[0].source)), scriptSource());
 });

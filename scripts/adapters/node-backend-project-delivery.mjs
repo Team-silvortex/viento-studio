@@ -171,7 +171,7 @@ export async function verifyBackendProjectDelivery(file, { signal } = {}) {
     // The pre-manifest ceiling admits new generated controller wrappers. Only
     // validated protocol 9 Godot assemblies gain the larger delivery inventory.
     const expandedInventory = review.project.schemaVersion === 2 && review.project.backend.id === 'org.viento.godot4'
-      && [9, 10].includes(review.project.backend.protocolVersion) && review.project.project.kind === 'godot-project';
+      && [9, 10, 11].includes(review.project.backend.protocolVersion) && review.project.project.kind === 'godot-project';
     if (entries.size > (expandedInventory ? 1154 : 642)) fail();
     const expected = new Map(review.project.files.map(row => [row.path, { size: row.size, sha256: row.sha256 }]));
     const readmeBytes = readme(review); expected.set('README.md', { size: readmeBytes.length, sha256: hash(readmeBytes) });

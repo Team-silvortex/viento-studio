@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import vm from 'node:vm';
+import {createSceneAnimationInstancePlayback} from '../../engine/scene-animation-instance-playback.mjs';
 import {dialogHarness} from './dialog-harness.mjs';
 import {captureSceneAnimationPreview} from '../../engine/scene-animation-preview.mjs';
 import {createSceneAnimationPlayer} from '../../web/modules/scene-animation-player.js';
@@ -9,13 +11,17 @@ import ja from '../../web/i18n/ja.js';
 const id=n=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`,rev='sha256:'+'a'.repeat(64),copy=v=>JSON.parse(JSON.stringify(v));
 function preview(loop=false){const scene={objectId:id(1),sourcePath:'documents/scenes/demo.json',sourceRevision:rev},manifest={objectId:id(4),sourcePath:'documents/animation/demo.json',sourceRevision:rev};return{ok:true,format:'viento-scene-preview',schemaVersion:2,snapshotId:rev,scene,actors:[{objectId:id(2),instanceId:id(3)},{objectId:id(2),instanceId:id(6)}],animationPreview:{format:'viento-scene-animation-preview',schemaVersion:1,status:'ready',snapshotId:rev,scene,manifest,diagnostics:[],document:{format:'viento-scene-animation',schemaVersion:1,sceneObjectId:id(1),durationSeconds:2,loop,tracks:[{id:id(5),instanceId:id(3),property:'offset2d',interpolation:'linear',keyframes:[{atSeconds:0,value:[0,0]},{atSeconds:2,value:[100,50]}]}]}}};}
 async function harness(options={}){
- let clock=0,serial=0,locale='zh-CN';const frames=new Map(),cancelled=[],samples=[],active=[],languages=[],events=new Map();
+ let clock=0,serial=0,locale='zh-CN';const frames=new Map(),cancelled=[],samples=[],instanceSamples=[],active=[],languages=[],events=new Map(),listeners=new Map();
  const h=await dialogHarness('app-scene-preview-animation',{captureSceneAnimationPreview:v=>captureSceneAnimationPreview(copy(v)),createSceneAnimationPlayer:ports=>createSceneAnimationPlayer({...ports,now:()=>clock,schedule:cb=>{frames.set(++serial,cb);return serial;},cancel:handle=>cancelled.push(handle)}),
  t:(key,...args)=>(locale==='en'?en[key]||key:locale==='ja'?ja[key]||key:key).replace(/\{(\d+)\}/g,(_,n)=>String(args[n]??'')),onLanguageChange:fn=>{languages.push(fn);return()=>languages.splice(languages.indexOf(fn),1);}});
- h.document.addEventListener=(type,fn)=>events.set(type,fn);h.document.removeEventListener=(type,fn)=>{if(events.get(type)===fn)events.delete(type);};
- const container=h.document.createElement('section');h.document.body.append(container);const controller=h.runtime.setupScenePreviewAnimation({container,setSample:value=>{samples.push(value&&copy(value));options.setSample?.(value);},onActiveChange:value=>active.push(value)});
+ h.document.addEventListener=(type,fn)=>{if(!listeners.has(type))listeners.set(type,new Set());listeners.get(type).add(fn);events.set(type,()=>[...listeners.get(type)].forEach(f=>f()));};h.document.removeEventListener=(type,fn)=>listeners.get(type)?.delete(fn);
+ h.runtime.createSceneAnimationInstancePlayback=catalog=>{const session=createSceneAnimationInstancePlayback(catalog);return {...session,command:(id,command,time)=>session.command(id,copy(command),time),commandAll:(command,time)=>session.commandAll(copy(command),time)};};
+ const childSource=(await fs.readFile(new URL('../../web/modules/app-scene-preview-instance-animation.js',import.meta.url),'utf8')).replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm,'').replaceAll('export ','');
+ vm.runInContext(childSource,h.runtime);const setupChild=h.runtime.setupScenePreviewInstanceAnimation;
+ h.runtime.setupScenePreviewInstanceAnimation=ports=>setupChild({...ports,now:()=>clock,schedule:cb=>{frames.set(++serial,cb);return serial;},cancel:handle=>cancelled.push(handle)});
+ const container=h.document.createElement('section');h.document.body.append(container);const controller=h.runtime.setupScenePreviewAnimation({container,setSample:value=>{samples.push(value&&copy(value));options.setSample?.(value);},setInstanceSamples:value=>{instanceSamples.push(value&&copy(value));options.setInstanceSamples?.(value);},onActiveChange:value=>active.push(value)});
  controller.setAvailable(true);controller.setVisible(true);const el=s=>h.element('scenePreviewAnimation'+s);
- return{...h,el,controller,container,samples,active,frames,cancelled,events,load:(value=preview())=>controller.setPreview(value),click:s=>el(s).click(),seek:value=>{el('Position').value=String(value);el('Position').dispatch('input');},tick:ms=>{clock=ms;frames.get(serial)?.();},language:value=>{locale=value;languages.forEach(fn=>fn());}};
+ return{...h,el,controller,container,samples,instanceSamples,active,frames,cancelled,events,load:(value=preview())=>controller.setPreview(value),click:s=>el(s).click(),seek:value=>{el('Position').value=String(value);el('Position').dispatch('input');},tick:ms=>{clock=ms;frames.get(serial)?.();},language:value=>{locale=value;languages.forEach(fn=>fn());}};
 }
 test('saved animation stays static until an explicit play or seek; Rust samples target instances without author IO',async()=>{
  const h=await harness(),source=preview(),original=copy(source);h.load(source);assert.equal(h.container.hidden,false);assert.ok(h.samples.every(x=>x===null));assert.equal(h.controller.isActive(),false);
@@ -64,4 +70,33 @@ test('saved clip selection uses local time, pauses at source start and preserves
  for(const locale of ['en','ja','zh-CN']){h.language(locale);assert.equal(h.el('Clip'),select);assert.equal(h.document.activeElement,select);assert.equal(select.value,id(7));assert.match(h.el('ClipRange').textContent,/0.5–1.5/);assert.equal(select.querySelector('b'),null);}
  h.click('Play');const stale=[...h.frames.values()].at(-1);select.value='';select.dispatch('change');const count=h.samples.length;stale();assert.equal(h.samples.length,count);assert.equal(h.el('Pause').disabled,true);assert.equal(h.el('Position').max,'2');assert.deepEqual(h.samples.at(-1).values[0].value,[0,0]);
  h.click('Stop');assert.equal(h.samples.at(-1),null);h.controller.destroy();
+});
+
+const change=(element,value,event='change')=>{element.value=String(value);element.dispatch(event);};
+const local=(h,suffix)=>h.element('scenePreviewInstanceAnimation'+suffix);
+function targets(){const p=preview(true);p.actors[0].name='Twin A';p.actors[1].name='Twin B';const d=p.animationPreview.document;d.schemaVersion=3;d.clips=[{id:id(7),name:'Loop',startSeconds:0,endSeconds:1,loop:true},{id:id(8),name:'Finish',startSeconds:1,endSeconds:2,loop:false}];d.tracks.push({...copy(d.tracks[0]),id:id(9),instanceId:id(6)});return p;}
+test('mode handoff owns one overlay while targets retain independent clips and playheads',async()=>{
+ const h=await harness();h.load(targets());h.seek(.25);const wholeStale=[...h.frames.values()].at(-1);
+ change(h.el('Mode'),'instance');assert.equal(h.samples.at(-1),null);assert.equal(h.controller.isActive(),false);assert.equal(h.el('Controls').hidden,true);assert.equal(h.el('Instances').hidden,false);
+ change(local(h,'Clip'),id(7));local(h,'Play').click();h.tick(400);
+ change(local(h,'Instance'),id(6));change(local(h,'Clip'),id(8));change(local(h,'Position'),.5,'input');
+ const rows=h.instanceSamples.at(-1);assert.equal(rows.length,2);assert.deepEqual(rows.map(r=>r.sample.values[0].value),[[20,10],[75,37.5]]);
+ assert.equal(h.controller.isActive(),true);assert.equal(local(h,'Position').value,'0.5');
+ change(local(h,'Instance'),id(3));assert.equal(local(h,'Clip').value,id(7));assert.equal(local(h,'Position').value,'0.4');assert.equal(local(h,'Pause').disabled,false);
+ h.tick(700);assert.equal(local(h,'Position').value,'0.7');const held=h.instanceSamples.at(-1).find(r=>r.instanceId===id(6));assert.deepEqual(held.sample.values[0].value,[75,37.5]);
+ local(h,'Stop').click();assert.deepEqual(h.instanceSamples.at(-1).map(r=>r.instanceId),[id(6)]);assert.equal(h.controller.isActive(),true);
+ h.controller.stop();assert.equal(h.instanceSamples.at(-1),null);assert.equal(h.controller.isActive(),false);assert.equal(local(h,'Clip').value,id(7));
+ local(h,'Play').click();const stale=[...h.frames.values()].at(-1);change(h.el('Mode'),'scene');const count=h.instanceSamples.length;stale();wholeStale?.();assert.equal(h.instanceSamples.length,count);assert.equal(h.instanceSamples.at(-1),null);assert.equal(h.el('Controls').hidden,false);assert.equal(h.controller.isActive(),false);
+ h.seek(.5);assert.deepEqual(h.samples.at(-1).values[0].value,[25,12.5]);h.controller.destroy();
+});
+test('instance mode backgrounds pause all targets and source hide or revocation permanently drops stale callbacks',async()=>{
+ const h=await harness();h.load(targets());change(h.el('Mode'),'instance');local(h,'Play').click();h.tick(250);change(local(h,'Instance'),id(6));local(h,'Play').click();h.tick(500);
+ h.document.hidden=true;h.events.get('visibilitychange')();const held=copy(h.instanceSamples.at(-1)),count=h.instanceSamples.length;h.tick(1500);assert.equal(h.instanceSamples.length,count);assert.deepEqual(h.instanceSamples.at(-1),held);assert.equal(local(h,'Pause').disabled,true);
+ h.document.hidden=false;local(h,'Play').click();h.tick(1750);assert.equal(local(h,'Position').value,'0.5');change(local(h,'Instance'),id(3));assert.equal(local(h,'Position').value,'0.5');assert.equal(local(h,'Pause').disabled,true);h.controller.destroy();
+ for(const end of [h=>h.load(targets()),h=>h.controller.reset(),h=>h.controller.setVisible(false),h=>h.controller.setAvailable(false),h=>h.controller.destroy()]){
+  const h=await harness();h.load(targets());change(h.el('Mode'),'instance');local(h,'Play').click();h.tick(100);const stale=[...h.frames.values()].at(-1);end(h);const count=h.instanceSamples.length;stale();assert.equal(h.instanceSamples.length,count);assert.equal(h.instanceSamples.at(-1),null);assert.equal(h.controller.isActive(),false);
+ }
+});
+test('instance renderer failure clears every target and releases parent layout gate',async()=>{
+ const h=await harness({setInstanceSamples:value=>{if(value?.length>1)throw Error('reject layer');}});h.load(targets());change(h.el('Mode'),'instance');local(h,'Play').click();h.tick(100);change(local(h,'Instance'),id(6));local(h,'Play').click();assert.equal(h.instanceSamples.at(-1),null);assert.equal(h.controller.isActive(),false);assert.match(local(h,'Status').textContent,/失败/);const count=h.instanceSamples.length;h.tick(300);assert.equal(h.instanceSamples.length,count);h.controller.destroy();
 });

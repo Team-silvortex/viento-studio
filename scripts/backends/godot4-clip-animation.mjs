@@ -2,11 +2,13 @@
 // their original generator, visual runtime and source-map bytes.
 import fs from 'node:fs/promises';
 import { generateGodotAnimationProject as generateSpriteAnimation } from './godot4-sprite-animation.mjs';
-import { buildHash } from '../adapters/node-build-snapshot.mjs';
+import { buildHash, buildError } from '../adapters/node-build-snapshot.mjs';
 export { godotAnimationDiagnostics } from './godot4-sprite-animation.mjs';
-export async function generateGodotAnimationProject(input) {
-  const plan = structuredClone(input), generated = await generateSpriteAnimation(plan);
-  if (plan.animation.document.schemaVersion !== 3) return generated;
+export async function generateGodotAnimationProject(input, { projectAnimationInstances = false } = {}) {
+  const plan = structuredClone(input);
+  if (plan.animation?.document.playbackScope === 'instance' && !projectAnimationInstances) throw buildError('build_animation_instances_require_project', 'Per-instance animation requires a project assembly.');
+  const generated = await generateSpriteAnimation(plan);
+  if (plan.animation.document.schemaVersion < 3) return generated;
   generated.sourceMap.animation.clips = plan.animation.document.clips.map(clip => ({ clipId: clip.id,
     declaration: plan.animation.locations.clips.find(row => row.id === clip.id).declaration }));
   const generator = await fs.readFile(new URL('./godot4-clip-animation.mjs', import.meta.url));

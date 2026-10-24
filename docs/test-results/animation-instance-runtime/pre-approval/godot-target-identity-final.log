@@ -1,0 +1,45 @@
+✔ schema4 emits protocol11 and inventory12 with independent target modules and unchanged old templates (133.701914ms)
+✔ real instance scope starts stopped without fabricated completions (13281.0837ms)
+✔ real two target clocks retain different clips and visual samples (false) (13064.649243ms)
+✔ real two target clocks retain different clips and visual samples (true) (13085.361655ms)
+✔ real same-frame natural completions are distinct and both target subscriptions are delivered (13064.745693ms)
+✔ real A command cancels only A pending completion while B stays deliverable and can replay (13125.047248ms)
+✔ real same target bindings share a head and queue order decides the last applied clip (13035.266536ms)
+✔ real explicit scene scope preserves automatic whole-scene playback and shared recipients (13154.718796ms)
+✔ real pause_animation() does not affect another target head (13070.788209ms)
+✔ real stop_animation() does not affect another target head (13041.388825ms)
+✔ real seek_animation(0.1) does not affect another target head (13065.501879ms)
+✔ real select_animation_clip(null) does not affect another target head (13059.091875ms)
+✔ real play_animation() does not affect another target head (13097.197011ms)
+✔ real generated v1 state scripts keep source bytes and completion enters only its target controller (13413.362946ms)
+✔ real generated v5 state scripts keep source bytes and completion enters only its target controller (13364.193418ms)
+✔ real mutable port binding cannot retarget a registered origin (13068.39184ms)
+✔ real mixed-scope scene switching revokes old ports and resets same-identity target lanes on reentry (13119.535244ms)
+✖ real replacing a port entire binding cannot borrow another registered target or source (13027.450832ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 223401.931136
+
+✖ failing tests:
+
+test at scripts/tests/project-animation-target-godot.test.mjs:261:1
+✖ real replacing a port entire binding cannot borrow another registered target or source (13027.450832ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_process_failed","message":"Godot process failed.","objectId":"12345678-1234-4234-8234-123456789abc","sourcePath":"documents/projects/demo.json","sourceRevision":"sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d","title":"Two-scene project","propertyPath":""},{"severity":"error","code":"runtime_behavior_animation_missing","message":"Animation port fields differ from its registered origin.","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:432853c363eb140fc60f33aa2a551561fe4e80ffd70a06646b5170e322176a3b","propertyPath":"/bindings/0","bindingId":"99999999-9999-4999-8999-999999999991","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","relatedObjectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","sourceRange":{"start":141,"end":484,"encoding":"utf-16","propertyPath":"/bindings/0","exact":true}}]
+  
+  1 !== 7
+  
+      at TestContext.<anonymous> (file:///tmp/viento-animation-instance-runtime/review-workspace/scripts/tests/project-animation-target-godot.test.mjs:271:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 7,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

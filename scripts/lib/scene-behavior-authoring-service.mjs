@@ -2,6 +2,7 @@
 // starts a tool, edits registrations or grants runtime authority.
 import { createHash } from 'node:crypto';
 import { hasScriptParameterDeclaration, discoverScriptParameterContract } from '../../engine/script-parameter-discovery.mjs';
+import { discoverAnimationStateBindings } from '../../engine/animation-state-bindings.mjs';
 import { readWorldSnapshot } from '../adapters/node-world-projection.mjs';
 import { inspectSceneBehaviors, validateSceneBehaviorDependencies, SCENE_BEHAVIOR_LIMITS } from '../../engine/scene-behaviors.mjs';
 import { parseJsonSource } from '../../engine/json-source.mjs';
@@ -113,8 +114,9 @@ export function createSceneBehaviorAuthoringService(root) {
       await import('../adapters/node-studio-core.mjs');
     }
     const sourceDescription = document => {
-      const parameterContract = discoverScriptParameterContract(document.content);
-      return { ...describe(document), name: boundedName(sourceFileName(document.sourcePath)), ...(parameterContract ? { parameterContract } : {}) };
+      const parameterContract = discoverScriptParameterContract(document.content), animationStateBindings = discoverAnimationStateBindings(document.content);
+      return { ...describe(document), name: boundedName(sourceFileName(document.sourcePath)),
+        ...(parameterContract ? { parameterContract } : {}), ...(animationStateBindings ? { animationStateBindings } : {}) };
     };
     const dependencies = document => ({ objectId: document.record.id, record: document.record, sourceRevision: document.sourceRevision });
     const dependencyState = { format: 'viento-behavior-authoring-dependencies', schemaVersion: 1, workspaceId: observed.source.workspace.id,

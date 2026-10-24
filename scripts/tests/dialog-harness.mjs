@@ -1,3 +1,4 @@
+import { supportsStudioCoreSceneAnimationInstances } from '../../engine/studio-core.mjs';
 import { setupAnimationStateTrialCaseEditor } from '../../web/modules/app-animation-state-trial-case-editor.js';
 import { setupAnimationStateTrialCase } from '../../web/modules/app-animation-state-trial-case.js';
 import { ANIMATION_STATE_TRIAL_CASE_LIMITS, createAnimationStateTrialCase, parseAnimationStateTrialCase, serializeAnimationStateTrialCase, replayAnimationStateTrialCase } from '../../engine/animation-state-trial-case.mjs';
@@ -155,7 +156,7 @@ export async function dialogHarness(module, overrides = {}) {
     createSceneAuthoringWorkflow: options => createSceneAuthoringWorkflow({ ...options,
       getSource: async (...args) => JSON.parse(JSON.stringify(await options.getSource(...args))),
       ...(options.loadCatalog ? { loadCatalog: async (...args) => JSON.parse(JSON.stringify(await options.loadCatalog(...args))) } : {}),
-    }), AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS, getStudioCoreMetadata, supportsStudioCoreCompositionPatch, supportsStudioCoreCompositionPositions, supportsStudioCoreCompositionFragment, supportsStudioCoreCompositionFragmentEdit, supportsStudioCoreCompositionPlacement, supportsStudioCoreCompositionStructure, supportsStudioCoreCompositionPlacements, supportsStudioCoreCompositionGroups, supportsStudioCoreCompositionDefinitions,
+    }), AbortController, DOMException, console, selectPackageEntries, PACKAGE_LIMITS, getStudioCoreMetadata, supportsStudioCoreSceneAnimationInstances, supportsStudioCoreCompositionPatch, supportsStudioCoreCompositionPositions, supportsStudioCoreCompositionFragment, supportsStudioCoreCompositionFragmentEdit, supportsStudioCoreCompositionPlacement, supportsStudioCoreCompositionStructure, supportsStudioCoreCompositionPlacements, supportsStudioCoreCompositionGroups, supportsStudioCoreCompositionDefinitions,
     getProjectionTemplates, lockProjectionTemplate, deriveProjectionTemplate, renderProjectionRuntime, getCreatePathError, canonicalJson, canExecuteBackend, validateExecutionToolStatus, sceneActorIdentity, sceneStructureActors, buildSceneOutline, validateSceneGroups,
     validateRuntimeCase: value => validateRuntimeCase(JSON.parse(JSON.stringify(value))),
     validateRuntimeCasePlan: (plan, value) => validateRuntimeCasePlan(JSON.parse(JSON.stringify(plan)), JSON.parse(JSON.stringify(value))),

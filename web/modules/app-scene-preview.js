@@ -126,7 +126,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
   const canvas = createScenePreviewCanvas({ canvas: el('scenePreviewCanvas'), onSelect(id) { selectedGroup = null; selected = id; renderSelection(); },
     onViewChange(view) { el('scenePreviewZoom').textContent = `${Math.round(view.scale * 100)}%`; } });
   const animation = typeof setupScenePreviewAnimation === 'function' ? setupScenePreviewAnimation({ container: el('scenePreviewAnimation'),
-    setSample: sample => canvas.setVisualSample?.(sample), onActiveChange: () => render(),
+    setSample: sample => canvas.setVisualSample?.(sample), setInstanceSamples: samples => canvas.setInstanceVisualSamples?.(samples), onActiveChange: () => render(),
   }) : { setAvailable() {}, setVisible() {}, setPreview() {}, reset() {}, stop() {}, isActive: () => false, destroy() {} };
   const release = id => {
     if (!previewUUID.test(id || '')) return;

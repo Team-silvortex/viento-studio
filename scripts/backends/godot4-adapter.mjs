@@ -13,14 +13,15 @@ import { generateGodotBehaviorProject, godotBehaviorDiagnostics, createBehaviorR
 import { generateGodotAudioProject, godotAudioDiagnostics } from './godot4-audio.mjs';
 import { generateGodotAnimationProject, godotAnimationDiagnostics } from './godot4-clip-animation.mjs';
 import { generateGodotAssemblyProject, godotAssemblyScripts, godotAssemblyDiagnostics } from './godot4-project.mjs';
+import { generateGodotPhysicsProject, hasGodotPhysics, godotPhysicsAssemblyScripts, godotPhysicsDiagnostics } from './godot4-physics.mjs';
 import { createProjectAnimationStateCatalog } from '../../engine/project-animation-states.mjs';
 import { createProjectRuntimeEventReader } from '../../engine/project-runtime-events.mjs';
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.19.0',
-  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 10 }],
-  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d'],
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.21.0',
+  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 11 }],
+  capabilities: ['physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -43,9 +44,10 @@ async function availability({ toolPath, enabled = true, platform = process.platf
 
 async function generate(plan) {
   support({ operation: 'build', plan });
+  if (plan.kind === 'scene2d' && plan.animation?.document.playbackScope === 'instance') throw buildError('build_animation_instances_require_project', 'Per-instance animation requires a project assembly.');
   // Detach before the generator's asynchronous file reads so callers cannot
   // change an admitted plan while its project bytes are being produced.
-  const generated = await (plan.kind === 'project' ? generateGodotAssemblyProject : plan.animation ? generateGodotAnimationProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
+  const generated = await (hasGodotPhysics(plan) ? generateGodotPhysicsProject : plan.kind === 'project' ? generateGodotAssemblyProject : plan.animation ? generateGodotAnimationProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
   return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
     artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
 }
@@ -54,6 +56,13 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ['scripts/backends/godot4-physics.mjs', new URL('./godot4-physics.mjs', import.meta.url)],
+    ['scripts/backends/godot4/physics-runtime.gd', new URL('./godot4/physics-runtime.gd', import.meta.url)],
+    ['scripts/backends/godot4/project-physics-runtime.gd', new URL('./godot4/project-physics-runtime.gd', import.meta.url)],
+    ['engine/scene-physics2d.mjs', new URL('../../engine/scene-physics2d.mjs', import.meta.url)],
+    ['engine/scene-physics2d-core.mjs', new URL('../../engine/scene-physics2d-core.mjs', import.meta.url)],
+    ...['project-animation-target-runtime.gd', 'project-animation-targets.gd', 'project-animation-target-completions.gd', 'project-animation-target-scene.gd'].map(name => [`scripts/backends/godot4/${name}`, new URL(`./godot4/${name}`, import.meta.url)]),
+    ['engine/project-animation-targets.mjs', new URL('../../engine/project-animation-targets.mjs', import.meta.url)],
     ['scripts/backends/godot4/project-animation-state-trigger-runtime.gd', new URL('./godot4/project-animation-state-trigger-runtime.gd', import.meta.url)],
     ['scripts/backends/godot4/project-animation-state-trigger-wrapper.gd', new URL('./godot4/project-animation-state-trigger-wrapper.gd', import.meta.url)],
     ['scripts/backends/godot4/project-animation-state-entry-runtime.gd', new URL('./godot4/project-animation-state-entry-runtime.gd', import.meta.url)],
@@ -158,7 +167,7 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
       XDG_DATA_HOME: path.join(directory, '.host/data'), XDG_CONFIG_HOME: path.join(directory, '.host/config'), XDG_CACHE_HOME: path.join(directory, '.host/cache') },
     signal, timeoutMs, onOutput };
   if (phase === 'script-check') {
-    const assemblyScripts = await godotAssemblyScripts(directory, signal);
+    const assemblyScripts = await godotPhysicsAssemblyScripts(directory, signal) || await godotAssemblyScripts(directory, signal);
     const scripts = assemblyScripts || ['runtime.gd'];
     if (!assemblyScripts) {
     let manifest;
@@ -201,9 +210,14 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
   }
   if (controlProgram === undefined) return runBuildProcess(tool.executable, ['--path', directory, ...args], options);
   if (phase !== 'run' || mode !== 'headlessLogic' || !smoke) throw buildError('runtime_control_unsupported', 'Control replay requires a headless smoke run.');
+  // Capture the validated request before any asynchronous inventory access.
+  // Callers may reuse or edit their input while this owned execution is pending.
   let program;
   try { program = validateSceneControlProgram(controlProgram); }
   catch (error) { throw buildError(error.errorCode || 'runtime_control_invalid', 'Invalid bounded runtime control program.'); }
+  if (await fs.access(path.join(directory, 'physics-project.json')).then(() => true, error => {
+    if (error.code === 'ENOENT') return false; throw error;
+  })) throw buildError('build_physics_control_replay_unsupported', 'Control replay is not yet composed with scene physics.');
   const stat = await fs.lstat(directory);
   if (!stat.isDirectory() || stat.isSymbolicLink()) throw buildError('build_output_invalid', 'Control replay requires an owned generated directory.');
   if (await fs.access(path.join(directory, 'animation.json')).then(() => true, error => {
@@ -262,9 +276,9 @@ async function cleanupProject(directory, { generatedFiles = [], resourceFiles = 
 export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
   descriptor, contractVersion: 1, acceptsLegacyBuildRecords: true, buildPhases, runtimePhases,
   availability, identify: identifyGodot, generate, fingerprint, executePhase,
-  diagnostics: (result, plan) => (plan.kind === 'project' ? godotAssemblyDiagnostics : plan.animation ? godotAnimationDiagnostics : plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
+  diagnostics: (result, plan) => (hasGodotPhysics(plan) ? godotPhysicsDiagnostics : plan.kind === 'project' ? godotAssemblyDiagnostics : plan.animation ? godotAnimationDiagnostics : plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
   createEventReader: (input, options) => {
-    if (input.kind === 'project') return createProjectRuntimeEventReader(input, { protocolVersion: createProjectAnimationStateCatalog(input).scenes.length ? 10 : input.scenes.some(scene => scene.animation) ? 7 : 4, ...options,
+    if (input.kind === 'project') return createProjectRuntimeEventReader(input, { protocolVersion: input.scenes.some(scene => scene.animation?.document.playbackScope === 'instance') ? 11 : createProjectAnimationStateCatalog(input).scenes.length ? 10 : input.scenes.some(scene => scene.animation) ? 7 : 4, ...options,
       ...(options?.smoke === true ? { expectedTotalSeconds: 0.5 } : {}) });
     const plan = input;
     const createBaseReader = plan.schemaVersion === 3 ? createBehaviorRuntimeEventReader : createRuntimeEventReader;

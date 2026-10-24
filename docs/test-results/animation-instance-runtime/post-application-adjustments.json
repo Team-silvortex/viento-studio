@@ -1,0 +1,28 @@
+{
+  "patchFiles": 58,
+  "modifiedPatchFiles": [
+    {
+      "path": "scripts/tests/scene-animation-runtime-scope-smoke.mjs",
+      "reviewedSha256": "a494602a87d949ccbc16d9943a3bf33453df073ac146b4a614123011371c0a6a",
+      "finalSha256": "d1b9d04d5e684c80419f38c379584c00a7af93dbce9c234dcbacf13fee9b6ef0"
+    },
+    {
+      "path": "web/modules/app-project-build.js",
+      "reviewedSha256": "bbf3bcdf6fc3f9ecc611f68870840f3fa4dd0aeb998db79a753f11e010ff35f2",
+      "finalSha256": "8652d5754c48f3c520836ad7c0f9454f0ebefb429633298e194c5bc046d425a3"
+    }
+  ],
+  "reasons": {
+    "web/modules/app-project-build.js": "The actual protocol11 integration test exposed four old shared-state/event/audio/event-review admission gates; all now admit protocol11.",
+    "scripts/tests/scene-animation-runtime-scope-smoke.mjs": "Move approved-source browser evidence to the permanent repository topic and describe its actual source-validation scope."
+  },
+  "additionalTestUpdates": [
+    "scripts/tests/animation-selectors-godot.test.mjs",
+    "scripts/tests/animation-combinations-godot.test.mjs",
+    "scripts/tests/runtime-instance-backends.test.mjs",
+    "scripts/tests/project-audio-runtime.test.mjs",
+    "scripts/tests/project-shared-state-runtime.test.mjs",
+    "scripts/tests/project-animation-observation-build-ui.test.mjs"
+  ],
+  "testUpdateScope": "Current adapter descriptor assertions use0.20.0; unknown future protocol is12; actual build-host regression exercises protocol11 panels, source navigation and event-to-entry review. Historical protocol10 generated adapter assertions remain0.19.0."
+}

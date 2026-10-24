@@ -1,6 +1,8 @@
 # 执行后端中间层
 
-**0.1.8 源码收录**：自然完成通知、状态表与条件、版本化源码重编辑、参数接口及脚本使用位置已纳入[本版](RELEASE_0.1.8.md)。当前Godot适配器0.16.0，新含动画项目使用protocol 7／清单8，22模块／43项声明能力保持；下述较早阶段的版本与验证条件按当时范围保留，本次未更新安装。
+**0.2.0 后当前工作树**增加显式[逐实例动画运行](#逐实例动画的后端准入)：作者动画4映射动画子计划3，仅instance项目选择协议11／Godot适配器0.20.0／清单12。旧整场景分支、独立预览与原作者脚本保持；本轮未发布或更新安装。
+
+**0.1.8 源码收录**：自然完成通知、状态表与条件、版本化源码重编辑、参数接口及脚本使用位置已纳入[本版](RELEASE_0.1.8.md)。0.1.8发布时Godot适配器0.16.0，新含动画项目使用protocol 7／清单8，22模块／43项声明能力保持；下述较早阶段的版本与验证条件按当时范围保留，本次未更新安装。
 
 **此前0.1.7开发阶段**增加独立自然完成契约及订阅：新含动画项目使用 Godot 0.16.0／project protocol 7／清单 8，旧协议 1–6 继续可读取，无动画生成仍为 protocol 4。完成来源是冻结动画／片段，接收来源才是行为；不借用事件发布者，也不把渲染节点泄露给脚本。见[架构](ARCHITECTURE.md#动画自然完成的独立边界)。
 
@@ -12,7 +14,7 @@
 
 **0.1.6 后工作树**新增独立 `animation.sprite2d` 准入：含等分网格序列帧的计划保留 `animation.visual2d` 并额外要求该能力，删去标记不能绕过检查。Godot 0.13.0 使用独立序列帧生成器；四属性计划继续生成原 0.12.0 文件。图片闭包沿实例现有绑定和冻结资源，不增加资源解析通路；Bevy 两通道明确拒绝。参见[动画格式](SCENE_ANIMATION.md#等分网格序列帧)。
 
-当前未发布工作树支持[项目组装](PROJECT_ASSEMBLY.md)、[共享状态](PROJECT_SHARED_STATE.md)、[项目事件](PROJECT_EVENTS.md)与[行为声音控制](PROJECT_AUDIO_CONTROLS.md)。中立 `project:1` 计划保留全部 Scene2D 子计划，Godot 适配器 `0.11.0` 声明 `project.scenes`、`project.scene-switching`、`project.shared-state`、`project.events`、`project.audio-control`，Bevy 两条通道尚不接收项目计划。独立 `VIENTO_PROJECT:` 协议 4 校验访问、嵌套事件、状态修订、事件 FIFO 投递及实际声音命令；宿主从已验证冻结工程显式选择协议。纯读取器保留协议 1／2／3，不放宽旧构建的指纹重建要求。纯账本与查询、Godot 的事件及声音队列、三类独立只读观察面板各自维护。
+项目事件与声音控制接入阶段支持[项目组装](PROJECT_ASSEMBLY.md)、[共享状态](PROJECT_SHARED_STATE.md)、[项目事件](PROJECT_EVENTS.md)与[行为声音控制](PROJECT_AUDIO_CONTROLS.md)。中立 `project:1` 计划保留全部 Scene2D 子计划，Godot 适配器 `0.11.0` 声明 `project.scenes`、`project.scene-switching`、`project.shared-state`、`project.events`、`project.audio-control`，Bevy 两条通道尚不接收项目计划。独立 `VIENTO_PROJECT:` 协议 4 校验访问、嵌套事件、状态修订、事件 FIFO 投递及实际声音命令；宿主从已验证冻结工程显式选择协议。纯读取器保留协议 1／2／3，不放宽旧构建的指纹重建要求。纯账本与查询、Godot 的事件及声音队列、三类独立只读观察面板各自维护。
 
 **0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；当前为 21 模块／38 项声明能力，本次未制作或更新安装包。
 
@@ -28,7 +30,7 @@
 
 [成员报告](RUNTIME_CASE_REPORTS.md)接在通用调度器之后，只选择既有执行终态、定义与已接收的采样。后端不实现报告队列或导出接口；文件保存／pin 回读属于可信宿主，严格评价属于纯层，详情／下载属于 GUI。相同格式覆盖 Godot 与 Bevy，不改变引擎协议或适配器指纹。
 
-0.0.8 源码把后端能力、宿主执行编排和具体引擎实现分开，Linux 上已有 Godot 4 与 [Bevy 无头后端](BEVY_BACKEND.md)两条受限实现。Bevy 消费无图 Scene2D plan 1／2，不接图片、作者 Rust 行为或图形运行；Godot 的[行为绑定](SCENE_BEHAVIORS.md)另为明确关联清单的场景增加 plan／runtime 3。作者格式和既有计划／协议保持。Nuislang、ns-nova、yalivia、离屏渲染、内嵌视口或 GPU 计算仍未接入。源码版本为 0.0.10，安装状态见 [当前状态](STATUS.md)。
+0.0.8 源码把后端能力、宿主执行编排和具体引擎实现分开，Linux 上已有 Godot 4 与 [Bevy 无头后端](BEVY_BACKEND.md)两条受限实现。Bevy 消费无图 Scene2D plan 1／2，不接图片、作者 Rust 行为或图形运行；Godot 的[行为绑定](SCENE_BEHAVIORS.md)另为明确关联清单的场景增加 plan／runtime 3。作者格式和既有计划／协议保持。Nuislang、ns-nova、yalivia、离屏渲染、内嵌视口或 GPU 计算仍未接入。该阶段源码版本为 0.0.10，当前安装状态见 [当前状态](STATUS.md)。
 
 0.0.9 的[有序验收组](RUNTIME_CASE_SUITES.md)由通用 Node 宿主顺序复用已有无头控制会话，每份重新验证冻结产物与可信工具。全部作者成员在任务分配前捕获，组准入和结果汇总留在纯模块；后端只收到原控制程序。断言失败继续，执行失败／取消停止余项；不新增引擎队列 API。
 
@@ -105,7 +107,7 @@ Bevy Rust 的适配器版本为 `0.2.0`，仅支持无图 plan／runtime 3，声
 
 生成结果通过 `files`、中立的 `resourceFiles`（资源 UUID → 相对文件路径）、`sourceMap`、历史 `backend` 元数据和 `artifact` 描述交付。宿主先校验并复制结果，再创建输出目录：拒绝绝对路径、路径逃逸、文件与资源冲突、同一路径同时作文件和目录、缺少入口及预算超限。构建输出始终位于作者工程和实际素材目录之外。具体引擎如何组织自己的生成项目，属于适配器职责。
 
-新 `build.json` 和 `session.json` 增加独立的 `executionAdapter: { id, contractVersion, sha256 }`。Godot 适配器指纹覆盖十二份文件：`scene-behavior-events.mjs`、`scene-runtime-events.mjs`、`godot4-adapter.mjs`、`backend-capabilities.mjs`、`node-execution-backends.mjs`、`godot4-behaviors.mjs`、`godot4/behavior-runtime.gd`、`scene-behaviors.mjs` 、`build-plan.mjs`、`scene-control-program.mjs`、`godot4/control-runtime.gd` 和 `godot4/control.tscn`；它与旧 `backend.sha256` 的生成器／运行脚本摘要分别核对。运行仍从冻结原文重建计划，核对后端、协议、工具版本与二进制摘要、生成文件清单和每份字节，才创建独立运行副本。源工程离线后可重放，工具或适配器变化要求重建。
+新 `build.json` 和 `session.json` 增加独立的 `executionAdapter: { id, contractVersion, sha256 }`。中间层最初接入时，Godot 适配器指纹覆盖十二份文件：`scene-behavior-events.mjs`、`scene-runtime-events.mjs`、`godot4-adapter.mjs`、`backend-capabilities.mjs`、`node-execution-backends.mjs`、`godot4-behaviors.mjs`、`godot4/behavior-runtime.gd`、`scene-behaviors.mjs` 、`build-plan.mjs`、`scene-control-program.mjs`、`godot4/control-runtime.gd` 和 `godot4/control.tscn`；它与旧 `backend.sha256` 的生成器／运行脚本摘要分别核对。运行仍从冻结原文重建计划，核对后端、协议、工具版本与二进制摘要、生成文件清单和每份字节，才创建独立运行副本。源工程离线后可重放，工具或适配器变化要求重建。
 
 显式兼容旧记录的已知 Godot 适配器允许没有 `executionAdapter` 字段的历史构建，仍执行旧生成器、工具和产物检查。新字段存在时必须精确匹配；其他后端不能因为字段缺失而自动获得兼容。原作者正文、UUID、登记、图片、Scene2D 格式和历史生成脚本不因此迁移。原无行为 plan／runtime 1／2 保持，行为清单明确选择新增 plan／runtime 3。
 
@@ -154,3 +156,21 @@ Godot 生成工程把音频映射至独立资源路径，普通图像及行为�
 工程库存和 ZIP 交付包含冻结的 WAV 原字节、声音清单及运行脚本。真实测试已核对异地工程文件／资源，并在 Godot 的隔离混音缓冲验证非零 PCM、零增益、停止与独立循环；这不验证实际扬声器。当前音频与有限控制回放组合明确拒绝；项目内行为触发已通过[独立声音控制](PROJECT_AUDIO_CONTROLS.md)接入；空间声音、总线、Bevy 音频及独立游戏发行仍需单独对接。见[声音指南](SCENE_AUDIO.md)和[专项验收](test-results/scene-audio/README.md)。
 
 项目声音控制使用协议 4 的 `audio-command` 及起止命令计数，行为和音轨来源从当前冻结计划分别解析。原 `VIENTO_AUDIO` 协议 1 继续负责时间提示与声音生命周期；动态回执还需满足到期提示前缀、局部时钟及访问结束校验。Godot 独立声音队列在事件队列后排空，调用播放器后才发回执；核心没有播放器对象或磁盘读写。Godot 生成 `assembly.json` schema 5，作者组装与项目计划保持 1，旧单场景生成字节保持。
+
+
+## 逐实例动画的后端准入
+
+作者动画schema4显式保存 `playbackScope`，对应animation-plan 3。只有instance范围要求 `animation.instances2d`；能力检查同时复核冻结声明，移除标记不能绕过准入。场景plan及project:1父格式保持，旧动画计划1／2继续读取。单独scene2d生成遇到instance会报告 `build_animation_instances_require_project`，必须从项目组装构建；只读保存态预览不受这个生成限制。Bevy两个通道均未声明此运行能力。
+
+| 项目包含内容 | 项目协议 | 生成适配器 | assembly清单 |
+| --- | --- | --- | --- |
+| 无动画 | 4 | 0.11.0 | 5 |
+| 整场景动画，无可识别状态控制器 | 7 | 0.16.0 | 8 |
+| 整场景动画，完整识别状态表控制器 | 10 | 0.19.0 | 11 |
+| 至少一个显式instance动画场景 | 11 | 0.20.0 | 12 |
+
+适配器描述符声明可接收协议11，实际生成分支仍按计划选择；文档4的scene范围本身不会启用协议11。清单12精确列出每个场景的范围、合法动画实例及所需运行文件，实例列表与冻结轨道相符。状态表作者v1–v5源文件不迁移，包装和target层仅进入生成工程；源与运行资源纳入生成器／适配器指纹、库存复核和ZIP交付。
+
+协议11命令保留发起行为身份并追加独立target；完成记录以 `targetCommandSequence` 锚定目标最后命令，以 `commandSequence` 保存完成时全局截止。中立账本、完整运行读取与查询校验访问、目标归属、Rust传输和投递关系。其他实例的命令不撤销该目标完成通知；原全局队列和总量预算保持，旧协议仍按原精确字段读取。
+
+Godot公开动画端口按原端口对象、登记访问、绑定与实际行为身份取回控制来源；修改字段或整体替换绑定声明不能重定向目标。该身份检查不限制任意GDScript的引擎／本机副作用，不是代码沙箱。GUI仍只显示冻结来源、目标和回执，不能持有引擎对象或注入任意目标命令。正式stop与预览静态恢复的区别见[动画范围](SCENE_ANIMATION.md#为正式运行选择播放范围)，实际验证见[本轮记录](test-results/animation-instance-runtime/README.md)。

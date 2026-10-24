@@ -61,7 +61,7 @@ async function build(t,table,body,{parameters,bom=false,edit}={}){
   const output=path.join(f.temporary,'combinations-build'),built=await buildProject({root:f.author,targetId:f.assemblyId,tool,output});
   assert.equal(built.ok,true,JSON.stringify(built.diagnostics||built.record?.diagnostics));
   assert.equal(await fs.readFile(path.join(f.author,'documents/scripts/checkpoint.txt'),'utf8'),content);
-  assert.equal(adapter.descriptor.version,'0.19.0');
+  assert.equal(adapter.descriptor.version,'0.21.0');
   return {...f,output,content};
 }
 const run=f=>runProjectBuild({buildDirectory:f.output,tool,headless:true,smoke:false});
@@ -189,8 +189,8 @@ test('real mixed firstMatch groups and scalar branches read state at delivery ti
 });
 
 test('real a matching all group with rejected entry does not attempt a matching any branch or fallback',real,async t=>{
-  const f=await build(t,branches(),'\tp.write_state("combat.value",true)\n\tp.write_state("combat.other",true)\n\tp.publish_event("choose","go")\n\thost.flush_requests()',{
-    parameters:f=>({clip_idle:f.clipIds[0][0],clip_all:'61616161-6161-4161-8161-000000000099',clip_any:f.clipIds[0][0],clip_leaf:f.clipIds[0][0],clip_fallback:f.clipIds[0][0]})});
+  // Author bindings are valid; corrupt the selected runtime clip to test fail-stop without fallback.
+  const f=await build(t,branches(),'\tp.write_state("combat.value",true)\n\tp.write_state("combat.other",true)\n\treceiver._clips[1] = "61616161-6161-4161-8161-000000000099"\n\tp.publish_event("choose","go")\n\thost.flush_requests()');
   const result=await run(f);assert.equal(result.ok,false);assert.ok(result.record.diagnostics.some(row=>row.code==='runtime_behavior_animation_clip'&&row.bindingId===f.bindingId));
   assert.equal(rows(result,'animation-command').length,2);assert.deepEqual(entries(result).map(row=>row.stateIndex),[0]);assert.equal(snapshots(result)[0].reason,'aborted');assert.equal(snapshots(result)[0].controllers[0].status,'inactive');
 });

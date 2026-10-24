@@ -35,7 +35,7 @@ async function fixture(t, options = {}) {
   });
   const container = h.document.createElement('div'); container.id = 'projectAnimationCompletions'; container.isConnected = true; h.document.body.append(container);
   const controller = h.runtime.setupProjectAnimationCompletionObservation({ container, getContext: () => context,
-    onOpen: async (source, opts) => { calls.push({ source, ...opts }); return options.onOpen ? options.onOpen(source, opts) : true; } });
+    onReviewTarget: options.onReviewTarget, onOpen: async (source, opts) => { calls.push({ source, ...opts }); return options.onOpen ? options.onOpen(source, opts) : true; } });
   t.after(() => controller.dispose());
   const el = suffix => h.element('projectAnimationCompletions' + suffix);
   return { ...h, container, controller, context, calls, el, set: (value, options) => controller.setSnapshot(value, options),
@@ -197,4 +197,52 @@ test('protocol10 retains completion provenance beside state snapshots', async t 
   const h = await fixture(t); h.set(clipSnapshot(), { protocolVersion: 10 });
   assert.equal(h.el('Panel').hidden, false); assert.equal(h.rows().length, 1);
   sourceButton(h, 'subscriber').click(); await flushDialogs(); assert.deepEqual(JSON.parse(JSON.stringify(h.calls[0].source)), origin().source);
+});
+
+function targetCompletions() {
+  const first = entry(), second = entry(2);
+  for (const [index, value] of [first, second].entries()) {
+    value.commandSequence = 2; value.targetCommandSequence = index + 1; value.state.timeSeconds = 2;
+    value.target = { kind: 'instance', instanceId: origin(index + 1).instanceId };
+    value.deliveries = [{ subscriptionId: index + 1, origin: origin(index + 1), status: 'handled' }];
+  }
+  return { sequence: 2, entries: [first, second] };
+}
+test('protocol11 displays simultaneous independent completions with separate lane anchors and instance filtering', async t => {
+  const h = await fixture(t), value = targetCompletions(); h.set(value, { protocolVersion: 11 });
+  assert.equal(h.rows().length, 2); assert.deepEqual(h.rows().map(row => row.dataset.targetInstanceId), [id(21), id(22)]);
+  assert.equal(h.rows()[0].querySelector('.project-animation-completion-anchor').textContent, '目标最后命令序号 1 · 全部命令截止 2');
+  assert.equal(h.rows()[1].querySelector('.project-animation-completion-anchor').textContent, '目标最后命令序号 2 · 全部命令截止 2');
+  h.filter(id(22)); const search = h.el('Search'); search.focus(); search.selectionStart = 1; search.selectionEnd = 4;
+  for (const dictionary of [{}, en, ja]) {
+    h.language(dictionary); assert.equal(h.rows().length, 1); assert.equal(h.rows()[0].dataset.sequence, '2');
+    assert.equal(h.rows()[0].querySelector('.project-animation-completion-target').textContent, (dictionary['动画目标：实例 {0}'] || '动画目标：实例 {0}').replace('{0}', id(22)));
+    assert.equal(h.document.activeElement, search); assert.deepEqual([search.selectionStart, search.selectionEnd], [1, 4]);
+  }
+  sourceButton(h, 'subscriber').click(); await flushDialogs(); assert.equal(h.calls[0].source.propertyPath, '/bindings/1');
+  h.set(value, { protocolVersion: 10 }); assert.equal(h.el('Panel').hidden, true);
+  delete value.entries[0].target; h.set(value, { protocolVersion: 11 }); assert.equal(h.el('Panel').hidden, true);
+});
+
+test('protocol11 changed completion target identity revokes delayed source navigation', async t => {
+  const gate = deferred(), h = await fixture(t, { onOpen: () => gate.promise }), value = targetCompletions();
+  h.set(value, { protocolVersion: 11 }); sourceButton(h).click();
+  const changed = structuredClone(value); changed.entries[0].target.instanceId = id(99); changed.entries[0].deliveries[0].origin.instanceId = id(99);
+  h.set(changed, { protocolVersion: 11 }); assert.equal(h.rows().length, 2); assert.equal(h.calls[0].isCurrent(), false);
+  gate.resolve(true); await flushDialogs();
+  const scene = snapshot(); scene.entries[0].target = { kind: 'scene' }; scene.entries[0].targetCommandSequence = 0;
+  h.set(scene, { protocolVersion: 11 }); assert.equal(h.rows()[0].querySelector('.project-animation-completion-target').textContent, '动画目标：整场景');
+});
+
+
+test('target review opener preserves record identity and cannot activate detached or filtered receipts', async t => {
+  const reviewed = [], h = await fixture(t, { onReviewTarget: (record, context) => reviewed.push({ record, ...context }) });
+  h.set(targetCompletions(), { protocolVersion: 11 });
+  const button = h.rows()[0].querySelector('.project-animation-completion-target-review-open'); button.click();
+  assert.deepEqual(JSON.parse(JSON.stringify(reviewed[0].record)), { kind: 'completion', sequence: 1 }); assert.equal(reviewed[0].isCurrent(), true);
+  h.filter('no-match'); button.dispatch('click'); assert.equal(reviewed.length, 1); assert.equal(reviewed[0].isCurrent(), false);
+  h.controller.focusRecord(1); assert.equal(h.document.activeElement, h.el('Search'));
+  h.filter(''); h.controller.focusRecord(1); assert.equal(h.document.activeElement, button);
+  h.context.sessionOwner = 'new-run'; h.controller.refresh(); button.dispatch('click'); assert.equal(reviewed.length, 1);
+  assert.equal(h.controller.focusRecord(1), false);
 });

@@ -14,10 +14,10 @@ const invalid = error => error instanceof TypeError && error.errorCode === 'stud
 const active = (plan, id) => plan.modules.find(item => item.id === id);
 const cap = (plan, id) => plan.capabilities.find(item => item.capability === id);
 
-test('builtin composition declares twenty-two stable modules and keeps contribution domains separate', () => {
+test('builtin composition declares twenty-three stable modules and keeps contribution domains separate', () => {
   assert.equal(STUDIO_MODULE_SCHEMA_VERSION, 1); assert.equal(STUDIO_PROFILE_SCHEMA_VERSION, 1);
   assert.deepEqual(STUDIO_MODULES.map(item => item.id), ['org.viento.document', 'org.viento.scripts', 'org.viento.scene-composition-create', 'org.viento.settings', 'org.viento.project',
-    'org.viento.world', 'org.viento.export', 'org.viento.media', 'org.viento.build', 'org.viento.scene3d', 'org.viento.scene3d-transforms', 'org.viento.scene3d-objects', 'org.viento.scene3d-environment', 'org.viento.scene3d-properties', 'org.viento.scene3d-translation', 'org.viento.scene3d-alignment', 'org.viento.scene3d-distribution', 'org.viento.scene3d-copy', 'org.viento.scene3d-removal', 'org.viento.scene-behaviors', 'org.viento.scene-audio', 'org.viento.scene-animation']);
+    'org.viento.world', 'org.viento.export', 'org.viento.media', 'org.viento.build', 'org.viento.scene3d', 'org.viento.scene3d-transforms', 'org.viento.scene3d-objects', 'org.viento.scene3d-environment', 'org.viento.scene3d-properties', 'org.viento.scene3d-translation', 'org.viento.scene3d-alignment', 'org.viento.scene3d-distribution', 'org.viento.scene3d-copy', 'org.viento.scene3d-removal', 'org.viento.scene-behaviors', 'org.viento.scene-audio', 'org.viento.scene-animation', 'org.viento.scene-physics2d']);
   const registry = createStudioModuleRegistry(), plan = registry.plan();
   assert.deepEqual(plan.modules.map(item => item.id), STUDIO_MODULES.map(item => item.id));
   assert.ok(plan.modules.every(item => item.active && item.reason === null));
@@ -32,7 +32,7 @@ test('builtin composition declares twenty-two stable modules and keeps contribut
   assert.equal(cap(plan, 'scene.authoring.transforms3d').domain, 'authoring');
   assert.equal(cap(plan, 'scene.authoring.translation3d').domain, 'authoring');
   assert.equal(cap(plan, 'scene.authoring.alignment3d').domain, 'authoring');
-  assert.equal(plan.capabilities.length, 43);
+  assert.equal(plan.capabilities.length, 44);
   assert.equal(cap(plan, 'project.authoring.assembly').moduleId, 'org.viento.build');
   assert.equal(cap(plan, 'project.authoring.assembly').domain, 'authoring');
   assert.equal(cap(plan, 'scene.authoring.audio-creation').moduleId, 'org.viento.build');
@@ -244,5 +244,5 @@ test('declared future module profiles cannot mutate original author payload or t
   assert.deepEqual(original, before); assert.equal(result.requests[0].status, 'missing');
   original.studioProfile.required[0].capability = 'scene.representation.scene2d';
   assert.equal(result.requests[0].capability, 'scene.representation.scene4d');
-  assert.equal(registry.plan().modules.length, 22); assert.equal(cap(registry.plan(), 'scene.representation.scene4d'), undefined);
+  assert.equal(registry.plan().modules.length, 23); assert.equal(cap(registry.plan(), 'scene.representation.scene4d'), undefined);
 });

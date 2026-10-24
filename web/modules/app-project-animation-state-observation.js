@@ -146,7 +146,7 @@ export function setupProjectAnimationStateObservation({ container, getContext = 
       updateContext();
       let admitted;
       try {
-        if (![8, 9, 10].includes(protocolVersion)) throw new TypeError('Unsupported animation state observation.');
+        if (![8, 9, 10, 11].includes(protocolVersion)) throw new TypeError('Unsupported animation state observation.');
         admitted = value == null ? null : validateProjectAnimationStatesSnapshot(value);
       } catch { clear(); render(); return; }
       const next = admitted == null ? '' : JSON.stringify(admitted);

@@ -93,10 +93,16 @@ function replacement(content, parsed, path, value) {
   return { ...location, text };
 }
 function candidateDocument(before, edit) {
-  const hasClips = Object.hasOwn(edit, 'clips');
-  const fields = record(edit, ['durationSeconds', 'loop', 'tracks', ...(hasClips ? ['clips'] : [])]);
-  return { ...before, ...fields,
-    schemaVersion: before.schemaVersion === 3 || hasClips ? 3 : before.schemaVersion === 2 || Array.isArray(fields.tracks) && fields.tracks.some(track => track?.property === 'spriteFrame2d') ? 2 : 1 };
+  const hasClips = Object.hasOwn(edit, 'clips'), hasScope = Object.hasOwn(edit, 'playbackScope');
+  const fields = record(edit, ['durationSeconds', 'loop', 'tracks', ...(hasClips ? ['clips'] : []), ...(hasScope ? ['playbackScope'] : [])]);
+  const scope = hasScope ? fields.playbackScope : before.playbackScope ?? 'scene';
+  if (!['scene', 'instance'].includes(scope)) fail();
+  const scoped = before.schemaVersion === 4 || scope === 'instance';
+  const candidate = { ...before, ...fields,
+    schemaVersion: scoped ? 4 : before.schemaVersion === 3 || hasClips ? 3 : before.schemaVersion === 2 || Array.isArray(fields.tracks) && fields.tracks.some(track => track?.property === 'spriteFrame2d') ? 2 : 1 };
+  if (scoped) { candidate.playbackScope = scope; candidate.clips ??= []; }
+  else delete candidate.playbackScope;
+  return candidate;
 }
 
 // Retime the current complete form, not an older saved model. This returns data
@@ -139,8 +145,8 @@ async function patch(content, edit) {
       leaf(`${path}/keyframes/${j}/value`, frame.value, next.keyframes[j].value);
     });
   });
-  if (candidate.schemaVersion === 3) {
-    if (before.schemaVersion !== 3) {
+  if ([3, 4].includes(candidate.schemaVersion)) {
+    if (![3, 4].includes(before.schemaVersion)) {
       // Insert one property after the last source value. Existing whitespace,
       // escaped property names, BOM and trailing text remain byte-for-byte.
       const last = range(parsed, `/${Object.keys(before).at(-1)}`), newline = content.match(/\r\n|\n|\r/)?.[0];
@@ -153,6 +159,14 @@ async function patch(content, edit) {
       else before.clips.forEach((clip, i) => {
         for (const key of ['name', 'startSeconds', 'endSeconds', 'loop']) leaf(`/clips/${i}/${key}`, clip[key], candidate.clips[i][key]);
       });
+    }
+  }
+  if (candidate.schemaVersion === 4) {
+    if (before.schemaVersion === 4) leaf('/playbackScope', before.playbackScope, candidate.playbackScope);
+    else {
+      const last = range(parsed, `/${Object.keys(before).at(-1)}`), newline = content.match(/\r\n|\n|\r/)?.[0];
+      const indent = content.slice(0, range(parsed, '/format').start).split(/\r\n|\n|\r/).at(-1).match(/^[ \t]*/)[0] || '  ';
+      patches.push({ start: last.end, end: last.end, propertyPath: '/playbackScope', text: `,${newline ? newline + indent : ''}"playbackScope":${newline ? ' ' : ''}${JSON.stringify(candidate.playbackScope)}` });
     }
   }
   if (!patches.length) throw error('unchanged');

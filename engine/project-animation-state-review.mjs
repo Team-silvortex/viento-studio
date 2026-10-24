@@ -11,7 +11,7 @@ const key = origin => `${origin.visitIndex}/${origin.sceneId}/${origin.bindingId
 export function createProjectAnimationStateReview(input) {
   let view;
   try { view = queryProjectRuntimeObservation(input); } catch { throw invalid(); }
-  if (![9, 10].includes(view.project.protocolVersion)) throw invalid();
+  if (![9, 10, 11].includes(view.project.protocolVersion)) throw invalid();
   const project = view.project, entries = freeze(project.animationStateEntries.entries), groups = new Map(), commands = new Map(), terminals = new Map();
   for (const entry of entries) {
     const scope = key(entry.origin);

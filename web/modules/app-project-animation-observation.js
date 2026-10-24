@@ -3,7 +3,7 @@ import { t, onLanguageChange } from '../i18n/index.js';
 
 // Executed animation receipts remain a read-only view with source-navigation
 // ports only. The runtime owns time, playback and scene lifetime.
-export function setupProjectAnimationObservation({ container, getContext = () => ({}), onOpen = async () => false } = {}) {
+export function setupProjectAnimationObservation({ container, getContext = () => ({}), onOpen = async () => false, onReviewTarget } = {}) {
   if (!container) return Object.freeze({ setSnapshot() {}, refresh() {}, dispose() {} });
   const document = container.ownerDocument;
   container.innerHTML = `<section id="projectAnimationCommandsPanel" class="project-animation-observation" hidden aria-labelledby="projectAnimationCommandsTitle">
@@ -64,13 +64,24 @@ export function setupProjectAnimationObservation({ container, getContext = () =>
     item.dataset.sequence = String(entry.sequence); item.dataset.action = entry.command.action; item.dataset.animationId = entry.animation.objectId;
     const heading = node('h4'), sequence = node('p', '', 'project-animation-sequence'), animation = node('p', '', 'project-animation-identity'), state = node('p', '', 'project-animation-state');
     const origin = node('p', '', 'project-animation-origin'), declaration = node('p', '', 'project-animation-origin');
-    const clip = node('p', '', 'project-animation-clip');
-    const record = { entry, signature: JSON.stringify(entry), item, heading, sequence, animation, state, origin, declaration, clip };
+    const clip = node('p', '', 'project-animation-clip'), target = node('p', '', 'project-animation-target');
+    const record = { entry, signature: JSON.stringify(entry), item, heading, sequence, animation, state, origin, declaration, clip, target };
     record.behaviorSource = sourceButton(record, entry.origin.source, 'behavior');
     record.animationSource = sourceButton(record, entry.animation.source, 'animation');
     const actions = node('div', '', 'project-animation-sources'); actions.append(record.behaviorSource, record.animationSource);
     if (entry.clip) { record.clipSource = sourceButton(record, entry.clip.source, 'clip'); actions.append(record.clipSource); }
-    item.append(heading, sequence, animation, state, clip, origin, declaration, actions); return record;
+    if (entry.target && typeof onReviewTarget === 'function') {
+      record.review = node('button', '', 'doc-btn doc-btn-ghost project-animation-target-review-open'); record.review.type = 'button';
+      record.review.addEventListener('click', () => {
+        const current = updateContext(), owner = sessionOwner, navigation = navigationOwner, epoch = generation;
+        const isCurrent = () => canUse(context()) && context().sessionOwner === owner && context().navigationOwner === navigation
+          && generation === epoch && records.get(entry.sequence) === record && !record.item.hidden && Boolean(snapshot);
+        if (!canUse(current) || !isCurrent()) return;
+        onReviewTarget({ kind: 'command', sequence: entry.sequence }, { isCurrent });
+      });
+      actions.append(record.review);
+    }
+    item.append(heading, sequence, animation, target, state, clip, origin, declaration, actions); return record;
   }
   function render() {
     if (disposed) return;
@@ -78,12 +89,12 @@ export function setupProjectAnimationObservation({ container, getContext = () =>
     el('Panel').hidden = !canUse(current) || !snapshot;
     setText(el('Title'), t('动画控制记录'));
     setText(el('Note'), t('只读显示动画命令执行时的状态和播放头，不代表当前画面。切换场景时保留记录，重新运行后清空。'));
-    setText(el('SearchLabel'), t(protocolVersion >= 6 ? '按场景、动画或片段筛选' : '按场景或动画标识筛选'));
+    setText(el('SearchLabel'), t(protocolVersion === 11 ? '按场景、实例、动画或片段筛选' : protocolVersion >= 6 ? '按场景、动画或片段筛选' : '按场景或动画标识筛选'));
     setText(el('Navigation'), opening ? t('正在打开动画控制来源…') : navigationMessage ? t(navigationMessage) : '');
     el('Navigation').hidden = !opening && !navigationMessage;
     search.disabled = !canUse(current) || !snapshot;
     if (!snapshot) { setText(el('Sequence'), ''); delete el('Sequence').dataset.sequence; setText(el('Empty'), ''); return; }
-    const query = search.value.trim().toLowerCase(), active = snapshot.entries.filter(entry => [entry.origin.sceneId, entry.animation.objectId, entry.clip?.id || '', entry.clip?.name || ''].some(value => value.toLowerCase().includes(query)));
+    const query = search.value.trim().toLowerCase(), active = snapshot.entries.filter(entry => [entry.origin.sceneId, entry.animation.objectId, entry.clip?.id || '', entry.clip?.name || '', entry.target?.instanceId || ''].some(value => value.toLowerCase().includes(query)));
     setText(el('Sequence'), t('命令序号 {0} · 显示 {1} / {2} 条动画命令', snapshot.sequence, active.length, snapshot.entries.length));
     el('Sequence').dataset.sequence = String(snapshot.sequence);
     el('Empty').hidden = active.length > 0;
@@ -98,12 +109,16 @@ export function setupProjectAnimationObservation({ container, getContext = () =>
       setText(record.animation, t('场景 {0} · 动画 {1}', entry.origin.sceneId, entry.animation.objectId));
       const phase = t({ playing: '播放', paused: '暂停', stopped: '停止', finished: '结束' }[entry.state.phase]);
       setText(record.state, t('执行后状态：{0} · 播放头 {1} 秒', phase, entry.state.positionSeconds));
+      record.target.hidden = !entry.target;
+      setText(record.target, entry.target ? entry.target.kind === 'instance' ? t('动画目标：实例 {0}', entry.target.instanceId) : t('动画目标：整场景') : '');
+      record.item.dataset.targetInstanceId = entry.target?.instanceId || '';
       record.clip.hidden = protocolVersion < 6;
       setText(record.clip, entry.clip ? t('片段：{0} · {1} · 原时间轴 {2}–{3} 秒', entry.clip.name, entry.clip.id, entry.clip.startSeconds, entry.clip.endSeconds) : t('完整动画'));
       if (record.clipSource) setText(record.clipSource, t('打开动画片段声明'));
       setText(record.origin, t('控制来源：{0} · {1}', entry.origin.source.sourcePath, entry.origin.source.propertyPath));
       setText(record.declaration, t('动画声明：{0} · {1}', entry.animation.source.sourcePath, entry.animation.source.propertyPath));
       setText(record.behaviorSource, t('打开控制来源')); setText(record.animationSource, t('打开动画声明'));
+      if (record.review) { setText(record.review, t('回看动画目标')); record.review.disabled = !canUse(current); }
       for (const button of [record.behaviorSource, record.animationSource, record.clipSource].filter(Boolean)) button.disabled = !canUse(current) || current.canOpenSource !== true || Boolean(opening);
       next.push(record.item);
     }
@@ -124,7 +139,7 @@ export function setupProjectAnimationObservation({ container, getContext = () =>
       let admitted;
       try {
         const nextProtocol = options.protocolVersion ?? 5;
-        if (![5, 6, 7, 8, 9, 10].includes(nextProtocol)) throw new TypeError('Unsupported animation observation.');
+        if (![5, 6, 7, 8, 9, 10, 11].includes(nextProtocol)) throw new TypeError('Unsupported animation observation.');
         admitted = value == null ? null : validateProjectAnimationCommandsSnapshot(value, { protocolVersion: nextProtocol });
         if (protocolVersion !== nextProtocol) { clear(); protocolVersion = nextProtocol; }
       }
@@ -135,6 +150,13 @@ export function setupProjectAnimationObservation({ container, getContext = () =>
         if (!snapshot) { invalidate(); records.clear(); list.replaceChildren(); }
       }
       render();
+    },
+    focusRecord(sequence) {
+      const current = updateContext();
+      if (!canUse(current) || !snapshot) return false;
+      const record = records.get(sequence);
+      (record && !record.item.hidden && record.review ? record.review : search).focus();
+      return true;
     },
     refresh: render,
     dispose() {

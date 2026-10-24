@@ -164,7 +164,7 @@ test('protocol10 descriptor requires trigger capability without changing protoco
   assert.deepEqual(checkExecutionBackendSupport(descriptor, { operation: 'build', plan }).map(item => item.capability), ['project.animation-state-entry-triggers']);
   descriptor.capabilities.push('project.animation-state-entry-triggers');
   assert.deepEqual(checkExecutionBackendSupport(descriptor, { operation: 'build', plan }), []);
-  descriptor.plans[1].runtimeProtocolVersion = 11; assert.throws(() => validateExecutionBackendDescriptor(descriptor));
+  descriptor.plans[1].runtimeProtocolVersion = 12; assert.throws(() => validateExecutionBackendDescriptor(descriptor));
 });
 test('trigger snapshot enforces duplicate callback keys and entry limit while direct re-entry stays legal', () => {
   const view = eventObserved(), snapshot = clone(view.project.animationStateEntries);

@@ -1,3 +1,4 @@
+import { setupProjectAnimationTargetReview } from './app-project-animation-target-review.js';
 import { setupProjectAnimationStateEntryObservation } from './app-project-animation-state-entry-observation.js';
 import { setupProjectAnimationStateObservation } from './app-project-animation-state-observation.js';
 import { setupProjectAnimationCompletionObservation } from './app-project-animation-completion-observation.js';
@@ -36,6 +37,14 @@ import { setupRuntimeCaseReport } from './app-runtime-case-report.js';
 import { setupBackendProjectDelivery } from './app-backend-project-delivery.js';
 import { setupBackendProject } from './app-backend-project.js';
 const errorLabels = {
+  build_physics_invalid: '场景物理配置无效，请检查物理体、实例编号、形状和碰撞层。',
+  build_physics_requires_project: '二维物理需要项目组装。请用当前场景创建组装后再构建。',
+  build_physics_control_replay_unsupported: '物理工程暂不支持有限控制回放，请使用无头测试或窗口预览。',
+  build_animation_state_clip_missing: '动画状态引用的片段不在当前场景中。请重新选择片段，或清空该状态的片段参数。',
+  build_animation_state_animation_missing: '动画状态控制器所在的场景没有动画。请添加场景动画，或移除该控制器绑定。',
+  build_animation_state_target_missing: '动画状态控制器绑定的实例没有动画轨道。请为该实例添加轨道，或修改控制器绑定。',
+  build_animation_state_preflight_limit: '动画绑定错误过多，部分诊断已省略。请修正已列出的问题后重新检查计划。',
+  build_animation_instances_require_project: '逐实例动画需要项目组装。请用当前场景创建组装后，再检查计划和构建。',
   runtime_behavior_animation_state_entry_invalid: '动画状态进入记录与构建时的控制器身份或状态不一致，运行已停止。',
   runtime_behavior_animation_state_entry_limit: '动画状态进入记录超出本次运行的 128 条限制，运行已停止；请减少重复进入或拆分测试。',
   build_animation_state_parameters_invalid: '动画状态脚本的片段参数必须是空字符串或小写 UUID，请检查行为绑定。',
@@ -146,6 +155,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <div class="build-scene-picker"><label id="projectBuildSceneLabel" for="projectBuildScene"></label><select id="projectBuildScene"></select>
     <button id="projectBuildRefresh" type="button" class="doc-btn doc-btn-ghost" data-i18n="刷新状态"></button></div>
     <button id="projectBuildAssembly" type="button" class="doc-btn doc-btn-ghost" data-i18n="项目组装" hidden></button>
+    <button id="projectBuildAssemblyFromScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="用当前场景创建组装" hidden></button>
     <button id="projectBuildEditScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="编辑场景" hidden></button>
     <button id="projectBuildCreateScene" type="button" class="doc-btn doc-btn-ghost" data-i18n="创建场景" hidden></button>
     <button id="projectBuildMaterialize" type="button" class="doc-btn doc-btn-ghost" data-i18n="从配方创建场景" hidden></button>
@@ -204,7 +214,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <div id="projectEventTrace"></div>
     <div id="projectEventReview"></div>
     <div id="projectAudioCommands"></div>
-    <div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div><div id="projectAnimationStates"></div><div id="projectAnimationStateEntries"></div>
+    <div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div><div id="projectAnimationTargetReview"></div><div id="projectAnimationStates"></div><div id="projectAnimationStateEntries"></div>
     <section id="projectBuildBehaviorEvents" hidden aria-labelledby="projectBuildBehaviorEventsTitle"><h3 id="projectBuildBehaviorEventsTitle" data-i18n="行为事件"></h3><ul id="projectBuildBehaviorEventList"></ul></section>
     <details class="build-raw"><summary data-i18n="原始细节与日志"></summary><pre id="projectBuildLogs" tabindex="0"></pre></details></section>`;
   document.body.append(dialog);
@@ -410,7 +420,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   const assemblyEditor = typeof setupProjectAssembly === 'function' ? setupProjectAssembly({
     getContext: () => { const context = getContext(); return { ...context,
       busy: (assemblyBusy ? context.nonWorldBusy !== false : Boolean(context.busy)) || requestBusy || running() || checkingTool(),
-      session: String(dialogSession), visible: dialog.open && activeTab === 'build', sourceToken: context.sceneDraftToken }; },
+      session: String(dialogSession), visible: dialog.open && activeTab === 'build', sceneId: !projectTarget() && liveScene() ? selected : '', sourceToken: context.sceneDraftToken }; },
     setBusy: value => { assemblyBusy = value === true; setBusy(value); render(); },
     request: body => requestProjectBuildDocument(body),
     applied: async result => {
@@ -422,7 +432,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       if (failure) throw failure;
       if (errorMessage || !data?.scenes.some(target => target.id === result.id && target.kind === 'project')) throw Error(t('组装已保存，但构建目录刷新失败。请刷新状态核对。'));
     },
-  }) : { open() {}, setAvailable() {}, refresh() {} };
+  }) : { open() {}, openForScene() {}, setAvailable() {}, refresh() {} };
 
   const audioCreator = typeof setupSceneAudioCreate === 'function' ? setupSceneAudioCreate({
     getContext: () => { const context = getContext(); return { ...context,
@@ -505,6 +515,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     return available && data?.supported && context.editable && !context.dirty && !context.creating && !context.busy;
   };
   const liveScene = () => Boolean(selectedScene() && selectedScene().frozenOnly !== true && !catalogUnavailable());
+  const maySeedAssembly = () => dialog.open && activeTab === 'build' && data?.assemblyDocuments === true
+    && typeof assemblyEditor.openForScene === 'function' && !projectTarget() && liveScene()
+    && !requestBusy && !running() && !checkingTool() && ready();
   const mayMaterialize = () => previewSupported && creationSupported && activeTab === 'preview'
     && selectedDocument()?.kind === 'composition' && !requestBusy && !running() && !checkingTool() && !catalogUnavailable() && ready();
   const editScene = () => {
@@ -706,6 +719,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       const owns = () => ownsRuntimeSourceContext() && isCurrent();
       return navigateOwnedSource([source.sourcePath, source], owns);
     },
+    onReviewTarget: (record, { isCurrent }) => {
+      if (!dialog.open || activeTab !== 'build' || !isCurrent()) return false;
+      return animationTargetReview.selectRecord(record.kind, record.sequence);
+    },
   }) : { setSnapshot() {}, refresh() {} };
   const animationCompletionObservation = typeof setupProjectAnimationCompletionObservation === 'function' ? setupProjectAnimationCompletionObservation({
     container: el('projectAnimationCompletions'),
@@ -718,6 +735,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       if (!mayOpenRuntimeSource() || !isCurrent()) return false;
       const owns = () => ownsRuntimeSourceContext() && isCurrent();
       return navigateOwnedSource([source.sourcePath, source], owns);
+    },
+    onReviewTarget: (record, { isCurrent }) => {
+      if (!dialog.open || activeTab !== 'build' || !isCurrent()) return false;
+      return animationTargetReview.selectRecord(record.kind, record.sequence);
     },
   }) : { setSnapshot() {}, refresh() {} };
   const animationStateObservation = typeof setupProjectAnimationStateObservation === 'function' ? setupProjectAnimationStateObservation({
@@ -767,16 +788,35 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     },
     onClose: sequence => eventObservation.focusEvent?.(sequence),
   }) : { setObservation() {}, selectEvent() { return false; }, refresh() {} };
+  const animationTargetReview = typeof setupProjectAnimationTargetReview === 'function' ? setupProjectAnimationTargetReview({
+    container: el('projectAnimationTargetReview'),
+    getContext: () => {
+      const observed = runtimeObservation();
+      return { available: available && Boolean(observed?.members), visible: dialog.open && activeTab === 'build',
+        sessionOwner: observed?.sessionOwner || '', navigationOwner: observed?.owner || '',
+        canOpenSource: mayOpenRuntimeSource(), canContinueSource: ownsRuntimeSourceContext() };
+    },
+    onOpen: async (source, { isCurrent }) => {
+      if (!mayOpenRuntimeSource() || !isCurrent()) return false;
+      const owns = () => ownsRuntimeSourceContext() && isCurrent();
+      return navigateOwnedSource([source.sourcePath, source], owns);
+    },
+    onClose: record => {
+      if (record?.kind === 'command') animationObservation.focusRecord?.(record.sequence);
+      else if (record?.kind === 'completion') animationCompletionObservation.focusRecord?.(record.sequence);
+    },
+  }) : { setObservation() {}, selectRecord() { return false; }, refresh() {} };
   function renderRuntimeObjects() {
     const observation = runtimeObservation(), owner = observation?.owner || '';
-    stateObservation.setSnapshot([2, 3, 4, 5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
-    eventObservation.setSnapshot([3, 4, 5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
-    audioObservation.setSnapshot([4, 5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.audioCommands : null);
-    animationObservation.setSnapshot([5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCommands : null, { protocolVersion: observation?.view.project?.protocolVersion >= 6 ? observation.view.project.protocolVersion : 5 });
-    animationCompletionObservation.setSnapshot([7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCompletions : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
-    animationStateObservation.setSnapshot([8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationStates : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
-    animationStateEntryObservation.setObservation([9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view : null);
-    eventReview.setObservation([3, 4, 5, 6, 7, 8, 9, 10].includes(observation?.view.project?.protocolVersion) ? observation.view : null);
+    animationTargetReview.setObservation(observation?.view.project?.protocolVersion === 11 ? observation.view : null);
+    stateObservation.setSnapshot([2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
+    eventObservation.setSnapshot([3, 4, 5, 6, 7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.events : null);
+    audioObservation.setSnapshot([4, 5, 6, 7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.audioCommands : null);
+    animationObservation.setSnapshot([5, 6, 7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCommands : null, { protocolVersion: observation?.view.project?.protocolVersion >= 6 ? observation.view.project.protocolVersion : 5 });
+    animationCompletionObservation.setSnapshot([7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationCompletions : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
+    animationStateObservation.setSnapshot([8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.animationStates : null, { protocolVersion: observation?.view.project?.protocolVersion || 1 });
+    animationStateEntryObservation.setObservation([9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view : null);
+    eventReview.setObservation([3, 4, 5, 6, 7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view : null);
     const panel = el('projectBuildRuntimeObjects'), input = el('projectBuildRuntimeSearch'), list = el('projectBuildRuntimeObjectList');
     const ownerChanged = runtimeOwner !== owner;
     if (ownerChanged) { runtimeOwner = owner; runtimeSearch = ''; input.value = ''; runtimeCardSignature = ''; }
@@ -958,6 +998,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildRefresh').disabled = requestBusy;
     el('projectBuildAssembly').hidden = activeTab === 'preview' || data?.assemblyDocuments !== true;
     el('projectBuildAssembly').disabled = requestBusy || running() || checkingTool() || !ready() || catalogUnavailable();
+    el('projectBuildAssemblyFromScene').hidden = activeTab !== 'build' || data?.assemblyDocuments !== true
+      || typeof assemblyEditor.openForScene !== 'function' || projectTarget() || !liveScene();
+    el('projectBuildAssemblyFromScene').disabled = !maySeedAssembly();
     el('projectBuildEditScene').hidden = projectTarget() || activeTab === 'preview' || !updateSupported;
     el('projectBuildEditScene').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildCreateScene').hidden = projectTarget() || activeTab === 'preview' || !creationSupported;
@@ -1205,6 +1248,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     render(); dialog.showModal(); void refresh();
   } });
   el('projectBuildAssembly').addEventListener('click', () => { if (data?.assemblyDocuments === true && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && !catalogUnavailable()) void assemblyEditor.open(projectTarget() && liveScene() ? selected : ''); });
+  el('projectBuildAssemblyFromScene').addEventListener('click', () => { if (maySeedAssembly()) void assemblyEditor.openForScene(selected); });
   el('projectBuildEditScene').addEventListener('click', () => { if (!projectTarget()) editScene(); });
   el('projectBuildSceneAudio').addEventListener('click', () => { if (!projectTarget() && audioCreationSupported && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void audioCreator.open(selected); });
   el('projectBuildSceneAnimation').addEventListener('click', () => { if (!projectTarget() && animationCreationSupported && activeTab === 'build' && !requestBusy && !running() && !checkingTool() && ready() && liveScene()) void animationCreator.open(selected); });
@@ -1229,6 +1273,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     audioObservation.refresh();
     animationObservation.refresh();
     animationCompletionObservation.refresh();
+    animationTargetReview.refresh();
     animationStateObservation.refresh();
     animationStateEntryObservation.refresh();
     const pending = pendingSourceFocus; pendingSourceFocus = null;

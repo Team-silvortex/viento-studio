@@ -11,7 +11,6 @@ import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.
 import { createProjectAnimationStateCatalog } from '../../engine/project-animation-states.mjs';
 import { DEFAULT_EDITABLE_GODOT_ANIMATION_STATE_SCRIPT } from '../../engine/animation-state-script-source.mjs';
 import { projectAnimationClipsAuthor } from './helpers/project-animation-clips-author-fixture.mjs';
-const tool = process.env.VIENTO_GODOT_BIN;
 const identify = async () => ({ version: 'fixture', sha256: '1'.repeat(64), platform: 'linux', arch: 'x64' });
 async function fixture(t, value = 'WRONG') {
   const f = await projectAnimationClipsAuthor(t);
@@ -20,8 +19,8 @@ async function fixture(t, value = 'WRONG') {
   const file = path.join(f.author, 'documents/behaviors/demo.json'), content = await fs.readFile(file, 'utf8');
   return { ...f, file, content, value };
 }
-function check(result, f) {
-  assert.equal(result.ok, false); assert.equal(result.status, 'failed'); assert.equal(result.buildDirectory, undefined);
+function check(result, f, status = 'rejected') {
+  assert.equal(result.ok, false); assert.equal(result.status, status); assert.equal(result.buildDirectory, undefined);
   assert.equal(result.diagnostics.length, 1); const diagnostic = result.diagnostics[0];
   assert.equal(diagnostic.code, 'build_animation_state_parameters_invalid');
   assert.equal(diagnostic.sourcePath, 'documents/behaviors/demo.json'); assert.equal(diagnostic.objectId, 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee');
@@ -38,17 +37,20 @@ test('build rejects typed or malformed state clips before output creation and re
   }
 });
 test('build diagnostic ignores error-supplied paths/ranges and mutable author edits after capture', async t => {
-  const f = await fixture(t), backendRegistry = createExecutionBackendRegistry([{ ...adapter, identify,
-    generate: async plan => { try { createProjectAnimationStateCatalog(plan); } catch (error) {
+  const f = await fixture(t, ''), backendRegistry = createExecutionBackendRegistry([{ ...adapter, identify,
+    generate: async plan => {
+      // Exercise the retained backend-error boundary after valid fresh preflight.
+      const invalid = structuredClone(plan); invalid.scenes[0].behaviors.bindings[0].parameters.clip_idle = false;
+      try { createProjectAnimationStateCatalog(invalid); } catch (error) {
       error.sourcePath = '/tmp/not-author.json'; error.propertyPath = '/invented'; error.sourceRevision = 'sha256:' + 'f'.repeat(64);
       error.sourceRange = { start: 0, end: 1, encoding: 'utf-16' }; throw error;
     } throw new Error('Expected invalid state parameter.'); },
   }]);
   const result = await buildProject({ root: f.author, targetId: f.assemblyId, backendRegistry,
     onProgress: event => { if (event.phase === 'generate') writeFileSync(f.file, '{"changed":"after frozen capture"}\n'); } });
-  check(result, f); assert.notEqual(await fs.readFile(f.file, 'utf8'), f.content);
+  check(result, f, 'failed'); assert.notEqual(await fs.readFile(f.file, 'utf8'), f.content);
 });
-test('real Godot tool identification plus build generation reports invalid clip at its author field', { skip: !tool ? 'Set VIENTO_GODOT_BIN for real build validation' : false }, async t => {
-  const f = await fixture(t), result = await buildProject({ root: f.author, targetId: f.assemblyId, tool }); check(result, f);
+test('invalid clip reports its author field even with an unavailable Godot tool', async t => {
+  const f = await fixture(t), result = await buildProject({ root: f.author, targetId: f.assemblyId, tool: '/missing/godot' }); check(result, f);
   assert.equal(await fs.readFile(f.file, 'utf8'), f.content);
 });
