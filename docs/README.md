@@ -1,41 +1,10 @@
 # 文档中心
 
-0.2.2 物理编辑器可在[场景空间中查看与选择碰撞体](SCENE_PHYSICS2D.md#在场景空间中查看与选择碰撞体)：读取保存态位置与逻辑尺寸，点击图形或列表定位已有参数，检查后显示新形状，再审阅、应用草稿并普通保存。读取失败仍可编辑，缺失目标保留供修复。验证见[空间图专题](test-results/scene-physics2d-space/README.md)。
+从要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。主线是 **设定 → 投影 → 场景实现 → 组装构建 → 工程交付**，各专题沿同一份作者数据工作。
 
-0.2.2 支持[从场景首次创建二维物理](SCENE_PHYSICS2D.md#从现有场景开始)：选择实例与形状、审阅原文和关系，一次保存三处文件，再继续字段编辑。当前为 23 模块／45 项声明能力，本机安装仍为 0.2.0；验证见[创建专题](test-results/scene-physics2d-creation/README.md)。
+[快速开始](GETTING_STARTED.md) · [完整工作流](PROJECT_WORKFLOW.md) · [当前状态](STATUS.md) · [开发路线](ROADMAP.md) · [历史索引](history/README.md)
 
-0.2.1 的作者与运行链路：[按状态配置片段](SCENE_ANIMATION.md#按状态配置动画片段) → [逐实例运行范围](SCENE_ANIMATION.md#为正式运行选择播放范围) → [从当前场景组装](PROJECT_ASSEMBLY.md#从当前场景开始) → [绑定预检](SCENE_ANIMATION.md#构建前检查状态片段绑定) → [按目标回看](SCENE_ANIMATION.md#按动画目标回看运行记录)。[临时实例预览](SCENE_ANIMATION.md#按实例预览已保存动画)与作者保存的运行范围分别管理。
-
-[二维物理声明与运行](SCENE_PHYSICS2D.md)：已有物理 JSON 的独立面板、碰撞体增删、矩形／圆形局部示意、完整原文审阅与普通保存；静态障碍、角色碰撞、触发区及项目事件／动画闭环。0.2.1 发布基线手动填写实例 UUID；0.2.2 新增[按已保存实例名称选择与修复](SCENE_PHYSICS2D.md#按名称选择已有场景实例)，目录刷新和应用前重读保护普通草稿，运动属性仍由构建检查。开发时点与覆盖见[独立验收](test-results/scene-physics2d-targets/README.md)。
-
-0.2.0 收录[内置用例 JSON 编辑](SCENE_ANIMATION.md#在-studio-内编辑试算用例)：从当前路径创建或编辑载入用例，经检查、显式应用／取消，再重跑并导出；作者源码和当前手动路径保持独立。见[本轮验收](test-results/animation-state-trial-case-editor/README.md)。
-
-0.2.0 收录[手动试算用例](SCENE_ANIMATION.md#保存与重跑手动试算用例)：已记录路径导出 JSON，导入后在当前表上显式重跑，首次预期不符即停止；文件、手动路径和作者保存分别管理。见[本轮验收](test-results/animation-state-trial-case/README.md)。
-
-0.2.0 收录[连续手动试算](SCENE_ANIMATION.md#连续试算事件与完成转换)：显式记录并采用预测状态，衔接事件和假定片段完成，查看步骤详情并撤回；[本轮验收](test-results/animation-state-trial-sequence/README.md)单列实际引擎与手动假设边界。
-
-0.2.0 收录[手动试算事件分支](SCENE_ANIMATION.md#手动试算事件分支)：在状态表内输入样本，查看分支、逐项比较与短路，再定位转换字段；[独立验收](test-results/animation-state-event-preview/README.md)将手动语义和实际引擎行为分开记录。
-
-0.2.0 收录[按事件回看投递与动画进入](PROJECT_EVENTS.md#按事件回看投递与动画进入)：从一条消息逐个检查订阅回执，再转到有确证关联的控制器历史；[本轮验收](test-results/project-event-review/README.md)与上一轮来源采集分别记录。
-
-0.2.0 收录[状态进入的触发来源](SCENE_ANIMATION.md#查看状态进入的触发来源)，贯通独立运行采集、严格关联和三语回看；[本轮验收](test-results/animation-entry-triggers/README.md)单列源码与实际引擎范围。
-
-**当前源码版本为 0.2.2**，收录物理实例名称选择与修复、首次创建及关系事务、场景空间图和导出指标 CI 竞态修复。见[版本记录](RELEASE_0.2.2.md)、[当前能力与平台](STATUS.md)和[发布预检](test-results/release-0.2.2/README.md)。本机 Linux AppImage 仍为 0.2.0，已有[安装验收](test-results/native-installed-0.2.0/README.md)及各开发专题保留当时版本与条件。
-
-动画作者与运行链路可从以下入口进入：
-
-- [状态表生成与重新编辑](SCENE_ANIMATION.md#从状态表生成动画脚本)，以及[静态状态图与字段定位](SCENE_ANIMATION.md#查看状态转换图)。
-- [有序事件分支](SCENE_ANIMATION.md#按顺序匹配事件分支)、[项目共享状态条件](SCENE_ANIMATION.md#按项目共享状态选择转换)和[全部／任一满足组合](SCENE_ANIMATION.md#组合多个转换条件)。
-- [逐次进入记录](SCENE_ANIMATION.md#查看每次成功进入状态的记录)、[退出前快照](SCENE_ANIMATION.md#查看运行后的动画状态快照)和[按控制器回看记录](SCENE_ANIMATION.md#按控制器回看运行记录)。
-- [行为参数接口修复](SCENE_BEHAVIORS.md#根据脚本接口修复参数)、[脚本使用位置与原文导航](SCENE_BEHAVIORS.md#从脚本查看使用位置)及[自然完成与片段衔接](SCENE_ANIMATION.md#动画自然完成与片段衔接)。
-
-[系统模块与工程需求](STUDIO_MODULES.md)说明整个 Studio 的装配、模板需求、表示和后端边界，以及后续 3D 与工作流布局的接入规则。
-
-[后端工程管理](BACKEND_PROJECTS.md)现另覆盖成功工程的本机持久索引、重启恢复、明确运行目标选择、离线冻结场景入口与保留规则；新版源码的交付和验证条件见[当前状态](STATUS.md)。
-
-从当前需要完成的任务进入。本文中的“工程”指一份 workspace；部分界面仍使用“作品”或“作品库”名称。
-
-[快速开始](GETTING_STARTED.md) · [当前状态](STATUS.md) · [功能成熟度图谱](FUNCTION_ATLAS.md) · [0.2.2 版本记录](RELEASE_0.2.2.md) · [开发路线](ROADMAP.md) · [历史记录](history/README.md)
+源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
 
 ## 第一次使用
 
@@ -48,14 +17,22 @@
 | 使用图片、视频与音频，切换界面语言 | [图片／视频／音频](MEDIA_RESOURCES.md)、[三语设置](LANGUAGES.md) |
 | 分享文档、备份工程或保存单个素材 | [导出](EXPORT.md) |
 | 选择对象和资源，在工程之间复用 | [资源包](RESOURCE_PACKAGES.md) |
+
+## 二维创作、运行与交付
+
+按 [设定到交付的完整流程](PROJECT_WORKFLOW.md#8-从设定到场景再交付生成工程) 选择当前环节；专题页负责具体按钮、格式和限制。
+
+| 需要做什么 | 从这里开始 |
+| --- | --- |
+| 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
+| 新建多演员配方、起始排布、九域编辑及生成独立运行场景 | [场景片段组合](SCENE_COMPOSITION.md) |
 | 多场景项目、启动入口、运行中切换与工程交付 | [项目组装](PROJECT_ASSEMBLY.md) |
 | 跨场景保留计数／标记，查看变更与行为来源 | [项目共享状态](PROJECT_SHARED_STATE.md) |
 | 行为间发布／订阅通知，查看处理顺序与双方来源 | [项目事件](PROJECT_EVENTS.md) |
-| [行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md) | 当前场景音轨的行为播放／停止、独立回执与双来源、工程交付 |
-| 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
+| 行为播放／停止当前场景音轨、观察回执与来源 | [行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md) |
 | 查看当前任务的问题、筛选诊断并返回原文修复 | [任务问题列表](PROJECT_BUILD.md#当前任务问题列表) |
 | 多实例挂载 GDScript／Rust、编辑参数／信号、选入音轨或动画片段编号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
-| 编辑已有物理 JSON、形状／偏移／掩码，审阅应用草稿后保存 | [二维物理编辑](SCENE_PHYSICS2D.md#编辑已有物理声明) |
+| 首次创建物理、选择实例、编辑形状／偏移、选择角色停止／滑动响应 | [二维物理](SCENE_PHYSICS2D.md) |
 | 编辑音轨与时间提示、选择 WAV 并试听／暂停／定位、Godot 播放及资源交付 | [场景声音](SCENE_AUDIO.md) |
 | 创建／编辑关键帧与序列帧、命名片段、时长调整与轨道复制、行为／事件控制、预览及 Godot 工程交付 | [场景动画](SCENE_ANIMATION.md) |
 | 查看运行对象、检索实例／定义并返回冻结声明 | [运行对象与采样](RUNTIME_OBJECTS.md) |
@@ -65,8 +42,8 @@
 | 查看批次中每份用例的失败步骤并下载独立 JSON | [成员报告](RUNTIME_CASE_REPORTS.md) |
 | 查看各后端生成工程、来源、文件库存与保留原因 | [后端工程管理](BACKEND_PROJECTS.md) |
 | 同一无图场景在 Godot／Bevy 上构建与无头运行 | [Bevy 第二后端](BEVY_BACKEND.md) |
-| 3D 对象与环境编辑、批量操作、预览导航及 Godot 工程导出 | [3D 场景编辑与预览](SCENE3D.md) |
-| 新建多演员配方、起始排布、九域编辑及生成独立运行场景 | [场景片段组合](SCENE_COMPOSITION.md) |
+
+三维场景使用独立的[创作、预览与 Godot 导出入口](SCENE3D.md)，当前不并入二维项目组装。
 
 ## 工程格式与语义操作
 
@@ -88,7 +65,7 @@
 | 主题 | 文档 |
 | --- | --- |
 | 跨架构功能、实现证据、四维成熟度与工作流筛选 | [当前功能图谱](FUNCTION_ATLAS.md)、[离线交互版](function-atlas.html) |
-| 已实现的模块职责、依赖方向与完整调用路径 | [系统架构](ARCHITECTURE.md)、[场景创作工作流](SCENE_AUTHORING.md) |
+| 已实现的分层、模块职责、依赖方向与调用路径 | [系统架构](ARCHITECTURE.md)、[Studio 模块](STUDIO_MODULES.md)、[场景创作工作流](SCENE_AUTHORING.md) |
 | 可移植解析、字段、存储及语义规划接口 | [引擎接口](../engine/README.md) |
 | 执行能力描述符、可信宿主注册表与具体引擎隔离 | [执行后端中间层](BACKEND_MIDDLEWARE.md) |
 | Node 本地服务、索引与维护命令 | [脚本说明](../scripts/README.md) |
@@ -123,11 +100,3 @@
 - [验证历程](history/VALIDATION.md)：各阶段的版本、测试计数、环境和限制。
 
 `test-results/` 保存日志、截图和源码摘要。[当前图谱](FUNCTION_ATLAS.md) 以四维坐标维护架构、功能、实现和成熟度；旧 b.4.3 图谱继续保存历史状态，不再承担当前能力目录。旧报告表示当时的状态；当前操作入口从本页进入，当前平台判断以 [STATUS](STATUS.md) 为准。
-
-当前 2D 创作主线新增[共享演员结构编辑](SCENE_COMPOSITION.md#编辑片段的演员结构)与独立[整份放置管理](SCENE_COMPOSITION.md#管理片段放置)：复用已有片段、复制原偏移及覆盖或移除整份放置，审阅全部影响身份及完整原文，再应用源码草稿并普通保存。当前源码与各平台验收条件见[当前状态](STATUS.md)。
-
-2D 配方当前还可[编辑组织分组](SCENE_COMPOSITION.md#编辑共享片段的组织分组)，按明确操作调整组名、父级和演员归组；与放置、演员字段及画布各自独立，普通保存仍是作者写入入口。
-
-片段定义管理见[新增、复制、重命名与未引用删除](SCENE_COMPOSITION.md#管理片段定义)。先维护共享声明，再通过独立演员、组织组和放置入口完成场景；普通保存继续保留作者原文。
-
-新配方可从[演员清单](SCENE_COMPOSITION.md#新建场景配方)开始：选择已有对象／投影并保留独立实例，使用[起始排布](SCENE_COMPOSITION.md#起始排布)预览、应用或撤销全部位置，审阅完整 JSON 后普通保存。再[生成独立运行场景](SCENE_COMPOSITION.md#从配方创建运行场景)，继续脚本、诊断修复与工程交付。源码与已安装版本的范围见 [0.2.2 版本记录](RELEASE_0.2.2.md)。

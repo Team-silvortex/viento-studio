@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-24**。源码版本 **0.2.2**；审查基线为提交 `a3f05aa3bf9a9aaeca32fa8e13751f0d17c0edcd`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-25**。源码版本 **0.2.3**；审查基线为提交 `64ea77792cb5f3d9d425ea6b36fcf20b1b44f7db`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -20,14 +20,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 161 |
-| 实现单元（含规划占位） | 482 |
-| 已审查实现关系 | 692 |
-| 显式评分单元 | 2768 |
-| 语义依赖边 | 462 |
-| 工作流切片 | 125 |
+| 功能 | 164 |
+| 实现单元（含规划占位） | 493 |
+| 已审查实现关系 | 703 |
+| 显式评分单元 | 2812 |
+| 语义依赖边 | 473 |
+| 工作流切片 | 128 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 2473 |
+| 引用并校验指纹的文件 | 2519 |
 
 ## 评分锚点
 
@@ -226,6 +226,9 @@
 | [保存态实例目录→名称/UUID修复→检查审阅→Apply重读→普通保存→既有物理构建运行](function-atlas.html#workflow=scene-physics2d-targets) | [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [引用／共享归属关系追加](#world.relation-add) → [按已保存场景实例选择与修复物理目标](#authoring.physics2d_targets) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 目录仅证明读取快照中的身份/关联；缺失旧目标可读取后修复，手填降级明确未验证。应用重读不构成跨文件锁，运动条件仍交保存态构建。真实Chrome保存后的Godot物理链路按本轮报告验收，不新增运行协议、声明创建、Bevy物理或安装交付。 |
 | [已保存场景→首次物理审阅与三文件保存→已有物理字段编辑→普通Save→物理构建预检](function-atlas.html#workflow=scene-first-physics2d-to-authoring) | [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [保存场景首次创建二维物理与双向登记](#authoring.physics2d_creation) → [按已保存场景实例选择与修复物理目标](#authoring.physics2d_targets) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 从已登记保存场景开始，首次创建一个显式物理体和双向关联；后续目标选择、字段编辑和普通Save归既有独立作者模块。成员准入不验证运动配置，构建另核对有效controls/speed和执行后端。新专题分别记录纯/HTTP/恢复/浏览器及构建验收，不把路径索引解释为空工程全GUI、安装设备或所有后端均已完成。 |
 | [保存态场景空间→已检查碰撞形状→选择现有字段→审阅草稿→普通保存→构建检查](function-atlas.html#workflow=scene-physics2d-saved-space) | [Scene2D v2 独立实例与定义复用](#scene.instances_v2) → [已保存场景空间中的物理形状回看与字段选择](#authoring.physics2d_space) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 保存态几何与当前已检查物理内容组合为静态空间图。只读观察与实例目录独立，刷新和点击不改字段值、审阅或Save；未完成输入隐藏图形，缺失目标单列。后续普通保存和构建运动检查仍沿原链路负责，Chrome普通保存后的既有Godot阻挡/触发区/动画另行验证；空间图本身没有物理求解、拖拽、跨文件锁或安装验收。 |
+| [保存态空间图→显式偏移手势/微调→已有字段→检查审阅→普通草稿/Save→物理构建](function-atlas.html#workflow=scene-physics2d-space-offset) | [已保存场景空间中的物理形状回看与字段选择](#authoring.physics2d_space) → [场景空间中的碰撞偏移调整与已有表单交接](#authoring.physics2d_space_edit) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 只调整现有碰撞体相对已保存实例的局部offset。临时拖动不写字段或源，松手后只改变化轴，检查/审阅/Apply/普通Save各自负责；无跨文件锁、实例位置移动、形状缩放、物理求解或新安装验收。本轮真实Chrome保存与Godot无头碰撞/事件/动画运行结果已单独登记；新功能未进入安装产物。 |
+| [已检查空间图→矩形/圆形尺寸手柄或微调→已有字段→检查审阅→普通Save→物理构建](function-atlas.html#workflow=scene-physics2d-space-resize) | [已保存场景空间中的物理形状回看与字段选择](#authoring.physics2d_space) → [场景空间中的碰撞尺寸手柄与已有表单交接](#authoring.physics2d_space_resize) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [源码／分段草稿、创建、保存与冲突](#authoring.document-edit) → [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) | 本次未登记额外缺口（不表示完成） | 显式尺寸模式仅调整现有shape的完整宽高或半径，原kind/center/offset保持；指针期间不写字段，松手后重新检查并沿原草稿/Save落盘。查看与偏移模式互斥，旧偏移成绩原样保留。此路径不承诺跨文件锁、物理求解、复杂形状或安装；本轮真实Chrome与保存后引擎结果单独留证。 |
+| [角色停止／滑动选择→审阅保存→项目构建→真实碰撞／触发／动画→独立工程交付](function-atlas.html#workflow=scene-physics2d-response) | [保存场景首次创建二维物理与双向登记](#authoring.physics2d_creation) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [二维角色碰撞停止／滑动的显式作者配置与原生执行](#scene.physics2d_response) → [项目级多场景组装、启动入口与统一工程交付](#build.project_assembly) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | 仅Godot项目组装中的显式角色响应。旧默认stop与无物理生成保持；slide仅对所选角色生效，物理根和视觉子层分离。实际Chrome保存和Godot斜碰/拐角/独立ZIP分别验证；无重力、动态刚体、3D/Bevy物理或新安装验收。 |
 
 ## 功能与实现切片
 
@@ -3176,6 +3179,59 @@
 平台：Linux Node/HTTP与浏览器作者端口；各层验证独立记录、0.2.1之后工作树；未更新安装或验收Android/Bevy物理。边界：独立只读观察从保存态Scene2D v2/v3给出视口、背景、实例中心、有效尺寸和颜色；复用场景解析及投影继承，不读取素材字节、不启动引擎、不依赖物理/动画/声音声明可用。；便携域严格捕获有界记录和完整source5，以冻结品牌对象绑定物理草稿；根据实例中心加声明offset生成box/circle视图，缺失目标单列，绝不借同定义另一实例或虚构原点。；宿主空间能力与目标目录能力分别维护代际；源码哈希、文档、路径、基线、版本及能力变化拒绝迟到响应。空间读取无写权限，也不授予目录成员检查或Apply权限。；SVG渲染器只消费已检查几何并回传现有bodyId；提供按种类图例、完整实例/碰撞体UUID及键盘按钮，按全场景与形状边界等比显示，不下载图片、不运行模拟。；空间图只显示当前通过检查的物理内容；未完成字段输入隐藏形状，成功检查再恢复。图上选择只切换已有字段，不改作者草稿、审阅和普通Save状态。；显式刷新可观察新的保存态位置，并保留字段节点、焦点、选择与已检查审阅；能力缺失、读取失败和迟到响应不会禁用原有字段编辑、局部示意或普通草稿应用。；保存态空间与当前物理草稿组合只是只读视图，不是跨文件锁、实时场景预览或运动验收。碰撞层/遮罩与有效controls/speed仍由既有声明及构建流程负责。；新增HTTP只读能力经会话、来源、请求体和无缓存约束接入；23模块45项声明能力、作者格式、Rust ABI、运行协议和执行后端保持。；本条只登记现有领域、服务、宿主、HTTP及UI回归文件；真实浏览器报告另行追加，不复用旧报告作为本轮空间视图成绩。；没有碰撞体拖拽、缩放手柄、动态刚体、接触点或物理步回放，也没有3D/Bevy物理或新安装交付。；上述开发增量纳入0.2.2源码交付；保留开发阶段原评分与证据。当前本机安装仍为0.2.0，本次不重标安装成熟度。。
 
 下一步：沿独立几何视图补充明确审阅的空间编辑、运动检查反馈和实际物理观察，保留普通源文件修复与保存权威。
+
+<a id="authoring.physics2d_space_edit"></a>
+### 场景空间中的碰撞偏移调整与已有表单交接
+
+`authoring.physics2d_space_edit` · 内容与作者工具 · 源码交付
+
+入口：已有物理编辑器→保存态空间图→显式调整偏移→拖动临时形状或键盘/按钮微调→检查审阅→应用普通草稿→Save
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **品牌场景视图的纯碰撞偏移提案**；纯领域基于品牌view和原偏移提出有界调整；Rust仍拥有声明数值规则，源编辑权限由后续作者链路独立持有。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space-edit/README\.md](../docs/test-results/scene-physics2d-space-edit/README.md)、[docs/test-results/scene-physics2d-space-edit/browser-1792911596807/browser\.json](../docs/test-results/scene-physics2d-space-edit/browser-1792911596807/browser.json)、[docs/test-results/scene-physics2d-space-edit/focused\.log](../docs/test-results/scene-physics2d-space-edit/focused.log) |
+| 交互与渲染 | **独立SVG碰撞偏移手势与键盘导航**；SVG手势与键盘/按钮只维护临时视图并回传品牌偏移提案，不读取或保存源码；过期视图与取消不提交。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space-edit/README\.md](../docs/test-results/scene-physics2d-space-edit/README.md)、[docs/test-results/scene-physics2d-space-edit/browser-1792911596807/browser\.json](../docs/test-results/scene-physics2d-space-edit/browser-1792911596807/browser.json)、[docs/test-results/scene-physics2d-space-edit/focused\.log](../docs/test-results/scene-physics2d-space-edit/focused.log) |
+| 交互与渲染 | **碰撞偏移提案到已有检查审阅表单的交接**；控制器拥有源会话与表单；接收提案后仅写变化偏移字段，原检查、审阅、草稿应用与普通Save边界保持。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space-edit/README\.md](../docs/test-results/scene-physics2d-space-edit/README.md)、[docs/test-results/scene-physics2d-space-edit/browser-1792911596807/browser\.json](../docs/test-results/scene-physics2d-space-edit/browser-1792911596807/browser.json)、[docs/test-results/scene-physics2d-space-edit/focused\.log](../docs/test-results/scene-physics2d-space-edit/focused.log) |
+
+平台：Linux共享Rust/WASM领域与浏览器控制器/渲染器；本轮真实Chrome HTTP编辑和Godot无头保存后运行验证、0.2.3源码收录，开发实测在升版前工作树完成；未验收Tauri安装、Android实机触控或Bevy物理。边界：在原23模块45项声明能力内增加可选空间手势，不改物理schema1、Rust/WASM、来源读取接口、后端、运行协议或生成工程。；纯域只接受品牌空间view及其中已解析的bodyId，基于原offset与有限delta返回冻结品牌提案；绑定原view、实例和偏移，通过既有Rust scenePhysics2D.inspect判断范围，不复制数值规则、不隐式clamp或量化。；只有显式开启调整模式后才可拖动选中碰撞体；pointer期间仅显示临时形状，松手把提案交还控制器。坐标变换使用当前SVG矩阵逆变换，触摸/指针取消、视图变化和失效坐标不提交偏移。；方向按钮和键盘微调走相同品牌提案路径，键盘修饰键可扩大步长。渲染器只拥有视图、手势与导航状态，不读取源码、不写草稿、不保存文件、不运行物理求解。；控制器复核当前源会话、独立空间能力代际、已检查模型与表单签名、选中body、view身份及原offset；仅变化轴更新原X/Y字符串，再撤销旧审阅等待检查。等价零位移保留输入拼写和审阅，不生成虚假修改。；未完成输入、缺失目标、旧view、其它body提案、关闭重开、空间能力撤回/恢复、来源变化或检查/应用等待均拒绝过期手势，不产生部分字段写入。字段编辑和普通原文修复始终沿原链路负责。；检查、完整原文审阅、显式Apply和普通Save仍是独立步骤；空间位置来自已保存场景，并非跨文件锁。实例根位置、逻辑尺寸、碰撞体尺寸、层和掩码不会由偏移手势修改。；中英日切换保留表单、选中项与焦点。本轮领域/控制器/手势回归与真实Chrome/Godot结果独立留证，完整检查区分条件跳过；未借用历史安装或设备成绩。；本切片没有形状缩放手柄、动态刚体/重力/关节、接触点或物理步回放，也没有3D/Bevy物理或新安装交付。。
+
+下一步：继续补充明确审阅的形状尺寸编辑与运动检查反馈，并分别验收物理步观察和其它后端；保持纯几何、渲染手势、字段会话与普通保存分层。
+
+<a id="authoring.physics2d_space_resize"></a>
+### 场景空间中的碰撞尺寸手柄与已有表单交接
+
+`authoring.physics2d_space_resize` · 内容与作者工具 · 源码交付
+
+入口：已检查空间图→显式尺寸模式→矩形宽高/圆形半径手柄或按钮键盘→检查审阅→普通草稿与Save
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **品牌场景视图的纯碰撞尺寸提案**；严格纯提案保持kind/center/offset，绑定品牌view及原shape；完整宽高和半径继续交Rust既有声明规则验证。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space-resize/README\.md](../docs/test-results/scene-physics2d-space-resize/README.md)、[docs/test-results/scene-physics2d-space-resize/browser-1792913553567/browser\.json](../docs/test-results/scene-physics2d-space-resize/browser-1792913553567/browser.json)、[docs/test-results/scene-physics2d-space-resize/focused\.log](../docs/test-results/scene-physics2d-space-resize/focused.log) |
+| 交互与渲染 | **中心固定的矩形与圆形尺寸手柄及微调**；手柄与按钮/键盘只维护临时形状及提出尺寸变化；共享查看/偏移导航与取消机制，不持有源码或Save权限。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space-resize/README\.md](../docs/test-results/scene-physics2d-space-resize/README.md)、[docs/test-results/scene-physics2d-space-resize/browser-1792913553567/browser\.json](../docs/test-results/scene-physics2d-space-resize/browser-1792913553567/browser.json)、[docs/test-results/scene-physics2d-space-resize/focused\.log](../docs/test-results/scene-physics2d-space-resize/focused.log) |
+| 交互与渲染 | **互斥尺寸模式到既有字段检查审阅的交接**；互斥尺寸模式验证原来源与已检查字段后只改变化维度；原审阅、草稿应用、普通Save和偏移能力保持分层。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-space-resize/README\.md](../docs/test-results/scene-physics2d-space-resize/README.md)、[docs/test-results/scene-physics2d-space-resize/browser-1792913553567/browser\.json](../docs/test-results/scene-physics2d-space-resize/browser-1792913553567/browser.json)、[docs/test-results/scene-physics2d-space-resize/focused\.log](../docs/test-results/scene-physics2d-space-resize/focused.log) |
+
+平台：Linux共享Rust/WASM领域与浏览器UI；本轮实际Chrome HTTP手柄/字段/Save与Godot保存后无头运行验证、0.2.3源码收录，开发实测在升版前工作树完成，未验收安装Tauri、Android实机触控或Bevy物理。边界：沿现有23模块45项声明能力接入尺寸模式，与查看和偏移模式互斥；不改作者物理schema1、Rust/WASM、来源只读端口、后端适配器、运行协议或生成工程。；独立纯领域只接受品牌空间view及已解析bodyId。box delta为完整宽高变化的两元素数组，circle delta为半径变化的一元素数组；冻结提案绑定原view、实例和fromShape，不切换shape kind。；既有Rust scenePhysics2D.inspect决定尺寸合法范围；结果尺寸为零、负值或越界，以及非有限或不完整输入拒绝；零增量保持原尺寸，无clamp或量化。原碰撞中心与offset、实例中心及逻辑尺寸保持。；矩形右/下/右下手柄相对原碰撞中心调整完整宽高，使用场景空间手势位移的两倍；圆形右手柄按水平位移调整半径。抓取点保持，变换使用当前SVG矩阵，指针过程中只有临时轮廓，松手才返回品牌提案。；独立宽度/高度/半径按钮及空间图方向键走相同提案路径，每次完整尺寸变化1，Shift为10；键盘不劫持文本输入或组合输入。旧偏移控件和导航由互斥模式继续提供。；渲染器不读取源码或保存；取消、多指、失焦、捕获丢失、视图/选择/模式变化、无效坐标和旧手柄均不提交。缺失目标不能产生空间尺寸提案，仍保留普通字段修复。；控制器复核源会话、空间能力代际、已检查模型、完整表单签名、选中体、同一view和原shape；只改变化的Width/Height或Radius字符串，焦点交给首个变化字段，再撤销旧审阅。零尺寸变化保持拼写、焦点和review。；显式检查、完整原文审阅、Apply和普通Save仍分别负责；尺寸提案不授予源写权限，不修改offset/层/掩码/种类或其它物理体。保存态空间不是跨文件锁，运动与实际构建条件继续由原物理链路核对。；本轮新增43项测试、163项专项和7915项完整检查独立留证；真实Chrome9流程/来源指纹与Godot运行单独记录。中英日保持字段节点、选择、焦点和审阅；不重标旧偏移报告。；没有碰撞体旋转、多体批量缩放、多边形、动态刚体/重力/关节、接触点或物理步回放；未提供3D/Bevy物理或新安装交付。。
+
+下一步：继续完善运动与碰撞检查反馈、物理观察及其它后端；复杂形状和批量编辑分别设计，保持尺寸领域、手柄交互、字段审阅和普通保存的权限边界。
+
+<a id="scene.physics2d_response"></a>
+### 二维角色碰撞停止／滑动的显式作者配置与原生执行
+
+`scene.physics2d_response` · 场景与执行 · 源码交付
+
+入口：物理首次创建／字段编辑→角色响应选择→完整审阅与保存→项目组装→Godot运行→工程交付
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **响应独立Rust规则与WASM准入**；原生与WASM共享严格格式规则，响应独立marker与operation；旧inspect和主协议保持。 | 4 / 3 / 4 / 2 | [docs/test-results/scene-physics2d-response/core-native-full\.log](../docs/test-results/scene-physics2d-response/core-native-full.log)、[docs/test-results/scene-physics2d-response/domain-core\.log](../docs/test-results/scene-physics2d-response/domain-core.log)、[docs/test-results/scene-physics2d-response/provenance\.json](../docs/test-results/scene-physics2d-response/provenance.json) |
+| 可移植 JS 语义 | **响应保真原文提案与首次创建保存链**；纯提案不写文件；schema升级与可选字段插删保留无关原字节，既有事务v12拥有发布及恢复。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-physics2d-response/domain-core\.log](../docs/test-results/scene-physics2d-response/domain-core.log)、[docs/test-results/scene-physics2d-response/creation\.log](../docs/test-results/scene-physics2d-response/creation.log)、[docs/test-results/scene-physics2d-response/provenance\.json](../docs/test-results/scene-physics2d-response/provenance.json) |
+| 交互与渲染 | **三语角色响应选择与已有审阅保存交接**；选择只进入原字段或创建请求，经来源/能力/raw表单守护后审阅；普通Save和求解仍归各自宿主。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-response/ui\.log](../docs/test-results/scene-physics2d-response/ui.log)、[docs/test-results/scene-physics2d-response/browser-1792916900275/browser\.json](../docs/test-results/scene-physics2d-response/browser-1792916900275/browser.json)、[docs/test-results/scene-physics2d-response/provenance\.json](../docs/test-results/scene-physics2d-response/provenance.json) |
+| 可移植 JS 语义 | **滑动中立能力与冻结计划/生成回执验证**；仅实际slide增加能力，场景/父项目/provider/receipt不能隐去要求；Bevy缺失能力明确拒绝。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-physics2d-response/backend\.log](../docs/test-results/scene-physics2d-response/backend.log)、[docs/test-results/scene-physics2d-response/provenance\.json](../docs/test-results/scene-physics2d-response/provenance.json)、[docs/test-results/scene-physics2d-response/README\.md](../docs/test-results/scene-physics2d-response/README.md) |
+| 执行后端 | **Godot独立有界滑动与响应工程交付**；响应包装保留旧停止和无物理生成器；显式步长的最多4次碰撞切面运动，严格脚本inventory与异地ZIP交付。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-response/backend\.log](../docs/test-results/scene-physics2d-response/backend.log)、[docs/test-results/scene-physics2d-response/backend\.json](../docs/test-results/scene-physics2d-response/backend.json)、[docs/test-results/scene-physics2d-response/provenance\.json](../docs/test-results/scene-physics2d-response/provenance.json) |
+
+平台：Linux共享Rust/WASM；实际Chrome HTTP作者保存、Godot无头及异地生成工程运行、0.2.3源码收录，开发实测在升版前工作树完成；两个Bevy通道明确拒绝，无新安装或移动设备验收。边界：作者schema 1保持旧七字段与停止语义；schema 2只允许character的可选collisionResponse=stop|slide，缺省停止。显式选择slide才升级；返回stop不自动降级，static/sensor不接受响应字段。；共享Rust使用独立scenePhysics2D.inspectResponse与可选响应marker，原inspect与主ABI保持。WASM回执核对完整输入语义，旧核心不冒充响应支持；没有JS规则回退。；原文提案只修改schema叶、响应字段及显式编辑的其他字段，保留BOM、CRLF、转义键与未改数值拼写；品牌空间偏移/尺寸DTO仍只描述几何，不删除源文响应。；已有编辑走Check/完整Review/Apply/普通Save，首次创建复用v12三文件事务与恢复。三语选择保留焦点与审阅，静默DOM变化、来源和能力撤回阻止旧提案应用。；中立物理计划仍为v1，仅实际slide角色要求physics.character-slide2d；冻结场景、父项目、提供者与生成回执分别核验，两个Bevy通道不伪装支持。；Godot执行适配器0.22.0；schema2独立响应生成器0.22.0只添加包装，旧schema1物理0.21.0及无物理生成字节保持。执行指纹变化需重建旧冻结工程；项目协议与组装清单按原内容选择，不新增物理线协议。；滑动使用显式物理步motion及碰撞剩余量沿切面继续，最多4次sweep；停止仍一次move_and_collide。角色物理根与视觉动画分离；无隐式重力、地板策略、摩擦或动态刚体。；真实Godot比较矩形/圆形旧停止、显式/缺省停止和滑动，另验拐角、无墙、mask、偏移与撤离；独立ZIP在原作者/构建路径不可用后验证碰撞、触发和动画链。真实Chrome与单元/恢复测试单独留证，不相加为覆盖率。。
+
+下一步：继续按实际二维玩法补重力／跳跃或动态刚体等独立模型及后端能力，并完善物理步和接触观察；安装与Bevy物理分别验收。
 
 ## 旧功能链路映射
 

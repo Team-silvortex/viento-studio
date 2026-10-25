@@ -1,0 +1,5232 @@
+{
+  "format": "viento-physics-response-verification",
+  "schemaVersion": 1,
+  "tool": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+  "cases": [
+    {
+      "name": "box-legacy-wall",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.21.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "6309f466702a174c83a7d9f452ab062873810437dcbc74d3a3b5fa8197907d81"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            135.04541015625,
+            215.04541015625
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.926040649414,
+            215.04541015625
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.926040649414,
+          215.04541015625
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.92604064941406,
+                215.04541015625
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "2dbc050a6e4d6aa80961eae0b69ce4c37542ab3e9712c134a73319e5a0e0c311"
+    },
+    {
+      "name": "box-implicit-wall",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            135.04541015625,
+            215.04541015625
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.926040649414,
+            215.04541015625
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.926040649414,
+          215.04541015625
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.92604064941406,
+                215.04541015625
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "d19cb4839acae3464cf786b8753387cc36c74ad387a5cc0ea8ea502606e73ecd"
+    },
+    {
+      "name": "box-stop-wall",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            135.04541015625,
+            215.04541015625
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.926040649414,
+            215.04541015625
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.926040649414,
+          215.04541015625
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.92604064941406,
+                215.04541015625
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "f3cd466f81d8ea8eb773dd0c2c4d36e900bf52002ba9590dd9d63baa8fd51374"
+    },
+    {
+      "name": "box-slide-wall",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            134.993927001953,
+            222.426406860352
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.993927001953,
+            222.426406860352
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.993927001953,
+          222.426406860352
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.99392700195312,
+                222.42640686035156
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "67068247edc2081ad1492aad803c70ac2b2b6fc93fe1a2fc9c67db3c4f6118a2"
+    },
+    {
+      "name": "circle-legacy-wall",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.21.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "6309f466702a174c83a7d9f452ab062873810437dcbc74d3a3b5fa8197907d81"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            135.040374755859,
+            215.040374755859
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.939086914062,
+            215.040374755859
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.939086914062,
+          215.040374755859
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.9390869140625,
+                215.04037475585938
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "69612316c41b4b54cb76e4e927c28d9cc729c082a5052f48f11c333c0146ad9a"
+    },
+    {
+      "name": "circle-implicit-wall",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            135.040374755859,
+            215.040374755859
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.939086914062,
+            215.040374755859
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.939086914062,
+          215.040374755859
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.9390869140625,
+                215.04037475585938
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "8ba619383dbe501a1f7f1091a27c3d9db95c1b465c246bffe5e0a36bb101fb63"
+    },
+    {
+      "name": "circle-stop-wall",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            135.040374755859,
+            215.040374755859
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.939086914062,
+            215.040374755859
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.939086914062,
+          215.040374755859
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.9390869140625,
+                215.04037475585938
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "f43f662cae5489c24f63a0ff7697647e3f4e6c2013d3be743a49010d1b6561c0"
+    },
+    {
+      "name": "circle-slide-wall",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            135.000564575195,
+            222.427261352539
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            135.000564575195,
+            222.427261352539
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          135.000564575195,
+          222.427261352539
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                135.0005645751953,
+                222.42726135253906
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "b455f51fee41d428ff8da5bc3bc10e4f5424a01f3c7fc2d0aa2ef81852b2b677"
+    },
+    {
+      "name": "box-stop-free",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            142.426452636719,
+            222.426452636719
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            142.426452636719,
+            222.426452636719
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          142.426452636719,
+          222.426452636719
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                142.42645263671875,
+                222.42645263671875
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "06678b8cf74b91f7ea832f92832acd0836b6fbcfe3b9880c05cbb06582c48dd9"
+    },
+    {
+      "name": "box-slide-free",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            142.426452636719,
+            222.426452636719
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            142.426452636719,
+            222.426452636719
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          142.426452636719,
+          222.426452636719
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                142.42645263671875,
+                222.42645263671875
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "2671eea97d99b78e0cbda74e1d0d63d7227246ad3860d7275fcf57a330608354"
+    },
+    {
+      "name": "box-stop-mask",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            142.426452636719,
+            222.426452636719
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            142.426452636719,
+            222.426452636719
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          142.426452636719,
+          222.426452636719
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                142.42645263671875,
+                222.42645263671875
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "b00e49e6cd36d9013e697969753e645914b06c8f5630d7de49795567a11d5492"
+    },
+    {
+      "name": "box-slide-mask",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            142.426452636719,
+            222.426452636719
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            142.426452636719,
+            222.426452636719
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          142.426452636719,
+          222.426452636719
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                142.42645263671875,
+                222.42645263671875
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "3651ee26aaf25af27b4483dcf1d260a853e5ab3e80e7abf5bb4073ee8a25bf46"
+    },
+    {
+      "name": "box-slide-corner",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            134.993927001953,
+            219.984252929688
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.925170898438,
+            219.925018310547
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.925170898438,
+          219.925018310547
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000091",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  235
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.9251708984375,
+                219.92501831054688
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000091",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                100,
+                235
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "f84857048450071da620e7333b82c9fcbb220c7fdb00b8e0555a4914670285c1"
+    },
+    {
+      "name": "circle-slide-corner",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            134.933517456055,
+            219.996932983398
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.933517456055,
+            219.996932983398
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.933517456055,
+          219.996932983398
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000091",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  235
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.9335174560547,
+                219.99693298339844
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000091",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                100,
+                235
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "de5240c26aecfbc7810892c1b4f6080918dbcd2d913686bdd494cc7611c4a83a"
+    },
+    {
+      "name": "box-stop-wall-normal",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            134.999481201172,
+            180
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.999481201172,
+            180
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.999481201172,
+          180
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.99948120117188,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "552720931b7558c07a346ae6849c6e0beedb176834ecf82b679c910b9a8a5fc9"
+    },
+    {
+      "name": "box-slide-wall-normal",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            134.999481201172,
+            180
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.999481201172,
+            180
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.999481201172,
+          180
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.99948120117188,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "1294b12018654ab4cf4fe971e8c84e96128a09d19501ed4441d536b11182d98b"
+    },
+    {
+      "name": "box-slide-offset",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            10,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            124.993942260742,
+            222.426452636719
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            10,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            124.993942260742,
+            222.426452636719
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          10,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          124.993942260742,
+          222.426452636719
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                124.99394226074219,
+                222.42645263671875
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "60e54914ee74a465ca6e11d7120f5282f9291adfe66d588a8a751d53b7c989fb"
+    },
+    {
+      "name": "box-slide-wall-reverse",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "416fad6a976c5b593e3289bc9414af0d83f490db9f69a6a2fc141343e9ecb7aa"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            134.993927001953,
+            222.426406860352
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            92.5330963134766,
+            179.965576171875
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            0,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          95.3615264892578,
+          182.794006347656
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          0,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 4,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 4,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 3,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 4,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                92.53309631347656,
+                179.965576171875
+              ],
+              "state": "moving"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 4,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 4,
+          "protocol": 4,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "authorFiles": 41,
+      "authorSha256BeforeAfter": "9c5d0ba7a3af2669014b0f0fb0338dfa280fa648ae7fe760ea5c39a45d6e22fd"
+    },
+    {
+      "name": "box-slide-wall",
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.22.0",
+        "protocolVersion": 10,
+        "capabilities": [
+          "animation.clips2d",
+          "animation.visual2d",
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "project.animation-control",
+          "project.animation-completion",
+          "project.animation-state-snapshots",
+          "project.animation-state-entries",
+          "project.animation-state-entry-triggers",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "462819d294558745ed3117940ff303832701051d0a970483471b8009bc73079d"
+      },
+      "probes": [
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "contact",
+          "native": true,
+          "position": [
+            134.993927001953,
+            222.426406860352
+          ],
+          "ticks": 15,
+          "visualOffset": [
+            28.3333339691162,
+            0
+          ],
+          "visualParent": true
+        },
+        {
+          "collisionOffset": [
+            0,
+            0
+          ],
+          "collisionParent": true,
+          "label": "final",
+          "native": true,
+          "position": [
+            134.993927001953,
+            222.426406860352
+          ],
+          "ticks": 30,
+          "visualOffset": [
+            53.3333320617676,
+            0
+          ],
+          "visualParent": true
+        }
+      ],
+      "settled": {
+        "collisionOffset": [
+          0,
+          0
+        ],
+        "collisionParent": true,
+        "label": "settled",
+        "native": true,
+        "position": [
+          134.993927001953,
+          222.426406860352
+        ],
+        "ticks": 29,
+        "visualOffset": [
+          51.6666679382324,
+          0
+        ],
+        "visualParent": true
+      },
+      "elapsed": 0.49999999999999994,
+      "events": [
+        {
+          "animationCommandSequence": 0,
+          "animationCompletionSequence": 0,
+          "animationStateEntrySequence": 0,
+          "animationStateSequence": 0,
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "event": "ready",
+          "eventSequence": 0,
+          "protocol": 10,
+          "stateRevision": 0
+        },
+        {
+          "event": "scene-enter",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "actors": [
+              {
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  100,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000002",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  115,
+                  180
+                ],
+                "state": "idle"
+              },
+              {
+                "instanceId": "70707070-7070-4070-8070-000000000003",
+                "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+                "position": [
+                  150,
+                  180
+                ],
+                "state": "idle"
+              }
+            ],
+            "event": "ready",
+            "protocol": 3,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+          },
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "clipId": "59595959-5959-4595-8595-000000000001",
+          "commandSequence": 0,
+          "event": "animation-state-entered",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "stateIndex": 0,
+          "timeSeconds": 0,
+          "trigger": {
+            "kind": "initial"
+          },
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "moving"
+          },
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "select",
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "commandSequence": 1,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000001",
+            "phase": "paused",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.016666666666666666
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "play"
+          },
+          "commandSequence": 2,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000001",
+            "phase": "playing",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.016666666666666666
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.entered",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "recipients": [
+            {
+              "bindingId": "99999999-9999-4999-8999-999999999991",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "subscriptionId": 1
+            }
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "clipId": "59595959-5959-4595-8595-000000000002",
+          "commandSequence": 2,
+          "event": "animation-state-entered",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "stateIndex": 1,
+          "timeSeconds": 0.05,
+          "trigger": {
+            "eventSequence": 1,
+            "kind": "event",
+            "subscriptionId": 1
+          },
+          "visitIndex": 1
+        },
+        {
+          "event": "event-delivery",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "status": "handled",
+          "subscriptionId": 1,
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "select",
+            "clipId": "59595959-5959-4595-8595-000000000002"
+          },
+          "commandSequence": 3,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000002",
+            "phase": "paused",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.05
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "play"
+          },
+          "commandSequence": 4,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000002",
+            "phase": "playing",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.05
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "70707070-7070-4070-8070-000000000005",
+          "event": "event-publish",
+          "instanceId": "70707070-7070-4070-8070-000000000002",
+          "name": "physics.exited",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 2,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "commandSequence": 4,
+          "completionSequence": 1,
+          "event": "animation-completed",
+          "protocol": 10,
+          "recipients": [
+            {
+              "bindingId": "99999999-9999-4999-8999-999999999991",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "subscriptionId": 1
+            }
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000002",
+            "phase": "finished",
+            "positionSeconds": 0.15000000000000002,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.21666666666666665
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "clipId": "59595959-5959-4595-8595-000000000001",
+          "commandSequence": 4,
+          "event": "animation-state-entered",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 3,
+          "stateIndex": 0,
+          "timeSeconds": 0.21666666666666665,
+          "trigger": {
+            "completionSequence": 1,
+            "kind": "completed",
+            "subscriptionId": 1
+          },
+          "visitIndex": 1
+        },
+        {
+          "completionSequence": 1,
+          "event": "animation-completion-delivery",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "status": "handled",
+          "subscriptionId": 1,
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "select",
+            "clipId": "59595959-5959-4595-8595-000000000001"
+          },
+          "commandSequence": 5,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000001",
+            "phase": "paused",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.21666666666666665
+          },
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "command": {
+            "action": "play"
+          },
+          "commandSequence": 6,
+          "event": "animation-command",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "state": {
+            "clipId": "59595959-5959-4595-8595-000000000001",
+            "phase": "playing",
+            "positionSeconds": 0,
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "timeSeconds": 0.21666666666666665
+          },
+          "visitIndex": 1
+        },
+        {
+          "event": "scene-event",
+          "frame": {
+            "event": "state",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "protocol": 3,
+            "state": "idle"
+          },
+          "protocol": 10,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "visitIndex": 1
+        },
+        {
+          "commandSequence": 6,
+          "controllers": [
+            {
+              "bindingId": "99999999-9999-4999-8999-999999999991",
+              "clipId": "59595959-5959-4595-8595-000000000001",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "stateIndex": 0,
+              "status": "active"
+            }
+          ],
+          "event": "animation-state-snapshot",
+          "protocol": 10,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "timeSeconds": 0.49999999999999994,
+          "visitIndex": 1
+        },
+        {
+          "actors": [
+            {
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                134.99392700195312,
+                222.42640686035156
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000002",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                115,
+                180
+              ],
+              "state": "idle"
+            },
+            {
+              "instanceId": "70707070-7070-4070-8070-000000000003",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "position": [
+                150,
+                180
+              ],
+              "state": "idle"
+            }
+          ],
+          "elapsedSeconds": 0.49999999999999994,
+          "event": "scene-exit",
+          "protocol": 10,
+          "reason": "finished",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1
+        },
+        {
+          "animationCommandSequence": 6,
+          "animationCompletionSequence": 1,
+          "animationStateEntrySequence": 3,
+          "animationStateSequence": 1,
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "audioCommandSequence": 0,
+          "event": "finished",
+          "eventSequence": 2,
+          "protocol": 10,
+          "stateRevision": 0,
+          "totalSeconds": 0.49999999999999994,
+          "visitCount": 1
+        }
+      ],
+      "delivery": {
+        "zipSha256": "d22bea5714b602df14466f1bcb30bac57115b16e74c587bd3862ef32187c1ee4",
+        "originalAuthorOffline": true,
+        "originalBuildOffline": true,
+        "generatedScriptsChecked": true
+      }
+    }
+  ]
+}

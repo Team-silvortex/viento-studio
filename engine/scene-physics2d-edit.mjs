@@ -104,6 +104,27 @@ function serialize(value, formatting, base) {
   return value && typeof value === 'object' && formatting.newline
     ? JSON.stringify(value, null, formatting.unit).replaceAll('\n', formatting.newline + base) : JSON.stringify(value);
 }
+function responsePatch(content, parsed, before, after, pointer, formatting) {
+  const key = 'collisionResponse', path = `${pointer}/${key}`, had = Object.hasOwn(before, key), has = Object.hasOwn(after, key);
+  if (had === has) {
+    if (!has || before[key] === after[key]) return [];
+    return [{ ...range(parsed, path), text: JSON.stringify(after[key]) }];
+  }
+  const keys = Object.keys(before), container = range(parsed, pointer);
+  if (has) {
+    const last = range(parsed, `${pointer}/${keys.at(-1)}`), first = range(parsed, `${pointer}/${keys[0]}`);
+    const gap = formatting.newline ? formatting.newline + formatting.indent(first.start) : '';
+    return [{ start: last.end, end: last.end, propertyPath: path,
+      text: `,${gap}"${key}":${formatting.newline ? ' ' : ''}${JSON.stringify(after[key])}` }];
+  }
+  const at = keys.indexOf(key), value = range(parsed, path);
+  // The already validated object has seven other fields. Removing the preceding
+  // comma (or the first key through the next key) preserves every other value.
+  const start = at ? range(parsed, `${pointer}/${keys[at - 1]}`).end : content.indexOf('"', container.start + 1);
+  const end = at ? value.end : content.indexOf('"', value.end);
+  if (start < container.start || end < start || end > container.end) fail();
+  return [{ start, end, propertyPath: path, text: '' }];
+}
 function bodyPatches(content, parsed, before, after, index, formatting) {
   const patches = [], pointer = `/bodies/${index}`;
   const leaf = (path, a, b) => {
@@ -119,6 +140,7 @@ function bodyPatches(content, parsed, before, after, index, formatting) {
   else leaf(`${pointer}/shape/radius`, before.shape.radius, after.shape.radius);
   for (let axis = 0; axis < 2; axis++) leaf(`${pointer}/offset/${axis}`, before.offset[axis], after.offset[axis]);
   for (const key of ['layer', 'mask']) leaf(`${pointer}/${key}`, before[key], after[key]);
+  patches.push(...responsePatch(content, parsed, before, after, pointer, formatting));
   return patches;
 }
 function candidateBodies(before, inputs) {
@@ -126,7 +148,11 @@ function candidateBodies(before, inputs) {
   const originals = new Map(before.bodies.map((body, index) => [body.id, index]));
   let lastIndex = -1, appended = false;
   return inputs.map(input => {
-    const body = record(input, bodyKeys), index = originals.get(body.id);
+    const hasResponse = input !== null && typeof input === 'object' && Object.hasOwn(input, 'collisionResponse');
+    const body = record(input, [...bodyKeys, ...(hasResponse ? ['collisionResponse'] : [])]), index = originals.get(body.id);
+    if (hasResponse && (body.kind !== 'character' || !['stop', 'slide'].includes(body.collisionResponse))) fail();
+    // The old default never upgrades a schema-1 document or adds redundant data.
+    if (before.schemaVersion === 1 && body.collisionResponse === 'stop') delete body.collisionResponse;
     if (index === undefined) appended = true;
     else {
       // Existing identities are stable, retained in source order. New complete
@@ -159,13 +185,15 @@ function bodiesPatch(content, parsed, before, after, formatting) {
 }
 async function patch(content, edit) {
   const before = await readScenePhysics2DDocument(content), fields = record(edit, ['bodies']);
-  const candidate = { ...before, bodies: candidateBodies(before, fields.bodies) };
+  const bodies = candidateBodies(before, fields.bodies);
+  const candidate = { ...before, schemaVersion: before.schemaVersion === 2 || bodies.some(body => body.collisionResponse === 'slide') ? 2 : 1, bodies };
   await inspect(candidate); safeSerialization();
   const parsed = parseJsonSource(content), formatting = style(content, parsed);
   const sameRows = before.bodies.length === candidate.bodies.length && before.bodies.every((body, index) => body.id === candidate.bodies[index].id);
   const patches = sameRows
     ? before.bodies.flatMap((body, index) => bodyPatches(content, parsed, body, candidate.bodies[index], index, formatting))
     : [bodiesPatch(content, parsed, before.bodies, candidate.bodies, formatting)];
+  if (before.schemaVersion !== candidate.schemaVersion) patches.unshift({ ...range(parsed, '/schemaVersion'), text: String(candidate.schemaVersion) });
   if (!patches.length) throw error('unchanged');
   const afterContent = applyPatches(content, patches);
   const after = await readScenePhysics2DDocument(afterContent); safeSerialization();

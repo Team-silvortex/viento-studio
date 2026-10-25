@@ -1,0 +1,970 @@
+TAP version 13
+# Subtest: older workflows without gaps remain valid and explicitly unreviewed
+not ok 1 - older workflows without gaps remain valid and explicitly unreviewed
+  ---
+  duration_ms: 43.877173
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:61:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:62:40)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-fa4la7',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-fa4la7/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-fa4la7'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-fa4la7/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:62:40)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:62:40)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: explicit empty gaps mean no additional recorded gaps, never completion
+not ok 2 - explicit empty gaps mean no additional recorded gaps, never completion
+  ---
+  duration_ms: 36.848465
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:70:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:71:87)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-5OHw0o',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-5OHw0o/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-5OHw0o'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-5OHw0o/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:71:87)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:71:87)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: registered gaps link to their own function and stay separate from ordered steps
+not ok 3 - registered gaps link to their own function and stay separate from ordered steps
+  ---
+  duration_ms: 35.746126
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:76:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:77:94)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-otK2aN',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-otK2aN/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-otK2aN'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-otK2aN/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:77:94)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:77:94)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: workflow steps reject malformed, short, duplicate and unknown references
+not ok 4 - workflow steps reject malformed, short, duplicate and unknown references
+  ---
+  duration_ms: 30.492318
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:83:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:86:66)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-1yADki',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-1yADki/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-1yADki'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-1yADki/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:86:66)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:86:66)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: gaps reject malformed, duplicate, unknown and overlapping references
+not ok 5 - gaps reject malformed, duplicate, unknown and overlapping references
+  ---
+  duration_ms: 29.563299
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:91:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:94:64)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-L9MbCE',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-L9MbCE/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-L9MbCE'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-L9MbCE/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:94:64)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:94:64)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: workflow records require safe unique IDs, label and boundary text
+not ok 6 - workflow records require safe unique IDs, label and boundary text
+  ---
+  duration_ms: 28.757225
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:99:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:102:62)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-lVlyfq',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-lVlyfq/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-lVlyfq'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-lVlyfq/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:102:62)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:102:62)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: priorities reject unknown references before Markdown rendering can crash
+not ok 7 - priorities reject unknown references before Markdown rendering can crash
+  ---
+  duration_ms: 30.719292
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:108:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:110:13)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-scqf5j',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-scqf5j/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-scqf5j'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-scqf5j/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:110:13)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:110:13)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: priorities require nonempty label, reason, acceptance and structured records
+not ok 8 - priorities require nonempty label, reason, acceptance and structured records
+  ---
+  duration_ms: 29.659533
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:114:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:117:63)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-maITRx',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-maITRx/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-maITRx'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-maITRx/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:117:63)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:117:63)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: priority functions are nonempty arrays with unique known references
+not ok 9 - priority functions are nonempty arrays with unique known references
+  ---
+  duration_ms: 30.679025
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:122:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:125:75)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-SnIWct',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-SnIWct/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-SnIWct'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-SnIWct/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:125:75)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:125:75)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: the same feature can support separately scoped priorities and workflows
+not ok 10 - the same feature can support separately scoped priorities and workflows
+  ---
+  duration_ms: 35.243884
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:129:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:132:12)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-qS19HU',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-qS19HU/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-qS19HU'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-qS19HU/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:132:12)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:132:12)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: Markdown escapes workflow/priority labels and encodes unusual evidence link paths
+not ok 11 - Markdown escapes workflow/priority labels and encodes unusual evidence link paths
+  ---
+  duration_ms: 36.493547
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:135:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:141:62)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-BamtAj',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-BamtAj/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-BamtAj'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-BamtAj/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:141:62)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:141:62)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: dependency orientation explicitly states prerequisite from to consumer to
+not ok 12 - dependency orientation explicitly states prerequisite from to consumer to
+  ---
+  duration_ms: 33.423418
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:149:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:150:40)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-gLRxbk',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-gLRxbk/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-gLRxbk'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-gLRxbk/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:150:40)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:150:40)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: check detects stale generated views without changing history and write repairs only views
+not ok 13 - check detects stale generated views without changing history and write repairs only views
+  ---
+  duration_ms: 35.508951
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:155:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:156:40)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-zgW3Sc',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-zgW3Sc/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-zgW3Sc'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-zgW3Sc/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:156:40)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:156:40)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: changed source evidence requires explicit reviewed refresh and historical hashes never refresh
+not ok 14 - changed source evidence requires explicit reviewed refresh and historical hashes never refresh
+  ---
+  duration_ms: 37.237541
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:162:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:163:40)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-kvOmde',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-kvOmde/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-kvOmde'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-kvOmde/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:163:40)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:163:40)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: existing working-tree delivery and four-dimensional completeness gates remain enforced
+not ok 15 - existing working-tree delivery and four-dimensional completeness gates remain enforced
+  ---
+  duration_ms: 29.198801
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:170:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    + actual - expected
+    
+    + Error: spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM
+    +     at Object.spawnSync (node:internal/child_process:1160:20)
+    +     at spawnSync (node:child_process:928:24)
+    +     at Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    +     at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:172:13)
+    +     at async Test.run (node:internal/test_runner/test:1409:7)
+    +     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    +   code: 'EPERM',
+    +   errno: -1,
+    +   path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node',
+    +   spawnargs: [
+    +     '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs',
+    +     '--root',
+    +     '/tmp/viento-atlas-cli-mYzpAT',
+    +     '--data',
+    +     '/tmp/viento-atlas-cli-mYzpAT/docs/function-atlas.json',
+    +     '--write',
+    +     '--refresh-sources'
+    +   ],
+    +   syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    errno: -1
+    syscall: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    path: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node'
+    spawnargs:
+      0: '/home/chiharukiryu/cdev/viento-studio/scripts/function-atlas.mjs'
+      1: '--root'
+      2: '/tmp/viento-atlas-cli-mYzpAT'
+      3: '--data'
+      4: '/tmp/viento-atlas-cli-mYzpAT/docs/function-atlas.json'
+      5: '--write'
+      6: '--refresh-sources'
+  error: 'spawnSync /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node EPERM'
+  code: 'EPERM'
+  stack: |-
+    Object.spawnSync (node:internal/child_process:1160:20)
+    spawnSync (node:child_process:928:24)
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:45:20)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:172:13)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  operator: 'strictEqual'
+  stack: |-
+    Object.run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:46:12)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/function-atlas.test.mjs:172:13)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 0
+# fail 15
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 508.520568

@@ -1,0 +1,318 @@
+✔ response layer retains byte-identical legacy physical and non-physical generator outputs (237.068119ms)
+✔ slide capability is derived only from slide and cannot be hidden from plan, provider or receipt (199.996739ms)
+✔ response inventory covers every generated script and rejects omissions, extra scenes, traversal and links (103.925718ms)
+✖ real box diagonal wall response preserves old stop and continues only the slide tangent (4118.399708ms)
+✖ real circle diagonal wall response preserves old stop and continues only the slide tangent (4036.43744ms)
+✖ real response has bounded corner sweeps, normal blocking, free motion, mask filtering, independent offsets and reverse escape (4047.260345ms)
+✖ real slide delivery retains native collision, sensors and animation after author/build paths disappear (21097.309627ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 3
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 33845.484032
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-response-backends.test.mjs:193:37
+✖ real box diagonal wall response preserves old stop and continues only the slide tangent (4118.399708ms)
+  AssertionError [ERR_ASSERTION]: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+  
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"entrySceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","event":"ready","eventSequence":0,"protocol":4,"stateRevision":0}
+  VIENTO_PROJECT:{"event":"scene-enter","protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[100.0,180.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[115.0,180.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[150.0,180.0],"state":"idle"}],"event":"ready","protocol":3,"sceneObjectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"event":"state","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":3,"state":"moving"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"bindingId":"70707070-7070-4070-8070-000000000005","event":"event-publish","instanceId":"70707070-7070-4070-8070-000000000002","name":"physics.entered","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":4,"recipients":[],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":1,"value":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","visitIndex":1}
+  VIENTO_PROJECT:{"bindingId":"70707070-7070-4070-8070-000000000005","event":"event-publish","instanceId":"70707070-7070-4070-8070-000000000002","name":"physics.exited","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":4,"recipients":[],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":2,"value":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"event":"state","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":3,"state":"idle"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[134.92604064941406,215.04541015625],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[115.0,180.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[150.0,180.0],"state":"idle"}],"elapsedSeconds":0.49999999999999994,"event":"scene-exit","protocol":4,"reason":"finished","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"event":"finished","eventSequence":2,"protocol":4,"stateRevision":0,"totalSeconds":0.49999999999999994,"visitCount":1}
+  ERROR: Node not found: "VientoVisual" (relative to "/root/VientoProject/VientoScene/actor_bbbbbbbb_bbbb_4bbb_8bbb_bbbbbbbbbbb1").
+     at: get_node (scene/main/node.cpp:1975)
+     GDScript backtrace (most recent call first):
+         [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:21)
+         [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:10)
+  SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.
+            at: _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+            GDScript backtrace (most recent call first):
+                [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+                [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:10)
+  ERROR: Node not found: "VientoVisual" (relative to "/root/VientoProject/VientoScene/actor_bbbbbbbb_bbbb_4bbb_8bbb_bbbbbbbbbbb1").
+     at: get_node (scene/main/node.cpp:1975)
+     GDScript backtrace (most recent call first):
+         [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:21)
+         [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:16)
+  SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.
+            at: _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+            GDScript backtrace (most recent call first):
+                [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+                [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:16)
+  
+  + actual - expected
+  
+  + [
+  +   {
+  +     code: 'godot_error',
+  +     message: 'ERROR: Node not found: "VientoVisual" (relative to "/root/VientoProject/VientoScene/actor_bbbbbbbb_bbbb_4bbb_8bbb_bbbbbbbbbbb1").',
+  +     objectId: '12345678-1234-4234-8234-123456789abc',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/projects/demo.json',
+  +     sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d',
+  +     title: 'Two-scene project'
+  +   },
+  +   {
+  +     code: 'godot_error',
+  +     message: "SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.",
+  +     objectId: '12345678-1234-4234-8234-123456789ac2',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourceLine: 22,
+  +     sourcePath: 'documents/scripts/second.txt',
+  +     sourceRange: {
+  +       encoding: 'utf-16',
+  +       end: 969,
+  +       exact: true,
+  +       propertyPath: '',
+  +       start: 608
+  +     },
+  +     sourceRevision: 'sha256:54808889a367ed3b32076322dbd65fba5e5a37068d675fe8aefd815f39a5aa45'
+  +   },
+  +   {
+  +     code: 'godot_error',
+  +     message: "SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.",
+  +     objectId: '12345678-1234-4234-8234-123456789abc',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/projects/demo.json',
+  +     sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d',
+  +     title: 'Two-scene project'
+  +   }
+  + ]
+  - []
+  
+      at observed (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:105:10)
+      at execute (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:126:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async native (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:130:18)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:196:20)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-physics2d-response-backends.test.mjs:193:37
+✖ real circle diagonal wall response preserves old stop and continues only the slide tangent (4036.43744ms)
+  AssertionError [ERR_ASSERTION]: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+  
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"entrySceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","event":"ready","eventSequence":0,"protocol":4,"stateRevision":0}
+  VIENTO_PROJECT:{"event":"scene-enter","protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[100.0,180.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[115.0,180.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[150.0,180.0],"state":"idle"}],"event":"ready","protocol":3,"sceneObjectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"event":"state","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":3,"state":"moving"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"bindingId":"70707070-7070-4070-8070-000000000005","event":"event-publish","instanceId":"70707070-7070-4070-8070-000000000002","name":"physics.entered","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":4,"recipients":[],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":1,"value":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","visitIndex":1}
+  VIENTO_PROJECT:{"bindingId":"70707070-7070-4070-8070-000000000005","event":"event-publish","instanceId":"70707070-7070-4070-8070-000000000002","name":"physics.exited","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":4,"recipients":[],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":2,"value":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"event":"state","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":3,"state":"idle"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[134.9390869140625,215.04037475585938],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[115.0,180.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[150.0,180.0],"state":"idle"}],"elapsedSeconds":0.49999999999999994,"event":"scene-exit","protocol":4,"reason":"finished","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"event":"finished","eventSequence":2,"protocol":4,"stateRevision":0,"totalSeconds":0.49999999999999994,"visitCount":1}
+  ERROR: Node not found: "VientoVisual" (relative to "/root/VientoProject/VientoScene/actor_bbbbbbbb_bbbb_4bbb_8bbb_bbbbbbbbbbb1").
+     at: get_node (scene/main/node.cpp:1975)
+     GDScript backtrace (most recent call first):
+         [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:21)
+         [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:10)
+  SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.
+            at: _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+            GDScript backtrace (most recent call first):
+                [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+                [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:10)
+  ERROR: Node not found: "VientoVisual" (relative to "/root/VientoProject/VientoScene/actor_bbbbbbbb_bbbb_4bbb_8bbb_bbbbbbbbbbb1").
+     at: get_node (scene/main/node.cpp:1975)
+     GDScript backtrace (most recent call first):
+         [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:21)
+         [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:16)
+  SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.
+            at: _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+            GDScript backtrace (most recent call first):
+                [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+                [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:16)
+  
+  + actual - expected
+  
+  + [
+  +   {
+  +     code: 'godot_error',
+  +     message: 'ERROR: Node not found: "VientoVisual" (relative to "/root/VientoProject/VientoScene/actor_bbbbbbbb_bbbb_4bbb_8bbb_bbbbbbbbbbb1").',
+  +     objectId: '12345678-1234-4234-8234-123456789abc',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/projects/demo.json',
+  +     sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d',
+  +     title: 'Two-scene project'
+  +   },
+  +   {
+  +     code: 'godot_error',
+  +     message: "SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.",
+  +     objectId: '12345678-1234-4234-8234-123456789ac2',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourceLine: 22,
+  +     sourcePath: 'documents/scripts/second.txt',
+  +     sourceRange: {
+  +       encoding: 'utf-16',
+  +       end: 969,
+  +       exact: true,
+  +       propertyPath: '',
+  +       start: 608
+  +     },
+  +     sourceRevision: 'sha256:54808889a367ed3b32076322dbd65fba5e5a37068d675fe8aefd815f39a5aa45'
+  +   },
+  +   {
+  +     code: 'godot_error',
+  +     message: "SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.",
+  +     objectId: '12345678-1234-4234-8234-123456789abc',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/projects/demo.json',
+  +     sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d',
+  +     title: 'Two-scene project'
+  +   }
+  + ]
+  - []
+  
+      at observed (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:105:10)
+      at execute (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:126:10)
+      at async native (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:130:18)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:196:20)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-physics2d-response-backends.test.mjs:206:1
+✖ real response has bounded corner sweeps, normal blocking, free motion, mask filtering, independent offsets and reverse escape (4047.260345ms)
+  AssertionError [ERR_ASSERTION]: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+  
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"entrySceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","event":"ready","eventSequence":0,"protocol":4,"stateRevision":0}
+  VIENTO_PROJECT:{"event":"scene-enter","protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[100.0,180.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[115.0,180.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[150.0,180.0],"state":"idle"}],"event":"ready","protocol":3,"sceneObjectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"event":"state","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":3,"state":"moving"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"bindingId":"70707070-7070-4070-8070-000000000005","event":"event-publish","instanceId":"70707070-7070-4070-8070-000000000002","name":"physics.entered","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":4,"recipients":[],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":1,"value":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","visitIndex":1}
+  VIENTO_PROJECT:{"bindingId":"70707070-7070-4070-8070-000000000005","event":"event-publish","instanceId":"70707070-7070-4070-8070-000000000002","name":"physics.exited","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":4,"recipients":[],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":2,"value":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"event":"state","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","protocol":3,"state":"idle"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  VIENTO_PROJECT:{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[142.42645263671875,222.42645263671875],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[115.0,180.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[150.0,180.0],"state":"idle"}],"elapsedSeconds":0.49999999999999994,"event":"scene-exit","protocol":4,"reason":"finished","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"event":"finished","eventSequence":2,"protocol":4,"stateRevision":0,"totalSeconds":0.49999999999999994,"visitCount":1}
+  ERROR: Node not found: "VientoVisual" (relative to "/root/VientoProject/VientoScene/actor_bbbbbbbb_bbbb_4bbb_8bbb_bbbbbbbbbbb1").
+     at: get_node (scene/main/node.cpp:1975)
+     GDScript backtrace (most recent call first):
+         [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:21)
+         [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:10)
+  SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.
+            at: _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+            GDScript backtrace (most recent call first):
+                [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+                [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:10)
+  ERROR: Node not found: "VientoVisual" (relative to "/root/VientoProject/VientoScene/actor_bbbbbbbb_bbbb_4bbb_8bbb_bbbbbbbbbbb1").
+     at: get_node (scene/main/node.cpp:1975)
+     GDScript backtrace (most recent call first):
+         [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:21)
+         [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:16)
+  SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.
+            at: _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+            GDScript backtrace (most recent call first):
+                [0] _report (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:22)
+                [1] _physics_process (res://behaviors/12345678-1234-4234-8234-123456789ac2.gd:16)
+  
+  + actual - expected
+  
+  + [
+  +   {
+  +     code: 'godot_error',
+  +     message: 'ERROR: Node not found: "VientoVisual" (relative to "/root/VientoProject/VientoScene/actor_bbbbbbbb_bbbb_4bbb_8bbb_bbbbbbbbbbb1").',
+  +     objectId: '12345678-1234-4234-8234-123456789abc',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/projects/demo.json',
+  +     sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d',
+  +     title: 'Two-scene project'
+  +   },
+  +   {
+  +     code: 'godot_error',
+  +     message: "SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.",
+  +     objectId: '12345678-1234-4234-8234-123456789ac2',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourceLine: 22,
+  +     sourcePath: 'documents/scripts/second.txt',
+  +     sourceRange: {
+  +       encoding: 'utf-16',
+  +       end: 969,
+  +       exact: true,
+  +       propertyPath: '',
+  +       start: 608
+  +     },
+  +     sourceRevision: 'sha256:54808889a367ed3b32076322dbd65fba5e5a37068d675fe8aefd815f39a5aa45'
+  +   },
+  +   {
+  +     code: 'godot_error',
+  +     message: "SCRIPT ERROR: Attempt to call function 'get_parent' in base 'null instance' on a null instance.",
+  +     objectId: '12345678-1234-4234-8234-123456789abc',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/projects/demo.json',
+  +     sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d',
+  +     title: 'Two-scene project'
+  +   }
+  + ]
+  - []
+  
+      at observed (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:105:10)
+      at execute (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:126:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async native (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:130:18)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:208:20)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-physics2d-response-backends.test.mjs:223:1
+✖ real slide delivery retains native collision, sensors and animation after author/build paths disappear (21097.309627ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   134.99392700195312,
+  +   222.42640686035156
+  -   134.993927001953,
+  -   222.426406860352
+    ]
+  
+      at observed (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:112:10)
+      at execute (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:126:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:241:18)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [Array],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

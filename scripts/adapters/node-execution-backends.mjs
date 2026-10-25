@@ -107,7 +107,8 @@ export function validateGeneratedExecutionProject(adapter, plan, generated) {
     || SCENE_PHYSICS2D_CAPABILITIES.some(capability => !adapter.descriptor.capabilities.includes(capability)
       || !generated.backend.capabilities.includes(capability))
     || physicsScenes.some(scene => scenePhysics2DCapabilities(scene.physics.document).some(capability =>
-      !scene.requiredCapabilities.includes(capability) || !plan.requiredCapabilities.includes(capability))))) invalid('Generated backend lacks the declared physics capabilities.');
+      !scene.requiredCapabilities.includes(capability) || !plan.requiredCapabilities.includes(capability)
+      || !adapter.descriptor.capabilities.includes(capability) || !generated.backend.capabilities.includes(capability))))) invalid('Generated backend lacks the declared physics capabilities.');
   // New project protocols retain byte-compatible legacy artifacts only when
   // the frozen plan does not need their newer animation contract.
   const projectAnimation = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation);

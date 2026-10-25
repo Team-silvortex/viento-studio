@@ -61,7 +61,7 @@ async function build(t,table,body,{parameters,bom=false,edit}={}){
   const output=path.join(f.temporary,'selectors-build'),built=await buildProject({root:f.author,targetId:f.assemblyId,tool,output});
   assert.equal(built.ok,true,JSON.stringify(built.diagnostics||built.record?.diagnostics));
   assert.equal(await fs.readFile(path.join(f.author,'documents/scripts/checkpoint.txt'),'utf8'),content);
-  assert.equal(adapter.descriptor.version,'0.21.0');
+  assert.equal(adapter.descriptor.version,'0.22.0');
   return {...f,output,content};
 }
 const run=f=>runProjectBuild({buildDirectory:f.output,tool,headless:true,smoke:false});

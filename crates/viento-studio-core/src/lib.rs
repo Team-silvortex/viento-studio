@@ -21,7 +21,6 @@ mod scene3d_removal_patch;
 mod scene3d_translation_patch;
 mod scene_animation;
 mod scene_audio;
-mod scene_physics2d;
 mod scene_composition;
 mod scene_composition_definition_rename;
 mod scene_composition_definitions_patch;
@@ -32,6 +31,7 @@ mod scene_composition_placement_patch;
 mod scene_composition_placements_patch;
 mod scene_composition_structure_patch;
 mod scene_layout;
+mod scene_physics2d;
 mod scene_source;
 mod wasm;
 
@@ -205,6 +205,12 @@ pub extern "C" fn viento_core_scene_audio_version() -> u32 {
 /// Optional engine-independent 2D body declaration inspection.
 #[no_mangle]
 pub extern "C" fn viento_core_scene_physics2d_version() -> u32 {
+    1
+}
+
+/// Optional character collision responses in physics declaration schema 2.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_physics2d_response_version() -> u32 {
     1
 }
 
@@ -584,7 +590,10 @@ fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
             scene_animation: scene_animation::dispatch(value)?,
         });
     }
-    if value["operation"].as_str() == Some("scenePhysics2D.inspect") {
+    if matches!(
+        value["operation"].as_str(),
+        Some("scenePhysics2D.inspect" | "scenePhysics2D.inspectResponse")
+    ) {
         return Ok(CoreResponse::ScenePhysics2DSuccess {
             protocol_version: PROTOCOL_VERSION,
             ok: true,
@@ -899,7 +908,10 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
                 ) {
                     scene_audio::validate_request_bytes(input)?;
                 }
-                if value["operation"].as_str() == Some("scenePhysics2D.inspect") {
+                if matches!(
+                    value["operation"].as_str(),
+                    Some("scenePhysics2D.inspect" | "scenePhysics2D.inspectResponse")
+                ) {
                     scene_physics2d::validate_request_bytes(input)?;
                 }
                 // Keep legacy request admission unchanged. The new exact DTO

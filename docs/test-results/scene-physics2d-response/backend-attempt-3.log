@@ -1,0 +1,84 @@
+✔ response layer retains byte-identical legacy physical and non-physical generator outputs (233.937566ms)
+✔ slide capability is derived only from slide and cannot be hidden from plan, provider or receipt (201.450385ms)
+✔ response inventory covers every generated script and rejects omissions, extra scenes, traversal and links (100.121035ms)
+✖ real box diagonal wall response preserves old stop and continues only the slide tangent (4047.801656ms)
+✖ real circle diagonal wall response preserves old stop and continues only the slide tangent (4082.752166ms)
+✖ real response has bounded corner sweeps, normal blocking, free motion, mask filtering, independent offsets and reverse escape (21031.110515ms)
+✔ real slide delivery retains native collision, sensors and animation after author/build paths disappear (22272.634643ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 4
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51975.017158
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-response-backends.test.mjs:193:37
+✖ real box diagonal wall response preserves old stop and continues only the slide tangent (4047.801656ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   135.04541015625,
+  -   134.926040649414,
+      215.04541015625
+    ]
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:197:49)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [Array],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-physics2d-response-backends.test.mjs:193:37
+✖ real circle diagonal wall response preserves old stop and continues only the slide tangent (4082.752166ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   135.040374755859,
+  -   134.939086914062,
+      215.040374755859
+    ]
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:197:49)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [Array],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-physics2d-response-backends.test.mjs:206:1
+✖ real response has bounded corner sweeps, normal blocking, free motion, mask filtering, independent offsets and reverse escape (21031.110515ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   134.993927001953,
+  +   219.984252929688
+  -   134.925170898438,
+  -   219.925018310547
+    ]
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-response-backends.test.mjs:212:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [Array],
+    expected: [Array],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

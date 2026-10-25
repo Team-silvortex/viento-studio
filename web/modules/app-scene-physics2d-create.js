@@ -1,3 +1,4 @@
+import { supportsStudioCoreScenePhysics2DResponse } from '../../engine/studio-core.mjs';
 import { createScenePhysics2DCreationDraft } from '../../engine/scene-physics2d-create-plan.mjs';
 import { captureScenePhysics2DCreationContext, createScenePhysics2DCreationRequest, validateScenePhysics2DCreationResult, confirmScenePhysics2DCreation } from '../../engine/scene-physics2d-creation-contract.mjs';
 import { getCreatePathError } from '../../engine/document-contract.mjs';
@@ -25,6 +26,9 @@ export function setupScenePhysics2DCreate({ getContext = () => ({}), setBusy = (
       <p id="scenePhysics2DCreateTargetIdentity" class="scene-physics2d-create-wide scene-physics2d-create-note"></p>
       <label><span data-i18n="物理体类型"></span><select id="scenePhysics2DCreateKind"></select></label>
       <label><span data-i18n="碰撞形状"></span><select id="scenePhysics2DCreateShape"></select></label>
+      <label id="scenePhysics2DCreateResponseField"><span data-i18n="角色碰撞响应"></span><select id="scenePhysics2DCreateResponse" aria-describedby="scenePhysics2DCreateResponseHint scenePhysics2DCreateResponseUnavailable"><option value="stop" data-i18n="碰撞后停止"></option><option value="slide" data-i18n="沿碰撞面滑动"></option></select></label>
+      <p id="scenePhysics2DCreateResponseHint" class="scene-physics2d-create-wide scene-physics2d-create-note" data-i18n="停止会截断本步移动；滑动会保留沿碰撞面的移动。仅影响角色逻辑碰撞，不改写视觉偏移或运行空间图模拟。"></p>
+      <p id="scenePhysics2DCreateResponseUnavailable" class="scene-physics2d-create-wide scene-physics2d-create-note" data-i18n="当前核心不支持角色滑动；已有停止行为及其他物理参数仍可编辑。" hidden></p>
       <label id="scenePhysics2DCreateWidthField"><span data-i18n="矩形宽度"></span><input id="scenePhysics2DCreateWidth" type="text" inputmode="decimal" maxlength="32" /></label>
       <label id="scenePhysics2DCreateHeightField"><span data-i18n="矩形高度"></span><input id="scenePhysics2DCreateHeight" type="text" inputmode="decimal" maxlength="32" /></label>
       <label id="scenePhysics2DCreateRadiusField"><span data-i18n="圆形半径"></span><input id="scenePhysics2DCreateRadius" type="text" inputmode="decimal" maxlength="32" /></label>
@@ -46,16 +50,17 @@ export function setupScenePhysics2DCreate({ getContext = () => ({}), setBusy = (
   const fail = key => { throw Object.assign(new Error(t(key)), { uiKey: key }); };
   let enabled = false, disposed = false, epoch = 0, owner = null, catalog = null, draft = null, baseline = '', preview = null;
   let phase = '', pendingWrite = null, needsRefresh = false, busyOwned = false, message = '', details = '', opener = null;
-  const fields = ['Type', 'Path', 'Instance', 'Kind', 'Shape', 'Width', 'Height', 'Radius', 'OffsetX', 'OffsetY', 'Layer', 'Mask'];
+  const fields = ['Type', 'Path', 'Instance', 'Kind', 'Response', 'Shape', 'Width', 'Height', 'Radius', 'OffsetX', 'OffsetY', 'Layer', 'Mask'];
   const kindLabels = { character: '角色物理体', static: '静态物理体', sensor: '传感器物理体' };
+  const responseAvailable = () => typeof supportsStudioCoreScenePhysics2DResponse === 'function' && supportsStudioCoreScenePhysics2DResponse();
   const circle = () => el('Shape').value === 'circle';
   const raw = () => Object.fromEntries(fields.map(name => [name, el(name).value]));
-  const signature = () => JSON.stringify(raw());
+  const signature = () => { const { Response, ...value } = raw(); return JSON.stringify({ ...value, ...(value.Kind === 'character' ? { Response } : {}) }); };
   const eligible = () => { const c = getContext(); return Boolean(!disposed && enabled && c.editable && !c.dirty && !c.creating && !c.busy && c.visible === true && uuid(c.sceneId) && typeof c.session === 'string'); };
   const owns = (generation = epoch, acceptToken = false) => { const c = getContext(); return Boolean(generation === epoch && dialog.open && owner && !owner.invalidated && eligible()
     && c.sceneId === owner.sceneId && c.session === owner.session && (acceptToken || c.sourceToken === owner.sourceToken)); };
   const canEdit = () => Boolean(!phase && !pendingWrite && !needsRefresh && catalog?.status === 'empty' && draft && owns());
-  const approval = () => preview && preview.catalog === catalog && preview.signature === signature();
+  const approval = () => preview && preview.catalog === catalog && preview.signature === signature() && (responseAvailable() || draft.Kind !== 'character' || draft.Response === 'stop');
   const dirty = () => Boolean(pendingWrite || preview || draft && catalog?.status !== 'ready' && signature() !== baseline);
   const hostBusy = value => { if (busyOwned !== value) { busyOwned = value; setBusy(value); } };
   function capture() { if (draft) Object.assign(draft, raw()); }
@@ -72,7 +77,7 @@ export function setupScenePhysics2DCreate({ getContext = () => ({}), setBusy = (
     options(el('Instance'), catalog.targets.map(target => [target.instanceId, t('{0} · 实例 {1}', target.name, target.instanceId)]), draft.Instance);
     options(el('Kind'), Object.entries(kindLabels).map(([id, label]) => [id, t(label)]), draft.Kind);
     options(el('Shape'), [['box', t('矩形')], ['circle', t('圆形')]], draft.Shape);
-    for (const name of ['Path', 'Width', 'Height', 'Radius', 'OffsetX', 'OffsetY', 'Layer', 'Mask']) if (el(name).value !== draft[name]) el(name).value = draft[name];
+    for (const name of ['Path', 'Response', 'Width', 'Height', 'Radius', 'OffsetX', 'OffsetY', 'Layer', 'Mask']) if (el(name).value !== draft[name]) el(name).value = draft[name];
   }
   function update() {
     if (disposed) return;
@@ -80,6 +85,9 @@ export function setupScenePhysics2DCreate({ getContext = () => ({}), setBusy = (
     const existing = catalog?.status === 'ready';
     el('Fields').hidden = catalog?.status !== 'empty' || !draft; el('Fields').disabled = !canEdit();
     fields.forEach(name => { el(name).disabled = !canEdit(); });
+    const character = el('Kind').value === 'character';
+    el('ResponseField').hidden = !character; el('ResponseHint').hidden = !character; el('ResponseUnavailable').hidden = !character || responseAvailable();
+    el('Response').disabled = !canEdit() || !character || !responseAvailable();
     el('WidthField').hidden = circle(); el('HeightField').hidden = circle(); el('RadiusField').hidden = !circle();
     el('Width').disabled = !canEdit() || circle(); el('Height').disabled = !canEdit() || circle(); el('Radius').disabled = !canEdit() || !circle();
     el('TargetIdentity').textContent = draft ? t('场景实例：{0}', draft.Instance) : '';
@@ -127,7 +135,7 @@ export function setupScenePhysics2DCreate({ getContext = () => ({}), setBusy = (
         if (!uuid(objectId) || !uuid(bodyId) || objectId === bodyId || used.has(objectId) || used.has(bodyId)) throw Error('Invalid stable physics body identity.');
         const type = next.documentTypes.find(item => item.id === 'physics2d') || next.documentTypes.find(item => item.id === 'physics') || next.documentTypes.find(item => item.id === 'document') || next.documentTypes[0];
         draft = { objectId, bodyId, Type: type.id, Path: `${next.documentRoot}/physics/new-physics2d.json`,
-          Instance: next.targets[0]?.instanceId || '', Kind: 'character', Shape: 'box', Width: '32', Height: '32', Radius: '16', OffsetX: '0', OffsetY: '0', Layer: '1', Mask: '1' };
+          Instance: next.targets[0]?.instanceId || '', Kind: 'character', Response: 'stop', Shape: 'box', Width: '32', Height: '32', Radius: '16', OffsetX: '0', OffsetY: '0', Layer: '1', Mask: '1' };
         renderFields(); baseline = signature();
       } else renderFields();
       message = '选择场景实例与物理体设置，审阅后保存二维物理文档。';
@@ -148,8 +156,9 @@ export function setupScenePhysics2DCreate({ getContext = () => ({}), setBusy = (
     if (!catalog.documentTypes.some(type => type.id === draft.Type) || !catalog.targets.some(target => target.instanceId === draft.Instance)) fail('请选择当前工程中的文档类型和场景实例。');
     if (!draft.Path.startsWith(catalog.documentRoot + '/') || !/\.json$/.test(draft.Path) || getCreatePathError(draft.Path)) fail('请使用正文目录内可迁移的 JSON 文件路径。');
     if (!['character', 'static', 'sensor'].includes(draft.Kind) || !['box', 'circle'].includes(draft.Shape)) fail('请选择有效的物理体类型和碰撞形状。');
+    if (draft.Kind === 'character' && draft.Response !== 'stop' && !responseAvailable()) fail('当前核心不支持角色滑动；已有停止行为及其他物理参数仍可编辑。');
     const planned = createScenePhysics2DCreationDraft({ sceneObjectId: catalog.scene.objectId, bodyId: draft.bodyId, instanceId: draft.Instance,
-      kind: draft.Kind, shape: circle() ? { kind: 'circle', radius: number(draft.Radius) } : { kind: 'box', size: [number(draft.Width), number(draft.Height)] },
+      kind: draft.Kind, ...(draft.Kind === 'character' && draft.Response !== 'stop' ? { collisionResponse: draft.Response } : {}), shape: circle() ? { kind: 'circle', radius: number(draft.Radius) } : { kind: 'box', size: [number(draft.Width), number(draft.Height)] },
       offset: [number(draft.OffsetX), number(draft.OffsetY)], layer: number(draft.Layer), mask: number(draft.Mask) });
     if (!planned.ok) fail('物理设置无效，请检查形状尺寸、偏移、层和检测掩码。');
     return createScenePhysics2DCreationRequest(catalog, { objectId: draft.objectId, documentType: draft.Type, sourcePath: draft.Path, content: planned.content });
@@ -158,9 +167,14 @@ export function setupScenePhysics2DCreate({ getContext = () => ({}), setBusy = (
     if (!canEdit() || mode === 'apply' && !approval()) { if (!phase && preview && !approval()) { invalidate(); update(); } return; }
     let requested; try { requested = mode === 'apply' ? { ...copy(preview.request), mode } : request(); }
     catch (error) { preview = null; message = error.uiKey || '物理设置无效，请检查形状尺寸、偏移、层和检测掩码。'; details = error.message || ''; update(); return; }
-    const generation = epoch, inputSignature = signature(), snapshot = catalog; phase = mode; hostBusy(true); details = ''; message = mode === 'apply' ? '正在保存二维物理文档与关系…' : '正在审阅二维物理文档与关系…'; update();
+    const generation = epoch, inputSignature = signature(), snapshot = catalog, responseRequired = draft.Kind === 'character' && draft.Response === 'slide'; phase = mode; hostBusy(true); details = ''; message = mode === 'apply' ? '正在保存二维物理文档与关系…' : '正在审阅二维物理文档与关系…'; update();
     try {
       const sourceRevision = await digest(requested.content); if (!owns(generation) || signature() !== inputSignature || catalog !== snapshot) return;
+      // Hashing yields to other work. Recheck the optional rule capability before
+      // publishing either command; an already published write still reconciles.
+      if (responseRequired && !responseAvailable()) {
+        preview = null; message = '当前核心不支持角色滑动；已有停止行为及其他物理参数仍可编辑。'; return;
+      }
       if (mode === 'apply') pendingWrite = { request: copy(requested), sourceRevision, result: null, notified: false };
       const result = await command(requested); if (!owns(generation) || signature() !== inputSignature || catalog !== snapshot) return;
       const valid = validateScenePhysics2DCreationResult(result, requested, snapshot, sourceRevision);

@@ -17,7 +17,9 @@ function vector(value) {
 }
 export function createScenePhysics2DCreationDraft(input) {
   try {
-    const raw = record(input, ['sceneObjectId', 'bodyId', 'instanceId', 'kind', 'shape', 'offset', 'layer', 'mask']);
+    const hasResponse = input !== null && typeof input === 'object' && Object.hasOwn(input, 'collisionResponse');
+    const raw = record(input, ['sceneObjectId', 'bodyId', 'instanceId', 'kind', 'shape', 'offset', 'layer', 'mask', ...(hasResponse ? ['collisionResponse'] : [])]);
+    if (hasResponse && (raw.kind !== 'character' || !['stop', 'slide'].includes(raw.collisionResponse))) invalid();
     if (['sceneObjectId', 'bodyId', 'instanceId', 'kind'].some(key => typeof raw[key] !== 'string')
       || typeof raw.layer !== 'number' || typeof raw.mask !== 'number') invalid();
     // Capture the discriminator before choosing exact shape fields; no getter
@@ -29,9 +31,10 @@ export function createScenePhysics2DCreationDraft(input) {
     const shape = record(raw.shape, fields);
     if (shape.kind === 'box') shape.size = vector(shape.size);
     else if (typeof shape.radius !== 'number' || !Number.isFinite(shape.radius)) invalid();
-    const { document } = inspectScenePhysics2D({ format: 'viento-scene-physics2d', schemaVersion: 1,
+    const slide = raw.collisionResponse === 'slide';
+    const { document } = inspectScenePhysics2D({ format: 'viento-scene-physics2d', schemaVersion: slide ? 2 : 1,
       sceneObjectId: raw.sceneObjectId, bodies: [{ id: raw.bodyId, instanceId: raw.instanceId, kind: raw.kind,
-        shape, offset: vector(raw.offset), layer: raw.layer, mask: raw.mask }] });
+        shape, offset: vector(raw.offset), layer: raw.layer, mask: raw.mask, ...(slide ? { collisionResponse: 'slide' } : {}) }] });
     return freeze({ ok: true, content: JSON.stringify(document, null, 2) + '\n', diagnostics: [] });
   } catch (error) {
     return freeze({ ok: false, content: null, diagnostics: [{ severity: 'error', code: error?.errorCode === 'studio_core_unavailable' ? error.errorCode : 'build_physics_invalid',

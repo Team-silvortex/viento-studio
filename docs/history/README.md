@@ -10,51 +10,78 @@
 - [原始测试证据目录](../test-results/)：按版本或专题保留 `results.json`、日志、截图及来源指纹；新验证新增记录，旧记录不覆盖。
 - [架构决策记录](../adr/)：保留每项设计决策及其背景；与发布验收记录分开查阅。
 
+## 2026-10-25 文档整理归档
+
+当前指南按任务和职责维护；下列快照保留整理前的完整正文或移出的版本前言。归档中的“当前”“未发布”和测试计数属于原时点。相对链接已重定位，既有发布、ADR 和测试报告仍在原位置。
+
+| 原指南 | 归档内容 |
+| --- | --- |
+| [系统架构](../ARCHITECTURE.md) | [完整架构快照](architecture-2026-10-25.md) |
+| [Studio 模块](../STUDIO_MODULES.md) | [完整模块快照](studio-modules-2026-10-25.md) |
+| [可移植引擎](../../engine/README.md) | [完整接口快照](engine-2026-10-25.md) |
+| [当前状态](../STATUS.md) | [完整状态快照](status-2026-10-25.md) |
+| [路线图](../ROADMAP.md) | [完整路线快照](roadmap-2026-10-25.md) |
+| [测试指南](../TESTING.md) | [完整验证指南快照](testing-2026-10-25.md) |
+| [二维构建](../PROJECT_BUILD.md) | [开发前言与选型记录](project-build-2026-10-25.md) |
+| [二维功能映射](../FUNCTION_MAPPING_2D.md) | [映射的历史判断](function-mapping-2d-2026-10-25.md) |
+| [场景动画](../SCENE_ANIMATION.md) | [动画阶段前言](scene-animation-2026-10-25.md) |
+| [场景行为](../SCENE_BEHAVIORS.md) | [行为阶段前言](scene-behaviors-2026-10-25.md) |
+| [Bevy 后端](../BEVY_BACKEND.md) | [Bevy 阶段记录](bevy-backend-2026-10-25.md) |
+| [执行中间层](../BACKEND_MIDDLEWARE.md) | [中间层阶段前言](backend-middleware-2026-10-25.md) |
+| 声音、行为声音控制与项目事件 | [三个专题的版本前言](runtime-guides-2026-10-25.md) |
+
+本轮只核对文档、命令入口及图谱来源，没有重跑产品功能或安装验收，详见[整理验证](../test-results/docs-refresh-2026-10-25/README.md)。
+
 ## 发布记录
 
-现行产品版本为 `0.2.0`，使用三段数字编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
+当前源码版本为 `0.2.3`，使用三段数字编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
 
 | 原报告 | 主题 |
 | --- | --- |
+| [RELEASE_0.2.3.md](../RELEASE_0.2.3.md) | 碰撞偏移／尺寸空间编辑、角色停止／滑动响应与文档重构 |
+| [RELEASE_0.2.2.md](../RELEASE_0.2.2.md) | 物理实例选择与修复、首次创建、场景空间查看与 CI 修复 |
+| [RELEASE_0.2.1.md](../RELEASE_0.2.1.md) | 逐实例动画、组装入口与二维物理闭环 |
 | [RELEASE_0.2.0.md](../RELEASE_0.2.0.md) | 0.2.0 动画进入来源、事件回看、手动试算与用例 JSON 编辑；保留源码升版时点 |
 | [RELEASE_0.1.9.md](../RELEASE_0.1.9.md) | 0.1.9 有序动画分支、共享／组合条件、状态快照与控制器回看 |
-| [RELEASE_0.0.2.md](../RELEASE_0.0.2.md) | 0.0.2 版本记录 |
-| [RELEASE_0.0.3.md](../RELEASE_0.0.3.md) | 0.0.3 版本记录 |
-| [RELEASE_0.0.4.md](../RELEASE_0.0.4.md) | 0.0.4 版本记录 |
-| [RELEASE_0.0.5.md](../RELEASE_0.0.5.md) | 0.0.5 版本记录 |
-| [RELEASE_0.0.6.md](../RELEASE_0.0.6.md) | 0.0.6 模板、投影与场景工作台 |
-| [RELEASE_0.0.7.md](../RELEASE_0.0.7.md) | 0.0.7 场景布局、Rust 核心与源码草稿 |
-| [RELEASE_0.0.8.md](../RELEASE_0.0.8.md) | 0.0.8 片段组合、GDScript、执行中间层与 Bevy |
-| [RELEASE_0.0.9.md](../RELEASE_0.0.9.md) | 0.0.9 工具检查、运行验收、工程用例、有序验收组与成员报告 |
-| [RELEASE_0.0.10.md](../RELEASE_0.0.10.md) | 0.0.10 后端工程管理、九域配方创作、系统模块与独立 3D 首切片 |
-| [RELEASE_0.1.0.md](../RELEASE_0.1.0.md) | 0.1.0 九域 3D 作者编辑、画布导航与整景取景 |
-| [RELEASE_0.1.1.md](../RELEASE_0.1.1.md) | 0.1.1 3D 天气与导航、内置脚本／行为创作及工程交付 |
-| [RELEASE_0.1.2.md](../RELEASE_0.1.2.md) | 0.1.2 查找替换、任务问题回源、多演员配方与起始排布、二维交付工作流 |
+| [RELEASE_0.1.8.md](../RELEASE_0.1.8.md) | 动画完成衔接与状态表脚本工作流 |
+| [RELEASE_0.1.7.md](../RELEASE_0.1.7.md) | 动画图集、片段、行为控制与事件触发 |
 | [RELEASE_0.1.6.md](../RELEASE_0.1.6.md) | 0.1.6 关键帧动画创作／预览／Godot 交付、音轨使用位置与定位 |
 | [RELEASE_0.1.5.md](../RELEASE_0.1.5.md) | 0.1.5 声音提示编排、轨道管理、素材试听与行为音轨选择 |
 | [RELEASE_0.1.4.md](../RELEASE_0.1.4.md) | 0.1.4 项目组装、场景切换、共享状态、事件与行为声音控制 |
 | [RELEASE_0.1.3.md](../RELEASE_0.1.3.md) | 0.1.3 多行为与脚本引用管理、Bevy Rust 就绪／固定步、场景声音与资源工程交付 |
-| [RELEASE_b.2.8.1.md](../RELEASE_b.2.8.1.md) | b.2.8.1 发布记录 |
-| [RELEASE_b.2.8.2.md](../RELEASE_b.2.8.2.md) | 发布编号更正 |
-| [RELEASE_b.2.8.md](../RELEASE_b.2.8.md) | b.2.8 发布记录 |
-| [RELEASE_b.2.9.md](../RELEASE_b.2.9.md) | b.2.9 发布记录 |
-| [RELEASE_b.3.0.md](../RELEASE_b.3.0.md) | b.3.0 发布记录 |
-| [RELEASE_b.3.1.md](../RELEASE_b.3.1.md) | b.3.1 发布记录 |
-| [RELEASE_b.3.2.md](../RELEASE_b.3.2.md) | b.3.2 发布记录 |
-| [RELEASE_b.3.3.md](../RELEASE_b.3.3.md) | b.3.3 发布记录 |
-| [RELEASE_b.3.4.md](../RELEASE_b.3.4.md) | b.3.4 发布记录 |
-| [RELEASE_b.3.5.md](../RELEASE_b.3.5.md) | b.3.5 发布记录 |
-| [RELEASE_b.3.6.md](../RELEASE_b.3.6.md) | b.3.6 发布记录 |
-| [RELEASE_b.3.7.md](../RELEASE_b.3.7.md) | b.3.7 发布记录 |
-| [RELEASE_b.3.8.md](../RELEASE_b.3.8.md) | b.3.8 发布记录 |
-| [RELEASE_b.3.9.md](../RELEASE_b.3.9.md) | b.3.9 发布记录 |
-| [RELEASE_b.4.0.md](../RELEASE_b.4.0.md) | b.4.0 发布记录 |
-| [RELEASE_b.4.1.md](../RELEASE_b.4.1.md) | b.4.1 发布记录 |
-| [RELEASE_b.4.2.md](../RELEASE_b.4.2.md) | b.4.2 发布记录 |
-| [RELEASE_b.4.3.md](../RELEASE_b.4.3.md) | b.4.3 发布记录 |
-| [RELEASE_b.4.4.md](../RELEASE_b.4.4.md) | b.4.4 发布记录 |
-| [RELEASE_b.4.5.md](../RELEASE_b.4.5.md) | b.4.5 发布记录 |
+| [RELEASE_0.1.2.md](../RELEASE_0.1.2.md) | 0.1.2 查找替换、任务问题回源、多演员配方与起始排布、二维交付工作流 |
+| [RELEASE_0.1.1.md](../RELEASE_0.1.1.md) | 0.1.1 3D 天气与导航、内置脚本／行为创作及工程交付 |
+| [RELEASE_0.1.0.md](../RELEASE_0.1.0.md) | 0.1.0 九域 3D 作者编辑、画布导航与整景取景 |
+| [RELEASE_0.0.10.md](../RELEASE_0.0.10.md) | 0.0.10 后端工程管理、九域配方创作、系统模块与独立 3D 首切片 |
+| [RELEASE_0.0.9.md](../RELEASE_0.0.9.md) | 0.0.9 工具检查、运行验收、工程用例、有序验收组与成员报告 |
+| [RELEASE_0.0.8.md](../RELEASE_0.0.8.md) | 0.0.8 片段组合、GDScript、执行中间层与 Bevy |
+| [RELEASE_0.0.7.md](../RELEASE_0.0.7.md) | 0.0.7 场景布局、Rust 核心与源码草稿 |
+| [RELEASE_0.0.6.md](../RELEASE_0.0.6.md) | 0.0.6 模板、投影与场景工作台 |
+| [RELEASE_0.0.5.md](../RELEASE_0.0.5.md) | 0.0.5 版本记录 |
+| [RELEASE_0.0.4.md](../RELEASE_0.0.4.md) | 0.0.4 版本记录 |
+| [RELEASE_0.0.3.md](../RELEASE_0.0.3.md) | 0.0.3 版本记录 |
+| [RELEASE_0.0.2.md](../RELEASE_0.0.2.md) | 0.0.2 版本记录 |
 | [RELEASE_b.4.6.md](../RELEASE_b.4.6.md) | b.4.6 发布记录 |
+| [RELEASE_b.4.5.md](../RELEASE_b.4.5.md) | b.4.5 发布记录 |
+| [RELEASE_b.4.4.md](../RELEASE_b.4.4.md) | b.4.4 发布记录 |
+| [RELEASE_b.4.3.md](../RELEASE_b.4.3.md) | b.4.3 发布记录 |
+| [RELEASE_b.4.2.md](../RELEASE_b.4.2.md) | b.4.2 发布记录 |
+| [RELEASE_b.4.1.md](../RELEASE_b.4.1.md) | b.4.1 发布记录 |
+| [RELEASE_b.4.0.md](../RELEASE_b.4.0.md) | b.4.0 发布记录 |
+| [RELEASE_b.3.9.md](../RELEASE_b.3.9.md) | b.3.9 发布记录 |
+| [RELEASE_b.3.8.md](../RELEASE_b.3.8.md) | b.3.8 发布记录 |
+| [RELEASE_b.3.7.md](../RELEASE_b.3.7.md) | b.3.7 发布记录 |
+| [RELEASE_b.3.6.md](../RELEASE_b.3.6.md) | b.3.6 发布记录 |
+| [RELEASE_b.3.5.md](../RELEASE_b.3.5.md) | b.3.5 发布记录 |
+| [RELEASE_b.3.4.md](../RELEASE_b.3.4.md) | b.3.4 发布记录 |
+| [RELEASE_b.3.3.md](../RELEASE_b.3.3.md) | b.3.3 发布记录 |
+| [RELEASE_b.3.2.md](../RELEASE_b.3.2.md) | b.3.2 发布记录 |
+| [RELEASE_b.3.1.md](../RELEASE_b.3.1.md) | b.3.1 发布记录 |
+| [RELEASE_b.3.0.md](../RELEASE_b.3.0.md) | b.3.0 发布记录 |
+| [RELEASE_b.2.9.md](../RELEASE_b.2.9.md) | b.2.9 发布记录 |
+| [RELEASE_b.2.8.2.md](../RELEASE_b.2.8.2.md) | 发布编号更正 |
+| [RELEASE_b.2.8.1.md](../RELEASE_b.2.8.1.md) | b.2.8.1 发布记录 |
+| [RELEASE_b.2.8.md](../RELEASE_b.2.8.md) | b.2.8 发布记录 |
 
 ## 缺陷修复与安全修复
 

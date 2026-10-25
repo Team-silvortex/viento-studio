@@ -13,11 +13,11 @@
 | 已有工程，想在浏览器编辑或体验合成样例 | 启动本机编辑服务，见下文 |
 | Android 预览 | 按 [移动端说明](../mobile/README.md) 构建与导入，先确认功能和设备限制 |
 
-当前源码版本为 **0.2.0**，本机 Linux AppImage 已更新；这不代表已有公开二进制下载或其他平台安装验收。具体交付与验证范围见 [当前状态](STATUS.md#版本与交付)。
+当前源码版本为 **0.2.3**，包含物理空间编辑与角色碰撞响应选择；本机 Linux AppImage 的安装验收仍为 **0.2.0**。源码和安装范围分别记录，不代表已有公开二进制下载或其他平台验收，见 [当前状态](STATUS.md#版本与交付)。
 
 ## 从源码启动桌面版
 
-准备 Node.js 24、Rust 稳定版及 [Tauri 系统依赖](https://v2.tauri.app/start/prerequisites/)，在仓库根目录执行：
+推荐准备已验证的 Node.js 24、Rust 稳定版及 [Tauri 系统依赖](https://v2.tauri.app/start/prerequisites/)，在仓库根目录执行：
 
 ```sh
 rustup target add wasm32-unknown-unknown
@@ -59,9 +59,10 @@ VIENTO_WORKSPACE_ROOT=/完整路径/我的工程 npm start -- --no-open
 
 仓库的 [examples/scene2d](../examples/scene2d/README.md) 是完整的合成工程。复制整个目录到自己的工程位置后，可通过上述浏览器命令或桌面首页打开它；默认空白工程和游戏设计模板不会自动生成可运行场景。
 
-无需安装 Godot 即可在仓库中检查样例计划，此操作只读取工程：
+安装 npm 依赖后，先准备共享 WASM 核心，再检查样例计划；计划检查只读取工程，无需安装 Godot：
 
 ```sh
+npm run core:build
 npm run project:build -- --command plan \
   --root examples/scene2d --scene documents/scenes/demo.json
 ```

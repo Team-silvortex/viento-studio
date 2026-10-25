@@ -1,45 +1,10 @@
 # 二维功能对接表
 
-**0.1.8 源码收录**：自然完成通知、状态表与条件、版本化源码重编辑、参数接口及脚本使用位置已纳入[本版](RELEASE_0.1.8.md)。当前Godot适配器0.16.0，新含动画项目使用protocol 7／清单8，22模块／43项声明能力保持；下述较早阶段的版本与验证条件按当时范围保留，本次未更新安装。
+本表按 **设定 → 投影 → 场景实现 → 项目组装 → 构建运行 → 工程交付** 追踪当前入口与实现边界。当前源码为 **0.2.3**，已收录碰撞偏移／尺寸的空间图调整与角色停止／滑动响应，本机安装仍为 **0.2.0**。具体交付与平台范围见[状态页](STATUS.md)，旧增量前言与历史判断见[归档](history/function-mapping-2d-2026-10-25.md)。
 
-**此前0.1.7开发阶段**新增[状态表到普通动画脚本](SCENE_ANIMATION.md#从状态表生成动画脚本)：Rust 中立规则 → Godot 发射器 → 表格与精确源码审阅 → 普通保存 → 既有片段参数 → 项目事件／自然完成 → 工程交付。此增量复用协议 7，不增加后端能力声明。
+首次操作读[项目工作流](PROJECT_WORKFLOW.md)和[构建指南](PROJECT_BUILD.md)。本页分为[入口交接](#从入口到实现)、[后端支持](#当前后端映射)、[明确缺口](#映射出的下一步)和[验证边界](#验证边界与图谱维护)。功能身份、实现绑定与评分以[功能图谱](FUNCTION_ATLAS.md)及[JSON](function-atlas.json)为准；这里不另设总分、完成率，也不把引擎原生能力视为 Studio 已接入能力。
 
-**此前0.1.7开发阶段**接通[动画自然完成→下一片段](SCENE_ANIMATION.md#动画自然完成与片段衔接)：普通脚本和两个片段参数、Godot 完成订阅、独立完成观察及工程交付各自负责。新含动画项目使用 protocol 7／清单 8／适配器 0.16.0；旧版记录以下文原时点为准，状态机与混合仍未接入。
-
-**已发布源码 0.1.7**已收录下述序列帧、项目动画控制、命名片段、行为参数选入、使用位置、事件触发、等比时长和轨道复制，见[版本记录](RELEASE_0.1.7.md)。该发布基线 Godot 适配器 0.15.0，按冻结内容选择 project protocol 4／5／6；22 模块／43 项声明能力保持。历史段落与证据继续标明开发时点，不代表当前安装或新的设备验收。
-
-**0.1.6 后工作树：复制动画轨道**。当前有效表单／源轨道 → 现有保存态实例目录／显式目标 → Rust 克隆并替换新身份、追加轨道 → 检查预览／完整原文审阅 → 普通草稿与保存 → 既有构建交付。目标同属性冲突整次拒绝；素材仍属于目标实例，结构提案重写 `tracks` 数组，其他未改原文保持。见[操作边界](SCENE_ANIMATION.md#复制轨道到其他实例)与[验证范围](test-results/scene-animation-track-copy/README.md)。
-
-**0.1.6 后工作树：整段按比例调整时长**。当前有效动画表单 → 独立目标时长 → Rust 同比例变换全部关键帧／片段边界 → 本地表单回填 → 检查与原文审阅 → 普通草稿／保存 → 既有预览、构建与工程交付。值、稳定编号、顺序和既有动画格式保持；时间精度塌缩整次拒绝。可选核心能力独立于普通字段编辑，不增加运行时协议或后端支持。见[操作与边界](SCENE_ANIMATION.md#整段按比例调整时长)。
-
-**0.1.6 后工作树：事件动画片段**。内置 TXT 起始内容 → 普通保存 → 行为 `event_name`／`clip_id` 参数（可按名称选入 UUID）→ 项目事件订阅 → 选择并播放 → 分别查看事件与动画执行记录。默认事件名为 `checkpoint`，空片段选择完整动画；就绪时保留自动播放。组合已有端口，缺少片段选择方法的旧项目不执行，不新增格式、能力或协议。见[配置与回执边界](SCENE_ANIMATION.md#用项目事件触发动画片段)。
-
-**0.1.6 后工作树：命名动画片段**。同一动画定义可重叠时间窗口 → 独立片段字段编辑 → 审阅与普通保存 → 编辑示意／已保存场景双预览 → 脚本选择 UUID → protocol 6 执行记录与片段回源 → Godot 工程 ZIP。曲线和素材共享，Rust 负责局部时间与取样，Godot 负责访问内排队；见[操作指南](SCENE_ANIMATION.md#命名动画片段)和[本轮验证](test-results/scene-animation-clips/README.md)。
-
-**0.1.6 后工作树：项目动画控制**。保存动画与普通脚本 → 行为绑定 → 项目冻结构建 → 访问内播放／暂停／停止／定位 → 双来源执行记录 → 工程 ZIP。Rust transport、独立请求队列和只读观察组件分别维护；Godot 0.14.0 对含动画项目使用 protocol 5，无动画项目与单场景保持各自旧路径。见[使用说明](SCENE_ANIMATION.md#行为控制项目动画)和[本轮验证](test-results/project-animation-controls/README.md)。
-
-**0.1.6 后工作树：等分图集序列帧**。实例图片 → 动画字段轨道 → 审阅与普通保存 → 同快照画面预览 → Godot 运行与工程交付，复用既有资源绑定和冻结字节。Rust 校验／采样、编辑提案、图像解码、渲染和后端各自维护。Godot 0.13.0 增加 `animation.sprite2d`；Bevy 未接入。操作见[序列帧](SCENE_ANIMATION.md#等分网格序列帧)，本轮测试见[专题](test-results/scene-animation-sprites/README.md)；不代表安装版已更新。
-
-**0.1.5 收录说明**：[本版源码](RELEASE_0.1.5.md)收录已有声音的时间提示编排、轨道管理、已绑定素材选择、就地试听及暂停／定位，以及行为文本参数中的音轨选择。读取、试听、表单修改与普通保存保持独立。下文开发阶段及专题证据保留原时点；源码发布不代表已更新安装或设备验收。
-
-**0.1.4 收录说明**：[本版源码](RELEASE_0.1.4.md)已收录首次声音创建与逐轨触发方式、项目组装与场景切换、共享状态、项目事件和行为声音控制。当前为 **21 模块／40 项声明能力**，Godot **0.11.0**、项目协议 **4**；旧段落与验收数字保留各自执行时点，本次未更新安装。
-
-**0.1.4 后工作树：试听进度与控制**：`scene.audio_audition` 沿用既有实现和绑定，新增当前素材的进度、暂停／继续与定位；声音文档、场景 cues 和后端运行各自独立。操作见[就地试听](SCENE_AUDIO.md#就地试听音轨素材)，本轮证据见[试听控制专题](test-results/scene-audio-audition-transport/README.md)。
-
-**此前 0.1.4 后工作树：选择已绑定的声音素材**：先通过现有 **世界与对象 → 绑定资源** 为声音文档绑定已登记 WAV，再在 **编辑场景声音** 显式读取已绑定素材并选择音轨的新素材。资源目录与来源修订复核独立于保真正文提案；修改经审阅后仅应用普通草稿，再普通保存。旧四种提案契约保持；单独替换素材时保留轨道身份与提示引用。目录读取不验证实际 PCM／哈希，构建继续检查资源字节；素材绑定与正文保存是两次独立操作。验证见[素材选择专题](test-results/scene-audio-resource-selection/README.md)。
-
-**此前 0.1.4 后轨道复制与移除切片**：[已有声音的轨道管理](SCENE_AUDIO.md#复制与移除已有声音轨道)支持复制当前轨道设置，生成独立轨道身份并复用同一素材，不复制时间提示。保持 1–16 条轨道；移除前需先移除或改接当前提示，行为脚本中的轨道 ID 由作者另行检查。新 `createSceneAudioTrackProposal` 只复用原文已使用的资源，保留已有轨道资源与相对顺序，新轨道追加；旧三种提案契约、普通草稿／保存、Rust ABI 和模块／后端版本保持。验证另见[轨道编辑专题](test-results/scene-audio-track-authoring/README.md)。
-
-**此前 0.1.4 后提示换轨与顺序切片**：[声音提示编排](SCENE_AUDIO.md#调整提示目标轨道与顺序)支持将提示改为当前文档中另一条已声明轨道，并用 **上移／下移** 调整作者列表。播放仍先按时间排序，同刻按列表顺序执行；提示身份、轨道资源及普通草稿／保存边界保持。新 `createSceneAudioTimelineProposal` 独立扩展编排，两种旧提案 API 保持原契约；Rust ABI、模块／能力和后端版本不变。验证范围见[换轨与顺序专题](test-results/scene-audio-cue-arrangement/README.md)。
-
-**此前 0.1.4 后提示增删切片**：[已有声音的时间提示编辑](SCENE_AUDIO.md#增删已有声音的时间提示)支持在独立面板添加或移除 0–64 条提示，保留既有轨道与资源绑定、旧提示身份和相对顺序；新提示追加。检查完整原文后应用普通草稿并保存，Rust 语义／ABI、模块／能力和后端版本保持。验证范围见[提示编辑专题](test-results/scene-audio-cue-authoring/README.md)。
-
-
-**0.1.3 收录说明**：本页标为 0.1.2 后工作树的多行为、脚本引用、Bevy Rust 与声音增量现已纳入[本版源码](RELEASE_0.1.3.md)。历史版本、模块数和验收条件保留原时点；0.1.3 收录时为 21 模块／38 项声明能力，该次未制作或更新安装包。
-
-以下声音编排记录始于源码 0.1.4；其后工作树已接通提示增删、换轨与上移／下移，随后接入同资源轨道复制／移除与已绑定素材选择，独立素材试听进一步支持进度、暂停／继续与定位；行为参数现可显式选入已保存场景的音轨编号。本页说明当前二维工作流如何交接。功能身份、实现绑定和评分以 [功能图谱 JSON](function-atlas.json) 为准；这里不另设总分或完成率，也不把引擎原生能力当作 Studio 已接入能力。
-
-[空工程到 Godot](function-atlas.html#workflow=oc-projection-composition-runtime) · [普通二维主线](function-atlas.html#workflow=author-to-delivery) · [配方到工程交付](function-atlas.html#workflow=composition-to-delivery) · [配方与 Godot 行为](function-atlas.html#workflow=composition-godot-behaviors) · [Bevy 数据交付](function-atlas.html#workflow=bevy-data-delivery) · [Bevy Rust 固定步与交付](function-atlas.html#workflow=bevy-rust-fixed-step-delivery) · [场景声音到工程交付](function-atlas.html#workflow=scene-audio-to-delivery) · [项目行为声音控制](function-atlas.html#workflow=project-audio-controls-to-delivery) · [动画完成到下一片段](function-atlas.html#workflow=animation-completion-to-next-clip) · [状态表到动画脚本与交付](function-atlas.html#workflow=animation-state-script-to-delivery)
+[空工程到 Godot](function-atlas.html#workflow=oc-projection-composition-runtime) · [普通二维主线](function-atlas.html#workflow=author-to-delivery) · [配方到工程交付](function-atlas.html#workflow=composition-to-delivery) · [Bevy 数据交付](function-atlas.html#workflow=bevy-data-delivery) · [Bevy Rust 固定步与交付](function-atlas.html#workflow=bevy-rust-fixed-step-delivery) · [场景声音](SCENE_AUDIO.md) · [场景动画](SCENE_ANIMATION.md) · [场景物理](SCENE_PHYSICS2D.md)
 
 ## 从入口到实现
 
@@ -50,12 +15,16 @@
 | 普通二维场景 | 构建与运行中的创建／编辑场景，默认稳定实例，可启用逻辑分组 | `scene.instances_v2`、`scene.groups_v3`；[`scene.create/update`](../engine/world-scene-create.mjs) 负责作者事务。逻辑分组不隐式变换位置 |
 | 配方创作 | 新建场景配方 → 多演员对象／投影清单 → 可选起始排布 → 完整 JSON 审阅 → 普通草稿与保存；九个独立编辑区继续丰富 | `scene.composition_create`、`scene.composition`、`scene.authoring_workflow`；只读目录、Rust 校验、独立助手与普通保存分别负责 |
 | 配方转运行场景 | 场景预览 → 从配方创建场景 → 审阅完整展开内容 → 保存新的 Scene2D | `scene.composition_materialize`；Rust 展开、JS 创建规划、独立对话框和共享创建事务分开。原配方不改写，生成场景不自动同步 |
-| 脚本与行为（可选） | TXT 草稿 → 普通保存；首次行为清单审阅／保存，或管理已有行为 → 审阅／保存脚本引用 → 打开行为原文 → 独立绑定编辑 → 普通保存 | `script.authoring`、`behavior.creation`、`behavior.authoring` 与既有 `relation.add`；首次清单和已有引用管理属于 0.1.2 后工作树。关联只改登记，绑定编辑只改草稿；显式声明 Godot/GDScript 或 Bevy/Rust，执行能力由对应宿主后端核对 |
-| 动画状态表（可选） | 新建脚本 → Godot / 动画状态表 → 初始状态／事件与完成转换 → 精确源码审阅 → 普通 TXT 保存 → 行为片段参数 → 项目运行与工程 ZIP | `authoring.animation_state_script`；Rust 验证并建立索引、独立 GDScript 发射器生成、UI 编辑本次创建表格。生成后普通源码可编辑，带版本声明且源码精确匹配时可重新打开表格；当前仍共享场景播放头 |
+| 脚本与行为（可选） | TXT 草稿 → 普通保存；首次行为清单审阅／保存，或管理已有行为 → 审阅／保存脚本引用 → 打开行为原文 → 独立绑定编辑 → 普通保存 | `script.authoring`、`behavior.creation`、`behavior.authoring` 与既有 `relation.add`；关联只改登记，绑定编辑只改草稿；显式声明 Godot/GDScript 或 Bevy/Rust，执行能力由对应宿主后端核对 |
+| 物理声明（可选） | 已保存场景 → 场景物理 → 审阅／一次保存正文与双向关系 → 字段修改与目标检查 → 应用草稿／普通保存 → 项目组装 | `scene.physics2d`、`authoring.physics2d`；声明、实例目录、保存态空间几何与后端求解分离。空间图支持查看／选择、偏移和尺寸手势；几何修改仍需检查、审阅、应用与普通保存，不移动场景实例 |
+| 动画轨道与片段（可选） | 已保存场景 → 首次创建动画 → 按名选实例／编辑关键帧与片段 → 检查／审阅／普通保存 → 保存态画面预览 | `scene.animation2d` 与独立编辑、目录和采样实现；资源归场景／投影，视觉变化不改逻辑位置或物理形状 |
+| 动画运行范围（可选） | 动画表单 → 明确整场景／逐实例 → 检查／审阅／普通保存 → 项目组装构建 | 动画 schema 4 的 `playbackScope` 决定真实运行目标；保存态预览中的临时范围单独维护。逐实例初始停止，脚本控制所属实例；同实例多控制器仍无所有权仲裁 |
+| 动画状态表（可选） | 新建脚本 → Godot / 动画状态表 → 初始状态／事件与完成转换 → 精确源码审阅 → 普通 TXT 保存 → 行为片段参数 → 项目运行与工程 ZIP | `authoring.animation_state_script`；Rust 验证并建立索引、独立 GDScript 发射器生成、UI 编辑本次创建表格。生成后普通源码可编辑，带版本声明且源码精确匹配时可重新打开表格；运行范围由动画文档显式选择，整场景共享或按实例独立 |
 | 脚本使用位置（可选） | 已保存 TXT → 查看跨场景登记引用与绑定 → 精确原文快照 → 主编辑器定位 → 显式修复／普通保存 → 刷新查询 | 只读目录、来源宿主与窗口分离；不扫描动态代码或未登记依赖，不自动迁移其他绑定 |
 | 脚本参数接口修复（可选） | 保存状态表变化 → 打开行为绑定 → 接口提示／显式补齐或更名保留值 → 检查／应用草稿／普通保存 → 项目运行 | 通用标量接口与源码 provider、表单助手分离；只修当前绑定，不推断任意脚本或跨工程迁移 |
 | 事件载荷条件（可选） | 事件转换 → 类型/比较/值 → Rust准入 → v2源码审阅 → 普通保存 → Godot与工程ZIP | 严格标量类型、精确数字、不匹配忽略；原v1保留，无条件可明确恢复；条件不是绑定参数 |
 | 状态转换图（可选） | 新建／重编辑表格 → 展开静态图 → 选择状态／转换 → 定位字段 → 原有源码审阅与保存 | 复用Rust检查与稳定索引，图投影／布局／视图分离；图操作不修改表格或撤销审阅，不表示运行中的活动状态 |
+| 状态规则试算（可选） | 当前状态表 → 显式事件／完成与共享状态样本 → 单步或连续试算 → 导出／编辑／重跑手动预期用例 | 纯规则求值、用例解析与表单各自负责；不执行引擎、推进真实播放头或把实际结果自动写为预期 |
 | 状态表再次编辑（可选） | 已保存 TXT → 编辑动画状态表 → 修改转换／审阅参数增删及完整源码 → 应用当前草稿 → 普通保存 → 项目运行 | 同文件版本声明、固定生成器比对、来源提案、宿主与视图分别负责；手改或未知版本拒绝表格覆盖，不自动迁移行为参数 |
 | 动画完成衔接（可选） | 新建普通完成脚本 → 绑定／按名填入前后片段 → 审阅与保存 → 项目运行 → 独立完成记录及三类来源导航 → 工程 ZIP | `runtime.project_animation_completion`；Rust transport 核验自然结束，可移植账本、Godot 完成投递、普通脚本和只读 UI 各自负责。循环、手动定位或停止不触发自然完成；新动画命令或离场使旧通知失效 |
 | 动画轨道复制（可选） | 编辑场景动画 → 已读取有效实例目录 → 显式选择源轨道／目标实例 → 复制 → 检查／审阅 → 普通草稿与保存 | Rust `sceneAnimation.copyTrack` 保留源轨道，只替换新轨道身份和目标后追加；父编辑器复用现有目录验证新目标，不读取图片或新增绑定。无目录或可选 marker 时保留普通字段编辑；同目标／属性和预算冲突不产生部分修改 |
@@ -68,34 +37,39 @@
 | 项目行为声音 | 已有音轨与绑定 → 事件声音脚本或直接请求 → 项目运行 → 声音控制记录及双方回源 | `runtime.project_audio_controls`；Rust 允许空时间提示，Godot 独立排队执行，可移植核心校验实际命令回执，UI 不取得播放器 |
 | 计划与构建 | 已保存 Scene2D 或项目组装 → 检查计划 → 显式构建 | `build.snapshot_plan`、`execution.backend_middleware`、`build.workbench_lifecycle`；中立计划通过具体后端能力准入，再冻结依赖和工具身份 |
 | 运行与诊断 | 显式无头测试／受支持的窗口预览；观察事件和任务问题，核对来源后打开原文 | `runtime.godot_generated_project` 或 `runtime.bevy_rust`；`build.task-problems` 保留单任务来源，修改后需要明确重验 |
+| 动画运行观察（可选） | 命令、完成、逐次进入与退出快照 → 按控制器／目标回看 → 核对冻结来源 | 各类回执独立验证；触发来源可回看真实进入原因，未记录逐项条件失败、实时活动高亮或断点 |
 | 工程管理 | 后端工程详情、文件核对、持久列表与显式运行选择 | `backend.project_management`、`backend.project_catalog`；生成工程和本机缓存不回写作者工程 |
 | 工程交付 | 交付工程 → 准备包 → 下载／保存 | `backend.project_delivery`；仅打包成功登记且库存校验通过的生成文件。完整作者迁移另走作品备份，独立游戏发行仍是规划项 |
 
-行为音轨选择的操作见[行为指南](SCENE_BEHAVIORS.md#将音轨编号填入行为参数)，证据单列[专题记录](test-results/scene-behavior-audio-picker/README.md)；没有目录端口的宿主保留普通参数编辑。本次未增加 Rust ABI、作者格式、后端版本、安装或设备验收。
+行为音轨选择的操作见[行为指南](SCENE_BEHAVIORS.md#将音轨编号填入行为参数)，证据单列[专题记录](test-results/scene-behavior-audio-picker/README.md)；没有目录端口的宿主保留普通参数编辑。该选择入口沿用普通参数保存；其独立专题不代表额外平台或安装验收。
 
 各阶段是可选择的业务路线，不是必须逐个调用的接口序列，也不是覆盖整条链路的一次原子事务。无行为场景可直接进入构建；首次创建、已有脚本引用管理及绑定正文编辑分别拥有各自的审阅与保存边界。
 
 ## 当前后端映射
 
-以下按 [Godot 适配器](../scripts/backends/godot4-adapter.mjs)、[Bevy 数据适配器](../scripts/backends/bevy-adapter.mjs) 与 [Bevy Rust 适配器](../scripts/backends/bevy-rust-adapter.mjs) 的能力声明核对。宿主服务当前固定一个执行后端；行为创建中的后端选项只写作者声明，不切换宿主。
+当前 Godot 执行适配器为 **0.22.0**，协议与生成器版本按[冻结项目内容选择](PROJECT_BUILD.md#当前项目协议选择)。以下按 [Godot 适配器](../scripts/backends/godot4-adapter.mjs)、[Bevy 数据适配器](../scripts/backends/bevy-adapter.mjs) 与 [Bevy Rust 适配器](../scripts/backends/bevy-rust-adapter.mjs) 的能力声明核对。宿主服务当前固定一个执行后端；行为创建中的后端选项只写作者声明，不切换宿主。
 
-| 对接能力 | Godot 4 | Bevy 数据通道 | Bevy Rust 通道（工作树） |
+| 对接能力 | Godot 4 | Bevy 数据通道 | Bevy Rust 通道 |
 | --- | --- | --- | --- |
 | 后端标识 | `org.viento.godot4` | `org.viento.bevy` | `org.viento.bevy-rust` |
 | 无行为二维计划 | plan 1／2 | plan 1／2，仅无图 | 当前仅接行为 plan 3 |
 | 作者 Scene2D v3 逻辑分组 | 保留组织结构；无行为时生成 plan 2 | 同样生成无图 plan 2 | 有行为时生成无图 plan 3；组不是空间变换 |
 | 多场景组装／启动场景 | project plan 1；成员保留各自 plan 1／2／3 | 未接入，明确拒绝 | 未接入，明确拒绝 |
 | 图片资源 | 已接入 | 未接入，明确拒绝 | 未接入，明确拒绝 |
-| 等分图集序列帧 | 适配器 0.16.0；`animation.sprite2d`，实例已有图片、整数帧／逐帧保持 | 未接入，明确拒绝 | 未接入，明确拒绝 |
-| 命名动画片段（参数按名称选入编号；动画侧查看本场景参数使用位置） | 适配器 0.16.0；`animation.clips2d`，当前动画按 UUID 选择区间，新含动画项目为 protocol 7／清单 8 | 未接入，明确拒绝 | 未接入，明确拒绝 |
-| 项目动画控制 | 适配器 0.16.0；`project.animation-control`，当前场景完整动画或选定片段，新含动画项目为 protocol 7／清单 8 | 未接入，明确拒绝 | 未接入，明确拒绝 |
-| 状态表生成动画脚本 | 生成普通 GDScript；复用项目事件／动画控制／完成端口，protocol 7／清单 8，不增加后端能力声明 | 尚无对应发射器 | 尚无对应发射器 |
-| 动画自然完成与片段衔接 | `project.animation-completion`，protocol 7／清单 8；独立订阅与完成记录，普通脚本通过既有控制端口衔接 | 未接入，明确拒绝 | 未接入，明确拒绝 |
-| 非空间音轨与时间提示 | 适配器 0.16.0 保留原声音子协议 1；1–16 音轨、0–64 提示、PCM16 WAV、0–60 秒 play／stop、独立音量与循环 | 未接入，明确拒绝 | 未接入，明确拒绝 |
-| 项目行为播放／停止音轨 | `project.audio-control`，无动画项目协议 4、含动画项目协议 7；访问内请求队列、实际回执及行为／音轨双来源 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 等分图集序列帧 | `animation.sprite2d`，实例已有图片、整数帧／逐帧保持 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 命名动画片段（参数按名称选入编号；动画侧查看本场景参数使用位置） | `animation.clips2d`，按 UUID 选择时间区间，曲线与素材共享 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 项目动画控制 | `project.animation-control`；完整动画或命名片段的播放／暂停／停止／定位 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 逐实例正式动画 | `animation.instances2d`；显式 schema 4／instance，要求项目组装；协议11 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 状态表生成动画脚本 | 普通 GDScript，v1–v5 完整源码匹配后可重编辑；事件、完成、载荷／共享状态与组合条件 | 尚无对应发射器 | 尚无对应发射器 |
+| 动画自然完成与片段衔接 | `project.animation-completion`；独立订阅与完成记录，脚本经既有控制端口衔接 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 动画状态与来源观察 | 退出快照、逐次进入及触发来源；按控制器／动画目标只读回看 | 未接入 | 未接入 |
+| 二维物理 | `physics.bodies2d`／`character2d`／`sensors2d`；静态体、方向键角色与触发区；要求项目组装 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 非空间音轨与时间提示 | 声音子协议 1；1–16 音轨、0–64 提示、PCM16 WAV、0–60 秒 play／stop、独立音量与循环 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 项目行为播放／停止音轨 | `project.audio-control`；访问内请求队列、实际回执及行为／音轨双来源 | 未接入，明确拒绝 | 未接入，明确拒绝 |
 | 参数／信号和作者脚本 | GDScript Node，plan 3 | 未接入作者代码 | Rust `ready`、显式固定步自身位置、类型化参数和映射事件，plan 3 |
 | 无头逻辑运行 | 已接入 | 可信固定运行程序 | 冻结 Cargo 源码临时编译与有界测试 |
-| 有限控制回放与按实例输入 | 无行为 plan 1／2；按实例输入限 plan 2；当前拒绝声音组合 | 同范围 | 未接入 |
+| 角色停止／滑动 | schema 2 角色可选；仅实际滑动追加 `physics.character-slide2d`，旧停止声明保持 | 未接入，明确拒绝 | 未接入，明确拒绝 |
+| 有限控制回放与按实例输入 | 无行为 plan 1／2；按实例输入限 plan 2；声音、动画、物理组合拒绝 | 同样限支持的无图、无行为计划 | 未接入 |
 | 独立窗口预览／截图 | 已接入具体能力 | 未接入 | 未接入 |
 | 嵌入运行视口／GPU 计算接口 | 尚未声明 | 尚未声明 | 尚未声明 |
 | 工程交付内容 | `project.godot`、场景、脚本及图片／WAV 资源 | `scene-data.json` 数据工程 | Cargo 源码／锁文件，不含二进制或 `target` |
@@ -105,36 +79,35 @@
 
 ## 映射出的下一步
 
-当前动画主线已接通自然完成衔接与从状态表生成普通脚本；当前绑定已有参数接口修复辅助；已增加已登记跨绑定使用位置；已补静态状态图和字段定位；已接通事件载荷条件；下一步可建设运行中的转换观察与明确的批量修复计划，每实例播放头、混合、骨骼与 Bevy 动画仍需独立契约。以下声音增量说明保留 0.1.4 开发时点，当前模块、图谱及后端版本以[状态页](STATUS.md)开头为准。
+当前已接通逐实例动画、状态进入来源与目标回看，以及 Godot 项目中的二维物理。空间图偏移／尺寸编辑补充作者输入方式，不增加后端能力或运行协议。下一步应分别验证以下缺口，具体优先级由[路线图](ROADMAP.md)与[图谱](FUNCTION_ATLAS.md)维护：
 
-[场景声音](SCENE_AUDIO.md)与[项目行为声音控制](PROJECT_AUDIO_CONTROLS.md)已分别接入；当前为 21 模块／40 项声明能力。作者使用 1–16 条轨道和 0–64 个有限时间提示，空提示支持纯行为触发；Godot 执行并交付实际 PCM WAV。0.1.4 后工作树在既有 `scene.audio_authoring` 先增加提示添加／移除，随后支持目标换轨与显式上下移动；复用原实现和绑定，2136 个评分对象保持。旧增删 API 和[原证据](test-results/scene-audio-cue-authoring/README.md)保持，换轨／顺序另见[编排专题](test-results/scene-audio-cue-arrangement/README.md)。此前同资源轨道复制与移除继续复用此功能及实现，旧三种 API 的轨道范围保持，证据独立存于[轨道专题](test-results/scene-audio-track-authoring/README.md)。此前素材选择同样复用该功能、实现和绑定，证据见[素材选择专题](test-results/scene-audio-resource-selection/README.md)；World 绑定、普通正文保存和构建音频验证保持独立，不增加图谱坐标或评分。此前素材试听独立登记 `scene.audio_audition`，新增 3 个实现并复用来源宿主／表单共 5 个绑定；图谱为 128 功能／355 实现／539 绑定／2156 单元／90 工作流，原 2136 个评分对象完整保留。新增 20 格按实现 4／验证 3／解耦 4／交付 2 记录，试听作为既有声音工作流中的可选步骤，不成为构建前置条件。声音声明编辑、素材试听、项目控制与只读观察保持各自边界。本轮进度、暂停／继续和素材定位扩展既有 i354 播放器与 i315 表单，2156 个评分对象保持；证据见[试听控制专题](test-results/scene-audio-audition-transport/README.md)。总线、空间音频、场景运行时暂停／跳转、自然结束观察和 Bevy 声音仍为后续范围。
+- **物理扩展**：当前角色可显式选择停止或滑动；重力、跳跃、动态刚体、力／冲量、材质、关节、3D 和 Bevy 物理尚未接入。
+- **动画扩展**：混合、骨骼、任意打包图集、关键帧事件、运行断点和实时状态高亮仍待独立契约；逐实例支持不意味着多个控制器自动仲裁。
+- **声音扩展**：总线、空间音频、场景运行时暂停／跳转、自然结束观察及 Bevy 声音未接入；素材试听已有暂停／继续／定位，不能推导相同运行能力。
+- **Bevy 作者 Rust 行为**：已有 `ready`、有限固定步自身位置、标量参数、事件与 Cargo 工程交付；图片、窗口、连续运行、热更新和项目组装仍缺契约与验证。工具配置见[Bevy 指南](BEVY_BACKEND.md)。
+- **工程交付**：`build.standalone_distribution` 尚未接入；工程 ZIP 仍需对应引擎工具，目标平台导出及无开发工具环境的独立游戏运行另行开发。
+- **编辑与协作**：引用移除／迁移、跨绑定批量修复、空间父子变换、跨视图撤销、跨文件配方、大规模性能和外部 IDE／LSP 接口仍需分别梳理。
 
-新建配方助手 `scene.composition_create` 已纳入 0.1.2 源码，初始一片段／1–64 演员／一放置；已有编辑区负责后续结构。横排／竖排／网格只修改起始表单坐标，预览、应用与撤销独立于普通保存。操作与范围见[创建指南](SCENE_COMPOSITION.md#新建场景配方)。
-
-0.1.2 之后工作树将首次行为创建扩展为 1–32 个绑定、最多 8 份去重脚本；同实例多行为与同脚本多实例均可显式配置，参数和信号仍在独立行为编辑器设置。它复用原三文件事务，该清单扩展保持 20 模块／37 项声明能力，未增加后端或协议；本轮 Rust 执行适配器是后续独立增量。当前主线沿“二维场景 → 实例行为组合 → 不同玩法 → 工程交付”推进，同一 OC 的不同投影和绑定清单可以各自演进；既有清单新增脚本引用现可从[管理已有行为](SCENE_BEHAVIORS.md#管理已有行为)独立审阅并保存，再进入绑定编辑；只读目录最多提供 256 个、每份至多 64 KiB 的已登记 TXT。缺失或歧义关系拒绝操作，不从模板或执行后端推断。
-
-- **Bevy 作者 Rust 行为**：`behavior.bevy_rust` 的首个工作树切片已用独立 `org.viento.bevy-rust` 适配器接入；旧数据运行程序保持不编译作者源码。固定步增量单列 `behavior.bevy_fixed_step`；当前闭环包含 `ready`、固定两步自身位置驱动、标量参数和映射事件；回调注册、单次提交和累计事件预算在独立 Rust 运行实现内维护。图片、控制回放、连续运行及热更新仍需独立契约和验证。工具配置与交付边界见[Bevy 指南](BEVY_BACKEND.md#rust-作者行为通道012-后工作树)。
-- **独立游戏发行**：`build.standalone_distribution`。工程 ZIP 已能迁移，但仍需引擎工具；目标平台导出和无开发引擎环境运行尚未接入。
-- 现有绑定的引用移除／迁移、空间父子变换、跨视图历史、跨文件配方及大规模性能仍按各功能的“下一步”单独审查，不由这些缺口穷举。
-
-工作流的 `gaps` 只列本次明确登记的额外缺口。旧工作流没有该字段表示尚未梳理，不能解释为没有缺口；显式空数组也只表示这次没有登记额外项。缺口单独展示，不会进入已经接通的阶段计数或继承相邻实现的评分。
+工作流的 `gaps` 只列明确登记的额外缺口。旧工作流没有该字段表示尚未梳理，不能解释为没有缺口；显式空数组也只表示这次没有登记额外项。缺口单独展示，不会进入已经接通的阶段计数或继承相邻实现的评分。
 
 ## 验证边界与图谱维护
 
 声音的 Rust／WASM、保真叶补丁、编辑来源守护、计划与 PCM 冻结、真实 Godot 混音和工程交付分别见[声音专题](test-results/scene-audio/README.md)。缓冲区捕获证明引擎产生了样本，未验证物理扬声器；不据此推导 Bevy 声音、安装或 Android 设备支持。
 
-Bevy Rust 作者行为首轮验证见[独立专题](test-results/bevy-rust-behaviors/README.md)，后续固定步位置／事件验证见[固定步专题](test-results/bevy-rust-fixed-step/README.md)。两者不从旧数据通道或 Godot 报告推导；本轮未更新安装包。
+Bevy Rust 作者行为首轮验证见[独立专题](test-results/bevy-rust-behaviors/README.md)，后续固定步位置／事件验证见[固定步专题](test-results/bevy-rust-fixed-step/README.md)。两者不从旧数据通道或 Godot 报告推导；安装范围单独以状态页为准。
 
-首次行为多绑定／多脚本与已有脚本引用管理分别见[创建专题](test-results/scene-behavior-multi-create/README.md)和[关联专题](test-results/scene-behavior-links/README.md)。旧的单绑定创建、行为编辑与运行证据继续按原条件阅读，本轮未更新安装包，也不据这些源码入口推导设备验收结果。
+首次行为多绑定／多脚本与已有脚本引用管理分别见[创建专题](test-results/scene-behavior-multi-create/README.md)和[关联专题](test-results/scene-behavior-links/README.md)。旧的单绑定创建、行为编辑与运行证据继续按原条件阅读，不据这些源码入口推导设备验收结果。
 
-新建配方首版的独立证据见[创建验收](test-results/scene-composition-create/README.md)，多演员增删、混合继承与运行另见[多演员验收](test-results/scene-composition-multi-create/README.md)，起始排布见[排布验收](test-results/scene-composition-create-layout/README.md)。上一轮[Linux 安装验收](test-results/native-installed-0.1.1/README.md)覆盖保存态配方的后续链路；新创建助手尚未重新打包安装。各记录分别保留起点和实际运行平台。
+新建配方首版的独立证据见[创建验收](test-results/scene-composition-create/README.md)，多演员增删、混合继承与运行另见[多演员验收](test-results/scene-composition-multi-create/README.md)，起始排布见[排布验收](test-results/scene-composition-create-layout/README.md)。早期[Linux 安装验收](test-results/native-installed-0.1.1/README.md)覆盖保存态配方的后续链路；该报告只证明当次安装条件，当前安装另见状态页。各记录分别保留起点和实际运行平台。
 
 [二维实测](test-results/two-dimensional-workflow/README.md) 的连续浏览器起点是服务夹具准备的已登记配方：界面创建独立场景、TXT 脚本和行为后，真实 Godot 无头运行、工程 ZIP 下载和异地导入通过。它不证明上游 OC／投影／配方全程 GUI、图形游戏体验、Bevy 作者行为或安装设备验收。Bevy 的已有验证仍以其独立专题为准。
 
-前一轮映射工作只完善目录、依赖关系、步骤／缺口阅读与定位工具，没有增加引擎能力，也没有重跑上述历史产品测试。新增工具测试和真实离线浏览器验证见 [功能映射验证记录](test-results/functional-mapping/README.md)。原有评分、证据和旧 F01–F50 网络保持；本轮有意修订的说明、优先项和依赖边见 [映射审查记录](test-results/functional-mapping/catalog-review.json)。
+早期映射工作只完善目录、依赖关系、步骤／缺口阅读与定位工具，没有增加引擎能力，也没有重跑上述历史产品测试。新增工具测试和真实离线浏览器验证见 [功能映射验证记录](test-results/functional-mapping/README.md)。原有评分、证据和旧 F01–F50 网络保持；该次修订的说明、优先项和依赖边见 [映射审查记录](test-results/functional-mapping/catalog-review.json)。
 
 依赖图统一采用 **前置能力 `from` → 使用者 `to`**。仅表示可选后续操作的关系放进工作流，不作为所有使用者必需的前置条件。新增能力先登记唯一功能身份，再关联实现与证据；图谱检查通过只证明引用和派生文件一致，不证明人工评分正确或功能已经验收。
 
-首次添加声音的目录、资源核验、三文件恢复、独立界面和浏览器运行／工程交付另见[本轮验收](test-results/scene-audio-creation/README.md)。已有作品与旧验收记录保留原字节。
+首次添加声音的目录、资源核验、三文件恢复、独立界面和浏览器运行／工程交付另见[首次创建验收](test-results/scene-audio-creation/README.md)。已有作品与旧验收记录保留原字节。
 
-项目行为声音的纯回执准入、Rust 空提示、实际 Godot 播放／停止、双来源导航与异地工程验证见[本轮专题](PROJECT_AUDIO_CONTROLS.md)。图谱新增 `runtime.project_audio_controls`，只为本轮新增绑定评分；旧声音与项目事件单元保留原证据和对象，不把命令回执当成持续播放、安装或物理扬声器验收。
+项目行为声音的纯回执准入、Rust 空提示、实际 Godot 播放／停止、双来源导航与异地工程验证见[行为声音指南](PROJECT_AUDIO_CONTROLS.md)。图谱新增 `runtime.project_audio_controls`，只为本轮新增绑定评分；旧声音与项目事件单元保留原证据和对象，不把命令回执当成持续播放、安装或物理扬声器验收。
+
+物理首次创建、目标目录与只读空间图见[创建](test-results/scene-physics2d-creation/README.md)、[目标选择](test-results/scene-physics2d-targets/README.md)和[空间图](test-results/scene-physics2d-space/README.md)。空间手势的开发阶段实测分别见[偏移编辑](test-results/scene-physics2d-space-edit/README.md)与[尺寸编辑](test-results/scene-physics2d-space-resize/README.md)；角色停止／滑动、旧默认兼容和异地 Godot 交付见[响应专题](test-results/scene-physics2d-response/README.md)。动画逐实例运行见[独立专题](test-results/animation-instance-runtime/README.md)；各专题保留实际浏览器、Godot 和源文件指纹条件，不替代安装程序验收。

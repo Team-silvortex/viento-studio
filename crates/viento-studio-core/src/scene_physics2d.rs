@@ -110,11 +110,15 @@ fn bits(value: &Value) -> bool {
 }
 
 fn document(value: &Value) -> Result<Value, CoreError> {
+    document_version(value, 1)
+}
+
+fn document_version(value: &Value, version: u32) -> Result<Value, CoreError> {
     if !exact(
         value,
         &["format", "schemaVersion", "sceneObjectId", "bodies"],
     ) || value["format"] != "viento-scene-physics2d"
-        || value["schemaVersion"].as_f64() != Some(1.0)
+        || value["schemaVersion"].as_f64() != Some(f64::from(version))
         || serde_json::to_vec(value).map_err(|_| invalid())?.len() > MAX_DOCUMENT_BYTES
     {
         return Err(invalid());
@@ -127,21 +131,29 @@ fn document(value: &Value) -> Result<Value, CoreError> {
     let mut ids = HashSet::new();
     let mut instances = HashSet::new();
     for body in bodies {
-        if !exact(
-            body,
-            &[
-                "id",
-                "instanceId",
-                "kind",
-                "shape",
-                "offset",
-                "layer",
-                "mask",
-            ],
-        ) || !matches!(
-            body["kind"].as_str(),
-            Some("static" | "character" | "sensor")
-        ) || !pair(&body["offset"], -8192.0, 8192.0)
+        let mut keys = vec![
+            "id",
+            "instanceId",
+            "kind",
+            "shape",
+            "offset",
+            "layer",
+            "mask",
+        ];
+        if version == 2 && body.get("collisionResponse").is_some() {
+            if body["kind"] != "character"
+                || !matches!(body["collisionResponse"].as_str(), Some("stop" | "slide"))
+            {
+                return Err(invalid());
+            }
+            keys.push("collisionResponse");
+        }
+        if !exact(body, &keys)
+            || !matches!(
+                body["kind"].as_str(),
+                Some("static" | "character" | "sensor")
+            )
+            || !pair(&body["offset"], -8192.0, 8192.0)
             || !bits(&body["layer"])
             || !bits(&body["mask"])
             || !ids.insert(uuid(&body["id"])?)
@@ -173,12 +185,19 @@ pub struct ScenePhysics2DResponse {
 pub(crate) fn dispatch(request: &Value) -> Result<ScenePhysics2DResponse, CoreError> {
     if !exact(request, &["protocolVersion", "operation", "document"])
         || request["protocolVersion"].as_f64() != Some(1.0)
-        || request["operation"] != "scenePhysics2D.inspect"
+        || !matches!(
+            request["operation"].as_str(),
+            Some("scenePhysics2D.inspect" | "scenePhysics2D.inspectResponse")
+        )
     {
         return Err(CoreError::request());
     }
     Ok(ScenePhysics2DResponse {
-        document: document(&request["document"])?,
+        document: if request["operation"] == "scenePhysics2D.inspectResponse" {
+            document_version(&request["document"], 2)?
+        } else {
+            document(&request["document"])?
+        },
     })
 }
 
@@ -333,5 +352,74 @@ mod tests {
         value = request(doc());
         value["operation"] = json!("scenePhysics2D.sample");
         assert!(dispatch(&value).is_err());
+    }
+
+    #[test]
+    fn response_schema_and_operation_are_separate_from_legacy_inspection() {
+        assert_eq!(crate::viento_core_scene_physics2d_response_version(), 1);
+        let mut value = doc();
+        value["schemaVersion"] = json!(2);
+        for response in [None, Some("stop"), Some("slide")] {
+            let mut candidate = value.clone();
+            if let Some(mode) = response {
+                candidate["bodies"][1]["collisionResponse"] = json!(mode);
+            }
+            assert!(document(&candidate).is_err());
+            assert_eq!(document_version(&candidate, 2).unwrap(), candidate);
+            let mut input = request(candidate.clone());
+            assert_eq!(wire(input.clone())["errorCode"], "scene_physics2d_invalid");
+            input["operation"] = json!("scenePhysics2D.inspectResponse");
+            assert_eq!(wire(input)["scenePhysics2D"]["document"], candidate);
+        }
+        let mut input = request(doc());
+        input["operation"] = json!("scenePhysics2D.inspectResponse");
+        assert_eq!(wire(input)["errorCode"], "scene_physics2d_invalid");
+    }
+
+    #[test]
+    fn response_is_an_optional_character_only_exact_enum() {
+        for mode in [
+            json!(null),
+            json!(true),
+            json!(1),
+            json!(""),
+            json!("Slide"),
+            json!("stop "),
+            json!({}),
+        ] {
+            let mut value = doc();
+            value["schemaVersion"] = json!(2);
+            value["bodies"][1]["collisionResponse"] = mode;
+            assert!(document_version(&value, 2).is_err());
+        }
+        for index in 0..3 {
+            let mut value = doc();
+            value["bodies"][index]["collisionResponse"] = json!("slide");
+            assert!(document(&value).is_err());
+            value["schemaVersion"] = json!(2);
+            assert_eq!(document_version(&value, 2).is_ok(), index == 1);
+        }
+        let mut value = doc();
+        value["schemaVersion"] = json!(2);
+        value["bodies"][1]["collisionResponse"] = json!("slide");
+        value["bodies"][1]["extra"] = json!(true);
+        assert!(document_version(&value, 2).is_err());
+    }
+
+    #[test]
+    fn response_raw_keys_and_existing_geometry_limits_remain_strict() {
+        let mut value = doc();
+        value["schemaVersion"] = json!(2);
+        value["bodies"][1]["collisionResponse"] = json!("slide");
+        let mut input = request(value.clone());
+        input["operation"] = json!("scenePhysics2D.inspectResponse");
+        let raw = serde_json::to_string(&input).unwrap().replace(
+            "\"collisionResponse\":\"slide\"",
+            "\"collisionResponse\":\"stop\",\"collisionResponse\":\"slide\"",
+        );
+        let result: Value = serde_json::from_slice(&crate::dispatch_json(raw.as_bytes())).unwrap();
+        assert_eq!(result["errorCode"], "studio_core_request_invalid");
+        value["bodies"][1]["offset"] = json!([8193, 0]);
+        assert!(document_version(&value, 2).is_err());
     }
 }

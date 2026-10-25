@@ -37,6 +37,7 @@ const ANIMATION_STATE_COMBINATION_OPERATIONS = new Set(['animationStateTable.ins
 const ANIMATION_STATE_CONDITION_OPERATIONS = new Set(['animationStateTable.inspectConditional', 'animationStateCondition.inspect', 'animationStateCondition.evaluate']);
 const SCENE_ANIMATION_OPERATIONS = new Set(['sceneAnimation.inspect', 'sceneAnimation.sample', 'sceneAnimation.transport', 'sceneAnimation.sampleClip', 'sceneAnimation.clipTransport', 'sceneAnimation.retime', 'sceneAnimation.copyTrack']);
 const SCENE_PHYSICS2D_OPERATIONS = new Set(['scenePhysics2D.inspect']);
+const SCENE_PHYSICS2D_RESPONSE_OPERATIONS = new Set(['scenePhysics2D.inspectResponse']);
 const SCENE_AUDIO_OPERATIONS = new Set(['sceneAudio.inspect', 'sceneAudio.sample']);
 const SCENE3D_PARTICLE_OPERATIONS = new Set(['scene3d.prepareParticleField', 'scene3d.sampleParticleField']);
 const PARTICLE_FIELDS = [['center', 'vector'], ['extent', 'vector'], ['velocity', 'vector'], ['size', 'vector'], ['color', 'color'], ['count', 'number'], ['seed', 'number']];
@@ -1960,12 +1961,23 @@ export function supportsStudioCoreScenePhysics2D() {
   return Boolean(runtime && typeof runtime.viento_core_scene_physics2d_version === 'function'
     && runtime.viento_core_scene_physics2d_version() === 1);
 }
+export function supportsStudioCoreScenePhysics2DResponse() {
+  return Boolean(runtime && typeof runtime.viento_core_scene_physics2d_response_version === 'function'
+    && runtime.viento_core_scene_physics2d_response_version() === 1);
+}
 export function dispatchStudioCoreScenePhysics2D(request) {
+  return dispatchPhysics2D(request, false);
+}
+export function dispatchStudioCoreScenePhysics2DResponse(request) {
+  return dispatchPhysics2D(request, true);
+}
+function dispatchPhysics2D(request, response) {
+  const operations = response ? SCENE_PHYSICS2D_RESPONSE_OPERATIONS : SCENE_PHYSICS2D_OPERATIONS;
   assertJson(request);
   if (!record(request, ['protocolVersion', 'operation', 'document']) || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION
-    || !SCENE_PHYSICS2D_OPERATIONS.has(request.operation)) throw fail('studio_core_request_invalid', 'Expected an explicit physics declaration inspection.');
-  if (!supportsStudioCoreScenePhysics2D()) throw unavailable();
-  const result = dispatch(request, SCENE_PHYSICS2D_OPERATIONS, (result, input) => {
+    || !operations.has(request.operation)) throw fail('studio_core_request_invalid', 'Expected an explicit physics declaration inspection.');
+  if (!(response ? supportsStudioCoreScenePhysics2DResponse() : supportsStudioCoreScenePhysics2D())) throw unavailable();
+  const result = dispatch(request, operations, (result, input) => {
     const invalid = () => { throw new Error('Rust core returned an unbound physics declaration receipt.'); };
     const uuid = value => typeof value === 'string' && value.length === 36 && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
     const bounded = (value, min, max) => Number.isFinite(value) && value >= min && value <= max;
@@ -1974,11 +1986,13 @@ export function dispatchStudioCoreScenePhysics2D(request) {
     const source = input.document;
     if (!record(result, ['protocolVersion', 'ok', 'scenePhysics2D']) || !record(result.scenePhysics2D, ['document'])
       || !record(source, ['format', 'schemaVersion', 'sceneObjectId', 'bodies']) || source.format !== 'viento-scene-physics2d'
-      || source.schemaVersion !== 1 || !uuid(source.sceneObjectId) || !Array.isArray(source.bodies)
+      || source.schemaVersion !== (response ? 2 : 1) || !uuid(source.sceneObjectId) || !Array.isArray(source.bodies)
       || source.bodies.length < 1 || source.bodies.length > 128 || encoder.encode(JSON.stringify(source)).length > 65536) invalid();
     const ids = new Set(), instances = new Set();
     for (const body of source.bodies) {
-      if (!record(body, ['id', 'instanceId', 'kind', 'shape', 'offset', 'layer', 'mask']) || !uuid(body.id) || !uuid(body.instanceId)
+      const hasResponse = response && Object.hasOwn(body, 'collisionResponse');
+      if (!record(body, ['id', 'instanceId', 'kind', 'shape', 'offset', 'layer', 'mask', ...(hasResponse ? ['collisionResponse'] : [])])
+        || hasResponse && (body.kind !== 'character' || !['stop', 'slide'].includes(body.collisionResponse)) || !uuid(body.id) || !uuid(body.instanceId)
         || ids.has(body.id) || instances.has(body.instanceId) || !['static', 'character', 'sensor'].includes(body.kind)
         || !pair(body.offset, -8192, 8192) || !bits(body.layer) || !bits(body.mask)) invalid();
       ids.add(body.id); instances.add(body.instanceId);

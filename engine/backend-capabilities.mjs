@@ -225,7 +225,18 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
       }
     }
     if (plan.physics) {
-      const kinds = new Set(Array.isArray(plan.physics.document?.bodies) ? plan.physics.document.bodies.map(body => body?.kind) : []);
+      const bodies = Array.isArray(plan.physics.document?.bodies) ? plan.physics.document.bodies : [];
+      const kinds = new Set(bodies.map(body => body?.kind));
+      // Slide is an opt-in response capability, never part of the base provider
+      // bundle required by legacy stop-only scenes. Re-derive it even if a
+      // forged plan has removed the requirement from both capability lists.
+      if (bodies.some(body => body?.kind === 'character' && body.collisionResponse === 'slide')) {
+        const capability = 'physics.character-slide2d';
+        if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',
+          'Physics plans must explicitly require their collision response capability.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
       const required = ['physics.bodies2d', ...(kinds.has('character') ? ['physics.character2d'] : []), ...(kinds.has('sensor') ? ['physics.sensors2d'] : [])];
       for (const capability of SCENE_PHYSICS2D_CAPABILITIES) {
         if (required.includes(capability) && !plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',
