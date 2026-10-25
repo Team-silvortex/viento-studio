@@ -1,0 +1,266 @@
+{
+  "date": "2026-10-25T11:53:47.941Z",
+  "node": "v24.21.0",
+  "mode": "before",
+  "version": "3.1.8",
+  "count": 4,
+  "passed": 4,
+  "groups": [
+    {
+      "advisory": "GHSA-w74x-v6f9-j3xg",
+      "title": "Percent-encoded scheme must not become an executable scheme",
+      "samples": [
+        {
+          "input": "%6Aavascript:alert(1)",
+          "normalize": {
+            "ok": true,
+            "value": "javascript:alert(1)"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "javascript",
+              "path": "alert(1)",
+              "reference": "absolute"
+            }
+          },
+          "resolve": {
+            "ok": true,
+            "value": "javascript:alert(1)"
+          }
+        },
+        {
+          "input": "%u006Aavascript:alert(1)",
+          "normalize": {
+            "ok": true,
+            "value": "javascript:alert(1)"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "javascript",
+              "path": "alert(1)",
+              "reference": "absolute"
+            }
+          },
+          "resolve": {
+            "ok": true,
+            "value": "javascript:alert(1)"
+          }
+        }
+      ],
+      "encodedPlainEquality": {
+        "ok": true,
+        "value": true
+      },
+      "source": "https://github.com/fastify/fast-uri/security/advisories/GHSA-w74x-v6f9-j3xg"
+    },
+    {
+      "advisory": "GHSA-xhq7-xmqj-769h",
+      "title": "Relative normalization must preserve resolution meaning",
+      "samples": [
+        {
+          "input": "../x",
+          "normalize": {
+            "ok": true,
+            "value": "x"
+          },
+          "direct": {
+            "ok": true,
+            "value": "https://a.example/x"
+          },
+          "normalizedResolution": {
+            "ok": true,
+            "value": "https://a.example/directory/x"
+          }
+        },
+        {
+          "input": "a/../b",
+          "normalize": {
+            "ok": true,
+            "value": "/b"
+          },
+          "direct": {
+            "ok": true,
+            "value": "https://a.example/directory/b"
+          },
+          "normalizedResolution": {
+            "ok": true,
+            "value": "https://a.example/b"
+          }
+        }
+      ],
+      "source": "https://github.com/fastify/fast-uri/security/advisories/GHSA-xhq7-xmqj-769h"
+    },
+    {
+      "advisory": "GHSA-wjr9-j795-jxcr",
+      "title": "Host canonicalization must not silently drop authority data",
+      "samples": [
+        {
+          "input": "http://a@b@evil.example/",
+          "forbidden": "http://a@evil.example/",
+          "parsedRawHost": "b@evil.example",
+          "normalize": {
+            "ok": true,
+            "value": "http://a@evil.example/"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "http",
+              "userinfo": "a",
+              "host": "evil.example",
+              "path": "/",
+              "reference": "absolute"
+            }
+          },
+          "resolve": {
+            "ok": true,
+            "value": "http://a@evil.example/"
+          }
+        },
+        {
+          "input": "http://ex\tample.com/",
+          "forbidden": "http://example.com/",
+          "parsedRawHost": "ex\tample.com",
+          "normalize": {
+            "ok": true,
+            "value": "http://example.com/"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "http",
+              "host": "example.com",
+              "path": "/",
+              "reference": "absolute"
+            }
+          },
+          "resolve": {
+            "ok": true,
+            "value": "http://example.com/"
+          }
+        },
+        {
+          "input": "http://ex\rample.com/",
+          "forbidden": "http://example.com/",
+          "parsedRawHost": "ex\rample.com",
+          "normalize": {
+            "ok": true,
+            "value": "http://example.com/"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "http",
+              "host": "example.com",
+              "path": "/",
+              "reference": "absolute"
+            }
+          },
+          "resolve": {
+            "ok": true,
+            "value": "http://example.com/"
+          }
+        },
+        {
+          "input": "http://ex\nample.com/",
+          "forbidden": "http://example.com/",
+          "parsedRawHost": "ex\nample.com",
+          "normalize": {
+            "ok": true,
+            "value": "http://example.com/"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "http",
+              "host": "example.com",
+              "path": "/",
+              "reference": "absolute"
+            }
+          },
+          "resolve": {
+            "ok": true,
+            "value": "http://example.com/"
+          }
+        }
+      ],
+      "smuggledCleanEquality": {
+        "ok": true,
+        "value": true
+      },
+      "source": "https://github.com/fastify/fast-uri/security/advisories/GHSA-wjr9-j795-jxcr"
+    },
+    {
+      "advisory": "GHSA-333x-w4r6-6crp",
+      "title": "Suffix first-segment colon must not become a scheme",
+      "samples": [
+        {
+          "input": "javascript:alert(1)",
+          "normalize": {
+            "ok": true,
+            "value": "javascript:alert(1)"
+          },
+          "reparsed": {
+            "ok": true,
+            "value": {
+              "scheme": "javascript",
+              "path": "alert(1)",
+              "reference": "absolute"
+            }
+          }
+        },
+        {
+          "input": "data:text/html,hello",
+          "normalize": {
+            "ok": true,
+            "value": "data:text/html,hello"
+          },
+          "reparsed": {
+            "ok": true,
+            "value": {
+              "scheme": "data",
+              "path": "text/html,hello",
+              "reference": "absolute"
+            }
+          }
+        },
+        {
+          "input": "vbscript:msgbox(1)",
+          "normalize": {
+            "ok": true,
+            "value": "vbscript:msgbox(1)"
+          },
+          "reparsed": {
+            "ok": true,
+            "value": {
+              "scheme": "vbscript",
+              "path": "msgbox(1)",
+              "reference": "absolute"
+            }
+          }
+        }
+      ],
+      "source": "https://github.com/fastify/fast-uri/security/advisories/GHSA-333x-w4r6-6crp"
+    }
+  ],
+  "checks": [
+    {
+      "name": "old version reproduces encoded-scheme injection",
+      "passed": true
+    },
+    {
+      "name": "old version reproduces altered relative semantics",
+      "passed": true
+    },
+    {
+      "name": "old version reproduces silently discarded host data",
+      "passed": true
+    },
+    {
+      "name": "old version reproduces live scheme in suffix output",
+      "passed": true
+    }
+  ]
+}

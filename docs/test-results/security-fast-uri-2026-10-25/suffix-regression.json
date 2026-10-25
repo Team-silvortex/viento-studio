@@ -1,0 +1,20 @@
+{
+  "advisory": "GHSA-333x-w4r6-6crp",
+  "source": "node_modules/fast-uri/test/reserved-path-normalization.test.js",
+  "note": "Uses a harmless a:b path with the upstream no-authority suffix options; checks the vulnerable normalization path and the already-safe direct serialization path. No scheme-bearing executable content is used.",
+  "before": {
+    "version": "3.1.8",
+    "normalize": "a:b",
+    "serialize": "a%3Ab",
+    "plain": "path/to/file",
+    "laterColon": "a/b:c"
+  },
+  "after": {
+    "version": "3.1.9",
+    "normalize": "a%3Ab",
+    "serialize": "a%3Ab",
+    "plain": "path/to/file",
+    "laterColon": "a/b:c"
+  },
+  "passed": true
+}

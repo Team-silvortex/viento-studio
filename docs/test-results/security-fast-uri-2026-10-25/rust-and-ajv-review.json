@@ -1,0 +1,78 @@
+{
+  "cargo_audit": {
+    "database": {
+      "advisory-count": 1352,
+      "last-commit": "21d909e4c8bd4e14c7aea58bf980c881a0053ab1",
+      "last-updated": "2026-10-24T10:30:13+02:00"
+    },
+    "source": "src-tauri/Cargo.lock",
+    "vulnerabilities": [
+      {
+        "id": "RUSTSEC-2026-0368",
+        "package": "zip",
+        "version": "4.6.1",
+        "patched": [
+          ">=9.0.0"
+        ],
+        "aliases": [
+          "GHSA-4v9h-p7m9-rh26"
+        ]
+      },
+      {
+        "id": "RUSTSEC-2026-0367",
+        "package": "zip",
+        "version": "4.6.1",
+        "patched": [
+          ">=9.0.0"
+        ],
+        "aliases": [
+          "GHSA-vv5m-jxxh-4627"
+        ]
+      },
+      {
+        "id": "RUSTSEC-2026-0369",
+        "package": "zip",
+        "version": "4.6.1",
+        "patched": [
+          ">=9.0.0"
+        ],
+        "aliases": [
+          "GHSA-4684-h2q9-2vcp"
+        ]
+      }
+    ],
+    "unsound": [
+      {
+        "id": "RUSTSEC-2026-0386",
+        "package": "tokio",
+        "version": "1.53.1",
+        "patched": [
+          ">=1.51.6, <1.52.0",
+          ">=1.53.3"
+        ]
+      }
+    ]
+  },
+  "notes": [
+    "All zip advisories affect extract/extract_stream convenience APIs. Production workspace import uses bounded reads, rejects symlink ZIP entries, validates manifest paths, creates ordinary files with create_new, and never restores archive Unix permissions. Those vulnerable methods are unused in application source.",
+    "Tokio AsyncFd constructors are not used by application source; transitive usage is not fully audited.",
+    "Vendored glib patch RUSTSEC-2024-0429 is already documented and not reported in this cargo audit.",
+    "No Cargo manifests or locks were changed. Remaining three Cargo audits were intentionally not run after exact four npm advisories were identified."
+  ],
+  "ajv_test_files": [
+    "scripts/tests/resource-packages.test.mjs",
+    "scripts/tests/scene3d-module-boundary.test.mjs",
+    "scripts/tests/world-behavior-create-pure.test.mjs",
+    "scripts/tests/world-commands.test.mjs",
+    "scripts/tests/world-object-create.test.mjs",
+    "scripts/tests/world-object-projection.test.mjs",
+    "scripts/tests/world-projection-update.test.mjs",
+    "scripts/tests/world-projection.test.mjs",
+    "scripts/tests/world-relations.test.mjs",
+    "scripts/tests/world-resources.test.mjs",
+    "scripts/tests/world-scene-create.test.mjs",
+    "scripts/tests/world-scene-update.test.mjs",
+    "scripts/tests/world-transactions.test.mjs"
+  ],
+  "scope": "Auxiliary Rust triage only: the Cargo findings are separate from the four reported npm fast-uri advisories and were not changed by this fix."
+}

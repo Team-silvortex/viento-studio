@@ -1,0 +1,291 @@
+{
+  "date": "2026-10-25T11:54:42.706Z",
+  "node": "v24.21.0",
+  "mode": "after",
+  "version": "3.1.9",
+  "count": 4,
+  "passed": 3,
+  "groups": [
+    {
+      "advisory": "GHSA-w74x-v6f9-j3xg",
+      "title": "Percent-encoded scheme must not become an executable scheme",
+      "samples": [
+        {
+          "input": "%6Aavascript:alert(1)",
+          "normalize": {
+            "ok": true,
+            "value": "%6Aavascript:alert(1)"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "%6Aavascript",
+              "path": "alert(1)",
+              "error": "URI scheme is malformed.",
+              "reference": "absolute"
+            }
+          },
+          "resolve": {
+            "ok": false,
+            "error": {
+              "name": "Error",
+              "message": "URI scheme is malformed."
+            }
+          }
+        },
+        {
+          "input": "%u006Aavascript:alert(1)",
+          "normalize": {
+            "ok": true,
+            "value": "%u006Aavascript:alert(1)"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "%u006Aavascript",
+              "path": "alert(1)",
+              "error": "URI scheme is malformed.",
+              "reference": "absolute"
+            }
+          },
+          "resolve": {
+            "ok": false,
+            "error": {
+              "name": "Error",
+              "message": "URI scheme is malformed."
+            }
+          }
+        }
+      ],
+      "encodedPlainEquality": {
+        "ok": true,
+        "value": false
+      },
+      "source": "https://github.com/fastify/fast-uri/security/advisories/GHSA-w74x-v6f9-j3xg"
+    },
+    {
+      "advisory": "GHSA-xhq7-xmqj-769h",
+      "title": "Relative normalization must preserve resolution meaning",
+      "samples": [
+        {
+          "input": "../x",
+          "normalize": {
+            "ok": true,
+            "value": "../x"
+          },
+          "direct": {
+            "ok": true,
+            "value": "https://a.example/x"
+          },
+          "normalizedResolution": {
+            "ok": true,
+            "value": "https://a.example/x"
+          }
+        },
+        {
+          "input": "a/../b",
+          "normalize": {
+            "ok": true,
+            "value": "b"
+          },
+          "direct": {
+            "ok": true,
+            "value": "https://a.example/directory/b"
+          },
+          "normalizedResolution": {
+            "ok": true,
+            "value": "https://a.example/directory/b"
+          }
+        }
+      ],
+      "source": "https://github.com/fastify/fast-uri/security/advisories/GHSA-xhq7-xmqj-769h"
+    },
+    {
+      "advisory": "GHSA-wjr9-j795-jxcr",
+      "title": "Host canonicalization must not silently drop authority data",
+      "samples": [
+        {
+          "input": "http://a@b@evil.example/",
+          "forbidden": "http://a@evil.example/",
+          "parsedRawHost": "b@evil.example",
+          "normalize": {
+            "ok": true,
+            "value": "http://a@b@evil.example/"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "http",
+              "userinfo": "a",
+              "host": "b@evil.example",
+              "path": "/",
+              "reference": "absolute",
+              "error": "URI host is malformed."
+            }
+          },
+          "resolve": {
+            "ok": false,
+            "error": {
+              "name": "Error",
+              "message": "URI host is malformed."
+            }
+          }
+        },
+        {
+          "input": "http://ex\tample.com/",
+          "forbidden": "http://example.com/",
+          "parsedRawHost": "ex\tample.com",
+          "normalize": {
+            "ok": true,
+            "value": "http://ex\tample.com/"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "http",
+              "host": "ex\tample.com",
+              "path": "/",
+              "reference": "absolute",
+              "error": "URI host is malformed."
+            }
+          },
+          "resolve": {
+            "ok": false,
+            "error": {
+              "name": "Error",
+              "message": "URI host is malformed."
+            }
+          }
+        },
+        {
+          "input": "http://ex\rample.com/",
+          "forbidden": "http://example.com/",
+          "parsedRawHost": "ex\rample.com",
+          "normalize": {
+            "ok": true,
+            "value": "http://ex\rample.com/"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "http",
+              "host": "ex\rample.com",
+              "path": "/",
+              "reference": "absolute",
+              "error": "URI host is malformed."
+            }
+          },
+          "resolve": {
+            "ok": false,
+            "error": {
+              "name": "Error",
+              "message": "URI host is malformed."
+            }
+          }
+        },
+        {
+          "input": "http://ex\nample.com/",
+          "forbidden": "http://example.com/",
+          "parsedRawHost": "ex\nample.com",
+          "normalize": {
+            "ok": true,
+            "value": "http://ex\nample.com/"
+          },
+          "parse": {
+            "ok": true,
+            "value": {
+              "scheme": "http",
+              "host": "ex\nample.com",
+              "path": "/",
+              "reference": "absolute",
+              "error": "URI host is malformed."
+            }
+          },
+          "resolve": {
+            "ok": false,
+            "error": {
+              "name": "Error",
+              "message": "URI host is malformed."
+            }
+          }
+        }
+      ],
+      "smuggledCleanEquality": {
+        "ok": true,
+        "value": false
+      },
+      "source": "https://github.com/fastify/fast-uri/security/advisories/GHSA-wjr9-j795-jxcr"
+    },
+    {
+      "advisory": "GHSA-333x-w4r6-6crp",
+      "title": "Suffix first-segment colon must not become a scheme",
+      "samples": [
+        {
+          "input": "javascript:alert(1)",
+          "normalize": {
+            "ok": true,
+            "value": "javascript:alert(1)"
+          },
+          "reparsed": {
+            "ok": true,
+            "value": {
+              "scheme": "javascript",
+              "path": "alert(1)",
+              "reference": "absolute"
+            }
+          }
+        },
+        {
+          "input": "data:text/html,hello",
+          "normalize": {
+            "ok": true,
+            "value": "data:text/html,hello"
+          },
+          "reparsed": {
+            "ok": true,
+            "value": {
+              "scheme": "data",
+              "path": "text/html,hello",
+              "reference": "absolute"
+            }
+          }
+        },
+        {
+          "input": "vbscript:msgbox(1)",
+          "normalize": {
+            "ok": true,
+            "value": "vbscript:msgbox(1)"
+          },
+          "reparsed": {
+            "ok": true,
+            "value": {
+              "scheme": "vbscript",
+              "path": "msgbox(1)",
+              "reference": "absolute"
+            }
+          }
+        }
+      ],
+      "source": "https://github.com/fastify/fast-uri/security/advisories/GHSA-333x-w4r6-6crp"
+    }
+  ],
+  "checks": [
+    {
+      "name": "encoded schemes remain inert or rejected across normalize/parse/resolve/equal",
+      "passed": true
+    },
+    {
+      "name": "both relative references retain their original resolution",
+      "passed": true
+    },
+    {
+      "name": "multiple @ and TAB/CR/LF hosts are rejected or preserved without silent rewriting",
+      "passed": true
+    },
+    {
+      "name": "suffix javascript/data/vbscript output reparses with no live scheme",
+      "passed": false,
+      "error": "javascript:alert(1)"
+    }
+  ]
+}
