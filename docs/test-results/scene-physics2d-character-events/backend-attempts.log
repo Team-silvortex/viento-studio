@@ -1,0 +1,5 @@
+Native development checks, Godot 4.7.2.
+First native hold run: import and every generated script check succeeded; execution produced landed/jumped/landed and 30 physical samples. One test assertion failed because it incorrectly expected scriptSource and scriptObjectId on the existing event origin. Event origin correctly owns the frozen behavior binding declaration; the script is resolved through that frozen binding implementation. Fixed only the test to validate both established contracts; no wire fields or production change.
+Targeted native rerun: 9/9 passed (hold, air retry, ceiling, grounded, controls none, zero jump, animation/audio consumers, reentry revocation, live without trace).
+Additional native run: 4/4 passed (exact old/new physical trajectory equality without publisher, isolated instances, abnormal-exit audio cleanup and port revocation, events after 256-sample trace limit).
+The final complete evidence run includes all 16 cases, portable relocation and native window capture.

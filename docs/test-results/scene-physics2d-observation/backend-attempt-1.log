@@ -1,0 +1,46 @@
+✔ observation wrapper keeps old generators and nonphysical output intact with complete independent script inventory (350.162935ms)
+✔ adapter requires smoke and current generated capability while legacy and interactive readers remain unchanged (72.841883ms)
+✔ real stop traces native contacts without changing old physical results (12389.990627ms)
+✔ real slide traces native contacts without changing old physical results (8251.841027ms)
+✔ real undeclared collider with copied identity metadata remains unmapped (4073.138212ms)
+✔ real 256-sample limit reports partial observation while all 30 physical steps still finish (4272.954636ms)
+✔ real sensor-driven scene reentry resets physical step and source ownership (4215.69724ms)
+✖ real static and sensor-only visits finish with an explicit empty observation (38.136708ms)
+✖ real portable ZIP retains observation, sensors and animation without original author or build paths (21807.112853ms)
+✔ real window capture uses the same smoke observation clock and retains final trace (4768.407893ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 8
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 60398.56528
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-observation-backends.test.mjs:185:1
+✖ real static and sensor-only visits finish with an explicit empty observation (38.136708ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_physics_invalid","message":"Static bodies and sensors require controls none and zero speed on their scene instance.","objectId":"70707070-7070-4070-8070-000000000001","sourcePath":"documents/physics/scene-0.json","sourceRevision":"sha256:ad90937fc20e4a940ffd541128448a295b9df3468f9086ae47b94bdca6900dd3","propertyPath":"/bodies/0/instanceId","sourceRange":{"start":213,"end":251,"encoding":"utf-16","propertyPath":"/bodies/0/instanceId","exact":true},"bodyId":"70707070-7070-4070-8070-000000000010","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1"}]
+  
+  false !== true
+  
+      at captured (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-observation-backends.test.mjs:40:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-observation-backends.test.mjs:187:17)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-physics2d-observation-backends.test.mjs:192:1
+✖ real portable ZIP retains observation, sensors and animation without original author or build paths (21807.112853ms)
+  TypeError: Cannot read properties of undefined (reading 'entries')
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-observation-backends.test.mjs:210:50)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

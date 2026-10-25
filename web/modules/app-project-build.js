@@ -1,3 +1,5 @@
+import { setupProjectPhysicsObservation } from './app-project-physics-observation.js';
+import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
 import { setupScenePhysics2DCreate } from './app-scene-physics2d-create.js';
 import { setupProjectAnimationTargetReview } from './app-project-animation-target-review.js';
 import { setupProjectAnimationStateEntryObservation } from './app-project-animation-state-entry-observation.js';
@@ -216,7 +218,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <div id="projectEventTrace"></div>
     <div id="projectEventReview"></div>
     <div id="projectAudioCommands"></div>
-    <div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div><div id="projectAnimationTargetReview"></div><div id="projectAnimationStates"></div><div id="projectAnimationStateEntries"></div>
+    <div id="projectPhysicsObservation"></div><div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div><div id="projectAnimationTargetReview"></div><div id="projectAnimationStates"></div><div id="projectAnimationStateEntries"></div>
     <section id="projectBuildBehaviorEvents" hidden aria-labelledby="projectBuildBehaviorEventsTitle"><h3 id="projectBuildBehaviorEventsTitle" data-i18n="行为事件"></h3><ul id="projectBuildBehaviorEventList"></ul></section>
     <details class="build-raw"><summary data-i18n="原始细节与日志"></summary><pre id="projectBuildLogs" tabindex="0"></pre></details></section>`;
   document.body.append(dialog);
@@ -681,6 +683,22 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
         visit?.index ?? 0, visit?.phase === 'left' ? 'between-scenes' : 'in-scene', members && [...members.values()]]) };
     } catch { return null; }
   }
+  // Physics snapshots belong to the run/build, independently of the legacy
+  // runtime object's initial positions or its current active scene.
+  function physicsObservation() {
+    const job = data?.job, build = matchedBuild();
+    if (!available || !data?.supported || activeTab !== 'build' || !projectTarget() || job?.kind !== 'run' || !job.physics || !build
+      || !supportsExecution('headlessLogic') || !data.backend.capabilities.includes('physics.observe2d')
+      || typeof job.id !== 'string' || !job.id || invalidatedRuntimeJobs.has(job.id)
+      || job.targetKind !== 'project' || build.targetKind !== 'project' || job.sceneId !== selected || job.backendId !== data.backend.id
+      || job.buildId !== build.id || job.snapshotId !== build.snapshotId || !/^sha256:[a-f0-9]{64}$/.test(job.snapshotId || '')) return null;
+    try {
+      const view = validateProjectPhysics2DObservation(job.physics), members = frozenRuntimeMembers(build);
+      if (!members || view.assemblyId !== selected || view.samples.some(sample => !members.has(sample.sceneId))) return null;
+      const owner = JSON.stringify([acceptedBackend, job.id, job.buildId, job.snapshotId, selected, [...members.values()]]);
+      return { view, sessionOwner: owner, owner: JSON.stringify([dialogSession, owner]) };
+    } catch { return null; }
+  }
   const ownsRuntimeSourceContext = () => {
     const context = getContext();
     return dialog.open && !context.dirty && !context.creating;
@@ -688,6 +706,18 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   // Loading the admitted source makes the editor busy. Keep busy as a click
   // admission check; the host owns its source read, editor token and writes.
   const mayOpenRuntimeSource = () => ownsRuntimeSourceContext() && !getContext().busy;
+  const physicsObserver = typeof setupProjectPhysicsObservation === 'function' ? setupProjectPhysicsObservation({
+    container: el('projectPhysicsObservation'),
+    getContext: () => {
+      const observed = physicsObservation();
+      return { available: Boolean(observed), visible: dialog.open && activeTab === 'build', sessionOwner: observed?.sessionOwner || '',
+        navigationOwner: observed?.owner || '', canOpenSource: mayOpenRuntimeSource(), canContinueSource: ownsRuntimeSourceContext() };
+    },
+    onOpen: async (source, { isCurrent }) => {
+      if (!mayOpenRuntimeSource() || !isCurrent()) return false;
+      return navigateOwnedSource([source.sourcePath, source], () => ownsRuntimeSourceContext() && isCurrent());
+    },
+  }) : { setSnapshot() {}, refresh() {} };
   const stateObservation = typeof setupProjectStateObservation === 'function' ? setupProjectStateObservation({
     container: el('projectSharedState'),
     getContext: () => {
@@ -828,6 +858,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     },
   }) : { setObservation() {}, selectRecord() { return false; }, refresh() {} };
   function renderRuntimeObjects() {
+    physicsObserver.setSnapshot(physicsObservation()?.view || null);
     const observation = runtimeObservation(), owner = observation?.owner || '';
     animationTargetReview.setObservation(observation?.view.project?.protocolVersion === 11 ? observation.view : null);
     stateObservation.setSnapshot([2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
@@ -1291,6 +1322,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     delivery.close();
     sceneAuthoring.closed();
     problems.refresh();
+    physicsObserver.refresh();
     stateObservation.refresh();
     eventObservation.refresh();
     eventReview.refresh();

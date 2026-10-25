@@ -1,3 +1,6 @@
+import { GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT } from './godot-character-contact-events-script.mjs';
+import { GODOT_CHARACTER_MOTION_EVENTS_SCRIPT } from './godot-character-motion-events-script.mjs';
+import { GODOT_PROJECT_EVENT_AUDIO_SCRIPT } from './godot-project-event-audio-script.mjs';
 import { GODOT_PHYSICS_SENSOR_SCRIPT } from './godot-physics-sensor-script.mjs';
 // Known starters prepare ordinary text drafts. Saving, registration, scene
 // relationships, language services and execution belong to their own hosts.
@@ -48,6 +51,12 @@ const starters = freeze([
     content: "extends Node\n\nvar _project\n\nfunc _ready() -> void:\n\tif not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\t_project.subscribe_event(\"checkpoint\", _on_checkpoint)\n\tcall_deferred(\"_publish_checkpoint\")\n\nfunc _publish_checkpoint() -> void:\n\t_project.publish_event(\"checkpoint\", \"hello\")\n\nfunc _on_checkpoint(value) -> bool:\n\treturn _project.write_state(\"last_event\", value)\n" },
   { id: 'godot-physics-sensor', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 物理触发区',
     description: '绑定到物理触发区实例。进入和离开时发布项目事件，载荷为对方实例编号；事件名称可在行为参数中设置。', content: GODOT_PHYSICS_SENSOR_SCRIPT },
+  { id: 'godot-character-motion-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 角色起跳与落地',
+    description: '绑定到已启用重力与跳跃的角色实例，真实起跳、首次接触地面及之后重新着地时发布项目事件，载荷为自身实例编号。可用 jumped_event／landed_event 改名，留空禁用；退出时断开连接。', content: GODOT_CHARACTER_MOTION_EVENTS_SCRIPT },
+  { id: 'godot-character-contact-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 角色移动碰撞',
+    description: '绑定到已启用重力与跳跃的角色实例，按每步实际移动碰撞集合发布开始和结束项目事件，载荷为对方实例编号。started_event／ended_event 可改名，留空禁用；other_instance_id 留空接受所有对方，填写时只接受该实例。没有本步碰撞即结束；退出场景只断开连接，不补发结束事件。', content: GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT },
+  { id: 'godot-project-event-audio', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 项目事件播放声音',
+    description: '订阅 event_name（默认 physics.landed），收到事件后播放 track_id 指定的已声明音轨。instance_id 留空接受全部载荷，填写时只响应相同的实例编号；就绪时不发布事件，退出时取消订阅。', content: GODOT_PROJECT_EVENT_AUDIO_SCRIPT },
   { id: 'godot-project-audio', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 事件声音',
     description: "填写已声明的音轨 UUID；订阅 sound 后，true 请求播放、false 请求停止。仅当前项目场景访问生效，也可在行为中直接调用声音接口。",
     content: "extends Node\n\n@export var track_id: String = \"\"\nvar _project\n\nfunc _ready() -> void:\n\tif track_id.is_empty() or not has_meta(\"viento_project\"):\n\t\treturn\n\t_project = get_meta(\"viento_project\")\n\tif _project.subscribe_event(\"sound\", _on_sound) == 0:\n\t\treturn\n\tcall_deferred(\"_publish_sound\")\n\nfunc _publish_sound() -> void:\n\t_project.publish_event(\"sound\", true)\n\nfunc _on_sound(value) -> bool:\n\tif typeof(value) != TYPE_BOOL:\n\t\treturn false\n\tif value:\n\t\treturn _project.play_audio(track_id)\n\treturn _project.stop_audio(track_id)\n" },

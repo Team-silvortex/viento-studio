@@ -12,7 +12,8 @@ import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
 import { buildProject, runProjectBuild } from '../adapters/node-project-build.mjs';
 import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.mjs';
 import { generateGodotAssemblyProject } from '../backends/godot4-project.mjs';
-import { godotPhysicsAssemblyScripts, generateGodotPhysicsProject } from '../backends/godot4-physics.mjs';
+import { generateGodotPhysicsProject } from '../backends/godot4-physics.mjs';
+import { godotPhysicsObservationAssemblyScripts as godotPhysicsAssemblyScripts } from '../backends/godot4-physics-observation.mjs';
 import { validateGeneratedExecutionProject } from '../adapters/node-execution-backends.mjs';
 import { inspectBackendProject } from '../adapters/node-backend-project.mjs';
 import { planBackendProjectDelivery, verifyBackendProjectDelivery } from '../adapters/node-backend-project-delivery.mjs';
@@ -96,7 +97,7 @@ test('no-physics assembly generation keeps every prior byte, receipt and protoco
 
 test('physics is an additive project wrapper with complete bounded script inventory and author mapping', async t => {
   const f = await capture(await scenePhysics2DAuthor(t)), directory = await stage(f);
-  assert.equal(f.generated.backend.version, '0.21.0'); assert.equal(f.generated.backend.protocolVersion, 10);
+  assert.equal(f.generated.backend.version, '0.23.0'); assert.equal(f.generated.backend.protocolVersion, 10);
   for (const capability of ['physics.bodies2d', 'physics.character2d', 'physics.sensors2d']) assert.ok(f.generated.backend.capabilities.includes(capability));
   const scripts = await godotPhysicsAssemblyScripts(directory);
   assert.ok(scripts.includes('project-physics-runtime.gd'));

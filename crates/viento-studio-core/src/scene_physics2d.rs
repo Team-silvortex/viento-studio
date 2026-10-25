@@ -140,13 +140,38 @@ fn document_version(value: &Value, version: u32) -> Result<Value, CoreError> {
             "layer",
             "mask",
         ];
-        if version == 2 && body.get("collisionResponse").is_some() {
+        if version >= 2 && body.get("collisionResponse").is_some() {
             if body["kind"] != "character"
                 || !matches!(body["collisionResponse"].as_str(), Some("stop" | "slide"))
             {
                 return Err(invalid());
             }
             keys.push("collisionResponse");
+        }
+        if version >= 3 && body.get("characterMotion").is_some() {
+            let motion = &body["characterMotion"];
+            if body["kind"] != "character"
+                || body["collisionResponse"] != "slide"
+                || !exact(motion, &["kind", "gravity", "jumpSpeed", "maxFallSpeed"])
+                || motion["kind"] != "platformer"
+                || !bounded(&motion["gravity"], 1.0, 20000.0)
+                || !bounded(&motion["jumpSpeed"], 0.0, 4000.0)
+                || !bounded(&motion["maxFallSpeed"], 1.0, 4000.0)
+            {
+                return Err(invalid());
+            }
+            keys.push("characterMotion");
+        }
+        if version == 4 && body.get("oneWay").is_some() {
+            let one_way = &body["oneWay"];
+            if body["kind"] != "static"
+                || body["shape"]["kind"] != "box"
+                || !exact(one_way, &["margin"])
+                || !bounded(&one_way["margin"], 1.0, 64.0)
+            {
+                return Err(invalid());
+            }
+            keys.push("oneWay");
         }
         if !exact(body, &keys)
             || !matches!(
@@ -187,13 +212,22 @@ pub(crate) fn dispatch(request: &Value) -> Result<ScenePhysics2DResponse, CoreEr
         || request["protocolVersion"].as_f64() != Some(1.0)
         || !matches!(
             request["operation"].as_str(),
-            Some("scenePhysics2D.inspect" | "scenePhysics2D.inspectResponse")
+            Some(
+                "scenePhysics2D.inspect"
+                    | "scenePhysics2D.inspectResponse"
+                    | "scenePhysics2D.inspectMotion"
+                    | "scenePhysics2D.inspectOneWay"
+            )
         )
     {
         return Err(CoreError::request());
     }
     Ok(ScenePhysics2DResponse {
-        document: if request["operation"] == "scenePhysics2D.inspectResponse" {
+        document: if request["operation"] == "scenePhysics2D.inspectOneWay" {
+            document_version(&request["document"], 4)?
+        } else if request["operation"] == "scenePhysics2D.inspectMotion" {
+            document_version(&request["document"], 3)?
+        } else if request["operation"] == "scenePhysics2D.inspectResponse" {
             document_version(&request["document"], 2)?
         } else {
             document(&request["document"])?
@@ -421,5 +455,283 @@ mod tests {
         assert_eq!(result["errorCode"], "studio_core_request_invalid");
         value["bodies"][1]["offset"] = json!([8193, 0]);
         assert!(document_version(&value, 2).is_err());
+    }
+    fn motion_doc() -> Value {
+        let mut value = doc();
+        value["schemaVersion"] = json!(3);
+        value["bodies"][1]["collisionResponse"] = json!("slide");
+        value["bodies"][1]["characterMotion"] = json!({
+            "kind":"platformer", "gravity":980, "jumpSpeed":360, "maxFallSpeed":1200
+        });
+        value
+    }
+
+    #[test]
+    fn motion_schema_preserves_values_and_remains_separate_from_older_operations() {
+        assert_eq!(crate::viento_core_scene_physics2d_motion_version(), 1);
+        for enabled in [true, false] {
+            let mut value = motion_doc();
+            if !enabled {
+                value["bodies"][1]
+                    .as_object_mut()
+                    .unwrap()
+                    .remove("characterMotion");
+            }
+            assert_eq!(document_version(&value, 3).unwrap(), value);
+            for operation in [
+                "scenePhysics2D.inspect",
+                "scenePhysics2D.inspectResponse",
+                "scenePhysics2D.inspectMotion",
+            ] {
+                let input = json!({"protocolVersion":1, "operation":operation, "document":value});
+                let result = wire(input);
+                if operation == "scenePhysics2D.inspectMotion" {
+                    assert_eq!(result["scenePhysics2D"]["document"], value);
+                } else {
+                    assert_eq!(result["errorCode"], "scene_physics2d_invalid");
+                }
+            }
+        }
+        for version in [1, 2] {
+            let mut value = doc();
+            value["schemaVersion"] = json!(version);
+            assert_eq!(
+                wire(
+                    json!({"protocolVersion":1,"operation":"scenePhysics2D.inspectMotion","document":value})
+                )["errorCode"],
+                "scene_physics2d_invalid"
+            );
+            let mut value = motion_doc();
+            value["schemaVersion"] = json!(version);
+            assert!(document_version(&value, version).is_err());
+        }
+    }
+
+    #[test]
+    fn motion_is_exact_character_only_and_requires_explicit_slide() {
+        for key in ["kind", "gravity", "jumpSpeed", "maxFallSpeed"] {
+            let mut value = motion_doc();
+            value["bodies"][1]["characterMotion"]
+                .as_object_mut()
+                .unwrap()
+                .remove(key);
+            assert!(document_version(&value, 3).is_err());
+        }
+        for motion in [
+            json!(null),
+            json!(false),
+            json!([]),
+            json!({}),
+            json!("platformer"),
+        ] {
+            let mut value = motion_doc();
+            value["bodies"][1]["characterMotion"] = motion;
+            assert!(document_version(&value, 3).is_err());
+        }
+        for kind in ["static", "sensor"] {
+            let mut value = motion_doc();
+            value["bodies"][1]["kind"] = json!(kind);
+            assert!(document_version(&value, 3).is_err());
+            value["bodies"][1]
+                .as_object_mut()
+                .unwrap()
+                .remove("collisionResponse");
+            assert!(document_version(&value, 3).is_err());
+        }
+        let mut value = motion_doc();
+        value["bodies"][1]["characterMotion"]["kind"] = json!("gravity");
+        assert!(document_version(&value, 3).is_err());
+        value = motion_doc();
+        value["bodies"][1]["characterMotion"]["grounded"] = json!(true);
+        assert!(document_version(&value, 3).is_err());
+        value = motion_doc();
+        value["bodies"][1]["collisionResponse"] = json!("stop");
+        assert!(document_version(&value, 3).is_err());
+        value["bodies"][1]
+            .as_object_mut()
+            .unwrap()
+            .remove("collisionResponse");
+        assert!(document_version(&value, 3).is_err());
+    }
+
+    #[test]
+    fn motion_numeric_limits_are_finite_inclusive_and_allow_fractional_units() {
+        for (key, low, high) in [
+            ("gravity", 1.0, 20000.0),
+            ("jumpSpeed", 0.0, 4000.0),
+            ("maxFallSpeed", 1.0, 4000.0),
+        ] {
+            for number in [low, low + 0.5, high] {
+                let mut value = motion_doc();
+                value["bodies"][1]["characterMotion"][key] = json!(number);
+                assert_eq!(document_version(&value, 3).unwrap(), value);
+            }
+            for invalid in [
+                json!(low - 0.01),
+                json!(high + 0.01),
+                json!("1"),
+                json!(true),
+                json!(null),
+                json!([]),
+            ] {
+                let mut value = motion_doc();
+                value["bodies"][1]["characterMotion"][key] = invalid;
+                assert!(document_version(&value, 3).is_err(), "{key}");
+            }
+        }
+    }
+
+    #[test]
+    fn motion_raw_decoded_duplicates_and_legacy_geometry_limits_are_checked() {
+        let input = json!({"protocolVersion":1,"operation":"scenePhysics2D.inspectMotion","document":motion_doc()});
+        let raw = serde_json::to_string(&input).unwrap();
+        for (from, to) in [
+            ("\"gravity\":980", "\"gravity\":1,\"grav\\u0069ty\":980"),
+            (
+                "\"characterMotion\":",
+                "\"characterMotio\\u006e\":null,\"characterMotion\":",
+            ),
+        ] {
+            let result: Value =
+                serde_json::from_slice(&crate::dispatch_json(raw.replace(from, to).as_bytes()))
+                    .unwrap();
+            assert_eq!(result["errorCode"], "studio_core_request_invalid");
+        }
+        for (pointer, invalid) in [
+            ("/bodies/1/offset", json!([8193, 0])),
+            ("/bodies/1/mask", json!(65536)),
+            ("/bodies/1/shape", json!({"kind":"box","size":[0,1]})),
+        ] {
+            let mut value = motion_doc();
+            *value.pointer_mut(pointer).unwrap() = invalid;
+            assert!(document_version(&value, 3).is_err());
+        }
+    }
+
+    fn one_way_doc() -> Value {
+        let mut value = motion_doc();
+        value["schemaVersion"] = json!(4);
+        value["bodies"][0]["oneWay"] = json!({"margin":1});
+        value
+    }
+
+    #[test]
+    fn one_way_schema_inherits_motion_and_stays_in_an_independent_operation_domain() {
+        assert_eq!(crate::viento_core_scene_physics2d_one_way_version(), 1);
+        let operations = [
+            "scenePhysics2D.inspect",
+            "scenePhysics2D.inspectResponse",
+            "scenePhysics2D.inspectMotion",
+            "scenePhysics2D.inspectOneWay",
+        ];
+        for version in 1..=4 {
+            let mut value = if version >= 3 { motion_doc() } else { doc() };
+            value["schemaVersion"] = json!(version);
+            for (index, operation) in operations.iter().enumerate() {
+                let result =
+                    wire(json!({"protocolVersion":1,"operation":operation,"document":value}));
+                if version == index + 1 {
+                    assert_eq!(result["scenePhysics2D"]["document"], value);
+                } else {
+                    assert_eq!(result["errorCode"], "scene_physics2d_invalid");
+                }
+            }
+        }
+        let value = one_way_doc();
+        assert_eq!(document_version(&value, 4).unwrap(), value);
+        let mut disabled = value.clone();
+        disabled["bodies"][0]
+            .as_object_mut()
+            .unwrap()
+            .remove("oneWay");
+        assert_eq!(document_version(&disabled, 4).unwrap(), disabled);
+        for version in 1..=3 {
+            let mut legacy = doc();
+            legacy["schemaVersion"] = json!(version);
+            legacy["bodies"][0]["oneWay"] = json!({"margin":1});
+            assert!(document_version(&legacy, version).is_err());
+        }
+    }
+
+    #[test]
+    fn one_way_is_an_exact_static_box_object_with_finite_inclusive_margin() {
+        for margin in [1.0, 1.125, 64.0] {
+            let mut value = one_way_doc();
+            value["bodies"][0]["oneWay"]["margin"] = json!(margin);
+            assert_eq!(document_version(&value, 4).unwrap(), value);
+        }
+        for invalid in [
+            json!(null),
+            json!(true),
+            json!(false),
+            json!(1),
+            json!("up"),
+            json!([]),
+            json!({}),
+            json!({"margin":1,"direction":"up"}),
+            json!({"margin":-0.001}),
+            json!({"margin":0}),
+            json!({"margin":0.999}),
+            json!({"margin":64.001}),
+            json!({"margin":"1"}),
+            json!({"margin":null}),
+            json!({"margin":false}),
+        ] {
+            let mut value = one_way_doc();
+            value["bodies"][0]["oneWay"] = invalid;
+            assert!(document_version(&value, 4).is_err());
+        }
+        for kind in ["character", "sensor"] {
+            let mut value = one_way_doc();
+            value["bodies"][0]["kind"] = json!(kind);
+            assert!(document_version(&value, 4).is_err());
+        }
+        let mut value = one_way_doc();
+        value["bodies"][0]["shape"] = json!({"kind":"circle","radius":16});
+        assert!(document_version(&value, 4).is_err());
+        value = one_way_doc();
+        value["bodies"][0]["collisionResponse"] = json!("slide");
+        assert!(document_version(&value, 4).is_err());
+        value = one_way_doc();
+        value["bodies"][1]["characterMotion"]["jumpSpeed"] = json!(-1);
+        assert!(document_version(&value, 4).is_err());
+    }
+
+    #[test]
+    fn one_way_rejects_raw_decoded_duplicates_without_changing_old_geometry_budgets() {
+        let input = json!({"protocolVersion":1,"operation":"scenePhysics2D.inspectOneWay","document":one_way_doc()});
+        let raw = serde_json::to_string(&input).unwrap();
+        for (from, to) in [
+            ("\"margin\":1", "\"margin\":0,\"marg\\u0069n\":1"),
+            ("\"oneWay\":", "\"oneWa\\u0079\":null,\"oneWay\":"),
+            ("\"margin\":1", "\"margin\":1e999"),
+        ] {
+            let result: Value =
+                serde_json::from_slice(&crate::dispatch_json(raw.replace(from, to).as_bytes()))
+                    .unwrap();
+            assert_eq!(result["errorCode"], "studio_core_request_invalid");
+        }
+        for (pointer, invalid) in [
+            ("/bodies/0/offset", json!([8193, 0])),
+            ("/bodies/0/layer", json!(65536)),
+            ("/bodies/0/shape", json!({"kind":"box","size":[0,1]})),
+        ] {
+            let mut value = one_way_doc();
+            *value.pointer_mut(pointer).unwrap() = invalid;
+            assert!(document_version(&value, 4).is_err());
+        }
+        let mut value = one_way_doc();
+        let mut bodies: Vec<Value> = (0..128)
+            .map(|index| {
+                let mut row = body(index, "static");
+                row["oneWay"] = json!({"margin":1});
+                row
+            })
+            .collect();
+        value["bodies"] = json!(bodies);
+        assert_eq!(document_version(&value, 4).unwrap(), value);
+        bodies.push(body(128, "static"));
+        value["bodies"] = json!(bodies);
+        assert!(document_version(&value, 4).is_err());
     }
 }

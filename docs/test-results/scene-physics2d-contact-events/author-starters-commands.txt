@@ -1,0 +1,22 @@
+Working directory: /home/chiharukiryu/cdev/viento-studio
+Shell: bash, login:false
+
+Exact test command (39/39 pass; 0 skip):
+set -o pipefail
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node --test scripts/tests/character-contact-event-starter.test.mjs scripts/tests/character-motion-event-starters.test.mjs scripts/tests/script-authoring.test.mjs | tee /tmp/viento-physics-character-contacts/author-starters-tests.log
+
+The new native starter harness checks 30 cases and exactly 24 expected diagnostics.
+The existing motion/audio native starter harness checks 19 cases and exactly 14 expected diagnostics.
+Native harness stdout/stderr are asserted by the tests; any parse, compile, assertion, or leak error fails the test.
+
+Before the new entry was added, legacy-starter-hashes.json captured SHA-256 of JSON.stringify(record) for each of the 17 existing catalog entries, including their source content. The new regression test compares every old full record against those hashes and requires exactly one added entry. The catalog now contains 18 entries.
+
+Exact pre-addition capture command:
+node --input-type=module - <<'JS'
+import fs from 'node:fs';
+import { createHash } from 'node:crypto';
+import { listScriptStarters } from './engine/script-authoring.mjs';
+const hashes = Object.fromEntries(listScriptStarters().map(row => [row.id, createHash('sha256').update(JSON.stringify(row)).digest('hex')]));
+fs.writeFileSync('/tmp/viento-physics-character-contacts/starter-baseline.json', JSON.stringify(hashes, null, 2));
+console.log(JSON.stringify(hashes, null, 2));
+JS

@@ -1,0 +1,19 @@
+cwd: /home/chiharukiryu/cdev/viento-studio
+Node: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node
+Godot: /home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64
+
+VIENTO_GODOT_BIN=<above> VIENTO_PHYSICS_MOTION_REPORT=docs/test-results/scene-physics2d-character-events/legacy-motion-native.json VIENTO_PHYSICS_OBSERVATION_REPORT=docs/test-results/scene-physics2d-character-events/legacy-observation-native.json node --test --test-isolation=none scripts/tests/scene-physics2d-character-motion-backends.test.mjs scripts/tests/scene-physics2d-observation-backends.test.mjs > legacy-native.log 2>&1
+
+npm run check -- --app-only
+# Detached Python subprocess supervisor records exact start, finish and exit status in full-check-exit.json. No external Godot env is set for the full check.
+
+# After reports and atlas additions are finalized:
+node scripts/function-atlas.mjs --write --refresh-sources
+python3 docs/test-results/docs-refresh-2026-10-25/check-links.py --output docs/test-results/scene-physics2d-character-events/links.json
+node scripts/function-atlas.mjs --check
+
+# Legacy targeted repair and both window captures (same explicit Node/Godot paths above):
+VIENTO_GODOT_BIN=<above> VIENTO_PHYSICS_MOTION_REPORT=docs/test-results/scene-physics2d-character-events/legacy-motion-recheck.json VIENTO_PHYSICS_OBSERVATION_REPORT=docs/test-results/scene-physics2d-character-events/legacy-observation-recheck.json VIENTO_PHYSICS_MOTION_CAPTURE=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-character-events/legacy-motion-window.png VIENTO_PHYSICS_OBSERVATION_CAPTURE=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-character-events/legacy-observation-window.png node --test --test-isolation=none --test-name-pattern="portable ZIP retains character motion|real window capture" scripts/tests/scene-physics2d-character-motion-backends.test.mjs scripts/tests/scene-physics2d-observation-backends.test.mjs > legacy-recheck.log 2>&1
+
+# New actual backend matrix (direct output):
+VIENTO_GODOT_BIN=<above> VIENTO_PHYSICS_EVENTS_REPORT=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-character-events/backend-native.json VIENTO_PHYSICS_EVENTS_CAPTURE=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-character-events/backend-window.png xvfb-run -a node --test scripts/tests/scene-physics2d-character-events-backends.test.mjs > backend-native.log 2>&1

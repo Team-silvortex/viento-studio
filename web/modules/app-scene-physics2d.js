@@ -1,4 +1,4 @@
-import { supportsStudioCoreScenePhysics2DResponse } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreScenePhysics2DResponse, supportsStudioCoreScenePhysics2DMotion, supportsStudioCoreScenePhysics2DOneWay } from '../../engine/studio-core.mjs';
 import { readScenePhysics2DDocument, createScenePhysics2DProposal, isScenePhysics2DProposal } from '../../engine/scene-physics2d-edit.mjs';
 import { isScenePhysics2DTargets, scenePhysics2DTargetsMatchSource, scenePhysics2DTargetValue, validateScenePhysics2DTargets } from '../../engine/scene-physics2d-targets.mjs';
 import { isScenePhysics2DSpace, scenePhysics2DSpaceMatchSource, createScenePhysics2DSpaceView } from '../../engine/scene-physics2d-space.mjs';
@@ -47,9 +47,27 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
           <div class="scene-physics2d-grid"><label><span data-i18n="物理类型"></span><select id="scenePhysics2DKind">
             <option value="static" data-i18n="静态碰撞体"></option><option value="character" data-i18n="角色碰撞体"></option><option value="sensor" data-i18n="触发区域"></option></select></label>
             <label><span data-i18n="碰撞形状"></span><select id="scenePhysics2DShape"><option value="box" data-i18n="矩形"></option><option value="circle" data-i18n="圆形"></option></select></label></div>
+          <section id="scenePhysics2DMotionSection" class="scene-physics2d-motion">
+            <label><span data-i18n="角色移动方式"></span><select id="scenePhysics2DMotion" aria-describedby="scenePhysics2DMotionHint scenePhysics2DMotionUnavailable"><option value="free" data-i18n="自由平面"></option><option value="platformer" data-i18n="重力与跳跃"></option></select></label>
+            <p id="scenePhysics2DMotionHint" class="scene-physics2d-note" data-i18n="启用重力与跳跃会同时选择滑动响应。左右键移动，空格或 Enter 在已着地时起跳；按住不会连续跳跃。水平速度沿用场景实例，不修改场景原文。"></p>
+            <p id="scenePhysics2DMotionUnavailable" class="scene-physics2d-note" data-i18n="当前核心不支持此运动格式；旧格式的自由平面物理参数仍可编辑。" hidden></p>
+            <div id="scenePhysics2DMotionFields" class="scene-physics2d-grid" hidden>
+              <label><span data-i18n="重力（单位/秒²）"></span><input id="scenePhysics2DGravity" type="text" inputmode="decimal" lang="" spellcheck="false" aria-describedby="scenePhysics2DMotionBounds"></label>
+              <label><span data-i18n="起跳速度（单位/秒）"></span><input id="scenePhysics2DJumpSpeed" type="text" inputmode="decimal" lang="" spellcheck="false" aria-describedby="scenePhysics2DMotionBounds"></label>
+              <label><span data-i18n="最大下落速度（单位/秒）"></span><input id="scenePhysics2DMaxFallSpeed" type="text" inputmode="decimal" lang="" spellcheck="false" aria-describedby="scenePhysics2DMotionBounds"></label>
+              <p id="scenePhysics2DMotionBounds" class="scene-physics2d-note" data-i18n="重力 1–20000，起跳速度 0–4000，最大下落速度 1–4000。起跳速度为 0 时禁用跳跃。向下为正；关闭后保留滑动响应和已升级的文档格式。"></p>
+            </div>
+          </section>
           <label id="scenePhysics2DResponseField"><span data-i18n="角色碰撞响应"></span><select id="scenePhysics2DResponse" aria-describedby="scenePhysics2DResponseHint scenePhysics2DResponseUnavailable"><option value="stop" data-i18n="碰撞后停止"></option><option value="slide" data-i18n="沿碰撞面滑动"></option></select></label>
           <p id="scenePhysics2DResponseHint" class="scene-physics2d-note" data-i18n="停止会截断本步移动；滑动会保留沿碰撞面的移动。仅影响角色逻辑碰撞，不改写视觉偏移或运行空间图模拟。"></p>
           <p id="scenePhysics2DResponseUnavailable" class="scene-physics2d-note" data-i18n="当前核心不支持角色滑动；已有停止行为及其他物理参数仍可编辑。" hidden></p>
+          <section id="scenePhysics2DOneWaySection" class="scene-physics2d-one-way" hidden>
+            <label><span data-i18n="静态碰撞方式"></span><select id="scenePhysics2DOneWay" aria-describedby="scenePhysics2DOneWayHint scenePhysics2DOneWayUnavailable"><option value="solid" data-i18n="普通碰撞"></option><option value="one-way" data-i18n="单向平台"></option></select></label>
+            <p id="scenePhysics2DOneWayHint" class="scene-physics2d-note" data-i18n="仅用于静态矩形。角色可从下方穿过，并从上方落到平台上；不会改变形状、偏移或场景位置。"></p>
+            <p id="scenePhysics2DOneWayUnavailable" class="scene-physics2d-note" data-i18n="当前核心不支持单向平台格式；旧格式的物理参数仍可编辑。" hidden></p>
+            <label id="scenePhysics2DOneWayMarginField" hidden><span data-i18n="穿透容差（场景单位）"></span><input id="scenePhysics2DOneWayMargin" type="text" inputmode="decimal" lang="" spellcheck="false" aria-describedby="scenePhysics2DOneWayBounds"></label>
+            <p id="scenePhysics2DOneWayBounds" class="scene-physics2d-note" data-i18n="容差为 1–64，影响单向碰撞判定；不是平台厚度。关闭单向设置会保留已升级的文档格式。" hidden></p>
+          </section>
           <div id="scenePhysics2DBox" class="scene-physics2d-grid"><label><span data-i18n="宽度"></span><input id="scenePhysics2DWidth" type="text" inputmode="decimal" lang="" spellcheck="false"></label>
             <label><span data-i18n="高度"></span><input id="scenePhysics2DHeight" type="text" inputmode="decimal" lang="" spellcheck="false"></label></div>
           <label id="scenePhysics2DCircle"><span data-i18n="半径"></span><input id="scenePhysics2DRadius" type="text" inputmode="decimal" lang="" spellcheck="false"></label>
@@ -76,7 +94,7 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
   const node = (tag, text = '') => { const result = document.createElement(tag); result.textContent = text; return result; };
   const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
   const revision = value => typeof value === 'string' && /^sha256:[a-f0-9]{64}$/.test(value);
-  const names = { Instance: 'instanceId', Kind: 'kind', Response: 'collisionResponse', Shape: 'shape', Width: 'width', Height: 'height', Radius: 'radius', X: 'x', Y: 'y', Layer: 'layer', Mask: 'mask' };
+  const names = { Instance: 'instanceId', Kind: 'kind', Response: 'collisionResponse', Motion: 'motion', Gravity: 'gravity', JumpSpeed: 'jumpSpeed', MaxFallSpeed: 'maxFallSpeed', OneWay: 'oneWayMode', OneWayMargin: 'oneWayMargin', Shape: 'shape', Width: 'width', Height: 'height', Radius: 'radius', X: 'x', Y: 'y', Layer: 'layer', Mask: 'mask' };
   let disposed = false, epoch = 0, session = null, pending = false, draft = [], selected = '', initial = '', proposal = null, approval = '', previewModel = null, previewForm = '', opener = null, message = '', diagnostic = '';
   let targetCatalog = null, targetState = 'idle', targetGeneration = 0, targetCapability = null, targetCatalogToken, approvedTargets = null, targetRenderKey = null;
   let spaceCatalog = null, spaceState = 'idle', spaceGeneration = 0, spaceCapability = null, spaceCatalogToken, spaceView = null, spaceViewCatalog = null, spaceViewModel = null, spaceViewFailed = false, spaceMode = 'view';
@@ -85,20 +103,29 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
       || ![...spaceView.bodies, ...spaceView.missingBodies].some(body => body.id === id)) return;
     selectBody(id);
   }, onOffsetProposal: acceptSpaceOffset, onResizeProposal: acceptSpaceResize }) : { render() {}, clear() {} };
+  let observedMotionCapability, motionGeneration = 0, observedOneWayCapability, oneWayGeneration = 0;
   const reserved = new Set();
   const eligible = context => Boolean(context.editable && !context.creating && context.sourceJSON === true && context.physicsSource === true
     && typeof context.sourcePath === 'string' && context.sourcePath && typeof context.sourceToken === 'string');
   const current = () => { const context = getContext(); return Boolean(!disposed && dialog.open && session && eligible(context) && context.available === true && !context.busy
     && context.sourcePath === session.source.sourcePath && context.sourceToken === session.source.token); };
   const responseAvailable = () => typeof supportsStudioCoreScenePhysics2DResponse === 'function' && supportsStudioCoreScenePhysics2DResponse();
+  const motionAvailable = () => typeof supportsStudioCoreScenePhysics2DMotion === 'function' && supportsStudioCoreScenePhysics2DMotion();
+  const oneWayAvailable = () => typeof supportsStudioCoreScenePhysics2DOneWay === 'function' && supportsStudioCoreScenePhysics2DOneWay();
+  const staticBox = body => body.kind === 'static' && (body.shape === 'box' || body.shape?.kind === 'box');
+  const requiredSchema = bodies => Math.max(session?.model.schemaVersion || 1, bodies.some(body => staticBox(body) && (body.oneWay || body.oneWayMode === 'one-way')) ? 4 : bodies.some(body => body.kind === 'character' && (body.characterMotion || body.motion === 'platformer')) ? 3 : bodies.some(body => body.kind === 'character' && body.collisionResponse === 'slide') ? 2 : 1);
+  const schemaAvailable = schema => schema === 4 ? oneWayAvailable() : schema === 3 ? motionAvailable() : schema === 2 ? responseAvailable() : schema === 1;
+  const capabilityRevision = schema => schema === 4 ? oneWayGeneration : schema === 3 ? motionGeneration : 0;
+  const featureAvailable = minimum => schemaAvailable(Math.max(requiredSchema(raw()), minimum));
+  const unavailable = () => Object.assign(new Error('Physics document capability unavailable.'), { errorCode: 'studio_core_unavailable' });
   const raw = () => draft.map(row => row.id === selected ? { ...row, ...Object.fromEntries(Object.entries(names).map(([id, key]) => [key, el(id).value])) } : row);
-  const signature = () => JSON.stringify(raw().map(({ width, height, radius, collisionResponse, responsePresent, ...row }) => ({ ...row, ...(row.kind === 'character' ? { collisionResponse } : {}), ...(row.shape === 'box' ? { width, height } : { radius }) })));
+  const signature = () => JSON.stringify(raw().map(({ width, height, radius, collisionResponse, responsePresent, motion, gravity, jumpSpeed, maxFallSpeed, oneWayMode, oneWayMargin, ...row }) => ({ ...row, ...(staticBox(row) ? { oneWayMode, ...(oneWayMode === 'one-way' ? { oneWayMargin } : {}) } : {}), ...(row.kind === 'character' ? { collisionResponse, motion, ...(motion === 'platformer' ? { gravity, jumpSpeed, maxFallSpeed } : {}) } : {}), ...(row.shape === 'box' ? { width, height } : { radius }) })));
   const dirty = () => Boolean(session && signature() !== initial);
   const canReadTargets = () => typeof getTargets === 'function' && getContext().targetsAvailable === true;
   const hasTargets = () => Boolean(session && current() && canReadTargets() && targetCatalog && targetState === 'ready'
     && targetCatalogToken === getContext().targetsToken && scenePhysics2DTargetsMatchSource(targetCatalog, session.source));
   const approved = () => isScenePhysics2DProposal(proposal) && signature() === approval
-    && (responseAvailable() || !proposal.edit.bodies.some(body => body.collisionResponse === 'slide'))
+    && schemaAvailable(requiredSchema(proposal.edit.bodies))
     && (!approvedTargets || hasTargets() && targetCatalog === approvedTargets);
   const capture = () => { if (session) draft = raw(); };
   function clearPreview() { previewModel = null; previewForm = ''; el('Stage').replaceChildren(); el('Stage').hidden = true; el('PreviewHint').hidden = false; clearSpaceView(); }
@@ -263,6 +290,12 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
   }
   function refresh() {
     if (disposed) return;
+    const capability = motionAvailable();
+    if (observedMotionCapability !== undefined && capability !== observedMotionCapability) motionGeneration++;
+    observedMotionCapability = capability;
+    const oneWayCapability = oneWayAvailable();
+    if (observedOneWayCapability !== undefined && oneWayCapability !== observedOneWayCapability) oneWayGeneration++;
+    observedOneWayCapability = oneWayCapability;
     const context = getContext(); button.hidden = !eligible(context); button.disabled = context.available !== true || Boolean(context.busy); button.textContent = t('编辑二维物理');
     observeTargetCapability(); observeSpaceCapability();
     if (session && !current()) { if (!pending) { proposal = null; approval = ''; } resetTargets({ review: !pending }); resetSpace(); clearPreview(); message = '原文已变化，请返回后重新打开物理编辑。'; }
@@ -272,7 +305,17 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     for (const control of el('Fields').querySelectorAll('input,select,button')) control.disabled = locked;
     const character = el('Kind').value === 'character';
     el('ResponseField').hidden = !character; el('ResponseHint').hidden = !character;
-    el('ResponseUnavailable').hidden = !character || responseAvailable(); el('Response').disabled = locked || !character || !responseAvailable();
+    const platformer = character && el('Motion').value === 'platformer';
+    el('MotionSection').hidden = !character; el('MotionFields').hidden = !platformer;
+    el('MotionUnavailable').hidden = !character || featureAvailable(3);
+    el('Motion').disabled = locked || !character || !featureAvailable(3);
+    for (const name of ['Gravity', 'JumpSpeed', 'MaxFallSpeed']) el(name).disabled = locked || !platformer || !featureAvailable(3);
+    const responseEditable = featureAvailable(2);
+    el('ResponseUnavailable').hidden = !character || responseEditable; el('Response').disabled = locked || !character || !responseEditable || platformer;
+    const platform = el('Kind').value === 'static' && el('Shape').value === 'box', oneWay = platform && el('OneWay').value === 'one-way';
+    el('OneWaySection').hidden = !platform; el('OneWayMarginField').hidden = !oneWay; el('OneWayBounds').hidden = !oneWay;
+    el('OneWayUnavailable').hidden = !platform || oneWayAvailable(); el('OneWay').disabled = locked || !platform || !oneWayAvailable();
+    el('OneWayMargin').disabled = locked || !oneWay || !oneWayAvailable();
     el('Add').disabled = locked || draft.length >= 128; el('Remove').disabled = locked || draft.length <= 1;
     el('Check').disabled = locked || targetState === 'loading'; el('Apply').disabled = locked || !approved();
     el('Path').textContent = session?.source.sourcePath || context.sourcePath || ''; el('Scene').textContent = session ? t('物理所属场景：{0}', session.model.sceneObjectId) : '';
@@ -289,12 +332,15 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     Promise.resolve().then(() => { if (!disposed && request === epoch && !dialog.open && target?.isConnected !== false) target?.focus?.(); }); return true;
   }
   function fail(error, text) { proposal = null; approval = ''; approvedTargets = null; clearPreview(); message = text; diagnostic = typeof error?.errorCode === 'string' ? error.errorCode : ''; }
-  const form = body => ({ id: body.id, instanceId: body.instanceId, kind: body.kind, collisionResponse: body.collisionResponse ?? 'stop', responsePresent: Object.hasOwn(body, 'collisionResponse'), shape: body.shape.kind,
+  const form = body => ({ id: body.id, instanceId: body.instanceId, kind: body.kind, collisionResponse: body.collisionResponse ?? 'stop', responsePresent: Object.hasOwn(body, 'collisionResponse'),
+    oneWayMode: body.oneWay ? 'one-way' : 'solid', oneWayMargin: String(body.oneWay?.margin ?? 1),
+    motion: body.characterMotion?.kind || 'free', gravity: String(body.characterMotion?.gravity ?? 980), jumpSpeed: String(body.characterMotion?.jumpSpeed ?? 360), maxFallSpeed: String(body.characterMotion?.maxFallSpeed ?? 1200), shape: body.shape.kind,
     width: String(body.shape.kind === 'box' ? body.shape.size[0] : 32), height: String(body.shape.kind === 'box' ? body.shape.size[1] : 32), radius: String(body.shape.kind === 'circle' ? body.shape.radius : 16),
     x: String(body.offset[0]), y: String(body.offset[1]), layer: String(body.layer), mask: String(body.mask) });
   async function open() {
     const context = { ...getContext() }; if (disposed || dialog.open || !eligible(context) || context.busy || context.available !== true) return false;
     const request = ++epoch; opener = document.activeElement; pending = true; message = '正在读取物理文档…'; dialog.showModal(); refresh();
+    const motionRequest = motionGeneration, motionCapability = motionAvailable(), oneWayRequest = oneWayGeneration, oneWayCapability = oneWayAvailable();
     const owns = () => { const now = getContext(); return !disposed && dialog.open && request === epoch && eligible(now) && !now.busy && now.available === true
       && now.sourcePath === context.sourcePath && now.sourceToken === context.sourceToken; };
     try {
@@ -302,6 +348,8 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
       if (!source || Object.keys(source).length !== 5 || source.sourcePath !== context.sourcePath || source.token !== context.sourceToken
         || !revision(source.sourceRevision) || !revision(source.baseSourceRevision) || typeof source.content !== 'string') throw Error('source');
       const captured = Object.freeze({ ...source }), model = await readScenePhysics2DDocument(captured.content); if (!owns()) return false;
+      if (model.schemaVersion === 4 && (!oneWayCapability || !oneWayAvailable() || oneWayGeneration !== oneWayRequest)
+        || model.schemaVersion === 3 && (!motionCapability || !motionAvailable() || motionGeneration !== motionRequest)) throw unavailable();
       session = { source: captured, model }; draft = model.bodies.map(form); selected = draft[0].id;
       for (const value of [model.sceneObjectId, ...model.bodies.flatMap(body => [body.id, body.instanceId])]) reserved.add(value);
       renderSelected(); initial = signature(); previewModel = model; previewForm = initial; message = '编辑已有物理声明，检查后应用到原文草稿。'; return true;
@@ -313,18 +361,23 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     return Number(value);
   }
   function edit() {
-    if (!responseAvailable() && raw().some(row => row.kind === 'character' && row.collisionResponse !== 'stop')) throw Object.assign(new Error('Collision response capability unavailable.'), { errorCode: 'studio_core_unavailable' });
+    if (raw().some(row => staticBox(row) && !['solid', 'one-way'].includes(row.oneWayMode))) throw Object.assign(new TypeError('Invalid one-way platform mode.'), { errorCode: 'scene_physics2d_authoring_invalid' });
+    if (raw().some(row => row.kind === 'character' && !['free', 'platformer'].includes(row.motion))) throw Object.assign(new TypeError('Invalid character motion mode.'), { errorCode: 'scene_physics2d_authoring_invalid' });
+    if (!schemaAvailable(requiredSchema(raw()))) throw unavailable();
     return { bodies: raw().map(row => ({ id: row.id, instanceId: row.instanceId, kind: row.kind,
+      ...(staticBox(row) && row.oneWayMode === 'one-way' ? { oneWay: { margin: numeric(row.oneWayMargin) } } : {}),
       ...(row.kind === 'character' && (row.collisionResponse !== 'stop' || row.responsePresent) ? { collisionResponse: row.collisionResponse } : {}),
+      ...(row.kind === 'character' && row.motion === 'platformer' ? { characterMotion: { kind: 'platformer', gravity: numeric(row.gravity), jumpSpeed: numeric(row.jumpSpeed), maxFallSpeed: numeric(row.maxFallSpeed) } } : {}),
       shape: row.shape === 'box' ? { kind: 'box', size: [numeric(row.width), numeric(row.height)] } : row.shape === 'circle' ? { kind: 'circle', radius: numeric(row.radius) } : { kind: row.shape },
       offset: [numeric(row.x), numeric(row.y)], layer: numeric(row.layer), mask: numeric(row.mask) })) };
   }
   async function check() {
     if (pending || !current() || targetState === 'loading') return false;
-    capture(); const owner = session, request = epoch, value = signature(), targets = hasTargets() ? targetCatalog : null, targetRequest = targetGeneration, responseCapability = responseAvailable(); pending = true; invalidate(); message = '正在检查物理修改…'; refresh();
-    const owns = () => request === epoch && session === owner && current() && signature() === value && responseAvailable() === responseCapability && targetRequest === targetGeneration
+    capture(); const owner = session, request = epoch, value = signature(), targets = hasTargets() ? targetCatalog : null, targetRequest = targetGeneration, schema = requiredSchema(raw()), capabilityRequest = capabilityRevision(schema); pending = true; invalidate(); message = '正在检查物理修改…'; refresh();
+    const owns = () => request === epoch && session === owner && current() && signature() === value && schemaAvailable(schema) && capabilityRevision(schema) === capabilityRequest && targetRequest === targetGeneration
       && (targets ? hasTargets() && targetCatalog === targets : !hasTargets());
     try {
+      if (!schemaAvailable(schema)) throw unavailable();
       if (value === initial) { if (targets) validateScenePhysics2DTargets(targets, owner.model); previewModel = owner.model; previewForm = value; message = '物理参数已检查；未修改原文。'; return true; }
       const candidate = await createScenePhysics2DProposal(owner.source, edit()); if (!owns()) return false;
       if (!isScenePhysics2DProposal(candidate) || candidate.kind !== 'scene-physics2d' || candidate.sourcePath !== owner.source.sourcePath
@@ -348,9 +401,9 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
   }
   async function apply() {
     if (pending || !current() || !approved()) { refresh(); return false; }
-    const owner = session, request = epoch, candidate = proposal, value = approval, targets = approvedTargets, targetRequest = targetGeneration;
+    const owner = session, request = epoch, candidate = proposal, value = approval, targets = approvedTargets, targetRequest = targetGeneration, capabilityRequest = capabilityRevision(requiredSchema(candidate.edit.bodies));
     const owns = () => !disposed && dialog.open && request === epoch && session === owner;
-    const unchanged = () => owns() && current() && approved() && proposal === candidate && signature() === value && approvedTargets === targets
+    const unchanged = () => owns() && current() && capabilityRevision(requiredSchema(candidate.edit.bodies)) === capabilityRequest && approved() && proposal === candidate && signature() === value && approvedTargets === targets
       && targetRequest === targetGeneration && (!targets || hasTargets() && targetCatalog === targets);
     pending = true; message = '正在应用物理修改到原文草稿…'; refresh();
     try {
@@ -369,7 +422,7 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     let id;
     try { for (let attempt = 0; attempt < 16; attempt++) { const value = globalThis.crypto?.randomUUID?.(); if (uuid(value) && !reserved.has(value)) { id = value; break; } } } catch { /* No fallback identity. */ }
     if (!id) { message = '无法分配新的碰撞体编号，输入已保留。'; refresh(); return; }
-    reserved.add(id); draft.push({ id, instanceId: '', kind: 'static', collisionResponse: 'stop', responsePresent: false, shape: 'box', width: '32', height: '32', radius: '16', x: '0', y: '0', layer: '1', mask: '1' });
+    reserved.add(id); draft.push({ id, instanceId: '', kind: 'static', collisionResponse: 'stop', responsePresent: false, oneWayMode: 'solid', oneWayMargin: '1', motion: 'free', gravity: '980', jumpSpeed: '360', maxFallSpeed: '1200', shape: 'box', width: '32', height: '32', radius: '16', x: '0', y: '0', layer: '1', mask: '1' });
     selected = id; invalidate(); renderSelected(); refresh(); el('Instance').focus();
   }
   function remove() {
@@ -393,7 +446,13 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     try { const value = scenePhysics2DTargetValue(targetCatalog, el('Target').value); if (value !== el('Instance').value) { el('Instance').value = value; changed(); } }
     catch { refreshTargets(); }
   });
-  for (const [name] of Object.entries(names)) el(name).addEventListener(['Kind', 'Shape', 'Response'].includes(name) ? 'change' : 'input', changed);
+  for (const [name] of Object.entries(names)) el(name).addEventListener(['Kind', 'Shape', 'Response', 'Motion', 'OneWay'].includes(name) ? 'change' : 'input', () => {
+    if (pending || !current()) return;
+    // Only an explicit mode/kind choice enables the required slide response;
+    // refreshes and silent field changes cannot repair or authorize a draft.
+    if (['Kind', 'Motion'].includes(name) && el('Kind').value === 'character' && el('Motion').value === 'platformer' && featureAvailable(3)) el('Response').value = 'slide';
+    changed();
+  });
   button.addEventListener('click', () => { void open(); }); el('Check').addEventListener('click', () => { void check(); }); el('Apply').addEventListener('click', () => { void apply(); });
   el('Add').addEventListener('click', add); el('Remove').addEventListener('click', remove);
   for (const name of ['Close', 'Cancel']) el(name).addEventListener('click', () => close());

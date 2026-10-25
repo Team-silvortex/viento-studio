@@ -1,0 +1,32 @@
+cwd: /home/chiharukiryu/cdev/viento-studio
+Node: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node (24.21.0)
+PATH also includes /home/chiharukiryu/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin
+
+plan-generator.log
+node --test --test-isolation=none scripts/tests/scene-physics2d-one-way-plan.test.mjs scripts/tests/scene-physics2d-character-motion-plan.test.mjs scripts/tests/scene-physics2d-one-way-backends.test.mjs
+17 passed / 14 native tests skipped without VIENTO_GODOT_BIN / 0 failed.
+
+full-check.log / full-check-exit.json
+npm run check -- --app-only
+Executed by /tmp/viento-physics-one-way/run-check.py, detached Python supervisor PID 103279.
+First full check: 8171 total, 7748 passed, 422 skipped, 1 outdated fingerprint test expectation failed.
+adapter-retest.log
+node --test scripts/tests/godot4-adapter.test.mjs scripts/tests/runtime-instance-backends.test.mjs
+13 passed / 2 native conditions skipped / 0 failed.
+
+full-check-recheck.log / full-check-recheck-exit.json
+npm run check -- --app-only
+Executed by /tmp/viento-physics-one-way/run-check-recheck.py, detached Python supervisor PID 161056.
+Native matrix separately sets tool and capture variables; see backend-commands.txt.
+
+Documentation and preservation:
+python3 /tmp/viento-physics-one-way/atlas.py
+python3 /tmp/viento-physics-one-way/preservation.py
+python3 docs/test-results/docs-refresh-2026-10-25/check-links.py --output docs/test-results/scene-physics2d-one-way/links.json
+node scripts/function-atlas.mjs --write --refresh-sources
+node scripts/function-atlas.mjs --check
+git diff --check
+
+No version bump, installation, commit, push, or author-data migration.
+
+Final complete application recheck: {'tests': 8171, 'pass': 7749, 'fail': 0, 'cancelled': 0, 'skipped': 422}; process exit 0.

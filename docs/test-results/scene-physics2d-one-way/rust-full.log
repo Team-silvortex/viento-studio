@@ -1,0 +1,470 @@
+   Compiling viento-studio-core v0.1.0 (/home/chiharukiryu/cdev/viento-studio/crates/viento-studio-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.36s
+     Running unittests src/lib.rs (crates/viento-studio-core/target/debug/deps/viento_studio_core-5f23e457f0a6fb2b)
+
+running 365 tests
+test animation_state_branches::tests::duplicate_raw_keys_remain_rejected_before_branch_dispatch ... ok
+test animation_state_conditions::tests::duplicate_keys_envelopes_unicode_and_optional_markers_are_explicit ... ok
+test animation_state_branches::tests::explicit_branches_preserve_full_order_indices_and_mode ... ok
+test animation_state_combinations::tests::group_normalization_and_full_numeric_budget_cover_every_leaf ... ok
+test animation_state_branches::tests::old_operations_keep_rejecting_mode_and_duplicate_event_triggers ... ok
+test animation_state_combinations::tests::raw_group_duplicate_keys_are_refused_before_deserialization_can_hide_them ... ok
+test animation_state_branches::tests::every_edge_is_validated_and_ordered_predicate_overlap_is_allowed ... ok
+test animation_state_selectors::tests::preserves_selector_in_table_and_indexed_ir_with_independent_marker ... ok
+test animation_state_conditions::tests::conditional_tables_reuse_legacy_indices_and_unique_triggers ... ok
+test animation_state_conditions::tests::numbers_use_exact_double_precision_and_normalized_zero ... ok
+test animation_state_selectors::tests::raw_selected_requests_reject_duplicate_decoded_keys ... ok
+test animation_state_selectors::tests::old_operations_still_reject_selectors_and_selected_admission_accepts_plain_tables ... ok
+test animation_state_branches::tests::opt_in_is_required_even_for_empty_or_unambiguous_tables ... ok
+test animation_state_conditions::tests::typed_comparisons_do_not_coerce_or_invert_mismatches ... ok
+test animation_state_combinations::tests::old_operations_reject_groups_while_new_capability_also_admits_legacy_leaves ... ok
+test layout_draft::tests::handle_exhaustion_never_wraps_or_reuses_closed_identifiers ... ok
+test layout_save::tests::exhausted_request_identifiers_do_not_reuse_tokens_or_change_state ... ok
+test animation_state_table::tests::index_is_ordered_and_preserves_table_self_edges_cycles_and_unused_states ... ok
+test animation_state_branches::tests::fallback_is_final_within_its_group_and_completions_stay_unique ... ok
+test animation_state_conditions::tests::scalar_and_operator_boundaries_are_strict ... ok
+test animation_state_selectors::tests::selectors_do_not_relax_scalar_or_condition_contracts ... ok
+test animation_state_combinations::tests::group_shape_and_each_leaf_are_strict_even_when_shadowed_or_redundant ... ok
+test animation_state_combinations::tests::groups_preserve_order_duplicates_singletons_and_original_indices ... ok
+test scene3d::fog_tests::escaped_fog_declaration_keeps_utf16_object_locations_and_all_author_values ... ok
+test scene3d::fog_tests::fog_decoded_duplicates_and_nonfinite_wire_numbers_fail_native_admission ... ok
+test animation_state_selectors::tests::unique_and_ordered_mixed_payload_shared_tables_keep_all_old_rules ... ok
+test animation_state_table::tests::references_duplicates_and_trigger_shapes_are_strict ... ok
+test scene3d::fog_tests::optional_fog_preserves_presence_zero_and_full_precision_without_adding_defaults ... ok
+test scene3d::tests::json_duplicates_decoded_key_duplicates_syntax_lone_surrogates_and_unknown_subtrees_reject ... ok
+test animation_state_combinations::tests::only_event_guards_and_explicit_final_fallbacks_keep_existing_branch_rules ... ok
+test scene3d::tests::camera_y_up_basis_requires_distance_and_horizontal_ratio_for_gpu ... ok
+test animation_state_selectors::tests::selectors_have_exact_shape_and_project_key_bounds ... ok
+test scene3d::tests::only_scene3d_schema_one_and_box_primitive_are_admitted ... ok
+test scene3d::tests::valid_model_retains_authored_degrees_and_values_without_rendering_or_normalization ... ok
+test scene3d::tests::whole_object_ranges_include_bom_crlf_multilingual_non_bmp_and_escaped_keys ... ok
+test scene3d::tests::camera_frustum_is_float32_usable_and_rejects_extreme_near_or_narrow_far ... ok
+test scene3d::tests::light_direction_ratio_nonzero_energy_and_colors_are_validated ... ok
+test animation_state_conditions::tests::original_table_budget_includes_conditions ... ok
+test scene3d::tests::object_vectors_use_exact_dimensions_finite_bounds_and_positive_sizes ... ok
+test scene3d::tests::exact_root_camera_light_and_object_keys_reject_assets_world_behaviors_and_missing_fields ... ok
+test scene3d::tests::names_count_unicode_scalars_and_viewport_requires_bounded_integers ... ok
+test scene3d_alignment_patch::tests::caller_identity_order_never_changes_reference_or_source_ordered_net_paths ... ok
+test scene3d::fog_tests::fog_is_an_exact_complete_record_with_bounded_finite_density_and_six_digit_color ... ok
+test animation_state_table::tests::names_never_trim_coerce_or_escape_into_another_namespace ... ok
+test scene3d_alignment_patch::tests::equal_numbers_keep_negative_zero_and_different_exponent_lexemes ... ok
+test scene3d_alignment_patch::tests::invalid_unselected_objects_and_duplicate_source_keys_use_existing_parse_errors ... ok
+test animation_state_table::tests::exact_records_bytes_and_duplicate_decoded_keys_are_checked ... ok
+test scene3d_alignment_patch::tests::direct_reference_assignment_retains_a_subnormal_number_and_extreme_coordinates ... ok
+test scene3d_alignment_patch::tests::only_net_numeric_tokens_change_amid_bom_crlf_unicode_escaped_keys_and_exponents ... ok
+test scene3d_alignment_patch::tests::axis_is_an_exact_closed_world_axis_without_normalization ... ok
+test scene3d_copy_patch::tests::a_zero_offset_still_creates_structural_copies_without_normalizing_positions ... ok
+test scene3d_copy_patch::tests::bom_crlf_unicode_escaped_keys_and_all_non_identity_non_position_tokens_survive ... ok
+test scene3d_alignment_patch::tests::wire_request_rejects_decoded_duplicate_fields_extra_fields_and_old_operation_mismatch ... ok
+test scene3d_copy_patch::tests::empty_overlong_or_malformed_copy_mapping_is_never_an_author_approval ... ok
+test scene3d_alignment_patch::tests::three_world_axes_use_the_explicit_reference_and_preserve_every_other_semantic ... ok
+test scene3d_copy_patch::tests::one_invalid_final_coordinate_rejects_the_entire_multi_source_candidate ... ok
+test scene3d_copy_patch::tests::malformed_or_invalid_unselected_source_retains_original_strict_parse_errors ... ok
+test scene3d_copy_patch::tests::identities_are_existing_distinct_sources_and_all_fresh_distinct_lowercase_uuids ... ok
+test scene3d_copy_patch::tests::one_insertion_keeps_the_whole_original_prefix_suffix_and_original_padding ... ok
+test scene3d_copy_patch::tests::subnormal_offsets_change_zero_but_rounded_noops_keep_nonzero_original_tokens ... ok
+test scene3d_alignment_patch::tests::incomplete_repeated_unknown_and_nonselected_reference_sets_fail_atomically ... ok
+test scene3d_copy_patch::tests::offset_and_final_position_extrema_are_inclusive_without_wrap_or_clamp ... ok
+test scene3d_copy_patch::tests::top_and_pair_decoded_duplicate_keys_and_extra_intents_fail_raw_request_admission ... ok
+test scene3d_copy_patch::tests::optional_copy_probe_does_not_repurpose_old_single_object_copy_or_parse ... ok
+test scene3d_copy_patch::tests::reverse_pairs_preserve_mapping_and_append_in_original_source_order ... ok
+test scene3d_copy_patch::tests::unchanged_exponents_and_signed_zero_in_copy_remain_raw ... ok
+test scene3d_distribution_patch::tests::already_uniform_values_keep_all_exponent_spelling_and_return_every_target ... ok
+test animation_state_table::tests::counts_and_distinct_event_budget_accept_exact_limits_only ... ok
+test scene3d_distribution_patch::tests::a_nonzero_span_that_cannot_hold_strictly_increasing_interiors_is_rejected_whole ... ok
+test scene3d_distribution_patch::tests::equal_coordinates_and_signed_zeros_keep_declaration_ties_and_unchanged_zero_token ... ok
+test scene3d::tests::utf8_source_budget_checks_raw_bom_and_multilingual_bytes ... ok
+test scene3d_distribution_patch::tests::axis_has_no_normalization_and_invalid_unselected_source_uses_old_parse_errors ... ok
+test scene3d_distribution_patch::tests::exact_cst_splice_preserves_bom_crlf_unicode_escaped_keys_and_both_endpoint_lexemes ... ok
+test scene3d_distribution_patch::tests::operation_order_is_binary64_multiply_fraction_then_add_not_an_alternative_lerp ... ok
+test scene3d_distribution_patch::tests::selected_ids_and_net_paths_stay_source_ordered_while_distribution_orders_by_original_coordinate ... ok
+test scene3d_distribution_patch::tests::exact_author_extremes_are_preserved_without_expanding_scope_or_coordinate_bounds ... ok
+test scene3d_distribution_patch::tests::incomplete_repeated_unknown_or_nonstring_identity_sets_fail_closed_before_any_patch ... ok
+test scene3d_distribution_patch::tests::zero_span_is_a_complete_byte_preserving_noop_including_signed_zero ... ok
+test scene3d_distribution_patch::tests::smallest_positive_subnormal_span_must_be_representable_and_not_silently_collapsed ... ok
+test animation_state_branches::tests::count_bounds_include_all_branches_and_unique_event_names ... ok
+test scene3d_distribution_patch::tests::three_world_axes_change_only_their_interior_position_and_preserve_all_other_semantics ... ok
+test scene3d_distribution_patch::tests::strict_wire_request_rejects_decoded_duplicates_unknown_fields_and_foreign_operation_shapes ... ok
+test scene3d_environment_patch::fog_tests::raw_fog_request_duplicates_unknown_keys_null_and_missing_fields_are_rejected ... ok
+test scene3d_environment_patch::fog_tests::adding_disabled_fog_is_explicit_while_ordinary_environment_edits_never_add_it ... ok
+test scene3d_environment_patch::fog_tests::existing_fog_edits_only_requested_changed_leaves_and_zero_disables_without_removal ... ok
+test scene3d_environment_patch::tests::decoded_escaped_keys_and_reordered_source_do_not_change_path_order ... ok
+test scene3d_environment_patch::fog_tests::fog_insertion_and_old_leaf_changes_form_one_exact_atomic_raw_splice ... ok
+test scene3d_environment_patch::tests::boundary_values_and_camera_constraints_reuse_existing_scene_parser ... ok
+test scene3d_environment_patch::fog_tests::invalid_fog_never_commits_other_valid_environment_fields ... ok
+test scene3d_environment_patch::tests::mixed_environment_values_follow_logical_order_and_preserve_all_objects ... ok
+test scene3d_environment_patch::tests::original_invalid_whole_scene_cannot_be_repaired_by_environment_values ... ok
+test scene3d::tests::declared_object_count_and_unique_canonical_uuid_are_bounded ... ok
+test scene3d_environment_patch::tests::position_and_target_can_atomically_move_both_camera_endpoints ... ok
+test scene3d_environment_patch::tests::raw_request_duplicates_are_rejected_at_all_nesting_levels_even_after_null ... ok
+test scene3d_environment_patch::tests::same_numeric_and_escaped_color_values_keep_negative_zero_exponents_and_all_bytes ... ok
+test scene3d_alignment_patch::tests::aggregate_growth_and_shrink_are_admitted_by_final_not_intermediate_byte_budget ... ok
+test scene3d_environment_patch::tests::near_and_far_change_together_without_invalid_intermediate_plane ... ok
+test scene3d_environment_patch::tests::exact_nonempty_nested_dtos_reject_null_unknown_empty_and_invalid_leaf_types ... ok
+test scene3d_environment_patch::tests::wire_response_shape_optional_probe_and_noop_are_independent ... ok
+test scene3d_objects_patch::tests::copy_changes_only_identity_and_name_value_tokens_not_numbers_keys_or_trivia ... ok
+test scene3d_objects_patch::tests::collision_foreign_identity_copy_self_and_last_remove_fail_without_new_objects ... ok
+test scene3d_objects_patch::tests::exact_union_rejects_extra_mixed_actions_missing_fields_and_wrong_operation ... ok
+test scene3d_objects_patch::tests::complete_add_is_appended_with_retained_root_and_old_object_tokens ... ok
+test scene3d_objects_patch::tests::added_object_is_validated_by_complete_existing_scene_rules ... ok
+test scene3d_copy_patch::tests::final_object_overflow_is_a_limit_error_not_partial_copy ... ok
+test scene3d_objects_patch::tests::dense_inline_arrays_and_unusual_whitespace_use_the_same_cst_boundaries ... ok
+test scene3d_environment_patch::tests::invalid_camera_and_light_vectors_or_bounds_are_whole_candidate_errors ... ok
+test scene3d_alignment_patch::tests::all_128_targets_are_source_ordered_and_anchor_does_not_add_a_net_path ... ok
+test scene3d_objects_patch::tests::explicit_copy_name_is_required_and_semantic_name_bounds_stay_with_scene_parser ... ok
+test scene3d_objects_patch::tests::original_full_validation_cannot_be_bypassed_by_removing_or_copying_bad_object ... ok
+test scene3d_objects_patch::tests::first_middle_last_removal_preserves_every_other_original_token_and_required_separators ... ok
+test scene3d_particles::tests::deterministic_sequence_matches_known_float32_phase_values_and_seed_zero_remains_valid ... ok
+test scene3d_objects_patch::tests::raw_request_top_and_full_object_duplicate_decoded_keys_are_rejected ... ok
+test scene3d_particles::tests::absent_particle_field_stays_absent_and_present_declarations_remain_author_values ... ok
+test scene3d_environment_patch::fog_tests::additive_fog_cannot_exceed_the_complete_scene_byte_limit ... ok
+test scene3d_particles::tests::field_coordinates_boundaries_do_not_impose_camera_or_object_count_rules ... ok
+test scene3d_particles::tests::explicit_time_sampling_supports_negative_velocity_wrap_and_random_access_without_state ... ok
+test scene3d_objects_patch::tests::same_semantic_copy_name_retains_original_escaped_name_and_negative_zero ... ok
+test scene3d_particles::tests::tiny_negative_offset_rounded_to_one_is_canonical_zero_and_time_bounds_are_strict ... ok
+test scene3d_particles::tests::raw_request_duplicate_keys_including_null_and_operation_specific_extras_are_rejected ... ok
+test scene3d_distribution_patch::tests::final_joint_growth_and_shrink_have_one_budget_without_intermediate_source_serialization ... ok
+test scene3d_patch::tests::decoded_duplicate_and_unknown_source_keys_fail_before_any_patch ... ok
+test scene3d_particles::tests::particle_and_fog_insertion_are_canonical_ordered_spans_without_changing_any_original_bytes ... ok
+test scene3d_particles::tests::disabled_empty_and_maximum_count_are_bounded_and_every_phase_is_exact_float32 ... ok
+test scene3d_particles::tests::existing_particle_updates_only_changed_leaf_tokens_and_count_zero_does_not_remove_field ... ok
+test scene3d_copy_patch::tests::sixty_four_distinct_sources_can_fill_the_final_128_object_budget ... ok
+test scene3d_particles::tests::field_requires_exact_complete_bounded_vectors_color_integers_and_size_inside_extent ... ok
+test scene3d_patch::tests::complete_original_scene_validation_precedes_noop_or_candidate_repair ... ok
+test scene3d_patch::tests::decoded_keys_identity_bom_crlf_unicode_and_other_numeric_tokens_are_exact ... ok
+test scene3d_patch::tests::mathematical_noop_keeps_exponents_negative_zero_and_all_raw_bytes ... ok
+test scene3d_patch::tests::raw_request_duplicate_escaped_fields_and_values_are_not_hidden_by_value ... ok
+test scene3d_patch::tests::original_key_order_does_not_control_changed_path_order ... ok
+test scene3d_patch::tests::one_instance_net_axes_are_patched_in_fixed_logical_path_order ... ok
+test scene3d_alignment_patch::tests::final_byte_budget_rejects_growth_without_partial_result_and_accepts_shrink ... ok
+test scene3d_patch::tests::wrong_missing_or_foreign_identity_cannot_select_by_object_order ... ok
+test scene3d_patch::tests::every_transform_bounds_are_inclusive_and_outside_is_atomic_rejection ... ok
+test scene3d_distribution_patch::tests::all_128_instances_sort_stably_and_keep_two_extrema_and_every_non_axis_value ... ok
+test scene3d_patch::tests::empty_unknown_partial_non_numeric_or_wrong_shape_values_are_not_repaired ... ok
+test scene3d_properties_patch::tests::both_properties_are_patched_only_at_exact_target_values_in_name_color_order ... ok
+test scene3d_properties_patch::tests::color_name_key_source_order_cannot_change_logical_paths ... ok
+test scene3d_properties_patch::tests::full_original_scene_validation_precedes_attempted_property_repair ... ok
+test scene3d_patch::tests::wire_response_is_exact_and_stateless_with_independent_optional_probe ... ok
+test scene3d_properties_patch::tests::names_with_quotes_controls_non_bmp_and_backslashes_are_canonical_value_strings ... ok
+test scene3d_copy_patch::tests::only_final_full_byte_budget_applies_to_all_copy_insertion ... ok
+test scene3d_properties_patch::tests::independent_probe_and_wire_receipt_have_no_identity_or_structural_side_effects ... ok
+test scene3d_properties_patch::tests::escaped_identity_keys_name_color_and_all_numeric_lexemes_stay_exact ... ok
+test scene3d_objects_patch::tests::wire_receipt_has_one_exact_path_and_stable_independent_capability ... ok
+test scene3d_properties_patch::tests::individual_and_mixed_noop_fields_do_not_become_extra_paths ... ok
+test scene3d_properties_patch::tests::raw_request_duplicates_include_decoded_keys_and_null_first_occurrence ... ok
+test scene3d_removal_patch::tests::bom_crlf_unicode_escaped_key_and_authored_tokens_survive ... ok
+test scene3d_properties_patch::tests::null_unknown_empty_numeric_fields_and_missing_or_foreign_identity_are_rejected ... ok
+test scene3d_properties_patch::tests::source_string_values_matching_keys_identity_or_other_names_are_not_identity_locators ... ok
+test scene3d_removal_patch::tests::invalid_source_errors_match_original_parser ... ok
+test scene3d_removal_patch::tests::exact_four_field_receipt_and_independent_abi ... ok
+test scene3d_removal_patch::tests::invalid_utf8_and_trailing_json_never_enter_the_author_operation ... ok
+test scene3d_removal_patch::tests::alternating_runs_use_original_indices ... ok
+test scene3d_removal_patch::tests::malformed_envelope_and_legacy_intents_are_rejected ... ok
+test scene3d_removal_patch::tests::raw_duplicate_decoded_and_unknown_request_keys_are_rejected ... ok
+test scene3d_removal_patch::tests::empty_duplicate_unknown_overlong_and_non_uuid_intents_are_invalid ... ok
+test scene3d_removal_patch::tests::first_run_preserves_survivors ... ok
+test scene3d_removal_patch::tests::final_run_preserves_survivors ... ok
+test scene3d_properties_patch::tests::unicode_codepoint_name_and_hex_color_rules_come_from_existing_parser ... ok
+test scene3d_removal_patch::tests::leading_and_trailing_runs_share_one_candidate ... ok
+test scene3d_translation_patch::tests::extreme_offsets_land_on_exact_position_bounds ... ok
+test scene3d_translation_patch::tests::exact_numeric_tokens_keep_bom_crlf_escaped_keys_and_all_other_lexemes ... ok
+test scene3d_translation_patch::tests::malformed_original_unselected_objects_still_use_existing_parse_errors ... ok
+test scene3d_removal_patch::tests::middle_run_preserves_survivors ... ok
+test scene3d_translation_patch::tests::exact_wire_request_rejects_decoded_duplicates_and_foreign_operations ... ok
+test scene3d_translation_patch::tests::one_overflow_refuses_the_whole_batch_without_partial_source ... ok
+test scene3d_translation_patch::tests::negative_zero_and_exponent_noop_spellings_are_not_normalized ... ok
+test scene3d_translation_patch::tests::source_order_targets_and_axis_paths_are_independent_of_requested_order ... ok
+test scene3d_translation_patch::tests::partly_rounded_translation_retains_all_targets_but_only_one_changed_axis ... ok
+test scene_animation::clip_tests::clip_sampling_uses_original_curves_once_and_preserves_full_timeline_defaults ... ok
+test scene_animation::clip_tests::clip_transport_preserves_large_clocks_and_sample_rejects_legacy_documents ... ok
+test scene3d_translation_patch::tests::zero_and_rounded_nonzero_deltas_preserve_every_byte_and_include_noop_targets ... ok
+test scene_animation::clip_tests::clip_transport_rejects_cross_scene_removed_clip_noncanonical_and_reverse_clock_state ... ok
+test scene_animation::clip_tests::clip_transport_selects_paused_local_heads_and_preserves_same_clock_fifo ... ok
+test scene_animation::clip_tests::clips_validate_identity_label_limits_ranges_and_allow_overlapping_windows ... ok
+test scene_animation::retime_tests::retime_equal_duration_is_exact_even_for_very_small_interior_instants ... ok
+test scene3d_removal_patch::tests::all_128_and_single_scene_last_object_are_invalid ... ok
+test scene_animation::retime_tests::retime_rejects_endpoint_underflow_without_clamping_or_merging ... ok
+test scene_animation::retime_tests::retime_rejects_distinct_global_instants_collapsing_across_tracks_or_clips ... ok
+test scene_animation::retime_tests::retime_revalidates_input_and_exact_envelopes_without_promoting_formats ... ok
+test scene_animation::retime_tests::retime_uses_normal_factors_and_normalized_fallback_without_overflow ... ok
+test scene_animation::scope_tests::explicit_scope_accepts_v4_and_never_changes_legacy_documents ... ok
+test scene_animation::scope_tests::scope_is_required_exact_and_bounded_by_the_existing_clip_rules ... ok
+test scene_animation::scope_tests::scope_does_not_change_sampling_or_explicit_clock_transport ... ok
+test scene_animation::tests::detached_inspection_and_explicit_time_sampling_preserve_author_data ... ok
+test scene_animation::scope_tests::scope_survives_retime_and_track_copy_without_mutating_source ... ok
+test scene_animation::tests::legacy_visual_tracks_stay_exact_and_sprite_channels_are_unique ... ok
+test scene3d_translation_patch::tests::missing_repeated_unknown_uppercase_ids_and_invalid_delta_shapes_fail_closed ... ok
+test scene3d_removal_patch::tests::original_budget_precedes_intent_and_removal_cannot_repair_it ... ok
+test scene_animation::tests::raw_duplicate_escaped_keys_bom_and_unpaired_unicode_fail_closed ... ok
+test scene_animation::retime_tests::retime_scales_all_formats_without_reordering_or_changing_values ... ok
+test scene3d_removal_patch::tests::removes_127_of_128_with_one_remaining ... ok
+test scene_animation::tests::sprite_grids_and_indices_are_bounded_integers_with_exact_track_shapes ... ok
+test scene_animation::tests::scalar_and_vector_shapes_bounds_and_exact_fields_are_required ... ok
+test scene_animation::tests::step_is_right_continuous_and_all_visual_properties_sample ... ok
+test scene_animation::tests::transport_autoplays_and_commands_advance_then_apply_at_the_same_clock ... ok
+test scene_animation::tests::terminal_hold_and_loop_boundaries_have_explicit_semantics ... ok
+test scene_animation::tests::transport_terminal_seek_resume_and_loop_boundaries_are_explicit ... ok
+test scene_animation::tests::sprite_samples_are_discrete_with_a_bound_grid_and_existing_time_semantics ... ok
+test scene_animation::tests::unique_tracks_channels_and_ordered_zero_based_keys_are_required ... ok
+test scene_animation::track_copy_tests::track_copy_rejects_missing_extra_and_duplicate_decoded_request_fields ... ok
+test scene_animation::tests::transport_rejects_unbound_noncanonical_and_nonmonotonic_inputs ... ok
+test scene_animation::track_copy_tests::track_copy_rejects_missing_source_duplicate_track_id_and_target_channel ... ok
+test scene_audio::tests::command_state_does_not_guess_natural_completion ... ok
+test scene_animation::track_copy_tests::track_copy_preserves_all_schemas_grids_curves_clips_and_original_order ... ok
+test scene_audio::tests::inspect_is_detached_and_preserves_track_values ... ok
+test scene_animation::track_copy_tests::track_copy_validates_all_three_ids_and_the_original_document ... ok
+test scene_audio::tests::explicit_sample_is_stateless_and_unstarted_tracks_are_stopped ... ok
+test scene_audio::tests::tracks_without_timeline_cues_remain_unstarted ... ok
+test scene_animation::tests::global_and_per_track_key_budgets_are_independent ... ok
+test scene_audio::tests::zero_and_negative_zero_have_the_same_stable_time_order ... ok
+test scene_audio::tests::stable_cues_and_restarts_and_idempotent_stop ... ok
+test scene_audio::tests::wire_rejects_nested_and_escaped_duplicates_and_exact_request_fields ... ok
+test scene3d_removal_patch::tests::singleton_first_middle_last ... ok
+test scene3d_removal_patch::tests::exact_byte_budget_source_can_shrink ... ok
+test scene_composition::tests::expansion_is_v3_and_source_map_tracks_composite_and_identity_fields ... ok
+test scene3d_distribution_patch::tests::original_final_byte_budgets_admit_shrink_and_noop_but_reject_growth_atomically ... ok
+test scene_audio::tests::strict_fields_values_references_and_limits ... ok
+test scene_composition::tests::inherited_image_null_and_absence_stay_distinct ... ok
+test scene_composition::tests::group_references_cycles_and_depth_are_checked_for_every_fragment ... ok
+test scene_composition::tests::identity_maps_are_complete_unique_and_cross_domain_disjoint ... ok
+test scene_composition::tests::overrides_are_local_and_stable_explicit_ids_survive_reordering ... ok
+test scene_composition::tests::override_whitelist_prevents_identity_definition_group_and_inheritance_changes ... ok
+test scene3d_objects_patch::tests::exact_original_final_utf8_budget_rejects_growth_and_allows_remove_shrink ... ok
+test scene_composition::tests::request_has_exact_shape_and_does_not_extend_protocol ... ok
+test scene_composition::tests::strict_scanner_rejects_decoded_duplicates_and_bad_json_everywhere ... ok
+test scene_composition::tests::raw_utf8_limit_and_nested_budget_are_checked_before_decoding ... ok
+test scene_composition::tests::scene_and_names_follow_unicode_units_and_viewport_bounds ... ok
+test scene_composition::tests::numeric_and_runtime_actor_contracts_hold_before_and_after_override ... ok
+test scene_composition::tests::unknown_fields_and_invalid_unused_fragments_cannot_hide ... ok
+test scene_composition::tests::template_domains_are_separate_but_keys_and_duplicates_are_strict ... ok
+test scene3d_translation_patch::tests::all_128_targets_are_source_ordered_without_increasing_author_budget ... ok
+test scene3d_environment_patch::tests::utf8_original_and_candidate_growth_budgets_allow_exact_noop_and_shrink ... ok
+test scene_composition_definition_rename::tests::decoded_identity_matches_escaped_value_and_keys_with_other_lexemes_retained ... ok
+test scene_composition_definition_rename::tests::incomplete_extra_wrong_operation_or_wrong_types_are_not_admitted ... ok
+test scene_composition_definition_rename::tests::full_original_validation_cannot_be_bypassed_by_noop_or_repair_rename ... ok
+test scene_animation::track_copy_tests::track_copy_revalidates_32_track_64_per_track_and_512_total_key_budgets ... ok
+test scene_composition_definition_rename::tests::same_id_is_exact_byte_noop_even_when_identity_uses_escapes ... ok
+test scene_composition_definition_rename::tests::only_related_references_change_with_interleaved_placements_and_reused_objects ... ok
+test scene_composition_definition_rename::tests::renames_all_related_placement_refs_in_source_order_without_changing_effective_scene ... ok
+test scene_animation::track_copy_tests::track_copy_rejects_result_bytes_even_with_legal_track_and_key_counts ... ok
+test scene_composition_definitions_patch::tests::invalid_original_duplicate_keys_and_unrelated_unused_declarations_cannot_be_bypassed ... ok
+test scene_composition_definition_rename::tests::missing_old_duplicate_new_and_nonlocal_identifiers_reject_without_cascade ... ok
+test scene_composition_definitions_patch::tests::add_complete_native_definition_leaves_generated_scene_and_placements_unchanged ... ok
+test scene_composition_definitions_patch::tests::nearest_locations_fall_back_to_existing_containers_with_canonical_array_keys ... ok
+test scene_composition_definitions_patch::tests::copy_only_replaces_fragment_identity_value_retaining_every_body_token ... ok
+test scene_composition::tests::failures_are_atomic_and_stateless_expansion_uses_no_layout_sessions ... ok
+test scene_composition_definitions_patch::tests::read_only_locations_convert_bom_crlf_multilingual_and_emoji_boundaries_to_utf16 ... ok
+test scene_composition_definition_rename::tests::unused_rename_changes_only_one_token_and_never_allocates_instances ... ok
+test scene_composition_fragment_patch::tests::a_hidden_template_edit_remains_a_declaration_change ... ok
+test scene3d_patch::tests::exact_original_and_final_utf8_budget_growth_shrink_noop_and_overflow ... ok
+test scene_composition_definitions_patch::tests::removing_unused_definition_before_used_fragment_rebuilds_provenance_paths ... ok
+test scene_composition_fragment_patch::tests::existing_semantic_noops_keep_raw_numeric_and_escaped_tokens ... ok
+test scene_composition_definitions_patch::tests::unplaced_definition_copy_does_not_require_any_instance_maps ... ok
+test scene_composition_fragment_patch::tests::multiple_missing_fields_append_once_in_canonical_field_order ... ok
+test scene_composition_definitions_patch::tests::exact_requests_and_entire_native_fragment_rules_are_checked_even_without_placements ... ok
+test scene_composition_fragment_patch::tests::offset_bounds_reject_only_uncovered_final_positions ... ok
+test scene_composition_fragment_patch::tests::shared_declarations_change_linked_instances_but_retain_local_overrides ... ok
+test scene_composition_definitions_patch::tests::referenced_missing_last_or_duplicate_id_edits_are_rejected ... ok
+test scene_composition::tests::declared_and_expanded_budgets_bound_all_work ... ok
+test scene3d_properties_patch::tests::whole_utf8_budget_includes_unicode_growth_and_allows_noop_or_exact_shrink ... ok
+test scene_composition_fragment_patch::tests::unused_fragments_are_editable_and_still_strictly_validated ... ok
+test scene3d_objects_patch::tests::object_limit_counts_entire_original_and_final_inventory ... ok
+test scene_composition_groups_patch::tests::add_complete_ordered_ids_and_hierarchy_without_actor_or_coordinate_changes ... ok
+test scene_composition_fragment_patch::tests::strict_values_identity_reset_duplicate_source_and_null_rules ... ok
+test scene_composition_definitions_patch::tests::location_requests_are_exact_unique_and_bounded_without_relaxing_recipe_rules ... ok
+test scene_composition_groups_patch::tests::assign_set_reset_only_actor_membership_across_every_placement ... ok
+test scene_composition_groups_patch::tests::edit_name_and_parent_is_atomic_and_preserves_stable_key_and_maps ... ok
+test scene_composition_definition_rename::tests::exact_source_byte_limit_checks_final_whole_batch_and_permits_shrink ... ok
+test scene_composition_groups_patch::tests::unused_fragment_can_add_assign_edit_reset_remove_without_generated_ids ... ok
+test scene_composition_groups_patch::tests::member_splicing_handles_escaped_keys_and_parent_first_middle_tail ... ok
+test scene_composition_groups_patch::tests::remove_requires_raw_empty_leaf_even_for_unused_fragment ... ok
+test scene_composition_patch::tests::array_patch_retains_unchanged_axis_lexemes_and_internal_whitespace ... ok
+test scene_composition_groups_patch::tests::cycle_unknown_reference_and_sixteen_level_hierarchy_are_fully_validated ... ok
+test scene_composition_groups_patch::tests::remove_empty_leaf_and_last_group_keeps_containers_and_other_bytes ... ok
+test scene3d_translation_patch::tests::original_and_final_byte_limits_reject_growth_accept_shrink_and_keep_noop ... ok
+test scene_composition_groups_patch::tests::same_semantic_name_parent_and_absent_membership_are_exact_byte_noops ... ok
+test scene_composition_patch::tests::existing_values_gain_ordered_fields_without_reformatting_others ... ok
+test scene_composition_groups_patch::tests::group_ids_are_exact_related_source_order_and_globally_fresh ... ok
+test scene_composition_fragment_patch::tests::final_budget_can_balance_growing_and_shrinking_fields ... ok
+test scene_composition_patch::tests::equivalent_existing_values_are_a_byte_identical_noop ... ok
+test scene_composition_patch::tests::atomic_edit_has_an_independent_capability_and_exact_request_shape ... ok
+test scene_composition_patch::tests::mixed_edits_replace_arrays_remove_tail_runs_and_append_without_overlap ... ok
+test scene_composition_patch::tests::missing_override_array_is_inserted_only_inside_the_selected_placement ... ok
+test scene_composition_patch::tests::empty_arrays_and_a_missing_actor_override_append_without_touching_other_entries ... ok
+test scene_composition_patch::tests::only_changed_existing_scalar_tokens_are_replaced ... ok
+test scene_composition_groups_patch::tests::names_use_utf16_limits_and_invalid_controls_and_shapes_are_rejected ... ok
+test scene_composition_definitions_patch::tests::final_source_budget_rejects_growth_but_allows_whole_definition_shrink ... ok
+test scene_composition_patch::tests::positions_batch_noops_do_not_promote_inherited_positions ... ok
+test scene_composition_patch::tests::positions_batch_preserves_numeric_tokens_and_unrelated_override_fields ... ok
+test scene_composition_patch::tests::numerical_replacements_use_the_existing_javascript_number_spelling ... ok
+test scene_composition_patch::tests::null_images_follow_inheritance_and_position_remains_local_before_offset ... ok
+test scene_composition_patch::tests::positions_batch_combines_same_placement_insertions_in_source_order ... ok
+test scene_composition_patch::tests::positions_batch_rejects_invalid_final_world_and_malformed_source_atomically ... ok
+test scene_composition_definitions_patch::tests::remove_first_middle_tail_unused_definition_preserves_other_item_bytes ... ok
+test scene_composition_patch::tests::replacing_every_old_member_with_new_fields_retains_container_layout ... ok
+test scene_composition_patch::tests::all_six_fields_set_atomically_and_bad_values_never_produce_partial_output ... ok
+test scene_composition_patch::tests::last_field_reset_removes_only_the_selected_override_entry ... ok
+test scene_composition_patch::tests::request_shape_unknown_targets_and_all_original_recipe_errors_are_rejected ... ok
+test scene_composition_patch::tests::stable_target_survives_placement_and_override_reordering ... ok
+test scene_composition_patch::tests::missing_reset_fields_are_byte_identical_and_sets_still_use_stable_identity ... ok
+test scene_composition_patch::tests::resetting_position_restores_local_coordinates_and_preserves_instance_mapping ... ok
+test scene_composition_placements_patch::tests::exact_requests_reject_editing_copy_defaults_and_overrides ... ok
+test scene_composition_patch::tests::positions_batch_has_an_independent_capability_and_strict_shape ... ok
+test scene_composition_patch::tests::resetting_an_explicit_null_image_restores_template_inheritance ... ok
+test scene_composition_placements_patch::tests::add_exact_scope_and_reusable_definitions ... ok
+test scene_composition_patch::tests::reset_fields_require_a_unique_disjoint_nonempty_supported_intent ... ok
+test scene_composition_patch::tests::resetting_first_middle_or_last_members_keeps_every_other_lexeme ... ok
+test scene_composition_placements_patch::tests::copy_preserves_every_nonidentity_token ... ok
+test scene_composition_placements_patch::tests::last_or_unknown_placement_cannot_be_removed ... ok
+test scene_composition_placements_patch::tests::copy_keeps_missing_vs_zero_and_empty_overrides ... ok
+test scene_composition_structure_patch::tests::preserves_extreme_unchanged_number_spellings_escaped_keys_and_all_other_tokens ... ok
+test scene_composition_placements_patch::tests::unused_fragment_first_placement_and_explicit_offset ... ok
+test scene_composition_structure_patch::tests::rejects_wrong_request_shapes_and_invalid_original_source_before_patch ... ok
+test scene_composition_placements_patch::tests::remove_first_last_preserves_other_placement_tokens_and_fragments ... ok
+test scene_composition_structure_patch::tests::adds_one_actor_and_all_explicit_identities_atomically ... ok
+test scene_layout::tests::javascript_rounding_handles_negative_ties_and_neighbors ... ok
+test scene_composition_structure_patch::tests::removes_all_ids_and_only_matching_overrides_keeps_empty_arrays ... ok
+test scene_composition_structure_patch::tests::sole_matching_override_becomes_empty_without_deleting_container ... ok
+test scene_physics2d::tests::all_kinds_shapes_and_order_survive_without_engine_state ... ok
+test scene_physics2d::tests::exact_documents_bodies_and_shapes_reject_unknown_or_missing_fields ... ok
+test scene_physics2d::tests::motion_is_exact_character_only_and_requires_explicit_slide ... ok
+test scene_composition_placements_patch::tests::fresh_all_identity_domains_and_exact_maps ... ok
+test scene_composition_structure_patch::tests::unused_fragment_can_add_without_ids_but_cannot_remove_last_actor ... ok
+test scene_physics2d::tests::motion_numeric_limits_are_finite_inclusive_and_allow_fractional_units ... ok
+test scene_physics2d::tests::motion_raw_decoded_duplicates_and_legacy_geometry_limits_are_checked ... ok
+test scene_composition_patch::tests::source_and_output_utf8_budgets_are_enforced_before_returning_content ... ok
+test scene_physics2d::tests::numeric_boundaries_are_inclusive_and_masks_are_sixteen_bit_integers ... ok
+test scene_composition_structure_patch::tests::exact_related_order_and_unique_generated_and_placement_identity_required ... ok
+test scene_physics2d::tests::raw_duplicate_keys_and_cross_domain_envelopes_fail ... ok
+test scene_physics2d::tests::identities_and_body_count_are_bounded_without_reordering ... ok
+test scene_physics2d::tests::motion_schema_preserves_values_and_remains_separate_from_older_operations ... ok
+test scene_physics2d::tests::response_raw_keys_and_existing_geometry_limits_remain_strict ... ok
+test scene_composition_definitions_patch::tests::fragment_and_aggregate_declared_actor_group_limits_include_unused_copies ... ok
+test scene_physics2d::tests::response_is_an_optional_character_only_exact_enum ... ok
+test scene_source::tests::decimal_output_matches_javascript_thresholds_subnormals_and_exact_even_ties ... ok
+test scene_physics2d::tests::one_way_is_an_exact_static_box_object_with_finite_inclusive_margin ... ok
+test scene_physics2d::tests::response_schema_and_operation_are_separate_from_legacy_inspection ... ok
+test scene_composition_structure_patch::tests::rejects_duplicate_keys_invalid_new_declaration_group_and_last_actor ... ok
+test scene_source::tests::inspect_versions_and_optional_feature_probe ... ok
+test scene_source::tests::exact_requests_and_batch_shapes_are_required ... ok
+test scene_source::tests::object_member_ranges_capture_original_keys_without_changing_value_ranges ... ok
+test scene_physics2d::tests::one_way_schema_inherits_motion_and_stays_in_an_independent_operation_domain ... ok
+test scene_source::tests::paths_follow_source_order_and_decoded_position_keys_preserve_their_spelling ... ok
+test scene_source::tests::strict_syntax_and_duplicate_decoded_keys_are_checked_throughout_unknown_subtrees ... ok
+test scene_source::tests::group_names_use_utf16_units_and_ecmascript_whitespace ... ok
+test wasm::tests::abi_runs_owned_buffers_and_invalid_allocations_do_not_replay_requests ... ok
+test scene_source::tests::unknown_numbers_and_escaped_lone_surrogates_are_never_interpreted_or_normalized ... ok
+test wasm::tests::abi_consumes_mutating_requests_once_and_recovers_after_rejected_runs ... ok
+test scene_source::tests::lossless_patches_keep_bom_crlf_numeric_spelling_and_unknown_values ... ok
+test scene_source::tests::structural_depth_budget_includes_unknown_subtrees_and_empty_containers ... ok
+test scene_composition_patch::tests::positions_batch_validates_final_budget_instead_of_intermediate_growth ... ok
+test scene_physics2d::tests::one_way_rejects_raw_decoded_duplicates_without_changing_old_geometry_budgets ... ok
+test scene_composition_patch::tests::mixed_edits_validate_only_the_final_candidate_and_enforce_both_byte_budgets ... ok
+test scene_source::tests::group_identity_parent_topology_and_membership_are_bounded ... ok
+test scene_composition_placements_patch::tests::final_source_budget_only ... ok
+test scene_composition_groups_patch::tests::declared_expanded_and_final_byte_budgets_are_atomic_with_shrinking_edits ... ok
+test scene_source::tests::source_geometry_and_identity_limits_match_all_three_versions ... ok
+test scene_composition_structure_patch::tests::full_final_expansion_checks_offsets_declared_expanded_and_bytes_budgets ... ok
+test scene_source::tests::byte_limits_apply_before_parsing_and_after_coordinate_growth ... ok
+test scene_composition_placements_patch::tests::final_world_offset_and_expanded_count_are_atomic ... ok
+test scene_composition_patch::tests::all_reset_subsets_preserve_retained_fields_and_report_fixed_source_paths ... ok
+
+test result: ok. 365 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running unittests src/main.rs (crates/viento-studio-core/target/debug/deps/viento_core-2576ebf013e150b3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (crates/viento-studio-core/target/debug/deps/cli-2f3b92945c2b0890)
+
+running 2 tests
+test native_json_lines_share_draft_history_until_explicit_close ... ok
+test native_json_lines_recovers_after_bad_json_and_an_oversized_line ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/draft.rs (crates/viento-studio-core/target/debug/deps/draft-837291ad59787839)
+
+running 8 tests
+test history_keeps_exactly_one_hundred_batches_and_original_dirty_baseline ... ok
+test full_actor_batch_is_one_step_and_limits_are_measured_in_utf8_bytes ... ok
+test native_threads_have_independent_draft_sessions ... ok
+test dispatcher_drafts_isolate_histories_and_release_without_handle_reuse ... ok
+test invalid_or_noop_batches_preserve_redo_and_all_positions ... ok
+test native_draft_owns_atomic_batches_and_independent_snapshots ... ok
+test protocol_rejects_bad_handles_and_malformed_batches_without_losing_redo ... ok
+test full_registry_rejects_without_evicting_or_mutating_active_drafts ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/fragment_inheritance.rs (crates/viento-studio-core/target/debug/deps/fragment_inheritance-18e38d4a581ecf2d)
+
+running 9 tests
+test duplicate_decoded_fields_and_invalid_unused_fragments_remain_rejected ... ok
+test fragment_edit_capability_is_independent_and_old_set_shape_remains_valid ... ok
+test missing_reset_fields_are_byte_identical_noops_without_deleting_the_actor ... ok
+test image_null_and_removed_declaration_are_distinct_and_local_suppression_survives ... ok
+test mixed_edits_handle_first_middle_tail_runs_and_append_after_removed_last_member ... ok
+test invalid_reset_intents_reject_atomically_even_when_setting_other_valid_fields ... ok
+test noninheriting_actors_can_remove_only_image_without_altering_the_flag ... ok
+test mixed_edits_check_only_the_final_byte_budget_and_every_final_placement ... ok
+test all_reset_subsets_remove_only_optional_declarations_and_keep_actor_and_placements ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/layout.rs (crates/viento-studio-core/target/debug/deps/layout-032fc8bb02aba73e)
+
+running 13 tests
+test alignment_overflow_rejects_the_entire_batch ... ok
+test batch_preserves_input_order_and_noops_and_does_not_need_sizes ... ok
+test fractional_boundary_cancellation_is_nudged_as_a_group ... ok
+test json_float_parsing_keeps_the_exact_binary_coordinate ... ok
+test group_clamp_preserves_spacing_at_both_boundaries ... ok
+test negative_ties_follow_javascript_round_in_both_free_and_snapped_movement ... ok
+test geometry_only_validates_selected_positions_and_sizes_but_all_identities ... ok
+test movement_uses_shared_delta_and_first_selected_snap_anchor ... ok
+test batch_rejects_extra_fields_duplicate_ids_and_invalid_existing_positions_atomically ... ok
+test protocol_rejects_bad_json_unknown_versions_and_operations ... ok
+test six_alignments_use_resolved_sizes_and_keep_unselected_actors_out ... ok
+test malformed_geometry_is_rejected_before_any_changes_are_returned ... ok
+test input_limit_is_shared_by_native_dispatch_and_wasm ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/placement_offset.rs (crates/viento-studio-core/target/debug/deps/placement_offset-95f61a7a712d8f9d)
+
+running 9 tests
+test decoded_duplicates_and_invalid_unused_fragments_cannot_be_hidden_by_reset ... ok
+test missing_pair_appends_once_and_preserves_existing_formatting_and_ids ... ok
+test placement_probe_and_request_domain_are_independent ... ok
+test existing_pair_keeps_escaped_key_untouched_axis_and_all_outside_bytes ... ok
+test original_and_all_final_positions_must_fit_even_when_selected_actor_is_safe ... ok
+test reset_removes_first_middle_or_last_member_without_rewriting_the_container ... ok
+test absent_and_explicit_zero_have_distinct_author_semantics ... ok
+test offsets_move_all_placement_actors_including_local_position_overrides ... ok
+test final_utf8_budget_allows_shrink_and_reset_but_rejects_growth_or_oversized_input ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/save.rs (crates/viento-studio-core/target/debug/deps/save-55c289f34329adcd)
+
+running 8 tests
+test flags_are_derived_from_all_nine_phases_and_request_ids_are_monotonic ... ok
+test draft_uses_authoritative_dirty_and_freezes_all_mutations_outside_editable_phases ... ok
+test actual_draft_edits_invalidate_reviews_but_invalid_batches_and_noops_do_not ... ok
+test accepted_save_is_one_way_even_when_refresh_fails_and_verification_can_conflict ... ok
+test stale_repeated_or_malformed_completions_leave_the_workflow_unchanged ... ok
+test error_matrix_keeps_definite_conflicts_distinct_from_uncertain_writes ... ok
+test begin_guards_dirty_permission_pending_input_and_phase_without_mutation ... ok
+test protocol_validates_shapes_and_draft_handles_without_changing_any_session ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests viento_studio_core
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

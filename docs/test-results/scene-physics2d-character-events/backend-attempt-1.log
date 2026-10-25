@@ -1,0 +1,28 @@
+Copied from the first tool-call result, before correcting only the event-origin test assertion. This is not a directly redirected process log.
+✖ real native character events hold preserve physical results and registered publisher identity (10038.123408ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10187.982362
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-character-events-backends.test.mjs:112:82
+✖ real native character events hold preserve physical results and registered publisher identity (10038.123408ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+    assert.ok(entries.every(entry => entry.origin.scriptObjectId === f.publisherScriptId && entry.origin.scriptSource.sourcePath === 'documents/scripts/motion-events.txt'))
+
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-character-events-backends.test.mjs:120:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '=='
+  }

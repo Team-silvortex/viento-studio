@@ -1,0 +1,19 @@
+Native executable: /home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64
+Version: 4.7.2.stable.official.ed1daf0bf
+SHA256: 8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e
+Working directory: /home/chiharukiryu/cdev/viento-studio
+
+First isolated native verification (1/1 passed):
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node --test --test-name-pattern='real native one-way default' scripts/tests/scene-physics2d-one-way-backends.test.mjs
+
+Full native suite (original result retained; 16 passed / 1 test-assertion failure):
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_ONE_WAY_REPORT=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-one-way/backend-native.json VIENTO_PHYSICS_ONE_WAY_CAPTURE=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-one-way/backend-window.png xvfb-run -a node --test scripts/tests/scene-physics2d-one-way-backends.test.mjs > docs/test-results/scene-physics2d-one-way/backend-native.log 2>&1
+
+Mask-only native recheck after correcting the half-second endpoint assertion:
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_ONE_WAY_REPORT=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-one-way/backend-mask-retest.json node --test --test-name-pattern='collision masks intact' scripts/tests/scene-physics2d-one-way-backends.test.mjs > docs/test-results/scene-physics2d-one-way/backend-mask-retest.log 2>&1
+
+Legacy schema-3 character-events suite (capture enabled):
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_EVENTS_REPORT=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-one-way/legacy-events-native.json VIENTO_PHYSICS_EVENTS_CAPTURE=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-one-way/legacy-events-window.png xvfb-run -a node --test scripts/tests/scene-physics2d-character-events-backends.test.mjs > docs/test-results/scene-physics2d-one-way/legacy-events-native.log 2>&1
+
+Exploratory probe: --headless --path /tmp/viento-one-way-probe-9enhncpk --script res://probe.gd
+Three raw probe logs retain the initial cases, margins 0/1/64, and positive margins 0.01/0.1/0.5/1. The saved backend-probe.gd is the final positive-margin variant. Default margin 1 and allowed range 1..64 follow observed misses below 1.

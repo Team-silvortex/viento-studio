@@ -214,6 +214,18 @@ pub extern "C" fn viento_core_scene_physics2d_response_version() -> u32 {
     1
 }
 
+/// Optional character gravity and jump declarations in physics schema 3.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_physics2d_motion_version() -> u32 {
+    1
+}
+
+/// Optional static one-way platform declarations in physics schema 4.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_physics2d_one_way_version() -> u32 {
+    1
+}
+
 /// Optional visual animation curves; core ABI and other domains remain independent.
 #[no_mangle]
 pub extern "C" fn viento_core_scene_animation_version() -> u32 {
@@ -592,7 +604,12 @@ fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
     }
     if matches!(
         value["operation"].as_str(),
-        Some("scenePhysics2D.inspect" | "scenePhysics2D.inspectResponse")
+        Some(
+            "scenePhysics2D.inspect"
+                | "scenePhysics2D.inspectResponse"
+                | "scenePhysics2D.inspectMotion"
+                | "scenePhysics2D.inspectOneWay"
+        )
     ) {
         return Ok(CoreResponse::ScenePhysics2DSuccess {
             protocol_version: PROTOCOL_VERSION,
@@ -910,7 +927,12 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
                 }
                 if matches!(
                     value["operation"].as_str(),
-                    Some("scenePhysics2D.inspect" | "scenePhysics2D.inspectResponse")
+                    Some(
+                        "scenePhysics2D.inspect"
+                            | "scenePhysics2D.inspectResponse"
+                            | "scenePhysics2D.inspectMotion"
+                            | "scenePhysics2D.inspectOneWay"
+                    )
                 ) {
                     scene_physics2d::validate_request_bytes(input)?;
                 }

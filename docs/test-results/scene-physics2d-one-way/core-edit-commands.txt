@@ -1,0 +1,21 @@
+Working directory: /home/chiharukiryu/cdev/viento-studio
+Final author contract: physics schema 4, static box only, oneWay:{margin}, margin 1..64 inclusive.
+Existing crates/viento-studio-core/target cache reused; no new target directory.
+
+rust-full.log
+cargo test --manifest-path crates/viento-studio-core/Cargo.toml --locked
+Result: 414 passed, 0 failed (365 unit + 49 integration), including 15 physics tests.
+
+wasm-build.log
+node scripts/build-studio-core.mjs
+Result: 745603 bytes, SHA-256 fd5d3699ae7508c3f50383e3600ce384dc44833d07d0e496ee6934c2c63b3a0c.
+
+core-edit-js.log
+node --test scripts/tests/scene-physics2d-one-way-core.test.mjs scripts/tests/scene-physics2d-one-way-edit.test.mjs scripts/tests/scene-physics2d-motion-core.test.mjs scripts/tests/scene-physics2d-motion-edit.test.mjs scripts/tests/scene-physics2d-core.test.mjs scripts/tests/scene-physics2d-response-core.test.mjs scripts/tests/scene-physics2d-edit.test.mjs scripts/tests/scene-physics2d-response-edit.test.mjs
+Result: 89 passed, 0 failed, 0 skipped (21 new one-way core/edit tests + 68 existing tests).
+
+core-edit-regression.log
+node --test scripts/tests/studio-core.test.mjs scripts/tests/scene-physics2d-create-plan.test.mjs scripts/tests/scene-physics2d-space-edit.test.mjs scripts/tests/scene-physics2d-space-resize.test.mjs
+Result: 47 passed, 0 failed, 0 skipped.
+
+Additional verification: git diff --check (exit 0, no output).

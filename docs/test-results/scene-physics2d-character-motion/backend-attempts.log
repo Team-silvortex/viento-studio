@@ -1,0 +1,9 @@
+Native development attempts, Godot 4.7.2; production runtime passed import and script-check.
+Attempt 1: 9 tests, 7 pass, 2 fail.
+PASS generation compatibility, generated inventory, landing/horizontal floor, air-repeat, wall, controls none, terminal speed.
+FAIL hold and ceiling: expected negative requestedMotion; fixed native-tick fixture pressed before grounded logical step because scene-entry barriers also run physics callbacks. Changed fixture to press after logical step 6, release at 7; ceiling moved within jump height.
+Targeted rerun: hold, air-repeat, ceiling 3/3 passed.
+Attempt 2: 5 additional tests, 4 pass, 1 fail.
+PASS zero jump speed, scene reentry, live play, relocated portable ZIP.
+FAIL mixed scene: expected nonphysical actor and character to end at same y; character correctly stopped on floor y179.99948 while nonphysical actor correctly continued to y202.42645. Fixed assertion to check independent outcomes and identical horizontal displacement.
+No production fix resulted from these fixture/assertion corrections.

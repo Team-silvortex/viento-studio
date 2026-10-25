@@ -1,6 +1,6 @@
 # Bevy 执行后端
 
-当前源码 **0.2.3** 提供两条独立的 Linux 无头通道：`org.viento.bevy` 运行无行为数据工程，`org.viento.bevy-rust` 编译已登记的作者 Rust 行为。两者分别登记工具、能力和产物，不自动互换；默认后端仍是 Godot。源码、安装与平台范围见[状态页](STATUS.md)，旧发布前言见[历史归档](history/bevy-backend-2026-10-25.md)。
+当前源码 **0.2.4** 提供两条独立的 Linux 无头通道：`org.viento.bevy` 运行无行为数据工程，`org.viento.bevy-rust` 编译已登记的作者 Rust 行为。两者分别登记工具、能力和产物，不自动互换；默认后端仍是 Godot。源码、安装与平台范围见[状态页](STATUS.md)，旧发布前言见[历史归档](history/bevy-backend-2026-10-25.md)。
 
 | 需求 | 选择与入口 |
 | --- | --- |

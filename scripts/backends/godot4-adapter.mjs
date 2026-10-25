@@ -13,16 +13,20 @@ import { generateGodotBehaviorProject, godotBehaviorDiagnostics, createBehaviorR
 import { generateGodotAudioProject, godotAudioDiagnostics } from './godot4-audio.mjs';
 import { generateGodotAnimationProject, godotAnimationDiagnostics } from './godot4-clip-animation.mjs';
 import { generateGodotAssemblyProject, godotAssemblyScripts, godotAssemblyDiagnostics } from './godot4-project.mjs';
-import { generateGodotPhysicsProject, hasGodotPhysics, godotPhysicsDiagnostics } from './godot4-physics.mjs';
-import { generateGodotPhysicsResponseProject, hasGodotPhysicsResponse, godotPhysicsResponseAssemblyScripts } from './godot4-physics-response.mjs';
+import { hasGodotPhysics, godotPhysicsDiagnostics } from './godot4-physics.mjs';
+import { hasGodotPhysicsOneWay } from './godot4-physics-one-way.mjs';
+import { generateGodotPhysicsCharacterContactsProject, godotPhysicsCharacterContactsAssemblyScripts } from './godot4-physics-character-contacts.mjs';
+import { hasGodotPhysicsCharacterMotion } from './godot4-physics-character-motion.mjs';
+import { generateGodotPhysicsObservationProject } from './godot4-physics-observation.mjs';
 import { createProjectAnimationStateCatalog } from '../../engine/project-animation-states.mjs';
 import { createProjectRuntimeEventReader } from '../../engine/project-runtime-events.mjs';
+import { createProjectPhysics2DTraceReader } from '../../engine/project-physics2d-trace.mjs';
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.22.0',
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.27.0',
   platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 11 }],
-  capabilities: ['physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
+  capabilities: ['physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -48,7 +52,7 @@ async function generate(plan) {
   if (plan.kind === 'scene2d' && plan.animation?.document.playbackScope === 'instance') throw buildError('build_animation_instances_require_project', 'Per-instance animation requires a project assembly.');
   // Detach before the generator's asynchronous file reads so callers cannot
   // change an admitted plan while its project bytes are being produced.
-  const generated = await (hasGodotPhysicsResponse(plan) ? generateGodotPhysicsResponseProject : hasGodotPhysics(plan) ? generateGodotPhysicsProject : plan.kind === 'project' ? generateGodotAssemblyProject : plan.animation ? generateGodotAnimationProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
+  const generated = await ((hasGodotPhysicsOneWay(plan) || hasGodotPhysicsCharacterMotion(plan)) ? generateGodotPhysicsCharacterContactsProject : hasGodotPhysics(plan) ? generateGodotPhysicsObservationProject : plan.kind === 'project' ? generateGodotAssemblyProject : plan.animation ? generateGodotAnimationProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
   return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
     artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
 }
@@ -57,6 +61,19 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ['scripts/backends/godot4-physics-character-contacts.mjs', new URL('./godot4-physics-character-contacts.mjs', import.meta.url)],
+    ['scripts/backends/godot4/physics-character-contacts-helper.gd', new URL('./godot4/physics-character-contacts-helper.gd', import.meta.url)],
+    ['scripts/backends/godot4/physics-character-contacts-port.gd', new URL('./godot4/physics-character-contacts-port.gd', import.meta.url)],
+    ['scripts/backends/godot4-physics-one-way.mjs', new URL('./godot4-physics-one-way.mjs', import.meta.url)],
+    ['scripts/backends/godot4/physics-one-way-helper.gd', new URL('./godot4/physics-one-way-helper.gd', import.meta.url)],
+    ['scripts/backends/godot4-physics-character-events.mjs', new URL('./godot4-physics-character-events.mjs', import.meta.url)],
+    ['scripts/backends/godot4/physics-character-events-scene.gd', new URL('./godot4/physics-character-events-scene.gd', import.meta.url)],
+    ['scripts/backends/godot4/physics-character-events-port.gd', new URL('./godot4/physics-character-events-port.gd', import.meta.url)],
+    ['scripts/backends/godot4-physics-character-motion.mjs', new URL('./godot4-physics-character-motion.mjs', import.meta.url)],
+    ['scripts/backends/godot4/physics-character-motion-runtime.gd', new URL('./godot4/physics-character-motion-runtime.gd', import.meta.url)],
+    ['scripts/backends/godot4-physics-observation.mjs', new URL('./godot4-physics-observation.mjs', import.meta.url)],
+    ['scripts/backends/godot4/physics-observation-runtime.gd', new URL('./godot4/physics-observation-runtime.gd', import.meta.url)],
+    ['scripts/backends/godot4/project-physics-observation-runtime.gd', new URL('./godot4/project-physics-observation-runtime.gd', import.meta.url)],
     ['scripts/backends/godot4-physics-response.mjs', new URL('./godot4-physics-response.mjs', import.meta.url)],
     ['scripts/backends/godot4/physics-response-runtime.gd', new URL('./godot4/physics-response-runtime.gd', import.meta.url)],
     ['scripts/backends/godot4-physics.mjs', new URL('./godot4-physics.mjs', import.meta.url)],
@@ -128,6 +145,7 @@ async function fingerprint() {
     ['engine/build-target.mjs', new URL('../../engine/build-target.mjs', import.meta.url)],
     ['engine/project-runtime-contracts.mjs', new URL('../../engine/project-runtime-contracts.mjs', import.meta.url)],
     ['engine/project-runtime-events.mjs', new URL('../../engine/project-runtime-events.mjs', import.meta.url)],
+    ['engine/project-physics2d-trace.mjs', new URL('../../engine/project-physics2d-trace.mjs', import.meta.url)],
     ['engine/project-shared-state.mjs', new URL('../../engine/project-shared-state.mjs', import.meta.url)],
     ['engine/project-event-bus.mjs', new URL('../../engine/project-event-bus.mjs', import.meta.url)],
     ['engine/project-animation-commands.mjs', new URL('../../engine/project-animation-commands.mjs', import.meta.url)],
@@ -170,7 +188,7 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
       XDG_DATA_HOME: path.join(directory, '.host/data'), XDG_CONFIG_HOME: path.join(directory, '.host/config'), XDG_CACHE_HOME: path.join(directory, '.host/cache') },
     signal, timeoutMs, onOutput };
   if (phase === 'script-check') {
-    const assemblyScripts = await godotPhysicsResponseAssemblyScripts(directory, signal) || await godotAssemblyScripts(directory, signal);
+    const assemblyScripts = await godotPhysicsCharacterContactsAssemblyScripts(directory, signal) || await godotAssemblyScripts(directory, signal);
     const scripts = assemblyScripts || ['runtime.gd'];
     if (!assemblyScripts) {
     let manifest;
@@ -281,8 +299,13 @@ export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
   availability, identify: identifyGodot, generate, fingerprint, executePhase,
   diagnostics: (result, plan) => (hasGodotPhysics(plan) ? godotPhysicsDiagnostics : plan.kind === 'project' ? godotAssemblyDiagnostics : plan.animation ? godotAnimationDiagnostics : plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
   createEventReader: (input, options) => {
-    if (input.kind === 'project') return createProjectRuntimeEventReader(input, { protocolVersion: input.scenes.some(scene => scene.animation?.document.playbackScope === 'instance') ? 11 : createProjectAnimationStateCatalog(input).scenes.length ? 10 : input.scenes.some(scene => scene.animation) ? 7 : 4, ...options,
+    if (input.kind === 'project') {
+      const runtimeReader = createProjectRuntimeEventReader(input, { protocolVersion: input.scenes.some(scene => scene.animation?.document.playbackScope === 'instance') ? 11 : createProjectAnimationStateCatalog(input).scenes.length ? 10 : input.scenes.some(scene => scene.animation) ? 7 : 4, ...options,
       ...(options?.smoke === true ? { expectedTotalSeconds: 0.5 } : {}) });
+      return options?.smoke === true && hasGodotPhysics(input)
+        && (options.capabilities === undefined || options.capabilities.includes('physics.observe2d'))
+        ? createProjectPhysics2DTraceReader(input, { runtimeReader, onSnapshot: options.onPhysicsSnapshot }) : runtimeReader;
+    }
     const plan = input;
     const createBaseReader = plan.schemaVersion === 3 ? createBehaviorRuntimeEventReader : createRuntimeEventReader;
     return plan.audio ? createSceneAudioEventReader(plan, { ...options, createBaseReader }) : createBaseReader(plan, options);

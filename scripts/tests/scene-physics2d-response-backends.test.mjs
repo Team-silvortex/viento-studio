@@ -14,7 +14,8 @@ import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.
 import { BEVY_EXECUTION_ADAPTER as bevy } from '../backends/bevy-adapter.mjs';
 import { BEVY_RUST_EXECUTION_ADAPTER as bevyRust } from '../backends/bevy-rust-adapter.mjs';
 import { generateGodotPhysicsProject } from '../backends/godot4-physics.mjs';
-import { generateGodotPhysicsResponseProject, godotPhysicsResponseAssemblyScripts } from '../backends/godot4-physics-response.mjs';
+import { generateGodotPhysicsResponseProject } from '../backends/godot4-physics-response.mjs';
+import { godotPhysicsObservationAssemblyScripts as godotPhysicsResponseAssemblyScripts } from '../backends/godot4-physics-observation.mjs';
 import { generateGodotAssemblyProject } from '../backends/godot4-project.mjs';
 import { checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
 import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
@@ -143,9 +144,16 @@ test('response layer retains byte-identical legacy physical and non-physical gen
     const ready = await capture(f), plan = ready.captured.plan;
     const legacy = await (plan.scenes.some(scene => scene.physics) ? generateGodotPhysicsProject : generateGodotAssemblyProject)(plan);
     assert.deepEqual(await generateGodotPhysicsResponseProject(plan), legacy);
-    const { artifact, ...output } = ready.generated; assert.deepEqual(output, legacy);
+    const { artifact, ...output } = ready.generated;
+    if (!plan.scenes.some(scene => scene.physics)) assert.deepEqual(output, legacy);
+    else for (const [name, bytes] of legacy.files) {
+      if (name === 'project.tscn') continue;
+      const observed = name.endsWith('/runtime.gd') && plan.scenes.some(scene => scene.physics && name === `scenes/${scene.scene.objectId}/runtime.gd`)
+        ? name.replace('/runtime.gd', '/physics-observation-base.gd') : name;
+      assert.deepEqual(output.files.get(observed), bytes, name);
+    }
     assert.ok(!output.files.has('physics-response-project.json')); assert.ok(!output.backend.capabilities.includes(slide));
-    if (plan.scenes.some(scene => scene.physics)) assert.equal(output.backend.version, '0.21.0');
+    if (plan.scenes.some(scene => scene.physics)) assert.equal(output.backend.version, '0.23.0');
   }
 });
 
@@ -153,7 +161,7 @@ test('slide capability is derived only from slide and cannot be hidden from plan
   const f = await capture(await fixture(t)); const plan = f.captured.plan, scene = plan.scenes[0];
   assert.ok(scenePhysics2DCapabilities(scene.physics.document).includes(slide));
   assert.ok(!stripScenePhysics2DPlan(scene).requiredCapabilities.includes(slide));
-  assert.equal(f.generated.backend.version, '0.22.0'); assert.equal(f.generated.backend.protocolVersion, 4);
+  assert.equal(f.generated.backend.version, '0.23.0'); assert.equal(f.generated.backend.protocolVersion, 4);
   assert.ok(f.generated.backend.capabilities.includes(slide));
   assert.deepEqual(checkExecutionBackendSupport(adapter.descriptor, { operation: 'build', plan }), []);
   const legacyProvider = { ...adapter.descriptor, capabilities: adapter.descriptor.capabilities.filter(capability => capability !== slide) };

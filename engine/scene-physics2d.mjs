@@ -7,10 +7,14 @@ import { normalizeSourcePath } from './source-path.mjs';
 export const SCENE_PHYSICS2D_MAX_BYTES = 65536;
 export const SCENE_PHYSICS2D_CAPABILITIES = Object.freeze(['physics.bodies2d', 'physics.character2d', 'physics.sensors2d']);
 export const SCENE_PHYSICS2D_SLIDE_CAPABILITY = 'physics.character-slide2d';
+export const SCENE_PHYSICS2D_MOTION_CAPABILITY = 'physics.character-motion2d';
+export const SCENE_PHYSICS2D_ONE_WAY_CAPABILITY = 'physics.one-way-platform2d';
 export const scenePhysics2DCapabilities = document => [SCENE_PHYSICS2D_CAPABILITIES[0],
   ...(document?.bodies?.some(body => body.kind === 'character') ? [SCENE_PHYSICS2D_CAPABILITIES[1]] : []),
   ...(document?.bodies?.some(body => body.kind === 'sensor') ? [SCENE_PHYSICS2D_CAPABILITIES[2]] : []),
-  ...(document?.bodies?.some(body => body.kind === 'character' && body.collisionResponse === 'slide') ? [SCENE_PHYSICS2D_SLIDE_CAPABILITY] : [])];
+  ...(document?.bodies?.some(body => body.kind === 'character' && body.collisionResponse === 'slide') ? [SCENE_PHYSICS2D_SLIDE_CAPABILITY] : []),
+  ...(document?.bodies?.some(body => body.kind === 'character' && body.characterMotion) ? [SCENE_PHYSICS2D_MOTION_CAPABILITY] : []),
+  ...(document?.bodies?.some(body => body.kind === 'static' && body.oneWay) ? [SCENE_PHYSICS2D_ONE_WAY_CAPABILITY] : [])];
 const uuid = value => typeof value === 'string' && value.length === 36 && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
 const revision = value => typeof value === 'string' && value.length === 71 && /^sha256:[a-f0-9]{64}$/.test(value);
 const fail = message => { throw Object.assign(new TypeError(message), { errorCode: 'build_physics_invalid' }); };
@@ -68,7 +72,7 @@ function actorsByInstance(plan) {
 export function stripScenePhysics2DPlan(input) {
   const { physics, ...plan } = copyData(input);
   if (!Array.isArray(plan.requiredCapabilities)) fail('Invalid scene capabilities.');
-  return { ...plan, requiredCapabilities: plan.requiredCapabilities.filter(value => !SCENE_PHYSICS2D_CAPABILITIES.includes(value) && value !== SCENE_PHYSICS2D_SLIDE_CAPABILITY) };
+  return { ...plan, requiredCapabilities: plan.requiredCapabilities.filter(value => !SCENE_PHYSICS2D_CAPABILITIES.includes(value) && value !== SCENE_PHYSICS2D_SLIDE_CAPABILITY && value !== SCENE_PHYSICS2D_MOTION_CAPABILITY && value !== SCENE_PHYSICS2D_ONE_WAY_CAPABILITY) };
 }
 
 export function validateScenePhysics2DPlan(input) {

@@ -1,0 +1,18 @@
+Working directory: /home/chiharukiryu/cdev/viento-studio
+Godot version: 4.7.2.stable.official.ed1daf0bf
+Godot executable SHA256: 8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e
+
+First native integration check: 1/1 passed, no preceding failed native attempt.
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node --test --test-name-pattern='real contact lifecycle' scripts/tests/scene-physics2d-contact-events-backends.test.mjs > docs/test-results/scene-physics2d-contact-events/backend-first-native.log 2>&1
+
+Descriptor and independent fingerprint tests: 13 passed, 2 native tests skipped because no Godot environment was set.
+node --test scripts/tests/godot4-adapter.test.mjs scripts/tests/runtime-instance-backends.test.mjs > docs/test-results/scene-physics2d-contact-events/backend-adapter-tests.log 2>&1
+
+Pure checks: 3 passed, 15 native tests skipped.
+node --test scripts/tests/scene-physics2d-contact-events-backends.test.mjs > docs/test-results/scene-physics2d-contact-events/backend-pure-tests.log 2>&1
+
+Full contact backend matrix: 18/18 passed, no skips; native window capture and portable relocation included.
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_CONTACTS_REPORT=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-contact-events/backend-native.json VIENTO_PHYSICS_CONTACTS_CAPTURE=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-contact-events/backend-window.png xvfb-run -a node --test scripts/tests/scene-physics2d-contact-events-backends.test.mjs > docs/test-results/scene-physics2d-contact-events/backend-native.log 2>&1
+
+Historical generation, inventory, default native run, portable relocation, and window capture. Both registries freeze the historical generator during both build and inspection; current adapter performs import, script checks and execution. The test-name filter selects 11 cases; unselected historical cases are not repeated.
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_EVENTS_REPORT=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-contact-events/legacy-events-native.json VIENTO_PHYSICS_EVENTS_CAPTURE=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-contact-events/legacy-events-window.png VIENTO_PHYSICS_ONE_WAY_REPORT=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-contact-events/legacy-one-way-native.json VIENTO_PHYSICS_ONE_WAY_CAPTURE=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-contact-events/legacy-one-way-window.png xvfb-run -a node --test --test-name-pattern='^(event generator|event inventory|one-way generation|one-way inventory|schema 4 with no one-way property|real native character events hold|real native one-way default|real portable ZIP|real (native )?window capture)' scripts/tests/scene-physics2d-character-events-backends.test.mjs scripts/tests/scene-physics2d-one-way-backends.test.mjs > docs/test-results/scene-physics2d-contact-events/legacy-native.log 2>&1

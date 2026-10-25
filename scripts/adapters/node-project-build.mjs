@@ -6,6 +6,7 @@ import { canonicalJson, createWorldProjection } from '../../engine/world-project
 import { createBuildTargetPlan, buildTargetIdentity, scenePlans } from '../../engine/build-target.mjs';
 import { createSceneRuntimeObservation } from '../../engine/scene-runtime-query.mjs';
 import { createProjectRuntimeObservation } from '../../engine/project-runtime-query.mjs';
+import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
 import { validateSceneControlProgram, validateSceneControlPlan, createSceneControlTraceReader } from '../../engine/scene-control-program.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
 import { checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
@@ -189,7 +190,7 @@ export async function readFrozenProjectBuild(buildDirectory, { backendId, backen
 export async function runProjectBuild({ buildDirectory, godot, tool = godot, backendId,
   backendRegistry = createExecutionBackendRegistry(), signal, timeoutMs = 30000, headless = true, smoke = true, capture = false,
   controlProgram: inputControlProgram, runtimeCase: inputRuntimeCase, runtimeCaseSceneId, expectedBuildId, expectedSnapshotId, onProgress = () => {} }) {
-  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram, runtimeCase;
+  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram, runtimeCase, physicsReader;
   // Callback consumers receive detached DTOs and cannot alter admitted input,
   // events, samples or the session record while a process is running.
   const publish = event => onProgress(JSON.parse(JSON.stringify(event)));
@@ -289,7 +290,14 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       if (record.diagnostics.length) break;
     }
     if (!record.diagnostics.length) {
-      const runtime = adapter.createEventReader(plan, { smoke, mode: operation, protocolVersion: build.backend.protocolVersion, onEvent: event => {
+      const physicsExpected = smoke === true && plan.kind === 'project' && build.backend.capabilities.includes('physics.observe2d');
+      const runtime = adapter.createEventReader(plan, { smoke, mode: operation, protocolVersion: build.backend.protocolVersion,
+        capabilities: build.backend.capabilities, onPhysicsSnapshot: snapshot => {
+          if (!physicsExpected) return;
+          const view = validateProjectPhysics2DObservation(snapshot);
+          if (view.assemblyId !== plan.assembly.objectId) throw buildError('runtime_physics2d_trace_invalid', 'Physics observation belongs to a different frozen project.');
+          record.physics = view; publish({ physics: view });
+        }, onEvent: event => {
         if (observation.push(event)) {
           record.runtime = observation.snapshot();
           // A consumer may cancel in response to ready. Publish the corresponding
@@ -298,6 +306,10 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
         }
         publish({ event, ...(event.event === 'ready' ? { phase: 'running' } : {}) });
       } });
+      if (physicsExpected) {
+        physicsReader = runtime;
+        if (!record.physics) throw buildError('runtime_physics2d_trace_invalid', 'Physics observation was not initialized.');
+      }
       const trace = controlProgram ? createSceneControlTraceReader(plan, controlProgram, {
         onRuntime: text => runtime.push(text),
         onSample: sample => {
@@ -332,6 +344,16 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     if (!record) return { ok: false, status, diagnostics: [item] };
     record.status = status; record.diagnostics.push(item);
   } finally {
+    // An exception or cancellation may interrupt the process before its normal
+    // reader finalization. Keep accepted samples and explicitly close the trace.
+    if (physicsReader) {
+      try { physicsReader.finish(); }
+      catch (error) {
+        record.status = signal?.aborted ? 'cancelled' : 'failed';
+        record.diagnostics.push(diagnostic(error, plan));
+      }
+    }
+    if (record?.physics && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.physics.phase = 'incomplete';
     if (sessionDirectory) await fs.rm(path.join(sessionDirectory, 'project'), { recursive: true, force: true });
   }
   if (observation) record.runtime = observation.snapshot();

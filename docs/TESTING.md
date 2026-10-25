@@ -1,8 +1,14 @@
 # 验证指南
 
-本页提供当前可用的验证入口和证据要求。当前源码为 **0.2.3**，已收录物理空间偏移／尺寸编辑及角色停止／滑动响应，安装验收仍为 **0.2.0**；具体范围见[当前状态](STATUS.md)。逐轮日志、旧命令上下文和历史计数完整迁入[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
+本页提供当前可用的验证入口和证据要求。当前源码为 **0.2.4**，已收录物理观察、角色重力／跳跃、运动与移动碰撞事件及静态单向平台，安装验收仍为 **0.2.0**；具体范围见[当前状态](STATUS.md)。逐轮日志、旧命令上下文和历史计数完整迁入[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
 
 ## 最近的功能证据
+
+最新[角色移动碰撞事件专题](test-results/scene-physics2d-contact-events/README.md)记录升版前 **0.2.3 工作树**的完整应用检查 **8199 项：7761 通过、438 条件跳过，零失败／取消**，以及普通作者脚本、独立原生端口、双方实例身份、项目事件与媒体、实际 Chrome 及工程交付。Rust 核心和作者格式保持；0.2.4 的版本／源码分发专项与发布预检另记于[发布检查](test-results/release-0.2.4/README.md)，不替代安装或其他后端验收。
+
+上一轮[单向平台专题](test-results/scene-physics2d-one-way/README.md)覆盖schema 4独立规则、静态矩形参数、保真保存、原生上穿／承重、旧运动事件与媒体、实际Chrome三语流程及异地工程交付。首次原生测试的时间窗口断言修正、定向复验和旧事件回归分别留证；没有把工作树测试视作安装验收。
+
+本版的升版前开发验证还包括[角色重力与跳跃专题](test-results/scene-physics2d-character-motion/README.md)，覆盖独立Rust/WASM规则、保真编辑、中立计划、三语UI、实际Godot和可搬迁工程。此前的[二维物理观察专题](test-results/scene-physics2d-observation/README.md)包含独立trace／宿主、真实Godot、Chrome和异地ZIP验证；各项条件与完整检查统计在该专题记录，未更新本机0.2.0安装。
 
 升版前 **0.2.2 工作树**在 2026-10-25 的[碰撞响应验收](test-results/scene-physics2d-response/README.md)记录最终完整应用检查 **7970 项：7599 通过、371 条件跳过，零失败／取消**；Rust 完整核心 407 项，UI 专项 108 项，实际 Chrome 5 流程／4 张截图／17 个来源摘要。真实 Godot 新矩阵 7 项含 19 个运行场景，另有旧物理原生 9 项全部通过。首次检查、能力撤回问题修复及最终复验分别留证；未重跑日常作品文档／模板／索引或安装验收。专项与完整检查有交集，不相加为覆盖率。升版后的版本一致性、源码分发与发布预检单独记录于 [0.2.3 发布检查](test-results/release-0.2.3/README.md)，不把上述开发成绩改标为升版重跑。
 
@@ -52,6 +58,61 @@ VIENTO_STUDIO_CORE_BIN="$PWD/crates/viento-studio-core/target/debug/viento-core"
 ```
 
 设置自定义 `CARGO_TARGET_DIR` 时，辅助程序路径须使用实际输出位置。修改严格解析、几何、补丁或格式时核对原生／WASM 输入输出、旧可选能力、合法及拒绝边界、原文字节和来源回执；单元测试数量不与应用总数相加。
+
+## 二维角色移动碰撞事件
+
+普通脚本及端口测试为 `character-contact-event-starter.test.mjs`；真实后端与浏览器入口：
+
+```sh
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node --test scripts/tests/scene-physics2d-contact-events-backends.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node scripts/tests/scene-physics2d-contact-events-smoke.mjs /absolute/path/to/chromium
+```
+
+核对仅运动角色获得独立版本1端口，本步碰撞集合按对方身份去重、结束差项先于开始差项；持续阻挡不重复，未知原生碰撞体不认领登记身份，关闭不合成结束事件。作者载荷为对方实例UUID，自身保留在来源；实际媒体执行、无trace交互运行、重入及异地ZIP分别核对。普通TXT创建、参数审阅、保存、三语和来源导航另做Chrome验证；详细命令与边界见[移动碰撞事件专题](test-results/scene-physics2d-contact-events/README.md)。
+
+## 二维静态单向平台
+
+核心、保真编辑、中立计划和UI入口为 `scene-physics2d-one-way-{core,edit,plan,ui}.test.mjs`。原生与浏览器入口：
+
+```sh
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node --test scripts/tests/scene-physics2d-one-way-backends.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node scripts/tests/scene-physics2d-one-way-smoke.mjs /absolute/path/to/chromium
+```
+
+验证静态矩形及有限容差1–64、拒绝旧格式夹带字段、独立检查能力、启用／关闭保真保存和关闭不降格式；核对上穿、从上承重、碰撞掩码、偏移、圆形角色、旧停止／滑动、重入与无trace交互运行。落地事件和动画／声音分别观察结果，工程ZIP搬迁后独立运行。完整原生截图需另设 `VIENTO_PHYSICS_ONE_WAY_CAPTURE`；执行命令与日志见[专题](test-results/scene-physics2d-one-way/README.md)。
+
+## 二维角色运动事件
+
+开发工作树专题见[角色事件验证](test-results/scene-physics2d-character-events/README.md)。普通起始脚本测试为 `character-motion-event-starters.test.mjs`，真实工具入口为：
+
+```sh
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node --test scripts/tests/scene-physics2d-character-events-backends.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node scripts/tests/scene-physics2d-character-events-smoke.mjs /absolute/path/to/chromium
+```
+
+核对实际接受起跳、初次／再次着地、持续站立、长按／空中按键、碰顶、禁用跳跃、实例和访问隔离；真实事件继续保留作者发布及订阅来源。动画与声音各看执行结果，不把发布成功当作播放成功；交互运行不依赖物理观察流。模板创建、显式参数、普通保存和三语入口另做浏览器验证，工程ZIP另验证原路径失效后的运行。新专题记录本轮结果，旧运动／观察证据不改标。
+
+## 二维角色重力与跳跃
+
+核心及保真编辑入口为 `scene-physics2d-motion-core.test.mjs`、`scene-physics2d-motion-edit.test.mjs`；中立计划与UI分别为 `scene-physics2d-character-motion-plan.test.mjs` 和 `scene-physics2d-character-motion-ui.test.mjs`。
+
+```sh
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node --test scripts/tests/scene-physics2d-character-motion-backends.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node scripts/tests/scene-physics2d-character-motion-smoke.mjs /absolute/path/to/chromium
+```
+
+验证实际落地横移、单次跳跃、长按／空中不连跳、碰顶／墙、速度上限、零起跳速度、无输入重力、混合角色和场景重入。交互运行与smoke共用同一次移动，原观察协议保持；测试输入按实际已完成逻辑步安排，不把引擎等待帧当成作者步。另核对关闭模式后的schema 3构建、缺能力拒绝、旧生成字节、原文叶保真以及导出后失去原路径仍能运行。专题保留失败、复验与准确工具条件。
+
+## 二维物理运行观察
+
+纯契约和宿主入口为 `project-physics2d-trace.test.mjs`、`project-physics2d-host.test.mjs`；界面为 `project-physics-observation-ui.test.mjs` 和 `project-physics-observation-build-ui.test.mjs`。真实工具测试需显式设置 `VIENTO_GODOT_BIN`：
+
+```sh
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node --test scripts/tests/scene-physics2d-observation-backends.test.mjs
+VIENTO_GODOT_BIN=/absolute/path/to/Godot node scripts/tests/scene-physics2d-observation-smoke.mjs /absolute/path/to/chromium
+```
+
+检查输出必须区分完整、限额部分和中断；未知碰撞体不能伪造来源，观察不写作者文件。真实窗口截图需要显示环境；旧生成器与运行脚本另有字节冻结断言。
 
 ## 二维物理空间编辑
 
@@ -176,7 +237,7 @@ node --test scripts/tests/function-atlas*.test.mjs
 
 | 范围 | 重点 |
 | --- | --- |
-| 新安装产物 | 0.2.3 源码中的空间编辑与碰撞响应尚未安装验收；安装包应覆盖新增界面和原有关键路径 |
+| 新安装产物 | 0.2.1–0.2.4 的源码增量尚未随新安装程序验收；安装包应覆盖新增界面和原有关键路径 |
 | 桌面扩展 | Windows／macOS 的选择器、解码、生命周期与签名；更多 3D、后端和长任务关闭场景 |
 | Android 实体设备 | 输入法候选、低内存回收、不同 WebView／厂商、云盘／外置存储及商店签名更新 |
 | 大工程 | 多 GiB 迁移、长期压力、空间不足、不同文件系统与接近各域预算的性能 |

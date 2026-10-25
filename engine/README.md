@@ -2,7 +2,7 @@
 
 `engine/` 提供不依赖 DOM、Node、HTTP、Tauri 或具体执行引擎的规则、模型、规划和观察契约。文件读取、摘要实现、素材字节、进程及持久化由宿主注入或执行；共享 Rust／WASM 负责已迁入的领域规则，JavaScript 负责来源捕获、回执核对和编排。
 
-本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。源码版本 **0.2.3**，已收录碰撞偏移／尺寸提案及角色停止／滑动响应；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
+本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。源码版本 **0.2.4**，已收录物理观察、角色重力／跳跃、运动与移动碰撞事件及静态单向平台；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
 
 ## 调用边界
 
@@ -98,6 +98,8 @@
 
 ## 声音、动画与二维物理
 
+角色运动事件与事件声音起始内容是普通TXT草稿，沿既有 `script-authoring` 创建／保存／绑定路径交付。Godot行为局部 `viento_character_motion` 只报告 jumped／landed，起始脚本自己发布已有项目事件；无新Rust声明或编辑器跨区写入权。事件声音可按实例UUID过滤，媒体控制和来源观察继续使用原契约。
+
 | 模块族 | 纯契约和接口边界 |
 | --- | --- |
 | `scene-audio-*` | Rust 声明／采样、原文提案、音轨目录、绑定素材目录和试听准备各自独立；字节、WebAudio 与运行归宿主 |
@@ -107,6 +109,7 @@
 | `animation-state-*.mjs` | 完整表准入、v1–v5 源码 codec、静态图、标量／共享值／平面组合与手动试算；真实运行证据另读 |
 | `project-animation-*.mjs`／`project-event-review.mjs` | 有界账本、完整观察准入、来源关联和独立回看模型；不使用当前作者文件补造冻结事实 |
 | `scene-physics2d.mjs`／`scene-physics2d-edit.mjs` | Rust 声明检查、显式关系子计划与原文编辑；目标、空间目录和执行能力分开 |
+| `project-physics2d-trace.mjs` | 独立物理观察流准入、冻结身份／来源映射、访问次序与256样本预算；只读快照不改作者声明或既有运行对象坐标 |
 | `scene-physics2d-targets.mjs` | 保存态实例目录与精确 source5 品牌、所有体的成员核对；Apply 前目录重读由宿主负责 |
 
 动画 schema 4 的逐实例运行、旧整场景协议兼容与目标时钟见[正式运行边界](../docs/ARCHITECTURE.md#逐实例正式动画运行边界)。声音、动画、物理的首次创建分别由 `world-audio-create.mjs`、`world-animation-create.mjs`、`world-physics2d-create.mjs` 规划，三文件事务在宿主执行，不借编辑提案直接落盘。
@@ -114,6 +117,12 @@
 `inspectScenePhysics2D(document)` 捕获输入后按 schema 分派：v1 使用既有 `scenePhysics2D.inspect`，v2 使用独立 `scenePhysics2D.inspectResponse` 与 `viento_core_scene_physics2d_response_version` 可选标记。v2 仅角色接受可选 `collisionResponse: "stop" | "slide"`，省略为停止。编辑提案在显式滑动时才修改 schema 叶与响应字段；首次创建默认仍生成 v1。空间 DTO 继续只保存几何字段，既有偏移／尺寸提案不会删除原文中的响应声明。
 
 `scenePhysics2DCapabilities(document)` 仅在实际滑动角色存在时追加 `physics.character-slide2d`；冻结场景与项目都需明确声明，缺失时拒绝。Godot 响应包装与旧停止生成器分离，两个 Bevy 适配器继续拒绝物理。作者格式、物理计划 v1、创建事务 v12 和项目运行线协议各自维护；详见[碰撞响应](../docs/SCENE_PHYSICS2D.md#选择角色的碰撞响应)。
+
+schema 3 的角色可显式保存 `characterMotion`（platformer、重力、起跳速度、最大下落速度），且要求滑动响应。独立 `scenePhysics2D.inspectMotion`／`viento_core_scene_physics2d_motion_version` 保持旧操作范围；JS桥接核对完整回执，原文编辑只修改相关叶及可选成员。`scenePhysics2DCapabilities` 从实际声明另派生 `physics.character-motion2d`；能力缺失时冻结计划、后端及生成回执分别拒绝。Godot 独立包装负责模拟，核心不持有速度／着地状态或引擎节点，观察v1与项目协议保持。关闭模式保留当前格式（schema 3或4），生成器显式转换到旧无运动分支。
+
+schema 4 以 `oneWay: { margin: 1 }` 增加静态矩形单向平台，容差有限且在 1–64 内。`inspectScenePhysics2D` 按版本选择独立 `scenePhysics2D.inspectOneWay`；`supportsStudioCoreScenePhysics2DOneWay`／`dispatchStudioCoreScenePhysics2DOneWay` 只依赖 `viento_core_scene_physics2d_one_way_version() === 1`，完整验证继承的 motion／slide 字段。旧操作仍严格对应 schema 1／2／3。`scene-physics2d-edit.mjs` 对 `oneWay.margin` 作叶级更新，三种可选字段共享不重叠的增删补丁；首次启用升级、关闭删除字段但不降版本，普通创建默认保持。
+
+`physics.one-way-platform2d` 仅由实际 `oneWay` 字段派生；Godot 0.26.0 包装配置固定朝上的原生矩形单向碰撞及 margin，原运动／事件层和项目／观察协议保持。没有移动平台、任意方向或向下穿透接口；两个 Bevy 适配器不支持。空间几何 DTO 不携带这些运行参数，表单几何修改保留完整作者声明。使用流程见[静态单向平台](../docs/SCENE_PHYSICS2D.md#配置静态单向平台)。
 
 ### 物理空间视图与字段提案
 
@@ -352,3 +361,5 @@ Godot、Bevy 数据与 Bevy Rust 的资源、语言和运行范围分别由后�
 `scripts/tests/portable-engine.test.mjs` 在无 Node 全局对象的隔离环境验证解析、字段、媒体、存储冲突和依赖方向；`portable-engine-scenarios.mjs` 可在真实静态浏览器页面运行。Rust 原生／WASM、一致性、来源守护、GUI 和实际引擎分别验证，最新范围见[测试指南](../docs/TESTING.md)及[功能图谱](../docs/FUNCTION_ATLAS.md)，历史结果不因整理重标。
 
 Android 的 `mobile/platform.mjs` 在 WebView 复用可移植规则，Rust `mobile_storage.rs` 执行私有目录原子读写、即时索引与恢复；项目包复用桌面格式。移动资源构建不等于本机作者工作台或引擎执行支持，媒体、模板配置及设备验收按[移动端说明](../mobile/README.md)单独判断。未来宿主接入应实现注入端口，不能改写作品逻辑路径或绕过来源／保存契约。
+
+`godot-character-contact-events-script.mjs` 是普通作者起始源码：校验独立 `viento_character_contacts` 版本1及两字符串信号，发布 `physics.contact_started`／`physics.contact_ended`，载荷为对方实例UUID，可用 `other_instance_id` 过滤。自身身份仍由现有项目端口绑定，旧运动、触发区与声音模板保持；此脚本不承担接触集合计算或文件保存。语义与设置见[移动碰撞事件](../docs/SCENE_PHYSICS2D.md#用角色移动碰撞驱动项目事件)。

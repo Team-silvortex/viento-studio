@@ -3,9 +3,9 @@
   "meta": {
     "title": "Viento Studio 功能成熟度图谱",
     "date": "2026-10-25",
-    "version": "0.2.3",
-    "commit": "64ea77792cb5f3d9d425ea6b36fcf20b1b44f7db",
-    "scope": "0.2.3源码收录碰撞偏移／尺寸空间编辑、角色停止／滑动响应，以及围绕现行工作流的文档重构。164功能/493实现/703绑定/2812评分/128工作流，23模块45项Studio声明能力保持。三项功能归属改为source-release，全部既有评分与证据对象保持；升版仅复核版本、源码分发、文档及图谱，不重标此前7970项应用检查和Chrome/Godot证据。安装仍为0.2.0，未创建新安装包、版本标签或GitHub Release。",
+    "version": "0.2.4",
+    "commit": "eb1e08984fad04722c54f682c1ceba9b531f8fe0",
+    "scope": "0.2.4源码收录物理运行观察、角色重力与跳跃、起落作者事件、静态单向平台及移动碰撞事件；Godot执行适配器0.27.0。169功能/511实现/721绑定/2884评分/133工作流；23模块45项Studio声明能力。原成熟度评分与开发实测证据保持；本机安装仍0.2.0。",
     "historicalSha256": {
       "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
       "docs/function-network.json": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
@@ -3528,6 +3528,106 @@
           "真实Godot比较矩形/圆形旧停止、显式/缺省停止和滑动，另验拐角、无墙、mask、偏移与撤离；独立ZIP在原作者/构建路径不可用后验证碰撞、触发和动画链。真实Chrome与单元/恢复测试单独留证，不相加为覆盖率。"
         ],
         "next": "继续按实际二维玩法补重力／跳跃或动态刚体等独立模型及后端能力，并完善物理步和接触观察；安装与Bevy物理分别验收。"
+      },
+      {
+        "id": "runtime.physics2d_observation",
+        "label": "二维角色物理步与移动碰撞的有界只读观察",
+        "group": "场景与执行",
+        "entry": "已保存项目→重新构建→半秒无头/截图测试→按实例与访问步骤查看→双方物理声明回源",
+        "delivery": "source-release",
+        "platforms": [
+          "Linux本地HTTP/Chrome与Godot4.7.2实际运行、工程ZIP交付",
+          "0.2.4源码收录，实测完成于升版前工作树；本机仍0.2.0，未验新安装、Android、Bevy或持续窗口采样"
+        ],
+        "boundary": [
+          "独立VIENTO_PHYSICS2D协议1和observation快照1，不升级物理作者schema1/2或项目协议4/7/10/11。Rust作者规则不变，JS只校验观测身份和顺序，不模拟求解。",
+          "每个角色内建移动后记录请求/实际位移及最多4条碰撞结果，冻结计划派生实例/物理体配对与双方来源。未登记的真实碰撞体显示未映射，禁止进程提供作者路径。",
+          "仅现有半秒smoke，最多256条角色样本；显式limited仍让游戏完成，中断/无效数据为incomplete，静态/传感器场景可零样本完成。不是持续接触、传感器重叠、着地或任意作者脚本位移日志。",
+          "通用宿主把physics与旧runtime观察分开保存；任务/build/snapshot/assembly和场景归属守护，旧任务迟到回调不能覆盖新任务，导航遵守脏稿保护。",
+          "Godot执行适配器/观察生成器0.23.0，独立physics.observe2d能力；原physics/response生成器与runtime字节保持，非物理产物保持。新观察库存与指纹验证后随生成工程交付。",
+          "中英日独立只读面板保留筛选和焦点，位置仅解释本次移动；不回写作者文件、不更改旧runtime.actor位置样本、不发布玩法事件。"
+        ],
+        "next": "基于真实物理步证据独立设计重力/跳跃或动态刚体；持续观察、碰撞事件、接触生命周期和Bevy物理分别定义。"
+      },
+      {
+        "id": "scene.physics2d_character_motion",
+        "label": "二维角色重力与着地跳跃",
+        "group": "场景与执行",
+        "entry": "物理角色字段→显式选择重力与跳跃→检查/审阅/普通保存→项目构建/运行→碰撞观察→生成工程交付",
+        "delivery": "source-release",
+        "platforms": [
+          "Linux本地HTTP/Chrome、Rust原生/WASM、Godot4.7.2与异地工程ZIP",
+          "0.2.4源码收录，实测完成于升版前工作树，安装仍0.2.0；未验新安装、Android或Bevy物理"
+        ],
+        "boundary": [
+          "physics schema3可选characterMotion仅允许character且显式slide；gravity/jumpSpeed/maxFallSpeed由独立Rust inspectMotion校验，旧schema1/2操作与主ABI保持。",
+          "原文叶补丁保留转义、BOM、换行及未改数字；新增/删除两个可选成员共同处理。关闭模式不降级schema，首次创建仍用既有流程。",
+          "纯计划从实际声明派生physics.character-motion2d；后端/provider/生成回执分别核验，Bevy明确拒绝。Godot独立0.24.0包装仅为实际启用运动增加脚本和参数，旧生成层字节保持。",
+          "显式delta积分重力与下落速度上限，左右输入沿用scene speed，ui_accept上升沿且前一步着地才能起跳；零起跳速度禁跳，长按和空中按键不连跳。",
+          "交互与smoke共用一次有界碰撞移动；前一步法线Y≤−0.7作为起跳依据，场景重入重建速度/着地/按键状态。观察协议1与项目4/7/10/11保持。",
+          "未提供动态刚体、平台策略、跳跃缓冲、土狼时间、正式着地事件、持续接触或3D物理；作者数据只在明确普通保存时变化。"
+        ],
+        "next": "按玩法需求独立定义接触事件、平台策略或动态刚体，保持作者控制与后端求解分离。"
+      },
+      {
+        "id": "runtime.physics2d_character_events",
+        "label": "角色起跳与落地驱动作者事件、动画和声音",
+        "group": "场景与执行",
+        "entry": "普通起始脚本→保存与角色绑定→显式事件/音轨参数→构建→真实角色运动→作者项目事件→动画/声音→来源回看与工程交付",
+        "delivery": "source-release",
+        "platforms": [
+          "Linux本地HTTP/Chrome三语、Godot4.7.2实际运行与异地工程ZIP",
+          "0.2.4源码收录，实测完成于升版前工作树，安装仍0.2.0；未验证新安装、Android、Bevy物理或扬声器"
+        ],
+        "boundary": [
+          "Godot可选physics.character-events2d端口提供版本1与无参jumped/landed信号；每个作者行为独立、限当前场景访问，_ready前注入。",
+          "起跳来自实际被接受的运动分支，着地来自原生接触false→true并包含首次接地；长按/空中重按/持续站立不重复。步末发送，关闭撤销；不消费256样本smoke trace。",
+          "新0.25生成层只在产物唯一匹配插入事实钩子，单次旧运动调用保持；原0.24及更早物理源码字节不变。独立库存、能力与指纹随工程交付。",
+          "普通TXT起始脚本以自身绑定和实例UUID发布已有项目事件；新声音模板只订阅，可按UUID过滤；动画复用已有状态/片段契约。旧15模板文本保持。",
+          "不扩展作者格式、Rust ABI、项目wire或观察协议；不扫描任意脚本推断计划需求。普通参数需显式填写，默认事件动画不自动切为逐实例目标。",
+          "编辑仍走检查/审阅/应用/普通保存；事件、声音和动画分别观察来源/执行结果，旧报告保留。没有离地、持续接触、动态刚体、平台策略或3D/Bevy物理。"
+        ],
+        "next": "继续独立定义平台策略或更完整接触生命周期，并用实际玩法验证中间层。"
+      },
+      {
+        "id": "scene.physics2d_one_way",
+        "label": "静态单向平台创作、运行与交付",
+        "group": "场景与执行",
+        "entry": "已有物理文档→静态矩形→单向平台/容差→检查审阅→应用草稿/保存→计划与构建→原生上穿/承重→事件媒体→工程交付",
+        "delivery": "source-release",
+        "platforms": [
+          "Linux本地HTTP/Chrome三语、Godot4.7.2真实运行与工程ZIP",
+          "0.2.4源码收录，实测完成于升版前工作树，安装仍0.2.0；未验证Android、Bevy物理或新安装"
+        ],
+        "boundary": [
+          "作者schema4静态box可声明oneWay:{margin}，范围1..64默认1；独立Rust/WASM inspectOneWay与marker，保留严格schema1/2/3检查。",
+          "现有创建入口保持；显式编辑保存才升级4，关闭不降级；保真叶补丁与geometry独立，取消和观察不改作者文件。",
+          "中立physics.one-way-platform2d按实际字段要求；schema4无oneWay不要求后端能力，仍要求schema4解析；两条Bevy通道明确拒绝。",
+          "Godot0.26独立生成包装只安装原生CollisionShape2D属性，固定顶部阻挡；不改旧13份物理实现，不新增运动求解。",
+          "库存、指纹与生成工程ZIP包含独立helper/sidecar/原runtime；项目wire和物理观察协议不变，原生落地仍驱动普通作者事件与媒体。",
+          "不含运动平台、斜坡、旋转方向、主动下穿或任意速度单步防穿透；margin不是平台厚度，较大值可影响初始重叠恢复。"
+        ],
+        "next": "独立完善接触生命周期或运动平台策略，并继续实际二维玩法验证。"
+      },
+      {
+        "id": "runtime.physics2d_character_contacts",
+        "label": "角色移动碰撞集合边沿驱动作者事件与媒体",
+        "group": "场景与执行",
+        "entry": "新建普通接触事件脚本→保存登记→绑定运动角色/筛选对方→构建→原生碰撞集合边沿→项目事件/动画/声音→来源与工程交付",
+        "delivery": "source-release",
+        "platforms": [
+          "Linux本地HTTP/Chrome三语、Godot4.7.2实际运行及工程ZIP",
+          "0.2.4源码收录，实测完成于升版前工作树；安装仍0.2.0，未验证Android或Bevy物理"
+        ],
+        "boundary": [
+          "仅characterMotion角色，每行为独立viento_character_contacts协议1；started/ended传递body_id与instance_id两个字符串，不暴露引擎对象。",
+          "本步实际移动碰撞集合相对上一步做差集，同一对去重、ended先于started；无本步碰撞即结束，不等于几何分离、传感器进出或着地。",
+          "Godot0.27包装保留旧15份源码与每个runtime.gd字节，super移动一次后读取已有contacts；未知原生碰撞体不认领作者身份。",
+          "旧运动回调后步末派发；端口限制本次访问，关闭清集合和连接，不合成ended；正式玩法不依赖256条smoke trace预算。",
+          "普通TXT模板按other_instance_id筛选，项目事件载荷是对方实例UUID，自身身份由原有发布来源提供；17项旧模板保持。",
+          "不改Rust、作者schema、项目wire或观察协议；可选后端脚本能力不通过扫描作者源码推断需求。无运动角色工程继续旧生成分支。"
+        ],
+        "next": "进一步独立接入自由平面角色、持续接触或移动平台，按真实玩法检验语义。"
       }
     ],
     "implementation": [
@@ -9815,6 +9915,256 @@
           "scripts/backends/godot4-physics-response.mjs",
           "scripts/backends/godot4/physics-response-runtime.gd",
           "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i494",
+        "label": "中立物理观察流、冻结来源和样本快照",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-physics2d-trace.mjs"
+        ]
+      },
+      {
+        "id": "i495",
+        "label": "物理运行会话持久化与任务归属",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/lib/project-build-service.mjs"
+        ]
+      },
+      {
+        "id": "i496",
+        "label": "Godot移动碰撞捕获与观察工程交付",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-physics-observation.mjs",
+          "scripts/backends/godot4/physics-observation-runtime.gd",
+          "scripts/backends/godot4/project-physics-observation-runtime.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i497",
+        "label": "只读物理样本筛选、接触详情与双来源导航",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "CSS"
+        ],
+        "paths": [
+          "web/modules/app-project-physics-observation.js",
+          "web/modules/app-project-build.js",
+          "web/project-physics-observation.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "web/index.html"
+        ]
+      },
+      {
+        "id": "i498",
+        "label": "独立角色运动声明规则与同源WASM回执",
+        "kind": "product",
+        "language": [
+          "Rust",
+          "JavaScript"
+        ],
+        "paths": [
+          "crates/viento-studio-core/src/scene_physics2d.rs",
+          "crates/viento-studio-core/src/lib.rs",
+          "engine/studio-core.mjs",
+          "engine/scene-physics2d-core.mjs"
+        ]
+      },
+      {
+        "id": "i499",
+        "label": "保真运动字段补丁与中立计划能力",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-physics2d-edit.mjs",
+          "engine/scene-physics2d.mjs",
+          "engine/backend-capabilities.mjs"
+        ]
+      },
+      {
+        "id": "i500",
+        "label": "Godot角色运动包装、统一时钟与可搬迁工程",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-physics-character-motion.mjs",
+          "scripts/backends/godot4/physics-character-motion-runtime.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i501",
+        "label": "角色运动字段、三语与审阅保存流程",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "CSS"
+        ],
+        "paths": [
+          "web/modules/app-scene-physics2d.js",
+          "web/scene-physics2d.css",
+          "web/i18n/en.js",
+          "web/i18n/ja.js"
+        ]
+      },
+      {
+        "id": "i502",
+        "label": "普通角色事件与声音起始草稿",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "engine/godot-character-motion-events-script.mjs",
+          "engine/godot-project-event-audio-script.mjs",
+          "engine/script-authoring.mjs"
+        ]
+      },
+      {
+        "id": "i503",
+        "label": "实际运动事实端口、步末派发与工程交付",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-physics-character-events.mjs",
+          "scripts/backends/godot4/physics-character-events-scene.gd",
+          "scripts/backends/godot4/physics-character-events-port.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i504",
+        "label": "既有脚本/行为入口的三语角色事件工作流",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "web/modules/app-script-create.js"
+        ]
+      },
+      {
+        "id": "i505",
+        "label": "独立单向平台格式检查与WASM回执",
+        "kind": "product",
+        "language": [
+          "Rust",
+          "JavaScript"
+        ],
+        "paths": [
+          "crates/viento-studio-core/src/scene_physics2d.rs",
+          "crates/viento-studio-core/src/lib.rs",
+          "engine/studio-core.mjs",
+          "engine/scene-physics2d-core.mjs"
+        ]
+      },
+      {
+        "id": "i506",
+        "label": "单向平台保真编辑与能力计划",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/scene-physics2d-edit.mjs",
+          "engine/scene-physics2d.mjs",
+          "engine/backend-capabilities.mjs"
+        ]
+      },
+      {
+        "id": "i507",
+        "label": "原生单向属性与完整工程库存",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-physics-one-way.mjs",
+          "scripts/backends/godot4/physics-one-way-helper.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i508",
+        "label": "三语单向平台参数与原文审阅",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-scene-physics2d.js",
+          "web/i18n/en.js",
+          "web/i18n/ja.js"
+        ]
+      },
+      {
+        "id": "i509",
+        "label": "普通移动碰撞作者事件脚本",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "engine/godot-character-contact-events-script.mjs",
+          "engine/script-authoring.mjs"
+        ]
+      },
+      {
+        "id": "i510",
+        "label": "原生移动碰撞差集、独立端口与工程库存",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-physics-character-contacts.mjs",
+          "scripts/backends/godot4/physics-character-contacts-helper.gd",
+          "scripts/backends/godot4/physics-character-contacts-port.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i511",
+        "label": "既有脚本与行为入口的三语碰撞事件工作流",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/i18n/en.js",
+          "web/i18n/ja.js",
+          "web/modules/app-script-create.js"
         ]
       }
     ],
@@ -29240,6 +29590,398 @@
         "e2982",
         "e3017",
         "e3018"
+      ]
+    },
+    {
+      "id": "b705",
+      "architecture": "semantic-js",
+      "function": "runtime.physics2d_observation",
+      "implementation": "i494",
+      "role": "独立纯模块核验访问/角色顺序与有限数值、预算和完整性，从冻结计划映射来源；不含DOM、Node或碰撞求解。",
+      "evidence": [
+        "e3019",
+        "e3020",
+        "e3021",
+        "e3022",
+        "e3038",
+        "e3039",
+        "e3040",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b706",
+      "architecture": "node-service",
+      "function": "runtime.physics2d_observation",
+      "implementation": "i495",
+      "role": "独立physics快照进入会话与当前run任务，取消/异常保留已准入样本，旧任务回调无法修改后来任务。",
+      "evidence": [
+        "e3023",
+        "e3024",
+        "e3021",
+        "e3022",
+        "e3038",
+        "e3039",
+        "e3040",
+        "e3041",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b707",
+      "architecture": "runtime-backend",
+      "function": "runtime.physics2d_observation",
+      "implementation": "i496",
+      "role": "独立包装维持stop/slide移动结果；样本上限不停止运行；入口/脚本库存与指纹核对，异地ZIP实际执行。",
+      "evidence": [
+        "e3025",
+        "e3026",
+        "e3027",
+        "e3028",
+        "e3029",
+        "e3021",
+        "e3022",
+        "e3038",
+        "e3039",
+        "e3040",
+        "e3042",
+        "e3043",
+        "e3044",
+        "e3045",
+        "e3046",
+        "e3047",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b708",
+      "architecture": "ui",
+      "function": "runtime.physics2d_observation",
+      "implementation": "i497",
+      "role": "视图只持有选择和筛选；job/build/snapshot与冻结来源限制导航，三语及窄屏不影响采样或作者文件。",
+      "evidence": [
+        "e3030",
+        "e3031",
+        "e3032",
+        "e3033",
+        "e3034",
+        "e3035",
+        "e3036",
+        "e3037",
+        "e3021",
+        "e3022",
+        "e3038",
+        "e3039",
+        "e3040",
+        "e3048",
+        "e3049",
+        "e3050",
+        "e3051",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b709",
+      "architecture": "rust-core",
+      "function": "scene.physics2d_character_motion",
+      "implementation": "i498",
+      "role": "独立可选域校验schema3，旧操作只接受原版本；核心不持有运行速度、引擎或IO。",
+      "evidence": [
+        "e3054",
+        "e3055",
+        "e3056",
+        "e3057",
+        "e3058",
+        "e3052",
+        "e3053",
+        "e3059",
+        "e3060",
+        "e3061",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b710",
+      "architecture": "semantic-js",
+      "function": "scene.physics2d_character_motion",
+      "implementation": "i499",
+      "role": "来源安全叶补丁与可选成员批量修改；冻结计划、能力和来源继续独立。",
+      "evidence": [
+        "e3062",
+        "e3063",
+        "e3064",
+        "e3065",
+        "e3066",
+        "e3052",
+        "e3053",
+        "e3067",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b711",
+      "architecture": "runtime-backend",
+      "function": "scene.physics2d_character_motion",
+      "implementation": "i500",
+      "role": "新生成层转换旧输入再恢复运动组件，交互与smoke共用一次运动，旧生成器不改。",
+      "evidence": [
+        "e3068",
+        "e3069",
+        "e3070",
+        "e3071",
+        "e3072",
+        "e3052",
+        "e3053",
+        "e3073",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b712",
+      "architecture": "ui",
+      "function": "scene.physics2d_character_motion",
+      "implementation": "i501",
+      "role": "按目标schema选择可选核心能力；字段签名与迟到请求守护，空间几何和普通保存保持独立。",
+      "evidence": [
+        "e3074",
+        "e3075",
+        "e3076",
+        "e3077",
+        "e3078",
+        "e3079",
+        "e3052",
+        "e3053",
+        "e3080",
+        "e3081",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b713",
+      "architecture": "semantic-js",
+      "function": "runtime.physics2d_character_events",
+      "implementation": "i502",
+      "role": "原有草稿/保存契约生成普通作者源码，不授予物理或文件写权限。",
+      "evidence": [
+        "e3084",
+        "e3085",
+        "e3086",
+        "e3087",
+        "e3082",
+        "e3083",
+        "e3088",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b714",
+      "architecture": "runtime-backend",
+      "function": "runtime.physics2d_character_events",
+      "implementation": "i503",
+      "role": "旧求解只执行一次，新层传递物理事实，作者绑定决定事件与媒体。",
+      "evidence": [
+        "e3089",
+        "e3090",
+        "e3091",
+        "e3092",
+        "e3093",
+        "e3094",
+        "e3082",
+        "e3083",
+        "e3095",
+        "e3096",
+        "e3097",
+        "e3098",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b715",
+      "architecture": "ui",
+      "function": "runtime.physics2d_character_events",
+      "implementation": "i504",
+      "role": "动态模板目录复用普通TXT/绑定/显式参数/保存，既有观察面板独立回看。",
+      "evidence": [
+        "e3099",
+        "e3100",
+        "e3101",
+        "e3102",
+        "e3082",
+        "e3083",
+        "e3103",
+        "e3104",
+        "e3105",
+        "e3106",
+        "e3107",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b716",
+      "architecture": "rust-core",
+      "function": "scene.physics2d_one_way",
+      "implementation": "i505",
+      "role": "核心验证文档与有限参数，不承担后端物理求解。",
+      "evidence": [
+        "e3110",
+        "e3111",
+        "e3112",
+        "e3113",
+        "e3114",
+        "e3108",
+        "e3109",
+        "e3115",
+        "e3116",
+        "e3117",
+        "e3140",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b717",
+      "architecture": "semantic-js",
+      "function": "scene.physics2d_one_way",
+      "implementation": "i506",
+      "role": "源身份、草稿补丁、中立能力与生成回执分离，后端必须真实支持。",
+      "evidence": [
+        "e3118",
+        "e3119",
+        "e3120",
+        "e3121",
+        "e3122",
+        "e3108",
+        "e3109",
+        "e3116",
+        "e3123",
+        "e3124",
+        "e3140",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b718",
+      "architecture": "runtime-backend",
+      "function": "scene.physics2d_one_way",
+      "implementation": "i507",
+      "role": "Godot独立包装配置原生形状，旧求解、事件与媒体端口组合。",
+      "evidence": [
+        "e3125",
+        "e3126",
+        "e3127",
+        "e3128",
+        "e3129",
+        "e3108",
+        "e3109",
+        "e3130",
+        "e3131",
+        "e3132",
+        "e3140",
+        "e3141",
+        "e3142",
+        "e3143",
+        "e3144",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b719",
+      "architecture": "ui",
+      "function": "scene.physics2d_one_way",
+      "implementation": "i508",
+      "role": "沿现有物理编辑和普通Save；空间编辑只改几何，运行观察保持只读。",
+      "evidence": [
+        "e3133",
+        "e3134",
+        "e3135",
+        "e3136",
+        "e3137",
+        "e3108",
+        "e3109",
+        "e3138",
+        "e3139",
+        "e3140",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b720",
+      "architecture": "semantic-js",
+      "function": "runtime.physics2d_character_contacts",
+      "implementation": "i509",
+      "role": "端口校验与作者事件发布独立于物理求解、文件保存和媒体选择。",
+      "evidence": [
+        "e3147",
+        "e3148",
+        "e3149",
+        "e3145",
+        "e3146",
+        "e3150",
+        "e3151",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b721",
+      "architecture": "runtime-backend",
+      "function": "runtime.physics2d_character_contacts",
+      "implementation": "i510",
+      "role": "只消费已有原生移动返回值，访问局部端口在步末分发，旧生成与原runtime保持。",
+      "evidence": [
+        "e3152",
+        "e3153",
+        "e3154",
+        "e3155",
+        "e3156",
+        "e3157",
+        "e3145",
+        "e3146",
+        "e3158",
+        "e3159",
+        "e3160",
+        "e3161",
+        "e3162",
+        "e3163",
+        "e3164",
+        "e3165",
+        "e3151",
+        "e3173",
+        "e3174"
+      ]
+    },
+    {
+      "id": "b722",
+      "architecture": "ui",
+      "function": "runtime.physics2d_character_contacts",
+      "implementation": "i511",
+      "role": "复用普通创建、参数和保存；事件、物理及媒体观察分别核对身份来源。",
+      "evidence": [
+        "e3166",
+        "e3167",
+        "e3168",
+        "e3169",
+        "e3170",
+        "e3145",
+        "e3146",
+        "e3171",
+        "e3172",
+        "e3173",
+        "e3174"
       ]
     }
   ],
@@ -57363,6 +58105,726 @@
       ],
       "value": 2,
       "reason": "0.2.2之后未发布工作树；源码版本与本机0.2.0安装未更新，不提升历史交付评分。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_observation",
+        "i494",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "独立纯模块核验访问/角色顺序与有限数值、预算和完整性，从冻结计划映射来源；不含DOM、Node或碰撞求解。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_observation",
+        "i494",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮纯契约、宿主/界面失败分支及真实Chrome/Godot/异地工程分别留证；不外推安装或其他后端。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_observation",
+        "i494",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "独立纯模块核验访问/角色顺序与有限数值、预算和完整性，从冻结计划映射来源；不含DOM、Node或碰撞求解。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_observation",
+        "i494",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后未提交工作树；本机安装仍0.2.0，本轮不提升历史评分。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.physics2d_observation",
+        "i495",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "独立physics快照进入会话与当前run任务，取消/异常保留已准入样本，旧任务回调无法修改后来任务。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.physics2d_observation",
+        "i495",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮纯契约、宿主/界面失败分支及真实Chrome/Godot/异地工程分别留证；不外推安装或其他后端。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.physics2d_observation",
+        "i495",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "独立physics快照进入会话与当前run任务，取消/异常保留已准入样本，旧任务回调无法修改后来任务。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.physics2d_observation",
+        "i495",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后未提交工作树；本机安装仍0.2.0，本轮不提升历史评分。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_observation",
+        "i496",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "独立包装维持stop/slide移动结果；样本上限不停止运行；入口/脚本库存与指纹核对，异地ZIP实际执行。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_observation",
+        "i496",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮纯契约、宿主/界面失败分支及真实Chrome/Godot/异地工程分别留证；不外推安装或其他后端。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_observation",
+        "i496",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "独立包装维持stop/slide移动结果；样本上限不停止运行；入口/脚本库存与指纹核对，异地ZIP实际执行。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_observation",
+        "i496",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后未提交工作树；本机安装仍0.2.0，本轮不提升历史评分。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_observation",
+        "i497",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "视图只持有选择和筛选；job/build/snapshot与冻结来源限制导航，三语及窄屏不影响采样或作者文件。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_observation",
+        "i497",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮纯契约、宿主/界面失败分支及真实Chrome/Godot/异地工程分别留证；不外推安装或其他后端。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_observation",
+        "i497",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "视图只持有选择和筛选；job/build/snapshot与冻结来源限制导航，三语及窄屏不影响采样或作者文件。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_observation",
+        "i497",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后未提交工作树；本机安装仍0.2.0，本轮不提升历史评分。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.physics2d_character_motion",
+        "i498",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "作者字段、计划与实际后端形成可用纵切；明确保留平台策略/动态刚体缺口。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.physics2d_character_motion",
+        "i498",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮同源核心、应用回归及真实Godot/Chrome验证；非多平台安装结论。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.physics2d_character_motion",
+        "i498",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "核心规则、纯补丁/计划、宿主、UI和引擎求解分开；仍复用既有场景/观察契约。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.physics2d_character_motion",
+        "i498",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后开发工作树，未升版或更新本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.physics2d_character_motion",
+        "i499",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "作者字段、计划与实际后端形成可用纵切；明确保留平台策略/动态刚体缺口。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.physics2d_character_motion",
+        "i499",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮同源核心、应用回归及真实Godot/Chrome验证；非多平台安装结论。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.physics2d_character_motion",
+        "i499",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "核心规则、纯补丁/计划、宿主、UI和引擎求解分开；仍复用既有场景/观察契约。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.physics2d_character_motion",
+        "i499",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后开发工作树，未升版或更新本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "scene.physics2d_character_motion",
+        "i500",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "作者字段、计划与实际后端形成可用纵切；明确保留平台策略/动态刚体缺口。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "scene.physics2d_character_motion",
+        "i500",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮同源核心、应用回归及真实Godot/Chrome验证；非多平台安装结论。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "scene.physics2d_character_motion",
+        "i500",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "核心规则、纯补丁/计划、宿主、UI和引擎求解分开；仍复用既有场景/观察契约。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "scene.physics2d_character_motion",
+        "i500",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后开发工作树，未升版或更新本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.physics2d_character_motion",
+        "i501",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "作者字段、计划与实际后端形成可用纵切；明确保留平台策略/动态刚体缺口。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.physics2d_character_motion",
+        "i501",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮同源核心、应用回归及真实Godot/Chrome验证；非多平台安装结论。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.physics2d_character_motion",
+        "i501",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "核心规则、纯补丁/计划、宿主、UI和引擎求解分开；仍复用既有场景/观察契约。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.physics2d_character_motion",
+        "i501",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后开发工作树，未升版或更新本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_events",
+        "i502",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "角色事实、作者事件和媒体控制形成实际可用链路；其他接触语义仍分开。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_events",
+        "i502",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮真实Godot/Chrome和完整应用回归；范围不外推安装或移动设备。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_events",
+        "i502",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "运动求解、事实端口、普通作者源码与项目事件/媒体分离；目前仅Godot执行。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_events",
+        "i502",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后工作树，未发布或升级本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_events",
+        "i503",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "角色事实、作者事件和媒体控制形成实际可用链路；其他接触语义仍分开。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_events",
+        "i503",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮真实Godot/Chrome和完整应用回归；范围不外推安装或移动设备。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_events",
+        "i503",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "运动求解、事实端口、普通作者源码与项目事件/媒体分离；目前仅Godot执行。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_events",
+        "i503",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后工作树，未发布或升级本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_events",
+        "i504",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "角色事实、作者事件和媒体控制形成实际可用链路；其他接触语义仍分开。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_events",
+        "i504",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "本轮真实Godot/Chrome和完整应用回归；范围不外推安装或移动设备。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_events",
+        "i504",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "运动求解、事实端口、普通作者源码与项目事件/媒体分离；目前仅Godot执行。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_events",
+        "i504",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后工作树，未发布或升级本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.physics2d_one_way",
+        "i505",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "单向平台作者编辑、原生执行、观察和交付贯通；其他平台策略独立待接。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.physics2d_one_way",
+        "i505",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "实际Godot、Chrome、Rust/WASM与应用回归；不外推安装或移动设备。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.physics2d_one_way",
+        "i505",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "严格声明、中立能力、保真编辑与原生适配分离；当前只有Godot物理。"
+    },
+    {
+      "coordinates": [
+        "rust-core",
+        "scene.physics2d_one_way",
+        "i505",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后工作树，未发布或升级本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.physics2d_one_way",
+        "i506",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "单向平台作者编辑、原生执行、观察和交付贯通；其他平台策略独立待接。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.physics2d_one_way",
+        "i506",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "实际Godot、Chrome、Rust/WASM与应用回归；不外推安装或移动设备。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.physics2d_one_way",
+        "i506",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "严格声明、中立能力、保真编辑与原生适配分离；当前只有Godot物理。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "scene.physics2d_one_way",
+        "i506",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后工作树，未发布或升级本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "scene.physics2d_one_way",
+        "i507",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "单向平台作者编辑、原生执行、观察和交付贯通；其他平台策略独立待接。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "scene.physics2d_one_way",
+        "i507",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "实际Godot、Chrome、Rust/WASM与应用回归；不外推安装或移动设备。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "scene.physics2d_one_way",
+        "i507",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "严格声明、中立能力、保真编辑与原生适配分离；当前只有Godot物理。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "scene.physics2d_one_way",
+        "i507",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后工作树，未发布或升级本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.physics2d_one_way",
+        "i508",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "单向平台作者编辑、原生执行、观察和交付贯通；其他平台策略独立待接。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.physics2d_one_way",
+        "i508",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "实际Godot、Chrome、Rust/WASM与应用回归；不外推安装或移动设备。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.physics2d_one_way",
+        "i508",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "严格声明、中立能力、保真编辑与原生适配分离；当前只有Godot物理。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "scene.physics2d_one_way",
+        "i508",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后工作树，未发布或升级本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_contacts",
+        "i509",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "原生碰撞事实、普通作者脚本、事件和媒体组成可用工作流；更广接触模型另行接入。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_contacts",
+        "i509",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Godot/Chrome、模板端口矩阵及完整应用回归；不外推安装或移动。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_contacts",
+        "i509",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "原生求解、集合边沿、访问端口和普通作者事件分离；仅Godot执行。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_contacts",
+        "i509",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后开发工作树，未发布或升级本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_contacts",
+        "i510",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "原生碰撞事实、普通作者脚本、事件和媒体组成可用工作流；更广接触模型另行接入。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_contacts",
+        "i510",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Godot/Chrome、模板端口矩阵及完整应用回归；不外推安装或移动。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_contacts",
+        "i510",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "原生求解、集合边沿、访问端口和普通作者事件分离；仅Godot执行。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_contacts",
+        "i510",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后开发工作树，未发布或升级本机0.2.0安装。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_contacts",
+        "i511",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "原生碰撞事实、普通作者脚本、事件和媒体组成可用工作流；更广接触模型另行接入。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_contacts",
+        "i511",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Godot/Chrome、模板端口矩阵及完整应用回归；不外推安装或移动。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_contacts",
+        "i511",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "原生求解、集合边沿、访问端口和普通作者事件分离；仅Godot执行。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_contacts",
+        "i511",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.3之后开发工作树，未发布或升级本机0.2.0安装。"
     }
   ],
   "evidence": [
@@ -75473,6 +76935,942 @@
       "kind": "report",
       "path": "docs/test-results/release-0.2.3/README.md",
       "note": "0.2.3版本与源码分发、保留及图谱检查；发布本身不提高历史成熟度分数。"
+    },
+    {
+      "id": "e3019",
+      "kind": "source",
+      "path": "engine/project-physics2d-trace.mjs",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3020",
+      "kind": "test",
+      "path": "scripts/tests/project-physics2d-trace.test.mjs",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3021",
+      "kind": "report",
+      "path": "docs/SCENE_PHYSICS2D.md",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3022",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/README.md",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3023",
+      "kind": "source",
+      "path": "scripts/adapters/node-project-build.mjs",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3024",
+      "kind": "source",
+      "path": "scripts/lib/project-build-service.mjs",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3025",
+      "kind": "source",
+      "path": "scripts/backends/godot4-physics-observation.mjs",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3026",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-observation-runtime.gd",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3027",
+      "kind": "source",
+      "path": "scripts/backends/godot4/project-physics-observation-runtime.gd",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3028",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3029",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-observation-backends.test.mjs",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3030",
+      "kind": "source",
+      "path": "web/modules/app-project-physics-observation.js",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3031",
+      "kind": "source",
+      "path": "web/modules/app-project-build.js",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3032",
+      "kind": "source",
+      "path": "web/project-physics-observation.css",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3033",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3034",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3035",
+      "kind": "source",
+      "path": "web/index.html",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3036",
+      "kind": "test",
+      "path": "scripts/tests/project-physics-observation-ui.test.mjs",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3037",
+      "kind": "test",
+      "path": "scripts/tests/project-physics-observation-build-ui.test.mjs",
+      "note": "0.2.3之后物理步观察工作树：有界记录、来源归属、真实运行及旧兼容证据。"
+    },
+    {
+      "id": "e3038",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/full-check.log",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3039",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/preservation.json",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3040",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/links.json",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3041",
+      "kind": "test",
+      "path": "scripts/tests/project-physics2d-host.test.mjs",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3042",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/backend-final.json",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3043",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/backend-final.log",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3044",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/backend-live.json",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3045",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/backend-live.log",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3046",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/legacy-native-final.log",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3047",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/backend-adjacent-confirmed.log",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3048",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-observation-smoke.mjs",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3049",
+      "kind": "test",
+      "path": "scripts/tests/helpers/project-physics2d-observation-fixture.mjs",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3050",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/ui-regression.log",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3051",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-observation/browser-1792919625779/browser.json",
+      "note": "物理观察开发工作树最终验证；条件、样本上限和未安装边界见专题。"
+    },
+    {
+      "id": "e3052",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-motion/README.md",
+      "note": "角色运动开发工作树验证；实际条件和不覆盖范围见专题。"
+    },
+    {
+      "id": "e3053",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-motion/full-check.log",
+      "note": "角色运动开发工作树验证；实际条件和不覆盖范围见专题。"
+    },
+    {
+      "id": "e3054",
+      "kind": "source",
+      "path": "crates/viento-studio-core/src/scene_physics2d.rs",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3055",
+      "kind": "source",
+      "path": "crates/viento-studio-core/src/lib.rs",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3056",
+      "kind": "source",
+      "path": "engine/studio-core.mjs",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3057",
+      "kind": "source",
+      "path": "engine/scene-physics2d-core.mjs",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3058",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-motion-core.test.mjs",
+      "note": "角色运动契约、兼容及实际入口测试，适用条件见测试代码。"
+    },
+    {
+      "id": "e3059",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-motion/rust-full.log",
+      "note": "本轮实际验证日志。"
+    },
+    {
+      "id": "e3060",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-motion/core-edit-js.log",
+      "note": "本轮实际验证日志。"
+    },
+    {
+      "id": "e3061",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-motion/core-edit-regression.log",
+      "note": "本轮实际验证日志。"
+    },
+    {
+      "id": "e3062",
+      "kind": "source",
+      "path": "engine/scene-physics2d-edit.mjs",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3063",
+      "kind": "source",
+      "path": "engine/scene-physics2d.mjs",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3064",
+      "kind": "source",
+      "path": "engine/backend-capabilities.mjs",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3065",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-motion-edit.test.mjs",
+      "note": "角色运动契约、兼容及实际入口测试，适用条件见测试代码。"
+    },
+    {
+      "id": "e3066",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-character-motion-plan.test.mjs",
+      "note": "角色运动契约、兼容及实际入口测试，适用条件见测试代码。"
+    },
+    {
+      "id": "e3067",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-motion/plan.log",
+      "note": "本轮实际验证日志。"
+    },
+    {
+      "id": "e3068",
+      "kind": "source",
+      "path": "scripts/backends/godot4-physics-character-motion.mjs",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3069",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-character-motion-runtime.gd",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3070",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3071",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-character-motion-backends.test.mjs",
+      "note": "角色运动契约、兼容及实际入口测试，适用条件见测试代码。"
+    },
+    {
+      "id": "e3072",
+      "kind": "test",
+      "path": "scripts/tests/helpers/scene-physics2d-character-motion-author-fixture.mjs",
+      "note": "角色运动契约、兼容及实际入口测试，适用条件见测试代码。"
+    },
+    {
+      "id": "e3073",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-motion/backend-native.json",
+      "note": "真实Godot角色运动矩阵，失败与复验分别留存。"
+    },
+    {
+      "id": "e3074",
+      "kind": "source",
+      "path": "web/modules/app-scene-physics2d.js",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3075",
+      "kind": "source",
+      "path": "web/scene-physics2d.css",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3076",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3077",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "角色运动新增实现；对应边界见物理指南。"
+    },
+    {
+      "id": "e3078",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-character-motion-ui.test.mjs",
+      "note": "角色运动契约、兼容及实际入口测试，适用条件见测试代码。"
+    },
+    {
+      "id": "e3079",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-character-motion-smoke.mjs",
+      "note": "角色运动契约、兼容及实际入口测试，适用条件见测试代码。"
+    },
+    {
+      "id": "e3080",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-motion/browser-1792921421837/browser.json",
+      "note": "真实Chrome编辑、保存、构建和物理观察；含语言/布局及作者摘要。"
+    },
+    {
+      "id": "e3081",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-motion/browser-1792921479654/browser.json",
+      "note": "真实Chrome编辑、保存、构建和物理观察；含语言/布局及作者摘要。"
+    },
+    {
+      "id": "e3082",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/README.md",
+      "note": "本轮实际执行条件和结果；不替代旧轮次或安装验收。"
+    },
+    {
+      "id": "e3083",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/full-check.log",
+      "note": "本轮实际执行条件和结果；不替代旧轮次或安装验收。"
+    },
+    {
+      "id": "e3084",
+      "kind": "source",
+      "path": "engine/godot-character-motion-events-script.mjs",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3085",
+      "kind": "source",
+      "path": "engine/godot-project-event-audio-script.mjs",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3086",
+      "kind": "source",
+      "path": "engine/script-authoring.mjs",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3087",
+      "kind": "test",
+      "path": "scripts/tests/character-motion-event-starters.test.mjs",
+      "note": "本轮可重复契约或实际工具验证入口。"
+    },
+    {
+      "id": "e3088",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/author-starters-tests.log",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3089",
+      "kind": "source",
+      "path": "scripts/backends/godot4-physics-character-events.mjs",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3090",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-character-events-scene.gd",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3091",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-character-events-port.gd",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3092",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3093",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-character-events-backends.test.mjs",
+      "note": "本轮可重复契约或实际工具验证入口。"
+    },
+    {
+      "id": "e3094",
+      "kind": "test",
+      "path": "scripts/tests/helpers/scene-physics2d-character-events-author-fixture.mjs",
+      "note": "本轮可重复契约或实际工具验证入口。"
+    },
+    {
+      "id": "e3095",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/backend-native.json",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3096",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/backend-attempt-1.log",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3097",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/backend-attempts.log",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3098",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/backend-native.log",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3099",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3100",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3101",
+      "kind": "source",
+      "path": "web/modules/app-script-create.js",
+      "note": "角色运动事件纵切实现，功能边界见物理指南。"
+    },
+    {
+      "id": "e3102",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-character-events-smoke.mjs",
+      "note": "本轮可重复契约或实际工具验证入口。"
+    },
+    {
+      "id": "e3103",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/ui-regression.log",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3104",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/browser-1792923394906/browser.json",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3105",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/browser-1792923463955/browser.json",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3106",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/browser-1792923513322/browser.json",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3107",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-character-events/browser-1792923577290/browser.json",
+      "note": "实际执行证据，失败或条件限制按报告原值保留。"
+    },
+    {
+      "id": "e3108",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/README.md",
+      "note": "本轮实际执行条件和范围，旧报告与安装验收独立。"
+    },
+    {
+      "id": "e3109",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/full-check.log",
+      "note": "本轮实际执行条件和范围，旧报告与安装验收独立。"
+    },
+    {
+      "id": "e3110",
+      "kind": "source",
+      "path": "crates/viento-studio-core/src/scene_physics2d.rs",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3111",
+      "kind": "source",
+      "path": "crates/viento-studio-core/src/lib.rs",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3112",
+      "kind": "source",
+      "path": "engine/studio-core.mjs",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3113",
+      "kind": "source",
+      "path": "engine/scene-physics2d-core.mjs",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3114",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-one-way-core.test.mjs",
+      "note": "本轮可复现检查入口。"
+    },
+    {
+      "id": "e3115",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/rust-full.log",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3116",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/core-edit-js.log",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3117",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/wasm-build.log",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3118",
+      "kind": "source",
+      "path": "engine/scene-physics2d-edit.mjs",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3119",
+      "kind": "source",
+      "path": "engine/scene-physics2d.mjs",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3120",
+      "kind": "source",
+      "path": "engine/backend-capabilities.mjs",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3121",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-one-way-edit.test.mjs",
+      "note": "本轮可复现检查入口。"
+    },
+    {
+      "id": "e3122",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-one-way-plan.test.mjs",
+      "note": "本轮可复现检查入口。"
+    },
+    {
+      "id": "e3123",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/core-edit-regression.log",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3124",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/plan-generator.log",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3125",
+      "kind": "source",
+      "path": "scripts/backends/godot4-physics-one-way.mjs",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3126",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-one-way-helper.gd",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3127",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3128",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-one-way-backends.test.mjs",
+      "note": "本轮可复现检查入口。"
+    },
+    {
+      "id": "e3129",
+      "kind": "test",
+      "path": "scripts/tests/helpers/scene-physics2d-one-way-author-fixture.mjs",
+      "note": "本轮可复现检查入口。"
+    },
+    {
+      "id": "e3130",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/backend-native.log",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3131",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/backend-native.json",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3132",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/legacy-events-native.log",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3133",
+      "kind": "source",
+      "path": "web/modules/app-scene-physics2d.js",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3134",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3135",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "单向平台纵切实现，边界见物理指南。"
+    },
+    {
+      "id": "e3136",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-one-way-ui.test.mjs",
+      "note": "本轮可复现检查入口。"
+    },
+    {
+      "id": "e3137",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-one-way-smoke.mjs",
+      "note": "本轮可复现检查入口。"
+    },
+    {
+      "id": "e3138",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/ui-regression.log",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3139",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/browser-1792925092123/browser.json",
+      "note": "本轮直接执行证据，条件与失败按专题记录。"
+    },
+    {
+      "id": "e3140",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/full-check-recheck.log",
+      "note": "本轮修正后的复验或旧格式原生回归，首次日志保留。"
+    },
+    {
+      "id": "e3141",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/adapter-retest.log",
+      "note": "本轮修正后的复验或旧格式原生回归，首次日志保留。"
+    },
+    {
+      "id": "e3142",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/backend-mask-retest.log",
+      "note": "本轮修正后的复验或旧格式原生回归，首次日志保留。"
+    },
+    {
+      "id": "e3143",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/backend-mask-retest.json",
+      "note": "本轮修正后的复验或旧格式原生回归，首次日志保留。"
+    },
+    {
+      "id": "e3144",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-one-way/legacy-events-native.json",
+      "note": "本轮修正后的复验或旧格式原生回归，首次日志保留。"
+    },
+    {
+      "id": "e3145",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/README.md",
+      "note": "本轮实际执行条件，旧专题和安装验收独立。"
+    },
+    {
+      "id": "e3146",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/full-check.log",
+      "note": "本轮实际执行条件，旧专题和安装验收独立。"
+    },
+    {
+      "id": "e3147",
+      "kind": "source",
+      "path": "engine/godot-character-contact-events-script.mjs",
+      "note": "角色移动碰撞事件实现，语义与边界见物理指南。"
+    },
+    {
+      "id": "e3148",
+      "kind": "source",
+      "path": "engine/script-authoring.mjs",
+      "note": "角色移动碰撞事件实现，语义与边界见物理指南。"
+    },
+    {
+      "id": "e3149",
+      "kind": "test",
+      "path": "scripts/tests/character-contact-event-starter.test.mjs",
+      "note": "可复现契约或实际工具检查入口。"
+    },
+    {
+      "id": "e3150",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/author-starters-tests.log",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3151",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/legacy-starter-hashes.json",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3152",
+      "kind": "source",
+      "path": "scripts/backends/godot4-physics-character-contacts.mjs",
+      "note": "角色移动碰撞事件实现，语义与边界见物理指南。"
+    },
+    {
+      "id": "e3153",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-character-contacts-helper.gd",
+      "note": "角色移动碰撞事件实现，语义与边界见物理指南。"
+    },
+    {
+      "id": "e3154",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-character-contacts-port.gd",
+      "note": "角色移动碰撞事件实现，语义与边界见物理指南。"
+    },
+    {
+      "id": "e3155",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "角色移动碰撞事件实现，语义与边界见物理指南。"
+    },
+    {
+      "id": "e3156",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-contact-events-backends.test.mjs",
+      "note": "可复现契约或实际工具检查入口。"
+    },
+    {
+      "id": "e3157",
+      "kind": "test",
+      "path": "scripts/tests/helpers/scene-physics2d-contact-events-author-fixture.mjs",
+      "note": "可复现契约或实际工具检查入口。"
+    },
+    {
+      "id": "e3158",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/backend-adapter-tests.log",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3159",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/backend-first-native.log",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3160",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/backend-native.log",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3161",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/backend-pure-tests.log",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3162",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/backend-native.json",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3163",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/legacy-native.log",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3164",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/legacy-events-native.json",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3165",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/legacy-one-way-native.json",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3166",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "角色移动碰撞事件实现，语义与边界见物理指南。"
+    },
+    {
+      "id": "e3167",
+      "kind": "source",
+      "path": "web/i18n/ja.js",
+      "note": "角色移动碰撞事件实现，语义与边界见物理指南。"
+    },
+    {
+      "id": "e3168",
+      "kind": "source",
+      "path": "web/modules/app-script-create.js",
+      "note": "角色移动碰撞事件实现，语义与边界见物理指南。"
+    },
+    {
+      "id": "e3169",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-contact-events-ui.test.mjs",
+      "note": "可复现契约或实际工具检查入口。"
+    },
+    {
+      "id": "e3170",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-contact-events-smoke.mjs",
+      "note": "可复现契约或实际工具检查入口。"
+    },
+    {
+      "id": "e3171",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/ui-regression.log",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3172",
+      "kind": "report",
+      "path": "docs/test-results/scene-physics2d-contact-events/browser-1792927451814/browser.json",
+      "note": "直接执行证据；首次失败与复验按专题分别记录。"
+    },
+    {
+      "id": "e3173",
+      "kind": "report",
+      "path": "docs/RELEASE_0.2.4.md",
+      "note": "0.2.4源码交付内容及实测范围；不增加安装验收。"
+    },
+    {
+      "id": "e3174",
+      "kind": "report",
+      "path": "docs/test-results/release-0.2.4/README.md",
+      "note": "升版专项检查，开发实测保留原版本及摘要。"
     }
   ],
   "dependencies": [
@@ -78313,6 +80711,150 @@
       "to": "scene.physics2d_response",
       "relation": "requires",
       "reason": "严格生成文件清单与已冻结依赖构成独立工程交付。"
+    },
+    {
+      "from": "runtime.physics2d_observation",
+      "to": "scene.physics2d",
+      "relation": "requires",
+      "reason": "物理声明与冻结实例成员构成可信来源。"
+    },
+    {
+      "from": "runtime.physics2d_observation",
+      "to": "scene.physics2d_response",
+      "relation": "requires",
+      "reason": "停止与滑动求解结果分别采样，不重新执行运动。"
+    },
+    {
+      "from": "runtime.physics2d_observation",
+      "to": "build.project_assembly",
+      "relation": "requires",
+      "reason": "观察沿当前项目访问生命周期，独立于动画协议。"
+    },
+    {
+      "from": "runtime.physics2d_observation",
+      "to": "backend.project_delivery",
+      "relation": "requires",
+      "reason": "观察脚本与严格库存随生成工程保留。"
+    },
+    {
+      "from": "scene.physics2d_character_motion",
+      "to": "authoring.physics2d",
+      "relation": "requires",
+      "reason": "复用检查/审阅/普通保存的作者入口。"
+    },
+    {
+      "from": "scene.physics2d_character_motion",
+      "to": "scene.physics2d_response",
+      "relation": "requires",
+      "reason": "运动角色要求显式滑动响应。"
+    },
+    {
+      "from": "scene.physics2d_character_motion",
+      "to": "runtime.physics2d_observation",
+      "relation": "requires",
+      "reason": "沿用有界位移与碰撞观察。"
+    },
+    {
+      "from": "scene.physics2d_character_motion",
+      "to": "build.project_assembly",
+      "relation": "requires",
+      "reason": "从保存态项目组装构建。"
+    },
+    {
+      "from": "scene.physics2d_character_motion",
+      "to": "backend.project_delivery",
+      "relation": "requires",
+      "reason": "运动参数和脚本随生成工程交付。"
+    },
+    {
+      "from": "runtime.physics2d_character_events",
+      "to": "scene.physics2d_character_motion",
+      "relation": "requires",
+      "reason": "实际重力/跳跃与原生接触提供事实。"
+    },
+    {
+      "from": "runtime.physics2d_character_events",
+      "to": "script.authoring",
+      "relation": "requires",
+      "reason": "普通TXT起始草稿和保存。"
+    },
+    {
+      "from": "runtime.physics2d_character_events",
+      "to": "runtime.project_events",
+      "relation": "requires",
+      "reason": "作者身份发布、订阅和来源。"
+    },
+    {
+      "from": "runtime.physics2d_character_events",
+      "to": "runtime.project_audio_controls",
+      "relation": "requires",
+      "reason": "订阅事件后请求并观察播放。"
+    },
+    {
+      "from": "runtime.physics2d_character_events",
+      "to": "runtime.project_animation_controls",
+      "relation": "requires",
+      "reason": "复用事件驱动的动画控制。"
+    },
+    {
+      "from": "runtime.physics2d_character_events",
+      "to": "backend.project_delivery",
+      "relation": "requires",
+      "reason": "生成脚本和冻结作者源随工程ZIP交付。"
+    },
+    {
+      "from": "scene.physics2d_one_way",
+      "to": "scene.physics2d",
+      "relation": "requires",
+      "reason": "已有物理身份、几何与原生碰撞提供基础。"
+    },
+    {
+      "from": "scene.physics2d_one_way",
+      "to": "authoring.physics2d",
+      "relation": "requires",
+      "reason": "既有声明表单、保真草稿与普通保存。"
+    },
+    {
+      "from": "scene.physics2d_one_way",
+      "to": "backend.project_delivery",
+      "relation": "requires",
+      "reason": "单向helper、库存与冻结作者源交付。"
+    },
+    {
+      "from": "runtime.physics2d_character_contacts",
+      "to": "scene.physics2d_character_motion",
+      "relation": "requires",
+      "reason": "既有运动求解返回真实碰撞集合。"
+    },
+    {
+      "from": "runtime.physics2d_character_contacts",
+      "to": "script.authoring",
+      "relation": "requires",
+      "reason": "普通TXT模板及保存登记。"
+    },
+    {
+      "from": "runtime.physics2d_character_contacts",
+      "to": "runtime.project_events",
+      "relation": "requires",
+      "reason": "作者身份、标量载荷与投递来源。"
+    },
+    {
+      "from": "runtime.physics2d_character_contacts",
+      "to": "runtime.project_animation_controls",
+      "relation": "requires",
+      "reason": "复用事件驱动动画控制。"
+    },
+    {
+      "from": "runtime.physics2d_character_contacts",
+      "to": "runtime.project_audio_controls",
+      "relation": "requires",
+      "reason": "按对方实例载荷筛选声音。"
+    },
+    {
+      "from": "runtime.physics2d_character_contacts",
+      "to": "backend.project_delivery",
+      "relation": "requires",
+      "reason": "独立脚本库存及冻结作者源可搬迁交付。"
     }
   ],
   "workflows": [
@@ -79983,6 +82525,76 @@
       ],
       "gaps": [],
       "boundary": "仅Godot项目组装中的显式角色响应。旧默认stop与无物理生成保持；slide仅对所选角色生效，物理根和视觉子层分离。实际Chrome保存和Godot斜碰/拐角/独立ZIP分别验证；无重力、动态刚体、3D/Bevy物理或新安装验收。"
+    },
+    {
+      "id": "scene-physics2d-observation",
+      "label": "保存物理项目→构建→半秒测试→物理步/碰撞观察→双方声明回源→工程交付",
+      "steps": [
+        "authoring.physics2d",
+        "build.project_assembly",
+        "runtime.physics2d_observation",
+        "backend.project_delivery"
+      ],
+      "gaps": [],
+      "boundary": "只读有界Godot smoke观察，不覆盖持续窗口/传感器重叠/地板状态或Bevy；部分记录与中断显式呈现，作者文件不变。"
+    },
+    {
+      "id": "scene-physics2d-character-motion",
+      "label": "角色运动字段→审阅/保存→构建→落地/起跳→物理观察→工程交付",
+      "steps": [
+        "authoring.physics2d",
+        "scene.physics2d_character_motion",
+        "build.project_assembly",
+        "runtime.physics2d_observation",
+        "backend.project_delivery"
+      ],
+      "gaps": [],
+      "boundary": "Godot基础platformer；旧自由平面与格式保持，其他平台策略/动态刚体/Bevy物理另行定义；作者保存是唯一持久入口。"
+    },
+    {
+      "id": "scene-physics2d-character-events",
+      "label": "角色脚本与参数→起跳/落地→作者项目事件→动画/声音→来源回看→工程交付",
+      "steps": [
+        "script.authoring",
+        "scene.physics2d_character_motion",
+        "runtime.physics2d_character_events",
+        "runtime.project_events",
+        "runtime.project_animation_controls",
+        "runtime.project_audio_controls",
+        "backend.project_delivery"
+      ],
+      "gaps": [],
+      "boundary": "Godot项目角色事件；首次接地算landed，参数显式保存；非持续接触/平台策略或Bevy物理。"
+    },
+    {
+      "id": "scene-physics2d-one-way",
+      "label": "静态平台参数→保真保存→原生上穿/承重→落地事件/媒体→观察回源→工程交付",
+      "steps": [
+        "scene.physics2d_character_motion",
+        "scene.physics2d_one_way",
+        "runtime.physics2d_character_events",
+        "runtime.project_events",
+        "runtime.project_animation_controls",
+        "runtime.project_audio_controls",
+        "backend.project_delivery"
+      ],
+      "gaps": [],
+      "boundary": "Godot静态矩形顶部单向；首次创建保持旧格式，启用显式保存；不含运动平台或主动下穿。"
+    },
+    {
+      "id": "scene-physics2d-contact-events",
+      "label": "角色移动碰撞→对方实例事件→动画/声音→来源回看→工程交付",
+      "steps": [
+        "script.authoring",
+        "scene.physics2d_character_motion",
+        "runtime.physics2d_character_contacts",
+        "runtime.project_events",
+        "runtime.project_animation_controls",
+        "runtime.project_audio_controls",
+        "backend.project_delivery"
+      ],
+      "gaps": [],
+      "boundary": "仅运动角色本步阻挡集合边沿；载荷为对方UUID而非自身；无几何分离或自由平面角色端口。"
     }
   ],
   "legacyCoverage": [
@@ -80508,7 +83120,7 @@
     "crates/viento-studio-core/src/animation_state_table.rs": "2327e9ebe9014f0a0c96eccfbbc528b90a7fe06aaf974bda4733024ec34e88a9",
     "crates/viento-studio-core/src/layout_draft.rs": "dfb72651a8787fed4410eb3e24dd4c82741fee3c18aca315530e304c436cb9aa",
     "crates/viento-studio-core/src/layout_save.rs": "8ebbc7c48366381c527031e1a12e35f13fc89f156c3d7162499489f1d5a0156c",
-    "crates/viento-studio-core/src/lib.rs": "783ea2cd93cd06306159edf028ae0c220b7f8bd1e6d768d98d511c8174c53deb",
+    "crates/viento-studio-core/src/lib.rs": "b891679655db94c0398caa76277ee9c109d9c466825fe63c45dea3f848a8694f",
     "crates/viento-studio-core/src/main.rs": "f83f78f6d29d557f30d110e4da08ed756d0ef1d58258103d7b53f35544268178",
     "crates/viento-studio-core/src/scene3d.rs": "e73ebf4c3a56d60c55155b608364d29c88608985b96330f83d9f308b0c9445ab",
     "crates/viento-studio-core/src/scene3d_alignment_patch.rs": "8ffd4c71fe9f5d213003c142a31b17d87248676583b51addff71899b1e104863",
@@ -80533,7 +83145,7 @@
     "crates/viento-studio-core/src/scene_composition_placements_patch.rs": "b287796d5c8a57657ad89c1524b9de9961943650fcd45e044ea8a35e87097152",
     "crates/viento-studio-core/src/scene_composition_structure_patch.rs": "538b7b2ef74624453a6986d3f6064e604d379c8892eb5a71304a6b07d7b91fb0",
     "crates/viento-studio-core/src/scene_layout.rs": "b7bc1be799e29192c2035d6539f41f7f54024ff8f626c26c2355bf5fd610d987",
-    "crates/viento-studio-core/src/scene_physics2d.rs": "39d8ffe2b9eb256a979f7274e02463caf9902b3976b7f6117eb0a86cf15830b3",
+    "crates/viento-studio-core/src/scene_physics2d.rs": "f9a144e4b110e3f596a3315d856e67ce17305aad58abe47e4ad188c40b3010ca",
     "crates/viento-studio-core/src/scene_source.rs": "51eb8792dbc777a157e73c0cbfcba4724a5c843ed6ccbde77ca22998c0f7bb96",
     "crates/viento-studio-core/src/wasm.rs": "30eff24e802dff307f655de3dbf4fad4a75974769025df2e713f66108f1cf0b6",
     "crates/viento-studio-core/tests/cli.rs": "c0d41788917d27bfbf5e7cca74bb4128e4eddf72fae25675eb21094361d06b55",
@@ -80550,17 +83162,17 @@
     "desktop/tests/native-smoke.py": "c470787e8f7c63c116aeab95fd879c6071c06eb244d1a0447c8f5fb84ad8ee51",
     "desktop/tests/native_workflow_2d.py": "d1d1c78ddec1bc1f5c036ce032d9fb232df8b0eecec73125b389bee2aa014091",
     "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
-    "docs/ARCHITECTURE.md": "eb8f095a9dd8f33eb363d67a026782e0446db7cc6f191c75c719510dde4c6209",
-    "docs/BACKEND_MIDDLEWARE.md": "66f8466f3559eebd61c31580e976561bad037cb4adb071b0bba063ddfae4fc86",
+    "docs/ARCHITECTURE.md": "7d4f363044626e93d1c0f22281fab91abec6bfbbca13519fa68ec7bf2c4d1ab7",
+    "docs/BACKEND_MIDDLEWARE.md": "9455b73c2dfbccd3f94ad16b1737a71038f7fd1a72b3d1558c5fbd33fc22402d",
     "docs/BACKEND_PROJECTS.md": "3cefc4a6f9edd443541a20749d4b2c2ac22014d0431edc3990b463d29be3acbe",
-    "docs/BEVY_BACKEND.md": "9965cf2bbe1c43b1d968756b589386890490c273e22a33ee159716e2b9fd5fee",
-    "docs/FUNCTION_MAPPING_2D.md": "8cebd438eaed29d06d5060f437abebeab2ed4b346be8c5888a28e6ebc6de0050",
+    "docs/BEVY_BACKEND.md": "1d726ce88cf3c6adf11db5885e22897d56dfe7866fb7cd9edcb5aaaf48ce384a",
+    "docs/FUNCTION_MAPPING_2D.md": "d9c1ffa1d149181991693eadf86b51e517f825b8110df68c65483ae6f591a1fb",
     "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
     "docs/NEXT_ARCHITECTURE.zh-CN.md": "1ca5d0336fdbdd6582ca0219e29a265c8115c1bee1dcc7ff386944d4be4ced30",
     "docs/PROJECT_ASSEMBLY.md": "f650e6e50284b6e94cb3d0e0ceb4ee318b762c5083d01f2080339769bf29ecb3",
-    "docs/PROJECT_AUDIO_CONTROLS.md": "2bd78c18bc345b74d87eaa0ab35d26bd978032b9545b22128b6fa7ca40e6edce",
-    "docs/PROJECT_BUILD.md": "8e43f3aecc9681fb96b476b87e22f51d5e27012fd4d1dc627371af98d997c2e1",
-    "docs/PROJECT_EVENTS.md": "78e047bbe010e4333d56e0e7738eed683fd8e7114b5cfa44a787bfa86ffde1fa",
+    "docs/PROJECT_AUDIO_CONTROLS.md": "dc7734deb7e3ead51447d1262b58847bac741877f8da96c338cb0ff65f7aeecc",
+    "docs/PROJECT_BUILD.md": "289fc1d99870f3e56e19ede2844b7620564565383595e3c1c48d01ba91b9d646",
+    "docs/PROJECT_EVENTS.md": "438ef81846cedecd722a1c6a20ccaf6c54f27fcea35639d01505547606326cab",
     "docs/PROJECT_SHARED_STATE.md": "4ae4441d4e7ba27cdbc8681ff920001df893c26b62f31e684c6489b143832793",
     "docs/PROJECT_WORKFLOW.md": "ce1f341b3ca1a884ad3f7f310bcaf0ab21d5d4d070cfbd888b05ee413ed4c76c",
     "docs/RELEASE_0.0.10.md": "6d2bdaa7d2998c13c3eb6be4843a88b90a6168d829c7457444acb94f1da239f4",
@@ -80578,21 +83190,22 @@
     "docs/RELEASE_0.2.1.md": "7996a23144076e2792ef95bfb3787b4c438301bcb762e06168a8aa27453fd4fc",
     "docs/RELEASE_0.2.2.md": "1e2f3b79708984a5019b1ba244a94f752ce5519f5dbc6645f6e3cd930a50c789",
     "docs/RELEASE_0.2.3.md": "1e7061eef3ad8a83de7e771f4f91d07252037f8fc774398a80268b7e90ba9407",
-    "docs/ROADMAP.md": "762ecfbe3d77833d2f99d37e283b1b3cf36ef8d48e634b1e7d076baaa0b838e6",
+    "docs/RELEASE_0.2.4.md": "18f4e7a7a3069d6126d12dfe1d31a2ad15d904d02eb743490f0c5677ee07d068",
+    "docs/ROADMAP.md": "314d61a4ac74ff4da180d0885537e3dfdeec0d797255337eaa84396849bc8f88",
     "docs/RUNTIME_CASES.md": "0000344399cc3a6afd6094b10b1679f4f928ab847467af4b9444ff7f84bb4e1f",
     "docs/RUNTIME_CASE_REPORTS.md": "42b67098cefebfa016f68e184499962afea7feda0607c8dbd461e647fff40f04",
     "docs/RUNTIME_CASE_SUITES.md": "6d5e783d87fd54df5e7f981b741de03a360c9ef690b3298cb0c4c7e28ea36f70",
     "docs/RUNTIME_CONTROL.md": "d30cf0f1ae794e8367dd82fc263d9ae415320f58dc2b18494943929425f1b9a2",
-    "docs/RUNTIME_OBJECTS.md": "00ff9006369439642be27b20a4c0d380b22b238a153aac1e621ae812cc4d8651",
+    "docs/RUNTIME_OBJECTS.md": "c6f9f4a441f75f423c1bb681e143bde9bb42db884317bb56fee63aa0ded7eff7",
     "docs/SCENE3D.md": "6794482ad92873939cafc5a363ae751d724c751565599dc81176cb94f45a46c4",
-    "docs/SCENE_ANIMATION.md": "267a455b3a3137e3e4442244992f538a8af7aec64d780b6815e549f86bcb974c",
+    "docs/SCENE_ANIMATION.md": "09e15b579817b2fc8ece583296f2b9daea5bb14b795ecdb43a84065b0b6bad91",
     "docs/SCENE_AUDIO.md": "a254d5d162d7de9bd2513dcf71d391ec4fd2254678de6468697621364a27e752",
     "docs/SCENE_AUTHORING.md": "2c3092ee6a68a8ba2e31958b2deb235c608a16d81d3ce4081b085761d296dccd",
-    "docs/SCENE_BEHAVIORS.md": "f7c8a00ff88c586b946d3ec6a4e8b58529667b5cca7d1e2b9443d4077dde1c81",
+    "docs/SCENE_BEHAVIORS.md": "3ed7e8fc0fd78203f8f9890f5d09c6f37337980c82b638b2b5c7948c4dd64f7a",
     "docs/SCENE_COMPOSITION.md": "90e1954c2f5e57a5c7e2a4d5d97179f6177832ec8e1f59983eabb6cbd6cc8d5a",
-    "docs/SCENE_PHYSICS2D.md": "a4df5634ac1e07536117f8e9cb70c806092c21b4bac2530843e9cd0379a52daa",
-    "docs/STATUS.md": "8327a507109b0d11ab42d58887dd07dc616fc4bde912a99eb6dde37597e7ddd1",
-    "docs/STUDIO_MODULES.md": "dfa996a6bc28b9bbe8112ad8e3516d66762f09a4a26dd6bdc38473eecfb96b28",
+    "docs/SCENE_PHYSICS2D.md": "987e7ac1410539c2806fd142b00259fafba3a2c705bfd54cc3c2da7a99030f71",
+    "docs/STATUS.md": "9ac504d44193cc502e80245092c88ac2e9f4d66d12d56bfc1f3eed34075b2aec",
+    "docs/STUDIO_MODULES.md": "c9c142e955fe449dde4c86a353a417f62d11a3714110d33a139af92d63c369ac",
     "docs/WORLD_TRANSACTIONS.md": "bcdf7e96289f68e92271fc7c6ad025985e3744857f304fa21eb2ede43a37394e",
     "docs/adr/0008-native-nuis-and-bootstrap-runtime.md": "7fbaba85e92b981b584f0d7cefc525b70890bb4d951a5727797b2c46381fde60",
     "docs/function-network.html": "bf42bb7b77083ed40316cd12ba21544e07b5a3b45f045b88ac0b24af056039d9",
@@ -80848,6 +83461,7 @@
     "docs/test-results/release-0.2.1/preservation.json": "ada03a2129deaf75d6eef1f29fb2204b43d1bfc0737e0c23516ecc8dd1c96b5c",
     "docs/test-results/release-0.2.2/README.md": "5288248504d2809297c1f5b271f778badb9fcf69928170c3f12e3a45cabd8faf",
     "docs/test-results/release-0.2.3/README.md": "d711759cec466bf1f5ca5ee28ce8af650411a4cba612c717226c5f3b1510ef33",
+    "docs/test-results/release-0.2.4/README.md": "23f38eb7eb7129b13013d1f19d2b1b7135f719c20f41acf387e3a7693bfaa5eb",
     "docs/test-results/resource-packages/results.json": "8a1a13357a461cd249efe5178b7c5bf06d2f950b377b0e25afb73abf84cdb3f9",
     "docs/test-results/runtime-case-documents/browser/browser.json": "06b19cd5fd9ef6e5fd2dbbb698d89ff887324af123eb472f4d534d590bb53203",
     "docs/test-results/runtime-case-documents/cleanup.json": "e4911d39652c0a64767b3861edd6e0b8426e4092e3822b937bd76a3efe9fb387",
@@ -81330,9 +83944,73 @@
     "docs/test-results/scene-instances/results.json": "82a3095d78abd495b0b470ecd44aa021aec4e7de8611854c43d906ff3a1a05d5",
     "docs/test-results/scene-instances/runtime-review-tests.log": "a9f76191e6422dceae333a9569459b74523d7ef2535be18dc12d9128cf68ef93",
     "docs/test-results/scene-layout/results.json": "04eb7246c13efa906e9c01cfbdd0a233e717f4f5a0b8ea84e01ba24ad4309173",
+    "docs/test-results/scene-physics2d-character-events/README.md": "f7adb299200e91780660ef5bb68e76eb3ed3770655c7a3684b37d99ddc021496",
+    "docs/test-results/scene-physics2d-character-events/author-starters-tests.log": "19650dcbdbe7243117f4e83368c0db1977140a171517553c232d820bef46425b",
+    "docs/test-results/scene-physics2d-character-events/backend-attempt-1.log": "fcdabcabe74c980d8a83376fb37afb1663fccc1abb74322467338ba04d588e06",
+    "docs/test-results/scene-physics2d-character-events/backend-attempts.log": "b2c9b797a8025f9ca103ad06999c991a96636dba40737b38fd2fda0076ceecb5",
+    "docs/test-results/scene-physics2d-character-events/backend-native.json": "327b0abf5ce3afa1cf52e20727a46729fcbddb7400dda63f44ca81ff1e877fcf",
+    "docs/test-results/scene-physics2d-character-events/backend-native.log": "4da4da36fe30625f11c8b031b578785aaff8127988fbe67880d825046f7a625a",
+    "docs/test-results/scene-physics2d-character-events/browser-1792923394906/browser.json": "55c1bc4cc97ce31c0d3855b0bad322ad8a00cc450f2e54a27597cb271cc202c7",
+    "docs/test-results/scene-physics2d-character-events/browser-1792923463955/browser.json": "69a26d6f53ca9c275e61c2e32be4426f18c38e2da8dbc25b27fea94bf7155737",
+    "docs/test-results/scene-physics2d-character-events/browser-1792923513322/browser.json": "72263d0b453de3bf85cc41a8bdb4ba6e57614bcbe6af23a8149442fc6db6f4d2",
+    "docs/test-results/scene-physics2d-character-events/browser-1792923577290/browser.json": "b4519d131d00335c7b7e1e4d39e60b1983e85644b1ebd3292f6196276330197b",
+    "docs/test-results/scene-physics2d-character-events/full-check.log": "aa161036875d3ca48cd767cd8b03513a604e9388033f7158b279dde920eca715",
+    "docs/test-results/scene-physics2d-character-events/ui-regression.log": "fd4d34cecc3aa77d3c195047e570bf7753b456478a4df6b41390cbd23ac2bc57",
+    "docs/test-results/scene-physics2d-character-motion/README.md": "b4b15ceadf1ff4b8373d730315bfd20634a2437550e3c581e87e07dac0545f84",
+    "docs/test-results/scene-physics2d-character-motion/backend-native.json": "488a69cb0dc0fee25154e14d1b97f4adbde29de9d20c8b94fd876b5e2f6d9ca1",
+    "docs/test-results/scene-physics2d-character-motion/browser-1792921421837/browser.json": "81027bcaaa69f60b3145b6a4888bc7dcf6484828f30ad5f499017974e1cebd52",
+    "docs/test-results/scene-physics2d-character-motion/browser-1792921479654/browser.json": "d98152125d6cdd6446de99ac4bce62c54159eecd1ac849e5c9c856fc21e0856b",
+    "docs/test-results/scene-physics2d-character-motion/core-edit-js.log": "8e5e4166e04b5f98bb412ac956c6dac55687b09cf7566a186eeedc56c9bae297",
+    "docs/test-results/scene-physics2d-character-motion/core-edit-regression.log": "61ebd09d965c5c607798bc01215b812287d83bdc11e5bb5e47ed61f05b08cfc0",
+    "docs/test-results/scene-physics2d-character-motion/full-check.log": "8cca62d82e10bee1f79fdc9654e7294f8868319496b0705fb2b7135f8e096a62",
+    "docs/test-results/scene-physics2d-character-motion/plan.log": "1c0bae8dfed3bded9fdf3c06ac4cd92bac0c943bd1589486ab86cd67c90e1fe4",
+    "docs/test-results/scene-physics2d-character-motion/rust-full.log": "ccb8141bb0396751dacee1a170e66289fb74aa91d4cf06ed9829813fea4cd866",
+    "docs/test-results/scene-physics2d-contact-events/README.md": "8b881c72838b6a1c2fdacb3224b65c73007e52c883b12ebec5b741c6297b8cf7",
+    "docs/test-results/scene-physics2d-contact-events/author-starters-tests.log": "cab79ca2420950b66ae4d10a6910f5bcbf8dcf8da85ff3f4254a6a439f033aa5",
+    "docs/test-results/scene-physics2d-contact-events/backend-adapter-tests.log": "9560fb7a5b3e443a735276d85291168946be3438b3f6fd54ef949e3309d674a7",
+    "docs/test-results/scene-physics2d-contact-events/backend-first-native.log": "8bae5d7f8ecf2ff8b4f5d3aad21e8cc34b99fc24e5da97837f8c5a8573afc7f0",
+    "docs/test-results/scene-physics2d-contact-events/backend-native.json": "36a2aaf3875e1b6c42a0817641cc8d098080328c794f501d9c0dbc61508737d8",
+    "docs/test-results/scene-physics2d-contact-events/backend-native.log": "7c5072dfc71c4283b1384e0c92bec442df4ea8ce820d121809b74934223aad06",
+    "docs/test-results/scene-physics2d-contact-events/backend-pure-tests.log": "a9826c28383e84bdf8f56e36ba98ee6b6ad192dc90ba02fe12cf029a03555b92",
+    "docs/test-results/scene-physics2d-contact-events/browser-1792927451814/browser.json": "1e7a8cce6b91569612e87215c52eddf39fafa6bf08dd297fd6f2be65466735a1",
+    "docs/test-results/scene-physics2d-contact-events/full-check.log": "84477e6e1bb9d8b02e5b2f94c3980c2e0ffdb26ccddb430ebece9d95b23dd2d6",
+    "docs/test-results/scene-physics2d-contact-events/legacy-events-native.json": "5d3e5013fef7d4ae92aae19101e5c1ef11baa37583e23aff52b906284778e6f7",
+    "docs/test-results/scene-physics2d-contact-events/legacy-native.log": "caf2f25e78bd3efa45de519a3d413ab71ce18f95d0a1c18d79e48af7c2f07fb9",
+    "docs/test-results/scene-physics2d-contact-events/legacy-one-way-native.json": "c5176c7189f61ca1c2b19e510370a867afad1aafc91785f6702d8482a7760658",
+    "docs/test-results/scene-physics2d-contact-events/legacy-starter-hashes.json": "2035a7ff53ae3860d2d8a4fa6a8f73b2d545ba54c18858a11096fb9b3aa61e1a",
+    "docs/test-results/scene-physics2d-contact-events/ui-regression.log": "f8f2a2119f614fb667d2b4abcedea4a1f6f91fb332708731c95d516dbf7e7cbe",
     "docs/test-results/scene-physics2d-creation/README.md": "4fbaa27d12bf9c2536a333dd22c7a43bdb74c443f73ca146091e7dc37f7fb14d",
     "docs/test-results/scene-physics2d-editor/README.md": "dcbe7487ec0f77dff33653017b28673d8d0f28a40bc3dd896ad519ddfdfa6590",
     "docs/test-results/scene-physics2d-editor/browser-1792828666896/browser.json": "e4e88c84ce09c60cad2950a83abd025c8e60f9c8fa7640404db8b72fe68caa77",
+    "docs/test-results/scene-physics2d-observation/README.md": "5a8a94c235639c671fe4a2ac8c3542e00b410efc15cb80b0cdb657edde0021f5",
+    "docs/test-results/scene-physics2d-observation/backend-adjacent-confirmed.log": "28e73232c3429a98a11aae9f24e692aaef491df7cceae8166f565f07e5a9be80",
+    "docs/test-results/scene-physics2d-observation/backend-final.json": "a251f56c3a30fb3f2fc2ba2ef895a8850780a60fda1fc591a1da94ae28c7c0a7",
+    "docs/test-results/scene-physics2d-observation/backend-final.log": "88b274eda920376d4041adc9424a5552a746c1bdfffeac10c46cf3477ebeee21",
+    "docs/test-results/scene-physics2d-observation/backend-live.json": "2b50749f7cd9b67b93dcf795a56b065019d323ac3567d866a592cc696f99e752",
+    "docs/test-results/scene-physics2d-observation/backend-live.log": "9a7acd66cbca7ba625c5a3b77916270d03896c4d526f685ef54e5ee635f548b8",
+    "docs/test-results/scene-physics2d-observation/browser-1792919625779/browser.json": "7d8ebf38ab65b59fee6ea7ce38657ca648e6e2daec7e9af52831b5743683474e",
+    "docs/test-results/scene-physics2d-observation/full-check.log": "7d76c504d9e227c6f21746a8990b485f84b214557e170aebb1e371ee885a2b90",
+    "docs/test-results/scene-physics2d-observation/legacy-native-final.log": "c0eef28ee8229ab5c2ba59ff856d01306f8f43acf025f1d560a85d4b227fe199",
+    "docs/test-results/scene-physics2d-observation/links.json": "cfed4faf89116088e0f37ede9cd5fa58a6063ddccef556a7215ebcd5654914e6",
+    "docs/test-results/scene-physics2d-observation/preservation.json": "e38f03e1c4e2ff166a1a30024d78e52705c59e8177bfc6e45c7b21934912f477",
+    "docs/test-results/scene-physics2d-observation/ui-regression.log": "2b43683a9a195256a8648f2172a88ae11590bf159aa07db83b1145e32d396f9c",
+    "docs/test-results/scene-physics2d-one-way/README.md": "e2b102fda309dce02d0481e0b39054cc94e4ebfa31d091571e97961ad4b1a297",
+    "docs/test-results/scene-physics2d-one-way/adapter-retest.log": "e893a58b5c41fbb8e440d7662ec90dce18b319b8c6b7f64f30e929a5fcb04f95",
+    "docs/test-results/scene-physics2d-one-way/backend-mask-retest.json": "570d2c44e1bd8b8d70cefc47997e4f595f8b5a640c505d3f3a0a3834f11fc3d1",
+    "docs/test-results/scene-physics2d-one-way/backend-mask-retest.log": "002a5af1f1585a340fd8f8fe8d72c4a3bd584d8b6a9377d92a5bf3af815df3d6",
+    "docs/test-results/scene-physics2d-one-way/backend-native.json": "0b77e275ab3e421faa7d34d693fe46ba3ebe23607814a19b7e562827e58ab3e8",
+    "docs/test-results/scene-physics2d-one-way/backend-native.log": "b06eef525e4d313853aeb7e8c12aaca83fd4dd6c567e406da70f84044d9fea94",
+    "docs/test-results/scene-physics2d-one-way/browser-1792925092123/browser.json": "bba05cc4f7d468c9528e3afdaa61e927e2442fb3acb83f637b09230b8387506a",
+    "docs/test-results/scene-physics2d-one-way/core-edit-js.log": "a232706afd70f9308a2ab1cc153ea892ca8894c6ee7434e49a7a0790c60e6057",
+    "docs/test-results/scene-physics2d-one-way/core-edit-regression.log": "0071b76099e540e0a8bcd74a3dfb29ea94ed80f8605b9080ca1d9dc0c353fbb2",
+    "docs/test-results/scene-physics2d-one-way/full-check-recheck.log": "a63dd85fb68e1c0c350719f35fd6b0db1d0c50ee6057a05c094bec3b40f81a1e",
+    "docs/test-results/scene-physics2d-one-way/full-check.log": "91b2706b699360ee55cc7f85d2c88601d4bd2132b251802563e2d6f5c765bed9",
+    "docs/test-results/scene-physics2d-one-way/legacy-events-native.json": "d6bc8678f3337256daabf8a707153e4f5deb4616f024382e14941870c56ae710",
+    "docs/test-results/scene-physics2d-one-way/legacy-events-native.log": "26abe5fbf281ace0b0cbd1434a260eafe39184e04eead916c638b9f276a2dafd",
+    "docs/test-results/scene-physics2d-one-way/plan-generator.log": "34b67bee31d3c0601eab0659dd22962d3bcd233f641566d87d8a981660921644",
+    "docs/test-results/scene-physics2d-one-way/rust-full.log": "88d226d1edf79d261d25c04a44a1675f0a91191aaa8c31aec1f8493ea6b648ca",
+    "docs/test-results/scene-physics2d-one-way/ui-regression.log": "06589438b17d53f39be2061f36738d50617d1c1fd156d089ef9ec186536eb86a",
+    "docs/test-results/scene-physics2d-one-way/wasm-build.log": "bc309708d3d8c4381db32c8b6bfeb0cef3d96c74df973a29cd07d8dd5e38b73a",
     "docs/test-results/scene-physics2d-response/README.md": "4435c261c2960ebde87c5e5538fd7b104ce14e9fcab6abd29f9600c61c4b6ffe",
     "docs/test-results/scene-physics2d-response/backend.json": "0760af3c5ba9e22ba557abdc7071250d45fd14d6c639e1c6788f8f36f76d9956",
     "docs/test-results/scene-physics2d-response/backend.log": "f78b77579289b970996f084f3e263342c6c32eccd14bfc120120df0a5d8e2f5a",
@@ -81750,7 +84428,7 @@
     "docs/test-results/world-m3/results.json": "aa4491e956bfe0f23f61158c5cf9a8ffeff6b48a4aa435f485acaeab74311d59",
     "docs/test-results/world-relations/results.json": "91d13aa1fbff592cc96cbbe3622d859b0151c38ca32f4d752d8cc29a2be20524",
     "docs/test-results/world-resources/results.json": "8dcb109a0bf9b4005240173cdac94b77ac9c5b67ebeb747dcf73dddf1ab4ffee",
-    "engine/README.md": "d9a8826917d28f9081c26fe4c214071e43c8a5823fc1a0a6c1f8dd1e8e02c0b6",
+    "engine/README.md": "13076d14bc1741f473a804bd81e31b969246f4e5f0bbd167275a16b1087503e6",
     "engine/animation-state-bindings.mjs": "a77eb5534e292ad6561c9bac4dedbc4d4cd5cb3ecddf3257c3981a1171f8336b",
     "engine/animation-state-branches-core.mjs": "2e0fdad7c839a70735de5e54d0afaf8a14082cbb40b5ee165eabec3ca4ee9c15",
     "engine/animation-state-combinations-core.mjs": "978f0794a802c6da196b650dd3e03cba1a7a63d8aebc7209810e4c4bfd041f95",
@@ -81764,7 +84442,7 @@
     "engine/animation-state-trial-case.mjs": "57a26f4aebb991cff5aa818ff9f41e9563cb9321a32ae5f82d32e1c1097fc98e",
     "engine/animation-state-trial-sequence.mjs": "b7aa9afd38543899a84dfcf16843083e73e7eb6294da17696305c3e27ff0e978",
     "engine/audio-wav.mjs": "e11faaa850c20a2b63bcdfe987964c1223712b49ed5fb897262f855fb3ca1f35",
-    "engine/backend-capabilities.mjs": "7d45efc2803af1585b0d975e663f59ae235f6e1971e0b5342774361272152609",
+    "engine/backend-capabilities.mjs": "63e48b6a119809bb91212e721dcb150198355ae452b37fe439a40495be02a5b0",
     "engine/backend-project-delivery.mjs": "14a024784311df069b3c9834779df7f73797e3ddf62ddfcf33ce4461b4bebd51",
     "engine/backend-project.mjs": "741e517703a28131c693df05cf2b16a2417bca95d0f2ccdae8710e94b1673207",
     "engine/build-plan.mjs": "38119bb5dd8b58f60fb064af9e051752ffb688913cfc4cef6835d12d8a85f0a0",
@@ -81779,7 +84457,10 @@
     "engine/godot-animation-selectors-script.mjs": "96f471ddf39d8cacaf2f9c1ddefceca6f879a203cdd6d9833507eb5ef691d321",
     "engine/godot-animation-state-conditions-script.mjs": "46edb613955d96188f5546a78fa97da7b14a06f3516a7e477ccf5fa34bd539a2",
     "engine/godot-animation-state-script.mjs": "a9fb4687b3b9e9573770a3f2dacc4d78e5540acfcc37cce05db2f6a8bc88f2d5",
+    "engine/godot-character-contact-events-script.mjs": "5eb5e57c3fce24af5ecd297efa17f280c1ae72a15287260f6fb8035034d3e155",
+    "engine/godot-character-motion-events-script.mjs": "826ecc8949cf7134c72d845a8f70beb9525c46e1abf6381a06ca361ecc750c49",
     "engine/godot-physics-sensor-script.mjs": "5642ff8caf896cd0a4abf3bbb5157f01d4ac9665ae6393cc895cedb83a7bd475",
+    "engine/godot-project-event-audio-script.mjs": "6d75d2dc4a43589c8e36a7a51e305d2b34af5c34829261ef2dcb6965f2def613",
     "engine/index.mjs": "f32d59dc8ae663d35c74e5dd145fbea63c88659e60e4fb10cfb9b236db237c49",
     "engine/json-source.mjs": "2a7b27c150f53d255176c7c6185eebd1d0ac1ba6312e355769f02b3f83cb15f9",
     "engine/layout.mjs": "67d8de2d7ff8b20ed802df88d808bb714c21617e2731de6c99600260ee9b4cf5",
@@ -81806,6 +84487,7 @@
     "engine/project-build-contract.mjs": "792c49457f9af1bbfa3a0a04b1ba07c0888237dff9c8c4d8f97ea32ae1d91f3f",
     "engine/project-event-bus.mjs": "f6cfdd83d71d08e4e81a4f53a1fb6eac28739350288efd9b7f3928b5bbb0e566",
     "engine/project-event-review.mjs": "edcabdadef1ca4b445505a4416d7e3ddc87f6fd36dc175a438b1c9cbbca6f2a2",
+    "engine/project-physics2d-trace.mjs": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
     "engine/project-problems.mjs": "5b67e49504c1996c507f77fb4a4dc5541d5229aadfdf014211f6cce4f2dd1874",
     "engine/project-runtime-contracts.mjs": "e4f365f530d6dec4f2a09426b33f9048af957830a7e50de4ad7bed324ee4f74d",
     "engine/project-runtime-events.mjs": "a6213e93e883d057c685152eb62a9b21c1eda9c4d3fb7fe75a69edc4d4da49e4",
@@ -81871,15 +84553,15 @@
     "engine/scene-identity.mjs": "eb17e6efdda342ca9ebb431c5522adf7f1544300f1fa6d24a75425ae4cb73a1e",
     "engine/scene-layout.mjs": "247578b42addf2ebe467f44d6ebac04c61c721da938b097be0e9cffa8af267a0",
     "engine/scene-model.mjs": "29872672282ec6b4a5924b014eadfa61093381636eabed6d7623bb428819ca3c",
-    "engine/scene-physics2d-core.mjs": "e889473379679ad17799349da84f60be723f38544ced4ba03c6b60e4b3643504",
+    "engine/scene-physics2d-core.mjs": "9c2e2b25b49a4faf8d98ca2f01815824045393088c386c8a647a527016402b4a",
     "engine/scene-physics2d-create-plan.mjs": "cb3bf5257d699723ccbd042c3b22c803905c2cf1e1b2ba50354f44e082e986c4",
     "engine/scene-physics2d-creation-contract.mjs": "c6e386f9bf21f2c96e9cd67db913aa8773ae153d7596d2a45cb422e2865c4b3c",
-    "engine/scene-physics2d-edit.mjs": "d7c36d1a84cc50d99513bb52d37fdc18bcef14494c93403e1c036fa1a7916593",
+    "engine/scene-physics2d-edit.mjs": "20170e5bb463e207e766b485a1c2a57b3c8c50dd98271d29edbcb27fc2d5b545",
     "engine/scene-physics2d-space-edit.mjs": "8cff3673f2184affd1b3d91210e7874e8e4f7983eae4d428c7293edc45149e44",
     "engine/scene-physics2d-space-resize.mjs": "3dc5100f91b4003c6c16f8bb335d80fbc33a6999df2996db873df8055f657458",
     "engine/scene-physics2d-space.mjs": "2acb5de0fffcd6b4496dd4e3da092afa7c8355cf1e257edb14646687a5df2bc2",
     "engine/scene-physics2d-targets.mjs": "6cbb847621ccc7ff4bce65d68676d54fa487d859feee58408a5f9e2143830534",
-    "engine/scene-physics2d.mjs": "2c00158ded5bc2d20f90087a9e14f5f6034721849b26c1eb360a6d141bab7d7a",
+    "engine/scene-physics2d.mjs": "a705b05369af82bdf4d350970bfd3178d48c3f1bf50214967b36fee95260e627",
     "engine/scene-preview-contract.mjs": "c500754da05884cc73f99c597d8367fad2a1515235e2d2c0c57377de1f34506b",
     "engine/scene-runtime-events.mjs": "227f3953bf7892bccbb1be5f1bfc5f42fd9d70a88583783738a15ad9a1bb69d5",
     "engine/scene-runtime-query.mjs": "2409489089f75e026a9358ea23cdee72b512fb809ad85ff45b92253193909c74",
@@ -81898,7 +84580,7 @@
     "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
     "engine/scene3d-translation.mjs": "ff8bcc30e738f4a6d7f8ce3e79fe6f25ff21d17654bac348298a8f4ab8af83e3",
     "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
-    "engine/script-authoring.mjs": "83f587306434e9fb0c9080df1fd475ddc7d76e360b6b522d2b548b5542780d1e",
+    "engine/script-authoring.mjs": "ef3aa1618d7c9cff8d1919ae49071934a15d0268e68b33dad640c5bf74977768",
     "engine/script-parameter-discovery.mjs": "7d1745cd2312cdf8490a4fbfa8016985c2f9365875322b35bc80d3f135b837cf",
     "engine/script-parameter-interface.mjs": "a4468f0e3ade0b81a34459ca692258191bc1a6bcf746dae3387d83a836ccf11e",
     "engine/script-usage.mjs": "61f74b8a3aaa06c4b672faa5db88aa36efd930d2d3fb247338a7ce60adfee03e",
@@ -81907,7 +84589,7 @@
     "engine/source-indentation.mjs": "a712e496a6504649064254d48ae98ce13b455de2964d2582790e5f2f9aabd8b5",
     "engine/source-position.mjs": "204a0b68649937a0fffd552fbe5a384058c42f51447884b73023871be6f15cc3",
     "engine/source-search.mjs": "6ae79219b7dfcf5d1bb4248933159151ad1e11b2b307c9f105aa728cb11dd1a9",
-    "engine/studio-core.mjs": "54ef4ecffb979859bed5cccac7e87211aa3e258831eae847e0029a6cfae918ec",
+    "engine/studio-core.mjs": "382c31ccdc1e1461a4205d063eee60a8c1a66a594cee49f17d38cb9d5d0145b4",
     "engine/studio-modules.mjs": "8ed2c4656b5a53b8433a282d9feb86935d54415a94b63ed0780d70765c6114fe",
     "engine/world-animation-create.mjs": "0ba9ddbeecf679d34044105fa3b5180446bc329e6e0f953a67f36957e854d0e9",
     "engine/world-audio-create.mjs": "39238d5330dc2f9f3109f5d9a27e7a43e3f7b4d1c2f4f2c87c9c74d8c9fc77a2",
@@ -81948,7 +84630,7 @@
     "scripts/adapters/node-execution-backends.mjs": "ab29befe983bdf25d38654ea613fc234980d0b4b048946978ed14d67d18591cc",
     "scripts/adapters/node-execution-tool-probe.mjs": "10171f6f7300744028266eafe8dd4435414fe64392a9065d33fbbd47a37924fa",
     "scripts/adapters/node-execution-tool.mjs": "6c807296f257df7354d46c5f0576a5f3e469acb239b46162546e543eaa73e6ac",
-    "scripts/adapters/node-project-build.mjs": "e23a76a348d1fca9e6f44f28833c1b5a57062e0de09f743cd09c1f882d54a2d4",
+    "scripts/adapters/node-project-build.mjs": "90b4d73ab47fbd8d01ef46cef451ec4aeee8da508e647812dca450a9eec0531e",
     "scripts/adapters/node-runtime-case-suite.mjs": "b104e896e46ea9d71dc63d647c28969cc7c5523db5310e35ec8ecff62d670736",
     "scripts/adapters/node-scene3d-export.mjs": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8",
     "scripts/adapters/node-studio-core.mjs": "4ef99f01f9201b59b1f5ed8227bdd74ba8dd9f41caad491836cf7edbb8af3037",
@@ -81964,13 +84646,18 @@
     "scripts/backends/bevy-rust/src/main.rs": "59c64d0ff86ee7d5e8adae1b431919cc2107577dc6122fa66c4b6b460de69379",
     "scripts/backends/bevy-rust/src/runtime.rs": "566e585520914e36850eca9318170993db38b4aa7379879eae32f0a2e91f6f7b",
     "scripts/backends/godot3d/runtime.gd": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
-    "scripts/backends/godot4-adapter.mjs": "2181e678782aa73294c66ce7f3f38777555d2101af262748658930d6f998da94",
+    "scripts/backends/godot4-adapter.mjs": "2c1669a10d378f0b7044ffe1791ef2ec6e21a845e0d637b7337fd9aeec2ea3a5",
     "scripts/backends/godot4-animation.mjs": "35075d9ddc4fd41b2eb0486fe3ee9dbcce0138ba00cce7f43c19acdaec829e7e",
     "scripts/backends/godot4-audio.mjs": "7bc6b162f37946ab5c5b85f6ca2e20e603ee6e7fddd395271cbd4195b983e7f0",
     "scripts/backends/godot4-behaviors.mjs": "e869876514f53d75858ad981fb2abc3c729e43a8c5b1a9d9ab2fc69a34a22b58",
     "scripts/backends/godot4-clip-animation.mjs": "1c125c14c4fd8af93e5853680f756b8c9ac8d08fa0e49b7cc64122a4d000cf43",
     "scripts/backends/godot4-dispatch.mjs": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
     "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
+    "scripts/backends/godot4-physics-character-contacts.mjs": "1409a4fdcab98ed8d8a865a25e32734877855836572de566efe6552399368eaf",
+    "scripts/backends/godot4-physics-character-events.mjs": "20acb031177cd584062eb98fb782bd3a770c976dc5506788ffa06c0780f647be",
+    "scripts/backends/godot4-physics-character-motion.mjs": "69e510c0f89e3b6d1526be11fec09c519bbe249b68a3db2ff874fc5c5ee9bcb8",
+    "scripts/backends/godot4-physics-observation.mjs": "a57cd89113f2088b577919b9b632470f8ebf2b565b39cf48074bbcf9e7368391",
+    "scripts/backends/godot4-physics-one-way.mjs": "fdca78bd33e1b34ef73f9ea40a76f8d0a00c34fb3b2f03165f0d76b816662b5e",
     "scripts/backends/godot4-physics-response.mjs": "4662812020b3f1aa513d32d9918b87a07648c6c55da382f7d1187fa7996b9de1",
     "scripts/backends/godot4-physics.mjs": "3131d66a627678956035fe9b9c7aaf1181f1cf91b36c9571d2e280d8b9b7db7b",
     "scripts/backends/godot4-project.mjs": "5fcd0644543fed8e63c4d33bbc860126b3a0e47fc5767e645ba4ebd80e9f9fda",
@@ -81983,6 +84670,13 @@
     "scripts/backends/godot4/behavior-runtime.gd": "ec039ccaff0f376734938f54808b7929e7385393fd89516de35561e5959943bb",
     "scripts/backends/godot4/control-runtime.gd": "7490fcb7dfb2c7a1f7b4b251a77804be0f5cea22e568eafe33a404de6b4aba64",
     "scripts/backends/godot4/control.tscn": "adcd159c8ef7ea1463b859e4a83dacc10c8aaa39f431b80eb695aaf4151466f2",
+    "scripts/backends/godot4/physics-character-contacts-helper.gd": "71c82fce2325b56c901cb2e0c1ab815012293b03f5b2557163a8d96003473233",
+    "scripts/backends/godot4/physics-character-contacts-port.gd": "98a7650d9d3b25234ddc5456687c17339aea843d24fa052f4676b882eef8c13d",
+    "scripts/backends/godot4/physics-character-events-port.gd": "bcaf4ef9b7112977fea1b2c48fa65ceee1d6e223394ea3e4de4c8b3bbba7834f",
+    "scripts/backends/godot4/physics-character-events-scene.gd": "d3377ea2c5184dba7d000cb92cb9dbce8718ba3a01d30e73224e6352c1471ebb",
+    "scripts/backends/godot4/physics-character-motion-runtime.gd": "82e745e373e76f66e3cd825c9763b5dd22365da5ffca0cfde0fd349c404f948c",
+    "scripts/backends/godot4/physics-observation-runtime.gd": "dfac842adbec1822b2628c1484c48c97c3efa468c24952da5ab98ee96b5524f7",
+    "scripts/backends/godot4/physics-one-way-helper.gd": "9eb9853c75c5a7d124824b9f6167a180c21f0a7581f05da776f8688eb8c008b9",
     "scripts/backends/godot4/physics-response-runtime.gd": "34c26239d216d232e757dc2d1357fb2a60546a56e32a426da4930aca4838aa83",
     "scripts/backends/godot4/physics-runtime.gd": "2f5749f32edf4bb2570f495752cfc93bd295a24df573b7ac8a10de34c8affecd",
     "scripts/backends/godot4/project-animation-clip-scene.gd": "c25134d812e3164c09b2dcce90fedd5685099ed7fa449cbc85107316ca3051c1",
@@ -82005,6 +84699,7 @@
     "scripts/backends/godot4/project-completion-runtime.gd": "4df909448eecf24a876a55d8cefc7c6045cacab7b32e01bde6d22ffdf40d2f75",
     "scripts/backends/godot4/project-control-runtime.gd": "829fbb9b6e5ed7a639b54e9a57050d0af2b7ab2d867299d0bbf7b358adcae5ea",
     "scripts/backends/godot4/project-events.gd": "7d4a7454e63cd278ee8aa0539f4341b52e86a59ff1e9f7a751e18a31a8cd50d0",
+    "scripts/backends/godot4/project-physics-observation-runtime.gd": "606bfa3df3ed047e34eb8a01bb1139d4d8fe5f42f5041eb28e00434736c473f7",
     "scripts/backends/godot4/project-physics-runtime.gd": "1d81deea4b2b5549e705dbed4b0c9a3b07403bdde76bfedc3ce127fb652b2742",
     "scripts/backends/godot4/project-runtime.gd": "e9a33b45cd9e35c2acf870fdf5fa24dca91dfd19f33fd25d3dd3bc18145abcf4",
     "scripts/backends/godot4/project-scene.gd": "ff3de5853a0e8414103cbfb0f9b9799d0e41c208c242a7d47ece1d81046a2e20",
@@ -82034,7 +84729,7 @@
     "scripts/lib/media-insertion.mjs": "27ffea2efc1564656b003a08e4cd7a3f87ef9c77858cfbea19f3ff8cb5ff42c9",
     "scripts/lib/paths.mjs": "0a0e5325d12176c09e88ffe8bdf195b1d19cb7ca210650aeb3f2764e3bfd3848",
     "scripts/lib/project-assembly-documents.mjs": "912c40ec86c458fbe8a0f392ea2d8ea65d950775bcaaa464564c470be4418d49",
-    "scripts/lib/project-build-service.mjs": "83f420600452ea04d1b7bfbdd8eefe0d5e15d3f5a06365f380d8c26187d6b2c7",
+    "scripts/lib/project-build-service.mjs": "4a137445050520472fa6d65fa144eb3da079dd7dd5ba1f51a0a2cf2fbe6c7422",
     "scripts/lib/project-definition.mjs": "a7da2a138b2b0be3db03b973945d9481afcb9745611c048ef449ed4a32c12781",
     "scripts/lib/project-documents.mjs": "9f81f09f1e0f627bc229e01adae8967cf5562ee36c118b472fd729a20da6247f",
     "scripts/lib/project-service.mjs": "a1a6a04d00bef0f682e579f84cc7e68cc45892d9e1904c36418d77e6375ff44c",
@@ -82169,6 +84864,8 @@
     "scripts/tests/build-runtime-protocol.test.mjs": "49c1f959e2ef939f16fc544875e1eec0fa10ef57589919ae3033b1170ba004d5",
     "scripts/tests/build.test.mjs": "3e241da1a1ac5798fbdc075ca8f64eb55e2322d8d121e2a0d4c110ded7a84dcc",
     "scripts/tests/call-paths.test.mjs": "a5559e1f56c77918b96d1a33f44b62a891870fb448d7f68ce4dedeea41140d2f",
+    "scripts/tests/character-contact-event-starter.test.mjs": "a8dda5e72c0c316ba7c0a5d614702b1f6b5b40a5d35b3d3a12a02828b4b0da8b",
+    "scripts/tests/character-motion-event-starters.test.mjs": "2028502de4f6ef82598472c46c31efcfd169642a8bbc92669a2a8bc9708f14e6",
     "scripts/tests/control-replay-smoke.mjs": "d395f5684779bc5635af1a87f958853c63891c3ea896f8585a4738ce4452e837",
     "scripts/tests/desktop-close.test.mjs": "9af2c664add04c4fba6a5f8082de953c31b9ca8783067d72f27d31240bd39fd0",
     "scripts/tests/desktop-library.test.mjs": "1f600e7a2010d7be6d506eade9684edc42a215eb7c8c56c224f2f780fe9d3481",
@@ -82201,11 +84898,16 @@
     "scripts/tests/function-atlas-smoke.mjs": "616a725fcfa199f15d9e9b577072c49d34b615a8098572bbc7405de510caf530",
     "scripts/tests/function-atlas-view.test.mjs": "424df7a656adb48a57570c3f53d5677cec980292654cb9ba50fc1a377c69d764",
     "scripts/tests/function-atlas.test.mjs": "f66d6b898ccc0020b9cb065de64b8fd352240b5010896dbd5c3afb86f6122987",
-    "scripts/tests/godot4-adapter.test.mjs": "8445dce70326a7c1e6d52e629e753bb2cdc4deca655642d2d6ab6be29811f457",
+    "scripts/tests/godot4-adapter.test.mjs": "7aff46e6d8e1ee3cdf79e620dcccb23760b3cfaf4a0a8e0aab5cffffcbcc51a2",
     "scripts/tests/godot4-behaviors.test.mjs": "addbed9b220c3ee298f0be51648c24b80b98d2473c3918aafc7b7e4eac87ceb4",
     "scripts/tests/godot4-project.test.mjs": "f24b3a15b0c0e8a600f7f89a8ac96c940478a9320b6da93c61e0468353b80639",
+    "scripts/tests/helpers/project-physics2d-observation-fixture.mjs": "3f9a9f86e27741ae1580b0966afad48bd7f2d0a734443d9d5d81585a1b70c169",
     "scripts/tests/helpers/project-shared-state-author-fixture.mjs": "b3229ec1fe81b8f98f8b8233a7b4feb8f25e5dc90f6219e9b50974020557b83d",
     "scripts/tests/helpers/project-shared-state-fixture.mjs": "80044985789765e378d0b008e3cd0ed420c5fcdb0e62e2a09409c7b4359d3759",
+    "scripts/tests/helpers/scene-physics2d-character-events-author-fixture.mjs": "dd3b0310c3763985f812049c9896f7178a46cbb6ecab4b4d90bf5f64268d2094",
+    "scripts/tests/helpers/scene-physics2d-character-motion-author-fixture.mjs": "fd9ff292c16246e4c4e7c757444e8cdbabe6112d8eabe9deb9d61105c94b6e75",
+    "scripts/tests/helpers/scene-physics2d-contact-events-author-fixture.mjs": "1c8865323b6e3dcb4aea921d11fb4a06d4282937c8a9bb2bcc43ec146d96d11d",
+    "scripts/tests/helpers/scene-physics2d-one-way-author-fixture.mjs": "e74b33dcf49bc2273b1ea7a11b7be1a983c0668f35c1c733d75bd2cbd3614056",
     "scripts/tests/i18n-diagnostics.test.mjs": "9afce6184f6ac3d9a5a314bea0b3abe070b0852c988f6c524b95b2ba3d2c1ff0",
     "scripts/tests/instance-control-smoke.mjs": "29d6425d5f43fcb3bff1766ce021cdb08c4933f4d755de73f53a007d2aa06b93",
     "scripts/tests/json-source.test.mjs": "224c1016f8665e92ec496324c150aa669703f3bee4ba90662cf83681ba98f59e",
@@ -82300,6 +85002,10 @@
     "scripts/tests/project-events-runtime.test.mjs": "298b4fae457d96b5789591ae3ce4bc9f313f66ac9e03d829232f67916521f06e",
     "scripts/tests/project-events-smoke.mjs": "ad811d8c7319f87ce1c5adca74609fb097ce125e4ecf456caa3413565589db29",
     "scripts/tests/project-events-workflow.test.mjs": "d13669105f9e05bda8068dc46392f771e732591610b0d2c44a1826afd0eda05c",
+    "scripts/tests/project-physics-observation-build-ui.test.mjs": "f41ad2b76cbef5b0846067cb72a48e52a4a5262d77771c273fc857b484ff10b9",
+    "scripts/tests/project-physics-observation-ui.test.mjs": "e9651327a561524d12800a8d6f893dbec852c2083d2e2d306a235690035512b9",
+    "scripts/tests/project-physics2d-host.test.mjs": "efb495ace77f5595d413adaecaa060d415e4d4dbb4311568536f6f90c810df84",
+    "scripts/tests/project-physics2d-trace.test.mjs": "6a61f9aa960946dfb78b33474720de1d86ec7ea67de9001eaebaaacffbe28878",
     "scripts/tests/project-problems-smoke.mjs": "c2c427b2047de9be1f8c3c1ae3021262b2e2e4fb125d3dcdb38cf8c9cf6824a6",
     "scripts/tests/project-problems-ui.test.mjs": "7fe61637410506de0f85055021d49f4496ed9ee3024aee74a1fa72eb6049d9e3",
     "scripts/tests/project-problems.test.mjs": "2450a42479814bfe4e55d71ac6dc944f4032c8ed49a104d425727c0c8350d397",
@@ -82343,7 +85049,7 @@
     "scripts/tests/runtime-case-suite.test.mjs": "7f17f8c6141c7e6dcd111afcfb86643001813c9168230f98c68b59fbc443b8fc",
     "scripts/tests/runtime-case-ui.test.mjs": "7b39d8f9e08897c66733a6cb587bee17421a7a2f365d94eed9970bbd8a1dbfec",
     "scripts/tests/runtime-control-backends.test.mjs": "96e2ac9faea8cb853917059f4a489fd76117e801def51cb7511de5a7044b3127",
-    "scripts/tests/runtime-instance-backends.test.mjs": "552253d0117eb0b850415b47fb1d22e99c245ef2c2f829653e630ef761e239b6",
+    "scripts/tests/runtime-instance-backends.test.mjs": "4293595f99883b0a6a651963b3501887b4967a169376e349ad0405491f0ead4e",
     "scripts/tests/runtime-object-smoke.mjs": "97d8fb99231301db6af075723d41993d1ccde031b7fef274c21c866bb9bc48f4",
     "scripts/tests/runtime-verification-case.test.mjs": "86cffeef603268663912f63739ce2529447738c719d6d8a4816939532cac74a6",
     "scripts/tests/scene-animation-clips-core.test.mjs": "a78752d781e97f3485910fe09148f04264f08633c82fcd61bafbb8e008bf8644",
@@ -82592,6 +85298,15 @@
     "scripts/tests/scene-model.test.mjs": "439eae373d39daba000cabce9e13360a4d759ad52918c576e253f86e310b7239",
     "scripts/tests/scene-outline-ui.test.mjs": "cbd8ff7d42d9b6d93ca8abd655c073862023addbc407a9ea7988bfe01bc3a4a5",
     "scripts/tests/scene-physics2d-build-integration.test.mjs": "211e7f316e19e7e6fe680880145e5eab3285c7735107eb53583e5ef83de082de",
+    "scripts/tests/scene-physics2d-character-events-backends.test.mjs": "eca4912196d32d51bd63f4441d7fe8186ef2cfecb7b712c308356a59b5d60b43",
+    "scripts/tests/scene-physics2d-character-events-smoke.mjs": "a196b04040752b4030f5d86781a213026d747a542da690c8ab426bc2c121d0b8",
+    "scripts/tests/scene-physics2d-character-motion-backends.test.mjs": "9342cc47483c4800c57b0c450baae7fb5209af5ae319f992046b05c84eb7ae85",
+    "scripts/tests/scene-physics2d-character-motion-plan.test.mjs": "34361c2a24e285ce51e27094568014b269280f0b3ba901f630e8700b75243b90",
+    "scripts/tests/scene-physics2d-character-motion-smoke.mjs": "c3b4ed40d7229839a4790bd60d2af964a75c47354e58483a07cdc16072b39c79",
+    "scripts/tests/scene-physics2d-character-motion-ui.test.mjs": "0775cce0c3882acd0a07e984f734f54dbbd3091d7108a6ae7e26c8ac20defb88",
+    "scripts/tests/scene-physics2d-contact-events-backends.test.mjs": "2306321acc7a3b358049132bb7b26b796c89921955a6b7895f9c9d2422a29e57",
+    "scripts/tests/scene-physics2d-contact-events-smoke.mjs": "166b383cf4d1d471bf639338e9d99ae0e95aae39d4cc6edd6e26382dde3325fb",
+    "scripts/tests/scene-physics2d-contact-events-ui.test.mjs": "3d6afc6f0ff68abbb4b1b62e6c507d0e0d2b2de0e8f5efccff59336887455ff3",
     "scripts/tests/scene-physics2d-core.test.mjs": "919fe11a37d30f0dd119c2631bf024726d4172003de5af4fee79c461d37295a4",
     "scripts/tests/scene-physics2d-create-plan.test.mjs": "916bc0d827ebdc55d06f86844f358dccfb61e9f4a3c8cc408ac32d7875aa69e2",
     "scripts/tests/scene-physics2d-create-smoke.mjs": "ba1274627e4f1e201b4b451945e5d3076ffa9ad1a34cdefc7cd0b677539d985e",
@@ -82603,9 +85318,19 @@
     "scripts/tests/scene-physics2d-edit.test.mjs": "431712011b625bc5a451c168f38989ab33d9d5e87d0361d4aafbdaa55862bdfb",
     "scripts/tests/scene-physics2d-editor-smoke.mjs": "ae7334005dbb5a977bbb4cd043592a487e09c75479e3f9b7aeb70f5f9ec53610",
     "scripts/tests/scene-physics2d-frozen-compatibility.test.mjs": "33a6f32d6610c88f7fc9043cc2276427bc734a2a81d0f884419c0ce6c3ae35d7",
-    "scripts/tests/scene-physics2d-godot.test.mjs": "30aa203a026638c4c3e32e83c79006ce80b3cb0d20d0429223bcae5cb4dc0d52",
+    "scripts/tests/scene-physics2d-godot.test.mjs": "31c319dbee521884cca845a63df348292a8392b54fc437bb0a494e990307876f",
+    "scripts/tests/scene-physics2d-motion-core.test.mjs": "c87c30934b1f06339ab1a98dd50ba2071c0babe620bb853ed3517166e0eef936",
+    "scripts/tests/scene-physics2d-motion-edit.test.mjs": "dcd8a263bf2a36e83cde7cc8b8581364ebcd31ed0e4442dee3b78981b9f138bc",
+    "scripts/tests/scene-physics2d-observation-backends.test.mjs": "6582a0c8f76b4b4c0808c070c3d6efb481024f5318b33e10ee707c26eb1c9697",
+    "scripts/tests/scene-physics2d-observation-smoke.mjs": "eb5dcb0a3d10c79bb37995394d5617af262a4a1630a056788f1efc1090fe2dc0",
+    "scripts/tests/scene-physics2d-one-way-backends.test.mjs": "e51ed539e77a5727c6ef9c052619e675eaf00db5c2f323117824953592be12a6",
+    "scripts/tests/scene-physics2d-one-way-core.test.mjs": "4b8cfb581dac56ef50f3e8b62af1fdc037d8c7f6d77d76a735fdfdadcd51a826",
+    "scripts/tests/scene-physics2d-one-way-edit.test.mjs": "69e210f61162e9a3aa91e349ea4fe1ae20fd130936844eb6561ddabf935b7937",
+    "scripts/tests/scene-physics2d-one-way-plan.test.mjs": "792fcbc8a585e9cd46d0eba6b4494e174ee0c2a878b96050b7a187f0842208af",
+    "scripts/tests/scene-physics2d-one-way-smoke.mjs": "248e7d658e56a83fa8c6ce036c86f1f76d07a8d7d8464cdae4ae8a4f075808ac",
+    "scripts/tests/scene-physics2d-one-way-ui.test.mjs": "e64eca4112009e96d4575c868307ef059cc1f71680308c6cb68d5aea3621ea0d",
     "scripts/tests/scene-physics2d-plan.test.mjs": "18694aa9e074f45c6be316aa7e4c597b6517e4244394379a2010cfa98071d33e",
-    "scripts/tests/scene-physics2d-response-backends.test.mjs": "09e2e1df5e6ec18cc916ef84ef1fea1cfd3fb3f36cb43368393ebf451e100147",
+    "scripts/tests/scene-physics2d-response-backends.test.mjs": "1367e94f35f79e4765f06326c7b5c38cc8226f654d27ba79d60651bda8379bac",
     "scripts/tests/scene-physics2d-response-core.test.mjs": "4c534ca9ae77acf1c5dcd57e31cf1c2eaaa5273466020005caf38e96a8eebb0b",
     "scripts/tests/scene-physics2d-response-create-plan.test.mjs": "381e0523076c85d57d3b850e72bdda733b3d8772093e68c9af82d0df44bc9dc0",
     "scripts/tests/scene-physics2d-response-create-ui.test.mjs": "a34db9358f0a2b35943293ac7651dc4fd309d34c19d288ed6ea5564ada8a7b6f",
@@ -82747,7 +85472,7 @@
     "scripts/tests/script-authoring-smoke.mjs": "38088a6976abada894848b37cd5054cfd5b93dd703f2ff8ce9f0c3bd3bdee661",
     "scripts/tests/script-authoring-system.test.mjs": "474677d7b6ac074b193d97ac9f521ab807447acff361b4a3e63ca519c3e15652",
     "scripts/tests/script-authoring-workflow.test.mjs": "8b40cc87dfca86740089d3593c914acb022f2b75aacfacb2e1c712991f959522",
-    "scripts/tests/script-authoring.test.mjs": "5339f7a5c4fd8ea998b12650870097a26bb1399a07b8ebc433e6ed35120a1ec0",
+    "scripts/tests/script-authoring.test.mjs": "29021b670fdc194b8d496cbd517d3bcc498ac44caec19462db92a26ab9a23327",
     "scripts/tests/script-create-ui.test.mjs": "34c042ac92a85c8a172be35898cdcb78b99d0723faf7ffe1ea1778a2d18489c0",
     "scripts/tests/script-parameter-discovery.test.mjs": "5824f8dff06dc493dd9ebac054bebed580f930655492b7d27f8b97c9d68317b1",
     "scripts/tests/script-parameter-interface.test.mjs": "957461d38ca4532e34edff50e6db3527e8ba83514e1c1ff44d012e544ebf0359",
@@ -82856,10 +85581,10 @@
     "web/animation-state-trial-case-editor.css": "6b69cae01ab42a233b7ef00efb3848c7da1c7b83693ceb83d9f923f5713c7259",
     "web/animation-state-trial-case.css": "b945e97e563ba61dca5b626f2ce51710df9024dbc94330d90c4768bc9269e4f5",
     "web/editor-layout.css": "2849fe419c6652474f4e49d77c382be1bba8d07f7b85649896b04af0116da8ef",
-    "web/i18n/en.js": "695025d99b50b9662fbdcc43c2cf3c1fcd829a76dba4e0280caeb11c3b2874d2",
+    "web/i18n/en.js": "c2bacb4d00e5d1b3d2b49bd8f201267f05f6add68db330b55779dbfee59bf594",
     "web/i18n/index.js": "74c86ed56017e915280972d1bceb0e06574b9dadaad73e92b4bb09a3c7017567",
-    "web/i18n/ja.js": "da1d0e49e59eb8bc29cb96749df0cd426cfa60cfda1482c7d1fb31ce800bb2a2",
-    "web/index.html": "8a77ae6758e3d2d35e0aeeb078e3d48bf7d45aa9936ec94fe03d370f448cbac8",
+    "web/i18n/ja.js": "b32ac36367ea824a4dea2bd969f9f6f0197c7c5f1618a7f8301a4279f20612ac",
+    "web/index.html": "a913067562ba57e3e52505fe447ce01ae21eee5d022a37c671c391089cf5fedb",
     "web/modules/app-animation-state-condition-group.js": "0c1b02f720757ed756c2efc2e27ca04346760400dbafc8a5c9768f4ba1a592d5",
     "web/modules/app-animation-state-condition.js": "62ca96e0221d6eb0a5b72eac21bacdf888c55a3851c0d4de85ef4bb376067c1a",
     "web/modules/app-animation-state-event-preview.js": "b178da0734dcf8f8af086b57f25db41003e9f68e715069c6a2c7c65aa28e5cea",
@@ -82889,9 +85614,10 @@
     "web/modules/app-project-animation-target-review.js": "7dea0d3f58daa91486f46b56f57681cb10ddb4f2acfd9cf9a7e9eb2c4ad3bfb1",
     "web/modules/app-project-assembly.js": "ffc980e29cafc6d94307404351bc52abf7d690f30e0e3e9b727dc1f255d4e326",
     "web/modules/app-project-audio-observation.js": "ba572fc0e6c868abc0db9432662d3b75f65531f04f4f08e4c4094e29ac42929f",
-    "web/modules/app-project-build.js": "2b07a7f5ea51fd1ac0bcc3d0ef95c821e7dcc621071060bfb5a98613e1c023fd",
+    "web/modules/app-project-build.js": "367383b3ec0edce935b62e82cc9536d5845b63ac0a0138c997a17077429fdc71",
     "web/modules/app-project-event-observation.js": "f07747d7fd58e7573f6b4c6ba3bf4e4d3ac077717c193bc4b17411e5f5a6582e",
     "web/modules/app-project-event-review.js": "9558ea75da21182a51c25add0595a959fc6bdfa8a509d532260cd0774da379a9",
+    "web/modules/app-project-physics-observation.js": "10d86d3ab703eb81924d2065e5898c32b264fd40f67ff0b5f25f9d2edc3b8f33",
     "web/modules/app-project-problems.js": "31e7510d42480bb047a488465a06326e9abb7dd85a1d005915b029ff4fa723d3",
     "web/modules/app-project-settings.js": "96ae129e3e4f97eab2e50e26650f2790206a491df39ad0140a54916c25875d9b",
     "web/modules/app-project-state-observation.js": "69f4b90fbb3d43edde85d898de86ba883faa208882c74425e8bb6b2fc310009d",
@@ -82936,7 +85662,7 @@
     "web/modules/app-scene-physics2d-create.js": "111b86c21b362db37ff78e6316c53bb6d76b5b290665e7aca2d0d1ffc1bc1460",
     "web/modules/app-scene-physics2d-source.js": "d5ebde8d42763b664321083f80bdf9cd7665967aa385f4a3d0583f8be2b67213",
     "web/modules/app-scene-physics2d-space.js": "9ff1e778d4880a6233b69fb4d34c8b7764f85662b047e6f6c2986c8d8e0d8a05",
-    "web/modules/app-scene-physics2d.js": "3325b4c77972e0e5f976392f1caa45f16800b0347c2759a792449bbb841d8972",
+    "web/modules/app-scene-physics2d.js": "082758b0dda0733406e78a29998b3250ccf4abe15b02a3d96c2fff3a8f1ba752",
     "web/modules/app-scene-preview-animation.js": "98dbc9d7233fcba4241cd4f5d78bf36619194e8d8b4063acb85fa5a5530c288f",
     "web/modules/app-scene-preview-canvas.js": "f7cc3cbc8b5c83522c444836e7d577fe12f145202bbcbb45dc1f776fadb0addd",
     "web/modules/app-scene-preview-instance-animation.js": "eac455c8905932a356009bcda11a300c1786b924839f69ae0c72662d7499e14b",
@@ -82985,6 +85711,7 @@
     "web/project-build.css": "2e7a99e24347cfa6edf0dde98295c253a8a6fe60352b45e059b95f87ec079464",
     "web/project-event-observation.css": "058fcbac4a63a470a0d9a24c1e6ed4342718b62004172f3ba98f09e7a68a160a",
     "web/project-event-review.css": "e8889c2392d5d3aec42b8280d3a2b9672136dc59a1903c902729b40db334572b",
+    "web/project-physics-observation.css": "3431b83396c3e65c83c227021d9d26210cd3ce98f0c3bec05e2c7aa847fcf33e",
     "web/project-problems.css": "39aebea6356895a5c2aa26aad9d1e0f4ddf18bb03fbbd66730db4d56c38c78ad",
     "web/project-state-observation.css": "e5a277e76c2a26ea7a10aba347a1f905358a0fb8c5f40251c82c0938ac035b6c",
     "web/scene-animation-create.css": "cd9e8515692920b7b1ef5add21d14fc48ea146b7949a46da130d7d705214d834",
@@ -82996,7 +85723,7 @@
     "web/scene-composition-create.css": "fc419879c7130eac5fb339d223fd6997beab89e7e4acb7e109f0bf9e0ec9f209",
     "web/scene-materialize.css": "437f1fdec5571fa9d2bda34b2356d9f32d1048c13a981c402f41786a5927593e",
     "web/scene-physics2d-create.css": "ec19579ba09560a23c8110929f7e8fb75a22cb0ad1fe0ef9caff23456a0a1bce",
-    "web/scene-physics2d.css": "15a3eb03a07a42769bf558955e78071e82c42aa792191b3d074a587efc3f4303",
+    "web/scene-physics2d.css": "8113554883204d3f4a318708893fb409367e93f9f3284cf618d541df7969bbce",
     "web/scene-preview.css": "e6e322dca16ec01d0436679296a5f45acf2e000116377d5349521acd35677c11",
     "web/scene3d-alignment.css": "911ca7d4c6af85a1238a1661ba7d3ac81c47efcb26107a55cb26b1f1659c1878",
     "web/scene3d-copy.css": "bbf6fe77a3977b88165dca22d00a158b77d73ed48731fb84f7c8a422fcc4c83f",

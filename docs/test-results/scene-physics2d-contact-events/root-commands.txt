@@ -1,0 +1,18 @@
+Working directory: /home/chiharukiryu/cdev/viento-studio
+Node: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node (24.21.0)
+PATH includes Node above and /home/chiharukiryu/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin.
+
+npm run check -- --app-only > docs/test-results/scene-physics2d-contact-events/full-check.log 2>&1
+# Python supervisor records UTC start/end and actual exit code in full-check-exit.json.
+# Result: 8199 tests; 7761 pass, 438 conditional skips, 0 fail/cancel; exit 0.
+
+python3 /tmp/viento-physics-contact-events/atlas.py
+# Appends only this topic's function, implementations, bindings, scores and evidence.
+python3 /tmp/viento-physics-contact-events/preservation.py
+# Checks hashes against this turn's dirty-worktree baseline.json, old atlas prefix,
+# 17 full starter records and final browser source hashes. Writes preservation.json.
+node scripts/function-atlas.mjs --write --refresh-sources
+node scripts/function-atlas.mjs --check > docs/test-results/scene-physics2d-contact-events/atlas-check.log 2>&1
+python3 docs/test-results/docs-refresh-2026-10-25/check-links.py --output docs/test-results/scene-physics2d-contact-events/links.json
+# Refresh atlas sources after final evidence updates, then recheck.
+git diff --check

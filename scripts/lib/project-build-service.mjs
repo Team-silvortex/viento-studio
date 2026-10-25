@@ -355,6 +355,7 @@ export function createProjectBuildService(root, {
     // Keep the admitted object view independently of the bounded raw-event
     // ring, including frames observed while cancellation terminates the tool.
     if (event.runtime) job.runtime = clone(event.runtime);
+    if (event.physics && job.kind === 'run') job.physics = clone(event.physics);
     if (event.verification && job.verification) job.verification = clone(event.verification);
     if (event.controlSample && job.control && job.control.samples.length < job.control.program.steps.length) {
       job.control.samples.push(clone(event.controlSample));
@@ -368,6 +369,8 @@ export function createProjectBuildService(root, {
   }
 
   async function runJob(payload, controller) {
+    const owner = job;
+    const ownedProgress = event => { if (job === owner && active?.controller === controller) progress(event); };
     try {
       let result;
       const sceneId = job.sceneId;
@@ -375,7 +378,7 @@ export function createProjectBuildService(root, {
         const entry=builds.get(payload.buildId);
         await assertRunnableEntry(entry);
         result=await executeRuntimeCaseSuite({capture:payload.capture,plan:payload.frozenPlan,authorRoot:root,buildDirectory:entry.directory,
-          buildId:entry.id,snapshotId:entry.snapshotId,tool,backendId,backendRegistry,cacheRoot,signal:controller.signal,onProgress:progress});
+          buildId:entry.id,snapshotId:entry.snapshotId,tool,backendId,backendRegistry,cacheRoot,signal:controller.signal,onProgress:ownedProgress});
         job.suite=clone(result.record.suite);
         if(result.lastRecord?.runtime)job.runtime=clone(result.lastRecord.runtime);
         if(result.lastRecord?.control)job.control=clone(result.lastRecord.control);
@@ -395,7 +398,7 @@ export function createProjectBuildService(root, {
       } else if (payload.action === 'build') {
         const output = path.join(namespace, job.id);
         result = await buildProject({ root, targetId: sceneId, tool, backendId, backendRegistry, output, signal: controller.signal,
-          expectedSnapshotId: payload.expectedSnapshotId, timeoutMs: executionTimeoutMs, onProgress: progress });
+          expectedSnapshotId: payload.expectedSnapshotId, timeoutMs: executionTimeoutMs, onProgress: ownedProgress });
         if (result.buildDirectory) {
           const summary = { id: result.record.buildId, sceneId, backendId, snapshotId: result.record.snapshotId,
             ...(job.targetKind === 'project' ? { targetKind: 'project', targetId: sceneId } : {}),
@@ -423,8 +426,9 @@ export function createProjectBuildService(root, {
           timeoutMs: payload.mode === 'window' ? 300000 : executionTimeoutMs,
           ...(payload.controlProgram !== undefined ? { controlProgram: payload.controlProgram } : {}),
           ...(payload.runtimeCase !== undefined ? { runtimeCase: payload.runtimeCase } : {}),
-          ...(payload.runtimeCaseSceneId ? { runtimeCaseSceneId: payload.runtimeCaseSceneId } : {}), onProgress: progress });
+          ...(payload.runtimeCaseSceneId ? { runtimeCaseSceneId: payload.runtimeCaseSceneId } : {}), onProgress: ownedProgress });
         if (result.record?.runtime) job.runtime = clone(result.record.runtime);
+        if (result.record?.physics) job.physics = clone(result.record.physics);
         if (result.record?.control) job.control = clone(result.record.control);
         if (result.record?.verification) job.verification = clone(result.record.verification);
       }

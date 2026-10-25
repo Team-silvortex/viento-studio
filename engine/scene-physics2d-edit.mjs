@@ -60,7 +60,7 @@ function copyData(input, depth = 0, budget = { nodes: 0, bytes: 0 }) {
   const array = Array.isArray(input), prototype = Object.getPrototypeOf(input);
   if (array ? prototype !== Array.prototype : prototype !== null && prototype !== Object.prototype) fail();
   const descriptors = Object.getOwnPropertyDescriptors(input), names = Reflect.ownKeys(descriptors), length = descriptors.length?.value;
-  if (array && (!Number.isSafeInteger(length) || length > 128 || names.length !== length + 1) || !array && names.length > 8) fail();
+  if (array && (!Number.isSafeInteger(length) || length > 128 || names.length !== length + 1) || !array && names.length > 9) fail();
   const output = array ? [] : Object.create(null);
   for (const key of array ? Array.from({ length }, (_, index) => String(index)) : names) {
     const descriptor = descriptors[key];
@@ -104,26 +104,34 @@ function serialize(value, formatting, base) {
   return value && typeof value === 'object' && formatting.newline
     ? JSON.stringify(value, null, formatting.unit).replaceAll('\n', formatting.newline + base) : JSON.stringify(value);
 }
-function responsePatch(content, parsed, before, after, pointer, formatting) {
-  const key = 'collisionResponse', path = `${pointer}/${key}`, had = Object.hasOwn(before, key), has = Object.hasOwn(after, key);
-  if (had === has) {
-    if (!has || before[key] === after[key]) return [];
-    return [{ ...range(parsed, path), text: JSON.stringify(after[key]) }];
+// Optional fields share comma boundaries. Group adjacent removals and append
+// additions once, so response, motion and platform changes never overlap in
+// source patches. Retained keys, whitespace and value lexemes remain untouched.
+function optionalPatches(content, parsed, before, after, pointer, formatting) {
+  const optional = ['collisionResponse', 'characterMotion', 'oneWay'], keys = Object.keys(before);
+  const removed = new Set(optional.filter(key => Object.hasOwn(before, key) && !Object.hasOwn(after, key)));
+  const additions = optional.filter(key => !Object.hasOwn(before, key) && Object.hasOwn(after, key));
+  const container = range(parsed, pointer), patches = [];
+  for (let index = 0; index < keys.length; index++) {
+    if (!removed.has(keys[index])) continue;
+    const first = index;
+    while (index + 1 < keys.length && removed.has(keys[index + 1])) index++;
+    const last = range(parsed, `${pointer}/${keys[index]}`);
+    const start = first ? range(parsed, `${pointer}/${keys[first - 1]}`).end : content.indexOf('"', container.start + 1);
+    const end = first ? last.end : content.indexOf('"', last.end);
+    if (start < container.start || end < start || end > container.end) fail();
+    patches.push({ start, end, propertyPaths: keys.slice(first, index + 1).map(key => `${pointer}/${key}`), text: '' });
   }
-  const keys = Object.keys(before), container = range(parsed, pointer);
-  if (has) {
-    const last = range(parsed, `${pointer}/${keys.at(-1)}`), first = range(parsed, `${pointer}/${keys[0]}`);
-    const gap = formatting.newline ? formatting.newline + formatting.indent(first.start) : '';
-    return [{ start: last.end, end: last.end, propertyPath: path,
-      text: `,${gap}"${key}":${formatting.newline ? ' ' : ''}${JSON.stringify(after[key])}` }];
+  if (additions.length) {
+    const kept = keys.filter(key => !removed.has(key)), last = range(parsed, `${pointer}/${kept.at(-1)}`);
+    const first = range(parsed, `${pointer}/${kept[0]}`), base = formatting.indent(first.start);
+    const gap = formatting.newline ? formatting.newline + base : '';
+    const text = additions.map(key => `,${gap}"${key}":${formatting.newline ? ' ' : ''}${serialize(after[key], formatting, base)}`).join('');
+    const paths = additions.map(key => `${pointer}/${key}`), tail = patches.find(patch => patch.start === last.end);
+    if (tail) { tail.text = text; tail.propertyPaths.push(...paths); }
+    else patches.push({ start: last.end, end: last.end, propertyPaths: paths, text });
   }
-  const at = keys.indexOf(key), value = range(parsed, path);
-  // The already validated object has seven other fields. Removing the preceding
-  // comma (or the first key through the next key) preserves every other value.
-  const start = at ? range(parsed, `${pointer}/${keys[at - 1]}`).end : content.indexOf('"', container.start + 1);
-  const end = at ? value.end : content.indexOf('"', value.end);
-  if (start < container.start || end < start || end > container.end) fail();
-  return [{ start, end, propertyPath: path, text: '' }];
+  return patches;
 }
 function bodyPatches(content, parsed, before, after, index, formatting) {
   const patches = [], pointer = `/bodies/${index}`;
@@ -140,7 +148,18 @@ function bodyPatches(content, parsed, before, after, index, formatting) {
   else leaf(`${pointer}/shape/radius`, before.shape.radius, after.shape.radius);
   for (let axis = 0; axis < 2; axis++) leaf(`${pointer}/offset/${axis}`, before.offset[axis], after.offset[axis]);
   for (const key of ['layer', 'mask']) leaf(`${pointer}/${key}`, before[key], after[key]);
-  patches.push(...responsePatch(content, parsed, before, after, pointer, formatting));
+  if (Object.hasOwn(before, 'collisionResponse') && Object.hasOwn(after, 'collisionResponse')) {
+    leaf(`${pointer}/collisionResponse`, before.collisionResponse, after.collisionResponse);
+  }
+  if (Object.hasOwn(before, 'characterMotion') && Object.hasOwn(after, 'characterMotion')) {
+    for (const key of ['kind', 'gravity', 'jumpSpeed', 'maxFallSpeed']) {
+      leaf(`${pointer}/characterMotion/${key}`, before.characterMotion[key], after.characterMotion[key]);
+    }
+  }
+  if (Object.hasOwn(before, 'oneWay') && Object.hasOwn(after, 'oneWay')) {
+    leaf(`${pointer}/oneWay/margin`, before.oneWay.margin, after.oneWay.margin);
+  }
+  patches.push(...optionalPatches(content, parsed, before, after, pointer, formatting));
   return patches;
 }
 function candidateBodies(before, inputs) {
@@ -149,7 +168,9 @@ function candidateBodies(before, inputs) {
   let lastIndex = -1, appended = false;
   return inputs.map(input => {
     const hasResponse = input !== null && typeof input === 'object' && Object.hasOwn(input, 'collisionResponse');
-    const body = record(input, [...bodyKeys, ...(hasResponse ? ['collisionResponse'] : [])]), index = originals.get(body.id);
+    const hasMotion = input !== null && typeof input === 'object' && Object.hasOwn(input, 'characterMotion');
+    const hasOneWay = input !== null && typeof input === 'object' && Object.hasOwn(input, 'oneWay');
+    const body = record(input, [...bodyKeys, ...(hasResponse ? ['collisionResponse'] : []), ...(hasMotion ? ['characterMotion'] : []), ...(hasOneWay ? ['oneWay'] : [])]), index = originals.get(body.id);
     if (hasResponse && (body.kind !== 'character' || !['stop', 'slide'].includes(body.collisionResponse))) fail();
     // The old default never upgrades a schema-1 document or adds redundant data.
     if (before.schemaVersion === 1 && body.collisionResponse === 'stop') delete body.collisionResponse;
@@ -186,7 +207,8 @@ function bodiesPatch(content, parsed, before, after, formatting) {
 async function patch(content, edit) {
   const before = await readScenePhysics2DDocument(content), fields = record(edit, ['bodies']);
   const bodies = candidateBodies(before, fields.bodies);
-  const candidate = { ...before, schemaVersion: before.schemaVersion === 2 || bodies.some(body => body.collisionResponse === 'slide') ? 2 : 1, bodies };
+  const candidate = { ...before, schemaVersion: Math.max(before.schemaVersion, bodies.some(body => Object.hasOwn(body, 'oneWay')) ? 4 : bodies.some(body => Object.hasOwn(body, 'characterMotion')) ? 3
+    : bodies.some(body => body.collisionResponse === 'slide') ? 2 : 1), bodies };
   await inspect(candidate); safeSerialization();
   const parsed = parseJsonSource(content), formatting = style(content, parsed);
   const sameRows = before.bodies.length === candidate.bodies.length && before.bodies.every((body, index) => body.id === candidate.bodies[index].id);
@@ -198,7 +220,7 @@ async function patch(content, edit) {
   const afterContent = applyPatches(content, patches);
   const after = await readScenePhysics2DDocument(afterContent); safeSerialization();
   if (canonicalJson(after) !== canonicalJson(candidate)) fail();
-  return { beforeContent: content, afterContent, edit, changedPaths: patches.map(item => item.propertyPath) };
+  return { beforeContent: content, afterContent, edit, changedPaths: patches.flatMap(item => item.propertyPaths ?? [item.propertyPath]) };
 }
 export async function createScenePhysics2DProposal(source, edit) {
   safeSerialization();

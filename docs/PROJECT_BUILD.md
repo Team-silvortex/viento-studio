@@ -1,6 +1,6 @@
 # 二维场景构建与运行（实验性）
 
-本页说明从已保存的二维场景到构建、运行和生成工程交付的操作。当前源码版本为 **0.2.3**，已收录物理空间图的偏移、尺寸调整及角色停止／滑动响应；本机已安装程序仍为 **0.2.0**。当前能力、平台与验收范围统一见[状态页](STATUS.md)，历次开发前言及选型探针移至[历史归档](history/project-build-2026-10-25.md)。
+本页说明从已保存的二维场景到构建、运行和生成工程交付的操作。当前源码版本为 **0.2.4**，已收录物理观察、角色重力／跳跃、运动与移动碰撞事件及静态单向平台；本机已安装程序仍为 **0.2.0**。当前能力、平台与验收范围统一见[状态页](STATUS.md)，历次开发前言及选型探针移至[历史归档](history/project-build-2026-10-25.md)。
 
 首次使用先读[项目工作流](PROJECT_WORKFLOW.md)；对照入口和后端支持用[二维功能对接表](FUNCTION_MAPPING_2D.md)。Godot 交付物是需要 Godot 工具的生成工程，Bevy 数据与 Rust 通道各需对应运行程序或工具链；均未接入独立游戏发行。构建入口目前只面向 Linux 本机编辑宿主，静态预览与真实引擎运行分别验证。
 
@@ -324,7 +324,9 @@ flowchart LR
 
 ### 当前项目协议选择
 
-以下适用于当前源码新构建的 **Godot 项目组装**，规则来自[项目生成器](../scripts/backends/godot4-project.mjs)与[物理包装生成器](../scripts/backends/godot4-physics.mjs)。宿主的 `executionAdapter` 当前为 **0.22.0**；产物中的 `backend.version` 是按内容选择的生成器版本，两者不是同一个版本号。
+[静态单向平台](SCENE_PHYSICS2D.md#配置静态单向平台)先按普通流程创建，再在已有物理编辑器启用并审阅保存；schema 4 的 `oneWay` 只含 `margin`（1–64，默认 1），且只允许静态矩形。关闭删除字段但不降 schema，只有实际字段要求 `physics.one-way-platform2d`。Godot 固定朝上的原生平台沿用角色运动及作者事件，不增加项目线协议或物理观察协议；Bevy 两个通道明确拒绝，移动平台与按键向下穿透未接入。
+
+以下适用于当前源码新构建的 **Godot 项目组装**，规则来自[项目生成器](../scripts/backends/godot4-project.mjs)与[物理包装生成器](../scripts/backends/godot4-physics.mjs)。宿主的 `executionAdapter` 当前为 **0.27.0**；产物中的 `backend.version` 是按内容选择的生成器版本，两者不是同一个版本号。
 
 | 冻结项目内容（从特殊到一般） | 项目运行协议 | `assembly.json` 版本 | 无物理时的生成器版本 |
 | --- | --- | --- | --- |
@@ -333,7 +335,7 @@ flowchart LR
 | 其余含整场景动画的项目 | 7 | 8 | 0.16.0 |
 | 不含动画的项目 | 4 | 5 | 0.11.0 |
 
-物理作者 schema 1 继续使用原 **0.21.0** 包装生成器；含 schema 2 时使用[独立响应包装](../scripts/backends/godot4-physics-response.mjs) **0.22.0**。二者继续使用上表选出的协议和组装清单版本，另附 `physics-project.json`；schema 2 还生成 `physics-response-project.json` 以校验响应脚本，没有新增物理线协议。作者 Scene2D v1／v2／v3、项目组装 v1、动画 v1–v4 和物理 v1／v2 分别维护；旧物理声明只有在显式选择滑动并保存后才升级。单场景构建不套用此表：逐实例动画及物理目前要求项目组装，其他单场景计划按既有分支处理。
+新物理构建使用[观察包装](../scripts/backends/godot4-physics-observation.mjs) **0.23.0**：内部复用 schema 1 的原 **0.21.0** 物理生成器，或 schema 2 的[响应包装](../scripts/backends/godot4-physics-response.mjs) **0.22.0**。三者继续使用上表选出的项目协议和组装清单版本，原 `physics-project.json` 与可选 `physics-response-project.json` 保留；新观察另有严格脚本库存。半秒测试发出独立 `VIENTO_PHYSICS2D` 协议1，不把逐步碰撞挤入项目事件或动画协议。显式角色重力／跳跃在观察层之上再使用独立运动包装 **0.24.0**，增加 `physics.character-motion2d` 与独立参数／脚本库存；当前新运动构建再套角色事件包装 **0.25.0**，增加可选 `physics.character-events2d` 和独立事件脚本库存，作者行为将真实起跳／落地接入既有项目事件；关闭运动的 schema 3 可继续构建，旧生成器保持。实际静态单向平台另由[0.26.0包装](../scripts/backends/godot4-physics-one-way.mjs)配置原生单向碰撞，附带 `one-way-project.json` 和参数／脚本库存；schema 4 无 `oneWay` 时复用旧生成分支。有运动角色的新构建再增加0.27.0移动碰撞事件包装、行为局部端口和独立脚本库存，复用原求解结果与项目事件协议；无运动角色仍走旧分支。作者 Scene2D v1／v2／v3、项目组装 v1、动画 v1–v4 和物理 v1–v4 分别维护；只有显式保存滑动、角色运动或单向平台才升级相应物理格式。单场景构建不套用此表：逐实例动画及物理目前要求项目组装，其他单场景计划按既有分支处理。
 
 旧协议和记录继续按其格式读取；修改 Studio 适配器或工具后，旧冻结构建需按执行指纹规则重新构建才能运行。旧专题中的“适配器 0.11.0／0.16.0／0.19.0／0.20.0”保留首次接入时点，不能覆盖当前宿主描述符。该兼容读取不自动迁移作者文件或更新本机安装。
 
@@ -346,7 +348,7 @@ flowchart LR
 | `project/` | Godot 的配置、场景、固定适配脚本及图片，行为场景另含清单和 `.gd` 副本；或 Bevy 的 `scene-data.json` 数据工程 |
 | `source-map.json` | v1 角色 UUID；v2 的实例／定义 UUID 配对，以及原文 revision、声明位置和运行节点映射；行为场景追加绑定与脚本来源 |
 | `build.json` | 实际工具版本及二进制摘要、历史生成器 `backend` 版本及源码摘要、新执行适配器 `executionAdapter` 指纹、输出摘要、导入／检查日志和状态 |
-| `sessions/<UUID>/session.json` | 关联 build / snapshot／后端与执行适配器的运行模式、状态事件、日志、诊断及独立的 `runtime` 对象观察 |
+| `sessions/<UUID>/session.json` | 关联 build / snapshot／后端与执行适配器的运行模式、状态事件、日志、诊断及独立的 `runtime` 对象观察；新物理测试另存 `physics` 快照 |
 | `sessions/<UUID>/preview.png` | 显式要求的窗口截图 |
 
 运行时重新校验快照、计划、生成文件、适配器和工具摘要，再创建独立运行副本。源工程移走后仍可运行；修改生成文件、换引擎二进制或更改适配器需要重建。作者工程的实际本机素材路径不写入快照；仅由捕获时的本地绑定解析。

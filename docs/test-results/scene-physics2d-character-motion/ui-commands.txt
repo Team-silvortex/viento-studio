@@ -1,0 +1,6 @@
+cwd: /home/chiharukiryu/cdev/viento-studio
+Node: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node
+UI new/response: node --test --test-isolation=none scripts/tests/scene-physics2d-character-motion-ui.test.mjs scripts/tests/scene-physics2d-response-ui.test.mjs
+UI regression: node --test --test-isolation=none scripts/tests/scene-physics2d-character-motion-ui.test.mjs scripts/tests/scene-physics2d-response-ui.test.mjs scripts/tests/scene-physics2d-ui.test.mjs scripts/tests/scene-physics2d-space-edit-ui.test.mjs scripts/tests/scene-physics2d-space-resize-ui.test.mjs scripts/tests/i18n.test.mjs
+Browser: VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node scripts/tests/scene-physics2d-character-motion-smoke.mjs
+Browser first attempt failed solely because the runner incorrectly required positive horizontal displacement after the generic smoke had released movement. The corrected runner verifies horizontal floor motion before the jump separately from landing. Both reports remain preserved. No product source changed between browser attempts.

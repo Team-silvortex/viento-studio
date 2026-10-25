@@ -14,7 +14,7 @@
 
 ## 从旧版本切换
 
-当前源码 0.2.3 的 Android `versionCode` 为 **1002003**，来自 `src-tauri/tauri.android.conf.json`；应用 ID 继续使用 `io.viento.studio`。该配置不代表已构建或验收同版本 APK。
+当前源码 0.2.4 的 Android `versionCode` 为 **1002004**，来自 `src-tauri/tauri.android.conf.json`；应用 ID 继续使用 `io.viento.studio`。该配置不代表已构建或验收同版本 APK。
 
 0.0.1 交接时曾在隔离 API 35 模拟器上以相同签名覆盖旧 0.4.6 APK，核对私有作品、稳定身份、原文字节和已落盘 WebView 存储保留。该历史结果不外推到后续源码版本。签名不同不能覆盖，应先在旧应用中导出完整项目；不要通过卸载或清除数据绕过检查。安装计数器、版本公式和历史兼容范围见 [兼容 ADR](../docs/adr/0001-product-version-and-data-compatibility.md)。
 

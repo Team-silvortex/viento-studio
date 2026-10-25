@@ -1,0 +1,48 @@
+✔ motion wrapper preserves every old output byte, source map and protocol and format 3 can disable its last motor (330.967926ms)
+✔ motion inventories reject missing, extra, mismatched, malformed and linked generated files (199.087078ms)
+✔ real character lands, keeps horizontal motion along the floor and shares the existing smoke observation (9364.999099ms)
+✔ real platformer hold (4201.9311ms)
+✔ real platformer air-repeat (4270.562248ms)
+✔ real platformer ceiling (5343.130866ms)
+✔ real platformer wall (5507.48474ms)
+✔ real platformer none (4364.413899ms)
+✔ real platformer terminal (4327.557537ms)
+✔ real mixed scene preserves top-down character and nonphysical movement while platformer ignores vertical arrow input (4327.479615ms)
+✔ real zero jump speed leaves gravity unchanged even on a grounded rising edge (4389.573958ms)
+✔ real scene reentry resets velocity and grounded state without inventing a new jump edge (4352.604321ms)
+✔ real live motion jumps and lands on the same physics clock without emitting smoke observations (4205.422737ms)
+✖ real portable ZIP retains character motion and observation without original author or build paths (8609.030035ms)
+﹣ real window capture uses the same smoke observation clock and retains final trace (0.079913ms) # Set VIENTO_GODOT_BIN and VIENTO_PHYSICS_MOTION_CAPTURE for native capture verification
+✔ observation wrapper keeps old generators and nonphysical output intact with complete independent script inventory (372.790574ms)
+✔ adapter requires smoke and current generated capability while legacy and interactive readers remain unchanged (74.405182ms)
+✔ real stop traces native contacts without changing old physical results (14044.354582ms)
+✔ real slide traces native contacts without changing old physical results (8774.581755ms)
+✔ real undeclared collider with copied identity metadata remains unmapped (4373.047343ms)
+✔ real 256-sample limit reports partial observation while all 30 physical steps still finish (4541.768535ms)
+✔ real sensor-driven scene reentry resets physical step and source ownership (4471.022853ms)
+✔ real static and sensor-only visits finish with an explicit empty observation (4357.025739ms)
+✔ real portable ZIP retains observation, sensors and animation without original author or build paths (24380.628931ms)
+﹣ real window capture uses the same smoke observation clock and retains final trace (0.141612ms) # Set VIENTO_GODOT_BIN and VIENTO_PHYSICS_OBSERVATION_CAPTURE for native capture verification
+✔ real interactive run preserves gameplay and emits no physics observation stream (4316.781018ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 23
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 2
+ℹ todo 0
+ℹ duration_ms 133618.584165
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-character-motion-backends.test.mjs:228:1
+✖ real portable ZIP retains character motion and observation without original author or build paths (8609.030035ms)
+  Error: The backend project does not match its frozen source and file inventory.
+      at buildError (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-build-snapshot.mjs:25:74)
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-backend-project.mjs:18:60)
+      at inspectBackendProject (file:///home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-backend-project.mjs:191:150)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-character-motion-backends.test.mjs:233:67)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errorCode: 'backend_project_changed'
+  }

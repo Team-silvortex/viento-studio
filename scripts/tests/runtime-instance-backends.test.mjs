@@ -45,7 +45,7 @@ async function inventory(directory) {
 }
 
 test('per-instance control is an additive capability, with engine-owned implementation versions', () => {
-  assert.equal(bevy.descriptor.version, '0.3.0'); assert.equal(godot.descriptor.version, '0.22.0');
+  assert.equal(bevy.descriptor.version, '0.3.0'); assert.equal(godot.descriptor.version, '0.27.0');
   for (const adapter of [bevy, godot]) {
     assert.ok(adapter.descriptor.capabilities.includes('runtime.control-replay'));
     assert.ok(adapter.descriptor.capabilities.includes('runtime.control-replay.instances'));

@@ -237,6 +237,24 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
         if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
           `Backend lacks capability: ${capability}`, { capability }));
       }
+      // Movement is independent of the base body provider. Re-derive this
+      // requirement from author data even if a forged plan omits its flag.
+      if (bodies.some(body => body?.kind === 'character' && Object.hasOwn(body, 'characterMotion'))) {
+        const capability = 'physics.character-motion2d';
+        if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',
+          'Physics plans must explicitly require their character movement capability.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
+      // Surface policy is independent of character motion. A forged plan must
+      // not hide a one-way surface by removing its advertised requirement.
+      if (bodies.some(body => body?.kind === 'static' && Object.hasOwn(body, 'oneWay'))) {
+        const capability = 'physics.one-way-platform2d';
+        if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',
+          'Physics plans must explicitly require their one-way platform capability.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
       const required = ['physics.bodies2d', ...(kinds.has('character') ? ['physics.character2d'] : []), ...(kinds.has('sensor') ? ['physics.sensors2d'] : [])];
       for (const capability of SCENE_PHYSICS2D_CAPABILITIES) {
         if (required.includes(capability) && !plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',
