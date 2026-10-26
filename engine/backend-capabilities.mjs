@@ -255,6 +255,15 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
         if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
           `Backend lacks capability: ${capability}`, { capability }));
       }
+      // Declared platform motion remains visible even when forged plans remove
+      // both the scene and project capability flags.
+      if (bodies.some(body => body?.kind === 'static' && Object.hasOwn(body, 'platformMotion'))) {
+        const capability = 'physics.platform-motion2d';
+        if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',
+          'Physics plans must explicitly require their platform movement capability.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
       const required = ['physics.bodies2d', ...(kinds.has('character') ? ['physics.character2d'] : []), ...(kinds.has('sensor') ? ['physics.sensors2d'] : [])];
       for (const capability of SCENE_PHYSICS2D_CAPABILITIES) {
         if (required.includes(capability) && !plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',

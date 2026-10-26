@@ -1,0 +1,171 @@
+// Real Chrome → ordinary one-way drop-through script → binding parameters → native Godot → animation/audio provenance.
+// Writes disposable author workspaces and a fresh evidence directory only.
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import assert from 'node:assert/strict';
+import { spawn } from 'node:child_process';
+import { once } from 'node:events';
+import { fileURLToPath } from 'node:url';
+import { setTimeout as delay } from 'node:timers/promises';
+import { serve } from './helpers.mjs';
+import { runCommand } from '../lib/process.mjs';
+import { buildHash } from '../adapters/node-build-snapshot.mjs';
+import { scenePhysics2DDropThroughAuthor } from './helpers/scene-physics2d-drop-through-author-fixture.mjs';
+import { listScriptStarters } from '../../engine/script-authoring.mjs';
+import { readRegistry } from '../lib/workspace.mjs';
+import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
+import '../adapters/node-studio-core.mjs';
+const appRoot=fileURLToPath(new URL('../../',import.meta.url)),tool=process.env.VIENTO_GODOT_BIN;
+if(!tool||!path.isAbsolute(tool))throw Error('Set VIENTO_GODOT_BIN to an absolute executable.');
+const evidenceRoot=path.join(appRoot,'docs/test-results/scene-physics2d-drop-through');
+const output=path.resolve(process.env.VIENTO_PHYSICS_DROP_THROUGH_UI_OUTPUT||path.join(evidenceRoot,`browser-${Date.now()}`));
+if(!output.startsWith(evidenceRoot+path.sep))throw Error('Use a fresh directory inside the drop-through evidence topic.');
+await fs.mkdir(output,{recursive:true});if((await fs.readdir(output)).length)throw Error('Use a new empty evidence directory.');
+const report={startedAt:new Date().toISOString(),steps:[],screenshots:[],jobs:[],errors:[],dialogs:[],layout:{},limitations:[
+  'Real HTTP editor and native Godot headless test; installed Tauri, Android and Bevy were not tested.',
+  'Runtime evidence covers the authored input request and per-character native one-way drop, alongside existing landing/contact events and executed media commands. Headless audio receipts do not prove audible output or audio hardware.',
+  'The browser creates one ordinary input TXT, registers one explicit reference and adds one character binding with drop_action. Existing landing/contact publishers and animation/audio consumers are saved fixture scripts; no auto-binding or parameter discovery is claimed.'
+]};
+const sources=['engine/godot-character-drop-through-script.mjs','engine/godot-character-motion-events-script.mjs','scripts/backends/godot4-physics-drop-through.mjs','scripts/backends/godot4/physics-drop-through-bridge.gd','scripts/backends/godot4/physics-drop-through-helper.gd','scripts/backends/godot4/physics-drop-through-port.gd','engine/script-authoring.mjs','engine/godot-character-contact-events-script.mjs','engine/godot-project-event-audio-script.mjs','engine/project-physics2d-trace.mjs','engine/project-runtime-events.mjs','engine/scene-physics2d.mjs','engine/backend-capabilities.mjs','scripts/adapters/node-project-build.mjs','scripts/lib/project-build-service.mjs',
+  'scripts/backends/godot4-adapter.mjs','scripts/backends/godot4-physics-one-way.mjs','scripts/backends/godot4/physics-one-way-helper.gd','scripts/backends/godot4-physics-movement-contacts.mjs','scripts/backends/godot4/physics-movement-contacts-helper.gd','scripts/backends/godot4/physics-planar-contacts-runtime.gd','scripts/backends/godot4-physics-character-contacts.mjs','scripts/backends/godot4/physics-character-contacts-helper.gd','scripts/backends/godot4/physics-character-contacts-port.gd','scripts/backends/godot4-physics-character-events.mjs','scripts/backends/godot4/physics-character-events-scene.gd','scripts/backends/godot4/physics-character-events-port.gd','scripts/backends/godot4-physics-character-motion.mjs','scripts/backends/godot4/physics-character-motion-runtime.gd',
+  'web/modules/app-script-create.js','web/modules/app-scene-behavior-links.js','web/modules/app-scene-behaviors.js','web/modules/app-behavior-source.js','web/modules/app-project-build.js','web/modules/app-project-event-observation.js','web/modules/app-project-physics-observation.js','web/modules/app-project-audio-observation.js','web/script-create.css','web/scene-behaviors.css','web/i18n/en.js','web/i18n/ja.js','scripts/tests/helpers/scene-physics2d-character-events-author-fixture.mjs','scripts/tests/helpers/scene-physics2d-character-motion-author-fixture.mjs','scripts/tests/helpers/scene-physics2d-author-fixture.mjs','scripts/tests/helpers/scene-physics2d-drop-through-author-fixture.mjs','scripts/tests/scene-physics2d-drop-through-smoke.mjs'];
+report.sources=Object.fromEntries(await Promise.all(sources.map(async name=>[name,buildHash(await fs.readFile(path.join(appRoot,name)))])));
+report.node={version:process.version,sha256:buildHash(await fs.readFile(process.execPath))};report.tool={sha256:buildHash(await fs.readFile(tool))};
+const cleanups=[],fixture={after:callback=>cleanups.push(callback)};
+const wait=async(check,label,budget=45000)=>{for(const deadline=Date.now()+budget;Date.now()<deadline;){if(await check())return;await delay(100);}throw Error('Timed out: '+label);};
+async function authorTree(root){const hashes={};for(const entry of await fs.readdir(root,{recursive:true,withFileTypes:true})){if(!entry.isFile())continue;const file=path.join(entry.parentPath||entry.path,entry.name),name=path.relative(root,file);if(name==='workspace.json'||/^(documents|metadata|templates|assets)\//.test(name))hashes[name]=buildHash(await fs.readFile(file));}return hashes;}
+let socket,captureFailure;
+try{
+  const temporary=await fs.mkdtemp(path.join(os.tmpdir(),'viento-physics-drop-through-browser-'));cleanups.push(()=>fs.rm(temporary,{recursive:true,force:true,maxRetries:20,retryDelay:100}));
+  const f=await scenePhysics2DDropThroughAuthor(fixture,{consumers:true});
+  const manifestPath='documents/behaviors/demo.json',manifestFile=path.join(f.author,manifestPath);
+  await f.edit(manifestPath,document=>{document.bindings=document.bindings.filter(binding=>binding.bindingId!==f.dropBindingId);});
+  const original=await fs.readFile(manifestFile,'utf8'),beforeBindings=JSON.parse(original).bindings;
+  const physics=await f.read(f.physicsPath),characterBody=physics.bodies.find(body=>body.instanceId===f.instanceId);
+  assert.equal(characterBody.kind,'character');assert.equal(characterBody.characterMotion.kind,'platformer');
+  assert.ok(physics.bodies.find(body=>body.id===f.platformBodyId).oneWay);
+  assert.ok(beforeBindings.some(binding=>binding.bindingId===f.publisherBindingId));
+  assert.ok(!beforeBindings.some(binding=>binding.bindingId===f.dropBindingId));
+  const env={...process.env,VIENTO_APP_ROOT:appRoot,VIENTO_WORKSPACE_ROOT:f.author,VIENTO_GODOT_BIN:tool,VIENTO_EXECUTION_BACKEND:'org.viento.godot4',XDG_CACHE_HOME:path.join(temporary,'cache'),XDG_CONFIG_HOME:path.join(temporary,'config')};delete env.VIENTO_SESSION_TOKEN;delete env.VIENTO_PREFERENCES_PATH;
+  const rebuilt=await runCommand(process.execPath,[path.join(appRoot,'scripts/ops/rebuild.mjs')],{cwd:appRoot,env});assert.equal(rebuilt.code,0,JSON.stringify(rebuilt));
+  const initial=await authorTree(f.author),base=await serve(fixture,appRoot,env);report.fixture={assemblyId:f.assemblyId,physicsPath:f.physicsPath,instanceId:f.instanceId,otherInstanceId:f.otherInstanceId,otherBodyId:f.otherBodyId,platformBodyId:f.platformBodyId,platformInstanceId:f.platformInstanceId,manifestPath,response:characterBody.collisionResponse,hasCharacterMotion:true};
+  const state=async()=>{const response=await fetch(`${base}/api/project-build`).then(value=>value.json());return response.data||response;};
+  const profile=path.join(temporary,'chrome');await fs.mkdir(profile);
+  const chrome=spawn(process.argv[2]||'/usr/bin/google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--no-default-browser-check',`--user-data-dir=${profile}`,'--remote-debugging-port=0','--window-size=1440,1100','about:blank'],{stdio:'ignore'});
+  cleanups.push(async()=>{if(chrome.exitCode===null&&chrome.signalCode===null){const exited=once(chrome,'exit');chrome.kill();await exited;}});
+  let port;await wait(async()=>{try{port=(await fs.readFile(path.join(profile,'DevToolsActivePort'),'utf8')).split('\n')[0];return Boolean(port);}catch{return false;}},'Chrome startup');
+  const pages=await fetch(`http://127.0.0.1:${port}/json/list`).then(value=>value.json());socket=new WebSocket(pages.find(page=>page.type==='page').webSocketDebuggerUrl);await once(socket,'open');
+  const pending=new Map();let sequence=0;
+  const call=(method,params={})=>new Promise((resolve,reject)=>{const id=++sequence;pending.set(id,{resolve,reject});socket.send(JSON.stringify({id,method,params}));});
+  socket.addEventListener('message',event=>{const value=JSON.parse(event.data);if(value.id){const request=pending.get(value.id);pending.delete(value.id);value.error?request?.reject(Error(value.error.message)):request?.resolve(value.result);}else if(value.method==='Runtime.exceptionThrown')report.errors.push(value.params.exceptionDetails);else if(value.method==='Page.javascriptDialogOpening'){report.dialogs.push(value.params.message);void call('Page.handleJavaScriptDialog',{accept:true});}});
+  const evaluate=async expression=>{const value=await call('Runtime.evaluate',{expression:`(async()=>(${expression}))()`,awaitPromise:true,returnByValue:true,userGesture:true});if(value.exceptionDetails)throw Error(JSON.stringify(value.exceptionDetails));return value.result.value;};
+  const click=selector=>evaluate(`document.querySelector(${JSON.stringify(selector)}).click()`),fill=(selector,value,event='change')=>evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.value=${JSON.stringify(value)};e.dispatchEvent(new Event(${JSON.stringify(event)},{bubbles:true}));})()`);
+  const enabled=selector=>wait(()=>evaluate(`document.querySelector(${JSON.stringify(selector)})?.disabled===false`),selector+' enabled');
+  const screenshot=async name=>{const image=await call('Page.captureScreenshot',{format:'png'});await fs.writeFile(path.join(output,name),Buffer.from(image.data,'base64'));report.screenshots.push(name);};
+  const panelVisible=()=>wait(()=>evaluate(`document.querySelector('#projectPhysicsObservationPanel')?.hidden===false`),'physics observation panel');
+  captureFailure=async()=>{await screenshot('failure.png');report.pageFailure=await evaluate(`({text:document.body.innerText,source:document.querySelector('#docSourceEditor')?.value})`);report.serviceFailure=await state();};
+  const perform=async(selector,kind)=>{const previous=(await state()).job?.id;await enabled(selector);await click(selector);let job;await wait(async()=>{job=(await state()).job;return job?.kind===kind&&job.id!==previous&&job.status!=='running';},kind+' completion',90000);report.jobs.push(job);assert.equal(job.status,'succeeded',JSON.stringify(job));return job;};
+  await call('Runtime.enable');await call('Page.enable');report.browser=(await call('Browser.getVersion')).product;await call('Page.navigate',{url:`${base}/web/?mode=edit`});
+  await wait(()=>evaluate(`document.readyState==='complete'&&(await import('/web/modules/app-state.js')).appState.editBackendAvailable&&document.querySelector('#projectBuildBtn')?.hidden===false`),'editor startup');
+  await wait(()=>evaluate(`Array.from(document.querySelectorAll('#docList button[data-path]')).some(button=>button.dataset.path.includes('scenes/demo'))`),'saved scene');
+  const chooseScene=()=>evaluate(`Array.from(document.querySelectorAll('#docList button[data-path]')).find(button=>button.dataset.path.includes('scenes/demo')).click()`);
+  await chooseScene();
+  const value=selector=>evaluate(`document.querySelector(${JSON.stringify(selector)}).value`),text=selector=>evaluate(`document.querySelector(${JSON.stringify(selector)}).textContent`);
+  const scriptPath='documents/scripts/drop-through-authored.txt',scriptFile=path.join(f.author,scriptPath),starter=listScriptStarters().find(item=>item.id==='godot-character-drop-through'),audioStarter=listScriptStarters().find(item=>item.id==='godot-project-event-audio');
+  assert.ok(starter&&audioStarter);
+  const openScript=async()=>{await enabled('#scriptCreateBtn');await click('#scriptCreateBtn');await enabled('#scriptCreateApply');await fill('#scriptCreateStarter',starter.id);await fill('#scriptCreateType','character');await fill('#scriptCreatePath',scriptPath,'input');await enabled('#scriptCreateApply');};
+  await openScript();assert.equal(await text('#scriptCreateSource'),starter.content);assert.deepEqual(await authorTree(f.author),initial);
+  for(const language of ['zh-CN','en','ja']){
+    await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});await evaluate(`(window.__starter=document.querySelector('#scriptCreateStarter'),window.__starter.focus())`);await evaluate(`(await import('/web/i18n/index.js')).applyLanguage(${JSON.stringify(language)})`);
+    assert.equal(await evaluate(`document.querySelector('#scriptCreateStarter')===window.__starter&&document.activeElement===window.__starter`),true);assert.equal(await value('#scriptCreateStarter'),starter.id);assert.equal(await text('#scriptCreateSource'),starter.content);assert.equal(await value('#scriptCreatePath'),scriptPath);
+    await evaluate(`document.querySelector('.script-create-body').scrollTop=0`);
+    const layout=await evaluate(`(()=>{const d=document.querySelector('#scriptCreateDialog'),inside=id=>{const r=document.querySelector(id).getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight};return{noOverflow:d.scrollWidth<=d.clientWidth&&document.documentElement.scrollWidth<=innerWidth,close:inside('#scriptCreateClose'),create:inside('#scriptCreateApply'),cancel:inside('#scriptCreateCancel'),label:document.querySelector('#scriptCreateStarter').selectedOptions[0].textContent};})()`);
+    for(const key of ['noOverflow','close','create','cancel'])assert.equal(layout[key],true,JSON.stringify(layout));report.layout['script-'+language]=layout;await screenshot(`drop-through-starter-${language}-390.png`);
+    await evaluate(`document.querySelector('.script-create-body').scrollTop=document.querySelector('.script-create-body').scrollHeight`);assert.equal(await evaluate(`(()=>{const p=document.querySelector('#scriptCreateSource'),b=document.querySelector('.script-create-body');return p.getBoundingClientRect().bottom<=b.getBoundingClientRect().bottom&&p.scrollWidth<=p.clientWidth;})()`),true);
+    await fill('#scriptCreateStarter',audioStarter.id);assert.equal(await text('#scriptCreateSource'),audioStarter.content);assert.equal(await value('#scriptCreatePath'),scriptPath);await fill('#scriptCreateStarter',starter.id);
+  }
+  await click('#scriptCreateCancel');await wait(()=>evaluate(`!document.querySelector('#scriptCreateDialog').open`),'cancel script');assert.deepEqual(await authorTree(f.author),initial);
+  report.steps.push('The new drop-through and existing event-audio starter options show exact ordinary GDScript source in Chinese, English and Japanese at 390px. Mode, path, focus, source and reachable Create/Cancel controls persist; cancelling writes nothing.');
+  await call('Emulation.clearDeviceMetricsOverride');await evaluate(`(await import('/web/i18n/index.js')).applyLanguage('zh-CN')`);await openScript();await click('#scriptCreateApply');await wait(()=>evaluate(`(await import('/web/modules/app-state.js')).appState.isCreating`),'ordinary TXT draft');assert.equal(await value('#docSourceEditor'),starter.content);assert.deepEqual(await authorTree(f.author),initial);
+  await enabled('#docSaveBtn');await click('#docSaveBtn');await wait(async()=>{try{return await fs.readFile(scriptFile,'utf8')===starter.content;}catch{return false;}},'ordinary TXT Save');
+  await wait(()=>evaluate(`!(await import('/web/modules/app-state.js')).appState.isSaving&&!(await import('/web/modules/app-state.js')).appState.isRebuilding&&!(await import('/web/modules/app-state.js')).appState.editHasUnsavedChanges`),'TXT index refresh');
+  const script=(await readRegistry(f.author)).documents.find(record=>record.sourcePath===scriptPath);assert.ok(script);const afterScript=await authorTree(f.author);
+  assert.deepEqual(Object.keys(afterScript).filter(key=>afterScript[key]!==initial[key]).sort(),[scriptPath,`metadata/documents/${script.id}.json`].sort());for(const[key,hash]of Object.entries(initial))assert.equal(afterScript[key],hash);
+  report.script={objectId:script.id,sourcePath:scriptPath,starterId:starter.id,sha256:buildHash(Buffer.from(starter.content))};report.steps.push('Create opens an ordinary unsaved TXT draft; Save adds exactly its source and registration while preserving all existing author files.');
+  await chooseScene();await enabled('#projectBuildBtn');await click('#projectBuildBtn');await enabled('#projectBuildScene');await fill('#projectBuildScene',f.sceneIds[0]);await enabled('#projectBuildManageBehavior');
+  const openLinks=async()=>{await click('#projectBuildManageBehavior');await enabled('#sceneBehaviorLinksOpen');await fill('#sceneBehaviorLinksSource',script.id);await enabled('#sceneBehaviorLinksCheck');await click('#sceneBehaviorLinksCheck');await enabled('#sceneBehaviorLinksSave');};
+  await openLinks();assert.deepEqual(await authorTree(f.author),afterScript);await click('#sceneBehaviorLinksCancel');await wait(()=>evaluate(`!document.querySelector('#sceneBehaviorLinksDialog').open`),'cancel link');assert.deepEqual(await authorTree(f.author),afterScript);
+  await openLinks();await click('#sceneBehaviorLinksSave');await enabled('#sceneBehaviorLinksOpen');
+  const afterLink=await authorTree(f.author),linkChanges=Object.keys(afterLink).filter(key=>afterLink[key]!==afterScript[key]);assert.equal(linkChanges.length,1);assert.match(linkChanges[0],/^metadata\/documents\/.*\.json$/);assert.equal(await fs.readFile(manifestFile,'utf8'),original);
+  const registration=JSON.parse(await fs.readFile(path.join(f.author,linkChanges[0]),'utf8'));assert.ok(registration.relations.some(relation=>relation.kind==='references'&&relation.targetId===script.id));
+  await click('#sceneBehaviorLinksOpen');await wait(()=>evaluate(`!document.querySelector('#sceneBehaviorLinksDialog').open&&!document.querySelector('#projectBuildDialog').open`),'open behavior source');await enabled('#sceneBehaviorsBtn');
+  await click('#sceneBehaviorsBtn');await enabled('#sceneBehaviorsAddBinding');await click('#sceneBehaviorsAddBinding');const bindingId=await value('#sceneBehaviorsBinding');assert.ok(!beforeBindings.some(binding=>binding.bindingId===bindingId));
+  await fill('#sceneBehaviorsSource',script.id);await fill('#sceneBehaviorsInstance',f.instanceId);
+  for(const[index,[name,parameter]]of [['drop_action',f.dropAction]].entries()){
+    await click('#sceneBehaviorsAddParameter');await fill(`#sceneBehaviorsParam${index}Name`,name,'input');await fill(`#sceneBehaviorsParam${index}Value`,parameter,'input');
+  }
+  await click('#sceneBehaviorsCheck');await enabled('#sceneBehaviorsApply');const candidate=await text('#sceneBehaviorsAfter'),parsed=JSON.parse(candidate),binding=parsed.bindings.find(row=>row.bindingId===bindingId);
+  assert.deepEqual(parsed.bindings.slice(0,-1),beforeBindings);assert.equal(binding.instanceId,f.instanceId);assert.equal(binding.implementation.sourceObjectId,script.id);assert.deepEqual(binding.parameters,{drop_action:f.dropAction});assert.deepEqual(binding.events,[]);assert.deepEqual(await authorTree(f.author),afterLink);
+  for(const language of ['zh-CN','en','ja']){
+    await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});await evaluate(`(window.__parameter=document.querySelector('#sceneBehaviorsParam0Value'),window.__parameter.focus(),window.__parameter.setSelectionRange(1,6))`);await evaluate(`(await import('/web/i18n/index.js')).applyLanguage(${JSON.stringify(language)})`);
+    assert.equal(await evaluate(`document.querySelector('#sceneBehaviorsParam0Value')===window.__parameter&&document.activeElement===window.__parameter&&window.__parameter.selectionStart===1&&window.__parameter.selectionEnd===6`),true);assert.equal(await text('#sceneBehaviorsAfter'),candidate);await evaluate(`document.querySelector('#sceneBehaviorsParam0Value').scrollIntoView({block:'center'})`);
+    const layout=await evaluate(`(()=>{const d=document.querySelector('#sceneBehaviorsDialog'),inside=id=>{const r=document.querySelector(id).getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight};return{noOverflow:d.scrollWidth<=d.clientWidth&&document.documentElement.scrollWidth<=innerWidth,parameter:inside('#sceneBehaviorsParam0Value'),apply:inside('#sceneBehaviorsApply'),cancel:inside('#sceneBehaviorsCancel')};})()`);for(const result of Object.values(layout))assert.equal(result,true,JSON.stringify(layout));report.layout['binding-'+language]=layout;await screenshot(`drop-through-binding-${language}-390.png`);
+  }
+  await call('Emulation.clearDeviceMetricsOverride');await evaluate(`(await import('/web/i18n/index.js')).applyLanguage('zh-CN')`);await click('#sceneBehaviorsApply');await wait(()=>evaluate(`!document.querySelector('#sceneBehaviorsDialog').open`),'binding applied to draft');assert.equal(await value('#docSourceEditor'),candidate);assert.deepEqual(await authorTree(f.author),afterLink);
+  await enabled('#docSaveBtn');await click('#docSaveBtn');await wait(async()=>await fs.readFile(manifestFile,'utf8')===candidate,'ordinary behavior Save');await wait(()=>evaluate(`!(await import('/web/modules/app-state.js')).appState.editHasUnsavedChanges&&!document.querySelector('#sceneBehaviorsBtn').disabled`),'behavior saved');const saved=await authorTree(f.author);assert.deepEqual(saved,{...afterLink,[manifestPath]:buildHash(Buffer.from(candidate))});
+  report.binding={bindingId,sourceId:script.id,instanceId:f.instanceId,parameters:binding.parameters,referenceChanged:linkChanges,behaviorPath:manifestPath};report.steps.push('Manage existing behavior explicitly registers one script reference. The ordinary behavior editor adds one character binding and its sole drop_action text parameter, retains every consumer binding, and preserves focus/review in three languages. Apply changes only a draft; Save changes only the behavior JSON.');
+  await click('#projectBuildBtn');await enabled('#projectBuildScene');await fill('#projectBuildScene',f.assemblyId);await perform('#projectBuildPlan','plan');await perform('#projectBuildGenerate','build');const ran=await perform('#projectBuildHeadless','run');
+  const project=ran.runtime.project,bus=project.events,events=bus.entries.filter(entry=>['physics.jumped','physics.landed'].includes(entry.name));
+  assert.deepEqual(events.map(entry=>entry.name),['physics.landed','physics.landed']);
+  assert.ok(events.every(entry=>entry.value===f.instanceId&&entry.origin.instanceId===f.instanceId&&entry.origin.bindingId===f.publisherBindingId));
+  assert.ok(events.every(entry=>entry.deliveries.every(delivery=>delivery.status==='handled')));
+  const firstLanding=events[0],landing=events[1];assert.ok(landing.deliveries.length>0);
+  const contactEvents=bus.entries.filter(entry=>entry.name.startsWith('physics.contact_'));
+  assert.deepEqual(contactEvents.map(entry=>entry.name),['physics.contact_started','physics.contact_ended']);
+  assert.ok(contactEvents.every(entry=>entry.value===f.platformInstanceId&&entry.origin.bindingId===f.contactBindingId));
+  const observed=validateProjectPhysics2DObservation(ran.physics);assert.equal(observed.samples.length,60);
+  const self=observed.samples.filter(sample=>sample.instanceId===f.instanceId),other=observed.samples.filter(sample=>sample.instanceId===f.otherInstanceId);
+  assert.equal(self.length,30);assert.equal(other.length,30);assert.notEqual(f.instanceId,f.otherInstanceId);
+  assert.equal(self[0].objectId,other[0].objectId);
+  assert.ok(Math.abs(self.at(-1).positionAfter[1]-f.expectedLandingY)<.2,'requested character reaches solid lower floor');
+  assert.ok(Math.abs(other.at(-1).positionAfter[1]-f.expectedSupportY)<.2,'other instance stays on the platform');
+  assert.ok(other.every(sample=>sample.positionAfter[1]<=f.expectedSupportY+.2));
+  assert.ok(self.some(sample=>sample.positionAfter[1]>f.platformTop+10));
+  assert.ok(self.every(sample=>sample.requestedMotion[1]>=0),'drop-through does not synthesize a jump');
+  const wall=self.flatMap(sample=>sample.contacts.map(contact=>({sample,contact}))).filter(row=>row.contact.collider?.bodyId===f.platformBodyId);
+  assert.ok(wall.length>0);assert.ok(wall.every(row=>row.contact.collider.instanceId===f.platformInstanceId));
+  assert.ok(other.at(-1).contacts.some(contact=>contact.collider?.bodyId===f.platformBodyId));
+  assert.ok(!self.at(-1).contacts.some(contact=>contact.collider?.bodyId===f.platformBodyId));
+  report.identities={selfInstanceId:f.instanceId,otherInstanceId:f.otherInstanceId,platformInstanceId:f.platformInstanceId,platformBodyId:f.platformBodyId,sharedActorObjectId:self[0].objectId};
+  report.dropThrough={expectedSupportY:f.expectedSupportY,expectedLandingY:f.expectedLandingY,selfExit:self.at(-1).positionAfter,otherExit:other.at(-1).positionAfter,dropAction:binding.parameters.drop_action};
+  const audio=project.audioCommands.entries.filter(entry=>entry.action==='play'&&entry.origin.bindingId===f.audioBindingId);assert.equal(audio.length,2);assert.ok(audio.every(entry=>entry.track.trackId===f.trackId));
+  const animation=project.animationCommands.entries;assert.ok(animation.some(entry=>entry.command.action==='play'&&entry.state.clipId===f.actionClipId&&firstLanding.deliveries.some(delivery=>delivery.origin.bindingId===entry.origin.bindingId)));report.runtime={events,contactEvents,audioCommands:audio,animationCommands:animation,physics:observed};
+  await wait(()=>evaluate(`document.querySelector('#projectEventTracePanel')?.hidden===false&&document.querySelector('#projectEventTraceSequence')?.dataset.sequence===${JSON.stringify(String(bus.sequence))}`),'final event observer snapshot');await fill('#projectEventTraceSearch','physics.','input');
+  assert.deepEqual(await evaluate(`Array.from(document.querySelectorAll('#projectEventTraceEntries > li:not([hidden])')).map(row=>({name:row.dataset.name,value:JSON.parse(row.querySelector('.project-event-value').textContent)}))`),bus.entries.filter(entry=>entry.name.includes('physics.')).map(entry=>({name:entry.name,value:entry.value})));
+  await evaluate(`document.querySelector('#projectEventTracePanel').scrollIntoView({block:'start'})`);await screenshot('drop-through-events-desktop.png');
+  for(const language of ['zh-CN','en','ja']){
+    await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:false});await evaluate(`(await import('/web/i18n/index.js')).applyLanguage(${JSON.stringify(language)})`);await evaluate(`document.querySelector('#projectEventTracePanel').scrollIntoView({block:'start'})`);
+    const layout=await evaluate(`(()=>{const d=document.querySelector('#projectBuildDialog'),p=document.querySelector('#projectEventTracePanel');return{noOverflow:d.scrollWidth<=d.clientWidth&&p.scrollWidth<=p.clientWidth&&document.documentElement.scrollWidth<=innerWidth,title:document.querySelector('#projectEventTraceTitle').textContent};})()`);assert.equal(layout.noOverflow,true);report.layout['events-'+language]=layout;await screenshot(`drop-through-events-${language}-390.png`);
+  }
+  await call('Emulation.clearDeviceMetricsOverride');await evaluate(`(await import('/web/i18n/index.js')).applyLanguage('zh-CN')`);
+  await wait(()=>evaluate(`document.querySelector('#projectAudioCommandsPanel')?.hidden===false&&document.querySelector('#projectAudioCommandsSequence')?.dataset.sequence===${JSON.stringify(String(project.audioCommands.sequence))}`),'final audio observer snapshot');assert.ok(await evaluate(`Array.from(document.querySelectorAll('#projectAudioCommandsEntries > li')).some(row=>row.dataset.action==='play')`));await evaluate(`document.querySelector('#projectAudioCommandsPanel').scrollIntoView({block:'start'})`);await screenshot('drop-through-audio-receipts.png');
+  report.steps.push('The browser-authored input script drops only its own gravity character through the supporting static one-way platform onto the solid lower floor. A second character with the same actor definition stays on the original platform. Existing publishers report two landings and one platform contact start/end, with no synthesized jump; existing animation and UUID-filtered event audio execute, including two audio play receipts. Event history remains readable at 390px in three languages.');
+  await panelVisible();await fill('#projectPhysicsObservationInstance',f.instanceId);const contactSample=wall[0].sample;await fill('#projectPhysicsObservationSample',String(contactSample.sequence));
+  assert.match(await text('#projectPhysicsObservationContacts'),new RegExp(f.platformBodyId));await click('.project-physics-collider-source');
+  await wait(()=>evaluate(`!document.querySelector('#projectBuildDialog').open&&(await import('/web/modules/app-state.js')).appState.activePath.endsWith(${JSON.stringify(f.physicsPath)})`),'other collider source navigation');
+  const colliderSelection=await evaluate(`(()=>{const e=document.querySelector('#docSourceEditor');return{start:e.selectionStart,end:e.selectionEnd,text:e.value.slice(e.selectionStart,e.selectionEnd)};})()`);assert.match(colliderSelection.text,new RegExp(f.platformBodyId));assert.match(colliderSelection.text,new RegExp(f.platformInstanceId));report.colliderNavigation={source:wall[0].contact.collider.source,selection:colliderSelection};await screenshot('other-collider-source.png');
+  await enabled('#projectBuildBtn');await click('#projectBuildBtn');await wait(()=>evaluate(`document.querySelector('#projectEventTracePanel')?.hidden===false&&document.querySelector('#projectEventTraceSequence')?.dataset.sequence===${JSON.stringify(String(bus.sequence))}`),'events retained after collider navigation');
+  report.steps.push('The native support contact names the one-way platform body and instance. Its source action selects the exact platform declaration, and reopening the workbench retains the event history.');
+  report.navigation=[];
+  for(const[role,entry,label,targetBinding]of [['publisher',landing,'publisher',f.publisherBindingId],['subscriber',firstLanding,'animation-subscriber',f.animationBindingId],['subscriber',landing,'audio-subscriber',f.audioBindingId]]){
+    if(report.navigation.length){await enabled('#projectBuildBtn');await click('#projectBuildBtn');}
+    await fill('#projectEventTraceSearch','physics.','input');const delivery=entry.deliveries.find(item=>item.origin.bindingId===targetBinding),selector=`#projectEventTraceEntries > li[data-sequence="${entry.sequence}"] ${role==='publisher'?'.project-event-publisher-source':`.project-event-delivery[data-subscription-id="${delivery.subscriptionId}"] .project-event-subscriber-source`}`,origin=role==='publisher'?entry.origin:delivery.origin,source=origin.source,sourceText=await fs.readFile(path.join(f.author,source.sourcePath),'utf8');
+    await enabled(selector);await click(selector);await wait(()=>evaluate(`!document.querySelector('#projectBuildDialog').open&&!(await import('/web/modules/app-state.js')).appState.isLoadingSource&&document.querySelector('#docSourceEditor').value===${JSON.stringify(sourceText)}`),label+' source navigation');
+    const selection=await evaluate(`(()=>{const e=document.querySelector('#docSourceEditor');return{start:e.selectionStart,end:e.selectionEnd,text:e.value.slice(e.selectionStart,e.selectionEnd)};})()`);if(source.sourceRange){assert.equal(selection.start,source.sourceRange.start);assert.equal(selection.end,source.sourceRange.end);assert.match(selection.text,new RegExp(origin.bindingId));}report.navigation.push({label,source,selection});await screenshot(`${label}-source.png`);
+  }
+  assert.equal(new Set(report.navigation.map(row=>row.source.propertyPath)).size,3);assert.deepEqual(await authorTree(f.author),saved);assert.deepEqual((await state()).job.runtime,ran.runtime);assert.deepEqual((await state()).job.physics,ran.physics);report.authorSnapshot={before:initial,afterScript,afterLink,afterSave:saved,after:await authorTree(f.author)};
+  report.steps.push('Existing landing publisher, animation subscriber and audio subscriber actions open the frozen behavior document with distinct binding property identities; exact selection is checked when the runtime supplies a source range. Observation and navigation preserve the completed job and every author file after explicit Save.');
+  assert.deepEqual(report.errors,[]);assert.deepEqual(report.dialogs,['今回のスクリプト作成設定を破棄しますか？エディターの内容は変更されません。','丢弃本次脚本选择与审阅？已保存的引用会保留。']);for(const[file,expected]of Object.entries(report.sources))assert.equal(buildHash(await fs.readFile(path.join(appRoot,file))),expected,'Source changed during smoke: '+file);report.sourceSnapshotUnchanged=true;report.ok=true;
+}catch(error){report.ok=false;report.failure=error.stack;console.error(error);process.exitCode=1;try{await captureFailure?.();}catch(failure){report.captureFailure=failure.message;}}
+finally{socket?.close();for(const cleanup of cleanups.reverse())try{await cleanup();}catch(error){report.ok=false;report.errors.push({cleanup:error.message});process.exitCode=1;}report.finishedAt=new Date().toISOString();await fs.writeFile(path.join(output,'browser.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({ok:report.ok,output,steps:report.steps,failure:report.failure},null,2));}

@@ -29,7 +29,7 @@ func _contact_signal(port, name: String) -> bool:
 
 func _ready() -> void:
 	if not has_meta("viento_project") or not has_meta("viento_character_contacts") or not has_meta("viento_instance_id"):
-		_fail("Bind this script to a character with gravity and jumping in a project run.")
+		_fail("Bind this script to a character with supported 2D collision movement in a project run.")
 		return
 	var project = get_meta("viento_project")
 	var contacts = get_meta("viento_character_contacts")

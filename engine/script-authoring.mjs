@@ -1,3 +1,5 @@
+import { GODOT_PLATFORM_ENDPOINT_EVENTS_SCRIPT } from './godot-platform-endpoint-events-script.mjs';
+import { GODOT_CHARACTER_DROP_THROUGH_SCRIPT } from './godot-character-drop-through-script.mjs';
 import { GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT } from './godot-character-contact-events-script.mjs';
 import { GODOT_CHARACTER_MOTION_EVENTS_SCRIPT } from './godot-character-motion-events-script.mjs';
 import { GODOT_PROJECT_EVENT_AUDIO_SCRIPT } from './godot-project-event-audio-script.mjs';
@@ -54,7 +56,11 @@ const starters = freeze([
   { id: 'godot-character-motion-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 角色起跳与落地',
     description: '绑定到已启用重力与跳跃的角色实例，真实起跳、首次接触地面及之后重新着地时发布项目事件，载荷为自身实例编号。可用 jumped_event／landed_event 改名，留空禁用；退出时断开连接。', content: GODOT_CHARACTER_MOTION_EVENTS_SCRIPT },
   { id: 'godot-character-contact-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 角色移动碰撞',
-    description: '绑定到已启用重力与跳跃的角色实例，按每步实际移动碰撞集合发布开始和结束项目事件，载荷为对方实例编号。started_event／ended_event 可改名，留空禁用；other_instance_id 留空接受所有对方，填写时只接受该实例。没有本步碰撞即结束；退出场景只断开连接，不补发结束事件。', content: GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT },
+    description: '绑定到自由平面（stop／slide）或已启用重力与跳跃的角色实例，按每步实际移动碰撞集合发布开始和结束项目事件，载荷为对方实例编号。started_event／ended_event 可改名，留空禁用；other_instance_id 留空接受所有对方，填写时只接受该实例。没有本步碰撞即结束；退出场景只断开连接，不补发结束事件。', content: GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT },
+  { id: 'godot-character-drop-through', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 单向平台下穿',
+    description: '绑定到已启用重力与跳跃的角色实例。按下 drop_action（默认 ui_down）的上升沿，请求在下一个物理步穿过当前支撑自身的静态单向平台；长按不重复，空中或实心地面上的请求不生效。就绪时不触发，退出时停止处理；落地与碰撞反馈沿用现有事件脚本。', content: GODOT_CHARACTER_DROP_THROUGH_SCRIPT },
+  { id: 'godot-platform-endpoint-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 平台端点事件',
+    description: '绑定到已声明水平往返运动的平台实例，抵达起点或终点时发布项目事件，载荷为自身实例编号。origin_event／destination_event 可改名，留空分别禁用；初始位于起点不触发，同一项目步内多次抵达同一端点合并一次。退出时断开连接；发布沿用项目事件的运行预算。', content: GODOT_PLATFORM_ENDPOINT_EVENTS_SCRIPT },
   { id: 'godot-project-event-audio', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 项目事件播放声音',
     description: '订阅 event_name（默认 physics.landed），收到事件后播放 track_id 指定的已声明音轨。instance_id 留空接受全部载荷，填写时只响应相同的实例编号；就绪时不发布事件，退出时取消订阅。', content: GODOT_PROJECT_EVENT_AUDIO_SCRIPT },
   { id: 'godot-project-audio', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 事件声音',

@@ -1,0 +1,29 @@
+✖ real box one-way drop isolates repeated-definition instances and preserves native landing media (16358.976974ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16512.674264
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-drop-through-backends.test.mjs:128:47
+✖ real box one-way drop isolates repeated-definition instances and preserves native landing media (16358.976974ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(mine.every(sample => Math.abs(sample.positionBefore[0] - sample.positionAfter[0]) < .0001))
+  
+      at dropped (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-drop-through-backends.test.mjs:123:26)
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-drop-through-backends.test.mjs:131:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

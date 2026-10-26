@@ -41,7 +41,9 @@ const legacy = {
 
 test('contact starter adds one catalog entry while preserving every previous record and source byte', () => {
   const all = listScriptStarters();
-  assert.equal(all.length, Object.keys(legacy).length + 1);
+  // Drop-through and platform endpoints are separately verified catalog extensions.
+  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), [starterId, 'godot-character-drop-through', 'godot-platform-endpoint-events']);
+  assert.equal(all.length, Object.keys(legacy).length + 3);
   assert.equal(new Set(all.map(row => row.id)).size, all.length);
   for (const [id, expected] of Object.entries(legacy)) assert.equal(hash(JSON.stringify(all.find(row => row.id === id))), expected, id);
   const row = all.find(item => item.id === starterId);

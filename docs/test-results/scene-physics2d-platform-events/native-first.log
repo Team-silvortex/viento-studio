@@ -1,0 +1,67 @@
+✔ new endpoint generation preserves the frozen motion layer and original plan/source map (253.990893ms)
+✖ real one-way endpoints publish ordinary author events and drive media (17355.961351ms)
+✖ real solid-negative endpoints publish ordinary author events and drive media (4251.744387ms)
+✖ real no-characters endpoints publish ordinary author events and drive media (4225.599175ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 1
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26239.652917
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-platform-events-backends.test.mjs:91:68
+✖ real one-way endpoints publish ordinary author events and drive media (17355.961351ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(output.reader.events.some(frame => frame.event === 'animation-command' && frame.bindingId === f.animationBindingId && frame.action === 'select-clip' && frame.clipId === f.actionClipId))
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-platform-events-backends.test.mjs:96:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-physics2d-platform-events-backends.test.mjs:91:68
+✖ real solid-negative endpoints publish ordinary author events and drive media (4251.744387ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(output.reader.events.some(frame => frame.event === 'animation-command' && frame.bindingId === f.animationBindingId && frame.action === 'select-clip' && frame.clipId === f.actionClipId))
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-platform-events-backends.test.mjs:96:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-physics2d-platform-events-backends.test.mjs:91:68
+✖ real no-characters endpoints publish ordinary author events and drive media (4225.599175ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(output.reader.events.some(frame => frame.event === 'animation-command' && frame.bindingId === f.animationBindingId && frame.action === 'select-clip' && frame.clipId === f.actionClipId))
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-platform-events-backends.test.mjs:96:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

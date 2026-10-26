@@ -72,7 +72,7 @@ const tableFor = version => {
 
 test('protocol10 declares trigger capability and inventory11 without changing recognized author bytes', async t => {
   const f = await fixture(t), inventory = JSON.parse(f.generated.files.get('assembly.json'));
-  assert.equal(f.generated.backend.protocolVersion, 10); assert.equal(f.generated.backend.version, '0.19.0');
+  assert.equal(f.generated.backend.protocolVersion, 10); assert.equal(f.generated.backend.version, '0.32.0');
   assert.equal(inventory.schemaVersion, 11); assert.ok(f.generated.backend.capabilities.includes('project.animation-state-entry-triggers'));
   assert.equal(f.generated.files.get(`behaviors/${f.scriptId}.gd`).toString(), f.content);
   assert.ok(f.generated.files.has('project-animation-state-trigger-runtime.gd'));

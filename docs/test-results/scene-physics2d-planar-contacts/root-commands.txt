@@ -1,0 +1,30 @@
+Working directory: /home/chiharukiryu/cdev/viento-studio
+Shell: bash, login=false
+Node: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node (24.21.0)
+PATH includes that Node directory and /home/chiharukiryu/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin.
+
+npm run check -- --app-only
+# Python supervisor records actual UTC start/end and exit status.
+# First run: full-check-first.log / full-check-first-exit.json
+# 8219 total, 7763 pass, 5 fail, 451 conditional skips, 0 cancelled.
+# The failures were historical 0.23 output/inventory assertions using the current
+# 0.28 generator. Their suites now use the explicit historical generator and
+# the same backend registry throughout build/inspection/run. Assertions remain.
+# Final full rerun: full-check.log / full-check-exit.json.
+# 8219 total, 7768 pass, 451 conditional skips, 0 fail/cancelled, exit 0.
+
+python3 /tmp/viento-planar-contacts/append-atlas.py
+# Appends only this topic's function, implementations, bindings, cells, evidence,
+# workflow and dependencies; preserves every previous axis/cell/evidence prefix.
+python3 /tmp/viento-planar-contacts/preservation.py
+# Checks 12112 protected files against 12137 initial files, all old reports,
+# version/lock files, Rust, historical physics source, final 36 browser hashes;
+# independently matches the existing 745603-byte WASM digest.
+# Full 17 legacy starter JSON records were also hashed with Node crypto and
+# compared to scene-physics2d-contact-events/legacy-starter-hashes.json.
+
+node scripts/function-atlas.mjs --write --refresh-sources
+node scripts/function-atlas.mjs --check > docs/test-results/scene-physics2d-planar-contacts/atlas-check.log 2>&1
+python3 docs/test-results/docs-refresh-2026-10-25/check-links.py --output docs/test-results/scene-physics2d-planar-contacts/links.json
+git diff --check
+# Final source refresh follows completed reports and final doc updates.

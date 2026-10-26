@@ -1,3 +1,4 @@
+import { godotExecutionBudgetAssemblyScripts } from '../backends/godot4-execution-budget.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -37,7 +38,7 @@ test('one project inventories every scene and shares resource copies without rew
   assert.equal(f.generated.files.get(`behaviors/${source.objectId}.gd`).toString(), source.content);
   assert.equal(buildHash(f.generated.files.get(`behaviors/${source.objectId}.gd`)), source.sourceRevision.slice(7));
   assert.equal(f.generated.backend.protocolVersion, 4);
-  assert.deepEqual((await godotAssemblyScripts(f.directory)).sort(), [...f.generated.files.keys()].filter(name => name.endsWith('.gd')).sort());
+  assert.deepEqual((await godotExecutionBudgetAssemblyScripts(f.directory)).sort(), [...f.generated.files.keys()].filter(name => name.endsWith('.gd')).sort());
   const changed = structuredClone(plan), script = changed.scenes[0].behaviors.sources[0];
   script.content += '\n# literal res://runtime.gd and res://scene.json must stay unchanged\n';
   script.sourceRevision = `sha256:${buildHash(script.content)}`;

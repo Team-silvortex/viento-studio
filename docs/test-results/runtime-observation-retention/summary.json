@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "scope": "runtime-observation-retention-first-slice",
+  "native": {
+    "tests": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "log": "native-test.log",
+    "tool": {
+      "executable": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "node": "v24.21.0",
+    "cases": [
+      {
+        "test": "live",
+        "status": "succeeded",
+        "lifecycle": {
+          "started": true,
+          "completed": true
+        },
+        "eventRetention": {
+          "limit": 128,
+          "total": 305,
+          "retained": 128,
+          "dropped": 177,
+          "firstSequence": 178,
+          "lastSequence": 305
+        },
+        "observedEventCount": 305,
+        "stdoutBytes": 144475
+      },
+      {
+        "test": "smoke",
+        "status": "succeeded",
+        "lifecycle": {
+          "started": true,
+          "completed": true
+        },
+        "eventRetention": {
+          "limit": 4096,
+          "total": 305,
+          "retained": 305,
+          "dropped": 0,
+          "firstSequence": 1,
+          "lastSequence": 305
+        },
+        "observedEventCount": 305,
+        "stdoutBytes": 144475
+      },
+      {
+        "test": "failure",
+        "status": "failed",
+        "lifecycle": {
+          "started": true,
+          "completed": false
+        },
+        "eventRetention": {
+          "limit": 128,
+          "total": 304,
+          "retained": 128,
+          "dropped": 176,
+          "firstSequence": 177,
+          "lastSequence": 304
+        },
+        "observedEventCount": 304,
+        "stdoutBytes": 144250
+      },
+      {
+        "test": "cancelled",
+        "status": "cancelled",
+        "lifecycle": {
+          "started": true,
+          "completed": false
+        },
+        "eventRetention": {
+          "limit": 128,
+          "total": 303,
+          "retained": 128,
+          "dropped": 175,
+          "firstSequence": 176,
+          "lastSequence": 303
+        },
+        "observedEventCount": 303,
+        "stdoutBytes": 143822
+      },
+      {
+        "test": "observer-failure",
+        "status": "failed",
+        "lifecycle": {
+          "started": true,
+          "completed": false
+        },
+        "eventRetention": {
+          "limit": 128,
+          "total": 303,
+          "retained": 128,
+          "dropped": 175,
+          "firstSequence": 176,
+          "lastSequence": 303
+        },
+        "observedEventCount": 303,
+        "stdoutBytes": 143822
+      }
+    ]
+  },
+  "readerQuery": {
+    "scope": "reader-and-query-regression",
+    "log": "reader-query-test.log",
+    "originalReaderRunNotReused": true,
+    "sourceSha256": {
+      "engine/project-runtime-events.mjs": "d3469f337098da222a5f7fde65aa71417ba3fc593359daf3dbbe3012d00242b0",
+      "engine/project-runtime-query.mjs": "62494cb578c4afe92c7fe8fcd1bf80ac49b313d00101186c1fe7770a4519ad56",
+      "scripts/adapters/node-project-build.mjs": "0a474f12fa94ddd36e4c87b37458249f925fc62d0eab11e00ac4150981a5bc1f",
+      "scripts/tests/project-runtime-retention.test.mjs": "1e9cf94cb6c0607b0e6c591be2d0bae7d5b6a470600b17c16872336c809eebf6",
+      "scripts/tests/project-runtime-query.test.mjs": "30aa91a9146b6f0d831c5ffe143902808cbfa27844ca80974a2b290c29fed7e3"
+    },
+    "tail": [
+      "ℹ tests 99",
+      "ℹ suites 0",
+      "ℹ pass 99",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 632.86549"
+    ]
+  },
+  "boundaries": [
+    "No execution budget removed or increased.",
+    "No process-output retention limit changed.",
+    "No semantic ledger pruning or schema changes.",
+    "Native coverage is headless project runs, not a graphical session or distribution package.",
+    "Earlier unsaved 92-test run is not represented by reader-query-test.log."
+  ],
+  "evidenceSha256": {
+    "smoke.stdout.log": "d7d0739f83e39f4536119634cc28a9c00bff12dad1f24998859a86bbf69fdd7f",
+    "smoke.author.txt": "390998cd03f2b4ea9dc7dc04c12ef6fe6929779c51c07b6248ac8b5af6b4bed2",
+    "observer-failure.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reader-query-summary.json": "89a6644d1efb128d9d8c67186af423f212f350bb93f6595bc60e61fc8c36e46b",
+    "live.author.txt": "390998cd03f2b4ea9dc7dc04c12ef6fe6929779c51c07b6248ac8b5af6b4bed2",
+    "cancelled.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "failure.stdout.log": "4d7930f0f17972d2044b2b4a04d8770a51a031da6db66a96ab5ed6077f060171",
+    "cancelled.json": "68c95aa58485d0b4b90319c815de2d3e68f9c683a80744a5f8844e278e8d1169",
+    "live.stdout.log": "d69a881674ec42a1a273bb90c1a96e60a43ee6ef9a2e21a62c114ebffe49554e",
+    "observer-failure.stdout.log": "61440748f0118edf679d205ec4c3eea77e74e7d134d596c77d7030a2247e190c",
+    "cancelled.stdout.log": "61440748f0118edf679d205ec4c3eea77e74e7d134d596c77d7030a2247e190c",
+    "cancelled.author.txt": "1c51ff7d7e2614d6ff9caa3d6cd517e47f6fcae33ba72135c72a2c89577e403d",
+    "native-test.log": "27443aa04a57f5d3bc3d5f5c251647b950c67c085a919a4ffa30d27e74a7bdba",
+    "smoke.json": "ff93b4adc6584c34839c42f1a683dcc4f6127493dde025830242648300237f85",
+    "observer-failure.json": "eebc6ec447e15e5abb47f1ae2ea73f234940bd01b9a8a9e72eb9b387eae35aa8",
+    "smoke.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "host-targeted-verification.json": "c26cf5ee85db5456fd8306d2c80f05bb5bd74cd3585954f8be3b7a73d3339d6e",
+    "live.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "failure.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "live.json": "1592f19771c59e9d00ea281179ba0d2f980a4e09c0f4782917f61a798b714ed1",
+    "failure.author.txt": "0ced45ce9a7a30975e033a5a6a558026e5bbdc3a9f0c2457417ba3c1d866f9ef",
+    "observer-failure.author.txt": "1c51ff7d7e2614d6ff9caa3d6cd517e47f6fcae33ba72135c72a2c89577e403d",
+    "failure.json": "e2f1a2d309cdbb3a713da1fdde0cf6833e6f3179732032efc6f7f71eeffa9eaf",
+    "reader-query-test.log": "b2d2f5e305d7430bc88fad1da61ec28bc3ca085801851572bc3c27dd4b62b650"
+  }
+}

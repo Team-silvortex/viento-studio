@@ -190,7 +190,7 @@ export async function readFrozenProjectBuild(buildDirectory, { backendId, backen
 export async function runProjectBuild({ buildDirectory, godot, tool = godot, backendId,
   backendRegistry = createExecutionBackendRegistry(), signal, timeoutMs = 30000, headless = true, smoke = true, capture = false,
   controlProgram: inputControlProgram, runtimeCase: inputRuntimeCase, runtimeCaseSceneId, expectedBuildId, expectedSnapshotId, onProgress = () => {} }) {
-  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram, runtimeCase, physicsReader;
+  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram, runtimeCase, physicsReader, runtimeReader;
   // Callback consumers receive detached DTOs and cannot alter admitted input,
   // events, samples or the session record while a process is running.
   const publish = event => onProgress(JSON.parse(JSON.stringify(event)));
@@ -291,7 +291,9 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     }
     if (!record.diagnostics.length) {
       const physicsExpected = smoke === true && plan.kind === 'project' && build.backend.capabilities.includes('physics.observe2d');
-      const runtime = adapter.createEventReader(plan, { smoke, mode: operation, protocolVersion: build.backend.protocolVersion,
+      const runtime = runtimeReader = adapter.createEventReader(plan, { smoke, mode: operation, protocolVersion: build.backend.protocolVersion,
+        // Interactive sessions keep a raw tail; finite verification retains its original complete record.
+        ...(plan.kind === 'project' && !smoke ? { retainedEvents: 128 } : {}),
         capabilities: build.backend.capabilities, onPhysicsSnapshot: snapshot => {
           if (!physicsExpected) return;
           const view = validateProjectPhysics2DObservation(snapshot);
@@ -332,7 +334,9 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       runtime.finish();
       record.phases.push({ phase: 'run', ...result }); record.events = runtime.events;
       record.diagnostics.push(...executionPhaseDiagnostics(adapter, result, plan), ...runtime.diagnostics, ...(trace?.diagnostics || []));
-      if (!record.diagnostics.length && (!runtime.events.some(item => item.event === 'ready') || smoke && !runtime.events.some(item => item.event === 'finished'))) {
+      const lifecycle = runtime.lifecycle || { started: runtime.events.some(item => item.event === 'ready'),
+        completed: runtime.events.some(item => item.event === 'finished') };
+      if (!record.diagnostics.length && (!lifecycle.started || smoke && !lifecycle.completed)) {
         record.diagnostics.push(diagnostic(buildError('runtime_protocol_incomplete', 'Runtime exited without the required lifecycle events.'), plan));
       }
     }
@@ -355,6 +359,12 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     }
     if (record?.physics && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.physics.phase = 'incomplete';
     if (sessionDirectory) await fs.rm(path.join(sessionDirectory, 'project'), { recursive: true, force: true });
+  }
+  if (runtimeReader) {
+    // Keep accepted evidence after normal completion, cancellation or a thrown observer.
+    record.events = runtimeReader.events;
+    if (runtimeReader.retention) record.eventRetention = { ...runtimeReader.retention };
+    if (runtimeReader.lifecycle) record.lifecycle = { ...runtimeReader.lifecycle };
   }
   if (observation) record.runtime = observation.snapshot();
   if (runtimeCase && record.verification) {

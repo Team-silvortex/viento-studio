@@ -1,23 +1,30 @@
 # 执行后端中间层
 
-本页描述 **纯能力与计划契约 → 可信宿主编排 → 具体执行适配器** 的职责。当前源码版本为 **0.2.4**，Linux 宿主提供 Godot 4、Bevy 数据与 Bevy Rust 三个受限适配器。应用版本、安装与平台范围见[状态页](STATUS.md)，历次接入前言见[历史归档](history/backend-middleware-2026-10-25.md)。
+本页描述 **纯能力与计划契约 → 可信宿主编排 → 具体执行适配器** 的职责。当前源码版本为 **0.2.5**，Linux 宿主提供 Godot 4、Bevy 数据与 Bevy Rust 三个受限适配器。应用版本、安装与平台范围见[状态页](STATUS.md)，历次接入前言见[历史归档](history/backend-middleware-2026-10-25.md)。
 
 | 阅读目的 | 入口 |
 | --- | --- |
 | 了解模块归属和信任边界 | [三层职责](#三层职责) · [架构](ARCHITECTURE.md) |
 | 确认某后端能接收哪些计划 | [描述符与能力检查](#描述符与能力检查) · [二维后端映射](FUNCTION_MAPPING_2D.md#当前后端映射) |
 | 核对冻结构建和重复运行 | [宿主适配与冻结回放](#宿主适配与冻结回放) · [工具身份检查](#工具身份检查) · [工程管理](BACKEND_PROJECTS.md) |
+| 核对执行次数、队列和记录的不同限制 | [有限执行预算](#有限执行预算) · [运行留存](PROJECT_BUILD.md#运行记录与留存) |
 | 观察与验收 | [运行对象](#运行对象观察) · [运行验收用例](#运行验收用例) · [验证边界](#验证与下一步) |
 | 接入具体领域 | [声音](#声音领域的具体适配) · [逐实例动画](#逐实例动画的后端准入) · [物理](SCENE_PHYSICS2D.md#构建交付与边界) |
 | 使用现有构建入口 | [工作台](PROJECT_BUILD.md#编辑器工作台) · [Bevy 工具配置](BEVY_BACKEND.md) · [当前项目协议选择](PROJECT_BUILD.md#当前项目协议选择) |
 
-当前 Godot 执行适配器为 **0.27.0**，Bevy 数据为 **0.3.0**，Bevy Rust 为 **0.2.0**。这些是适配器身份，不能与应用版本、作者格式或按内容选择的生成器版本混用。空间图偏移／尺寸编辑沿用原后端契约；角色停止／滑动响应另以 `physics.character-slide2d` 显式声明，只有实际滑动才要求该能力。原生 Nuislang／ns-nova／yalivia、离屏渲染、内嵌运行视口、GPU 计算与通用插件 ABI 尚未接入或冻结。
+0.2.5 源码中的 Godot 执行适配器为 **0.32.0**，Bevy 数据为 **0.3.0**，Bevy Rust 为 **0.2.0**。这些是适配器身份，不能与应用版本、作者格式或按内容选择的生成器版本混用。空间图偏移／尺寸编辑沿用原后端契约；角色停止／滑动响应另以 `physics.character-slide2d` 显式声明，只有实际滑动才要求该能力。原生 Nuislang／ns-nova／yalivia、离屏渲染、内嵌运行视口、GPU 计算与通用插件 ABI 尚未接入或冻结。
 
 新运动构建另声明 `physics.character-events2d`：行为局部版本1端口只报告真实起跳／落地，作者脚本选择普通项目事件名。它是后端可选脚本能力，不通过文本扫描推断计划需求，也不改变项目运行协议；旧运动生成层0.24.0及作者schema 3保持。
 
 静态单向平台以作者 schema 4 的 `oneWay: { margin: 1 }` 显式声明，只限静态矩形，margin 为 1–64。计划仅在字段实际存在时要求 `physics.one-way-platform2d`；Godot 0.26.0 包装设置原生形状的单向碰撞与容差，方向固定朝上。关闭后保留 schema 4，缺省继续普通碰撞；旧响应、运动和事件生成层保持，项目与观察协议不变。两个 Bevy 通道不支持该执行能力。
 
-Godot0.27.0运动构建另提供可选 `physics.character-contacts2d`：每个运动角色行为独立观察本步实际移动碰撞集合的开始／结束，对方身份来自原生节点匹配。原有求解只执行一次，原文／wire／trace保持；普通作者脚本决定是否发布项目事件以及如何筛选载荷。没有运动角色时继续旧生成分支，语义与限制见[移动碰撞事件](SCENE_PHYSICS2D.md#用角色移动碰撞驱动项目事件)。
+0.28.0生成层提供可选 `physics.character-contacts2d`：自由平面停止／滑动和重力角色的行为独立观察本步实际移动碰撞集合的开始／结束，对方身份来自原生节点匹配。唯一收集器复用原求解结果，原文／wire／trace保持；普通作者脚本决定是否发布项目事件以及如何筛选载荷。没有角色时继续旧生成分支；0.2.4所用0.27.0仍保留历史生成与检查，语义见[移动碰撞事件](SCENE_PHYSICS2D.md#用角色移动碰撞驱动项目事件)。
+
+0.30.0新增声明驱动的水平往返平台 `physics.platform-motion2d`：Rust校验schema 5，前端只编辑并审阅原文；后端轨迹控制器以既有项目时钟前进，将实际支撑平台的位移合入重力角色原运动请求。输入、轨迹、原生求解与观察分离；垂直和旋转运动尚未声明，见[水平往返平台](SCENE_PHYSICS2D.md#配置水平往返平台)。
+
+0.29.0仅在同场景同时声明重力角色与静态单向平台时添加可选 `physics.character-drop-through2d`。下穿端口只接收自身实例请求，独立控制器管理队列、支撑与例外；共享移动钩子不增加求解。作者输入动作由普通TXT处理，原生例外与几何恢复由后端负责，具体生命周期见[主动下穿](SCENE_PHYSICS2D.md#从单向平台主动下穿)。
+
+0.31.0另提供可选 `physics.platform-events2d`，行为局部端口通知本步抵达过的轨迹端点。每端每步最多一次，作者TXT决定是否发布原有项目事件；端口、轨迹与事件预算独立，见[平台端点事件](SCENE_PHYSICS2D.md#用平台端点事件驱动动画与声音)。
 
 ## 三层职责
 
@@ -43,6 +50,7 @@ flowchart LR
 | 层次 | 实现 | 负责内容 |
 | --- | --- | --- |
 | 可移植有限控制 | `engine/scene-control-program.mjs` | 检查全局／按实例方向布尔程序、冻结实例目标、时长及输入行／联合对象预算；按行准入有限步骤样本与生命周期，不模拟移动、不携引擎句柄 |
+| 可移植执行预算 | `engine/project-execution-budget.mjs` | 提供七维有限策略和原子成本预留；不持有业务序号、队列、原始记录或重置时钟 |
 | 可移植运行观察 | `engine/scene-runtime-query.mjs` | 从已验证 plan 1／2／3 建立独立身份／来源视图，消费准入事件并按实例／定义筛选；不启动进程、不查询引擎反射 |
 | 可移植能力契约 | `engine/backend-capabilities.mjs` | 校验纯数据描述符，分别检查执行操作、平台、计划版本和功能需求；不接触文件、进程、DOM 或具体引擎 |
 | 可移植工具状态 | `engine/execution-tool-status.mjs` | 严格校验身份检查状态及版本／摘要；不携工具路径、进程输出或执行权限 |
@@ -59,7 +67,7 @@ flowchart LR
 
 | 字段 | 约定 |
 | --- | --- |
-| `id`、`label`、`version` | 点分命名空间身份、展示名称、无前导零的 `x.y.z` 适配器版本；当前 Godot 为 `org.viento.godot4`、`Godot 4`、`0.27.0` |
+| `id`、`label`、`version` | 点分命名空间身份、展示名称、无前导零的 `x.y.z` 适配器版本；当前 Godot 为 `org.viento.godot4`、`Godot 4`、`0.32.0` |
 | `platforms` | 无重复的平台标识数组；当前 Godot 适配器仅声明 `linux` |
 | `plans` | `{ kind, schemaVersion, runtimeProtocolVersion }` 数组，按 kind／schema 唯一；Scene2D plan 1／2／3 分别绑定 runtime 1／2／3，3 用于显式行为。当前 Godot 另声明 project plan 1／项目运行协议 11，实际生成分支按[项目内容选择](PROJECT_BUILD.md#当前项目协议选择)；每次访问嵌套对应子场景原协议。通用描述符接受 project runtime 1–11，由具体适配器显式声明 |
 | `capabilities` | 无重复的功能标识数组；Godot 包括二维场景、输入、图片、GDScript 行为、有限控制回放、声音、项目事件／状态／切换、动画与二维物理。完整标识以[Godot 描述符](../scripts/backends/godot4-adapter.mjs)为准，各声明仍须与冻结计划同时核验 |
@@ -122,6 +130,28 @@ Bevy Rust 的适配器版本为 `0.2.0`，仅支持无图 plan／runtime 3，声
 
 [有限用例](RUNTIME_CASES.md)在通用宿主组合控制回放与可移植评判，沿用已有执行操作和适配器接口。纯层检查有限方向程序、plan 2 实例目标、步骤与显式位置容差／状态预期；宿主从严格 trace 取得样本并给出真实运行完成事实。会话追加独立 `verification`，不把断言失败写成引擎进程失败，取消／协议错误不补造通过证据。HTTP 输入只含纯数据且在任务分配前准入；Godot／Bevy 仍各自执行控制程序，无新引擎接口、计划、trace 或设备句柄。
 
+## 有限执行预算
+
+`engine/project-execution-budget.mjs` 是项目执行准入的纯中间层。`PROJECT_EXECUTION_BUDGET_POLICY` 固定下列会话累计上限；Godot 0.32.0 新生成项目与可移植事件总线消费同一策略，作者格式和项目运行协议 4／7／10／11 保持。这里的版本标识属于新的生成包装；下文及历史文档中的原生成层仍保留。
+
+| 成本维度 | 会话累计上限 |
+| --- | --- |
+| `eventRegistrations` | 1024 次事件订阅注册 |
+| `eventPublishes` | 128 次事件发布 |
+| `eventDeliveries` | 1024 个预留接收者 |
+| `eventBytes` | 524288 字节事件名与载荷成本 |
+| `stateMutations` | 1024 次共享状态变更 |
+| `audioRequests` | 256 次声音控制请求 |
+| `animationRequests` | 256 次动画控制请求 |
+
+一次 `reserve(costs)` 先检查完整成本向量，再同时扣除各维额度。未知维度、负数、非安全整数或任何一维超额都会整体拒绝，不污染其他计数。端口先完成身份、输入与当前容量检查，再提交成本；重复订阅、同值写入和删除不存在的状态键不计费。`engine/project-event-bus.mjs` 使用这一机制预留发布次数、接收者数和字节，事件序号、令牌归属及投递队列仍由事件总线管理。
+
+Godot 协调器持有一个共用预算实例，事件、共享状态、音频和动画分别使用自身维度。`sequence`／`state_revision` 记录业务事实，动画 `reserved_count` 保留单调的请求身份，不能拿它们当可重置额度。活动订阅数、待处理队列长度和待处理字节数属于当前占用，仍由各服务独立限制；原始日志留存、业务记录与运行生命周期也分别管理。
+
+`godot4-execution-budget.mjs` 仅转换已知生成模板，将策略保存为可审阅的 `execution-budget.json`，连同 `project-execution-budget.gd` 和转换后的脚本纳入库存与摘要。检查按同一策略重建并核对这些字节；删除 sidecar 或 helper 后仍留有预算接线会被拒绝。无预算层痕迹的历史产物继续走原库存分支，历史生成器和运行模板源文件保持冻结；作者脚本、资源与登记不迁移。宿主仍须通过原有工具、适配器和冻结产物身份检查，库存兼容不授予绕过指纹的资格。
+
+本轮仍采用**会话累计有限策略**。flush、deferred 调用和场景切换不会补充额度，没有逐帧重置或 continuous 执行开关；动画完成通知等其他限制保持各自原契约。验证范围与证据见[有限执行预算记录](test-results/runtime-execution-budget/README.md)。
+
 ## 运行对象观察
 
 [运行对象](RUNTIME_OBJECTS.md)沿用 adapter contract version 1 与已有运行协议。通用执行器在工具与产物全部校验后建立观察，先发布分离的 runtime 视图，再通知原始事件；任务服务的完整视图独立于 128 条事件环，终态会话保留最后有效观察。来源仅取冻结声明，状态事件不更新坐标；取消或错误不补造 finished 样本。
@@ -153,7 +183,7 @@ Godot 生成工程把音频映射至独立资源路径，普通图像及行为�
 
 作者动画schema4显式保存 `playbackScope`，对应animation-plan 3。只有instance范围要求 `animation.instances2d`；能力检查同时复核冻结声明，移除标记不能绕过准入。场景plan及project:1父格式保持，旧动画计划1／2继续读取。单独scene2d生成遇到instance会报告 `build_animation_instances_require_project`，必须从项目组装构建；只读保存态预览不受这个生成限制。Bevy两个通道均未声明此运行能力。
 
-当前协议、`assembly.json` 和生成器版本统一见[项目协议选择表](PROJECT_BUILD.md#当前项目协议选择)。当前 Godot 执行适配器为0.27.0；无物理项目的生成器按内容分别使用0.11.0／0.16.0／0.19.0／0.20.0。新物理构建在原schema 1包装0.21.0或schema 2响应包装0.22.0之上使用观察包装0.23.0，保留所选项目协议，独立声明 `physics.observe2d`。显式 schema 3 角色运动由独立0.24.0层增加运动参数与脚本，再套0.25.0作者事件包装；无运动字段的schema 3只转换给旧生成分支，不授予新能力。只有实际滑动角色要求 `physics.character-slide2d`，实际运动角色另要求 `physics.character-motion2d`；schema 4 的实际单向平台要求 `physics.one-way-platform2d` 并增加0.26.0包装。旧生成器源码与直接调用产物保持，新适配器生成的物理工程增加观察脚本和库存。
+当前协议、`assembly.json` 和生成器版本统一见[项目协议选择表](PROJECT_BUILD.md#当前项目协议选择)。当前 Godot 执行适配器为0.30.0；无物理项目的生成器按内容分别使用0.11.0／0.16.0／0.19.0／0.20.0。新物理构建在原schema 1包装0.21.0或schema 2响应包装0.22.0之上使用观察包装0.23.0，保留所选项目协议，独立声明 `physics.observe2d`。显式 schema 3 角色运动由独立0.24.0层增加运动参数与脚本，再套0.25.0作者事件包装；无运动字段的schema 3不授予角色重力／跳跃及其运动事件能力；若仍声明character，当前0.28.0会提供独立的 `physics.character-contacts2d` 移动碰撞端口。只有实际滑动角色要求 `physics.character-slide2d`，实际运动角色另要求 `physics.character-motion2d`；schema 4 的实际单向平台要求 `physics.one-way-platform2d` 并增加0.26.0包装。旧生成器源码与直接调用产物保持，新适配器生成的物理工程增加观察脚本和库存。
 
 适配器描述符声明可接收协议11，实际生成分支仍按计划选择；文档4的scene范围本身不会启用协议11。清单12精确列出每个场景的范围、合法动画实例及所需运行文件，实例列表与冻结轨道相符。状态表作者v1–v5源文件不迁移，包装和target层仅进入生成工程；源与运行资源纳入生成器／适配器指纹、库存复核和ZIP交付。
 

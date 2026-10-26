@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-25**。源码版本 **0.2.4**；审查基线为提交 `eb1e08984fad04722c54f682c1ceba9b531f8fe0`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-26**。源码版本 **0.2.5**；审查基线为提交 `6d9560ff4861fdcfd918a7618c6557344f8d1d03`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -20,14 +20,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 169 |
-| 实现单元（含规划占位） | 511 |
-| 已审查实现关系 | 721 |
-| 显式评分单元 | 2884 |
-| 语义依赖边 | 497 |
-| 工作流切片 | 133 |
+| 功能 | 175 |
+| 实现单元（含规划占位） | 527 |
+| 已审查实现关系 | 737 |
+| 显式评分单元 | 2948 |
+| 语义依赖边 | 530 |
+| 工作流切片 | 139 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 2634 |
+| 引用并校验指纹的文件 | 2712 |
 
 ## 评分锚点
 
@@ -234,6 +234,12 @@
 | [角色脚本与参数→起跳/落地→作者项目事件→动画/声音→来源回看→工程交付](function-atlas.html#workflow=scene-physics2d-character-events) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [二维角色重力与着地跳跃](#scene.physics2d_character_motion) → [角色起跳与落地驱动作者事件、动画和声音](#runtime.physics2d_character_events) → [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [行为驱动项目音轨播放停止与实际命令观察](#runtime.project_audio_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | Godot项目角色事件；首次接地算landed，参数显式保存；非持续接触/平台策略或Bevy物理。 |
 | [静态平台参数→保真保存→原生上穿/承重→落地事件/媒体→观察回源→工程交付](function-atlas.html#workflow=scene-physics2d-one-way) | [二维角色重力与着地跳跃](#scene.physics2d_character_motion) → [静态单向平台创作、运行与交付](#scene.physics2d_one_way) → [角色起跳与落地驱动作者事件、动画和声音](#runtime.physics2d_character_events) → [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [行为驱动项目音轨播放停止与实际命令观察](#runtime.project_audio_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | Godot静态矩形顶部单向；首次创建保持旧格式，启用显式保存；不含运动平台或主动下穿。 |
 | [角色移动碰撞→对方实例事件→动画/声音→来源回看→工程交付](function-atlas.html#workflow=scene-physics2d-contact-events) | [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [二维角色重力与着地跳跃](#scene.physics2d_character_motion) → [角色移动碰撞集合边沿驱动作者事件与媒体](#runtime.physics2d_character_contacts) → [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [行为驱动项目音轨播放停止与实际命令观察](#runtime.project_audio_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | 仅运动角色本步阻挡集合边沿；载荷为对方UUID而非自身；无几何分离或自由平面角色端口。 |
+| [自由平面角色→碰墙/停步/再碰墙→项目事件与媒体→来源→工程交付](function-atlas.html#workflow=scene-physics2d-planar-contacts) | [二维角色碰撞停止／滑动的显式作者配置与原生执行](#scene.physics2d_response) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [自由平面角色移动碰撞事件与统一采集](#runtime.physics2d_planar_contacts) → [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [行为驱动项目音轨播放停止与实际命令观察](#runtime.project_audio_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | stop/slide的每步移动集合边沿；不等于持续几何接触。0\.28开发工作树，旧motor/0\.27证据保留。 |
+| [单向平台与重力角色→普通下穿脚本→按键下落→落地媒体→来源与工程交付](function-atlas.html#workflow=scene-physics2d-drop-through) | [静态单向平台创作、运行与交付](#scene.physics2d_one_way) → [二维角色重力与着地跳跃](#scene.physics2d_character_motion) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [逐角色单向平台下穿与作者输入脚本](#runtime.physics2d_drop_through) → [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [行为驱动项目音轨播放停止与实际命令观察](#runtime.project_audio_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | 仅自身角色；true为排队，实际原生步复核。几何分离恢复，无固定时间保证。0\.29开发工作树；旧0\.28及更早证据保持。 |
+| [平台声明→原文审阅保存→水平往返承载/脱离→观察与来源→工程交付](function-atlas.html#workflow=scene-physics2d-platform-motion) | [独立二维物理声明、原生碰撞与传感器事件](#scene.physics2d) → [已有二维物理声明的独立编辑与草稿交接](#authoring.physics2d) → [二维角色重力与着地跳跃](#scene.physics2d_character_motion) → [水平往返平台与重力角色承载](#runtime.physics2d_platform_motion) → [二维角色物理步与移动碰撞的有界只读观察](#runtime.physics2d_observation) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | 水平静态矩形、重力角色的上步真实返回支撑；不等于持续几何接触或全向运动平台。0\.30开发工作树，旧1–4作者与旧运行协议保持。 |
+| [平台轨迹→端点脚本→作者事件/媒体→来源→工程交付](function-atlas.html#workflow=scene-physics2d-platform-events) | [水平往返平台与重力角色承载](#runtime.physics2d_platform_motion) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [平台端点原生通知与作者事件媒体接线](#runtime.physics2d_platform_events) → [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [行为驱动项目音轨播放停止与实际命令观察](#runtime.project_audio_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | 每端每步合并通知；原生通知可连续，但普通项目事件仍有累计128等预算，不承诺长时间循环游戏。0\.31开发工作树，旧\.30证据保持。 |
+| [全量准入→独立生命周期/语义→原始尾部→留存说明→结果核对](function-atlas.html#workflow=runtime-observation-retention) | [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [项目内运行时场景切换与逐访问观察](#runtime.project_scene_switching) → [原始观察留存、独立生命周期与工作台截断说明](#runtime.observation_retention) → [运行对象、位置采样与冻结来源只读观察](#runtime.objects_inspection) → [同场景有序验收组与宿主批次调度](#runtime.case_suites) | 本次未登记额外缺口（不表示完成） | 原始留存首段已完成；不是解除累计执行限额或无限运行，原生与浏览器合成任务分别验证。 |
+| [规则→容量校验→原子预留→运行→拒绝与历史兼容核对](function-atlas.html#workflow=runtime-execution-budget) | [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [项目内运行时场景切换与逐访问观察](#runtime.project_scene_switching) → [共用有限执行预算与原子准入](#runtime.execution_budget) → [原始观察留存、独立生命周期与工作台截断说明](#runtime.observation_retention) | 本次未登记额外缺口（不表示完成） | 已完成有限预算解耦；持续运行的调度周期与语义留存仍待新契约。 |
 
 ## 功能与实现切片
 
@@ -3325,6 +3331,106 @@
 平台：Linux本地HTTP/Chrome三语、Godot4.7.2实际运行及工程ZIP、0.2.4源码收录，实测完成于升版前工作树；安装仍0.2.0，未验证Android或Bevy物理。边界：仅characterMotion角色，每行为独立viento_character_contacts协议1；started/ended传递body_id与instance_id两个字符串，不暴露引擎对象。；本步实际移动碰撞集合相对上一步做差集，同一对去重、ended先于started；无本步碰撞即结束，不等于几何分离、传感器进出或着地。；Godot0.27包装保留旧15份源码与每个runtime.gd字节，super移动一次后读取已有contacts；未知原生碰撞体不认领作者身份。；旧运动回调后步末派发；端口限制本次访问，关闭清集合和连接，不合成ended；正式玩法不依赖256条smoke trace预算。；普通TXT模板按other_instance_id筛选，项目事件载荷是对方实例UUID，自身身份由原有发布来源提供；17项旧模板保持。；不改Rust、作者schema、项目wire或观察协议；可选后端脚本能力不通过扫描作者源码推断需求。无运动角色工程继续旧生成分支。。
 
 下一步：进一步独立接入自由平面角色、持续接触或移动平台，按真实玩法检验语义。
+
+<a id="runtime.physics2d_planar_contacts"></a>
+### 自由平面角色移动碰撞事件与统一采集
+
+`runtime.physics2d_planar_contacts` · 场景与执行 · 源码交付
+
+入口：普通角色碰撞体stop/slide→普通接触脚本与参数→保存构建→碰墙/停步/再碰墙→作者事件与媒体→来源和工程交付
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 执行后端 | **跨运动策略的碰撞集合采集与平面运行桥**；复用既有运动返回值，采集/访问端口与作者事件分离，工程库存严格校验。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-planar-contacts/README\.md](../docs/test-results/scene-physics2d-planar-contacts/README.md)、[docs/test-results/scene-physics2d-planar-contacts/native-full\.json](../docs/test-results/scene-physics2d-planar-contacts/native-full.json)、[docs/test-results/scene-physics2d-planar-contacts/native-final/validation\.json](../docs/test-results/scene-physics2d-planar-contacts/native-final/validation.json) |
+| 交互与渲染 | **自由平面碰撞脚本的既有创作工作流**；复用普通脚本、三参数、审阅保存、事件/媒体与来源观察；扩展适用说明。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-planar-contacts/README\.md](../docs/test-results/scene-physics2d-planar-contacts/README.md)、[docs/test-results/scene-physics2d-planar-contacts/native-full\.json](../docs/test-results/scene-physics2d-planar-contacts/native-full.json)、[docs/test-results/scene-physics2d-planar-contacts/native-final/validation\.json](../docs/test-results/scene-physics2d-planar-contacts/native-final/validation.json) |
+
+平台：Linux本地HTTP/Chrome中英日390px、Godot4.7.2真实无头及窗口、独立工程ZIP、0.2.5源码收录，实测完成于升版前工作树；安装仍0.2.0，Android/Bevy物理未接入，未验扬声器输出。边界：Godot0.28将原physics.character-contacts2d协议1扩至自由平面stop/slide，静态体与传感器无端口；无需启用characterMotion。；从冻结0.26及更早生成层组合唯一采集器；纯平面live薄层与原smoke路径调用同一既有移动方法，mixed保留原motor和jumped/landed顺序，不叠加0.27采集器。；读取本步已有原生碰撞集合；零motion时即使仍贴墙也可ended，不是几何分离或持续接触查询。同一设定多实例按稳定实例编号区分，不认领未知碰撞体metadata。；复用现有普通TXT起始脚本、三个参数、项目事件标量载荷及媒体订阅；旧TXT无需改写，新构建才接入；编辑与观察沿原权限链。；访问端口在_ready前注入；步末先结束后开始，回调重入受守护，关闭清集合和连接不合成ended。交互不读取有界trace。；新manifest/helper/原文库存随工程交付；保存的平面原脚本按冻结模板精确校验，篡改/链接/遗漏/孤儿和混合旧新采集器拒绝。旧生成器、作者schema、Rust/WASM及项目wire不变。。
+
+下一步：继续独立定义持续接触、运动平台或动态刚体，并按真实玩法补完二维工作流。
+
+<a id="runtime.physics2d_drop_through"></a>
+### 逐角色单向平台下穿与作者输入脚本
+
+`runtime.physics2d_drop_through` · 场景与执行 · 源码交付
+
+入口：普通下穿脚本→绑定重力角色→按键请求→原生落下→原有落地/接触事件和媒体→来源与工程交付
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 工程定义与格式 | **下穿作者脚本与输入边沿约定**；普通作者源只发出自己实例的请求，输入边沿与后端物理求解分开。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-drop-through/README\.md](../docs/test-results/scene-physics2d-drop-through/README.md)、[docs/test-results/scene-physics2d-drop-through/native-final\.json](../docs/test-results/scene-physics2d-drop-through/native-final.json)、[docs/test-results/scene-physics2d-drop-through/browser-first/browser\.json](../docs/test-results/scene-physics2d-drop-through/browser-first/browser.json) |
+| 执行后端 | **逐角色下穿控制器、访问端口与交付库存**；复用既有移动钩子，只管理自身例外与访问生命周期，冻结旧层并验证新库存。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-drop-through/README\.md](../docs/test-results/scene-physics2d-drop-through/README.md)、[docs/test-results/scene-physics2d-drop-through/native-final\.json](../docs/test-results/scene-physics2d-drop-through/native-final.json)、[docs/test-results/scene-physics2d-drop-through/browser-first/browser\.json](../docs/test-results/scene-physics2d-drop-through/browser-first/browser.json) |
+| 交互与渲染 | **下穿脚本普通创建与行为参数工作流**；复用现有创建、关联、参数审阅保存和来源导航，新增三语入口。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-drop-through/README\.md](../docs/test-results/scene-physics2d-drop-through/README.md)、[docs/test-results/scene-physics2d-drop-through/native-final\.json](../docs/test-results/scene-physics2d-drop-through/native-final.json)、[docs/test-results/scene-physics2d-drop-through/browser-first/browser\.json](../docs/test-results/scene-physics2d-drop-through/browser-first/browser.json) |
+
+平台：Linux本地HTTP/Chrome中英日390px、Godot4.7.2真实无头及窗口、独立工程ZIP、0.2.5源码收录，实测完成于升版前工作树；安装仍0.2.0，Android/Bevy物理未接入，未验扬声器输出。边界：Godot0.29可选physics.character-drop-through2d只在同场景有重力角色与静态单向平台时提供；行为局部viento_character_drop协议1，仅protocol_version与request_drop，无新信号。；request_drop返回true仅表示排队；下一原生步复核角色着地与本次实际返回的向上支撑，未知或普通返回支撑拒绝；不补做几何接触全集查询。；只为自己绑定实例与对应平台添加临时碰撞例外，并清除着地避免同一步跳跃抢先；不传送、设速度、增加求解或更改平台和其他角色。；实际碰撞形状的全局包围盒脱离平台及margin后恢复；低重力、厚平台或紧邻下层障碍可延后恢复，无强制计时；关闭清自己持有的例外，旧访问端口失效。；新增普通TXT模板，唯一drop_action默认ui_down；上升沿请求，启动时已按住或持续按住不会反复请求，false不是报错。原18项模板保持。；薄桥委托冻结0.28统一采集层和独立下穿控制器；无适用场景沿旧生成结果，新增交付清单及原文库存严格验证，作者schema、Rust/WASM与项目wire保持。。
+
+下一步：继续推进持续接触、移动平台或动态刚体，并以真实二维玩法验证接口边界。
+
+<a id="runtime.physics2d_platform_motion"></a>
+### 水平往返平台与重力角色承载
+
+`runtime.physics2d_platform_motion` · 场景与执行 · 源码交付
+
+入口：静态矩形平台→水平往返参数→检查审阅/应用草稿/保存→构建运行→承载/脱离→观察来源与工程交付
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 共享 Rust 核心 | **Rust平台规则、保真编辑与中立能力计划**；Rust独立领域规则，JS只承接原文编辑和可移植计划，渲染不决定轨迹语义。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-platform-motion/README\.md](../docs/test-results/scene-physics2d-platform-motion/README.md)、[docs/test-results/scene-physics2d-platform-motion/core-summary\.json](../docs/test-results/scene-physics2d-platform-motion/core-summary.json)、[docs/test-results/scene-physics2d-platform-motion/native-final\.json](../docs/test-results/scene-physics2d-platform-motion/native-final.json) |
+| 执行后端 | **水平轨迹与承载控制器、旧层组合和严格交付库存**；薄接线复用唯一求解；控制器只提供本步携带位移，库存保留冻结旧验证链。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-platform-motion/README\.md](../docs/test-results/scene-physics2d-platform-motion/README.md)、[docs/test-results/scene-physics2d-platform-motion/core-summary\.json](../docs/test-results/scene-physics2d-platform-motion/core-summary.json)、[docs/test-results/scene-physics2d-platform-motion/native-final\.json](../docs/test-results/scene-physics2d-platform-motion/native-final.json) |
+| 交互与渲染 | **现有物理编辑器平台参数与三语审阅保存**；复用检查、完整原文审阅、应用草稿和普通保存；空间编辑保持运动字段。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-platform-motion/README\.md](../docs/test-results/scene-physics2d-platform-motion/README.md)、[docs/test-results/scene-physics2d-platform-motion/core-summary\.json](../docs/test-results/scene-physics2d-platform-motion/core-summary.json)、[docs/test-results/scene-physics2d-platform-motion/native-final\.json](../docs/test-results/scene-physics2d-platform-motion/native-final.json) |
+
+平台：Linux本地HTTP/Chrome中英日390px、Godot4.7.2真实无头及窗口、独立工程ZIP、0.2.5源码收录，实测完成于升版前工作树；安装仍0.2.0，Android/Bevy物理未验收。边界：schema5可选platformMotion仅静态矩形；水平有符号终点偏移与速度独立于角色输入，可与oneWay组合。显式开启升级，关闭不降级，旧作者文件不自动迁移。；Rust独立inspectPlatformMotion规则与WASM能力标记；JS保真编辑/规划声明physics.platform-motion2d，Bevy明确拒绝。无运动schema5仅投影计划副本为4供冻结旧生成器使用。；Godot0.30独立控制器沿本次访问起点做恒速水平往返；只承载上次真实向上碰撞支撑且仍着地的characterMotion角色。携带位移合入原有单次求解与观察requestedMotion，不增加碰撞查询。；实际起跳和下穿复核执行当步停止承载；角色仍受原有墙体阻挡。支撑来自返回碰撞事实而非完整接触查询；普通平面角色不承载。；平台自身按轨迹移动，不自动避障；无竖直、旋转、多路径、侧推、挤压或动态刚体惯性。关闭或退出访问停止控制，重入从保存起点重新计时。；新清单、参数、helper及旧运行原文进入严格库存，继续完整旧生成检查。运行及观察协议保持，19项既有脚本起始内容保持；空间图只显示起点几何。。
+
+下一步：按真实二维玩法继续定义持续接触、垂直/旋转运动、动态刚体与发行交付；各项分别验证。
+
+<a id="runtime.physics2d_platform_events"></a>
+### 平台端点原生通知与作者事件媒体接线
+
+`runtime.physics2d_platform_events` · 场景与执行 · 源码交付
+
+入口：普通端点TXT→保存登记→绑定移动平台与配置事件名→端点通知→项目事件/动画/声音→来源与工程交付
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 工程定义与格式 | **普通平台端点起始脚本与实例身份发布**；原生事实与作者项目事件分开，普通脚本决定发布名与本平台标量身份。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-platform-events/README\.md](../docs/test-results/scene-physics2d-platform-events/README.md)、[docs/test-results/scene-physics2d-platform-events/native-final\.json](../docs/test-results/scene-physics2d-platform-events/native-final.json)、[docs/test-results/scene-physics2d-platform-events/browser-verification\.json](../docs/test-results/scene-physics2d-platform-events/browser-verification.json) |
+| 执行后端 | **轨迹端点采集、访问局部端口与严格交付库存**；复用原轨迹与求解，在步末合并派发；保留历史源码与完整库存校验。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-platform-events/README\.md](../docs/test-results/scene-physics2d-platform-events/README.md)、[docs/test-results/scene-physics2d-platform-events/native-final\.json](../docs/test-results/scene-physics2d-platform-events/native-final.json)、[docs/test-results/scene-physics2d-platform-events/browser-verification\.json](../docs/test-results/scene-physics2d-platform-events/browser-verification.json) |
+| 交互与渲染 | **平台端点脚本普通创建、绑定与三语来源流程**；沿现有脚本和行为编辑入口，不在界面模拟端点或隐式建立跨区关系。 | 4 / 4 / 3 / 2 | [docs/test-results/scene-physics2d-platform-events/README\.md](../docs/test-results/scene-physics2d-platform-events/README.md)、[docs/test-results/scene-physics2d-platform-events/native-final\.json](../docs/test-results/scene-physics2d-platform-events/native-final.json)、[docs/test-results/scene-physics2d-platform-events/browser-verification\.json](../docs/test-results/scene-physics2d-platform-events/browser-verification.json) |
+
+平台：Linux本地HTTP/Chrome中英日390px、Godot4.7.2实际无头及窗口、独立工程ZIP、0.2.5源码收录，实测完成于升版前工作树；本机安装仍0.2.0，Android/Bevy物理未验收。边界：Godot0.31可选physics.platform-events2d；仅移动平台实例的行为获得访问局部viento_platform_events协议1，origin_reached/destination_reached均零参数。；通知表示本项目步内曾抵达该端点，每端每步至多一次；初始origin与零时长不通知，区间为(before,after]，多圈合并且两端按首次抵达顺序。不是逐次穿越计数。；独立薄桥复用冻结0.30唯一轨迹推进；原碰撞、角色事实与媒体更新结束后派发。闭访、切换请求、失效行为停止后续回调，重入没有旧通知。；普通TXT以origin_event/destination_event选择项目事件名，空名各自禁用；载荷为本平台UUID，来源复用冻结行为绑定。旧19项起始内容保持。；原生通知不依赖有界trace和累计项目发布预算；转为项目事件后仍受128次等旧预算，超限明确失败。长期交互执行与观察留存解耦尚待单独实施。；新场景入口、wrapper/helper/port/清单严格库存；原.30源和生成原文保留并继续完整旧校验。作者schema、Rust/WASM、项目运行及观察协议保持。。
+
+下一步：优先独立设计持续交互模式的执行预算与观察留存，再补更丰富的二维物理玩法。
+
+<a id="runtime.observation_retention"></a>
+### 原始观察留存、独立生命周期与工作台截断说明
+
+`runtime.observation_retention` · 场景与执行 · 源码交付
+
+入口：运行→全部准入帧与语义观察→有界原始保留窗→累计/保留/移出提示→成功/失败/取消证据
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **原始帧窗口与独立生命周期**；准入、回调和完整语义账本与原始数组分离。 | 4 / 4 / 4 / 2 | [docs/test-results/runtime-observation-retention/README\.md](../docs/test-results/runtime-observation-retention/README.md)、[docs/test-results/runtime-observation-retention/summary\.json](../docs/test-results/runtime-observation-retention/summary.json)、[docs/test-results/runtime-observation-retention/browser/browser-verification\.json](../docs/test-results/runtime-observation-retention/browser/browser-verification.json) |
+| 本机服务与适配 | **交互会话保留与任务留存统计**；宿主选择原始窗口并保存范围；失败/取消与suite计数保持真实。 | 4 / 4 / 4 / 2 | [docs/test-results/runtime-observation-retention/README\.md](../docs/test-results/runtime-observation-retention/README.md)、[docs/test-results/runtime-observation-retention/summary\.json](../docs/test-results/runtime-observation-retention/summary.json)、[docs/test-results/runtime-observation-retention/browser/browser-verification\.json](../docs/test-results/runtime-observation-retention/browser/browser-verification.json) |
+| 交互与渲染 | **三语日志及原始摘要留存说明**；展示已校验留存数量，保留语言/焦点与任务状态，不模拟执行完整性。 | 4 / 4 / 4 / 2 | [docs/test-results/runtime-observation-retention/README\.md](../docs/test-results/runtime-observation-retention/README.md)、[docs/test-results/runtime-observation-retention/summary\.json](../docs/test-results/runtime-observation-retention/summary.json)、[docs/test-results/runtime-observation-retention/browser/browser-verification\.json](../docs/test-results/runtime-observation-retention/browser/browser-verification.json) |
+
+平台：Linux本地HTTP/Chrome中英日390px；真实Godot4.7.2无头项目及取消/失败、0.2.5源码收录，实测完成于升版前工作树，本机安装仍0.2.0；浏览器使用合成任务，原生另行验收。边界：reader累计准入计数与原始数组分开；retainedEvents默认4096，可选1–4096，旧4096准入硬预算不变。每次push和onEvent收到全部新准入帧。；独立lifecycle记录合法ready/finished，不以已轮出的原始数组推断；交互项目session尾部128，有限smoke完整记录保持。；语义观察内部原始缓存为1；事件/媒体/状态/访问/因果完整账本仍独立，未裁剪其历史或改变来源。；工作台日志32768 UTF16单元且不从代理对中间截断；raw events128条。公开total/retained/dropped，suite清空与取消后排空继续计数。；三语显示原始摘要与业务项目事件账本的区别；旧宿主缺metadata不捏造完整性。；事件128、state1024、audio/animation256、visit64、输出及时间等执行上限仍有效。本切片不是持续运行协议，也未修改Godot生成器。。
+
+下一步：按单次调度设计执行预算和当前队列容量，再设计带因果锚点的语义账本留存及新的持续运行合同。
+
+<a id="runtime.execution_budget"></a>
+### 共用有限执行预算与原子准入
+
+`runtime.execution_budget` · 场景与执行 · 源码交付
+
+入口：输入/当前容量校验→整组额度准入→独立身份递增→队列执行与观察
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **可移植七维准入与事件账本**；规则与序号和观察无关，事件语义验证在其他检查通过后原子预留。 | 4 / 4 / 4 / 2 | [docs/test-results/runtime-execution-budget/README\.md](../docs/test-results/runtime-execution-budget/README.md)、[docs/test-results/runtime-execution-budget/candidate-native-final\.log](../docs/test-results/runtime-execution-budget/candidate-native-final.log)、[docs/test-results/runtime-execution-budget/candidate-native-final-exit\.json](../docs/test-results/runtime-execution-budget/candidate-native-final-exit.json) |
+| 执行后端 | **Godot有限预算生成层和严格库存**；生成阶段投影同一策略，宿主校验库存，Godot各服务独立管理身份和当前容量。 | 4 / 4 / 4 / 2 | [docs/test-results/runtime-execution-budget/README\.md](../docs/test-results/runtime-execution-budget/README.md)、[docs/test-results/runtime-execution-budget/candidate-native-final\.log](../docs/test-results/runtime-execution-budget/candidate-native-final.log)、[docs/test-results/runtime-execution-budget/candidate-native-final-exit\.json](../docs/test-results/runtime-execution-budget/candidate-native-final-exit.json) |
+
+平台：可移植JavaScript策略与真实Godot4.7.2无头项目、0.2.5源码收录，实测完成于升版前工作树；新项目生成层和执行适配器0.32.0，安装仍0.2.0。边界：七维累计策略同源：事件注册/发布/接收者/字节、状态修改、音频请求、动画请求。多维一次准入，失败不部分消耗。；业务sequence/revision与动画reserved_count保持单调；当前队列/活跃订阅/存储容量独立，重复订阅和无变化状态不计费。；新生成project严格转换已知模板并登记helper和policy库存；旧源冻结，历史工程走原校验。；项目协议4/7/10/11、assembly schema和作者格式不变；未新增生产协议帧或作者预算API。；仍为会话累计预算；没有reset、持续运行profile、语义账本裁剪或解除时长/输出/4096准入上限。；Bevy、Rust/WASM和界面此次没有新预算适配。。
+
+下一步：设计由宿主控制的调度周期及跨周期因果归属，先完成语义留存契约再开放连续运行。
 
 ## 旧功能链路映射
 

@@ -10,7 +10,7 @@ import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
 import { generateEditableGodotAnimationStateScript } from '../../engine/animation-state-script-source.mjs';
 import { DEFAULT_ANIMATION_STATE_TABLE } from '../../engine/godot-animation-state-script.mjs';
 import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.mjs';
-import { godotAssemblyScripts } from '../backends/godot4-project.mjs';
+import { generateGodotAssemblyProject, godotAssemblyScripts } from '../backends/godot4-project.mjs';
 
 const tool = process.env.VIENTO_GODOT_BIN;
 const real = { skip: !tool ? 'Set VIENTO_GODOT_BIN for real scoped animation playback' : false, timeout: 120000 };
@@ -100,10 +100,10 @@ async function build(t, body, options = {}) {
 const run = f => runProjectBuild({ buildDirectory: f.output, tool, headless: true, smoke: false });
 const selectBoth = f => `\tp.select_animation_clip("${f.clipIds[0][1]}")\n\tp.play_animation()\n\tq.select_animation_clip("${f.clipIds[0][1]}")\n\tq.play_animation()\n\thost.flush_requests()`;
 
-test('schema4 emits protocol11 and inventory12 with independent target modules and unchanged old templates', async t => {
+test('historical schema4 generation emits protocol11 and inventory12 with independent target modules and unchanged old templates', async t => {
   const f = await author(t); await f.script('checkpoint', 'extends Node\n');
   const captured = await captureBuildSnapshot(f.author, f.assemblyId); assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics));
-  const generated = await adapter.generate(captured.plan);
+  const generated = await generateGodotAssemblyProject(captured.plan);
   assert.equal(generated.backend.protocolVersion, 11); assert.equal(generated.backend.version, '0.20.0');
   assert.equal(JSON.parse(generated.files.get('assembly.json')).schemaVersion, 12);
   for (const name of ['project-animation-target-runtime.gd', 'project-animation-targets.gd', 'project-animation-target-completions.gd']) assert.ok(generated.files.has(name), name);

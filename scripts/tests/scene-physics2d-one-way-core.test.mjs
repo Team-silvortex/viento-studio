@@ -79,7 +79,7 @@ test('all four physics schemas remain separate operation domains and only schema
     assert.throws(() => inspectScenePhysics2D(value), invalid);
   }
   for (const dispatch of dispatches.slice(0, 3)) assert.throws(() => dispatch(request(document())), { errorCode: 'studio_core_request_invalid' });
-  const value = document(); value.schemaVersion = 5; assert.throws(() => inspectScenePhysics2D(value), invalid);
+  const value = document(); value.schemaVersion = 6; assert.throws(() => inspectScenePhysics2D(value), invalid);
   assert.equal(getStudioCoreMetadata().ready, true);
 });
 

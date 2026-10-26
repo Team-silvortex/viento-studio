@@ -122,3 +122,37 @@ test('skipped tokens cannot be captured again while already queued recipients ca
   const forged = bus.snapshot(); forged.entries[1].deliveries[0].status = 'handled';
   assert.throws(() => validateProjectEventSnapshot(forged), { errorCode: 'runtime_project_invalid' });
 });
+
+
+test('queue and token ownership rejection do not spend later event, byte or delivery allowance', () => {
+  const bus = createProjectEventBus();
+  for (let sequence = 1; sequence <= 64; sequence++) bus.publish(publish(sequence, true, [1]));
+  // All candidate recipients would reserve 64 deliveries. None may be charged
+  // or assigned ownership when the live queue has no space.
+  const candidateIds = Array.from({ length: 64 }, (_, index) => index + 2);
+  for (let attempt = 0; attempt < 17; attempt++) refuse(bus, 'publish', publish(65, true, candidateIds, 'rejected'));
+  for (let sequence = 1; sequence <= 64; sequence++) bus.deliver(ack(sequence, 1));
+  const admittedIds = Array.from({ length: 64 }, (_, index) => index + 1);
+  for (let sequence = 65; sequence <= 79; sequence++) {
+    bus.publish(publish(sequence, true, admittedIds));
+    for (const subscriptionId of admittedIds) bus.deliver(ack(sequence, subscriptionId));
+  }
+  assert.equal(bus.snapshot().entries.reduce((sum, entry) => sum + entry.deliveries.length, 0), 1024);
+  refuse(bus, 'publish', publish(80, true, [1]));
+  for (let sequence = 80; sequence <= 128; sequence++) bus.publish(publish(sequence, true, []));
+  assert.equal(bus.sequence, 128);
+  assert.equal(bus.pendingCount, 0);
+  assert.deepEqual(validateProjectEventSnapshot(bus.snapshot()), bus.snapshot());
+});
+
+test('failed ownership checks do not charge the exact remaining event payload budget', () => {
+  const bus = createProjectEventBus();
+  bus.publish(publish(1, 'x'.repeat(4095), [1], 'A')); bus.deliver(ack(1, 1));
+  for (let attempt = 0; attempt < 128; attempt++) refuse(bus, 'publish', publish(2, 'x'.repeat(4096), [1], 'B'));
+  for (let sequence = 2; sequence <= 127; sequence++) bus.publish(publish(sequence, 'x'.repeat(4096), [], 'A'));
+  // 4096 + 126 * 4097 + 3970 exactly reaches the finite payload allowance.
+  bus.publish(publish(128, 'x'.repeat(3969), [], 'A'));
+  assert.equal(bus.snapshot().entries.reduce((sum, entry) => sum + entry.name.length + entry.value.length, 0), 524288);
+  assert.equal(bus.sequence, 128);
+  assert.deepEqual(validateProjectEventSnapshot(bus.snapshot()), bus.snapshot());
+});

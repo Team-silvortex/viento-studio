@@ -1,0 +1,383 @@
+TAP version 13
+# Subtest: historical assembly generation exposes protocol 7 and bounded generated scripts; ordinary projects retain protocol 4 files
+ok 1 - historical assembly generation exposes protocol 7 and bounded generated scripts; ordinary projects retain protocol 4 files
+  ---
+  duration_ms: 162.094739
+  type: 'test'
+  ...
+# Subtest: real ready commands execute FIFO after initialization and return scene-clock transport states
+ok 2 - real ready commands execute FIFO after initialization and return scene-clock transport states
+  ---
+  duration_ms: 11976.976228
+  type: 'test'
+  ...
+# Subtest: real paused transport freezes sprite and transform while scene clock advances; seek end and play restart
+ok 3 - real paused transport freezes sprite and transform while scene clock advances; seek end and play restart
+  ---
+  duration_ms: 11938.409357
+  type: 'test'
+  ...
+# Subtest: real loop seek to duration wraps to zero and stays paused
+ok 4 - real loop seek to duration wraps to zero and stays paused
+  ---
+  duration_ms: 11980.332283
+  type: 'test'
+  ...
+# Subtest: real boolean seek fails without an execution receipt
+ok 5 - real boolean seek fails without an execution receipt
+  ---
+  duration_ms: 11965.595382
+  type: 'test'
+  ...
+# Subtest: real negative seek fails without an execution receipt
+ok 6 - real negative seek fails without an execution receipt
+  ---
+  duration_ms: 12474.539993
+  type: 'test'
+  ...
+# Subtest: real out of range seek fails without an execution receipt
+ok 7 - real out of range seek fails without an execution receipt
+  ---
+  duration_ms: 12630.470869
+  type: 'test'
+  ...
+# Subtest: real NaN seek fails without an execution receipt
+ok 8 - real NaN seek fails without an execution receipt
+  ---
+  duration_ms: 12582.10528
+  type: 'test'
+  ...
+# Subtest: real infinity seek fails without an execution receipt
+ok 9 - real infinity seek fails without an execution receipt
+  ---
+  duration_ms: 12618.231265
+  type: 'test'
+  ...
+# Subtest: real failing event callback drops an accepted animation command
+ok 10 - real failing event callback drops an accepted animation command
+  ---
+  duration_ms: 12538.593063
+  type: 'test'
+  ...
+# Subtest: real 65th pending request rejects the entire unexecuted animation queue
+ok 11 - real 65th pending request rejects the entire unexecuted animation queue
+  ---
+  duration_ms: 12632.603982
+  type: 'test'
+  ...
+# Subtest: real old visit ports fail while A to B to A resets autoplay and fresh queue ownership
+ok 12 - real old visit ports fail while A to B to A resets autoplay and fresh queue ownership
+  ---
+  duration_ms: 12672.946624
+  type: 'test'
+  ...
+# Subtest: real non-animation member rejects control instead of touching another scene animation
+ok 13 - real non-animation member rejects control instead of touching another scene animation
+  ---
+  duration_ms: 12428.955119
+  type: 'test'
+  ...
+# Subtest: animation project ZIP includes its controller and runs after author and build removal
+ok 14 - animation project ZIP includes its controller and runs after author and build removal
+  ---
+  duration_ms: 18336.077556
+  type: 'test'
+  ...
+# Subtest: real natural completion is independent of shutdown and play restarts from zero
+ok 15 - real natural completion is independent of shutdown and play restarts from zero
+  ---
+  duration_ms: 12524.773861
+  type: 'test'
+  ...
+# Subtest: real request accepted before animation becomes unavailable has no execution receipt
+ok 16 - real request accepted before animation becomes unavailable has no execution receipt
+  ---
+  duration_ms: 12718.899622
+  type: 'test'
+  ...
+# Subtest: real 257th session request preserves the first 256 completed command receipts
+ok 17 - real 257th session request preserves the first 256 completed command receipts
+  ---
+  duration_ms: 13645.978427
+  type: 'test'
+  ...
+# Subtest: real event commands execute after event delivery and audio but before scene exit
+ok 18 - real event commands execute after event delivery and audio but before scene exit
+  ---
+  duration_ms: 12569.941877
+  type: 'test'
+  ...
+# Subtest: real frame sampling recomputes from command anchors at a rounding-sensitive endpoint
+ok 19 - real frame sampling recomputes from command anchors at a rounding-sensitive endpoint
+  ---
+  duration_ms: 12584.148539
+  type: 'test'
+  ...
+# Subtest: real ready and event requests reach declared scene audio before A→B→A and reset on a new run
+ok 20 - real ready and event requests reach declared scene audio before A→B→A and reset on a new run
+  ---
+  duration_ms: 14349.935268
+  type: 'test'
+  ...
+# Subtest: the unchanged built-in audio starter compiles with a declared track and safely guards a single scene
+ok 21 - the unchanged built-in audio starter compiles with a declared track and safely guards a single scene
+  ---
+  duration_ms: 18711.922589
+  type: 'test'
+  ...
+# Subtest: initial requested playback follows authored time-zero cues and retains later timeline order
+ok 22 - initial requested playback follows authored time-zero cues and retains later timeline order
+  ---
+  duration_ms: 10671.116674
+  type: 'test'
+  ...
+# Subtest: old visit audio ports cannot control an identically named track in the next scene
+ok 23 - old visit audio ports cannot control an identically named track in the next scene
+  ---
+  duration_ms: 10690.130048
+  type: 'test'
+  ...
+# Subtest: real boolean track is rejected at its owning binding without a playback receipt
+ok 24 - real boolean track is rejected at its owning binding without a playback receipt
+  ---
+  duration_ms: 12354.283722
+  type: 'test'
+  ...
+# Subtest: real unknown track is rejected at its owning binding without a playback receipt
+ok 25 - real unknown track is rejected at its owning binding without a playback receipt
+  ---
+  duration_ms: 11152.784913
+  type: 'test'
+  ...
+# Subtest: a scene without audio cannot access another project member audio declaration
+ok 26 - a scene without audio cannot access another project member audio declaration
+  ---
+  duration_ms: 10868.474119
+  type: 'test'
+  ...
+# Subtest: a failing event callback discards its accepted audio request without inventing playback
+ok 27 - a failing event callback discards its accepted audio request without inventing playback
+  ---
+  duration_ms: 11105.064598
+  type: 'test'
+  ...
+# Subtest: the 65th pending audio request fails before any queued player operation
+ok 28 - the 65th pending audio request fails before any queued player operation
+  ---
+  duration_ms: 11186.612471
+  type: 'test'
+  ...
+# Subtest: the 257th session request is rejected while the previous 256 real operations remain attributable
+ok 29 - the 257th session request is rejected while the previous 256 real operations remain attributable
+  ---
+  duration_ms: 11989.168791
+  type: 'test'
+  ...
+# Subtest: native audio becoming unavailable between acceptance and execution has no success receipt
+ok 30 - native audio becoming unavailable between acceptance and execution has no success receipt
+  ---
+  duration_ms: 11233.08292
+  type: 'test'
+  ...
+# Subtest: window close drains callback playback before audio shutdown and project completion
+ok 31 - window close drains callback playback before audio shutdown and project completion
+  ---
+  duration_ms: 11247.241329
+  type: 'test'
+  ...
+# Subtest: behavior audio requests produce native PCM, loop across the WAV duration and stop to true silence
+ok 32 - behavior audio requests produce native PCM, loop across the WAV duration and stop to true silence
+  ---
+  duration_ms: 13009.664919
+  type: 'test'
+  ...
+# {"audiblePeak":0.0146488891914487,"loopPlayingAfterDuration":true,"stoppedPeak":0,"zeroGainPeak":0}
+# Subtest: real project events deliver FIFO across separate behaviors and drain before A→B→A
+ok 33 - real project events deliver FIFO across separate behaviors and drain before A→B→A
+  ---
+  duration_ms: 10996.093816
+  type: 'test'
+  ...
+# Subtest: the unchanged built-in event starter compiles in a project and safely guards a single scene
+ok 34 - the unchanged built-in event starter compiles in a project and safely guards a single scene
+  ---
+  duration_ms: 19032.424623
+  type: 'test'
+  ...
+# Subtest: duplicate subscriptions reuse tokens, late registrations receive no replay and self-removal stays handled
+ok 35 - duplicate subscriptions reuse tokens, late registrations receive no replay and self-removal stays handled
+  ---
+  duration_ms: 10958.822702
+  type: 'test'
+  ...
+# Subtest: stale visit event ports are revoked and subscription identities are never reused
+ok 36 - stale visit event ports are revoked and subscription identities are never reused
+  ---
+  duration_ms: 10922.323943
+  type: 'test'
+  ...
+# Subtest: window close waits for every captured recipient and nested FIFO publication
+ok 37 - window close waits for every captured recipient and nested FIFO publication
+  ---
+  duration_ms: 10947.757852
+  type: 'test'
+  ...
+# Subtest: real false result is rejected without acknowledging delivery or rolling back earlier effects
+ok 38 - real false result is rejected without acknowledging delivery or rolling back earlier effects
+  ---
+  duration_ms: 10946.13254
+  type: 'test'
+  ...
+# Subtest: real void result is rejected without acknowledging delivery or rolling back earlier effects
+ok 39 - real void result is rejected without acknowledging delivery or rolling back earlier effects
+  ---
+  duration_ms: 10990.616025
+  type: 'test'
+  ...
+# Subtest: real runtime error is rejected without acknowledging delivery or rolling back earlier effects
+ok 40 - real runtime error is rejected without acknowledging delivery or rolling back earlier effects
+  ---
+  duration_ms: 10942.893617
+  type: 'test'
+  ...
+# Subtest: real async callback is rejected without acknowledging delivery or rolling back earlier effects
+ok 41 - real async callback is rejected without acknowledging delivery or rolling back earlier effects
+  ---
+  duration_ms: 11011.532244
+  type: 'test'
+  ...
+# Subtest: real another node callback is rejected at the owning binding
+ok 42 - real another node callback is rejected at the owning binding
+  ---
+  duration_ms: 11089.062795
+  type: 'test'
+  ...
+# Subtest: real wrong callback arity is rejected at the owning binding
+ok 43 - real wrong callback arity is rejected at the owning binding
+  ---
+  duration_ms: 10964.974618
+  type: 'test'
+  ...
+# Subtest: real 65th active subscription fails before changing the accepted publication history
+ok 44 - real 65th active subscription fails before changing the accepted publication history
+  ---
+  duration_ms: 10940.320132
+  type: 'test'
+  ...
+# Subtest: real 1025th lifetime registration fails before changing the accepted publication history
+ok 45 - real 1025th lifetime registration fails before changing the accepted publication history
+  ---
+  duration_ms: 10934.798378
+  type: 'test'
+  ...
+# Subtest: real 65th queued message fails before changing the accepted publication history
+ok 46 - real 65th queued message fails before changing the accepted publication history
+  ---
+  duration_ms: 10882.347058
+  type: 'test'
+  ...
+# Subtest: real pending payload bytes beyond 16384 fails before changing the accepted publication history
+ok 47 - real pending payload bytes beyond 16384 fails before changing the accepted publication history
+  ---
+  duration_ms: 10864.671562
+  type: 'test'
+  ...
+# Subtest: real 1025th reserved delivery fails before changing the accepted publication history
+ok 48 - real 1025th reserved delivery fails before changing the accepted publication history
+  ---
+  duration_ms: 11015.853857
+  type: 'test'
+  ...
+# Subtest: real session payload bytes beyond 524288 fails before changing the accepted publication history
+ok 49 - real session payload bytes beyond 524288 fails before changing the accepted publication history
+  ---
+  duration_ms: 11111.562962
+  type: 'test'
+  ...
+# Subtest: self-publishing callbacks terminate at the session publication limit without a recursive stack
+ok 50 - self-publishing callbacks terminate at the session publication limit without a recursive stack
+  ---
+  duration_ms: 11249.419996
+  type: 'test'
+  ...
+# Subtest: a captured callback whose behavior was freed fails instead of fabricating a skipped delivery
+ok 51 - a captured callback whose behavior was freed fails instead of fabricating a skipped delivery
+  ---
+  duration_ms: 10842.259773
+  type: 'test'
+  ...
+# Subtest: real boolean event name is rejected without an implicit conversion or accepted publication
+ok 52 - real boolean event name is rejected without an implicit conversion or accepted publication
+  ---
+  duration_ms: 10876.393592
+  type: 'test'
+  ...
+# Subtest: real non-finite event payload is rejected without an implicit conversion or accepted publication
+ok 53 - real non-finite event payload is rejected without an implicit conversion or accepted publication
+  ---
+  duration_ms: 10835.224793
+  type: 'test'
+  ...
+# Subtest: real project state crosses A→B→A with binding provenance and starts empty on each new run
+ok 54 - real project state crosses A→B→A with binding provenance and starts empty on each new run
+  ---
+  duration_ms: 14487.290146
+  type: 'test'
+  ...
+# Subtest: real state keeps booleans distinct, normalizes numeric no-ops and preserves Unicode and double precision
+ok 55 - real state keeps booleans distinct, normalizes numeric no-ops and preserves Unicode and double precision
+  ---
+  duration_ms: 10701.174043
+  type: 'test'
+  ...
+# Subtest: real stale visit ports cannot read, overwrite or erase the next visit session state
+ok 56 - real stale visit ports cannot read, overwrite or erase the next visit session state
+  ---
+  duration_ms: 10703.269488
+  type: 'test'
+  ...
+# Subtest: real non-string key fails at its binding without committing the rejected state
+ok 57 - real non-string key fails at its binding without committing the rejected state
+  ---
+  duration_ms: 10689.740271
+  type: 'test'
+  ...
+# Subtest: real non-finite value fails at its binding without committing the rejected state
+ok 58 - real non-finite value fails at its binding without committing the rejected state
+  ---
+  duration_ms: 10650.631334
+  type: 'test'
+  ...
+# Subtest: real string UTF-8 overflow fails at its binding without committing the rejected state
+ok 59 - real string UTF-8 overflow fails at its binding without committing the rejected state
+  ---
+  duration_ms: 10700.527562
+  type: 'test'
+  ...
+# Subtest: real 65th key fails at its binding without committing the rejected state
+ok 60 - real 65th key fails at its binding without committing the rejected state
+  ---
+  duration_ms: 10659.535831
+  type: 'test'
+  ...
+# Subtest: real aggregate byte overflow fails at its binding without committing the rejected state
+ok 61 - real aggregate byte overflow fails at its binding without committing the rejected state
+  ---
+  duration_ms: 10633.260169
+  type: 'test'
+  ...
+# Subtest: real 1025th mutation fails at its binding without committing the rejected state
+ok 62 - real 1025th mutation fails at its binding without committing the rejected state
+  ---
+  duration_ms: 10812.914772
+  type: 'test'
+  ...
+1..62
+# tests 62
+# suites 0
+# pass 62
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 397221.680953

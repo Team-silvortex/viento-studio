@@ -39,7 +39,8 @@ const legacy = {
 
 test('new character event and audio starters preserve every existing catalog record and ordinary source byte', () => {
   const all = listScriptStarters();
-  assert.equal(all.filter(row => row.id !== 'godot-character-contact-events').length, Object.keys(legacy).length + 2);
+  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), ['godot-character-motion-events', 'godot-character-contact-events', 'godot-character-drop-through', 'godot-platform-endpoint-events', 'godot-project-event-audio']);
+  assert.equal(all.length, Object.keys(legacy).length + 5);
   assert.equal(new Set(all.map(row => row.id)).size, all.length);
   for (const [id, expected] of Object.entries(legacy)) {
     assert.equal(hash(JSON.stringify(all.find(row => row.id === id))), expected, id);

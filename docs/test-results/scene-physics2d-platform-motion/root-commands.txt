@@ -1,0 +1,8 @@
+Repository: /home/chiharukiryu/cdev/viento-studio
+PATH prepends /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin and /home/chiharukiryu/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin
+npm run check -- --app-only
+node scripts/function-atlas.mjs --write --refresh-sources
+node scripts/function-atlas.mjs --check
+Function atlas CLI/view tests are included in the full app-only run above.
+python3 docs/test-results/docs-refresh-2026-10-25/check-links.py --output docs/test-results/scene-physics2d-platform-motion/links.json
+git diff --check

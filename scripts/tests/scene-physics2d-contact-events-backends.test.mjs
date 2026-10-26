@@ -10,6 +10,7 @@ import { scenePhysics2DContactEventsAuthor } from './helpers/scene-physics2d-con
 import { scenePhysics2DOneWayAuthor } from './helpers/scene-physics2d-one-way-author-fixture.mjs';
 import { GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT } from '../../engine/godot-character-contact-events-script.mjs';
 import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
+import { createExecutionBackendRegistry } from '../adapters/node-execution-backends.mjs';
 import { buildProject } from '../adapters/node-project-build.mjs';
 import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.mjs';
 import { generateGodotPhysicsOneWayProject } from '../backends/godot4-physics-one-way.mjs';
@@ -36,10 +37,16 @@ async function hashes(directory, prefix = '') {
   }
   return result;
 }
+// Preserve 0.27 generated output and delivery under its historical registry.
+const frozenContactsAdapter = { ...adapter, async generate(plan) {
+  const generated = await generateGodotPhysicsCharacterContactsProject(plan);
+  return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles), artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
+} };
+const frozenRegistry = () => createExecutionBackendRegistry([frozenContactsAdapter]);
 async function captured(f) {
   const captured = await captureBuildSnapshot(f.author, f.assemblyId);
   assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics));
-  return { ...f, captured, generated: await adapter.generate(captured.plan) };
+  return { ...f, captured, generated: await frozenContactsAdapter.generate(captured.plan) };
 }
 async function stage(f, generated = f.generated) {
   const directory = await fs.mkdtemp(path.join(f.temporary, 'staged-'));
@@ -329,8 +336,8 @@ test('real live contact lifecycle publishes events and media without smoke trace
 
 test('real portable ZIP retains contact lifecycle and media without original author or build paths', real, async t => {
   const f = await captured(await fixture(t, { consumers: true })), before = await hashes(f.author), output = path.join(f.temporary, 'build');
-  const built = await buildProject({ root: f.author, targetId: f.assemblyId, tool, output }); assert.equal(built.ok, true, JSON.stringify(built.record?.diagnostics || built));
-  const inspection = () => inspectBackendProject({ buildDirectory: output });
+  const built = await buildProject({ root: f.author, targetId: f.assemblyId, tool, output, backendRegistry: frozenRegistry() }); assert.equal(built.ok, true, JSON.stringify(built.record?.diagnostics || built));
+  const inspection = () => inspectBackendProject({ buildDirectory: output, backendRegistry: frozenRegistry() });
   const delivery = await planBackendProjectDelivery({ inspection: await inspection(), assertCurrent: inspection });
   const zip = path.join(f.temporary, 'contact-events.zip'); await writeExportZip(delivery, zip); await verifyBackendProjectDelivery(zip);
   const moved = await fs.mkdtemp(path.join(os.tmpdir(), 'viento-physics-contact-events-relocated-')); t.after(() => fs.rm(moved, { recursive: true, force: true }));

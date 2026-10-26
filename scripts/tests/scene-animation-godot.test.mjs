@@ -1,3 +1,4 @@
+import { godotExecutionBudgetAssemblyScripts } from '../backends/godot4-execution-budget.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -190,7 +191,7 @@ async function assembly(t) {
 
 test('project inventories and remaps animation composition including five-script behavior/audio scenes', async t => {
   const f = await assembly(t), generated = await materialize(t, f.value, f.captured.resources);
-  const scripts = await godotAssemblyScripts(generated.directory);
+  const scripts = await godotExecutionBudgetAssemblyScripts(generated.directory);
   assert.equal(scripts.length, [...generated.generated.files.keys()].filter(name => name.endsWith('.gd')).length);
   for (const child of f.value.scenes) {
     const prefix = `scenes/${child.scene.objectId}`;

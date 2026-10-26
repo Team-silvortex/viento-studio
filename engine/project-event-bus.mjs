@@ -1,10 +1,13 @@
 import { canonicalJson } from './canonical-json.mjs';
+import { createProjectExecutionBudget, PROJECT_EXECUTION_BUDGET_POLICY } from './project-execution-budget.mjs';
 import { projectRuntimeExact as exact, copyProjectRuntimeData as copy, copyProjectEventSnapshotData as copySnapshot, invalidProjectRuntime as invalid } from './project-runtime-contracts.mjs';
 import { projectSharedStateKey as keyValid, projectSharedStateScalar as scalar, copyProjectStateOrigin as originCopy } from './project-shared-state.mjs';
 
 // Subscription storage and callbacks belong to the execution backend. This
 // portable contract admits only frozen recipients and their ordered outcomes.
-export const PROJECT_EVENT_LIMITS = Object.freeze({ messages: 128, recipients: 64, deliveries: 1024, subscriptionId: 1024, pending: 64, pendingBytes: 16384, totalBytes: 524288 });
+export const PROJECT_EVENT_LIMITS = Object.freeze({ messages: PROJECT_EXECUTION_BUDGET_POLICY.eventPublishes, recipients: 64,
+  deliveries: PROJECT_EXECUTION_BUDGET_POLICY.eventDeliveries, subscriptionId: PROJECT_EXECUTION_BUDGET_POLICY.eventRegistrations,
+  pending: 64, pendingBytes: 16384, totalBytes: PROJECT_EXECUTION_BUDGET_POLICY.eventBytes });
 const tokenValid = id => Number.isInteger(id) && id >= 1 && id <= PROJECT_EVENT_LIMITS.subscriptionId;
 const sequenceValid = id => Number.isInteger(id) && id >= 1 && id <= PROJECT_EVENT_LIMITS.messages;
 const ownerKey = (name, origin) => canonicalJson({ name, origin });
@@ -54,8 +57,8 @@ export function validateProjectEventSnapshot(input) {
 }
 
 export function createProjectEventBus() {
-  const entries = [], queue = [], tokens = new Map(), retired = new Set();
-  let totalBytes = 0, totalDeliveries = 0, pendingBytes = 0;
+  const entries = [], queue = [], tokens = new Map(), retired = new Set(), budget = createProjectExecutionBudget();
+  let pendingBytes = 0;
   return Object.freeze({
     get sequence() { return entries.length; },
     get pendingCount() { return queue.length; },
@@ -69,14 +72,14 @@ export function createProjectEventBus() {
           return { ...recipient, status: 'pending' };
         }) }, candidateTokens);
       const { entry, bytes } = checked, hasRecipients = entry.deliveries.length > 0;
-      if (entry.sequence !== entries.length + 1 || entry.deliveries.some(delivery => retired.has(delivery.subscriptionId)) || totalBytes + bytes > PROJECT_EVENT_LIMITS.totalBytes
-        || totalDeliveries + entry.deliveries.length > PROJECT_EVENT_LIMITS.deliveries
+      if (entry.sequence !== entries.length + 1 || entry.deliveries.some(delivery => retired.has(delivery.subscriptionId))
         || entries.length && entry.origin.visitIndex < entries.at(-1).origin.visitIndex
         || queue.length && entry.origin.visitIndex !== queue[0].entry.origin.visitIndex
         || hasRecipients && (queue.length >= PROJECT_EVENT_LIMITS.pending || pendingBytes + bytes > PROJECT_EVENT_LIMITS.pendingBytes)) throw invalid();
       // Commit every reserved recipient and byte together; a rejected publish
       // cannot consume a sequence, token owner or future delivery allowance.
-      entries.push(entry); totalBytes += bytes; totalDeliveries += entry.deliveries.length;
+      if (!budget.reserve({ eventPublishes: 1, eventDeliveries: entry.deliveries.length, eventBytes: bytes })) throw invalid();
+      entries.push(entry);
       for (const [id, owner] of candidateTokens) tokens.set(id, owner);
       if (hasRecipients) { queue.push({ entry, bytes, index: 0 }); pendingBytes += bytes; }
     },

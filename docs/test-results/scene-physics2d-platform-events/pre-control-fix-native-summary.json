@@ -1,0 +1,148 @@
+{
+  "format": "viento-platform-events-native-summary",
+  "schemaVersion": 1,
+  "completedAt": "2026-10-26T08:41:24.136353+00:00",
+  "tests": {
+    "total": 15,
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "nativeCases": 14
+  },
+  "historicalMotionRegression": {
+    "total": 5,
+    "passed": 5,
+    "log": "previous-motion-native-regression.log"
+  },
+  "backendTests": {
+    "total": 19,
+    "passed": 17,
+    "failed": 0,
+    "skipped": 2,
+    "skipReason": "Existing optional native instance replay tests require their separate tool environment."
+  },
+  "backend": {
+    "id": "org.viento.godot4",
+    "version": "0.31.0",
+    "protocolVersion": 10,
+    "capabilities": [
+      "animation.clips2d",
+      "animation.visual2d",
+      "audio.nonspatial",
+      "audio.timeline",
+      "behavior.bindings",
+      "behavior.gdscript",
+      "image",
+      "input.arrows",
+      "project.scenes",
+      "scene2d",
+      "state.movement",
+      "project.scene-switching",
+      "project.shared-state",
+      "project.events",
+      "project.audio-control",
+      "project.animation-control",
+      "project.animation-completion",
+      "project.animation-state-snapshots",
+      "project.animation-state-entries",
+      "project.animation-state-entry-triggers",
+      "physics.bodies2d",
+      "physics.character2d",
+      "physics.sensors2d",
+      "physics.character-slide2d",
+      "physics.observe2d",
+      "physics.character-motion2d",
+      "physics.character-events2d",
+      "physics.one-way-platform2d",
+      "physics.character-contacts2d",
+      "physics.character-drop-through2d",
+      "physics.platform-motion2d",
+      "physics.platform-events2d"
+    ],
+    "artifactKind": "godot-project",
+    "platforms": [
+      "linux"
+    ],
+    "execution": {
+      "headlessLogic": true,
+      "windowPreview": true,
+      "embeddedViewport": false,
+      "gpuCompute": false
+    },
+    "sha256": "f7684db1ee5cf7c011d66c81a7b3cdae478cd53f08eddf33e98d717ad30023fd"
+  },
+  "tool": {
+    "executable": "/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64",
+    "version": "4.7.2.stable.official.ed1daf0bf",
+    "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "nativeNotificationsWithoutPublication": 160,
+  "ordinaryPublicationBoundary": {
+    "accepted": 128,
+    "diagnostics": [
+      {
+        "severity": "error",
+        "code": "runtime_behavior_event_limit",
+        "message": "Project event delivery budget was exceeded.",
+        "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+        "sourcePath": "documents/behaviors/demo.json",
+        "sourceRevision": "sha256:b1f83890f84b1e45220ade2ab9e78d6581aa0db227edbb0f1b09663e9dc5ed96",
+        "propertyPath": "/bindings/3",
+        "bindingId": "85858585-8585-4858-8858-000000000002",
+        "instanceId": "79797979-7979-4979-8979-000000000001",
+        "relatedObjectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+      }
+    ],
+    "changed": false
+  },
+  "semantics": "Each zero-argument endpoint signal means this endpoint was reached at least once during the completed project step; coalesced per endpoint per step, ordered by first arrival, interval (before, after], no ready or zero-delta signal. It is not a crossing count or long-running event-bus guarantee.",
+  "productionCorrection": {
+    "reason": "A first callback queuing its platform for deletion could still notify another behavior on that platform in the same endpoint dispatch.",
+    "beforeProof": "deletion-before-fix.log",
+    "beforeProofScope": "Counterfactual isolated temporary generated build only, with saved pre-fix helper; frozen production and tests were not modified. Expected assertion failure reproduces the unwanted second callback.",
+    "fix": "Validate the platform is alive, in the tree and not queued for deletion before every record dispatch.",
+    "afterProof": "native-final.log; queued-platform-revokes-remaining-subscribers case"
+  },
+  "testCorrections": [
+    {
+      "log": "native-first.log",
+      "reason": "Three new assertions read animation commands at the root instead of existing command.action/command.clipId; runtime events and media had succeeded."
+    },
+    {
+      "log": "backend-first.log",
+      "reason": "New test attempted to modify an immutable captured plan; fixed by cloning before editing."
+    },
+    {
+      "log": "native-matrix-first.log",
+      "reason": "Intentional early project-close test used finite smoke duration; switched that test to live mode. Native close/revocation had completed correctly."
+    }
+  ],
+  "window": {
+    "path": "native-window.png",
+    "reviewed": true,
+    "findings": "Captured real Godot scene shows moving and independent stationary platforms with characters. Inherited fixture labels overlap beneath shared-definition actors; this is unchanged fixture content. Endpoint media receipts are validated by native events, not inferred from pixels."
+  },
+  "zip": {
+    "path": "/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-platform-events/native-final-platform-events.zip",
+    "sha256": "e3e82d7221f7bb7d3a1e42bf5fc79cdd8eb626863c57333d2507fb24349d729d"
+  },
+  "sourceHashes": "backend-source-hashes.json",
+  "caseNames": [
+    "one-way-events-media",
+    "solid-negative-events-media",
+    "no-characters-events-media",
+    "coalesced-multi-crossing-local-ports",
+    "exact-boundaries-zero-delta-reentry",
+    "queued-behavior-removal",
+    "scene-request-reentry-revocation",
+    "direct-close-revocation",
+    "native-160-no-trace-no-publish",
+    "ordinary-publish-128-explicit-failure",
+    "portable-relocation",
+    "window-capture",
+    "frozen-030-motion-exact-native-samples",
+    "queued-platform-revokes-remaining-subscribers"
+  ]
+}

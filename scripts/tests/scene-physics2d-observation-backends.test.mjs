@@ -9,8 +9,9 @@ import yauzl from 'yauzl';
 import { scenePhysics2DAuthor } from './helpers/scene-physics2d-author-fixture.mjs';
 import { projectAnimationClipsAuthor } from './helpers/project-animation-clips-author-fixture.mjs';
 import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
+import { createExecutionBackendRegistry } from '../adapters/node-execution-backends.mjs';
 import { buildProject } from '../adapters/node-project-build.mjs';
-import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.mjs';
+import { GODOT4_EXECUTION_ADAPTER as currentAdapter } from '../backends/godot4-adapter.mjs';
 import { generateGodotPhysicsProject } from '../backends/godot4-physics.mjs';
 import { generateGodotPhysicsResponseProject } from '../backends/godot4-physics-response.mjs';
 import { generateGodotPhysicsObservationProject, godotPhysicsObservationAssemblyScripts } from '../backends/godot4-physics-observation.mjs';
@@ -18,6 +19,15 @@ import { inspectBackendProject } from '../adapters/node-backend-project.mjs';
 import { planBackendProjectDelivery, verifyBackendProjectDelivery } from '../adapters/node-backend-project-delivery.mjs';
 import { writeExportZip } from '../lib/export-package.mjs';
 
+// These historical physics/response/observation contracts retain the 0.23
+// generated files. The current host still validates and executes them; current
+// 0.28 movement contacts are covered by the separate planar contacts suite.
+const adapter = { ...currentAdapter, async generate(plan) {
+  const generated = await generateGodotPhysicsObservationProject(plan);
+  return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
+    artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
+} };
+const frozenRegistry = () => createExecutionBackendRegistry([adapter]);
 const tool = process.env.VIENTO_GODOT_BIN;
 const real = { skip: !tool ? 'Set VIENTO_GODOT_BIN for native observation verification' : false, timeout: 180000 };
 const capturePath = process.env.VIENTO_PHYSICS_OBSERVATION_CAPTURE;
@@ -204,9 +214,9 @@ test('real static and sensor-only visits finish with an explicit empty observati
 
 test('real portable ZIP retains observation, sensors and animation without original author or build paths', real, async t => {
   const f = await captured(await fixture(t, { animation: true })), before = await hashes(f.author), output = path.join(f.temporary, 'build');
-  const built = await buildProject({ root: f.author, targetId: f.assemblyId, tool, output });
+  const built = await buildProject({ backendRegistry: frozenRegistry(), root: f.author, targetId: f.assemblyId, tool, output });
   assert.equal(built.ok, true, JSON.stringify(built.record?.diagnostics || built));
-  const inspection = () => inspectBackendProject({ buildDirectory: output });
+  const inspection = () => inspectBackendProject({ backendRegistry: frozenRegistry(), buildDirectory: output });
   const delivery = await planBackendProjectDelivery({ inspection: await inspection(), assertCurrent: inspection });
   const zip = path.join(f.temporary, 'observed-physics.zip'); await writeExportZip(delivery, zip); await verifyBackendProjectDelivery(zip);
   const moved = await fs.mkdtemp(path.join(os.tmpdir(), 'viento-physics-observation-relocated-')); t.after(() => fs.rm(moved, { recursive: true, force: true }));

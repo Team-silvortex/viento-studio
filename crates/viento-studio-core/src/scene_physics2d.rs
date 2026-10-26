@@ -162,7 +162,7 @@ fn document_version(value: &Value, version: u32) -> Result<Value, CoreError> {
             }
             keys.push("characterMotion");
         }
-        if version == 4 && body.get("oneWay").is_some() {
+        if version >= 4 && body.get("oneWay").is_some() {
             let one_way = &body["oneWay"];
             if body["kind"] != "static"
                 || body["shape"]["kind"] != "box"
@@ -172,6 +172,22 @@ fn document_version(value: &Value, version: u32) -> Result<Value, CoreError> {
                 return Err(invalid());
             }
             keys.push("oneWay");
+        }
+        if version == 5 && body.get("platformMotion").is_some() {
+            let motion = &body["platformMotion"];
+            if body["kind"] != "static"
+                || body["shape"]["kind"] != "box"
+                || !exact(motion, &["kind", "offsetX", "speed"])
+                || motion["kind"] != "horizontal"
+                || !bounded(&motion["offsetX"], -8192.0, 8192.0)
+                || motion["offsetX"]
+                    .as_f64()
+                    .is_none_or(|offset| offset.abs() < 1.0)
+                || !bounded(&motion["speed"], 1.0, 2000.0)
+            {
+                return Err(invalid());
+            }
+            keys.push("platformMotion");
         }
         if !exact(body, &keys)
             || !matches!(
@@ -217,13 +233,16 @@ pub(crate) fn dispatch(request: &Value) -> Result<ScenePhysics2DResponse, CoreEr
                     | "scenePhysics2D.inspectResponse"
                     | "scenePhysics2D.inspectMotion"
                     | "scenePhysics2D.inspectOneWay"
+                    | "scenePhysics2D.inspectPlatformMotion"
             )
         )
     {
         return Err(CoreError::request());
     }
     Ok(ScenePhysics2DResponse {
-        document: if request["operation"] == "scenePhysics2D.inspectOneWay" {
+        document: if request["operation"] == "scenePhysics2D.inspectPlatformMotion" {
+            document_version(&request["document"], 5)?
+        } else if request["operation"] == "scenePhysics2D.inspectOneWay" {
             document_version(&request["document"], 4)?
         } else if request["operation"] == "scenePhysics2D.inspectMotion" {
             document_version(&request["document"], 3)?
@@ -733,5 +752,150 @@ mod tests {
         bodies.push(body(128, "static"));
         value["bodies"] = json!(bodies);
         assert!(document_version(&value, 4).is_err());
+    }
+
+    fn platform_motion_doc() -> Value {
+        let mut value = one_way_doc();
+        value["schemaVersion"] = json!(5);
+        value["bodies"][0]["platformMotion"] =
+            json!({"kind":"horizontal","offsetX":160,"speed":80});
+        value
+    }
+
+    #[test]
+    fn platform_motion_inherits_all_fields_with_an_independent_schema_five_domain() {
+        assert_eq!(
+            crate::viento_core_scene_physics2d_platform_motion_version(),
+            1
+        );
+        for enabled in [true, false] {
+            let mut value = platform_motion_doc();
+            if !enabled {
+                value["bodies"][0]
+                    .as_object_mut()
+                    .unwrap()
+                    .remove("platformMotion");
+            }
+            assert_eq!(document_version(&value, 5).unwrap(), value);
+            for operation in [
+                "scenePhysics2D.inspect",
+                "scenePhysics2D.inspectResponse",
+                "scenePhysics2D.inspectMotion",
+                "scenePhysics2D.inspectOneWay",
+                "scenePhysics2D.inspectPlatformMotion",
+            ] {
+                let result =
+                    wire(json!({"protocolVersion":1,"operation":operation,"document":value}));
+                if operation == "scenePhysics2D.inspectPlatformMotion" {
+                    assert_eq!(result["scenePhysics2D"]["document"], value);
+                } else {
+                    assert_eq!(result["errorCode"], "scene_physics2d_invalid");
+                }
+            }
+        }
+        for version in 1..=4 {
+            let mut value = doc();
+            value["schemaVersion"] = json!(version);
+            let result = wire(
+                json!({"protocolVersion":1,"operation":"scenePhysics2D.inspectPlatformMotion","document":value}),
+            );
+            assert_eq!(result["errorCode"], "scene_physics2d_invalid");
+            value["bodies"][0]["platformMotion"] =
+                json!({"kind":"horizontal","offsetX":1,"speed":1});
+            assert!(document_version(&value, version).is_err());
+        }
+    }
+
+    #[test]
+    fn platform_motion_requires_exact_horizontal_static_box_and_bounded_nonzero_travel() {
+        for offset in [-8192.0, -1.0, 1.0, 1.125, 8192.0] {
+            for speed in [1.0, 1.25, 2000.0] {
+                let mut value = platform_motion_doc();
+                value["bodies"][0]["platformMotion"] =
+                    json!({"kind":"horizontal","offsetX":offset,"speed":speed});
+                assert_eq!(document_version(&value, 5).unwrap(), value);
+            }
+        }
+        for replacement in [
+            json!(null),
+            json!(true),
+            json!([]),
+            json!("horizontal"),
+            json!({}),
+        ] {
+            let mut value = platform_motion_doc();
+            value["bodies"][0]["platformMotion"] = replacement;
+            assert!(document_version(&value, 5).is_err());
+        }
+        for key in ["kind", "offsetX", "speed"] {
+            let mut value = platform_motion_doc();
+            value["bodies"][0]["platformMotion"]
+                .as_object_mut()
+                .unwrap()
+                .remove(key);
+            assert!(document_version(&value, 5).is_err());
+        }
+        for (pointer, bad) in [
+            ("/bodies/0/platformMotion/kind", json!("linear")),
+            ("/bodies/0/platformMotion/offsetX", json!(0)),
+            ("/bodies/0/platformMotion/offsetX", json!(-0.0)),
+            ("/bodies/0/platformMotion/offsetX", json!(0.999)),
+            ("/bodies/0/platformMotion/offsetX", json!(-0.999)),
+            ("/bodies/0/platformMotion/offsetX", json!(-8192.001)),
+            ("/bodies/0/platformMotion/offsetX", json!(8192.001)),
+            ("/bodies/0/platformMotion/offsetX", json!("160")),
+            ("/bodies/0/platformMotion/speed", json!(0.999)),
+            ("/bodies/0/platformMotion/speed", json!(2000.001)),
+            ("/bodies/0/platformMotion/speed", json!(null)),
+            ("/bodies/0/platformMotion/speed", json!(true)),
+            ("/bodies/0/kind", json!("sensor")),
+            ("/bodies/0/kind", json!("character")),
+            ("/bodies/0/shape", json!({"kind":"circle","radius":16})),
+            ("/bodies/0/oneWay/margin", json!(0)),
+            ("/bodies/1/characterMotion/gravity", json!(20001)),
+        ] {
+            let mut value = platform_motion_doc();
+            *value.pointer_mut(pointer).unwrap() = bad;
+            assert!(document_version(&value, 5).is_err(), "{pointer}");
+        }
+        let mut value = platform_motion_doc();
+        value["bodies"][0]["platformMotion"]["offsetY"] = json!(0);
+        assert!(document_version(&value, 5).is_err());
+        let mut value = platform_motion_doc();
+        value["bodies"][0].as_object_mut().unwrap().remove("oneWay");
+        assert_eq!(document_version(&value, 5).unwrap(), value);
+    }
+
+    #[test]
+    fn platform_motion_raw_keys_and_body_limits_remain_strict() {
+        let input = json!({"protocolVersion":1,"operation":"scenePhysics2D.inspectPlatformMotion","document":platform_motion_doc()});
+        let raw = serde_json::to_string(&input).unwrap();
+        for (from, to) in [
+            ("\"offsetX\":160", "\"offsetX\":1,\"offset\\u0058\":160"),
+            (
+                "\"platformMotion\":",
+                "\"platformMotio\\u006e\":null,\"platformMotion\":",
+            ),
+            ("\"speed\":80", "\"speed\":1e999"),
+        ] {
+            let result: Value =
+                serde_json::from_slice(&crate::dispatch_json(raw.replace(from, to).as_bytes()))
+                    .unwrap();
+            assert_eq!(result["errorCode"], "studio_core_request_invalid");
+        }
+        let mut value = platform_motion_doc();
+        value["bodies"] = (0..128)
+            .map(|n| {
+                let mut row = body(n, "static");
+                row["platformMotion"] = json!({"kind":"horizontal","offsetX":-1,"speed":2000});
+                row
+            })
+            .collect();
+        assert_eq!(document_version(&value, 5).unwrap(), value);
+        value["bodies"]
+            .as_array_mut()
+            .unwrap()
+            .push(body(128, "static"));
+        assert!(document_version(&value, 5).is_err());
     }
 }

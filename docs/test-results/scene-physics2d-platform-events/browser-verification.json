@@ -1,0 +1,381 @@
+{
+  "verifiedAt": "2026-10-26T08:50:26.998028+00:00",
+  "report": "browser-control-fix/browser.json",
+  "visualReview": "browser-control-fix/visual-review.json",
+  "firstReport": "browser-1793003598952/browser.json",
+  "rerunReason": "Full regression found four fingerprint-input URLs had accidentally entered the existing executePhase controlProgram staging list. The adapter now removes only those four entries from that branch. Platform generation was unchanged, but the adapter fingerprint changed, so the full six-flow Chrome/native workflow and all 15 screenshots were repeated. Earlier browser reports and the earlier per-subscriber queue_free hardening explanation are retained.",
+  "ok": true,
+  "sourceCount": 58,
+  "sourceSnapshotUnchangedDuringRun": true,
+  "sourceMismatchesAtVerification": [],
+  "sources": [
+    {
+      "path": "engine/studio-core.mjs",
+      "expected": "d6214c94de2de177459abecccc56b9f4620ecd65db4f567fbb379cd609a5c43f",
+      "actual": "d6214c94de2de177459abecccc56b9f4620ecd65db4f567fbb379cd609a5c43f",
+      "matches": true
+    },
+    {
+      "path": "engine/studio-core.wasm",
+      "expected": "aded22e0575b084b5b7730d62a2a1256f00b40a9c0d862aeaf088a35d489d0a3",
+      "actual": "aded22e0575b084b5b7730d62a2a1256f00b40a9c0d862aeaf088a35d489d0a3",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4-physics-platform-events.mjs",
+      "expected": "5455a5413e2674990a38a81ec0e1d71d40080d1eafdd93d72dd04c5453569815",
+      "actual": "5455a5413e2674990a38a81ec0e1d71d40080d1eafdd93d72dd04c5453569815",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-platform-events-helper.gd",
+      "expected": "ab4078c4605ec35bdd31de61a47fecee4f6998bf732b060337a40c4a0777c9b9",
+      "actual": "ab4078c4605ec35bdd31de61a47fecee4f6998bf732b060337a40c4a0777c9b9",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-platform-events-port.gd",
+      "expected": "7184c0d016e7ac425ed9baf0b5f00b3ede220341a07fcd864e490b54d4cc7f00",
+      "actual": "7184c0d016e7ac425ed9baf0b5f00b3ede220341a07fcd864e490b54d4cc7f00",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-platform-events-scene.gd",
+      "expected": "e3cf7b1cdf7ee8e316398759848db0252ec82efec8501166c10209454a68a056",
+      "actual": "e3cf7b1cdf7ee8e316398759848db0252ec82efec8501166c10209454a68a056",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4-physics-platform-motion.mjs",
+      "expected": "147c43088be233b03ef686c1f5a2e47888a2eda2b41e3e58f28107f0d5c1433e",
+      "actual": "147c43088be233b03ef686c1f5a2e47888a2eda2b41e3e58f28107f0d5c1433e",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-platform-motion-helper.gd",
+      "expected": "f672ccd3dd880093dd50105fd093c32f8ef194cb01e94f8c43af5c74bb8348fc",
+      "actual": "f672ccd3dd880093dd50105fd093c32f8ef194cb01e94f8c43af5c74bb8348fc",
+      "matches": true
+    },
+    {
+      "path": "engine/godot-platform-endpoint-events-script.mjs",
+      "expected": "4d52b33be308d2a70994dd1f49dd4f3ff3262bef091d2669f49e5bde0c28fb9b",
+      "actual": "4d52b33be308d2a70994dd1f49dd4f3ff3262bef091d2669f49e5bde0c28fb9b",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/helpers/scene-physics2d-platform-events-author-fixture.mjs",
+      "expected": "4f5da6d0916cd0c281a5ad6c005af21e4c8e89ba15f5fcc6cfcc7d327c546128",
+      "actual": "4f5da6d0916cd0c281a5ad6c005af21e4c8e89ba15f5fcc6cfcc7d327c546128",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/helpers/scene-physics2d-platform-motion-author-fixture.mjs",
+      "expected": "bc3a46c1d59e311c695cafe77dacaa167e1f030cbbf9d436c137d58f42cb6490",
+      "actual": "bc3a46c1d59e311c695cafe77dacaa167e1f030cbbf9d436c137d58f42cb6490",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/scene-physics2d-platform-events-smoke.mjs",
+      "expected": "cb636e08f02b39e4d9bb664ccadc3c7aaada74e094bf3880e39bad76cb78ff09",
+      "actual": "cb636e08f02b39e4d9bb664ccadc3c7aaada74e094bf3880e39bad76cb78ff09",
+      "matches": true
+    },
+    {
+      "path": "engine/godot-character-drop-through-script.mjs",
+      "expected": "957a896e9ccb86524724b04b0d1eaf7462e395d053a89773aa17a123b5a2c798",
+      "actual": "957a896e9ccb86524724b04b0d1eaf7462e395d053a89773aa17a123b5a2c798",
+      "matches": true
+    },
+    {
+      "path": "engine/godot-character-motion-events-script.mjs",
+      "expected": "826ecc8949cf7134c72d845a8f70beb9525c46e1abf6381a06ca361ecc750c49",
+      "actual": "826ecc8949cf7134c72d845a8f70beb9525c46e1abf6381a06ca361ecc750c49",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4-physics-drop-through.mjs",
+      "expected": "d51c7463b42375ab99a763756614c5aae6a0a9bf6bf6e9f7a2eb48f98a0d9056",
+      "actual": "d51c7463b42375ab99a763756614c5aae6a0a9bf6bf6e9f7a2eb48f98a0d9056",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-drop-through-bridge.gd",
+      "expected": "adaa376b81ef7232280fc000e6ae13e2f23fc7dfe3bab7de4a86c529632f7840",
+      "actual": "adaa376b81ef7232280fc000e6ae13e2f23fc7dfe3bab7de4a86c529632f7840",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-drop-through-helper.gd",
+      "expected": "b12633adcca09775585de563b12d180938c1a0a3d2e1129f99e96b2323ce972e",
+      "actual": "b12633adcca09775585de563b12d180938c1a0a3d2e1129f99e96b2323ce972e",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-drop-through-port.gd",
+      "expected": "fe560b6063ee770c8f75287b6b37de25a9465c83f6ec45473d505b7929509385",
+      "actual": "fe560b6063ee770c8f75287b6b37de25a9465c83f6ec45473d505b7929509385",
+      "matches": true
+    },
+    {
+      "path": "engine/script-authoring.mjs",
+      "expected": "0a63e7691c4696ef6c8e630b7ab79cab2d5788ded643fe2551efc8c05bc53b66",
+      "actual": "0a63e7691c4696ef6c8e630b7ab79cab2d5788ded643fe2551efc8c05bc53b66",
+      "matches": true
+    },
+    {
+      "path": "engine/godot-character-contact-events-script.mjs",
+      "expected": "0d1bca9464599ef3c215436dbdb1b30a2ecc1c10290c9fe1407f1cbb22023f6b",
+      "actual": "0d1bca9464599ef3c215436dbdb1b30a2ecc1c10290c9fe1407f1cbb22023f6b",
+      "matches": true
+    },
+    {
+      "path": "engine/godot-project-event-audio-script.mjs",
+      "expected": "6d75d2dc4a43589c8e36a7a51e305d2b34af5c34829261ef2dcb6965f2def613",
+      "actual": "6d75d2dc4a43589c8e36a7a51e305d2b34af5c34829261ef2dcb6965f2def613",
+      "matches": true
+    },
+    {
+      "path": "engine/project-physics2d-trace.mjs",
+      "expected": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
+      "actual": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
+      "matches": true
+    },
+    {
+      "path": "engine/project-runtime-events.mjs",
+      "expected": "a6213e93e883d057c685152eb62a9b21c1eda9c4d3fb7fe75a69edc4d4da49e4",
+      "actual": "a6213e93e883d057c685152eb62a9b21c1eda9c4d3fb7fe75a69edc4d4da49e4",
+      "matches": true
+    },
+    {
+      "path": "engine/scene-physics2d.mjs",
+      "expected": "ccbe9a989862a5b8716f3381b884defd325ebe94b143eb13e9bb663efeaaf2a6",
+      "actual": "ccbe9a989862a5b8716f3381b884defd325ebe94b143eb13e9bb663efeaaf2a6",
+      "matches": true
+    },
+    {
+      "path": "engine/backend-capabilities.mjs",
+      "expected": "5a06d45abd1073d4f6c9450b619abb8e49922f24e589793721f6c6c588c31587",
+      "actual": "5a06d45abd1073d4f6c9450b619abb8e49922f24e589793721f6c6c588c31587",
+      "matches": true
+    },
+    {
+      "path": "scripts/adapters/node-project-build.mjs",
+      "expected": "90b4d73ab47fbd8d01ef46cef451ec4aeee8da508e647812dca450a9eec0531e",
+      "actual": "90b4d73ab47fbd8d01ef46cef451ec4aeee8da508e647812dca450a9eec0531e",
+      "matches": true
+    },
+    {
+      "path": "scripts/lib/project-build-service.mjs",
+      "expected": "4a137445050520472fa6d65fa144eb3da079dd7dd5ba1f51a0a2cf2fbe6c7422",
+      "actual": "4a137445050520472fa6d65fa144eb3da079dd7dd5ba1f51a0a2cf2fbe6c7422",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "expected": "dbaf4f01e0ee3009504a2da589e82b7888e143eace5efb05fd55ebc958bd75ab",
+      "actual": "dbaf4f01e0ee3009504a2da589e82b7888e143eace5efb05fd55ebc958bd75ab",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4-physics-one-way.mjs",
+      "expected": "fdca78bd33e1b34ef73f9ea40a76f8d0a00c34fb3b2f03165f0d76b816662b5e",
+      "actual": "fdca78bd33e1b34ef73f9ea40a76f8d0a00c34fb3b2f03165f0d76b816662b5e",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-one-way-helper.gd",
+      "expected": "9eb9853c75c5a7d124824b9f6167a180c21f0a7581f05da776f8688eb8c008b9",
+      "actual": "9eb9853c75c5a7d124824b9f6167a180c21f0a7581f05da776f8688eb8c008b9",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4-physics-movement-contacts.mjs",
+      "expected": "2f3761f2d6b5f9dc2d249e54af40053ac9830c45fab129629e7be851082fc7b2",
+      "actual": "2f3761f2d6b5f9dc2d249e54af40053ac9830c45fab129629e7be851082fc7b2",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-movement-contacts-helper.gd",
+      "expected": "8ecd63ce99cde509d94c764139d2b86d4d488053ca0df0029975cc52ae878c3b",
+      "actual": "8ecd63ce99cde509d94c764139d2b86d4d488053ca0df0029975cc52ae878c3b",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-planar-contacts-runtime.gd",
+      "expected": "9b37910677196b4d4464686c89af64abc8c776684676f87953f3374768fe83be",
+      "actual": "9b37910677196b4d4464686c89af64abc8c776684676f87953f3374768fe83be",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4-physics-character-contacts.mjs",
+      "expected": "1409a4fdcab98ed8d8a865a25e32734877855836572de566efe6552399368eaf",
+      "actual": "1409a4fdcab98ed8d8a865a25e32734877855836572de566efe6552399368eaf",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-character-contacts-helper.gd",
+      "expected": "71c82fce2325b56c901cb2e0c1ab815012293b03f5b2557163a8d96003473233",
+      "actual": "71c82fce2325b56c901cb2e0c1ab815012293b03f5b2557163a8d96003473233",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-character-contacts-port.gd",
+      "expected": "98a7650d9d3b25234ddc5456687c17339aea843d24fa052f4676b882eef8c13d",
+      "actual": "98a7650d9d3b25234ddc5456687c17339aea843d24fa052f4676b882eef8c13d",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4-physics-character-events.mjs",
+      "expected": "20acb031177cd584062eb98fb782bd3a770c976dc5506788ffa06c0780f647be",
+      "actual": "20acb031177cd584062eb98fb782bd3a770c976dc5506788ffa06c0780f647be",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-character-events-scene.gd",
+      "expected": "d3377ea2c5184dba7d000cb92cb9dbce8718ba3a01d30e73224e6352c1471ebb",
+      "actual": "d3377ea2c5184dba7d000cb92cb9dbce8718ba3a01d30e73224e6352c1471ebb",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-character-events-port.gd",
+      "expected": "bcaf4ef9b7112977fea1b2c48fa65ceee1d6e223394ea3e4de4c8b3bbba7834f",
+      "actual": "bcaf4ef9b7112977fea1b2c48fa65ceee1d6e223394ea3e4de4c8b3bbba7834f",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4-physics-character-motion.mjs",
+      "expected": "69e510c0f89e3b6d1526be11fec09c519bbe249b68a3db2ff874fc5c5ee9bcb8",
+      "actual": "69e510c0f89e3b6d1526be11fec09c519bbe249b68a3db2ff874fc5c5ee9bcb8",
+      "matches": true
+    },
+    {
+      "path": "scripts/backends/godot4/physics-character-motion-runtime.gd",
+      "expected": "82e745e373e76f66e3cd825c9763b5dd22365da5ffca0cfde0fd349c404f948c",
+      "actual": "82e745e373e76f66e3cd825c9763b5dd22365da5ffca0cfde0fd349c404f948c",
+      "matches": true
+    },
+    {
+      "path": "web/modules/app-script-create.js",
+      "expected": "94d82ac21b31c0e400f2cd9cb31a280e8247a0321380ea9d74159e15c9f02d76",
+      "actual": "94d82ac21b31c0e400f2cd9cb31a280e8247a0321380ea9d74159e15c9f02d76",
+      "matches": true
+    },
+    {
+      "path": "web/modules/app-scene-behavior-links.js",
+      "expected": "b81ac012c84b7f68a9041af4bd4d8ee1b90ef1a06f82e3bde63d1c4e2bd88260",
+      "actual": "b81ac012c84b7f68a9041af4bd4d8ee1b90ef1a06f82e3bde63d1c4e2bd88260",
+      "matches": true
+    },
+    {
+      "path": "web/modules/app-scene-behaviors.js",
+      "expected": "9307774f6e6fb8a0277c37ea38565ae6424b0da60f9c7c996bcd40e2b89af36c",
+      "actual": "9307774f6e6fb8a0277c37ea38565ae6424b0da60f9c7c996bcd40e2b89af36c",
+      "matches": true
+    },
+    {
+      "path": "web/modules/app-behavior-source.js",
+      "expected": "82426a4282fe41718ba18aeb142c394289af8fa177584ab921ca08e3da944f42",
+      "actual": "82426a4282fe41718ba18aeb142c394289af8fa177584ab921ca08e3da944f42",
+      "matches": true
+    },
+    {
+      "path": "web/modules/app-project-build.js",
+      "expected": "367383b3ec0edce935b62e82cc9536d5845b63ac0a0138c997a17077429fdc71",
+      "actual": "367383b3ec0edce935b62e82cc9536d5845b63ac0a0138c997a17077429fdc71",
+      "matches": true
+    },
+    {
+      "path": "web/modules/app-project-event-observation.js",
+      "expected": "f07747d7fd58e7573f6b4c6ba3bf4e4d3ac077717c193bc4b17411e5f5a6582e",
+      "actual": "f07747d7fd58e7573f6b4c6ba3bf4e4d3ac077717c193bc4b17411e5f5a6582e",
+      "matches": true
+    },
+    {
+      "path": "web/modules/app-project-physics-observation.js",
+      "expected": "10d86d3ab703eb81924d2065e5898c32b264fd40f67ff0b5f25f9d2edc3b8f33",
+      "actual": "10d86d3ab703eb81924d2065e5898c32b264fd40f67ff0b5f25f9d2edc3b8f33",
+      "matches": true
+    },
+    {
+      "path": "web/modules/app-project-audio-observation.js",
+      "expected": "ba572fc0e6c868abc0db9432662d3b75f65531f04f4f08e4c4094e29ac42929f",
+      "actual": "ba572fc0e6c868abc0db9432662d3b75f65531f04f4f08e4c4094e29ac42929f",
+      "matches": true
+    },
+    {
+      "path": "web/script-create.css",
+      "expected": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f",
+      "actual": "993572d92182a2f0c4c387c7ad351c9e892c4047da22fd7473d2d1134003172f",
+      "matches": true
+    },
+    {
+      "path": "web/scene-behaviors.css",
+      "expected": "18c116197160480ce61893fa4cf09a379cf51a317e955b4fd242e44dd500cdac",
+      "actual": "18c116197160480ce61893fa4cf09a379cf51a317e955b4fd242e44dd500cdac",
+      "matches": true
+    },
+    {
+      "path": "web/i18n/en.js",
+      "expected": "791d6fe6123dff40d933e1611f54926568d027ff1e9dee11a27fe8423caf885f",
+      "actual": "791d6fe6123dff40d933e1611f54926568d027ff1e9dee11a27fe8423caf885f",
+      "matches": true
+    },
+    {
+      "path": "web/i18n/ja.js",
+      "expected": "6e3b1f3c6461fc4b523a2b13ee875e7e2f4f2b58bed1c5aa6d35e3caad942178",
+      "actual": "6e3b1f3c6461fc4b523a2b13ee875e7e2f4f2b58bed1c5aa6d35e3caad942178",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/helpers/scene-physics2d-character-events-author-fixture.mjs",
+      "expected": "dd3b0310c3763985f812049c9896f7178a46cbb6ecab4b4d90bf5f64268d2094",
+      "actual": "dd3b0310c3763985f812049c9896f7178a46cbb6ecab4b4d90bf5f64268d2094",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/helpers/scene-physics2d-character-motion-author-fixture.mjs",
+      "expected": "fd9ff292c16246e4c4e7c757444e8cdbabe6112d8eabe9deb9d61105c94b6e75",
+      "actual": "fd9ff292c16246e4c4e7c757444e8cdbabe6112d8eabe9deb9d61105c94b6e75",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/helpers/scene-physics2d-author-fixture.mjs",
+      "expected": "7d1fac77678db579a707a579f3c17f99fd94a0de3cd7f3ee08b082fb7e6a7775",
+      "actual": "7d1fac77678db579a707a579f3c17f99fd94a0de3cd7f3ee08b082fb7e6a7775",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/helpers/scene-physics2d-drop-through-author-fixture.mjs",
+      "expected": "9eb9d45b7632b4cc98b40875e74ce3504ba1e5821aebd9b4e4af167b76910523",
+      "actual": "9eb9d45b7632b4cc98b40875e74ce3504ba1e5821aebd9b4e4af167b76910523",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/scene-physics2d-drop-through-smoke.mjs",
+      "expected": "067220c039bac867f01db17ef38920aa98fe7fc319cfc8607dd18dd158d334f3",
+      "actual": "067220c039bac867f01db17ef38920aa98fe7fc319cfc8607dd18dd158d334f3",
+      "matches": true
+    }
+  ],
+  "screenshotsReviewed": 15,
+  "authorFilesBefore": 51,
+  "authorFilesAfter": 53,
+  "changedAuthorPaths": [
+    "documents/behaviors/demo.json",
+    "documents/scripts/platform-endpoints-authored.txt",
+    "metadata/documents/2bcbe883-6283-46b5-aa77-28336c2ea70c.json",
+    "metadata/documents/eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee.json"
+  ],
+  "limitations": [
+    "Native collider navigation has an exact physics source selection. Project-event publisher, animation subscriber and audio subscriber sources carry distinct frozen propertyPath values, but the existing event-origin contract supplies no sourceRange; these actions open the behavior document without an exact text selection.",
+    "Long starter descriptions remain readable by scrolling the existing dialog body; the long Japanese native select label uses its existing ellipsis. Create/Cancel and binding Apply/Cancel actions remain reachable at 390px.",
+    "This is a real HTTP editor plus native Godot headless run. It verifies executed media commands, not audible audio or hardware; installed Tauri, Android and Bevy are outside this run.",
+    "The finite ordinary publisher run uses the existing cumulative 128-publication project event budget; no unlimited ordinary event-publication claim is made."
+  ],
+  "previousReport": "browser-final/browser.json",
+  "previousVerification": "browser-verification-before-control-fix.json",
+  "changedSourcesSincePreviousReport": [
+    "scripts/backends/godot4-adapter.mjs"
+  ]
+}

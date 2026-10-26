@@ -1,0 +1,31 @@
+Working directory: /home/chiharukiryu/cdev/viento-studio
+Shell: bash, login=false
+Node: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node (24.21.0)
+PATH prepended with that Node directory and /home/chiharukiryu/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin.
+
+npm run check -- --app-only
+Python supervisor records UTC start/end and actual exit in full-check-exit.json.
+8251 total, 7780 passed, 471 conditional skips, 0 failed/cancelled, exit 0.
+Production and shared fixture were frozen throughout. After this run started,
+only the native test file changed: fixture preconditions corrected and one
+held-input case appended. Those conditional native branches are independently
+covered by the final real-Godot 19/19 run; two queue revalidation cases are extra.
+
+python3 /tmp/viento-physics-drop-through/finish-report.py
+python3 /tmp/viento-physics-drop-through/append-atlas.py
+Appends one function, three implementations, three bindings, 12 maturity cells,
+six dependencies and one workflow; all prior atlas prefixes remain unchanged.
+
+node scripts/function-atlas.mjs --write --refresh-sources
+node scripts/function-atlas.mjs --check > docs/test-results/scene-physics2d-drop-through/atlas-check.log 2>&1
+node --test scripts/tests/function-atlas.test.mjs scripts/tests/function-atlas-view.test.mjs > docs/test-results/scene-physics2d-drop-through/atlas-tests.log 2>&1
+python3 /tmp/viento-physics-drop-through/preservation.py
+Checks the 12232-file turn baseline, all prior reports and 46 browser sources,
+version/lock files, Rust and old physics implementations; independently verifies
+the original 745603-byte WASM hash. Only explicit current source/doc changes are
+allowed. The 18 complete legacy starter records are independently verified in
+legacy-starter-command.txt and legacy-starter-hashes.json.
+
+python3 docs/test-results/docs-refresh-2026-10-25/check-links.py --output docs/test-results/scene-physics2d-drop-through/links.json
+git diff --check
+Final source snapshot refresh follows completed reports/doc updates.

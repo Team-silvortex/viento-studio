@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-26T09:13:38.608477+00:00",
+  "scope": "UI evidence packaging only; no production files changed and no tests rerun during packaging.",
+  "sourceSha256AtPackaging": {
+    "web/modules/app-project-build.js": "7726655bc72a1f652330b1c013a25b99e1cd66f87e2a765c18e4d3bf4c36b399",
+    "web/i18n/en.js": "66c1e43aed466610831316a42b72e7fe289e5ec1408a3a92e6f7f96e8fe5c6e5",
+    "web/i18n/ja.js": "e9db685d4a2adf61b2cdd0664d64a93a58da2610889d4ebc460cf799bdb7ab59",
+    "scripts/tests/project-build-retention-smoke.mjs": "97fa57f67595c69bfd33b98532852803f504ef35673c21646948c8e28df654ff",
+    "scripts/tests/project-build-retention-ui.test.mjs": "a39d59e17297a1eb985fbbd9c3f3da8bc0a523c0c9b44608d62db6e40195685d"
+  },
+  "browserReport": "browser.json",
+  "browserReportSha256": "da23f16f8ff3ba7d058bc0f12007801c870145d209a61a9afa2ffd03ce2bde23",
+  "browser": "Chrome/154.0.8037.97",
+  "browserOk": true,
+  "automatedObservations": 12,
+  "actualVisualInspection": {
+    "count": 3,
+    "screenshots": [
+      "running-zh-CN-390.png",
+      "succeeded-en-390.png",
+      "failed-ja-390.png"
+    ],
+    "method": "The three original PNG files were opened with view_image and visually inspected. The remaining nine PNGs were not visually inspected. All twelve observations have automated DOM/layout assertions in browser.json."
+  },
+  "evidenceCopy": {
+    "from": "/tmp/viento-build-retention-ui-1793005837973",
+    "method": "Byte-for-byte copy2 of the existing browser report and all 12 PNGs; no report content or screenshots changed.",
+    "copiedFiles": [
+      "browser.json",
+      "cancelled-en-390.png",
+      "cancelled-ja-390.png",
+      "cancelled-zh-CN-390.png",
+      "failed-en-390.png",
+      "failed-ja-390.png",
+      "failed-zh-CN-390.png",
+      "running-en-390.png",
+      "running-ja-390.png",
+      "running-zh-CN-390.png",
+      "succeeded-en-390.png",
+      "succeeded-ja-390.png",
+      "succeeded-zh-CN-390.png"
+    ]
+  },
+  "limitations": [
+    "Actual Chrome renders the current editor over local HTTP. Build status GET/cancel responses are synthetic browser fixtures, not Godot or Bevy execution.",
+    "1200 synthetic raw event summaries and synthetic log lines are reduced to 128 records and 32768 UTF-16 code units before display. Host retention is tested separately.",
+    "These raw summaries are not the validated project event ledger. No claim of complete runtime observation, installed Tauri or Android verification."
+  ],
+  "uiVerification": "ui-verification.txt"
+}

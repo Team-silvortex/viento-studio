@@ -1,0 +1,5 @@
+{
+  "documents/scripts/checkpoint.txt": "extends Node\nvar p\nfunc _ready() -> void:\n\tp = get_meta(\"viento_project\")\n\t_probe()\nfunc _snapshot(label: String, details: Dictionary = {}) -> void:\n\tvar host = p.host.get_ref()\n\tprint(\"VIENTO_BUDGET_SNAPSHOT:\" + JSON.stringify({\"label\": label, \"used\": host.execution_budget.snapshot(), \"details\": details}))\nfunc _probe() -> void:\n\tvar host = p.host.get_ref()\n\tp.subscribe_event(\"bytes\", _receive)\n\tvar accepted := 0\n\tfor index in range(4):\n\t\tif p.publish_event(\"bytes\", \"x\".repeat(4096)):\n\t\t\taccepted += 1\n\t_snapshot(\"rejected\", {\"accepted\": accepted, \"pending\": host.event_bus.pending_count(), \"sequence\": host.event_bus.sequence})\nfunc _receive(_value) -> bool:\n\treturn true\n",
+  "documents/scripts/publisher.txt": "extends Node\n",
+  "documents/scripts/second.txt": "extends Node\n"
+}

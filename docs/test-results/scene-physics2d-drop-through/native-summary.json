@@ -1,0 +1,109 @@
+{
+  "format": "viento-drop-through-native-summary",
+  "schemaVersion": 1,
+  "matrix": {
+    "tests": 19,
+    "native": 19,
+    "pure": 0,
+    "passed": 19,
+    "failed": 0,
+    "skipped": 0,
+    "log": "native-final.log",
+    "proof": "native-final.json",
+    "durationMs": 142130.0029
+  },
+  "independentQueuedRevalidation": {
+    "tests": 2,
+    "native": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "log": "native-queued-revalidation.log",
+    "proof": "native-queued-revalidation.json",
+    "runnerSnapshot": "queued-revalidation-runner.mjs.txt"
+  },
+  "sourceHashes": "native-source-hashes.json",
+  "commands": "native-commands.txt",
+  "zip": {
+    "path": "docs/test-results/scene-physics2d-drop-through/native-final-drop-through.zip",
+    "sha256": "c9863921a2a18e1f4821c1f650b3ae4c004f489ff5beb1be19b7fdafe3961a85"
+  },
+  "window": {
+    "path": "native-window.png",
+    "sha256": "8a51cbfa6e7b2ef0276fbc9a93a2d60f5a1b343692303545d683652ae8cd4488",
+    "visuallyInspected": true
+  },
+  "historicalWarnings": {
+    "message": "WARNING: 2 ObjectDB instances were leaked at exit (run with --verbose for details).",
+    "comparison": "The same no-request fixture produced the same warning in both the 0.29 current generation and the 0.28 historical generation. Samples, final actors and publications were deep-equal as parsed values.",
+    "evidence": "native-final-stdout.log; no-request-exact-legacy-solve"
+  },
+  "lowGravity": {
+    "gravity": 20,
+    "firstGroundedStep": 14,
+    "lastProbe": {
+      "exceptions": [
+        "platform"
+      ],
+      "grounded": false,
+      "position": [
+        100,
+        143.755508422852
+      ],
+      "step": 30
+    },
+    "semantics": "Request is made only once real native grounded support is reported. Initial gravity 1 and then gravity 20 with a fixed tick-6 request correctly returned false before a native support contact existed."
+  },
+  "adjacentSolid": {
+    "requests": [
+      {
+        "accepted": true
+      }
+    ],
+    "semantics": "The native first collision may report only the one-way body. The existing solid body is never ignored and still supports the character. The capability does not enumerate every geometrically adjacent support with extra queries."
+  },
+  "priorAttempts": [
+    {
+      "log": "native-first.log",
+      "tests": 1,
+      "passed": 0,
+      "failed": 1,
+      "reason": "The fixture inherited the smoke driver right-arrow input and horizontal speed 240. The vertical-only assertion was invalid."
+    },
+    {
+      "log": "native-second.log",
+      "tests": 1,
+      "passed": 0,
+      "failed": 1,
+      "reason": "The horizontal issue persisted after merely loosening numeric tolerance. The final shared fixture sets speed 0, retaining arrow controls for the jump-precedence case. No production change."
+    },
+    {
+      "log": "native-third.log",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "reason": "The corrected isolated fixture passed."
+    },
+    {
+      "log": "native-matrix-first.log",
+      "tests": 18,
+      "passed": 16,
+      "failed": 2,
+      "reason": "Low gravity did not have native support at fixed request tick 6; three separate nonmotor probe sources exceeded the author manifest limit of 8 sources. No production change."
+    },
+    {
+      "log": "native-repair-focus.log",
+      "tests": 3,
+      "passed": 2,
+      "failed": 1,
+      "reason": "One reused source bound to three nonmotor instances and the held-key second-platform case passed. Gravity 20 still first grounded only at tick 14, so a tick-6 request correctly rejected."
+    },
+    {
+      "log": "native-low-gravity-focus.log",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "reason": "Request is now triggered by actual native support, and the owned exception stays until close because the shapes have not separated."
+    }
+  ]
+}

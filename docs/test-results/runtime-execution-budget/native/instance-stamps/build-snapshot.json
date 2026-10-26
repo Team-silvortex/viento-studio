@@ -1,0 +1,1507 @@
+{
+  "format": "viento-build-snapshot",
+  "schemaVersion": 1,
+  "source": {
+    "workspace": {
+      "format": "viento-workspace",
+      "version": 3,
+      "id": "11111111-1111-4111-8111-111111111115",
+      "name": "Scene Behavior Example",
+      "createdAt": 0,
+      "paths": {
+        "documents": "documents",
+        "templates": "templates",
+        "metadata": "metadata"
+      },
+      "assetStores": {
+        "main": {
+          "path": "assets"
+        }
+      },
+      "documentTypes": [
+        {
+          "id": "character",
+          "label": "角色 / Actor",
+          "directory": "characters",
+          "parserProfile": "structured",
+          "template": "character.md"
+        },
+        {
+          "id": "scene",
+          "label": "场景 / Scene",
+          "directory": "scenes",
+          "parserProfile": "structured",
+          "template": "scene.json"
+        },
+        {
+          "id": "behavior",
+          "label": "行为绑定 / Behavior",
+          "directory": "behaviors",
+          "parserProfile": "structured",
+          "template": "behavior.json"
+        },
+        {
+          "id": "script",
+          "label": "行为源码 / Script",
+          "directory": "scripts",
+          "parserProfile": "structured",
+          "template": "script.txt"
+        },
+        {
+          "id": "audio",
+          "label": "Audio",
+          "directory": "audio",
+          "parserProfile": "structured",
+          "template": "audio.json"
+        },
+        {
+          "id": "assembly",
+          "label": "Project assembly",
+          "directory": "projects",
+          "parserProfile": "structured",
+          "template": "assembly.json"
+        },
+        {
+          "id": "animation",
+          "label": "Animation",
+          "directory": "animations",
+          "parserProfile": "structured",
+          "template": "animation.json"
+        }
+      ]
+    },
+    "definition": {
+      "id": "11111111-1111-4111-8111-111111111115",
+      "name": "Scene Behavior Example",
+      "version": 3,
+      "paths": {
+        "documents": "documents",
+        "templates": "templates",
+        "metadata": "metadata"
+      },
+      "configurable": true,
+      "projectTypes": true,
+      "documentTypes": [
+        {
+          "id": "character",
+          "label": "角色 / Actor",
+          "directory": "characters",
+          "parserProfile": "structured",
+          "template": "character.md",
+          "templateSource": "templates/character.md",
+          "content": ""
+        },
+        {
+          "id": "scene",
+          "label": "场景 / Scene",
+          "directory": "scenes",
+          "parserProfile": "structured",
+          "template": "scene.json",
+          "templateSource": "templates/scene.json",
+          "content": ""
+        },
+        {
+          "id": "behavior",
+          "label": "行为绑定 / Behavior",
+          "directory": "behaviors",
+          "parserProfile": "structured",
+          "template": "behavior.json",
+          "templateSource": "templates/behavior.json",
+          "content": ""
+        },
+        {
+          "id": "script",
+          "label": "行为源码 / Script",
+          "directory": "scripts",
+          "parserProfile": "structured",
+          "template": "script.txt",
+          "templateSource": "templates/script.txt",
+          "content": ""
+        },
+        {
+          "id": "audio",
+          "label": "Audio",
+          "directory": "audio",
+          "parserProfile": "structured",
+          "template": "audio.json",
+          "templateSource": "templates/audio.json",
+          "content": ""
+        },
+        {
+          "id": "assembly",
+          "label": "Project assembly",
+          "directory": "projects",
+          "parserProfile": "structured",
+          "template": "assembly.json",
+          "templateSource": "templates/assembly.json",
+          "content": ""
+        },
+        {
+          "id": "animation",
+          "label": "Animation",
+          "directory": "animations",
+          "parserProfile": "structured",
+          "template": "animation.json",
+          "templateSource": "templates/animation.json",
+          "content": ""
+        }
+      ]
+    },
+    "documents": [
+      {
+        "sourcePath": "documents/animations/scene-0.json",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "58585858-5858-4585-8585-000000000100",
+          "sourcePath": "documents/animations/scene-0.json",
+          "documentType": "animation",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "slot": "scene"
+            }
+          ],
+          "assetBindings": []
+        },
+        "descriptor": {
+          "documentType": "animation",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "slot": "scene"
+            }
+          ],
+          "format": "viento-document",
+          "version": 1,
+          "id": "58585858-5858-4585-8585-000000000100",
+          "sourcePath": "documents/animations/scene-0.json",
+          "assetBindings": [],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "Animation"
+        },
+        "content": "{\n  \"format\": \"viento-scene-animation\",\n  \"schemaVersion\": 4,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"durationSeconds\": 1,\n  \"loop\": true,\n  \"tracks\": [\n    {\n      \"id\": \"58585858-5858-4585-8585-000000000001\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\n      \"property\": \"offset2d\",\n      \"interpolation\": \"linear\",\n      \"keyframes\": [\n        {\n          \"atSeconds\": 0,\n          \"value\": [\n            0,\n            0\n          ]\n        },\n        {\n          \"atSeconds\": 1,\n          \"value\": [\n            100,\n            0\n          ]\n        }\n      ]\n    }\n  ],\n  \"clips\": [\n    {\n      \"id\": \"59595959-5959-4595-8595-000000000001\",\n      \"name\": \"歩く / Idle\",\n      \"startSeconds\": 0.25,\n      \"endSeconds\": 0.75,\n      \"loop\": true\n    },\n    {\n      \"id\": \"59595959-5959-4595-8595-000000000002\",\n      \"name\": \"攻撃 / Strike\",\n      \"startSeconds\": 0.5,\n      \"endSeconds\": 1,\n      \"loop\": false\n    }\n  ],\n  \"playbackScope\": \"instance\"\n}\n",
+        "sourceRevision": "sha256:a49c014999575cd57132467bdb69280c9a544f1f18e18f66197d9e44d6565424"
+      },
+      {
+        "sourcePath": "documents/animations/scene-1.json",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "58585858-5858-4585-8585-000000000101",
+          "sourcePath": "documents/animations/scene-1.json",
+          "documentType": "animation",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789abd",
+              "slot": "scene"
+            }
+          ],
+          "assetBindings": []
+        },
+        "descriptor": {
+          "documentType": "animation",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789abd",
+              "slot": "scene"
+            }
+          ],
+          "format": "viento-document",
+          "version": 1,
+          "id": "58585858-5858-4585-8585-000000000101",
+          "sourcePath": "documents/animations/scene-1.json",
+          "assetBindings": [],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "Animation"
+        },
+        "content": "{\n  \"format\": \"viento-scene-animation\",\n  \"schemaVersion\": 3,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"durationSeconds\": 1,\n  \"loop\": true,\n  \"tracks\": [\n    {\n      \"id\": \"58585858-5858-4585-8585-000000000001\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\n      \"property\": \"offset2d\",\n      \"interpolation\": \"linear\",\n      \"keyframes\": [\n        {\n          \"atSeconds\": 0,\n          \"value\": [\n            0,\n            0\n          ]\n        },\n        {\n          \"atSeconds\": 1,\n          \"value\": [\n            100,\n            0\n          ]\n        }\n      ]\n    }\n  ],\n  \"clips\": [\n    {\n      \"id\": \"59595959-5959-4595-8595-000000000011\",\n      \"name\": \"歩く / Idle\",\n      \"startSeconds\": 0.25,\n      \"endSeconds\": 0.75,\n      \"loop\": true\n    },\n    {\n      \"id\": \"59595959-5959-4595-8595-000000000012\",\n      \"name\": \"攻撃 / Strike\",\n      \"startSeconds\": 0.5,\n      \"endSeconds\": 1,\n      \"loop\": false\n    }\n  ]\n}\n",
+        "sourceRevision": "sha256:c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a"
+      },
+      {
+        "sourcePath": "documents/audio/demo.json",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "88888888-8888-4888-8888-888888888888",
+          "sourcePath": "documents/audio/demo.json",
+          "documentType": "audio",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789abd",
+              "slot": "scene"
+            }
+          ],
+          "assetBindings": [
+            {
+              "assetId": "99999999-9999-4999-8999-999999999999",
+              "role": "audio"
+            }
+          ]
+        },
+        "descriptor": {
+          "documentType": "audio",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789abd",
+              "slot": "scene"
+            }
+          ],
+          "format": "viento-document",
+          "version": 1,
+          "id": "88888888-8888-4888-8888-888888888888",
+          "sourcePath": "documents/audio/demo.json",
+          "assetBindings": [
+            {
+              "assetId": "99999999-9999-4999-8999-999999999999",
+              "role": "audio"
+            }
+          ],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "Audio"
+        },
+        "content": "{\n  \"format\": \"viento-scene-audio\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"tracks\": [\n    {\n      \"id\": \"77777777-7777-4777-8777-000000000001\",\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\n      \"role\": \"music\",\n      \"volume\": 0.12,\n      \"loop\": true\n    },\n    {\n      \"id\": \"77777777-7777-4777-8777-000000000002\",\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\n      \"role\": \"effect\",\n      \"volume\": 0.3,\n      \"loop\": false\n    }\n  ],\n  \"cues\": [\n    {\n      \"id\": \"66666666-6666-4666-8666-000000000001\",\n      \"trackId\": \"77777777-7777-4777-8777-000000000001\",\n      \"atSeconds\": 0,\n      \"action\": \"play\"\n    },\n    {\n      \"id\": \"66666666-6666-4666-8666-000000000002\",\n      \"trackId\": \"77777777-7777-4777-8777-000000000002\",\n      \"atSeconds\": 0.25,\n      \"action\": \"play\"\n    },\n    {\n      \"id\": \"66666666-6666-4666-8666-000000000003\",\n      \"trackId\": \"77777777-7777-4777-8777-000000000001\",\n      \"atSeconds\": 0.5,\n      \"action\": \"stop\"\n    }\n  ]\n}\n",
+        "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729"
+      },
+      {
+        "sourcePath": "documents/audio/first.json",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789ae1",
+          "sourcePath": "documents/audio/first.json",
+          "documentType": "audio",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "slot": "scene"
+            }
+          ],
+          "assetBindings": [
+            {
+              "assetId": "99999999-9999-4999-8999-999999999999",
+              "role": "audio"
+            }
+          ]
+        },
+        "descriptor": {
+          "documentType": "audio",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "slot": "scene"
+            }
+          ],
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789ae1",
+          "sourcePath": "documents/audio/first.json",
+          "assetBindings": [
+            {
+              "assetId": "99999999-9999-4999-8999-999999999999",
+              "role": "audio"
+            }
+          ],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "Audio"
+        },
+        "content": "{\n  \"format\": \"viento-scene-audio\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"tracks\": [\n    {\n      \"id\": \"77777777-7777-4777-8777-000000000001\",\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\n      \"role\": \"music\",\n      \"volume\": 0.12,\n      \"loop\": true\n    },\n    {\n      \"id\": \"77777777-7777-4777-8777-000000000002\",\n      \"resourceId\": \"99999999-9999-4999-8999-999999999999\",\n      \"role\": \"effect\",\n      \"volume\": 0.3,\n      \"loop\": false\n    }\n  ],\n  \"cues\": []\n}\n",
+        "sourceRevision": "sha256:a56cbb6810055e5dbf2bbf9e9692119c4b97f1989376490a9a66612cafcfe1a2"
+      },
+      {
+        "sourcePath": "documents/behaviors/demo.json",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+          "sourcePath": "documents/behaviors/demo.json",
+          "documentType": "behavior",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "slot": "scene"
+            },
+            {
+              "kind": "reference",
+              "targetId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+              "slot": "implementation"
+            }
+          ],
+          "assetBindings": []
+        },
+        "descriptor": {
+          "documentType": "behavior",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "slot": "scene"
+            },
+            {
+              "kind": "reference",
+              "targetId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+              "slot": "implementation"
+            }
+          ],
+          "format": "viento-document",
+          "version": 1,
+          "id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+          "sourcePath": "documents/behaviors/demo.json",
+          "assetBindings": [],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "行为绑定 / Behavior"
+        },
+        "content": "{\n  \"format\": \"viento-scene-behaviors\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"bindings\": [\n    {\n      \"bindingId\": \"99999999-9999-4999-8999-999999999991\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\n      \"implementation\": {\n        \"backendId\": \"org.viento.godot4\",\n        \"language\": \"gdscript\",\n        \"sourceObjectId\": \"ffffffff-ffff-4fff-8fff-ffffffffffff\"\n      },\n      \"parameters\": {},\n      \"events\": []\n    }\n  ]\n}\n",
+        "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354"
+      },
+      {
+        "sourcePath": "documents/behaviors/second.json",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789ac1",
+          "sourcePath": "documents/behaviors/second.json",
+          "documentType": "behavior",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789abd",
+              "slot": "scene"
+            },
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789ac2",
+              "slot": "implementation"
+            }
+          ],
+          "assetBindings": []
+        },
+        "descriptor": {
+          "documentType": "behavior",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789abd",
+              "slot": "scene"
+            },
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789ac2",
+              "slot": "implementation"
+            }
+          ],
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789ac1",
+          "sourcePath": "documents/behaviors/second.json",
+          "assetBindings": [],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "行为绑定 / Behavior"
+        },
+        "content": "{\n  \"format\": \"viento-scene-behaviors\",\n  \"schemaVersion\": 1,\n  \"sceneObjectId\": \"12345678-1234-4234-8234-123456789abd\",\n  \"bindings\": [\n    {\n      \"bindingId\": \"12345678-1234-4234-8234-123456789ac3\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\n      \"implementation\": {\n        \"backendId\": \"org.viento.godot4\",\n        \"language\": \"gdscript\",\n        \"sourceObjectId\": \"12345678-1234-4234-8234-123456789ac2\"\n      },\n      \"parameters\": {},\n      \"events\": []\n    }\n  ]\n}\n",
+        "sourceRevision": "sha256:a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76"
+      },
+      {
+        "sourcePath": "documents/characters/traveler.md",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sourcePath": "documents/characters/traveler.md",
+          "documentType": "character",
+          "parserProfile": "structured",
+          "relations": [],
+          "assetBindings": [
+            {
+              "assetId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+              "role": "sprite"
+            }
+          ]
+        },
+        "descriptor": {
+          "documentType": "character",
+          "parserProfile": "structured",
+          "relations": [],
+          "format": "viento-document",
+          "version": 1,
+          "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sourcePath": "documents/characters/traveler.md",
+          "assetBindings": [
+            {
+              "assetId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+              "role": "sprite"
+            }
+          ],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "角色 / Actor"
+        },
+        "content": "# Traveler / 旅人 / 旅人\n\n姓名：Traveler\n背景：来自示例工程的旅人。角色背景仍属于角色文档。\n",
+        "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20"
+      },
+      {
+        "sourcePath": "documents/projects/demo.json",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789abc",
+          "sourcePath": "documents/projects/demo.json",
+          "documentType": "assembly",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "slot": "scene"
+            },
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789abd",
+              "slot": "scene"
+            }
+          ],
+          "assetBindings": []
+        },
+        "descriptor": {
+          "documentType": "assembly",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "slot": "scene"
+            },
+            {
+              "kind": "reference",
+              "targetId": "12345678-1234-4234-8234-123456789abd",
+              "slot": "scene"
+            }
+          ],
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789abc",
+          "sourcePath": "documents/projects/demo.json",
+          "assetBindings": [],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "Project assembly"
+        },
+        "content": "{\n  \"format\": \"viento-project-assembly\",\n  \"schemaVersion\": 1,\n  \"title\": \"Two-scene project\",\n  \"entrySceneId\": \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n  \"sceneIds\": [\n    \"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\n    \"12345678-1234-4234-8234-123456789abd\"\n  ]\n}\n",
+        "sourceRevision": "sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d"
+      },
+      {
+        "sourcePath": "documents/scenes/audio.json",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789abd",
+          "sourcePath": "documents/scenes/audio.json",
+          "documentType": "scene",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "slot": "actor"
+            },
+            {
+              "kind": "audio",
+              "targetId": "88888888-8888-4888-8888-888888888888",
+              "slot": "scene audio"
+            },
+            {
+              "kind": "behavior",
+              "targetId": "12345678-1234-4234-8234-123456789ac1",
+              "slot": "instance behaviors"
+            },
+            {
+              "kind": "animation",
+              "targetId": "58585858-5858-4585-8585-000000000101",
+              "slot": "scene animation"
+            }
+          ],
+          "assetBindings": []
+        },
+        "descriptor": {
+          "documentType": "scene",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "slot": "actor"
+            },
+            {
+              "kind": "audio",
+              "targetId": "88888888-8888-4888-8888-888888888888",
+              "slot": "scene audio"
+            },
+            {
+              "kind": "behavior",
+              "targetId": "12345678-1234-4234-8234-123456789ac1",
+              "slot": "instance behaviors"
+            },
+            {
+              "kind": "animation",
+              "targetId": "58585858-5858-4585-8585-000000000101",
+              "slot": "scene animation"
+            }
+          ],
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789abd",
+          "sourcePath": "documents/scenes/audio.json",
+          "assetBindings": [],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "场景 / Scene"
+        },
+        "content": "{\n  \"format\": \"viento-scene2d\",\n  \"schemaVersion\": 2,\n  \"title\": \"Second scene with shared actors and audio\",\n  \"viewport\": [\n    800,\n    480\n  ],\n  \"background\": \"#0d1829\",\n  \"actors\": [\n    {\n      \"objectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\n      \"position\": [\n        200,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 0,\n      \"controls\": \"none\",\n      \"imageResourceId\": \"cccccccc-cccc-4ccc-8ccc-cccccccccccc\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\"\n    },\n    {\n      \"objectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\n      \"position\": [\n        500,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 0,\n      \"controls\": \"none\",\n      \"imageResourceId\": \"cccccccc-cccc-4ccc-8ccc-cccccccccccc\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\"\n    }\n  ]\n}\n",
+        "sourceRevision": "sha256:038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265"
+      },
+      {
+        "sourcePath": "documents/scenes/demo.json",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/demo.json",
+          "documentType": "scene",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "slot": "actor"
+            },
+            {
+              "kind": "behavior",
+              "targetId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "slot": "instance behaviors"
+            },
+            {
+              "kind": "animation",
+              "targetId": "58585858-5858-4585-8585-000000000100",
+              "slot": "scene animation"
+            },
+            {
+              "kind": "audio",
+              "targetId": "12345678-1234-4234-8234-123456789ae1",
+              "slot": "scene audio"
+            }
+          ],
+          "assetBindings": []
+        },
+        "descriptor": {
+          "documentType": "scene",
+          "parserProfile": "structured",
+          "relations": [
+            {
+              "kind": "reference",
+              "targetId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "slot": "actor"
+            },
+            {
+              "kind": "behavior",
+              "targetId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+              "slot": "instance behaviors"
+            },
+            {
+              "kind": "animation",
+              "targetId": "58585858-5858-4585-8585-000000000100",
+              "slot": "scene animation"
+            },
+            {
+              "kind": "audio",
+              "targetId": "12345678-1234-4234-8234-123456789ae1",
+              "slot": "scene audio"
+            }
+          ],
+          "format": "viento-document",
+          "version": 1,
+          "id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/demo.json",
+          "assetBindings": [],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "场景 / Scene"
+        },
+        "content": "{\n  \"format\": \"viento-scene2d\",\n  \"schemaVersion\": 2,\n  \"title\": \"Independent GDScript Behaviors\",\n  \"viewport\": [\n    800,\n    480\n  ],\n  \"background\": \"#0d1829\",\n  \"actors\": [\n    {\n      \"objectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\n      \"position\": [\n        200,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 0,\n      \"controls\": \"none\",\n      \"imageResourceId\": \"cccccccc-cccc-4ccc-8ccc-cccccccccccc\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\"\n    },\n    {\n      \"objectId\": \"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\n      \"position\": [\n        500,\n        220\n      ],\n      \"size\": [\n        80,\n        80\n      ],\n      \"color\": \"#ffffff\",\n      \"speed\": 0,\n      \"controls\": \"none\",\n      \"imageResourceId\": \"cccccccc-cccc-4ccc-8ccc-cccccccccccc\",\n      \"instanceId\": \"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\"\n    }\n  ]\n}\n",
+        "sourceRevision": "sha256:f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd"
+      },
+      {
+        "sourcePath": "documents/scripts/checkpoint.txt",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+          "sourcePath": "documents/scripts/checkpoint.txt",
+          "documentType": "script",
+          "parserProfile": "structured",
+          "relations": [],
+          "assetBindings": []
+        },
+        "descriptor": {
+          "documentType": "script",
+          "parserProfile": "structured",
+          "relations": [],
+          "format": "viento-document",
+          "version": 1,
+          "id": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+          "sourcePath": "documents/scripts/checkpoint.txt",
+          "assetBindings": [],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "行为源码 / Script"
+        },
+        "content": "extends Node\nvar p\nfunc _ready() -> void:\n\tp = get_meta(\"viento_project\")\n\tcall_deferred(\"_probe\")\nfunc _snapshot(label: String, details: Dictionary = {}) -> void:\n\tvar host = p.host.get_ref()\n\tprint(\"VIENTO_BUDGET_SNAPSHOT:\" + JSON.stringify({\"label\": label, \"used\": host.execution_budget.snapshot(), \"details\": details}))\nfunc _probe() -> void:\n\tvar host = p.host.get_ref()\n\tp.select_animation_clip(\"59595959-5959-4595-8595-000000000001\")\n\tp.play_animation()\n\t_sample(\"reserved\")\n\thost.flush_requests()\n\t_sample(\"applied\")\n\tp.pause_animation()\n\t_sample(\"pause-reserved\")\n\thost.flush_requests()\n\t_sample(\"paused\")\nfunc _sample(label: String) -> void:\n\tvar host = p.host.get_ref()\n\t_snapshot(label, {\"reserved\": host.animation_control.reserved_count, \"sequence\": host.animation_control.sequence, \"pending\": host.animation_control.pending_count()})\n",
+        "sourceRevision": "sha256:49c043d009709d94e51fc0a8c367dfdc9cb6bb18940c76be2038d0156b59d171"
+      },
+      {
+        "sourcePath": "documents/scripts/second.txt",
+        "record": {
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789ac2",
+          "sourcePath": "documents/scripts/second.txt",
+          "documentType": "script",
+          "parserProfile": "structured",
+          "relations": [],
+          "assetBindings": []
+        },
+        "descriptor": {
+          "documentType": "script",
+          "parserProfile": "structured",
+          "relations": [],
+          "format": "viento-document",
+          "version": 1,
+          "id": "12345678-1234-4234-8234-123456789ac2",
+          "sourcePath": "documents/scripts/second.txt",
+          "assetBindings": [],
+          "parserOptions": {},
+          "fieldGroups": [],
+          "typeLabel": "行为源码 / Script"
+        },
+        "content": "extends Node\n",
+        "sourceRevision": "sha256:006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a"
+      }
+    ],
+    "assets": [
+      {
+        "record": {
+          "format": "viento-asset",
+          "version": 1,
+          "id": "99999999-9999-4999-8999-999999999999",
+          "name": "Generated 440 Hz tone",
+          "kind": "audio",
+          "tags": [],
+          "location": {
+            "store": "main",
+            "path": "tone.wav"
+          },
+          "content": {
+            "size": 44144,
+            "sha256": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af"
+          },
+          "legacyPaths": [
+            "assets/tone.wav"
+          ]
+        },
+        "availability": "present-unverified"
+      },
+      {
+        "record": {
+          "format": "viento-asset",
+          "version": 1,
+          "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+          "name": "Traveler",
+          "kind": "image",
+          "tags": [],
+          "location": {
+            "store": "main",
+            "path": "traveler.svg"
+          },
+          "content": {
+            "size": 231,
+            "sha256": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99"
+          },
+          "legacyPaths": [
+            "assets/traveler.svg"
+          ]
+        },
+        "availability": "present-unverified"
+      }
+    ]
+  },
+  "plan": {
+    "format": "viento-build-plan",
+    "schemaVersion": 1,
+    "kind": "project",
+    "projectId": "11111111-1111-4111-8111-111111111115",
+    "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+    "worldRevision": "sha256:ab3c450574e2882f4910eaca1c47de13a7834fe15a7257101e2a06dc99275c1c",
+    "assembly": {
+      "objectId": "12345678-1234-4234-8234-123456789abc",
+      "sourcePath": "documents/projects/demo.json",
+      "sourceRevision": "sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "title": "Two-scene project"
+    },
+    "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "scenes": [
+      {
+        "format": "viento-build-plan",
+        "schemaVersion": 3,
+        "kind": "scene2d",
+        "projectId": "11111111-1111-4111-8111-111111111115",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "worldRevision": "sha256:ab3c450574e2882f4910eaca1c47de13a7834fe15a7257101e2a06dc99275c1c",
+        "scene": {
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/demo.json",
+          "sourceRevision": "sha256:f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd",
+          "title": "Independent GDScript Behaviors",
+          "viewport": [
+            800,
+            480
+          ],
+          "background": "#0d1829"
+        },
+        "requiredCapabilities": [
+          "scene2d",
+          "input.arrows",
+          "state.movement",
+          "image",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "audio.nonspatial",
+          "audio.timeline",
+          "animation.visual2d",
+          "animation.clips2d",
+          "animation.instances2d"
+        ],
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              200,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/0"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              500,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "sourcePath": "documents/scenes/demo.json",
+              "propertyPath": "/actors/1"
+            }
+          }
+        ],
+        "resources": [
+          {
+            "id": "99999999-9999-4999-8999-999999999999",
+            "kind": "audio",
+            "extension": "wav",
+            "size": 44144,
+            "sha256": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af"
+          },
+          {
+            "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "size": 231,
+            "sha256": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+            "extension": "svg"
+          }
+        ],
+        "behaviors": {
+          "format": "viento-behavior-plan",
+          "schemaVersion": 1,
+          "backendId": "org.viento.godot4",
+          "language": "gdscript",
+          "manifest": {
+            "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+            "sourcePath": "documents/behaviors/demo.json",
+            "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354"
+          },
+          "sources": [
+            {
+              "objectId": "ffffffff-ffff-4fff-8fff-ffffffffffff",
+              "sourcePath": "documents/scripts/checkpoint.txt",
+              "sourceRevision": "sha256:49c043d009709d94e51fc0a8c367dfdc9cb6bb18940c76be2038d0156b59d171",
+              "language": "gdscript",
+              "content": "extends Node\nvar p\nfunc _ready() -> void:\n\tp = get_meta(\"viento_project\")\n\tcall_deferred(\"_probe\")\nfunc _snapshot(label: String, details: Dictionary = {}) -> void:\n\tvar host = p.host.get_ref()\n\tprint(\"VIENTO_BUDGET_SNAPSHOT:\" + JSON.stringify({\"label\": label, \"used\": host.execution_budget.snapshot(), \"details\": details}))\nfunc _probe() -> void:\n\tvar host = p.host.get_ref()\n\tp.select_animation_clip(\"59595959-5959-4595-8595-000000000001\")\n\tp.play_animation()\n\t_sample(\"reserved\")\n\thost.flush_requests()\n\t_sample(\"applied\")\n\tp.pause_animation()\n\t_sample(\"pause-reserved\")\n\thost.flush_requests()\n\t_sample(\"paused\")\nfunc _sample(label: String) -> void:\n\tvar host = p.host.get_ref()\n\t_snapshot(label, {\"reserved\": host.animation_control.reserved_count, \"sequence\": host.animation_control.sequence, \"pending\": host.animation_control.pending_count()})\n"
+            }
+          ],
+          "bindings": [
+            {
+              "bindingId": "99999999-9999-4999-8999-999999999991",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "implementation": {
+                "backendId": "org.viento.godot4",
+                "language": "gdscript",
+                "sourceObjectId": "ffffffff-ffff-4fff-8fff-ffffffffffff"
+              },
+              "parameters": {},
+              "events": [],
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "declaration": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+                "propertyPath": "/bindings/0"
+              }
+            }
+          ]
+        },
+        "audio": {
+          "format": "viento-audio-plan",
+          "schemaVersion": 1,
+          "manifest": {
+            "objectId": "12345678-1234-4234-8234-123456789ae1",
+            "sourcePath": "documents/audio/first.json",
+            "sourceRevision": "sha256:a56cbb6810055e5dbf2bbf9e9692119c4b97f1989376490a9a66612cafcfe1a2"
+          },
+          "document": {
+            "cues": [],
+            "format": "viento-scene-audio",
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "schemaVersion": 1,
+            "tracks": [
+              {
+                "id": "77777777-7777-4777-8777-000000000001",
+                "loop": true,
+                "resourceId": "99999999-9999-4999-8999-999999999999",
+                "role": "music",
+                "volume": 0.12
+              },
+              {
+                "id": "77777777-7777-4777-8777-000000000002",
+                "loop": false,
+                "resourceId": "99999999-9999-4999-8999-999999999999",
+                "role": "effect",
+                "volume": 0.3
+              }
+            ]
+          },
+          "locations": {
+            "tracks": [
+              {
+                "id": "77777777-7777-4777-8777-000000000001",
+                "declaration": {
+                  "objectId": "12345678-1234-4234-8234-123456789ae1",
+                  "sourcePath": "documents/audio/first.json",
+                  "sourceRevision": "sha256:a56cbb6810055e5dbf2bbf9e9692119c4b97f1989376490a9a66612cafcfe1a2",
+                  "propertyPath": "/tracks/0",
+                  "sourceRange": {
+                    "start": 135,
+                    "end": 318,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/0",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "77777777-7777-4777-8777-000000000002",
+                "declaration": {
+                  "objectId": "12345678-1234-4234-8234-123456789ae1",
+                  "sourcePath": "documents/audio/first.json",
+                  "sourceRevision": "sha256:a56cbb6810055e5dbf2bbf9e9692119c4b97f1989376490a9a66612cafcfe1a2",
+                  "propertyPath": "/tracks/1",
+                  "sourceRange": {
+                    "start": 324,
+                    "end": 508,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/1",
+                    "exact": true
+                  }
+                }
+              }
+            ],
+            "cues": []
+          }
+        },
+        "animation": {
+          "format": "viento-animation-plan",
+          "schemaVersion": 3,
+          "manifest": {
+            "objectId": "58585858-5858-4585-8585-000000000100",
+            "sourcePath": "documents/animations/scene-0.json",
+            "sourceRevision": "sha256:a49c014999575cd57132467bdb69280c9a544f1f18e18f66197d9e44d6565424"
+          },
+          "document": {
+            "clips": [
+              {
+                "endSeconds": 0.75,
+                "id": "59595959-5959-4595-8595-000000000001",
+                "loop": true,
+                "name": "歩く / Idle",
+                "startSeconds": 0.25
+              },
+              {
+                "endSeconds": 1,
+                "id": "59595959-5959-4595-8595-000000000002",
+                "loop": false,
+                "name": "攻撃 / Strike",
+                "startSeconds": 0.5
+              }
+            ],
+            "durationSeconds": 1,
+            "format": "viento-scene-animation",
+            "loop": true,
+            "playbackScope": "instance",
+            "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+            "schemaVersion": 4,
+            "tracks": [
+              {
+                "id": "58585858-5858-4585-8585-000000000001",
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "interpolation": "linear",
+                "keyframes": [
+                  {
+                    "atSeconds": 0,
+                    "value": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "atSeconds": 1,
+                    "value": [
+                      100,
+                      0
+                    ]
+                  }
+                ],
+                "property": "offset2d"
+              }
+            ]
+          },
+          "locations": {
+            "tracks": [
+              {
+                "id": "58585858-5858-4585-8585-000000000001",
+                "declaration": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "sourcePath": "documents/animations/scene-0.json",
+                  "sourceRevision": "sha256:a49c014999575cd57132467bdb69280c9a544f1f18e18f66197d9e44d6565424",
+                  "propertyPath": "/tracks/0",
+                  "sourceRange": {
+                    "start": 179,
+                    "end": 609,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/0",
+                    "exact": true
+                  }
+                }
+              }
+            ],
+            "clips": [
+              {
+                "id": "59595959-5959-4595-8595-000000000001",
+                "declaration": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "sourcePath": "documents/animations/scene-0.json",
+                  "sourceRevision": "sha256:a49c014999575cd57132467bdb69280c9a544f1f18e18f66197d9e44d6565424",
+                  "propertyPath": "/clips/0",
+                  "sourceRange": {
+                    "start": 632,
+                    "end": 791,
+                    "encoding": "utf-16",
+                    "propertyPath": "/clips/0",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "59595959-5959-4595-8595-000000000002",
+                "declaration": {
+                  "objectId": "58585858-5858-4585-8585-000000000100",
+                  "sourcePath": "documents/animations/scene-0.json",
+                  "sourceRevision": "sha256:a49c014999575cd57132467bdb69280c9a544f1f18e18f66197d9e44d6565424",
+                  "propertyPath": "/clips/1",
+                  "sourceRange": {
+                    "start": 797,
+                    "end": 955,
+                    "encoding": "utf-16",
+                    "propertyPath": "/clips/1",
+                    "exact": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "format": "viento-build-plan",
+        "schemaVersion": 3,
+        "kind": "scene2d",
+        "projectId": "11111111-1111-4111-8111-111111111115",
+        "worldId": "world:6b0e6c1aff4a06827f854d13b2a8db687296be1188dd626b066a873f15339cfe",
+        "worldRevision": "sha256:ab3c450574e2882f4910eaca1c47de13a7834fe15a7257101e2a06dc99275c1c",
+        "scene": {
+          "objectId": "12345678-1234-4234-8234-123456789abd",
+          "sourcePath": "documents/scenes/audio.json",
+          "sourceRevision": "sha256:038b28dd8e561b1759f3937746b5ffae4f29794d19072c022dbe35c7557a8265",
+          "title": "Second scene with shared actors and audio",
+          "viewport": [
+            800,
+            480
+          ],
+          "background": "#0d1829"
+        },
+        "requiredCapabilities": [
+          "scene2d",
+          "input.arrows",
+          "state.movement",
+          "image",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "audio.nonspatial",
+          "audio.timeline",
+          "animation.visual2d",
+          "animation.clips2d"
+        ],
+        "actors": [
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              200,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "propertyPath": "/actors/0"
+            }
+          },
+          {
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              500,
+              220
+            ],
+            "size": [
+              80,
+              80
+            ],
+            "color": "#ffffff",
+            "speed": 0,
+            "controls": "none",
+            "imageResourceId": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "name": "Traveler / 旅人 / 旅人",
+            "sourcePath": "documents/characters/traveler.md",
+            "sourceRevision": "sha256:ba1b72d654937744bfa48ac6142fa4ae89decf76cf1a908785a4c2d019f83f20",
+            "declaration": {
+              "objectId": "12345678-1234-4234-8234-123456789abd",
+              "sourcePath": "documents/scenes/audio.json",
+              "propertyPath": "/actors/1"
+            }
+          }
+        ],
+        "resources": [
+          {
+            "id": "99999999-9999-4999-8999-999999999999",
+            "kind": "audio",
+            "extension": "wav",
+            "size": 44144,
+            "sha256": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af"
+          },
+          {
+            "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+            "size": 231,
+            "sha256": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+            "extension": "svg"
+          }
+        ],
+        "behaviors": {
+          "format": "viento-behavior-plan",
+          "schemaVersion": 1,
+          "backendId": "org.viento.godot4",
+          "language": "gdscript",
+          "manifest": {
+            "objectId": "12345678-1234-4234-8234-123456789ac1",
+            "sourcePath": "documents/behaviors/second.json",
+            "sourceRevision": "sha256:a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76"
+          },
+          "sources": [
+            {
+              "objectId": "12345678-1234-4234-8234-123456789ac2",
+              "sourcePath": "documents/scripts/second.txt",
+              "sourceRevision": "sha256:006c373933f8e49903c974a70b81864df932f34b72076a11916696e4577e804a",
+              "language": "gdscript",
+              "content": "extends Node\n"
+            }
+          ],
+          "bindings": [
+            {
+              "bindingId": "12345678-1234-4234-8234-123456789ac3",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "implementation": {
+                "backendId": "org.viento.godot4",
+                "language": "gdscript",
+                "sourceObjectId": "12345678-1234-4234-8234-123456789ac2"
+              },
+              "parameters": {},
+              "events": [],
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "declaration": {
+                "objectId": "12345678-1234-4234-8234-123456789ac1",
+                "sourcePath": "documents/behaviors/second.json",
+                "sourceRevision": "sha256:a48a2358a9654ae56c19e183f59577a55718c27ef8066661e91e217e5c382b76",
+                "propertyPath": "/bindings/0"
+              }
+            }
+          ]
+        },
+        "audio": {
+          "format": "viento-audio-plan",
+          "schemaVersion": 1,
+          "manifest": {
+            "objectId": "88888888-8888-4888-8888-888888888888",
+            "sourcePath": "documents/audio/demo.json",
+            "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729"
+          },
+          "document": {
+            "cues": [
+              {
+                "action": "play",
+                "atSeconds": 0,
+                "id": "66666666-6666-4666-8666-000000000001",
+                "trackId": "77777777-7777-4777-8777-000000000001"
+              },
+              {
+                "action": "play",
+                "atSeconds": 0.25,
+                "id": "66666666-6666-4666-8666-000000000002",
+                "trackId": "77777777-7777-4777-8777-000000000002"
+              },
+              {
+                "action": "stop",
+                "atSeconds": 0.5,
+                "id": "66666666-6666-4666-8666-000000000003",
+                "trackId": "77777777-7777-4777-8777-000000000001"
+              }
+            ],
+            "format": "viento-scene-audio",
+            "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+            "schemaVersion": 1,
+            "tracks": [
+              {
+                "id": "77777777-7777-4777-8777-000000000001",
+                "loop": true,
+                "resourceId": "99999999-9999-4999-8999-999999999999",
+                "role": "music",
+                "volume": 0.12
+              },
+              {
+                "id": "77777777-7777-4777-8777-000000000002",
+                "loop": false,
+                "resourceId": "99999999-9999-4999-8999-999999999999",
+                "role": "effect",
+                "volume": 0.3
+              }
+            ]
+          },
+          "locations": {
+            "tracks": [
+              {
+                "id": "77777777-7777-4777-8777-000000000001",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/tracks/0",
+                  "sourceRange": {
+                    "start": 135,
+                    "end": 318,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/0",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "77777777-7777-4777-8777-000000000002",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/tracks/1",
+                  "sourceRange": {
+                    "start": 324,
+                    "end": 508,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/1",
+                    "exact": true
+                  }
+                }
+              }
+            ],
+            "cues": [
+              {
+                "id": "66666666-6666-4666-8666-000000000001",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/cues/0",
+                  "sourceRange": {
+                    "start": 530,
+                    "end": 691,
+                    "encoding": "utf-16",
+                    "propertyPath": "/cues/0",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "66666666-6666-4666-8666-000000000002",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/cues/1",
+                  "sourceRange": {
+                    "start": 697,
+                    "end": 861,
+                    "encoding": "utf-16",
+                    "propertyPath": "/cues/1",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "66666666-6666-4666-8666-000000000003",
+                "declaration": {
+                  "objectId": "88888888-8888-4888-8888-888888888888",
+                  "sourcePath": "documents/audio/demo.json",
+                  "sourceRevision": "sha256:0e985525d2fc4e51ef08cca53091bf787a89644ea23f3875114b642e7ae12729",
+                  "propertyPath": "/cues/2",
+                  "sourceRange": {
+                    "start": 867,
+                    "end": 1030,
+                    "encoding": "utf-16",
+                    "propertyPath": "/cues/2",
+                    "exact": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "animation": {
+          "format": "viento-animation-plan",
+          "schemaVersion": 2,
+          "manifest": {
+            "objectId": "58585858-5858-4585-8585-000000000101",
+            "sourcePath": "documents/animations/scene-1.json",
+            "sourceRevision": "sha256:c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a"
+          },
+          "document": {
+            "clips": [
+              {
+                "endSeconds": 0.75,
+                "id": "59595959-5959-4595-8595-000000000011",
+                "loop": true,
+                "name": "歩く / Idle",
+                "startSeconds": 0.25
+              },
+              {
+                "endSeconds": 1,
+                "id": "59595959-5959-4595-8595-000000000012",
+                "loop": false,
+                "name": "攻撃 / Strike",
+                "startSeconds": 0.5
+              }
+            ],
+            "durationSeconds": 1,
+            "format": "viento-scene-animation",
+            "loop": true,
+            "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+            "schemaVersion": 3,
+            "tracks": [
+              {
+                "id": "58585858-5858-4585-8585-000000000001",
+                "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+                "interpolation": "linear",
+                "keyframes": [
+                  {
+                    "atSeconds": 0,
+                    "value": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "atSeconds": 1,
+                    "value": [
+                      100,
+                      0
+                    ]
+                  }
+                ],
+                "property": "offset2d"
+              }
+            ]
+          },
+          "locations": {
+            "tracks": [
+              {
+                "id": "58585858-5858-4585-8585-000000000001",
+                "declaration": {
+                  "objectId": "58585858-5858-4585-8585-000000000101",
+                  "sourcePath": "documents/animations/scene-1.json",
+                  "sourceRevision": "sha256:c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a",
+                  "propertyPath": "/tracks/0",
+                  "sourceRange": {
+                    "start": 179,
+                    "end": 609,
+                    "encoding": "utf-16",
+                    "propertyPath": "/tracks/0",
+                    "exact": true
+                  }
+                }
+              }
+            ],
+            "clips": [
+              {
+                "id": "59595959-5959-4595-8595-000000000011",
+                "declaration": {
+                  "objectId": "58585858-5858-4585-8585-000000000101",
+                  "sourcePath": "documents/animations/scene-1.json",
+                  "sourceRevision": "sha256:c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a",
+                  "propertyPath": "/clips/0",
+                  "sourceRange": {
+                    "start": 632,
+                    "end": 791,
+                    "encoding": "utf-16",
+                    "propertyPath": "/clips/0",
+                    "exact": true
+                  }
+                }
+              },
+              {
+                "id": "59595959-5959-4595-8595-000000000012",
+                "declaration": {
+                  "objectId": "58585858-5858-4585-8585-000000000101",
+                  "sourcePath": "documents/animations/scene-1.json",
+                  "sourceRevision": "sha256:c74c768069f28f8d2277b4a2dad7b719df9e5bb08c6cbb9fe60aa6b28fa6798a",
+                  "propertyPath": "/clips/1",
+                  "sourceRange": {
+                    "start": 797,
+                    "end": 955,
+                    "encoding": "utf-16",
+                    "propertyPath": "/clips/1",
+                    "exact": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "resources": [
+      {
+        "id": "99999999-9999-4999-8999-999999999999",
+        "kind": "audio",
+        "extension": "wav",
+        "size": 44144,
+        "sha256": "efaf1c71d4d00716156ccfd0b68fd890e88a5fa8ce00b7dd73b29f51905ba0af"
+      },
+      {
+        "id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "size": 231,
+        "sha256": "f31e1bdc5b117c5eb051a7cc02f198832269c58dfd609286a761d14841c95e99",
+        "extension": "svg"
+      }
+    ],
+    "requiredCapabilities": [
+      "animation.clips2d",
+      "animation.instances2d",
+      "animation.visual2d",
+      "audio.nonspatial",
+      "audio.timeline",
+      "behavior.bindings",
+      "behavior.gdscript",
+      "image",
+      "input.arrows",
+      "project.scenes",
+      "scene2d",
+      "state.movement"
+    ]
+  }
+}

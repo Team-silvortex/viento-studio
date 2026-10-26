@@ -1,0 +1,47 @@
+Repository: /home/chiharukiryu/cdev/viento-studio
+Actual executed command:
+/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node /tmp/viento-drop-through-ui/verify-legacy-starters.mjs
+Result: 18 complete pre-addition records verified unchanged; current catalog contains 19 records with only godot-character-drop-through added. The initial saved snapshot and hardcoded test baseline agree. Production and test files were read only.
+
+Exact verification script used:
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
+import path from 'node:path';
+const root = process.cwd();
+const testPath = 'scripts/tests/character-drop-through-starter.test.mjs';
+const sourcePath = 'engine/script-authoring.mjs';
+const snapshotPath = '/tmp/viento-drop-through-ui/legacy.json';
+const testSource = await fs.readFile(testPath, 'utf8');
+const baseline = JSON.parse(testSource.match(/const legacy = (\{[\s\S]*?\n\});/)[1]);
+assert.deepEqual(JSON.parse(await fs.readFile(snapshotPath, 'utf8')), baseline);
+const { listScriptStarters } = await import(pathToFileURL(path.join(root, sourcePath)).href);
+const all = listScriptStarters();
+const hash = value => createHash('sha256').update(value).digest('hex');
+assert.equal(Object.keys(baseline).length, 18);
+assert.equal(all.length, 19);
+const records = Object.fromEntries(Object.entries(baseline).map(([id, expected]) => {
+  const record = all.find(value => value.id === id);
+  assert.ok(record, id);
+  const actual = hash(JSON.stringify(record));
+  assert.equal(actual, expected, id);
+  return [id, { expected, actual, unchanged: true }];
+}));
+const added = all.filter(value => !Object.hasOwn(baseline, value.id)).map(value => value.id);
+assert.deepEqual(added, ['godot-character-drop-through']);
+const report = {
+  format: 'viento-legacy-starter-record-verification', schemaVersion: 1,
+  checkedAt: new Date().toISOString(), ok: true,
+  algorithm: 'SHA-256 of UTF-8 JSON.stringify(complete starter record)',
+  completeRecordFields: ['id', 'languageId', 'backendId', 'label', 'description', 'content'],
+  provenance: { savedBeforeAddition: snapshotPath, hardcodedBaseline: testPath,
+    baselineCopiesEqual: true, testSourceSha256: hash(testSource),
+    catalogSource: sourcePath, catalogSourceSha256: hash(await fs.readFile(sourcePath)) },
+  verifiedLegacyRecords: Object.keys(records).length, currentRecords: all.length,
+  addedRecords: added, records,
+  command: '/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node /tmp/viento-drop-through-ui/verify-legacy-starters.mjs',
+  commandRecord: 'legacy-starter-command.txt'
+};
+await fs.writeFile('docs/test-results/scene-physics2d-drop-through/legacy-starter-hashes.json', JSON.stringify(report, null, 2) + '\n');
+console.log(JSON.stringify({ ok: report.ok, verifiedLegacyRecords: report.verifiedLegacyRecords, currentRecords: report.currentRecords, addedRecords: report.addedRecords }));

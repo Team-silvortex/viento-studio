@@ -1,0 +1,103 @@
+import '/home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-studio-core.mjs';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { scenePhysics2DDropThroughAuthor } from '/home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers/scene-physics2d-drop-through-author-fixture.mjs';
+import { captureBuildSnapshot } from '/home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-build-snapshot.mjs';
+import { GODOT4_EXECUTION_ADAPTER as adapter } from '/home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs';
+const root='/tmp/viento-moving-platform-spike';
+const tool='/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64';
+const t={after(){}};
+const summary=[];
+for(const spec of [{name:'horizontal',end:[50,0]},{name:'up',end:[0,-50]},{name:'down',end:[0,50]},{name:'up-jump',end:[0,-50],jump:true},{name:'down-drop',end:[0,50],drop:true},{name:'horizontal-drop',end:[50,0],drop:true}]) {
+ const f=await scenePhysics2DDropThroughAuthor(t,{consumers:false,drop:false});
+ await f.edit('documents/scenes/demo.json',s=>{s.actors[2].position[1]=500});
+ await f.script('motion-input',`extends Node\nvar ticks := -1\nfunc _physics_process(_delta: float) -> void:\n\tvar step: int = get_parent().get_parent().get("physics_observation_step")\n\tif step == ticks:\n\t\treturn\n\tticks = step\n\tif ticks == 10:\n\t\t${spec.jump?'Input.action_press("ui_accept")':spec.drop?'Input.action_press("ui_down")':'pass'}\n\tif ticks == 11:\n\t\tInput.action_release("ui_accept")\n\t\tInput.action_release("ui_down")\n`);
+ const captured=await captureBuildSnapshot(f.author,f.assemblyId); if(!captured.ok)throw Error(JSON.stringify(captured.diagnostics));
+ const generated=await adapter.generate(captured.plan); const prefix=`scenes/${f.sceneId}`;
+ let runtimePath=[...generated.files.keys()].find(n=>n.endsWith('/runtime.gd')&&generated.files.get(n).includes('character_motion_configs'));
+ let runtime=generated.files.get(runtimePath).toString();
+ runtime=runtime.replace('var character_motion_configs: Dictionary = {}','var platform_spike = preload("res://platform-spike.gd").new()\nvar character_motion_configs: Dictionary = {}');
+ runtime=runtime.replace('character_motion_jump_held = Input.is_action_pressed("ui_accept")','character_motion_jump_held = Input.is_action_pressed("ui_accept")\n\tplatform_spike.install(self)');
+ runtime=runtime.replace('var input := Input.get_vector','platform_spike.begin(self, delta)\n\tvar input := Input.get_vector');
+ runtime=runtime.replace('\t\t\tvar before := character.global_position','\t\t\tmotion = platform_spike.motion(self, character, motion, velocity)\n\t\t\tvar before := character.global_position');
+ runtime=runtime.replace('\t\t\tvar contacts := physics_observation_move(character, motion, body.get("collisionResponse", "stop"))','\t\t\tvar contacts := physics_observation_move(character, motion, body.get("collisionResponse", "stop"))\n\t\t\tplatform_spike.sample(self, character, contacts)');
+ runtime=runtime.replace('\tcharacter_motion_jump_held = jump_held','\tcharacter_motion_jump_held = jump_held\n\tplatform_spike.finish(self)');
+ generated.files.set(runtimePath,Buffer.from(runtime));
+ const gd=`extends RefCounted
+var platform: AnimatableBody2D
+var origin: Vector2
+var change: Vector2
+var supports: Dictionary = {}
+var ticks := 0
+var elapsed := 0.0
+func install(scene: Node) -> void:
+\tfor actor in scene.actors:
+\t\tif actor["instanceId"] != "${f.platformInstanceId}":
+\t\t\tcontinue
+\t\tvar old: StaticBody2D = actor["node"]
+\t\tplatform = AnimatableBody2D.new()
+\t\tplatform.name = old.name
+\t\tplatform.transform = old.transform
+\t\tplatform.collision_layer = old.collision_layer
+\t\tplatform.collision_mask = old.collision_mask
+\t\tplatform.sync_to_physics = false
+\t\tfor key in old.get_meta_list():
+\t\t\tplatform.set_meta(key, old.get_meta(key))
+\t\tfor child in old.get_children():
+\t\t\told.remove_child(child)
+\t\t\tplatform.add_child(child)
+\t\tvar index: int = old.get_index()
+\t\tscene.remove_child(old)
+\t\told.free()
+\t\tscene.add_child(platform)
+\t\tscene.move_child(platform, index)
+\t\tactor["node"] = platform
+\t\torigin = platform.global_position
+func begin(_scene: Node, delta: float) -> void:
+\tticks += 1
+\tvar previous: Vector2 = platform.global_position
+\tif ticks > 3:
+\t\telapsed += delta
+\tvar axis := Vector2(${spec.end[0]}, ${spec.end[1]})
+\tvar length: float = axis.length()
+\tvar phase: float = fposmod(elapsed * 240.0, length * 2.0)
+\tvar progress: float = phase if phase <= length else length * 2.0 - phase
+\tplatform.global_position = origin + axis.normalized() * progress
+\tchange = platform.global_position - previous
+func motion(scene: Node, character: CharacterBody2D, desired: Vector2, velocity: Vector2) -> Vector2:
+\tvar instance_id := ""
+\tfor actor in scene.actors:
+\t\tif actor["node"] == character:
+\t\t\tinstance_id = actor["instanceId"]
+\tif supports.get(instance_id, false) and scene.character_motion_grounded.get(instance_id, false) and velocity.y >= 0.0 and not character.get_collision_exceptions().has(platform):
+\t\treturn desired + change
+\treturn desired
+func sample(scene: Node, character: CharacterBody2D, contacts: Array) -> void:
+\tvar supported := false
+\tfor contact in contacts:
+\t\tif contact["normal"][1] <= -0.7 and contact.get("collider") is Dictionary and contact["collider"].get("instanceId") == "${f.platformInstanceId}":
+\t\t\tsupported = true
+\tfor actor in scene.actors:
+\t\tif actor["node"] == character:
+\t\t\tsupports[actor["instanceId"]] = supported
+func finish(scene: Node) -> void:
+\tvar chars: Array = []
+\tfor actor in scene.actors:
+\t\tif scene.physics_bodies.get(actor["instanceId"]) == "character":
+\t\t\tvar node: CharacterBody2D = actor["node"]
+\t\t\tchars.append({"id":actor["instanceId"],"position":[node.global_position.x,node.global_position.y],"grounded":scene.character_motion_grounded.get(actor["instanceId"],false),"support":supports.get(actor["instanceId"],false),"exception":node.get_collision_exceptions().has(platform)})
+\tprint("PLATFORM_SPIKE:" + JSON.stringify({"tick":ticks,"platform":[platform.global_position.x,platform.global_position.y],"delta":[change.x,change.y],"characters":chars}))
+`;
+ generated.files.set('platform-spike.gd',Buffer.from(gd));
+ const directory=path.join(root,spec.name); await fs.mkdir(directory,{recursive:true});
+ for(const[name,bytes]of[...generated.files,...[...generated.resourceFiles].map(([id,name])=>[name,captured.resources.get(id)])]){await fs.mkdir(path.dirname(path.join(directory,name)),{recursive:true});await fs.writeFile(path.join(directory,name),bytes)}
+ const imported=spawnSync(tool,['--headless','--path',directory,'--editor','--import'],{encoding:'utf8',timeout:45000});
+ await fs.writeFile(path.join(root,spec.name+'-import.log'),imported.stdout+imported.stderr);
+ const result=spawnSync(tool,['--headless','--path',directory,'--','--viento-smoke'],{encoding:'utf8',timeout:45000});
+ await fs.writeFile(path.join(root,spec.name+'.log'),result.stdout+result.stderr);
+ const samples=result.stdout.split('\n').filter(l=>l.startsWith('PLATFORM_SPIKE:')).map(l=>JSON.parse(l.slice('PLATFORM_SPIKE:'.length)));
+ summary.push({spec,status:result.status,error:result.error?.message,samples});
+ await fs.writeFile(path.join(root,'summary.json'),JSON.stringify(summary,null,2));
+ console.log(spec.name,result.status,samples.length,(result.stderr||'').slice(0,1000));
+}

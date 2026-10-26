@@ -226,6 +226,12 @@ pub extern "C" fn viento_core_scene_physics2d_one_way_version() -> u32 {
     1
 }
 
+/// Optional declared moving platforms in physics schema 5.
+#[no_mangle]
+pub extern "C" fn viento_core_scene_physics2d_platform_motion_version() -> u32 {
+    1
+}
+
 /// Optional visual animation curves; core ABI and other domains remain independent.
 #[no_mangle]
 pub extern "C" fn viento_core_scene_animation_version() -> u32 {
@@ -609,6 +615,7 @@ fn dispatch_value(value: &Value) -> Result<CoreResponse, CoreError> {
                 | "scenePhysics2D.inspectResponse"
                 | "scenePhysics2D.inspectMotion"
                 | "scenePhysics2D.inspectOneWay"
+                | "scenePhysics2D.inspectPlatformMotion"
         )
     ) {
         return Ok(CoreResponse::ScenePhysics2DSuccess {
@@ -932,6 +939,7 @@ pub fn dispatch(input: &[u8]) -> CoreResponse {
                             | "scenePhysics2D.inspectResponse"
                             | "scenePhysics2D.inspectMotion"
                             | "scenePhysics2D.inspectOneWay"
+                            | "scenePhysics2D.inspectPlatformMotion"
                     )
                 ) {
                     scene_physics2d::validate_request_bytes(input)?;

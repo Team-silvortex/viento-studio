@@ -1,0 +1,11 @@
+Repository: /home/chiharukiryu/cdev/viento-studio
+Node: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node
+Godot: /home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64
+
+Initial focused run (author-ui-first.log):
+PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node --test scripts/tests/character-drop-through-starter.test.mjs scripts/tests/scene-physics2d-drop-through-ui.test.mjs scripts/tests/script-authoring.test.mjs scripts/tests/character-contact-event-starter.test.mjs
+Result: 41 tests, 41 pass, 0 fail, 0 skipped.
+
+Broader final run (author-ui-tests.log):
+PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node --test scripts/tests/character-drop-through-starter.test.mjs scripts/tests/scene-physics2d-drop-through-ui.test.mjs scripts/tests/script-authoring.test.mjs scripts/tests/character-contact-event-starter.test.mjs scripts/tests/character-motion-event-starters.test.mjs scripts/tests/script-create-ui.test.mjs scripts/tests/i18n.test.mjs scripts/tests/i18n-coverage.test.mjs
+Result: 100 tests, 100 pass, 0 fail, 0 skipped. Native harnesses run rather than skip. Drop-through harness checks 17 scenarios; its 14 expected errors are deliberately malformed or stale ports/actions, while refusal=false stays silent and processing continues. Old movement/contact/audio sources stay intact, and all 18 complete starter records retain the pre-addition hashes.

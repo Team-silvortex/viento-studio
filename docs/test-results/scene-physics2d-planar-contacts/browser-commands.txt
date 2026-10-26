@@ -1,0 +1,11 @@
+Working directory: /home/chiharukiryu/cdev/viento-studio
+
+PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node scripts/tests/scene-physics2d-planar-contacts-smoke.mjs /usr/bin/google-chrome > docs/test-results/scene-physics2d-planar-contacts/browser-run-1.log 2>&1
+
+PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node scripts/tests/scene-physics2d-planar-contacts-smoke.mjs /usr/bin/google-chrome > docs/test-results/scene-physics2d-planar-contacts/browser-run-2.log 2>&1
+
+PATH=/home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:$PATH VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 node scripts/tests/scene-physics2d-planar-contacts-smoke.mjs /usr/bin/google-chrome > docs/test-results/scene-physics2d-planar-contacts/browser-run-3.log 2>&1
+
+Run 1: exit 1; test assertion compared stopped position to first wall collision rather than immediately preceding collision. Native contact safe-margin correction moved 0.014862 after that first collision. Production was unchanged. Fixed assertion now requires exact position equality with the immediately preceding colliding sample.
+Run 2: exit 0; all six flows and 15 screenshots passed. Backend inventory validator changed after this run completed, so this is retained as intermediate evidence.
+Run 3: exit 0; final production, six flows, 15 screenshots, all 36 source hashes remain current. Final report: browser-1792996821232/browser.json.

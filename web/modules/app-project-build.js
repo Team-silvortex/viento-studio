@@ -220,7 +220,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <div id="projectAudioCommands"></div>
     <div id="projectPhysicsObservation"></div><div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div><div id="projectAnimationTargetReview"></div><div id="projectAnimationStates"></div><div id="projectAnimationStateEntries"></div>
     <section id="projectBuildBehaviorEvents" hidden aria-labelledby="projectBuildBehaviorEventsTitle"><h3 id="projectBuildBehaviorEventsTitle" data-i18n="行为事件"></h3><ul id="projectBuildBehaviorEventList"></ul></section>
-    <details class="build-raw"><summary data-i18n="原始细节与日志"></summary><pre id="projectBuildLogs" tabindex="0"></pre></details></section>`;
+    <div class="build-raw"><p id="projectBuildLogRetention" class="build-hint" hidden></p>
+    <p id="projectBuildEventRetention" class="build-hint" hidden></p>
+    <details id="projectBuildRaw"><summary data-i18n="原始细节与日志"></summary><pre id="projectBuildLogs" tabindex="0" aria-describedby="projectBuildLogRetention projectBuildEventRetention"></pre></details></div></section>`;
   document.body.append(dialog);
   const el = id => dialog.querySelector(`#${id}`);
   const released = () => ({ left: false, right: false, up: false, down: false });
@@ -998,6 +1000,24 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
         sceneLabel: data.scenes.find(scene => scene.id === job.sceneId)?.title });
     } catch { problems.setSnapshot(null, { invalid: true }); }
   }
+  function renderRetention(job) {
+    const valid = (value, unit, limit, retained) => value && typeof value === 'object' && !Array.isArray(value)
+      && value.unit === unit && value.limit === limit
+      && ['total', 'retained', 'dropped'].every(key => Number.isSafeInteger(value[key]) && value[key] >= 0)
+      && value.retained === retained && value.retained <= limit && value.total >= value.retained
+      && value.dropped === value.total - value.retained;
+    const logs = job?.retention?.logs, events = job?.retention?.events;
+    const logLabel = el('projectBuildLogRetention'), eventLabel = el('projectBuildEventRetention');
+    logLabel.hidden = eventLabel.hidden = !job;
+    // The raw buffers are independent from validated project event ledgers.
+    // Missing or inconsistent host metadata must not imply complete observation.
+    logLabel.textContent = !job ? '' : valid(logs, 'utf16-code-units', 32768, typeof job.logs === 'string' ? job.logs.length : -1)
+      ? t('日志：保留 {0} / 共 {1} 个 UTF-16 代码单元，上限 {2}；较早部分已移出 {3} 个。', logs.retained, logs.total, logs.limit, logs.dropped)
+      : t('日志：留存信息不可用。');
+    eventLabel.textContent = !job ? '' : valid(events, 'records', 128, Array.isArray(job.events) ? job.events.length : -1)
+      ? t('原始事件摘要：保留 {0} / 共 {1} 条，上限 {2}；已移出 {3} 条。此处不是项目事件账本。', events.retained, events.total, events.limit, events.dropped)
+      : t('原始事件摘要：留存信息不可用。此处不是项目事件账本。');
+  }
   function render() {
     translatePage(dialog);
     const context = getContext(), job = data?.job;
@@ -1098,7 +1118,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildSnapshot').textContent = summary ? t('快照：{0}', summary.snapshotId) : '';
     renderProblems(job);
     el('projectBuildEvents').hidden = !job?.events?.length;
-    el('projectBuildEvents').textContent = t('已收到 {0} 条运行事件；完整内容见原始细节。', job?.events?.length || 0);
+    el('projectBuildEvents').textContent = t('当前保留 {0} 条原始运行事件摘要；内容见原始细节。', job?.events?.length || 0);
+    renderRetention(job);
     renderRuntimeObjects();
     const behaviorEvents = el('projectBuildBehaviorEventList'); behaviorEvents.replaceChildren();
     for (const event of job?.events || []) {

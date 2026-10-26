@@ -1,0 +1,13 @@
+Working directory: /home/chiharukiryu/cdev/viento-studio
+Node: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node
+PATH prepended: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin:/home/chiharukiryu/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin
+VIENTO_GODOT_BIN unset for these conditional/pure regressions. Native cases are proved separately.
+
+node --test scripts/tests/scene-physics2d-*-backends.test.mjs scripts/tests/godot4-adapter.test.mjs scripts/tests/runtime-instance-backends.test.mjs
+Result: 123 total, 31 passed, 92 conditional skips, 0 failed. backend-first.log; native test file was still being expanded during this preliminary run.
+
+node --test scripts/tests/scene-physics2d-drop-through-inventory.test.mjs
+Result: 5 passed, 0 skipped, 0 failed. inventory-tests.log.
+
+node --test scripts/tests/scene-physics2d*.test.mjs scripts/tests/godot4-adapter.test.mjs scripts/tests/runtime-instance-backends.test.mjs
+Result: 671 total, 573 passed, 98 conditional skips, 0 failed. physics-regression.log. This covers all physics author format, editor, workflow, backend and inventory tests available at execution time.

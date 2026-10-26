@@ -108,7 +108,7 @@ function serialize(value, formatting, base) {
 // additions once, so response, motion and platform changes never overlap in
 // source patches. Retained keys, whitespace and value lexemes remain untouched.
 function optionalPatches(content, parsed, before, after, pointer, formatting) {
-  const optional = ['collisionResponse', 'characterMotion', 'oneWay'], keys = Object.keys(before);
+  const optional = ['collisionResponse', 'characterMotion', 'oneWay', 'platformMotion'], keys = Object.keys(before);
   const removed = new Set(optional.filter(key => Object.hasOwn(before, key) && !Object.hasOwn(after, key)));
   const additions = optional.filter(key => !Object.hasOwn(before, key) && Object.hasOwn(after, key));
   const container = range(parsed, pointer), patches = [];
@@ -159,6 +159,11 @@ function bodyPatches(content, parsed, before, after, index, formatting) {
   if (Object.hasOwn(before, 'oneWay') && Object.hasOwn(after, 'oneWay')) {
     leaf(`${pointer}/oneWay/margin`, before.oneWay.margin, after.oneWay.margin);
   }
+  if (Object.hasOwn(before, 'platformMotion') && Object.hasOwn(after, 'platformMotion')) {
+    for (const key of ['kind', 'offsetX', 'speed']) {
+      leaf(`${pointer}/platformMotion/${key}`, before.platformMotion[key], after.platformMotion[key]);
+    }
+  }
   patches.push(...optionalPatches(content, parsed, before, after, pointer, formatting));
   return patches;
 }
@@ -170,7 +175,8 @@ function candidateBodies(before, inputs) {
     const hasResponse = input !== null && typeof input === 'object' && Object.hasOwn(input, 'collisionResponse');
     const hasMotion = input !== null && typeof input === 'object' && Object.hasOwn(input, 'characterMotion');
     const hasOneWay = input !== null && typeof input === 'object' && Object.hasOwn(input, 'oneWay');
-    const body = record(input, [...bodyKeys, ...(hasResponse ? ['collisionResponse'] : []), ...(hasMotion ? ['characterMotion'] : []), ...(hasOneWay ? ['oneWay'] : [])]), index = originals.get(body.id);
+    const hasPlatformMotion = input !== null && typeof input === 'object' && Object.hasOwn(input, 'platformMotion');
+    const body = record(input, [...bodyKeys, ...(hasResponse ? ['collisionResponse'] : []), ...(hasMotion ? ['characterMotion'] : []), ...(hasOneWay ? ['oneWay'] : []), ...(hasPlatformMotion ? ['platformMotion'] : [])]), index = originals.get(body.id);
     if (hasResponse && (body.kind !== 'character' || !['stop', 'slide'].includes(body.collisionResponse))) fail();
     // The old default never upgrades a schema-1 document or adds redundant data.
     if (before.schemaVersion === 1 && body.collisionResponse === 'stop') delete body.collisionResponse;
@@ -207,7 +213,7 @@ function bodiesPatch(content, parsed, before, after, formatting) {
 async function patch(content, edit) {
   const before = await readScenePhysics2DDocument(content), fields = record(edit, ['bodies']);
   const bodies = candidateBodies(before, fields.bodies);
-  const candidate = { ...before, schemaVersion: Math.max(before.schemaVersion, bodies.some(body => Object.hasOwn(body, 'oneWay')) ? 4 : bodies.some(body => Object.hasOwn(body, 'characterMotion')) ? 3
+  const candidate = { ...before, schemaVersion: Math.max(before.schemaVersion, bodies.some(body => Object.hasOwn(body, 'platformMotion')) ? 5 : bodies.some(body => Object.hasOwn(body, 'oneWay')) ? 4 : bodies.some(body => Object.hasOwn(body, 'characterMotion')) ? 3
     : bodies.some(body => body.collisionResponse === 'slide') ? 2 : 1), bodies };
   await inspect(candidate); safeSerialization();
   const parsed = parseJsonSource(content), formatting = style(content, parsed);

@@ -1,14 +1,28 @@
 # 验证指南
 
-本页提供当前可用的验证入口和证据要求。当前源码为 **0.2.4**，已收录物理观察、角色重力／跳跃、运动与移动碰撞事件及静态单向平台，安装验收仍为 **0.2.0**；具体范围见[当前状态](STATUS.md)。逐轮日志、旧命令上下文和历史计数完整迁入[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
+本页提供当前可用的验证入口和证据要求。当前源码为 **0.2.5**，已收录自由平面碰撞、单向平台下穿、水平往返及端点事件、原始观察留存和有限执行预算，安装验收仍为 **0.2.0**；具体范围见[当前状态](STATUS.md)。逐轮日志、旧命令上下文和历史计数完整迁入[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
 
 ## 最近的功能证据
 
-最新[角色移动碰撞事件专题](test-results/scene-physics2d-contact-events/README.md)记录升版前 **0.2.3 工作树**的完整应用检查 **8199 项：7761 通过、438 条件跳过，零失败／取消**，以及普通作者脚本、独立原生端口、双方实例身份、项目事件与媒体、实际 Chrome 及工程交付。Rust 核心和作者格式保持；0.2.4 的版本／源码分发专项与发布预检另记于[发布检查](test-results/release-0.2.4/README.md)，不替代安装或其他后端验收。
+本版六项增量的功能证据均来自升版前 **0.2.4 工作树**，下列结果保持原执行时点。0.2.5 版本一致性、源码分发与发布预检另见[发布检查](test-results/release-0.2.5/README.md)，内容汇总见[发布记录](RELEASE_0.2.5.md)。
+
+最近的[共用有限执行预算](test-results/runtime-execution-budget/README.md)验证JS／Godot同源七维策略、原子拒绝、新旧库存与身份序号保持。冻结候选23/23、旧原生边界62/62均通过；完整app-only为**8419项，7895通过、524条件跳过，0失败／取消**。仍是有限会话，未增加连续运行模式。
+
+上一轮[运行观察留存](test-results/runtime-observation-retention/README.md)验证原始帧窗口、独立生命周期、完整语义账本、工作台累计／保留／移出说明，以及成功、失败、取消与批次切换；持续运行的累计执行上限尚未解除。完整app-only为**8387项，7876通过、511条件跳过，0失败／取消**；原生5/5、reader/query99/99；浏览器三语12组合成任务，和真实原生验证分开记录。
+
+上一轮[平台端点事件](test-results/scene-physics2d-platform-events/README.md)验证普通脚本、访问局部端口、每步合并语义、实际媒体与来源，以及严格库存与工程交付；原生连续通知和既有项目事件累计上限分别验收。完整app-only为**8356项，7850通过、506条件跳过，0失败／取消**；最终原生15/15、Chrome6流程／15截图、58来源摘要一致。首次完整检查的3条受控运行回归修复后全量重跑，失败日志保留。
+
+上一轮[水平往返平台](test-results/scene-physics2d-platform-motion/README.md)验证schema 5独立Rust／WASM规则、保真编辑与三语、真实承载／脱离、原生运动和工程交付；垂直运动的前期探针与当前已实现范围分开记录。完整app-only为8328项：7837通过、491条件跳过、0失败／取消；Rust417/417，核心邻接157/157，UI148/148，最终原生22/22，Chrome7流程／11截图。
+
+上一轮[单向平台主动下穿](test-results/scene-physics2d-drop-through/README.md)沿普通TXT、行为绑定和参数保存验证逐角色例外、真实几何恢复、返回支撑校验及相邻实体阻挡、关闭撤销、原生运行与工程交付；完整数字与失败过程在专题记录。完整app-only：8251项，7780通过、471条件跳过，0失败／取消；原生19/19及补充2/2、作者/UI100/100、Chrome6流程／15截图分别记录。
+
+此前0.2.4开发工作树的[自由平面碰撞事件](test-results/scene-physics2d-planar-contacts/README.md)验证停止／滑动角色、混合重力角色、交互与测试单次求解、事件媒体、旧生成器兼容及工程搬迁；用户继续使用普通碰撞脚本与行为编辑器。完整app-only为8219项，7768通过、451条件跳过，0失败／取消；原生矩阵16/16及最终源码定向6/6、Chrome6流程单列。旧0.27及更早专题保持原版本与实测范围。
+
+上一轮[角色移动碰撞事件专题](test-results/scene-physics2d-contact-events/README.md)记录升版前 **0.2.3 工作树**的完整应用检查 **8199 项：7761 通过、438 条件跳过，零失败／取消**，以及普通作者脚本、独立原生端口、双方实例身份、项目事件与媒体、实际 Chrome 及工程交付。Rust 核心和作者格式保持；0.2.4 的版本／源码分发专项与发布预检另记于[发布检查](test-results/release-0.2.4/README.md)，不替代安装或其他后端验收。
 
 上一轮[单向平台专题](test-results/scene-physics2d-one-way/README.md)覆盖schema 4独立规则、静态矩形参数、保真保存、原生上穿／承重、旧运动事件与媒体、实际Chrome三语流程及异地工程交付。首次原生测试的时间窗口断言修正、定向复验和旧事件回归分别留证；没有把工作树测试视作安装验收。
 
-本版的升版前开发验证还包括[角色重力与跳跃专题](test-results/scene-physics2d-character-motion/README.md)，覆盖独立Rust/WASM规则、保真编辑、中立计划、三语UI、实际Godot和可搬迁工程。此前的[二维物理观察专题](test-results/scene-physics2d-observation/README.md)包含独立trace／宿主、真实Godot、Chrome和异地ZIP验证；各项条件与完整检查统计在该专题记录，未更新本机0.2.0安装。
+0.2.4 发布前的开发验证还包括[角色重力与跳跃专题](test-results/scene-physics2d-character-motion/README.md)，覆盖独立Rust/WASM规则、保真编辑、中立计划、三语UI、实际Godot和可搬迁工程。此前的[二维物理观察专题](test-results/scene-physics2d-observation/README.md)包含独立trace／宿主、真实Godot、Chrome和异地ZIP验证；各项条件与完整检查统计在该专题记录，未更新本机0.2.0安装。
 
 升版前 **0.2.2 工作树**在 2026-10-25 的[碰撞响应验收](test-results/scene-physics2d-response/README.md)记录最终完整应用检查 **7970 项：7599 通过、371 条件跳过，零失败／取消**；Rust 完整核心 407 项，UI 专项 108 项，实际 Chrome 5 流程／4 张截图／17 个来源摘要。真实 Godot 新矩阵 7 项含 19 个运行场景，另有旧物理原生 9 项全部通过。首次检查、能力撤回问题修复及最终复验分别留证；未重跑日常作品文档／模板／索引或安装验收。专项与完整检查有交集，不相加为覆盖率。升版后的版本一致性、源码分发与发布预检单独记录于 [0.2.3 发布检查](test-results/release-0.2.3/README.md)，不把上述开发成绩改标为升版重跑。
 
@@ -83,7 +97,7 @@ VIENTO_GODOT_BIN=/absolute/path/to/Godot node scripts/tests/scene-physics2d-one-
 
 ## 二维角色运动事件
 
-开发工作树专题见[角色事件验证](test-results/scene-physics2d-character-events/README.md)。普通起始脚本测试为 `character-motion-event-starters.test.mjs`，真实工具入口为：
+0.2.4 发布前开发专题见[角色事件验证](test-results/scene-physics2d-character-events/README.md)。普通起始脚本测试为 `character-motion-event-starters.test.mjs`，真实工具入口为：
 
 ```sh
 VIENTO_GODOT_BIN=/absolute/path/to/Godot node --test scripts/tests/scene-physics2d-character-events-backends.test.mjs
@@ -237,7 +251,7 @@ node --test scripts/tests/function-atlas*.test.mjs
 
 | 范围 | 重点 |
 | --- | --- |
-| 新安装产物 | 0.2.1–0.2.4 的源码增量尚未随新安装程序验收；安装包应覆盖新增界面和原有关键路径 |
+| 新安装产物 | 0.2.1–0.2.5 的源码增量尚未随新安装程序验收；安装包应覆盖新增界面和原有关键路径 |
 | 桌面扩展 | Windows／macOS 的选择器、解码、生命周期与签名；更多 3D、后端和长任务关闭场景 |
 | Android 实体设备 | 输入法候选、低内存回收、不同 WebView／厂商、云盘／外置存储及商店签名更新 |
 | 大工程 | 多 GiB 迁移、长期压力、空间不足、不同文件系统与接近各域预算的性能 |

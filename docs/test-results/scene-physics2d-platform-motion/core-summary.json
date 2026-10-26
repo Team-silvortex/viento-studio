@@ -1,0 +1,81 @@
+{
+  "format": "viento-platform-motion-core-validation",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-26T07:51:51.933076+00:00",
+  "contract": {
+    "physicsSchemaVersion": 5,
+    "marker": "viento_core_scene_physics2d_platform_motion_version",
+    "markerVersion": 1,
+    "operation": "scenePhysics2D.inspectPlatformMotion",
+    "capability": "physics.platform-motion2d",
+    "bodyKinds": [
+      "static"
+    ],
+    "shapeKinds": [
+      "box"
+    ],
+    "platformMotion": {
+      "kind": "horizontal",
+      "offsetX": "finite 1 <= abs(offsetX) <= 8192",
+      "speed": "finite 1 <= speed <= 2000"
+    },
+    "oneWayComposable": true,
+    "automaticAuthorMigration": false
+  },
+  "validation": {
+    "rust": {
+      "command": "cargo test --manifest-path crates/viento-studio-core/Cargo.toml --locked",
+      "log": "core-native-full.log",
+      "passed": 417,
+      "failed": 0,
+      "ignored": 0
+    },
+    "wasmBuild": {
+      "command": "node scripts/build-studio-core.mjs",
+      "log": "core-build.log",
+      "bytes": 745886,
+      "sha256": "aded22e0575b084b5b7730d62a2a1256f00b40a9c0d862aeaf088a35d489d0a3",
+      "sourceHash": "a153f139904c1dbab869b9529e1bbe71225000b6eaaa897f5afafbb0db55552b",
+      "rustcVersion": "rustc 1.95.0 (59807616e 2026-04-14)"
+    },
+    "javascript": {
+      "log": "core-tests.log",
+      "passed": 157,
+      "failed": 0,
+      "skipped": 0,
+      "newFeatureTests": 26,
+      "suites": [
+        "scene-physics2d-core",
+        "scene-physics2d-response-core",
+        "scene-physics2d-one-way-core",
+        "scene-physics2d-platform-motion-core",
+        "scene-physics2d-edit",
+        "scene-physics2d-response-edit",
+        "scene-physics2d-motion-edit",
+        "scene-physics2d-one-way-edit",
+        "scene-physics2d-platform-motion-edit",
+        "scene-physics2d-character-motion-plan",
+        "scene-physics2d-one-way-plan",
+        "scene-physics2d-platform-motion-plan",
+        "scene-physics2d-space",
+        "scene-physics2d-space-edit",
+        "scene-physics2d-space-resize"
+      ]
+    },
+    "format": "cargo fmt --manifest-path crates/viento-studio-core/Cargo.toml --check passed",
+    "diff": "git diff --check on owned sources passed"
+  },
+  "sources": {
+    "crates/viento-studio-core/src/lib.rs": "7fc89b7743078b770f970dd6a0eacc03ad996ff5cf7d3caa44674a9cef81893a",
+    "crates/viento-studio-core/src/scene_physics2d.rs": "d33c88098a5c2cdedf2d5cfd89c5b5ddc3bafaae80e87c51275be68ddd8ca564",
+    "engine/studio-core.mjs": "d6214c94de2de177459abecccc56b9f4620ecd65db4f567fbb379cd609a5c43f",
+    "engine/scene-physics2d-core.mjs": "2a6337c158b4b04084addd48031ba2e857c4eab10ba8f87c878a8e6212bb4c5e",
+    "engine/scene-physics2d.mjs": "ccbe9a989862a5b8716f3381b884defd325ebe94b143eb13e9bb663efeaaf2a6",
+    "engine/scene-physics2d-edit.mjs": "11a990a68b2f5634a71576b82e0fef0679f13deede9218094daa984c8455c8c4",
+    "engine/backend-capabilities.mjs": "5a06d45abd1073d4f6c9450b619abb8e49922f24e589793721f6c6c588c31587",
+    "scripts/tests/scene-physics2d-one-way-core.test.mjs": "23b60445b38eff287004d7cc3e34e88d9c160954fe5da72883371cd82768a13f",
+    "scripts/tests/scene-physics2d-platform-motion-core.test.mjs": "7db034b9894973b7c45e93cd3b7df15c206028d84d7b44fa5bc9b4c11fbb9322",
+    "scripts/tests/scene-physics2d-platform-motion-edit.test.mjs": "3df5af412f8918f68bb6b80f348dc6a7310085891baeeae99530e656158668c4",
+    "scripts/tests/scene-physics2d-platform-motion-plan.test.mjs": "2753ddd7f31ed857e5dadc7ed120e4716ae462a4759cf174d6f4bb3f4b68f0bb"
+  }
+}

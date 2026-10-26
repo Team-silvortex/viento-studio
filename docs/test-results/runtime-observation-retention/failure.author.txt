@@ -1,0 +1,12 @@
+extends Node
+var project
+func _ready() -> void:
+	project = get_meta("viento_project")
+	call_deferred("_retention_burst")
+func _retention_burst() -> void:
+	print("retention-log:" + "x".repeat(40000))
+	for value in range(1, 301):
+		if not project.write_state("retention_counter", value):
+			push_error("RETENTION_BURST_REJECTED")
+			return
+	project.write_state("invalid key", true)

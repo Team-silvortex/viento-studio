@@ -1,0 +1,30 @@
+# Run from /home/chiharukiryu/cdev/viento-studio with bash login:false.
+# Runtime: /home/chiharukiryu/.local/share/nodejs/node-v24.21.0-linux-x64/bin/node v24.21.0.
+# The first two pure attempts and first two native attempts accidentally copied
+# the historical frozenContactsAdapter from the old test while it was being
+# frozen by the other agent. They therefore exercised 0.23 output and produced
+# the expected missing-port error. These are test wiring failures; all initial
+# logs remain. Correcting the new test to use adapter.generate resolved them.
+
+# Initial incorrectly frozen attempts (preserved):
+node --test scripts/tests/scene-physics2d-planar-contacts-backends.test.mjs > native-pure.log 2>&1
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_PLANAR_CONTACTS_REPORT=docs/test-results/scene-physics2d-planar-contacts/native-first.json node --test --test-name-pattern='real planar slide edges' scripts/tests/scene-physics2d-planar-contacts-backends.test.mjs > native-first.log 2>&1
+node --test scripts/tests/scene-physics2d-planar-contacts-backends.test.mjs > native-pure-recheck.log 2>&1
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_PLANAR_CONTACTS_REPORT=docs/test-results/scene-physics2d-planar-contacts/native-first-recheck.json node --test --test-name-pattern='real planar slide edges' scripts/tests/scene-physics2d-planar-contacts-backends.test.mjs > native-first-recheck.log 2>&1
+
+# Current adapter pure generation/inventory: 3 passed, 13 native conditions skipped.
+node --test scripts/tests/scene-physics2d-planar-contacts-backends.test.mjs > docs/test-results/scene-physics2d-planar-contacts/native-pure-current.log 2>&1
+
+# Current adapter first genuine native run: 1 passed.
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_PLANAR_CONTACTS_REPORT=docs/test-results/scene-physics2d-planar-contacts/native-current-first.json node --test --test-name-pattern='real planar slide edges' scripts/tests/scene-physics2d-planar-contacts-backends.test.mjs > docs/test-results/scene-physics2d-planar-contacts/native-current-first.log 2>&1
+
+# Final complete suite: all 16 cases, including 13 native cases, ZIP and actual window.
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_PLANAR_CONTACTS_CAPTURE=/home/chiharukiryu/cdev/viento-studio/docs/test-results/scene-physics2d-planar-contacts/native-window.png VIENTO_PHYSICS_PLANAR_CONTACTS_REPORT=docs/test-results/scene-physics2d-planar-contacts/native-full.json node --test scripts/tests/scene-physics2d-planar-contacts-backends.test.mjs > docs/test-results/scene-physics2d-planar-contacts/native-full.log 2>&1
+
+# Final inventory guard changed the generator source hash without changing
+# generated runtime/script bytes. Revalidate live use, relocated final ZIP and
+# all 3 pure generator/inventory cases against the final adapter source.
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_PLANAR_CONTACTS_REPORT=docs/test-results/scene-physics2d-planar-contacts/native-final/validation.json node --test --test-name-pattern='real live contact|real portable ZIP|movement contact generator|projects with no characters|movement contact inventory' scripts/tests/scene-physics2d-planar-contacts-backends.test.mjs > docs/test-results/scene-physics2d-planar-contacts/native-final/validation.log 2>&1
+
+# Additional final-source script-check and ordinary media edge case.
+VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 VIENTO_PHYSICS_PLANAR_CONTACTS_REPORT=docs/test-results/scene-physics2d-planar-contacts/native-final/media-validation.json node --test --test-name-pattern='real planar slide edges' scripts/tests/scene-physics2d-planar-contacts-backends.test.mjs > docs/test-results/scene-physics2d-planar-contacts/native-final/media-validation.log 2>&1

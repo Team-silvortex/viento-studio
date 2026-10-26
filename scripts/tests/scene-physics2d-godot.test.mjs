@@ -10,14 +10,23 @@ import { scenePhysics2DAuthor } from './helpers/scene-physics2d-author-fixture.m
 import { projectAnimationClipsAuthor } from './helpers/project-animation-clips-author-fixture.mjs';
 import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
 import { buildProject, runProjectBuild } from '../adapters/node-project-build.mjs';
-import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.mjs';
+import { GODOT4_EXECUTION_ADAPTER as currentAdapter } from '../backends/godot4-adapter.mjs';
 import { generateGodotAssemblyProject } from '../backends/godot4-project.mjs';
 import { generateGodotPhysicsProject } from '../backends/godot4-physics.mjs';
-import { godotPhysicsObservationAssemblyScripts as godotPhysicsAssemblyScripts } from '../backends/godot4-physics-observation.mjs';
-import { validateGeneratedExecutionProject } from '../adapters/node-execution-backends.mjs';
+import { generateGodotPhysicsObservationProject, godotPhysicsObservationAssemblyScripts as godotPhysicsAssemblyScripts } from '../backends/godot4-physics-observation.mjs';
+import { createExecutionBackendRegistry, validateGeneratedExecutionProject } from '../adapters/node-execution-backends.mjs';
 import { inspectBackendProject } from '../adapters/node-backend-project.mjs';
 import { planBackendProjectDelivery, verifyBackendProjectDelivery } from '../adapters/node-backend-project-delivery.mjs';
 import { writeExportZip } from '../lib/export-package.mjs';
+// These historical physics/response/observation contracts retain the 0.23
+// generated files. The current host still validates and executes them; current
+// 0.28 movement contacts are covered by the separate planar contacts suite.
+const adapter = { ...currentAdapter, async generate(plan) {
+  const generated = await generateGodotPhysicsObservationProject(plan);
+  return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
+    artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
+} };
+const frozenRegistry = () => createExecutionBackendRegistry([adapter]);
 const tool = process.env.VIENTO_GODOT_BIN;
 const real = { skip: !tool ? 'Set VIENTO_GODOT_BIN for native physics verification' : false, timeout: 180000 };
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -45,13 +54,13 @@ async function stage(f) {
 }
 async function build(f) {
   const before = await hashes(f.author), output = path.join(f.temporary, 'build');
-  const built = await buildProject({ root: f.author, targetId: f.assemblyId, tool, output });
+  const built = await buildProject({ backendRegistry: frozenRegistry(), root: f.author, targetId: f.assemblyId, tool, output });
   assert.equal(built.ok, true, JSON.stringify(built.record?.diagnostics || built));
   assert.deepEqual(await hashes(f.author), before);
   return { ...f, output, built };
 }
 async function run(f) {
-  const result = await runProjectBuild({ buildDirectory: f.output, tool, headless: true, smoke: true });
+  const result = await runProjectBuild({ backendRegistry: frozenRegistry(), buildDirectory: f.output, tool, headless: true, smoke: true });
   assert.equal(result.ok, true, JSON.stringify(result.record?.diagnostics || result)); return result;
 }
 const exitActor = (result, f, instanceId = f.instanceId) => result.record.events.find(row => row.event === 'scene-exit' && row.sceneId === f.sceneIds[0]).actors.find(row => row.instanceId === instanceId);
@@ -160,7 +169,7 @@ test('real sensor scene switch revokes old publishers and settles native registr
 
 test('real portable backend ZIP contains physics and runs after author/build paths disappear with visual-only animation', real, async t => {
   const f = await scenePhysics2DAuthor(t); await attachProbe(f); const built = await build(f);
-  const inspection = () => inspectBackendProject({ buildDirectory: built.output });
+  const inspection = () => inspectBackendProject({ backendRegistry: frozenRegistry(), buildDirectory: built.output });
   const delivery = await planBackendProjectDelivery({ inspection: await inspection(), assertCurrent: inspection });
   const zip = path.join(f.temporary, 'physics.zip'); await writeExportZip(delivery, zip); await verifyBackendProjectDelivery(zip);
   const moved = await fs.mkdtemp(path.join(os.tmpdir(), 'viento-physics-relocated-')); t.after(() => fs.rm(moved, { recursive: true, force: true }));
@@ -196,7 +205,7 @@ test('real interactive physics clock advances movement once per native tick and 
     .replace('\tassert(get_parent() is CharacterBody2D)', '\tassert(get_parent() is CharacterBody2D)\n\tInput.action_press("ui_right")');
   source += `\nfunc _physics_process(_delta: float) -> void:\n\tticks += 1\n\tif ticks == 15:\n\t\tInput.action_release("ui_right")\n\tif ticks == 30:\n\t\tcall_deferred("_finish")\nfunc _finish() -> void:\n\tget_tree().root.get_node("VientoProject").finish_project()\n`;
   await f.script('second', source);
-  const built = await build(f), result = await runProjectBuild({ buildDirectory: built.output, tool, headless: true, smoke: false });
+  const built = await build(f), result = await runProjectBuild({ backendRegistry: frozenRegistry(), buildDirectory: built.output, tool, headless: true, smoke: false });
   assert.equal(result.ok, true, JSON.stringify(result.record?.diagnostics || result)); assertLoop(result, f, 160);
   const elapsed = result.record.events.at(-1).totalSeconds; assert.ok(elapsed > .45 && elapsed < .6, String(elapsed));
   assert.ok(Math.abs(exitActor(result, f).position[0] - (100 + 240 * elapsed / 2)) < .1);

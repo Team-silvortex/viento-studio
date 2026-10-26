@@ -35,6 +35,32 @@ const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4})
 const fail = (code, message, status = 400) => createError(status, message, {}, code);
 const clone = value => JSON.parse(JSON.stringify(value));
 const terminal = new Set(['succeeded', 'failed', 'cancelled', 'timeout']);
+const logRetentionLimit = 32768, eventRetentionLimit = 128;
+const createJobRetention = () => ({
+  logs: { unit: 'utf16-code-units', limit: logRetentionLimit, total: 0, retained: 0, dropped: 0 },
+  events: { unit: 'records', limit: eventRetentionLimit, total: 0, retained: 0, dropped: 0 },
+});
+
+function retainJobOutput(job, text) {
+  const logs = job.logs + text;
+  let start = Math.max(0, logs.length - logRetentionLimit);
+  // Keep the newest complete characters within the existing UTF-16 budget.
+  // A boundary inside a surrogate pair drops both code units, never one half.
+  if (start > 0 && logs.charCodeAt(start - 1) >= 0xd800 && logs.charCodeAt(start - 1) <= 0xdbff
+    && logs.charCodeAt(start) >= 0xdc00 && logs.charCodeAt(start) <= 0xdfff) start++;
+  job.logs = logs.slice(start);
+  const retention = job.retention.logs;
+  retention.total += text.length; retention.retained = job.logs.length;
+  retention.dropped = retention.total - retention.retained;
+}
+
+function retainJobEvent(job, event) {
+  job.events.push(event);
+  if (job.events.length > eventRetentionLimit) job.events.shift();
+  const retention = job.retention.events;
+  retention.total++; retention.retained = job.events.length;
+  retention.dropped = retention.total - retention.retained;
+}
 
 export async function stopProjectBuildServices() {
   await Promise.all([...services].map(service => service.close()));
@@ -351,6 +377,7 @@ export function createProjectBuildService(root, {
     }
     if (event.caseStarted) {
       job.runtime=null; job.control=clone(event.control); job.verification=clone(event.verification); job.events=[];
+      job.retention.events.retained = 0; job.retention.events.dropped = job.retention.events.total;
     }
     // Keep the admitted object view independently of the bounded raw-event
     // ring, including frames observed while cancellation terminates the tool.
@@ -360,12 +387,12 @@ export function createProjectBuildService(root, {
     if (event.controlSample && job.control && job.control.samples.length < job.control.program.steps.length) {
       job.control.samples.push(clone(event.controlSample));
     }
+    // Output and accepted-event totals also include pipe drainage after cancel.
+    // Retention describes the visible buffers; it never changes job status.
+    if (event.output) retainJobOutput(job, event.output.text);
+    if (event.event) retainJobEvent(job, event.event);
     if (active.controller.signal.aborted) return;
     if (event.phase) job.phase = event.phase;
-    if (event.output) job.logs = (job.logs + event.output.text).slice(-32768);
-    if (event.event) {
-      job.events.push(event.event); if (job.events.length > 128) job.events.shift();
-    }
   }
 
   async function runJob(payload, controller) {
@@ -488,7 +515,7 @@ export function createProjectBuildService(root, {
       reportAvailable:false,passedChecks:0,failedChecks:0,unavailableChecks:0}));
     memberReports.clear();
     job={id:randomUUID(),kind:'suite',sceneId:entry.sceneId,backendId,buildId:entry.id,snapshotId:entry.snapshotId,
-      status:'running',phase:'tool',createdAt:new Date().toISOString(),diagnostics:[],events:[],logs:'',plan:null,runtime:null,
+      status:'running',phase:'tool',createdAt:new Date().toISOString(),diagnostics:[],events:[],logs:'',retention:createJobRetention(),plan:null,runtime:null,
       suite:{documentId:capture.documentId,sourceVersion:capture.sourceVersion,sceneObjectId:capture.sceneObjectId,
         entries,summary:summarizeRuntimeCaseSuite(entries.map(row=>row.state))}};
     active={controller,promise:null};
@@ -671,7 +698,7 @@ export function createProjectBuildService(root, {
       ...((payload.targetKind || builds.get(payload.buildId)?.targetKind) === 'project' ? { targetKind: 'project', targetId: payload.sceneId || builds.get(payload.buildId).sceneId } : {}),
       ...(payload.action === 'run' ? { buildId: builds.get(payload.buildId).id, snapshotId: builds.get(payload.buildId).snapshotId } : {}),
       status: 'running', phase: payload.action === 'run' ? 'tool' : 'snapshot', createdAt: new Date().toISOString(),
-      diagnostics: [], events: [], logs: '', plan: null, runtime: null,
+      diagnostics: [], events: [], logs: '', retention: createJobRetention(), plan: null, runtime: null,
       ...(controlProgram || runtimeCase ? { control: { program: clone(controlProgram || runtimeCase.program),
         sha256: `sha256:${buildHash(canonicalJson(controlProgram || runtimeCase.program))}`, samples: [] } } : {}),
       ...(runtimeCase ? { verification: { definition: clone(runtimeCase), sha256: `sha256:${buildHash(canonicalJson(runtimeCase))}`,

@@ -1,0 +1,56 @@
+{
+  "format": "viento-targeted-verification-summary",
+  "schemaVersion": 1,
+  "scope": "Host build-service retention accounting",
+  "evidence": "Commands and results transcribed from this task's tool execution outputs. Raw stdout was not persisted; no command was rerun solely to manufacture an original log.",
+  "workingDirectory": "/home/chiharukiryu/cdev/viento-studio",
+  "checks": [
+    {
+      "command": "node scripts/tests/project-build-retention.test.mjs",
+      "exitCode": 0,
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node scripts/tests/project-build-service.test.mjs",
+      "exitCode": 0,
+      "tests": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node scripts/tests/runtime-case-suite-host.test.mjs",
+      "exitCode": 0,
+      "tests": 17,
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node scripts/tests/project-build-http.test.mjs",
+      "exitCode": 0,
+      "tests": 9,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 3,
+      "execution": "require_escalated",
+      "note": "Initial sandbox execution had five listen EPERM failures on temporary loopback servers. Authorized escalated rerun passed. Three real-Godot HTTP cases skipped because VIENTO_GODOT_BIN was not set for this command."
+    },
+    {
+      "command": "git diff --check -- scripts/lib/project-build-service.mjs scripts/tests/project-build-retention.test.mjs",
+      "exitCode": 0,
+      "note": "Whitespace check passed before the final suite-specific test was appended."
+    }
+  ],
+  "verifiedBehavior": [
+    "Fresh build and plan tasks have zero counts; tool checks retain the current job.",
+    "Logs retain at most 32768 UTF-16 code units, count both output streams in arrival order, and do not split surrogate pairs at the retained boundary.",
+    "The 128-record raw event window rotates while all 142 admitted runtime frames reach the full observation pipeline.",
+    "Public snapshots cannot mutate retained logs, events, or accounting.",
+    "Failed and cancelled execution retains accounting; output drained after cancellation is included.",
+    "Suite member transition reports 132 total, zero retained, and 132 dropped events; two completed members report 264 total, 128 retained, and 136 dropped."
+  ]
+}

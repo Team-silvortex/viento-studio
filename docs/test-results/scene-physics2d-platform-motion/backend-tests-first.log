@@ -1,0 +1,53 @@
+✔ Godot descriptor and host contract are immutable, precise and independent of legacy build metadata (2.218588ms)
+✔ adapter preserves frozen v1/v2 file hashes, source owner maps and generator fingerprints (10.499266ms)
+✔ generation owns an admitted plan before asynchronous reads and never shares source objects with its caller (1.495685ms)
+✔ generation rejects unsupported plan headers and required capabilities without rewriting author inputs (1.648661ms)
+✔ availability remains a non-executing stat/access check and identification retains Godot version pinning (145.758069ms)
+✔ real spawned processes receive legacy Godot flags, literal arguments and isolated host paths (224.420433ms)
+✔ unsupported modes and invalid capture combinations are rejected before any process starts (2.593968ms)
+✔ phase execution delegates cancellation, deadlines and observer failures to the shared process owner (170.173511ms)
+✔ diagnostics and event readers retain v1/v2 source ownership and reject redirected runtime locations (1.816215ms)
+✔ cleanup removes only known generated caches and never follows their links into source data (3.342852ms)
+✖ execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators (23.790638ms)
+✔ per-instance control is an additive capability, with engine-owned implementation versions (0.693945ms)
+✔ adapters reject unknown or definition targets, duplicate rows, plan1 and row overflow before staging or spawning (29.579347ms)
+﹣ real engine replay drives repeated-definition instances in opposite directions with independent release and movement (0.257905ms) # SKIP
+﹣ empty instance steps release all actors and explicit false rows give identical results (0.123888ms) # SKIP
+✔ platform extension preserves every historical generated file outside its declared runtime projection (253.711124ms)
+✔ platform inventory rejects missing, redirected and substituted generated helpers and historical originals (174.167502ms)
+✔ platform inventory validates exact scene membership, body identities, motion bounds and gravity carrier scope (207.953757ms)
+✔ platform inventory rejects orphaned motion layers in unchanged historical projects (199.337434ms)
+✔ platform runtime tampering cannot hide behind unchanged historical inventory and no-motor scenes retain coverage (218.137525ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 2
+ℹ todo 0
+ℹ duration_ms 1173.522512
+
+✖ failing tests:
+
+test at scripts/tests/godot4-adapter.test.mjs:188:1
+✖ execution fingerprint covers adapter, shared capability contract and host registry separately from historical generators (23.790638ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      contractVersion: 1,
+      id: 'org.viento.godot4',
+  +   sha256: 'f66f62e2dbd100f22ce1e96ead9593b29e31b77d881115db35414a5822bdf3c3'
+  -   sha256: '7d347f9931e14f7fe7e6ac8a825086134524bd5c53fd3c2664833b4f4271b1ac'
+    }
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/godot4-adapter.test.mjs:198:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { id: 'org.viento.godot4', contractVersion: 1, sha256: 'f66f62e2dbd100f22ce1e96ead9593b29e31b77d881115db35414a5822bdf3c3' },
+    expected: { id: 'org.viento.godot4', contractVersion: 1, sha256: '7d347f9931e14f7fe7e6ac8a825086134524bd5c53fd3c2664833b4f4271b1ac' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

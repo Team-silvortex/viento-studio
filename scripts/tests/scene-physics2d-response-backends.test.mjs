@@ -10,21 +10,30 @@ import { scenePhysics2DAuthor } from './helpers/scene-physics2d-author-fixture.m
 import { projectAnimationClipsAuthor } from './helpers/project-animation-clips-author-fixture.mjs';
 import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
 import { buildProject } from '../adapters/node-project-build.mjs';
-import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.mjs';
+import { GODOT4_EXECUTION_ADAPTER as currentAdapter } from '../backends/godot4-adapter.mjs';
 import { BEVY_EXECUTION_ADAPTER as bevy } from '../backends/bevy-adapter.mjs';
 import { BEVY_RUST_EXECUTION_ADAPTER as bevyRust } from '../backends/bevy-rust-adapter.mjs';
 import { generateGodotPhysicsProject } from '../backends/godot4-physics.mjs';
 import { generateGodotPhysicsResponseProject } from '../backends/godot4-physics-response.mjs';
-import { godotPhysicsObservationAssemblyScripts as godotPhysicsResponseAssemblyScripts } from '../backends/godot4-physics-observation.mjs';
+import { generateGodotPhysicsObservationProject, godotPhysicsObservationAssemblyScripts as godotPhysicsResponseAssemblyScripts } from '../backends/godot4-physics-observation.mjs';
 import { generateGodotAssemblyProject } from '../backends/godot4-project.mjs';
 import { checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
 import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
 import { validateScenePhysics2DPlan, stripScenePhysics2DPlan, scenePhysics2DCapabilities, SCENE_PHYSICS2D_SLIDE_CAPABILITY as slide } from '../../engine/scene-physics2d.mjs';
-import { validateGeneratedExecutionProject } from '../adapters/node-execution-backends.mjs';
+import { createExecutionBackendRegistry, validateGeneratedExecutionProject } from '../adapters/node-execution-backends.mjs';
 import { inspectBackendProject } from '../adapters/node-backend-project.mjs';
 import { planBackendProjectDelivery, verifyBackendProjectDelivery } from '../adapters/node-backend-project-delivery.mjs';
 import { writeExportZip } from '../lib/export-package.mjs';
 
+// These historical physics/response/observation contracts retain the 0.23
+// generated files. The current host still validates and executes them; current
+// 0.28 movement contacts are covered by the separate planar contacts suite.
+const adapter = { ...currentAdapter, async generate(plan) {
+  const generated = await generateGodotPhysicsObservationProject(plan);
+  return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
+    artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
+} };
+const frozenRegistry = () => createExecutionBackendRegistry([adapter]);
 const tool = process.env.VIENTO_GODOT_BIN;
 const real = { skip: !tool ? 'Set VIENTO_GODOT_BIN for native response verification' : false, timeout: 180000 };
 const hash = value => createHash('sha256').update(value).digest('hex');
@@ -235,10 +244,10 @@ test('real response has bounded corner sweeps, normal blocking, free motion, mas
 
 test('real slide delivery retains native collision, sensors and animation after author/build paths disappear', real, async t => {
   const f = await capture(await fixture(t, { animation: true })), before = await hashes(f.author), output = path.join(f.temporary, 'build');
-  const built = await buildProject({ root: f.author, targetId: f.assemblyId, tool, output, timeoutMs: 60000 });
+  const built = await buildProject({ backendRegistry: frozenRegistry(), root: f.author, targetId: f.assemblyId, tool, output, timeoutMs: 60000 });
   assert.equal(built.ok, true, JSON.stringify(built.record?.diagnostics || built)); assert.deepEqual(await hashes(f.author), before);
   assert.equal(f.generated.backend.protocolVersion, 10);
-  const inspection = () => inspectBackendProject({ buildDirectory: output });
+  const inspection = () => inspectBackendProject({ backendRegistry: frozenRegistry(), buildDirectory: output });
   const delivery = await planBackendProjectDelivery({ inspection: await inspection(), assertCurrent: inspection });
   const zip = path.join(f.temporary, 'response.zip'); await writeExportZip(delivery, zip); await verifyBackendProjectDelivery(zip);
   const moved = await fs.mkdtemp(path.join(os.tmpdir(), 'viento-response-relocated-')); t.after(() => fs.rm(moved, { recursive: true, force: true }));

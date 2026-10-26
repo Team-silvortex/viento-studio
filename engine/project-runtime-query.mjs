@@ -16,7 +16,8 @@ export function createProjectRuntimeObservation(input, { protocolVersion = 1 } =
   const plan = validateProjectAssemblyPlan(input), scenes = new Map(plan.scenes.map(scene => [scene.scene.objectId, scene]));
   let child = createSceneRuntimeObservation(scenes.get(plan.entrySceneId));
   const project = { assemblyId: plan.assembly.objectId, entrySceneId: plan.entrySceneId, activeSceneId: plan.entrySceneId, visits: [] };
-  const reader = createProjectRuntimeEventReader(plan, { protocolVersion, onEvent: frame => {
+  // This observer consumes admitted callbacks and semantic ledgers, never a raw history.
+  const reader = createProjectRuntimeEventReader(plan, { protocolVersion, retainedEvents: 1, onEvent: frame => {
     if (frame.event === 'scene-enter') {
       project.activeSceneId = frame.sceneId; child = createSceneRuntimeObservation(scenes.get(frame.sceneId));
       project.visits.push({ index: frame.visitIndex, sceneId: frame.sceneId, phase: 'waiting', elapsedSeconds: 0 });

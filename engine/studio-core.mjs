@@ -40,6 +40,7 @@ const SCENE_PHYSICS2D_OPERATIONS = new Set(['scenePhysics2D.inspect']);
 const SCENE_PHYSICS2D_RESPONSE_OPERATIONS = new Set(['scenePhysics2D.inspectResponse']);
 const SCENE_PHYSICS2D_MOTION_OPERATIONS = new Set(['scenePhysics2D.inspectMotion']);
 const SCENE_PHYSICS2D_ONE_WAY_OPERATIONS = new Set(['scenePhysics2D.inspectOneWay']);
+const SCENE_PHYSICS2D_PLATFORM_MOTION_OPERATIONS = new Set(['scenePhysics2D.inspectPlatformMotion']);
 const SCENE_AUDIO_OPERATIONS = new Set(['sceneAudio.inspect', 'sceneAudio.sample']);
 const SCENE3D_PARTICLE_OPERATIONS = new Set(['scene3d.prepareParticleField', 'scene3d.sampleParticleField']);
 const PARTICLE_FIELDS = [['center', 'vector'], ['extent', 'vector'], ['velocity', 'vector'], ['size', 'vector'], ['color', 'color'], ['count', 'number'], ['seed', 'number']];
@@ -1975,6 +1976,10 @@ export function supportsStudioCoreScenePhysics2DOneWay() {
   return Boolean(runtime && typeof runtime.viento_core_scene_physics2d_one_way_version === 'function'
     && runtime.viento_core_scene_physics2d_one_way_version() === 1);
 }
+export function supportsStudioCoreScenePhysics2DPlatformMotion() {
+  return Boolean(runtime && typeof runtime.viento_core_scene_physics2d_platform_motion_version === 'function'
+    && runtime.viento_core_scene_physics2d_platform_motion_version() === 1);
+}
 export function dispatchStudioCoreScenePhysics2D(request) {
   return dispatchPhysics2D(request, 1);
 }
@@ -1987,13 +1992,16 @@ export function dispatchStudioCoreScenePhysics2DMotion(request) {
 export function dispatchStudioCoreScenePhysics2DOneWay(request) {
   return dispatchPhysics2D(request, 4);
 }
+export function dispatchStudioCoreScenePhysics2DPlatformMotion(request) {
+  return dispatchPhysics2D(request, 5);
+}
 function dispatchPhysics2D(request, version) {
-  const operations = version === 4 ? SCENE_PHYSICS2D_ONE_WAY_OPERATIONS : version === 3 ? SCENE_PHYSICS2D_MOTION_OPERATIONS
+  const operations = version === 5 ? SCENE_PHYSICS2D_PLATFORM_MOTION_OPERATIONS : version === 4 ? SCENE_PHYSICS2D_ONE_WAY_OPERATIONS : version === 3 ? SCENE_PHYSICS2D_MOTION_OPERATIONS
     : version === 2 ? SCENE_PHYSICS2D_RESPONSE_OPERATIONS : SCENE_PHYSICS2D_OPERATIONS;
   assertJson(request);
   if (!record(request, ['protocolVersion', 'operation', 'document']) || request.protocolVersion !== STUDIO_CORE_PROTOCOL_VERSION
     || !operations.has(request.operation)) throw fail('studio_core_request_invalid', 'Expected an explicit physics declaration inspection.');
-  if (!(version === 4 ? supportsStudioCoreScenePhysics2DOneWay() : version === 3 ? supportsStudioCoreScenePhysics2DMotion()
+  if (!(version === 5 ? supportsStudioCoreScenePhysics2DPlatformMotion() : version === 4 ? supportsStudioCoreScenePhysics2DOneWay() : version === 3 ? supportsStudioCoreScenePhysics2DMotion()
     : version === 2 ? supportsStudioCoreScenePhysics2DResponse() : supportsStudioCoreScenePhysics2D())) throw unavailable();
   const result = dispatch(request, operations, (result, input) => {
     const invalid = () => { throw new Error('Rust core returned an unbound physics declaration receipt.'); };
@@ -2010,8 +2018,9 @@ function dispatchPhysics2D(request, version) {
     for (const body of source.bodies) {
       const hasResponse = version >= 2 && Object.hasOwn(body, 'collisionResponse');
       const hasMotion = version >= 3 && Object.hasOwn(body, 'characterMotion');
-      const hasOneWay = version === 4 && Object.hasOwn(body, 'oneWay');
-      if (!record(body, ['id', 'instanceId', 'kind', 'shape', 'offset', 'layer', 'mask', ...(hasResponse ? ['collisionResponse'] : []), ...(hasMotion ? ['characterMotion'] : []), ...(hasOneWay ? ['oneWay'] : [])])
+      const hasOneWay = version >= 4 && Object.hasOwn(body, 'oneWay');
+      const hasPlatformMotion = version === 5 && Object.hasOwn(body, 'platformMotion');
+      if (!record(body, ['id', 'instanceId', 'kind', 'shape', 'offset', 'layer', 'mask', ...(hasResponse ? ['collisionResponse'] : []), ...(hasMotion ? ['characterMotion'] : []), ...(hasOneWay ? ['oneWay'] : []), ...(hasPlatformMotion ? ['platformMotion'] : [])])
         || hasResponse && (body.kind !== 'character' || !['stop', 'slide'].includes(body.collisionResponse)) || !uuid(body.id) || !uuid(body.instanceId)
         || ids.has(body.id) || instances.has(body.instanceId) || !['static', 'character', 'sensor'].includes(body.kind)
         || !pair(body.offset, -8192, 8192) || !bits(body.layer) || !bits(body.mask)) invalid();
@@ -2021,6 +2030,10 @@ function dispatchPhysics2D(request, version) {
         || !bounded(body.characterMotion.jumpSpeed, 0, 4000) || !bounded(body.characterMotion.maxFallSpeed, 1, 4000))) invalid();
       if (hasOneWay && (body.kind !== 'static' || body.shape?.kind !== 'box'
         || !record(body.oneWay, ['margin']) || !bounded(body.oneWay.margin, 1, 64))) invalid();
+      if (hasPlatformMotion && (body.kind !== 'static' || body.shape?.kind !== 'box'
+        || !record(body.platformMotion, ['kind', 'offsetX', 'speed']) || body.platformMotion.kind !== 'horizontal'
+        || !bounded(body.platformMotion.offsetX, -8192, 8192) || Math.abs(body.platformMotion.offsetX) < 1
+        || !bounded(body.platformMotion.speed, 1, 2000))) invalid();
       ids.add(body.id); instances.add(body.instanceId);
       const shape = body.shape;
       if (!(shape?.kind === 'box' && record(shape, ['kind', 'size']) && pair(shape.size, 1, 8192)

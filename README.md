@@ -8,7 +8,7 @@ Viento 是面向原创设定与游戏创作的实验性 IDE，正在打通 **设
 
 ## 当前状态
 
-当前源码版本为 **0.2.4**，新增[物理运行观察](docs/SCENE_PHYSICS2D.md#查看角色的物理步与碰撞)、[角色重力与跳跃](docs/SCENE_PHYSICS2D.md#配置角色的重力与跳跃)、[静态单向平台](docs/SCENE_PHYSICS2D.md#配置静态单向平台)，并将角色运动与移动碰撞接入作者事件、动画和声音；本机 Linux 安装验收仍为 **0.2.0**。版本、平台、验证证据统一见 [当前状态](docs/STATUS.md)，发布内容见 [0.2.4 记录](docs/RELEASE_0.2.4.md)。
+当前源码版本为 **0.2.5**，新增自由平面角色碰撞事件、[单向平台下穿](docs/SCENE_PHYSICS2D.md#从单向平台主动下穿)、[水平往返平台与端点事件](docs/SCENE_PHYSICS2D.md#配置水平往返平台)，并分离原始观察留存与有限执行预算；本机 Linux 安装验收仍为 **0.2.0**。版本、平台、验证证据统一见 [当前状态](docs/STATUS.md)，发布内容和检查见 [0.2.5 记录](docs/RELEASE_0.2.5.md)及[发布检查](docs/test-results/release-0.2.5/README.md)。
 
 | 创作环节 | 已有能力与操作指南 |
 | --- | --- |

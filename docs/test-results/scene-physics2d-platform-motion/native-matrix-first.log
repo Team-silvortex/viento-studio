@@ -1,0 +1,270 @@
+✔ platform generation leaves input/source locations unchanged and empty schema 5 projects use exact historical output (186.449536ms)
+✔ platform generated inventory retains the complete historical validation chain (152.163299ms)
+✔ real horizontal one-way platform carries only native supported gravity characters through reversal (17118.950864ms)
+✔ real horizontal solid platform carries only native supported gravity characters through reversal (8219.477883ms)
+✔ real horizontal circle-offset platform carries only native supported gravity characters through reversal (6383.028712ms)
+✔ real horizontal both-riders platform carries only native supported gravity characters through reversal (4593.136102ms)
+✔ real jump detaches the same accepted step while the other rider keeps moving (4258.793041ms)
+✔ real drop detaches the same accepted step while the other rider keeps moving (4229.974827ms)
+✔ real own horizontal input combines once with platform carry and native walls still stop it (4223.002184ms)
+✔ real character walking off a moving platform loses carry without geometric contact synthesis (4217.17116ms)
+✔ real no-characters scene moves its platform without inventing a gravity carrier (4233.82925ms)
+✖ real free-planar scene moves its platform without inventing a gravity carrier (4226.327489ms)
+✔ real masked scene moves its platform without inventing a gravity carrier (4201.359058ms)
+✔ real airborne scene moves its platform without inventing a gravity carrier (4203.333094ms)
+✔ real live platform movement and event consumers work without smoke trace sampling (4166.43773ms)
+✔ real scene reentry resets trajectory and discards prior support ownership before author ready (4314.816633ms)
+✔ real portable ZIP retains platform carry and media after original paths go offline (33867.116316ms)
+✔ real window capture keeps horizontal reversal and the independent stationary character (4948.635783ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 17
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 117931.130594
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-platform-motion-backends.test.mjs:180:76
+✖ real free-planar scene moves its platform without inventing a gravity carrier (4226.327489ms)
+  AssertionError [ERR_ASSERTION]: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+  
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"entrySceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","event":"ready","eventSequence":0,"protocol":4,"stateRevision":0}
+  VIENTO_PHYSICS2D:{"assemblyId":"12345678-1234-4234-8234-123456789abc","event":"ready","limit":256,"protocol":1}
+  VIENTO_PROJECT:{"event":"scene-enter","protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[100.0,144.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[500.0,100.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[300.0,340.0],"state":"idle"},{"instanceId":"79797979-7979-4979-8979-000000000001","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[150.0,160.0],"state":"idle"},{"instanceId":"79797979-7979-4979-8979-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[440.0,144.0],"state":"idle"},{"instanceId":"83838383-8383-4838-8838-000000000001","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[440.0,160.0],"state":"idle"}],"event":"ready","protocol":3,"sceneObjectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  PLATFORM_READY:{"animatable":true,"position":[150.0,160.0],"sync":false}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":1,"stepIndex":1,"timeSeconds":0.016666666666666666,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":2,"stepIndex":1,"timeSeconds":0.016666666666666666,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":3,"stepIndex":2,"timeSeconds":0.03333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":4,"stepIndex":2,"timeSeconds":0.03333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":5,"stepIndex":3,"timeSeconds":0.05,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":6,"stepIndex":3,"timeSeconds":0.05,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":7,"stepIndex":4,"timeSeconds":0.06666666666666667,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":8,"stepIndex":4,"timeSeconds":0.06666666666666667,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":9,"stepIndex":5,"timeSeconds":0.08333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":10,"stepIndex":5,"timeSeconds":0.08333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":11,"stepIndex":6,"timeSeconds":0.09999999999999999,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":12,"stepIndex":6,"timeSeconds":0.09999999999999999,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":13,"stepIndex":7,"timeSeconds":0.11666666666666665,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":14,"stepIndex":7,"timeSeconds":0.11666666666666665,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":15,"stepIndex":8,"timeSeconds":0.13333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":16,"stepIndex":8,"timeSeconds":0.13333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":17,"stepIndex":9,"timeSeconds":0.15,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":18,"stepIndex":9,"timeSeconds":0.15,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":19,"stepIndex":10,"timeSeconds":0.16666666666666666,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":20,"stepIndex":10,"timeSeconds":0.16666666666666666,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":21,"stepIndex":11,"timeSeconds":0.18333333333333332,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":22,"stepIndex":11,"timeSeconds":0.18333333333333332,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":23,"stepIndex":12,"timeSeconds":0.19999999999999998,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":24,"stepIndex":12,"timeSeconds":0.19999999999999998,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":25,"stepIndex":13,"timeSeconds":0.21666666666666665,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":26,"stepIndex":13,"timeSeconds":0.21666666666666665,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":27,"stepIndex":14,"timeSeconds":0.2333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":28,"stepIndex":14,"timeSeconds":0.2333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":29,"stepIndex":15,"timeSeconds":0.24999999999999997,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":30,"stepIndex":15,"timeSeconds":0.24999999999999997,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":31,"stepIndex":16,"timeSeconds":0.26666666666666666,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":32,"stepIndex":16,"timeSeconds":0.26666666666666666,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":33,"stepIndex":17,"timeSeconds":0.2833333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":34,"stepIndex":17,"timeSeconds":0.2833333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":35,"stepIndex":18,"timeSeconds":0.3,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":36,"stepIndex":18,"timeSeconds":0.3,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":37,"stepIndex":19,"timeSeconds":0.31666666666666665,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":38,"stepIndex":19,"timeSeconds":0.31666666666666665,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":39,"stepIndex":20,"timeSeconds":0.3333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":40,"stepIndex":20,"timeSeconds":0.3333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":41,"stepIndex":21,"timeSeconds":0.35,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":42,"stepIndex":21,"timeSeconds":0.35,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":43,"stepIndex":22,"timeSeconds":0.36666666666666664,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":44,"stepIndex":22,"timeSeconds":0.36666666666666664,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":45,"stepIndex":23,"timeSeconds":0.3833333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":46,"stepIndex":23,"timeSeconds":0.3833333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":47,"stepIndex":24,"timeSeconds":0.39999999999999997,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":48,"stepIndex":24,"timeSeconds":0.39999999999999997,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":49,"stepIndex":25,"timeSeconds":0.41666666666666663,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":50,"stepIndex":25,"timeSeconds":0.41666666666666663,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":51,"stepIndex":26,"timeSeconds":0.4333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":52,"stepIndex":26,"timeSeconds":0.4333333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":53,"stepIndex":27,"timeSeconds":0.44999999999999996,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":54,"stepIndex":27,"timeSeconds":0.44999999999999996,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":55,"stepIndex":28,"timeSeconds":0.4666666666666666,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":56,"stepIndex":28,"timeSeconds":0.4666666666666666,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":57,"stepIndex":29,"timeSeconds":0.4833333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":58,"stepIndex":29,"timeSeconds":0.4833333333333333,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"70707070-7070-4070-8070-000000000010","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","positionAfter":[100.0,144.0],"positionBefore":[100.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":59,"stepIndex":30,"timeSeconds":0.49999999999999994,"visitIndex":1}
+  VIENTO_PHYSICS2D:{"bodyId":"79797979-7979-4979-8979-000000000004","contacts":[],"deltaSeconds":0.016666666666666666,"event":"sample","instanceId":"79797979-7979-4979-8979-000000000003","positionAfter":[440.0,144.0],"positionBefore":[440.0,144.0],"protocol":1,"requestedMotion":[0.0,0.0],"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","sequence":60,"stepIndex":30,"timeSeconds":0.49999999999999994,"visitIndex":1}
+  VIENTO_PROJECT:{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[100.0,144.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[500.0,100.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[300.0,340.0],"state":"idle"},{"instanceId":"79797979-7979-4979-8979-000000000001","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[174.0,160.0],"state":"idle"},{"instanceId":"79797979-7979-4979-8979-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[440.0,144.0],"state":"idle"},{"instanceId":"83838383-8383-4838-8838-000000000001","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[440.0,160.0],"state":"idle"}],"elapsedSeconds":0.49999999999999994,"event":"scene-exit","protocol":4,"reason":"finished","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PHYSICS2D:{"event":"finished","limited":false,"protocol":1,"sampleCount":60}
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"event":"finished","eventSequence":0,"protocol":4,"stateRevision":0,"totalSeconds":0.49999999999999994,"visitCount":1}
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.
+            at: _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+            GDScript backtrace (most recent call first):
+                [0] _physics_process (res://behaviors/84848484-8484-4848-8848-000000000001.gd:21)
+  
+  + actual - expected
+  
+  + [
+  +   {
+  +     code: 'godot_error',
+  +     message: "SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.",
+  +     objectId: '84848484-8484-4848-8848-000000000001',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourceLine: 21,
+  +     sourcePath: 'documents/scripts/platform-probe.txt',
+  +     sourceRange: {
+  +       encoding: 'utf-16',
+  +       end: 1227,
+  +       exact: true,
+  +       propertyPath: '',
+  +       start: 781
+  +     },
+  +     sourceRevision: 'sha256:f1af01031c8d72bd5587fd9af4f92032caff2d99c2efef2184ee2cb94820ea07'
+  +   },
+  +   {
+  +     code: 'godot_error',
+  +     message: "SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.",
+  +     objectId: '12345678-1234-4234-8234-123456789abc',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/projects/demo.json',
+  +     sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d',
+  +     title: 'Two-scene project'
+  +   }
+  + ]
+  - []
+  
+      at execute (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-platform-motion-backends.test.mjs:57:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-platform-motion-backends.test.mjs:188:94)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { severity: 'error', code: 'godot_error', message: "SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.", objectId: '84848484-8484-4848-8848-000000000001', sourcePath: 'documents/scripts/platform-probe.txt', propertyPath: '', sourceRevision: 'sha256:f1af01031c8d72bd5587fd9af4f92032caff2d99c2efef2184ee2cb94820ea07', sourceLine: 21, sourceRange: [Object] }, { severity: 'error', code: 'godot_error', message: "SCRIPT ERROR: Invalid access to property or key 'character_motion_grounded' on a base object of type 'Node2D (project-scene.gd)'.", objectId: '12345678-1234-4234-8234-123456789abc', sourcePath: 'documents/projects/demo.json', propertyPath: '', sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d', title: 'Two-scene project' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

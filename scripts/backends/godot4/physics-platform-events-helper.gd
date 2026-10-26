@@ -1,0 +1,93 @@
+extends "res://platform-motion-helper.gd"
+
+const EndpointPort = preload("res://platform-events-port.gd")
+var declared: Array = []
+var ports: Dictionary = {}
+var pending: Array = []
+var stepping := false
+var flushing := false
+
+func _init(instance_ids: Array) -> void:
+	declared = instance_ids.duplicate()
+
+func attach(scene: Node, binding: Dictionary, behavior: Node) -> void:
+	var instance_id: String = binding["instanceId"]
+	if not active(scene) or not instance_id in declared:
+		return
+	var port = EndpointPort.new()
+	if not ports.has(instance_id):
+		ports[instance_id] = []
+	ports[instance_id].append({"port": port, "behavior": weakref(behavior)})
+	behavior.set_meta("viento_platform_events", port)
+
+func start(scene: Node) -> bool:
+	if stepping or flushing or not active(scene):
+		return false
+	pending.clear()
+	stepping = true
+	return true
+
+# Observe the frozen trajectory operation, not a rendered position or a trace.
+# For phase p and positive advance a, endpoints lie in (p, p+a]. At most the
+# first occurrence of each endpoint is retained, in first-occurrence order.
+func begin(scene: Node, delta: float) -> void:
+	var candidates: Array = []
+	if stepping and active(scene) and is_finite(delta) and delta > 0.0:
+		for instance_id in platforms:
+			var platform: Dictionary = platforms[instance_id]
+			var node = platform["node"].get_ref()
+			if not is_instance_valid(node):
+				continue
+			var phase: float = platform["phase"]
+			var distance: float = absf(float(platform["motion"]["offsetX"]))
+			var after: float = phase + float(platform["motion"]["speed"]) * delta
+			var destination: bool = after >= (distance if phase < distance else distance * 3.0)
+			var origin: bool = after >= distance * 2.0
+			var endpoints: Array = ["destination_reached", "origin_reached"] if phase < distance else ["origin_reached", "destination_reached"]
+			for endpoint in endpoints:
+				if (endpoint == "origin_reached" and origin) or (endpoint == "destination_reached" and destination):
+					candidates.append({"instanceId": instance_id, "signal": endpoint})
+	super.begin(scene, delta)
+	if not stepping or not active(scene):
+		return
+	for fact in candidates:
+		var platform: Dictionary = platforms[fact["instanceId"]]
+		var node = platform["node"].get_ref()
+		if is_instance_valid(node) and is_finite(float(platform["phase"])) and node.global_position.is_finite():
+			pending.append(fact)
+
+func deliverable(scene: Node) -> bool:
+	return active(scene) and scene.project_host.pending_scene.is_empty() and not scene.project_host.finish_requested
+
+func finish(scene: Node) -> void:
+	stepping = false
+	var facts := pending
+	pending = []
+	flushing = true
+	for fact in facts:
+		if not deliverable(scene):
+			break
+		var platform = platforms[fact["instanceId"]]["node"].get_ref()
+		if not is_instance_valid(platform) or not platform.is_inside_tree() or platform.is_queued_for_deletion():
+			continue
+		for record in ports.get(fact["instanceId"], []):
+			if not deliverable(scene) or not is_instance_valid(platform) or not platform.is_inside_tree() or platform.is_queued_for_deletion():
+				break
+			var behavior = record["behavior"].get_ref()
+			if not is_instance_valid(behavior) or not behavior.is_inside_tree() or behavior.is_queued_for_deletion():
+				continue
+			record["port"].emit_signal(fact["signal"])
+	flushing = false
+
+func revoke() -> void:
+	stepping = false
+	pending.clear()
+	for records in ports.values():
+		for record in records:
+			var port = record["port"]
+			for signal_name in ["origin_reached", "destination_reached"]:
+				for connection in port.get_signal_connection_list(signal_name):
+					port.disconnect(signal_name, connection["callable"])
+	ports.clear()
+	declared.clear()
+	super.revoke()

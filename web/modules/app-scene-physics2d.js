@@ -1,4 +1,4 @@
-import { supportsStudioCoreScenePhysics2DResponse, supportsStudioCoreScenePhysics2DMotion, supportsStudioCoreScenePhysics2DOneWay } from '../../engine/studio-core.mjs';
+import { supportsStudioCoreScenePhysics2DResponse, supportsStudioCoreScenePhysics2DMotion, supportsStudioCoreScenePhysics2DOneWay, supportsStudioCoreScenePhysics2DPlatformMotion } from '../../engine/studio-core.mjs';
 import { readScenePhysics2DDocument, createScenePhysics2DProposal, isScenePhysics2DProposal } from '../../engine/scene-physics2d-edit.mjs';
 import { isScenePhysics2DTargets, scenePhysics2DTargetsMatchSource, scenePhysics2DTargetValue, validateScenePhysics2DTargets } from '../../engine/scene-physics2d-targets.mjs';
 import { isScenePhysics2DSpace, scenePhysics2DSpaceMatchSource, createScenePhysics2DSpaceView } from '../../engine/scene-physics2d-space.mjs';
@@ -68,6 +68,16 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
             <label id="scenePhysics2DOneWayMarginField" hidden><span data-i18n="穿透容差（场景单位）"></span><input id="scenePhysics2DOneWayMargin" type="text" inputmode="decimal" lang="" spellcheck="false" aria-describedby="scenePhysics2DOneWayBounds"></label>
             <p id="scenePhysics2DOneWayBounds" class="scene-physics2d-note" data-i18n="容差为 1–64，影响单向碰撞判定；不是平台厚度。关闭单向设置会保留已升级的文档格式。" hidden></p>
           </section>
+          <section id="scenePhysics2DPlatformMotionSection" class="scene-physics2d-motion" hidden>
+            <label><span data-i18n="平台移动方式"></span><select id="scenePhysics2DPlatformMotion" aria-describedby="scenePhysics2DPlatformMotionHint scenePhysics2DPlatformMotionUnavailable"><option value="none" data-i18n="保持静止"></option><option value="horizontal" data-i18n="水平往返"></option></select></label>
+            <p id="scenePhysics2DPlatformMotionHint" class="scene-physics2d-note" data-i18n="以已保存实例的位置为起点，水平往返移动。平台速度独立于角色速度；终点偏移不改变碰撞偏移或场景原文。空间图只显示起点，不运行运动模拟。"></p>
+            <p id="scenePhysics2DPlatformMotionUnavailable" class="scene-physics2d-note" data-i18n="当前核心不支持移动平台格式；旧格式的物理参数仍可编辑。" hidden></p>
+            <div id="scenePhysics2DPlatformMotionFields" class="scene-physics2d-grid" hidden>
+              <label><span data-i18n="终点水平偏移（场景单位）"></span><input id="scenePhysics2DPlatformMotionX" type="text" inputmode="decimal" lang="" spellcheck="false" aria-describedby="scenePhysics2DPlatformMotionBounds"></label>
+              <label><span data-i18n="平台速度（单位/秒）"></span><input id="scenePhysics2DPlatformMotionSpeed" type="text" inputmode="decimal" lang="" spellcheck="false" aria-describedby="scenePhysics2DPlatformMotionBounds"></label>
+              <p id="scenePhysics2DPlatformMotionBounds" class="scene-physics2d-note" data-i18n="偏移绝对值为 1–8192，负值向左、正值向右；速度为 1–2000。关闭运动会保留已升级的文档格式。"></p>
+            </div>
+          </section>
           <div id="scenePhysics2DBox" class="scene-physics2d-grid"><label><span data-i18n="宽度"></span><input id="scenePhysics2DWidth" type="text" inputmode="decimal" lang="" spellcheck="false"></label>
             <label><span data-i18n="高度"></span><input id="scenePhysics2DHeight" type="text" inputmode="decimal" lang="" spellcheck="false"></label></div>
           <label id="scenePhysics2DCircle"><span data-i18n="半径"></span><input id="scenePhysics2DRadius" type="text" inputmode="decimal" lang="" spellcheck="false"></label>
@@ -94,7 +104,7 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
   const node = (tag, text = '') => { const result = document.createElement(tag); result.textContent = text; return result; };
   const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
   const revision = value => typeof value === 'string' && /^sha256:[a-f0-9]{64}$/.test(value);
-  const names = { Instance: 'instanceId', Kind: 'kind', Response: 'collisionResponse', Motion: 'motion', Gravity: 'gravity', JumpSpeed: 'jumpSpeed', MaxFallSpeed: 'maxFallSpeed', OneWay: 'oneWayMode', OneWayMargin: 'oneWayMargin', Shape: 'shape', Width: 'width', Height: 'height', Radius: 'radius', X: 'x', Y: 'y', Layer: 'layer', Mask: 'mask' };
+  const names = { Instance: 'instanceId', Kind: 'kind', Response: 'collisionResponse', Motion: 'motion', Gravity: 'gravity', JumpSpeed: 'jumpSpeed', MaxFallSpeed: 'maxFallSpeed', OneWay: 'oneWayMode', OneWayMargin: 'oneWayMargin', PlatformMotion: 'platformMotionMode', PlatformMotionX: 'platformMotionX', PlatformMotionSpeed: 'platformMotionSpeed', Shape: 'shape', Width: 'width', Height: 'height', Radius: 'radius', X: 'x', Y: 'y', Layer: 'layer', Mask: 'mask' };
   let disposed = false, epoch = 0, session = null, pending = false, draft = [], selected = '', initial = '', proposal = null, approval = '', previewModel = null, previewForm = '', opener = null, message = '', diagnostic = '';
   let targetCatalog = null, targetState = 'idle', targetGeneration = 0, targetCapability = null, targetCatalogToken, approvedTargets = null, targetRenderKey = null;
   let spaceCatalog = null, spaceState = 'idle', spaceGeneration = 0, spaceCapability = null, spaceCatalogToken, spaceView = null, spaceViewCatalog = null, spaceViewModel = null, spaceViewFailed = false, spaceMode = 'view';
@@ -103,7 +113,7 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
       || ![...spaceView.bodies, ...spaceView.missingBodies].some(body => body.id === id)) return;
     selectBody(id);
   }, onOffsetProposal: acceptSpaceOffset, onResizeProposal: acceptSpaceResize }) : { render() {}, clear() {} };
-  let observedMotionCapability, motionGeneration = 0, observedOneWayCapability, oneWayGeneration = 0;
+  let observedMotionCapability, motionGeneration = 0, observedOneWayCapability, oneWayGeneration = 0, observedPlatformMotionCapability, platformMotionGeneration = 0;
   const reserved = new Set();
   const eligible = context => Boolean(context.editable && !context.creating && context.sourceJSON === true && context.physicsSource === true
     && typeof context.sourcePath === 'string' && context.sourcePath && typeof context.sourceToken === 'string');
@@ -112,14 +122,15 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
   const responseAvailable = () => typeof supportsStudioCoreScenePhysics2DResponse === 'function' && supportsStudioCoreScenePhysics2DResponse();
   const motionAvailable = () => typeof supportsStudioCoreScenePhysics2DMotion === 'function' && supportsStudioCoreScenePhysics2DMotion();
   const oneWayAvailable = () => typeof supportsStudioCoreScenePhysics2DOneWay === 'function' && supportsStudioCoreScenePhysics2DOneWay();
+  const platformMotionAvailable = () => typeof supportsStudioCoreScenePhysics2DPlatformMotion === 'function' && supportsStudioCoreScenePhysics2DPlatformMotion();
   const staticBox = body => body.kind === 'static' && (body.shape === 'box' || body.shape?.kind === 'box');
-  const requiredSchema = bodies => Math.max(session?.model.schemaVersion || 1, bodies.some(body => staticBox(body) && (body.oneWay || body.oneWayMode === 'one-way')) ? 4 : bodies.some(body => body.kind === 'character' && (body.characterMotion || body.motion === 'platformer')) ? 3 : bodies.some(body => body.kind === 'character' && body.collisionResponse === 'slide') ? 2 : 1);
-  const schemaAvailable = schema => schema === 4 ? oneWayAvailable() : schema === 3 ? motionAvailable() : schema === 2 ? responseAvailable() : schema === 1;
-  const capabilityRevision = schema => schema === 4 ? oneWayGeneration : schema === 3 ? motionGeneration : 0;
+  const requiredSchema = bodies => Math.max(session?.model.schemaVersion || 1, bodies.some(body => staticBox(body) && (body.platformMotion || body.platformMotionMode === 'horizontal')) ? 5 : bodies.some(body => staticBox(body) && (body.oneWay || body.oneWayMode === 'one-way')) ? 4 : bodies.some(body => body.kind === 'character' && (body.characterMotion || body.motion === 'platformer')) ? 3 : bodies.some(body => body.kind === 'character' && body.collisionResponse === 'slide') ? 2 : 1);
+  const schemaAvailable = schema => schema === 5 ? platformMotionAvailable() : schema === 4 ? oneWayAvailable() : schema === 3 ? motionAvailable() : schema === 2 ? responseAvailable() : schema === 1;
+  const capabilityRevision = schema => schema === 5 ? platformMotionGeneration : schema === 4 ? oneWayGeneration : schema === 3 ? motionGeneration : 0;
   const featureAvailable = minimum => schemaAvailable(Math.max(requiredSchema(raw()), minimum));
   const unavailable = () => Object.assign(new Error('Physics document capability unavailable.'), { errorCode: 'studio_core_unavailable' });
   const raw = () => draft.map(row => row.id === selected ? { ...row, ...Object.fromEntries(Object.entries(names).map(([id, key]) => [key, el(id).value])) } : row);
-  const signature = () => JSON.stringify(raw().map(({ width, height, radius, collisionResponse, responsePresent, motion, gravity, jumpSpeed, maxFallSpeed, oneWayMode, oneWayMargin, ...row }) => ({ ...row, ...(staticBox(row) ? { oneWayMode, ...(oneWayMode === 'one-way' ? { oneWayMargin } : {}) } : {}), ...(row.kind === 'character' ? { collisionResponse, motion, ...(motion === 'platformer' ? { gravity, jumpSpeed, maxFallSpeed } : {}) } : {}), ...(row.shape === 'box' ? { width, height } : { radius }) })));
+  const signature = () => JSON.stringify(raw().map(({ width, height, radius, collisionResponse, responsePresent, motion, gravity, jumpSpeed, maxFallSpeed, oneWayMode, oneWayMargin, platformMotionMode, platformMotionX, platformMotionSpeed, ...row }) => ({ ...row, ...(staticBox(row) ? { oneWayMode, ...(oneWayMode === 'one-way' ? { oneWayMargin } : {}), platformMotionMode, ...(platformMotionMode === 'horizontal' ? { platformMotionX, platformMotionSpeed } : {}) } : {}), ...(row.kind === 'character' ? { collisionResponse, motion, ...(motion === 'platformer' ? { gravity, jumpSpeed, maxFallSpeed } : {}) } : {}), ...(row.shape === 'box' ? { width, height } : { radius }) })));
   const dirty = () => Boolean(session && signature() !== initial);
   const canReadTargets = () => typeof getTargets === 'function' && getContext().targetsAvailable === true;
   const hasTargets = () => Boolean(session && current() && canReadTargets() && targetCatalog && targetState === 'ready'
@@ -296,6 +307,9 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     const oneWayCapability = oneWayAvailable();
     if (observedOneWayCapability !== undefined && oneWayCapability !== observedOneWayCapability) oneWayGeneration++;
     observedOneWayCapability = oneWayCapability;
+    const platformMotionCapability = platformMotionAvailable();
+    if (observedPlatformMotionCapability !== undefined && platformMotionCapability !== observedPlatformMotionCapability) platformMotionGeneration++;
+    observedPlatformMotionCapability = platformMotionCapability;
     const context = getContext(); button.hidden = !eligible(context); button.disabled = context.available !== true || Boolean(context.busy); button.textContent = t('编辑二维物理');
     observeTargetCapability(); observeSpaceCapability();
     if (session && !current()) { if (!pending) { proposal = null; approval = ''; } resetTargets({ review: !pending }); resetSpace(); clearPreview(); message = '原文已变化，请返回后重新打开物理编辑。'; }
@@ -314,8 +328,14 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     el('ResponseUnavailable').hidden = !character || responseEditable; el('Response').disabled = locked || !character || !responseEditable || platformer;
     const platform = el('Kind').value === 'static' && el('Shape').value === 'box', oneWay = platform && el('OneWay').value === 'one-way';
     el('OneWaySection').hidden = !platform; el('OneWayMarginField').hidden = !oneWay; el('OneWayBounds').hidden = !oneWay;
-    el('OneWayUnavailable').hidden = !platform || oneWayAvailable(); el('OneWay').disabled = locked || !platform || !oneWayAvailable();
-    el('OneWayMargin').disabled = locked || !oneWay || !oneWayAvailable();
+    const oneWayEditable = featureAvailable(4);
+    el('OneWayUnavailable').hidden = !platform || oneWayEditable; el('OneWay').disabled = locked || !platform || !oneWayEditable;
+    el('OneWayMargin').disabled = locked || !oneWay || !oneWayEditable;
+    const movingPlatform = platform && el('PlatformMotion').value === 'horizontal';
+    el('PlatformMotionSection').hidden = !platform; el('PlatformMotionFields').hidden = !movingPlatform;
+    el('PlatformMotionUnavailable').hidden = !platform || platformMotionAvailable();
+    el('PlatformMotion').disabled = locked || !platform || !platformMotionAvailable();
+    for (const name of ['PlatformMotionX', 'PlatformMotionSpeed']) el(name).disabled = locked || !movingPlatform || !platformMotionAvailable();
     el('Add').disabled = locked || draft.length >= 128; el('Remove').disabled = locked || draft.length <= 1;
     el('Check').disabled = locked || targetState === 'loading'; el('Apply').disabled = locked || !approved();
     el('Path').textContent = session?.source.sourcePath || context.sourcePath || ''; el('Scene').textContent = session ? t('物理所属场景：{0}', session.model.sceneObjectId) : '';
@@ -334,13 +354,14 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
   function fail(error, text) { proposal = null; approval = ''; approvedTargets = null; clearPreview(); message = text; diagnostic = typeof error?.errorCode === 'string' ? error.errorCode : ''; }
   const form = body => ({ id: body.id, instanceId: body.instanceId, kind: body.kind, collisionResponse: body.collisionResponse ?? 'stop', responsePresent: Object.hasOwn(body, 'collisionResponse'),
     oneWayMode: body.oneWay ? 'one-way' : 'solid', oneWayMargin: String(body.oneWay?.margin ?? 1),
+    platformMotionMode: body.platformMotion?.kind || 'none', platformMotionX: String(body.platformMotion?.offsetX ?? 120), platformMotionSpeed: String(body.platformMotion?.speed ?? 60),
     motion: body.characterMotion?.kind || 'free', gravity: String(body.characterMotion?.gravity ?? 980), jumpSpeed: String(body.characterMotion?.jumpSpeed ?? 360), maxFallSpeed: String(body.characterMotion?.maxFallSpeed ?? 1200), shape: body.shape.kind,
     width: String(body.shape.kind === 'box' ? body.shape.size[0] : 32), height: String(body.shape.kind === 'box' ? body.shape.size[1] : 32), radius: String(body.shape.kind === 'circle' ? body.shape.radius : 16),
     x: String(body.offset[0]), y: String(body.offset[1]), layer: String(body.layer), mask: String(body.mask) });
   async function open() {
     const context = { ...getContext() }; if (disposed || dialog.open || !eligible(context) || context.busy || context.available !== true) return false;
     const request = ++epoch; opener = document.activeElement; pending = true; message = '正在读取物理文档…'; dialog.showModal(); refresh();
-    const motionRequest = motionGeneration, motionCapability = motionAvailable(), oneWayRequest = oneWayGeneration, oneWayCapability = oneWayAvailable();
+    const motionRequest = motionGeneration, motionCapability = motionAvailable(), oneWayRequest = oneWayGeneration, oneWayCapability = oneWayAvailable(), platformMotionRequest = platformMotionGeneration, platformMotionCapability = platformMotionAvailable();
     const owns = () => { const now = getContext(); return !disposed && dialog.open && request === epoch && eligible(now) && !now.busy && now.available === true
       && now.sourcePath === context.sourcePath && now.sourceToken === context.sourceToken; };
     try {
@@ -348,7 +369,8 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
       if (!source || Object.keys(source).length !== 5 || source.sourcePath !== context.sourcePath || source.token !== context.sourceToken
         || !revision(source.sourceRevision) || !revision(source.baseSourceRevision) || typeof source.content !== 'string') throw Error('source');
       const captured = Object.freeze({ ...source }), model = await readScenePhysics2DDocument(captured.content); if (!owns()) return false;
-      if (model.schemaVersion === 4 && (!oneWayCapability || !oneWayAvailable() || oneWayGeneration !== oneWayRequest)
+      if (model.schemaVersion === 5 && (!platformMotionCapability || !platformMotionAvailable() || platformMotionGeneration !== platformMotionRequest)
+        || model.schemaVersion === 4 && (!oneWayCapability || !oneWayAvailable() || oneWayGeneration !== oneWayRequest)
         || model.schemaVersion === 3 && (!motionCapability || !motionAvailable() || motionGeneration !== motionRequest)) throw unavailable();
       session = { source: captured, model }; draft = model.bodies.map(form); selected = draft[0].id;
       for (const value of [model.sceneObjectId, ...model.bodies.flatMap(body => [body.id, body.instanceId])]) reserved.add(value);
@@ -361,10 +383,12 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     return Number(value);
   }
   function edit() {
+    if (raw().some(row => staticBox(row) && !['none', 'horizontal'].includes(row.platformMotionMode))) throw Object.assign(new TypeError('Invalid platform motion mode.'), { errorCode: 'scene_physics2d_authoring_invalid' });
     if (raw().some(row => staticBox(row) && !['solid', 'one-way'].includes(row.oneWayMode))) throw Object.assign(new TypeError('Invalid one-way platform mode.'), { errorCode: 'scene_physics2d_authoring_invalid' });
     if (raw().some(row => row.kind === 'character' && !['free', 'platformer'].includes(row.motion))) throw Object.assign(new TypeError('Invalid character motion mode.'), { errorCode: 'scene_physics2d_authoring_invalid' });
     if (!schemaAvailable(requiredSchema(raw()))) throw unavailable();
     return { bodies: raw().map(row => ({ id: row.id, instanceId: row.instanceId, kind: row.kind,
+      ...(staticBox(row) && row.platformMotionMode === 'horizontal' ? { platformMotion: { kind: 'horizontal', offsetX: numeric(row.platformMotionX), speed: numeric(row.platformMotionSpeed) } } : {}),
       ...(staticBox(row) && row.oneWayMode === 'one-way' ? { oneWay: { margin: numeric(row.oneWayMargin) } } : {}),
       ...(row.kind === 'character' && (row.collisionResponse !== 'stop' || row.responsePresent) ? { collisionResponse: row.collisionResponse } : {}),
       ...(row.kind === 'character' && row.motion === 'platformer' ? { characterMotion: { kind: 'platformer', gravity: numeric(row.gravity), jumpSpeed: numeric(row.jumpSpeed), maxFallSpeed: numeric(row.maxFallSpeed) } } : {}),
@@ -422,7 +446,7 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     let id;
     try { for (let attempt = 0; attempt < 16; attempt++) { const value = globalThis.crypto?.randomUUID?.(); if (uuid(value) && !reserved.has(value)) { id = value; break; } } } catch { /* No fallback identity. */ }
     if (!id) { message = '无法分配新的碰撞体编号，输入已保留。'; refresh(); return; }
-    reserved.add(id); draft.push({ id, instanceId: '', kind: 'static', collisionResponse: 'stop', responsePresent: false, oneWayMode: 'solid', oneWayMargin: '1', motion: 'free', gravity: '980', jumpSpeed: '360', maxFallSpeed: '1200', shape: 'box', width: '32', height: '32', radius: '16', x: '0', y: '0', layer: '1', mask: '1' });
+    reserved.add(id); draft.push({ id, instanceId: '', kind: 'static', collisionResponse: 'stop', responsePresent: false, oneWayMode: 'solid', oneWayMargin: '1', platformMotionMode: 'none', platformMotionX: '120', platformMotionSpeed: '60', motion: 'free', gravity: '980', jumpSpeed: '360', maxFallSpeed: '1200', shape: 'box', width: '32', height: '32', radius: '16', x: '0', y: '0', layer: '1', mask: '1' });
     selected = id; invalidate(); renderSelected(); refresh(); el('Instance').focus();
   }
   function remove() {
@@ -446,7 +470,7 @@ export function setupScenePhysics2D({ getContext = () => ({}), getSource = async
     try { const value = scenePhysics2DTargetValue(targetCatalog, el('Target').value); if (value !== el('Instance').value) { el('Instance').value = value; changed(); } }
     catch { refreshTargets(); }
   });
-  for (const [name] of Object.entries(names)) el(name).addEventListener(['Kind', 'Shape', 'Response', 'Motion', 'OneWay'].includes(name) ? 'change' : 'input', () => {
+  for (const [name] of Object.entries(names)) el(name).addEventListener(['Kind', 'Shape', 'Response', 'Motion', 'OneWay', 'PlatformMotion'].includes(name) ? 'change' : 'input', () => {
     if (pending || !current()) return;
     // Only an explicit mode/kind choice enables the required slide response;
     // refreshes and silent field changes cannot repair or authorize a draft.

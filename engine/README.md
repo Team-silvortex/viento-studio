@@ -2,7 +2,7 @@
 
 `engine/` 提供不依赖 DOM、Node、HTTP、Tauri 或具体执行引擎的规则、模型、规划和观察契约。文件读取、摘要实现、素材字节、进程及持久化由宿主注入或执行；共享 Rust／WASM 负责已迁入的领域规则，JavaScript 负责来源捕获、回执核对和编排。
 
-本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。源码版本 **0.2.4**，已收录物理观察、角色重力／跳跃、运动与移动碰撞事件及静态单向平台；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
+本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。源码版本 **0.2.5**，已收录自由平面碰撞、单向平台下穿、水平往返及端点事件，原始观察留存和共用有限执行预算分别维护；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
 
 ## 调用边界
 
@@ -122,7 +122,9 @@ schema 3 的角色可显式保存 `characterMotion`（platformer、重力、起�
 
 schema 4 以 `oneWay: { margin: 1 }` 增加静态矩形单向平台，容差有限且在 1–64 内。`inspectScenePhysics2D` 按版本选择独立 `scenePhysics2D.inspectOneWay`；`supportsStudioCoreScenePhysics2DOneWay`／`dispatchStudioCoreScenePhysics2DOneWay` 只依赖 `viento_core_scene_physics2d_one_way_version() === 1`，完整验证继承的 motion／slide 字段。旧操作仍严格对应 schema 1／2／3。`scene-physics2d-edit.mjs` 对 `oneWay.margin` 作叶级更新，三种可选字段共享不重叠的增删补丁；首次启用升级、关闭删除字段但不降版本，普通创建默认保持。
 
-`physics.one-way-platform2d` 仅由实际 `oneWay` 字段派生；Godot 0.26.0 包装配置固定朝上的原生矩形单向碰撞及 margin，原运动／事件层和项目／观察协议保持。没有移动平台、任意方向或向下穿透接口；两个 Bevy 适配器不支持。空间几何 DTO 不携带这些运行参数，表单几何修改保留完整作者声明。使用流程见[静态单向平台](../docs/SCENE_PHYSICS2D.md#配置静态单向平台)。
+水平往返平台使用物理schema 5的独立核心域 `scenePhysics2D.inspectPlatformMotion`，仅静态矩形接受 `platformMotion: {kind: "horizontal", offsetX, speed}`。保真编辑器显式升级声明；真实轨迹和承载由执行后端处理，Web空间图保持几何显示。[使用与边界](../docs/SCENE_PHYSICS2D.md#配置水平往返平台)。
+
+`physics.one-way-platform2d` 仅由实际 `oneWay` 字段派生；Godot 0.26.0 包装配置固定朝上的原生矩形单向碰撞及 margin，原运动／事件层和项目／观察协议保持。0.26包装本身只配置静态单向面；水平运动与主动下穿由后续独立层提供，任意方向尚未定义。两个 Bevy 适配器不支持。空间几何 DTO 不携带这些运行参数，表单几何修改保留完整作者声明。使用流程见[静态单向平台](../docs/SCENE_PHYSICS2D.md#配置静态单向平台)。
 
 ### 物理空间视图与字段提案
 
@@ -185,10 +187,21 @@ schema 4 以 `oneWay: { margin: 1 }` 增加静态矩形单向平台，容差有�
 | `execution-tool-status.mjs` | unchecked／checking／ready／unavailable；成功状态携版本与二进制摘要，不携路径或执行权限 |
 | `scene-control-program.mjs` | 有限方向输入；全局／逐实例 schema 分离，1–64 步、单步 ≤0.25 秒、总 8 秒、演员×步数 1024、最后全释放 |
 | `runtime-verification-case.mjs`／`runtime-case-document.mjs` | 有限用例、身份和断言；仅无行为 plan 2，完成／失败／缺样本分开，不模拟引擎 |
+| `project-execution-budget.mjs` | 七维有限会话成本的原子预留与分离快照；业务身份、队列和记录留存由调用方管理 |
 | `scene-runtime-events.mjs`／`scene-runtime-query.mjs` | 已冻结计划的身份、位置、生命周期和步骤准入，再返回不可变观察；来源来自计划，不采用进程任意路径 |
 | `backend-project-delivery.mjs` | 绑定完整后端清单与摘要的交付审阅 DTO；归档成员和字节再由宿主验证 |
 
 Godot、Bevy 数据与 Bevy Rust 的资源、语言和运行范围分别由后端声明。完整冻结、进程执行、工具身份和工程生成见[中间层](../docs/BACKEND_MIDDLEWARE.md)，模块状态不替代后端能力。
+
+### 项目有限执行预算
+
+`project-execution-budget.mjs` 导出冻结的 `PROJECT_EXECUTION_BUDGET_POLICY` 与 `createProjectExecutionBudget()`。后者返回冻结接口：`reserve(costs) -> boolean` 原子准入完整成本向量，`snapshot()` 返回七维已用计数的冻结副本。七维分别为 `eventRegistrations`、`eventPublishes`、`eventDeliveries`、`eventBytes`、`stateMutations`、`audioRequests`、`animationRequests`；具体上限见[共用策略](../docs/BACKEND_MIDDLEWARE.md#有限执行预算)。
+
+成本向量只接受普通对象或 null 原型对象的可枚举自有数据字段；空向量与零成本有效。未知键、访问器、非安全整数、负数或超额整体返回 `false`，不执行 getter、不修改已用计数。输入和快照不能回写内部状态；每个预算实例独立，不提供 reset、业务序号或调度时钟。
+
+`project-event-bus.mjs` 在身份、令牌及待处理容量检查完成后预留事件次数、接收者与字节；原有完整序列和投递语义不变。Godot 0.32.0 生成包装从同一策略输出 `execution-budget.json`，运行 helper 在一个协调器中供事件、状态、音频与动画调用；helper 和转换脚本接受严格库存核对，历史模板源字节与无预算层产物读取保留。`sequence`／`state_revision`／动画 `reserved_count` 继续表达业务身份，活动订阅和待处理容量由各自服务管理。
+
+作者格式及项目运行协议 4／7／10／11 未改变，单场景生成不加入项目预算层。当前仍是有限会话，flush、deferred 和场景切换不重置额度，也没有 continuous 开关；原始帧尾部留存不改变这些执行上限。验证范围见[有限执行预算记录](../docs/test-results/runtime-execution-budget/README.md)。
 
 ## 独立 3D 原始表示
 
@@ -363,3 +376,11 @@ Godot、Bevy 数据与 Bevy Rust 的资源、语言和运行范围分别由后�
 Android 的 `mobile/platform.mjs` 在 WebView 复用可移植规则，Rust `mobile_storage.rs` 执行私有目录原子读写、即时索引与恢复；项目包复用桌面格式。移动资源构建不等于本机作者工作台或引擎执行支持，媒体、模板配置及设备验收按[移动端说明](../mobile/README.md)单独判断。未来宿主接入应实现注入端口，不能改写作品逻辑路径或绕过来源／保存契约。
 
 `godot-character-contact-events-script.mjs` 是普通作者起始源码：校验独立 `viento_character_contacts` 版本1及两字符串信号，发布 `physics.contact_started`／`physics.contact_ended`，载荷为对方实例UUID，可用 `other_instance_id` 过滤。自身身份仍由现有项目端口绑定，旧运动、触发区与声音模板保持；此脚本不承担接触集合计算或文件保存。语义与设置见[移动碰撞事件](../docs/SCENE_PHYSICS2D.md#用角色移动碰撞驱动项目事件)。
+
+0.2.5 源码让同一碰撞起始脚本支持自由平面停止／滑动角色，参数与端口版本保持；运行求解、集合差项及普通作者事件仍由各自层负责。实际适配范围见[物理指南](../docs/SCENE_PHYSICS2D.md#用角色移动碰撞驱动项目事件)。
+
+`godot-character-drop-through-script.mjs` 把已有输入动作的按键边沿转换为自身 `viento_character_drop.request_drop()`，只有 `drop_action` 参数。端口拒绝是正常玩法结果；几何支撑、例外恢复和生命周期由独立Godot控制器负责，脚本不承担移动、碰撞查询或文件保存。见[主动下穿](../docs/SCENE_PHYSICS2D.md#从单向平台主动下穿)。
+
+`godot-platform-endpoint-events-script.mjs` 是普通TXT起始内容，严格核对 `viento_platform_events` 版本1、零参起点／终点信号和本实例身份。`origin_event`／`destination_event` 空名各自禁用，发布载荷为平台UUID。运行端每端每项目步合并通知，不在脚本中轮询位置、推进轨迹或管理物理句柄；现有项目事件预算保持。见[平台端点事件](../docs/SCENE_PHYSICS2D.md#用平台端点事件驱动动画与声音)。
+
+`project-runtime-events.mjs` 将原始帧保留窗与累计准入、启动／结束状态分离；`retention` 描述原始帧序号范围，`lifecycle` 描述已验证状态。回调和每次 `push()` 返回所有新准入帧，业务账本仍保留完整有限语义。`project-runtime-query.mjs` 仅留最后一条原始帧，独立消费语义结果；这不解除4096帧或各业务的累计执行预算。

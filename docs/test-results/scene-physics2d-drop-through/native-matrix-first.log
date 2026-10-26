@@ -1,0 +1,69 @@
+✔ real box one-way drop isolates repeated-definition instances and preserves native landing media (16606.333071ms)
+✔ real circle-offset one-way drop isolates repeated-definition instances and preserves native landing media (17046.385507ms)
+✔ real queued requests reject duplicates and held input cannot drop the stationary second instance (4245.649641ms)
+✔ real drop request rejects air without changing movement or native exceptions (4222.344599ms)
+✔ real drop request rejects solid without changing movement or native exceptions (4214.59208ms)
+✔ real queued drop precedes a jump edge without adding velocity or a second integration (4250.580318ms)
+✖ real low gravity keeps its owned exception while the complete offset shape still overlaps the platform (4192.476449ms)
+✔ real owned drop cleanup preserves a pre-existing author collision exception (4197.524279ms)
+✔ real wide-margin keeps the exception until complete shapes separate and always revokes it on close (4227.257803ms)
+✔ real near-solid keeps the exception until complete shapes separate and always revokes it on close (4200.852075ms)
+✔ real adjacent solid support remains active when a request ignores only the native reported one-way support (4210.882356ms)
+✔ real no-request project preserves the exact previous native movement samples and events (8406.910434ms)
+✖ real sensor static and planar bindings receive no drop capability while the motor port remains scoped (61.212654ms)
+✔ real scene reentry revokes owned pairs and stale ports before new visit author ready (4458.410529ms)
+✔ real live drop and landing media use native physics without smoke tracing (4344.999044ms)
+✔ real portable ZIP retains scoped drop and landing media after original paths go offline (34060.866033ms)
+✔ real native window capture retains the same drop landing and isolated second character (5126.656136ms)
+✔ real pre-existing exception for the supporting platform is never claimed or removed by a drop request (4344.76463ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 16
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 132614.04678
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-drop-through-backends.test.mjs:170:1
+✖ real low gravity keeps its owned exception while the complete offset shape still overlaps the platform (4192.476449ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     accepted: false
+  -     accepted: true
+      }
+    ]
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-drop-through-backends.test.mjs:175:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { accepted: false } ],
+    expected: [ { accepted: true } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/scene-physics2d-drop-through-backends.test.mjs:235:1
+✖ real sensor static and planar bindings receive no drop capability while the motor port remains scoped (61.212654ms)
+  AssertionError [ERR_ASSERTION]: [{"severity":"error","code":"build_behavior_invalid","message":"A manifest references at most 8 source documents.","propertyPath":"/bindings","objectId":"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee","sourcePath":"documents/behaviors/demo.json","sourceRevision":"sha256:109a813d6e8cd0ca5c06301caa0f327a684042d568dc2f6ae7710a4f35dc508f","sourceRange":{"start":135,"end":3934,"encoding":"utf-16","propertyPath":"/bindings","exact":true}}]
+  
+  false !== true
+  
+      at captured (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-drop-through-backends.test.mjs:37:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-drop-through-backends.test.mjs:244:31)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

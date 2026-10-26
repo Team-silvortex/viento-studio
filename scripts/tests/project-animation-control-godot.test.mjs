@@ -7,7 +7,7 @@ import { projectAnimationControlAuthor } from './helpers/project-animation-contr
 import { buildProject, runProjectBuild } from '../adapters/node-project-build.mjs';
 import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
 import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.mjs';
-import { godotAssemblyScripts } from '../backends/godot4-project.mjs';
+import { generateGodotAssemblyProject, godotAssemblyScripts } from '../backends/godot4-project.mjs';
 import { inspectBackendProject } from '../adapters/node-backend-project.mjs';
 import { planBackendProjectDelivery, verifyBackendProjectDelivery } from '../adapters/node-backend-project-delivery.mjs';
 import { writeExportZip } from '../lib/export-package.mjs';
@@ -30,16 +30,16 @@ function rejected(result, f, code) {
   assert.equal(result.record.diagnostics.some(row => row.code === 'runtime_project_protocol_invalid'), false, JSON.stringify(result.record.diagnostics));
 }
 
-test('animation projects expose protocol 7 and bounded generated scripts; ordinary projects retain protocol 4 files', async t => {
+test('historical assembly generation exposes protocol 7 and bounded generated scripts; ordinary projects retain protocol 4 files', async t => {
   const f = await projectAnimationControlAuthor(t), captured = await captureBuildSnapshot(f.author, f.assemblyId);
   assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics));
-  const generated = await adapter.generate(captured.plan);
+  const generated = await generateGodotAssemblyProject(captured.plan);
   assert.equal(generated.backend.protocolVersion, 7); assert.equal(generated.backend.version, '0.16.0');
   assert.ok(generated.backend.capabilities.includes('project.animation-control'));
   assert.equal(JSON.parse(generated.files.get('assembly.json')).schemaVersion, 8);
   assert.ok(generated.files.has('project-control-runtime.gd')); assert.ok(generated.files.has('project-animation.gd'));
   for (const id of f.sceneIds) await f.edit(`metadata/documents/${id}.json`, row => { row.relations = row.relations.filter(relation => relation.kind !== 'animation'); });
-  const ordinary = await captureBuildSnapshot(f.author, f.assemblyId), legacy = await adapter.generate(ordinary.plan);
+  const ordinary = await captureBuildSnapshot(f.author, f.assemblyId), legacy = await generateGodotAssemblyProject(ordinary.plan);
   assert.equal(legacy.backend.protocolVersion, 4); assert.equal(JSON.parse(legacy.files.get('assembly.json')).schemaVersion, 5);
   assert.equal(legacy.files.has('project-control-runtime.gd'), false); assert.equal(legacy.files.has('project-animation.gd'), false);
   assert.deepEqual(legacy.files.get('project-runtime.gd'), await fs.readFile(new URL('../backends/godot4/project-runtime.gd', import.meta.url)));

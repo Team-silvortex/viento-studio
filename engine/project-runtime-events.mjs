@@ -24,7 +24,10 @@ const defaultSceneReader = (plan, options) => {
 // Child wire frames remain unchanged inside a visit envelope. A scene-exit is
 // a project boundary, never a forged child finished (which means two smoke
 // steps in the legacy audio contract). Re-entering creates a new child reader.
-export function createProjectRuntimeEventReader(input, { protocolVersion = PROJECT_RUNTIME_PROTOCOL, onEvent, createSceneReader = defaultSceneReader, expectedTotalSeconds } = {}) {
+export function createProjectRuntimeEventReader(input, { protocolVersion = PROJECT_RUNTIME_PROTOCOL, onEvent, createSceneReader = defaultSceneReader, expectedTotalSeconds, retainedEvents = PROJECT_RUNTIME_MAX_EVENTS } = {}) {
+  if (!Number.isInteger(retainedEvents) || retainedEvents < 1 || retainedEvents > PROJECT_RUNTIME_MAX_EVENTS) {
+    throw Object.assign(new TypeError('Retained project runtime events must be between 1 and 4096.'), { errorCode: 'runtime_project_invalid' });
+  }
   if (![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(protocolVersion)) throw Object.assign(new TypeError('Unsupported project runtime protocol.'), { errorCode: 'runtime_project_invalid' });
   const sharedState = protocolVersion >= 2 ? createProjectSharedState() : null;
   const eventBus = protocolVersion >= 3 ? createProjectEventBus() : null;
@@ -46,7 +49,7 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
   if (typeof createSceneReader !== 'function') throw new TypeError('A scene runtime reader is required.');
   const events = [], diagnostics = [];
   let started = false, completed = false, current = null, visitCount = 0, nextSceneId = plan.entrySceneId, finalExit = false, totalSeconds = 0;
-  let pending = '', dropping = false, ended = false, limitReported = false;
+  let pending = '', dropping = false, ended = false, limitReported = false, acceptedCount = 0;
   const issue = (message = 'Invalid project runtime protocol frame.', code = 'runtime_project_protocol_invalid') => {
     if (diagnostics.length < 128) diagnostics.push(freeze({ severity: 'error', code, message,
       objectId: plan.assembly.objectId, sourcePath: plan.assembly.sourcePath, sourceRevision: plan.assembly.sourceRevision, propertyPath: '' }));
@@ -54,7 +57,11 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
   const importDiagnostics = (reader, from) => {
     for (const diagnostic of reader.diagnostics.slice(from)) if (diagnostics.length < 128) diagnostics.push(freeze(copy(diagnostic)));
   };
-  const publish = frame => { const value = freeze(frame); events.push(value); onEvent?.(value); return value; };
+  const publish = (frame, admitted) => {
+    const value = freeze(frame); acceptedCount++; events.push(value);
+    if (events.length > retainedEvents) events.shift();
+    admitted?.push(value); onEvent?.(value); return value;
+  };
   const currentIdentity = frame => current && frame.visitIndex === current.index && frame.sceneId === current.plan.scene.objectId;
   const actorStates = (scene, actors) => {
     const reader = createSceneRuntimeEventReader({ ...scene, schemaVersion: scene.schemaVersion === 3 ? 2 : scene.schemaVersion });
@@ -64,7 +71,7 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
   const laneFor = target => current.animationLanes.get(projectAnimationTargetKey(target))
     || { state: initialProjectAnimationTargetState(current.plan.animation, target), commandSequence: 0 };
   const animationTime = () => targeted ? current.animationTime : current.animationState?.timeSeconds ?? null;
-  const admit = frame => {
+  const admit = (frame, admitted) => {
     if (!frame || frame.protocol !== protocolVersion || completed) { issue(); return; }
     if (current?.stateSnapshot && frame.event !== 'scene-exit'
       && !(frame.event === 'scene-event' && (frame.frame?.event === 'diagnostic'
@@ -305,22 +312,28 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
       }
       completed = true;
     } else { issue(); return; }
-    publish(frame);
+    publish(frame, admitted);
   };
-  const line = text => {
+  const line = (text, admitted) => {
     if (!text.startsWith(PROJECT_RUNTIME_PREFIX)) {
       if (/^VIENTO_(?:RUNTIME|AUDIO):/.test(text)) issue('A child runtime frame escaped its project visit.');
       return;
     }
-    if (events.length >= PROJECT_RUNTIME_MAX_EVENTS) { if (!limitReported) { issue('Project runtime event budget exceeded.'); limitReported = true; } return; }
+    if (acceptedCount >= PROJECT_RUNTIME_MAX_EVENTS) { if (!limitReported) { issue('Project runtime event budget exceeded.'); limitReported = true; } return; }
     let frame; try { frame = copy(JSON.parse(text.slice(PROJECT_RUNTIME_PREFIX.length))); } catch { issue(); return; }
-    admit(frame);
+    admit(frame, admitted);
   };
   const api = {
     get events() { return events.slice(); }, get diagnostics() { return diagnostics.slice(); },
+    // These sequence numbers count admitted raw frames, independently of the
+    // business sequences carried by event, audio and animation records.
+    get retention() { return Object.freeze({ limit: retainedEvents, total: acceptedCount, retained: events.length,
+      dropped: acceptedCount - events.length, firstSequence: events.length ? acceptedCount - events.length + 1 : null,
+      lastSequence: events.length ? acceptedCount : null }); },
+    get lifecycle() { return Object.freeze({ started, completed }); },
     push(text) {
       if (ended || typeof text !== 'string') return [];
-      const start = events.length;
+      const admitted = [];
       for (const piece of text.split(/(?<=\n)/)) {
         const complete = piece.endsWith('\n');
         if (!dropping) {
@@ -329,9 +342,9 @@ export function createProjectRuntimeEventReader(input, { protocolVersion = PROJE
             pending = ''; dropping = true;
           } else pending += piece;
         }
-        if (complete) { if (!dropping) line(pending.replace(/\r?\n$/, '')); pending = ''; dropping = false; }
+        if (complete) { if (!dropping) line(pending.replace(/\r?\n$/, ''), admitted); pending = ''; dropping = false; }
       }
-      return events.slice(start);
+      return admitted;
     },
     finish() {
       if (!ended) {

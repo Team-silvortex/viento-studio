@@ -1,0 +1,64 @@
+✔ new endpoint generation preserves the frozen motion layer and original plan/source map (268.102118ms)
+✔ real one-way endpoints publish ordinary author events and drive media (17394.588107ms)
+✔ real solid-negative endpoints publish ordinary author events and drive media (4263.154432ms)
+✔ real no-characters endpoints publish ordinary author events and drive media (4228.408429ms)
+✔ real short path coalesces each endpoint once per step in first-arrival order with separate behavior ports (4196.888977ms)
+✔ real exact endpoint arrival has no ready or zero-delta duplicate and cannot reenter motion during callbacks (4210.386242ms)
+✔ real queued behavior removal suppresses its remaining callback without removing another binding (4212.813924ms)
+✔ real endpoint scene request suppresses remaining old-visit callbacks and reentry installs fresh ports (4333.142026ms)
+✖ real direct scene close revokes pending endpoint callbacks before project shutdown (3861.523134ms)
+✔ real live native endpoint facts exceed 128 without trace or project publication (6238.411559ms)
+✔ real ordinary publisher retains the existing explicit cumulative 128-event failure boundary (4810.26979ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 10
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 58183.22181
+
+✖ failing tests:
+
+test at scripts/tests/scene-physics2d-platform-events-backends.test.mjs:180:1
+✖ real direct scene close revokes pending endpoint callbacks before project shutdown (3861.523134ms)
+  AssertionError [ERR_ASSERTION]: Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+  
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"entrySceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","event":"ready","eventSequence":0,"protocol":4,"stateRevision":0}
+  VIENTO_PHYSICS2D:{"assemblyId":"12345678-1234-4234-8234-123456789abc","event":"ready","limit":256,"protocol":1}
+  VIENTO_PROJECT:{"event":"scene-enter","protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PROJECT:{"event":"scene-event","frame":{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[100.0,144.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[500.0,100.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[300.0,340.0],"state":"idle"},{"instanceId":"79797979-7979-4979-8979-000000000001","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[150.0,160.0],"state":"idle"},{"instanceId":"79797979-7979-4979-8979-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[440.0,144.0],"state":"idle"},{"instanceId":"83838383-8383-4838-8838-000000000001","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[440.0,160.0],"state":"idle"}],"event":"ready","protocol":3,"sceneObjectId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd"},"protocol":4,"sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","stream":"runtime","visitIndex":1}
+  ENDPOINT_READY:{"port":true,"probe":1,"visit":1}
+  ENDPOINT_READY:{"port":true,"probe":2,"visit":1}
+  ENDPOINT_PROBE:{"count":1,"endpoint":"destination","phase":1.33333333333334,"position":[150.66667175293,160.0],"probe":1,"time":0.0166666666666667,"visit":1}
+  VIENTO_PROJECT:{"actors":[{"instanceId":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[100.0,144.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000002","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[500.0,100.0],"state":"idle"},{"instanceId":"70707070-7070-4070-8070-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[300.0,340.0],"state":"idle"},{"instanceId":"79797979-7979-4979-8979-000000000001","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[150.6666717529297,160.0],"state":"idle"},{"instanceId":"79797979-7979-4979-8979-000000000003","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[440.0,144.0],"state":"idle"},{"instanceId":"83838383-8383-4838-8838-000000000001","objectId":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","position":[440.0,160.0],"state":"idle"}],"elapsedSeconds":0.016666666666666666,"event":"scene-exit","protocol":4,"reason":"finished","sceneId":"dddddddd-dddd-4ddd-8ddd-dddddddddddd","visitIndex":1}
+  VIENTO_PHYSICS2D:{"event":"finished","limited":false,"protocol":1,"sampleCount":0}
+  VIENTO_PROJECT:{"assemblyId":"12345678-1234-4234-8234-123456789abc","audioCommandSequence":0,"event":"finished","eventSequence":0,"protocol":4,"stateRevision":0,"totalSeconds":0.016666666666666666,"visitCount":1}
+  
+  + actual - expected
+  
+  + [
+  +   {
+  +     code: 'runtime_protocol_incomplete',
+  +     message: 'Project runtime did not complete the expected duration.',
+  +     objectId: '12345678-1234-4234-8234-123456789abc',
+  +     propertyPath: '',
+  +     severity: 'error',
+  +     sourcePath: 'documents/projects/demo.json',
+  +     sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d'
+  +   }
+  + ]
+  - []
+  
+      at execute (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-platform-events-backends.test.mjs:59:69)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/scene-physics2d-platform-events-backends.test.mjs:183:68)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ { severity: 'error', code: 'runtime_protocol_incomplete', message: 'Project runtime did not complete the expected duration.', objectId: '12345678-1234-4234-8234-123456789abc', sourcePath: 'documents/projects/demo.json', sourceRevision: 'sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d', propertyPath: '' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

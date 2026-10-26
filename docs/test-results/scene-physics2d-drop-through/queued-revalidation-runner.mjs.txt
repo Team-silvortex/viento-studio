@@ -1,0 +1,140 @@
+import '/home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-studio-core.mjs';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import { createHash } from 'node:crypto';
+import yauzl from '/home/chiharukiryu/cdev/viento-studio/node_modules/yauzl/index.js';
+import { scenePhysics2DDropThroughAuthor } from '/home/chiharukiryu/cdev/viento-studio/scripts/tests/helpers/scene-physics2d-drop-through-author-fixture.mjs';
+import { captureBuildSnapshot } from '/home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-build-snapshot.mjs';
+import { buildProject } from '/home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-project-build.mjs';
+import { GODOT4_EXECUTION_ADAPTER as adapter } from '/home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-adapter.mjs';
+import { generateGodotPhysicsMovementContactsProject } from '/home/chiharukiryu/cdev/viento-studio/scripts/backends/godot4-physics-movement-contacts.mjs';
+import { inspectBackendProject } from '/home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-backend-project.mjs';
+import { planBackendProjectDelivery, verifyBackendProjectDelivery } from '/home/chiharukiryu/cdev/viento-studio/scripts/adapters/node-backend-project-delivery.mjs';
+import { writeExportZip } from '/home/chiharukiryu/cdev/viento-studio/scripts/lib/export-package.mjs';
+
+const tool = process.env.VIENTO_GODOT_BIN;
+const real = { skip: !tool ? 'Set VIENTO_GODOT_BIN for native observation verification' : false, timeout: 180000 };
+const capturePath = process.env.VIENTO_PHYSICS_DROP_THROUGH_CAPTURE;
+const reportPath = process.env.VIENTO_PHYSICS_DROP_THROUGH_REPORT;
+const evidence = [];
+const hash = value => createHash('sha256').update(value).digest('hex');
+const id = n => `80808080-8080-4080-8080-${String(n).padStart(12, '0')}`;
+test.after(async () => { if (reportPath) await fs.writeFile(reportPath, JSON.stringify({ format: 'viento-physics-drop-through-proof', schemaVersion: 1, tool, cases: evidence }, null, 2) + '\n', { flag: 'wx' }); });
+async function hashes(directory, prefix = '') {
+  const result = {};
+  for (const item of await fs.readdir(path.join(directory, prefix), { withFileTypes: true })) {
+    const name = prefix ? `${prefix}/${item.name}` : item.name;
+    if (item.isDirectory()) Object.assign(result, await hashes(directory, name));
+    else { assert.ok(item.isFile()); result[name] = hash(await fs.readFile(path.join(directory, name))); }
+  }
+  return result;
+}
+async function captured(f) {
+  const captured = await captureBuildSnapshot(f.author, f.assemblyId);
+  assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics));
+  return { ...f, captured, generated: await adapter.generate(captured.plan) };
+}
+async function stage(f, generated = f.generated) {
+  const directory = await fs.mkdtemp(path.join(f.temporary, 'staged-'));
+  for (const [name, bytes] of [...generated.files, ...[...generated.resourceFiles].map(([id, name]) => [name, f.captured.resources.get(id)])]) {
+    await fs.mkdir(path.dirname(path.join(directory, name)), { recursive: true }); await fs.writeFile(path.join(directory, name), bytes);
+  }
+  return directory;
+}
+async function execute(f, directory, { generated = f.generated, scriptCheck = false, mode = 'headlessLogic', capture, smoke = true } = {}) {
+  const identified = await adapter.identify(tool);
+  for (const phase of scriptCheck ? adapter.buildPhases : adapter.runtimePhases) {
+    const result = await adapter.executePhase({ phase, directory, tool: identified, timeoutMs: 60000 });
+    assert.equal(result.status, 'succeeded', result.stdout + result.stderr);
+    assert.deepEqual(adapter.diagnostics(result, f.captured.plan), [], result.stdout + result.stderr);
+  }
+  const result = await adapter.executePhase({ phase: 'run', directory, tool: identified, smoke, mode, ...(capture ? { capturePath: capture } : {}), timeoutMs: 60000 });
+  if (reportPath) await fs.appendFile(reportPath.replace(/\.json$/, '-stdout.log'), result.stdout + result.stderr + '\n');
+  assert.equal(result.status, 'succeeded', result.stdout + result.stderr);
+  assert.deepEqual(adapter.diagnostics(result, f.captured.plan), [], result.stdout + result.stderr);
+  const reader = adapter.createEventReader(f.captured.plan, { smoke, capabilities: generated.backend.capabilities });
+  reader.push(result.stdout); const ended = reader.finish(); assert.deepEqual(ended.diagnostics, [], result.stdout);
+  const snapshot = reader.snapshot?.();
+  if (snapshot) assert.equal(snapshot.phase, 'finished');
+  return { result, reader, snapshot, tool: identified };
+}
+
+const fixture = scenePhysics2DDropThroughAuthor;
+const capability = 'physics.character-drop-through2d';
+function exitActors(output, visitIndex) { return output.reader.events.find(frame => frame.event === 'scene-exit' && (!visitIndex || frame.visitIndex === visitIndex)).actors; }
+function publications(output, bindingId) { return output.reader.events.filter(frame => frame.event === 'event-publish' && (!bindingId || frame.bindingId === bindingId)); }
+function facts(output, tag = 'DROP_PROBE:') { return output.result.stdout.split('\n').filter(line => line.startsWith(tag)).map(line => JSON.parse(line.slice(tag.length))); }
+function samples(output, f) { return output.snapshot.samples.filter(sample => sample.instanceId === f.instanceId); }
+function record(name, f, output, before) {
+  evidence.push({ name, backend: f.generated.backend, tool: output.tool, samples: output.snapshot?.samples || [], probes: facts(output), requests: facts(output, 'DROP_REQUEST:'),
+    publications: publications(output), audio: output.reader.events.filter(frame => frame.event === 'audio-command'), animation: output.reader.events.filter(frame => frame.event === 'animation-command'),
+    finalActors: output.reader.events.filter(frame => frame.event === 'scene-exit').map(frame => ({ visitIndex: frame.visitIndex, actors: frame.actors })),
+    authorFiles: Object.keys(before).length, authorSha256: hash(JSON.stringify(before)) });
+}
+async function probe(f, { ready = '', step = '', exit = '', removeStarter = false, instanceId = f.instanceId } = {}) {
+  if (removeStarter) await f.edit(f.manifestPath, document => { document.bindings = document.bindings.filter(binding => binding.bindingId !== f.dropBindingId); });
+  await f.addBehavior(id(1), id(2), 'drop-probe', `extends Node
+var ticks := -1
+var owner_body: CharacterBody2D
+var platform_body: StaticBody2D
+var floor_body: StaticBody2D
+var port
+func _ready() -> void:
+\tvar scene = get_parent().get_parent()
+\tfor actor in scene.actors:
+\t\tif actor["instanceId"] == "${instanceId}":
+\t\t\towner_body = actor["node"]
+\t\tif actor["instanceId"] == "${f.platformInstanceId}":
+\t\t\tplatform_body = actor["node"]
+\t\tif actor["instanceId"] == "${f.wallInstanceId}":
+\t\t\tfloor_body = actor["node"]
+\tport = get_meta("viento_character_drop") if has_meta("viento_character_drop") else null
+\tprint("DROP_READY:" + JSON.stringify({"present": port != null, "version": port.protocol_version() if port != null else 0}))
+${ready || '\tpass'}
+func _physics_process(_delta: float) -> void:
+\tvar scene = get_parent().get_parent()
+\tvar tick: int = scene.get("physics_observation_step")
+\tif tick == ticks:
+\t\treturn
+\tticks = tick
+${step || '\tpass'}
+\tvar exceptions: Array = []
+\tfor body in owner_body.get_collision_exceptions():
+\t\texceptions.append("platform" if body == platform_body else "floor" if body == floor_body else "other")
+\tprint("DROP_PROBE:" + JSON.stringify({"step": ticks, "position": [owner_body.position.x, owner_body.position.y], "exceptions": exceptions, "grounded": scene.character_motion_grounded.get("${instanceId}", false)}))
+func _exit_tree() -> void:
+\tprint("DROP_EXIT:" + JSON.stringify({"request": port.request_drop() if port != null else false, "exceptions": owner_body.get_collision_exceptions().size() if is_instance_valid(owner_body) else -1}))
+${exit || '\tpass'}
+`, {}, instanceId);
+}
+function dropped(output, f, { stationary = true } = {}) {
+  assert.equal(f.generated.backend.version, '0.29.0'); assert.ok(f.generated.backend.capabilities.includes(capability));
+  assert.equal(output.snapshot.samples.length, 60);
+  const mine = samples(output, f), other = output.snapshot.samples.filter(sample => sample.instanceId === f.otherInstanceId);
+  assert.equal(mine.length, 30); assert.equal(other.length, 30);
+  assert.ok(mine.some(sample => sample.contacts.some(contact => contact.collider?.bodyId === f.platformBodyId)));
+  assert.ok(mine.some(sample => sample.positionBefore[1] < f.platformTop && sample.positionAfter[1] > f.platformTop));
+  assert.ok(mine.some(sample => sample.contacts.some(contact => contact.collider?.instanceId === f.wallInstanceId)));
+  assert.ok(Math.abs(exitActors(output)[0].position[1] - f.expectedLandingY) < .2);
+  assert.ok(Math.abs(exitActors(output).find(actor => actor.instanceId === f.otherInstanceId).position[1] - f.expectedSupportY) < .2);
+  if (stationary) assert.ok(mine.every(sample => Math.abs(sample.positionBefore[0] - sample.positionAfter[0]) < .0001));
+  assert.deepEqual(publications(output, f.publisherBindingId).map(frame => frame.name), ['physics.landed', 'physics.landed']);
+  assert.deepEqual(publications(output, f.contactBindingId).map(frame => frame.name), ['physics.contact_started', 'physics.contact_ended']);
+}
+
+
+for (const change of ['moved-character', 'detached-requester']) test(`real queued drop revalidates ${change} before adding an exception`, real, async t => {
+  const raw = await fixture(t, { drop: false, consumers: false });
+  const mutation = change === 'moved-character' ? '\t\towner_body.position.x += 1.0' : '\t\tget_parent().remove_child(self)\n\t\tqueue_free()';
+  await probe(raw, { removeStarter: true, step: '\tif ticks == 6:\n\t\tprint("DROP_REQUEST:" + JSON.stringify({"accepted": port.request_drop()}))\n' + mutation });
+  const f = await captured(raw), before = await hashes(f.author), output = await execute(f, await stage(f));
+  assert.deepEqual(facts(output, 'DROP_REQUEST:'), [{ accepted: true }]);
+  assert.ok(facts(output).every(row => row.exceptions.length === 0));
+  assert.ok(Math.abs(exitActors(output)[0].position[1] - raw.expectedSupportY) < .2);
+  assert.deepEqual(facts(output, 'DROP_EXIT:'), [{ request: false, exceptions: 0 }]);
+  assert.deepEqual(publications(output, f.publisherBindingId).map(frame => frame.name), ['physics.landed']);
+  assert.deepEqual(await hashes(f.author), before); record(change + '-queued-revalidation', f, output, before);
+});
