@@ -9,6 +9,20 @@ import { executionPhaseDiagnostics } from '../adapters/node-execution-backends.m
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const linux = { skip: process.platform !== 'linux' ? 'The Bevy Rust route is currently Linux only.' : false };
+
+test('execution fingerprint includes the neutral scene admission contract and packaged Rust sources', async () => {
+  const files = ['scripts/backends/bevy-rust-adapter.mjs', 'scripts/backends/bevy-rust-project.mjs', 'engine/scene-behavior-events.mjs',
+    'engine/scene-runtime-events.mjs', 'engine/scene-behaviors.mjs', 'engine/build-plan.mjs', 'engine/scene-model.mjs',
+    'engine/backend-capabilities.mjs', 'scripts/adapters/node-execution-backends.mjs',
+    'scripts/backends/bevy-rust/Cargo.lock', 'scripts/backends/bevy-rust/Cargo.toml',
+    'scripts/backends/bevy-rust/src/behavior_sources.rs', 'scripts/backends/bevy-rust/src/main.rs', 'scripts/backends/bevy-rust/src/runtime.rs'];
+  const identities = await Promise.all(files.map(async file => ({ path:file, sha256:hash(await fs.readFile(new URL(`../../${file}`, import.meta.url))) })));
+  const fingerprint = await adapter.fingerprint();
+  assert.deepEqual(fingerprint, { id:'org.viento.bevy-rust', contractVersion:1, sha256:hash(JSON.stringify(identities)) });
+  assert.equal(identities.filter(identity => identity.path === 'engine/scene-model.mjs').length, 1);
+  assert.notEqual(fingerprint.sha256, hash(JSON.stringify(identities.filter(identity => identity.path !== 'engine/scene-model.mjs'))));
+});
+
 async function fixture(t, options = {}) {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'viento-bevy-rust-adapter-test-'));
   t.after(() => fs.rm(root, { recursive: true, force: true }));

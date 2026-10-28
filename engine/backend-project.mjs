@@ -74,7 +74,7 @@ export function validateBackendProjectManifest(input) {
   if (!text(source.workspaceId, 192) || !uuid(assembly ? source.assemblyId : source.sceneId) || !sourcePath(source.sourcePath) || !revision(source.sourceRevision)
     || !token(source.planKind) || !Number.isInteger(source.planSchemaVersion) || source.planSchemaVersion < 1 || source.planSchemaVersion > 65535) throw invalid();
   if (assembly) {
-    if (source.planKind !== 'project' || source.planSchemaVersion !== 1 || !uuid(source.entrySceneId)
+    if (source.planKind !== 'project' || ![1, 2].includes(source.planSchemaVersion) || !uuid(source.entrySceneId)
       || !Array.isArray(source.scenes) || !source.scenes.length || source.scenes.length > 32) throw invalid();
     const ids = new Set(), paths = new Set();
     for (const scene of source.scenes) {

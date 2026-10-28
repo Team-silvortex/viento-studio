@@ -43,7 +43,7 @@ export function setupSceneCompositionFragments({ getContext = () => ({}), valida
       <div class="scene-composition-fragment-group scene-composition-fragment-single">${selection('Speed', '速度')}
         <label class="scene-field"><span data-i18n="速度"></span><input id="sceneCompositionFragmentsSpeed" type="number" min="0" max="2000" step="any"></label>${restoration('Speed')}<p id="sceneCompositionFragmentsSpeedStatus" class="build-hint"></p></div>
       <div class="scene-composition-fragment-group scene-composition-fragment-single">${selection('Controls', '控制')}
-        <label class="scene-field"><span data-i18n="控制"></span><select id="sceneCompositionFragmentsControls"><option value="" data-i18n="请选择"></option><option value="none" data-i18n="不接受输入"></option><option value="arrows" data-i18n="方向键"></option></select></label>${restoration('Controls')}<p id="sceneCompositionFragmentsControlsStatus" class="build-hint"></p></div>
+        <label class="scene-field"><span data-i18n="控制"></span><select id="sceneCompositionFragmentsControls"><option value="" data-i18n="请选择"></option><option value="none" data-i18n="无内置控制"></option><option value="arrows" data-i18n="方向键"></option></select></label>${restoration('Controls')}<p id="sceneCompositionFragmentsControlsStatus" class="build-hint"></p></div>
       <div class="scene-composition-fragment-group scene-composition-fragment-single">${selection('Image', '场景图片')}
         <label class="scene-field"><span data-i18n="场景图片"></span><select id="sceneCompositionFragmentsImage"></select></label>${restoration('Image')}<p id="sceneCompositionFragmentsImageStatus" class="build-hint"></p></div>
     </div><p id="sceneCompositionFragmentsResetHelp" class="build-hint"></p></fieldset>

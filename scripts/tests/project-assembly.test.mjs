@@ -7,6 +7,7 @@ import { createProjectAssemblyPlan, validateProjectAssemblyPlan } from '../../en
 import { createBuildTargetPlan, buildTargetIdentity, entryScenePlan, scenePlans } from '../../engine/build-target.mjs';
 import { createScene2DPlan } from '../../engine/build-plan.mjs';
 import { checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
+import { validateProjectInputMap, inspectProjectInputMap, PROJECT_INPUT_MAP_KEYS } from '../../engine/project-input-map.mjs';
 const golden = JSON.parse(await fs.readFile(new URL('./fixtures/scene-model/legacy-plan-v1.json', import.meta.url), 'utf8'));
 const assemblyId = '11111111-1111-4111-8111-111111111111', otherId = '22222222-2222-4222-8222-222222222222';
 const revision = content => `sha256:${createHash('sha256').update(content).digest('hex')}`;
@@ -123,4 +124,61 @@ test('backend project admission checks explicit support and every member impleme
   assert.ok(checkExecutionBackendSupport(backend, { operation: 'build', plan: value }).some(item => item.code === 'build_behavior_backend_unsupported' && item.objectId === otherId));
   delete value.scenes[1].behaviors; value.requiredCapabilities = value.requiredCapabilities.filter(item => item !== 'image');
   assert.ok(checkExecutionBackendSupport(backend, { operation: 'build', plan: value }).some(item => item.code === 'build_assembly_invalid' && item.capability === 'image'));
+});
+
+const inputId = '33333333-3333-4333-8333-333333333333';
+const inputMap = () => ({ format: 'viento-input-map', schemaVersion: 1, actions: [
+  { name: 'move_left', keys: ['KeyA', 'ArrowLeft'] }, { name: 'alternate_left', keys: ['KeyA'] },
+] });
+function inputFixture() {
+  const fixtureValue = fixture(), input = inputMap(), content = encode(input), sourcePath = 'documents/input/map.json';
+  fixtureValue.observed.source.documents.push({ record: { format: 'viento-document', id: inputId, sourcePath, relations: [], assetBindings: [] }, sourcePath, content, sourceRevision: revision(content) });
+  fixtureValue.document.content = encode({ ...declaration(), schemaVersion: 2, inputMapId: inputId });
+  fixtureValue.document.sourceRevision = revision(fixtureValue.document.content);
+  return fixtureValue;
+}
+
+test('input maps validate physical key whitelist, bounded unique actions, and strict data', () => {
+  const value = inputMap(), result = validateProjectInputMap(value);
+  assert.deepEqual(result, value); assert.notEqual(result.actions, value.actions);
+  value.actions[0].keys[0] = 'KeyB'; assert.equal(result.actions[0].keys[0], 'KeyA');
+  assert.ok(Object.isFrozen(result.actions[0].keys));
+  assert.equal(PROJECT_INPUT_MAP_KEYS.includes('Escape'), false);
+  assert.equal(PROJECT_INPUT_MAP_KEYS.includes('ShiftLeft'), false);
+  for (const mutate of [v => { v.actions[0].name = 'ui_left'; }, v => { v.actions[1].name = v.actions[0].name; },
+    v => { v.actions[0].name = 'Bad'; }, v => { v.actions[0].keys = ['KeyA', 'KeyA']; },
+    v => { v.actions[0].keys = ['Escape']; }, v => { v.actions[0].keys = ['ShiftLeft']; },
+    v => { v.actions[0].keys = []; }, v => { v.actions = []; }, v => { v.extra = true; }]) {
+    const bad = inputMap(); mutate(bad); assert.throws(() => validateProjectInputMap(bad), { errorCode: 'build_input_map_invalid' });
+  }
+  let getters = 0; const hostile = inputMap(); Object.defineProperty(hostile.actions[0], 'keys', { enumerable: true, get() { getters++; return ['KeyA']; } });
+  assert.throws(() => validateProjectInputMap(hostile)); assert.equal(getters, 0);
+  assert.throws(() => inspectProjectInputMap('{"format":"viento-input-map","format":"viento-input-map","schemaVersion":1,"actions":[]}'));
+});
+
+test('assembly input document is an explicit validated dependency included in the immutable plan', () => {
+  const { observed, document } = inputFixture(), sourceBefore = structuredClone(observed), assembly = JSON.parse(document.content.replace(/^\uFEFF/, ''));
+  assert.deepEqual(projectAssemblyDocumentIds(assembly), [...declaration().sceneIds, inputId]);
+  assert.deepEqual(validateProjectAssemblyDependencies(assembly, document.record, observed.source), []);
+  const result = createProjectAssemblyPlan(observed, assemblyId); assert.equal(result.ok, true, JSON.stringify(result.diagnostics));
+  assert.equal(result.plan.schemaVersion, 2); assert.ok(result.plan.requiredCapabilities.includes('project.input-map'));
+  assert.equal(result.plan.inputMap.objectId, inputId); assert.deepEqual(result.plan.inputMap.document, inputMap());
+  assert.deepEqual(validateProjectAssemblyPlan(result.plan), result.plan); assert.deepEqual(observed, sourceBefore);
+  observed.source.documents.find(item => item.record.id === inputId).content = '{}';
+  assert.equal(result.plan.inputMap.document.actions[0].keys[0], 'KeyA');
+  assert.equal(createProjectAssemblyPlan(observed, assemblyId).diagnostics[0].code, 'build_assembly_input_invalid');
+  observed.source.documents = observed.source.documents.filter(item => item.record.id !== inputId);
+  assert.equal(createProjectAssemblyPlan(observed, assemblyId).diagnostics[0].code, 'build_assembly_input_missing');
+});
+
+test('input maps cannot alias assembly or scene and forged plans cannot remove the capability', () => {
+  const { observed, document } = inputFixture(), source = JSON.parse(document.content.replace(/^\uFEFF/, ''));
+  assert.throws(() => validateProjectAssembly({ ...source, inputMapId: source.entrySceneId }));
+  assert.equal(validateProjectAssemblyDependencies({ ...source, inputMapId: assemblyId }, document.record, observed.source).at(-1).code, 'build_assembly_input_missing');
+  const result = createProjectAssemblyPlan(observed, assemblyId).plan;
+  for (const mutate of [v => { v.inputMap.document.actions[0].keys = ['Escape']; },
+    v => { v.inputMap.objectId = v.entrySceneId; }, v => { v.requiredCapabilities = v.requiredCapabilities.filter(x => x !== 'project.input-map'); },
+    v => { v.schemaVersion = 1; }]) {
+    const bad = structuredClone(result); mutate(bad); assert.throws(() => validateProjectAssemblyPlan(bad), { errorCode: 'build_assembly_invalid' });
+  }
 });

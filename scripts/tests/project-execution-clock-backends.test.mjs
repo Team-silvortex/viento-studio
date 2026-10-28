@@ -48,7 +48,10 @@ for (const kind of ['events', 'animation', 'states', 'instances', 'physics']) te
   const legacy = await godotExecutionClockAssemblyScripts(await f.stage(f.previous));
   assert.deepEqual(legacy.sort(), [...f.previous.files.keys()].filter(name => name.endsWith('.gd')).sort());
   const current = await adapter.generate(f.captured.plan);
-  assert.equal(current.backend.version, f.captured.plan.scenes.some(scene => scene.audio?.document.tracks.length) ? '0.36.0' : current.backend.protocolVersion === 4 ? '0.34.0' : '0.35.0');
+  const intent = f.captured.plan.scenes.some(scene => scene.physics?.document.bodies.some(body => body.characterMotion
+    && scene.actors.some(actor => actor.instanceId === body.instanceId && actor.controls === 'none')));
+  assert.equal(current.backend.capabilities.includes('physics.character-intent2d'), intent);
+  assert.equal(current.backend.version, intent ? '0.37.0' : f.captured.plan.scenes.some(scene => scene.audio?.document.tracks.length) ? '0.36.0' : current.backend.protocolVersion === 4 ? '0.34.0' : '0.35.0');
   assert.equal(current.backend.protocolVersion, generated.backend.protocolVersion);
   assert.ok(current.backend.capabilities.includes('runtime.execution-frames'));
 });

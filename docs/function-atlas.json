@@ -3,9 +3,9 @@
   "meta": {
     "title": "Viento Studio 功能成熟度图谱",
     "date": "2026-10-28",
-    "version": "0.2.6",
-    "commit": "52337b82d8dda282256bf1db52804cc894f58181",
-    "scope": "0.2.6源码交付：调度时钟、因果锚点、精确业务帧、动画与音频请求、事件位置及中英日只读面板。Godot适配器0.36.0，项目生成依内容为0.36/0.35/0.34，原作者格式、业务协议及有限预算保持；Bevy能力不变，安装仍0.2.0。181功能/546实现/756绑定/3024评分/145工作流；23模块45项Studio声明能力。六项delivery归入source-release，原评分、证据和专题时点描述不改，发布不提高成熟度。本次0.2.6完整app-only为8684项、8122通过、562条件跳过、零失败或取消；升版前0.2.5同计数日志仍独立保留。真实引擎范围依各专题，不将浏览器或版本预检计作新设备验收。",
+    "version": "0.2.7",
+    "commit": "e10e2e051530188e891ea2745a4325c7e678799f",
+    "scope": "0.2.7源码交付逐实例角色运动意图、项目键盘输入映射、有限物理回放与独立验收，以及受限Bevy项目组装与入口控制回放。Godot执行适配器0.38.0；Bevy数据通道支持项目入口无头运行与有限回放，不支持项目输入映射、场景切换或物理。182功能/549实现/759绑定/3036评分/146工作流；23模块45项Studio声明能力。逐实例角色意图归入source-release，历史评分、证据及专题时点保留，发布不提高成熟度；本机安装仍0.2.0。0.2.6的原范围和测试结果见其发布记录；本版app-only检查8877项、8277通过、600条件跳过、零失败；Rust核心417通过；Tauri桌面59通过、1忽略；版本与源码归档8通过；真实引擎18通过、1跳过，另有真实窗口／协议10项全通过。具体执行条件及引擎边界见0.2.7发布检查和各专题，条件跳过不计入引擎通过。",
     "historicalSha256": {
       "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
       "docs/function-network.json": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
@@ -793,9 +793,11 @@
           "Rust运行程序是独立可信本机工具，作者工程只生成scene-data.json；不动态运行Cargo或编译作者Rust源码。",
           "中立事件模块无Node/DOM/Godot/Bevy imports；原Godot5文件保持字节，适配器各自负责命令/生成布局/工具身份。",
           "host环境固定单backend，CLI可显式backend/tool；HTTP不接新代码/路径，原界面无引擎选择器；desktop资源带adapter但不带Bevybin，Android不带执行器。",
-          "不承诺作者Rust/GDScript跨语言互译；无BRP/反射/RPC/热更新/任意状态机/新安装包。"
+          "不承诺作者Rust/GDScript跨语言互译；无BRP/反射/RPC/热更新/任意状态机/新安装包。",
+          "0.2.7 数据通道接入项目计划schema1及项目协议1；每个无图、无行为成员都经独立Bevy检查并保存在工程内，明确指定的入口成员执行无头运行，项目生命周期桥接到中立事件。真实Bevy双场景构建／运行、非入口错误定位、离线ZIP重定位运行分别测试。",
+          "项目支持冻结入口的有限方向控制回放；不提供场景切换、窗口或项目输入映射；项目计划schema2以及图片、行为、物理、声音、动画均拒绝。单场景原有有限回放不变；独立Bevy Rust作者后端未接入项目组装。适配器指纹变化，旧冻结构建需重建；未更新安装。"
         ],
-        "next": "该旧数据通道保持无行为计划与有限控制；作者源码另见独立behavior.bevy_rust，不要求把数据运行程序升级成编译器。连续实时采样、资源、图片／窗口与规模继续分别验收。",
+        "next": "继续按各后端能力单独接入项目输入映射、场景切换及更丰富的项目回放；作者源码另见独立behavior.bevy_rust，资源、图片／窗口与规模继续分别验收。",
         "platforms": [
           "Linux可信本机CLI/编辑服务；源码与新安装验收分开",
           "Android仅portable事件规则，无执行器/UI"
@@ -1142,7 +1144,8 @@
           "VIENTO_TRACE schema1 按连续0基stepIndex返回全体actor身份/有限position/idle|moving；只在validready与finished之间，结束步长/演员值必须匹配程序与lastsample。",
           "runtime与trace逐行原序，不先处理整块finished；无效结束不覆盖样本，取消/错误不补造完成；旧no-control观察和默认smoke保留。",
           "Godot独立可信控制驱动保留原5文件/GDS行为2文件；Bevy可信工具0.3.0处理自身ECS，固定Bevy0.19.1、不编译作者Rust；工具/bin不进作者迁移包。",
-          "schema1 CLI只run可选16KiB JSON文件；HTTP只run新增controlProgram数据，UI编辑/进度/三语步骤样本与草稿守护；没有stdin、RPC、实时键盘、反射、渲染/GPU、安装或Android执行器。"
+          "schema1 CLI只run可选16KiB JSON文件；HTTP只run新增controlProgram数据，UI编辑/进度/三语步骤样本与草稿守护；没有stdin、RPC、实时键盘、反射、渲染/GPU、安装或Android执行器。",
+          "0.2.7源码 Bevy 数据通道明确声明 project.control-replay，可对冻结项目入口执行全局有限方向回放，样本与项目访问记录归属入口；项目验收用例／批次、场景切换、物理和键盘输入仍未接入。"
         ],
         "next": "schema1全局基础保持；按实例有限输入另列runtime.instance_control。独立behavior.bevy_rust暂不接此有限回放；Rust行为回放、实时采样、运行资源、窗口输入和规模仍分别验收。",
         "platforms": [
@@ -1166,7 +1169,8 @@
           "CLI schema2控制文件<=256KiB，schema1旧16KiB限制保留；host记录冻结规范程序SHA及有效样本，verifiedownedbuild持有中立controlTargets；HTTP不接作者路径/工具/code/Entity，未知目标在启动任务前拒绝。",
           "Godot adapter0.5.0用独立可信GDS driver；Bevy adapter/native0.3.0锁Bevy0.19.1，工具升级需重建；旧Godot5/GDS2/WASM2及历史证据原字节保留。",
           "UI实例列表以instanceId末尾8位在前、name在后，窄屏区分同名/同前缀实例；title及实际值保留完整instanceId；选择目标不改JSON，显式生成才替换为已验证四步示例；poll/reopen/locale保留输入与草稿守护，不写作者工程。",
-          "仅有限按实例方向输入；没有实时输入／RPC／反射／运行组件修改、渲染／GPU、跨会话恢复、Tauri新安装或Android执行器。独立Rust作者通道behavior.bevy_rust尚未接入这条按实例回放路径。"
+          "仅有限按实例方向输入；没有实时输入／RPC／反射／运行组件修改、渲染／GPU、跨会话恢复、Tauri新安装或Android执行器。独立Rust作者通道behavior.bevy_rust尚未接入这条按实例回放路径。",
+          "0.2.7源码 Bevy 项目组装的入口 plan 2 可逐实例回放；目标和联合预算只从冻结入口派生，同名或其他成员实例不因此获得访问资格。"
         ],
         "next": "保持有限路由和完整采样的共同粒度；类型化事件、资源、实时采样与可变组件只有出现实际共同需求才另立契约。",
         "platforms": [
@@ -2545,9 +2549,11 @@
           "Godot生成单个project.godot和多个UUID命名场景目录，该组装切片的运行证据只观察启动成员；后续项目内运行时切换由runtime.project_scene_switching独立记录。",
           "项目工程使用manifest v2明确assembly、entry及成员来源；旧单场景manifest v1、冻结重放和生成器边界保持。资源包沿组装→成员→已登记行为／素材依赖闭包，并在导入核对成员源。",
           "组装作者服务与独立三语界面不执行引擎；构建目录、已有工程恢复选择和交付仍走可信宿主编排。物理／动画、Scene3D／Composition直接组装、LSP和独立游戏发行未包含。",
-          "最终业务验证从准备好的双场景工程出发，不声称空工程上游全部GUI创作；真实Chrome四组／八图、三语390px及Godot入口对象／窗口取消、工程ZIP异地启动均通过，81份来源不变。全应用5067项中4948通过／119条件跳过；后端专项117项另列，准备62比对／4组调用不等于安装。"
+          "最终业务验证从准备好的双场景工程出发，不声称空工程上游全部GUI创作；真实Chrome四组／八图、三语390px及Godot入口对象／窗口取消、工程ZIP异地启动均通过，81份来源不变。全应用5067项中4948通过／119条件跳过；后端专项117项另列，准备62比对／4组调用不等于安装。",
+          "0.2.7源码新增Bevy数据后端组装：接项目计划schema1，逐一校验并保留全部受支持场景，指定入口无头运行，项目来源映射和离线ZIP保留成员身份。项目输入映射schema2、场景切换与窗口尚未支持；Bevy Rust作者后端尚未接入。旧Godot验证和上述历史统计保持原时点。",
+          "0.2.7源码另以project.control-replay接入Bevy冻结入口有限方向回放；全局与逐实例按入口计划准入，不包含项目验收用例／批次、物理或键盘输入。"
         ],
-        "next": "项目内切换与逐访问观察由runtime.project_scene_switching独立接入并保存新证据；随后分别定义3D／配方构建和目标平台发行。"
+        "next": "Godot项目内切换与逐访问观察由runtime.project_scene_switching独立记录；Bevy项目的输入映射、切换、项目验收与更丰富的运行能力，以及3D／配方构建和目标平台发行仍分别推进。"
       },
       {
         "id": "runtime.project_scene_switching",
@@ -3547,7 +3553,11 @@
           "仅现有半秒smoke，最多256条角色样本；显式limited仍让游戏完成，中断/无效数据为incomplete，静态/传感器场景可零样本完成。不是持续接触、传感器重叠、着地或任意作者脚本位移日志。",
           "通用宿主把physics与旧runtime观察分开保存；任务/build/snapshot/assembly和场景归属守护，旧任务迟到回调不能覆盖新任务，导航遵守脏稿保护。",
           "Godot执行适配器/观察生成器0.23.0，独立physics.observe2d能力；原physics/response生成器与runtime字节保持，非物理产物保持。新观察库存与指纹验证后随生成工程交付。",
-          "中英日独立只读面板保留筛选和焦点，位置仅解释本次移动；不回写作者文件、不更改旧runtime.actor位置样本、不发布玩法事件。"
+          "中英日独立只读面板保留筛选和焦点，位置仅解释本次移动；不回写作者文件、不更改旧runtime.actor位置样本、不发布玩法事件。",
+          "0.2.7源码另提供单场景无行为/音画 Godot 物理项目 30 步输入回放：完整观察验证每角色身份、步序和时钟，完成不代表玩法验收；此增量单独留证，不沿用旧回放评分。",
+          "0.2.7源码的五轨时间轴可逐步及按范围编辑临时回放草稿；JSON 无效时保留原文，末步必须释放；不扩展后端或自动保存作品。",
+          "0.2.7源码可将物理回放输入显式保存为绑定场景的独立作者文档；版本冲突受保护，资源包追踪场景依赖，已保存输入不包含验收断言或运行结果。",
+          "0.2.7源码另提供独立物理验收：完整观察后按实例与步骤检查位置容差和移动扫掠碰撞，区分通过、失败和不完整；输入及断言可保存并迁移，执行结果不写入作者文档。"
         ],
         "next": "基于真实物理步证据独立设计重力/跳跃或动态刚体；持续观察、碰撞事件、接触生命周期和Bevy物理分别定义。"
       },
@@ -3667,6 +3677,7 @@
           "只为自己绑定实例与对应平台添加临时碰撞例外，并清除着地避免同一步跳跃抢先；不传送、设速度、增加求解或更改平台和其他角色。",
           "实际碰撞形状的全局包围盒脱离平台及margin后恢复；低重力、厚平台或紧邻下层障碍可延后恢复，无强制计时；关闭清自己持有的例外，旧访问端口失效。",
           "新增普通TXT模板，唯一drop_action默认ui_down；上升沿请求，启动时已按住或持续按住不会反复请求，false不是报错。原18项模板保持。",
+          "0.2.7源码项目组装计划对原样下穿模板的drop_action核对项目映射，缺失时提供非阻断来源提示；ui_*与修改过的脚本不作缺失推断。",
           "薄桥委托冻结0.28统一采集层和独立下穿控制器；无适用场景沿旧生成结果，新增交付清单及原文库存严格验证，作者schema、Rust/WASM与项目wire保持。"
         ],
         "next": "继续推进持续接触、移动平台或动态刚体，并以真实二维玩法验证接口边界。"
@@ -3819,7 +3830,7 @@
         "delivery": "source-release",
         "platforms": [
           "可移植JavaScript合同与Linux本地Node宿主；Godot4真实无头范围由本轮专题另行验证",
-          "0.2.5之后工作树，当前适配器0.36.0；含音轨生成0.36、无音轨有动画0.35、两者均无0.34；未新增界面或更新安装"
+          "0.2.6 发布时适配器0.36.0；含音轨生成0.36、无音轨有动画0.35、两者均无0.34；该轮未更新安装"
         ],
         "boundary": [
           "accepted身份与执行commandSequence分开；仅成功预留入队分配连续1–256请求ID，待处理容量仍64。",
@@ -3878,6 +3889,29 @@
           "下方已有reader、后端和宿主评分记录为前一轮历史审查；其中“无新界面”描述当时范围，新增验证器与界面评分另列。"
         ],
         "next": "继续核验其他跨尾部因果引用与长期运行；跨后端项目事件、安装与设备体验分别验收。"
+      },
+      {
+        "id": "runtime.physics2d_character_intent",
+        "label": "逐实例角色运动意图与 Godot 行为端口",
+        "group": "场景与执行",
+        "entry": "重力角色 controls=none→普通 Godot 运动脚本→保存与绑定→构建→单步请求→原物理求解与观察",
+        "delivery": "source-release",
+        "platforms": [
+          "Godot 4 Linux 0.2.7源码；具体实测范围见本轮报告",
+          "Bevy、Android 原生及已安装程序尚未声明或验收"
+        ],
+        "boundary": [
+          "只有同一实例同时启用角色重力运动并选择 controls=none 时，绑定行为在 _ready 前获得访问局部 viento_character_intent 端口；旧 arrows 路径保留。",
+          "protocol_version=1；submit(axis,jump) 的 axis 为有限 [-1,1] 数值，jump 为布尔值；true 仅表示入队，不表示实际位移或起跳。",
+          "每角色最多一个待消费请求，先到先受理；下一项目步一次性消费，未提交时水平意图归零；不缓存空中跳跃，不改变既有起跳和落地事实。",
+          "请求与行为绑定和场景访问关联，暂停时不接收新请求，暂停前请求待恢复；行为失效、退出或关闭不允许残留旧请求。",
+          "新合格场景通过 Godot0.37 可选能力组合原生求解、下穿与平台包装；保留旧模板及无合格角色时的原生成分支，不扫描脚本文本猜测能力。",
+          "意图合同是运行行为接口，当前只有 Godot 实现；不是中立独立 SDK、Bevy 物理、多平台设备验收或原生 Nuislang。作者 schema、项目 wire 继续不变。",
+          "最终完整应用检查8709项、8133通过、576条件跳过；新能力12项真实Godot通过，正式生成工程脚本检查及旧链回归见专题。",
+          "0.2.7源码的普通起始脚本可通过行为文本参数选择左、右、跳跃动作；每个绑定独立配置，原作者脚本不自动改写。独立输入映射可在 Studio 编辑、保存并由组装引用，Godot 构建注册受限物理键；与内置动作可能同时触发，实测见项目输入映射专题。",
+          "新项目动作检查对原样官方Godot角色运动意图脚本的三个动作参数及单向平台下穿脚本的drop_action给非阻断缺失提示；引用映射时核对动作，无映射时提示显式自定义动作。保守排除ui_*，不推断自定义脚本或运行时注册，也不改写作者内容。提示位置指向行为绑定，最多256条并提示结果省略。"
+        ],
+        "next": "继续扩展输入设备、项目物理回放支持范围、自由平面输入和 Bevy 接入，并评估长期多控制器仲裁；设备及安装单独验收。"
       }
     ],
     "implementation": [
@@ -5346,14 +5380,16 @@
       },
       {
         "id": "i125",
-        "label": "bevy-adapter.mjs / bevy-project.mjs：工具、阶段与数据产物",
+        "label": "Bevy数据适配器：单场景及项目生成、阶段与事件桥接",
         "kind": "product",
         "language": [
           "JavaScript"
         ],
         "paths": [
           "scripts/backends/bevy-adapter.mjs",
-          "scripts/backends/bevy-project.mjs"
+          "scripts/backends/bevy-project.mjs",
+          "scripts/backends/bevy-project-assembly.mjs",
+          "scripts/backends/bevy-project-runtime.mjs"
         ]
       },
       {
@@ -10869,6 +10905,52 @@
           "web/modules/app-project-event-positions-observation.js",
           "web/modules/app-project-build.js"
         ]
+      },
+      {
+        "id": "i547",
+        "label": "作者运动意图脚本与普通脚本创建",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "engine/script-authoring.mjs"
+        ]
+      },
+      {
+        "id": "i548",
+        "label": "Godot逐角色意图端口、单步消费和生成库存",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-physics-character-intent.mjs",
+          "scripts/backends/godot4-physics-character-intent-transform.mjs",
+          "scripts/backends/godot4/physics-character-intent-bridge.gd",
+          "scripts/backends/godot4/physics-character-intent-helper.gd",
+          "scripts/backends/godot4/physics-character-intent-port.gd",
+          "scripts/backends/godot4-adapter.mjs",
+          "scripts/backends/godot4-physics-drop-through.mjs",
+          "scripts/backends/godot4-physics-platform-motion.mjs",
+          "scripts/backends/godot4-physics-drop-through-v0.29.mjs.txt",
+          "scripts/backends/godot4-physics-platform-motion-v0.30.mjs.txt"
+        ]
+      },
+      {
+        "id": "i549",
+        "label": "普通脚本入口的角色意图模板与本地化",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-script-create.js",
+          "web/i18n/en.js",
+          "web/i18n/ja.js"
+        ]
       }
     ],
     "maturity": [
@@ -15008,7 +15090,7 @@
       "architecture": "runtime-backend",
       "function": "runtime.bevy_rust",
       "implementation": "i125",
-      "role": "Bevy精确工具识别、noimage准入、数据工程生成与scene-check/headless阶段，不导入Godot模块。",
+      "role": "Bevy精确工具识别、noimage准入、单场景与项目schema1数据工程生成；项目逐场景检查，仅入口无头运行并桥接项目事件，不导入Godot模块。项目入口可按冻结数据进行有限全局或逐实例回放；项目验收用例、切换、窗口、物理及键盘输入映射仍不支持。",
       "evidence": [
         "e425",
         "e429",
@@ -31302,6 +31384,50 @@
         "e3369",
         "e3370",
         "e3371"
+      ]
+    },
+    {
+      "id": "b758",
+      "architecture": "semantic-js",
+      "function": "runtime.physics2d_character_intent",
+      "implementation": "i547",
+      "role": "普通 GDScript 起始内容从动作边沿构造单步意图；创建和保存仍走既有脚本流程。",
+      "evidence": [
+        "e3372",
+        "e3381",
+        "e3385"
+      ]
+    },
+    {
+      "id": "b759",
+      "architecture": "runtime-backend",
+      "function": "runtime.physics2d_character_intent",
+      "implementation": "i548",
+      "role": "Godot角色与行为访问各自隔离；由原角色运动器消费意图，并经独立库存验证与旧分支组合。",
+      "evidence": [
+        "e3373",
+        "e3374",
+        "e3375",
+        "e3376",
+        "e3377",
+        "e3378",
+        "e3382",
+        "e3383",
+        "e3385"
+      ]
+    },
+    {
+      "id": "b760",
+      "architecture": "ui",
+      "function": "runtime.physics2d_character_intent",
+      "implementation": "i549",
+      "role": "复用普通创建列表与中英日文案；不自动建立行为绑定或跨工作区写入。",
+      "evidence": [
+        "e3379",
+        "e3380",
+        "e3384",
+        "e3381",
+        "e3385"
       ]
     }
   ],
@@ -61545,6 +61671,126 @@
       ],
       "value": 2,
       "reason": "当前工作树可用，尚未纳入新版本或安装验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_intent",
+        "i547",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "工作树中有普通作者模板与现有创建路径；更广控制、配置和后端仍未完成。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_intent",
+        "i547",
+        "verification"
+      ],
+      "value": 2,
+      "reason": "已有脚本契约和普通入口测试；正式执行记录以本轮专题为准。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_intent",
+        "i547",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "作者脚本只提交行为局部端口，求解、绑定与保存各自负责；目前模板是Godot GDScript。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.physics2d_character_intent",
+        "i547",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "仅本工作树；不等同源码新版本或更新安装。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_intent",
+        "i548",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "角色输入与原求解接通，更多控制策略和跨后端仍待完善。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_intent",
+        "i548",
+        "verification"
+      ],
+      "value": 2,
+      "reason": "12项真实Godot运行、正式导入与脚本检查及旧链专项通过；窗口截图有条件跳过，安装与其他平台未验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_intent",
+        "i548",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "意图队列与后端运动求解分离，端口按实例和场景访问限定；目前只由Godot实现。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.physics2d_character_intent",
+        "i548",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "仅本工作树；旧构建需要按适配器指纹规则重建，未更新安装。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_intent",
+        "i549",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "复用普通脚本创建与语言文案，显式绑定仍由作者完成。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_intent",
+        "i549",
+        "verification"
+      ],
+      "value": 2,
+      "reason": "已有入口和模板测试；不将源码或未完成的检查宣称为真实浏览器验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_intent",
+        "i549",
+        "decoupling"
+      ],
+      "value": 2,
+      "reason": "创建界面复用现有宿主与本地化入口，模板仍指定Godot。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.physics2d_character_intent",
+        "i549",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "仅本工作树，未纳入已发布源码或安装。"
     }
   ],
   "evidence": [
@@ -81773,6 +82019,90 @@
       "kind": "report",
       "path": "docs/test-results/runtime-event-positions-ui/README.md",
       "note": "事件位置只读观察本轮验证与范围；不代表已安装版本或其他后端设备验收。"
+    },
+    {
+      "id": "e3372",
+      "kind": "source",
+      "path": "engine/script-authoring.mjs",
+      "note": "普通脚本起始内容和作者输入示例，不直接修改场景或绑定。"
+    },
+    {
+      "id": "e3373",
+      "kind": "source",
+      "path": "scripts/backends/godot4-physics-character-intent.mjs",
+      "note": "仅合格计划组合新生成层及独立库存；作者格式与项目 wire 不升级。"
+    },
+    {
+      "id": "e3374",
+      "kind": "source",
+      "path": "scripts/backends/godot4-physics-character-intent-transform.mjs",
+      "note": "仅转换生成副本并提供可逆规范化；原生求解模板保持。"
+    },
+    {
+      "id": "e3375",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-character-intent-helper.gd",
+      "note": "逐实例待消费意图、访问范围、暂停、失效与单步仲裁。"
+    },
+    {
+      "id": "e3376",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-character-intent-port.gd",
+      "note": "行为局部版本1端口和弱引用生命周期。"
+    },
+    {
+      "id": "e3377",
+      "kind": "source",
+      "path": "scripts/backends/godot4/physics-character-intent-bridge.gd",
+      "note": "组合既有移动与下穿 helper，保持单次求解。"
+    },
+    {
+      "id": "e3378",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "Godot可选能力、生成入口、库存检查及执行指纹。"
+    },
+    {
+      "id": "e3379",
+      "kind": "source",
+      "path": "web/modules/app-script-create.js",
+      "note": "复用普通脚本创建入口，无跨区隐式绑定。"
+    },
+    {
+      "id": "e3380",
+      "kind": "source",
+      "path": "web/i18n/en.js",
+      "note": "普通模板英文文案；中文和日文按既有语言入口维护。"
+    },
+    {
+      "id": "e3381",
+      "kind": "test",
+      "path": "scripts/tests/character-intent-starter.test.mjs",
+      "note": "作者模板契约测试源码；具体运行结果以本轮专题为准。"
+    },
+    {
+      "id": "e3382",
+      "kind": "test",
+      "path": "scripts/tests/project-character-intent-godot.test.mjs",
+      "note": "真实Godot项目测试源码；存在该文件不表示目标环境验证完成。"
+    },
+    {
+      "id": "e3383",
+      "kind": "test",
+      "path": "scripts/tests/scene-physics2d-character-intent-inventory.test.mjs",
+      "note": "库存、篡改与旧生成兼容测试源码；完整结果以报告为准。"
+    },
+    {
+      "id": "e3384",
+      "kind": "test",
+      "path": "scripts/tests/script-create-ui.test.mjs",
+      "note": "普通脚本入口与本地化回归测试源码；不等同浏览器设备验收。"
+    },
+    {
+      "id": "e3385",
+      "kind": "report",
+      "path": "docs/test-results/character-intent/README.md",
+      "note": "本轮角色意图核对报告；只认可报告实际记录的执行范围及限制。"
     }
   ],
   "dependencies": [
@@ -85069,6 +85399,24 @@
       "to": "runtime.event_positions",
       "relation": "requires",
       "reason": "事件位置只组合已准入语义账本、精确封套与宿主交接，不反向修改作者、队列或执行预算。"
+    },
+    {
+      "from": "scene.physics2d_character_motion",
+      "to": "runtime.physics2d_character_intent",
+      "relation": "requires",
+      "reason": "端口只注入显式角色运动配置并沿原运动器消费。"
+    },
+    {
+      "from": "script.authoring",
+      "to": "runtime.physics2d_character_intent",
+      "relation": "requires",
+      "reason": "普通作者脚本负责输入和意图提交。"
+    },
+    {
+      "from": "behavior.authoring",
+      "to": "runtime.physics2d_character_intent",
+      "relation": "requires",
+      "reason": "脚本必须显式绑定到符合条件的角色实例。"
     }
   ],
   "workflows": [
@@ -86166,7 +86514,7 @@
       "gaps": [
         "build.standalone_distribution"
       ],
-      "boundary": "从临时副本中两个已登记Scene2D开始；最终Chrome四组／八图、三语390px审阅取消和两文件保存，统一Godot工程启动第二成员，展示入口对象并完成原生Godot窗口ready／面板关闭重开／明确取消。17030字节ZIP十文件／一共享图像异地导入后仍执行同一入口；81份源指纹保持。独立后端专项另验证行为／声音入口和非入口错误。运行时切换、直接3D／配方成员、物理动画／LSP、无引擎独立发行和安装设备验收未包含。"
+      "boundary": "从临时副本中两个已登记Scene2D开始；最终Chrome四组／八图、三语390px审阅取消和两文件保存，统一Godot工程启动第二成员，展示入口对象并完成原生Godot窗口ready／面板关闭重开／明确取消。17030字节ZIP十文件／一共享图像异地导入后仍执行同一入口；81份源指纹保持。独立后端专项另验证行为／声音入口和非入口错误。运行时切换、直接3D／配方成员、物理动画／LSP、无引擎独立发行和安装设备验收未包含。 0.2.7源码在数据型Bevy项目schema1中逐场景检查、无头执行入口并验证ZIP异地运行；支持冻结入口的有限方向回放，项目输入映射、场景切换和窗口尚未支持，Bevy Rust未接入。前述Godot／Chrome结果仍为历史时点，不外推到本轮Bevy界面或安装。"
     },
     {
       "id": "project-scene-switching-to-delivery",
@@ -86968,6 +87316,19 @@
       ],
       "gaps": [],
       "boundary": "复用原业务协议及生成产物；171项定向已通过，真实Godot六案通过且源码守卫一致，旧媒体14项原生回归及完整检查8667项、8105通过、562条件跳过通过。pending不证明回调未执行，原有限账本/预算保持，没有持续运行、其他后端或安装验收。 本轮新增经校验的独立只读面板并核对运行归属；专项测试见事件位置UI专题。上述数量为上一轮证据。"
+    },
+    {
+      "id": "scene-physics2d-character-intent",
+      "label": "重力角色→普通运动脚本→逐实例意图→物理运动与观察",
+      "steps": [
+        "scene.physics2d_character_motion",
+        "script.authoring",
+        "behavior.authoring",
+        "runtime.physics2d_character_intent",
+        "runtime.physics2d_observation"
+      ],
+      "gaps": [],
+      "boundary": "仅 controls=none 的重力角色，单步消费；观察仍是有限样本，Godot 0.2.7源码与安装设备范围分别核验。"
     }
   ],
   "legacyCoverage": [
@@ -87532,19 +87893,19 @@
     "desktop/package-source.py": "82297a3ccfbcf9dbb7c21648ffdcfb5e264926c754e2f99679e49842fd93305e",
     "desktop/prepare.mjs": "bba6f34bdf89e718bc21275cf0681890d52451bfcce2ec178696edb1ef56d390",
     "desktop/tests/native-library.py": "923e991ff9a7427bb927466afb37b754e71b8fd7d18d6acf7b960842063ed0f4",
-    "desktop/tests/native-smoke.py": "c470787e8f7c63c116aeab95fd879c6071c06eb244d1a0447c8f5fb84ad8ee51",
+    "desktop/tests/native-smoke.py": "5a5446e05d056fffc36c5f61fbe84a1785db4ee14ccb067186abf45edc02014a",
     "desktop/tests/native_workflow_2d.py": "d1d1c78ddec1bc1f5c036ce032d9fb232df8b0eecec73125b389bee2aa014091",
     "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
     "docs/ARCHITECTURE.md": "deb62b486ae76de5d902e01c133de128933113684585504fbf4e3012a0d81af7",
-    "docs/BACKEND_MIDDLEWARE.md": "bcbd11fcc82f8ecdfccad811a4a1ddea0d9fc7123284f9da81e61a25d9e35252",
+    "docs/BACKEND_MIDDLEWARE.md": "4553d976323c0cec3beec205c56bf1e2263dbc1c1b604e0a83ee1078b2c36ceb",
     "docs/BACKEND_PROJECTS.md": "3cefc4a6f9edd443541a20749d4b2c2ac22014d0431edc3990b463d29be3acbe",
-    "docs/BEVY_BACKEND.md": "1d726ce88cf3c6adf11db5885e22897d56dfe7866fb7cd9edcb5aaaf48ce384a",
-    "docs/FUNCTION_MAPPING_2D.md": "c6e1bf7985872738c930b00c3033b748b43ecb4a0d44adedd1171e6f5d56c89f",
+    "docs/BEVY_BACKEND.md": "b69a940e57d493323ada9e75a0c81e5efdf716bfe15f90caf8a99ad57cf99472",
+    "docs/FUNCTION_MAPPING_2D.md": "280d96538054f0ee21b803f2858e5aae0f62489bce81c2f03f30d786e0bfc8cc",
     "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
     "docs/NEXT_ARCHITECTURE.zh-CN.md": "1ca5d0336fdbdd6582ca0219e29a265c8115c1bee1dcc7ff386944d4be4ced30",
-    "docs/PROJECT_ASSEMBLY.md": "f650e6e50284b6e94cb3d0e0ceb4ee318b762c5083d01f2080339769bf29ecb3",
+    "docs/PROJECT_ASSEMBLY.md": "4bb8e52c6ec2e4d5c51208baa5c0621e9f62d0e78634c4ba4aab6f39afd97511",
     "docs/PROJECT_AUDIO_CONTROLS.md": "dc7734deb7e3ead51447d1262b58847bac741877f8da96c338cb0ff65f7aeecc",
-    "docs/PROJECT_BUILD.md": "9d02dd04eaa51c253a63ab7be7d26eb58c720b3438e10ad2c3c0eae3f248eac6",
+    "docs/PROJECT_BUILD.md": "c2cbaf72293db43ef30360274e151026b34f9f84b4918e9c3055944f6f7f2d23",
     "docs/PROJECT_EVENTS.md": "69d7f7f4ae70b25d8e5885192788a35d1a1ac5f74495f6eddc1dfa442be03f09",
     "docs/PROJECT_SHARED_STATE.md": "4ae4441d4e7ba27cdbc8681ff920001df893c26b62f31e684c6489b143832793",
     "docs/PROJECT_WORKFLOW.md": "ce1f341b3ca1a884ad3f7f310bcaf0ab21d5d4d070cfbd888b05ee413ed4c76c",
@@ -87565,7 +87926,7 @@
     "docs/RELEASE_0.2.3.md": "1e7061eef3ad8a83de7e771f4f91d07252037f8fc774398a80268b7e90ba9407",
     "docs/RELEASE_0.2.4.md": "18f4e7a7a3069d6126d12dfe1d31a2ad15d904d02eb743490f0c5677ee07d068",
     "docs/RELEASE_0.2.5.md": "abc8d1af2dec8d6abae9c714b69e2876c5b638051b53e7d83a16b74d1d9b4c65",
-    "docs/ROADMAP.md": "1a40157d8a03d207ebeb5d49b077e51abb12865ee641c49183eb0f15762c9193",
+    "docs/ROADMAP.md": "af9558b7918add63c37c1782a26ca13b1285044866cde58365d67a4a80392f3a",
     "docs/RUNTIME_CASES.md": "0000344399cc3a6afd6094b10b1679f4f928ab847467af4b9444ff7f84bb4e1f",
     "docs/RUNTIME_CASE_REPORTS.md": "42b67098cefebfa016f68e184499962afea7feda0607c8dbd461e647fff40f04",
     "docs/RUNTIME_CASE_SUITES.md": "6d5e783d87fd54df5e7f981b741de03a360c9ef690b3298cb0c4c7e28ea36f70",
@@ -87575,10 +87936,10 @@
     "docs/SCENE_ANIMATION.md": "09e15b579817b2fc8ece583296f2b9daea5bb14b795ecdb43a84065b0b6bad91",
     "docs/SCENE_AUDIO.md": "a254d5d162d7de9bd2513dcf71d391ec4fd2254678de6468697621364a27e752",
     "docs/SCENE_AUTHORING.md": "2c3092ee6a68a8ba2e31958b2deb235c608a16d81d3ce4081b085761d296dccd",
-    "docs/SCENE_BEHAVIORS.md": "46b1ae9f6d1579281d6aedaa610a4f3b719c1537a0dd9c808f754ad7bc8de148",
+    "docs/SCENE_BEHAVIORS.md": "3d358b0c777dc269475991d3da980ceb7db1d6ae818f816aa1fdfa5f3e7f9624",
     "docs/SCENE_COMPOSITION.md": "90e1954c2f5e57a5c7e2a4d5d97179f6177832ec8e1f59983eabb6cbd6cc8d5a",
-    "docs/SCENE_PHYSICS2D.md": "f7fdcf5cb17c715b9595b80530b6d86f213da4f3baa63e4b7197434b3977440e",
-    "docs/STATUS.md": "6b286abe8f12005a6fdbc757c95dcd3c8c2aecf3f98190e9ad9530b34eb1173c",
+    "docs/SCENE_PHYSICS2D.md": "20ae6a8716b0de3652f8069ae6c44007951cd6ffc4e585e36913a666c22f73d1",
+    "docs/STATUS.md": "60ce5d393495dccf254643f00872b1c471817ae55988d1ca974b63e6ebc8f1bc",
     "docs/STUDIO_MODULES.md": "68ea521b872eb1b34b1179b7c66df9cdb57973e299f319f0d3b196a116b13aa9",
     "docs/WORLD_TRANSACTIONS.md": "bcdf7e96289f68e92271fc7c6ad025985e3744857f304fa21eb2ede43a37394e",
     "docs/adr/0008-native-nuis-and-bootstrap-runtime.md": "7fbaba85e92b981b584f0d7cefc525b70890bb4d951a5727797b2c46381fde60",
@@ -87684,6 +88045,7 @@
     "docs/test-results/bevy-rust-fixed-step/rust-test.log": "e1a3dfcc2cce9bf209aa3f52cd2b39405a1f9bcafab6568303595195f8088182",
     "docs/test-results/build-workbench/browser.json": "652d2efcbc17e2cc82d1b7720d6b6b9a9440e73595a8452f87a257c5b1d0637e",
     "docs/test-results/build-workbench/results.json": "2ad094db36c7e0cea0c8c1ef64932524cdadb567fe9352829082157a9be15ab4",
+    "docs/test-results/character-intent/README.md": "909065aeec46bdc5c08312570d9db44d7b5ceeb0c096e2f2653d224af09af3fb",
     "docs/test-results/ci-scene3d-replacement/README.md": "21683f9064fcb317bce6b386e29ddf5604438459605bfeee8142b9acebb23d97",
     "docs/test-results/ci-scene3d-replacement/summary.json": "c54a50cedd2e86d0cd0879da2d7176d447782081ad259f32045920922777ac91",
     "docs/test-results/document-migration-2026-09-23/results.json": "3a595c004e372eb845762b343ff39d565e30793360904133331557be446f221f",
@@ -88854,9 +89216,9 @@
     "engine/animation-state-trial-case.mjs": "57a26f4aebb991cff5aa818ff9f41e9563cb9321a32ae5f82d32e1c1097fc98e",
     "engine/animation-state-trial-sequence.mjs": "b7aa9afd38543899a84dfcf16843083e73e7eb6294da17696305c3e27ff0e978",
     "engine/audio-wav.mjs": "e11faaa850c20a2b63bcdfe987964c1223712b49ed5fb897262f855fb3ca1f35",
-    "engine/backend-capabilities.mjs": "5a06d45abd1073d4f6c9450b619abb8e49922f24e589793721f6c6c588c31587",
+    "engine/backend-capabilities.mjs": "518f85765ff3d9942267ba90cbc0e33fd22c1eb39264ccf154c17aeb86539047",
     "engine/backend-project-delivery.mjs": "14a024784311df069b3c9834779df7f73797e3ddf62ddfcf33ce4461b4bebd51",
-    "engine/backend-project.mjs": "741e517703a28131c693df05cf2b16a2417bca95d0f2ccdae8710e94b1673207",
+    "engine/backend-project.mjs": "f07d4e2984e51651033623fa3d8c2dc13ace951cbe873d0b318abfdfba986138",
     "engine/build-plan.mjs": "38119bb5dd8b58f60fb064af9e051752ffb688913cfc4cef6835d12d8a85f0a0",
     "engine/build-target.mjs": "f4ed82e175032d78a9014b49d16f3dbe6e0ca480a9278bbc0b6b2cc763e1cf24",
     "engine/document-model.mjs": "ccdd05ff614086ad038dae4dccfca438eee99aefca69ce85a05c9f1b5c93b0ef",
@@ -88895,9 +89257,9 @@
     "engine/project-animation-target-review.mjs": "e60990c94ca072f703c6c05fd07624511bd00f825343d9769b174711f4459a4e",
     "engine/project-animation-targets.mjs": "ea07cc20a063f151c9738b760eba09f5b01f0792d210404c16836a1fbfad15ab",
     "engine/project-animation-transport.mjs": "9049a044ea7bb3aa57eb4049ea233cdeb1db383f004543622ab4718e77beb566",
-    "engine/project-assembly-plan-contract.mjs": "8c49059be9026be3e49dfd678251ffe6bcdad77368e66e8dea1abb44626f0356",
-    "engine/project-assembly-plan.mjs": "8b90a3030cdcd0a588550c76ab992f033383701e4c02efed8fd1967b1d203b4d",
-    "engine/project-assembly.mjs": "597d4b07d1389954cf14b1e5bbc7593792972d47fa1cf57872729003912550b5",
+    "engine/project-assembly-plan-contract.mjs": "676b4935e942baae5b9d33a01a8aef5a932b801081f5cf11ec9be1faf5a0106c",
+    "engine/project-assembly-plan.mjs": "34b1cbe9204f29f8ed0160b1a4ce7bfdfa1661cbd453c9051af06493b94ef19c",
+    "engine/project-assembly.mjs": "752602128cefd3091babef7aabdd9f9166181d1f860e6066c0bec24120ac0710",
     "engine/project-audio-commands.mjs": "9845c1563d7cfae2d6509dba65a5edc3f62c905e8a04989f7a2ac53b164dc63a",
     "engine/project-audio-requests.mjs": "db7d8a1d22dfe4971d7e58cfb8d80fbf00ee74c3b6278cc9d5b91250038bfb6d",
     "engine/project-build-contract.mjs": "792c49457f9af1bbfa3a0a04b1ba07c0888237dff9c8c4d8f97ea32ae1d91f3f",
@@ -88914,7 +89276,7 @@
     "engine/project-queued-requests.mjs": "e94cf91a95ebb7e5c08afad7a79e3e2b460b419dd74826fe2903c996dffabd93",
     "engine/project-runtime-contracts.mjs": "e4f365f530d6dec4f2a09426b33f9048af957830a7e50de4ad7bed324ee4f74d",
     "engine/project-runtime-events.mjs": "d3469f337098da222a5f7fde65aa71417ba3fc593359daf3dbbe3012d00242b0",
-    "engine/project-runtime-query.mjs": "62494cb578c4afe92c7fe8fcd1bf80ac49b313d00101186c1fe7770a4519ad56",
+    "engine/project-runtime-query.mjs": "cdcaf0ad9fadaa9b55cfd8078cd8c2aa0fabaf39454e50696a33cc416b708a67",
     "engine/project-shared-state.mjs": "f615021c9f04261c41888d3dc62ee8c65f87627706fdf268d0ce1e3e3ba9a357",
     "engine/project.mjs": "a7e6418c10226757a481f77e3f066714fad5a64f41aac92e779a936e42347c41",
     "engine/resource-package.mjs": "fe7eee206331ec6d5dd16c90e76474b1483742e1796921392529b9521db4ac92",
@@ -88975,7 +89337,7 @@
     "engine/scene-groups.mjs": "0149aa1efdedf32032446c2d5346a428982bf5f368230289fc0cc5e3a9d48cb0",
     "engine/scene-identity.mjs": "eb17e6efdda342ca9ebb431c5522adf7f1544300f1fa6d24a75425ae4cb73a1e",
     "engine/scene-layout.mjs": "247578b42addf2ebe467f44d6ebac04c61c721da938b097be0e9cffa8af267a0",
-    "engine/scene-model.mjs": "29872672282ec6b4a5924b014eadfa61093381636eabed6d7623bb428819ca3c",
+    "engine/scene-model.mjs": "6bd3cd82f095508eaeda5008f698c60591413200fc2a7020e734f5a8ac8cbb7b",
     "engine/scene-physics2d-core.mjs": "2a6337c158b4b04084addd48031ba2e857c4eab10ba8f87c878a8e6212bb4c5e",
     "engine/scene-physics2d-create-plan.mjs": "cb3bf5257d699723ccbd042c3b22c803905c2cf1e1b2ba50354f44e082e986c4",
     "engine/scene-physics2d-creation-contract.mjs": "c6e386f9bf21f2c96e9cd67db913aa8773ae153d7596d2a45cb422e2865c4b3c",
@@ -89003,7 +89365,7 @@
     "engine/scene3d-transform.mjs": "d5d7948928a1c3d55e8b864faa063d107e911af854fffe6b89613ab1cc28c312",
     "engine/scene3d-translation.mjs": "ff8bcc30e738f4a6d7f8ce3e79fe6f25ff21d17654bac348298a8f4ab8af83e3",
     "engine/scene3d.mjs": "7a334e3d32e9e258a9aec4effd6760d3806b9db384c025c42f9252a286ac6e06",
-    "engine/script-authoring.mjs": "0a63e7691c4696ef6c8e630b7ab79cab2d5788ded643fe2551efc8c05bc53b66",
+    "engine/script-authoring.mjs": "2db8817cf5c175eeb17600ca0c2271f7ff4567baf65781d58a5418d4458ac0c1",
     "engine/script-parameter-discovery.mjs": "7d1745cd2312cdf8490a4fbfa8016985c2f9365875322b35bc80d3f135b837cf",
     "engine/script-parameter-interface.mjs": "a4468f0e3ade0b81a34459ca692258191bc1a6bcf746dae3387d83a836ccf11e",
     "engine/script-usage.mjs": "61f74b8a3aaa06c4b672faa5db88aa36efd930d2d3fb247338a7ce60adfee03e",
@@ -89045,31 +89407,33 @@
     "schemas/workspace-v3.schema.json": "b9f945ba4a6f221ecd782a0128bce342224dcc283f655c1c6e14b75e6fd2ac13",
     "scripts/README.md": "6f70a1e55f5981f0afbf275b112dfeb251e988bffb1915e136babac1fd63a777",
     "scripts/adapters/node-backend-project-catalog.mjs": "7cf1e86805aa38e07364a24e99b6a7946a6d775f618b22be543bdb7b3c7c8ede",
-    "scripts/adapters/node-backend-project-delivery.mjs": "2c87a66886c9cd27af95a8c5a32321830977f2bb5508dc6d9bf694ced84a354c",
+    "scripts/adapters/node-backend-project-delivery.mjs": "7bd862e5dd2fd86f8ac11172ce63cb426f71b5bace1ea9c8211385f85fd4d427",
     "scripts/adapters/node-backend-project-retention.mjs": "8c7c67082a0c7fcc9026a91fca305cbe3115e89337a89b62835a5708268c945e",
     "scripts/adapters/node-backend-project.mjs": "18c87cb33ee032ed6f73e2e80147e64866c28241b43f9d2aa23e96cd5275a749",
     "scripts/adapters/node-build-snapshot.mjs": "77f258e9e5d550686c1b33abfd7889a374d1041a12f3f228a338e4721f6135de",
     "scripts/adapters/node-document-storage.mjs": "74c2c13ede6919cbc70bbd7eae2d1931f05b1bb709450b4181330af1dadb994e",
-    "scripts/adapters/node-execution-backends.mjs": "ab29befe983bdf25d38654ea613fc234980d0b4b048946978ed14d67d18591cc",
+    "scripts/adapters/node-execution-backends.mjs": "661d738069b75a5ece219a603f5a5a0a9dd895d4e9ca15b67518a658c00497f5",
     "scripts/adapters/node-execution-tool-probe.mjs": "10171f6f7300744028266eafe8dd4435414fe64392a9065d33fbbd47a37924fa",
     "scripts/adapters/node-execution-tool.mjs": "6c807296f257df7354d46c5f0576a5f3e469acb239b46162546e543eaa73e6ac",
-    "scripts/adapters/node-project-build.mjs": "354d461b00ead1415aa8231b1412f34669aee3c8a25ee14319f4e3429a632a47",
+    "scripts/adapters/node-project-build.mjs": "84347ccd75bbe482c1a10fd4509fcb141d04bc3f25bc77e790ad2bd5ba8f2bff",
     "scripts/adapters/node-runtime-case-suite.mjs": "b104e896e46ea9d71dc63d647c28969cc7c5523db5310e35ec8ecff62d670736",
     "scripts/adapters/node-scene3d-export.mjs": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8",
     "scripts/adapters/node-studio-core.mjs": "4ef99f01f9201b59b1f5ed8227bdd74ba8dd9f41caad491836cf7edbb8af3037",
     "scripts/adapters/node-world-commands.mjs": "01c1deb0209718203cfc04a013ed7f60d3d7008a03ca09134b2ce0c94dfe441e",
     "scripts/adapters/node-world-projection.mjs": "c98c4ac6eef138605102b9317583c83d416e1e414f9843407aab5ecf4297fa61",
-    "scripts/backends/bevy-adapter.mjs": "fe4930697c4087d8983b368825e2c47b58878f37ccb91928984b0eea77f1bbef",
-    "scripts/backends/bevy-project.mjs": "3e4cec5947286359b1561d1551603db4cf5f3dc382a0121d0560b9578af1ec53",
-    "scripts/backends/bevy-rust-adapter.mjs": "f6b54db1e6ed568b11de26f58269e052e0d8f5a7560beacbac9b5e8349dd7334",
-    "scripts/backends/bevy-rust-project.mjs": "68d90b49a02686926178f8c451be66933f95ea07e1a1046f3c38160d84ab9971",
+    "scripts/backends/bevy-adapter.mjs": "dd88d0a750225e952c751a7b7f3634afcc8a7e9b05032e33e211b1c94156c493",
+    "scripts/backends/bevy-project-assembly.mjs": "3a2659e31e33fdd5074e91ec3d3ca70e6a942c32fe62313d893446e44ed57228",
+    "scripts/backends/bevy-project-runtime.mjs": "d596e5176ebeea6edd608cfa2d281a857fc9dac7bc6de6ca292eafa99269b17a",
+    "scripts/backends/bevy-project.mjs": "738ebf7044bcf9774e91256c9e71eb9892ec11e14c7f6ad71369777509dd796d",
+    "scripts/backends/bevy-rust-adapter.mjs": "59ce3bd3bca59b5ec40f46e9e40758375447b627e14457483890ea2b8f89d0dd",
+    "scripts/backends/bevy-rust-project.mjs": "068520a950fd1850a19c005bdfca60dd911547d50472d315d71ac883321e29fd",
     "scripts/backends/bevy-rust/Cargo.lock": "6e10bacff1b1e21af9e72a4026edfc7edf06ba5e28dc4e7eb32358e015c7e25f",
     "scripts/backends/bevy-rust/Cargo.toml": "074dc7863724868e2bae47a2146ed88ef6ff543b9c5a964d10dde0147f5d5cf4",
     "scripts/backends/bevy-rust/src/behavior_sources.rs": "fef1cd4536fc497f780d65435640f4d5d9fd14d29d6da034e06e42303595fdaf",
     "scripts/backends/bevy-rust/src/main.rs": "59c64d0ff86ee7d5e8adae1b431919cc2107577dc6122fa66c4b6b460de69379",
     "scripts/backends/bevy-rust/src/runtime.rs": "566e585520914e36850eca9318170993db38b4aa7379879eae32f0a2e91f6f7b",
     "scripts/backends/godot3d/runtime.gd": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
-    "scripts/backends/godot4-adapter.mjs": "c51b6ee2821c6401b3fd3a36592d303bd8066b0f7176135c62a4934626e954fb",
+    "scripts/backends/godot4-adapter.mjs": "703f08a9d325cac6198f54fd8eb05e681a099ad2c87975a6fa0d677776b43413",
     "scripts/backends/godot4-animation-requests.mjs": "3a4ca5e1ef1a9c533fca2c8a7f932783968fc024f1fea4b39a9f5d29e54e1f4e",
     "scripts/backends/godot4-animation.mjs": "35075d9ddc4fd41b2eb0486fe3ee9dbcce0138ba00cce7f43c19acdaec829e7e",
     "scripts/backends/godot4-audio-requests.mjs": "c2bfa57171a5b484340f191d2fbbadbfc9e106a21b5210f7323f7cba57fab1f8",
@@ -89083,13 +89447,17 @@
     "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
     "scripts/backends/godot4-physics-character-contacts.mjs": "1409a4fdcab98ed8d8a865a25e32734877855836572de566efe6552399368eaf",
     "scripts/backends/godot4-physics-character-events.mjs": "20acb031177cd584062eb98fb782bd3a770c976dc5506788ffa06c0780f647be",
+    "scripts/backends/godot4-physics-character-intent-transform.mjs": "fc85e3c56d94de056b4664d0068d064091945c26fda2fb43cd32cacdc2418959",
+    "scripts/backends/godot4-physics-character-intent.mjs": "63c06e8a749c9f4592af2af2aba263c94c1836142aaa89c625e50fd75173a22b",
     "scripts/backends/godot4-physics-character-motion.mjs": "69e510c0f89e3b6d1526be11fec09c519bbe249b68a3db2ff874fc5c5ee9bcb8",
-    "scripts/backends/godot4-physics-drop-through.mjs": "d51c7463b42375ab99a763756614c5aae6a0a9bf6bf6e9f7a2eb48f98a0d9056",
+    "scripts/backends/godot4-physics-drop-through-v0.29.mjs.txt": "d51c7463b42375ab99a763756614c5aae6a0a9bf6bf6e9f7a2eb48f98a0d9056",
+    "scripts/backends/godot4-physics-drop-through.mjs": "cf8a50547619c4f44cd61f11b4525a3fed4ebfdd728f56d1918d5e98fae35535",
     "scripts/backends/godot4-physics-movement-contacts.mjs": "2f3761f2d6b5f9dc2d249e54af40053ac9830c45fab129629e7be851082fc7b2",
     "scripts/backends/godot4-physics-observation.mjs": "a57cd89113f2088b577919b9b632470f8ebf2b565b39cf48074bbcf9e7368391",
     "scripts/backends/godot4-physics-one-way.mjs": "fdca78bd33e1b34ef73f9ea40a76f8d0a00c34fb3b2f03165f0d76b816662b5e",
     "scripts/backends/godot4-physics-platform-events.mjs": "5455a5413e2674990a38a81ec0e1d71d40080d1eafdd93d72dd04c5453569815",
-    "scripts/backends/godot4-physics-platform-motion.mjs": "147c43088be233b03ef686c1f5a2e47888a2eda2b41e3e58f28107f0d5c1433e",
+    "scripts/backends/godot4-physics-platform-motion-v0.30.mjs.txt": "147c43088be233b03ef686c1f5a2e47888a2eda2b41e3e58f28107f0d5c1433e",
+    "scripts/backends/godot4-physics-platform-motion.mjs": "7db3690735cb71cf87bc4248ca91bf46619d923077b5396128d605ca15e3780b",
     "scripts/backends/godot4-physics-response.mjs": "4662812020b3f1aa513d32d9918b87a07648c6c55da382f7d1187fa7996b9de1",
     "scripts/backends/godot4-physics.mjs": "3131d66a627678956035fe9b9c7aaf1181f1cf91b36c9571d2e280d8b9b7db7b",
     "scripts/backends/godot4-project.mjs": "5fcd0644543fed8e63c4d33bbc860126b3a0e47fc5767e645ba4ebd80e9f9fda",
@@ -89111,6 +89479,9 @@
     "scripts/backends/godot4/physics-character-contacts-port.gd": "98a7650d9d3b25234ddc5456687c17339aea843d24fa052f4676b882eef8c13d",
     "scripts/backends/godot4/physics-character-events-port.gd": "bcaf4ef9b7112977fea1b2c48fa65ceee1d6e223394ea3e4de4c8b3bbba7834f",
     "scripts/backends/godot4/physics-character-events-scene.gd": "d3377ea2c5184dba7d000cb92cb9dbce8718ba3a01d30e73224e6352c1471ebb",
+    "scripts/backends/godot4/physics-character-intent-bridge.gd": "d69d0d0547979f492cc9323bf703020b2f3bed440eb8289fc9434777bdf5bdbf",
+    "scripts/backends/godot4/physics-character-intent-helper.gd": "ef6b5ad09766f141766f4419a52385dcd32fc987e340a0eab0e891cbf0a49bb6",
+    "scripts/backends/godot4/physics-character-intent-port.gd": "cd6953c38d7a3721a8acbd5350bfaff9d443b3e377634c204fdd9d6524d5000e",
     "scripts/backends/godot4/physics-character-motion-runtime.gd": "82e745e373e76f66e3cd825c9763b5dd22365da5ffca0cfde0fd349c404f948c",
     "scripts/backends/godot4/physics-drop-through-bridge.gd": "adaa376b81ef7232280fc000e6ae13e2f23fc7dfe3bab7de4a86c529632f7840",
     "scripts/backends/godot4/physics-drop-through-helper.gd": "b12633adcca09775585de563b12d180938c1a0a3d2e1129f99e96b2323ce972e",
@@ -89175,16 +89546,16 @@
     "scripts/lib/media-assets.mjs": "b73fe62036b25f115f26f861250ca7fe28fc8a8b66ae17da688cc6a410d27965",
     "scripts/lib/media-insertion.mjs": "27ffea2efc1564656b003a08e4cd7a3f87ef9c77858cfbea19f3ff8cb5ff42c9",
     "scripts/lib/paths.mjs": "0a0e5325d12176c09e88ffe8bdf195b1d19cb7ca210650aeb3f2764e3bfd3848",
-    "scripts/lib/project-assembly-documents.mjs": "912c40ec86c458fbe8a0f392ea2d8ea65d950775bcaaa464564c470be4418d49",
-    "scripts/lib/project-build-service.mjs": "b1cf3be120643a1f70a6fe2a6dfdbd86afcbedf36551f65163dfe7ebbd26eb19",
+    "scripts/lib/project-assembly-documents.mjs": "9dbfd279d42a21708998366690535ed2fb2ba418e9ce7f23c812be408396c964",
+    "scripts/lib/project-build-service.mjs": "b63461f515dc8db651fe615efba303a027ab72b4a64bfa9c197d52a5d9d2ebfe",
     "scripts/lib/project-definition.mjs": "a7da2a138b2b0be3db03b973945d9481afcb9745611c048ef449ed4a32c12781",
     "scripts/lib/project-documents.mjs": "9f81f09f1e0f627bc229e01adae8967cf5562ee36c118b472fd729a20da6247f",
     "scripts/lib/project-service.mjs": "a1a6a04d00bef0f682e579f84cc7e68cc45892d9e1904c36418d77e6375ff44c",
     "scripts/lib/project-templates.json": "3944610922fcc88d05c7f897f81fc7d8c25e6f214e5345d710f41f285f3c7734",
-    "scripts/lib/resource-package-catalog.mjs": "03e9bed97696551d184a6a703a017c9602ab42bbc357aedebbbe5c258658b0a5",
+    "scripts/lib/resource-package-catalog.mjs": "4162eafd8f2a144ee1f62e62555fd5cabb421e705cc4bb72dd1a0b247288fca0",
     "scripts/lib/resource-package-export.mjs": "8b5d1bb3d655c085b0bebc2f7bc9e6df955d8a49e68419e83c738706931e0030",
-    "scripts/lib/resource-package-import.mjs": "eade228adbf3011e9108838e6286da64e9e5c9fe684174f17bc5d89d8ec3703e",
-    "scripts/lib/resource-package-reader.mjs": "81eac3705ce8d326b3673c3cf545620efaa4734b0bd2b49efb7c48bcd2dcb31d",
+    "scripts/lib/resource-package-import.mjs": "cfef0473224b16e89f86d3503baec41bbc5f4f4856cc51e93e3638bf78520bc4",
+    "scripts/lib/resource-package-reader.mjs": "5d360e465979acb9867163b7f0f9b28e27655186a22f7e6d9a46f426ed7fc313",
     "scripts/lib/resource-package-service.mjs": "b383ffe1a71355548633da386f6c12dff3643c5c47e606ff55b650bdd0297616",
     "scripts/lib/resource-package-transaction.mjs": "60de7cbf45c16669916b8f7e7130efc6685f3cabf4756817064353ea3bc6d727",
     "scripts/lib/runtime-author-documents.mjs": "7fb68b992f61065448e50bdd67e2f9dcb05b7bdd6b084a2868c057e677cdfb7b",
@@ -89219,7 +89590,7 @@
     "scripts/lib/world-transaction-state.mjs": "76ad888adecf5cc285e6f16d670aaf305608e3ed9a036ec309969493a74d31f9",
     "scripts/lib/world-transactions.mjs": "e2ca2de60dc370618294287238b238493dec1b7b5e5cd021cdbd8b1b64b44cdd",
     "scripts/ops/site.mjs": "49a05759788ee1466f83e13573d4350f74bd527d1d8b0b756ce89ce7291af015",
-    "scripts/project-build.mjs": "103d0280a4e63f65de726645513179648570f7309b71e0fedd0aae4c94fc8812",
+    "scripts/project-build.mjs": "9f48bdb318830086e5f21f7187ba11916fb73f9d0bb3e426df87ad334a43c22d",
     "scripts/scene-compose.mjs": "a4774451c1bfa2791c434483259d663bd150f738be189d3381be3a3800ac9d90",
     "scripts/scene3d.mjs": "2a996e5e15c8d93960911d3503c5df6ca94df6ab344b61f3acd34a929d53fec5",
     "scripts/standardize-docs/core.mjs": "00cdb3efb310b01b7506166c2259682c022974284fe3f5677e7235fcb0c5da56",
@@ -89298,10 +89669,10 @@
     "scripts/tests/backend-project-management-smoke.mjs": "b22d15c02ec93d60edf1da1a75a1811b076131a3f83d45438b8362daf7864ec9",
     "scripts/tests/backend-project-retention.test.mjs": "c30d3aabc0256dbeb8bb8936d3528e298fc5add29737804ffb091c075733aa43",
     "scripts/tests/backend-project-ui-smoke.mjs": "2f3efa980326d3fe41cb91dd88c3ba469d7fbe02f08f35a02a31daa702f8b786",
-    "scripts/tests/backend-project-ui.test.mjs": "991db9961801d50cbb518885d93eb4b63a5d6ebe7d25b63e94152aa496424481",
+    "scripts/tests/backend-project-ui.test.mjs": "d6bfc5e673ae2d760c610438fc3a091d9d7677b561e3aec0e07ca2b1d4d5ef31",
     "scripts/tests/backend-project.test.mjs": "8e6eb721276f25416667c057de7f01de3f96423d8f79da834bab2ec63d00d4c6",
-    "scripts/tests/bevy-adapter.test.mjs": "0efab72485adeb18620963453ecb59dab7905c75f3864c9b1eda5f020a22aa83",
-    "scripts/tests/bevy-rust-adapter.test.mjs": "e103ffb4b484dcb7407c69b172f088f72c0795298b4341ddcaee802ce5126025",
+    "scripts/tests/bevy-adapter.test.mjs": "d6a46cf85c64e2cf7758762301344ee1c97a7eb5a2c7e07058b632286b84a3a4",
+    "scripts/tests/bevy-rust-adapter.test.mjs": "b45eaf6d649f74b17dea0eb1e5f972ecc78a8e4799dc9ddfe8c442bb5afcb3de",
     "scripts/tests/bevy-rust-fixed-step-smoke.mjs": "126153f46987f2e7a08e6a3fe28d48b41d2d6e270b879d206951a8b0e0e10819",
     "scripts/tests/bevy-rust-fixed-step.test.mjs": "49021b32a69c41a7d83f506ba9239733ffafedf8e11d615e307051253a29b5c0",
     "scripts/tests/bevy-rust-project.test.mjs": "5e657c1944cb5800c327bec53ae79fcbf1227de64174cf7d1bc6d2128b90fedd",
@@ -89311,9 +89682,10 @@
     "scripts/tests/build-runtime-protocol.test.mjs": "49c1f959e2ef939f16fc544875e1eec0fa10ef57589919ae3033b1170ba004d5",
     "scripts/tests/build.test.mjs": "3e241da1a1ac5798fbdc075ca8f64eb55e2322d8d121e2a0d4c110ded7a84dcc",
     "scripts/tests/call-paths.test.mjs": "a5559e1f56c77918b96d1a33f44b62a891870fb448d7f68ce4dedeea41140d2f",
-    "scripts/tests/character-contact-event-starter.test.mjs": "406c2d3c62b072eb02f4a105af415aab7ce94ea8d9173422c6578a6d040d810b",
-    "scripts/tests/character-drop-through-starter.test.mjs": "4e3214083e4010c4e6a5a9212b151b12a69b2283f0cd18d8ffb21c0b5964e8a0",
-    "scripts/tests/character-motion-event-starters.test.mjs": "fa4b1957d438c8b1efed6453911e3a7e41c78725421d2fa966ba32749adf78c2",
+    "scripts/tests/character-contact-event-starter.test.mjs": "6bbc97a07310624e79877a91b38ec77899bad40b5a76ab4f5c83378e6004e8ca",
+    "scripts/tests/character-drop-through-starter.test.mjs": "ed3142944907e98e84536a23e43e29558ae776afe51950dff1a5118b3e77641d",
+    "scripts/tests/character-intent-starter.test.mjs": "7dc2448430967a22f9e0c41c004da08c4c3883a2ba11ae28c907df868ea8b294",
+    "scripts/tests/character-motion-event-starters.test.mjs": "426616ed861890a77584327e608d3684e4e54fdab2c87863263ef41ed8e67f33",
     "scripts/tests/control-replay-smoke.mjs": "d395f5684779bc5635af1a87f958853c63891c3ea896f8585a4738ce4452e837",
     "scripts/tests/desktop-close.test.mjs": "9af2c664add04c4fba6a5f8082de953c31b9ca8783067d72f27d31240bd39fd0",
     "scripts/tests/desktop-library.test.mjs": "1f600e7a2010d7be6d506eade9684edc42a215eb7c8c56c224f2f780fe9d3481",
@@ -89346,7 +89718,7 @@
     "scripts/tests/function-atlas-smoke.mjs": "616a725fcfa199f15d9e9b577072c49d34b615a8098572bbc7405de510caf530",
     "scripts/tests/function-atlas-view.test.mjs": "424df7a656adb48a57570c3f53d5677cec980292654cb9ba50fc1a377c69d764",
     "scripts/tests/function-atlas.test.mjs": "f66d6b898ccc0020b9cb065de64b8fd352240b5010896dbd5c3afb86f6122987",
-    "scripts/tests/godot4-adapter.test.mjs": "1fd094901e5e14592e0fb28fa39c94f2bd7a80d552e40d723a06acb3284a084f",
+    "scripts/tests/godot4-adapter.test.mjs": "85570e9b152c3ebfafe6dd5e6d37e1c92cae19955778628c8169270ea2be90a0",
     "scripts/tests/godot4-behaviors.test.mjs": "addbed9b220c3ee298f0be51648c24b80b98d2473c3918aafc7b7e4eac87ceb4",
     "scripts/tests/godot4-project.test.mjs": "de00c6a7cf96931fa146e6ac3a84600b5c2a88467634d101019c69cd84f49d6b",
     "scripts/tests/helpers/project-physics2d-observation-fixture.mjs": "3f9a9f86e27741ae1580b0966afad48bd7f2d0a734443d9d5d81585a1b70c169",
@@ -89369,14 +89741,14 @@
     "scripts/tests/mobile-drafts.test.mjs": "cb2415da294c3d9ac300a01e7f7692ed87088cfbe85289fbe45dedaa2aef671a",
     "scripts/tests/mobile-library.test.mjs": "59b46b51b5ffa56516cde0700de384e5630acc01432dd27b8a9e2b4d6efe6512",
     "scripts/tests/mobile-platform.test.mjs": "44c3a82291a353e873eee9fb0364a46c97a158f243087e4338d702a24d690d91",
-    "scripts/tests/node-backend-project-delivery.test.mjs": "70f9620f115297de6e352c633e8cf9a11e9927238b10ee98f334d689159fa96e",
-    "scripts/tests/object-projection-ui.test.mjs": "9807ba6d47a82438fdcb1d70572d7555b8a603aa1397a305ebb7e8d55cdca796",
+    "scripts/tests/node-backend-project-delivery.test.mjs": "e7ae460370b6745982aaea4afb090620a7f582fb8d28446c102391d373668829",
+    "scripts/tests/object-projection-ui.test.mjs": "543a2b47e094dcf4e81a5fb1397b6b2fb2c7a7dc10a5e3de60c7eda99dffda68",
     "scripts/tests/parser.test.mjs": "535c9f9ccb78a198d525beb80d17c125912def0c1edf6b001d1eb3be4e95f5bf",
-    "scripts/tests/platform-endpoint-event-starter.test.mjs": "33c5ac96e926e95a75c93f02ea89f3336288e13050b89c1acfb572d1179d6ead",
+    "scripts/tests/platform-endpoint-event-starter.test.mjs": "e5c1303651c975c64abed8f5de929a80e20d2d12ddb46e05a77450fee48587c7",
     "scripts/tests/portable-engine.test.mjs": "90c17db812f222ac50c24b51b2b178d2c5bf585c41de0919bb2e870e925f1a0f",
     "scripts/tests/project-animation-authoring-smoke.mjs": "fd683ecfc101e5d41ec2c584248e970ebfb5a8f8c11423aea36b763cc7937358",
     "scripts/tests/project-animation-authoring-workflow.test.mjs": "06b339da4440ba9b93c872b2ce1e85e69bf43375ca3c06bbf71f81078be5ed13",
-    "scripts/tests/project-animation-capabilities.test.mjs": "7f708dbcd4b2b984a7a88ec84b962be20035b3dfb2e30e2423d1161943ed7d44",
+    "scripts/tests/project-animation-capabilities.test.mjs": "18e4495023a1f8c1d14507e6ed3b1603542df9e18c8ba29e94dc3716d5d1edd1",
     "scripts/tests/project-animation-clip-runtime.test.mjs": "71197c4fee804ec644e9e855334803cf06b50678bc7991b870ae79e73a566c17",
     "scripts/tests/project-animation-clips-godot.test.mjs": "a4380b77576072e774a2115a6c6798f73e6eb1f7f9e6295d3f21342673ba2d75",
     "scripts/tests/project-animation-clips-workflow.test.mjs": "eb735b599d7aa60f8d589355a4979a0e2df01f07f5c1ca5edb117b1fccdb1910",
@@ -89420,15 +89792,15 @@
     "scripts/tests/project-animation-target-review-ui.test.mjs": "247c8d25462fc52dccbef8fa99bab400487a18cec72b0b65c4b275149e230471",
     "scripts/tests/project-animation-target-review.test.mjs": "53c63c947cbbd4067851511fd56b73b6f0c4a77837f32fc3795c224e1d584f8c",
     "scripts/tests/project-animation-target-runtime.test.mjs": "54edfff7b8e34963b9754eacd444a4a343f2bf2365fd6e18759afc3c601e0938",
-    "scripts/tests/project-assembly-backend-project.test.mjs": "6be52b8d1f0fa7ea04174d4d02f11697bc68365d73b30b328766b3330f877e80",
+    "scripts/tests/project-assembly-backend-project.test.mjs": "85ebc934fed27eea71605f00594a0c9a9041795b460b99b1fef83cd09c1196eb",
     "scripts/tests/project-assembly-build-ui.test.mjs": "9ee7c0ed008e8b9e80d95cf7f646afafaa6acce55790342408d57fda993b23d5",
     "scripts/tests/project-assembly-documents.test.mjs": "a3a779799616009d5838268fd42e0183dcf7512d3067af66c0b539078bc61b9d",
-    "scripts/tests/project-assembly-packages.test.mjs": "2de4f96a0f3cb3b7e02ce0f98971ec2928117c93fda35e1e3f5337843aa5f631",
+    "scripts/tests/project-assembly-packages.test.mjs": "def5b7e81e6dad2ae2b17125fcf4bbae68bcb2e29081582f48d9a984e393dd7a",
     "scripts/tests/project-assembly-smoke.mjs": "a4ece1addd1598baf0650a80039eaffe3f34fa38ff589f478b5c222aabc79d80",
     "scripts/tests/project-assembly-snapshot.test.mjs": "32fee38c7828ae2d8b5d234eb033c0c9b9d23f3602498527626c005c078b82e5",
-    "scripts/tests/project-assembly-ui.test.mjs": "4a46f52b171b8dc454b0b1107ad1ec4bb56ffdb662ae336ef6fc9ec3b30aa2b3",
-    "scripts/tests/project-assembly-workflow.test.mjs": "24a9ded4c6967199be549533ffc53e0b69667567a9c4f15c52c24ed3ed72058c",
-    "scripts/tests/project-assembly.test.mjs": "9cb8c9f2a538a7f6e708d1a7e7feb8568aa6d1927292385f740a13e0051dafcf",
+    "scripts/tests/project-assembly-ui.test.mjs": "51dcf2423406a2e79c47fa0534dd9e0764be4355bf6d1571f8d0453eca157358",
+    "scripts/tests/project-assembly-workflow.test.mjs": "4a3abd33d9cf670bae74ba8f1c790bac97b2b63047f09afc5d9a161cdb869a5b",
+    "scripts/tests/project-assembly.test.mjs": "8d09ffac640442aceb9f9b6d3a0a9de6619060e17464712e978c8b279496b4df",
     "scripts/tests/project-audio-commands.test.mjs": "095f94c84895c2c1d43b5bc2f2d05a57d4ab859ea781c6907d1771e67af36dec",
     "scripts/tests/project-audio-control-godot.test.mjs": "b1540a75c6a74fb2b85c44610f3a63ecad3c84410430646eafa785e92b68db72",
     "scripts/tests/project-audio-control-smoke.mjs": "2075f9f4a7f2ffe180d8263c1dd6a61c848009d9e6fa1348b80561955ed12644",
@@ -89447,11 +89819,12 @@
     "scripts/tests/project-build-service.test.mjs": "2e494305326c20fe6cbb0213672fc17550ae9e0105e1068b63a5e158f4dc3057",
     "scripts/tests/project-build-smoke.mjs": "ec77400298cdc28c948ee42a7d8527e2389a13623acc5a70c387bb4558a25e77",
     "scripts/tests/project-build-tabs.test.mjs": "534306ec70a609d794edc0c435830dbc58e12f83301a8e7a4138910e00a2c32c",
-    "scripts/tests/project-build-ui.test.mjs": "0ac492b7cf934bd1e32e1ba989a474197272c24e80b05e091cfc80be2c50ee57",
+    "scripts/tests/project-build-ui.test.mjs": "a02bf22e00637c69c997bf088480549d4946fc09f589a32ac39d0ddb1591d22e",
     "scripts/tests/project-build.test.mjs": "c16532c78f2f7e2a81e48e671859357b3f76a489a9c3fc9d14deb60f3e3555e9",
     "scripts/tests/project-causal-anchors-godot.test.mjs": "81301589a3885f92559543347d9805e060217ad0db74256c91a2cef9821d222f",
     "scripts/tests/project-causal-anchors-host.test.mjs": "cbf0f90a0372b6f44b6959a55a8b04bb9ce5b4c0de95e01ce0513efbccd0575b",
     "scripts/tests/project-causal-anchors.test.mjs": "55ba770c98bfecab21303831f2f0126c78ef901f27b5d87e235abba16140038f",
+    "scripts/tests/project-character-intent-godot.test.mjs": "99d362d68452248a0953dcac5196eb8563eac3189b8f5226a505b4666ecd249d",
     "scripts/tests/project-definition.test.mjs": "46ff91af400a9b78c20ec7d4fed122faa7037bd292850abeb3b29dcd12376f0f",
     "scripts/tests/project-event-animation-authoring-smoke.mjs": "752265029b2561d1b9f03ce6235f422ab0ed4e5cbcf97d4dab9a6c92cc2f5d23",
     "scripts/tests/project-event-animation-authoring-workflow.test.mjs": "5cd067ad29a4f2caebea81173871e5cc9583ae7be25ab4ce12c4b6822d01a9a0",
@@ -89472,10 +89845,10 @@
     "scripts/tests/project-events-runtime.test.mjs": "298b4fae457d96b5789591ae3ce4bc9f313f66ac9e03d829232f67916521f06e",
     "scripts/tests/project-events-smoke.mjs": "f69823a181a7c26d28e34167ef7280d03aefd89f39505ced2667801c279e444f",
     "scripts/tests/project-events-workflow.test.mjs": "d13669105f9e05bda8068dc46392f771e732591610b0d2c44a1826afd0eda05c",
-    "scripts/tests/project-execution-budget-backends.test.mjs": "81212b14cab2240b4cf1ae2882d326050267f0f6cfdd61e50ae8708520fe8a41",
+    "scripts/tests/project-execution-budget-backends.test.mjs": "20b6fe4080e6ad26125374060517b328a4087ca570bd6603e6f08c1ba7e8913e",
     "scripts/tests/project-execution-budget-godot.test.mjs": "3fe7fd157908b777939a8f1087c2604c8e9e539f3ac1483e203044ad6cf7d00d",
     "scripts/tests/project-execution-budget.test.mjs": "6e554fe0f6bdabd53a542fe7af69ef3d22ab42fd4e2ab975877d8d671156c0f5",
-    "scripts/tests/project-execution-clock-backends.test.mjs": "e46f82fb5923b8fe50cc0e36cfdc3eb63fee89d57aa289cf34c97f7f65b61613",
+    "scripts/tests/project-execution-clock-backends.test.mjs": "07948887d6e2f28517849f798b4a7d5a1980a24f4f0c8676bb14f561f808071b",
     "scripts/tests/project-execution-clock-godot.test.mjs": "8148515fd598728d69eb57eedb490514882295b1dde0c76ba1513d2c6361b828",
     "scripts/tests/project-execution-clock-host.test.mjs": "18f5ae99ce5b4598a20eadefb10b444ab365da989069652eac1177decd4cdaa3",
     "scripts/tests/project-execution-clock-lifecycle-godot.test.mjs": "5675892d0f2aafb196111db9a6a47abc3282c16a40c655992b33eb55f5a9bde0",
@@ -89533,7 +89906,7 @@
     "scripts/tests/runtime-case-suite.test.mjs": "7f17f8c6141c7e6dcd111afcfb86643001813c9168230f98c68b59fbc443b8fc",
     "scripts/tests/runtime-case-ui.test.mjs": "7b39d8f9e08897c66733a6cb587bee17421a7a2f365d94eed9970bbd8a1dbfec",
     "scripts/tests/runtime-control-backends.test.mjs": "96e2ac9faea8cb853917059f4a489fd76117e801def51cb7511de5a7044b3127",
-    "scripts/tests/runtime-instance-backends.test.mjs": "190a4ab9e5ab98333d89a93b0cc03bfc6da4136524f8b71725c9e42e081019fe",
+    "scripts/tests/runtime-instance-backends.test.mjs": "930e15e67c3811f87989f9b6dd587604f7d4b1869be798ed63c00135029196c6",
     "scripts/tests/runtime-object-smoke.mjs": "97d8fb99231301db6af075723d41993d1ccde031b7fef274c21c866bb9bc48f4",
     "scripts/tests/runtime-verification-case.test.mjs": "86cffeef603268663912f63739ce2529447738c719d6d8a4816939532cac74a6",
     "scripts/tests/scene-animation-clips-core.test.mjs": "a78752d781e97f3485910fe09148f04264f08633c82fcd61bafbb8e008bf8644",
@@ -89784,6 +90157,7 @@
     "scripts/tests/scene-physics2d-build-integration.test.mjs": "211e7f316e19e7e6fe680880145e5eab3285c7735107eb53583e5ef83de082de",
     "scripts/tests/scene-physics2d-character-events-backends.test.mjs": "eca4912196d32d51bd63f4441d7fe8186ef2cfecb7b712c308356a59b5d60b43",
     "scripts/tests/scene-physics2d-character-events-smoke.mjs": "a196b04040752b4030f5d86781a213026d747a542da690c8ab426bc2c121d0b8",
+    "scripts/tests/scene-physics2d-character-intent-inventory.test.mjs": "3b7db5f2ecce8647b7090316cd9d790d10601fef2ec65dfef1e47d01db351616",
     "scripts/tests/scene-physics2d-character-motion-backends.test.mjs": "9342cc47483c4800c57b0c450baae7fb5209af5ae319f992046b05c84eb7ae85",
     "scripts/tests/scene-physics2d-character-motion-plan.test.mjs": "34361c2a24e285ce51e27094568014b269280f0b3ba901f630e8700b75243b90",
     "scripts/tests/scene-physics2d-character-motion-smoke.mjs": "c3b4ed40d7229839a4790bd60d2af964a75c47354e58483a07cdc16072b39c79",
@@ -89799,7 +90173,7 @@
     "scripts/tests/scene-physics2d-create-ui.test.mjs": "b337229ef8a83663c9267451c71235b4ff0a6d94a05be84a8010d3c92f1a76b2",
     "scripts/tests/scene-physics2d-creation-contract.test.mjs": "f454681c6e268bd33823a661b4f2b524d560141a6ecca18879f1b3eeb8bfb854",
     "scripts/tests/scene-physics2d-creation-http.test.mjs": "5d42c3ceb016737da5df9f038bef79b92dc6a9b5c9f4d27362d3f3c25214c279",
-    "scripts/tests/scene-physics2d-drop-through-backends.test.mjs": "963babbcc83aedf1efde8c1356d755c4467d5a261cd8cd8002872e7df7bd237c",
+    "scripts/tests/scene-physics2d-drop-through-backends.test.mjs": "d35790c6c49690b287f541f9a5a99ee98540bd2128d5169500d74c1039e07264",
     "scripts/tests/scene-physics2d-drop-through-inventory.test.mjs": "e2acd6d0750b29b6535fa71e5550f757c18f23f64e8b9af7ef680215e4f6a057",
     "scripts/tests/scene-physics2d-drop-through-smoke.mjs": "067220c039bac867f01db17ef38920aa98fe7fc319cfc8607dd18dd158d334f3",
     "scripts/tests/scene-physics2d-drop-through-ui.test.mjs": "a4c21ad17b5f0d45a9ed8b6c9a9f8936266985058eced9c03335c90a55f5780c",
@@ -89825,7 +90199,7 @@
     "scripts/tests/scene-physics2d-platform-events-inventory.test.mjs": "8b8a05f5a7c181242d5c217af813822043296bc699c57b87af94b7a0f3511949",
     "scripts/tests/scene-physics2d-platform-events-smoke.mjs": "cb636e08f02b39e4d9bb664ccadc3c7aaada74e094bf3880e39bad76cb78ff09",
     "scripts/tests/scene-physics2d-platform-events-ui.test.mjs": "36f1544ce6b031562a384dd0570879f0b01f129bc1a61d8c7f8dba72d466c128",
-    "scripts/tests/scene-physics2d-platform-motion-backends.test.mjs": "34f8ff7e805ede7541dd4676273c825a25f7e958ff52587d2ad9cd5701b43ca4",
+    "scripts/tests/scene-physics2d-platform-motion-backends.test.mjs": "bf40bcfa3c1167ef479833ade4df0f76f27341527439f9573030ebd1c2c058f0",
     "scripts/tests/scene-physics2d-platform-motion-core.test.mjs": "7db034b9894973b7c45e93cd3b7df15c206028d84d7b44fa5bc9b4c11fbb9322",
     "scripts/tests/scene-physics2d-platform-motion-edit.test.mjs": "3df5af412f8918f68bb6b80f348dc6a7310085891baeeae99530e656158668c4",
     "scripts/tests/scene-physics2d-platform-motion-inventory.test.mjs": "2f57ba012acb44e7b8089c2d2a18ff905258e05ab6aada777544cbbcd1588421",
@@ -89871,7 +90245,7 @@
     "scripts/tests/scene-preview-instance-animation-ui.test.mjs": "16018ee81af966f0929959cebe592582267db77dd86ae9c29cad0374d595ae92",
     "scripts/tests/scene-preview-service.test.mjs": "26caa0ba5a5933e1f3784a2f7df9451dc0baa49e18b25db12f32d1772a2a93e0",
     "scripts/tests/scene-preview-smoke.mjs": "36aa9a08d3a5a239b2d2ab75e48c84b01a37757e4f1b35db2d86cc849391770a",
-    "scripts/tests/scene-preview-ui.test.mjs": "0782dcc2f33fe96e6375146ad48b6d0fe0637091cf21670864f21dae45d6214f",
+    "scripts/tests/scene-preview-ui.test.mjs": "dd021cd0086317c1082246a9c2b94c17cc0f84774fb82eee6e928325333a0497",
     "scripts/tests/scene-runtime-events.test.mjs": "fcf547db4d467fe249b0b8a831fd8c173d72ab53b4fb70802e090298a09107a4",
     "scripts/tests/scene-runtime-query-host.test.mjs": "1e65f7263e0757af93e9f8cc9ac4c20f48c7f56b6e5ad52a63038bc0d817ddb6",
     "scripts/tests/scene-runtime-query-ui.test.mjs": "cbe6c160ccfb8c1292b6c1e43d59a9bdbb449375dd79cd35f9f3a2233799752f",
@@ -89970,12 +90344,12 @@
     "scripts/tests/scene3d-translation-ui.test.mjs": "d80b40548cb4b9267a54a895172cef3d714be111d62b240a2090a8b0f9aa98f2",
     "scripts/tests/scene3d-translation.test.mjs": "6ce3f7f3476d7cf93abd5372534334b6737cd2bf38285c3f501430034ad722ab",
     "scripts/tests/scene3d.test.mjs": "326fea22720a1241bcf8936f4a3d753e4e11d59b9558e3ba9a3466fbd3bee7db",
-    "scripts/tests/script-authoring-host.test.mjs": "eaebc9bea481aba448ae3ca6a37149e6fc8fcdcba3d346e216e2851b0f98a727",
+    "scripts/tests/script-authoring-host.test.mjs": "00b15c723bdd3c295f21485c5272ff51767a179d372b7e331ab77bffbf0ff773",
     "scripts/tests/script-authoring-smoke.mjs": "38088a6976abada894848b37cd5054cfd5b93dd703f2ff8ce9f0c3bd3bdee661",
     "scripts/tests/script-authoring-system.test.mjs": "474677d7b6ac074b193d97ac9f521ab807447acff361b4a3e63ca519c3e15652",
     "scripts/tests/script-authoring-workflow.test.mjs": "8b40cc87dfca86740089d3593c914acb022f2b75aacfacb2e1c712991f959522",
-    "scripts/tests/script-authoring.test.mjs": "094c054d52cbce4f5e3dbe5924785e1c86293e5612a4abb642cba77348c81059",
-    "scripts/tests/script-create-ui.test.mjs": "34c042ac92a85c8a172be35898cdcb78b99d0723faf7ffe1ea1778a2d18489c0",
+    "scripts/tests/script-authoring.test.mjs": "303cb2405cb9e1231e377a06179d24a22019f8099b580b533baa8609bacb5318",
+    "scripts/tests/script-create-ui.test.mjs": "cd96c22153e202fdc6cbd717f1ae5cd1197a1516030b0be414a92cf1d371b417",
     "scripts/tests/script-parameter-discovery.test.mjs": "5824f8dff06dc493dd9ebac054bebed580f930655492b7d27f8b97c9d68317b1",
     "scripts/tests/script-parameter-interface.test.mjs": "957461d38ca4532e34edff50e6db3527e8ba83514e1c1ff44d012e544ebf0359",
     "scripts/tests/script-usage-host.test.mjs": "ad52b5953ac75b735ea1bed996e939c337cc827415eb7cc4f856d0d54fc7c03f",
@@ -90083,10 +90457,10 @@
     "web/animation-state-trial-case-editor.css": "6b69cae01ab42a233b7ef00efb3848c7da1c7b83693ceb83d9f923f5713c7259",
     "web/animation-state-trial-case.css": "b945e97e563ba61dca5b626f2ce51710df9024dbc94330d90c4768bc9269e4f5",
     "web/editor-layout.css": "2849fe419c6652474f4e49d77c382be1bba8d07f7b85649896b04af0116da8ef",
-    "web/i18n/en.js": "068109fcfa2c5fc30c99e9b08dcfd6b31ec5f3274ccf1a6b55424e39b30d9c6b",
+    "web/i18n/en.js": "8cf9b53a0374bc5928211a7069dde7870903725b1597943e7368e33d18af7eb9",
     "web/i18n/index.js": "74c86ed56017e915280972d1bceb0e06574b9dadaad73e92b4bb09a3c7017567",
-    "web/i18n/ja.js": "5c9f920b7986a02eccd19c36822e7e87eb2b2be66d692d6e6256430741021808",
-    "web/index.html": "6ddf1ec663a379f929128a1736f08364455cd28ce3a666fe1fa37b1421980522",
+    "web/i18n/ja.js": "26cc988237c55e2488b1ba747991c2779fb5f88218f2bd2fd06511a2b83c97f1",
+    "web/index.html": "5b2d5f59f08363aaee40e69e9224a384c9628259cd4ab8c0035b5c5a434ab9d7",
     "web/modules/app-animation-state-condition-group.js": "0c1b02f720757ed756c2efc2e27ca04346760400dbafc8a5c9768f4ba1a592d5",
     "web/modules/app-animation-state-condition.js": "62ca96e0221d6eb0a5b72eac21bacdf888c55a3851c0d4de85ef4bb376067c1a",
     "web/modules/app-animation-state-event-preview.js": "b178da0734dcf8f8af086b57f25db41003e9f68e715069c6a2c7c65aa28e5cea",
@@ -90097,7 +90471,7 @@
     "web/modules/app-animation-state-trial-case-editor.js": "90cab6b511fd5cfec5d4bcf482418bb51ccbb8780c4502203be4afe61888fb17",
     "web/modules/app-animation-state-trial-case.js": "b845828261a8ceef63cca89d2a6a474fd57330d88cdf70d157d4cb8905f2b298",
     "web/modules/app-backend-project-delivery.js": "4b675d46c60914ba06703c09d461a492c0ee1cc42fb011625d9f46bec4021dfd",
-    "web/modules/app-backend-project.js": "1edc3a7e03e74a733735b7961182819417d8ef0cbe3e07e816f87a591cac64b7",
+    "web/modules/app-backend-project.js": "6c6d495ba21341a4c5b668bdaa1a5c0d4a314f3cd0d31d17dc1295bf9126aeba",
     "web/modules/app-behavior-source.js": "82426a4282fe41718ba18aeb142c394289af8fa177584ab921ca08e3da944f42",
     "web/modules/app-doc-service.js": "19837e57630b1b1355d3100a68557f1b570e26db96ca8266f362a1715a24a3d8",
     "web/modules/app-editor-draft.js": "df1634a910b8b231b7ed44067c41138c23bbd2bbb7936fefb5cc9d977a147316",
@@ -90106,7 +90480,7 @@
     "web/modules/app-field-editor.js": "d280039f0e9a28cfd13fbff6c821c1e5e9a06b13d28518999499328be5836fd2",
     "web/modules/app-media-editor.js": "514c629a0baeab519313898206c52e68fe0dfd8c9cf84bf50da0765451cfcc99",
     "web/modules/app-media-render.js": "a8b3b1aff81deaf915de895ad45ca9c6e61b3e4abd54d3f42aebc7dc1ba42231",
-    "web/modules/app-object-projection.js": "303d41e05d5fbea2f9311d6ab3bfa7773711b4f762c6e61a1148236777467cb7",
+    "web/modules/app-object-projection.js": "b6601c877227028f897bd0efe2db869744baca6c42b4a3569ab7ea2da33c95e7",
     "web/modules/app-project-animation-completion-observation.js": "d1c85ff579fe5481704f1cac3d029f9f3b12e63e6a82780bb85e74521ec1dab5",
     "web/modules/app-project-animation-observation.js": "d7db96b7b365c72e68d397dd58079782357be54f03d0d8adfbda716a01ccfb11",
     "web/modules/app-project-animation-state-entry-observation.js": "fbcc00edc61597ce43d64579030d4f204dcf9982ed127b689eccf7473c9662b9",
@@ -90114,9 +90488,9 @@
     "web/modules/app-project-animation-state-review.js": "7344eeaf37b3bd522d33eb9ce19a9577e650a647c36b21f8b469f95867a3cf02",
     "web/modules/app-project-animation-state-trigger.js": "c9d5f2d1fb592af25d9004a53e8a1c2f166a0a299e6ad6e1076c4d2e1805f48f",
     "web/modules/app-project-animation-target-review.js": "7dea0d3f58daa91486f46b56f57681cb10ddb4f2acfd9cf9a7e9eb2c4ad3bfb1",
-    "web/modules/app-project-assembly.js": "ffc980e29cafc6d94307404351bc52abf7d690f30e0e3e9b727dc1f255d4e326",
+    "web/modules/app-project-assembly.js": "75af5b925651bed5852779ee6bb58de934db7705443957f9099ff759ba3a12d3",
     "web/modules/app-project-audio-observation.js": "ba572fc0e6c868abc0db9432662d3b75f65531f04f4f08e4c4094e29ac42929f",
-    "web/modules/app-project-build.js": "f7692092777f6d094094220c573f6f7fa236128d49b413f327ba1b65029911a3",
+    "web/modules/app-project-build.js": "542a8805653a2a0f9782c28a319bfa22a463e1244adb54b46e12b32f66b4f59d",
     "web/modules/app-project-event-observation.js": "f07747d7fd58e7573f6b4c6ba3bf4e4d3ac077717c193bc4b17411e5f5a6582e",
     "web/modules/app-project-event-positions-observation.js": "598e7a04cd6357f872b24078d42abbd81037b025bf0924dbd9f8d179ad3f9856",
     "web/modules/app-project-event-review.js": "9558ea75da21182a51c25add0595a959fc6bdfa8a509d532260cd0774da379a9",
@@ -90129,7 +90503,7 @@
     "web/modules/app-runtime-case-documents.js": "471b655a6ab2117f98ac62e52ba8fb8f8fc8f73e416cb0f218edaf7270bc4732",
     "web/modules/app-runtime-case-report.js": "6cda8e8bb74a251879195efe6bc1b8312825d83e40fb702f4843e2afd5028c2e",
     "web/modules/app-runtime-case-suites.js": "81d9ac9d6d8543c69dc0e590f2e018c15bdc75ec3e35ab9e764eff53b7c510fb",
-    "web/modules/app-runtime.js": "16e6dc66778e494de96298479c7269a89b9daf1dd85df6184dfd93af10fc9185",
+    "web/modules/app-runtime.js": "4648f015ea83cbf88842aee61d882f8bf7309985bd342fa702cfa15024ba7971",
     "web/modules/app-scene-animation-clips.js": "5ea47930ece48f75c5bfad5e1a2c83599fb72a2e748b8216746e66264e286bab",
     "web/modules/app-scene-animation-create.js": "494c12e33defb03e27adee07b62ce071dc956f97818f309aca2e7afee7647f70",
     "web/modules/app-scene-animation-retime.js": "9d5c7d24faad9820bd8525066110055f535252ced254f04d7f1d72bcbd61bcbc",
@@ -90150,15 +90524,15 @@
     "web/modules/app-scene-behaviors.js": "9307774f6e6fb8a0277c37ea38565ae6424b0da60f9c7c996bcd40e2b89af36c",
     "web/modules/app-scene-composition-batch-layout.js": "f2e5eead553c2c33ad4f9797044cd889a289968d9a26d65371643f014748d442",
     "web/modules/app-scene-composition-create.js": "39ebd25bcc5b9800f05e40093948b0f3afdf9bdb4a62cf9aa1d1ca83802e46d9",
-    "web/modules/app-scene-composition-definitions.js": "d94b996917e3181105f57629325a53fcbdb62224c892849b25d34dc69dab4947",
-    "web/modules/app-scene-composition-fragments.js": "d466469571ec6f57d7e88e807bf483c88faef335dc1f766834adf2586a826303",
+    "web/modules/app-scene-composition-definitions.js": "16955788ae10f9b617f0bb7df7704684f3b8135720042d87b841a7c9ff25e76b",
+    "web/modules/app-scene-composition-fragments.js": "bd4f1b9474f32c8cff99e40eca90e338d5344a884ecd4466606fbba4de8b6248",
     "web/modules/app-scene-composition-groups.js": "15182b125b55081f00086b14e4603839823e984b2e17601636247b0123253e7a",
     "web/modules/app-scene-composition-layout.js": "2330947bdd7d3f6258c71615e384e3c54630d5415184d6532cea663cc59313b6",
-    "web/modules/app-scene-composition-overrides.js": "c8f90fc7aec8db3439c2f5bee8b3a5d439499114f284b8f8c625a7561f9453b0",
+    "web/modules/app-scene-composition-overrides.js": "aa6301d45ed6cb93d5308812148f5961aff648eb258f890104b1fa9ae688677c",
     "web/modules/app-scene-composition-placement.js": "429ebfee6678eb75d989e636eca882152ac637de110600d7aa9c90317e9090ea",
     "web/modules/app-scene-composition-placements.js": "7af919ee89831f452645b1618c32edbcef725b541f4389aaa591fa4575f0ca48",
-    "web/modules/app-scene-composition-structure.js": "25f48e525dc605d08f61adc989c7d6cee4de34682980718779e0752d857281b7",
-    "web/modules/app-scene-create.js": "a4e1821ed35754a0f87bf90e232f44e3b645f45e697c55bab06f5108550257cd",
+    "web/modules/app-scene-composition-structure.js": "ecc0be8c40209021ca71b9f0c66c170999b799f6026ca1076a60b50ab6fe4c83",
+    "web/modules/app-scene-create.js": "65cd3b52f4d56d02e52ef8568aa95895c4f6ca4801541f658215ce8511989ff4",
     "web/modules/app-scene-layout.js": "1e6b5bc5df5ddfacd92bf9ae982c10c08e966d38825acefd725a25591dd5d10f",
     "web/modules/app-scene-materialize.js": "573aa564285a3a81d8d370c274d62440a0bd31b11ed98dd29948ba365f599a88",
     "web/modules/app-scene-outline.js": "93db8f0b3c7951e2a6631abfc09a87261522c3a1bb12401b9e47307c317b5264",
@@ -90169,7 +90543,7 @@
     "web/modules/app-scene-preview-animation.js": "98dbc9d7233fcba4241cd4f5d78bf36619194e8d8b4063acb85fa5a5530c288f",
     "web/modules/app-scene-preview-canvas.js": "f7cc3cbc8b5c83522c444836e7d577fe12f145202bbcbb45dc1f776fadb0addd",
     "web/modules/app-scene-preview-instance-animation.js": "eac455c8905932a356009bcda11a300c1786b924839f69ae0c72662d7499e14b",
-    "web/modules/app-scene-preview.js": "1e89e28c6a2794868b4fc9618230f1b0c80aefc2627148ae399099a377ef0585",
+    "web/modules/app-scene-preview.js": "0da2e45bb2c86bd06e76e82fad1283f3b51eddb60d9eb8266d99e836308bf663",
     "web/modules/app-scene3d-alignment.js": "a6f93e3d191dac8e81bf0cacbe9be6a277ab9d3037e84e18efd378748159bcb3",
     "web/modules/app-scene3d-copy.js": "a9ca26bc91bae21a568c9593ea923abbf552826dde8f095d0641875ad38e6184",
     "web/modules/app-scene3d-distribution.js": "8b1574b343f67c418b53c7bc07f83e6ecd69988308aa291cb5b3123ea7710cb6",
@@ -90191,8 +90565,8 @@
     "web/modules/app-source-reveal.js": "45ed39671a100268ee8b7f171c341fda6970aa8bdece9b86cd8749e2d4ab56b6",
     "web/modules/app-source-search.js": "ce2f78e29b37dbb86f843816420e9f3e18c03f65d69c9d6b667d2da7f8eca7fd",
     "web/modules/app-studio-core.js": "dbc282577a11f5930f4560c0e175b50dbcebbae10f915a1faa994aa740acabcc",
-    "web/modules/app-studio-system.js": "fefcd6c3847866c38a548588ea65059f5cae0bcf34d2f9f211dca1a0df4e2e38",
-    "web/modules/app-world-browser.js": "db99e5a7584992ee4dfe4e575fbe7bc7db966b3c8514a48ecdfb2e489eb407b0",
+    "web/modules/app-studio-system.js": "6cc17c9cffc5811c062afbe1f1dd55662dfa956b85646f118a6726126e8c1263",
+    "web/modules/app-world-browser.js": "a064f510ad203c10ab1d358dc305941315c3f1a5969d99160a87cf224480592b",
     "web/modules/scene-animation-player.js": "a606fd87ae987963dc23292c7a44581f9d701f1be5ce099dd7c8abb39fafcf4c",
     "web/modules/scene-animation-preview.js": "cc06fb90ea103f7615314a40b9b055feff1a43b8205a93253105ebdff5998378",
     "web/modules/scene-audio-audition.js": "9539bdc2df944cd449981c3d6154fdd726f026ebba7a65e3effdb8ff199b21fe",
@@ -90211,7 +90585,7 @@
     "web/project-animation-target-review.css": "190029fd0778e49917fbafe5d0e9fa910d5f25dbd7ec5bbfa0a6f0790eab9695",
     "web/project-assembly.css": "7f257b38cee1f43199af8e1be05e2b1a72b526a37759904d0adb4171ff5bc9c3",
     "web/project-audio-observation.css": "e56d7e9b16c31cf5d2864188e08ae3ef7c7d7073f49e712021903129cbd662d1",
-    "web/project-build.css": "2e7a99e24347cfa6edf0dde98295c253a8a6fe60352b45e059b95f87ec079464",
+    "web/project-build.css": "f2aa3c516fd153130f9ab3a54bf86ce3b6b0f325ae77ee316558c2f5ec056c16",
     "web/project-event-observation.css": "058fcbac4a63a470a0d9a24c1e6ed4342718b62004172f3ba98f09e7a68a160a",
     "web/project-event-review.css": "e8889c2392d5d3aec42b8280d3a2b9672136dc59a1903c902729b40db334572b",
     "web/project-physics-observation.css": "3431b83396c3e65c83c227021d9d26210cd3ce98f0c3bec05e2c7aa847fcf33e",

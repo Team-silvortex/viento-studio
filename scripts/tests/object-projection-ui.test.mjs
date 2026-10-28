@@ -58,7 +58,7 @@ test('projection creator supports custom document types, v2 paths, typed configu
   const h = await harness({ version: 2 });
   assert.equal(h.element('objectProjectionPath').value, 'design-data/projections/new-projection.json');
   assert.equal(h.element('objectProjectionType').value, 'notes');
-  assert.deepEqual(h.element('objectProjectionField-controls').children.map(option => option.textContent), ['方向键', '不接受输入']);
+  assert.deepEqual(h.element('objectProjectionField-controls').children.map(option => option.textContent), ['方向键', '无内置控制']);
   h.set('objectProjectionTemplate', 'builtin:org.viento.projection.rpg-npc', 'change');
   h.set('objectProjectionField-interactable', false, 'change'); h.set('objectProjectionField-health', '0');
   h.set('objectProjectionField-image', assetId, 'change'); await h.preview();
@@ -69,6 +69,19 @@ test('projection creator supports custom document types, v2 paths, typed configu
   h.element('objectProjectionForm').requestSubmit(); assert.equal(h.calls[1].request.objectId, request.objectId); assert.equal(h.calls[1].request.content, request.content);
   h.calls[1].resolve({ status: 'applied' }); await flushDialogs();
   assert.equal(h.element('objectProjectionSave').disabled, true); assert.equal(h.element('objectProjectionDialog').dataset.dirty, 'false');
+});
+
+test('controls without built-in input retain their raw value through all interface languages and preview', async () => {
+  const h = await harness();
+  h.set('objectProjectionField-controls', 'none', 'change');
+  for (const [locale, label] of [['zh-CN', '无内置控制'], ['en', 'No built-in controls'], ['ja', '組み込み操作なし']]) {
+    h.setLanguage(locale);
+    const select = h.element('objectProjectionField-controls');
+    assert.equal(select.value, 'none');
+    assert.equal(select.children.find(option => option.value === 'none').textContent, label);
+  }
+  await h.preview();
+  assert.equal(JSON.parse(h.calls.at(-1).request.content).configuration.controls, 'none');
 });
 
 test('switching subtemplates invalidates preview and existing projections become independent defaults with the chosen core source', async () => {
@@ -203,13 +216,30 @@ test('projection summaries localize title, control enums and booleans while edit
   const h = await harness({ worldBrowser: true }); h.element('worldProjectionList').querySelectorAll('button')[1].click();
   const rows = () => h.element('worldInspector').querySelector('table').querySelectorAll('tr');
   assert.ok(rows().some(row => row.children[0].textContent === '标题'));
-  assert.equal(rows().find(row => row.children[0].textContent === '移动控制').children[1].textContent, '不接受输入');
+  assert.equal(rows().find(row => row.children[0].textContent === '移动控制').children[1].textContent, '无内置控制');
   assert.equal(rows().find(row => row.children[0].textContent === '可交互').children[1].textContent, '是');
   h.element('worldInspector').querySelector('[aria-label="修改属性：移动控制"]').click(); assert.equal(h.element('worldPropertyValue').value, 'none');
   h.element('worldPropertyCancel').click(); h.setLanguage('en');
-  assert.equal(rows().find(row => row.children[0].textContent === en['移动控制']).children[1].textContent, 'No input');
+  assert.equal(rows().find(row => row.children[0].textContent === en['移动控制']).children[1].textContent, 'No built-in controls');
   assert.equal(rows().find(row => row.children[0].textContent === en['可交互']).children[1].textContent, 'Yes');
   h.element('worldInspector').querySelector(`[aria-label="${en['修改属性：{0}'].replace('{0}', en['可交互'])}"]`).click(); assert.equal(h.element('worldPropertyValue').value, 'true');
+});
+
+test('projection summaries leave unrelated enum values untouched', async () => {
+  const world = await fixture(), npc = world.objects.find(object => object.id === ids[2]);
+  npc.provenance.authoredProjection.template.snapshot.fields.push({ id: 'displayMode', label: 'Display mode', type: 'enum', options: ['none', 'arrows'] });
+  npc.properties['field-custom'] = { label: 'Display mode', group: 'configuration', kind: 'string', value: 'none' };
+  npc.propertyBindings.push({ ...structuredClone(npc.propertyBindings[0]), propertyPath: '/properties/field-custom' });
+  const h = await harness({ worldBrowser: true, world });
+  h.element('worldProjectionList').querySelectorAll('button')[1].click();
+  for (const locale of ['zh-CN', 'en', 'ja']) {
+    h.setLanguage(locale);
+    const rows = h.element('worldInspector').querySelector('table').querySelectorAll('tr');
+    assert.equal(rows.find(row => row.children[0].textContent === 'Display mode').children[1].textContent, 'none');
+    const controlLabel = locale === 'zh-CN' ? '移动控制' : locale === 'en' ? en['移动控制'] : ja['移动控制'];
+    const controlValue = locale === 'zh-CN' ? '无内置控制' : locale === 'en' ? 'No built-in controls' : '組み込み操作なし';
+    assert.equal(rows.find(row => row.children[0].textContent === controlLabel).children[1].textContent, controlValue);
+  }
 });
 
 function editedWorld(world, request) {

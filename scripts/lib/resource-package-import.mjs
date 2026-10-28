@@ -4,7 +4,7 @@ import path from 'node:path';
 import { readWorkspace, readRegistry, resolveAssetRoot, walkFiles, assertPortableFileTree, portablePath } from './workspace.mjs';
 import { workspacePaths, projectDefinition, resolveDocumentDefinition, validateProjectTypes } from './project-layout.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
-import { readPackageBytes, packageDigest, inspectPackageComposition, inspectPackageSceneBehaviors, inspectPackageRuntimeCase,
+import { readPackageBytes, packageDigest, inspectPackageComposition, inspectPackageSceneBehaviors, inspectPackageRuntimeAuthorDocument,
   inspectPackageRuntimeCaseSuite, inspectPackageProjectAssembly, packageDocumentClassification } from './resource-package-catalog.mjs';
 import { packageFileHash } from './resource-package-export.mjs';
 import { readWorldFence, assertWorldFence } from './world-transaction-state.mjs';
@@ -18,7 +18,7 @@ import { packageError } from '../../engine/resource-package.mjs';
 import { validateObjectProjection, inspectObjectProjection, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 import { validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
 import { sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
-import { runtimeCaseDocumentIds, validateRuntimeCaseDocumentDependencies } from '../../engine/runtime-case-document.mjs';
+import { runtimeAuthorDocumentIds, validateRuntimeAuthorDocumentDependencies } from './runtime-author-package.mjs';
 import { runtimeCaseSuiteDocumentIds, validateRuntimeCaseSuiteDependencies } from '../../engine/runtime-case-suite.mjs';
 
 const key = value => value.normalize('NFC').toLowerCase();
@@ -136,7 +136,7 @@ export async function planPackageImport(root, pack, signal) {
     const checked = await validateObjectProjection(bytes.toString('utf8'), record, { digest: packageDigest });
     const composition = inspectPackageComposition(bytes, item.sourcePath);
     const behavior = inspectPackageSceneBehaviors(bytes, item.sourcePath);
-    const runtimeCase = inspectPackageRuntimeCase(bytes, item.sourcePath);
+    const runtimeCase = inspectPackageRuntimeAuthorDocument(bytes, item.sourcePath);
     const suite = inspectPackageRuntimeCaseSuite(bytes, item.sourcePath);
     const assembly = inspectPackageProjectAssembly(bytes, item.sourcePath);
     // Keep a classification, not every incoming source body. The dependency
@@ -253,7 +253,7 @@ export async function planPackageImport(root, pack, signal) {
   }
   const caseSources = new Map();
   for (const { record, checked } of caseChecks) {
-    if (!checked.ok || runtimeCaseDocumentIds(checked.value).some(id => !declaredDocuments.has(id))) {
+    if (!checked.ok || runtimeAuthorDocumentIds(checked.value).some(id => !declaredDocuments.has(id))) {
       conflict(record.sourcePath, 'dependency'); continue;
     }
     const sceneId = checked.value.sceneObjectId, incoming = pack.manifest.documents.find(item => item.id === sceneId);
@@ -295,7 +295,7 @@ export async function planPackageImport(root, pack, signal) {
       caseSources.set(actorId, { record: definition, sourcePath: definition.sourcePath, content });
     }
     const caseDependencies = new Map([...projectionSources, ...caseSources]);
-    if (validateRuntimeCaseDocumentDependencies(checked.value, record, { documents: [...caseDependencies.values()] }).length) {
+    if (validateRuntimeAuthorDocumentDependencies(checked.value, record, { documents: [...caseDependencies.values()] }).length) {
       conflict(record.sourcePath, 'dependency');
     }
   }

@@ -135,10 +135,10 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
   if (values.command === 'build') return buildProject({ root: values.root, targetId: values.target ?? values.scene, ...configuration, output: values.output, signal, timeoutMs });
   if (values.output) throw new Error('Plan does not write output; omit --output.');
   const captured = await captureBuildSnapshot(values.root, values.target ?? values.scene, { signal });
-  const diagnostics = captured.ok && explicitBackend ? checkExecutionBackendSupport(
+  const diagnostics = captured.ok && explicitBackend ? [...captured.diagnostics, ...checkExecutionBackendSupport(
     createExecutionBackendRegistry().resolve(configuration.backendId).descriptor,
-    { operation: 'build', platform: process.platform, plan: captured.plan }) : captured.diagnostics;
-  return { ok: captured.ok && !diagnostics.length, plan: captured.plan, snapshotId: captured.snapshotId, diagnostics };
+    { operation: 'build', platform: process.platform, plan: captured.plan })] : captured.diagnostics;
+  return { ok: captured.ok && !diagnostics.some(item => item.severity !== 'warning'), plan: captured.plan, snapshotId: captured.snapshotId, diagnostics };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

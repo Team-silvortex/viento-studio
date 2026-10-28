@@ -14,6 +14,9 @@ import { inspectSceneComposition } from '../../engine/scene-composition-document
 import { querySceneRuntimeObservation } from '../../engine/scene-runtime-query.mjs';
 import { queryProjectRuntimeObservation } from '../../engine/project-runtime-query.mjs';
 import { validateSceneControlProgram, validateSceneControlPlan } from '../../engine/scene-control-program.mjs';
+import { validateProjectPhysics2DInputReplay } from '../../engine/project-physics2d-input-replay.mjs';
+import { validateProjectPhysics2DReplayCase, evaluateProjectPhysics2DReplayCase } from '../../engine/project-physics2d-replay-case.mjs';
+import { validateProjectPhysics2DReplayPlan } from '../../engine/project-physics2d-replay-contract.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { buildTargetIdentity, scenePlans } from '../../engine/build-target.mjs';
@@ -21,6 +24,8 @@ import { inspectProjectAssembly } from '../../engine/project-assembly.mjs';
 import { backendProjectSourceIdentity } from '../../engine/backend-project.mjs';
 import { createProjectAssemblyDocumentService } from './project-assembly-documents.mjs';
 import { createRuntimeCaseDocumentService } from './runtime-case-documents.mjs';
+import { createPhysicsReplayDocumentService } from './physics-replay-documents.mjs';
+import { createPhysicsReplayCaseDocumentService } from './physics-replay-case-documents.mjs';
 import { createRuntimeCaseSuiteDocumentService, captureRuntimeCaseSuite } from './runtime-case-suites.mjs';
 import { summarizeRuntimeCaseSuite } from '../../engine/runtime-case-suite.mjs';
 import { readRuntimeCaseReport } from './runtime-case-reports.mjs';
@@ -76,6 +81,8 @@ export function createProjectBuildService(root, {
   const adapter = backendRegistry.resolve(backendId);
   const assemblyDocuments = createProjectAssemblyDocumentService(root, { onWrite: onAuthorWrite });
   const caseDocuments = createRuntimeCaseDocumentService(root, { onWrite: onAuthorWrite });
+  const physicsReplayDocuments = createPhysicsReplayDocumentService(root, { onWrite: onAuthorWrite });
+  const physicsReplayCaseDocuments = createPhysicsReplayCaseDocumentService(root, { onWrite: onAuthorWrite });
   const suiteDocuments = createRuntimeCaseSuiteDocumentService(root, { onWrite:onAuthorWrite });
   const caseOperations = new Set();
   const caseOperation = async operation => {
@@ -182,9 +189,35 @@ export function createProjectBuildService(root, {
 
   function frozenBuildEntry(summary, frozenPlan) {
     if (frozenPlan.kind === 'project') {
+      let physicsReplayAvailable = false;
+      try {
+        validateProjectPhysics2DReplayPlan(frozenPlan, { backendId, capabilities: adapter.descriptor.capabilities });
+        physicsReplayAvailable = true;
+      } catch { /* A valid build may legitimately not support this optional replay. */ }
+      const entryScene = frozenPlan.scenes.find(scene => scene.scene.objectId === frozenPlan.entrySceneId);
+      let controlPlan = null;
+      if (adapter.descriptor.capabilities.includes('project.control-replay')
+        && adapter.descriptor.capabilities.includes('runtime.control-replay')
+        && entryScene && [1, 2].includes(entryScene.schemaVersion)
+        && !entryScene.behaviors && !entryScene.audio && !entryScene.animation && !entryScene.physics) {
+        const candidate = { format: entryScene.format, kind: entryScene.kind, schemaVersion: entryScene.schemaVersion,
+          scene: { objectId: entryScene.scene.objectId, sourcePath: entryScene.scene.sourcePath },
+          actors: entryScene.actors.map(actor => ({ objectId: actor.objectId, ...(actor.instanceId ? { instanceId: actor.instanceId } : {}) })) };
+        try {
+          validateSceneControlPlan(candidate, { format: 'viento-runtime-control', schemaVersion: 1, fixedDelta: 0.25,
+            steps: [{ left: false, right: false, up: false, down: false }] });
+          controlPlan = candidate;
+        } catch { /* An admitted build need not support optional entry replay. */ }
+      }
       const entry = { id: summary.id, sceneId: summary.sceneId, targetId: summary.sceneId, targetKind: 'project', backendId,
         snapshotId: summary.snapshotId, title: summary.title, planSchemaVersion: frozenPlan.schemaVersion,
-        entrySceneId: frozenPlan.entrySceneId, sceneCount: frozenPlan.scenes.length,
+        entrySceneId: frozenPlan.entrySceneId, sceneCount: frozenPlan.scenes.length, physicsReplayAvailable,
+        controlReplayAvailable: Boolean(controlPlan),
+        ...(controlPlan ? { controlSceneId: controlPlan.scene.objectId, controlSourcePath: controlPlan.scene.sourcePath,
+          controlPlanSchemaVersion: controlPlan.schemaVersion, controlActorCount: controlPlan.actors.length,
+          ...(controlPlan.schemaVersion === 2 && adapter.descriptor.capabilities.includes('runtime.control-replay.instances')
+            ? { controlTargets: entryScene.actors.map(actor => ({ instanceId: actor.instanceId, objectId: actor.objectId,
+              name: (actor.name || actor.objectId).replace(/\s+/gu, ' ').trim().slice(0, 160) || actor.objectId })) } : {}) } : {}),
         // Navigation uses the approved frozen member list, never the mutable
         // author catalog or identities supplied by the running process.
         scenes: frozenPlan.scenes.map(scene => ({ sceneId: scene.scene.objectId,
@@ -194,7 +227,7 @@ export function createProjectBuildService(root, {
           runtimeProtocolVersion: adapter.descriptor.plans.find(item => item.kind === 'scene2d'
             && item.schemaVersion === scene.schemaVersion)?.runtimeProtocolVersion ?? null })),
         actorCount: frozenPlan.scenes.reduce((sum, scene) => sum + scene.actors.length, 0) };
-      return { public: entry, owned: { ...entry, directory: summary.directory, retentionPin: summary.retentionPin, catalogEntry: summary.catalogEntry } };
+      return { public: entry, owned: { ...entry, directory: summary.directory, controlPlan, physicsReplayPlan: physicsReplayAvailable ? frozenPlan : null, retentionPin: summary.retentionPin, catalogEntry: summary.catalogEntry } };
     }
     const entry = { id: summary.id, sceneId: summary.sceneId, backendId, snapshotId: summary.snapshotId, title: summary.title,
       planSchemaVersion: frozenPlan.schemaVersion, actorCount: frozenPlan.actors.length };
@@ -418,8 +451,9 @@ export function createProjectBuildService(root, {
         if(result.lastRecord?.verification)job.verification=clone(result.lastRecord.verification);
       } else if (payload.action === 'plan') {
         const captured = await captureBuildSnapshot(root, sceneId, { signal: controller.signal });
-        const diagnostics = captured.ok ? checkExecutionBackendSupport(adapter.descriptor, { operation: 'build', platform: process.platform, plan: captured.plan }) : captured.diagnostics;
-        result = { ok: !diagnostics.length, status: diagnostics.length ? 'failed' : 'succeeded', diagnostics };
+        const diagnostics = captured.ok ? [...captured.diagnostics, ...checkExecutionBackendSupport(adapter.descriptor, { operation: 'build', platform: process.platform, plan: captured.plan })] : captured.diagnostics;
+        const errors = diagnostics.some(item => item.severity !== 'warning');
+        result = { ok: !errors, status: errors ? 'failed' : 'succeeded', diagnostics };
         if (result.ok) {
           const plans = scenePlans(captured.plan), behavioral = plans.filter(plan => plan.behaviors);
           job.plan = { snapshotId: captured.snapshotId, title: buildTargetIdentity(captured.plan).title,
@@ -458,10 +492,15 @@ export function createProjectBuildService(root, {
           headless: payload.mode === 'headless', smoke: payload.mode === 'headless',
           timeoutMs: payload.mode === 'window' ? 300000 : executionTimeoutMs,
           ...(payload.controlProgram !== undefined ? { controlProgram: payload.controlProgram } : {}),
+          ...(payload.physicsControlProgram !== undefined ? { physicsControlProgram: payload.physicsControlProgram } : {}),
+          ...(payload.physicsReplayCase !== undefined ? { physicsReplayCase: payload.physicsReplayCase } : {}),
+          ...(payload.physicsReplaySceneId !== undefined ? { physicsReplaySceneId: payload.physicsReplaySceneId } : {}),
           ...(payload.runtimeCase !== undefined ? { runtimeCase: payload.runtimeCase } : {}),
           ...(payload.runtimeCaseSceneId ? { runtimeCaseSceneId: payload.runtimeCaseSceneId } : {}), onProgress: ownedProgress });
         if (result.record?.runtime) job.runtime = clone(result.record.runtime);
         if (result.record?.physics) job.physics = clone(result.record.physics);
+        if (result.record?.physicsControl) job.physicsControl = clone(result.record.physicsControl);
+        if (result.record?.physicsVerification) job.physicsVerification = clone(result.record.physicsVerification);
         if (result.record?.executionClock) job.executionClock = clone(result.record.executionClock);
         if (result.record?.executionFrames) job.executionFrames = clone(result.record.executionFrames);
         if (result.record?.eventPositions) job.eventPositions = clone(result.record.eventPositions);
@@ -473,11 +512,36 @@ export function createProjectBuildService(root, {
       }
       // A verification session commits its execution/evaluation status while
       // saving the final record. A later cancel cannot rewrite that result.
-      job.status = (payload.runtimeCase || payload.action==='suite-run') && result.record ? result.record.status
+      job.status = (payload.runtimeCase || payload.physicsControlProgram || payload.physicsReplayCase || payload.action==='suite-run') && result.record ? result.record.status
         : controller.signal.aborted ? 'cancelled' : terminal.has(result.status) ? result.status : 'failed';
       if (payload.action!=='suite-run' && job.verification && job.status !== 'succeeded') job.verification.evaluation = clone(evaluateRuntimeCase(
         builds.get(payload.buildId).controlPlan, job.verification.definition, job.control?.samples || [], { complete: false }));
-      job.diagnostics = (result.record?.diagnostics || result.diagnostics || []).slice(0, 256);
+      if (job.physicsVerification && job.status !== 'succeeded') job.physicsVerification.evaluation = { status: 'incomplete', checks: [] };
+      const reported = result.record?.diagnostics || result.diagnostics || [];
+      // Keep blocking errors visible when optional suggestions fill the UI
+      // budget. Preserve upstream omission notices when they are present.
+      job.diagnostics = reported.length <= 256 ? reported : [
+        ...reported.filter(item => item.severity !== 'warning' && item.severity !== 'info'),
+        ...reported.filter(item => item.severity === 'warning' && item.code?.endsWith('_limit')),
+        ...reported.filter(item => item.severity === 'warning' && !item.code?.endsWith('_limit')),
+        ...reported.filter(item => item.severity === 'info'),
+      ].slice(0, 256);
+      if (reported.length > 256) {
+        const action = item => item.severity === 'warning' && ['build_input_action_unmapped', 'build_input_action_unconfigured'].includes(item.code);
+        const limitCode = 'build_input_action_unmapped_limit';
+        const upstream = reported.find(item => item.code === limitCode && item.severity === 'warning');
+        const total = reported.filter(action).length + (upstream?.omittedCount || 0);
+        let retained = job.diagnostics.filter(action).length;
+        let limitIndex = job.diagnostics.findIndex(item => item.code === limitCode && item.severity === 'warning');
+        if (limitIndex < 0 && total > retained) {
+          // Reserve one slot for the notice without displacing an error.
+          limitIndex = job.diagnostics.findLastIndex(action);
+          if (limitIndex >= 0) retained--;
+        }
+        if (limitIndex >= 0) job.diagnostics[limitIndex] = { ...job.diagnostics[limitIndex],
+          severity: 'warning', code: limitCode,
+          message: 'Further input action suggestions were omitted. Check the reported behavior bindings.', omittedCount: total - retained };
+      }
     } catch (error) {
       job.status = controller.signal.aborted ? 'cancelled' : 'failed';
       if (payload.action==='suite-run' && job.suite) {
@@ -486,6 +550,7 @@ export function createProjectBuildService(root, {
       }
       if (payload.action!=='suite-run' && job.verification) job.verification.evaluation = clone(evaluateRuntimeCase(
         builds.get(payload.buildId).controlPlan, job.verification.definition, [], { complete: false }));
+      if (job.physicsVerification) job.physicsVerification.evaluation = { status: 'incomplete', checks: [] };
       job.diagnostics = [{ severity: 'error', code: controller.signal.aborted ? 'build_cancelled' : error.errorCode || 'build_failed',
         message: controller.signal.aborted ? 'Build operation cancelled.' : 'Cannot complete this build operation.',
         objectId: job.sceneId, sourcePath: scenes.find(scene => scene.id === job.sceneId)?.sourcePath || '', propertyPath: '' }];
@@ -538,9 +603,13 @@ export function createProjectBuildService(root, {
   async function command(payload) {
     if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)
-      || !['plan', 'build', 'run', 'cancel', 'inspect', 'inspect-project', 'select-project', 'tool-check', 'case-list', 'case-load', 'case-save', 'suite-list', 'suite-load', 'suite-save', 'suite-run', 'suite-report', 'assembly-list', 'assembly-load', 'assembly-save'].includes(payload.action)) throw fail('build_request_invalid', 'Invalid build action.');
-    const allowed = { plan: ['action', 'sceneId', 'targetId'], build: ['action', 'sceneId', 'targetId', 'expectedSnapshotId'], run: ['action', 'buildId', 'mode', 'controlProgram', 'runtimeCase', 'runtimeCaseSceneId'], cancel: ['action', 'jobId'],
+      || !['plan', 'build', 'run', 'cancel', 'inspect', 'inspect-project', 'select-project', 'tool-check', 'case-list', 'case-load', 'case-save', 'physics-replay-list', 'physics-replay-load', 'physics-replay-save', 'physics-case-list', 'physics-case-load', 'physics-case-save', 'suite-list', 'suite-load', 'suite-save', 'suite-run', 'suite-report', 'assembly-list', 'assembly-load', 'assembly-save'].includes(payload.action)) throw fail('build_request_invalid', 'Invalid build action.');
+    const allowed = { plan: ['action', 'sceneId', 'targetId'], build: ['action', 'sceneId', 'targetId', 'expectedSnapshotId'], run: ['action', 'buildId', 'mode', 'controlProgram', 'physicsControlProgram', 'physicsReplayCase', 'physicsReplaySceneId', 'runtimeCase', 'runtimeCaseSceneId'], cancel: ['action', 'jobId'],
       inspect: ['action', 'jobId', 'instanceId', 'objectId'], 'inspect-project': ['action', 'buildId'], 'select-project': ['action', 'buildId'], 'tool-check': ['action'],
+      'physics-case-list': ['action', 'sceneId'], 'physics-case-load': ['action', 'documentId'],
+      'physics-case-save': ['action', 'sceneId', 'sceneVersion', 'content', 'documentId', 'expectedVersion', 'sourcePath', 'documentType'],
+      'physics-replay-list': ['action', 'sceneId'], 'physics-replay-load': ['action', 'documentId'],
+      'physics-replay-save': ['action', 'sceneId', 'sceneVersion', 'content', 'documentId', 'expectedVersion', 'sourcePath', 'documentType'],
       'case-list': ['action', 'sceneId'], 'case-load': ['action', 'documentId'],
       'case-save': ['action', 'sceneId', 'sceneVersion', 'content', 'documentId', 'expectedVersion', 'sourcePath', 'documentType'],
       'suite-list':['action','sceneId'],'suite-load':['action','documentId'],
@@ -588,6 +657,12 @@ export function createProjectBuildService(root, {
     if (payload.action === 'assembly-save') return caseOperation(async () => {
       const result = await assemblyDocuments.save(payload); catalogAt = 0; return result;
     });
+    if (payload.action === 'physics-case-list') return caseOperation(() => physicsReplayCaseDocuments.list(payload.sceneId));
+    if (payload.action === 'physics-case-load') return caseOperation(() => physicsReplayCaseDocuments.load(payload.documentId));
+    if (payload.action === 'physics-case-save') return caseOperation(() => physicsReplayCaseDocuments.save(payload));
+    if (payload.action === 'physics-replay-list') return caseOperation(() => physicsReplayDocuments.list(payload.sceneId));
+    if (payload.action === 'physics-replay-load') return caseOperation(() => physicsReplayDocuments.load(payload.documentId));
+    if (payload.action === 'physics-replay-save') return caseOperation(() => physicsReplayDocuments.save(payload));
     if (payload.action === 'case-list') return caseOperation(() => caseDocuments.list(payload.sceneId));
     if (payload.action === 'case-load') return caseOperation(() => caseDocuments.load(payload.documentId));
     if (payload.action === 'case-save') return caseOperation(() => caseDocuments.save(payload));
@@ -615,7 +690,25 @@ export function createProjectBuildService(root, {
     if (Object.hasOwn(payload, 'runtimeCaseSceneId') && (!uuid(payload.runtimeCaseSceneId) || !Object.hasOwn(payload, 'runtimeCase'))) {
       throw fail('runtime_case_scene_mismatch', 'A scene binding requires a runtime case and a valid scene identity.', 422);
     }
-    let controlProgram, runtimeCase;
+    if (Object.hasOwn(payload, 'physicsReplaySceneId') && (!uuid(payload.physicsReplaySceneId) || !Object.hasOwn(payload, 'physicsControlProgram') && !Object.hasOwn(payload, 'physicsReplayCase'))) {
+      throw fail('runtime_physics_replay_scene_mismatch', 'A physics replay scene binding requires its input program and a valid scene identity.', 422);
+    }
+    let controlProgram, runtimeCase, physicsControlProgram, physicsReplayCase;
+    if (Object.hasOwn(payload, 'physicsReplayCase')) {
+      if (['physicsControlProgram', 'controlProgram', 'runtimeCase'].some(key => Object.hasOwn(payload, key)))
+        throw fail('runtime_physics2d_case_invalid', 'Select only one replay or verification program.');
+      try { physicsReplayCase = validateProjectPhysics2DReplayCase(payload.physicsReplayCase); }
+      catch (error) { throw fail(error.errorCode || 'runtime_physics2d_case_invalid', 'Invalid physics verification case.'); }
+      if (payload.mode !== 'headless') throw fail('runtime_physics2d_input_unsupported', 'Physics verification requires headless mode.', 422);
+      physicsControlProgram = physicsReplayCase.program;
+    }
+    if (Object.hasOwn(payload, 'physicsControlProgram')) {
+      if (Object.hasOwn(payload, 'controlProgram') || Object.hasOwn(payload, 'runtimeCase'))
+        throw fail('runtime_physics2d_input_invalid', 'Select only one replay or verification program.');
+      try { physicsControlProgram = validateProjectPhysics2DInputReplay(payload.physicsControlProgram); }
+      catch { throw fail('runtime_physics2d_input_invalid', 'Invalid physics input replay program.'); }
+      if (payload.mode !== 'headless') throw fail('runtime_physics2d_input_unsupported', 'Physics input replay requires a finite headless run.', 422);
+    }
     if (Object.hasOwn(payload, 'runtimeCase')) {
       try { runtimeCase = validateRuntimeCase(payload.runtimeCase); }
       catch (error) { throw fail(error.errorCode || 'runtime_case_invalid', 'Invalid runtime verification case.', error.errorCode === 'runtime_case_limit' ? 422 : 400); }
@@ -632,7 +725,9 @@ export function createProjectBuildService(root, {
     }
     // Capture request scalars and validated values before awaiting host state.
     // Callers cannot change the job after ownership admission begins.
-    payload = { ...payload, ...(controlProgram ? { controlProgram } : {}), ...(runtimeCase ? { runtimeCase } : {}) };
+    payload = { ...payload, ...(controlProgram ? { controlProgram } : {}), ...(runtimeCase ? { runtimeCase } : {}),
+      ...(physicsControlProgram && !physicsReplayCase ? { physicsControlProgram } : {}),
+      ...(physicsReplayCase ? { physicsReplayCase } : {}) };
     if (payload.action === 'tool-check') return checkTool();
     if (payload.action === 'inspect') {
       if (!uuid(payload.jobId) || Object.hasOwn(payload, 'instanceId') && !uuid(payload.instanceId)
@@ -661,12 +756,27 @@ export function createProjectBuildService(root, {
       if (!['headless', 'window'].includes(payload.mode)) throw fail('build_request_invalid', 'Invalid runtime mode.');
       const diagnostics = checkExecutionBackendSupport(adapter.descriptor, { operation: payload.mode === 'headless' ? 'headlessLogic' : 'windowPreview', platform: process.platform });
       if (diagnostics.length) throw fail(diagnostics[0].code, diagnostics[0].message, 422);
-      if ((controlProgram || runtimeCase) && builds.get(payload.buildId).targetKind === 'project') {
-        throw fail(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'Select a single scene build for control replay or verification.', 422);
+      if (physicsControlProgram && payload.physicsReplaySceneId && payload.physicsReplaySceneId !== builds.get(payload.buildId).entrySceneId) {
+        throw fail('runtime_physics_replay_scene_mismatch', 'The physics replay belongs to a different frozen entry scene.', 422);
+      }
+      if (physicsControlProgram && !builds.get(payload.buildId).physicsReplayAvailable) {
+        throw fail('runtime_physics2d_input_unsupported', 'This frozen project does not support physics input replay.', 422);
+      }
+      if (physicsReplayCase) {
+        try { physicsReplayCase = validateProjectPhysics2DReplayCase(physicsReplayCase, builds.get(payload.buildId).physicsReplayPlan); }
+        catch (error) { throw fail(error.errorCode || 'runtime_physics2d_case_invalid', 'Physics verification does not match this frozen build.', 422); }
+        payload.physicsReplayCase = physicsReplayCase;
+      }
+      const controlBuild = builds.get(payload.buildId), projectControl = controlBuild.targetKind === 'project';
+      if (runtimeCase && projectControl) {
+        throw fail('runtime_case_unsupported', 'Select a single scene build for runtime verification.', 422);
+      }
+      if (controlProgram && projectControl && (!adapter.descriptor.capabilities.includes('project.control-replay') || !controlBuild.controlReplayAvailable)) {
+        throw fail('runtime_control_unsupported', 'This project build does not support entry-scene control replay.', 422);
       }
       if (controlProgram && (!adapter.descriptor.capabilities.includes('runtime.control-replay')
         || controlProgram.schemaVersion === 2 && !adapter.descriptor.capabilities.includes('runtime.control-replay.instances')
-        || ![1, 2].includes(builds.get(payload.buildId).planSchemaVersion))) {
+        || ![1, 2].includes(projectControl ? controlBuild.controlPlanSchemaVersion : controlBuild.planSchemaVersion))) {
         throw fail('runtime_control_unsupported', 'This build does not support finite control replay.', 422);
       }
       if (controlProgram) {
@@ -711,8 +821,12 @@ export function createProjectBuildService(root, {
       ...(payload.action === 'run' ? { buildId: builds.get(payload.buildId).id, snapshotId: builds.get(payload.buildId).snapshotId } : {}),
       status: 'running', phase: payload.action === 'run' ? 'tool' : 'snapshot', createdAt: new Date().toISOString(),
       diagnostics: [], events: [], logs: '', retention: createJobRetention(), plan: null, runtime: null,
+      ...(physicsControlProgram ? { physicsControl: { program: clone(physicsControlProgram),
+        sha256: `sha256:${buildHash(canonicalJson(physicsControlProgram))}`, complete: false } } : {}),
       ...(controlProgram || runtimeCase ? { control: { program: clone(controlProgram || runtimeCase.program),
         sha256: `sha256:${buildHash(canonicalJson(controlProgram || runtimeCase.program))}`, samples: [] } } : {}),
+      ...(physicsReplayCase ? { physicsVerification: { definition: clone(physicsReplayCase), sha256: `sha256:${buildHash(canonicalJson(physicsReplayCase))}`,
+        evaluation: { status: 'incomplete', checks: [] } } } : {}),
       ...(runtimeCase ? { verification: { definition: clone(runtimeCase), sha256: `sha256:${buildHash(canonicalJson(runtimeCase))}`,
         evaluation: clone(evaluateRuntimeCase(builds.get(payload.buildId).controlPlan, runtimeCase, [], { complete: false })) } } : {}) };
     // Start on a microtask after registering the owner; normal HTTP completion

@@ -480,7 +480,14 @@ with tempfile.TemporaryDirectory(prefix='viento-native-e2e-') as directory:
         (screenshots / 'desktop-library.png').write_bytes(base64.b64decode(screenshot))
         if generic_tool:
             click('#createBtn')
-            assert '通用 OC 项目' in script('return document.querySelector("#createDialog").textContent')
+            templates = script('return [...document.querySelector("#projectTemplate").options].map(o=>({id:o.value,label:o.textContent}))')
+            assert templates == [
+                {'id': 'org.viento.blank', 'label': '空白工程'},
+                {'id': 'org.viento.oc-game', 'label': '游戏'},
+                {'id': 'org.viento.oc-literature', 'label': '文学'},
+                {'id': 'org.viento.oc-drama', 'label': '戏剧'},
+                {'id': 'org.viento.software-design', 'label': '软件设计'},
+            ], templates
             click('#cancelCreateBtn')
         if os.environ.get('VIENTO_TEST_LANGUAGE'):
             switch_language('en')

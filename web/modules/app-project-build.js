@@ -1,5 +1,8 @@
 import { setupProjectPhysicsObservation } from './app-project-physics-observation.js';
 import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
+import { validateProjectPhysics2DInputReplay } from '../../engine/project-physics2d-input-replay.mjs';
+import { validateProjectPhysics2DReplayCase } from '../../engine/project-physics2d-replay-case.mjs';
+import { PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS, setProjectPhysics2DInputReplayRange } from '../../engine/project-physics2d-input-replay-edit.mjs';
 import { setupScenePhysics2DCreate } from './app-scene-physics2d-create.js';
 import { setupProjectAnimationTargetReview } from './app-project-animation-target-review.js';
 import { setupProjectAnimationStateEntryObservation } from './app-project-animation-state-entry-observation.js';
@@ -36,6 +39,8 @@ import { validateSceneControlProgram, validateSceneControlPlan } from '../../eng
 import { validateExecutionToolStatus } from '../../engine/execution-tool-status.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
 import { setupRuntimeCaseDocuments } from './app-runtime-case-documents.js';
+import { setupPhysicsReplayDocuments } from './app-physics-replay-documents.js';
+import { setupPhysicsCaseDocuments } from './app-physics-case-documents.js';
 import { requestProjectBuildDocument, requestExport, checkExport, releaseExport } from './app-doc-service.js';
 import { setupRuntimeCaseSuites } from './app-runtime-case-suites.js';
 import { setupRuntimeCaseReport } from './app-runtime-case-report.js';
@@ -45,6 +50,12 @@ const errorLabels = {
   build_physics_invalid: '场景物理配置无效，请检查物理体、实例编号、形状和碰撞层。',
   build_physics_requires_project: '二维物理需要项目组装。请用当前场景创建组装后再构建。',
   build_physics_control_replay_unsupported: '物理工程暂不支持有限控制回放，请使用无头测试或窗口预览。',
+  runtime_physics2d_input_invalid: '物理输入回放格式有误：需要 30 个完整布尔输入步骤，末步全部释放。',
+  runtime_physics2d_case_invalid: '物理验收无效或引用了当前构建以外的实例、碰撞体，请核对后重新运行。',
+  runtime_physics2d_input_unsupported: '物理输入回放仅支持单场景、含二维物理且无行为、声音和动画的 Godot 项目。',
+  build_input_action_unconfigured: '项目没有配置输入映射。请检查角色动作参数；脚本也可能在运行时注册该动作。',
+  build_input_action_unmapped: '角色动作未在项目输入映射中找到。请检查行为参数和映射；脚本也可能在运行时注册该动作。',
+  build_input_action_unmapped_limit: '角色输入动作提示过多，部分提示已省略。请检查已列出的行为参数。',
   build_animation_state_clip_missing: '动画状态引用的片段不在当前场景中。请重新选择片段，或清空该状态的片段参数。',
   build_animation_state_animation_missing: '动画状态控制器所在的场景没有动画。请添加场景动画，或移除该控制器绑定。',
   build_animation_state_target_missing: '动画状态控制器绑定的实例没有动画轨道。请为该实例添加轨道，或修改控制器绑定。',
@@ -61,6 +72,7 @@ const errorLabels = {
   build_scene_format: '场景必须使用 viento-scene2d 第 1、2 或 3 版 JSON 格式。',
   build_scene_json: '场景 JSON 格式有误，请打开原文检查。',
   build_scene_value: '场景字段的值不符合要求，请检查标出的位置。',
+  build_scene_title_unicode: '场景标题包含无效的 Unicode 字符，请删除或重新输入该字符。',
   build_actor_value: '角色字段的值不符合要求，请检查标出的位置。',
   build_actor_missing: '场景引用的角色不存在或原文不可用。',
   build_actor_duplicate: '同一个角色不能在场景中重复声明。',
@@ -180,16 +192,58 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <button id="projectBuildGenerate" type="button" class="doc-btn" data-i18n="构建场景"></button>
     <button id="projectBuildHeadless" type="button" class="doc-btn doc-btn-ghost" data-i18n="无头测试"></button>
     <button id="projectBuildControl" type="button" class="doc-btn doc-btn-ghost" data-i18n="控制回放" hidden></button>
+    <button id="projectBuildPhysicsReplay" type="button" class="doc-btn doc-btn-ghost" data-i18n="物理输入回放" hidden></button>
+    <button id="projectBuildPhysicsCaseRun" type="button" class="doc-btn doc-btn-ghost" data-i18n="运行物理验收" hidden></button>
     <button id="projectBuildCaseRun" type="button" class="doc-btn doc-btn-ghost" data-i18n="运行验收" hidden></button>
     <button id="projectBuildWindow" type="button" class="doc-btn doc-btn-ghost" data-i18n="窗口预览"></button>
     <button id="projectBuildCancel" type="button" class="doc-btn doc-btn-ghost" data-i18n="取消任务" hidden></button></div>
     <details id="projectBuildControlEditor" class="build-control-editor" hidden><summary data-i18n="编辑控制回放"></summary>
+    <p id="projectBuildControlProjectHint" class="build-hint" hidden data-i18n="项目回放仅作用于冻结工程的启动场景，不切换场景，也不使用项目键盘输入映射。"></p>
     <p class="build-hint" data-i18n="方向键按固定步长逐步回放；仅用于本次无头测试，不写入作品文件。"></p>
     <div class="build-control-target"><label for="projectBuildControlTarget" data-i18n="输入示例的目标"></label><select id="projectBuildControlTarget"></select>
     <button id="projectBuildControlExample" type="button" class="doc-btn doc-btn-ghost" data-i18n="生成输入示例"></button></div>
     <p id="projectBuildControlTargetHint" class="build-hint" hidden data-i18n="实例输入按步骤独立生效；某一步未列出的实例会释放方向键，不延续上一步输入。"></p>
     <label for="projectBuildControlProgram" data-i18n="控制步骤（JSON）"></label><textarea id="projectBuildControlProgram" spellcheck="false" maxlength="262144" rows="9" aria-describedby="projectBuildControlBudget projectBuildControlError"></textarea>
     <p id="projectBuildControlBudget" class="build-hint"></p><p id="projectBuildControlError" role="alert" hidden></p></details>
+    <details id="projectBuildPhysicsReplayEditor" class="build-control-editor" hidden><summary data-i18n="编辑物理输入回放"></summary>
+    <p class="build-hint" data-i18n="只支持单场景、含二维物理且无行为、声音和动画的 Godot 项目。输入作用于全部方向键角色；controls 为 none 的角色不消费内建动作。固定 30 步、每步 1/60 秒；最后一步须全部释放。运行不写入作品；可显式保存回放文档。完成只表示输入流程与采样结束，不表示玩法验收通过。"></p>
+    <div id="projectBuildPhysicsDocuments"></div>
+    <button id="projectBuildPhysicsReplayExample" type="button" class="doc-btn doc-btn-ghost" data-i18n="生成物理输入示例"></button>
+    <p id="projectBuildPhysicsTimelineHint" class="build-hint" data-i18n="点击或按空格切换输入；方向键在时间轴中移动。第 30 步固定释放。JSON 不合法时保留原文并停用时间轴。"></p>
+    <div class="build-physics-range" role="group" data-i18n-aria-label="批量编辑输入范围">
+      <label for="projectBuildPhysicsRangeAction" data-i18n="动作"></label><select id="projectBuildPhysicsRangeAction">
+        <option value="left" data-i18n="向左"></option><option value="right" data-i18n="向右"></option><option value="up" data-i18n="向上"></option><option value="down" data-i18n="向下"></option><option value="jump" data-i18n="跳跃"></option></select>
+      <label for="projectBuildPhysicsRangeStart" data-i18n="起始步"></label><input id="projectBuildPhysicsRangeStart" type="number" min="1" max="30" value="1">
+      <label for="projectBuildPhysicsRangeEnd" data-i18n="结束步"></label><input id="projectBuildPhysicsRangeEnd" type="number" min="1" max="30" value="1">
+      <button id="projectBuildPhysicsRangePress" type="button" class="doc-btn doc-btn-ghost" data-i18n="范围内按下"></button><button id="projectBuildPhysicsRangeRelease" type="button" class="doc-btn doc-btn-ghost" data-i18n="范围内释放"></button>
+    </div><p id="projectBuildPhysicsRangeError" role="alert" hidden></p>
+    <div id="projectBuildPhysicsTimeline" class="build-physics-timeline" role="group" data-i18n-aria-label="物理输入时间轴" aria-describedby="projectBuildPhysicsTimelineHint"></div>
+    <p id="projectBuildPhysicsTimelineInvalid" class="build-hint" role="status" hidden data-i18n="请先修正 JSON，时间轴不会覆盖当前文本。"></p>
+    <label for="projectBuildPhysicsReplayProgram" data-i18n="物理输入步骤（JSON）"></label><textarea id="projectBuildPhysicsReplayProgram" spellcheck="false" maxlength="262144" rows="9" aria-describedby="projectBuildPhysicsReplayError"></textarea>
+    <p id="projectBuildPhysicsReplayError" role="alert" hidden></p></details>
+    <p id="projectBuildPhysicsReplayStatus" role="status" aria-live="polite" hidden></p>
+    <details id="projectBuildPhysicsCaseEditor" class="build-control-editor" hidden><summary data-i18n="编辑物理验收"></summary>
+    <p class="build-hint" data-i18n="验收使用独立的输入和预期；碰撞表示该步骤的运动扫掠，不代表着地或触发器。运行结果与验收结果分别显示。"></p>
+    <div id="projectBuildPhysicsCaseDocuments"></div>
+    <button id="projectBuildPhysicsCaseInput" type="button" class="doc-btn doc-btn-ghost" data-i18n="将当前输入复制到验收"></button>
+    <button id="projectBuildPhysicsCaseUseInput" type="button" class="doc-btn doc-btn-ghost" data-i18n="将验收输入载入回放"></button>
+    <button id="projectBuildPhysicsCaseSample" type="button" class="doc-btn doc-btn-ghost" data-i18n="从完整物理回放生成预期"></button>
+    <p class="build-hint" data-i18n="生成会替换验收草稿；生成后请调整容差和预期。"></p>
+    <fieldset class="build-physics-case-fields"><legend data-i18n="添加或替换检查"></legend>
+    <label for="projectBuildPhysicsCaseInstance" data-i18n="角色实例编号"></label><input id="projectBuildPhysicsCaseInstance" type="text" maxlength="36" list="projectBuildPhysicsCaseInstances"><datalist id="projectBuildPhysicsCaseInstances"></datalist>
+    <label for="projectBuildPhysicsCaseStep" data-i18n="检查步骤"></label><input id="projectBuildPhysicsCaseStep" type="number" min="1" max="30" value="30">
+    <label><input id="projectBuildPhysicsCasePosition" type="checkbox"> <span data-i18n="检查位置"></span></label>
+    <label for="projectBuildPhysicsCaseX" data-i18n="预期 X"></label><input id="projectBuildPhysicsCaseX" type="number" step="any" value="0">
+    <label for="projectBuildPhysicsCaseY" data-i18n="预期 Y"></label><input id="projectBuildPhysicsCaseY" type="number" step="any" value="0">
+    <label for="projectBuildPhysicsCaseToleranceX" data-i18n="X 容差"></label><input id="projectBuildPhysicsCaseToleranceX" type="number" min="0" step="any" value="0.01">
+    <label for="projectBuildPhysicsCaseToleranceY" data-i18n="Y 容差"></label><input id="projectBuildPhysicsCaseToleranceY" type="number" min="0" step="any" value="0.01">
+    <label for="projectBuildPhysicsCaseContact" data-i18n="扫掠碰撞"></label><select id="projectBuildPhysicsCaseContact"><option value="none" data-i18n="不检查"></option><option value="yes" data-i18n="有碰撞"></option><option value="no" data-i18n="无碰撞"></option></select>
+    <label for="projectBuildPhysicsCaseBody" data-i18n="碰撞体编号（可选）"></label><input id="projectBuildPhysicsCaseBody" type="text" maxlength="36">
+    <button id="projectBuildPhysicsCaseAdd" type="button" class="doc-btn doc-btn-ghost" data-i18n="应用检查"></button></fieldset>
+    <label for="projectBuildPhysicsCaseProgram" data-i18n="物理验收定义（JSON）"></label><textarea id="projectBuildPhysicsCaseProgram" spellcheck="false" maxlength="262144" rows="9" aria-describedby="projectBuildPhysicsCaseError"></textarea>
+    <p id="projectBuildPhysicsCaseError" role="alert" hidden></p></details>
+    <section id="projectBuildPhysicsCaseResult" class="build-case-result" hidden aria-labelledby="projectBuildPhysicsCaseTitle"><h3 id="projectBuildPhysicsCaseTitle" data-i18n="物理验收结果"></h3>
+    <p id="projectBuildPhysicsCaseSummary" role="status" aria-live="polite"></p><ul id="projectBuildPhysicsCaseChecks"></ul></section>
     <details id="projectBuildCaseEditor" class="build-control-editor" hidden><summary data-i18n="编辑运行验收"></summary>
     <p class="build-hint" data-i18n="按实例和步骤检查位置或状态；运行使用冻结构建，保存用例需明确操作。执行完成与验收通过分别显示。"></p>
     <div id="projectBuildCaseDocuments"></div>
@@ -232,16 +286,218 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   const defaultControlProgram = () => ({ format: 'viento-runtime-control', schemaVersion: 1, fixedDelta: 0.25,
     steps: [{ ...released(), right: true }, released(), { ...released(), left: true }, released()] });
   el('projectBuildControlProgram').value = JSON.stringify(defaultControlProgram(), null, 2);
+  const defaultPhysicsReplay = () => ({ format: 'viento-physics2d-input-replay', schemaVersion: 1, fixedDelta: 1 / 60,
+    steps: Array.from({ length: 30 }, (_, index) => ({ left: false, right: index < 18, up: false, down: false, jump: index === 6 })) });
+  el('projectBuildPhysicsReplayProgram').value = JSON.stringify(defaultPhysicsReplay(), null, 2);
+  let physicsReplayError = '', physicsDocuments = null;
+  let physicsCaseError = '', physicsCaseDocuments = null;
+  // Construct once: polling and language changes must not replace the focused cell.
+  const physicsTimeline = el('projectBuildPhysicsTimeline');
+  const physicsActionLabels = { left: '向左', right: '向右', up: '向上', down: '向下', jump: '跳跃' };
+  const physicsTimelineCells = [];
+  let physicsTimelineFocus = 0;
+  for (const action of PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS) {
+    const row = document.createElement('div'); row.className = 'build-physics-timeline-row';
+    const label = document.createElement('span'); label.className = 'build-physics-timeline-label'; row.append(label);
+    const cells = [];
+    for (let step = 0; step < 30; step++) {
+      const cell = document.createElement('button'); cell.type = 'button'; cell.className = 'build-physics-timeline-cell';
+      cell.dataset.action = action; cell.dataset.step = String(step); cell.textContent = String(step + 1);
+      cell.addEventListener('click', () => {
+        if (step === 29) return;
+        let program; try { program = readPhysicsReplay(); } catch { return; }
+        const updated = setProjectPhysics2DInputReplayRange(program, action, step, step, !program.steps[step][action]);
+        el('projectBuildPhysicsReplayProgram').value = JSON.stringify(updated, null, 2);
+        physicsReplayError = ''; physicsDocuments?.changed(); renderPhysicsReplay(); renderPhysicsCase();
+      });
+      cell.addEventListener('focus', () => { physicsTimelineFocus = PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS.indexOf(action) * 30 + step; });
+      cell.addEventListener('keydown', event => {
+        let index = physicsTimelineFocus;
+        if (event.key === 'ArrowLeft') index = Math.max(index - 1, Math.floor(index / 30) * 30);
+        else if (event.key === 'ArrowRight') index = Math.min(index + 1, Math.floor(index / 30) * 30 + 29);
+        else if (event.key === 'ArrowUp') index = Math.max(index - 30, index % 30);
+        else if (event.key === 'ArrowDown') index = Math.min(index + 30, 120 + index % 30);
+        else if (event.key === 'Home') index = Math.floor(index / 30) * 30;
+        else if (event.key === 'End') index = Math.floor(index / 30) * 30 + 29;
+        else return;
+        event.preventDefault(); physicsTimelineFocus = index; renderPhysicsTimeline();
+        const target = physicsTimelineCells[Math.floor(index / 30)].cells[index % 30];
+        target.focus(); target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      });
+      row.append(cell); cells.push(cell);
+    }
+    physicsTimeline.append(row); physicsTimelineCells.push({ label, cells, action });
+  }
+  window.addEventListener('resize', () => {
+    if (dialog.open && physicsTimeline.contains(document.activeElement)) document.activeElement.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  });
+  function renderPhysicsTimeline() {
+    let program = null; try { program = readPhysicsReplay(); } catch { /* Retain invalid JSON verbatim. */ }
+    el('projectBuildPhysicsTimelineInvalid').hidden = Boolean(program);
+    if (!el('projectBuildPhysicsRangeError').hidden) el('projectBuildPhysicsRangeError').textContent = t('请输入有效的 1–30 步范围；按下范围不能包含第 30 步。');
+    el('projectBuildPhysicsRangePress').disabled = !program; el('projectBuildPhysicsRangeRelease').disabled = !program;
+    physicsTimelineCells.forEach(({ label, cells, action }, row) => {
+      label.textContent = t(physicsActionLabels[action]);
+      cells.forEach((cell, step) => {
+        const pressed = Boolean(program?.steps[step]?.[action]);
+        cell.disabled = !program;
+        cell.tabIndex = row * 30 + step === physicsTimelineFocus ? 0 : -1;
+        cell.setAttribute('aria-pressed', String(pressed));
+        cell.setAttribute('aria-disabled', String(step === 29));
+        cell.setAttribute('aria-label', t('第 {0} 步：{1}，{2}', step + 1, t(physicsActionLabels[action]), t(step === 29 ? '固定释放' : pressed ? '按下' : '释放')));
+      });
+    });
+  }
+  const hasPhysicsReplayCapability = () => projectTarget() && data?.backend?.id === 'org.viento.godot4'
+    && Boolean(data?.backend?.capabilities?.includes('physics.observe2d') && supportsExecution('headlessLogic')
+      && matchedBuild()?.physicsReplayAvailable === true);
+  const physicsReplayBuildSupported = () => matchedBuild()?.targetKind === 'project' && matchedBuild()?.sceneCount === 1;
+  function readPhysicsReplay() {
+    let value;
+    try { value = JSON.parse(el('projectBuildPhysicsReplayProgram').value); }
+    catch { throw Object.assign(new Error('Invalid physics replay JSON.'), { errorCode: 'runtime_physics2d_input_json' }); }
+    return validateProjectPhysics2DInputReplay(value);
+  }
+  function renderPhysicsReplay() {
+    const supported = hasPhysicsReplayCapability();
+    el('projectBuildPhysicsReplay').hidden = !supported;
+    el('projectBuildPhysicsReplayEditor').hidden = !supported;
+    el('projectBuildPhysicsReplay').disabled = !supported || !physicsReplayBuildSupported() || !mayStart('run', 'headless') || Boolean(physicsDocuments && !physicsDocuments.runAllowed());
+    el('projectBuildPhysicsReplayExample').disabled = !supported || !physicsReplayBuildSupported() || !mayStart('run', 'headless');
+    renderPhysicsTimeline();
+    physicsDocuments?.render();
+    el('projectBuildPhysicsReplayError').hidden = !physicsReplayError;
+    el('projectBuildPhysicsReplayError').textContent = physicsReplayError ? t(physicsReplayError) : '';
+    const status = el('projectBuildPhysicsReplayStatus'), job = data?.job, build = matchedBuild(), replay = job?.physicsControl;
+    status.hidden = true; status.textContent = '';
+    if (!supported || !available || !dialog.open || activeTab !== 'build' || !build || job?.kind !== 'run'
+      || typeof job.id !== 'string' || !job.id || invalidatedRuntimeJobs.has(job.id)
+      || job.targetKind !== 'project' || job.targetId !== selected || job.sceneId !== selected
+      || job.backendId !== data.backend.id || job.buildId !== build.id || job.snapshotId !== build.snapshotId
+      || !/^sha256:[a-f0-9]{64}$/.test(job.snapshotId || '') || !['running', 'succeeded', 'failed', 'cancelled', 'timeout'].includes(job.status)
+      || !replay || typeof replay !== 'object' || Array.isArray(replay)
+      || Object.keys(replay).length !== 3 || !['program', 'sha256', 'complete'].every(key => Object.hasOwn(replay, key))
+      || typeof replay.complete !== 'boolean' || !/^sha256:[a-f0-9]{64}$/.test(replay.sha256 || '')) return;
+    try { validateProjectPhysics2DInputReplay(replay.program); }
+    catch { return; }
+    const result = job.status === 'running' ? '进行中' : job.status === 'succeeded' && replay.complete ? '已完成' : '未完成';
+    status.textContent = t('物理输入回放：{0} · 30 步 · {1}。完成只表示输入流程与采样结束，不表示玩法验收通过。', t(result), replay.sha256);
+    status.hidden = false;
+  }
+  function physicsCaseRead() {
+    const text = el('projectBuildPhysicsCaseProgram').value;
+    if (new TextEncoder().encode(text).length > 262144) throw new Error('too large');
+    return validateProjectPhysics2DReplayCase(JSON.parse(text));
+  }
+  function physicsCaseOwnedJob() {
+    const job = data?.job, build = matchedBuild();
+    if (!hasPhysicsReplayCapability() || !physicsReplayBuildSupported() || !available || !dialog.open || activeTab !== 'build'
+      || !build || job?.kind !== 'run' || typeof job.id !== 'string' || !job.id || invalidatedRuntimeJobs.has(job.id)
+      || job.targetKind !== 'project' || job.targetId !== selected || job.sceneId !== selected
+      || job.backendId !== data.backend.id || job.buildId !== build.id || job.snapshotId !== build.snapshotId
+      || !/^sha256:[a-f0-9]{64}$/.test(job.snapshotId || '') || !['running', 'succeeded', 'failed', 'cancelled', 'timeout'].includes(job.status)) return null;
+    return job;
+  }
+  function sampledPhysicsCase() {
+    const job = physicsCaseOwnedJob(), build = matchedBuild();
+    if (!job || job.status !== 'succeeded' || job.physicsControl?.complete !== true) return null;
+    try {
+      const program = validateProjectPhysics2DInputReplay(job.physicsControl.program);
+      if (canonicalJson(program) !== canonicalJson(readPhysicsReplay())) return null;
+      const observation = validateProjectPhysics2DObservation(job.physics);
+      if (observation.phase !== 'finished' || observation.limited || observation.assemblyId !== selected) return null;
+      const rows = observation.samples.filter(row => row.stepIndex === 30 && row.sceneId === build.entrySceneId);
+      if (!rows.length || rows.length > 128) return null;
+      return validateProjectPhysics2DReplayCase({ format: 'viento-physics2d-replay-case', schemaVersion: 1, program,
+        checks: rows.map(row => ({ instanceId: row.instanceId, stepIndex: 30,
+          positionAfter: { value: row.positionAfter, tolerance: [0.01, 0.01] } })) });
+    } catch { return null; }
+  }
+  function renderPhysicsCase() {
+    const supported = hasPhysicsReplayCapability() && physicsReplayBuildSupported();
+    physicsCaseDocuments?.render();
+    el('projectBuildPhysicsCaseEditor').hidden = !supported;
+    el('projectBuildPhysicsCaseRun').hidden = !supported;
+    el('projectBuildPhysicsCaseRun').disabled = !supported || !mayStart('run', 'headless') || Boolean(physicsCaseDocuments && !physicsCaseDocuments.runAllowed());
+    el('projectBuildPhysicsCaseSample').disabled = !supported || !mayStart('run', 'headless') || !sampledPhysicsCase();
+    el('projectBuildPhysicsCaseError').hidden = !physicsCaseError;
+    el('projectBuildPhysicsCaseError').textContent = physicsCaseError ? t(physicsCaseError) : '';
+    const list = el('projectBuildPhysicsCaseChecks'); list.replaceChildren();
+    const result = el('projectBuildPhysicsCaseResult'); result.hidden = true;
+    const targets = el('projectBuildPhysicsCaseInstances'); targets.replaceChildren();
+    const sampled = sampledPhysicsCase();
+    for (const check of sampled?.checks || []) {
+      const option = document.createElement('option'); option.value = check.instanceId; targets.append(option);
+    }
+    const job = physicsCaseOwnedJob(), verification = job?.physicsVerification;
+    if (!verification || getContext().dirty || getContext().creating || getContext().busy) return;
+    try {
+      const definition = validateProjectPhysics2DReplayCase(verification.definition);
+      if (canonicalJson(definition) !== canonicalJson(physicsCaseRead()) || canonicalJson(definition.program) !== canonicalJson(readPhysicsReplay())
+        || canonicalJson(definition.program) !== canonicalJson(validateProjectPhysics2DInputReplay(job.physicsControl?.program))
+        || !/^sha256:[a-f0-9]{64}$/.test(verification.sha256 || '') || !/^sha256:[a-f0-9]{64}$/.test(job.physicsControl?.sha256 || '')) return;
+      const evaluation = verification.evaluation;
+      if (!evaluation || !['passed', 'failed', 'incomplete'].includes(evaluation.status) || !Array.isArray(evaluation.checks)
+        || evaluation.status !== 'incomplete' && (job.status !== 'succeeded' || job.physicsControl?.complete !== true)
+        || evaluation.status === 'incomplete' && evaluation.checks.length !== 0) return;
+      if (evaluation.status !== 'incomplete') {
+        const observation = validateProjectPhysics2DObservation(job.physics);
+        if (observation.phase !== 'finished' || observation.limited || observation.assemblyId !== selected) return;
+        const checks = definition.checks.map(check => {
+          const sample = observation.samples.find(row => row.sceneId === matchedBuild()?.entrySceneId && row.instanceId === check.instanceId && row.stepIndex === check.stepIndex);
+          if (!sample) throw new Error('missing sample');
+          const result = { instanceId: check.instanceId, stepIndex: check.stepIndex, passed: true };
+          if (check.positionAfter) {
+            const expected = check.positionAfter.value, tolerance = check.positionAfter.tolerance, actual = sample.positionAfter;
+            const passed = actual.every((value, axis) => Math.abs(value - expected[axis]) <= tolerance[axis]);
+            result.positionAfter = { expected, tolerance, actual, passed }; result.passed &&= passed;
+          }
+          if (check.contact) {
+            const actual = check.contact.bodyId ? sample.contacts.some(item => item.collider?.bodyId === check.contact.bodyId) : sample.contacts.length > 0;
+            const passed = actual === check.contact.exists;
+            result.contact = { ...check.contact, actual, passed }; result.passed &&= passed;
+          }
+          return result;
+        });
+        if (canonicalJson(evaluation) !== canonicalJson({ status: checks.every(check => check.passed) ? 'passed' : 'failed', checks })) return;
+      }
+      el('projectBuildPhysicsCaseSummary').textContent = t({ passed: '物理验收通过', failed: '物理验收未通过', incomplete: '物理验收未完成' }[evaluation.status]);
+      for (const check of evaluation.checks) {
+        const item = node('li', t('实例 {0} · 第 {1} 步 · {2}', check.instanceId, check.stepIndex, t(check.passed ? '检查通过' : '检查未通过')), 'build-case-check');
+        if (check.positionAfter) item.append(node('p', t('位置：预期 {0} ± {1}，实际 {2} · {3}',
+          JSON.stringify(check.positionAfter.expected), JSON.stringify(check.positionAfter.tolerance), JSON.stringify(check.positionAfter.actual),
+          t(check.positionAfter.passed ? '检查通过' : '检查未通过')), 'build-monospace'));
+        if (check.contact) item.append(node('p', t('扫掠碰撞（{0}）：预期 {1}，实际 {2} · {3}', check.contact.bodyId || t('任意碰撞体'),
+          t(check.contact.exists ? '有碰撞' : '无碰撞'), t(check.contact.actual ? '有碰撞' : '无碰撞'),
+          t(check.contact.passed ? '检查通过' : '检查未通过')), 'build-monospace'));
+        list.append(item);
+      }
+      result.hidden = false;
+    } catch { /* A stale or malformed result never becomes an acceptance claim. */ }
+  }
   let controlError = '', controlTarget = '', controlTargetOwner = '';
-  const hasControlCapability = () => !projectTarget() && Boolean(data?.backend?.capabilities?.includes('runtime.control-replay')
-    && supportsExecution('headlessLogic'));
+  const hasProjectControl = () => {
+    const build = matchedBuild(), source = build?.controlSourcePath;
+    return Boolean(data?.backend?.capabilities?.includes('project.control-replay') && build?.controlReplayAvailable === true
+      && build.controlSceneId === build.entrySceneId && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(build.controlSceneId || '')
+      && typeof source === 'string' && source.length > 0 && source.length <= 4096
+      && !/[\\\0]/.test(source) && !source.startsWith('/') && !/^[A-Za-z]:\//.test(source)
+      && !source.split('/').includes('..') && source.split('/').some(part => part && part !== '.')
+      && !source.split('/').filter(part => part && part !== '.').join('/').startsWith('.')
+      && Number.isSafeInteger(build.controlActorCount) && build.controlActorCount >= 1 && build.controlActorCount <= 128
+      && [1, 2].includes(build.controlPlanSchemaVersion));
+  };
+  const hasControlCapability = () => Boolean(data?.backend?.capabilities?.includes('runtime.control-replay')
+    && supportsExecution('headlessLogic') && (!projectTarget() || hasProjectControl()));
+  const controlPlanVersion = () => projectTarget() ? matchedBuild()?.controlPlanSchemaVersion : matchedBuild()?.planSchemaVersion;
+  const controlActorCount = () => projectTarget() ? matchedBuild()?.controlActorCount : matchedBuild()?.actorCount;
   const hasInstanceControlCapability = () => hasControlCapability()
     && Boolean(data?.backend?.capabilities?.includes('runtime.control-replay.instances'));
   function instanceControlTargets(requireInstanceCapability = true) {
     const build = matchedBuild();
-    if (!(requireInstanceCapability ? hasInstanceControlCapability() : hasControlCapability()) || build?.planSchemaVersion !== 2 || !Array.isArray(build.controlTargets)
+    if (!(requireInstanceCapability ? hasInstanceControlCapability() : hasControlCapability()) || controlPlanVersion() !== 2 || !Array.isArray(build.controlTargets)
       || build.controlTargets.length < 1 || build.controlTargets.length > 128
-      || Number.isSafeInteger(build.actorCount) && build.controlTargets.length !== build.actorCount) return [];
+      || Number.isSafeInteger(controlActorCount()) && build.controlTargets.length !== controlActorCount()) return [];
     const seen = new Set(), targets = [];
     const uuid = value => typeof value === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(value);
     for (const target of build.controlTargets) {
@@ -252,7 +508,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     return targets;
   }
   const controlSceneSupported = () => {
-    const version = matchedBuild()?.planSchemaVersion;
+    const version = controlPlanVersion();
+    if (projectTarget()) return matchedBuild()?.controlReplayAvailable === true && [1, 2].includes(version);
     return version === undefined ? !(planScene === selected && Number.isSafeInteger(plan?.behaviorBindingCount)) : [1, 2].includes(version);
   };
   function readControlProgram() {
@@ -264,10 +521,11 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       const targets = instanceControlTargets();
       if (!targets.length) throw Object.assign(new Error('Instance replay is not supported by this frozen build.'), { errorCode: 'runtime_control_unsupported' });
       validateSceneControlPlan({ format: 'viento-build-plan', kind: 'scene2d', schemaVersion: 2,
-        scene: { objectId: selected, sourcePath: selectedScene()?.sourcePath },
+        scene: { objectId: projectTarget() ? matchedBuild()?.controlSceneId : selected,
+          sourcePath: projectTarget() ? matchedBuild()?.controlSourcePath : selectedScene()?.sourcePath },
         actors: targets.map(target => ({ instanceId: target.instanceId, objectId: target.objectId })) }, program);
     }
-    const actorCount = matchedBuild()?.actorCount ?? (planScene === selected ? plan?.actorCount : undefined);
+    const actorCount = controlActorCount() ?? (!projectTarget() && planScene === selected ? plan?.actorCount : undefined);
     if (Number.isSafeInteger(actorCount) && actorCount * program.steps.length > 1024) {
       throw Object.assign(new Error('Control sample budget exceeded.'), { errorCode: 'runtime_control_limit' });
     }
@@ -278,6 +536,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildControl').hidden = !supported;
     el('projectBuildControl').disabled = !mayStart('run', 'headless') || !supported || !controlSceneSupported();
     el('projectBuildControlEditor').hidden = !supported;
+    el('projectBuildControlProjectHint').hidden = !supported || !projectTarget();
     const build = matchedBuild(), targets = instanceControlTargets(), targetPicker = el('projectBuildControlTarget');
     const owner = build ? JSON.stringify([acceptedBackend, build.id, build.snapshotId, selected]) : '';
     if (controlTargetOwner !== owner) { controlTargetOwner = owner; controlTarget = ''; }
@@ -347,7 +606,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   }
   function renderRuntimeCase() {
     const supported = Boolean(runtimeCasePlan()), permitted = mayStart('run', 'headless') && supported;
-    el('projectBuildCaseRun').hidden = !hasControlCapability();
+    el('projectBuildCaseRun').hidden = projectTarget() || !hasControlCapability();
     el('projectBuildCaseRun').disabled = !permitted || Boolean(caseDocuments && !caseDocuments.runAllowed());
     el('projectBuildCaseEditor').hidden = projectTarget() || !selectedScene();
     el('projectBuildCaseGenerate').disabled = !permitted || !sampledRuntimeCase();
@@ -537,7 +796,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   const catalogUnavailable = () => data?.catalogDiagnostic?.code === 'build_catalog_unavailable';
   const checkingTool = () => toolCheckBusy || data?.toolStatus?.status === 'checking';
   const mayCheckTool = () => activeTab === 'build' && available && data?.supported && Boolean(data?.toolStatus)
-    && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.() && !delivery?.isBusy();
+    && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !physicsDocuments?.isBusy() && !physicsCaseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.() && !delivery?.isBusy();
   const ready = () => {
     const context = getContext();
     return available && data?.supported && context.editable && !context.dirty && !context.creating && !context.busy;
@@ -998,7 +1257,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       if (source && !source.disabled) source.focus();
     }
   }
-  const mayStart = (action, mode) => activeTab === 'build' && !errorMessage && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.() && !delivery?.isBusy() && ready() && Boolean(selectedScene())
+  const mayStart = (action, mode) => activeTab === 'build' && !errorMessage && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !physicsDocuments?.isBusy() && !physicsCaseDocuments?.isBusy() && !caseSuites?.isBusy() && !backendProjects?.isBusy?.() && !delivery?.isBusy() && ready() && Boolean(selectedScene())
     && (action === 'run' || liveScene())
     && (action === 'plan' || data.available && backendUnchanged() && (action === 'build'
       ? supportsExecution('build') && planBackend === acceptedBackend && planScene === selected && Boolean(plan)
@@ -1125,6 +1384,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildGenerate').disabled = !mayStart('build');
     el('projectBuildHeadless').disabled = !mayStart('run', 'headless'); el('projectBuildWindow').disabled = !mayStart('run', 'window');
     renderControlProgram();
+    renderPhysicsReplay();
+    renderPhysicsCase();
     renderRuntimeCase();
     caseDocuments?.render();
     caseSuites?.render();
@@ -1218,9 +1479,29 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     } catch (error) { if (epoch === requestEpoch) fail(error); }
     finally { if (epoch === requestEpoch) { requestBusy = false; render(); schedule(); } }
   }
-  async function submit(action, mode, replay = false, verify = false) {
+  async function submit(action, mode, replay = false, verify = false, physicsReplay = false, physicsVerify = false) {
     if (action === 'cancel' ? !running() || requestBusy || cancelling : !mayStart(action, mode)) { render(); return; }
-    let controlProgram, runtimeCase;
+    let controlProgram, runtimeCase, physicsControlProgram, physicsReplayCase;
+    if (physicsVerify) {
+      if (!hasPhysicsReplayCapability() || !physicsReplayBuildSupported() || physicsCaseDocuments && !physicsCaseDocuments.runAllowed()) { render(); return; }
+      try {
+        physicsReplayCase = physicsCaseRead();
+        if (canonicalJson(physicsReplayCase.program) !== canonicalJson(readPhysicsReplay())) throw new Error('input mismatch');
+        physicsCaseError = '';
+      } catch {
+        physicsCaseError = '物理验收格式或输入不匹配，请检查定义并明确复制当前输入。';
+        el('projectBuildPhysicsCaseEditor').open = true; renderPhysicsCase(); el('projectBuildPhysicsCaseProgram').focus(); return;
+      }
+    }
+    if (physicsReplay) {
+      if (!hasPhysicsReplayCapability() || !physicsReplayBuildSupported() || physicsDocuments && !physicsDocuments.runAllowed()) { render(); return; }
+      try { physicsControlProgram = readPhysicsReplay(); physicsReplayError = ''; }
+      catch (error) {
+        physicsReplayError = error.errorCode === 'runtime_physics2d_input_json' ? '物理输入步骤不是有效的 JSON，请检查后重试。'
+          : errorLabels[error.errorCode] || errorLabels.runtime_physics2d_input_invalid;
+        el('projectBuildPhysicsReplayEditor').open = true; renderPhysicsReplay(); el('projectBuildPhysicsReplayProgram').focus(); return;
+      }
+    }
     if (verify) {
       if (caseDocuments && !caseDocuments.runAllowed()) { render(); return; }
       try { runtimeCase = readRuntimeCase(); caseError = ''; }
@@ -1242,6 +1523,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     clearTimeout(timer); timer = null;
     const body = action === 'cancel' ? { action, jobId: data.job.id }
       : action === 'run' ? { action, buildId: matchedBuild().id, mode, ...(controlProgram ? { controlProgram } : {}),
+        ...(physicsControlProgram ? { physicsControlProgram, ...(physicsDocuments?.boundSceneId() ? { physicsReplaySceneId: physicsDocuments.boundSceneId() } : {}) } : {}),
+        ...(physicsReplayCase ? { physicsReplayCase, ...(physicsCaseDocuments?.boundSceneId() ? { physicsReplaySceneId: physicsCaseDocuments.boundSceneId() } : {}) } : {}),
         ...(runtimeCase ? { runtimeCase, ...(caseDocuments?.boundSceneId() ? { runtimeCaseSceneId: caseDocuments.boundSceneId() } : {}) } : {}) }
       : { action, ...(projectTarget() ? { targetId: selected } : { sceneId: selected }), ...(action === 'build' ? { expectedSnapshotId: plan.snapshotId } : {}) };
     if (action === 'cancel') cancelling = true;
@@ -1292,6 +1575,32 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('管理运行验收文档'))).payload,
     onChange: render,
   });
+  physicsDocuments = setupPhysicsReplayDocuments({
+    container: el('projectBuildPhysicsDocuments'),
+    getState: () => ({ ...getContext(), sceneId: hasPhysicsReplayCapability() ? matchedBuild()?.entrySceneId || '' : '',
+      buildIdentity: JSON.stringify([matchedBuild()?.id || '', matchedBuild()?.snapshotId || '', data?.backend?.id || '']),
+      available: available && hasPhysicsReplayCapability(), visible: dialog.open && activeTab === 'build', session: dialogSession,
+      active: requestBusy || running() || checkingTool() || caseDocuments?.isBusy() || physicsCaseDocuments?.isBusy() || caseSuites?.isBusy() || backendProjects?.isBusy?.() || delivery?.isBusy(),
+      offline: catalogUnavailable() }),
+    getText: () => el('projectBuildPhysicsReplayProgram').value,
+    setText: text => { el('projectBuildPhysicsReplayProgram').value = text; physicsReplayError = ''; },
+    request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
+      : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('管理物理回放文档'))).payload,
+    onChange: render,
+  });
+  physicsCaseDocuments = setupPhysicsCaseDocuments({
+    container: el('projectBuildPhysicsCaseDocuments'),
+    getState: () => ({ ...getContext(), sceneId: hasPhysicsReplayCapability() ? matchedBuild()?.entrySceneId || '' : '',
+      buildIdentity: JSON.stringify([matchedBuild()?.id || '', matchedBuild()?.snapshotId || '', data?.backend?.id || '']),
+      available: available && hasPhysicsReplayCapability(), visible: dialog.open && activeTab === 'build', session: dialogSession,
+      active: requestBusy || running() || checkingTool() || caseDocuments?.isBusy() || physicsDocuments?.isBusy() || caseSuites?.isBusy() || backendProjects?.isBusy?.() || delivery?.isBusy(),
+      offline: catalogUnavailable() }),
+    getText: () => el('projectBuildPhysicsCaseProgram').value,
+    setText: text => { el('projectBuildPhysicsCaseProgram').value = text; physicsCaseError = ''; },
+    request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
+      : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('管理物理验收文档'))).payload,
+    onChange: render,
+  });
   async function runSuite({ suiteDocumentId, expectedVersion }) {
     if (!mayStart('run', 'headless') || !runtimeCasePlan() || catalogUnavailable()) { render(); return; }
     const body = { action: 'suite-run', buildId: matchedBuild().id, suiteDocumentId, expectedVersion };
@@ -1316,7 +1625,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   delivery = setupBackendProjectDelivery({
     getContext: () => ({ available: available && data?.projectManagement?.delivery === 'viento-build-delivery-v1', visible: dialog.open && activeTab === 'build', session: dialogSession,
       sceneId: selectedScene()?.id || '', backendId: data?.backend?.id || '', backendIdentity: acceptedBackend,
-      busy: requestBusy || running() || checkingTool() || caseDocuments?.isBusy() || caseSuites?.isBusy() }),
+      busy: requestBusy || running() || checkingTool() || caseDocuments?.isBusy() || physicsDocuments?.isBusy() || physicsCaseDocuments?.isBusy() || caseSuites?.isBusy() }),
     prepare: (payload, signal) => requestExport(payload, signal),
     checkDownload: (id, signal) => checkExport(id, signal), release: id => releaseExport(id), onChange: render,
   });
@@ -1325,7 +1634,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       sceneId: selectedScene()?.id || '', backendId: data?.backend?.id || '', backendIdentity: acceptedBackend, requestEpoch,
       projects: data?.projects, projectManagement: data?.projectManagement, latestBuild: matchedBuild(),
       busy: requestBusy || running() || checkingTool() || delivery?.isBusy(),
-      canSelect: !delivery?.isBusy() && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !caseSuites?.isBusy() }),
+      canSelect: !delivery?.isBusy() && !requestBusy && !running() && !checkingTool() && !caseDocuments?.isBusy() && !physicsDocuments?.isBusy() && !physicsCaseDocuments?.isBusy() && !caseSuites?.isBusy() }),
     onChange: render,
     onDeliver: (receipt, owner) => delivery.open(receipt, owner),
     onSelect: (status, owner) => {
@@ -1343,7 +1652,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   });
   caseSuites = setupRuntimeCaseSuites({ container: el('projectBuildSuites'),
     getState: () => ({ ...getContext(), sceneId: projectTarget() ? '' : selectedScene()?.id || '', available: available && !projectTarget(), visible: dialog.open, session: dialogSession,
-      active: requestBusy || running() || checkingTool() || caseDocuments?.isBusy(), offline: catalogUnavailable(),
+      active: requestBusy || running() || checkingTool() || caseDocuments?.isBusy() || physicsDocuments?.isBusy() || physicsCaseDocuments?.isBusy(), offline: catalogUnavailable(),
       buildId: matchedBuild()?.id || '', backendId: data?.backend?.id || '', canRun: mayStart('run', 'headless') && Boolean(runtimeCasePlan()), job: data?.job }),
     request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('管理运行验收文档'))).payload,
@@ -1368,6 +1677,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     if (dialog.open || handledCloseSession === dialogSession) return;
     handledCloseSession = dialogSession;
     caseDocuments.closed();
+    physicsDocuments?.closed();
+    physicsCaseDocuments?.closed();
     caseSuites.closed();
     caseReport.closed();
     backendProjects.closed();
@@ -1418,6 +1729,71 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   el('projectBuildGenerate').addEventListener('click', () => void submit('build'));
   el('projectBuildHeadless').addEventListener('click', () => void submit('run', 'headless'));
   el('projectBuildControl').addEventListener('click', () => void submit('run', 'headless', true));
+  el('projectBuildPhysicsReplay').addEventListener('click', () => void submit('run', 'headless', false, false, true));
+  el('projectBuildPhysicsCaseRun').addEventListener('click', () => void submit('run', 'headless', false, false, false, true));
+  el('projectBuildPhysicsCaseProgram').addEventListener('input', () => { physicsCaseError = ''; physicsCaseDocuments?.changed(); renderPhysicsCase(); });
+  el('projectBuildPhysicsCaseInput').addEventListener('click', () => {
+    try {
+      const current = el('projectBuildPhysicsCaseProgram').value;
+      let value = current.trim() ? JSON.parse(current) : { format: 'viento-physics2d-replay-case', schemaVersion: 1, checks: [] };
+      if (!value || typeof value !== 'object' || Array.isArray(value) || !Array.isArray(value.checks)) throw new Error('invalid');
+      value.program = readPhysicsReplay(); el('projectBuildPhysicsCaseProgram').value = JSON.stringify(value, null, 2);
+      physicsCaseDocuments?.changed(); physicsCaseError = ''; renderPhysicsCase();
+    } catch { physicsCaseError = '物理验收格式或输入不匹配，请检查定义并明确复制当前输入。'; renderPhysicsCase(); }
+  });
+  el('projectBuildPhysicsCaseUseInput').addEventListener('click', () => {
+    try {
+      const value = physicsCaseRead();
+      if (physicsDocuments && !physicsDocuments.confirmReplace()) return;
+      el('projectBuildPhysicsReplayProgram').value = JSON.stringify(value.program, null, 2);
+      physicsDocuments?.generated(); physicsReplayError = ''; physicsCaseError = ''; render();
+    } catch { physicsCaseError = '物理验收格式或输入不匹配，请检查定义并明确复制当前输入。'; renderPhysicsCase(); }
+  });
+  el('projectBuildPhysicsCaseSample').addEventListener('click', () => {
+    const value = sampledPhysicsCase();
+    if (!value || !mayStart('run', 'headless')) return;
+    if (el('projectBuildPhysicsCaseProgram').value.trim() && !window.confirm(t('生成会替换验收草稿，继续吗？'))) return;
+    el('projectBuildPhysicsCaseProgram').value = JSON.stringify(value, null, 2); physicsCaseDocuments?.generated(); physicsCaseError = ''; renderPhysicsCase();
+  });
+  el('projectBuildPhysicsCaseAdd').addEventListener('click', () => {
+    try {
+      let value = JSON.parse(el('projectBuildPhysicsCaseProgram').value);
+      if (!Array.isArray(value.checks)) throw new Error('invalid');
+      const number = id => { const raw = el(id).value; if (!raw.trim() || !Number.isFinite(Number(raw))) throw new Error('invalid'); return Number(raw); };
+      const check = { instanceId: el('projectBuildPhysicsCaseInstance').value.trim(), stepIndex: number('projectBuildPhysicsCaseStep') };
+      if (el('projectBuildPhysicsCasePosition').checked) check.positionAfter = { value: [number('projectBuildPhysicsCaseX'), number('projectBuildPhysicsCaseY')], tolerance: [number('projectBuildPhysicsCaseToleranceX'), number('projectBuildPhysicsCaseToleranceY')] };
+      const contact = el('projectBuildPhysicsCaseContact').value;
+      if (contact === 'yes' || contact === 'no') { check.contact = { exists: contact === 'yes' }; const body = el('projectBuildPhysicsCaseBody').value.trim(); if (body) check.contact.bodyId = body; }
+      value.checks = value.checks.filter(row => row.instanceId !== check.instanceId || row.stepIndex !== check.stepIndex).concat(check);
+      value = validateProjectPhysics2DReplayCase(value);
+      el('projectBuildPhysicsCaseProgram').value = JSON.stringify(value, null, 2); physicsCaseDocuments?.changed(); physicsCaseError = ''; renderPhysicsCase();
+    } catch { physicsCaseError = '检查无效，请核对实例、步骤、位置、容差和碰撞体编号。'; renderPhysicsCase(); }
+  });
+  el('projectBuildPhysicsReplayExample').addEventListener('click', () => {
+    if (!mayStart('run', 'headless') || !hasPhysicsReplayCapability() || !physicsReplayBuildSupported()) { render(); return; }
+    if (physicsDocuments && !physicsDocuments.confirmReplace()) return;
+    const input = el('projectBuildPhysicsReplayProgram'); input.value = JSON.stringify(defaultPhysicsReplay(), null, 2);
+    physicsDocuments?.generated(); physicsReplayError = ''; renderPhysicsReplay(); renderPhysicsCase(); input.focus(); input.selectionStart = input.selectionEnd = 0;
+  });
+  function editPhysicsRange(pressed) {
+    let program; try { program = readPhysicsReplay(); } catch { renderPhysicsReplay(); return; }
+    const action = el('projectBuildPhysicsRangeAction').value;
+    const startText = el('projectBuildPhysicsRangeStart').value, endText = el('projectBuildPhysicsRangeEnd').value;
+    const start = Number(startText), end = Number(endText), error = el('projectBuildPhysicsRangeError');
+    if (!PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS.includes(action) || !/^\d+$/.test(startText) || !/^\d+$/.test(endText)
+      || !Number.isSafeInteger(start) || !Number.isSafeInteger(end) || start < 1 || end > 30 || start > end || (pressed && end === 30)) {
+      error.hidden = false; error.textContent = t('请输入有效的 1–30 步范围；按下范围不能包含第 30 步。'); return;
+    }
+    const updated = setProjectPhysics2DInputReplayRange(program, action, start - 1, end - 1, pressed);
+    if (program.steps.slice(start - 1, end).some(step => step[action] !== pressed)) {
+      el('projectBuildPhysicsReplayProgram').value = JSON.stringify(updated, null, 2);
+      physicsDocuments?.changed();
+    }
+    physicsReplayError = ''; error.hidden = true; renderPhysicsReplay(); renderPhysicsCase();
+  }
+  el('projectBuildPhysicsRangePress').addEventListener('click', () => editPhysicsRange(true));
+  el('projectBuildPhysicsRangeRelease').addEventListener('click', () => editPhysicsRange(false));
+  el('projectBuildPhysicsReplayProgram').addEventListener('input', () => { physicsReplayError = ''; physicsDocuments?.changed(); renderPhysicsReplay(); renderPhysicsCase(); });
   el('projectBuildCaseRun').addEventListener('click', () => void submit('run', 'headless', false, true));
   el('projectBuildCaseGenerate').addEventListener('click', () => {
     if (!mayStart('run', 'headless')) { render(); return; }

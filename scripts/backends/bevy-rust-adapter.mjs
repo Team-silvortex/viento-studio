@@ -54,7 +54,7 @@ async function identify(executable, { signal } = {}) {
 }
 async function fingerprint() {
   const files = ['scripts/backends/bevy-rust-adapter.mjs', 'scripts/backends/bevy-rust-project.mjs', 'engine/scene-behavior-events.mjs',
-    'engine/scene-runtime-events.mjs', 'engine/scene-behaviors.mjs', 'engine/build-plan.mjs', 'engine/backend-capabilities.mjs', 'scripts/adapters/node-execution-backends.mjs'];
+    'engine/scene-runtime-events.mjs', 'engine/scene-behaviors.mjs', 'engine/build-plan.mjs', 'engine/scene-model.mjs', 'engine/backend-capabilities.mjs', 'scripts/adapters/node-execution-backends.mjs'];
   const template = new URL('./bevy-rust/', import.meta.url);
   for (const name of (await fs.readdir(template, { recursive: true })).sort()) {
     const url = new URL(name, template); if ((await fs.lstat(url)).isFile()) files.push(`scripts/backends/bevy-rust/${name}`);

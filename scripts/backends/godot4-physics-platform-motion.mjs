@@ -1,6 +1,7 @@
 // Explicit horizontal trajectories extend a frozen old plan projection. The
 // original solvers and facts remain owned by the historical physics layers.
 import fs from 'node:fs/promises';
+import { unhookCharacterIntent } from './godot4-physics-character-intent-transform.mjs';
 import path from 'node:path';
 import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
 import { SCENE_PHYSICS2D_PLATFORM_MOTION_CAPABILITY } from '../../engine/scene-physics2d.mjs';
@@ -13,7 +14,7 @@ const invalid = () => { throw buildError('build_physics_platform_motion_invalid'
 const replaceOne = (source, before, after) => { if (source.split(before).length !== 2) invalid(); return source.replace(before, after); };
 const helperName = 'platform-motion-helper.gd';
 const helperURL = new URL('./godot4/physics-platform-motion-helper.gd', import.meta.url);
-function hook(source, id, motor) {
+export function hook(source, id, motor) {
   if (source.includes('platform_motion') || source.includes('platform-motion-helper.gd')) invalid();
   let result = replaceOne(source, '\nfunc _ready() -> void:', '\nvar platform_motion = preload("res://platform-motion-helper.gd").new()\n\nfunc _ready() -> void:');
   result = replaceOne(result, '\tsuper._ready()', `\tsuper._ready()\n\tplatform_motion.install(self, "res://scenes/${id}/platform-motion.json")`);
@@ -25,12 +26,12 @@ function hook(source, id, motor) {
   }
   return result;
 }
-function oneWay(source, id) {
+export function oneWay(source, id) {
   const ready = 'func _ready() -> void:\n\tsuper._ready()';
   // Historical one-way installation follows the same native root factory.
   return replaceOne(source, ready, ready + `\n\tif not preload("res://physics-one-way-helper.gd").install(self, "res://scenes/${id}/one-way.json"):\n\t\treturn`);
 }
-async function historicalRuntime(id, motor) {
+export async function historicalRuntime(id, motor) {
   const prefix = `scenes/${id}`;
   if (!motor) return (await fs.readFile(new URL('./godot4/physics-observation-runtime.gd', import.meta.url), 'utf8'))
     .replace('__PHYSICS_RUNTIME__', `res://${prefix}/physics-observation-base.gd`).replace('__PHYSICS_DOCUMENT__', `res://${prefix}/physics.json`);
@@ -53,7 +54,8 @@ export async function generateGodotPhysicsPlatformMotionProject(input) {
   legacy.requiredCapabilities = legacy.requiredCapabilities.filter(value => value !== SCENE_PHYSICS2D_PLATFORM_MOTION_CAPABILITY);
   const generated = await generateGodotPhysicsDropThroughProject(legacy);
   if (!selected.length) return generated;
-  const helper = await fs.readFile(helperURL), generator = await fs.readFile(new URL('./godot4-physics-platform-motion.mjs', import.meta.url));
+  // Keep the published generation fingerprint stable as validation evolves.
+  const helper = await fs.readFile(helperURL), generator = await fs.readFile(new URL('./godot4-physics-platform-motion-v0.30.mjs.txt', import.meta.url));
   for (const scene of selected) {
     const id = scene.scene.objectId, prefix = `scenes/${id}`, original = generated.files.get(`${prefix}/runtime.gd`);
     const motor = generated.files.has(`${prefix}/character-motion.json`), base = generated.files.get(`${prefix}/one-way-original.gd`);
@@ -85,7 +87,11 @@ export async function godotPhysicsPlatformMotionAssemblyScripts(directory, signa
     for (const row of assembly) {
       const id = row.sceneId, prefix = `scenes/${id}`, originalName = `${prefix}/platform-motion-original.gd`, originalOneWayName = `${prefix}/platform-motion-one-way-original.gd`;
       const documentBytes = await optional(`${prefix}/platform-motion.json`), originalBytes = await optional(originalName), originalOneWay = await optional(originalOneWayName);
-      const runtime = (await read(`${prefix}/runtime.gd`)).toString(), oldOneWay = await optional(`${prefix}/one-way-original.gd`);
+      const rawRuntime = (await read(`${prefix}/runtime.gd`)).toString(), rawOldOneWay = await optional(`${prefix}/one-way-original.gd`);
+      const intent = await optional('character-intent-project.json');
+      const canNormalize = intent !== null && JSON.parse(intent).sceneIds?.includes(id);
+      const runtime = canNormalize ? unhookCharacterIntent(rawRuntime) : rawRuntime;
+      const oldOneWay = canNormalize && rawOldOneWay !== null ? Buffer.from(unhookCharacterIntent(rawOldOneWay.toString())) : rawOldOneWay;
       const touched = documentBytes !== null || originalBytes !== null || originalOneWay !== null || runtime.includes('platform_motion') || runtime.includes(helperName) || oldOneWay?.includes('platform_motion');
       if (inventory === null) { if (touched) invalid(); continue; }
       if (!touched) continue;

@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "steps": [
+    "Real Chrome trusted Ctrl/Meta+S is prevented; synthetic IME composition/cancel preserves the dirty draft; trusted Escape respects both confirm outcomes."
+  ],
+  "errors": [],
+  "limitations": [
+    "Chrome source web app on an isolated HTTP server; Tauri package and physical keyboard are not tested."
+  ],
+  "browser": "Chrome/156.0.8078.73",
+  "shortcuts": [
+    {
+      "key": "s",
+      "ctrl": true,
+      "meta": false,
+      "prevented": true,
+      "trusted": true
+    },
+    {
+      "key": "s",
+      "ctrl": false,
+      "meta": true,
+      "prevented": true,
+      "trusted": true
+    }
+  ]
+}

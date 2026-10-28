@@ -55,3 +55,49 @@ test('protocol7 completion capability is explicit while legacy animation backend
   descriptor.plans.find(item => item.kind === 'project').runtimeProtocolVersion = 6;
   assert.deepEqual(checkExecutionBackendSupport(descriptor, { operation: 'build', plan }), []);
 });
+
+
+test('animation capabilities are scoped to the selected project plan version and cannot hide missing input maps', () => {
+  const v1 = animationProject(), v2 = structuredClone(v1), descriptor = structuredClone(adapter.descriptor);
+  v2.schemaVersion = 2;
+  v2.inputMap = { objectId:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', sourcePath:'documents/input/keys.json',
+    sourceRevision:`sha256:${'a'.repeat(64)}`, document:{ format:'viento-input-map', schemaVersion:1, actions:[{name:'move_left', keys:['KeyA']}] } };
+  v2.requiredCapabilities = [...v2.requiredCapabilities, 'project.input-map'].sort();
+  const first = descriptor.plans.find(item => item.kind === 'project' && item.schemaVersion === 1);
+  const second = descriptor.plans.find(item => item.kind === 'project' && item.schemaVersion === 2);
+  descriptor.capabilities = descriptor.capabilities.filter(value => value !== 'project.animation-completion');
+  first.runtimeProtocolVersion = 6; second.runtimeProtocolVersion = 11;
+  assert.deepEqual(checkExecutionBackendSupport(descriptor, {operation:'build', plan:v1}), []);
+  assert.ok(checkExecutionBackendSupport(descriptor, {operation:'build', plan:v2}).some(item => item.capability === 'project.animation-completion'));
+  first.runtimeProtocolVersion = 11; second.runtimeProtocolVersion = 6;
+  assert.ok(checkExecutionBackendSupport(descriptor, {operation:'build', plan:v1}).some(item => item.capability === 'project.animation-completion'));
+  assert.deepEqual(checkExecutionBackendSupport(descriptor, {operation:'build', plan:v2}), []);
+  descriptor.capabilities = descriptor.capabilities.filter(value => value !== 'project.input-map');
+  assert.ok(checkExecutionBackendSupport(descriptor, {operation:'build', plan:v2}).some(item => item.code === 'build_capability_missing' && item.capability === 'project.input-map'));
+  const forged = structuredClone(v2); forged.requiredCapabilities = forged.requiredCapabilities.filter(value => value !== 'project.input-map');
+  assert.ok(checkExecutionBackendSupport(descriptor, {operation:'build', plan:forged}).some(item => item.code === 'build_assembly_invalid' && item.capability === 'project.input-map'));
+});
+
+test('state and per-instance animation protocol checks use the matching project schema', () => {
+  const v1 = animationProject(), v2 = structuredClone(v1), descriptor = structuredClone(adapter.descriptor);
+  v2.schemaVersion = 2;
+  v2.inputMap = { objectId:'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', sourcePath:'documents/input/keys.json',
+    sourceRevision:`sha256:${'a'.repeat(64)}`, document:{ format:'viento-input-map', schemaVersion:1, actions:[{name:'move_left', keys:['KeyA']}] } };
+  v2.requiredCapabilities = [...v2.requiredCapabilities, 'project.input-map'].sort();
+  const first = descriptor.plans.find(item => item.kind === 'project' && item.schemaVersion === 1);
+  const second = descriptor.plans.find(item => item.kind === 'project' && item.schemaVersion === 2);
+  for (const [protocol, capability] of [[8, 'project.animation-state-snapshots'], [9, 'project.animation-state-entries'], [10, 'project.animation-state-entry-triggers']]) {
+    const limited = structuredClone(descriptor); limited.capabilities = limited.capabilities.filter(value => value !== capability);
+    limited.plans.find(item => item.kind === 'project' && item.schemaVersion === 1).runtimeProtocolVersion = 6;
+    limited.plans.find(item => item.kind === 'project' && item.schemaVersion === 2).runtimeProtocolVersion = protocol;
+    assert.deepEqual(checkExecutionBackendSupport(limited, {operation:'build', plan:v1}), []);
+    assert.ok(checkExecutionBackendSupport(limited, {operation:'build', plan:v2}).some(item => item.capability === capability));
+  }
+  first.runtimeProtocolVersion = 11; second.runtimeProtocolVersion = 6;
+  v2.scenes[0].animation.document.playbackScope = 'instance';
+  v2.scenes[0].requiredCapabilities.push('animation.instances2d');
+  v2.requiredCapabilities.push('animation.instances2d');
+  assert.ok(checkExecutionBackendSupport(descriptor, {operation:'build', plan:v2}).some(item => item.capability === 'animation.instances2d'));
+  second.runtimeProtocolVersion = 11;
+  assert.deepEqual(checkExecutionBackendSupport(descriptor, {operation:'build', plan:v2}), []);
+});

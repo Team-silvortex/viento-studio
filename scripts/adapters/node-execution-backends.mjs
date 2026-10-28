@@ -115,12 +115,15 @@ export function validateGeneratedExecutionProject(adapter, plan, generated) {
   const projectStates = projectAnimation && createProjectAnimationStateCatalog(plan).scenes.length > 0;
   const projectClips = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation?.document?.schemaVersion >= 3);
   const projectInstances = Array.isArray(plan.scenes) && plan.scenes.some(scene => scene.animation?.document?.playbackScope === 'instance');
-  const legacyProjectProtocol = selectedPlan?.kind === 'project' && selectedPlan.schemaVersion === 1
+  const legacyProjectProtocol = selectedPlan?.kind === 'project' && [1, 2].includes(selectedPlan.schemaVersion)
     && Array.isArray(plan.scenes) && (
       [5, 6, 7, 8, 9, 10, 11].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 4 && !projectAnimation
       || selectedPlan.runtimeProtocolVersion === 6 && generated?.backend?.protocolVersion === 5 && projectAnimation && !projectClips
       || [8, 9, 10, 11].includes(selectedPlan.runtimeProtocolVersion) && generated?.backend?.protocolVersion === 7 && projectAnimation && !projectStates && !projectInstances
       || selectedPlan.runtimeProtocolVersion === 11 && generated?.backend?.protocolVersion === 10 && projectStates && !projectInstances);
+  if (plan.kind === 'project' && plan.schemaVersion === 2 && (!Array.isArray(plan.requiredCapabilities) || !plan.requiredCapabilities.includes('project.input-map')
+    || !Array.isArray(adapter.descriptor.capabilities) || !adapter.descriptor.capabilities.includes('project.input-map')
+    || !Array.isArray(generated?.backend?.capabilities) || !generated.backend.capabilities.includes('project.input-map'))) invalid('Generated backend lacks the declared project input map.');
   if (!selectedPlan || !generated || !(generated.files instanceof Map) || !(generated.resourceFiles instanceof Map)
     || generated.files.size < 1 || generated.files.size > (selectedPlan?.kind === 'project' && [9, 10, 11].includes(selectedPlan.runtimeProtocolVersion) && [9, 10, 11].includes(generated.backend?.protocolVersion) ? 1024 : 512) || generated.resourceFiles.size !== plan.resources.length
     || selectedPlan?.kind === 'project' && generated.backend?.protocolVersion === 6 && !projectClips

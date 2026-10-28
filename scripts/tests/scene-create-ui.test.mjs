@@ -221,3 +221,18 @@ test('new scenes can repeat a single definition and cloning and reordering prese
   h.element('sceneActor0Remove').click(); await h.preview();
   assert.deepEqual(JSON.parse(h.calls.at(-1).request.content).actors.map(actor => actor.instanceId), [second, cloned]);
 });
+
+test('invalid Unicode scene titles show actionable localized errors before preview and preserve the draft', async () => {
+  const h = await harness();
+  for (const [language, badTitle, message] of [
+    ['zh-CN', 'bad \ud800 title', /场景标题包含无效的 Unicode 字符/],
+    ['en', 'bad \udc00 title', /invalid Unicode character/],
+    ['ja', 'bad \ud800 title', /無効な Unicode 文字/],
+  ]) {
+    h.setLanguage(language); h.set('sceneCreateName', badTitle); h.element('sceneCreateCheck').click();
+    assert.equal(h.calls.length, 0); assert.match(h.element('sceneCreateDiagnostics').textContent, message);
+    assert.equal(h.element('sceneCreateName').value, badTitle);
+  }
+  h.set('sceneCreateName', '日本語 e\u0301 🦊'); await h.preview();
+  assert.equal(JSON.parse(h.calls.at(-1).request.content).title, '日本語 e\u0301 🦊');
+});

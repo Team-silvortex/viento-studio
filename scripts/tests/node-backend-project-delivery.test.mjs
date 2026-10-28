@@ -46,6 +46,8 @@ test('Godot, scripted Godot and Bevy deliveries use the existing streaming write
     assert.equal(f.plan.entries.filter(row => row.buffer).length, 1, 'generated files remain streamed, only bounded README is buffered');
     const readme = entries.find(row => row.path === 'README.md').buffer.toString();
     for (const text of ['中文', 'English', '日本語', '.viento.zip', f.project.tool.version]) assert.ok(readme.includes(text));
+    assert.equal(readme.includes('<runtime-path>'), false, 'Godot and standalone Bevy scenes do not receive assembly instructions');
+    assert.equal(readme.includes('scene switching is not supported'), false);
     for (const text of [f.author, f.directory, '/usr/bin/', 'snapshot.source']) assert.equal(entries.some(row => row.buffer.includes(text)), false);
   }
 });
@@ -227,4 +229,22 @@ test('delivery ZIP rejects the1155th entry before opening even a valid protocol9
   try { await assert.rejects(verifyBackendProjectDelivery(output), invalid); }
   finally { yauzl.ZipFile.prototype.openReadStreamPromise = original; }
   assert.equal(reads, 0, 'the global entry limit is checked before any decompression');
+});
+
+test('Rust delivery instructions remain distinct from data-only Bevy assembly instructions', async t => {
+  const f = await backendProjectFixture(t, { backend: 'bevy', version: 2 });
+  // Synthetic recorded inventory isolates README routing from Rust compilation.
+  const project = structuredClone(f.project);
+  project.backend.id = 'org.viento.bevy-rust';
+  project.executionAdapter.id = project.backend.id;
+  project.project.kind = 'bevy-rust-project';
+  const bytes = Buffer.from(JSON.stringify(project, null, 2) + '\n');
+  await fs.writeFile(path.join(f.directory, 'backend-project.json'), bytes);
+  const inspection = { project, buildDirectory: f.directory, inspection: { recorded: true, manifestSha256: digest(bytes) } };
+  const plan = await planBackendProjectDelivery({ inspection, assertCurrent: async () => {} });
+  const readme = plan.entries.find(row => row.path === 'README.md').buffer.toString();
+  assert.ok(readme.includes('cargo build --locked --offline'));
+  assert.ok(readme.includes('viento-bevy-behaviors --scene'));
+  assert.equal(readme.includes('<runtime-path>'), false);
+  assert.equal(readme.includes('scene switching is not supported'), false);
 });

@@ -1,5 +1,6 @@
 // Frozen project envelope admission is independent of author parsing and host IO.
 import { canonicalJson } from './canonical-json.mjs';
+import { validateProjectInputMap } from './project-input-map.mjs';
 import { validateSceneAnimationPlan } from './scene-animation.mjs';
 import { validateScenePhysics2DPlan } from './scene-physics2d.mjs';
 
@@ -36,8 +37,8 @@ export function validateProjectAssemblyPlan(input) {
   const text = item => typeof item === 'string' && item.length > 0 && item.length <= 4096;
   const exact = (item, keys) => item && typeof item === 'object' && !Array.isArray(item)
     && Object.keys(item).length === keys.length && keys.every(key => Object.hasOwn(item, key));
-  if (!exact(value, ['format', 'schemaVersion', 'kind', 'projectId', 'worldId', 'worldRevision', 'assembly', 'entrySceneId', 'scenes', 'resources', 'requiredCapabilities'])
-    || value.format !== 'viento-build-plan' || value.kind !== 'project' || value.schemaVersion !== 1
+  if (!exact(value, ['format', 'schemaVersion', 'kind', 'projectId', 'worldId', 'worldRevision', 'assembly', 'entrySceneId', 'scenes', 'resources', 'requiredCapabilities', ...(value.schemaVersion === 2 ? ['inputMap'] : [])])
+    || value.format !== 'viento-build-plan' || value.kind !== 'project' || ![1, 2].includes(value.schemaVersion)
     || !text(value.projectId) || !text(value.worldId) || !revision(value.worldRevision)
     || !exact(value.assembly, ['objectId', 'sourcePath', 'sourceRevision', 'title']) || !uuid(value.assembly.objectId)
     || !text(value.assembly.sourcePath) || !value.assembly.sourcePath.toLowerCase().endsWith('.json') || !revision(value.assembly.sourceRevision)
@@ -64,6 +65,14 @@ export function validateProjectAssemblyPlan(input) {
       if (resources.has(resource.id) && canonicalJson(resources.get(resource.id)) !== canonicalJson(resource)) return fail();
       resources.set(resource.id, resource);
     }
+  }
+  if (value.schemaVersion === 2) {
+    if (!exact(value.inputMap, ['objectId', 'sourcePath', 'sourceRevision', 'document']) || !uuid(value.inputMap.objectId)
+      || value.inputMap.objectId === value.assembly.objectId || ids.has(value.inputMap.objectId) || !text(value.inputMap.sourcePath)
+      || !value.inputMap.sourcePath.toLowerCase().endsWith('.json') || value.inputMap.sourcePath === value.assembly.sourcePath
+      || paths.has(value.inputMap.sourcePath) || !revision(value.inputMap.sourceRevision)) return fail();
+    try { validateProjectInputMap(value.inputMap.document); } catch { return fail(); }
+    capabilities.add('project.input-map');
   }
   if (!ids.has(value.entrySceneId)
     || canonicalJson(value.resources) !== canonicalJson([...resources.values()].sort((a, b) => a.id.localeCompare(b.id)))

@@ -47,7 +47,7 @@ async function stage(f, generated = f.generated) {
   }
   return directory;
 }
-async function execute(f, directory, { scriptCheck = false, mode = 'headlessLogic', capture, smoke = true } = {}) {
+async function execute(f, directory, { scriptCheck = false, mode = 'headlessLogic', capture, smoke = true, backend = f.generated.backend } = {}) {
   const identified = await adapter.identify(tool);
   for (const phase of scriptCheck ? adapter.buildPhases : adapter.runtimePhases) {
     const result = await adapter.executePhase({ phase, directory, tool: identified, timeoutMs: 60000 });
@@ -58,7 +58,7 @@ async function execute(f, directory, { scriptCheck = false, mode = 'headlessLogi
   if (reportPath) await fs.appendFile(reportPath.replace(/\.json$/, '-stdout.log'), result.stdout + result.stderr + '\n');
   assert.equal(result.status, 'succeeded', result.stdout + result.stderr);
   assert.deepEqual(adapter.diagnostics(result, f.captured.plan), [], result.stdout + result.stderr);
-  const reader = adapter.createEventReader(f.captured.plan, { smoke, capabilities: f.generated.backend.capabilities });
+  const reader = adapter.createEventReader(f.captured.plan, { smoke, capabilities: backend.capabilities });
   reader.push(result.stdout); const ended = reader.finish(); assert.deepEqual(ended.diagnostics, [], result.stdout);
   const snapshot = reader.snapshot?.(); if (snapshot) assert.equal(snapshot.phase, 'finished');
   return { result, reader, snapshot, tool: identified };
@@ -66,14 +66,14 @@ async function execute(f, directory, { scriptCheck = false, mode = 'headlessLogi
 function samples(output, f) { return output.snapshot.samples.filter(sample => sample.instanceId === f.instanceId); }
 function publications(output, bindingId) { return output.reader.events.filter(frame => frame.event === 'event-publish' && (!bindingId || frame.bindingId === bindingId)); }
 function exitActors(output) { return output.reader.events.find(frame => frame.event === 'scene-exit').actors; }
-function record(name, f, output, before) {
-  evidence.push({ name, backend: f.generated.backend, tool: output.tool, samples: output.snapshot?.samples || [], probes: facts(output), publications: publications(output),
+function record(name, f, output, before, backend = f.generated.backend) {
+  evidence.push({ name, backend, tool: output.tool, samples: output.snapshot?.samples || [], probes: facts(output), publications: publications(output),
     audio: output.reader.events.filter(frame => frame.event === 'audio-command'), animation: output.reader.events.filter(frame => frame.event === 'animation-command'),
     finalActors: output.reader.events.filter(frame => frame.event === 'scene-exit').map(frame => ({ visitIndex: frame.visitIndex, actors: frame.actors })),
     authorFiles: Object.keys(before).length, authorSha256: hash(JSON.stringify(before)) });
 }
-function carried(output, f, { both = false } = {}) {
-  assert.equal(f.generated.backend.version, '0.31.0'); assert.ok(f.generated.backend.capabilities.includes('physics.platform-motion2d'));
+function carried(output, f, { both = false, backend = f.generated.backend, expectedVersion = '0.31.0' } = {}) {
+  assert.equal(backend.version, expectedVersion); assert.ok(backend.capabilities.includes('physics.platform-motion2d'));
   const mine = samples(output, f); assert.equal(mine.length, 30);
   assert.ok(mine.some(sample => sample.requestedMotion[0] > 1)); assert.ok(mine.some(sample => sample.requestedMotion[0] < -1));
   assert.ok(mine.some(sample => sample.positionAfter[0] - sample.positionBefore[0] > 1));
@@ -234,8 +234,12 @@ test('real portable ZIP retains platform carry and media after original paths go
     const file=path.join(moved,entry.fileName);await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,Buffer.concat(chunks));
   }}finally{await new Promise(resolve=>{archive.reader.once('close',resolve);archive.close()});}
   assert.deepEqual(await hashes(f.author),before);await fs.rename(f.author,f.author+'.offline');await fs.rename(output,output+'.offline');
-  const observed=await execute(f,path.join(moved,'project'),{scriptCheck:true});carried(observed,f);
-  assert.equal(observed.reader.events.filter(frame=>frame.event==='audio-command'&&frame.bindingId===f.audioBindingId).length,1);record('portable-relocation',f,observed,before);
+  const backend = built.record.backend;
+  assert.equal(backend.version, '0.37.0');
+  assert.ok(backend.capabilities.includes('physics.character-intent2d'));
+  assert.ok(backend.capabilities.includes('runtime.execution-frames'));
+  const observed=await execute(f,path.join(moved,'project'),{scriptCheck:true,backend});carried(observed,f,{backend,expectedVersion:'0.37.0'});
+  assert.equal(observed.reader.events.filter(frame=>frame.event==='audio-command'&&frame.bindingId===f.audioBindingId).length,1);record('portable-relocation',f,observed,before,backend);
   if(reportPath){const destination=path.join(path.dirname(reportPath),path.basename(reportPath,'.json')+'-platform-motion.zip');await fs.copyFile(zip,destination,fs.constants.COPYFILE_EXCL);evidence.at(-1).zip={path:destination,sha256:hash(await fs.readFile(zip))};}
 });
 

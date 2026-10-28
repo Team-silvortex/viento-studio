@@ -23,6 +23,11 @@ export const bevyRustSourcePath = objectId => {
 };
 
 export function validateBevyRustPlan(plan) {
+  // Keep this boundary safe even when called with a plan that bypassed the
+  // neutral scene parser. Do not silently replace the author's code units.
+  if (typeof plan?.scene?.title === 'string' && /[\uD800-\uDFFF]/u.test(plan.scene.title)) {
+    invalid('The scene title contains an unpaired Unicode surrogate; replace it with valid text.');
+  }
   if (plan?.format !== 'viento-build-plan' || plan.kind !== 'scene2d' || plan.schemaVersion !== 3
     || !provenance(plan.scene) || typeof plan.scene.title !== 'string' || !plan.scene.title.trim() || plan.scene.title.length > 160
     || /[\x00-\x1f]/.test(plan.scene.title) || !pair(plan.scene.viewport, 64, 4096) || !plan.scene.viewport.every(Number.isInteger)

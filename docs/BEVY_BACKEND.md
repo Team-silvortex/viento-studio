@@ -1,6 +1,6 @@
 # Bevy 执行后端
 
-当前源码 **0.2.4** 提供两条独立的 Linux 无头通道：`org.viento.bevy` 运行无行为数据工程，`org.viento.bevy-rust` 编译已登记的作者 Rust 行为。两者分别登记工具、能力和产物，不自动互换；默认后端仍是 Godot。源码、安装与平台范围见[状态页](STATUS.md)，旧发布前言见[历史归档](history/bevy-backend-2026-10-25.md)。
+0.2.7 源码提供两条独立的 Linux 无头通道：`org.viento.bevy` 运行无行为数据工程，`org.viento.bevy-rust` 编译已登记的作者 Rust 行为。两者分别登记工具、能力和产物，不自动互换；默认后端仍是 Godot。源码、安装与平台范围见[状态页](STATUS.md)，旧发布前言见[历史归档](history/bevy-backend-2026-10-25.md)。
 
 | 需求 | 选择与入口 |
 | --- | --- |
@@ -9,7 +9,15 @@
 | 核对冻结执行和生成工程 | [执行中间层](BACKEND_MIDDLEWARE.md) · [数据通道产物](#数据通道中间层与产物) · [后端工程管理](BACKEND_PROJECTS.md) |
 | 比较 Godot 与 Bevy 的已接入能力 | [二维功能映射](FUNCTION_MAPPING_2D.md#当前后端映射) · [验证范围](#数据通道验证与下一步) |
 
-两条 Bevy 通道均未接项目组装、视觉动画、声音、物理或图形窗口；不能从 Bevy 引擎本身具备的功能推导 Studio 已接入能力。Godot 项目协议与 Bevy 的 scene2d 协议各自维护，见[当前项目协议选择](PROJECT_BUILD.md#当前项目协议选择)。
+数据通道支持无输入映射的项目组装：构建时逐一检查全部成员，运行时仅执行指定入口场景，支持对该冻结入口执行有限方向回放。Bevy Rust 作者行为通道仍不支持项目组装。两条通道均未接视觉动画、声音、物理或图形窗口；不能从 Bevy 引擎本身具备的功能推导 Studio 已接入能力。Godot 与 Bevy 的运行契约分别维护，见[当前项目协议选择](PROJECT_BUILD.md#当前项目协议选择)。
+
+## 场景标题的 Unicode 诊断
+
+Scene2D 标题应使用完整的 Unicode 字符，最长 160 个 UTF-16 代码单元；中文、日文、组合字符和 emoji 都可以保留原样。JSON 允许转义出单独的高、低代理项，例如 `\ud800`，但它们不是完整 Unicode 字符，无法由 Bevy Rust 运行程序作为有效文本读取。当前源码在中立场景检查时报告 `build_scene_title_unicode`，定位到原场景的 `/title`；两个 Bevy 生成器也各自阻止未通过该检查的计划生成产物。场景创建、预览与构建界面提供中英日提示。
+
+遇到该诊断时，打开提示所指向的场景原文，在标题中删除或重新输入无效字符，再普通保存并重新检查计划与构建。仅当存在该问题时需要手动修改；程序不会自动替换字符或改写旧作品，旧文档的登记与恢复路径继续保留。合法字符不会被规范化或转换。
+
+此修复改变了两个 Bevy 生成器的实现摘要，旧的冻结 Bevy 构建需要重新生成后再运行；它不要求迁移作者格式或替换已安装的 Bevy 运行程序。[专项测试记录](test-results/bevy-scene-unicode/README.md)区分了真实 Bevy 数据通道、生成器及界面测试；其中不把数据通道运行推断成 Rust 作者行为工程的实测。
 
 <a id="rust-作者行为通道012-后工作树"></a>
 
@@ -76,12 +84,22 @@ Bevy 生成的数据工程已接入[持久列表与显式运行选择](BACKEND_P
 | --- | --- |
 | 后端身份 | `org.viento.bevy`，适配器与可信运行程序版本 `0.3.0` |
 | 工具链 | 固定 Bevy `0.19.1`；Rust 最低 `1.95`；仅 Linux 声明 |
-| 输入计划 | 无图 Scene2D plan 1／2；作者 Scene2D v3 的组织分组仍按既有规则编译到 plan 2 |
-| 功能 | `scene2d`、`input.arrows`、`state.movement`、`runtime.control-replay`、`runtime.control-replay.instances`；独立实例保持定义 UUID 与实例 UUID 配对 |
+| 输入计划 | 无图 Scene2D plan 1／2；无输入映射的 project plan 1，成员各为受支持的 Scene2D plan 1／2；作者 Scene2D v3 的组织分组仍按既有规则编译到 plan 2 |
+| 功能 | `scene2d`、`input.arrows`、`state.movement`、`project.scenes`；单场景支持 `runtime.control-replay` 和 `runtime.control-replay.instances`；项目声明 `project.control-replay`，对冻结入口支持全局或逐实例有限方向回放，独立实例保持定义 UUID 与实例 UUID 配对 |
 | 执行 | 构建数据工程、独立进程无头测试；窗口、截图、离屏、内嵌视口、GPU 均为 `false` |
-| 未接入 | 图片／音视频、作者 Rust 行为、GDScript plan 3、BRP、反射、RPC、热更新、独立发行程序 |
+| 未接入 | 场景切换、项目输入映射、图片／音视频、动画、物理、作者 Rust 行为、GDScript plan 3、BRP、反射、RPC、热更新、独立发行程序 |
 
 Bevy 依赖关闭默认功能，仅启用 `std`。可信运行程序使用 `App`、`MinimalPlugins`、组件、查询和移动 system；没有加载窗口、渲染、素材或实体键盘输入插件。无头 smoke 使用受控方向输入和固定时间步，并不代表实体键盘或画面验收。插件能按需求组成不同应用，这是 [Bevy 官方插件模型](https://bevy.org/learn/quick-start/getting-started/plugins/)的基本接口；实际锁定版本与 API 见 [Bevy 0.19.1 App 文档](https://docs.rs/bevy/0.19.1/bevy/app/struct.App.html)。
+
+## 数据通道：项目组装与交付
+
+项目组装使用现有作者 JSON：选择 1–32 个受支持的无图、无行为场景并指定入口，不引用项目输入映射。检查计划和构建会核对每个成员，可信 Bevy 工具逐一执行场景检查；任一成员不支持或检查失败均阻断项目构建。生成文件包括 `assembly.json`、各成员 `scenes/<场景 UUID>/scene-data.json` 和入口 `scene-data.json`。宿主适配器将入口场景的真实事件转换为项目协议 1 的访问观察；它不支持场景切换、实体键盘输入或图形窗口。其他成员随工程交付，但不会自动运行。
+
+在配置 `org.viento.bevy` 宿主并保存组装后，通过 **构建与运行 → 检查计划 → 构建项目 → 无头测试** 操作。带图片、行为、动画、声音、物理或输入映射的组装会被明确拒绝，不会为了适配 Bevy 改写作者内容。无输入映射的旧组装无需格式迁移；本次适配器指纹变化后，已有 Bevy 冻结构建需重新生成。
+
+选择已构建的项目后，可以使用 **编辑控制回放 → 控制回放** 对冻结入口进行有限无头运行：schema 1 的方向作用于入口中启用方向控制的实例，schema 2 可以逐实例指定方向，未列实例按步释放。实例选择与样本均来自已冻结入口，而非当前可变场景；运行不写作者数据，也不执行其他成员。每步长、末步释放和样本预算沿用[有限控制回放](RUNTIME_CONTROL.md)；项目级运行验收用例与批次、场景切换、物理回放、项目键盘映射和实体键盘输入仍未接入。
+
+后端工程目录和 `.viento-build.zip` 保存生成文件及来源清单，可在作者工程离线时检查和交付。接收方须另备匹配且可信的 `viento-bevy-runtime 0.3.0 bevy 0.19.1`；生成包不包含运行程序，也不是独立发行游戏。完整作者作品迁移仍使用 `.viento.zip` 或带依赖的资源包，生成工程的修改不会回写作者数据。单场景回放、项目入口回放与无程序项目无头 smoke 使用各自的准入和运行记录。
 
 ## 数据通道：准备可信运行程序
 
@@ -162,7 +180,7 @@ flowchart LR
   Admission --> UI[任务记录与界面]
 ```
 
-`bevy-project.mjs` 只生成 `scene-data.json` 与来源映射。构建阶段 `scene-check` 调用工具检查该数据；运行阶段把已校验的冻结文件复制到独立会话目录，由工具执行。不把 Cargo 目标目录、设备句柄或 Bevy Entity 数字 ID 写入作者元数据。构建仍记录源快照、源映射、产物字节、真实工具以及执行适配器摘要；源工程离线后可回放。
+`bevy-project.mjs` 为单场景生成 `scene-data.json` 与来源映射；`bevy-project-assembly.mjs` 组织所有成员、项目清单和入口副本。构建阶段 `scene-check` 调用工具检查各成员；运行阶段把已校验的冻结文件复制到独立会话目录，由工具执行入口。不把 Cargo 目标目录、设备句柄或 Bevy Entity 数字 ID 写入作者元数据。构建仍记录源快照、源映射、产物字节、真实工具以及执行适配器摘要；源工程离线后可回放。
 
 `engine/scene-runtime-events.mjs` 是无 Node、DOM 或引擎依赖的事件准入规则：验证 plan／runtime 1／2、完整演员集合、实例／定义配对、有限坐标、`idle`／`moving` 与 ready／finished 顺序，限制帧与事件预算。原文导航只取冻结计划来源；进程输出不能指定任意作者文件。Bevy 不导入 Godot 的生成器或读取器；原 Godot 五份生成／运行文件保持原字节。
 

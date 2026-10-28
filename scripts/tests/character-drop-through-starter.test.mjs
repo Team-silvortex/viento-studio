@@ -42,8 +42,8 @@ const legacy = {
 test('drop-through starter adds exactly one record while preserving all 18 previous records byte-for-byte', () => {
   const all = listScriptStarters();
   assert.equal(Object.keys(legacy).length, 18);
-  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), [starterId, 'godot-platform-endpoint-events']);
-  assert.equal(all.length, 20);
+  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), [starterId, 'godot-platform-endpoint-events', 'godot-character-intent']);
+  assert.equal(all.length, 21);
   assert.equal(new Set(all.map(row => row.id)).size, all.length);
   for (const [id, expected] of Object.entries(legacy)) assert.equal(hash(JSON.stringify(all.find(row => row.id === id))), expected, id);
   const row = all.find(item => item.id === starterId);

@@ -110,3 +110,44 @@ test('real saved assembly builds, runs, survives inspection and ZIP relocation w
     if (phase === 'run') assert.ok(projectFramesFromStdout(result.stdout).some(frame => frame.event === 'scene-event' && frame.stream === 'audio'));
   }
 });
+
+
+test('project input-map plan survives manifest, catalog and offline engine project delivery', async t => {
+  const inputMap = { format: 'viento-input-map', schemaVersion: 1, actions: [{ name: 'move_left', keys: ['KeyA', 'ArrowLeft'] }] };
+  const f = await projectAssemblyBuildFixture(t, { inputMap });
+  assert.equal(f.captured.plan.schemaVersion, 2); assert.equal(f.project.source.planSchemaVersion, 2);
+  assert.ok(f.project.dependencies.some(item => item.objectId === f.inputMapId && item.role === 'author-document'));
+  assert.match((await fs.readFile(path.join(f.directory, 'project/project.godot'), 'utf8')), /move_left/);
+  for (const version of [0, 3]) { const invalidProject = structuredClone(f.project); invalidProject.source.planSchemaVersion = version; assert.throws(() => validateBackendProjectManifest(invalidProject), invalid); }
+  const backendId = f.project.backend.id, namespace = path.join(f.temporary, 'cache/editor', 'b'.repeat(24), backendId), directory = path.join(namespace, randomUUID());
+  await fs.mkdir(namespace, { recursive: true }); await fs.rename(f.directory, directory);
+  const retentionPin = await createProjectRetentionPin(directory); pinProjectFile(retentionPin, 'backend-project.json', json(f.project));
+  const catalog = createBackendProjectCatalog({ namespace, backendId });
+  const entry = await catalog.capture({ buildDirectory: directory, project: f.project, manifestSha256: f.manifestSha256, retentionPin, title: 'Input project', createdAt: '2026-10-15T00:00:00.000Z' });
+  await catalog.upsert(entry); await fs.rm(f.author, { recursive: true });
+  const restored = await createBackendProjectCatalog({ namespace, backendId }).read();
+  const recovered = restored.entries.find(item => item.buildId === entry.buildId);
+  assert.equal((await assertCatalogProject(recovered)).buildDirectory, directory);
+  const inspect = () => inspectBackendProject({ buildDirectory: directory, ...f.pins });
+  const plan = await planBackendProjectDelivery({ inspection: await inspect(), assertCurrent: inspect });
+  const output = path.join(f.temporary, 'input-project.zip'); await writeExportZip(plan, output);
+  const verified = await verifyBackendProjectDelivery(output);
+  assert.equal(verified.delivery.project.source.planSchemaVersion, 2);
+  assert.ok(verified.delivery.project.dependencies.some(item => item.objectId === f.inputMapId));
+});
+
+test('real Godot build stores a v2 input-map project and can deliver it offline', { skip: !tool }, async t => {
+  const inputMap = { format: 'viento-input-map', schemaVersion: 1, actions: [{ name: 'actor_left', keys: ['KeyA', 'ArrowLeft'] }] };
+  const f = await projectAssemblyAuthor(t, { entry: 'audio', inputMap });
+  const built = await buildProject({ root: f.author, scene: f.assemblyId, godot: tool, output: path.join(f.temporary, 'build-with-input'), timeoutMs: 60000 });
+  assert.equal(built.ok, true, JSON.stringify(built.diagnostics || built.record?.diagnostics));
+  const directory = built.directory || built.output || built.buildDirectory;
+  const run = await runProjectBuild({ buildDirectory: directory, godot: tool, timeoutMs: 60000 });
+  assert.equal(run.ok, true, JSON.stringify(run.diagnostics || run.record?.diagnostics));
+  await fs.rm(f.author, { recursive: true });
+  const inspect = () => inspectBackendProject({ buildDirectory: directory });
+  const inspection = await inspect(); assert.equal(inspection.project.source.planSchemaVersion, 2);
+  const plan = await planBackendProjectDelivery({ inspection, assertCurrent: inspect }), output = path.join(f.temporary, 'delivery-input.zip');
+  await writeExportZip(plan, output); const verified = await verifyBackendProjectDelivery(output);
+  assert.equal(verified.delivery.project.source.planSchemaVersion, 2);
+});

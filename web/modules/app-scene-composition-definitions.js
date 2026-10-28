@@ -38,7 +38,7 @@ export function setupSceneCompositionDefinitions({ getContext = () => ({}), vali
           <label class="scene-field"><span data-i18n="高度"></span><input id="sceneCompositionDefinitionsHeight" type="number" min="1" max="2048" step="any"></label>
           <label class="scene-field"><span data-i18n="颜色"></span><input id="sceneCompositionDefinitionsColor" type="text" spellcheck="false"></label>
           <label class="scene-field"><span data-i18n="速度"></span><input id="sceneCompositionDefinitionsSpeed" type="number" min="0" max="2000" step="any"></label>
-          <label class="scene-field"><span data-i18n="控制"></span><select id="sceneCompositionDefinitionsControls"><option value="arrows" data-i18n="方向键"></option><option value="none" data-i18n="不接受输入"></option></select></label>
+          <label class="scene-field"><span data-i18n="控制"></span><select id="sceneCompositionDefinitionsControls"><option value="arrows" data-i18n="方向键"></option><option value="none" data-i18n="无内置控制"></option></select></label>
           <label class="scene-field"><span data-i18n="场景图片"></span><select id="sceneCompositionDefinitionsImage"></select></label></div>
         <p id="sceneCompositionDefinitionsDefaults" class="build-hint"></p>
       </fieldset>

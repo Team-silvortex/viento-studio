@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { randomUUID } from 'node:crypto';
@@ -8,6 +9,9 @@ import { createSceneRuntimeObservation } from '../../engine/scene-runtime-query.
 import { createProjectRuntimeObservation } from '../../engine/project-runtime-query.mjs';
 import { createProjectCausalAnchors } from '../../engine/project-causal-anchors.mjs';
 import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
+import { validateProjectPhysics2DInputReplay } from '../../engine/project-physics2d-input-replay.mjs';
+import { validateProjectPhysics2DReplayCase, evaluateProjectPhysics2DReplayCase } from '../../engine/project-physics2d-replay-case.mjs';
+import { validateProjectPhysics2DReplayPlan, validateProjectPhysics2DReplayObservation } from '../../engine/project-physics2d-replay-contract.mjs';
 import { validateSceneControlProgram, validateSceneControlPlan, createSceneControlTraceReader } from '../../engine/scene-control-program.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
 import { checkExecutionBackendSupport } from '../../engine/backend-capabilities.mjs';
@@ -80,6 +84,32 @@ async function saveRecord(directory, name, record, retentionPin) {
   finally { await fs.rm(temporary, { force: true }); }
 }
 
+// A physics acceptance result has exactly one commit. The asynchronous temp
+// write can be cancelled; after its last cancellation check, synchronous rename
+// makes the check and atomic publication indivisible with respect to JS abort
+// callbacks. Once rename succeeds, later cancellation cannot change the result.
+async function commitPhysicsCaseRecord(directory, record, signal, plan) {
+  const temporary = path.join(directory, `.session.json.${randomUUID()}`);
+  let committed = false;
+  try {
+    await fs.writeFile(temporary, json(record), { flag: 'wx', mode: 0o600 });
+    if (signal?.aborted && record.status !== 'cancelled') {
+      record.status = 'cancelled';
+      record.diagnostics.push(diagnostic(buildError('runtime_cancelled', 'Runtime cancelled.'), plan));
+      record.physicsControl.complete = false;
+      if (record.physics) record.physics.phase = 'incomplete';
+      record.physicsVerification.evaluation = { status: 'incomplete', checks: [] };
+      await fs.writeFile(temporary, json(record), { flag: 'w', mode: 0o600 });
+    }
+    fsSync.renameSync(temporary, path.join(directory, 'session.json'));
+    committed = true;
+  } finally {
+    // After rename there is no temporary path to clean up, and no awaited work
+    // may turn a successful commit into an apparent failure.
+    if (!committed) await fs.rm(temporary, { force: true });
+  }
+}
+
 export async function buildProject({ root, scene, targetId, godot, tool = godot, backendId = DEFAULT_EXECUTION_BACKEND,
   backendRegistry = createExecutionBackendRegistry(), output, signal, timeoutMs = 30000, expectedSnapshotId, onProgress = () => {} }) {
   let directory, plan, record, retentionPin, adapter, generated, sourceDocuments = [];
@@ -132,7 +162,7 @@ export async function buildProject({ root, scene, targetId, godot, tool = godot,
     const onOutput = output => onProgress({ output });
     for (const phase of adapter.buildPhases) {
       onProgress({ phase });
-      const result = await adapter.executePhase({ phase, tool: identifiedTool, directory: project, signal, timeoutMs, onOutput });
+      const result = await adapter.executePhase({ phase, tool: identifiedTool, directory: project, signal, timeoutMs, targetKind: plan.kind, onOutput });
       record.phases.push({ phase, ...result });
       record.diagnostics.push(...executionPhaseDiagnostics(adapter, result, plan));
       if (record.diagnostics.length) break;
@@ -190,8 +220,9 @@ export async function readFrozenProjectBuild(buildDirectory, { backendId, backen
 
 export async function runProjectBuild({ buildDirectory, godot, tool = godot, backendId,
   backendRegistry = createExecutionBackendRegistry(), signal, timeoutMs = 30000, headless = true, smoke = true, capture = false,
-  controlProgram: inputControlProgram, runtimeCase: inputRuntimeCase, runtimeCaseSceneId, expectedBuildId, expectedSnapshotId, onProgress = () => {} }) {
-  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram, runtimeCase, physicsReader, runtimeReader;
+  controlProgram: inputControlProgram, physicsControlProgram: inputPhysicsControlProgram, physicsReplayCase: inputPhysicsReplayCase, physicsReplaySceneId, runtimeCase: inputRuntimeCase, runtimeCaseSceneId, expectedBuildId, expectedSnapshotId, onProgress = () => {} }) {
+  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram, physicsControlProgram, physicsReplayCase, runtimeCase, physicsReader, runtimeReader, traceReader;
+  let physicsReplayObserved = false;
   // Callback consumers receive detached DTOs and cannot alter admitted input,
   // events, samples or the session record while a process is running.
   const publish = event => onProgress(JSON.parse(JSON.stringify(event)));
@@ -205,6 +236,21 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     return { runtime, ...(causalAnchors ? { causalAnchors } : {}) };
   };
   try {
+    if (inputPhysicsReplayCase !== undefined) {
+      if (inputPhysicsControlProgram !== undefined || inputControlProgram !== undefined || inputRuntimeCase !== undefined) throw buildError('runtime_physics2d_case_invalid', 'Select only one replay or verification program.');
+      physicsReplayCase = validateProjectPhysics2DReplayCase(inputPhysicsReplayCase);
+      physicsControlProgram = physicsReplayCase.program;
+      if (headless !== true || smoke !== true || capture !== false) throw buildError('runtime_physics2d_input_unsupported', 'Physics verification requires a finite headless run.');
+    }
+    if (inputPhysicsControlProgram !== undefined) {
+      if (inputControlProgram !== undefined || inputRuntimeCase !== undefined) throw buildError('runtime_physics2d_input_invalid', 'Select only one replay or verification program.');
+      physicsControlProgram = validateProjectPhysics2DInputReplay(inputPhysicsControlProgram);
+      if (headless !== true || smoke !== true || capture !== false) throw buildError('runtime_physics2d_input_unsupported', 'Physics input replay requires a finite headless run.');
+    }
+    if (physicsReplaySceneId !== undefined && (inputPhysicsControlProgram === undefined && inputPhysicsReplayCase === undefined || typeof physicsReplaySceneId !== 'string'
+      || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(physicsReplaySceneId))) {
+      throw buildError('runtime_physics_replay_scene_mismatch', 'A physics replay scene binding requires its input program and a valid scene identity.');
+    }
     if (runtimeCaseSceneId !== undefined && (inputRuntimeCase === undefined || typeof runtimeCaseSceneId !== 'string'
       || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(runtimeCaseSceneId))) {
       throw buildError('runtime_case_scene_mismatch', 'A scene binding requires a runtime case and a valid scene identity.');
@@ -230,6 +276,11 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     const read = async (name, limit) => readBuildFile(await resolveContainedPath(buildDirectory, path.join(buildDirectory, name)), limit, signal);
     const operation = capture ? 'windowCapture' : headless ? 'headlessLogic' : 'windowPreview';
     assertBackendOperation(adapter, operation);
+    if (physicsReplaySceneId !== undefined && (plan.kind !== 'project' || plan.entrySceneId !== physicsReplaySceneId)) {
+      throw buildError('runtime_physics_replay_scene_mismatch', 'The physics replay belongs to a different frozen entry scene.');
+    }
+    if (physicsControlProgram) validateProjectPhysics2DReplayPlan(plan, { backendId: adapter.descriptor.id, capabilities: adapter.descriptor.capabilities });
+    if (physicsReplayCase) physicsReplayCase = validateProjectPhysics2DReplayCase(physicsReplayCase, plan);
     if (controlProgram && (!adapter.descriptor.capabilities.includes('runtime.control-replay')
       || controlProgram.schemaVersion === 2 && !adapter.descriptor.capabilities.includes('runtime.control-replay.instances'))) {
       throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'This backend does not support control replay.');
@@ -238,13 +289,18 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       throw buildError('runtime_case_scene_mismatch', 'The runtime case belongs to a different frozen scene.');
     }
     if (runtimeCase) runtimeCase = validateRuntimeCasePlan(plan, runtimeCase);
-    if (controlProgram && (plan.kind !== 'scene2d' || ![1, 2].includes(plan.schemaVersion) || plan.behaviors || plan.animation)) {
-      throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'Control replay requires a Scene2D plan version 1 or 2 without authored behaviors or visual animation.');
+    const controlScene = plan.kind === 'project' ? plan.scenes.find(scene => scene.scene.objectId === plan.entrySceneId) : plan;
+    if (controlProgram && (plan.kind === 'project' && (runtimeCase || plan.schemaVersion !== 1
+      || !adapter.descriptor.capabilities.includes('project.control-replay'))
+      || !controlScene || ![1, 2].includes(controlScene.schemaVersion) || controlScene.behaviors || controlScene.animation || plan.kind === 'project' && (controlScene.physics || controlScene.audio))) {
+      throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'Control replay requires a supported data-only entry scene.');
     }
-    if (controlProgram) controlProgram = validateSceneControlPlan(plan, controlProgram);
+    if (controlProgram) controlProgram = validateSceneControlPlan(controlScene, controlProgram);
     frozenSourceDocuments = snapshot.source.documents;
     assertBackendOperation(adapter, operation, plan);
     const generated = validateGeneratedExecutionProject(adapter, plan, await adapter.generate(plan));
+    if (physicsControlProgram && !generated.backend.capabilities.includes('physics.observe2d'))
+      throw buildError('runtime_physics2d_input_unsupported', 'The frozen project does not provide physics observation.');
     // Capabilities select protocol readers, so bind the entire declaration to
     // regenerated metadata instead of trusting editable build-record fields.
     if (canonicalJson(generated.backend) !== canonicalJson(build.backend)) throw buildError('runtime_adapter_changed', 'Backend code or declaration changed; rebuild this project before running.');
@@ -273,7 +329,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     aborted(signal);
     // Runtime identities and navigation come only from the revalidated frozen
     // plan. No process frame can introduce an object or author location.
-    observation = plan.kind === 'project' ? createProjectRuntimeObservation(plan, { protocolVersion: build.backend.protocolVersion })
+    observation = plan.kind === 'project' ? createProjectRuntimeObservation(plan, { protocolVersion: build.backend.protocolVersion, ...(controlProgram ? { controlProgram } : {}) })
       : createSceneRuntimeObservation(plan, { ...(controlProgram ? { controlProgram } : {}) });
     const sessions = await resolveContainedPath(buildDirectory, path.join(buildDirectory, 'sessions'), { allowMissing: true });
     await fs.mkdir(sessions, { recursive: true });
@@ -285,6 +341,9 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       runtime: observation.snapshot(),
       ...(plan.kind === 'project' ? { target: { kind: 'project', objectId: plan.assembly.objectId, entrySceneId: plan.entrySceneId } } : {}),
       ...(controlProgram ? { control: { program: controlProgram, sha256: `sha256:${buildHash(canonicalJson(controlProgram))}`, samples: [] } } : {}),
+      ...(physicsControlProgram ? { physicsControl: { program: physicsControlProgram, sha256: `sha256:${buildHash(canonicalJson(physicsControlProgram))}`, complete: false } } : {}),
+      ...(physicsReplayCase ? { physicsVerification: { definition: physicsReplayCase, sha256: `sha256:${buildHash(canonicalJson(physicsReplayCase))}`,
+        evaluation: { status: 'incomplete', checks: [] } } } : {}),
       ...(runtimeCase ? { verification: { definition: runtimeCase, sha256: `sha256:${buildHash(canonicalJson(runtimeCase))}`,
         evaluation: evaluateRuntimeCase(plan, runtimeCase, [], { complete: false }) } } : {}) };
     const initialRuntime = captureRuntime();
@@ -297,16 +356,21 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     }
     for (const phase of adapter.runtimePhases) {
       publish({ phase });
-      const result = await adapter.executePhase({ phase, tool: identifiedTool, directory: project, signal, timeoutMs, onOutput: output => publish({ output }) });
+      const result = await adapter.executePhase({ phase, tool: identifiedTool, directory: project, signal, timeoutMs, targetKind: plan.kind, onOutput: output => publish({ output }) });
       record.phases.push({ phase, ...result }); record.diagnostics.push(...executionPhaseDiagnostics(adapter, result, plan));
       if (record.diagnostics.length) break;
     }
     if (!record.diagnostics.length) {
       const physicsExpected = smoke === true && plan.kind === 'project' && generated.backend.capabilities.includes('physics.observe2d');
+      // Project completion is held until EOF and a successful process exit, so
+      // later malformed frames cannot publish a completed project lifecycle.
+      let replayTerminal = null, replayFinalized = false, replayInvalidTail = false;
+      const projectReplay = plan.kind === 'project' && Boolean(controlProgram);
       const runtime = runtimeReader = adapter.createEventReader(plan, { smoke, mode: operation, protocolVersion: build.backend.protocolVersion,
         // Interactive sessions keep a raw tail; finite verification retains its original complete record.
         ...(plan.kind === 'project' && !smoke ? { retainedEvents: 128 } : {}),
-        capabilities: generated.backend.capabilities, onEventPositionsSnapshot: snapshot => {
+        capabilities: generated.backend.capabilities, ...(plan.kind === 'project' && controlProgram ? { controlProgram,
+          canFinishReplay: () => replayFinalized && !replayInvalidTail && !signal?.aborted && traceReader?.diagnostics.length === 0 && traceReader.samples.length === controlProgram.steps.length } : {}), onEventPositionsSnapshot: snapshot => {
           record.eventPositions = snapshot; publish({ eventPositions: snapshot });
         }, onAudioRequestsSnapshot: snapshot => {
           record.audioRequests = snapshot; publish({ audioRequests: snapshot });
@@ -333,8 +397,15 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
         physicsReader = runtime;
         if (!record.physics) throw buildError('runtime_physics2d_trace_invalid', 'Physics observation was not initialized.');
       }
-      const trace = controlProgram ? createSceneControlTraceReader(plan, controlProgram, {
-        onRuntime: text => runtime.push(text),
+      const trace = traceReader = controlProgram ? createSceneControlTraceReader(controlScene, controlProgram, {
+        onRuntime: text => {
+          if (projectReplay) {
+            if (replayTerminal) { replayInvalidTail = true; return; }
+            let event; try { event = JSON.parse(text.slice('VIENTO_RUNTIME:'.length)).event; } catch { /* Runtime reader reports malformed lines. */ }
+            if (event === 'finished') { replayTerminal = text; return; }
+          }
+          runtime.push(text);
+        },
         onSample: sample => {
           record.control.samples.push(JSON.parse(JSON.stringify(sample)));
           if (runtimeCase) record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, record.control.samples, { complete: false });
@@ -347,18 +418,29 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       }) : null;
       record.status = 'running'; await saveRecord(sessionDirectory, 'session.json', record);
       publish({ phase: 'starting' });
-      const result = await adapter.executePhase({ phase: 'run', tool: identifiedTool, directory: project, signal, timeoutMs, mode: operation, smoke,
+      const result = await adapter.executePhase({ phase: 'run', tool: identifiedTool, directory: project, signal, timeoutMs, targetKind: plan.kind, mode: operation, smoke,
         ...(controlProgram ? { controlProgram: JSON.parse(JSON.stringify(controlProgram)) } : {}),
+        ...(physicsControlProgram ? { physicsControlProgram: JSON.parse(JSON.stringify(physicsControlProgram)) } : {}),
         ...(capture ? { capturePath: path.join(sessionDirectory, 'preview.png') } : {}),
         onOutput: output => { publish({ output }); if (output.stream === 'stdout') (trace || runtime).push(output.text); } });
       if (trace) trace.finish({ requireComplete: result.status === 'succeeded' });
+      if (projectReplay && result.status === 'succeeded' && !signal?.aborted && replayTerminal && !replayInvalidTail && !trace.diagnostics.length) {
+        replayFinalized = true; runtime.push(replayTerminal);
+      }
       runtime.finish();
       record.phases.push({ phase: 'run', ...result }); record.events = runtime.events;
       record.diagnostics.push(...executionPhaseDiagnostics(adapter, result, plan), ...runtime.diagnostics, ...(trace?.diagnostics || []));
+      if (replayInvalidTail) record.diagnostics.push({ severity: 'error', code: 'runtime_control_trace_invalid',
+        message: 'Runtime frames followed the finite replay terminal.', objectId: controlScene.scene.objectId,
+        sourcePath: controlScene.scene.sourcePath, propertyPath: '' });
       const lifecycle = runtime.lifecycle || { started: runtime.events.some(item => item.event === 'ready'),
         completed: runtime.events.some(item => item.event === 'finished') };
       if (!record.diagnostics.length && (!lifecycle.started || smoke && !lifecycle.completed)) {
         record.diagnostics.push(diagnostic(buildError('runtime_protocol_incomplete', 'Runtime exited without the required lifecycle events.'), plan));
+      }
+      if (physicsControlProgram && result.status === 'succeeded' && !record.diagnostics.length) {
+        validateProjectPhysics2DReplayObservation(plan, record.physics);
+        physicsReplayObserved = true;
       }
     }
     record.status = record.diagnostics.length ? (record.phases.some(item => item.status === 'cancelled') ? 'cancelled' : record.phases.some(item => item.status === 'timeout') ? 'timeout' : 'failed') : 'succeeded';
@@ -370,7 +452,14 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     record.status = status; record.diagnostics.push(item);
   } finally {
     // An exception or cancellation may interrupt the process before its normal
-    // reader finalization. Keep accepted samples and explicitly close the trace.
+    // reader finalization. Keep accepted samples and diagnostics.
+    if (traceReader && record) {
+      // A throwing observer can interrupt the reader while it is dispatching
+      // an already accepted line. Preserve its evidence without replaying that
+      // same pending line during cleanup. Normal/cancelled process returns
+      // have already finalized the reader above.
+      for (const item of traceReader.diagnostics) if (!record.diagnostics.some(existing => JSON.stringify(existing) === JSON.stringify(item))) record.diagnostics.push(item);
+    }
     if (physicsReader) {
       try { physicsReader.finish(); }
       catch (error) {
@@ -379,6 +468,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       }
     }
     if (record?.physics && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.physics.phase = 'incomplete';
+    if (record?.physicsControl && record.status !== 'succeeded') record.physicsControl.complete = false;
     if (sessionDirectory) await fs.rm(path.join(sessionDirectory, 'project'), { recursive: true, force: true });
   }
   if (runtimeReader) {
@@ -431,9 +521,29 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, [], { complete: false });
     }
   }
+  if (physicsControlProgram && record.physicsControl) {
+    if (signal?.aborted && record.status === 'succeeded') {
+      record.status = 'cancelled'; record.diagnostics.push(diagnostic(buildError('runtime_cancelled', 'Runtime cancelled.'), plan));
+    }
+    record.physicsControl.complete = record.status === 'succeeded' && physicsReplayObserved;
+    if (record.status !== 'succeeded' && record.physics) record.physics.phase = 'incomplete';
+  }
+  if (physicsReplayCase && record.physicsVerification) {
+    try {
+      record.physicsVerification.evaluation = evaluateProjectPhysics2DReplayCase(plan, physicsReplayCase, record.physics,
+        { complete: record.status === 'succeeded' && record.physicsControl.complete });
+    } catch (error) {
+      record.status = 'failed'; record.physicsControl.complete = false;
+      if (record.physics) record.physics.phase = 'incomplete';
+      record.diagnostics.push(diagnostic(error, plan));
+      record.physicsVerification.evaluation = { status: 'incomplete', checks: [] };
+    }
+  }
+
   const diagnosticSources = scenePlans(plan).flatMap(scene => [...(scene.behaviors ? [scene.behaviors.manifest.objectId, ...scene.behaviors.sources.map(source => source.objectId)] : []), ...(scene.animation ? [scene.animation.manifest.objectId] : []), ...(scene.physics ? [scene.physics.manifest.objectId] : [])]);
   if (diagnosticSources.length) record.diagnostics = attachFrozenDiagnosticSources(record.diagnostics, frozenSourceDocuments, diagnosticSources);
-  await saveRecord(sessionDirectory, 'session.json', record);
+  if (physicsReplayCase) await commitPhysicsCaseRecord(sessionDirectory, record, signal, plan);
+  else await saveRecord(sessionDirectory, 'session.json', record);
   // Final record persistence is the case commit point. Cancellation during
   // that awaited write must not leave a passed disk record behind.
   if (runtimeCase && signal?.aborted && record.status === 'succeeded') {
@@ -441,5 +551,13 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, record.control.samples, { complete: false });
     await saveRecord(sessionDirectory, 'session.json', record);
   }
-  return { ok: record.status === 'succeeded' && (!record.verification || record.verification.evaluation.status === 'passed'), status: record.status, sessionDirectory, record };
+  if (physicsControlProgram && !physicsReplayCase && signal?.aborted && record.status === 'succeeded') {
+    record.status = 'cancelled'; record.diagnostics.push(diagnostic(buildError('runtime_cancelled', 'Runtime cancelled.'), plan));
+    record.physicsControl.complete = false;
+    if (record.physics) record.physics.phase = 'incomplete';
+    if (record.physicsVerification) record.physicsVerification.evaluation = { status: 'incomplete', checks: [] };
+    await saveRecord(sessionDirectory, 'session.json', record);
+  }
+  return { ok: record.status === 'succeeded' && (!record.verification || record.verification.evaluation.status === 'passed')
+    && (!record.physicsVerification || record.physicsVerification.evaluation.status === 'passed'), status: record.status, sessionDirectory, record };
 }

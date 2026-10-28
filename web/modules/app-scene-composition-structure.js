@@ -34,7 +34,7 @@ export function setupSceneCompositionStructure({ getContext = () => ({}), valida
         <label class="scene-field"><span data-i18n="高度"></span><input id="sceneCompositionStructureHeight" type="number" min="1" max="2048" step="any"></label>
         <label class="scene-field"><span data-i18n="颜色"></span><input id="sceneCompositionStructureColor" type="text" spellcheck="false"></label>
         <label class="scene-field"><span data-i18n="速度"></span><input id="sceneCompositionStructureSpeed" type="number" min="0" max="2000" step="any"></label>
-        <label class="scene-field"><span data-i18n="控制"></span><select id="sceneCompositionStructureControls"><option value="arrows" data-i18n="方向键"></option><option value="none" data-i18n="不接受输入"></option></select></label>
+        <label class="scene-field"><span data-i18n="控制"></span><select id="sceneCompositionStructureControls"><option value="arrows" data-i18n="方向键"></option><option value="none" data-i18n="无内置控制"></option></select></label>
         <label class="scene-field"><span data-i18n="场景图片"></span><select id="sceneCompositionStructureImage"></select></label></div>
       <p id="sceneCompositionStructureDefaults" class="build-hint"></p><p class="build-hint" data-i18n="位置是偏移前的局部坐标；每个放置再加自己的偏移。新增演员追加到片段末尾。"></p>
     </fieldset>

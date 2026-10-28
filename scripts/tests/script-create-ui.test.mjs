@@ -203,13 +203,14 @@ test('Bevy Rust drafts retain the selected backend, exact TXT contents and local
   }
 });
 
-for (const starterId of ['godot-project-animation', 'godot-project-animation-clip', 'godot-project-animation-event', 'godot-project-animation-completion']) test(`${starterId} keeps all reviewed bytes and choices across three languages before ordinary draft handoff`, async t => {
+for (const starterId of ['godot-project-animation', 'godot-project-animation-clip', 'godot-project-animation-event', 'godot-project-animation-completion', 'godot-character-intent']) test(`${starterId} keeps all reviewed bytes and choices across three languages before ordinary draft handoff`, async t => {
   const h = await fixture(t), starter = listScriptStarters().find(item => item.id === starterId);
   h.open(); h.set('Starter', starter.id, 'change'); h.set('Type', 'note', 'change'); h.set('Path', 'documents/scripts/动画 控制.txt');
   for (const locale of ['en', 'ja', 'zh']) {
     h.language(locale); const dictionary = { en, ja }[locale] || {};
     assert.equal(h.el('Starter').value, starter.id); assert.equal(h.el('Source').textContent, starter.content);
     assert.equal(h.el('Description').textContent, dictionary[starter.description] || starter.description);
+    assert.equal(h.el('Starter').children.find(item => item.value === starterId).textContent, dictionary[starter.label] || starter.label);
     assert.equal(h.el('Type').value, 'note'); assert.equal(h.el('Path').value, 'documents/scripts/动画 控制.txt');
     assert.equal(h.calls.length, 0); assert.equal(h.el('Apply').disabled, false);
   }

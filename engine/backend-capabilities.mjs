@@ -112,7 +112,7 @@ export function validateExecutionBackendDescriptor(input) {
   for (const plan of value.plans) {
     exact(plan, ['kind', 'schemaVersion', 'runtimeProtocolVersion']);
     if (!(plan.kind === 'scene2d' && [1, 2, 3].includes(plan.schemaVersion) && [1, 2, 3].includes(plan.runtimeProtocolVersion)
-      || plan.kind === 'project' && plan.schemaVersion === 1 && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(plan.runtimeProtocolVersion))) throw invalid();
+      || plan.kind === 'project' && [1, 2].includes(plan.schemaVersion) && [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(plan.runtimeProtocolVersion))) throw invalid();
     const key = `${plan.kind}:${plan.schemaVersion}`;
     if (plans.has(key)) throw invalid();
     plans.add(key);
@@ -149,7 +149,7 @@ function supportRequest(input) {
     text(target.objectId, 256);
     text(target.sourcePath, 4096);
     if (plan.kind === 'project') {
-      if (plan.schemaVersion !== 1 || Object.hasOwn(plan, 'scene') || Object.hasOwn(plan, 'actors')
+      if (![1, 2].includes(plan.schemaVersion) || (plan.schemaVersion === 2) !== Object.hasOwn(plan, 'inputMap') || Object.hasOwn(plan, 'scene') || Object.hasOwn(plan, 'actors')
         || Object.hasOwn(plan, 'behaviors') || Object.hasOwn(plan, 'audio') || Object.hasOwn(plan, 'animation') || Object.hasOwn(plan, 'physics')
         || !Array.isArray(plan.scenes) || !plan.scenes.length || plan.scenes.length > 32
         || new Set(plan.scenes.map(scene => scene?.scene?.objectId)).size !== plan.scenes.length
@@ -190,16 +190,16 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
     if (plan.kind === 'project') {
       if (plan.scenes.some(scene => scene.animation) && !backend.capabilities.includes('project.animation-control')) diagnostics.push(diagnostic('build_capability_missing',
         'Backend lacks capability: project.animation-control', { capability: 'project.animation-control' }));
-      if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && [7, 8, 9, 10, 11].includes(item.runtimeProtocolVersion))
+      if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && item.schemaVersion === plan.schemaVersion && [7, 8, 9, 10, 11].includes(item.runtimeProtocolVersion))
         && !backend.capabilities.includes('project.animation-completion')) diagnostics.push(diagnostic('build_capability_missing',
         'Backend lacks capability: project.animation-completion', { capability: 'project.animation-completion' }));
       for (const [protocols, capability] of [[[8, 9, 10, 11], 'project.animation-state-snapshots'], [[9, 10, 11], 'project.animation-state-entries'], [[10, 11], 'project.animation-state-entry-triggers']]) {
-        if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && protocols.includes(item.runtimeProtocolVersion))
+        if (plan.scenes.some(scene => scene.animation) && backend.plans.some(item => item.kind === 'project' && item.schemaVersion === plan.schemaVersion && protocols.includes(item.runtimeProtocolVersion))
           && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing', `Backend lacks capability: ${capability}`, { capability }));
       }
       if (plan.scenes.some(scene => scene.animation?.document.playbackScope === 'instance')
-        && !backend.plans.some(item => item.kind === 'project' && item.runtimeProtocolVersion === 11)) diagnostics.push(diagnostic('build_capability_missing', 'Per-instance animation requires project runtime protocol 11.', { capability: 'animation.instances2d' }));
-      const required = new Set(['project.scenes', ...plan.scenes.flatMap(scene => scene.requiredCapabilities)]);
+        && !backend.plans.some(item => item.kind === 'project' && item.schemaVersion === plan.schemaVersion && item.runtimeProtocolVersion === 11)) diagnostics.push(diagnostic('build_capability_missing', 'Per-instance animation requires project runtime protocol 11.', { capability: 'animation.instances2d' }));
+      const required = new Set(['project.scenes', ...(plan.schemaVersion === 2 ? ['project.input-map'] : []), ...plan.scenes.flatMap(scene => scene.requiredCapabilities)]);
       for (const capability of required) if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_assembly_invalid',
         'Project plans must explicitly require every member capability.', { capability }));
       for (const scene of plan.scenes) diagnostics.push(...checkExecutionBackendSupport(backend, { ...value, plan: scene }));

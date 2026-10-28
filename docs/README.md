@@ -4,7 +4,7 @@
 
 [快速开始](GETTING_STARTED.md) · [完整工作流](PROJECT_WORKFLOW.md) · [当前状态](STATUS.md) · [开发路线](ROADMAP.md) · [历史索引](history/README.md)
 
-当前源码的[0.2.6 发布记录](RELEASE_0.2.6.md)与[发布检查](test-results/release-0.2.6/README.md)分别说明功能收录和升版验证。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
+当前源码的[0.2.7 发布记录](RELEASE_0.2.7.md)与[发布检查](test-results/release-0.2.7/README.md)分别说明功能收录和升版验证。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
 
 ## 第一次使用
 
@@ -26,13 +26,13 @@
 | --- | --- |
 | 场景实例／分组、布局与源码草稿预览、构建和测试 | [构建与运行](PROJECT_BUILD.md) |
 | 新建多演员配方、起始排布、九域编辑及生成独立运行场景 | [场景片段组合](SCENE_COMPOSITION.md) |
-| 多场景项目、启动入口、运行中切换与工程交付 | [项目组装](PROJECT_ASSEMBLY.md) |
+| 多场景项目、启动入口、键盘映射、运行与工程交付 | [项目组装](PROJECT_ASSEMBLY.md) |
 | 跨场景保留计数／标记，查看变更与行为来源 | [项目共享状态](PROJECT_SHARED_STATE.md) |
 | 行为间发布／订阅通知，查看处理顺序、来源与精确回执位置 | [项目事件](PROJECT_EVENTS.md)、[事件位置观察](BACKEND_MIDDLEWARE.md#项目事件发布与投递位置) |
 | 行为播放／停止当前场景音轨、观察回执与来源 | [行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md) |
 | 查看当前任务的问题、筛选诊断并返回原文修复 | [任务问题列表](PROJECT_BUILD.md#当前任务问题列表) |
 | 多实例挂载 GDScript／Rust、编辑参数／信号、选入音轨或动画片段编号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
-| 创建与编辑物理、空间调整、角色重力／跳跃、单向与水平往返平台、观察碰撞及驱动动画／声音 | [二维物理](SCENE_PHYSICS2D.md) |
+| 创建与编辑物理、角色运动、平台与碰撞，以及受限物理输入回放和验收 | [二维物理](SCENE_PHYSICS2D.md) |
 | 编辑音轨与时间提示、选择 WAV 并试听／暂停／定位、Godot 播放及资源交付 | [场景声音](SCENE_AUDIO.md) |
 | 创建／编辑关键帧与序列帧、命名片段、时长调整与轨道复制、行为／事件控制、预览及 Godot 工程交付 | [场景动画](SCENE_ANIMATION.md) |
 | 查看运行对象、检索实例／定义并返回冻结声明 | [运行对象与采样](RUNTIME_OBJECTS.md) |

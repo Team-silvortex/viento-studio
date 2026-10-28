@@ -1,0 +1,277 @@
+passed: Chrome
+passed: editor ready
+passed: #projectBuildBtn enabled
+passed: build open
+passed: assembly catalog
+passed: index ready
+passed: #projectBuildPlan enabled
+passed: plan result
+passed: #projectBuildGenerate enabled
+passed: build result
+passed: instance replay control
+passed: run result
+passed: runtime objects
+{
+  "ok": true,
+  "steps": [
+    "Selected the two-scene project assembly, checked and built using the actual Bevy backend.",
+    "Generated an instance-targeted replay in the UI, switched Chinese, English and Japanese without losing it, ran Bevy, and inspected two objects and visit in the UI."
+  ],
+  "errors": [],
+  "limitations": [
+    "Real headless Chrome web editor, isolated fixture workspace and cache. Tauri package and physical input are not tested."
+  ],
+  "browser": "Chrome/156.0.8078.73",
+  "planned": {
+    "snapshotId": "sha256:c9fc2d2d60ead11c3018d41114a7d92fb562f903a76a19abec6da31c72e4cb62",
+    "title": "Two-scene project",
+    "actorCount": 4,
+    "resourceCount": 0,
+    "kind": "project",
+    "sceneCount": 2,
+    "entrySceneId": "12345678-1234-4234-8234-123456789abd"
+  },
+  "program": {
+    "format": "viento-runtime-control",
+    "schemaVersion": 2,
+    "fixedDelta": 0.25,
+    "steps": [
+      {
+        "inputs": [
+          {
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "left": false,
+            "right": true,
+            "up": false,
+            "down": false
+          }
+        ]
+      },
+      {
+        "inputs": [
+          {
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "left": false,
+            "right": false,
+            "up": false,
+            "down": false
+          }
+        ]
+      },
+      {
+        "inputs": [
+          {
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "left": true,
+            "right": false,
+            "up": false,
+            "down": false
+          }
+        ]
+      },
+      {
+        "inputs": [
+          {
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "left": false,
+            "right": false,
+            "up": false,
+            "down": false
+          }
+        ]
+      }
+    ]
+  },
+  "zh-CN": {
+    "hint": "项目回放仅作用于冻结工程的启动场景，不切换场景，也不使用项目键盘输入映射。",
+    "button": "控制回放"
+  },
+  "en": {
+    "hint": "Project replay affects only the frozen project’s entry scene; it does not switch scenes or use the project keyboard input map.",
+    "button": "Control replay"
+  },
+  "ja": {
+    "hint": "プロジェクトのリプレイは凍結済みプロジェクトの開始シーンだけに作用し、シーンの切り替えやプロジェクトのキーボード入力マップは使用しません。",
+    "button": "操作リプレイ"
+  },
+  "samples": [
+    {
+      "actors": [
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            220,
+            220
+          ],
+          "state": "moving"
+        },
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            500,
+            220
+          ],
+          "state": "idle"
+        }
+      ],
+      "event": "sample",
+      "format": "viento-runtime-trace",
+      "protocolVersion": 2,
+      "schemaVersion": 1,
+      "stepIndex": 0
+    },
+    {
+      "actors": [
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            220,
+            220
+          ],
+          "state": "idle"
+        },
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            500,
+            220
+          ],
+          "state": "idle"
+        }
+      ],
+      "event": "sample",
+      "format": "viento-runtime-trace",
+      "protocolVersion": 2,
+      "schemaVersion": 1,
+      "stepIndex": 1
+    },
+    {
+      "actors": [
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            200,
+            220
+          ],
+          "state": "moving"
+        },
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            500,
+            220
+          ],
+          "state": "idle"
+        }
+      ],
+      "event": "sample",
+      "format": "viento-runtime-trace",
+      "protocolVersion": 2,
+      "schemaVersion": 1,
+      "stepIndex": 2
+    },
+    {
+      "actors": [
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            200,
+            220
+          ],
+          "state": "idle"
+        },
+        {
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "position": [
+            500,
+            220
+          ],
+          "state": "idle"
+        }
+      ],
+      "event": "sample",
+      "format": "viento-runtime-trace",
+      "protocolVersion": 2,
+      "schemaVersion": 1,
+      "stepIndex": 3
+    }
+  ],
+  "runtime": {
+    "format": "viento-runtime-observation",
+    "schemaVersion": 1,
+    "sceneObjectId": "12345678-1234-4234-8234-123456789abd",
+    "protocolVersion": 2,
+    "phase": "finished",
+    "sequence": 10,
+    "actors": [
+      {
+        "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "name": "Traveler / 旅人 / 旅人",
+        "position": [
+          200,
+          220
+        ],
+        "state": "idle",
+        "positionSample": "finished",
+        "positionCurrent": true,
+        "source": {
+          "objectId": "12345678-1234-4234-8234-123456789abd",
+          "sourcePath": "documents/scenes/audio.json",
+          "propertyPath": "/actors/0",
+          "sourceRevision": "sha256:138a556294f338759e441feb529f12959aaf452bcb823259d28a33227162df64"
+        }
+      },
+      {
+        "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+        "name": "Traveler / 旅人 / 旅人",
+        "position": [
+          500,
+          220
+        ],
+        "state": "idle",
+        "positionSample": "finished",
+        "positionCurrent": true,
+        "source": {
+          "objectId": "12345678-1234-4234-8234-123456789abd",
+          "sourcePath": "documents/scenes/audio.json",
+          "propertyPath": "/actors/1",
+          "sourceRevision": "sha256:138a556294f338759e441feb529f12959aaf452bcb823259d28a33227162df64"
+        }
+      }
+    ],
+    "control": {
+      "stepCount": 4,
+      "completedSteps": 4,
+      "fixedDelta": 0.25
+    },
+    "project": {
+      "assemblyId": "12345678-1234-4234-8234-123456789abc",
+      "entrySceneId": "12345678-1234-4234-8234-123456789abd",
+      "activeSceneId": "12345678-1234-4234-8234-123456789abd",
+      "visits": [
+        {
+          "index": 1,
+          "sceneId": "12345678-1234-4234-8234-123456789abd",
+          "phase": "finished",
+          "elapsedSeconds": 1
+        }
+      ]
+    }
+  },
+  "diagnostics": [],
+  "ui": {
+    "phase": "控制回放：已收到 4 / 4 步 · 每步 0.25 秒 · 已收到结束位置样本。",
+    "objects": "Traveler / 旅人 / 旅人\n\n实例标识：bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\n\n对象标识：aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\n\n状态：静止\n\n位置样本：(200, 220)\n\n结束样本\n\n打开实例声明\nTraveler / 旅人 / 旅人\n\n实例标识：bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\n\n对象标识：aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\n\n状态：静止\n\n位置样本：(500, 220)\n\n结束样本\n\n打开实例声明",
+    "visits": "第 1 次 · Second scene with shared actors and audio · 场景运行结束\n\n本次访问时长：1 秒\n\n打开场景原文"
+  }
+}

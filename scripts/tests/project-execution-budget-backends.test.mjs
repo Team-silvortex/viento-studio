@@ -15,6 +15,7 @@ import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
 import { generateGodotAssemblyProject, godotAssemblyScripts } from '../backends/godot4-project.mjs';
 import { generateGodotPhysicsPlatformEventsProject } from '../backends/godot4-physics-platform-events.mjs';
 import { generateGodotExecutionBudgetProject, godotExecutionBudgetAssemblyScripts } from '../backends/godot4-execution-budget.mjs';
+import { hookCharacterIntent, unhookCharacterIntent } from '../backends/godot4-physics-character-intent-transform.mjs';
 import { generateGodotProject } from '../backends/godot4-dispatch.mjs';
 import { generateGodotBehaviorProject } from '../backends/godot4-behaviors.mjs';
 import { generateGodotAudioProject } from '../backends/godot4-audio.mjs';
@@ -60,6 +61,21 @@ for (const kind of ['events', 'animation', 'states', 'instances', 'physics']) te
   const viaAdapter = await adapter.generate(f.captured.plan);
   // Current scheduling observation keeps the frozen finite-budget artifacts.
   for (const [name, bytes] of f.generated.files) {
+    const intentMatch = /^scenes\/([^/]+)\/(runtime|one-way-original)\.gd$/.exec(name);
+    const intentBackup = intentMatch && `scenes/${intentMatch[1]}/character-intent-original-${intentMatch[2]}.gd.txt`;
+    if (intentBackup && viaAdapter.files.has(intentBackup)) {
+      assert.ok(viaAdapter.backend.capabilities.includes('physics.character-intent2d'));
+      assert.deepEqual(viaAdapter.files.get(intentBackup), bytes, `${name} original`);
+      assert.equal(viaAdapter.files.get(name).toString(), hookCharacterIntent(bytes.toString()), `${name} hook`);
+      assert.equal(unhookCharacterIntent(viaAdapter.files.get(name).toString()), bytes.toString(), `${name} inverse`);
+      continue;
+    }
+    if (name === 'movement-contacts-helper.gd' && viaAdapter.files.has('character-intent-original-contacts.gd')) {
+      assert.ok(viaAdapter.backend.capabilities.includes('physics.character-intent2d'));
+      assert.deepEqual(viaAdapter.files.get('character-intent-original-contacts.gd'), bytes, `${name} original`);
+      assert.deepEqual(viaAdapter.files.get(name), await fs.readFile(new URL('../backends/godot4/physics-character-intent-bridge.gd', import.meta.url)), `${name} bridge`);
+      continue;
+    }
     const original = `execution-frames-original-${name}.txt`, requestOriginal = `animation-requests-original-${name}.txt`, audioOriginal = `audio-requests-original-${name}.txt`;
     const preserved = name === 'project.godot' ? 'execution-clock-original.godot' : viaAdapter.files.has(original) ? original : viaAdapter.files.has(requestOriginal) ? requestOriginal : viaAdapter.files.has(audioOriginal) ? audioOriginal : name;
     assert.deepEqual(viaAdapter.files.get(preserved), bytes, name);

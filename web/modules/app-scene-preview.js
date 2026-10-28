@@ -16,6 +16,7 @@ const diagnosticLabels = {
   build_scene_format: '场景必须使用 viento-scene2d 第 1、2 或 3 版 JSON 格式。',
   build_scene_json: '场景 JSON 格式有误，请打开原文检查。',
   build_scene_value: '场景字段的值不符合要求，请检查标出的位置。',
+  build_scene_title_unicode: '场景标题包含无效的 Unicode 字符，请删除或重新输入该字符。',
   build_actor_value: '角色字段的值不符合要求，请检查标出的位置。',
   build_actor_missing: '场景引用的角色不存在或原文不可用。',
   build_actor_duplicate: '同一个角色不能在场景中重复声明。',
@@ -222,7 +223,7 @@ export function setupScenePreview({ container, getContext = () => ({}), getDraft
     appendCompositionIdentity(properties, provenance?.composition);
     const list = node('dl', '', 'scene-preview-properties');
     const rows = [['位置（中心）', 'position', actor.position.join(', ')], ['尺寸', 'size', actor.size.join(' × ')], ['颜色', 'color', actor.color],
-      ['速度', 'speed', String(actor.speed)], ['控制', 'controls', t(actor.controls === 'arrows' ? '方向键' : '不接受输入')], ['场景图片', 'imageResourceId', actor.imageResourceId || t('不使用图片')]];
+      ['速度', 'speed', String(actor.speed)], ['控制', 'controls', t(actor.controls === 'arrows' ? '方向键' : '无内置控制')], ['场景图片', 'imageResourceId', actor.imageResourceId || t('不使用图片')]];
     for (const [label, field, value] of rows) {
       list.append(node('dt', t(label))); const cell = node('dd', value);
       const location = provenance?.fields?.[field] || actor.fieldSources?.[field] || { ...actor.declaration, propertyPath: `${actor.declaration.propertyPath}/${field}` };

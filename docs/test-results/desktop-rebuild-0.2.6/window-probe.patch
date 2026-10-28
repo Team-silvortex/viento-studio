@@ -1,0 +1,57 @@
+--- a/scripts/tests/project-character-intent-godot.test.mjs
++++ b/scripts/tests/project-character-intent-godot.test.mjs
+@@ -15,7 +15,7 @@
+ const executable = process.env.VIENTO_GODOT_BIN;
+ const real = { skip: !executable ? 'Set VIENTO_GODOT_BIN for native Godot intent tests' : false, timeout: 180000 };
+ const id = n => `92929292-9292-4292-8292-${String(n).padStart(12, '0')}`;
+-async function setup(t, { arrows = false, extra = false, drop = false, platform = false, driverSource, probeSource = 'extends Node\n' } = {}) {
++async function setup(t, { arrows = false, extra = false, drop = false, platform = false, driverSource, probeSource = 'extends Node\n', observerSource = 'extends Node\n' } = {}) {
+   const f = platform ? await scenePhysics2DPlatformMotionAuthor(t, { consumers: false })
+     : drop ? await scenePhysics2DDropThroughAuthor(t, { consumers: false, drop: false })
+     : await scenePhysics2DCharacterEventsAuthor(t, { jump: false, controls: 'none' });
+@@ -24,7 +24,7 @@
+   if (driverSource) await f.script('motion-input', driverSource);
+   const a = id(1), b = id(2), c = id(3), d = id(4), other = id(5), otherBody = id(6);
+   await f.addBehavior(a, b, 'intent-first', probeSource);
+-  await f.addBehavior(c, d, 'intent-second', 'extends Node\n');
++  await f.addBehavior(c, d, 'intent-second', observerSource);
+   if (extra || arrows) {
+     await f.edit('documents/scenes/demo.json', scene => {
+       scene.actors.push({ ...structuredClone(scene.actors[0]), instanceId: other, position: [300, 178], controls: arrows ? 'arrows' : 'none' });
+@@ -377,3 +377,36 @@
+   assert.ok(samples.some(row => row.requestedMotion[0] > 7.9 && row.contacts.some(contact => contact.collider?.bodyId === f.platformBodyId)), JSON.stringify(samples));
+   assert.ok(samples.some(row => row.requestedMotion[0] < -3.9), JSON.stringify(samples));
+ });
++
++
++test('isolated real window: X11 keyboard drives builtin intent starter', { timeout: 60000 }, async t => {
++  const { spawn } = await import('node:child_process');
++  const starter = listScriptStarters().find(item => item.id === 'godot-character-intent');
++  const observer = `extends Node
++var tick := 0
++func _physics_process(_delta: float) -> void:
++\ttick += 1
++\tif tick % 6 == 0:
++\t\tvar actor = get_tree().root.get_node("VientoProject").current.actors[0]["node"]
++\t\tprint("INTENT_POSITION:" + JSON.stringify({"tick":tick,"x":actor.position.x,"y":actor.position.y}))
++\tif tick >= 300:
++\t\tget_tree().root.get_node("VientoProject").call_deferred("finish_project")
++`;
++  const f = await setup(t, { probeSource: starter.content, observerSource: observer });
++  assert.equal(await fs.readFile(path.join(f.author, 'documents/scripts/intent-first.txt'),'utf8'), starter.content);
++  const input = spawn('python3', ['<TEST_EVIDENCE_DIR>/keyboard.py'], {env:process.env});
++  let injected = ''; input.stdout.on('data', chunk => injected += chunk); input.stderr.on('data', chunk => injected += chunk);
++  const done = new Promise(resolve => input.on('close', code => resolve(code)));
++  const result = await adapter.executePhase({ phase:'run', directory:f.directory, tool:f.identified, smoke:false, mode:'windowPreview', timeoutMs:30000 });
++  const code = await done; await fs.writeFile('<TEST_EVIDENCE_DIR>/window-output.log',result.stdout + '\nSTDERR\n' + result.stderr + '\nXINPUT\n' + injected);
++  assert.equal(code, 0, injected); assert.equal(result.status,'succeeded',result.stdout+result.stderr);
++  assert.deepEqual(adapter.diagnostics(result,f.captured.plan), [], result.stdout+result.stderr);
++  const rows=result.stdout.split('\n').filter(row=>row.startsWith('INTENT_POSITION:')).map(row=>JSON.parse(row.slice('INTENT_POSITION:'.length)));
++  assert.ok(rows.length >= 35, JSON.stringify(rows));
++  const xs=rows.map(r=>r.x), ys=rows.map(r=>r.y); const max=Math.max(...xs), maxIndex=xs.indexOf(max);
++  assert.ok(max - xs[0] > 30, JSON.stringify(rows));
++  assert.ok(max - Math.min(...xs.slice(maxIndex)) > 30, JSON.stringify(rows));
++  assert.ok(ys[0] - Math.min(...ys) > 5, JSON.stringify(rows));
++  assert.ok(result.stdout.includes('"name":"physics.jumped"'), result.stdout);
++  console.log('WINDOW_PHYSICS:' + JSON.stringify({injected,first:rows[0],maxX:max,minLaterX:Math.min(...xs.slice(maxIndex)),minY:Math.min(...ys),last:rows.at(-1),samples:rows.length}));
++});

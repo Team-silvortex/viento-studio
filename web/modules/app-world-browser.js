@@ -143,7 +143,7 @@ export function setupWorldBrowser({ getContext = () => ({}), setBusy = () => {},
         const labelKey = isProjection && field.label === 'title' && !field.group ? '标题' : field.label;
         const displayLabel = isProjection ? t(labelKey) : field.label;
         const configurationField = authored?.template.snapshot.fields.find(item => item.label === field.label);
-        const enumLabel = configurationField?.type === 'enum' && ['arrows', 'none'].includes(field.value) ? t(field.value === 'arrows' ? '方向键' : '不接受输入') : field.value;
+        const enumLabel = configurationField?.type === 'enum' && configurationField.id === authored?.template.snapshot.runtime?.controls && ['arrows', 'none'].includes(field.value) ? t(field.value === 'arrows' ? '方向键' : '无内置控制') : field.value;
         const displayValue = isProjection && field.kind === 'boolean' ? t(field.value === 'true' ? '是' : '否') : enumLabel;
         tr.append(node('td', isProjection ? displayLabel : [field.group, field.label].filter(Boolean).join(' / ')), node('td', displayValue),
           node('td', `${binding.authorityRef.range.start}–${binding.authorityRef.range.end} (UTF-16)`));

@@ -8,12 +8,15 @@ import { createSceneRuntimeEventReader } from '../../engine/scene-runtime-events
 import { validateSceneControlProgram, validateSceneControlPlan } from '../../engine/scene-control-program.mjs';
 import { buildError, buildHash, readBuildFile } from '../adapters/node-build-snapshot.mjs';
 import { runBuildProcess } from '../lib/build-process.mjs';
+import { resolveContainedPath } from '../lib/contained-path.mjs';
 import { generateBevyProject, BEVY_RUNTIME_IDENTITY } from './bevy-project.mjs';
+import { generateBevyAssemblyProject } from './bevy-project-assembly.mjs';
+import { createBevyProjectRuntimeEventReader } from './bevy-project-runtime.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
   format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.bevy', label: 'Bevy', version: '0.3.0', platforms: ['linux'],
-  plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }],
-  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'runtime.control-replay', 'runtime.control-replay.instances'],
+  plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 1 }],
+  capabilities: ['scene2d', 'input.arrows', 'state.movement', 'runtime.control-replay', 'runtime.control-replay.instances', 'project.scenes', 'project.control-replay'],
   execution: { build: true, headlessLogic: true, windowPreview: false, windowCapture: false, offscreenRender: false, embeddedViewport: false, gpuCompute: false }, extensions: [],
 });
 const absolute = value => typeof value === 'string' && path.isAbsolute(value) && !value.includes('\0');
@@ -43,15 +46,47 @@ async function identify(executable, { signal } = {}) {
 }
 async function generate(plan) {
   support({ operation: 'build', plan });
-  return generateBevyProject(structuredClone(plan));
+  return plan.kind === 'project' ? generateBevyAssemblyProject(plan) : generateBevyProject(structuredClone(plan));
 }
 async function fingerprint() {
-  const paths = ['scripts/backends/bevy-adapter.mjs', 'scripts/backends/bevy-project.mjs', 'engine/scene-runtime-events.mjs',
-    'engine/scene-control-program.mjs', 'engine/build-plan.mjs', 'engine/backend-capabilities.mjs', 'scripts/adapters/node-execution-backends.mjs'];
+  const paths = ['scripts/backends/bevy-adapter.mjs', 'scripts/backends/bevy-project.mjs', 'scripts/backends/bevy-project-assembly.mjs', 'scripts/backends/bevy-project-runtime.mjs',
+    'engine/project-assembly-plan-contract.mjs', 'engine/project-runtime-events.mjs', 'engine/project-runtime-query.mjs',
+    'engine/scene-runtime-events.mjs', 'engine/scene-runtime-query.mjs', 'scripts/adapters/node-project-build.mjs', 'scripts/lib/contained-path.mjs',
+    'engine/scene-control-program.mjs', 'engine/build-plan.mjs', 'engine/scene-model.mjs', 'engine/backend-capabilities.mjs', 'scripts/adapters/node-execution-backends.mjs'];
   const identities = await Promise.all(paths.map(async file => ({ path: file, sha256: buildHash(await fs.readFile(new URL(`../../${file}`, import.meta.url))) })));
   return { id: descriptor.id, contractVersion: 1, sha256: buildHash(JSON.stringify(identities)) };
 }
-async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000, onOutput, mode = 'headlessLogic', smoke = true, capturePath, controlProgram } = {}) {
+async function readAssembly(directory, signal) {
+  let bytes;
+  try { bytes = await readBuildFile(path.join(directory, 'assembly.json'), 65536, signal); }
+  catch (error) { if (error.code === 'ENOENT') return null; throw error; }
+  let value;
+  try { value = JSON.parse(bytes); } catch { throw buildError('build_assembly_invalid', 'Invalid Bevy project inventory.'); }
+  const keys = item => item && typeof item === 'object' && !Array.isArray(item) ? Object.keys(item).sort().join(',') : '';
+  const uuid = item => typeof item === 'string' && /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(item);
+  if (keys(value) !== 'entrySceneId,format,scenes,schemaVersion' || value.format !== 'viento-bevy-project' || value.schemaVersion !== 1
+    || !uuid(value.entrySceneId) || !Array.isArray(value.scenes) || !value.scenes.length || value.scenes.length > 32)
+    throw buildError('build_assembly_invalid', 'Invalid Bevy project inventory.');
+  const ids = new Set();
+  for (const row of value.scenes) {
+    if (keys(row) !== 'entry,sceneId' || !uuid(row.sceneId) || ids.has(row.sceneId) || row.entry !== `scenes/${row.sceneId}/scene-data.json`)
+      throw buildError('build_assembly_invalid', 'Invalid Bevy project inventory.');
+    ids.add(row.sceneId);
+  }
+  if (!ids.has(value.entrySceneId)) throw buildError('build_assembly_invalid', 'Invalid Bevy project entry scene.');
+  let selected;
+  for (const row of value.scenes) {
+    const bytes = await readBuildFile(await resolveContainedPath(directory, path.join(directory, row.entry)), 4 * 1024 * 1024, signal);
+    let scene; try { scene = JSON.parse(bytes); } catch { throw buildError('build_assembly_invalid', 'Invalid Bevy scene inventory.'); }
+    if (scene?.format !== 'viento-bevy-scene' || scene.scene?.objectId !== row.sceneId)
+      throw buildError('build_assembly_invalid', 'Bevy project scene does not match its inventory identity.');
+    if (row.sceneId === value.entrySceneId) selected = bytes;
+  }
+  const entry = await readBuildFile(path.join(directory, 'scene-data.json'), 4 * 1024 * 1024, signal);
+  if (!entry.equals(selected)) throw buildError('build_assembly_invalid', 'Bevy project entry does not match the declared scene.');
+  return value;
+}
+async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000, onOutput, mode = 'headlessLogic', smoke = true, capturePath, controlProgram, targetKind } = {}) {
   if (!['scene-check', 'run'].includes(phase)) throw buildError('build_execution_unsupported', 'Bevy does not support this execution phase.');
   if (controlProgram !== undefined && (phase !== 'run' || mode !== 'headlessLogic' || !smoke)) {
     throw buildError('runtime_control_unsupported', 'Control replay requires a headless smoke run.');
@@ -62,12 +97,17 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
   if (typeof smoke !== 'boolean') throw buildError('runtime_mode_invalid', 'Select a boolean smoke-run option.');
   if (!absolute(tool?.executable)) throw buildError('build_tool_required', 'Provide an identified absolute Bevy runtime executable path.');
   if (!absolute(directory)) throw buildError('build_output_invalid', 'Execute Bevy only in an absolute generated-project directory.');
+  if (signal?.aborted) return { phase, status: 'cancelled', exitCode: null, stdout: '', stderr: '', durationMs: 0 };
+  // Snapshot caller-owned replay data before the first asynchronous read.
   let program;
   if (controlProgram !== undefined) {
-    if (phase !== 'run' || mode !== 'headlessLogic' || !smoke) throw buildError('runtime_control_unsupported', 'Control replay requires a headless smoke run.');
     try { program = validateSceneControlProgram(controlProgram); }
     catch (error) { throw buildError(error.errorCode || 'runtime_control_invalid', 'Invalid bounded runtime control program.'); }
   }
+  const assembly = await readAssembly(directory, signal);
+  if (targetKind !== undefined && !['scene2d', 'project'].includes(targetKind)) throw buildError('build_assembly_invalid', 'Invalid frozen target kind.');
+  if (targetKind === 'project' && !assembly || targetKind === 'scene2d' && assembly)
+    throw buildError('build_assembly_invalid', 'Generated inventory does not match the frozen target kind.');
   const controlPath = path.join(directory, 'control-program.json');
   let staged = false;
   const args = ['--scene', path.join(directory, 'scene-data.json'), ...(phase === 'scene-check' ? ['--check'] : smoke ? ['--smoke'] : []),
@@ -87,15 +127,48 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
       }
       await fs.writeFile(controlPath, JSON.stringify(program) + '\n', { flag: 'wx', mode: 0o600 }); staged = true;
     }
-    const result = await runBuildProcess(tool.executable, args, { cwd: directory, signal, timeoutMs, onOutput,
-      env: { ...process.env, XDG_DATA_HOME: path.join(directory, '.host/data'),
-        XDG_CONFIG_HOME: path.join(directory, '.host/config'), XDG_CACHE_HOME: path.join(directory, '.host/cache') } });
+    const env = { ...process.env, XDG_DATA_HOME: path.join(directory, '.host/data'),
+      XDG_CONFIG_HOME: path.join(directory, '.host/config'), XDG_CACHE_HOME: path.join(directory, '.host/cache') };
+    if (assembly && phase === 'scene-check') {
+      const checks = [], started = Date.now(); let remainingBytes = 1024 * 1024;
+      for (const row of assembly.scenes) {
+        const remaining = timeoutMs - (Date.now() - started);
+        if (remaining < 1) return { phase, status: 'timeout', exitCode: null, stdout: '', stderr: '', durationMs: Date.now() - started, sceneChecks: checks };
+        const scenePath = await resolveContainedPath(directory, path.join(directory, row.entry));
+        const result = await runBuildProcess(tool.executable, ['--scene', scenePath, '--check'],
+          { cwd: directory, signal, timeoutMs: remaining, maxOutputBytes: remainingBytes, onOutput, env });
+        checks.push({ sceneId: row.sceneId, ...result });
+        remainingBytes -= Math.min(remainingBytes, Buffer.byteLength(result.stdout) + Buffer.byteLength(result.stderr));
+        if (result.status !== 'succeeded') return { ...result, phase, durationMs: Date.now() - started, sceneChecks: checks };
+        if (!remainingBytes && checks.length < assembly.scenes.length)
+          return { phase, status: 'output-limit', exitCode: null, stdout: '', stderr: '', durationMs: Date.now() - started, sceneChecks: checks };
+      }
+      return { phase, status: 'succeeded', exitCode: 0, stdout: '', stderr: '', durationMs: Date.now() - started, sceneChecks: checks };
+    }
+    const result = await runBuildProcess(tool.executable, args, { cwd: directory, signal, timeoutMs, onOutput, env });
     return { ...result, phase };
   } finally {
     if (staged) await fs.rm(controlPath, { force: true });
   }
 }
 function diagnostics(result, plan) {
+  if (plan.kind === 'project') {
+    if (result.phase === 'run') {
+      const scene = plan.scenes.find(item => item.scene.objectId === plan.entrySceneId);
+      return result.status === 'succeeded' ? [] : diagnostics(result, scene);
+    }
+    const checks = Array.isArray(result.sceneChecks) ? result.sceneChecks : [];
+    const output = checks.flatMap(check => {
+      const scene = plan.scenes.find(item => item.scene.objectId === check.sceneId);
+      return scene ? diagnostics({ ...check, phase: result.phase }, scene) : [];
+    });
+    if (result.status !== 'succeeded' && !output.some(item => item.code.startsWith('build_process_'))) {
+      const scene = plan.scenes.find(item => item.scene.objectId === plan.entrySceneId);
+      output.push({ severity: 'error', code: `build_process_${result.status.replaceAll('-', '_')}`,
+        message: `Bevy runtime process ${result.status}.`, objectId: scene.scene.objectId, sourcePath: scene.scene.sourcePath, propertyPath: '' });
+    }
+    return output;
+  }
   const reader = createSceneRuntimeEventReader(plan);
   if (result.phase !== 'run') reader.push(result.stdout);
   const reported = reader.finish().diagnostics;
@@ -111,4 +184,5 @@ async function cleanupProject(directory) {
 }
 export const BEVY_EXECUTION_ADAPTER = Object.freeze({ descriptor, contractVersion: 1, acceptsLegacyBuildRecords: false,
   buildPhases: Object.freeze(['scene-check']), runtimePhases: Object.freeze([]), availability, identify, generate, fingerprint,
-  executePhase, diagnostics, createEventReader: createSceneRuntimeEventReader, cleanupProject });
+  executePhase, diagnostics, createEventReader: (plan, options) => plan.kind === 'project'
+    ? createBevyProjectRuntimeEventReader(plan, options) : createSceneRuntimeEventReader(plan, options), cleanupProject });

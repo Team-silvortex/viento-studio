@@ -11,6 +11,11 @@ const color = value => typeof value === 'string' && /^#[a-f0-9]{6}(?:[a-f0-9]{2}
 const invalid = () => { throw buildError('build_backend_plan_invalid', 'Invalid Scene2D data for the Bevy runtime.'); };
 
 export async function generateBevyProject(plan) {
+  // JSON escapes lone surrogates, but Rust's serde_json correctly rejects
+  // them. Reject before producing an artifact without changing author text.
+  if (typeof plan?.scene?.title === 'string' && /[\uD800-\uDFFF]/u.test(plan.scene.title)) {
+    throw buildError('build_backend_plan_invalid', 'The scene title contains an unpaired Unicode surrogate; replace it with valid text.');
+  }
   if (plan?.format !== 'viento-build-plan' || plan.kind !== 'scene2d' || ![1, 2].includes(plan.schemaVersion)
     || !uuid(plan.scene?.objectId) || typeof plan.scene.title !== 'string' || !plan.scene.title.trim() || plan.scene.title.length > 160
     || /[\x00-\x1f]/.test(plan.scene.title)

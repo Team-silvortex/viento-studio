@@ -1,3 +1,4 @@
+import { inspectProjectInputMap } from '../../engine/project-input-map.mjs';
 import { createScriptUsageSourceHost } from './app-script-usage-source.js';
 import { createAnimationStateScriptSourceHost } from './app-animation-state-script-source.js';
 import { createScenePhysics2DSourceHost } from './app-scene-physics2d-source.js';
@@ -3770,6 +3771,41 @@ function documentCreateContext() {
   return { editable, busy, dirty, creating, sourceToken: `create:${documentCreateGeneration}`, documentRoot, documentTypes };
 }
 
+let inputMapObservation = null, inputMapGeneration = 0;
+function inputMapContext() {
+  const doc = getActiveDoc(), creating = documentCreateContext();
+  const path = state.isEditing && !state.isCreating ? canonicalizeSourcePath(state.activeEditSource) : '';
+  const content = state.isEditing && !state.isCreating ? getCurrentEditContent() : '';
+  let valid = false;
+  if (/\.json$/i.test(path)) { try { inspectProjectInputMap(content); valid = true; } catch {} }
+  const canEdit = valid && isEditModeActive() && state.isEditing && state.editInputMode === 'source'
+    && state.activeEditPath === doc?.path && !isEditorBusy();
+  const canCreate = creating.editable && !creating.busy && !creating.dirty && !creating.creating;
+  const mode = canEdit ? 'edit' : canCreate ? 'create' : '';
+  const observed = [mode, doc, path, content, state.activeEditPath, state.editInputMode, editorLoadToken,
+    editSessionBaselineContent, editSessionVersion, creating.sourceToken];
+  if (!inputMapObservation || observed.some((value, index) => value !== inputMapObservation[index])) { inputMapObservation = observed; inputMapGeneration++; }
+  return { mode, token: `input-map:${inputMapGeneration}`, path, content, documentRoot: creating.documentRoot, documentTypes: creating.documentTypes };
+}
+function applyInputMapDraft(proposal, { isCurrent = () => true } = {}) {
+  const conflict = () => { throw Object.assign(new Error('Input map no longer owns this editor session.'), { errorCode: 'input_map_authoring_conflict' }); };
+  const owner = inputMapContext();
+  if (!proposal || typeof isCurrent !== 'function' || !isCurrent() || !owner.mode || proposal.mode !== owner.mode || proposal.token !== owner.token) conflict();
+  inspectProjectInputMap(proposal.content);
+  if (owner.mode === 'create') {
+    if (proposal.before !== '' || typeof proposal.sourcePath !== 'string' || !proposal.sourcePath.startsWith(owner.documentRoot + '/')
+      || !/\.json$/i.test(proposal.sourcePath) || getCreatePathError(proposal.sourcePath)
+      || !owner.documentTypes.some(item => item.id === proposal.documentType)) conflict();
+    if (!isCurrent() || inputMapContext().token !== owner.token) conflict();
+    return applyPreparedDocumentDraft({ sourcePath: proposal.sourcePath, documentType: proposal.documentType, content: proposal.content },
+      t('输入映射草稿已准备好；保存后才会登记到工程。'));
+  }
+  if (proposal.before !== owner.content || proposal.sourcePath !== owner.path || !isCurrent() || inputMapContext().token !== owner.token) conflict();
+  setSourceEditorContent(proposal.content); refreshEditSessionDirtyState(); refreshEditButtons();
+  setEditorStatus(t('输入映射修改已应用到原文草稿；尚未保存。'));
+  return Object.freeze({ applied: true, sourcePath: owner.path, content: proposal.content, focus() { editEditorEl?.focus?.({ preventScroll: true }); } });
+}
+
 function scriptCreateContext() { return documentCreateContext(); }
 function compositionCreateContext() { return documentCreateContext(); }
 
@@ -5972,6 +6008,7 @@ async function initApp(options = {}) {
     settings: options.settings,
     features: options.features,
     ports: {
+      inputMap: { getContext: inputMapContext, applyDraft: applyInputMapDraft },
       scripts: { getContext: scriptCreateContext, createDraft: createScriptDraft, editStateTable: animationStateScriptSourceHost, usage: scriptUsageSourceHost },
       compositionCreate: { getContext: compositionCreateContext, createDraft: createCompositionDraft },
       sceneAudio: audioSourceHost,

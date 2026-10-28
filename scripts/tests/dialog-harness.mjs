@@ -1,3 +1,7 @@
+import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
+import { validateProjectPhysics2DReplayCase } from '../../engine/project-physics2d-replay-case.mjs';
+import { validateProjectPhysics2DInputReplay } from '../../engine/project-physics2d-input-replay.mjs';
+import { PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS, setProjectPhysics2DInputReplayRange } from '../../engine/project-physics2d-input-replay-edit.mjs';
 import { supportsStudioCoreSceneAnimationInstances } from '../../engine/studio-core.mjs';
 import { setupAnimationStateTrialCaseEditor } from '../../web/modules/app-animation-state-trial-case-editor.js';
 import { setupAnimationStateTrialCase } from '../../web/modules/app-animation-state-trial-case.js';
@@ -148,7 +152,11 @@ export async function dialogHarness(module, overrides = {}) {
   const timers = new Map();
   let timerId = 0;
   const runtime = vm.createContext({
-    document, window, URL, Blob, TextEncoder, SCENE_PREVIEW_API_PATH, WORLD_API_PATH,
+    document, window, URL, Blob, TextEncoder, SCENE_PREVIEW_API_PATH, WORLD_API_PATH, PROJECT_PHYSICS2D_INPUT_REPLAY_ACTIONS,
+    setProjectPhysics2DInputReplayRange: (value, ...args) => setProjectPhysics2DInputReplayRange(JSON.parse(JSON.stringify(value)), ...args),
+    validateProjectPhysics2DObservation: value => validateProjectPhysics2DObservation(JSON.parse(JSON.stringify(value))),
+    validateProjectPhysics2DReplayCase: value => validateProjectPhysics2DReplayCase(JSON.parse(JSON.stringify(value))),
+    validateProjectPhysics2DInputReplay: value => validateProjectPhysics2DInputReplay(JSON.parse(JSON.stringify(value))),
     captureSceneAnimationSpriteLayout: value => captureSceneAnimationSpriteLayout(JSON.parse(JSON.stringify(value))), scenePreviewImageDimensions,
     backendProjectSourceIdentity: value => backendProjectSourceIdentity(JSON.parse(JSON.stringify(value))),
     // Browser modules share a realm. This VM fixture transports catalog/source
@@ -219,6 +227,12 @@ export async function dialogHarness(module, overrides = {}) {
     const caseDocuments = (await fs.readFile(new URL('../../web/modules/app-runtime-case-documents.js', import.meta.url), 'utf8'))
       .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
     vm.runInContext(caseDocuments, runtime);
+    const physicsDocuments = (await fs.readFile(new URL('../../web/modules/app-physics-replay-documents.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(physicsDocuments, runtime);
+    const physicsCaseDocuments = (await fs.readFile(new URL('../../web/modules/app-physics-case-documents.js', import.meta.url), 'utf8'))
+      .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
+    vm.runInContext(physicsCaseDocuments, runtime);
     const caseSuites = (await fs.readFile(new URL('../../web/modules/app-runtime-case-suites.js', import.meta.url), 'utf8'))
       .replace(/^import[\s\S]*?from ['"][^'"]+['"];\n/gm, '').replaceAll('export ', '');
     vm.runInContext(caseSuites, runtime);

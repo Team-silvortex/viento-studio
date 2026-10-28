@@ -3,6 +3,7 @@ import { validateProjectAnimationStateEntriesSnapshot, validateProjectAnimationS
 import { validateProjectAnimationStatesSnapshot, validateProjectAnimationStatesTimeline } from './project-animation-states.mjs';
 import { validateProjectAssemblyPlan } from './project-assembly-plan-contract.mjs';
 import { createSceneRuntimeObservation, querySceneRuntimeObservation } from './scene-runtime-query.mjs';
+import { validateSceneControlPlan } from './scene-control-program.mjs';
 import { validateProjectAnimationCompletionsSnapshot, validateProjectAnimationCompletionTimeline } from './project-animation-completions.mjs';
 import { validateProjectAnimationCommandsSnapshot } from './project-animation-commands.mjs';
 import { validateProjectAudioCommandsSnapshot } from './project-audio-commands.mjs';
@@ -12,14 +13,17 @@ import { createProjectRuntimeEventReader } from './project-runtime-events.mjs';
 import { PROJECT_RUNTIME_PREFIX, PROJECT_RUNTIME_MAX_VISITS, projectRuntimeUuid as uuid, projectRuntimeExact as exact,
   projectRuntimeTime as time, copyProjectRuntimeData as copy, copyProjectEventObservationData as copyEventObservation, copyProjectAudioObservationData as copyAudioObservation, copyProjectAnimationObservationData as copyAnimationObservation, copyProjectAnimationClipObservationData as copyClipObservation, copyProjectAnimationCompletionObservationData as copyCompletionObservation, copyProjectAnimationStatesObservationData as copyStatesObservation, copyProjectAnimationStateEntriesObservationData as copyEntriesObservation, invalidProjectRuntime as invalid } from './project-runtime-contracts.mjs';
 
-export function createProjectRuntimeObservation(input, { protocolVersion = 1 } = {}) {
+export function createProjectRuntimeObservation(input, { protocolVersion = 1, controlProgram } = {}) {
   const plan = validateProjectAssemblyPlan(input), scenes = new Map(plan.scenes.map(scene => [scene.scene.objectId, scene]));
-  let child = createSceneRuntimeObservation(scenes.get(plan.entrySceneId));
+  const entryScene = scenes.get(plan.entrySceneId);
+  const program = controlProgram === undefined ? null : validateSceneControlPlan(entryScene, controlProgram);
+  let child = createSceneRuntimeObservation(entryScene, program ? { controlProgram: program } : {});
   const project = { assemblyId: plan.assembly.objectId, entrySceneId: plan.entrySceneId, activeSceneId: plan.entrySceneId, visits: [] };
   // This observer consumes admitted callbacks and semantic ledgers, never a raw history.
   const reader = createProjectRuntimeEventReader(plan, { protocolVersion, retainedEvents: 1, onEvent: frame => {
     if (frame.event === 'scene-enter') {
-      project.activeSceneId = frame.sceneId; child = createSceneRuntimeObservation(scenes.get(frame.sceneId));
+      project.activeSceneId = frame.sceneId; child = createSceneRuntimeObservation(scenes.get(frame.sceneId),
+        program && frame.visitIndex === 1 && frame.sceneId === plan.entrySceneId ? { controlProgram: program } : {});
       project.visits.push({ index: frame.visitIndex, sceneId: frame.sceneId, phase: 'waiting', elapsedSeconds: 0 });
     } else if (frame.event === 'scene-event') {
       if (frame.stream === 'runtime') child.push(frame.frame);
@@ -34,14 +38,30 @@ export function createProjectRuntimeObservation(input, { protocolVersion = 1 } =
         visit.phase = 'finished';
         // This is an observation-only final sample admitted by project exit.
         // It never enters the old child wire reader or its audio smoke clock.
-        child.push({ protocol: scenes.get(frame.sceneId).schemaVersion, event: 'finished', actors: frame.actors, fixedDelta: 1 });
+        child.push({ protocol: scenes.get(frame.sceneId).schemaVersion, event: 'finished', actors: frame.actors,
+          fixedDelta: program && frame.visitIndex === 1 && frame.sceneId === plan.entrySceneId ? program.fixedDelta : 1 });
       }
     }
   } });
   return Object.freeze({
     push(inputEvent) {
       let event; try { event = copy(inputEvent); } catch { return false; }
+      // A replay terminal must not mark the project visit finished before all
+      // of its admitted samples reached the scene observer.
+      if (program && event?.event === 'scene-exit' && event.reason === 'finished'
+        && event.visitIndex === 1 && event.sceneId === plan.entrySceneId) {
+        const control = child.snapshot().control;
+        if (!control || control.completedSteps !== control.stepCount) return false;
+      }
       return reader.push(PROJECT_RUNTIME_PREFIX + JSON.stringify(event) + '\n').length === 1;
+    },
+    pushSample(sample) {
+      // Trace frames have no scene or visit identifier. They are meaningful
+      // only in the first, ready entry visit to which this program was bound.
+      const visit = project.visits[0];
+      if (!program || project.visits.length !== 1 || project.activeSceneId !== plan.entrySceneId
+        || !visit || visit.index !== 1 || visit.sceneId !== plan.entrySceneId || visit.phase !== 'ready') return false;
+      return child.pushSample(sample);
     },
     snapshot() { return { ...child.snapshot(), project: { ...copy(project), ...(protocolVersion >= 2 ? { protocolVersion, sharedState: reader.sharedState, ...(protocolVersion >= 3 ? { events: reader.projectEvents } : {}), ...(protocolVersion >= 4 ? { audioCommands: reader.audioCommands } : {}), ...(protocolVersion >= 5 ? { animationCommands: reader.animationCommands } : {}), ...(protocolVersion >= 7 ? { animationCompletions: reader.animationCompletions } : {}), ...(protocolVersion >= 8 ? { animationStates: reader.animationStates } : {}), ...(protocolVersion >= 9 ? { animationStateEntries: reader.animationStateEntries } : {}) } : {}) } }; },
   });

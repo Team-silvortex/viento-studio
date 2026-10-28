@@ -10,6 +10,7 @@ import { planPackageImport } from '../lib/resource-package-import.mjs';
 import { applyPackageImport } from '../lib/resource-package-transaction.mjs';
 import { registerWorkspace } from '../lib/workspace.mjs';
 import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
+import { createProjectAssemblyDocumentService } from '../lib/project-assembly-documents.mjs';
 
 async function fixture(t, { dependencies = true } = {}) {
   const f = await projectAssemblyAuthor(t);
@@ -73,4 +74,57 @@ test('assembly import verifies declared member source kinds rather than UUID ava
   await fs.writeFile(file, JSON.stringify(value));
   const preview = await planPackageImport(f.target, f.pack);
   assert.ok(preview.summary.conflicts.some(item => JSON.stringify(item).includes('dependency')));
+});
+
+
+test('input mapping follows the assembly through selection, export and offline import', async t => {
+  const f = await projectAssemblyAuthor(t), inputId = '33333333-3333-4333-8333-333333333333';
+  const assemblyPath = path.join(f.author, 'documents/projects/demo.json');
+  const assembly = JSON.parse(await fs.readFile(assemblyPath));
+  const input = { format: 'viento-input-map', schemaVersion: 1, actions: [{ name: 'left', keys: ['KeyA', 'ArrowLeft'] }] };
+  const inputPath = 'documents/projects/controls.json', inputBytes = JSON.stringify(input, null, 2) + '\n';
+  await fs.writeFile(path.join(f.author, inputPath), inputBytes);
+  const recordPath = path.join(f.author, `metadata/documents/${f.assemblyId}.json`), record = JSON.parse(await fs.readFile(recordPath));
+  await fs.writeFile(path.join(f.author, `metadata/documents/${inputId}.json`), JSON.stringify({ ...record, id: inputId, sourcePath: inputPath, relations: [], assetBindings: [] }));
+  await fs.writeFile(assemblyPath, JSON.stringify({ ...assembly, schemaVersion: 2, inputMapId: inputId }, null, 2));
+  const catalog = await readPackageCatalog(f.author), assemblyEntry = catalog.entries.find(item => item.id === f.assemblyId);
+  assert.ok(assemblyEntry.dependencies.includes(inputId)); assert.deepEqual(assemblyEntry.problems, []);
+  const plan = await planExport(f.author, { kind: 'resources', revision: catalog.revision, ids: [f.assemblyId], includeDependencies: true, includeChildren: false });
+  const zip = path.join(f.temporary, 'with-input.zip'); await writeExportZip(plan, zip);
+  const staging = path.join(f.temporary, 'unpacked-input'); await fs.mkdir(staging);
+  const pack = await unpackResourcePackage(zip, staging); assert.ok(pack.manifest.documents.some(item => item.id === inputId));
+  const target = path.join(f.temporary, 'target-input'); await fs.mkdir(target);
+  await fs.copyFile(path.join(f.author, 'workspace.json'), path.join(target, 'workspace.json'));
+  await fs.mkdir(path.join(target, 'documents')); await fs.mkdir(path.join(target, 'assets')); await registerWorkspace(target);
+  const documents = pack.manifest.documents;
+  pack.manifest.documents = documents.filter(item => item.id !== inputId);
+  assert.ok((await planPackageImport(target, pack)).summary.conflicts.length);
+  pack.manifest.documents = documents;
+  const preview = await planPackageImport(target, pack); assert.deepEqual(preview.summary.conflicts, []);
+  assert.equal((await applyPackageImport(target, pack, preview.revision)).status, 'imported');
+  await fs.rename(f.author, `${f.author}-offline`);
+  const captured = await captureBuildSnapshot(target, f.assemblyId);
+  assert.equal(captured.ok, true, JSON.stringify(captured.diagnostics)); assert.equal(captured.plan.schemaVersion, 2);
+  assert.deepEqual(captured.plan.inputMap.document, input); assert.equal(await fs.readFile(path.join(target, inputPath), 'utf8'), inputBytes);
+  await fs.writeFile(path.join(target, inputPath), '{}');
+  assert.equal(captured.plan.inputMap.document.actions[0].keys[0], 'KeyA');
+  const after = await captureBuildSnapshot(target, f.assemblyId); assert.equal(after.ok, false);
+});
+
+
+test('assembly editor lists valid registered input maps and protects saved versions', async t => {
+  const f = await projectAssemblyAuthor(t), inputId = '33333333-3333-4333-8333-333333333333';
+  const record = JSON.parse(await fs.readFile(path.join(f.author, `metadata/documents/${f.assemblyId}.json`)));
+  const inputPath = 'documents/projects/controls.json', input = { format: 'viento-input-map', schemaVersion: 1, actions: [{ name: 'jump', keys: ['Space'] }] };
+  await fs.writeFile(path.join(f.author, inputPath), JSON.stringify(input));
+  await fs.writeFile(path.join(f.author, `metadata/documents/${inputId}.json`), JSON.stringify({ ...record, id: inputId, sourcePath: inputPath, relations: [], assetBindings: [] }));
+  const service = createProjectAssemblyDocumentService(f.author), catalog = await service.list();
+  assert.equal(catalog.inputMaps.length, 1); assert.equal(catalog.inputMaps[0].id, inputId); assert.equal(catalog.inputMaps[0].path, inputPath);
+  const existing = await service.load(f.assemblyId), assembly = { ...existing.definition, schemaVersion: 2, inputMapId: inputId };
+  const saved = await service.save({ worldId: existing.worldId, baseRevision: existing.baseRevision, documentId: f.assemblyId, expectedVersion: existing.version, content: JSON.stringify(assembly) });
+  assert.equal(saved.valid, true); assert.equal(saved.definition.inputMapId, inputId);
+  await fs.writeFile(path.join(f.author, inputPath), JSON.stringify({ ...input, actions: [{ name: 'ui_cancel', keys: ['Space'] }] }));
+  const changed = await service.list(); assert.equal(changed.inputMaps.length, 0); assert.equal(changed.documents[0].valid, false);
+  await assert.rejects(service.save({ worldId: changed.worldId, baseRevision: changed.baseRevision, documentId: saved.id, expectedVersion: saved.version, content: JSON.stringify(assembly) }), { errorCode: 'project_assembly_document_invalid' });
+  assert.equal((await service.load(f.assemblyId)).definition.inputMapId, inputId);
 });

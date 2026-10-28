@@ -109,7 +109,7 @@ export function setupObjectProjection({ getContext = () => ({}), setBusy = () =>
     field(settings, { id: 'objectProjectionType', label: '文档类型', value: draft.documentType, options: editing ? undefined : types().map(type => [type.definition.id, type.label]), readOnly: editing, changed: value => { draft.documentType = value; } });
     field(settings, { id: 'objectProjectionPath', label: '原文路径', value: draft.sourcePath, maxLength: 1024, readOnly: editing, changed: value => { draft.sourcePath = value; } });
     for (const item of draft.snapshot.fields) {
-      const options = item.type === 'enum' ? item.options.map(value => [value, item.id === draft.snapshot.runtime?.controls ? t(value === 'arrows' ? '方向键' : '不接受输入') : value]) : item.type === 'image'
+      const options = item.type === 'enum' ? item.options.map(value => [value, item.id === draft.snapshot.runtime?.controls ? t(value === 'arrows' ? '方向键' : '无内置控制') : value]) : item.type === 'image'
         ? [['', t('不使用图片')], ...images(item.id).map(resource => [resource.id, `${resource.descriptor.name} · ${resource.descriptor.location.path}`])] : undefined;
       field(el('objectProjectionConfiguration'), { id: `objectProjectionField-${item.id}`, label: item.label, value: draft.configuration[item.id], options, kind: item.type,
         multiline: item.type === 'string' && item.id !== draft.snapshot.runtime?.color && (item.limits?.maxLength ?? 4096) > 160, min: item.limits?.min, max: item.limits?.max, maxLength: item.limits?.maxLength, pointer: `/configuration/${item.id}`, changed: value => { draft.configuration[item.id] = value; } });

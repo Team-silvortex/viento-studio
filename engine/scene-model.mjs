@@ -76,6 +76,12 @@ export function resolveScene2DModel({ source, projection }, sceneRef, { mode = '
   keys(scene, ['format', 'schemaVersion', 'title', 'viewport', 'background', 'actors', ...(scene.schemaVersion === 3 ? ['groups'] : [])], '');
   if (scene.schemaVersion === 3) for (const diagnostic of validateSceneGroups(scene).diagnostics) issue(diagnostic.code, diagnostic.message, diagnostic.propertyPath);
   if (typeof scene.title !== 'string' || !scene.title.trim() || scene.title.length > 160 || /[\x00-\x1f]/.test(scene.title)) issue('build_scene_value', 'Provide a scene title of 1–160 characters.', '/title');
+  // Preserve legacy registration/recovery, but do not hand lone UTF-16
+  // surrogates to runtimes that consume Unicode scalar text. JSON can encode
+  // these values even though they cannot be represented as valid UTF-8.
+  if (!registrationOnly && typeof scene.title === 'string' && /[\uD800-\uDFFF]/u.test(scene.title)) {
+    issue('build_scene_title_unicode', 'The scene title contains an unpaired Unicode surrogate; replace it with valid text.', '/title');
+  }
   if (!pair(scene.viewport, 64, 4096) || !scene.viewport.every(Number.isInteger)) issue('build_scene_value', 'Viewport dimensions must be integers from 64 to 4096.', '/viewport');
   if (!color(scene.background)) issue('build_scene_value', 'Use a hex background color.', '/background');
   if (!Array.isArray(scene.actors) || scene.actors.length < 1 || scene.actors.length > 128) {

@@ -4,7 +4,7 @@ import os from 'node:os';
 import '../../adapters/node-studio-core.mjs';
 
 const json = value => JSON.stringify(value, null, 2) + '\n';
-export async function projectAssemblyAuthor(t, { entry = 'behavior', title = 'Two-scene project' } = {}) {
+export async function projectAssemblyAuthor(t, { entry = 'behavior', title = 'Two-scene project', inputMap = null } = {}) {
   const temporary = await fs.mkdtemp(path.join(os.tmpdir(), 'viento-assembly-backend-'));
   t.after(() => fs.rm(temporary, { recursive: true, force: true }));
   const author = path.join(temporary, 'author');
@@ -32,11 +32,16 @@ export async function projectAssemblyAuthor(t, { entry = 'behavior', title = 'Tw
   await write('documents/audio/demo.json', audio);
   const audioRecord = JSON.parse(await fs.readFile(new URL(`metadata/documents/${audioId}.json`, audioRoot)));
   audioRecord.relations[0].targetId = audioSceneId; await write(`metadata/documents/${audioId}.json`, audioRecord);
-  const assembly = { format: 'viento-project-assembly', schemaVersion: 1, title, entrySceneId, sceneIds: [behaviorSceneId, audioSceneId] };
+  const inputMapId = '33333333-3333-4333-8333-333333333333';
+  if (inputMap) {
+    await write('documents/projects/controls.json', inputMap);
+    await write(`metadata/documents/${inputMapId}.json`, { ...record, id: inputMapId, sourcePath: 'documents/projects/controls.json', documentType: 'assembly', relations: [], assetBindings: [] });
+  }
+  const assembly = { format: 'viento-project-assembly', schemaVersion: inputMap ? 2 : 1, title, entrySceneId, sceneIds: [behaviorSceneId, audioSceneId], ...(inputMap ? { inputMapId } : {}) };
   await write('documents/projects/demo.json', assembly); await write('templates/assembly.json', assembly);
   await write(`metadata/documents/${assemblyId}.json`, { ...record, id: assemblyId, sourcePath: 'documents/projects/demo.json', documentType: 'assembly',
     relations: assembly.sceneIds.map(targetId => ({ kind: 'reference', targetId, slot: 'scene' })) });
-  return { temporary, author, assemblyId, sceneIds: assembly.sceneIds, entrySceneId, scriptId, waveId };
+  return { temporary, author, assemblyId, sceneIds: assembly.sceneIds, entrySceneId, scriptId, waveId, ...(inputMap ? { inputMapId } : {}) };
 }
 
 export async function projectAssemblyBuildFixture(t, options = {}) {

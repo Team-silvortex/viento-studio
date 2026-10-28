@@ -130,3 +130,37 @@ test('confirmed new and updated assembly remains selected with its current title
   assert.equal(h.calls.filter(row=>row.action==='assembly-list').length,1);
  }
 });
+
+test('binding a saved input map is explicit, reviewed and produces only assembly schema 2', async () => {
+ const h=await harness(); h.catalog().inputMaps=[{id:id(50),path:'documents/input/map.json',title:'map.json',version:sha('map')}];
+ await h.open(); h.add(1); h.review(); assert.equal(JSON.parse(h.el('Source').textContent).schemaVersion,1);
+ h.set('InputMap',id(50),'change'); assert.equal(h.el('Save').disabled,true); h.review();
+ const value=JSON.parse(h.el('Source').textContent); assert.equal(value.schemaVersion,2); assert.equal(value.inputMapId,id(50));
+ h.click('Save');await settle();assert.equal(JSON.parse(h.calls.at(-1).content).inputMapId,id(50));
+ h.gate().resolve(h.persist(h.calls.at(-1)));await settle(); assert.equal(h.el('InputMap').value,id(50));
+ h.set('InputMap','','change');h.review();const detached=JSON.parse(h.el('Source').textContent);assert.equal(detached.schemaVersion,1);assert.equal(Object.hasOwn(detached,'inputMapId'),false);
+});
+test('missing input map remains visible and cannot be silently removed by refresh or save', async () => {
+ const h=await harness();h.catalog().inputMaps=[{id:id(50),path:'documents/input/map.json',title:'map.json',version:sha('map')}];
+ const content=JSON.stringify({format:'viento-project-assembly',schemaVersion:2,title:'Existing',sceneIds:[id(1)],entrySceneId:id(1),inputMapId:id(50)});
+ h.persist({sourcePath:'documents/projects/original.json',documentType:'document',content}); await h.open(id(90));
+ h.catalog().inputMaps=[]; h.click('Refresh');await settle();assert.equal(h.el('InputMap').value,id(50));assert.match(h.el('InputMap').children.at(-1).textContent,/输入映射不可用/);
+ h.review();assert.equal(h.el('Save').disabled,true);assert.equal(h.el('Error').textContent,'所选输入映射不可用，请刷新目录、修复映射文档或选择其他映射；也可选择不使用输入映射。');
+ assert.equal(h.calls.filter(row=>row.action==='assembly-save').length,0); assert.equal(h.el('InputMap').value,id(50));
+ h.set('InputMap','','change'); assert.equal(h.el('Error').hidden,true); h.review();
+ assert.equal(h.el('Save').disabled,false); assert.equal(JSON.parse(h.el('Source').textContent).schemaVersion,1);
+ assert.equal(h.calls.filter(row=>row.action==='assembly-save').length,0);
+});
+
+test('missing map review message follows language changes and a restored catalog permits a fresh review', async () => {
+ let language='zh'; const translate=key => language==='en' ? (en[key] || key) : language==='ja' ? (ja[key] || key) : key;
+ const h=await harness({t:translate}); const map={id:id(50),path:'documents/input/map.json',title:'map.json',version:sha('map')};
+ h.catalog().inputMaps=[map]; const content=JSON.stringify({format:'viento-project-assembly',schemaVersion:2,title:'Existing',sceneIds:[id(1)],entrySceneId:id(1),inputMapId:id(50)});
+ h.persist({sourcePath:'documents/projects/original.json',documentType:'document',content}); await h.open(id(90));
+ h.catalog().inputMaps=[]; h.click('Refresh'); await settle(); h.review();
+ const key='所选输入映射不可用，请刷新目录、修复映射文档或选择其他映射；也可选择不使用输入映射。';
+ for(const next of ['en','ja','zh']) { language=next; for(const render of h.languages) render(); assert.equal(h.el('Error').textContent,translate(key)); assert.equal(h.el('InputMap').value,id(50)); assert.equal(h.el('Save').disabled,true); }
+ h.catalog().inputMaps=[map]; h.click('Refresh'); await settle(); h.review();
+ assert.equal(h.el('Error').hidden,true); assert.equal(h.el('Save').disabled,false); assert.equal(h.el('Source').textContent,content);
+ assert.equal(h.calls.filter(row=>row.action==='assembly-save').length,0);
+});

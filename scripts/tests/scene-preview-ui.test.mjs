@@ -319,3 +319,13 @@ test('invalid scene structure sidecars never paint or expose a misleading group 
     assert.ok(h.calls.some(call => call.request.method === 'DELETE' && call.url.includes(value.previewId)), 'rejected structure releases its captured preview');
   }
 });
+
+test('invalid Unicode title in saved scene has a specific preview diagnostic and source link', async () => {
+  const h = await harness();
+  h.post().reject(Object.assign(new Error('invalid'), { payload: { ok: false, diagnostics: [{ code: 'build_scene_title_unicode',
+    sourcePath: preview().scene.sourcePath, propertyPath: '/title', message: 'unpaired surrogate' }] } }));
+  await flushDialogs();
+  assert.match(h.element('scenePreviewDiagnostics').textContent, /场景标题包含无效的 Unicode 字符/);
+  h.element('scenePreviewDiagnostics').querySelector('button').click();
+  assert.equal(h.opened.at(-1)[1].propertyPath, '/title');
+});

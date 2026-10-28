@@ -14,8 +14,10 @@ import { PACKAGE_LIMITS, packageError } from '../../engine/resource-package.mjs'
 import { validateObjectProjection, validateProjectionDependencies } from '../../engine/object-projection.mjs';
 import { inspectSceneComposition, validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
 import { inspectSceneBehaviors, sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
-import { inspectRuntimeCaseDocument, runtimeCaseDocumentIds, validateRuntimeCaseDocumentDependencies,
-  RUNTIME_CASE_DOCUMENT_FILE_MAX_BYTES } from '../../engine/runtime-case-document.mjs';
+import { inspectRuntimeCaseDocument, RUNTIME_CASE_DOCUMENT_FILE_MAX_BYTES } from '../../engine/runtime-case-document.mjs';
+import { inspectPhysicsReplayDocument, PHYSICS_REPLAY_DOCUMENT_FILE_MAX_BYTES } from '../../engine/physics-replay-document.mjs';
+import { inspectPhysicsReplayCaseDocument, PHYSICS_REPLAY_CASE_DOCUMENT_FILE_MAX_BYTES } from '../../engine/physics-replay-case-document.mjs';
+import { runtimeAuthorDocumentIds, validateRuntimeAuthorDocumentDependencies } from './runtime-author-package.mjs';
 import { inspectRuntimeCaseSuite, runtimeCaseSuiteDocumentIds, validateRuntimeCaseSuiteDependencies,
   RUNTIME_CASE_SUITE_FILE_MAX_BYTES } from '../../engine/runtime-case-suite.mjs';
 
@@ -53,14 +55,28 @@ export function inspectPackageSceneBehaviors(bytes, sourcePath) {
     code: 'build_behavior_invalid', message: 'A behavior manifest requires UTF-8 JSON in a registered .json document.', propertyPath: '' }] };
 }
 
-export function inspectPackageRuntimeCase(bytes, sourcePath) {
-  const checked = inspectRuntimeCaseDocument(bytes.toString('utf8'));
+function inspectPackageAuthorDocument(bytes, sourcePath, inspect, maxBytes, code, label) {
+  const checked = inspect(bytes.toString('utf8'));
   if (!checked.recognized) return checked;
-  let valid = sourcePath.toLowerCase().endsWith('.json') && bytes.length <= RUNTIME_CASE_DOCUMENT_FILE_MAX_BYTES;
+  let valid = sourcePath.toLowerCase().endsWith('.json') && bytes.length <= maxBytes;
   try { new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes); }
   catch { valid = false; }
   return valid ? checked : { recognized: true, ok: false, value: null, diagnostics: [{ severity: 'error',
-    code: 'runtime_case_document_invalid', message: 'A runtime case requires bounded UTF-8 JSON in a registered .json document.', propertyPath: '' }] };
+    code, message: `${label} requires bounded UTF-8 JSON in a registered .json document.`, propertyPath: '' }] };
+}
+
+export function inspectPackageRuntimeCase(bytes, sourcePath) {
+  return inspectPackageAuthorDocument(bytes, sourcePath, inspectRuntimeCaseDocument,
+    RUNTIME_CASE_DOCUMENT_FILE_MAX_BYTES, 'runtime_case_document_invalid', 'A runtime case');
+}
+
+export function inspectPackageRuntimeAuthorDocument(bytes, sourcePath) {
+  const checked = inspectPackageRuntimeCase(bytes, sourcePath);
+  if (checked.recognized) return checked;
+  const replay = inspectPackageAuthorDocument(bytes, sourcePath, inspectPhysicsReplayDocument,
+    PHYSICS_REPLAY_DOCUMENT_FILE_MAX_BYTES, 'runtime_physics_replay_document_invalid', 'A physics replay');
+  return replay.recognized ? replay : inspectPackageAuthorDocument(bytes, sourcePath, inspectPhysicsReplayCaseDocument,
+    PHYSICS_REPLAY_CASE_DOCUMENT_FILE_MAX_BYTES, 'runtime_physics_case_document_invalid', 'A physics acceptance case');
 }
 
 export function inspectPackageRuntimeCaseSuite(bytes, sourcePath) {
@@ -150,7 +166,7 @@ export async function readPackageCatalog(root, signal) {
         const projection = await validateObjectProjection(sourceText, record, { digest: packageDigest });
         const composition = inspectPackageComposition(source, relative);
         const behavior = inspectPackageSceneBehaviors(source, relative);
-        const runtimeCase = inspectPackageRuntimeCase(source, relative);
+        const runtimeCase = inspectPackageRuntimeAuthorDocument(source, relative);
         const suite = inspectPackageRuntimeCaseSuite(source, relative);
         const assembly = inspectPackageProjectAssembly(source, relative);
         // Dependency validation only needs availability and the projection or
@@ -190,7 +206,7 @@ export async function readPackageCatalog(root, signal) {
         const deps = new Set([...(record.relations || []).map(link => link.targetId), ...record.assetBindings.map(link => link.assetId)]);
         if (composition.ok) for (const id of [...composition.dependencies.objectIds, ...composition.dependencies.imageResourceIds]) deps.add(id);
         if (behavior.ok && behavior.recognized) for (const id of sceneBehaviorDocumentIds(behavior.value)) deps.add(id);
-        if (runtimeCase.ok && runtimeCase.recognized) for (const id of runtimeCaseDocumentIds(runtimeCase.value)) deps.add(id);
+        if (runtimeCase.ok && runtimeCase.recognized) for (const id of runtimeAuthorDocumentIds(runtimeCase.value)) deps.add(id);
         if (suite.ok && suite.recognized) for (const id of runtimeCaseSuiteDocumentIds(suite.value)) deps.add(id);
         if (assembly.ok && assembly.recognized) for (const id of projectAssemblyDocumentIds(assembly.value)) deps.add(id);
         for (const url of urls) {
@@ -214,7 +230,7 @@ export async function readPackageCatalog(root, signal) {
   // Re-observe these source-derived UUID dependencies against catalog hashes;
   // ordinary author documents still retain only their thin classification.
   const bodyDependencyIds = new Set([...behaviorChecks.filter(item => item.behavior.ok).flatMap(item => sceneBehaviorDocumentIds(item.behavior.value)),
-    ...caseChecks.filter(item => item.checked.ok).flatMap(item => runtimeCaseDocumentIds(item.checked.value)),
+    ...caseChecks.filter(item => item.checked.ok).flatMap(item => runtimeAuthorDocumentIds(item.checked.value)),
     ...suiteChecks.filter(item => item.checked.ok).flatMap(item => runtimeCaseSuiteDocumentIds(item.checked.value)),
     ...assemblyChecks.filter(item => item.checked.ok).flatMap(item => projectAssemblyDocumentIds(item.checked.value))]);
   for (const id of bodyDependencyIds) {
@@ -237,7 +253,7 @@ export async function readPackageCatalog(root, signal) {
     if (!behavior.ok || validateSceneBehaviorDependencies(behavior.value, record, projectionSource).length) item.problems.push('正文解析失败');
   }
   for (const { item, record, checked } of caseChecks) {
-    if (!checked.ok || validateRuntimeCaseDocumentDependencies(checked.value, record, projectionSource).length) item.problems.push('正文解析失败');
+    if (!checked.ok || validateRuntimeAuthorDocumentDependencies(checked.value, record, projectionSource).length) item.problems.push('正文解析失败');
   }
   for (const { item, record, checked } of suiteChecks) {
     if (!checked.ok || validateRuntimeCaseSuiteDependencies(checked.value, record, projectionSource).length) item.problems.push('正文解析失败');

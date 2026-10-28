@@ -25,7 +25,8 @@ export async function generateGodotPhysicsDropThroughProject(input) {
   const sceneIds = plan.scenes.filter(selected).map(scene => scene.scene.objectId);
   if (!sceneIds.length) return generated;
   const files = await Promise.all(sources.map(async ([name, source]) => [name, await fs.readFile(new URL(source, import.meta.url))]));
-  const generator = await fs.readFile(new URL('./godot4-physics-drop-through.mjs', import.meta.url));
+  // Preserve the published generator identity while inventory validation evolves.
+  const generator = await fs.readFile(new URL('./godot4-physics-drop-through-v0.29.mjs.txt', import.meta.url));
   generated.files.set('movement-contacts-base-helper.gd', generated.files.get('movement-contacts-helper.gd'));
   for (const [name, bytes] of files) generated.files.set(name, bytes);
   generated.files.set('drop-through-project.json', Buffer.from(JSON.stringify({ format: 'viento-godot-drop-through-project', schemaVersion: 1, sceneIds }, null, 2) + '\n'));
@@ -42,6 +43,13 @@ export async function godotPhysicsDropThroughAssemblyScripts(directory, signal) 
   const inventory = await optional('drop-through-project.json', 8192);
   const base = await optional('movement-contacts-base-helper.gd');
   const entries = await Promise.all(sources.map(async ([name, source]) => ({ name, source, bytes: await optional(name) })));
+  // The verified intent bridge wraps this exact historical helper.
+  if (await optional('character-intent-project.json', 8192) !== null) {
+    const bridge = await optional('movement-contacts-helper.gd');
+    const original = await optional('character-intent-original-contacts.gd');
+    if (bridge === null || !bridge.equals(await fs.readFile(new URL('./godot4/physics-character-intent-bridge.gd', import.meta.url))) || original === null) invalid();
+    entries[0].bytes = original;
+  }
   if (inventory === null) {
     if (base !== null || entries.slice(1).some(entry => entry.bytes !== null)
       || entries[0].bytes?.includes('drop-through') || entries[0].bytes?.includes('movement-contacts-base-helper.gd')) invalid();

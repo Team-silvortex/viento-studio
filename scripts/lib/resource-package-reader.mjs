@@ -9,12 +9,12 @@ import { portablePath, assertPortableFileTree } from './workspace.mjs';
 import { validateProjectTypes, workspacePaths } from './project-layout.mjs';
 import { validateDocumentModels } from './document-model.mjs';
 import { PACKAGE_LIMITS, RESOURCE_PACKAGE_FORMAT, RESOURCE_PACKAGE_VERSION, packageError } from '../../engine/resource-package.mjs';
-import { readPackageBytes, inspectPackageComposition, inspectPackageSceneBehaviors, inspectPackageRuntimeCase,
+import { readPackageBytes, inspectPackageComposition, inspectPackageSceneBehaviors, inspectPackageRuntimeAuthorDocument,
   inspectPackageRuntimeCaseSuite, packageDocumentClassification } from './resource-package-catalog.mjs';
 import { inspectObjectProjection } from '../../engine/object-projection.mjs';
 import { validateSceneCompositionDependencies } from '../../engine/scene-composition-document.mjs';
 import { sceneBehaviorDocumentIds, validateSceneBehaviorDependencies } from '../../engine/scene-behaviors.mjs';
-import { runtimeCaseDocumentIds, validateRuntimeCaseDocumentDependencies } from '../../engine/runtime-case-document.mjs';
+import { runtimeAuthorDocumentIds, validateRuntimeAuthorDocumentDependencies } from './runtime-author-package.mjs';
 import { runtimeCaseSuiteDocumentIds, validateRuntimeCaseSuiteDependencies } from '../../engine/runtime-case-suite.mjs';
 
 export const PACKAGE_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -143,14 +143,14 @@ export async function unpackResourcePackage(file, directory, signal) {
       const checked = inspectPackageComposition(bytes, item.sourcePath);
       documentSources.push({ record, content: packageDocumentClassification(inspectObjectProjection(bytes.toString('utf8'), record), checked) });
       const behavior = inspectPackageSceneBehaviors(bytes, item.sourcePath);
-      const runtimeCase = inspectPackageRuntimeCase(bytes, item.sourcePath);
+      const runtimeCase = inspectPackageRuntimeAuthorDocument(bytes, item.sourcePath);
       const suite = inspectPackageRuntimeCaseSuite(bytes, item.sourcePath);
       if (suite.recognized) {
         if (!suite.ok || runtimeCaseSuiteDocumentIds(suite.value).some(id => !documentIds.has(id))) invalid();
         suiteChecks.push({ record, checked: suite });
       }
       if (runtimeCase.recognized) {
-        if (!runtimeCase.ok || runtimeCaseDocumentIds(runtimeCase.value).some(id => !documentIds.has(id))) invalid();
+        if (!runtimeCase.ok || runtimeAuthorDocumentIds(runtimeCase.value).some(id => !documentIds.has(id))) invalid();
         caseChecks.push({ record, checked: runtimeCase });
       }
       if (behavior.recognized) {
@@ -172,7 +172,7 @@ export async function unpackResourcePackage(file, directory, signal) {
     };
     for (const { record, checked } of compositionChecks) if (validateSceneCompositionDependencies(checked, record, compositionSource).length) invalid();
     const bodyDependencyIds = new Set([...behaviorChecks.flatMap(item => sceneBehaviorDocumentIds(item.checked.value)),
-      ...caseChecks.flatMap(item => runtimeCaseDocumentIds(item.checked.value)),
+      ...caseChecks.flatMap(item => runtimeAuthorDocumentIds(item.checked.value)),
       ...suiteChecks.flatMap(item => runtimeCaseSuiteDocumentIds(item.checked.value))]);
     for (const id of bodyDependencyIds) {
       const document = documentSources.find(item => item.record.id === id);
@@ -193,8 +193,8 @@ export async function unpackResourcePackage(file, directory, signal) {
         diagnostic.code !== 'build_behavior_dependency_unavailable' || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
     }
     for (const { record, checked } of caseChecks) {
-      if (validateRuntimeCaseDocumentDependencies(checked.value, record, behaviorSource).some(diagnostic =>
-        diagnostic.code !== 'runtime_case_dependency_unavailable' || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
+      if (validateRuntimeAuthorDocumentDependencies(checked.value, record, behaviorSource).some(diagnostic =>
+        !['runtime_case_dependency_unavailable', 'runtime_physics_replay_dependency_unavailable', 'runtime_physics_case_dependency_unavailable'].includes(diagnostic.code) || !requiredIds.has(diagnostic.relatedObjectId))) invalid();
     }
     for (const { record, checked } of suiteChecks) {
       if (validateRuntimeCaseSuiteDependencies(checked.value, record, behaviorSource).some(diagnostic =>

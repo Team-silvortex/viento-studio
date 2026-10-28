@@ -13,7 +13,8 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
     <fieldset id="projectAssemblyFields"><div class="project-assembly-grid"><label for="projectAssemblyName" data-i18n="组装名称"></label><input id="projectAssemblyName" maxlength="160" autocomplete="off"><label for="projectAssemblyPath" data-i18n="组装保存位置"></label><input id="projectAssemblyPath" maxlength="1024" autocomplete="off"><label for="projectAssemblyType" data-i18n="文档类型"></label><select id="projectAssemblyType"></select></div>
     <div class="project-assembly-members"><section><label for="projectAssemblyCandidate" data-i18n="可添加场景"></label><select id="projectAssemblyCandidate"></select><button id="projectAssemblyAdd" type="button" class="doc-btn" data-i18n="加入项目"></button></section>
     <section><label for="projectAssemblyMembers" data-i18n="有序场景成员"></label><select id="projectAssemblyMembers" size="8"></select><div class="project-assembly-actions"><button id="projectAssemblyUp" type="button" class="doc-btn" data-i18n="上移"></button><button id="projectAssemblyDown" type="button" class="doc-btn" data-i18n="下移"></button><button id="projectAssemblyRemove" type="button" class="doc-btn" data-i18n="移除成员"></button></div></section></div>
-    <label for="projectAssemblyEntry" data-i18n="启动场景"></label><select id="projectAssemblyEntry"></select><p id="projectAssemblyCount"></p></fieldset>
+    <label for="projectAssemblyEntry" data-i18n="启动场景"></label><select id="projectAssemblyEntry"></select><p id="projectAssemblyCount"></p>
+    <label for="projectAssemblyInputMap" data-i18n="项目输入映射"></label><select id="projectAssemblyInputMap" aria-describedby="projectAssemblyInputMapHint"></select><p id="projectAssemblyInputMapHint" data-i18n="选择已保存的输入映射文档；保存组装后重新构建才会生效。无映射时保留原输入设置。"></p></fieldset>
     <details id="projectAssemblyReview" hidden open><summary data-i18n="待保存组装原文"></summary><pre id="projectAssemblySource"></pre></details></div>
     <p id="projectAssemblyStatus" role="status" aria-live="polite"></p><p id="projectAssemblyError" role="alert" hidden></p>
     <footer><button id="projectAssemblyCheck" type="button" class="doc-btn" data-i18n="审阅组装"></button><button id="projectAssemblySave" type="button" class="doc-btn" data-i18n="保存组装"></button><button id="projectAssemblyCancel" type="button" class="doc-btn" data-i18n="取消"></button></footer>`;
@@ -28,13 +29,14 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
   const writable = () => owns() && !busy && !pending && !needsRefresh && catalog && draft && getContext().editable === true && !getContext().dirty && !getContext().creating && !getContext().busy;
   const signature = () => JSON.stringify(draft), dirty = () => Boolean(pending || draft && signature() !== baseline);
   const notifyBusy = value => { busy = value; setBusy(value); };
-  function fields() { if (draft) { draft.title = el('Name').value; draft.path = el('Path').value; draft.type = el('Type').value; draft.entrySceneId = el('Entry').value; } }
+  function fields() { if (draft) { draft.title = el('Name').value; draft.path = el('Path').value; draft.type = el('Type').value; draft.entrySceneId = el('Entry').value; draft.inputMapId = el('InputMap').value; } }
   function options(select, rows, selected, placeholder = '') {
     const out = [];
     if (placeholder) { const option = document.createElement('option'); option.value = ''; option.textContent = t(placeholder); out.push(option); }
     for (const [value, label] of rows) { const option = document.createElement('option'); option.value = value; option.textContent = label; out.push(option); }
     select.replaceChildren(...out); select.value = selected;
   }
+  const lockedInputMap = () => busy || Boolean(pending) || !owns() || !draft;
   const sceneLabel = id => { const item = catalog?.scenes.find(item => item.id === id); return item ? `${item.title} · ${item.path}` : id; };
   function renderDocuments(selected = el('Documents').value || loaded?.id || '') {
     options(el('Documents'), (catalog?.documents || []).map(item => [item.id, `${item.title}${item.valid ? '' : ' · ' + t('需要修复')}`]), selected, '选择组装文档');
@@ -46,6 +48,11 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
     options(el('Candidate'), (catalog?.scenes || []).filter(item => !draft?.sceneIds.includes(item.id)).map(item => [item.id, `${item.title} · ${item.path}`]), el('Candidate').value || (catalog?.scenes || []).find(item => !draft?.sceneIds.includes(item.id))?.id || '');
     const memberRows = (draft?.sceneIds || []).map((id, index) => [id, `${index + 1}. ${sceneLabel(id)}`]);
     options(el('Members'), memberRows, selectedMember); options(el('Entry'), memberRows, draft?.entrySceneId || '', '选择启动场景');
+    const maps = catalog?.inputMaps || [];
+    const mapRows = maps.map(item => [item.id, `${item.title} · ${item.path}`]);
+    if (draft?.inputMapId && !maps.some(item => item.id === draft.inputMapId)) mapRows.push([draft.inputMapId, `${draft.inputMapId} · ${t('输入映射不可用')}`]);
+    options(el('InputMap'), mapRows, draft?.inputMapId || '', '不使用输入映射');
+    el('InputMap').disabled = !Array.isArray(catalog?.inputMaps) || lockedInputMap();
     el('Name').value = draft?.title || ''; el('Path').value = draft?.path || '';
     const can = writable(), locked = busy || Boolean(pending) || !owns();
     el('Fields').disabled = locked || !draft; el('Path').disabled = locked || Boolean(loaded); el('Type').disabled = locked || Boolean(loaded);
@@ -67,6 +74,7 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
       || typeof value.defaults?.documentsPath !== 'string' || !Array.isArray(value.defaults.documentTypes)
       || value.scenes.some(item => !uuid(item.id) || !version(item.version) || typeof item.path !== 'string' || typeof item.title !== 'string')
       || value.documents.some(item => !uuid(item.id) || !version(item.version) || typeof item.path !== 'string' || typeof item.title !== 'string')
+      || value.inputMaps !== undefined && (!Array.isArray(value.inputMaps) || value.inputMaps.some(item => !uuid(item.id) || !version(item.version) || typeof item.path !== 'string' || typeof item.title !== 'string') || new Set(value.inputMaps.map(item => item.id)).size !== value.inputMaps.length)
       || new Set(value.scenes.map(item => item.id)).size !== value.scenes.length) throw Error('Invalid assembly catalog.');
     return copy(value);
   }
@@ -87,7 +95,7 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
       if (index < 0) catalog.documents.push(row); else catalog.documents[index] = row;
       renderDocuments(row.id);
     }
-    draft = { title: checked.definition.title, sceneIds: checked.definition.sceneIds, entrySceneId: checked.definition.entrySceneId, path: value.path, type: value.documentType };
+    draft = { title: checked.definition.title, sceneIds: checked.definition.sceneIds, entrySceneId: checked.definition.entrySceneId, inputMapId: checked.definition.inputMapId || '', path: value.path, type: value.documentType };
     seedSceneId = ''; sceneOwner = ''; selectedMember = draft.sceneIds[0] || ''; baseline = signature(); preview = null; pending = null; needsRefresh = false; error = ''; message = '组装已载入，可调整成员与启动场景。';
   }
   function newDraft(scene = null) {
@@ -95,7 +103,7 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
     let path = base + '.json';
     if (scene) for (let suffix = 2; catalog.documents.some(item => item.path === path); suffix++) path = `${base}-${suffix}.json`;
     loaded = null; draft = { title: scene ? t('{0} 的项目组装', scene.title).slice(0, 160).replace(/[\uD800-\uDBFF]$/, '') : t('新项目组装'),
-      sceneIds: scene ? [scene.id] : [], entrySceneId: scene?.id || '', path, type: catalog.defaults.documentType };
+      sceneIds: scene ? [scene.id] : [], entrySceneId: scene?.id || '', inputMapId: '', path, type: catalog.defaults.documentType };
     seedSceneId = ''; sceneOwner = scene?.id || ''; selectedMember = scene?.id || ''; baseline = scene ? '' : signature(); preview = null; needsRefresh = false; error = '';
     message = scene ? '已将当前场景设为首个成员和启动场景，请审阅后保存组装。' : '选择场景后审阅完整组装原文，再保存。';
   }
@@ -144,8 +152,12 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
   }
   function review() {
     if (!writable()) return false; fields(); preview = null; error = '';
+    if (draft.inputMapId && !(catalog.inputMaps || []).some(item => item.id === draft.inputMapId)) {
+      error = '所选输入映射不可用，请刷新目录、修复映射文档或选择其他映射；也可选择不使用输入映射。';
+      render(); return false;
+    }
     try {
-      const value = validateProjectAssembly({ format: 'viento-project-assembly', schemaVersion: 1, title: draft.title, sceneIds: draft.sceneIds, entrySceneId: draft.entrySceneId });
+      const value = validateProjectAssembly({ format: 'viento-project-assembly', schemaVersion: draft.inputMapId ? 2 : 1, title: draft.title, sceneIds: draft.sceneIds, entrySceneId: draft.entrySceneId, ...(draft.inputMapId ? { inputMapId: draft.inputMapId } : {}) });
       if (value.sceneIds.some(id => !catalog.scenes.some(item => item.id === id)) || getCreatePathError(draft.path) || !draft.path.startsWith(catalog.defaults.documentsPath + '/') || !/\.json$/i.test(draft.path) || !catalog.defaults.documentTypes.some(type => type.id === draft.type)) throw Error('Invalid assembly location or membership.');
       const content = loaded && signature() === baseline ? loaded.content : JSON.stringify(value, null, 2) + '\n';
       preview = { signature: signature(), content }; message = '请核对成员顺序、启动场景与完整原文，再保存组装。';
@@ -189,7 +201,7 @@ export function setupProjectAssembly({ getContext, setBusy = () => {}, request, 
   const openForScene = sceneId => uuid(sceneId) ? openDraft('', sceneId) : Promise.resolve(false);
   function changed() { fields(); preview = null; error = ''; render(); }
   for (const name of ['Name', 'Path']) el(name).addEventListener('input', changed);
-  for (const name of ['Type', 'Entry']) el(name).addEventListener('change', changed);
+  for (const name of ['Type', 'Entry', 'InputMap']) el(name).addEventListener('change', changed);
   el('Documents').addEventListener('change', render); el('Candidate').addEventListener('change', render);
   el('Members').addEventListener('change', () => { selectedMember = el('Members').value; render(); });
   el('Add').addEventListener('click', () => { if (!writable() || draft.sceneIds.length >= 32 || !catalog.scenes.some(item => item.id === el('Candidate').value) || draft.sceneIds.includes(el('Candidate').value)) return; draft.sceneIds.push(el('Candidate').value); selectedMember = el('Candidate').value; if (!draft.entrySceneId) draft.entrySceneId = selectedMember; preview = null; render(); });

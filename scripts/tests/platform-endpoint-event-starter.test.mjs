@@ -42,9 +42,9 @@ const legacy = {
 test('platform endpoint starter adds one record and preserves all 19 complete previous records', () => {
   const all = listScriptStarters();
   assert.equal(Object.keys(legacy).length, 19);
-  assert.equal(all.length, 20);
-  assert.equal(new Set(all.map(row => row.id)).size, 20);
-  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), [starterId]);
+  assert.equal(all.length, 21);
+  assert.equal(new Set(all.map(row => row.id)).size, 21);
+  assert.deepEqual(all.filter(row => !Object.hasOwn(legacy, row.id)).map(row => row.id), [starterId, 'godot-character-intent']);
   for (const [id, expected] of Object.entries(legacy)) assert.equal(hash(JSON.stringify(all.find(row => row.id === id))), expected, id);
   const row = all.find(item => item.id === starterId);
   assert.deepEqual(Object.keys(row), ['id', 'languageId', 'backendId', 'label', 'description', 'content']);

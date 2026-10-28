@@ -1,3 +1,4 @@
+import { setupInputMap } from './app-input-map.js';
 import { setupScriptUsage } from './app-script-usage.js';
 import { setupAnimationStateScriptEdit } from './app-animation-state-script-edit.js';
 import { setupScenePhysics2D } from './app-scene-physics2d.js';
@@ -62,6 +63,7 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
   }
   // Language preferences must finish before any localized domain view mounts.
   if (active(IDS.settings)) { await setupSettings(settings ?? ports.settings ?? {}); initialized.push(IDS.settings); }
+  if (ports.inputMap && typeof setupInputMap === 'function') controllers.set(IDS.document, setupInputMap(Object.freeze({ ...ports.inputMap })));
   if (typeof setupSceneCompositionCreate === 'function') mount(IDS.compositionCreate, setupSceneCompositionCreate, options('compositionCreate'));
   if (typeof setupScriptCreate === 'function') mount(IDS.scripts, ports => {
     // Script tools share registration, but receive separate source ports.
@@ -128,6 +130,7 @@ export async function setupStudioSystem({ settings, features = {}, ports = {} } 
     return snapshot();
   }
   function refreshMedia() {
+    controllers.get(IDS.document)?.refresh?.();
     controllers.get(IDS.compositionCreate)?.refresh?.();
     controllers.get(IDS.scripts)?.refresh?.();
     controllers.get(IDS.sceneBehaviors)?.refresh?.();

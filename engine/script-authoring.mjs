@@ -1,3 +1,4 @@
+import { GODOT_CHARACTER_INTENT_SCRIPT } from './godot-character-intent-script.mjs';
 import { GODOT_PLATFORM_ENDPOINT_EVENTS_SCRIPT } from './godot-platform-endpoint-events-script.mjs';
 import { GODOT_CHARACTER_DROP_THROUGH_SCRIPT } from './godot-character-drop-through-script.mjs';
 import { GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT } from './godot-character-contact-events-script.mjs';
@@ -78,6 +79,8 @@ const starters = freeze([
   { id: animationStateStarter, languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 动画状态表',
     description: '配置初始状态以及事件或自然完成转换，生成普通脚本。各状态的 clip_ 参数在行为编辑器中选入片段；运行时启动初始状态，共用当前场景播放头。生成后继续编辑普通源码。',
     content: DEFAULT_GODOT_ANIMATION_STATE_SCRIPT },
+  { id: 'godot-character-intent', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 角色运动意图',
+    description: '绑定到 controls 为 none 且启用重力与跳跃的角色实例。可在行为参数中设置 left_action、right_action 和 jump_action，默认使用 ui_left、ui_right 和 ui_accept；动作必须已在 Godot 注册，模板不会创建按键映射。每次物理回调提交左右输入与跳跃按键上升沿；每个项目步只采纳该角色首个请求，未收到请求时横向输入归零；不缓存空中跳跃。', content: GODOT_CHARACTER_INTENT_SCRIPT },
 ]);
 
 // Inspect own data descriptors before reading values. Unknown keys, accessors,

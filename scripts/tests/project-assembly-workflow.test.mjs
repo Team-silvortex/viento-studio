@@ -8,6 +8,7 @@ import { createProjectBuildService } from '../lib/project-build-service.mjs';
 import { runProjectBuildCommand } from '../project-build.mjs';
 import { readFrozenProjectBuild, runProjectBuild } from '../adapters/node-project-build.mjs';
 import { buildHash } from '../adapters/node-build-snapshot.mjs';
+import { BEVY_EXECUTION_ADAPTER } from '../backends/bevy-adapter.mjs';
 
 const first = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
 const second = 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';
@@ -81,10 +82,21 @@ test('assembly workflow: a saved non-entry member change invalidates the reviewe
   await assert.rejects(fs.stat(cacheRoot), { code: 'ENOENT' });
 });
 
-test('assembly workflow: Bevy refuses the aggregate while preserving individually buildable members', async t => {
-  const { root, assembly } = await fixture(t);
+test('assembly workflow: Bevy identifies unsupported images while retaining both data-only members', async t => {
+  const { root, assembly } = await fixture(t), before = await authorHashes(root);
   const result = await runProjectBuildCommand(['--root', root, '--target', assembly.id, '--backend', 'org.viento.bevy']);
-  assert.equal(result.ok, false); assert.ok(result.diagnostics.some(item => item.code === 'build_backend_plan_unsupported'));
+  assert.equal(result.ok, false);
+  assert.ok(result.diagnostics.some(item => item.code === 'build_capability_missing' && item.capability === 'image'));
+  assert.ok(!result.diagnostics.some(item => item.code === 'build_backend_plan_unsupported'));
+  assert.deepEqual(result.plan.scenes.map(scene => scene.scene.objectId), [first, second]);
+  for (const scene of result.plan.scenes) {
+    const dataOnly = structuredClone(scene);
+    dataOnly.resources = []; dataOnly.requiredCapabilities = dataOnly.requiredCapabilities.filter(item => item !== 'image');
+    for (const actor of dataOnly.actors) delete actor.imageResourceId;
+    const generated = await BEVY_EXECUTION_ADAPTER.generate(dataOnly);
+    assert.equal(JSON.parse(generated.files.get('scene-data.json')).scene.objectId, scene.scene.objectId);
+  }
+  assert.deepEqual(await authorHashes(root), before);
 });
 
 test('assembly workflow: real Godot freezes two scenes, runs the selected entry, restores offline and refuses scene-only replay', {

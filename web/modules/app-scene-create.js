@@ -39,6 +39,7 @@ const sceneDiagnosticLabels = {
   build_instance_duplicate: '场景实例身份不能重复，请为复制的实例使用新身份。',
   build_actor_value: '角色字段的值不符合要求，请检查标出的位置。',
   build_scene_value: '场景字段的值不符合要求，请检查标出的位置。',
+  build_scene_title_unicode: '场景标题包含无效的 Unicode 字符，请删除或重新输入该字符。',
   build_image_unsupported: '请选择已登记的 PNG、JPEG、WebP 或 SVG 图片。',
   build_image_unverified: '图片缺少有效的内容校验信息，请重新导入。',
   build_resource_changed: '图片内容与登记信息不符，请重新导入后检查计划。',
@@ -187,7 +188,7 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
       }
       field(fields, { id: `${prefix}Color`, label: '对象颜色（十六进制）', value: actor.color, maxLength: 9, pointer: `/actors/${index}/color`, changeValue: value => { actor.color = value; } });
       field(fields, { id: `${prefix}Speed`, label: '速度（像素／秒）', type: 'number', min: 0, max: 2000, value: actor.speed, pointer: `/actors/${index}/speed`, changeValue: value => { actor.speed = value; } });
-      field(fields, { id: `${prefix}Controls`, label: '移动控制', value: actor.controls, pointer: `/actors/${index}/controls`, options: [['arrows', t('方向键')], ['none', t('不接受输入')]], changeValue: value => { actor.controls = value; } });
+      field(fields, { id: `${prefix}Controls`, label: '移动控制', value: actor.controls, pointer: `/actors/${index}/controls`, options: [['arrows', t('方向键')], ['none', t('无内置控制')]], changeValue: value => { actor.controls = value; } });
       if (actor.useProjectionDefaults && inherited) {
         for (const [key, suffix, label, inputs] of [
           ['imageResourceId', 'Image', '在此场景覆盖图片', ['Image']], ['size', 'Size', '在此场景覆盖尺寸', ['size0', 'size1']],
@@ -245,6 +246,7 @@ export function setupSceneCreate({ getContext = () => ({}), setBusy = () => {}, 
     const color = value => /^#[a-f0-9]{6}(?:[a-f0-9]{2})?$/i.test(value);
     if (!draft || !projection) return [{ code: 'scene_catalog_required' }];
     if (!draft.title.trim() || draft.title.length > 160 || /[\x00-\x1f]/.test(draft.title)) issue('build_scene_value', '/title');
+    if (/[\uD800-\uDFFF]/u.test(draft.title)) issue('build_scene_title_unicode', '/title');
     if (!draft.viewport.every(value => numeric(value, 64, 4096, true))) issue('build_scene_value', '/viewport');
     if (!color(draft.background)) issue('build_scene_value', '/background');
     if (!editing && !types().some(type => type.definition.id === draft.documentType)) issue('world_type_unknown');

@@ -19,7 +19,8 @@ import { GODOT_EXECUTION_FRAMES_CAPABILITY } from './godot4-execution-frames.mjs
 import { createProjectExecutionFramesReader } from '../../engine/project-execution-frames.mjs';
 import { createProjectEventPositionsReader } from '../../engine/project-event-positions.mjs';
 import { GODOT_ANIMATION_REQUESTS_CAPABILITY } from './godot4-animation-requests.mjs';
-import { generateGodotAudioRequestsProject, godotAudioRequestsAssemblyScripts, GODOT_AUDIO_REQUESTS_CAPABILITY } from './godot4-audio-requests.mjs';
+import { GODOT_AUDIO_REQUESTS_CAPABILITY } from './godot4-audio-requests.mjs';
+import { generateGodotPhysicsCharacterIntentProject, godotPhysicsCharacterIntentAssemblyScripts, GODOT_CHARACTER_INTENT_CAPABILITY } from './godot4-physics-character-intent.mjs';
 import { createProjectAudioRequestsReader } from '../../engine/project-audio-requests.mjs';
 import { createProjectAnimationRequestsReader } from '../../engine/project-animation-requests.mjs';
 import { createProjectExecutionClockReader } from '../../engine/project-execution-clock.mjs';
@@ -27,11 +28,14 @@ import { createProjectAnimationStateCatalog } from '../../engine/project-animati
 import { createProjectRuntimeEventReader } from '../../engine/project-runtime-events.mjs';
 import { createProjectPhysics2DTraceReader } from '../../engine/project-physics2d-trace.mjs';
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
+import { executeGodotPhysicsInputReplay } from './godot4-physics-input-replay.mjs';
+import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
+import { applyGodotInputMap } from './godot4-input-map.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.36.0',
-  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 11 }],
-  capabilities: [GODOT_AUDIO_REQUESTS_CAPABILITY, GODOT_ANIMATION_REQUESTS_CAPABILITY, GODOT_EXECUTION_FRAMES_CAPABILITY, GODOT_EXECUTION_CLOCK_CAPABILITY, 'physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.38.0',
+  platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 11 }, { kind: 'project', schemaVersion: 2, runtimeProtocolVersion: 11 }],
+  capabilities: ['project.input-map', GODOT_CHARACTER_INTENT_CAPABILITY, GODOT_AUDIO_REQUESTS_CAPABILITY, GODOT_ANIMATION_REQUESTS_CAPABILITY, GODOT_EXECUTION_FRAMES_CAPABILITY, GODOT_EXECUTION_CLOCK_CAPABILITY, 'physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -57,7 +61,13 @@ async function generate(plan) {
   if (plan.kind === 'scene2d' && plan.animation?.document.playbackScope === 'instance') throw buildError('build_animation_instances_require_project', 'Per-instance animation requires a project assembly.');
   // Detach before the generator's asynchronous file reads so callers cannot
   // change an admitted plan while its project bytes are being produced.
-  const generated = await (plan.kind === 'project' || hasGodotPhysics(plan) ? generateGodotAudioRequestsProject : plan.animation ? generateGodotAnimationProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
+  const detached = structuredClone(plan);
+  // Existing generators continue consuming the v1 projection and retain their
+  // output and fingerprints. The map belongs solely to the outer adapter.
+  const inputMap = detached.kind === 'project' && detached.schemaVersion === 2 ? validateProjectAssemblyPlan(detached).inputMap : null;
+  if (inputMap) { delete detached.inputMap; detached.schemaVersion = 1; detached.requiredCapabilities = detached.requiredCapabilities.filter(value => value !== 'project.input-map'); }
+  const generated = await (detached.kind === 'project' || hasGodotPhysics(detached) ? generateGodotPhysicsCharacterIntentProject : detached.animation ? generateGodotAnimationProject : detached.audio ? generateGodotAudioProject : detached.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(detached);
+  if (inputMap) await applyGodotInputMap(generated, inputMap);
   return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
     artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
 }
@@ -66,6 +76,16 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ['scripts/backends/godot4-input-map.mjs', new URL('./godot4-input-map.mjs', import.meta.url)],
+    ['engine/project-input-map.mjs', new URL('../../engine/project-input-map.mjs', import.meta.url)],
+    ['scripts/backends/godot4-physics-input-replay.mjs', new URL('./godot4-physics-input-replay.mjs', import.meta.url)],
+    ['scripts/backends/godot4/physics-input-replay-driver.gd', new URL('./godot4/physics-input-replay-driver.gd', import.meta.url)],
+    ['engine/project-physics2d-input-replay.mjs', new URL('../../engine/project-physics2d-input-replay.mjs', import.meta.url)],
+    ['scripts/backends/godot4-physics-drop-through-v0.29.mjs.txt', new URL('./godot4-physics-drop-through-v0.29.mjs.txt', import.meta.url)],
+    ['scripts/backends/godot4-physics-platform-motion-v0.30.mjs.txt', new URL('./godot4-physics-platform-motion-v0.30.mjs.txt', import.meta.url)],
+    ['scripts/backends/godot4-physics-character-intent.mjs', new URL('./godot4-physics-character-intent.mjs', import.meta.url)],
+    ['scripts/backends/godot4-physics-character-intent-transform.mjs', new URL('./godot4-physics-character-intent-transform.mjs', import.meta.url)],
+    ...['character-intent-bridge.gd', 'character-intent-helper.gd', 'character-intent-port.gd'].map(name => [`scripts/backends/godot4/physics-${name}`, new URL(`./godot4/physics-${name}`, import.meta.url)]),
     ['engine/project-event-positions.mjs', new URL('../../engine/project-event-positions.mjs', import.meta.url)],
     ['engine/project-queued-requests.mjs', new URL('../../engine/project-queued-requests.mjs', import.meta.url)],
     ['engine/project-audio-requests.mjs', new URL('../../engine/project-audio-requests.mjs', import.meta.url)],
@@ -162,6 +182,7 @@ async function fingerprint() {
     ['scripts/backends/godot4/behavior-runtime.gd', new URL('./godot4/behavior-runtime.gd', import.meta.url)],
     ['engine/scene-behaviors.mjs', new URL('../../engine/scene-behaviors.mjs', import.meta.url)],
     ['engine/build-plan.mjs', new URL('../../engine/build-plan.mjs', import.meta.url)],
+    ['engine/scene-model.mjs', new URL('../../engine/scene-model.mjs', import.meta.url)],
     ['engine/scene-control-program.mjs', new URL('../../engine/scene-control-program.mjs', import.meta.url)],
     ['scripts/backends/godot4/control-runtime.gd', new URL('./godot4/control-runtime.gd', import.meta.url)],
     ['scripts/backends/godot4/control.tscn', new URL('./godot4/control.tscn', import.meta.url)],
@@ -176,6 +197,9 @@ async function fingerprint() {
     ['engine/audio-wav.mjs', new URL('../../engine/audio-wav.mjs', import.meta.url)],
     ['scripts/backends/godot4-project.mjs', new URL('./godot4-project.mjs', import.meta.url)],
     ['engine/project-assembly-plan.mjs', new URL('../../engine/project-assembly-plan.mjs', import.meta.url)],
+    ['engine/project-input-action-diagnostics.mjs', new URL('../../engine/project-input-action-diagnostics.mjs', import.meta.url)],
+    ['engine/godot-character-intent-script.mjs', new URL('../../engine/godot-character-intent-script.mjs', import.meta.url)],
+    ['engine/godot-character-drop-through-script.mjs', new URL('../../engine/godot-character-drop-through-script.mjs', import.meta.url)],
     ['engine/project-assembly-plan-contract.mjs', new URL('../../engine/project-assembly-plan-contract.mjs', import.meta.url)],
     ['engine/project-assembly.mjs', new URL('../../engine/project-assembly.mjs', import.meta.url)],
     ['engine/build-target.mjs', new URL('../../engine/build-target.mjs', import.meta.url)],
@@ -198,8 +222,11 @@ async function fingerprint() {
   return { id: descriptor.id, contractVersion: 1, sha256: buildHash(JSON.stringify(identities)) };
 }
 
-async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000, onOutput, mode = 'headlessLogic', smoke = true, capturePath, controlProgram } = {}) {
+async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000, onOutput, mode = 'headlessLogic', smoke = true, capturePath, controlProgram, physicsControlProgram } = {}) {
   if (!['import', 'script-check', 'run'].includes(phase)) throw buildError('build_execution_unsupported', 'Godot does not support this execution phase.');
+  if (physicsControlProgram !== undefined && (controlProgram !== undefined || phase !== 'run' || mode !== 'headlessLogic' || !smoke)) {
+    throw buildError('runtime_physics2d_input_unsupported', 'Physics input replay requires a dedicated headless smoke run.');
+  }
   if (controlProgram !== undefined && (phase !== 'run' || mode !== 'headlessLogic' || !smoke)) {
     throw buildError('runtime_control_unsupported', 'Control replay requires a headless smoke run.');
   }
@@ -224,7 +251,7 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
       XDG_DATA_HOME: path.join(directory, '.host/data'), XDG_CONFIG_HOME: path.join(directory, '.host/config'), XDG_CACHE_HOME: path.join(directory, '.host/cache') },
     signal, timeoutMs, onOutput };
   if (phase === 'script-check') {
-    const assemblyScripts = await godotAudioRequestsAssemblyScripts(directory, signal);
+    const assemblyScripts = await godotPhysicsCharacterIntentAssemblyScripts(directory, signal);
     const scripts = assemblyScripts || ['runtime.gd'];
     if (!assemblyScripts) {
     let manifest;
@@ -265,6 +292,7 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
     }
     return { ...result, stdout, stderr, durationMs: Date.now() - started };
   }
+  if (physicsControlProgram !== undefined) return executeGodotPhysicsInputReplay({ directory, tool, signal, options, physicsControlProgram });
   if (controlProgram === undefined) return runBuildProcess(tool.executable, ['--path', directory, ...args], options);
   if (phase !== 'run' || mode !== 'headlessLogic' || !smoke) throw buildError('runtime_control_unsupported', 'Control replay requires a headless smoke run.');
   // Capture the validated request before any asynchronous inventory access.

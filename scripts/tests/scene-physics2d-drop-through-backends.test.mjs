@@ -111,7 +111,9 @@ ${exit || '\tpass'}
 `, {}, instanceId);
 }
 function dropped(output, f, { stationary = true } = {}) {
-  assert.equal(f.generated.backend.version, '0.29.0'); assert.ok(f.generated.backend.capabilities.includes(capability));
+  assert.equal(f.generated.backend.version, '0.37.0');
+  assert.ok(f.generated.backend.capabilities.includes(capability));
+  assert.ok(f.generated.backend.capabilities.includes('physics.character-intent2d'));
   assert.equal(output.snapshot.samples.length, 60);
   const mine = samples(output, f), other = output.snapshot.samples.filter(sample => sample.instanceId === f.otherInstanceId);
   assert.equal(mine.length, 30); assert.equal(other.length, 30);

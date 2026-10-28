@@ -109,6 +109,9 @@ export function setupBackendProject({ container, request, getState, onChange = (
         ? '这是包含作者 Rust 行为的 Cargo 源工程。需要匹配的 Rust 工具链与锁定依赖；编译缓存和可执行文件不随工程交付。'
         : '这是从已保存作者输入生成的派生工程。请在作者工程修改设计，再重新检查和构建；生成文件不是作者原文。';
     view.facts.parentElement.append(view.node('p', t(explanation), 'build-hint'));
+    if (project.source.planKind === 'project' && project.backend.id === 'org.viento.bevy' && project.project.kind === 'bevy-scene') {
+      view.facts.parentElement.append(view.node('p', t('组装工程仅运行入口场景，不支持场景切换；需要另行准备可信的 Bevy 运行程序。'), 'build-hint'));
+    }
     const source = view.section('来源与锁定输入', '详情按构建时捕获的来源与文件清单展示；当前作者编辑和工具检查不会改写此工程。');
     const sourceFacts = view.node('dl', '', 'backend-project-facts'); source.append(sourceFacts);
     const sourceIdentity = backendProjectSourceIdentity(project);

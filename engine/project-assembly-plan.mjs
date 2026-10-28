@@ -3,6 +3,8 @@ import { inspectProjectAssembly, validateProjectAssemblyDependencies } from './p
 import { createScene2DPlan } from './build-plan.mjs';
 import { parseJsonSource, locateJsonSource } from './json-source.mjs';
 import { canonicalJson } from './canonical-json.mjs';
+import { inspectProjectInputMap } from './project-input-map.mjs';
+import { inspectProjectInputActionReferences } from './project-input-action-diagnostics.mjs';
 
 export function createProjectAssemblyPlan(observed, targetRef) {
   const { source, projection } = observed;
@@ -41,13 +43,18 @@ export function createProjectAssemblyPlan(observed, targetRef) {
   if (resources.size > 128) diagnostics.push({ severity: 'error', code: 'build_assembly_limit',
     message: 'A project assembly can include at most 128 distinct resources.', ...location('/sceneIds') });
   if (diagnostics.length) return { ok: false, plan: null, diagnostics };
-  return { ok: true, plan: { format: 'viento-build-plan', schemaVersion: 1, kind: 'project',
+  const input = checked.value.schemaVersion === 2 ? source.documents.find(item => item.record?.id === checked.value.inputMapId) : null;
+  if (input) capabilities.add('project.input-map');
+  const inputDocument = input ? inspectProjectInputMap(input.content) : null;
+  const suggestions = inspectProjectInputActionReferences(scenes, inputDocument, source.documents);
+  return { ok: true, plan: { format: 'viento-build-plan', schemaVersion: input ? 2 : 1, kind: 'project',
     projectId: source.workspace.id, worldId: projection.world.id, worldRevision: projection.world.revision,
     assembly: { objectId: document.record.id, sourcePath: document.sourcePath, sourceRevision: document.sourceRevision, title: checked.value.title },
     entrySceneId: checked.value.entrySceneId, scenes,
+    ...(input ? { inputMap: { objectId: input.record.id, sourcePath: input.sourcePath, sourceRevision: input.sourceRevision, document: inputDocument } } : {}),
     resources: [...resources.values()].sort((a, b) => a.id.localeCompare(b.id)),
     requiredCapabilities: [...capabilities].sort(),
-  }, diagnostics: [] };
+  }, diagnostics: suggestions };
 }
 
 export { validateProjectAssemblyPlan } from './project-assembly-plan-contract.mjs';

@@ -6,6 +6,7 @@ import { getCreatePathError, API_ERRORS } from '../../engine/document-contract.m
 import { canonicalJson, createWorldProjection } from '../../engine/world-projection.mjs';
 import { inspectProjectAssembly, validateProjectAssemblyDependencies } from '../../engine/project-assembly.mjs';
 import { parseJsonSource } from '../../engine/json-source.mjs';
+import { inspectProjectInputMap } from '../../engine/project-input-map.mjs';
 import { readWorldSnapshot } from '../adapters/node-world-projection.mjs';
 import { createNodeDocumentStorage } from '../adapters/node-document-storage.mjs';
 import { resolveContainedPath } from './contained-path.mjs';
@@ -49,6 +50,10 @@ export function createProjectAssemblyDocumentService(root, { onWrite = () => {},
     const observed = await readWorldSnapshot(root), source = observed.source;
     return { ...identity(observed), scenes: source.documents.flatMap(document => {
       const value = sceneValue(document); return value ? [{ id: document.record.id, path: document.sourcePath, title: value.title || path.basename(document.sourcePath), version: document.sourceRevision }] : [];
+    }), inputMaps: source.documents.flatMap(document => {
+      if (!document.record || !document.sourceRevision || !document.sourcePath.toLowerCase().endsWith('.json')) return [];
+      try { inspectProjectInputMap(document.content); return [{ id: document.record.id, path: document.sourcePath, title: path.basename(document.sourcePath), version: document.sourceRevision }]; }
+      catch { return []; }
     }), documents: source.documents.filter(document => document.record && inspectProjectAssembly(document.content).recognized).map(document => documentView(observed, document)),
     defaults: { documentsPath: source.definition.paths.documents, documentType: source.definition.documentTypes[0]?.id || '',
       documentTypes: source.definition.documentTypes.map(type => ({ id: type.id, label: type.label || type.id })) } };

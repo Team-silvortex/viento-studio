@@ -103,6 +103,7 @@ test('Bevy details distinguish scene data from Cargo, author Rust and a standalo
   assert.match(h.element('backendProjectContent').textContent, /Bevy 场景数据工程/);
   assert.match(h.element('backendProjectContent').textContent, /不是 Cargo 工程，不编译作者 Rust，也不是独立发行程序/);
   assert.match(h.element('backendProjectContent').textContent, /没有复制素材/);
+  assert.doesNotMatch(h.element('backendProjectContent').textContent, /组装工程仅运行入口场景/);
   assert.equal(h.element('backendProjectFiles').children.length, 1); assert.equal(h.calls.length, 1);
 });
 
@@ -288,6 +289,27 @@ test('assembly manifest details retain assembly identity and disclose ordered sc
   source.dependencies.push({ objectId: assemblyId, sourcePath: source.source.sourcePath, sourceRevision: source.source.sourceRevision, role: 'assembly' }, { objectId: otherSceneId, sourcePath: 'documents/scenes/other.json', sourceRevision: revision(81), role: 'scene' });
   source.dependencies.sort((a,b)=>a.sourcePath<b.sourcePath?-1:1); const project = validateBackendProjectManifest(source);
   const h=await view({project,rows:[summary(project,{sceneId:assemblyId,targetKind:'project'})],current:{sceneId:assemblyId}});assert.equal(await h.open(),true);
-  const text=h.element('backendProjectContent').textContent;for(const expected of ['来源组装标识',assemblyId,'启动场景标识',otherSceneId,'组装场景数量','documents/scenes/other.json','组装原文'])assert.ok(text.includes(expected),expected);
+  const text=h.element('backendProjectContent').textContent; assert.ok(!text.includes('组装工程仅运行入口场景'));for(const expected of ['来源组装标识',assemblyId,'启动场景标识',otherSceneId,'组装场景数量','documents/scenes/other.json','组装原文'])assert.ok(text.includes(expected),expected);
   assert.deepEqual(h.calls,[{action:'inspect-project',buildId}]);h.setState({...h.state,sceneId});assert.equal(h.element('backendProjectDetails').hidden,true);
+});
+
+
+test('Bevy assembled project clearly states entry-only execution in Chinese, English and Japanese', async () => {
+  const source = clone(manifest({ backend: 'org.viento.bevy' })), assemblyId = id(80), otherSceneId = id(81);
+  source.schemaVersion = 2; source.backend.protocolVersion = 1;
+  source.source = { workspaceId: 'frozen-author-workspace', assemblyId, sourcePath: 'documents/projects/game.json', sourceRevision: revision(80), planKind: 'project', planSchemaVersion: 1,
+    entrySceneId: otherSceneId, scenes: [{ sceneId, sourcePath: 'documents/scenes/frozen-scene.json', sourceRevision: revision(2) }, { sceneId: otherSceneId, sourcePath: 'documents/scenes/other.json', sourceRevision: revision(81) }] };
+  source.dependencies.push({ objectId: assemblyId, sourcePath: source.source.sourcePath, sourceRevision: source.source.sourceRevision, role: 'assembly' },
+    { objectId: otherSceneId, sourcePath: 'documents/scenes/other.json', sourceRevision: revision(81), role: 'scene' });
+  source.dependencies.sort((a,b) => a.sourcePath < b.sourcePath ? -1 : 1);
+  const project = validateBackendProjectManifest(source);
+  const h = await view({ project, rows: [summary(project, { sceneId: assemblyId, targetKind: 'project' })], current: { sceneId: assemblyId } });
+  assert.equal(await h.open(), true);
+  const hint = '组装工程仅运行入口场景，不支持场景切换；需要另行准备可信的 Bevy 运行程序。';
+  for (const dictionary of [{}, en, ja]) {
+    h.language(dictionary);
+    assert.ok(h.element('backendProjectContent').textContent.includes(dictionary[hint] || hint));
+    assert.ok(h.element('backendProjectContent').textContent.includes(otherSceneId));
+    assert.equal(h.calls.length, 1);
+  }
 });

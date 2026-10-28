@@ -1,6 +1,7 @@
 // Portable project membership. Stable registered document identities are the
 // only links; engines and generated paths are deliberately absent.
 import { parseJsonSource } from './json-source.mjs';
+import { inspectProjectInputMap } from './project-input-map.mjs';
 
 export const PROJECT_ASSEMBLY_FORMAT = 'viento-project-assembly';
 export const PROJECT_ASSEMBLY_FILE_MAX_BYTES = 32768;
@@ -24,9 +25,9 @@ function fields(value, array = false) {
 }
 
 export function validateProjectAssembly(input) {
-  const data = fields(input), keys = ['format', 'schemaVersion', 'title', 'entrySceneId', 'sceneIds'];
+  const data = fields(input), version = data.schemaVersion?.value, keys = ['format', 'schemaVersion', 'title', 'entrySceneId', 'sceneIds', ...(version === 2 ? ['inputMapId'] : [])];
   if (Reflect.ownKeys(data).length !== keys.length || !keys.every(key => Object.hasOwn(data, key))) throw invalid('Expected only the project assembly declaration fields.');
-  if (data.format.value !== PROJECT_ASSEMBLY_FORMAT || data.schemaVersion.value !== 1) throw invalid('Expected viento-project-assembly schemaVersion 1.');
+  if (data.format.value !== PROJECT_ASSEMBLY_FORMAT || ![1, 2].includes(version)) throw invalid('Expected viento-project-assembly schemaVersion 1 or 2.');
   const title = data.title.value;
   if (typeof title !== 'string' || !title.trim() || title.length > 160 || /[\x00-\x1f\x7f]/.test(title)) throw invalid('Provide an assembly title of 1–160 characters.', '/title');
   for (const character of title) if (character.codePointAt(0) >= 0xd800 && character.codePointAt(0) <= 0xdfff) throw invalid('Use valid Unicode in the assembly title.', '/title');
@@ -40,7 +41,8 @@ export function validateProjectAssembly(input) {
   }
   const entrySceneId = data.entrySceneId.value;
   if (!uuid(entrySceneId) || !sceneIds.includes(entrySceneId)) throw invalid('The entry scene must be included in the assembly.', '/entrySceneId');
-  return Object.freeze({ format: PROJECT_ASSEMBLY_FORMAT, schemaVersion: 1, title, entrySceneId, sceneIds: Object.freeze(sceneIds) });
+  if (version === 2 && (!uuid(data.inputMapId.value) || sceneIds.includes(data.inputMapId.value))) throw invalid('The input map must be a distinct registered document.', '/inputMapId');
+  return Object.freeze({ format: PROJECT_ASSEMBLY_FORMAT, schemaVersion: version, title, entrySceneId, sceneIds: Object.freeze(sceneIds), ...(version === 2 ? { inputMapId: data.inputMapId.value } : {}) });
 }
 
 // Recognize malformed declarations too, without mistaking nested JSON examples
@@ -92,7 +94,7 @@ export function inspectProjectAssembly(content) {
   catch (error) { return fail([issue(error.errorCode || 'build_assembly_invalid', error.message, error.propertyPath || '')]); }
 }
 
-export function projectAssemblyDocumentIds(value) { return [...validateProjectAssembly(value).sceneIds]; }
+export function projectAssemblyDocumentIds(value) { const assembly = validateProjectAssembly(value); return [...assembly.sceneIds, ...(assembly.schemaVersion === 2 ? [assembly.inputMapId] : [])]; }
 
 export function validateProjectAssemblyDependencies(input, record, source = {}) {
   const value = validateProjectAssembly(input), diagnostics = [];
@@ -106,6 +108,15 @@ export function validateProjectAssemblyDependencies(input, record, source = {}) 
     const parsed = parseJsonSource(document.content);
     if (!parsed.ok || parsed.value?.format !== 'viento-scene2d' || ![1, 2, 3].includes(parsed.value.schemaVersion)) {
       diagnostics.push(issue('build_assembly_scene_invalid', 'An assembly member must contain an unambiguous Scene2D declaration.', propertyPath, { relatedObjectId: id }));
+    }
+  }
+  if (value.schemaVersion === 2) {
+    const document = documents.get(value.inputMapId);
+    if (value.inputMapId === record?.id || !document || typeof document.content !== 'string' || !document.sourcePath?.toLowerCase().endsWith('.json')) {
+      diagnostics.push(issue('build_assembly_input_missing', 'The input map must be another available registered JSON document.', '/inputMapId', { relatedObjectId: value.inputMapId }));
+    } else {
+      try { inspectProjectInputMap(document.content); }
+      catch { diagnostics.push(issue('build_assembly_input_invalid', 'The input map declaration is invalid.', '/inputMapId', { relatedObjectId: value.inputMapId })); }
     }
   }
   return diagnostics;

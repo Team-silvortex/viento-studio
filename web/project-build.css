@@ -228,3 +228,20 @@
 .backend-delivery-body { min-height: 0; overflow: auto; }
 .backend-delivery .build-heading, .backend-delivery .build-actions { flex: 0 0 auto; }
 .backend-delivery #backendDeliveryStatus, .backend-delivery #backendDeliveryError { flex: 0 0 auto; overflow-wrap: anywhere; }
+
+/* Physics input matrix stays scrollable on narrow workspaces. */
+.build-physics-timeline { overflow-x: auto; margin-block: 8px; padding-bottom: 4px; }
+.build-physics-timeline-row { display: grid; grid-template-columns: 4.5em repeat(30, 2.25em); gap: 3px; min-width: max-content; margin-block: 3px; align-items: center; }
+.build-physics-timeline-label { position: sticky; left: 0; z-index: 1; padding: 3px; background: #f7faf8; }
+.build-physics-timeline-cell { padding: 4px 0; border: 1px solid #94b4a2; border-radius: 4px; color: inherit; background: transparent; cursor: pointer; }
+.build-physics-timeline-cell[aria-pressed="true"] { color: #092c1c; background: #8edbb4; border-color: #318b5d; font-weight: 700; }
+.build-physics-timeline-cell[aria-disabled="true"] { opacity: .6; cursor: default; }
+.build-physics-timeline-cell:focus-visible { outline: 3px solid #2384c6; outline-offset: 1px; }
+
+.build-physics-range { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-block: 8px; }
+.build-physics-range input { width: 4.5em; }
+
+.build-physics-case-fields { display: grid; grid-template-columns: minmax(9rem, 1fr) minmax(0, 2fr); gap: 8px 12px; align-items: center; min-width: 0; margin-block: 12px; padding: 12px; border: 1px solid #bdd1c4; border-radius: 8px; }
+.build-physics-case-fields input:not([type="checkbox"]), .build-physics-case-fields select { box-sizing: border-box; width: 100%; min-width: 0; padding: 8px; font: inherit; color: inherit; background: white; border: 1px solid #94b4a2; border-radius: 8px; }
+.build-physics-case-fields > label:has(input[type="checkbox"]), .build-physics-case-fields > button { grid-column: 1 / -1; }
+@media (max-width: 600px) { .build-physics-case-fields { grid-template-columns: minmax(0, 1fr); } .build-physics-case-fields > label:has(input[type="checkbox"]), .build-physics-case-fields > button { grid-column: auto; } }
