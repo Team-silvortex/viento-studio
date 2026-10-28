@@ -1,3 +1,4 @@
+import { projectFramesFromStdout } from './helpers/project-execution-frames-fixture.mjs';
 // Actual Chrome project event delivery -> shared state -> scene switching -> relocated ZIP.
 // Every author mutation is confined to a disposable copy of the Scene2D example.
 import fs from 'node:fs/promises';
@@ -142,7 +143,7 @@ try {
   const unzip = await runCommand('unzip', ['-q', archive, '-d', relocated], { cwd: temp }); assert.equal(unzip.code, 0);
   const project = path.join(relocated, 'project'), imported = await runCommand(tool, ['--headless', '--editor', '--path', project, '--import', '--quit'], { cwd: temp, env }); assert.equal(imported.code, 0); assert.doesNotMatch(imported.stdout + imported.stderr, /SCRIPT ERROR|Parse Error/);
   const run = await runCommand(tool, ['--headless', '--path', project, '--', '--viento-smoke'], { cwd: temp, env }); assert.equal(run.code, 0); assert.doesNotMatch(run.stdout + run.stderr, /SCRIPT ERROR|Parse Error/);
-  const frames = run.stdout.split('\n').filter(line => line.startsWith('VIENTO_PROJECT:')).map(line => JSON.parse(line.slice('VIENTO_PROJECT:'.length))); assert.deepEqual(frames.filter(frame=>frame.event==='scene-enter').map(frame=>frame.sceneId), [first, second, first]); assert.equal(frames.at(-1).event, 'finished');
+  const frames = projectFramesFromStdout(run.stdout); assert.deepEqual(frames.filter(frame=>frame.event==='scene-enter').map(frame=>frame.sceneId), [first, second, first]); assert.equal(frames.at(-1).event, 'finished');
   assert.equal(frames.at(-1).stateRevision, fixture.expectedRevision); assert.equal(frames.at(-1).eventSequence, fixture.expectedSequence);
   assert.deepEqual(frames.filter(frame=>frame.event.startsWith('event-')), ran.events.filter(frame=>frame.event.startsWith('event-')));
   assert.deepEqual(frames.filter(frame=>frame.event==='state'), ran.events.filter(frame=>frame.event==='state'));

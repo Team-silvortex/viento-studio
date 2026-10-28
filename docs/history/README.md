@@ -34,10 +34,11 @@
 
 ## 发布记录
 
-当前源码版本为 `0.2.5`，使用三段数字编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
+当前源码版本为 `0.2.6`，使用三段数字编号；`b.X.Y` 和更早的数字版本是历史编号。编号兼容规则见 [版本与数据兼容 ADR](../adr/0001-product-version-and-data-compatibility.md)。0.0.1 的交付与恢复记录位于下方的迁移交接分类。
 
 | 原报告 | 主题 |
 | --- | --- |
+| [RELEASE_0.2.6.md](../RELEASE_0.2.6.md) | 调度时钟、因果锚点、精确业务帧、媒体请求、事件位置面板与 Godot 音频修订；[发布检查](../test-results/release-0.2.6/README.md) |
 | [RELEASE_0.2.5.md](../RELEASE_0.2.5.md) | 自由平面碰撞、平台下穿、水平往返与端点事件、原始留存和有限预算；[发布检查](../test-results/release-0.2.5/README.md) |
 | [RELEASE_0.2.4.md](../RELEASE_0.2.4.md) | 物理运行观察、角色重力／跳跃、作者运动与移动碰撞事件、静态单向平台 |
 | [RELEASE_0.2.3.md](../RELEASE_0.2.3.md) | 碰撞偏移／尺寸空间编辑、角色停止／滑动响应与文档重构 |

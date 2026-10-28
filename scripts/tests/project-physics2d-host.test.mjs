@@ -1,3 +1,4 @@
+import { createProjectFrameEncoder } from './helpers/project-execution-frames-fixture.mjs';
 import '../adapters/node-studio-core.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -13,7 +14,6 @@ import { buildHash } from '../adapters/node-build-snapshot.mjs';
 
 const tool = { executable: process.execPath, version: 'physics-host-test', sha256: 'a'.repeat(64), platform: process.platform, arch: process.arch };
 const phaseResult = (phase, status = 'succeeded') => ({ phase, status, exitCode: status === 'succeeded' ? 0 : 1, stdout: '', stderr: '' });
-const line = (frame, physics = false) => (physics ? 'VIENTO_PHYSICS2D:' : 'VIENTO_PROJECT:') + JSON.stringify(frame) + '\n';
 function registry({ execute, snapshots } = {}) {
   let plan;
   return createExecutionBackendRegistry([{ ...godot,
@@ -28,7 +28,8 @@ function registry({ execute, snapshots } = {}) {
       const scene = plan.scenes.find(row => row.scene.objectId === plan.entrySceneId), body = scene.physics.document.bodies.find(row => row.kind === 'character');
       const actor = scene.actors.find(row => row.instanceId === body.instanceId);
       const actors = scene.actors.map(row => ({ objectId: row.objectId, instanceId: row.instanceId, position: row.position, state: 'idle' }));
-      const emit = (frame, physics = false) => context.onOutput({ stream: 'stdout', text: line(frame, physics) });
+      const encodeProject = createProjectFrameEncoder();
+      const emit = (frame, physics = false) => context.onOutput({ stream: 'stdout', text: physics ? 'VIENTO_PHYSICS2D:' + JSON.stringify(frame) + '\n' : encodeProject(frame) });
       const begin = () => {
         emit({ protocol: 4, event: 'ready', assemblyId: plan.assembly.objectId, entrySceneId: plan.entrySceneId, stateRevision: 0, eventSequence: 0, audioCommandSequence: 0 });
         if (context.smoke) emit({ protocol: 1, event: 'ready', assemblyId: plan.assembly.objectId, limit: 256 }, true);

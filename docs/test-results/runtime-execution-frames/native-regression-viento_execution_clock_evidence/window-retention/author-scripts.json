@@ -1,0 +1,5 @@
+{
+  "documents/scripts/checkpoint.txt": "extends Node\nvar p\nfunc _ready() -> void:\n\tp = get_meta(\"viento_project\")\n\tpass\nfunc _probe(label: String) -> void:\n\tprint(\"VIENTO_CLOCK_PROBE:\" + JSON.stringify({\"label\": label, \"clock\": {\"idleFrame\": Engine.get_process_frames(), \"physicsFrame\": Engine.get_physics_frames()}, \"used\": p.host.get_ref().execution_budget.snapshot()}))\nfunc _finish() -> void:\n\tp.host.get_ref().finish_project()\nvar steps := 0\nfunc _process(_delta: float) -> void:\n\tsteps += 1\n\tp.write_state(\"counter\", steps)\n\tif steps == 40:\n\t\t_probe(\"forty\")\n\t\tset_process(false)\n\t\tcall_deferred(\"_finish\")\n",
+  "documents/scripts/publisher.txt": "extends Node\n",
+  "documents/scripts/second.txt": "extends Node\n"
+}

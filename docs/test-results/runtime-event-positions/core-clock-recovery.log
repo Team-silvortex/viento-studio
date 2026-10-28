@@ -1,0 +1,352 @@
+TAP version 13
+# Subtest: construction requires event and exact-position capabilities with bounded retention and detached initial DTO
+ok 1 - construction requires event and exact-position capabilities with bounded retention and detached initial DTO
+  ---
+  duration_ms: 9.855411
+  type: 'test'
+  ...
+# Subtest: fragmented multi-visit business traffic gains exact event positions without changing old DTOs
+ok 2 - fragmented multi-visit business traffic gains exact event positions without changing old DTOs
+  ---
+  duration_ms: 11.478742
+  type: 'test'
+  ...
+# Subtest: zero recipients settle publication facts immediately without inventing delivery positions
+ok 3 - zero recipients settle publication facts immediately without inventing delivery positions
+  ---
+  duration_ms: 2.045471
+  type: 'test'
+  ...
+# Subtest: nested publication facts precede their callbacks while recipient FIFO and each exact receipt remain distinct
+ok 4 - nested publication facts precede their callbacks while recipient FIFO and each exact receipt remain distinct
+  ---
+  duration_ms: 2.838467
+  type: 'test'
+  ...
+# Subtest: partial success followed by callback failure preserves side effects and leaves remaining recipients pending
+ok 5 - partial success followed by callback failure preserves side effects and leaves remaining recipients pending
+  ---
+  duration_ms: 2.500604
+  type: 'test'
+  ...
+# Subtest: illegal publications, delivery order, identities and retired tokens preserve only admitted positions
+ok 6 - illegal publications, delivery order, identities and retired tokens preserve only admitted positions
+  ---
+  duration_ms: 2.285902
+  type: 'test'
+  ...
+# Subtest: retained publications preserve their original positions after unrelated raw and execution tails rotate
+ok 7 - retained publications preserve their original positions after unrelated raw and execution tails rotate
+  ---
+  duration_ms: 12.761355
+  type: 'test'
+  ...
+# Subtest: 32 newest settled identities coexist with all pending publications even when empty newer publications settle first
+ok 8 - 32 newest settled identities coexist with all pending publications even when empty newer publications settle first
+  ---
+  duration_ms: 10.585198
+  type: 'test'
+  ...
+# Subtest: 128 publications, 64 pending messages and 1024 recipients retain their independent legacy bounds
+ok 9 - 128 publications, 64 pending messages and 1024 recipients retain their independent legacy bounds
+  ---
+  duration_ms: 2131.670637
+  type: 'test'
+  ...
+# Subtest: pending payload byte rejection does not add positions or consume the next legal publication identity
+ok 10 - pending payload byte rejection does not add positions or consume the next legal publication identity
+  ---
+  duration_ms: 2.870487
+  type: 'test'
+  ...
+# Subtest: scene re-entry retains old publication positions and uses new frozen visit sources and subscription IDs
+ok 11 - scene re-entry retains old publication positions and uses new frozen visit sources and subscription IDs
+  ---
+  duration_ms: 1.939022
+  type: 'test'
+  ...
+# Subtest: initial, publication and final snapshot observer failures never mutate or replay admitted facts
+ok 12 - initial, publication and final snapshot observer failures never mutate or replay admitted facts
+  ---
+  duration_ms: 2.655234
+  type: 'test'
+  ...
+# Subtest: downstream onEvent failure recovers committed publication or delivery with exact position before closing
+ok 13 - downstream onEvent failure recovers committed publication or delivery with exact position before closing
+  ---
+  duration_ms: 2.126684
+  type: 'test'
+  ...
+# Subtest: downstream frame-snapshot failures still retain the event ledger commit and never replay buffered lines
+ok 14 - downstream frame-snapshot failures still retain the event ledger commit and never replay buffered lines
+  ---
+  duration_ms: 1.16377
+  type: 'test'
+  ...
+# Subtest: unterminated publication and delivery tails are admitted once even if downstream business observers throw
+ok 15 - unterminated publication and delivery tails are admitted once even if downstream business observers throw
+  ---
+  duration_ms: 2.811175
+  type: 'test'
+  ...
+# Subtest: independent clock final observer retry remains possible without duplicating event positions
+ok 16 - independent clock final observer retry remains possible without duplicating event positions
+  ---
+  duration_ms: 1.845087
+  type: 'test'
+  ...
+# Subtest: a failing final clock observer still publishes independent incomplete event positions without replaying either channel
+ok 17 - a failing final clock observer still publishes independent incomplete event positions without replaying either channel
+  ---
+  duration_ms: 1.837182
+  type: 'test'
+  ...
+# Subtest: enormous unrelated logs are passed through without an additional buffer or widening line limits
+ok 18 - enormous unrelated logs are passed through without an additional buffer or widening line limits
+  ---
+  duration_ms: 2.136372
+  type: 'test'
+  ...
+# Subtest: missing or mismatching exact-position metadata never creates an inferred publication position
+ok 19 - missing or mismatching exact-position metadata never creates an inferred publication position
+  ---
+  duration_ms: 2.738189
+  type: 'test'
+  ...
+# Subtest: event positions wrap both media request observers without merging identities or evidence
+ok 20 - event positions wrap both media request observers without merging identities or evidence
+  ---
+  duration_ms: 19.872476
+  type: 'test'
+  ...
+# Subtest: nested media observer errors close event positions without dropping peer state or fabricating event terminals
+ok 21 - nested media observer errors close event positions without dropping peer state or fabricating event terminals
+  ---
+  duration_ms: 7.912161
+  type: 'test'
+  ...
+# Subtest: constructor rejects readers missing mandatory observation surfaces before snapshot or push
+ok 22 - constructor rejects readers missing mandatory observation surfaces before snapshot or push
+  ---
+  duration_ms: 4.859212
+  type: 'test'
+  ...
+# Subtest: an unrelated committed business callback failure never relocates the last event publication
+ok 23 - an unrelated committed business callback failure never relocates the last event publication
+  ---
+  duration_ms: 1.274658
+  type: 'test'
+  ...
+# Subtest: clock observer starts detached, owns no admission reset and preserves underlying observation ports
+ok 24 - clock observer starts detached, owns no admission reset and preserves underlying observation ports
+  ---
+  duration_ms: 0.344104
+  type: 'test'
+  ...
+# Subtest: same-window samples coalesce, real clock advancement starts a new window and cumulative totals remain exact
+ok 25 - same-window samples coalesce, real clock advancement starts a new window and cumulative totals remain exact
+  ---
+  duration_ms: 0.567382
+  type: 'test'
+  ...
+# Subtest: duplicates, changed clocks, skipped indexes, counter rollbacks and inconsistent totals reject without changing admitted state
+ok 26 - duplicates, changed clocks, skipped indexes, counter rollbacks and inconsistent totals reject without changing admitted state
+  ---
+  duration_ms: 3.739916
+  type: 'test'
+  ...
+# Subtest: first frame must start at one with used equal to total and complete bounded vectors
+ok 27 - first frame must start at one with used equal to total and complete bounded vectors
+  ---
+  duration_ms: 0.505227
+  type: 'test'
+  ...
+# Subtest: rejection and terminal samples may repeat unchanged totals, while all post-terminal frames reject
+ok 28 - rejection and terminal samples may repeat unchanged totals, while all post-terminal frames reject
+  ---
+  duration_ms: 0.333816
+  type: 'test'
+  ...
+# Subtest: bounded windows retain their global indexes and exact accumulated totals after eviction
+ok 29 - bounded windows retain their global indexes and exact accumulated totals after eviction
+  ---
+  duration_ms: 0.8381
+  type: 'test'
+  ...
+# Subtest: partial prefix, CRLF, Unicode legacy logs and a final unterminated clock frame parse across single-character chunks
+ok 30 - partial prefix, CRLF, Unicode legacy logs and a final unterminated clock frame parse across single-character chunks
+  ---
+  duration_ms: 0.36315
+  type: 'test'
+  ...
+# Subtest: large clock lines are discarded with bounded buffering and subsequent valid/legacy lines survive
+ok 31 - large clock lines are discarded with bounded buffering and subsequent valid/legacy lines survive
+  ---
+  duration_ms: 0.254507
+  type: 'test'
+  ...
+# Subtest: non-clock traffic retains original bytes and its own reader line limits
+ok 32 - non-clock traffic retains original bytes and its own reader line limits
+  ---
+  duration_ms: 0.706063
+  type: 'test'
+  ...
+# Subtest: clock frame attempts have an independent finite ceiling and do not consume or block legacy events
+ok 33 - clock frame attempts have an independent finite ceiling and do not consume or block legacy events
+  ---
+  duration_ms: 90.104885
+  type: 'test'
+  ...
+# Subtest: invalid observations count toward the finite parsing ceiling and diagnostics remain bounded
+ok 34 - invalid observations count toward the finite parsing ceiling and diagnostics remain bounded
+  ---
+  duration_ms: 9.940611
+  type: 'test'
+  ...
+# Subtest: malformed JSON and prototype keys cannot change counters or leak into legacy frames
+ok 35 - malformed JSON and prototype keys cannot change counters or leak into legacy frames
+  ---
+  duration_ms: 0.41631
+  type: 'test'
+  ...
+# Subtest: finish without a terminal sample preserves valid windows as incomplete and is idempotent
+ok 36 - finish without a terminal sample preserves valid windows as incomplete and is idempotent
+  ---
+  duration_ms: 0.243607
+  type: 'test'
+  ...
+# Subtest: observer callbacks receive isolated views and thrown callback errors propagate after a valid admission
+ok 37 - observer callbacks receive isolated views and thrown callback errors propagate after a valid admission
+  ---
+  duration_ms: 0.366406
+  type: 'test'
+  ...
+# Subtest: real project reader remains byte-compatible and retains independent events, lifecycle and budget
+ok 38 - real project reader remains byte-compatible and retains independent events, lifecycle and budget
+  ---
+  duration_ms: 1.459754
+  type: 'test'
+  ...
+# Subtest: reader construction rejects invalid bounds and missing collaborators
+ok 39 - reader construction rejects invalid bounds and missing collaborators
+  ---
+  duration_ms: 0.230632
+  type: 'test'
+  ...
+# Subtest: construction validates collaborators and bounded retention and exposes an isolated empty view
+ok 40 - construction validates collaborators and bounded retention and exposes an isolated empty view
+  ---
+  duration_ms: 2.748068
+  type: 'test'
+  ...
+# Subtest: each admitted project frame retains its exact position through fragmented input and raw retention eviction
+ok 41 - each admitted project frame retains its exact position through fragmented input and raw retention eviction
+  ---
+  duration_ms: 1.730822
+  type: 'test'
+  ...
+# Subtest: same-clock frames stay distinct and event/completion identities never retain payload, state or source paths
+ok 42 - same-clock frames stay distinct and event/completion identities never retain payload, state or source paths
+  ---
+  duration_ms: 9.450132
+  type: 'test'
+  ...
+# Subtest: clock, physics and log streams remain independently delegated around enveloped business frames
+ok 43 - clock, physics and log streams remain independently delegated around enveloped business frames
+  ---
+  duration_ms: 3.173836
+  type: 'test'
+  ...
+# Subtest: duplicate, skipped, reversed and malformed envelopes never reach or advance business state
+ok 44 - duplicate, skipped, reversed and malformed envelopes never reach or advance business state
+  ---
+  duration_ms: 7.053213
+  type: 'test'
+  ...
+# Subtest: malformed JSON and prototype fields never enter the project reader
+ok 45 - malformed JSON and prototype fields never enter the project reader
+  ---
+  duration_ms: 0.460863
+  type: 'test'
+  ...
+# Subtest: invalid business frames retain original diagnostics and do not consume an index or clock advance
+ok 46 - invalid business frames retain original diagnostics and do not consume an index or clock advance
+  ---
+  duration_ms: 0.376686
+  type: 'test'
+  ...
+# Subtest: bare project lines are rejected before the old reader, including a fragmented final line
+ok 47 - bare project lines are rejected before the old reader, including a fragmented final line
+  ---
+  duration_ms: 0.41655
+  type: 'test'
+  ...
+# Subtest: oversized envelopes and wrapped business lines are rejected without widening the original frame limit
+ok 48 - oversized envelopes and wrapped business lines are rejected without widening the original frame limit
+  ---
+  duration_ms: 2.134588
+  type: 'test'
+  ...
+# Subtest: the exact project line ceiling includes its newline before envelope delegation
+ok 49 - the exact project line ceiling includes its newline before envelope delegation
+  ---
+  duration_ms: 4.819848
+  type: 'test'
+  ...
+# Subtest: huge non-envelope lines and partial unrelated prefixes pass through without being buffered here
+ok 50 - huge non-envelope lines and partial unrelated prefixes pass through without being buffered here
+  ---
+  duration_ms: 1.262565
+  type: 'test'
+  ...
+# Subtest: envelope parsing and admitted business frames remain bounded by the existing 4096-frame ceiling
+ok 51 - envelope parsing and admitted business frames remain bounded by the existing 4096-frame ceiling
+  ---
+  duration_ms: 103.348073
+  type: 'test'
+  ...
+# Subtest: outer observer exceptions preserve admitted snapshots without replay and allow subsequent business frames
+ok 52 - outer observer exceptions preserve admitted snapshots without replay and allow subsequent business frames
+  ---
+  duration_ms: 1.803017
+  type: 'test'
+  ...
+# Subtest: a failing observer on an unterminated finished envelope cannot cause replay during a second finish
+ok 53 - a failing observer on an unterminated finished envelope cannot cause replay during a second finish
+  ---
+  duration_ms: 1.598044
+  type: 'test'
+  ...
+# Subtest: a final clock observer failure preserves its retry notification without replaying business frames
+ok 54 - a final clock observer failure preserves its retry notification without replaying business frames
+  ---
+  duration_ms: 0.74761
+  type: 'test'
+  ...
+# Subtest: a complete independent clock notification failure retains its final observer notification
+ok 55 - a complete independent clock notification failure retains its final observer notification
+  ---
+  duration_ms: 0.711232
+  type: 'test'
+  ...
+# Subtest: underlying onEvent exceptions recover the admitted identity and quarantine pending delegate buffers
+ok 56 - underlying onEvent exceptions recover the admitted identity and quarantine pending delegate buffers
+  ---
+  duration_ms: 0.632675
+  type: 'test'
+  ...
+# Subtest: incomplete runs, malformed terminal frames and post-terminal envelopes never invent completion
+ok 57 - incomplete runs, malformed terminal frames and post-terminal envelopes never invent completion
+  ---
+  duration_ms: 1.821803
+  type: 'test'
+  ...
+1..57
+# tests 57
+# suites 0
+# pass 57
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2547.753676

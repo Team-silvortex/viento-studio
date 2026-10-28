@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "meta": {
     "title": "Viento Studio 功能成熟度图谱",
-    "date": "2026-10-26",
-    "version": "0.2.5",
-    "commit": "6d9560ff4861fdcfd918a7618c6557344f8d1d03",
-    "scope": "0.2.5源码收录自由平面移动碰撞、逐角色下穿、水平往返平台、平台端点事件、原始观察留存和共用有限执行预算；Godot执行适配器与新项目生成层0.32.0。175功能/527实现/737绑定/2948评分/139工作流；23模块45项Studio声明能力。成熟度评分与开发实测证据保持；本机安装仍0.2.0。",
+    "date": "2026-10-28",
+    "version": "0.2.6",
+    "commit": "52337b82d8dda282256bf1db52804cc894f58181",
+    "scope": "0.2.6源码交付：调度时钟、因果锚点、精确业务帧、动画与音频请求、事件位置及中英日只读面板。Godot适配器0.36.0，项目生成依内容为0.36/0.35/0.34，原作者格式、业务协议及有限预算保持；Bevy能力不变，安装仍0.2.0。181功能/546实现/756绑定/3024评分/145工作流；23模块45项Studio声明能力。六项delivery归入source-release，原评分、证据和专题时点描述不改，发布不提高成熟度。本次0.2.6完整app-only为8684项、8122通过、562条件跳过、零失败或取消；升版前0.2.5同计数日志仍独立保留。真实引擎范围依各专题，不将浏览器或版本预检计作新设备验收。",
     "historicalSha256": {
       "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
       "docs/function-network.json": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
@@ -2493,7 +2493,8 @@
           "有限smoke处理0、0.25、0.5秒，窗口生成工程由实际delta推进；独立VIENTO_AUDIO协议1核对就绪、提示顺序、结束及冻结诊断来源，与原演员／行为事件组合。 有限运行的声音结束时刻与演员步数交叉核对；高精度提示保留IEEE-754值及0.5秒相邻double边界，不以四舍五入扩大触发范围。",
           "真实Godot4.7.2隔离AudioEffectCapture验证非零PCM、零音量、停止和独立循环，未验证物理扬声器；缺WAV给出轨道来源错误，不虚报finished。",
           "工程ZIP仅带核对后的生成文件与WAV原字节，已验证异地工程库存和声音资源；不等于无开发引擎环境的独立游戏发行。",
-          "音频与有限控制回放目前明确拒绝；行为信号触发声音、空间声音、总线、Bevy音频、新安装和目标设备验收不在本范围。"
+          "音频与有限控制回放目前明确拒绝；行为信号触发声音、空间声音、总线、Bevy音频、新安装和目标设备验收不在本范围。",
+          "2026-10-26工具链修订：官方Godot4.7.2的WAV/PlaybackWAV立即退出残留仍属已知缺口；本机独立回移上游五行清理后，42个探针和33个项目用例通过，31次原生运行无残留并切换默认工具。旧官方保留，旧冻结构建需重建；不代表Studio安装更新、物理设备或全部音频分配验收。"
         ],
         "next": "先独立接通行为事件到声音命令及受控时钟的组合验证；其他后端、空间音频、总线与独立发行各自准入。",
         "platforms": [
@@ -2647,7 +2648,8 @@
           "Rust声声明提示范围从1–64扩展为0–64，仍1–16轨道且原非空语义不变，schema1与ABI保持；WASM桥严格回执同步接受空提示，没有JS声音规则替代。纯行为音轨可原文设cues:[]，首次创建也可逐轨选择行为触发；0.1.4后可在独立声音面板移除全部提示后普通保存。定时新建默认生成播放提示；旧安装可能仍拒空提示。",
           "独立三语只读面板只显示实际执行的播放／停止命令、局部时间与两种冻结来源，保留历史筛选，来源票据随任务／访问／目标变化失效。事件与状态观察保持独立；脚本起始内容仍走普通草稿审阅、保存与绑定。",
           "旧单场景生成字节保留；宿主继续按已验证冻结后端协议选择reader／observer，不放宽生成指纹。既有本机构建遇指纹变化需重建；旧独立ZIP保留自身代码。无空间声音、混音总线、暂停／跳转、实时音量、自然结束观察、Bevy声音或独立发行。",
-          "本轮核心149／UI133、共享Rust335及native声音9通过；真实Godot新声音13、相邻回归65、宿主8通过；Chrome六组11图核对A→B→A的8条实际命令、6次事件发布和状态修订8，双轨真实范围回源及异地工程再运行。完整常规应用5284项中5128通过、156条件跳过；897 JS与API／版本预检通过。各组合重叠不相加，准备副本与混音缓冲不推导安装或物理设备验收。"
+          "本轮核心149／UI133、共享Rust335及native声音9通过；真实Godot新声音13、相邻回归65、宿主8通过；Chrome六组11图核对A→B→A的8条实际命令、6次事件发布和状态修订8，双轨真实范围回源及异地工程再运行。完整常规应用5284项中5128通过、156条件跳过；897 JS与API／版本预检通过。各组合重叠不相加，准备副本与混音缓冲不推导安装或物理设备验收。",
+          "2026-10-26工具链修订：官方Godot4.7.2的WAV/PlaybackWAV立即退出残留仍属已知缺口；本机独立回移上游五行清理后，42个探针和33个项目用例通过，31次原生运行无残留并切换默认工具。旧官方保留，旧冻结构建需重建；不代表Studio安装更新、物理设备或全部音频分配验收。"
         ],
         "next": "按明确声音语义分别设计自然结束观察、暂停／跳转、空间音频与其他后端；不把实际命令回执扩展为隐式设备状态。"
       },
@@ -3748,6 +3750,134 @@
           "Bevy、Rust/WASM和界面此次没有新预算适配。"
         ],
         "next": "设计由宿主控制的调度周期及跨周期因果归属，先完成语义留存契约再开放连续运行。"
+      },
+      {
+        "id": "runtime.execution_clock",
+        "label": "宿主调度窗口与有限预算用量观察",
+        "group": "场景与执行",
+        "entry": "普通作者调用→真实引擎帧对→七维预算差值→独立观察流→32窗口留存→会话结果核对",
+        "delivery": "source-release",
+        "platforms": [
+          "可移植JS读取合同，Linux本地宿主与Godot4.7.2真实无头",
+          "0.2.5之后开发工作树，Godot执行适配器0.33.0；安装仍0.2.0，未新增界面或Bevy接入"
+        ],
+        "boundary": [
+          "真实Engine idle/physics计数对定位有预算活动的观察窗口，同一窗口合并成功调用；不是因果事务、宿主调度额度或作者可推进的周期。",
+          "七维窗口差值与累计预算独立核对；原有限累计上限不reset，flush、切场景和deferred不主动补充额度。",
+          "0.33独立autoload和预算facade组合冻结0.32生成结果；原GDScript、作者格式和项目协议4/7/10/11保持。新独立观察前缀协议1与原流组合。",
+          "reader校验时钟/序号/向量单调及差值一致，最近32窗口，8192帧和16KiB行边界；非法观察不覆盖已准入状态，旧协议有自己的准入和原始留存。",
+          "session及任务接口保留累计总量/窗口/移出数量；取消和异常标incomplete，只证明最后有效样本。无预算调用的正常会话记录零用量终态窗。",
+          "观察不裁剪完整事件/动画语义账本，也未增加新的界面控件、无限运行模式或引擎无关调度实现。"
+        ],
+        "next": "动画请求身份及接受/应用观察已独立接入；继续音频/事件排队身份、跨尾部因果位置与未决引用保留，再设计实时准入。"
+      },
+      {
+        "id": "runtime.causal_anchors",
+        "label": "项目因果锚点与引用保留",
+        "group": "场景与执行",
+        "entry": "完整准入观察→保留根→触发与命令引用闭包→冻结投影→会话与任务接口",
+        "delivery": "source-release",
+        "platforms": [
+          "可移植JavaScript合同与Linux本地Node宿主，Godot4.7.2真实无头验证",
+          "0.2.5之后开发工作树；Godot适配器0.33.0保持，未新增界面或安装验收"
+        ],
+        "boundary": [
+          "四类节点沿用完整账本身份与来源：事件、动画命令、动画完成、状态进入；默认每类最近16项，可设0–64。",
+          "未决事件/完成投递、当前访问目标基线、每控制器最近进入成为保留根；依赖闭包独立于最近尾部，不重编号。",
+          "trigger、global-watermark、playback-command分开；逐实例目标命令与全局截止可不同，跨访问自动播放不伪造来源。",
+          "从严格校验的完整观察产生冻结副本；成功、取消和通知异常保存最后合法投影，实时/最终任务接口复制数据。",
+          "现有时钟输出不能证明精确窗口归属；未增加排队请求ID，最近控制器进入不等于实时活跃状态。",
+          "完整语义账本、退休身份、FIFO、去重与有限预算保持；没有执行账本裁剪、连续运行或新协议升级。"
+        ],
+        "next": "动画与音频请求观察、既有事件发布及逐接收者位置已分别接入；继续其他跨尾部因果引用保留，再依据FIFO和稳定身份设计完整账本退休与实时准入。"
+      },
+      {
+        "id": "runtime.execution_frames",
+        "label": "业务回执精确引擎帧与位置留存",
+        "group": "场景与执行",
+        "entry": "真实输出时钟→独立封套→原业务准入→128条位置尾部→会话与任务核对",
+        "delivery": "source-release",
+        "platforms": [
+          "可移植JavaScript合同与Linux本地Node宿主；Godot4.7.2音频修订工具真实无头验证",
+          "0.2.5之后工作树，Godot适配器0.34.0；未新增UI或更新Studio安装"
+        ],
+        "boundary": [
+          "封套协议1仅增加连续index和真实idle/physics对，内部项目协议4/7/10/11 DTO保持；新构建不重复输出裸业务帧。",
+          "原业务准入成功才记录位置；默认最近128条，仅含业务身份，不复制负载；4096次尝试及原行预算继续生效。",
+          "位置与预算窗口独立，零成本回执不制造窗口；旧因果锚点不自动保留已移出的精确位置。",
+          "新helper/sidecar/原副本严格核对已知源码；宿主完整重生成backend描述后选择能力，篡改记录不能降级校验。",
+          "异常与取消保留已接受事实；业务通知异常不重放，独立clock通知可完成原有收尾。",
+          "旧GDScript保持，预算/clock库存JS接口变化改变指纹，旧冻结构建须显式重建；未增加请求ID、账本裁剪、连续运行或Bevy适配。"
+        ],
+        "next": "动画与音频请求观察、既有事件发布及逐接收者位置已分别接入；继续其他跨尾部因果引用保留，再依据FIFO和稳定身份设计完整账本退休与实时准入。"
+      },
+      {
+        "id": "runtime.animation_requests",
+        "label": "动画排队请求身份与结果观察",
+        "group": "场景与执行",
+        "entry": "成功入队→独立请求ID/接受时钟→原业务回执→精确应用或中止→未决与终态留存→会话交接",
+        "delivery": "source-release",
+        "platforms": [
+          "可移植JavaScript合同与Linux本地Node宿主；Godot4真实无头范围由本轮专题另行验证",
+          "0.2.5之后工作树，当前适配器0.36.0；含音轨生成0.36、无音轨有动画0.35、两者均无0.34；未新增界面或更新安装"
+        ],
+        "boundary": [
+          "accepted身份与执行commandSequence分开；仅成功预留入队分配连续1–256请求ID，待处理容量仍64。",
+          "冻结计划核对访问/绑定/实例/对象/目标及作者来源；seek接受时按整段duration，选片后的执行范围由原命令reader负责。",
+          "applied必须匹配FIFO队首、已准入原回执和当前executionFrameIndex/clock；discarded只在合法运行error后反映实际abort清队列。",
+          "pending只表示结果证据未齐，可能已有执行回执；取消和回调异常不得推定未执行或已丢弃，不重放原业务。",
+          "默认最近128条终态加全部未决；16KiB UTF-8行、512次尝试与128诊断有界，原项目协议4/7/10/11及所有累计预算保持。",
+          "生成helper/sidecar/原副本严格核对已知源码；完整backend与执行指纹继续守护会话和交付，未接入Bevy。",
+          "动画历史定向与真实Godot证据独立记录；本轮与音频复用共用队列观察，音频另有独立功能及验证范围，事件请求身份、跨尾部因果位置和continuous仍未覆盖。"
+        ],
+        "next": "动画与音频请求观察、既有事件发布及逐接收者位置已分别接入；继续其他跨尾部因果引用保留，再依据FIFO和稳定身份设计完整账本退休与实时准入。"
+      },
+      {
+        "id": "runtime.audio_requests",
+        "label": "音频排队请求身份与结果观察",
+        "group": "场景与执行",
+        "entry": "音频成功入队→独立请求ID/接受时钟→原播放或停止回执→精确应用或中止→未决与终态留存→会话交接",
+        "delivery": "source-release",
+        "platforms": [
+          "可移植JavaScript合同与Linux本地Node宿主；Godot4真实无头范围由本轮专题单列",
+          "0.2.5之后工作树，Godot描述符0.36.0；含音轨生成0.36，无音轨有动画0.35，两者均无0.34；未新增界面或更新安装"
+        ],
+        "boundary": [
+          "共用队列reader只负责分流、时钟/FIFO关联、留存与异常收尾；音频和动画领域模块分别核对冻结计划及原业务回执。",
+          "音频成功预留后分配连续requestId并入队，随后输出接受标记，独立于动画编号及执行commandSequence；两域各自保持256次会话预算和64条待处理容量。",
+          "origin五种身份与音轨来自冻结计划，作者来源和resourceId只从冻结绑定及轨道声明补齐；仅支持既有play/stop。",
+          "applied必须匹配队首、已准入audio-command和当前精确executionFrameIndex/clock；它证明后端调用及回执，不证明设备已经出声。",
+          "discarded只接受合法业务error后的FIFO清理标记，由abort循环于移除队首前同步输出；不推定播放发生或失败。缺完整applied保持pending，已有回执也不推定未执行或已丢弃。",
+          "默认最近128条终态加全部pending；16KiB UTF-8行、512次前缀尝试和128诊断有界。混合项目不合并计数，不改变原音频先于动画的drain顺序。",
+          "生成helper/sidecar/原副本与唯一变换逐字核对，固定音频Buffer组合旧库存仍须真实读取实际文件；原业务协议4/7/10/11与GDScript模板保持。",
+          "核心136项与宿主/库存定向已验证，新音频真实Godot7项、旧动画/迁移8项、原音频5项及库存真实导入回归通过且来源不变；最终app-only待报告确认，没有设备出声验收、事件请求身份、账本裁剪或continuous。"
+        ],
+        "next": "动画与音频请求观察、既有事件发布及逐接收者位置已分别接入；继续其他跨尾部因果引用保留，再依据FIFO和稳定身份设计完整账本退休与实时准入。"
+      },
+      {
+        "id": "runtime.event_positions",
+        "label": "项目事件发布与逐接收者回执位置保留",
+        "group": "场景与执行",
+        "entry": "原发布/投递准入→精确业务帧→发布及逐接收者位置→已结清尾部/全部未决→会话任务交接→只读面板",
+        "delivery": "source-release",
+        "platforms": [
+          "可移植JavaScript观察与Linux本地Node宿主；Godot真实引擎验收范围由本轮专题另记",
+          "0.2.5之后未发布工作树；新增只读Web面板；无安装或其他执行后端接入；Godot描述符与生成版本保持"
+        ],
+        "boundary": [
+          "复用已有event-publish接受回执与event-delivery handled/skipped回执；沿用sequence/subscriptionId，不增加sideband、请求ID、GDScript/helper、清单或backend能力。",
+          "原事件总线继续核对冻结发送/接收绑定、标量载荷、令牌与FIFO；位置只取已准入execution-frame封套的真实idle/physics时钟及索引，拒绝帧不会新增证据。",
+          "eventPositions items保留旧ledger条目及published位置；handled/skipped接收者增加delivered，pending没有该字段；双方source只来自冻结声明。",
+          "默认按发布sequence保留最近32条已结清记录加全部未决；零接收者立即结清，可先于更早未决记录完成；部分完成条目保留全部接收者及已有位置。",
+          "counts分开published/settled/pending及预留deliveries/handled/skipped/pendingDeliveries；retention记录保留与移出，不裁剪原完整语义账本、退休令牌或返还预算。",
+          "位置证明对应回执已输出，不是回调开始时刻；回调可在缺回执前产生副作用，pending不证明未执行；失败或取消不制造discarded。",
+          "宿主处理准入后业务/位置回调抛错、空初始化失败和下游尾帧，保存唯一已接受事实并标incomplete；会话及任务getter副本互不回写。",
+          "Godot仅在project、protocol>=3且已有runtime.execution-frames时组合；无cap、旧协议/reader和其他后端保持原字段。backend descriptor0.36及生成字节不变，executionAdapter纳入新reader导致旧冻结构建须重建。",
+          "新事件core23项、宿主12项与既有链共171项定向通过，核心跨通道收尾回归57项通过；新事件6项及旧媒体14项真实Godot通过，定向1406份与原生1353份源码分别在各次执行期间不变，每个新原生案例58份来源不变。原生运行后仅调整两份非原生测试，生产与原生夹具保持；完整检查8667项、8105通过、562条件跳过，该轮无其他后端、设备、新UI或安装验收。",
+          "本轮独立只读面板消费严格校验后的快照，匹配项目运行与冻结成员；不依赖旧账本，历史协议、Bevy和缺失数据不显示；待处理不证明回调未执行。验证范围见事件位置UI专题。",
+          "下方已有reader、后端和宿主评分记录为前一轮历史审查；其中“无新界面”描述当时范围，新增验证器与界面评分另列。"
+        ],
+        "next": "继续核验其他跨尾部因果引用与长期运行；跨后端项目事件、安装与设备体验分别验收。"
       }
     ],
     "implementation": [
@@ -10508,6 +10638,236 @@
           "scripts/backends/godot4-execution-budget.mjs",
           "scripts/backends/godot4/project-execution-budget.gd",
           "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i528",
+        "label": "独立调度观察流与七维窗口校验",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-execution-clock.mjs"
+        ]
+      },
+      {
+        "id": "i529",
+        "label": "Godot时钟采集与冻结预算观察包装",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-execution-clock.mjs",
+          "scripts/backends/godot4/execution-clock-host.gd",
+          "scripts/backends/godot4/execution-clock-budget.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i530",
+        "label": "调度摘要会话持久化与任务交接",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/lib/project-build-service.mjs"
+        ]
+      },
+      {
+        "id": "i531",
+        "label": "纯因果锚点保留与引用闭包",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-causal-anchors.mjs"
+        ]
+      },
+      {
+        "id": "i532",
+        "label": "因果锚点会话保存与任务复制",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/lib/project-build-service.mjs"
+        ]
+      },
+      {
+        "id": "i533",
+        "label": "精确业务位置纯封套读取与留存",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-execution-frames.mjs"
+        ]
+      },
+      {
+        "id": "i534",
+        "label": "Godot真实帧采集与生成库存",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-execution-frames.mjs",
+          "scripts/backends/godot4/execution-frame-emitter.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i535",
+        "label": "位置会话持久化与任务交接",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/lib/project-build-service.mjs"
+        ]
+      },
+      {
+        "id": "i536",
+        "label": "动画请求纯观察与未决保留",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-animation-requests.mjs"
+        ]
+      },
+      {
+        "id": "i537",
+        "label": "Godot动画队列观察与严格库存",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-animation-requests.mjs",
+          "scripts/backends/godot4/animation-request-emitter.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i538",
+        "label": "动画请求会话保存与任务交接",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/lib/project-build-service.mjs"
+        ]
+      },
+      {
+        "id": "i539",
+        "label": "共用队列观察与音频领域校验",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-queued-requests.mjs",
+          "engine/project-audio-requests.mjs"
+        ]
+      },
+      {
+        "id": "i540",
+        "label": "Godot音频队列观察与严格库存",
+        "kind": "product",
+        "language": [
+          "JavaScript",
+          "GDScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-audio-requests.mjs",
+          "scripts/backends/godot4/audio-request-emitter.gd",
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i541",
+        "label": "音频请求会话保存与任务交接",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/lib/project-build-service.mjs"
+        ]
+      },
+      {
+        "id": "i542",
+        "label": "事件账本与精确帧的位置保留",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-event-positions.mjs"
+        ]
+      },
+      {
+        "id": "i543",
+        "label": "Godot事件位置reader选择与指纹",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/backends/godot4-adapter.mjs"
+        ]
+      },
+      {
+        "id": "i544",
+        "label": "事件位置会话保存与任务交接",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "scripts/adapters/node-project-build.mjs",
+          "scripts/lib/project-build-service.mjs"
+        ]
+      },
+      {
+        "id": "i545",
+        "label": "事件位置快照语义校验与独立副本",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "engine/project-event-positions-query.mjs"
+        ]
+      },
+      {
+        "id": "i546",
+        "label": "事件位置只读面板与运行归属接线",
+        "kind": "product",
+        "language": [
+          "JavaScript"
+        ],
+        "paths": [
+          "web/modules/app-project-event-positions-observation.js",
+          "web/modules/app-project-build.js"
         ]
       }
     ],
@@ -24660,7 +25020,9 @@
         "e2004",
         "e2005",
         "e2006",
-        "e2007"
+        "e2007",
+        "e3311",
+        "e3312"
       ]
     },
     {
@@ -24679,7 +25041,9 @@
         "e2004",
         "e2005",
         "e2006",
-        "e2007"
+        "e2007",
+        "e3311",
+        "e3312"
       ]
     },
     {
@@ -25833,7 +26197,9 @@
         "e2246",
         "e2247",
         "e2248",
-        "e2249"
+        "e2249",
+        "e3311",
+        "e3312"
       ]
     },
     {
@@ -30664,6 +31030,278 @@
         "e3287",
         "e3288",
         "e3289"
+      ]
+    },
+    {
+      "id": "b739",
+      "architecture": "semantic-js",
+      "function": "runtime.execution_clock",
+      "implementation": "i528",
+      "role": "纯观察合同组合原reader，不能取得预算重置或业务执行权限。",
+      "evidence": [
+        "e3290",
+        "e3291",
+        "e3292",
+        "e3293",
+        "e3294",
+        "e3295"
+      ]
+    },
+    {
+      "id": "b740",
+      "architecture": "runtime-backend",
+      "function": "runtime.execution_clock",
+      "implementation": "i529",
+      "role": "引擎读取真实调度时钟，旧准入委托原对象；严格库存登记独立autoload和facade。",
+      "evidence": [
+        "e3290",
+        "e3291",
+        "e3292",
+        "e3293",
+        "e3294",
+        "e3296",
+        "e3297",
+        "e3298",
+        "e3299"
+      ]
+    },
+    {
+      "id": "b741",
+      "architecture": "node-service",
+      "function": "runtime.execution_clock",
+      "implementation": "i530",
+      "role": "运行和取消均保存最后有效摘要，任务接口复制独立DTO，不改变项目语义账本。",
+      "evidence": [
+        "e3290",
+        "e3291",
+        "e3292",
+        "e3293",
+        "e3294",
+        "e3300",
+        "e3301",
+        "e3302"
+      ]
+    },
+    {
+      "id": "b742",
+      "architecture": "semantic-js",
+      "function": "runtime.causal_anchors",
+      "implementation": "i531",
+      "role": "独立纯投影校验完整观察，不拥有执行、预算或作者写入权限。",
+      "evidence": [
+        "e3303",
+        "e3304",
+        "e3305",
+        "e3306",
+        "e3307"
+      ]
+    },
+    {
+      "id": "b743",
+      "architecture": "node-service",
+      "function": "runtime.causal_anchors",
+      "implementation": "i532",
+      "role": "准入后捕获一致投影，持久化与任务消费者使用分离副本。",
+      "evidence": [
+        "e3303",
+        "e3304",
+        "e3305",
+        "e3308",
+        "e3309",
+        "e3310"
+      ]
+    },
+    {
+      "id": "b744",
+      "architecture": "semantic-js",
+      "function": "runtime.execution_frames",
+      "implementation": "i533",
+      "role": "只负责位置合同，原reader继续准入业务；不推测预算归属。",
+      "evidence": [
+        "e3313",
+        "e3314",
+        "e3315",
+        "e3316"
+      ]
+    },
+    {
+      "id": "b745",
+      "architecture": "runtime-backend",
+      "function": "runtime.execution_frames",
+      "implementation": "i534",
+      "role": "转换已知生成副本，helper独立采集真实Engine时钟并由严格库存核验。",
+      "evidence": [
+        "e3313",
+        "e3314",
+        "e3317",
+        "e3318",
+        "e3319",
+        "e3320"
+      ]
+    },
+    {
+      "id": "b746",
+      "architecture": "node-service",
+      "function": "runtime.execution_frames",
+      "implementation": "i535",
+      "role": "重生成核对完整backend，保存最后有效观察并复制任务DTO，不承担渲染。",
+      "evidence": [
+        "e3313",
+        "e3314",
+        "e3321",
+        "e3322",
+        "e3323",
+        "e3324"
+      ]
+    },
+    {
+      "id": "b747",
+      "architecture": "semantic-js",
+      "function": "runtime.animation_requests",
+      "implementation": "i536",
+      "role": "按冻结计划核对身份、FIFO、时刻及明确结果，原reader继续拥有业务准入。",
+      "evidence": [
+        "e3325",
+        "e3326",
+        "e3327"
+      ]
+    },
+    {
+      "id": "b748",
+      "architecture": "runtime-backend",
+      "function": "runtime.animation_requests",
+      "implementation": "i537",
+      "role": "仅转换已知队列副本的成功接受/应用/clear输出点；不重新调度或返还预算。",
+      "evidence": [
+        "e3328",
+        "e3329",
+        "e3330",
+        "e3331",
+        "e3332",
+        "e3333"
+      ]
+    },
+    {
+      "id": "b749",
+      "architecture": "node-service",
+      "function": "runtime.animation_requests",
+      "implementation": "i538",
+      "role": "保存分离快照并核对完整backend，异常后保留请求与独立业务证据。",
+      "evidence": [
+        "e3334",
+        "e3335",
+        "e3336",
+        "e3337"
+      ]
+    },
+    {
+      "id": "b750",
+      "architecture": "semantic-js",
+      "function": "runtime.audio_requests",
+      "implementation": "i539",
+      "role": "共用有界观察机制并分离音频领域准入，核对冻结音轨、FIFO、真实帧位置与明确结果。",
+      "evidence": [
+        "e3338",
+        "e3339",
+        "e3340",
+        "e3341",
+        "e3342"
+      ]
+    },
+    {
+      "id": "b751",
+      "architecture": "runtime-backend",
+      "function": "runtime.audio_requests",
+      "implementation": "i540",
+      "role": "仅转换已知音频队列生成副本的接受/应用/clear点，严格验证库存与原字节；不调度或增加预算。",
+      "evidence": [
+        "e3343",
+        "e3344",
+        "e3345",
+        "e3346",
+        "e3347",
+        "e3348"
+      ]
+    },
+    {
+      "id": "b752",
+      "architecture": "node-service",
+      "function": "runtime.audio_requests",
+      "implementation": "i541",
+      "role": "按独立能力组合reader并保存分离快照，异常后保留已接受请求与原业务事实；不把回执当作设备出声。",
+      "evidence": [
+        "e3349",
+        "e3350",
+        "e3351",
+        "e3352"
+      ]
+    },
+    {
+      "id": "b753",
+      "architecture": "semantic-js",
+      "function": "runtime.event_positions",
+      "implementation": "i542",
+      "role": "从唯一已准入事件事实及其精确帧保留发布/逐接收者位置，已结清尾部与全部未决分开保留；不管理业务队列或预算。",
+      "evidence": [
+        "e3353",
+        "e3354",
+        "e3355",
+        "e3364"
+      ]
+    },
+    {
+      "id": "b754",
+      "architecture": "runtime-backend",
+      "function": "runtime.event_positions",
+      "implementation": "i543",
+      "role": "仅按既有精确帧能力和协议选择观察reader并冻结实现指纹，保留旧reader入口；没有新增生成产物或backend能力。",
+      "evidence": [
+        "e3356",
+        "e3357",
+        "e3358",
+        "e3359",
+        "e3364"
+      ]
+    },
+    {
+      "id": "b755",
+      "architecture": "node-service",
+      "function": "runtime.event_positions",
+      "implementation": "i544",
+      "role": "保存分离的会话与任务快照，准入后回调异常及取消仍保留已确认位置，尾帧收尾不重放原业务。",
+      "evidence": [
+        "e3360",
+        "e3361",
+        "e3362",
+        "e3363",
+        "e3364"
+      ]
+    },
+    {
+      "id": "b756",
+      "architecture": "semantic-js",
+      "function": "runtime.event_positions",
+      "implementation": "i545",
+      "role": "校验受限快照及已保留证据之间的次序和统计，返回不与宿主共享的结果；不推导缺失回执。",
+      "evidence": [
+        "e3365",
+        "e3366",
+        "e3370",
+        "e3371"
+      ]
+    },
+    {
+      "id": "b757",
+      "architecture": "ui",
+      "function": "runtime.event_positions",
+      "implementation": "i546",
+      "role": "在构建工作台只读展示位置，按当前项目任务、后端、构建、快照和冻结成员筛选，不要求旧运行账本可用。",
+      "evidence": [
+        "e3367",
+        "e3368",
+        "e3369",
+        "e3370",
+        "e3371"
       ]
     }
   ],
@@ -60147,6 +60785,766 @@
       ],
       "value": 2,
       "reason": "0.2.4之后源码工作树，未更新已安装应用。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.execution_clock",
+        "i528",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "已接入普通和物理项目，具备独立读取、32窗口留存及会话持久化。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.execution_clock",
+        "i528",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Godot链路覆盖回调/物理/媒体、窗口轮转、拒绝与取消；生成和流式合同另有边界测试。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.execution_clock",
+        "i528",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "观察流、有限准入和作者语义分开；旧运行源码及项目协议保持。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.execution_clock",
+        "i528",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.5之后工作树，未提交发布或更新本机安装；独立生成工程含全部观察源码。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.execution_clock",
+        "i529",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "已接入普通和物理项目，具备独立读取、32窗口留存及会话持久化。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.execution_clock",
+        "i529",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Godot链路覆盖回调/物理/媒体、窗口轮转、拒绝与取消；生成和流式合同另有边界测试。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.execution_clock",
+        "i529",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "观察流、有限准入和作者语义分开；旧运行源码及项目协议保持。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.execution_clock",
+        "i529",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.5之后工作树，未提交发布或更新本机安装；独立生成工程含全部观察源码。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.execution_clock",
+        "i530",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "已接入普通和物理项目，具备独立读取、32窗口留存及会话持久化。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.execution_clock",
+        "i530",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实Godot链路覆盖回调/物理/媒体、窗口轮转、拒绝与取消；生成和流式合同另有边界测试。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.execution_clock",
+        "i530",
+        "decoupling"
+      ],
+      "value": 4,
+      "reason": "观察流、有限准入和作者语义分开；旧运行源码及项目协议保持。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.execution_clock",
+        "i530",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.5之后工作树，未提交发布或更新本机安装；独立生成工程含全部观察源码。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.causal_anchors",
+        "i531",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "有限观察投影从保留合同到会话/任务接口闭环，异常保存最后合法状态。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.causal_anchors",
+        "i531",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "完整应用检查、真实Godot长尾/实例/取消/切场景及宿主错误分支通过，限无头逻辑范围。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.causal_anchors",
+        "i531",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯规则与Node持久化分离，尚无第二执行目标复用与一致性验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.causal_anchors",
+        "i531",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前开发工作树，未发布新版本或更新安装。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.causal_anchors",
+        "i532",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "有限观察投影从保留合同到会话/任务接口闭环，异常保存最后合法状态。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.causal_anchors",
+        "i532",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "完整应用检查、真实Godot长尾/实例/取消/切场景及宿主错误分支通过，限无头逻辑范围。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.causal_anchors",
+        "i532",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯规则与Node持久化分离，尚无第二执行目标复用与一致性验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.causal_anchors",
+        "i532",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前开发工作树，未发布新版本或更新安装。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.execution_frames",
+        "i533",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "从输出采集、原业务准入到会话与任务保存闭环，含取消/异常和降级拒绝。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.execution_frames",
+        "i533",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "新原生4案及旧交付6案、调度因果13案在冻结源码上通过；限Linux无头范围。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.execution_frames",
+        "i533",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "位置合同、Godot采集与Node保存分离；尚无第二执行后端一致性验证。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.execution_frames",
+        "i533",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前开发工作树，未发布新版本或更新Studio安装。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.execution_frames",
+        "i534",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "从输出采集、原业务准入到会话与任务保存闭环，含取消/异常和降级拒绝。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.execution_frames",
+        "i534",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "新原生4案及旧交付6案、调度因果13案在冻结源码上通过；限Linux无头范围。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.execution_frames",
+        "i534",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "位置合同、Godot采集与Node保存分离；尚无第二执行后端一致性验证。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.execution_frames",
+        "i534",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前开发工作树，未发布新版本或更新Studio安装。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.execution_frames",
+        "i535",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "从输出采集、原业务准入到会话与任务保存闭环，含取消/异常和降级拒绝。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.execution_frames",
+        "i535",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "新原生4案及旧交付6案、调度因果13案在冻结源码上通过；限Linux无头范围。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.execution_frames",
+        "i535",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "位置合同、Godot采集与Node保存分离；尚无第二执行后端一致性验证。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.execution_frames",
+        "i535",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前开发工作树，未发布新版本或更新Studio安装。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.animation_requests",
+        "i536",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "动画请求主流程、FIFO终态和全部未决保留已接入；音频/事件身份与持续运行仍待扩展。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.animation_requests",
+        "i536",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "定向合同和宿主集成、7项新增真实Godot请求案例与历史回归已验证；无窗口或第二后端验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.animation_requests",
+        "i536",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "请求合同、Godot采集和Node保存职责分离；尚无第二后端一致性验证。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.animation_requests",
+        "i536",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前未发布工作树，未升级应用版本或更新Studio安装。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.animation_requests",
+        "i537",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "动画请求主流程、FIFO终态和全部未决保留已接入；音频/事件身份与持续运行仍待扩展。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.animation_requests",
+        "i537",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "定向合同和宿主集成、7项新增真实Godot请求案例与历史回归已验证；无窗口或第二后端验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.animation_requests",
+        "i537",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "请求合同、Godot采集和Node保存职责分离；尚无第二后端一致性验证。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.animation_requests",
+        "i537",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前未发布工作树，未升级应用版本或更新Studio安装。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.animation_requests",
+        "i538",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "动画请求主流程、FIFO终态和全部未决保留已接入；音频/事件身份与持续运行仍待扩展。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.animation_requests",
+        "i538",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "定向合同和宿主集成、7项新增真实Godot请求案例与历史回归已验证；无窗口或第二后端验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.animation_requests",
+        "i538",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "请求合同、Godot采集和Node保存职责分离；尚无第二后端一致性验证。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.animation_requests",
+        "i538",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前未发布工作树，未升级应用版本或更新Studio安装。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.audio_requests",
+        "i539",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "音频请求主流程及独立留存已接入，共用队列机制与领域校验分离；事件请求及持续运行仍待扩展。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.audio_requests",
+        "i539",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "核心136项、宿主与库存定向、音频7项真实Godot及历史兼容通过；最终app-only 8626项、556条件跳过；未做声音设备或安装验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.audio_requests",
+        "i539",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "共用纯观察、音频领域、Godot采集与Node保存职责明确；尚无第二执行后端一致性验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.audio_requests",
+        "i539",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前未发布工作树，未升级应用版本或更新Studio安装。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.audio_requests",
+        "i540",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "音频请求主流程及独立留存已接入，共用队列机制与领域校验分离；事件请求及持续运行仍待扩展。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.audio_requests",
+        "i540",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "核心136项、宿主与库存定向、音频7项真实Godot及历史兼容通过；最终app-only 8626项、556条件跳过；未做声音设备或安装验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.audio_requests",
+        "i540",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "共用纯观察、音频领域、Godot采集与Node保存职责明确；尚无第二执行后端一致性验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.audio_requests",
+        "i540",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前未发布工作树，未升级应用版本或更新Studio安装。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.audio_requests",
+        "i541",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "音频请求主流程及独立留存已接入，共用队列机制与领域校验分离；事件请求及持续运行仍待扩展。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.audio_requests",
+        "i541",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "核心136项、宿主与库存定向、音频7项真实Godot及历史兼容通过；最终app-only 8626项、556条件跳过；未做声音设备或安装验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.audio_requests",
+        "i541",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "共用纯观察、音频领域、Godot采集与Node保存职责明确；尚无第二执行后端一致性验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.audio_requests",
+        "i541",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前未发布工作树，未升级应用版本或更新Studio安装。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.event_positions",
+        "i542",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已接通原发布及逐接收者回执的位置保存、未决与已结清尾部及宿主交接；完整账本退休与持续运行未开放。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.event_positions",
+        "i542",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "171项定向（事件核心23项）、核心跨通道57项、新事件6项与旧媒体14项真实Godot通过；原生后仅改两份非原生测试，生产与原生夹具保持；完整检查8667项、8105通过、562条件跳过；非其他后端、设备或安装验收。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.event_positions",
+        "i542",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "事件准入、帧位置、纯观察及Node保存分别管理；Godot只选择已有能力，其他执行后端未接入。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.event_positions",
+        "i542",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前未发布工作树，无新界面、应用升版或Studio安装更新。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.event_positions",
+        "i543",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已接通原发布及逐接收者回执的位置保存、未决与已结清尾部及宿主交接；完整账本退休与持续运行未开放。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.event_positions",
+        "i543",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "171项定向（事件核心23项）、核心跨通道57项、新事件6项与旧媒体14项真实Godot通过；原生后仅改两份非原生测试，生产与原生夹具保持；完整检查8667项、8105通过、562条件跳过；非其他后端、设备或安装验收。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.event_positions",
+        "i543",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "事件准入、帧位置、纯观察及Node保存分别管理；Godot只选择已有能力，其他执行后端未接入。"
+    },
+    {
+      "coordinates": [
+        "runtime-backend",
+        "runtime.event_positions",
+        "i543",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前未发布工作树，无新界面、应用升版或Studio安装更新。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.event_positions",
+        "i544",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已接通原发布及逐接收者回执的位置保存、未决与已结清尾部及宿主交接；完整账本退休与持续运行未开放。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.event_positions",
+        "i544",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "171项定向（事件核心23项）、核心跨通道57项、新事件6项与旧媒体14项真实Godot通过；原生后仅改两份非原生测试，生产与原生夹具保持；完整检查8667项、8105通过、562条件跳过；非其他后端、设备或安装验收。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.event_positions",
+        "i544",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "事件准入、帧位置、纯观察及Node保存分别管理；Godot只选择已有能力，其他执行后端未接入。"
+    },
+    {
+      "coordinates": [
+        "node-service",
+        "runtime.event_positions",
+        "i544",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前未发布工作树，无新界面、应用升版或Studio安装更新。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.event_positions",
+        "i545",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已接入快照校验及复制；此层只核对已保留位置，不承担业务队列和跨后端执行。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.event_positions",
+        "i545",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "纯校验边界测试及真实reader到界面接线的模块集成测试；范围见本轮报告。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.event_positions",
+        "i545",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "纯函数独立于DOM和宿主，复用既有事件契约；尚未证明其他后端生成此能力。"
+    },
+    {
+      "coordinates": [
+        "semantic-js",
+        "runtime.event_positions",
+        "i545",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前工作树可用，尚未纳入新版本或安装验收。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.event_positions",
+        "i546",
+        "implementation"
+      ],
+      "value": 3,
+      "reason": "已有独立只读面板、发布及投递位置、保留摘要和任务归属控制；当前不提供新的执行或编辑接口。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.event_positions",
+        "i546",
+        "verification"
+      ],
+      "value": 3,
+      "reason": "面板和构建页的隔离与跨模块接线测试覆盖缺省、取消、归属及真实reader快照；真实设备/安装验收另计。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.event_positions",
+        "i546",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "组件接收快照及上下文端口，宿主独立核验归属；实际事件来源仍由现有后端能力提供。"
+    },
+    {
+      "coordinates": [
+        "ui",
+        "runtime.event_positions",
+        "i546",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "当前工作树可用，尚未纳入新版本或安装验收。"
     }
   ],
   "evidence": [
@@ -79883,6 +81281,498 @@
       "kind": "report",
       "path": "docs/test-results/release-0.2.5/README.md",
       "note": "升版专项检查，开发实测保留原版本及摘要。"
+    },
+    {
+      "id": "e3290",
+      "kind": "report",
+      "path": "docs/test-results/runtime-execution-clock/README.md",
+      "note": "调度观察真实运行、严格库存与保留证据；不认领持续运行。"
+    },
+    {
+      "id": "e3291",
+      "kind": "test",
+      "path": "scripts/tests/project-execution-clock.test.mjs",
+      "note": "时钟/向量、流式读取、边界与原协议透明组合。"
+    },
+    {
+      "id": "e3292",
+      "kind": "test",
+      "path": "scripts/tests/project-execution-clock-backends.test.mjs",
+      "note": "五生成分支、冻结字节及新库存缺失/篡改拒绝。"
+    },
+    {
+      "id": "e3293",
+      "kind": "test",
+      "path": "scripts/tests/project-execution-clock-godot.test.mjs",
+      "note": "真实作者回调、物理步、媒体、留存、拒绝与取消。"
+    },
+    {
+      "id": "e3294",
+      "kind": "test",
+      "path": "scripts/tests/project-execution-clock-lifecycle-godot.test.mjs",
+      "note": "空会话与观察回调失败的生命周期持久化。"
+    },
+    {
+      "id": "e3295",
+      "kind": "source",
+      "path": "engine/project-execution-clock.mjs",
+      "note": "纯观察合同组合原reader，不能取得预算重置或业务执行权限。"
+    },
+    {
+      "id": "e3296",
+      "kind": "source",
+      "path": "scripts/backends/godot4-execution-clock.mjs",
+      "note": "引擎读取真实调度时钟，旧准入委托原对象；严格库存登记独立autoload和facade。"
+    },
+    {
+      "id": "e3297",
+      "kind": "source",
+      "path": "scripts/backends/godot4/execution-clock-host.gd",
+      "note": "引擎读取真实调度时钟，旧准入委托原对象；严格库存登记独立autoload和facade。"
+    },
+    {
+      "id": "e3298",
+      "kind": "source",
+      "path": "scripts/backends/godot4/execution-clock-budget.gd",
+      "note": "引擎读取真实调度时钟，旧准入委托原对象；严格库存登记独立autoload和facade。"
+    },
+    {
+      "id": "e3299",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "引擎读取真实调度时钟，旧准入委托原对象；严格库存登记独立autoload和facade。"
+    },
+    {
+      "id": "e3300",
+      "kind": "source",
+      "path": "scripts/adapters/node-project-build.mjs",
+      "note": "运行和取消均保存最后有效摘要，任务接口复制独立DTO，不改变项目语义账本。"
+    },
+    {
+      "id": "e3301",
+      "kind": "source",
+      "path": "scripts/lib/project-build-service.mjs",
+      "note": "运行和取消均保存最后有效摘要，任务接口复制独立DTO，不改变项目语义账本。"
+    },
+    {
+      "id": "e3302",
+      "kind": "test",
+      "path": "scripts/tests/project-execution-clock-host.test.mjs",
+      "note": "真实生成与冻结校验、模拟进程：无换行尾帧、运行前和初始通知异常均保存失败会话与有效观察。"
+    },
+    {
+      "id": "e3303",
+      "kind": "report",
+      "path": "docs/test-results/runtime-causal-anchors/README.md",
+      "note": "4项真实Godot、9项旧调度回归及完整应用检查，范围与首次失败如实留证。"
+    },
+    {
+      "id": "e3304",
+      "kind": "report",
+      "path": "docs/test-results/runtime-causal-anchors/native-final.log",
+      "note": "真实无头验证长尾引用、实例播放来源、取消与访问释放。"
+    },
+    {
+      "id": "e3305",
+      "kind": "test",
+      "path": "scripts/tests/project-causal-anchors-godot.test.mjs",
+      "note": "作者端口执行原生行为，核对作者摘要、冻结来源、会话和临时目录清理。"
+    },
+    {
+      "id": "e3306",
+      "kind": "source",
+      "path": "engine/project-causal-anchors.mjs",
+      "note": "独立纯投影校验完整观察，不拥有执行、预算或作者写入权限。"
+    },
+    {
+      "id": "e3307",
+      "kind": "test",
+      "path": "scripts/tests/project-causal-anchors.test.mjs",
+      "note": "完整输入校验与引用闭包边界。"
+    },
+    {
+      "id": "e3308",
+      "kind": "source",
+      "path": "scripts/adapters/node-project-build.mjs",
+      "note": "准入后捕获一致投影，持久化与任务消费者使用分离副本。"
+    },
+    {
+      "id": "e3309",
+      "kind": "source",
+      "path": "scripts/lib/project-build-service.mjs",
+      "note": "准入后捕获一致投影，持久化与任务消费者使用分离副本。"
+    },
+    {
+      "id": "e3310",
+      "kind": "test",
+      "path": "scripts/tests/project-causal-anchors-host.test.mjs",
+      "note": "通知异常、保存一致性与任务副本隔离。"
+    },
+    {
+      "id": "e3311",
+      "kind": "report",
+      "path": "docs/test-results/godot-audio-shutdown/README.md",
+      "note": "原生verbose定位WAV与PlaybackWAV；18次独立对照和3轮32次播放销毁确认本机音频退出清理缺口，非修复或安装验收。"
+    },
+    {
+      "id": "e3312",
+      "kind": "report",
+      "path": "docs/test-results/godot-audio-shutdown-patch/README.md",
+      "note": "Godot4.7.2本地回移音频退出清理：42个独立探针及33个Node用例通过，31次项目原生运行无残留；独立安装并切换默认工具链，原官方可回退。非Studio安装包更新或其他平台验收。"
+    },
+    {
+      "id": "e3313",
+      "kind": "report",
+      "path": "docs/test-results/runtime-execution-frames/README.md",
+      "note": "4项新原生、6项交付及13项调度因果回归，首次失败与边界分别留证。"
+    },
+    {
+      "id": "e3314",
+      "kind": "test",
+      "path": "scripts/tests/project-execution-frames-godot.test.mjs",
+      "note": "独立Engine探针、长尾、取消与逐实例回执，对照作者和冻结来源。"
+    },
+    {
+      "id": "e3315",
+      "kind": "source",
+      "path": "engine/project-execution-frames.mjs",
+      "note": "只负责位置合同，原reader继续准入业务；不推测预算归属。"
+    },
+    {
+      "id": "e3316",
+      "kind": "test",
+      "path": "scripts/tests/project-execution-frames.test.mjs",
+      "note": "覆盖本层正常与异常边界；真实引擎证据由独立原生矩阵提供。"
+    },
+    {
+      "id": "e3317",
+      "kind": "source",
+      "path": "scripts/backends/godot4-execution-frames.mjs",
+      "note": "转换已知生成副本，helper独立采集真实Engine时钟并由严格库存核验。"
+    },
+    {
+      "id": "e3318",
+      "kind": "source",
+      "path": "scripts/backends/godot4/execution-frame-emitter.gd",
+      "note": "转换已知生成副本，helper独立采集真实Engine时钟并由严格库存核验。"
+    },
+    {
+      "id": "e3319",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "转换已知生成副本，helper独立采集真实Engine时钟并由严格库存核验。"
+    },
+    {
+      "id": "e3320",
+      "kind": "test",
+      "path": "scripts/tests/project-execution-frames-backends.test.mjs",
+      "note": "覆盖本层正常与异常边界；真实引擎证据由独立原生矩阵提供。"
+    },
+    {
+      "id": "e3321",
+      "kind": "source",
+      "path": "scripts/adapters/node-project-build.mjs",
+      "note": "重生成核对完整backend，保存最后有效观察并复制任务DTO，不承担渲染。"
+    },
+    {
+      "id": "e3322",
+      "kind": "source",
+      "path": "scripts/lib/project-build-service.mjs",
+      "note": "重生成核对完整backend，保存最后有效观察并复制任务DTO，不承担渲染。"
+    },
+    {
+      "id": "e3323",
+      "kind": "test",
+      "path": "scripts/tests/project-execution-frames-host.test.mjs",
+      "note": "覆盖本层正常与异常边界；真实引擎证据由独立原生矩阵提供。"
+    },
+    {
+      "id": "e3324",
+      "kind": "test",
+      "path": "scripts/tests/project-causal-anchors-host.test.mjs",
+      "note": "覆盖本层正常与异常边界；真实引擎证据由独立原生矩阵提供。"
+    },
+    {
+      "id": "e3325",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "本轮动画请求观察合同、pending语义、有限预算及未覆盖范围；真实引擎结果另见独立专题。"
+    },
+    {
+      "id": "e3326",
+      "kind": "source",
+      "path": "engine/project-animation-requests.mjs",
+      "note": "按冻结计划核对身份、FIFO、时刻及明确结果，原reader继续拥有业务准入。"
+    },
+    {
+      "id": "e3327",
+      "kind": "test",
+      "path": "scripts/tests/project-animation-requests.test.mjs",
+      "note": "本层正常与异常边界，独立于安装及其他平台验收。"
+    },
+    {
+      "id": "e3328",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "本轮动画请求观察合同、pending语义、有限预算及未覆盖范围；真实引擎结果另见独立专题。"
+    },
+    {
+      "id": "e3329",
+      "kind": "source",
+      "path": "scripts/backends/godot4-animation-requests.mjs",
+      "note": "仅转换已知队列副本的成功接受/应用/clear输出点；不重新调度或返还预算。"
+    },
+    {
+      "id": "e3330",
+      "kind": "source",
+      "path": "scripts/backends/godot4/animation-request-emitter.gd",
+      "note": "仅转换已知队列副本的成功接受/应用/clear输出点；不重新调度或返还预算。"
+    },
+    {
+      "id": "e3331",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "仅转换已知队列副本的成功接受/应用/clear输出点；不重新调度或返还预算。"
+    },
+    {
+      "id": "e3332",
+      "kind": "test",
+      "path": "scripts/tests/project-animation-requests-backends.test.mjs",
+      "note": "本层正常与异常边界，独立于安装及其他平台验收。"
+    },
+    {
+      "id": "e3333",
+      "kind": "test",
+      "path": "scripts/tests/project-animation-requests-godot.test.mjs",
+      "note": "本层正常/异常边界测试；原生文件为验证入口，文件存在不视为此次已运行。"
+    },
+    {
+      "id": "e3334",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "本轮动画请求观察合同、pending语义、有限预算及未覆盖范围；真实引擎结果另见独立专题。"
+    },
+    {
+      "id": "e3335",
+      "kind": "source",
+      "path": "scripts/adapters/node-project-build.mjs",
+      "note": "保存分离快照并核对完整backend，异常后保留请求与独立业务证据。"
+    },
+    {
+      "id": "e3336",
+      "kind": "source",
+      "path": "scripts/lib/project-build-service.mjs",
+      "note": "保存分离快照并核对完整backend，异常后保留请求与独立业务证据。"
+    },
+    {
+      "id": "e3337",
+      "kind": "test",
+      "path": "scripts/tests/project-animation-requests-host.test.mjs",
+      "note": "本层正常与异常边界，独立于安装及其他平台验收。"
+    },
+    {
+      "id": "e3338",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "音频请求及共用观察合同、独立预算与pending语义；后端调用回执不代表声音设备验收。"
+    },
+    {
+      "id": "e3339",
+      "kind": "source",
+      "path": "engine/project-queued-requests.mjs",
+      "note": "共用有界观察机制并分离音频领域准入，核对冻结音轨、FIFO、真实帧位置与明确结果。"
+    },
+    {
+      "id": "e3340",
+      "kind": "source",
+      "path": "engine/project-audio-requests.mjs",
+      "note": "共用有界观察机制并分离音频领域准入，核对冻结音轨、FIFO、真实帧位置与明确结果。"
+    },
+    {
+      "id": "e3341",
+      "kind": "test",
+      "path": "scripts/tests/project-audio-requests.test.mjs",
+      "note": "本领域与组合边界的可执行验证入口；核心及定向结果已记录，原生与完整检查以本轮专题最终证据为准，文件存在不表示本次已运行。"
+    },
+    {
+      "id": "e3342",
+      "kind": "test",
+      "path": "scripts/tests/project-animation-requests.test.mjs",
+      "note": "本领域与组合边界的可执行验证入口；核心及定向结果已记录，原生与完整检查以本轮专题最终证据为准，文件存在不表示本次已运行。"
+    },
+    {
+      "id": "e3343",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "音频请求及共用观察合同、独立预算与pending语义；后端调用回执不代表声音设备验收。"
+    },
+    {
+      "id": "e3344",
+      "kind": "source",
+      "path": "scripts/backends/godot4-audio-requests.mjs",
+      "note": "仅转换已知音频队列生成副本的接受/应用/clear点，严格验证库存与原字节；不调度或增加预算。"
+    },
+    {
+      "id": "e3345",
+      "kind": "source",
+      "path": "scripts/backends/godot4/audio-request-emitter.gd",
+      "note": "仅转换已知音频队列生成副本的接受/应用/clear点，严格验证库存与原字节；不调度或增加预算。"
+    },
+    {
+      "id": "e3346",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "仅转换已知音频队列生成副本的接受/应用/clear点，严格验证库存与原字节；不调度或增加预算。"
+    },
+    {
+      "id": "e3347",
+      "kind": "test",
+      "path": "scripts/tests/project-audio-requests-backends.test.mjs",
+      "note": "本领域与组合边界的可执行验证入口；核心及定向结果已记录，原生与完整检查以本轮专题最终证据为准，文件存在不表示本次已运行。"
+    },
+    {
+      "id": "e3348",
+      "kind": "test",
+      "path": "scripts/tests/project-audio-requests-godot.test.mjs",
+      "note": "本领域与组合边界的可执行验证入口；核心及定向结果已记录，原生与完整检查以本轮专题最终证据为准，文件存在不表示本次已运行。"
+    },
+    {
+      "id": "e3349",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "音频请求及共用观察合同、独立预算与pending语义；后端调用回执不代表声音设备验收。"
+    },
+    {
+      "id": "e3350",
+      "kind": "source",
+      "path": "scripts/adapters/node-project-build.mjs",
+      "note": "按独立能力组合reader并保存分离快照，异常后保留已接受请求与原业务事实；不把回执当作设备出声。"
+    },
+    {
+      "id": "e3351",
+      "kind": "source",
+      "path": "scripts/lib/project-build-service.mjs",
+      "note": "按独立能力组合reader并保存分离快照，异常后保留已接受请求与原业务事实；不把回执当作设备出声。"
+    },
+    {
+      "id": "e3352",
+      "kind": "test",
+      "path": "scripts/tests/project-audio-requests-host.test.mjs",
+      "note": "本领域与组合边界的可执行验证入口；核心及定向结果已记录，原生与完整检查以本轮专题最终证据为准，文件存在不表示本次已运行。"
+    },
+    {
+      "id": "e3353",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "事件发布与投递位置合同：复用原回执与封套、32条已结清尾部加全部未决，pending不证明未执行，无新生成协议。"
+    },
+    {
+      "id": "e3354",
+      "kind": "source",
+      "path": "engine/project-event-positions.mjs",
+      "note": "从唯一已准入事件事实及其精确帧保留发布/逐接收者位置，已结清尾部与全部未决分开保留；不管理业务队列或预算。"
+    },
+    {
+      "id": "e3355",
+      "kind": "test",
+      "path": "scripts/tests/project-event-positions.test.mjs",
+      "note": "本轮新core23项、宿主12项和既有链共171项定向已通过；真实Godot六案已通过且源码守卫一致，完整检查8667项、8105通过、562条件跳过，既有媒体14项原生回归通过。"
+    },
+    {
+      "id": "e3356",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "事件发布与投递位置合同：复用原回执与封套、32条已结清尾部加全部未决，pending不证明未执行，无新生成协议。"
+    },
+    {
+      "id": "e3357",
+      "kind": "source",
+      "path": "scripts/backends/godot4-adapter.mjs",
+      "note": "仅按既有精确帧能力和协议选择观察reader并冻结实现指纹，保留旧reader入口；没有新增生成产物或backend能力。"
+    },
+    {
+      "id": "e3358",
+      "kind": "test",
+      "path": "scripts/tests/project-event-positions-host.test.mjs",
+      "note": "本轮新core23项、宿主12项和既有链共171项定向已通过；真实Godot六案已通过且源码守卫一致，完整检查8667项、8105通过、562条件跳过，既有媒体14项原生回归通过。"
+    },
+    {
+      "id": "e3359",
+      "kind": "test",
+      "path": "scripts/tests/project-event-positions-godot.test.mjs",
+      "note": "本轮新core23项、宿主12项和既有链共171项定向已通过；真实Godot六案已通过且源码守卫一致，完整检查8667项、8105通过、562条件跳过，既有媒体14项原生回归通过。"
+    },
+    {
+      "id": "e3360",
+      "kind": "design",
+      "path": "docs/BACKEND_MIDDLEWARE.md",
+      "note": "事件发布与投递位置合同：复用原回执与封套、32条已结清尾部加全部未决，pending不证明未执行，无新生成协议。"
+    },
+    {
+      "id": "e3361",
+      "kind": "source",
+      "path": "scripts/adapters/node-project-build.mjs",
+      "note": "保存分离的会话与任务快照，准入后回调异常及取消仍保留已确认位置，尾帧收尾不重放原业务。"
+    },
+    {
+      "id": "e3362",
+      "kind": "source",
+      "path": "scripts/lib/project-build-service.mjs",
+      "note": "保存分离的会话与任务快照，准入后回调异常及取消仍保留已确认位置，尾帧收尾不重放原业务。"
+    },
+    {
+      "id": "e3363",
+      "kind": "test",
+      "path": "scripts/tests/project-event-positions-host.test.mjs",
+      "note": "本轮新core23项、宿主12项和既有链共171项定向已通过；真实Godot六案已通过且源码守卫一致，完整检查8667项、8105通过、562条件跳过，既有媒体14项原生回归通过。"
+    },
+    {
+      "id": "e3364",
+      "kind": "report",
+      "path": "docs/test-results/runtime-event-positions/README.md",
+      "note": "2026-10-28事件位置专题：定向171项与真实Godot六案通过；分别记录源码守卫和每案冻结来源，既有媒体14项原生回归及完整检查8667项、8105通过、562条件跳过通过。"
+    },
+    {
+      "id": "e3365",
+      "kind": "source",
+      "path": "engine/project-event-positions-query.mjs",
+      "note": "纯语义层验证有界事件位置快照、保留统计、接收者与位置顺序，返回独立副本。"
+    },
+    {
+      "id": "e3366",
+      "kind": "test",
+      "path": "scripts/tests/project-event-positions-query.test.mjs",
+      "note": "覆盖有效快照、错误字段、保留与次序约束以及快照隔离；详见本轮报告。"
+    },
+    {
+      "id": "e3367",
+      "kind": "source",
+      "path": "web/modules/app-project-event-positions-observation.js",
+      "note": "只读显示已确认的位置与逐接收者回执；缺回执不解释为未执行。"
+    },
+    {
+      "id": "e3368",
+      "kind": "source",
+      "path": "web/modules/app-project-build.js",
+      "note": "按当前项目运行、后端、构建、目标、快照及冻结场景成员接入独立面板，不依赖旧运行账本。"
+    },
+    {
+      "id": "e3369",
+      "kind": "test",
+      "path": "scripts/tests/project-event-positions-observation-ui.test.mjs",
+      "note": "覆盖面板呈现、状态、保留边界、上下文及本地化；详见本轮报告。"
+    },
+    {
+      "id": "e3370",
+      "kind": "test",
+      "path": "scripts/tests/project-event-positions-build-ui.test.mjs",
+      "note": "覆盖真实reader至验证与面板接线、任务归属、缺省、取消和旧后端；详见本轮报告。"
+    },
+    {
+      "id": "e3371",
+      "kind": "report",
+      "path": "docs/test-results/runtime-event-positions-ui/README.md",
+      "note": "事件位置只读观察本轮验证与范围；不代表已安装版本或其他后端设备验收。"
     }
   ],
   "dependencies": [
@@ -83065,6 +84955,120 @@
       "to": "runtime.execution_budget",
       "relation": "requires",
       "reason": "共用配额依附已有会话和观察，保留身份/来源与有限运行边界。"
+    },
+    {
+      "from": "runtime.execution_budget",
+      "to": "runtime.execution_clock",
+      "relation": "requires",
+      "reason": "调度观察复用有限准入、原始记录边界和已有宿主生命周期，不反向取得作者数据权限。"
+    },
+    {
+      "from": "runtime.observation_retention",
+      "to": "runtime.execution_clock",
+      "relation": "requires",
+      "reason": "调度观察复用有限准入、原始记录边界和已有宿主生命周期，不反向取得作者数据权限。"
+    },
+    {
+      "from": "build.workbench_lifecycle",
+      "to": "runtime.execution_clock",
+      "relation": "requires",
+      "reason": "调度观察复用有限准入、原始记录边界和已有宿主生命周期，不反向取得作者数据权限。"
+    },
+    {
+      "from": "runtime.project_events",
+      "to": "runtime.causal_anchors",
+      "relation": "requires",
+      "reason": "保留完整观察已有的触发、投递和目标身份；调度摘要与因果投影并列，不推断精确窗口归属。"
+    },
+    {
+      "from": "runtime.project_animation_state_entry_triggers",
+      "to": "runtime.causal_anchors",
+      "relation": "requires",
+      "reason": "保留完整观察已有的触发、投递和目标身份；调度摘要与因果投影并列，不推断精确窗口归属。"
+    },
+    {
+      "from": "runtime.project_animation_target_review",
+      "to": "runtime.causal_anchors",
+      "relation": "requires",
+      "reason": "保留完整观察已有的触发、投递和目标身份；调度摘要与因果投影并列，不推断精确窗口归属。"
+    },
+    {
+      "from": "runtime.execution_clock",
+      "to": "runtime.causal_anchors",
+      "relation": "requires",
+      "reason": "保留完整观察已有的触发、投递和目标身份；调度摘要与因果投影并列，不推断精确窗口归属。"
+    },
+    {
+      "from": "runtime.execution_clock",
+      "to": "runtime.execution_frames",
+      "relation": "requires",
+      "reason": "组合原业务准入、独立预算观察与宿主生命周期，不反向修改作者数据或扩大执行预算。"
+    },
+    {
+      "from": "runtime.observation_retention",
+      "to": "runtime.execution_frames",
+      "relation": "requires",
+      "reason": "组合原业务准入、独立预算观察与宿主生命周期，不反向修改作者数据或扩大执行预算。"
+    },
+    {
+      "from": "build.workbench_lifecycle",
+      "to": "runtime.execution_frames",
+      "relation": "requires",
+      "reason": "组合原业务准入、独立预算观察与宿主生命周期，不反向修改作者数据或扩大执行预算。"
+    },
+    {
+      "from": "runtime.execution_frames",
+      "to": "runtime.animation_requests",
+      "relation": "requires",
+      "reason": "请求身份和结果观察组合已准入业务、精确位置和宿主保存，不反向修改作者或执行预算。"
+    },
+    {
+      "from": "runtime.project_animation_controls",
+      "to": "runtime.animation_requests",
+      "relation": "requires",
+      "reason": "请求身份和结果观察组合已准入业务、精确位置和宿主保存，不反向修改作者或执行预算。"
+    },
+    {
+      "from": "build.workbench_lifecycle",
+      "to": "runtime.animation_requests",
+      "relation": "requires",
+      "reason": "请求身份和结果观察组合已准入业务、精确位置和宿主保存，不反向修改作者或执行预算。"
+    },
+    {
+      "from": "runtime.execution_frames",
+      "to": "runtime.audio_requests",
+      "relation": "requires",
+      "reason": "音频请求观察组合冻结领域、已准入原回执、精确业务位置与宿主保存，不反向修改作者或执行预算。"
+    },
+    {
+      "from": "runtime.project_audio_controls",
+      "to": "runtime.audio_requests",
+      "relation": "requires",
+      "reason": "音频请求观察组合冻结领域、已准入原回执、精确业务位置与宿主保存，不反向修改作者或执行预算。"
+    },
+    {
+      "from": "build.workbench_lifecycle",
+      "to": "runtime.audio_requests",
+      "relation": "requires",
+      "reason": "音频请求观察组合冻结领域、已准入原回执、精确业务位置与宿主保存，不反向修改作者或执行预算。"
+    },
+    {
+      "from": "runtime.project_events",
+      "to": "runtime.event_positions",
+      "relation": "requires",
+      "reason": "事件位置只组合已准入语义账本、精确封套与宿主交接，不反向修改作者、队列或执行预算。"
+    },
+    {
+      "from": "runtime.execution_frames",
+      "to": "runtime.event_positions",
+      "relation": "requires",
+      "reason": "事件位置只组合已准入语义账本、精确封套与宿主交接，不反向修改作者、队列或执行预算。"
+    },
+    {
+      "from": "build.workbench_lifecycle",
+      "to": "runtime.event_positions",
+      "relation": "requires",
+      "reason": "事件位置只组合已准入语义账本、精确封套与宿主交接，不反向修改作者、队列或执行预算。"
     }
   ],
   "workflows": [
@@ -84891,6 +86895,79 @@
       ],
       "gaps": [],
       "boundary": "已完成有限预算解耦；持续运行的调度周期与语义留存仍待新契约。"
+    },
+    {
+      "id": "runtime-execution-clock",
+      "label": "作者调用→真实调度帧→预算观察→有界摘要→会话核对",
+      "steps": [
+        "runtime.execution_budget",
+        "runtime.execution_clock",
+        "runtime.observation_retention",
+        "build.workbench_lifecycle"
+      ],
+      "gaps": [],
+      "boundary": "调度观察与因果投影、业务位置层分别接通；实时预算补充与连续运行仍待定义，非全链路完成。"
+    },
+    {
+      "id": "runtime-causal-anchors",
+      "label": "准入观察→保留根→引用闭包→任务交接→落盘核对",
+      "steps": [
+        "runtime.project_events",
+        "runtime.project_animation_state_entry_triggers",
+        "runtime.project_animation_target_review",
+        "runtime.causal_anchors",
+        "build.workbench_lifecycle"
+      ],
+      "gaps": [],
+      "boundary": "完成有限账本的独立因果投影；动画请求另有独立身份与时刻观察，音频/事件请求及锚点位置保留、执行账本裁剪仍待实现。"
+    },
+    {
+      "id": "runtime-execution-frames",
+      "label": "业务输出→精确引擎帧→准入→位置尾部→会话交接",
+      "steps": [
+        "runtime.execution_clock",
+        "runtime.execution_frames",
+        "runtime.observation_retention",
+        "build.workbench_lifecycle"
+      ],
+      "gaps": [],
+      "boundary": "本层仅已准入业务回执的精确位置；动画接受/应用由独立请求层记录，音频/事件请求与跨尾部位置保留尚未覆盖，非持续运行完成。"
+    },
+    {
+      "id": "runtime-animation-requests",
+      "label": "动画入队→接受身份→执行回执→明确结果→未决/终态保留→会话核对",
+      "steps": [
+        "runtime.project_animation_controls",
+        "runtime.execution_frames",
+        "runtime.animation_requests",
+        "build.workbench_lifecycle"
+      ],
+      "gaps": [],
+      "boundary": "本工作流只表示动画请求路径；音频有独立身份及专题，两者共用队列观察。事件请求、跨尾部因果位置、账本裁剪及continuous仍未覆盖，非全链路完成。"
+    },
+    {
+      "id": "runtime-audio-requests",
+      "label": "音频入队→接受身份→播放/停止回执→明确结果→未决/终态留存→会话核对",
+      "steps": [
+        "runtime.project_audio_controls",
+        "runtime.execution_frames",
+        "runtime.audio_requests",
+        "build.workbench_lifecycle"
+      ],
+      "gaps": [],
+      "boundary": "音频与动画计数独立且共享纯队列观察；核心/定向、音频原生7项及历史兼容已验证，完整检查待本轮报告确认。后端调用回执或移除前清理标记不证明设备出声；事件请求、完整账本裁剪与continuous仍未覆盖。"
+    },
+    {
+      "id": "runtime-event-positions",
+      "label": "发布/投递准入→精确帧→未决及已结清位置保留→会话任务核对→只读面板",
+      "steps": [
+        "runtime.project_events",
+        "runtime.execution_frames",
+        "runtime.event_positions",
+        "build.workbench_lifecycle"
+      ],
+      "gaps": [],
+      "boundary": "复用原业务协议及生成产物；171项定向已通过，真实Godot六案通过且源码守卫一致，旧媒体14项原生回归及完整检查8667项、8105通过、562条件跳过通过。pending不证明回调未执行，原有限账本/预算保持，没有持续运行、其他后端或安装验收。 本轮新增经校验的独立只读面板并核对运行归属；专项测试见事件位置UI专题。上述数量为上一轮证据。"
     }
   ],
   "legacyCoverage": [
@@ -85458,16 +87535,16 @@
     "desktop/tests/native-smoke.py": "c470787e8f7c63c116aeab95fd879c6071c06eb244d1a0447c8f5fb84ad8ee51",
     "desktop/tests/native_workflow_2d.py": "d1d1c78ddec1bc1f5c036ce032d9fb232df8b0eecec73125b389bee2aa014091",
     "desktop/ui/app.js": "3f1b74e3c9acdef41da0543a1f34e8f004d213c111bec8efc86207c258ffe0ef",
-    "docs/ARCHITECTURE.md": "4ff6ffe476907ab2be6a300bfe0ba2776c3a42268fba61f9614d972a76f8730f",
-    "docs/BACKEND_MIDDLEWARE.md": "142135280a16051db168869772caf882e7c7dff1e08c284a277cdaa28572d7fe",
+    "docs/ARCHITECTURE.md": "deb62b486ae76de5d902e01c133de128933113684585504fbf4e3012a0d81af7",
+    "docs/BACKEND_MIDDLEWARE.md": "bcbd11fcc82f8ecdfccad811a4a1ddea0d9fc7123284f9da81e61a25d9e35252",
     "docs/BACKEND_PROJECTS.md": "3cefc4a6f9edd443541a20749d4b2c2ac22014d0431edc3990b463d29be3acbe",
     "docs/BEVY_BACKEND.md": "1d726ce88cf3c6adf11db5885e22897d56dfe7866fb7cd9edcb5aaaf48ce384a",
-    "docs/FUNCTION_MAPPING_2D.md": "f00614585841505eaadf8b5d92c03885ccddfb61a424f826d6d9c91bebc0bbd5",
+    "docs/FUNCTION_MAPPING_2D.md": "c6e1bf7985872738c930b00c3033b748b43ecb4a0d44adedd1171e6f5d56c89f",
     "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
     "docs/NEXT_ARCHITECTURE.zh-CN.md": "1ca5d0336fdbdd6582ca0219e29a265c8115c1bee1dcc7ff386944d4be4ced30",
     "docs/PROJECT_ASSEMBLY.md": "f650e6e50284b6e94cb3d0e0ceb4ee318b762c5083d01f2080339769bf29ecb3",
     "docs/PROJECT_AUDIO_CONTROLS.md": "dc7734deb7e3ead51447d1262b58847bac741877f8da96c338cb0ff65f7aeecc",
-    "docs/PROJECT_BUILD.md": "2687c4446e14fb5a94eba36d1536cae53ea0628c6b554c431c5f40ec12521307",
+    "docs/PROJECT_BUILD.md": "9d02dd04eaa51c253a63ab7be7d26eb58c720b3438e10ad2c3c0eae3f248eac6",
     "docs/PROJECT_EVENTS.md": "69d7f7f4ae70b25d8e5885192788a35d1a1ac5f74495f6eddc1dfa442be03f09",
     "docs/PROJECT_SHARED_STATE.md": "4ae4441d4e7ba27cdbc8681ff920001df893c26b62f31e684c6489b143832793",
     "docs/PROJECT_WORKFLOW.md": "ce1f341b3ca1a884ad3f7f310bcaf0ab21d5d4d070cfbd888b05ee413ed4c76c",
@@ -85488,7 +87565,7 @@
     "docs/RELEASE_0.2.3.md": "1e7061eef3ad8a83de7e771f4f91d07252037f8fc774398a80268b7e90ba9407",
     "docs/RELEASE_0.2.4.md": "18f4e7a7a3069d6126d12dfe1d31a2ad15d904d02eb743490f0c5677ee07d068",
     "docs/RELEASE_0.2.5.md": "abc8d1af2dec8d6abae9c714b69e2876c5b638051b53e7d83a16b74d1d9b4c65",
-    "docs/ROADMAP.md": "e637f52f57f0d80830afe940eaaf5d9cb4035a1a9f2879039ec56606098ba993",
+    "docs/ROADMAP.md": "1a40157d8a03d207ebeb5d49b077e51abb12865ee641c49183eb0f15762c9193",
     "docs/RUNTIME_CASES.md": "0000344399cc3a6afd6094b10b1679f4f928ab847467af4b9444ff7f84bb4e1f",
     "docs/RUNTIME_CASE_REPORTS.md": "42b67098cefebfa016f68e184499962afea7feda0607c8dbd461e647fff40f04",
     "docs/RUNTIME_CASE_SUITES.md": "6d5e783d87fd54df5e7f981b741de03a360c9ef690b3298cb0c4c7e28ea36f70",
@@ -85500,9 +87577,9 @@
     "docs/SCENE_AUTHORING.md": "2c3092ee6a68a8ba2e31958b2deb235c608a16d81d3ce4081b085761d296dccd",
     "docs/SCENE_BEHAVIORS.md": "46b1ae9f6d1579281d6aedaa610a4f3b719c1537a0dd9c808f754ad7bc8de148",
     "docs/SCENE_COMPOSITION.md": "90e1954c2f5e57a5c7e2a4d5d97179f6177832ec8e1f59983eabb6cbd6cc8d5a",
-    "docs/SCENE_PHYSICS2D.md": "417cba76c827c7f78f9ad54164e7de5a4900df97911dc8dd03bde008e57bdba8",
-    "docs/STATUS.md": "5339106ae55c60c35da496936608f4d394c8ad50b53db6212119aa5dc2b88fc8",
-    "docs/STUDIO_MODULES.md": "989eaeff4eca498a86072fc9844f0fded2bdaa0735deae3f2965cb4216329b2b",
+    "docs/SCENE_PHYSICS2D.md": "f7fdcf5cb17c715b9595b80530b6d86f213da4f3baa63e4b7197434b3977440e",
+    "docs/STATUS.md": "6b286abe8f12005a6fdbc757c95dcd3c8c2aecf3f98190e9ad9530b34eb1173c",
+    "docs/STUDIO_MODULES.md": "68ea521b872eb1b34b1179b7c66df9cdb57973e299f319f0d3b196a116b13aa9",
     "docs/WORLD_TRANSACTIONS.md": "bcdf7e96289f68e92271fc7c6ad025985e3744857f304fa21eb2ede43a37394e",
     "docs/adr/0008-native-nuis-and-bootstrap-runtime.md": "7fbaba85e92b981b584f0d7cefc525b70890bb4d951a5727797b2c46381fde60",
     "docs/function-network.html": "bf42bb7b77083ed40316cd12ba21544e07b5a3b45f045b88ac0b24af056039d9",
@@ -85617,6 +87694,8 @@
     "docs/test-results/export-references-2026-09-23/results.json": "6224d3e3e547a139e7224c20d8c52e1561b383b237984932888399908649fcee",
     "docs/test-results/field-editing-2026-09-24/results.json": "ad52ab94c46a3450e939e4803531f0cf6e95db67ea126fd08f382926fe07b246",
     "docs/test-results/functional-mapping/summary.json": "868ac28b2836d3c93ab77455639a8e6f0d23f0029c36c0014058ee587cd61a48",
+    "docs/test-results/godot-audio-shutdown-patch/README.md": "c4bd632f5f02391ffe2d800651a013bc620fde4dfeeb6c46eac9e3a24834789f",
+    "docs/test-results/godot-audio-shutdown/README.md": "7b26a2636bcd7a4b8a794c786555235b195cd48f1e8e6892166b7c6b7657b4dd",
     "docs/test-results/media-insertion-2026-09-23/results.json": "42c29f11bfdc0149b1805df646db2c0909e1040b7db7a9d9a054eb63e4cc6c8d",
     "docs/test-results/native-current-2026-09-24/results.json": "9c876c1b42389b2f2ba4a79ba155bb63fbeca435644c836612a846af35c67663",
     "docs/test-results/native-installed-0.1.1/summary.json": "76daecabb73fcc97139a3f04ee4b922abd780ef97d0a01b2caf614cd0c70e6bc",
@@ -85783,6 +87862,8 @@
     "docs/test-results/runtime-case-suites/packaged-resources.json": "2b1505972f1650cefc794c5f2e4c5a45bbed757d729dcab286ca08df2b516054",
     "docs/test-results/runtime-case-suites/results.json": "46f1d131047d8bb0f6c3b2e95e843dde3ee03bc74f626c183a37b152f4948299",
     "docs/test-results/runtime-case-suites/source-hashes.json": "4f3f1149223f4711cfe644f339f23cd701a9677fac223eb1727df1f34fe9db0a",
+    "docs/test-results/runtime-causal-anchors/README.md": "c93ddf817aacac6f6669cb14ac6a159da5171ffadc50a56d16384589cfbfaf59",
+    "docs/test-results/runtime-causal-anchors/native-final.log": "d711b9dd3458b34d34797777db1bc2060d08331a166ab302a66c2818e7a42531",
     "docs/test-results/runtime-control-replay/boundary-findings.json": "418a398802a277fb4b11ae9b6eb2ac332c5fe2c53d44c5649180e84dd858a409",
     "docs/test-results/runtime-control-replay/browser-final/browser.json": "dd3afeb9ef7939fc9e00d47e4803b2c98f73f0a1762d1933eaf1d97f54921b76",
     "docs/test-results/runtime-control-replay/cli-tests-final.log": "e52d886c931559327c881bb4bb710d329514cdde3b69a939124ef2b87e09d1f7",
@@ -85792,10 +87873,14 @@
     "docs/test-results/runtime-control-replay/portable-tests.log": "29e56311cf670c3e4818dac46ca38f4fcc3f9ce6f283ec5e030b6a40fbc84a74",
     "docs/test-results/runtime-control-replay/results.json": "d374dd8fd05b45c363e9fdb4d8d2fb56fa58a2016be47b8e69d00850b3ba53c8",
     "docs/test-results/runtime-control-replay/runtime-proof.json": "27158c568087c5c4bf739038e7572f28847951a86874d30a4026f8a74e935dd7",
+    "docs/test-results/runtime-event-positions-ui/README.md": "72adae4f8a9839afd4b4bd999fe6defc9b99520a2823a2214ec42a398df2fabe",
+    "docs/test-results/runtime-event-positions/README.md": "d4b02c043e3362a805acebccb0a2ff850ae0779ecc47f18e6f54705d89ea4174",
     "docs/test-results/runtime-execution-budget/README.md": "028a3e455975f2d066254da34a86b614b0b3be2d0b0980513c139e1b6e0ea642",
     "docs/test-results/runtime-execution-budget/candidate-native-final-exit.json": "48562bafc7080423c67cd5c24db1e18dd4139f1dd4a5d6862f2b1e06f5abd42e",
     "docs/test-results/runtime-execution-budget/candidate-native-final.log": "ac9ad4ff749deab63e8a3c69d51c0dd93e5793a83fc9bc60a4640491a02fe91d",
     "docs/test-results/runtime-execution-budget/full-check.log": "94bbac2f08729859c0edd6f3584fab2563f999ed6a0cc8d01b93a7ffbab2514e",
+    "docs/test-results/runtime-execution-clock/README.md": "4d529cc0028044601cc31f5f6d87948c7657edc2aa68963c3e0b92bd3d6d95e0",
+    "docs/test-results/runtime-execution-frames/README.md": "838ce675b725f934f3d641f44c3f20dfa2f7a89bc6654df50fd1f42e997a955e",
     "docs/test-results/runtime-instance-control/boundary-findings.json": "e7bd64ade65225cce87997dfe7eb5e28745e96bf2b8b8b8137b39587500f99ff",
     "docs/test-results/runtime-instance-control/browser-final/browser.json": "9bb279639589d33cd3d9ffc4c5089f04c7ce0984994536eed708f6e2c430fe81",
     "docs/test-results/runtime-instance-control/cleanup.json": "48af19af93e40a3a16a0d888d59ae5088d865bfbfb45eb6052834b0872c52ab5",
@@ -86755,7 +88840,7 @@
     "docs/test-results/world-m3/results.json": "aa4491e956bfe0f23f61158c5cf9a8ffeff6b48a4aa435f485acaeab74311d59",
     "docs/test-results/world-relations/results.json": "91d13aa1fbff592cc96cbbe3622d859b0151c38ca32f4d752d8cc29a2be20524",
     "docs/test-results/world-resources/results.json": "8dcb109a0bf9b4005240173cdac94b77ac9c5b67ebeb747dcf73dddf1ab4ffee",
-    "engine/README.md": "59023f6f596464cc66ea5334d3af3a0ef994802992185a41f57be8a2961daff1",
+    "engine/README.md": "d08e7843874b7f2c3d333418a9f80cabd980fa841029964882322f28d20c4766",
     "engine/animation-state-bindings.mjs": "a77eb5534e292ad6561c9bac4dedbc4d4cd5cb3ecddf3257c3981a1171f8336b",
     "engine/animation-state-branches-core.mjs": "2e0fdad7c839a70735de5e54d0afaf8a14082cbb40b5ee165eabec3ca4ee9c15",
     "engine/animation-state-combinations-core.mjs": "978f0794a802c6da196b650dd3e03cba1a7a63d8aebc7209810e4c4bfd041f95",
@@ -86802,6 +88887,7 @@
     "engine/project-animation-commands.mjs": "49b2ea830604bd493b4bab4a308b462fa5ef1e24975180166d9c4ac230543290",
     "engine/project-animation-completions.mjs": "b72ccb92bb59da61bc7a8f61d4cf563f682d1e9365b595f63c7203a33d52e086",
     "engine/project-animation-preflight.mjs": "df7134a90ba516b09aafd41bdc41706d769e3b1b4f6b5c985c138062f88c3b59",
+    "engine/project-animation-requests.mjs": "ca57cb4af7cd7ca1231d46b6c1b9e02e067a1a6ea30f99209256c03b03f8a719",
     "engine/project-animation-state-entries.mjs": "93473da20d63c42a0e4b8cc0e2a9b6ed7eb20cece240451074789f0f2075d9b3",
     "engine/project-animation-state-entry-triggers.mjs": "42559e634a6102e98debcc4c533e7463511441bedf410720a24e782465aafb05",
     "engine/project-animation-state-review.mjs": "32144c7815d0f914d68296ad4b0a3b0b915305f39252a1e2d64c8d8ab8ca9f27",
@@ -86813,12 +88899,19 @@
     "engine/project-assembly-plan.mjs": "8b90a3030cdcd0a588550c76ab992f033383701e4c02efed8fd1967b1d203b4d",
     "engine/project-assembly.mjs": "597d4b07d1389954cf14b1e5bbc7593792972d47fa1cf57872729003912550b5",
     "engine/project-audio-commands.mjs": "9845c1563d7cfae2d6509dba65a5edc3f62c905e8a04989f7a2ac53b164dc63a",
+    "engine/project-audio-requests.mjs": "db7d8a1d22dfe4971d7e58cfb8d80fbf00ee74c3b6278cc9d5b91250038bfb6d",
     "engine/project-build-contract.mjs": "792c49457f9af1bbfa3a0a04b1ba07c0888237dff9c8c4d8f97ea32ae1d91f3f",
+    "engine/project-causal-anchors.mjs": "93f3d59d30082a34c6f3f82c4e545668749508d88d343c88d2210c2cbaaaeacc",
     "engine/project-event-bus.mjs": "3a03eed67e61d129694982bb9437c7fd8452a41bf88bccb6ac67b2d0a3780687",
+    "engine/project-event-positions-query.mjs": "eb3e416c4e89d82c940a25afeb19def91c9e8800db6f1d03178035dfc2365682",
+    "engine/project-event-positions.mjs": "5d9332db81883d46110770ef95d93ffcfe788c019e29f296eeeb7c99ea7a4809",
     "engine/project-event-review.mjs": "edcabdadef1ca4b445505a4416d7e3ddc87f6fd36dc175a438b1c9cbbca6f2a2",
     "engine/project-execution-budget.mjs": "5624b9df4be70201c82ef186a95ebcc090edf26faa594baf26a03f425b5c9912",
+    "engine/project-execution-clock.mjs": "ea3a3ef1fca31fb93c010f32f46c2e42552c17deb13c646ab8e13d34622e31e5",
+    "engine/project-execution-frames.mjs": "3bcd518079a2af397c1ebd9ef32556d2c1347bbbe3e137cc7fffdf7367f46b47",
     "engine/project-physics2d-trace.mjs": "5bdc828c7e03a527be7aa64528beff990c4a7ebe58345769307eaca6fd623b41",
     "engine/project-problems.mjs": "5b67e49504c1996c507f77fb4a4dc5541d5229aadfdf014211f6cce4f2dd1874",
+    "engine/project-queued-requests.mjs": "e94cf91a95ebb7e5c08afad7a79e3e2b460b419dd74826fe2903c996dffabd93",
     "engine/project-runtime-contracts.mjs": "e4f365f530d6dec4f2a09426b33f9048af957830a7e50de4ad7bed324ee4f74d",
     "engine/project-runtime-events.mjs": "d3469f337098da222a5f7fde65aa71417ba3fc593359daf3dbbe3012d00242b0",
     "engine/project-runtime-query.mjs": "62494cb578c4afe92c7fe8fcd1bf80ac49b313d00101186c1fe7770a4519ad56",
@@ -86960,7 +89053,7 @@
     "scripts/adapters/node-execution-backends.mjs": "ab29befe983bdf25d38654ea613fc234980d0b4b048946978ed14d67d18591cc",
     "scripts/adapters/node-execution-tool-probe.mjs": "10171f6f7300744028266eafe8dd4435414fe64392a9065d33fbbd47a37924fa",
     "scripts/adapters/node-execution-tool.mjs": "6c807296f257df7354d46c5f0576a5f3e469acb239b46162546e543eaa73e6ac",
-    "scripts/adapters/node-project-build.mjs": "0a474f12fa94ddd36e4c87b37458249f925fc62d0eab11e00ac4150981a5bc1f",
+    "scripts/adapters/node-project-build.mjs": "354d461b00ead1415aa8231b1412f34669aee3c8a25ee14319f4e3429a632a47",
     "scripts/adapters/node-runtime-case-suite.mjs": "b104e896e46ea9d71dc63d647c28969cc7c5523db5310e35ec8ecff62d670736",
     "scripts/adapters/node-scene3d-export.mjs": "26bdd40f80a9ae2a603bf2f5f9674f3e15a5a17bdd80a576548aadb9f35ed4e8",
     "scripts/adapters/node-studio-core.mjs": "4ef99f01f9201b59b1f5ed8227bdd74ba8dd9f41caad491836cf7edbb8af3037",
@@ -86976,13 +89069,17 @@
     "scripts/backends/bevy-rust/src/main.rs": "59c64d0ff86ee7d5e8adae1b431919cc2107577dc6122fa66c4b6b460de69379",
     "scripts/backends/bevy-rust/src/runtime.rs": "566e585520914e36850eca9318170993db38b4aa7379879eae32f0a2e91f6f7b",
     "scripts/backends/godot3d/runtime.gd": "2216b06d3cfb4214ad9df3a3eaaf33d27a83c325caba46ef8f2750f290bb5472",
-    "scripts/backends/godot4-adapter.mjs": "830e1bb66f2c157a2eed9d0fcb95103ee05ad0590a1a3cdaedc8db42406faaf6",
+    "scripts/backends/godot4-adapter.mjs": "c51b6ee2821c6401b3fd3a36592d303bd8066b0f7176135c62a4934626e954fb",
+    "scripts/backends/godot4-animation-requests.mjs": "3a4ca5e1ef1a9c533fca2c8a7f932783968fc024f1fea4b39a9f5d29e54e1f4e",
     "scripts/backends/godot4-animation.mjs": "35075d9ddc4fd41b2eb0486fe3ee9dbcce0138ba00cce7f43c19acdaec829e7e",
+    "scripts/backends/godot4-audio-requests.mjs": "c2bfa57171a5b484340f191d2fbbadbfc9e106a21b5210f7323f7cba57fab1f8",
     "scripts/backends/godot4-audio.mjs": "7bc6b162f37946ab5c5b85f6ca2e20e603ee6e7fddd395271cbd4195b983e7f0",
     "scripts/backends/godot4-behaviors.mjs": "e869876514f53d75858ad981fb2abc3c729e43a8c5b1a9d9ab2fc69a34a22b58",
     "scripts/backends/godot4-clip-animation.mjs": "1c125c14c4fd8af93e5853680f756b8c9ac8d08fa0e49b7cc64122a4d000cf43",
     "scripts/backends/godot4-dispatch.mjs": "ac0900a870def37b93a3cab3b095497389d48703cdcf577fe455cff83574bdbe",
-    "scripts/backends/godot4-execution-budget.mjs": "39348a73a93b6d4cf528260d08a532b8fa3bf823070846f9998c21812c6c13c3",
+    "scripts/backends/godot4-execution-budget.mjs": "d3cad04dc99ea1af438d7eaf1cdb0727e922d4aa4e373dc2d83b5b989c79beba",
+    "scripts/backends/godot4-execution-clock.mjs": "043598b457043e73dd7380bef61adf06dd092a7c1e83c36b459399554f5f0e6b",
+    "scripts/backends/godot4-execution-frames.mjs": "f88372322ac862cc0e770b152b4b09bd9736b8b34a6689e3149800f81d28616f",
     "scripts/backends/godot4-instances.mjs": "5530025ea8327c95db7f75605dd29e177036a232192fc4b1f2935c45d50c0a85",
     "scripts/backends/godot4-physics-character-contacts.mjs": "1409a4fdcab98ed8d8a865a25e32734877855836572de566efe6552399368eaf",
     "scripts/backends/godot4-physics-character-events.mjs": "20acb031177cd584062eb98fb782bd3a770c976dc5506788ffa06c0780f647be",
@@ -86999,12 +89096,17 @@
     "scripts/backends/godot4-scene3d.mjs": "2e9c29b62868b643036df67f0fbb09b77c6710247764bf5c837277200f53876a",
     "scripts/backends/godot4-sprite-animation.mjs": "5335701bd8ab773953102f8f0c558e4d6617365aa7bf4342b7c0c07608790635",
     "scripts/backends/godot4.mjs": "d42d385b5a6e62ff4aa91d00f6065bdd0cefbc7ddde55e08cf5e3c62060fff77",
+    "scripts/backends/godot4/animation-request-emitter.gd": "a97f59bb5224af8c4684ae6b2ac96c4a91d19ac746c2c5ec99f7d5a8a5ceb4be",
     "scripts/backends/godot4/animation-runtime.gd": "e1c4181b8b0c274ca48f9542d3afc5a00e19dd0173994a9cef8656f73dfd2579",
     "scripts/backends/godot4/animation-sprite-runtime.gd": "b590ff1a0eeb5c923a0c83cabda5c77f4347a6a33302af95658ca1e01d1652eb",
+    "scripts/backends/godot4/audio-request-emitter.gd": "2a7b18e59b20f3f5d5de6c62372f1e4255c992189fb0e6464339018cdc3fe490",
     "scripts/backends/godot4/audio-runtime.gd": "3cb01c0c8dffe90b3326be6371cf559de7e2d641125a512b16f3745f970dabf8",
     "scripts/backends/godot4/behavior-runtime.gd": "ec039ccaff0f376734938f54808b7929e7385393fd89516de35561e5959943bb",
     "scripts/backends/godot4/control-runtime.gd": "7490fcb7dfb2c7a1f7b4b251a77804be0f5cea22e568eafe33a404de6b4aba64",
     "scripts/backends/godot4/control.tscn": "adcd159c8ef7ea1463b859e4a83dacc10c8aaa39f431b80eb695aaf4151466f2",
+    "scripts/backends/godot4/execution-clock-budget.gd": "000a6ac20cc4c2255f25e608c2e18222d3d6b414c08d0a6d92312d356f76c341",
+    "scripts/backends/godot4/execution-clock-host.gd": "56725127932907999eb410e8c55eae856863e3e0abef127e97d971e828016031",
+    "scripts/backends/godot4/execution-frame-emitter.gd": "5d4c10c41b28e3481f539ba0263a6a13180a8e1a0f2bd8f32b45a85b45ab3cb0",
     "scripts/backends/godot4/physics-character-contacts-helper.gd": "71c82fce2325b56c901cb2e0c1ab815012293b03f5b2557163a8d96003473233",
     "scripts/backends/godot4/physics-character-contacts-port.gd": "98a7650d9d3b25234ddc5456687c17339aea843d24fa052f4676b882eef8c13d",
     "scripts/backends/godot4/physics-character-events-port.gd": "bcaf4ef9b7112977fea1b2c48fa65ceee1d6e223394ea3e4de4c8b3bbba7834f",
@@ -87074,7 +89176,7 @@
     "scripts/lib/media-insertion.mjs": "27ffea2efc1564656b003a08e4cd7a3f87ef9c77858cfbea19f3ff8cb5ff42c9",
     "scripts/lib/paths.mjs": "0a0e5325d12176c09e88ffe8bdf195b1d19cb7ca210650aeb3f2764e3bfd3848",
     "scripts/lib/project-assembly-documents.mjs": "912c40ec86c458fbe8a0f392ea2d8ea65d950775bcaaa464564c470be4418d49",
-    "scripts/lib/project-build-service.mjs": "271b7b61c844c3595c448222b01b20ad322461c4a2e4d4737fe9553cd3b4f982",
+    "scripts/lib/project-build-service.mjs": "b1cf3be120643a1f70a6fe2a6dfdbd86afcbedf36551f65163dfe7ebbd26eb19",
     "scripts/lib/project-definition.mjs": "a7da2a138b2b0be3db03b973945d9481afcb9745611c048ef449ed4a32c12781",
     "scripts/lib/project-documents.mjs": "9f81f09f1e0f627bc229e01adae8967cf5562ee36c118b472fd729a20da6247f",
     "scripts/lib/project-service.mjs": "a1a6a04d00bef0f682e579f84cc7e68cc45892d9e1904c36418d77e6375ff44c",
@@ -87121,7 +89223,7 @@
     "scripts/scene-compose.mjs": "a4774451c1bfa2791c434483259d663bd150f738be189d3381be3a3800ac9d90",
     "scripts/scene3d.mjs": "2a996e5e15c8d93960911d3503c5df6ca94df6ab344b61f3acd34a929d53fec5",
     "scripts/standardize-docs/core.mjs": "00cdb3efb310b01b7506166c2259682c022974284fe3f5677e7235fcb0c5da56",
-    "scripts/tests/animation-branches-godot.test.mjs": "ed9e33c9bce26d67afcfa9d468028e3a0e481546cfb70de128bb11bc4e1b144a",
+    "scripts/tests/animation-branches-godot.test.mjs": "d0d6fd1fbdd0b4a224575122843f61bd03bbd167d789571de87324cf73daa0e5",
     "scripts/tests/animation-branches-source.test.mjs": "a96cf362bb2a415e85d87c32e342c4655a2bf26e6172f6bc492ac966a62df451",
     "scripts/tests/animation-condition-groups-smoke.mjs": "2d7545db68582a1b5e16838386733ad57ddb4712f4ccdee2282dccd050440930",
     "scripts/tests/animation-entry-triggers-smoke.mjs": "c7327f87fea3c360fe7bc8e886fe57befc2b6d8c1205a3824d5b3bfa965d76e6",
@@ -87146,11 +89248,11 @@
     "scripts/tests/animation-state-script-authoring.test.mjs": "92a940a05955a9193e7969709b0cb8b55fa0218e00fd3ad18526dba4a1053c5d",
     "scripts/tests/animation-state-script-edit-ui.test.mjs": "09fd0924e2d8251ed94899370a757fc2f7b0cefa4033f952b5629c271d31b9d3",
     "scripts/tests/animation-state-script-edit.test.mjs": "3b94dc1e879af5c497aa669e671c1ae9555d9a0512bf256f3844e2e7c73faf12",
-    "scripts/tests/animation-state-script-godot.test.mjs": "09254e6ec47fae8422cc6ed649fde5f8a9d71195c60fed55141e7853a900d6cf",
+    "scripts/tests/animation-state-script-godot.test.mjs": "7cc4a6daa7bb56ecb2f9cb59adcf40118365367b982d0c219beb992111c46fe0",
     "scripts/tests/animation-state-script-reedit-smoke.mjs": "029cf70493af9e3260f2be7abb3ebff8113a9cf8145a652307d8127085528f4b",
     "scripts/tests/animation-state-script-reedit-workflow.test.mjs": "dcc3a1f1e57260c332b196ea2eb526efa801788ad82ef261c8be19b053bc62a7",
     "scripts/tests/animation-state-script-smoke.mjs": "8e9c1bc870731a3790665afd90be2be755d2d57304067d32b05d8b959c8a6a04",
-    "scripts/tests/animation-state-script-source-godot.test.mjs": "672deb8a62a3484bd5eec21861b0a8d190330381903d86a6491fa2cdbe557170",
+    "scripts/tests/animation-state-script-source-godot.test.mjs": "a6e33b42089c367550db2daf1053ba4455412d99957b7b856f00e339cb2b39cb",
     "scripts/tests/animation-state-script-source-host.test.mjs": "8ff54651af5be5df702d03ddfd2969470dac306de38014132f303bcd9dc2a7fb",
     "scripts/tests/animation-state-script-source.test.mjs": "52eb6c40b0adc20e49e46bb8442bb49c035ae9b0e622d1c6667655c06d72d56f",
     "scripts/tests/animation-state-script-workflow.test.mjs": "4499c94eb10d11717b308764823c37fe638d5c30c855895bbddb859677134372",
@@ -87244,9 +89346,9 @@
     "scripts/tests/function-atlas-smoke.mjs": "616a725fcfa199f15d9e9b577072c49d34b615a8098572bbc7405de510caf530",
     "scripts/tests/function-atlas-view.test.mjs": "424df7a656adb48a57570c3f53d5677cec980292654cb9ba50fc1a377c69d764",
     "scripts/tests/function-atlas.test.mjs": "f66d6b898ccc0020b9cb065de64b8fd352240b5010896dbd5c3afb86f6122987",
-    "scripts/tests/godot4-adapter.test.mjs": "ab498ac73debe2591321ea9cd446c1c78706e27ead1e1ce8ce1a14d2479a7bf0",
+    "scripts/tests/godot4-adapter.test.mjs": "1fd094901e5e14592e0fb28fa39c94f2bd7a80d552e40d723a06acb3284a084f",
     "scripts/tests/godot4-behaviors.test.mjs": "addbed9b220c3ee298f0be51648c24b80b98d2473c3918aafc7b7e4eac87ceb4",
-    "scripts/tests/godot4-project.test.mjs": "6a165b15a6a41e507ea3c77303ccd6dcdef5a7e72641de1496e6cb21afad1349",
+    "scripts/tests/godot4-project.test.mjs": "de00c6a7cf96931fa146e6ac3a84600b5c2a88467634d101019c69cd84f49d6b",
     "scripts/tests/helpers/project-physics2d-observation-fixture.mjs": "3f9a9f86e27741ae1580b0966afad48bd7f2d0a734443d9d5d81585a1b70c169",
     "scripts/tests/helpers/project-shared-state-author-fixture.mjs": "b3229ec1fe81b8f98f8b8233a7b4feb8f25e5dc90f6219e9b50974020557b83d",
     "scripts/tests/helpers/project-shared-state-fixture.mjs": "80044985789765e378d0b008e3cd0ed420c5fcdb0e62e2a09409c7b4359d3759",
@@ -87276,20 +89378,24 @@
     "scripts/tests/project-animation-authoring-workflow.test.mjs": "06b339da4440ba9b93c872b2ce1e85e69bf43375ca3c06bbf71f81078be5ed13",
     "scripts/tests/project-animation-capabilities.test.mjs": "7f708dbcd4b2b984a7a88ec84b962be20035b3dfb2e30e2423d1161943ed7d44",
     "scripts/tests/project-animation-clip-runtime.test.mjs": "71197c4fee804ec644e9e855334803cf06b50678bc7991b870ae79e73a566c17",
-    "scripts/tests/project-animation-clips-godot.test.mjs": "5d2c978d6e53f0a813a704054912bc82e9de1f4c52142b4845c608ab56ff0fe6",
+    "scripts/tests/project-animation-clips-godot.test.mjs": "a4380b77576072e774a2115a6c6798f73e6eb1f7f9e6295d3f21342673ba2d75",
     "scripts/tests/project-animation-clips-workflow.test.mjs": "eb735b599d7aa60f8d589355a4979a0e2df01f07f5c1ca5edb117b1fccdb1910",
     "scripts/tests/project-animation-completion-authoring-workflow.test.mjs": "ca0178df958075e96719087cca1a577ba332804c34d031472bb0375b927bded9",
-    "scripts/tests/project-animation-completion-godot.test.mjs": "b360b081a77542c2145f049a5031fafa9e4106d546dd87c5051a5579a53744d3",
+    "scripts/tests/project-animation-completion-godot.test.mjs": "b6c505587354a6a9dc4afd37f3b3a7dc4142bd4c306da8e1e5ce2458f1987f07",
     "scripts/tests/project-animation-completion-observation-ui.test.mjs": "8da01e3718b14124d97a5705073f49d8ca021f52b97d2c2ca943a834ee8e3088",
     "scripts/tests/project-animation-completion-smoke.mjs": "c030294a59f50148069c78a56dcb5364afeea2dd1a23db094748897225ed7e97",
     "scripts/tests/project-animation-completions.test.mjs": "25e90f137de22201241470d314cd6b5206b565ec3e9e87f1163a00bc30748324",
-    "scripts/tests/project-animation-control-godot.test.mjs": "6c56d86b6aa6d01ca6016e890cf0e2afff81cc819085b7535554fd72ab51a07c",
+    "scripts/tests/project-animation-control-godot.test.mjs": "d0eeae92f6e3963f3f2b0d49b014635e442fc51ed9a7d1fbe322ca2d77754329",
     "scripts/tests/project-animation-control-workflow.test.mjs": "1440334dcd97d3c4e947d8f7ed1cb90744345bab6c3626deb1aff5fa63f11a96",
     "scripts/tests/project-animation-observation-build-ui.test.mjs": "f3a2d36a1da082b96b0caf3020ad54209eba1b3d2a46b753a6d6e58f638d1acf",
     "scripts/tests/project-animation-observation-ui.test.mjs": "9a9c585ecf41962b90495bb6674685dedcb0c515642d56d392015b6930e238ec",
     "scripts/tests/project-animation-preflight-smoke.mjs": "8547249bddc6fb0d4d3e2d3329d1f0704ae4a818f1a392df38b89fc229bfa982",
     "scripts/tests/project-animation-preflight-workflow.test.mjs": "fb4624a7ee6336ec25a487158dc49784eb021b4e73a441bc938c2dc7ec3f75e4",
     "scripts/tests/project-animation-preflight.test.mjs": "1b65858d62587031cb1ae03deb5f02e3f80129cec61f0bfe01d788805188bf22",
+    "scripts/tests/project-animation-requests-backends.test.mjs": "c64798638ccb4908c310d0d2aa21b361fa17f259aa452d85b607230ff1a33473",
+    "scripts/tests/project-animation-requests-godot.test.mjs": "11bbe4bf739b0b40413b13a24111c1225931e8d899f7a7f669a91ac0574f68e8",
+    "scripts/tests/project-animation-requests-host.test.mjs": "5365e7fae8b66b6a200b40b7d1d8cb283fe6c1ffc5393e2f54f26e7d862af1be",
+    "scripts/tests/project-animation-requests.test.mjs": "0fa731adf6695aa90cd4b68a993ccc35b9fa31a592380d6fdd0fb5a104bec79d",
     "scripts/tests/project-animation-runtime.test.mjs": "502c8f1717643975218ad1a890e48396be06ff521dcb579e6e16dac7b06c1175",
     "scripts/tests/project-animation-state-build.test.mjs": "1fff707a07f4f1b6bf6496c5fbc640bfb378590587e256dadb9b5e5956618eac",
     "scripts/tests/project-animation-state-entries-smoke.mjs": "ce5154c1881b3b01887391be515e3353c7a8915061f0de402dd59e068518768a",
@@ -87297,9 +89403,9 @@
     "scripts/tests/project-animation-state-entry-godot.test.mjs": "23879abc6b3f12a6ffb8330d6341753cccb854f541df804624cc3f0fb4240649",
     "scripts/tests/project-animation-state-entry-inventory.test.mjs": "d858905a654a93f6e32e4f4316c11c32d2e53fc6fbc7a40ff1d1b6b52e688fd9",
     "scripts/tests/project-animation-state-entry-observation-ui.test.mjs": "9042788de6a6308df68cbd434f5ee1f23f5a5d1a018944d4811c203c888ef2ee",
-    "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs": "8ec176ec4eb89052362c55f6afe51f77f6c4c465fe6213c92fa70b6549c3d3d6",
+    "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs": "54cefde15a0d46d9e3631055d2b8d57ec0329de97fc42c1c2c00561800e04d43",
     "scripts/tests/project-animation-state-entry-triggers.test.mjs": "e51415f28b5093607e72b4d1ce052209cff7e82310af5f9e028e5b1183f379fe",
-    "scripts/tests/project-animation-state-godot.test.mjs": "a1e851a7a8eeb7405a776dc9fa795349f030578c79241d0f5f557611aef3e795",
+    "scripts/tests/project-animation-state-godot.test.mjs": "f870b5db59b76e9913233c58efbddf5c9a54a65e89f445693a90cf35ad181085",
     "scripts/tests/project-animation-state-observation-ui.test.mjs": "af398ba673c2c0e97abe368ec9de7255b05d6898df040e8d247c10a38f135ff9",
     "scripts/tests/project-animation-state-review-smoke.mjs": "d9c91661ae9f1404e5781a2fdd706009d3bee7ac25ba1b7fabc243775546ec40",
     "scripts/tests/project-animation-state-review-ui.test.mjs": "c71b0715c6b82d821fb2b3a20f8f6dd51850a1859ebf49f32b12cfaeaa714611",
@@ -87307,28 +89413,32 @@
     "scripts/tests/project-animation-state-snapshot-smoke.mjs": "c2caed0a50b61c54919ddf65921baafd76cb62c0cd19a7149ae80444a02c9d1a",
     "scripts/tests/project-animation-states.test.mjs": "8643963af3be5dbf8717b033c5b1ac709b699d37dc8a30d459a0eb4b84f5ae93",
     "scripts/tests/project-animation-target-backend.test.mjs": "75e499ae551904f6b47427920153a15aa6950745b1a8d2c0a8dc279cdd8289da",
-    "scripts/tests/project-animation-target-delivery.test.mjs": "5e8a43356a6df8c34e1dbfc5649477fea95ebe59e123c796aab54d5ba4ede3fe",
+    "scripts/tests/project-animation-target-delivery.test.mjs": "942e2d0a93a20728fd21c8d396f80718a27763145e69bdbd76d1e0c40dbf5b01",
     "scripts/tests/project-animation-target-godot.test.mjs": "a5829ac0abe2a21abddf3bf9fb495f0954d879ffc55d5b32fe501210dfaaaef4",
     "scripts/tests/project-animation-target-inventory.test.mjs": "18b8249dc8c5ff96a45c6d15e70ccf32e10b193f2be6eba23570874315dec603",
     "scripts/tests/project-animation-target-review-smoke.mjs": "62727e5df32ecc26733cbe5db3865fc20aa1c5981a0538f4ddda3c6d026520e1",
     "scripts/tests/project-animation-target-review-ui.test.mjs": "247c8d25462fc52dccbef8fa99bab400487a18cec72b0b65c4b275149e230471",
     "scripts/tests/project-animation-target-review.test.mjs": "53c63c947cbbd4067851511fd56b73b6f0c4a77837f32fc3795c224e1d584f8c",
     "scripts/tests/project-animation-target-runtime.test.mjs": "54edfff7b8e34963b9754eacd444a4a343f2bf2365fd6e18759afc3c601e0938",
-    "scripts/tests/project-assembly-backend-project.test.mjs": "71ad8cf5eb28bd97e1310ceb91922e133b311a1725e62f95fe348526cdbeb4cf",
+    "scripts/tests/project-assembly-backend-project.test.mjs": "6be52b8d1f0fa7ea04174d4d02f11697bc68365d73b30b328766b3330f877e80",
     "scripts/tests/project-assembly-build-ui.test.mjs": "9ee7c0ed008e8b9e80d95cf7f646afafaa6acce55790342408d57fda993b23d5",
     "scripts/tests/project-assembly-documents.test.mjs": "a3a779799616009d5838268fd42e0183dcf7512d3067af66c0b539078bc61b9d",
     "scripts/tests/project-assembly-packages.test.mjs": "2de4f96a0f3cb3b7e02ce0f98971ec2928117c93fda35e1e3f5337843aa5f631",
-    "scripts/tests/project-assembly-smoke.mjs": "297340da01f2f6311b6412407383f42c67a0201019e610ba9e9621081e8f891e",
+    "scripts/tests/project-assembly-smoke.mjs": "a4ece1addd1598baf0650a80039eaffe3f34fa38ff589f478b5c222aabc79d80",
     "scripts/tests/project-assembly-snapshot.test.mjs": "32fee38c7828ae2d8b5d234eb033c0c9b9d23f3602498527626c005c078b82e5",
     "scripts/tests/project-assembly-ui.test.mjs": "4a46f52b171b8dc454b0b1107ad1ec4bb56ffdb662ae336ef6fc9ec3b30aa2b3",
     "scripts/tests/project-assembly-workflow.test.mjs": "24a9ded4c6967199be549533ffc53e0b69667567a9c4f15c52c24ed3ed72058c",
     "scripts/tests/project-assembly.test.mjs": "9cb8c9f2a538a7f6e708d1a7e7feb8568aa6d1927292385f740a13e0051dafcf",
     "scripts/tests/project-audio-commands.test.mjs": "095f94c84895c2c1d43b5bc2f2d05a57d4ab859ea781c6907d1771e67af36dec",
     "scripts/tests/project-audio-control-godot.test.mjs": "b1540a75c6a74fb2b85c44610f3a63ecad3c84410430646eafa785e92b68db72",
-    "scripts/tests/project-audio-control-smoke.mjs": "f3fe89962d4f74a80c299f86e6fbc322ec1e9a70b21a83f36e744b91d38cc35b",
+    "scripts/tests/project-audio-control-smoke.mjs": "2075f9f4a7f2ffe180d8263c1dd6a61c848009d9e6fa1348b80561955ed12644",
     "scripts/tests/project-audio-control-workflow.test.mjs": "5e7d288393e4a51d470c6b840494b75a05f13135bc4ce4f1af0a58a4446ed03b",
     "scripts/tests/project-audio-observation-build-ui.test.mjs": "a5de43c18d9754be6f7dd3227f28890794a1ffa6e01b78945432e82511712f1c",
     "scripts/tests/project-audio-observation-ui.test.mjs": "d1009f66d655dd8305c880f42e9aa51041744ed49e9acff355112683e7ac3253",
+    "scripts/tests/project-audio-requests-backends.test.mjs": "5ef1c06637c6674ef2870ce7059236dd748f206eeaf60e13bc66cd29fedabe26",
+    "scripts/tests/project-audio-requests-godot.test.mjs": "965e9aaedf93454264fc81e84bd7aee90aba7a4a6f881618326b0a3dfa2e6ca0",
+    "scripts/tests/project-audio-requests-host.test.mjs": "0c48d196d2e34ce7ddced36ea78fe22dfe00e32303c857f1873fa7f32fec48b8",
+    "scripts/tests/project-audio-requests.test.mjs": "f6679ce4e7ddb0db45cfd1579e46957e1bfe826296f4a8fce01cb3b95b67b18a",
     "scripts/tests/project-audio-runtime.test.mjs": "2e46bef12c8b1328a9e862f89f3e56491f3c80ae1b3a93e9eebc9130f5417e89",
     "scripts/tests/project-build-http.test.mjs": "c6e36c22e21de91ff66e79cbe55db1bc6f1701ea3141a7460e7929f74208a539",
     "scripts/tests/project-build-retention-smoke.mjs": "97fa57f67595c69bfd33b98532852803f504ef35673c21646948c8e28df654ff",
@@ -87339,6 +89449,9 @@
     "scripts/tests/project-build-tabs.test.mjs": "534306ec70a609d794edc0c435830dbc58e12f83301a8e7a4138910e00a2c32c",
     "scripts/tests/project-build-ui.test.mjs": "0ac492b7cf934bd1e32e1ba989a474197272c24e80b05e091cfc80be2c50ee57",
     "scripts/tests/project-build.test.mjs": "c16532c78f2f7e2a81e48e671859357b3f76a489a9c3fc9d14deb60f3e3555e9",
+    "scripts/tests/project-causal-anchors-godot.test.mjs": "81301589a3885f92559543347d9805e060217ad0db74256c91a2cef9821d222f",
+    "scripts/tests/project-causal-anchors-host.test.mjs": "cbf0f90a0372b6f44b6959a55a8b04bb9ce5b4c0de95e01ce0513efbccd0575b",
+    "scripts/tests/project-causal-anchors.test.mjs": "55ba770c98bfecab21303831f2f0126c78ef901f27b5d87e235abba16140038f",
     "scripts/tests/project-definition.test.mjs": "46ff91af400a9b78c20ec7d4fed122faa7037bd292850abeb3b29dcd12376f0f",
     "scripts/tests/project-event-animation-authoring-smoke.mjs": "752265029b2561d1b9f03ce6235f422ab0ed4e5cbcf97d4dab9a6c92cc2f5d23",
     "scripts/tests/project-event-animation-authoring-workflow.test.mjs": "5cd067ad29a4f2caebea81173871e5cc9583ae7be25ab4ce12c4b6822d01a9a0",
@@ -87346,19 +89459,34 @@
     "scripts/tests/project-event-bus.test.mjs": "0727270fb3bcded6ee964096f09115c950bf66898cd6e2469e4a1c6a56c6145e",
     "scripts/tests/project-event-observation-build-ui.test.mjs": "a21f82300a7fe7bd91d2efcfad04ffe1792244afb2e51029b04959692e417b7c",
     "scripts/tests/project-event-observation-ui.test.mjs": "5a8ffc6d65f8447d5885df8b0b75a6382fd156d4146a9780510020f804074231",
+    "scripts/tests/project-event-positions-build-ui.test.mjs": "8d57863a1003bd3dac3eedea816d69e306fcf67a3f6e6e66cf925de1787167b8",
+    "scripts/tests/project-event-positions-godot.test.mjs": "2cc7cd82372a7a9ab3f9dcbf2d4569355af05d8f0fdc4101d8253e7158badb0c",
+    "scripts/tests/project-event-positions-host.test.mjs": "7a05fd99d860e515ffe41f83226f6605a50351c4eebe7726561205df94b310ae",
+    "scripts/tests/project-event-positions-observation-ui.test.mjs": "8a66f46aae35f84865cbd87fbe1df7abb71770664b0175bcd3b4f7c963cbd6a3",
+    "scripts/tests/project-event-positions-query.test.mjs": "9997b71810abdae473d11436947a4dbb7d3d5231ee2218f8da6023bb83145b55",
+    "scripts/tests/project-event-positions.test.mjs": "1b6073effba6915208c2f8fdb309c1be9111102b57bdd2674665ad5d16609822",
     "scripts/tests/project-event-review-smoke.mjs": "1c8ea5bc17f5bb97f34bff445752254c60db41e2be6933f586b142290c4d89d8",
     "scripts/tests/project-event-review-ui.test.mjs": "4442f6651b80eb5177dd5a27c3d6ff0aa8db2b34674f2f153964314065b1f5d3",
     "scripts/tests/project-event-review.test.mjs": "54746ab3392187f162f5fd5c4728a34babb67a15c5c97264e382db1a4e028ab9",
     "scripts/tests/project-events-godot.test.mjs": "1c187b4952bbd0a3d03a91741281a04d0b91f5a02bb4c315dabb5d502ed437c9",
     "scripts/tests/project-events-runtime.test.mjs": "298b4fae457d96b5789591ae3ce4bc9f313f66ac9e03d829232f67916521f06e",
-    "scripts/tests/project-events-smoke.mjs": "ad811d8c7319f87ce1c5adca74609fb097ce125e4ecf456caa3413565589db29",
+    "scripts/tests/project-events-smoke.mjs": "f69823a181a7c26d28e34167ef7280d03aefd89f39505ced2667801c279e444f",
     "scripts/tests/project-events-workflow.test.mjs": "d13669105f9e05bda8068dc46392f771e732591610b0d2c44a1826afd0eda05c",
-    "scripts/tests/project-execution-budget-backends.test.mjs": "05d2a7477d98f0a34b73e46ca9e75c5b8fa289e58b526f6f4e93a3d4773a0d46",
+    "scripts/tests/project-execution-budget-backends.test.mjs": "81212b14cab2240b4cf1ae2882d326050267f0f6cfdd61e50ae8708520fe8a41",
     "scripts/tests/project-execution-budget-godot.test.mjs": "3fe7fd157908b777939a8f1087c2604c8e9e539f3ac1483e203044ad6cf7d00d",
     "scripts/tests/project-execution-budget.test.mjs": "6e554fe0f6bdabd53a542fe7af69ef3d22ab42fd4e2ab975877d8d671156c0f5",
+    "scripts/tests/project-execution-clock-backends.test.mjs": "e46f82fb5923b8fe50cc0e36cfdc3eb63fee89d57aa289cf34c97f7f65b61613",
+    "scripts/tests/project-execution-clock-godot.test.mjs": "8148515fd598728d69eb57eedb490514882295b1dde0c76ba1513d2c6361b828",
+    "scripts/tests/project-execution-clock-host.test.mjs": "18f5ae99ce5b4598a20eadefb10b444ab365da989069652eac1177decd4cdaa3",
+    "scripts/tests/project-execution-clock-lifecycle-godot.test.mjs": "5675892d0f2aafb196111db9a6a47abc3282c16a40c655992b33eb55f5a9bde0",
+    "scripts/tests/project-execution-clock.test.mjs": "36d5de26d8ff16a2b9a33032ac638ee5ef1c5f3fd7abc8b4a019482431f7df0a",
+    "scripts/tests/project-execution-frames-backends.test.mjs": "56c224bef21b6ab82154129dcdca6e03571003e726daaef7f276305f6dcdcc70",
+    "scripts/tests/project-execution-frames-godot.test.mjs": "7aa99437685f6cb57a7170aa0b4f6d204b12cbdc93b73395570aa9d2692d16d0",
+    "scripts/tests/project-execution-frames-host.test.mjs": "921b87977a306e4b1400332d48b79daed53e1d9ee7cd82d8b8713d603fc40045",
+    "scripts/tests/project-execution-frames.test.mjs": "52adbe5f03fef27004b0838d7bd48fbdeb6c126706ef694e4e2dec6202687658",
     "scripts/tests/project-physics-observation-build-ui.test.mjs": "f41ad2b76cbef5b0846067cb72a48e52a4a5262d77771c273fc857b484ff10b9",
     "scripts/tests/project-physics-observation-ui.test.mjs": "e9651327a561524d12800a8d6f893dbec852c2083d2e2d306a235690035512b9",
-    "scripts/tests/project-physics2d-host.test.mjs": "efb495ace77f5595d413adaecaa060d415e4d4dbb4311568536f6f90c810df84",
+    "scripts/tests/project-physics2d-host.test.mjs": "9d12b39c6cd3562dae5e6072078249ca1c7b178df9edf9a705b2c025d2d2d3a1",
     "scripts/tests/project-physics2d-trace.test.mjs": "6a61f9aa960946dfb78b33474720de1d86ec7ea67de9001eaebaaacffbe28878",
     "scripts/tests/project-problems-smoke.mjs": "c2c427b2047de9be1f8c3c1ae3021262b2e2e4fb125d3dcdb38cf8c9cf6824a6",
     "scripts/tests/project-problems-ui.test.mjs": "7fe61637410506de0f85055021d49f4496ed9ee3024aee74a1fa72eb6049d9e3",
@@ -87368,13 +89496,13 @@
     "scripts/tests/project-runtime-query.test.mjs": "30aa91a9146b6f0d831c5ffe143902808cbfa27844ca80974a2b290c29fed7e3",
     "scripts/tests/project-runtime-retention-host.test.mjs": "ba48b0dc2a7a88f0b928be9f43c246de94442456ab5db6185c815bd7e7c26bf2",
     "scripts/tests/project-runtime-retention.test.mjs": "1e9cf94cb6c0607b0e6c591be2d0bae7d5b6a470600b17c16872336c809eebf6",
-    "scripts/tests/project-scene-switching-godot.test.mjs": "c32f90ba3453b646ee0cff1240e5d4a004143bca6d5242107a52ac531f6e69d4",
-    "scripts/tests/project-scene-switching-smoke.mjs": "7a9811bbb30604d75c077f9ffc7de930b4f5b0ec9748054c1993e957af8f82b0",
+    "scripts/tests/project-scene-switching-godot.test.mjs": "9401176d71de9c513dabe9e62273768f76dfb0ecc496ddf40a7f8c89b8b45227",
+    "scripts/tests/project-scene-switching-smoke.mjs": "46464c7367dbbf529fd5d0d0c3293f6a3d5719b6f097f245eb50421b446337ee",
     "scripts/tests/project-scene-switching-ui.test.mjs": "fbb6650bfaa0dc67cd548844a2852e1cb523e9e3d3fccf5b0e3f97a0287b6207",
     "scripts/tests/project-scene-switching-workflow.test.mjs": "3d34d95ed902f928329c1e7c4965efd7d28500b639f72a140972d13ef3c0fd03",
     "scripts/tests/project-shared-state-godot.test.mjs": "f289cc1b30770f75f40ca937f9ca0351140187716e6462932b8584e2ec2b5510",
     "scripts/tests/project-shared-state-runtime.test.mjs": "1fef2ce4e9dd680b2f359dc86a800ca165e2199391a7aafee88dacf93e884fb8",
-    "scripts/tests/project-shared-state-smoke.mjs": "01e4402710e0b54e46748bfd7325d1e3fd32c2206e224885ccfc73099ad5b503",
+    "scripts/tests/project-shared-state-smoke.mjs": "fa07651a043f5c9efcc8e4928db03b340757d7e7b2d9af080174f19ec3fd6619",
     "scripts/tests/project-shared-state-workflow.test.mjs": "a48825f458b2ab584733da5abbc0d03c5220d52d1747797429d756c5f0987897",
     "scripts/tests/project-shared-state.test.mjs": "3dccd9ab2bea671d95e1d8ccbcbfdc25412ffb8e187d27d21c3fc1409dbc7ae4",
     "scripts/tests/project-snapshot.test.mjs": "442fd8529e7f09011fee3ccf18df1c909206f3d677fcde0f0b8c38e052868da8",
@@ -87405,7 +89533,7 @@
     "scripts/tests/runtime-case-suite.test.mjs": "7f17f8c6141c7e6dcd111afcfb86643001813c9168230f98c68b59fbc443b8fc",
     "scripts/tests/runtime-case-ui.test.mjs": "7b39d8f9e08897c66733a6cb587bee17421a7a2f365d94eed9970bbd8a1dbfec",
     "scripts/tests/runtime-control-backends.test.mjs": "96e2ac9faea8cb853917059f4a489fd76117e801def51cb7511de5a7044b3127",
-    "scripts/tests/runtime-instance-backends.test.mjs": "255af0f6fa0ef30da6be6fb0c701b079688ff36a05c4f8b530233435964b1402",
+    "scripts/tests/runtime-instance-backends.test.mjs": "190a4ab9e5ab98333d89a93b0cc03bfc6da4136524f8b71725c9e42e081019fe",
     "scripts/tests/runtime-object-smoke.mjs": "97d8fb99231301db6af075723d41993d1ccde031b7fef274c21c866bb9bc48f4",
     "scripts/tests/runtime-verification-case.test.mjs": "86cffeef603268663912f63739ce2529447738c719d6d8a4816939532cac74a6",
     "scripts/tests/scene-animation-clips-core.test.mjs": "a78752d781e97f3485910fe09148f04264f08633c82fcd61bafbb8e008bf8644",
@@ -87422,7 +89550,7 @@
     "scripts/tests/scene-animation-directory.test.mjs": "c0ca6b118e767ec2f199c424e9197ebd69fd035a7969cf16e09ce8b12b0b792c",
     "scripts/tests/scene-animation-edit.test.mjs": "551a794e344a233bf7fba21a5fddf34d11d43a2c281dadd04e0fc93548c0044c",
     "scripts/tests/scene-animation-editor-ui.test.mjs": "8e3149c2596c15ffb484bfc77db38932960213c37a8e9959520e2cbd2c6217d6",
-    "scripts/tests/scene-animation-godot.test.mjs": "04a28852b9586bb1f302611340d3d7404aec9e2352eb08494cbcd246a536f2f8",
+    "scripts/tests/scene-animation-godot.test.mjs": "6dc06e5ff355244e87863a857096a1984c2c8251fb041863c9789152e84df949",
     "scripts/tests/scene-animation-instance-playback.test.mjs": "bb7761b46265e4d69b4448de934c85f57d8d07e02791331d8534afa94b17e47c",
     "scripts/tests/scene-animation-instance-preview-smoke.mjs": "106a9c65eecfc67e12a8913b3bafe18e2f8dbee3195960ca3f019f6294e82c88",
     "scripts/tests/scene-animation-instance-visual-frame.test.mjs": "b66841b48529e4c8cbd84286752c9390b49ae3293a876f7dc0c760fbe95ac38a",
@@ -87536,7 +89664,7 @@
     "scripts/tests/scene-behavior-packages.test.mjs": "ac1603141a64e6d1f8ce4ffbae977523c9dfbbee58b8bf8336d94972a9cc7147",
     "scripts/tests/scene-behavior-parameter-contract-service.test.mjs": "5612cb96fb52c7095c4f70bf71a99964a680c5987ed6a2b80d5590d32b61ae4c",
     "scripts/tests/scene-behavior-parameter-host.test.mjs": "bf1c7e03e77f3dec842bf6f69681adc9f2be7a82083bfdcf03a95dc9e0600e81",
-    "scripts/tests/scene-behavior-parameter-workflow.test.mjs": "d080e3cf0fbf13b4aaa91ee2190e01dec3cf43dda19a14e0309f1a2a110cf4fe",
+    "scripts/tests/scene-behavior-parameter-workflow.test.mjs": "244df3403203ea69e4bb20a39c4cf63850b60aead597a0de9257e598c6b092b5",
     "scripts/tests/scene-behavior-parameters-smoke.mjs": "a0309584700cce7ce3ad5f3e8ac650dbc2d31d43f79fd203355bc2b4481827c4",
     "scripts/tests/scene-behavior-parameters-ui.test.mjs": "6364b7a77d729e8c3b2606d0bbabd3728635cf041161523da2a9856e3a0b3914",
     "scripts/tests/scene-behavior-smoke.mjs": "b55d43740e202de9510b2c89fedad151849e4e50ed40981be4bbceca9342d30c",
@@ -87955,10 +90083,10 @@
     "web/animation-state-trial-case-editor.css": "6b69cae01ab42a233b7ef00efb3848c7da1c7b83693ceb83d9f923f5713c7259",
     "web/animation-state-trial-case.css": "b945e97e563ba61dca5b626f2ce51710df9024dbc94330d90c4768bc9269e4f5",
     "web/editor-layout.css": "2849fe419c6652474f4e49d77c382be1bba8d07f7b85649896b04af0116da8ef",
-    "web/i18n/en.js": "66c1e43aed466610831316a42b72e7fe289e5ec1408a3a92e6f7f96e8fe5c6e5",
+    "web/i18n/en.js": "068109fcfa2c5fc30c99e9b08dcfd6b31ec5f3274ccf1a6b55424e39b30d9c6b",
     "web/i18n/index.js": "74c86ed56017e915280972d1bceb0e06574b9dadaad73e92b4bb09a3c7017567",
-    "web/i18n/ja.js": "e9db685d4a2adf61b2cdd0664d64a93a58da2610889d4ebc460cf799bdb7ab59",
-    "web/index.html": "25b7cda3601973d09bcdc3f39a3084fa84e1edf338e58533465dedcac7f616b4",
+    "web/i18n/ja.js": "5c9f920b7986a02eccd19c36822e7e87eb2b2be66d692d6e6256430741021808",
+    "web/index.html": "6ddf1ec663a379f929128a1736f08364455cd28ce3a666fe1fa37b1421980522",
     "web/modules/app-animation-state-condition-group.js": "0c1b02f720757ed756c2efc2e27ca04346760400dbafc8a5c9768f4ba1a592d5",
     "web/modules/app-animation-state-condition.js": "62ca96e0221d6eb0a5b72eac21bacdf888c55a3851c0d4de85ef4bb376067c1a",
     "web/modules/app-animation-state-event-preview.js": "b178da0734dcf8f8af086b57f25db41003e9f68e715069c6a2c7c65aa28e5cea",
@@ -87988,8 +90116,9 @@
     "web/modules/app-project-animation-target-review.js": "7dea0d3f58daa91486f46b56f57681cb10ddb4f2acfd9cf9a7e9eb2c4ad3bfb1",
     "web/modules/app-project-assembly.js": "ffc980e29cafc6d94307404351bc52abf7d690f30e0e3e9b727dc1f255d4e326",
     "web/modules/app-project-audio-observation.js": "ba572fc0e6c868abc0db9432662d3b75f65531f04f4f08e4c4094e29ac42929f",
-    "web/modules/app-project-build.js": "7726655bc72a1f652330b1c013a25b99e1cd66f87e2a765c18e4d3bf4c36b399",
+    "web/modules/app-project-build.js": "f7692092777f6d094094220c573f6f7fa236128d49b413f327ba1b65029911a3",
     "web/modules/app-project-event-observation.js": "f07747d7fd58e7573f6b4c6ba3bf4e4d3ac077717c193bc4b17411e5f5a6582e",
+    "web/modules/app-project-event-positions-observation.js": "598e7a04cd6357f872b24078d42abbd81037b025bf0924dbd9f8d179ad3f9856",
     "web/modules/app-project-event-review.js": "9558ea75da21182a51c25add0595a959fc6bdfa8a509d532260cd0774da379a9",
     "web/modules/app-project-physics-observation.js": "10d86d3ab703eb81924d2065e5898c32b264fd40f67ff0b5f25f9d2edc3b8f33",
     "web/modules/app-project-problems.js": "31e7510d42480bb047a488465a06326e9abb7dd85a1d005915b029ff4fa723d3",

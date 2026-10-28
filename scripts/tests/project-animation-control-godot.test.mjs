@@ -173,13 +173,14 @@ test('animation project ZIP includes its controller and runs after author and bu
     const file = path.join(moved, entry.fileName); await fs.mkdir(path.dirname(file), { recursive: true }); await fs.writeFile(file, Buffer.concat(chunks));
   } } finally { await new Promise(resolve => { archive.reader.once('close', resolve); archive.close(); }); }
   assert.ok(inventory.includes('project/project-control-runtime.gd')); assert.ok(inventory.includes('project/project-animation.gd'));
+  const runtimeBackend = JSON.parse(await fs.readFile(path.join(f.output, 'build.json'))).backend;
   const snapshot = JSON.parse(await fs.readFile(path.join(f.output, 'snapshot.json')));
   await fs.rm(f.author, { recursive: true }); await fs.rm(f.output, { recursive: true });
   const identified = await adapter.identify(tool), directory = path.join(moved, 'project');
   for (const phase of [...adapter.buildPhases, 'run']) {
     const result = await adapter.executePhase({ phase, directory, tool: identified, timeoutMs: 60000 });
     assert.equal(result.status, 'succeeded', result.stdout + result.stderr); assert.deepEqual(adapter.diagnostics(result, snapshot.plan), [], result.stdout + result.stderr);
-    if (phase === 'run') { const reader = adapter.createEventReader(snapshot.plan); reader.push(result.stdout); assert.deepEqual(reader.finish().diagnostics, [], result.stdout + result.stderr); assert.equal(reader.events.filter(row => row.event === 'animation-command').length, 2); }
+    if (phase === 'run') { const reader = adapter.createEventReader(snapshot.plan, { capabilities: runtimeBackend.capabilities }); reader.push(result.stdout); assert.deepEqual(reader.finish().diagnostics, [], result.stdout + result.stderr); assert.equal(reader.events.filter(row => row.event === 'animation-command').length, 2); }
   }
 });
 

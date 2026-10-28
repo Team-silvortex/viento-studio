@@ -1,0 +1,34 @@
+✔ native ready, deferred and process admissions follow actual host frame pairs (10616.250846ms)
+✔ native physics callbacks advance windows using real physics frame stamps (10555.371116ms)
+✔ native forty windows retain the latest thirty-two without losing cumulative state or author origins (10862.34217ms)
+✖ native recursive publication cannot use clock observations to evade the shared session limit (10886.905541ms)
+✔ native flushes, scene switches and deferred calls preserve the budget and same-frame clock identity (10640.870538ms)
+✔ native mixed event callbacks report the same seven dimensions as the shared budget (12637.835371ms)
+✔ native cancellation saves the last accepted clock summary as incomplete (10769.789907ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 6
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77100.025423
+
+✖ failing tests:
+
+test at scripts/tests/project-execution-clock-godot.test.mjs:236:1
+✖ native recursive publication cannot use clock observations to evade the shared session limit (10886.905541ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-execution-clock-godot.test.mjs:245:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

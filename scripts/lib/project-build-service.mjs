@@ -383,6 +383,12 @@ export function createProjectBuildService(root, {
     // ring, including frames observed while cancellation terminates the tool.
     if (event.runtime) job.runtime = clone(event.runtime);
     if (event.physics && job.kind === 'run') job.physics = clone(event.physics);
+    if (event.executionClock && job.kind === 'run') job.executionClock = clone(event.executionClock);
+    if (event.executionFrames && job.kind === 'run') job.executionFrames = clone(event.executionFrames);
+    if (event.eventPositions && job.kind === 'run') job.eventPositions = clone(event.eventPositions);
+    if (event.audioRequests && job.kind === 'run') job.audioRequests = clone(event.audioRequests);
+    if (event.animationRequests && job.kind === 'run') job.animationRequests = clone(event.animationRequests);
+    if (event.causalAnchors && job.kind === 'run') job.causalAnchors = clone(event.causalAnchors);
     if (event.verification && job.verification) job.verification = clone(event.verification);
     if (event.controlSample && job.control && job.control.samples.length < job.control.program.steps.length) {
       job.control.samples.push(clone(event.controlSample));
@@ -456,6 +462,12 @@ export function createProjectBuildService(root, {
           ...(payload.runtimeCaseSceneId ? { runtimeCaseSceneId: payload.runtimeCaseSceneId } : {}), onProgress: ownedProgress });
         if (result.record?.runtime) job.runtime = clone(result.record.runtime);
         if (result.record?.physics) job.physics = clone(result.record.physics);
+        if (result.record?.executionClock) job.executionClock = clone(result.record.executionClock);
+        if (result.record?.executionFrames) job.executionFrames = clone(result.record.executionFrames);
+        if (result.record?.eventPositions) job.eventPositions = clone(result.record.eventPositions);
+        if (result.record?.audioRequests) job.audioRequests = clone(result.record.audioRequests);
+        if (result.record?.animationRequests) job.animationRequests = clone(result.record.animationRequests);
+        if (result.record?.causalAnchors) job.causalAnchors = clone(result.record.causalAnchors);
         if (result.record?.control) job.control = clone(result.record.control);
         if (result.record?.verification) job.verification = clone(result.record.verification);
       }

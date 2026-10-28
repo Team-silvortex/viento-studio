@@ -1,0 +1,16 @@
+diff --git a/servers/audio/audio_server.cpp b/servers/audio/audio_server.cpp
+index b7730d7f28f7..3ae9c5da661d 100644
+--- a/servers/audio/audio_server.cpp
++++ b/servers/audio/audio_server.cpp
+@@ -1476,6 +1476,11 @@ void AudioServer::finish() {
+ 		AudioDriverManager::get_driver(i)->finish();
+ 	}
+ 
++	for (AudioStreamPlaybackListNode *playback : playback_list) {
++		_delete_stream_playback_list_node(playback);
++	}
++	_cleanup_lists();
++
+ 	for (int i = 0; i < buses.size(); i++) {
+ 		memdelete(buses[i]);
+ 	}

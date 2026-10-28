@@ -1,0 +1,5 @@
+extends Node
+func _ready() -> void:
+	var project = get_meta("viento_project")
+	for count in range(1, 6):
+		project.write_state("counter", count)

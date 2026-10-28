@@ -1,4 +1,4 @@
-import { godotExecutionBudgetAssemblyScripts } from '../backends/godot4-execution-budget.mjs';
+import { godotAudioRequestsAssemblyScripts } from '../backends/godot4-audio-requests.mjs';
 import '../adapters/node-studio-core.mjs';
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
@@ -59,11 +59,11 @@ async function stage(f){const directory=path.join(f.temporary,'generated');for(c
 test('only exact frozen state scripts select protocol10; manually edited scripts retain protocol7',async t=>{
   for(const modified of [false,true]){
     const f=await fixture(t,{modified}),inventory=JSON.parse(f.generated.files.get('assembly.json'));
-    assert.equal(f.generated.backend.protocolVersion,modified?7:10);assert.equal(f.generated.backend.version,'0.32.0');assert.equal(inventory.schemaVersion,modified?8:11);
+    assert.equal(f.generated.backend.protocolVersion,modified?7:10);assert.equal(f.generated.backend.version,f.captured.plan.scenes.some(scene => scene.audio?.document.tracks.length) ? '0.36.0' : '0.35.0');assert.equal(inventory.schemaVersion,modified?8:11);
     assert.equal(f.generated.files.has('project-animation-state-runtime.gd'),!modified);
     assert.equal(f.generated.files.get(`behaviors/${f.scriptId}.gd`).toString(),f.content);
     if(!modified){const limited={...adapter,descriptor:{...adapter.descriptor,capabilities:adapter.descriptor.capabilities.filter(capability=>capability!=='project.animation-state-snapshots')}};assert.throws(()=>validateGeneratedExecutionProject(limited,f.captured.plan,f.generated));const expected=createProjectAnimationStateCatalog(f.captured.plan);assert.deepEqual(inventory.scenes[0].animationStateControllers,expected.scenes[0].controllers.map(({bindingId,instanceId,objectId,scriptObjectId,states,clips})=>({bindingId,instanceId,objectId,scriptObjectId,states,clips})));assert.deepEqual(inventory.scenes[1].animationStateControllers,[]);}
-    const directory=await stage(f);assert.deepEqual((await godotExecutionBudgetAssemblyScripts(directory)).sort(),[...f.generated.files.keys()].filter(file=>file.endsWith('.gd')).sort());
+    const directory=await stage(f);assert.deepEqual((await godotAudioRequestsAssemblyScripts(directory)).sort(),[...f.generated.files.keys()].filter(file=>file.endsWith('.gd')).sort());
     for(const protocolVersion of modified?[4,5,6,8,9,10]:[4,5,6,7,8,9])assert.throws(()=>validateGeneratedExecutionProject(adapter,f.captured.plan,{...f.generated,backend:{...f.generated.backend,protocolVersion}}));
   }
 });
@@ -135,7 +135,7 @@ test('real BOM/CRLF state controller and snapshot layer survive ZIP delivery aft
   try{for await(const entry of archive.eachEntry()){const chunks=[];for await(const chunk of await archive.openReadStreamPromise(entry))chunks.push(chunk);const file=path.join(moved,entry.fileName);await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,Buffer.concat(chunks));}}finally{await new Promise(resolve=>{archive.reader.once('close',resolve);archive.close();});}
   const snapshot=JSON.parse(await fs.readFile(path.join(f.output,'snapshot.json')));await fs.rm(f.author,{recursive:true});await fs.rm(f.output,{recursive:true});
   const directory=path.join(moved,'project');assert.equal(await fs.readFile(path.join(directory,'behaviors',f.scriptId+'.gd'),'utf8'),f.content);assert.ok((await godotAssemblyScripts(directory)).includes('project-animation-state-runtime.gd'));
-  const identified=await adapter.identify(tool);for(const phase of [...adapter.buildPhases,'run']){const execution=await adapter.executePhase({phase,directory,tool:identified,smoke:false,timeoutMs:60000});assert.equal(execution.status,'succeeded',execution.stdout+execution.stderr);assert.deepEqual(adapter.diagnostics(execution,snapshot.plan),[],execution.stdout+execution.stderr);if(phase==='run'){const reader=adapter.createEventReader(snapshot.plan);reader.push(execution.stdout);assert.deepEqual(reader.finish().diagnostics,[],execution.stdout+execution.stderr);const trace=reader.events.filter(row=>row.event==='animation-state-snapshot');assert.equal(trace.length,1);assert.equal(trace[0].controllers[0].stateIndex,1);assert.equal(reader.events.at(-1).animationStateSequence,1);}}
+  const identified=await adapter.identify(tool);for(const phase of [...adapter.buildPhases,'run']){const execution=await adapter.executePhase({phase,directory,tool:identified,smoke:false,timeoutMs:60000});assert.equal(execution.status,'succeeded',execution.stdout+execution.stderr);assert.deepEqual(adapter.diagnostics(execution,snapshot.plan),[],execution.stdout+execution.stderr);if(phase==='run'){const reader=adapter.createEventReader(snapshot.plan, { capabilities: f.generated.backend.capabilities });reader.push(execution.stdout);assert.deepEqual(reader.finish().diagnostics,[],execution.stdout+execution.stderr);const trace=reader.events.filter(row=>row.event==='animation-state-snapshot');assert.equal(trace.length,1);assert.equal(trace[0].controllers[0].stateIndex,1);assert.equal(reader.events.at(-1).animationStateSequence,1);}}
 });
 
 test('real v2 conditional script returns to idle on completion before its terminal snapshot',real,async t=>{

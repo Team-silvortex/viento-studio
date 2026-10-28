@@ -1,4 +1,4 @@
-import { godotExecutionBudgetAssemblyScripts } from '../backends/godot4-execution-budget.mjs';
+import { godotAudioRequestsAssemblyScripts } from '../backends/godot4-audio-requests.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -38,7 +38,7 @@ test('one project inventories every scene and shares resource copies without rew
   assert.equal(f.generated.files.get(`behaviors/${source.objectId}.gd`).toString(), source.content);
   assert.equal(buildHash(f.generated.files.get(`behaviors/${source.objectId}.gd`)), source.sourceRevision.slice(7));
   assert.equal(f.generated.backend.protocolVersion, 4);
-  assert.deepEqual((await godotExecutionBudgetAssemblyScripts(f.directory)).sort(), [...f.generated.files.keys()].filter(name => name.endsWith('.gd')).sort());
+  assert.deepEqual((await godotAudioRequestsAssemblyScripts(f.directory)).sort(), [...f.generated.files.keys()].filter(name => name.endsWith('.gd')).sort());
   const changed = structuredClone(plan), script = changed.scenes[0].behaviors.sources[0];
   script.content += '\n# literal res://runtime.gd and res://scene.json must stay unchanged\n';
   script.sourceRevision = `sha256:${buildHash(script.content)}`;
@@ -68,7 +68,7 @@ for (const entry of ['behavior', 'audio']) test(`real Godot imports all members 
   }
   const result = await adapter.executePhase({ phase: 'run', directory: f.directory, tool, timeoutMs: 30000 });
   assert.equal(result.status, 'succeeded', result.stdout + result.stderr);
-  const reader = adapter.createEventReader(f.captured.plan); reader.push(result.stdout); const received = reader.finish();
+  const reader = adapter.createEventReader(f.captured.plan, { capabilities: f.generated.backend.capabilities }); reader.push(result.stdout); const received = reader.finish();
   assert.deepEqual(received.diagnostics, [], result.stdout + result.stderr);
   assert.equal(received.events.some(event => event.event === 'ready'), true); assert.equal(received.events.some(event => event.event === 'finished'), true);
   const ready = received.events.find(event => event.event === 'ready');

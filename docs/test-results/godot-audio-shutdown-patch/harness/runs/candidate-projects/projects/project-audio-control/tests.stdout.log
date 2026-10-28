@@ -1,0 +1,89 @@
+TAP version 13
+# Subtest: real ready and event requests reach declared scene audio before A→B→A and reset on a new run
+ok 1 - real ready and event requests reach declared scene audio before A→B→A and reset on a new run
+  ---
+  duration_ms: 14682.984885
+  type: 'test'
+  ...
+# Subtest: the unchanged built-in audio starter compiles with a declared track and safely guards a single scene
+ok 2 - the unchanged built-in audio starter compiles with a declared track and safely guards a single scene
+  ---
+  duration_ms: 19015.845458
+  type: 'test'
+  ...
+# Subtest: initial requested playback follows authored time-zero cues and retains later timeline order
+ok 3 - initial requested playback follows authored time-zero cues and retains later timeline order
+  ---
+  duration_ms: 11108.138864
+  type: 'test'
+  ...
+# Subtest: old visit audio ports cannot control an identically named track in the next scene
+ok 4 - old visit audio ports cannot control an identically named track in the next scene
+  ---
+  duration_ms: 11228.235711
+  type: 'test'
+  ...
+# Subtest: real boolean track is rejected at its owning binding without a playback receipt
+ok 5 - real boolean track is rejected at its owning binding without a playback receipt
+  ---
+  duration_ms: 11136.200275
+  type: 'test'
+  ...
+# Subtest: real unknown track is rejected at its owning binding without a playback receipt
+ok 6 - real unknown track is rejected at its owning binding without a playback receipt
+  ---
+  duration_ms: 11114.301337
+  type: 'test'
+  ...
+# Subtest: a scene without audio cannot access another project member audio declaration
+ok 7 - a scene without audio cannot access another project member audio declaration
+  ---
+  duration_ms: 10809.680836
+  type: 'test'
+  ...
+# Subtest: a failing event callback discards its accepted audio request without inventing playback
+ok 8 - a failing event callback discards its accepted audio request without inventing playback
+  ---
+  duration_ms: 11186.985682
+  type: 'test'
+  ...
+# Subtest: the 65th pending audio request fails before any queued player operation
+ok 9 - the 65th pending audio request fails before any queued player operation
+  ---
+  duration_ms: 11239.92
+  type: 'test'
+  ...
+# Subtest: the 257th session request is rejected while the previous 256 real operations remain attributable
+ok 10 - the 257th session request is rejected while the previous 256 real operations remain attributable
+  ---
+  duration_ms: 13090.922456
+  type: 'test'
+  ...
+# Subtest: native audio becoming unavailable between acceptance and execution has no success receipt
+ok 11 - native audio becoming unavailable between acceptance and execution has no success receipt
+  ---
+  duration_ms: 11287.646334
+  type: 'test'
+  ...
+# Subtest: window close drains callback playback before audio shutdown and project completion
+ok 12 - window close drains callback playback before audio shutdown and project completion
+  ---
+  duration_ms: 11165.420328
+  type: 'test'
+  ...
+# Subtest: behavior audio requests produce native PCM, loop across the WAV duration and stop to true silence
+ok 13 - behavior audio requests produce native PCM, loop across the WAV duration and stop to true silence
+  ---
+  duration_ms: 12929.014422
+  type: 'test'
+  ...
+# {"audiblePeak":0.0146488891914487,"loopPlayingAfterDuration":true,"stoppedPeak":0,"zeroGainPeak":0}
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 160122.526008

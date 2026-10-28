@@ -6,6 +6,7 @@ import { canonicalJson, createWorldProjection } from '../../engine/world-project
 import { createBuildTargetPlan, buildTargetIdentity, scenePlans } from '../../engine/build-target.mjs';
 import { createSceneRuntimeObservation } from '../../engine/scene-runtime-query.mjs';
 import { createProjectRuntimeObservation } from '../../engine/project-runtime-query.mjs';
+import { createProjectCausalAnchors } from '../../engine/project-causal-anchors.mjs';
 import { validateProjectPhysics2DObservation } from '../../engine/project-physics2d-trace.mjs';
 import { validateSceneControlProgram, validateSceneControlPlan, createSceneControlTraceReader } from '../../engine/scene-control-program.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
@@ -194,6 +195,15 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
   // Callback consumers receive detached DTOs and cannot alter admitted input,
   // events, samples or the session record while a process is running.
   const publish = event => onProgress(JSON.parse(JSON.stringify(event)));
+  const captureRuntime = () => {
+    const runtime = observation.snapshot();
+    const causalAnchors = plan.kind === 'project' ? createProjectCausalAnchors(runtime) : null;
+    // Commit both views before notifying consumers. Raw tails and clock windows
+    // never determine which semantic references remain necessary.
+    record.runtime = runtime;
+    if (causalAnchors) record.causalAnchors = causalAnchors;
+    return { runtime, ...(causalAnchors ? { causalAnchors } : {}) };
+  };
   try {
     if (runtimeCaseSceneId !== undefined && (inputRuntimeCase === undefined || typeof runtimeCaseSceneId !== 'string'
       || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(runtimeCaseSceneId))) {
@@ -235,8 +245,9 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     frozenSourceDocuments = snapshot.source.documents;
     assertBackendOperation(adapter, operation, plan);
     const generated = validateGeneratedExecutionProject(adapter, plan, await adapter.generate(plan));
-    if (generated.backend.protocolVersion !== build.backend.protocolVersion
-      || generated.backend.sha256 !== build.backend.sha256) throw buildError('runtime_adapter_changed', 'Backend code changed; rebuild this project before running.');
+    // Capabilities select protocol readers, so bind the entire declaration to
+    // regenerated metadata instead of trusting editable build-record fields.
+    if (canonicalJson(generated.backend) !== canonicalJson(build.backend)) throw buildError('runtime_adapter_changed', 'Backend code or declaration changed; rebuild this project before running.');
     const executionAdapter = await executionAdapterFingerprint(adapter);
     if (build.executionAdapter !== undefined ? canonicalJson(build.executionAdapter) !== canonicalJson(executionAdapter)
       : !adapter.acceptsLegacyBuildRecords) throw buildError('runtime_adapter_changed', 'Execution adapter changed; rebuild this project before running.');
@@ -276,8 +287,9 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       ...(controlProgram ? { control: { program: controlProgram, sha256: `sha256:${buildHash(canonicalJson(controlProgram))}`, samples: [] } } : {}),
       ...(runtimeCase ? { verification: { definition: runtimeCase, sha256: `sha256:${buildHash(canonicalJson(runtimeCase))}`,
         evaluation: evaluateRuntimeCase(plan, runtimeCase, [], { complete: false }) } } : {}) };
+    const initialRuntime = captureRuntime();
     await saveRecord(sessionDirectory, 'session.json', record);
-    publish({ runtime: observation.snapshot(), ...(record.verification ? { verification: record.verification } : {}) });
+    publish({ ...initialRuntime, ...(record.verification ? { verification: record.verification } : {}) });
     const project = path.join(sessionDirectory, 'project'); await fs.mkdir(project);
     for (const [relative, content] of bytes) {
       await fs.mkdir(path.dirname(path.join(project, relative)), { recursive: true });
@@ -290,21 +302,30 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       if (record.diagnostics.length) break;
     }
     if (!record.diagnostics.length) {
-      const physicsExpected = smoke === true && plan.kind === 'project' && build.backend.capabilities.includes('physics.observe2d');
+      const physicsExpected = smoke === true && plan.kind === 'project' && generated.backend.capabilities.includes('physics.observe2d');
       const runtime = runtimeReader = adapter.createEventReader(plan, { smoke, mode: operation, protocolVersion: build.backend.protocolVersion,
         // Interactive sessions keep a raw tail; finite verification retains its original complete record.
         ...(plan.kind === 'project' && !smoke ? { retainedEvents: 128 } : {}),
-        capabilities: build.backend.capabilities, onPhysicsSnapshot: snapshot => {
+        capabilities: generated.backend.capabilities, onEventPositionsSnapshot: snapshot => {
+          record.eventPositions = snapshot; publish({ eventPositions: snapshot });
+        }, onAudioRequestsSnapshot: snapshot => {
+          record.audioRequests = snapshot; publish({ audioRequests: snapshot });
+        }, onAnimationRequestsSnapshot: snapshot => {
+          record.animationRequests = snapshot; publish({ animationRequests: snapshot });
+        }, onExecutionFramesSnapshot: snapshot => {
+          record.executionFrames = snapshot; publish({ executionFrames: snapshot });
+        }, onExecutionClockSnapshot: snapshot => {
+          record.executionClock = snapshot; publish({ executionClock: snapshot });
+        }, onPhysicsSnapshot: snapshot => {
           if (!physicsExpected) return;
           const view = validateProjectPhysics2DObservation(snapshot);
           if (view.assemblyId !== plan.assembly.objectId) throw buildError('runtime_physics2d_trace_invalid', 'Physics observation belongs to a different frozen project.');
           record.physics = view; publish({ physics: view });
         }, onEvent: event => {
         if (observation.push(event)) {
-          record.runtime = observation.snapshot();
-          // A consumer may cancel in response to ready. Publish the corresponding
-          // detached view first so that cancellation cannot hide admitted state.
-          publish({ runtime: observation.snapshot() });
+          // A consumer may cancel in response to ready. Capture semantic
+          // anchors before publishing, so failure cannot hide admitted evidence.
+          publish(captureRuntime());
         }
         publish({ event, ...(event.event === 'ready' ? { phase: 'running' } : {}) });
       } });
@@ -365,8 +386,41 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     record.events = runtimeReader.events;
     if (runtimeReader.retention) record.eventRetention = { ...runtimeReader.retention };
     if (runtimeReader.lifecycle) record.lifecycle = { ...runtimeReader.lifecycle };
+    if (runtimeReader.executionClock || runtimeReader.executionFrames || runtimeReader.animationRequests || runtimeReader.audioRequests || runtimeReader.eventPositions) {
+      // Preserve the last admitted scheduling evidence even when cancellation
+      // interrupts the process before its terminal observation can arrive.
+      try { runtimeReader.finish(); }
+      catch (error) {
+        // Finalization can be the first notification after an early failure,
+        // or flush a trailing frame whose observer throws. Persistence must
+        // still complete with the last admitted window and a failed status.
+        record.status = signal?.aborted ? 'cancelled' : 'failed';
+        record.diagnostics.push(diagnostic(error, plan));
+      }
+      if (runtimeReader.executionClock) record.executionClock = runtimeReader.executionClock;
+      if (runtimeReader.executionFrames) record.executionFrames = runtimeReader.executionFrames;
+      if (runtimeReader.animationRequests) record.animationRequests = runtimeReader.animationRequests;
+      if (runtimeReader.audioRequests) record.audioRequests = runtimeReader.audioRequests;
+      if (runtimeReader.eventPositions) record.eventPositions = runtimeReader.eventPositions;
+      // A final unterminated envelope may have admitted a business frame.
+      record.events = runtimeReader.events;
+      if (runtimeReader.retention) record.eventRetention = { ...runtimeReader.retention };
+      if (runtimeReader.lifecycle) record.lifecycle = { ...runtimeReader.lifecycle };
+    }
   }
-  if (observation) record.runtime = observation.snapshot();
+  // The initial reader notification can fail before runtimeReader is assigned.
+  if (record.executionClock && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.executionClock = { ...record.executionClock, phase: 'incomplete' };
+  if (record.executionFrames && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.executionFrames = { ...record.executionFrames, phase: 'incomplete' };
+  if (record.eventPositions && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.eventPositions = { ...record.eventPositions, phase: 'incomplete' };
+  if (record.audioRequests && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.audioRequests = { ...record.audioRequests, phase: 'incomplete' };
+  if (record.animationRequests && ['failed', 'cancelled', 'timeout'].includes(record.status)) record.animationRequests = { ...record.animationRequests, phase: 'incomplete' };
+  if (observation) {
+    try { captureRuntime(); }
+    catch (error) {
+      record.status = signal?.aborted ? 'cancelled' : 'failed';
+      record.diagnostics.push(diagnostic(error, plan));
+    }
+  }
   if (runtimeCase && record.verification) {
     if (signal?.aborted && record.status === 'succeeded') {
       record.status = 'cancelled'; record.diagnostics.push(diagnostic(buildError('runtime_cancelled', 'Runtime cancelled.'), plan));

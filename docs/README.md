@@ -4,7 +4,7 @@
 
 [快速开始](GETTING_STARTED.md) · [完整工作流](PROJECT_WORKFLOW.md) · [当前状态](STATUS.md) · [开发路线](ROADMAP.md) · [历史索引](history/README.md)
 
-当前源码的[0.2.5 发布记录](RELEASE_0.2.5.md)与[发布检查](test-results/release-0.2.5/README.md)分别说明功能收录和升版验证。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
+当前源码的[0.2.6 发布记录](RELEASE_0.2.6.md)与[发布检查](test-results/release-0.2.6/README.md)分别说明功能收录和升版验证。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
 
 ## 第一次使用
 
@@ -28,7 +28,7 @@
 | 新建多演员配方、起始排布、九域编辑及生成独立运行场景 | [场景片段组合](SCENE_COMPOSITION.md) |
 | 多场景项目、启动入口、运行中切换与工程交付 | [项目组装](PROJECT_ASSEMBLY.md) |
 | 跨场景保留计数／标记，查看变更与行为来源 | [项目共享状态](PROJECT_SHARED_STATE.md) |
-| 行为间发布／订阅通知，查看处理顺序与双方来源 | [项目事件](PROJECT_EVENTS.md) |
+| 行为间发布／订阅通知，查看处理顺序、来源与精确回执位置 | [项目事件](PROJECT_EVENTS.md)、[事件位置观察](BACKEND_MIDDLEWARE.md#项目事件发布与投递位置) |
 | 行为播放／停止当前场景音轨、观察回执与来源 | [行为驱动场景声音](PROJECT_AUDIO_CONTROLS.md) |
 | 查看当前任务的问题、筛选诊断并返回原文修复 | [任务问题列表](PROJECT_BUILD.md#当前任务问题列表) |
 | 多实例挂载 GDScript／Rust、编辑参数／信号、选入音轨或动画片段编号及错误定位 | [场景行为绑定](SCENE_BEHAVIORS.md) |
@@ -68,6 +68,7 @@
 | 已实现的分层、模块职责、依赖方向与调用路径 | [系统架构](ARCHITECTURE.md)、[Studio 模块](STUDIO_MODULES.md)、[场景创作工作流](SCENE_AUTHORING.md) |
 | 可移植解析、字段、存储及语义规划接口 | [引擎接口](../engine/README.md) |
 | 执行能力描述符、可信宿主注册表与具体引擎隔离 | [执行后端中间层](BACKEND_MIDDLEWARE.md) |
+| 本机 Godot 修订来源、重建、验证与回退 | [Godot 工具链](GODOT_TOOLCHAIN.md) |
 | Node 本地服务、索引与维护命令 | [脚本说明](../scripts/README.md) |
 | 桌面启动、打包、原生交互和清理 | [桌面说明](../desktop/README.md) |
 | Android 私有存储、构建与设备限制 | [移动端说明](../mobile/README.md) |
@@ -100,3 +101,5 @@
 - [验证历程](history/VALIDATION.md)：各阶段的版本、测试计数、环境和限制。
 
 `test-results/` 保存日志、截图和源码摘要。[当前图谱](FUNCTION_ATLAS.md) 以四维坐标维护架构、功能、实现和成熟度；旧 b.4.3 图谱继续保存历史状态，不再承担当前能力目录。旧报告表示当时的状态；当前操作入口从本页进入，当前平台判断以 [STATUS](STATUS.md) 为准。
+
+0.2.6 运行观察专题：[调度时钟](test-results/runtime-execution-clock/README.md)、[因果锚点](test-results/runtime-causal-anchors/README.md)、[业务帧](test-results/runtime-execution-frames/README.md)、[动画请求](test-results/runtime-animation-requests/README.md)、[音频请求](test-results/runtime-audio-requests/README.md)、[事件位置](test-results/runtime-event-positions/README.md)及[只读面板](test-results/runtime-event-positions-ui/README.md)。各报告保留升版前的验证范围与版本，当前合同见[执行中间层](BACKEND_MIDDLEWARE.md)。

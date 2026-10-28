@@ -1,0 +1,2809 @@
+{
+  "date": "2026-10-28",
+  "scope": "audio queued-request observation; additive atlas review after source-preserving generic reader extraction",
+  "baseline": {
+    "path": "/tmp/viento-audio-requests/before/docs/function-atlas.json",
+    "sha256": "4d6f7d47df41e0b4308b1bb533e612cdccc6c055cac6c567f6999296dd904f9f",
+    "counts": {
+      "functions": 179,
+      "implementations": 538,
+      "bindings": 748,
+      "cells": 2992,
+      "evidence": 3337,
+      "dependencies": 543,
+      "workflows": 143
+    }
+  },
+  "reviewedAtlas": {
+    "path": "docs/function-atlas.json",
+    "sha256": "3b82ff793851bd0785ed2bba3c5384ae628b8a641ba229792c5c8689bc2539ac",
+    "counts": {
+      "functions": 180,
+      "implementations": 541,
+      "bindings": 751,
+      "cells": 3004,
+      "evidence": 3352,
+      "dependencies": 546,
+      "workflows": 144
+    }
+  },
+  "delta": {
+    "functions": 1,
+    "implementations": 3,
+    "bindings": 3,
+    "cells": 12,
+    "evidence": 15,
+    "dependencies": 3,
+    "workflows": 1
+  },
+  "preserved": {
+    "bindings": true,
+    "cells": true,
+    "evidence": true,
+    "dependencies": true,
+    "implementations": true,
+    "architectureAxis": true,
+    "maturityAxis": true,
+    "legacyCoverage": true,
+    "priorities": true
+  },
+  "oldRecordsChecked": {
+    "bindings": 748,
+    "cells": 2992,
+    "evidence": 3337
+  },
+  "newScores": [
+    {
+      "bindingId": "b750",
+      "function": "runtime.audio_requests",
+      "implementation": "i539",
+      "scores": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    },
+    {
+      "bindingId": "b751",
+      "function": "runtime.audio_requests",
+      "implementation": "i540",
+      "scores": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    },
+    {
+      "bindingId": "b752",
+      "function": "runtime.audio_requests",
+      "implementation": "i541",
+      "scores": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    }
+  ],
+  "existingDescriptiveUpdates": {
+    "functions": [
+      {
+        "id": "runtime.animation_requests",
+        "changedKeys": [
+          "next",
+          "boundary",
+          "platforms"
+        ]
+      }
+    ],
+    "workflows": [
+      {
+        "id": "runtime-animation-requests",
+        "changedKeys": [
+          "boundary"
+        ]
+      }
+    ]
+  },
+  "historicalSnapshots": {
+    "docs/FUNCTION_NETWORK.md": {
+      "baseline": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
+      "current": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
+      "preserved": true
+    },
+    "docs/function-network.json": {
+      "baseline": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
+      "current": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
+      "preserved": true
+    },
+    "docs/function-network.html": {
+      "baseline": "bf42bb7b77083ed40316cd12ba21544e07b5a3b45f045b88ac0b24af056039d9",
+      "current": "bf42bb7b77083ed40316cd12ba21544e07b5a3b45f045b88ac0b24af056039d9",
+      "preserved": true
+    },
+    "docs/function-network.mmd": {
+      "baseline": "a153d860a8171d1ce01ae45fd3a2e5d08d59e506d2d52ca966d5cfc3d87af39f",
+      "current": "a153d860a8171d1ce01ae45fd3a2e5d08d59e506d2d52ca966d5cfc3d87af39f",
+      "preserved": true
+    }
+  },
+  "referencedOldTestReportsPreserved": {
+    "docs/test-results/animation-condition-groups/README.md": true,
+    "docs/test-results/animation-entry-triggers/README.md": true,
+    "docs/test-results/animation-entry-triggers/browser-1792738072990/browser.json": true,
+    "docs/test-results/animation-entry-triggers/preservation.json": true,
+    "docs/test-results/animation-entry-triggers/review.json": true,
+    "docs/test-results/animation-entry-triggers/summary.json": true,
+    "docs/test-results/animation-instance-runtime/README.md": true,
+    "docs/test-results/animation-parameter-bindings/README.md": true,
+    "docs/test-results/animation-shared-state-conditions/README.md": true,
+    "docs/test-results/animation-state-bindings/README.md": true,
+    "docs/test-results/animation-state-bindings/browser-authoring-1792813246200/browser.json": true,
+    "docs/test-results/animation-state-branches/README.md": true,
+    "docs/test-results/animation-state-conditions/README.md": true,
+    "docs/test-results/animation-state-event-preview/README.md": true,
+    "docs/test-results/animation-state-event-preview/preservation.json": true,
+    "docs/test-results/animation-state-event-preview/summary.json": true,
+    "docs/test-results/animation-state-graph/README.md": true,
+    "docs/test-results/animation-state-reedit/README.md": true,
+    "docs/test-results/animation-state-table/README.md": true,
+    "docs/test-results/animation-state-trial-case-editor/README.md": true,
+    "docs/test-results/animation-state-trial-case-editor/preservation.json": true,
+    "docs/test-results/animation-state-trial-case-editor/summary.json": true,
+    "docs/test-results/animation-state-trial-case/README.md": true,
+    "docs/test-results/animation-state-trial-case/preservation.json": true,
+    "docs/test-results/animation-state-trial-case/summary.json": true,
+    "docs/test-results/animation-state-trial-sequence/README.md": true,
+    "docs/test-results/animation-state-trial-sequence/preservation.json": true,
+    "docs/test-results/animation-state-trial-sequence/summary.json": true,
+    "docs/test-results/archive-registry-2026-09-23/results.json": true,
+    "docs/test-results/asset-binding-2026-09-23/results.json": true,
+    "docs/test-results/asset-export/results.json": true,
+    "docs/test-results/backend-middleware/browser/browser.json": true,
+    "docs/test-results/backend-middleware/packaged-resources.json": true,
+    "docs/test-results/backend-middleware/results.json": true,
+    "docs/test-results/backend-project-catalog/browser-confirmed/browser.json": true,
+    "docs/test-results/backend-project-catalog/catalog-core-lock-repair.log": true,
+    "docs/test-results/backend-project-catalog/catalog-focused-lock-repair.log": true,
+    "docs/test-results/backend-project-catalog/catalog-missing-temp-final.json": true,
+    "docs/test-results/backend-project-catalog/catalog-missing-temp-initial.json": true,
+    "docs/test-results/backend-project-catalog/cleanup.json": true,
+    "docs/test-results/backend-project-catalog/final-audit.json": true,
+    "docs/test-results/backend-project-catalog/full-check-frozen.log": true,
+    "docs/test-results/backend-project-catalog/full-check-initial.log": true,
+    "docs/test-results/backend-project-catalog/packaged-resources-frozen.json": true,
+    "docs/test-results/backend-project-catalog/real-backends-final/results.json": true,
+    "docs/test-results/backend-project-catalog/real-backends-initial/results.json": true,
+    "docs/test-results/backend-project-catalog/results.json": true,
+    "docs/test-results/backend-project-catalog/service-review.json": true,
+    "docs/test-results/backend-project-catalog/source-hashes.json": true,
+    "docs/test-results/backend-project-delivery/browser-release/browser.json": true,
+    "docs/test-results/backend-project-delivery/results.json": true,
+    "docs/test-results/backend-project-management/backend-cache-final.log": true,
+    "docs/test-results/backend-project-management/boundary-review.json": true,
+    "docs/test-results/backend-project-management/browser/browser.json": true,
+    "docs/test-results/backend-project-management/cleanup.json": true,
+    "docs/test-results/backend-project-management/cli-tests-final-second.log": true,
+    "docs/test-results/backend-project-management/core-regression-final.log": true,
+    "docs/test-results/backend-project-management/final-audit.json": true,
+    "docs/test-results/backend-project-management/focused-final-repair.log": true,
+    "docs/test-results/backend-project-management/full-check-initial.log": true,
+    "docs/test-results/backend-project-management/packaged-resources.json": true,
+    "docs/test-results/backend-project-management/real-backends-final/results.json": true,
+    "docs/test-results/backend-project-management/results.json": true,
+    "docs/test-results/backend-project-management/retention-boundary-final.log": true,
+    "docs/test-results/backend-project-management/source-hashes.json": true,
+    "docs/test-results/backend-project-management/ui-tests-language-final.log": true,
+    "docs/test-results/behavior-binding/bindings.json": true,
+    "docs/test-results/behavior-binding/guard.gd": true,
+    "docs/test-results/behavior-binding/probe.gd": true,
+    "docs/test-results/behavior-binding/results.json": true,
+    "docs/test-results/behavior-binding/run.mjs": true,
+    "docs/test-results/bevy-backend/adapter-real-final.log": true,
+    "docs/test-results/bevy-backend/browser/browser.json": true,
+    "docs/test-results/bevy-backend/packaged-resources.json": true,
+    "docs/test-results/bevy-backend/results.json": true,
+    "docs/test-results/bevy-backend/runtime-proof.json": true,
+    "docs/test-results/bevy-backend/workflow-real-initial.log": true,
+    "docs/test-results/bevy-rust-behaviors/README.md": true,
+    "docs/test-results/bevy-rust-behaviors/adapter-final-after-json.log": true,
+    "docs/test-results/bevy-rust-behaviors/app-check.log": true,
+    "docs/test-results/bevy-rust-behaviors/browser-1791891439479/browser.json": true,
+    "docs/test-results/bevy-rust-behaviors/generator-tests.log": true,
+    "docs/test-results/bevy-rust-behaviors/neutral-events.log": true,
+    "docs/test-results/bevy-rust-behaviors/prepared.json": true,
+    "docs/test-results/bevy-rust-behaviors/runtime-template-tests.log": true,
+    "docs/test-results/bevy-rust-behaviors/ui.log": true,
+    "docs/test-results/bevy-rust-fixed-step/app-check.log": true,
+    "docs/test-results/bevy-rust-fixed-step/authoring-summary.json": true,
+    "docs/test-results/bevy-rust-fixed-step/authoring.log": true,
+    "docs/test-results/bevy-rust-fixed-step/backend-regression.log": true,
+    "docs/test-results/bevy-rust-fixed-step/browser-1791892801455/browser.json": true,
+    "docs/test-results/bevy-rust-fixed-step/legacy-generator.log": true,
+    "docs/test-results/bevy-rust-fixed-step/native-workflow-summary.json": true,
+    "docs/test-results/bevy-rust-fixed-step/prepared.json": true,
+    "docs/test-results/bevy-rust-fixed-step/rust-clippy.log": true,
+    "docs/test-results/bevy-rust-fixed-step/rust-fmt.log": true,
+    "docs/test-results/bevy-rust-fixed-step/rust-test.log": true,
+    "docs/test-results/build-workbench/browser.json": true,
+    "docs/test-results/build-workbench/results.json": true,
+    "docs/test-results/ci-scene3d-replacement/README.md": true,
+    "docs/test-results/ci-scene3d-replacement/summary.json": true,
+    "docs/test-results/document-migration-2026-09-23/results.json": true,
+    "docs/test-results/editor-filtering-2026-09-23/results.json": true,
+    "docs/test-results/editor-index-refresh-2026-09-23/results.json": true,
+    "docs/test-results/export-browser-2026-09-24/results.json": true,
+    "docs/test-results/export-downloads-2026-09-24/results.json": true,
+    "docs/test-results/export-references-2026-09-23/results.json": true,
+    "docs/test-results/field-editing-2026-09-24/results.json": true,
+    "docs/test-results/functional-mapping/summary.json": true,
+    "docs/test-results/godot-audio-shutdown-patch/README.md": true,
+    "docs/test-results/godot-audio-shutdown/README.md": true,
+    "docs/test-results/media-insertion-2026-09-23/results.json": true,
+    "docs/test-results/native-current-2026-09-24/results.json": true,
+    "docs/test-results/native-installed-0.1.1/summary.json": true,
+    "docs/test-results/oc-projection-edit/results.json": true,
+    "docs/test-results/oc-projections/results.json": true,
+    "docs/test-results/oc-templates/results.json": true,
+    "docs/test-results/project-animation-completion/README.md": true,
+    "docs/test-results/project-animation-controls/README.md": true,
+    "docs/test-results/project-animation-controls/app-check-final.log": true,
+    "docs/test-results/project-animation-controls/authoring-ui-test.log": true,
+    "docs/test-results/project-animation-controls/backend-final.log": true,
+    "docs/test-results/project-animation-controls/browser-authoring-1792298161902/browser.json": true,
+    "docs/test-results/project-animation-controls/core-native-parity.log": true,
+    "docs/test-results/project-animation-controls/integration-final.log": true,
+    "docs/test-results/project-animation-controls/runtime-tests-final.log": true,
+    "docs/test-results/project-animation-controls/rust-core-tests.log": true,
+    "docs/test-results/project-animation-controls/summary.json": true,
+    "docs/test-results/project-animation-preflight/README.md": true,
+    "docs/test-results/project-animation-state-entries/README.md": true,
+    "docs/test-results/project-animation-state-review/README.md": true,
+    "docs/test-results/project-animation-state-snapshot/README.md": true,
+    "docs/test-results/project-animation-target-review/README.md": true,
+    "docs/test-results/project-assembly/application.log": true,
+    "docs/test-results/project-assembly/browser-1792059497612/browser.json": true,
+    "docs/test-results/project-assembly/core-results.json": true,
+    "docs/test-results/project-assembly/godot-backend-tests.log": true,
+    "docs/test-results/project-assembly/prepared-resources.json": true,
+    "docs/test-results/project-audio-controls/README.md": true,
+    "docs/test-results/project-audio-controls/application.log": true,
+    "docs/test-results/project-audio-controls/audio-native-parity.log": true,
+    "docs/test-results/project-audio-controls/browser-1792070078319/browser.json": true,
+    "docs/test-results/project-audio-controls/cleanup.json": true,
+    "docs/test-results/project-audio-controls/core-results.json": true,
+    "docs/test-results/project-audio-controls/godot-audio.log": true,
+    "docs/test-results/project-audio-controls/godot-regression.log": true,
+    "docs/test-results/project-audio-controls/host-checkpoint.log": true,
+    "docs/test-results/project-audio-controls/host-workflows.log": true,
+    "docs/test-results/project-audio-controls/prepared-resources.json": true,
+    "docs/test-results/project-audio-controls/preservation.json": true,
+    "docs/test-results/project-audio-controls/rust-full.log": true,
+    "docs/test-results/project-audio-controls/summary.json": true,
+    "docs/test-results/project-audio-controls/ui-results.json": true,
+    "docs/test-results/project-audio-controls/visual-review.json": true,
+    "docs/test-results/project-definition-2026-09-23/results.json": true,
+    "docs/test-results/project-event-animation/README.md": true,
+    "docs/test-results/project-event-animation/preservation.json": true,
+    "docs/test-results/project-event-animation/summary.json": true,
+    "docs/test-results/project-event-review/README.md": true,
+    "docs/test-results/project-event-review/preservation.json": true,
+    "docs/test-results/project-event-review/summary.json": true,
+    "docs/test-results/project-events/README.md": true,
+    "docs/test-results/project-events/application-godot-checkpoint.log": true,
+    "docs/test-results/project-events/application.log": true,
+    "docs/test-results/project-events/boundary-review.json": true,
+    "docs/test-results/project-events/browser-1792066747316/browser.json": true,
+    "docs/test-results/project-events/cleanup.json": true,
+    "docs/test-results/project-events/core-results.json": true,
+    "docs/test-results/project-events/godot-tests.log": true,
+    "docs/test-results/project-events/host-final.log": true,
+    "docs/test-results/project-events/prepared-resources.json": true,
+    "docs/test-results/project-events/preservation.json": true,
+    "docs/test-results/project-events/project-build-cancellation.log": true,
+    "docs/test-results/project-events/script-starters.log": true,
+    "docs/test-results/project-events/summary.json": true,
+    "docs/test-results/project-events/ui-results.json": true,
+    "docs/test-results/project-events/visual-review.json": true,
+    "docs/test-results/project-problems/browser-1791870888844/report.json": true,
+    "docs/test-results/project-problems/full-final.log": true,
+    "docs/test-results/project-problems/resources.json": true,
+    "docs/test-results/project-problems/summary.json": true,
+    "docs/test-results/project-scene-switching/README.md": true,
+    "docs/test-results/project-scene-switching/application.log": true,
+    "docs/test-results/project-scene-switching/browser-1792061481767/browser.json": true,
+    "docs/test-results/project-scene-switching/browser-1792062052259/browser.json": true,
+    "docs/test-results/project-scene-switching/browser-1792062422595/browser.json": true,
+    "docs/test-results/project-scene-switching/core-results.json": true,
+    "docs/test-results/project-scene-switching/core-tests.log": true,
+    "docs/test-results/project-scene-switching/godot-final-mode.log": true,
+    "docs/test-results/project-scene-switching/godot-fingerprint-final.log": true,
+    "docs/test-results/project-scene-switching/godot-tests.log": true,
+    "docs/test-results/project-scene-switching/host-workflow.log": true,
+    "docs/test-results/project-scene-switching/prepared-resources.json": true,
+    "docs/test-results/project-scene-switching/script-starters.log": true,
+    "docs/test-results/project-scene-switching/summary.json": true,
+    "docs/test-results/project-scene-switching/ui-results.json": true,
+    "docs/test-results/project-settings-2026-09-23/results.json": true,
+    "docs/test-results/project-shared-state/README.md": true,
+    "docs/test-results/project-shared-state/application.log": true,
+    "docs/test-results/project-shared-state/browser-1792064414574/browser.json": true,
+    "docs/test-results/project-shared-state/core-results.json": true,
+    "docs/test-results/project-shared-state/godot-tests.log": true,
+    "docs/test-results/project-shared-state/host-workflow.log": true,
+    "docs/test-results/project-shared-state/prepared-resources.json": true,
+    "docs/test-results/project-shared-state/script-starters.log": true,
+    "docs/test-results/project-shared-state/summary.json": true,
+    "docs/test-results/project-shared-state/ui-results.json": true,
+    "docs/test-results/project-snapshot-2026-09-23/results.json": true,
+    "docs/test-results/project-templates/results.json": true,
+    "docs/test-results/release-0.0.10/atlas-delivery.json": true,
+    "docs/test-results/release-0.0.10/results.json": true,
+    "docs/test-results/release-0.0.4/results.json": true,
+    "docs/test-results/release-0.0.5/results.json": true,
+    "docs/test-results/release-0.0.6/results.json": true,
+    "docs/test-results/release-0.0.7/results.json": true,
+    "docs/test-results/release-0.0.8/cleanup.json": true,
+    "docs/test-results/release-0.0.8/core-proof.json": true,
+    "docs/test-results/release-0.0.8/historical-preservation.json": true,
+    "docs/test-results/release-0.0.8/packaged-resources.json": true,
+    "docs/test-results/release-0.0.8/prepared-manifests.json": true,
+    "docs/test-results/release-0.0.8/results.json": true,
+    "docs/test-results/release-0.0.8/source-archive.json": true,
+    "docs/test-results/release-0.0.8/source-hashes.json": true,
+    "docs/test-results/release-0.0.8/version-source-tests.log": true,
+    "docs/test-results/release-0.0.9/cleanup.json": true,
+    "docs/test-results/release-0.0.9/final-formatting.json": true,
+    "docs/test-results/release-0.0.9/final-source-hashes.json": true,
+    "docs/test-results/release-0.0.9/historical-preservation.json": true,
+    "docs/test-results/release-0.0.9/packaged-resources.json": true,
+    "docs/test-results/release-0.0.9/prepared-manifests.json": true,
+    "docs/test-results/release-0.0.9/results.json": true,
+    "docs/test-results/release-0.0.9/source-archive.json": true,
+    "docs/test-results/release-0.0.9/source-hashes.json": true,
+    "docs/test-results/release-0.1.1/preflight.json": true,
+    "docs/test-results/release-0.1.2/close-guard.log": true,
+    "docs/test-results/release-0.1.2/preflight.json": true,
+    "docs/test-results/release-0.1.3/preflight.json": true,
+    "docs/test-results/release-0.1.5/preflight.json": true,
+    "docs/test-results/release-0.1.6/preflight.json": true,
+    "docs/test-results/release-0.1.6/source-archive.json": true,
+    "docs/test-results/release-0.1.7/preflight.json": true,
+    "docs/test-results/release-0.1.7/preservation.json": true,
+    "docs/test-results/release-0.1.8/preflight.json": true,
+    "docs/test-results/release-0.1.8/preservation.json": true,
+    "docs/test-results/release-0.1.9/preflight.json": true,
+    "docs/test-results/release-0.1.9/preservation.json": true,
+    "docs/test-results/release-0.2.0/preflight.json": true,
+    "docs/test-results/release-0.2.0/preservation.json": true,
+    "docs/test-results/release-0.2.1/preflight.json": true,
+    "docs/test-results/release-0.2.1/preservation.json": true,
+    "docs/test-results/release-0.2.2/README.md": true,
+    "docs/test-results/release-0.2.3/README.md": true,
+    "docs/test-results/release-0.2.4/README.md": true,
+    "docs/test-results/release-0.2.5/README.md": true,
+    "docs/test-results/resource-packages/results.json": true,
+    "docs/test-results/runtime-case-documents/browser/browser.json": true,
+    "docs/test-results/runtime-case-documents/cleanup.json": true,
+    "docs/test-results/runtime-case-documents/historical-preservation.json": true,
+    "docs/test-results/runtime-case-documents/native-helpers-proof.json": true,
+    "docs/test-results/runtime-case-documents/packaged-resources.json": true,
+    "docs/test-results/runtime-case-documents/results.json": true,
+    "docs/test-results/runtime-case-documents/source-hashes.json": true,
+    "docs/test-results/runtime-case-reports/browser/browser.json": true,
+    "docs/test-results/runtime-case-reports/cleanup.json": true,
+    "docs/test-results/runtime-case-reports/historical-preservation.json": true,
+    "docs/test-results/runtime-case-reports/native-helpers-proof.json": true,
+    "docs/test-results/runtime-case-reports/packaged-resources.json": true,
+    "docs/test-results/runtime-case-reports/results.json": true,
+    "docs/test-results/runtime-case-reports/review.json": true,
+    "docs/test-results/runtime-case-reports/source-hashes.json": true,
+    "docs/test-results/runtime-case-suites/browser/browser.json": true,
+    "docs/test-results/runtime-case-suites/cleanup.json": true,
+    "docs/test-results/runtime-case-suites/historical-preservation.json": true,
+    "docs/test-results/runtime-case-suites/native-helpers-proof.json": true,
+    "docs/test-results/runtime-case-suites/packaged-resources.json": true,
+    "docs/test-results/runtime-case-suites/results.json": true,
+    "docs/test-results/runtime-case-suites/source-hashes.json": true,
+    "docs/test-results/runtime-causal-anchors/README.md": true,
+    "docs/test-results/runtime-causal-anchors/native-final.log": true,
+    "docs/test-results/runtime-control-replay/boundary-findings.json": true,
+    "docs/test-results/runtime-control-replay/browser-final/browser.json": true,
+    "docs/test-results/runtime-control-replay/cli-tests-final.log": true,
+    "docs/test-results/runtime-control-replay/engine-tests-final.log": true,
+    "docs/test-results/runtime-control-replay/host-ui-tests.log": true,
+    "docs/test-results/runtime-control-replay/packaged-resources.json": true,
+    "docs/test-results/runtime-control-replay/portable-tests.log": true,
+    "docs/test-results/runtime-control-replay/results.json": true,
+    "docs/test-results/runtime-control-replay/runtime-proof.json": true,
+    "docs/test-results/runtime-execution-budget/README.md": true,
+    "docs/test-results/runtime-execution-budget/candidate-native-final-exit.json": true,
+    "docs/test-results/runtime-execution-budget/candidate-native-final.log": true,
+    "docs/test-results/runtime-execution-budget/full-check.log": true,
+    "docs/test-results/runtime-execution-clock/README.md": true,
+    "docs/test-results/runtime-execution-frames/README.md": true,
+    "docs/test-results/runtime-instance-control/boundary-findings.json": true,
+    "docs/test-results/runtime-instance-control/browser-final/browser.json": true,
+    "docs/test-results/runtime-instance-control/cleanup.json": true,
+    "docs/test-results/runtime-instance-control/cli-tests.log": true,
+    "docs/test-results/runtime-instance-control/engine-tests-final.log": true,
+    "docs/test-results/runtime-instance-control/historical-preservation.json": true,
+    "docs/test-results/runtime-instance-control/host-ui-tests-final.log": true,
+    "docs/test-results/runtime-instance-control/packaged-resources.json": true,
+    "docs/test-results/runtime-instance-control/portable-tests-final.log": true,
+    "docs/test-results/runtime-instance-control/results.json": true,
+    "docs/test-results/runtime-instance-control/runtime-proof.json": true,
+    "docs/test-results/runtime-instance-control/source-hashes.json": true,
+    "docs/test-results/runtime-instance-control/ui-target-label-tests-final.log": true,
+    "docs/test-results/runtime-object-inspection/browser/browser.json": true,
+    "docs/test-results/runtime-object-inspection/core-query-final.log": true,
+    "docs/test-results/runtime-object-inspection/host-real.log": true,
+    "docs/test-results/runtime-object-inspection/packaged-resources.json": true,
+    "docs/test-results/runtime-object-inspection/results.json": true,
+    "docs/test-results/runtime-object-inspection/ui-final.log": true,
+    "docs/test-results/runtime-observation-retention/README.md": true,
+    "docs/test-results/runtime-observation-retention/browser/browser-verification.json": true,
+    "docs/test-results/runtime-observation-retention/full-check.log": true,
+    "docs/test-results/runtime-observation-retention/summary.json": true,
+    "docs/test-results/runtime-tool-probe/app-check.log": true,
+    "docs/test-results/runtime-tool-probe/browser-check.mjs": true,
+    "docs/test-results/runtime-tool-probe/browser/browser.json": true,
+    "docs/test-results/runtime-tool-probe/cleanup.json": true,
+    "docs/test-results/runtime-tool-probe/cli-tests.log": true,
+    "docs/test-results/runtime-tool-probe/core-probe-tests.log": true,
+    "docs/test-results/runtime-tool-probe/engine-probes.log": true,
+    "docs/test-results/runtime-tool-probe/historical-preservation.json": true,
+    "docs/test-results/runtime-tool-probe/native-helpers-proof.json": true,
+    "docs/test-results/runtime-tool-probe/packaged-resources.json": true,
+    "docs/test-results/runtime-tool-probe/results.json": true,
+    "docs/test-results/runtime-tool-probe/source-hashes.json": true,
+    "docs/test-results/runtime-verification-cases/browser/browser.json": true,
+    "docs/test-results/runtime-verification-cases/cleanup.json": true,
+    "docs/test-results/runtime-verification-cases/historical-preservation.json": true,
+    "docs/test-results/runtime-verification-cases/native-helpers-proof.json": true,
+    "docs/test-results/runtime-verification-cases/packaged-resources.json": true,
+    "docs/test-results/runtime-verification-cases/results.json": true,
+    "docs/test-results/runtime-verification-cases/source-hashes.json": true,
+    "docs/test-results/rust-layout-history/layout-browser/browser.json": true,
+    "docs/test-results/rust-layout-history/packaged-resources.json": true,
+    "docs/test-results/rust-layout-history/results.json": true,
+    "docs/test-results/rust-layout-history/selection-browser/browser.json": true,
+    "docs/test-results/rust-layout-save/layout-browser/browser.json": true,
+    "docs/test-results/rust-layout-save/packaged-resources.json": true,
+    "docs/test-results/rust-layout-save/results.json": true,
+    "docs/test-results/rust-layout-save/selection-browser/browser.json": true,
+    "docs/test-results/rust-scene-source/packaged-resources.json": true,
+    "docs/test-results/rust-scene-source/results.json": true,
+    "docs/test-results/rust-studio-core/packaged-sources.json": true,
+    "docs/test-results/rust-studio-core/results.json": true,
+    "docs/test-results/rust-studio-core/rust-core.log": true,
+    "docs/test-results/rust-studio-core/source-archive.log": true,
+    "docs/test-results/save-conflicts-2026-09-23/results.json": true,
+    "docs/test-results/save-recovery-2026-09-23/results.json": true,
+    "docs/test-results/scene-animation-clips/README.md": true,
+    "docs/test-results/scene-animation-clips/preservation.json": true,
+    "docs/test-results/scene-animation-clips/summary.json": true,
+    "docs/test-results/scene-animation-creation/README.md": true,
+    "docs/test-results/scene-animation-creation/application.log": true,
+    "docs/test-results/scene-animation-creation/browser-1792292923679/browser.json": true,
+    "docs/test-results/scene-animation-creation/core-regression.log": true,
+    "docs/test-results/scene-animation-creation/design-review.json": true,
+    "docs/test-results/scene-animation-creation/host-transaction.log": true,
+    "docs/test-results/scene-animation-creation/preservation.json": true,
+    "docs/test-results/scene-animation-creation/summary.json": true,
+    "docs/test-results/scene-animation-creation/ui-regression.log": true,
+    "docs/test-results/scene-animation-creation/visual-review.json": true,
+    "docs/test-results/scene-animation-creation/workflow-godot.log": true,
+    "docs/test-results/scene-animation-instance-preview/README.md": true,
+    "docs/test-results/scene-animation-instance-preview/browser-1792814726419/browser.json": true,
+    "docs/test-results/scene-animation-retime/README.md": true,
+    "docs/test-results/scene-animation-retime/preservation.json": true,
+    "docs/test-results/scene-animation-retime/summary.json": true,
+    "docs/test-results/scene-animation-scene-preview/README.md": true,
+    "docs/test-results/scene-animation-scene-preview/browser-1792294748026/browser.json": true,
+    "docs/test-results/scene-animation-scene-preview/canvas-final.log": true,
+    "docs/test-results/scene-animation-scene-preview/check-project-final.log": true,
+    "docs/test-results/scene-animation-scene-preview/preservation.json": true,
+    "docs/test-results/scene-animation-scene-preview/review.json": true,
+    "docs/test-results/scene-animation-scene-preview/summary.json": true,
+    "docs/test-results/scene-animation-scene-preview/visual-review.json": true,
+    "docs/test-results/scene-animation-sprites/README.md": true,
+    "docs/test-results/scene-animation-sprites/app-check-final.log": true,
+    "docs/test-results/scene-animation-sprites/backend-final.log": true,
+    "docs/test-results/scene-animation-sprites/browser-1792297019604/browser.json": true,
+    "docs/test-results/scene-animation-sprites/core-js-native.log": true,
+    "docs/test-results/scene-animation-sprites/core-rust.log": true,
+    "docs/test-results/scene-animation-sprites/preview-budget-confirmed.log": true,
+    "docs/test-results/scene-animation-sprites/preview-final.log": true,
+    "docs/test-results/scene-animation-sprites/summary.json": true,
+    "docs/test-results/scene-animation-targets/README.md": true,
+    "docs/test-results/scene-animation-targets/application.log": true,
+    "docs/test-results/scene-animation-targets/browser-1792292126728/browser.json": true,
+    "docs/test-results/scene-animation-targets/design-review.json": true,
+    "docs/test-results/scene-animation-targets/preservation.json": true,
+    "docs/test-results/scene-animation-targets/score-review.json": true,
+    "docs/test-results/scene-animation-targets/summary.json": true,
+    "docs/test-results/scene-animation-track-copy/README.md": true,
+    "docs/test-results/scene-animation-track-copy/preservation.json": true,
+    "docs/test-results/scene-animation-track-copy/summary.json": true,
+    "docs/test-results/scene-animation-usage/README.md": true,
+    "docs/test-results/scene-animation-usage/preservation.json": true,
+    "docs/test-results/scene-animation-usage/summary.json": true,
+    "docs/test-results/scene-animation/README.md": true,
+    "docs/test-results/scene-animation/backend-summary.json": true,
+    "docs/test-results/scene-animation/browser-1792289564799/browser.json": true,
+    "docs/test-results/scene-animation/cleanup.json": true,
+    "docs/test-results/scene-animation/core-js.log": true,
+    "docs/test-results/scene-animation/design-review.json": true,
+    "docs/test-results/scene-animation/full-final.log": true,
+    "docs/test-results/scene-animation/plan-final.log": true,
+    "docs/test-results/scene-animation/prepared-summary.json": true,
+    "docs/test-results/scene-animation/preservation.json": true,
+    "docs/test-results/scene-animation/score-review.json": true,
+    "docs/test-results/scene-animation/summary.json": true,
+    "docs/test-results/scene-animation/ui-final.log": true,
+    "docs/test-results/scene-animation/visual-review.json": true,
+    "docs/test-results/scene-assembly-entry/README.md": true,
+    "docs/test-results/scene-audio-audition-transport/README.md": true,
+    "docs/test-results/scene-audio-audition/README.md": true,
+    "docs/test-results/scene-audio-creation/browser-1792056336902/browser.json": true,
+    "docs/test-results/scene-audio-creation/close.log": true,
+    "docs/test-results/scene-audio-creation/prepared.json": true,
+    "docs/test-results/scene-audio-creation/pure-summary.json": true,
+    "docs/test-results/scene-audio-creation/pure-test.log": true,
+    "docs/test-results/scene-audio-creation/ui-lock-final.log": true,
+    "docs/test-results/scene-audio-cue-arrangement/README.md": true,
+    "docs/test-results/scene-audio-cue-authoring/README.md": true,
+    "docs/test-results/scene-audio-resource-selection/README.md": true,
+    "docs/test-results/scene-audio-track-authoring/README.md": true,
+    "docs/test-results/scene-audio-trigger-creation/README.md": true,
+    "docs/test-results/scene-audio-trigger-creation/browser-1792071659015/browser.json": true,
+    "docs/test-results/scene-audio-trigger-creation/prepared-resources.json": true,
+    "docs/test-results/scene-audio-trigger-creation/score-review.json": true,
+    "docs/test-results/scene-audio-trigger-creation/summary.json": true,
+    "docs/test-results/scene-audio-usage-navigation/README.md": true,
+    "docs/test-results/scene-audio-usage-navigation/design-review.json": true,
+    "docs/test-results/scene-audio-usage-navigation/summary.json": true,
+    "docs/test-results/scene-audio-usage/README.md": true,
+    "docs/test-results/scene-audio-usage/summary.json": true,
+    "docs/test-results/scene-audio/app-check.log": true,
+    "docs/test-results/scene-audio/browser-summary.json": true,
+    "docs/test-results/scene-audio/compatibility-final.log": true,
+    "docs/test-results/scene-audio/core-summary.json": true,
+    "docs/test-results/scene-audio/editor-summary.json": true,
+    "docs/test-results/scene-audio/godot-summary.json": true,
+    "docs/test-results/scene-audio/planning-tests.log": true,
+    "docs/test-results/scene-audio/prepared.json": true,
+    "docs/test-results/scene-authoring-workflow/app-check.log": true,
+    "docs/test-results/scene-authoring-workflow/boundary-review.json": true,
+    "docs/test-results/scene-authoring-workflow/browser-batch/browser.json": true,
+    "docs/test-results/scene-authoring-workflow/browser-canvas/browser.json": true,
+    "docs/test-results/scene-authoring-workflow/browser-fragment-inheritance/browser.json": true,
+    "docs/test-results/scene-authoring-workflow/browser-override/browser.json": true,
+    "docs/test-results/scene-authoring-workflow/browser-placement/browser.json": true,
+    "docs/test-results/scene-authoring-workflow/browser-structure/browser.json": true,
+    "docs/test-results/scene-authoring-workflow/cleanup.json": true,
+    "docs/test-results/scene-authoring-workflow/final-audit.json": true,
+    "docs/test-results/scene-authoring-workflow/focused-tests-initial.log": true,
+    "docs/test-results/scene-authoring-workflow/independent-review.json": true,
+    "docs/test-results/scene-authoring-workflow/new-tests.log": true,
+    "docs/test-results/scene-authoring-workflow/old-test-contract-review.json": true,
+    "docs/test-results/scene-authoring-workflow/packaged-resources.json": true,
+    "docs/test-results/scene-authoring-workflow/results.json": true,
+    "docs/test-results/scene-authoring-workflow/source-delta.json": true,
+    "docs/test-results/scene-authoring/results.json": true,
+    "docs/test-results/scene-behavior-animation-picker/README.md": true,
+    "docs/test-results/scene-behavior-animation-picker/browser-1792485879925/browser.json": true,
+    "docs/test-results/scene-behavior-animation-picker/preservation.json": true,
+    "docs/test-results/scene-behavior-animation-picker/summary.json": true,
+    "docs/test-results/scene-behavior-audio-picker/README.md": true,
+    "docs/test-results/scene-behavior-authoring/browser-smoke.json": true,
+    "docs/test-results/scene-behavior-authoring/summary.json": true,
+    "docs/test-results/scene-behavior-creation/README.md": true,
+    "docs/test-results/scene-behavior-creation/summary.json": true,
+    "docs/test-results/scene-behavior-links/summary.json": true,
+    "docs/test-results/scene-behavior-multi-create/summary.json": true,
+    "docs/test-results/scene-behavior-runtime/browser/browser.json": true,
+    "docs/test-results/scene-behavior-runtime/packaged-resources.json": true,
+    "docs/test-results/scene-behavior-runtime/results.json": true,
+    "docs/test-results/scene-composition-batch-canvas/app-check.log": true,
+    "docs/test-results/scene-composition-batch-canvas/boundary-review.json": true,
+    "docs/test-results/scene-composition-batch-canvas/browser/browser.json": true,
+    "docs/test-results/scene-composition-batch-canvas/cleanup.json": true,
+    "docs/test-results/scene-composition-batch-canvas/core-focus-tests.log": true,
+    "docs/test-results/scene-composition-batch-canvas/core-tests.log": true,
+    "docs/test-results/scene-composition-batch-canvas/focused-tests.log": true,
+    "docs/test-results/scene-composition-batch-canvas/historical-preservation.json": true,
+    "docs/test-results/scene-composition-batch-canvas/packaged-resources.json": true,
+    "docs/test-results/scene-composition-batch-canvas/results.json": true,
+    "docs/test-results/scene-composition-batch-canvas/single-regression/browser.json": true,
+    "docs/test-results/scene-composition-batch-canvas/source-hashes.json": true,
+    "docs/test-results/scene-composition-batch-canvas/ui-tests-final.log": true,
+    "docs/test-results/scene-composition-canvas/app-check.log": true,
+    "docs/test-results/scene-composition-canvas/boundary-review.json": true,
+    "docs/test-results/scene-composition-canvas/browser-final/browser.json": true,
+    "docs/test-results/scene-composition-canvas/core-layout-tests.log": true,
+    "docs/test-results/scene-composition-canvas/focused-tests.log": true,
+    "docs/test-results/scene-composition-canvas/inheritance-regression/browser.json": true,
+    "docs/test-results/scene-composition-canvas/packaged-resources.json": true,
+    "docs/test-results/scene-composition-canvas/results.json": true,
+    "docs/test-results/scene-composition-canvas/source-hashes.json": true,
+    "docs/test-results/scene-composition-create-layout/summary.json": true,
+    "docs/test-results/scene-composition-create/browser-acceptance.json": true,
+    "docs/test-results/scene-composition-create/summary.json": true,
+    "docs/test-results/scene-composition-definition-authoring/app-check-initial.log": true,
+    "docs/test-results/scene-composition-definition-authoring/app-check.log": true,
+    "docs/test-results/scene-composition-definition-authoring/boundary-cases.mjs": true,
+    "docs/test-results/scene-composition-definition-authoring/boundary-source-results.json": true,
+    "docs/test-results/scene-composition-definition-authoring/browser-final/browser.json": true,
+    "docs/test-results/scene-composition-definition-authoring/browser-module-graph-final.log": true,
+    "docs/test-results/scene-composition-definition-authoring/browser-third/browser.json": true,
+    "docs/test-results/scene-composition-definition-authoring/cleanup.json": true,
+    "docs/test-results/scene-composition-definition-authoring/core-bridge-tests.log": true,
+    "docs/test-results/scene-composition-definition-authoring/core-native-test.log": true,
+    "docs/test-results/scene-composition-definition-authoring/core-pure-tests.log": true,
+    "docs/test-results/scene-composition-definition-authoring/core-regression-final.log": true,
+    "docs/test-results/scene-composition-definition-authoring/core-results.json": true,
+    "docs/test-results/scene-composition-definition-authoring/document-review.json": true,
+    "docs/test-results/scene-composition-definition-authoring/native-helpers.json": true,
+    "docs/test-results/scene-composition-definition-authoring/packaged-resources.json": true,
+    "docs/test-results/scene-composition-definition-authoring/prepared-check-initial.log": true,
+    "docs/test-results/scene-composition-definition-authoring/prepared-check.mjs": true,
+    "docs/test-results/scene-composition-definition-authoring/preservation-audit.json": true,
+    "docs/test-results/scene-composition-definition-authoring/results.json": true,
+    "docs/test-results/scene-composition-definition-authoring/review.json": true,
+    "docs/test-results/scene-composition-definition-authoring/source-delta.json": true,
+    "docs/test-results/scene-composition-definition-authoring/source-hashes.json": true,
+    "docs/test-results/scene-composition-definition-authoring/web-focused-second.log": true,
+    "docs/test-results/scene-composition-definition-authoring/web-regression.log": true,
+    "docs/test-results/scene-composition-definition-authoring/workflow-tests-final.log": true,
+    "docs/test-results/scene-composition-fragment-editor/app-check.log": true,
+    "docs/test-results/scene-composition-fragment-editor/batch-regression/browser.json": true,
+    "docs/test-results/scene-composition-fragment-editor/boundary-probe.json": true,
+    "docs/test-results/scene-composition-fragment-editor/boundary-receipt-probe.json": true,
+    "docs/test-results/scene-composition-fragment-editor/boundary-review.json": true,
+    "docs/test-results/scene-composition-fragment-editor/browser/browser.json": true,
+    "docs/test-results/scene-composition-fragment-editor/browser/fragment-narrow-en.png": true,
+    "docs/test-results/scene-composition-fragment-editor/browser/fragment-narrow-ja.png": true,
+    "docs/test-results/scene-composition-fragment-editor/browser/fragment-narrow-zh-CN.png": true,
+    "docs/test-results/scene-composition-fragment-editor/browser/fragment-source-review.png": true,
+    "docs/test-results/scene-composition-fragment-editor/cleanup.json": true,
+    "docs/test-results/scene-composition-fragment-editor/core-clippy.log": true,
+    "docs/test-results/scene-composition-fragment-editor/core-fmt.log": true,
+    "docs/test-results/scene-composition-fragment-editor/core-focus-tests-final.log": true,
+    "docs/test-results/scene-composition-fragment-editor/core-tests.log": true,
+    "docs/test-results/scene-composition-fragment-editor/focused-tests-final.log": true,
+    "docs/test-results/scene-composition-fragment-editor/historical-preservation.json": true,
+    "docs/test-results/scene-composition-fragment-editor/packaged-resources.json": true,
+    "docs/test-results/scene-composition-fragment-editor/results.json": true,
+    "docs/test-results/scene-composition-fragment-editor/single-regression/browser.json": true,
+    "docs/test-results/scene-composition-fragment-editor/source-hashes.json": true,
+    "docs/test-results/scene-composition-fragment-editor/ui-tests.acceptance.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/app-check.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/auxiliary-generated-directory.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/batch-regression/browser.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/boundary-probe.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/boundary-receipt-probe.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/boundary-review.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/browser-initial/browser.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/browser-second/browser.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/cleanup.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-clippy.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-fmt.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-focus-tests.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-helper-tests-initial.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-native-build.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-source-hashes.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-tests-initial.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-tests-second.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-tests.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/core-wasm-build.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/desktop-prepare-initial.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/focused-tests.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/frozen-backend-baseline.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/generated-baseline.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/historical-baseline.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/historical-preservation.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/host-parent-final.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/host-parent-initial.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/host-parent-intermediate.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/native-helpers-build-initial.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/native-helpers.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/override-regression/browser.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/packaged-resources.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/prepared-check-initial.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/prepared-check.mjs": true,
+    "docs/test-results/scene-composition-fragment-inheritance/protected-scene-slices.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/results.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/set-regression/browser.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/source-hashes.json": true,
+    "docs/test-results/scene-composition-fragment-inheritance/ui-regression-initial.log": true,
+    "docs/test-results/scene-composition-fragment-inheritance/ui-tests-initial.log": true,
+    "docs/test-results/scene-composition-fragment-rename/app-check.log": true,
+    "docs/test-results/scene-composition-fragment-rename/boundary-cases.mjs": true,
+    "docs/test-results/scene-composition-fragment-rename/boundary-source-results.json": true,
+    "docs/test-results/scene-composition-fragment-rename/browser-final/browser.json": true,
+    "docs/test-results/scene-composition-fragment-rename/browser-fourth/browser.json": true,
+    "docs/test-results/scene-composition-fragment-rename/browser-initial/browser.json": true,
+    "docs/test-results/scene-composition-fragment-rename/browser-second/browser.json": true,
+    "docs/test-results/scene-composition-fragment-rename/browser-third/browser.json": true,
+    "docs/test-results/scene-composition-fragment-rename/cleanup.json": true,
+    "docs/test-results/scene-composition-fragment-rename/core-bridge-tests.log": true,
+    "docs/test-results/scene-composition-fragment-rename/core-clippy.log": true,
+    "docs/test-results/scene-composition-fragment-rename/core-fmt-check.log": true,
+    "docs/test-results/scene-composition-fragment-rename/core-independent-audit.json": true,
+    "docs/test-results/scene-composition-fragment-rename/core-native-test.log": true,
+    "docs/test-results/scene-composition-fragment-rename/core-pure-tests.log": true,
+    "docs/test-results/scene-composition-fragment-rename/core-regression-final.log": true,
+    "docs/test-results/scene-composition-fragment-rename/core-results.json": true,
+    "docs/test-results/scene-composition-fragment-rename/document-review.json": true,
+    "docs/test-results/scene-composition-fragment-rename/fixed-node.json": true,
+    "docs/test-results/scene-composition-fragment-rename/native-helpers.json": true,
+    "docs/test-results/scene-composition-fragment-rename/native-tools-build-initial.log": true,
+    "docs/test-results/scene-composition-fragment-rename/native-tools-build-second.log": true,
+    "docs/test-results/scene-composition-fragment-rename/native-tools-build.log": true,
+    "docs/test-results/scene-composition-fragment-rename/packaged-resources.json": true,
+    "docs/test-results/scene-composition-fragment-rename/prepared-check-initial.log": true,
+    "docs/test-results/scene-composition-fragment-rename/prepared-check-second.log": true,
+    "docs/test-results/scene-composition-fragment-rename/prepared-check.log": true,
+    "docs/test-results/scene-composition-fragment-rename/preservation-audit.json": true,
+    "docs/test-results/scene-composition-fragment-rename/results.json": true,
+    "docs/test-results/scene-composition-fragment-rename/review.json": true,
+    "docs/test-results/scene-composition-fragment-rename/reviewer-native-provenance.json": true,
+    "docs/test-results/scene-composition-fragment-rename/source-delta.json": true,
+    "docs/test-results/scene-composition-fragment-rename/source-hashes.json": true,
+    "docs/test-results/scene-composition-fragment-rename/web-focused-final.log": true,
+    "docs/test-results/scene-composition-fragment-rename/web-validation.json": true,
+    "docs/test-results/scene-composition-fragment-rename/workflow-tests-final.log": true,
+    "docs/test-results/scene-composition-group-authoring/app-check.log": true,
+    "docs/test-results/scene-composition-group-authoring/browser-confirmed/browser.json": true,
+    "docs/test-results/scene-composition-group-authoring/cleanup.json": true,
+    "docs/test-results/scene-composition-group-authoring/core-bridge-tests.log": true,
+    "docs/test-results/scene-composition-group-authoring/core-native-test.log": true,
+    "docs/test-results/scene-composition-group-authoring/core-pure-tests.log": true,
+    "docs/test-results/scene-composition-group-authoring/core-regression-final.log": true,
+    "docs/test-results/scene-composition-group-authoring/core-results.json": true,
+    "docs/test-results/scene-composition-group-authoring/document-review.json": true,
+    "docs/test-results/scene-composition-group-authoring/native-helpers.json": true,
+    "docs/test-results/scene-composition-group-authoring/packaged-resources.json": true,
+    "docs/test-results/scene-composition-group-authoring/preservation-audit.json": true,
+    "docs/test-results/scene-composition-group-authoring/results.json": true,
+    "docs/test-results/scene-composition-group-authoring/review.json": true,
+    "docs/test-results/scene-composition-group-authoring/source-delta.json": true,
+    "docs/test-results/scene-composition-group-authoring/source-hashes.json": true,
+    "docs/test-results/scene-composition-group-authoring/web-focused-second.log": true,
+    "docs/test-results/scene-composition-group-authoring/web-regression.log": true,
+    "docs/test-results/scene-composition-group-authoring/workflow-tests-final.log": true,
+    "docs/test-results/scene-composition-inheritance/boundary-review.json": true,
+    "docs/test-results/scene-composition-inheritance/browser/browser.json": true,
+    "docs/test-results/scene-composition-inheritance/core-tests.log": true,
+    "docs/test-results/scene-composition-inheritance/focused-tests.log": true,
+    "docs/test-results/scene-composition-inheritance/prepared-resources.json": true,
+    "docs/test-results/scene-composition-inheritance/results.json": true,
+    "docs/test-results/scene-composition-multi-create/summary.json": true,
+    "docs/test-results/scene-composition-overrides/browser/browser.json": true,
+    "docs/test-results/scene-composition-overrides/core-bridge.log": true,
+    "docs/test-results/scene-composition-overrides/packaged-resources.json": true,
+    "docs/test-results/scene-composition-overrides/results.json": true,
+    "docs/test-results/scene-composition-placement-offset/app-check.log": true,
+    "docs/test-results/scene-composition-placement-offset/batch-evidence-relocation.json": true,
+    "docs/test-results/scene-composition-placement-offset/batch-regression/browser.json": true,
+    "docs/test-results/scene-composition-placement-offset/boundary-probe-initial.log": true,
+    "docs/test-results/scene-composition-placement-offset/boundary-probe.json": true,
+    "docs/test-results/scene-composition-placement-offset/boundary-receipt-probe.json": true,
+    "docs/test-results/scene-composition-placement-offset/boundary-review.json": true,
+    "docs/test-results/scene-composition-placement-offset/browser-initial/browser.json": true,
+    "docs/test-results/scene-composition-placement-offset/browser-second/browser.json": true,
+    "docs/test-results/scene-composition-placement-offset/browser/browser.json": true,
+    "docs/test-results/scene-composition-placement-offset/cleanup.json": true,
+    "docs/test-results/scene-composition-placement-offset/core-clippy.log": true,
+    "docs/test-results/scene-composition-placement-offset/core-fmt.log": true,
+    "docs/test-results/scene-composition-placement-offset/core-focus.log": true,
+    "docs/test-results/scene-composition-placement-offset/core-native-test-initial.log": true,
+    "docs/test-results/scene-composition-placement-offset/core-native-test.log": true,
+    "docs/test-results/scene-composition-placement-offset/core-source-hashes.json": true,
+    "docs/test-results/scene-composition-placement-offset/core-wasm-build.log": true,
+    "docs/test-results/scene-composition-placement-offset/focused-tests.log": true,
+    "docs/test-results/scene-composition-placement-offset/frozen-backend-baseline.json": true,
+    "docs/test-results/scene-composition-placement-offset/historical-baseline.json": true,
+    "docs/test-results/scene-composition-placement-offset/historical-preservation.json": true,
+    "docs/test-results/scene-composition-placement-offset/host-parent-tests.log": true,
+    "docs/test-results/scene-composition-placement-offset/inheritance-regression/browser.json": true,
+    "docs/test-results/scene-composition-placement-offset/native-helpers.json": true,
+    "docs/test-results/scene-composition-placement-offset/new-test-counts.json": true,
+    "docs/test-results/scene-composition-placement-offset/packaged-resources.json": true,
+    "docs/test-results/scene-composition-placement-offset/parent-preview-initial.log": true,
+    "docs/test-results/scene-composition-placement-offset/prepared-check-initial.log": true,
+    "docs/test-results/scene-composition-placement-offset/prepared-check.mjs": true,
+    "docs/test-results/scene-composition-placement-offset/protected-scene-slices.json": true,
+    "docs/test-results/scene-composition-placement-offset/results.json": true,
+    "docs/test-results/scene-composition-placement-offset/source-hashes.json": true,
+    "docs/test-results/scene-composition-placement-offset/ui-regression-initial.log": true,
+    "docs/test-results/scene-composition-placement-offset/ui-tests-final.log": true,
+    "docs/test-results/scene-composition-placement-offset/ui-tests-initial.log": true,
+    "docs/test-results/scene-composition-placement-structure/app-check.log": true,
+    "docs/test-results/scene-composition-placement-structure/browser-confirmed/browser.json": true,
+    "docs/test-results/scene-composition-placement-structure/cleanup.json": true,
+    "docs/test-results/scene-composition-placement-structure/core-js-tests-final.log": true,
+    "docs/test-results/scene-composition-placement-structure/core-native-test-final.log": true,
+    "docs/test-results/scene-composition-placement-structure/core-regression-final.log": true,
+    "docs/test-results/scene-composition-placement-structure/core-results.json": true,
+    "docs/test-results/scene-composition-placement-structure/final-doc-review.json": true,
+    "docs/test-results/scene-composition-placement-structure/native-helpers.json": true,
+    "docs/test-results/scene-composition-placement-structure/packaged-resources.json": true,
+    "docs/test-results/scene-composition-placement-structure/preservation-audit.json": true,
+    "docs/test-results/scene-composition-placement-structure/results.json": true,
+    "docs/test-results/scene-composition-placement-structure/review.json": true,
+    "docs/test-results/scene-composition-placement-structure/source-delta.json": true,
+    "docs/test-results/scene-composition-placement-structure/source-hashes.json": true,
+    "docs/test-results/scene-composition-placement-structure/web-focused-initial.log": true,
+    "docs/test-results/scene-composition-placement-structure/web-regression.log": true,
+    "docs/test-results/scene-composition-placement-structure/workflow-tests.log": true,
+    "docs/test-results/scene-composition-preview/browser/browser.json": true,
+    "docs/test-results/scene-composition-preview/packaged-resources.json": true,
+    "docs/test-results/scene-composition-preview/results.json": true,
+    "docs/test-results/scene-composition-structure/app-check.log": true,
+    "docs/test-results/scene-composition-structure/batch-regression/browser.json": true,
+    "docs/test-results/scene-composition-structure/boundary-review.json": true,
+    "docs/test-results/scene-composition-structure/browser-confirmed/browser.json": true,
+    "docs/test-results/scene-composition-structure/cleanup.json": true,
+    "docs/test-results/scene-composition-structure/core-native-test.log": true,
+    "docs/test-results/scene-composition-structure/final-audit.json": true,
+    "docs/test-results/scene-composition-structure/focused-tests.log": true,
+    "docs/test-results/scene-composition-structure/host-review.json": true,
+    "docs/test-results/scene-composition-structure/packaged-resources.json": true,
+    "docs/test-results/scene-composition-structure/results.json": true,
+    "docs/test-results/scene-composition-structure/single-regression/browser.json": true,
+    "docs/test-results/scene-composition-workflow/browser/browser.json": true,
+    "docs/test-results/scene-composition-workflow/packaged-resources.json": true,
+    "docs/test-results/scene-composition-workflow/results.json": true,
+    "docs/test-results/scene-composition/packaged-resources.json": true,
+    "docs/test-results/scene-composition/results.json": true,
+    "docs/test-results/scene-draft-preview/app-check-verified.log": true,
+    "docs/test-results/scene-draft-preview/backend.log": true,
+    "docs/test-results/scene-draft-preview/browser-final-verified/browser.json": true,
+    "docs/test-results/scene-draft-preview/host-ui.log": true,
+    "docs/test-results/scene-draft-preview/http.log": true,
+    "docs/test-results/scene-draft-preview/results.json": true,
+    "docs/test-results/scene-edit/results.json": true,
+    "docs/test-results/scene-groups/browser-final/browser.json": true,
+    "docs/test-results/scene-groups/group-core-tests.log": true,
+    "docs/test-results/scene-groups/packaged-resources.json": true,
+    "docs/test-results/scene-groups/results.json": true,
+    "docs/test-results/scene-groups/semantics-tests.log": true,
+    "docs/test-results/scene-instances/browser/browser.json": true,
+    "docs/test-results/scene-instances/packaged-resources.json": true,
+    "docs/test-results/scene-instances/results.json": true,
+    "docs/test-results/scene-instances/runtime-review-tests.log": true,
+    "docs/test-results/scene-layout/results.json": true,
+    "docs/test-results/scene-physics2d-character-events/README.md": true,
+    "docs/test-results/scene-physics2d-character-events/author-starters-tests.log": true,
+    "docs/test-results/scene-physics2d-character-events/backend-attempt-1.log": true,
+    "docs/test-results/scene-physics2d-character-events/backend-attempts.log": true,
+    "docs/test-results/scene-physics2d-character-events/backend-native.json": true,
+    "docs/test-results/scene-physics2d-character-events/backend-native.log": true,
+    "docs/test-results/scene-physics2d-character-events/browser-1792923394906/browser.json": true,
+    "docs/test-results/scene-physics2d-character-events/browser-1792923463955/browser.json": true,
+    "docs/test-results/scene-physics2d-character-events/browser-1792923513322/browser.json": true,
+    "docs/test-results/scene-physics2d-character-events/browser-1792923577290/browser.json": true,
+    "docs/test-results/scene-physics2d-character-events/full-check.log": true,
+    "docs/test-results/scene-physics2d-character-events/ui-regression.log": true,
+    "docs/test-results/scene-physics2d-character-motion/README.md": true,
+    "docs/test-results/scene-physics2d-character-motion/backend-native.json": true,
+    "docs/test-results/scene-physics2d-character-motion/browser-1792921421837/browser.json": true,
+    "docs/test-results/scene-physics2d-character-motion/browser-1792921479654/browser.json": true,
+    "docs/test-results/scene-physics2d-character-motion/core-edit-js.log": true,
+    "docs/test-results/scene-physics2d-character-motion/core-edit-regression.log": true,
+    "docs/test-results/scene-physics2d-character-motion/full-check.log": true,
+    "docs/test-results/scene-physics2d-character-motion/plan.log": true,
+    "docs/test-results/scene-physics2d-character-motion/rust-full.log": true,
+    "docs/test-results/scene-physics2d-contact-events/README.md": true,
+    "docs/test-results/scene-physics2d-contact-events/author-starters-tests.log": true,
+    "docs/test-results/scene-physics2d-contact-events/backend-adapter-tests.log": true,
+    "docs/test-results/scene-physics2d-contact-events/backend-first-native.log": true,
+    "docs/test-results/scene-physics2d-contact-events/backend-native.json": true,
+    "docs/test-results/scene-physics2d-contact-events/backend-native.log": true,
+    "docs/test-results/scene-physics2d-contact-events/backend-pure-tests.log": true,
+    "docs/test-results/scene-physics2d-contact-events/browser-1792927451814/browser.json": true,
+    "docs/test-results/scene-physics2d-contact-events/full-check.log": true,
+    "docs/test-results/scene-physics2d-contact-events/legacy-events-native.json": true,
+    "docs/test-results/scene-physics2d-contact-events/legacy-native.log": true,
+    "docs/test-results/scene-physics2d-contact-events/legacy-one-way-native.json": true,
+    "docs/test-results/scene-physics2d-contact-events/legacy-starter-hashes.json": true,
+    "docs/test-results/scene-physics2d-contact-events/ui-regression.log": true,
+    "docs/test-results/scene-physics2d-creation/README.md": true,
+    "docs/test-results/scene-physics2d-drop-through/README.md": true,
+    "docs/test-results/scene-physics2d-drop-through/browser-first/browser.json": true,
+    "docs/test-results/scene-physics2d-drop-through/browser-verification.json": true,
+    "docs/test-results/scene-physics2d-drop-through/full-check.log": true,
+    "docs/test-results/scene-physics2d-drop-through/native-final.json": true,
+    "docs/test-results/scene-physics2d-editor/README.md": true,
+    "docs/test-results/scene-physics2d-editor/browser-1792828666896/browser.json": true,
+    "docs/test-results/scene-physics2d-observation/README.md": true,
+    "docs/test-results/scene-physics2d-observation/backend-adjacent-confirmed.log": true,
+    "docs/test-results/scene-physics2d-observation/backend-final.json": true,
+    "docs/test-results/scene-physics2d-observation/backend-final.log": true,
+    "docs/test-results/scene-physics2d-observation/backend-live.json": true,
+    "docs/test-results/scene-physics2d-observation/backend-live.log": true,
+    "docs/test-results/scene-physics2d-observation/browser-1792919625779/browser.json": true,
+    "docs/test-results/scene-physics2d-observation/full-check.log": true,
+    "docs/test-results/scene-physics2d-observation/legacy-native-final.log": true,
+    "docs/test-results/scene-physics2d-observation/links.json": true,
+    "docs/test-results/scene-physics2d-observation/preservation.json": true,
+    "docs/test-results/scene-physics2d-observation/ui-regression.log": true,
+    "docs/test-results/scene-physics2d-one-way/README.md": true,
+    "docs/test-results/scene-physics2d-one-way/adapter-retest.log": true,
+    "docs/test-results/scene-physics2d-one-way/backend-mask-retest.json": true,
+    "docs/test-results/scene-physics2d-one-way/backend-mask-retest.log": true,
+    "docs/test-results/scene-physics2d-one-way/backend-native.json": true,
+    "docs/test-results/scene-physics2d-one-way/backend-native.log": true,
+    "docs/test-results/scene-physics2d-one-way/browser-1792925092123/browser.json": true,
+    "docs/test-results/scene-physics2d-one-way/core-edit-js.log": true,
+    "docs/test-results/scene-physics2d-one-way/core-edit-regression.log": true,
+    "docs/test-results/scene-physics2d-one-way/full-check-recheck.log": true,
+    "docs/test-results/scene-physics2d-one-way/full-check.log": true,
+    "docs/test-results/scene-physics2d-one-way/legacy-events-native.json": true,
+    "docs/test-results/scene-physics2d-one-way/legacy-events-native.log": true,
+    "docs/test-results/scene-physics2d-one-way/plan-generator.log": true,
+    "docs/test-results/scene-physics2d-one-way/rust-full.log": true,
+    "docs/test-results/scene-physics2d-one-way/ui-regression.log": true,
+    "docs/test-results/scene-physics2d-one-way/wasm-build.log": true,
+    "docs/test-results/scene-physics2d-planar-contacts/README.md": true,
+    "docs/test-results/scene-physics2d-planar-contacts/browser-1792996821232/browser.json": true,
+    "docs/test-results/scene-physics2d-planar-contacts/full-check.log": true,
+    "docs/test-results/scene-physics2d-planar-contacts/legacy-027-native.json": true,
+    "docs/test-results/scene-physics2d-planar-contacts/native-final/media-validation.json": true,
+    "docs/test-results/scene-physics2d-planar-contacts/native-final/validation.json": true,
+    "docs/test-results/scene-physics2d-planar-contacts/native-full.json": true,
+    "docs/test-results/scene-physics2d-platform-events/README.md": true,
+    "docs/test-results/scene-physics2d-platform-events/browser-verification.json": true,
+    "docs/test-results/scene-physics2d-platform-events/full-check.log": true,
+    "docs/test-results/scene-physics2d-platform-events/native-final.json": true,
+    "docs/test-results/scene-physics2d-platform-motion/README.md": true,
+    "docs/test-results/scene-physics2d-platform-motion/browser-1793001510579/browser.json": true,
+    "docs/test-results/scene-physics2d-platform-motion/core-summary.json": true,
+    "docs/test-results/scene-physics2d-platform-motion/full-check.log": true,
+    "docs/test-results/scene-physics2d-platform-motion/native-final.json": true,
+    "docs/test-results/scene-physics2d-response/README.md": true,
+    "docs/test-results/scene-physics2d-response/backend.json": true,
+    "docs/test-results/scene-physics2d-response/backend.log": true,
+    "docs/test-results/scene-physics2d-response/browser-1792916900275/browser.json": true,
+    "docs/test-results/scene-physics2d-response/core-native-full.log": true,
+    "docs/test-results/scene-physics2d-response/creation.log": true,
+    "docs/test-results/scene-physics2d-response/domain-core.log": true,
+    "docs/test-results/scene-physics2d-response/full-check.log": true,
+    "docs/test-results/scene-physics2d-response/provenance.json": true,
+    "docs/test-results/scene-physics2d-response/ui.log": true,
+    "docs/test-results/scene-physics2d-space-edit/README.md": true,
+    "docs/test-results/scene-physics2d-space-edit/browser-1792911596807/browser.json": true,
+    "docs/test-results/scene-physics2d-space-edit/checks.json": true,
+    "docs/test-results/scene-physics2d-space-edit/focused.log": true,
+    "docs/test-results/scene-physics2d-space-edit/full-check.log": true,
+    "docs/test-results/scene-physics2d-space-edit/preservation.json": true,
+    "docs/test-results/scene-physics2d-space-resize/README.md": true,
+    "docs/test-results/scene-physics2d-space-resize/browser-1792913064081/browser.json": true,
+    "docs/test-results/scene-physics2d-space-resize/browser-1792913138632/browser.json": true,
+    "docs/test-results/scene-physics2d-space-resize/browser-1792913553567/browser.json": true,
+    "docs/test-results/scene-physics2d-space-resize/checks.json": true,
+    "docs/test-results/scene-physics2d-space-resize/focused.log": true,
+    "docs/test-results/scene-physics2d-space-resize/full-check.log": true,
+    "docs/test-results/scene-physics2d-space-resize/preservation.json": true,
+    "docs/test-results/scene-physics2d-space/README.md": true,
+    "docs/test-results/scene-physics2d-space/browser-1792835175573/browser.json": true,
+    "docs/test-results/scene-physics2d-space/full-check.log": true,
+    "docs/test-results/scene-physics2d-space/preservation.json": true,
+    "docs/test-results/scene-physics2d-targets/README.md": true,
+    "docs/test-results/scene-physics2d/README.md": true,
+    "docs/test-results/scene-preview/browser.json": true,
+    "docs/test-results/scene-preview/results.json": true,
+    "docs/test-results/scene-selection/results.json": true,
+    "docs/test-results/scene-source-layout/app-check-verified.log": true,
+    "docs/test-results/scene-source-layout/browser-render/browser.json": true,
+    "docs/test-results/scene-source-layout/browser-saved-layout/browser.json": true,
+    "docs/test-results/scene-source-layout/engine-final.log": true,
+    "docs/test-results/scene-source-layout/host-integration.log": true,
+    "docs/test-results/scene-source-layout/packaged-resources.json": true,
+    "docs/test-results/scene-source-layout/results.json": true,
+    "docs/test-results/scene-source-model/browser-verified/browser.json": true,
+    "docs/test-results/scene-source-model/packaged-resources.json": true,
+    "docs/test-results/scene-source-model/results.json": true,
+    "docs/test-results/scene2d-build/results.json": true,
+    "docs/test-results/scene2d-build/window-session.json": true,
+    "docs/test-results/scene3d-alignment-authoring/application-check-confirmed.log": true,
+    "docs/test-results/scene3d-alignment-authoring/application-timing.json": true,
+    "docs/test-results/scene3d-alignment-authoring/baseline.json": true,
+    "docs/test-results/scene3d-alignment-authoring/core-bridge-initial.log": true,
+    "docs/test-results/scene3d-alignment-authoring/core-native-tests-confirmed.log": true,
+    "docs/test-results/scene3d-alignment-authoring/core-proposal-initial.log": true,
+    "docs/test-results/scene3d-alignment-authoring/core-regression.log": true,
+    "docs/test-results/scene3d-alignment-authoring/core-results.json": true,
+    "docs/test-results/scene3d-alignment-authoring/host-tests-initial.log": true,
+    "docs/test-results/scene3d-alignment-authoring/implementation-ready.json": true,
+    "docs/test-results/scene3d-alignment-authoring/module-tests-isolation-diagnostic.log": true,
+    "docs/test-results/scene3d-alignment-authoring/packaged-resources-browser-final.json": true,
+    "docs/test-results/scene3d-alignment-authoring/prepared-confirmation-browser-final.json": true,
+    "docs/test-results/scene3d-alignment-authoring/prepared-final-binding.json": true,
+    "docs/test-results/scene3d-alignment-authoring/quality-initial.json": true,
+    "docs/test-results/scene3d-alignment-authoring/results.json": true,
+    "docs/test-results/scene3d-alignment-authoring/source-hashes-browser-final.json": true,
+    "docs/test-results/scene3d-alignment-authoring/source-phase-confirmation.json": true,
+    "docs/test-results/scene3d-alignment-authoring/stage-preservation.json": true,
+    "docs/test-results/scene3d-alignment-authoring/stage-review.json": true,
+    "docs/test-results/scene3d-alignment-authoring/ui-and-i18n-confirmed.log": true,
+    "docs/test-results/scene3d-alignment-authoring/ui-quality-initial.json": true,
+    "docs/test-results/scene3d-alignment-authoring/visual-review-independent.json": true,
+    "docs/test-results/scene3d-alignment-authoring/visual-review-web.json": true,
+    "docs/test-results/scene3d-alignment-authoring/web-legacy-addendum.json": true,
+    "docs/test-results/scene3d-alignment-authoring/web-validation.json": true,
+    "docs/test-results/scene3d-copy-authoring/application-checks.log": true,
+    "docs/test-results/scene3d-copy-authoring/application-timing.json": true,
+    "docs/test-results/scene3d-copy-authoring/baseline.json": true,
+    "docs/test-results/scene3d-copy-authoring/core-build-freeze.json": true,
+    "docs/test-results/scene3d-copy-authoring/core-js-tests-initial.log": true,
+    "docs/test-results/scene3d-copy-authoring/core-native-tests-initial.log": true,
+    "docs/test-results/scene3d-copy-authoring/core-regression.log": true,
+    "docs/test-results/scene3d-copy-authoring/core-results.json": true,
+    "docs/test-results/scene3d-copy-authoring/host-tests.log": true,
+    "docs/test-results/scene3d-copy-authoring/implementation-ready.json": true,
+    "docs/test-results/scene3d-copy-authoring/legacy-addon.json": true,
+    "docs/test-results/scene3d-copy-authoring/module-tests.log": true,
+    "docs/test-results/scene3d-copy-authoring/packaged-resources.json": true,
+    "docs/test-results/scene3d-copy-authoring/prepared-final-binding.json": true,
+    "docs/test-results/scene3d-copy-authoring/quality-initial.json": true,
+    "docs/test-results/scene3d-copy-authoring/results.json": true,
+    "docs/test-results/scene3d-copy-authoring/source-freeze-final.json": true,
+    "docs/test-results/scene3d-copy-authoring/source-hashes-final.json": true,
+    "docs/test-results/scene3d-copy-authoring/stage-preservation.json": true,
+    "docs/test-results/scene3d-copy-authoring/stage-review.json": true,
+    "docs/test-results/scene3d-copy-authoring/ui-and-i18n-confirmed.log": true,
+    "docs/test-results/scene3d-copy-authoring/ui-quality-initial.json": true,
+    "docs/test-results/scene3d-copy-authoring/visual-review-independent.json": true,
+    "docs/test-results/scene3d-copy-authoring/visual-review.json": true,
+    "docs/test-results/scene3d-copy-authoring/web-validation.json": true,
+    "docs/test-results/scene3d-distribution-authoring/application-check.log": true,
+    "docs/test-results/scene3d-distribution-authoring/application-timing.json": true,
+    "docs/test-results/scene3d-distribution-authoring/baseline.json": true,
+    "docs/test-results/scene3d-distribution-authoring/core-build-freeze.json": true,
+    "docs/test-results/scene3d-distribution-authoring/core-js-tests-initial.log": true,
+    "docs/test-results/scene3d-distribution-authoring/core-native-tests-confirmed.log": true,
+    "docs/test-results/scene3d-distribution-authoring/core-native-tests-initial.log": true,
+    "docs/test-results/scene3d-distribution-authoring/core-regression.log": true,
+    "docs/test-results/scene3d-distribution-authoring/core-results.json": true,
+    "docs/test-results/scene3d-distribution-authoring/host-tests.log": true,
+    "docs/test-results/scene3d-distribution-authoring/implementation-ready.json": true,
+    "docs/test-results/scene3d-distribution-authoring/initial-producer/scene3d_distribution_patch.rs": true,
+    "docs/test-results/scene3d-distribution-authoring/module-tests.log": true,
+    "docs/test-results/scene3d-distribution-authoring/packaged-resources.json": true,
+    "docs/test-results/scene3d-distribution-authoring/prepared-final-binding.json": true,
+    "docs/test-results/scene3d-distribution-authoring/quality-initial.json": true,
+    "docs/test-results/scene3d-distribution-authoring/results.json": true,
+    "docs/test-results/scene3d-distribution-authoring/source-freeze-final.json": true,
+    "docs/test-results/scene3d-distribution-authoring/source-hashes-final.json": true,
+    "docs/test-results/scene3d-distribution-authoring/stage-preservation.json": true,
+    "docs/test-results/scene3d-distribution-authoring/stage-review.json": true,
+    "docs/test-results/scene3d-distribution-authoring/ui-and-i18n-confirmed.log": true,
+    "docs/test-results/scene3d-distribution-authoring/ui-quality-initial.json": true,
+    "docs/test-results/scene3d-distribution-authoring/visual-review-independent.json": true,
+    "docs/test-results/scene3d-distribution-authoring/visual-review-web.json": true,
+    "docs/test-results/scene3d-distribution-authoring/web-legacy-addendum.json": true,
+    "docs/test-results/scene3d-distribution-authoring/web-validation.json": true,
+    "docs/test-results/scene3d-environment-authoring/application-timing.json": true,
+    "docs/test-results/scene3d-environment-authoring/atlas-preservation-review.json": true,
+    "docs/test-results/scene3d-environment-authoring/baseline.json": true,
+    "docs/test-results/scene3d-environment-authoring/browser-environment-confirmed/browser.json": true,
+    "docs/test-results/scene3d-environment-authoring/cleanup.json": true,
+    "docs/test-results/scene3d-environment-authoring/core-document-review-final.json": true,
+    "docs/test-results/scene3d-environment-authoring/core-results.json": true,
+    "docs/test-results/scene3d-environment-authoring/packaged-resources-final.json": true,
+    "docs/test-results/scene3d-environment-authoring/packaged-resources.json": true,
+    "docs/test-results/scene3d-environment-authoring/preservation-audit-before-cleanup.json": true,
+    "docs/test-results/scene3d-environment-authoring/receipt-key-slot-final.json": true,
+    "docs/test-results/scene3d-environment-authoring/receipt-key-swap-initial.json": true,
+    "docs/test-results/scene3d-environment-authoring/results.json": true,
+    "docs/test-results/scene3d-environment-authoring/review.json": true,
+    "docs/test-results/scene3d-environment-authoring/source-freeze-final.json": true,
+    "docs/test-results/scene3d-environment-authoring/source-freeze.json": true,
+    "docs/test-results/scene3d-environment-authoring/source-quality-initial.json": true,
+    "docs/test-results/scene3d-environment-authoring/syntax-final.json": true,
+    "docs/test-results/scene3d-environment-authoring/web-validation.json": true,
+    "docs/test-results/scene3d-fog/browser-aligned/browser.json": true,
+    "docs/test-results/scene3d-fog/godot.json": true,
+    "docs/test-results/scene3d-fog/prepared.json": true,
+    "docs/test-results/scene3d-fog/results.json": true,
+    "docs/test-results/scene3d-navigation/application-timing.json": true,
+    "docs/test-results/scene3d-navigation/atlas-preservation-review.json": true,
+    "docs/test-results/scene3d-navigation/baseline.json": true,
+    "docs/test-results/scene3d-navigation/cleanup.json": true,
+    "docs/test-results/scene3d-navigation/packaged-resources-verified.json": true,
+    "docs/test-results/scene3d-navigation/preservation-audit-before-cleanup.json": true,
+    "docs/test-results/scene3d-navigation/quality-confirmed.json": true,
+    "docs/test-results/scene3d-navigation/renderer-document-review-confirmed.json": true,
+    "docs/test-results/scene3d-navigation/renderer-results.json": true,
+    "docs/test-results/scene3d-navigation/results.json": true,
+    "docs/test-results/scene3d-navigation/review.json": true,
+    "docs/test-results/scene3d-navigation/source-freeze-verified.json": true,
+    "docs/test-results/scene3d-navigation/web-validation.json": true,
+    "docs/test-results/scene3d-object-authoring/app-check.log": true,
+    "docs/test-results/scene3d-object-authoring/application-timing.json": true,
+    "docs/test-results/scene3d-object-authoring/atlas-preservation-review.json": true,
+    "docs/test-results/scene3d-object-authoring/browser-objects-final/browser.json": true,
+    "docs/test-results/scene3d-object-authoring/browser-objects-second/browser.json": true,
+    "docs/test-results/scene3d-object-authoring/browser-transform-regression-1/browser.json": true,
+    "docs/test-results/scene3d-object-authoring/cleanup.json": true,
+    "docs/test-results/scene3d-object-authoring/core-bridge-tests.log": true,
+    "docs/test-results/scene3d-object-authoring/core-clippy.log": true,
+    "docs/test-results/scene3d-object-authoring/core-fmt-check.log": true,
+    "docs/test-results/scene3d-object-authoring/core-native-test.log": true,
+    "docs/test-results/scene3d-object-authoring/core-regression-final.log": true,
+    "docs/test-results/scene3d-object-authoring/core-results.json": true,
+    "docs/test-results/scene3d-object-authoring/host-boundary-initial.json": true,
+    "docs/test-results/scene3d-object-authoring/packaged-resources.json": true,
+    "docs/test-results/scene3d-object-authoring/portable-host-initial.log": true,
+    "docs/test-results/scene3d-object-authoring/preservation-audit-before-cleanup.json": true,
+    "docs/test-results/scene3d-object-authoring/results.json": true,
+    "docs/test-results/scene3d-object-authoring/review.json": true,
+    "docs/test-results/scene3d-object-authoring/source-boundary-initial.json": true,
+    "docs/test-results/scene3d-object-authoring/ui-boundary-final.json": true,
+    "docs/test-results/scene3d-object-authoring/ui-tests-layout-final.log": true,
+    "docs/test-results/scene3d-object-authoring/web-validation.json": true,
+    "docs/test-results/scene3d-orientation/browser/browser.json": true,
+    "docs/test-results/scene3d-orientation/preflight.json": true,
+    "docs/test-results/scene3d-orientation/prepared.json": true,
+    "docs/test-results/scene3d-orientation/report.json": true,
+    "docs/test-results/scene3d-orientation/targeted-tests.tap": true,
+    "docs/test-results/scene3d-orthographic/browser/browser.json": true,
+    "docs/test-results/scene3d-orthographic/preflight.json": true,
+    "docs/test-results/scene3d-orthographic/prepared.json": true,
+    "docs/test-results/scene3d-orthographic/report.json": true,
+    "docs/test-results/scene3d-orthographic/targeted-tests.tap": true,
+    "docs/test-results/scene3d-pan/browser/browser.json": true,
+    "docs/test-results/scene3d-pan/preflight.json": true,
+    "docs/test-results/scene3d-pan/prepared.json": true,
+    "docs/test-results/scene3d-pan/report.json": true,
+    "docs/test-results/scene3d-pan/targeted-tests.tap": true,
+    "docs/test-results/scene3d-particles/browser-final/browser.json": true,
+    "docs/test-results/scene3d-particles/core/core-results.json": true,
+    "docs/test-results/scene3d-particles/godot-gl.json": true,
+    "docs/test-results/scene3d-particles/godot.json": true,
+    "docs/test-results/scene3d-particles/gpu/gpu-results.json": true,
+    "docs/test-results/scene3d-particles/prepared.json": true,
+    "docs/test-results/scene3d-particles/results.json": true,
+    "docs/test-results/scene3d-picking/application-timing.json": true,
+    "docs/test-results/scene3d-picking/atlas-preservation-review.json": true,
+    "docs/test-results/scene3d-picking/baseline.json": true,
+    "docs/test-results/scene3d-picking/cleanup.json": true,
+    "docs/test-results/scene3d-picking/extreme-frame-final.json": true,
+    "docs/test-results/scene3d-picking/packaged-resources.json": true,
+    "docs/test-results/scene3d-picking/preservation-audit-before-cleanup.json": true,
+    "docs/test-results/scene3d-picking/quality-confirmed.json": true,
+    "docs/test-results/scene3d-picking/renderer-results.json": true,
+    "docs/test-results/scene3d-picking/results.json": true,
+    "docs/test-results/scene3d-picking/review.json": true,
+    "docs/test-results/scene3d-picking/source-freeze-final.json": true,
+    "docs/test-results/scene3d-picking/web-validation.json": true,
+    "docs/test-results/scene3d-primitives/app-check.log": true,
+    "docs/test-results/scene3d-primitives/backend-results.json": true,
+    "docs/test-results/scene3d-primitives/boundary-source-results.json": true,
+    "docs/test-results/scene3d-primitives/browser-label-final/browser.json": true,
+    "docs/test-results/scene3d-primitives/cleanup.json": true,
+    "docs/test-results/scene3d-primitives/core-backend-boundary-review.json": true,
+    "docs/test-results/scene3d-primitives/core-clippy.log": true,
+    "docs/test-results/scene3d-primitives/core-cross-review.json": true,
+    "docs/test-results/scene3d-primitives/core-final-confirmation-label.json": true,
+    "docs/test-results/scene3d-primitives/core-fmt-check.log": true,
+    "docs/test-results/scene3d-primitives/core-independent-audit.json": true,
+    "docs/test-results/scene3d-primitives/core-native-test.log": true,
+    "docs/test-results/scene3d-primitives/core-regression-final.log": true,
+    "docs/test-results/scene3d-primitives/core-results.json": true,
+    "docs/test-results/scene3d-primitives/document-review.json": true,
+    "docs/test-results/scene3d-primitives/export-tests-final.log": true,
+    "docs/test-results/scene3d-primitives/fixed-node.json": true,
+    "docs/test-results/scene3d-primitives/godot-final.json": true,
+    "docs/test-results/scene3d-primitives/native-helpers.json": true,
+    "docs/test-results/scene3d-primitives/packaged-resources.json": true,
+    "docs/test-results/scene3d-primitives/prepared-check-label-final.log": true,
+    "docs/test-results/scene3d-primitives/preservation-audit.json": true,
+    "docs/test-results/scene3d-primitives/results.json": true,
+    "docs/test-results/scene3d-primitives/review.json": true,
+    "docs/test-results/scene3d-primitives/source-delta.json": true,
+    "docs/test-results/scene3d-primitives/source-hashes.json": true,
+    "docs/test-results/scene3d-primitives/web-focused-label-final.log": true,
+    "docs/test-results/scene3d-primitives/web-validation.json": true,
+    "docs/test-results/scene3d-property-authoring/application-timing.json": true,
+    "docs/test-results/scene3d-property-authoring/atlas-preservation-review.json": true,
+    "docs/test-results/scene3d-property-authoring/baseline.json": true,
+    "docs/test-results/scene3d-property-authoring/cleanup.json": true,
+    "docs/test-results/scene3d-property-authoring/core-document-review.json": true,
+    "docs/test-results/scene3d-property-authoring/core-results.json": true,
+    "docs/test-results/scene3d-property-authoring/packaged-resources-confirmed.json": true,
+    "docs/test-results/scene3d-property-authoring/preservation-audit-before-cleanup.json": true,
+    "docs/test-results/scene3d-property-authoring/results.json": true,
+    "docs/test-results/scene3d-property-authoring/review.json": true,
+    "docs/test-results/scene3d-property-authoring/source-freeze-confirmed.json": true,
+    "docs/test-results/scene3d-property-authoring/source-quality-initial.json": true,
+    "docs/test-results/scene3d-removal-authoring/application-checks.log": true,
+    "docs/test-results/scene3d-removal-authoring/application-environment-correction.json": true,
+    "docs/test-results/scene3d-removal-authoring/baseline.json": true,
+    "docs/test-results/scene3d-removal-authoring/browser-copy/browser.json": true,
+    "docs/test-results/scene3d-removal-authoring/browser-objects/browser.json": true,
+    "docs/test-results/scene3d-removal-authoring/browser-preview/browser.json": true,
+    "docs/test-results/scene3d-removal-authoring/browser-removal-layout/browser.json": true,
+    "docs/test-results/scene3d-removal-authoring/browser-removal/browser.json": true,
+    "docs/test-results/scene3d-removal-authoring/core-bridge.log": true,
+    "docs/test-results/scene3d-removal-authoring/core-cli-build.log": true,
+    "docs/test-results/scene3d-removal-authoring/core-clippy.log": true,
+    "docs/test-results/scene3d-removal-authoring/core-fmt-initial.log": true,
+    "docs/test-results/scene3d-removal-authoring/core-fmt.log": true,
+    "docs/test-results/scene3d-removal-authoring/core-old-authors.json": true,
+    "docs/test-results/scene3d-removal-authoring/core-old-authors.log": true,
+    "docs/test-results/scene3d-removal-authoring/core-proposal.log": true,
+    "docs/test-results/scene3d-removal-authoring/core-results.json": true,
+    "docs/test-results/scene3d-removal-authoring/core-test.log": true,
+    "docs/test-results/scene3d-removal-authoring/core-wasm-build.log": true,
+    "docs/test-results/scene3d-removal-authoring/host-tests.log": true,
+    "docs/test-results/scene3d-removal-authoring/independent-review.json": true,
+    "docs/test-results/scene3d-removal-authoring/independent-review.mjs": true,
+    "docs/test-results/scene3d-removal-authoring/module-tests.log": true,
+    "docs/test-results/scene3d-removal-authoring/native-cli-path-binding.json": true,
+    "docs/test-results/scene3d-removal-authoring/packaged-resources-layout.json": true,
+    "docs/test-results/scene3d-removal-authoring/packaged-resources.json": true,
+    "docs/test-results/scene3d-removal-authoring/portable-removal-cases.mjs": true,
+    "docs/test-results/scene3d-removal-authoring/prepared-binding.json": true,
+    "docs/test-results/scene3d-removal-authoring/prepared-check.log": true,
+    "docs/test-results/scene3d-removal-authoring/prepared-check.mjs": true,
+    "docs/test-results/scene3d-removal-authoring/previous-studio-core.build.json": true,
+    "docs/test-results/scene3d-removal-authoring/previous-studio-core.wasm": true,
+    "docs/test-results/scene3d-removal-authoring/stage-review.json": true,
+    "docs/test-results/scene3d-removal-authoring/ui-tests-confirmed.log": true,
+    "docs/test-results/scene3d-scene-framing/browser-verified/browser.json": true,
+    "docs/test-results/scene3d-scene-framing/independent-review.json": true,
+    "docs/test-results/scene3d-scene-framing/legacy-browser/browser.json": true,
+    "docs/test-results/scene3d-scene-framing/prepared.json": true,
+    "docs/test-results/scene3d-scene-framing/regression.json": true,
+    "docs/test-results/scene3d-selection-feedback/application-timing.json": true,
+    "docs/test-results/scene3d-selection-feedback/atlas-preservation-review.json": true,
+    "docs/test-results/scene3d-selection-feedback/baseline.json": true,
+    "docs/test-results/scene3d-selection-feedback/cleanup.json": true,
+    "docs/test-results/scene3d-selection-feedback/packaged-resources.json": true,
+    "docs/test-results/scene3d-selection-feedback/prepared-confirmation.json": true,
+    "docs/test-results/scene3d-selection-feedback/preservation-audit-before-cleanup.json": true,
+    "docs/test-results/scene3d-selection-feedback/quality-initial.json": true,
+    "docs/test-results/scene3d-selection-feedback/renderer-results.json": true,
+    "docs/test-results/scene3d-selection-feedback/results.json": true,
+    "docs/test-results/scene3d-selection-feedback/review.json": true,
+    "docs/test-results/scene3d-selection-feedback/source-freeze-confirmed.json": true,
+    "docs/test-results/scene3d-selection-feedback/source-phase-confirmation.json": true,
+    "docs/test-results/scene3d-selection-feedback/web-validation.json": true,
+    "docs/test-results/scene3d-standard-views/browser/browser.json": true,
+    "docs/test-results/scene3d-standard-views/prepared.json": true,
+    "docs/test-results/scene3d-standard-views/results.json": true,
+    "docs/test-results/scene3d-touch/browser/browser.json": true,
+    "docs/test-results/scene3d-touch/preflight.json": true,
+    "docs/test-results/scene3d-touch/prepared.json": true,
+    "docs/test-results/scene3d-touch/report.json": true,
+    "docs/test-results/scene3d-touch/targeted-tests.tap": true,
+    "docs/test-results/scene3d-transform-authoring/app-check.log": true,
+    "docs/test-results/scene3d-transform-authoring/atlas-preservation-review.json": true,
+    "docs/test-results/scene3d-transform-authoring/browser-final/browser.json": true,
+    "docs/test-results/scene3d-transform-authoring/cleanup.json": true,
+    "docs/test-results/scene3d-transform-authoring/core-bridge-tests.log": true,
+    "docs/test-results/scene3d-transform-authoring/core-clippy.log": true,
+    "docs/test-results/scene3d-transform-authoring/core-document-review.json": true,
+    "docs/test-results/scene3d-transform-authoring/core-fmt-check.log": true,
+    "docs/test-results/scene3d-transform-authoring/core-native-test-second.log": true,
+    "docs/test-results/scene3d-transform-authoring/core-results.json": true,
+    "docs/test-results/scene3d-transform-authoring/packaged-resources.json": true,
+    "docs/test-results/scene3d-transform-authoring/portable-host-final.log": true,
+    "docs/test-results/scene3d-transform-authoring/preservation-audit-before-cleanup.json": true,
+    "docs/test-results/scene3d-transform-authoring/results.json": true,
+    "docs/test-results/scene3d-transform-authoring/review.json": true,
+    "docs/test-results/scene3d-transform-authoring/source-boundary-final.json": true,
+    "docs/test-results/scene3d-transform-authoring/source-delta.json": true,
+    "docs/test-results/scene3d-transform-authoring/source-hashes.json": true,
+    "docs/test-results/scene3d-transform-authoring/system-ports-final.log": true,
+    "docs/test-results/scene3d-transform-authoring/ui-boundary-final.json": true,
+    "docs/test-results/scene3d-transform-authoring/web-validation.json": true,
+    "docs/test-results/scene3d-translation-authoring/application-timing.json": true,
+    "docs/test-results/scene3d-translation-authoring/atlas-preservation-review.json": true,
+    "docs/test-results/scene3d-translation-authoring/baseline.json": true,
+    "docs/test-results/scene3d-translation-authoring/cleanup.json": true,
+    "docs/test-results/scene3d-translation-authoring/core-results.json": true,
+    "docs/test-results/scene3d-translation-authoring/host-quality-initial.json": true,
+    "docs/test-results/scene3d-translation-authoring/packaged-resources-confirmed.json": true,
+    "docs/test-results/scene3d-translation-authoring/prepared-confirmation-confirmed.json": true,
+    "docs/test-results/scene3d-translation-authoring/preservation-audit-before-cleanup.json": true,
+    "docs/test-results/scene3d-translation-authoring/quality-initial.json": true,
+    "docs/test-results/scene3d-translation-authoring/results.json": true,
+    "docs/test-results/scene3d-translation-authoring/review.json": true,
+    "docs/test-results/scene3d-translation-authoring/source-freeze-confirmed.json": true,
+    "docs/test-results/scene3d-translation-authoring/source-hashes-confirmed.json": true,
+    "docs/test-results/scene3d-translation-authoring/source-phase-confirmation.json": true,
+    "docs/test-results/scene3d-translation-authoring/ui-late-checkbox-after-fix.json": true,
+    "docs/test-results/scene3d-translation-authoring/ui-late-checkbox-confirmed.json": true,
+    "docs/test-results/scene3d-translation-authoring/ui-lifecycle-fix.json": true,
+    "docs/test-results/scene3d-translation-authoring/web-validation.json": true,
+    "docs/test-results/script-authoring/browser-verified/browser.json": true,
+    "docs/test-results/script-authoring/focused-final.log": true,
+    "docs/test-results/script-authoring/full-check.log": true,
+    "docs/test-results/script-authoring/summary.json": true,
+    "docs/test-results/script-usage/README.md": true,
+    "docs/test-results/source-diagnostics/browser-1791864433041/report.json": true,
+    "docs/test-results/source-diagnostics/focused-final.log": true,
+    "docs/test-results/source-diagnostics/full-verified.log": true,
+    "docs/test-results/source-diagnostics/position-regression-final/report.json": true,
+    "docs/test-results/source-diagnostics/resources.json": true,
+    "docs/test-results/source-diagnostics/summary.json": true,
+    "docs/test-results/source-editing/browser-1791856760717/report.json": true,
+    "docs/test-results/source-editing/focused-final.log": true,
+    "docs/test-results/source-editing/full-check.log": true,
+    "docs/test-results/source-editing/resources.json": true,
+    "docs/test-results/source-editing/summary.json": true,
+    "docs/test-results/source-navigation/browser-1791861708197/report.json": true,
+    "docs/test-results/source-navigation/focused-handoff-final.log": true,
+    "docs/test-results/source-navigation/full-final.log": true,
+    "docs/test-results/source-navigation/resources.json": true,
+    "docs/test-results/source-navigation/summary.json": true,
+    "docs/test-results/source-search/README.md": true,
+    "docs/test-results/source-search/browser-1791869406177/report.json": true,
+    "docs/test-results/source-search/full-final.log": true,
+    "docs/test-results/source-search/resources.json": true,
+    "docs/test-results/source-search/summary.json": true,
+    "docs/test-results/studio-system-modules/app-check.log": true,
+    "docs/test-results/studio-system-modules/browser-system/browser.json": true,
+    "docs/test-results/studio-system-modules/cleanup.json": true,
+    "docs/test-results/studio-system-modules/core-boundary-review.json": true,
+    "docs/test-results/studio-system-modules/final-audit.json": true,
+    "docs/test-results/studio-system-modules/final-boundary-review.json": true,
+    "docs/test-results/studio-system-modules/final-doc-review.json": true,
+    "docs/test-results/studio-system-modules/native-helpers.json": true,
+    "docs/test-results/studio-system-modules/native-provenance-regression.log": true,
+    "docs/test-results/studio-system-modules/native-provenance-review.json": true,
+    "docs/test-results/studio-system-modules/native-target-relocation.json": true,
+    "docs/test-results/studio-system-modules/native-test-review.json": true,
+    "docs/test-results/studio-system-modules/native-tools-build-final.log": true,
+    "docs/test-results/studio-system-modules/native-unit-tests.log": true,
+    "docs/test-results/studio-system-modules/new-tests.log": true,
+    "docs/test-results/studio-system-modules/packaged-resources.json": true,
+    "docs/test-results/studio-system-modules/profile-snapshot-initial.json": true,
+    "docs/test-results/studio-system-modules/results.json": true,
+    "docs/test-results/studio-system-modules/source-delta.json": true,
+    "docs/test-results/template-http-2026-09-23/results.json": true,
+    "docs/test-results/translation-refinement-2026-09-24/results.json": true,
+    "docs/test-results/trilingual-2026-09-24/results.json": true,
+    "docs/test-results/two-dimensional-workflow/README.md": true,
+    "docs/test-results/two-dimensional-workflow/full.log": true,
+    "docs/test-results/two-dimensional-workflow/resources.json": true,
+    "docs/test-results/two-dimensional-workflow/summary.json": true,
+    "docs/test-results/workflow-b.4.5/results.json": true,
+    "docs/test-results/world-create/results.json": true,
+    "docs/test-results/world-m1/results.json": true,
+    "docs/test-results/world-m2/results.json": true,
+    "docs/test-results/world-m3/results.json": true,
+    "docs/test-results/world-relations/results.json": true,
+    "docs/test-results/world-resources/results.json": true
+  },
+  "frozenCoreSources": {
+    "engine/project-queued-requests.mjs": {
+      "expected": "e94cf91a95ebb7e5c08afad7a79e3e2b460b419dd74826fe2903c996dffabd93",
+      "current": "e94cf91a95ebb7e5c08afad7a79e3e2b460b419dd74826fe2903c996dffabd93",
+      "preserved": true
+    },
+    "engine/project-animation-requests.mjs": {
+      "expected": "ca57cb4af7cd7ca1231d46b6c1b9e02e067a1a6ea30f99209256c03b03f8a719",
+      "current": "ca57cb4af7cd7ca1231d46b6c1b9e02e067a1a6ea30f99209256c03b03f8a719",
+      "preserved": true
+    },
+    "engine/project-audio-requests.mjs": {
+      "expected": "db7d8a1d22dfe4971d7e58cfb8d80fbf00ee74c3b6278cc9d5b91250038bfb6d",
+      "current": "db7d8a1d22dfe4971d7e58cfb8d80fbf00ee74c3b6278cc9d5b91250038bfb6d",
+      "preserved": true
+    },
+    "scripts/tests/project-audio-requests.test.mjs": {
+      "expected": "f6679ce4e7ddb0db45cfd1579e46957e1bfe826296f4a8fce01cb3b95b67b18a",
+      "current": "f6679ce4e7ddb0db45cfd1579e46957e1bfe826296f4a8fce01cb3b95b67b18a",
+      "preserved": true
+    }
+  },
+  "changedReferencedSources": [
+    "docs/ARCHITECTURE.md",
+    "docs/BACKEND_MIDDLEWARE.md",
+    "docs/PROJECT_BUILD.md",
+    "docs/ROADMAP.md",
+    "docs/STATUS.md",
+    "engine/README.md",
+    "engine/project-animation-requests.mjs",
+    "scripts/adapters/node-project-build.mjs",
+    "scripts/backends/godot4-adapter.mjs",
+    "scripts/backends/godot4-animation-requests.mjs",
+    "scripts/backends/godot4-execution-budget.mjs",
+    "scripts/backends/godot4-execution-clock.mjs",
+    "scripts/backends/godot4-execution-frames.mjs",
+    "scripts/lib/project-build-service.mjs",
+    "scripts/tests/godot4-adapter.test.mjs",
+    "scripts/tests/godot4-project.test.mjs",
+    "scripts/tests/project-animation-requests-godot.test.mjs",
+    "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs",
+    "scripts/tests/project-animation-state-godot.test.mjs",
+    "scripts/tests/project-execution-budget-backends.test.mjs",
+    "scripts/tests/project-execution-clock-backends.test.mjs",
+    "scripts/tests/project-execution-clock-godot.test.mjs",
+    "scripts/tests/project-execution-clock-lifecycle-godot.test.mjs",
+    "scripts/tests/project-execution-frames-godot.test.mjs",
+    "scripts/tests/runtime-instance-backends.test.mjs",
+    "scripts/tests/scene-animation-godot.test.mjs"
+  ],
+  "oldBindingsUsingChangedSources": [
+    {
+      "bindingId": "b093",
+      "function": "runtime.godot_generated_project",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b095",
+      "function": "build.workbench_lifecycle",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b109",
+      "function": "scene.text_instances",
+      "paths": [
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b111",
+      "function": "runtime.native_nuis",
+      "paths": [
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b112",
+      "function": "studio.native_gui_gpu",
+      "paths": [
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b113",
+      "function": "build.standalone_distribution",
+      "paths": [
+        "docs/PROJECT_BUILD.md",
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b114",
+      "function": "core.history_migration",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b115",
+      "function": "core.semantic_migration",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b116",
+      "function": "world.mixed_changeset",
+      "paths": [
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b117",
+      "function": "behavior.csharp_deferred",
+      "paths": [
+        "docs/PROJECT_BUILD.md",
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b146",
+      "function": "scene.instances_v2",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b160",
+      "function": "scene.groups_v3",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b186",
+      "function": "scene.composition",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b191",
+      "function": "execution.backend_middleware",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md"
+      ]
+    },
+    {
+      "bindingId": "b192",
+      "function": "execution.backend_middleware",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b193",
+      "function": "execution.backend_middleware",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/godot4-adapter.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b194",
+      "function": "execution.backend_middleware",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md"
+      ]
+    },
+    {
+      "bindingId": "b196",
+      "function": "behavior.scene_runtime",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b197",
+      "function": "behavior.scene_runtime",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b205",
+      "function": "runtime.objects_inspection",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b209",
+      "function": "runtime.control_replay",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b210",
+      "function": "runtime.control_replay",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b215",
+      "function": "runtime.instance_control",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs",
+        "scripts/tests/runtime-instance-backends.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b216",
+      "function": "runtime.instance_control",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/runtime-instance-backends.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b217",
+      "function": "runtime.instance_control",
+      "paths": [
+        "scripts/tests/runtime-instance-backends.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b219",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md"
+      ]
+    },
+    {
+      "bindingId": "b220",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md"
+      ]
+    },
+    {
+      "bindingId": "b221",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "docs/PROJECT_BUILD.md",
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b222",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "docs/PROJECT_BUILD.md"
+      ]
+    },
+    {
+      "bindingId": "b223",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "docs/PROJECT_BUILD.md"
+      ]
+    },
+    {
+      "bindingId": "b225",
+      "function": "runtime.verification_cases",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b226",
+      "function": "runtime.verification_cases",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b240",
+      "function": "runtime.case_suites",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b245",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b246",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b247",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b248",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b249",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b255",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b256",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b257",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b258",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b259",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b260",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b261",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b262",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b263",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b264",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b278",
+      "function": "backend.project_management",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b279",
+      "function": "backend.project_management",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b283",
+      "function": "backend.project_catalog",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b309",
+      "function": "scene.composition_definition_rename",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b310",
+      "function": "scene.composition_definition_rename",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b311",
+      "function": "scene.composition_definition_rename",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b312",
+      "function": "scene.composition_definition_rename",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b323",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b324",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b325",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b326",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b327",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b328",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b329",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b330",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b331",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b332",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b333",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b334",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b335",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b336",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b337",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b338",
+      "function": "scene.navigation3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b339",
+      "function": "scene.navigation3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b340",
+      "function": "scene.navigation3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b341",
+      "function": "scene.navigation3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b342",
+      "function": "scene.picking3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b343",
+      "function": "scene.picking3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b344",
+      "function": "scene.picking3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b345",
+      "function": "scene.selection_feedback3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b346",
+      "function": "scene.selection_feedback3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b347",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b348",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b349",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b350",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b351",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b352",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b353",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b354",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b355",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b356",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b357",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b358",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b359",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b360",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b361",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b362",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b363",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b364",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b365",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b366",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b411",
+      "function": "backend.project_delivery",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b412",
+      "function": "backend.project_delivery",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b413",
+      "function": "backend.project_delivery",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b435",
+      "function": "authoring.source-search",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b436",
+      "function": "authoring.source-search",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b437",
+      "function": "authoring.source-search",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b438",
+      "function": "build.task-problems",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b439",
+      "function": "build.task-problems",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/PROJECT_BUILD.md"
+      ]
+    },
+    {
+      "bindingId": "b440",
+      "function": "build.task-problems",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b441",
+      "function": "scene.composition_materialize",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b442",
+      "function": "scene.composition_materialize",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b443",
+      "function": "scene.composition_materialize",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b464",
+      "function": "behavior.bevy_rust",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b488",
+      "function": "runtime.godot_audio",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b490",
+      "function": "runtime.godot_audio",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b491",
+      "function": "backend.project_delivery",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b501",
+      "function": "build.project_assembly",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b503",
+      "function": "build.project_assembly",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/godot4-project.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b509",
+      "function": "runtime.project_scene_switching",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b510",
+      "function": "runtime.project_scene_switching",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b516",
+      "function": "runtime.project_shared_state",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b517",
+      "function": "runtime.project_shared_state",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b523",
+      "function": "runtime.project_events",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b525",
+      "function": "runtime.project_events",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b530",
+      "function": "runtime.project_audio_controls",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b534",
+      "function": "runtime.project_audio_controls",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b549",
+      "function": "scene.animation2d",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/scene-animation-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b550",
+      "function": "scene.animation2d",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/tests/scene-animation-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b564",
+      "function": "scene.sprite_animation",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b567",
+      "function": "runtime.project_animation_controls",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b574",
+      "function": "scene.animation_clips",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b586",
+      "function": "runtime.project_animation_completion",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b589",
+      "function": "runtime.project_animation_completion",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b626",
+      "function": "runtime.project_animation_state_snapshots",
+      "paths": [
+        "scripts/tests/project-animation-state-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b627",
+      "function": "runtime.project_animation_state_snapshots",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/project-animation-state-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b628",
+      "function": "runtime.project_animation_state_snapshots",
+      "paths": [
+        "scripts/tests/project-animation-state-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b644",
+      "function": "runtime.project_animation_state_entry_triggers",
+      "paths": [
+        "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b645",
+      "function": "runtime.project_animation_state_entry_triggers",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b646",
+      "function": "runtime.project_animation_state_entry_triggers",
+      "paths": [
+        "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b668",
+      "function": "runtime.project_animation_instances",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b671",
+      "function": "build.project_assembly",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b676",
+      "function": "scene.physics2d",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b677",
+      "function": "scene.physics2d",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b683",
+      "function": "authoring.physics2d_targets",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b684",
+      "function": "authoring.physics2d_targets",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b686",
+      "function": "authoring.physics2d_creation",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b687",
+      "function": "authoring.physics2d_creation",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b688",
+      "function": "authoring.physics2d_creation",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b689",
+      "function": "authoring.physics2d_creation",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b704",
+      "function": "scene.physics2d_response",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b706",
+      "function": "runtime.physics2d_observation",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b707",
+      "function": "runtime.physics2d_observation",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b711",
+      "function": "scene.physics2d_character_motion",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b714",
+      "function": "runtime.physics2d_character_events",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b718",
+      "function": "scene.physics2d_one_way",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b721",
+      "function": "runtime.physics2d_character_contacts",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b723",
+      "function": "runtime.physics2d_planar_contacts",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b726",
+      "function": "runtime.physics2d_drop_through",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b729",
+      "function": "runtime.physics2d_platform_motion",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b732",
+      "function": "runtime.physics2d_platform_events",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b735",
+      "function": "runtime.observation_retention",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b738",
+      "function": "runtime.execution_budget",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/backends/godot4-execution-budget.mjs",
+        "scripts/tests/project-execution-budget-backends.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b739",
+      "function": "runtime.execution_clock",
+      "paths": [
+        "scripts/tests/project-execution-clock-backends.test.mjs",
+        "scripts/tests/project-execution-clock-godot.test.mjs",
+        "scripts/tests/project-execution-clock-lifecycle-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b740",
+      "function": "runtime.execution_clock",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/backends/godot4-execution-clock.mjs",
+        "scripts/tests/project-execution-clock-backends.test.mjs",
+        "scripts/tests/project-execution-clock-godot.test.mjs",
+        "scripts/tests/project-execution-clock-lifecycle-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b741",
+      "function": "runtime.execution_clock",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs",
+        "scripts/tests/project-execution-clock-backends.test.mjs",
+        "scripts/tests/project-execution-clock-godot.test.mjs",
+        "scripts/tests/project-execution-clock-lifecycle-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b743",
+      "function": "runtime.causal_anchors",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b744",
+      "function": "runtime.execution_frames",
+      "paths": [
+        "scripts/tests/project-execution-frames-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b745",
+      "function": "runtime.execution_frames",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/backends/godot4-execution-frames.mjs",
+        "scripts/tests/project-execution-frames-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b746",
+      "function": "runtime.execution_frames",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs",
+        "scripts/tests/project-execution-frames-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b747",
+      "function": "runtime.animation_requests",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "engine/project-animation-requests.mjs"
+      ]
+    },
+    {
+      "bindingId": "b748",
+      "function": "runtime.animation_requests",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/backends/godot4-animation-requests.mjs",
+        "scripts/tests/project-animation-requests-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b749",
+      "function": "runtime.animation_requests",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    }
+  ],
+  "scoreReviewReason": "All existing binding, cell value/reason and evidence records are exact baseline copies. Refreshed source fingerprints do not replace historic evidence or imply new certification. Only the new audio feature has added score cells; 3/3/3/2 remains scoped to implemented and validated current working-tree behavior, with no install, device playback or second backend certification.",
+  "validation": {
+    "core": {
+      "total": 136,
+      "passed": 136,
+      "skipped": 0,
+      "log": "/tmp/viento-audio-requests/core/core-official.log"
+    },
+    "targeted": {
+      "total": 174,
+      "passed": 141,
+      "skipped": 33
+    },
+    "nativeAudio": {
+      "total": 7,
+      "passed": 7,
+      "skipped": 0
+    },
+    "nativeAnimationAndZip": {
+      "total": 8,
+      "passed": 8,
+      "skipped": 0
+    },
+    "nativeAudioCompatibility": {
+      "total": 5,
+      "passed": 5,
+      "skipped": 0
+    },
+    "backends": {
+      "total": 16,
+      "passed": 16,
+      "includesRealImport": 1
+    },
+    "fullFinal": "Running at review; parent will record final outcome. Groups overlap and are not summed into coverage."
+  },
+  "delivery": {
+    "version": "0.2.5",
+    "versionUnchanged": true,
+    "stage": "working-tree",
+    "score": 2,
+    "installedStudio": "0.2.0",
+    "newInstallationOrPublication": false
+  },
+  "documentationReview": {
+    "consistent": [
+      "0.36 descriptor and audio-track generation; 0.35 animation-only; 0.34 otherwise",
+      "accepted after reservation/ID allocation/enqueue",
+      "discarded emitted synchronously before FIFO head removal during abort",
+      "applied matches backend receipt/execution position and does not prove speaker playback",
+      "fixed bounded helper UID metadata supported without granting executable inventory",
+      "old protocols, finite execution budgets, all pending and separate terminal tail retention remain"
+    ],
+    "supplements": [
+      "Include audio reserved_count alongside animation in identity section",
+      "Correct ID allocation versus accepted output ordering",
+      "List audio phase/counts/retention DTO keys explicitly"
+    ],
+    "pendingParentWork": [
+      "Update full-final claims and re-run source refresh/check"
+    ],
+    "limits": [
+      "No event queued-request identity",
+      "No continuous execution or budget reset",
+      "No new UI or installation",
+      "No Bevy audio request observer",
+      "No device playback acceptance"
+    ]
+  },
+  "atlasCheck": {
+    "date": "2026-10-28",
+    "command": "node scripts/function-atlas.mjs --check",
+    "exitCode": 0,
+    "log": "/tmp/viento-audio-requests/docs-review/atlas-check.log",
+    "counts": {
+      "functions": 180,
+      "implementations": 541,
+      "bindings": 751,
+      "cells": 3004,
+      "evidence": 3352,
+      "dependencies": 546,
+      "workflows": 144
+    },
+    "sourceSnapshotCurrent": true,
+    "note": "Checked after documentation supplement and source refresh; parent will refresh again after full-final results update."
+  }
+}

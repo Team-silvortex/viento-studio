@@ -1,0 +1,1526 @@
+{
+  "date": "2026-10-28",
+  "review": "animation-request-observation-additive-atlas",
+  "baseline": {
+    "path": "/tmp/viento-animation-requests/before/docs/function-atlas.json",
+    "sha256": "9770b2766ec3f4fd51e5edcb38db4746250fe3e0df80c7601a3248fb7ab53159",
+    "counts": {
+      "functions": 178,
+      "implementations": 535,
+      "bindings": 745,
+      "cells": 2980,
+      "evidence": 3324,
+      "dependencies": 540,
+      "workflows": 142
+    }
+  },
+  "reviewedAtlas": {
+    "path": "docs/function-atlas.json",
+    "sha256": "f76a94f5bf51d2ed5c8005f2a9e623b044b5dbb419356f91fd4e0643df3af741",
+    "counts": {
+      "functions": 179,
+      "implementations": 538,
+      "bindings": 748,
+      "cells": 2992,
+      "evidence": 3337,
+      "dependencies": 543,
+      "workflows": 143
+    }
+  },
+  "delta": {
+    "functions": 1,
+    "implementations": 3,
+    "bindings": 3,
+    "cells": 12,
+    "evidence": 13,
+    "dependencies": 3,
+    "workflows": 1
+  },
+  "preserved": {
+    "bindings": true,
+    "cells": true,
+    "evidence": true,
+    "dependencies": true,
+    "implementationEntries": true,
+    "architectureAxis": true,
+    "maturityAxis": true,
+    "legacyCoverage": true,
+    "priorities": true
+  },
+  "newScores": [
+    {
+      "bindingId": "b747",
+      "function": "runtime.animation_requests",
+      "implementation": "i536",
+      "scores": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    },
+    {
+      "bindingId": "b748",
+      "function": "runtime.animation_requests",
+      "implementation": "i537",
+      "scores": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    },
+    {
+      "bindingId": "b749",
+      "function": "runtime.animation_requests",
+      "implementation": "i538",
+      "scores": {
+        "implementation": 3,
+        "verification": 3,
+        "decoupling": 3,
+        "delivery": 2
+      }
+    }
+  ],
+  "existingFunctionTextChanges": [
+    {
+      "id": "runtime.execution_clock",
+      "changedKeys": [
+        "next"
+      ]
+    },
+    {
+      "id": "runtime.causal_anchors",
+      "changedKeys": [
+        "next"
+      ]
+    },
+    {
+      "id": "runtime.execution_frames",
+      "changedKeys": [
+        "next"
+      ]
+    }
+  ],
+  "existingWorkflowTextChanges": [
+    {
+      "id": "runtime-causal-anchors",
+      "changedKeys": [
+        "boundary"
+      ]
+    },
+    {
+      "id": "runtime-execution-frames",
+      "changedKeys": [
+        "boundary"
+      ]
+    }
+  ],
+  "existingEvidenceSourcesChanged": [
+    "docs/ARCHITECTURE.md",
+    "docs/BACKEND_MIDDLEWARE.md",
+    "docs/PROJECT_BUILD.md",
+    "docs/ROADMAP.md",
+    "docs/STATUS.md",
+    "engine/README.md",
+    "scripts/adapters/node-project-build.mjs",
+    "scripts/backends/godot4-adapter.mjs",
+    "scripts/backends/godot4-execution-budget.mjs",
+    "scripts/backends/godot4-execution-clock.mjs",
+    "scripts/backends/godot4-execution-frames.mjs",
+    "scripts/lib/project-build-service.mjs",
+    "scripts/tests/godot4-adapter.test.mjs",
+    "scripts/tests/godot4-project.test.mjs",
+    "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs",
+    "scripts/tests/project-animation-state-godot.test.mjs",
+    "scripts/tests/project-execution-budget-backends.test.mjs",
+    "scripts/tests/project-execution-clock-backends.test.mjs",
+    "scripts/tests/project-execution-clock-godot.test.mjs",
+    "scripts/tests/project-execution-frames-godot.test.mjs",
+    "scripts/tests/runtime-instance-backends.test.mjs",
+    "scripts/tests/scene-animation-godot.test.mjs"
+  ],
+  "existingBindingsReferencingChangedSources": [
+    {
+      "bindingId": "b093",
+      "function": "runtime.godot_generated_project",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b095",
+      "function": "build.workbench_lifecycle",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b109",
+      "function": "scene.text_instances",
+      "paths": [
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b111",
+      "function": "runtime.native_nuis",
+      "paths": [
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b112",
+      "function": "studio.native_gui_gpu",
+      "paths": [
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b113",
+      "function": "build.standalone_distribution",
+      "paths": [
+        "docs/PROJECT_BUILD.md",
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b114",
+      "function": "core.history_migration",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b115",
+      "function": "core.semantic_migration",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b116",
+      "function": "world.mixed_changeset",
+      "paths": [
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b117",
+      "function": "behavior.csharp_deferred",
+      "paths": [
+        "docs/PROJECT_BUILD.md",
+        "docs/ROADMAP.md"
+      ]
+    },
+    {
+      "bindingId": "b146",
+      "function": "scene.instances_v2",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b160",
+      "function": "scene.groups_v3",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b186",
+      "function": "scene.composition",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b191",
+      "function": "execution.backend_middleware",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md"
+      ]
+    },
+    {
+      "bindingId": "b192",
+      "function": "execution.backend_middleware",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b193",
+      "function": "execution.backend_middleware",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/godot4-adapter.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b194",
+      "function": "execution.backend_middleware",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md"
+      ]
+    },
+    {
+      "bindingId": "b196",
+      "function": "behavior.scene_runtime",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b197",
+      "function": "behavior.scene_runtime",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b205",
+      "function": "runtime.objects_inspection",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b209",
+      "function": "runtime.control_replay",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b210",
+      "function": "runtime.control_replay",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b215",
+      "function": "runtime.instance_control",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs",
+        "scripts/tests/runtime-instance-backends.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b216",
+      "function": "runtime.instance_control",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/runtime-instance-backends.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b217",
+      "function": "runtime.instance_control",
+      "paths": [
+        "scripts/tests/runtime-instance-backends.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b219",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md"
+      ]
+    },
+    {
+      "bindingId": "b220",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md"
+      ]
+    },
+    {
+      "bindingId": "b221",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "docs/PROJECT_BUILD.md",
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b222",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "docs/PROJECT_BUILD.md"
+      ]
+    },
+    {
+      "bindingId": "b223",
+      "function": "execution.tool_identity",
+      "paths": [
+        "docs/BACKEND_MIDDLEWARE.md",
+        "docs/PROJECT_BUILD.md"
+      ]
+    },
+    {
+      "bindingId": "b225",
+      "function": "runtime.verification_cases",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b226",
+      "function": "runtime.verification_cases",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b240",
+      "function": "runtime.case_suites",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b245",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b246",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b247",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b248",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b249",
+      "function": "runtime.case_reports",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b255",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b256",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b257",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b258",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b259",
+      "function": "scene.composition_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b260",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b261",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b262",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b263",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b264",
+      "function": "scene.composition_batch_canvas",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b278",
+      "function": "backend.project_management",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b279",
+      "function": "backend.project_management",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b283",
+      "function": "backend.project_catalog",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b309",
+      "function": "scene.composition_definition_rename",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b310",
+      "function": "scene.composition_definition_rename",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b311",
+      "function": "scene.composition_definition_rename",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b312",
+      "function": "scene.composition_definition_rename",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b323",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b324",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b325",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b326",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b327",
+      "function": "scene.object_authoring3d",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b328",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b329",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b330",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b331",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b332",
+      "function": "scene.environment_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b333",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b334",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b335",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b336",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b337",
+      "function": "scene.properties_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b338",
+      "function": "scene.navigation3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b339",
+      "function": "scene.navigation3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b340",
+      "function": "scene.navigation3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b341",
+      "function": "scene.navigation3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b342",
+      "function": "scene.picking3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b343",
+      "function": "scene.picking3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b344",
+      "function": "scene.picking3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b345",
+      "function": "scene.selection_feedback3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b346",
+      "function": "scene.selection_feedback3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b347",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b348",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b349",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b350",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b351",
+      "function": "scene.translation_authoring3d",
+      "paths": [
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b352",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b353",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b354",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b355",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b356",
+      "function": "scene.alignment_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b357",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b358",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b359",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b360",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b361",
+      "function": "scene.distribution_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b362",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b363",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b364",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b365",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b366",
+      "function": "scene.copy_authoring3d",
+      "paths": [
+        "docs/STATUS.md",
+        "engine/README.md"
+      ]
+    },
+    {
+      "bindingId": "b411",
+      "function": "backend.project_delivery",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b412",
+      "function": "backend.project_delivery",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b413",
+      "function": "backend.project_delivery",
+      "paths": [
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b435",
+      "function": "authoring.source-search",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b436",
+      "function": "authoring.source-search",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b437",
+      "function": "authoring.source-search",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b438",
+      "function": "build.task-problems",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b439",
+      "function": "build.task-problems",
+      "paths": [
+        "docs/ARCHITECTURE.md",
+        "docs/PROJECT_BUILD.md"
+      ]
+    },
+    {
+      "bindingId": "b440",
+      "function": "build.task-problems",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b441",
+      "function": "scene.composition_materialize",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b442",
+      "function": "scene.composition_materialize",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b443",
+      "function": "scene.composition_materialize",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b464",
+      "function": "behavior.bevy_rust",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b488",
+      "function": "runtime.godot_audio",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b490",
+      "function": "runtime.godot_audio",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b491",
+      "function": "backend.project_delivery",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b501",
+      "function": "build.project_assembly",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b503",
+      "function": "build.project_assembly",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/godot4-project.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b509",
+      "function": "runtime.project_scene_switching",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b510",
+      "function": "runtime.project_scene_switching",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b516",
+      "function": "runtime.project_shared_state",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b517",
+      "function": "runtime.project_shared_state",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b523",
+      "function": "runtime.project_events",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b525",
+      "function": "runtime.project_events",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b530",
+      "function": "runtime.project_audio_controls",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b534",
+      "function": "runtime.project_audio_controls",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b549",
+      "function": "scene.animation2d",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/scene-animation-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b550",
+      "function": "scene.animation2d",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/tests/scene-animation-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b564",
+      "function": "scene.sprite_animation",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b567",
+      "function": "runtime.project_animation_controls",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b574",
+      "function": "scene.animation_clips",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b586",
+      "function": "runtime.project_animation_completion",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b589",
+      "function": "runtime.project_animation_completion",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b626",
+      "function": "runtime.project_animation_state_snapshots",
+      "paths": [
+        "scripts/tests/project-animation-state-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b627",
+      "function": "runtime.project_animation_state_snapshots",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/project-animation-state-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b628",
+      "function": "runtime.project_animation_state_snapshots",
+      "paths": [
+        "scripts/tests/project-animation-state-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b644",
+      "function": "runtime.project_animation_state_entry_triggers",
+      "paths": [
+        "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b645",
+      "function": "runtime.project_animation_state_entry_triggers",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b646",
+      "function": "runtime.project_animation_state_entry_triggers",
+      "paths": [
+        "scripts/tests/project-animation-state-entry-trigger-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b668",
+      "function": "runtime.project_animation_instances",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b671",
+      "function": "build.project_assembly",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b676",
+      "function": "scene.physics2d",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs"
+      ]
+    },
+    {
+      "bindingId": "b677",
+      "function": "scene.physics2d",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b683",
+      "function": "authoring.physics2d_targets",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b684",
+      "function": "authoring.physics2d_targets",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b686",
+      "function": "authoring.physics2d_creation",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b687",
+      "function": "authoring.physics2d_creation",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b688",
+      "function": "authoring.physics2d_creation",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b689",
+      "function": "authoring.physics2d_creation",
+      "paths": [
+        "docs/ARCHITECTURE.md"
+      ]
+    },
+    {
+      "bindingId": "b704",
+      "function": "scene.physics2d_response",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b706",
+      "function": "runtime.physics2d_observation",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b707",
+      "function": "runtime.physics2d_observation",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b711",
+      "function": "scene.physics2d_character_motion",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b714",
+      "function": "runtime.physics2d_character_events",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b718",
+      "function": "scene.physics2d_one_way",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b721",
+      "function": "runtime.physics2d_character_contacts",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b723",
+      "function": "runtime.physics2d_planar_contacts",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b726",
+      "function": "runtime.physics2d_drop_through",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b729",
+      "function": "runtime.physics2d_platform_motion",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b732",
+      "function": "runtime.physics2d_platform_events",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs"
+      ]
+    },
+    {
+      "bindingId": "b735",
+      "function": "runtime.observation_retention",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b738",
+      "function": "runtime.execution_budget",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/backends/godot4-execution-budget.mjs",
+        "scripts/tests/project-execution-budget-backends.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b739",
+      "function": "runtime.execution_clock",
+      "paths": [
+        "scripts/tests/project-execution-clock-backends.test.mjs",
+        "scripts/tests/project-execution-clock-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b740",
+      "function": "runtime.execution_clock",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/backends/godot4-execution-clock.mjs",
+        "scripts/tests/project-execution-clock-backends.test.mjs",
+        "scripts/tests/project-execution-clock-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b741",
+      "function": "runtime.execution_clock",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs",
+        "scripts/tests/project-execution-clock-backends.test.mjs",
+        "scripts/tests/project-execution-clock-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b743",
+      "function": "runtime.causal_anchors",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs"
+      ]
+    },
+    {
+      "bindingId": "b744",
+      "function": "runtime.execution_frames",
+      "paths": [
+        "scripts/tests/project-execution-frames-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b745",
+      "function": "runtime.execution_frames",
+      "paths": [
+        "scripts/backends/godot4-adapter.mjs",
+        "scripts/backends/godot4-execution-frames.mjs",
+        "scripts/tests/project-execution-frames-godot.test.mjs"
+      ]
+    },
+    {
+      "bindingId": "b746",
+      "function": "runtime.execution_frames",
+      "paths": [
+        "scripts/adapters/node-project-build.mjs",
+        "scripts/lib/project-build-service.mjs",
+        "scripts/tests/project-execution-frames-godot.test.mjs"
+      ]
+    }
+  ],
+  "sourceReviewScope": "Existing binding roles, cells (values and reasons), and evidence records remain exact. Source fingerprints must refresh after final docs edits. Old scores retain their original scoped claims; they are not newly certified by adding this feature.",
+  "historicalSnapshots": {
+    "docs/FUNCTION_NETWORK.md": {
+      "baseline": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
+      "current": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
+      "preserved": true
+    },
+    "docs/function-network.json": {
+      "baseline": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
+      "current": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
+      "preserved": true
+    },
+    "docs/function-network.html": {
+      "baseline": "bf42bb7b77083ed40316cd12ba21544e07b5a3b45f045b88ac0b24af056039d9",
+      "current": "bf42bb7b77083ed40316cd12ba21544e07b5a3b45f045b88ac0b24af056039d9",
+      "preserved": true
+    },
+    "docs/function-network.mmd": {
+      "baseline": "a153d860a8171d1ce01ae45fd3a2e5d08d59e506d2d52ca966d5cfc3d87af39f",
+      "current": "a153d860a8171d1ce01ae45fd3a2e5d08d59e506d2d52ca966d5cfc3d87af39f",
+      "preserved": true
+    }
+  },
+  "frozenCoreSources": {
+    "engine/project-animation-requests.mjs": {
+      "expected": "b7dfc4ddb18ff82a09a17418ab4ec1b8a04f2d620e05ed5061d623825f3ca24f",
+      "actual": "b7dfc4ddb18ff82a09a17418ab4ec1b8a04f2d620e05ed5061d623825f3ca24f",
+      "preserved": true
+    },
+    "scripts/tests/project-animation-requests.test.mjs": {
+      "expected": "0fa731adf6695aa90cd4b68a993ccc35b9fa31a592380d6fdd0fb5a104bec79d",
+      "actual": "0fa731adf6695aa90cd4b68a993ccc35b9fa31a592380d6fdd0fb5a104bec79d",
+      "preserved": true
+    },
+    "engine/project-execution-frames.mjs": {
+      "expected": "3bcd518079a2af397c1ebd9ef32556d2c1347bbbe3e137cc7fffdf7367f46b47",
+      "actual": "3bcd518079a2af397c1ebd9ef32556d2c1347bbbe3e137cc7fffdf7367f46b47",
+      "preserved": true
+    },
+    "scripts/tests/project-execution-frames.test.mjs": {
+      "expected": "52adbe5f03fef27004b0838d7bd48fbdeb6c126706ef694e4e2dec6202687658",
+      "actual": "52adbe5f03fef27004b0838d7bd48fbdeb6c126706ef694e4e2dec6202687658",
+      "preserved": true
+    }
+  },
+  "delivery": {
+    "applicationVersion": "0.2.5",
+    "unchangedFromBaseline": true,
+    "stage": "working-tree",
+    "score": 2,
+    "studioInstalledVersion": "0.2.0",
+    "newInstallOrReleaseClaimed": false
+  },
+  "validationScope": {
+    "coreSixSuites": {
+      "total": 98,
+      "passed": 98,
+      "skipped": 0,
+      "log": "/tmp/viento-animation-requests-core.log"
+    },
+    "native": "Parent confirmed final 23/23 plus compatibility 7/7, no skips; detailed evidence and full-suite totals are maintained in docs/test-results/runtime-animation-requests by parent."
+  },
+  "atlasCheck": {
+    "command": "node scripts/function-atlas.mjs --check",
+    "exitCode": 1,
+    "log": "/tmp/viento-animation-requests/atlas-check-agent.log",
+    "reason": "Parent final documentation updates changed referenced source digests since generation. Structural validation completed before source snapshot guard. Root will refresh sources and re-run final check.",
+    "stalePathsAtReview": [
+      "docs/BACKEND_MIDDLEWARE.md",
+      "docs/STATUS.md"
+    ]
+  },
+  "documentationReview": {
+    "scope": [
+      "README.md",
+      "docs/ARCHITECTURE.md",
+      "docs/BACKEND_MIDDLEWARE.md",
+      "docs/PROJECT_BUILD.md",
+      "docs/STATUS.md",
+      "docs/ROADMAP.md",
+      "docs/TESTING.md",
+      "engine/README.md"
+    ],
+    "contractsConsistent": true,
+    "pendingParentEdits": [
+      "Replace three new verification-cell reasons mentioning pending native review after confirmed native success; retain 3/3/3/2 scores.",
+      "Update STATUS and report final totals; regenerate atlas after final docs edits."
+    ],
+    "limitations": [
+      "No audio/event queued-request identity yet",
+      "No continuous or periodic budget reset",
+      "No new UI, Bevy implementation, Studio installation, release, commit, or push"
+    ]
+  },
+  "finalization": {
+    "reviewer": "root",
+    "date": "2026-10-28",
+    "atlasSha256": "4d6f7d47df41e0b4308b1bb533e612cdccc6c055cac6c567f6999296dd904f9f",
+    "preserved": {
+      "bindings": true,
+      "cells": true,
+      "evidence": true,
+      "dependencies": true,
+      "implementation": true
+    },
+    "atlasCheck": {
+      "ok": true,
+      "mode": "check",
+      "architectures": 11,
+      "functions": 179,
+      "implementations": 538,
+      "bindings": 748,
+      "cells": 2992,
+      "dependencyEdges": 543,
+      "workflows": 143,
+      "historicalChains": 50,
+      "referencedFiles": 2745,
+      "exitCode": 0
+    },
+    "resolvedPendingEdits": [
+      "Updated new implementation/verification explanations after native success without changing values",
+      "Updated final report and STATUS counts",
+      "Refreshed source hashes and passed final atlas check"
+    ],
+    "priorReview": "score-review-agent.json"
+  }
+}

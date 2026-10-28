@@ -1,0 +1,730 @@
+{
+  "format": "viento-runtime-session",
+  "schemaVersion": 1,
+  "sessionId": "57ab1baa-d530-4d8a-9456-d626de6857fb",
+  "buildId": "3555b0e7-1669-44da-8c95-d4d45d130a26",
+  "snapshotId": "sha256:1b872fc3688fed92f30f4ab77d5b83f9e413f3ebf7b35bc8b0dec2247a3b8e47",
+  "backendId": "org.viento.godot4",
+  "executionAdapter": {
+    "id": "org.viento.godot4",
+    "contractVersion": 1,
+    "sha256": "e1eb43e3fcbb6f619ee6c8ac1d190d65419951fb515b9d69c9d83b3701136287"
+  },
+  "tool": {
+    "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+    "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "mode": "headless-logic",
+  "smoke": false,
+  "status": "failed",
+  "events": [
+    {
+      "assemblyId": "12345678-1234-4234-8234-123456789abc",
+      "audioCommandSequence": 0,
+      "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "event": "ready",
+      "eventSequence": 0,
+      "protocol": 4,
+      "stateRevision": 0
+    },
+    {
+      "event": "scene-enter",
+      "protocol": 4,
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "visitIndex": 1
+    },
+    {
+      "event": "scene-event",
+      "frame": {
+        "actors": [
+          {
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              200,
+              220
+            ],
+            "state": "idle"
+          },
+          {
+            "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+            "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            "position": [
+              500,
+              220
+            ],
+            "state": "idle"
+          }
+        ],
+        "event": "ready",
+        "protocol": 3,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+      },
+      "protocol": 4,
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "stream": "runtime",
+      "visitIndex": 1
+    },
+    {
+      "event": "scene-event",
+      "frame": {
+        "event": "ready",
+        "protocol": 1,
+        "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "trackIds": [
+          "77777777-7777-4777-8777-000000000001",
+          "77777777-7777-4777-8777-000000000002"
+        ]
+      },
+      "protocol": 4,
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "stream": "audio",
+      "visitIndex": 1
+    },
+    {
+      "action": "stop",
+      "bindingId": "99999999-9999-4999-8999-999999999991",
+      "commandSequence": 1,
+      "event": "audio-command",
+      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "protocol": 4,
+      "resourceId": "99999999-9999-4999-8999-999999999999",
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "timeSeconds": 0,
+      "trackId": "77777777-7777-4777-8777-000000000001",
+      "visitIndex": 1
+    },
+    {
+      "event": "scene-event",
+      "frame": {
+        "bindingId": "99999999-9999-4999-8999-999999999991",
+        "code": "runtime_behavior_audio_unavailable",
+        "event": "diagnostic",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "message": "The declared scene audio track is not available for playback.",
+        "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "protocol": 3,
+        "severity": "error"
+      },
+      "protocol": 4,
+      "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "stream": "runtime",
+      "visitIndex": 1
+    }
+  ],
+  "diagnostics": [
+    {
+      "severity": "error",
+      "code": "build_process_failed",
+      "message": "Godot process failed.",
+      "objectId": "12345678-1234-4234-8234-123456789abc",
+      "sourcePath": "documents/projects/demo.json",
+      "sourceRevision": "sha256:3622c5dfd3e3e336c950287793fb14edda0de9e1b9ee39d33045aa4c0837f30d",
+      "title": "Two-scene project",
+      "propertyPath": ""
+    },
+    {
+      "severity": "error",
+      "code": "runtime_behavior_audio_unavailable",
+      "message": "The declared scene audio track is not available for playback.",
+      "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+      "sourcePath": "documents/behaviors/demo.json",
+      "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+      "propertyPath": "/bindings/0",
+      "bindingId": "99999999-9999-4999-8999-999999999991",
+      "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "relatedObjectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "sourceRange": {
+        "start": 141,
+        "end": 484,
+        "encoding": "utf-16",
+        "propertyPath": "/bindings/0",
+        "exact": true
+      }
+    }
+  ],
+  "phases": [
+    {
+      "phase": "import",
+      "status": "succeeded",
+      "exitCode": 0,
+      "exitSignal": null,
+      "stdout": "Godot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | Started Registering global classes... (18 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[   5% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  10% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  15% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  21% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  26% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  31% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  36% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  42% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  47% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  52% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  57% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  63% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  68% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  73% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  78% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  84% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n[  89% ] \u001b[90m\u001b[1mupdate_scripts_classes\u001b[22m | \u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mupdate_scripts_classes\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | Started Scanning actions... (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | 99999999-9999-4999-8999-999999999999.wav\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1m_update_scan_actions\u001b[22m | cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1m_update_scan_actions\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | Preparing files to reimport...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing pre-reimport operations...\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | cccccccc-cccc-4ccc-8ccc-cccccccccccc.svg\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mreimport\u001b[22m | 99999999-9999-4999-8999-999999999999.wav\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mreimport\u001b[22m | Finalizing Asset Import...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Started (Re)Importing Assets (2 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mreimport\u001b[22m | Executing post-reimport operations...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n",
+      "stderr": "",
+      "durationMs": 3132
+    },
+    {
+      "phase": "run",
+      "status": "failed",
+      "exitCode": 1,
+      "exitSignal": null,
+      "stdout": "Godot Engine v4.7.2.stable.viento_audiofix1_ed1daf0bf - https://godotengine.org\n\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"assemblyId\":\"12345678-1234-4234-8234-123456789abc\",\"audioCommandSequence\":0,\"entrySceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"event\":\"ready\",\"eventSequence\":0,\"protocol\":4,\"stateRevision\":0},\"index\":1,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"event\":\"scene-enter\",\"protocol\":4,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1},\"index\":2,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"event\":\"scene-event\",\"frame\":{\"actors\":[{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[200.0,220.0],\"state\":\"idle\"},{\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"position\":[500.0,220.0],\"state\":\"idle\"}],\"event\":\"ready\",\"protocol\":3,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\"},\"protocol\":4,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"stream\":\"runtime\",\"visitIndex\":1},\"index\":3,\"protocol\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":0},\"frame\":{\"event\":\"scene-event\",\"frame\":{\"event\":\"ready\",\"protocol\":1,\"sceneObjectId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"trackIds\":[\"77777777-7777-4777-8777-000000000001\",\"77777777-7777-4777-8777-000000000002\"]},\"protocol\":4,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"stream\":\"audio\",\"visitIndex\":1},\"index\":4,\"protocol\":1}\nVIENTO_AUDIO_REQUEST:{\"action\":\"stop\",\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"event\":\"accepted\",\"origin\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1},\"protocol\":1,\"requestId\":1,\"trackId\":\"77777777-7777-4777-8777-000000000001\"}\nVIENTO_AUDIO_REQUEST_PROBE:{\"accepted\":true,\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"kind\":\"accepted\",\"label\":\"first-stop\",\"requestId\":1,\"reserved\":1}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"frame\":{\"action\":\"stop\",\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"commandSequence\":1,\"event\":\"audio-command\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":4,\"resourceId\":\"99999999-9999-4999-8999-999999999999\",\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"timeSeconds\":0.0,\"trackId\":\"77777777-7777-4777-8777-000000000001\",\"visitIndex\":1},\"index\":5,\"protocol\":1}\nVIENTO_AUDIO_REQUEST:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"commandSequence\":1,\"event\":\"applied\",\"executionFrameIndex\":5,\"protocol\":1,\"requestId\":1}\nVIENTO_AUDIO_REQUEST_PROBE:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"commandSequence\":1,\"kind\":\"applied\",\"label\":\"first-stop\"}\nVIENTO_AUDIO_REQUEST:{\"action\":\"play\",\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"event\":\"accepted\",\"origin\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1},\"protocol\":1,\"requestId\":2,\"trackId\":\"77777777-7777-4777-8777-000000000001\"}\nVIENTO_AUDIO_REQUEST_PROBE:{\"accepted\":true,\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"kind\":\"accepted\",\"label\":\"unavailable-play\",\"requestId\":2,\"reserved\":2}\nVIENTO_AUDIO_REQUEST:{\"action\":\"stop\",\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"event\":\"accepted\",\"origin\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1},\"protocol\":1,\"requestId\":3,\"trackId\":\"77777777-7777-4777-8777-000000000001\"}\nVIENTO_AUDIO_REQUEST_PROBE:{\"accepted\":true,\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"kind\":\"accepted\",\"label\":\"later-stop\",\"requestId\":3,\"reserved\":3}\nVIENTO_AUDIO_REQUEST:{\"action\":\"play\",\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"event\":\"accepted\",\"origin\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"visitIndex\":1},\"protocol\":1,\"requestId\":4,\"trackId\":\"77777777-7777-4777-8777-000000000001\"}\nVIENTO_AUDIO_REQUEST_PROBE:{\"accepted\":true,\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"kind\":\"accepted\",\"label\":\"later-play\",\"requestId\":4,\"reserved\":4}\nVIENTO_EXECUTION_FRAME:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"frame\":{\"event\":\"scene-event\",\"frame\":{\"bindingId\":\"99999999-9999-4999-8999-999999999991\",\"code\":\"runtime_behavior_audio_unavailable\",\"event\":\"diagnostic\",\"instanceId\":\"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1\",\"message\":\"The declared scene audio track is not available for playback.\",\"objectId\":\"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa\",\"protocol\":3,\"severity\":\"error\"},\"protocol\":4,\"sceneId\":\"dddddddd-dddd-4ddd-8ddd-dddddddddddd\",\"stream\":\"runtime\",\"visitIndex\":1},\"index\":6,\"protocol\":1}\nVIENTO_AUDIO_REQUEST_PROBE:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"commandSequence\":1,\"kind\":\"applied\",\"label\":\"failed-backend-call\"}\nVIENTO_AUDIO_REQUEST:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"event\":\"discarded\",\"protocol\":1,\"reason\":\"abort\",\"requestId\":2}\nVIENTO_AUDIO_REQUEST:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"event\":\"discarded\",\"protocol\":1,\"reason\":\"abort\",\"requestId\":3}\nVIENTO_AUDIO_REQUEST:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"event\":\"discarded\",\"protocol\":1,\"reason\":\"abort\",\"requestId\":4}\nVIENTO_EXECUTION_CLOCK:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"event\":\"sample\",\"index\":1,\"protocol\":1,\"reason\":\"sample\",\"total\":{\"animationRequests\":0,\"audioRequests\":4,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":0},\"used\":{\"animationRequests\":0,\"audioRequests\":4,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":0}}\nVIENTO_EXECUTION_CLOCK:{\"clock\":{\"idleFrame\":0,\"physicsFrame\":1},\"event\":\"sample\",\"index\":1,\"protocol\":1,\"reason\":\"aborted\",\"total\":{\"animationRequests\":0,\"audioRequests\":4,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":0},\"used\":{\"animationRequests\":0,\"audioRequests\":4,\"eventBytes\":0,\"eventDeliveries\":0,\"eventPublishes\":0,\"eventRegistrations\":0,\"stateMutations\":0}}\n",
+      "stderr": "",
+      "durationMs": 372
+    }
+  ],
+  "runtime": {
+    "format": "viento-runtime-observation",
+    "schemaVersion": 1,
+    "sceneObjectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "protocolVersion": 3,
+    "phase": "ready",
+    "sequence": 1,
+    "actors": [
+      {
+        "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+        "name": "Traveler / 旅人 / 旅人",
+        "position": [
+          200,
+          220
+        ],
+        "state": "idle",
+        "positionSample": "ready",
+        "positionCurrent": true,
+        "source": {
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/demo.json",
+          "propertyPath": "/actors/0",
+          "sourceRevision": "sha256:f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd"
+        }
+      },
+      {
+        "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",
+        "name": "Traveler / 旅人 / 旅人",
+        "position": [
+          500,
+          220
+        ],
+        "state": "idle",
+        "positionSample": "ready",
+        "positionCurrent": true,
+        "source": {
+          "objectId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sourcePath": "documents/scenes/demo.json",
+          "propertyPath": "/actors/1",
+          "sourceRevision": "sha256:f897aedd886a029111a981f308077cb602546538d02e1b547ed6bec9bd379dfd"
+        }
+      }
+    ],
+    "project": {
+      "assemblyId": "12345678-1234-4234-8234-123456789abc",
+      "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "activeSceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+      "visits": [
+        {
+          "index": 1,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "phase": "ready",
+          "elapsedSeconds": 0
+        }
+      ],
+      "protocolVersion": 4,
+      "sharedState": {
+        "revision": 0,
+        "entries": [],
+        "lastChange": null
+      },
+      "events": {
+        "sequence": 0,
+        "entries": []
+      },
+      "audioCommands": {
+        "sequence": 1,
+        "entries": [
+          {
+            "sequence": 1,
+            "action": "stop",
+            "timeSeconds": 0,
+            "origin": {
+              "visitIndex": 1,
+              "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+              "bindingId": "99999999-9999-4999-8999-999999999991",
+              "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+              "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+              "source": {
+                "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+                "sourcePath": "documents/behaviors/demo.json",
+                "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+                "propertyPath": "/bindings/0"
+              }
+            },
+            "track": {
+              "trackId": "77777777-7777-4777-8777-000000000001",
+              "resourceId": "99999999-9999-4999-8999-999999999999",
+              "source": {
+                "objectId": "12345678-1234-4234-8234-123456789ae1",
+                "sourcePath": "documents/audio/first.json",
+                "sourceRevision": "sha256:a56cbb6810055e5dbf2bbf9e9692119c4b97f1989376490a9a66612cafcfe1a2",
+                "propertyPath": "/tracks/0",
+                "sourceRange": {
+                  "start": 135,
+                  "end": 318,
+                  "encoding": "utf-16",
+                  "propertyPath": "/tracks/0",
+                  "exact": true
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "target": {
+    "kind": "project",
+    "objectId": "12345678-1234-4234-8234-123456789abc",
+    "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+  },
+  "causalAnchors": {
+    "format": "viento-project-causal-anchors",
+    "schemaVersion": 1,
+    "assemblyId": "12345678-1234-4234-8234-123456789abc",
+    "protocolVersion": 4,
+    "recentPerKind": 16,
+    "nodes": [],
+    "edges": [],
+    "roots": [],
+    "retention": {
+      "events": {
+        "total": 0,
+        "retained": 0,
+        "dropped": 0
+      },
+      "animationCommands": {
+        "total": 0,
+        "retained": 0,
+        "dropped": 0
+      },
+      "animationCompletions": {
+        "total": 0,
+        "retained": 0,
+        "dropped": 0
+      },
+      "animationStateEntries": {
+        "total": 0,
+        "retained": 0,
+        "dropped": 0
+      },
+      "aggregate": {
+        "total": 0,
+        "retained": 0,
+        "dropped": 0
+      }
+    }
+  },
+  "executionClock": {
+    "format": "viento-execution-clock-observation",
+    "schemaVersion": 1,
+    "policyVersion": 1,
+    "limits": {
+      "eventRegistrations": 1024,
+      "eventPublishes": 128,
+      "eventDeliveries": 1024,
+      "eventBytes": 524288,
+      "stateMutations": 1024,
+      "audioRequests": 256,
+      "animationRequests": 256
+    },
+    "phase": "incomplete",
+    "total": {
+      "animationRequests": 0,
+      "audioRequests": 4,
+      "eventBytes": 0,
+      "eventDeliveries": 0,
+      "eventPublishes": 0,
+      "eventRegistrations": 0,
+      "stateMutations": 0
+    },
+    "totalWindows": 1,
+    "windows": [
+      {
+        "index": 1,
+        "clock": {
+          "idleFrame": 0,
+          "physicsFrame": 1
+        },
+        "used": {
+          "animationRequests": 0,
+          "audioRequests": 4,
+          "eventBytes": 0,
+          "eventDeliveries": 0,
+          "eventPublishes": 0,
+          "eventRegistrations": 0,
+          "stateMutations": 0
+        },
+        "total": {
+          "animationRequests": 0,
+          "audioRequests": 4,
+          "eventBytes": 0,
+          "eventDeliveries": 0,
+          "eventPublishes": 0,
+          "eventRegistrations": 0,
+          "stateMutations": 0
+        },
+        "reason": "aborted"
+      }
+    ],
+    "retention": {
+      "limit": 32,
+      "total": 1,
+      "retained": 1,
+      "dropped": 0,
+      "firstIndex": 1,
+      "lastIndex": 1
+    }
+  },
+  "executionFrames": {
+    "format": "viento-project-execution-frames",
+    "schemaVersion": 1,
+    "phase": "incomplete",
+    "totalFrames": 6,
+    "frames": [
+      {
+        "index": 1,
+        "clock": {
+          "idleFrame": 0,
+          "physicsFrame": 0
+        },
+        "reference": {
+          "protocol": 4,
+          "event": "ready",
+          "assemblyId": "12345678-1234-4234-8234-123456789abc",
+          "entrySceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        }
+      },
+      {
+        "index": 2,
+        "clock": {
+          "idleFrame": 0,
+          "physicsFrame": 0
+        },
+        "reference": {
+          "protocol": 4,
+          "event": "scene-enter",
+          "visitIndex": 1,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd"
+        }
+      },
+      {
+        "index": 3,
+        "clock": {
+          "idleFrame": 0,
+          "physicsFrame": 0
+        },
+        "reference": {
+          "protocol": 4,
+          "event": "scene-event",
+          "visitIndex": 1,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "childEvent": "ready"
+        }
+      },
+      {
+        "index": 4,
+        "clock": {
+          "idleFrame": 0,
+          "physicsFrame": 0
+        },
+        "reference": {
+          "protocol": 4,
+          "event": "scene-event",
+          "visitIndex": 1,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "audio",
+          "childEvent": "ready"
+        }
+      },
+      {
+        "index": 5,
+        "clock": {
+          "idleFrame": 0,
+          "physicsFrame": 1
+        },
+        "reference": {
+          "protocol": 4,
+          "event": "audio-command",
+          "visitIndex": 1,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "commandSequence": 1
+        }
+      },
+      {
+        "index": 6,
+        "clock": {
+          "idleFrame": 0,
+          "physicsFrame": 1
+        },
+        "reference": {
+          "protocol": 4,
+          "event": "scene-event",
+          "visitIndex": 1,
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "stream": "runtime",
+          "childEvent": "diagnostic"
+        }
+      }
+    ],
+    "retention": {
+      "limit": 128,
+      "total": 6,
+      "retained": 6,
+      "dropped": 0,
+      "firstIndex": 1,
+      "lastIndex": 6
+    }
+  },
+  "audioRequests": {
+    "format": "viento-project-audio-requests",
+    "schemaVersion": 1,
+    "phase": "incomplete",
+    "counts": {
+      "accepted": 4,
+      "applied": 1,
+      "discarded": 3,
+      "pending": 0
+    },
+    "requests": [
+      {
+        "requestId": 1,
+        "status": "applied",
+        "acceptedClock": {
+          "idleFrame": 0,
+          "physicsFrame": 1
+        },
+        "origin": {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1,
+          "source": {
+            "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+            "sourcePath": "documents/behaviors/demo.json",
+            "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+            "propertyPath": "/bindings/0"
+          }
+        },
+        "track": {
+          "trackId": "77777777-7777-4777-8777-000000000001",
+          "resourceId": "99999999-9999-4999-8999-999999999999",
+          "source": {
+            "objectId": "12345678-1234-4234-8234-123456789ae1",
+            "sourcePath": "documents/audio/first.json",
+            "sourceRevision": "sha256:a56cbb6810055e5dbf2bbf9e9692119c4b97f1989376490a9a66612cafcfe1a2",
+            "propertyPath": "/tracks/0",
+            "sourceRange": {
+              "start": 135,
+              "end": 318,
+              "encoding": "utf-16",
+              "propertyPath": "/tracks/0",
+              "exact": true
+            }
+          }
+        },
+        "action": "stop",
+        "applied": {
+          "clock": {
+            "idleFrame": 0,
+            "physicsFrame": 1
+          },
+          "commandSequence": 1,
+          "executionFrameIndex": 5
+        }
+      },
+      {
+        "requestId": 2,
+        "status": "discarded",
+        "acceptedClock": {
+          "idleFrame": 0,
+          "physicsFrame": 1
+        },
+        "origin": {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1,
+          "source": {
+            "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+            "sourcePath": "documents/behaviors/demo.json",
+            "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+            "propertyPath": "/bindings/0"
+          }
+        },
+        "track": {
+          "trackId": "77777777-7777-4777-8777-000000000001",
+          "resourceId": "99999999-9999-4999-8999-999999999999",
+          "source": {
+            "objectId": "12345678-1234-4234-8234-123456789ae1",
+            "sourcePath": "documents/audio/first.json",
+            "sourceRevision": "sha256:a56cbb6810055e5dbf2bbf9e9692119c4b97f1989376490a9a66612cafcfe1a2",
+            "propertyPath": "/tracks/0",
+            "sourceRange": {
+              "start": 135,
+              "end": 318,
+              "encoding": "utf-16",
+              "propertyPath": "/tracks/0",
+              "exact": true
+            }
+          }
+        },
+        "action": "play",
+        "discarded": {
+          "clock": {
+            "idleFrame": 0,
+            "physicsFrame": 1
+          },
+          "reason": "abort"
+        }
+      },
+      {
+        "requestId": 3,
+        "status": "discarded",
+        "acceptedClock": {
+          "idleFrame": 0,
+          "physicsFrame": 1
+        },
+        "origin": {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1,
+          "source": {
+            "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+            "sourcePath": "documents/behaviors/demo.json",
+            "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+            "propertyPath": "/bindings/0"
+          }
+        },
+        "track": {
+          "trackId": "77777777-7777-4777-8777-000000000001",
+          "resourceId": "99999999-9999-4999-8999-999999999999",
+          "source": {
+            "objectId": "12345678-1234-4234-8234-123456789ae1",
+            "sourcePath": "documents/audio/first.json",
+            "sourceRevision": "sha256:a56cbb6810055e5dbf2bbf9e9692119c4b97f1989376490a9a66612cafcfe1a2",
+            "propertyPath": "/tracks/0",
+            "sourceRange": {
+              "start": 135,
+              "end": 318,
+              "encoding": "utf-16",
+              "propertyPath": "/tracks/0",
+              "exact": true
+            }
+          }
+        },
+        "action": "stop",
+        "discarded": {
+          "clock": {
+            "idleFrame": 0,
+            "physicsFrame": 1
+          },
+          "reason": "abort"
+        }
+      },
+      {
+        "requestId": 4,
+        "status": "discarded",
+        "acceptedClock": {
+          "idleFrame": 0,
+          "physicsFrame": 1
+        },
+        "origin": {
+          "bindingId": "99999999-9999-4999-8999-999999999991",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "visitIndex": 1,
+          "source": {
+            "objectId": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+            "sourcePath": "documents/behaviors/demo.json",
+            "sourceRevision": "sha256:0c6c5b4a0e9b8997e1a0d984a629613894c58e4d2ba63d00453999781469f354",
+            "propertyPath": "/bindings/0"
+          }
+        },
+        "track": {
+          "trackId": "77777777-7777-4777-8777-000000000001",
+          "resourceId": "99999999-9999-4999-8999-999999999999",
+          "source": {
+            "objectId": "12345678-1234-4234-8234-123456789ae1",
+            "sourcePath": "documents/audio/first.json",
+            "sourceRevision": "sha256:a56cbb6810055e5dbf2bbf9e9692119c4b97f1989376490a9a66612cafcfe1a2",
+            "propertyPath": "/tracks/0",
+            "sourceRange": {
+              "start": 135,
+              "end": 318,
+              "encoding": "utf-16",
+              "propertyPath": "/tracks/0",
+              "exact": true
+            }
+          }
+        },
+        "action": "play",
+        "discarded": {
+          "clock": {
+            "idleFrame": 0,
+            "physicsFrame": 1
+          },
+          "reason": "abort"
+        }
+      }
+    ],
+    "retention": {
+      "limit": 128,
+      "total": 4,
+      "retained": 4,
+      "dropped": 0,
+      "pending": 0,
+      "terminal": 4,
+      "firstRequestId": 1,
+      "lastRequestId": 4
+    }
+  },
+  "eventPositions": {
+    "format": "viento-project-event-positions",
+    "schemaVersion": 1,
+    "phase": "incomplete",
+    "counts": {
+      "published": 0,
+      "settled": 0,
+      "pending": 0,
+      "deliveries": 0,
+      "handled": 0,
+      "skipped": 0,
+      "pendingDeliveries": 0
+    },
+    "retention": {
+      "limit": 32,
+      "total": 0,
+      "retained": 0,
+      "dropped": 0,
+      "pending": 0,
+      "settled": 0,
+      "firstSequence": null,
+      "lastSequence": null
+    },
+    "items": []
+  },
+  "eventRetention": {
+    "limit": 128,
+    "total": 6,
+    "retained": 6,
+    "dropped": 0,
+    "firstSequence": 1,
+    "lastSequence": 6
+  },
+  "lifecycle": {
+    "started": true,
+    "completed": false
+  }
+}

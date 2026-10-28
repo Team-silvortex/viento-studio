@@ -2,7 +2,7 @@
 
 Viento Studio 以作者原文和稳定元数据为中心，连接通用创作、场景实现与后端工程交付。本文按职责、数据流和扩展边界描述当前实现；具体操作见[工作流](PROJECT_WORKFLOW.md)，API 入口见[可移植引擎](../engine/README.md)，GUI 装配见[系统模块](STUDIO_MODULES.md)。
 
-源码版本为 **0.2.5**，已收录自由平面碰撞、单向平台下穿、水平往返及端点事件，原始观察留存与有限执行预算分别维护；固定注册 **23 个模块、45 项声明能力**。源码、开发阶段验证和本机安装分别记录于 [STATUS](STATUS.md)；本机 **0.2.0 Linux** 验收不代表这些新能力已安装。旧发布数字和逐轮实现细节完整保存在[整理前快照](history/architecture-2026-10-25.md)，不在本文逐轮追加。
+源码版本为 **0.2.6**，调度时钟、因果锚点、业务帧、媒体请求与事件位置观察分别维护，事件位置面板只消费经校验的冻结任务快照；固定注册 **23 个模块、45 项声明能力**。源码、开发阶段验证和本机安装分别记录于 [STATUS](STATUS.md)；本机 **0.2.0 Linux** 验收不代表这些新能力已安装。旧发布数字和逐轮实现细节完整保存在[整理前快照](history/architecture-2026-10-25.md)，不在本文逐轮追加。
 
 ## 阅读与扩展入口
 
@@ -24,6 +24,8 @@ Viento Studio 以作者原文和稳定元数据为中心，连接通用创作、
 工程交付只消费成功构建的登记清单。`backend-project-delivery.mjs` 产生绑定清单摘要的审阅 DTO，Node 重新验证身份及字节，仅打包登记的 `project/*`、`README.md` 和 `manifest.json`。作者快照、运行日志、缓存和工具不随包复制；原始摘要只作来源引用。交付持有构建执行槽直到最终复查和收尾，下载读取冻结包。独立视图只取得准备、下载和释放端口，生成工程的外部修改不会自动回写作者数据。
 
 [完整接口细节与阶段记录](history/architecture-2026-10-25.md#section-01)。
+
+运行观察另由纯 `project-causal-anchors.mjs` 建立必要来源与引用闭包，Node会话和任务接口只负责保存与复制。稀疏投影与完整准入账本分开，不增加前端依赖或Godot反射；预算clock不用于推测业务位置；0.34独立封套在实际输出点采集业务时钟。接口边界见[因果锚点](BACKEND_MIDDLEWARE.md#因果锚点投影)。
 
 ## 模块与依赖方向
 
@@ -162,6 +164,24 @@ Node 语义命令与旧文档保存共享登记锁。多记录发布先保存意
 项目执行成本由 `engine/project-execution-budget.mjs` 的七维有限策略独立管理：事件注册、发布、预留接收者、载荷字节、共享状态变更、声音请求与动画请求。可移植事件总线原子预留事件成本；Godot 0.32.0 为新生成项目接入同源策略和共用预算实例，完整向量检查失败不消耗任何维度。业务 `sequence`、`state_revision` 和动画 `reserved_count` 保持单调身份，待处理队列及活动订阅仍各自管理当前占用。
 
 预算包装保存可核验的 `execution-budget.json`、helper 和生成脚本库存；旧模板源文件冻结，未带预算层的历史产物继续原库存读取及冻结身份检查。作者格式、清单 schema 与项目运行协议 4／7／10／11 保持，下文按内容选择的旧生成层由新包装复用。此阶段仍有会话累计上限，flush、deferred 与场景切换均不重置，尚未提供 continuous 运行。职责和限制见[有限执行预算](BACKEND_MIDDLEWARE.md#有限执行预算)，验证见[专项记录](test-results/runtime-execution-budget/README.md)。
+
+0.2.5 发布后的开发增量由独立 Godot **0.33.0** 包装接入 `runtime.execution-clock`。`execution-clock-host.gd` autoload在项目协调器启动前安装预算观察包装，`execution-clock-budget.gd` 委托冻结的0.32预算实例执行准入；旧运行脚本与预算语义保持。原入口备份、新autoload、策略sidecar和两份新脚本由严格库存验证，不修改作者声明或项目协议4／7／10／11。
+
+调度观察通过独立 `VIENTO_EXECUTION_CLOCK` 协议1传递真实 `Engine` 的idle／physics帧对、七维累计成本与窗口增量。`engine/project-execution-clock.mjs` 组合原项目及物理reader，原子校验时钟、完整向量和累计差值，同帧对合并，默认只留最近32窗口；观察行限16 KiB、每会话限8192帧。宿主把合法快照保存到会话和任务的 `executionClock` 字段；正常完成与取消／失败后的不完整状态分别表示，暂未增加界面控件。
+
+帧对窗口只标识调度观察分组，不能作为因果事务或补充额度的边界。业务身份、完整有限语义账本、队列容量、累计预算、输出及时间限制各自保持；当前仍不支持无限持续运行。本增量未发布或安装，契约见[执行调度观察](BACKEND_MIDDLEWARE.md#执行调度观察)，实际验证见[专题记录](test-results/runtime-execution-clock/README.md)。
+### 独立业务帧位置
+
+Godot0.34业务位置层在生成副本的业务输出点加精确帧封套；纯 `project-execution-frames.mjs` 负责封套准入与有界位置尾部，原project／physics读取器继续校验业务DTO。Node负责重生成能力校验、会话保存和任务快照复制，前端未参与时钟推断。128条业务位置与32个预算窗口独立；零成本回执可以没有预算窗口。作者格式和旧项目协议保持，原始模板不写回。详见[业务帧合同](BACKEND_MIDDLEWARE.md#业务回执的精确引擎帧)与[验证](test-results/runtime-execution-frames/README.md)。
+
+
+### 项目事件发布与投递位置
+
+`engine/project-event-positions.mjs` 在原事件总线与精确业务帧读取器之后，按已准入的 `event-publish`／`event-delivery` 保存发布及逐接收者回执的位置。事件总线继续负责冻结双方来源、订阅令牌、FIFO和128发布／1024预留投递等有限合同；此层只保存已确认事实，不借用音频／动画的一请求一应用队列模型。
+
+默认按发布sequence保留最近32条已结清记录和全部未决发布；零接收者发布立即结清，可以先于更早的未决发布结清。部分投递完成后，未决发布仍保存整份收件快照及已有回执位置；原始帧尾部淘汰不删除这些证据。Node保存 `eventPositions` 到会话及任务快照，副本修改不能回写内部状态，异常后仍保存已准入事实。
+
+Godot适配器仅对项目协议≥3且已有 `runtime.execution-frames` 的reader组合此层；其他后端和旧reader不自动新增字段。没有新sideband、helper、清单、capability或生成版本，0.36描述符及0.36／0.35／0.34生成选择保持；`executionAdapter` 指纹纳入新reader，旧冻结构建需显式重建。合同见[中间层](BACKEND_MIDDLEWARE.md#项目事件发布与投递位置)，当前171项定向与真实Godot六案已通过，最终全量及兼容范围见[专题](test-results/runtime-event-positions/README.md)。
 
 [完整接口细节与阶段记录](history/architecture-2026-10-25.md#section-06)。
 
@@ -473,7 +493,19 @@ protocol 10／11 使用 `initial`、`direct`、`event`、`completed` 标签；�
 
 [完整接口细节与阶段记录](history/architecture-2026-10-25.md#section-46)。
 
-### 逐实例正式动画运行边界
+### 动画排队请求的独立观察边界
+
+`project-animation-requests.mjs` 将动画领域校验交给共用 `project-queued-requests.mjs` 组合精确帧reader，按冻结计划验证排队身份、绑定来源、动画队列FIFO和接受／应用时刻；原动画命令reader继续负责执行状态及片段范围。接受记录不能提前证明应用，`applied`必须同时匹配已准入原回执和当前精确帧索引／时钟；`discarded`只在已观察运行错误后核对队首中止。Node保存分离的 `animationRequests` 到会话与任务接口，观察层不执行命令或修改作者数据。
+
+Godot描述符为0.36.0；含音轨项目采用0.36外层，无音轨但含动画项目保持0.35，两者均无时保持0.34。动画和音频分别由能力开关选择reader，默认各保留最近128条终态及全部未决请求，最多各64条未决；缺少完整应用证据时即使已有业务回执仍保持pending。事件请求身份、跨尾部因果位置保留、完整账本裁剪和continuous模式尚未覆盖。动画历史证据见[专题](test-results/runtime-animation-requests/README.md)。
+
+### 音频排队请求的独立观察边界
+
+`project-queued-requests.mjs` 只负责分流、时钟与FIFO终态关联、留存和异常收尾；`project-audio-requests.mjs` 与动画模块分别验证冻结领域身份和命令。音频来源与音轨声明由冻结计划派生，原音频reader继续核对资源、行为回执和业务时间。两域使用独立的requestId、256次会话预算、64条待处理容量和128条默认终态尾部，混合项目不合并计数或更改原先音频先于动画的drain顺序。
+
+Godot0.36只变换已知 `project-audio.gd` 生成副本，接受在成功预留入队后输出，应用在原 `audio-command` 封套之后输出，abort清理循环在移除FIFO队首前同步输出discarded；它只表示已观察到清理标记，不推定播放发生或失败。helper、sidecar、原副本及变换后字节由严格库存核验；固定音频Buffer通过旧层时仍读取真实文件。Node保存分离的 `audioRequests` 会话／任务快照。applied仅证明后端调用及回执，不证明声卡出声；合同见[音频观察](BACKEND_MIDDLEWARE.md#音频排队请求观察)，当前验证范围见[专题](test-results/runtime-audio-requests/README.md)。
+
+## 逐实例正式动画运行边界
 
 作者动画 schema 4 显式保存 `playbackScope: scene|instance`，Rust 可选 marker 只门控新格式；旧文档只在显式选择 instance 后升级，读入不迁移，切回 scene 不降级。动画子计划 3 声明范围与轨道归属，`animation.instances2d` 单独准入；同一实例的多个绑定共享一个播放状态。
 

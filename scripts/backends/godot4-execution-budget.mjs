@@ -83,19 +83,61 @@ export async function generateGodotExecutionBudgetProject(input) {
   ])) };
   return generated;
 }
-export async function godotExecutionBudgetAssemblyScripts(directory, signal) {
-  const read = async (name, limit = 65536) => readBuildFile(await resolveContainedPath(directory, path.join(directory, name)), limit, signal);
+// Only the trusted execution-frame layer uses these bytes and the fixed-file
+// override below, after independently checking the actual file and its backup.
+export async function godotExecutionBudgetRuntimeBytes() {
+  return transform('project-runtime.gd', (await fs.readFile(sourceURL('project-runtime.gd'))).toString());
+}
+// Only fixed generated animation queues can receive verified original bytes.
+// Copy before any asynchronous read; this interface never accepts a file path.
+export function copyGodotAnimationOriginals(animationOriginals) {
+  if (animationOriginals === undefined) return undefined;
+  if (!(animationOriginals instanceof Map) || animationOriginals.size < 1 || animationOriginals.size > 2
+    || !animationOriginals.has('project-animation.gd')) invalid();
+  const originals = new Map();
+  for (const [name, bytes] of animationOriginals) {
+    if (!['project-animation.gd', 'project-animation-targets.gd'].includes(name) || !Buffer.isBuffer(bytes)) invalid();
+    originals.set(name, Buffer.from(bytes));
+  }
+  return originals;
+}
+export async function godotExecutionBudgetAnimationBytes(schema) {
+  return new Map((await expectedScripts(schema)).filter(([name]) => ['project-animation.gd', 'project-animation-targets.gd'].includes(name))
+    .map(([name, , bytes]) => [name, bytes]));
+}
+// This final override can only stand for the one generated audio queue.
+export function copyGodotAudioOriginal(originalProjectAudio) {
+  if (originalProjectAudio === undefined) return undefined;
+  if (!Buffer.isBuffer(originalProjectAudio)) invalid();
+  return Buffer.from(originalProjectAudio);
+}
+export async function godotExecutionBudgetAudioBytes() {
+  return transform('project-audio.gd', (await fs.readFile(sourceURL('project-audio.gd'))).toString());
+}
+export async function godotExecutionBudgetAssemblyScripts(directory, signal, originalProjectRuntime, animationOriginals, originalProjectAudio) {
+  if (originalProjectRuntime !== undefined && !Buffer.isBuffer(originalProjectRuntime)) invalid();
+  const original = originalProjectRuntime === undefined ? undefined : Buffer.from(originalProjectRuntime);
+  const animations = copyGodotAnimationOriginals(animationOriginals), audio = copyGodotAudioOriginal(originalProjectAudio);
+  const read = async (name, limit = 65536) => {
+    const bytes = await readBuildFile(await resolveContainedPath(directory, path.join(directory, name)), limit, signal);
+    return name === 'project-runtime.gd' && original !== undefined ? Buffer.from(original)
+      : name === 'project-audio.gd' && audio !== undefined ? Buffer.from(audio)
+      : animations?.has(name) ? Buffer.from(animations.get(name)) : bytes;
+  };
   const optional = async (name, limit) => { try { return await read(name, limit); } catch (error) { if (error.code === 'ENOENT') return null; invalid(); } };
   try {
     const inventory = await optional(inventoryName), helper = await optional(helperName);
     const contents = new Map(await Promise.all(allNames.map(async name => [name, await optional(name)])));
     if (inventory === null) {
+      if (original !== undefined || animations !== undefined || audio !== undefined) invalid();
       if (helper !== null || [...contents.values()].some(bytes => bytes?.includes('execution_budget'))) invalid();
       return await godotPhysicsPlatformEventsAssemblyScripts(directory, signal) || await godotAssemblyScripts(directory, signal);
     }
     const assembly = JSON.parse(await read('assembly.json', 4 * 1024 * 1024)), rows = await expectedScripts(assembly.schemaVersion);
     if (!inventory.equals(document(rows.map(([name]) => name))) || helper === null || !helper.equals(await fs.readFile(sourceURL(helperName)))) invalid();
     const names = new Set(rows.map(([name]) => name));
+    if (animations !== undefined && ([...names].filter(name => name === 'project-animation.gd' || name === 'project-animation-targets.gd')
+      .some(name => !animations.has(name)) || [...animations.keys()].some(name => !names.has(name)))) invalid();
     for (const [name, actual] of contents) {
       if (names.has(name)) { if (actual === null || !actual.equals(rows.find(([key]) => key === name)[2])) invalid(); }
       else if (actual !== null) invalid();

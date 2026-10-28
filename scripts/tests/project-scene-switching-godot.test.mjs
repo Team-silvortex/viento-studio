@@ -32,7 +32,7 @@ async function prepare(t, options, edit) {
 }
 async function run(f, options = {}) {
   const result = await adapter.executePhase({ phase: 'run', directory: f.directory, tool: f.tool, timeoutMs: 30000, ...options });
-  const reader = adapter.createEventReader(f.captured.plan); reader.push(result.stdout); const received = reader.finish();
+  const reader = adapter.createEventReader(f.captured.plan, { capabilities: f.generated.backend.capabilities }); reader.push(result.stdout); const received = reader.finish();
   return { result, received };
 }
 const enters = received => received.events.filter(frame => frame.event === 'scene-enter');

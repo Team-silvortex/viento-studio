@@ -1,0 +1,41 @@
+{
+  "scope": [
+    "engine/project-queued-requests.mjs",
+    "engine/project-animation-requests.mjs",
+    "engine/project-audio-requests.mjs",
+    "scripts/tests/project-audio-requests.test.mjs"
+  ],
+  "changes": "Extract domain-independent bounded queue observation, preserve animation public behavior and constructor error precedence, add audio domain adapter and 25 regression cases including bidirectional composition.",
+  "oldAnimationTestUnchanged": true,
+  "test": {
+    "command": "node --test --test-isolation=none --test-reporter=tap --test-concurrency=1 [8 suites]",
+    "log": "/tmp/viento-audio-requests/core/core-final.log",
+    "total": 136,
+    "pass": 136,
+    "fail": 0,
+    "skip": 0
+  },
+  "sources": {
+    "engine/project-queued-requests.mjs": {
+      "before": null,
+      "after": "e94cf91a95ebb7e5c08afad7a79e3e2b460b419dd74826fe2903c996dffabd93"
+    },
+    "engine/project-animation-requests.mjs": {
+      "before": "b7dfc4ddb18ff82a09a17418ab4ec1b8a04f2d620e05ed5061d623825f3ca24f",
+      "after": "ca57cb4af7cd7ca1231d46b6c1b9e02e067a1a6ea30f99209256c03b03f8a719"
+    },
+    "engine/project-audio-requests.mjs": {
+      "before": null,
+      "after": "db7d8a1d22dfe4971d7e58cfb8d80fbf00ee74c3b6278cc9d5b91250038bfb6d"
+    },
+    "scripts/tests/project-audio-requests.test.mjs": {
+      "before": null,
+      "after": "f6679ce4e7ddb0db45cfd1579e46957e1bfe826296f4a8fce01cb3b95b67b18a"
+    }
+  },
+  "patchSha256": "221780f3de4b53446b8a6c303adc3ff4602706b75e3eae2e98ed75b7e0a56778",
+  "protocolsChanged": false,
+  "authorFilesChanged": false,
+  "installedApplicationChanged": false,
+  "limitsChanged": false
+}

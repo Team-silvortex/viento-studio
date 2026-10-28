@@ -1,0 +1,6 @@
+{
+  "path": "/home/chiharukiryu/.local/bin/viento-studio",
+  "sha256": "ff41704e95c46bb7c2b11e36962126a12ed6f89bc75e1f3feb5e03ac006ff98c",
+  "mode": "0o755",
+  "content": "#!/bin/sh\n# System media codecs complement the portable application.\nexport GST_PLUGIN_PATH_1_0=\"${GST_PLUGIN_PATH_1_0:+$GST_PLUGIN_PATH_1_0:}/usr/lib/x86_64-linux-gnu/gstreamer-1.0\"\n# Local trusted Godot default; explicit caller configuration remains authoritative.\nif [ -z \"${VIENTO_GODOT_BIN+x}\" ] && [ -x /home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64 ]; then\n  export VIENTO_GODOT_BIN=/home/chiharukiryu/.cache/io.viento.studio/toolchains/godot/4.7.2-stable/linux-x86_64/Godot_v4.7.2-stable_linux.x86_64\nfi\nexec /home/chiharukiryu/.local/opt/viento-studio/Viento-Studio.AppImage \"$@\"\n"
+}

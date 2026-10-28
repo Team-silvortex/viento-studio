@@ -12,6 +12,7 @@ import { projectAnimationClipsAuthor } from './helpers/project-animation-clips-a
 import { captureBuildSnapshot } from '../adapters/node-build-snapshot.mjs';
 import { buildProject, runProjectBuild } from '../adapters/node-project-build.mjs';
 import { GODOT4_EXECUTION_ADAPTER as adapter } from '../backends/godot4-adapter.mjs';
+import { generateGodotExecutionBudgetProject } from '../backends/godot4-execution-budget.mjs';
 import { godotAssemblyScripts, godotAssemblyDiagnostics } from '../backends/godot4-project.mjs';
 import { validateGeneratedExecutionProject } from '../adapters/node-execution-backends.mjs';
 import { inspectBackendProject } from '../adapters/node-backend-project.mjs';
@@ -72,7 +73,7 @@ const tableFor = version => {
 
 test('protocol10 declares trigger capability and inventory11 without changing recognized author bytes', async t => {
   const f = await fixture(t), inventory = JSON.parse(f.generated.files.get('assembly.json'));
-  assert.equal(f.generated.backend.protocolVersion, 10); assert.equal(f.generated.backend.version, '0.32.0');
+  assert.equal(f.generated.backend.protocolVersion, 10); assert.equal(f.generated.backend.version, f.captured.plan.scenes.some(scene => scene.audio?.document.tracks.length) ? '0.36.0' : '0.35.0');
   assert.equal(inventory.schemaVersion, 11); assert.ok(f.generated.backend.capabilities.includes('project.animation-state-entry-triggers'));
   assert.equal(f.generated.files.get(`behaviors/${f.scriptId}.gd`).toString(), f.content);
   assert.ok(f.generated.files.has('project-animation-state-trigger-runtime.gd'));
@@ -169,7 +170,10 @@ test('real rejected play has no successful event entry and retains the original 
 });
 
 test('real p9 runtime and wrapper remain runnable with their strict previous wire fields', real, async t => {
-  const f = await fixture(t, { body: '\tp.publish_event("action",true)\n\thost.flush_requests()' }), directory = await stage(f);
+  const f = await fixture(t, { body: '\tp.publish_event("action",true)\n\thost.flush_requests()' });
+  // This case deliberately exercises the historical unwrapped protocol 9.
+  f.generated = await generateGodotExecutionBudgetProject(f.captured.plan);
+  const directory = await stage(f);
   const scene = (await fs.readFile(path.join(directory, 'project.tscn'), 'utf8')).replace('project-animation-state-trigger-runtime.gd', 'project-animation-state-entry-runtime.gd');
   await fs.writeFile(path.join(directory, 'project.tscn'), scene);
   const wrapper = (await fs.readFile(new URL('../backends/godot4/project-animation-state-entry-wrapper.gd', import.meta.url), 'utf8')).replace('__SCRIPT_OBJECT_ID__', f.scriptId);

@@ -14,16 +14,24 @@ import { generateGodotAudioProject, godotAudioDiagnostics } from './godot4-audio
 import { generateGodotAnimationProject, godotAnimationDiagnostics } from './godot4-clip-animation.mjs';
 import { godotAssemblyDiagnostics } from './godot4-project.mjs';
 import { hasGodotPhysics, godotPhysicsDiagnostics } from './godot4-physics.mjs';
-import { generateGodotExecutionBudgetProject, godotExecutionBudgetAssemblyScripts } from './godot4-execution-budget.mjs';
+import { GODOT_EXECUTION_CLOCK_CAPABILITY } from './godot4-execution-clock.mjs';
+import { GODOT_EXECUTION_FRAMES_CAPABILITY } from './godot4-execution-frames.mjs';
+import { createProjectExecutionFramesReader } from '../../engine/project-execution-frames.mjs';
+import { createProjectEventPositionsReader } from '../../engine/project-event-positions.mjs';
+import { GODOT_ANIMATION_REQUESTS_CAPABILITY } from './godot4-animation-requests.mjs';
+import { generateGodotAudioRequestsProject, godotAudioRequestsAssemblyScripts, GODOT_AUDIO_REQUESTS_CAPABILITY } from './godot4-audio-requests.mjs';
+import { createProjectAudioRequestsReader } from '../../engine/project-audio-requests.mjs';
+import { createProjectAnimationRequestsReader } from '../../engine/project-animation-requests.mjs';
+import { createProjectExecutionClockReader } from '../../engine/project-execution-clock.mjs';
 import { createProjectAnimationStateCatalog } from '../../engine/project-animation-states.mjs';
 import { createProjectRuntimeEventReader } from '../../engine/project-runtime-events.mjs';
 import { createProjectPhysics2DTraceReader } from '../../engine/project-physics2d-trace.mjs';
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.32.0',
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.36.0',
   platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 11 }],
-  capabilities: ['physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
+  capabilities: [GODOT_AUDIO_REQUESTS_CAPABILITY, GODOT_ANIMATION_REQUESTS_CAPABILITY, GODOT_EXECUTION_FRAMES_CAPABILITY, GODOT_EXECUTION_CLOCK_CAPABILITY, 'physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -49,7 +57,7 @@ async function generate(plan) {
   if (plan.kind === 'scene2d' && plan.animation?.document.playbackScope === 'instance') throw buildError('build_animation_instances_require_project', 'Per-instance animation requires a project assembly.');
   // Detach before the generator's asynchronous file reads so callers cannot
   // change an admitted plan while its project bytes are being produced.
-  const generated = await (plan.kind === 'project' || hasGodotPhysics(plan) ? generateGodotExecutionBudgetProject : plan.animation ? generateGodotAnimationProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
+  const generated = await (plan.kind === 'project' || hasGodotPhysics(plan) ? generateGodotAudioRequestsProject : plan.animation ? generateGodotAnimationProject : plan.audio ? generateGodotAudioProject : plan.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(structuredClone(plan));
   return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
     artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
 }
@@ -58,6 +66,21 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ['engine/project-event-positions.mjs', new URL('../../engine/project-event-positions.mjs', import.meta.url)],
+    ['engine/project-queued-requests.mjs', new URL('../../engine/project-queued-requests.mjs', import.meta.url)],
+    ['engine/project-audio-requests.mjs', new URL('../../engine/project-audio-requests.mjs', import.meta.url)],
+    ['scripts/backends/godot4-audio-requests.mjs', new URL('./godot4-audio-requests.mjs', import.meta.url)],
+    ['scripts/backends/godot4/audio-request-emitter.gd', new URL('./godot4/audio-request-emitter.gd', import.meta.url)],
+    ['engine/project-animation-requests.mjs', new URL('../../engine/project-animation-requests.mjs', import.meta.url)],
+    ['scripts/backends/godot4-animation-requests.mjs', new URL('./godot4-animation-requests.mjs', import.meta.url)],
+    ['scripts/backends/godot4/animation-request-emitter.gd', new URL('./godot4/animation-request-emitter.gd', import.meta.url)],
+    ['scripts/backends/godot4-execution-clock.mjs', new URL('./godot4-execution-clock.mjs', import.meta.url)],
+    ['scripts/backends/godot4/execution-clock-host.gd', new URL('./godot4/execution-clock-host.gd', import.meta.url)],
+    ['scripts/backends/godot4/execution-clock-budget.gd', new URL('./godot4/execution-clock-budget.gd', import.meta.url)],
+    ['engine/project-execution-clock.mjs', new URL('../../engine/project-execution-clock.mjs', import.meta.url)],
+    ['engine/project-execution-frames.mjs', new URL('../../engine/project-execution-frames.mjs', import.meta.url)],
+    ['scripts/backends/godot4-execution-frames.mjs', new URL('./godot4-execution-frames.mjs', import.meta.url)],
+    ['scripts/backends/godot4/execution-frame-emitter.gd', new URL('./godot4/execution-frame-emitter.gd', import.meta.url)],
     ['scripts/backends/godot4-execution-budget.mjs', new URL('./godot4-execution-budget.mjs', import.meta.url)],
     ['scripts/backends/godot4/project-execution-budget.gd', new URL('./godot4/project-execution-budget.gd', import.meta.url)],
     ['engine/project-execution-budget.mjs', new URL('../../engine/project-execution-budget.mjs', import.meta.url)],
@@ -201,7 +224,7 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
       XDG_DATA_HOME: path.join(directory, '.host/data'), XDG_CONFIG_HOME: path.join(directory, '.host/config'), XDG_CACHE_HOME: path.join(directory, '.host/cache') },
     signal, timeoutMs, onOutput };
   if (phase === 'script-check') {
-    const assemblyScripts = await godotExecutionBudgetAssemblyScripts(directory, signal);
+    const assemblyScripts = await godotAudioRequestsAssemblyScripts(directory, signal);
     const scripts = assemblyScripts || ['runtime.gd'];
     if (!assemblyScripts) {
     let manifest;
@@ -313,11 +336,22 @@ export const GODOT4_EXECUTION_ADAPTER = Object.freeze({
   diagnostics: (result, plan) => (hasGodotPhysics(plan) ? godotPhysicsDiagnostics : plan.kind === 'project' ? godotAssemblyDiagnostics : plan.animation ? godotAnimationDiagnostics : plan.audio ? godotAudioDiagnostics : plan.schemaVersion === 3 ? godotBehaviorDiagnostics : godotDiagnostics)(result, plan),
   createEventReader: (input, options) => {
     if (input.kind === 'project') {
-      const runtimeReader = createProjectRuntimeEventReader(input, { protocolVersion: input.scenes.some(scene => scene.animation?.document.playbackScope === 'instance') ? 11 : createProjectAnimationStateCatalog(input).scenes.length ? 10 : input.scenes.some(scene => scene.animation) ? 7 : 4, ...options,
+      const protocolVersion = options?.protocolVersion ?? (input.scenes.some(scene => scene.animation?.document.playbackScope === 'instance') ? 11 : createProjectAnimationStateCatalog(input).scenes.length ? 10 : input.scenes.some(scene => scene.animation) ? 7 : 4);
+      const runtimeReader = createProjectRuntimeEventReader(input, { protocolVersion, ...options,
       ...(options?.smoke === true ? { expectedTotalSeconds: 0.5 } : {}) });
-      return options?.smoke === true && hasGodotPhysics(input)
+      const observed = options?.smoke === true && hasGodotPhysics(input)
         && (options.capabilities === undefined || options.capabilities.includes('physics.observe2d'))
         ? createProjectPhysics2DTraceReader(input, { runtimeReader, onSnapshot: options.onPhysicsSnapshot }) : runtimeReader;
+      const scheduled = options?.capabilities?.includes(GODOT_EXECUTION_CLOCK_CAPABILITY)
+        ? createProjectExecutionClockReader({ runtimeReader: observed, onSnapshot: options.onExecutionClockSnapshot }) : observed;
+      const framed = options?.capabilities?.includes(GODOT_EXECUTION_FRAMES_CAPABILITY)
+        ? createProjectExecutionFramesReader({ runtimeReader: scheduled, onSnapshot: options.onExecutionFramesSnapshot }) : scheduled;
+      const animated = options?.capabilities?.includes(GODOT_ANIMATION_REQUESTS_CAPABILITY)
+        ? createProjectAnimationRequestsReader(input, { runtimeReader: framed, protocolVersion, onSnapshot: options.onAnimationRequestsSnapshot }) : framed;
+      const audio = options?.capabilities?.includes(GODOT_AUDIO_REQUESTS_CAPABILITY)
+        ? createProjectAudioRequestsReader(input, { runtimeReader: animated, protocolVersion, onSnapshot: options.onAudioRequestsSnapshot }) : animated;
+      return protocolVersion >= 3 && options?.capabilities?.includes(GODOT_EXECUTION_FRAMES_CAPABILITY)
+        ? createProjectEventPositionsReader({ runtimeReader: audio, onSnapshot: options.onEventPositionsSnapshot }) : audio;
     }
     const plan = input;
     const createBaseReader = plan.schemaVersion === 3 ? createBehaviorRuntimeEventReader : createRuntimeEventReader;

@@ -1,0 +1,172 @@
+TAP version 13
+# Subtest: construction requires event and exact-position capabilities with bounded retention and detached initial DTO
+ok 1 - construction requires event and exact-position capabilities with bounded retention and detached initial DTO
+  ---
+  duration_ms: 8.982915
+  type: 'test'
+  ...
+# Subtest: fragmented multi-visit business traffic gains exact event positions without changing old DTOs
+ok 2 - fragmented multi-visit business traffic gains exact event positions without changing old DTOs
+  ---
+  duration_ms: 12.793709
+  type: 'test'
+  ...
+# Subtest: zero recipients settle publication facts immediately without inventing delivery positions
+ok 3 - zero recipients settle publication facts immediately without inventing delivery positions
+  ---
+  duration_ms: 1.761593
+  type: 'test'
+  ...
+# Subtest: nested publication facts precede their callbacks while recipient FIFO and each exact receipt remain distinct
+ok 4 - nested publication facts precede their callbacks while recipient FIFO and each exact receipt remain distinct
+  ---
+  duration_ms: 2.536895
+  type: 'test'
+  ...
+# Subtest: partial success followed by callback failure preserves side effects and leaves remaining recipients pending
+ok 5 - partial success followed by callback failure preserves side effects and leaves remaining recipients pending
+  ---
+  duration_ms: 1.93456
+  type: 'test'
+  ...
+# Subtest: illegal publications, delivery order, identities and retired tokens preserve only admitted positions
+ok 6 - illegal publications, delivery order, identities and retired tokens preserve only admitted positions
+  ---
+  duration_ms: 2.666023
+  type: 'test'
+  ...
+# Subtest: retained publications preserve their original positions after unrelated raw and execution tails rotate
+ok 7 - retained publications preserve their original positions after unrelated raw and execution tails rotate
+  ---
+  duration_ms: 13.779689
+  type: 'test'
+  ...
+# Subtest: 32 newest settled identities coexist with all pending publications even when empty newer publications settle first
+ok 8 - 32 newest settled identities coexist with all pending publications even when empty newer publications settle first
+  ---
+  duration_ms: 10.78339
+  type: 'test'
+  ...
+# Subtest: 128 publications, 64 pending messages and 1024 recipients retain their independent legacy bounds
+ok 9 - 128 publications, 64 pending messages and 1024 recipients retain their independent legacy bounds
+  ---
+  duration_ms: 2145.584941
+  type: 'test'
+  ...
+# Subtest: pending payload byte rejection does not add positions or consume the next legal publication identity
+ok 10 - pending payload byte rejection does not add positions or consume the next legal publication identity
+  ---
+  duration_ms: 2.940988
+  type: 'test'
+  ...
+# Subtest: scene re-entry retains old publication positions and uses new frozen visit sources and subscription IDs
+ok 11 - scene re-entry retains old publication positions and uses new frozen visit sources and subscription IDs
+  ---
+  duration_ms: 1.820542
+  type: 'test'
+  ...
+# Subtest: initial, publication and final snapshot observer failures never mutate or replay admitted facts
+ok 12 - initial, publication and final snapshot observer failures never mutate or replay admitted facts
+  ---
+  duration_ms: 3.063112
+  type: 'test'
+  ...
+# Subtest: downstream onEvent failure recovers committed publication or delivery with exact position before closing
+ok 13 - downstream onEvent failure recovers committed publication or delivery with exact position before closing
+  ---
+  duration_ms: 2.616913
+  type: 'test'
+  ...
+# Subtest: downstream frame-snapshot failures still retain the event ledger commit and never replay buffered lines
+not ok 14 - downstream frame-snapshot failures still retain the event ledger commit and never replay buffered lines
+  ---
+  duration_ms: 1.363323
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-positions.test.mjs:212:1'
+  failureType: 'testCodeFailure'
+  error: 'position observer'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    onFrames (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-positions.test.mjs:214:119)
+    publish (file:///home/chiharukiryu/cdev/viento-studio/engine/project-execution-frames.mjs:29:37)
+    Object.finish (file:///home/chiharukiryu/cdev/viento-studio/engine/project-execution-frames.mjs:157:9)
+    Object.finish (file:///home/chiharukiryu/cdev/viento-studio/engine/project-event-positions.mjs:108:29)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-positions.test.mjs:216:11)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: unterminated publication and delivery tails are admitted once even if downstream business observers throw
+ok 15 - unterminated publication and delivery tails are admitted once even if downstream business observers throw
+  ---
+  duration_ms: 3.30164
+  type: 'test'
+  ...
+# Subtest: independent clock final observer retry remains possible without duplicating event positions
+ok 16 - independent clock final observer retry remains possible without duplicating event positions
+  ---
+  duration_ms: 1.963174
+  type: 'test'
+  ...
+# Subtest: enormous unrelated logs are passed through without an additional buffer or widening line limits
+ok 17 - enormous unrelated logs are passed through without an additional buffer or widening line limits
+  ---
+  duration_ms: 2.268865
+  type: 'test'
+  ...
+# Subtest: missing or mismatching exact-position metadata never creates an inferred publication position
+ok 18 - missing or mismatching exact-position metadata never creates an inferred publication position
+  ---
+  duration_ms: 3.768046
+  type: 'test'
+  ...
+# Subtest: event positions wrap both media request observers without merging identities or evidence
+ok 19 - event positions wrap both media request observers without merging identities or evidence
+  ---
+  duration_ms: 23.404579
+  type: 'test'
+  ...
+# Subtest: nested media observer errors close event positions without dropping peer state or fabricating event terminals
+not ok 20 - nested media observer errors close event positions without dropping peer state or fabricating event terminals
+  ---
+  duration_ms: 4.108411
+  type: 'test'
+  location: '/home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-positions.test.mjs:287:1'
+  failureType: 'testCodeFailure'
+  error: 'media observer'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    observer (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-positions.test.mjs:289:64)
+    publish (file:///home/chiharukiryu/cdev/viento-studio/engine/project-queued-requests.mjs:38:37)
+    Object.finish (file:///home/chiharukiryu/cdev/viento-studio/engine/project-queued-requests.mjs:181:39)
+    Object.finish (file:///home/chiharukiryu/cdev/viento-studio/engine/project-event-positions.mjs:108:29)
+    TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-event-positions.test.mjs:292:27)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1402:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+    Test.postRun (node:internal/test_runner/test:1542:19)
+    Test.run (node:internal/test_runner/test:1467:12)
+  ...
+# Subtest: constructor rejects readers missing mandatory observation surfaces before snapshot or push
+ok 21 - constructor rejects readers missing mandatory observation surfaces before snapshot or push
+  ---
+  duration_ms: 3.965999
+  type: 'test'
+  ...
+# Subtest: an unrelated committed business callback failure never relocates the last event publication
+ok 22 - an unrelated committed business callback failure never relocates the last event publication
+  ---
+  duration_ms: 1.475849
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 20
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2302.747435

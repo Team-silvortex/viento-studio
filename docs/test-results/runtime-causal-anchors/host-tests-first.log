@@ -1,0 +1,28 @@
+✔ project sessions publish detached causal anchors and save the admitted source after completion (194.032378ms)
+✔ a consumer throwing after an admitted pending event cannot hide its causal source on disk (95.091681ms)
+✔ an initial causal observer failure saves an empty view before the engine starts (81.324153ms)
+✖ task status retains detached live and final causal views through the service boundary (72.680064ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 573.23557
+
+✖ failing tests:
+
+test at scripts/tests/project-causal-anchors-host.test.mjs:95:1
+✖ task status retains detached live and final causal views through the service boundary (72.680064ms)
+  Error: A project assembly requires targetId.
+      at createError (file:///home/chiharukiryu/cdev/viento-studio/engine/service-error.mjs:2:17)
+      at fail (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/project-build-service.mjs:35:47)
+      at Object.command (file:///home/chiharukiryu/cdev/viento-studio/scripts/lib/project-build-service.mjs:687:78)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-causal-anchors-host.test.mjs:110:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    statusCode: 400,
+    payload: {},
+    errorCode: 'build_request_invalid'
+  }

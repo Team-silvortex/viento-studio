@@ -1,0 +1,66 @@
+{
+  "scope": "Chrome imported the actual build-dialog module and event-position component, using a local fixture service and no real engine or installed application.",
+  "checks": [
+    {
+      "initial": {
+        "open": true,
+        "items": 4,
+        "text": "door.open发布序号 1 · 业务帧 4 · 空闲帧 3 · 物理帧 3订阅 1 · 访问 1 · 场景 dddddddd-dddd-4ddd-8ddd-dddddddddddd · 绑定 00000008-1111-4111-8111-111111111111 · 实例 11111111-1111-4111-8111-111111111111 · 对象 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb已处理（回调成功）投递回执 · 业务帧 7 · 空闲帧 6 · 物理帧 6door.open发布序号 2 · 业务帧 5 · 空闲帧 4 · 物理帧 4订阅 1 · 访问 1 · 场景 dddddddd-dddd-4ddd-8ddd-dddddddddddd · 绑定 00000008-1111-4111-8111-111111111111 · 实例 11111111-1111-4111-8111-111111111111 · 对象 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb已跳过（已取消订阅）投递回执 · 业务帧 8 · 空闲帧 7 · 物理帧 7door.open发布序号 3 · 业务帧 12 · 空闲帧 11 · 物理帧 11订阅 2 · 访问 2 · 场景 00000002-1111-4111-8111-111111111111 · 绑定 0000003e-1111-4111-8111-111111111111 · 实例 11111111-1111-4111-8111-111111111111 · 对象 bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb已处理（回调成功）投递回执 · 业务帧 13 · 空闲帧 12 · 物理帧 12nobody发布序号 4 · 业务帧 17 · 空闲帧 16 · 物理帧 16发布时没有订阅者。",
+        "phase": "finished",
+        "legacyHidden": true
+      }
+    },
+    {
+      "newTask": "missing positions hidden and old rows cleared"
+    },
+    {
+      "freshTask": "owned valid observations restored"
+    },
+    {
+      "invalidSnapshot": "rejected and previous rows cleared"
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "integrated-dialog-1440.png"
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/project-build"
+    },
+    {
+      "method": "GET",
+      "path": "/api/project-build"
+    },
+    {
+      "method": "GET",
+      "path": "/api/project-build"
+    },
+    {
+      "method": "GET",
+      "path": "/api/project-build"
+    }
+  ],
+  "sourcesBefore": {
+    "web/modules/app-project-build.js": "f7692092777f6d094094220c573f6f7fa236128d49b413f327ba1b65029911a3",
+    "web/modules/app-project-event-positions-observation.js": "598e7a04cd6357f872b24078d42abbd81037b025bf0924dbd9f8d179ad3f9856",
+    "engine/project-event-positions-query.mjs": "eb3e416c4e89d82c940a25afeb19def91c9e8800db6f1d03178035dfc2365682",
+    "web/project-event-observation.css": "058fcbac4a63a470a0d9a24c1e6ed4342718b62004172f3ba98f09e7a68a160a",
+    "web/project-build.css": "2e7a99e24347cfa6edf0dde98295c253a8a6fe60352b45e059b95f87ec079464",
+    "web/i18n/en.js": "068109fcfa2c5fc30c99e9b08dcfd6b31ec5f3274ccf1a6b55424e39b30d9c6b",
+    "web/i18n/ja.js": "5c9f920b7986a02eccd19c36822e7e87eb2b2be66d692d6e6256430741021808"
+  },
+  "browser": "Chrome/154.0.8037.97",
+  "ok": true,
+  "sourcesAfter": {
+    "web/modules/app-project-build.js": "f7692092777f6d094094220c573f6f7fa236128d49b413f327ba1b65029911a3",
+    "web/modules/app-project-event-positions-observation.js": "598e7a04cd6357f872b24078d42abbd81037b025bf0924dbd9f8d179ad3f9856",
+    "engine/project-event-positions-query.mjs": "eb3e416c4e89d82c940a25afeb19def91c9e8800db6f1d03178035dfc2365682",
+    "web/project-event-observation.css": "058fcbac4a63a470a0d9a24c1e6ed4342718b62004172f3ba98f09e7a68a160a",
+    "web/project-build.css": "2e7a99e24347cfa6edf0dde98295c253a8a6fe60352b45e059b95f87ec079464",
+    "web/i18n/en.js": "068109fcfa2c5fc30c99e9b08dcfd6b31ec5f3274ccf1a6b55424e39b30d9c6b",
+    "web/i18n/ja.js": "5c9f920b7986a02eccd19c36822e7e87eb2b2be66d692d6e6256430741021808"
+  },
+  "sourcesUnchanged": true
+}

@@ -1,0 +1,77 @@
+TAP version 13
+# Subtest: audio composes with scene and behavior bases without changing their frozen files
+ok 1 - audio composes with scene and behavior bases without changing their frozen files
+  ---
+  duration_ms: 15.743828
+  type: 'test'
+  ...
+# Subtest: audio resources keep a dedicated path alongside existing images
+ok 2 - audio resources keep a dedicated path alongside existing images
+  ---
+  duration_ms: 2.006749
+  type: 'test'
+  ...
+# Subtest: adapter refuses malformed audio plans before generating a project
+ok 3 - adapter refuses malformed audio plans before generating a project
+  ---
+  duration_ms: 7.181595
+  type: 'test'
+  ...
+# Subtest: control replay rejects audio composition explicitly before starting a process
+ok 4 - control replay rejects audio composition explicitly before starting a process
+  ---
+  duration_ms: 6.05152
+  type: 'test'
+  ...
+# Subtest: real Godot executes ready, fixed-step audio, same-time order and final cleanup exactly once
+ok 5 - real Godot executes ready, fixed-step audio, same-time order and final cleanup exactly once
+  ---
+  duration_ms: 8453.068322
+  type: 'test'
+  ...
+# Subtest: real Godot reports a missing WAV as a source-owned audio error without a false finish
+ok 6 - real Godot reports a missing WAV as a source-owned audio error without a false finish
+  ---
+  duration_ms: 3956.927598
+  type: 'test'
+  ...
+# Subtest: real Godot mixes nonzero PCM, preserves independent loop modes and makes gain zero silent
+ok 7 - real Godot mixes nonzero PCM, preserves independent loop modes and makes gain zero silent
+  ---
+  duration_ms: 5736.156088
+  type: 'test'
+  ...
+# {"loopModesIndependent":true,"loopPlayingAfterDuration":true,"quarterGainPeak":0.122104123234749,"stoppedPeak":0,"zeroGainPeak":0}
+# Subtest: audio import diagnostics use the resource declaration instead of an arbitrary log path
+ok 8 - audio import diagnostics use the resource declaration instead of an arbitrary log path
+  ---
+  duration_ms: 0.544692
+  type: 'test'
+  ...
+# Subtest: real Godot delivery relocates with audio bytes intact and regenerates only owned import caches
+ok 9 - real Godot delivery relocates with audio bytes intact and regenerates only owned import caches
+  ---
+  duration_ms: 8943.601757
+  type: 'test'
+  ...
+# Subtest: actor smoke completion cannot conceal a shortened audio timeline
+ok 10 - actor smoke completion cannot conceal a shortened audio timeline
+  ---
+  duration_ms: 1.313005
+  type: 'test'
+  ...
+# Subtest: real Godot preserves valid high precision cue timing through the audio protocol
+ok 11 - real Godot preserves valid high precision cue timing through the audio protocol
+  ---
+  duration_ms: 3955.991821
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 31191.34832

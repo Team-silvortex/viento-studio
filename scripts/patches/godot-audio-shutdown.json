@@ -1,0 +1,29 @@
+{
+  "format": "viento-godot-toolchain-patch",
+  "schemaVersion": 1,
+  "name": "audio-shutdown",
+  "baseVersion": "4.7.2",
+  "baseCommit": "ed1daf0bf001b61586d9930840f2f1394092c079",
+  "sourceArchive": {
+    "url": "https://codeload.github.com/godotengine/godot/tar.gz/ed1daf0bf001b61586d9930840f2f1394092c079",
+    "sha256": "e607e9985e1c201bc9cdc1aec8a120f0c3f53b9603f1f828e2b748534a2471ef"
+  },
+  "upstream": {
+    "pullRequest": "https://github.com/godotengine/godot/pull/122742",
+    "author": "Decryptu",
+    "commits": [
+      "7cc813110a2c961b2369573e95920026afc23859",
+      "eb5f8e774b5ca29cfbec745829767f82a7e8ec98"
+    ]
+  },
+  "patch": {
+    "path": "godot-audio-shutdown.patch",
+    "sha256": "42c59871bc9ff3e5db34c5334a16527b423d4609c332692e7d5771ad26212cfa",
+    "files": [
+      "servers/audio/audio_server.cpp"
+    ]
+  },
+  "buildName": "viento_audiofix1_ed1daf0bf",
+  "target": "editor",
+  "note": "Local backport; no claim that the upstream PR is merged. Exact tool version and binary digest remain part of each frozen Viento build."
+}

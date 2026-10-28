@@ -1,0 +1,33 @@
+✔ an unterminated clock sample survives repeated observer errors during host finalization (181.37887ms)
+✔ a consumer failing before execution cannot interrupt the final clock snapshot and disk record (105.477378ms)
+✖ an initial clock notification failure persists an incomplete session before reader assignment (102.445473ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 519.776009
+
+✖ failing tests:
+
+test at scripts/tests/project-execution-clock-host.test.mjs:82:1
+✖ an initial clock notification failure persists an incomplete session before reader assignment (102.445473ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'waiting'
+  - 'incomplete'
+  
+      at run (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-execution-clock-host.test.mjs:42:10)
+      at async TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-execution-clock-host.test.mjs:85:18)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'waiting',
+    expected: 'incomplete',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

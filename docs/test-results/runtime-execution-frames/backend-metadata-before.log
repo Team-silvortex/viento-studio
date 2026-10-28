@@ -1,0 +1,69 @@
+✔ exact execution positions persist after a final unterminated envelope and consumer mutations stay detached (198.136785ms)
+✔ position-consumer failure preserves each admitted position exactly once (114.508575ms)
+✔ business-consumer failure preserves each admitted position exactly once (109.676259ms)
+✔ an initial position notification failure saves an incomplete empty observation before execution (102.059138ms)
+✔ a new generated project cannot silently downgrade its runtime output to unwrapped project frames (102.396984ms)
+✖ stored backend metadata cannot select a different runtime reader: remove-frames (89.076617ms)
+✖ stored backend metadata cannot select a different runtime reader: add-capability (99.94077ms)
+✖ stored backend metadata cannot select a different runtime reader: change-version (97.489395ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 5
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1041.713697
+
+✖ failing tests:
+
+test at scripts/tests/project-execution-frames-host.test.mjs:98:79
+✖ stored backend metadata cannot select a different runtime reader: remove-frames (89.076617ms)
+  AssertionError [ERR_ASSERTION]: Reject metadata changes before executing any runtime.
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-execution-frames-host.test.mjs:108:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-execution-frames-host.test.mjs:98:79
+✖ stored backend metadata cannot select a different runtime reader: add-capability (99.94077ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-execution-frames-host.test.mjs:106:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/tests/project-execution-frames-host.test.mjs:98:79
+✖ stored backend metadata cannot select a different runtime reader: change-version (97.489395ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///home/chiharukiryu/cdev/viento-studio/scripts/tests/project-execution-frames-host.test.mjs:106:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

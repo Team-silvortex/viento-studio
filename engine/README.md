@@ -188,6 +188,12 @@ schema 4 以 `oneWay: { margin: 1 }` 增加静态矩形单向平台，容差有�
 | `scene-control-program.mjs` | 有限方向输入；全局／逐实例 schema 分离，1–64 步、单步 ≤0.25 秒、总 8 秒、演员×步数 1024、最后全释放 |
 | `runtime-verification-case.mjs`／`runtime-case-document.mjs` | 有限用例、身份和断言；仅无行为 plan 2，完成／失败／缺样本分开，不模拟引擎 |
 | `project-execution-budget.mjs` | 七维有限会话成本的原子预留与分离快照；业务身份、队列和记录留存由调用方管理 |
+| `project-queued-requests.mjs` | 共用请求分流、时钟／FIFO终态关联、留存与异常收尾；领域规则由调用方提供 |
+| `project-animation-requests.mjs` | 校验冻结动画来源、目标及命令，复用共用队列观察 |
+| `project-audio-requests.mjs` | 校验冻结音轨、绑定与播放／停止请求；后端回执不证明设备出声 |
+| `project-event-positions.mjs` | 复用原事件账本与精确帧，保留已结清发布尾部及全部未决的逐接收者位置 |
+| `project-execution-frames.mjs` | 组合原reader准入精确业务帧封套，保留有界位置尾部，独立于预算窗口 |
+| `project-execution-clock.mjs` | 组合reader校验独立调度观察；真实帧对、七维增量／总量与有界窗口，不补充执行额度 |
 | `scene-runtime-events.mjs`／`scene-runtime-query.mjs` | 已冻结计划的身份、位置、生命周期和步骤准入，再返回不可变观察；来源来自计划，不采用进程任意路径 |
 | `backend-project-delivery.mjs` | 绑定完整后端清单与摘要的交付审阅 DTO；归档成员和字节再由宿主验证 |
 
@@ -202,6 +208,28 @@ Godot、Bevy 数据与 Bevy Rust 的资源、语言和运行范围分别由后�
 `project-event-bus.mjs` 在身份、令牌及待处理容量检查完成后预留事件次数、接收者与字节；原有完整序列和投递语义不变。Godot 0.32.0 生成包装从同一策略输出 `execution-budget.json`，运行 helper 在一个协调器中供事件、状态、音频与动画调用；helper 和转换脚本接受严格库存核对，历史模板源字节与无预算层产物读取保留。`sequence`／`state_revision`／动画 `reserved_count` 继续表达业务身份，活动订阅和待处理容量由各自服务管理。
 
 作者格式及项目运行协议 4／7／10／11 未改变，单场景生成不加入项目预算层。当前仍是有限会话，flush、deferred 和场景切换不重置额度，也没有 continuous 开关；原始帧尾部留存不改变这些执行上限。验证范围见[有限执行预算记录](../docs/test-results/runtime-execution-budget/README.md)。
+
+### 项目执行调度观察
+
+`project-execution-clock.mjs` 是0.2.5发布后的未发布开发增量。导出 `PROJECT_EXECUTION_CLOCK_PREFIX`（`VIENTO_EXECUTION_CLOCK:`）和 `createProjectExecutionClockReader({ runtimeReader, onSnapshot, retainedWindows = 32 })`。`runtimeReader` 必须提供 `push()`／`finish()`；可选 `onSnapshot` 接收分离快照，`retainedWindows` 允许1–8192。返回接口保留原事件、诊断和getter，并在物理组合存在 `snapshot()` 时继续转发；调度快照另从 `executionClock` 读取。
+
+独立协议1只接受精确sample结构：`index`、`clock: { idleFrame, physicsFrame }`、七维 `used`／`total` 及 `reason`。原因限 `sample`、`rejected`、`finished`、`aborted`。新窗口时钟必须单调且至少一个维度前进；当前窗口可合并增量，累计成本必须等于上个窗口总量加当前增量，所有成本保持有限策略范围。非法观察原子拒绝，不能回退或部分修改最后合法记录。
+
+`executionClock` 快照包含 `format: "viento-execution-clock-observation"`、`schemaVersion: 1`、`policyVersion: 1`、`limits`、`phase`、七维 `total`、`totalWindows`、`windows` 和 `retention`。窗口行保留实际帧对、成本、索引与原因；retention给出上限、累计／保留／移出数量及首末窗口索引。默认保留32个窗口，同窗口更新不增加总数。phase为 `waiting`／`recording`／`finished`／`incomplete`；reader收尾缺少合法终止或存在诊断时不确认完成。
+
+每行限制16 KiB UTF-8，观察处理预算8192帧，诊断最多128条。分块输入仅暂存可能属于此前缀的内容，其他内容立即委托原reader；合法观察与业务协议互不占用对方帧编号。`finish()` 保留原返回形状，快照另由getter及回调提供。宿主将快照存入 `session.json.executionClock` 和任务同名字段，并对取消／失败／超时明确设置 `incomplete`；当前没有专用界面控件。
+
+Godot0.33包装从真实引擎idle／physics计数生成窗口，复用冻结0.32预算和既有项目协议4／7／10／11。窗口是观察分组，不是因果事务；未增加reset或continuous开关，有限累计准入、业务序号、语义账本、输出及时限保持。实现分层见[执行调度观察](../docs/BACKEND_MIDDLEWARE.md#执行调度观察)，验证范围见[专题记录](../docs/test-results/runtime-execution-clock/README.md)，不沿用旧预算验收作为新增观察的通过证据。
+
+### 项目因果锚点
+
+`project-causal-anchors.mjs` 的 `createProjectCausalAnchors(runtimeObservation, { recentPerKind = 16 })` 从严格校验后的完整观察生成独立、分离且深冻结的 `viento-project-causal-anchors` schema1。支持旧项目协议1–11；无相应账本时不伪造节点。`recentPerKind`允许0–64，未知选项和访问器拒绝，非法数据不进入投影。
+
+`nodes`使用原 `kind:sequence` 身份，四类为 `events`、`animationCommands`、`animationCompletions`、`animationStateEntries`，`record`保留冻结来源。`roots`的理由为 `recent`、`pending-delivery`、`target-baseline`、`latest-controller-entry`；当前ready访问的目标基线涵盖playing、paused、stopped和finished回执，最近控制器进入不声称实时active。`edges`区分触发来源 `trigger`、全局截止 `global-watermark` 和实际播放命令 `playback-command`。逐实例完成沿 `targetCommandSequence`定位播放，不能用全局截止代替。
+
+所有保留根的引用递归保留并去重。`retention`为四类与aggregate提供total／retained／dropped；dropped只表示未纳入当前投影，旧完整账本仍保留。已退出访问不再贡献目标／控制器基线，已完成投递仍可能被保留入口引用。DTO放在会话／任务顶层 `causalAnchors`，不扩充旧project观察字段，不交回旧完整序号验证器。
+
+此层不消费原始日志或给事件猜测引擎帧，不拥有执行预算、订阅身份和队列。未接收独立排队请求身份，也不把状态进入后的相邻命令当作其执行结果。[验证范围](../docs/test-results/runtime-causal-anchors/README.md)。
 
 ## 独立 3D 原始表示
 
@@ -384,3 +412,42 @@ Android 的 `mobile/platform.mjs` 在 WebView 复用可移植规则，Rust `mobi
 `godot-platform-endpoint-events-script.mjs` 是普通TXT起始内容，严格核对 `viento_platform_events` 版本1、零参起点／终点信号和本实例身份。`origin_event`／`destination_event` 空名各自禁用，发布载荷为平台UUID。运行端每端每项目步合并通知，不在脚本中轮询位置、推进轨迹或管理物理句柄；现有项目事件预算保持。见[平台端点事件](../docs/SCENE_PHYSICS2D.md#用平台端点事件驱动动画与声音)。
 
 `project-runtime-events.mjs` 将原始帧保留窗与累计准入、启动／结束状态分离；`retention` 描述原始帧序号范围，`lifecycle` 描述已验证状态。回调和每次 `push()` 返回所有新准入帧，业务账本仍保留完整有限语义。`project-runtime-query.mjs` 仅留最后一条原始帧，独立消费语义结果；这不解除4096帧或各业务的累计执行预算。
+
+### 项目业务帧位置
+
+`createProjectExecutionFramesReader({ runtimeReader, onSnapshot, retainedFrames = 128 })` 从 `project-execution-frames.mjs` 导出，与 `PROJECT_EXECUTION_FRAME_PREFIX`（`VIENTO_EXECUTION_FRAME:`）配套。`retainedFrames` 允许1–4096；原reader必须提供 `push()`／`finish()`，原getter及物理 `snapshot()`继续转发。对旧业务DTO本身不增加字段，仅在独立协议1封套中校验连续index及单调 `{idleFrame, physicsFrame}`，准入仍由原reader决定；有该能力的新构建拒绝裸项目帧。
+
+`executionFrames` 返回分离快照：`format: "viento-project-execution-frames"`、`schemaVersion: 1`、`phase`、`totalFrames`、`frames`和`retention`。每行只保留index、clock和紧凑reference；retention给出limit／total／retained／dropped／firstIndex／lastIndex。phase为waiting／recording／finished／incomplete。业务通知异常后的已准入事实只保存一次；透传clock通知仍可独立完成收尾。
+
+Godot0.34在真实输出点采集计数，Node将快照保存至session与任务接口。零成本业务位置不能强制归入预算窗口，尾部之外的因果锚点不会获得推测时钟。具体行与帧预算、库存和旧构建重建要求见[中间层](../docs/BACKEND_MIDDLEWARE.md#业务回执的精确引擎帧)，实际证据见[专题](../docs/test-results/runtime-execution-frames/README.md)。
+
+### 动画排队请求观察
+
+`project-animation-requests.mjs` 导出 `PROJECT_ANIMATION_REQUEST_PREFIX`（`VIENTO_ANIMATION_REQUEST:`）及 `createProjectAnimationRequestsReader(plan, { runtimeReader, protocolVersion = 7, onSnapshot, retainedRequests = 128 })`。runtimeReader必须已组合精确业务帧层；业务协议可为5–11，逐实例计划要求11，当前产品按内容选择7／10／11。retainedRequests允许1–256，仅限制终态尾部；原getter、业务返回值及物理snapshot继续转发。
+
+独立协议1的accepted精确携带requestId、clock、origin、target和command；origin只含visitIndex／sceneId／bindingId／instanceId／objectId，source由冻结计划构造。applied另含commandSequence及executionFrameIndex，必须匹配FIFO队首、已准入原animation-command和当前精确业务帧时钟；discarded仅接受运行error后的队首及reason=abort。接受时seek只校验整段duration，选择后的范围继续交给原执行准入。
+
+`animationRequests`返回分离DTO：`format: "viento-project-animation-requests"`、schemaVersion=1、phase、counts（accepted／applied／discarded／pending）、requests和retention（limit／total／retained／dropped／pending／terminal／firstRequestId／lastRequestId）。请求行包含requestId、status、acceptedClock、冻结origin、target、command，以及终态的applied（clock／commandSequence／executionFrameIndex）或discarded（clock／reason）。行按requestId排序，默认最近128条终态加全部未决请求，最多64条未决。
+
+每会话最多256个连续请求ID、512次此前缀尝试；去行尾观察行最多16 KiB UTF-8，诊断最多128条。无完整applied证据时保留pending，即使原业务回执已经准入；业务观察者异常不重放，尾帧与独立clock仍按原收尾边界保留。finished仅在业务完成、无未决及诊断后确认；宿主失败／取消／超时标incomplete。无动画旧reader由适配器能力开关保持原入口；音频由独立能力选择其领域reader，事件请求身份与continuous仍未开放。合同见[中间层](../docs/BACKEND_MIDDLEWARE.md#动画排队请求观察)，验证范围见[专题](../docs/test-results/runtime-animation-requests/README.md)。
+
+
+### 共用队列与音频请求观察
+
+`project-queued-requests.mjs` 提供动画与音频共用的观察机制：前缀分流、单调时钟、FIFO队首与原业务回执关联、终态留存和回调异常收尾。领域模块分别提供冻结计划准入，原业务reader继续拥有实际命令及状态规则；共用机制不合并两域身份、队列或预算。
+
+`project-audio-requests.mjs` 导出 `PROJECT_AUDIO_REQUEST_PREFIX`（`VIENTO_AUDIO_REQUEST:`）及 `createProjectAudioRequestsReader(plan, { runtimeReader, protocolVersion = 4, onSnapshot, retainedRequests = 128 })`，支持业务协议4–11，在精确业务帧reader之外组合。retainedRequests允许1–256，仅限制终态尾部。accepted携带requestId、clock、origin五种身份、trackId与action（play／stop）；来源及音轨资源从冻结计划派生，进程不能指定作者路径。applied携带commandSequence和executionFrameIndex，须匹配原audio-command与当前精确帧时钟；discarded仅在真实业务error之后接受队首reason=abort；这是abort循环于移除队首前同步输出的清理标记，不推定播放发生或失败。
+
+`audioRequests` 返回独立的 `viento-project-audio-requests`、schemaVersion=1快照，包含phase（waiting／recording／finished／incomplete）、counts（accepted／applied／discarded／pending）、requests和retention（limit／total／retained／dropped／pending／terminal／firstRequestId／lastRequestId）。请求行保存requestId、status、acceptedClock、origin五身份与冻结source、track（trackId／resourceId／冻结source）、action，以及显式applied或discarded证据；默认保留最近128条终态加全部pending，最多64条未决。音频与动画各有256个会话请求ID和256次有限预约，不共享编号或返还额度；前缀尝试、单行及诊断上限同共用观察合同；拒绝诊断为runtime_audio_request_invalid，限额诊断为runtime_audio_request_limit。没有完整applied证据时保留pending，不从取消推断丢弃，也不从已验证后端调用推断设备出声。
+
+Node将快照保存到会话与任务接口，原业务协议保持。含音轨Godot项目使用0.36外层，无音轨但有动画仍为0.35，两者均无为0.34。新领域与共用reader的最终验证、组合库存、宿主和真实引擎范围见[音频专题](../docs/test-results/runtime-audio-requests/README.md)，合同见[中间层](../docs/BACKEND_MIDDLEWARE.md#音频排队请求观察)；本轮未发布或更新安装。
+
+### 项目事件发布与投递位置
+
+`project-event-positions.mjs` 导出 `createProjectEventPositionsReader({ runtimeReader, onSnapshot, retainedEvents = 32 })`。下游必须提供已有 `projectEvents` 语义账本及 `executionFrames`，retainedEvents允许1–128，仅限制已结清发布尾部。此层逐行委托原读取器，不解析新前缀、不增加游戏请求；完整原账本、FIFO和预算仍由既有模块维护。
+
+`eventPositions` 为 `viento-project-event-positions`、schemaVersion=1，phase取waiting／recording／finished／incomplete；counts为published／settled／pending／deliveries／handled／skipped／pendingDeliveries，deliveries表示已预留接收者总数。retention为limit／total／retained／dropped／pending／settled／firstSequence／lastSequence。items复用原事件条目的sequence、name、value、origin、deliveries，并增加 `published:{clock,executionFrameIndex}`；handled／skipped接收者增加 `delivered:{clock,executionFrameIndex}`，pending没有delivered。clock为idleFrame／physicsFrame，双方source仍来自原账本的冻结绑定。
+
+默认保留按发布sequence最新32条已结清发布加全部未决发布，零接收者发布立即结清；部分投递完成也会保留整份未决条目的已确认位置。原始尾部移出不丢失这些证据，但不扩展为完整历史时钟账本。位置是回执输出位置，不是回调开始时刻；pending不证明未执行，取消或失败不制造discarded。异常后的唯一已准入事实及下游尾帧会在收尾保存，回调拿到的副本不能改变内部状态。
+
+原有getter、events／diagnostics和可选snapshot继续转发；匹配位置或原账本失败时增加runtime_event_position_invalid，原业务诊断保持。Godot仅在项目协议≥3且已有runtime.execution-frames时组合此reader，旧reader和其他后端保持原字段范围。没有新backend能力、版本或GDScript；执行适配器指纹变化仍要求旧冻结构建重建。171项定向和真实Godot六案已通过，最终完整检查及兼容范围见[本轮专题](../docs/test-results/runtime-event-positions/README.md)。

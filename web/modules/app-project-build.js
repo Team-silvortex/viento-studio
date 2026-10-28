@@ -8,6 +8,8 @@ import { setupProjectAnimationCompletionObservation } from './app-project-animat
 import { setupProjectAnimationObservation } from './app-project-animation-observation.js';
 import { setupProjectAudioObservation } from './app-project-audio-observation.js';
 import { setupProjectEventObservation } from './app-project-event-observation.js';
+import { setupProjectEventPositionsObservation } from './app-project-event-positions-observation.js';
+import { validateProjectEventPositions } from '../../engine/project-event-positions-query.mjs';
 import { setupProjectEventReview } from './app-project-event-review.js';
 import { setupProjectStateObservation } from './app-project-state-observation.js';
 import { setupProjectAssembly } from './app-project-assembly.js';
@@ -216,6 +218,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <p id="projectBuildRuntimeCount"></p><p id="projectBuildRuntimeEmpty" hidden></p><ul id="projectBuildRuntimeObjectList"></ul></section>
     <div id="projectSharedState"></div>
     <div id="projectEventTrace"></div>
+    <div id="projectEventPositions"></div>
     <div id="projectEventReview"></div>
     <div id="projectAudioCommands"></div>
     <div id="projectPhysicsObservation"></div><div id="projectAnimationCommands"></div><div id="projectAnimationCompletions"></div><div id="projectAnimationTargetReview"></div><div id="projectAnimationStates"></div><div id="projectAnimationStateEntries"></div>
@@ -701,6 +704,33 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       return { view, sessionOwner: owner, owner: JSON.stringify([dialogSession, owner]) };
     } catch { return null; }
   }
+  // Position snapshots are independent of runtime/ledger tails. Tie them to
+  // the selected project run and frozen members before exposing them.
+  function eventPositionsObservation() {
+    const job = data?.job, build = matchedBuild();
+    if (!available || !data?.supported || activeTab !== 'build' || !projectTarget() || job?.kind !== 'run' || !job.eventPositions || !build
+      || !supportsExecution('headlessLogic') && !supportsExecution('windowPreview')
+      || !data.backend.capabilities.includes('project.events') || !data.backend.capabilities.includes('runtime.execution-frames')
+      || typeof job.id !== 'string' || !job.id || invalidatedRuntimeJobs.has(job.id)
+      || job.targetKind !== 'project' || build.targetKind !== 'project' || job.sceneId !== selected
+      || job.targetId !== selected || build.targetId !== selected || job.backendId !== data.backend.id
+      || job.buildId !== build.id || job.snapshotId !== build.snapshotId || !/^sha256:[a-f0-9]{64}$/.test(job.snapshotId || '')) return null;
+    try {
+      const view = validateProjectEventPositions(job.eventPositions), members = frozenRuntimeMembers(build);
+      if (!members || view.items.some(item => !members.has(item.origin.sceneId)
+        || item.deliveries.some(delivery => !members.has(delivery.origin.sceneId)))) return null;
+      const owner = JSON.stringify([acceptedBackend, job.id, job.buildId, job.snapshotId, selected, [...members.values()]]);
+      return { view, sessionOwner: owner, owner: JSON.stringify([dialogSession, owner]) };
+    } catch { return null; }
+  }
+  const eventPositionsObserver = typeof setupProjectEventPositionsObservation === 'function' ? setupProjectEventPositionsObservation({
+    container: el('projectEventPositions'),
+    getContext: () => {
+      const observed = eventPositionsObservation();
+      return { available: Boolean(observed), visible: dialog.open && activeTab === 'build', sessionOwner: observed?.sessionOwner || '',
+        navigationOwner: observed?.owner || '' };
+    },
+  }) : { setSnapshot() {}, refresh() {} };
   const ownsRuntimeSourceContext = () => {
     const context = getContext();
     return dialog.open && !context.dirty && !context.creating;
@@ -861,6 +891,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   }) : { setObservation() {}, selectRecord() { return false; }, refresh() {} };
   function renderRuntimeObjects() {
     physicsObserver.setSnapshot(physicsObservation()?.view || null);
+    eventPositionsObserver.setSnapshot(eventPositionsObservation()?.view || null);
     const observation = runtimeObservation(), owner = observation?.owner || '';
     animationTargetReview.setObservation(observation?.view.project?.protocolVersion === 11 ? observation.view : null);
     stateObservation.setSnapshot([2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(observation?.view.project?.protocolVersion) ? observation.view.project.sharedState : null);
@@ -1344,6 +1375,7 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     sceneAuthoring.closed();
     problems.refresh();
     physicsObserver.refresh();
+    eventPositionsObserver.refresh();
     stateObservation.refresh();
     eventObservation.refresh();
     eventReview.refresh();

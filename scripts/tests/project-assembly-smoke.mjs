@@ -1,3 +1,4 @@
+import { projectFramesFromStdout } from './helpers/project-execution-frames-fixture.mjs';
 // Actual Chrome authoring -> multi-scene Godot project -> relocated engineering ZIP.
 // Every author mutation is confined to a disposable copy of the Scene2D example.
 import fs from 'node:fs/promises';
@@ -111,7 +112,7 @@ try {
   const unzip = await runCommand('unzip', ['-q', archive, '-d', relocated], { cwd: temp }); assert.equal(unzip.code, 0);
   const project = path.join(relocated, 'project'), imported = await runCommand(tool, ['--headless', '--editor', '--path', project, '--import', '--quit'], { cwd: temp, env }); assert.equal(imported.code, 0); assert.doesNotMatch(imported.stdout + imported.stderr, /SCRIPT ERROR|Parse Error/);
   const run = await runCommand(tool, ['--headless', '--path', project, '--', '--viento-smoke'], { cwd: temp, env }); assert.equal(run.code, 0); assert.doesNotMatch(run.stdout + run.stderr, /SCRIPT ERROR|Parse Error/);
-  const frames = run.stdout.split('\n').filter(line => line.startsWith('VIENTO_PROJECT:')).map(line => JSON.parse(line.slice('VIENTO_PROJECT:'.length))); assert.equal(frames.find(frame => frame.event === 'ready').entrySceneId, second); assert.deepEqual(frames.filter(frame => frame.event === 'scene-enter').map(frame => frame.sceneId), [second]);
+  const frames = projectFramesFromStdout(run.stdout); assert.equal(frames.find(frame => frame.event === 'ready').entrySceneId, second); assert.deepEqual(frames.filter(frame => frame.event === 'scene-enter').map(frame => frame.sceneId), [second]);
   report.delivery = { bytes: receipt.bytes, sha256: buildHash(await fs.readFile(archive)), fileCount: verified.fileCount, assetCount: verified.assetCount, frames };
   assert.equal(verified.assetCount, 1); assert.deepEqual(await authorHashes(root), saved); assert.deepEqual(report.errors, []);
   report.steps.push('The visible multi-scene project is reviewed, downloaded, independently verified, extracted elsewhere and started by real Godot with the same entry scene.');

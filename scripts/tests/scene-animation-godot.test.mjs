@@ -1,4 +1,4 @@
-import { godotExecutionBudgetAssemblyScripts } from '../backends/godot4-execution-budget.mjs';
+import { godotAudioRequestsAssemblyScripts } from '../backends/godot4-audio-requests.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -191,7 +191,7 @@ async function assembly(t) {
 
 test('project inventories and remaps animation composition including five-script behavior/audio scenes', async t => {
   const f = await assembly(t), generated = await materialize(t, f.value, f.captured.resources);
-  const scripts = await godotExecutionBudgetAssemblyScripts(generated.directory);
+  const scripts = await godotAudioRequestsAssemblyScripts(generated.directory);
   assert.equal(scripts.length, [...generated.generated.files.keys()].filter(name => name.endsWith('.gd')).length);
   for (const child of f.value.scenes) {
     const prefix = `scenes/${child.scene.objectId}`;
@@ -212,7 +212,7 @@ test('real project animation survives scene A to B to A and starts a fresh clock
   const result = await adapter.executePhase({ phase: 'run', directory: generated.directory, tool });
   assert.equal(result.status, 'succeeded', result.stdout + result.stderr);
   assert.deepEqual(adapter.diagnostics(result, f.value), [], result.stdout + result.stderr);
-  const reader = adapter.createEventReader(f.value); reader.push(result.stdout); assert.deepEqual(reader.finish().diagnostics, [], result.stdout + result.stderr);
+  const reader = adapter.createEventReader(f.value, { capabilities: generated.generated.backend.capabilities }); reader.push(result.stdout); assert.deepEqual(reader.finish().diagnostics, [], result.stdout + result.stderr);
   assert.deepEqual(reader.events.filter(event => event.event === 'scene-enter').map(event => event.sceneId), [f.sceneIds[0], f.sceneIds[1], f.sceneIds[0]]);
   assert.equal(result.stdout.split('\n').filter(line => line === 'ANIMATION_VISIT_READY:0.0').length, 3);
   assert.equal(result.stdout.split('\n').filter(line => line === 'ANIMATION_VISIT_CLOSED:true').length, 3);

@@ -1,3 +1,4 @@
+import { projectFramesFromStdout } from './helpers/project-execution-frames-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -106,7 +107,6 @@ test('real saved assembly builds, runs, survives inspection and ZIP relocation w
   for (const phase of ['import', 'run']) {
     const result = await adapter.executePhase({ phase, directory: project, tool: identified, timeoutMs: 60000 });
     assert.equal(result.status, 'succeeded', result.stdout + result.stderr);
-    if (phase === 'run') assert.ok(result.stdout.split('\n').filter(line => line.startsWith('VIENTO_PROJECT:'))
-      .map(line => JSON.parse(line.slice('VIENTO_PROJECT:'.length))).some(frame => frame.event === 'scene-event' && frame.stream === 'audio'));
+    if (phase === 'run') assert.ok(projectFramesFromStdout(result.stdout).some(frame => frame.event === 'scene-event' && frame.stream === 'audio'));
   }
 });

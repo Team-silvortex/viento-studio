@@ -1,0 +1,22 @@
+✔ native scene requests preserve same-callback FIFO and exact acceptance and application clocks (15364.040394ms)
+✔ native instance requests keep one FIFO while actual engine frames advance between acceptance and application (17379.118762ms)
+✔ native accepted select and seek distinguish execution failure from the later abort queue discard (14087.770708ms)
+✔ native cancellation keeps accepted requests pending after business positions and budget windows rotate (14579.38384ms)
+✔ native terminal request retention keeps 128 outcomes plus pending requests without trimming the old command ledger (16632.871906ms)
+✔ native full queues reject request 65 without allocating an identity or charging another reservation (14301.839438ms)
+✔ native author ready accepts requests after the generated ready receipt and before their deferred application (14431.027797ms)
+✔ native author ready audio requests preserve FIFO before their deferred backend calls (12952.542893ms)
+✔ native audio request clocks follow actual idle and physics frames between acceptance and backend application (12603.672443ms)
+✔ native unavailable audio preserves the preceding completed call and explicitly discards the remaining FIFO on abort (12706.657048ms)
+✔ native cancellation retains pending audio requests after 160 state revisions and both observation tails rotate (12946.183048ms)
+✔ native audio retention keeps 128 terminal outcomes plus pending identities and all 148 old business receipts (14147.225223ms)
+✔ native mixed requests keep independent identities while audio backend calls retain priority over animation (16424.30998ms)
+✔ native audio queue capacity rejects request 65 before identity allocation and discards only the 64 accepted requests (12773.150207ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 201687.212728

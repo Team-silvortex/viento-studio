@@ -80,6 +80,6 @@ func _probe() -> void:
     const execution=await adapter.executePhase({phase,directory,tool:identified,smoke:false,timeoutMs:60000});
     assert.equal(execution.status,'succeeded',execution.stdout+execution.stderr);
     assert.deepEqual(adapter.diagnostics(execution,snapshot.plan),[],execution.stdout+execution.stderr);
-    if(phase==='run'){const reader=adapter.createEventReader(snapshot.plan);reader.push(execution.stdout);assert.deepEqual(reader.finish().diagnostics,[],execution.stdout+execution.stderr);verifyEvents(reader.events);}
+    if(phase==='run'){const reader=adapter.createEventReader(snapshot.plan, { capabilities: built.record.backend.capabilities });reader.push(execution.stdout);assert.deepEqual(reader.finish().diagnostics,[],execution.stdout+execution.stderr);verifyEvents(reader.events);}
   }
 });

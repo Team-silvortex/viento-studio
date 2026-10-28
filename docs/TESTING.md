@@ -1,12 +1,70 @@
 # 验证指南
 
-本页提供当前可用的验证入口和证据要求。当前源码为 **0.2.5**，已收录自由平面碰撞、单向平台下穿、水平往返及端点事件、原始观察留存和有限执行预算，安装验收仍为 **0.2.0**；具体范围见[当前状态](STATUS.md)。逐轮日志、旧命令上下文和历史计数完整迁入[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
+本页提供当前可用的验证入口和证据要求。当前源码为 **0.2.6**，已收录调度时钟、因果锚点、精确业务帧、媒体请求及事件位置观察，运行仍受有限预算约束，安装验收仍为 **0.2.0**；具体范围见[当前状态](STATUS.md)。逐轮日志、旧命令上下文和历史计数完整迁入[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
+
+0.2.6 收录的[调度观察专题](test-results/runtime-execution-clock/README.md)独立验证真实引擎帧归窗、七维用量、留存与取消，不修改原运行协议或累计上限。复现纯合同与库存：
+
+```sh
+node --test scripts/tests/project-execution-clock.test.mjs scripts/tests/project-execution-clock-backends.test.mjs scripts/tests/project-execution-clock-host.test.mjs
+VIENTO_GODOT_BIN=/path/to/Godot node --test scripts/tests/project-execution-clock-godot.test.mjs scripts/tests/project-execution-clock-lifecycle-godot.test.mjs
+```
+
+没有配置真实Godot时，原生项明确跳过；不能把该结果写成引擎验收。调度窗口以实际idle／physics帧对为准，`_ready`之后的deferred可能已经跨过物理步。
+
+新增[因果锚点专题](test-results/runtime-causal-anchors/README.md)验证未决投递、逐实例播放命令、进入触发闭包、长尾保留和切场景释放：
+
+```sh
+node --test scripts/tests/project-causal-anchors.test.mjs scripts/tests/project-causal-anchors-host.test.mjs
+VIENTO_GODOT_BIN=/path/to/Godot node --test scripts/tests/project-causal-anchors-godot.test.mjs
+```
+
+宿主替身检查与真实Godot结果分开记录；原生四例包含raw tail和clock窗口轮转，但不把日志顺序解释为精确归帧。
+
+[音频退出调查](test-results/godot-audio-shutdown/README.md)提供不依赖Viento的Godot最小脚本。检查退出清理时，除退出码和警告外还须观察弱引用；两帧后没有警告并不证明对象已回收。该调查记录上游缺陷，不能记作修复通过。后续[修订验收](test-results/godot-audio-shutdown-patch/README.md)另存官方／修订工具的42例对照、四组项目验证与安装摘要；原生退出码、日志捕获完整性及无残留必须同时通过。复建和默认工具切换见[工具链指南](GODOT_TOOLCHAIN.md)。
+
+当前[精确业务帧专题](test-results/runtime-execution-frames/README.md)另外验证封套准入、生成库存、异常落盘和真实输出时钟：
+
+```bash
+node --test scripts/tests/project-execution-frames.test.mjs scripts/tests/project-execution-frames-backends.test.mjs scripts/tests/project-execution-frames-host.test.mjs
+VIENTO_GODOT_BIN=/path/to/Godot node --test --test-concurrency=1 scripts/tests/project-execution-frames-godot.test.mjs
+```
+
+`VIENTO_EXECUTION_FRAMES_EVIDENCE` 保存逐案原始输出、真实时钟对照、session、冻结来源及作者前后摘要。Godot工具使用[音频退出修订版](GODOT_TOOLCHAIN.md)，不改Studio安装；纯host合成时钟只证明接线，不能计作引擎验收。
+
+新增[动画请求观察专题](test-results/runtime-animation-requests/README.md)分别记录纯reader、生成库存、宿主交接及真实Godot结果：
+
+```sh
+node --test scripts/tests/project-animation-requests.test.mjs scripts/tests/project-animation-requests-backends.test.mjs scripts/tests/project-animation-requests-host.test.mjs
+VIENTO_GODOT_BIN=/path/to/Godot VIENTO_ANIMATION_REQUESTS_EVIDENCE=/tmp/viento-animation-requests-evidence node --test --test-concurrency=1 scripts/tests/project-animation-requests-godot.test.mjs
+```
+
+核对接受／应用跨帧、FIFO、实例来源、选片后执行失败、实际abort清队列、取消未决和终态尾部；普通作者`_ready`请求与deferred路径分别验证。完整applied须匹配真实业务回执及精确帧，缺marker的pending不能解释为未执行。原生测试未配置工具时明确跳过，测试文件存在不代表已经通过；本能力已纳入0.2.6源码，尚未随新版安装程序验收，旧累计预算继续生效。
+
+新增[音频请求观察专题](test-results/runtime-audio-requests/README.md)分开核对共用队列reader、音频领域、组合库存、宿主落盘和真实Godot：
+
+```sh
+node --test scripts/tests/project-audio-requests.test.mjs scripts/tests/project-animation-requests.test.mjs scripts/tests/project-audio-requests-backends.test.mjs scripts/tests/project-audio-requests-host.test.mjs
+VIENTO_GODOT_BIN=/path/to/Godot VIENTO_AUDIO_REQUESTS_EVIDENCE=/tmp/viento-audio-requests-evidence node --test --test-concurrency=1 scripts/tests/project-audio-requests-backends.test.mjs scripts/tests/project-audio-requests-godot.test.mjs
+```
+
+验证范围包括普通作者ready入队、真实idle／physics跨帧、不可用音轨后的实际abort丢弃、取消且观察尾部轮转、128终态加全部pending、音频／动画独立ID与混合执行顺序、65号请求拒绝。原作者脚本与产品源码需记录执行前后hash，session落盘应与返回值一致；applied只代表后端调用回执，不做声卡出声验收。核心136项与宿主定向已验证；UID修复后库存16项含真实import／script-check通过，新音频原生7项、旧动画／迁移8项、原音频5项通过且源守卫一致，最终app-only共8626项、8070通过、556条件跳过，原生未配置工具时跳过不算通过。
+
+新增[事件发布与投递位置专题](test-results/runtime-event-positions/README.md)复用原业务封套，分开验证读取器事实保留、宿主交接和真实引擎输出。已完成的宿主定向回归：
+
+```sh
+node --test --test-isolation=none --test-concurrency=1 scripts/tests/project-event-positions.test.mjs scripts/tests/project-event-positions-host.test.mjs
+VIENTO_GODOT_BIN=/path/to/Godot VIENTO_EVENT_POSITIONS_EVIDENCE=/tmp/viento-event-position-evidence node --test --test-concurrency=1 scripts/tests/project-event-positions-godot.test.mjs
+```
+
+新核心23项、宿主12项及既有链共171项定向通过、零跳过。补充核心／clock／frames回归57项通过，其中事件位置23项，覆盖下游clock最终通知失败时事件位置仍发送incomplete且不重放；证据见[跨通道回归](test-results/runtime-event-positions/core-clock-recovery.log)。宿主覆盖会话落盘与双方冻结来源、快照深拷贝、发布及投递准入后的业务／位置回调异常、初始化异常、尾部无换行回执、取消未决、130条状态帧冲刷原始尾部、任务实时和最终交接、无capability及旧协议／旧reader无新字段。宿主组使用真实构建产物与合成进程帧，只证明接线；真实Godot六案已通过并记录作者及原生1353份源码守卫，每案另核对58份来源；完整检查8667项、8105通过、562条件跳过，旧音频与动画14项原生回归通过。核对生成产物与原GDScript保持、执行适配器指纹确实纳入新reader；pending不能记成未执行，零接收者发布须立即结清。真实六案分别覆盖空／handled／skipped接收者、跨真实帧投递、嵌套发布与回调失败、160条状态帧后的取消、32条已结清尾部加未决及音频／动画组合；没有新sideband。
 
 ## 最近的功能证据
 
-本版六项增量的功能证据均来自升版前 **0.2.4 工作树**，下列结果保持原执行时点。0.2.5 版本一致性、源码分发与发布预检另见[发布检查](test-results/release-0.2.5/README.md)，内容汇总见[发布记录](RELEASE_0.2.5.md)。
+0.2.6 收录的事件位置只读面板提供 `scripts/tests/project-event-positions-query.test.mjs`、`scripts/tests/project-event-positions-observation-ui.test.mjs` 及构建界面接线测试，覆盖不可信快照、当前后端和冻结任务归属、未确认与保留范围、中英日和旧能力回退。本轮定向162／162通过；浏览器独立组件使用合成任务快照，在中英日与两种视口尺寸组合共6项通过，不能代表完整应用工作流或真实引擎运行。另用真实Chrome加载构建对话框并从受控本地服务读取合成任务，核对新任务、恢复和错误快照清除；未运行Godot或安装程序。该专题在升版前0.2.5工作树的app-only完整检查为8684项、8122通过、562条件跳过、零失败／取消；真实Godot六案保持其原证据和测试时点。0.2.6发布时另行重跑app-only、Rust核心与版本／源码分发检查，结果见[本版发布检查](test-results/release-0.2.6/README.md)，不覆盖专题日志。
 
-最近的[共用有限执行预算](test-results/runtime-execution-budget/README.md)验证JS／Godot同源七维策略、原子拒绝、新旧库存与身份序号保持。冻结候选23/23、旧原生边界62/62均通过；完整app-only为**8419项，7895通过、524条件跳过，0失败／取消**。仍是有限会话，未增加连续运行模式。
+0.2.5 的六项增量功能证据均来自其升版前 **0.2.4 工作树**，下列结果保持原执行时点。0.2.5 版本一致性、源码分发与发布预检另见[发布检查](test-results/release-0.2.5/README.md)，内容汇总见[发布记录](RELEASE_0.2.5.md)。
+
+0.2.5 收录的[共用有限执行预算](test-results/runtime-execution-budget/README.md)验证JS／Godot同源七维策略、原子拒绝、新旧库存与身份序号保持。冻结候选23/23、旧原生边界62/62均通过；完整app-only为**8419项，7895通过、524条件跳过，0失败／取消**。仍是有限会话，未增加连续运行模式。
 
 上一轮[运行观察留存](test-results/runtime-observation-retention/README.md)验证原始帧窗口、独立生命周期、完整语义账本、工作台累计／保留／移出说明，以及成功、失败、取消与批次切换；持续运行的累计执行上限尚未解除。完整app-only为**8387项，7876通过、511条件跳过，0失败／取消**；原生5/5、reader/query99/99；浏览器三语12组合成任务，和真实原生验证分开记录。
 
@@ -251,7 +309,7 @@ node --test scripts/tests/function-atlas*.test.mjs
 
 | 范围 | 重点 |
 | --- | --- |
-| 新安装产物 | 0.2.1–0.2.5 的源码增量尚未随新安装程序验收；安装包应覆盖新增界面和原有关键路径 |
+| 新安装产物 | 0.2.1–0.2.6 的源码增量尚未随新安装程序验收；安装包应覆盖新增界面和原有关键路径 |
 | 桌面扩展 | Windows／macOS 的选择器、解码、生命周期与签名；更多 3D、后端和长任务关闭场景 |
 | Android 实体设备 | 输入法候选、低内存回收、不同 WebView／厂商、云盘／外置存储及商店签名更新 |
 | 大工程 | 多 GiB 迁移、长期压力、空间不足、不同文件系统与接近各域预算的性能 |

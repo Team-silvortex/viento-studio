@@ -1,0 +1,27 @@
+{
+  "revision": 2,
+  "baselineHarness": "revisions/v1-original-regression",
+  "baselineEvidenceUnmodified": "runs/original-regression",
+  "sourceHashes": {
+    "run.py": "2d6d19236cf013423b3406fa078993d16583e05841482447c5df955f7ee64327",
+    "godot-verbose.py": "d2e351ee1265fb1378947d03fae9eab03b0a74905ec74767445f02dd25f432e0",
+    "guard-selftest.py": "a4021307422fb06abbbcf3f5b7a81573015e5242f3c1e7abd452e93d33a3881d"
+  },
+  "standaloneProbesUnchanged": true,
+  "probeHashes": {
+    "probes/cycles.gd": "cf10f57bd70e7ec8f865849c8db152cfbd898303375ae6df5325d275d262f107",
+    "probes/probe.gd": "8201e30196efcae536b572e7e8c63ba71bb466861fdfbc100fdeab96b204166b",
+    "probes/shutdown-edges.gd": "b81d219e7232f14a7ae14c6da2af294367fd4de3fbeb6837e157b72cc9249022"
+  },
+  "changes": [
+    "Project runtime exit whitelist is exactly integer 0 or 1; signals, other exits, and crash reports fail. Existing Node test protocol/diagnostic assertions remain required.",
+    "Captured stdout, stderr, and JSON require identical invocation stems. Pending, temporary, orphan, missing, or unexpected artifacts fail.",
+    "Tee errors produce captureComplete=false and wrapper exit 74. Each stream requires EOF completion, exact byte length, and SHA256.",
+    "Parent process timeout drains are bounded after TERM and KILL; incomplete pipes fail. Only the invocation-owned process group is signalled.",
+    "Runtime probes, 42-case standalone matrix, and direct no-leak assertions are unchanged. No product sources or baseline evidence were edited."
+  ],
+  "guardSelftest": "selftests/capture-guards-20261026T121310Z/summary.json",
+  "guardCasesPassed": 28,
+  "nativeGodotRunsForRevision": 0,
+  "scope": "Runtime launcher capture; --version, --editor, --check-only still exec real Godot directly; outer Node test result remains required."
+}

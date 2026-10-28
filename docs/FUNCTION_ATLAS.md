@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-10-26**。源码版本 **0.2.5**；审查基线为提交 `6d9560ff4861fdcfd918a7618c6557344f8d1d03`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-10-28**。源码版本 **0.2.6**；审查基线为提交 `52337b82d8dda282256bf1db52804cc894f58181`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -20,14 +20,14 @@
 | 项目 | 数量 |
 | --- | ---: |
 | 架构区域 | 11 |
-| 功能 | 175 |
-| 实现单元（含规划占位） | 527 |
-| 已审查实现关系 | 737 |
-| 显式评分单元 | 2948 |
-| 语义依赖边 | 530 |
-| 工作流切片 | 139 |
+| 功能 | 181 |
+| 实现单元（含规划占位） | 546 |
+| 已审查实现关系 | 756 |
+| 显式评分单元 | 3024 |
+| 语义依赖边 | 549 |
+| 工作流切片 | 145 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 2712 |
+| 引用并校验指纹的文件 | 2764 |
 
 ## 评分锚点
 
@@ -240,6 +240,12 @@
 | [平台轨迹→端点脚本→作者事件/媒体→来源→工程交付](function-atlas.html#workflow=scene-physics2d-platform-events) | [水平往返平台与重力角色承载](#runtime.physics2d_platform_motion) → [内置脚本起始内容与普通TXT草稿保存](#script.authoring) → [内置行为绑定、参数与信号原文编辑](#behavior.authoring) → [平台端点原生通知与作者事件媒体接线](#runtime.physics2d_platform_events) → [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [行为驱动项目音轨播放停止与实际命令观察](#runtime.project_audio_controls) → [已核对生成工程的可移植交付包](#backend.project_delivery) | 本次未登记额外缺口（不表示完成） | 每端每步合并通知；原生通知可连续，但普通项目事件仍有累计128等预算，不承诺长时间循环游戏。0\.31开发工作树，旧\.30证据保持。 |
 | [全量准入→独立生命周期/语义→原始尾部→留存说明→结果核对](function-atlas.html#workflow=runtime-observation-retention) | [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [项目内运行时场景切换与逐访问观察](#runtime.project_scene_switching) → [原始观察留存、独立生命周期与工作台截断说明](#runtime.observation_retention) → [运行对象、位置采样与冻结来源只读观察](#runtime.objects_inspection) → [同场景有序验收组与宿主批次调度](#runtime.case_suites) | 本次未登记额外缺口（不表示完成） | 原始留存首段已完成；不是解除累计执行限额或无限运行，原生与浏览器合成任务分别验证。 |
 | [规则→容量校验→原子预留→运行→拒绝与历史兼容核对](function-atlas.html#workflow=runtime-execution-budget) | [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) → [项目内运行时场景切换与逐访问观察](#runtime.project_scene_switching) → [共用有限执行预算与原子准入](#runtime.execution_budget) → [原始观察留存、独立生命周期与工作台截断说明](#runtime.observation_retention) | 本次未登记额外缺口（不表示完成） | 已完成有限预算解耦；持续运行的调度周期与语义留存仍待新契约。 |
+| [作者调用→真实调度帧→预算观察→有界摘要→会话核对](function-atlas.html#workflow=runtime-execution-clock) | [共用有限执行预算与原子准入](#runtime.execution_budget) → [宿主调度窗口与有限预算用量观察](#runtime.execution_clock) → [原始观察留存、独立生命周期与工作台截断说明](#runtime.observation_retention) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) | 本次未登记额外缺口（不表示完成） | 调度观察与因果投影、业务位置层分别接通；实时预算补充与连续运行仍待定义，非全链路完成。 |
+| [准入观察→保留根→引用闭包→任务交接→落盘核对](function-atlas.html#workflow=runtime-causal-anchors) | [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [动画成功进入的真实回调来源](#runtime.project_animation_state_entry_triggers) → [按播放目标回看动画运行记录](#runtime.project_animation_target_review) → [项目因果锚点与引用保留](#runtime.causal_anchors) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) | 本次未登记额外缺口（不表示完成） | 完成有限账本的独立因果投影；动画请求另有独立身份与时刻观察，音频/事件请求及锚点位置保留、执行账本裁剪仍待实现。 |
+| [业务输出→精确引擎帧→准入→位置尾部→会话交接](function-atlas.html#workflow=runtime-execution-frames) | [宿主调度窗口与有限预算用量观察](#runtime.execution_clock) → [业务回执精确引擎帧与位置留存](#runtime.execution_frames) → [原始观察留存、独立生命周期与工作台截断说明](#runtime.observation_retention) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) | 本次未登记额外缺口（不表示完成） | 本层仅已准入业务回执的精确位置；动画接受/应用由独立请求层记录，音频/事件请求与跨尾部位置保留尚未覆盖，非持续运行完成。 |
+| [动画入队→接受身份→执行回执→明确结果→未决/终态保留→会话核对](function-atlas.html#workflow=runtime-animation-requests) | [行为驱动项目动画播放、暂停、停止与跳转](#runtime.project_animation_controls) → [业务回执精确引擎帧与位置留存](#runtime.execution_frames) → [动画排队请求身份与结果观察](#runtime.animation_requests) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) | 本次未登记额外缺口（不表示完成） | 本工作流只表示动画请求路径；音频有独立身份及专题，两者共用队列观察。事件请求、跨尾部因果位置、账本裁剪及continuous仍未覆盖，非全链路完成。 |
+| [音频入队→接受身份→播放/停止回执→明确结果→未决/终态留存→会话核对](function-atlas.html#workflow=runtime-audio-requests) | [行为驱动项目音轨播放停止与实际命令观察](#runtime.project_audio_controls) → [业务回执精确引擎帧与位置留存](#runtime.execution_frames) → [音频排队请求身份与结果观察](#runtime.audio_requests) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) | 本次未登记额外缺口（不表示完成） | 音频与动画计数独立且共享纯队列观察；核心/定向、音频原生7项及历史兼容已验证，完整检查待本轮报告确认。后端调用回执或移除前清理标记不证明设备出声；事件请求、完整账本裁剪与continuous仍未覆盖。 |
+| [发布/投递准入→精确帧→未决及已结清位置保留→会话任务核对→只读面板](function-atlas.html#workflow=runtime-event-positions) | [项目会话事件发布订阅与有界投递观察](#runtime.project_events) → [业务回执精确引擎帧与位置留存](#runtime.execution_frames) → [项目事件发布与逐接收者回执位置保留](#runtime.event_positions) → [构建工作台、诊断、取消与进程回收](#build.workbench_lifecycle) | 本次未登记额外缺口（不表示完成） | 复用原业务协议及生成产物；171项定向已通过，真实Godot六案通过且源码守卫一致，旧媒体14项原生回归及完整检查8667项、8105通过、562条件跳过通过。pending不证明回调未执行，原有限账本/预算保持，没有持续运行、其他后端或安装验收。 本轮新增经校验的独立只读面板并核对运行归属；专项测试见事件位置UI专题。上述数量为上一轮证据。 |
 
 ## 功能与实现切片
 
@@ -2432,7 +2438,7 @@
 | 执行后端 | **Godot每轨播放器与场景时间驱动**；Godot各轨独立流与播放器实现时间提示、音量与循环；有限smoke和实际时间由运行器维护。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-audio/godot-summary\.json](../docs/test-results/scene-audio/godot-summary.json)、[docs/test-results/scene-audio/browser-summary\.json](../docs/test-results/scene-audio/browser-summary.json)、[docs/test-results/scene-audio/prepared\.json](../docs/test-results/scene-audio/prepared.json) |
 | 本机服务与适配 | **node-execution-backends\.mjs / node-project-build\.mjs：可信注册、输出与冻结编排**；通用生成资源映射承载WAV冻结副本及库存校验，执行编排不内嵌音轨语义。 | 4 / 3 / 3 / 2 | [docs/test-results/scene-audio/planning-tests\.log](../docs/test-results/scene-audio/planning-tests.log)、[docs/test-results/scene-audio/godot-summary\.json](../docs/test-results/scene-audio/godot-summary.json)、[docs/test-results/scene-audio/browser-summary\.json](../docs/test-results/scene-audio/browser-summary.json) |
 
-平台：Linux本机Godot4.7.2实际引擎PCM缓冲验证与异地工程交付、0.1.3源码交付；未验收物理扬声器或安装设备。边界：Godot适配器0.6.0显式声明audio.nonspatial／audio.timeline，旧无声音生成保持各自模块；Bevy数据与Rust行为通道明确拒绝，不静默丢弃声音。；宿主冻结实际PCM16 WAV，单／双声道、8–96kHz、每份最多32MiB；登记hash、完整RIFF容器、数据对齐及冻结库存均须核验，不转码或改写作者素材。；Godot独立生成器输出声音清单、运行脚本和audio/资源路径；每轨独立AudioStreamPlayer及流副本，处理音量、循环、play重新启动及stop。music／effect不变成混音总线。；有限smoke处理0、0.25、0.5秒，窗口生成工程由实际delta推进；独立VIENTO_AUDIO协议1核对就绪、提示顺序、结束及冻结诊断来源，与原演员／行为事件组合。 有限运行的声音结束时刻与演员步数交叉核对；高精度提示保留IEEE-754值及0.5秒相邻double边界，不以四舍五入扩大触发范围。；真实Godot4.7.2隔离AudioEffectCapture验证非零PCM、零音量、停止和独立循环，未验证物理扬声器；缺WAV给出轨道来源错误，不虚报finished。；工程ZIP仅带核对后的生成文件与WAV原字节，已验证异地工程库存和声音资源；不等于无开发引擎环境的独立游戏发行。；音频与有限控制回放目前明确拒绝；行为信号触发声音、空间声音、总线、Bevy音频、新安装和目标设备验收不在本范围。。
+平台：Linux本机Godot4.7.2实际引擎PCM缓冲验证与异地工程交付、0.1.3源码交付；未验收物理扬声器或安装设备。边界：Godot适配器0.6.0显式声明audio.nonspatial／audio.timeline，旧无声音生成保持各自模块；Bevy数据与Rust行为通道明确拒绝，不静默丢弃声音。；宿主冻结实际PCM16 WAV，单／双声道、8–96kHz、每份最多32MiB；登记hash、完整RIFF容器、数据对齐及冻结库存均须核验，不转码或改写作者素材。；Godot独立生成器输出声音清单、运行脚本和audio/资源路径；每轨独立AudioStreamPlayer及流副本，处理音量、循环、play重新启动及stop。music／effect不变成混音总线。；有限smoke处理0、0.25、0.5秒，窗口生成工程由实际delta推进；独立VIENTO_AUDIO协议1核对就绪、提示顺序、结束及冻结诊断来源，与原演员／行为事件组合。 有限运行的声音结束时刻与演员步数交叉核对；高精度提示保留IEEE-754值及0.5秒相邻double边界，不以四舍五入扩大触发范围。；真实Godot4.7.2隔离AudioEffectCapture验证非零PCM、零音量、停止和独立循环，未验证物理扬声器；缺WAV给出轨道来源错误，不虚报finished。；工程ZIP仅带核对后的生成文件与WAV原字节，已验证异地工程库存和声音资源；不等于无开发引擎环境的独立游戏发行。；音频与有限控制回放目前明确拒绝；行为信号触发声音、空间声音、总线、Bevy音频、新安装和目标设备验收不在本范围。；2026-10-26工具链修订：官方Godot4.7.2的WAV/PlaybackWAV立即退出残留仍属已知缺口；本机独立回移上游五行清理后，42个探针和33个项目用例通过，31次原生运行无残留并切换默认工具。旧官方保留，旧冻结构建需重建；不代表Studio安装更新、物理设备或全部音频分配验收。。
 
 下一步：先独立接通行为事件到声音命令及受控时钟的组合验证；其他后端、空间音频、总线与独立发行各自准入。
 
@@ -2561,7 +2567,7 @@
 | 本机服务与适配 | **冻结项目协议选择与宿主共享状态读取**；复用宿主冻结协议分派及读取，项目4接线不新建另一份运行模型。 | 4 / 4 / 3 / 2 | [docs/test-results/project-audio-controls/core-results\.json](../docs/test-results/project-audio-controls/core-results.json)、[docs/test-results/project-audio-controls/ui-results\.json](../docs/test-results/project-audio-controls/ui-results.json)、[docs/test-results/project-audio-controls/rust-full\.log](../docs/test-results/project-audio-controls/rust-full.log) |
 | 可移植 JS 语义 | **已知脚本起始内容与纯草稿提案**；复用原脚本草稿机制补事件声音起始内容，不取得播放／保存／绑定权限。 | 4 / 4 / 3 / 2 | [docs/test-results/project-audio-controls/core-results\.json](../docs/test-results/project-audio-controls/core-results.json)、[docs/test-results/project-audio-controls/ui-results\.json](../docs/test-results/project-audio-controls/ui-results.json)、[docs/test-results/project-audio-controls/rust-full\.log](../docs/test-results/project-audio-controls/rust-full.log) |
 
-平台：Linux本机HTTP编辑器与真实Chrome／Godot 4；桌面及移动准备副本按98项字节对照和4组实际调用验证、0.1.4源码交付；未更新安装，Android及其他系统目标设备、物理扬声器与独立发行未验收。边界：仅项目行为端口新增play_audio(trackId)／stop_audio(trackId)，轨道必须属于当前访问冻结声音声明；无播放器、Godot Node、资源路径或设备句柄穿过纯核心与UI。旧访问静默拒绝，同次请求返回true只表示队列受理，不等于已播放。；新project protocol4增加audio-command与ready／finished.audioCommandSequence，作者组装及project plan1、旧scene1／2／3与AUDIO1提示流保持。纯调用默认protocol1，显式保留旧1／2／3；Godot0.11.0生成清单5与project.audio-control属于后端能力，不增系统模块／声明能力。；每运行最多256次受理请求、64条待执行；合法候选先完整核验并预留。每次play重启、stop幂等但都记实际调用回执，拒绝不消耗序号或预算。未知轨道／非法输入在调用行为处诊断失败；不向后来访问或新运行转移请求。；行为_ready可能早于音轨初始化；独立声音队列在完整初始化、audio ready及t0提示后执行。安全点先排空事件队列再顺序执行声音请求，两队列完成后才切场景或正常结束；取消／失败不伪造未执行回执。离场统一停止播放器，历史命令不表明音轨仍在播放。；中立线帧严格核对全局commandSequence、当前visit／scene／binding／instance／object、track／resource、play／stop及有限局部timeSeconds。来源仅由冻结行为与音轨各自声明解析，wire禁止路径／范围注入；失败或音频finished后拒新回执。；同访问命令时间非减，旧提示已准入数量必须等于冻结atSeconds<=命令时间的数量，scene-exit核对最后命令不晚于实际声音与访问结束。进行中不独立证明物理调用瞬间／设备播放；仍由宿主判定取消及失败，不把一次命令当自然结束或音量状态。；DTO project.audioCommands保留最多256条完整回执，分别含原始行为origin和track的轨道／资源／来源；查询演员不删历史，原访问身份不会替换为当前同轨对象。音轨真实sourceRange原样保留，行为无范围时只承诺文档／字段回源。；声音账本沿既有8 MiB数据复制边界；最大完整双来源、事件／状态／场景观察叠加由protocol4专用32 MiB约束覆盖，旧protocol1／2／3预算保持。所有选择按data descriptor，不调用getter。；Rust声声明提示范围从1–64扩展为0–64，仍1–16轨道且原非空语义不变，schema1与ABI保持；WASM桥严格回执同步接受空提示，没有JS声音规则替代。纯行为音轨可原文设cues:[]，首次创建也可逐轨选择行为触发；0.1.4后可在独立声音面板移除全部提示后普通保存。定时新建默认生成播放提示；旧安装可能仍拒空提示。；独立三语只读面板只显示实际执行的播放／停止命令、局部时间与两种冻结来源，保留历史筛选，来源票据随任务／访问／目标变化失效。事件与状态观察保持独立；脚本起始内容仍走普通草稿审阅、保存与绑定。；旧单场景生成字节保留；宿主继续按已验证冻结后端协议选择reader／observer，不放宽生成指纹。既有本机构建遇指纹变化需重建；旧独立ZIP保留自身代码。无空间声音、混音总线、暂停／跳转、实时音量、自然结束观察、Bevy声音或独立发行。；本轮核心149／UI133、共享Rust335及native声音9通过；真实Godot新声音13、相邻回归65、宿主8通过；Chrome六组11图核对A→B→A的8条实际命令、6次事件发布和状态修订8，双轨真实范围回源及异地工程再运行。完整常规应用5284项中5128通过、156条件跳过；897 JS与API／版本预检通过。各组合重叠不相加，准备副本与混音缓冲不推导安装或物理设备验收。。
+平台：Linux本机HTTP编辑器与真实Chrome／Godot 4；桌面及移动准备副本按98项字节对照和4组实际调用验证、0.1.4源码交付；未更新安装，Android及其他系统目标设备、物理扬声器与独立发行未验收。边界：仅项目行为端口新增play_audio(trackId)／stop_audio(trackId)，轨道必须属于当前访问冻结声音声明；无播放器、Godot Node、资源路径或设备句柄穿过纯核心与UI。旧访问静默拒绝，同次请求返回true只表示队列受理，不等于已播放。；新project protocol4增加audio-command与ready／finished.audioCommandSequence，作者组装及project plan1、旧scene1／2／3与AUDIO1提示流保持。纯调用默认protocol1，显式保留旧1／2／3；Godot0.11.0生成清单5与project.audio-control属于后端能力，不增系统模块／声明能力。；每运行最多256次受理请求、64条待执行；合法候选先完整核验并预留。每次play重启、stop幂等但都记实际调用回执，拒绝不消耗序号或预算。未知轨道／非法输入在调用行为处诊断失败；不向后来访问或新运行转移请求。；行为_ready可能早于音轨初始化；独立声音队列在完整初始化、audio ready及t0提示后执行。安全点先排空事件队列再顺序执行声音请求，两队列完成后才切场景或正常结束；取消／失败不伪造未执行回执。离场统一停止播放器，历史命令不表明音轨仍在播放。；中立线帧严格核对全局commandSequence、当前visit／scene／binding／instance／object、track／resource、play／stop及有限局部timeSeconds。来源仅由冻结行为与音轨各自声明解析，wire禁止路径／范围注入；失败或音频finished后拒新回执。；同访问命令时间非减，旧提示已准入数量必须等于冻结atSeconds<=命令时间的数量，scene-exit核对最后命令不晚于实际声音与访问结束。进行中不独立证明物理调用瞬间／设备播放；仍由宿主判定取消及失败，不把一次命令当自然结束或音量状态。；DTO project.audioCommands保留最多256条完整回执，分别含原始行为origin和track的轨道／资源／来源；查询演员不删历史，原访问身份不会替换为当前同轨对象。音轨真实sourceRange原样保留，行为无范围时只承诺文档／字段回源。；声音账本沿既有8 MiB数据复制边界；最大完整双来源、事件／状态／场景观察叠加由protocol4专用32 MiB约束覆盖，旧protocol1／2／3预算保持。所有选择按data descriptor，不调用getter。；Rust声声明提示范围从1–64扩展为0–64，仍1–16轨道且原非空语义不变，schema1与ABI保持；WASM桥严格回执同步接受空提示，没有JS声音规则替代。纯行为音轨可原文设cues:[]，首次创建也可逐轨选择行为触发；0.1.4后可在独立声音面板移除全部提示后普通保存。定时新建默认生成播放提示；旧安装可能仍拒空提示。；独立三语只读面板只显示实际执行的播放／停止命令、局部时间与两种冻结来源，保留历史筛选，来源票据随任务／访问／目标变化失效。事件与状态观察保持独立；脚本起始内容仍走普通草稿审阅、保存与绑定。；旧单场景生成字节保留；宿主继续按已验证冻结后端协议选择reader／observer，不放宽生成指纹。既有本机构建遇指纹变化需重建；旧独立ZIP保留自身代码。无空间声音、混音总线、暂停／跳转、实时音量、自然结束观察、Bevy声音或独立发行。；本轮核心149／UI133、共享Rust335及native声音9通过；真实Godot新声音13、相邻回归65、宿主8通过；Chrome六组11图核对A→B→A的8条实际命令、6次事件发布和状态修订8，双轨真实范围回源及异地工程再运行。完整常规应用5284项中5128通过、156条件跳过；897 JS与API／版本预检通过。各组合重叠不相加，准备副本与混音缓冲不推导安装或物理设备验收。；2026-10-26工具链修订：官方Godot4.7.2的WAV/PlaybackWAV立即退出残留仍属已知缺口；本机独立回移上游五行清理后，42个探针和33个项目用例通过，31次原生运行无残留并切换默认工具。旧官方保留，旧冻结构建需重建；不代表Studio安装更新、物理设备或全部音频分配验收。。
 
 下一步：按明确声音语义分别设计自然结束观察、暂停／跳转、空间音频与其他后端；不把实际命令回执扩展为隐式设备状态。
 
@@ -3431,6 +3437,109 @@
 平台：可移植JavaScript策略与真实Godot4.7.2无头项目、0.2.5源码收录，实测完成于升版前工作树；新项目生成层和执行适配器0.32.0，安装仍0.2.0。边界：七维累计策略同源：事件注册/发布/接收者/字节、状态修改、音频请求、动画请求。多维一次准入，失败不部分消耗。；业务sequence/revision与动画reserved_count保持单调；当前队列/活跃订阅/存储容量独立，重复订阅和无变化状态不计费。；新生成project严格转换已知模板并登记helper和policy库存；旧源冻结，历史工程走原校验。；项目协议4/7/10/11、assembly schema和作者格式不变；未新增生产协议帧或作者预算API。；仍为会话累计预算；没有reset、持续运行profile、语义账本裁剪或解除时长/输出/4096准入上限。；Bevy、Rust/WASM和界面此次没有新预算适配。。
 
 下一步：设计由宿主控制的调度周期及跨周期因果归属，先完成语义留存契约再开放连续运行。
+
+<a id="runtime.execution_clock"></a>
+### 宿主调度窗口与有限预算用量观察
+
+`runtime.execution_clock` · 场景与执行 · 源码交付
+
+入口：普通作者调用→真实引擎帧对→七维预算差值→独立观察流→32窗口留存→会话结果核对
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **独立调度观察流与七维窗口校验**；纯观察合同组合原reader，不能取得预算重置或业务执行权限。 | 4 / 4 / 4 / 2 | [docs/test-results/runtime-execution-clock/README\.md](../docs/test-results/runtime-execution-clock/README.md)、[scripts/tests/project-execution-clock\.test\.mjs](../scripts/tests/project-execution-clock.test.mjs)、[scripts/tests/project-execution-clock-backends\.test\.mjs](../scripts/tests/project-execution-clock-backends.test.mjs) |
+| 执行后端 | **Godot时钟采集与冻结预算观察包装**；引擎读取真实调度时钟，旧准入委托原对象；严格库存登记独立autoload和facade。 | 4 / 4 / 4 / 2 | [docs/test-results/runtime-execution-clock/README\.md](../docs/test-results/runtime-execution-clock/README.md)、[scripts/tests/project-execution-clock\.test\.mjs](../scripts/tests/project-execution-clock.test.mjs)、[scripts/tests/project-execution-clock-backends\.test\.mjs](../scripts/tests/project-execution-clock-backends.test.mjs) |
+| 本机服务与适配 | **调度摘要会话持久化与任务交接**；运行和取消均保存最后有效摘要，任务接口复制独立DTO，不改变项目语义账本。 | 4 / 4 / 4 / 2 | [docs/test-results/runtime-execution-clock/README\.md](../docs/test-results/runtime-execution-clock/README.md)、[scripts/tests/project-execution-clock\.test\.mjs](../scripts/tests/project-execution-clock.test.mjs)、[scripts/tests/project-execution-clock-backends\.test\.mjs](../scripts/tests/project-execution-clock-backends.test.mjs) |
+
+平台：可移植JS读取合同，Linux本地宿主与Godot4.7.2真实无头、0.2.5之后开发工作树，Godot执行适配器0.33.0；安装仍0.2.0，未新增界面或Bevy接入。边界：真实Engine idle/physics计数对定位有预算活动的观察窗口，同一窗口合并成功调用；不是因果事务、宿主调度额度或作者可推进的周期。；七维窗口差值与累计预算独立核对；原有限累计上限不reset，flush、切场景和deferred不主动补充额度。；0.33独立autoload和预算facade组合冻结0.32生成结果；原GDScript、作者格式和项目协议4/7/10/11保持。新独立观察前缀协议1与原流组合。；reader校验时钟/序号/向量单调及差值一致，最近32窗口，8192帧和16KiB行边界；非法观察不覆盖已准入状态，旧协议有自己的准入和原始留存。；session及任务接口保留累计总量/窗口/移出数量；取消和异常标incomplete，只证明最后有效样本。无预算调用的正常会话记录零用量终态窗。；观察不裁剪完整事件/动画语义账本，也未增加新的界面控件、无限运行模式或引擎无关调度实现。。
+
+下一步：动画请求身份及接受/应用观察已独立接入；继续音频/事件排队身份、跨尾部因果位置与未决引用保留，再设计实时准入。
+
+<a id="runtime.causal_anchors"></a>
+### 项目因果锚点与引用保留
+
+`runtime.causal_anchors` · 场景与执行 · 源码交付
+
+入口：完整准入观察→保留根→触发与命令引用闭包→冻结投影→会话与任务接口
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **纯因果锚点保留与引用闭包**；独立纯投影校验完整观察，不拥有执行、预算或作者写入权限。 | 4 / 4 / 3 / 2 | [docs/test-results/runtime-causal-anchors/README\.md](../docs/test-results/runtime-causal-anchors/README.md)、[docs/test-results/runtime-causal-anchors/native-final\.log](../docs/test-results/runtime-causal-anchors/native-final.log)、[scripts/tests/project-causal-anchors-godot\.test\.mjs](../scripts/tests/project-causal-anchors-godot.test.mjs) |
+| 本机服务与适配 | **因果锚点会话保存与任务复制**；准入后捕获一致投影，持久化与任务消费者使用分离副本。 | 4 / 4 / 3 / 2 | [docs/test-results/runtime-causal-anchors/README\.md](../docs/test-results/runtime-causal-anchors/README.md)、[docs/test-results/runtime-causal-anchors/native-final\.log](../docs/test-results/runtime-causal-anchors/native-final.log)、[scripts/tests/project-causal-anchors-godot\.test\.mjs](../scripts/tests/project-causal-anchors-godot.test.mjs) |
+
+平台：可移植JavaScript合同与Linux本地Node宿主，Godot4.7.2真实无头验证、0.2.5之后开发工作树；Godot适配器0.33.0保持，未新增界面或安装验收。边界：四类节点沿用完整账本身份与来源：事件、动画命令、动画完成、状态进入；默认每类最近16项，可设0–64。；未决事件/完成投递、当前访问目标基线、每控制器最近进入成为保留根；依赖闭包独立于最近尾部，不重编号。；trigger、global-watermark、playback-command分开；逐实例目标命令与全局截止可不同，跨访问自动播放不伪造来源。；从严格校验的完整观察产生冻结副本；成功、取消和通知异常保存最后合法投影，实时/最终任务接口复制数据。；现有时钟输出不能证明精确窗口归属；未增加排队请求ID，最近控制器进入不等于实时活跃状态。；完整语义账本、退休身份、FIFO、去重与有限预算保持；没有执行账本裁剪、连续运行或新协议升级。。
+
+下一步：动画与音频请求观察、既有事件发布及逐接收者位置已分别接入；继续其他跨尾部因果引用保留，再依据FIFO和稳定身份设计完整账本退休与实时准入。
+
+<a id="runtime.execution_frames"></a>
+### 业务回执精确引擎帧与位置留存
+
+`runtime.execution_frames` · 场景与执行 · 源码交付
+
+入口：真实输出时钟→独立封套→原业务准入→128条位置尾部→会话与任务核对
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **精确业务位置纯封套读取与留存**；只负责位置合同，原reader继续准入业务；不推测预算归属。 | 4 / 4 / 3 / 2 | [docs/test-results/runtime-execution-frames/README\.md](../docs/test-results/runtime-execution-frames/README.md)、[scripts/tests/project-execution-frames-godot\.test\.mjs](../scripts/tests/project-execution-frames-godot.test.mjs)、[scripts/tests/project-execution-frames\.test\.mjs](../scripts/tests/project-execution-frames.test.mjs) |
+| 执行后端 | **Godot真实帧采集与生成库存**；转换已知生成副本，helper独立采集真实Engine时钟并由严格库存核验。 | 4 / 4 / 3 / 2 | [docs/test-results/runtime-execution-frames/README\.md](../docs/test-results/runtime-execution-frames/README.md)、[scripts/tests/project-execution-frames-godot\.test\.mjs](../scripts/tests/project-execution-frames-godot.test.mjs)、[scripts/tests/project-execution-frames-backends\.test\.mjs](../scripts/tests/project-execution-frames-backends.test.mjs) |
+| 本机服务与适配 | **位置会话持久化与任务交接**；重生成核对完整backend，保存最后有效观察并复制任务DTO，不承担渲染。 | 4 / 4 / 3 / 2 | [docs/test-results/runtime-execution-frames/README\.md](../docs/test-results/runtime-execution-frames/README.md)、[scripts/tests/project-execution-frames-godot\.test\.mjs](../scripts/tests/project-execution-frames-godot.test.mjs)、[scripts/tests/project-execution-frames-host\.test\.mjs](../scripts/tests/project-execution-frames-host.test.mjs) |
+
+平台：可移植JavaScript合同与Linux本地Node宿主；Godot4.7.2音频修订工具真实无头验证、0.2.5之后工作树，Godot适配器0.34.0；未新增UI或更新Studio安装。边界：封套协议1仅增加连续index和真实idle/physics对，内部项目协议4/7/10/11 DTO保持；新构建不重复输出裸业务帧。；原业务准入成功才记录位置；默认最近128条，仅含业务身份，不复制负载；4096次尝试及原行预算继续生效。；位置与预算窗口独立，零成本回执不制造窗口；旧因果锚点不自动保留已移出的精确位置。；新helper/sidecar/原副本严格核对已知源码；宿主完整重生成backend描述后选择能力，篡改记录不能降级校验。；异常与取消保留已接受事实；业务通知异常不重放，独立clock通知可完成原有收尾。；旧GDScript保持，预算/clock库存JS接口变化改变指纹，旧冻结构建须显式重建；未增加请求ID、账本裁剪、连续运行或Bevy适配。。
+
+下一步：动画与音频请求观察、既有事件发布及逐接收者位置已分别接入；继续其他跨尾部因果引用保留，再依据FIFO和稳定身份设计完整账本退休与实时准入。
+
+<a id="runtime.animation_requests"></a>
+### 动画排队请求身份与结果观察
+
+`runtime.animation_requests` · 场景与执行 · 源码交付
+
+入口：成功入队→独立请求ID/接受时钟→原业务回执→精确应用或中止→未决与终态留存→会话交接
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **动画请求纯观察与未决保留**；按冻结计划核对身份、FIFO、时刻及明确结果，原reader继续拥有业务准入。 | 3 / 3 / 3 / 2 | [docs/BACKEND\_MIDDLEWARE\.md](../docs/BACKEND_MIDDLEWARE.md)、[scripts/tests/project-animation-requests\.test\.mjs](../scripts/tests/project-animation-requests.test.mjs) |
+| 执行后端 | **Godot动画队列观察与严格库存**；仅转换已知队列副本的成功接受/应用/clear输出点；不重新调度或返还预算。 | 3 / 3 / 3 / 2 | [docs/BACKEND\_MIDDLEWARE\.md](../docs/BACKEND_MIDDLEWARE.md)、[scripts/tests/project-animation-requests-backends\.test\.mjs](../scripts/tests/project-animation-requests-backends.test.mjs)、[scripts/tests/project-animation-requests-godot\.test\.mjs](../scripts/tests/project-animation-requests-godot.test.mjs) |
+| 本机服务与适配 | **动画请求会话保存与任务交接**；保存分离快照并核对完整backend，异常后保留请求与独立业务证据。 | 3 / 3 / 3 / 2 | [docs/BACKEND\_MIDDLEWARE\.md](../docs/BACKEND_MIDDLEWARE.md)、[scripts/tests/project-animation-requests-host\.test\.mjs](../scripts/tests/project-animation-requests-host.test.mjs) |
+
+平台：可移植JavaScript合同与Linux本地Node宿主；Godot4真实无头范围由本轮专题另行验证、0.2.5之后工作树，当前适配器0.36.0；含音轨生成0.36、无音轨有动画0.35、两者均无0.34；未新增界面或更新安装。边界：accepted身份与执行commandSequence分开；仅成功预留入队分配连续1–256请求ID，待处理容量仍64。；冻结计划核对访问/绑定/实例/对象/目标及作者来源；seek接受时按整段duration，选片后的执行范围由原命令reader负责。；applied必须匹配FIFO队首、已准入原回执和当前executionFrameIndex/clock；discarded只在合法运行error后反映实际abort清队列。；pending只表示结果证据未齐，可能已有执行回执；取消和回调异常不得推定未执行或已丢弃，不重放原业务。；默认最近128条终态加全部未决；16KiB UTF-8行、512次尝试与128诊断有界，原项目协议4/7/10/11及所有累计预算保持。；生成helper/sidecar/原副本严格核对已知源码；完整backend与执行指纹继续守护会话和交付，未接入Bevy。；动画历史定向与真实Godot证据独立记录；本轮与音频复用共用队列观察，音频另有独立功能及验证范围，事件请求身份、跨尾部因果位置和continuous仍未覆盖。。
+
+下一步：动画与音频请求观察、既有事件发布及逐接收者位置已分别接入；继续其他跨尾部因果引用保留，再依据FIFO和稳定身份设计完整账本退休与实时准入。
+
+<a id="runtime.audio_requests"></a>
+### 音频排队请求身份与结果观察
+
+`runtime.audio_requests` · 场景与执行 · 源码交付
+
+入口：音频成功入队→独立请求ID/接受时钟→原播放或停止回执→精确应用或中止→未决与终态留存→会话交接
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **共用队列观察与音频领域校验**；共用有界观察机制并分离音频领域准入，核对冻结音轨、FIFO、真实帧位置与明确结果。 | 3 / 3 / 3 / 2 | [docs/BACKEND\_MIDDLEWARE\.md](../docs/BACKEND_MIDDLEWARE.md)、[scripts/tests/project-audio-requests\.test\.mjs](../scripts/tests/project-audio-requests.test.mjs)、[scripts/tests/project-animation-requests\.test\.mjs](../scripts/tests/project-animation-requests.test.mjs) |
+| 执行后端 | **Godot音频队列观察与严格库存**；仅转换已知音频队列生成副本的接受/应用/clear点，严格验证库存与原字节；不调度或增加预算。 | 3 / 3 / 3 / 2 | [docs/BACKEND\_MIDDLEWARE\.md](../docs/BACKEND_MIDDLEWARE.md)、[scripts/tests/project-audio-requests-backends\.test\.mjs](../scripts/tests/project-audio-requests-backends.test.mjs)、[scripts/tests/project-audio-requests-godot\.test\.mjs](../scripts/tests/project-audio-requests-godot.test.mjs) |
+| 本机服务与适配 | **音频请求会话保存与任务交接**；按独立能力组合reader并保存分离快照，异常后保留已接受请求与原业务事实；不把回执当作设备出声。 | 3 / 3 / 3 / 2 | [docs/BACKEND\_MIDDLEWARE\.md](../docs/BACKEND_MIDDLEWARE.md)、[scripts/tests/project-audio-requests-host\.test\.mjs](../scripts/tests/project-audio-requests-host.test.mjs) |
+
+平台：可移植JavaScript合同与Linux本地Node宿主；Godot4真实无头范围由本轮专题单列、0.2.5之后工作树，Godot描述符0.36.0；含音轨生成0.36，无音轨有动画0.35，两者均无0.34；未新增界面或更新安装。边界：共用队列reader只负责分流、时钟/FIFO关联、留存与异常收尾；音频和动画领域模块分别核对冻结计划及原业务回执。；音频成功预留后分配连续requestId并入队，随后输出接受标记，独立于动画编号及执行commandSequence；两域各自保持256次会话预算和64条待处理容量。；origin五种身份与音轨来自冻结计划，作者来源和resourceId只从冻结绑定及轨道声明补齐；仅支持既有play/stop。；applied必须匹配队首、已准入audio-command和当前精确executionFrameIndex/clock；它证明后端调用及回执，不证明设备已经出声。；discarded只接受合法业务error后的FIFO清理标记，由abort循环于移除队首前同步输出；不推定播放发生或失败。缺完整applied保持pending，已有回执也不推定未执行或已丢弃。；默认最近128条终态加全部pending；16KiB UTF-8行、512次前缀尝试和128诊断有界。混合项目不合并计数，不改变原音频先于动画的drain顺序。；生成helper/sidecar/原副本与唯一变换逐字核对，固定音频Buffer组合旧库存仍须真实读取实际文件；原业务协议4/7/10/11与GDScript模板保持。；核心136项与宿主/库存定向已验证，新音频真实Godot7项、旧动画/迁移8项、原音频5项及库存真实导入回归通过且来源不变；最终app-only待报告确认，没有设备出声验收、事件请求身份、账本裁剪或continuous。。
+
+下一步：动画与音频请求观察、既有事件发布及逐接收者位置已分别接入；继续其他跨尾部因果引用保留，再依据FIFO和稳定身份设计完整账本退休与实时准入。
+
+<a id="runtime.event_positions"></a>
+### 项目事件发布与逐接收者回执位置保留
+
+`runtime.event_positions` · 场景与执行 · 源码交付
+
+入口：原发布/投递准入→精确业务帧→发布及逐接收者位置→已结清尾部/全部未决→会话任务交接→只读面板
+
+| 架构 | 实现／职责 | 四项评分 | 证据入口 |
+| --- | --- | --- | --- |
+| 可移植 JS 语义 | **事件账本与精确帧的位置保留**；从唯一已准入事件事实及其精确帧保留发布/逐接收者位置，已结清尾部与全部未决分开保留；不管理业务队列或预算。 | 3 / 3 / 3 / 2 | [docs/test-results/runtime-event-positions/README\.md](../docs/test-results/runtime-event-positions/README.md)、[docs/BACKEND\_MIDDLEWARE\.md](../docs/BACKEND_MIDDLEWARE.md)、[scripts/tests/project-event-positions\.test\.mjs](../scripts/tests/project-event-positions.test.mjs) |
+| 执行后端 | **Godot事件位置reader选择与指纹**；仅按既有精确帧能力和协议选择观察reader并冻结实现指纹，保留旧reader入口；没有新增生成产物或backend能力。 | 3 / 3 / 3 / 2 | [docs/test-results/runtime-event-positions/README\.md](../docs/test-results/runtime-event-positions/README.md)、[docs/BACKEND\_MIDDLEWARE\.md](../docs/BACKEND_MIDDLEWARE.md)、[scripts/tests/project-event-positions-host\.test\.mjs](../scripts/tests/project-event-positions-host.test.mjs) |
+| 本机服务与适配 | **事件位置会话保存与任务交接**；保存分离的会话与任务快照，准入后回调异常及取消仍保留已确认位置，尾帧收尾不重放原业务。 | 3 / 3 / 3 / 2 | [docs/test-results/runtime-event-positions/README\.md](../docs/test-results/runtime-event-positions/README.md)、[docs/BACKEND\_MIDDLEWARE\.md](../docs/BACKEND_MIDDLEWARE.md)、[scripts/tests/project-event-positions-host\.test\.mjs](../scripts/tests/project-event-positions-host.test.mjs) |
+| 可移植 JS 语义 | **事件位置快照语义校验与独立副本**；校验受限快照及已保留证据之间的次序和统计，返回不与宿主共享的结果；不推导缺失回执。 | 3 / 3 / 3 / 2 | [docs/test-results/runtime-event-positions-ui/README\.md](../docs/test-results/runtime-event-positions-ui/README.md)、[scripts/tests/project-event-positions-query\.test\.mjs](../scripts/tests/project-event-positions-query.test.mjs)、[scripts/tests/project-event-positions-build-ui\.test\.mjs](../scripts/tests/project-event-positions-build-ui.test.mjs) |
+| 交互与渲染 | **事件位置只读面板与运行归属接线**；在构建工作台只读展示位置，按当前项目任务、后端、构建、快照和冻结成员筛选，不要求旧运行账本可用。 | 3 / 3 / 3 / 2 | [docs/test-results/runtime-event-positions-ui/README\.md](../docs/test-results/runtime-event-positions-ui/README.md)、[scripts/tests/project-event-positions-observation-ui\.test\.mjs](../scripts/tests/project-event-positions-observation-ui.test.mjs)、[scripts/tests/project-event-positions-build-ui\.test\.mjs](../scripts/tests/project-event-positions-build-ui.test.mjs) |
+
+平台：可移植JavaScript观察与Linux本地Node宿主；Godot真实引擎验收范围由本轮专题另记、0.2.5之后未发布工作树；新增只读Web面板；无安装或其他执行后端接入；Godot描述符与生成版本保持。边界：复用已有event-publish接受回执与event-delivery handled/skipped回执；沿用sequence/subscriptionId，不增加sideband、请求ID、GDScript/helper、清单或backend能力。；原事件总线继续核对冻结发送/接收绑定、标量载荷、令牌与FIFO；位置只取已准入execution-frame封套的真实idle/physics时钟及索引，拒绝帧不会新增证据。；eventPositions items保留旧ledger条目及published位置；handled/skipped接收者增加delivered，pending没有该字段；双方source只来自冻结声明。；默认按发布sequence保留最近32条已结清记录加全部未决；零接收者立即结清，可先于更早未决记录完成；部分完成条目保留全部接收者及已有位置。；counts分开published/settled/pending及预留deliveries/handled/skipped/pendingDeliveries；retention记录保留与移出，不裁剪原完整语义账本、退休令牌或返还预算。；位置证明对应回执已输出，不是回调开始时刻；回调可在缺回执前产生副作用，pending不证明未执行；失败或取消不制造discarded。；宿主处理准入后业务/位置回调抛错、空初始化失败和下游尾帧，保存唯一已接受事实并标incomplete；会话及任务getter副本互不回写。；Godot仅在project、protocol>=3且已有runtime.execution-frames时组合；无cap、旧协议/reader和其他后端保持原字段。backend descriptor0.36及生成字节不变，executionAdapter纳入新reader导致旧冻结构建须重建。；新事件core23项、宿主12项与既有链共171项定向通过，核心跨通道收尾回归57项通过；新事件6项及旧媒体14项真实Godot通过，定向1406份与原生1353份源码分别在各次执行期间不变，每个新原生案例58份来源不变。原生运行后仅调整两份非原生测试，生产与原生夹具保持；完整检查8667项、8105通过、562条件跳过，该轮无其他后端、设备、新UI或安装验收。；本轮独立只读面板消费严格校验后的快照，匹配项目运行与冻结成员；不依赖旧账本，历史协议、Bevy和缺失数据不显示；待处理不证明回调未执行。验证范围见事件位置UI专题。；下方已有reader、后端和宿主评分记录为前一轮历史审查；其中“无新界面”描述当时范围，新增验证器与界面评分另列。。
+
+下一步：继续核验其他跨尾部因果引用与长期运行；跨后端项目事件、安装与设备体验分别验收。
 
 ## 旧功能链路映射
 

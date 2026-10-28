@@ -1,6 +1,6 @@
 # 二维场景构建与运行（实验性）
 
-本页说明从已保存的二维场景到构建、运行和生成工程交付的操作。当前源码版本为 **0.2.5**，已收录自由平面碰撞、单向平台下穿、水平往返及端点事件，原始观察留存和共用有限执行预算分别维护；本机已安装程序仍为 **0.2.0**。当前能力、平台与验收范围统一见[状态页](STATUS.md)，历次开发前言及选型探针移至[历史归档](history/project-build-2026-10-25.md)。
+本页说明从已保存的二维场景到构建、运行和生成工程交付的操作。当前源码版本为 **0.2.6**，已收录调度时钟、因果锚点、精确业务帧、媒体请求和事件位置观察；原始留存与有限执行预算分别维护，本机已安装程序仍为 **0.2.0**。当前能力、平台与验收范围统一见[状态页](STATUS.md)，历次开发前言及选型探针移至[历史归档](history/project-build-2026-10-25.md)。
 
 首次使用先读[项目工作流](PROJECT_WORKFLOW.md)；对照入口和后端支持用[二维功能对接表](FUNCTION_MAPPING_2D.md)。Godot 交付物是需要 Godot 工具的生成工程，Bevy 数据与 Rust 通道各需对应运行程序或工具链；均未接入独立游戏发行。构建入口目前只面向 Linux 本机编辑宿主，静态预览与真实引擎运行分别验证。
 
@@ -13,6 +13,19 @@
 | 运行并定位问题 | [任务问题列表](#当前任务问题列表) · [运行对象](RUNTIME_OBJECTS.md) · [验收用例](#运行验收用例) · [批量验收](RUNTIME_CASE_SUITES.md) |
 | 交付、核对与迁移 | [后端工程管理](BACKEND_PROJECTS.md) · [工程交付](BACKEND_PROJECTS.md#交付生成工程) · [记录与清理](#记录与清理) |
 | 查询数据接口与版本 | [场景声明](#场景与引用) · [数据与适配边界](#数据与适配边界) · [当前项目协议选择](#当前项目协议选择) · [源码 CLI](#运行样例) |
+
+0.2.6 源码保存**调度观察**：Godot新项目在 `session.json.executionClock` 记录真实引擎 idle／physics 帧对、七维累计预算及各窗口差值，保留最近32窗并注明移出数量。任务接口也提供此字段，当前没有新增界面控件。取消或异常保留最后有效摘要并标为 `incomplete`；它不保证包含强制终止前尚未输出的全部消耗。没有预算调用的正常会话保存一个零用量终态窗口。观察窗口不是完整因果事务，累计额度仍不重置，具体合同见[后端调度观察](BACKEND_MIDDLEWARE.md#执行调度观察)与[验证专题](test-results/runtime-execution-clock/README.md)。
+
+项目会话及任务状态另提供 `causalAnchors`：在最近记录之外保留未完成投递和仍被进入／完成引用的来源，区分全局命令截止与准确的实例播放命令。原始帧或时钟窗口移出不自动释放这些引用；`retention`只描述锚点投影，完整语义账本和有限累计预算仍在。字段和真实长尾验证见[因果保留](test-results/runtime-causal-anchors/README.md)。
+
+0.2.6 源码另保存**业务回执位置**：新Godot项目把每个已接受业务帧的真实idle／physics计数、连续位置索引与业务身份保存到 `session.json.executionFrames` 和任务接口，默认保留最近128条。它独立于预算窗口，零成本回执也有位置；取消或通知错误保留最后有效位置并标为 `incomplete`。当前无新增界面入口，也不为已移出的位置或更早因果锚点推算时钟。新增0.34能力和库存必须匹配冻结重生成结果，旧构建指纹改变时需要显式重建。见[合同](BACKEND_MIDDLEWARE.md#业务回执的精确引擎帧)与[实测](test-results/runtime-execution-frames/README.md)。
+
+新动画项目还保存 `session.json.animationRequests` 和任务同名快照：请求ID、接受时钟、冻结绑定来源与目标，以及有完整证据的应用或中止结果。默认保留最近128条终态，全部未决请求另行保留；计数和retention明确说明总量、保留与移出。**pending只表示结果证据未齐**，业务回执可能已经执行，但进程中断或通知错误使后续applied未到达；不能据此推定尚未执行或已取消。此能力仍是会话／任务接口，没有新增界面。含动画而无音轨项目生成0.35.0，两者均无时保持0.34.0；合同见[动画请求观察](BACKEND_MIDDLEWARE.md#动画排队请求观察)，验收范围见[专题](test-results/runtime-animation-requests/README.md)。
+
+含音轨项目另保存 `session.json.audioRequests` 和任务同名快照，生成外层为0.36.0。音频与动画分别拥有请求ID、256次请求预算、64条待处理容量和128条默认终态尾部；共用观察代码不合并两域计数。音频applied须对应已准入audio-command及精确帧，只证明后端播放／停止调用已有回执，不能视为设备出声。缺完整终态时保持pending，取消不制造discarded；当前没有新界面。合同见[音频请求观察](BACKEND_MIDDLEWARE.md#音频排队请求观察)，开发阶段原生及兼容范围见[专题](test-results/runtime-audio-requests/README.md)；其中完整检查8626项、8070通过、556条件跳过属于该专题时点。
+
+
+项目事件另保存 `session.json.eventPositions` 和任务同名快照：已有发布回执及每个handled／skipped接收者回执分别记录精确时钟与业务帧索引，默认保留按发布序号最近32条已结清记录加全部未决记录。原始事件与执行帧尾部移出后，未决发布仍保留来源及已确认的部分投递位置；取消时pending不表示回调未执行，也不会产生推测的丢弃结果。只有项目协议≥3且已有精确业务帧能力的Godot读取链选择此视图，没有新增生成层；backend版本和产物保持，旧冻结构建仍因新的宿主读取器指纹须重建。0.2.6 在构建对话框提供独立只读事件位置面板，中英日显示发布和逐接收者已确认帧及留存范围；仅展示当前后端与冻结任务匹配的有效快照。未确认只表示缺少回执，回调可能已经执行。Bevy目前不支持项目事件。事件位置的定向171项及真实Godot六案、全量与兼容结果见[开发报告](test-results/runtime-event-positions/README.md)，合同见[中间层](BACKEND_MIDDLEWARE.md#项目事件发布与投递位置)。[面板专题](test-results/runtime-event-positions-ui/README.md)另有定向162／162和真实Chrome组件三语／两尺寸共6组合成快照验证，并通过受控本地服务核对构建对话框的任务切换和无效快照清除；该轮未运行Godot或安装程序。其app-only完整检查8684项、8122通过、562条件跳过、零失败／取消属于升版前0.2.5工作树，不改标为0.2.6重跑。
 
 ## 运行记录与留存
 
@@ -339,7 +352,7 @@ flowchart LR
 
 [静态单向平台](SCENE_PHYSICS2D.md#配置静态单向平台)先按普通流程创建，再在已有物理编辑器启用并审阅保存；schema 4 的 `oneWay` 只含 `margin`（1–64，默认 1），且只允许静态矩形。关闭删除字段但不降 schema，只有实际字段要求 `physics.one-way-platform2d`。Godot 固定朝上的原生平台沿用角色运动及作者事件，不增加项目线协议或物理观察协议；Bevy 两个通道明确拒绝；0.2.5 收录的[水平往返](SCENE_PHYSICS2D.md#配置水平往返平台)与[主动下穿](SCENE_PHYSICS2D.md#从单向平台主动下穿)由后续独立层提供。
 
-以下适用于当前源码新构建的 **Godot 项目组装**，规则来自[项目生成器](../scripts/backends/godot4-project.mjs)与[物理包装生成器](../scripts/backends/godot4-physics.mjs)。宿主的 `executionAdapter` 当前为 **0.32.0**。新项目组装在下表对应基础层外接入[共用有限预算生成层](../scripts/backends/godot4-execution-budget.mjs)，产物 `backend.version` 为 **0.32.0**，项目协议和 `assembly.json` 版本仍按内容选择。应用版本、执行适配器、基础生成层与线协议分别维护。
+以下适用于当前源码新构建的 **Godot 项目组装**，规则来自[项目生成器](../scripts/backends/godot4-project.mjs)与[物理包装生成器](../scripts/backends/godot4-physics.mjs)。0.2.6 的 `executionAdapter` 为 **0.36.0**；0.2.5 的历史交付为 **0.32.0**。新项目组装在下表对应基础层外接入[共用有限预算生成层](../scripts/backends/godot4-execution-budget.mjs)，有限预算层 `backend.version` 为 **0.32.0**，调度观察层为 **0.33.0**，业务位置层为 **0.34.0**，含动画项目再套 **0.35.0** 动画请求层，含音轨项目最后套 **0.36.0** 音频请求层；无音轨但有动画为0.35.0，两者均无为0.34.0；项目协议和 `assembly.json` 版本仍按内容选择。应用版本、执行适配器、基础生成层与线协议分别维护。
 
 `execution-budget.json` 明确记录会话范围、七维限额和受转换脚本；运行前严格核对它与 `project-execution-budget.gd` 及生成脚本的一致性。删除部分预算文件不能降级成旧工程。原生成器和原始脚本继续保留，历史工程经原有库存验证；旧本机构建仍需按执行指纹要求重建。
 

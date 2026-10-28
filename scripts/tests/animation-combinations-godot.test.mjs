@@ -236,12 +236,13 @@ test('real v5 BOM/CRLF group controller retains p10 entries completion and immut
   const moved=path.join(f.temporary,'moved'),archive=await yauzl.openPromise(zip,{lazyEntries:true,autoClose:false});
   try{for await(const entry of archive.eachEntry()){const chunks=[];for await(const chunk of await archive.openReadStreamPromise(entry))chunks.push(chunk);const file=path.join(moved,entry.fileName);await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,Buffer.concat(chunks));}}
   finally{await new Promise(resolve=>{archive.reader.once('close',resolve);archive.close();});}
+  const runtimeBackend = JSON.parse(await fs.readFile(path.join(f.output, 'build.json'))).backend;
   const snapshot=JSON.parse(await fs.readFile(path.join(f.output,'snapshot.json')));await fs.rm(f.author,{recursive:true});await fs.rm(f.output,{recursive:true});
   const directory=path.join(moved,'project'),retained=await fs.readFile(path.join(directory,'behaviors',f.scriptId+'.gd'),'utf8');assert.equal(retained,f.content);assert.deepEqual(readAnimationStateScriptSource(retained).table,table);
   const manifest=JSON.parse(await fs.readFile(path.join(directory,'assembly.json')));assert.equal(manifest.schemaVersion,11);assert.deepEqual(manifest.animationStateWrappers,[{scriptObjectId:f.scriptId,path:`animation-state-wrappers/${f.scriptId}.gd`}]);
   const identified=await adapter.identify(tool);
   for(const phase of [...adapter.buildPhases,'run']){const execution=await adapter.executePhase({phase,directory,tool:identified,smoke:false,timeoutMs:60000});
     assert.equal(execution.status,'succeeded',execution.stdout+execution.stderr);assert.deepEqual(adapter.diagnostics(execution,snapshot.plan),[],execution.stdout+execution.stderr);
-    if(phase==='run'){const reader=adapter.createEventReader(snapshot.plan);reader.push(execution.stdout);assert.deepEqual(reader.finish().diagnostics,[],execution.stdout+execution.stderr);verify(reader.events);}
+    if(phase==='run'){const reader=adapter.createEventReader(snapshot.plan, { capabilities: runtimeBackend.capabilities });reader.push(execution.stdout);assert.deepEqual(reader.finish().diagnostics,[],execution.stdout+execution.stderr);verify(reader.events);}
   }
 });
