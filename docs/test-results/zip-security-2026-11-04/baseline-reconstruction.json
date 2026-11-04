@@ -1,0 +1,48 @@
+{
+  "baselineRef": "7bf21dd4",
+  "injectedTests": [
+    {
+      "file": "src-tauri/src/workspace.rs",
+      "test": "local_header_name_mismatches_are_rejected_without_restoring_files",
+      "originalSourceSha256": "96d18ed684189f69b7af979e2ad831033cf1b4a1f8a11336dd1da893e77a7f89",
+      "regressionSha256": "66baf40f90da149690dae7da36b6d190d93c3f4fa2ee6f02f7c9ca4c1f31312f",
+      "reconstructedSourceSha256": "7cdc1d8f166e80d74fb7b2a5a7f0edbca36ff458d5d1359b2acd99ed5a4ed522"
+    },
+    {
+      "file": "src-tauri/src/mobile_archive.rs",
+      "test": "local_header_name_mismatches_are_rejected_without_publishing_a_project",
+      "originalSourceSha256": "793586b7e5a11301e1b8a096b66d2ae3931710d8508d486d7ad3628604b842a1",
+      "regressionSha256": "0d9b4446f3a426c09749e069aca0dc751c929ea6323c2277f56f294d54b250de",
+      "reconstructedSourceSha256": "469d16c18a72a43f8c0bee06191467a53ca6f3d6330b0964a7f64839a109bbba"
+    }
+  ],
+  "baselineCommit": "7bf21dd4d0ef96f20ab6f086b777f2b00f312a70",
+  "directDependencies": {
+    "serde": "1.0.229",
+    "serde_json": "1.0.151",
+    "uuid": "1.26.0",
+    "sha2": "0.10.9",
+    "unicode-normalization": "0.1.25",
+    "zip": "4.6.1",
+    "tempfile": "3.27.0",
+    "fs2": "0.4.3"
+  },
+  "command": [
+    "cargo",
+    "test",
+    "--manifest-path",
+    "<baseline-harness>/Cargo.toml",
+    "--offline",
+    "--locked",
+    "--lib",
+    "local_header_name_mismatches",
+    "--",
+    "--nocapture"
+  ],
+  "exitCode": 101,
+  "expectedFailureObserved": true,
+  "durationSeconds": 1.252,
+  "rawLogSha256": "173c2ad287e15a8e558e8c5b7a103257f7619b53e8b528bf7f2815ef8296c7fb",
+  "publishedLogSha256": "10b877b36e7dd90e5c651f71cedf77cfcc546c48614c8a105974fe73f58af87e",
+  "pathNormalization": "Repository and temporary/cache absolute paths are replaced with <repo>, <harness>, <baseline-harness>, <tauri-target> and <cargo-home>."
+}

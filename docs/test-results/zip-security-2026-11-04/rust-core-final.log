@@ -1,0 +1,54 @@
+   Compiling viento-studio v0.2.8 (<harness>)
+    Finished `test` profile [unoptimized] target(s) in 1.40s
+     Running unittests src/lib.rs (<harness>/target/debug/deps/viento_studio-07b560229131dd89)
+
+running 46 tests
+test mobile_storage::archive::tests::corrupt_and_oversized_packages_do_not_enter_the_library ... ok
+test workspace::project_templates::tests::explicit_null_and_malformed_template_profiles_are_not_treated_as_absent ... ok
+test mobile_storage::tests::recovery_never_overwrites_a_different_source ... ok
+test mobile_storage::tests::oversized_or_invalid_utf8_sources_are_not_partially_saved ... ok
+test mobile_storage::archive::tests::cold_start_discards_only_unpublished_imports ... ok
+test workspace::project_templates::tests::absent_studio_profiles_preserve_builtin_serialization_and_provenance ... ok
+test workspace::project_templates::tests::studio_profile_snapshots_are_validated_and_part_of_template_provenance ... ok
+test workspace::tests::backup_snapshots_detect_replaced_files_even_when_size_and_modified_time_are_preserved ... ok
+test mobile_storage::archive::tests::unregistered_documents_cannot_be_imported_as_an_empty_work ... ok
+test workspace::tests::full_project_migration_roundtrip ... ignored, full-size source and asset migration; set VIENTO_TEST_SOURCE_ROOT
+test mobile_storage::tests::create_save_reopen_preserves_bytes_and_registered_identity ... ok
+test workspace::tests::compatibility_guard_blocks_old_readers_and_never_replaces_a_missing_public_manifest ... ok
+test workspace::tests::imports_legacy_v1_archives_without_changing_identity_or_source_bytes ... ok
+test mobile_storage::tests::linked_files_and_parents_are_never_followed ... ok
+test workspace::project_templates::tests::packages_are_closed_and_reject_ambiguous_or_escaping_templates ... ok
+test workspace::tests::invalid_template_studio_profiles_do_not_publish_partial_projects ... ok
+test mobile_storage::tests::paths_and_case_collisions_cannot_escape_or_replace_existing_documents ... ok
+test mobile_storage::archive::tests::duplicate_import_preserves_newer_content_and_identity ... ok
+test mobile_storage::tests::native_revision_check_rejects_stale_or_missing_versions_without_touching_data ... ok
+test workspace::tests::archive_roundtrip_preserves_sources_binary_assets_and_excludes_cache ... ok
+test workspace::project_templates::tests::studio_profile_provenance_matches_node_integer_semantics_without_rewriting_values ... ok
+test workspace::tests::generic_projects_are_empty_and_keep_custom_types_templates_and_media_on_restore ... ok
+test workspace::tests::studio_profiles_accept_declarative_future_capabilities_without_mutating_manifests ... ok
+test workspace::tests::imports_are_validated_before_committing_and_existing_folders_are_preserved ... ok
+test workspace::tests::studio_profiles_reject_invalid_shapes_and_unknown_declaration_keys ... ok
+test workspace::tests::studio_profiles_reject_unsafe_tokens_versions_and_cross_list_duplicates ... ok
+test workspace::tests::new_workspaces_copy_seed_or_templates_without_sharing_or_overwriting_data ... ok
+test workspace::tests::studio_profiles_enforce_per_list_and_ascii_token_boundaries ... ok
+test workspace::tests::local_header_name_mismatches_are_rejected_without_restoring_files ... ok
+test mobile_storage::archive::tests::local_header_name_mismatches_are_rejected_without_publishing_a_project ... ok
+test workspace::tests::world_transaction_fences_reject_linked_state ... ok
+test mobile_storage::tests::interrupted_creations_finish_without_losing_source_or_identity ... ok
+test workspace::tests::v2_archive_carries_metadata_and_external_assets_but_not_local_bindings ... ok
+test workspace::tests::wrong_checksum_rolls_back_the_entire_import ... ok
+test workspace::tests::imports_reject_portable_directory_file_and_unicode_collisions_before_restore ... ok
+test workspace::tests::resource_package_imports_block_archives_until_committed ... ok
+test workspace::tests::template_studio_profiles_are_copied_and_preserved_by_seed_and_archive_migration ... ok
+test workspace::tests::existing_future_and_malformed_profiles_preserve_ordinary_open_and_archive_bytes ... ok
+test workspace::tests::unfinished_world_transactions_block_archives_and_receipts_fence_completed_transactions ... ok
+test workspace::tests::missing_registered_sources_and_asset_bindings_cannot_be_reported_as_complete_archives ... ok
+test workspace::tests::registered_asset_fingerprints_protect_backup_and_restore_even_when_zip_checksums_match ... ok
+test mobile_storage::archive::tests::desktop_mobile_roundtrip_preserves_every_file_and_all_media_bindings ... ok
+test workspace::tests::native_exports_reject_paths_that_would_merge_on_another_filesystem ... ok
+test workspace::tests::selected_templates_are_copied_once_and_roundtrip_without_catalogue_lookup ... ok
+test mobile_storage::archive::tests::unreadable_sources_rollback_import_and_keep_the_archive ... ok
+test mobile_storage::archive::tests::zip_json_and_text_budgets_are_checked_before_extraction ... ok
+
+test result: ok. 45 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.12s
+

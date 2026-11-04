@@ -1391,6 +1391,7 @@ export default {
   "“{0}”的项目包已导出。": "The project archive for “{0}” was exported.",
   "移动端项目包最多 1 GiB，展开后最多 4 GiB": "Mobile archives must be at most 1 GiB, or 4 GiB when extracted.",
   "项目包无法读取，请选择完整的 Viento ZIP 项目包": "Cannot read this archive. Select a complete Viento ZIP project archive.",
+  "项目包文件名无效，请选择完整的 Viento ZIP 项目包": "This archive contains an invalid filename. Select a complete Viento ZIP project archive.",
   "项目包文件过多，请在桌面版中打开": "This archive has too many files. Open it in the desktop app.",
   "项目元数据过大，请在桌面版中打开": "The project metadata is too large. Open it in the desktop app.",
   "请先在桌面版升级此作品，再导出项目包": "Upgrade this work in the desktop app, then export a new project archive.",

@@ -1,0 +1,85 @@
+{
+  "date": "2026-11-04",
+  "applicationVersion": "0.2.8",
+  "baseline": "7bf21dd4d0ef96f20ab6f086b777f2b00f312a70",
+  "scope": "Post-release source security fix; application/archive formats unchanged; no new installer or device acceptance.",
+  "advisory": {
+    "ghsa": "GHSA-m665-v7pm-7grj",
+    "cve": "CVE-2026-115905",
+    "githubAlert": 6,
+    "url": "https://github.com/advisories/GHSA-m665-v7pm-7grj",
+    "oldZip": "4.6.1",
+    "newZip": "9.0.5",
+    "explicitHeaderConsistencyValidation": [
+      "desktop import_workspace",
+      "mobile archive preflight"
+    ]
+  },
+  "toolchain": {
+    "platform": "Linux x86_64",
+    "node": "24.21.0",
+    "rustc": "1.95.0",
+    "cargo": "1.95.0",
+    "hostMinimumRust": "1.88"
+  },
+  "results": {
+    "beforeFix": {
+      "command": "cargo test --offline --locked --lib local_header_name_mismatches -- --nocapture",
+      "passed": 0,
+      "failed": 2,
+      "exitCode": 101,
+      "expectedFailure": true
+    },
+    "nativeModules": {
+      "passed": 45,
+      "failed": 0,
+      "ignored": 1
+    },
+    "nativeInterop": {
+      "passed": 87,
+      "failed": 0,
+      "skipped": 0
+    },
+    "fullTauri": {
+      "passed": 61,
+      "failed": 0,
+      "ignored": 1,
+      "exitCode": 0
+    },
+    "i18n": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    "appInitial": {
+      "tests": 8995,
+      "passed": 8343,
+      "failed": 1,
+      "skipped": 651,
+      "reason": "New invalid ZIP filename message lacked English/Japanese translations; fixed before final rerun."
+    },
+    "appFinal": {
+      "command": "npm run check -- --app-only",
+      "exitCode": 0,
+      "tests": 8995,
+      "pass": 8344,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 651,
+      "todo": 0,
+      "durationMs": 458640.040476
+    }
+  },
+  "ignoredRustTest": "Existing full_project_migration_roundtrip requires additional full-size author fixture; legacy and cross-host archive interoperability were separately executed.",
+  "limitations": [
+    "No new application installer generated or installed.",
+    "No Android device or Windows/macOS acceptance performed.",
+    "App conditional skips do not count as actual engine/device acceptance."
+  ],
+  "dependencyGraph": {
+    "productionLockSha256": "b125f3705ee37cf7c3f060ff4ab906da2fac9d672e0ef4eee6d98d83aa452c2e",
+    "harnessPackageCount": 66,
+    "allPackagesAndDependencyEdgesAreProductionLockSubset": true,
+    "unrelatedLockPackagesChanged": []
+  }
+}

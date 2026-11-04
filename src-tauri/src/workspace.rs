@@ -380,7 +380,10 @@ fn layout_fields(version: u32) -> BTreeMap<String, serde_json::Value> {
 fn default_layout(version: u32) -> BTreeMap<String, serde_json::Value> {
     let mut fields = layout_fields(version);
     if version == 3 {
-        fields.insert("documentTypes".into(), project_templates::legacy_defaults()["documentTypes"].clone());
+        fields.insert(
+            "documentTypes".into(),
+            project_templates::legacy_defaults()["documentTypes"].clone(),
+        );
     }
     fields
 }
@@ -829,7 +832,11 @@ pub fn create_workspace(
     create_workspace_contents(parent, name, seed, templates, None)
 }
 
-pub fn create_workspace_from_template(parent: &Path, name: &str, template_id: &str) -> Result<PathBuf> {
+pub fn create_workspace_from_template(
+    parent: &Path,
+    name: &str,
+    template_id: &str,
+) -> Result<PathBuf> {
     // Resolve and validate before creating anything. An unknown selection must
     // not silently produce a different kind of project.
     let template = project_templates::select(template_id)?;
@@ -864,7 +871,9 @@ fn create_workspace_contents(
         fs::create_dir(temporary.path().join(folder)).map_err(io_error)?;
     }
     let mut extra = layout_fields(version);
-    if template.is_none() { extra = default_layout(version); }
+    if template.is_none() {
+        extra = default_layout(version);
+    }
     if let Some(source) = seed {
         for relative in list_files(source)? {
             let destination = temporary.path().join(&relative);
@@ -878,7 +887,10 @@ fn create_workspace_contents(
                 .extra;
         }
     } else if let Some(template) = template {
-        extra.insert("documentTypes".into(), serde_json::json!(template.document_types));
+        extra.insert(
+            "documentTypes".into(),
+            serde_json::json!(template.document_types),
+        );
         extra.insert("projectTemplate".into(), template.provenance());
         if let Some(profile) = template.studio_profile {
             extra.insert("studioProfile".into(), profile);
@@ -998,21 +1010,32 @@ fn world_transaction_fence(root: &Path) -> Result<Option<Vec<u8>>> {
     match fs::symlink_metadata(&file) {
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(world),
         Err(error) => return Err(error.to_string()),
-        Ok(metadata) if metadata.file_type().is_symlink() || !metadata.is_file() || metadata.len() > 128 => {
+        Ok(metadata)
+            if metadata.file_type().is_symlink() || !metadata.is_file() || metadata.len() > 128 =>
+        {
             return Err("资源包导入记录无效".into());
         }
         _ => {}
     }
     let mut token = String::new();
-    fs::File::open(file).map_err(io_error)?.take(129).read_to_string(&mut token).map_err(io_error)?;
+    fs::File::open(file)
+        .map_err(io_error)?
+        .take(129)
+        .read_to_string(&mut token)
+        .map_err(io_error)?;
     if token.len() != 37 || !token.ends_with('\n') || Uuid::parse_str(token.trim()).is_err() {
         return Err("资源包导入记录无效".into());
     }
-    serde_json::to_vec(&(world, token)).map(Some).map_err(|error| error.to_string())
+    serde_json::to_vec(&(world, token))
+        .map(Some)
+        .map_err(|error| error.to_string())
 }
 
 fn world_transaction_receipt(root: &Path) -> Result<Option<Vec<u8>>> {
-    for directory in [root.join(".viento"), root.join(".viento/world-transactions")] {
+    for directory in [
+        root.join(".viento"),
+        root.join(".viento/world-transactions"),
+    ] {
         match fs::symlink_metadata(&directory) {
             Ok(meta) if meta.is_dir() && !meta.file_type().is_symlink() => {}
             Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
@@ -1031,18 +1054,38 @@ fn world_transaction_receipt(root: &Path) -> Result<Option<Vec<u8>>> {
         _ => return Err("事务提交记录无效".into()),
     }
     let mut bytes = Vec::new();
-    fs::File::open(head).map_err(io_error)?.take(8193).read_to_end(&mut bytes).map_err(io_error)?;
-    if bytes.len() > 8192 { return Err("事务提交记录过大".into()); }
+    fs::File::open(head)
+        .map_err(io_error)?
+        .take(8193)
+        .read_to_end(&mut bytes)
+        .map_err(io_error)?;
+    if bytes.len() > 8192 {
+        return Err("事务提交记录过大".into());
+    }
     let receipt: serde_json::Value = serde_json::from_slice(&bytes).map_err(io_error)?;
-    let valid_hash = |key: &str, prefix: &str| receipt[key].as_str()
-        .and_then(|value| value.strip_prefix(prefix))
-        .is_some_and(|value| value.len() == 64 && value.bytes().all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)));
-    if receipt["format"] != "viento-transaction-receipt" || receipt["schemaVersion"] != 1
+    let valid_hash = |key: &str, prefix: &str| {
+        receipt[key]
+            .as_str()
+            .and_then(|value| value.strip_prefix(prefix))
+            .is_some_and(|value| {
+                value.len() == 64
+                    && value
+                        .bytes()
+                        .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte))
+            })
+    };
+    if receipt["format"] != "viento-transaction-receipt"
+        || receipt["schemaVersion"] != 1
         || !matches!(receipt["state"].as_str(), Some("committed" | "rolled-back"))
         || receipt.as_object().is_none_or(|object| object.len() != 8)
         || receipt["worldId"].as_str().is_none_or(str::is_empty)
-        || receipt["transactionId"].as_str().is_none_or(|id| Uuid::parse_str(id).is_err())
-        || !valid_hash("proposalId", "proposal:") || !valid_hash("baseRevision", "sha256:") || !valid_hash("revision", "sha256:") {
+        || receipt["transactionId"]
+            .as_str()
+            .is_none_or(|id| Uuid::parse_str(id).is_err())
+        || !valid_hash("proposalId", "proposal:")
+        || !valid_hash("baseRevision", "sha256:")
+        || !valid_hash("revision", "sha256:")
+    {
         return Err("事务提交记录无效".into());
     }
     Ok(Some(Sha256::digest(&bytes).to_vec()))
@@ -1178,6 +1221,9 @@ pub fn import_workspace(archive_path: &Path, parent: &Path) -> Result<PathBuf> {
     if archive.len() > MAX_FILES + 1 {
         return Err("迁移包文件数量过多".into());
     }
+    // zip 9 keeps dual-header checks opt-in. Reject ambiguous names, metadata
+    // and overlapping entries before reading the manifest or creating files.
+    archive.validate_header_consistency().map_err(io_error)?;
     let mut raw = String::new();
     {
         let mut entry = archive
@@ -1231,8 +1277,9 @@ pub fn import_workspace(archive_path: &Path, parent: &Path) -> Result<PathBuf> {
     let mut zip_names = HashSet::new();
     for index in 0..archive.len() {
         let entry = archive.by_index(index).map_err(io_error)?;
-        if !zip_names.insert(entry.name().to_string())
-            || (entry.name() != "manifest.json" && !exact_names.contains(entry.name()))
+        let name = entry.name().map_err(io_error)?;
+        if !zip_names.insert(name.to_string())
+            || (name != "manifest.json" && !exact_names.contains(name.as_ref()))
             || entry.is_dir()
             || entry
                 .unix_mode()
@@ -1790,7 +1837,9 @@ mod tests {
         fs::create_dir_all(directory.join("active")).unwrap();
         let destination = temp.path().join("archive.viento");
         fs::write(&destination, b"existing archive").unwrap();
-        assert!(export_workspace(&root, &destination).unwrap_err().contains("未完成事务"));
+        assert!(export_workspace(&root, &destination)
+            .unwrap_err()
+            .contains("未完成事务"));
         assert_eq!(fs::read(&destination).unwrap(), b"existing archive");
         fs::remove_dir(directory.join("active")).unwrap();
         let before = world_transaction_fence(&root).unwrap();
@@ -1812,7 +1861,11 @@ mod tests {
     fn world_transaction_fences_reject_linked_state() {
         let temp = tempfile::tempdir().unwrap();
         let root = create_workspace(temp.path(), "linked-transaction", None, None).unwrap();
-        std::os::unix::fs::symlink(temp.path().join("missing"), root.join(".viento/world-transactions")).unwrap();
+        std::os::unix::fs::symlink(
+            temp.path().join("missing"),
+            root.join(".viento/world-transactions"),
+        )
+        .unwrap();
         assert!(world_transaction_fence(&root).is_err());
     }
 
@@ -1857,36 +1910,66 @@ mod tests {
     #[test]
     fn selected_templates_are_copied_once_and_roundtrip_without_catalogue_lookup() {
         let temp = tempfile::tempdir().unwrap();
-        let first = create_workspace_from_template(temp.path(), "设计 A", "org.viento.software-design").unwrap();
-        let second = create_workspace_from_template(temp.path(), "设计 B", "org.viento.software-design").unwrap();
-        let blank = create_workspace_from_template(temp.path(), "空白", "org.viento.blank").unwrap();
+        let first =
+            create_workspace_from_template(temp.path(), "设计 A", "org.viento.software-design")
+                .unwrap();
+        let second =
+            create_workspace_from_template(temp.path(), "设计 B", "org.viento.software-design")
+                .unwrap();
+        let blank =
+            create_workspace_from_template(temp.path(), "空白", "org.viento.blank").unwrap();
         let initial = ensure_workspace(&first).unwrap();
         assert_ne!(initial.id, ensure_workspace(&second).unwrap().id);
-        assert_eq!(ensure_workspace(&blank).unwrap().extra["documentTypes"].as_array().unwrap().len(), 1);
+        assert_eq!(
+            ensure_workspace(&blank).unwrap().extra["documentTypes"]
+                .as_array()
+                .unwrap()
+                .len(),
+            1
+        );
         assert!(!blank.join("templates/character.md").exists());
         assert!(!first.join("templates/character.md").exists());
         let original = fs::read(second.join("templates/component.yaml")).unwrap();
         let modified = b"name: Independent\r\ncustom: true\r\n";
         fs::write(first.join("templates/component.yaml"), modified).unwrap();
-        let third = create_workspace_from_template(temp.path(), "设计 C", "org.viento.software-design").unwrap();
-        assert_eq!(fs::read(second.join("templates/component.yaml")).unwrap(), original);
-        assert_eq!(fs::read(third.join("templates/component.yaml")).unwrap(), original);
+        let third =
+            create_workspace_from_template(temp.path(), "设计 C", "org.viento.software-design")
+                .unwrap();
+        assert_eq!(
+            fs::read(second.join("templates/component.yaml")).unwrap(),
+            original
+        );
+        assert_eq!(
+            fs::read(third.join("templates/component.yaml")).unwrap(),
+            original
+        );
         let mut manifest = initial.clone();
         // Provenance is a receipt, not an installed-package dependency. Existing
         // projects remain usable when that package/version is unavailable.
-        manifest.extra.insert("projectTemplate".into(), serde_json::json!({
-            "packageId":"example.uninstalled", "version":"99.0.0", "digest":"sha256:historical"
-        }));
+        manifest.extra.insert(
+            "projectTemplate".into(),
+            serde_json::json!({
+                "packageId":"example.uninstalled", "version":"99.0.0", "digest":"sha256:historical"
+            }),
+        );
         write_json(&first.join("workspace.json"), &manifest).unwrap();
         let archive = temp.path().join("independent.zip");
         export_workspace(&first, &archive).unwrap();
         let restored = import_workspace(&archive, temp.path()).unwrap();
-        assert_eq!(fs::read(restored.join("workspace.json")).unwrap(), fs::read(first.join("workspace.json")).unwrap());
-        assert_eq!(fs::read(restored.join("templates/component.yaml")).unwrap(), modified);
+        assert_eq!(
+            fs::read(restored.join("workspace.json")).unwrap(),
+            fs::read(first.join("workspace.json")).unwrap()
+        );
+        assert_eq!(
+            fs::read(restored.join("templates/component.yaml")).unwrap(),
+            modified
+        );
         assert_eq!(ensure_workspace(&restored).unwrap().id, initial.id);
         let count = fs::read_dir(temp.path()).unwrap().count();
         assert!(create_workspace_from_template(temp.path(), "拒绝", "unknown.template").is_err());
-        assert!(create_workspace_from_template(temp.path(), "../拒绝", "org.viento.blank").is_err());
+        assert!(
+            create_workspace_from_template(temp.path(), "../拒绝", "org.viento.blank").is_err()
+        );
         assert_eq!(fs::read_dir(temp.path()).unwrap().count(), count);
     }
 
@@ -2212,6 +2295,79 @@ mod tests {
         }
         assert!(root.exists());
         assert!(!temp.path().parent().unwrap().join("escape.txt").exists());
+    }
+
+    #[test]
+    fn local_header_name_mismatches_are_rejected_without_restoring_files() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = create_workspace(temp.path(), "作者原稿", None, None).unwrap();
+        let source = b"\xef\xbb\xbf# Original story\r\n";
+        fs::write(root.join("documents/story.md"), source).unwrap();
+        let original = list_files(&root)
+            .unwrap()
+            .into_iter()
+            .map(|name| {
+                let bytes = fs::read(root.join(&name)).unwrap();
+                (name, bytes)
+            })
+            .collect::<BTreeMap<_, _>>();
+        let archive = temp.path().join("original.zip");
+        export_workspace(&root, &archive).unwrap();
+        let valid_bytes = fs::read(&archive).unwrap();
+        let valid_parent = temp.path().join("valid");
+        fs::create_dir(&valid_parent).unwrap();
+        let restored = import_workspace(&archive, &valid_parent).unwrap();
+        assert_eq!(
+            fs::read(restored.join("documents/story.md")).unwrap(),
+            source
+        );
+
+        let parent = temp.path().join("restore");
+        let existing = parent.join("existing/documents/story.md");
+        fs::create_dir_all(existing.parent().unwrap()).unwrap();
+        fs::write(&existing, b"newer existing draft").unwrap();
+        let outside = temp.path().join("escape__.txt");
+        fs::write(&outside, b"existing file outside the restored project").unwrap();
+        for (central_name, local_name) in [
+            ("manifest.json", "manifest.fake"),
+            ("documents/story.md", "../../escape__.txt"),
+        ] {
+            let header = {
+                let mut zip = ZipArchive::new(std::io::Cursor::new(&valid_bytes)).unwrap();
+                let entry = zip.by_name(central_name).unwrap();
+                entry.header_start() as usize
+            };
+            // Change only the LFH filename. The central directory, content,
+            // lengths, CRC32 and Viento SHA-256 manifest remain valid.
+            let mut cloaked = valid_bytes.clone();
+            assert_eq!(&cloaked[header..header + 4], b"PK\x03\x04");
+            let length = u16::from_le_bytes([cloaked[header + 26], cloaked[header + 27]]) as usize;
+            assert_eq!(length, central_name.len());
+            assert_eq!(length, local_name.len());
+            assert_eq!(
+                &cloaked[header + 30..header + 30 + length],
+                central_name.as_bytes()
+            );
+            cloaked[header + 30..header + 30 + length].copy_from_slice(local_name.as_bytes());
+            let bad_archive = temp.path().join("cloaked.zip");
+            fs::write(&bad_archive, &cloaked).unwrap();
+
+            assert!(
+                import_workspace(&bad_archive, &parent).is_err(),
+                "accepted inconsistent local header for {central_name}"
+            );
+            assert_eq!(fs::read_dir(&parent).unwrap().count(), 1);
+            assert_eq!(fs::read(&existing).unwrap(), b"newer existing draft");
+            assert_eq!(
+                fs::read(&outside).unwrap(),
+                b"existing file outside the restored project"
+            );
+            assert_eq!(fs::read(&bad_archive).unwrap(), cloaked);
+            for (name, bytes) in &original {
+                assert_eq!(&fs::read(root.join(name)).unwrap(), bytes, "{name}");
+            }
+            assert_eq!(list_files(&root).unwrap().len(), original.len());
+        }
     }
 
     #[test]

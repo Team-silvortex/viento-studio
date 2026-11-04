@@ -13,9 +13,11 @@
 | 本机 Godot 工具 | 已验收并切换至独立音频清理修订版，原官方 4.7.2 工具保留；工具更换不等于 Studio 升级 | [音频退出补丁](test-results/godot-audio-shutdown-patch/README.md)、[工具链指南](GODOT_TOOLCHAIN.md) |
 | 本机安装 | 最近安装并实测的 Linux x86_64 AppImage 为 **0.2.0** | [安装验收](test-results/native-installed-0.2.0/README.md) |
 | 源码分发 | 从源码启动或自行构建；安装包 CI 可手动生成构件 | [桌面构建](../desktop/README.md) |
-| 当前源码结构 | **23 模块／45 项声明能力**；**183 功能／555 实现／765 绑定／3060 评分单元／148 工作流** | [模块边界](STUDIO_MODULES.md)、[功能图谱](FUNCTION_ATLAS.md) |
+| 当前源码结构 | **23 模块／45 项声明能力**；**183 功能／556 实现／767 绑定／3068 评分单元／148 工作流** | [模块边界](STUDIO_MODULES.md)、[功能图谱](FUNCTION_ATLAS.md) |
 
 0.2.8 源码收录 Bevy 冻结入口的已保存用例与有序验收组，并接入 Godot 垂直往返平台和事件驱动的平台启停；范围见[Bevy](BEVY_BACKEND.md#验收项目入口)、[垂直平台](SCENE_PHYSICS2D.md#配置垂直往返平台)与[平台启停](SCENE_PHYSICS2D.md#用事件控制平台启停)。源码推送不会自动更新本机或其他机器的安装。图谱中的原评分和证据仍保留审查时点，不因发布提高成熟度；图谱计数也不是全部平台的支持率。
+
+0.2.8 后续源码的 [ZIP 安全修复](SECURITY_ZIP_2026-11-04.md)升级 zip 9.0.5，并在桌面／移动入口显式验证双头一致性；旧安装包尚未重建，验证范围按独立记录阅读。
 
 `.viento.zip` 保存作者工程和素材；`.viento-build.zip` 交付已经生成、可审查的后端工程，仍需要相应工具。独立可运行游戏程序的发行导出尚未接通。工具、缓存和生成工程与作者数据分离，见[数据目录](WORKSPACE_LAYOUT.md)和[工程交付](BACKEND_PROJECTS.md#交付生成工程)。
 

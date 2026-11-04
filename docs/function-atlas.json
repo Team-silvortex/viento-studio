@@ -4,8 +4,8 @@
     "title": "Viento Studio 功能成熟度图谱",
     "date": "2026-11-04",
     "version": "0.2.8",
-    "commit": "dbbe7b91940b1a57209811ce1aae8522ca8b1fe0",
-    "scope": "0.2.8源码收录Bevy项目入口已保存用例/有序验收组、垂直平台schema6与Godot0.40平台事件启停，并整理结构/使用文档和生成物清理。Godot执行适配器0.40.0、Bevy数据0.3.0；项目与物理观察协议保持；183功能/555实现/765绑定/3060评分/148工作流，23模块45项Studio声明能力。交付标签已更新，既有评分和开发证据保留原审查时点，发布不重评成熟度；本机安装仍0.2.0。升版前平台控制工作树完整检查8995项：8344通过、651条件跳过、零失败/取消；真实Godot主组13/13、暂停角色互动2/2，其余Bevy、Chrome、Rust及交付证据按各专题实际时点阅读，不将其改写为0.2.8发布重跑。本版发布检查重跑完整应用8995项/8344通过/651条件跳过/零失败，Rust420、版本与归档8、真实Godot13与Bevy2项通过；见docs/test-results/release-0.2.8/README.md；安装及其他设备分别验收。",
+    "commit": "7bf21dd4d0ef96f20ab6f086b777f2b00f312a70",
+    "scope": "0.2.8后续ZIP安全修复：zip9.0.5、桌面/移动双头一致性验证、可失败名称解码、宿主MSRV1.88；新增独立实现关系，安装未重建，原评分及历史证据不改写。0.2.8源码收录Bevy项目入口已保存用例/有序验收组、垂直平台schema6与Godot0.40平台事件启停，并整理结构/使用文档和生成物清理。Godot执行适配器0.40.0、Bevy数据0.3.0；项目与物理观察协议保持；183功能/556实现/767绑定/3068评分/148工作流，23模块45项Studio声明能力。交付标签已更新，既有评分和开发证据保留原审查时点，发布不重评成熟度；本机安装仍0.2.0。升版前平台控制工作树完整检查8995项：8344通过、651条件跳过、零失败/取消；真实Godot主组13/13、暂停角色互动2/2，其余Bevy、Chrome、Rust及交付证据按各专题实际时点阅读，不将其改写为0.2.8发布重跑。本版发布检查重跑完整应用8995项/8344通过/651条件跳过/零失败，Rust420、版本与归档8、真实Godot13与Bevy2项通过；见docs/test-results/release-0.2.8/README.md；安装及其他设备分别验收。",
     "historicalSha256": {
       "docs/FUNCTION_NETWORK.md": "3bf8534b9be6a6bc3ab4ffbb1ba75c92b11dfa01c7fa3bf41c95e184ca58d3b6",
       "docs/function-network.json": "f3d06deb06701d7a7f5990eeb185fe34a19a7f2f3463551a4407a19c7128892d",
@@ -390,7 +390,8 @@
         "entry": "作品库 backup_workspace / restore_workspace；POST /api/export kind=project；Android 完整包入口",
         "boundary": [
           "最新 Rust 核心轮次未提供归档和移动存储辅助程序，该 19 项跳过不能覆盖旧证据",
-          "多 GiB 实作容量、空间耗尽和断电未验收；大作品测试按配置忽略"
+          "多 GiB 实作容量、空间耗尽和断电未验收；大作品测试按配置忽略",
+          "2026-11-04后续ZIP安全修复以9.0.5显式验证双头一致性，宿主MSRV1.88；新增实现单独记录，旧安装与旧评分不证明该补丁已交付设备。"
         ],
         "next": "每次增加作者数据类型，补齐跨宿主往返与失败恢复。",
         "platforms": [
@@ -11082,6 +11083,20 @@
           "scripts/backends/godot4-physics-platform-events.mjs",
           "scripts/backends/godot4-adapter.mjs",
           "scripts/backends/godot4-physics-input-replay.mjs"
+        ]
+      },
+      {
+        "id": "i556",
+        "label": "ZIP严格双头验证与两个原生导入入口",
+        "kind": "product",
+        "language": [
+          "Rust"
+        ],
+        "paths": [
+          "src-tauri/Cargo.toml",
+          "src-tauri/Cargo.lock",
+          "src-tauri/src/workspace.rs",
+          "src-tauri/src/mobile_archive.rs"
         ]
       }
     ],
@@ -31689,6 +31704,32 @@
         "e3406",
         "e3407",
         "e3408"
+      ]
+    },
+    {
+      "id": "b767",
+      "architecture": "desktop-host",
+      "function": "storage.full-archive",
+      "implementation": "i556",
+      "role": "桌面归档拒绝双头歧义后才解析与恢复，正常作者数据路径和身份规则保持。",
+      "evidence": [
+        "e3409",
+        "e3410",
+        "e3411",
+        "e3412"
+      ]
+    },
+    {
+      "id": "b768",
+      "architecture": "android-host",
+      "function": "storage.full-archive",
+      "implementation": "i556",
+      "role": "移动预检在暂存目录与项目发布前拒绝同类归档，宿主互通验证不外推设备验收。",
+      "evidence": [
+        "e3409",
+        "e3410",
+        "e3411",
+        "e3412"
       ]
     }
   ],
@@ -62292,6 +62333,86 @@
       ],
       "value": 2,
       "reason": "仅未发布工作树；本机安装0.2.0及其他目标设备未更新验收。"
+    },
+    {
+      "coordinates": [
+        "desktop-host",
+        "storage.full-archive",
+        "i556",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "桌面/移动入口、可失败名称和回滚边界闭环，合法归档与变异包都有验证。"
+    },
+    {
+      "coordinates": [
+        "desktop-host",
+        "storage.full-archive",
+        "i556",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实生产原文模块、原生互通与失败回归；完整宿主及应用条件见本轮报告，不继承旧安装证明。"
+    },
+    {
+      "coordinates": [
+        "desktop-host",
+        "storage.full-archive",
+        "i556",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "ZIP结构验证由独立上游接口承担，仍与原生归档宿主集成；没有新增前端解析副本。"
+    },
+    {
+      "coordinates": [
+        "desktop-host",
+        "storage.full-archive",
+        "i556",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.8后的源码修复，尚未形成新安装产物；其他设备与发行验收独立。"
+    },
+    {
+      "coordinates": [
+        "android-host",
+        "storage.full-archive",
+        "i556",
+        "implementation"
+      ],
+      "value": 4,
+      "reason": "桌面/移动入口、可失败名称和回滚边界闭环，合法归档与变异包都有验证。"
+    },
+    {
+      "coordinates": [
+        "android-host",
+        "storage.full-archive",
+        "i556",
+        "verification"
+      ],
+      "value": 4,
+      "reason": "真实生产原文模块、原生互通与失败回归；完整宿主及应用条件见本轮报告，不继承旧安装证明。"
+    },
+    {
+      "coordinates": [
+        "android-host",
+        "storage.full-archive",
+        "i556",
+        "decoupling"
+      ],
+      "value": 3,
+      "reason": "ZIP结构验证由独立上游接口承担，仍与原生归档宿主集成；没有新增前端解析副本。"
+    },
+    {
+      "coordinates": [
+        "android-host",
+        "storage.full-archive",
+        "i556",
+        "delivery"
+      ],
+      "value": 2,
+      "reason": "0.2.8后的源码修复，尚未形成新安装产物；其他设备与发行验收独立。"
     }
   ],
   "evidence": [
@@ -82742,6 +82863,30 @@
       "kind": "report",
       "path": "docs/RELEASE_0.2.8.md",
       "note": "0.2.8源码交付范围，区分Bevy入口验收、垂直与启停、作者数据和生成工程；发布不重评历史评分。"
+    },
+    {
+      "id": "e3409",
+      "kind": "report",
+      "path": "docs/test-results/zip-security-2026-11-04/README.md",
+      "note": "旧ZIP双头变异真实复现、新桌面与移动拒绝、生产锁子图验证、合法前身与跨宿主逐字节迁移；安装独立。"
+    },
+    {
+      "id": "e3410",
+      "kind": "source",
+      "path": "src-tauri/src/workspace.rs",
+      "note": "桌面导入在清单与文件恢复前显式验证全部本地头与中央目录，并处理名称解码失败；含实际变异包回归。"
+    },
+    {
+      "id": "e3411",
+      "kind": "source",
+      "path": "src-tauri/src/mobile_archive.rs",
+      "note": "移动预检沿相同严格校验，失败不进入.mobile-import或发布作品；含移动真实调用回归。"
+    },
+    {
+      "id": "e3412",
+      "kind": "design",
+      "path": "docs/SECURITY_ZIP_2026-11-04.md",
+      "note": "上游告警、修复边界、Rust最低版本、合法旧包和安装范围。"
     }
   ],
   "dependencies": [
@@ -88645,7 +88790,8 @@
     "docs/SCENE_BEHAVIORS.md": "3c02dfd7cd6270f33447179bb87b957edd6009c18e62bc1356dae292b1ea1e46",
     "docs/SCENE_COMPOSITION.md": "c03001de8aa7e0f1a01f72c375d6e1702133bd5f5e26b5704f13a019221f6d75",
     "docs/SCENE_PHYSICS2D.md": "ad8b95acb6c504a711637e44b2e486cb8dd1dabb050ddae33787ffbda0f50c7f",
-    "docs/STATUS.md": "4bf4e77f42a2bc82c91bdf1ce5b81596a4ed448176d4af46adfda1ab53df3a74",
+    "docs/SECURITY_ZIP_2026-11-04.md": "a34a98275b1948f17829f294df5a04042243a9d1b312f950b9777111fd6c6591",
+    "docs/STATUS.md": "e69c06a265ad3586c74f10b3fea1976cfbde57ae5807b3280b5d346ae5337bf1",
     "docs/STUDIO_MODULES.md": "5a943057d530f66f3b0c04ce2705d5c694daa6754a8be646e0f2ab8401ffc9d1",
     "docs/WORLD_TRANSACTIONS.md": "bcdf7e96289f68e92271fc7c6ad025985e3744857f304fa21eb2ede43a37394e",
     "docs/adr/0008-native-nuis-and-bootstrap-runtime.md": "7fbaba85e92b981b584f0d7cefc525b70890bb4d951a5727797b2c46381fde60",
@@ -89914,6 +90060,7 @@
     "docs/test-results/world-m3/results.json": "aa4491e956bfe0f23f61158c5cf9a8ffeff6b48a4aa435f485acaeab74311d59",
     "docs/test-results/world-relations/results.json": "91d13aa1fbff592cc96cbbe3622d859b0151c38ca32f4d752d8cc29a2be20524",
     "docs/test-results/world-resources/results.json": "8dcb109a0bf9b4005240173cdac94b77ac9c5b67ebeb747dcf73dddf1ab4ffee",
+    "docs/test-results/zip-security-2026-11-04/README.md": "0e3eb285dedeeedbacc283554bdf66eb24c60c0991473aa313933428e094c625",
     "engine/README.md": "6fdbae5907d9969da49cb5c5b40db17d47117550c68a8b59fc8c3c06cfe62953",
     "engine/animation-state-bindings.mjs": "a77eb5534e292ad6561c9bac4dedbc4d4cd5cb3ecddf3257c3981a1171f8336b",
     "engine/animation-state-branches-core.mjs": "2e0fdad7c839a70735de5e54d0afaf8a14082cbb40b5ee165eabec3ca4ee9c15",
@@ -91177,17 +91324,19 @@
     "scripts/tests/world-transactions.test.mjs": "02427bc668beb9b84ec4ba1fe3fcedf1a4293869ed09d08e0ff213dc31afd7c3",
     "scripts/workspace.mjs": "8067d98be67d70aaf9d83b48e01e8fdef69fe83395aaff33e7814a13894a3077",
     "scripts/world.mjs": "5f1f1b1f6e145b0738112856ee08f59aa5f5835e58ec6adaafc6d6365fe4667c",
+    "src-tauri/Cargo.lock": "b125f3705ee37cf7c3f060ff4ab906da2fac9d672e0ef4eee6d98d83aa452c2e",
+    "src-tauri/Cargo.toml": "e04f3fe5757cc9df2c75d737c4003aabc9b61f2199fd019a981a8607ce4f7b0f",
     "src-tauri/gen/android/app/src/main/java/io/viento/studio/ArchiveTransferPlugin.kt": "309b6dea7b8085b935673f160e7ba3d7c37deb855f177df673c4a62fafba0a0e",
     "src-tauri/src/close_state.rs": "06f5639c1f9f9e086ee73de9b81e1a3a9a09a4b2436980826c4b5c92c891c11b",
     "src-tauri/src/desktop_host.rs": "cf5ef9448848178d8084782712545ed9aa3017e6a9bf16d14112495f8b6bd5e8",
     "src-tauri/src/export.rs": "f050442c347327ec0cab6c1cd6f871eb5765d801783216d28376b88f7d46e96e",
-    "src-tauri/src/mobile_archive.rs": "793586b7e5a11301e1b8a096b66d2ae3931710d8508d486d7ad3628604b842a1",
+    "src-tauri/src/mobile_archive.rs": "580e5e757e5c0aa9c9e197c2593f604aab3d86425bdd63b503e08fdb995f20cf",
     "src-tauri/src/mobile_host.rs": "c67f0605e004c3aa7e3f4b50ac7f808803e4f8c4825f88596f7153ef60f4c072",
     "src-tauri/src/mobile_storage.rs": "a22f2b25771a34396d720189f0cc2cdb0540fcafe72c3391bdc9696bc12cb643",
     "src-tauri/src/mobile_transfer.rs": "f407ced01f4c77d927163c737b73ad6d5bea2e7d27aa0e16a5dc3c4f1978be84",
     "src-tauri/src/preferences.rs": "21cd709cf08108333dbd039507fc23a802e7d221309937bb4416a753b0eeba8e",
     "src-tauri/src/project_templates.rs": "ba7ca8372c4ac6a5e5d3a3fe547bcfaa5c5736fa3c7865fdb753bcfa82111410",
-    "src-tauri/src/workspace.rs": "96d18ed684189f69b7af979e2ad831033cf1b4a1f8a11336dd1da893e77a7f89",
+    "src-tauri/src/workspace.rs": "388f1b0f9905ee561ba7a4cafe7b91d3b341635832dff757c5368eebbbeff880",
     "web/animation-state-condition-group.css": "7db6f40b56adfaaea64919b24cdd04c7888491f8a7d70545114b0746426fcc67",
     "web/animation-state-condition.css": "4a8922b0d88b029d638d129ce95118c83e3115adb8d439c09e5a05f9f00e23d6",
     "web/animation-state-event-preview.css": "c8655a2b2a23209d1fcaffeef2e452b71c4cd6325c0f063f8ee17a642e98b175",
@@ -91197,9 +91346,9 @@
     "web/animation-state-trial-case-editor.css": "6b69cae01ab42a233b7ef00efb3848c7da1c7b83693ceb83d9f923f5713c7259",
     "web/animation-state-trial-case.css": "b945e97e563ba61dca5b626f2ce51710df9024dbc94330d90c4768bc9269e4f5",
     "web/editor-layout.css": "2849fe419c6652474f4e49d77c382be1bba8d07f7b85649896b04af0116da8ef",
-    "web/i18n/en.js": "53bb29de55739ff0f16dd2b657d13f11d7bb92a0fdfe6e88275e2f9b5469a739",
+    "web/i18n/en.js": "2f0ae865361558e10137fb1cc6abd51f2d44bc7c010fc821ab37433e22161047",
     "web/i18n/index.js": "74c86ed56017e915280972d1bceb0e06574b9dadaad73e92b4bb09a3c7017567",
-    "web/i18n/ja.js": "a960349c463ca8521d23f378bdb52a1a53f04bae3b807e5d1ee0b613d974da34",
+    "web/i18n/ja.js": "6b6109576cd5e52ffcb634c34b1279fa6f0ea854e791a25077ebf5949874082f",
     "web/index.html": "62ffea0e67aa653958c9e1c363d8b3ef54279041fc2859e72335f432a2c16e68",
     "web/modules/app-animation-state-condition-group.js": "0c1b02f720757ed756c2efc2e27ca04346760400dbafc8a5c9768f4ba1a592d5",
     "web/modules/app-animation-state-condition.js": "62ca96e0221d6eb0a5b72eac21bacdf888c55a3851c0d4de85ef4bb376067c1a",

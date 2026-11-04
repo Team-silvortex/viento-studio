@@ -1,0 +1,53 @@
+Excerpt: initial npm run check -- --app-only; exit 1. Successful individual test lines omitted.
+
+
+> viento-studio@0.2.8 check
+> node scripts/check-project.mjs --app-only
+
+版本一致性检查通过：0.2.8（构建 0.2.8）
+语法检查通过：1517 个 JavaScript 文件
+API 契约预检通过
+<node> failed with exit code 1. ﹣ actual ordered branches select one declared first match and otherwise use the last fallback (0.779966ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ actual ordered branches select one reordered first match and otherwise use the last fallback (0.102743ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ unmatched conditions including cross-type ne preserve the state and live subscription until a later matching event (0.105298ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ a matching self-edge restarts once, entering a new state does not cascade, and natural completion returns once (0.075071ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ ordered event group unmatched at a natural completion safe point retains existing scheduling semantics (0.087384ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ ordered event group matching at a natural completion safe point retains existing scheduling semantics (0.076373ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ failure entering the first matching branch stops execution without attempting the fallback (0.072606ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ explicit firstMatch with no transitions compiles and activates without event subscriptions (0.086262ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ v3 exact floating thresholds and encoded Unicode strings choose the corresponding branch (0.112482ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+﹣ v3 BOM/CRLF source survives independent ZIP delivery after author and build removal (0.146535ms) # Set VIENTO_GODOT_BIN for actual ordered animation branch checks
+ℹ tests 8995
+ℹ suites 0
+ℹ pass 8343
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 651
+ℹ todo 0
+ℹ duration_ms 462730.490871
+
+✖ failing tests:
+
+test at scripts/tests/i18n-coverage.test.mjs:59:1
+✖ marked interface messages are covered in English and Japanese (517.553774ms)
+  AssertionError [ERR_ASSERTION]: Add each marked message to both translation catalogues
+  + actual - expected
+  
+  + [
+  +   [
+  +     '项目包文件名无效，请选择完整的 Viento ZIP 项目包',
+  +     'mobile_archive.rs'
+  +   ]
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file://<repo>/scripts/tests/i18n-coverage.test.mjs:91:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ [ '项目包文件名无效，请选择完整的 Viento ZIP 项目包', 'mobile_archive.rs' ] ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

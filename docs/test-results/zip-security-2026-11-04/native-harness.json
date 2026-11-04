@@ -1,0 +1,80 @@
+{
+  "purpose": "Compile unmodified production archive and mobile storage source without GTK/Tauri; use original example files as entry points.",
+  "repository": "<repo>",
+  "temporaryHarness": "<harness>",
+  "manifest": "[package]\nname = \"viento-studio\"\nversion = \"0.2.8\"\nedition = \"2021\"\n[lib]\nname = \"viento_studio\"\n[dependencies]\nserde = { version = \"=1.0.229\", features = [\"derive\"] }\nserde_json = { version = \"=1.0.151\" }\nuuid = { version = \"=1.26.0\", features = [\"v4\", \"serde\"] }\nsha2 = { version = \"=0.10.9\" }\nunicode-normalization = { version = \"=0.1.25\" }\nzip = { version = \"=9.0.5\", default-features = false, features = [\"deflate\"] }\ntempfile = { version = \"=3.27.0\" }\nfs2 = { version = \"=0.4.3\" }\n[[bin]]\nname = \"workspace-archive\"\npath = \"<repo>/src-tauri/examples/workspace-archive.rs\"\n[[bin]]\nname = \"mobile-storage\"\npath = \"<repo>/src-tauri/examples/mobile-storage.rs\"\n[profile.dev]\ndebug = 0\nincremental = false\n[profile.test]\ndebug = 0\nincremental = false\n",
+  "libSource": "#![allow(dead_code)]\n#[path = \"<repo>/src-tauri/src/workspace.rs\"]\npub mod workspace;\n#[path = \"<repo>/src-tauri/src/mobile_storage.rs\"]\npub mod mobile_storage;\n",
+  "productionSources": [
+    "src-tauri/src/workspace.rs",
+    "src-tauri/src/project_templates.rs",
+    "src-tauri/src/mobile_storage.rs",
+    "src-tauri/src/mobile_archive.rs"
+  ],
+  "commands": {
+    "resolve": [
+      "cargo",
+      "metadata",
+      "--manifest-path",
+      "<harness>/Cargo.toml",
+      "--offline",
+      "--format-version",
+      "1"
+    ],
+    "rust": [
+      "cargo",
+      "test",
+      "--manifest-path",
+      "<harness>/Cargo.toml",
+      "--offline",
+      "--locked",
+      "--lib"
+    ],
+    "binaries": [
+      "cargo",
+      "build",
+      "--manifest-path",
+      "<harness>/Cargo.toml",
+      "--offline",
+      "--locked",
+      "--bins"
+    ],
+    "node": [
+      "node",
+      "--test",
+      "--test-reporter=spec",
+      "scripts/tests/export.test.mjs",
+      "scripts/tests/archive-registry.test.mjs",
+      "scripts/tests/mobile-archive.test.mjs",
+      "scripts/tests/predecessor-compatibility.test.mjs",
+      "scripts/tests/mobile-platform.test.mjs"
+    ]
+  },
+  "nodeEnvironment": {
+    "VIENTO_TEST_ARCHIVE_BINARY": "<harness>/target/debug/workspace-archive",
+    "VIENTO_MOBILE_STORE_BIN": "<harness>/target/debug/mobile-storage"
+  },
+  "results": {
+    "rust": {
+      "passed": 45,
+      "failed": 0,
+      "ignored": 1,
+      "ignoredReason": "Existing full_project_migration_roundtrip requires full-size source fixture."
+    },
+    "node": {
+      "passed": 87,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "limitations": [
+    "Harness verifies production archive/storage modules directly; full Tauri verification is recorded separately."
+  ],
+  "placeholders": {
+    "<repo>": "Absolute repository path supplied to prepare-native-harness.py.",
+    "<harness>": "A new temporary directory supplied to prepare-native-harness.py for the fixed source.",
+    "<baseline-harness>": "A separate new temporary directory supplied with --baseline-ref for the old source.",
+    "<tauri-target>": "The new temporary CARGO_TARGET_DIR used for full Tauri verification.",
+    "<cargo-home>": "The local Cargo dependency cache, used only to normalize compiler diagnostic paths."
+  },
+  "preparationScript": "prepare-native-harness.py REPOSITORY NEW_HARNESS [--baseline-ref COMMIT]"
+}

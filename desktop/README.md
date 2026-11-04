@@ -6,6 +6,8 @@
 
 Linux GTK/WebKit 使用仓库内的 glib 安全修复副本，构建及源码迁移需要完整保留 `src-tauri/vendor`。补丁来源、兼容原因和优化回归见 [安全修复记录](../docs/SECURITY_GLIB_b.2.9.md)。
 
+0.2.8 后续源码修复将 ZIP 库更新为 9.0.5，并在桌面及移动导入时开启双头一致性校验；合法旧包继续核对正文、素材与身份。修复范围及安装边界见 [ZIP 安全记录](../docs/SECURITY_ZIP_2026-11-04.md)。
+
 桌面版使用 Tauri 2。安装后从应用图标启动，在作品库首页新建、打开或导入作品，然后进入现有文档编辑器。Node.js 24.20.0 与转换器随应用提供，使用者无需安装 Node.js、Python、Rust 或手动启动服务。
 
 ## 作品与数据
@@ -26,7 +28,7 @@ Linux GTK/WebKit 使用仓库内的 glib 安全修复副本，构建及源码迁
 
 ## 开发和打包
 
-构建机建议使用 Node.js 24，并需要 Rust 稳定版及 [Tauri 系统依赖](https://v2.tauri.app/start/prerequisites/)。
+构建机建议使用 Node.js 24，并需要 Rust 稳定版（宿主最低 1.88）及 [Tauri 系统依赖](https://v2.tauri.app/start/prerequisites/)。
 
 ```sh
 rustup target add wasm32-unknown-unknown

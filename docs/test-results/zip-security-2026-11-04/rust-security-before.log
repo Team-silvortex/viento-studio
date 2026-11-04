@@ -1,0 +1,27 @@
+Baseline: Git commit 7bf21dd4 with only the two current regression functions injected.
+Command: ["cargo", "test", "--manifest-path", "<baseline-harness>/Cargo.toml", "--offline", "--locked", "--lib", "local_header_name_mismatches", "--", "--nocapture"]
+Environment override: CARGO_TARGET_DIR=<harness>/target
+   Compiling viento-studio v0.2.8 (<baseline-harness>)
+    Finished `test` profile [unoptimized] target(s) in 1.19s
+     Running unittests src/lib.rs (<harness>/target/debug/deps/viento_studio-8b2e82c1456a58dc)
+
+running 2 tests
+
+thread 'workspace::tests::local_header_name_mismatches_are_rejected_without_restoring_files' (129320) panicked at <baseline-harness>/snapshot/src-tauri/src/workspace.rs:2272:13:
+accepted inconsistent local header for manifest.json
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test workspace::tests::local_header_name_mismatches_are_rejected_without_restoring_files ... FAILED
+
+thread 'mobile_storage::archive::tests::local_header_name_mismatches_are_rejected_without_publishing_a_project' (129319) panicked at <baseline-harness>/snapshot/src-tauri/src/mobile_archive.rs:336:53:
+called `Result::unwrap_err()` on an `Ok` value: Object {"assetStores": Object {"main": Object {"path": String("assets")}}, "createdAt": Number(1793789650673), "documentTypes": Array [Object {"directory": String(""), "id": String("document"), "label": String("档案"), "parserProfile": String("structured"), "template": String("document.md")}, Object {"directory": String("characters"), "id": String("character"), "label": String("角色"), "parserProfile": String("structured"), "template": String("character.md")}, Object {"directory": String("stories"), "id": String("story"), "label": String("故事"), "parserProfile": String("prose"), "template": String("story.md")}, Object {"directory": String("places"), "id": String("place"), "label": String("地点"), "parserProfile": String("structured"), "template": String("place.md")}, Object {"directory": String("organizations"), "id": String("organization"), "label": String("组织"), "parserProfile": String("structured"), "template": String("organization.md")}, Object {"directory": String("concepts"), "id": String("concept"), "label": String("设定"), "parserProfile": String("structured"), "template": String("concept.md")}], "format": String("viento-workspace"), "id": String("14412e18-f1ff-441b-b606-ad8e5542ce1e"), "name": String("作者原稿"), "paths": Object {"documents": String("documents"), "metadata": String("metadata"), "templates": String("templates")}, "version": Number(3)}
+test mobile_storage::archive::tests::local_header_name_mismatches_are_rejected_without_publishing_a_project ... FAILED
+
+failures:
+
+failures:
+    mobile_storage::archive::tests::local_header_name_mismatches_are_rejected_without_publishing_a_project
+    workspace::tests::local_header_name_mismatches_are_rejected_without_restoring_files
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 44 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `--lib`

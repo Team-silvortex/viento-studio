@@ -1,6 +1,6 @@
 # 当前功能图谱：架构、功能、实现与成熟度
 
-核对日期：**2026-11-04**。源码版本 **0.2.8**；审查基线为提交 `dbbe7b91940b1a57209811ce1aae8522ca8b1fe0`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
+核对日期：**2026-11-04**。源码版本 **0.2.8**；审查基线为提交 `7bf21dd4d0ef96f20ab6f086b777f2b00f312a70`，各项交付状态见下文。范围为本仓库已识别的能力与明确规划，不是全部未来功能的穷举，也不是运行时逐函数调用图。各项实测范围与执行条件见对应证据；源码验证不等于新安装包或设备验收。
 
 [离线交互图谱](function-atlas.html) · [稀疏张量 JSON](function-atlas.json) · [依赖图 Mermaid](function-atlas.mmd) · [二维功能对接表](FUNCTION_MAPPING_2D.md) · [架构边界](ARCHITECTURE.md) · [当前平台](STATUS.md) · [旧 b.4.3 功能网络](FUNCTION_NETWORK.md)
 
@@ -21,13 +21,13 @@
 | --- | ---: |
 | 架构区域 | 11 |
 | 功能 | 183 |
-| 实现单元（含规划占位） | 555 |
-| 已审查实现关系 | 765 |
-| 显式评分单元 | 3060 |
+| 实现单元（含规划占位） | 556 |
+| 已审查实现关系 | 767 |
+| 显式评分单元 | 3068 |
 | 语义依赖边 | 558 |
 | 工作流切片 | 148 |
 | 旧链路已映射 | 50 |
-| 引用并校验指纹的文件 | 2812 |
+| 引用并校验指纹的文件 | 2816 |
 
 ## 评分锚点
 
@@ -610,8 +610,10 @@
 | 存储与事务 | **workspace\.rs**；作者数据修订、发布、锁或恢复；遵守现有事务边界。 | 4 / 4 / 3 / 3 | [docs/test-results/release-0\.0\.4/results\.json](../docs/test-results/release-0.0.4/results.json)、[docs/test-results/release-0\.0\.6/results\.json](../docs/test-results/release-0.0.6/results.json)、[docs/test-results/scene-selection/results\.json](../docs/test-results/scene-selection/results.json) |
 | 本机服务与适配 | **export-package\.mjs**；本机服务编排及宿主适配；领域计算与持久化按对应模块分工。 | 4 / 4 / 3 / 3 | [docs/test-results/release-0\.0\.4/results\.json](../docs/test-results/release-0.0.4/results.json)、[docs/test-results/release-0\.0\.6/results\.json](../docs/test-results/release-0.0.6/results.json)、[docs/test-results/scene-selection/results\.json](../docs/test-results/scene-selection/results.json) |
 | Android 宿主 | **mobile\_archive\.rs**；Android请求/存储/迁移适配；只覆盖已声明移动子集。 | 4 / 4 / 3 / 3 | [docs/test-results/release-0\.0\.4/results\.json](../docs/test-results/release-0.0.4/results.json)、[docs/test-results/release-0\.0\.6/results\.json](../docs/test-results/release-0.0.6/results.json)、[docs/test-results/scene-selection/results\.json](../docs/test-results/scene-selection/results.json) |
+| 桌面宿主 | **ZIP严格双头验证与两个原生导入入口**；桌面归档拒绝双头歧义后才解析与恢复，正常作者数据路径和身份规则保持。 | 4 / 4 / 3 / 2 | [docs/test-results/zip-security-2026-11-04/README\.md](../docs/test-results/zip-security-2026-11-04/README.md)、[docs/SECURITY\_ZIP\_2026-11-04\.md](../docs/SECURITY_ZIP_2026-11-04.md) |
+| Android 宿主 | **ZIP严格双头验证与两个原生导入入口**；移动预检在暂存目录与项目发布前拒绝同类归档，宿主互通验证不外推设备验收。 | 4 / 4 / 3 / 2 | [docs/test-results/zip-security-2026-11-04/README\.md](../docs/test-results/zip-security-2026-11-04/README.md)、[docs/SECURITY\_ZIP\_2026-11-04\.md](../docs/SECURITY_ZIP_2026-11-04.md) |
 
-平台：Tauri桌面导入／导出、本机浏览器仅完整包导出，恢复使用桌面宿主、Android私有目录与SAF完整包迁移。边界：最新 Rust 核心轮次未提供归档和移动存储辅助程序，该 19 项跳过不能覆盖旧证据；多 GiB 实作容量、空间耗尽和断电未验收；大作品测试按配置忽略。
+平台：Tauri桌面导入／导出、本机浏览器仅完整包导出，恢复使用桌面宿主、Android私有目录与SAF完整包迁移。边界：最新 Rust 核心轮次未提供归档和移动存储辅助程序，该 19 项跳过不能覆盖旧证据；多 GiB 实作容量、空间耗尽和断电未验收；大作品测试按配置忽略；2026-11-04后续ZIP安全修复以9.0.5显式验证双头一致性，宿主MSRV1.88；新增实现单独记录，旧安装与旧评分不证明该补丁已交付设备。。
 
 下一步：每次增加作者数据类型，补齐跨宿主往返与失败恢复。
 

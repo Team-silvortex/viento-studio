@@ -20,6 +20,10 @@ impl MobileLibrary {
         if zip.len() > MAX_ARCHIVE_FILES {
             return Err(error(413, "项目包文件过多，请在桌面版中打开"));
         }
+        // Keep the mobile preflight on the same strict header policy as the
+        // desktop restore, before allocating import staging or parsing JSON.
+        zip.validate_header_consistency()
+            .map_err(|_| error(400, "项目包无法读取，请选择完整的 Viento ZIP 项目包"))?;
         let mut total = 0u64;
         let mut metadata_bytes = 0u64;
         let mut source_bytes = 0u64;
@@ -28,6 +32,9 @@ impl MobileLibrary {
             let entry = zip
                 .by_index(index)
                 .map_err(|_| error(400, "项目包无法读取，请选择完整的 Viento ZIP 项目包"))?;
+            let name = entry
+                .name()
+                .map_err(|_| error(400, "项目包文件名无效，请选择完整的 Viento ZIP 项目包"))?;
             total = total
                 .checked_add(entry.size())
                 .ok_or_else(|| error(413, "移动端项目包最多 1 GiB，展开后最多 4 GiB"))?;
@@ -36,31 +43,32 @@ impl MobileLibrary {
             }
             // The shared archive verifier reads registries and its manifest as
             // JSON. Bound those allocations before asking it to extract files.
-            let limit = if entry.name() == "manifest.json" {
+            let limit = if name.as_ref() == "manifest.json" {
                 64 * MAX_TEXT
             } else {
                 MAX_TEXT
             };
-            if (entry.name() == "manifest.json"
-                || entry.name().starts_with("metadata/")
-                || entry.name() == "workspace.json"
-                || entry.name() == ".viento/workspace.json")
+            if (name.as_ref() == "manifest.json"
+                || name.as_ref().starts_with("metadata/")
+                || name.as_ref() == "workspace.json"
+                || name.as_ref() == ".viento/workspace.json")
                 && entry.size() > limit as u64
             {
                 return Err(error(413, "项目元数据过大，请在桌面版中打开"));
             }
-            if entry.name().starts_with("metadata/") {
+            if name.as_ref().starts_with("metadata/") {
                 metadata_bytes = metadata_bytes.saturating_add(entry.size());
                 if metadata_bytes > 32 * MAX_TEXT as u64 {
                     return Err(error(413, "项目元数据过大，请在桌面版中打开"));
                 }
             }
-            let extension = Path::new(entry.name())
+            let extension = Path::new(name.as_ref())
                 .extension()
                 .and_then(|value| value.to_str())
                 .unwrap_or("")
                 .to_ascii_lowercase();
-            if (entry.name().starts_with("documents/") || entry.name().starts_with("design-data/"))
+            if (name.as_ref().starts_with("documents/")
+                || name.as_ref().starts_with("design-data/"))
                 && !entry.is_dir()
                 && ["", "md", "txt", "json", "yaml", "yml"].contains(&extension.as_str())
             {
@@ -68,7 +76,7 @@ impl MobileLibrary {
                 if source_bytes > 32 * MAX_TEXT as u64 {
                     return Err(error(413, "移动端正文总量最多 32 MiB，请在桌面版中打开"));
                 }
-                sources.insert(entry.name().to_string());
+                sources.insert(name.into_owned());
             }
         }
         let mut manifest = String::new();
@@ -276,6 +284,75 @@ mod tests {
             assert_eq!(fs::read(archive).unwrap(), original);
         }
     }
+    #[test]
+    fn local_header_name_mismatches_are_rejected_without_publishing_a_project() {
+        let temp = tempfile::tempdir().unwrap();
+        let source = MobileLibrary::new(temp.path().join("source")).unwrap();
+        let work = source.create("作者原稿").unwrap();
+        let id = work["id"].as_str().unwrap();
+        save(
+            &source,
+            id,
+            "documents/story.md",
+            "\u{feff}# 旅人\r\n原稿\r\n",
+        );
+        let source_root = source.project(id).unwrap().0;
+        let original = tree(&source_root);
+        let archive = temp.path().join("original.zip");
+        source.export_archive(id, &archive).unwrap();
+        let valid_bytes = fs::read(&archive).unwrap();
+        let control = MobileLibrary::new(temp.path().join("control")).unwrap();
+        assert_eq!(control.import_archive(&archive).unwrap(), work);
+        assert_eq!(tree(&control.project(id).unwrap().0), original);
+
+        let target = MobileLibrary::new(temp.path().join("target")).unwrap();
+        let existing_work = target.create("保留已有作品").unwrap();
+        let existing_id = existing_work["id"].as_str().unwrap();
+        save(
+            &target,
+            existing_id,
+            "documents/story.md",
+            "newer existing draft",
+        );
+        let existing_root = target.project(existing_id).unwrap().0;
+        let existing = tree(&existing_root);
+        for (central_name, local_name) in [
+            ("manifest.json", "manifest.fake"),
+            ("documents/story.md", "documents/other.md"),
+        ] {
+            let header = {
+                let mut zip = zip::ZipArchive::new(std::io::Cursor::new(&valid_bytes)).unwrap();
+                let entry = zip.by_name(central_name).unwrap();
+                entry.header_start() as usize
+            };
+            // Keep CDFH names and all content checksums intact, reproducing the
+            // dual-header discrepancy from GHSA-m665-v7pm-7grj.
+            let mut cloaked = valid_bytes.clone();
+            assert_eq!(&cloaked[header..header + 4], b"PK\x03\x04");
+            let length = u16::from_le_bytes([cloaked[header + 26], cloaked[header + 27]]) as usize;
+            assert_eq!(length, central_name.len());
+            assert_eq!(length, local_name.len());
+            assert_eq!(
+                &cloaked[header + 30..header + 30 + length],
+                central_name.as_bytes()
+            );
+            cloaked[header + 30..header + 30 + length].copy_from_slice(local_name.as_bytes());
+            let bad_archive = temp.path().join("cloaked.zip");
+            fs::write(&bad_archive, &cloaked).unwrap();
+
+            assert_eq!(
+                target.import_archive(&bad_archive).unwrap_err().status_code,
+                400
+            );
+            assert_eq!(target.list().unwrap().as_array().unwrap().len(), 1);
+            assert_eq!(fs::read_dir(&target.root).unwrap().count(), 1);
+            assert!(!target.root.join(".mobile-import").exists());
+            assert_eq!(tree(&existing_root), existing);
+            assert_eq!(tree(&source_root), original);
+            assert_eq!(fs::read(&bad_archive).unwrap(), cloaked);
+        }
+    }
+
     #[test]
     fn corrupt_and_oversized_packages_do_not_enter_the_library() {
         let temp = tempfile::tempdir().unwrap();
