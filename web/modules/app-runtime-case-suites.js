@@ -18,7 +18,7 @@ export function setupRuntimeCaseSuites({ container, request, getState, onRun, on
     <button id="projectBuildSuiteSaveAs" type="button" class="doc-btn doc-btn-ghost" data-i18n="验收组另存为"></button>
     <button id="projectBuildSuiteNew" type="button" class="doc-btn doc-btn-ghost" data-i18n="作为新验收组"></button>
     <button id="projectBuildSuiteRun" type="button" class="doc-btn" data-i18n="运行已保存验收组"></button></div>
-    <p id="projectBuildSuiteStatus" class="build-hint" role="status" aria-live="polite"></p><p id="projectBuildSuiteError" role="alert" hidden></p></details>
+    <p id="projectBuildSuiteRevision" class="build-hint" hidden></p><p id="projectBuildSuiteStatus" class="build-hint" role="status" aria-live="polite"></p><p id="projectBuildSuiteError" role="alert" hidden></p></details>
     <section id="projectBuildSuiteResult" class="build-case-result" hidden aria-labelledby="projectBuildSuiteResultTitle"><h3 id="projectBuildSuiteResultTitle" data-i18n="批量验收结果"></h3>
     <p id="projectBuildSuiteSummary" role="status" aria-live="polite"></p><ol id="projectBuildSuiteEntries"></ol></section>`;
   const el = suffix => container.querySelector(`#projectBuildSuite${suffix}`);
@@ -47,19 +47,37 @@ export function setupRuntimeCaseSuites({ container, request, getState, onRun, on
   };
   let catalog = null, catalogScene = '', choice = '', loaded = null, members = [], boundScene = '', baseline = '';
   let busy = false, epoch = 0, revision = 0, lastScene = '', pathEdited = false, uncertain = false, errorKey = '';
-  const pendingSaves = new Set();
+  let pendingSaves = new Set(), contextKey = null, restoredType = null;
+  const contexts = new Map();
+  function selectContext() {
+    const next = getState().contextKey || 'scene';
+    if (next === contextKey) return;
+    if (contextKey !== null) {
+      if (pendingSaves.size) uncertain = true;
+      contexts.set(contextKey, { catalog, catalogScene, choice, loaded, members, boundScene, baseline,
+        revision, lastScene, pathEdited, uncertain, errorKey, pendingSaves, path: el('Path').value, type: el('Type').value });
+    }
+    epoch++; busy = false; contextKey = next;
+    const saved = contexts.get(next);
+    ({ catalog = null, catalogScene = '', choice = '', loaded = null, members = [], boundScene = '', baseline = '',
+      revision = 0, lastScene = '', pathEdited = false, uncertain = false, errorKey = '', pendingSaves = new Set() } = saved || {});
+    el('Path').value = saved?.path || '';
+    // Re-render options even when two contexts happen to share one catalog.
+    el('Select').dataset.signature = ''; el('Cases').dataset.signature = ''; el('Type').dataset.signature = '';
+    restoredType = saved?.type || null;
+  }
   const draft = () => ({ format: 'viento-runtime-case-suite', schemaVersion: 1, sceneObjectId: boundScene || getState().sceneId, documentIds: [...members] });
   const signature = () => canonicalJson(draft());
   const dirty = () => signature() !== baseline;
   const foreign = () => Boolean(boundScene && boundScene !== getState().sceneId);
-  const owner = () => ({ ...getState(), revision, signature: signature() });
+  const owner = () => ({ ...getState(), contextKey: contextKey || 'scene', revision, signature: signature() });
   const owns = (origin, requestEpoch, unchanged = false) => {
-    const now = getState(); return epoch === requestEpoch && now.visible && now.session === origin.session && now.sceneId === origin.sceneId
+    const now = getState(); return epoch === requestEpoch && (now.contextKey || 'scene') === origin.contextKey && now.visible && now.session === origin.session && now.sceneId === origin.sceneId
       && (!unchanged || revision === origin.revision && signature() === origin.signature);
   };
-  const readable = () => { const state = getState(); return Boolean(state.available && state.visible && state.sceneId && !state.active && !state.offline && !busy); };
+  const readable = () => { const state = getState(); return Boolean(state.available && state.visible && state.sceneId && !state.active && !state.offline && !busy && pendingSaves.size === 0); };
   const writable = () => { const state = getState(); return readable() && state.editable && !state.dirty && !state.creating && !state.busy && !foreign() && !uncertain; };
-  const mayRun = () => { const state = getState(); return Boolean(loaded?.valid && !dirty() && !foreign() && !uncertain && !busy && !state.offline && state.canRun && state.buildId); };
+  const mayRun = () => { const state = getState(); return Boolean(loaded?.valid && !dirty() && !foreign() && !uncertain && !busy && pendingSaves.size === 0 && !state.offline && state.canRun && state.buildId); };
   const fail = error => { errorKey = errors[error?.code || error?.errorCode] || '验收组操作未完成，请刷新核对；当前成员选择已保留。'; };
   function suggestedPath() {
     if (catalogScene !== getState().sceneId || !catalog) return '';
@@ -69,7 +87,7 @@ export function setupRuntimeCaseSuites({ container, request, getState, onRun, on
   }
   function renderResult() {
     const job = getState().job, suite = job?.suite, list = el('Entries');
-    el('Result').hidden = job?.kind !== 'suite' || !suite || job.sceneId !== getState().sceneId || job.buildId !== getState().buildId || job.backendId !== getState().backendId;
+    el('Result').hidden = job?.kind !== 'suite' || !suite || job.sceneId !== (getState().targetId || getState().sceneId) || job.buildId !== getState().buildId || job.backendId !== getState().backendId || (getState().snapshotId && job.snapshotId !== getState().snapshotId);
     if (el('Result').hidden) { list.replaceChildren(); list.dataset.signature = ''; return; }
     try {
       if (!uuid(suite.documentId) || !version(suite.sourceVersion) || suite.sceneObjectId !== getState().sceneId
@@ -104,10 +122,20 @@ export function setupRuntimeCaseSuites({ container, request, getState, onRun, on
     } catch { list.replaceChildren(); list.dataset.signature = ''; el('Summary').textContent = t('批量验收结果不可读取，请刷新状态。'); }
   }
   function render() {
+    selectContext();
     const state = getState(); container.hidden = !state.sceneId;
     if (lastScene !== state.sceneId) { lastScene = state.sceneId; choice = ''; revision++; pathEdited = false; el('Path').value = suggestedPath(); }
     translatePage(container);
     const current = catalogScene === state.sceneId ? catalog : null;
+    const authorRevision = loaded?.sceneId === state.sceneId ? loaded.sceneVersion : current?.sceneVersion;
+    const revisionMessage = !authorRevision ? '刷新或载入用例后可比较作者场景与冻结场景的修订。'
+      : !state.frozenSceneVersion ? '冻结场景修订不可比较；保存使用上次读取的作者场景修订。'
+        : authorRevision === state.frozenSceneVersion ? '上次读取的作者场景与冻结场景修订一致；其他依赖仍可能不同。'
+          : '上次读取的作者场景与冻结场景修订不同；保存使用作者场景，运行使用冻结场景。';
+    el('Revision').hidden = !state.project;
+    el('Revision').textContent = state.project ? t(revisionMessage) + (loaded?.sceneId === state.sceneId && current?.sceneVersion
+      && loaded.sceneVersion !== current.sceneVersion ? ' ' + t('已载入验收组使用原场景修订；另存为使用新刷新目录的场景修订。') : '') : '';
+
     const optionsSignature = canonicalJson([current?.documents || [], choice, t('请先刷新验收组列表'), t('暂无已保存验收组'), t('需要修复')]);
     if (el('Select').dataset.signature !== optionsSignature) {
       const placeholder = document.createElement('option'); placeholder.value = ''; placeholder.textContent = t(current ? '暂无已保存验收组' : '请先刷新验收组列表');
@@ -117,7 +145,7 @@ export function setupRuntimeCaseSuites({ container, request, getState, onRun, on
     }
     const types = current?.defaults.documentTypes || [], typeSignature = canonicalJson(types.map(item => [item.id, t(item.label)]));
     if (el('Type').dataset.signature !== typeSignature) {
-      const previous = el('Type').value; el('Type').replaceChildren(...types.map(item => { const option = document.createElement('option'); option.value = item.id; option.textContent = t(item.label); return option; }));
+      const previous = restoredType || el('Type').value; restoredType = null; el('Type').replaceChildren(...types.map(item => { const option = document.createElement('option'); option.value = item.id; option.textContent = t(item.label); return option; }));
       el('Type').value = types.some(item => item.id === previous) ? previous : current?.defaults.documentType || ''; el('Type').dataset.signature = typeSignature;
     }
     const editableMembers = Boolean(current && !state.active && !busy && !uncertain && !foreign());
@@ -154,7 +182,7 @@ export function setupRuntimeCaseSuites({ container, request, getState, onRun, on
     el('SaveAs').disabled = !canSave || !current || !el('Path').value.trim() || !el('Type').value;
     el('New').disabled = busy || state.active || uncertain || !state.sceneId;
     el('Run').disabled = !mayRun(); el('Path').disabled = busy || state.active; el('Type').disabled = busy || state.active;
-    const message = uncertain ? '验收组保存结果尚未确认。请刷新并明确载入后再写入；当前成员选择已保留。'
+    const message = uncertain ? '保存结果尚未确认。网络中断后服务端可能仍在写入；请先检查对应位置及原文，再明确载入核对，避免立即重复新建。当前草稿已保留。'
       : foreign() ? errors.runtime_suite_scene_mismatch : loaded && !loaded.valid ? '已载入需要修复的验收组，请核对成员后保存。'
         : loaded ? dirty() ? '已载入 {0} · 成员有未保存修改，保存后才能批量运行。' : '已载入 {0}'
           : current ? '新验收组草稿；至少选择一份用例，明确保存后才能批量运行。' : '先刷新验收组与用例列表；选择成员不会改动用例原文。';
@@ -195,19 +223,21 @@ export function setupRuntimeCaseSuites({ container, request, getState, onRun, on
     const origin = owner(), previous = loaded, create = asNew || !previous, current = catalogScene === origin.sceneId ? catalog : null;
     const sceneVersion = create ? current?.sceneVersion : previous.sceneVersion;
     if (!sceneVersion || create && (!el('Path').value.trim() || !el('Type').value)) return;
+    if (origin.project && (!origin.frozenSceneVersion || origin.frozenSceneVersion !== sceneVersion)
+      && !window.confirm(t('作者场景与冻结场景修订不同或无法比较。验收组将按当前作者场景保存；运行仍使用冻结场景。继续保存吗？'))) return;
     const content = previous && !dirty() ? previous.content : JSON.stringify(definition, null, 2);
     const payload = { action: 'suite-save', sceneId: origin.sceneId, sceneVersion, content,
       ...(create ? { sourcePath: el('Path').value.trim(), documentType: el('Type').value } : { documentId: previous.id, expectedVersion: previous.version }) };
-    const requestEpoch = ++epoch; pendingSaves.add(requestEpoch); busy = true; errorKey = ''; render(); onChange();
+    const requestEpoch = ++epoch, ownerPendingSaves = pendingSaves; ownerPendingSaves.add(requestEpoch); busy = true; errorKey = ''; render(); onChange();
     try {
-      const result = await request(payload); if (!owns(origin, requestEpoch)) { uncertain = true; return; }
+      const result = await request(payload); if (!owns(origin, requestEpoch)) { if (contextKey === origin.contextKey) uncertain = true; return; }
       if (!uuid(result?.id) || result.sceneId !== origin.sceneId || !version(result.version) || result.content !== content) { uncertain = true; throw new Error('Unconfirmed suite save.'); }
       loaded = result; boundScene = result.sceneId; baseline = origin.signature; choice = result.id; uncertain = false;
       if (catalogScene === origin.sceneId && catalog) { const { id, path, title, version, sceneId, valid, diagnostics } = result;
         catalog = { ...catalog, documents: [...catalog.documents.filter(item => item.id !== id), { id, path, title, version, sceneId, valid, diagnostics }] }; }
       pathEdited = false; el('Path').value = suggestedPath();
     } catch (error) { if (owns(origin, requestEpoch)) { fail(error); const status = error?.status ?? error?.statusCode; if (!Number.isInteger(status) || status < 400 || status >= 500) uncertain = true; } }
-    finally { pendingSaves.delete(requestEpoch); if (epoch === requestEpoch) { busy = false; render(); onChange(); } }
+    finally { ownerPendingSaves.delete(requestEpoch); if (epoch === requestEpoch) busy = false; if (contextKey === origin.contextKey) { render(); onChange(); } }
   }
   el('Refresh').addEventListener('click', () => void refresh()); el('Load').addEventListener('click', () => void load());
   el('Save').addEventListener('click', () => void save()); el('SaveAs').addEventListener('click', () => void save(true));

@@ -7,7 +7,7 @@ import { canonicalJson } from '../../engine/canonical-json.mjs';
 import { buildError, buildHash } from '../adapters/node-build-snapshot.mjs';
 import { generateBevyProject } from './bevy-project.mjs';
 
-const capabilities = ['scene2d', 'input.arrows', 'state.movement', 'project.scenes', 'runtime.control-replay', 'runtime.control-replay.instances', 'project.control-replay'];
+const capabilities = ['scene2d', 'input.arrows', 'state.movement', 'project.scenes', 'runtime.control-replay', 'runtime.control-replay.instances', 'project.control-replay', 'project.runtime-case', 'project.runtime-case-suite'];
 const unsupported = capability => { throw buildError('build_capability_missing', `Bevy does not support ${capability}.`, { capability }); };
 const sceneKeys = new Set(['format', 'schemaVersion', 'kind', 'projectId', 'worldId', 'worldRevision', 'scene', 'actors', 'resources', 'requiredCapabilities']);
 const sceneDataKeys = new Set(['objectId', 'sourcePath', 'sourceRevision', 'title', 'viewport', 'background']);

@@ -42,6 +42,7 @@ test('Bevy assembly retains all scenes and explicitly selects the entry without 
   assert.equal(output.backend.protocolVersion, 1);
   assert.ok(output.backend.capabilities.includes('runtime.control-replay'));
   assert.ok(output.backend.capabilities.includes('project.control-replay'));
+  assert.ok(output.backend.capabilities.includes('project.runtime-case'));
   assert.ok(output.backend.capabilities.includes('runtime.control-replay.instances'));
   const standalone = await generateBevyProject(input.scenes[0]);
   assert.ok(standalone.backend.capabilities.includes('runtime.control-replay'));

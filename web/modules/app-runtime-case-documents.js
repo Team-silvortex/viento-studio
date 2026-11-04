@@ -15,6 +15,7 @@ export function setupRuntimeCaseDocuments({ container, getState, getText, setTex
     <div class="build-actions"><button id="projectBuildCaseDocumentSave" type="button" class="doc-btn" data-i18n="保存用例"></button>
     <button id="projectBuildCaseDocumentSaveAs" type="button" class="doc-btn doc-btn-ghost" data-i18n="用例另存为"></button>
     <button id="projectBuildCaseDocumentNew" type="button" class="doc-btn doc-btn-ghost" data-i18n="作为新用例"></button></div>
+    <p id="projectBuildCaseDocumentRevision" class="build-hint" role="status" aria-live="polite" hidden></p>
     <p id="projectBuildCaseDocumentStatus" class="build-hint" role="status" aria-live="polite"></p>
     <p id="projectBuildCaseDocumentError" role="alert" hidden></p></div>`;
   const el = id => container.querySelector(`#projectBuildCaseDocument${id}`);
@@ -40,18 +41,35 @@ export function setupRuntimeCaseDocuments({ container, getState, getText, setTex
   };
   let catalog = null, catalogScene = '', choice = '', loaded = null, boundScene = '', baseline = '';
   let busy = false, epoch = 0, revision = 0, errorKey = '', uncertain = false, lastScene = '', pathEdited = false;
-  const pendingSaves = new Set();
-  const snapshot = () => ({ ...getState(), revision, text: getText() });
+  let pendingSaves = new Set(), contextKey = null;
+  const contexts = new Map();
+  // Each project build has its own document binding as well as its own text.
+  // The scene view deliberately retains its existing cross-scene safety guard.
+  function selectContext() {
+    const next = getState().contextKey || 'scene';
+    if (next === contextKey) return;
+    if (contextKey !== null) {
+      if (pendingSaves.size) uncertain = true;
+      contexts.set(contextKey, { catalog, catalogScene, choice, loaded, boundScene, baseline,
+        revision, errorKey, uncertain, lastScene, pathEdited, pendingSaves });
+    }
+    epoch++; busy = false; contextKey = next;
+    const saved = contexts.get(next);
+    ({ catalog = null, catalogScene = '', choice = '', loaded = null, boundScene = '', baseline = '',
+      revision = 0, errorKey = '', uncertain = false, lastScene = '', pathEdited = false,
+      pendingSaves = new Set() } = saved || {});
+  }
+  const snapshot = () => ({ ...getState(), contextKey: contextKey || 'scene', revision, text: getText() });
   const owns = (owner, requestEpoch, textRequired = false) => {
     const now = getState();
-    return epoch === requestEpoch && now.visible && now.session === owner.session && now.sceneId === owner.sceneId
+    return epoch === requestEpoch && (now.contextKey || 'scene') === owner.contextKey && now.visible && now.session === owner.session && now.sceneId === owner.sceneId
       && (!textRequired || revision === owner.revision && getText() === owner.text);
   };
   const dirty = () => getText() !== baseline;
   const foreign = () => Boolean(boundScene && boundScene !== getState().sceneId);
   const readable = () => {
     const state = getState();
-    return state.available && state.visible && state.sceneId && !state.offline && !state.active && !busy;
+    return state.available && state.visible && state.sceneId && !state.offline && !state.active && !busy && pendingSaves.size === 0;
   };
   const writable = () => {
     const state = getState();
@@ -73,6 +91,7 @@ export function setupRuntimeCaseDocuments({ container, getState, getText, setTex
     return validateRuntimeCase(JSON.parse(text));
   }
   function render() {
+    selectContext();
     const state = getState();
     if (lastScene !== state.sceneId) {
       lastScene = state.sceneId; choice = ''; pathEdited = false; revision++;
@@ -80,6 +99,14 @@ export function setupRuntimeCaseDocuments({ container, getState, getText, setTex
     }
     translatePage(container);
     const currentCatalog = catalogScene === state.sceneId ? catalog : null;
+    const authorRevision = loaded?.sceneId === state.sceneId ? loaded.sceneVersion : currentCatalog?.sceneVersion;
+    const revisionMessage = !authorRevision ? '刷新或载入用例后可比较作者场景与冻结场景的修订。'
+      : !state.frozenSceneVersion ? '冻结场景修订不可比较；保存使用上次读取的作者场景修订。'
+        : authorRevision === state.frozenSceneVersion ? '上次读取的作者场景与冻结场景修订一致；其他依赖仍可能不同。'
+          : '上次读取的作者场景与冻结场景修订不同；保存使用作者场景，运行使用冻结场景。';
+    el('Revision').hidden = !state.project;
+    el('Revision').textContent = state.project ? t(revisionMessage) + (loaded?.sceneId === state.sceneId && currentCatalog?.sceneVersion
+      && loaded.sceneVersion !== currentCatalog.sceneVersion ? ' ' + t('已载入用例使用原场景修订；另存为使用新刷新目录的场景修订。') : '') : '';
     const documents = currentCatalog?.documents || [];
     const signature = JSON.stringify([documents, choice, t('请先刷新用例列表'), t('暂无已保存用例'), t('需要修复')]);
     if (el('Select').dataset.signature !== signature) {
@@ -109,9 +136,9 @@ export function setupRuntimeCaseDocuments({ container, getState, getText, setTex
     const canSave = writable() && valid && Boolean(loaded?.sceneVersion || currentCatalog?.sceneVersion);
     el('Save').disabled = !canSave || (!loaded && (!el('Path').value.trim() || !el('Type').value));
     el('SaveAs').disabled = !canSave || !currentCatalog || !el('Path').value.trim() || !el('Type').value;
-    el('New').disabled = busy || state.active || uncertain || !state.sceneId;
+    el('New').disabled = busy || pendingSaves.size > 0 || state.active || uncertain || !state.sceneId;
     el('Path').disabled = busy || state.active; el('Type').disabled = busy || state.active;
-    const message = uncertain ? '保存结果尚未确认。请刷新并明确载入，避免重复写入；当前草稿已保留。'
+    const message = uncertain ? '保存结果尚未确认。网络中断后服务端可能仍在写入；请先检查对应位置及原文，再明确载入核对，避免立即重复新建。当前草稿已保留。'
       : foreign() ? '此用例属于另一个场景。请选择对应场景，或明确作为新用例。'
         : loaded && !loaded.valid ? '已载入需要修复的用例。请核对场景与检查，运行和保存都会重新校验。'
           : loaded ? (dirty() ? '已载入 {0} · 有未保存修改' : '已载入 {0}')
@@ -164,13 +191,15 @@ export function setupRuntimeCaseDocuments({ container, getState, getText, setTex
     } catch (error) { fail(error); render(); return; }
     const sceneVersion = create ? currentCatalog?.sceneVersion : previous.sceneVersion;
     if (!sceneVersion || create && (!el('Path').value.trim() || !el('Type').value)) return;
+    if (owner.project && (!owner.frozenSceneVersion || owner.frozenSceneVersion !== sceneVersion)
+      && !window.confirm(t('作者场景与冻结场景修订不同或无法比较。用例将按当前作者场景保存；运行仍使用冻结场景。继续保存吗？'))) return;
     const payload = { action: 'case-save', sceneId: owner.sceneId, sceneVersion, content,
       ...(create ? { sourcePath: el('Path').value.trim(), documentType: el('Type').value }
         : { documentId: previous.id, expectedVersion: previous.version }) };
-    const requestEpoch = ++epoch; pendingSaves.add(requestEpoch); busy = true; errorKey = ''; render(); onChange();
+    const requestEpoch = ++epoch, ownerPendingSaves = pendingSaves; ownerPendingSaves.add(requestEpoch); busy = true; errorKey = ''; render(); onChange();
     try {
       const result = await request(payload);
-      if (!owns(owner, requestEpoch)) { uncertain = true; return; }
+      if (!owns(owner, requestEpoch)) { if (contextKey === owner.contextKey) uncertain = true; return; }
       if (!result?.id || result.sceneId !== owner.sceneId || typeof result.version !== 'string' || result.content !== content) {
         uncertain = true; throw new Error('Unconfirmed case save.');
       }
@@ -188,7 +217,13 @@ export function setupRuntimeCaseDocuments({ container, getState, getText, setTex
         const status = error?.status ?? error?.statusCode;
         if (!Number.isInteger(status) || status < 400 || status >= 500) uncertain = true;
       }
-    } finally { pendingSaves.delete(requestEpoch); if (epoch === requestEpoch) { busy = false; render(); onChange(); } }
+    } finally {
+      ownerPendingSaves.delete(requestEpoch);
+      if (epoch === requestEpoch) busy = false;
+      // A save can settle after its context has been left and later restored.
+      // Its owner must be re-rendered to enable an explicit reconciliation read.
+      if (contextKey === owner.contextKey) { render(); onChange(); }
+    }
   }
   el('Refresh').addEventListener('click', () => void refresh());
   el('Load').addEventListener('click', () => void load());

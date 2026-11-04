@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "environment": {
+    "browser": "Chrome/156.0.8078.73",
+    "runtime": "viento-bevy-runtime 0.3.0 / Bevy 0.19.1",
+    "scope": "isolated workspace and cache; HTTP editor and headless Bevy on Linux"
+  },
+  "steps": [
+    "Selected the two-scene project assembly, checked and built using the actual Bevy backend.",
+    "Saved a generated case as an author document linked to the entry scene.",
+    "Refreshed and explicitly reloaded the persisted case.",
+    "Saved two entry-scene cases, with the first suite member deliberately failing its expectation.",
+    "Ran failed then passing member in order on the frozen Bevy project, with separate execution and acceptance results.",
+    "Opened each independently pinned member report in the editor."
+  ],
+  "batch": {
+    "targetKind": "project",
+    "projectIdentityMatches": true,
+    "entryIdentityMatches": true,
+    "buildIdentityMatches": true,
+    "snapshotIdentityMatches": true,
+    "orderedStates": [
+      "failed",
+      "passed"
+    ],
+    "executionStates": [
+      "succeeded",
+      "succeeded"
+    ],
+    "summary": {
+      "status": "failed",
+      "complete": true,
+      "total": 2,
+      "completed": 2,
+      "queued": 0,
+      "running": 0,
+      "passed": 1,
+      "failed": 1,
+      "incomplete": 0,
+      "notRun": 0
+    }
+  },
+  "authorFiles": {
+    "beforeFiles": 26,
+    "afterFiles": 32,
+    "unchangedFiles": 26,
+    "createdDocuments": 3,
+    "createdRegistrations": 3
+  },
+  "errors": [],
+  "sourceSha256": {
+    "scripts/lib/project-build-service.mjs": "9614d7ad237c605f8b01df272df66d4d9fd60f1f5ad9a2affc665e0596a88f7d",
+    "scripts/adapters/node-runtime-case-suite.mjs": "a5fc7eaad7bdd59bd3b8038a80bdbffc91f7281c111a2b29760481bc0e37b447",
+    "scripts/adapters/node-project-build.mjs": "45019753057954697f10bee01790c8cdcb1d54c5d4cd9f20d92b7ed5158dfdda",
+    "scripts/backends/bevy-adapter.mjs": "d9fde69a6675a1107a201e99d9dc09cceeab51de0ea94c67daed6eeb0b6aa539",
+    "scripts/backends/bevy-project-assembly.mjs": "d19bea7afd9c7d256f387be3cd27af7816a18b95d54a06bfc98469ca756c36f5",
+    "scripts/lib/runtime-case-suites.mjs": "d38fc9bfef4a3684b101d13bb25c0faf6c4d7d6ac6652cc86ee3baf0ef8c462e",
+    "scripts/lib/runtime-case-reports.mjs": "0962c184aec1fa44bd7170f70d0f847725906576a6f8e133b47cfccb6ad6f1c7",
+    "engine/runtime-case-suite.mjs": "4aaf456595f664989acdd81ef26ea3cd6a51da202f4746e7aaa2c06dfba4ae5b",
+    "engine/runtime-case-suite-contract.mjs": "8e3e1dcd68ff0d737c27815d6c07d16e9007e7f9e5eef5533d97f66d97e0b2b1",
+    "engine/runtime-case-document.mjs": "847097f91a549f57fd9acc217b5cfa78139f086b5c41b187805d4e9ab8e4da11",
+    "engine/runtime-case-report.mjs": "56bd922778f39610d0d3ff5bb09645c9d1f0b7497f6b2e39d4746e6faaec1e92",
+    "web/modules/app-project-build.js": "40634f80fa5b26794b4925ec3503d92adaba3a6265d358af095f9ad0722c4b32",
+    "web/modules/app-runtime-case-suites.js": "9290a982a2fe1ff4fe5917f5c35f8f37c148d259fb4c08fc9025f3e16b6e1e42",
+    "web/modules/app-runtime-case-report.js": "3c481e99bdc698312fcc70172fa0c6f90b9fd3860c584aeea3c7d38816526e2d"
+  },
+  "limitations": [
+    "Real headless Chrome web editor, isolated fixture workspace and cache. Tauri package and physical input are not tested."
+  ]
+}

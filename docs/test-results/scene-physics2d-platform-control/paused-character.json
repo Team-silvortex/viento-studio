@@ -1,0 +1,3801 @@
+{
+  "format": "viento-paused-platform-character-proof",
+  "schemaVersion": 1,
+  "startedAt": "2026-11-04T09:18:00.195Z",
+  "sourceHashes": {
+    "scripts/backends/godot4-adapter.mjs": "1c310bd4479c9de737ec2314ed797acda7b261508c3f47d4f81dcaebe5669563",
+    "scripts/backends/godot4-physics-platform-control.mjs": "878d2a7f9e99128ff7b2b6ed9d398dc90bc43a020ef2782213f8c7e04d1a7cfb",
+    "scripts/backends/godot4-physics-platform-control-inventory.mjs": "af086b9467fc05946735a0e1367b8e5169e1e661d5d4bca7bba51ee248534169",
+    "scripts/backends/godot4-physics-platform-vertical.mjs": "cf29f15316cbed94e171cd9a5f7159660e7ff53e4eb7f72ad03c0319f9032f85",
+    "scripts/backends/godot4-physics-platform-vertical-inventory.mjs": "6dcdde53039032e85246a5aca2004aa6acacbf91795075f81d92989f01e5292e",
+    "scripts/backends/godot4-physics-platform-events.mjs": "769e9f3980bcc6aaf191c7cd8b722e3592cb0ff853bc3ee33fa6524f3e7d7f66",
+    "scripts/backends/godot4-physics-input-replay.mjs": "dd790ead2a34544340ecbd68d661e5951afcc443210bb1fbcda13efccb03f08d",
+    "engine/godot-platform-control-script.mjs": "85c2ebfa732f9a7e13655771658b1392400c6ef4c16a7406f690a389200f7879",
+    "engine/backend-capabilities.mjs": "6f068344a42cb6a9d89cc9db5ec0d829e7a4d5819fce91a0b8bf0c3605e67f25",
+    "scripts/tests/scene-physics2d-platform-control-backends.test.mjs": "b005da9a6d9db5d9ab860c102566714ea62d810b9799e85c77396d17671fd74c",
+    "scripts/tests/helpers/scene-physics2d-platform-control-author-fixture.mjs": "868c4f680077796a8e58f1af079862f31005c0885bda3b76133fddd829e5f0c0",
+    "scripts/backends/godot4/physics-platform-control-helper.gd": "35a21e393e25ed4236b503a477e50a69c8324b838c904f9cdcc7943af1621e69",
+    "scripts/backends/godot4/physics-platform-control-port.gd": "b439bc20c1c51d2ff59ed4ca31f99d218943b1b4143f6cc2457b3a7c35701a2e",
+    "scripts/backends/godot4/physics-platform-control-scene.gd": "152e7c70f0c58c7cb6f28be64adb97ddebbb7ae3353005cce73c8add9dd75cd1",
+    "scripts/backends/godot4/physics-platform-vertical-motion-helper.gd": "3103880919dc127d999f4768c903e656c098adc9e374dccf380794c8224c1fa2",
+    "scripts/backends/godot4/physics-platform-vertical-events-helper.gd": "11beefbd03f811437777474837fa54027ad7705c7bec2308a6fdbf9ed30d5e8c",
+    "scripts/backends/godot4/physics-platform-vertical-drop-helper.gd": "1fa4a4772a5fa0dd01d6c0c249489a97badbaccc3258642a70cdcb1324d1ab03",
+    "scripts/backends/godot4/physics-platform-vertical-scene.gd": "ef35c36bb0fd3dfecc85b1a687a650089bd184699084d012da52c8dabf88db7b",
+    "scripts/backends/godot4/physics-platform-motion-helper.gd": "f672ccd3dd880093dd50105fd093c32f8ef194cb01e94f8c43af5c74bb8348fc",
+    "scripts/backends/godot4/physics-platform-events-helper.gd": "ab4078c4605ec35bdd31de61a47fecee4f6998bf732b060337a40c4a0777c9b9",
+    "scripts/backends/godot4/physics-platform-events-port.gd": "7184c0d016e7ac425ed9baf0b5f00b3ede220341a07fcd864e490b54d4cc7f00",
+    "scripts/tests/platform-control-paused-character-smoke.mjs": "dea205109ce27d7829e438fa3a31c5dd6220288333a421c281eb6b9df8f744f1"
+  },
+  "cases": [
+    {
+      "interaction": "jump",
+      "passed": true,
+      "tool": {
+        "executable": "<toolchains>/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+        "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+        "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.40.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d",
+          "physics.observe2d",
+          "physics.character-motion2d",
+          "physics.character-events2d",
+          "physics.one-way-platform2d",
+          "physics.character-contacts2d",
+          "physics.character-drop-through2d",
+          "physics.platform-motion2d",
+          "physics.platform-events2d",
+          "runtime.execution-clock",
+          "runtime.execution-frames",
+          "runtime.audio-requests",
+          "physics.character-intent2d",
+          "physics.platform-vertical2d",
+          "physics.platform-control2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "b91a85a3d93a57188dc215bd14d0f110e344491b5148c8974af4f040865f54ad"
+      },
+      "probes": [
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144
+          ],
+          "running": true,
+          "step": 0
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 1
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 2
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 3
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 4
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 5
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 6
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 7
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 8
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 9
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 10
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            138.258590698242
+          ],
+          "running": false,
+          "step": 11
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            132.425262451172
+          ],
+          "running": false,
+          "step": 12
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            127.425262451172
+          ],
+          "running": false,
+          "step": 13
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            123.258598327637
+          ],
+          "running": false,
+          "step": 14
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            119.925262451172
+          ],
+          "running": false,
+          "step": 15
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            117.425262451172
+          ],
+          "running": false,
+          "step": 16
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            115.758598327637
+          ],
+          "running": false,
+          "step": 17
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            114.925262451172
+          ],
+          "running": false,
+          "step": 18
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            114.925262451172
+          ],
+          "running": false,
+          "step": 19
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            115.758598327637
+          ],
+          "running": false,
+          "step": 20
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            117.425262451172
+          ],
+          "running": false,
+          "step": 21
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            119.925262451172
+          ],
+          "running": false,
+          "step": 22
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            123.258598327637
+          ],
+          "running": false,
+          "step": 23
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            127.425262451172
+          ],
+          "running": false,
+          "step": 24
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            132.425262451172
+          ],
+          "running": false,
+          "step": 25
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            138.258590698242
+          ],
+          "running": false,
+          "step": 26
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.925262451172
+          ],
+          "running": false,
+          "step": 27
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.999221801758
+          ],
+          "running": false,
+          "step": 28
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.999221801758
+          ],
+          "running": false,
+          "step": 29
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.999221801758
+          ],
+          "running": false,
+          "step": 30
+        }
+      ],
+      "movementEvents": [
+        {
+          "bindingId": "73737373-7373-4373-8373-000000000002",
+          "event": "event-publish",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "name": "physics.landed",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "73737373-7373-4373-8373-000000000002",
+          "event": "event-publish",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "name": "physics.jumped",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 3,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        },
+        {
+          "bindingId": "73737373-7373-4373-8373-000000000002",
+          "event": "event-publish",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "name": "physics.landed",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 5,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        }
+      ],
+      "physicsSamples": [
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0.9990234375
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "stepIndex": 1,
+          "timeSeconds": 0.016666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0.9990234375
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 3,
+          "stepIndex": 2,
+          "timeSeconds": 0.03333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 5,
+          "stepIndex": 3,
+          "timeSeconds": 0.05,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 7,
+          "stepIndex": 4,
+          "timeSeconds": 0.06666666666666667,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 9,
+          "stepIndex": 5,
+          "timeSeconds": 0.08333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 11,
+          "stepIndex": 6,
+          "timeSeconds": 0.09999999999999999,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 13,
+          "stepIndex": 7,
+          "timeSeconds": 0.11666666666666665,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 15,
+          "stepIndex": 8,
+          "timeSeconds": 0.13333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 17,
+          "stepIndex": 9,
+          "timeSeconds": 0.15,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 19,
+          "stepIndex": 10,
+          "timeSeconds": 0.16666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            138.2585906982422
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            -6.6666669845581055
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 21,
+          "stepIndex": 11,
+          "timeSeconds": 0.18333333333333332,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            -6.7404327392578125
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            132.42526245117188
+          ],
+          "positionBefore": [
+            100,
+            138.2585906982422
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            -5.833333492279053
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 23,
+          "stepIndex": 12,
+          "timeSeconds": 0.19999999999999998,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            -5.8333282470703125
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            127.42526245117188
+          ],
+          "positionBefore": [
+            100,
+            132.42526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            -5.000000476837158
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 25,
+          "stepIndex": 13,
+          "timeSeconds": 0.21666666666666665,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            -5
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            123.25859832763672
+          ],
+          "positionBefore": [
+            100,
+            127.42526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            -4.1666669845581055
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 27,
+          "stepIndex": 14,
+          "timeSeconds": 0.2333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            -4.166664123535156
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            119.92526245117188
+          ],
+          "positionBefore": [
+            100,
+            123.25859832763672
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            -3.3333334922790527
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 29,
+          "stepIndex": 15,
+          "timeSeconds": 0.24999999999999997,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            -3.3333358764648438
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            117.42526245117188
+          ],
+          "positionBefore": [
+            100,
+            119.92526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            -2.500000238418579
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 31,
+          "stepIndex": 16,
+          "timeSeconds": 0.26666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            -2.5
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            115.75859832763672
+          ],
+          "positionBefore": [
+            100,
+            117.42526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            -1.6666667461395264
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 33,
+          "stepIndex": 17,
+          "timeSeconds": 0.2833333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            -1.6666641235351562
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            114.92526245117188
+          ],
+          "positionBefore": [
+            100,
+            115.75859832763672
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            -0.8333333730697632
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 35,
+          "stepIndex": 18,
+          "timeSeconds": 0.3,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            -0.8333358764648438
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            114.92526245117188
+          ],
+          "positionBefore": [
+            100,
+            114.92526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 37,
+          "stepIndex": 19,
+          "timeSeconds": 0.31666666666666665,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            115.75859832763672
+          ],
+          "positionBefore": [
+            100,
+            114.92526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0.8333333730697632
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 39,
+          "stepIndex": 20,
+          "timeSeconds": 0.3333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0.8333358764648438
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            117.42526245117188
+          ],
+          "positionBefore": [
+            100,
+            115.75859832763672
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            1.6666667461395264
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 41,
+          "stepIndex": 21,
+          "timeSeconds": 0.35,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            1.6666641235351562
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            119.92526245117188
+          ],
+          "positionBefore": [
+            100,
+            117.42526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            2.500000238418579
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 43,
+          "stepIndex": 22,
+          "timeSeconds": 0.36666666666666664,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            2.5
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            123.25859832763672
+          ],
+          "positionBefore": [
+            100,
+            119.92526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            3.3333334922790527
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 45,
+          "stepIndex": 23,
+          "timeSeconds": 0.3833333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            3.3333358764648438
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            127.42526245117188
+          ],
+          "positionBefore": [
+            100,
+            123.25859832763672
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            4.1666669845581055
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 47,
+          "stepIndex": 24,
+          "timeSeconds": 0.39999999999999997,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            4.166664123535156
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            132.42526245117188
+          ],
+          "positionBefore": [
+            100,
+            127.42526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            5.000000476837158
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 49,
+          "stepIndex": 25,
+          "timeSeconds": 0.41666666666666663,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            5
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            138.2585906982422
+          ],
+          "positionBefore": [
+            100,
+            132.42526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            5.833333492279053
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 51,
+          "stepIndex": 26,
+          "timeSeconds": 0.4333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            5.8333282470703125
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.92526245117188
+          ],
+          "positionBefore": [
+            100,
+            138.2585906982422
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            6.6666669845581055
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 53,
+          "stepIndex": 27,
+          "timeSeconds": 0.44999999999999996,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            6.6666717529296875
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9992218017578
+          ],
+          "positionBefore": [
+            100,
+            144.92526245117188
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0.0739593505859375
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 55,
+          "stepIndex": 28,
+          "timeSeconds": 0.4666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0.0739593505859375
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9992218017578
+          ],
+          "positionBefore": [
+            100,
+            144.9992218017578
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 57,
+          "stepIndex": 29,
+          "timeSeconds": 0.4833333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9992218017578
+          ],
+          "positionBefore": [
+            100,
+            144.9992218017578
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 59,
+          "stepIndex": 30,
+          "timeSeconds": 0.49999999999999994,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        }
+      ],
+      "authorFiles": 51,
+      "authorSha256": "864ab83ab62a0d3df943db0450610702f050b61d7791a7b077f837554d28e93b",
+      "authorUnchanged": true,
+      "generatedFilesUnchanged": true
+    },
+    {
+      "interaction": "drop",
+      "passed": true,
+      "tool": {
+        "executable": "<toolchains>/godot/4.7.2-viento-audiofix1/linux-x86_64/Godot_v4.7.2-viento-audiofix1_linux.x86_64",
+        "version": "4.7.2.stable.viento_audiofix1_ed1daf0bf",
+        "sha256": "d0214fafa4af018589761b772f38be02b421cd021ed69c45c1d7a4bcd2acbb04",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "backend": {
+        "id": "org.viento.godot4",
+        "version": "0.40.0",
+        "protocolVersion": 4,
+        "capabilities": [
+          "audio.nonspatial",
+          "audio.timeline",
+          "behavior.bindings",
+          "behavior.gdscript",
+          "image",
+          "input.arrows",
+          "project.scenes",
+          "scene2d",
+          "state.movement",
+          "project.scene-switching",
+          "project.shared-state",
+          "project.events",
+          "project.audio-control",
+          "physics.bodies2d",
+          "physics.character2d",
+          "physics.sensors2d",
+          "physics.character-slide2d",
+          "physics.observe2d",
+          "physics.character-motion2d",
+          "physics.character-events2d",
+          "physics.one-way-platform2d",
+          "physics.character-contacts2d",
+          "physics.character-drop-through2d",
+          "physics.platform-motion2d",
+          "physics.platform-events2d",
+          "runtime.execution-clock",
+          "runtime.execution-frames",
+          "runtime.audio-requests",
+          "physics.character-intent2d",
+          "physics.platform-vertical2d",
+          "physics.platform-control2d"
+        ],
+        "artifactKind": "godot-project",
+        "platforms": [
+          "linux"
+        ],
+        "execution": {
+          "headlessLogic": true,
+          "windowPreview": true,
+          "embeddedViewport": false,
+          "gpuCompute": false
+        },
+        "sha256": "b91a85a3d93a57188dc215bd14d0f110e344491b5148c8974af4f040865f54ad"
+      },
+      "probes": [
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144
+          ],
+          "running": true,
+          "step": 0
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 1
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 2
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 3
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 4
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 5
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 6
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 7
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 8
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 9
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 10
+        },
+        {
+          "grounded": true,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            144.9990234375
+          ],
+          "running": false,
+          "step": 11
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": true,
+          "position": [
+            100,
+            145.83235168457
+          ],
+          "running": false,
+          "step": 12
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": true,
+          "position": [
+            100,
+            147.4990234375
+          ],
+          "running": false,
+          "step": 13
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": true,
+          "position": [
+            100,
+            149.9990234375
+          ],
+          "running": false,
+          "step": 14
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": true,
+          "position": [
+            100,
+            153.33235168457
+          ],
+          "running": false,
+          "step": 15
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": true,
+          "position": [
+            100,
+            157.4990234375
+          ],
+          "running": false,
+          "step": 16
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": true,
+          "position": [
+            100,
+            162.4990234375
+          ],
+          "running": false,
+          "step": 17
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": true,
+          "position": [
+            100,
+            168.33235168457
+          ],
+          "running": false,
+          "step": 18
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": true,
+          "position": [
+            100,
+            174.9990234375
+          ],
+          "running": false,
+          "step": 19
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            182.4990234375
+          ],
+          "running": false,
+          "step": 20
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            190.83235168457
+          ],
+          "running": false,
+          "step": 21
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            199.9990234375
+          ],
+          "running": false,
+          "step": 22
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            209.9990234375
+          ],
+          "running": false,
+          "step": 23
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            220.83235168457
+          ],
+          "running": false,
+          "step": 24
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            232.4990234375
+          ],
+          "running": false,
+          "step": 25
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            244.9990234375
+          ],
+          "running": false,
+          "step": 26
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            258.332366943359
+          ],
+          "running": false,
+          "step": 27
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            272.4990234375
+          ],
+          "running": false,
+          "step": 28
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            287.4990234375
+          ],
+          "running": false,
+          "step": 29
+        },
+        {
+          "grounded": false,
+          "phase": 0,
+          "platform": [
+            150,
+            160
+          ],
+          "platformException": false,
+          "position": [
+            100,
+            303.332366943359
+          ],
+          "running": false,
+          "step": 30
+        }
+      ],
+      "movementEvents": [
+        {
+          "bindingId": "73737373-7373-4373-8373-000000000002",
+          "event": "event-publish",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "name": "physics.landed",
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "protocol": 4,
+          "recipients": [],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "value": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "visitIndex": 1
+        }
+      ],
+      "physicsSamples": [
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0.9990234375
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 1,
+          "stepIndex": 1,
+          "timeSeconds": 0.016666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0.9990234375
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 3,
+          "stepIndex": 2,
+          "timeSeconds": 0.03333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 5,
+          "stepIndex": 3,
+          "timeSeconds": 0.05,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 7,
+          "stepIndex": 4,
+          "timeSeconds": 0.06666666666666667,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 9,
+          "stepIndex": 5,
+          "timeSeconds": 0.08333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 11,
+          "stepIndex": 6,
+          "timeSeconds": 0.09999999999999999,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 13,
+          "stepIndex": 7,
+          "timeSeconds": 0.11666666666666665,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 15,
+          "stepIndex": 8,
+          "timeSeconds": 0.13333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 17,
+          "stepIndex": 9,
+          "timeSeconds": 0.15,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 19,
+          "stepIndex": 10,
+          "timeSeconds": 0.16666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            144.9990234375
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 21,
+          "stepIndex": 11,
+          "timeSeconds": 0.18333333333333332,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            145.8323516845703
+          ],
+          "positionBefore": [
+            100,
+            144.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            0.8333333730697632
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 23,
+          "stepIndex": 12,
+          "timeSeconds": 0.19999999999999998,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            0.8333282470703125
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            147.4990234375
+          ],
+          "positionBefore": [
+            100,
+            145.8323516845703
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            1.6666667461395264
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 25,
+          "stepIndex": 13,
+          "timeSeconds": 0.21666666666666665,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            1.6666717529296875
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            149.9990234375
+          ],
+          "positionBefore": [
+            100,
+            147.4990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            2.500000238418579
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 27,
+          "stepIndex": 14,
+          "timeSeconds": 0.2333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            2.5
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            153.3323516845703
+          ],
+          "positionBefore": [
+            100,
+            149.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            3.3333334922790527
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 29,
+          "stepIndex": 15,
+          "timeSeconds": 0.24999999999999997,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            3.3333282470703125
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            157.4990234375
+          ],
+          "positionBefore": [
+            100,
+            153.3323516845703
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            4.1666669845581055
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 31,
+          "stepIndex": 16,
+          "timeSeconds": 0.26666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            4.1666717529296875
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            162.4990234375
+          ],
+          "positionBefore": [
+            100,
+            157.4990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            5.000000476837158
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 33,
+          "stepIndex": 17,
+          "timeSeconds": 0.2833333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            5
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            168.3323516845703
+          ],
+          "positionBefore": [
+            100,
+            162.4990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            5.833333492279053
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 35,
+          "stepIndex": 18,
+          "timeSeconds": 0.3,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            5.8333282470703125
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            174.9990234375
+          ],
+          "positionBefore": [
+            100,
+            168.3323516845703
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            6.6666669845581055
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 37,
+          "stepIndex": 19,
+          "timeSeconds": 0.31666666666666665,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            6.6666717529296875
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            182.4990234375
+          ],
+          "positionBefore": [
+            100,
+            174.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            7.500000476837158
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 39,
+          "stepIndex": 20,
+          "timeSeconds": 0.3333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            7.5
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            190.8323516845703
+          ],
+          "positionBefore": [
+            100,
+            182.4990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            8.333333969116211
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 41,
+          "stepIndex": 21,
+          "timeSeconds": 0.35,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            8.333328247070312
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            199.9990234375
+          ],
+          "positionBefore": [
+            100,
+            190.8323516845703
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            9.166666984558105
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 43,
+          "stepIndex": 22,
+          "timeSeconds": 0.36666666666666664,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            9.166671752929688
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            209.9990234375
+          ],
+          "positionBefore": [
+            100,
+            199.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            10.000000953674316
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 45,
+          "stepIndex": 23,
+          "timeSeconds": 0.3833333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            10
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            220.8323516845703
+          ],
+          "positionBefore": [
+            100,
+            209.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            10.833333969116211
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 47,
+          "stepIndex": 24,
+          "timeSeconds": 0.39999999999999997,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            10.833328247070312
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            232.4990234375
+          ],
+          "positionBefore": [
+            100,
+            220.8323516845703
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            11.666666984558105
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 49,
+          "stepIndex": 25,
+          "timeSeconds": 0.41666666666666663,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            11.666671752929688
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            244.9990234375
+          ],
+          "positionBefore": [
+            100,
+            232.4990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            12.500000953674316
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 51,
+          "stepIndex": 26,
+          "timeSeconds": 0.4333333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            12.5
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            258.3323669433594
+          ],
+          "positionBefore": [
+            100,
+            244.9990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            13.333333969116211
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 53,
+          "stepIndex": 27,
+          "timeSeconds": 0.44999999999999996,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            13.333343505859375
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            272.4990234375
+          ],
+          "positionBefore": [
+            100,
+            258.3323669433594
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            14.166666984558105
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 55,
+          "stepIndex": 28,
+          "timeSeconds": 0.4666666666666666,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            14.166656494140625
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            287.4990234375
+          ],
+          "positionBefore": [
+            100,
+            272.4990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            15.000000953674316
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 57,
+          "stepIndex": 29,
+          "timeSeconds": 0.4833333333333333,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            15
+          ]
+        },
+        {
+          "bodyId": "70707070-7070-4070-8070-000000000010",
+          "contacts": [],
+          "deltaSeconds": 0.016666666666666666,
+          "event": "sample",
+          "instanceId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+          "positionAfter": [
+            100,
+            303.3323669433594
+          ],
+          "positionBefore": [
+            100,
+            287.4990234375
+          ],
+          "protocol": 1,
+          "requestedMotion": [
+            0,
+            15.833333969116211
+          ],
+          "sceneId": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+          "sequence": 59,
+          "stepIndex": 30,
+          "timeSeconds": 0.49999999999999994,
+          "visitIndex": 1,
+          "objectId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "response": "slide",
+          "source": {
+            "objectId": "70707070-7070-4070-8070-000000000001",
+            "sourcePath": "documents/physics/scene-0.json",
+            "sourceRevision": "sha256:e6c24a0a34646e65286900244a482404fec10fa008c211c2e1372df7eb21abcb",
+            "propertyPath": "/bodies/0",
+            "sourceRange": {
+              "start": 139,
+              "end": 653,
+              "encoding": "utf-16",
+              "propertyPath": "/bodies/0",
+              "exact": true
+            }
+          },
+          "displacement": [
+            0,
+            15.833343505859375
+          ]
+        }
+      ],
+      "authorFiles": 51,
+      "authorSha256": "29876e5f6061dd651d2eec93a2e70f3b34eed9330f66b2c593b506120be59c56",
+      "authorUnchanged": true,
+      "generatedFilesUnchanged": true
+    }
+  ],
+  "limitations": [
+    "Actual Linux Godot headless logic; no window, installed Tauri, Android or Bevy execution."
+  ],
+  "sourceSnapshotUnchanged": true,
+  "passed": 2,
+  "failed": 0,
+  "ok": true,
+  "finishedAt": "2026-11-04T09:18:09.253Z"
+}

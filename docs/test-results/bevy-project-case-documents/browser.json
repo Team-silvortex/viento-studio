@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "environment": {
+    "browser": "Chrome/156.0.8078.73",
+    "runtime": "viento-bevy-runtime 0.3.0 / Bevy 0.19.1",
+    "scope": "isolated workspace, HTTP editor and headless Bevy on Linux"
+  },
+  "steps": [
+    "Selected the two-scene project assembly, checked and built using the actual Bevy backend.",
+    "Saved a generated case as an author document linked to the entry scene.",
+    "Refreshed and explicitly reloaded the persisted case.",
+    "An external case edit is preserved on conflict, and the local UI draft remains intact.",
+    "After author scene edit, existing frozen project still runs and passes the original saved-case expectation.",
+    "Divergent author and frozen revisions are displayed; cancel prevents writing, then explicit confirmation saves against the author revision.",
+    "All author files outside the explicitly edited scene, case document and new registry record have identical hashes."
+  ],
+  "authorFiles": {
+    "before": 26,
+    "after": 28,
+    "unchanged": 25,
+    "changed": [
+      "entry scene",
+      "new case document",
+      "new document registration"
+    ]
+  },
+  "errors": [],
+  "sourceSha256": {
+    "web/modules/app-runtime-case-documents.js": "e2d0b9df3b21251f90c20612a9cb127735be78b23eee4b273de956c2ec040da4",
+    "web/modules/app-project-build.js": "760c514bcd7d02efdc5b6855f110e7c1650ed7de78d54fc8a85c9e97e8e9fc61",
+    "scripts/lib/project-build-service.mjs": "73f4370947c8259ce24a43afc50e666a8e8d84a0b1a2a3e225d41e410d6698eb",
+    "scripts/adapters/node-project-build.mjs": "5b45b5ab16f6be0f26ff4cb23fa21e14b6c41f1c9c67cedcf6f04eab78cfe239"
+  },
+  "testScriptSha256": "ac4254bf75579dc38e8487f2124c2376198be4ca77c478d0ad07b4bc1c7e9a18"
+}

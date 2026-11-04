@@ -29,7 +29,8 @@ export function setupRuntimeCaseReport({ container, request, getState, onChange 
   function member(documentId = selected) {
     const state = getState(), job = state.job;
     if (!state.available || !state.visible || job?.kind !== 'suite' || !uuid(job.id)
-      || job.sceneId !== state.sceneId || job.buildId !== state.buildId || job.backendId !== state.backendId
+      || job.sceneId !== (state.targetId || state.sceneId) || job.buildId !== state.buildId || job.backendId !== state.backendId
+      || (state.snapshotId && job.snapshotId !== state.snapshotId)
       || !job.suite || job.suite.sceneObjectId !== state.sceneId) return null;
     const entry = job.suite.entries?.find(item => item.documentId === documentId);
     return entry?.reportAvailable === true && ['passed', 'failed', 'incomplete'].includes(entry.state)
@@ -38,7 +39,7 @@ export function setupRuntimeCaseReport({ container, request, getState, onChange 
   function ownership(documentId = selected) {
     const state = getState(), entry = member(documentId); if (!entry) return null;
     const job = state.job;
-    return { session: state.session, jobId: job.id, context: {
+    return { session: state.session, targetId: state.targetId || state.sceneId, jobId: job.id, context: {
       sceneObjectId: state.sceneId, buildId: state.buildId, snapshotId: job.snapshotId, backendId: state.backendId,
       suiteDocumentId: job.suite.documentId, suiteSourceVersion: job.suite.sourceVersion,
       documentId, sourceVersion: entry.sourceVersion, sessionId: entry.sessionId,

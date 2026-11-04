@@ -254,3 +254,145 @@ test('the author-document transport uses the existing API token in headers only 
   token = ''; await context.requestProjectBuildDocument({ action: 'case-load', documentId });
   assert.equal(calls[1].options.headers.Authorization, undefined); assert.equal(calls[1].options.headers['Content-Type'], 'application/json');
 });
+
+test('project temporary editing preserves a loaded scene case and its saved revision', async () => {
+  const state = status(), projectId = '99999999-9999-4999-8999-999999999999';
+  state.backend.capabilities.push('project.control-replay', 'project.runtime-case');
+  state.scenes.push({ id: projectId, title: 'Project', sourcePath: 'content/projects/game.json', kind: 'project' });
+  const h = await harness(state); await h.click('Refresh'); h.select(); await h.click('Load');
+  const input = h.element('projectBuildCaseProgram'), original = input.value;
+  const project = clone(state); project.latestBuild = { id: 'project-build', backendId: state.backend.id, sceneId: projectId, targetKind: 'project',
+    snapshotId: `sha256:${'5'.repeat(64)}`, planSchemaVersion: 1, entrySceneId: otherSceneId, controlSceneId: otherSceneId,
+    controlSourcePath: 'content/scenes/other.json', controlPlanSchemaVersion: 2, controlActorCount: 1, controlReplayAvailable: true,
+    controlTargets: [{ instanceId, objectId, name: 'Actor' }] };
+  await h.refresh(project); h.scene(projectId); assert.equal(input.value, '');
+  const temporary = definition(); temporary.checks[0].position.value[0] = 50; h.input(JSON.stringify(temporary));
+  h.element('projectBuildCaseRun').click(); await flushDialogs();
+  assert.equal(h.jobs.at(-1).runtimeCaseSceneId, otherSceneId); assert.deepEqual(h.jobs.at(-1).runtimeCase, temporary);
+  h.scene(sceneId); await h.refresh(state); assert.equal(input.value, original);
+  await h.click('Save'); assert.equal(h.calls.at(-1).documentId, documentId);
+  assert.equal(h.calls.at(-1).expectedVersion, version); assert.equal(h.calls.at(-1).content, originalContent());
+});
+
+
+function projectDocumentState() {
+  const state = status(), projectId = '99999999-9999-4999-8999-999999999999';
+  state.backend.capabilities.push('project.control-replay', 'project.runtime-case');
+  state.scenes.push({ id: projectId, title: 'Project', sourcePath: 'content/projects/game.json', kind: 'project' });
+  state.latestBuild = { id: 'project-build', backendId: state.backend.id, sceneId: projectId, targetKind: 'project',
+    snapshotId: `sha256:${'5'.repeat(64)}`, planSchemaVersion: 1, entrySceneId: sceneId, controlSceneId: sceneId,
+    controlSourcePath: 'content/scenes/scene.json', controlPlanSchemaVersion: 2, controlActorCount: 1, controlReplayAvailable: true,
+    scenes: [{ sceneId, sourceRevision: sceneVersion }], controlTargets: [{ instanceId, objectId, name: 'Actor' }] };
+  return state;
+}
+
+test('project entry documents save and load through scene identity and explicitly compare author revisions', async () => {
+  const state = projectDocumentState(), h = await harness(state); h.scene(state.latestBuild.sceneId);
+  assert.equal(h.element('projectBuildCaseDocuments').hidden, false);
+  h.input(); await h.click('Refresh');
+  assert.match(h.element('projectBuildCaseDocumentRevision').textContent, /修订一致/);
+  h.respond(body => saved({ id: copyId, version: nextVersion, path: body.sourcePath, content: body.content }));
+  await h.click('Save');
+  assert.equal(h.calls.at(-1).sceneId, sceneId); assert.equal(h.calls.at(-1).sceneVersion, sceneVersion);
+  assert.equal(JSON.parse(h.calls.at(-1).content).sceneObjectId, sceneId);
+  h.element('projectBuildCaseRun').click(); await flushDialogs();
+  assert.equal(h.jobs.at(-1).runtimeCaseSceneId, sceneId); assert.equal(h.jobs.at(-1).expectedSnapshotId, state.latestBuild.snapshotId);
+  h.respond(catalog([saved()], { sceneVersion: nextVersion })); await h.click('Refresh'); h.select();
+  h.respond(saved({ sceneVersion: nextVersion })); await h.click('Load');
+  assert.match(h.element('projectBuildCaseDocumentRevision').textContent, /修订不同/);
+  const before = h.calls.length; h.runtime.window.confirm = () => false; await h.click('Save');
+  assert.equal(h.calls.length, before, 'declining an author/frozen mismatch never writes');
+  h.runtime.window.confirm = () => true;
+  h.respond(body => saved({ sceneVersion: nextVersion, version: `sha256:${'6'.repeat(64)}`, content: body.content }));
+  await h.click('Save'); assert.equal(h.calls.at(-1).sceneVersion, nextVersion);
+});
+
+test('same-entry project builds and projects isolate loaded revisions, draft text and late responses', async () => {
+  const state = projectDocumentState(), h = await harness(state); h.scene(state.latestBuild.sceneId);
+  await h.click('Refresh'); h.select(); await h.click('Load'); const firstText = h.element('projectBuildCaseProgram').value;
+  const pending = deferred(); h.respond(() => pending.promise); h.element('projectBuildCaseDocumentSave').click();
+  const submitted = h.calls.at(-1);
+  const second = clone(state); second.latestBuild.id = 'project-rebuilt'; second.latestBuild.snapshotId = `sha256:${'7'.repeat(64)}`;
+  await h.refresh(second);
+  assert.equal(h.element('projectBuildCaseProgram').value, '');
+  assert.doesNotMatch(h.element('projectBuildCaseDocumentStatus').textContent, /已载入/);
+  h.input(JSON.stringify(definition())); pending.resolve(saved({ version: nextVersion, content: submitted.content })); await flushDialogs();
+  assert.equal(h.element('projectBuildCaseDocumentSave').disabled, true, 'another build did not inherit a saved baseline');
+  await h.refresh(state); assert.equal(h.element('projectBuildCaseProgram').value, firstText);
+  assert.equal(h.element('projectBuildCaseDocumentSave').disabled, true, 'interrupted write requires explicit reconciliation');
+  h.respond(saved({ version: nextVersion, content: submitted.content })); await h.click('Load');
+  assert.equal(h.element('projectBuildCaseDocumentSave').disabled, false);
+  const third = clone(second), otherProject = '88888888-8888-4888-8888-888888888888';
+  third.scenes.push({ id: otherProject, kind: 'project', title: 'Other project', sourcePath: 'content/projects/other.json' });
+  third.latestBuild.sceneId = otherProject; await h.refresh(third); h.scene(otherProject);
+  assert.equal(h.element('projectBuildCaseProgram').value, '');
+  assert.doesNotMatch(h.element('projectBuildCaseDocumentStatus').textContent, /已载入/);
+});
+
+test('a late entry document load cannot overwrite a new build with the same entry', async () => {
+  const state = projectDocumentState(), h = await harness(state); h.scene(state.latestBuild.sceneId); await h.click('Refresh'); h.select();
+  const pending = deferred(); h.respond(() => pending.promise); h.element('projectBuildCaseDocumentLoad').click();
+  const newer = clone(state); newer.latestBuild.id = 'rebuilt'; newer.latestBuild.snapshotId = `sha256:${'8'.repeat(64)}`; await h.refresh(newer);
+  const input = h.input('{ new build draft'); pending.resolve(saved()); await flushDialogs();
+  assert.equal(input.value, '{ new build draft'); assert.doesNotMatch(h.element('projectBuildCaseDocumentStatus').textContent, /已载入/);
+});
+
+test('project case preserves draft on author conflict and remains runnable when author catalog goes offline', async () => {
+  const state = projectDocumentState(), h = await harness(state); h.scene(state.latestBuild.sceneId);
+  await h.click('Refresh'); h.select(); await h.click('Load'); const input = h.element('projectBuildCaseProgram'), text = input.value;
+  h.respond(async () => { throw Object.assign(new Error('author changed after reading'), { code: 'runtime_case_scene_conflict', status: 409 }); });
+  await h.click('Save'); assert.equal(input.value, text);
+  assert.match(h.element('projectBuildCaseDocumentError').textContent, /场景原文已变化/);
+  assert.equal(h.element('projectBuildCaseDocumentSave').disabled, false);
+  const offline = clone(state); offline.catalogDiagnostic = { code: 'build_catalog_unavailable' }; await h.refresh(offline);
+  for (const button of ['Load', 'Save', 'SaveAs', 'Refresh']) assert.equal(h.element(`projectBuildCaseDocument${button}`).disabled, true);
+  assert.equal(input.value, text); assert.equal(h.element('projectBuildCaseRun').disabled, false);
+  h.element('projectBuildCaseRun').click(); await flushDialogs();
+  assert.equal(h.jobs.at(-1).runtimeCaseSceneId, sceneId); assert.equal(h.jobs.at(-1).expectedSnapshotId, state.latestBuild.snapshotId);
+});
+
+test('project revision notices and shared scene binding are translated in English and Japanese', async () => {
+  const state = projectDocumentState(), h = await harness(state); h.scene(state.latestBuild.sceneId); await h.click('Refresh');
+  for (const [dictionary, match] of [[en, /matches/], [ja, /一致/]]) {
+    h.language(dictionary); assert.match(h.element('projectBuildCaseDocumentRevision').textContent, match);
+    assert.ok(!h.element('projectBuildCaseProjectHint').textContent.includes('用例绑定入口场景'));
+  }
+});
+
+test('in-flight save blocks reconciliation until settlement after a same-entry build round trip', async () => {
+  const state = projectDocumentState(), h = await harness(state); h.scene(state.latestBuild.sceneId);
+  await h.click('Refresh'); h.select(); await h.click('Load');
+  const pending = deferred(); h.respond(() => pending.promise); h.element('projectBuildCaseDocumentSave').click();
+  const submitted = h.calls.at(-1), second = clone(state); second.latestBuild.id = 'different-build'; second.latestBuild.snapshotId = `sha256:${'8'.repeat(64)}`;
+  await h.refresh(second); await h.refresh(state);
+  for (const button of ['Load', 'Refresh', 'Save', 'SaveAs', 'New']) assert.equal(h.element(`projectBuildCaseDocument${button}`).disabled, true, button);
+  const count = h.calls.length; await h.click('Load'); await h.click('Refresh'); await h.click('Save'); await h.click('SaveAs');
+  assert.equal(h.calls.length, count, 'a pending write cannot be reconciled from old bytes or duplicated');
+  pending.resolve(saved({ version: nextVersion, content: submitted.content })); await flushDialogs();
+  assert.equal(h.element('projectBuildCaseDocumentLoad').disabled, false);
+  assert.equal(h.element('projectBuildCaseDocumentSave').disabled, true, 'a settled but unconfirmed write still needs an explicit read');
+  h.respond(saved({ version: nextVersion, content: submitted.content })); await h.click('Load');
+  assert.equal(h.element('projectBuildCaseDocumentSave').disabled, false);
+});
+
+test('closing and reopening an in-flight save blocks reconciliation reads until it settles', async () => {
+  const h = await harness(); await h.click('Refresh'); h.select(); await h.click('Load');
+  const pending = deferred(); h.respond(() => pending.promise); h.element('projectBuildCaseDocumentSave').click(); const submitted = h.calls.at(-1);
+  await h.close(); await h.reopen();
+  for (const button of ['Load', 'Refresh', 'Save', 'SaveAs', 'New']) assert.equal(h.element(`projectBuildCaseDocument${button}`).disabled, true, button);
+  pending.resolve(saved({ version: nextVersion, content: submitted.content })); await flushDialogs();
+  assert.equal(h.element('projectBuildCaseDocumentLoad').disabled, false);
+  assert.equal(h.element('projectBuildCaseDocumentSave').disabled, true);
+  h.respond(saved({ version: nextVersion, content: submitted.content })); await h.click('Load');
+  assert.equal(h.element('projectBuildCaseDocumentSave').disabled, false);
+});
+
+test('project revision notice distinguishes loaded baseline from refreshed save-as revision', async () => {
+  const state = projectDocumentState(), h = await harness(state); h.scene(state.latestBuild.sceneId);
+  await h.click('Refresh'); h.select(); await h.click('Load');
+  h.respond(catalog([saved()], { sceneVersion: nextVersion })); await h.click('Refresh');
+  const notice = h.element('projectBuildCaseDocumentRevision').textContent;
+  assert.match(notice, /修订一致/); assert.match(notice, /另存为使用新刷新目录/);
+  h.runtime.window.confirm = () => false; const before = h.calls.length; await h.click('SaveAs');
+  assert.equal(h.calls.length, before, 'save-as uses the newer catalog version and requires mismatch confirmation');
+});

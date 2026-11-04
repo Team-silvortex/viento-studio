@@ -255,3 +255,98 @@ test('suite GUI imports only its browser-pure contract; the portable closure has
   }
   assert.ok(visited.size >= 1);
 });
+
+
+function projectSuiteState() {
+  const value = status(), projectId = '99999999-9999-4999-8999-999999999999';
+  value.backend.capabilities.push('project.control-replay', 'project.runtime-case', 'project.runtime-case-suite');
+  value.scenes.push({ id: projectId, kind: 'project', title: 'Project', sourcePath: 'documents/projects/game.json' });
+  value.latestBuild = { id: 'project-build', backendId: value.backend.id, sceneId: projectId, targetKind: 'project',
+    snapshotId: `sha256:${'5'.repeat(64)}`, planSchemaVersion: 1, entrySceneId: sceneId, controlSceneId: sceneId,
+    controlSourcePath: 'documents/scenes/scene.json', controlPlanSchemaVersion: 2, controlActorCount: 1,
+    controlReplayAvailable: true, scenes: [{ sceneId, sourceRevision: sceneVersion }],
+    controlTargets: [{ instanceId, objectId, name: 'Actor' }] };
+  return value;
+}
+
+test('project suite requires explicit capability, saves against the author scene and runs the frozen project build', async () => {
+  const value = projectSuiteState(), h = await harness(value); h.scene(value.latestBuild.sceneId);
+  assert.equal(h.element('projectBuildSuites').hidden, false);
+  await h.click('Refresh'); h.select(); await h.click('Load');
+  assert.match(h.element('projectBuildSuiteRevision').textContent, /修订一致/);
+  await h.click('Run'); assert.deepEqual(h.calls.at(-1), { action: 'suite-run', buildId: 'project-build', suiteDocumentId: suiteId, expectedVersion: version, expectedSnapshotId: value.latestBuild.snapshotId, runtimeCaseSceneId: sceneId });
+  h.respond(catalog({ sceneVersion: nextVersion })); await h.click('Refresh'); h.select();
+  h.respond(saved({ sceneVersion: nextVersion })); await h.click('Load');
+  assert.match(h.element('projectBuildSuiteRevision').textContent, /修订不同/);
+  for (const [language, expected] of [[en, 'differs'], [ja, '異なり']]) { h.language(language); assert.match(h.element('projectBuildSuiteRevision').textContent, new RegExp(expected)); }
+  h.language({}); h.runtime.window.confirm = () => false; const before = h.calls.length; await h.click('Save');
+  assert.equal(h.calls.length, before); h.runtime.window.confirm = () => true;
+  h.respond(body => saved({ version: nextVersion, sceneVersion: nextVersion, content: body.content })); await h.click('Save');
+  assert.equal(h.calls.at(-1).sceneId, sceneId); assert.equal(h.calls.at(-1).sceneVersion, nextVersion);
+  const unsupported = clone(value); unsupported.backend.capabilities = unsupported.backend.capabilities.filter(x => x !== 'project.runtime-case-suite');
+  await h.refresh(unsupported); assert.equal(h.element('projectBuildSuites').hidden, true);
+});
+
+test('project suite drafts and pending writes are isolated between snapshots even for the same entry', async () => {
+  const value = projectSuiteState(), h = await harness(value); h.scene(value.latestBuild.sceneId);
+  await h.click('Refresh'); h.select(); await h.click('Load'); h.member(caseIds[0], false);
+  const waiting = deferred(); h.respond(() => waiting.promise); h.element('projectBuildSuiteSave').click();
+  const submitted = h.calls.at(-1), rebuilt = clone(value); rebuilt.latestBuild.id = 'project-rebuilt'; rebuilt.latestBuild.snapshotId = `sha256:${'7'.repeat(64)}`;
+  await h.refresh(rebuilt); assert.deepEqual(h.selected(), []); assert.equal(h.element('projectBuildSuiteRun').disabled, true);
+  await h.refresh(value); assert.equal(h.element('projectBuildSuiteSave').disabled, true);
+  assert.match(h.element('projectBuildSuiteStatus').textContent, /尚未确认/);
+  waiting.resolve(saved({ version: nextVersion, content: submitted.content })); await flushDialogs();
+  assert.equal(h.element('projectBuildSuiteSave').disabled, true);
+  h.respond(saved({ version: nextVersion, content: submitted.content, definition: JSON.parse(submitted.content) })); await h.click('Load');
+  assert.equal(h.element('projectBuildSuiteSave').disabled, false);
+});
+
+test('project suite results require project target and the exact frozen entry and snapshot', async () => {
+  const value = projectSuiteState(), current = batch(['passed']); value.job = current.job;
+  value.job.sceneId = value.latestBuild.sceneId; value.job.buildId = value.latestBuild.id; value.job.snapshotId = value.latestBuild.snapshotId;
+  const h = await harness(value); h.scene(value.latestBuild.sceneId); assert.equal(h.element('projectBuildSuiteResult').hidden, false);
+  for (const mutation of [j => { j.sceneId = sceneId; }, j => { j.suite.sceneObjectId = otherSceneId; }, j => { j.snapshotId = nextVersion; }]) {
+    const stale = clone(value); mutation(stale.job); await h.refresh(stale);
+    assert.ok(h.element('projectBuildSuiteResult').hidden || /不可读取/.test(h.element('projectBuildSuiteSummary').textContent));
+  }
+});
+
+
+test('late project suite load cannot overwrite a new build or another project with the same entry', async () => {
+  const value = projectSuiteState(), h = await harness(value); h.scene(value.latestBuild.sceneId);
+  await h.click('Refresh'); h.select(); const waiting = deferred(); h.respond(() => waiting.promise); h.element('projectBuildSuiteLoad').click();
+  const other = clone(value), otherProject = '88888888-8888-4888-8888-888888888888';
+  other.scenes.push({ id: otherProject, kind: 'project', title: 'Other project', sourcePath: 'documents/projects/other.json' });
+  other.latestBuild.sceneId = otherProject; other.latestBuild.id = 'other-build'; other.latestBuild.snapshotId = `sha256:${'8'.repeat(64)}`;
+  await h.refresh(other); h.scene(otherProject); waiting.resolve(saved()); await flushDialogs();
+  assert.deepEqual(h.selected(), []); assert.equal(h.element('projectBuildSuiteRun').disabled, true);
+  await h.refresh(value); h.scene(value.latestBuild.sceneId); assert.equal(h.element('projectBuildSuiteRun').disabled, true);
+});
+
+test('project suite save stays locked across close and reopen until the pending request settles and is explicitly reconciled', async () => {
+  const value = projectSuiteState(), h = await harness(value); h.scene(value.latestBuild.sceneId);
+  await h.click('Refresh'); h.select(); await h.click('Load'); const waiting = deferred();
+  h.respond(() => waiting.promise); h.element('projectBuildSuiteSave').click();
+  const submitted = h.calls.at(-1); await h.close(); await h.reopen();
+  for (const action of ['Refresh', 'Load', 'Save', 'SaveAs', 'New', 'Run']) assert.equal(h.element(`projectBuildSuite${action}`).disabled, true, action);
+  const before = h.calls.length; await h.click('Load'); await h.click('Save'); assert.equal(h.calls.length, before);
+  waiting.resolve(saved({ version: nextVersion, content: submitted.content })); await flushDialogs();
+  assert.equal(h.element('projectBuildSuiteRefresh').disabled, false); assert.equal(h.element('projectBuildSuiteSave').disabled, true);
+  h.respond(saved({ version: nextVersion, content: submitted.content })); await h.click('Load');
+  assert.equal(h.element('projectBuildSuiteSave').disabled, false);
+});
+
+test('project suite lost and ambiguous responses need explicit reconciliation, while an author conflict can be repaired', async () => {
+  const value = projectSuiteState(), h = await harness(value); h.scene(value.latestBuild.sceneId);
+  await h.click('Refresh'); h.select(); await h.click('Load');
+  h.respond(async () => { throw Object.assign(new Error('Conflict'), { status: 409, code: 'runtime_suite_scene_conflict' }); });
+  await h.click('Save'); assert.match(h.element('projectBuildSuiteError').textContent, /场景原文已变化/);
+  assert.equal(h.element('projectBuildSuiteSave').disabled, false);
+  for (const status of [undefined, 200, 500]) {
+    h.respond(async () => { throw Object.assign(new Error('Unconfirmed'), { status }); }); await h.click('Save');
+    for (const action of ['Save', 'SaveAs', 'New', 'Run']) assert.equal(h.element(`projectBuildSuite${action}`).disabled, true, `${status}: ${action}`);
+    assert.match(h.element('projectBuildSuiteStatus').textContent, /尚未确认/); const before = h.calls.length;
+    await h.refresh(); assert.equal(h.calls.length, before);
+    h.respond(saved()); await h.click('Load'); assert.equal(h.element('projectBuildSuiteSave').disabled, false);
+  }
+});

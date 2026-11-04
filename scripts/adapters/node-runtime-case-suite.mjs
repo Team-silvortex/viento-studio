@@ -8,7 +8,9 @@ import { validateRuntimeCaseDocument } from '../../engine/runtime-case-document.
 import { createRuntimeCaseReport } from '../../engine/runtime-case-report.mjs';
 import { writeRuntimeCaseReport } from '../lib/runtime-case-reports.mjs';
 import { buildHash, buildError } from './node-build-snapshot.mjs';
-import { runProjectBuild, projectBuildCacheRoot } from './node-project-build.mjs';
+import { runProjectBuild, projectBuildCacheRoot, readFrozenProjectBuild } from './node-project-build.mjs';
+import { entryScenePlan, isProjectControlEntryEligible } from '../../engine/build-target.mjs';
+import { validateGeneratedExecutionProject } from './node-execution-backends.mjs';
 import { resolveAssetRoot } from '../lib/workspace.mjs';
 
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -33,9 +35,14 @@ export async function executeRuntimeCaseSuite({ capture, plan, authorRoot, build
   signal, cacheRoot=projectBuildCacheRoot(), timeoutMs=120000, caseTimeoutMs=30000, onProgress=()=>{} }) {
   if(!Number.isSafeInteger(timeoutMs)||timeoutMs<1||timeoutMs>120000
     ||!Number.isSafeInteger(caseTimeoutMs)||caseTimeoutMs<1||caseTimeoutMs>30000) throw buildError('runtime_suite_limit','Invalid batch execution budget.');
-  const definition=validateRuntimeCaseSuitePlan(plan,capture.definition,capture.cases.map(({documentId,document})=>({documentId,document})));
-  plan={format:plan.format,kind:plan.kind,schemaVersion:plan.schemaVersion,scene:{objectId:plan.scene.objectId,sourcePath:plan.scene.sourcePath},
-    actors:plan.actors.map(actor=>({objectId:actor.objectId,instanceId:actor.instanceId}))};
+  // Detach the complete target before any asynchronous work. A project is
+  // executed as a project; only admission and reports use its frozen entry.
+  const targetPlan=clone(plan), entry=entryScenePlan(targetPlan);
+  if(targetPlan.kind==='project' && !isProjectControlEntryEligible(targetPlan))
+    throw buildError('runtime_case_unsupported','Project entry case suites require a data-only entry scene.');
+  const definition=validateRuntimeCaseSuitePlan(entry,capture.definition,capture.cases.map(({documentId,document})=>({documentId,document})));
+  plan={format:entry.format,kind:entry.kind,schemaVersion:entry.schemaVersion,scene:{objectId:entry.scene.objectId,sourcePath:entry.scene.sourcePath},
+    actors:entry.actors.map(actor=>({objectId:actor.objectId,instanceId:actor.instanceId}))};
   const cases=capture.cases.map(item=>({documentId:item.documentId,title:item.title,sourceVersion:item.sourceVersion,definition:validateRuntimeCaseDocument(item.document).case}));
   const suite={documentId:capture.documentId,sourceVersion:capture.sourceVersion,sceneObjectId:definition.sceneObjectId,
     entries:cases.map(item=>({documentId:item.documentId,title:item.title,sourceVersion:item.sourceVersion,state:'queued',executionStatus:null,
@@ -48,6 +55,18 @@ export async function executeRuntimeCaseSuite({ capture, plan, authorRoot, build
   const timer=setTimeout(()=>{expired=true;abort();},timeoutMs);timer.unref();
   const record={format:'viento-runtime-case-suite-run',schemaVersion:1,buildId,snapshotId,backendId,createdAt:new Date().toISOString(),status:'running',suite:summarize(),diagnostics:[]};
   try {
+    const frozen=await readFrozenProjectBuild(buildDirectory,{backendId,backendRegistry,signal:controller.signal});
+    if(frozen.build.buildId!==buildId || frozen.build.snapshotId!==snapshotId || canonicalJson(frozen.plan)!==canonicalJson(targetPlan))
+      throw buildError('runtime_build_invalid','The suite target does not match the frozen build.');
+    if(targetPlan.kind==='project') {
+      const required=['project.runtime-case-suite','project.runtime-case','project.control-replay','runtime.control-replay'];
+      if(targetPlan.schemaVersion!==1 || !required.every(item=>frozen.adapter.descriptor.capabilities.includes(item)))
+        throw buildError('runtime_case_unsupported','This project backend does not support entry case suites.');
+      const generated=validateGeneratedExecutionProject(frozen.adapter,targetPlan,await frozen.adapter.generate(targetPlan));
+      if(!Array.isArray(generated.backend.capabilities)||!required.every(item=>generated.backend.capabilities.includes(item))
+        ||canonicalJson(generated.backend)!==canonicalJson(frozen.build.backend))
+        throw buildError('runtime_case_unsupported','The frozen generated project does not support entry case suites.');
+    }
     const target=await destination(path.join(cacheRoot,'suites',randomUUID()));
     if(within(await destination(authorRoot),target)||within(await destination(resolveAssetRoot(authorRoot)),target)) {
       throw buildError('build_output_in_source','Suite receipts must remain outside author files and assets.');

@@ -12,6 +12,7 @@ import { createExecutionBackendRegistry, DEFAULT_EXECUTION_BACKEND } from './ada
 import { checkExecutionBackendSupport } from '../engine/backend-capabilities.mjs';
 import { validateSceneControlProgram, SCENE_CONTROL_V1_FILE_MAX_BYTES, SCENE_CONTROL_V2_FILE_MAX_BYTES } from '../engine/scene-control-program.mjs';
 import { validateRuntimeCase, RUNTIME_CASE_FILE_MAX_BYTES } from '../engine/runtime-verification-case.mjs';
+import { entryScenePlan, isProjectControlEntryEligible } from '../engine/build-target.mjs';
 import { inspectRuntimeCaseDocument } from '../engine/runtime-case-document.mjs';
 
 export async function runProjectBuildCommand(argv, { signal } = {}) {
@@ -68,8 +69,9 @@ export async function runProjectBuildCommand(argv, { signal } = {}) {
     const backendRegistry=createExecutionBackendRegistry();
     const frozen=await readFrozenProjectBuild(values.build,{...(explicitBackend?{backendId:configuration.backendId}:{}),backendRegistry,signal});
     const selected=frozenConfiguration(frozen);
-    if (frozen.plan.kind === 'project') throw buildError('runtime_case_unsupported', 'Runtime case suites require a single scene build.');
-    const capture=await captureRuntimeCaseSuite(values.root,{documentRef:values['runtime-suite'],plan:frozen.plan,signal});
+    if (frozen.plan.kind === 'project' && !isProjectControlEntryEligible(frozen.plan))
+      throw buildError('runtime_case_unsupported', 'Project entry case suites require a data-only entry scene.');
+    const capture=await captureRuntimeCaseSuite(values.root,{documentRef:values['runtime-suite'],plan:entryScenePlan(frozen.plan),signal});
     return executeRuntimeCaseSuite({capture,plan:frozen.plan,authorRoot:values.root,buildDirectory:frozen.buildDirectory,
       buildId:frozen.build.buildId,snapshotId:frozen.build.snapshotId,tool:selected.tool,backendId:selected.backendId,
       backendRegistry,signal,caseTimeoutMs:timeoutMs});

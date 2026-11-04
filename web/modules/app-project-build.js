@@ -127,6 +127,8 @@ const errorLabels = {
   runtime_control_trace_invalid: '控制回放返回了无效样本，请查看原始日志。',
   runtime_control_trace_incomplete: '控制回放未返回完整步骤，请查看原始日志。',
   runtime_case_invalid: '运行验收格式有误，请检查控制程序和预期检查。',
+  runtime_case_snapshot_mismatch: '冻结项目快照已改变，请刷新并重新选择运行工程。',
+  runtime_case_scene_mismatch: '验收不属于冻结项目的入口场景，请刷新并核对。',
   runtime_case_limit: '运行验收超出限制，请减少检查或控制步骤。',
   runtime_case_unsupported: '运行验收仅支持无行为的第 2 版场景与有限无头控制回放。',
   runtime_case_target_missing: '验收引用的实例不属于当前构建，请核对实例标识。',
@@ -245,7 +247,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     <section id="projectBuildPhysicsCaseResult" class="build-case-result" hidden aria-labelledby="projectBuildPhysicsCaseTitle"><h3 id="projectBuildPhysicsCaseTitle" data-i18n="物理验收结果"></h3>
     <p id="projectBuildPhysicsCaseSummary" role="status" aria-live="polite"></p><ul id="projectBuildPhysicsCaseChecks"></ul></section>
     <details id="projectBuildCaseEditor" class="build-control-editor" hidden><summary data-i18n="编辑运行验收"></summary>
-    <p class="build-hint" data-i18n="按实例和步骤检查位置或状态；运行使用冻结构建，保存用例需明确操作。执行完成与验收通过分别显示。"></p>
+    <p id="projectBuildCaseSceneHint" class="build-hint" data-i18n="按实例和步骤检查位置或状态；运行使用冻结构建，保存用例需明确操作。执行完成与验收通过分别显示。"></p>
+    <p id="projectBuildCaseProjectHint" class="build-hint" data-i18n="用例绑定入口场景，可被使用该场景的其他项目复用。运行使用冻结场景；保存校验当前作者场景，两者可能不同。" hidden></p>
     <div id="projectBuildCaseDocuments"></div>
     <button id="projectBuildCaseGenerate" type="button" class="doc-btn doc-btn-ghost" data-i18n="从完整控制采样生成验收"></button>
     <p id="projectBuildCaseHint" class="build-hint" data-i18n="可以粘贴验收 JSON，或先完成一次控制回放，再明确生成最后一步的预期检查。生成会替换当前验收文本。"></p>
@@ -570,11 +573,28 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildControlError').textContent = controlError ? t(controlError) : '';
   }
   let caseError = '', caseDocuments = null, caseSuites = null, caseReport = null, backendProjects = null, delivery = null;
+  // Temporary project cases must never inherit or overwrite a saved scene case.
+  const caseDrafts = new Map();
+  let caseDraftOwner = null;
+  const runtimeCaseOwner = () => projectTarget() ? JSON.stringify(['project', acceptedBackend, selected, matchedBuild()?.id || '',
+    matchedBuild()?.snapshotId || '', matchedBuild()?.controlSceneId || '']) : 'scene';
+  function selectCaseDraft() {
+    const owner = runtimeCaseOwner();
+    if (owner === caseDraftOwner) return;
+    const input = el('projectBuildCaseProgram');
+    if (caseDraftOwner !== null) caseDrafts.set(caseDraftOwner, { text: input.value, start: input.selectionStart, end: input.selectionEnd });
+    const draft = caseDrafts.get(owner);
+    input.value = draft?.text || '';
+    if (draft) { input.selectionStart = draft.start; input.selectionEnd = draft.end; }
+    caseDraftOwner = owner; caseError = '';
+  }
   function runtimeCasePlan() {
-    if (projectTarget()) return null;
+    if (projectTarget() && (matchedBuild()?.planSchemaVersion !== 1
+      || !data?.backend?.capabilities?.includes('project.runtime-case'))) return null;
     const targets = instanceControlTargets(false);
     return targets.length ? { format: 'viento-build-plan', kind: 'scene2d', schemaVersion: 2,
-      scene: { objectId: selected, sourcePath: selectedScene()?.sourcePath },
+      scene: { objectId: projectTarget() ? matchedBuild()?.controlSceneId : selected,
+        sourcePath: projectTarget() ? matchedBuild()?.controlSourcePath : selectedScene()?.sourcePath },
       actors: targets.map(({ instanceId, objectId }) => ({ instanceId, objectId })) } : null;
   }
   function readRuntimeCase() {
@@ -605,19 +625,26 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     } catch { return null; }
   }
   function renderRuntimeCase() {
+    selectCaseDraft();
     const supported = Boolean(runtimeCasePlan()), permitted = mayStart('run', 'headless') && supported;
-    el('projectBuildCaseRun').hidden = projectTarget() || !hasControlCapability();
+    const project = projectTarget(), projectSupported = project && hasControlCapability()
+      && matchedBuild()?.planSchemaVersion === 1 && data?.backend?.capabilities?.includes('project.runtime-case');
+    el('projectBuildCaseRun').hidden = !hasControlCapability() || project && !projectSupported;
     el('projectBuildCaseRun').disabled = !permitted || Boolean(caseDocuments && !caseDocuments.runAllowed());
-    el('projectBuildCaseEditor').hidden = projectTarget() || !selectedScene();
+    el('projectBuildCaseEditor').hidden = !selectedScene() || project && !projectSupported;
+    el('projectBuildCaseSceneHint').hidden = project;
+    el('projectBuildCaseProjectHint').hidden = !project;
+    el('projectBuildCaseDocuments').hidden = project && !projectSupported;
     el('projectBuildCaseGenerate').disabled = !permitted || !sampledRuntimeCase();
     el('projectBuildCaseError').hidden = !caseError;
     el('projectBuildCaseError').textContent = caseError ? t(caseError) : '';
     const job = data?.job, verification = job?.verification, list = el('projectBuildCaseChecks');
     list.replaceChildren();
-    el('projectBuildCaseResult').hidden = job?.kind !== 'run' || !verification || job.buildId !== matchedBuild()?.id || job.backendId !== data?.backend?.id;
+    el('projectBuildCaseResult').hidden = job?.kind !== 'run' || !verification || job.buildId !== matchedBuild()?.id || job.snapshotId !== matchedBuild()?.snapshotId || job.backendId !== data?.backend?.id;
     if (el('projectBuildCaseResult').hidden) return;
     try {
       const definition = validateRuntimeCasePlan(runtimeCasePlan(), verification.definition);
+      if (canonicalJson(validateSceneControlProgram(job.control?.program)) !== canonicalJson(definition.program)) throw new Error('Verification program mismatch.');
       const evaluation = evaluateRuntimeCase(runtimeCasePlan(), definition, job.control?.samples || [],
         { complete: job.status === 'succeeded' && verification.evaluation?.complete === true });
       if (canonicalJson(evaluation) !== canonicalJson(verification.evaluation)) throw new Error('Invalid verification result.');
@@ -1379,6 +1406,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     el('projectBuildManageBehavior').disabled = requestBusy || running() || !ready() || !liveScene();
     el('projectBuildCreateBehavior').hidden = projectTarget() || activeTab === 'preview' || !behaviorCreationSupported;
     el('projectBuildCreateBehavior').disabled = requestBusy || running() || !ready() || !liveScene();
+    // Select the draft and its document owner before computing busy/run guards.
+    selectCaseDraft(); caseDocuments?.render();
     el('projectBuildPlan').disabled = !mayStart('plan');
     el('projectBuildGenerate').textContent = t(projectTarget() ? '构建项目' : '构建场景');
     el('projectBuildGenerate').disabled = !mayStart('build');
@@ -1387,10 +1416,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     renderPhysicsReplay();
     renderPhysicsCase();
     renderRuntimeCase();
-    caseDocuments?.render();
     caseSuites?.render();
-    el('projectBuildSuites').hidden = projectTarget();
-    el('projectBuildCaseReport').hidden = projectTarget();
+    el('projectBuildSuites').hidden = projectTarget() && !projectSuiteAvailable();
+    el('projectBuildCaseReport').hidden = projectTarget() && !projectSuiteAvailable();
     caseReport?.render();
     backendProjects?.render();
     delivery?.refresh();
@@ -1525,7 +1553,8 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       : action === 'run' ? { action, buildId: matchedBuild().id, mode, ...(controlProgram ? { controlProgram } : {}),
         ...(physicsControlProgram ? { physicsControlProgram, ...(physicsDocuments?.boundSceneId() ? { physicsReplaySceneId: physicsDocuments.boundSceneId() } : {}) } : {}),
         ...(physicsReplayCase ? { physicsReplayCase, ...(physicsCaseDocuments?.boundSceneId() ? { physicsReplaySceneId: physicsCaseDocuments.boundSceneId() } : {}) } : {}),
-        ...(runtimeCase ? { runtimeCase, ...(caseDocuments?.boundSceneId() ? { runtimeCaseSceneId: caseDocuments.boundSceneId() } : {}) } : {}) }
+        ...(runtimeCase ? { runtimeCase, ...(projectTarget() ? { runtimeCaseSceneId: matchedBuild().controlSceneId, expectedSnapshotId: matchedBuild().snapshotId }
+          : caseDocuments?.boundSceneId() ? { runtimeCaseSceneId: caseDocuments.boundSceneId() } : {}) } : {}) }
       : { action, ...(projectTarget() ? { targetId: selected } : { sceneId: selected }), ...(action === 'build' ? { expectedSnapshotId: plan.snapshotId } : {}) };
     if (action === 'cancel') cancelling = true;
     if (action === 'plan') { plan = null; planScene = ''; }
@@ -1567,7 +1596,10 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
   }
   caseDocuments = setupRuntimeCaseDocuments({
     container: el('projectBuildCaseDocuments'),
-    getState: () => ({ ...getContext(), sceneId: projectTarget() ? '' : selectedScene()?.id || '', available: available && !projectTarget(),
+    getState: () => ({ ...getContext(), sceneId: projectTarget() ? matchedBuild()?.controlSceneId || '' : selectedScene()?.id || '',
+      contextKey: runtimeCaseOwner(), project: projectTarget(),
+      frozenSceneVersion: projectTarget() ? matchedBuild()?.scenes?.find(item => item.sceneId === matchedBuild()?.controlSceneId)?.sourceRevision || '' : '',
+      available: available && (!projectTarget() || Boolean(runtimeCasePlan())),
       visible: dialog.open, session: dialogSession, active: requestBusy || running() || checkingTool() || caseSuites?.isBusy(), offline: catalogUnavailable() }),
     getText: () => el('projectBuildCaseProgram').value,
     setText: text => { el('projectBuildCaseProgram').value = text; caseError = ''; },
@@ -1601,9 +1633,11 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('管理物理验收文档'))).payload,
     onChange: render,
   });
+  const projectSuiteAvailable = () => Boolean(runtimeCasePlan() && (!projectTarget() || data?.backend?.capabilities?.includes('project.runtime-case-suite')));
   async function runSuite({ suiteDocumentId, expectedVersion }) {
-    if (!mayStart('run', 'headless') || !runtimeCasePlan() || catalogUnavailable()) { render(); return; }
-    const body = { action: 'suite-run', buildId: matchedBuild().id, suiteDocumentId, expectedVersion };
+    if (!mayStart('run', 'headless') || !projectSuiteAvailable() || catalogUnavailable()) { render(); return; }
+    const body = { action: 'suite-run', buildId: matchedBuild().id, suiteDocumentId, expectedVersion,
+      ...(projectTarget() ? { expectedSnapshotId: matchedBuild().snapshotId, runtimeCaseSceneId: matchedBuild().controlSceneId } : {}) };
     clearTimeout(timer); timer = null;
     const epoch = ++requestEpoch; requestBusy = true; errorMessage = ''; errorDetails = ''; render();
     try {
@@ -1617,8 +1651,9 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
     }
   }
   caseReport = setupRuntimeCaseReport({ container: el('projectBuildCaseReport'),
-    getState: () => ({ available: available && !projectTarget(), visible: dialog.open && !projectTarget(), session: dialogSession, sceneId: projectTarget() ? '' : selectedScene()?.id || '',
-      buildId: matchedBuild()?.id || '', backendId: data?.backend?.id || '', job: data?.job }),
+    getState: () => ({ available: available && (!projectTarget() || projectSuiteAvailable()), visible: dialog.open, session: dialogSession,
+      sceneId: projectTarget() ? matchedBuild()?.controlSceneId || '' : selectedScene()?.id || '', targetId: selected,
+      snapshotId: matchedBuild()?.snapshotId || '', buildId: matchedBuild()?.id || '', backendId: data?.backend?.id || '', job: data?.job }),
     request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('读取用例报告'))).payload,
   });
@@ -1651,9 +1686,12 @@ export function setupProjectBuild({ getContext = () => ({}), getSceneDraft = asy
       body: JSON.stringify(body) }, 15000, t('读取后端工程详情'))).payload,
   });
   caseSuites = setupRuntimeCaseSuites({ container: el('projectBuildSuites'),
-    getState: () => ({ ...getContext(), sceneId: projectTarget() ? '' : selectedScene()?.id || '', available: available && !projectTarget(), visible: dialog.open, session: dialogSession,
+    getState: () => ({ ...getContext(), sceneId: projectTarget() ? matchedBuild()?.controlSceneId || '' : selectedScene()?.id || '',
+      targetId: selected, contextKey: runtimeCaseOwner(), project: projectTarget(),
+      frozenSceneVersion: projectTarget() ? matchedBuild()?.scenes?.find(item => item.sceneId === matchedBuild()?.controlSceneId)?.sourceRevision || '' : '',
+      available: available && (!projectTarget() || projectSuiteAvailable()), visible: dialog.open, session: dialogSession,
       active: requestBusy || running() || checkingTool() || caseDocuments?.isBusy() || physicsDocuments?.isBusy() || physicsCaseDocuments?.isBusy(), offline: catalogUnavailable(),
-      buildId: matchedBuild()?.id || '', backendId: data?.backend?.id || '', canRun: mayStart('run', 'headless') && Boolean(runtimeCasePlan()), job: data?.job }),
+      snapshotId: matchedBuild()?.snapshotId || '', buildId: matchedBuild()?.id || '', backendId: data?.backend?.id || '', canRun: mayStart('run', 'headless') && projectSuiteAvailable(), job: data?.job }),
     request: typeof requestProjectBuildDocument === 'function' ? requestProjectBuildDocument
       : async body => (await fetchJsonApiRequest(PROJECT_BUILD_API_PATH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }, 45000, t('管理运行验收文档'))).payload,
     onRun: runSuite, onInspect: documentId => void caseReport.open(documentId), onChange: render,

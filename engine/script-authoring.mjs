@@ -1,4 +1,5 @@
 import { GODOT_CHARACTER_INTENT_SCRIPT } from './godot-character-intent-script.mjs';
+import { GODOT_PLATFORM_CONTROL_SCRIPT } from './godot-platform-control-script.mjs';
 import { GODOT_PLATFORM_ENDPOINT_EVENTS_SCRIPT } from './godot-platform-endpoint-events-script.mjs';
 import { GODOT_CHARACTER_DROP_THROUGH_SCRIPT } from './godot-character-drop-through-script.mjs';
 import { GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT } from './godot-character-contact-events-script.mjs';
@@ -60,6 +61,8 @@ const starters = freeze([
     description: '绑定到自由平面（stop／slide）或已启用重力与跳跃的角色实例，按每步实际移动碰撞集合发布开始和结束项目事件，载荷为对方实例编号。started_event／ended_event 可改名，留空禁用；other_instance_id 留空接受所有对方，填写时只接受该实例。没有本步碰撞即结束；退出场景只断开连接，不补发结束事件。', content: GODOT_CHARACTER_CONTACT_EVENTS_SCRIPT },
   { id: 'godot-character-drop-through', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 单向平台下穿',
     description: '绑定到已启用重力与跳跃的角色实例。按下 drop_action（默认 ui_down）的上升沿，请求在下一个物理步穿过当前支撑自身的静态单向平台；长按不重复，空中或实心地面上的请求不生效。就绪时不触发，退出时停止处理；落地与碰撞反馈沿用现有事件脚本。', content: GODOT_CHARACTER_DROP_THROUGH_SCRIPT },
+  { id: 'godot-platform-control', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 事件控制平台',
+    description: '绑定到已声明水平或垂直往返运动的平台实例。initial_running 默认开启，就绪时请求一次；resume_event／pause_event 默认 platform.resume／platform.pause，名称必须不同，留空分别禁用。instance_id 留空接受全部事件载荷，填写时只响应相同实例编号；可用触发区进入／离开事件连接压力板。请求在下一物理步生效，暂停保留位置与方向，恢复后继续；同一步竞争被拒绝时保留最新目标，并逐物理回调重试到受理；新事件覆盖旧目标。端口失效或退出时取消订阅并停止重试；不保证竞争公平性。', content: GODOT_PLATFORM_CONTROL_SCRIPT },
   { id: 'godot-platform-endpoint-events', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 平台端点事件',
     description: '绑定到已声明水平往返运动的平台实例，抵达起点或终点时发布项目事件，载荷为自身实例编号。origin_event／destination_event 可改名，留空分别禁用；初始位于起点不触发，同一项目步内多次抵达同一端点合并一次。退出时断开连接；发布沿用项目事件的运行预算。', content: GODOT_PLATFORM_ENDPOINT_EVENTS_SCRIPT },
   { id: 'godot-project-event-audio', languageId: 'gdscript', backendId: 'org.viento.godot4', label: 'Godot / 项目事件播放声音',

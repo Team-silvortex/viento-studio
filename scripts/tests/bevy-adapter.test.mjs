@@ -34,7 +34,7 @@ const linux = { skip: process.platform !== 'linux' ? 'Bevy adapter is enabled on
 
 test('Bevy descriptor advertises only real headless v1/v2 operations and freezes its host contract', () => {
   assert.equal(adapter.descriptor.id, 'org.viento.bevy'); assert.equal(adapter.descriptor.version, '0.3.0');
-  assert.deepEqual(adapter.descriptor.capabilities, ['scene2d', 'input.arrows', 'state.movement', 'runtime.control-replay', 'runtime.control-replay.instances', 'project.scenes', 'project.control-replay']);
+  assert.deepEqual(adapter.descriptor.capabilities, ['scene2d', 'input.arrows', 'state.movement', 'runtime.control-replay', 'runtime.control-replay.instances', 'project.scenes', 'project.control-replay', 'project.runtime-case', 'project.runtime-case-suite']);
   assert.deepEqual(adapter.descriptor.plans, [...[1, 2].map(version => ({ kind: 'scene2d', schemaVersion: version, runtimeProtocolVersion: version })), { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 1 }]);
   assert.deepEqual(adapter.descriptor.execution, { build: true, headlessLogic: true, windowPreview: false, windowCapture: false, offscreenRender: false, embeddedViewport: false, gpuCompute: false });
   assert.equal(adapter.acceptsLegacyBuildRecords, false); assert.deepEqual(adapter.buildPhases, ['scene-check']); assert.deepEqual(adapter.runtimePhases, []);
@@ -164,12 +164,16 @@ test('execution fingerprints cover the packaged implementation without depending
   const files = ['scripts/backends/bevy-adapter.mjs', 'scripts/backends/bevy-project.mjs', 'scripts/backends/bevy-project-assembly.mjs', 'scripts/backends/bevy-project-runtime.mjs',
     'engine/project-assembly-plan-contract.mjs', 'engine/project-runtime-events.mjs', 'engine/project-runtime-query.mjs',
     'engine/scene-runtime-events.mjs', 'engine/scene-runtime-query.mjs', 'scripts/adapters/node-project-build.mjs', 'scripts/lib/contained-path.mjs',
-    'engine/scene-control-program.mjs', 'engine/build-plan.mjs', 'engine/scene-model.mjs', 'engine/backend-capabilities.mjs', 'scripts/adapters/node-execution-backends.mjs'];
+    'engine/scene-control-program.mjs', 'engine/runtime-verification-case.mjs', 'engine/build-plan.mjs', 'engine/build-target.mjs', 'engine/scene-model.mjs', 'engine/backend-capabilities.mjs', 'scripts/adapters/node-execution-backends.mjs',
+    'scripts/adapters/node-runtime-case-suite.mjs', 'scripts/lib/runtime-case-suites.mjs', 'scripts/lib/runtime-case-reports.mjs',
+    'engine/runtime-case-suite.mjs', 'engine/runtime-case-suite-contract.mjs', 'engine/runtime-case-document.mjs', 'engine/runtime-case-report.mjs'];
   const identities = await Promise.all(files.map(async file => ({ path: file, sha256: hash(await fs.readFile(new URL(`../../${file}`, import.meta.url))) })));
   const fingerprint = await adapter.fingerprint();
   assert.deepEqual(fingerprint, { id: 'org.viento.bevy', contractVersion: 1, sha256: hash(JSON.stringify(identities)) });
   assert.equal(identities.filter(identity => identity.path === 'engine/scene-model.mjs').length, 1);
-  for (const dependency of ['engine/scene-model.mjs', 'engine/scene-control-program.mjs', 'engine/project-runtime-query.mjs',
+  for (const dependency of ['scripts/adapters/node-runtime-case-suite.mjs', 'scripts/lib/runtime-case-suites.mjs',
+    'scripts/lib/runtime-case-reports.mjs', 'engine/runtime-case-suite.mjs', 'engine/runtime-case-suite-contract.mjs',
+    'engine/runtime-case-document.mjs', 'engine/runtime-case-report.mjs', 'engine/build-target.mjs', 'engine/scene-model.mjs', 'engine/scene-control-program.mjs', 'engine/runtime-verification-case.mjs', 'engine/project-runtime-query.mjs',
     'engine/scene-runtime-query.mjs', 'scripts/adapters/node-project-build.mjs']) {
     assert.equal(identities.filter(identity => identity.path === dependency).length, 1, dependency);
     assert.notEqual(fingerprint.sha256, hash(JSON.stringify(identities.filter(identity => identity.path !== dependency))), dependency);

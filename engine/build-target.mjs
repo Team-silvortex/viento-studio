@@ -12,3 +12,11 @@ export function createBuildTargetPlan(observed, targetRef) {
 export const buildTargetIdentity = plan => plan?.kind === 'project' ? plan.assembly : plan?.scene;
 export const scenePlans = plan => plan?.kind === 'project' ? plan.scenes : plan ? [plan] : [];
 export const entryScenePlan = plan => plan?.kind === 'project' ? plan.scenes.find(scene => scene.scene.objectId === plan.entrySceneId) || null : plan;
+
+// Shared eligibility for finite project-entry control and verification. The
+// generated project still runs as a whole; these features admit data-only entry scenes.
+export function isProjectControlEntryEligible(plan) {
+  if (plan?.kind !== 'project' || plan.schemaVersion !== 1) return false;
+  const entry = entryScenePlan(plan);
+  return Boolean(entry && [1, 2].includes(entry.schemaVersion) && !entry.behaviors && !entry.animation && !entry.physics && !entry.audio);
+}

@@ -159,3 +159,98 @@ test('case errors and malformed evaluation cannot affect ordinary control replay
   await h.refresh(bad); assert.equal(h.element('projectBuildCaseChecks').children.length, 0);
   assert.equal(h.element('projectBuildCaseSummary').children.length, 0); assert.match(h.element('projectBuildCaseSummary').textContent, /不可读取/);
 });
+
+function projectState() {
+  const state = initial(), assemblyId = '99999999-9999-4999-8999-999999999999';
+  state.backend.capabilities.push('project.control-replay', 'project.runtime-case');
+  state.scenes = [{ id: assemblyId, kind: 'project', title: 'Project', sourcePath: 'documents/projects/game.json' }];
+  state.latestBuild = { id: 'build-one', backendId, sceneId: assemblyId, targetKind: 'project', snapshotId, entrySceneId: sceneId,
+    planSchemaVersion: 1, controlReplayAvailable: true, controlSceneId: sceneId, controlSourcePath: 'documents/scenes/demo.json',
+    controlPlanSchemaVersion: 2, controlActorCount: 2, controlTargets: instances.map(instanceId => ({ instanceId, objectId, name: 'Actor' })) };
+  return state;
+}
+
+test('project verification binds frozen entry and snapshot, exposes documents and hides suites', async () => {
+  const h = await harness(projectState());
+  assert.equal(h.element('projectBuildCaseEditor').hidden, false);
+  assert.equal(h.element('projectBuildCaseProjectHint').hidden, false);
+  assert.equal(h.element('projectBuildCaseSceneHint').hidden, true);
+  assert.equal(h.element('projectBuildCaseDocuments').hidden, false);
+  assert.equal(h.element('projectBuildSuites').hidden, true);
+  const expected = definition(); caseInput(h, JSON.stringify(expected));
+  h.element('projectBuildCaseRun').click(); await flushDialogs();
+  assert.deepEqual(h.calls.at(-1).body, { action: 'run', buildId: 'build-one', mode: 'headless',
+    runtimeCase: expected, runtimeCaseSceneId: sceneId, expectedSnapshotId: snapshotId });
+  for (const [dictionary, expectedHint] of [[en, 'entry scene'], [ja, '開始シーン']]) {
+    h.language(dictionary); assert.ok(h.element('projectBuildCaseProjectHint').textContent.includes(expectedHint));
+  }
+});
+
+test('project verification capability and frozen entry targets gate the controls', async () => {
+  const state = projectState(), h = await harness(state);
+  const foreign = definition(); foreign.checks[0].instanceId = otherSceneId;
+  caseInput(h, JSON.stringify(foreign)); const before = h.calls.length;
+  h.element('projectBuildCaseRun').click(); await flushDialogs();
+  assert.equal(h.calls.length, before); assert.equal(h.element('projectBuildCaseError').hidden, false);
+  const withoutCapability = projectState(); withoutCapability.backend.capabilities = withoutCapability.backend.capabilities.filter(c => c !== 'project.runtime-case');
+  await h.refresh(withoutCapability); assert.equal(h.element('projectBuildCaseEditor').hidden, true);
+  assert.equal(h.element('projectBuildCaseRun').hidden, true);
+});
+
+
+test('project verification hides stale results for a different snapshot', async () => {
+  const state = projectState(), verification = definition();
+  state.job = { id: 'case-job', kind: 'run', backendId, buildId: state.latestBuild.id, snapshotId, sceneId: state.latestBuild.sceneId,
+    targetKind: 'project', status: 'succeeded', diagnostics: [], events: [], logs: '', control: { program: program(), samples: samples() },
+    verification: { definition: verification, sha256: `sha256:${'a'.repeat(64)}`,
+      evaluation: evaluateRuntimeCase(frozenPlan(), verification, samples(), { complete: true }) } };
+  const h = await harness(state); assert.equal(h.element('projectBuildCaseResult').hidden, false);
+  assert.ok(h.element('projectBuildCaseSummary').textContent.includes('验收通过'));
+  await h.refresh({ ...state, job: { ...state.job, snapshotId: `sha256:${'d'.repeat(64)}` } });
+  assert.equal(h.element('projectBuildCaseResult').hidden, true);
+});
+
+
+test('project plan schema 2 is not claimed as temporary verification support', async () => {
+  const state = projectState(); state.latestBuild.planSchemaVersion = 2;
+  const h = await harness(state); assert.equal(h.element('projectBuildCaseEditor').hidden, true);
+  assert.equal(h.element('projectBuildCaseRun').hidden, true);
+});
+
+test('verification result cannot claim success for a different executed control program', async () => {
+  const state = projectState(), verification = definition(), altered = program();
+  altered.steps[0].inputs[0].right = false; altered.steps[0].inputs[0].left = true;
+  state.job = { id: 'case-job', kind: 'run', backendId, buildId: state.latestBuild.id, snapshotId, sceneId: state.latestBuild.sceneId,
+    targetKind: 'project', status: 'succeeded', diagnostics: [], events: [], logs: '', control: { program: altered, samples: samples() },
+    verification: { definition: verification, sha256: `sha256:${'a'.repeat(64)}`,
+      evaluation: evaluateRuntimeCase(frozenPlan(), verification, samples(), { complete: true }) } };
+  const h = await harness(state); assert.equal(h.element('projectBuildCaseChecks').children.length, 0);
+  assert.match(h.element('projectBuildCaseSummary').textContent, /不可读取/);
+});
+
+
+test('project drafts are isolated from a scene case even when instance IDs overlap', async () => {
+  const state = projectState(); state.scenes.push({ id: sceneId, title: 'Scene', sourcePath: 'documents/scenes/demo.json' });
+  const h = await harness(state), picker = h.element('projectBuildScene'), input = h.element('projectBuildCaseProgram');
+  assert.equal(picker.value, sceneId);
+  const sceneText = JSON.stringify(definition()); caseInput(h, sceneText);
+  picker.value = state.scenes[0].id; picker.dispatch('change');
+  assert.equal(input.value, '', 'project does not inherit scene case despite identical instance IDs');
+  const before = h.calls.length; h.element('projectBuildCaseRun').click(); await flushDialogs();
+  assert.equal(h.calls.length, before);
+  const projectText = JSON.stringify({ ...definition(), checks: [{ instanceId: instances[1], stepIndex: 0, state: 'moving' }] });
+  caseInput(h, projectText);
+  picker.value = sceneId; picker.dispatch('change'); assert.equal(input.value, sceneText);
+  picker.value = state.scenes[0].id; picker.dispatch('change'); assert.equal(input.value, projectText);
+});
+
+
+test('a rebuilt project with a different entry or snapshot gets a separate temporary draft', async () => {
+  const state = projectState(), h = await harness(state), input = caseInput(h, JSON.stringify(definition()));
+  const text = input.value, rebuilt = projectState();
+  rebuilt.latestBuild = { ...rebuilt.latestBuild, id: 'build-two', snapshotId: `sha256:${'e'.repeat(64)}`,
+    entrySceneId: otherSceneId, controlSceneId: otherSceneId, controlSourcePath: 'documents/scenes/other.json' };
+  await h.refresh(rebuilt); assert.equal(input.value, '');
+  const before = h.calls.length; h.element('projectBuildCaseRun').click(); await flushDialogs(); assert.equal(h.calls.length, before);
+  await h.refresh(state); assert.equal(input.value, text);
+});

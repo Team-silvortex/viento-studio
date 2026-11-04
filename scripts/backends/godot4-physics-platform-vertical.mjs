@@ -1,0 +1,56 @@
+// Only vertical declarations select this layer. Historical horizontal output
+// remains independently readable; proxy data is internal generation input.
+import fs from 'node:fs/promises';
+import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
+import { SCENE_PHYSICS2D_PLATFORM_VERTICAL_CAPABILITY as capability } from '../../engine/scene-physics2d.mjs';
+import { generateGodotPhysicsCharacterIntentProject, godotPhysicsCharacterIntentAssemblyScripts } from './godot4-physics-character-intent.mjs';
+import { buildError, buildHash } from '../adapters/node-build-snapshot.mjs';
+import { verticalNames, verticalDropName, verticalInventoryName, verticalSourceURL, verticalOriginalMain, verticalMain,
+  verticalSceneSource, validateGodotPlatformVerticalInventory } from './godot4-physics-platform-vertical-inventory.mjs';
+const invalid = () => { throw buildError('build_physics_platform_vertical_invalid', 'Invalid generated vertical platform projection.'); };
+const json = value => Buffer.from(JSON.stringify(value, null, 2) + '\n');
+export async function generateGodotPhysicsPlatformVerticalProject(input) {
+  if (input?.kind !== 'project') throw buildError('build_physics_requires_project', 'Scene physics currently requires a project assembly.');
+  const plan = validateProjectAssemblyPlan(input), legacy = structuredClone(plan);
+  const selected = plan.scenes.filter(scene => scene.physics?.document.bodies.some(body => body.platformMotion?.kind === 'vertical'));
+  for (const scene of legacy.scenes) {
+    scene.requiredCapabilities = scene.requiredCapabilities.filter(value => value !== capability);
+    if (scene.physics?.document.schemaVersion !== 6) continue;
+    scene.physics.document.schemaVersion = 5;
+    for (const body of scene.physics.document.bodies) if (body.platformMotion?.kind === 'vertical') {
+      const motion = body.platformMotion;
+      body.platformMotion = { kind: 'horizontal', offsetX: motion.offsetY, speed: motion.speed };
+    }
+  }
+  legacy.requiredCapabilities = legacy.requiredCapabilities.filter(value => value !== capability);
+  const generated = await generateGodotPhysicsCharacterIntentProject(legacy);
+  if (!selected.length) return generated;
+  const wrapper = await fs.readFile(verticalSourceURL('platform-vertical-scene.gd'));
+  const hasDrop = generated.files.has('drop-through-helper.gd');
+  const helpers = await Promise.all([...verticalNames, ...(hasDrop ? [verticalDropName] : [])].map(async name => [name, await fs.readFile(verticalSourceURL(name))]));
+  for (const name of [...verticalNames, verticalDropName, verticalInventoryName]) if (generated.files.has(name)) invalid();
+  for (const scene of selected) {
+    const id = scene.scene.objectId, prefix = `scenes/${id}`, original = generated.files.get(`${prefix}/main.tscn`);
+    if (!original || original.toString() !== verticalOriginalMain(id)) invalid();
+    const proxy = JSON.parse(generated.files.get(`${prefix}/platform-motion.json`));
+    generated.files.set(`${prefix}/platform-vertical-original.tscn.txt`, original);
+    generated.files.set(`${prefix}/main.tscn`, Buffer.from(verticalMain(id)));
+    generated.files.set(`${prefix}/platform-vertical-scene.gd`, Buffer.from(verticalSceneSource(wrapper.toString(), id, proxy.bodies.map(body => body.instanceId), hasDrop)));
+    generated.files.set(`${prefix}/platform-vertical.json`, json({ format: 'viento-godot-platform-vertical2d', schemaVersion: 1, sceneObjectId: id,
+      bodies: scene.physics.document.bodies.filter(body => body.platformMotion?.kind === 'vertical').map(body => ({ bodyId: body.id, instanceId: body.instanceId, platformMotion: body.platformMotion })) }));
+  }
+  for (const [name, bytes] of helpers) generated.files.set(name, bytes);
+  const manifest = json({ format: 'viento-godot-platform-vertical-project', schemaVersion: 1, sceneIds: selected.map(scene => scene.scene.objectId) });
+  generated.files.set(verticalInventoryName, manifest);
+  generated.backend = { ...generated.backend, version: '0.39.0', capabilities: [...generated.backend.capabilities, capability],
+    sha256: buildHash(Buffer.concat([Buffer.from(generated.backend.sha256), await fs.readFile(new URL('./godot4-physics-platform-vertical-v0.39.mjs.txt', import.meta.url)),
+      await fs.readFile(new URL('./godot4-physics-platform-vertical-inventory-v0.39.mjs.txt', import.meta.url)), ...helpers.map(([, bytes]) => bytes), wrapper, manifest])) };
+  return generated;
+}
+export async function godotPhysicsPlatformVerticalAssemblyScripts(directory, signal) {
+  const projection = await validateGodotPlatformVerticalInventory(directory, signal);
+  const previous = await godotPhysicsCharacterIntentAssemblyScripts(directory, signal);
+  if (projection === null) return previous;
+  if (!previous) invalid();
+  return [...previous, ...projection.scripts];
+}

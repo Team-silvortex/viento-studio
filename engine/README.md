@@ -2,7 +2,7 @@
 
 `engine/` 提供不依赖 DOM、Node、HTTP、Tauri 或具体执行引擎的规则、模型、规划和观察契约。文件读取、摘要实现、素材字节、进程及持久化由宿主注入或执行；共享 Rust／WASM 负责已迁入的领域规则，JavaScript 负责来源捕获、回执核对和编排。
 
-本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。源码版本 **0.2.5**，已收录自由平面碰撞、单向平台下穿、水平往返及端点事件，原始观察留存和共用有限执行预算分别维护；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
+本文是当前 API 导航，按数据、作者提案、执行观察和存储接口组织。已发布源码版本为 **0.2.8**，工作树可能另有未发布改动；安装与平台范围见 [STATUS](../docs/STATUS.md)。[完整历史接口快照](../docs/history/engine-2026-10-25.md)保留请求示例、旧兼容细节及逐轮记录。以下 3D 标题中的旧版本号保留既有外部链接，不作为当前交付状态。
 
 ## 调用边界
 
@@ -124,6 +124,8 @@ schema 4 以 `oneWay: { margin: 1 }` 增加静态矩形单向平台，容差有�
 
 水平往返平台使用物理schema 5的独立核心域 `scenePhysics2D.inspectPlatformMotion`，仅静态矩形接受 `platformMotion: {kind: "horizontal", offsetX, speed}`。保真编辑器显式升级声明；真实轨迹和承载由执行后端处理，Web空间图保持几何显示。[使用与边界](../docs/SCENE_PHYSICS2D.md#配置水平往返平台)。
 
+垂直往返平台另用物理 schema 6、`scenePhysics2D.inspectPlatformVertical` 与独立 WASM 标记。静态矩形接受 `{kind: "vertical", offsetY, speed}`，仅实际垂直轨迹要求 `physics.platform-vertical2d`；schema 6 可保留水平或静止声明。核心验证参数，不模拟支撑、轨迹或碰撞；正式执行见[垂直平台](../docs/SCENE_PHYSICS2D.md#配置垂直往返平台)。
+
 `physics.one-way-platform2d` 仅由实际 `oneWay` 字段派生；Godot 0.26.0 包装配置固定朝上的原生矩形单向碰撞及 margin，原运动／事件层和项目／观察协议保持。0.26包装本身只配置静态单向面；水平运动与主动下穿由后续独立层提供，任意方向尚未定义。两个 Bevy 适配器不支持。空间几何 DTO 不携带这些运行参数，表单几何修改保留完整作者声明。使用流程见[静态单向平台](../docs/SCENE_PHYSICS2D.md#配置静态单向平台)。
 
 ### 物理空间视图与字段提案
@@ -211,7 +213,7 @@ Godot、Bevy 数据与 Bevy Rust 的资源、语言和运行范围分别由后�
 
 ### 项目执行调度观察
 
-`project-execution-clock.mjs` 是0.2.5发布后的未发布开发增量。导出 `PROJECT_EXECUTION_CLOCK_PREFIX`（`VIENTO_EXECUTION_CLOCK:`）和 `createProjectExecutionClockReader({ runtimeReader, onSnapshot, retainedWindows = 32 })`。`runtimeReader` 必须提供 `push()`／`finish()`；可选 `onSnapshot` 接收分离快照，`retainedWindows` 允许1–8192。返回接口保留原事件、诊断和getter，并在物理组合存在 `snapshot()` 时继续转发；调度快照另从 `executionClock` 读取。
+`project-execution-clock.mjs` 已纳入0.2.6源码。导出 `PROJECT_EXECUTION_CLOCK_PREFIX`（`VIENTO_EXECUTION_CLOCK:`）和 `createProjectExecutionClockReader({ runtimeReader, onSnapshot, retainedWindows = 32 })`。`runtimeReader` 必须提供 `push()`／`finish()`；可选 `onSnapshot` 接收分离快照，`retainedWindows` 允许1–8192。返回接口保留原事件、诊断和getter，并在物理组合存在 `snapshot()` 时继续转发；调度快照另从 `executionClock` 读取。
 
 独立协议1只接受精确sample结构：`index`、`clock: { idleFrame, physicsFrame }`、七维 `used`／`total` 及 `reason`。原因限 `sample`、`rejected`、`finished`、`aborted`。新窗口时钟必须单调且至少一个维度前进；当前窗口可合并增量，累计成本必须等于上个窗口总量加当前增量，所有成本保持有限策略范围。非法观察原子拒绝，不能回退或部分修改最后合法记录。
 
@@ -407,6 +409,8 @@ Android 的 `mobile/platform.mjs` 在 WebView 复用可移植规则，Rust `mobi
 
 0.2.5 源码让同一碰撞起始脚本支持自由平面停止／滑动角色，参数与端口版本保持；运行求解、集合差项及普通作者事件仍由各自层负责。实际适配范围见[物理指南](../docs/SCENE_PHYSICS2D.md#用角色移动碰撞驱动项目事件)。
 
+`godot-platform-control-script.mjs` 提供0.2.8收录的普通 Godot TXT 起始源码：按 `initial_running` 和项目事件请求本平台启停，可选用 `instance_id` 过滤载荷；受竞争拒绝时保留最新期望并在物理回调重试。行为局部 `viento_platform_control` 版本 1 的首个有效请求在下一物理步应用；读取的是作者开关，不证明实际位移。Godot 实际移动平台由 0.40.0 层提供可选 `physics.platform-control2d`，不改变作者格式、Rust／WASM 或项目／观察协议；语义与保存流程见[事件控制平台](../docs/SCENE_PHYSICS2D.md#用事件控制平台启停)。
+
 `godot-character-drop-through-script.mjs` 把已有输入动作的按键边沿转换为自身 `viento_character_drop.request_drop()`，只有 `drop_action` 参数。端口拒绝是正常玩法结果；几何支撑、例外恢复和生命周期由独立Godot控制器负责，脚本不承担移动、碰撞查询或文件保存。见[主动下穿](../docs/SCENE_PHYSICS2D.md#从单向平台主动下穿)。
 
 `godot-platform-endpoint-events-script.mjs` 是普通TXT起始内容，严格核对 `viento_platform_events` 版本1、零参起点／终点信号和本实例身份。`origin_event`／`destination_event` 空名各自禁用，发布载荷为平台UUID。运行端每端每项目步合并通知，不在脚本中轮询位置、推进轨迹或管理物理句柄；现有项目事件预算保持。见[平台端点事件](../docs/SCENE_PHYSICS2D.md#用平台端点事件驱动动画与声音)。
@@ -440,7 +444,7 @@ Godot0.34在真实输出点采集计数，Node将快照保存至session与任务
 
 `audioRequests` 返回独立的 `viento-project-audio-requests`、schemaVersion=1快照，包含phase（waiting／recording／finished／incomplete）、counts（accepted／applied／discarded／pending）、requests和retention（limit／total／retained／dropped／pending／terminal／firstRequestId／lastRequestId）。请求行保存requestId、status、acceptedClock、origin五身份与冻结source、track（trackId／resourceId／冻结source）、action，以及显式applied或discarded证据；默认保留最近128条终态加全部pending，最多64条未决。音频与动画各有256个会话请求ID和256次有限预约，不共享编号或返还额度；前缀尝试、单行及诊断上限同共用观察合同；拒绝诊断为runtime_audio_request_invalid，限额诊断为runtime_audio_request_limit。没有完整applied证据时保留pending，不从取消推断丢弃，也不从已验证后端调用推断设备出声。
 
-Node将快照保存到会话与任务接口，原业务协议保持。含音轨Godot项目使用0.36外层，无音轨但有动画仍为0.35，两者均无为0.34。新领域与共用reader的最终验证、组合库存、宿主和真实引擎范围见[音频专题](../docs/test-results/runtime-audio-requests/README.md)，合同见[中间层](../docs/BACKEND_MIDDLEWARE.md#音频排队请求观察)；本轮未发布或更新安装。
+Node将快照保存到会话与任务接口，原业务协议保持。含音轨Godot项目使用0.36外层，无音轨但有动画仍为0.35，两者均无为0.34。新领域与共用reader的最终验证、组合库存、宿主和真实引擎范围见[音频专题](../docs/test-results/runtime-audio-requests/README.md)，合同见[中间层](../docs/BACKEND_MIDDLEWARE.md#音频排队请求观察)；音频能力已纳入0.2.6源码，专题保留发布前验证条件，本机安装仍为0.2.0。
 
 ### 项目事件发布与投递位置
 

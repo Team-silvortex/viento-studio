@@ -4,7 +4,7 @@
 
 [快速开始](GETTING_STARTED.md) · [完整工作流](PROJECT_WORKFLOW.md) · [当前状态](STATUS.md) · [开发路线](ROADMAP.md) · [历史索引](history/README.md)
 
-当前源码的[0.2.7 发布记录](RELEASE_0.2.7.md)与[发布检查](test-results/release-0.2.7/README.md)分别说明功能收录和升版验证。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
+当前源码的[0.2.8 发布记录](RELEASE_0.2.8.md)与[发布检查](test-results/release-0.2.8/README.md)分别说明功能收录和升版验证；上一版见[0.2.7 发布记录](RELEASE_0.2.7.md)。源码版本、安装包和平台覆盖以 [STATUS](STATUS.md) 为准；操作和契约查专题指南，逐轮验证查历史记录。先确认使用的源码或安装包范围，再按下列入口操作。
 
 ## 第一次使用
 

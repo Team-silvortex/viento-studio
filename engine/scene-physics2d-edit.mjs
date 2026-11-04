@@ -160,8 +160,14 @@ function bodyPatches(content, parsed, before, after, index, formatting) {
     leaf(`${pointer}/oneWay/margin`, before.oneWay.margin, after.oneWay.margin);
   }
   if (Object.hasOwn(before, 'platformMotion') && Object.hasOwn(after, 'platformMotion')) {
-    for (const key of ['kind', 'offsetX', 'speed']) {
-      leaf(`${pointer}/platformMotion/${key}`, before.platformMotion[key], after.platformMotion[key]);
+    if (before.platformMotion.kind !== after.platformMotion.kind) {
+      // Axis changes replace only this declaration; all other source bytes stay intact.
+      leaf(`${pointer}/platformMotion`, before.platformMotion, after.platformMotion);
+    } else {
+      const axis = before.platformMotion.kind === 'vertical' ? 'offsetY' : 'offsetX';
+      for (const key of ['kind', axis, 'speed']) {
+        leaf(`${pointer}/platformMotion/${key}`, before.platformMotion[key], after.platformMotion[key]);
+      }
     }
   }
   patches.push(...optionalPatches(content, parsed, before, after, pointer, formatting));
@@ -213,7 +219,7 @@ function bodiesPatch(content, parsed, before, after, formatting) {
 async function patch(content, edit) {
   const before = await readScenePhysics2DDocument(content), fields = record(edit, ['bodies']);
   const bodies = candidateBodies(before, fields.bodies);
-  const candidate = { ...before, schemaVersion: Math.max(before.schemaVersion, bodies.some(body => Object.hasOwn(body, 'platformMotion')) ? 5 : bodies.some(body => Object.hasOwn(body, 'oneWay')) ? 4 : bodies.some(body => Object.hasOwn(body, 'characterMotion')) ? 3
+  const candidate = { ...before, schemaVersion: Math.max(before.schemaVersion, bodies.some(body => body.platformMotion?.kind === 'vertical') ? 6 : bodies.some(body => Object.hasOwn(body, 'platformMotion')) ? 5 : bodies.some(body => Object.hasOwn(body, 'oneWay')) ? 4 : bodies.some(body => Object.hasOwn(body, 'characterMotion')) ? 3
     : bodies.some(body => body.collisionResponse === 'slide') ? 2 : 1), bodies };
   await inspect(candidate); safeSerialization();
   const parsed = parseJsonSource(content), formatting = style(content, parsed);

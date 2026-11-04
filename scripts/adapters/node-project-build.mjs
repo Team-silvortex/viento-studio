@@ -4,7 +4,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { randomUUID } from 'node:crypto';
 import { canonicalJson, createWorldProjection } from '../../engine/world-projection.mjs';
-import { createBuildTargetPlan, buildTargetIdentity, scenePlans } from '../../engine/build-target.mjs';
+import { createBuildTargetPlan, buildTargetIdentity, scenePlans, isProjectControlEntryEligible } from '../../engine/build-target.mjs';
 import { createSceneRuntimeObservation } from '../../engine/scene-runtime-query.mjs';
 import { createProjectRuntimeObservation } from '../../engine/project-runtime-query.mjs';
 import { createProjectCausalAnchors } from '../../engine/project-causal-anchors.mjs';
@@ -221,7 +221,7 @@ export async function readFrozenProjectBuild(buildDirectory, { backendId, backen
 export async function runProjectBuild({ buildDirectory, godot, tool = godot, backendId,
   backendRegistry = createExecutionBackendRegistry(), signal, timeoutMs = 30000, headless = true, smoke = true, capture = false,
   controlProgram: inputControlProgram, physicsControlProgram: inputPhysicsControlProgram, physicsReplayCase: inputPhysicsReplayCase, physicsReplaySceneId, runtimeCase: inputRuntimeCase, runtimeCaseSceneId, expectedBuildId, expectedSnapshotId, onProgress = () => {} }) {
-  let sessionDirectory, record, plan, frozenSourceDocuments, observation, controlProgram, physicsControlProgram, physicsReplayCase, runtimeCase, physicsReader, runtimeReader, traceReader;
+  let sessionDirectory, record, plan, runtimeCasePlan, frozenSourceDocuments, observation, controlProgram, physicsControlProgram, physicsReplayCase, runtimeCase, physicsReader, runtimeReader, traceReader;
   let physicsReplayObserved = false;
   // Callback consumers receive detached DTOs and cannot alter admitted input,
   // events, samples or the session record while a process is running.
@@ -285,20 +285,35 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       || controlProgram.schemaVersion === 2 && !adapter.descriptor.capabilities.includes('runtime.control-replay.instances'))) {
       throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'This backend does not support control replay.');
     }
-    if (runtimeCaseSceneId !== undefined && buildTargetIdentity(plan)?.objectId !== runtimeCaseSceneId) {
+    const controlScene = plan.kind === 'project' ? plan.scenes.find(scene => scene.scene.objectId === plan.entrySceneId) : plan;
+    if (runtimeCase && plan.kind === 'project' && runtimeCaseSceneId === undefined) {
+      throw buildError('runtime_case_scene_mismatch', 'Project runtime verification requires the frozen entry scene identity.');
+    }
+    if (runtimeCaseSceneId !== undefined && (plan.kind === 'project' ? plan.entrySceneId : buildTargetIdentity(plan)?.objectId) !== runtimeCaseSceneId) {
       throw buildError('runtime_case_scene_mismatch', 'The runtime case belongs to a different frozen scene.');
     }
-    if (runtimeCase) runtimeCase = validateRuntimeCasePlan(plan, runtimeCase);
-    const controlScene = plan.kind === 'project' ? plan.scenes.find(scene => scene.scene.objectId === plan.entrySceneId) : plan;
-    if (controlProgram && (plan.kind === 'project' && (runtimeCase || plan.schemaVersion !== 1
-      || !adapter.descriptor.capabilities.includes('project.control-replay'))
-      || !controlScene || ![1, 2].includes(controlScene.schemaVersion) || controlScene.behaviors || controlScene.animation || plan.kind === 'project' && (controlScene.physics || controlScene.audio))) {
+    if (controlProgram && (plan.kind === 'project' ? !isProjectControlEntryEligible(plan)
+      || !adapter.descriptor.capabilities.includes('project.control-replay')
+      || runtimeCase && !adapter.descriptor.capabilities.includes('project.runtime-case')
+      : !controlScene || ![1, 2].includes(controlScene.schemaVersion) || controlScene.behaviors || controlScene.animation)) {
       throw buildError(runtimeCase ? 'runtime_case_unsupported' : 'runtime_control_unsupported', 'Control replay requires a supported data-only entry scene.');
+    }
+    // A project continues to execute and report its full frozen plan. Only case
+    // validation and evaluation use the frozen entry, never the author catalog.
+    if (runtimeCase) {
+      runtimeCasePlan = controlScene;
+      runtimeCase = validateRuntimeCasePlan(runtimeCasePlan, runtimeCase);
     }
     if (controlProgram) controlProgram = validateSceneControlPlan(controlScene, controlProgram);
     frozenSourceDocuments = snapshot.source.documents;
     assertBackendOperation(adapter, operation, plan);
     const generated = validateGeneratedExecutionProject(adapter, plan, await adapter.generate(plan));
+    if (runtimeCase && plan.kind === 'project' && (!Array.isArray(generated.backend.capabilities)
+      || ['project.runtime-case', 'project.control-replay', 'runtime.control-replay',
+        ...(controlProgram.schemaVersion === 2 ? ['runtime.control-replay.instances'] : [])]
+        .some(capability => !generated.backend.capabilities.includes(capability)))) {
+      throw buildError('runtime_case_unsupported', 'The frozen generated project does not declare this entry verification capability.');
+    }
     if (physicsControlProgram && !generated.backend.capabilities.includes('physics.observe2d'))
       throw buildError('runtime_physics2d_input_unsupported', 'The frozen project does not provide physics observation.');
     // Capabilities select protocol readers, so bind the entire declaration to
@@ -345,7 +360,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
       ...(physicsReplayCase ? { physicsVerification: { definition: physicsReplayCase, sha256: `sha256:${buildHash(canonicalJson(physicsReplayCase))}`,
         evaluation: { status: 'incomplete', checks: [] } } } : {}),
       ...(runtimeCase ? { verification: { definition: runtimeCase, sha256: `sha256:${buildHash(canonicalJson(runtimeCase))}`,
-        evaluation: evaluateRuntimeCase(plan, runtimeCase, [], { complete: false }) } } : {}) };
+        evaluation: evaluateRuntimeCase(runtimeCasePlan, runtimeCase, [], { complete: false }) } } : {}) };
     const initialRuntime = captureRuntime();
     await saveRecord(sessionDirectory, 'session.json', record);
     publish({ ...initialRuntime, ...(record.verification ? { verification: record.verification } : {}) });
@@ -408,7 +423,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
         },
         onSample: sample => {
           record.control.samples.push(JSON.parse(JSON.stringify(sample)));
-          if (runtimeCase) record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, record.control.samples, { complete: false });
+          if (runtimeCase) record.verification.evaluation = evaluateRuntimeCase(runtimeCasePlan, runtimeCase, record.control.samples, { complete: false });
           if (observation.pushSample(sample)) {
             record.runtime = observation.snapshot();
             publish({ runtime: observation.snapshot(), controlSample: sample,
@@ -515,10 +530,10 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
     if (signal?.aborted && record.status === 'succeeded') {
       record.status = 'cancelled'; record.diagnostics.push(diagnostic(buildError('runtime_cancelled', 'Runtime cancelled.'), plan));
     }
-    try { record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, record.control.samples, { complete: record.status === 'succeeded' }); }
+    try { record.verification.evaluation = evaluateRuntimeCase(runtimeCasePlan, runtimeCase, record.control.samples, { complete: record.status === 'succeeded' }); }
     catch (error) {
       record.diagnostics.push(diagnostic(error, plan)); record.status = 'failed';
-      record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, [], { complete: false });
+      record.verification.evaluation = evaluateRuntimeCase(runtimeCasePlan, runtimeCase, [], { complete: false });
     }
   }
   if (physicsControlProgram && record.physicsControl) {
@@ -548,7 +563,7 @@ export async function runProjectBuild({ buildDirectory, godot, tool = godot, bac
   // that awaited write must not leave a passed disk record behind.
   if (runtimeCase && signal?.aborted && record.status === 'succeeded') {
     record.status = 'cancelled'; record.diagnostics.push(diagnostic(buildError('runtime_cancelled', 'Runtime cancelled.'), plan));
-    record.verification.evaluation = evaluateRuntimeCase(plan, runtimeCase, record.control.samples, { complete: false });
+    record.verification.evaluation = evaluateRuntimeCase(runtimeCasePlan, runtimeCase, record.control.samples, { complete: false });
     await saveRecord(sessionDirectory, 'session.json', record);
   }
   if (physicsControlProgram && !physicsReplayCase && signal?.aborted && record.status === 'succeeded') {

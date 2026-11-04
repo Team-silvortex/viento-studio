@@ -173,14 +173,18 @@ fn document_version(value: &Value, version: u32) -> Result<Value, CoreError> {
             }
             keys.push("oneWay");
         }
-        if version == 5 && body.get("platformMotion").is_some() {
+        if version >= 5 && body.get("platformMotion").is_some() {
             let motion = &body["platformMotion"];
+            let axis = match motion["kind"].as_str() {
+                Some("horizontal") => "offsetX",
+                Some("vertical") if version >= 6 => "offsetY",
+                _ => return Err(invalid()),
+            };
             if body["kind"] != "static"
                 || body["shape"]["kind"] != "box"
-                || !exact(motion, &["kind", "offsetX", "speed"])
-                || motion["kind"] != "horizontal"
-                || !bounded(&motion["offsetX"], -8192.0, 8192.0)
-                || motion["offsetX"]
+                || !exact(motion, &["kind", axis, "speed"])
+                || !bounded(&motion[axis], -8192.0, 8192.0)
+                || motion[axis]
                     .as_f64()
                     .is_none_or(|offset| offset.abs() < 1.0)
                 || !bounded(&motion["speed"], 1.0, 2000.0)
@@ -234,13 +238,16 @@ pub(crate) fn dispatch(request: &Value) -> Result<ScenePhysics2DResponse, CoreEr
                     | "scenePhysics2D.inspectMotion"
                     | "scenePhysics2D.inspectOneWay"
                     | "scenePhysics2D.inspectPlatformMotion"
+                    | "scenePhysics2D.inspectPlatformVertical"
             )
         )
     {
         return Err(CoreError::request());
     }
     Ok(ScenePhysics2DResponse {
-        document: if request["operation"] == "scenePhysics2D.inspectPlatformMotion" {
+        document: if request["operation"] == "scenePhysics2D.inspectPlatformVertical" {
+            document_version(&request["document"], 6)?
+        } else if request["operation"] == "scenePhysics2D.inspectPlatformMotion" {
             document_version(&request["document"], 5)?
         } else if request["operation"] == "scenePhysics2D.inspectOneWay" {
             document_version(&request["document"], 4)?
@@ -897,5 +904,156 @@ mod tests {
             .unwrap()
             .push(body(128, "static"));
         assert!(document_version(&value, 5).is_err());
+    }
+
+    fn vertical_doc() -> Value {
+        let mut value = platform_motion_doc();
+        value["schemaVersion"] = json!(6);
+        value["bodies"][0]["platformMotion"] = json!({"kind":"vertical","offsetY":-160,"speed":80});
+        value
+    }
+
+    #[test]
+    fn vertical_platforms_have_their_own_operation_and_preserve_all_inherited_semantics() {
+        assert_eq!(
+            crate::viento_core_scene_physics2d_platform_vertical_version(),
+            1
+        );
+        for motion in [
+            None,
+            Some(json!({"kind":"horizontal","offsetX":160,"speed":80})),
+            Some(json!({"kind":"vertical","offsetY":-160,"speed":80})),
+        ] {
+            let mut value = vertical_doc();
+            match motion {
+                Some(motion) => value["bodies"][0]["platformMotion"] = motion,
+                None => {
+                    value["bodies"][0]
+                        .as_object_mut()
+                        .unwrap()
+                        .remove("platformMotion");
+                }
+            }
+            assert_eq!(document_version(&value, 6).unwrap(), value);
+            for operation in [
+                "inspect",
+                "inspectResponse",
+                "inspectMotion",
+                "inspectOneWay",
+                "inspectPlatformMotion",
+                "inspectPlatformVertical",
+            ] {
+                let result = wire(
+                    json!({"protocolVersion":1,"operation":format!("scenePhysics2D.{operation}"),"document":value}),
+                );
+                if operation == "inspectPlatformVertical" {
+                    assert_eq!(result["scenePhysics2D"]["document"], value);
+                } else {
+                    assert_eq!(result["errorCode"], "scene_physics2d_invalid");
+                }
+            }
+        }
+        for version in 1..=5 {
+            let mut value = doc();
+            value["schemaVersion"] = json!(version);
+            value["bodies"][0]["platformMotion"] = json!({"kind":"vertical","offsetY":1,"speed":1});
+            assert!(document_version(&value, version).is_err());
+        }
+        assert_eq!(
+            wire(
+                json!({"protocolVersion":1,"operation":"scenePhysics2D.inspectPlatformVertical","document":platform_motion_doc()})
+            )["errorCode"],
+            "scene_physics2d_invalid"
+        );
+    }
+
+    #[test]
+    fn vertical_platforms_require_exact_static_boxes_and_bounded_signed_travel() {
+        for offset in [-8192.0, -1.125, -1.0, 1.0, 1.125, 8192.0] {
+            for speed in [1.0, 1.25, 2000.0] {
+                let mut value = vertical_doc();
+                value["bodies"][0]["platformMotion"] =
+                    json!({"kind":"vertical","offsetY":offset,"speed":speed});
+                assert_eq!(document_version(&value, 6).unwrap(), value);
+            }
+        }
+        for motion in [
+            json!(null),
+            json!(false),
+            json!(1),
+            json!([]),
+            json!({}),
+            json!({"kind":"vertical","offsetX":160,"speed":80}),
+            json!({"kind":"vertical","offsetY":160,"offsetX":0,"speed":80}),
+            json!({"kind":"vertical","offsetY":160}),
+            json!({"kind":"horizontal","offsetY":160,"speed":80}),
+        ] {
+            let mut value = vertical_doc();
+            value["bodies"][0]["platformMotion"] = motion;
+            assert!(document_version(&value, 6).is_err());
+        }
+        for bad in [
+            json!(-8192.001),
+            json!(8192.001),
+            json!(0),
+            json!(-0.0),
+            json!(0.999),
+            json!(-0.999),
+            json!(true),
+            json!("160"),
+            json!(null),
+            json!([]),
+        ] {
+            let mut value = vertical_doc();
+            value["bodies"][0]["platformMotion"]["offsetY"] = bad;
+            assert!(document_version(&value, 6).is_err());
+        }
+        for (pointer, bad) in [
+            ("/bodies/0/platformMotion/speed", json!(0.999)),
+            ("/bodies/0/platformMotion/speed", json!(2000.001)),
+            ("/bodies/0/kind", json!("character")),
+            ("/bodies/0/kind", json!("sensor")),
+            ("/bodies/0/shape", json!({"kind":"circle","radius":16})),
+            ("/bodies/0/oneWay/margin", json!(0)),
+            ("/bodies/1/characterMotion/gravity", json!(20001)),
+            ("/bodies/0/mask", json!(65536)),
+        ] {
+            let mut value = vertical_doc();
+            *value.pointer_mut(pointer).unwrap() = bad;
+            assert!(document_version(&value, 6).is_err(), "{pointer}");
+        }
+    }
+
+    #[test]
+    fn vertical_platform_raw_duplicates_and_existing_collection_limits_remain_strict() {
+        let input = json!({"protocolVersion":1,"operation":"scenePhysics2D.inspectPlatformVertical","document":vertical_doc()});
+        let raw = serde_json::to_string(&input).unwrap();
+        for (from, to) in [
+            ("\"offsetY\":-160", "\"offsetY\":1,\"offset\\u0059\":-160"),
+            (
+                "\"platformMotion\":",
+                "\"platformMotio\\u006e\":null,\"platformMotion\":",
+            ),
+            ("\"speed\":80", "\"speed\":1e999"),
+        ] {
+            let result: Value =
+                serde_json::from_slice(&crate::dispatch_json(raw.replace(from, to).as_bytes()))
+                    .unwrap();
+            assert_eq!(result["errorCode"], "studio_core_request_invalid");
+        }
+        let mut value = vertical_doc();
+        value["bodies"] = (0..128)
+            .map(|n| {
+                let mut row = body(n, "static");
+                row["platformMotion"] = json!({"kind":"vertical","offsetY":-1,"speed":2000});
+                row
+            })
+            .collect();
+        assert_eq!(document_version(&value, 6).unwrap(), value);
+        value["bodies"]
+            .as_array_mut()
+            .unwrap()
+            .push(body(128, "static"));
+        assert!(document_version(&value, 6).is_err());
     }
 }

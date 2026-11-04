@@ -5,6 +5,8 @@ import path from 'node:path';
 import { generateGodotPhysicsPlatformMotionProject, godotPhysicsPlatformMotionAssemblyScripts } from './godot4-physics-platform-motion.mjs';
 import { buildHash, buildError, readBuildFile } from '../adapters/node-build-snapshot.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
+import { validateGodotPlatformVerticalInventory } from './godot4-physics-platform-vertical-inventory.mjs';
+import { validateGodotPlatformControlInventory } from './godot4-physics-platform-control-inventory.mjs';
 const capability = 'physics.platform-events2d';
 const sourceURL = name => new URL(`./godot4/physics-platform-events-${name}.gd`, import.meta.url);
 const exact = (value, keys) => value && typeof value === 'object' && !Array.isArray(value)
@@ -18,7 +20,7 @@ export async function generateGodotPhysicsPlatformEventsProject(input) {
   const motion = generated.files.get('platform-motion-project.json');
   if (!motion) return generated;
   const scenes = JSON.parse(motion).sceneIds;
-  const [helper, port, wrapper, generator] = await Promise.all(['helper', 'port', 'scene'].map(name => fs.readFile(sourceURL(name))).concat(fs.readFile(new URL('./godot4-physics-platform-events.mjs', import.meta.url))));
+  const [helper, port, wrapper, generator] = await Promise.all(['helper', 'port', 'scene'].map(name => fs.readFile(sourceURL(name))).concat(fs.readFile(new URL('./godot4-physics-platform-events-v0.31.mjs.txt', import.meta.url))));
   for (const id of scenes) {
     const prefix = `scenes/${id}`, original = generated.files.get(`${prefix}/main.tscn`);
     if (!original || original.toString() !== baseScene(id)) invalid();
@@ -38,12 +40,14 @@ export async function godotPhysicsPlatformEventsAssemblyScripts(directory, signa
   const read = async (name, limit = 65536) => readBuildFile(await resolveContainedPath(directory, path.join(directory, name)), limit, signal);
   const optional = async (name, limit) => { try { return await read(name, limit); } catch (error) { if (error.code === 'ENOENT') return null; invalid(); } };
   try {
+    const controls = await validateGodotPlatformControlInventory(directory, signal);
+    const vertical = await validateGodotPlatformVerticalInventory(directory, signal);
     const inventory = await optional('platform-events-project.json', 8192), helper = await optional('platform-events-helper.gd'), port = await optional('platform-events-port.gd');
     const assemblyBytes = await optional('assembly.json', 4 * 1024 * 1024), rows = assemblyBytes === null ? [] : JSON.parse(assemblyBytes).scenes;
     const selected = [], added = [], wrapper = (await fs.readFile(sourceURL('scene'))).toString();
     for (const row of rows) {
       const id = row.sceneId, prefix = `scenes/${id}`, original = await optional(`${prefix}/platform-events-original.tscn`), scene = await optional(`${prefix}/platform-events-scene.gd`);
-      const main = await read(`${prefix}/main.tscn`), motion = await optional(`${prefix}/platform-motion.json`);
+      const main = vertical?.mains.get(id) || controls?.mains.get(id) || await read(`${prefix}/main.tscn`), motion = await optional(`${prefix}/platform-motion.json`);
       const touched = original !== null || scene !== null || main.includes('platform-events');
       if (inventory === null) { if (touched) invalid(); continue; }
       if (motion === null) { if (touched) invalid(); continue; }

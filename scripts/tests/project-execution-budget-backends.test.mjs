@@ -59,8 +59,29 @@ for (const kind of ['events', 'animation', 'states', 'instances', 'physics']) te
     else assert.deepEqual(f.generated.files.get(name), bytes, name);
   }
   const viaAdapter = await adapter.generate(f.captured.plan);
+  // Moving-platform projects now wrap the historical scene entry, while the
+  // finite-budget artifacts and original platform entry remain byte-identical.
+  const movingScenes = f.captured.plan.scenes.filter(scene => scene.physics?.document.bodies.some(body => body.platformMotion));
+  assert.equal(viaAdapter.backend.capabilities.includes('physics.platform-control2d'), movingScenes.length > 0);
+  if (movingScenes.length) {
+    const manifest = JSON.parse(viaAdapter.files.get('platform-control-project.json'));
+    assert.deepEqual(manifest, { format: 'viento-godot-platform-control-project', schemaVersion: 1,
+      sceneIds: movingScenes.map(scene => scene.scene.objectId) });
+    assert.equal(viaAdapter.backend.version, '0.40.0');
+  }
   // Current scheduling observation keeps the frozen finite-budget artifacts.
   for (const [name, bytes] of f.generated.files) {
+    const sceneEntry = /^scenes\/([^/]+)\/main\.tscn$/.exec(name);
+    if (sceneEntry && movingScenes.some(scene => scene.scene.objectId === sceneEntry[1])) {
+      const prefix = `scenes/${sceneEntry[1]}`, oldMain = bytes.toString();
+      assert.equal(oldMain.split('/platform-events-scene.gd"').length, 2, name);
+      assert.deepEqual(viaAdapter.files.get(`${prefix}/platform-control-original.tscn.txt`), bytes, `${name} original`);
+      assert.equal(viaAdapter.files.get(name).toString(), oldMain.replace('/platform-events-scene.gd"', '/platform-control-scene.gd"'), `${name} control entry`);
+      const wrapper = viaAdapter.files.get(`${prefix}/platform-control-scene.gd`).toString();
+      assert.ok(wrapper.includes(`extends "res://${prefix}/project-scene.gd"`));
+      assert.ok(wrapper.includes('preload("res://platform-control-helper.gd")'));
+      continue;
+    }
     const intentMatch = /^scenes\/([^/]+)\/(runtime|one-way-original)\.gd$/.exec(name);
     const intentBackup = intentMatch && `scenes/${intentMatch[1]}/character-intent-original-${intentMatch[2]}.gd.txt`;
     if (intentBackup && viaAdapter.files.has(intentBackup)) {

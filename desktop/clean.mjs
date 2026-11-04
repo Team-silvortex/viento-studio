@@ -5,7 +5,8 @@ import { appStoragePaths, readWorkspaceSelector } from '../scripts/lib/app-stora
 
 // Only application build output belongs here. Never add dist/, workspaces/,
 // .viento/, Git history or arbitrary user-supplied paths to this list.
-const generated = ['crates/viento-studio-core/target', 'engine/studio-core.wasm', 'engine/studio-core.build.json', 'src-tauri/target', 'src-tauri/binaries', 'src-tauri/gen/schemas',
+const generated = ['crates/viento-studio-core/target', 'crates/viento-bevy-runtime/target',
+  'scripts/backends/bevy-rust/target', 'engine/studio-core.wasm', 'engine/studio-core.build.json', 'src-tauri/target', 'src-tauri/binaries', 'src-tauri/gen/schemas',
   'desktop/resources', 'desktop/.cache', 'desktop/ui/i18n', 'mobile/dist',
   'src-tauri/gen/android/.gradle', 'src-tauri/gen/android/.kotlin', 'src-tauri/gen/android/build',
   'src-tauri/gen/android/app/build', 'src-tauri/gen/android/buildSrc/build', 'src-tauri/gen/android/buildSrc/.gradle',

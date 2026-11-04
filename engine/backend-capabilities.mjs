@@ -264,6 +264,15 @@ export function checkExecutionBackendSupport(descriptor, request = {}) {
         if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
           `Backend lacks capability: ${capability}`, { capability }));
       }
+      // Vertical movement is separately admitted, even when a forged plan
+      // preserves only its generic platform-motion flag.
+      if (bodies.some(body => body?.kind === 'static' && body.platformMotion?.kind === 'vertical')) {
+        const capability = 'physics.platform-vertical2d';
+        if (!plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',
+          'Physics plans must explicitly require their vertical platform capability.', { capability }));
+        if (!plan.requiredCapabilities.includes(capability) && !backend.capabilities.includes(capability)) diagnostics.push(diagnostic('build_capability_missing',
+          `Backend lacks capability: ${capability}`, { capability }));
+      }
       const required = ['physics.bodies2d', ...(kinds.has('character') ? ['physics.character2d'] : []), ...(kinds.has('sensor') ? ['physics.sensors2d'] : [])];
       for (const capability of SCENE_PHYSICS2D_CAPABILITIES) {
         if (required.includes(capability) && !plan.requiredCapabilities.includes(capability)) diagnostics.push(diagnostic('build_physics_invalid',

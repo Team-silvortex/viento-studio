@@ -26,14 +26,14 @@ const directory = () => ({ format: 'viento-scene-physics2d-space', schemaVersion
 });
 const fieldNames = ['Instance', 'Kind', 'Shape', 'Width', 'Height', 'Radius', 'X', 'Y', 'Layer', 'Mask'];
 async function fixture(t, settings = {}) {
-  const original = settings.content || JSON.stringify(settings.model || model(), null, 2) + '\n'; let platformMotionCapability = settings.platformMotionCapability !== false; let oneWayCapability = settings.oneWayCapability !== false; let motionCapability = settings.motionCapability !== false; let capability = settings.capability !== false; let content = original, language = 'zh', listener = () => {}, rendererCallbacks;
+  const original = settings.content || JSON.stringify(settings.model || model(), null, 2) + '\n'; let platformMotionCapability = settings.platformMotionCapability !== false; let verticalCapability = settings.verticalCapability ?? platformMotionCapability; let oneWayCapability = settings.oneWayCapability !== false; let motionCapability = settings.motionCapability !== false; let capability = settings.capability !== false; let content = original, language = 'zh', listener = () => {}, rendererCallbacks;
   const context = { editable: true, creating: false, busy: false, sourceJSON: true, physicsSource: true, available: true,
     sourcePath: 'documents/physics/demo.json', sourceToken: 'host:1', targetsAvailable: false, spaceAvailable: settings.spaceAvailable ?? true, spaceToken: 'space:1' };
   const source = () => ({ sourcePath: context.sourcePath, token: context.sourceToken, content, sourceRevision: hash(content), baseSourceRevision: hash(original) });
   const calls = [], writes = [], renders = [], state = { view: null, options: null }, reads = [];
   const translate = (key, ...args) => (({ en, ja }[language]?.[key] || key).replace(/\{(\d+)\}/g, (_, n) => String(args[n] ?? '')));
   const h = await dialogHarness('app-scene-physics2d', {
-    supportsStudioCoreScenePhysics2DPlatformMotion: () => platformMotionCapability, supportsStudioCoreScenePhysics2DOneWay: () => oneWayCapability, supportsStudioCoreScenePhysics2DResponse: () => capability, supportsStudioCoreScenePhysics2DMotion: () => motionCapability,
+    supportsStudioCoreScenePhysics2DPlatformMotion: () => platformMotionCapability, supportsStudioCoreScenePhysics2DPlatformVertical: () => verticalCapability, supportsStudioCoreScenePhysics2DOneWay: () => oneWayCapability, supportsStudioCoreScenePhysics2DResponse: () => capability, supportsStudioCoreScenePhysics2DMotion: () => motionCapability,
     readScenePhysics2DDocument, isScenePhysics2DProposal, isScenePhysics2DSpace, isScenePhysics2DOffsetProposal, isScenePhysics2DResizeProposal,
     createScenePhysics2DProposal: async (before, edit) => { await settings.beforeProposal?.(); return createScenePhysics2DProposal(copy(before), copy(edit)); },
     scenePhysics2DSpaceMatchSource: (space, snapshot) => scenePhysics2DSpaceMatchSource(space, copy(snapshot)),
@@ -64,7 +64,7 @@ async function fixture(t, settings = {}) {
     proposeOffset: (delta = [1, 0], bodyId = el('Body').value, view = state.view) => createScenePhysics2DOffsetProposal(view, bodyId, delta),
     offerOffset: candidate => rendererCallbacks.onOffsetProposal(candidate),
     select: bodyId => rendererCallbacks.onSelect(bodyId),
-    platformMotionCapability(value) { platformMotionCapability = value; controller.refresh(); }, oneWayCapability(value) { oneWayCapability = value; controller.refresh(); }, motionCapability(value) { motionCapability = value; controller.refresh(); }, language(value) { language = value; listener(); }, capability(value) { capability = value; controller.refresh(); },
+    platformMotionCapability(value) { platformMotionCapability = value; controller.refresh(); }, verticalCapability(value) { verticalCapability = value; controller.refresh(); }, oneWayCapability(value) { oneWayCapability = value; controller.refresh(); }, motionCapability(value) { motionCapability = value; controller.refresh(); }, language(value) { language = value; listener(); }, capability(value) { capability = value; controller.refresh(); },
   };
 }
 
@@ -147,7 +147,7 @@ test('equivalent endpoint and speed spelling makes no patch or Apply ticket', as
   assert.equal(h.el('Apply').disabled,true); assert.equal(h.el('PlatformMotionX').value,'1.20e2'); assert.equal(h.content(),h.original);
 });
 test('invalid mode and silent endpoint or speed changes cannot reuse review approval', async t => {
-  const h=await fixture(t,{model:baseModel()}); await platform(h); h.set('PlatformMotion','vertical'); await h.click('Check'); assert.equal(h.el('Apply').disabled,true);
+  const h=await fixture(t,{model:baseModel()}); await platform(h); h.set('PlatformMotion','diagonal'); await h.click('Check'); assert.equal(h.el('Apply').disabled,true);
   h.set('PlatformMotion','horizontal'); for(const [name,value] of [['PlatformMotionX','240'],['PlatformMotionSpeed','80']]) { await h.click('Check'); assert.equal(h.el('Apply').disabled,false); h.el(name).value=value; await h.click('Apply'); assert.equal(h.writes.length,0); }
 });
 test('missing platform marker blocks schema5 creation while older geometry and one-way edits still work', async t => {
@@ -198,4 +198,64 @@ test('three languages preserve focused mode review and incomplete signed endpoin
 });
 test('cancel discards a platform review and reopening shows the original stationary declaration', async t => {
   const h=await fixture(t,{model:baseModel()}); await platform(h); h.set('PlatformMotion','horizontal'); await h.click('Check'); await h.click('Cancel'); assert.equal(h.content(),h.original); assert.equal(h.writes.length,0); await platform(h); assert.equal(h.el('PlatformMotion').value,'none');
+});
+
+
+test('vertical platform review applies only an explicit draft and keeps separate axis inputs', async t => {
+  const h=await fixture(t,{model:baseModel()}); await platform(h); h.set('PlatformMotion','horizontal'); h.set('PlatformMotionX','-140');
+  h.set('PlatformMotion','vertical'); assert.equal(h.el('PlatformMotionXField').hidden,true); assert.equal(h.el('PlatformMotionYField').hidden,false);
+  h.set('PlatformMotionY','-240'); h.set('PlatformMotionSpeed','80'); await h.click('Check');
+  assert.deepEqual(reviewed(h).bodies[1].platformMotion,{kind:'vertical',offsetY:-240,speed:80}); assert.equal(reviewed(h).schemaVersion,6);
+  assert.equal(h.content(),h.original); assert.equal(h.writes.length,0);
+  h.set('PlatformMotion','horizontal'); assert.equal(h.el('PlatformMotionX').value,'-140');
+  h.set('PlatformMotion','vertical'); assert.equal(h.el('PlatformMotionY').value,'-240'); await h.click('Check'); await h.click('Apply');
+  assert.equal(h.writes.length,1); assert.deepEqual(JSON.parse(h.content()).bodies[1].platformMotion,{kind:'vertical',offsetY:-240,speed:80});
+});
+
+test('vertical bounds, capability changes and cancel do not write or silently downgrade', async t => {
+  const h=await fixture(t,{model:baseModel()}); await platform(h); h.set('PlatformMotion','vertical');
+  for(const value of ['0','0.9','8193','-8193','1e-']) { h.set('PlatformMotionY',value); await h.click('Check'); assert.equal(h.el('Apply').disabled,true); assert.equal(h.el('PlatformMotionY').value,value); }
+  h.set('PlatformMotionY','-1'); await h.click('Check'); assert.equal(h.el('Apply').disabled,false);
+  h.verticalCapability(false); assert.equal(h.el('Apply').disabled,true); assert.equal(h.el('PlatformVertical').disabled,true);
+  h.set('PlatformMotion','horizontal'); await h.click('Check'); assert.equal(reviewed(h).schemaVersion,5);
+  await h.click('Cancel'); assert.equal(h.writes.length,0); assert.equal(h.content(),h.original);
+  const source=baseModel(); source.schemaVersion=6; source.bodies[1].platformMotion={kind:'vertical',offsetY:30,speed:20};
+  const k=await fixture(t,{model:source}); await platform(k); k.set('PlatformMotion','none'); await k.click('Check'); assert.equal(reviewed(k).schemaVersion,6);
+});
+
+test('vertical labels and signed input survive language changes and geometry edits', async t => {
+  const source=baseModel(); source.schemaVersion=6; source.bodies[1].oneWay={margin:1}; source.bodies[1].platformMotion={kind:'vertical',offsetY:-160,speed:80};
+  const h=await fixture(t,{model:source}); await platform(h); h.el('PlatformMotionY').focus();
+  for(const language of ['en','ja','zh']) { h.language(language); assert.equal(h.el('PlatformMotionY').value,'-160'); assert.equal(h.document.activeElement,h.el('PlatformMotionY')); }
+  for(const mode of ['offset','resize']) { await h.click(mode==='offset'?'SpaceEdit':'SpaceResize');
+    assert.equal(mode==='offset'?h.offerOffset(h.proposeOffset([2,0])):h.offer(h.propose([2,0])),true); await h.click('Check');
+    assert.deepEqual(reviewed(h).bodies[1].platformMotion,source.bodies[1].platformMotion); assert.deepEqual(reviewed(h).bodies[1].oneWay,{margin:1});
+  }
+});
+
+
+test('older horizontal core leaves vertical unavailable with a clear explanation', async t => {
+  const h=await fixture(t,{model:baseModel(),verticalCapability:false}); await platform(h);
+  assert.equal(h.el('PlatformMotion').disabled,false); assert.equal(h.el('PlatformHorizontal').disabled,false);
+  assert.equal(h.el('PlatformVertical').disabled,true); assert.equal(h.el('PlatformVerticalUnavailable').hidden,false);
+  h.set('PlatformMotion','horizontal'); await h.click('Check'); assert.equal(reviewed(h).schemaVersion,5);
+});
+
+test('vertical capability withdrawal and ABA prevent pending Check and Apply', async t => {
+  for(const phase of ['Check','Apply']) for(const restore of [false,true]) {
+    const gate=deferred(),h=await fixture(t,{model:baseModel(),[phase==='Check'?'beforeProposal':'beforeApply']:()=>gate.promise});
+    await platform(h); h.set('PlatformMotion','vertical'); if(phase==='Apply')await h.click('Check');
+    h.el(phase).click(); await h.settle(); h.verticalCapability(false); if(restore)h.verticalCapability(true);
+    gate.resolve(); await h.settle(); assert.equal(h.writes.length,0,phase+restore); if(phase==='Check')assert.equal(h.el('Apply').disabled,true);
+  }
+});
+
+
+test('vertical marker withdrawal and ABA reject opening a schema6 document', async t => {
+  for (const restore of [false,true]) {
+    const source=baseModel(); source.schemaVersion=6; source.bodies[1].platformMotion={kind:'vertical',offsetY:30,speed:20};
+    const gate=deferred(),h=await fixture(t,{model:source,beforeSource:()=>gate.promise});
+    const opening=h.controller.open(); await h.settle(); h.verticalCapability(false); if(restore)h.verticalCapability(true);
+    gate.resolve(); assert.equal(await opening,false); assert.equal(h.el('Fields').hidden,true);
+  }
 });

@@ -51,7 +51,22 @@ for (const kind of ['events', 'animation', 'states', 'instances', 'physics']) te
   const intent = f.captured.plan.scenes.some(scene => scene.physics?.document.bodies.some(body => body.characterMotion
     && scene.actors.some(actor => actor.instanceId === body.instanceId && actor.controls === 'none')));
   assert.equal(current.backend.capabilities.includes('physics.character-intent2d'), intent);
-  assert.equal(current.backend.version, intent ? '0.37.0' : f.captured.plan.scenes.some(scene => scene.audio?.document.tracks.length) ? '0.36.0' : current.backend.protocolVersion === 4 ? '0.34.0' : '0.35.0');
+  const movingScenes = f.captured.plan.scenes.filter(scene => scene.physics?.document.bodies.some(body => body.platformMotion));
+  assert.equal(current.backend.capabilities.includes('physics.platform-control2d'), movingScenes.length > 0);
+  assert.equal(current.backend.version, movingScenes.length ? '0.40.0' : intent ? '0.37.0' : f.captured.plan.scenes.some(scene => scene.audio?.document.tracks.length) ? '0.36.0' : current.backend.protocolVersion === 4 ? '0.34.0' : '0.35.0');
+  if (movingScenes.length) {
+    assert.deepEqual(JSON.parse(current.files.get('platform-control-project.json')), { format: 'viento-godot-platform-control-project', schemaVersion: 1,
+      sceneIds: movingScenes.map(scene => scene.scene.objectId) });
+    for (const scene of movingScenes) {
+      const prefix = `scenes/${scene.scene.objectId}`, name = `${prefix}/main.tscn`, oldMain = generated.files.get(name);
+      assert.ok(oldMain); assert.equal(oldMain.toString().split('/platform-events-scene.gd"').length, 2);
+      assert.deepEqual(current.files.get(`${prefix}/platform-control-original.tscn.txt`), oldMain, `${name} original`);
+      assert.equal(current.files.get(name).toString(), oldMain.toString().replace('/platform-events-scene.gd"', '/platform-control-scene.gd"'), `${name} control entry`);
+      const wrapper = current.files.get(`${prefix}/platform-control-scene.gd`).toString();
+      assert.ok(wrapper.includes(`extends "res://${prefix}/project-scene.gd"`));
+      assert.ok(wrapper.includes('preload("res://platform-control-helper.gd")'));
+    }
+  }
   assert.equal(current.backend.protocolVersion, generated.backend.protocolVersion);
   assert.ok(current.backend.capabilities.includes('runtime.execution-frames'));
 });

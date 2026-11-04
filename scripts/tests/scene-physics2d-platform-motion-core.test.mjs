@@ -78,7 +78,7 @@ test('all five schema operations remain separate and older schemas reject platfo
   }
   for (const version of [1, 2, 3, 4]) { const value = legacyDocument(version); value.bodies[0].platformMotion = document().bodies[0].platformMotion; assert.throws(() => inspectScenePhysics2D(value), invalid); }
   for (const dispatch of dispatches.slice(0, 4)) assert.throws(() => dispatch(request(document())), { errorCode: 'studio_core_request_invalid' });
-  const value = document(); value.schemaVersion = 6; assert.throws(() => inspectScenePhysics2D(value), invalid);
+  const value = document(); value.schemaVersion = 7; assert.throws(() => inspectScenePhysics2D(value), invalid);
   assert.equal(getStudioCoreMetadata().ready, true);
 });
 

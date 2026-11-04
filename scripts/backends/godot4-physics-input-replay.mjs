@@ -7,7 +7,7 @@ import { validateProjectPhysics2DInputReplay } from '../../engine/project-physic
 import { buildError, readBuildFile } from '../adapters/node-build-snapshot.mjs';
 import { resolveContainedPath } from '../lib/contained-path.mjs';
 import { runBuildProcess } from '../lib/build-process.mjs';
-import { godotPhysicsCharacterIntentAssemblyScripts } from './godot4-physics-character-intent.mjs';
+import { godotPhysicsPlatformControlAssemblyScripts } from './godot4-physics-platform-control.mjs';
 
 const unsupported = () => { throw buildError('runtime_physics2d_input_unsupported', 'Physics input replay requires a single physics scene with no behaviors, animation, or audio.'); };
 const optional = async file => fs.access(file).then(() => true, error => { if (error.code === 'ENOENT') return false; throw error; });
@@ -18,7 +18,7 @@ export async function executeGodotPhysicsInputReplay({ directory, tool, signal, 
   catch (error) { throw buildError(error.errorCode || 'runtime_physics2d_input_invalid', 'Invalid physics input replay program.'); }
   const stat = await fs.lstat(directory);
   if (!stat.isDirectory() || stat.isSymbolicLink()) throw buildError('build_output_invalid', 'Physics replay requires an owned generated directory.');
-  const scripts = await godotPhysicsCharacterIntentAssemblyScripts(directory, signal);
+  const scripts = await godotPhysicsPlatformControlAssemblyScripts(directory, signal);
   if (!scripts) unsupported();
   const read = async (name, limit = 4 * 1024 * 1024) => readBuildFile(await resolveContainedPath(directory, path.join(directory, name)), limit, signal);
   const assembly = JSON.parse(await read('assembly.json'));

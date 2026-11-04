@@ -19,7 +19,7 @@ import { validateProjectPhysics2DReplayCase, evaluateProjectPhysics2DReplayCase 
 import { validateProjectPhysics2DReplayPlan } from '../../engine/project-physics2d-replay-contract.mjs';
 import { validateRuntimeCase, validateRuntimeCasePlan, evaluateRuntimeCase } from '../../engine/runtime-verification-case.mjs';
 import { canonicalJson } from '../../engine/canonical-json.mjs';
-import { buildTargetIdentity, scenePlans } from '../../engine/build-target.mjs';
+import { buildTargetIdentity, scenePlans, entryScenePlan, isProjectControlEntryEligible } from '../../engine/build-target.mjs';
 import { inspectProjectAssembly } from '../../engine/project-assembly.mjs';
 import { backendProjectSourceIdentity } from '../../engine/backend-project.mjs';
 import { createProjectAssemblyDocumentService } from './project-assembly-documents.mjs';
@@ -402,7 +402,7 @@ export function createProjectBuildService(root, {
       const {documentId,pin,receiptDirectory}=event.caseReport;
       const row=job.suite?.entries.find(item=>item.documentId===documentId),context=pin?.context;
       if(row?.reportAvailable===true&&context?.documentId===documentId&&context.buildId===job.buildId
-        &&context.snapshotId===job.snapshotId&&context.backendId===job.backendId&&context.sceneObjectId===job.sceneId
+        &&context.snapshotId===job.snapshotId&&context.backendId===job.backendId&&context.sceneObjectId===job.suite.sceneObjectId
         &&context.suiteDocumentId===job.suite.documentId&&context.suiteSourceVersion===job.suite.sourceVersion
         &&context.sourceVersion===row.sourceVersion&&context.sessionId===row.sessionId) {
         memberReports.set(documentId,{pin,receiptDirectory});
@@ -560,7 +560,8 @@ export function createProjectBuildService(root, {
   }
 
   async function startSuite(raw) {
-    const request={buildId:raw.buildId,suiteDocumentId:raw.suiteDocumentId,expectedVersion:raw.expectedVersion};
+    const request={buildId:raw.buildId,suiteDocumentId:raw.suiteDocumentId,expectedVersion:raw.expectedVersion,
+      expectedSnapshotId:raw.expectedSnapshotId,runtimeCaseSceneId:raw.runtimeCaseSceneId};
     if(!uuid(request.buildId)||!uuid(request.suiteDocumentId)||typeof request.expectedVersion!=='string'
       ||!/^sha256:[a-f0-9]{64}$/.test(request.expectedVersion))throw fail('runtime_suite_document_request','Select an owned build and a saved suite revision.');
     if(active||probe||deliveryOperation)throw fail('build_busy','A build task or tool check is already active.',409);
@@ -574,10 +575,19 @@ export function createProjectBuildService(root, {
     if(frozen.build.buildId!==entry.id||frozen.build.snapshotId!==entry.snapshotId||buildTargetIdentity(frozen.plan)?.objectId!==entry.sceneId) {
       throw fail('runtime_build_invalid','The owned frozen build changed.',422);
     }
-    if (frozen.plan.kind === 'project') throw fail('runtime_case_unsupported', 'Select a single scene build for runtime case suites.', 422);
+    if (frozen.plan.kind === 'project' && request.expectedSnapshotId !== frozen.build.snapshotId)
+      throw fail('runtime_case_snapshot_mismatch', 'Select the current frozen project snapshot.', 422);
+    if (frozen.plan.kind === 'project' && request.runtimeCaseSceneId !== frozen.plan.entrySceneId)
+      throw fail('runtime_case_scene_mismatch', 'Select the frozen project entry scene.', 422);
+    if (frozen.plan.kind !== 'project' && (request.expectedSnapshotId !== undefined || request.runtimeCaseSceneId !== undefined))
+      throw fail('runtime_suite_document_request', 'Scene suite runs do not accept project entry bindings.', 400);
+    if (frozen.plan.kind === 'project' && (!isProjectControlEntryEligible(frozen.plan)
+      || !['project.runtime-case-suite', 'project.runtime-case', 'project.control-replay'].every(cap => adapter.descriptor.capabilities.includes(cap)
+        && Array.isArray(frozen.build.backend.capabilities) && frozen.build.backend.capabilities.includes(cap))))
+      throw fail('runtime_case_unsupported', 'This project backend does not support entry case suites.', 422);
     const diagnostics=checkExecutionBackendSupport(adapter.descriptor,{operation:'headlessLogic',platform:process.platform,plan:frozen.plan});
     if(diagnostics.length)throw fail(diagnostics[0].code,diagnostics[0].message,422);
-    const capture=await captureRuntimeCaseSuite(root,{documentId:request.suiteDocumentId,expectedVersion:request.expectedVersion,plan:frozen.plan});
+    const capture=await captureRuntimeCaseSuite(root,{documentId:request.suiteDocumentId,expectedVersion:request.expectedVersion,plan:entryScenePlan(frozen.plan)});
     if(!adapter.descriptor.capabilities.includes('runtime.control-replay')
       ||capture.cases.some(item=>item.document.case.program.schemaVersion===2)&&!adapter.descriptor.capabilities.includes('runtime.control-replay.instances')) {
       throw fail('runtime_case_unsupported','This backend does not support the suite programs.',422);
@@ -604,7 +614,7 @@ export function createProjectBuildService(root, {
     if (closed) throw fail('build_service_closed', 'Build service is closing.', 503);
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)
       || !['plan', 'build', 'run', 'cancel', 'inspect', 'inspect-project', 'select-project', 'tool-check', 'case-list', 'case-load', 'case-save', 'physics-replay-list', 'physics-replay-load', 'physics-replay-save', 'physics-case-list', 'physics-case-load', 'physics-case-save', 'suite-list', 'suite-load', 'suite-save', 'suite-run', 'suite-report', 'assembly-list', 'assembly-load', 'assembly-save'].includes(payload.action)) throw fail('build_request_invalid', 'Invalid build action.');
-    const allowed = { plan: ['action', 'sceneId', 'targetId'], build: ['action', 'sceneId', 'targetId', 'expectedSnapshotId'], run: ['action', 'buildId', 'mode', 'controlProgram', 'physicsControlProgram', 'physicsReplayCase', 'physicsReplaySceneId', 'runtimeCase', 'runtimeCaseSceneId'], cancel: ['action', 'jobId'],
+    const allowed = { plan: ['action', 'sceneId', 'targetId'], build: ['action', 'sceneId', 'targetId', 'expectedSnapshotId'], run: ['action', 'buildId', 'mode', 'controlProgram', 'physicsControlProgram', 'physicsReplayCase', 'physicsReplaySceneId', 'runtimeCase', 'runtimeCaseSceneId', 'expectedSnapshotId'], cancel: ['action', 'jobId'],
       inspect: ['action', 'jobId', 'instanceId', 'objectId'], 'inspect-project': ['action', 'buildId'], 'select-project': ['action', 'buildId'], 'tool-check': ['action'],
       'physics-case-list': ['action', 'sceneId'], 'physics-case-load': ['action', 'documentId'],
       'physics-case-save': ['action', 'sceneId', 'sceneVersion', 'content', 'documentId', 'expectedVersion', 'sourcePath', 'documentType'],
@@ -614,7 +624,7 @@ export function createProjectBuildService(root, {
       'case-save': ['action', 'sceneId', 'sceneVersion', 'content', 'documentId', 'expectedVersion', 'sourcePath', 'documentType'],
       'suite-list':['action','sceneId'],'suite-load':['action','documentId'],
       'suite-save':['action','sceneId','sceneVersion','content','documentId','expectedVersion','sourcePath','documentType'],
-      'suite-run':['action','buildId','suiteDocumentId','expectedVersion'],
+      'suite-run':['action','buildId','suiteDocumentId','expectedVersion','expectedSnapshotId','runtimeCaseSceneId'],
       'assembly-list': ['action'], 'assembly-load': ['action', 'documentId'],
       'assembly-save': ['action', 'worldId', 'baseRevision', 'content', 'documentId', 'expectedVersion', 'sourcePath', 'documentType'],
       'suite-report':['action','jobId','documentId'] }[payload.action];
@@ -768,8 +778,17 @@ export function createProjectBuildService(root, {
         payload.physicsReplayCase = physicsReplayCase;
       }
       const controlBuild = builds.get(payload.buildId), projectControl = controlBuild.targetKind === 'project';
-      if (runtimeCase && projectControl) {
-        throw fail('runtime_case_unsupported', 'Select a single scene build for runtime verification.', 422);
+      if (runtimeCase && projectControl && (controlBuild.planSchemaVersion !== 1
+        || !adapter.descriptor.capabilities.includes('project.runtime-case')
+        || !adapter.descriptor.capabilities.includes('project.control-replay') || !controlBuild.controlReplayAvailable)) {
+        throw fail('runtime_case_unsupported', 'This project build does not support entry-scene runtime verification.', 422);
+      }
+      if (Object.hasOwn(payload, 'expectedSnapshotId') && (!runtimeCase || !projectControl
+        || typeof payload.expectedSnapshotId !== 'string' || payload.expectedSnapshotId !== controlBuild.snapshotId)) {
+        throw fail('runtime_case_snapshot_mismatch', 'The verification does not match this frozen project snapshot.', 422);
+      }
+      if (runtimeCase && projectControl && payload.expectedSnapshotId !== controlBuild.snapshotId) {
+        throw fail('runtime_case_snapshot_mismatch', 'Select the frozen project snapshot for verification.', 422);
       }
       if (controlProgram && projectControl && (!adapter.descriptor.capabilities.includes('project.control-replay') || !controlBuild.controlReplayAvailable)) {
         throw fail('runtime_control_unsupported', 'This project build does not support entry-scene control replay.', 422);
@@ -784,7 +803,8 @@ export function createProjectBuildService(root, {
         catch (error) { throw fail(error.errorCode || 'runtime_control_invalid', 'Control replay does not match this frozen build.', 422); }
       }
       if (runtimeCase) {
-        if (payload.runtimeCaseSceneId && payload.runtimeCaseSceneId !== builds.get(payload.buildId).sceneId) {
+        if (projectControl ? payload.runtimeCaseSceneId !== controlBuild.controlSceneId
+          : payload.runtimeCaseSceneId && payload.runtimeCaseSceneId !== controlBuild.sceneId) {
           throw fail('runtime_case_scene_mismatch', 'The case belongs to a different frozen scene.', 422);
         }
         if (!adapter.descriptor.capabilities.includes('runtime.control-replay')

@@ -140,3 +140,50 @@ for (const action of ['offset', 'resize']) test(`schema5 ${action} space proposa
   assert.equal(slice(result.afterContent, '/bodies/1'), slice(content, '/bodies/1')); assert.ok(result.afterContent.includes('"oneWa\\u0079"'));
   assert.deepEqual(result.changedPaths, [action === 'offset' ? '/bodies/0/offset/0' : '/bodies/0/shape/size/1']);
 });
+
+
+test('vertical authoring upgrades only when chosen, keeps schema6 and preserves unrelated source bytes', async () => {
+  for (const version of [1, 4, 5, 6]) {
+    const value = document(version), content = encode(value).replace('"layer": 1', '"layer": 1e0');
+    const form = edit(value); form.bodies[0].platformMotion = { kind: 'vertical', offsetY: -240, speed: 80 };
+    const proposal = await createScenePhysics2DProposal(source(content), form);
+    const after = read(proposal.afterContent);
+    assert.equal(after.schemaVersion, 6);
+    assert.deepEqual(after.bodies[0].platformMotion, { kind: 'vertical', offsetY: -240, speed: 80 });
+    assert.equal(slice(content, '/bodies/1'), slice(proposal.afterContent, '/bodies/1'));
+    assert.ok(proposal.afterContent.includes('"layer": 1e0'));
+    assert.ok(proposal.afterContent.startsWith('\ufeff'));
+    assert.ok(!/(?<!\r)\n/.test(proposal.afterContent));
+    const undo = edit(after); delete undo.bodies[0].platformMotion;
+    assert.equal(read((await createScenePhysics2DProposal(source(proposal.afterContent), undo)).afterContent).schemaVersion, 6);
+  }
+});
+
+test('vertical endpoint leaf and axis switches preserve every unrelated lexeme', async () => {
+  const value = document(6); value.bodies[0].platformMotion = { kind: 'vertical', offsetY: -120, speed: 80 };
+  const content = encode(value).replace('"offsetY": -120', '"offset\\u0059": -1.20e2').replace('"speed": 80', '"speed": 8.00e1').replace('"margin": 1', '"margin": 1.00e0');
+  const changed = edit(value); changed.bodies[0].platformMotion.offsetY = 400;
+  const proposal = await createScenePhysics2DProposal(source(content), changed);
+  assert.equal(proposal.afterContent, content.replace('"offset\\u0059": -1.20e2', '"offset\\u0059": 400'));
+  assert.deepEqual(proposal.changedPaths, ['/bodies/0/platformMotion/offsetY']);
+  const switchAxis = edit(value); switchAxis.bodies[0].platformMotion = { kind: 'horizontal', offsetX: -160, speed: 80 };
+  const switched = await createScenePhysics2DProposal(source(content), switchAxis);
+  assert.equal(read(switched.afterContent).schemaVersion, 6);
+  assert.deepEqual(read(switched.afterContent).bodies[0].platformMotion, switchAxis.bodies[0].platformMotion);
+  assert.deepEqual(switched.changedPaths, ['/bodies/0/platformMotion']);
+  assert.equal(slice(content, '/bodies/1'), slice(switched.afterContent, '/bodies/1'));
+  assert.ok(switched.afterContent.includes('"margin": 1.00e0'));
+});
+
+test('vertical endpoint bounds and invalid mixed axes are rejected without clamping', async () => {
+  for (const offsetY of [-8192, -1, 1, 8192]) for (const speed of [1, 2000]) {
+    const value = document(4), form = edit(value); form.bodies[0].platformMotion = { kind: 'vertical', offsetY, speed };
+    assert.deepEqual(read((await createScenePhysics2DProposal(source(encode(value)), form)).afterContent).bodies[0].platformMotion, form.bodies[0].platformMotion);
+  }
+  for (const platformMotion of [{ kind:'vertical',offsetY:0,speed:1 }, { kind:'vertical',offsetY:8193,speed:1 },
+    { kind:'vertical',offsetY:1,speed:0 }, { kind:'vertical',offsetY:1,speed:2001 },
+    { kind:'vertical',offsetX:1,speed:1 }, { kind:'vertical',offsetX:1,offsetY:1,speed:1 }]) {
+    const value = document(4), form = edit(value); form.bodies[0].platformMotion = platformMotion;
+    await assert.rejects(createScenePhysics2DProposal(source(encode(value)), form), invalid);
+  }
+});

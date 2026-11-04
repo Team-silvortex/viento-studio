@@ -20,7 +20,7 @@ import { createProjectExecutionFramesReader } from '../../engine/project-executi
 import { createProjectEventPositionsReader } from '../../engine/project-event-positions.mjs';
 import { GODOT_ANIMATION_REQUESTS_CAPABILITY } from './godot4-animation-requests.mjs';
 import { GODOT_AUDIO_REQUESTS_CAPABILITY } from './godot4-audio-requests.mjs';
-import { generateGodotPhysicsCharacterIntentProject, godotPhysicsCharacterIntentAssemblyScripts, GODOT_CHARACTER_INTENT_CAPABILITY } from './godot4-physics-character-intent.mjs';
+import { GODOT_CHARACTER_INTENT_CAPABILITY } from './godot4-physics-character-intent.mjs';
 import { createProjectAudioRequestsReader } from '../../engine/project-audio-requests.mjs';
 import { createProjectAnimationRequestsReader } from '../../engine/project-animation-requests.mjs';
 import { createProjectExecutionClockReader } from '../../engine/project-execution-clock.mjs';
@@ -30,12 +30,13 @@ import { createProjectPhysics2DTraceReader } from '../../engine/project-physics2
 import { createSceneAudioEventReader } from '../../engine/scene-audio-events.mjs';
 import { executeGodotPhysicsInputReplay } from './godot4-physics-input-replay.mjs';
 import { validateProjectAssemblyPlan } from '../../engine/project-assembly-plan.mjs';
+import { generateGodotPhysicsPlatformControlProject, godotPhysicsPlatformControlAssemblyScripts } from './godot4-physics-platform-control.mjs';
 import { applyGodotInputMap } from './godot4-input-map.mjs';
 
 const descriptor = validateExecutionBackendDescriptor({
-  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.38.0',
+  format: 'viento-execution-backend', schemaVersion: 1, id: 'org.viento.godot4', label: 'Godot 4', version: '0.40.0',
   platforms: ['linux'], plans: [{ kind: 'scene2d', schemaVersion: 1, runtimeProtocolVersion: 1 }, { kind: 'scene2d', schemaVersion: 2, runtimeProtocolVersion: 2 }, { kind: 'scene2d', schemaVersion: 3, runtimeProtocolVersion: 3 }, { kind: 'project', schemaVersion: 1, runtimeProtocolVersion: 11 }, { kind: 'project', schemaVersion: 2, runtimeProtocolVersion: 11 }],
-  capabilities: ['project.input-map', GODOT_CHARACTER_INTENT_CAPABILITY, GODOT_AUDIO_REQUESTS_CAPABILITY, GODOT_ANIMATION_REQUESTS_CAPABILITY, GODOT_EXECUTION_FRAMES_CAPABILITY, GODOT_EXECUTION_CLOCK_CAPABILITY, 'physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
+  capabilities: ['physics.platform-control2d', 'physics.platform-vertical2d', 'project.input-map', GODOT_CHARACTER_INTENT_CAPABILITY, GODOT_AUDIO_REQUESTS_CAPABILITY, GODOT_ANIMATION_REQUESTS_CAPABILITY, GODOT_EXECUTION_FRAMES_CAPABILITY, GODOT_EXECUTION_CLOCK_CAPABILITY, 'physics.platform-events2d', 'physics.platform-motion2d', 'physics.character-drop-through2d', 'physics.character-contacts2d', 'physics.one-way-platform2d', 'physics.character-events2d', 'physics.character-motion2d', 'physics.observe2d', 'physics.bodies2d', 'physics.character2d', 'physics.sensors2d', 'physics.character-slide2d', 'scene2d', 'input.arrows', 'state.movement', 'image', 'behavior.bindings', 'behavior.gdscript', 'runtime.control-replay', 'runtime.control-replay.instances', 'audio.nonspatial', 'audio.timeline', 'project.scenes', 'project.scene-switching', 'project.shared-state', 'project.events', 'project.audio-control', 'project.animation-control', 'project.animation-completion', 'project.animation-state-snapshots', 'project.animation-state-entries', 'project.animation-state-entry-triggers', 'animation.visual2d', 'animation.sprite2d', 'animation.clips2d', 'animation.instances2d'],
   execution: { build: true, headlessLogic: true, windowPreview: true, windowCapture: true, offscreenRender: false, embeddedViewport: false, gpuCompute: false },
   extensions: [],
 });
@@ -66,8 +67,13 @@ async function generate(plan) {
   // output and fingerprints. The map belongs solely to the outer adapter.
   const inputMap = detached.kind === 'project' && detached.schemaVersion === 2 ? validateProjectAssemblyPlan(detached).inputMap : null;
   if (inputMap) { delete detached.inputMap; detached.schemaVersion = 1; detached.requiredCapabilities = detached.requiredCapabilities.filter(value => value !== 'project.input-map'); }
-  const generated = await (detached.kind === 'project' || hasGodotPhysics(detached) ? generateGodotPhysicsCharacterIntentProject : detached.animation ? generateGodotAnimationProject : detached.audio ? generateGodotAudioProject : detached.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(detached);
-  if (inputMap) await applyGodotInputMap(generated, inputMap);
+  const generated = await (detached.kind === 'project' || hasGodotPhysics(detached) ? generateGodotPhysicsPlatformControlProject : detached.animation ? generateGodotAnimationProject : detached.audio ? generateGodotAudioProject : detached.schemaVersion === 3 ? generateGodotBehaviorProject : generateGodotProject)(detached);
+  if (inputMap) {
+    await applyGodotInputMap(generated, inputMap);
+    // Keep the selected outer vertical layer visible after the historical map wrapper.
+    if (generated.backend.capabilities.includes('physics.platform-control2d')) generated.backend.version = '0.40.0';
+    else if (generated.backend.capabilities.includes('physics.platform-vertical2d')) generated.backend.version = '0.39.0';
+  }
   return { ...generated, resourceFiles: new Map(generated.resourceFiles || generated.imageFiles),
     artifact: { kind: 'godot-project', entry: 'project.godot', requiresTool: true } };
 }
@@ -76,6 +82,10 @@ async function fingerprint() {
   // Include the admission rules and host contract implementation without
   // changing the historical generator/runtime fingerprint in build.backend.
   const files = [
+    ...['godot4-physics-platform-control.mjs', 'godot4-physics-platform-control-inventory.mjs', 'godot4-physics-platform-vertical-v0.39.mjs.txt', 'godot4-physics-platform-vertical-inventory-v0.39.mjs.txt'].map(name => [`scripts/backends/${name}`, new URL(`./${name}`, import.meta.url)]),
+    ...['helper', 'port', 'scene'].map(name => [`scripts/backends/godot4/physics-platform-control-${name}.gd`, new URL(`./godot4/physics-platform-control-${name}.gd`, import.meta.url)]),
+    ...['godot4-physics-platform-vertical.mjs', 'godot4-physics-platform-vertical-inventory.mjs', 'godot4-physics-platform-events-v0.31.mjs.txt'].map(name => [`scripts/backends/${name}`, new URL(`./${name}`, import.meta.url)]),
+    ...['motion-helper', 'events-helper', 'drop-helper', 'scene'].map(name => [`scripts/backends/godot4/physics-platform-vertical-${name}.gd`, new URL(`./godot4/physics-platform-vertical-${name}.gd`, import.meta.url)]),
     ['scripts/backends/godot4-input-map.mjs', new URL('./godot4-input-map.mjs', import.meta.url)],
     ['engine/project-input-map.mjs', new URL('../../engine/project-input-map.mjs', import.meta.url)],
     ['scripts/backends/godot4-physics-input-replay.mjs', new URL('./godot4-physics-input-replay.mjs', import.meta.url)],
@@ -251,7 +261,7 @@ async function executePhase({ phase, tool, directory, signal, timeoutMs = 30000,
       XDG_DATA_HOME: path.join(directory, '.host/data'), XDG_CONFIG_HOME: path.join(directory, '.host/config'), XDG_CACHE_HOME: path.join(directory, '.host/cache') },
     signal, timeoutMs, onOutput };
   if (phase === 'script-check') {
-    const assemblyScripts = await godotPhysicsCharacterIntentAssemblyScripts(directory, signal);
+    const assemblyScripts = await godotPhysicsPlatformControlAssemblyScripts(directory, signal);
     const scripts = assemblyScripts || ['runtime.gd'];
     if (!assemblyScripts) {
     let manifest;

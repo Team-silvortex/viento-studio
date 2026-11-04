@@ -200,3 +200,13 @@ test('the report GUI contract closure remains portable without author parsers, i
   }
   assert.ok(visited.size >= 3);
 });
+
+
+test('project report distinguishes target from entry and rejects a changed frozen snapshot', async () => {
+  const h = await view(), state = current(), targetId = '99999999-9999-4999-8999-999999999999';
+  state.targetId = targetId; state.snapshotId = state.job.snapshotId; state.job.sceneId = targetId; h.setState(state);
+  await h.open(); assert.equal(h.element('projectBuildCaseReportExport').disabled, false);
+  const changed = clone(state); changed.snapshotId = revision(9); h.setState(changed);
+  assert.equal(h.element('projectBuildCaseReportPanel').hidden, true);
+  h.setState({ ...state, targetId: sceneId }); await h.open(); assert.equal(h.element('projectBuildCaseReportPanel').hidden, true);
+});

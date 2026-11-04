@@ -1,6 +1,6 @@
 # 验证指南
 
-本页提供当前可用的验证入口和证据要求。当前源码为 **0.2.6**，已收录调度时钟、因果锚点、精确业务帧、媒体请求及事件位置观察，运行仍受有限预算约束，安装验收仍为 **0.2.0**；具体范围见[当前状态](STATUS.md)。逐轮日志、旧命令上下文和历史计数完整迁入[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
+本页提供验证入口和证据要求。已发布源码为 **0.2.8**，工作树可能另有未发布改动；最近安装验收仍为 **0.2.0**，具体范围见[当前状态](STATUS.md)。0.2.8 发布结果见[发布检查](test-results/release-0.2.8/README.md)；此前0.2.7发布记录与本轮能力的发布前专题保留各自执行时点，专题证据不重标为本轮发布或安装验收。逐轮日志、旧命令上下文和历史计数见[验证指南历史快照](history/testing-2026-10-25.md)，原 `test-results/` 报告不改写。
 
 0.2.6 收录的[调度观察专题](test-results/runtime-execution-clock/README.md)独立验证真实引擎帧归窗、七维用量、留存与取消，不修改原运行协议或累计上限。复现纯合同与库存：
 
@@ -11,7 +11,7 @@ VIENTO_GODOT_BIN=/path/to/Godot node --test scripts/tests/project-execution-cloc
 
 没有配置真实Godot时，原生项明确跳过；不能把该结果写成引擎验收。调度窗口以实际idle／physics帧对为准，`_ready`之后的deferred可能已经跨过物理步。
 
-新增[因果锚点专题](test-results/runtime-causal-anchors/README.md)验证未决投递、逐实例播放命令、进入触发闭包、长尾保留和切场景释放：
+0.2.6 的[因果锚点专题](test-results/runtime-causal-anchors/README.md)验证未决投递、逐实例播放命令、进入触发闭包、长尾保留和切场景释放：
 
 ```sh
 node --test scripts/tests/project-causal-anchors.test.mjs scripts/tests/project-causal-anchors-host.test.mjs
@@ -22,7 +22,7 @@ VIENTO_GODOT_BIN=/path/to/Godot node --test scripts/tests/project-causal-anchors
 
 [音频退出调查](test-results/godot-audio-shutdown/README.md)提供不依赖Viento的Godot最小脚本。检查退出清理时，除退出码和警告外还须观察弱引用；两帧后没有警告并不证明对象已回收。该调查记录上游缺陷，不能记作修复通过。后续[修订验收](test-results/godot-audio-shutdown-patch/README.md)另存官方／修订工具的42例对照、四组项目验证与安装摘要；原生退出码、日志捕获完整性及无残留必须同时通过。复建和默认工具切换见[工具链指南](GODOT_TOOLCHAIN.md)。
 
-当前[精确业务帧专题](test-results/runtime-execution-frames/README.md)另外验证封套准入、生成库存、异常落盘和真实输出时钟：
+0.2.6 的[精确业务帧专题](test-results/runtime-execution-frames/README.md)另外验证封套准入、生成库存、异常落盘和真实输出时钟：
 
 ```bash
 node --test scripts/tests/project-execution-frames.test.mjs scripts/tests/project-execution-frames-backends.test.mjs scripts/tests/project-execution-frames-host.test.mjs
@@ -31,7 +31,7 @@ VIENTO_GODOT_BIN=/path/to/Godot node --test --test-concurrency=1 scripts/tests/p
 
 `VIENTO_EXECUTION_FRAMES_EVIDENCE` 保存逐案原始输出、真实时钟对照、session、冻结来源及作者前后摘要。Godot工具使用[音频退出修订版](GODOT_TOOLCHAIN.md)，不改Studio安装；纯host合成时钟只证明接线，不能计作引擎验收。
 
-新增[动画请求观察专题](test-results/runtime-animation-requests/README.md)分别记录纯reader、生成库存、宿主交接及真实Godot结果：
+0.2.6 的[动画请求观察专题](test-results/runtime-animation-requests/README.md)分别记录纯reader、生成库存、宿主交接及真实Godot结果：
 
 ```sh
 node --test scripts/tests/project-animation-requests.test.mjs scripts/tests/project-animation-requests-backends.test.mjs scripts/tests/project-animation-requests-host.test.mjs
@@ -40,7 +40,7 @@ VIENTO_GODOT_BIN=/path/to/Godot VIENTO_ANIMATION_REQUESTS_EVIDENCE=/tmp/viento-a
 
 核对接受／应用跨帧、FIFO、实例来源、选片后执行失败、实际abort清队列、取消未决和终态尾部；普通作者`_ready`请求与deferred路径分别验证。完整applied须匹配真实业务回执及精确帧，缺marker的pending不能解释为未执行。原生测试未配置工具时明确跳过，测试文件存在不代表已经通过；本能力已纳入0.2.6源码，尚未随新版安装程序验收，旧累计预算继续生效。
 
-新增[音频请求观察专题](test-results/runtime-audio-requests/README.md)分开核对共用队列reader、音频领域、组合库存、宿主落盘和真实Godot：
+0.2.6 的[音频请求观察专题](test-results/runtime-audio-requests/README.md)分开核对共用队列reader、音频领域、组合库存、宿主落盘和真实Godot：
 
 ```sh
 node --test scripts/tests/project-audio-requests.test.mjs scripts/tests/project-animation-requests.test.mjs scripts/tests/project-audio-requests-backends.test.mjs scripts/tests/project-audio-requests-host.test.mjs
@@ -49,7 +49,7 @@ VIENTO_GODOT_BIN=/path/to/Godot VIENTO_AUDIO_REQUESTS_EVIDENCE=/tmp/viento-audio
 
 验证范围包括普通作者ready入队、真实idle／physics跨帧、不可用音轨后的实际abort丢弃、取消且观察尾部轮转、128终态加全部pending、音频／动画独立ID与混合执行顺序、65号请求拒绝。原作者脚本与产品源码需记录执行前后hash，session落盘应与返回值一致；applied只代表后端调用回执，不做声卡出声验收。核心136项与宿主定向已验证；UID修复后库存16项含真实import／script-check通过，新音频原生7项、旧动画／迁移8项、原音频5项通过且源守卫一致，最终app-only共8626项、8070通过、556条件跳过，原生未配置工具时跳过不算通过。
 
-新增[事件发布与投递位置专题](test-results/runtime-event-positions/README.md)复用原业务封套，分开验证读取器事实保留、宿主交接和真实引擎输出。已完成的宿主定向回归：
+0.2.6 的[事件发布与投递位置专题](test-results/runtime-event-positions/README.md)复用原业务封套，分开验证读取器事实保留、宿主交接和真实引擎输出。已完成的宿主定向回归：
 
 ```sh
 node --test --test-isolation=none --test-concurrency=1 scripts/tests/project-event-positions.test.mjs scripts/tests/project-event-positions-host.test.mjs

@@ -10,6 +10,25 @@
 
 应用安装资源包含代码、内置起始模板目录、通用格式定义、界面资源和运行环境；日常作品的正文、修改后的模板、元数据和素材原文件独立保存。新建时把所选包的类型和模板复制进工程，之后不依赖安装目录中的包。已有资料通过打开作品文件夹或完整迁移包导入。
 
+### 源码仓库与运行数据
+
+下表帮助区分程序开发目录与作者工程；这些路径有不同的保存和清理规则，不需要把作者作品放进源码树。
+
+| 位置 | 职责 | 保存与使用 |
+| --- | --- | --- |
+| `engine/`、`crates/viento-studio-core/`、`schemas/` | 可移植语义、共享核心与格式契约 | 程序源码；`engine/studio-core.wasm` 和 crate `target/` 是构建产物 |
+| `web/`、`scripts/` | 编辑界面、本机服务、文件适配与后端生成 | 程序源码；服务按配置打开独立工程 |
+| `desktop/`、`src-tauri/`、`mobile/` | 桌面和 Android 宿主、平台资源准备与打包 | 配置与代码随源码保存；生成资源、sidecar 和构建目录可重建，但打包前需重新准备 |
+| `crates/viento-bevy-runtime/` | 可信 Bevy 无头运行工具源码 | 程序源码；运行工具须按 [Bevy 指南](BEVY_BACKEND.md) 单独准备 |
+| `examples/` | 仓库内合成示例工程 | 用于体验和验证；动手试验时先复制，避免改动示例 |
+| `docs/`、`docs/test-results/` | 操作、架构、历史记录与测试证据 | 是仓库内容，不属于临时缓存；历史日志和截图保留原执行时点 |
+| 独立作品目录 | 清单、正文、模板、登记、素材及 `.viento/` 下的本机绑定和恢复信息 | 作者权威数据；位置可自行选择，完整迁移按 [导出指南](EXPORT.md) 操作 |
+| 系统配置、数据和缓存目录 | 本机偏好、最近作品、默认作品和备份，以及构建／运行派生产物 | 路径和分类见 [本机数据目录](LOCAL_DATA_STORAGE.md)；作品、备份与缓存不能一并删除 |
+| `node_modules/`、各 crate 的 `target/`、`scripts/backends/bevy-rust/target/`、`src-tauri/target/`、`desktop/.cache/` | 依赖和构建缓存 | `clean` 覆盖桌面、共享核心和两条 Bevy 通道的默认 `target/`，保留 `node_modules/` 与自定义编译目录；使用 `npm run clean -- --dry-run` 先查看实际清理范围 |
+| `dist/`、`src-tauri/binaries/`、`desktop/resources/` | 本机构建交付物、sidecar 与打包资源 | 部分可以重新生成，但可能包含正在使用的交付物；确认用途和可恢复性后再清理，`dist/current/` 不是普通临时目录 |
+
+`.viento/cache/` 只是工程内部的派生缓存；同级的兼容标记、本机绑定、迁移与事务恢复信息不是缓存。Git 历史、测试证据、作品和备份也不属于常规清理对象。
+
 ## 目录标准
 
 ```text
